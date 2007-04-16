@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 16. April 2007 um 23:42
+-- Erstellungszeit: 16. April 2007 um 23:55
 -- Server Version: 5.0.33
 -- PHP-Version: 5.2.1
 -- 
@@ -178,7 +178,7 @@ CREATE TABLE `fs_counter` (
 -- Daten für Tabelle `fs_counter`
 -- 
 
-REPLACE INTO `fs_counter` VALUES (42, 6603, 3, 1, 2, 20);
+REPLACE INTO `fs_counter` VALUES (42, 6609, 3, 1, 2, 20);
 
 -- --------------------------------------------------------
 
@@ -429,6 +429,8 @@ REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go
 REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=press_add', 1, 1174737386);
 REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=userrights', 1, 1176750458);
 REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=useradd', 2, 1176750468);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/', 1, 1176760481);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=allconfig', 1, 1176760485);
 
 -- --------------------------------------------------------
 
@@ -499,7 +501,7 @@ REPLACE INTO `fs_counter_stat` VALUES (2007, 3, 24, 0, 62);
 REPLACE INTO `fs_counter_stat` VALUES (2007, 3, 25, 1, 7);
 REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 13, 1, 1);
 REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 15, 1, 1);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 16, 1, 12);
+REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 16, 1, 18);
 
 -- --------------------------------------------------------
 
@@ -621,7 +623,7 @@ CREATE TABLE `fs_global_config` (
 -- Daten für Tabelle `fs_global_config`
 -- 
 
-REPLACE INTO `fs_global_config` VALUES (1, 'http://localhost/frogsystem/www', 'admin@frogsystem.de', 'FrogSystem', 'FrogSystem - Your Way to Nature', 'CMS, content, management, system', 'Kermit, Sweil, rockfest, Don-Esteban, Fizzban', 0, 0, 1, 2);
+REPLACE INTO `fs_global_config` VALUES (1, 'http://localhost/fs2/www', 'admin@frogsystem.de', 'FrogSystem', 'FrogSystem - Your Way to Nature', 'CMS, content, management, system', 'Kermit, Sweil, rockfest, Don-Esteban, Fizzban', 0, 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -967,7 +969,6 @@ CREATE TABLE `fs_poll_voters` (
 -- Daten für Tabelle `fs_poll_voters`
 -- 
 
-REPLACE INTO `fs_poll_voters` VALUES (16, 5, '127.0.0.1', 1174404845);
 
 -- --------------------------------------------------------
 
@@ -1270,7 +1271,7 @@ CREATE TABLE `fs_useronline` (
 -- Daten für Tabelle `fs_useronline`
 -- 
 
-REPLACE INTO `fs_useronline` VALUES ('127.0.0.1', NULL, 1176750448);
+REPLACE INTO `fs_useronline` VALUES ('127.0.0.1', NULL, 1176760470);
 
 -- --------------------------------------------------------
 
