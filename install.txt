@@ -1,4 +1,4 @@
-hi there^^
+hi, hi there^^
 
 i tried to copy the server-structure with its inc and www folder. in www you can find the content. be safe you changed the include path in the .htaccess to your inc directory (No, not the inc in the www-folder, the one besides the www-folder).
 
