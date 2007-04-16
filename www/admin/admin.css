@@ -1,0 +1,208 @@
+body
+{
+    margin:0px;
+    font-family:Verdana;
+    background-color: #7EC46B;
+    background-image: url(img/bg.png);
+    background-repeat: repeat-x;
+}
+a
+{
+    font-size:8pt;
+    font-family:Verdana;
+    color:#000000;
+}
+a.menu
+{
+    font-size:8pt;
+    font-family:Verdana;
+    color:#000000;
+    text-decoration:none;
+}
+font.status
+  {
+   font-size:8pt;
+   font-family:Verdana;
+   color:#ff0000;
+  }
+.menuhead
+  {
+   font-size:8pt;
+   font-family:Verdana;
+   color:#000000;
+   font-weight:bold;
+   text-decoration:none;
+  }
+.menu
+  {
+   font-size:8pt;
+   font-family:Verdana;
+   color:#000000;
+  }
+/*.hiddencat
+  {
+   display: block;
+   margin-left: 10px;
+   margin-top: 2px;
+   margin-bottom: 2px;
+  }*/
+td.config
+  {
+   text-align:left;
+   font-size:9pt;
+   font-family:Verdana;
+   color:#000000;
+   font-weight:bold;
+  }
+td.configthin
+  {
+   text-align:left;
+   font-size:9pt;
+   font-family:Verdana;
+   color:#000000;
+  }
+td.h
+  {
+   font-size:8pt;
+   font-family:Verdana;
+   font-weight:bold;
+   color:#000000;
+   background:#AAAAAA;
+  }
+td.n
+  {
+   font-size:8pt;
+   font-family:Verdana;
+   color:#000000;
+   background:#CCCCCC;
+  }
+td.nw
+  {
+   font-size:8pt;
+   font-family:Verdana;
+   color:#000000;
+   background:#BBBBBB;
+  }
+font.small
+  {
+   font-size:7pt;
+   font-family:Verdana;
+   color:#000000;
+   font-weight:normal;
+  }   
+textarea
+  {
+   color:#000000;
+   font-size:9pt;
+   font-family:Verdana;
+   border:1px solid #000000;
+   background-color:#B7B7B7;
+  }
+input.text
+  {
+   color:#000000;
+   font-size:9pt;
+   font-family:Verdana;
+   border:1px solid #000000;
+   background-color:#B7B7B7;
+  }
+input.button
+  {
+   color:#000000;
+   font-size:8pt;
+   font-family:Verdana;
+   border:1px solid #000000;
+   background-color:#B7B7B7;
+  }
+select
+  {
+   color:#000000;
+   font-size:9pt;
+   font-family:Verdana;
+   border:1px solid #000000;
+   background-color:#B7B7B7;
+  }
+
+#menu
+{
+ position:relative;
+ background-color:#EEEEEE;
+ width:140px;
+ border-right:1px solid #000000;
+ border-bottom:1px solid #000000;
+ padding:5px;
+ padding-top:7px;
+ top:-2px;
+}
+#menushadow
+{
+ position:absolute;
+ background-color:#575757;
+ width:153px;
+ z-index:1;
+}
+
+#main
+{
+ position:absolute;
+ top:25px;
+ left:50%;
+ margin-left: -220px;
+}
+#mainshadow
+{
+ width:622px;
+ background-color:#575757;
+}
+#maincontent
+{
+ position:relative;
+ padding:10px;
+ top:-2px;
+ left:-2px;
+ width:600px;
+ background-color:#EEEEEE;
+ border:1px solid #000000;
+}
+
+/* Toggle Menu */
+
+.toggle {
+ display: none;
+}
+
+/* Tooltip */
+
+.tooltip {
+ position: absolute;
+ text-decoration: none;
+ font-style: bold;
+ border-bottom:none;
+}
+.tooltip:hover {
+ z-index: 1000;
+ background: transparent;
+ cursor:help;
+ border: none;
+}
+.tooltip span {
+ display: none;
+ position: absolute;
+ text-decoration: none;
+}
+.tooltip:hover span {
+ display: block;
+ position: absolute;
+ top: 25px;
+ left: 0px;
+ width: 150px;
+ z-index: 100;
+ color: #000000;
+ border: 1px solid;
+ border-color: #000000 #000000 #000000 #000000;
+ padding: 3px;
+ background: #EEEEEE;
+ font-family: Verdana, Arial, Helvetica, Sans-serif;
+ font-style: Normal;
+ text-align: left;
+}
