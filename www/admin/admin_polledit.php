@@ -40,7 +40,7 @@ if ($_POST[polledit] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
         mysql_query($update, $db);
 
         // Antworten in der DB aktualisieren
-        for($i=0; $i<count($ant); $i++)
+        for($i=0; $i<count($_POST[ant]); $i++)
         {
             if (isset($_POST[dela][$i]))
             {
