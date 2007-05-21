@@ -6,6 +6,12 @@
 
 if ($_POST['title'] AND $_POST['virtualhost'] AND $_POST['admin_mail'])
 {
+
+  if (substr($_POST[virtualhost], -1) != "/")
+  {
+      $_POST[virtualhost] = $_POST[virtualhost]."/";
+  }
+
   $_POST[title] = savesql($_POST[title]);
   $_POST[virtualhost] = savesql($_POST[virtualhost]);
   $_POST[description] = savesql($_POST[description]);

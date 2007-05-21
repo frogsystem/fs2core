@@ -51,7 +51,7 @@ $time = time();
 $index = mysql_query("select * from fs_news where news_date <= $time and news_id = $_GET[id]", $db);
 while ($news_arr = mysql_fetch_assoc($index))
 {
-   $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code]);
+   $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
 }
 unset($news_arr);
 
@@ -86,12 +86,53 @@ while ($comment_arr = mysql_fetch_assoc($index))
     }
 
     // Text formatieren
-    if ($config_arr[html_code] < 3)
+    switch ($config_arr[html_code])
     {
-        $comment_arr[comment_text] = killhtml($comment_arr[comment_text]);
+        case 1:
+            $html = false;
+            break;
+        case 2:
+            $html = false;
+            break;
+        case 3:
+            $html = true;
+            break;
+        case 4:
+            $html = true;
+            break;
     }
-    $comment_arr[comment_text] = bb2html($comment_arr[comment_text]);
+    switch ($config_arr[fs_code])
+    {
+        case 1:
+            $fs = false;
+            break;
+        case 2:
+            $fs = false;
+            break;
+        case 3:
+            $fs = true;
+            break;
+        case 4:
+            $fs = true;
+            break;
+    }
+    switch ($config_arr[para_handling])
+    {
+        case 1:
+            $para = false;
+            break;
+        case 2:
+            $para = false;
+            break;
+        case 3:
+            $para = true;
+            break;
+        case 4:
+            $para = true;
+            break;
+    }
 
+    $comment_arr[comment_text] = fscode($comment_arr[comment_text],$fs,$html,$para);
     $comment_arr[comment_date] = date("d.m.Y" , $comment_arr[comment_date]) . " um " . date("H:i" , $comment_arr[comment_date]);
 
     // Template auslesen und füllen

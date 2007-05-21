@@ -21,6 +21,10 @@ a.small
     text-decoration:none;
 }
 
+.thumb
+{
+    cursor:pointer;
+}
 
 
 #head_shadow

@@ -60,7 +60,7 @@ $index = mysql_query("select * from fs_news
                       limit $config_arr[num_news]", $db);
 while ($news_arr = mysql_fetch_assoc($index))
 {
-    $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code]);
+    $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
 }
 unset($news_arr);
 

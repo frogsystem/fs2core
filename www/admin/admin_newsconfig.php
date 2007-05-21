@@ -8,19 +8,22 @@ if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y]
 {
     settype($_POST[numnews], 'integer');
     settype($_POST[numhead], 'integer');
-    settype($_POST[htmlcode], 'integer');
+    settype($_POST[html_code], 'integer');
+    settype($_POST[fs_code], 'integer');
+    settype($_POST[para_handling], 'integer');
     settype($_POST[cat_pic_x], 'integer');
     settype($_POST[cat_pic_y], 'integer');
     settype($_POST[com_rights], 'integer');
     
     mysql_query("UPDATE fs_news_config
-                 SET num_news  = '$_POST[numnews]',
-                     num_head  = '$_POST[numhead]',
-                     html_code = '$_POST[htmlcode]',
-                     fs_code   = '$_POST[fscode]',
-                     cat_pic_x   = '$_POST[cat_pic_x]',
-                     cat_pic_y   = '$_POST[cat_pic_y]',
-                     com_rights   = '$_POST[com_rights]'", $db);
+                 SET num_news        = '$_POST[numnews]',
+                     num_head        = '$_POST[numhead]',
+                     html_code       = '$_POST[html_code]',
+                     fs_code         = '$_POST[fs_code]',
+                     para_handling   = '$_POST[para_handling]',
+                     cat_pic_x       = '$_POST[cat_pic_x]',
+                     cat_pic_y       = '$_POST[cat_pic_y]',
+                     com_rights      = '$_POST[com_rights]'", $db);
     systext("Die Konfiguration wurde aktualisiert");
 }
 
@@ -44,6 +47,9 @@ else
         case 3:
             $htmlop3 = "selected";
             break;
+        case 4:
+            $htmlop4 = "selected";
+            break;
     }
     switch ($config_arr[fs_code])
     {
@@ -55,6 +61,24 @@ else
             break;
         case 3:
             $fsop3 = "selected";
+            break;
+        case 4:
+            $fsop4 = "selected";
+            break;
+    }
+    switch ($config_arr[para_handling])
+    {
+        case 1:
+            $paraop1 = "selected";
+            break;
+        case 2:
+            $paraop2 = "selected";
+            break;
+        case 3:
+            $paraop3 = "selected";
+            break;
+        case 4:
+            $paraop4 = "selected";
             break;
     }
  
@@ -87,10 +111,11 @@ else
                                     <font class="small">Erlaubt Html code in</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <select name="htmlcode">
+                                    <select name="html_code">
                                         <option '.$htmlop1.' value="1">Aus</option>
                                         <option '.$htmlop2.' value="2">News</option>
-                                        <option '.$htmlop3.' value="3">News & Kommentaren</option>
+                                        <option '.$htmlop3.' value="3">Kommentaren</option>
+                                        <option '.$htmlop4.' value="4">News & Kommentaren</option>
                                     </select>
                                 </td>
                             </tr>
@@ -100,10 +125,25 @@ else
                                     <font class="small">Erlaubt FS code in</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <select name="fscode">
+                                    <select name="fs_code">
                                         <option '.$fsop1.' value="1">Aus</option>
                                         <option '.$fsop2.' value="2">News</option>
-                                        <option '.$fsop3.' value="3">News & Kommentaren</option>
+                                        <option '.$fsop3.' value="3">Kommentaren</option>
+                                        <option '.$fsop4.' value="4">News & Kommentaren</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top">
+                                    Absatzbehandlung:<br>
+                                    <font class="small">Aktiviert die Absatzbehandlung in</font>
+                                </td>
+                                <td class="config" valign="top">
+                                    <select name="para_handling">
+                                        <option '.$paraop1.' value="1">Aus</option>
+                                        <option '.$paraop2.' value="2">News</option>
+                                        <option '.$paraop3.' value="3">Kommentaren</option>
+                                        <option '.$paraop4.' value="4">News & Kommentaren</option>
                                     </select>
                                 </td>
                             </tr>

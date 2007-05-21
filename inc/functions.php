@@ -102,7 +102,7 @@ function get_dl_categories (&$ids, $cat_id, $id=0, $ebene=-1)
 //////// Display News //////////
 ////////////////////////////////
 
-function display_news ($news_arr, $html_code, $fs_code)
+function display_news ($news_arr, $html_code, $fs_code, $para_handling)
 {
     global $db, $global_config_arr;
 
@@ -112,23 +112,56 @@ function display_news ($news_arr, $html_code, $fs_code)
     // Kategorie lesen
     $index2 = mysql_query("select cat_name from fs_news_cat where cat_id = $news_arr[cat_id]", $db);
     $news_arr[cat_name] = mysql_result($index2, 0, "cat_name");
-    $news_arr[cat_pic] = $news_arr[cat_id] . ".gif";
+    $news_arr[cat_pic] = image_url("images/news_cat/", $news_arr[cat_id]);
 
     // Text formatieren
-    $news_arr[news_text] = stripslashes($news_arr[news_text]);
-    if ($html_code == 1)
+    switch ($html_code)
     {
-        $news_arr[news_text] = killhtml($news_arr[news_text]);
+        case 1:
+            $html = false;
+            break;
+        case 2:
+            $html = true;
+            break;
+        case 3:
+            $html = false;
+            break;
+        case 4:
+            $html = true;
+            break;
     }
-    if ($fs_code > 1)
+    switch ($fs_code)
     {
-        //$news_arr[news_text] = fscode($news_arr[news_text], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        $news_arr[news_text] = bb2html($news_arr[news_text]);
+        case 1:
+            $fs = false;
+            break;
+        case 2:
+            $fs = true;
+            break;
+        case 3:
+            $fs = false;
+            break;
+        case 4:
+            $fs = true;
+            break;
     }
-    else
+    switch ($para_handling)
     {
-        $news_arr[news_text] = fscode($news_arr[news_text], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        case 1:
+            $para = false;
+            break;
+        case 2:
+            $para = true;
+            break;
+        case 3:
+            $para = false;
+            break;
+        case 4:
+            $para = true;
+            break;
     }
+
+    $news_arr[news_text] = fscode($news_arr[news_text],$fs,$html,$para);
 
     // User auslesen
     $index2 = mysql_query("select user_name from fs_user where user_id = $news_arr[user_id]", $db);
@@ -194,9 +227,9 @@ function display_news ($news_arr, $html_code, $fs_code)
     return $news_template;
 }
 
-////////////////////////////////
-///// Dateigröße umrechnen /////
-////////////////////////////////
+//////////////////////
+// convert filesize //
+//////////////////////
 
 function getsize($size)
 {
@@ -222,9 +255,9 @@ function getsize($size)
     return $size;
 }
 
-///////////////////////////////////
-// Worte in einem text markieren //
-///////////////////////////////////
+/////////////////////////
+// mark word in a text //  <=== BAD FUNCTION *HAS TO BE IMPROVED*
+/////////////////////////
 
 function markword($text, $word)
 {
@@ -233,214 +266,140 @@ function markword($text, $word)
     return $text;
 }
 
-////////////////////////////////
-// ' aus einem String löschen //
-////////////////////////////////
+/////////////////////////////////
+// create save strings for sql //
+/////////////////////////////////
 
 function savesql($text)
 {
     $text = trim($text);
-    //$text = str_replace ("'","&#039;",$text);
-    //$text = str_replace ('"',"&quot;",$text);
     $text = mysql_real_escape_string($text);
     return $text;
 }
 
 //////////////////////////////////
-// HTML Tags unschädlich machen //
+// kill html in textareas, etc. //
 //////////////////////////////////
 
 function killhtml($text)
 {
     $text = trim($text);
-    $text = str_replace ("'","&#039;","$text");
-    $text = str_replace ('"',"&quot;","$text");
-    $text = str_replace("<", "&lt;", "$text");
-    $text = str_replace(">", "&gt;", "$text");
+    $text = stripslashes($text);
+    $text = htmlspecialchars ($text);
     return $text;
 }
 
-///////////////////////////////////
-// Text nach FS Code formatieren //
-///////////////////////////////////
 
-function fscode($text, $do_b, $do_i, $do_u, $do_center, $do_url, $do_img, $do_list, $do_color, $do_table, $do_size, $do_code, $do_quote)
-{
-    $text = str_replace("\r\n","<br>\r",$text);
-  
-    if ($do_b == 1)
-    {
-        // [b]...[/b]
-        $text=preg_replace("=(.*?)\[b\](.*?)\[/b\]=i", 
-                           "\\1<b>\\2</b>",$text); 
-    }
-    if ($do_i == 1)
-    {
-        // [i]...[/i]
-        $text=preg_replace("=(.*?)\[i\](.*?)\[/i\]=i", 
-                           "\\1<i>\\2</i>",$text); 
-    }
-    if ($do_u == 1)
-    {
-        // [u]...[/u]
-        $text=preg_replace("=(.*?)\[u\](.*?)\[/u\]=i", 
-                           "\\1<u>\\2</u>",$text); 
-    }
-    if ($do_center == 1)
-    {
-        // [center]...[/center]
-        $text=preg_replace("=(.*?)\[center\](.*?)\[/center\]=i", 
-                           "\\1<center>\\2</center>",$text); 
-    }
-    if ($do_list == 1)
-    {
-        // [list]...[/list]
-        $text=preg_replace("=(.*?)\[list\](.*?)\[/list\]=i", 
-                           "\\1<ul>\\2</ul>",$text); 
-       // [numlist]...[/numlist]
-       $text=preg_replace("=(.*?)\[numlist\](.*?)\[/numlist\]=i", 
-                          "\\1<ol>\\2</ol>",$text); 
-       $text = str_replace("[*]", "<li>", $text);  
-    }
-    if ($do_img == 1)
-    {
-        // [img]http://[/img]
-        $text=preg_replace("=(.*?)\[img\](http:\/\/|http:\/\/www\.)([^ \"\n\r\t<]*?)\[/img\]=i", 
-                           "\\1<img border=\"0\" src=\"\\2\\3\" alt=\"\">",$text); 
-        // [img]www.[/img]
-        $text=preg_replace("=(.*?)\[img\](www\.)([^ \"\n\r\t<]*?)\[/img\]=i", 
-                           "\\1<img border=\"0\" src=\"http://\\2\\3\" alt=\"\">",$text); 
-        // [img=right]http://[/img]
-        $text=preg_replace("=(.*?)\[img\=right\](http:\/\/|http:\/\/www\.)([^ \"\n\r\t<]*?)\[/img\]=i", 
-                           "\\1<img border=\"0\"  src=\"\\2\\3\" align=\"right\" style\=\"float\: right\" alt=\"\">",$text); 
-        // [img=left]http://[/img]
-        $text=preg_replace("=(.*?)\[img\=left\](http:\/\/|http:\/\/www\.)([^ \"\n\r\t<]*?)\[/img\]=i", 
-                           "\\1<img border=\"0\"  src=\"\\2\\3\" align=\"left\" style\=\"float\: left\" alt=\"\">",$text); 
-        // [img=right]www.[/img]
-        $text=preg_replace("=(.*?)\[img\=right\](www\.)([^ \"\n\r\t<]*?)\[/img\]=i", 
-                           "\\1<img border=\"0\"  src=\"http://\\2\\3\" align=\"right\" style\=\"float\: right\" alt=\"\">",$text); 
-        // [img=left]www.[/img]
-        $text=preg_replace("=(.*?)\[img\=left\](www\.)([^ \"\n\r\t<]*?)\[/img\]=i", 
-                           "\\1<img border=\"0\"  src=\"http://\\2\\3\" align=\"left\" style\=\"float\: left\" alt=\"\">",$text); 
-    }
-    if ($do_url == 1)
-    {
-        // http://
-        $text=preg_replace("=(^|\ |\n)(http:\/\/|http:\/\/www\.)([a-zA-Z0-9\.\/\-\_]{1,})=i", 
-                           "\\1<a href=\"\\2\\3\" target=\"_blank\">\\2\\3</a>",$text); 
-        // www.
-        $text=preg_replace("=(^|\ |\n)(www\.)([a-zA-Z0-9\.\/\-\_]{1,})=i", 
-                           "\\1<a href=\"http://\\2\\3\" target=\"_blank\">\\2\\3</a>",$text); 
-        // [url]http://[/url]
-        $text=preg_replace("=(.*?)\[url\](http:\/\/|http:\/\/www\.)([^ \"\n\r\t<]*?)\[/url\]=i", 
-                           "\\1<a href=\"\\2\\3\" target=\"_blank\">\\2\\3</a>",$text); 
-        // [url=http://]text[/url]
-        $text=preg_replace("=(.*?)\[url\=(http:\/\/|http:\/\/www\.)([^ \"\n\r\t<]*?)\](.*?)\[/url\]=i", 
-                           "\\1<a href=\"\\2\\3\" target=\"_blank\">\\4</a>",$text); 
-        // [url]www.[/url]
-        $text=preg_replace("=(.*?)\[url\](www\.)([^ \"\n\r\t<]*?)\[/url\]=i", 
-                           "\\1<a href=\"http://\\2\\3\" target=\"_blank\">\\2\\3</a>",$text); 
-        // [url=www.]text[/url]
-        $text=preg_replace("=(.*?)\[url\=(|www\.)([^ \"\n\r\t<]*?)\](.*?)\[/url\]=i", 
-                           "\\1<a href=\"http://\\2\\3\" target=\"_blank\">\\4</a>",$text); 
-        // mail@
-        $text=preg_replace("=(^|\ |\n)([a-zA-Z0-9\.\/\-\_]{1,})@([a-zA-Z0-9\.\/\-\_]{1,})=i", 
-                           "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>",$text); 
-        // [email]
-        $text=preg_replace("=(.*?)\[email\]([a-zA-Z0-9\.\/\-\_]{1,})@([a-zA-Z0-9\.\/\-\_]{1,})\[\/email\]=i", 
-                           "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>",$text); 
-        // [email=]
-        $text=preg_replace("=(.*?)\[email\=([a-zA-Z0-9\.\/\-\_]{1,})@([a-zA-Z0-9\.\/\-\_]{1,})\](.*?)\[\/email\]=i", 
-                           "\\1<a href=\"mailto:\\2@\\3\">\\4</a>",$text); 
-    }
-    if ($do_color == 1)
-    {
-        // [color=...]text[/color]
-        $text=preg_replace("=(.*?)\[color\=([a-zA-Z0-9]{1,8})\](.*?)\[/color\]=i", 
-                           "\\1<font color=\"\\2\">\\3</font> ",$text); 
-        // [color=#...]text[/color]
-        $text=preg_replace("=(.*?)\[color\=\#([a-zA-Z0-9]{1,8})\](.*?)\[/color\]=i", 
-                           "\\1<font color=\"\\2\">\\3</font> ",$text); 
-    }
-    if ($do_size == 1)
-    {
-        // [size=...]text[/size]
-        $text=preg_replace("=(.*?)\[size\=([1-8]{1,1})\](.*?)\[/size\]=i", 
-                           "\\1<font size=\"\\2\">\\3</font> ",$text); 
-    }
-    if ($do_table == 1)
-    {
-        // [table]...[/table]
-        $text=preg_replace("=(.*?)\[table\](.*?)\[/table\]=i", 
-                           "\\1<table border=\"0\" width=\"100%\">\\2</table>",$text); 
-        // [row=...*...]
-        $text=preg_replace("=(.*?)\[row\=(.*?)\*(.*?)\]=i", 
-                           "\\1<tr><td>\\2</td><td>\\3</td></tr>",$text); 
-    }
-    if ($do_quote == 1)
-    {
-        // [quote]...[/quote]
-        $text=preg_replace("=(.*?)\[quote\](.*?)\[/quote\]=i", 
-                           "\\1<table cellpadding=\"5\" align=\"center\" border=\"0\" width=\"98%\"><tr><td><b><font face=\"verdana\" size=\"2\">Zitat:</font></b></td></tr><tr><td style=\"border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1\">\\2</td></tr></table>",$text); 
-        // [quote=...]...[/quote]
-        $text=preg_replace("=(.*?)\[quote\=(.*?)\](.*?)\[/quote\]=i", 
-                           "\\1<table cellpadding=\"5\" align=\"center\" border=\"0\" width=\"98%\"><tr><td><b><font face=\"verdana\" size=\"2\">Zitat von \\2:</font></b></td></tr><tr><td style=\"border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1\">\\3</td></tr></table>",$text); 
-    }
-    if ($do_code == 1)
-    {
-        // [code]...[/code]
-        $text=preg_replace("=(.*?)\[code\](.*?)\[/code\]=i", 
-                           "\\1<table cellpadding=\"5\" align=\"center\" border=\"0\" width=\"98%\"><tr><td><b><font face=\"verdana\" size=\"2\">Code:</font></b></td></tr><tr><td style=\"border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1\"><span class=\"code\"><code>\\2</code></span></td></tr></table>",$text); 
-    }
-    return $text;
-}
+//////////////////////////////
+// Format text with FS Code //
+//////////////////////////////
 
-///////////////////////////////////
-// Text nach BB Code formatieren //
-///////////////////////////////////
-
-function bb2html($text)
+function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0)
 {
         include_once 'bbcodefunctions.php';
-        
         $bbcode = new StringParser_BBCode ();
+
         $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
-        
+
+        if ($html==false)
         $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'htmlspecialchars');
+
+        $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'stripslashes');
         $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'nl2br');
         $bbcode->addParser ('list', 'bbcode_stripcontents');
-        
+
+        if ($all==true OR $do_smilies==1)
+        $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'do_bbcode_smilies');
+
+        if ($all==true OR $do_b==1)
         $bbcode->addCode ('b', 'simple_replace', null, array ('start_tag' => '<b>', 'end_tag' => '</b>'),
                           'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_i==1)
         $bbcode->addCode ('i', 'simple_replace', null, array ('start_tag' => '<i>', 'end_tag' => '</i>'),
                           'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_u==1)
+        $bbcode->addCode ('u', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:underline">', 'end_tag' => '</span>'),
+                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_s==1)
+        $bbcode->addCode ('s', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:line-through">', 'end_tag' => '</span>'),
+                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_center==1)
+        $bbcode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<center>', 'end_tag' => '</center>'),
+                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_url==1)
         $bbcode->addCode ('url', 'usecontent?', 'do_bbcode_url', array ('usecontent_param' => 'default'),
                           'link', array ('listitem', 'block', 'inline'), array ('link'));
-        $bbcode->addCode ('link', 'callback_replace_single', 'do_bbcode_url', array (),
+
+        if ($all==true OR $do_homelink==1)
+        $bbcode->addCode ('home', 'usecontent?', 'do_bbcode_homelink', array ('usecontent_param' => 'default'),
                           'link', array ('listitem', 'block', 'inline'), array ('link'));
+
+        if ($all==true OR $do_email==1)
+        $bbcode->addCode ('email', 'usecontent?', 'do_bbcode_email', array ('usecontent_param' => 'default'),
+                          'link', array ('listitem', 'block', 'inline'), array ('link'));
+
+        if ($all==true OR $do_img==1)
         $bbcode->addCode ('img', 'usecontent?', 'do_bbcode_img', array (),
                           'image', array ('listitem', 'block', 'inline', 'link'), array ());
-        $bbcode->addCode ('bild', 'usecontent?', 'do_bbcode_img', array (),
+
+        if ($all==true OR $do_cimg==1)
+        $bbcode->addCode ('cimg', 'usecontent?', 'do_bbcode_cimg', array (),
                           'image', array ('listitem', 'block', 'inline', 'link'), array ());
-        $bbcode->addCode ('quote', 'usecontent?', 'do_bbcode_quote', array ('usecontent_param' => 'default'),
-                                          'block', array ('listitem', 'block', 'inline'), array ('link'));
-        $bbcode->setOccurrenceType ('img', 'image');
-        $bbcode->setOccurrenceType ('bild', 'image');
-        $bbcode->setMaxOccurrences ('image', 2);
+
+        if ($all==true OR $do_list==1)
         $bbcode->addCode ('list', 'simple_replace', null, array ('start_tag' => '<ul>', 'end_tag' => '</ul>'),
-                          'list', array ('block', 'listitem'), array ());
+                          'list', array ('block', 'listitem'), array ('link'));
+
+        if ($all==true OR $do_numlist==1)
+        $bbcode->addCode ('numlist', 'simple_replace', null, array ('start_tag' => '<ol>', 'end_tag' => '</ol>'),
+                          'list', array ('block', 'listitem'), array ('link'));
+
+        if ($all==true OR $do_list==1 OR $do_numlist==1) {
         $bbcode->addCode ('*', 'simple_replace', null, array ('start_tag' => '<li>', 'end_tag' => '</li>'),
                           'listitem', array ('list'), array ());
         $bbcode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
-        $bbcode->setCodeFlag ('*', 'paragraphs', true);
+        $bbcode->setCodeFlag ('*', 'paragraphs', false);
         $bbcode->setCodeFlag ('list', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         $bbcode->setCodeFlag ('list', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
-        $bbcode->setCodeFlag ('list', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
+        $bbcode->setCodeFlag ('list', 'closetag.before.newline', BBCODE_NEWLINE_DROP); }
+
+
+        if ($all==true OR $do_font==1)
+        $bbcode->addCode ('font', 'callback_replace', 'do_bbcode_font', array (),
+                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_color==1)
+        $bbcode->addCode ('color', 'callback_replace', 'do_bbcode_color', array (),
+                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_size==1)
+        $bbcode->addCode ('size', 'callback_replace', 'do_bbcode_size', array (),
+                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_code==1)
+        $bbcode->addCode ('code', 'callback_replace', 'do_bbcode_code', array (),
+                          'block', array ('listitem', 'block', 'inline'), array ('link'));
+
+        if ($all==true OR $do_quote==1)
+        $bbcode->addCode ('quote', 'callback_replace', 'do_bbcode_quote', array (),
+                          'block', array ('listitem', 'block', 'inline'), array ('link'));
+
+        if ($all==true OR $do_noparse==1)
+        $bbcode->addCode ('noparse', 'usecontent', 'do_bbcode_noparse', array (),
+                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($para==true)
         $bbcode->setRootParagraphHandling (true);
-        
+
+        $bbcode->setGlobalCaseSensitive (false);
         $parsedtext = $bbcode->parse ($text);
         unset($bbcode);
-        
+
         return $parsedtext;
 }
 
