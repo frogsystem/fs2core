@@ -186,6 +186,15 @@ elseif ($_POST[newsid] OR $_POST[tempid])
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$_POST[newsid].'" name="enewsid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
+                            <tr valign="top">
+                                <td class="config">
+                                    News löschen:
+                                </td>
+                                <td class="config">
+                                    <input onClick="alert(this.value)" type="checkbox" name="delnews" value="Sicher?">
+                                    <br /><br /><br />
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="config" valign="top" width="30%">
                                     Kategorie:<br>
@@ -312,16 +321,10 @@ elseif ($_POST[newsid] OR $_POST[tempid])
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config">
-                                    News löschen:
-                                </td>
-                                <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delnews" value="Sicher?">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" value="Absenden">
+                                <td colspan="2" align="center">
+                                    <br />
+                                    <br />
+                                    <input class="button" type="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" value="Änderungen Speichern">
                                 </td>
                             </tr>
                         </table>
@@ -330,14 +333,15 @@ elseif ($_POST[newsid] OR $_POST[tempid])
 
     // Kommentare anzeigen
     echo'
-                    <p>
+                    <br />
+                    <hr />
                     <form action="'.$PHP_SELF.'" method="post">
                         <input type="hidden" value="commentedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td align="center" class="config" colspan="4">
-                                    Kommentare
+                                    Kommentare<br /><br />
                                 </td>
                             </tr>
                             <tr>

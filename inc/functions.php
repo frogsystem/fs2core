@@ -1,5 +1,77 @@
 <?php
 ////////////////////////////////
+//// Create textarea        ////
+////////////////////////////////
+
+function code_textarea($name, $text="", $rows="", $cols="", $class="")
+{
+
+    if ($name != "") {
+        $name2 = 'name="'.$name.'" id="'.$name.'"';
+    } else {
+        return false;
+    }
+    
+    if ($rows != "") {
+        $rows2 = 'rows="'.$rows.'"';
+    }
+    
+    if ($cols != "") {
+        $cols2 = 'cols="'.$cols.'"';
+    }
+    
+    if ($class != "") {
+        $class2 = 'class="'.$class.'"';
+    }
+    
+    return '<textarea '.$rows2.' '.$cols2.' '.$name2.' '.$class2.'>'.$text.'</textarea><br />
+
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr valign="bottom">
+    
+<td align="left">
+    <input type="button" class="button" value="B" onClick="insert(\''.$name.'\', \'[b]\', \'[/b]\')" title="fett">
+    <input type="button" class="button" value="I" onClick="insert(\''.$name.'\', \'[i]\', \'[/i]\')" title="kursiv">
+    <input type="button" class="button" value="U" onClick="insert(\''.$name.'\', \'[u]\', \'[/u]\')" title="unterstrichen">
+    <input type="button" class="button" value="S" onClick="insert(\''.$name.'\', \'[s]\', \'[/s]\')" title="durgestrichen">
+</td>
+<td align="center">
+    <input type="button" class="button" value="CENTER" onClick="insert(\''.$name.'\', \'[center]\', \'[/center]\')" title="zentriert">
+</td>
+<td align="right">
+    <input type="button" class="button" value="FONT" onClick="insert_com(\''.$name.'\', \'font\', \'Bitte gib die gewünschte Schriftart ein: \', \'\')" title="Schriftart">
+    <input type="button" class="button" value="COLOR" onClick="insert_com(\''.$name.'\', \'color\', \'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein: \', \'\')" title="Schriftfarbe">
+    <input type="button" class="button" value="SIZE" onClick="insert_com(\''.$name.'\', \'size\', \'Bitte gib die gewünschte Schriftgröße (Zahl von 1-7) ein: \', \'\')" title="Schriftgröße">
+</td>
+    
+    </tr>
+    </table>
+    
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr valign="bottom">
+
+<td align="left">
+        <input type="button" class="button" value="IMG" onClick="insert_mcom(\''.$name.'\', \'[img]\', \'[/img]\', \'Bitte gib die URL zu deiner Grafik ein:\', \'http://\')" title="Bild einfügen">
+    <input type="button" class="button" value="CIMG" onClick="insert_mcom(\''.$name.'\', \'[cimg]\', \'[/cimg]\', \'Bitte gib den Namen des Content-Images (mit Endung) ein:\', \'\')" title="Content-Image einfügen">
+</td>
+<td align="center">
+    <input type="button" class="button" value="URL" onClick="insert_com(\''.$name.'\', \'url\', \'Bitte gib die URL ein: \', \'http://\')" title="Link einfügen">
+    <input type="button" class="button" value="HURL" onClick="insert_com(\''.$name.'\', \'home\', \'Bitte gib den projektinternen Verweisnamen ein: \', \'\')" title="Projektinternen Link einfügen">
+    <input type="button" class="button" value="MAIL" onClick="insert_com(\''.$name.'\', \'email\', \'Bitte gib die Email-Adresse ein: \', \'\')" title="Email-Link einfügen">
+</td>
+<td align="right">
+    <input type="button" class="button" value="CO" onClick="insert(\''.$name.'\', \'[code]\', \'[/code]\')" title="Code einfügen">
+    <input type="button" class="button" value="QU" onClick="insert(\''.$name.'\', \'[quote]\', \'[/quote]\')" title="Zitat einfügen">
+    <input type="button" class="button" value="NO" onClick="insert(\''.$name.'\', \'[noparse]\', \'[/noparse]\')" title="Nicht umzuwandelnden Bereich einfügen">
+</td>
+
+    </tr>
+    </table><br />
+';
+}
+
+
+////////////////////////////////
 //// Image exists           ////
 ////////////////////////////////
 

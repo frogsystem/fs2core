@@ -82,6 +82,15 @@ if (isset($_POST[commentid]))
                         <input type="hidden" value="'.$dbcommentdate.'" name="commentdate">
                         <input type="hidden" value="'.$comment_arr[news_id].'" name="newsid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
+                            <tr valign="top">
+                                <td class="config">
+                                    Kommentar löschen:
+                                </td>
+                                <td class="config">
+                                    <input onClick="alert(this.value)" type="checkbox" name="delcomment" value="Sicher?">
+                                    <br /><br /><br />
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Datum:<br>
@@ -119,16 +128,9 @@ if (isset($_POST[commentid]))
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config">
-                                    Kommentar löschen:
-                                </td>
-                                <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delcomment" value="Sicher?">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
+                                <td colspan="2" align="center">
+                                    <br /><br />
+                                    <input class="button" type="submit" value="Änderungen speichern">
                                 </td>
                             </tr>
                         </table>

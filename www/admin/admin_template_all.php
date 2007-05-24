@@ -12,12 +12,12 @@ if ($_POST[indexphp] ||
     $_POST[statistik] ||
     $_POST[announcement])
 {
-    $_POST[indexphp] = addslashes($_POST[indexphp]);
-    $_POST[error] = addslashes($_POST[error]);
-    $_POST[pic_viewer] = addslashes($_POST[pic_viewer]);
-    $_POST[main_menu] = addslashes($_POST[main_menu]);
-    $_POST[community_map] = addslashes($_POST[community_map]);
-    $_POST[announcement] = addslashes($_POST[announcement]);
+    $_POST[indexphp] = savesql($_POST[indexphp]);
+    $_POST[error] = savesql($_POST[error]);
+    $_POST[pic_viewer] = savesql($_POST[pic_viewer]);
+    $_POST[main_menu] = savesql($_POST[main_menu]);
+    $_POST[community_map] = savesql($_POST[community_map]);
+    $_POST[announcement] = savesql($_POST[announcement]);
 
     mysql_query("update fs_template
                  set indexphp = '$_POST[indexphp]',
@@ -70,25 +70,25 @@ else
     {
 
     $index = mysql_query("select indexphp from fs_template where id = '$_POST[design]'", $db);
-    $indexphp = stripslashes(mysql_result($index, 0, "indexphp"));
+    $indexphp = killhtml(mysql_result($index, 0, "indexphp"));
 
     $index = mysql_query("select error from fs_template where id = '$_POST[design]'", $db);
-    $error = stripslashes(mysql_result($index, 0, "error"));
+    $error = killhtml(mysql_result($index, 0, "error"));
 
     $index = mysql_query("select pic_viewer from fs_template where id = '$_POST[design]'", $db);
-    $pic_viewer = stripslashes(mysql_result($index, 0, "pic_viewer"));
+    $pic_viewer = killhtml(mysql_result($index, 0, "pic_viewer"));
 
     $index = mysql_query("select main_menu from fs_template where id = '$_POST[design]'", $db);
-    $main_menu = stripslashes(mysql_result($index, 0, "main_menu"));
+    $main_menu = killhtml(mysql_result($index, 0, "main_menu"));
 
     $index = mysql_query("select community_map from fs_template where id = '$_POST[design]'", $db);
-    $community_map = stripslashes(mysql_result($index, 0, "community_map"));
+    $community_map = killhtml(mysql_result($index, 0, "community_map"));
 
     $index = mysql_query("select statistik from fs_template where id = '$_POST[design]'", $db);
-    $statistik = stripslashes(mysql_result($index, 0, "statistik"));
+    $statistik = killhtml(mysql_result($index, 0, "statistik"));
 
     $index = mysql_query("select announcement from fs_template where id = '$_POST[design]'", $db);
-    $announcement = stripslashes(mysql_result($index, 0, "announcement"));
+    $announcement = killhtml(mysql_result($index, 0, "announcement"));
 
     echo'
                     <input type="hidden" value="" name="editwhat">

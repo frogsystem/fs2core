@@ -4,6 +4,7 @@ include("config.inc.php");
 include("functions.php");
 include("adminfunctions.php");
 include("phrases.inc.php");
+include("phrases.inc.php");
 
 //////////////////////////////
 ///// Cookie
@@ -87,6 +88,7 @@ echo'
     <title>Frog System - '.$pagetitle.'</title>
     <link rel="stylesheet" type="text/css" href="admin.css">
     <script src="functions.js" type="text/javascript"></script>
+    <script src="../inc/functions.js" type="text/javascript"></script>
 </head>
 <body>
 <noscript>

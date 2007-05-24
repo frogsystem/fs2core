@@ -103,8 +103,7 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
             $id = $id[value];
             settype($id, 'integer');
             mysql_query("update fs_poll_answers set answer_count = answer_count + 1 where answer_id = '$id'", $db);
-
-            if (count($_POST[antwort]) != 0) {
+            if (count($_POST[answer]) != 0) {
                 registerVoter($_POST['pollid'], $voter_ip); //Register Voter if voted
                 mysql_query("update fs_poll set poll_participants = poll_participants + 1 where poll_id = '$_POST[pollid]'", $db);
             }

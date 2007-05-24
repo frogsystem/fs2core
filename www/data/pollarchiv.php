@@ -74,47 +74,67 @@ if ($_GET[pollid])
 
 else
 {
-	if (!isset($_GET['orderby']))
-    	$_GET['orderby'] = 'default';
+        if (!isset($_GET['sort']))
+            $_GET['sort'] = 'default';
 
-    $order_name = 'desc'; $order_voters = 'desc'; $order_date = 'desc';
+        $order_name = 'asc'; $order_voters = 'asc'; $order_startdate = 'asc'; $order_enddate = 'asc';
+        $arrow_name = ''; $arrow_voters = ''; $arrow_startdate = ''; $arrow_enddate = '';
     
-	switch($_GET['orderby']) {
-		case 'name_desc': {
-			$index = mysql_query("select * from fs_poll order by poll_quest desc", $db);
-			$order_name = 'asc';
-			break;
-		}
-		case 'name_asc': {
-			$index = mysql_query("select * from fs_poll order by poll_quest asc", $db);
-			$order_name = 'desc';
-			break;
-		}
-		case 'voters_desc': {
-			$index = mysql_query("select * from fs_poll order by poll_participants desc", $db);
-			$order_voters = 'asc';
-			break;
-		}
-		case 'voters_asc': {
-			$index = mysql_query("select * from fs_poll order by poll_participants asc", $db);
-			$order_voters = 'desc';
-			break;
-		}
-		case 'date_desc': {
-			$index = mysql_query("select * from fs_poll order by poll_end desc", $db);
-			$order_date = 'asc';
-			break;
-		}
-		case 'date_asc': {
-			$index = mysql_query("select * from fs_poll order by poll_end asc", $db);
-			$order_date = 'desc';
-			break;
-		}
-		default: {
-			$index = mysql_query("select * from fs_poll order by poll_end desc", $db);
-			$order_date = 'desc';
-			break;
-		}
+        switch($_GET['sort']) {
+                case 'name_desc': {
+                        $index = mysql_query("select * from fs_poll order by poll_quest desc", $db);
+                        $order_name = 'asc';
+                        $arrow_name = '<img src="images/icons/pointer_down.gif" alt="" border="0" title="Absteigend" />';
+                        break;
+                }
+                case 'name_asc': {
+                        $index = mysql_query("select * from fs_poll order by poll_quest asc", $db);
+                        $order_name = 'desc';
+                        $arrow_name = '<img src="images/icons/pointer_up.gif" alt="" border="0" title="Aufsteigend" />';
+                        break;
+                }
+                case 'voters_desc': {
+                        $index = mysql_query("select * from fs_poll order by poll_participants desc", $db);
+                        $order_voters = 'asc';
+                        $arrow_voters = '<img src="images/icons/pointer_down.gif" alt="" border="0" title="Absteigend" />';
+                        break;
+                }
+                case 'voters_asc': {
+                        $index = mysql_query("select * from fs_poll order by poll_participants asc", $db);
+                        $order_voters = 'desc';
+                        $arrow_voters = '<img src="images/icons/pointer_up.gif" alt="" border="0" title="Aufsteigend" />';
+                        break;
+                }
+                case 'startdate_desc': {
+                        $index = mysql_query("select * from fs_poll order by poll_start desc", $db);
+                        $order_startdate = 'asc';
+                        $arrow_startdate = '<img src="images/icons/pointer_down.gif" alt="" border="0" title="Absteigend" />';
+                        break;
+                }
+                case 'startdate_asc': {
+                        $index = mysql_query("select * from fs_poll order by poll_start asc", $db);
+                        $order_startdate = 'desc';
+                        $arrow_startdate = '<img src="images/icons/pointer_up.gif" alt="" border="0" title="Aufsteigend" />';
+                        break;
+                }
+                case 'enddate_desc': {
+                        $index = mysql_query("select * from fs_poll order by poll_end desc", $db);
+                        $order_enddate = 'asc';
+                        $arrow_enddate = '<img src="images/icons/pointer_down.gif" alt="" border="0" title="Absteigend" />';
+                        break;
+                }
+                case 'enddate_asc': {
+                        $index = mysql_query("select * from fs_poll order by poll_end asc", $db);
+                        $order_enddate = 'desc';
+                        $arrow_enddate = '<img src="images/icons/pointer_up.gif" alt="" border="0" title="Aufsteigend" />';
+                        break;
+                }
+                default: {
+                        $index = mysql_query("select * from fs_poll order by poll_end desc", $db);
+                        $order_enddate = 'asc';
+                        $arrow_enddate = '<img src="images/icons/pointer_down.gif" alt="" border="0" title="Absteigend" />';
+                        break;
+                }
     }
     
     while ($poll_arr = mysql_fetch_assoc($index))
@@ -140,7 +160,12 @@ else
     $template = str_replace("{umfragen}", $list_lines, $template);
     $template = str_replace("{order_name}", $order_name, $template);
     $template = str_replace("{order_voters}", $order_voters, $template);
-    $template = str_replace("{order_date}", $order_date, $template);
+    $template = str_replace("{order_startdate}", $order_startdate, $template);
+    $template = str_replace("{order_enddate}", $order_enddate, $template);
+    $template = str_replace("{arrow_name}", $arrow_name, $template);
+    $template = str_replace("{arrow_voters}", $arrow_voters, $template);
+    $template = str_replace("{arrow_startdate}", $arrow_startdate, $template);
+    $template = str_replace("{arrow_enddate}", $arrow_enddate, $template);
 
     unset($list_lines);
 }

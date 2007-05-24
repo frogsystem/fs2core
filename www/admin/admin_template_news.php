@@ -4,31 +4,27 @@
 //// Datenbank aktualisieren ////
 /////////////////////////////////
 
-if ($_POST[link] &&
-    $_POST[body] &&
-    $_POST[relatedlinks] &&
-    $_POST[headline] &&
-    $_POST[headline_body] &&
-    $_POST[comment_body] &&
-    $_POST[comment_autor] &&
-    $_POST[comment_form] &&
-    $_POST[comment_form_name] &&
+if ($_POST[link] ||
+    $_POST[body] ||
+    $_POST[relatedlinks] ||
+    $_POST[headline] ||
+    $_POST[headline_body] ||
+    $_POST[comment_body] ||
+    $_POST[comment_autor] ||
+    $_POST[comment_form] ||
+    $_POST[comment_form_name] ||
     $_POST[search_form])
 {
-    $_POST[body] = addslashes($_POST[body]);
-    $_POST[link] = addslashes($_POST[link]);
-    $_POST[relatedlinks] = addslashes($_POST[relatedlinks]);
-    $_POST[headline] = addslashes($_POST[headline]);
-    $_POST[headline_body] = addslashes($_POST[headline_body]);
-    $_POST[comment_body] = addslashes($_POST[comment_body]);
-    $_POST[comment_autor] = addslashes($_POST[comment_autor]);
-
-    $_POST[comment_form] = addslashes($_POST[comment_form]);
-    $_POST[comment_form] = ereg_replace ("&lt;textarea&gt;","<textarea>", $_POST[comment_form]); 
-    $_POST[comment_form] = ereg_replace ("&lt;/textarea&gt;","</textarea>", $_POST[comment_form]); 
-
-    $_POST[comment_form_name] = addslashes($_POST[comment_form_name]);
-    $_POST[search_form] = addslashes($_POST[search_form]);
+    $_POST[body] = savesql($_POST[body]);
+    $_POST[link] = savesql($_POST[link]);
+    $_POST[relatedlinks] = savesql($_POST[relatedlinks]);
+    $_POST[headline] = savesql($_POST[headline]);
+    $_POST[headline_body] = savesql($_POST[headline_body]);
+    $_POST[comment_body] = savesql($_POST[comment_body]);
+    $_POST[comment_autor] = savesql($_POST[comment_autor]);
+    $_POST[comment_form] = savesql($_POST[comment_form]);
+    $_POST[comment_form_name] = savesql($_POST[comment_form_name]);
+    $_POST[search_form] = savesql($_POST[search_form]);
 
     mysql_query("update fs_template
                  set news_body = '$_POST[body]',
@@ -86,36 +82,34 @@ else
     {
 
     $index = mysql_query("select news_body from fs_template where id = '$_POST[design]'", $db);
-    $body = stripslashes(mysql_result($index, 0, "news_body"));
+    $body = killhtml(mysql_result($index, 0, "news_body"));
 
     $index = mysql_query("select news_related_links from fs_template where id = '$_POST[design]'", $db);
-    $related_links = stripslashes(mysql_result($index, 0, "news_related_links"));
+    $related_links = killhtml(mysql_result($index, 0, "news_related_links"));
 
     $index = mysql_query("select news_link from fs_template where id = '$_POST[design]'", $db);
-    $link = stripslashes(mysql_result($index, 0, "news_link"));
+    $link = killhtml(mysql_result($index, 0, "news_link"));
 
     $index = mysql_query("select news_headline from fs_template where id = '$_POST[design]'", $db);
-    $headline = stripslashes(mysql_result($index, 0, "news_headline"));
+    $headline = killhtml(mysql_result($index, 0, "news_headline"));
 
     $index = mysql_query("select news_headline_body from fs_template where id = '$_POST[design]'", $db);
-    $headline_body = stripslashes(mysql_result($index, 0, "news_headline_body"));
+    $headline_body = killhtml(mysql_result($index, 0, "news_headline_body"));
 
     $index = mysql_query("select news_comment_body from fs_template where id = '$_POST[design]'", $db);
-    $comment_body = stripslashes(mysql_result($index, 0, "news_comment_body"));
+    $comment_body = killhtml(mysql_result($index, 0, "news_comment_body"));
 
     $index = mysql_query("select news_comment_autor from fs_template where id = '$_POST[design]'", $db);
-    $comment_autor = stripslashes(mysql_result($index, 0, "news_comment_autor"));
+    $comment_autor = killhtml(mysql_result($index, 0, "news_comment_autor"));
 
     $index = mysql_query("select news_comment_form from fs_template where id = '$_POST[design]'", $db);
-    $comment_form = stripslashes(mysql_result($index, 0, "news_comment_form"));
-    $comment_form = ereg_replace ("<textarea>","&lt;textarea&gt;",$comment_form); 
-    $comment_form = ereg_replace ("</textarea>","&lt;/textarea&gt;",$comment_form); 
-
+    $comment_form = killhtml(mysql_result($index, 0, "news_comment_form"));
+    
     $index = mysql_query("select news_comment_form_name from fs_template where id = '$_POST[design]'", $db);
-    $comment_form_name = stripslashes(mysql_result($index, 0, "news_comment_form_name"));
+    $comment_form_name = killhtml(mysql_result($index, 0, "news_comment_form_name"));
 
     $index = mysql_query("select news_search_form from fs_template where id = '$_POST[design]'", $db);
-    $search_form = stripslashes(mysql_result($index, 0, "news_search_form"));
+    $search_form = killhtml(mysql_result($index, 0, "news_search_form"));
 
     echo'
                     <input type="hidden" value="" name="editwhat">
@@ -126,13 +120,16 @@ else
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
-                                    Link Zeile:<br>
-                                    <font class="small">Eine Zeile der Related Links<br>
+                                    Related Link Zeile:<br>
+                                    <font class="small">Eine Zeile der Related Links<br /><br />
                                     Gültige Tags:<br>
-                                    '. fetchTemplateTags($link) .'</font>
+                                    '.insert_tt("{name}","Der Titel den der Link trägt.").'
+                                    '.insert_tt("{target}","Das Ziel-Fenster des Links.").'
+                                    '.insert_tt("{url}","Die URL auf die verlinkt werden soll.").'
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="4" cols="66" name="link">'.$link.'</textarea>
+                                    <textarea rows="6" cols="66" name="link">'.$link.'</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -143,13 +140,14 @@ else
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Related Links:<br>
-                                    <font class="small">Die Related Links unter einer News<br>
+                                    Related Links Body:<br>
+                                    <font class="small">Die Related Links unter einer News<br /><br />
                                     Gültige Tags:<br>
-                                    '. fetchTemplateTags($related_links) .'</font>
+                                    '.insert_tt("{links}","Bindet nacheinander die angegebenen Links ein.").'
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="4" cols="66" name="relatedlinks">'.$related_links.'</textarea>
+                                    <textarea rows="5" cols="66" name="relatedlinks">'.$related_links.'</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -159,11 +157,27 @@ else
                                 </td>
                             </tr>
                             <tr>
+                                <td class="config" colspan="2">
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="config" valign="top">
-                                    Body:<br>
-                                    <font class="small">Der News Body, in dem alles zusammenläuft<br>
+                                    News Body:<br>
+                                    <font class="small">Der News Body, in dem alles zusammenläuft<br /><br />
                                     Gültige Tags:<br>
-                                    '. fetchTemplateTags($body) .'</font>
+                                    '.insert_tt("{newsid}","ID der News, für die eindeutige Ansteuerung auf der Startseite.").'
+                                    '.insert_tt("{titel}","Der Titel der News.").'
+                                    '.insert_tt("{datum}","Das Datum an dem die News veröffentlicht wurde.").'
+                                    '.insert_tt("{text}","Der Text der News.").'
+                                    '.insert_tt("{autor}","Der Name des News-Schreibers.").'
+                                    '.insert_tt("{autor_profilurl}","URL zum Profil des Autors.").'
+                                    '.insert_tt("{kategorie_bildname}","URL zum Kategorie-Bild.").'
+                                    '.insert_tt("{kategorie_name}","Der Titel der Kategorie.").'
+                                    '.insert_tt("{kommentar_url}","URL zur Kommentaransicht der News.").'
+                                    '.insert_tt("{kommentar_anzahl}","Anzahl der zur News abgegebenen Kommentare.").'
+                                    '.insert_tt("{related_links}","Bindet die Related Links der News ein.").'
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
                                     <textarea rows="25" cols="66" name="body">'.$body.'</textarea>
@@ -183,12 +197,15 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Headline:<br>
-                                    <font class="small">Zeile im Headline Body<br>
+                                    <font class="small">Zeile im Headline Body<br /><br />
                                     Gültige Tags:<br>
-                                    '. fetchTemplateTags($headline) .'</font>
+                                    '.insert_tt("{titel}","Der Titel der News.").'
+                                    '.insert_tt("{datum}","Das Datum an dem die News veröffentlicht wurde.").'
+                                    '.insert_tt("{url}","URL zur News.").'
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="4" cols="66" name="headline">'.$headline.'</textarea>
+                                    <textarea rows="6" cols="66" name="headline">'.$headline.'</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -200,9 +217,11 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Headline Body:<br>
-                                    <font class="small">Headline Kasten oben auf der Seite<br>
+                                    <font class="small">Headline Kasten oben auf der Seite<br /><br />
                                     Gültige Tags:<br>
-                                    '. fetchTemplateTags($headline_body) .'</font>
+                                    '.insert_tt("{headlines}","Bindet die Headlines ein.").'
+                                    '.insert_tt("{downloads}","Bindet die Downloads ein.").'
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
                                     <textarea rows="15" cols="66" name="headline_body">'.$headline_body.'</textarea>
@@ -222,12 +241,14 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Kommentar Autor:<br>
-                                    <font class="small">Link zum Kommentar Autor<br>
+                                    <font class="small">Link zum Kommentar Autor<br /><br />
                                     Gültige Tags:<br>
-                                    '. fetchTemplateTags($comment_autor) .'</font>
+                                    '.insert_tt("{name}","Der Name des Kommentar-Schreibers.").'
+                                    '.insert_tt("{url}","URL zum Profil des Autors.").'
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="4" cols="66" name="comment_autor">'.$comment_autor.'</textarea>
+                                    <textarea rows="5" cols="66" name="comment_autor">'.$comment_autor.'</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -239,9 +260,14 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Kommentar Body:<br>
-                                    <font class="small">Der Kommentar Body, in dem alles zusammenläuft<br>
+                                    <font class="small">Der Kommentar Body, in dem alles zusammenläuft<br /><br />
                                     Gültige Tags:<br>
-                                    '. fetchTemplateTags($comment_body) .'</font>
+                                    '.insert_tt("{titel}","Der Titel des Kommentars.").'
+                                    '.insert_tt("{datum}","Das Datum an dem der Kommentar geschrieben wurde.").'
+                                    '.insert_tt("{text}","Der Text des Kommentars.").'
+                                    '.insert_tt("{autor}","Bindet das \"Kommentar Autor\" Template ein.").'
+                                    '.insert_tt("{autor_avatar}","Bindet einen evtl. Avatar des Autors ein.").'
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
                                     <textarea rows="25" cols="66" name="comment_body">'.$comment_body.'</textarea>
@@ -256,7 +282,8 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Formular Name:<br>
-                                    <font class="small">Wird angezeigt, wenn der User nicht registriert ist<br>
+                                    <font class="small">Wird angezeigt, wenn der User nicht registriert ist.
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
                                     <textarea rows="4" cols="66" name="comment_form_name">'.$comment_form_name.'</textarea>
@@ -271,9 +298,11 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Kommentar Formular:<br>
-                                    <font class="small">Formular zum schreiben von Kommentaren<br>
+                                    <font class="small">Formular zum schreiben von Kommentaren<br /><br />
                                     Gültige Tags:<br>
-                                    '. fetchTemplateTags($comment_form) .'</font>
+                                    '.insert_tt("{newsid}","ID der News, um sie eindeutig zu identifizieren.").'
+                                    '.insert_tt("{name_input}","Bindet den Namen des angemeldeten Users, bzw. das Template \"Forumlar Name\" ein.").'
+                                    </font>
                                 </td>
                                 <td class="config" valign="top">
                                     <textarea rows="15" cols="66" name="comment_form">'.$comment_form.'</textarea>
@@ -293,7 +322,7 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Such Formular:<br>
-                                    <font class="small">Formular für die Suche im Archiv<br>
+                                    <font class="small">Formular für die Suche im Archiv<br /><br />
                                     Gültige Tags:<br>
                                     '.insert_tt("{years}","Fügt die Jahre ein, für die News verfügbar sind.").'
                                     </font>

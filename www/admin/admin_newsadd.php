@@ -169,8 +169,8 @@ else
                                     Text:<br>
                                     <font class="small">Html ist '.$config_arr[html_code].'. FScode ist '.$config_arr[fs_code].'</font>
                                 </td>
-                                <td valign="top">
-                                    <textarea rows="8" cols="66" name="text">'.$_POST[text].'</textarea>
+                                <td valign="top" align="left">
+                                    '.code_textarea("text", $_POST[text], 8, 66).'
                                 </td>
                             </tr>
     ';
