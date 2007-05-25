@@ -1,8 +1,0 @@
-php_value include_path "D:\server\xampp\htdocs\frogsystem\inc"
-
-ErrorDocument 404 /?go=404
-ErrorDocument 403 /?go=403
-
-Options +FollowSymLinks
-RewriteEngine on
-RewriteBase /frogsystem/www/
