@@ -45,13 +45,13 @@ function setToggle(MenuID,state)
 {
     if (state == "show") {
         document.getElementById(MenuID).style.display = "block";
-        document.getElementById("timg_"+MenuID).src = "img/pointer_down.gif";
+        document.getElementById("timg_"+MenuID).src = "admin/img/pointer_down.gif";
         if (closedMenu.inArray(MenuID)) {
             closedMenu.deleteArray(MenuID);
         }
     } else {
         document.getElementById(MenuID).style.display = "none";
-        document.getElementById("timg_"+MenuID).src = "img/pointer.gif";
+        document.getElementById("timg_"+MenuID).src = "admin/img/pointer.gif";
         if (!closedMenu.inArray(MenuID)) {
             closedMenu.push(MenuID);
         }

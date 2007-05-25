@@ -152,7 +152,7 @@ else
                                 <td class="config" valign="top">
                                     <input class="text" size="30" id="username" name="poster" value="'.$_POST[poster].'" maxlength="100" disabled>
                                     <input type="hidden" id="userid" name="posterid" value="'.$_POST[posterid].'">
-                                    <input onClick=\'open("admin_finduser.php","Poster","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\' class="button" type="button" value="Ändern">
+                                    <input onClick=\'open("admin/admin_finduser.php","Poster","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\' class="button" type="button" value="Ändern">
                                 </td>
                             </tr>
                             <tr>
@@ -170,7 +170,7 @@ else
                                     <font class="small">Html ist '.$config_arr[html_code].'. FScode ist '.$config_arr[fs_code].'</font>
                                 </td>
                                 <td valign="top" align="left">
-                                    '.code_textarea("text", $_POST[text], 8, 66).'
+                                    '.code_textarea("text", $_POST[text], 328, 130).'
                                 </td>
                             </tr>
     ';
@@ -189,7 +189,7 @@ else
                                     <font class="small">Wird unter der News eingetragen<br>[Titel] [URL] [Neues Fenster]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="23" name="linkname['.$j.']" value="'.stripslashes(killhtml($_POST[linkname][$j])).'" maxlength="100">
+                                    <input class="text" size="23" name="linkname['.$j.']" value="'.stripslashes(killhtml($_POST[linkname][$j])).'" maxlength="100"><br />
                                     <input class="text" size="35" value="'.stripslashes(killhtml($_POST[linkurl][$j])).'" name="linkurl['.$j.']" maxlength="255">
                                     <input type="checkbox" name="linktarget['.$j.']" value="1" '.$lcheck.'>
                                 </td>
@@ -205,7 +205,7 @@ else
                                     <font class="small">Wird unter der News eingetragen<br>[Titel] [URL] [Neues Fenster]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="23" name="linkname['.$j.']" maxlength="100"> 
+                                    <input class="text" size="23" name="linkname['.$j.']" maxlength="100"><br />
                                     <input class="text" size="35" name="linkurl['.$j.']" maxlength="255"> 
                                     <input type="checkbox" name="linktarget['.$j.']" value="1">
                                 </td>
@@ -225,8 +225,8 @@ else
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">
-                                    <input class="button" type="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" value="Absenden">
+                                <td colspan="2" align="center"><br /><br />
+                                    <input class="button" type="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" value="News eintragen">
                                 </td>
                             </tr>
                         </table>

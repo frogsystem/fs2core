@@ -39,13 +39,6 @@ font.status
    font-family:Verdana;
    color:#000000;
   }
-/*.hiddencat
-  {
-   display: block;
-   margin-left: 10px;
-   margin-top: 2px;
-   margin-bottom: 2px;
-  }*/
 td.config
   {
    text-align:left;
@@ -98,7 +91,7 @@ textarea
    border:1px solid #000000;
    background-color:#B7B7B7;
   }
-input.text
+.text
   {
    color:#000000;
    font-size:9pt;
@@ -106,7 +99,7 @@ input.text
    border:1px solid #000000;
    background-color:#B7B7B7;
   }
-input.button
+.button
   {
    color:#000000;
    font-size:8pt;

@@ -3,7 +3,7 @@ session_start();
 include("config.inc.php");
 if ($db)
 {
-    include("inc/dl.inc.php");
+    include("res/dl.inc.php");
     include("functions.php");
     include("cookielogin.php");
     include("phrases.inc.php");
@@ -40,37 +40,37 @@ unset($template);
 
 
 // Ankündigung laden
-include("inc/announcement.inc.php");
+include("res/announcement.inc.php");
 $template_announcement = $template;
 unset($template);
 
 // User Menü laden
-include("inc/user.inc.php");
+include("res/user.inc.php");
 $template_user = $template;
 unset($template);
 
 // Zufallsbild laden
-include("inc/randompic.inc.php");
+include("res/randompic.inc.php");
 $template_randompic = $template;
 unset($template);
 
 // Poll laden
-include("inc/poll.inc.php");
+include("res/poll.inc.php");
 $template_poll = $template;
 unset($template);
 
 // Statistik laden
-include("inc/stats.inc.php");
+include("res/stats.inc.php");
 $template_stats = $template;
 unset($template);
 
 // Shop laden
-include("inc/shop.inc.php");
+include("res/shop.inc.php");
 $template_shop = $template;
 unset($template);
 
 // Partner laden
-include("inc/partner.inc.php");
+include("res/partner.inc.php");
 $template_partner = $template;
 unset($template);
 
@@ -80,7 +80,7 @@ echo'
 <head>
 
   <title>'.$global_config_arr[title].'</title>
-  <base href="'.$global_config_arr['virtualhost'].'/">
+  <base href="'.$global_config_arr['virtualhost'].'">
   
   <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
   <META name="Description" content="'.$global_config_arr[description].'">
@@ -97,6 +97,7 @@ if ($global_config_arr[show_favicon] == 1)
   ';
 
   echo '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />
+  <link rel="stylesheet" type="text/css" href="res/editor.css" />
   <script src="inc/functions.js" type="text/javascript"></script>';
 
 // <link rel="alternate" type="application/rss+xml" href="rss/rss.php" title="RSS Feed" />';

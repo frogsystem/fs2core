@@ -86,9 +86,12 @@ echo'
 <html>
 <head>
     <title>Frog System - '.$pagetitle.'</title>
-    <link rel="stylesheet" type="text/css" href="admin.css">
-    <script src="functions.js" type="text/javascript"></script>
-    <script src="../inc/functions.js" type="text/javascript"></script>
+    <base href="'.$global_config_arr['virtualhost'].'">
+    
+    <link rel="stylesheet" type="text/css" href="admin/admin.css">
+    <link rel="stylesheet" type="text/css" href="res/editor.css">
+    <script src="admin/functions.js" type="text/javascript"></script>
+    <script src="res/functions.js" type="text/javascript"></script>
 </head>
 <body>
 <noscript>
@@ -105,7 +108,7 @@ echo'
             <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td width="100%" height="78" valign="top">
-                        <img border="0" src="img/frogsystem.gif" width="140" height="78">
+                        <img border="0" src="admin/img/frogsystem.gif" width="140" height="78">
                     </td>
                 </tr>
 
@@ -539,7 +542,7 @@ echo'
     <div id="main">
         <div id="mainshadow">
             <div id="maincontent">
-                <img border="0" src="img/pointer.gif" width="5" height="8" alt=""> 
+                <img border="0" src="admin/img/pointer.gif" width="5" height="8" alt="">
                 <font style="font-size:8pt;"><b>'.$pagetitle.'</b></font>
                 <div align="center">
                     <p>
