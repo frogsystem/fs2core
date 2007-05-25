@@ -1,0 +1,95 @@
+<?php
+
+///////////////////////////
+//// Auswahl speichern ////
+///////////////////////////
+
+if ($_POST['sended'])
+{
+    while (list($key, $val) = each($_POST['randompic_cat']))
+    {
+        mysql_query("UPDATE fs_screen_cat
+                     SET potm = '$val'
+                     WHERE cat_id = '$key'", $db);
+    }
+    systext("Einstellungen wurden gespeichert!");
+}
+
+////////////////////////
+/// Eingabeformular ////
+////////////////////////
+    echo'
+                    <form action="'.$PHP_SELF.'" method="post">
+                        <input type="hidden" value="randompic_cat" name="go">
+                        <input type="hidden" value="1" name="sended">
+                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                            <tr>
+                                <td class="config" width="30%">
+                                    Name
+                                </td>
+                                <td class="config" width="10%">
+                                    Pics
+                                </td>
+                                <td class="config" width="20%">
+                                    Sichtbarkeit
+                                </td>
+                                <td class="config" width="20%">
+                                    erstellt am
+                                </td>
+                                <td class="config" width="20%">
+                                    Zufallsbild-Kategorie
+                                </td>
+                            </tr>
+    ';
+    $index = mysql_query("select * from fs_screen_cat WHERE cat_type != 2 order by cat_name asc", $db);
+    while ($cat_arr = mysql_fetch_assoc($index))
+    {
+        $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
+        $screen_index = mysql_query("select cat_id from fs_screen where cat_id = $cat_arr[cat_id]", $db);
+        $screen_rows = mysql_num_rows($screen_index);
+        echo'
+                            <input type="hidden" name="randompic_cat['.$cat_arr[cat_id].']" value="0">
+                            <tr>
+                                <td class="configthin">
+                                    '.$cat_arr[cat_name].'
+                                </td>
+                                <td class="configthin">
+                                    '.$screen_rows.'
+                                </td>
+                                <td class="configthin">';
+                                    switch ($cat_arr[cat_visibility]) {
+                                    case 0:
+                                        echo "Nicht aufrufbar";
+                                        break;
+                                    case 1:
+                                        echo "Sichtbar";
+                                        break;
+                                    case 2:
+                                       echo "Nicht in Auswahl";
+                                       break;
+                                    }
+                                    echo'
+                                </td>
+                                <td class="configthin">
+                                    '.$cat_arr[cat_date].'
+                                </td>
+                                <td class="configthin">
+                                    <input type="checkbox" name="randompic_cat['.$cat_arr[cat_id].']" value="1"';
+                                        if ($cat_arr[potm] == 1)
+                                          echo ' checked=checked';
+                                        echo'
+                                    >
+                                </td>
+                            </tr>
+
+        ';
+    }
+    echo'                   <tr>
+                                <td colspan="5" align="center">
+                                    <input class="button" type="submit" value="Auswahl speichern">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>';
+?>
