@@ -32,7 +32,7 @@ $farbe_text2  = imagecolorallocate($image,25,25,25);
 $farbe_text3  = imagecolorallocate($image,204,204,204);
 
 // Oberfläche
-imagestring ($image,3,85,11,"Monatsstatistik Dungeon Lords ($monthname $_GET[s_year])",$farbe_text);
+imagestring ($image,3,140,11,"Monatsstatistik ($monthname $_GET[s_year])",$farbe_text);
 imagefilledrectangle($image,20,35,45,40,$farbe_visits); 
 imagestring ($image,2,57,30,"Visits",$farbe_text);
 imagefilledrectangle($image,455,35,480,40,$farbe_hits); 
@@ -206,19 +206,25 @@ switch (TRUE)
         $nvis = ceil($dbmaxvisits/10);
         $add = 10;
         $ovis = $nvis * 10;
-        $tvis = "d";
+        $tvis = "0";
         break;
     case ($dbmaxvisits < 1000):
         $nvis = ceil($dbmaxvisits/100);
         $add = 100;
         $ovis = $nvis * 100;
-        $tvis = "c";
+        $tvis = "00";
         break;
-    case ($dbmaxvisits > 1000):
+    case ($dbmaxvisits < 10000):
         $nvis = ceil($dbmaxvisits/1000);
         $add = 1000;
         $ovis = $nvis * 1000;
         $tvis = "k";
+        break;
+    case ($dbmaxvisits > 10000):
+        $nvis = ceil($dbmaxvisits/10000);
+        $add = 10000;
+        $ovis = $nvis * 10000;
+        $tvis = "0k";
         break;
 }
 
@@ -241,13 +247,13 @@ switch (TRUE)
         $nvis = round($dbmaxhits/10);
         $add = 10;
         $ovis = $nvis * 10;
-        $tvis = "d";
+        $tvis = "0";
         break;
     case ($dbmaxhits < 1000):
         $nvis = round($dbmaxhits/100);
         $add = 100;
         $ovis = $nvis * 100;
-        $tvis = "c";
+        $tvis = "00";
         break;
     case ($dbmaxhits < 10000):
         $nvis = round($dbmaxhits/1000);
@@ -267,7 +273,7 @@ for ($i=0; $i<=$ovis; $i=$i+$add)
 {
     $maxx = 285 - ($i / $dbmaxhits * 220);
     imageline($image,480,$maxx,485,$maxx,$farbe_rand);
-    imagestring($image,1,485,$maxx-5,$i/$add.$tvis,$farbe_text3);
+    imagestring($image,1,483,$maxx-5,$i/$add.$tvis,$farbe_text3);
 }
 
 
