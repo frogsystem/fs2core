@@ -1,168 +1,91 @@
 <?php
+########################################
+#### explanation of editor creation ####
+########################################
+/*
+    $TEMPLATE_EDIT[0][name] = "name"; //name of the template's db-entry
+    $TEMPLATE_EDIT[0][title] = "title"; //title of the template
+    $TEMPLATE_EDIT[0][description] = "description"; //short description of what the template is for
+    $TEMPLATE_EDIT[0][rows] = "x"; //number of rows of the textarea
+    $TEMPLATE_EDIT[0][cols] = "y"; //number of cols of the textarea
+        $TEMPLATE_EDIT[0][help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $TEMPLATE_EDIT[0][help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $TEMPLATE_EDIT[0][help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $TEMPLATE_EDIT[0][help][...][text] = "text"; //to add more possible tags
 
-/////////////////////////////////
-//// Datenbank aktualisieren ////
-/////////////////////////////////
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates
 
-if ($_POST[body] &&
-    $_POST[hot] &&
-    $_POST[main_body] &&
-    $_POST[artikel])
+    $TEMPLATE_EDIT[...][name] = "..."; //continue with the numbers after $TEMPLATE_EDIT to add more template-editors
+    ...
+*/
+##########################################
+#### / explanation of editor creation ####
+##########################################
+
+
+    $TEMPLATE_GO = "shoptemplate";
+
+    $TEMPLATE_EDIT[0][name] = "shop_hot";
+    $TEMPLATE_EDIT[0][title] = "Hot Link";
+    $TEMPLATE_EDIT[0][description] = "Hot Link für die rechte Menü Leiste.";
+    $TEMPLATE_EDIT[0][rows] = "5";
+    $TEMPLATE_EDIT[0][cols] = "66";
+        $TEMPLATE_EDIT[0][help][0][tag] = "{titel}";
+        $TEMPLATE_EDIT[0][help][0][text] = "Name des Artikels.";
+        $TEMPLATE_EDIT[0][help][1][tag] = "{thumb}";
+        $TEMPLATE_EDIT[0][help][1][text] = "URL des Produkt-Vorschaubildes.";
+        $TEMPLATE_EDIT[0][help][2][tag] = "{link}";
+        $TEMPLATE_EDIT[0][help][2][text] = "URL zum Produkt im jeweiligen Shop.";
+        
+
+    $TEMPLATE_EDIT[1][name] = "shop_body";
+    $TEMPLATE_EDIT[1][title] = "Mini Shop Body";
+    $TEMPLATE_EDIT[1][description] = "Mini Shop im rechten Menü.";
+    $TEMPLATE_EDIT[1][rows] = "15";
+    $TEMPLATE_EDIT[1][cols] = "66";
+        $TEMPLATE_EDIT[1][help][0][tag] = "{hotlinks}";
+        $TEMPLATE_EDIT[1][help][0][text] = "Bindet nacheinander die einzelnen Produkt-Hotlinks ein.";
+        
+
+    $TEMPLATE_EDIT[2][name] = "shop_artikel";
+    $TEMPLATE_EDIT[2][title] = "Artikel";
+    $TEMPLATE_EDIT[2][description] = "Ansicht eines Artikels.";
+    $TEMPLATE_EDIT[2][rows] = "15";
+    $TEMPLATE_EDIT[2][cols] = "66";
+        $TEMPLATE_EDIT[2][help][0][tag] = "{titel}";
+        $TEMPLATE_EDIT[2][help][0][text] = "Name des Artikels.";
+        $TEMPLATE_EDIT[2][help][1][tag] = "{beschreibung}";
+        $TEMPLATE_EDIT[2][help][1][text] = "Produkt-Beschreibung des Artikels.";
+        $TEMPLATE_EDIT[2][help][2][tag] = "{preis}";
+        $TEMPLATE_EDIT[2][help][2][text] = "Preis des Artikels (ohne Währung).";
+        $TEMPLATE_EDIT[2][help][2][tag] = "{bestell_url}";
+        $TEMPLATE_EDIT[2][help][2][text] = "URL zum Produkt im jeweiligen Shop.";
+        $TEMPLATE_EDIT[2][help][2][tag] = "{bild}";
+        $TEMPLATE_EDIT[2][help][2][text] = "URL des Produkt-Bildes.";
+        $TEMPLATE_EDIT[2][help][2][tag] = "{thumbnail}";
+        $TEMPLATE_EDIT[2][help][2][text] = "URL des Produkt-Vorschaubildes.";
+
+
+    $TEMPLATE_EDIT[3][name] = "shop_main_body";
+    $TEMPLATE_EDIT[3][title] = "Shop Body";
+    $TEMPLATE_EDIT[3][description] = "Detailseite des Shops.";
+    $TEMPLATE_EDIT[3][rows] = "20";
+    $TEMPLATE_EDIT[3][cols] = "66";
+        $TEMPLATE_EDIT[3][help][0][tag] = "{artikel}";
+        $TEMPLATE_EDIT[3][help][0][text] = "Bindet nacheinander die einzelnen Produkte ein.";
+
+        
+//////////////////////////
+//// Intialise Editor ////
+//////////////////////////
+
+if (templatepage_postcheck($TEMPLATE_EDIT))
 {
-    $_POST[body] = addslashes($_POST[body]);
-    $_POST[hot] = addslashes($_POST[hot]);
-    $_POST[main_body] = addslashes($_POST[main_body]);
-    $_POST[artikel] = addslashes($_POST[artikel]);
-
-    mysql_query("update fs_template
-                 set shop_body = '$_POST[body]',
-                     shop_hot = '$_POST[hot]',
-                     shop_main_body = '$_POST[main_body]',
-                     shop_artikel = '$_POST[artikel]'
-                 where id = '$_POST[design]'", $db);
-
+    templatepage_save($TEMPLATE_EDIT);
     systext("Template wurde aktualisiert");
 }
-
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
-
 else
 {
-    // Design ermittlen
-    echo'
-                    <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
-                            <input type="hidden" value="shoptemplate" name="go">
-                            <input type="hidden" value="'.$_POST[design].'" name="design">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design auswählen</option>
-                                <option value="">------------------------</option>
-    ';
-
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      echo '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        echo ' selected=selected';
-      echo '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        echo ' (aktiv)';
-      echo '</option>';
-    }
-
-    echo'
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
-    ';
-
-    if (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="")
-    {
-
-    $index = mysql_query("select shop_body from fs_template where id = '$_POST[design]'", $db);
-    $body = stripslashes(mysql_result($index, 0, "shop_body"));
-
-    $index = mysql_query("select shop_hot from fs_template where id = '$_POST[design]'", $db);
-    $hot = stripslashes(mysql_result($index, 0, "shop_hot"));
-
-    $index = mysql_query("select shop_main_body from fs_template where id = '$_POST[design]'", $db);
-    $main_body = stripslashes(mysql_result($index, 0, "shop_main_body"));
-
-    $index = mysql_query("select shop_artikel from fs_template where id = '$_POST[design]'", $db);
-    $artikel = stripslashes(mysql_result($index, 0, "shop_artikel"));
-
-    echo'
-                    <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
-                        <input type="hidden" value="shoptemplate" name="go">
-                        <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top">
-                                    Hot Link:<br>
-                                    <font class="small">Hot Link für die rechte Menü Leiste<br>
-                                    Gültige Tags:<br>
-                                   '. fetchTemplateTags($hot) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="hot">'.$hot.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'hot\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Mini Shop Body:<br>
-                                    <font class="small">Mini Shop im rechten Menü<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($body) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="body">'.$body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Artikel:<br>
-                                    <font class="small">Ansicht eines Artikels<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($artikel) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="artikel">'.$artikel.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'artikel\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Shop Body:<br>
-                                    <font class="small">Detailseite des Shops<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($main_body) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="20" cols="66" name="main_body">'.$main_body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'main_body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
-    }
+    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
 }
 ?>

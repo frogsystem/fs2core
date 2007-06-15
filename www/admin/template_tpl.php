@@ -24,32 +24,44 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "artikeltemplate";
+    $TEMPLATE_GO = "";
 
-    $TEMPLATE_EDIT[0][name] = "artikel_autor";
-    $TEMPLATE_EDIT[0][title] = "Autor";
-    $TEMPLATE_EDIT[0][description] = "Das Erscheinungsbild der Autoren-Kennzeichnung.";
-    $TEMPLATE_EDIT[0][rows] = "4";
+    $TEMPLATE_EDIT[0][name] = "";
+    $TEMPLATE_EDIT[0][title] = "";
+    $TEMPLATE_EDIT[0][description] = "";
+    $TEMPLATE_EDIT[0][rows] = "";
     $TEMPLATE_EDIT[0][cols] = "66";
-        $TEMPLATE_EDIT[0][help][0][tag] = "{username}";
-        $TEMPLATE_EDIT[0][help][0][text] = "Der Username des Autors.";
-        $TEMPLATE_EDIT[0][help][1][tag] = "{profillink}";
-        $TEMPLATE_EDIT[0][help][1][text] = "URL zum Profil des Autors.";
+        $TEMPLATE_EDIT[0][help][0][tag] = "{}";
+        $TEMPLATE_EDIT[0][help][0][text] = "";
+        $TEMPLATE_EDIT[0][help][1][tag] = "{}";
+        $TEMPLATE_EDIT[0][help][1][text] = "";
+        $TEMPLATE_EDIT[0][help][2][tag] = "{}";
+        $TEMPLATE_EDIT[0][help][2][text] = "";
         
 
-    $TEMPLATE_EDIT[1][name] = "artikel_body";
-    $TEMPLATE_EDIT[1][title] = "Body";
-    $TEMPLATE_EDIT[1][description] = "Das Erscheinungsbild eines Artikels.";
-    $TEMPLATE_EDIT[1][rows] = "25";
+    $TEMPLATE_EDIT[1][name] = "";
+    $TEMPLATE_EDIT[1][title] = "";
+    $TEMPLATE_EDIT[1][description] = "";
+    $TEMPLATE_EDIT[1][rows] = "";
     $TEMPLATE_EDIT[1][cols] = "66";
-        $TEMPLATE_EDIT[1][help][0][tag] = "{titel}";
-        $TEMPLATE_EDIT[1][help][0][text] = "Die Überschrift des Artikels.";
-        $TEMPLATE_EDIT[1][help][1][tag] = "{datum}";
-        $TEMPLATE_EDIT[1][help][1][text] = "Das Datum an dem der Artikel geschrieben wurde.";
-        $TEMPLATE_EDIT[1][help][2][tag] = "{text}";
-        $TEMPLATE_EDIT[1][help][2][text] = "Der Artikel-Text an sich.";
-        $TEMPLATE_EDIT[1][help][2][tag] = "{autor}";
-        $TEMPLATE_EDIT[1][help][2][text] = "Bindet das Autoren-Template ein.";
+        $TEMPLATE_EDIT[1][help][0][tag] = "{}";
+        $TEMPLATE_EDIT[1][help][0][text] = "";
+        $TEMPLATE_EDIT[1][help][1][tag] = "{}";
+        $TEMPLATE_EDIT[1][help][1][text] = "";
+        $TEMPLATE_EDIT[1][help][2][tag] = "{}";
+        $TEMPLATE_EDIT[1][help][2][text] = "";
+
+    $TEMPLATE_EDIT[2][name] = "";
+    $TEMPLATE_EDIT[2][title] = "";
+    $TEMPLATE_EDIT[2][description] = "";
+    $TEMPLATE_EDIT[2][rows] = "";
+    $TEMPLATE_EDIT[2][cols] = "66";
+        $TEMPLATE_EDIT[2][help][0][tag] = "{}";
+        $TEMPLATE_EDIT[2][help][0][text] = "";
+        $TEMPLATE_EDIT[2][help][1][tag] = "{}";
+        $TEMPLATE_EDIT[2][help][1][text] = "";
+        $TEMPLATE_EDIT[2][help][2][tag] = "{}";
+        $TEMPLATE_EDIT[2][help][2][text] = "";
 
         
 //////////////////////////

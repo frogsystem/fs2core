@@ -1,288 +1,162 @@
 <?php
+########################################
+#### explanation of editor creation ####
+########################################
+/*
+    $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
 
-/////////////////////////////////
-//// Datenbank aktualisieren ////
-/////////////////////////////////
+    $TEMPLATE_EDIT[0][name] = "name"; //name of the template's db-entry
+    $TEMPLATE_EDIT[0][title] = "title"; //title of the template
+    $TEMPLATE_EDIT[0][description] = "description"; //short description of what the template is for
+    $TEMPLATE_EDIT[0][rows] = "x"; //number of rows of the textarea
+    $TEMPLATE_EDIT[0][cols] = "y"; //number of cols of the textarea
+        $TEMPLATE_EDIT[0][help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $TEMPLATE_EDIT[0][help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $TEMPLATE_EDIT[0][help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $TEMPLATE_EDIT[0][help][...][text] = "text"; //to add more possible tags
 
-if ($_POST[search_field] &&
-    $_POST[navigation] &&
-    $_POST[body] &&
-    $_POST[datei_preview] &&
-    $_POST[file_body] &&
-    $_POST[file]&&
-    $_POST[file_is_mirror]&&
-    $_POST[stats] &&
-    $_POST[quick_links])
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates
+
+    $TEMPLATE_EDIT[...][name] = "..."; //continue with the numbers after $TEMPLATE_EDIT to add more template-editors
+    ...
+*/
+##########################################
+#### / explanation of editor creation ####
+##########################################
+
+    $TEMPLATE_GO = "dltemplate";
+
+    $TEMPLATE_EDIT[0][name] = "dl_search_field";
+    $TEMPLATE_EDIT[0][title] = $admin_phrases[template][dl_search_field][title];
+    $TEMPLATE_EDIT[0][description] = $admin_phrases[template][dl_search_field][description];
+    $TEMPLATE_EDIT[0][rows] = "15";
+    $TEMPLATE_EDIT[0][cols] = "66";
+        $TEMPLATE_EDIT[0][help][0][tag] = "{input_cat}";
+        $TEMPLATE_EDIT[0][help][0][text] = $admin_phrases[template][dl_search_field][help_1];
+        $TEMPLATE_EDIT[0][help][1][tag] = "{keyword}";
+        $TEMPLATE_EDIT[0][help][1][text] = $admin_phrases[template][dl_search_field][help_2];
+        $TEMPLATE_EDIT[0][help][2][tag] = "{all_url}";
+        $TEMPLATE_EDIT[0][help][2][text] = $admin_phrases[template][dl_search_field][help_3];
+
+    $TEMPLATE_EDIT[1][name] = "dl_navigation";
+    $TEMPLATE_EDIT[1][title] = $admin_phrases[template][dl_navigation][title];
+    $TEMPLATE_EDIT[1][description] = $admin_phrases[template][dl_navigation][description];
+    $TEMPLATE_EDIT[1][rows] = "5";
+    $TEMPLATE_EDIT[1][cols] = "66";
+        $TEMPLATE_EDIT[1][help][0][tag] = "{icon}";
+        $TEMPLATE_EDIT[1][help][0][text] = $admin_phrases[template][dl_navigation][help_1];
+        $TEMPLATE_EDIT[1][help][1][tag] = "{kategorie_url}";
+        $TEMPLATE_EDIT[1][help][1][text] = $admin_phrases[template][dl_navigation][help_2];
+        $TEMPLATE_EDIT[1][help][2][tag] = "{kategorie_name}";
+        $TEMPLATE_EDIT[1][help][2][text] = $admin_phrases[template][dl_navigation][help_3];
+
+    $TEMPLATE_EDIT[2][name] = "dl_quick_links";
+    $TEMPLATE_EDIT[2][title] = $admin_phrases[template][dl_quick_links][title];
+    $TEMPLATE_EDIT[2][description] = $admin_phrases[template][dl_quick_links][description];
+    $TEMPLATE_EDIT[2][rows] = "5";
+    $TEMPLATE_EDIT[2][cols] = "66";
+        $TEMPLATE_EDIT[2][help][0][tag] = "{datum}";
+        $TEMPLATE_EDIT[2][help][0][text] = $admin_phrases[template][dl_quick_links][help_1];
+        $TEMPLATE_EDIT[2][help][1][tag] = "{url}";
+        $TEMPLATE_EDIT[2][help][1][text] = $admin_phrases[template][dl_quick_links][help_2];
+        $TEMPLATE_EDIT[2][help][2][tag] = "{name}";
+        $TEMPLATE_EDIT[2][help][2][text] = $admin_phrases[template][dl_quick_links][help_3];
+
+    $TEMPLATE_EDIT[3] = false;
+
+    $TEMPLATE_EDIT[4][name] = "dl_datei_preview";
+    $TEMPLATE_EDIT[4][title] = $admin_phrases[template][dl_datei_preview][title];
+    $TEMPLATE_EDIT[4][description] = $admin_phrases[template][dl_datei_preview][description];
+    $TEMPLATE_EDIT[4][rows] = "10";
+    $TEMPLATE_EDIT[4][cols] = "66";
+        $TEMPLATE_EDIT[4][help][0][tag] = "{name}";
+        $TEMPLATE_EDIT[4][help][0][text] = $admin_phrases[template][dl_datei_preview][help_1];
+        $TEMPLATE_EDIT[4][help][1][tag] = "{url}";
+        $TEMPLATE_EDIT[4][help][1][text] = $admin_phrases[template][dl_datei_preview][help_2];
+        $TEMPLATE_EDIT[4][help][2][tag] = "{cat}";
+        $TEMPLATE_EDIT[4][help][2][text] = $admin_phrases[template][dl_datei_preview][help_3];
+        $TEMPLATE_EDIT[4][help][3][tag] = "{datum}";
+        $TEMPLATE_EDIT[4][help][3][text] = $admin_phrases[template][dl_datei_preview][help_4];
+        $TEMPLATE_EDIT[4][help][4][tag] = "{text}";
+        $TEMPLATE_EDIT[4][help][4][text] = $admin_phrases[template][dl_datei_preview][help_5];
+
+    $TEMPLATE_EDIT[5][name] = "dl_body";
+    $TEMPLATE_EDIT[5][title] = $admin_phrases[template][dl_body][title];
+    $TEMPLATE_EDIT[5][description] = $admin_phrases[template][dl_body][description];
+    $TEMPLATE_EDIT[5][rows] = "20";
+    $TEMPLATE_EDIT[5][cols] = "66";
+        $TEMPLATE_EDIT[5][help][0][tag] = "{navigation}";
+        $TEMPLATE_EDIT[5][help][0][text] = $admin_phrases[template][dl_body][help_1];
+        $TEMPLATE_EDIT[5][help][1][tag] = "{suchfeld}";
+        $TEMPLATE_EDIT[5][help][1][text] = $admin_phrases[template][dl_body][help_2];
+        $TEMPLATE_EDIT[5][help][2][tag] = "{dateien}";
+        $TEMPLATE_EDIT[5][help][2][text] = $admin_phrases[template][dl_body][help_3];
+
+    $TEMPLATE_EDIT[6] = false;
+
+    $TEMPLATE_EDIT[7][name] = "dl_file";
+    $TEMPLATE_EDIT[7][title] = $admin_phrases[template][dl_file][title];
+    $TEMPLATE_EDIT[7][description] = $admin_phrases[template][dl_file][description];
+    $TEMPLATE_EDIT[7][rows] = "10";
+    $TEMPLATE_EDIT[7][cols] = "66";
+        $TEMPLATE_EDIT[7][help][0][tag] = "{name}";
+        $TEMPLATE_EDIT[7][help][0][text] = $admin_phrases[template][dl_file][help_1];
+        $TEMPLATE_EDIT[7][help][1][tag] = "{url}";
+        $TEMPLATE_EDIT[7][help][1][text] = $admin_phrases[template][dl_file][help_2];
+        $TEMPLATE_EDIT[7][help][2][tag] = "{size}";
+        $TEMPLATE_EDIT[7][help][2][text] = $admin_phrases[template][dl_file][help_3];
+        $TEMPLATE_EDIT[7][help][3][tag] = "{traffic}";
+        $TEMPLATE_EDIT[7][help][3][text] = $admin_phrases[template][dl_file][help_4];
+        $TEMPLATE_EDIT[7][help][4][tag] = "{hits}";
+        $TEMPLATE_EDIT[7][help][4][text] = $admin_phrases[template][dl_file][help_5];
+        $TEMPLATE_EDIT[7][help][5][tag] = "{mirror_ext}";
+        $TEMPLATE_EDIT[7][help][5][text] = $admin_phrases[template][dl_file][help_6];
+        $TEMPLATE_EDIT[7][help][6][tag] = "{mirror_col}";
+        $TEMPLATE_EDIT[7][help][6][text] = $admin_phrases[template][dl_file][help_7];
+
+    $TEMPLATE_EDIT[8][name] = "dl_stats";
+    $TEMPLATE_EDIT[8][title] = $admin_phrases[template][dl_stats][title];
+    $TEMPLATE_EDIT[8][description] = $admin_phrases[template][dl_stats][description];
+    $TEMPLATE_EDIT[8][rows] = "10";
+    $TEMPLATE_EDIT[8][cols] = "66";
+        $TEMPLATE_EDIT[8][help][0][tag] = "{number}";
+        $TEMPLATE_EDIT[8][help][0][text] = $admin_phrases[template][dl_stats][help_1];
+        $TEMPLATE_EDIT[8][help][1][tag] = "{size}";
+        $TEMPLATE_EDIT[8][help][1][text] = $admin_phrases[template][dl_stats][help_2];
+        $TEMPLATE_EDIT[8][help][2][tag] = "{traffic}";
+        $TEMPLATE_EDIT[8][help][2][text] = $admin_phrases[template][dl_stats][help_3];
+        $TEMPLATE_EDIT[8][help][3][tag] = "{hits}";
+        $TEMPLATE_EDIT[8][help][3][text] = $admin_phrases[template][dl_stats][help_4];
+
+    $TEMPLATE_EDIT[9][name] = "dl_file_is_mirror";
+    $TEMPLATE_EDIT[9][title] = "Mirror";
+    $TEMPLATE_EDIT[9][description] = "Anzeige, falls das File ein Mirror ist.";
+    $TEMPLATE_EDIT[9][rows] = "5";
+    $TEMPLATE_EDIT[9][cols] = "66";
+
+    $TEMPLATE_EDIT[10][name] = "dl_file_body";
+    $TEMPLATE_EDIT[10][title] = "Datei Body";
+    $TEMPLATE_EDIT[10][description] = "Detailseite eines Downloads.";
+    $TEMPLATE_EDIT[10][rows] = "25";
+    $TEMPLATE_EDIT[10][cols] = "66";
+        $TEMPLATE_EDIT[10][help][0][tag] = "{}";
+        $TEMPLATE_EDIT[10][help][0][text] = "";
+        $TEMPLATE_EDIT[10][help][1][tag] = "{}";
+        $TEMPLATE_EDIT[10][help][1][text] = "";
+        $TEMPLATE_EDIT[10][help][2][tag] = "{}";
+        $TEMPLATE_EDIT[10][help][2][text] = "";
+        
+//////////////////////////
+//// Intialise Editor ////
+//////////////////////////
+
+if (templatepage_postcheck($TEMPLATE_EDIT))
 {
-    $_POST[search_field] = addslashes($_POST[search_field]);
-    $_POST[navigation] = addslashes($_POST[navigation]);
-    $_POST[body] = addslashes($_POST[body]);
-    $_POST[datei_preview] = addslashes($_POST[datei_preview]);
-    $_POST[file_body] = addslashes($_POST[file_body]);
-    $_POST[file] = addslashes($_POST[file]);
-    $_POST[file_is_mirror] = addslashes($_POST[file_is_mirror]);
-    $_POST[stats] = addslashes($_POST[stats]);
-    $_POST[quick_links] = addslashes($_POST[quick_links]);
-
-    mysql_query("update fs_template
-                 set dl_search_field = '$_POST[search_field]',
-                     dl_navigation = '$_POST[navigation]',
-                     dl_body = '$_POST[body]',
-                     dl_datei_preview = '$_POST[datei_preview]',
-                     dl_file_body = '$_POST[file_body]',
-                     dl_file = '$_POST[file]',
-                     dl_file_is_mirror = '$_POST[file_is_mirror]',
-                     dl_stats = '$_POST[stats]',
-                     dl_quick_links = '$_POST[quick_links]'
-                where id = '$_POST[design]'", $db);
-
+    templatepage_save($TEMPLATE_EDIT);
     systext("Template wurde aktualisiert");
 }
-
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
-
 else
 {
-    // Design ermittlen
-    echo'
-                    <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
-                            <input type="hidden" value="dltemplate" name="go">
-                            <input type="hidden" value="'.$_POST[design].'" name="design">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design auswählen</option>
-                                <option value="">------------------------</option>
-    ';
-
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      echo '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        echo ' selected=selected';
-      echo '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        echo ' (aktiv)';
-      echo '</option>';
-    }
-
-    echo'
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
-    ';
-
-    if (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="")
-    {
-
-    $index = mysql_query("select dl_search_field from fs_template where id = '$_POST[design]'", $db);
-    $search_field = stripslashes(mysql_result($index, 0, "dl_search_field"));
-
-    $index = mysql_query("select dl_navigation from fs_template where id = '$_POST[design]'", $db);
-    $navigation = stripslashes(mysql_result($index, 0, "dl_navigation"));
-
-    $index = mysql_query("select dl_body from fs_template where id = '$_POST[design]'", $db);
-    $body = stripslashes(mysql_result($index, 0, "dl_body"));
-
-    $index = mysql_query("select dl_datei_preview from fs_template where id = '$_POST[design]'", $db);
-    $datei_preview = stripslashes(mysql_result($index, 0, "dl_datei_preview"));
-
-    $index = mysql_query("select dl_file_body from fs_template where id = '$_POST[design]'", $db);
-    $file_body = stripslashes(mysql_result($index, 0, "dl_file_body"));
-
-    $index = mysql_query("select dl_file from fs_template where id = '$_POST[design]'", $db);
-    $file = stripslashes(mysql_result($index, 0, "dl_file"));
-    
-    $index = mysql_query("select dl_file_is_mirror from fs_template where id = '$_POST[design]'", $db);
-    $file_is_mirror = stripslashes(mysql_result($index, 0, "dl_file_is_mirror"));
-    
-    $index = mysql_query("select dl_stats from fs_template where id = '$_POST[design]'", $db);
-    $stats = stripslashes(mysql_result($index, 0, "dl_stats"));
-
-    $index = mysql_query("select dl_quick_links from fs_template where id = '$_POST[design]'", $db);
-    $quick_links = stripslashes(mysql_result($index, 0, "dl_quick_links"));
-
-    echo'
-                    <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
-                        <input type="hidden" value="dltemplate" name="go">
-                        <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top">
-                                    Such Feld:<br>
-                                    <font class="small">Kleines Suchfeld, dass auf jeder Seite angezeigt werden kann<br />
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($search_field) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="10" cols="66" name="search_field">'.$search_field.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'search_field\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Navigation:<br>
-                                    <font class="small">Zeile der Navigation<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($navigation) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="navigation">'.$navigation.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'navigation\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Quick Links:<br>
-                                    <font class="small">Quick Links Feld auf der Newsseite<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($quick_links) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="quick_links">'.$quick_links.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'quick_links\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Datei Vorschau:<br>
-                                    <font class="small">Vorschau einer Datei in der Übersicht<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($datei_preview) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="datei_preview">'.$datei_preview.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'datei_preview\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Download Übersicht:<br>
-                                    <font class="small">Übersichtsseite für die Downloads. Wird auch für die Suchergebnisse genutzt<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($body) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="20" cols="66" name="body">'.$body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    File:<br>
-                                    <font class="small">Zeile für ein File<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($file) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="file">'.$file.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'file\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Statistik:<br>
-                                    <font class="small">Zeile für die Statistik unter den Files<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($stats) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="stats">'.$stats.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'stats\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Mirror:<br>
-                                    <font class="small">Anzeige, wenn das File ein Mirror ist<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($file_is_mirror) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="file_is_mirror">'.$file_is_mirror.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'file_is_mirror\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Datei Body:<br>
-                                    <font class="small">Detailseite für einen Download<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($file_body) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="25" cols="66" name="file_body">'.$file_body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'file_body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
-    }
+    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
 }
 ?>

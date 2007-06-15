@@ -6,7 +6,7 @@ if ($db)
     include("res/dl.inc.php");
     include("functions.php");
     include("cookielogin.php");
-    include("phrases.inc.php");
+    include("phrases/phrases.de.php");
 
 // Hauptmenü aufbauen
 $index = mysql_query("select main_menu from fs_template where id = '$global_config_arr[design]'", $db);

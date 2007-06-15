@@ -1,256 +1,138 @@
 <?php
+########################################
+#### explanation of editor creation ####
+########################################
+/*
+    $TEMPLATE_EDIT[0][name] = "name"; //name of the template's db-entry
+    $TEMPLATE_EDIT[0][title] = "title"; //title of the template
+    $TEMPLATE_EDIT[0][description] = "description"; //short description of what the template is for
+    $TEMPLATE_EDIT[0][rows] = "x"; //number of rows of the textarea
+    $TEMPLATE_EDIT[0][cols] = "y"; //number of cols of the textarea
+        $TEMPLATE_EDIT[0][help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $TEMPLATE_EDIT[0][help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $TEMPLATE_EDIT[0][help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $TEMPLATE_EDIT[0][help][...][text] = "text"; //to add more possible tags
 
-/////////////////////////////////
-//// Datenbank aktualisieren ////
-/////////////////////////////////
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates
 
-if ($_POST[indexphp] ||
-    $_POST[error] ||
-    $_POST[pic_viewer] ||
-    $_POST[main_menu] ||
-    $_POST[community_map] ||
-    $_POST[statistik] ||
-    $_POST[announcement])
+    $TEMPLATE_EDIT[...][name] = "..."; //continue with the numbers after $TEMPLATE_EDIT to add more template-editors
+    ...
+*/
+##########################################
+#### / explanation of editor creation ####
+##########################################
+
+    $TEMPLATE_GO = "alltemplate";
+
+    $TEMPLATE_EDIT[0][name] = "indexphp";
+    $TEMPLATE_EDIT[0][title] = "Index.php";
+    $TEMPLATE_EDIT[0][description] = "Hauptdesign der Seite";
+    $TEMPLATE_EDIT[0][rows] = "15";
+    $TEMPLATE_EDIT[0][cols] = "66";
+        $TEMPLATE_EDIT[0][help][0][tag] = "{main_menu}";
+        $TEMPLATE_EDIT[0][help][0][text] = "Bindet das Template \"Haupt Menü\" ein.";
+        $TEMPLATE_EDIT[0][help][1][tag] = "{announcement}";
+        $TEMPLATE_EDIT[0][help][1][text] = "Bindet die Ankündigung ein.";
+        $TEMPLATE_EDIT[0][help][2][tag] = "{content}";
+        $TEMPLATE_EDIT[0][help][2][text] = "Markiert die Stelle, an der Seiteninhalt eingefügt wird.";
+        $TEMPLATE_EDIT[0][help][3][tag] = "{user}";
+        $TEMPLATE_EDIT[0][help][3][text] = "Bindet das User-Menü ein.";
+        $TEMPLATE_EDIT[0][help][4][tag] = "{randompic}";
+        $TEMPLATE_EDIT[0][help][4][text] = "Bindet das Zufallsbild ein.";
+        $TEMPLATE_EDIT[0][help][5][tag] = "{poll}";
+        $TEMPLATE_EDIT[0][help][5][text] = "Bindet das Umfragensystem ein.";
+        $TEMPLATE_EDIT[0][help][6][tag] = "{stats}";
+        $TEMPLATE_EDIT[0][help][6][text] = "Bindet die Statistik ein.";
+        $TEMPLATE_EDIT[0][help][7][tag] = "{shop}";
+        $TEMPLATE_EDIT[0][help][7][text] = "Bindet den Shop ein.";
+        $TEMPLATE_EDIT[0][help][8][tag] = "{partner}";
+        $TEMPLATE_EDIT[0][help][8][text] = "Bindet das Partnersystem ein.";
+
+    $TEMPLATE_EDIT[1][name] = "error";
+    $TEMPLATE_EDIT[1][title] = "Fehlermeldung";
+    $TEMPLATE_EDIT[1][description] = "Systemmeldung, wenn ein Fehler auftritt";
+    $TEMPLATE_EDIT[1][rows] = "15";
+    $TEMPLATE_EDIT[1][cols] = "66";
+        $TEMPLATE_EDIT[1][help][0][tag] = "{titel}";
+        $TEMPLATE_EDIT[1][help][0][text] = "Der Titel der Systemmeldung.";
+        $TEMPLATE_EDIT[1][help][1][tag] = "{meldung}";
+        $TEMPLATE_EDIT[1][help][1][text] = "Der Text der Systemmeldung.";
+
+    $TEMPLATE_EDIT[2][name] = "pic_viewer";
+    $TEMPLATE_EDIT[2][title] = "Picture Viewer";
+    $TEMPLATE_EDIT[2][description] = "Popup zum darstellen von Bildern";
+    $TEMPLATE_EDIT[2][rows] = "25";
+    $TEMPLATE_EDIT[2][cols] = "66";
+        $TEMPLATE_EDIT[2][help][0][tag] = "{bannercode}";
+        $TEMPLATE_EDIT[2][help][0][text] = "Bindet die Werbung ein.";
+        $TEMPLATE_EDIT[2][help][1][tag] = "{weiter_grafik}";
+        $TEMPLATE_EDIT[2][help][1][text] = "Bildadresse der Grafik \"images/icons/weiter.gif\".";
+        $TEMPLATE_EDIT[2][help][2][tag] = "{zurück_grafik}";
+        $TEMPLATE_EDIT[2][help][2][text] = "Bildadresse der Grafik \"images/icons/zurueck.gif\".";
+        $TEMPLATE_EDIT[2][help][3][tag] = "{bild}";
+        $TEMPLATE_EDIT[2][help][3][text] = "Bildadresse des Galerie-Bildes.";
+        $TEMPLATE_EDIT[2][help][4][tag] = "{text}";
+        $TEMPLATE_EDIT[2][help][4][text] = "Beschreibungs-Text des Bildes.";
+
+    $TEMPLATE_EDIT[3][name] = "main_menu";
+    $TEMPLATE_EDIT[3][title] = "Haupt Menü";
+    $TEMPLATE_EDIT[3][description] = "Linke Navigationsleiste";
+    $TEMPLATE_EDIT[3][rows] = "25";
+    $TEMPLATE_EDIT[3][cols] = "66";
+        $TEMPLATE_EDIT[3][help][0][tag] = "{virtualhost}";
+        $TEMPLATE_EDIT[3][help][0][text] = "Die unter Konfiguration angegebene Adresse der Seite, auf die Links umgeschaltet werden.";
+        
+    $TEMPLATE_EDIT[4][name] = "community_map";
+    $TEMPLATE_EDIT[4][title] = "Community Map";
+    $TEMPLATE_EDIT[4][description] = "Gerüst für die Community Map";
+    $TEMPLATE_EDIT[4][rows] = "15";
+    $TEMPLATE_EDIT[4][cols] = "66";
+        $TEMPLATE_EDIT[4][help][0][tag] = "{karte}";
+        $TEMPLATE_EDIT[4][help][0][text] = "Bindet die Karte ein.";
+
+    $TEMPLATE_EDIT[5][name] = "statistik";
+    $TEMPLATE_EDIT[5][title] = "Statistik:";
+    $TEMPLATE_EDIT[5][description] = "Besucher und Seiten Statistik";
+    $TEMPLATE_EDIT[5][rows] = "";
+    $TEMPLATE_EDIT[5][cols] = "66";
+        $TEMPLATE_EDIT[5][help][0][tag] = "{visits}";
+        $TEMPLATE_EDIT[5][help][0][text] = "Anzahl aller Besucher der Seite.";
+        $TEMPLATE_EDIT[5][help][1][tag] = "{visits_heute}";
+        $TEMPLATE_EDIT[5][help][1][text] = "Zahl aller Besucher am aktuellen Tag.";
+        $TEMPLATE_EDIT[5][help][2][tag] = "{hits}";
+        $TEMPLATE_EDIT[5][help][2][text] = "Anzahl aller Seitenaufrufe.";
+        $TEMPLATE_EDIT[5][help][3][tag] = "{hits_heute}";
+        $TEMPLATE_EDIT[5][help][3][text] = "Zahl aller Seitenaufrufe am aktuellen Tag.";
+        $TEMPLATE_EDIT[5][help][4][tag] = "{user_online}";
+        $TEMPLATE_EDIT[5][help][4][text] = "Zahl aller Besucher die sich zurzeit auf der Seite befinden.";
+        $TEMPLATE_EDIT[5][help][5][tag] = "{news}";
+        $TEMPLATE_EDIT[5][help][5][text] = "Anzahl der geschriebenen News.";
+        $TEMPLATE_EDIT[5][help][6][tag] = "{user}";
+        $TEMPLATE_EDIT[5][help][6][text] = "Anzahl der registrierten User.";
+        $TEMPLATE_EDIT[5][help][7][tag] = "{artikel}";
+        $TEMPLATE_EDIT[5][help][7][text] = "Anzahl der geschriebenen Artikel.";
+        $TEMPLATE_EDIT[5][help][8][tag] = "{kommentare}";
+        $TEMPLATE_EDIT[5][help][8][text] = "Anzahl der abgegebenen Kommentare.";
+
+    $TEMPLATE_EDIT[5][name] = "announcement";
+    $TEMPLATE_EDIT[5][title] = "Ankündigung";
+    $TEMPLATE_EDIT[5][description] = "Globale Ankündigung auf der Seite";
+    $TEMPLATE_EDIT[5][rows] = "15";
+    $TEMPLATE_EDIT[5][cols] = "66";
+        $TEMPLATE_EDIT[5][help][0][tag] = "{meldung}";
+        $TEMPLATE_EDIT[5][help][0][text] = "Fügt die angegebene Meldung ein.";
+
+//////////////////////////
+//// Intialise Editor ////
+//////////////////////////
+
+if (templatepage_postcheck($TEMPLATE_EDIT))
 {
-    $_POST[indexphp] = savesql($_POST[indexphp]);
-    $_POST[error] = savesql($_POST[error]);
-    $_POST[pic_viewer] = savesql($_POST[pic_viewer]);
-    $_POST[main_menu] = savesql($_POST[main_menu]);
-    $_POST[community_map] = savesql($_POST[community_map]);
-    $_POST[announcement] = savesql($_POST[announcement]);
-
-    mysql_query("update fs_template
-                 set indexphp = '$_POST[indexphp]',
-                     error = '$_POST[error]',
-                     pic_viewer = '$_POST[pic_viewer]',
-                     main_menu = '$_POST[main_menu]',
-                     community_map = '$_POST[community_map]',
-                     announcement = '$_POST[announcement]'
-                 where id = '$_POST[design]'", $db);
-
+    templatepage_save($TEMPLATE_EDIT);
     systext("Template wurde aktualisiert");
 }
-
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
-
 else
 {
-    // Design ermittlen
-    echo'
-                    <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
-                            <input type="hidden" value="alltemplate" name="go">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design auswählen</option>
-                                <option value="">------------------------</option>
-    ';
-
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      echo '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        echo ' selected=selected';
-      echo '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        echo ' (aktiv)';
-      echo '</option>';
-    }
-
-    echo'
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
-    ';
-
-    if (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="")
-    {
-
-    $index = mysql_query("select indexphp from fs_template where id = '$_POST[design]'", $db);
-    $indexphp = killhtml(mysql_result($index, 0, "indexphp"));
-
-    $index = mysql_query("select error from fs_template where id = '$_POST[design]'", $db);
-    $error = killhtml(mysql_result($index, 0, "error"));
-
-    $index = mysql_query("select pic_viewer from fs_template where id = '$_POST[design]'", $db);
-    $pic_viewer = killhtml(mysql_result($index, 0, "pic_viewer"));
-
-    $index = mysql_query("select main_menu from fs_template where id = '$_POST[design]'", $db);
-    $main_menu = killhtml(mysql_result($index, 0, "main_menu"));
-
-    $index = mysql_query("select community_map from fs_template where id = '$_POST[design]'", $db);
-    $community_map = killhtml(mysql_result($index, 0, "community_map"));
-
-    $index = mysql_query("select statistik from fs_template where id = '$_POST[design]'", $db);
-    $statistik = killhtml(mysql_result($index, 0, "statistik"));
-
-    $index = mysql_query("select announcement from fs_template where id = '$_POST[design]'", $db);
-    $announcement = killhtml(mysql_result($index, 0, "announcement"));
-
-    echo'
-                    <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
-                        <input type="hidden" value="alltemplate" name="go">
-                        <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top">
-                                    Index.php:<br>
-                                    <font class="small">Hauptdesign der Seite<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{main_menu}","Bindet das Template \"Haupt Menü\" ein.").'
-                                    '.insert_tt("{announcement}","Bindet die Ankündigung ein.").'
-                                    '.insert_tt("{content}","Markiert die Stelle, an der Seiteninhalt eingefügt wird.").'
-                                    '.insert_tt("{user}","Bindet das User-Menü ein.").'
-                                    '.insert_tt("{randompic}","Bindet das Zufallsbild ein.").'
-                                    '.insert_tt("{poll}","Bindet das Umfragensystem ein.").'
-                                    '.insert_tt("{stats}","Bindet die Statistik ein.").'
-                                    '.insert_tt("{shop}","Bindet den Shop ein.").'
-                                    '.insert_tt("{partner}","Bindet das Partnersystem ein.").'
-                                    </font>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="indexphp">'.$indexphp.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'indexphp\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Error Meldung:<br>
-                                    <font class="small">Systemmeldung, wenn ein Fehler auftritt<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{titel}","Der Titel der Systemmeldung.").'
-                                    '.insert_tt("{meldung}","Der Text der Systemmeldung.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="error">'.$error.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'error\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Picture Viewer:<br>
-                                    <font class="small">Popup zum darstellen von Bildern<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{bannercode}","Bindet die Werbung ein.").'
-                                    '.insert_tt("{weiter_grafik}","Bildadresse der Grafik \"images/icons/weiter.gif\".").'
-                                    '.insert_tt("{zurück_grafik}","Bildadresse der Grafik \"images/icons/zurueck.gif\".").'
-                                    '.insert_tt("{bild}","Bildadresse des Galerie-Bildes.").'
-                                    '.insert_tt("{text}","Beschreibungs-Text des Bildes.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="25" cols="66" name="pic_viewer">'.$pic_viewer.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'pic_viewer\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Haupt Menü:<br>
-                                    <font class="small">Linke Menüleiste<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{virtualhost}","Die unter Konfiguration angegebene Adresse der Seite, auf die Links umgeschaltet werden.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="25" cols="66" name="main_menu">'.$main_menu.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'main_menu\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Community Map:<br>
-                                    <font class="small">Gerüst für die Community Map<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{karte}","Bindet die Karte ein.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="community_map">'.$community_map.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'community_map\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Statistik:<br>
-                                    <font class="small">Besucher und Seiten Statistik<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{visits}","Anzahl aller Besucher der Seite.").'
-                                    '.insert_tt("{visits_heute}","Zahl aller Besucher am aktuellen Tag.").'
-                                    '.insert_tt("{hits}","Anzahl aller Seitenaufrufe.").'
-                                    '.insert_tt("{hits_heute}","Zahl aller Seitenaufrufe am aktuellen Tag.").'
-                                    '.insert_tt("{user_online}","Zahl aller Besucher die sich zurzeit auf der Seite befinden.").'
-                                    '.insert_tt("{news}","Anzahl der geschriebenen News.").'
-                                    '.insert_tt("{user}","Anzahl der registrierten User.").'
-                                    '.insert_tt("{artikel}","Anzahl der geschriebenen Artikel.").'
-                                    '.insert_tt("{kommentare}","Anzahl der abgegebenen Kommentare.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="statistik">'.$statistik.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'statistik\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Ankündigung:<br>
-                                    <font class="small">Globale Ankündigung<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{meldung}","Fügt die angegebene Meldung ein.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="announcement">'.$announcement.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'announcement\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
-    }
+    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
 }
 ?>

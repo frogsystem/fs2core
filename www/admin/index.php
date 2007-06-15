@@ -3,8 +3,8 @@ session_start();
 include("config.inc.php");
 include("functions.php");
 include("adminfunctions.php");
-include("phrases.inc.php");
-include("phrases.inc.php");
+include("../phrases/phrases.de.php");
+include("../phrases/admin_phrases.de.php");
 
 //////////////////////////////
 ///// Cookie
