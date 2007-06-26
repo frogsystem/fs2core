@@ -6,11 +6,10 @@
 
 if ($_POST['sended'])
 {
-    while (list($key, $val) = each($_POST['randompic_cat']))
+    while (list($key, $val) = each($_POST['randompic_time']))
     {
-        mysql_query("UPDATE fs_screen_random
-                     SET potm = '$val'
-                     WHERE cat_id = '$key'", $db);
+        settype($key, 'integer');
+        mysql_query("DELETE FROM fs_screen_random WHERE random_id = '". $key ."'", $db);
     }
     systext("Einstellungen wurden gespeichert!");
 }
@@ -39,11 +38,12 @@ if ($_POST['sended'])
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("select * from fs_screen_random a inner join fs_screen b order by a.end desc", $db);
+    $index = mysql_query("SELECT * FROM fs_screen_random a INNER JOIN fs_screen b ON(a.screen_id = b.screen_id) ORDER BY a.end DESC", $db);
     while ($random_arr = mysql_fetch_assoc($index))
     {
 	$random_arr['start'] = date("d.m.Y H:i", $random_arr['start']);
-        $random_arr['end'] = date("d.m.Y H:i", $random_arr['end']);
+	$random_arr['end'] = date("d.m.Y H:i", $random_arr['end']);
+	if(empty($random_arr['name'])) $random_arr['name'] = 'Kein Name';
         echo'
                             <tr>
                                 <td class="configthin">
@@ -54,7 +54,7 @@ if ($_POST['sended'])
                                 </td>
                                 </td>
                                 <td class="configthin">
-                                    '.$cat_arr['end'].'
+                                    '.$random_arr['end'].'
                                 </td>
                                 <td class="configthin">
                                     <input type="checkbox" name="randompic_time['.$random_arr['random_id'].']" value="1"';
@@ -66,11 +66,8 @@ if ($_POST['sended'])
         ';
     }
     echo'                   <tr>
-                                <td colspan="2" align="center">
+                                <td colspan="4" align="center">
                                     <input class="button" type="submit" value="Auswahl speichern">
-				</td>
-				<td colspan="2" align="center">
-				    <input type="button" onClick=\'open("admin/admin_findpicture.php","Bild","width=500,height=500,screenX=50,screenY=50,scrollbars=YES")\' class="button" value="Hinzuf&uuml;gen">
 				</td>
                             </tr>
                         </table>
