@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 2.10.0.2
 -- http://www.phpmyadmin.net
 -- 
@@ -1173,7 +1173,7 @@ REPLACE INTO `fs_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 (12, 7, ''),
 (11, 7, ''),
 (13, 7, ''),
-(14, 7, ''),
+(14, 7, '');
 
 -- --------------------------------------------------------
 
