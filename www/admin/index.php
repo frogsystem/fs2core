@@ -392,6 +392,9 @@ $ADMIN_ARR[perm][1] = "perm_potmedit";
 
 createmenu($ADMIN_ARR);
 
+  createlink('randompic_time_add');
+  createlink('randompic_time');
+
   createlink('randompic_cat');
   createlink('randompictemplate');
 

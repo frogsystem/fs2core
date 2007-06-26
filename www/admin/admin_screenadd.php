@@ -66,7 +66,7 @@ echo'
                             <tr>
                                 <td class="config" valign="top">
                                     Bildtitel:<br>
-                                    <font class="small">Bilduntertiel (optional)</font>
+                                    <font class="small">Bilduntertitel (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="title" size="33" maxlength="100">

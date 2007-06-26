@@ -9,7 +9,7 @@ if ($_POST['sended'])
     while (list($key, $val) = each($_POST['randompic_cat']))
     {
         mysql_query("UPDATE fs_screen_cat
-                     SET potm = '$val'
+                     SET randompic = '$val'
                      WHERE cat_id = '$key'", $db);
     }
     systext("Einstellungen wurden gespeichert!");
