@@ -8,8 +8,13 @@ if ($db)
     include("cookielogin.php");
     include("phrases/phrases.de.php");
 
-// Alte Zufallsbild-Einträge aus der Datenbank entfernen
-mysql_query("DELETE FROM fs_screen_random WHERE end < NOW()", $db);
+/////////////////////////////
+//// Konstruktor aufrufe ////
+/////////////////////////////
+
+delete_old_randoms ();
+
+
 
 // Hauptmenü aufbauen
 $index = mysql_query("select main_menu from fs_template where id = '$global_config_arr[design]'", $db);

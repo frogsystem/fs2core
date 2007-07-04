@@ -76,7 +76,7 @@ if ($_POST['sended'])
                                 </td>
                                 <td class="configthin">
                                     <input type="checkbox" name="randompic_cat['.$cat_arr[cat_id].']" value="1"';
-                                        if ($cat_arr[potm] == 1)
+                                        if ($cat_arr[randompic] == 1)
                                           echo ' checked=checked';
                                         echo'
                                     >

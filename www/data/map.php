@@ -9,7 +9,7 @@ $flash = '
          <param name="scale" value="exactfit">
          <param name="menu" value="false">
          <param name="WMODE" value="transparent">
-         <embed src="inc/map.swf" quality="high"
+         <embed src="res/map.swf" quality="high"
                 WMODE="transparent"
                 scale="exactfit"
                 menu="false"

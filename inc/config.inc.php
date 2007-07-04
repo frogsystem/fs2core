@@ -70,6 +70,7 @@ elseif (isset ($_GET['zone']) AND $global_config_arr[allow_other_designs] == 1)
 $index = mysql_query("select name from fs_template WHERE id = '$global_config_arr[design]'", $db);
 $global_config_arr['design_name'] = mysql_result($index, "name");
 
+
 ////////////////////////
 //// Counter Script ////
 ////////////////////////

@@ -4,7 +4,7 @@ function openedit(what)
     document.getElementsByName("editwhat")[0].value = what;
     newWidth = screen.availWidth;
     newHeight = screen.availHeight;
-    window.open("admin/admin_frogpad.php","editor","width=newWidth,height=newHeight,left=0,top=0,scrollbars=YES,resizable=YES");
+    window.open("admin_frogpad.php","editor","width=newWidth,height=newHeight,left=0,top=0,scrollbars=YES,resizable=YES");
 }
 
 closedMenu=new Array();
@@ -47,13 +47,13 @@ function setToggle(MenuID,state)
 {
     if (state == "show") {
         document.getElementById(MenuID).style.display = "block";
-        document.getElementById("timg_"+MenuID).src = "admin/img/pointer_down.gif";
+        document.getElementById("timg_"+MenuID).src = "img/pointer_down.gif";
         if (closedMenu.inArray(MenuID)) {
             closedMenu.deleteArray(MenuID);
         }
     } else {
         document.getElementById(MenuID).style.display = "none";
-        document.getElementById("timg_"+MenuID).src = "admin/img/pointer.gif";
+        document.getElementById("timg_"+MenuID).src = "img/pointer.gif";
         if (!closedMenu.inArray(MenuID)) {
             closedMenu.push(MenuID);
         }

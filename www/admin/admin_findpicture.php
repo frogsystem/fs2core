@@ -17,20 +17,20 @@ echo'
                 <img border="0" src="img/pointer.gif" width="5" height="8" alt=""> 
                 <font style="font-size:8pt;"><b>BILD SUCHEN</b></font>
                 <div align="center">
-		    <p>
-		    <form action="'.$PHP_SELF.'" method="post">
-		    <table border="0" cellpadding="2" cellspacing="0" width="420">
+                    <p>
+                    <form action="'.$PHP_SELF.'" method="post">
+                    <table border="0" cellpadding="2" cellspacing="0" width="420">
                                 <tr>
                                     <td align="center" class="configthin" width="50%">
-				        <select class="select" name="cat">
-					';
+                                        <select class="select" name="cat">
+                                        ';
 $index = mysql_query("SELECT * FROM fs_screen_cat WHERE cat_id != 6", $db);
 
 while($cat_arr = mysql_fetch_array($index)) {
-	echo '                                  <option value="'.$cat_arr['cat_id'].'"'. ($_POST['cat']==$cat_arr['cat_id']?'selected':'') .'>'. $cat_arr['cat_name'] .'</option>';
+        echo '                                  <option value="'.$cat_arr['cat_id'].'"'. ($_POST['cat']==$cat_arr['cat_id']?'selected':'') .'>'. $cat_arr['cat_name'] .'</option>';
 }
 echo '
-				        </select>
+                                        </select>
                                         <input class="button" type="submit" value="Anzeigen">
                                     </td>
                                 </tr>
@@ -54,29 +54,31 @@ if (isset($_POST['cat']))
     while ($screen_arr = mysql_fetch_array($index))
     {
         if($newLineStart)
-	{
-	    $newLineStart = false;
-	    $i = 0;
+        {
+            $newLineStart = false;
+            $i = 0;
             echo '
                         <tr>';
-	}
-	echo '
+        }
+        echo '
                             <td>';
-	echo'
-                                <img src="../images/screenshots/'. $screen_arr['screen_id'] .'_s.jpg" name="'.$screen_arr['screen_id'].'" style="cursor:pointer;"
-                                    onmousedown="javascript:opener.document.getElementById(\'screen_id\').value=\''. $screen_arr['screen_id'] .'\';
+        $new_img_path = image_url("../images/screenshots/", $screen_arr['screen_id']."_s", true);
+        echo'
+                                <img src="'.$new_img_path.'" name="'.$screen_arr['screen_id'].'" style="cursor:pointer;"
+                                    onclick="javascript:opener.document.getElementById(\'screen_id\').value=\''. $screen_arr['screen_id'] .'\';
                                          javascript:opener.document.getElementById(\'screen_selectortext\').value=\'Bild ausgew&auml;hlt!\';
-                                     	 self.close();">
+                                             javascript:opener.document.getElementById(\'selected_pic\').src=\''.$new_img_path.'\';
+                                              self.close();">
         ';        
         echo '
-		            </td>';
-	$newLineEnd = !(++$i < 3);
-	if($newLineEnd)
-	{
-	    $newLineStart = true;
+                            </td>';
+        $newLineEnd = !(++$i < 3);
+        if($newLineEnd)
+        {
+            $newLineStart = true;
             echo '
                         </tr>';
-	}
+        }
 
     }
     echo'
@@ -85,7 +87,7 @@ if (isset($_POST['cat']))
 }
 
 echo'
-	            </p>
+                    </p>
                 </div>
             </div>
         </div>

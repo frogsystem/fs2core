@@ -1,5 +1,22 @@
 <?php
 ////////////////////////////////
+//// del old timed randoms  ////
+////////////////////////////////
+function delete_old_randoms()
+{
+  global $db;
+  global $global_config;
+
+  if ($global_config[random_timed_deltime] != -1) {
+    // Alte Zufallsbild-Einträge aus der Datenbank entfernen
+    mysql_query("DELETE a
+                FROM fs_screen_random a, fs_global_config b
+                WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime", $db);
+  }
+}
+
+
+////////////////////////////////
 //// Create textarea        ////
 ////////////////////////////////
 

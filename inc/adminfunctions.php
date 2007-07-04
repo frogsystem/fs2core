@@ -191,11 +191,11 @@ function insert_tt($title,$text,$form)
 {
    return '
 '.$title.' <span class="tooltip">
-<img border="0" src="admin/img/help.gif" alt="?" />&nbsp;
+<img border="0" src="img/help.gif" alt="?" />&nbsp;
 <span>
- <img border="0" src="admin/img/pointer.gif" alt="->" /> <b>'.$title.'</b><br />'.$text.'
+ <img border="0" src="img/pointer.gif" alt="->" /> <b>'.$title.'</b><br />'.$text.'
 </span></span>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:insert(\''.$form.'\',\''.$title.'\',\'\');"><img border="0" src="admin/img/pointer.gif" alt="->" title="einfügen" /></a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:insert(\''.$form.'\',\''.$title.'\',\'\');"><img border="0" src="img/pointer.gif" alt="->" title="einfügen" /></a>
 <br />
    ';
 }
@@ -230,7 +230,7 @@ function createpage($title, $permission, $page)
  global $filetoinc;
  $pagetitle = $title; 
  if ($permission == 1) $filetoinc = $page; 
- else $filetoinc = 'admin/admin_error.php';
+ else $filetoinc = 'admin_error.php';
 }
 
 ////////////////////////////////
@@ -293,7 +293,7 @@ function createmenu_head($title, $toggle)
                  <tr>
                     <td width="100%">
                         <a class="menuhead" href="javascript:toggleMenu(\''.$toggle.'\')">
-                        <img border="0" src="admin/img/pointer.gif" width="5" height="8" alt="" id="timg_'.$toggle.'">
+                        <img border="0" src="img/pointer.gif" width="5" height="8" alt="" id="timg_'.$toggle.'">
                         '.$title.'</a>
                     </td>
                 </tr>
@@ -337,7 +337,7 @@ function createlink($page_call, $page_link_title = false, $page_link_url = false
   {
       echo'
 
-                        <a class="menu" href="'.$PHP_SELF.'admin/?go='.$createlink_arr[page_call].'">
+                        <a class="menu" href="'.$PHP_SELF.'?go='.$createlink_arr[page_call].'">
                             '.$createlink_arr[link_title].'
                         </a><br />
 
