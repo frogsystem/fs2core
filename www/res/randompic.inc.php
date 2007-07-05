@@ -7,7 +7,7 @@ if ($config_arr[active] == 1)
   if ($config_arr[type_priority] == 1)
   {
     // random pic (time controlled)
-    $index = mysql_query("SELECT * FROM fs_screen_random a INNER JOIN fs_screen b ON (a.screen_id = b.screen_id) AND a.start <= UNIX_TIMESTAMP() AND a.end >= UNIX_TIMESTAMP()", $db);
+    $index = mysql_query("SELECT * FROM fs_screen_random a INNER JOIN fs_screen b ON (a.screen_id = b.screen_id) AND a.start <= UNIX_TIMESTAMP() AND a.end >= UNIX_TIMESTAMP() ORDER BY RAND() LIMIT 1", $db);
     $rows = mysql_num_rows($index);
   }
   else
