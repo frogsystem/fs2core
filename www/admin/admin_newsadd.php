@@ -84,8 +84,8 @@ else
     // News Konfiguration lesen
     $index = mysql_query("SELECT html_code, fs_code FROM fs_news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
-    $config_arr[html_code] = ($config_arr[html_code] > 1) ? "an" : "aus";
-    $config_arr[fs_code] = ($config_arr[fs_code] > 1) ? "an" : "aus";
+    $config_arr[html_code] = ($config_arr[html_code] == 2 OR $config_arr[html_code] == 4) ? "an" : "aus";
+    $config_arr[fs_code] = ($config_arr[fs_code] == 2 OR $config_arr[fs_code] == 4) ? "an" : "aus";
 
     if (!isset($_POST[options]))
     {
@@ -167,7 +167,8 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Text:<br>
-                                    <font class="small">Html ist '.$config_arr[html_code].'. FScode ist '.$config_arr[fs_code].'</font>
+                                    <font class="small">Html ist '.$config_arr[html_code].'.
+                                    <br />FScode ist '.$config_arr[fs_code].'.</font>
                                 </td>
                                 <td valign="top" align="left">
                                     '.code_textarea("text", $_POST[text], 328, 130).'

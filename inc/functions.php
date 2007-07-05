@@ -5,9 +5,9 @@
 function delete_old_randoms()
 {
   global $db;
-  global $global_config;
+  global $global_config_arr;
 
-  if ($global_config[random_timed_deltime] != -1) {
+  if ($global_config_arr[random_timed_deltime] != -1) {
     // Alte Zufallsbild-Einträge aus der Datenbank entfernen
     mysql_query("DELETE a
                 FROM fs_screen_random a, fs_global_config b
@@ -20,8 +20,10 @@ function delete_old_randoms()
 //// Create textarea        ////
 ////////////////////////////////
 
-function code_textarea($name, $text="", $width="", $height="", $class="")
+function code_textarea($name, $text="", $width="", $height="", $class="", $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
 {
+    global $global_config_arr;
+
     if ($name != "") {
         $name2 = 'name="'.$name.'" id="'.$name.'"';
     } else {
@@ -39,14 +41,18 @@ function code_textarea($name, $text="", $width="", $height="", $class="")
     if ($class != "") {
         $class2 = 'class="'.$class.'"';
     }
-    
-    $textarea = '
+
+    $textarea = "";
+    $textarea .= '
     
 <table cellpadding="0" cellspacing="0" border="0">
   <tr valign="top">
     <td>
       <textarea '.$name2.' '.$class2.' style="'.$width2.' '.$height2.'">'.$text.'</textarea>
     </td>
+';
+if ($all==true OR $fs_smilies==1) {
+  $textarea .= '
     <td style="width:4px; empty-cells:show;">
     </td>
     <td>
@@ -54,102 +60,170 @@ function code_textarea($name, $text="", $width="", $height="", $class="")
         <legend class="small" align="left"><font class="small">Smilies</font></legend>
           <table cellpadding="2" cellspacing="0" border="0" width="100%">
             <tr align="center">
-              <td><img src="images/smilies/happy.gif" alt="" onClick="insert(\''.$name.'\', \':-)\', \'\')" class="editor_smilies" /></td>
-              <td><img src="images/smilies/sad.gif" alt="" onClick="insert(\''.$name.'\', \':-(\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/happy.gif" alt="" onClick="insert(\''.$name.'\', \':-)\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/sad.gif" alt="" onClick="insert(\''.$name.'\', \':-(\', \'\')" class="editor_smilies" /></td>
             </tr>
             <tr align="center">
-              <td><img src="images/smilies/wink.gif" alt="" onClick="insert(\''.$name.'\', \';-)\', \'\')" class="editor_smilies" /></td>
-              <td><img src="images/smilies/tongue.gif" alt="" onClick="insert(\''.$name.'\', \':-P\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/wink.gif" alt="" onClick="insert(\''.$name.'\', \';-)\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/tongue.gif" alt="" onClick="insert(\''.$name.'\', \':-P\', \'\')" class="editor_smilies" /></td>
             </tr>
             <tr align="center">
-              <td><img src="images/smilies/grin.gif" alt="" onClick="insert(\''.$name.'\', \'xD\', \'\')" class="editor_smilies" /></td>
-              <td><img src="images/smilies/shocked.gif" alt="" onClick="insert(\''.$name.'\', \':-o\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/grin.gif" alt="" onClick="insert(\''.$name.'\', \'xD\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/shocked.gif" alt="" onClick="insert(\''.$name.'\', \':-o\', \'\')" class="editor_smilies" /></td>
             </tr>
             <tr align="center">
-              <td><img src="images/smilies/sweet.gif" alt="" onClick="insert(\''.$name.'\', \'^_^\', \'\')" class="editor_smilies" /></td>
-              <td><img src="images/smilies/neutral.gif" alt="" onClick="insert(\''.$name.'\', \':-/\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/sweet.gif" alt="" onClick="insert(\''.$name.'\', \'^_^\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/neutral.gif" alt="" onClick="insert(\''.$name.'\', \':-/\', \'\')" class="editor_smilies" /></td>
             </tr>
             <tr align="center">
-              <td><img src="images/smilies/satisfied.gif" alt="" onClick="insert(\''.$name.'\', \':-]\', \'\')" class="editor_smilies" /></td>
-              <td><img src="images/smilies/angry.gif" alt="" onClick="insert(\''.$name.'\', \'>-(\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/satisfied.gif" alt="" onClick="insert(\''.$name.'\', \':-]\', \'\')" class="editor_smilies" /></td>
+              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/angry.gif" alt="" onClick="insert(\''.$name.'\', \'>-(\', \'\')" class="editor_smilies" /></td>
             </tr>
          </table>
       </fieldset>
     </td>
+  ';
+}
+$textarea .= '
   </tr>
 </table>
 
 <table cellpadding="0" cellspacing="0" border="0">
-  <tr valign="bottom"><td class="editor_td">
+  <tr valign="bottom">';
+  
+if ($all==true OR $fs_b==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert(\''.$name.'\', \'[b]\', \'[/b]\')">
-      <img src="images/icons/bold.gif" alt="B" title="fett" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/bold.gif" alt="B" title="fett" />
     </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_i==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert(\''.$name.'\', \'[i]\', \'[/i]\')">
-      <img src="images/icons/italic.gif" alt="I" title="kursiv" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/italic.gif" alt="I" title="kursiv" />
     </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_u==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert(\''.$name.'\', \'[u]\', \'[/u]\')">
-      <img src="images/icons/underline.gif" alt="U" title="unterstrichen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/underline.gif" alt="U" title="unterstrichen" />
     </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_s==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert(\''.$name.'\', \'[s]\', \'[/s]\')">
-      <img src="images/icons/strike.gif" alt="S" title="durgestrichen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/strike.gif" alt="S" title="durgestrichen" />
     </div>
-  </td><td class="editor_td_seperator">
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_b==1 OR $fs_i==1 OR $fs_u==1 OR $fs_s==1) {
+  $textarea .= '<td class="editor_td_seperator">
+  </td>';
+}
+if ($all==true OR $fs_center==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert(\''.$name.'\', \'[center]\', \'[/center]\')">
-      <img src="images/icons/center.gif" alt="CENTER" title="zentriert" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/center.gif" alt="CENTER" title="zentriert" />
     </div>
-  </td><td class="editor_td_seperator">
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_center==1) {
+  $textarea .= '<td class="editor_td_seperator">
+  </td>';
+}
+if ($all==true OR $fs_font==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert_com(\''.$name.'\', \'font\', \'Bitte gib die gewünschte Schriftart ein: \', \'\')">
-      <img src="images/icons/font.gif" alt="FONT" title="Schriftart" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/font.gif" alt="FONT" title="Schriftart" />
     </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_color==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert_com(\''.$name.'\', \'color\', \'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein: \', \'\')">
-      <img src="images/icons/color.gif" alt="COLOR" title="Schriftfarbe" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/color.gif" alt="COLOR" title="Schriftfarbe" />
     </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_size==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert_com(\''.$name.'\', \'size\', \'Bitte gib die gewünschte Schriftgröße (Zahl von 1-7) ein: \', \'\')">
-      <img src="images/icons/size.gif" alt="SIZE" title="Schriftgröße" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/size.gif" alt="SIZE" title="Schriftgröße" />
     </div>
-  </td><td class="editor_td_seperator">
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_font==1 OR $fs_color==1 OR $fs_size==1) {
+  $textarea .= '<td class="editor_td_seperator">
+  </td>';
+}
+if ($all==true OR $fs_img==1) {
+  $textarea .= '<td class="editor_td">
         <div class="editor_button" onClick="insert_mcom(\''.$name.'\', \'[img]\', \'[/img]\', \'Bitte gib die URL zu deiner Grafik ein:\', \'http://\')">
-      <img src="images/icons/img.gif" alt="IMG" title="Bild einfügen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/img.gif" alt="IMG" title="Bild einfügen" />
         </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_cimg==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert_mcom(\''.$name.'\', \'[cimg]\', \'[/cimg]\', \'Bitte gib den Namen des Content-Images (mit Endung) ein:\', \'\')">
-      <img src="images/icons/cimg.gif" alt="CIMG" title="Content-Image einfügen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/cimg.gif" alt="CIMG" title="Content-Image einfügen" />
     </div>
-  </td><td class="editor_td_seperator">
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_img==1 OR $fs_cimg==1) {
+  $textarea .= '<td class="editor_td_seperator">
+  </td>';
+}
+if ($all==true OR $fs_url==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert_com(\''.$name.'\', \'url\', \'Bitte gib die URL ein: \', \'http://\')">
-      <img src="images/icons/url.gif" alt="URL" title="Link einfügen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/url.gif" alt="URL" title="Link einfügen" />
         </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_home==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert_com(\''.$name.'\', \'home\', \'Bitte gib den projektinternen Verweisnamen ein: \', \'\')">
-      <img src="images/icons/home.gif" alt="HOME" title="Projektinternen Link einfügen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/home.gif" alt="HOME" title="Projektinternen Link einfügen" />
     </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_email==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert_com(\''.$name.'\', \'email\', \'Bitte gib die Email-Adresse ein: \', \'\')">
-      <img src="images/icons/email.gif" alt="EMAIL" title="Email-Link einfügen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/email.gif" alt="EMAIL" title="Email-Link einfügen" />
     </div>
-  </td><td class="editor_td_seperator">
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_url==1 OR $fs_home==1 OR $fs_email==1) {
+  $textarea .= '<td class="editor_td_seperator">
+  </td>';
+}
+if ($all==true OR $fs_code==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert(\''.$name.'\', \'[code]\', \'[/code]\')">
-      <img src="images/icons/code.gif" alt="C" title="Code-Bereich einfügen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/code.gif" alt="C" title="Code-Bereich einfügen" />
         </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_quote==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert(\''.$name.'\', \'[quote]\', \'[/quote]\')">
-      <img src="images/icons/quote.gif" alt="Q" title="Zitat einfügen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/quote.gif" alt="Q" title="Zitat einfügen" />
     </div>
-  </td><td class="editor_td">
+  </td>';
+}
+if ($all==true OR $fs_noparse==1) {
+  $textarea .= '<td class="editor_td">
     <div class="editor_button" onClick="insert(\''.$name.'\', \'[noparse]\', \'[/noparse]\')">
-      <img src="images/icons/noparse.gif" alt="N" title="Nicht umzuwandelnden Bereich einfügen" />
+      <img src="'.$global_config_arr[virtualhost].'images/icons/noparse.gif" alt="N" title="Nicht umzuwandelnden Bereich einfügen" />
     </div>
-  </td></tr>
+  </td>';
+}
+$textarea .= '</tr>
 </table><br />';
 
     return $textarea;
@@ -219,7 +293,7 @@ function sys_message ($title, $message)
 
     $index = mysql_query("select error from fs_template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "error"));
-    $template = str_replace("{titel}", $title, $template); 
+    $template = str_replace("{titel}", $title, $template);
     $template = str_replace("{meldung}", $message, $template);
     echo $template;
     unset($template);
@@ -332,16 +406,16 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     // Template lesen und füllen
     $index2 = mysql_query("select news_body from fs_template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index2, 0, "news_body"));
-    $template = str_replace("{newsid}", $news_arr[news_id], $template); 
-    $template = str_replace("{titel}", $news_arr[news_title], $template); 
-    $template = str_replace("{datum}", $news_arr[news_date], $template); 
-    $template = str_replace("{text}", $news_arr[news_text], $template); 
-    $template = str_replace("{autor}", $news_arr[user_name], $template); 
-    $template = str_replace("{autor_profilurl}", $news_arr[user_url], $template); 
-    $template = str_replace("{kategorie_bildname}", $news_arr[cat_pic], $template); 
-    $template = str_replace("{kategorie_name}", $news_arr[cat_name], $template); 
-    $template = str_replace("{kommentar_url}", $news_arr[comment_url], $template); 
-    $template = str_replace("{kommentar_anzahl}", $news_arr[kommentare], $template); 
+    $template = str_replace("{newsid}", $news_arr[news_id], $template);
+    $template = str_replace("{titel}", $news_arr[news_title], $template);
+    $template = str_replace("{datum}", $news_arr[news_date], $template);
+    $template = str_replace("{text}", $news_arr[news_text], $template);
+    $template = str_replace("{autor}", $news_arr[user_name], $template);
+    $template = str_replace("{autor_profilurl}", $news_arr[user_url], $template);
+    $template = str_replace("{kategorie_bildname}", $news_arr[cat_pic], $template);
+    $template = str_replace("{kategorie_name}", $news_arr[cat_name], $template);
+    $template = str_replace("{kommentar_url}", $news_arr[comment_url], $template);
+    $template = str_replace("{kommentar_anzahl}", $news_arr[kommentare], $template);
 
     $link_tpl = "";
     $index2 = mysql_query("select * from fs_news_links where news_id = $news_arr[news_id] order by link_id", $db);
@@ -349,9 +423,9 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     {
         $index3 = mysql_query("select news_link from fs_template where id = '$global_config_arr[design]'", $db);
         $link = stripslashes(mysql_result($index3, 0, "news_link"));
-        $link = str_replace("{name}", $link_arr[link_name], $link); 
+        $link = str_replace("{name}", $link_arr[link_name], $link);
         $link_arr[link_url] = str_replace("&","&amp;",$link_arr[link_url]);
-        $link = str_replace("{url}", $link_arr[link_url], $link); 
+        $link = str_replace("{url}", $link_arr[link_url], $link);
         if ($link_arr[link_target] == 1)
         {
             $link_arr[link_target] = "_blank";
@@ -360,7 +434,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
         {
             $link_arr[link_target] = "_self";
         }
-        $link = str_replace("{target}", $link_arr[link_target], $link); 
+        $link = str_replace("{target}", $link_arr[link_target], $link);
         $link_tpl .= $link;
     }
     unset($link_arr);
@@ -369,13 +443,13 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     {
         $index2 = mysql_query("select news_related_links from fs_template where id = '$global_config_arr[design]'", $db);
         $related_links = stripslashes(mysql_result($index2, 0, "news_related_links"));
-        $related_links = str_replace("{links}", $link_tpl, $related_links); 
+        $related_links = str_replace("{links}", $link_tpl, $related_links);
 
-        $template = str_replace("{related_links}", $related_links, $template); 
+        $template = str_replace("{related_links}", $related_links, $template);
     }
     else
     {
-        $template = str_replace("{related_links}", "", $template); 
+        $template = str_replace("{related_links}", "", $template);
     }
 
     $news_template = $template;
@@ -390,8 +464,8 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
 
 function getsize($size)
 {
-    $mb = 1024; 
-    $gb = 1024 * $mb; 
+    $mb = 1024;
+    $gb = 1024 * $mb;
     $tb = 1024 * $gb;
 
     switch (TRUE)
@@ -419,7 +493,7 @@ function getsize($size)
 function markword($text, $word)
 {
     $text = preg_replace("=(.*?)$word(.*?)=i", 
-                         "\\1<font color=\"red\"><b>$word</b></font>\\2",$text); 
+                         "\\1<font color=\"red\"><b>$word</b></font>\\2",$text);
     return $text;
 }
 

@@ -106,7 +106,7 @@ if ($global_config_arr[show_favicon] == 1)
 
   echo '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />
   <link rel="stylesheet" type="text/css" href="res/editor.css" />
-  <script src="inc/functions.js" type="text/javascript"></script>';
+  <script src="res/functions.js" type="text/javascript"></script>';
 
 // <link rel="alternate" type="application/rss+xml" href="rss/rss.php" title="RSS Feed" />';
 

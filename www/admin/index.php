@@ -88,7 +88,7 @@ echo'
     <title>Frog System - '.$pagetitle.'</title>
     
     <link rel="stylesheet" type="text/css" href="admin.css">
-    <link rel="stylesheet" type="text/css" href="res/editor.css">
+    <link rel="stylesheet" type="text/css" href="../res/editor.css">
     <script src="functions.js" type="text/javascript"></script>
     <script src="../res/functions.js" type="text/javascript"></script>
 </head>

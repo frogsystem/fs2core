@@ -135,6 +135,10 @@ while ($comment_arr = mysql_fetch_assoc($index))
     $comment_arr[comment_text] = fscode($comment_arr[comment_text],$fs,$html,$para);
     $comment_arr[comment_date] = date("d.m.Y" , $comment_arr[comment_date]) . " um " . date("H:i" , $comment_arr[comment_date]);
 
+    //FScode-Html Anzeige
+    $fs_active = ($fs) ? "an" : "aus";
+    $html_active = ($html) ? "an" : "aus";
+
     // Template auslesen und füllen
     $index2 = mysql_query("select news_comment_body from fs_template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index2, 0, "news_comment_body"));
@@ -162,9 +166,11 @@ $index = mysql_query("select news_comment_form from fs_template where id = '$glo
 $template = stripslashes(mysql_result($index, 0, "news_comment_form"));
 $template = str_replace("{newsid}", $_GET[id], $template); 
 $template = str_replace("{name_input}", $form_name, $template); 
+$template = str_replace("{textarea}", code_textarea("text", "", 357, 120, "text", false, 1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1), $template);
+$template = str_replace("{fs_code}", $fs_active, $template);
+$template = str_replace("{html}", $html_active, $template);
 
 $formular_template = $template;
 
 $template = $news_template.$comments_template.$formular_template;
-
 ?>
