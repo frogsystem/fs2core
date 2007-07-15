@@ -37,7 +37,7 @@ if (file_exists("data/".$_GET[go].".php"))
 }
 elseif (mysql_num_rows($index) == 1)
 {
-  include("inc/artikel.inc.php");
+  include("res/artikel.inc.php");
 }
 else
 {

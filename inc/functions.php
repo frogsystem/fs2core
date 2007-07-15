@@ -252,6 +252,8 @@ function image_exists($path, $name)
 
 function image_url($path, $name, $error=true)
 {
+  global $global_config_arr;
+
   if (file_exists("$path"."$name.jpg"))
     $url = $path."$name.jpg";
   elseif (file_exists("$path"."$name.gif"))
@@ -259,7 +261,7 @@ function image_url($path, $name, $error=true)
   elseif (file_exists("$path"."$name.png"))
     $url = $path."$name.png";
   elseif ($error==true)
-    $url = "../images/icons/nopic.gif";
+    $url = $global_config_arr[virtualhost]."images/icons/nopic.gif";
   else
     $url = "";
 

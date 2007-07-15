@@ -28,9 +28,9 @@ if (mysql_num_rows($index) > 0)
     $index = mysql_query("select news_id from fs_news where user_id = $_GET[userid]", $db);
     $user_arr[user_news] = mysql_num_rows($index);
 
-    if (file_exists("images/avatare/".$_GET[userid].".gif"))
+    if (image_exists("images/avatare/",$_GET[userid]))
     {
-        $user_arr[user_avatar] = '<img src="images/avatare/'.$_GET[userid].'.gif">';
+        $user_arr[user_avatar] = '<img src="'.image_url("images/avatare/",$_GET[userid]).'" />';
     }
     else
     {

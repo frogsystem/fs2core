@@ -91,7 +91,7 @@ if ($_POST[login]==1)
 ///////// Logout //////////
 ///////////////////////////
 
-if ($_GET[go] == "logout")
+if ($_GET[go] == "logout" AND $_POST[go] != "login")
 {
  session_unset();
  session_destroy();

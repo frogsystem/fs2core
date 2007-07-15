@@ -495,6 +495,7 @@ createmenu($ADMIN_ARR);
   createlink('useradd');
   createlink('useredit');
   createlink('userrights');
+  createlink('userlist');
   createlink('usertemplate');
 
 createmenu_end($ADMIN_ARR);

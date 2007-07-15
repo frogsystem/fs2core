@@ -10,6 +10,7 @@ if ($_SESSION[user_level] == "loggedin")
     $index = mysql_query("select user_user_menu from fs_template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "user_user_menu"));
     $template = str_replace("{username}", $_SESSION[user_name], $template); 
+    $template = str_replace("{logout}", "?go=logout", $template);
 
     // Admin-Link
     $isadmin = mysql_query("select is_admin from fs_user where user_id = '$_SESSION[user_id]'", $db);
@@ -18,6 +19,7 @@ if ($_SESSION[user_level] == "loggedin")
           $index = mysql_query("select user_admin_link from fs_template where id = '$global_config_arr[design]'", $db);
           $admin_link = stripslashes(mysql_result($index, 0, "user_admin_link"));
           $template = str_replace("{admin}", $admin_link, $template);
+          $template = str_replace("{adminlink}", $global_config_arr[virtualhost]."admin", $template);
     }
     else
     {

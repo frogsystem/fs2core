@@ -3,17 +3,17 @@
 #### explanation of editor creation ####
 ########################################
 /*
-    $TEMPLATE_EDIT[0][name] = "name"; //name of the template's db-entry
-    $TEMPLATE_EDIT[0][title] = "title"; //title of the template
-    $TEMPLATE_EDIT[0][description] = "description"; //short description of what the template is for
-    $TEMPLATE_EDIT[0][rows] = "x"; //number of rows of the textarea
-    $TEMPLATE_EDIT[0][cols] = "y"; //number of cols of the textarea
-        $TEMPLATE_EDIT[0][help][0][tag] = "{tag}"; //{tag}s which may be used in the template
-        $TEMPLATE_EDIT[0][help][0][text] = "text"; //description of the tag, shown at the tooltip
-        $TEMPLATE_EDIT[0][help][...][tag] = "{tag}"; //continue with numbers after [help]
-        $TEMPLATE_EDIT[0][help][...][text] = "text"; //to add more possible tags
+    $tmp[name] = "name"; //name of the template's db-entry
+    $tmp[title] = "title"; //title of the template
+    $tmp[description] = "description"; //short description of what the template is for
+    $tmp[rows] = "x"; //number of rows of the textarea
+    $tmp[cols] = "y"; //number of cols of the textarea
+        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $tmp[help][...][text] = "text"; //to add more possible tags
 
-    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates
+    $tmp = false; //creates a vertcal bar to separate templates
 
     $TEMPLATE_EDIT[...][name] = "..."; //continue with the numbers after $TEMPLATE_EDIT to add more template-editors
     ...
@@ -23,104 +23,127 @@
 ##########################################
 
     $TEMPLATE_GO = "alltemplate";
+    unset($tmp);
 
-    $TEMPLATE_EDIT[0][name] = "indexphp";
-    $TEMPLATE_EDIT[0][title] = "Index.php";
-    $TEMPLATE_EDIT[0][description] = "Hauptdesign der Seite";
-    $TEMPLATE_EDIT[0][rows] = "15";
-    $TEMPLATE_EDIT[0][cols] = "66";
-        $TEMPLATE_EDIT[0][help][0][tag] = "{main_menu}";
-        $TEMPLATE_EDIT[0][help][0][text] = "Bindet das Template \"Haupt Menü\" ein.";
-        $TEMPLATE_EDIT[0][help][1][tag] = "{announcement}";
-        $TEMPLATE_EDIT[0][help][1][text] = "Bindet die Ankündigung ein.";
-        $TEMPLATE_EDIT[0][help][2][tag] = "{content}";
-        $TEMPLATE_EDIT[0][help][2][text] = "Markiert die Stelle, an der Seiteninhalt eingefügt wird.";
-        $TEMPLATE_EDIT[0][help][3][tag] = "{user}";
-        $TEMPLATE_EDIT[0][help][3][text] = "Bindet das User-Menü ein.";
-        $TEMPLATE_EDIT[0][help][4][tag] = "{randompic}";
-        $TEMPLATE_EDIT[0][help][4][text] = "Bindet das Zufallsbild ein.";
-        $TEMPLATE_EDIT[0][help][5][tag] = "{poll}";
-        $TEMPLATE_EDIT[0][help][5][text] = "Bindet das Umfragensystem ein.";
-        $TEMPLATE_EDIT[0][help][6][tag] = "{stats}";
-        $TEMPLATE_EDIT[0][help][6][text] = "Bindet die Statistik ein.";
-        $TEMPLATE_EDIT[0][help][7][tag] = "{shop}";
-        $TEMPLATE_EDIT[0][help][7][text] = "Bindet den Shop ein.";
-        $TEMPLATE_EDIT[0][help][8][tag] = "{partner}";
-        $TEMPLATE_EDIT[0][help][8][text] = "Bindet das Partnersystem ein.";
+    $tmp[name] = "error";
+    $tmp[title] = $admin_phrases[template][error][title];
+    $tmp[description] = $admin_phrases[template][error][description];
+    $tmp[rows] = "5";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{titel}";
+        $tmp[help][0][text] = $admin_phrases[template][error][help_1];
+        $tmp[help][1][tag] = "{meldung}";
+        $tmp[help][1][text] = $admin_phrases[template][error][help_2];
+    $TEMPLATE_EDIT[0] = $tmp;
+    unset($tmp);
 
-    $TEMPLATE_EDIT[1][name] = "error";
-    $TEMPLATE_EDIT[1][title] = "Fehlermeldung";
-    $TEMPLATE_EDIT[1][description] = "Systemmeldung, wenn ein Fehler auftritt";
-    $TEMPLATE_EDIT[1][rows] = "15";
-    $TEMPLATE_EDIT[1][cols] = "66";
-        $TEMPLATE_EDIT[1][help][0][tag] = "{titel}";
-        $TEMPLATE_EDIT[1][help][0][text] = "Der Titel der Systemmeldung.";
-        $TEMPLATE_EDIT[1][help][1][tag] = "{meldung}";
-        $TEMPLATE_EDIT[1][help][1][text] = "Der Text der Systemmeldung.";
+    $TEMPLATE_EDIT[1] = false;
+    unset($tmp);
 
-    $TEMPLATE_EDIT[2][name] = "pic_viewer";
-    $TEMPLATE_EDIT[2][title] = "Picture Viewer";
-    $TEMPLATE_EDIT[2][description] = "Popup zum darstellen von Bildern";
-    $TEMPLATE_EDIT[2][rows] = "25";
-    $TEMPLATE_EDIT[2][cols] = "66";
-        $TEMPLATE_EDIT[2][help][0][tag] = "{bannercode}";
-        $TEMPLATE_EDIT[2][help][0][text] = "Bindet die Werbung ein.";
-        $TEMPLATE_EDIT[2][help][1][tag] = "{weiter_grafik}";
-        $TEMPLATE_EDIT[2][help][1][text] = "Bildadresse der Grafik \"images/icons/weiter.gif\".";
-        $TEMPLATE_EDIT[2][help][2][tag] = "{zurück_grafik}";
-        $TEMPLATE_EDIT[2][help][2][text] = "Bildadresse der Grafik \"images/icons/zurueck.gif\".";
-        $TEMPLATE_EDIT[2][help][3][tag] = "{bild}";
-        $TEMPLATE_EDIT[2][help][3][text] = "Bildadresse des Galerie-Bildes.";
-        $TEMPLATE_EDIT[2][help][4][tag] = "{text}";
-        $TEMPLATE_EDIT[2][help][4][text] = "Beschreibungs-Text des Bildes.";
+    $tmp[name] = "indexphp";
+    $tmp[title] = $admin_phrases[template][indexphp][title];
+    $tmp[description] = $admin_phrases[template][indexphp][description];
+    $tmp[rows] = "20";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{main_menu}";
+        $tmp[help][0][text] = $admin_phrases[template][indexphp][help_1];
+        $tmp[help][1][tag] = "{announcement}";
+        $tmp[help][1][text] = $admin_phrases[template][indexphp][help_2];
+        $tmp[help][2][tag] = "{content}";
+        $tmp[help][2][text] = $admin_phrases[template][indexphp][help_3];
+        $tmp[help][3][tag] = "{user}";
+        $tmp[help][3][text] = $admin_phrases[template][indexphp][help_4];
+        $tmp[help][4][tag] = "{randompic}";
+        $tmp[help][4][text] = $admin_phrases[template][indexphp][help_5];
+        $tmp[help][5][tag] = "{poll}";
+        $tmp[help][5][text] = $admin_phrases[template][indexphp][help_6];
+        $tmp[help][6][tag] = "{stats}";
+        $tmp[help][6][text] = $admin_phrases[template][indexphp][help_7];
+        $tmp[help][7][tag] = "{shop}";
+        $tmp[help][7][text] = $admin_phrases[template][indexphp][help_8];
+        $tmp[help][8][tag] = "{partner}";
+        $tmp[help][8][text] = $admin_phrases[template][indexphp][help_9];
+    $TEMPLATE_EDIT[2] = $tmp;
+    unset($tmp);
 
-    $TEMPLATE_EDIT[3][name] = "main_menu";
-    $TEMPLATE_EDIT[3][title] = "Haupt Menü";
-    $TEMPLATE_EDIT[3][description] = "Linke Navigationsleiste";
-    $TEMPLATE_EDIT[3][rows] = "25";
-    $TEMPLATE_EDIT[3][cols] = "66";
-        $TEMPLATE_EDIT[3][help][0][tag] = "{virtualhost}";
-        $TEMPLATE_EDIT[3][help][0][text] = "Die unter Konfiguration angegebene Adresse der Seite, auf die Links umgeschaltet werden.";
+    $tmp[name] = "main_menu";
+    $tmp[title] = $admin_phrases[template][main_menu][title] ;
+    $tmp[description] = $admin_phrases[template][main_menu][description] ;
+    $tmp[rows] = "20";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{virtualhost}";
+        $tmp[help][0][text] = $admin_phrases[template][main_menu][help_1] ;
+    $TEMPLATE_EDIT[3] = $tmp;
+    unset($tmp);
+
+    $TEMPLATE_EDIT[4] = false;
+    unset($tmp);
+    
+    $tmp[name] = "pic_viewer";
+    $tmp[title] = $admin_phrases[template][pic_viewer][title];
+    $tmp[description] = $admin_phrases[template][pic_viewer][description];
+    $tmp[rows] = "25";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{next_img}";
+        $tmp[help][0][text] = $admin_phrases[template][pic_viewer][help_1];
+        $tmp[help][1][tag] = "{prev_img}";
+        $tmp[help][1][text] = $admin_phrases[template][pic_viewer][help_2];
+        $tmp[help][2][tag] = "{pic}";
+        $tmp[help][2][text] = $admin_phrases[template][pic_viewer][help_3];
+        $tmp[help][3][tag] = "{title}";
+        $tmp[help][3][text] = $admin_phrases[template][pic_viewer][help_4];
+    $TEMPLATE_EDIT[5] = $tmp;
+    unset($tmp);
         
-    $TEMPLATE_EDIT[4][name] = "community_map";
-    $TEMPLATE_EDIT[4][title] = "Community Map";
-    $TEMPLATE_EDIT[4][description] = "Gerüst für die Community Map";
-    $TEMPLATE_EDIT[4][rows] = "15";
-    $TEMPLATE_EDIT[4][cols] = "66";
-        $TEMPLATE_EDIT[4][help][0][tag] = "{karte}";
-        $TEMPLATE_EDIT[4][help][0][text] = "Bindet die Karte ein.";
+    $tmp[name] = "announcement";
+    $tmp[title] = $admin_phrases[template][announcement][title];
+    $tmp[description] = $admin_phrases[template][announcement][description];
+    $tmp[rows] = "10";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{meldung}";
+        $tmp[help][0][text] = $admin_phrases[template][announcement][help_1];
+    $TEMPLATE_EDIT[6] = $tmp;
+    unset($tmp);
+    
+    $TEMPLATE_EDIT[13] = false;
+    unset($tmp);
+    
+    $tmp[name] = "statistik";
+    $tmp[title] = $admin_phrases[template][statistik][title];
+    $tmp[description] = $admin_phrases[template][statistik][description];
+    $tmp[rows] = "15";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{visits}";
+        $tmp[help][0][text] = $admin_phrases[template][statistik][help_1];
+        $tmp[help][1][tag] = "{visits_heute}";
+        $tmp[help][1][text] = $admin_phrases[template][statistik][help_2];
+        $tmp[help][2][tag] = "{hits}";
+        $tmp[help][2][text] = $admin_phrases[template][statistik][help_3];
+        $tmp[help][3][tag] = "{hits_heute}";
+        $tmp[help][3][text] = $admin_phrases[template][statistik][help_4];
+        $tmp[help][4][tag] = "{user_online}";
+        $tmp[help][4][text] = $admin_phrases[template][statistik][help_5];
+        $tmp[help][5][tag] = "{news}";
+        $tmp[help][5][text] = $admin_phrases[template][statistik][help_6];
+        $tmp[help][6][tag] = "{user}";
+        $tmp[help][6][text] = $admin_phrases[template][statistik][help_7];
+        $tmp[help][7][tag] = "{artikel}";
+        $tmp[help][7][text] = $admin_phrases[template][statistik][help_8];
+        $tmp[help][8][tag] = "{kommentare}";
+        $tmp[help][8][text] = $admin_phrases[template][statistik][help_9];
+    $TEMPLATE_EDIT[7] = $tmp;
+    unset($tmp);
+    
+    $tmp[name] = "community_map";
+    $tmp[title] = $admin_phrases[template][community_map][title];
+    $tmp[description] = $admin_phrases[template][community_map][description];
+    $tmp[rows] = "15";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{karte}";
+        $tmp[help][0][text] = $admin_phrases[template][community_map][help_1];
+    $TEMPLATE_EDIT[8] = $tmp;
+    unset($tmp);
 
-    $TEMPLATE_EDIT[5][name] = "statistik";
-    $TEMPLATE_EDIT[5][title] = "Statistik:";
-    $TEMPLATE_EDIT[5][description] = "Besucher und Seiten Statistik";
-    $TEMPLATE_EDIT[5][rows] = "";
-    $TEMPLATE_EDIT[5][cols] = "66";
-        $TEMPLATE_EDIT[5][help][0][tag] = "{visits}";
-        $TEMPLATE_EDIT[5][help][0][text] = "Anzahl aller Besucher der Seite.";
-        $TEMPLATE_EDIT[5][help][1][tag] = "{visits_heute}";
-        $TEMPLATE_EDIT[5][help][1][text] = "Zahl aller Besucher am aktuellen Tag.";
-        $TEMPLATE_EDIT[5][help][2][tag] = "{hits}";
-        $TEMPLATE_EDIT[5][help][2][text] = "Anzahl aller Seitenaufrufe.";
-        $TEMPLATE_EDIT[5][help][3][tag] = "{hits_heute}";
-        $TEMPLATE_EDIT[5][help][3][text] = "Zahl aller Seitenaufrufe am aktuellen Tag.";
-        $TEMPLATE_EDIT[5][help][4][tag] = "{user_online}";
-        $TEMPLATE_EDIT[5][help][4][text] = "Zahl aller Besucher die sich zurzeit auf der Seite befinden.";
-        $TEMPLATE_EDIT[5][help][5][tag] = "{news}";
-        $TEMPLATE_EDIT[5][help][5][text] = "Anzahl der geschriebenen News.";
-        $TEMPLATE_EDIT[5][help][6][tag] = "{user}";
-        $TEMPLATE_EDIT[5][help][6][text] = "Anzahl der registrierten User.";
-        $TEMPLATE_EDIT[5][help][7][tag] = "{artikel}";
-        $TEMPLATE_EDIT[5][help][7][text] = "Anzahl der geschriebenen Artikel.";
-        $TEMPLATE_EDIT[5][help][8][tag] = "{kommentare}";
-        $TEMPLATE_EDIT[5][help][8][text] = "Anzahl der abgegebenen Kommentare.";
-
-    $TEMPLATE_EDIT[5][name] = "announcement";
-    $TEMPLATE_EDIT[5][title] = "Ankündigung";
-    $TEMPLATE_EDIT[5][description] = "Globale Ankündigung auf der Seite";
-    $TEMPLATE_EDIT[5][rows] = "15";
-    $TEMPLATE_EDIT[5][cols] = "66";
-        $TEMPLATE_EDIT[5][help][0][tag] = "{meldung}";
-        $TEMPLATE_EDIT[5][help][0][text] = "Fügt die angegebene Meldung ein.";
 
 //////////////////////////
 //// Intialise Editor ////
