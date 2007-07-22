@@ -87,7 +87,7 @@ if (isset($_POST[commentid]))
                                     Kommentar löschen:
                                 </td>
                                 <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delcomment" value="Sicher?">
+                                    <input onClick=\'delalert ("delcomment","Soll der Kommentar wirklich gelöscht werden?")\' type="checkbox" name="delcomment" id="delcomment" value="1">
                                     <br /><br /><br />
                                 </td>
                             </tr>

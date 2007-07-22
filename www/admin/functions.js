@@ -1,3 +1,16 @@
+//delete alert
+function delalert (elementID, alertText) {
+  if (document.getElementById(elementID).checked == true) {
+    var Check = confirm(alertText);
+    if (Check == true) {
+      document.getElementById(elementID).checked = true;
+    } else {
+      document.getElementById(elementID).checked = false;
+    }
+  }
+  return true;
+}
+
 //Open Edit-PopUp
 function openedit(what)
 {

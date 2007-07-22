@@ -191,7 +191,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
                                     News löschen:
                                 </td>
                                 <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delnews" value="Sicher?">
+                                    <input onClick=\'delalert ("delnews","Soll die News wirklich gelöscht werden?")\' type="checkbox" name="delnews" id="delnews" value="1">
                                     <br /><br /><br />
                                 </td>
                             </tr>

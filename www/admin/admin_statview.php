@@ -33,7 +33,7 @@ $index = mysql_query("SELECT s_month FROM fs_counter_stat WHERE s_year = $dbfirs
 $dbfirstmonth = mysql_result($index, 0, "s_month");
 
 echo '
-                                <a href="'.$PHP_SELF.'admin/?go=statview&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'&PHPSESSID='.session_id().'">'.$dbfirstyear.'</a>
+                                <a href="'.$PHP_SELF.'?go=statview&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'&PHPSESSID='.session_id().'">'.$dbfirstyear.'</a>
 ';
 
 // Alle weiteren Jahre auflisten
@@ -43,7 +43,7 @@ if ($dbfirstyear < date("Y"))
     {
         echo '
                                 |
-                                <a href="'.$PHP_SELF.'admin/?go=statview&s_year='.$y.'&s_month=1&PHPSESSID='.session_id().'">'.$y.'</a>
+                                <a href="'.$PHP_SELF.'?go=statview&s_year='.$y.'&s_month=1&PHPSESSID='.session_id().'">'.$y.'</a>
         ';
     }
 }
@@ -123,8 +123,7 @@ for ($d=1; $d<date("t",mktime(0, 0, 0, $s_month, 1, $s_year))+1; $d++)
                                             '.point_number($dbhits).'
                                         </td>
                                         <td '.$class.'align="left" style="font-size:1pt;">
-                                            <img border="0" src="admin/img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
-                                            <img border="0" src="admin/img/chits.gif" height="4" width="'.round($hitswidth).'">
+                                            <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
                                         </td>
                                     </tr>
         ';
@@ -221,7 +220,7 @@ for ($m=1; $m<13; $m++)
         echo'
                                     <tr>
                                         <td class="n" align="center">
-                                            <a style="text-decoration:none;" href="'.$PHP_SELF.'admin/?go=statview&PHPSESSID='.session_id().'&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
+                                            <a style="text-decoration:none;" href="'.$PHP_SELF.'?go=statview&PHPSESSID='.session_id().'&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
                                         </td>
                                         <td class="n" align="center">
                                             '.point_number($sum_arr[sumvisits]).'
@@ -230,9 +229,9 @@ for ($m=1; $m<13; $m++)
                                             '.point_number($sum_arr[sumhits]).'
                                         </td>
                                         <td class="n" align="left" style="font-size:1pt;">
-                                            <img align="left" onClick=\'open("admin/admin_statgfx.php?s_year='.$_GET[s_year].'&s_month='.$m.'","Picture","width=520,height=330,screenX=200,screenY=150")\' style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="admin/img/cdiag.gif">
-                                            <img border="0" src="admin/img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
-                                            <img border="0" src="admin/img/chits.gif" height="4" width="'.round($hitswidth).'">
+                                            <img align="left" onClick=\'open("admin_statgfx.php?s_year='.$_GET[s_year].'&s_month='.$m.'","Picture","width=520,height=330,screenX=200,screenY=150")\' style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
+                                            <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
+                                            <img border="0" src="img/chits.gif" height="4" width="'.round($hitswidth).'">
                                         </td>
                                     </tr>
         ';

@@ -82,7 +82,8 @@ include("res/partner.inc.php");
 $template_partner = $template;
 unset($template);
 
-echo'
+$template_main = "";
+$template_main .= '
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -101,7 +102,7 @@ echo'
   ';
 
 if ($global_config_arr[show_favicon] == 1)
-  echo '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico">
+  $template_main .= '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico">
   ';
 
   echo '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />
@@ -110,7 +111,7 @@ if ($global_config_arr[show_favicon] == 1)
 
 // <link rel="alternate" type="application/rss+xml" href="rss/rss.php" title="RSS Feed" />';
 
-echo'</head>';
+$template_main .= '</head>';
 
 // Template laden
 $index = mysql_query("select indexphp from fs_template where id = '$global_config_arr[design]'", $db);
@@ -143,28 +144,48 @@ $index = mysql_query("select * from fs_includes where include_type = '2'", $db);
 while ($include_arr = mysql_fetch_assoc($index))
 {
     // Include laden
-    include("inc/".$include_arr['replace_thing']);
+    include("res/".$include_arr['replace_thing']);
     $template_include = $template;
     unset($template);
+    
+    //Seitenvariablen
+    $index = mysql_query("select replace_string, replace_thing from fs_includes where include_type = '1' ORDER BY replace_string ASC", $db);
+    while ($sv_arr = mysql_fetch_assoc($index))
+    {
+        // Include-URL laden
+        $sv_arr['replace_thing'] = str_replace("[", "&#x5B;", $sv_arr['replace_thing']);
+        $sv_arr['replace_thing'] = str_replace("]", "&#x5D;", $sv_arr['replace_thing']);
+        $sv_arr['replace_thing'] = str_replace("%", "&#x25;", $sv_arr['replace_thing']);
+        $template_include = str_replace($sv_arr['replace_string'], $sv_arr['replace_thing'], $template_include);
+    }
+    unset($sv_arr);
+    $template_include = str_replace("[", "&#x5B;", $template_include);
+    $template_include = str_replace("]", "&#x5D;", $template_include);
+    $template_include = str_replace("%", "&#x25;", $template_include);
     $template_index = str_replace($include_arr['replace_string'], $template_include, $template_index);
     unset($template_include);
 }
-
+unset($include_arr);
 
 //Seitenvariablen
-$index = mysql_query("select * from fs_includes where include_type = '1'", $db);
-while ($include_arr = mysql_fetch_assoc($index))
+$index = mysql_query("select replace_string, replace_thing from fs_includes where include_type = '1' ORDER BY replace_string ASC", $db);
+while ($sv_arr = mysql_fetch_assoc($index))
 {
     // Include-URL laden
-    $template_index = str_replace($include_arr['replace_string'], $include_arr['replace_thing'], $template_index);
+    $sv_arr['replace_thing'] = str_replace("[", "&#x5B;", $sv_arr['replace_thing']);
+    $sv_arr['replace_thing'] = str_replace("]", "&#x5D;", $sv_arr['replace_thing']);
+    $sv_arr['replace_thing'] = str_replace("%", "&#x25;", $sv_arr['replace_thing']);
+    $template_index = str_replace($sv_arr['replace_string'], $sv_arr['replace_thing'], $template_index);
 }
-
+unset($sv_arr);
 
 $template_index = str_replace("{virtualhost}", $global_config_arr[virtualhost], $template_index);
 
-echo $template_index;
+$template_main .=  $template_index;
+$template_main .= '</html>';
 
-echo'</html>';
+echo $template_main;
+
 mysql_close($db);
 }
 else
@@ -173,7 +194,7 @@ echo '
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>Frogsystem</title>
+  <title>Keine Verbindung!</title>
 </head>
 <body>
   <b>Beim Verbindungsaufbau zum Server ist ein Fehler aufgetreten. Bitte versuchen Sie es später nocheinmal.</b>

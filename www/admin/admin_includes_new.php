@@ -1,10 +1,12 @@
 <?php
 
+$empty_entry = true;
+
 /////////////////////////////////////
 //// Includes einfügen           ////
 /////////////////////////////////////
 
-if ($_POST['replace_string'] AND $_POST['replace_thing'] AND $_POST['name'])
+if ($_POST['replace_thing'] AND $_POST['name'])
 {
     $_POST[replace_string] = "[%".$_POST['name']."%]";
     $_POST[replace_string] = savesql($_POST[replace_string]);
@@ -21,14 +23,17 @@ if ($_POST['replace_string'] AND $_POST['replace_thing'] AND $_POST['name'])
                              '".$_POST[include_type]."')", $db);
 
         systext("Das Ersetzungsmuster wurde erfolgreich eingefügt!");
+        unset($_POST['sended']);
+        unset($_POST['replace_string']);
+        unset($_POST['name']);
+        unset($_POST['replace_thing']);
+        unset($_POST['include_type']);
     }
     else
     {
         systext("Es existiert bereits ein solches Ersetzungsmuster!");
+        $empty_entry = false;
     }
-
-
-
 
 }
 
@@ -36,14 +41,30 @@ if ($_POST['replace_string'] AND $_POST['replace_thing'] AND $_POST['name'])
 ////// Template Formular ////////////
 /////////////////////////////////////
 
-$error_message = "";
 
-if (isset($_POST['sended']))
+if (isset($_POST['sended']) AND $empty_entry == true)
 {
-$error_message = "Bitte füllen Sie <b>alle Felder</b> aus!";
+  $error_message = "Bitte füllen Sie <b>alle Felder</b> aus!";
+  systext($error_message);
 }
 
-  systext($error_message);
+if (isset($_POST['include_type']) AND $_POST['include_type']==1) {
+  $start_sv_name = killhtml($_POST['name']);
+  $start_sv_replace = killhtml($_POST['replace_thing']);
+  $start_in_name = "";
+  $start_in_replace = "";
+} elseif (isset($_POST['include_type']) AND $_POST['include_type']==2) {
+  $start_sv_name = "";
+  $start_sv_replace = "";
+  $start_in_name = killhtml($_POST['name']);
+  $start_in_replace = killhtml($_POST['replace_thing']);
+} else {
+  $start_sv_name = "";
+  $start_sv_replace = "";
+  $start_in_name = "";
+  $start_in_replace = "";
+}
+
   
   
   echo'<table border="0" cellpadding="4" cellspacing="0" width="100%">
@@ -54,8 +75,8 @@ $error_message = "Bitte füllen Sie <b>alle Felder</b> aus!";
   <font class="small">Zum Einbinden von selbsterstellten xyz.inc.php Dateien aus dem Verzeichnis "frogsystem/inc/" in das Template "Index.php".</font></td>
  </tr>
  <tr valign="top">
-  <td class="config">Seitenvariablen können keine Ersetzungsmuster enthalten!</td>
-  <td class="config">Includes können nur Seitenvariablen als Ersetzungsmuster enthalten!</td>
+  <td class="config">Seitenvariablen dürfen keine Ersetzungsmuster enthalten!</td>
+  <td class="config">Includes dürfen nur Seitenvariablen als Ersetzungsmuster enthalten!</td>
  <tr>
  <tr>
   <td class="config" colspan="2"><span style="color:red">Achtung:</span> Es wird prinzipiell dieser Ersetzungssyntax verwendet: [%ersetzungstext%]</td>
@@ -88,14 +109,14 @@ $error_message = "Bitte füllen Sie <b>alle Felder</b> aus!";
          <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 
          <font class="small">Name:</font><br>
-         <input class="text" size="23" name="name" id="sv_name" maxlength="255" value=""
+         <input class="text" size="23" name="name" id="sv_name" maxlength="255" value="'.$start_sv_name.'"
           onkeydown="actSV()" onkeypress="actSV()" onkeyup="actSV()" />
          <br><br>
          <font class="small">Suchmuster:</font><br>
-         <input class="text" size="23" name="replace_string" id="sv_syntax" maxlength="255"  value="[%%]" disabled="disabled" />
+         <input class="text" size="23" name="replace_string" id="sv_syntax" maxlength="255"  value="[%'.$start_sv_name.'%]" disabled="disabled" />
          <br><br>
          <font class="small">Ersetzung:</font><br>
-         <textarea name="replace_thing" rows="5" cols="20" wrap="virtual"></textarea>
+         <textarea name="replace_thing" rows="5" cols="20" wrap="virtual">'.$start_sv_replace.'</textarea>
          <br><br>
          <input class="button" type="submit" value="hinzufügen" onclick="actSV()">
   </form>
@@ -110,14 +131,14 @@ $error_message = "Bitte füllen Sie <b>alle Felder</b> aus!";
          <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 
          <font class="small">Name:</font><br>
-         <input class="text" size="23" name="name" id="in_name" maxlength="255" value=""
+         <input class="text" size="23" name="name" id="in_name" maxlength="255" value="'.$start_in_name.'"
           onkeydown="actIN()" onkeypress="actIN()" onkeyup="actIN()" />
          <br><br>
          <font class="small">Suchmuster:</font><br>
-         <input class="text" size="23" name="replace_string" id="in_syntax" maxlength="255" value="[%%]" disabled="disabled" />
+         <input class="text" size="23" name="replace_string" id="in_syntax" maxlength="255" value="[%'.$start_in_name.'%]" disabled="disabled" />
          <br><br>
          <font class="small">Dateiname:</font><br>
-         <input class="text" size="23" name="replace_thing" maxlength="255" value="" />
+         <input class="text" size="23" name="replace_thing" maxlength="255" value="'.$start_in_replace.'" />
          <br><br>
          <input class="button" type="submit" value="hinzufügen" onclick="actIN()">
   </form>
