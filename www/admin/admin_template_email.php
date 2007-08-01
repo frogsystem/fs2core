@@ -1,113 +1,70 @@
 <?php
+########################################
+#### explanation of editor creation ####
+########################################
+/*
+    $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
+    unset($tmp); //unsets $tmp for safety-issues
+    
+    $tmp[name] = "name"; //name of the template's db-entry
+    $tmp[title] = "title"; //title of the template
+    $tmp[description] = "description"; //short description of what the template is for
+    $tmp[rows] = "x"; //number of rows of the textarea
+    $tmp[cols] = "y"; //number of cols of the textarea
+        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $tmp[help][...][text] = "text"; //to add more possible tags
+    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    unset($tmp); //unsets $tmp for safety-issues
+    
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-/////////////////////////////////
-//// Datenbank aktualisieren ////
-/////////////////////////////////
+    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
+    ...
+*/
+##########################################
+#### / explanation of editor creation ####
+##########################################
 
-if ($_POST[register] ||
-    $_POST[passchange])
+    $TEMPLATE_GO = "emailtemplate";
+    unset($tmp);
+    
+    $tmp[name] = "email_register";
+    $tmp[title] = $admin_phrases[template][email_register][title];
+    $tmp[description] = $admin_phrases[template][email_register][description];
+    $tmp[rows] = "10";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{username}";
+        $tmp[help][0][text] = $admin_phrases[template][email_register][help_1];
+        $tmp[help][1][tag] = "{password}";
+        $tmp[help][1][text] = $admin_phrases[template][email_register][help_2];
+    $TEMPLATE_EDIT[0] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "email_passchange";
+    $tmp[title] = $admin_phrases[template][email_passchange][title];
+    $tmp[description] = $admin_phrases[template][email_passchange][description];
+    $tmp[rows] = "10";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{username}";
+        $tmp[help][0][text] = $admin_phrases[template][email_passchange][help_1];
+        $tmp[help][1][tag] = "{password}";
+        $tmp[help][1][text] = $admin_phrases[template][email_passchange][help_2];
+    $TEMPLATE_EDIT[1] = $tmp;
+    unset($tmp);
+        
+//////////////////////////
+//// Intialise Editor ////
+//////////////////////////
+
+if (templatepage_postcheck($TEMPLATE_EDIT))
 {
-    $_POST[register] = addslashes($_POST[register]);
-    $_POST[passchange] = addslashes($_POST[passchange]);
-
-    mysql_query("update fs_template
-                 set email_register = '$_POST[register]',
-                     email_passchange = '$_POST[passchange]'
-                 where id = '$_POST[design]'", $db);
-
+    templatepage_save($TEMPLATE_EDIT);
     systext("Template wurde aktualisiert");
 }
-
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
-
 else
 {
-    // Design ermittlen
-    echo'
-                    <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
-                            <input type="hidden" value="emailtemplate" name="go">
-                            <input type="hidden" value="'.$_POST[design].'" name="design">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design auswählen</option>
-                                <option value="">------------------------</option>
-    ';
-
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      echo '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        echo ' selected=selected';
-      echo '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        echo ' (aktiv)';
-      echo '</option>';
-    }
-
-    echo'
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
-    ';
-
-    if (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="")
-    {
-
-    $index = mysql_query("select email_register from fs_template where id = '$_POST[design]'", $db);
-    $register = stripslashes(mysql_result($index, 0, "email_register"));
-
-    $index = mysql_query("select email_passchange from fs_template where id = '$_POST[design]'", $db);
-    $passchange = stripslashes(mysql_result($index, 0, "email_passchange"));
-
-    echo'
-                    <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
-                        <input type="hidden" value="emailtemplate" name="go">
-                        <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top">
-                                    Registrierung:<br>
-                                    <font class="small">Gültige Tags: '. fetchTemplateTags($register) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="10" cols="66" name="register">'.$register.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'register\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Passwortänderung:<br>
-                                    <font class="small">Gültige Tags: '. fetchTemplateTags($passchange) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="10" cols="66" name="passchange">'.$passchange.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'passchange\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
-    }
+    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
 }
 ?>

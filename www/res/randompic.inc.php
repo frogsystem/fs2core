@@ -26,8 +26,8 @@ if ($config_arr[active] == 1)
     $mini = "images/screenshots/" . $dbscreenid . "_s.jpg";
     $link = 'showimg.php?pic='.$bild.'&amp;title='.$dbscreenname;
 
-    $tindex = mysql_query("select potm_body from fs_template where id = '$global_config_arr[design]'", $db);
-    $body = stripslashes(mysql_result($tindex, 0, "potm_body"));
+    $tindex = mysql_query("select randompic_body from fs_template where id = '$global_config_arr[design]'", $db);
+    $body = stripslashes(mysql_result($tindex, 0, "randompic_body"));
     $body = str_replace("{titel}", $dbpotmtitle, $body);
     $body = str_replace("{thumb}", $mini, $body);
     $body = str_replace("{link}", $link, $body);
@@ -36,8 +36,8 @@ if ($config_arr[active] == 1)
   }
   else
   {
-    $index = mysql_query("select potm_nobody from fs_template where id = '$global_config_arr[design]'", $db);
-    $template = stripslashes(mysql_result($index, 0, "potm_nobody"));
+    $index = mysql_query("select randompic_nobody from fs_template where id = '$global_config_arr[design]'", $db);
+    $template = stripslashes(mysql_result($index, 0, "randompic_nobody"));
   }
   
 }

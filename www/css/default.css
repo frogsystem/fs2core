@@ -6,6 +6,10 @@ body
     color:#000000;
     font-size:8pt;
 }
+.small
+{
+    font-size:7pt;
+}
 
 a
 {
@@ -13,7 +17,6 @@ a
     font-size:8pt;
     text-decoration:none;
 }
-
 a.small
 {
     color:#008800;
@@ -134,10 +137,6 @@ a.small
 {
     padding-top:2px;
     border-top:1px solid #000000;
-}
-.small
-{
-    font-size:7pt;
 }
 
 .text

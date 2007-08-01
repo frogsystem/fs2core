@@ -105,9 +105,9 @@ if ($global_config_arr[show_favicon] == 1)
   $template_main .= '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico">
   ';
 
-  echo '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />
+  $template_main .= '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />
   <link rel="stylesheet" type="text/css" href="res/editor.css" />
-  <script src="res/functions.js" type="text/javascript"></script>';
+  <script type="text/javascript" src="res/functions.js" ></script>';
 
 // <link rel="alternate" type="application/rss+xml" href="rss/rss.php" title="RSS Feed" />';
 

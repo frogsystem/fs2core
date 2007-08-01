@@ -80,16 +80,16 @@ if ($_POST['name'] AND !file_exists("../css/$_POST[name].css"))
 else
 {
 
-$error_message = "";
+  $error_message = "";
 
-if (isset($_POST['sended']))
-{
-$error_message = "Bitte füllen Sie <b>alle Pflichfelder</b> aus!";
-}
-if (file_exists("../css/$_POST[name].css"))
-{
-$error_message = "Es existiert bereits ein <b>Template mit diesem Namen</b>!";
-}
+  if (isset($_POST['sended']))
+  {
+    $error_message = "Bitte füllen Sie <b>alle Pflichfelder</b> aus!";
+  }
+  if (file_exists("../css/$_POST[name].css"))
+  {
+    $error_message = "Es existiert bereits ein <b>Template mit diesem Namen</b>!";
+  }
 
   systext($error_message);
   echo'<form action="'.$PHP_SELF.'" method="post">

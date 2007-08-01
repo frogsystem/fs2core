@@ -20,7 +20,7 @@
     
     $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    //continue with new templates and just change the numbers of $TEMPLATE_EDIT add the end
+    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
     ...
 */
 ##########################################

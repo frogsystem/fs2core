@@ -4,20 +4,23 @@
 ########################################
 /*
     $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
+    unset($tmp); //unsets $tmp for safety-issues
 
-    $TEMPLATE_EDIT[0][name] = "name"; //name of the template's db-entry
-    $TEMPLATE_EDIT[0][title] = "title"; //title of the template
-    $TEMPLATE_EDIT[0][description] = "description"; //short description of what the template is for
-    $TEMPLATE_EDIT[0][rows] = "x"; //number of rows of the textarea
-    $TEMPLATE_EDIT[0][cols] = "y"; //number of cols of the textarea
-        $TEMPLATE_EDIT[0][help][0][tag] = "{tag}"; //{tag}s which may be used in the template
-        $TEMPLATE_EDIT[0][help][0][text] = "text"; //description of the tag, shown at the tooltip
-        $TEMPLATE_EDIT[0][help][...][tag] = "{tag}"; //continue with numbers after [help]
-        $TEMPLATE_EDIT[0][help][...][text] = "text"; //to add more possible tags
+    $tmp[name] = "name"; //name of the template's db-entry
+    $tmp[title] = "title"; //title of the template
+    $tmp[description] = "description"; //short description of what the template is for
+    $tmp[rows] = "x"; //number of rows of the textarea
+    $tmp[cols] = "y"; //number of cols of the textarea
+        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $tmp[help][...][text] = "text"; //to add more possible tags
+    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    unset($tmp); //unsets $tmp for safety-issues
 
-    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    $TEMPLATE_EDIT[...][name] = "..."; //continue with the numbers after $TEMPLATE_EDIT to add more template-editors
+    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
     ...
 */
 ##########################################

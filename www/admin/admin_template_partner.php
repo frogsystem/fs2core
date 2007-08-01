@@ -1,163 +1,112 @@
 <?php
+########################################
+#### explanation of editor creation ####
+########################################
+/*
+    $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
+    unset($tmp); //unsets $tmp for safety-issues
 
-/////////////////////////////////
-//// Datenbank aktualisieren ////
-/////////////////////////////////
+    $tmp[name] = "name"; //name of the template's db-entry
+    $tmp[title] = "title"; //title of the template
+    $tmp[description] = "description"; //short description of what the template is for
+    $tmp[rows] = "x"; //number of rows of the textarea
+    $tmp[cols] = "y"; //number of cols of the textarea
+        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $tmp[help][...][text] = "text"; //to add more possible tags
+    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    unset($tmp); //unsets $tmp for safety-issues
 
-if ($_POST[main_body] && $_POST[eintrag] && $_POST[navi_eintrag] && $_POST[navi_body])
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
+
+    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
+    ...
+*/
+##########################################
+#### / explanation of editor creation ####
+##########################################
+
+    $TEMPLATE_GO = "partnertemplate";
+    unset($tmp);
+
+    $tmp[name] = "partner_eintrag";
+    $tmp[title] = $admin_phrases[template][partner_eintrag][title];
+    $tmp[description] = $admin_phrases[template][partner_eintrag][description];
+    $tmp[rows] = "10";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{url}";
+        $tmp[help][0][text] = $admin_phrases[template][partner_eintrag][help_1];
+        $tmp[help][1][tag] = "{img_url}";
+        $tmp[help][1][text] = $admin_phrases[template][partner_eintrag][help_2];
+        $tmp[help][2][tag] = "{button_url}";
+        $tmp[help][2][text] = $admin_phrases[template][partner_eintrag][help_3];
+        $tmp[help][3][tag] = "{name}";
+        $tmp[help][3][text] = $admin_phrases[template][partner_eintrag][help_4];
+        $tmp[help][4][tag] = "{text}";
+        $tmp[help][4][text] = $admin_phrases[template][partner_eintrag][help_5];
+    $TEMPLATE_EDIT[0] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "partner_main_body";
+    $tmp[title] = $admin_phrases[template][partner_main_body][title];
+    $tmp[description] = $admin_phrases[template][partner_main_body][description];
+    $tmp[rows] = "15";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{partner_all}";
+        $tmp[help][0][text] = $admin_phrases[template][partner_main_body][help_1];
+        $tmp[help][1][tag] = "{permanents}";
+        $tmp[help][1][text] = $admin_phrases[template][partner_main_body][help_2];
+        $tmp[help][2][tag] = "{non_permanents}";
+        $tmp[help][2][text] = $admin_phrases[template][partner_main_body][help_3];
+    $TEMPLATE_EDIT[1] = $tmp;
+    unset($tmp);
+
+    $TEMPLATE_EDIT[2] = false;
+
+    $tmp[name] = "partner_navi_eintrag";
+    $tmp[title] = $admin_phrases[template][partner_navi_eintrag][title];
+    $tmp[description] = $admin_phrases[template][partner_navi_eintrag][description];
+    $tmp[rows] = "15";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{url}";
+        $tmp[help][0][text] = $admin_phrases[template][partner_eintrag][help_1];
+        $tmp[help][1][tag] = "{img_url}";
+        $tmp[help][1][text] = $admin_phrases[template][partner_eintrag][help_2];
+        $tmp[help][2][tag] = "{button_url}";
+        $tmp[help][2][text] = $admin_phrases[template][partner_eintrag][help_3];
+        $tmp[help][3][tag] = "{name}";
+        $tmp[help][3][text] = $admin_phrases[template][partner_eintrag][help_4];
+        $tmp[help][4][tag] = "{text}";
+        $tmp[help][4][text] = $admin_phrases[template][partner_eintrag][help_5];
+    $TEMPLATE_EDIT[3] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "partner_navi_body";
+    $tmp[title] = $admin_phrases[template][partner_navi_body][title];
+    $tmp[description] = $admin_phrases[template][partner_navi_body][description];
+    $tmp[rows] = "15";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{partner_all}";
+        $tmp[help][0][text] = $admin_phrases[template][partner_main_body][help_1];
+        $tmp[help][1][tag] = "{permanents}";
+        $tmp[help][1][text] = $admin_phrases[template][partner_main_body][help_2];
+        $tmp[help][2][tag] = "{non_permanents}";
+        $tmp[help][2][text] = $admin_phrases[template][partner_main_body][help_3];
+    $TEMPLATE_EDIT[4] = $tmp;
+    unset($tmp);
+
+//////////////////////////
+//// Intialise Editor ////
+//////////////////////////
+
+if (templatepage_postcheck($TEMPLATE_EDIT))
 {
-    $_POST[main_body] = addslashes($_POST[main_body]);
-    $_POST[eintrag] = addslashes($_POST[eintrag]);
-
-    mysql_query("update fs_template
-                 set partner_main_body = '$_POST[main_body]',
-                     partner_eintrag = '$_POST[eintrag]',
-                     partner_navi_eintrag = '$_POST[navi_eintrag]',
-                     partner_navi_body = '$_POST[navi_body]'
-                 where id = '$_POST[design]'", $db);
-
+    templatepage_save($TEMPLATE_EDIT);
     systext("Template wurde aktualisiert");
 }
-
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
-
 else
 {
-    // Design ermittlen
-    echo'
-                    <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
-                            <input type="hidden" value="partnertemplate" name="go">
-                            <input type="hidden" value="'.$_POST[design].'" name="design">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design auswählen</option>
-                                <option value="">------------------------</option>
-    ';
-
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      echo '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        echo ' selected=selected';
-      echo '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        echo ' (aktiv)';
-      echo '</option>';
-    }
-
-    echo'
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
-    ';
-
-    if (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="")
-    {
-
-    $index = mysql_query("select partner_eintrag from fs_template where id = '$_POST[design]'", $db);
-    $eintrag = stripslashes(mysql_result($index, 0, "partner_eintrag"));
-
-    $index = mysql_query("select partner_main_body from fs_template where id = '$_POST[design]'", $db);
-    $main_body = stripslashes(mysql_result($index, 0, "partner_main_body"));
-    
-    $index = mysql_query("select partner_navi_eintrag from fs_template where id = '$_POST[design]'", $db);
-    $navi_eintrag = stripslashes(mysql_result($index, 0, "partner_navi_eintrag"));
-
-    $index = mysql_query("select partner_navi_body from fs_template where id = '$_POST[design]'", $db);
-    $navi_body = stripslashes(mysql_result($index, 0, "partner_navi_body"));
-
-    echo'
-                    <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
-                        <input type="hidden" value="partnertemplate" name="go">
-                        <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top">
-                                    Eintrag:<br>
-                                    <font class="small">Ansicht eines Eintrags.<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($eintrag) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="eintrag">'.$eintrag.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'eintrag\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Partner Übersicht:<br>
-                                    <font class="small">Lister aller eingetragenen Partner<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($main_body) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="20" cols="66" name="main_body">'.$main_body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'main_body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Eintrag in der Navi:<br>
-                                    <font class="small">Aussehen eines Eintrags in der Navi.<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($navi_eintrag) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="20" cols="66" name="navi_eintrag">'.$navi_eintrag.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'navi_eintrag\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Navi Body:<br>
-                                    <font class="small">Gesamt-Aussehen der Partner in der Navi.<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($navi_body) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="20" cols="66" name="navi_body">'.$navi_body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'navi_body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
-    }
+    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
 }
 ?>

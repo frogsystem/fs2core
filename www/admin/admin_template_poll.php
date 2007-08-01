@@ -1,307 +1,220 @@
 <?php
+########################################
+#### explanation of editor creation ####
+########################################
+/*
+    $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
+    unset($tmp); //unsets $tmp for safety-issues
+    
+    $tmp[name] = "name"; //name of the template's db-entry
+    $tmp[title] = "title"; //title of the template
+    $tmp[description] = "description"; //short description of what the template is for
+    $tmp[rows] = "x"; //number of rows of the textarea
+    $tmp[cols] = "y"; //number of cols of the textarea
+        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $tmp[help][...][text] = "text"; //to add more possible tags
+    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    unset($tmp); //unsets $tmp for safety-issues
+    
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-/////////////////////////////////
-//// Datenbank aktualisieren ////
-/////////////////////////////////
+    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
+    ...
+*/
+##########################################
+#### / explanation of editor creation ####
+##########################################
 
-if ($_POST[body] ||
-    $_POST[line] ||
-    $_POST[no_poll] ||
-    $_POST[result] ||
-    $_POST[result_line] ||
-    $_POST[list_line] ||
-    $_POST[liste] ||
-    $_POST[main_body] ||
-    $_POST[main_line])
+    $TEMPLATE_GO = "polltemplate";
+    unset($tmp);
+    
+    $tmp[name] = "poll_line";
+    $tmp[title] = $admin_phrases[template][poll_line][title];
+    $tmp[description] = $admin_phrases[template][poll_line][description];
+    $tmp[rows] = "5";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{answer}";
+        $tmp[help][0][text] = $admin_phrases[template][poll_line][help_1];
+        $tmp[help][1][tag] = "{answer_id}";
+        $tmp[help][1][text] = $admin_phrases[template][poll_line][help_2];
+        $tmp[help][2][tag] = "{type}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_line][help_3];
+        $tmp[help][3][tag] = "{multiple}";
+        $tmp[help][3][text] = $admin_phrases[template][poll_line][help_4];
+    $TEMPLATE_EDIT[0] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "poll_body";
+    $tmp[title] = $admin_phrases[template][poll_body][title];
+    $tmp[description] = $admin_phrases[template][poll_body][description];
+    $tmp[rows] = "15";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{question}";
+        $tmp[help][0][text] = $admin_phrases[template][poll_body][help_1];
+        $tmp[help][1][tag] = "{answers}";
+        $tmp[help][1][text] = $admin_phrases[template][poll_body][help_2];
+        $tmp[help][2][tag] = "{poll_id}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_body][help_3];
+        $tmp[help][2][tag] = "{type}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_body][help_4];
+    $TEMPLATE_EDIT[1] = $tmp;
+    unset($tmp);
+    
+    $tmp[name] = "poll_no_poll";
+    $tmp[title] = $admin_phrases[template][poll_no_poll][title];
+    $tmp[description] = $admin_phrases[template][poll_no_poll][description];
+    $tmp[rows] = "5";
+    $tmp[cols] = "66";
+    $TEMPLATE_EDIT[2] = $tmp;
+    unset($tmp);
+    
+    $TEMPLATE_EDIT[3] = false;
+
+    $tmp[name] = "poll_result_line";
+    $tmp[title] = $admin_phrases[template][poll_result_line][title];
+    $tmp[description] = $admin_phrases[template][poll_result_line][description];
+    $tmp[rows] = "5";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{answer}";
+        $tmp[help][0][text] = $admin_phrases[template][poll_result_line][help_1];
+        $tmp[help][1][tag] = "{votes}";
+        $tmp[help][1][text] = $admin_phrases[template][poll_result_line][help_2];
+        $tmp[help][2][tag] = "{percentage}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_result_line][help_3];
+        $tmp[help][3][tag] = "{bar_width}";
+        $tmp[help][3][text] = $admin_phrases[template][poll_result_line][help_4];
+    $TEMPLATE_EDIT[4] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "poll_result";
+    $tmp[title] = $admin_phrases[template][poll_result][title];
+    $tmp[description] = $admin_phrases[template][poll_result][description];
+    $tmp[rows] = "15";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{question}";
+        $tmp[help][0][text] = $admin_phrases[template][poll_result][help_1];
+        $tmp[help][1][tag] = "{answers}";
+        $tmp[help][1][text] = $admin_phrases[template][poll_result][help_2];
+        $tmp[help][2][tag] = "{all_votes}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_result][help_3];
+        $tmp[help][3][tag] = "{participants}";
+        $tmp[help][3][text] = $admin_phrases[template][poll_result][help_4];
+        $tmp[help][4][tag] = "{type}";
+        $tmp[help][4][text] = $admin_phrases[template][poll_result][help_5];
+    $TEMPLATE_EDIT[5] = $tmp;
+    unset($tmp);
+
+    $TEMPLATE_EDIT[6] = false;
+
+    $tmp[name] = "poll_list_line";
+    $tmp[title] = $admin_phrases[template][poll_list_line][title];
+    $tmp[description] = $admin_phrases[template][poll_list_line][description];
+    $tmp[rows] = "10";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{question}";
+        $tmp[help][0][text] = $admin_phrases[template][poll_list_line][help_1];
+        $tmp[help][1][tag] = "{url}";
+        $tmp[help][1][text] = $admin_phrases[template][poll_list_line][help_2];
+        $tmp[help][2][tag] = "{all_votes}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_list_line][help_3];
+        $tmp[help][3][tag] = "{participants}";
+        $tmp[help][3][text] = $admin_phrases[template][poll_list_line][help_4];
+        $tmp[help][4][tag] = "{type}";
+        $tmp[help][4][text] = $admin_phrases[template][poll_list_line][help_5];
+        $tmp[help][5][tag] = "{start_date}";
+        $tmp[help][5][text] = $admin_phrases[template][poll_list_line][help_6];
+        $tmp[help][6][tag] = "{end_date}";
+        $tmp[help][6][text] = $admin_phrases[template][poll_list_line][help_7];
+    $TEMPLATE_EDIT[7] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "poll_list";
+    $tmp[title] = $admin_phrases[template][poll_list][title];
+    $tmp[description] = $admin_phrases[template][poll_list][description];
+    $tmp[rows] = "20";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{polls}";
+        $tmp[help][0][text] = $admin_phrases[template][poll_list][help_1];
+        $tmp[help][1][tag] = "{order_question}";
+        $tmp[help][1][text] = $admin_phrases[template][poll_list][help_2];
+        $tmp[help][2][tag] = "{arrow_question}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_list][help_3];
+        $tmp[help][3][tag] = "{order_allvotes}";
+        $tmp[help][3][text] = $admin_phrases[template][poll_list][help_4];
+        $tmp[help][4][tag] = "{arrow_allvotes}";
+        $tmp[help][4][text] = $admin_phrases[template][poll_list][help_5];
+        $tmp[help][5][tag] = "{order_participants}";
+        $tmp[help][5][text] = $admin_phrases[template][poll_list][help_6];
+        $tmp[help][6][tag] = "{arrow_participants}";
+        $tmp[help][6][text] = $admin_phrases[template][poll_list][help_7];
+        $tmp[help][7][tag] = "{order_type}";
+        $tmp[help][7][text] = $admin_phrases[template][poll_list][help_8];
+        $tmp[help][8][tag] = "{arrow_type}";
+        $tmp[help][8][text] = $admin_phrases[template][poll_list][help_9];
+        $tmp[help][9][tag] = "{order_startdate}";
+        $tmp[help][9][text] = $admin_phrases[template][poll_list][help_10];
+        $tmp[help][10][tag] = "{arrow_startdate}";
+        $tmp[help][10][text] = $admin_phrases[template][poll_list][help_11];
+        $tmp[help][11][tag] = "{order_enddate}";
+        $tmp[help][11][text] = $admin_phrases[template][poll_list][help_12];
+        $tmp[help][12][tag] = "{arrow_enddate}";
+        $tmp[help][12][text] = $admin_phrases[template][poll_list][help_13];
+    $TEMPLATE_EDIT[8] = $tmp;
+    unset($tmp);
+
+    $TEMPLATE_EDIT[9] = false;
+
+    $tmp[name] = "poll_main_line";
+    $tmp[title] = $admin_phrases[template][poll_main_line][title];
+    $tmp[description] = $admin_phrases[template][poll_main_line][description];
+    $tmp[rows] = "10";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{answer}";
+        $tmp[help][0][text] = $admin_phrases[template][poll_main_line][help_1];
+        $tmp[help][1][tag] = "{votes}";
+        $tmp[help][1][text] = $admin_phrases[template][poll_main_line][help_2];
+        $tmp[help][2][tag] = "{percentage}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_main_line][help_3];
+        $tmp[help][3][tag] = "{bar_width}";
+        $tmp[help][3][text] = $admin_phrases[template][poll_main_line][help_4];
+    $TEMPLATE_EDIT[10] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "poll_main_body";
+    $tmp[title] = $admin_phrases[template][poll_main_body][title];
+    $tmp[description] = $admin_phrases[template][poll_main_body][description];
+    $tmp[rows] = "20";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{question}";
+        $tmp[help][0][text] = $admin_phrases[template][poll_main_body][help_1];
+        $tmp[help][1][tag] = "{answers}";
+        $tmp[help][1][text] = $admin_phrases[template][poll_main_body][help_2];
+        $tmp[help][2][tag] = "{all_votes}";
+        $tmp[help][2][text] = $admin_phrases[template][poll_main_body][help_3];
+        $tmp[help][3][tag] = "{participants}";
+        $tmp[help][3][text] = $admin_phrases[template][poll_main_body][help_4];
+        $tmp[help][4][tag] = "{type}";
+        $tmp[help][4][text] = $admin_phrases[template][poll_main_body][help_5];
+        $tmp[help][5][tag] = "{start_date}";
+        $tmp[help][5][text] = $admin_phrases[template][poll_main_body][help_6];
+        $tmp[help][6][tag] = "{end_date}";
+        $tmp[help][6][text] = $admin_phrases[template][poll_main_body][help_7];
+    $TEMPLATE_EDIT[11] = $tmp;
+    unset($tmp);
+    
+//////////////////////////
+//// Intialise Editor ////
+//////////////////////////
+
+if (templatepage_postcheck($TEMPLATE_EDIT))
 {
-    $_POST[body] = addslashes($_POST[body]);
-    $_POST[line] = addslashes($_POST[line]);
-    $_POST[no_poll] = addslashes($_POST[no_poll]);
-    $_POST[result] = addslashes($_POST[result]);
-    $_POST[result_line] = addslashes($_POST[result_line]);
-    $_POST[list_line] = addslashes($_POST[list_line]);
-    $_POST[liste] = addslashes($_POST[liste]);
-    $_POST[main_body] = addslashes($_POST[main_body]);
-    $_POST[main_line] = addslashes($_POST[main_line]);
-
-    mysql_query("update fs_template
-                 set poll_body = '$_POST[body]',
-                     poll_line = '$_POST[line]',
-                     poll_no_poll = '$_POST[no_poll]',
-                     poll_result = '$_POST[result]',
-                     poll_result_line = '$_POST[result_line]',
-                     poll_list_line = '$_POST[list_line]',
-                     poll_list = '$_POST[liste]',
-                     poll_main_body = '$_POST[main_body]',
-                     poll_main_line = '$_POST[main_line]'
-                 where id = '$_POST[design]'", $db);
-
+    templatepage_save($TEMPLATE_EDIT);
     systext("Template wurde aktualisiert");
 }
-
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
-
 else
 {
-    // Design ermittlen
-    echo'
-                    <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
-                            <input type="hidden" value="polltemplate" name="go">
-                            <input type="hidden" value="'.$_POST[design].'" name="design">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design auswählen</option>
-                                <option value="">------------------------</option>
-    ';
-
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      echo '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        echo ' selected=selected';
-      echo '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        echo ' (aktiv)';
-      echo '</option>';
-    }
-
-    echo'
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
-    ';
-
-    if (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="")
-    {
-
-    $index = mysql_query("select poll_body from fs_template where id = '$_POST[design]'", $db);
-    $body = stripslashes(mysql_result($index, 0, "poll_body"));
-
-    $index = mysql_query("select poll_line from fs_template where id = '$_POST[design]'", $db);
-    $line = stripslashes(mysql_result($index, 0, "poll_line"));
-
-    $index = mysql_query("select poll_no_poll from fs_template where id = '$_POST[design]'", $db);
-    $no_poll = stripslashes(mysql_result($index, 0, "poll_no_poll"));
-
-    $index = mysql_query("select poll_result from fs_template where id = '$_POST[design]'", $db);
-    $result = stripslashes(mysql_result($index, 0, "poll_result"));
-
-    $index = mysql_query("select poll_result_line from fs_template where id = '$_POST[design]'", $db);
-    $result_line = stripslashes(mysql_result($index, 0, "poll_result_line"));
-
-    $index = mysql_query("select poll_list_line from fs_template where id = '$_POST[design]'", $db);
-    $list_line = stripslashes(mysql_result($index, 0, "poll_list_line"));
-
-    $index = mysql_query("select poll_list from fs_template where id = '$_POST[design]'", $db);
-    $liste = stripslashes(mysql_result($index, 0, "poll_list"));
-
-    $index = mysql_query("select poll_main_body from fs_template where id = '$_POST[design]'", $db);
-    $main_body = stripslashes(mysql_result($index, 0, "poll_main_body"));
-
-    $index = mysql_query("select poll_main_line from fs_template where id = '$_POST[design]'", $db);
-    $main_line = stripslashes(mysql_result($index, 0, "poll_main_line"));
-
-    echo'
-                    <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
-                        <input type="hidden" value="polltemplate" name="go">
-                        <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top">
-                                    Antwort Zeile:<br>
-                                    <font class="small">Antwortmöglichkeit im rechten Menü<br>
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{answer}","Der Antworttext.").'
-                                    '.insert_tt("{answer_id}","Die ID der Antwort, damit das Script auch weiß, für was abgestimmt wurde").'
-                                    '.insert_tt("{type}","Der Umfragentyp. Notwendig, da die beiden Typen verschiedene Auswahlmöglichkeiten erfordern.").'
-                                    '.insert_tt("{multiple}","Erweiterung für Multiple-Choice Umfragen.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="line">'.$line.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'line\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Umfrage Body:<br>
-                                    <font class="small">Body der Umfrage im Menü<br>
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{question}","Die Frage, nach der in der Umfrage gefragt wird.").'
-                                    '.insert_tt("{answers}","Markiert die Stelle, an der hintereinander alle Antworten eingefügt werden. (Template \"Antwort Zeile\")").'
-                                    '.insert_tt("{poll_id}","Die ID der Umfrage, damit das Script weiß welche Umfrage das ist.").'
-                                    '.insert_tt("{button_state}","Stellt den Status des Abstimmen-Buttons ein. Wichtig für die Abstimmsicherheit.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="body">'.$body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Keine Umfrage:<br>
-                                    <font class="small">Altenative, wenn keine Umfrage aktiv ist</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="no_poll">'.$no_poll.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'no_poll\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Resultat Zeile:<br>
-                                    <font class="small">Resultat im rechten Menü<br>
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{answer}","Der Antworttext.").'
-                                    '.insert_tt("{votes}","Die Anzahl der Stimmen die eine Antwort erhalten hat.").'
-                                    '.insert_tt("{percentage}","Der Stimmenanteil einer Antwort in Prozent. (Mit Prozentzeichen!)").'
-                                    '.insert_tt("{bar_width}","Die Breite des Antwortbalkens bei der grafischen Stimmendarstellung.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="result_line">'.$result_line.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'result_line\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Resultat:<br>
-                                    <font class="small">Ergebnis der Umfrage im Menü<br>
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{question}","Die Frage, nach der in der Umfrage gefragt wird.").'
-                                    '.insert_tt("{answers}","Markiert die Stelle, an der hintereinander alle Antworten eingefügt werden. (Template \"Resultat Zeile\")").'
-                                    '.insert_tt("{all_votes}","Die Anzahl aller abgegebenen Stimmen.").'
-                                    '.insert_tt("{participants}","Die Anzahl aller Umfrageteilnehmer.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="result">'.$result.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'result\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Umfrage:<br>
-                                    <font class="small">Zeile in der Übersichtsseite der bisherigen Umfragen<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($first_line) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="list_line">'.$list_line.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'list_line\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Umfragen Übersicht:<br>
-                                    <font class="small">Übersichtsseite der bisherigen Umfragen<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($liste) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="20" cols="66" name="liste">'.$liste.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'liste\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Archiv Antwort:<br>
-                                    <font class="small">Antwort einer archivierten Umfrage<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($main_line) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="main_line">'.$main_line.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'main_line\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Archiv Umfrage:<br>
-                                    <font class="small">Archivierte Umfrage<br>
-                                    Gültige Tags:<br>
-                                    '. fetchTemplateTags($main_body) .'</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="20" cols="66" name="main_body">'.$main_body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'main_body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
-    }
+    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
 }
 ?>

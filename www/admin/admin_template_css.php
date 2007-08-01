@@ -73,7 +73,8 @@ elseif ($_SESSION[user_level] == "authorised")
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top"></td>
+                                <td class="config" valign="top">
+                                </td>
                                 <td class="config" valign="top">
                                     <input type="button" class="button" Value="Editor" onClick="openedit(\'code\')">
                                 </td>

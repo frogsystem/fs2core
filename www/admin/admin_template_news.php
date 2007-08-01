@@ -1,350 +1,194 @@
 <?php
+########################################
+#### explanation of editor creation ####
+########################################
+/*
+    $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
+    unset($tmp); //unsets $tmp for safety-issues
+    
+    $tmp[name] = "name"; //name of the template's db-entry
+    $tmp[title] = "title"; //title of the template
+    $tmp[description] = "description"; //short description of what the template is for
+    $tmp[rows] = "x"; //number of rows of the textarea
+    $tmp[cols] = "y"; //number of cols of the textarea
+        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $tmp[help][...][text] = "text"; //to add more possible tags
+    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    unset($tmp); //unsets $tmp for safety-issues
+    
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-/////////////////////////////////
-//// Datenbank aktualisieren ////
-/////////////////////////////////
+    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
+    ...
+*/
+##########################################
+#### / explanation of editor creation ####
+##########################################
 
-if ($_POST[link] ||
-    $_POST[body] ||
-    $_POST[relatedlinks] ||
-    $_POST[headline] ||
-    $_POST[headline_body] ||
-    $_POST[comment_body] ||
-    $_POST[comment_autor] ||
-    $_POST[comment_form] ||
-    $_POST[comment_form_name] ||
-    $_POST[search_form])
+    $TEMPLATE_GO = "newstemplate";
+    unset($tmp);
+    
+    $tmp[name] = "news_link";
+    $tmp[title] = $admin_phrases[template][news_link][title];
+    $tmp[description] = $admin_phrases[template][news_link][description];
+    $tmp[rows] = "5";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{name}";
+        $tmp[help][0][text] = $admin_phrases[template][news_link][help_1];
+        $tmp[help][1][tag] = "{target}";
+        $tmp[help][1][text] = $admin_phrases[template][news_link][help_2];
+        $tmp[help][2][tag] = "{url}";
+        $tmp[help][2][text] = $admin_phrases[template][news_link][help_3];
+    $TEMPLATE_EDIT[0] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "news_related_links";
+    $tmp[title] = $admin_phrases[template][news_related_links][title];
+    $tmp[description] = $admin_phrases[template][news_related_links][description];
+    $tmp[rows] = "5";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{links}";
+        $tmp[help][0][text] = $admin_phrases[template][news_related_links][help_1];
+    $TEMPLATE_EDIT[1] = $tmp;
+    unset($tmp);
+    
+    $TEMPLATE_EDIT[2] = false;
+    
+    $tmp[name] = "news_body";
+    $tmp[title] = $admin_phrases[template][news_body][title];
+    $tmp[description] = $admin_phrases[template][news_body][description];
+    $tmp[rows] = "25";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{newsid}";
+        $tmp[help][0][text] = $admin_phrases[template][news_body][help_1];
+        $tmp[help][1][tag] = "{titel}";
+        $tmp[help][1][text] = $admin_phrases[template][news_body][help_2];
+        $tmp[help][2][tag] = "{datum}";
+        $tmp[help][2][text] = $admin_phrases[template][news_body][help_3];
+        $tmp[help][3][tag] = "{text}";
+        $tmp[help][3][text] = $admin_phrases[template][news_body][help_4];
+        $tmp[help][4][tag] = "{autor}";
+        $tmp[help][4][text] = $admin_phrases[template][news_body][help_5];
+        $tmp[help][5][tag] = "{autor_profilurl}";
+        $tmp[help][5][text] = $admin_phrases[template][news_body][help_6];
+        $tmp[help][6][tag] = "{kategorie_bildname}";
+        $tmp[help][6][text] = $admin_phrases[template][news_body][help_7];
+        $tmp[help][7][tag] = "{kategorie_name}";
+        $tmp[help][7][text] = $admin_phrases[template][news_body][help_8];
+        $tmp[help][8][tag] = "{kommentar_url}";
+        $tmp[help][8][text] = $admin_phrases[template][news_body][help_9];
+        $tmp[help][9][tag] = "{kommentar_anzahl}";
+        $tmp[help][9][text] = $admin_phrases[template][news_body][help_10];
+        $tmp[help][10][tag] = "{related_links}";
+        $tmp[help][10][text] = $admin_phrases[template][news_body][help_11];
+    $TEMPLATE_EDIT[3] = $tmp;
+    unset($tmp);
+
+    $TEMPLATE_EDIT[4] = false;
+
+    $tmp[name] = "news_headline";
+    $tmp[title] = $admin_phrases[template][news_headline][title];
+    $tmp[description] = $admin_phrases[template][news_headline][description];
+    $tmp[rows] = "7";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{titel}";
+        $tmp[help][0][text] = $admin_phrases[template][news_headline][help_1];
+        $tmp[help][1][tag] = "{datum}";
+        $tmp[help][1][text] = $admin_phrases[template][news_headline][help_2];
+        $tmp[help][2][tag] = "{url}";
+        $tmp[help][2][text] = $admin_phrases[template][news_headline][help_3];
+    $TEMPLATE_EDIT[5] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "news_headline_body";
+    $tmp[title] = $admin_phrases[template][news_headline_body][title];
+    $tmp[description] = $admin_phrases[template][news_headline_body][description];
+    $tmp[rows] = "15";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{headlines}";
+        $tmp[help][0][text] = $admin_phrases[template][news_headline_body][help_1];
+        $tmp[help][1][tag] = "{downloads}";
+        $tmp[help][1][text] = $admin_phrases[template][news_headline_body][help_2];
+    $TEMPLATE_EDIT[6] = $tmp;
+    unset($tmp);
+
+    $TEMPLATE_EDIT[7] = false;
+
+    $tmp[name] = "news_comment_autor";
+    $tmp[title] = $admin_phrases[template][news_comment_autor][title];
+    $tmp[description] = $admin_phrases[template][news_comment_autor][description];
+    $tmp[rows] = "5";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{name}";
+        $tmp[help][0][text] = $admin_phrases[template][news_comment_autor][help_1];
+        $tmp[help][1][tag] = "{url}";
+        $tmp[help][1][text] = $admin_phrases[template][news_comment_autor][help_2];
+    $TEMPLATE_EDIT[8] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "news_comment_body";
+    $tmp[title] = $admin_phrases[template][news_comment_body][title];
+    $tmp[description] = $admin_phrases[template][news_comment_body][description];
+    $tmp[rows] = "25";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{titel}";
+        $tmp[help][0][text] = $admin_phrases[template][news_comment_body][help_1];
+        $tmp[help][1][tag] = "{datum}";
+        $tmp[help][1][text] = $admin_phrases[template][news_comment_body][help_2];
+        $tmp[help][2][tag] = "{text}";
+        $tmp[help][2][text] = $admin_phrases[template][news_comment_body][help_3];
+        $tmp[help][3][tag] = "{autor}";
+        $tmp[help][3][text] = $admin_phrases[template][news_comment_body][help_4];
+        $tmp[help][4][tag] = "{autor_avatar}";
+        $tmp[help][4][text] = $admin_phrases[template][news_comment_body][help_5];
+    $TEMPLATE_EDIT[9] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "news_comment_form_name";
+    $tmp[title] = $admin_phrases[template][news_comment_form_name][title];
+    $tmp[description] = $admin_phrases[template][news_comment_form_name][description];
+    $tmp[rows] = "4";
+    $tmp[cols] = "66";
+    $TEMPLATE_EDIT[10] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "news_comment_form";
+    $tmp[title] = $admin_phrases[template][news_comment_form][title];
+    $tmp[description] = $admin_phrases[template][news_comment_form][description];
+    $tmp[rows] = "20";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{newsid}";
+        $tmp[help][0][text] = $admin_phrases[template][news_comment_form][help_1];
+        $tmp[help][1][tag] = "{name_input}";
+        $tmp[help][1][text] = $admin_phrases[template][news_comment_form][help_2];
+    $TEMPLATE_EDIT[11] = $tmp;
+    unset($tmp);
+
+    $TEMPLATE_EDIT[12] = false;
+
+    $tmp[name] = "news_search_form";
+    $tmp[title] = $admin_phrases[template][news_search_form][title];
+    $tmp[description] = $admin_phrases[template][news_search_form][description];
+    $tmp[rows] = "25";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{years}";
+        $tmp[help][0][text] = $admin_phrases[template][news_search_form][help_1];
+    $TEMPLATE_EDIT[13] = $tmp;
+    unset($tmp);
+
+//////////////////////////
+//// Intialise Editor ////
+//////////////////////////
+
+if (templatepage_postcheck($TEMPLATE_EDIT))
 {
-    $_POST[body] = savesql($_POST[body]);
-    $_POST[link] = savesql($_POST[link]);
-    $_POST[relatedlinks] = savesql($_POST[relatedlinks]);
-    $_POST[headline] = savesql($_POST[headline]);
-    $_POST[headline_body] = savesql($_POST[headline_body]);
-    $_POST[comment_body] = savesql($_POST[comment_body]);
-    $_POST[comment_autor] = savesql($_POST[comment_autor]);
-    $_POST[comment_form] = savesql($_POST[comment_form]);
-    $_POST[comment_form_name] = savesql($_POST[comment_form_name]);
-    $_POST[search_form] = savesql($_POST[search_form]);
-
-    mysql_query("update fs_template
-                 set news_body = '$_POST[body]',
-                     news_link = '$_POST[link]',
-                     news_related_links = '$_POST[relatedlinks]',
-                     news_headline = '$_POST[headline]',
-                     news_headline_body = '$_POST[headline_body]',
-                     news_comment_body = '$_POST[comment_body]',
-                     news_comment_autor = '$_POST[comment_autor]',
-                     news_comment_form = '$_POST[comment_form]',
-                     news_comment_form_name = '$_POST[comment_form_name]',
-                     news_search_form = '$_POST[search_form]'
-                 where id = '$_POST[design]'", $db);
-
+    templatepage_save($TEMPLATE_EDIT);
     systext("Template wurde aktualisiert");
 }
-
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
-
 else
 {
-    // Design ermittlen
-    echo'
-                    <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
-                            <input type="hidden" value="newstemplate" name="go">
-                            <input type="hidden" value="'.$_POST[design].'" name="design">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design auswählen</option>
-                                <option value="">------------------------</option>
-    ';
-
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      echo '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        echo ' selected=selected';
-      echo '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        echo ' (aktiv)';
-      echo '</option>';
-    }
-
-    echo'
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
-    ';
-
-    if (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="")
-    {
-
-    $index = mysql_query("select news_body from fs_template where id = '$_POST[design]'", $db);
-    $body = killhtml(mysql_result($index, 0, "news_body"));
-
-    $index = mysql_query("select news_related_links from fs_template where id = '$_POST[design]'", $db);
-    $related_links = killhtml(mysql_result($index, 0, "news_related_links"));
-
-    $index = mysql_query("select news_link from fs_template where id = '$_POST[design]'", $db);
-    $link = killhtml(mysql_result($index, 0, "news_link"));
-
-    $index = mysql_query("select news_headline from fs_template where id = '$_POST[design]'", $db);
-    $headline = killhtml(mysql_result($index, 0, "news_headline"));
-
-    $index = mysql_query("select news_headline_body from fs_template where id = '$_POST[design]'", $db);
-    $headline_body = killhtml(mysql_result($index, 0, "news_headline_body"));
-
-    $index = mysql_query("select news_comment_body from fs_template where id = '$_POST[design]'", $db);
-    $comment_body = killhtml(mysql_result($index, 0, "news_comment_body"));
-
-    $index = mysql_query("select news_comment_autor from fs_template where id = '$_POST[design]'", $db);
-    $comment_autor = killhtml(mysql_result($index, 0, "news_comment_autor"));
-
-    $index = mysql_query("select news_comment_form from fs_template where id = '$_POST[design]'", $db);
-    $comment_form = killhtml(mysql_result($index, 0, "news_comment_form"));
-    
-    $index = mysql_query("select news_comment_form_name from fs_template where id = '$_POST[design]'", $db);
-    $comment_form_name = killhtml(mysql_result($index, 0, "news_comment_form_name"));
-
-    $index = mysql_query("select news_search_form from fs_template where id = '$_POST[design]'", $db);
-    $search_form = killhtml(mysql_result($index, 0, "news_search_form"));
-
-    echo'
-                    <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
-                        <input type="hidden" value="newstemplate" name="go">
-                        <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top">
-                                    Related Link Zeile:<br>
-                                    <font class="small">Eine Zeile der Related Links<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{name}","Der Titel den der Link trägt.").'
-                                    '.insert_tt("{target}","Das Ziel-Fenster des Links.").'
-                                    '.insert_tt("{url}","Die URL auf die verlinkt werden soll.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="6" cols="66" name="link">'.$link.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'link\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Related Links Body:<br>
-                                    <font class="small">Die Related Links unter einer News<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{links}","Bindet nacheinander die angegebenen Links ein.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="relatedlinks">'.$related_links.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'relatedlinks\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    News Body:<br>
-                                    <font class="small">Der News Body, in dem alles zusammenläuft<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{newsid}","ID der News, für die eindeutige Ansteuerung auf der Startseite.").'
-                                    '.insert_tt("{titel}","Der Titel der News.").'
-                                    '.insert_tt("{datum}","Das Datum an dem die News veröffentlicht wurde.").'
-                                    '.insert_tt("{text}","Der Text der News.").'
-                                    '.insert_tt("{autor}","Der Name des News-Schreibers.").'
-                                    '.insert_tt("{autor_profilurl}","URL zum Profil des Autors.").'
-                                    '.insert_tt("{kategorie_bildname}","URL zum Kategorie-Bild.").'
-                                    '.insert_tt("{kategorie_name}","Der Titel der Kategorie.").'
-                                    '.insert_tt("{kommentar_url}","URL zur Kommentaransicht der News.").'
-                                    '.insert_tt("{kommentar_anzahl}","Anzahl der zur News abgegebenen Kommentare.").'
-                                    '.insert_tt("{related_links}","Bindet die Related Links der News ein.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="25" cols="66" name="body">'.$body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Headline:<br>
-                                    <font class="small">Zeile im Headline Body<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{titel}","Der Titel der News.").'
-                                    '.insert_tt("{datum}","Das Datum an dem die News veröffentlicht wurde.").'
-                                    '.insert_tt("{url}","URL zur News.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="6" cols="66" name="headline">'.$headline.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'headline\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Headline Body:<br>
-                                    <font class="small">Headline Kasten oben auf der Seite<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{headlines}","Bindet die Headlines ein.").'
-                                    '.insert_tt("{downloads}","Bindet die Downloads ein.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="headline_body">'.$headline_body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'headline_body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Kommentar Autor:<br>
-                                    <font class="small">Link zum Kommentar Autor<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{name}","Der Name des Kommentar-Schreibers.").'
-                                    '.insert_tt("{url}","URL zum Profil des Autors.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="comment_autor">'.$comment_autor.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'comment_autor\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Kommentar Body:<br>
-                                    <font class="small">Der Kommentar Body, in dem alles zusammenläuft<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{titel}","Der Titel des Kommentars.").'
-                                    '.insert_tt("{datum}","Das Datum an dem der Kommentar geschrieben wurde.").'
-                                    '.insert_tt("{text}","Der Text des Kommentars.").'
-                                    '.insert_tt("{autor}","Bindet das \"Kommentar Autor\" Template ein.").'
-                                    '.insert_tt("{autor_avatar}","Bindet einen evtl. Avatar des Autors ein.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="25" cols="66" name="comment_body">'.$comment_body.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'comment_body\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Formular Name:<br>
-                                    <font class="small">Wird angezeigt, wenn der User nicht registriert ist.
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="4" cols="66" name="comment_form_name">'.$comment_form_name.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'comment_form_name\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Kommentar Formular:<br>
-                                    <font class="small">Formular zum schreiben von Kommentaren<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{newsid}","ID der News, um sie eindeutig zu identifizieren.").'
-                                    '.insert_tt("{name_input}","Bindet den Namen des angemeldeten Users, bzw. das Template \"Forumlar Name\" ein.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="comment_form">'.$comment_form.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'comment_form\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Such Formular:<br>
-                                    <font class="small">Formular für die Suche im Archiv<br /><br />
-                                    Gültige Tags:<br>
-                                    '.insert_tt("{years}","Fügt die Jahre ein, für die News verfügbar sind.").'
-                                    </font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="25" cols="66" name="search_form">'.$search_form.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top"></td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'search_form\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
-    }
+    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
 }
 ?>

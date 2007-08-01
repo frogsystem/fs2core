@@ -4,20 +4,23 @@
 ########################################
 /*
     $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
+    unset($tmp); //unsets $tmp for safety-issues
 
-    $TEMPLATE_EDIT[0][name] = "name"; //name of the template's db-entry
-    $TEMPLATE_EDIT[0][title] = "title"; //title of the template
-    $TEMPLATE_EDIT[0][description] = "description"; //short description of what the template is for
-    $TEMPLATE_EDIT[0][rows] = "x"; //number of rows of the textarea
-    $TEMPLATE_EDIT[0][cols] = "y"; //number of cols of the textarea
-        $TEMPLATE_EDIT[0][help][0][tag] = "{tag}"; //{tag}s which may be used in the template
-        $TEMPLATE_EDIT[0][help][0][text] = "text"; //description of the tag, shown at the tooltip
-        $TEMPLATE_EDIT[0][help][...][tag] = "{tag}"; //continue with numbers after [help]
-        $TEMPLATE_EDIT[0][help][...][text] = "text"; //to add more possible tags
+    $tmp[name] = "name"; //name of the template's db-entry
+    $tmp[title] = "title"; //title of the template
+    $tmp[description] = "description"; //short description of what the template is for
+    $tmp[rows] = "x"; //number of rows of the textarea
+    $tmp[cols] = "y"; //number of cols of the textarea
+        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $tmp[help][...][text] = "text"; //to add more possible tags
+    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    unset($tmp); //unsets $tmp for safety-issues
 
-    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    $TEMPLATE_EDIT[...][name] = "..."; //continue with the numbers after $TEMPLATE_EDIT to add more template-editors
+    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
     ...
 */
 ##########################################
@@ -25,32 +28,35 @@
 ##########################################
 
     $TEMPLATE_GO = "artikeltemplate";
+    unset($tmp);
 
-    $TEMPLATE_EDIT[0][name] = "artikel_autor";
-    $TEMPLATE_EDIT[0][title] = "Autor";
-    $TEMPLATE_EDIT[0][description] = "Das Erscheinungsbild der Autoren-Kennzeichnung.";
-    $TEMPLATE_EDIT[0][rows] = "4";
-    $TEMPLATE_EDIT[0][cols] = "66";
-        $TEMPLATE_EDIT[0][help][0][tag] = "{username}";
-        $TEMPLATE_EDIT[0][help][0][text] = "Der Username des Autors.";
-        $TEMPLATE_EDIT[0][help][1][tag] = "{profillink}";
-        $TEMPLATE_EDIT[0][help][1][text] = "URL zum Profil des Autors.";
-        
+    $tmp[name] = "artikel_autor";
+    $tmp[title] = $admin_phrases[template][artikel_autor][title];
+    $tmp[description] = $admin_phrases[template][artikel_autor][description];
+    $tmp[rows] = "4";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{username}";
+        $tmp[help][0][text] = $admin_phrases[template][artikel_autor][help_1];
+        $tmp[help][1][tag] = "{profillink}";
+        $tmp[help][1][text] = $admin_phrases[template][artikel_autor][help_2];
+    $TEMPLATE_EDIT[0] = $tmp;
+    unset($tmp);
 
-    $TEMPLATE_EDIT[1][name] = "artikel_body";
-    $TEMPLATE_EDIT[1][title] = "Body";
-    $TEMPLATE_EDIT[1][description] = "Das Erscheinungsbild eines Artikels.";
-    $TEMPLATE_EDIT[1][rows] = "25";
-    $TEMPLATE_EDIT[1][cols] = "66";
-        $TEMPLATE_EDIT[1][help][0][tag] = "{titel}";
-        $TEMPLATE_EDIT[1][help][0][text] = "Die Überschrift des Artikels.";
-        $TEMPLATE_EDIT[1][help][1][tag] = "{datum}";
-        $TEMPLATE_EDIT[1][help][1][text] = "Das Datum an dem der Artikel geschrieben wurde.";
-        $TEMPLATE_EDIT[1][help][2][tag] = "{text}";
-        $TEMPLATE_EDIT[1][help][2][text] = "Der Artikel-Text an sich.";
-        $TEMPLATE_EDIT[1][help][2][tag] = "{autor}";
-        $TEMPLATE_EDIT[1][help][2][text] = "Bindet das Autoren-Template ein.";
-
+    $tmp[name] = "artikel_body";
+    $tmp[title] = $admin_phrases[template][artikel_body][title];
+    $tmp[description] = $admin_phrases[template][artikel_body][description];
+    $tmp[rows] = "25";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{titel}";
+        $tmp[help][0][text] = $admin_phrases[template][artikel_body][help_1];
+        $tmp[help][1][tag] = "{datum}";
+        $tmp[help][1][text] = $admin_phrases[template][artikel_body][help_2];
+        $tmp[help][2][tag] = "{text}";
+        $tmp[help][2][text] = $admin_phrases[template][artikel_body][help_3];
+        $tmp[help][2][tag] = "{autor}";
+        $tmp[help][2][text] = $admin_phrases[template][artikel_body][help_4];
+    $TEMPLATE_EDIT[1] = $tmp;
+    unset($tmp);
         
 //////////////////////////
 //// Intialise Editor ////

@@ -3,6 +3,9 @@
 #### explanation of editor creation ####
 ########################################
 /*
+    $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
+    unset($tmp); //unsets $tmp for safety-issues
+
     $tmp[name] = "name"; //name of the template's db-entry
     $tmp[title] = "title"; //title of the template
     $tmp[description] = "description"; //short description of what the template is for
@@ -12,10 +15,12 @@
         $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
         $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
         $tmp[help][...][text] = "text"; //to add more possible tags
+    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    unset($tmp); //unsets $tmp for safety-issues
 
-    $tmp = false; //creates a vertcal bar to separate templates
+    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    $TEMPLATE_EDIT[...][name] = "..."; //continue with the numbers after $TEMPLATE_EDIT to add more template-editors
+    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
     ...
 */
 ##########################################
