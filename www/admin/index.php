@@ -62,19 +62,19 @@ while ($acp_arr = mysql_fetch_assoc($index))
         break;
     }
 }
+
     //logout
     if ($go == 'logout')
     {
-        createpage('LOGOUT', 1, 'admin_logout.php');
         setcookie ("login", "", time() - 3600, "/");
         $_SESSION=array();
         $page_created = true;
     }
-
     //pseudo-else
-    if ($go == 'login' OR $page_created == false)
+    if ($page_created == false)
     {
         createpage('LOGIN', 1, 'admin_login.php');
+        $go = "login";
     }
 
 //////////////////////////////
@@ -82,10 +82,10 @@ while ($acp_arr = mysql_fetch_assoc($index))
 //////////////////////////////
 
 echo'
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <title>Frog System - '.$pagetitle.'</title>
+    <title>Frogsystem 2 - '.$pagetitle.'</title>
     
     <link rel="stylesheet" type="text/css" href="admin.css">
     <link rel="stylesheet" type="text/css" href="../res/editor.css">
@@ -93,462 +93,484 @@ echo'
     <script src="../res/functions.js" type="text/javascript"></script>
 </head>
 <body>
-<noscript>
-<style type="text/css">
-<!--
- .toggle {
- display: block;
-}
--->
-</style>
-</noscript>
-    <div id="menushadow">
-        <div id="menu">
-            <table border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td width="100%" height="78" valign="top">
-                        <img border="0" src="img/frogsystem.gif" width="140" height="78">
-                    </td>
-                </tr>
 
-';
+
+<div id="head">
+     Seitenname
+     <div id="head_link">
+         <a href="'.$global_config_arr[virtualhost].'" target="_self" class="head_link">» zur Hauptseite</a>
+     </div>
+</div>';
+
+
+
+##############################
+### START OF NAVI CREATION ###
+##############################
 
 //////////////////////////////
-///// explanation of menu creation
+///// explanation of navi creation
 //////////////////////////////
 /*
-$ADMIN_ARR[title] = "title"; //title of menu
-$ADMIN_ARR[id] = "id"; //id of menu; has to be unique; important for menu toggle
+$NAVI_ARR[title] = "title"; //title of navi
+$NAVI_ARR[menu_id][] = "id1"; //id of first menu to be shown in
+$NAVI_ARR[menu_id][] = "id2"; //id of second menu to be shown in
+//etc...
 
-$ADMIN_ARR[perm][0] = "perm_name1"; //first required permisson to show the menu head
-$ADMIN_ARR[perm][1] = "perm_name2"; //second required permisson to show the menu head
-$ADMIN_ARR[perm][2] = "perm_name3"; //third required permisson to show the menu head
-$ADMIN_ARR[perm][...] = "perm_name..."; //... and so on
-//note "$ADMIN_ARR[perm][0] = "true";" (and no other permissions) to show menu always
+$NAVI_ARR[link][] = "link_name1"; //first link in the navi
+$NAVI_ARR[link][] = "link_name2"; //second link in the navi
+//etc...
 
-createmenu($ADMIN_ARR); //creates the head of the menu, with title and toggle link
-
-  createlink('link_name1'); //first link in the menu
-  createlink('link_name2'); //second link in the menu
-  createlink('link_name3'); //second link in the menu
-  createlink('link_name...'); //... and so on
-
-createmenu_end($ADMIN_ARR); //creates the end of the menu, closes tags
-unset($ADMIN_ARR); //deletes the variable
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi)); //store navi into $template
+unset($NAVI_ARR); //deletes the variable
 */
+
+
+
+unset($template_navi);
+unset($menu_show_arr);
 
 //////////////////////////////
 ///// general
 //////////////////////////////
 
-$ADMIN_ARR[title] = "Allgemein";
-$ADMIN_ARR[id] = "general";
+$NAVI_ARR[title] = "Allgemein";
+$NAVI_ARR[menu_id] = "general";
 
-$ADMIN_ARR[perm][0] = "perm_allconfig";
-$ADMIN_ARR[perm][1] = "perm_allannouncement";
-$ADMIN_ARR[perm][2] = "perm_allphpinfo";
+$NAVI_ARR[link][] = "allconfig";
+$NAVI_ARR[link][] = "allannouncement";
+$NAVI_ARR[link][] = "allphpinfo";
+$NAVI_ARR[link][] = "emailtemplate";
 
-createmenu($ADMIN_ARR);
-
-  createlink('allconfig');
-  createlink('allannouncement');
-  createlink('allphpinfo');
-  createlink('emailtemplate');
-  createlink('alltemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
 
 //////////////////////////////
 ///// includes
 //////////////////////////////
 
-$ADMIN_ARR[title] = "Includes";
-$ADMIN_ARR[id] = "includes";
-
-$ADMIN_ARR[perm][0] = "perm_allconfig";
-
-createmenu($ADMIN_ARR);
-
-  createlink('includes_edit');
-  createlink('includes_new');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// designs
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Designs";
-$ADMIN_ARR[id] = "designs";
-
-$ADMIN_ARR[perm][0] = "perm_templateedit";
-
-createmenu($ADMIN_ARR);
-
-  createlink('template_create');
-  createlink('template_manage');
-  createlink('csstemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// zones
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Zonen";
-$ADMIN_ARR[id] = "zones";
-
-$ADMIN_ARR[perm][0] = "perm_templateedit";
-$ADMIN_ARR[perm][1] = "perm_allannouncement";
-$ADMIN_ARR[perm][2] = "perm_allphpinfo";
-
-createmenu($ADMIN_ARR);
-
-  createlink('zone_create');
-  createlink('zone_manage');
-  createlink('zone_config');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// news
-//////////////////////////////
-
-$ADMIN_ARR[title] = "News";
-$ADMIN_ARR[id] = "news";
-
-$ADMIN_ARR[perm][0] = "perm_newsadd";
-$ADMIN_ARR[perm][1] = "perm_newsedit";
-$ADMIN_ARR[perm][2] = "perm_newscat";
-$ADMIN_ARR[perm][3] = "perm_newsnewcat";
-$ADMIN_ARR[perm][4] = "perm_newsconfig";
-
-createmenu($ADMIN_ARR);
-
-  createlink('newsadd');
-  createlink('newsedit');
-  createlink('news_cat_create');
-  createlink('news_cat_manage');
-  createlink('newsconfig');
-  createlink('newstemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-  
-//////////////////////////////
-///// articles
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Artikel";
-$ADMIN_ARR[id] = "articles";
-
-$ADMIN_ARR[perm][0] = "perm_artikeladd";
-$ADMIN_ARR[perm][1] = "perm_artikeledit";
-
-createmenu($ADMIN_ARR);
-
-  createlink('artikeladd');
-  createlink('artikeledit');
-  createlink('cimgadd');
-  createlink('cimgdel');
-  createlink('artikeltemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-  
-//////////////////////////////
-///// press releases
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Presseberichte";
-$ADMIN_ARR[id] = "press";
-
-$ADMIN_ARR[perm][0] = true;
-
-createmenu($ADMIN_ARR);
-
-  createlink('press_add');
-  createlink('press_edit');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// downloads
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Download";
-$ADMIN_ARR[id] = "downloads";
-
-$ADMIN_ARR[perm][0] = "perm_dladd";
-$ADMIN_ARR[perm][1] = "perm_dledit";
-$ADMIN_ARR[perm][2] = "perm_dlcat";
-$ADMIN_ARR[perm][3] = "perm_dlnewcat";
-
-createmenu($ADMIN_ARR);
-
-  createlink('dladd');
-  createlink('dledit');
-  createlink('dlcat');
-  createlink('dlnewcat');
-  createlink('dlconfig');
-  createlink('dltemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// polls
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Umfrage";
-$ADMIN_ARR[id] = "polls";
-
-$ADMIN_ARR[perm][0] = "perm_polladd";
-$ADMIN_ARR[perm][1] = "perm_polledit";
-
-createmenu($ADMIN_ARR);
-
-  createlink('polladd');
-  createlink('polledit');
-  createlink('polltemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// gallery
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Galerie";
-$ADMIN_ARR[id] = "gallery";
-
-$ADMIN_ARR[perm][0] = "perm_screencat";
-$ADMIN_ARR[perm][1] = "perm_screennewcat";
-
-createmenu($ADMIN_ARR);
-
-  createlink('screennewcat');
-  createlink('screencat');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-  
-//////////////////////////////
-///// screenshots
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Screenshots";
-$ADMIN_ARR[id] = "screenshots";
-
-$ADMIN_ARR[perm][0] = "perm_screenadd";
-$ADMIN_ARR[perm][1] = "perm_screenedit";
-$ADMIN_ARR[perm][2] = "perm_screenconfig";
-
-createmenu($ADMIN_ARR);
-
-  createlink('screenadd');
-  createlink('screenedit');
-  createlink('screenconfig');
-  createlink('screenshottemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// wallpaper
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Wallpaper";
-$ADMIN_ARR[id] = "wallpaper";
-
-$ADMIN_ARR[perm][0] = "perm_screenadd";
-$ADMIN_ARR[perm][1] = "perm_screenedit";
-
-createmenu($ADMIN_ARR);
-
-  createlink('wallpaperadd');
-  createlink('wallpaperedit');
-//  createlink('wallpapertemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-
-//////////////////////////////
-///// random pic
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Zufallsbild";
-$ADMIN_ARR[id] = "randompic";
-
-$ADMIN_ARR[perm][0] = "perm_potmadd";
-$ADMIN_ARR[perm][1] = "perm_potmedit";
-
-createmenu($ADMIN_ARR);
-
-  createlink('randompic_cat');
-  createlink('randompic_time_add');
-  createlink('randompic_time');
-  createlink('randompic_config');
-  createlink('randompictemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// shop
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Shop";
-$ADMIN_ARR[id] = "shop";
-
-$ADMIN_ARR[perm][0] = "perm_shopadd";
-$ADMIN_ARR[perm][1] = "perm_shopadd";
-
-createmenu($ADMIN_ARR);
-
-  createlink('shopadd');
-  createlink('shopedit');
-  createlink('shoptemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-  
-//////////////////////////////
-///// affiliates
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Partnerseiten";
-$ADMIN_ARR[id] = "affiliates";
-
-$ADMIN_ARR[perm][0] = "perm_partneradd";
-$ADMIN_ARR[perm][1] = "perm_partneredit";
-
-createmenu($ADMIN_ARR);
-
-  createlink('partneradd');
-  createlink('partneredit');
-  createlink('partnerconfig');
-  createlink('partnertemplate');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
-
-//////////////////////////////
-///// community map (german only!)
-//////////////////////////////
-
-$ADMIN_ARR[title] = "Community Map";
-$ADMIN_ARR[id] = "cmap";
-
-$ADMIN_ARR[perm][0] = "perm_map";
-
-createmenu($ADMIN_ARR);
-
-  createlink('map', 'Deutschland', 'map&amp;landid=1');
-  createlink('map', 'Schweiz', 'map&amp;landid=2');
-  createlink('map', 'Österreich', 'map&amp;landid=3');
-
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
+$NAVI_ARR[title] = "Includes";
+$NAVI_ARR[menu_id] = "general";
+
+$NAVI_ARR[link][] = "includes_edit";
+$NAVI_ARR[link][] = "includes_new";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
 
 //////////////////////////////
 ///// statistics
 //////////////////////////////
 
-$ADMIN_ARR[title] = "Statistik";
-$ADMIN_ARR[id] = "stats";
+$NAVI_ARR[title] = "Statistik";
+$NAVI_ARR[menu_id] = "general";
 
-$ADMIN_ARR[perm][0] = "perm_statedit";
-$ADMIN_ARR[perm][1] = "perm_statview";
-$ADMIN_ARR[perm][2] = "perm_statspace";
-$ADMIN_ARR[perm][3] = "perm_statref";
+$NAVI_ARR[link][] = "statview";
+$NAVI_ARR[link][] = "statedit";
+$NAVI_ARR[link][] = "statref";
+$NAVI_ARR[link][] = "statspace";
 
-createmenu($ADMIN_ARR);
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
 
-  createlink('statview');
-  createlink('statedit');
-  createlink('statref');
-  createlink('statspace');
+//////////////////////////////
+///// news
+//////////////////////////////
 
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
+$NAVI_ARR[title] = "News";
+$NAVI_ARR[menu_id] = "content";
+
+$NAVI_ARR[link][] = "newsadd";
+$NAVI_ARR[link][] = "newsedit";
+$NAVI_ARR[link][] = "news_cat_create";
+$NAVI_ARR[link][] = "news_cat_manage";
+$NAVI_ARR[link][] = "newsconfig";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// articles
+//////////////////////////////
+
+$NAVI_ARR[title] = "Artikel";
+$NAVI_ARR[menu_id] = "content";
+
+$NAVI_ARR[link][] = "artikeladd";
+$NAVI_ARR[link][] = "artikeledit";
+$NAVI_ARR[link][] = "cimgadd";
+$NAVI_ARR[link][] = "cimgdel";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// polls
+//////////////////////////////
+
+$NAVI_ARR[title] = "Umfrage";
+$NAVI_ARR[menu_id] = "content";
+
+$NAVI_ARR[link][] = "polladd";
+$NAVI_ARR[link][] = "polledit";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// press releases
+//////////////////////////////
+
+$NAVI_ARR[title] = "Presseberichte";
+$NAVI_ARR[menu_id] = "content";
+
+$NAVI_ARR[link][] = "press_add";
+$NAVI_ARR[link][] = "press_edit";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// gallery
+//////////////////////////////
+
+$NAVI_ARR[title] = "Galerie";
+$NAVI_ARR[menu_id] = "media";
+
+$NAVI_ARR[link][] = "screennewcat";
+$NAVI_ARR[link][] = "screencat";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// screenshots
+//////////////////////////////
+
+$NAVI_ARR[title] = "Screenshots";
+$NAVI_ARR[menu_id] = "media";
+
+$NAVI_ARR[link][] = "screenadd";
+$NAVI_ARR[link][] = "screenedit";
+$NAVI_ARR[link][] = "screenconfig";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// wallpaper
+//////////////////////////////
+
+$NAVI_ARR[title] = "Wallpaper";
+$NAVI_ARR[menu_id] = "media";
+
+$NAVI_ARR[link][] = "wallpaperadd";
+$NAVI_ARR[link][] = "wallpaperedit";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// random pic
+//////////////////////////////
+
+$NAVI_ARR[title] = "Zufallsbild";
+$NAVI_ARR[menu_id] = "media";
+
+$NAVI_ARR[link][] = "randompic_cat";
+$NAVI_ARR[link][] = "randompic_time_add";
+$NAVI_ARR[link][] = "randompic_time";
+$NAVI_ARR[link][] = "randompic_config";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+$ADMIN_ARR[title] = "Zufallsbild";
+$ADMIN_ARR[id] = "randompic";
+
+//////////////////////////////
+///// downloads
+//////////////////////////////
+
+$NAVI_ARR[title] = "Downloads";
+$NAVI_ARR[menu_id] = "media";
+
+$NAVI_ARR[link][] = "dladd";
+$NAVI_ARR[link][] = "dledit";
+$NAVI_ARR[link][] = "dlcat";
+$NAVI_ARR[link][] = "dlnewcat";
+$NAVI_ARR[link][] = "dlconfig";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// affiliates
+//////////////////////////////
+
+$NAVI_ARR[title] = "Partnerseiten";
+$NAVI_ARR[menu_id] = "promo";
+
+$NAVI_ARR[link][] = "partneradd";
+$NAVI_ARR[link][] = "partneredit";
+$NAVI_ARR[link][] = "partnerconfig";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// shop
+//////////////////////////////
+
+$NAVI_ARR[title] = "Shop";
+$NAVI_ARR[menu_id] = "promo";
+
+$NAVI_ARR[link][] = "shopadd";
+$NAVI_ARR[link][] = "shopedit";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// designs
+//////////////////////////////
+
+$NAVI_ARR[title] = "Designs";
+$NAVI_ARR[menu_id] = "styles";
+
+$NAVI_ARR[link][] = "template_create";
+$NAVI_ARR[link][] = "template_manage";
+$NAVI_ARR[link][] = "csstemplate";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// zones
+//////////////////////////////
+
+$NAVI_ARR[title] = "Zonen";
+$NAVI_ARR[menu_id] = "styles";
+
+$NAVI_ARR[link][] = "zone_create";
+$NAVI_ARR[link][] = "zone_manage";
+$NAVI_ARR[link][] = "zone_config";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// templates
+//////////////////////////////
+
+$NAVI_ARR[title] = "Templates";
+$NAVI_ARR[menu_id] = "styles";
+
+$NAVI_ARR[link][] = "alltemplate";
+$NAVI_ARR[link][] = "newstemplate";
+$NAVI_ARR[link][] = "artikeltemplate";
+$NAVI_ARR[link][] = "polltemplate";
+$NAVI_ARR[link][] = "screenshottemplate";
+//$NAVI_ARR[link][] = "wallpapertemplate";
+$NAVI_ARR[link][] = "randompictemplate";
+$NAVI_ARR[link][] = "dltemplate";
+$NAVI_ARR[link][] = "shoptemplate";
+$NAVI_ARR[link][] = "partnertemplate";
+$NAVI_ARR[link][] = "usertemplate";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
 
 //////////////////////////////
 ///// user
 //////////////////////////////
 
-$ADMIN_ARR[title] = "Benutzer";
-$ADMIN_ARR[id] = "user";
+$NAVI_ARR[title] = "Benutzer";
+$NAVI_ARR[menu_id] = "user";
 
-$ADMIN_ARR[perm][0] = "perm_useradd";
-$ADMIN_ARR[perm][1] = "perm_useredit";
-$ADMIN_ARR[perm][2] = "perm_userrights";
+$NAVI_ARR[link][] = "useradd";
+$NAVI_ARR[link][] = "useredit";
+$NAVI_ARR[link][] = "userrights";
+$NAVI_ARR[link][] = "userlist";
+$NAVI_ARR[link][] = "userrights";
 
-createmenu($ADMIN_ARR);
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
 
-  createlink('useradd');
-  createlink('useredit');
-  createlink('userrights');
-  createlink('userlist');
-  createlink('usertemplate');
+//////////////////////////////
+///// community map (german only!)
+//////////////////////////////
 
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
+$NAVI_ARR[title] = "Community Map";
+$NAVI_ARR[menu_id] = "user";
+
+$NAVI_ARR[link][] = "map&amp;landid=1";
+$NAVI_ARR[link][] = "map&amp;landid=2";
+$NAVI_ARR[link][] = "map&amp;landid=3";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
 
 //////////////////////////////
 ///// profile/logout
 //////////////////////////////
 
-$ADMIN_ARR[title] = "Profil";
-$ADMIN_ARR[id] = "profile";
+$NAVI_ARR[title] = "Profil";
+$NAVI_ARR[menu_id] = "user";
 
-$ADMIN_ARR[perm][0] = true;
+$NAVI_ARR[link][] = "profil";
 
-createmenu($ADMIN_ARR);
+if ($_SESSION["user_level"] == "authorised") {
+    $NAVI_ARR[link][] = "logout";
+} else {
+    $NAVI_ARR[link][] = "login";
+}
 
-  createlink('profil');
-  if ($_SESSION["user_level"] == "authorised") {
-  createlink('logout', 'Logout', 'logout'.$session_url, '1');
-  } else {
-  createlink('login', 'Login', 'login', '1');
-  }
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+############################
+### END OF NAVI CREATION ###
+############################
 
-createmenu_end($ADMIN_ARR);
-unset($ADMIN_ARR);
+
+
+
+
+##############################
+### START OF MENU CREATION ###
+##############################
+
+//////////////////////////////
+///// explanation of menu creation
+//////////////////////////////
+/*
+$tmp_arr[title] = "title"; //title of menu
+$tmp_arr[id] = "id"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+etc...
+
+createmenu($MENU_ARR); //creates the menu-list
+unset($MENU_ARR); //deletes the variable
+*/
+
+$tmp_arr[title] = "Allgemein"; //title of menu
+$tmp_arr[id] = "general"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+$tmp_arr[title] = "News & Content"; //title of menu
+$tmp_arr[id] = "content"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+$tmp_arr[title] = "Media"; //title of menu
+$tmp_arr[id] = "media"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+$tmp_arr[title] = "Promotion"; //title of menu
+$tmp_arr[id] = "promo"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+$tmp_arr[title] = "Styles"; //title of menu
+$tmp_arr[id] = "styles"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+$tmp_arr[title] = "User"; //title of menu
+$tmp_arr[id] = "user"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+############################
+### END OF MENU CREATION ###
+############################
+
+
+##################################
+### START OF MENU/NAVI DISPLAY ###
+##################################
+echo'<div id="menu_top_left"></div>
+<div id="menu_top_loop">';
+
+createmenu($MENU_ARR); //creates the menu-list
+unset($MENU_ARR); //deletes the variable
+
+echo '</div>
+<div id="menu_top_right">';
+
+if ($_SESSION["user_level"] == "authorised") {
+    echo '<a href="'.$PHP_SELF.'?go=logout" target="_self" class="menu_link">Logout</a>';
+} else {
+    $menu_class = "menu_link";
+    if ($go=="login") {
+        $menu_class = "menu_link_selected";
+    }
+    echo '<a href="'.$PHP_SELF.'?go=login" target="_self" class="'.$menu_class.'">Login</a>';
+}
+
+echo '</div>
+
+<div id="bg"><div id="bg_padding">
+
+     <div id="navi_container">';
+
+if ($template_navi == "") {
+    $template_navi = '
+        <div id="navi_top" style="height:43px;">
+            <img src="img/pointer.png" alt="">&nbsp;&nbsp;<b>Hallo Admin!</b>
+            <div id="navi_link">
+               Herzlich Willkommen
+               im Admin-CP des Frogsystem 2!
+            </div>
+
+    </div>';
+}
+
+echo $template_navi;
+echo '</div>';
+################################
+### END OF MENU/NAVI DISPLAY ###
+################################
+
 
 echo'
-    <script type="text/javascript">
-        iniMenu();
-    </script>
-';
-###################
-### END OF MENU ###
-###################
-
-echo'
-                <tr>
-                    <td width="100%">
-                        &nbsp;
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-    </div>
-
-    <div id="main">
-        <div id="mainshadow">
-            <div id="maincontent">
-                <img border="0" src="img/pointer.gif" width="5" height="8" alt="">
-                <font style="font-size:8pt;"><b>'.$pagetitle.'</b></font>
-                <div align="center">
-                    <p>
+     <div id="content_container">
+         <div id="content_top"></div>
+         <div id="content_padding">
+             <img border="0" src="img/pointer.png" alt="" style="vertical-align:middle">
+             <span style="font-size:8pt;"><b>'.$pagetitle.'</b></span>
+             <br /><br />
+             <div align="center">
 ';
 
 
@@ -563,11 +585,13 @@ include($filetoinc);
 //////////////////////////////
 
 echo'
-                </div>
-           </div>
-       </div>
-       <p>
-   </div>
+             </div>
+         </div>
+         <div id="content_foot"></div>
+     </div>
+
+</div></div>
+
 </body>
 </html>
 ';

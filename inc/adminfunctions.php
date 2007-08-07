@@ -237,69 +237,105 @@ function createpage($title, $permission, $page)
 //// Menü erzeugen           ///
 ////////////////////////////////
 
-function createmenu($admin_arr)
+function createmenu($menu_arr)
 {
-    if (createmenu_perm($admin_arr[perm])) {
-        createmenu_head($admin_arr[title], $admin_arr[id]);
-        echo '<tr><td width="100%"><div id="'.$admin_arr[id].'" class="toggle">';
-    }
-}
+    global $go;
 
-////////////////////////////////
-//// Menüende erzeugen       ///
-////////////////////////////////
+    end ($menu_arr);
+    $end = key($menu_arr);
+    reset ($menu_arr);
 
-function createmenu_end($admin_arr)
-{
-    if (createmenu_perm($admin_arr[perm])) {
-        echo '</div></td></tr>';
-    }
-}
-
-////////////////////////////////
-//// Menüende Permission     ///
-////////////////////////////////
-
-function createmenu_perm($perm_arr)
-{
-    $givePermission = false;
-    foreach ($perm_arr as $value) {
-        if ($_SESSION[$value] == 1) {
-            $givePermission = true;
-        } else {
-            $givePermission = false;
+    foreach ($menu_arr as $key => $value)
+    {
+        if ($value[show] == true AND $_SESSION["user_level"] == "authorised")
+        {
+            $menu_class = "menu_link";
+            if ($_GET['mid']==$value[id] AND ($go!="login" OR $_SESSION["user_level"] == "authorised")) {
+                $menu_class = "menu_link_selected";
+            }
+            $template .= '<a href="'.$PHP_SELF.'?mid='.$value[id].'" target="_self" class="'.$menu_class.'">'.$value[title].'</a>';
+            if ($key != $end) {
+                $template .= "&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
         }
     }
-    if ($perm_arr[0] === true) {
-        $givePermission = true;
-    }
-    return $givePermission;
+
+    echo $template;
+    unset($template);
 }
 
-
-
-
 ////////////////////////////////
-//// Menü-Überschrift        ///
-//// erzeugen                ///
+//// Menu ermitteln          ///
 ////////////////////////////////
 
-function createmenu_head($title, $toggle)
+function createmenu_show2arr($navi_arr)
 {
- echo '
-                <tr>
-                    <td width="100%" height="15"></td>
-                </tr>
-                 <tr>
-                    <td width="100%">
-                        <a class="menuhead" href="javascript:toggleMenu(\''.$toggle.'\')">
-                        <img border="0" src="img/pointer.gif" width="5" height="8" alt="" id="timg_'.$toggle.'">
-                        '.$title.'</a>
-                    </td>
-                </tr>
+    unset($template);
 
- ';
+    foreach ($navi_arr[link] as $value)
+    {
+        $template .= createlink($value);
+    }
+
+
+    if ($template == "") {
+        $show_arr[state] = false;
+    } else {
+        $show_arr[state] = true;
+    }
+    $show_arr[menu_id] = $navi_arr[menu_id];
+    return $show_arr;
 }
+
+////////////////////////////////
+//// Menü anzeigen           ///
+////////////////////////////////
+
+function createmenu_show($show_arr,$menu_id)
+{
+    foreach ($show_arr as $value)
+    {
+        if ($value[menu_id] == $menu_id AND $value[state] == true) {
+            return true;
+        }
+    }
+    return false;
+}
+
+////////////////////////////////
+//// Navi erzeugen           ///
+////////////////////////////////
+
+function createnavi($navi_arr, $first)
+{
+    unset($template);
+
+    if ($navi_arr[menu_id] == $_GET['mid'] AND $_SESSION["user_level"] == "authorised") {
+        foreach ($navi_arr[link] as $value)
+        {
+            $template .= createlink($value);
+        }
+
+        if ($first == true) {
+            $headline_img = "navi_top";
+        } else {
+            $headline_img = "navi_headline";
+        }
+    }
+    
+    if ($template != "") {
+        $template = '
+            <div id="'.$headline_img.'">
+                <img src="img/pointer.png" alt="" style="vertical-align:middle">&nbsp;<b>'.$navi_arr[title].'</b>
+                <div id="navi_link">
+                    '.$template.'
+                </div>
+            </div>';
+    }
+    
+    return $template;
+}
+
 
 ////////////////////////////////
 //// Seitenlink generieren   ///
@@ -309,9 +345,11 @@ function createmenu_head($title, $toggle)
 function createlink($page_call, $page_link_title = false, $page_link_url = false, $page_link_perm = false)
 {
   global $db;
-   
+
   $index = mysql_query("SELECT * FROM fs_admin_cp WHERE page_call = '$page_call' LIMIT 0,1", $db);
   $createlink_arr = mysql_fetch_assoc($index);
+
+  $sid = "&amp;sid=".session_id();
 
   if ($createlink_arr[permission]!=1)
   {
@@ -327,24 +365,64 @@ function createlink($page_call, $page_link_title = false, $page_link_url = false
   {
       $createlink_arr[link_title] = $page_link_title;
   }
-  
+
   if ($page_link_url!=false)
   {
       $createlink_arr[page_call] = $page_link_url;
   }
+
+  $link_class = "navi";
+  if ($_GET['go'] == $page_call)
+  {
+      $link_class = "navi_selected";
+  }
   
   if ($createlink_arr[permission] == 1)
   {
-      echo'
-
-                        <a class="menu" href="'.$PHP_SELF.'?go='.$createlink_arr[page_call].'">
-                            '.$createlink_arr[link_title].'
-                        </a><br />
-
-     ';
+      return'
+      <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go='.$createlink_arr[page_call].$sid.'" class="navi">- </a>
+      <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go='.$createlink_arr[page_call].$sid.'" class="'.$link_class.'">
+          '.$createlink_arr[link_title].'
+      </a><br />';
+  }
+  else
+  {
+      return "";
   }
 }
 
+////////////////////////////////
+//// Navi first              ///
+////////////////////////////////
+
+function createnavi_first($template)
+{
+    if (strlen($template) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+////////////////////////////////
+//// Navi Permission         ///
+////////////////////////////////
+
+function createnavi_perm($perm_arr)
+{
+    $givePermission = false;
+    foreach ($perm_arr as $value) {
+        if ($_SESSION[$value] == 1) {
+            $givePermission = true;
+        } else {
+            $givePermission = false;
+        }
+    }
+    if ($perm_arr[0] === true) {
+        $givePermission = true;
+    }
+    return $givePermission;
+}
 
 ////////////////////////////
 //// Pic Upload Meldung ////

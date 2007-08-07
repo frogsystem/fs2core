@@ -11,7 +11,7 @@ if ($_POST[username] &&
     switch ($loggedin)
     {
         case 0:
-            systext('Login war erfolgreich<br>Willkommen im Frog System auf ' . $_SERVER[SERVER_NAME]);
+            systext('Login war erfolgreich<br>Herzlich Willkommen im Admin-CP des Frogsystem 2');
             break;
         case 1:
             systext('Login fehlgeschlagen<br>Username existiert nicht');
@@ -31,7 +31,7 @@ if ($_POST[username] &&
 
 elseif ($_SESSION[user_level] == "authorised")
 {
-    systext('Login war erfolgreich<br>Willkommen im Frog System auf ' . $_SERVER[SERVER_NAME]);
+    systext('Login war erfolgreich<br>Herzlich Willkommen im Admin-CP des Frogsystem 2');
 }
 
 ////////////////////////////
