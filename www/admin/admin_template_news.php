@@ -41,7 +41,7 @@
         $tmp[help][1][text] = $admin_phrases[template][news_link][help_2];
         $tmp[help][2][tag] = "{url}";
         $tmp[help][2][text] = $admin_phrases[template][news_link][help_3];
-    $TEMPLATE_EDIT[0] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "news_related_links";
@@ -51,10 +51,10 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{links}";
         $tmp[help][0][text] = $admin_phrases[template][news_related_links][help_1];
-    $TEMPLATE_EDIT[1] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
-    $TEMPLATE_EDIT[2] = false;
+    $TEMPLATE_EDIT[] = false;
     
     $tmp[name] = "news_body";
     $tmp[title] = $admin_phrases[template][news_body][title];
@@ -83,10 +83,10 @@
         $tmp[help][9][text] = $admin_phrases[template][news_body][help_10];
         $tmp[help][10][tag] = "{related_links}";
         $tmp[help][10][text] = $admin_phrases[template][news_body][help_11];
-    $TEMPLATE_EDIT[3] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[4] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "news_headline";
     $tmp[title] = $admin_phrases[template][news_headline][title];
@@ -99,7 +99,7 @@
         $tmp[help][1][text] = $admin_phrases[template][news_headline][help_2];
         $tmp[help][2][tag] = "{url}";
         $tmp[help][2][text] = $admin_phrases[template][news_headline][help_3];
-    $TEMPLATE_EDIT[5] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "news_headline_body";
@@ -111,10 +111,10 @@
         $tmp[help][0][text] = $admin_phrases[template][news_headline_body][help_1];
         $tmp[help][1][tag] = "{downloads}";
         $tmp[help][1][text] = $admin_phrases[template][news_headline_body][help_2];
-    $TEMPLATE_EDIT[6] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[7] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "news_comment_autor";
     $tmp[title] = $admin_phrases[template][news_comment_autor][title];
@@ -125,7 +125,7 @@
         $tmp[help][0][text] = $admin_phrases[template][news_comment_autor][help_1];
         $tmp[help][1][tag] = "{url}";
         $tmp[help][1][text] = $admin_phrases[template][news_comment_autor][help_2];
-    $TEMPLATE_EDIT[8] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "news_comment_body";
@@ -143,15 +143,37 @@
         $tmp[help][3][text] = $admin_phrases[template][news_comment_body][help_4];
         $tmp[help][4][tag] = "{autor_avatar}";
         $tmp[help][4][text] = $admin_phrases[template][news_comment_body][help_5];
-    $TEMPLATE_EDIT[9] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
+    
+    $TEMPLATE_EDIT[] = false;
+    
+    $tmp[name] = "news_comment_form_spam";
+    $tmp[title] = $admin_phrases[template][news_comment_form_spam][title];
+    $tmp[description] = $admin_phrases[template][news_comment_form_spam][description];
+    $tmp[rows] = "7";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{captcha_url}";
+        $tmp[help][0][text] = $admin_phrases[template][news_comment_form_spam][help_1];
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "news_comment_form_spamtext";
+    $tmp[title] = $admin_phrases[template][news_comment_form_spamtext][title];
+    $tmp[description] = $admin_phrases[template][news_comment_form_spamtext][description];
+    $tmp[rows] = "7";
+    $tmp[cols] = "66";
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+    
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "news_comment_form_name";
     $tmp[title] = $admin_phrases[template][news_comment_form_name][title];
     $tmp[description] = $admin_phrases[template][news_comment_form_name][description];
     $tmp[rows] = "4";
     $tmp[cols] = "66";
-    $TEMPLATE_EDIT[10] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "news_comment_form";
@@ -163,10 +185,14 @@
         $tmp[help][0][text] = $admin_phrases[template][news_comment_form][help_1];
         $tmp[help][1][tag] = "{name_input}";
         $tmp[help][1][text] = $admin_phrases[template][news_comment_form][help_2];
-    $TEMPLATE_EDIT[11] = $tmp;
+        $tmp[help][2][tag] = "{antispam}";
+        $tmp[help][2][text] = $admin_phrases[template][news_comment_form][help_3];
+        $tmp[help][3][tag] = "{antispamtext}";
+        $tmp[help][3][text] = $admin_phrases[template][news_comment_form][help_4];
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[12] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "news_search_form";
     $tmp[title] = $admin_phrases[template][news_search_form][title];
@@ -175,7 +201,7 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{years}";
         $tmp[help][0][text] = $admin_phrases[template][news_search_form][help_1];
-    $TEMPLATE_EDIT[13] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
 //////////////////////////

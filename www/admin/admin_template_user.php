@@ -35,7 +35,7 @@
     $tmp[description] = $admin_phrases[template][user_mini_login][description];
     $tmp[rows] = "20";
     $tmp[cols] = "66";
-    $TEMPLATE_EDIT[0] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "user_user_menu";
@@ -49,7 +49,7 @@
         $tmp[help][1][text] = $admin_phrases[template][user_user_menu][help_2] ;
         $tmp[help][2][tag] = "{logout}";
         $tmp[help][2][text] = $admin_phrases[template][user_user_menu][help_3] ;
-    $TEMPLATE_EDIT[1] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "user_admin_link";
@@ -59,10 +59,10 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{adminlink}";
         $tmp[help][0][text] = $admin_phrases[template][user_admin_link][help_1];
-    $TEMPLATE_EDIT[2] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[3] = false;
+    $TEMPLATE_EDIT[] = false;
     unset($tmp);
 
     $tmp[name] = "user_login";
@@ -70,7 +70,7 @@
     $tmp[description] = $admin_phrases[template][user_login][description];
     $tmp[rows] = "20";
     $tmp[cols] = "66";
-    $TEMPLATE_EDIT[4] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "user_register";
@@ -78,10 +78,35 @@
     $tmp[description] = $admin_phrases[template][user_register][description];
     $tmp[rows] = "20";
     $tmp[cols] = "66";
-    $TEMPLATE_EDIT[5] = $tmp;
+        $tmp[help][0][tag] = "{antispam}";
+        $tmp[help][0][text] = $admin_phrases[template][user_register][help_1];
+        $tmp[help][1][tag] = "{antispamtext}";
+        $tmp[help][1][text] = $admin_phrases[template][user_register][help_2];
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[6] = false;
+    $TEMPLATE_EDIT[] = false;
+    unset($tmp);
+
+    $tmp[name] = "user_spam";
+    $tmp[title] = $admin_phrases[template][user_spam][title];
+    $tmp[description] = $admin_phrases[template][user_spam][description];
+    $tmp[rows] = "7";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{captcha_url}";
+        $tmp[help][0][text] = $admin_phrases[template][user_spam][help_1];
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+
+    $tmp[name] = "user_spamtext";
+    $tmp[title] = $admin_phrases[template][user_spamtext][title];
+    $tmp[description] = $admin_phrases[template][user_spamtext][description];
+    $tmp[rows] = "7";
+    $tmp[cols] = "66";
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+
+    $TEMPLATE_EDIT[] = false;
     unset($tmp);
 
     $tmp[name] = "user_profil";
@@ -103,7 +128,7 @@
         $tmp[help][5][text] = $admin_phrases[template][user_profil][help_6];
         $tmp[help][6][tag] = "{kommentare}";
         $tmp[help][6][text] = $admin_phrases[template][user_profil][help_7];
-    $TEMPLATE_EDIT[7] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "user_profiledit";
@@ -119,10 +144,10 @@
         $tmp[help][2][text] = $admin_phrases[template][user_profiledit][help_3];
         $tmp[help][3][tag] = "{email_zeigen}";
         $tmp[help][3][text] = $admin_phrases[template][user_profiledit][help_4];
-    $TEMPLATE_EDIT[8] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[9] = false;
+    $TEMPLATE_EDIT[] = false;
     unset($tmp);
     
     $tmp[name] = "user_memberlist_body";
@@ -154,7 +179,7 @@
         $tmp[help][10][text] = $admin_phrases[template][user_memberlist_body][help_11];
         $tmp[help][11][tag] = "{arrow_comments}";
         $tmp[help][11][text] = $admin_phrases[template][user_memberlist_body][help_12];
-    $TEMPLATE_EDIT[10] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
     $tmp[name] = "user_memberlist_userline";
@@ -178,7 +203,7 @@
         $tmp[help][6][text] = $admin_phrases[template][user_memberlist_adminline][help_7];
         $tmp[help][7][tag] = "{comments}";
         $tmp[help][7][text] = $admin_phrases[template][user_memberlist_adminline][help_8];
-    $TEMPLATE_EDIT[11] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "user_memberlist_adminline";
@@ -202,7 +227,7 @@
         $tmp[help][6][text] = $admin_phrases[template][user_memberlist_adminline][help_7];
         $tmp[help][7][tag] = "{comments}";
         $tmp[help][7][text] = $admin_phrases[template][user_memberlist_adminline][help_8];
-    $TEMPLATE_EDIT[12] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
         
 //////////////////////////

@@ -96,7 +96,7 @@ echo'
 
 
 <div id="head">
-     Seitenname
+     '.$global_config_arr[title].'
      <div id="head_link">
          <a href="'.$global_config_arr[virtualhost].'" target="_self" class="head_link">» zur Hauptseite</a>
      </div>
@@ -529,13 +529,9 @@ echo '</div>
 <div id="menu_top_right">';
 
 if ($_SESSION["user_level"] == "authorised") {
-    echo '<a href="'.$PHP_SELF.'?go=logout" target="_self" class="menu_link">Logout</a>';
+    echo '<a href="'.$PHP_SELF.'?go=logout" target="_self" class="menu_link_right">Logout</a>';
 } else {
-    $menu_class = "menu_link";
-    if ($go=="login") {
-        $menu_class = "menu_link_selected";
-    }
-    echo '<a href="'.$PHP_SELF.'?go=login" target="_self" class="'.$menu_class.'">Login</a>';
+    echo '<a href="'.$PHP_SELF.'?go=login" target="_self" class="menu_link_right">Login</a>';
 }
 
 echo '</div>
@@ -547,7 +543,7 @@ echo '</div>
 if ($template_navi == "") {
     $template_navi = '
         <div id="navi_top" style="height:43px;">
-            <img src="img/pointer.png" alt="">&nbsp;&nbsp;<b>Hallo Admin!</b>
+            <img src="img/pointer.png" alt="" style="vertical-align:text-bottom">&nbsp;<b>Hallo Admin!</b>
             <div id="navi_link">
                Herzlich Willkommen
                im Admin-CP des Frogsystem 2!
@@ -567,7 +563,7 @@ echo'
      <div id="content_container">
          <div id="content_top"></div>
          <div id="content_padding">
-             <img border="0" src="img/pointer.png" alt="" style="vertical-align:middle">
+             <img border="0" src="img/pointer.png" alt="" style="vertical-align:text-top">
              <span style="font-size:8pt;"><b>'.$pagetitle.'</b></span>
              <br /><br />
              <div align="center">

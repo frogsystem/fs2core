@@ -37,7 +37,8 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
                    date = '$_POST[date]',
                    page = '$_POST[page]',
                    page_next = '$_POST[page_next]',
-                   page_prev = '$_POST[page_prev]'
+                   page_prev = '$_POST[page_prev]',
+                   registration_antispam = '$_POST[registration_antispam]'
                WHERE id = '1'", $db);
     systext("Die Konfiguration wurde aktualisiert");
 }
@@ -152,7 +153,7 @@ else
              </td>
              <td class="config" valign="top" width="50%">
                <select name="design" size="1">';
-               
+
                $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
                while ($design_arr = mysql_fetch_assoc($index))
                {
@@ -201,6 +202,24 @@ else
                    if ($config_arr[show_announcement] == 0)
                    echo ' selected="selected"';
                  echo'>nie</option>
+               </select>
+             </td>
+           </tr>
+           <tr>
+             <td class="config" valign="top" width="50%">
+               Anti Spam bei Registrierung:<br>
+               <font class="small">Soll Anti Spam bei der Registrierung werden?</font>
+             </td>
+             <td class="config" valign="top" width="50%">
+               <select name="registration_antispam">
+                 <option value="1"';
+                 if ($config_arr[registration_antispam] == 1)
+                   echo ' selected="selected"';
+                 echo'>ein</option>
+                 <option value="0"';
+                   if ($config_arr[registration_antispam] == 0)
+                   echo ' selected="selected"';
+                 echo'>aus</option>
                </select>
              </td>
            </tr>

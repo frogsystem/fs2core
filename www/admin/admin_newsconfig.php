@@ -4,7 +4,7 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y] && $_POST[com_rights])
+if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y])
 {
     settype($_POST[numnews], 'integer');
     settype($_POST[numhead], 'integer');
@@ -14,6 +14,7 @@ if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y]
     settype($_POST[cat_pic_x], 'integer');
     settype($_POST[cat_pic_y], 'integer');
     settype($_POST[com_rights], 'integer');
+    settype($_POST[com_antispam], 'integer');
     
     mysql_query("UPDATE fs_news_config
                  SET num_news        = '$_POST[numnews]',
@@ -23,7 +24,9 @@ if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y]
                      para_handling   = '$_POST[para_handling]',
                      cat_pic_x       = '$_POST[cat_pic_x]',
                      cat_pic_y       = '$_POST[cat_pic_y]',
-                     com_rights      = '$_POST[com_rights]'", $db);
+                     com_rights      = '$_POST[com_rights]',
+                     com_antispam    = '$_POST[com_antispam]',
+                     com_sort        = '$_POST[com_sort]'", $db);
     systext("Die Konfiguration wurde aktualisiert");
 }
 
@@ -182,6 +185,46 @@ else
                                         echo'>registrierte User</option>
                                         <option value="0"';
                                         if ($config_arr[com_rights] == 0)
+                                            echo ' selected="selected"';
+                                        echo'>niemanden</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top" width="50%">
+                                    Kommentare sortieren:<br>
+                                    <font class="small">Wie sollen die Kommentare sortiert werden?</font>
+                                </td>
+                                <td class="config" valign="top" width="50%">
+                                    <select name="com_sort">
+                                        <option value="asc"';
+                                        if ($config_arr[com_sort] == "asc")
+                                            echo ' selected="selected"';
+                                        echo'>Alte zuerst</option>
+                                        <option value="desc"';
+                                        if ($config_arr[com_sort] == "desc")
+                                            echo ' selected="selected"';
+                                        echo'>Neue zuerst</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top" width="50%">
+                                    Anti Spam bei Kommentaren für:<br>
+                                    <font class="small">Soll Anti Spam bei Kommentaren aktiviert sein?</font>
+                                </td>
+                                <td class="config" valign="top" width="50%">
+                                    <select name="com_antispam">
+                                        <option value="2"';
+                                        if ($config_arr[com_antispam] == 2)
+                                            echo ' selected="selected"';
+                                        echo'>alle User</option>
+                                        <option value="1"';
+                                        if ($config_arr[com_antispam] == 1)
+                                            echo ' selected="selected"';
+                                        echo'>nicht registrierte User</option>
+                                        <option value="0"';
+                                        if ($config_arr[com_antispam] == 0)
                                             echo ' selected="selected"';
                                         echo'>niemanden</option>
                                     </select>

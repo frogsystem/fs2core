@@ -118,6 +118,13 @@ $admin_phrases[template][news_comment_body][help_3]             = "Der Text des 
 $admin_phrases[template][news_comment_body][help_4]             = "Bindet den Namen eines nicht registrierten Autors oder das Template \"Kommentar Autor\" ein.";
 $admin_phrases[template][news_comment_body][help_5]             = "Bindet einen evtl. Avatar des Autors ein.";
 
+$admin_phrases[template][news_comment_form_spam][title]         = "Anti Spam";
+$admin_phrases[template][news_comment_form_spam][description]   = "Captcha zum Schutz gegen Spam-Bots.";
+$admin_phrases[template][news_comment_form_spam][help_1]        = "URL zum Anti Spam Captcha Bild.";
+
+$admin_phrases[template][news_comment_form_spamtext][title]     = "Anti Spam Text";
+$admin_phrases[template][news_comment_form_spamtext][description]= "Erklärungstext, warum Anti Spam verwendet wird.";
+
 $admin_phrases[template][news_comment_form_name][title]         = "Eingabefeld Name";
 $admin_phrases[template][news_comment_form_name][description]   = "Wird angezeigt, wenn der User nicht registriert ist.";
 
@@ -125,6 +132,8 @@ $admin_phrases[template][news_comment_form][title]              = "Kommentar For
 $admin_phrases[template][news_comment_form][description]        = "Formular zum schreiben von Kommentaren.";
 $admin_phrases[template][news_comment_form][help_1]             = "ID der News, um sie eindeutig zu identifizieren.";
 $admin_phrases[template][news_comment_form][help_2]             = "Bindet den Namen des angemeldeten Users, bzw. das Template \"Eingabefeld Name\" ein.";
+$admin_phrases[template][news_comment_form][help_3]             = "Bindet das Anti Spam Captcha ein.";
+$admin_phrases[template][news_comment_form][help_4]             = "Bindet den Erklärungstext, warum Anti Spam verwendet wird ein.";
 
 $admin_phrases[template][news_search_form][title]               = "Newsarchiv Suche";
 $admin_phrases[template][news_search_form][description]         = "Formular für die Suche im Archiv.";
@@ -379,6 +388,15 @@ $admin_phrases[template][user_login][description]               = "Großes User-L
 
 $admin_phrases[template][user_register][title]                  = "Registrieren";
 $admin_phrases[template][user_register][description]            = "Forumlar zur Registrierung auf der Seite.";
+$admin_phrases[template][user_register][help_1]                 = "Bindet das Anti Spam Captcha ein.";
+$admin_phrases[template][user_register][help_2]                 = "Bindet den Erklärungstext, warum Anti Spam verwendet wird ein.";
+
+$admin_phrases[template][user_spam][title]                      = "Anti Spam";
+$admin_phrases[template][user_spam][description]                = "Captcha zum Schutz gegen Spam-Bots.";
+$admin_phrases[template][user_spam][help_1]                     = "URL zum Anti Spam Captcha Bild.";
+
+$admin_phrases[template][user_spamtext][title]                  = "Anti Spam Text";
+$admin_phrases[template][user_spamtext][description]            = "Erklärungstext, warum Anti Spam verwendet wird.";
 
 $admin_phrases[template][user_profil][title]                    = "Profil";
 $admin_phrases[template][user_profil][description]              = "Öffentliche Profilseite der User.";

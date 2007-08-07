@@ -12,7 +12,9 @@ $phrases[registration]      = "Registrierung";
 
 // Kommentare
 $phrases[add_comment]       = "Kommentar hinzufügen";
-$phrases[comment_not_added] = "Kommentar konnte nicht hinzugefügt werden.<br>Es müssen alle Felder ausgefüllt sein.";
+$phrases[comment_not_added] = "Kommentar konnte nicht hinzugefügt werden.";
+$phrases[comment_empty]     = "<br>Es müssen alle Felder ausgefüllt sein.";
+$phrases[comment_spam]      = "<br>Die Rechenaufgabe muss richtig gelöst werden.";
 
 // Download
 $phrases[dl_not_logged_in]  = "<font color=\"red\"><b>Hinweis:</b></font> Um Dateien runterzuladen musst du <a href=\"?go=login\">eingeloggt</a> sein. Ansonsten kannst du nur die Mirros nutzen.";
@@ -29,6 +31,7 @@ $phrases[no_avatar]         = "Kein Bild gewählt";
 $phrases[user_not_exist]    = "Dieser User existiert nicht";
 $phrases[user_exists]       = "Username existiert bereits";
 $phrases[registered]        = "Du bist nun registriert und kannst dich auf der Seite einloggen";
+$phrases[user_antispam]     = "Die Rechenaufgabe muss richtig gelöst werden.";
 
 // Login/out
 $phrases[logged_in]         = "Du bist eingeloggt";

@@ -31,7 +31,7 @@ if ($_POST[username] &&
 
 elseif ($_SESSION[user_level] == "authorised")
 {
-    systext('Login war erfolgreich<br>Herzlich Willkommen im Admin-CP des Frogsystem 2');
+    systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!');
 }
 
 ////////////////////////////

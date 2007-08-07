@@ -522,6 +522,18 @@ function killhtml($text)
     return $text;
 }
 
+//////////////////////////////////
+// kill sv whre not allowed     //
+//////////////////////////////////
+
+function killsv($text)
+{
+    $text = str_replace("[", "&#x5B;", $text);
+    $text = str_replace("]", "&#x5D;", $text);
+    $text = str_replace("%", "&#x25;", $text);
+    return $text;
+}
+
 
 //////////////////////////////
 // Format text with FS Code //

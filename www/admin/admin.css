@@ -273,7 +273,7 @@ a.head_link:hover,a.head_link:focus { text-decoration:underline; }
 /**************************************************/
 /* menu links styles */
 /**************************************************/
-a.menu_link,a.menu_link_selected
+a.menu_link,a.menu_link_selected,a.menu_link_right
 {
     font-size:9pt;
     font-family:Arial;
@@ -294,11 +294,16 @@ a.menu_link_selected
     background-image:url('img/menubg_hover.jpg');
 }
 
-a.menu_link:hover,a.menu_link:focus,a.menu_link_selected:hover,a.menu_link_selected:focus
+a.menu_link:hover,a.menu_link:focus,a.menu_link_selected:hover,a.menu_link_selected:focus,a.menu_link_right:hover,a.menu_link_right:focus
 {
     text-decoration:none;
     font-weight:normal;
     background-image:url('img/menubg_hover.jpg');
+}
+a.menu_link_right:hover,a.menu_link_right:focus
+{
+    background-image:url('img/menu_top_r_hover.jpg');
+    background-position:right top;
 }
 a.menu_link_selected:hover,a.menu_link_selected:focus
 {

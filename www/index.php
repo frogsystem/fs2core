@@ -172,9 +172,7 @@ $index = mysql_query("select replace_string, replace_thing from fs_includes wher
 while ($sv_arr = mysql_fetch_assoc($index))
 {
     // Include-URL laden
-    $sv_arr['replace_thing'] = str_replace("[", "&#x5B;", $sv_arr['replace_thing']);
-    $sv_arr['replace_thing'] = str_replace("]", "&#x5D;", $sv_arr['replace_thing']);
-    $sv_arr['replace_thing'] = str_replace("%", "&#x25;", $sv_arr['replace_thing']);
+    $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
     $template_index = str_replace($sv_arr['replace_string'], $sv_arr['replace_thing'], $template_index);
 }
 unset($sv_arr);

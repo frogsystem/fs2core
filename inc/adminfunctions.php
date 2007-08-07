@@ -326,7 +326,7 @@ function createnavi($navi_arr, $first)
     if ($template != "") {
         $template = '
             <div id="'.$headline_img.'">
-                <img src="img/pointer.png" alt="" style="vertical-align:middle">&nbsp;<b>'.$navi_arr[title].'</b>
+                <img src="img/pointer.png" alt="" style="vertical-align:text-bottom">&nbsp;<b>'.$navi_arr[title].'</b>
                 <div id="navi_link">
                     '.$template.'
                 </div>
