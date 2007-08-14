@@ -100,7 +100,7 @@ function create_templatepage($template_arr, $go)
         
         $return_template .= '
         <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="'.$_SERVER[PHP_SELF].'" method="post">
                         <input type="hidden" value="'.$go.'" name="go">
                         <input type="hidden" value="'.$_POST[design].'" name="design">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -382,8 +382,7 @@ function createlink($page_call, $page_link_title = false, $page_link_url = false
       return'
       <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go='.$createlink_arr[page_call].$sid.'" class="navi">- </a>
       <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go='.$createlink_arr[page_call].$sid.'" class="'.$link_class.'">
-          '.$createlink_arr[link_title].'
-      </a><br />';
+          '.$createlink_arr[link_title].'</a><br />';
   }
   else
   {

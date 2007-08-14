@@ -15,11 +15,12 @@ if ($_POST[stayonline]==1)
     admin_set_cookie($_POST[username], $_POST[userpassword]);
 }
 
-if ($HTTP_COOKIE_VARS["login"])
+if ($_COOKIE["login"])
 {
-    $userpassword = substr($HTTP_COOKIE_VARS["login"], 0, 32);
-    $username = substr($HTTP_COOKIE_VARS["login"], 32, strlen($HTTP_COOKIE_VARS["login"]));
+    $userpassword = substr($_COOKIE["login"], 0, 32);
+    $username = substr($_COOKIE["login"], 32, strlen($HTTP_COOKIE_VARS["login"]));
     admin_login($username, $userpassword, true);
+    $session_url = "";
 }
 else
 {
@@ -88,7 +89,7 @@ echo'
     <title>Frogsystem 2 - '.$pagetitle.'</title>
     
     <link rel="stylesheet" type="text/css" href="admin.css">
-    <link rel="stylesheet" type="text/css" href="../res/editor.css">
+    <link rel="stylesheet" type="text/css" href="editor.css">
     <script src="functions.js" type="text/javascript"></script>
     <script src="../res/functions.js" type="text/javascript"></script>
 </head>
@@ -141,6 +142,22 @@ $NAVI_ARR[link][] = "allconfig";
 $NAVI_ARR[link][] = "allannouncement";
 $NAVI_ARR[link][] = "allphpinfo";
 $NAVI_ARR[link][] = "emailtemplate";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// iwac editor
+//////////////////////////////
+
+$NAVI_ARR[title] = "Editor";
+$NAVI_ARR[menu_id] = "general";
+
+$NAVI_ARR[link][] = "editorconfig";
+$NAVI_ARR[link][] = "editordesign";
+$NAVI_ARR[link][] = "editorsmilies";
+$NAVI_ARR[link][] = "editorfscode";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -246,6 +263,7 @@ $NAVI_ARR[menu_id] = "media";
 
 $NAVI_ARR[link][] = "screennewcat";
 $NAVI_ARR[link][] = "screencat";
+$NAVI_ARR[link][] = "screenconfig";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -260,7 +278,6 @@ $NAVI_ARR[menu_id] = "media";
 
 $NAVI_ARR[link][] = "screenadd";
 $NAVI_ARR[link][] = "screenedit";
-$NAVI_ARR[link][] = "screenconfig";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -387,7 +404,7 @@ $NAVI_ARR[link][] = "newstemplate";
 $NAVI_ARR[link][] = "artikeltemplate";
 $NAVI_ARR[link][] = "polltemplate";
 $NAVI_ARR[link][] = "screenshottemplate";
-//$NAVI_ARR[link][] = "wallpapertemplate";
+$NAVI_ARR[link][] = "wallpapertemplate";
 $NAVI_ARR[link][] = "randompictemplate";
 $NAVI_ARR[link][] = "dltemplate";
 $NAVI_ARR[link][] = "shoptemplate";

@@ -6,7 +6,7 @@
 
 if ($_SESSION[user_level] == "loggedin")
 {
-    sys_message("Login<br>", $phrases[logged_in]);
+    $template = sys_message("Login<br>", $phrases[logged_in]);
 }
 
 //////////////////////////////

@@ -62,7 +62,7 @@ if ($_POST[usermail] && $_SESSION[user_id])
 
     // Meldung ausgeben
     $message .= $phrases[profile_update];
-    sys_message("Profil", $message);
+    $template .= sys_message("Profil", $message);
 }
 
 //////////////////////////////

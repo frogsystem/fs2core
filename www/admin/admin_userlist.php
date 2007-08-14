@@ -4,7 +4,7 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST[user_per_page] && $_POST[user_per_page]!=0)
+if ($_POST[user_per_page] && ($_POST[user_per_page]>0 OR $_POST[user_per_page]==-1))
 {
     settype($_POST[user_per_page], 'integer');
     
@@ -31,7 +31,8 @@ else
                             <tr>
                                 <td class="config" valign="top" width="50%">
                                     User pro Seite:<br>
-                                    <font class="small">Gibt die Anzahl an Bildern in einer Zeile an.</font>
+                                    <font class="small">Gibt die Anzahl an Usern auf einer Seite an.<br />
+                                    <b>-1 um alle User auf einer Seite anzeigen zu lassen</b></font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <input class="text" size="2" name="user_per_page" value="'.$config_arr[user_per_page].'" maxlength="3"> User<br /><font class="small">(0 ist nicht zulässig)</font>

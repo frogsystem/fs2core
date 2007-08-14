@@ -43,7 +43,7 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
         if (mysql_num_rows($index) > 0) { $sysmeldung .= $phrases[user_exists]; }
         if (mysql_num_rows($index) > 0 AND $anti_spam != true) { $sysmeldung .= "<br />"; }
         if ($anti_spam != true) { $sysmeldung .= $phrases[user_antispam]; }
-        sys_message($phrases[sysmessage], $phrases[user_antispam]);
+        $template .= sys_message($phrases[sysmessage], $phrases[user_antispam]);
         
         // Registerformular erneut ausgeben
         $index = mysql_query("select user_spam from fs_template where id = '$global_config_arr[design]'", $db);
@@ -54,9 +54,10 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
         $user_spam_text = stripslashes(mysql_result($index, 0, "user_spamtext"));
 
         $index = mysql_query("select user_register from fs_template where id = '$global_config_arr[design]'", $db);
-        $template = stripslashes(mysql_result($index, 0, "user_register"));
-        $template = str_replace("{antispam}", $user_spam, $template);
-        $template = str_replace("{antispamtext}", $user_spam_text, $template);
+        $template_form .= stripslashes(mysql_result($index, 0, "user_register"));
+        $template_form = str_replace("{antispam}", $user_spam, $template_form);
+        $template_form = str_replace("{antispamtext}", $user_spam_text, $template_form);
+        $template .= $template_form;
     }
 
     else

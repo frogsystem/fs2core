@@ -4,7 +4,7 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_POST[max_size] && $_POST[pics_per_row] && $_POST[pics_per_page] && $_POST[pics_per_row]!=0 && $_POST[pics_per_page]!=0)
+if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_POST[max_size] && $_POST[pics_per_row] && $_POST[pics_per_page] && $_POST[pics_per_row]>0 && ($_POST[pics_per_page]>0 OR $_POST[pics_per_page]==-1))
 {
     settype($_POST[screenx], 'integer');
     settype($_POST[screeny], 'integer');
@@ -13,6 +13,9 @@ if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_
     settype($_POST[max_size], 'integer');
     settype($_POST[pics_per_row], 'integer');
     settype($_POST[pics_per_page], 'integer');
+    settype($_POST[show_img_x], 'integer');
+    settype($_POST[show_img_y], 'integer');
+    
     $update = "UPDATE fs_screen_config
                SET screen_x = '$_POST[screenx]',
                    screen_y = '$_POST[screeny]',
@@ -21,7 +24,9 @@ if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_
                    max_size = '$_POST[max_size]',
                    pics_per_row = '$_POST[pics_per_row]',
                    pics_per_page = '$_POST[pics_per_page]',
-                   sort = '$_POST[sort]'";
+                   sort = '$_POST[sort]',
+                   show_img_x = '$_POST[show_img_x]',
+                   show_img_y = '$_POST[show_img_y]'";
     mysql_query($update, $db);
     systext("Die Konfiguration wurde aktualisiert");
 }
@@ -87,7 +92,6 @@ else
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <input class="text" size="1" name="pics_per_page" value="'.$config_arr[pics_per_page].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zulässig)</font>
-                                </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
@@ -105,6 +109,17 @@ else
                                           echo ' selected="selected"';
                                         echo'>neue Bilder zuerst</option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top" width="70%">
+                                    Bildbetrachter Anzeigegröße:<br>
+                                    <font class="small">Größe in der die Bilder im Bilderbetrachter max. angezeigt werden.</font>
+                                </td>
+                                <td class="config" valign="top" width="30%">
+                                    <input class="text" size="5" name="show_img_x" value="'.$config_arr[show_img_x].'" maxlength="4">
+                                    x
+                                    <input class="text" size="5" name="show_img_y" value="'.$config_arr[show_img_y].'" maxlength="4">
                                 </td>
                             </tr>
                             <tr>

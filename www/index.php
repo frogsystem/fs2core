@@ -24,16 +24,24 @@ $template_main_menu = stripslashes(mysql_result($index, 0, "main_menu"));
 // Inhalt einfügen
 if (!isset($_GET[go]))
 {
-  $_GET[go] = "news";
+  $goto = "news";
 }
 else
 {
-  $_GET[go] = savesql($_GET[go]);
-  $index = mysql_query("select artikel_url from fs_artikel where artikel_url = '$_GET[go]'");
+  $goto = savesql($_GET[go]);
+  $index = mysql_query("select artikel_url from fs_artikel where artikel_url = '$goto'");
 }
-if (file_exists("data/".$_GET[go].".php"))
+
+//Go-Aliase
+if ($goto == "screenshots" OR $goto == "wallpaper")
 {
-  include("data/".$_GET[go].".php");
+  $goto = "gallery";
+}
+
+//Ausgabe einbinden
+if (file_exists("data/".$goto.".php"))
+{
+  include("data/".$goto.".php");
 }
 elseif (mysql_num_rows($index) == 1)
 {
@@ -105,9 +113,14 @@ if ($global_config_arr[show_favicon] == 1)
   $template_main .= '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico">
   ';
 
-  $template_main .= '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />
-  <link rel="stylesheet" type="text/css" href="res/editor.css" />
-  <script type="text/javascript" src="res/functions.js" ></script>';
+  $template_main .= '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />';
+
+  // Editor CSS laden
+  include("res/editor.css.php");
+  $template_main .= $template;
+  unset($template);
+  
+  $template_main .= '<script type="text/javascript" src="res/functions.js" ></script>';
 
 // <link rel="alternate" type="application/rss+xml" href="rss/rss.php" title="RSS Feed" />';
 

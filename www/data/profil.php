@@ -48,7 +48,6 @@ if (mysql_num_rows($index) > 0)
     $template = str_replace("{artikel}", $user_arr[user_artikel], $template); 
     $template = str_replace("{kommentare}", $user_arr[user_comments], $template);
 
-    echo $template;
 }
 
 /////////////////////////
@@ -57,6 +56,6 @@ if (mysql_num_rows($index) > 0)
 
 else
 {
-    sys_message($phrases[sysmessage], $phrases[user_not_exist]);
+    $template = sys_message($phrases[sysmessage], $phrases[user_not_exist]);
 }
 ?>

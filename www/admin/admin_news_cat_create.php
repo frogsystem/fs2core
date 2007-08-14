@@ -17,9 +17,8 @@ if ($_POST['name'])
 
   $index = mysql_query("select * from fs_news_config", $db);
   $admin_news_config_arr = mysql_fetch_assoc($index);
-  
-  $index = mysql_query("select cat_id from fs_news_cat ORDER BY cat_id DESC", $db);
-  $id = mysql_result($index, "cat_id");
+
+  $id = mysql_insert_id();
 
   if ($_FILES['cat_pic']['name'] != "")
   {

@@ -43,7 +43,7 @@
         $tmp[help][2][text] = $admin_phrases[template][screenshot_cat][help_3];
         $tmp[help][3][tag] = "{number}";
         $tmp[help][3][text] = $admin_phrases[template][screenshot_cat][help_4];
-    $TEMPLATE_EDIT[0] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "screenshot_body";
@@ -53,10 +53,10 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{cats}";
         $tmp[help][0][text] = $admin_phrases[template][screenshot_body][help_1];
-    $TEMPLATE_EDIT[1] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[2] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "screenshot_pic";
     $tmp[title] = $admin_phrases[template][screenshot_pic][title];
@@ -69,7 +69,7 @@
         $tmp[help][1][text] = $admin_phrases[template][screenshot_pic][help_2];
         $tmp[help][2][tag] = "{text}";
         $tmp[help][2][text] = $admin_phrases[template][screenshot_pic][help_3];
-    $TEMPLATE_EDIT[3] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "screenshot_cat_body";
@@ -83,7 +83,7 @@
         $tmp[help][1][text] = $admin_phrases[template][screenshot_cat_body][help_2];
         $tmp[help][2][tag] = "{page}";
         $tmp[help][2][text] = $admin_phrases[template][screenshot_cat_body][help_3];
-    $TEMPLATE_EDIT[4] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
 //////////////////////////

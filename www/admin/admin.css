@@ -109,88 +109,11 @@ select
    background-color:#B7B7B7;
   }
 
-#menu
-{
- position:relative;
- background-color:#EEEEEE;
- width:140px;
- border-right:1px solid #000000;
- border-bottom:1px solid #000000;
- padding:5px;
- padding-top:7px;
- top:-2px;
-}
-#menushadow
-{
- position:absolute;
- background-color:#575757;
- width:153px;
- z-index:1;
-}
-
-#main
-{
- position:absolute;
- top:25px;
- left:50%;
- margin-left: -220px;
-}
-#mainshadow
-{
- width:622px;
- background-color:#575757;
-}
-#maincontent
-{
- position:relative;
- padding:10px;
- top:-2px;
- left:-2px;
- width:600px;
- background-color:#EEEEEE;
- border:1px solid #000000;
-}
 
 /* Toggle Menu */
 
 .toggle {
  display: none;
-}
-
-/* Tooltip */
-
-.tooltip {
- position: absolute;
- text-decoration: none;
- font-style: bold;
- border-bottom:none;
-}
-.tooltip:hover {
- z-index: 1000;
- background: transparent;
- cursor:help;
- border: none;
-}
-.tooltip span {
- display: none;
- position: absolute;
- text-decoration: none;
-}
-.tooltip:hover span {
- display: block;
- position: absolute;
- top: 25px;
- left: 0px;
- width: 150px;
- z-index: 100;
- color: #000000;
- border: 1px solid;
- border-color: #000000 #000000 #000000 #000000;
- padding: 3px;
- background: #EEEEEE;
- font-family: Verdana, Arial, Helvetica, Sans-serif;
- font-style: Normal;
- text-align: left;
 }
 
 /**************************************************/
@@ -510,4 +433,44 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
     position:relative;
     bottom:0px;
     left:0px;
+}
+
+
+
+/**************************************************/
+/* tooltip */
+/**************************************************/
+
+.tooltip {
+ position: absolute;
+ text-decoration: none;
+ font-style: bold;
+ border-bottom:none;
+}
+.tooltip:hover {
+ z-index: 1000;
+ background: transparent;
+ cursor:help;
+ border: none;
+}
+.tooltip span {
+ display: none;
+ position: absolute;
+ text-decoration: none;
+}
+.tooltip:hover span {
+ display: block;
+ position: absolute;
+ top: 25px;
+ left: 0px;
+ width: 150px;
+ z-index: 100;
+ color: #000000;
+ border: 1px solid;
+ border-color: #000000 #000000 #000000 #000000;
+ padding: 3px;
+ background: #EEEEEE;
+ font-family: Verdana, Arial, Helvetica, Sans-serif;
+ font-style: Normal;
+ text-align: left;
 }

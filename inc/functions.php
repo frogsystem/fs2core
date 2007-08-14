@@ -23,6 +23,7 @@ function delete_old_randoms()
 function code_textarea($name, $text="", $width="", $height="", $class="", $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
 {
     global $global_config_arr;
+    global $db;
 
     if ($name != "") {
         $name2 = 'name="'.$name.'" id="'.$name.'"';
@@ -42,193 +43,194 @@ function code_textarea($name, $text="", $width="", $height="", $class="", $all=t
         $class2 = 'class="'.$class.'"';
     }
 
-    $textarea = "";
-    $textarea .= '
-    
-<table cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top">
-    <td>
-      <textarea '.$name2.' '.$class2.' style="'.$width2.' '.$height2.'">'.$text.'</textarea>
-    </td>
-';
-if ($all==true OR $fs_smilies==1) {
-  $textarea .= '
-    <td style="width:4px; empty-cells:show;">
-    </td>
-    <td>
+    $style = $name2.' '.$class2.' style="'.$width2.' '.$height2.'"';
+
+  if ($all==true OR $fs_smilies==1) {
+    $smilies = '
       <fieldset style="width:46px;">
         <legend class="small" align="left"><font class="small">Smilies</font></legend>
-          <table cellpadding="2" cellspacing="0" border="0" width="100%">
-            <tr align="center">
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/happy.gif" alt="" onClick="insert(\''.$name.'\', \':-)\', \'\')" class="editor_smilies" /></td>
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/sad.gif" alt="" onClick="insert(\''.$name.'\', \':-(\', \'\')" class="editor_smilies" /></td>
-            </tr>
-            <tr align="center">
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/wink.gif" alt="" onClick="insert(\''.$name.'\', \';-)\', \'\')" class="editor_smilies" /></td>
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/tongue.gif" alt="" onClick="insert(\''.$name.'\', \':-P\', \'\')" class="editor_smilies" /></td>
-            </tr>
-            <tr align="center">
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/grin.gif" alt="" onClick="insert(\''.$name.'\', \'xD\', \'\')" class="editor_smilies" /></td>
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/shocked.gif" alt="" onClick="insert(\''.$name.'\', \':-o\', \'\')" class="editor_smilies" /></td>
-            </tr>
-            <tr align="center">
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/sweet.gif" alt="" onClick="insert(\''.$name.'\', \'^_^\', \'\')" class="editor_smilies" /></td>
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/neutral.gif" alt="" onClick="insert(\''.$name.'\', \':-/\', \'\')" class="editor_smilies" /></td>
-            </tr>
-            <tr align="center">
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/satisfied.gif" alt="" onClick="insert(\''.$name.'\', \':-]\', \'\')" class="editor_smilies" /></td>
-              <td><img src="'.$global_config_arr[virtualhost].'images/smilies/angry.gif" alt="" onClick="insert(\''.$name.'\', \'>-(\', \'\')" class="editor_smilies" /></td>
-            </tr>
-         </table>
-      </fieldset>
-    </td>
-  ';
-}
-$textarea .= '
-  </tr>
-</table>
+          <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
-<table cellpadding="0" cellspacing="0" border="0">
-  <tr valign="bottom">';
+    $index = mysql_query("select * from fs_editor_config", $db);
+    $config_arr = mysql_fetch_assoc($index);
+    $config_arr[num_smilies] = $config_arr[smilies_rows]*$config_arr[smilies_cols];
+            
+    $zaehler = 0;
+    $index = mysql_query("SELECT * FROM fs_smilies ORDER by `order` ASC LIMIT 0, $config_arr[num_smilies]", $db);
+    while ($smilie_arr = mysql_fetch_assoc($index))
+    {
+        $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id]);
+
+        $smilie_template = '<td><img src="'.$smilie_arr[url].'" alt="" onClick="insert(\''.$name.'\', \''.$smilie_arr[replace_string].'\', \'\')" class="editor_smilies" /></td>';
+
+        $zaehler += 1;
+        switch ($zaehler)
+        {
+            case $config_arr[smilies_cols] == 1:
+                $zaehler = 0;
+                $smilies .= "<tr align=\"center\">\n\r";
+                $smilies .= $smilie_template;
+                $smilies .= "</tr>\n\r";
+                break;
+            case $config_arr[smilies_cols]:
+                $zaehler = 0;
+                $smilies .= $smilie_template;
+                $smilies .= "</tr>\n\r";
+                break;
+            case 1:
+                $smilies .= "<tr align=\"center\">\n\r";
+                $smilies .= $smilie_template;
+                break;
+            default:
+                $smilies .= $smilie_template;
+                break;
+        }
+    }
+    unset($smilie_arr);
+    unset($smilie_template);
+    unset($config_arr);
+    
+    $smilies .= '</table></fieldset>';
+
+  } else {
+    $smilies = "";
+  }
+
+$buttons = "";
   
 if ($all==true OR $fs_b==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert(\''.$name.'\', \'[b]\', \'[/b]\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/bold.gif" alt="B" title="fett" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/bold.gif', "B", "fett", "insert('$name', '[b]', '[/b]')");
 }
 if ($all==true OR $fs_i==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert(\''.$name.'\', \'[i]\', \'[/i]\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/italic.gif" alt="I" title="kursiv" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/italic.gif', "I", "kursiv", "insert('$name', '[i]', '[/i]')");
 }
 if ($all==true OR $fs_u==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert(\''.$name.'\', \'[u]\', \'[/u]\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/underline.gif" alt="U" title="unterstrichen" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/underline.gif', "U", "unterstrichen", "insert('$name','[u]','[/u]')");
 }
 if ($all==true OR $fs_s==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert(\''.$name.'\', \'[s]\', \'[/s]\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/strike.gif" alt="S" title="durgestrichen" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/strike.gif', "S", "durgestrichen", "insert('$name', '[s]', '[/s]')");
 }
+
+
 if ($all==true OR $fs_b==1 OR $fs_i==1 OR $fs_u==1 OR $fs_s==1) {
-  $textarea .= '<td class="editor_td_seperator">
-  </td>';
+  $buttons .= create_textarea_seperator();
 }
+
+
 if ($all==true OR $fs_center==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert(\''.$name.'\', \'[center]\', \'[/center]\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/center.gif" alt="CENTER" title="zentriert" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/center.gif', "CENTER", "zentriert", "insert('$name', '[center]', '[/center]')");
 }
+
+
 if ($all==true OR $fs_center==1) {
-  $textarea .= '<td class="editor_td_seperator">
-  </td>';
+  $buttons .= create_textarea_seperator();
 }
+
+
 if ($all==true OR $fs_font==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert_com(\''.$name.'\', \'font\', \'Bitte gib die gewünschte Schriftart ein: \', \'\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/font.gif" alt="FONT" title="Schriftart" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/font.gif', "FONT", "Schriftart", "insert_com('$name', 'font', 'Bitte gib die gewünschte Schriftart ein:', '')");
 }
 if ($all==true OR $fs_color==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert_com(\''.$name.'\', \'color\', \'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein: \', \'\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/color.gif" alt="COLOR" title="Schriftfarbe" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/color.gif', "COLOR", "Schriftfarbe", "insert_com('$name', 'color', 'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein:', '')");
 }
 if ($all==true OR $fs_size==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert_com(\''.$name.'\', \'size\', \'Bitte gib die gewünschte Schriftgröße (Zahl von 1-7) ein: \', \'\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/size.gif" alt="SIZE" title="Schriftgröße" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/size.gif', "SIZE", "Schriftgröße", "insert_com('$name', 'size', 'Bitte gib die gewünschte Schriftgröße (Zahl von 1-7) ein:', '')");
 }
+
+
 if ($all==true OR $fs_font==1 OR $fs_color==1 OR $fs_size==1) {
-  $textarea .= '<td class="editor_td_seperator">
-  </td>';
+  $buttons .= create_textarea_seperator();
 }
+
+
 if ($all==true OR $fs_img==1) {
-  $textarea .= '<td class="editor_td">
-        <div class="editor_button" onClick="insert_mcom(\''.$name.'\', \'[img]\', \'[/img]\', \'Bitte gib die URL zu deiner Grafik ein:\', \'http://\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/img.gif" alt="IMG" title="Bild einfügen" />
-        </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/img.gif', "IMG", "Bild einfügen", "insert_mcom('$name', '[img]', '[/img]', 'Bitte gib die URL zu der Grafik ein:', 'http://')");
 }
 if ($all==true OR $fs_cimg==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert_mcom(\''.$name.'\', \'[cimg]\', \'[/cimg]\', \'Bitte gib den Namen des Content-Images (mit Endung) ein:\', \'\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/cimg.gif" alt="CIMG" title="Content-Image einfügen" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/cimg.gif', "CIMG", "Content-Image einfügen", "insert_mcom('$name', '[cimg]', '[/cimg]', 'Bitte gib den Namen des Content-Images (mit Endung) ein:', '')");
 }
+
+
 if ($all==true OR $fs_img==1 OR $fs_cimg==1) {
-  $textarea .= '<td class="editor_td_seperator">
-  </td>';
+  $buttons .= create_textarea_seperator();
 }
+
+
 if ($all==true OR $fs_url==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert_com(\''.$name.'\', \'url\', \'Bitte gib die URL ein: \', \'http://\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/url.gif" alt="URL" title="Link einfügen" />
-        </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/url.gif', "URL", "Link einfügen", "insert_com('$name', 'url', 'Bitte gib die URL ein:', 'http://')");
 }
 if ($all==true OR $fs_home==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert_com(\''.$name.'\', \'home\', \'Bitte gib den projektinternen Verweisnamen ein: \', \'\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/home.gif" alt="HOME" title="Projektinternen Link einfügen" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/home.gif', "HOME", "Projektinternen Link einfügen", "insert_com('$name', 'home', 'Bitte gib den projektinternen Verweisnamen ein:', '')");
 }
 if ($all==true OR $fs_email==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert_com(\''.$name.'\', \'email\', \'Bitte gib die Email-Adresse ein: \', \'\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/email.gif" alt="EMAIL" title="Email-Link einfügen" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/email.gif', "@", "Email-Link einfügen", "insert_com('$name', 'email', 'Bitte gib die Email-Adresse ein:', '')");
 }
+
+
 if ($all==true OR $fs_url==1 OR $fs_home==1 OR $fs_email==1) {
-  $textarea .= '<td class="editor_td_seperator">
-  </td>';
+  $buttons .= create_textarea_seperator();
 }
+
+
 if ($all==true OR $fs_code==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert(\''.$name.'\', \'[code]\', \'[/code]\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/code.gif" alt="C" title="Code-Bereich einfügen" />
-        </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/code.gif', "C", "Code-Bereich einfügen", "insert('$name', '[code]', '[/code]')");
 }
 if ($all==true OR $fs_quote==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert(\''.$name.'\', \'[quote]\', \'[/quote]\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/quote.gif" alt="Q" title="Zitat einfügen" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/quote.gif', "Q", "Zitat einfügen", "insert('$name', '[quote]', '[/quote]')");
 }
 if ($all==true OR $fs_noparse==1) {
-  $textarea .= '<td class="editor_td">
-    <div class="editor_button" onClick="insert(\''.$name.'\', \'[noparse]\', \'[/noparse]\')">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/noparse.gif" alt="N" title="Nicht umzuwandelnden Bereich einfügen" />
-    </div>
-  </td>';
+  $buttons .= create_textarea_button('images/icons/noparse.gif', "N", "Nicht umzuwandelnden Bereich einfügen", "insert('$name', '[noparse]', '[/noparse]')");
 }
-$textarea .= '</tr>
-</table><br />';
+
+    $index = mysql_query("SELECT editor_design FROM fs_template WHERE id = '$global_config_arr[design]'");
+    $textarea = stripslashes(mysql_result($index, 0, "editor_design"));
+    $textarea = str_replace("{style}", $style, $textarea);
+    $textarea = str_replace("{text}", $text, $textarea);
+    $textarea = str_replace("{buttons}", $buttons, $textarea);
+    $textarea = str_replace("{smilies}", $smilies, $textarea);
 
     return $textarea;
 }
 
+
+////////////////////////////////
+//// Create textarea Button ////
+////////////////////////////////
+
+function create_textarea_button($img_url, $alt, $title, $insert)
+{
+    global $global_config_arr;
+    unset($button);
+    
+    $javascript = 'onClick="'.$insert.'"';
+
+    $index = mysql_query("SELECT editor_button FROM fs_template WHERE id = '$global_config_arr[design]'");
+    $button = stripslashes(mysql_result($index, 0, "editor_button"));
+    $button = str_replace("{img_url}", $global_config_arr[virtualhost].$img_url, $button);
+    $button = str_replace("{alt}", $alt, $button);
+    $button = str_replace("{title}", $title, $button);
+    $button = str_replace("{javascript}", $javascript, $button);
+    
+    return $button;
+
+}
+
+
+////////////////////////////////////
+//// Create textarea  Seperator ////
+////////////////////////////////////
+
+function create_textarea_seperator()
+{
+    global $global_config_arr;
+    unset($seperator);
+
+    $index = mysql_query("SELECT editor_seperator FROM fs_template WHERE id = '$global_config_arr[design]'");
+    $seperator = stripslashes(mysql_result($index, 0, "editor_seperator"));
+
+    return $seperator;
+
+}
 
 ////////////////////////////////
 //// Image exists           ////
@@ -261,7 +263,7 @@ function image_url($path, $name, $error=true)
   elseif (file_exists("$path"."$name.png"))
     $url = $path."$name.png";
   elseif ($error==true)
-    $url = $global_config_arr[virtualhost]."images/icons/nopic.gif";
+    $url = $global_config_arr[virtualhost]."images/icons/nopic_small.gif";
   else
     $url = "";
 
@@ -297,7 +299,7 @@ function sys_message ($title, $message)
     $template = stripslashes(mysql_result($index, 0, "error"));
     $template = str_replace("{titel}", $title, $template);
     $template = str_replace("{meldung}", $message, $template);
-    echo $template;
+    return $template;
     unset($template);
 }
 
@@ -518,7 +520,7 @@ function killhtml($text)
 {
     $text = trim($text);
     $text = stripslashes($text);
-    $text = htmlspecialchars ($text);
+    $text = htmlspecialchars($text);
     return $text;
 }
 

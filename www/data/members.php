@@ -7,6 +7,9 @@
     //Wieviele User
     $index = mysql_query("SELECT COUNT(*) AS number FROM fs_user", $db);
     $config_arr[number_of_users] = mysql_result($index, 0, "number");
+    if ($config_arr[user_per_page]==-1) {
+        $config_arr[user_per_page] = $config_arr[number_of_users];
+    }
     $config_arr[number_of_pages] = ceil($config_arr[number_of_users]/$config_arr[user_per_page]);
 
     if (!isset($_GET['page']))
@@ -141,17 +144,21 @@ while ($user = mysql_fetch_assoc($users_sql))
 
 //Seitennavigation
 $pagenav = $global_config_arr[page];
+$prev = $global_config_arr[page_prev];
+$next = $global_config_arr[page_next];
 $pagenav = str_replace("{page_number}", $_GET[page], $pagenav );
 $pagenav = str_replace("{total_pages}", $config_arr[number_of_pages], $pagenav );
 //Zurück-Schaltfläche
 if ($_GET['page'] > 1) {
-  $pagenav = str_replace("{prev}", "<a href='?go=members&sort=$_GET[sort]&page=$config_arr[oldpage]'><< </a>", $pagenav);
+  $prev = str_replace("{url}", "?go=members&sort=$_GET[sort]&page=$config_arr[oldpage]", $prev);
+  $pagenav = str_replace("{prev}", $prev, $pagenav);
 } else {
   $pagenav = str_replace("{prev}", "", $pagenav);
 }
 //Weiter-Schaltfläche
 if (($_GET['page']*$config_arr[user_per_page]) < $config_arr[number_of_users]) {
-  $pagenav = str_replace("{next}", "<a href='?go=members&sort=$_GET[sort]&page=$config_arr[newpage]'> >></a>", $pagenav);
+  $next = str_replace("{url}", "?go=members&sort=$_GET[sort]&page=$config_arr[newpage]", $next);
+  $pagenav = str_replace("{next}", $next, $pagenav);
 } else {
   $pagenav = str_replace("{next}", "", $pagenav);;
 }

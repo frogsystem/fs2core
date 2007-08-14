@@ -4,27 +4,54 @@ $config_arr = mysql_fetch_assoc($index);
 
 if ($config_arr[active] == 1)
 {
+    $index_timed = mysql_query("SELECT * FROM fs_screen_random a INNER JOIN fs_screen b ON (a.screen_id = b.screen_id) AND a.start <= UNIX_TIMESTAMP() AND a.end >= UNIX_TIMESTAMP() ORDER BY RAND() LIMIT 1", $db);
+
+    $index_cat = mysql_query("SELECT * FROM fs_screen_cat a INNER JOIN fs_screen b ON (a.cat_id = b.cat_id) AND a.randompic = 1 AND a.cat_type != 2 ORDER BY RAND() LIMIT 1", $db); //cat_type = 2 => wallpaper!
+
   if ($config_arr[type_priority] == 1)
   {
     // random pic (time controlled)
-    $index = mysql_query("SELECT * FROM fs_screen_random a INNER JOIN fs_screen b ON (a.screen_id = b.screen_id) AND a.start <= UNIX_TIMESTAMP() AND a.end >= UNIX_TIMESTAMP() ORDER BY RAND() LIMIT 1", $db);
-    $rows = mysql_num_rows($index);
+    $index = $index_timed;
+    $rows = mysql_num_rows($index_timed);
+    $type = 1;
   }
   else
   {
     // random pic (random from categories)
-    $index = mysql_query("SELECT * FROM fs_screen_cat a INNER JOIN fs_screen b ON (a.cat_id = b.cat_id) AND a.randompic = 1 AND a.cat_type != 2 ORDER BY RAND() LIMIT 1", $db); //cat_type = 2 => wallpaper!
-    $rows = mysql_num_rows($index);
+    $index = $index_cat;
+    $rows = mysql_num_rows($index_cat);
+    $type = 2;
+  }
+
+  if ($rows < 1)
+  {
+    if ($config_arr[type_priority] == 1) {
+      // random pic (random from categories)
+      $index = $index_cat;
+      $rows = mysql_num_rows($index_cat);
+      $type = 2;
+    } else {
+      // random pic (time controlled)
+      $index = $index_timed;
+      $rows = mysql_num_rows($index_timed);
+      $type = 1;
+    }
   }
 
   if ($rows > 0)
   {
     $dbscreenid = mysql_result($index, $randompic, "screen_id");
     $dbscreenname = mysql_result($index, $randompic, "screen_name");
+    $dbscreencat = mysql_result($index, $randompic, "cat_id");
 
-    $bild = "images/screenshots/" . $dbscreenid . ".jpg";
-    $mini = "images/screenshots/" . $dbscreenid . "_s.jpg";
-    $link = 'showimg.php?pic='.$bild.'&amp;title='.$dbscreenname;
+    $bild = image_url("images/screenshots/", $dbscreenid);
+    $mini = image_url("images/screenshots/", $dbscreenid."_s");
+
+    if ($type==1) {
+      $link = 'showimg.php?pic='.$bild.'&amp;title='.$dbscreenname;
+    } else {
+      $link = "showimg.php?screen=1&amp;catid=$dbscreencat&amp;screenid=$dbscreenid";
+    }
 
     $tindex = mysql_query("select randompic_body from fs_template where id = '$global_config_arr[design]'", $db);
     $body = stripslashes(mysql_result($tindex, 0, "randompic_body"));

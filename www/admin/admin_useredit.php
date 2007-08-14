@@ -4,73 +4,71 @@
 //// User aktualisieren ////
 ////////////////////////////
 
-if ($_POST[ueusername] && $_POST[ueusermail])
+if ($_POST[username] && $_POST[usermail])
 {
     $_POST[username] = savesql($_POST[username]);
     $_POST[usermail] = savesql($_POST[usermail]);
-    settype($_POST[ueuserid], 'integer');
+    settype($_POST[userid], 'integer');
     settype($_POST[isadmin], 'integer');
     settype($_POST[showmail], 'integer');
 
     $regdate = mktime(0, 0, 0, $_POST[tag], $_POST[monat], $_POST[jahr]);
-    $_POST[showmail] = ($_POST[showmail] == 1) ? 1 : 0;
  
     // Username schon vorhanden?
-    $index = mysql_query("SELECT user_id FROM fs_user WHERE user_name = '$_POST[ueusername]'", $db);
+    $index = mysql_query("SELECT user_id FROM fs_user WHERE user_name = '$_POST[username]'", $db);
     $rows = mysql_num_rows($index);
     $dbexistid = mysql_result($index, 0, "user_id");
 
     // Neuer name noch nicht vorhanden, oder gleicher User
-    if (($dbexistid == $_POST[ueuserid]) || ($rows == 0))
+    if (($dbexistid == $_POST[userid]) || ($rows == 0))
     {
         if (!isset($_POST[deluser]))
         {
-            $_POST[isadmin] = isset($_POST[isadmin]) ? 1 : 0;
-            $index = mysql_query("select is_admin from fs_user where user_id = '$_POST[ueuserid]'", $db);
+            $index = mysql_query("select is_admin from fs_user where user_id = '$_POST[userid]'", $db);
             $dbisadmin = mysql_result($index, 0, "is_admin");
 
             // Wenn vorher kein Admin, jetzt aber wohl
             if (($_POST[isadmin] == 1) && ($dbisadmin == 0))
             {
                 mysql_query("INSERT INTO fs_permissions (user_id)
-                             VALUES (".$_POST[ueuserid].")", $db);
+                             VALUES (".$_POST[userid].")", $db);
             }
 
             // Wenn vorher Admin, jetzt aber nicht mehr
             if (($_POST[isadmin] == 0) && ($dbisadmin == 1))
             {
-                $dbaction = "delete from fs_permissions where user_id = ".$_POST[ueuserid];
+                $dbaction = "delete from fs_permissions where user_id = ".$_POST[userid];
                 mysql_query($dbaction, $db);
             }
 
             // Neues Passwort?
             if ($_POST[newpass] != "")
             {
-                $ueuserpass = md5($_POST[newpass]);
+                $userpass = md5($_POST[newpass]);
             }
             else
             {
-                $ueuserpass = savesql($_POST[oldpass]);
+                $userpass = savesql($_POST[oldpass]);
             }
 
             $update = "UPDATE fs_user
-                       SET user_name     = '$_POST[ueusername]',
-                           user_mail     = '$_POST[ueusermail]',
-                           user_password = '$ueuserpass',
+                       SET user_name     = '$_POST[username]',
+                           user_mail     = '$_POST[usermail]',
+                           user_password = '$userpass',
                            is_admin      = '$_POST[isadmin]',
                            reg_date      = '$regdate',
                            show_mail     = '$_POST[showmail]'
-                       WHERE user_id = $_POST[ueuserid]";
+                       WHERE user_id = $_POST[userid]";
             mysql_query($update, $db);
 
             systext('User wurde geändert');
         } 
         else  // User löschen
         {
-            $dbaction = "delete from fs_permissions where user_id = ".$_POST[ueuserid];
+            $dbaction = "delete from fs_permissions where user_id = ".$_POST[userid];
             @mysql_query($dbaction, $db);
 
-            $dbaction = "delete from fs_user where user_id = ".$_POST[ueuserid];
+            $dbaction = "delete from fs_user where user_id = ".$_POST[userid];
             mysql_query($dbaction, $db);
 
             mysql_query("update fs_counter set user=user-1", $db);
@@ -87,10 +85,10 @@ if ($_POST[ueusername] && $_POST[ueusermail])
 ////// User editieren //////
 ////////////////////////////
 
-elseif (isset($_POST[euuserid]))
+elseif (isset($_POST[select_user]))
 {
-    settype($_POST[euuserid], 'integer');
-    $index = mysql_query("select * from fs_user where user_id = $_POST[euuserid]", $db);
+    settype($_POST[select_user], 'integer');
+    $index = mysql_query("select * from fs_user where user_id = $_POST[select_user]", $db);
     $user_arr = mysql_fetch_assoc($index);
 
     $user_arr[is_admin] = ($user_arr[is_admin] == 1) ? "checked" : "";
@@ -101,7 +99,7 @@ elseif (isset($_POST[euuserid]))
                         <input type="hidden" value="useredit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$user_arr[user_password].'" name="oldpass">
-                        <input type="hidden" value="'.$_POST[euuserid].'" name="ueuserid">
+                        <input type="hidden" value="'.$_POST[select_user].'" name="userid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top" width="50%">
@@ -109,7 +107,7 @@ elseif (isset($_POST[euuserid]))
                                     <font class="small">Name des Users</font>
                                 </td>
                                 <td class="config" width="50%" valign="top">
-                                    <input class="text" size="30" name="ueusername" value="'.$user_arr[user_name].'" maxlength="100">
+                                    <input class="text" size="30" name="username" value="'.$user_arr[user_name].'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -118,7 +116,7 @@ elseif (isset($_POST[euuserid]))
                                     <font class="small">E-Mail Adresse, an die das Passwort gesendet wird</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="30" name="ueusermail" value="'.$user_arr[user_mail].'" maxlength="100">
+                                    <input class="text" size="30" name="usermail" value="'.$user_arr[user_mail].'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -165,7 +163,7 @@ elseif (isset($_POST[euuserid]))
                                     <font class="status"><b>ACHTUNG!</b> kann nicht rückgängig gemacht werden</font>
                                 </td>
                                 <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="deluser" value="Sicher?">
+                                    <input onClick=\'delalert ("deluser","Soll der User wirklich gelöscht werden?")\' type="checkbox" name="deluser" id="deluser" value="1">
                                 </td>
                             </tr>
                             <tr>
@@ -239,7 +237,7 @@ else
                                     '.$user_arr[user_name].'
                                 </td>
                                 <td class="config">
-                                    <input type="radio" name="euuserid" value="'.$user_arr[user_id].'">
+                                    <input type="radio" name="select_user" value="'.$user_arr[user_id].'">
                                 </td>
                             </tr>
             ';

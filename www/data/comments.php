@@ -83,7 +83,7 @@ if (isset($_POST[addcomment]))
         {
             $reason .= $phrases[comment_spam];
         }
-        sys_message($phrases[comment_not_added], $reason);
+        $template .= sys_message($phrases[comment_not_added], $reason);
     }
 }
 
@@ -96,10 +96,18 @@ $time = time();
 
 // News anzeigen
 $index = mysql_query("select * from fs_news where news_date <= $time and news_id = $_GET[id]", $db);
-while ($news_arr = mysql_fetch_assoc($index))
-{
-   $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
+
+$news_rows = mysql_num_rows($index);
+
+if ($news_rows >0) {
+    $news_arr = mysql_fetch_assoc($index);
+    $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
+} else {
+    $news_template = sys_message($phrases[sysmessage], $phrases[news_not_exist]);
 }
+
+
+
 unset($news_arr);
 
 // Kommentare erzeugen
@@ -226,13 +234,18 @@ if ($config_arr[com_antispam]==0 OR ($config_arr[com_antispam]==1 AND $_SESSION[
     $form_spam_text ="";
 }
 
+//Editor config
+$index = mysql_query("select * from fs_editor_config", $db);
+$editor_config = mysql_fetch_assoc($index);
+
+$template_textarea = code_textarea("text", "", $editor_config[textarea_width], $editor_config[textarea_height], "text", false, $editor_config[smilies],$editor_config[bold],$editor_config[italic],$editor_config[underline],$editor_config[strike],$editor_config[center],$editor_config[font],$editor_config[color],$editor_config[size],$editor_config[img],$editor_config[cimg],$editor_config[url],$editor_config[home],$editor_config[email],$editor_config[code],$editor_config[quote],$editor_config[noparse]);
 
 
 $index = mysql_query("select news_comment_form from fs_template where id = '$global_config_arr[design]'", $db);
 $template = stripslashes(mysql_result($index, 0, "news_comment_form"));
 $template = str_replace("{newsid}", $_GET[id], $template); 
 $template = str_replace("{name_input}", $form_name, $template); 
-$template = str_replace("{textarea}", code_textarea("text", "", 357, 120, "text", false, 1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1), $template);
+$template = str_replace("{textarea}", $template_textarea, $template);
 $template = str_replace("{fs_code}", $fs_active, $template);
 $template = str_replace("{html}", $html_active, $template);
 $template = str_replace("{antispam}", $form_spam, $template);
@@ -240,5 +253,9 @@ $template = str_replace("{antispamtext}", $form_spam_text, $template);
 
 $formular_template = $template;
 
-$template = $news_template.$comments_template.$formular_template;
+if ($news_rows>0 AND $news_arr[news_date]<=time()) {
+    $template = $news_template.$comments_template.$formular_template;
+} else {
+    $template = $news_template;
+}
 ?>

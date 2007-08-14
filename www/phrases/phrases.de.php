@@ -10,11 +10,17 @@ $phrases[time_at]           = "um";
 $phrases[pass_change]       = "Passwortänderung";
 $phrases[registration]      = "Registrierung";
 
+// News
+$phrases[news_not_exist]    = "News nicht vorhanden";
+
 // Kommentare
 $phrases[add_comment]       = "Kommentar hinzufügen";
 $phrases[comment_not_added] = "Kommentar konnte nicht hinzugefügt werden.";
 $phrases[comment_empty]     = "<br>Es müssen alle Felder ausgefüllt sein.";
 $phrases[comment_spam]      = "<br>Die Rechenaufgabe muss richtig gelöst werden.";
+
+// Galerie
+$phrases[no_pics]           = "Es wurden keine Bilder gefunden.";
 
 // Download
 $phrases[dl_not_logged_in]  = "<font color=\"red\"><b>Hinweis:</b></font> Um Dateien runterzuladen musst du <a href=\"?go=login\">eingeloggt</a> sein. Ansonsten kannst du nur die Mirros nutzen.";

@@ -18,7 +18,8 @@ function do_bbcode_smilies ($text) {
     $index = mysql_query("SELECT * FROM fs_smilies", $db);
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
-        $text = str_replace ($smilie_arr['replace_string'], '<img src="'. $page_url.'images/smilies/'.$smilie_arr['image_name'].'" alt="'.$smilie_arr['replace_string'].'" />', $text);
+        $url = image_url("images/smilies/", $smilie_arr['id']);
+        $text = str_replace ($smilie_arr['replace_string'], '<img src="'.$page_url.$url.'" alt="'.$smilie_arr['replace_string'].'" />', $text);
     }
     return $text;
 }

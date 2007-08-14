@@ -178,7 +178,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
     }
 
     echo'
-                    <form id="form" action="'.$PHP_SELF.'" method="post">
+                    <form id="form" action="'.$_SERVER[PHP_SELF].'" method="post">
                         <input type="hidden" value="newsedit" name="go">
                         <input id="send" type="hidden" value="0" name="newsedit">
                         <input type="hidden" value="'.$_POST[newsid].'" name="tempid">
@@ -335,7 +335,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
     echo'
                     <br />
                     <hr />
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="'.$_SERVER[PHP_SELF].'" method="post">
                         <input type="hidden" value="commentedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -450,7 +450,7 @@ else
     $bereich = '<font class="small">'.$anfang.' ... '.$ende.'</font>';
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="'.$_SERVER[PHP_SELF].'" method="post">
                         <input type="hidden" value="newsedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">

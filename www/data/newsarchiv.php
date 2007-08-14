@@ -20,6 +20,7 @@ if (mysql_num_rows($index) == 0) {
 $template = str_replace("{years}", $years, $template);
 
 $searchform_template = $template;
+unset($template);
 ////////////////////////////////
 /// News nach Datum anzeigen ///
 ////////////////////////////////
@@ -45,13 +46,13 @@ if ($_POST[jahr] && $_POST[monat])
     {
         while ($news_arr = mysql_fetch_assoc($index))
         {
-            $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code]);
+            $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
         }
         unset($news_arr);
     }
     else
     {
-        sys_message($phrases[sysmessage], $phrases[no_result_time]);
+        $news_template = sys_message($phrases[sysmessage], $phrases[no_result_time]);
     }
 }
 
@@ -75,13 +76,13 @@ if ($_POST[keyword])
     {
         while ($news_arr = mysql_fetch_assoc($index))
         {
-            $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code]);
+            $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
         }
         unset($news_arr);
     }
     else
     {
-        sys_message($phrases[sysmessage], $phrases[no_result_word]);
+        $news_template = sys_message($phrases[sysmessage], $phrases[no_result_word]);
     }
 }
 

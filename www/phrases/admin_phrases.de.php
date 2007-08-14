@@ -167,6 +167,20 @@ $admin_phrases[template][screenshot_cat_body][help_3]           = "Ausgabe der S
 
 
 
+//Wallpaper
+$admin_phrases[template][wallpaper_pic][title]                  = "Wallpaper";
+$admin_phrases[template][wallpaper_pic][description]            = "Aussehen eines einzelnen Wallpapers.";
+$admin_phrases[template][wallpaper_pic][help_1]                 = "URL zum Thumbnail des Wallpapers.";
+$admin_phrases[template][wallpaper_pic][help_2]                 = "Beschreibungstext des Wallpapers.";
+$admin_phrases[template][wallpaper_pic][help_3]                 = "Bindet nacheinander die einzelnen Größen des Wallpapers ein.";
+
+$admin_phrases[template][wallpaper_sizes][title]                = "Wallpaper Größen";
+$admin_phrases[template][wallpaper_sizes][description]          = "Aussehen der Wallpaper Größen.";
+$admin_phrases[template][wallpaper_sizes][help_1]               = "URL zum Wallpaper in dieser Größe.";
+$admin_phrases[template][wallpaper_sizes][help_2]               = "Die Größe des Wallpapers als Text.";
+
+
+
 //Randompic
 $admin_phrases[template][randompic_body][title]                 = "Zufallsbild Body";
 $admin_phrases[template][randompic_body][description]           = "Aussehen des Zufallsbilds im Menü.";
@@ -451,4 +465,27 @@ $admin_phrases[template][user_memberlist_adminline][help_5]     = "Anmeldedatum 
 $admin_phrases[template][user_memberlist_adminline][help_6]     = "Zahl der vom User verfassten News.";
 $admin_phrases[template][user_memberlist_adminline][help_7]     = "Zahl der vom User verfassten Artikel.";
 $admin_phrases[template][user_memberlist_adminline][help_8]     = "Zahl der vom User verfassten Kommentare.";
+
+
+
+//Editor
+$admin_phrases[template][editor_design][title]                  = "Editor Darstellung";
+$admin_phrases[template][editor_design][description]            = "Anordnung des IWAC-Editors auf der Seite.";
+$admin_phrases[template][editor_design][help_1]                 = "CSS-Style des Textareas (siehe Konfiguration).";
+$admin_phrases[template][editor_design][help_2]                 = "Evtl. vorgegebener Text.";
+$admin_phrases[template][editor_design][help_3]                 = "Bindet die ausgewählten Buttons ein.";
+$admin_phrases[template][editor_design][help_3]                 = "Bindet die Smilie-Liste ein.";
+
+$admin_phrases[template][editor_css][title]                     = "Editor CSS";
+$admin_phrases[template][editor_css][description]               = "CSS Datei des IWAC-Editors.";
+
+$admin_phrases[template][editor_button][title]                  = "Button Darstellung";
+$admin_phrases[template][editor_button][description]            = "Anordnung des IWAC-Editors auf der Seite.";
+$admin_phrases[template][editor_button][help_1]                 = "URL zum Button Bild.";
+$admin_phrases[template][editor_button][help_2]                 = "Alternativer Anzeige Text.";
+$admin_phrases[template][editor_button][help_3]                 = "Beschreibungstext der beim Drüberfahren erscheint.";
+$admin_phrases[template][editor_button][help_3]                 = "Javascript-Teil zur Funktion des Buttons.";
+
+$admin_phrases[template][editor_seperator][title]               = "Teiler Darstellung";
+$admin_phrases[template][editor_seperator][description]         = "Darstellung des Teilers zwischen Button-Gruppen.";
 ?>

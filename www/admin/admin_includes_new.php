@@ -72,7 +72,7 @@ if (isset($_POST['include_type']) AND $_POST['include_type']==1) {
   <td class="config" width="50%">Seitenvariablen<br>
   <font class="small">Werden am Ende, direkt vor der Ausgabe ersetzt und können daher überall verwendet werden.</font></td>
   <td class="config" width="50%">Includes<br>
-  <font class="small">Zum Einbinden von selbsterstellten xyz.inc.php Dateien aus dem Verzeichnis "frogsystem/inc/" in das Template "Index.php".</font></td>
+  <font class="small">Zum Einbinden von selbsterstellten xyz.inc.php Dateien aus dem Verzeichnis "[FS-Verzeichnis]/res/" in das Template "Index.php".</font></td>
  </tr>
  <tr valign="top">
   <td class="config">Seitenvariablen dürfen keine Ersetzungsmuster enthalten!</td>

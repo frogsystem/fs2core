@@ -24,7 +24,7 @@ elseif ($_SESSION[user_level] == "authorised")
     // CSS Dateien ermittlen
     echo'
                     <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
+                        <form action="'.$_SERVER[PHP_SELF].'" method="post">
                             <input type="hidden" value="csstemplate" name="go">
                             <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                             <select name="design" onChange="this.form.submit();">
