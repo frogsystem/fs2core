@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 08. August 2007 um 00:05
+-- Erstellungszeit: 14. August 2007 um 23:37
 -- Server Version: 5.0.45
 -- PHP-Version: 5.2.3
 
@@ -28,7 +28,7 @@ CREATE TABLE `fs_admin_cp` (
   `permission` varchar(255) collate latin1_general_ci NOT NULL default '',
   `file` varchar(255) collate latin1_general_ci NOT NULL default '',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=76 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=81 ;
 
 -- 
 -- Daten für Tabelle `fs_admin_cp`
@@ -106,7 +106,12 @@ REPLACE INTO `fs_admin_cp` VALUES (69, 'map&amp;landid=1', '', 'Deutschland', 'p
 REPLACE INTO `fs_admin_cp` VALUES (70, 'map&amp;landid=2', '', 'Schweiz', 'perm_map', '');
 REPLACE INTO `fs_admin_cp` VALUES (75, 'logout', 'LOGOUT', 'Logout', '1', 'admin_logout.php');
 REPLACE INTO `fs_admin_cp` VALUES (71, 'map&amp;landid=3', '', 'Österreich', 'perm_map', '');
+REPLACE INTO `fs_admin_cp` VALUES (76, 'editorsmilies', 'SMILIES VERWALTEN', 'Smilies', '1', 'admin_editor_smilies.php');
 REPLACE INTO `fs_admin_cp` VALUES (73, 'login', 'LOGIN', 'Login', '1', 'admin_login.php');
+REPLACE INTO `fs_admin_cp` VALUES (77, 'editorconfig', 'EDITOR KONFIGURATION', 'Konfiguration', '1', 'admin_editor_config.php');
+REPLACE INTO `fs_admin_cp` VALUES (78, 'editordesign', 'EDITOR DARSTELLUNG', 'Darstellung', '1', 'admin_editor_design.php');
+REPLACE INTO `fs_admin_cp` VALUES (79, 'editorfscode', 'FS CODE VERWALTUNG', 'FS-Codes', '1', 'admin_editor_fscode.php');
+REPLACE INTO `fs_admin_cp` VALUES (80, 'wallpapertemplate', 'WALLPAPER TEMPLATE BEARBEITEN  ', 'Wallpaper', '1', 'admin_template_wallpaper.php');
 
 -- --------------------------------------------------------
 
@@ -123,7 +128,7 @@ CREATE TABLE `fs_announcement` (
 -- Daten für Tabelle `fs_announcement`
 -- 
 
-REPLACE INTO `fs_announcement` VALUES ('hö3');
+REPLACE INTO `fs_announcement` VALUES ('Dies ist eine Test-Ankündigung!');
 
 -- --------------------------------------------------------
 
@@ -147,7 +152,6 @@ CREATE TABLE `fs_artikel` (
 -- Daten für Tabelle `fs_artikel`
 -- 
 
-REPLACE INTO `fs_artikel` VALUES ('lorem_ipsum', 'Lorem Ipsum', 1157493600, '1', 'Lorem ipsum sint mandamus id vix, mel eu meliore assentior, sit eu mutat repudiandae. Mnesarchum neglegentur pro eu, ut inermis scaevola incorrupte vis, et omnis ubique pri. Eu ius oporteat periculis, ut stet dicta tation sed. Pro ut omnium deserunt adolescens, cum suas mundi an, eu modo dolores senserit sit. Vel no nibh honestatis, eum et dicta erant dictas.\r\n\r\nEtiam doctus ei vix, vix te alii expetendis. Usu ne novum lobortis mandamus, diceret periculis ad est. Pro an dicta latine, ex laoreet vituperatoribus quando vis, quo in nemore sanctus laoreet. Ut pericula argumentum usu. Ne duo assum populo. Nec deserunt perpetua euripidis eu, ne quo zzril postea instructior, an his putant aeterno.\r\n\r\nEi vel timeam contentiones intellegebat, decore dicta vituperatoribus eu quo, atqui ceteros his an. Has id libris hendrerit, vix semper labores nonummy no. In sit vidisse moderatius. Fugit posidonium ne qui, ex has liber volutpat. Duo maluisset delicatissimi id, nihil fastidii perpetua ei vix. Qui ei audire delenit, ea habeo commodo molestiae sea, his eu graeci noluisse lobortis.', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -170,8 +174,6 @@ CREATE TABLE `fs_cmap_user` (
 -- Daten für Tabelle `fs_cmap_user`
 -- 
 
-REPLACE INTO `fs_cmap_user` VALUES (1, 1, 'er', 4, 3, 'fffg');
-REPLACE INTO `fs_cmap_user` VALUES (2, 2, 'ghgfhfth', 5, 345, NULL);
 
 -- --------------------------------------------------------
 
@@ -193,7 +195,7 @@ CREATE TABLE `fs_counter` (
 -- Daten für Tabelle `fs_counter`
 -- 
 
-REPLACE INTO `fs_counter` VALUES (68, 11320, 5, 1, 2, 27);
+REPLACE INTO `fs_counter` VALUES (5, 852, 1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -212,479 +214,103 @@ CREATE TABLE `fs_counter_ref` (
 -- Daten für Tabelle `fs_counter_ref`
 -- 
 
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/', 103, 1156976125);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=allconfig', 175, 1156977187);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php', 1668, 1156977293);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=allanouncement', 76, 1156977514);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=allphpinfo', 35, 1156977515);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=newsadd', 80, 1156977517);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=artikeladd', 100, 1156977518);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=dladd', 32, 1156977519);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=dledit', 21, 1156977519);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=csstemplate', 80, 1156977715);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=alltemplate', 220, 1156983165);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=dlnewcat', 16, 1156983174);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=newscat', 7, 1156983175);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=newsnewcat', 4, 1156983182);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=dlcat', 22, 1156983187);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=newsconfig', 37, 1156983191);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=newsedit', 50, 1156983196);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=news_cat_create', 50, 1156984857);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=news_cat_manage', 135, 1156984861);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/', 40, 1157243034);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/admin_finduser.php', 35, 1157319909);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=useradd', 4, 1157325559);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=useredit', 16, 1157325568);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/', 107, 1157325614);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=statview', 6, 1157325926);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=statedit', 5, 1157325944);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=map&landid=1', 9, 1157325958);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=map&landid=2', 5, 1157325959);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=map&landid=3', 4, 1157325962);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=screenadd', 14, 1157326805);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=template_create', 80, 1157410727);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=template_manage', 76, 1157410727);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=emailtemplate', 21, 1157421671);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=artikeledit', 40, 1157462773);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgadd', 33, 1157463048);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel', 131, 1157463050);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=kraftwelle.jpg', 1, 1157464359);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=kraftwelle_s.jpg', 1, 1157465528);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=karte.jpg', 2, 1157465774);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=karte2.jpg', 2, 1157465797);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=karte2_s.jpg', 1, 1157465828);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=karte_s.jpg', 1, 1157465832);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=Neu%20Textdokument.txt', 2, 1157468782);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=zblubb.jpg', 1, 1157469907);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=lbubb.jpg', 1, 1157469909);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=aads.jpg', 1, 1157470082);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=m%F6p.jpg', 1, 1157470121);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=aasasdasd.jpg', 1, 1157470279);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=polladd', 40, 1157540226);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/admin_artikelprev.php', 4, 1157541892);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=sd.jpg', 1, 1157551098);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=hintergrund.gif', 3, 1157551251);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=impressum.gif', 1, 1157551391);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=infos.gif', 1, 1157551397);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=kommentare.gif', 1, 1157551403);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=links.gif', 1, 1157551721);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=logo.gif', 1, 1157551857);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_all.jpg', 2, 1157551873);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_bottom.gif', 1, 1157551976);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_top1.jpg', 2, 1157551981);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_top2-hov.jpg', 1, 1157552011);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_top2.jpg', 1, 1157552105);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_top3.jpg', 1, 1157552201);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_top4.jpg', 1, 1157552229);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_top5.jpg', 2, 1157552322);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_top6.jpg', 1, 1157552328);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=menu_l_top7.jpg', 1, 1157552833);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=artworks.gif', 1, 1157552872);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=bg.jpg', 1, 1157553016);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=downloads.gif', 1, 1157553149);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=ecke_r.jpg', 1, 1157553219);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=ee.jpg', 1, 1157553390);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=features.gif', 1, 1157553392);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=ecke_l.jpg', 1, 1157553395);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=fakten.gif', 1, 1157553397);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?design=1', 4, 1157562684);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=dltemplate', 25, 1157564757);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?design=0', 1, 1157565070);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=newsarchiv', 36, 1157565071);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=pollarchiv', 20, 1157565071);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=shop', 11, 1157565072);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=screenshots', 23, 1157565073);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=map', 12, 1157565073);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=download', 63, 1157565076);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=news', 282, 1157565080);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=comments&id=6', 15, 1157572613);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=editprofil', 6, 1157572643);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=pollarchiv&pollid=1', 1, 1157573147);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=download&catid=2', 41, 1157573344);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=screenconfig', 23, 1157839786);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=dlconfig', 31, 1157839950);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=dlfile&fileid=1', 23, 1157841855);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=download&catid=0', 3, 1157844078);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=download&keyword=tes', 3, 1157844079);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=download&keyword=sdsdsd', 1, 1157844094);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=logout', 7, 1158258823);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=map&design=1', 3, 1159364015);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=news&design=1', 5, 1159364082);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=polltemplate', 40, 1159365371);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=polledit', 20, 1159365528);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=newstemplate', 7, 1159372197);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=cimgdel&unlink=ssd.gif', 1, 1159376742);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=screenedit', 28, 1159376877);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=screennewcat', 42, 1159376882);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=screencat', 48, 1159376928);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=statview&PHPSESSID=&s_year=2006&s_month=9', 4, 1160258599);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=statview&PHPSESSID=&s_year=2006&s_month=10', 2, 1160258601);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=potmadd', 11, 1160258704);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=potmedit', 1, 1160258833);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=randompic_cat', 10, 1160259916);
-REPLACE INTO `fs_counter_ref` VALUES ('http://projectgw.pr.funpic.de/', 3, 1160298304);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=screenshots&catid=7', 4, 1160779960);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=screenshots&catid=6', 1, 1160779964);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=wallpaperadd', 46, 1160820408);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=wallpaperedit', 53, 1160829357);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=statref', 4, 1160835558);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=statspace', 1, 1160835576);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=shopadd', 7, 1161506718);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=shopedit', 5, 1161506722);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=artikeltemplate', 4, 1161973154);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=screenshottemplate', 2, 1161973162);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=potmtemplate', 2, 1161973172);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=randompictemplate', 5, 1161973272);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=usertemplate', 4, 1161973322);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=profil', 24, 1161973531);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=shoptemplate', 4, 1161976761);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=userrights', 3, 1161977848);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=partneradd', 12, 1162468650);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=partneredit', 20, 1162468655);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=partnerconfig', 12, 1162468660);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=partnertemplate', 24, 1162468736);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=partner', 12, 1162477531);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=includes_edit', 62, 1162824535);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=includes_new', 47, 1162826317);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=allconfig', 13, 1165325938);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=allphpinfo', 7, 1165325960);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=alltemplate', 5, 1165325988);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=allannouncement', 25, 1165326014);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=allannouncement', 18, 1165326040);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=includes_edit', 15, 1166460593);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=includes_new', 19, 1166462395);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=polladd', 3, 1166462407);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=polledit', 1, 1166462435);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=usertemplate', 3, 1169900932);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=pollarchiv&pollid=4', 5, 1169904420);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/', 17, 1169930753);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/admin/', 22, 1169933267);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=news', 19, 1169933847);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=newsarchiv', 2, 1169947079);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv', 29, 1169947080);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=members', 4, 1169951505);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=comments&id=6', 23, 1169952937);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=map', 1, 1169955003);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=screenshots', 1, 1169955005);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=screenshots&catid=7', 1, 1169955013);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=comments&id=5', 1, 1169955109);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=editprofil', 2, 1169993165);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/', 6, 1169993178);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=allconfig', 2, 1169993377);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=profil&userid=1', 2, 1170010945);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=includes_edit', 1, 1170013364);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=includes_new', 1, 1170013368);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=emailtemplate', 5, 1170013370);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=allphpinfo', 1, 1170013386);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=allannouncement', 1, 1170013388);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=alltemplate', 18, 1170013396);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=template_create', 2, 1170013481);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=template_manage', 1, 1170013485);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=artikeltemplate', 1, 1170013577);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=polltemplate', 15, 1170013580);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/admin/?go=allconfig', 7, 1170087701);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/admin/?go=allannouncement', 8, 1170087703);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/admin/?go=allphpinfo', 2, 1170087707);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/admin/?go=admin_ajax.php', 1, 1170093175);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/admin/?go=includes_edit', 1, 1170093336);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/', 7, 1170093648);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/?go=allannouncement', 3, 1170111423);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/#', 19, 1170111606);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/?go=allconfig', 2, 1170112445);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/?go=allphpinfo', 1, 1170112447);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/?go=randompic_cat', 8, 1170112590);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/?go=screennewcat', 2, 1170112594);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/?go=screencat', 5, 1170112625);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/admin/?go=randompictemplate', 2, 1170112679);
-REPLACE INTO `fs_counter_ref` VALUES ('http://127.0.0.1/www/', 25, 1170157883);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/admin/?go=polltemplate', 39, 1170158013);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/admin/?go=dltemplate', 1, 1170160917);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv&orderby=name', 7, 1170161735);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv&orderby=voters', 2, 1170161738);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv&orderby=date', 2, 1170161739);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv&orderby=name_desc', 2, 1170267159);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv&orderby=name_asc', 1, 1170267164);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv&orderby=voters_desc', 2, 1170267168);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv&orderby=voters_asc', 1, 1170267176);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www/?go=pollarchiv&orderby=date_desc', 1, 1170267186);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/www//admin/?go=dltemplate', 3, 1170280667);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=zone_create', 22, 1172074097);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=zone_manage', 4, 1172074098);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=zone_config', 8, 1172074099);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=zone_create', 10, 1172085991);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=polltemplate', 1, 1174573451);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=template_create', 17, 1174577109);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=zone_manage', 8, 1174577123);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=artikeladd', 3, 1174603165);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=newstemplate', 3, 1174603200);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=downlo', 2, 1174603906);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=press_add', 23, 1174604352);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=press_edit', 17, 1174604356);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=newsedit', 4, 1174651149);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=artikeledit', 3, 1174651164);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=cimgadd', 6, 1174651180);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=template_manage', 7, 1174651488);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=emailtemplate', 5, 1174660137);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=screencat', 1, 1174672184);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=news_cat_create', 3, 1174672203);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=zone_config', 3, 1174672268);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=press_edit', 6, 1174672437);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=csstemplate', 1, 1174672659);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=newsconfig', 1, 1174672667);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=newsadd', 4, 1174672679);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=artikeltemplate', 1, 1174672682);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=cimgdel', 2, 1174673098);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=useredit', 5, 1174673172);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/?go=profil&userid=3', 2, 1174673275);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=logout', 20, 1174673678);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=logout&sid=', 17, 1174673692);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/index.php?go=login', 39, 1174673965);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=dladd', 1, 1174675774);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=logout', 1, 1174698725);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=press_add', 1, 1174737386);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=userrights', 1, 1176750458);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/frogsystem/www/admin/?go=useradd', 2, 1176750468);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/', 72, 1176760481);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=allconfig', 43, 1176760485);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/', 105, 1176760566);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=newsarchiv', 65, 1176761187);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/', 91, 1177684365);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots', 67, 1177684371);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=7', 6, 1177684373);
-REPLACE INTO `fs_counter_ref` VALUES ('http://sweil.dyndns.org/fs2/', 2, 1177691888);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=press_add', 11, 1178634943);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=press_edit', 7, 1178634946);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=alltemplate', 125, 1178634985);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=newsadd', 137, 1179739621);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=newsedit', 312, 1179739623);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=newsconfig', 35, 1179740180);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=news_cat_manage', 7, 1179740256);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=newstemplate', 65, 1179741920);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=comments&id=6', 50, 1179743152);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=usertemplate', 89, 1179743297);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=download', 44, 1179743536);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=useredit', 1, 1179743630);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=logout', 23, 1179743650);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=news', 99, 1179743654);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=editprofil', 2, 1179743662);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=dlfile&fileid=1', 3, 1179743824);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=csstemplate', 83, 1179743833);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv', 75, 1179743954);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&pollid=4', 13, 1179743964);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&pollid=5', 4, 1179743969);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&pollid=3', 1, 1179743972);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&pollid=2', 1, 1179743976);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&orderby=voters_desc', 10, 1179743985);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&orderby=voters_asc', 4, 1179743986);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&orderby=name_desc', 4, 1179743992);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&orderby=date_desc', 7, 1179743994);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&orderby=date_asc', 6, 1179743996);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&orderby=name_asc', 3, 1179744086);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//', 1, 1179749085);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=comments&id=6', 4, 1179749091);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=allannouncement', 24, 1179750280);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=cimgadd', 20, 1179751905);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=cimgdel', 8, 1179751992);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=artikeledit', 2, 1179752886);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/admin_finduser.php', 4, 1179930908);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=profil', 1, 1179931451);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=login', 47, 1179931456);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=polltemplate', 58, 1180018868);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv', 6, 1180019739);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&sort=enddate_desc', 26, 1180020050);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&sort=startdate_desc', 4, 1180020054);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&sort=voters_desc', 8, 1180020057);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&sort=enddate_asc', 32, 1180020077);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&sort=startdate_asc', 9, 1180020213);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&sort=voters_asc', 10, 1180020215);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&sort=name_desc', 2, 1180020217);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&sort=name_asc', 2, 1180020250);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=pollarchiv&pollid=1', 1, 1180021666);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=shop', 9, 1180021846);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www//?go=screenshots&catid=6', 1, 1180042256);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=allphpinfo', 2, 1180115365);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=template_create', 5, 1180115426);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=template_manage', 12, 1180115428);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=map', 17, 1180121985);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=shoptemplate', 40, 1181740206);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=artikeltemplate', 12, 1181742064);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=dltemplate', 48, 1181742586);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=download&keyword=sd', 2, 1181743655);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=download&catid=2', 23, 1181743665);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=download&catid=2&keyword=sd', 3, 1181743666);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=download&catid=2&keyword=gg', 1, 1181743924);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=dlfile&fileid=1', 9, 1181744144);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?keyword=get&go=download&catid=2', 1, 1181744202);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=includes_new', 93, 1181936293);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=includes_edit', 168, 1181936295);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs/', 1, 1182700813);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs/www/', 1, 1182700822);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=randompic_cat', 9, 1182701203);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php', 36, 1182701208);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=randompic_time', 29, 1182704721);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=randompic_time_add', 145, 1182865466);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/admin_findpicture.php', 103, 1182866644);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=screenadd', 9, 1182870962);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=screenedit', 5, 1182871137);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=cimgdel&unlink=test.gif', 1, 1182893370);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=screennewcat', 5, 1182955533);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=screencat', 11, 1182955536);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=screenconfig', 51, 1182955545);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=wallpaperedit', 8, 1182955550);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=shopadd', 6, 1182955597);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=shopedit', 1, 1182955607);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=6', 2, 1182970749);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=zone_config', 8, 1182971104);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=randompic_config', 128, 1182971221);
-REPLACE INTO `fs_counter_ref` VALUES ('http://frogsystem.de/', 3, 1183385629);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=randompictemplate', 9, 1183584888);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&sort=enddate_asc', 1, 1183640172);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&sort=enddate_desc', 1, 1183640173);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&sort=startdate_asc', 1, 1183640175);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&sort=startdate_desc', 1, 1183640176);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&sort=voters_asc', 1, 1183640177);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&sort=voters_desc', 1, 1183640178);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&sort=name_asc', 4, 1183640179);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&sort=name_desc', 2, 1183640180);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members', 36, 1184437107);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=userlist', 13, 1184437785);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=login', 3, 1184440397);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=lorem_ipsum', 1, 1184449485);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=regdate_asc', 8, 1184452613);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=news_asc', 3, 1184452621);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=regdate_desc', 6, 1184452696);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=name_desc', 25, 1184452765);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=articles_{order_articles}', 1, 1184501279);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=articles_desc', 7, 1184501413);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=name_asc', 26, 1184501417);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=news_desc', 3, 1184501656);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=comments_desc', 2, 1184501661);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=comments_asc', 1, 1184501664);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=8', 3, 1184515419);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=screenshottemplate', 27, 1184515476);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=7&page=1', 25, 1184523756);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=7&page=2', 27, 1184523759);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=7&page=7', 1, 1184523802);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=default&page=2', 3, 1184524880);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=default&page=1', 1, 1184524881);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=name_desc&page=2', 3, 1184524923);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=members&sort=name_desc&page=1', 2, 1184524924);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=partnerconfig', 2, 1185125867);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=comments&id=10', 1, 1185134218);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=artikeladd', 2, 1185617558);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv&pollid=4', 1, 1185618838);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=emailtemplate', 4, 1185622565);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=partnertemplate', 11, 1185624757);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=partneradd', 1, 1185655657);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=dladd', 2, 1186401878);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=statref', 2, 1186401889);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=statview', 2, 1186401904);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=statview&s_year=2007&s_month=1&PHPSESSID=', 2, 1186401931);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=statview&s_year=2006&s_month=8&PHPSESSID=', 1, 1186401935);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=statview&PHPSESSID=&s_year=2007&s_month=8', 3, 1186401945);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=dledit', 2, 1186402018);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=2&go=screenadd', 27, 1186403703);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=3&go=screenadd', 16, 1186403704);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=4&go=screenadd', 13, 1186403705);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=screenadd', 22, 1186403706);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=zone_create', 5, 1186410844);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=zone_manage', 6, 1186410848);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=2&go=includes_new', 4, 1186411952);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=includes_new', 1, 1186411954);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=3&go=includes_new', 2, 1186411955);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=4&go=includes_new', 1, 1186411957);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1', 6, 1186412325);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=5&go=allconfig', 3, 1186412927);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=4&go=allconfig', 2, 1186412927);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=3&go=allconfig', 2, 1186412928);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=2&go=allconfig', 6, 1186412929);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=allconfig', 10, 1186412941);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=7&page=0', 4, 1186413299);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=', 4, 1186419008);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=2&go=', 3, 1186419009);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=3&go=', 4, 1186419009);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=comments&id=11', 3, 1186419956);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=5&go=', 2, 1186420034);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=4&go=', 1, 1186420058);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=6&go=', 3, 1186420059);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=statview', 10, 1186420496);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=statedit', 9, 1186420500);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=statref', 11, 1186420646);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=allphpinfo', 4, 1186420885);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=emailtemplate', 2, 1186420968);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=alltemplate', 1, 1186420969);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=1&go=allannouncement', 4, 1186420975);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=6&go=allconfig', 1, 1186421113);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=2', 4, 1186421114);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=4', 2, 1186421124);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=3', 1, 1186421126);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=5', 1, 1186421127);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=6', 2, 1186421128);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general', 143, 1186421208);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content', 132, 1186421211);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=statview', 1, 1186421227);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=statedit', 2, 1186421231);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=promo', 43, 1186421253);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user', 68, 1186421254);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media', 56, 1186421254);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles', 50, 1186434882);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=promo&go=shopadd', 2, 1186436879);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=promo&go=partneradd', 8, 1186436880);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=promo&go=partneredit', 5, 1186436881);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=promo&go=partnerconfig', 12, 1186436882);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=promo&go=partnertemplate', 7, 1186436882);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=press_edit', 5, 1186437519);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=press_add', 3, 1186437520);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=style', 4, 1186437754);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=partnertemplate', 1, 1186438135);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=shoptemplate', 1, 1186438136);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=dltemplate', 1, 1186438137);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=randompictemplate', 1, 1186438138);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=screenshottemplate', 1, 1186438139);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=polltemplate', 1, 1186438140);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=artikeltemplate', 1, 1186438141);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=newstemplate', 1, 1186438141);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=alltemplate', 1, 1186438145);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=map&landid=1', 23, 1186438692);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=map&landid=2', 31, 1186438693);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=zone_config', 3, 1186439279);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=zone_create', 1, 1186439355);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=profil', 8, 1186439357);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=logout', 2, 1186439359);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=map&landid=3', 18, 1186439362);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=userlist', 4, 1186439369);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=login', 6, 1186439388);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=map', 3, 1186439592);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=useradd', 1, 1186439626);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=allconfig', 1, 1186440159);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=newsadd', 2, 1186440162);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=newsedit', 11, 1186440164);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=logout[%session_id%]', 1, 1186441660);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=logout&sid=', 5, 1186441731);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=login%22%22', 9, 1186444513);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=logout', 28, 1186444519);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=press_add&sid=', 1, 1186444568);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=press_edit&sid=', 1, 1186444570);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=promo&go=partneredit&sid=', 1, 1186444578);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=promo&go=shopadd&sid=', 1, 1186444579);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=zone_manage&sid=', 1, 1186444585);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=polledit&sid=', 1, 1186444588);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=includes_new&sid=', 1, 1186444591);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=profil&sid=', 1, 1186444846);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=login%22', 1, 1186444977);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=allconfig&sid=', 35, 1186447151);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=allannouncement&sid=', 1, 1186448379);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=allphpinfo&sid=', 1, 1186448425);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=includes_edit&sid=', 2, 1186448437);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=usertemplate&sid=', 22, 1186448456);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=partnertemplate&sid=', 1, 1186448457);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=shoptemplate&sid=', 3, 1186448459);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=dltemplate&sid=', 1, 1186448468);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=newstemplate&sid=', 24, 1186483216);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=newsconfig&sid=', 28, 1186483393);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=register', 13, 1186502075);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=alltemplate&sid=', 2, 1186516513);
-REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=userlist&sid=', 1, 1186523710);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=map', 1, 1186939097);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=news', 60, 1186939098);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/', 16, 1186939099);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general', 18, 1186939101);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content', 6, 1186939102);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=newsadd&sid=', 5, 1186939111);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=news_cat_create&sid=', 2, 1186939118);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/', 56, 1186939142);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/', 14, 1186940050);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user', 2, 1186940054);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles', 5, 1186940055);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=alltemplate&sid=', 5, 1186940058);
+REPLACE INTO `fs_counter_ref` VALUES ('http://projectoffset.worldofplayers.de/', 1, 1186941079);
+REPLACE INTO `fs_counter_ref` VALUES ('http://projectoffset.worldofplayers.de/admin/index.php', 1, 1186941575);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=csstemplate&sid=', 6, 1186944603);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php', 11, 1186946327);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=content', 17, 1186946329);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=content&go=newsadd&sid=', 11, 1186946330);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=content&go=newsedit&sid=', 9, 1186946332);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=media', 4, 1186946408);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles', 11, 1186946410);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=csstemplate&sid=', 2, 1186946471);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general', 16, 1186946502);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=content&go=news_cat_create&sid=', 1, 1186946555);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=editordesign&sid=', 89, 1186946610);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=editorfscode&sid=', 3, 1186946611);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=includes_edit&sid=', 1, 1186946612);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=statedit&sid=', 1, 1186946615);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?go=logout', 3, 1186946773);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?go=login', 6, 1186946775);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=promo', 1, 1186946781);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=zone_config&sid=', 1, 1186946785);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=dltemplate&sid=', 1, 1186946787);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=alltemplate&sid=', 2, 1186946819);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=newnews', 1, 1186946916);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=newsadd', 1, 1186948069);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=content&go=news_cat_manage&sid=', 2, 1186948073);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=media&go=randompic_cat&sid=', 2, 1186950678);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=media&go=screennewcat&sid=', 5, 1186950682);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=media&go=screencat&sid=', 10, 1186950976);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=media&go=screenadd&sid=', 2, 1186951002);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=media&go=screenconfig&sid=', 1, 1186951047);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=template_create&sid=', 1, 1186951108);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=template_manage&sid=', 1, 1186951366);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=2', 1, 1186953120);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=newsconfig&sid=', 1, 1186953129);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media', 5, 1186953131);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=screenconfig&sid=', 3, 1186954973);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=includes_edit&sid=', 7, 1186954981);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=includes_new&sid=', 13, 1186954983);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=editorsmilies&sid=', 8, 1186956407);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=editorsmilies&oid=1&action=movedown&sid=', 3, 1187009017);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=editorconfig&sid=', 14, 1187009043);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=editordesign&sid=', 11, 1187009044);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=user&go=userlist&sid=', 1, 1187009172);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=randompic_cat&sid=', 2, 1187011074);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=randompic_time_add&sid=', 2, 1187011076);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=randompic_time&sid=', 1, 1187011082);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=randompic_config&sid=', 1, 1187011116);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=allconfig&sid=', 3, 1187012594);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=logout', 1, 1187012808);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?go=login', 2, 1187012809);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=comments&id=1', 21, 1187017053);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=pollarchiv', 3, 1187017093);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/res/', 9, 1187017937);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=editorconfig&sid=', 46, 1187018159);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=editorsmilies&sid=', 15, 1187018160);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=editorsmilies&oid=5&action=moveup&sid=', 1, 1187019639);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=editorsmilies&oid=4&action=moveup&sid=', 2, 1187019822);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=editorsmilies&oid=3&action=moveup&sid=', 9, 1187019866);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=newsedit&sid=', 1, 1187022744);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=profil&userid=1', 4, 1187028627);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=editprofil', 2, 1187028659);
+REPLACE INTO `fs_counter_ref` VALUES ('http://sweil.dyndns.org/fs2/www/?go=comments&id=1', 4, 1187030319);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots', 31, 1187036366);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=screennewcat&sid=', 10, 1187036399);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=screencat&sid=', 10, 1187036400);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=3', 20, 1187036607);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=1', 15, 1187036997);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=screenadd&sid=', 11, 1187040752);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=1&page=2', 4, 1187040793);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=gallery', 2, 1187121926);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=wallpaper', 17, 1187121949);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=wallpaperadd&sid=', 3, 1187121992);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=wallpaperedit&sid=', 10, 1187122000);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=screenedit&sid=', 2, 1187122046);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=screenshottemplate&sid=', 2, 1187122516);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=screenshottemplate&sid=', 5, 1187122543);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=artikeltemplate&sid=', 1, 1187123095);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=randompictemplate&sid=', 1, 1187123096);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=styles&go=wallpapertemplate&sid=', 12, 1187123098);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=4', 2, 1187125659);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=allannouncement&sid=', 1, 1187125743);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=gallery&catid=1&page=2', 8, 1187126019);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=gallery&catid=1&page=1', 6, 1187126020);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots&catid=1&page=1', 2, 1187126241);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/index.php?mid=general&go=allconfig&sid=', 1, 1187126374);
 
 -- --------------------------------------------------------
 
@@ -705,85 +331,9 @@ CREATE TABLE `fs_counter_stat` (
 -- Daten für Tabelle `fs_counter_stat`
 -- 
 
-REPLACE INTO `fs_counter_stat` VALUES (2006, 8, 31, 1, 151);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 3, 1, 172);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 4, 0, 272);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 5, 1, 500);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 6, 1, 519);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 9, 1, 1);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 10, 1, 210);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 14, 1, 5);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 27, 1, 491);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 9, 28, 1, 6);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 3, 1, 15);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 7, 1, 152);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 7, 1, 152);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 8, 0, 106);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 12, 1, 1);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 14, 2, 335);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 14, 2, 335);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 18, 1, 9);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 22, 1, 277);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 23, 0, 48);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 27, 2, 291);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 27, 2, 291);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 10, 29, 1, 3);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 2, 1, 161);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 2, 1, 161);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 6, 1, 104);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 6, 1, 104);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 7, 0, 2);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 9, 1, 1);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 15, 2, 17);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 15, 2, 17);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 11, 24, 1, 4);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 12, 5, 1, 197);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 12, 18, 1, 22);
-REPLACE INTO `fs_counter_stat` VALUES (2006, 12, 21, 1, 27);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 1, 27, 1, 211);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 1, 28, 1, 253);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 1, 29, 1, 377);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 1, 30, 1, 155);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 1, 31, 1, 47);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 2, 1, 0, 2);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 2, 21, 1, 151);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 3, 19, 1, 356);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 3, 20, 1, 186);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 3, 22, 1, 79);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 3, 23, 1, 604);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 3, 24, 0, 62);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 3, 25, 1, 7);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 13, 1, 1);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 15, 1, 1);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 16, 1, 22);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 17, 0, 13);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 27, 2, 5);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 4, 28, 0, 1);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 5, 8, 1, 9);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 5, 21, 1, 326);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 5, 23, 1, 120);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 5, 24, 1, 281);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 5, 25, 1, 325);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 6, 11, 1, 14);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 6, 13, 1, 119);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 6, 15, 1, 35);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 6, 24, 1, 58);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 6, 26, 1, 303);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 6, 27, 1, 313);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 2, 1, 11);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 4, 1, 97);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 5, 0, 133);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 14, 1, 138);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 15, 1, 426);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 20, 1, 6);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 22, 1, 304);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 23, 0, 5);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 28, 1, 167);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 29, 1, 1);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 7, 30, 0, 37);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 8, 1, 1, 8);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 8, 6, 1, 573);
-REPLACE INTO `fs_counter_stat` VALUES (2007, 8, 7, 3, 879);
+REPLACE INTO `fs_counter_stat` VALUES (2007, 8, 12, 1, 176);
+REPLACE INTO `fs_counter_stat` VALUES (2007, 8, 13, 3, 544);
+REPLACE INTO `fs_counter_stat` VALUES (2007, 8, 14, 1, 132);
 
 -- --------------------------------------------------------
 
@@ -803,13 +353,12 @@ CREATE TABLE `fs_dl` (
   `dl_autor_url` varchar(255) collate latin1_general_ci default NULL,
   `dl_open` tinyint(4) default NULL,
   PRIMARY KEY  (`dl_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_dl`
 -- 
 
-REPLACE INTO `fs_dl` VALUES (1, 2, 1, 1157841305, 'sdsdsd', 'dfgfdfsdfs', 'Sweil', 'http://www.10tacle.sk/', 1);
 
 -- --------------------------------------------------------
 
@@ -823,13 +372,12 @@ CREATE TABLE `fs_dl_cat` (
   `subcat_id` mediumint(8) NOT NULL default '0',
   `cat_name` char(100) collate latin1_general_ci default NULL,
   PRIMARY KEY  (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_dl_cat`
 -- 
 
-REPLACE INTO `fs_dl_cat` VALUES (2, 0, 'Videos');
 
 -- --------------------------------------------------------
 
@@ -869,16 +417,50 @@ CREATE TABLE `fs_dl_files` (
   `file_size` mediumint(8) NOT NULL default '0',
   `file_is_mirror` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`file_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_dl_files`
 -- 
 
-REPLACE INTO `fs_dl_files` VALUES (1, 1, 7, 'Test', 'http://ftp.worldofplayers.net/frogsystem/hallo.test', 43335, 0);
-REPLACE INTO `fs_dl_files` VALUES (1, 2, 27, 'Test @ www.ggg.de', 'http://ftp.worldofplayers.net/frogsystem/muss.zip', 43335, 1);
-REPLACE INTO `fs_dl_files` VALUES (1, 3, 25, 'Test @ www.ggg.de', 'http://ftp.worldofplayers.net/frogsystem/muss.zip', 43335, 1);
-REPLACE INTO `fs_dl_files` VALUES (1, 4, 27, 'Test @ www.ggg.de', 'http://ftp.worldofplayers.net/frogsystem/muss.zip', 43335, 1);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `fs_editor_config`
+-- 
+
+DROP TABLE IF EXISTS `fs_editor_config`;
+CREATE TABLE `fs_editor_config` (
+  `id` tinyint(1) NOT NULL default '1',
+  `smilies_rows` int(2) NOT NULL,
+  `smilies_cols` int(2) NOT NULL,
+  `textarea_width` int(3) NOT NULL,
+  `textarea_height` int(3) NOT NULL,
+  `bold` tinyint(1) NOT NULL default '0',
+  `italic` tinyint(1) NOT NULL default '0',
+  `underline` tinyint(1) NOT NULL default '0',
+  `strike` tinyint(1) NOT NULL default '0',
+  `center` tinyint(1) NOT NULL default '0',
+  `font` tinyint(1) NOT NULL default '0',
+  `color` tinyint(1) NOT NULL default '0',
+  `size` tinyint(1) NOT NULL default '0',
+  `img` tinyint(1) NOT NULL default '0',
+  `cimg` tinyint(1) NOT NULL default '0',
+  `url` tinyint(1) NOT NULL default '0',
+  `home` tinyint(1) NOT NULL default '0',
+  `email` tinyint(1) NOT NULL default '0',
+  `code` tinyint(1) NOT NULL default '0',
+  `quote` tinyint(1) NOT NULL default '0',
+  `noparse` tinyint(1) NOT NULL default '0',
+  `smilies` tinyint(1) NOT NULL default '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+-- 
+-- Daten für Tabelle `fs_editor_config`
+-- 
+
+REPLACE INTO `fs_editor_config` VALUES (1, 5, 2, 357, 120, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -911,7 +493,7 @@ CREATE TABLE `fs_global_config` (
 -- Daten für Tabelle `fs_global_config`
 -- 
 
-REPLACE INTO `fs_global_config` VALUES (1, 'http://localhost/fs2/www/', 'admin@frogsystem.de', 'Frogsystem 2', 'FrogSystem - Your Way to Nature', 'dfdf', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 0, 0, 1, 2, 'd.m.Y', '{prev}Seite {page_number} von {total_pages}{next}', '<a href=\\"{url}\\"> »</a>', '<a href=\\"{url}\\"><< </a>', 1, 604800);
+REPLACE INTO `fs_global_config` VALUES (1, 'http://localhost/fs2/www/', 'admin@frogsystem.de', 'Frogsystem 2', 'FrogSystem - Your Way to Nature', 'dfdf', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 0, 0, 1, 2, 'd.m.Y', '{prev}Seite {page_number} von {total_pages}{next}', '<a href=\\"{url}\\"> »</a>', '<a href=\\"{url}\\">« </a>', 1, 604800);
 
 -- --------------------------------------------------------
 
@@ -926,14 +508,13 @@ CREATE TABLE `fs_includes` (
   `replace_thing` text collate latin1_general_ci NOT NULL,
   `include_type` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_includes`
 -- 
 
-REPLACE INTO `fs_includes` VALUES (11, '[%test%]', 'das ist nicht gut: [%hallo%]', 1);
-REPLACE INTO `fs_includes` VALUES (12, '[%hallo%]', 'neuer umhang', 1);
+REPLACE INTO `fs_includes` VALUES (1, '[%netzwerk%]', 'wop.inc.php', 2);
 
 -- --------------------------------------------------------
 
@@ -951,9 +532,7 @@ CREATE TABLE `fs_iplist` (
 -- Daten für Tabelle `fs_iplist`
 -- 
 
-REPLACE INTO `fs_iplist` VALUES (1186497756, '89.14.107.78');
-REPLACE INTO `fs_iplist` VALUES (1186497785, '90.153.112.236');
-REPLACE INTO `fs_iplist` VALUES (1186499137, '127.0.0.1');
+REPLACE INTO `fs_iplist` VALUES (1187121915, '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -970,13 +549,13 @@ CREATE TABLE `fs_news` (
   `news_title` varchar(100) collate latin1_general_ci default NULL,
   `news_text` text collate latin1_general_ci,
   PRIMARY KEY  (`news_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_news`
 -- 
 
-REPLACE INTO `fs_news` VALUES (6, 6, 1, 1157411940, 'Vocent feugait', 'Vocent feugait te eam, id pro nihil quaestio. Mei probo graeci ea. Euismod gubergren complectitur id mea. Vel prompta volutpat postulant et, nec meis detraxit an. Facer mentitum dissentiet per ne, id regione singulis antiopam cum.\r\n\r\nEx vel falli viderer habemus. Ea ius repudiare constituto vituperata, ad omnis nominavi ius. Usu mollis verear delicata id, nec et facete facilisi consequuntur. Illud utamur quo at, cibo corrumpit reprimique an pri.\r\n\r\nPer imperdiet iracundia ei, iudico quaeque inermis vel te, aliquando forensibus at vel. Error choro definitiones ius ei. Vel choro legimus ut, quo no nonumy appellantur instructior. Eum vocent singulis et, quodsi reprehendunt vix cu, eu aliquid volumus hendrerit quo.\r\n\r\nMea at solum doctus habemus. An labore assueverit mea, in essent aliquyam conceptam nec. Eligendi luptatum iudicabit an vim. Quem neglegentur est at. Quot mediocritatem te usu, at mea volutpat tincidunt. Ea ius sapientem ocurreret contentiones.\r\n\r\nErat omittam fabellas ei sit, quodsi vulputate ius cu. Vero utroque phaedrum sed an, ea cum diam scaevola moderatius, ad hinc graeco duo. Ex mei numquam voluptua, ex has fuisset cotidieque, justo habemus definitionem ei has. Eum nobis possit conclusionemque ea. Perpetua gubergren usu cu. Ne inani assentior mei.');
+REPLACE INTO `fs_news` VALUES (1, 1, 1, 1186939080, 'Lorem Ipsum', 'Lorem Ipsum');
 
 -- --------------------------------------------------------
 
@@ -990,13 +569,13 @@ CREATE TABLE `fs_news_cat` (
   `cat_name` varchar(100) collate latin1_general_ci default NULL,
   `cat_description` text collate latin1_general_ci NOT NULL,
   PRIMARY KEY  (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_news_cat`
 -- 
 
-REPLACE INTO `fs_news_cat` VALUES (6, 'Latein', 'In dieser Kategorie werden Texte nur auf Latein gepostet.');
+REPLACE INTO `fs_news_cat` VALUES (1, 'latein', '');
 
 -- --------------------------------------------------------
 
@@ -1014,30 +593,13 @@ CREATE TABLE `fs_news_comments` (
   `comment_title` varchar(100) collate latin1_general_ci default NULL,
   `comment_text` text collate latin1_general_ci,
   PRIMARY KEY  (`comment_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=28 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_news_comments`
 -- 
 
-REPLACE INTO `fs_news_comments` VALUES (2, 6, 'asdsa', 0, 1169953620, 'b, i, u, s', '[b]fett[/b]\r\n[i]kursiv[/i]\r\n[u]unterstrichen[/u]\r\n[s]durchgestrichen[/s]');
-REPLACE INTO `fs_news_comments` VALUES (4, 6, '', 1, 1169999393, 'center, url, home, email', '[center]zentriert[/CENTER]\r\n\r\n[url]http://google.de[/url]\r\n[url=http://google.de]Google.de[/url]\r\n\r\n[home]newsarchiv[/home]\r\n[home=newsarchiv]Alte News anzeigen[/home]\r\n\r\n[email]admin@frogsystem.de[/email]\r\n[email=admin@frogsystem.de]Email-Adresse des Admins[/email]');
-REPLACE INTO `fs_news_comments` VALUES (5, 6, '', 1, 1169999432, 'img, cimg', '[img]http://forum.worldofplayers.de/layouts/wop/buttons/reply.gif[/img]\r\n[img=right]http://forum.worldofplayers.de/layouts/wop/buttons/reply.gif[/img]\r\n\r\n[cimg]test.gif[/cimg]\r\n[cimg=right]test.gif[/cimg]');
-REPLACE INTO `fs_news_comments` VALUES (6, 6, '', 1, 1169999566, 'list, numlist', '[list][*]test 1\r\n[*]test 2\r\n[*]test 3[/list]\r\n[numlist][*]test 1\r\n[*]test 2\r\n[*]test 3[/numlist]');
-REPLACE INTO `fs_news_comments` VALUES (7, 6, '', 1, 1170001566, 'font, color, size', '[font=courier]Text in Courier[/font]\r\n\r\n[color=red]Rote Schrift[/color]\r\n\r\n[size=5]Große Schrift[/size]');
-REPLACE INTO `fs_news_comments` VALUES (8, 6, '', 1, 1170002001, 'code, quote, noparse', '[quote]Ich bin nicht der Herrscher der Welt; die Welt beherrscht mich![/quote]\r\n\r\n[quote=Sweil]Ich bin nicht der Herrscher der Welt; die Welt beherrscht mich![/quote]\r\n\r\n[code]Ich bin nicht der Herrscher der Welt; die Welt beherrscht mich![/code]\r\n\r\n[noparse][b]Kein fetter Text![/b][/noparse]');
-REPLACE INTO `fs_news_comments` VALUES (9, 6, '', 1, 1170003505, 'smilies', ':-) ;-) xD :-P §sweet');
-REPLACE INTO `fs_news_comments` VALUES (13, 6, '1', 1, 1183658894, 'Hallo', '[u][s][center][font=tahoma]hallo[font][/center][/s][/u]xD');
-REPLACE INTO `fs_news_comments` VALUES (14, 6, '1', 1, 1183659509, 'hi', ':) [b]ich bin fett[/b]\r\n[center]und ich zentriert[/center]');
-REPLACE INTO `fs_news_comments` VALUES (18, 6, '1', 1, 1185134284, 'alle smilies', ':-);-):-(:-PxD:-o^_^:-/>-(:-]');
-REPLACE INTO `fs_news_comments` VALUES (16, 6, '1', 1, 1183660216, '=)', ':-oxD:-(:-(:-);-)^_^:-]>-(');
-REPLACE INTO `fs_news_comments` VALUES (19, 6, '1', 1, 1185134328, 'html-test', '<b>test</b>');
-REPLACE INTO `fs_news_comments` VALUES (23, 6, '1', 1, 1186486876, '[%hallo%]', '[%hallo%]');
-REPLACE INTO `fs_news_comments` VALUES (22, 6, 'dfdfdf', 0, 1186485754, 'ddfdf', '[b]df[/b]');
-REPLACE INTO `fs_news_comments` VALUES (24, 6, '1', 1, 1186486940, '[%hallo%]', '[%hallo%]');
-REPLACE INTO `fs_news_comments` VALUES (25, 6, '1', 1, 1186487654, 'ghgh', 'gh');
-REPLACE INTO `fs_news_comments` VALUES (26, 6, '1', 1, 1186487675, 'ert', 'rertert');
-REPLACE INTO `fs_news_comments` VALUES (27, 6, 'dfdfdf', 0, 1186487787, 'dfdfdf', 'dfdfd');
+REPLACE INTO `fs_news_comments` VALUES (1, 1, '1', 1, 1187028975, 'Smilies', ':-):-(;-)xD:-o^_^:-/:-]>-(');
 
 -- --------------------------------------------------------
 
@@ -1079,13 +641,12 @@ CREATE TABLE `fs_news_links` (
   `link_url` varchar(255) collate latin1_general_ci default NULL,
   `link_target` tinyint(4) default NULL,
   PRIMARY KEY  (`link_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_news_links`
 -- 
 
-REPLACE INTO `fs_news_links` VALUES (6, 6, 'Generator', 'http://www.lorem-ipsum.info/generator3-de', 1);
 
 -- --------------------------------------------------------
 
@@ -1101,13 +662,12 @@ CREATE TABLE `fs_partner` (
   `partner_beschreibung` text collate latin1_general_ci NOT NULL,
   `partner_permanent` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`partner_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_partner`
 -- 
 
-REPLACE INTO `fs_partner` VALUES (2, 'DSA - Drakensang', 'http://www.dsa-drakensang.de', 'Drakensang ist ein super Spiel!', 1);
 
 -- --------------------------------------------------------
 
@@ -1186,8 +746,6 @@ CREATE TABLE `fs_permissions` (
 -- 
 
 REPLACE INTO `fs_permissions` VALUES (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-REPLACE INTO `fs_permissions` VALUES (2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-REPLACE INTO `fs_permissions` VALUES (4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1204,17 +762,12 @@ CREATE TABLE `fs_poll` (
   `poll_type` tinyint(4) default NULL,
   `poll_participants` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`poll_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_poll`
 -- 
 
-REPLACE INTO `fs_poll` VALUES (1, 'Weiter Machen?', 1157540160, 1160132160, 0, 0);
-REPLACE INTO `fs_poll` VALUES (2, 'möp?', 1159364100, 1161956100, 1, 0);
-REPLACE INTO `fs_poll` VALUES (3, 'jhk', 1154013780, 1161962580, 0, 0);
-REPLACE INTO `fs_poll` VALUES (4, '^test', 1166462340, 1180266360, 1, 30);
-REPLACE INTO `fs_poll` VALUES (5, 'hehe', 1174404180, 1177078980, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1229,23 +782,12 @@ CREATE TABLE `fs_poll_answers` (
   `answer` varchar(255) collate latin1_general_ci default NULL,
   `answer_count` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`answer_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_poll_answers`
 -- 
 
-REPLACE INTO `fs_poll_answers` VALUES (1, 1, 'Ja', 8);
-REPLACE INTO `fs_poll_answers` VALUES (1, 2, 'Nein', 4);
-REPLACE INTO `fs_poll_answers` VALUES (2, 3, 'blubb', 5);
-REPLACE INTO `fs_poll_answers` VALUES (2, 4, 'gg', 3);
-REPLACE INTO `fs_poll_answers` VALUES (2, 5, 'dfsdfsdf', 3);
-REPLACE INTO `fs_poll_answers` VALUES (3, 6, 'hjk', 0);
-REPLACE INTO `fs_poll_answers` VALUES (3, 7, 'hjkh', 0);
-REPLACE INTO `fs_poll_answers` VALUES (4, 8, 'hallo', 18);
-REPLACE INTO `fs_poll_answers` VALUES (4, 9, 'hallihallo', 20);
-REPLACE INTO `fs_poll_answers` VALUES (5, 10, '1', 1);
-REPLACE INTO `fs_poll_answers` VALUES (5, 11, '2', 1);
 
 -- --------------------------------------------------------
 
@@ -1260,7 +802,7 @@ CREATE TABLE `fs_poll_voters` (
   `ip_address` varchar(15) collate latin1_general_ci NOT NULL default '0.0.0.0',
   `time` int(32) NOT NULL default '0',
   PRIMARY KEY  (`voter_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=20 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_poll_voters`
@@ -1340,20 +882,22 @@ CREATE TABLE `fs_screen` (
   `cat_id` smallint(6) unsigned default NULL,
   `screen_name` char(100) collate latin1_general_ci default NULL,
   PRIMARY KEY  (`screen_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=17 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=11 ;
 
 -- 
 -- Daten für Tabelle `fs_screen`
 -- 
 
-REPLACE INTO `fs_screen` VALUES (5, 7, 'test');
-REPLACE INTO `fs_screen` VALUES (4, 7, '');
-REPLACE INTO `fs_screen` VALUES (6, 7, '');
-REPLACE INTO `fs_screen` VALUES (12, 7, '');
-REPLACE INTO `fs_screen` VALUES (11, 7, '');
-REPLACE INTO `fs_screen` VALUES (13, 7, '');
-REPLACE INTO `fs_screen` VALUES (14, 7, '');
-REPLACE INTO `fs_screen` VALUES (16, 8, 'test');
+REPLACE INTO `fs_screen` VALUES (1, 1, '');
+REPLACE INTO `fs_screen` VALUES (2, 1, '');
+REPLACE INTO `fs_screen` VALUES (3, 1, '');
+REPLACE INTO `fs_screen` VALUES (4, 1, '');
+REPLACE INTO `fs_screen` VALUES (5, 1, '');
+REPLACE INTO `fs_screen` VALUES (6, 1, '');
+REPLACE INTO `fs_screen` VALUES (7, 1, '');
+REPLACE INTO `fs_screen` VALUES (8, 1, '');
+REPLACE INTO `fs_screen` VALUES (9, 1, '');
+REPLACE INTO `fs_screen` VALUES (10, 1, '');
 
 -- --------------------------------------------------------
 
@@ -1370,15 +914,16 @@ CREATE TABLE `fs_screen_cat` (
   `cat_date` int(11) NOT NULL default '0',
   `randompic` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=5 ;
 
 -- 
 -- Daten für Tabelle `fs_screen_cat`
 -- 
 
-REPLACE INTO `fs_screen_cat` VALUES (6, 'Wallpaper', 2, 2, 1160258165, 0);
-REPLACE INTO `fs_screen_cat` VALUES (7, 'Screenshots', 1, 1, 1160260023, 1);
-REPLACE INTO `fs_screen_cat` VALUES (8, 'test', 1, 0, 1183583860, 1);
+REPLACE INTO `fs_screen_cat` VALUES (1, 'sichtbar', 1, 2, 1187036417, 0);
+REPLACE INTO `fs_screen_cat` VALUES (2, 'nicht in Auswahl', 1, 2, 1187036435, 0);
+REPLACE INTO `fs_screen_cat` VALUES (3, 'nicht sichtbar', 1, 0, 1187036440, 0);
+REPLACE INTO `fs_screen_cat` VALUES (4, 'Bilder', 2, 1, 1187122022, 0);
 
 -- --------------------------------------------------------
 
@@ -1395,14 +940,16 @@ CREATE TABLE `fs_screen_config` (
   `max_size` int(11) NOT NULL default '0',
   `pics_per_row` tinyint(1) NOT NULL,
   `pics_per_page` tinyint(2) NOT NULL,
-  `sort` varchar(4) collate latin1_general_ci NOT NULL
+  `sort` varchar(4) collate latin1_general_ci NOT NULL,
+  `show_img_x` int(4) NOT NULL,
+  `show_img_y` int(4) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- 
 -- Daten für Tabelle `fs_screen_config`
 -- 
 
-REPLACE INTO `fs_screen_config` VALUES (5000, 5000, 120, 90, 2048, 3, 6, 'desc');
+REPLACE INTO `fs_screen_config` VALUES (5000, 5000, 120, 90, 2048, 3, 6, 'desc', 800, 600);
 
 -- --------------------------------------------------------
 
@@ -1417,7 +964,7 @@ CREATE TABLE `fs_screen_random` (
   `start` int(11) NOT NULL,
   `end` int(11) NOT NULL,
   PRIMARY KEY  (`random_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_screen_random`
@@ -1458,16 +1005,12 @@ CREATE TABLE `fs_shop` (
   `artikel_preis` varchar(10) collate latin1_general_ci default NULL,
   `artikel_hot` tinyint(4) default NULL,
   PRIMARY KEY  (`artikel_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_shop`
 -- 
 
-REPLACE INTO `fs_shop` VALUES (1, 'Guild Wars Nightfall', 'http://www.amazon.de/NCsoft-Europe-Guild-Wars-Nightfall/dp/B000I2J5BU/sr=8-1/qid=1161969497/ref=pd_ka_1/028-6232893-0480517?ie=UTF8&s=videogames', 'Guild Wars – der Kampf geht weiter! Die Finsternis bricht herein, das Licht muss siegen ... Wenn ein korrupter Herrscher die Macht eines verstorbenen Gottes herbeiruft, bedarf es einer Gruppe unerschrockener Helden, um den Kontinent Elona vor der schleichenden Dunkelheit zu retten. Guild Wars Nightfall ist die dritte epische Herausforderung aus dem preisgekrönten Guild Wars-Universum und wird sowohl neue also auch erfahrene Guild Wars-Spieler gleichermaßen begeistern!\r\n\r\nJeder Held schreibt seine eigene Geschichte. Die Handlungen der Spieler werden drastische Konsequenzen nach sich ziehen und die Gruppe wird zum verlängerten Arm des Charakters. So haben Sie Guild Wars noch nie zuvor gesehen!', '38,95', 0);
-REPLACE INTO `fs_shop` VALUES (2, 'Factions', 'http://www.amazon.de/NCsoft-Europe-Guild-Wars-Nightfall/dp/B000I2J5BU/sr=8-1/qid=1161969497/ref=pd_ka_1/028-6232893-0480517?ie=UTF8&s=videogames', 'Guild Wars – der Kampf geht weiter! Die Finsternis bricht herein, das Licht muss siegen ... Wenn ein korrupter Herrscher die Macht eines verstorbenen Gottes herbeiruft, bedarf es einer Gruppe unerschrockener Helden, um den Kontinent Elona vor der schleichenden Dunkelheit zu retten. Guild Wars Nightfall ist die dritte epische Herausforderung aus dem preisgekrönten Guild Wars-Universum und wird sowohl neue also auch erfahrene Guild Wars-Spieler gleichermaßen begeistern!\r\n\r\nJeder Held schreibt seine eigene Geschichte. Die Handlungen der Spieler werden drastische Konsequenzen nach sich ziehen und die Gruppe wird zum verlängerten Arm des Charakters. So haben Sie Guild Wars noch nie zuvor gesehen!', '56,65', 1);
-REPLACE INTO `fs_shop` VALUES (3, 'test gain', 'ddd', 'dddddddddxd', '8,99', 0);
-REPLACE INTO `fs_shop` VALUES (4, 'asf', 'sdf', 'asdfasdf', '434,8', 1);
 
 -- --------------------------------------------------------
 
@@ -1479,45 +1022,24 @@ DROP TABLE IF EXISTS `fs_smilies`;
 CREATE TABLE `fs_smilies` (
   `id` mediumint(6) NOT NULL auto_increment,
   `replace_string` varchar(15) collate latin1_general_ci NOT NULL,
-  `image_name` varchar(255) collate latin1_general_ci NOT NULL,
+  `order` int(3) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=32 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=11 ;
 
 -- 
 -- Daten für Tabelle `fs_smilies`
 -- 
 
-REPLACE INTO `fs_smilies` VALUES (1, ':-)', 'happy.gif');
-REPLACE INTO `fs_smilies` VALUES (2, ':-(', 'sad.gif');
-REPLACE INTO `fs_smilies` VALUES (3, ';-)', 'wink.gif');
-REPLACE INTO `fs_smilies` VALUES (4, ':-P', 'tongue.gif');
-REPLACE INTO `fs_smilies` VALUES (5, 'xD', 'grin.gif');
-REPLACE INTO `fs_smilies` VALUES (6, ':-o', 'shocked.gif');
-REPLACE INTO `fs_smilies` VALUES (7, '^_^', 'sweet.gif');
-REPLACE INTO `fs_smilies` VALUES (8, ':-/', 'neutral.gif');
-REPLACE INTO `fs_smilies` VALUES (9, ':-]', 'satisfied.gif');
-REPLACE INTO `fs_smilies` VALUES (10, '>-(', 'angry.gif');
-REPLACE INTO `fs_smilies` VALUES (11, '§afraid', 'afraid.gif');
-REPLACE INTO `fs_smilies` VALUES (12, '§angry', 'angry.gif');
-REPLACE INTO `fs_smilies` VALUES (13, '§wink', 'wink.gif');
-REPLACE INTO `fs_smilies` VALUES (14, '§confused', 'confused.gif');
-REPLACE INTO `fs_smilies` VALUES (15, '§cool', 'cool.gif');
-REPLACE INTO `fs_smilies` VALUES (16, '§grin', 'grin.gif');
-REPLACE INTO `fs_smilies` VALUES (17, '§happy', 'happy.gif');
-REPLACE INTO `fs_smilies` VALUES (18, '§ko', 'ko.gif');
-REPLACE INTO `fs_smilies` VALUES (19, '§laugh', 'laughing.gif');
-REPLACE INTO `fs_smilies` VALUES (20, '§mad', 'mad.gif');
-REPLACE INTO `fs_smilies` VALUES (21, '§neutral', 'neutral.gif');
-REPLACE INTO `fs_smilies` VALUES (22, '§rolleyes', 'rolleyes.gif');
-REPLACE INTO `fs_smilies` VALUES (23, '§sad', 'sad.gif');
-REPLACE INTO `fs_smilies` VALUES (24, '§satisfied', 'satisfied.gif');
-REPLACE INTO `fs_smilies` VALUES (25, '§shock', 'shocked.gif');
-REPLACE INTO `fs_smilies` VALUES (26, '§sigh', 'sigh.gif');
-REPLACE INTO `fs_smilies` VALUES (27, '§sleep', 'sleep.gif');
-REPLACE INTO `fs_smilies` VALUES (28, '§sweet', 'sweet.gif');
-REPLACE INTO `fs_smilies` VALUES (29, '§tongue', 'tongue.gif');
-REPLACE INTO `fs_smilies` VALUES (30, '§yawn', 'yawn.gif');
-REPLACE INTO `fs_smilies` VALUES (31, '&gt;-(', 'angry.gif');
+REPLACE INTO `fs_smilies` VALUES (1, ':-)', 1);
+REPLACE INTO `fs_smilies` VALUES (2, ':-(', 2);
+REPLACE INTO `fs_smilies` VALUES (3, ';-)', 3);
+REPLACE INTO `fs_smilies` VALUES (4, ':-P', 4);
+REPLACE INTO `fs_smilies` VALUES (5, 'xD', 5);
+REPLACE INTO `fs_smilies` VALUES (6, ':-o', 6);
+REPLACE INTO `fs_smilies` VALUES (7, '^_^', 7);
+REPLACE INTO `fs_smilies` VALUES (8, ':-/', 8);
+REPLACE INTO `fs_smilies` VALUES (9, ':-]', 9);
+REPLACE INTO `fs_smilies` VALUES (10, '&gt;-(', 10);
 
 -- --------------------------------------------------------
 
@@ -1565,6 +1087,8 @@ CREATE TABLE `fs_template` (
   `screenshot_body` text collate latin1_general_ci NOT NULL,
   `screenshot_cat` text collate latin1_general_ci NOT NULL,
   `screenshot_cat_body` text collate latin1_general_ci NOT NULL,
+  `wallpaper_pic` text collate latin1_general_ci NOT NULL,
+  `wallpaper_sizes` text collate latin1_general_ci NOT NULL,
   `pic_viewer` text collate latin1_general_ci NOT NULL,
   `user_user_menu` text collate latin1_general_ci NOT NULL,
   `user_admin_link` text collate latin1_general_ci NOT NULL,
@@ -1599,6 +1123,10 @@ CREATE TABLE `fs_template` (
   `code_tag` text collate latin1_general_ci NOT NULL,
   `quote_tag` text collate latin1_general_ci NOT NULL,
   `quote_tag_name` text collate latin1_general_ci NOT NULL,
+  `editor_design` text collate latin1_general_ci NOT NULL,
+  `editor_css` text collate latin1_general_ci NOT NULL,
+  `editor_button` text collate latin1_general_ci NOT NULL,
+  `editor_seperator` text collate latin1_general_ci NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci PACK_KEYS=1;
 
@@ -1606,7 +1134,7 @@ CREATE TABLE `fs_template` (
 -- Daten für Tabelle `fs_template`
 -- 
 
-REPLACE INTO `fs_template` VALUES (0, 'default', '<body>\r\n    <div id="head_shadow"></div>\r\n    <div id="head">[%test%]<br />[%hallo%]</div>\r\n\r\n\r\n    <div id="menu_l_shadow">\r\n        <div id="menu_l">\r\n{main_menu}\r\n        </div>\r\n    </div>\r\n    <div id="main_container">\r\n        <div id="main_shadow">\r\n            <div id="main">\r\n{announcement}\r\n{content}\r\n            </div>\r\n        </div>\r\n        <p>\r\n    </div>\r\n\r\n    <div id="menu_r_shadow">\r\n        <div id="menu_r">\r\n{user}<br><br>\r\n{randompic}\r\nShop:<br>\r\n{shop}<br><br>\r\nUmfrage:<br>\r\n{poll}<br><br>\r\nPartner:<br>\r\n{partner}<br><br>\r\nStatistik:<br>\r\n{stats}<br><br>\r\nNetzwerk:<br>\r\n[%netzwerk%]\r\n<br><br>\r\n        </div>\r\n    </div>\r\n</body>', '<div class="news_head" style="height:10px;">\r\n   <span style="float:left;">\r\n       <b>{titel}</b>\r\n   </span>\r\n   <span class="small" style="float:right;">\r\n       <b>{datum}</b>\r\n   </span>\r\n</div>\r\n<div>\r\n   {text}\r\n</div>\r\n<div>\r\n   <span class="small" style="float:right;">\r\n       {autor}\r\n   </span>\r\n</div>\r\n<p></p>', 'geschrieben von <a class="small" href="{profillink}">{username}</a>', '<img class=\\"thumb\\" onClick=\\"open(\\''{link}\\'',\\''Picture\\'',\\''width=900,height=710,screenX=0,screenY=0\\'')\\" src=\\"{thumb}\\" alt=\\"{titel}\\">', '<div class=\\"small\\" align=\\"center\\">\r\n     Kein Zufallsbild aktiv\r\n</div>', '{hotlinks}', '<div align="center">\r\n    <a style="font-weight:bold;" class="small" target="_blank" href="{link}">{titel}</a>\r\n</div>', '<li><a href="{url}" target="{target}">{name}</a></li>', '<p>\r\n<b>Related Links:</b>\r\n<ul>\r\n    {links}\r\n</ul>', '<span class="small">{datum} </span><a class="small" href="{url}">{titel}</a><br>', '<b>Allgemein</b><br>\r\n<a class="small" href="{virtualhost}?go=news">- News</a><br>\r\n<a class="small" href="{virtualhost}?go=newsarchiv">- News Archiv</a><br>\r\n<a class="small" href="{virtualhost}?go=pollarchiv">- Umfragen Archiv</a><br>\r\n<a class="small" href="{virtualhost}?go=shop">- Shop</a><br>\r\n<a class="small" href="{virtualhost}?go=screenshots">- Screenshots</a><br>\r\n<a class="small" href="{virtualhost}?go=map">- Community Map</a><br>\r\n<a class="small" href="{virtualhost}?go=members">- Mitgliederliste</a><br>\r\n<a class="small" href="{virtualhost}?go=download">- Downloads</a><br>', '<div class="news_head" style="height:10px;">\r\n    <span style="float:left;">\r\n        <b>{titel}</b>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        <b>{datum}</b>\r\n    </span>\r\n</div>\r\n<div style="padding:3px;">\r\n    <table border="0" cellpadding="0" cellspacing="0" width="100%">\r\n        <tr>\r\n            <td align="left" valign="top">\r\n                {autor_avatar}\r\n            </td>\r\n            <td valign="top" align="left">\r\n                {text}\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="news_footer">\r\n    <span class="small" style="float:right;">\r\n        geschrieben von: {autor}</a>\r\n    </span>\r\n</div>\r\n<br /><br /><br />', '<a class="small" href="{url}">{name}</a>', '<script type="text/javascript"> \r\n<!-- \r\n    function chkFormular() \r\n    {\r\n        if((document.getElementById("name").value == "") ||\r\n           (document.getElementById("title").value == "") ||\r\n           (document.getElementById("text").value == ""))\r\n        {\r\n            alert ("Du hast nicht alle Felder ausgefüllt"); \r\n            return false;\r\n        }\r\n    } \r\n//--> \r\n</script> \r\n\r\n<b id="add">Kommentar hinzufügen</b><p>\r\n<div>\r\n    <form action="" method="post" onSubmit="return chkFormular()">\r\n        <input type="hidden" name="go" value="comments">\r\n        <input type="hidden" name="addcomment" value="1">\r\n        <input type="hidden" name="id" value="{newsid}">\r\n        <table width="100%"> \r\n            <tr>\r\n                <td align="left">\r\n                    <b>Name: </b>\r\n                </td>\r\n                <td align="left">\r\n                    {name_input}\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="left">\r\n                    <b>Titel: </b>\r\n                </td>\r\n                <td align="left">\r\n                    <input class="text" name="title" id="title" size="32" maxlength="32">\r\n                </td>\r\n            </tr>\r\n{antispam}\r\n            <tr>\r\n                <td align="left" valign="top">\r\n                    <b>Text:</b><br />\r\n                      <font class="small">Html ist {html}.<br />\r\n                      FScode ist {fs_code}.</font>\r\n                </td>\r\n                <td align="left">\r\n                    {textarea}\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td></td>\r\n                <td align="left">\r\n                    <input class="button" type="submit" value="Absenden">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td></td>\r\n                <td align="left">\r\n                   {antispamtext}\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n</div><p>', '<input class="text" name="name" id="name" size="32" maxlength="25">\r\n<span class="small"> Willst du dich </span>\r\n<a class="small" href="?go=login">einloggen?</a>', '<tr>\r\n                <td align="left">\r\n                    <img src="{captcha_url}">\r\n                </td>\r\n                <td align="left">\r\n                    <input class="text" name="spam" id="spam" size="32" maxlength="25">\r\n<span class="small">Bitte löse diese kleine Rechenaufgabe.</span> <a class="small" href="#antispam">Warum? *</a>\r\n                </td>\r\n            </tr>', '<br /><br />\r\n <table border="0" cellspacing="0" cellpadding="0" width="60%">\r\n  <tr>\r\n   <td valign="top" align="left">\r\n<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platziern. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>\r\n   </td>\r\n  </tr>\r\n </table>', '<script type="text/javascript"> \r\n<!-- \r\n    function chkFormular() \r\n    {\r\n        if (document.getElementById("keyword").value.length < "4")\r\n        {\r\n            alert("Es müssen mehr als 3 Zeichen sein"); \r\n            return false;\r\n        }\r\n    } \r\n//--> \r\n</script> \r\n\r\n<b>NEWSARCHIV</b><p>\r\n<div>\r\n    <form action="" method="post">\r\n        <input type="hidden" name="go" value="newsarchiv">\r\n        <b>News aus dem: </b>\r\n        <select class="text" name="monat">\r\n            <option value="1">Januar</option>\r\n            <option value="2">Februar</option>\r\n            <option value="3">März</option>\r\n            <option value="4">April</option>\r\n            <option value="5">Mai</option>\r\n            <option value="6">Juni</option>\r\n            <option value="7">Juli</option>\r\n            <option value="8">August</option>\r\n            <option value="9">September</option>\r\n            <option value="10">Oktober</option>\r\n            <option value="11">November</option>\r\n            <option value="12">Dezember</option>\r\n        </select>\r\n        <select class="text" name="jahr">\r\n            {years}\r\n        </select>\r\n        <input class="button" type="submit" value="Anzeigen">\r\n    </form>\r\n    <p>\r\n    oder\r\n    <p>\r\n    <form action="" method="post" onSubmit="return chkFormular()">\r\n        <input type="hidden" name="go" value="newsarchiv">\r\n        <b>Nach: </b>\r\n        <input class="text" id="keyword" name="keyword" size="30" maxlength="20">\r\n        <input class="button" type="submit" value="Suchen">\r\n    </form>\r\n</div>\r\n<p></p>', '<b>{titel}</b><br>\r\n{meldung}\r\n<p></p>', '<b>NEWS</b><p>\r\n<div>\r\n    <b>Headlines:</b><br>\r\n    {headlines}\r\n</div>\r\n<div>\r\n    <b>Downloads:</b><br>\r\n    {downloads}\r\n</div>\r\n<p>', '<tr>\r\n    <b>Einloggen</b>\r\n</tr>\r\n<tr>\r\n    <td align="center">\r\n        <form action="" method="post">\r\n            <input type="hidden" name="go" value="login">\r\n            <input type="hidden" name="login" value="1">\r\n            <table align="center" border="0" cellpadding="0" cellspacing="0" width="120">\r\n                <tr>\r\n                    <td align="right">\r\n                        <font class="small">Name:</font>\r\n                    </td>\r\n                    <td>\r\n                        <input class="text" size="10" name="username" maxlength="100">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="right">\r\n                        <font class="small">Pass:</font>\r\n                    </td>\r\n                    <td>\r\n                        <input class="text" size="10" type="password" name="userpassword" maxlength="16">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="center" colspan="2">\r\n                        <input type="checkbox" name="stayonline" value="1" checked>\r\n                        <font class="small">eingeloggt bleiben</font>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="center" colspan="2">\r\n                        <input class="button" type="submit" value="Anmelden">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td colspan="2" align="center">\r\n                        <a class="small" href="?go=register">Noch nicht registriert?</a>\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </form>\r\n    </td>\r\n</tr>', '<b>SHOP</b><p>\r\n<table width="100%">\r\n    {artikel}\r\n</table>', '<tr>\r\n    <td align="left" valign="top" width="60" rowspan="4">\r\n        <img border="0" style="cursor:pointer;" onClick=open(''showimg.php?pic={bild}'',''Picture'',''width=900,height=710,screenX=0,screenY=0'') src="{thumbnail}">\r\n    </td>\r\n    <td align="left" width="100">\r\n        <b>Titel:</b>\r\n    </td>\r\n        <td align="left">\r\n            {titel}\r\n        </td>\r\n    </tr>\r\n<tr>\r\n    <td align="left" valign="top">\r\n        <b>Beschreibung:</b>\r\n    </td>\r\n    <td align="left" valign="top">\r\n        {beschreibung}</td>\r\n    </tr>\r\n<tr>\r\n    <td align="left">\r\n        <b>Preis:</b>\r\n    </td>\r\n    <td align="left">\r\n        {preis} ¤\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td align="left"></td>\r\n    <td align="left">\r\n        <a href="{bestell_url}" target="_blank">Jetzt bestellen!</a>\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td colspan="3">\r\n         \r\n    </td>\r\n</tr>', '<img border="0" src="images/design/{icon}">\r\n<a href="{kategorie_url}">{kategorie_name}</a><br>', '<form action="" method="get">\r\n<tr>\r\n  <td colspan="3" align="right"><br /> <b>Kategorie durchsuchen:</b></td>\r\n  <td colspan="1" align="left"><br /> \r\n    <input class="text" size="20" name="keyword" value="{keyword}">\r\n    <input class="button" type="submit" value="Go">\r\n    <input class="button" type="button" value="Alle anzeigen" onclick="location=''{all_url}''">\r\n    <input type="hidden" name="go" value="download">\r\n    {input_cat}</td>\r\n</tr>\r\n\r\n</form>', '<b>DOWNLOADS</b><p>\r\n{navigation}\r\n<table border="0" cellpadding="0" cellspacing="2" width="100%">\r\n<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Titel</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Kategorie</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Uploaddatum</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Beschreibung</strong></td>\r\n </tr>\r\n{dateien}\r\n{suchfeld}\r\n</table>', '<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><a href="{url}"><b>{name}</b></a></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle">{cat}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle">{datum}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{text}</td>\r\n </tr>', '<b>DOWNLOADS -> {titel}</b><p>\r\n{navigation}\r\n    <table width="100%">\r\n        <tr>\r\n            <td align="left" width="130" rowspan="6" valign="top">\r\n                <img class="thumb" onClick=open(''showimg.php?pic={bild}'',''Picture'',''width=900,height=710,screenX=0,screenY=0'') src="{thumbnail}">\r\n            </td>\r\n        </tr>\r\n         <tr>\r\n            <td align="left" colspan="2" height="20" valign="top">\r\n                <b>{titel}</b>\r\n            </td>\r\n        </tr>\r\n       <tr>\r\n            <td align="left" width="75">\r\n                <b>Kategorie:</b>\r\n            </td>\r\n            <td align="left">\r\n                {cat}\r\n            </td>\r\n        </tr>\r\n       <tr>\r\n            <td align="left" width="75">\r\n                <b>Datum:</b>\r\n            </td>\r\n            <td align="left">\r\n                {datum}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td align="left" width="75">\r\n                <b>Uploader:</b>\r\n            </td>\r\n            <td align="left">\r\n                <a href="{uploader_url}">{uploader}</a>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td align="left" width="75">\r\n                <b>Autor:</b>\r\n            </td>\r\n            <td align="left">\r\n                {autor_link}\r\n            </td>\r\n        </tr>\r\n    </table>\r\n    <br>\r\n    <table width="100%">\r\n        <tr>\r\n            <td align="left" valign="top" width="130">\r\n                <b>Beschreibung:</b>\r\n            </td>\r\n            <td align="left" valign="top">{text}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td colspan="2"></td>\r\n        </tr>\r\n        <tr>\r\n             <td align="left" valign="top">\r\n                 <b>Dateien:</b>\r\n             </td>\r\n             <td align="left">{messages}\r\n             </td>\r\n         </tr>\r\n         <tr>\r\n             <td colspan="2"></td>\r\n         </tr>\r\n    </table>\r\n\r\n<table border="0" cellpadding="0" cellspacing="2" width="100%">\r\n<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;" colspan="2" ><strong>Datei (Download)</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Größe</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Traffic</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Downloads</strong></td>\r\n</tr>\r\n{files}\r\n<tr>\r\n  <td colspan="5" style="border: 1px solid #000000; padding: 3px;"><img alt="" src="images/design/null.gif"></td>\r\n</tr>\r\n{stats}\r\n</table>', '<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"{mirror_col}><a target="_blank" href="{url}"><b>{name}</b></a></td>{mirror_ext}\r\n  <td style="border: 1px solid #000000; padding: 3px;">{size}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{traffic}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{hits}</td>\r\n</tr>', '<td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle"><b>Mirror!</b></td>', '<tr>\r\n              <td style="border: 1px solid #000000; padding: 3px;" colspan="2" >{number}</strong></td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{size}</td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{traffic}</td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{hits}</td>\r\n              </tr>', '<span class="small">{datum} </span><a class="small" href="{url}">{name}</a><br>', '<td class=\\"small\\" align=\\"center\\" valign=\\"top\\">\r\n    <img class=\\"thumb\\" onClick=\\"open(\\''{url}\\'',\\''Picture\\'',\\''width=950,height=710,screenX=0,screenY=0\\'')\\" src=\\"{thumbnail}\\" alt=\\"{text}\\"><br>\r\n    {text}\r\n</td>', '<b>SCREENSHOT KATEGORIEN</b><p>\r\n<table width=\\"100%\\">\r\n{kategorien}\r\n</table>', '<tr>\r\n    <td align=\\"left\\">\r\n        <a href=\\"{url}\\">{name}</a>\r\n    </td>\r\n    <td align=\\"left\\">\r\n        erstellt am {datum}\r\n    </td>\r\n    <td align=\\"left\\">\r\n        {menge} Bilder\r\n    </td>\r\n</tr>', '<b>SCREENSHOTS: {title}</b><p>\r\n<center>{page}</center><br />\r\n<table border=\\"0\\" cellpadding=\\"\\" cellspacing=\\"10\\" width=\\"100%\\">\r\n{screenshots}\r\n</table>', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">\r\n<html>\r\n<head>\r\n    <title>Dungeon-Lords</title>\r\n    <link rel="stylesheet" type="text/css" href="inc/dl.css">\r\n    <meta name="keywords" content="Dungeon, Lords, Dungeon Lords, RPG, Rollenspiel, Schwerter, Fantasy, Game, Spiel, news, demo, lösung, tipps, fanseite, offiziell, screenshots, forum, downloads, download, videos, trailer">\r\n</head>\r\n<body>\r\n    <div align="center">\r\n        <table border="0" cellpadding="0" cellspacing="0" width="900" style="background-image:url(images/design/sp_bg.jpg); height:710px">\r\n            <tr>\r\n                <td width="900" colspan="3" style="background-image:url(images/design/sp_bn_o.jpg);" height="16"></td>\r\n            </tr>\r\n            <tr>\r\n                <td width="90" style="background-image:url(images/design/sp_bn_l.jpg);" height="60"></td>\r\n                <td width="468" height="60" bgcolor="#000000">{bannercode}</td>\r\n                <td width="342" style="background-image:url(images/design/sp_bn_r.jpg);" height="60"></td>\r\n            </tr>\r\n            <tr>\r\n                <td width="900" colspan="3" style="background-image:url(images/design/sp_bn_u.jpg);" height="14"></td>\r\n            </tr>\r\n            <tr>\r\n                <td width="900" style="background-image:url(images/design/loading.gif);" align="center" colspan="3" height="620">\r\n                    <table border="0" cellpadding="0" cellspacing="0">\r\n                        <tr>\r\n                            <td>{zurück_grafik}</td>\r\n                            <td width="300" height="200">\r\n                                <img src="{bild}" onclick="javascipt:self.close();" border="0" alt="{text}"></td>\r\n                            <td>{weiter_grafik}</td>\r\n                        </tr>\r\n                    </table>\r\n                    <b>{text}</b>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n</body>\r\n</html>', '<b>Willkommen {username}</b><br>\r\n<a class="small" href="{virtualhost}?go=editprofil">- Mein Profil</a><br>\r\n{admin}\r\n<a class="small" href="{logout}">- Logout</a>', '<a class=''small'' href=''{adminlink}'' target="_self">- Admin-CP</a><br />', '<div class="field_head" style="padding-left:60px; width:516px;">\r\n    <font class="h1" style="float:left; padding-top:14px;">Login</font>\r\n</div>\r\n<div class="field_middle" align="left">\r\n    <form action="" method="post">\r\n        <input type="hidden" name="go" value="login">\r\n        <input type="hidden" name="login" value="1">\r\n        <table align="center" border="0" cellpadding="4" cellspacing="0">\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Name:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="33" name="username" maxlength="100">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="33" type="password" name="userpassword" maxlength="16">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Angemeldet bleiben:</b>\r\n                </td>\r\n                <td>\r\n                    <input type="checkbox" name="stayonline" value="1" checked>\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td colspan="2" align="center">\r\n                    <input class="button" type="submit" value="Login">\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n    <p>\r\n    Du hast dich noch nicht registriert? Dann wirds jetzt aber Zeit ;) -> \r\n    <a href="?go=register">registrieren</a>\r\n    <p>\r\n</div>\r\n<div class="field_footer"></div>\r\n<p></p>', '<b>PROFIL ÄNDERN ({username})</b><p>\r\n<form action="" method="post" enctype="multipart/form-data">\r\n    <input type="hidden" name="go" value="editprofil">\r\n    <table align="center" border="0" cellpadding="4" cellspacing="0">\r\n        <tr>\r\n            <td width="50%" valign="top">\r\n                <b>Benutzerbild:</b>\r\n            </td>\r\n            <td width="50%">\r\n                {avatar}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>Benutzerbild hochladen:</b><br>\r\n                <font class="small">Nur wenn das alte überschrieben werden soll (max 110x110 px)</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="16" type="file" name="userpic">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>E-Mail:</b><br>\r\n                <font class="small">Deine E-Mail Adresse</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="34" value="{email}" name="usermail" maxlength="100">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>E-Mail zeigen:</b><br>\r\n                <font class="small">Zeige die E-Mail im öffentlichen Profil</font>\r\n            </td>\r\n            <td>\r\n                <input value="1" name="showmail" type="checkbox" {email_zeigen}>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>Neues Passwort:</b><br>\r\n                <font class="small">Nur eintragen, wenn du ein neues Passwort erstellen willst</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="33" type="password" name="userpassword" maxlength="16">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td colspan="2" align="center">\r\n                <input class="button" type="submit" value="Absenden">\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</form>', '<b>Members List</b><br /><br />\r\n<table width="100%" border="0">\r\n<tr>\r\n  <td><b>Avatar</b></td>\r\n  <td><a href="?go=members&sort=name_{order_name}" style="color:#000;"><b>Benutzername</b> {arrow_name}</a></td>\r\n  <td><b>E-Mail</b></td>\r\n  <td><a href="?go=members&sort=regdate_{order_regdate}" style="color:#000;"><b>Registriert seit</b> {arrow_regdate}</a></td>\r\n  <td><a href="?go=members&sort=news_{order_news}" style="color:#000;"><b>News</b> {arrow_news}</a></td>\r\n  <td><a href="?go=members&sort=articles_{order_articles}" style="color:#000;"><b>Artikel</b> {arrow_articles}</a></td>\r\n  <td><a href="?go=members&sort=comments_{order_comments}" style="color:#000;"><b>Kommentare</b> {arrow_comments}</a></td>\r\n</tr>\r\n{members}\r\n</table><br /><br />\r\n<center>{page}</center>', '<tr>\r\n  <td align="center">{avatar}</td>\r\n  <td><a href="{userlink}" class="small">{username}</a></td>\r\n  <td>{email}</td>\r\n  <td align="center">{reg_date}</td>\r\n  <td align="center">{news}</td>\r\n  <td align="center">{articles}</td>\r\n  <td align="center">{comments}</td>\r\n</tr>', '<tr>\r\n  <td align="center">{avatar}</td>\r\n  <td><a href="{userlink}" class="small"><b><i>{username}</i></b></a></td>\r\n  <td>{email}</td>\r\n  <td align="center">{reg_date}</td>\r\n  <td align="center">{news}</td>\r\n  <td align="center">{articles}</td>\r\n  <td align="center">{comments}</td>\r\n</tr>', '<tr>\r\n                <td align="right">\r\n                    <img src="{captcha_url}">\r\n                </td>\r\n                <td>\r\n                    <input class="text" name="spam" id="spam" size="30" maxlength="25"><br />\r\n<span class="small">Bitte löse diese kleine Rechenaufgabe.</span>\r\n                </td>\r\n            </tr>', '<br /><br />\r\n <table border="0" cellspacing="0" cellpadding="0" width="60%">\r\n  <tr>\r\n   <td valign="top" align="left">\r\n<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>\r\n   </td>\r\n  </tr>\r\n </table>', '<div class="field_head" style="padding-left:60px; width:516px;">\r\n    <font class="h1" style="float:left; padding-top:14px;">Community Map</font>\r\n</div>\r\n<div class="field_middle" align="left">\r\n    {karte}\r\n    <div align="right">\r\n        <font class="small">Zum betrachten der Karte wird Flash benötigt: </font><br>\r\n        <img border="0" src="images/design/flash_rune.gif" align="middle">\r\n        <a target="_blank" href="http://www.adobe.com/go/getflashplayer">\r\n            <img border="0" src="images/design/flash_download_now.gif" align="middle">\r\n        </a>\r\n    </div>\r\n</div>\r\n<div class="field_footer"></div>\r\n<p></p>', '<form name=\\"poll\\" action=\\"\\" method=\\"post\\">\r\n    <input type=\\"hidden\\" name=\\"pollid\\" value=\\"{poll_id}\\">\r\n    <table align=\\"center\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">\r\n        <tr>\r\n            <td class=\\"small\\" colspan=\\"2\\" align=\\"center\\">\r\n                <b>{question}</b>\r\n            </td>\r\n        </tr>\r\n{answers}\r\n        <tr>\r\n            <td colspan=\\"2\\" align=\\"center\\" ><br />\r\n                <input class=\\"button\\" type=\\"submit\\" value=\\"Abstimmen\\" {button_state}><br />\r\n<a class=\\"small\\" href=\\"?go=pollarchiv&pollid={poll_id}\\"><b>Ergebnis anzeigen!</b></a>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</form>', '<tr>\r\n    <td valign=\\"top\\">\r\n        <input type=\\"{type}\\" name=\\"answer{multiple}\\" value=\\"{answer_id}\\">\r\n    </td>\r\n    <td align=\\"left\\" class=\\"small\\">\r\n        {answer}\r\n    </td>\r\n</tr>', '<b>UMFRAGEN ARCHIV</b><p>\r\n<b>{frage}</b><p>\r\n<table width=\\"100%\\">\r\n{antworten}\r\n   <tr><td> </td></tr>\r\n   <tr><td align=\\"left\\">Anzahl der Teilnehmer: </td><td align=\\"left\\" colspan=\\"2\\"><b>{participants}</b></td></tr>\r\n   <tr><td align=\\"left\\">Anzahl der Stimmen: </td><td align=\\"left\\" colspan=\\"2\\"><b>{stimmen}</b></td></tr>\r\n   <tr><td align=\\"left\\">Art der Umfrage: </td><td align=\\"left\\" colspan=\\"2\\">{typ}</td></tr>\r\n   <tr><td align=\\"left\\">Umfragedauer:</td><td align=\\"left\\" colspan=\\"2\\">{start_datum} bis {end_datum}</td></tr>\r\n</table>', '<tr>\r\n    <td align=\\"left\\">{antwort}</td>\r\n    <td align=\\"left\\">{stimmen}</td>\r\n    <td align=\\"left\\">\r\n        <div style=\\"width:{balken_breite}px; height:4px; font-size:1px; background-color:#00FF00;\\">\r\n    </td>\r\n</tr>', '<table align=\\"center\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">\r\n    <tr>\r\n        <td class=\\"small\\" colspan=\\"2\\" align=\\"center\\">\r\n            <b>{question}</b>\r\n        </td>\r\n    </tr>\r\n{answers}\r\n</table>\r\n<div class=\\"small\\">Teilnehmer: {participants}</div>\r\n<b>Bereits abgestimmt!</b>', '<tr>\r\n    <td align=\\"left\\" class=\\"small\\" colspan=\\"2\\">\r\n        {answer}\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td align=\\"left\\" class=\\"small\\">\r\n        {percentage}\r\n    </td>\r\n    <td align=\\"left\\">\r\n        <div style=\\"width:{bar_width}px; height:4px; font-size:1px; background-color:#00FF00;\\">\r\n    </td>\r\n</tr>', '<b>UMFRAGEN ARCHIV</b><p>\r\n<table border=\\"0\\" width=\\"100%\\" cellpadding=\\"2\\" cellspacing=\\"0\\">\r\n<tr>\r\n  <td align=\\"left\\"><a href=\\"?go=pollarchiv&sort=name_{order_name}\\" style=\\"color: #000\\"><b>Frage {arrow_name}</b></a></td>\r\n  <td align=\\"left\\" width=\\"100\\"><a href=\\"?go=pollarchiv&sort=voters_{order_voters}\\" style=\\"color: #000\\"><b>Teilnehmer {arrow_voters}</b></a></td>\r\n  <td align=\\"left\\" width=\\"70\\"><a href=\\"?go=pollarchiv&sort=startdate_{order_startdate}\\" style=\\"color: #000\\"><b>von {arrow_startdate}</b></a></td>\r\n  <td align=\\"left\\" width=\\"10\\"></td>\r\n  <td align=\\"left\\" width=\\"70\\"><a href=\\"?go=pollarchiv&sort=enddate_{order_enddate}\\" style=\\"color: #000\\"><b>bis {arrow_enddate}</b></a></td>\r\n</tr>\r\n{umfragen}\r\n</table>\r\n<p>', '  <tr>\r\n   <td align=\\"left\\"><a href=\\"{url}\\">{frage}</a></td>\r\n   <td align=\\"left\\">{voters}</td>\r\n   <td align=\\"left\\" class=\\"small\\">{start_datum}</td>\r\n   <td align=\\"left\\" class=\\"small\\">-</td>\r\n   <td align=\\"left\\" class=\\"small\\">{end_datum}</td>\r\n  </tr>', '<div class=\\"small\\" align=\\"center\\">\r\n    Zur Zeit keine<br>Umfrage aktiv\r\n</div>', '<b>PROFIL VON {username}</b><p>\r\n<table align="center" border="0" cellpadding="4" cellspacing="0">\r\n    <tr>\r\n        <td width="50%" valign="top">\r\n            <b>Benutzerbild:</b>\r\n        </td>\r\n        <td width="50%">\r\n            {avatar}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>E-Mail:</b>\r\n        </td>\r\n        <td>\r\n            {email}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Registriert seit:</b>\r\n        </td>\r\n        <td>\r\n            {reg_datum}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene Kommentare:</b>\r\n        </td>\r\n        <td>\r\n            {kommentare}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene News:</b>\r\n        </td>\r\n        <td>\r\n            {news}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene Artikel:</b>\r\n        </td>\r\n        <td>\r\n            {artikel}\r\n        </td>\r\n    </tr>\r\n</table>', '- <b>{visits}</b> Visits<br>\r\n- <b>{visits_heute}</b> Visits heute<br>\r\n- <b>{hits}</b> Hits<br>\r\n- <b>{hits_heute}</b> Hits heute<br>\r\n- <b>{user_online}</b> Besucher online<p>\r\n- <b>{user}</b> registrierte User<br>\r\n- <b>{news}</b> News<br>\r\n- <b>{kommentare}</b> Kommentare<br>\r\n- <b>{artikel}</b> Artikel', '<script type="text/javascript"> \r\n<!-- \r\nfunction chkFormular() \r\n{\r\n    if((document.getElementById("username").value == "") ||\r\n       (document.getElementById("usermail").value == "") ||\r\n       (document.getElementById("userpass1").value == "") ||\r\n       (document.getElementById("userpass2").value == ""))\r\n    {\r\n        alert("Du hast nicht alle Felder ausgefüllt"); \r\n        return false;\r\n    }\r\n    if(document.getElementById("userpass1").value != document.getElementById("userpass2").value)\r\n    {\r\n        alert("Passwöter sind verschieden"); \r\n        return false;\r\n    }\r\n} \r\n//--> \r\n</script> \r\n\r\n<b>REGISTRIEREN</b><p>\r\n<div>\r\n    Registriere dich im Frog System, um in den Genuss erweiterter Features zu kommen. Dazu zählen bisher:\r\n    <ul>\r\n        <li>Zugriff auf unsere Downloads</li>\r\n        <li>Hochladen eines eigenen Benutzerbildes, für die von dir geschriebenen Kommentare</li>\r\n    </ul>\r\n    Weitere Features werden folgen.\r\n    <p>\r\n    <form action="" method="post" onSubmit="return chkFormular()">\r\n        <input type="hidden" value="register" name="go">\r\n        <table border="0" cellpadding="2" cellspacing="0" align="center">\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Name:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="username" id="username" maxlength="100">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="userpass1" id="userpass1" type="password" maxlength="16">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort wiederholen:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="userpass2" id="userpass2" type="password" maxlength="16">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>E-Mail:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="usermail" id="usermail" maxlength="100">\r\n                </td>\r\n            </tr>\r\n{antispam}\r\n            <tr>\r\n                <td colspan="2" align="center">\r\n                    <input type="submit" class="button" value="Registrieren">\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n    <p>\r\n</div>', '<div class="news_head" style="height:10px;" id ="{newsid}">\r\n    <span style="float:left;">\r\n        <img src="{kategorie_bildname}" alt=""><b>[{kategorie_name}] {titel}</b>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        <b>{datum}</b>\r\n    </span>\r\n</div>\r\n<div style="padding:3px;">\r\n    {text}\r\n    {related_links}\r\n</div>\r\n<div class="news_footer">\r\n    <span class="small" style="float:left;">\r\n        <a class="small" href="{kommentar_url}">Kommentare ({kommentar_anzahl})</a>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        geschrieben von: <a class="small" href="{autor_profilurl}">{autor}</a>\r\n    </span>\r\n</div>\r\n<br><br>', '<b>Ankündigung:</b>\r\n<br><br>\r\n    {meldung}\r\n<br><br>', 'Hallo {username}\r\n\r\nDu hast dich im Frog System registriert. Deine Logindaten sind:\r\nUsername: {username}\r\nPasswort: {passwort}', 'Hallo {username}\r\n\r\nDein Passwort im Frog System wurde geändert.\r\nDas neue Lautet: {passwort}', '<div align="center">\r\n  <a href="{url}" target="_blank">\r\n    <img src="{bild}" border="0" alt="{name}"  title="{name}">\r\n  </a>\r\n  <br>\r\n</div>', 'Partner:\r\n{partner}', '<div align="center">\r\n  <a href="{url}" target="_blank">\r\n    <img src="{bild}" border="0" alt="{name}"  title="{name}">\r\n  </a>\r\n  <br>\r\n</div>', '{permanents}\r\n\r\n<div align="center"><br><b>\r\nZufallsauswahl:</b><br>\r\n\r\n{non-permanents}\r\n\r\n<a href="?go=partner">alle Partner</a></div><br>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Code:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1"><font face="Courier New">{text}</font>\r\n</td></tr></table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Zitat:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1">{text}\r\n</td></tr></table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Zitat von {author}:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1">{text}\r\n</td></tr></table>');
+REPLACE INTO `fs_template` VALUES (0, 'default', '<body>\r\n    <div id="head_shadow"></div>\r\n    <div id="head">[%test%]<br />[%hallo%]</div>\r\n\r\n\r\n    <div id="menu_l_shadow">\r\n        <div id="menu_l">\r\n{main_menu}\r\n        </div>\r\n    </div>\r\n    <div id="main_container">\r\n        <div id="main_shadow">\r\n            <div id="main">\r\n{announcement}\r\n{content}\r\n            </div>\r\n        </div>\r\n        <p>\r\n    </div>\r\n\r\n    <div id="menu_r_shadow">\r\n        <div id="menu_r">\r\n{user}<br><br>\r\n{randompic}\r\nShop:<br>\r\n{shop}<br><br>\r\nUmfrage:<br>\r\n{poll}<br><br>\r\nPartner:<br>\r\n{partner}<br><br>\r\nStatistik:<br>\r\n{stats}<br><br>\r\nNetzwerk:<br>\r\n[%netzwerk%]\r\n<br><br>\r\n        </div>\r\n    </div>\r\n</body>', '<div class="news_head" style="height:10px;">\r\n   <span style="float:left;">\r\n       <b>{titel}</b>\r\n   </span>\r\n   <span class="small" style="float:right;">\r\n       <b>{datum}</b>\r\n   </span>\r\n</div>\r\n<div>\r\n   {text}\r\n</div>\r\n<div>\r\n   <span class="small" style="float:right;">\r\n       {autor}\r\n   </span>\r\n</div>\r\n<p></p>', 'geschrieben von <a class="small" href="{profillink}">{username}</a>', '<img class=\\"thumb\\" onClick=\\"open(\\''{link}\\'',\\''Picture\\'',\\''width=900,height=710,screenX=0,screenY=0\\'')\\" src=\\"{thumb}\\" alt=\\"{titel}\\">', '<div class=\\"small\\" align=\\"center\\">\r\n     Kein Zufallsbild aktiv\r\n</div>', '{hotlinks}', '<div align="center">\r\n    <a style="font-weight:bold;" class="small" target="_blank" href="{link}">{titel}</a>\r\n</div>', '<li><a href="{url}" target="{target}">{name}</a></li>', '<p>\r\n<b>Related Links:</b>\r\n<ul>\r\n    {links}\r\n</ul>', '<span class="small">{datum} </span><a class="small" href="{url}">{titel}</a><br>', '<b>Allgemein</b><br>\r\n<a class="small" href="{virtualhost}?go=news">- News</a><br>\r\n<a class="small" href="{virtualhost}?go=newsarchiv">- News Archiv</a><br>\r\n<a class="small" href="{virtualhost}?go=pollarchiv">- Umfragen Archiv</a><br>\r\n<a class="small" href="{virtualhost}?go=shop">- Shop</a><br>\r\n<a class="small" href="{virtualhost}?go=screenshots">- Screenshots</a><br>\r\n<a class="small" href="{virtualhost}?go=map">- Community Map</a><br>\r\n<a class="small" href="{virtualhost}?go=members">- Mitgliederliste</a><br>\r\n<a class="small" href="{virtualhost}?go=download">- Downloads</a><br>', '<div class="news_head" style="height:10px;">\r\n    <span style="float:left;">\r\n        <b>{titel}</b>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        <b>{datum}</b>\r\n    </span>\r\n</div>\r\n<div style="padding:3px;">\r\n    <table border="0" cellpadding="0" cellspacing="0" width="100%">\r\n        <tr>\r\n            <td align="left" valign="top">\r\n                {autor_avatar}\r\n            </td>\r\n            <td valign="top" align="left">\r\n                {text}\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="news_footer">\r\n    <span class="small" style="float:right;">\r\n        geschrieben von: {autor}</a>\r\n    </span>\r\n</div>\r\n<br /><br /><br />', '<a class="small" href="{url}">{name}</a>', '<script type="text/javascript"> \r\n<!-- \r\n    function chkFormular() \r\n    {\r\n        if((document.getElementById("name").value == "") ||\r\n           (document.getElementById("title").value == "") ||\r\n           (document.getElementById("text").value == ""))\r\n        {\r\n            alert ("Du hast nicht alle Felder ausgefüllt"); \r\n            return false;\r\n        }\r\n    } \r\n//--> \r\n</script> \r\n\r\n<b id="add">Kommentar hinzufügen</b><p>\r\n<div>\r\n    <form action="" method="post" onSubmit="return chkFormular()">\r\n        <input type="hidden" name="go" value="comments">\r\n        <input type="hidden" name="addcomment" value="1">\r\n        <input type="hidden" name="id" value="{newsid}">\r\n        <table width="100%"> \r\n            <tr>\r\n                <td align="left">\r\n                    <b>Name: </b>\r\n                </td>\r\n                <td align="left">\r\n                    {name_input}\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="left">\r\n                    <b>Titel: </b>\r\n                </td>\r\n                <td align="left">\r\n                    <input class="text" name="title" id="title" size="32" maxlength="32">\r\n                </td>\r\n            </tr>\r\n{antispam}\r\n            <tr>\r\n                <td align="left" valign="top">\r\n                    <b>Text:</b><br />\r\n                      <font class="small">Html ist {html}.<br />\r\n                      FScode ist {fs_code}.</font>\r\n                </td>\r\n                <td align="left">\r\n                    {textarea}\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td></td>\r\n                <td align="left">\r\n                    <input class="button" type="submit" value="Absenden">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td></td>\r\n                <td align="left">\r\n                   {antispamtext}\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n</div><p>', '<input class="text" name="name" id="name" size="32" maxlength="25">\r\n<span class="small"> Willst du dich </span>\r\n<a class="small" href="?go=login">einloggen?</a>', '<tr>\r\n                <td align="left">\r\n                    <img src="{captcha_url}">\r\n                </td>\r\n                <td align="left">\r\n                    <input class="text" name="spam" id="spam" size="32" maxlength="25">\r\n<span class="small">Bitte löse diese kleine Rechenaufgabe.</span> <a class="small" href="#antispam">Warum? *</a>\r\n                </td>\r\n            </tr>', '<br /><br />\r\n <table border="0" cellspacing="0" cellpadding="0" width="60%">\r\n  <tr>\r\n   <td valign="top" align="left">\r\n<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platziern. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>\r\n   </td>\r\n  </tr>\r\n </table>', '<script type="text/javascript"> \r\n<!-- \r\n    function chkFormular() \r\n    {\r\n        if (document.getElementById("keyword").value.length < "4")\r\n        {\r\n            alert("Es müssen mehr als 3 Zeichen sein"); \r\n            return false;\r\n        }\r\n    } \r\n//--> \r\n</script> \r\n\r\n<b>NEWSARCHIV</b><p>\r\n<div>\r\n    <form action="" method="post">\r\n        <input type="hidden" name="go" value="newsarchiv">\r\n        <b>News aus dem: </b>\r\n        <select class="text" name="monat">\r\n            <option value="1">Januar</option>\r\n            <option value="2">Februar</option>\r\n            <option value="3">März</option>\r\n            <option value="4">April</option>\r\n            <option value="5">Mai</option>\r\n            <option value="6">Juni</option>\r\n            <option value="7">Juli</option>\r\n            <option value="8">August</option>\r\n            <option value="9">September</option>\r\n            <option value="10">Oktober</option>\r\n            <option value="11">November</option>\r\n            <option value="12">Dezember</option>\r\n        </select>\r\n        <select class="text" name="jahr">\r\n            {years}\r\n        </select>\r\n        <input class="button" type="submit" value="Anzeigen">\r\n    </form>\r\n    <p>\r\n    oder\r\n    <p>\r\n    <form action="" method="post" onSubmit="return chkFormular()">\r\n        <input type="hidden" name="go" value="newsarchiv">\r\n        <b>Nach: </b>\r\n        <input class="text" id="keyword" name="keyword" size="30" maxlength="20">\r\n        <input class="button" type="submit" value="Suchen">\r\n    </form>\r\n</div>\r\n<p></p>', '<b>{titel}</b><br>\r\n{meldung}\r\n<p></p>', '<b>NEWS</b><p>\r\n<div>\r\n    <b>Headlines:</b><br>\r\n    {headlines}\r\n</div>\r\n<div>\r\n    <b>Downloads:</b><br>\r\n    {downloads}\r\n</div>\r\n<p>', '<tr>\r\n    <b>Einloggen</b>\r\n</tr>\r\n<tr>\r\n    <td align="center">\r\n        <form action="" method="post">\r\n            <input type="hidden" name="go" value="login">\r\n            <input type="hidden" name="login" value="1">\r\n            <table align="center" border="0" cellpadding="0" cellspacing="0" width="120">\r\n                <tr>\r\n                    <td align="right">\r\n                        <font class="small">Name:</font>\r\n                    </td>\r\n                    <td>\r\n                        <input class="text" size="10" name="username" maxlength="100">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="right">\r\n                        <font class="small">Pass:</font>\r\n                    </td>\r\n                    <td>\r\n                        <input class="text" size="10" type="password" name="userpassword" maxlength="16">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="center" colspan="2">\r\n                        <input type="checkbox" name="stayonline" value="1" checked>\r\n                        <font class="small">eingeloggt bleiben</font>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="center" colspan="2">\r\n                        <input class="button" type="submit" value="Anmelden">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td colspan="2" align="center">\r\n                        <a class="small" href="?go=register">Noch nicht registriert?</a>\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </form>\r\n    </td>\r\n</tr>', '<b>SHOP</b><p>\r\n<table width="100%">\r\n    {artikel}\r\n</table>', '<tr>\r\n    <td align="left" valign="top" width="60" rowspan="4">\r\n        <img border="0" style="cursor:pointer;" onClick=open(''showimg.php?pic={bild}'',''Picture'',''width=900,height=710,screenX=0,screenY=0'') src="{thumbnail}">\r\n    </td>\r\n    <td align="left" width="100">\r\n        <b>Titel:</b>\r\n    </td>\r\n        <td align="left">\r\n            {titel}\r\n        </td>\r\n    </tr>\r\n<tr>\r\n    <td align="left" valign="top">\r\n        <b>Beschreibung:</b>\r\n    </td>\r\n    <td align="left" valign="top">\r\n        {beschreibung}</td>\r\n    </tr>\r\n<tr>\r\n    <td align="left">\r\n        <b>Preis:</b>\r\n    </td>\r\n    <td align="left">\r\n        {preis} ¤\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td align="left"></td>\r\n    <td align="left">\r\n        <a href="{bestell_url}" target="_blank">Jetzt bestellen!</a>\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td colspan="3">\r\n         \r\n    </td>\r\n</tr>', '<img border="0" src="images/design/{icon}">\r\n<a href="{kategorie_url}">{kategorie_name}</a><br>', '<form action="" method="get">\r\n<tr>\r\n  <td colspan="3" align="right"><br /> <b>Kategorie durchsuchen:</b></td>\r\n  <td colspan="1" align="left"><br /> \r\n    <input class="text" size="20" name="keyword" value="{keyword}">\r\n    <input class="button" type="submit" value="Go">\r\n    <input class="button" type="button" value="Alle anzeigen" onclick="location=''{all_url}''">\r\n    <input type="hidden" name="go" value="download">\r\n    {input_cat}</td>\r\n</tr>\r\n\r\n</form>', '<b>DOWNLOADS</b><p>\r\n{navigation}\r\n<table border="0" cellpadding="0" cellspacing="2" width="100%">\r\n<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Titel</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Kategorie</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Uploaddatum</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Beschreibung</strong></td>\r\n </tr>\r\n{dateien}\r\n{suchfeld}\r\n</table>', '<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><a href="{url}"><b>{name}</b></a></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle">{cat}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle">{datum}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{text}</td>\r\n </tr>', '<b>DOWNLOADS -> {titel}</b><p>\r\n{navigation}\r\n    <table width="100%">\r\n        <tr>\r\n            <td align="left" width="130" rowspan="6" valign="top">\r\n                <img class="thumb" onClick=open(''showimg.php?pic={bild}'',''Picture'',''width=900,height=710,screenX=0,screenY=0'') src="{thumbnail}">\r\n            </td>\r\n        </tr>\r\n         <tr>\r\n            <td align="left" colspan="2" height="20" valign="top">\r\n                <b>{titel}</b>\r\n            </td>\r\n        </tr>\r\n       <tr>\r\n            <td align="left" width="75">\r\n                <b>Kategorie:</b>\r\n            </td>\r\n            <td align="left">\r\n                {cat}\r\n            </td>\r\n        </tr>\r\n       <tr>\r\n            <td align="left" width="75">\r\n                <b>Datum:</b>\r\n            </td>\r\n            <td align="left">\r\n                {datum}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td align="left" width="75">\r\n                <b>Uploader:</b>\r\n            </td>\r\n            <td align="left">\r\n                <a href="{uploader_url}">{uploader}</a>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td align="left" width="75">\r\n                <b>Autor:</b>\r\n            </td>\r\n            <td align="left">\r\n                {autor_link}\r\n            </td>\r\n        </tr>\r\n    </table>\r\n    <br>\r\n    <table width="100%">\r\n        <tr>\r\n            <td align="left" valign="top" width="130">\r\n                <b>Beschreibung:</b>\r\n            </td>\r\n            <td align="left" valign="top">{text}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td colspan="2"></td>\r\n        </tr>\r\n        <tr>\r\n             <td align="left" valign="top">\r\n                 <b>Dateien:</b>\r\n             </td>\r\n             <td align="left">{messages}\r\n             </td>\r\n         </tr>\r\n         <tr>\r\n             <td colspan="2"></td>\r\n         </tr>\r\n    </table>\r\n\r\n<table border="0" cellpadding="0" cellspacing="2" width="100%">\r\n<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;" colspan="2" ><strong>Datei (Download)</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Größe</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Traffic</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Downloads</strong></td>\r\n</tr>\r\n{files}\r\n<tr>\r\n  <td colspan="5" style="border: 1px solid #000000; padding: 3px;"><img alt="" src="images/design/null.gif"></td>\r\n</tr>\r\n{stats}\r\n</table>', '<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"{mirror_col}><a target="_blank" href="{url}"><b>{name}</b></a></td>{mirror_ext}\r\n  <td style="border: 1px solid #000000; padding: 3px;">{size}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{traffic}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{hits}</td>\r\n</tr>', '<td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle"><b>Mirror!</b></td>', '<tr>\r\n              <td style="border: 1px solid #000000; padding: 3px;" colspan="2" >{number}</strong></td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{size}</td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{traffic}</td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{hits}</td>\r\n              </tr>', '<span class="small">{datum} </span><a class="small" href="{url}">{name}</a><br>', '<td class="small" align="center" valign="top">\r\n    <img class="thumb" onClick="open(''{url}'',''Picture'',''width=950,height=710,screenX=0,screenY=0'')" src="{thumbnail}" alt="{text}"><br>\r\n    {text}\r\n</td>', '<b>SCREENSHOT KATEGORIEN</b><p>\r\n<table width="100%">\r\n{cats}\r\n</table>', '<tr>\r\n    <td align="left">\r\n        <a href="{url}">{name}</a>\r\n    </td>\r\n    <td align="left">\r\n        erstellt am {datum}\r\n    </td>\r\n    <td align="left">\r\n        {menge} Bilder\r\n    </td>\r\n</tr>', '<b>SCREENSHOTS: {title}</b><p>\r\n<center>{page}</center><br />\r\n<table border="0" cellpadding="" cellspacing="10" width="100%">\r\n{screenshots}\r\n</table>', '<td align="center" valign="top">\r\n  <b>{text}</b><br />\r\n  <img src="{thumb_url}" alt="" />\r\n  <br /><br />\r\n  <b>Verfügbare Größen:</b>\r\n  {sizes}\r\n  <br />\r\n</td>', '<br />- <a href="{url}" target="_blank">{size}</a>', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">\r\n<html>\r\n<head>\r\n    <title>DSA-Drakensang</title>\r\n    <link rel="stylesheet" type="text/css" href="inc/fs.css">\r\n    <LINK REL="SHORTCUT ICON" HREF="images/design/dsa.ico">\r\n</head>\r\n<body style="background-image:url(images/design/bg.jpg); background-position:center top;" leftmargin="0" topmargin="0">\r\n<center>\r\n{bannercode}\r\n<table style="border-width:2px; border-style:solid; border-color:#774C1F;" cellspacing="0" cellpadding="3">\r\n <tr align="center">\r\n  <td>\r\n   <a href="{bild_url}" target="_blank">{bild}</a><br><b>{text}</b>\r\n  </td>\r\n </tr>\r\n <tr>\r\n</table>\r\n<table cellspacing="0" cellpadding="3">\r\n <tr>\r\n  <td width="33%" align="right">\r\n   <b>{weiter_grafik}</b>\r\n  </td>\r\n  <td width="33%" align="center">\r\n   <b>{close}</b>\r\n  </td>\r\n  <td width="33%" align="left">\r\n   <b>{zurück_grafik}</b>\r\n  </td>\r\n </tr>\r\n</table>\r\n</center>\r\n\r\n</body>\r\n</html>', '<b>Willkommen {username}</b><br>\r\n<a class="small" href="{virtualhost}?go=editprofil">- Mein Profil</a><br>\r\n{admin}\r\n<a class="small" href="{logout}">- Logout</a>', '<a class=''small'' href=''{adminlink}'' target="_self">- Admin-CP</a><br />', '<div class="field_head" style="padding-left:60px; width:516px;">\r\n    <font class="h1" style="float:left; padding-top:14px;">Login</font>\r\n</div>\r\n<div class="field_middle" align="left">\r\n    <form action="" method="post">\r\n        <input type="hidden" name="go" value="login">\r\n        <input type="hidden" name="login" value="1">\r\n        <table align="center" border="0" cellpadding="4" cellspacing="0">\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Name:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="33" name="username" maxlength="100">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="33" type="password" name="userpassword" maxlength="16">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Angemeldet bleiben:</b>\r\n                </td>\r\n                <td>\r\n                    <input type="checkbox" name="stayonline" value="1" checked>\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td colspan="2" align="center">\r\n                    <input class="button" type="submit" value="Login">\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n    <p>\r\n    Du hast dich noch nicht registriert? Dann wirds jetzt aber Zeit ;) -> \r\n    <a href="?go=register">registrieren</a>\r\n    <p>\r\n</div>\r\n<div class="field_footer"></div>\r\n<p></p>', '<b>PROFIL ÄNDERN ({username})</b><p>\r\n<form action="" method="post" enctype="multipart/form-data">\r\n    <input type="hidden" name="go" value="editprofil">\r\n    <table align="center" border="0" cellpadding="4" cellspacing="0">\r\n        <tr>\r\n            <td width="50%" valign="top">\r\n                <b>Benutzerbild:</b>\r\n            </td>\r\n            <td width="50%">\r\n                {avatar}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>Benutzerbild hochladen:</b><br>\r\n                <font class="small">Nur wenn das alte überschrieben werden soll (max 110x110 px)</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="16" type="file" name="userpic">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>E-Mail:</b><br>\r\n                <font class="small">Deine E-Mail Adresse</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="34" value="{email}" name="usermail" maxlength="100">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>E-Mail zeigen:</b><br>\r\n                <font class="small">Zeige die E-Mail im öffentlichen Profil</font>\r\n            </td>\r\n            <td>\r\n                <input value="1" name="showmail" type="checkbox" {email_zeigen}>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>Neues Passwort:</b><br>\r\n                <font class="small">Nur eintragen, wenn du ein neues Passwort erstellen willst</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="33" type="password" name="userpassword" maxlength="16">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td colspan="2" align="center">\r\n                <input class="button" type="submit" value="Absenden">\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</form>', '<b>Members List</b><br /><br />\r\n<table width="100%" border="0">\r\n<tr>\r\n  <td><b>Avatar</b></td>\r\n  <td><a href="?go=members&sort=name_{order_name}" style="color:#000;"><b>Benutzername</b> {arrow_name}</a></td>\r\n  <td><b>E-Mail</b></td>\r\n  <td><a href="?go=members&sort=regdate_{order_regdate}" style="color:#000;"><b>Registriert seit</b> {arrow_regdate}</a></td>\r\n  <td><a href="?go=members&sort=news_{order_news}" style="color:#000;"><b>News</b> {arrow_news}</a></td>\r\n  <td><a href="?go=members&sort=articles_{order_articles}" style="color:#000;"><b>Artikel</b> {arrow_articles}</a></td>\r\n  <td><a href="?go=members&sort=comments_{order_comments}" style="color:#000;"><b>Kommentare</b> {arrow_comments}</a></td>\r\n</tr>\r\n{members}\r\n</table><br /><br />\r\n<center>{page}</center>', '<tr>\r\n  <td align="center">{avatar}</td>\r\n  <td><a href="{userlink}" class="small">{username}</a></td>\r\n  <td>{email}</td>\r\n  <td align="center">{reg_date}</td>\r\n  <td align="center">{news}</td>\r\n  <td align="center">{articles}</td>\r\n  <td align="center">{comments}</td>\r\n</tr>', '<tr>\r\n  <td align="center">{avatar}</td>\r\n  <td><a href="{userlink}" class="small"><b><i>{username}</i></b></a></td>\r\n  <td>{email}</td>\r\n  <td align="center">{reg_date}</td>\r\n  <td align="center">{news}</td>\r\n  <td align="center">{articles}</td>\r\n  <td align="center">{comments}</td>\r\n</tr>', '<tr>\r\n                <td align="right">\r\n                    <img src="{captcha_url}">\r\n                </td>\r\n                <td>\r\n                    <input class="text" name="spam" id="spam" size="30" maxlength="25"><br />\r\n<span class="small">Bitte löse diese kleine Rechenaufgabe.</span>\r\n                </td>\r\n            </tr>', '<br /><br />\r\n <table border="0" cellspacing="0" cellpadding="0" width="60%">\r\n  <tr>\r\n   <td valign="top" align="left">\r\n<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>\r\n   </td>\r\n  </tr>\r\n </table>', '<div class="field_head" style="padding-left:60px; width:516px;">\r\n    <font class="h1" style="float:left; padding-top:14px;">Community Map</font>\r\n</div>\r\n<div class="field_middle" align="left">\r\n    {karte}\r\n    <div align="right">\r\n        <font class="small">Zum betrachten der Karte wird Flash benötigt: </font><br>\r\n        <img border="0" src="images/design/flash_rune.gif" align="middle">\r\n        <a target="_blank" href="http://www.adobe.com/go/getflashplayer">\r\n            <img border="0" src="images/design/flash_download_now.gif" align="middle">\r\n        </a>\r\n    </div>\r\n</div>\r\n<div class="field_footer"></div>\r\n<p></p>', '<form name=\\"poll\\" action=\\"\\" method=\\"post\\">\r\n    <input type=\\"hidden\\" name=\\"pollid\\" value=\\"{poll_id}\\">\r\n    <table align=\\"center\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">\r\n        <tr>\r\n            <td class=\\"small\\" colspan=\\"2\\" align=\\"center\\">\r\n                <b>{question}</b>\r\n            </td>\r\n        </tr>\r\n{answers}\r\n        <tr>\r\n            <td colspan=\\"2\\" align=\\"center\\" ><br />\r\n                <input class=\\"button\\" type=\\"submit\\" value=\\"Abstimmen\\" {button_state}><br />\r\n<a class=\\"small\\" href=\\"?go=pollarchiv&pollid={poll_id}\\"><b>Ergebnis anzeigen!</b></a>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</form>', '<tr>\r\n    <td valign=\\"top\\">\r\n        <input type=\\"{type}\\" name=\\"answer{multiple}\\" value=\\"{answer_id}\\">\r\n    </td>\r\n    <td align=\\"left\\" class=\\"small\\">\r\n        {answer}\r\n    </td>\r\n</tr>', '<b>UMFRAGEN ARCHIV</b><p>\r\n<b>{frage}</b><p>\r\n<table width=\\"100%\\">\r\n{antworten}\r\n   <tr><td> </td></tr>\r\n   <tr><td align=\\"left\\">Anzahl der Teilnehmer: </td><td align=\\"left\\" colspan=\\"2\\"><b>{participants}</b></td></tr>\r\n   <tr><td align=\\"left\\">Anzahl der Stimmen: </td><td align=\\"left\\" colspan=\\"2\\"><b>{stimmen}</b></td></tr>\r\n   <tr><td align=\\"left\\">Art der Umfrage: </td><td align=\\"left\\" colspan=\\"2\\">{typ}</td></tr>\r\n   <tr><td align=\\"left\\">Umfragedauer:</td><td align=\\"left\\" colspan=\\"2\\">{start_datum} bis {end_datum}</td></tr>\r\n</table>', '<tr>\r\n    <td align=\\"left\\">{antwort}</td>\r\n    <td align=\\"left\\">{stimmen}</td>\r\n    <td align=\\"left\\">\r\n        <div style=\\"width:{balken_breite}px; height:4px; font-size:1px; background-color:#00FF00;\\">\r\n    </td>\r\n</tr>', '<table align=\\"center\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">\r\n    <tr>\r\n        <td class=\\"small\\" colspan=\\"2\\" align=\\"center\\">\r\n            <b>{question}</b>\r\n        </td>\r\n    </tr>\r\n{answers}\r\n</table>\r\n<div class=\\"small\\">Teilnehmer: {participants}</div>\r\n<b>Bereits abgestimmt!</b>', '<tr>\r\n    <td align=\\"left\\" class=\\"small\\" colspan=\\"2\\">\r\n        {answer}\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td align=\\"left\\" class=\\"small\\">\r\n        {percentage}\r\n    </td>\r\n    <td align=\\"left\\">\r\n        <div style=\\"width:{bar_width}px; height:4px; font-size:1px; background-color:#00FF00;\\">\r\n    </td>\r\n</tr>', '<b>UMFRAGEN ARCHIV</b><p>\r\n<table border=\\"0\\" width=\\"100%\\" cellpadding=\\"2\\" cellspacing=\\"0\\">\r\n<tr>\r\n  <td align=\\"left\\"><a href=\\"?go=pollarchiv&sort=name_{order_name}\\" style=\\"color: #000\\"><b>Frage {arrow_name}</b></a></td>\r\n  <td align=\\"left\\" width=\\"100\\"><a href=\\"?go=pollarchiv&sort=voters_{order_voters}\\" style=\\"color: #000\\"><b>Teilnehmer {arrow_voters}</b></a></td>\r\n  <td align=\\"left\\" width=\\"70\\"><a href=\\"?go=pollarchiv&sort=startdate_{order_startdate}\\" style=\\"color: #000\\"><b>von {arrow_startdate}</b></a></td>\r\n  <td align=\\"left\\" width=\\"10\\"></td>\r\n  <td align=\\"left\\" width=\\"70\\"><a href=\\"?go=pollarchiv&sort=enddate_{order_enddate}\\" style=\\"color: #000\\"><b>bis {arrow_enddate}</b></a></td>\r\n</tr>\r\n{umfragen}\r\n</table>\r\n<p>', '  <tr>\r\n   <td align=\\"left\\"><a href=\\"{url}\\">{frage}</a></td>\r\n   <td align=\\"left\\">{voters}</td>\r\n   <td align=\\"left\\" class=\\"small\\">{start_datum}</td>\r\n   <td align=\\"left\\" class=\\"small\\">-</td>\r\n   <td align=\\"left\\" class=\\"small\\">{end_datum}</td>\r\n  </tr>', '<div class=\\"small\\" align=\\"center\\">\r\n    Zur Zeit keine<br>Umfrage aktiv\r\n</div>', '<b>PROFIL VON {username}</b><p>\r\n<table align="center" border="0" cellpadding="4" cellspacing="0">\r\n    <tr>\r\n        <td width="50%" valign="top">\r\n            <b>Benutzerbild:</b>\r\n        </td>\r\n        <td width="50%">\r\n            {avatar}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>E-Mail:</b>\r\n        </td>\r\n        <td>\r\n            {email}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Registriert seit:</b>\r\n        </td>\r\n        <td>\r\n            {reg_datum}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene Kommentare:</b>\r\n        </td>\r\n        <td>\r\n            {kommentare}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene News:</b>\r\n        </td>\r\n        <td>\r\n            {news}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene Artikel:</b>\r\n        </td>\r\n        <td>\r\n            {artikel}\r\n        </td>\r\n    </tr>\r\n</table>', '- <b>{visits}</b> Visits<br>\r\n- <b>{visits_heute}</b> Visits heute<br>\r\n- <b>{hits}</b> Hits<br>\r\n- <b>{hits_heute}</b> Hits heute<br>\r\n- <b>{user_online}</b> Besucher online<p>\r\n- <b>{user}</b> registrierte User<br>\r\n- <b>{news}</b> News<br>\r\n- <b>{kommentare}</b> Kommentare<br>\r\n- <b>{artikel}</b> Artikel', '<script type="text/javascript"> \r\n<!-- \r\nfunction chkFormular() \r\n{\r\n    if((document.getElementById("username").value == "") ||\r\n       (document.getElementById("usermail").value == "") ||\r\n       (document.getElementById("userpass1").value == "") ||\r\n       (document.getElementById("userpass2").value == ""))\r\n    {\r\n        alert("Du hast nicht alle Felder ausgefüllt"); \r\n        return false;\r\n    }\r\n    if(document.getElementById("userpass1").value != document.getElementById("userpass2").value)\r\n    {\r\n        alert("Passwöter sind verschieden"); \r\n        return false;\r\n    }\r\n} \r\n//--> \r\n</script> \r\n\r\n<b>REGISTRIEREN</b><p>\r\n<div>\r\n    Registriere dich im Frog System, um in den Genuss erweiterter Features zu kommen. Dazu zählen bisher:\r\n    <ul>\r\n        <li>Zugriff auf unsere Downloads</li>\r\n        <li>Hochladen eines eigenen Benutzerbildes, für die von dir geschriebenen Kommentare</li>\r\n    </ul>\r\n    Weitere Features werden folgen.\r\n    <p>\r\n    <form action="" method="post" onSubmit="return chkFormular()">\r\n        <input type="hidden" value="register" name="go">\r\n        <table border="0" cellpadding="2" cellspacing="0" align="center">\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Name:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="username" id="username" maxlength="100">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="userpass1" id="userpass1" type="password" maxlength="16">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort wiederholen:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="userpass2" id="userpass2" type="password" maxlength="16">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>E-Mail:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="usermail" id="usermail" maxlength="100">\r\n                </td>\r\n            </tr>\r\n{antispam}\r\n            <tr>\r\n                <td colspan="2" align="center">\r\n                    <input type="submit" class="button" value="Registrieren">\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n    <p>\r\n</div>', '<div class="news_head" style="height:10px;" id ="{newsid}">\r\n    <span style="float:left;">\r\n        <img src="{kategorie_bildname}" alt=""><b>[{kategorie_name}] {titel}</b>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        <b>{datum}</b>\r\n    </span>\r\n</div>\r\n<div style="padding:3px;">\r\n    {text}\r\n    {related_links}\r\n</div>\r\n<div class="news_footer">\r\n    <span class="small" style="float:left;">\r\n        <a class="small" href="{kommentar_url}">Kommentare ({kommentar_anzahl})</a>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        geschrieben von: <a class="small" href="{autor_profilurl}">{autor}</a>\r\n    </span>\r\n</div>\r\n<br><br>', '<b>Ankündigung:</b>\r\n<br><br>\r\n    {meldung}\r\n<br><br>', 'Hallo {username}\r\n\r\nDu hast dich im Frog System registriert. Deine Logindaten sind:\r\nUsername: {username}\r\nPasswort: {passwort}', 'Hallo {username}\r\n\r\nDein Passwort im Frog System wurde geändert.\r\nDas neue Lautet: {passwort}', '<div align="center">\r\n  <a href="{url}" target="_blank">\r\n    <img src="{bild}" border="0" alt="{name}"  title="{name}">\r\n  </a>\r\n  <br>\r\n</div>', 'Partner:\r\n{partner}', '<div align="center">\r\n  <a href="{url}" target="_blank">\r\n    <img src="{bild}" border="0" alt="{name}"  title="{name}">\r\n  </a>\r\n  <br>\r\n</div>', '{permanents}\r\n\r\n<div align="center"><br><b>\r\nZufallsauswahl:</b><br>\r\n\r\n{non-permanents}\r\n\r\n<a href="?go=partner">alle Partner</a></div><br>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Code:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1"><font face="Courier New">{text}</font>\r\n</td></tr></table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Zitat:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1">{text}\r\n</td></tr></table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Zitat von {author}:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1">{text}\r\n</td></tr></table>', '<table cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px">\r\n  <tr valign="bottom">\r\n    {buttons}\r\n  </tr>\r\n</table>\r\n\r\n<table cellpadding="0" cellspacing="0" border="0">\r\n  <tr valign="top">\r\n    <td>\r\n      <textarea {style}>{text}</textarea>\r\n    </td>\r\n    <td style="width:4px; empty-cells:show;">\r\n    </td>\r\n    <td>\r\n      {smilies}\r\n    </td>\r\n  </tr>\r\n</table>\r\n<br />', '.editor_button {\r\n  font-size:8pt;\r\n  font-family:Verdana;\r\n  border:1px solid #000000;\r\n  background-color:#B7B7B7;\r\n  width:20px;\r\n  height:20px;\r\n  cursor:pointer;\r\n  text-align:center;\r\n}\r\n.editor_button:hover {\r\n  background-color:#A5E5A5;\r\n}\r\n.editor_td {\r\n  width:24px;\r\n  height:23px;\r\n  vertical-align:bottom;\r\n  text-align:left;\r\n}\r\n.editor_td_seperator {\r\n  width:5px;\r\n  height:23px;\r\n  background-image:url("images/icons/separator.gif");\r\n  background-repeat:no-repeat;\r\n  background-position:top left;\r\n}\r\n.editor_smilies {\r\n  cursor:pointer;\r\n  padding:0px;\r\n}', '<td class="editor_td">\r\n    <div class="editor_button" {javascript}>\r\n      <img src="{img_url}" alt="{alt}" title="{title}" />\r\n    </div>\r\n  </td>', '<td class="editor_td_seperator"></td>');
 
 -- --------------------------------------------------------
 
@@ -1672,7 +1200,7 @@ CREATE TABLE `fs_useronline` (
 -- Daten für Tabelle `fs_useronline`
 -- 
 
-REPLACE INTO `fs_useronline` VALUES ('127.0.0.1', NULL, 1186523696);
+REPLACE INTO `fs_useronline` VALUES ('127.0.0.1', NULL, 1187126374);
 
 -- --------------------------------------------------------
 
@@ -1687,13 +1215,13 @@ CREATE TABLE `fs_wallpaper` (
   `wallpaper_title` varchar(255) collate latin1_general_ci NOT NULL default '',
   `cat_id` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`wallpaper_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci PACK_KEYS=1 AUTO_INCREMENT=21 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_wallpaper`
 -- 
 
-REPLACE INTO `fs_wallpaper` VALUES (20, 'forbiddencity', 'von ArenaNet', 6);
+REPLACE INTO `fs_wallpaper` VALUES (1, 'test', 'haha', 4);
 
 -- --------------------------------------------------------
 
@@ -1707,16 +1235,13 @@ CREATE TABLE `fs_wallpaper_sizes` (
   `wallpaper_id` mediumint(8) NOT NULL default '0',
   `size` varchar(255) collate latin1_general_ci NOT NULL default '',
   PRIMARY KEY  (`size_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci PACK_KEYS=1 AUTO_INCREMENT=32 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_wallpaper_sizes`
 -- 
 
-REPLACE INTO `fs_wallpaper_sizes` VALUES (27, 20, '1280x960');
-REPLACE INTO `fs_wallpaper_sizes` VALUES (30, 20, '1280x1024');
-REPLACE INTO `fs_wallpaper_sizes` VALUES (13, 20, '1600x1200');
-REPLACE INTO `fs_wallpaper_sizes` VALUES (31, 20, '800x600');
+REPLACE INTO `fs_wallpaper_sizes` VALUES (1, 1, '800x600');
 
 -- --------------------------------------------------------
 
@@ -1731,11 +1256,9 @@ CREATE TABLE `fs_zones` (
   `design_id` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci PACK_KEYS=0 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci PACK_KEYS=0 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_zones`
 -- 
 
-REPLACE INTO `fs_zones` VALUES (1, 'rot', 1);
-REPLACE INTO `fs_zones` VALUES (2, 'blau', 0);
