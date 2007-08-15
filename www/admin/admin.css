@@ -252,15 +252,16 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
     z-index:5;
     font-size:14pt;
     font-family:Times New Roman;
+    font-variant:small-caps;
+    font-weight:normal;
     color:#363636;
-    text-transform:uppercase;
 }
 #head_link
 {
     position:relative;
     left:-16px;
     top:13px;
-    text-transform:none;
+    font-variant:normal;
 }
 
 
@@ -441,24 +442,32 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
 /* tooltip */
 /**************************************************/
 
-.tooltip {
+a.tooltip {
  position: absolute;
  text-decoration: none;
- font-style: bold;
- border-bottom:none;
+ font-style: normal;
+ font-weight: normal;
+ border: none;
 }
-.tooltip:hover {
+a.tooltip:hover {
  z-index: 1000;
  background: transparent;
  cursor:help;
+ text-decoration: none;
+ font-style: normal;
+ font-weight: normal;
  border: none;
 }
-.tooltip span {
+a.tooltip span {
  display: none;
  position: absolute;
  text-decoration: none;
+ font-style: normal;
+ font-weight: normal;
+ border: none;
+ font-size:7pt;
 }
-.tooltip:hover span {
+a.tooltip:hover span {
  display: block;
  position: absolute;
  top: 25px;
@@ -471,6 +480,8 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
  padding: 3px;
  background: #EEEEEE;
  font-family: Verdana, Arial, Helvetica, Sans-serif;
- font-style: Normal;
  text-align: left;
+ text-decoration: none;
+ font-style: normal;
+ font-weight: normal;
 }

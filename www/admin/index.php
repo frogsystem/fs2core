@@ -426,7 +426,6 @@ $NAVI_ARR[link][] = "useradd";
 $NAVI_ARR[link][] = "useredit";
 $NAVI_ARR[link][] = "userrights";
 $NAVI_ARR[link][] = "userlist";
-$NAVI_ARR[link][] = "userrights";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);

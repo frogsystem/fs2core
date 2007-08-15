@@ -33,7 +33,7 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
                        artikel_text  = '$_POST[text]',
                        artikel_preis = '$_POST[preis]',
                        artikel_hot   = '$_POST[hot]'
-                   WHERE artikel_id = $_POST[editartikelid]";
+                   WHERE artikel_id = '$_POST[editartikelid]'";
         mysql_query($update, $db);
         systext("Artikel wurde aktualisiert");
     }
@@ -54,7 +54,7 @@ elseif ($_POST[artikelid])
                     <form action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shopedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <input type="hidden" value="'.$artikelid.'" name="editartikelid">
+                        <input type="hidden" value="'.$artikel_arr[artikel_id].'" name="editartikelid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">

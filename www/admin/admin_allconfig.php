@@ -31,6 +31,7 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
                    description = '$_POST[description]',
                    keywords = '$_POST[keywords]',
                    author = '$_POST[author]',
+                   show_favicon = '$_POST[show_favicon]',
                    design = '$_POST[design]',
                    allow_other_designs = '$_POST[allow_other_designs]',
                    show_announcement = '$_POST[show_announcement]',
@@ -144,6 +145,19 @@ else
              </td>
              <td class="config" valign="top" width="50%">
                <input class="text" size="40" name="keywords" maxlength="255" value="'.$config_arr[keywords].'">
+             </td>
+           </tr>
+           <tr>
+             <td class="config" valign="top" width="50%">
+               Favicon verwenden:<br>
+               <font class="small">Soll das Favicon eingebunden werden?<br>
+               ([FS-Verzeichnis]/images/icons/favicon.ico)</font>
+             </td>
+             <td class="config" valign="top" width="50%">
+               <input type="checkbox" name="show_favicon" value="1"';
+               if ($config_arr[show_favicon] == 1)
+                 echo " checked=checked";
+               echo'/>
              </td>
            </tr>
            <tr>

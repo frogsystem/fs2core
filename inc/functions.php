@@ -294,6 +294,7 @@ function image_delete($path, $name)
 function sys_message ($title, $message)
 {
     global $db;
+    global $global_config_arr;
 
     $index = mysql_query("select error from fs_template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "error"));

@@ -158,7 +158,7 @@ function create_templateeditor($editor_arr)
                                     
     if (count($editor_arr[help]) >= 1)
     {
-        $editor_template .= '<br /><br />Gültige Tags:<br>';
+        $editor_template .= '<br /><br /><span style="padding-bottom:5px; display:block;">Gültige Tags:<br /></span>';
         foreach ($editor_arr[help] as $help)
         {
             $editor_template .= insert_tt($help[tag],$help[text],$editor_arr[name]);
@@ -190,12 +190,12 @@ function create_templateeditor($editor_arr)
 function insert_tt($title,$text,$form)
 {
    return '
-'.$title.' <span class="tooltip">
-<img border="0" src="img/help.gif" alt="?" />&nbsp;
+'.$title.' <a class="tooltip" href="#">
+<img border="0" src="img/help.png" align="top" />&nbsp;
 <span>
- <img border="0" src="img/pointer.gif" alt="->" /> <b>'.$title.'</b><br />'.$text.'
-</span></span>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:insert(\''.$form.'\',\''.$title.'\',\'\');"><img border="0" src="img/pointer.gif" alt="->" title="einfügen" /></a>
+ <img border="0" src="img/pointer.png" align="top" alt="->" /> <b>'.$title.'</b><br />'.$text.'
+</span></a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:insert(\''.$form.'\',\''.$title.'\',\'\');"><img border="0" src="img/pointer.png" alt="->" title="einfügen" align="top" /></a>
 <br />
    ';
 }
