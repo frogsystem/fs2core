@@ -51,7 +51,7 @@ if ($_POST[usermail] && $_SESSION[user_id])
             $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
             $header .= "X-Mailer: PHP/" . phpversion(). "\n";
             $header .= "X-Sender-IP: $REMOTE_ADDR\n";
-            $header .= "Content-Type: text/html";
+            $header .= "Content-Type: text/plain";
             mail($_POST[usermail], $email_betreff, $template_mail, $header);
             
             //UPDATE PASSWORD
