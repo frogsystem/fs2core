@@ -35,7 +35,7 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
     $userpass = $_POST[userpass1];
     $_POST[userpass2] = md5(savesql($_POST[userpass1]));
 
-    // Username schon vorhanden? ode anti spam falsch?
+    // Username schon vorhanden? oder anti spam falsch?
     $index = mysql_query("select user_name from fs_user where user_name = '$_POST[username]'", $db);
     if (mysql_num_rows($index) > 0 OR $anti_spam != true)
     {
@@ -43,7 +43,7 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
         if (mysql_num_rows($index) > 0) { $sysmeldung .= $phrases[user_exists]; }
         if (mysql_num_rows($index) > 0 AND $anti_spam != true) { $sysmeldung .= "<br />"; }
         if ($anti_spam != true) { $sysmeldung .= $phrases[user_antispam]; }
-        $template .= sys_message($phrases[sysmessage], $phrases[user_antispam]);
+        $template .= sys_message($phrases[sysmessage], $sysmeldung);
         
         // Registerformular erneut ausgeben
         $index = mysql_query("select user_spam from fs_template where id = '$global_config_arr[design]'", $db);
@@ -64,18 +64,17 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
     {
         $regdate = time();
         $index = mysql_query("select email_register from fs_template where id = '$global_config_arr[design]'", $db);
-        $template = stripslashes(mysql_result($index, 0, "email_register"));
-        $template = str_replace("{username}", $_POST[username], $template); 
-        $template = str_replace("{passwort}", $_POST[userpass1], $template);
+        $template_mail = stripslashes(mysql_result($index, 0, "email_register"));
+        $template_mail = str_replace("{username}", $_POST[username], $template_mail);
+        $template_mail = str_replace("{password}", $_POST[userpass1], $template_mail);
 
-        $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtual_host];
-        $header="From: ".$phrases[registration]." @ ".$global_config_arr[virtual_host]."\n"; 
-        $header .= "Reply-To: ".$phrases[registration]." @ ".$global_config_arr[virtual_host]."\n"; 
-        $header .= "Bcc: $_POST[usermail]\n"; 
+        $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtualhost];
+        $header="From: ".$global_config_arr[admin_mail]."\n";
+        $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
         $header .= "X-Mailer: PHP/" . phpversion(). "\n"; 
         $header .= "X-Sender-IP: $REMOTE_ADDR\n"; 
         $header .= "Content-Type: text/html"; 
-        mail($_POST[usermail], $email_betreff, $template,$header); 
+        mail($_POST[usermail], $email_betreff, $template_mail, $header);
 
         $adduser = 'INSERT INTO fs_user (user_name, user_password, user_mail, reg_date)
                     VALUES ("'.$_POST[username].'",
@@ -84,7 +83,7 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
                             "'.$regdate.'");';
         mysql_query($adduser, $db);
         mysql_query("update fs_counter set user=user+1", $db);
-        sys_message($phrases[sysmessage], $phrases[registered]);
+        $template = sys_message($phrases[sysmessage], $phrases[registered]);
     }
 }
 

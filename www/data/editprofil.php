@@ -41,20 +41,18 @@ if ($_POST[usermail] && $_SESSION[user_id])
         {
             //MAIl TEMPLATE
             $index = mysql_query("SELECT email_passchange FROM fs_template WHERE id = $global_config_arr[design]", $db);
-            $template = stripslashes(mysql_result($index, 0, "email_passchange"));
-            $template = str_replace("{username}", $_SESSION[user_name], $template);
-            $template = str_replace("{passwort}", $mailpass, $template);
+            $template_mail = stripslashes(mysql_result($index, 0, "email_passchange"));
+            $template_mail = str_replace("{username}", $_SESSION[user_name], $template_mail);
+            $template_mail = str_replace("{password}", $mailpass, $template_mail);
 
             //SEND MAIL
             $email_betreff = $phrases[pass_change] . " @ " . $global_config_arr[virtualhost];
-            $header="From: ".$phrases[registration]." @ ".$global_config_arr[virtualhost]."\n";
-            $header .= "Reply-To: ".$phrases[registration]." @ ".$global_config_arr[virtualhost]."\n";
-            $header .= "Bcc: $usermail\n";
+            $header="From: ".$global_config_arr[admin_mail]."\n";
+            $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
             $header .= "X-Mailer: PHP/" . phpversion(). "\n";
             $header .= "X-Sender-IP: $REMOTE_ADDR\n";
-            $header .= "Content-Type: text/plain";
-            mail($_POST[usermail], $email_betreff, $template, $header);
-            unset($template);
+            $header .= "Content-Type: text/html";
+            mail($_POST[usermail], $email_betreff, $template_mail, $header);
             
             //UPDATE PASSWORD
             $update = "UPDATE fs_user SET user_password = '$_POST[userpassword]' WHERE user_id = $_SESSION[user_id]";
