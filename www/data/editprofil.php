@@ -13,6 +13,7 @@ if ($_POST[usermail] && $_SESSION[user_id])
     // Avatar hochladen, wenn vorhanden
     if ($_FILES[userpic][tmp_name])
     {
+        image_delete("images/avatare/", $_SESSION[user_id]);
         $upload = upload_img($_FILES[userpic], "images/avatare/", $_SESSION[user_id], 30*1024, 110, 110, 0, 0, false);
         $message = upload_img_notice($upload)."<br />";
     }
