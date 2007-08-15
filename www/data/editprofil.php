@@ -13,19 +13,8 @@ if ($_POST[usermail] && $_SESSION[user_id])
     // Avatar hochladen, wenn vorhanden
     if ($_FILES[userpic][tmp_name])
     {
-        $valid_pic = pic_upload($_FILES[userpic], "images/avatare/", $_SESSION[user_id], 110, 110, 0, 0, false, 80, "gif");
-        switch ($valid_pic)
-        {
-            case 0:
-                $message = $phrases[avatar_loaded].'<br>';
-                break;
-            case 1:
-                $message = $phrases[avatar_no_jpggif].'<br>';
-                break;
-            case 2:
-                $message = $phrases[avatar_to_big].'<br>';
-                break;
-        }
+        $upload = upload_img($_FILES[userpic], "images/avatare/", $_SESSION[user_id], 30*1024, 110, 110, 0, 0, false);
+        $message = upload_img_notice($upload)."<br />";
     }
 
     // User Daten aktualisieren
@@ -35,33 +24,45 @@ if ($_POST[usermail] && $_SESSION[user_id])
                    show_mail = '$_POST[showmail]'
                where user_id = $_SESSION[user_id]";
     mysql_query($update, $db);
+    $message .= $phrases[profile_update];
 
     // Neues Passwort eintragen 
     if ($_POST[userpassword])
     {
         $_POST[usermail] = savesql($_POST[usermail]);
         $mailpass = $_POST[userpassword];
-
-        $index = mysql_query("select email_passchange from fs_template where id = '$global_config_arr[design]'", $db);
-        $template = stripslashes(mysql_result($index, 0, "email_passchange"));
-        $template = str_replace("{username}", $_SESSION[user_name], $template); 
-        $template = str_replace("{passwort}", $mailpass, $template);
-
-        $email_betreff = $phrases[pass_change] . " @ " . $global_config_arr[virtualhost];
-        $header="From: ".$phrases[registration]." @ ".$global_config_arr[virtualhost]."\n"; 
-        $header .= "Reply-To: ".$phrases[registration]." @ ".$global_config_arr[virtualhost]."\n"; 
-        $header .= "Bcc: $usermail\n"; 
-        $header .= "X-Mailer: PHP/" . phpversion(). "\n"; 
-        $header .= "X-Sender-IP: $REMOTE_ADDR\n"; 
-        $header .= "Content-Type: text/plain"; 
-        mail($_POST[usermail], $email_betreff, $template, $header); 
         $_POST[userpassword] = md5($_POST[userpassword]);
-        $update = "update fs_user set user_password = '$_POST[userpassword]' where user_id = $_SESSION[user_id]";
-        mysql_query($update, $db);
+        
+        $index = mysql_query("SELECT user_password FROM fs_user WHERE user_id = '$_SESSION[user_id]'", $db);
+        $oldpass = mysql_result($index, 0, "user_password");
+        
+        if ($_POST[userpassword]!=$oldpass)
+        {
+            //MAIl TEMPLATE
+            $index = mysql_query("SELECT email_passchange FROM fs_template WHERE id = $global_config_arr[design]", $db);
+            $template = stripslashes(mysql_result($index, 0, "email_passchange"));
+            $template = str_replace("{username}", $_SESSION[user_name], $template);
+            $template = str_replace("{passwort}", $mailpass, $template);
+
+            //SEND MAIL
+            $email_betreff = $phrases[pass_change] . " @ " . $global_config_arr[virtualhost];
+            $header="From: ".$phrases[registration]." @ ".$global_config_arr[virtualhost]."\n";
+            $header .= "Reply-To: ".$phrases[registration]." @ ".$global_config_arr[virtualhost]."\n";
+            $header .= "Bcc: $usermail\n";
+            $header .= "X-Mailer: PHP/" . phpversion(). "\n";
+            $header .= "X-Sender-IP: $REMOTE_ADDR\n";
+            $header .= "Content-Type: text/plain";
+            mail($_POST[usermail], $email_betreff, $template, $header);
+            unset($template);
+            
+            //UPDATE PASSWORD
+            $update = "UPDATE fs_user SET user_password = '$_POST[userpassword]' WHERE user_id = $_SESSION[user_id]";
+            mysql_query($update, $db);
+            $message .= "<br />".$phrases[pass_update];
+        }
     }
 
-    // Meldung ausgeben
-    $message .= $phrases[profile_update];
+    // Meldung ausgebena
     $template .= sys_message("Profil", $message);
 }
 
@@ -79,9 +80,9 @@ else
         $user_arr[show_mail] = ($user_arr[show_mail] == 1) ? "checked" : "";
 
         // Avatar vorhanden?
-        if (file_exists("images/avatare/".$_SESSION[user_id].".gif"))
+        if (image_exists("images/avatare/", $_SESSION[user_id]))
         {
-            $user_arr[user_avatar] = '<img src="images/avatare/'.$_SESSION[user_id].'.gif">';
+            $user_arr[user_avatar] = '<img src="'.image_url("images/avatare/",$_SESSION[user_id]).'" />';
         }
         else
         {
