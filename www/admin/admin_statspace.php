@@ -6,8 +6,6 @@
 
 if (isset($_GET[size]))
 {
-    include("functions.php");
-
     disk_free_space($_SERVER[DOCUMENT_ROOT]);
     disk_total_space($_SERVER[DOCUMENT_ROOT]);
 
@@ -215,7 +213,6 @@ function list_dir (&$files, $dirname, $dirs=NULL, $ebene=-1)
                             </tr>
                         </table>
                     </form>
-                    <p>
     ';
 }
 ?>

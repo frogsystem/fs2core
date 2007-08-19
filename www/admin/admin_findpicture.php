@@ -96,7 +96,6 @@ if (isset($_POST['cat']))
 }
 
 echo'
-                    </p>
                 </div>
             </div>
         </div>

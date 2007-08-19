@@ -11,16 +11,16 @@ if ($_POST[username] &&
     switch ($loggedin)
     {
         case 0:
-            systext('Login war erfolgreich<br>Herzlich Willkommen im Admin-CP des Frogsystem 2');
+            systext('Login war erfolgreich<br>Herzlich Willkommen im Admin-CP des Frogsystem 2!');
             break;
         case 1:
-            systext('Login fehlgeschlagen<br>Username existiert nicht');
+            systext('Login fehlgeschlagen:<br>Username existiert nicht');
             break;
         case 2:
-            systext('Login fehlgeschlagen<br>Passwort inkorrekt');
+            systext('Login fehlgeschlagen:<br>Passwort inkorrekt');
             break;
         case 3:
-            systext('Login fehlgeschlagen<br>Du hast keine Rechte für den Administartionsbereich');
+            systext('Login fehlgeschlagen:<br>Du hast keine Rechte für den Administartionsbereich');
             break;
     }
 }
@@ -41,7 +41,7 @@ elseif ($_SESSION[user_level] == "authorised")
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" name="login" value="1">
                         <table width="600" border="0" cellpadding="4" cellspacing="0">
                             <tr>

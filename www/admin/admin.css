@@ -36,39 +36,7 @@ td.nw
    background:#BBBBBB;
   }
 
-textarea
-  {
-   color:#000000;
-   font-size:9pt;
-   font-family:Verdana;
-   border:1px solid #000000;
-   background-color:#B7B7B7;
-  }
-.text
-  {
-   color:#000000;
-   font-size:9pt;
-   font-family:Verdana;
-   border:1px solid #000000;
-   background-color:#B7B7B7;
-  }
-.button
-  {
-   color:#000000;
-   font-size:8pt;
-   font-family:Verdana;
-   border:1px solid #000000;
-   background-color:#B7B7B7;
-   font-weight:normal;
-  }
-select
-  {
-   color:#000000;
-   font-size:9pt;
-   font-family:Verdana;
-   border:1px solid #000000;
-   background-color:#B7B7B7;
-  }
+
 
 
 /**************************************************/
@@ -90,17 +58,57 @@ body
     overflow-y: scroll;
 }
 .small
-  {
-   font-size:7pt;
-   font-family:Verdana;
-   font-weight:normal;
-  }
+{
+    font-size:7pt;
+    font-family:Verdana;
+    font-weight:normal;
+}
 .thumb
 {
     cursor:pointer;
 }
 
 
+
+/**************************************************/
+/* formular styles */
+/**************************************************/
+textarea
+{
+    color:#000000;
+    font-size:9pt;
+    font-family:Verdana;
+    border:1px solid #000000;
+    background-color:#B7B7B7;
+}
+select
+{
+    color:#000000;
+    font-size:9pt;
+    font-family:Verdana;
+    border:1px solid #000000;
+    background-color:#B7B7B7;
+}
+.text
+{
+    color:#000000;
+    font-size:9pt;
+    font-family:Verdana;
+    border:1px solid #000000;
+    background-color:#B7B7B7;
+    font-weight:normal;
+}
+.button
+{
+    color:#000000;
+    font-size:8pt;
+    font-family:Verdana;
+    border:1px solid #000000;
+    background-color:#B7B7B7;
+    font-weight:normal;
+}
+
+  
 
 /**************************************************/
 /* standard links styles */

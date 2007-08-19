@@ -16,7 +16,7 @@ if ($_FILES['newsmilie']['name'] != "" AND $_POST['replace_string'])
                  VALUES ('$_POST[replace_string]', '$_POST[insert_after]'+1)", $db);
 
     $id = mysql_insert_id();
-    $upload = upload_img($_FILES['newsmilie'], "../images/smilies/", $id, 1024*1024, 9999, 9999, 0, 0, false);
+    $upload = upload_img($_FILES['newsmilie'], "../images/smilies/", $id, 1024*1024, 9999, 9999);
     systext(upload_img_notice($upload));
 }
 
@@ -83,7 +83,7 @@ elseif (($_GET['action']=="moveup" OR $_GET['action']=="movedown") AND isset($_G
 
   $index = mysql_query("SELECT * FROM fs_smilies ORDER BY `order` ASC", $db);
 
-  echo'<form action="'.$PHP_SELF.'" method="post" enctype="multipart/form-data">
+  echo'<form action="" method="post" enctype="multipart/form-data">
          <input type="hidden" value="editorsmilies" name="go">
          <input type="hidden" name="sended" value="">
          <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -138,7 +138,7 @@ if (mysql_num_rows($index)>0)
 
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="editorsmilies" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0">
@@ -176,7 +176,8 @@ if (mysql_num_rows($index)>0)
         }
         
         echo'
-                            <tr>
+                            <tr onmouseover="javascript:this.style.backgroundColor=\'#EEEEEE\'"
+                                onmouseout="javascript:this.style.backgroundColor=\'transparent\'">
                                 <td></td>
                                 <td align="left">
                                     <img src="'.image_url("../images/smilies/", $smilie_arr[id]).'" alt="" />
@@ -189,7 +190,7 @@ if (mysql_num_rows($index)>0)
                                     '.$pointer_down.'
                                 </td>
                                 <td align="center" style="padding-left:30px;">
-                                    <input onClick=\'delalert ("delsmilie'.$smilie_arr[id].'","Soll der Smilie wirklich gelöscht werden?")\' type="checkbox" name="delsmilie[]" id="delsmilie'.$smilie_arr[id].'" value="'.$smilie_arr[order].'">
+                                    <input onClick=\'delalert ("delsmilie'.$smilie_arr[id].'","Soll der Smilie '.$smilie_arr[replace_string].' wirklich gelöscht werden?")\' type="checkbox" name="delsmilie[]" id="delsmilie'.$smilie_arr[id].'" value="'.$smilie_arr[order].'">
                                 </td>
                                 <td></td>
                             </tr>

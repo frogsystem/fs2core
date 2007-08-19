@@ -1,5 +1,4 @@
 <?php
-
 echo '
                     <table border="0" cellpadding="4" cellspacing="0" width="400">
                         <tr>
@@ -9,5 +8,4 @@ echo '
                         </tr>
                     </table>
 ';
-
 ?>

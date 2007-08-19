@@ -24,8 +24,10 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
 
         if (isset($_FILES[artikelimg]))
         {
-            $valid_pic = upload_img($_FILES[artikelimg], "../images/shop/", $_POST[editartikelid], 2*1024*1024, 800, 600, 71, 100);
+            $upload = upload_img($_FILES[artikelimg], "../images/shop/", $_POST[editartikelid], 2*1024*1024, 400, 600);
             systext(upload_img_notice($upload));
+            $thumb = create_thumb_from(image_url("../images/shop/",$_POST[editartikelid],false), 100, 100);
+            systext(create_thumb_notice($thumb));
         }
         $update = "UPDATE fs_shop
                    SET artikel_name  = '$_POST[title]',
@@ -51,7 +53,7 @@ elseif ($_POST[artikelid])
     $dbartikelhot = ($artikel_arr[artikel_hot] == 1) ? "checked" : "";
 
     echo'
-                    <form action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shopedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$artikel_arr[artikel_id].'" name="editartikelid">
@@ -68,10 +70,11 @@ elseif ($_POST[artikelid])
                             <tr>
                                 <td class="config" valign="top">
                                     Neues Bild:<br>
-                                    <font class="small">Nur ausfüllen, wenn das alte ersetzt werden soll</font>
+                                    <font class="small">Nur ausfüllen, wenn das alte ersetzt werden soll.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="file" class="text" name="artikelimg" size="33">
+                                    <input type="file" class="text" name="artikelimg" size="33"><br />
+                                    <font class="small">[max. 400 x 600 Pixel] [max. 2 MB]</font>
                                 </td>
                             </tr>
                             <tr>
@@ -86,7 +89,7 @@ elseif ($_POST[artikelid])
                             <tr>
                                 <td class="config" valign="top">
                                     URL:<br>
-                                    <font class="small">Link zum Onlineshop</font>
+                                    <font class="small">Link zum Produkt</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="url" size="51" value="'.$artikel_arr[artikel_url].'" maxlength="255">
@@ -98,16 +101,16 @@ elseif ($_POST[artikelid])
                                     <font class="small">Kurze Artikelbeschreibung (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea class="text" name="text" rows="5" cols="51">'.$artikel_arr[artikel_text].'</textarea>
+                                    '.create_editor("text", $artikel_arr[artikel_text], 330, 130).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Preis:<br>
-                                    <font class="small">Preis in $euro; (bsp 7,99)</font>
+                                    <font class="small">Preis in &euro; (bsp 7,99)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="preis" size="10" value="'.$artikel_arr[artikel_preis].'" maxlength="7">
+                                    <input class="text" name="preis" size="10" value="'.$artikel_arr[artikel_preis].'" maxlength="7"> &euro;
                                 </td>
                             </tr>
                             <tr>
@@ -124,7 +127,7 @@ elseif ($_POST[artikelid])
                                     Artikel löschen:
                                 </td>
                                 <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delartikel" value="Sicher?">
+                                    <input onClick=\'delalert ("delartikel", "Soll der Shop-Artikel wirklich gelöscht werden?")\' type="checkbox" name="delartikel" id="delartikel" value="1">
                                 </td>
                             </tr>
                             <tr>
@@ -144,7 +147,7 @@ elseif ($_POST[artikelid])
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="shopedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -171,7 +174,7 @@ else
         echo'
                             <tr>
                                 <td class="config">
-                                    <img src="../images/shop/'.$artikel_arr[artikel_id].'_s.jpg" width="35" height="50">
+                                    <img src="../images/shop/'.$artikel_arr[artikel_id].'_s.jpg">
                                 </td>
                                 <td class="configthin">
                                     '.$artikel_arr[artikel_name].'

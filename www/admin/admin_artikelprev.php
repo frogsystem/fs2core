@@ -6,7 +6,7 @@ include("adminfunctions.php");
 echo'
 <html>
 <head>
-    <title>Artikel Preview</title>
+    <title>Frogsystem 2 - Vorschau</title>
 
     <link rel="stylesheet" type="text/css" href="../css/'.$global_config_arr[design_name].'.css">
     <script>
@@ -88,7 +88,7 @@ else
 
 if ($_POST[fscode] == 1)
 {
-    $_POST[text] = fscode($_POST[text], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    $_POST[text] = fscode($_POST[text], true, true, false);
 }
 $_POST[text] = stripslashes($_POST[text]);
 

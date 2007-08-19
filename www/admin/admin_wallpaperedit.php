@@ -37,7 +37,7 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
                 $filesname = "sizeimg_$i";
                 if (isset($_FILES[$filesname]) && $_POST[wpnew][$i]==1 && $_POST[size][$i]!="")
                 {
-                    $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['oldname']."_".$_POST['size'][$i]."a", 5*1024*1024, 9999, 9999, 0, 0, false);
+                    $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['oldname']."_".$_POST['size'][$i]."a", 5*1024*1024, 9999, 9999);
                     systext(upload_img_notice($upload));
                     switch ($upload)
                     {
@@ -62,7 +62,7 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
                     
                     if (isset($_FILES[$filesname]))
                     {
-                        $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['oldname']."_".$_POST['size'][$i]."a", 5*1024*1024, 9999, 9999, 0, 0, false);
+                        $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['oldname']."_".$_POST['size'][$i]."a", 5*1024*1024, 9999, 9999);
                         systext(upload_img_notice($upload));
                     }
                 }
@@ -86,7 +86,7 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
        systext('Fehler bei der Bearbeitung:<br><br>
        - Jede Größe darf nur einmal vorkommen<br>
        - Der Wallpapername muss einzigartig sein<br><br>
-       Da eine oder beide Bedingungen nicht erfüllt ist/sind, wurde die Bearbeitung abgebrochen!');
+       Da nicht beide Bedingungen nicht erfüllt sind, wurde die Bearbeitung abgebrochen!');
    }
 }
 elseif ($_POST['wallpaper_id'] AND $_POST['sended'] == "delete")
@@ -145,7 +145,8 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
 
     for($i=0; $i<mysql_num_rows($index2); $i++)
     {
-        $admin_sizes_arr[wp_exists][$i] = "Dieses Wallpaper existiert bereits! Wählen sie nur ein Neues aus, wenn das Alte überschrieben werden soll!<br>";
+        $admin_sizes_arr[wp_exists][$i] = '<font class="small">Dieses Wallpaper existiert bereits!<br />
+        Wählen sie nur ein Neues aus, wenn das Alte überschrieben werden soll!</font><br />';
         if (!isset($_POST[size][$i]))
         {
             $_POST[size][$i] = mysql_result($index2, $i, "size");
@@ -163,7 +164,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
     $_POST[options] = $_POST[options] + $_POST[optionsadd];
 
     echo'
-                    <form id="form" action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input id="send" type="hidden" value="0" name="wpedit">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
                         <input type="hidden" value="wallpaperedit" name="go">
@@ -174,11 +175,11 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
                         <input type="hidden" name="oldname" value="'.$admin_wp_arr[old_name].'" />
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
-                                <td class="config" valign="top" width="125px">
+                                <td class="config" valign="top" width="150">
                                     Dateiname:<br>
                                     <font class="small">Name unter dem gespeichert wird.</font>
                                 </td>
-                                <td class="config" valign="top">
+                                <td class="config" valign="top" width="450">
                                     <input class="text" name="wallpaper_name" size="33" maxlength="100" value="'.$admin_wp_arr[wallpaper_name].'">
                                 </td>
                             </tr>
@@ -230,7 +231,7 @@ echo'
                                     <input type="hidden" name="size_id['.$j.']" value="'.$_POST[size_id][$j].'" />
                                     <input class="text" id="size'.$j.'" name="size['.$j.']" size="10" maxlength="30" value="'.$_POST[size][$j].'">
                                     <input type="file" class="text" name="sizeimg_'.$j.'" size="25">
-                                    Löschen: <input name="delwp['.$j.']" value="'.$_POST[size_id][$j].'" type="checkbox"><br>
+                                    Löschen:&nbsp;<input name="delwp['.$j.']" id="'.$j.'" value="'.$_POST[size_id][$j].'" type="checkbox" onClick=\'delalert ("'.$j.'", "Soll die Größe '.$i.' des Wallpapers wirklich gelöscht werden?")\'><br>
                                     '.$admin_sizes_arr['wp_exists'][$j].'
                                     <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
                                     <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
@@ -300,7 +301,7 @@ echo'
     $wallpaper_arr = mysql_fetch_assoc($index);
 
 echo '
-<form action="'.$PHP_SELF.'" method="post">
+<form action="" method="post">
 <table width="100%" cellpadding="4" cellspacing="0">
 <input type="hidden" value="wallpaperedit" name="go">
 <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -316,7 +317,7 @@ echo '
                Soll das untenstehende Wallpaper wirklich gelöscht werden?
            </td>
            <td width="25%">
-             <input type="submit" value="Ja" class="button" />  <input type="button" onclick="history.back(1);" value="Nein" class="button" />
+             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?mid=media&go=wallpaperedit";\' value="Nein" class="button" />
            </td>
        <tr>
        <tr>
@@ -355,7 +356,7 @@ else
     }
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="wallpaperedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -391,7 +392,7 @@ else
     if (isset($_POST[wpcatid]))
     {
         echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="wallpaperedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -413,7 +414,7 @@ else
         while ($wallpaper_arr = mysql_fetch_assoc($index))
         {
             echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" name="wallpaper_id" value="'.$wallpaper_arr[wallpaper_id].'" />
                         <input type="hidden" value="wallpaperedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">

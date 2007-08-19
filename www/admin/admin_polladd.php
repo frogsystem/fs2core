@@ -100,7 +100,7 @@ else
 
     
     echo'
-                    <form id="form" action="'.$PHP_SELF.'" method="post">
+                    <form id="form" action="" method="post">
                         <input type="hidden" value="polladd" name="go">
                         <input id="send" type="hidden" value="0" name="polladd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
@@ -121,12 +121,12 @@ else
                                     <font class="small">Die Umfrage startet am</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input id="startday" class="text" size="2" value="'.$_POST[nowtag].'" name="nowtag" maxlength="2">
-                                    <input id="startmonth" class="text" size="2" value="'.$_POST[nowmonat].'" name="nowmonat" maxlength="2">
-                                    <input id="startyear" class="text" size="4" value="'.$_POST[nowjahr].'" name="nowjahr" maxlength="4">
+                                    <input id="startday" class="text" size="1" value="'.$_POST[nowtag].'" name="nowtag" maxlength="2"> .
+                                    <input id="startmonth" class="text" size="1" value="'.$_POST[nowmonat].'" name="nowmonat" maxlength="2"> .
+                                    <input id="startyear" class="text" size="3" value="'.$_POST[nowjahr].'" name="nowjahr" maxlength="4">
                                     <font class="small"> um </font>
-                                    <input id="starthour" class="text" size="2" value="'.$_POST[nowstunde].'" name="nowstunde" maxlength="2">
-                                    <input id="startminute" class="text" size="2" value="'.$_POST[nowmin].'" name="nowmin" maxlength="2">
+                                    <input id="starthour" class="text" size="1" value="'.$_POST[nowstunde].'" name="nowstunde" maxlength="2"> :
+                                    <input id="startminute" class="text" size="1" value="'.$_POST[nowmin].'" name="nowmin" maxlength="2"> Uhr
                                     <input onClick=\'document.getElementById("startday").value="'.$jetzt[tag].'";
                                                      document.getElementById("startmonth").value="'.$jetzt[monat].'";
                                                      document.getElementById("startyear").value="'.$jetzt[jahr].'";
@@ -166,12 +166,12 @@ else
                                     <font class="small">Die Umfrage endet am</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input id="endday"  class="text" size="2" value="'.$_POST[endtag].'" name="endtag" maxlength="2">
-                                    <input id="endmonth" class="text" size="2" value="'.$_POST[endmonat].'" name="endmonat" maxlength="2">
-                                    <input id="endyear" class="text" size="4" value="'.$_POST[endjahr].'" name="endjahr" maxlength="4">
+                                    <input id="endday"  class="text" size="1" value="'.$_POST[endtag].'" name="endtag" maxlength="2"> .
+                                    <input id="endmonth" class="text" size="1" value="'.$_POST[endmonat].'" name="endmonat" maxlength="2"> .
+                                    <input id="endyear" class="text" size="3" value="'.$_POST[endjahr].'" name="endjahr" maxlength="4">
                                     <font class="small"> um </font>
-                                    <input id="endhour" class="text" size="2" value="'.$_POST[endstunde].'" name="endstunde" maxlength="2">
-                                    <input id="endminute" class="text" size="2" value="'.$_POST[endmin].'" name="endmin" maxlength="2">
+                                    <input id="endhour" class="text" size="1" value="'.$_POST[endstunde].'" name="endstunde" maxlength="2"> :
+                                    <input id="endminute" class="text" size="1" value="'.$_POST[endmin].'" name="endmin" maxlength="2"> Uhr
                                     <input onClick=\'document.getElementById("endday").value="'.$jetzt[tag].'";
                                                      document.getElementById("endmonth").value="'.$jetzt[monat].'";
                                                      document.getElementById("endyear").value="'.$jetzt[jahr].'";

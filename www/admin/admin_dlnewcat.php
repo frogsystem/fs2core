@@ -32,7 +32,7 @@ if (isset($_POST[catname]))
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="dlnewcat" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">

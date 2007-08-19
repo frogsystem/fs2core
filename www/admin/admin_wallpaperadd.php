@@ -34,7 +34,7 @@ if (mysql_num_rows($index)==0) {
       if (isset($_FILES[$filesname]) AND $_POST['size'][$j] != "")
       {
         $j = $i - 1;
-        $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][$j], 5*1024*1024, 9999, 9999, 0, 0, false);
+        $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][$j], 5*1024*1024, 9999, 9999);
         systext(upload_img_notice($upload));
         switch ($upload)
         {
@@ -81,18 +81,18 @@ else
     $_POST[options] = $_POST[options] + $_POST[optionsadd];
 
 echo'
-                    <form id="form" action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input id="send" type="hidden" value="0" name="wpadd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
                         <input type="hidden" value="wallpaperadd" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
-                                <td class="config" valign="top" width="125px">
+                                <td class="config" valign="top" width="150">
                                     Dateiname:<br>
                                     <font class="small">Name unter dem gespeichert wird.</font>
                                 </td>
-                                <td class="config" valign="top">
+                                <td class="config" valign="top" width="450">
                                     <input class="text" name="wallpaper_name" size="33" maxlength="100" value="'.$_POST[wallpaper_name].'">
                                 </td>
                             </tr>

@@ -11,7 +11,7 @@ if (isset($_POST[title]))
     $_POST[title] = savesql($_POST[title]);
     if ($_POST[delscreen])   // Screenshot löschen
     {
-        mysql_query("DELETE FROM fs_screen WHERE screen_id = '$_POST[editscreenid]'", $db);
+        mysql_query("DELETE FROM fs_screen WHERE screen_id = $_POST[editscreenid]", $db);
         image_delete("../images/screenshots/", $_POST[editscreenid]);
         image_delete("../images/screenshots/", "$_POST[editscreenid]_s");
         systext('Screenshot wurde gelöscht');
@@ -19,7 +19,8 @@ if (isset($_POST[title]))
     else   // Screenshot editieren
     {
         $update = "UPDATE fs_screen
-                   SET cat_id = $_POST[catid], screen_name = '$_POST[title]'
+                   SET cat_id = $_POST[catid],
+                   screen_name = '$_POST[title]'
                    WHERE screen_id = $_POST[editscreenid]";
         mysql_query($update, $db);
         systext("Der Screenshot wurde editiert");
@@ -38,10 +39,10 @@ elseif (isset($_POST[screenid]))
     $screen_arr = mysql_fetch_assoc($index);
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="screenedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <input type="hidden" value="'.$screenid.'" name="editscreenid">
+                        <input type="hidden" value="'.$screen_arr[screen_id].'" name="editscreenid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
@@ -88,7 +89,7 @@ elseif (isset($_POST[screenid]))
                                     Screenshot löschen:
                                 </td>
                                 <td class="config">
-                                   <input onClick="alert(this.value)" type="checkbox" name="delscreen" value="Sicher?">
+                                   <input onClick=\'delalert ("delscreen", "Soll der Screenshot wirklich gelöscht werden?")\' type="checkbox" name="delscreen" id="delscreen" value="1">
                                 </td>
                             </tr>
                             <tr>
@@ -114,7 +115,7 @@ else
     }
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="screenedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -149,7 +150,7 @@ else
     if (isset($_POST[screencatid]))
     {
         echo'<br>
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="screenedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -174,7 +175,10 @@ else
             $index2 = mysql_query("select cat_name from fs_screen_cat where cat_id = $screen_arr[cat_id]", $db);
             $db_cat_name = mysql_result($index2, 0, "cat_name");
             echo'
-                            <tr>
+                            <tr style="cursor:pointer;"
+                                onmouseover="javascript:this.style.backgroundColor=\'#EEEEEE\'"
+                                onmouseout="javascript:this.style.backgroundColor=\'transparent\'"
+                                onClick=\'document.getElementById("'.$screen_arr[screen_id].'").checked="true";\'>
                                 <td class="configthin">
                                     <img src="../images/screenshots/'.$screen_arr[screen_id].'_s.jpg" width="50" height="37" alt="">
                                 </td>
@@ -185,7 +189,7 @@ else
                                     '.$db_cat_name.'
                                 </td>
                                 <td class="configthin">
-                                    <input type="radio" name="screenid" value="'.$screen_arr[screen_id].'">
+                                    <input type="radio" name="screenid" id="'.$screen_arr[screen_id].'" value="'.$screen_arr[screen_id].'">
                                 </td>
                             </tr>
             ';

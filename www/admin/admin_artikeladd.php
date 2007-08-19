@@ -20,7 +20,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
     if (mysql_num_rows($index) == 0)
     {
         $_POST[title] = savesql($_POST[title]);
-        $_POST[text] = addslashes($_POST[text]);
+        $_POST[text] = savesql($_POST[text]);
         settype($_POST[posterid], 'integer');
         $_POST[search] = isset($_POST[search]) ? 1 : 0;
         $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
@@ -75,7 +75,7 @@ else
     $dbartikelfscode = ($_POST['fscode'] == 1) ? "checked" : "";
 
     echo'
-                    <form id="send1" action="'.$PHP_SELF.'" method="post" target="_self">
+                    <form id="send1" action="" method="post">
                         <input type="hidden" value="artikeladd" name="go">
                         <input type="hidden" value="" name="sended">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -104,7 +104,7 @@ else
                                     <font class="small">Verfasser des Artikels (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="30" id="username" name="poster" value="'.$dbusername.'" maxlength="100" disabled>
+                                    <input class="text" size="30" id="username" name="poster" value="'.$dbusername.'" maxlength="100" readonly="readonly">
                                     <input type="hidden" id="userid" name="posterid" value="'.$_POST[posterid].'">
                                     <input onClick=\'open("admin_finduser.php","Poster","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\' class="button" type="button" value="Ändern">
                                     <input onClick=\'document.getElementById("username").value="";
@@ -152,19 +152,12 @@ else
                                     <font class="small">Html ist an. FScode ist an</font>
                                 </td>
                                 <td valign="top">
-                                    <textarea rows="26" cols="66" name="text">'.stripslashes(killhtml($_POST[text])).'</textarea>
+                                    '.create_editor("text", stripslashes(killhtml($_POST[text])), 407, 380, "", false).'
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config">
-                                    Artikel löschen:
-                                </td>
-                                <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delit" value="Sicher?">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
+                                <td></td>
+                                <td>
                                     <input class="button" type="button" value="Vorschau" onClick="javascript:open(\'about:blank\',\'prev\',\'width=700,height=710,screenX=0,screenY=0,scrollbars=yes\'); document.getElementById(\'send1\').action=\'admin_artikelprev.php\'; document.getElementById(\'send1\').target=\'prev\'; document.getElementById(\'send1\').submit();">
                                     <input class="button" type="button" value="Absenden" onClick="javascript:document.getElementById(\'send1\').target=\'_self\'; document.getElementById(\'send1\').action=\''.$PHP_SELF.'\'; document.getElementById(\'send1\').submit();">
                                 </td>

@@ -39,11 +39,10 @@
         $tmp[help][0][text] = $admin_phrases[template][error][help_1];
         $tmp[help][1][tag] = "{meldung}";
         $tmp[help][1][text] = $admin_phrases[template][error][help_2];
-    $TEMPLATE_EDIT[0] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[1] = false;
-    unset($tmp);
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "indexphp";
     $tmp[title] = $admin_phrases[template][indexphp][title];
@@ -68,7 +67,7 @@
         $tmp[help][7][text] = $admin_phrases[template][indexphp][help_8];
         $tmp[help][8][tag] = "{partner}";
         $tmp[help][8][text] = $admin_phrases[template][indexphp][help_9];
-    $TEMPLATE_EDIT[2] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "main_menu";
@@ -78,11 +77,10 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{virtualhost}";
         $tmp[help][0][text] = $admin_phrases[template][main_menu][help_1] ;
-    $TEMPLATE_EDIT[3] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[4] = false;
-    unset($tmp);
+    $TEMPLATE_EDIT[] = false;
     
     $tmp[name] = "pic_viewer";
     $tmp[title] = $admin_phrases[template][pic_viewer][title];
@@ -97,7 +95,7 @@
         $tmp[help][2][text] = $admin_phrases[template][pic_viewer][help_3];
         $tmp[help][3][tag] = "{title}";
         $tmp[help][3][text] = $admin_phrases[template][pic_viewer][help_4];
-    $TEMPLATE_EDIT[5] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
         
     $tmp[name] = "announcement";
@@ -107,11 +105,10 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{meldung}";
         $tmp[help][0][text] = $admin_phrases[template][announcement][help_1];
-    $TEMPLATE_EDIT[6] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
-    $TEMPLATE_EDIT[13] = false;
-    unset($tmp);
+    $TEMPLATE_EDIT[] = false;
     
     $tmp[name] = "statistik";
     $tmp[title] = $admin_phrases[template][statistik][title];
@@ -136,7 +133,7 @@
         $tmp[help][7][text] = $admin_phrases[template][statistik][help_8];
         $tmp[help][8][tag] = "{kommentare}";
         $tmp[help][8][text] = $admin_phrases[template][statistik][help_9];
-    $TEMPLATE_EDIT[7] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
     $tmp[name] = "community_map";
@@ -146,7 +143,7 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{karte}";
         $tmp[help][0][text] = $admin_phrases[template][community_map][help_1];
-    $TEMPLATE_EDIT[8] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
 

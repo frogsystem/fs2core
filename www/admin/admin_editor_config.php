@@ -69,7 +69,7 @@ else
     $index = mysql_query("SELECT * FROM fs_editor_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="editorconfig" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">

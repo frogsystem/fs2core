@@ -61,7 +61,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
     systext($error_message);
     
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="screencat" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" name="sended" value="edit" />
@@ -148,7 +148,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
 
 echo '
-<form action="'.$PHP_SELF.'" method="post">
+<form action="" method="post">
 <table width="100%" cellpadding="4" cellspacing="0">
 <input type="hidden" value="screencat" name="go">
 <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -165,7 +165,7 @@ echo '
                Soll die Kategorie "'.$admin_cat_arr[cat_name].'" wirklich gelöscht werden?
            </td>
            <td width="50%">
-             <input type="submit" value="Ja" class="button" />  <input type="button" onclick="history.back(1);" value="Nein" class="button" />
+             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?mid=media&go=screencat";\' value="Nein" class="button" />
            </td>
        </tr>
        <tr><td height="10px"></td></tr>
@@ -196,7 +196,7 @@ echo'
                 Die letzte Kategorie kann nicht gelöscht werden.<br>
                 Bitte legen Sie zuerst eine neue Kategorie an.</td>
               <td>
-                <input type="button" onclick="history.back(1);" value="Zurück zur Übersicht" class="button" />
+                <input type="button" onclick=\'location.href="?mid=media&go=screencat";\' value="Zurück zur Übersicht" class="button" />
               </td>
             </tr>
 
@@ -239,7 +239,7 @@ else
         $screen_index = mysql_query("select cat_id from fs_screen where cat_id = $cat_arr[cat_id]", $db);
         $screen_rows = mysql_num_rows($screen_index);
         echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" name="cat_id" value="'.$cat_arr[cat_id].'" />
                         <input type="hidden" value="screencat" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">

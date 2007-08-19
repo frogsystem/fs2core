@@ -15,12 +15,12 @@
         $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
         $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
         $tmp[help][...][text] = "text"; //to add more possible tags
-    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
-    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
+    $TEMPLATE_EDIT[] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
+    //continue with new templates
     ...
 */
 ##########################################
@@ -42,7 +42,7 @@
         $tmp[help][1][text] = "URL des Produkt-Vorschaubildes.";
         $tmp[help][2][tag] = "{link}";
         $tmp[help][2][text] = "URL zum Produkt im jeweiligen Shop.";
-    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "shop_body";
@@ -52,7 +52,7 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{hotlinks}";
         $tmp[help][0][text] = "Bindet nacheinander die einzelnen Produkt-Hotlinks ein.";
-    $TEMPLATE_EDIT[1] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "shop_artikel";
@@ -72,7 +72,7 @@
         $tmp[help][2][text] = "URL des Produkt-Bildes.";
         $tmp[help][2][tag] = "{thumbnail}";
         $tmp[help][2][text] = "URL des Produkt-Vorschaubildes.";
-    $TEMPLATE_EDIT[2] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "shop_main_body";
@@ -82,7 +82,7 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{artikel}";
         $tmp[help][0][text] = "Bindet nacheinander die einzelnen Produkte ein.";
-    $TEMPLATE_EDIT[3] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
         
 //////////////////////////

@@ -15,12 +15,12 @@
         $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
         $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
         $tmp[help][...][text] = "text"; //to add more possible tags
-    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
-    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
+    $TEMPLATE_EDIT[] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
+    //continue with new templates
     ...
 */
 ##########################################
@@ -45,7 +45,7 @@
         $tmp[help][3][text] = $admin_phrases[template][partner_eintrag][help_4];
         $tmp[help][4][tag] = "{text}";
         $tmp[help][4][text] = $admin_phrases[template][partner_eintrag][help_5];
-    $TEMPLATE_EDIT[0] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "partner_main_body";
@@ -59,10 +59,10 @@
         $tmp[help][1][text] = $admin_phrases[template][partner_main_body][help_2];
         $tmp[help][2][tag] = "{non_permanents}";
         $tmp[help][2][text] = $admin_phrases[template][partner_main_body][help_3];
-    $TEMPLATE_EDIT[1] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[2] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "partner_navi_eintrag";
     $tmp[title] = $admin_phrases[template][partner_navi_eintrag][title];
@@ -79,7 +79,7 @@
         $tmp[help][3][text] = $admin_phrases[template][partner_eintrag][help_4];
         $tmp[help][4][tag] = "{text}";
         $tmp[help][4][text] = $admin_phrases[template][partner_eintrag][help_5];
-    $TEMPLATE_EDIT[3] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "partner_navi_body";
@@ -93,7 +93,7 @@
         $tmp[help][1][text] = $admin_phrases[template][partner_main_body][help_2];
         $tmp[help][2][tag] = "{non_permanents}";
         $tmp[help][2][text] = $admin_phrases[template][partner_main_body][help_3];
-    $TEMPLATE_EDIT[4] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
 //////////////////////////

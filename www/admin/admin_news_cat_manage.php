@@ -1,4 +1,9 @@
 <?php
+//////////////////////
+//// Config laden ////
+//////////////////////
+$index = mysql_query("select * from fs_news_config", $db);
+$admin_news_config_arr = mysql_fetch_assoc($index);
 
 //////////////////////////////////
 ///// Kategorie aktualisieren ////
@@ -28,10 +33,7 @@ if ($_POST['cat_id'] AND $_POST['name'] AND $_POST['sended'] == "edit")
     }
     elseif ($_FILES['cat_pic']['name'] != "")
     {
-      $index = mysql_query("select * from fs_news_config", $db);
-      $admin_news_config_arr = mysql_fetch_assoc($index);
-
-      $upload = upload_img($_FILES['cat_pic'], "../images/news_cat/", $_POST[cat_id], 5*1024*1024, $admin_news_config_arr[cat_pic_x], $admin_news_config_arr[cat_pic_y], 0, 0, false);
+      $upload = upload_img($_FILES['cat_pic'], "../images/news_cat/", $_POST[cat_id], 5*1024*1024, $admin_news_config_arr[cat_pic_x], $admin_news_config_arr[cat_pic_y]);
       systext(upload_img_notice($upload));
     }
 
@@ -74,7 +76,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
 
 systext($error_message);
 echo '
-<form action="'.$PHP_SELF.'" method="post" enctype="multipart/form-data">
+<form action="" method="post" enctype="multipart/form-data">
 <table width="100%" cellpadding="4" cellspacing="0">
 <input type="hidden" name="sended" value="edit" />
 <input type="hidden" name="cat_action" value="'.$_POST[cat_action].'" />
@@ -105,12 +107,15 @@ echo '
              echo'
            </td>
            <td class="config">
-             <input name="cat_pic" type="file" size="40" class="text" />';
+             <input name="cat_pic" type="file" size="40" class="text" /><br />
+               <font class="small">
+                 [max. '.$admin_news_config_arr[cat_pic_x].' x '.$admin_news_config_arr[cat_pic_y].' Pixel] [max. 1 MB]
+               </font>';
              if (image_exists("../images/news_cat/", $admin_cat_arr[cat_id]))
                echo'
              <br>
              <font class="small"><b>Nur auswählen, wenn das bisherige Bild überschrieben werden soll!</b></font><br><br>
-             <input type="checkbox" name="cat_pic_delete" value="1" /> <font class="small"><b>Bild löschen?</b></font><br><br>';
+             <input type="checkbox" name="cat_pic_delete" id="cpd" value="1" onClick=\'delalert ("cpd", "Soll das Kategorie Bild wirklich gelöscht werden?")\' /> <font class="small"><b>Bild löschen?</b></font><br><br>';
            echo'
            </td>
        </tr>
@@ -143,7 +148,7 @@ echo '
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
 
 echo '
-<form action="'.$PHP_SELF.'" method="post">
+<form action="" method="post">
 <table width="100%" cellpadding="4" cellspacing="0">
 <input type="hidden" name="sended" value="delete" />
 <input type="hidden" name="cat_id" value="'.$admin_cat_arr[cat_id].'" />
@@ -161,7 +166,7 @@ echo '
                Soll die Kategorie "'.$admin_cat_arr[cat_name].'" wirklich gelöscht werden?
            </td>
            <td width="50%">
-             <input type="submit" value="Ja" class="button" />  <input type="button" onclick="history.back(1);" value="Nein" class="button" />
+             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?mid=content&go=news_cat_manage";\' value="Nein" class="button" />
            </td>
        </tr>
        <tr><td height="10px"></td></tr>
@@ -192,7 +197,7 @@ echo'
                 Die letzte Kategorie kann nicht gelöscht werden.<br>
                 Bitte legen Sie zuerst eine neue Kategorie an.</td>
               <td>
-                <input type="button" onclick="history.back(1);" value="Zurück zur Übersicht" class="button" />
+                <input type="button" onclick=\'location.href="?mid=content&go=news_cat_manage";\' value="Zurück zur Übersicht" class="button" />
               </td>
             </tr>
 
@@ -207,7 +212,7 @@ else
   $index = mysql_query("select * from fs_news_cat ORDER BY cat_name", $db);
   while ($admin_cat_arr = mysql_fetch_assoc($index))
   {
-    echo '<form action="'.$PHP_SELF.'" method="post">
+    echo '<form action="" method="post">
        <input type="hidden" name="cat_id" value="'.$admin_cat_arr[cat_id].'" />
        <input type="hidden" value="news_cat_manage" name="go">
        <input type="hidden" value="'.session_id().'" name="PHPSESSID">

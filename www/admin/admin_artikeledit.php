@@ -25,9 +25,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
         {
             $_POST[oldurl] = savesql($_POST[oldurl]);
             $_POST[title] = savesql($_POST[title]);
-            $_POST[text] = addslashes($_POST[text]);
-            $_POST[text] = ereg_replace ("&lt;textarea&gt;", "<textarea>", $_POST[text]); 
-            $_POST[text] = ereg_replace ("&lt;/textarea&gt;", "</textarea>", $_POST[text]); 
+            $_POST[text] = savesql($_POST[text]);
             settype($_POST[posterid], 'integer');
             $_POST[search] = isset($_POST[search]) ? 1 : 0;
             $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
@@ -143,7 +141,7 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
     }
 
     echo'
-                    <form id="send1" action="'.$PHP_SELF.'" method="post" target="_self">
+                    <form id="send1" action="" method="post" target="_self">
                         <input type="hidden" value="artikeledit" name="go">
                         <input type="hidden" value="" name="sended">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -173,7 +171,7 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
                                     <font class="small">Verfasser des Artikels (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="30" id="username" name="poster" value="'.$dbusername.'" maxlength="100" disabled>
+                                    <input class="text" size="30" id="username" name="poster" value="'.$dbusername.'" maxlength="100" readonly="readonly">
                                     <input type="hidden" id="userid" name="posterid" value="'.$_POST[posterid].'">
                                     <input onClick=\'open("admin_finduser.php","Poster","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\' class="button" type="button" value="Ändern">
                                     <input onClick=\'document.getElementById("username").value="";
@@ -229,11 +227,13 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
                                     Artikel löschen:
                                 </td>
                                 <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delit" value="Sicher?">
+                                    <input type="checkbox" name="delit" id="delit" value="1"
+                                    onClick=onClick=\'delalert ("delit", "Soll der Artikel wirklich gelöscht werden?")\'>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">
+                                <td></td>
+                                <td>
                                     <input class="button" type="button" value="Vorschau" onClick="javascript:open(\'about:blank\',\'prev\',\'width=700,height=710,screenX=0,screenY=0,scrollbars=yes\'); document.getElementById(\'send1\').action=\'admin_artikelprev.php\'; document.getElementById(\'send1\').target=\'prev\'; document.getElementById(\'send1\').submit();">
                                     <input class="button" type="button" value="Absenden" onClick="javascript:document.getElementById(\'send1\').target=\'_self\'; document.getElementById(\'send1\').action=\''.$PHP_SELF.'\'; document.getElementById(\'send1\').submit();">
                                 </td>

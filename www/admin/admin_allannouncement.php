@@ -23,7 +23,7 @@ else
     $text = stripslashes(mysql_result($index, 0, "text"));
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="1" name="change">
                         <input type="hidden" value="allannouncement" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -31,10 +31,11 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Ankündigung:<br>
-                                    <font class="small">Leer lassen für keine. HTML ist erlaubt</font>
+                                    <font class="small">Leer lassen zum nicht Anzeigen.<br />
+                                    HTML ist erlaubt</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="15" cols="66" name="text">'.$text.'</textarea>
+                                    '.create_editor("text", $text, 407, 225, "", false).'
                                 </td>
                             </tr>
                             <tr>

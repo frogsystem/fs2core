@@ -40,7 +40,7 @@ elseif (isset($_POST[editcatid]))
     $index = mysql_query("SELECT * FROM fs_dl_cat WHERE cat_id = '$_POST[editcatid]'", $db);
     $cat_arr = mysql_fetch_assoc($index);
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="dlcat" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$cat_arr[cat_id].'" name="catid">
@@ -80,7 +80,7 @@ elseif (isset($_POST[editcatid]))
                                     Kategorie löschen:
                                 </td>
                                 <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delcat" value="Sicher?">
+                                    <input onClick=\'delalert ("delcat", "Soll die Downloadkategorie wirklich gelöscht werden?")\' type="checkbox" name="delcat" id="delcat" value="1">
                                 </td>
                             </tr>
                             <tr>
@@ -100,7 +100,7 @@ elseif (isset($_POST[editcatid]))
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="dlcat" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">

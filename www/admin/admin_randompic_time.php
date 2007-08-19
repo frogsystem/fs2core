@@ -18,7 +18,7 @@ if ($_POST['sended'])
 /// Eingabeformular ////
 ////////////////////////
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="randompic_time" name="go">
                         <input type="hidden" value="1" name="sended">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -41,9 +41,9 @@ if ($_POST['sended'])
     $index = mysql_query("SELECT * FROM fs_screen_random a INNER JOIN fs_screen b ON(a.screen_id = b.screen_id) ORDER BY a.end DESC", $db);
     while ($random_arr = mysql_fetch_assoc($index))
     {
-	$random_arr['start'] = date("d.m.Y H:i", $random_arr['start']);
-	$random_arr['end'] = date("d.m.Y H:i", $random_arr['end']);
-	if(empty($random_arr['name'])) $random_arr['name'] = 'Kein Name';
+        $random_arr['start'] = date("d.m.Y H:i", $random_arr['start']);
+        $random_arr['end'] = date("d.m.Y H:i", $random_arr['end']);
+        if(empty($random_arr['name'])) $random_arr['name'] = 'Kein Name';
         echo'
                             <tr>
                                 <td class="configthin">
@@ -57,9 +57,7 @@ if ($_POST['sended'])
                                     '.$random_arr['end'].'
                                 </td>
                                 <td class="configthin">
-                                    <input type="checkbox" name="randompic_time['.$random_arr['random_id'].']" value="1"';
-                                        echo'
-                                    >
+                                    <input type="checkbox" name="deltimed['.$random_arr['random_id'].']" id="'.$random_arr['random_id'].'" value="1"onClick=\'delalert ("'.$random_arr['random_id'].'", "Soll das zeitgesteuerte Zufallsbild wirklich gelöscht werden?")\' />
                                 </td>
                             </tr>
 
@@ -68,7 +66,7 @@ if ($_POST['sended'])
     echo'                   <tr>
                                 <td colspan="4" align="center">
                                     <input class="button" type="submit" value="Auswahl speichern">
-				</td>
+                                </td>
                             </tr>
                         </table>
                     </form>';

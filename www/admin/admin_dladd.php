@@ -35,17 +35,19 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST
                          '".$_POST[autor]."',
                          '".$_POST[autorurl]."',
                          '".$_POST[dlopen]."');", $db);
-
+                         
+    $id = mysql_insert_id();
+    
     // Bild auswerten und hochladen
     $index = mysql_query("select * from fs_dl_config", $db);
     $admin_dl_config_arr = mysql_fetch_assoc($index);
     
-    $index = mysql_query("SELECT dl_id FROM fs_dl ORDER BY dl_id DESC", $db);
-    $id = mysql_result($index, 0, "dl_id");
     if ($_FILES[dlimg] && ($_FILES[dlimg] != "none"))
     {
-        $upload = upload_img($_FILES['dlimg'], "../images/downloads/", $id, 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y], $admin_dl_config_arr[thumb_x], $admin_dl_config_arr[thumb_y], true);
+        $upload = upload_img($_FILES['dlimg'], "../images/downloads/", $id, 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
         systext(upload_img_notice($upload));
+        $thumb = create_thumb_from(image_url("../images/downloads/",$id,false), $admin_dl_config_arr[thumb_x],  $admin_dl_config_arr[thumb_y]);
+        systext(create_thumb_notice($thumb));
     }
 
     // Files eintragen
@@ -80,7 +82,7 @@ else
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'
-                    <form id="form" action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="dladd" name="go">
                         <input id="send" type="hidden" value="0" name="dladd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
@@ -123,27 +125,29 @@ else
                                     <font class="small">Diese Beschreibung erscheint unter dem Download</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="8" cols="53" name="text">'.$_POST[text].'</textarea>
+                                    '.create_editor("text", $_POST[text], 330, 130).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Autor:<br>
-                                    <font class="small">[Autor der Datei] [Homepage des Autors]</font>
+                                    <font class="small">[Autor der Datei]<br />
+                                    [Homepage des Autors]</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="20" name="autor" value="'.$_POST[autor].'" maxlength="100">
+                                    <br />
                                     <input class="text" size="30" value="'.$_POST[autorurl].'" name="autorurl" maxlength="255" id="test">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Screenshot:<br>
-                                    <font class="small">Dient als Vorschau für den Download.<br>
-                                    [max. '.$admin_dl_config_arr[screen_x].'x'.$admin_dl_config_arr[screen_y].'] [2MB] [jpg/gif/png] (optional)</font>
+                                    Screenshot: <font class="small">(optional)</font><br>
+                                    <font class="small">Dient als Vorschau für den Download.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="file" class="text" name="dlimg" size="35">
+                                    <input type="file" class="text" name="dlimg" size="35"><br />
+                                    <font class="small">[max. '.$admin_dl_config_arr[screen_x].'x'.$admin_dl_config_arr[screen_y].'] [2MB] [jpg/gif/png] (optional)</font>
                                 </td>
                             </tr>
     ';
@@ -161,13 +165,12 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     File '.$i.':<br>
-                                    <font class="small">[Titel]<br>[URL]<br>[Große in KB]<br>[Mirror?]</font>
+                                    <font class="small">[Titel]<br />[URL]<br />[Große in KB]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" value="'.$_POST[fname][$j].'" maxlength="100">
-                                    <input class="text" size="30" value="'.$_POST[furl][$j].'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad">
-                                    <input class="text" size="30" value="'.$_POST[fsize][$j].'" name="fsize['.$j.']" maxlength="8"><br />
+                                    <input class="text" size="20" name="fname['.$j.']" value="'.$_POST[fname][$j].'" maxlength="100"><br />
+                                    <input class="text" size="30" value="'.$_POST[furl][$j].'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
+                                    <input class="text" size="30" value="'.$_POST[fsize][$j].'" name="fsize['.$j.']" maxlength="8"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'">
                                 </td>
                             </tr>
@@ -179,13 +182,13 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     File '.$i.':<br>
-                                    <font class="small">[Titel]<br>[URL]<br>[Große in KB]<br>[Mirror?]</font>
+                                    <font class="small">[Titel]<br />[URL]<br />[Große in KB]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" maxlength="100">
+                                    <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />
                                     <input class="text" size="30" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad">
-                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8"><br />
+                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
+                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                 </td>
                             </tr>

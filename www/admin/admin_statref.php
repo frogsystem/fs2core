@@ -34,7 +34,8 @@ else
     }
 
     settype($_POST[limit], 'integer');
-    $_POST[filter] = savesql($_POST[filter]);
+    $filter = savesql($_POST[filter]);
+    $_POST[filter] = killhtml($_POST[filter]);
 
     switch ($_POST[order])
     {
@@ -50,12 +51,12 @@ else
     }
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="statref" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0">
+                        <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
-                                <td class="config">
+                                <td class="config" colspan="2">
                                     Zeige
                                     <input name="limit" size="4" class="text" value="'.$_POST[limit].'">
                                     Einträge sortiert nach 
@@ -64,15 +65,15 @@ else
                                         <option value="d" '.$dsel.'>Datum</option>
                                         <option value="c" '.$csel.'>Counter</option>
                                     </select>
-                                    ( Filter:
-                                    <input name="filter" size="10" class="text" value="'.$_POST[filter].'">
-                                    )
-                                    <input type="submit" value="Anzeigen" class="button">
+                                    &nbsp;Filter: <input name="filter" size="35" class="text" value="'.$_POST[filter].'">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <font style="font-size:7pt;">Setzte im Filter ein ! an erster Stelle um den Suchbegriff auszuschließen.</font>
+                                    <font style="font-size:7pt;">Setzte im Filter ein ! an erster Stelle um den Suchbegriff komplett auszuschließen.<br />Mehrere Suchbegriffe können mit , getrennt werden.</font>
+                                </td>
+                                <td align="right">
+                                    <input type="submit" value="Anzeigen" class="button">
                                 </td>
                             </tr>
                         </table>
@@ -99,42 +100,54 @@ else
     $filter = str_replace(" ","",$filter);
     $filterarray = explode(",", $filter);
 
+    $first_and = true;
+    $first_or = true;
     foreach ($filterarray as $string)
     {
         if (substr($string, 0, 1) == "!")
         {
-            $like = " ref_url NOT LIKE";
+            $like = "ref_url NOT LIKE";
             $string = substr($string, 1);
-            if ($i > 0)
+            if (!$first_and)
             {
-                $query .= " AND";
+                $and_query .= " AND ";
             }
+            $and_query .= $like . " '%" . $string . "%'";
+            $first_and = false;
         }
         else
         {
-            $like = " ref_url LIKE";
-            if ($i > 0)
+            $like = "ref_url LIKE";
+            if (!$first_or)
             {
-                $query .= " OR";
+                $or_query .= " OR ";
             }
+            $or_query .= $like . " '%" . $string . "%'";
+            $first_or = false;
         }
-        $query .= $like . " '%" . $string . "%'";
+        $i++;
     }
+    
+    if ($or_query!="") {
+        $or_query = "(".$or_query.")";
+        $and_query = " AND ".$and_query;
+    }
+    $query =  $or_query . $and_query;
 
     switch ($order)
     {
         case "u":
-            $query .=  " order by ref_url LIMIT " . $_POST[limit];
+            $query .=  " ORDER BY ref_url LIMIT " . $_POST[limit];
             break;
         case "c":
-            $query .=  " order by ref_count desc LIMIT " . $_POST[limit];
+            $query .=  " ORDER BY ref_count DESC LIMIT " . $_POST[limit];
             break;
         default:
-            $query .=  " order by ref_date desc LIMIT " . $_POST[limit];
+            $query .=  " ORDER BY ref_date DESC LIMIT " . $_POST[limit];
             break;
     }
 
-    $index = mysql_query("select * from fs_counter_ref where $query", $db);
+    $index = mysql_query("SELECT * FROM fs_counter_ref WHERE $query", $db);
     while ($referrer_arr = mysql_fetch_assoc($index))
     {
         $dburlfull = $referrer_arr[ref_url];
@@ -182,7 +195,7 @@ else
     echo'
                     </table>
                     <p>
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="statref" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">

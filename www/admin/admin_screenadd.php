@@ -1,4 +1,9 @@
 <?php
+/////////////////////
+//// Config laden ///
+/////////////////////
+$index = mysql_query("SELECT * FROM fs_screen_config");  // Screenshot Konfiguration auslesen
+$config_arr = mysql_fetch_assoc($index);
 
 /////////////////////////////
 //// Screenshot hochladen ///
@@ -6,12 +11,7 @@
 
 if (isset($_FILES['screenimg']))
 {
-    $index = mysql_query("SELECT * FROM fs_screen_config");  // Screenshot Konfiguration auslesen
-    $db_screenx = mysql_result($index, 0, "screen_x");
-    $db_screeny = mysql_result($index, 0, "screen_y");
-    $db_thumbx = mysql_result($index, 0, "thumb_x");
-    $db_thumby = mysql_result($index, 0, "thumb_y");
-    $max_size = mysql_result($index, 0, "max_size");
+
 
     settype($_POST[catid], 'integer');
     $_POST[title] = savesql($_POST[title]);
@@ -20,29 +20,18 @@ if (isset($_FILES['screenimg']))
                          '".$_POST[title]."');", $db);
     $id = mysql_insert_id();
     
-    $upload = upload_img($_FILES['screenimg'], "../images/screenshots/", $id, $max_size*1024, $db_screenx, $db_screeny, $db_thumbx, $db_thumby);
+    $upload = upload_img($_FILES['screenimg'], "../images/screenshots/", $id, $config_arr[max_size]*1024, $config_arr[screen_x], $config_arr[screen_y]);
     systext(upload_img_notice($upload));
     switch ($upload)
     {
       case 0:
         break;
-      case 1:
+      default:
         mysql_query("DELETE FROM fs_screen WHERE screen_id = '$id'");
         break;
-      case 2:
-        mysql_query("DELETE FROM fs_screen WHERE screen_id = '$id'");
-        break;
-      case 3:
-        mysql_query("DELETE FROM fs_screen WHERE screen_id = '$id'");
-        break;
-      case 4:
-        mysql_query("DELETE FROM fs_screen WHERE screen_id = '$id'");
-        break;
-      case 5:
-        mysql_query("DELETE FROM fs_screen WHERE screen_id = '$id'");
-        image_delete("../images/screenshots/", $id);
-        break;
-  }
+    }
+    $thumb = create_thumb_from(image_url("../images/screenshots/",$id,false), $config_arr[thumb_x], $config_arr[thumb_y]);
+    systext(create_thumb_notice($thumb));
 }
 
 /////////////////////////////
@@ -50,7 +39,7 @@ if (isset($_FILES['screenimg']))
 /////////////////////////////
 
 echo'
-                    <form action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="screenadd" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
@@ -60,13 +49,14 @@ echo'
                                     <font class="small">Bild auswählen, dass hochgeladen werden soll</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="file" class="text" name="screenimg" size="33">
+                                    <input type="file" class="text" name="screenimg" size="33"><br />
+                                    <font class="small">[max. '.$config_arr[screen_x].' x '.$config_arr[screen_y].' Pixel] [max. '.$config_arr[max_size].' KB]</font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Bildtitel:<br>
-                                    <font class="small">Bilduntertitel (optional)</font>
+                                    Bildtitel: <font class="small">(optional)</font><br>
+                                    <font class="small">Bilduntertitel</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="title" size="33" maxlength="100">

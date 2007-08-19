@@ -73,7 +73,7 @@ if (isset($_POST[commentid]))
     $config_arr[fs_code] = ($config_arr[fs_code] == 3) ? "an" : "aus";
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="commentedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$_POST[commentid].'" name="ecommentid">
@@ -124,7 +124,7 @@ if (isset($_POST[commentid]))
                                     <font class="small">Html ist '.$config_arr[html_code].'. FScode ist '.$config_arr[fs_code].'</font>
                                 </td>
                                 <td valign="top">
-                                    <textarea rows="8" cols="66" name="text">'.$comment_arr[comment_text].'</textarea>
+                                    '.create_editor("text", $comment_arr[comment_text], 330, 130).'
                                 </td>
                             </tr>
                             <tr>

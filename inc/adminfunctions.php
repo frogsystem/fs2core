@@ -3,7 +3,7 @@
 //// Create textarea        ////
 ////////////////////////////////
 
-function create_editor($name, $text="", $width="", $height="", $class="")
+function create_editor($name, $text="", $width="", $height="", $class="", $do_smilies=true)
 {
     global $global_config_arr;
     global $db;
@@ -28,7 +28,9 @@ function create_editor($name, $text="", $width="", $height="", $class="")
 
     $style = $name2.' '.$class2.' style="'.$width2.' '.$height2.'"';
 
-
+  $smilies = "";
+  if ($do_smilies == true)
+  {
     $smilies = '
       <fieldset style="width:46px;">
         <legend class="small" align="left"><font class="small">Smilies</font></legend>
@@ -61,7 +63,8 @@ function create_editor($name, $text="", $width="", $height="", $class="")
     unset($config_arr);
 
     $smilies .= '</table></fieldset>';
-
+  }
+  
     $buttons = "";
     $buttons .= create_editor_button('images/icons/bold.gif', "B", "fett", "insert('$name', '[b]', '[/b]')");
     $buttons .= create_editor_button('images/icons/italic.gif', "I", "kursiv", "insert('$name', '[i]', '[/i]')");
@@ -595,9 +598,6 @@ function upload_img_notice($upload)
       return "Das Bild ist zu groß! (Abmessungen)";
       break;
     case 5:
-      return "Es konnte kein Thumbnail erstellt werden!";
-      break;
-    case 6:
       return "Das Bild ist entspricht nicht den erforderlichen Abmessungen!";
       break;
   }
@@ -607,7 +607,7 @@ function upload_img_notice($upload)
 ///// Pic Upload + Thumbnail ///
 ////////////////////////////////
 
-function upload_img($image, $image_path, $image_name, $image_max_size, $image_max_width, $image_max_height, $thumb_max_width, $thumb_max_height, $create_thumb=true, $quality=100, $only_this_size = false)
+function upload_img($image, $image_path, $image_name, $image_max_size, $image_max_width, $image_max_height, $quality=100, $only_this_size = false)
 {
 
   //Dateityp ermitteln
@@ -650,7 +650,7 @@ function upload_img($image, $image_path, $image_name, $image_max_size, $image_ma
   }
   if ( $only_this_size == true AND ( (imagesx($source_image) != $image_max_width) OR (imagesy($source_image) != $image_max_height) ) )
   {
-    return 6;  // Fehler 6: Das Bild ist entspricht nicht den erforderlichen Abmessungen!
+    return 5;  // Fehler 6: Das Bild ist entspricht nicht den erforderlichen Abmessungen!
     break;
   }
 
@@ -659,90 +659,7 @@ function upload_img($image, $image_path, $image_name, $image_max_size, $image_ma
   $full_path = $image_path . $image_name . "." . $type;
   move_uploaded_file($image['tmp_name'], $full_path);
   chmod ($full_path, 0644);
-  clearstatcache();
 
-  //Thumbnail erstellen
-
-  if ($create_thumb == true)
-  {
-
-    //Abmessungen des Thumbnails ermitteln
-
-    $imgratio = imagesx($source_image) / imagesy($source_image);
-
-    if ($imgratio > 1)  //Querformat
-    {
-      if ($thumb_max_width/$imgratio <= $thumb_max_height)
-      {
-        $newwidth = $thumb_max_width;
-        $newheight = $thumb_max_width/$imgratio;
-      }
-      else
-      {
-        $newheight = $thumb_max_height;
-        $newwidth = $thumb_max_height*$imgratio;
-      }
-    }
-
-    else  //Hochformat
-    {
-      if ($thumb_max_height*$imgratio <= $thumb_max_width)
-      {
-        $newheight = $thumb_max_height;
-        $newwidth = $thumb_max_height*$imgratio;
-      }
-      else
-      {
-        $newwidth = $thumb_max_width;
-        $newheight = $thumb_max_width/$imgratio;
-      }
-    }
-    
-    if (imagesx($source_image) <= $thumb_max_width AND imagesy($source_image) <= $thumb_max_height)
-    {
-        $newwidth = imagesx($source_image);
-        $newheight = imagesy($source_image);
-    }
-
-    //Thumbnail je nach Dateityp erstellen
-
-    if ($type=="jpg")
-    {
-      $thumb = ImageCreateTrueColor($newwidth,$newheight);
-      $source = imagecreatefromjpeg($full_path);
-      imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, imagesx($source), imagesy($source));
-      $thumb_path = "$image_path"."$image_name"."_s.$type";
-      imagejpeg($thumb, $thumb_path, $quality);
-      chmod ($thumb_path, 0644);
-      clearstatcache();
-    }
-    elseif ($type=="gif")
-    {
-      $thumb = ImageCreateTrueColor($newwidth,$newheight);
-      $source = imagecreatefromgif($full_path);
-      imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, imagesx($source), imagesy($source));
-      $thumb_path = "$image_path"."$image_name"."_s.$type";
-      imagegif($thumb, $thumb_path, $quality);
-      chmod ($thumb_path, 0644);
-      clearstatcache();
-    }
-    elseif ($type=="png")
-    {
-      $thumb = ImageCreateTrueColor($newwidth,$newheight);
-      $source = imagecreatefrompng($full_path);
-      imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, imagesx($source), imagesy($source));
-      $thumb_path = "$image_path"."$image_name"."_s.$type";
-      imagepng($thumb, $thumb_path, $quality);
-      chmod ($thumb_path, 0644);
-      clearstatcache();
-    }
-    else
-    {
-      return 5;  // Fehler 5: Es konnte kein Thumbnail erstellt werden!
-      break;
-    }
-
-  }
   return 0; // Ausgabe 0: Das Bild wurde erfolgreich hochgeladen!
   clearstatcache();
 }

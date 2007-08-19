@@ -14,8 +14,8 @@ if ($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h])
     mysql_query("UPDATE fs_counter_stat
                  SET s_visits = $_POST[v],
                      s_hits   = $_POST[h]
-                 WHERE s_day   = $_POST[d] and
-                       s_month = $_POST[m] and
+                 WHERE s_day   = $_POST[d] AND
+                       s_month = $_POST[m] AND
                        s_year  = $_POST[y]", $db);
     systext("Der Counter wurde aktualisiert");
 }
@@ -43,7 +43,7 @@ elseif ($_POST[ed] && $_POST[em] && $_POST[ey])
     {
         $counter_arr = mysql_fetch_assoc($index);
         echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="statedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$_POST[ed].'" name="d">
@@ -52,20 +52,20 @@ elseif ($_POST[ed] && $_POST[em] && $_POST[ey])
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="60%">
-                                    Besucher gesamt:<br>
+                                    Besucher:<br>
                                     <font class="small">Anzahl der Besucher am '.$_POST[ed].'.'.$_POST[em].'.'.$_POST[ey].'</font>
                                 </td>
                                 <td class="config" width="40%">
-                                    <input class="text" size="16" name="ev" maxlength="16" value="'.$counter_arr[s_visits].'">
+                                    <input class="text" size="16" name="v" maxlength="16" value="'.$counter_arr[s_visits].'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" width="60%">
-                                    Hits gesamt:<br>
+                                    Hits:<br>
                                     <font class="small">Anzahl der Seitenaufrufe am '.$_POST[ed].'.'.$_POST[em].'.'.$_POST[ey].'</font>
                                 </td>
                                 <td class="config" width="40%">
-                                    <input class="text" size="16" name="eh" maxlength="16" value="'.$counter_arr[s_hits].'">
+                                    <input class="text" size="16" name="h" maxlength="16" value="'.$counter_arr[s_hits].'">
                                 </td>
                             </tr>
                             <tr>
@@ -112,10 +112,15 @@ elseif ($_POST[editvisits] != "" &&
 
 else
 {
+    //Zeit-Array für Heute Button
+    $heute[d] = date("d");
+    $heute[m] = date("m");
+    $heute[y] = date("Y");
+
     $index = mysql_query("SELECT * FROM fs_counter", $db);
     $counter_arr = mysql_fetch_assoc($index);
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="statedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
@@ -181,19 +186,24 @@ else
                         </table>
                     </form>
                     <p>
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="statedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="60%">
                                     Tag editieren:<br>
-                                    <font class="small">Gib das Datum ein, das du editieren möchtest [T][M][JJJJ]</font>
+                                    <font class="small">Gib das Datum ein, das du editieren möchtest.<br />
+                                    [TT].[MM].[JJJJ]</font>
                                 </td>
                                 <td class="config" width="40%">
-                                    <input class="text" size="2" name="ed" maxlength="2">
-                                    <input class="text" size="2" name="em" maxlength="2">
-                                    <input class="text" size="4" name="ey" maxlength="4">
+                                    <input class="text" size="1" name="ed" id="ed" maxlength="2"> .
+                                    <input class="text" size="1" name="em" id="em"  maxlength="2"> .
+                                    <input class="text" size="3" name="ey" id="ey"  maxlength="4">&nbsp;&nbsp;
+                                    <input class="button" type="button" value="Heute"
+                                           onClick=\'document.getElementById("ed").value="'.$heute[d].'";
+                                                     document.getElementById("em").value="'.$heute[m].'";
+                                                     document.getElementById("ey").value="'.$heute[y].'";\'>
                                 </td>
                             </tr>
                             <tr>

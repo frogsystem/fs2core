@@ -22,8 +22,12 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
   
   if (!image_exists("../images/content/",$_POST[newname])  AND !image_exists("../images/content/",$_POST[newname]."_s"))
   {
-    $upload = upload_img($_FILES['cimg'], "../images/content/", $_POST['newname'], 1024*1024, 9999, 9999, $_POST['width'], $_POST['height'], $make_thumb);
+    $upload = upload_img($_FILES['cimg'], "../images/content/", $_POST['newname'], 1024*1024, 9999, 9999);
     systext(upload_img_notice($upload));
+    if ($make_thumb) {
+      $thumb = create_thumb_from(image_url("../images/content/",$_POST['newname'],false), $_POST['width'], $_POST['height']);
+      systext(create_thumb_notice($thumb));
+    }
     unset($_POST['width']);
     unset($_POST['height']);
     unset($_POST['oldname']);
@@ -58,7 +62,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
     systext($error_message);
     
 echo'
-                    <form action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="cimgadd" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" name="sended" value="">

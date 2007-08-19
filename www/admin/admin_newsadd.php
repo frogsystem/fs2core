@@ -98,7 +98,7 @@ else
     }
 
     echo'
-                    <form id="form" action="'.$PHP_SELF.'" method="post">
+                    <form id="form" action="" method="post">
                         <input type="hidden" value="newsadd" name="go">
                         <input id="send" type="hidden" value="0" name="newsadd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
@@ -187,7 +187,7 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Link '.$i.':<br>
-                                    <font class="small">Wird unter der News eingetragen<br>[Titel] [URL] [Neues Fenster]</font>
+                                    <font class="small">Wird unter der News eingetragen<br>[Titel]<br />[URL] [Neues Fenster]</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="23" name="linkname['.$j.']" value="'.stripslashes(killhtml($_POST[linkname][$j])).'" maxlength="100"><br />
@@ -203,7 +203,7 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Link '.$i.':<br>
-                                    <font class="small">Wird unter der News eingetragen<br>[Titel] [URL] [Neues Fenster]</font>
+                                    <font class="small">Wird unter der News eingetragen<br>[Titel]<br />[URL] [Neues Fenster]</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="23" name="linkname['.$j.']" maxlength="100"><br />

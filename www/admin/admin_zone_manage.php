@@ -66,7 +66,7 @@ elseif ($_POST['design_id'] AND $_POST['template_action'])
     }
 
     systext($error_message);
-    echo'<form action="'.$PHP_SELF.'" method="post">
+    echo'<form action="" method="post">
            <input type="hidden" value="template_manage" name="go">
            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
            <input type="hidden" name="sended" value="edit" />
@@ -99,7 +99,7 @@ elseif ($_POST['design_id'] AND $_POST['template_action'])
 
     $admin_design_arr['name'] = killhtml($admin_design_arr['name']);
 
-    echo'<form action="'.$PHP_SELF.'" method="post">
+    echo'<form action="" method="post">
            <input type="hidden" value="template_manage" name="go">
            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
            <input type="hidden" name="sended" value="delete" />

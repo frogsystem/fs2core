@@ -1,4 +1,9 @@
 <?php
+//////////////////////
+//// Config laden ////
+//////////////////////
+$index = mysql_query("select * from fs_news_config", $db);
+$admin_news_config_arr = mysql_fetch_assoc($index);
 
 //////////////////////////////////
 //// Neue Kategorie eintragen ////
@@ -12,17 +17,13 @@ if ($_POST['name'])
   mysql_query("INSERT INTO fs_news_cat
                (cat_name, cat_description)
                VALUES ('$_POST[name]', '$_POST[description]')", $db);
-
-  systext("Kategorie wurde hinzugefügt");
-
-  $index = mysql_query("select * from fs_news_config", $db);
-  $admin_news_config_arr = mysql_fetch_assoc($index);
-
   $id = mysql_insert_id();
-
+  
+  systext("Kategorie wurde hinzugefügt");
+  
   if ($_FILES['cat_pic']['name'] != "")
   {
-    $upload = upload_img($_FILES['cat_pic'], "../images/news_cat/", $id, 1024*1024, $admin_news_config_arr[cat_pic_x], $admin_news_config_arr[cat_pic_y], 0, 0, false);
+    $upload = upload_img($_FILES['cat_pic'], "../images/news_cat/", $id, 1024*1024, $admin_news_config_arr[cat_pic_x], $admin_news_config_arr[cat_pic_y]);
     systext(upload_img_notice($upload));
   }
   else
@@ -42,7 +43,7 @@ else
   }
   
   systext($error_message);
-  echo'<form action="'.$PHP_SELF.'" method="post" enctype="multipart/form-data">
+  echo'<form action="" method="post" enctype="multipart/form-data">
          <input type="hidden" value="news_cat_create" name="go">
          <input type="hidden" name="sended" value="">
          <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -62,7 +63,10 @@ else
                <font class="small">Kategorie-Bild</font>
              </td>
              <td class="config" valign="top" width="50%">
-               <input class="text" size="40" name="cat_pic" type="file" />
+               <input class="text" size="40" name="cat_pic" type="file" /><br />
+               <font class="small">
+                 [max. '.$admin_news_config_arr[cat_pic_x].' x '.$admin_news_config_arr[cat_pic_y].' Pixel] [max. 1 MB]
+               </font>
              </td>
            </tr>
            <tr align="left" valign="top">

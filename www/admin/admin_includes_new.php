@@ -102,7 +102,7 @@ if (isset($_POST['include_type']) AND $_POST['include_type']==1) {
          </script>
 
 
-  <form action="'.$PHP_SELF.'" method="post">
+  <form action="" method="post">
          <input type="hidden" value="includes_new" name="go">
          <input type="hidden" name="sended" value="">
          <input type="hidden" name="include_type" value="1">
@@ -113,7 +113,7 @@ if (isset($_POST['include_type']) AND $_POST['include_type']==1) {
           onkeydown="actSV()" onkeypress="actSV()" onkeyup="actSV()" />
          <br><br>
          <font class="small">Suchmuster:</font><br>
-         <input class="text" size="23" name="replace_string" id="sv_syntax" maxlength="255"  value="[%'.$start_sv_name.'%]" disabled="disabled" />
+         <input class="text" size="23" name="replace_string" id="sv_syntax" maxlength="255"  value="[%'.$start_sv_name.'%]" readonly="readonly" />
          <br><br>
          <font class="small">Ersetzung:</font><br>
          <textarea name="replace_thing" rows="5" cols="20" wrap="virtual">'.$start_sv_replace.'</textarea>
@@ -124,7 +124,7 @@ if (isset($_POST['include_type']) AND $_POST['include_type']==1) {
   </td>
   <td>
 
-  <form action="'.$PHP_SELF.'" method="post">
+  <form action="" method="post">
          <input type="hidden" value="includes_new" name="go">
          <input type="hidden" name="sended" value="">
          <input type="hidden" name="include_type" value="2">
@@ -135,7 +135,7 @@ if (isset($_POST['include_type']) AND $_POST['include_type']==1) {
           onkeydown="actIN()" onkeypress="actIN()" onkeyup="actIN()" />
          <br><br>
          <font class="small">Suchmuster:</font><br>
-         <input class="text" size="23" name="replace_string" id="in_syntax" maxlength="255" value="[%'.$start_in_name.'%]" disabled="disabled" />
+         <input class="text" size="23" name="replace_string" id="in_syntax" maxlength="255" value="[%'.$start_in_name.'%]" readonly="readonly" />
          <br><br>
          <font class="small">Dateiname:</font><br>
          <input class="text" size="23" name="replace_thing" maxlength="255" value="'.$start_in_replace.'" />

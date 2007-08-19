@@ -178,7 +178,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
     }
 
     echo'
-                    <form id="form" action="'.$_SERVER[PHP_SELF].'" method="post">
+                    <form id="form" action="" method="post">
                         <input type="hidden" value="newsedit" name="go">
                         <input id="send" type="hidden" value="0" name="newsedit">
                         <input type="hidden" value="'.$_POST[newsid].'" name="tempid">
@@ -261,7 +261,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
                                     <font class="small">Html ist '.$config_arr[html_code].'. FScode ist '.$config_arr[fs_code].'</font>
                                 </td>
                                 <td valign="top">
-                                    <textarea rows="8" cols="66" name="text">'.$_POST[text].'</textarea>
+                                    '.create_editor("text", $_POST[text], 330, 130).'
                                 </td>
                             </tr>
     ';
@@ -278,13 +278,13 @@ elseif ($_POST[newsid] OR $_POST[tempid])
                                 <td class="config" valign="top">
                                     Link '.$j.':<br>
                                     <font class="small">Wird unter der News eingetragen<br>
-                                    [Titel] [URL] [Neues Fenster] [löschen]</font>
+                                    [Titel]<br />[URL] [Neues Fenster]<br />[löschen]</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="22" name="linkname['.$i.']" value="'.stripslashes(killhtml($_POST[linkname][$i])).'" maxlength="100"><br />
                                     <input class="text" size="32" value="'.stripslashes(killhtml($_POST[linkurl][$i])).'" name="linkurl['.$i.']" maxlength="255">
                                     <input type="checkbox" name="linktarget['.$i.']" value="1" '.$lcheck.'><br />
-                                    Löschen? <input name="dellink['.$i.']" value="'.$_POST[linkid][$i].'" type="checkbox">
+                                    Löschen? <input onClick=\'delalert ("'.$i.'", "Soll der Link '.$j.' der News wirklich gelöscht werden?")\' name="dellink['.$i.']" id="'.$i.'" value="'.$_POST[linkid][$i].'" type="checkbox">
                                     <input type="hidden" name="linkid['.$i.']" value="'.$_POST[linkid][$i].'">
                                 </td>
                             </tr>
@@ -297,7 +297,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
                                 <td class="config" valign="top">
                                     Link '.$j.':<br>
                                     <font class="small">Wird unter der News eingetragen<br>
-                                    [Titel] [URL] [Neues Fenster]</font>
+                                    [Titel]<br />[URL] [Neues Fenster]</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="22" name="linkname['.$i.']" maxlength="100"><br />
@@ -335,7 +335,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
     echo'
                     <br />
                     <hr />
-                    <form action="'.$_SERVER[PHP_SELF].'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="commentedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -450,7 +450,7 @@ else
     $bereich = '<font class="small">'.$anfang.' ... '.$ende.'</font>';
 
     echo'
-                    <form action="'.$_SERVER[PHP_SELF].'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="newsedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">

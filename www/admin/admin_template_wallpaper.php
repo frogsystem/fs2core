@@ -15,12 +15,12 @@
         $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
         $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
         $tmp[help][...][text] = "text"; //to add more possible tags
-    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
     
-    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
+    $TEMPLATE_EDIT[] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
+    //continue with new templates
     ...
 */
 ##########################################

@@ -19,35 +19,10 @@ if ($_FILES[artikelimg] && $_POST[title] && $_POST[url] && $_POST[preis])
                          '".$_POST[hot]."');", $db);
     $id = mysql_insert_id();
 
-    $valid_pic = upload_img($_FILES['artikelimg'], "../images/shop/", $id, 2*1024*1024, 800, 600, 71, 100);
-    switch ($upload)
-    {
-      case 0:
-        systext("Artikel wurde eingestellt");
-        break;
-      case 1:
-        mysql_query("DELETE FROM fs_shop WHERE artikel_id = '$id'", $db);
-        systext("Artikel konnte nicht eingefügt werden.");
-        break;
-      case 2:
-        mysql_query("DELETE FROM fs_shop WHERE artikel_id = '$id'", $db);
-        systext("Artikel konnte nicht eingefügt werden.");
-        break;
-      case 3:
-        mysql_query("DELETE FROM fs_shop WHERE artikel_id = '$id'", $db);
-        systext("Artikel konnte nicht eingefügt werden.");
-        break;
-      case 4:
-        mysql_query("DELETE FROM fs_shop WHERE artikel_id = '$id'", $db);
-        systext("Artikel konnte nicht eingefügt werden.");
-        break;
-      case 5:
-        mysql_query("DELETE FROM fs_shop WHERE artikel_id = '$id'", $db);
-        systext("Artikel konnte nicht eingefügt werden.");
-        image_delete("../images/shop/", $id);
-        break;
-    }
+    $upload = upload_img($_FILES['artikelimg'], "../images/shop/", $id, 2*1024*1024, 400, 600);
     systext(upload_img_notice($upload));
+    $thumb = create_thumb_from(image_url("../images/shop/",$id,false), 100, 100);
+    systext(create_thumb_notice($thumb));
 }
 
 ////////////////////////////
@@ -57,23 +32,25 @@ if ($_FILES[artikelimg] && $_POST[title] && $_POST[url] && $_POST[preis])
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shopadd" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
-                                    <font class="small">Bild auswählen, dass hochgeladen werden soll <br>(max 400x500)</font>
+                                    <font class="small">Bild auswählen, dass hochgeladen werden soll.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="file" class="text" name="artikelimg" size="33">
+                                    <input type="file" class="text" name="artikelimg" size="33"><br />
+                                    <font class="small">[max. 400 x 600 Pixel] [max. 2 MB]</font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Artikelname:<br>
-                                    <font class="small">Name des Artikel. Kommt auch in den Hotlink</font>
+                                    <font class="small">Name des Artikel.<br />
+                                    Kommt auch in den Hotlink</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="title" size="51" maxlength="100">
@@ -82,7 +59,7 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     URL:<br>
-                                    <font class="small">Link zum Onlineshop</font>
+                                    <font class="small">Link zum Produkt</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="url" size="51" maxlength="255">
@@ -94,7 +71,7 @@ else
                                     <font class="small">Kurze Artikelbeschreibung (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea class="text" name="text" rows="5" cols="51"></textarea>
+                                    '.create_editor("text", "", 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -103,7 +80,7 @@ else
                                     <font class="small">Preis in &euro; (bsp 7,99)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="preis" size="10" maxlength="7">
+                                    <input class="text" name="preis" size="10" maxlength="7"> &euro;
                                 </td>
                             </tr>
                             <tr>

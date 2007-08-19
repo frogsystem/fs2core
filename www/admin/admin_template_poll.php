@@ -15,12 +15,12 @@
         $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
         $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
         $tmp[help][...][text] = "text"; //to add more possible tags
-    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
     
-    $TEMPLATE_EDIT[1] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
+    $TEMPLATE_EDIT[] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    //continue with new templates and just change the numbers of $TEMPLATE_EDIT at the end
+    //continue with new templates
     ...
 */
 ##########################################
@@ -43,7 +43,7 @@
         $tmp[help][2][text] = $admin_phrases[template][poll_line][help_3];
         $tmp[help][3][tag] = "{multiple}";
         $tmp[help][3][text] = $admin_phrases[template][poll_line][help_4];
-    $TEMPLATE_EDIT[0] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "poll_body";
@@ -59,7 +59,7 @@
         $tmp[help][2][text] = $admin_phrases[template][poll_body][help_3];
         $tmp[help][2][tag] = "{type}";
         $tmp[help][2][text] = $admin_phrases[template][poll_body][help_4];
-    $TEMPLATE_EDIT[1] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
     $tmp[name] = "poll_no_poll";
@@ -67,10 +67,10 @@
     $tmp[description] = $admin_phrases[template][poll_no_poll][description];
     $tmp[rows] = "5";
     $tmp[cols] = "66";
-    $TEMPLATE_EDIT[2] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
-    $TEMPLATE_EDIT[3] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "poll_result_line";
     $tmp[title] = $admin_phrases[template][poll_result_line][title];
@@ -85,7 +85,7 @@
         $tmp[help][2][text] = $admin_phrases[template][poll_result_line][help_3];
         $tmp[help][3][tag] = "{bar_width}";
         $tmp[help][3][text] = $admin_phrases[template][poll_result_line][help_4];
-    $TEMPLATE_EDIT[4] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "poll_result";
@@ -103,10 +103,10 @@
         $tmp[help][3][text] = $admin_phrases[template][poll_result][help_4];
         $tmp[help][4][tag] = "{type}";
         $tmp[help][4][text] = $admin_phrases[template][poll_result][help_5];
-    $TEMPLATE_EDIT[5] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[6] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "poll_list_line";
     $tmp[title] = $admin_phrases[template][poll_list_line][title];
@@ -127,7 +127,7 @@
         $tmp[help][5][text] = $admin_phrases[template][poll_list_line][help_6];
         $tmp[help][6][tag] = "{end_date}";
         $tmp[help][6][text] = $admin_phrases[template][poll_list_line][help_7];
-    $TEMPLATE_EDIT[7] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "poll_list";
@@ -161,10 +161,10 @@
         $tmp[help][11][text] = $admin_phrases[template][poll_list][help_12];
         $tmp[help][12][tag] = "{arrow_enddate}";
         $tmp[help][12][text] = $admin_phrases[template][poll_list][help_13];
-    $TEMPLATE_EDIT[8] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[9] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "poll_main_line";
     $tmp[title] = $admin_phrases[template][poll_main_line][title];
@@ -179,7 +179,7 @@
         $tmp[help][2][text] = $admin_phrases[template][poll_main_line][help_3];
         $tmp[help][3][tag] = "{bar_width}";
         $tmp[help][3][text] = $admin_phrases[template][poll_main_line][help_4];
-    $TEMPLATE_EDIT[10] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "poll_main_body";
@@ -201,7 +201,7 @@
         $tmp[help][5][text] = $admin_phrases[template][poll_main_body][help_6];
         $tmp[help][6][tag] = "{end_date}";
         $tmp[help][6][text] = $admin_phrases[template][poll_main_body][help_7];
-    $TEMPLATE_EDIT[11] = $tmp;
+    $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
 //////////////////////////

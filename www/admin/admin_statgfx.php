@@ -1,6 +1,7 @@
-<?PHP
+<?php
 
 include("config.inc.php");
+
 if (!isset($_GET[s_year]))
 {
     $_GET[s_year] = date("Y");

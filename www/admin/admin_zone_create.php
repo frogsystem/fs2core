@@ -69,7 +69,7 @@ if (in_array($_POST['name'], $forbidden_names_array))
 
 
   systext($error_message);
-  echo'<form action="'.$PHP_SELF.'" method="post">
+  echo'<form action="" method="post">
          <input type="hidden" value="zone_create" name="go">
          <input type="hidden" name="sended" value="">
          <input type="hidden" value="'.session_id().'" name="PHPSESSID">

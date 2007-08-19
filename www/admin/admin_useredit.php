@@ -4,7 +4,7 @@
 //// User aktualisieren ////
 ////////////////////////////
 
-if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND $_POST[jahr])
+if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND $_POST[jahr] AND $_POST[userid] != 1 AND $_POST[userid] != $_SESSION[user_id])
 {
     $_POST[username] = savesql($_POST[username]);
     $_POST[usermail] = savesql($_POST[usermail]);
@@ -63,7 +63,7 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
 
             systext('User wurde geändert');
         } 
-        else  // User löschen
+        elseif($_POST[userid] != 1 AND $_POST[userid] != $_SESSION[user_id])  // User löschen
         {
             $dbaction = "delete from fs_permissions where user_id = ".$_POST[userid];
             @mysql_query($dbaction, $db);
@@ -95,7 +95,7 @@ elseif (isset($_POST[select_user]))
     $user_arr[show_mail] = ($user_arr[show_mail] == 1) ? "checked" : "";
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="useredit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$user_arr[user_password].'" name="oldpass">
@@ -183,7 +183,7 @@ elseif (isset($_POST[select_user]))
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="useredit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -208,7 +208,7 @@ else
     if (isset($_POST[filter]))
     {
         echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="useredit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">

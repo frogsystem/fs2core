@@ -29,13 +29,15 @@ if ($_POST[polledit] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
         $edate = mktime($_POST[estunde], $_POST[emin], 0, $_POST[emonat], $_POST[etag], $_POST[ejahr]);
   
         $_POST[type] = isset($_POST[type]) ? 1 : 0;
+        settype($_POST[participants], 'integer');
 
         // Umfrage in der DB aktualisieren
         $update = "UPDATE fs_poll
                    SET poll_quest = '$_POST[frage]',
                        poll_start = '$adate',
                        poll_end   = '$edate',
-                       poll_type  = '$_POST[type]'
+                       poll_type  = '$_POST[type]',
+                       poll_participants  = '$_POST[participants]'
                    WHERE poll_id = $_POST[editpollid]";
         mysql_query($update, $db);
 
@@ -154,6 +156,11 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
         $_POST[type] = "checked";
     }
 
+    if (!isset($_POST[participants]))
+    {
+        $_POST[participants] = mysql_result($index, 0, "poll_participants");
+    }
+
     $index = mysql_query("SELECT * FROM fs_poll_answers WHERE poll_id = '$_POST[pollid]' ORDER BY answer_id", $db);
     $rows = mysql_num_rows($index);
     for($i=0; $i<$rows; $i++)
@@ -179,7 +186,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
     $_POST[options] += $_POST[optionsadd];
 
     echo'
-                    <form id="form" action="'.$PHP_SELF.'" method="post">
+                    <form id="form" action="" method="post">
                         <input type="hidden" value="polledit" name="go">
                         <input id="send" type="hidden" value="0" name="polledit">
                         <input type="hidden" value="'.$_POST[pollid].'" name="tempid">
@@ -202,12 +209,12 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                     <font class="small">Die Umfrage startet am</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input id="startday" class="text" size="2" value="'.$_POST[atag].'" name="atag" maxlength="2">
-                                    <input id="startmonth" class="text" size="2" value="'.$_POST[amonat].'" name="amonat" maxlength="2">
-                                    <input id="startyear" class="text" size="4" value="'.$_POST[ajahr].'" name="ajahr" maxlength="4">
+                                    <input id="startday" class="text" size="1" value="'.$_POST[atag].'" name="atag" maxlength="2"> .
+                                    <input id="startmonth" class="text" size="1" value="'.$_POST[amonat].'" name="amonat" maxlength="2"> .
+                                    <input id="startyear" class="text" size="3" value="'.$_POST[ajahr].'" name="ajahr" maxlength="4">
                                     <font class="small"> um </font>
-                                    <input id="starthour" class="text" size="2" value="'.$_POST[astunde].'" name="astunde" maxlength="2">
-                                    <input id="startminute" class="text" size="2" value="'.$_POST[amin].'" name="amin" maxlength="2">
+                                    <input id="starthour" class="text" size="1" value="'.$_POST[astunde].'" name="astunde" maxlength="2"> :
+                                    <input id="startminute" class="text" size="1" value="'.$_POST[amin].'" name="amin" maxlength="2"> Uhr
                                     <input onClick=\'document.getElementById("startday").value="'.$jetzt[tag].'";
                                                      document.getElementById("startmonth").value="'.$jetzt[monat].'";
                                                      document.getElementById("startyear").value="'.$jetzt[jahr].'";
@@ -247,12 +254,12 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                     <font class="small">Die Umfrage endet am</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input id="endday"  class="text" size="2" value="'.$_POST[etag].'" name="etag" maxlength="2">
-                                    <input id="endmonth" class="text" size="2" value="'.$_POST[emonat].'" name="emonat" maxlength="2">
-                                    <input id="endyear" class="text" size="4" value="'.$_POST[ejahr].'" name="ejahr" maxlength="4">
+                                    <input id="endday"  class="text" size="1" value="'.$_POST[etag].'" name="etag" maxlength="2"> .
+                                    <input id="endmonth" class="text" size="1" value="'.$_POST[emonat].'" name="emonat" maxlength="2"> .
+                                    <input id="endyear" class="text" size="3" value="'.$_POST[ejahr].'" name="ejahr" maxlength="4">
                                     <font class="small"> um </font>
-                                    <input id="endhour" class="text" size="2" value="'.$_POST[estunde].'" name="estunde" maxlength="2">
-                                    <input id="endminute" class="text" size="2" value="'.$_POST[emin].'" name="emin" maxlength="2">
+                                    <input id="endhour" class="text" size="1" value="'.$_POST[estunde].'" name="estunde" maxlength="2"> :
+                                    <input id="endminute" class="text" size="1" value="'.$_POST[emin].'" name="emin" maxlength="2"> Uhr
                                     <input onClick=\'document.getElementById("endday").value="'.$jetzt[tag].'";
                                                      document.getElementById("endmonth").value="'.$jetzt[monat].'";
                                                      document.getElementById("endyear").value="'.$jetzt[jahr].'";
@@ -303,7 +310,8 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                 <td class="config" valign="top">
                                     <input class="text" size="48" name="ant['.$i.']" value="'.$_POST[ant][$i].'" maxlength="100"> 
                                     <input class="text" size="5" name="count['.$i.']" value="'.$_POST[count][$i].'" maxlength="5">
-                                    <input name="dela['.$i.']" value="'.$_POST[id][$i].'" type="checkbox">
+                                    <input name="dela['.$i.']" id="'.$i.'" value="'.$_POST[id][$i].'" type="checkbox"
+                                    onClick=\'delalert ("'.$i.'", "Soll die Antwortmöglichkeit '.$j.' wirklich gelöscht werden?")\'>
                                     <input type="hidden" name="id['.$i.']" value="'.$_POST[id][$i].'">
                                 </td>
                             </tr>
@@ -346,11 +354,20 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                 </td>
                             </tr>
                             <tr>
+                                <td class="config" valign="top">
+                                    Teilnehmer:<br>
+                                    <font class="small">Wieviele User haben teilgenommen?</font>
+                                </td>
+                                <td class="config" valign="top">
+                                    <input class="text" size="5" name="participants" maxlength="5" value="'.$_POST[participants].'">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="config">
                                     Umfrage löschen:
                                 </td>
                                 <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="delpoll" value="Sicher?">
+                                    <input onClick=\'delalert ("delpoll", "Soll die Umfrage wirklich gelöscht werden?")\' type="checkbox" name="delpoll" id="delpoll" value="1">
                                 </td>
                             </tr>
                             <tr>
@@ -370,7 +387,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="polledit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">

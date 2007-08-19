@@ -66,7 +66,7 @@ elseif ($_POST['design_id'] AND $_POST['template_action'])
     }
 
     systext($error_message);
-    echo'<form action="'.$PHP_SELF.'" method="post">
+    echo'<form action="" method="post">
            <input type="hidden" value="template_manage" name="go">
            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
            <input type="hidden" name="sended" value="edit" />
@@ -99,7 +99,7 @@ elseif ($_POST['design_id'] AND $_POST['template_action'])
 
     $admin_design_arr['name'] = killhtml($admin_design_arr['name']);
 
-    echo'<form action="'.$PHP_SELF.'" method="post">
+    echo'<form action="" method="post">
            <input type="hidden" value="template_manage" name="go">
            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
            <input type="hidden" name="sended" value="delete" />
@@ -117,7 +117,7 @@ elseif ($_POST['design_id'] AND $_POST['template_action'])
                Soll das Design "'.$admin_design_arr[name].'" wirklich gelöscht werden?
              </td>
              <td width="50%">
-               <input type="submit" value="Ja" class="button" />  <input type="button" onclick="history.back(1);" value="Nein" class="button" />
+               <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?mid=styles&go=template_manage";\' value="Nein" class="button" />
              </td>
            </tr>';
        
@@ -160,8 +160,8 @@ else
          <tr>
            <td class="config" colspan="2">
              Wählen Sie das Design aus, dass Sie bearbeiten möchten:<br>
-             <font class="small">Das Standart-Design <b>default</b> kann weder bearbeitet
-             noch gelöscht werden!</font>
+             <font class="small"><b>Achtung!</b> Das Standard-Design <b>default</b> kann nicht umbenannt
+             und gelöscht werden!</font>
            </td>
          </tr>
          <tr><td></td></tr>';
@@ -179,7 +179,7 @@ else
          {
            while ($admin_design_arr = mysql_fetch_assoc($index))
            {
-             echo '<form action="'.$PHP_SELF.'" method="post">
+             echo '<form action="" method="post">
                      <input type="hidden" value="template_manage" name="go">
                      <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                      <input type="hidden" name="design_id" value="'.$admin_design_arr[id].'" />

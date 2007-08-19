@@ -11,7 +11,7 @@ if ($_POST[username] && $_POST[usermail])
     settype($_POST[regdate], "integer");
 
     // existiert dieser Username schon?
-    $index = mysql_query("select user_name from fs_user where user_name = '$_POST[username]'", $db);
+    $index = mysql_query("SELECT user_name FROM fs_user WHERE user_name = '$_POST[username]'", $db);
     $rows = mysql_num_rows($index);
 
     if ($rows == 0)
@@ -34,7 +34,7 @@ if ($_POST[username] && $_POST[usermail])
         $index = mysql_query("select email_register from fs_template where id = '$global_config_arr[design]'", $db);
         $template_mail = stripslashes(mysql_result($index, 0, "email_register"));
         $template_mail = str_replace("{username}", $_POST[username], $template_mail);
-        $template_mail = str_replace("{passwort}", $newpass, $template_mail);
+        $template_mail = str_replace("{password}", $newpass, $template_mail);
 
         $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtualhost];
         $header  = "From: ".$global_config_arr[admin_mail]."\n";
@@ -44,7 +44,7 @@ if ($_POST[username] && $_POST[usermail])
         $header .= "Content-Type: text/plain";
         mail($usermail, $email_betreff, $template_mail, $header);
 
-        mysql_query("update fs_counter set user=user+1", $db);
+        mysql_query("UPDATE fs_counter SET user=user+1", $db);
         systext('User wurde hinzugefügt');
     }
     else
@@ -62,7 +62,7 @@ else
     $reg_time = time();
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="useradd" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$reg_time.'" name="regdate">

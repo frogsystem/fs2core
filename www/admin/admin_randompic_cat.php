@@ -19,7 +19,7 @@ if ($_POST['sended'])
 /// Eingabeformular ////
 ////////////////////////
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="randompic_cat" name="go">
                         <input type="hidden" value="1" name="sended">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">

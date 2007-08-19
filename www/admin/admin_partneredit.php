@@ -50,7 +50,7 @@ elseif (isset($_POST[partnerid]))
     $partnerpermanent = ($partner_arr[partner_permanent] == 1) ? 'checked="checked"' : '';
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="partneredit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$partnerid.'" name="editpartnerid">
@@ -61,7 +61,7 @@ elseif (isset($_POST[partnerid]))
                                     <font class="small">Kleiner Partnerbutton für rechtes Men&uuml;.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url("../images/partner/", $_POST[partnerid]."_small", true).'">
+                                   <img src="'.image_url("../images/partner/", $_POST[partnerid]."_small").'">
                                 </td>
                             </tr>
                             <tr>
@@ -70,7 +70,7 @@ elseif (isset($_POST[partnerid]))
                                     <font class="small">Gro&szlig; Partnerbutton für die Übersicht.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url("../images/partner/", $_POST[partnerid]."_big", true).'">
+                                   <img src="'.image_url("../images/partner/", $_POST[partnerid]."_big").'">
                                 </td>
                             </tr>
                             <tr>
@@ -97,7 +97,7 @@ elseif (isset($_POST[partnerid]))
                                     <font class="small">Kurze Beschreibung der Partnerseite.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="beschreibung">'.$partner_arr[partner_beschreibung].'</textarea>
+                                    '.create_editor("beschreibung", $partner_arr[partner_beschreibung], 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -115,7 +115,7 @@ elseif (isset($_POST[partnerid]))
                                     <font class="small">Das Ändern der Bilder ist nur über Löschen und Neuanlegen möglich.</font>
                                 </td>
                                 <td class="config">
-                                   <input onClick="alert(this.value)" type="checkbox" name="delpartner" value="Sicher?">
+                                   <input onClick=\'delalert ("delpartner", "Soll die Partnerseite wirklich gelöscht werden?")\' type="checkbox" name="delpartner" id="delpartner" value="1">
                                 </td>
                             </tr>
                             <tr>
@@ -131,9 +131,10 @@ elseif (isset($_POST[partnerid]))
 //////////////////////////////
 /// Partnerseite auswählen ///
 //////////////////////////////
-
+else
+{
         echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="partneredit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -174,4 +175,5 @@ elseif (isset($_POST[partnerid]))
                         </table>
                     </form>
         ';
+}
 ?>

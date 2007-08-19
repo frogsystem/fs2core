@@ -21,7 +21,7 @@ if ($_POST[deluser])
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="map" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -54,7 +54,7 @@ else
                                     '.utf8_decode($user_arr[user_ort]).'
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="deluser[]" value="'.$user_arr[user_id].'">
+                                    <input type="checkbox" name="deluser[]" value="'.$user_arr[user_id].'" id="'.$user_arr[user_id].'" onClick=\'delalert ("'.$user_arr[user_id].'", "Soll der Eintrag von \"'.utf8_decode($user_arr[user_name]).'\" wirklich gelöscht werden?")\'>
                                 </td>
                             </tr>
         ';

@@ -87,7 +87,7 @@ else
     $config_arr[page_prev] = killhtml($config_arr[page_prev]);
 
   systext($error_message);
-  echo'<form action="'.$PHP_SELF.'" method="post">
+  echo'<form action="" method="post">
          <input type="hidden" value="allconfig" name="go">
          <input type="hidden" name="sended" value="">
          <input type="hidden" value="'.session_id().'" name="PHPSESSID">
@@ -253,7 +253,8 @@ else
                <font class="small">Design der Seitenanzeige bei mehrseitigen Anzeigen.</font>
              </td>
              <td class="config" valign="top" width="50%">
-               <input class="text" size="40" name="page" maxlength="255" value="'.$config_arr[page].'"><br />
+               <textarea name="page" wrap="virtual" style="width:299px; height:45px;">'.$config_arr[page].'</textarea>
+               <br />
                <font class="small">{page_number} = aktuelle Seite; {prev} = Seite zurück <br />
                {total_pages} = Seitenzahl; {next} = Seite weiter</font>
              </td>

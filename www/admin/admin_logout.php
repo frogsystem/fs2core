@@ -1,4 +1,4 @@
 <?php
 session_unset();
-systext('Du bist nun wieder ausgeloggt');
+systext('Du bist nun wieder ausgeloggt.');
 ?>

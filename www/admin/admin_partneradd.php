@@ -1,4 +1,23 @@
 <?php
+//////////////////////
+//// Config laden ////
+//////////////////////
+$index = mysql_query("SELECT * FROM fs_partner_config", $db);
+$config_arr = mysql_fetch_assoc($index);
+if ($config_arr[small_allow] == 0) {
+    $config_arr[small_allow_bool] = true;
+    $config_arr[small_allow_text] = "exakt";
+} else {
+    $config_arr[small_allow_bool] = false;
+    $config_arr[small_allow_text] = "max.";
+}
+if ($config_arr[big_allow] == 0) {
+    $config_arr[big_allow_bool] = true;
+    $config_arr[big_allow_text] = "exakt";
+} else {
+    $config_arr[big_allow_bool] = false;
+    $config_arr[big_allow_text] = "max.";
+}
 
 ///////////////////////////////
 //// Partnerbild hochladen ////
@@ -18,25 +37,14 @@ if (isset($_FILES['bild_small']) && isset($_FILES['bild_big']) && $_POST['name']
                          '".$_POST[link]."',
                          '".$_POST[beschreibung]."',
                          '".$_POST[permanent]."')", $db);
-                         
     $id = mysql_insert_id();
 
-    $index = mysql_query("SELECT * FROM fs_partner_config", $db);
-    $config_arr = mysql_fetch_assoc($index);
-
-    $allow = false;
-    if ($config_arr[small_allow] == 0)
-        $allow = true;
-
-    $upload1 = upload_img($_FILES['bild_small'], "../images/partner/", $id."_small", 2*1024*1024, $config_arr[small_x], $config_arr[small_y], 0, 0, false, 100, $allow);
+    $upload1 = upload_img($_FILES['bild_small'], "../images/partner/", $id."_small", 2*1024*1024, $config_arr[small_x], $config_arr[small_y], 100, $config_arr[small_allow_bool]);
     
     switch ($upload1)
     {
       case 0:
-        $allow = false;
-        if ($config_arr[big_allow] == 0)
-            $allow = true;
-        $upload2 = upload_img($_FILES['bild_big'], "../images/partner/", $id."_big", 2*1024*1024, $config_arr[big_x], $config_arr[big_y], 0, 0, false, 100, $allow);
+        $upload2 = upload_img($_FILES['bild_big'], "../images/partner/", $id."_big", 2*1024*1024, $config_arr[big_x], $config_arr[big_y], 100, $config_arr[big_allow_bool]);
 
         switch ($upload2)
         {
@@ -68,7 +76,7 @@ if (isset($_FILES['bild_small']) && isset($_FILES['bild_big']) && $_POST['name']
 //////////////////////////
 
 echo'
-                    <form action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="partneradd" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
@@ -78,7 +86,10 @@ echo'
                                     <font class="small">Button zum Hochladen für das rechte Men&uuml; ausw&auml;hlen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="file" class="text" name="bild_small" size="50">
+                                    <input type="file" class="text" name="bild_small" size="50"><br />
+                                    <font class="small">
+                                      ['.$config_arr[small_allow_text].' '.$config_arr[small_x].' x '.$config_arr[small_y].' Pixel] [max. 2 MB]
+                                    </font>
                                 </td>
                             </tr>
                             <tr>
@@ -87,7 +98,10 @@ echo'
                                     <font class="small">Button zum Hochladen für die &Uuml;bersichtsseite ausw&auml;hlen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="file" class="text" name="bild_big" size="50">
+                                    <input type="file" class="text" name="bild_big" size="50"><br />
+                                    <font class="small">
+                                      ['.$config_arr[big_allow_text].' '.$config_arr[big_x].' x '.$config_arr[big_y].' Pixel] [max. 2 MB]
+                                    </font>
                                 </td>
                             </tr>
                             <tr>
@@ -114,7 +128,7 @@ echo'
                                     <font class="small">Kurze Beschreibung der Partnerseite.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="5" cols="66" name="beschreibung"></textarea>
+                                    '.create_editor("beschreibung", "", 330, 130).'
                                 </td>
                             </tr>
                             <tr>

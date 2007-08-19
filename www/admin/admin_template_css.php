@@ -6,7 +6,7 @@
 
 if ($_POST[code] && (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="") && ($_SESSION[user_level] == "authorised"))
 {
-    $index = mysql_query("select id, name from fs_template WHERE id = '$_POST[design]'", $db);
+    $index = mysql_query("SELECT id, name FROM fs_template WHERE id = '$_POST[design]'", $db);
     $design_arr = mysql_fetch_assoc($index);
 
     $fp = fopen("../css/".$design_arr[name].".css", "w");
@@ -24,7 +24,7 @@ elseif ($_SESSION[user_level] == "authorised")
     // CSS Dateien ermittlen
     echo'
                     <div align="left">
-                        <form action="'.$_SERVER[PHP_SELF].'" method="post">
+                        <form action="" method="post">
                             <input type="hidden" value="csstemplate" name="go">
                             <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                             <select name="design" onChange="this.form.submit();">
@@ -59,7 +59,7 @@ elseif ($_SESSION[user_level] == "authorised")
 
         echo'
                     <input type="hidden" value="" name="editwhat">
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="csstemplate" name="go">
                         <input type="hidden" value="'.$_POST[design].'" name="design">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">

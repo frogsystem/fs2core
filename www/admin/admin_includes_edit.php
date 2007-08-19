@@ -110,7 +110,7 @@ if ($_POST[include_id])
     <center><table border="0" cellpadding="4" cellspacing="0">
       <tr valign="top" align="left">
         <td>
-          <form action="'.$PHP_SELF.'" method="post">
+          <form action="" method="post">
             <input type="hidden" value="includes_edit" name="go">
             <input type="hidden" name="sended" value="">
             <input type="hidden" name="include_type" value="'.$inc_arr[include_type].'">
@@ -125,7 +125,7 @@ if ($_POST[include_id])
             <input class="text" size="23" name="name" id="sv_name" maxlength="255" value="'.$inc_arr[replace_string].'" onkeydown="actSV()" onkeypress="actSV()" onkeyup="actSV()" />
             <br /><br />
             <font class="small">Suchmuster:</font><br>
-            <input class="text" size="23" name="replace_string" id="sv_syntax" maxlength="255"  value="[%'.$inc_arr[replace_string].'%]" disabled="disabled" />
+            <input class="text" size="23" name="replace_string" id="sv_syntax" maxlength="255"  value="[%'.$inc_arr[replace_string].'%]" readonly="readonly" />
             <br /><br />
             <font class="small">Ersetzung:</font><br>
             <textarea name="replace_thing" rows="5" cols="20" wrap="virtual">'.$inc_arr[replace_thing].'</textarea>
@@ -158,7 +158,7 @@ if ($_POST[include_id])
     <center><table border="0" cellpadding="4" cellspacing="0">
       <tr valign="top" align="left">
         <td>
-          <form action="'.$PHP_SELF.'" method="post">
+          <form action="" method="post">
             <input type="hidden" value="includes_edit" name="go">
             <input type="hidden" name="sended" value="">
             <input type="hidden" name="include_type" value="'.$inc_arr[include_type].'">
@@ -173,7 +173,7 @@ if ($_POST[include_id])
             <input class="text" size="23" name="name" id="in_name" maxlength="255" value="'.$inc_arr[replace_string].'" onkeydown="actIN()" onkeypress="actIN()" onkeyup="actIN()" />
             <br /><br />
             <font class="small">Suchmuster:</font><br>
-            <input class="text" size="23" name="replace_string" id="in_syntax" maxlength="255"  value="[%'.$inc_arr[replace_string].'%]" disabled="disabled" />
+            <input class="text" size="23" name="replace_string" id="in_syntax" maxlength="255"  value="[%'.$inc_arr[replace_string].'%]" readonly="readonly" />
             <br /><br />
             <font class="small">Dateiname:</font><br>
             <input class="text" size="23" name="replace_thing" maxlength="255" value="'.$inc_arr[replace_thing].'" />
@@ -203,7 +203,7 @@ else
   <td></td>
  </tr>
  <tr valign="top">
-  <form action="'.$PHP_SELF.'" method="post">
+  <form action="" method="post">
     <input type="hidden" value="includes_edit" name="go">
     <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 

@@ -331,7 +331,7 @@ elseif (isset($_POST[edituserid]))
     }
     
     echo'
-          <form action="'.$PHP_SELF.'" method="post">
+          <form action="" method="post">
           <input type="hidden" value="userrights" name="go">
           <input type="hidden" value="'.session_id().'" name="PHPSESSID">
           <input type="hidden" value="'.$_POST[edituserid].'" name="userid">
@@ -382,7 +382,7 @@ elseif (isset($_POST[edituserid]))
 else
 {
     echo'
-          <form action="'.$PHP_SELF.'" method="post">
+          <form action="" method="post">
           <input type="hidden" value="userrights" name="go">
           <input type="hidden" value="'.session_id().'" name="PHPSESSID">
           <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -392,9 +392,9 @@ else
            </tr>
     ';
     $index = mysql_query("SELECT user_id, user_name
-                           FROM fs_user
-                           WHERE is_admin = 1 AND user_id != 1 AND user_id != $_SESSION[user_id]
-                           ORDER BY user_name", $db);
+                          FROM fs_user
+                          WHERE is_admin = 1 AND user_id != 1 AND user_id != $_SESSION[user_id]
+                          ORDER BY user_name", $db);
     while ($user_arr = mysql_fetch_assoc($index))
     {
         echo'

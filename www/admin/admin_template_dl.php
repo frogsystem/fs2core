@@ -41,7 +41,7 @@
         $tmp[help][1][text] = $admin_phrases[template][dl_search_field][help_2];
         $tmp[help][2][tag] = "{all_url}";
         $tmp[help][2][text] = $admin_phrases[template][dl_search_field][help_3];
-    $TEMPLATE_EDIT[0] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "dl_navigation";
@@ -55,7 +55,7 @@
         $tmp[help][1][text] = $admin_phrases[template][dl_navigation][help_2];
         $tmp[help][2][tag] = "{kategorie_name}";
         $tmp[help][2][text] = $admin_phrases[template][dl_navigation][help_3];
-    $TEMPLATE_EDIT[1] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "dl_quick_links";
@@ -69,10 +69,10 @@
         $tmp[help][1][text] = $admin_phrases[template][dl_quick_links][help_2];
         $tmp[help][2][tag] = "{name}";
         $tmp[help][2][text] = $admin_phrases[template][dl_quick_links][help_3];
-    $TEMPLATE_EDIT[2] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
-    $TEMPLATE_EDIT[3] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "dl_datei_preview";
     $tmp[title] = $admin_phrases[template][dl_datei_preview][title];
@@ -89,7 +89,7 @@
         $tmp[help][3][text] = $admin_phrases[template][dl_datei_preview][help_4];
         $tmp[help][4][tag] = "{text}";
         $tmp[help][4][text] = $admin_phrases[template][dl_datei_preview][help_5];
-    $TEMPLATE_EDIT[4] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "dl_body";
@@ -103,10 +103,10 @@
         $tmp[help][1][text] = $admin_phrases[template][dl_body][help_2];
         $tmp[help][2][tag] = "{dateien}";
         $tmp[help][2][text] = $admin_phrases[template][dl_body][help_3];
-    $TEMPLATE_EDIT[5] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
-    $TEMPLATE_EDIT[6] = false;
+    $TEMPLATE_EDIT[] = false;
 
     $tmp[name] = "dl_file";
     $tmp[title] = $admin_phrases[template][dl_file][title];
@@ -127,7 +127,7 @@
         $tmp[help][5][text] = $admin_phrases[template][dl_file][help_6];
         $tmp[help][6][tag] = "{mirror_col}";
         $tmp[help][6][text] = $admin_phrases[template][dl_file][help_7];
-    $TEMPLATE_EDIT[7] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "dl_stats";
@@ -143,7 +143,7 @@
         $tmp[help][2][text] = $admin_phrases[template][dl_stats][help_3];
         $tmp[help][3][tag] = "{hits}";
         $tmp[help][3][text] = $admin_phrases[template][dl_stats][help_4];
-    $TEMPLATE_EDIT[8] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "dl_file_is_mirror";
@@ -151,7 +151,7 @@
     $tmp[description] = $admin_phrases[template][dl_file_is_mirror][description];
     $tmp[rows] = "5";
     $tmp[cols] = "66";
-    $TEMPLATE_EDIT[9] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp[name] = "dl_file_body";
@@ -185,7 +185,7 @@
         $tmp[help][11][text] = $admin_phrases[template][dl_file_body][help_12];
         $tmp[help][12][tag] = "{files}";
         $tmp[help][12][text] = $admin_phrases[template][dl_file_body][help_13];
-    $TEMPLATE_EDIT[10] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
 //////////////////////////

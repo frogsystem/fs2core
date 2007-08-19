@@ -38,8 +38,10 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         $admin_dl_config_arr = mysql_fetch_assoc($index);
         if ($_Files[dlimg] && ($_FILES[dlimg] != "none"))
         {
-            $upload = upload_img($_FILES['dlimg'], "../images/downloads/",$_POST[editdlid], 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y], $admin_dl_config_arr[thumb_x], $admin_dl_config_arr[thumb_y], true);
+            $upload = upload_img($_FILES['dlimg'], "../images/downloads/", $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
             systext(upload_img_notice($upload));
+            $thumb = create_thumb_from(image_url("../images/downloads/",$_POST['editdlid'],false), $admin_dl_config_arr[thumb_x], $admin_dl_config_arr[thumb_y]);
+            systext(create_thumb_notice($thumb));
         }
 
         $dlopen = isset($_POST[dlopen]) ? 1 : 0;
@@ -179,7 +181,7 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'
-                    <form id="form" action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="dledit" name="go">
                         <input id="send" type="hidden" value="0" name="dledit">
                         <input type="hidden" value="'.$_POST[dlid].'" name="tempid">
@@ -225,27 +227,29 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
                                     <font class="small">Diese Beschreibung erscheint unter dem Download</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea rows="8" cols="53" name="text">'.$_POST[text].'</textarea>
+                                    '.create_editor("text", $_POST[text], 330, 130).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Autor:<br>
-                                    <font class="small">[Name des Autors] [Homepage des Autors]</font>
+                                    <font class="small">[Name des Autors]<br />
+                                    [Homepage des Autors]</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="20" name="autor" value="'.$_POST[autor].'" maxlength="100">
+                                    <br />
                                     <input class="text" size="30" name="autorurl" value="'.$_POST[autorurl].'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Screenshot:<br>
-                                    <font class="small">Nur angeben wenn ein neues Bild erzeugt werden soll.<br>
-                                    [max. '.$admin_dl_config_arr[screen_x].'x'.$admin_dl_config_arr[screen_y].'] [2MB] [jpg/gif/png] (optional)</font>
+                                    Screenshot: <font class="small">(optional)</font><br>
+                                    <font class="small">Nur angeben wenn ein neues Bild erzeugt werden soll.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="file" class="text" name="dlimg" size="35">
+                                    <input type="file" class="text" name="dlimg" size="35"><br />
+                                    <font class="small">[max. '.$admin_dl_config_arr[screen_x].'x'.$admin_dl_config_arr[screen_y].'] [2MB] [jpg/gif/png]</font>
                                 </td>
                             </tr>
     ';
@@ -269,13 +273,14 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
                                     <font class="small">[Titel]<br>[URL]<br>[Große in KB]<br>[Anzahl der DLs]<br>[Mirror?]<br>[löschen]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" value="'.$_POST[fname][$j].'" maxlength="100">
+                                    <input class="text" size="20" name="fname['.$j.']" value="'.$_POST[fname][$j].'" maxlength="100"><br />
                                     <input class="text" size="30" value="'.$_POST[furl][$j].'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad">
-                                    <input class="text" size="30" value="'.$_POST[fsize][$j].'" name="fsize['.$j.']" maxlength="8">
-                                    <input class="text" size="30" value="'.$_POST[fcount][$j].'" name="fcount['.$j.']" maxlength="100"><br />
+                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
+                                    <input class="text" size="30" value="'.$_POST[fsize][$j].'" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="30" value="'.$_POST[fcount][$j].'" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'"><br />
-                                    Löschen: <input name="delf['.$j.']" value="'.$_POST[fid][$j].'" type="checkbox">
+                                    Löschen: <input name="delf['.$j.']" id="delf['.$j.']" value="'.$_POST[fid][$j].'" type="checkbox"
+                                    onClick=\'delalert ("delf['.$j.']", "Soll das File (Nr. '.$i.') wirklich gelöscht werden?")\'>
                                     <input type="hidden" name="fid['.$j.']" value="'.$_POST[fid][$j].'">
                                     <input type="hidden" name="fnew['.$j.']" value="'.$_POST[fnew][$j].'">
                                 </td>
@@ -288,14 +293,14 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
                             <tr>
                                 <td class="config" valign="top">
                                     File '.$i.':<br>
-                                    <font class="small">[Titel]<br>[URL]<br>[Große in KB]<br>[Anzahl der DLs]<br>[Mirror?]</font>
+                                    <font class="small">[Titel]<br />[URL]<br />[Große in KB]<br />[Anzahl der DLs]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" maxlength="100">
+                                    <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />
                                     <input class="text" size="30" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad">
-                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8">
-                                    <input class="text" size="30" name="fcount['.$j.']" maxlength="100"><br />
+                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
+                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="30" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                     <input type="hidden" name="fnew['.$j.']" value="1">
                                 </td>
@@ -329,7 +334,7 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
                                     Download löschen:
                                 </td>
                                 <td class="config">
-                                    <input onClick="alert(this.value)" type="checkbox" name="deldl" value="Sicher?">
+                                    <input onClick=\'delalert ("deldl", "Soll der Download wirklich gelöscht werden?")\' type="checkbox" name="deldl" id="deldl" value="1">
                                 </td>
                             </tr>
                             <tr>
@@ -349,7 +354,7 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="dledit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
@@ -379,7 +384,7 @@ else
     ';
 
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="dledit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
