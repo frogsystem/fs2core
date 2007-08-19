@@ -4,7 +4,7 @@
 //// User aktualisieren ////
 ////////////////////////////
 
-if ($_POST[username] && $_POST[usermail])
+if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND $_POST[jahr])
 {
     $_POST[username] = savesql($_POST[username]);
     $_POST[usermail] = savesql($_POST[usermail]);
@@ -12,7 +12,7 @@ if ($_POST[username] && $_POST[usermail])
     settype($_POST[isadmin], 'integer');
     settype($_POST[showmail], 'integer');
 
-    $regdate = mktime(0, 0, 0, $_POST[tag], $_POST[monat], $_POST[jahr]);
+    $regdate = mktime(0, 0, 0, $_POST[monat], $_POST[tag], $_POST[jahr]);
  
     // Username schon vorhanden?
     $index = mysql_query("SELECT user_id FROM fs_user WHERE user_name = '$_POST[username]'", $db);
@@ -223,7 +223,9 @@ else
         ';
 
         $_POST[filter] = savesql($_POST[filter]);
-        $index = mysql_query("select * from fs_user where user_name like '%$_POST[filter]%' order by user_name", $db);
+        $index = mysql_query("SELECT * FROM fs_user
+                              WHERE user_name like '%$_POST[filter]%' AND user_id != 1 AND user_id != $_SESSION[user_id]
+                              ORDER BY user_name", $db);
         while ($user_arr = mysql_fetch_assoc($index))
         {
             $user_arr[user_name] = killhtml($user_arr[user_name]);

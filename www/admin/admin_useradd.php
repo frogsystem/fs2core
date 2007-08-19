@@ -31,20 +31,18 @@ if ($_POST[username] && $_POST[usermail])
         mysql_query($sqlquery, $db);
 
         // Mail versenden
-        $index = mysql_query("select template_code from fs_template where template_name = 'email_register'", $db);
-        $template = stripslashes(mysql_result($index, 0, "template_code"));
-        $template = str_replace("{username}", $_POST[username], $template); 
-        $template = str_replace("{passwort}", $newpass, $template);
+        $index = mysql_query("select email_register from fs_template where id = '$global_config_arr[design]'", $db);
+        $template_mail = stripslashes(mysql_result($index, 0, "email_register"));
+        $template_mail = str_replace("{username}", $_POST[username], $template_mail);
+        $template_mail = str_replace("{passwort}", $newpass, $template_mail);
 
-        $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtual_host];
-        $header="From: ".$phrases[registration]." @ ".$global_config_arr[virtual_host]."\n"; 
-        $header .= "Reply-To: ".$phrases[registration]." @ ".$global_config_arr[virtual_host]."\n"; 
-        $header .= "Bcc: $_POST[usermail]\n"; 
+        $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtualhost];
+        $header  = "From: ".$global_config_arr[admin_mail]."\n";
+        $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
         $header .= "X-Mailer: PHP/" . phpversion(). "\n"; 
         $header .= "X-Sender-IP: $REMOTE_ADDR\n"; 
-        $header .= "Content-Type: text/html"; 
-
-        mail($usermail, $email_betreff, $template, $header); 
+        $header .= "Content-Type: text/plain";
+        mail($usermail, $email_betreff, $template_mail, $header);
 
         mysql_query("update fs_counter set user=user+1", $db);
         systext('User wurde hinzugefügt');
@@ -61,11 +59,13 @@ if ($_POST[username] && $_POST[usermail])
 
 else
 {
+    $reg_time = time();
+
     echo'
                     <form action="'.$PHP_SELF.'" method="post">
                         <input type="hidden" value="useradd" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <input type="hidden" value="'.time().'" name="regdate">
+                        <input type="hidden" value="'.$reg_time.'" name="regdate">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top" width="50%">
@@ -91,7 +91,7 @@ else
                                     <font class="small">Anmeldedatum des Users</font>
                                 </td>
                                 <td align="center" class="config">
-                                    '.date("d.m.Y", time()).'
+                                    '.date("d.m.Y", $reg_time).'
                                 </td>
                             </tr>
                             <tr>

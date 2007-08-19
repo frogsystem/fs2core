@@ -17,11 +17,15 @@ $sicherheits_eingabe = encrypt($_POST["spam"], "3g9sp3hr45");
 $sicherheits_eingabe = str_replace("=", "", $sicherheits_eingabe);
 
 //////////////////////////////
-//// Config laden         ////
+//// Configs laden         ////
 //////////////////////////////
 
+//Kommentar-Config
 $index = mysql_query("select * from fs_news_config", $db);
 $config_arr = mysql_fetch_assoc($index);
+//Editor config
+$index = mysql_query("select * from fs_editor_config", $db);
+$editor_config = mysql_fetch_assoc($index);
 
 //////////////////////////////
 //// Kommentar hinzufügen ////
@@ -120,9 +124,9 @@ while ($comment_arr = mysql_fetch_assoc($index))
         $index2 = mysql_query("select user_name, is_admin from fs_user where user_id = $comment_arr[comment_poster_id]", $db);
         $comment_arr[comment_poster] = killhtml(mysql_result($index2, 0, "user_name"));
         $comment_arr[is_admin] = mysql_result($index2, 0, "is_admin");
-        if (file_exists("images/avatare/".$comment_arr[comment_poster_id].".gif"))
+        if (image_exists("images/avatare/",$comment_arr[comment_poster_id]))
         {
-            $comment_arr[comment_avatar] = '<div style="width:120px;"><img align="left" src="images/avatare/'.$comment_arr[comment_poster_id].'.gif" alt="'.$comment_arr[comment_poster].'"></div>';
+            $comment_arr[comment_avatar] = '<div style="width:120px;"><img align="left" src="'.image_url("images/avatare/",$comment_arr[comment_poster_id]).'" alt="'.$comment_arr[comment_poster].'"></div>';
         }
         if ($comment_arr[is_admin] == 1)
         {
@@ -187,7 +191,12 @@ while ($comment_arr = mysql_fetch_assoc($index))
             break;
     }
 
-    $comment_arr[comment_text] = fscode($comment_arr[comment_text],$fs,$html,$para);
+    if ($fs == true) {
+        $comment_arr[comment_text] = fscode($comment_arr[comment_text],$fs,$html,$para, $editor_config[do_bold], $editor_config[do_italic], $editor_config[do_underline], $editor_config[do_strike], $editor_config[do_center], $editor_config[do_url], $editor_config[do_home], $editor_config[do_email], $editor_config[do_img], $editor_config[do_cimg], $editor_config[do_list], $editor_config[do_numlist], $editor_config[do_font], $editor_config[do_color], $editor_config[do_size], $editor_config[do_code], $editor_config[do_quote], $editor_config[do_noparse], $editor_config[do_smilies]);
+    } else {
+        $comment_arr[comment_text] = fscode($comment_arr[comment_text],$fs,$html,$para);
+    }
+
     $comment_arr[comment_text] = killsv($comment_arr[comment_text]);
     $comment_arr[comment_date] = date("d.m.Y" , $comment_arr[comment_date]) . " um " . date("H:i" , $comment_arr[comment_date]);
     
@@ -234,11 +243,8 @@ if ($config_arr[com_antispam]==0 OR ($config_arr[com_antispam]==1 AND $_SESSION[
     $form_spam_text ="";
 }
 
-//Editor config
-$index = mysql_query("select * from fs_editor_config", $db);
-$editor_config = mysql_fetch_assoc($index);
-
-$template_textarea = code_textarea("text", "", $editor_config[textarea_width], $editor_config[textarea_height], "text", false, $editor_config[smilies],$editor_config[bold],$editor_config[italic],$editor_config[underline],$editor_config[strike],$editor_config[center],$editor_config[font],$editor_config[color],$editor_config[size],$editor_config[img],$editor_config[cimg],$editor_config[url],$editor_config[home],$editor_config[email],$editor_config[code],$editor_config[quote],$editor_config[noparse]);
+//Textarea
+$template_textarea = create_textarea("text", "", $editor_config[textarea_width], $editor_config[textarea_height], "text", false, $editor_config[smilies],$editor_config[bold],$editor_config[italic],$editor_config[underline],$editor_config[strike],$editor_config[center],$editor_config[font],$editor_config[color],$editor_config[size],$editor_config[img],$editor_config[cimg],$editor_config[url],$editor_config[home],$editor_config[email],$editor_config[code],$editor_config[quote],$editor_config[noparse]);
 
 
 $index = mysql_query("select news_comment_form from fs_template where id = '$global_config_arr[design]'", $db);

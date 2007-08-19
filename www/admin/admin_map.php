@@ -45,8 +45,8 @@ else
     {
         echo'
                             <tr style="cursor:pointer;"
-                                onmouseover="javascript:this.style.backgroundColor=\'#DDDDDD\'"
-                                onmouseout="javascript:this.style.backgroundColor=\'#EEEEEE\'">
+                                onmouseover="javascript:this.style.backgroundColor=\'#EEEEEE\'"
+                                onmouseout="javascript:this.style.backgroundColor=\'transparent\'">
                                 <td class="configthin">
                                     '.utf8_decode($user_arr[user_name]).'
                                 </td>

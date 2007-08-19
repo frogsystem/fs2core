@@ -1,5 +1,6 @@
 <?php
 include("config.inc.php");
+include("functions.php");
 
 settype($_GET[catid], 'integer');
 settype($_GET[screenid], 'integer');
@@ -77,16 +78,52 @@ else    //Hochformat
 $close ="&nbsp;&nbsp;&nbsp;<a href='#ank' onclick='self.close();'>[Fenster schlie&szlig;en]</a>&nbsp;&nbsp;&nbsp;";
 
 $index = mysql_query("select pic_viewer from fs_template where id = '$global_config_arr[design]'", $db);
-$template = stripslashes(mysql_result($index, 0, "pic_viewer"));
+$template_viewer = stripslashes(mysql_result($index, 0, "pic_viewer"));
         
-$template = str_replace("{bannercode}", $bannercode, $template);
-$template = str_replace("{text}", $_GET[title], $template);
-$template = str_replace("{weiter_grafik}", $next, $template);
-$template = str_replace("{zurück_grafik}", $prev, $template);
-$template = str_replace("{bild}", $_GET[pic], $template);
-$template = str_replace("{bild_url}", $_GET[pic_url], $template);
-$template = str_replace("{close}", $close, $template);
+$template_viewer = str_replace("{text}", $_GET[title], $template_viewer);
+$template_viewer = str_replace("{weiter_grafik}", $next, $template_viewer);
+$template_viewer = str_replace("{zurück_grafik}", $prev, $template_viewer);
+$template_viewer = str_replace("{bild}", $_GET[pic], $template_viewer);
+$template_viewer = str_replace("{bild_url}", $_GET[pic_url], $template_viewer);
+$template_viewer = str_replace("{close}", $close, $template_viewer);
 
+
+//Includes
+$index = mysql_query("select * from fs_includes where include_type = '2'", $db);
+while ($include_arr = mysql_fetch_assoc($index))
+{
+    // Include laden
+    include("res/".$include_arr['replace_thing']);
+    $template_include = $template;
+    unset($template);
+
+    //Seitenvariablen
+    $index = mysql_query("select replace_string, replace_thing from fs_includes where include_type = '1' ORDER BY replace_string ASC", $db);
+    while ($sv_arr = mysql_fetch_assoc($index))
+    {
+        // Include-URL laden
+        $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
+        $template_include = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_include);
+    }
+    unset($sv_arr);
+    $template_include =  killsv($template_include);
+    $template_viewer = str_replace($include_arr['replace_string'], $template_include, $template_viewer);
+    unset($template_include);
+}
+unset($include_arr);
+
+//Seitenvariablen
+$index = mysql_query("select replace_string, replace_thing from fs_includes where include_type = '1' ORDER BY replace_string ASC", $db);
+while ($sv_arr = mysql_fetch_assoc($index))
+{
+    // Include-URL laden
+    $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
+    $template_viewer = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_viewer);
+}
+unset($sv_arr);
+
+$template = $template_viewer;
+unset($template_viewer);
 echo $template;
 
 mysql_close($db);

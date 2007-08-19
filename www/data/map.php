@@ -1,10 +1,10 @@
 <?php
 
 $flash = '
-     <object classid="CLSID:D27CDB6E-AE6D-11cf-96B8-444553540000"
-             codebase="http://active.macromedia.com/flash2/cabs/swflash.cab#version=4,0,0,0"
-             width="600" height="600">
-         <param name="movie" VALUE="inc/map.swf">
+     <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+             codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0"
+             width="600" height="600" id="map" >
+         <param name="movie" VALUE="res/map.swf">
          <param name="quality" value="high">
          <param name="scale" value="exactfit">
          <param name="menu" value="false">
@@ -16,7 +16,7 @@ $flash = '
                 width="600" height="600"
                 swLiveConnect="false"
                 type="application/x-shockwave-flash"
-                pluginspage ="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+                pluginspage ="http://www.macromedia.com/go/getflashplayer">
          </embed>
      </object>
 ';

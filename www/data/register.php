@@ -69,7 +69,7 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
         $template_mail = str_replace("{password}", $_POST[userpass1], $template_mail);
 
         $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtualhost];
-        $header="From: ".$global_config_arr[admin_mail]."\n";
+        $header  = "From: ".$global_config_arr[admin_mail]."\n";
         $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
         $header .= "X-Mailer: PHP/" . phpversion(). "\n"; 
         $header .= "X-Sender-IP: $REMOTE_ADDR\n"; 

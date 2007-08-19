@@ -9,6 +9,8 @@ if ($_POST['sended'] AND (($_POST['timed_deltime']==1 AND $_POST['deltime_time']
 
   settype($_POST[title],"integer");
   settype($_POST[type_priority],"integer");
+  settype($_POST[use_priority_only],"integer");
+  
   if ($_POST[timed_deltime]!=1) {
     settype($_POST[timed_deltime],"integer");
   } else {
@@ -32,7 +34,8 @@ if ($_POST['sended'] AND (($_POST['timed_deltime']==1 AND $_POST['deltime_time']
 
   mysql_query("UPDATE fs_screen_random_config
                SET active = '$_POST[active]',
-                   type_priority = '$_POST[type_priority]'
+                   type_priority = '$_POST[type_priority]',
+                   use_priority_only = '$_POST[use_priority_only]'
                WHERE id = '1'", $db);
   mysql_query("UPDATE fs_global_config
                SET random_timed_deltime = '$_POST[timed_deltime]'
@@ -118,6 +121,18 @@ else
                    echo ' selected="selected"';
                  echo'>Zufallsbilder aus gewählten Kategorien</option>
                </select>
+             </td>
+           </tr>
+           <tr align="left" valign="top">
+             <td class="config" valign="top" width="50%">
+               Nur vorrangiges System:<br>
+               <font class="small">Auswählen, wenn nur das vorrangige System verwendet werden soll.</font>
+             </td>
+             <td class="config" valign="top" width="50%">
+               <input type="checkbox" name="use_priority_only" value="1"';
+               if ($config_arr[use_priority_only] == 1)
+                 echo " checked=checked";
+               echo'/>
              </td>
            </tr>
            <tr>

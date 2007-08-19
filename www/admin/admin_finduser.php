@@ -7,25 +7,24 @@ echo'
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Frog System</title>
+    <title>Frogsystem 2 - User suchen</title>
     <link rel="stylesheet" type="text/css" href="admin.css">
 </head>
-<body>
-    <div id="main" style="left:10px; top:10px; margin-left:0px;">
-        <div id="mainshadow" style="width:300px;">
-            <div id="maincontent" style="width:300px;">
-                <img border="0" src="img/pointer.gif" width="5" height="8" alt=""> 
-                <font style="font-size:8pt;"><b>USER SUCHEN</b></font>
-                <div align="center">
-                    <p>
+<body id="find_body">
+
+            <div id="find_head">
+                &nbsp;<img border="0" src="img/pointer.png" alt="" align="top" />
+                <b>USER SUCHEN</b>
+            </div>
+            <div align="center">
 ';
 
 echo'
                     <form action="'.$PHP_SELF.'" method="post">
                         <input type="hidden" value="useredit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="280">
+                        <table border="0" cellpadding="2" cellspacing="0" width="287">
                             <tr>
-                                <td align="center" class="configthin" width="50%">
+                                <td align="center" class="configthin">
                                     <input value="'.$_POST[filter].'" class="text" name="filter" size="30">
                                     <input class="button" type="submit" value="Suchen">
                                 </td>
@@ -37,12 +36,10 @@ echo'
 if (isset($_POST[filter]))
 {
     echo'
-                    <table border="0" cellpadding="2" cellspacing="0" width="280">
-                        <tr>
-                            <td align="center" class="config" width="50%">
-                                Username
-                            </td>
-                        </tr>
+                    <br />
+     <div id="find_container">
+         <div id="find_top">Username</div>
+             <table border="0" cellpadding="2" cellspacing="0" width="287" style="padding-left:13px;">
     ';
     $_POST[filter] = savesql($_POST[filter]);
     $index = mysql_query("SELECT * FROM fs_user WHERE user_name LIKE '%$_POST[filter]%' ORDER BY user_name", $db);
@@ -53,27 +50,32 @@ if (isset($_POST[filter]))
 
 echo'
                         <tr name="'.$user_arr[user_id].'" value="'.$user_arr[user_name].'" style="cursor:pointer;"
-                            onmouseover="this.style.backgroundColor=\'#DDDDDD\'"
-                            onmouseout="this.style.backgroundColor=\'#EEEEEE\'"
-                            onmousedown="javascript:opener.document.getElementById(\'username\').value=\''.$user_arr[user_name].'\';
+                            onmouseover="this.style.backgroundColor=\'#EEEEEE\';"
+                            onmouseout="this.style.backgroundColor=\'transparent\';"
+                            onclick="javascript:opener.document.getElementById(\'username\').value=\''.$user_arr[user_name].'\';
                                          javascript:opener.document.getElementById(\'userid\').value=\''.$user_arr[user_id].'\';
                                          self.close();">
-                            <td class="configthin">
+                            <td>
                                 '.$username.'
                             </td>
                         </tr>
         ';
     }
+    if (mysql_num_rows($index) <= 0) {
+        echo '<table border="0" cellpadding="2" cellspacing="0" width="287" style="padding-left:13px;">
+                  <tr>
+                      <td>Keine User gefunden!</td>
+                  </tr>';
+    }
     echo'
                     </table>
+         </div>
+         <div id="find_foot"></div>
     ';
 }
 
 echo'
-                </div>
-            </div>
-        </div>
-        <p>
+
     </div>
 </body>
 </html>

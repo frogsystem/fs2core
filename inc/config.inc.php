@@ -23,7 +23,6 @@ if ($db)
 //// Seitenvariablen ///
 ////////////////////////
 
-$bannercode = '';
 
 // Allgemeine Config + Infos
 $index = mysql_query("SELECT * FROM fs_global_config", $db);

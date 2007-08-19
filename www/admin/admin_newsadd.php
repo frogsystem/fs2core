@@ -150,9 +150,9 @@ else
                                     <font class="small">Verfasser der News</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="30" id="username" name="poster" value="'.$_POST[poster].'" maxlength="100" disabled>
+                                    <input class="text" size="30" id="username" name="poster" value="'.$_POST[poster].'" maxlength="100" readonly="readonly">
                                     <input type="hidden" id="userid" name="posterid" value="'.$_POST[posterid].'">
-                                    <input onClick=\'open("admin/admin_finduser.php","Poster","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\' class="button" type="button" value="Ändern">
+                                    <input onClick=\'open("admin_finduser.php","Poster","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\' class="button" type="button" value="Ändern">
                                 </td>
                             </tr>
                             <tr>
@@ -171,7 +171,7 @@ else
                                     <br />FScode ist '.$config_arr[fs_code].'.</font>
                                 </td>
                                 <td valign="top" align="left">
-                                    '.code_textarea("text", $_POST[text], 328, 130).'
+                                    '.create_editor("text", $_POST[text], 330, 130).'
                                 </td>
                             </tr>
     ';

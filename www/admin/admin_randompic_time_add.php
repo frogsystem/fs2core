@@ -75,11 +75,11 @@ else
                                     <font class="small">Bild auswählen</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="button" class="Button" value="Bild ausw&auml;hlen" onClick=\'open("admin_findpicture.php","Bild","width=480,height=300,screenX=50,screenY=50,scrollbars=YES")\'"> <input type="text" id="screen_selectortext" value="'. (!empty($_POST['screen_id'])?'Bild ausgew&auml;hlt!':'Kein Bild ausgew&auml;hlt') .'" size="17" readonly>
+                                    <input type="button" class="button" value="Bild ausw&auml;hlen" onClick=\'open("admin_findpicture.php","Bild","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\'"> <input type="text" id="screen_selectortext" value="'. (!empty($_POST['screen_id'])?'Bild ausgew&auml;hlt!':'Kein Bild ausgew&auml;hlt') .'" size="17" readonly>
                                     <input type="hidden" id="screen_id" name="screen_id" value="'. $_POST['screen_id'] .'">
                                 </td>
                                 <td class="config" valign="top">
-                                    <img id="selected_pic" src="img/no_pic2.gif" alt="" />
+                                    <img id="selected_pic" src="img/no_pic_small.gif" alt="" />
                                 </td>
                             </tr>
                             <tr>

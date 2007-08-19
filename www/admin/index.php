@@ -142,6 +142,7 @@ $NAVI_ARR[link][] = "allconfig";
 $NAVI_ARR[link][] = "allannouncement";
 $NAVI_ARR[link][] = "allphpinfo";
 $NAVI_ARR[link][] = "emailtemplate";
+$NAVI_ARR[link][] = "permissionadd";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -219,8 +220,6 @@ $NAVI_ARR[menu_id] = "content";
 
 $NAVI_ARR[link][] = "artikeladd";
 $NAVI_ARR[link][] = "artikeledit";
-$NAVI_ARR[link][] = "cimgadd";
-$NAVI_ARR[link][] = "cimgdel";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -249,6 +248,20 @@ $NAVI_ARR[menu_id] = "content";
 
 $NAVI_ARR[link][] = "press_add";
 $NAVI_ARR[link][] = "press_edit";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// content images
+//////////////////////////////
+
+$NAVI_ARR[title] = "Bilder";
+$NAVI_ARR[menu_id] = "content";
+
+$NAVI_ARR[link][] = "cimgadd";
+$NAVI_ARR[link][] = "cimgdel";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -380,7 +393,7 @@ unset($NAVI_ARR);
 //////////////////////////////
 ///// zones
 //////////////////////////////
-
+/*
 $NAVI_ARR[title] = "Zonen";
 $NAVI_ARR[menu_id] = "styles";
 
@@ -391,7 +404,7 @@ $NAVI_ARR[link][] = "zone_config";
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
 unset($NAVI_ARR);
-
+*/
 //////////////////////////////
 ///// templates
 //////////////////////////////
@@ -498,7 +511,7 @@ $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
 
-$tmp_arr[title] = "News & Content"; //title of menu
+$tmp_arr[title] = "Inhalt"; //title of menu
 $tmp_arr[id] = "content"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;

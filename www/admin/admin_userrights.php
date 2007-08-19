@@ -1,96 +1,314 @@
 <?php
+///////////////////////
+//// Rechte Array /////
+///////////////////////
+
+$tmp[perm] = "perm_allconfig";
+$tmp[description] = "Seitenkonfiguration";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_allannouncement";
+$tmp[description] = "Ankündigungen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_allphpinfo";
+$tmp[description] = "PHP Info";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_editorconfig";
+$tmp[description] = "Editor Konfiguration";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_editordesign";
+$tmp[description] = "Editor Darstellung";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_editorsmilies";
+$tmp[description] = "Smilie Verwaltung";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_editorfscodes";
+$tmp[description] = "FSCode Verwaltung";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_includesadd";
+$tmp[description] = "Includes hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_includesedit";
+$tmp[description] = "Includes bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_statview";
+$tmp[description] = "Statistik anzeigen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_statedit";
+$tmp[description] = "Statistik bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_statref";
+$tmp[description] = "Referrer Statistik";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_statspace";
+$tmp[description] = "Speicherplatz Statistik";
+$all_perms[] = $tmp;
+
+
+
+$tmp[perm] = "perm_newsadd";
+$tmp[description] = "News schreiben";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_newsedit";
+$tmp[description] = "News bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_newscatadd";
+$tmp[description] = "News Kategorien hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_newscat";
+$tmp[description] = "News Kategorien bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_newsconfig";
+$tmp[description] = "News Konfiguration";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_artikeladd";
+$tmp[description] = "Artikel schreiben";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_artikeledit";
+$tmp[description] = "Artikel bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_polladd";
+$tmp[description] = "Umfragen hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_polledit";
+$tmp[description] = "Umfragen bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_pressadd";
+$tmp[description] = "Presseberichte hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_pressedit";
+$tmp[description] = "Presseberichte bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_cimgadd";
+$tmp[description] = "Inhalts-Bilder hochladen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_cimgedit";
+$tmp[description] = "Inhalts-Bilder verwalten";
+$all_perms[] = $tmp;
+
+
+
+$tmp[perm] = "perm_gallerycatadd";
+$tmp[description] = "Galerie Kategorien hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_gallerycat";
+$tmp[description] = "Galerie Kategorien bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_galleryconfig";
+$tmp[description] = "Galerie Konfiguration";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_screenadd";
+$tmp[description] = "Galerie Bilder hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_screenedit";
+$tmp[description] = "Galerie Bilder bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_wpadd";
+$tmp[description] = "Wallpaper hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_wpedit";
+$tmp[description] = "Wallpaper bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_randomcat";
+$tmp[description] = "Zufallsbilder Kategorien auswählen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_randomadd";
+$tmp[description] = "Zeitgesteuerte Zufallsbilder hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_randomedit";
+$tmp[description] = "Zeitgesteuerte Zufallsbilder bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_randomconfig";
+$tmp[description] = "Zufallsbil Konfiguration";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_dladd";
+$tmp[description] = "Downloads hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_dledit";
+$tmp[description] = "Downloads bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_dlcatadd";
+$tmp[description] = "Download Kategorien hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_dlcat";
+$tmp[description] = "Download Kategorien bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_dlconfig";
+$tmp[description] = "Download Konfiguration";
+$all_perms[] = $tmp;
+
+
+
+$tmp[perm] = "perm_partneradd";
+$tmp[description] = "Partnerseiten hinzuügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_partneredit";
+$tmp[description] = "Partnerseiten verwalten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_partnerconfig";
+$tmp[description] = "Partnerseiten Konfiguration";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_shopadd";
+$tmp[description] = "Shop Artikel hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_shopedit";
+$tmp[description] = "Shop Artikel bearbeiten";
+$all_perms[] = $tmp;
+
+
+
+$tmp[perm] = "perm_designadd";
+$tmp[description] = "Designs erstellen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_designedit";
+$tmp[description] = "Designs verwalten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_all";
+$tmp[description] = "Template bearbeiten: Allgemein";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_artikel";
+$tmp[description] = "Template bearbeiten: Artikel";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_css";
+$tmp[description] = "Template bearbeiten: CSS";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_dl";
+$tmp[description] = "Template bearbeiten: Downloads";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_email";
+$tmp[description] = "Template bearbeiten: Emailvorlagen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_gallery";
+$tmp[description] = "Template bearbeiten: Galerie";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_news";
+$tmp[description] = "Template bearbeiten: News";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_partner";
+$tmp[description] = "Template bearbeiten: Partnerseiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_poll";
+$tmp[description] = "Template bearbeiten: Umfragen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_random";
+$tmp[description] = "Template bearbeiten: Zufallsbild";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_shop";
+$tmp[description] = "Template bearbeiten: Shop";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_user";
+$tmp[description] = "Template bearbeiten: User";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_wp";
+$tmp[description] = "Template bearbeiten: Wallpaper";
+$all_perms[] = $tmp;
+
+
+
+$tmp[perm] = "perm_useradd";
+$tmp[description] = "User hinzufügen";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_useredit";
+$tmp[description] = "User bearbeiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_userrights";
+$tmp[description] = "Userrechte";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_userlistconfig";
+$tmp[description] = "Userliste Konfiguration";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_map";
+$tmp[description] = "Community Map";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_profiledit";
+$tmp[description] = "Profil bearbeiten";
+$all_perms[] = $tmp;
+
+
 
 ///////////////////////
 //// Rechte ändern ////
 ///////////////////////
 
-if (isset($_POST[ueuserid]))
+if (isset($_POST[userid]))
 {
-    settype($_POST[ueuserid], 'integer');
-    if ($_POST[ueuserid] != 1)
+    settype($_POST[userid], 'integer');
+    if ($_POST[userid] != 1 AND $_POST[userid] != $_SESSION[user_id])
     {
-        $_POST[uepermnewsadd] = isset($_POST[uepermnewsadd]) ? 1 : 0;
-        $_POST[uepermnewsedit] = isset($_POST[uepermnewsedit]) ? 1 : 0;
-        $_POST[uepermnewscat] = isset($_POST[uepermnewscat]) ? 1 : 0;
-        $_POST[uepermnewsnewcat] = isset($_POST[uepermnewsnewcat]) ? 1 : 0;
-        $_POST[uepermnewsconfig] = isset($_POST[uepermnewsconfig]) ? 1 : 0;
-        $_POST[uepermdladd] = isset($_POST[uepermdladd]) ? 1 : 0;
-        $_POST[uepermdledit] = isset($_POST[uepermdledit]) ? 1 : 0;
-        $_POST[uepermdlcat] = isset($_POST[uepermdlcat]) ? 1 : 0;
-        $_POST[uepermdlnewcat] = isset($_POST[uepermdlnewcat]) ? 1 : 0;
-        $_POST[uepermpolladd] = isset($_POST[uepermpolladd]) ? 1 : 0;
-        $_POST[uepermpolledit] = isset($_POST[uepermpolledit]) ? 1 : 0;
-        $_POST[uepermpotmadd] = isset($_POST[uepermpotmadd]) ? 1 : 0;
-        $_POST[uepermpotmedit] = isset($_POST[uepermpotmedit]) ? 1 : 0;
-        $_POST[uepermscreenadd] = isset($_POST[uepermscreenadd]) ? 1 : 0;
-        $_POST[uepermscreenedit] = isset($_POST[uepermscreenedit]) ? 1 : 0;
-        $_POST[uepermscreencat] = isset($_POST[uepermscreencat]) ? 1 : 0;
-        $_POST[uepermscreennewcat] = isset($_POST[uepermscreennewcat]) ? 1 : 0;
-        $_POST[uepermscreenconfig] = isset($_POST[uepermscreenconfig]) ? 1 : 0;
-        $_POST[uepermshopadd] = isset($_POST[uepermshopadd]) ? 1 : 0;
-        $_POST[uepermshopedit] = isset($_POST[uepermshopedit]) ? 1 : 0;
-        $_POST[uepermmap] = isset($_POST[uepermmap]) ? 1 : 0;
-        $_POST[uepermstatview] = isset($_POST[uepermstatview]) ? 1 : 0;
-        $_POST[uepermstatedit] = isset($_POST[uepermstatedit]) ? 1 : 0;
-        $_POST[uepermstatref] = isset($_POST[uepermstatref]) ? 1 : 0;
-        $_POST[uepermuseradd] = isset($_POST[uepermuseradd]) ? 1 : 0;
-        $_POST[uepermuseredit] = isset($_POST[uepermuseredit]) ? 1 : 0;
-        $_POST[uepermuserrights] = isset($_POST[uepermuserrights]) ? 1 : 0;
-        $_POST[uepermartikeladd] = isset($_POST[uepermartikeladd]) ? 1 : 0;
-        $_POST[uepermartikeledit] = isset($_POST[uepermartikeledit]) ? 1 : 0;
-        $_POST[uepermtemplateedit] = isset($_POST[uepermtemplateedit]) ? 1 : 0;
-        $_POST[uepermallphpinfo] = isset($_POST[uepermallphpinfo]) ? 1 : 0;
-        $_POST[uepermallconfig] = isset($_POST[uepermallconfig]) ? 1 : 0;
-        $_POST[uepermallanouncement] = isset($_POST[uepermallanouncement]) ? 1 : 0;
-        $_POST[uepermstatspace] = isset($_POST[uepermstatspace]) ? 1 : 0;
-        $_POST[uepermgbedit] = isset($_POST[uepermgbedit]) ? 1 : 0;
-        $_POST[uepermgbcat] = isset($_POST[uepermgbcat]) ? 1 : 0;
-
-        $update = "UPDATE fs_permissions
-                   SET perm_newsadd = $_POST[uepermnewsadd],
-                       perm_newsedit = $_POST[uepermnewsedit],
-                       perm_newscat = $_POST[uepermnewscat],
-                       perm_newsnewcat = $_POST[uepermnewsnewcat],
-                       perm_newsconfig = $_POST[uepermnewsconfig],
-                       perm_dladd = $_POST[uepermdladd],
-                       perm_dledit = $_POST[uepermdledit],
-                       perm_dlcat = $_POST[uepermdlcat],
-                       perm_dlnewcat = $_POST[uepermdlnewcat],
-                       perm_polladd = $_POST[uepermpolladd],
-                       perm_polledit = $_POST[uepermpolledit],
-                       perm_potmadd = $_POST[uepermpotmadd],
-                       perm_potmedit = $_POST[uepermpotmedit],
-                       perm_screenadd = $_POST[uepermscreenadd],
-                       perm_screenedit = $_POST[uepermscreenedit],
-                       perm_screencat = $_POST[uepermscreencat],
-                       perm_screennewcat = $_POST[uepermscreennewcat],
-                       perm_screenconfig = $_POST[uepermscreenconfig],
-                       perm_shopadd = $_POST[uepermshopadd],
-                       perm_shopedit = $_POST[uepermshopedit],
-                       perm_statedit = $_POST[uepermstatedit],
-                       perm_useradd = $_POST[uepermuseradd],
-                       perm_useredit = $_POST[uepermuseredit],
-                       perm_userrights = $_POST[uepermuserrights],
-                       perm_map = $_POST[uepermmap],
-                       perm_statview = $_POST[uepermstatview],
-                       perm_statref = $_POST[uepermstatref],
-                       perm_artikeladd = $_POST[uepermartikeladd],
-                       perm_artikeledit = $_POST[uepermartikeledit],
-                       perm_templateedit = $_POST[uepermtemplateedit],
-                       perm_allphpinfo = $_POST[uepermallphpinfo],
-                       perm_allconfig = $_POST[uepermallconfig],
-                       perm_allanouncement = $_POST[uepermallanouncement],
-                       perm_statspace = $_POST[uepermstatspace],
-                       perm_gbedit = $_POST[uepermgbedit],
-                       perm_gbcat = $_POST[uepermgbcat]
-                   WHERE user_id = $_POST[ueuserid]";
-
-        mysql_query($update, $db);
+        foreach($all_perms AS $value)
+        {
+            $_POST[$value[perm]] = isset($_POST[$value[perm]]) ? 1 : 0;
+            $update = "UPDATE fs_permissions
+                       SET $value[perm] = '".$_POST[$value[perm]]."'
+                       WHERE user_id = $_POST[userid]";
+            mysql_query($update, $db);
+        }
         systext('User wurde geändert');
     }
     else
     {
-        systext("Dieser User kann nicht editiert werden");
+        systext("Dieser User kann nicht bearbeitet werden!");
     }
 }
   
@@ -98,209 +316,63 @@ if (isset($_POST[ueuserid]))
 /// Rechte editieren //
 ///////////////////////
 
-elseif (isset($_POST[euuserid]))
+elseif (isset($_POST[edituserid]))
 {
-    settype($euuserid, 'integer');
-    $userindex = mysql_query("SELECT user_name FROM fs_user WHERE user_id = $euuserid", $db);
+    settype($_POST[edituserid], 'integer');
+    $userindex = mysql_query("SELECT user_name FROM fs_user WHERE user_id = $_POST[edituserid]", $db);
     $dbusername = mysql_result($userindex, 0, "user_name");
 
-    $index = mysql_query("SELECT * FROM fs_permissions WHERE user_id = $euuserid", $db);
+    $index = mysql_query("SELECT * FROM fs_permissions WHERE user_id = $_POST[edituserid]", $db);
     $perm_arr = mysql_fetch_assoc($index);
 
-    $perm_arr[perm_newsadd] = ($perm_arr[perm_newsadd] == 1) ? "checked" : "";
-    $perm_arr[perm_newsedit] = ($perm_arr[perm_newsedit] == 1) ? "checked" : "";
-    $perm_arr[perm_newscat] = ($perm_arr[perm_newscat] == 1) ? "checked" : "";
-    $perm_arr[perm_newsnewcat] = ($perm_arr[perm_newsnewcat] == 1) ? "checked" : "";
-    $perm_arr[perm_newsconfig] = ($perm_arr[perm_newsconfig] == 1) ? "checked" : "";
-    $perm_arr[perm_dladd] = ($perm_arr[perm_dladd] == 1) ? "checked" : "";
-    $perm_arr[perm_dledit] = ($perm_arr[perm_dledit] == 1) ? "checked" : "";
-    $perm_arr[perm_dlcat] = ($perm_arr[perm_dlcat] == 1) ? "checked" : "";
-    $perm_arr[perm_dlnewcat] = ($perm_arr[perm_dlnewcat] == 1) ? "checked" : "";
-    $perm_arr[perm_polladd] = ($perm_arr[perm_polladd] == 1) ? "checked" : "";
-    $perm_arr[perm_polledit] = ($perm_arr[perm_polledit] == 1) ? "checked" : "";
-    $perm_arr[perm_potmadd] = ($perm_arr[perm_potmadd] == 1) ? "checked" : "";
-    $perm_arr[perm_potmedit] = ($perm_arr[perm_potmedit] == 1) ? "checked" : "";
-    $perm_arr[perm_screenadd] = ($perm_arr[perm_screenadd] == 1) ? "checked" : "";
-    $perm_arr[perm_screenedit] = ($perm_arr[perm_screenedit] == 1) ? "checked" : "";
-    $perm_arr[perm_screencat] = ($perm_arr[perm_screencat] == 1) ? "checked" : "";
-    $perm_arr[perm_screennewcat] = ($perm_arr[perm_screennewcat] == 1) ? "checked" : "";
-    $perm_arr[perm_screenconfig] = ($perm_arr[perm_screenconfig] == 1) ? "checked" : "";
-    $perm_arr[perm_shopadd] = ($perm_arr[perm_shopadd] == 1) ? "checked" : "";
-    $perm_arr[perm_shopedit] = ($perm_arr[perm_shopedit] == 1) ? "checked" : "";
-    $perm_arr[perm_map] = ($perm_arr[perm_map] == 1) ? "checked" : "";
-    $perm_arr[perm_statview] = ($perm_arr[perm_statview] == 1) ? "checked" : "";
-    $perm_arr[perm_statedit] = ($perm_arr[perm_statedit] == 1) ? "checked" : "";
-    $perm_arr[perm_statref] = ($perm_arr[perm_statref] == 1) ? "checked" : "";
-    $perm_arr[perm_useradd] = ($perm_arr[perm_useradd] == 1) ? "checked" : "";
-    $perm_arr[perm_userrights] = ($perm_arr[perm_userrights] == 1) ? "checked" : "";
-    $perm_arr[perm_artikeladd] = ($perm_arr[perm_artikeladd] == 1) ? "checked" : "";
-    $perm_arr[perm_artikeledit] = ($perm_arr[perm_artikeledit] == 1) ? "checked" : "";
-    $perm_arr[perm_templateedit] = ($perm_arr[perm_templateedit] == 1) ? "checked" : "";
-    $perm_arr[perm_allphpinfo] = ($perm_arr[perm_allphpinfo] == 1) ? "checked" : "";
-    $perm_arr[perm_allconfig] = ($perm_arr[perm_allconfig] == 1) ? "checked" : "";
-    $perm_arr[perm_allanouncement] = ($perm_arr[perm_allanouncement] == 1) ? "checked" : "";
-    $perm_arr[perm_statspace] = ($perm_arr[perm_statspace] == 1) ? "checked" : "";
-    $perm_arr[perm_gbedit] = ($perm_arr[perm_gbedit] == 1) ? "checked" : "";
-    $perm_arr[perm_perm_gbcat] = ($perm_arr[perm_perm_gbcat] == 1) ? "checked" : "";
+    foreach($all_perms AS $value)
+    {
+        $perm_arr[$value[perm]] = ($perm_arr[$value[perm]] == 1) ? 'checked="checked"' : "";
+    }
+    
     echo'
           <form action="'.$PHP_SELF.'" method="post">
           <input type="hidden" value="userrights" name="go">
           <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-          <input type="hidden" value="'.$euuserid.'" name="ueuserid">
-          <table border="0" cellpadding="4" cellspacing="0" width="600">
-           <tr>
-             <td class="config" colspan="2" valign="top"><b>Rechte für '.$dbusername.' einstellen</b></td
-           </tr>
-           <tr>
-             <td class="configthin" width="50%">Allgemeine Konfiguration:</td>
-             <td align="center" width="50%"><input type="checkbox" name="uepermallconifg" value="1" '.$perm_arr[perm_allconfig].'></td>
-           </tr>
-           <tr>
-             <td class="configthin" width="50%">Ankündigungen:</td>
-             <td align="center" width="50%"><input type="checkbox" name="uepermallanouncement" value="1" '.$perm_arr[perm_allanouncement].'></td>
-           </tr>
-           <tr>
-             <td class="configthin" width="50%">PHP Info:</td>
-             <td align="center" width="50%"><input type="checkbox" name="uepermallphpinfo" value="1" '.$perm_arr[perm_allphpinfo].'></td>
-           </tr>
-           <tr>
-             <td class="configthin" width="50%">News schreiben:</td>
-             <td align="center" width="50%"><input type="checkbox" name="uepermnewsadd" value="1" '.$perm_arr[perm_newsadd].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">News Archiv:</td>
-             <td align="center"><input type="checkbox" name="uepermnewsedit" value="1" '.$perm_arr[perm_newsedit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">News Kategorien:</td>
-             <td align="center"><input type="checkbox" name="uepermnewscat" value="1" '.$perm_arr[perm_newscat].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">News Kategorie hinzufügen:</td>
-             <td align="center"><input type="checkbox" name="uepermnewsnewcat" value="1" '.$perm_arr[perm_newsnewcat].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">News Konfiguration:</td>
-             <td align="center"><input type="checkbox" name="uepermnewsconfig" value="1" '.$perm_arr[perm_newsconfig].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Artikel schreiben:</td>
-             <td align="center"><input type="checkbox" name="uepermartikeladd" value="1" '.$perm_arr[perm_artikeladd].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Artikel editieren:</td>
-             <td align="center"><input type="checkbox" name="uepermartikeledit" value="1" '.$perm_arr[perm_artikeledit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Download hinzufügen:</td>
-             <td align="center"><input type="checkbox" name="uepermdladd" value="1" '.$perm_arr[perm_dladd].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Download bearbeiten:</td>
-             <td align="center"><input type="checkbox" name="uepermdledit" value="1" '.$perm_arr[perm_dledit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Download Kategorien:</td>
-             <td align="center"><input type="checkbox" name="uepermdlcat" value="1" '.$perm_arr[perm_dlcat].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Download Kategorie hinzufügen:</td>
-             <td align="center"><input type="checkbox" name="uepermdlnewcat" value="1" '.$perm_arr[perm_dlnewcat].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Umfrage hinzufügen:</td>
-             <td align="center"><input type="checkbox" name="uepermpolladd" value="1" '.$perm_arr[perm_polladd].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Umfrage Archiv:</td>
-             <td align="center"><input type="checkbox" name="uepermpolledit" value="1" '.$perm_arr[perm_polledit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">POTM Bild hinzufügen:</td>
-             <td align="center"><input type="checkbox" name="uepermpotmadd" value="1" '.$perm_arr[perm_potmadd].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">POTM Übersicht:</td>
-             <td align="center"><input type="checkbox" name="uepermpotmedit" value="1" '.$perm_arr[perm_potmedit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Screenshot hinzufügen:</td>
-             <td align="center"><input type="checkbox" name="uepermscreenadd" value="1" '.$perm_arr[perm_screenadd].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Screenshots Übersicht:</td>
-             <td align="center"><input type="checkbox" name="uepermscreenedit" value="1" '.$perm_arr[perm_screenedit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Screenshot Kategorien:</td>
-             <td align="center"><input type="checkbox" name="uepermscreencat" value="1" '.$perm_arr[perm_screencat].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Screenshot Kategorie hinzufügen</td>
-             <td align="center"><input type="checkbox" name="uepermscreennewcat" value="1" '.$perm_arr[perm_screennewcat].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Screenshot Konfiguration:</td>
-             <td align="center"><input type="checkbox" name="uepermscreenconfig" value="1" '.$perm_arr[perm_screenconfig].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Shop Artikel hinzufügen:</td>
-             <td align="center"><input type="checkbox" name="uepermshopadd" value="1" '.$perm_arr[perm_shopadd].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Shop Übersicht:</td>
-             <td align="center"><input type="checkbox" name="uepermshopedit" value="1" '.$perm_arr[perm_shopedit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Community Map:</td>
-             <td align="center"><input type="checkbox" name="uepermmap" value="1" '.$perm_arr[perm_map].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Statistik anzeigen:</td>
-             <td align="center"><input type="checkbox" name="uepermstatview" value="1" '.$perm_arr[perm_statview].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Statistik bearbeiten:</td>
-             <td align="center"><input type="checkbox" name="uepermstatedit" value="1" '.$perm_arr[perm_statedit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Referrer Statistik:</td>
-             <td align="center"><input type="checkbox" name="uepermstatref" value="1" '.$perm_arr[perm_statref].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Speicherplatz Statistik:</td>
-             <td align="center"><input type="checkbox" name="uepermstatspace" value="1" '.$perm_arr[perm_statspace].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Template:</td>
-             <td align="center"><input type="checkbox" name="uepermtemplateedit" value="1" '.$perm_arr[perm_templateedit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Gästebuch editieren:</td>
-             <td align="center"><input type="checkbox" name="uepermgbedit" value="1" '.$perm_arr[perm_gbedit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Gästebuch Kategorien:</td>
-             <td align="center"><input type="checkbox" name="uepermgbcat" value="1" '.$perm_arr[perm_gbcat].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Benutzer hinzufügen:</td>
-             <td align="center"><input type="checkbox" name="uepermuseradd" value="1" '.$perm_arr[perm_useradd].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Benutzer editieren:</td>
-             <td align="center"><input type="checkbox" name="uepermuseredit" value="1" '.$perm_arr[perm_useredit].'></td>
-           </tr>
-           <tr>
-             <td class="configthin">Benutzer Rechte:</td>
-             <td align="center"><input type="checkbox" name="uepermuserrights" value="1" '.$perm_arr[perm_userrights].'></td>
-           </tr>
-           <tr>
-             <td colspan="2"><input type="submit" class="button" value="Absenden"></td>
-           </tr>
+          <input type="hidden" value="'.$_POST[edituserid].'" name="userid">
+          <table border="0" cellpadding="0" cellspacing="0" align="center" width="600">
+            <tr>
+              <td class="config" colspan="2" valign="top">
+                <b>Rechte für '.$dbusername.' einstellen</b><br /><br />
+              </td>
+            </tr>
+            <tr>
+              <td width="50%">';
+              
+    $per_col = ceil(count($all_perms)/2);
+    $i=0;
+    foreach($all_perms AS $value)
+    {
+        $i++;
+        if ($i==1) {echo'<table border="0" cellpadding="1" cellspacing="0">';}
+        echo'<tr>
+               <td>
+                 <input type="checkbox" style="vertical-align:bottom;" name="'.$value[perm].'" value="1" '
+                 .$perm_arr[$value[perm]].'>
+               </td>
+               <td style="font-size:8pt; font-family:Verdana;" width="100%">
+                 '.$value[description].'
+               </td>
+             </tr>';
+        if ($i==$per_col) {echo'</table></td><td width="50%"><table border="0" cellpadding="1" cellspacing="0">';}
+    }
+              
+    echo'       </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br /><br />
+                <input type="submit" class="button" value="Absenden">
+              </td>
+            </tr>
          </table>
-         </form>
-    ';
+         </form>';
 }
 
 ///////////////////////
@@ -321,14 +393,21 @@ else
     ';
     $index = mysql_query("SELECT user_id, user_name
                            FROM fs_user
-                           WHERE user_id != 1 AND is_admin = 1
+                           WHERE is_admin = 1 AND user_id != 1 AND user_id != $_SESSION[user_id]
                            ORDER BY user_name", $db);
     while ($user_arr = mysql_fetch_assoc($index))
     {
         echo'
            <tr>
             <td class="configthin">'.killhtml($user_arr[user_name]).'</td>
-            <td class="config"><input type="radio" name="euuserid" value="'.$user_arr[user_id].'"></td>
+            <td class="config"><input type="radio" name="edituserid" value="'.$user_arr[user_id].'"></td>
+           </tr>
+        ';
+    }
+    if (mysql_num_rows($index) <= 0) {
+        echo'
+           <tr>
+            <td class="configthin" colspan="2"><br />Keine User gefunden!</td>
            </tr>
         ';
     }

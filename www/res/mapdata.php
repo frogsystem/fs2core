@@ -9,7 +9,10 @@ include("functions.php");
 if ($_POST[action] == "input")
 {
     $_POST[username] = savesql($_POST[username]);
-    $_POST[ort] = savesql($_POST[ort]);
+    $insert_ort = savesql($_POST[ort]);
+    if ($insert_ort == "undefined") {
+        $insert_ort = "unbekannt";
+    }
     settype($_POST[posx], 'integer');
     settype($_POST[posy], 'integer');
     settype($_POST[landid], 'integer');
@@ -19,7 +22,7 @@ if ($_POST[action] == "input")
                          '".$_POST[username]."',
                          '".$_POST[posx]."',
                          '".$_POST[posy]."',
-                         '".$_POST[ort]."');", $db);
+                         '".$insert_ort."');", $db);
 }
 
 ////////////////////////

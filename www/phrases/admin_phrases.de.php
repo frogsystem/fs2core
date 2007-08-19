@@ -488,4 +488,20 @@ $admin_phrases[template][editor_button][help_3]                 = "Javascript-Te
 
 $admin_phrases[template][editor_seperator][title]               = "Teiler Darstellung";
 $admin_phrases[template][editor_seperator][description]         = "Darstellung des Teilers zwischen Button-Gruppen.";
+
+
+
+//Editor - FS Codes
+$admin_phrases[template][quote_tag][title]                      = "Zitat";
+$admin_phrases[template][quote_tag][description]                = "Darstellung des \"Zitat\" - FSCodes.<br /><br />[quote]text[/quote]";
+$admin_phrases[template][quote_tag][help_1]                     = "Text der vom Zitat-Block umschlossen wird.";
+
+$admin_phrases[template][quote_tag_name][title]                 = "Zitat von";
+$admin_phrases[template][quote_tag_name][description]           = "Darstellung des \"Zitat von\" - FSCodes.<br /><br />[quote=author]text[/quote]";
+$admin_phrases[template][quote_tag_name][help_1]                = "Text der vom Zitat-Block umschlossen wird.";
+$admin_phrases[template][quote_tag_name][help_2]                = "Name des Autors, des zitierten Textes.";
+
+$admin_phrases[template][code_tag][title]                       = "Code";
+$admin_phrases[template][code_tag][description]                 = "Darstellung des \"Code\" - FSCodes.<br /><br />[code]text[/code]";
+$admin_phrases[template][code_tag][help_1]                      = "Text der vom Code-Block umschlossen wird.";
 ?>

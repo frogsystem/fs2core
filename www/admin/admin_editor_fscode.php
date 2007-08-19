@@ -27,32 +27,43 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "emailtemplate";
+    $TEMPLATE_GO = "editorfscode";
     unset($tmp);
-    
-    $tmp[name] = "email_register";
-    $tmp[title] = $admin_phrases[template][email_register][title];
-    $tmp[description] = $admin_phrases[template][email_register][description];
+
+    $tmp[name] = "quote_tag";
+    $tmp[title] = $admin_phrases[template][quote_tag][title];
+    $tmp[description] = $admin_phrases[template][quote_tag][description];
     $tmp[rows] = "10";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{username}";
-        $tmp[help][0][text] = $admin_phrases[template][email_register][help_1];
-        $tmp[help][1][tag] = "{password}";
-        $tmp[help][1][text] = $admin_phrases[template][email_register][help_2];
+        $tmp[help][0][tag] = "{text}";
+        $tmp[help][0][text] = $admin_phrases[template][quote_tag][help_1];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "email_passchange";
-    $tmp[title] = $admin_phrases[template][email_passchange][title];
-    $tmp[description] = $admin_phrases[template][email_passchange][description];
+    $tmp[name] = "quote_tag_name";
+    $tmp[title] = $admin_phrases[template][quote_tag_name][title];;
+    $tmp[description] = $admin_phrases[template][quote_tag_name][description];
     $tmp[rows] = "10";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{username}";
-        $tmp[help][0][text] = $admin_phrases[template][email_passchange][help_1];
-        $tmp[help][1][tag] = "{password}";
-        $tmp[help][1][text] = $admin_phrases[template][email_passchange][help_2];
+        $tmp[help][0][tag] = "{text}";
+        $tmp[help][0][text] = $admin_phrases[template][quote_tag_name][help_1];
+        $tmp[help][1][tag] = "{author}";
+        $tmp[help][1][text] = $admin_phrases[template][quote_tag_name][help_2];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
+
+    $TEMPLATE_EDIT[] = false;
+    
+    $tmp[name] = "code_tag";
+    $tmp[title] = $admin_phrases[template][code_tag][title];
+    $tmp[description] = $admin_phrases[template][code_tag][description];
+    $tmp[rows] = "10";
+    $tmp[cols] = "66";
+        $tmp[help][0][tag] = "{text}";
+        $tmp[help][0][text] = $admin_phrases[template][code_tag][help_1];
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+
         
 //////////////////////////
 //// Intialise Editor ////

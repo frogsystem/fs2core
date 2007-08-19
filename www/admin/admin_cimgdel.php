@@ -4,7 +4,7 @@ echo '<script type="text/javascript">
       {
         var Check = confirm("Soll das Bild wirklich gelöscht werden?");
         if (Check == true)
-          location.href = "?go=cimgdel&unlink=" + file;
+          location.href = "?mid='.$_GET[mid].'&go=cimgdel&unlink=" + file + "'.$session_url.'";
       }
       </script>';
 
@@ -16,9 +16,19 @@ if (isset($_GET['unlink']))
 
 $ordner=opendir("../images/content"); // gib hier den gewünschten pfad an
 
+$ext_arr[] = ".jpg";
+$ext_arr[] = ".jpeg";
+$ext_arr[] = ".gif";
+$ext_arr[] = ".png";
+$ext_arr[] = ".JPG";
+$ext_arr[] = ".JPEG";
+$ext_arr[] = ".GIF";
+$ext_arr[] = ".PNG";
+
 while(($datei=readdir($ordner))!== false)
 {
-  if($datei!="." && $datei!="..")
+  $extension = substr($datei, strrpos($datei, "."));
+  if($datei!="." AND $datei!=".." AND in_array($extension,$ext_arr))
   {
     $bildnamen[] = $datei;
   }
@@ -32,11 +42,11 @@ if (count($bildnamen)!=0)
   foreach ($bildnamen as $datei)
   {
     echo '<tr align="left" valign="top">
-             <td class="config" width="50%">
+             <td class="config" width="75%">
                '.$datei.' <font class="small">(<a href="../images/content/'.$datei.'" target="_blank">ansehen</a>)</font>
              </td>
-             <td class="config" width="50%">
-             <input onClick="cimgdel(\''.$datei.'\')"06.09.2006 class="button" type="button" value="Löschen">
+             <td class="config" width="25%">
+             <input onClick="cimgdel(\''.$datei.'\')" class="button" type="button" value="Löschen">
              </td>
            </tr>';
   }

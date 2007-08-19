@@ -1,37 +1,3 @@
-
-a
-{
-    font-size:8pt;
-    font-family:Verdana;
-    color:#000000;
-}
-a.menu
-{
-    font-size:8pt;
-    font-family:Verdana;
-    color:#000000;
-    text-decoration:none;
-}
-font.status
-  {
-   font-size:8pt;
-   font-family:Verdana;
-   color:#ff0000;
-  }
-.menuhead
-  {
-   font-size:8pt;
-   font-family:Verdana;
-   color:#000000;
-   font-weight:bold;
-   text-decoration:none;
-  }
-.menu
-  {
-   font-size:8pt;
-   font-family:Verdana;
-   color:#000000;
-  }
 td.config
   {
    text-align:left;
@@ -69,13 +35,7 @@ td.nw
    color:#000000;
    background:#BBBBBB;
   }
-font.small
-  {
-   font-size:7pt;
-   font-family:Verdana;
-   color:#000000;
-   font-weight:normal;
-  }   
+
 textarea
   {
    color:#000000;
@@ -99,6 +59,7 @@ textarea
    font-family:Verdana;
    border:1px solid #000000;
    background-color:#B7B7B7;
+   font-weight:normal;
   }
 select
   {
@@ -109,12 +70,6 @@ select
    background-color:#B7B7B7;
   }
 
-
-/* Toggle Menu */
-
-.toggle {
- display: none;
-}
 
 /**************************************************/
 /* standard styles */
@@ -135,10 +90,11 @@ body
     overflow-y: scroll;
 }
 .small
-{
-    font-size:7pt;
-}
-
+  {
+   font-size:7pt;
+   font-family:Verdana;
+   font-weight:normal;
+  }
 .thumb
 {
     cursor:pointer;
@@ -484,4 +440,55 @@ a.tooltip:hover span {
  text-decoration: none;
  font-style: normal;
  font-weight: normal;
+}
+
+
+
+/**************************************************/
+/* find_xyz styles */
+/**************************************************/
+#find_body
+{
+    background-image:none;
+    background-color:#495144;
+}
+
+#find_head
+{
+    background-image:url('img/menubg.jpg');
+    background-repeat:repeat-x;
+    width:100%;
+    height:34px;
+    font-size:9pt;
+    font-family:Arial;
+    color:#FFFFFF;
+    padding-top:4px;
+}
+
+#find_container
+{
+    background-image:url('img/content_loop_small.jpg');
+    background-repeat:repeat-y;
+    width:308px;
+    text-align:left;
+}
+#find_top
+{
+    background-image:url('img/content_top_small.jpg');
+    background-repeat:no-repeat;
+    width:308px;
+    height:25px;
+    padding-left:15px;
+    padding-top:20px;
+    font-size:9pt;
+    font-family:Verdana;
+    color:#000000;
+    font-weight:bold;
+}
+#find_foot
+{
+    background-image:url('img/content_foot_small.jpg');
+    background-repeat:no-repeat;
+    width:308px;
+    height:53px;
 }

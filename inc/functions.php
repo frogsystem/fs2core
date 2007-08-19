@@ -20,7 +20,7 @@ function delete_old_randoms()
 //// Create textarea        ////
 ////////////////////////////////
 
-function code_textarea($name, $text="", $width="", $height="", $class="", $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
+function create_textarea($name, $text="", $width="", $height="", $class="", $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
 {
     global $global_config_arr;
     global $db;
@@ -47,9 +47,9 @@ function code_textarea($name, $text="", $width="", $height="", $class="", $all=t
 
   if ($all==true OR $fs_smilies==1) {
     $smilies = '
-      <fieldset style="width:46px;">
+      <fieldset>
         <legend class="small" align="left"><font class="small">Smilies</font></legend>
-          <table cellpadding="2" cellspacing="0" border="0" width="100%">';
+          <table cellpadding="2" cellspacing="0" border="0">';
 
     $index = mysql_query("select * from fs_editor_config", $db);
     $config_arr = mysql_fetch_assoc($index);

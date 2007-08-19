@@ -7,31 +7,44 @@ echo'
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Frog System - Frogpad</title>
+    <title>Frogsystem 2 - Frogpad</title>
     <link rel="stylesheet" type="text/css" href="admin.css">
     <style>
-        #shadow
-        {
-            background-color:#575757;
-            width:900px;
-            height:660px;
-            position:absolute;
-            left:50%;
-            top:50%;
-            margin-left:-449px;
-            margin-top:-329px;
-        }
-        #mainpad
-        {
-            position:relative;
-            padding-left:20px;
-            top:-2px;
-            left:-2px;
-            width:900px;
-            height:660px;
-            background-color:#EEEEEE;
-            border:1px solid black;
-        }
+      #pad_container
+      {
+          background-image:url(img/content_loop.jpg);
+          background-repeat:repeat-y;
+          width:684px;
+          text-align:left;
+          margin-top:5px;
+      }
+      #pad_padding
+      {
+          width:604px;
+          padding-left:35px;
+          padding-right:45px;
+          text-align:left;
+      }
+      #pad_top
+      {
+          background-image:url(img/content_top.jpg);
+          background-repeat:no-repeat;
+          width:684px;
+          height:27px;
+          padding-left:19px;
+          padding-top:18px;
+          font-size:9pt;
+          font-family:Verdana;
+          color:#000000;
+          font-weight:bold;
+      }
+      #pad_foot
+      {
+          background-image:url(img/content_foot.jpg);
+          background-repeat:no-repeat;
+          width:684px;
+          height:53px;
+      }
     </style>
     <script>
         <!--
@@ -49,16 +62,20 @@ echo'
         // -->
     </script>
 </head>
-<body onLoad="fill()">
-    <div id="shadow">
-        <div id="mainpad">
-            <img border="0" src="img/pointer.gif" alt="">
-            <font style="font-size:8pt;"><b>FROGPAD</b></font><p>
-            <textarea name="code" style="font-family:monospace; overflow:auto;" cols="122" rows="38"></textarea>
-            <input type="button" class="button" value="Ändern" onClick="send();">
-            <input type="button" class="button" value="Abbrechen" onClick="javascript:self.close()">
-        </div>
+<body onLoad="fill()" id="find_body">
+  <center><div id="pad_container">
+    <div id="pad_top">
+      <img border="0" src="img/pointer.png" alt="" align="top" />
+      <font style="font-size:8pt;"><b>FROGPAD</b></font>
     </div>
+    <div id="pad_padding">
+      <textarea name="code" style="font-family:monospace; overflow:auto; width:604px; height:540px;"></textarea>
+      <br /><br />
+      <input type="button" class="button" value="Ändern" onClick="send();">
+      <input type="button" class="button" value="Abbrechen" onClick="javascript:self.close()">
+    </div>
+    <div id="pad_foot"></div>
+  </div></center>
 </body>
 </html>
 ';

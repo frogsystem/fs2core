@@ -100,17 +100,17 @@ $template_main .= '
   <base href="'.$global_config_arr['virtualhost'].'">
   
   <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-  <META name="Description" content="'.$global_config_arr[description].'">
-  <META name="Keywords" content="'.$global_config_arr[keywords].'">
-  <META name="Author" content="'.$global_config_arr[author].'">
-  <META name="Content-language" content="de">
-  <META name="Revisit-after" content="3 days">
-  <META name="Audience" content="Alle">
-  <META name="Robots" content="INDEX,FOLLOW">
+  <META name="Description" content="'.$global_config_arr[description].'" />
+  <META name="Keywords" content="'.$global_config_arr[keywords].'" />
+  <META name="Author" content="'.$global_config_arr[author].'" />
+  <META name="Content-language" content="de" />
+  <META name="Revisit-after" content="3 days" />
+  <META name="Audience" content="Alle" />
+  <META name="Robots" content="INDEX,FOLLOW" />
   ';
 
 if ($global_config_arr[show_favicon] == 1)
-  $template_main .= '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico">
+  $template_main .= '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico" />
   ';
 
   $template_main .= '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />';
@@ -166,15 +166,11 @@ while ($include_arr = mysql_fetch_assoc($index))
     while ($sv_arr = mysql_fetch_assoc($index))
     {
         // Include-URL laden
-        $sv_arr['replace_thing'] = str_replace("[", "&#x5B;", $sv_arr['replace_thing']);
-        $sv_arr['replace_thing'] = str_replace("]", "&#x5D;", $sv_arr['replace_thing']);
-        $sv_arr['replace_thing'] = str_replace("%", "&#x25;", $sv_arr['replace_thing']);
-        $template_include = str_replace($sv_arr['replace_string'], $sv_arr['replace_thing'], $template_include);
+        $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
+        $template_include = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_include);
     }
     unset($sv_arr);
-    $template_include = str_replace("[", "&#x5B;", $template_include);
-    $template_include = str_replace("]", "&#x5D;", $template_include);
-    $template_include = str_replace("%", "&#x25;", $template_include);
+    $template_include =  killsv($template_include);
     $template_index = str_replace($include_arr['replace_string'], $template_include, $template_index);
     unset($template_include);
 }
@@ -186,7 +182,7 @@ while ($sv_arr = mysql_fetch_assoc($index))
 {
     // Include-URL laden
     $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
-    $template_index = str_replace($sv_arr['replace_string'], $sv_arr['replace_thing'], $template_index);
+    $template_index = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_index);
 }
 unset($sv_arr);
 

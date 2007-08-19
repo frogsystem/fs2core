@@ -23,7 +23,7 @@ if ($config_arr[active] == 1)
     $type = 2;
   }
 
-  if ($rows < 1)
+  if ($rows <= 0 AND $config_arr[use_priority_only] != 1)
   {
     if ($config_arr[type_priority] == 1) {
       // random pic (random from categories)

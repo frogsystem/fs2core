@@ -36,13 +36,13 @@
     $tmp[rows] = "7";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{img_url}";
-        $tmp[help][0][text] = $admin_phrases[template][editor_button][help1];
+        $tmp[help][0][text] = $admin_phrases[template][editor_button][help_1];
         $tmp[help][1][tag] = "{alt}";
-        $tmp[help][1][text] = $admin_phrases[template][editor_button][help2];
+        $tmp[help][1][text] = $admin_phrases[template][editor_button][help_2];
         $tmp[help][2][tag] = "{title}";
-        $tmp[help][2][text] = $admin_phrases[template][editor_button][help3];
+        $tmp[help][2][text] = $admin_phrases[template][editor_button][help_3];
         $tmp[help][3][tag] = "{javascript}";
-        $tmp[help][3][text] = $admin_phrases[template][editor_button][help4];
+        $tmp[help][3][text] = $admin_phrases[template][editor_button][help_4];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
@@ -62,13 +62,13 @@
     $tmp[rows] = "20";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "{style}";
-        $tmp[help][0][text] = $admin_phrases[template][editor_design][help1];
+        $tmp[help][0][text] = $admin_phrases[template][editor_design][help_1];
         $tmp[help][1][tag] = "{text}";
-        $tmp[help][1][text] = $admin_phrases[template][editor_design][help2];
+        $tmp[help][1][text] = $admin_phrases[template][editor_design][help_2];
         $tmp[help][2][tag] = "{buttons}";
-        $tmp[help][2][text] = $admin_phrases[template][editor_design][help3];
+        $tmp[help][2][text] = $admin_phrases[template][editor_design][help_3];
         $tmp[help][3][tag] = "{smilies}";
-        $tmp[help][3][text] = $admin_phrases[template][editor_design][help4];
+        $tmp[help][3][text] = $admin_phrases[template][editor_design][help_4];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
