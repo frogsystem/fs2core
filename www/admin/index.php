@@ -36,14 +36,7 @@ if ($_POST[login]==1)
 ///// detect subpage
 //////////////////////////////
 
-if ($_GET[go])
-{
-    $go = $_GET[go];
-}
-if ($_POST[go])
-{
-    $go = $_POST[go];
-}
+$go = $_REQUEST['go'];
 
 $index = mysql_query("SELECT * FROM fs_admin_cp", $db);
 
@@ -248,6 +241,9 @@ $NAVI_ARR[menu_id] = "content";
 
 $NAVI_ARR[link][] = "press_add";
 $NAVI_ARR[link][] = "press_edit";
+$NAVI_ARR[link][] = "press_cat";
+$NAVI_ARR[link][] = "game";
+$NAVI_ARR[link][] = "language";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);

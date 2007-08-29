@@ -402,7 +402,7 @@ function createmenu($menu_arr)
         if ($value[show] == true AND $_SESSION["user_level"] == "authorised")
         {
             $menu_class = "menu_link";
-            if ($_GET['mid']==$value[id] AND ($go!="login" OR $_SESSION["user_level"] == "authorised")) {
+            if ($_REQUEST['mid']==$value[id] AND ($go!="login" OR $_SESSION["user_level"] == "authorised")) {
                 $menu_class = "menu_link_selected";
             }
             $template .= '<a href="'.$PHP_SELF.'?mid='.$value[id].$session_url.'" target="_self" class="'.$menu_class.'">'.$value[title].'</a>';
@@ -462,7 +462,7 @@ function createnavi($navi_arr, $first)
 {
     unset($template);
 
-    if ($navi_arr[menu_id] == $_GET['mid'] AND $_SESSION["user_level"] == "authorised") {
+    if ($navi_arr[menu_id] == $_REQUEST['mid'] AND $_SESSION["user_level"] == "authorised") {
         foreach ($navi_arr[link] as $value)
         {
             $template .= createlink($value);
@@ -531,8 +531,8 @@ function createlink($page_call, $page_link_title = false, $page_link_url = false
   if ($createlink_arr[permission] == 1)
   {
       return'
-      <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go='.$createlink_arr[page_call].$session_url.'" class="navi">- </a>
-      <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go='.$createlink_arr[page_call].$session_url.'" class="'.$link_class.'">
+      <a href="'.$PHP_SELF.'?mid='.$_REQUEST['mid'].'&go='.$createlink_arr[page_call].$session_url.'" class="navi">- </a>
+      <a href="'.$PHP_SELF.'?mid='.$_REQUEST['mid'].'&go='.$createlink_arr[page_call].$session_url.'" class="'.$link_class.'">
           '.$createlink_arr[link_title].'</a><br />';
   }
   else
