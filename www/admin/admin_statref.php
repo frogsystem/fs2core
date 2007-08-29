@@ -70,7 +70,7 @@ else
                             </tr>
                             <tr>
                                 <td>
-                                    <font style="font-size:7pt;">Setzte im Filter ein ! an erster Stelle um den Suchbegriff komplett auszuschließen.<br />Mehrere Suchbegriffe können mit , getrennt werden.</font>
+                                    <font style="font-size:7pt;">Setzte im Filter ein ! an erster Stelle um den Suchbegriff komplett auszuschließen.<br />Mehrere Suchbegriffe können mit , oder Leerzeichen getrennt werden.</font>
                                 </td>
                                 <td align="right">
                                     <input type="submit" value="Anzeigen" class="button">
@@ -97,14 +97,18 @@ else
                         </tr>
     ';
 
-    $filter = str_replace(" ","",$filter);
+    $filter = str_replace(" ",",",$filter);
     $filterarray = explode(",", $filter);
+
+    $query = "";
+    $and_query = "";
+    $or_query = "";
 
     $first_and = true;
     $first_or = true;
     foreach ($filterarray as $string)
     {
-        if (substr($string, 0, 1) == "!")
+        if (substr($string, 0, 1) == "!" AND substr($string, 1) != "")
         {
             $like = "ref_url NOT LIKE";
             $string = substr($string, 1);
@@ -115,7 +119,7 @@ else
             $and_query .= $like . " '%" . $string . "%'";
             $first_and = false;
         }
-        else
+        elseif (substr($string, 0, 1) != "!" AND $string != "")
         {
             $like = "ref_url LIKE";
             if (!$first_or)
@@ -130,9 +134,15 @@ else
     
     if ($or_query!="") {
         $or_query = "(".$or_query.")";
-        $and_query = " AND ".$and_query;
+        if ($and_query!="") {
+            $and_query = " AND ".$and_query;
+        }
     }
-    $query =  $or_query . $and_query;
+    
+    if ($or_query != "" OR $and_query != "") {
+        $query = " WHERE ";
+    }
+    $query .= $or_query . $and_query;
 
     switch ($order)
     {
@@ -147,7 +157,7 @@ else
             break;
     }
 
-    $index = mysql_query("SELECT * FROM fs_counter_ref WHERE $query", $db);
+    $index = mysql_query("SELECT * FROM fs_counter_ref $query", $db);
     while ($referrer_arr = mysql_fetch_assoc($index))
     {
         $dburlfull = $referrer_arr[ref_url];

@@ -124,7 +124,7 @@ if (isset($_POST[commentid]))
                                     <font class="small">Html ist '.$config_arr[html_code].'. FScode ist '.$config_arr[fs_code].'</font>
                                 </td>
                                 <td valign="top">
-                                    '.create_editor("text", $comment_arr[comment_text], 330, 130).'
+                                    '.create_editor("text", killhtml($comment_arr[comment_text]), 330, 130).'
                                 </td>
                             </tr>
                             <tr>

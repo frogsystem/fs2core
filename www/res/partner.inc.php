@@ -14,11 +14,13 @@ while ($permanent_arr = mysql_fetch_assoc($permanent))
     $index2 = mysql_query("select partner_navi_eintrag from fs_template where id = '$global_config_arr[design]'", $db);
     $partner = stripslashes(mysql_result($index2, 0, "partner_navi_eintrag"));
     $partner = str_replace("{url}", $permanent_arr[partner_link], $partner);
-    $partner = str_replace("{bild}", image_url("images/partner/", $permanent_arr[partner_id]."_small", false), $partner);
+    $partner = str_replace("{img_url}", image_url("images/partner/",$permanent_arr[partner_id]."_big"), $partner);
+    $partner = str_replace("{button_url}", image_url("images/partner/",$permanent_arr[partner_id]."_small"), $partner);
     $partner = str_replace("{name}", $permanent_arr[partner_name], $partner);
     $partner = str_replace("{text}", $permanent_arr[partner_beschreibung], $partner);
     
     $permanent_list .= $partner;
+    $shuffle_arr[] = $partner;
 
 }
 unset($permanent_arr);
@@ -29,92 +31,66 @@ unset($permanent_arr);
 //////////////////////////////////////
 
 // Zahl der aus der Gesamtzahl auszuwählenden Partner        
-$index = mysql_query("SELECT * FROM fs_partner_config", $db);
-$rand_arr = mysql_fetch_assoc($index);
-$randanzahl = $rand_arr[partner_anzahl];
-unset($rand_arr);
+$index = mysql_query("SELECT partner_anzahl FROM fs_partner_config", $db);
+$rand_arr[shuffle_non_perm] = mysql_result($index,0,"partner_anzahl");
+$rand_arr[shuffle_all] = mysql_result($index,0,"partner_anzahl");
+//Zahl der existierenden Partner
+$index = mysql_query("SELECT COUNT(partner_id) AS number FROM fs_partner", $db);
+if (mysql_result($index,0,"number")<$rand_arr[shuffle_all]){
+    $rand_arr[shuffle_all] = mysql_result($index,0,"number");
+}
+$index = mysql_query("SELECT COUNT(partner_id) AS number FROM fs_partner WHERE partner_permanent = 0", $db);
+if (mysql_result($index,0,"number")<$rand_arr[shuffle_non_perm]){
+    $rand_arr[shuffle_non_perm] = mysql_result($index,0,"number");
+}
 
-// Abgleich mit Anzahl der existierenden Datensätze
-$index = mysql_query("SELECT partner_id FROM fs_partner WHERE partner_permanent = 0", $db);
-if (mysql_num_rows($index) < $randanzahl)
-{
-        $randanzahl = mysql_num_rows($index); // Wenn Anzahl auszuwählender Partner zu groß ist, diese Anzahl verkleinern
-} 
-
-// Gesamtzahl aller Partner
-$index = mysql_query("SELECT MAX(partner_id) AS partner_id FROM fs_partner", $db); //größter Datensatz = Anzahl an Datensätzen
-$rand_arr = mysql_fetch_assoc($index);
-$rows = $rand_arr[partner_id];
 
 ////////////////////////
 //// Zufallsauswahl ////
 ////////////////////////
 
-if ($rows > 0)
+$non_permanent = mysql_query("SELECT partner_id,
+                                     partner_name,
+                                     partner_link,
+                                     partner_beschreibung,
+                                     partner_permanent
+                              FROM fs_partner WHERE partner_permanent = 0", $db);
+while ($non_permanent_arr = mysql_fetch_assoc($non_permanent))
 {
-        function checkifdouble($ran,$i) // prüft, ob diese Zahl schon "ausgewürfelt" wurde
-        {
-            for ($j=1; $j<$i; $j++)
-            {
-                if ($ran[$j] == $ran[$i])
-                {
-                    $ergebnis = "true";
-                    break;
-                }
-                else
-                {
-                    $ergebnis = "false";
-                }
-            }
-            return $ergebnis;
-        }
-        
-        for ($i=1; $i<=$randanzahl; $i++) 
-        {
-            $ran[$i] = mt_rand(1, $rows); // "würfelt" Zahl aus
-            if ($i>1) // erst ab zweiter Zahl Vergleich, ob Zahl schon dran war
-            {
-                while (checkifdouble($ran,$i) == "true") // so lange "würfeln", bis eine Zahl kommt, die noch nicht dran war (!=true, mit checkifdouble prüfen)
-                {
-                    $ran[$i] = mt_rand(1, $rows);
-                }
-            }
-            $index2 = mysql_query("SELECT partner_id,
-                                          partner_name,
-                                          partner_link,
-                                          partner_beschreibung,
-                                          partner_permanent
-                                   FROM fs_partner WHERE partner_id = '$ran[$i]'
-                                                   AND partner_permanent = 0", $db);
-                $partner_arr = mysql_fetch_assoc($index2);
-                if ($partner_arr[partner_id] == NULL) // falls Datensatz mit der ausgewürfelten id nicht existiert (z.B. gelöscht), Zähler um 1 zurücksetzen, weiter mit for-Schleife
-                {
-                        $i--;
-                        unset ($partner_arr);
-                }
-                else // Bild mit Link ausgeben
-                {
-                    $index3 = mysql_query("select partner_navi_eintrag from fs_template where id = '$global_config_arr[design]'", $db);
-                    $partner = stripslashes(mysql_result($index3, 0, "partner_navi_eintrag"));
-                    $partner = str_replace("{url}", $partner_arr[partner_link], $partner);
-                    $partner = str_replace("{bild}", image_url("images/partner/", $partner_arr[partner_id]."_small", false), $partner);
-                    $partner = str_replace("{name}", $partner_arr[partner_name], $partner);
-                    $partner = str_replace("{text}", $partner_arr[partner_beschreibung], $partner);
+    $index2 = mysql_query("SELECT partner_navi_eintrag FROM fs_template WHERE id = '$global_config_arr[design]'", $db);
+    $partner = stripslashes(mysql_result($index2, 0, "partner_navi_eintrag"));
+    $partner = str_replace("{url}", $non_permanent_arr[partner_link], $partner);
+    $partner = str_replace("{img_url}", image_url("images/partner/",$non_permanent_arr[partner_id]."_big"), $partner);
+    $partner = str_replace("{button_url}", image_url("images/partner/",$non_permanent_arr[partner_id]."_small"), $partner);
+    $partner = str_replace("{name}", $non_permanent_arr[partner_name], $partner);
+    $partner = str_replace("{text}", $non_permanent_arr[partner_beschreibung], $partner);
 
-                    $partner_navi_list .= $partner;
+    $non_perm_shuffle_arr[] = $partner;
+    $shuffle_arr[] = $partner;
 
-                    unset ($partner_arr);
-                }
-        }
 }
+unset($non_permanent_arr);
 
-else
+if ($rand_arr[shuffle_non_perm] > 0)
 {
-    $partner_navi_list = '<br><br>';
+    srand((float) microtime() * 10000000);
+    shuffle($non_perm_shuffle_arr);
+    for ($i=0;$i<$rand_arr[shuffle_non_perm];$i++) {
+        $non_permanent_list .= $non_perm_shuffle_arr[$i];
+    }
+}
+if ($rand_arr[shuffle_all] > 0)
+{
+    srand((float) microtime() * 10000000);
+    shuffle($shuffle_arr);
+    for ($i=0;$i<$rand_arr[shuffle_all];$i++) {
+        $partner_all_list .= $shuffle_arr[$i];
+    }
 }
 
 $index = mysql_query("select partner_navi_body from fs_template where id = '$global_config_arr[design]'", $db);
 $template = stripslashes(mysql_result($index, 0, "partner_navi_body"));
+$template = str_replace("{partner_all}", $partner_all_list, $template);
 $template = str_replace("{permanents}", $permanent_list, $template);
-$template = str_replace("{non-permanents}", $partner_navi_list, $template);
+$template = str_replace("{non_permanents}", $non_permanent_list, $template);
 ?>

@@ -76,7 +76,7 @@ $global_config_arr['design_name'] = mysql_result($index, "name");
 
 
     $time = time();             // Aktueller Timestamp
-    $counttime="86400";         // Zeit die die IPs gespeichert bleiben in sek. (1 Tag = 86400)
+    $counttime = "86400";       // Zeit die die IPs gespeichert bleiben in sek. (1 Tag = 86400)
     $s_year2 = date("Y");       // Jahr
     $s_month2 = date("m");      // Monat
     $s_day2 = date("d");        // Tag
