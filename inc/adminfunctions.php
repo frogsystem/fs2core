@@ -210,7 +210,7 @@ function create_templatepage($template_arr, $go)
     // Design ermittlen
     $return_template .= '
                     <div align="left">
-                        <form action="'.$PHP_SELF.'" method="post">
+                        <form action="" method="post">
                             <input type="hidden" value="'.$go.'" name="go">
                             <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                             <select name="design" onChange="this.form.submit();">
@@ -251,7 +251,7 @@ function create_templatepage($template_arr, $go)
         
         $return_template .= '
         <input type="hidden" value="" name="editwhat">
-                    <form action="'.$_SERVER[PHP_SELF].'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="'.$go.'" name="go">
                         <input type="hidden" value="'.$_POST[design].'" name="design">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">

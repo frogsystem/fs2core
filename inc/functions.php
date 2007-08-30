@@ -314,6 +314,33 @@ function point_number ($zahl)
     return $zahl;
 }
 
+/////////////////////////////////////////
+// String kürzen ohne Wort zuzerstören //
+/////////////////////////////////////////
+function truncate_string ($string, $maxlength, $extension) {
+
+   // Set the replacement for the "string break" in the wordwrap function
+   $cutmarker = "**F3rVRB,YQFrK6qpE**cut_here**cc3Z,7L,jVy9bDWY**";
+
+   // Checking if the given string is longer than $maxlength
+   if (strlen($string)+strlen($$extension) > $maxlength) {
+
+       // Using wordwrap() to set the cutmarker
+       // NOTE: wordwrap (PHP 4 >= 4.0.2, PHP 5)
+       $string = wordwrap($string, $maxlength, $cutmarker);
+
+       // Exploding the string at the cutmarker, set by wordwrap()
+       $string = explode($cutmarker, $string);
+
+       // Adding $extension to the first value of the array $string, returned by explode()
+       $string = $string[0] . $extension;
+   }
+
+   // returning $string
+   return $string;
+
+}
+
 ////////////////////////////////
 ///// Download Categories //////
 ////////////////////////////////
@@ -649,6 +676,17 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         unset($bbcode);
 
         return $parsedtext;
+}
+
+//////////////////////////
+// kill FS Code in text //
+//////////////////////////
+
+function killfs($text)
+{
+    $text = fscode($text);
+    $text = strip_tags($text);
+    return $text;
 }
 
 ///////////////////////////////////////////////////////////////
