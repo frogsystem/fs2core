@@ -64,14 +64,14 @@ else
 settype($_POST[posterid], 'integer');
 $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
 
-$index = mysql_query("SELECT user_id, user_name FROM fs_user WHERE user_id = '$_POST[posterid]'", $db);
+$index = mysql_query("SELECT user_id, user_name FROM ".$global_config_arr[pref]."user WHERE user_id = '$_POST[posterid]'", $db);
 if (mysql_num_rows($index) == 1)
 {
     $dbusername = mysql_result($index, 0, "user_name");
     $userlink = '?go=profil&amp;userid=' . mysql_result($index, 0, "user_id");
 
     // Template für Artikel Autor abrufen und füllen
-    $index = mysql_query("select artikel_autor from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select artikel_autor from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $autor = stripslashes(mysql_result($index, 0, "artikel_autor"));
     $autor = str_replace("{profillink}", $userlink, $autor); 
     $autor = str_replace("{username}", $dbusername, $autor); 
@@ -93,7 +93,7 @@ if ($_POST[fscode] == 1)
 $_POST[text] = stripslashes($_POST[text]);
 
 // Template für Artikel Body abrufen und füllen
-$index = mysql_query("select artikel_body from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select artikel_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $body = stripslashes(mysql_result($index, 0, "artikel_body"));
 $body = str_replace("{titel}", $_POST[title], $body); 
 $body = str_replace("{datum}", $date, $body); 

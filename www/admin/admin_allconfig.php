@@ -23,8 +23,9 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
   $_POST[page] = savesql($_POST[page]);
   $_POST[page_next] = savesql($_POST[page_next]);
   $_POST[page_prev] = savesql($_POST[page_prev]);
+  $_POST[feed] = savesql($_POST[feed]);
   
-  mysql_query("UPDATE fs_global_config
+  mysql_query("UPDATE ".$global_config_arr[pref]."global_config
                SET virtualhost = '$_POST[virtualhost]',
                    admin_mail = '$_POST[admin_mail]',
                    title = '$_POST[title]',
@@ -39,7 +40,8 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
                    page = '$_POST[page]',
                    page_next = '$_POST[page_next]',
                    page_prev = '$_POST[page_prev]',
-                   registration_antispam = '$_POST[registration_antispam]'
+                   registration_antispam = '$_POST[registration_antispam]',
+                   feed = '$_POST[feed]'
                WHERE id = '1'", $db);
     systext("Die Konfiguration wurde aktualisiert");
 }
@@ -50,7 +52,7 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
 
 else
 {
-  $index = mysql_query("SELECT * FROM fs_global_config", $db);
+  $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."global_config", $db);
   $config_arr = mysql_fetch_assoc($index);
     
   $error_message = "";
@@ -59,12 +61,16 @@ else
   {
     $config_arr[title] = $_POST['title'];
     $config_arr[virtualhost] = $_POST['virtualhost'];
+    $config_arr[admin_mail] = $_POST['admin_mail'];
     $config_arr[description] = $_POST['description'];
     $config_arr[author] = $_POST['author'];
-    $config_arr[admin_mail] = $_POST['admin_mail'];
     $config_arr[keywords] = $_POST['keywords'];
+    $config_arr[show_favicon] = $_POST['show_favicon'];
+    $config_arr[feed] = $_POST['feed'];
     $config_arr[design] = $_POST['design'];
     $config_arr[allow_other_designs] = $_POST['allow_other_designs'];
+    $config_arr[show_announcement] = $_POST['show_announcement'];
+    $config_arr[registration_antispam] = $_POST['registration_antispam'];
     $config_arr[date] = $_POST['date'];
     $config_arr[page] = $_POST['page'];
     $config_arr[page_next] = $_POST['page_next'];
@@ -162,13 +168,44 @@ else
            </tr>
            <tr>
              <td class="config" valign="top" width="50%">
+               Feed:<br>
+               <font class="small">Welcher Feed soll in Html-Kopf eingebunden werden?</font>
+             </td>
+             <td class="config" valign="top" width="50%">
+               <select name="feed" size="1">';
+                 echo '<option value="rss091"';
+                 if ($config_arr[feed] == "rss091")
+                   echo ' selected=selected';
+                 echo '>RSS 0.91</option>';
+                 
+                 echo '<option value="rss10"';
+                 if ($config_arr[feed] == "rss10")
+                   echo ' selected=selected';
+                 echo '>RSS 1.0</option>';
+                 
+                 echo '<option value="rss20"';
+                 if ($config_arr[feed] == "rss20")
+                   echo ' selected=selected';
+                 echo '>RSS 2.0</option>';
+                 
+                 echo '<option value="atom10"';
+                 if ($config_arr[feed] == "atom10")
+                   echo ' selected=selected';
+                 echo '>Atom 1.0</option>';
+
+               echo'
+               </select>
+             </td>
+           </tr>
+           <tr>
+             <td class="config" valign="top" width="50%">
                Design:<br>
                <font class="small">Design, in dem die Seite angezeigt wird</font>
              </td>
              <td class="config" valign="top" width="50%">
                <select name="design" size="1">';
 
-               $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
+               $index = mysql_query("select id, name from ".$global_config_arr[pref]."template ORDER BY id", $db);
                while ($design_arr = mysql_fetch_assoc($index))
                {
                  echo '<option value="'.$design_arr[id].'"';

@@ -10,8 +10,8 @@ if ($_POST[polledit] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
     settype($_POST[editpollid], 'integer');
     if ($_POST[delpoll])
     {
-        mysql_query("DELETE FROM fs_poll WHERE poll_id = '$_POST[editpollid]'", $db);
-        mysql_query("DELETE FROM fs_poll_answers WHERE poll_id = '$_POST[editpollid]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."poll WHERE poll_id = '$_POST[editpollid]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."poll_answers WHERE poll_id = '$_POST[editpollid]'", $db);
         systext("Die Umfrage wurde gelöscht");
     }
 
@@ -32,7 +32,7 @@ if ($_POST[polledit] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
         settype($_POST[participants], 'integer');
 
         // Umfrage in der DB aktualisieren
-        $update = "UPDATE fs_poll
+        $update = "UPDATE ".$global_config_arr[pref]."poll
                    SET poll_quest = '$_POST[frage]',
                        poll_start = '$adate',
                        poll_end   = '$edate',
@@ -47,7 +47,7 @@ if ($_POST[polledit] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
             if (isset($_POST[dela][$i]))
             {
                 settype($_POST[dela][$i], 'integer');
-                mysql_query("DELETE FROM fs_poll_answers WHERE answer_id = " . $_POST[dela][$i], $db);
+                mysql_query("DELETE FROM ".$global_config_arr[pref]."poll_answers WHERE answer_id = " . $_POST[dela][$i], $db);
             }
             else
             {
@@ -58,14 +58,14 @@ if ($_POST[polledit] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
 
                 if (!$_POST[id][$i] && $_POST[ant][$i])
                 {
-                    mysql_query("INSERT INTO fs_poll_answers (poll_id, answer, answer_count)
+                    mysql_query("INSERT INTO ".$global_config_arr[pref]."poll_answers (poll_id, answer, answer_count)
                                  VALUES ('".$_POST[editpollid]."',
                                          '".$_POST[ant][$i]."',
                                          '".$_POST[count][$i]."');", $db);
                 }
                 else
                 {
-                    $update = "UPDATE fs_poll_answers
+                    $update = "UPDATE ".$global_config_arr[pref]."poll_answers
                                SET answer       = '".$_POST[ant][$i]."',
                                    answer_count = '".$_POST[count][$i]."'
                                WHERE answer_id = ".$_POST[id][$i];
@@ -96,7 +96,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
     }
 
     settype($_POST[pollid], 'integer');
-    $index = mysql_query("SELECT * FROM fs_poll WHERE poll_id = '$_POST[pollid]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."poll WHERE poll_id = '$_POST[pollid]'", $db);
 
     if (!isset($_POST[frage]))
     {
@@ -161,7 +161,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
         $_POST[participants] = mysql_result($index, 0, "poll_participants");
     }
 
-    $index = mysql_query("SELECT * FROM fs_poll_answers WHERE poll_id = '$_POST[pollid]' ORDER BY answer_id", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."poll_answers WHERE poll_id = '$_POST[pollid]' ORDER BY answer_id", $db);
     $rows = mysql_num_rows($index);
     for($i=0; $i<$rows; $i++)
     {
@@ -411,7 +411,7 @@ else
     ';
 
     // Umfragen auflisten
-    $index = mysql_query("SELECT * FROM fs_poll ORDER BY poll_start DESC", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."poll ORDER BY poll_start DESC", $db);
     while ($poll_arr = mysql_fetch_assoc($index))
     {
         $poll_arr[poll_start] = date("d.m.Y" , $poll_arr[poll_start]) ;

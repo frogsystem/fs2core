@@ -38,7 +38,7 @@ if ($_POST[login]==1)
 
 $go = $_REQUEST['go'];
 
-$index = mysql_query("SELECT * FROM fs_admin_cp", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."admin_cp", $db);
 
 $page_created = false;
 while ($acp_arr = mysql_fetch_assoc($index))
@@ -84,7 +84,7 @@ echo'
     <link rel="stylesheet" type="text/css" href="admin.css">
     <link rel="stylesheet" type="text/css" href="editor.css">
     <script src="functions.js" type="text/javascript"></script>
-    <script src="../res/functions.js" type="text/javascript"></script>
+    <script src="../res/js_functions.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -222,7 +222,7 @@ unset($NAVI_ARR);
 ///// polls
 //////////////////////////////
 
-$NAVI_ARR[title] = "Umfrage";
+$NAVI_ARR[title] = "Umfragen";
 $NAVI_ARR[menu_id] = "content";
 
 $NAVI_ARR[link][] = "polladd";
@@ -239,11 +239,10 @@ unset($NAVI_ARR);
 $NAVI_ARR[title] = "Presseberichte";
 $NAVI_ARR[menu_id] = "content";
 
+$NAVI_ARR[link][] = "press_config";
+$NAVI_ARR[link][] = "press_admin";
 $NAVI_ARR[link][] = "press_add";
 $NAVI_ARR[link][] = "press_edit";
-$NAVI_ARR[link][] = "press_cat";
-$NAVI_ARR[link][] = "game";
-$NAVI_ARR[link][] = "language";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -282,7 +281,7 @@ unset($NAVI_ARR);
 ///// screenshots
 //////////////////////////////
 
-$NAVI_ARR[title] = "Screenshots";
+$NAVI_ARR[title] = "Bilder";
 $NAVI_ARR[menu_id] = "media";
 
 $NAVI_ARR[link][] = "screenadd";
@@ -310,7 +309,7 @@ unset($NAVI_ARR);
 ///// random pic
 //////////////////////////////
 
-$NAVI_ARR[title] = "Zufallsbild";
+$NAVI_ARR[title] = "Zufallsbilder";
 $NAVI_ARR[menu_id] = "media";
 
 $NAVI_ARR[link][] = "randompic_cat";
@@ -321,9 +320,6 @@ $NAVI_ARR[link][] = "randompic_config";
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
 unset($NAVI_ARR);
-
-$ADMIN_ARR[title] = "Zufallsbild";
-$ADMIN_ARR[id] = "randompic";
 
 //////////////////////////////
 ///// downloads
@@ -349,9 +345,9 @@ unset($NAVI_ARR);
 $NAVI_ARR[title] = "Partnerseiten";
 $NAVI_ARR[menu_id] = "promo";
 
+$NAVI_ARR[link][] = "partnerconfig";
 $NAVI_ARR[link][] = "partneradd";
 $NAVI_ARR[link][] = "partneredit";
-$NAVI_ARR[link][] = "partnerconfig";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -381,6 +377,7 @@ $NAVI_ARR[menu_id] = "styles";
 $NAVI_ARR[link][] = "template_create";
 $NAVI_ARR[link][] = "template_manage";
 $NAVI_ARR[link][] = "csstemplate";
+$NAVI_ARR[link][] = "jstemplate";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -412,6 +409,7 @@ $NAVI_ARR[link][] = "alltemplate";
 $NAVI_ARR[link][] = "newstemplate";
 $NAVI_ARR[link][] = "artikeltemplate";
 $NAVI_ARR[link][] = "polltemplate";
+$NAVI_ARR[link][] = "press_template";
 $NAVI_ARR[link][] = "screenshottemplate";
 $NAVI_ARR[link][] = "wallpapertemplate";
 $NAVI_ARR[link][] = "randompictemplate";

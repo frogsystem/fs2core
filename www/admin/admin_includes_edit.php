@@ -14,12 +14,12 @@ if (($_POST['replace_thing'] AND $_POST['name']) OR $_POST[include_del]==1)
     $_POST[old_name] = savesql($_POST[old_name]);
     $_POST[replace_thing] = savesql($_POST[replace_thing]);
 
-    $index = mysql_query("SELECT * FROM fs_includes
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."includes
                           WHERE replace_string = '".$_POST[replace_string]."'", $db);
 
     if ($_POST[include_del]==1)
     {
-        mysql_query("DELETE FROM fs_includes WHERE id = '$_POST[include_id]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."includes WHERE id = '$_POST[include_id]'", $db);
         systext("Das Ersetzungsmuster wurde erfolgreich gelöscht");
         unset($_POST['sended']);
         unset($_POST['replace_string']);
@@ -30,7 +30,7 @@ if (($_POST['replace_thing'] AND $_POST['name']) OR $_POST[include_del]==1)
     }
     elseif (mysql_num_rows($index) == 0 OR $_POST[replace_string] == $_POST[old_name])
     {
-        mysql_query("UPDATE fs_includes
+        mysql_query("UPDATE ".$global_config_arr[pref]."includes
                      SET replace_string = '$_POST[replace_string]',
                          replace_thing =  '$_POST[replace_thing]'
                      WHERE id = $_POST[include_id]", $db);
@@ -63,7 +63,7 @@ if ($_POST[include_id])
     systext($error_message);
   }
 
-  $index = mysql_query("SELECT * FROM fs_includes WHERE id=$_POST[include_id]", $db);
+  $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."includes WHERE id=$_POST[include_id]", $db);
   $inc_arr = mysql_fetch_assoc($index);
 
   $inc_arr[replace_string] = killhtml(substr($inc_arr[replace_string], 2,strlen($inc_arr[replace_string])-4));
@@ -208,7 +208,7 @@ else
     <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 
   <td  class="configthin">';
-  $index = mysql_query("SELECT id, replace_string FROM fs_includes WHERE include_type=1 ORDER BY replace_string ASC", $db);
+  $index = mysql_query("SELECT id, replace_string FROM ".$global_config_arr[pref]."includes WHERE include_type=1 ORDER BY replace_string ASC", $db);
   while ($inc_arr = mysql_fetch_assoc($index))
   {
     echo '<input type="radio" name="include_id" value="'.$inc_arr[id].'" /> '.$inc_arr[replace_string].'<br />';
@@ -216,7 +216,7 @@ else
   
 echo'</td>
   <td  class="configthin">';
-  $index = mysql_query("SELECT id, replace_string FROM fs_includes WHERE include_type=2 ORDER BY replace_string ASC", $db);
+  $index = mysql_query("SELECT id, replace_string FROM ".$global_config_arr[pref]."includes WHERE include_type=2 ORDER BY replace_string ASC", $db);
   while ($inc_arr = mysql_fetch_assoc($index))
   {
     echo '<input type="radio" name="include_id" value="'.$inc_arr[id].'" /> '.$inc_arr[replace_string].'<br />';

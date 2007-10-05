@@ -1,92 +1,54 @@
 <?php
-
-/////////////////////////////////
-////// CSS Datei speichern //////
-/////////////////////////////////
-
-if ($_POST[code] && (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="") && ($_SESSION[user_level] == "authorised"))
-{
-    $index = mysql_query("SELECT id, name FROM fs_template WHERE id = '$_POST[design]'", $db);
-    $design_arr = mysql_fetch_assoc($index);
-
-    $fp = fopen("../css/".$design_arr[name].".css", "w");
-    fputs($fp, $_POST[code]);
-    fclose($fp);
-    systext("$design_arr[name] wurde aktualisiert");
-}
-
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
-
-elseif ($_SESSION[user_level] == "authorised")
-{
-    // CSS Dateien ermittlen
-    echo'
-                    <div align="left">
-                        <form action="" method="post">
-                            <input type="hidden" value="csstemplate" name="go">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design auswählen</option>
-                                <option value="">------------------------</option>
-    ';
-
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      echo '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        echo ' selected=selected';
-      echo '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        echo ' (aktiv)';
-      echo '</option>';
-    }
+########################################
+#### explanation of editor creation ####
+########################################
+/*
+    $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
+    unset($tmp); //unsets $tmp for safety-issues
     
-    echo'
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
-    ';
+    $tmp[name] = "name"; //name of the template's db-entry
+    $tmp[title] = "title"; //title of the template
+    $tmp[description] = "description"; //short description of what the template is for
+    $tmp[rows] = "x"; //number of rows of the textarea
+    $tmp[cols] = "y"; //number of cols of the textarea
+        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
+        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
+        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
+        $tmp[help][...][text] = "text"; //to add more possible tags
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
+    unset($tmp); //unsets $tmp for safety-issues
+    
+    $TEMPLATE_EDIT[] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
 
-    if (($_POST[design] OR $_POST[design]==0) AND $_POST[design]!="")
-    {
-        // Datei einlesen
-        $index = mysql_query("select id, name from fs_template WHERE id = '$_POST[design]'", $db);
-        $design_arr = mysql_fetch_assoc($index);
-        $datei = file_get_contents("../css/".$design_arr[name].".css");
+    //continue with new templates just remind to add them at the end with $TEMPLATE_EDIT[] = $tmp;
+    ...
+*/
+##########################################
+#### / explanation of editor creation ####
+##########################################
 
-        echo'
-                    <input type="hidden" value="" name="editwhat">
-                    <form action="" method="post">
-                        <input type="hidden" value="csstemplate" name="go">
-                        <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top" width="120">
-                                    CSS:</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <textarea rows="20" cols="66" name="code">'.$datei.'</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                </td>
-                                <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\'code\')">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-        ';
-    }
+    $TEMPLATE_GO = "csstemplate";
+    unset($tmp);
+    
+    $tmp[name] = "style_css";
+    $tmp[title] = $admin_phrases[template][style_css][title];;
+    $tmp[description] = $admin_phrases[template][style_css][description];
+    $tmp[rows] = "30";
+    $tmp[cols] = "66";
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+        
+//////////////////////////
+//// Intialise Editor ////
+//////////////////////////
+
+if (templatepage_postcheck($TEMPLATE_EDIT))
+{
+    templatepage_save($TEMPLATE_EDIT);
+    systext("Template wurde aktualisiert");
+}
+else
+{
+    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
 }
 ?>

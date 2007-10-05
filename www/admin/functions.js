@@ -1,3 +1,4 @@
+
 //delete alert
 function delalert (elementID, alertText) {
   if (document.getElementById(elementID).checked == true) {
@@ -11,6 +12,72 @@ function delalert (elementID, alertText) {
   return true;
 }
 
+
+var last;
+var lastBox;
+
+//create Change onClick
+function createClick (theBox) {
+    if (theBox.type == 'radio') {
+        if (theBox.checked != true) {
+             theBox.checked = !(theBox.checked);
+        }
+    } else {
+        theBox.checked = !(theBox.checked);
+    }
+    return true;
+}
+
+//reset Not selected
+function resetUnclicked (resetColor, last, lastBox, object) {
+    if (object != last) {
+    if (last) {
+        last.style.backgroundColor = resetColor;
+    }
+    if (lastBox) {
+        lastBox.checked = false;
+    }
+    return true;
+    }
+
+}
+
+//colorize onClick
+function colorClick (theBox, overColor, clickColor, object) {
+
+    if (theBox.checked == true) {
+        object.style.backgroundColor = clickColor;
+        last = object;
+        lastBox = theBox;
+    } else {
+        object.style.backgroundColor = overColor;
+    }
+    return true;
+}
+
+//colorize onMouseOver
+function colorOver (theBox, overColor, clickOver, object) {
+    if (theBox.checked == true) {
+        object.style.backgroundColor = clickOver;
+    } else {
+        object.style.backgroundColor = overColor;
+    }
+    return true;
+}
+
+//colorize onMouseOut
+function colorOut (theBox, outColor, clickOut, object) {
+    if (theBox.checked == true) {
+        object.style.backgroundColor = clickOut;
+    } else {
+        object.style.backgroundColor = outColor;
+    }
+    return true;
+}
+
+
+
+
 //Open Edit-PopUp
 function openedit(what)
 {
@@ -20,119 +87,80 @@ function openedit(what)
     window.open("admin_frogpad.php","editor","width=newWidth,height=newHeight,left=0,top=0,scrollbars=YES,resizable=YES");
 }
 
-closedMenu=new Array();
 
-//Initialize Menu
-function iniMenu()
+
+
+//Schaltjahr
+function schaltJahr(Jhr)
 {
-    if (getCookieInfo("tAdminMenu") != false) {
-    closedMenu = getCookieInfo("tAdminMenu");
-    }
+    var sJahr;
+    S4Jahr = Jhr%4;
+    SHJahr = Jhr%100;
+    S4HJahr = Jhr%400;
+    sJahr = ((S4HJahr == "0") ? (1) : ((SHJahr == "0") ? (0) : ((S4Jahr == "0") ? (1) : (0))));
 
-    //document.write("menu ->"+closedMenu);
-    for (i=0; i<document.getElementsByTagName("div").length; i++) {
-        if (document.getElementsByTagName("div")[i].className == "toggle") {
-            MenuID = document.getElementsByTagName("div")[i].id;
-            if (closedMenu.inArray(MenuID)) {
-                setToggle(MenuID,"hide");
-            } else {
-                setToggle(MenuID,"show");
-            }
-        }
-    }
-
+    return sJahr;
 }
 
-//Toggle Menu
-function toggleMenu(MenuID)
+//change date
+function changeDate (dayID, monthID, yearID, hourID, minID, dayShift, monthShift, yearShift, hourShift, minShift)
 {
-    var MenuState = document.getElementById(MenuID).style.display;
+    var oldDate = new Date(parseInt(document.getElementById(yearID).value, 10),
+                           parseInt(document.getElementById(monthID).value, 10) - 1,
+                           parseInt(document.getElementById(dayID).value, 10),
+                           parseInt(document.getElementById(hourID).value, 10),
+                           parseInt(document.getElementById(minID).value, 10),
+                           "0");
+    
+    var newDate = new Date();
+    newDate.setTime(oldDate.getTime());
 
-    if (MenuState == "none") {
-        setToggle(MenuID,"show");
+   var sJahr;
+    if (oldDate.getMonth <= 1) {
+       sJahr = schaltJahr(oldDate.getFullYear());
     } else {
-        setToggle(MenuID,"hide");
+       sJahr = schaltJahr(oldDate.getFullYear() + 1)
     }
-}
-
-//Set Toggle State
-function setToggle(MenuID,state)
-{
-    if (state == "show") {
-        document.getElementById(MenuID).style.display = "block";
-        document.getElementById("timg_"+MenuID).src = "img/pointer_down.gif";
-        if (closedMenu.inArray(MenuID)) {
-            closedMenu.deleteArray(MenuID);
-        }
+    if (sJahr == 1) {
+        yearShift = parseInt(yearShift, 10)*366*24*60*60*1000;
     } else {
-        document.getElementById(MenuID).style.display = "none";
-        document.getElementById("timg_"+MenuID).src = "img/pointer.gif";
-        if (!closedMenu.inArray(MenuID)) {
-            closedMenu.push(MenuID);
+        yearShift = parseInt(yearShift, 10)*365*24*60*60*1000;
+    }
+    newDate.setTime(newDate.getTime() + yearShift);
+
+    if (parseInt(monthShift, 10) > 0) {
+        for (var i=0; i < parseInt(monthShift, 10); i++) {
+            newDate.setMonth(newDate.getMonth() + 1);
+        }
+    } else if (parseInt(monthShift, 10) < 0) {
+        for (var i=0; i < (parseInt(monthShift, 10) * -1); i++) {
+            newDate.setMonth(newDate.getMonth() - 1);
         }
     }
-    setCookie(closedMenu.join("|"), 1000*60*60*24*365); //Cookie expires in 365 Days = 1 Year
-}
+    
+    dayShift = parseInt(dayShift, 10)*24*60*60*1000;
+    newDate.setTime(newDate.getTime() + dayShift);
+    
+    hourShift = parseInt(hourShift, 10)*60*60*1000;
+    newDate.setTime(newDate.getTime() + hourShift);
+    
+    minShift = parseInt(minShift, 10)*60*1000;
+    newDate.setTime(newDate.getTime() + minShift);
+    
+    var newDay = newDate.getDate();
+      if (newDay < 10) {newDay = "0" + newDay;}
+    var newMonth = newDate.getMonth() + 1;
+      if (newMonth < 10) {newMonth = "0" + newMonth;}
+    var newYear = newDate.getFullYear();
+    var newHour = newDate.getHours();
+      if (newHour < 10) {newHour = "0" + newHour;}
+    var newMin = newDate.getMinutes();
+      if (newMin < 10) {newMin = "0" + newMin;}
 
-//Imitate deleteArray
-Array.prototype.deleteArray = function (value)
-// Returns true if the passed value is found in the
-// array.  Returns false if it is not.
-{
-    var i;
-    for (i=0; i < this.length; i++) {
-        // Matches identical (===), not just similar (==).
-        if (this[i] === value) {
-            this.splice(i,1);
-            return true;
-        }
-    }
-    return false;
-}
-
-//Imitate inArray
-Array.prototype.inArray = function (value)
-// Returns true if the passed value is found in the
-// array.  Returns false if it is not.
-{
-    var i;
-    for (i=0; i < this.length; i++) {
-        // Matches identical (===), not just similar (==).
-        if (this[i] === value) {
-            return true;
-        }
-    }
-    return false;
-}
-
-//Set tAdminMenu Cookie
-function setCookie(tMenuIDs, expiresIn)
-{
-    var expires = new Date();
-    var expireDate = expires.getTime() + expiresIn;
-    expires.setTime(expireDate);
-    document.cookie="tAdminMenu="+tMenuIDs+"; expires="+expires.toGMTString()+";";
-}
-
-//Get Information from Cookie
-function getCookieInfo(cookieName)
-{
-    var menuData = new Array();
-    if (document.cookie) {
-        begin = document.cookie.indexOf(cookieName+"=");
-        if (begin != -1) {
-            begin += cookieName.length+1;
-            end = document.cookie.indexOf(";", begin);
-            if (end == -1) {
-                end = document.cookie.length;
-            }
-            cookievalue = unescape(document.cookie.substring(begin, end));
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
-    menuData = cookievalue.split('|');
-    return menuData;
+    document.getElementById(dayID).value = newDay;
+    document.getElementById(monthID).value = newMonth;
+    document.getElementById(yearID).value = newYear;
+    document.getElementById(hourID).value = newHour;
+    document.getElementById(minID).value = newMin;
+    return true;
 }

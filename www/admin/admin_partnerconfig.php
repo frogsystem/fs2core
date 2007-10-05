@@ -4,21 +4,23 @@
 /// Partnerseite editieren ///
 //////////////////////////////
 
-if ($_POST[small_x] && $_POST[small_y] && $_POST[big_x] && $_POST[big_y] && $_POST[partner_anzahl])
+if ($_POST[small_x] && $_POST[small_y] && $_POST[big_x] && $_POST[big_y] && $_POST[file_size] && ($_POST[partner_anzahl] && $_POST[partner_anzahl]>0))
 {
     settype($_POST[small_x], 'integer');
     settype($_POST[small_y], 'integer');
     settype($_POST[big_x], 'integer');
     settype($_POST[big_y], 'integer');
     settype($_POST[partner_anzahl], 'integer');
-    $update = "UPDATE fs_partner_config
+    settype($_POST[file_size], 'integer');
+    $update = "UPDATE ".$global_config_arr[pref]."partner_config
                SET partner_anzahl = '$_POST[partner_anzahl]',
                    small_x = '$_POST[small_x]',
                    small_y = '$_POST[small_y]',
                    small_allow = '$_POST[small_allow]',
                    big_x = '$_POST[big_x]',
                    big_y = '$_POST[big_y]',
-                   big_allow = '$_POST[big_allow]'";
+                   big_allow = '$_POST[big_allow]',
+                   file_size = '$_POST[file_size]'";
     mysql_query($update, $db);
     systext("Die Konfiguration wurde aktualisiert");
 }
@@ -30,7 +32,7 @@ if ($_POST[small_x] && $_POST[small_y] && $_POST[big_x] && $_POST[big_y] && $_PO
 else
 {
 
-    $index = mysql_query("SELECT * FROM fs_partner_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner_config", $db);
     $config_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -40,13 +42,26 @@ else
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
-                                    Anzahl:<br>
-                                    <font class="small">Anzal der wechselnd angezeigten Partnerbuttons.</font>
+                                    Anzahl zufälliger Partner:<br />
+                                    <font class="small">Anzal der zusätzlich zufällig angezeigten Partnerbuttons.<br />
+                                    <b>Permante Partner werden immer angezeigt!</b></font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="partner_anzahl" size="1" value="'.$config_arr[partner_anzahl].'" maxlength="2">
+                                    <input class="text" name="partner_anzahl" size="1" value="'.$config_arr[partner_anzahl].'" maxlength="2"> Partnerseiten
+                                    <br /><font class="small">(0 ist nicht zulässig)</font>
                                 </td>
                             </tr>
+                            <tr><td>&nbsp;</td></tr>
+                            <tr>
+                                <td class="config" valign="top" width="70%">
+                                    Dateigröße:<br>
+                                    <font class="small">Dateigröße, bis zu der Bilder hochgeladen werden können.</font>
+                                </td>
+                                <td class="config" valign="top" width="30%">
+                                    <input class="text" size="5" name="file_size" value="'.$config_arr[file_size].'" maxlength="4"> KB
+                                </td>
+                            </tr>
+                            <tr><td>&nbsp;</td></tr>
                             <tr>
                                 <td class="config" valign="top" width="70%">
                                     Bildgröße kleine Bilder:<br>
@@ -55,7 +70,7 @@ else
                                 <td class="config" valign="top" width="30%">
                                     <input class="text" size="5" name="small_x" value="'.$config_arr[small_x].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="small_y" value="'.$config_arr[small_y].'" maxlength="4">
+                                    <input class="text" size="5" name="small_y" value="'.$config_arr[small_y].'" maxlength="4"> Pixel
                                 </td>
                             </tr>
                             <tr>
@@ -84,7 +99,7 @@ else
                                 <td class="config" valign="top" width="50%">
                                     <input class="text" size="5" name="big_x" value="'.$config_arr[big_x].'" maxlength="3">
                                     x
-                                    <input class="text" size="5" name="big_y" value="'.$config_arr[big_y].'" maxlength="3">
+                                    <input class="text" size="5" name="big_y" value="'.$config_arr[big_y].'" maxlength="3"> Pixel
                                 </td>
                             </tr>
                             <tr>

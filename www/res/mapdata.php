@@ -17,7 +17,7 @@ if ($_POST[action] == "input")
     settype($_POST[posy], 'integer');
     settype($_POST[landid], 'integer');
 
-    mysql_query("INSERT INTO fs_cmap_user (land_id, user_name, x_pos, y_pos, user_ort)
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."cmap_user (land_id, user_name, x_pos, y_pos, user_ort)
                  VALUES ('".$_POST[landid]."',
                          '".$_POST[username]."',
                          '".$_POST[posx]."',
@@ -35,28 +35,28 @@ if ($_POST['action'] == "getit")
 
   $landid = $_POST[landid];
 
-  $userindex = mysql_query("select user_name from fs_cmap_user where land_id = $landid order by user_name");
+  $userindex = mysql_query("select user_name from ".$global_config_arr[pref]."cmap_user where land_id = $landid order by user_name");
   $i = 0;
   while($row = mysql_fetch_array($userindex))
   {
     $usersname[$i] = $row['user_name'];
     $i++;
   }
-  $userindex = mysql_query("select user_ort from fs_cmap_user where land_id = $landid order by user_name");
+  $userindex = mysql_query("select user_ort from ".$global_config_arr[pref]."cmap_user where land_id = $landid order by user_name");
   $i = 0;
   while($row = mysql_fetch_array($userindex))
   {
     $usersort[$i] = $row['user_ort'];
     $i++;
   }
-  $userindex = mysql_query("select x_pos from fs_cmap_user where land_id = $landid order by user_name");
+  $userindex = mysql_query("select x_pos from ".$global_config_arr[pref]."cmap_user where land_id = $landid order by user_name");
   $i = 0;
   while($row = mysql_fetch_array($userindex))
   {
     $usersxpos[$i] = $row['x_pos'];
     $i++;
   }
-  $userindex = mysql_query("select y_pos from fs_cmap_user where land_id = $landid order by user_name");
+  $userindex = mysql_query("select y_pos from ".$global_config_arr[pref]."cmap_user where land_id = $landid order by user_name");
   $i = 0;
   while($row = mysql_fetch_array($userindex))
   {

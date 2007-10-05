@@ -5,18 +5,18 @@
 ////////////////////////////
 
 // News Konfiguration lesen
-$index = mysql_query("select * from fs_news_config", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
 $config_arr = mysql_fetch_assoc($index);
 $time = time();
 
 // Headlines erzeugen
-$index = mysql_query("select * from fs_news
+$index = mysql_query("select * from ".$global_config_arr[pref]."news
                       where news_date <= $time
                       order by news_date desc
                       limit $config_arr[num_head]", $db);
 while ($newshead_arr = mysql_fetch_assoc($index))
 {
-    $index2 = mysql_query("select news_headline from fs_template where id = '$global_config_arr[design]'", $db);
+    $index2 = mysql_query("select news_headline from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $headline = stripslashes(mysql_result($index2, 0, "news_headline"));
     $newshead_arr[news_date] = date("d.m.y" , $newshead_arr[news_date]) . " | " . date("H:i" , $newshead_arr[news_date]);
     $headline = str_replace("{datum}", $newshead_arr[news_date], $headline); 
@@ -28,13 +28,13 @@ unset($newshead_arr);
 
 // Neuste Downloads erzeugen
 $index = mysql_query("select dl_name, dl_id, dl_date
-                      from fs_dl
+                      from ".$global_config_arr[pref]."dl
                       where dl_open = 1
                       order by dl_date desc
                       limit $config_arr[num_head]", $db);
 while ($dlhead_arr = mysql_fetch_assoc($index))
 {
-    $index2 = mysql_query("select dl_quick_links from fs_template where id = '$global_config_arr[design]'", $db);
+    $index2 = mysql_query("select dl_quick_links from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $download = stripslashes(mysql_result($index2, 0, "dl_quick_links"));
     $dlhead_arr[dl_date] = date("d.m.y" , $dlhead_arr[dl_date]) . " | " . date("H:i" , $dlhead_arr[dl_date]);
     $download = str_replace("{datum}", $dlhead_arr[dl_date], $download); 
@@ -45,7 +45,7 @@ while ($dlhead_arr = mysql_fetch_assoc($index))
 unset($dlhead_arr);
 
 // Headline Body aufbauen
-$index = mysql_query("select news_headline_body from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select news_headline_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $template = stripslashes(mysql_result($index, 0, "news_headline_body"));
 $template = str_replace("{headlines}", $headline_tpl, $template); 
 $template = str_replace("{downloads}", $downloads_tpl, $template); 
@@ -54,7 +54,7 @@ $template = str_replace("{downloads}", $downloads_tpl, $template);
 ////// News ausgeben ///////
 ////////////////////////////
 
-$index = mysql_query("select * from fs_news
+$index = mysql_query("select * from ".$global_config_arr[pref]."news
                       where news_date <= $time
                       order by news_date desc
                       limit $config_arr[num_news]", $db);

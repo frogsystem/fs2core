@@ -9,7 +9,7 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
     settype($_POST[editartikelid], 'integer');
     if (isset($_POST[delartikel]))
     {
-        mysql_query("DELETE FROM fs_shop WHERE artikel_id = $_POST[editartikelid]", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[editartikelid]", $db);
         unlink("../images/shop/".$_POST[editartikelid]."_s.jpg");
         unlink("../images/shop/".$_POST[editartikelid].".jpg");
         systext('Artikel wurde gelöscht');
@@ -29,7 +29,7 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
             $thumb = create_thumb_from(image_url("../images/shop/",$_POST[editartikelid],false), 100, 100);
             systext(create_thumb_notice($thumb));
         }
-        $update = "UPDATE fs_shop
+        $update = "UPDATE ".$global_config_arr[pref]."shop
                    SET artikel_name  = '$_POST[title]',
                        artikel_url   = '$_POST[url]',
                        artikel_text  = '$_POST[text]',
@@ -48,7 +48,7 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
 elseif ($_POST[artikelid])
 {
     settype($_POST[artikelid], 'integer');
-    $index = mysql_query("SELECT * FROM fs_shop WHERE artikel_id = $_POST[artikelid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $db);
     $artikel_arr = mysql_fetch_assoc($index);
     $dbartikelhot = ($artikel_arr[artikel_hot] == 1) ? "checked" : "";
 
@@ -167,7 +167,7 @@ else
                             </tr>
     ';
     $index = mysql_query("SELECT artikel_id, artikel_name, artikel_preis
-                          FROM fs_shop
+                          FROM ".$global_config_arr[pref]."shop
                           ORDER BY artikel_name DESC", $db);
     while ($artikel_arr = mysql_fetch_assoc($index))
     {

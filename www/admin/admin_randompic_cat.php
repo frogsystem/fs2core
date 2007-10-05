@@ -8,7 +8,7 @@ if ($_POST['sended'])
 {
     while (list($key, $val) = each($_POST['randompic_cat']))
     {
-        mysql_query("UPDATE fs_screen_cat
+        mysql_query("UPDATE ".$global_config_arr[pref]."screen_cat
                      SET randompic = '$val'
                      WHERE cat_id = '$key'", $db);
     }
@@ -42,11 +42,11 @@ if ($_POST['sended'])
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("select * from fs_screen_cat WHERE cat_type != 2 order by cat_name asc", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_type != 2 order by cat_name asc", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
-        $screen_index = mysql_query("select cat_id from fs_screen where cat_id = $cat_arr[cat_id]", $db);
+        $screen_index = mysql_query("select cat_id from ".$global_config_arr[pref]."screen where cat_id = $cat_arr[cat_id]", $db);
         $screen_rows = mysql_num_rows($screen_index);
         echo'
                             <input type="hidden" name="randompic_cat['.$cat_arr[cat_id].']" value="0">

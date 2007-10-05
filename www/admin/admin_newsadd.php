@@ -13,7 +13,7 @@ if ($_POST[newsadd] && $_POST[title] && $_POST[text])
     settype($_POST[posterid], 'integer');
     $_POST[title] = savesql($_POST[title]);
     $_POST[text] = addslashes($_POST[text]);
-    mysql_query("INSERT INTO fs_news (cat_id, user_id, news_date, news_title, news_text)
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."news (cat_id, user_id, news_date, news_title, news_text)
                  VALUES ('".$_POST[catid]."',
                          '".$_POST[posterid]."',
                          '$newsdate',
@@ -21,7 +21,7 @@ if ($_POST[newsadd] && $_POST[title] && $_POST[text])
                          '".$_POST[text]."');", $db);
 
     // Links in die DB eintragen
-    $index = mysql_query("SELECT news_id FROM fs_news WHERE news_title = '".$_POST[title]."'");
+    $index = mysql_query("SELECT news_id FROM ".$global_config_arr[pref]."news WHERE news_title = '".$_POST[title]."'");
     $id = mysql_result($index, 0, "news_id");
     for ($i=0; $i<count($_POST[linkname]); $i++)
     {
@@ -31,7 +31,7 @@ if ($_POST[newsadd] && $_POST[title] && $_POST[text])
 
         if ($_POST[linkname][$i] != "")
         {
-            mysql_query("INSERT INTO fs_news_links (news_id, link_name, link_url, link_target)
+            mysql_query("INSERT INTO ".$global_config_arr[pref]."news_links (news_id, link_name, link_url, link_target)
                          VALUES ('$id',
                                  '".$_POST[linkname][$i]."',
                                  '".$_POST[linkurl][$i]."',
@@ -39,7 +39,7 @@ if ($_POST[newsadd] && $_POST[title] && $_POST[text])
         }
     }
 
-    mysql_query("UPDATE fs_counter SET news = news + 1", $db);
+    mysql_query("UPDATE ".$global_config_arr[pref]."counter SET news = news + 1", $db);
     systext("News wurde hinzugefügt");
 }
 
@@ -75,14 +75,14 @@ else
         $_POST[posterid] = $_SESSION[user_id];
     }
     // User auslesen
-    $index = mysql_query("SELECT user_name, user_id FROM fs_user WHERE user_id = $_POST[posterid]", $db);
+    $index = mysql_query("SELECT user_name, user_id FROM ".$global_config_arr[pref]."user WHERE user_id = $_POST[posterid]", $db);
     if (!isset($_POST[poster]))
     {
         $_POST[poster] = mysql_result($index, 0, "user_name");
     }
 
     // News Konfiguration lesen
-    $index = mysql_query("SELECT html_code, fs_code FROM fs_news_config", $db);
+    $index = mysql_query("SELECT html_code, fs_code FROM ".$global_config_arr[pref]."news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     $config_arr[html_code] = ($config_arr[html_code] == 2 OR $config_arr[html_code] == 4) ? "an" : "aus";
     $config_arr[fs_code] = ($config_arr[fs_code] == 2 OR $config_arr[fs_code] == 4) ? "an" : "aus";
@@ -114,7 +114,7 @@ else
     ';
 
     // Kategorien auflisten
-    $index = mysql_query("SELECT * FROM fs_news_cat", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_cat", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $catcheck = ($_POST[catid] == $cat_arr[cat_id]) ? "selected" : "";

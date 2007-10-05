@@ -11,7 +11,7 @@ if ($_FILES[artikelimg] && $_POST[title] && $_POST[url] && $_POST[preis])
     $_POST[preis] = savesql($_POST[preis]);
     $_POST[text] = savesql($_POST[text]);
     settype($_POST[hot], "integer");
-    mysql_query("INSERT INTO fs_shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
                  VALUES ('".$_POST[title]."',
                          '".$_POST[url]."',
                          '".$_POST[text]."',

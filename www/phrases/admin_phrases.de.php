@@ -1,13 +1,123 @@
 <?php
+////////////
+// common //
+////////////
+$admin_phrases[common][note_notfilled]            = "Bitte füllen Sie alle Pflichtfelder aus!";
+$admin_phrases[common][optional]                  = "(optional)";
+$admin_phrases[common][selection]                 = "Auswahl";
+$admin_phrases[common][selection_edit]            = "Auswahl bearbeiten";
+$admin_phrases[common][selection_del]             = "Auswahl löschen";
+$admin_phrases[common][do_button]                 = "Ausführen";
+$admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bisherige Bild überschrieben werden soll!";
+
+$admin_phrases[common][yes]                       = "Ja";
+$admin_phrases[common][no]                        = "Nein";
+
+
+
+////////////
+// Editor //
+////////////
+$admin_phrases[editor][smilies_delnotconfirm]     = "gewählte Smilies nicht löschen";
+$admin_phrases[editor][smilies_delconfirm]        = "gewählte Smilies löschen";
+
+
+
+////////////////////
+// Presseberichte //
+////////////////////
+$admin_phrases[press][delpage]                    = "Eintrag löschen";
+$admin_phrases[press][delpage_question]           = "Soll der Eintrag wirklich gelöscht werden?";
+$admin_phrases[press][delconfirm]                 = "Eintrag löschen";
+$admin_phrases[press][delnotconfirm]              = "Eintrag nicht löschen";
+
+$admin_phrases[press][note_noreleases]            = "Es wurden keine Presseberichte gefunden!";
+
+
+ 
+///////////////////
+// Zufallsbilder //
+///////////////////
+$admin_phrases[random][start_time]                = "Startzeit";
+$admin_phrases[random][end_time]                  = "Endzeit";
+$admin_phrases[random][title]                     = "Titel";
+
+$admin_phrases[random][delpic]                    = "Zeitgesteuertes Zufallsbild löschen";
+$admin_phrases[random][delpic_question]           = "Soll das zeitgesteuertes Zufallsbild wirklich gelöscht werden?";
+$admin_phrases[random][delconfirm]                = "Zufallsbild löschen";
+$admin_phrases[random][delnotconfirm]             = "Zufallsbild nicht löschen";
+$admin_phrases[random][delnote]                   = "(Hinweis: Es wird lediglich der Eintrag als zeitgesteuertes Zufallsbild gelöscht. Das Bild als solches bleibt erhalten.)";
+
+$admin_phrases[random][note_deleted]              = "Das zeitgesteuerte Zufallsbild wurde erfolgreich gelöscht!";
+$admin_phrases[random][note_notdeleted]           = "Das zeitgesteuerte Zufallsbild wurde nicht gelöscht!";
+
+
+
+
+/////////////
+// Partner //
+/////////////
+$admin_phrases[partner][small_pic]                = "Partnerbild klein";
+$admin_phrases[partner][small_pic_desc]           = "Kleines Partnerbild für die Navigation.";
+$admin_phrases[partner][big_pic]                  = "Partnerbild groß";
+$admin_phrases[partner][big_pic_desc]             = "Großes Partnerbild für die Übersichtsseite.";
+$admin_phrases[partner][name]                     = "Partnername";
+$admin_phrases[partner][name_desc]                = "Name der Partnerseite.";
+$admin_phrases[partner][link]                     = "Link";
+$admin_phrases[partner][link_desc]                = "URL der Partnerseite.";
+$admin_phrases[partner][desc]                     = "Beschreibung";
+$admin_phrases[partner][desc_desc]                = "Kurze Beschreibung der Partnerseite.";
+$admin_phrases[partner][perm]                     = "Permanent angezeigen";
+$admin_phrases[partner][perm_desc]                = "Kleines Partnerbild wird in der Navigation permanent angezeigt.";
+
+$admin_phrases[partner][partnerpage]              = "Partnerseite";
+$admin_phrases[partner][perm_desc]                = "Kleines Partnerbild wird in der Navigation permanent angezeigt.";
+
+$admin_phrases[partner][delpage]                  = "Partnerseite löschen";
+$admin_phrases[partner][delpage_question]         = "Soll die Partnerseite wirklich gelöscht werden?";
+$admin_phrases[partner][delconfirm]               = "Partnerseite löschen";
+$admin_phrases[partner][delnotconfirm]            = "Partnerseite nicht löschen";
+
+$admin_phrases[partner][add]                      = "Partnerseite hinzufügen";
+$admin_phrases[partner][save]                     = "Änderungen speichern";
+$admin_phrases[partner][exact]                    = "exakt";
+$admin_phrases[partner][max]                      = "max.";
+$admin_phrases[partner][px]                       = "Pixel";
+$admin_phrases[partner][kb]                       = "KB";
+
+$admin_phrases[partner][note_notadded]            = "Partnerseite konnte nicht hinzugefügt werden!";
+$admin_phrases[partner][note_addmore]             = "Weitere Partnerseite hinzufügen:";
+$admin_phrases[partner][note_uploaded]            = "Bilder wurden hochgeladen!";
+$admin_phrases[partner][note_added]               = "Partnerseite wurde hinzugefügt!";
+$admin_phrases[partner][note_edited]              = "Änderungen wurden erfolgreich gespeichert!";
+$admin_phrases[partner][note_deleted]             = "Die Partnerseite wurde erfolgreich gelöscht!";
+$admin_phrases[partner][note_notdeleted]          = "Die Partnerseite wurde nicht gelöscht!";
+$admin_phrases[partner][note_nopages]             = "Es wurden keine Partnerseiten gefunden!";
+
+
+
 ///////////////
 // Templates //
 ///////////////
+
+//CSS
+$admin_phrases[template][style_css][title]        = "CSS";
+$admin_phrases[template][style_css][description]  = "Beinhaltet die CSS-Definitionen des Designs.";
+
+//Java Script
+$admin_phrases[template][js_userfunctions][title] = "Java Script";
+$admin_phrases[template][js_userfunctions][description]= "Beinhaltet von Benutzern definierten Java Script Code.";
+
+
 
 //Allgemein
 $admin_phrases[template][error][title]                          = "Systemmeldung";
 $admin_phrases[template][error][description]                    = "Gibt Systemnachrichten aus.";
 $admin_phrases[template][error][help_1]                         = "Der Titel der Systemmeldung.";
 $admin_phrases[template][error][help_2]                         = "Der Text der Systemmeldung.";
+
+$admin_phrases[template][doctype][title]                        = "HTML-Dokumenttyp";
+$admin_phrases[template][doctype][description]                  = "Definition des HTML-Dokumenttyps (HTML-Doctype).";
 
 $admin_phrases[template][indexphp][title]                       = "Index.php";
 $admin_phrases[template][indexphp][description]                 = "Hauptdesign der Seite.";
@@ -66,6 +176,54 @@ $admin_phrases[template][artikel_body][help_1]                  = "Die Überschri
 $admin_phrases[template][artikel_body][help_2]                  = "Das Datum an dem der Artikel geschrieben wurde.";
 $admin_phrases[template][artikel_body][help_3]                  = "Der Artikel-Text an sich.";
 $admin_phrases[template][artikel_body][help_4]                  = "Bindet das Autoren-Template ein.";
+
+
+
+//Presseberichte
+$admin_phrases[template][press_navi_line][title]                = "Navigation Zeile";
+$admin_phrases[template][press_navi_line][description]          = "Eine Zeile der Navigation.";
+$admin_phrases[template][press_navi_line][help_1]               = "URL zum Öffnen/Anzeigen des Navigationsordners.";
+$admin_phrases[template][press_navi_line][help_2]               = "Der Titel des Navigationsordners.";
+$admin_phrases[template][press_navi_line][help_3]               = "URL zum Bild des Navigationsordners.";
+$admin_phrases[template][press_navi_line][help_4]               = "URL zu einem entsprechenden Standard-Ordnersymbol.";
+
+$admin_phrases[template][press_navi_main][title]                = "Navigation";
+$admin_phrases[template][press_navi_main][description]          = "Das Erscheinungsbild der Navigation.";
+$admin_phrases[template][press_navi_main][help_1]               = "Bindet nacheinander die Ordner/Zeilen der Navigation ein.";
+
+$admin_phrases[template][press_intro][title]                    = "Einleitung";
+$admin_phrases[template][press_intro][description]              = "Das Erscheinungsbild des Einleitungstextes.";
+$admin_phrases[template][press_intro][help_1]                   = "Der unformatierte Einleitungstext.";
+
+$admin_phrases[template][press_note][title]                     = "Anmerkungen";
+$admin_phrases[template][press_note][description]               = "Das Erscheinungsbild der Anmerkungen.";
+$admin_phrases[template][press_note][help_1]                    = "Die unformatierten Anmerkungen.";
+
+$admin_phrases[template][press_body][title]                     = "Pressebericht";
+$admin_phrases[template][press_body][description]               = "Das Erscheinungsbild eines Presseberichtes.";
+$admin_phrases[template][press_body][help_1]                    = "Der Titel des Presseberichtes.";
+$admin_phrases[template][press_body][help_2]                    = "URL zum Pressebericht.";
+$admin_phrases[template][press_body][help_3]                    = "Datum an dem der Pressebericht veröffentlicht wurde.";
+$admin_phrases[template][press_body][help_4]                    = "Die (formatierte) Einleitung des Presseberichtes.";
+$admin_phrases[template][press_body][help_5]                    = "Der kurze Vorschautext des Presseberichtes.";
+$admin_phrases[template][press_body][help_6]                    = "Die (formatierten) Anmerkungen zum Presseberichtes.";
+$admin_phrases[template][press_body][help_7]                    = "Titel des Spiels, zu dem der Pressebericht veröffentlicht wurde.";
+$admin_phrases[template][press_body][help_8]                    = "URL zum Bild des Spiels, zu dem der Pressebericht veröffentlicht wurde.";
+$admin_phrases[template][press_body][help_9]                    = "Titel der Kategorie, zu der der Pressebericht zugeordnet wurde.";
+$admin_phrases[template][press_body][help_10]                   = "URL zum Bild der Kategorie, zu der der Pressebericht zugeordnet wurde.";
+$admin_phrases[template][press_body][help_11]                   = "Sprache, in der der Pressebericht verfasst wurde.";
+$admin_phrases[template][press_body][help_12]                   = "URL zum Bild der Sprache, in der der Pressebericht verfasst wurde.";
+
+$admin_phrases[template][press_container][title]                = "Presseberichte Container";
+$admin_phrases[template][press_container][description]          = "Container um die angezeigten Presseberichte.";
+$admin_phrases[template][press_container][help_1]               = "Bindet nacheinander alle passenden Presseberichte ein.";
+
+
+$admin_phrases[template][press_main_body][title]                = "Übersicht";
+$admin_phrases[template][press_main_body][description]          = "Das Erscheinungsbild der ganzen Seite.";
+$admin_phrases[template][press_main_body][help_1]               = "Bindet die Navigation ein.";
+$admin_phrases[template][press_main_body][help_2]               = "Bindet den Pressebericht Container mit allen passenden Presseberichte ein.";
+
 
 
 

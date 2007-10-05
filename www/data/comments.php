@@ -21,10 +21,10 @@ $sicherheits_eingabe = str_replace("=", "", $sicherheits_eingabe);
 //////////////////////////////
 
 //Kommentar-Config
-$index = mysql_query("select * from fs_news_config", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
 $config_arr = mysql_fetch_assoc($index);
 //Editor config
-$index = mysql_query("select * from fs_editor_config", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."editor_config", $db);
 $editor_config = mysql_fetch_assoc($index);
 
 //////////////////////////////
@@ -65,14 +65,14 @@ if (isset($_POST[addcomment]))
             $userid = 0;
         }
 
-        mysql_query("INSERT INTO fs_news_comments (news_id, comment_poster, comment_poster_id, comment_date, comment_title, comment_text)
+        mysql_query("INSERT INTO ".$global_config_arr[pref]."news_comments (news_id, comment_poster, comment_poster_id, comment_date, comment_title, comment_text)
                      VALUES ('".$_POST[id]."',
                              '".$_POST[name]."',
                              '$userid',
                              '$commentdate',
                              '".$_POST[title]."',
                              '".$_POST[text]."');", $db);
-        mysql_query("update fs_counter set comments=comments+1", $db);
+        mysql_query("update ".$global_config_arr[pref]."counter set comments=comments+1", $db);
     }
     else
     {
@@ -99,7 +99,7 @@ settype($_GET[id], 'integer');
 $time = time();
 
 // News anzeigen
-$index = mysql_query("select * from fs_news where news_date <= $time and news_id = $_GET[id]", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."news where news_date <= $time and news_id = $_GET[id]", $db);
 
 $news_rows = mysql_num_rows($index);
 
@@ -115,13 +115,13 @@ if ($news_rows >0) {
 unset($news_arr);
 
 // Kommentare erzeugen
-$index = mysql_query("select * from fs_news_comments where news_id = $_GET[id] order by comment_date $config_arr[com_sort]", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."news_comments where news_id = $_GET[id] order by comment_date $config_arr[com_sort]", $db);
 while ($comment_arr = mysql_fetch_assoc($index))
 {
     // User auslesen
     if ($comment_arr[comment_poster_id] != 0)
     {
-        $index2 = mysql_query("select user_name, is_admin from fs_user where user_id = $comment_arr[comment_poster_id]", $db);
+        $index2 = mysql_query("select user_name, is_admin from ".$global_config_arr[pref]."user where user_id = $comment_arr[comment_poster_id]", $db);
         $comment_arr[comment_poster] = killhtml(mysql_result($index2, 0, "user_name"));
         $comment_arr[is_admin] = mysql_result($index2, 0, "is_admin");
         if (image_exists("images/avatare/",$comment_arr[comment_poster_id]))
@@ -132,7 +132,7 @@ while ($comment_arr = mysql_fetch_assoc($index))
         {
             $comment_arr[comment_poster] = "<b>" . $comment_arr[comment_poster] . "</b>";
         }
-        $index2 = mysql_query("select news_comment_autor from fs_template where id = '$global_config_arr[design]'", $db);
+        $index2 = mysql_query("select news_comment_autor from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $comment_autor = stripslashes(mysql_result($index2, 0, "news_comment_autor"));
         $comment_autor = str_replace("{url}", "?go=profil&amp;userid=".$comment_arr[comment_poster_id], $comment_autor); 
         $comment_autor = str_replace("{name}", $comment_arr[comment_poster], $comment_autor); 
@@ -208,7 +208,7 @@ while ($comment_arr = mysql_fetch_assoc($index))
     $html_active = ($html) ? "an" : "aus";
 
     // Template auslesen und füllen
-    $index2 = mysql_query("select news_comment_body from fs_template where id = '$global_config_arr[design]'", $db);
+    $index2 = mysql_query("select news_comment_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index2, 0, "news_comment_body"));
     $template = str_replace("{titel}", $comment_arr[comment_title], $template);
     $template = str_replace("{datum}", $comment_arr[comment_date], $template); 
@@ -221,14 +221,14 @@ while ($comment_arr = mysql_fetch_assoc($index))
 unset($comment_arr);
 
 // Eingabeformular generieren
-$index = mysql_query("select news_comment_form_name from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select news_comment_form_name from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $form_name = stripslashes(mysql_result($index, 0, "news_comment_form_name"));
 
-$index = mysql_query("select news_comment_form_spam from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select news_comment_form_spam from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $form_spam = stripslashes(mysql_result($index, 0, "news_comment_form_spam"));
 $form_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php", $form_spam);
 
-$index = mysql_query("select news_comment_form_spamtext from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select news_comment_form_spamtext from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $form_spam_text = stripslashes(mysql_result($index, 0, "news_comment_form_spamtext"));
 
 if (isset($_SESSION[user_name]))
@@ -247,7 +247,7 @@ if ($config_arr[com_antispam]==0 OR ($config_arr[com_antispam]==1 AND $_SESSION[
 $template_textarea = create_textarea("text", "", $editor_config[textarea_width], $editor_config[textarea_height], "text", false, $editor_config[smilies],$editor_config[bold],$editor_config[italic],$editor_config[underline],$editor_config[strike],$editor_config[center],$editor_config[font],$editor_config[color],$editor_config[size],$editor_config[img],$editor_config[cimg],$editor_config[url],$editor_config[home],$editor_config[email],$editor_config[code],$editor_config[quote],$editor_config[noparse]);
 
 
-$index = mysql_query("select news_comment_form from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select news_comment_form from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $template = stripslashes(mysql_result($index, 0, "news_comment_form"));
 $template = str_replace("{newsid}", $_GET[id], $template); 
 $template = str_replace("{name_input}", $form_name, $template); 

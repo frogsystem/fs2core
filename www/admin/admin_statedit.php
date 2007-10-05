@@ -4,14 +4,14 @@
 //// Tagesstatistik aktualisieren ////
 //////////////////////////////////////
 
-if ($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h])
+if (($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h]) AND $_POST['do'] == "day")
 {
     settype($_POST[d], 'integer');
     settype($_POST[m], 'integer');
     settype($_POST[y], 'integer');
     settype($_POST[v], 'integer');
     settype($_POST[h], 'integer');
-    mysql_query("UPDATE fs_counter_stat
+    mysql_query("UPDATE ".$global_config_arr[pref]."counter_stat
                  SET s_visits = $_POST[v],
                      s_hits   = $_POST[h]
                  WHERE s_day   = $_POST[d] AND
@@ -24,14 +24,14 @@ if ($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h])
 ////// Tagesstatistik editieren //////
 //////////////////////////////////////
 
-elseif ($_POST[ed] && $_POST[em] && $_POST[ey])
+elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
 {
     settype($_POST[ed], 'integer');
     settype($_POST[em], 'integer');
     settype($_POST[ey], 'integer');
     $index = mysql_query("SELECT s_visits,
                                  s_hits
-                          FROM fs_counter_stat
+                          FROM ".$global_config_arr[pref]."counter_stat
                           WHERE s_day = $_POST[ed] and
                                 s_month = $_POST[em] and
                                 s_year = $_POST[ey]", $db);
@@ -45,6 +45,7 @@ elseif ($_POST[ed] && $_POST[em] && $_POST[ey])
         echo'
                     <form action="" method="post">
                         <input type="hidden" value="statedit" name="go">
+                        <input type="hidden" value="day" name="do">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$_POST[ed].'" name="d">
                         <input type="hidden" value="'.$_POST[em].'" name="m">
@@ -83,12 +84,13 @@ elseif ($_POST[ed] && $_POST[em] && $_POST[ey])
 /// Gesamtstatistik aktualisieren ////
 //////////////////////////////////////
 
-elseif ($_POST[editvisits] != "" &&
+elseif (($_POST[editvisits] != "" &&
         $_POST[edithits] != "" &&
         $_POST[edituser] != "" &&
         $_POST[editnews] != "" &&
         $_POST[editartikel] != "" &&
         $_POST[editcomments] != "")
+        AND $_POST['do'] == "edit")
 {
     settype($_POST[editvisits], 'integer');
     settype($_POST[edithits], 'integer');
@@ -96,7 +98,7 @@ elseif ($_POST[editvisits] != "" &&
     settype($_POST[editnews], 'integer');
     settype($_POST[editartikel], 'integer');
     settype($_POST[editcomments], 'integer');
-    mysql_query("UPDATE fs_counter
+    mysql_query("UPDATE ".$global_config_arr[pref]."counter
                  SET visits = '$_POST[editvisits]',
                      hits = '$_POST[edithits]',
                      user = '$_POST[edituser]',
@@ -106,6 +108,37 @@ elseif ($_POST[editvisits] != "" &&
     systext("Der Counter wurde aktualisiert");
 }
 
+////////////////////////////////////////
+/// Gesamtstatistik synchronisieren ////
+////////////////////////////////////////
+
+elseif ($_POST['do'] == "sync")
+{
+    $index = mysql_query("SELECT SUM(s_hits) AS hits, SUM(s_visits) AS visits FROM ".$global_config_arr[pref]."counter_stat", $db);
+    $sync_arr[hits] = mysql_result($index,0,"hits");
+    $sync_arr[visits] = mysql_result($index,0,"visits");
+
+    $index = mysql_query("SELECT COUNT(user_id) AS user FROM ".$global_config_arr[pref]."user", $db);
+    $sync_arr[user] = mysql_result($index,0,"user");
+    
+    $index = mysql_query("SELECT COUNT(news_id) AS news FROM ".$global_config_arr[pref]."news", $db);
+    $sync_arr[news] = mysql_result($index,0,"news");
+    
+    $index = mysql_query("SELECT COUNT(comment_id) AS comments FROM ".$global_config_arr[pref]."news_comments", $db);
+    $sync_arr[comments] = mysql_result($index,0,"comments");
+
+    $index = mysql_query("SELECT COUNT(artikel_url) AS artikel FROM ".$global_config_arr[pref]."artikel", $db);
+    $sync_arr[artikel] = mysql_result($index,0,"artikel");
+
+    mysql_query("UPDATE ".$global_config_arr[pref]."counter
+                 SET visits = '$sync_arr[visits]',
+                     hits = '$sync_arr[hits]',
+                     user = '$sync_arr[user]',
+                     news = '$sync_arr[news]',
+                     artikel = '$sync_arr[artikel]',
+                     comments = '$sync_arr[comments]'", $db);
+    systext("Die Statistik wurde synchroniesiert.");
+}
 //////////////////////////////////////
 ///// Gesamtstatistik editieren //////
 //////////////////////////////////////
@@ -117,11 +150,31 @@ else
     $heute[m] = date("m");
     $heute[y] = date("Y");
 
-    $index = mysql_query("SELECT * FROM fs_counter", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."counter", $db);
     $counter_arr = mysql_fetch_assoc($index);
+    
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="statedit" name="go">
+                        <input type="hidden" value="sync" name="do">
+                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                            <tr>
+                                <td class="config" width="60%">
+                                    Statistik synchronisieren:<br>
+                                    <font class="small">Soll die Statistik mit den Datenbankwerten<br />
+                                    synchronisiert werden?</font>
+                                </td>
+                                <td class="config" width="40%">
+                                    <input class="button" type="submit" value="Jetzt synchronisieren">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <br />
+                    <form action="" method="post">
+                        <input type="hidden" value="statedit" name="go">
+                        <input type="hidden" value="edit" name="do">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -185,9 +238,10 @@ else
                             </tr>
                         </table>
                     </form>
-                    <p>
+                    <br />
                     <form action="" method="post">
                         <input type="hidden" value="statedit" name="go">
+                        <input type="hidden" value="day" name="do">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>

@@ -9,7 +9,7 @@ if (isset($_FILES['sizeimg_0']) AND $_POST['size']['0'] AND $_POST['wallpaper_na
     $_POST[wallpaper_name] = savesql($_POST[wallpaper_name]);
     $_POST[wallpaper_title] = savesql($_POST[wallpaper_title]);
     
-$index = mysql_query("SELECT * FROM fs_wallpaper WHERE wallpaper_name = '$_POST[wallpaper_name]'", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper WHERE wallpaper_name = '$_POST[wallpaper_name]'", $db);
 if (mysql_num_rows($index)==0) {
     
     for ($i=1; $i<=$_POST[options]; $i++)
@@ -21,7 +21,7 @@ if (mysql_num_rows($index)==0) {
         $_POST['size'][$j] = "";
     }
     
-    mysql_query("INSERT INTO fs_wallpaper (wallpaper_name, wallpaper_title, cat_id)
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."wallpaper (wallpaper_name, wallpaper_title, cat_id)
                  VALUES ('".$_POST[wallpaper_name]."',
                          '".$_POST[wallpaper_title]."',
                          '".$_POST[catid]."')", $db);
@@ -39,7 +39,7 @@ if (mysql_num_rows($index)==0) {
         switch ($upload)
         {
         case 0:
-          mysql_query("INSERT INTO fs_wallpaper_sizes (wallpaper_id, size)
+          mysql_query("INSERT INTO ".$global_config_arr[pref]."wallpaper_sizes (wallpaper_id, size)
                        VALUES ('".$wp_id."',
                                '".$_POST['size'][$j]."')", $db);
           break;
@@ -113,7 +113,7 @@ echo'
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = mysql_query("SELECT * FROM fs_screen_cat WHERE cat_type = 2", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 2", $db);
 while ($cat_arr = mysql_fetch_assoc($index))
 {
     echo'

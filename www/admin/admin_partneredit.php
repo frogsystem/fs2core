@@ -1,82 +1,176 @@
 <?php
+//////////////////////////////
+/// Config laden /////////////
+//////////////////////////////
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner_config", $db);
+$config_arr = mysql_fetch_assoc($index);
+if ($config_arr[small_allow] == 0) {
+    $config_arr[small_allow_bool] = true;
+    $config_arr[small_allow_text] = $admin_phrases[partner][exact];
+} else {
+    $config_arr[small_allow_bool] = false;
+    $config_arr[small_allow_text] = $admin_phrases[partner][max];
+}
+if ($config_arr[big_allow] == 0) {
+    $config_arr[big_allow_bool] = true;
+    $config_arr[big_allow_text] = $admin_phrases[partner][exact];
+} else {
+    $config_arr[big_allow_bool] = false;
+    $config_arr[big_allow_text] = $admin_phrases[partner][max];
+}
+
 
 //////////////////////////////
 /// Partnerseite editieren ///
 //////////////////////////////
-
-if (isset($_POST[name]))
+if (($_POST['name'] AND $_POST['name'] != "")
+    && ($_POST['link'] AND $_POST['link'] != "")
+    && $_POST['partner_action'] == "edit"
+    && $_POST['sended'] == "edit"
+    && isset($_POST['partner_id'])
+   )
 {
+    unset($message);
+
     $_POST[name] = savesql($_POST[name]);
     $_POST[link] = savesql($_POST[link]);
-    $_POST[beschreibung] = addslashes($_POST[beschreibung]);
-    $_POST[beschreibung] = ereg_replace ("&lt;textarea&gt;", "<textarea>", $_POST[beschreibung]); 
-    $_POST[beschreibung] = ereg_replace ("&lt;/textarea&gt;", "</textarea>", $_POST[beschreibung]); 
-    settype($_POST[partnerid], 'integer'); 
-    settype($_POST[editpartnerid], 'integer');
+    $_POST[description] = savesql($_POST[description]);
+    settype($_POST[partner_id], 'integer');
     $_POST[permanent] = isset($_POST[permanent]) ? 1 : 0;
 
-    if ($_POST[delpartner])   // Partnerseite löschen
+    $update = "UPDATE ".$global_config_arr[pref]."partner
+               SET partner_name = '$_POST[name]',
+                   partner_link = '$_POST[link]',
+                   partner_beschreibung = '$_POST[description]',
+                   partner_permanent = '$_POST[permanent]'
+               WHERE partner_id = '$_POST[partner_id]'";
+    mysql_query($update, $db);
+    
+    if ($_FILES['bild_small']['name'] != "")
     {
-        mysql_query("DELETE FROM fs_partner WHERE partner_id = '$_POST[editpartnerid]'", $db);
-        image_delete("../images/partner/", $_POST[editpartnerid]."_small");
-        image_delete("../images/partner/", $_POST[editpartnerid]."_big");
-        systext('Die Partnerseite wurde gelöscht');
+      $upload = upload_img($_FILES['bild_small'], "../images/partner/", $_POST[partner_id]."_small", $config_arr[file_size]*1024, $config_arr[small_x], $config_arr[small_y], 100, $config_arr[small_allow_bool]);
+      $message .= $admin_phrases[partner][small_pic] . ": " . upload_img_notice($upload) . "<br />";
     }
-    else   // Partnerseite editieren
+    
+    if ($_FILES['bild_big']['name'] != "")
     {
-        $update = "UPDATE fs_partner
-                   SET partner_name = '$_POST[name]',
-                       partner_link = '$_POST[link]',
-                       partner_beschreibung = '$_POST[beschreibung]',
-                       partner_permanent = '$_POST[permanent]'
-                   WHERE partner_id = '$_POST[editpartnerid]'";
-        mysql_query($update, $db);
-        systext("Die Partnerseite wurde editiert");
+      $upload = upload_img($_FILES['bild_big'], "../images/partner/", $_POST[partner_id]."_big", $config_arr[file_size]*1024, $config_arr[big_x], $config_arr[big_y], 100, $config_arr[big_allow_bool]);
+      $message .= $admin_phrases[partner][big_pic] . ": " . upload_img_notice($upload) . "<br />";
     }
+    
+    $message .= $admin_phrases[partner][note_edited];
+    systext($message);
+
+    unset($message);
+    unset($_POST['partner_action']);
+    unset($_POST['sended']);
+    unset($_POST['partner_id']);
 }
+
+
+//////////////////////////////
+/// Partnerseite löschen /////
+//////////////////////////////
+elseif ($_POST['partner_action'] == "delete"
+    && $_POST['sended'] == "delete"
+    && isset($_POST['partner_id'])
+   )
+{
+    settype($_POST[partner_id], 'integer');
+    
+    if ($_POST['delete_partner'])   // Partnerseite löschen
+    {
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."partner WHERE partner_id = '$_POST[partner_id]'", $db);
+        image_delete("../images/partner/", $_POST[partner_id]."_small");
+        image_delete("../images/partner/", $_POST[partner_id]."_big");
+        systext($admin_phrases[partner][note_deleted]);
+    }
+    else
+    {
+        systext($admin_phrases[partner][note_notdeleted]);
+    }
+
+    unset($_POST['delete_partner']);
+    unset($_POST['partner_action']);
+    unset($_POST['sended']);
+    unset($_POST['partner_id']);
+}
+
 
 //////////////////////////////
 /// Partnerseite anzeigen ////
 //////////////////////////////
-
-elseif (isset($_POST[partnerid]))
+elseif ($_POST[partner_action] == "edit"
+        && isset($_POST[partner_id])
+       )
 {
-    settype($_POST[partnerid], 'integer');
+    settype($_POST[partner_id], 'integer');
 
-    $index = mysql_query("SELECT * FROM fs_partner WHERE partner_id = $_POST[partnerid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner WHERE partner_id = $_POST[partner_id]", $db);
     $partner_arr = mysql_fetch_assoc($index);
         
-    // permanent anzuzeigen?
-    $partnerpermanent = ($partner_arr[partner_permanent] == 1) ? 'checked="checked"' : '';
+    $partner_arr['partner_name'] = killhtml($partner_arr['partner_name']);
+    $partner_arr['partner_link'] = killhtml($partner_arr['partner_link']);
+    $partner_arr['partner_beschreibung'] = killhtml($partner_arr['partner_beschreibung']);
+    $partner_arr['partner_perm'] = ($partner_arr['partner_permanent'] == 1) ? ' checked="checked"' : '';
+
+
+    //Error Message
+    if ($_POST['sended'] == "edit") {
+        systext ($admin_phrases[common][note_notfilled]);
+
+        $partner_arr['partner_name'] = killhtml($_POST['name']);
+        $partner_arr['partner_link'] = killhtml($_POST['link']);
+        $partner_arr['partner_beschreibung'] = killhtml($_POST['description']);
+        $partner_arr['partner_perm'] = isset($_POST['permanent']) ? ' checked="checked"' : '';
+    }
 
     echo'
-                    <form action="" method="post">
+                    <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="partneredit" name="go">
+                        <input type="hidden" value="edit" name="partner_action">
+                        <input type="hidden" value="edit" name="sended">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <input type="hidden" value="'.$partnerid.'" name="editpartnerid">
+                        <input type="hidden" value="'.$partner_arr[partner_id].'" name="partner_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
-                                    Bild klein:<br>
-                                    <font class="small">Kleiner Partnerbutton für rechtes Men&uuml;.</font>
+                                    '.$admin_phrases[partner][small_pic].':<br />
+                                    <font class="small">'.$admin_phrases[partner][small_pic_desc].'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url("../images/partner/", $_POST[partnerid]."_small").'">
+                                   <img src="'.image_url("../images/partner/", $_POST[partner_id]."_small").'">
+                                   <br /><br />
+                                   <input type="file" class="text" name="bild_small" size="50"><br />
+                                   <font class="small">
+                                     ['.$config_arr[small_allow_text].' '.$config_arr[small_x].' x '.$config_arr[small_y].' '.$admin_phrases[partner][px].'] [max. '.$config_arr[file_size].' '.$admin_phrases[partner][kb].']
+                                    </font><br />
+                                    <font class="small">
+                                      <b>'.$admin_phrases[common][replace_img].'</b>
+                                    </font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Bild groß:<br>
-                                    <font class="small">Gro&szlig; Partnerbutton für die Übersicht.</font>
+                                    '.$admin_phrases[partner][big_pic].':<br />
+                                    <font class="small">'.$admin_phrases[partner][big_pic_desc].'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url("../images/partner/", $_POST[partnerid]."_big").'">
+                                   <img src="'.image_url("../images/partner/", $_POST[partner_id]."_big").'">
+                                   <br /><br />
+                                   <input type="file" class="text" name="bild_big" size="50"><br />
+                                   <font class="small">
+                                     ['.$config_arr[big_allow_text].' '.$config_arr[big_x].' x '.$config_arr[big_y].' '.$admin_phrases[partner][px].'] [max. '.$config_arr[file_size].' '.$admin_phrases[partner][kb].']
+                                   </font><br />
+                                    <font class="small">
+                                      <b>'.$admin_phrases[common][replace_img].'</b>
+                                    </font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Partnername:<br>
-                                    <font class="small">Name der Partnerseite.</font>
+                                    '.$admin_phrases[partner][name].':<br />
+                                    <font class="small">'.$admin_phrases[partner][name_desc].'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="name" size="33" value="'.$partner_arr[partner_name].'" maxlength="100">
@@ -84,8 +178,8 @@ elseif (isset($_POST[partnerid]))
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Link:<br>
-                                    <font class="small">Link zur Partnerseite.</font>
+                                    '.$admin_phrases[partner][link].':<br />
+                                    <font class="small">'.$admin_phrases[partner][link_desc].'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="link" size="50" value="'.$partner_arr[partner_link].'" maxlength="100">
@@ -93,34 +187,27 @@ elseif (isset($_POST[partnerid]))
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Beschreibung:<br>
-                                    <font class="small">Kurze Beschreibung der Partnerseite.</font>
+                                    '.$admin_phrases[partner][desc].': <font class="small">'.$admin_phrases[common][optional].'</font><br />
+                                    <font class="small">'.$admin_phrases[partner][desc_desc].'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("beschreibung", $partner_arr[partner_beschreibung], 330, 130).'
+                                    '.create_editor("description", $partner_arr[partner_beschreibung], 330, 130).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Permanent angezeigt:<br>
-                                    <font class="small">Diesen Partnerbutton permanent anzeigen.</font>
+                                    '.$admin_phrases[partner][perm].':<br />
+                                    <font class="small">'.$admin_phrases[partner][perm_desc].'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="checkbox" value="1" name="permanent" '.$partnerpermanent.'>    
+                                    <input type="checkbox" value="1" name="permanent" '.$partner_arr[partner_perm].'>
                                 </td>
                             </tr>
+                            <tr><td></td></tr>
                             <tr>
-                                <td class="config">
-                                    Partnerseite löschen:<br>
-                                    <font class="small">Das Ändern der Bilder ist nur über Löschen und Neuanlegen möglich.</font>
-                                </td>
-                                <td class="config">
-                                   <input onClick=\'delalert ("delpartner", "Soll die Partnerseite wirklich gelöscht werden?")\' type="checkbox" name="delpartner" id="delpartner" value="1">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
+                                <td></td>
+                                <td align="left">
+                                    <input class="button" type="submit" value="'.$admin_phrases[partner][save].'">
                                 </td>
                             </tr>
                         </table>
@@ -129,51 +216,129 @@ elseif (isset($_POST[partnerid]))
 }
 
 //////////////////////////////
+/// Partnerseite löschen /////
+//////////////////////////////
+elseif ($_POST[partner_action] == "delete"
+        && isset($_POST[partner_id])
+       )
+{
+    settype($_POST[partner_id], 'integer');
+
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner WHERE partner_id = $_POST[partner_id]", $db);
+    $partner_arr = mysql_fetch_assoc($index);
+
+    $partner_arr['partner_name'] = killhtml($partner_arr['partner_name']);
+    $partner_arr['partner_link'] = killhtml($partner_arr['partner_link']);
+
+    echo'
+                    <form action="" method="post">
+                        <input type="hidden" value="partneredit" name="go">
+                        <input type="hidden" value="delete" name="partner_action">
+                        <input type="hidden" value="delete" name="sended">
+                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="'.$partner_arr[partner_id].'" name="partner_id">
+                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                            <tr align="left" valign="top">
+                                <td class="config" colspan="2">
+                                    '.$admin_phrases[partner][delpage].': '.$partner_arr[partner_name].'
+                                    <span class="small">('.$partner_arr[partner_link].')</span>
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td class="config" colspan="2">
+                                    <img src="'.image_url("../images/partner/", $partner_arr[partner_id]."_big").'">
+                                    <br /><br />
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td width="50%" class="config">
+                                    '.$admin_phrases[partner][delpage_question].'
+                                </td>
+                                <td width="50%" align="right">
+                                    <select name="delete_partner" size="1">
+                                        <option value="0">'.$admin_phrases[partner][delnotconfirm].'</option>
+                                        <option value="1">'.$admin_phrases[partner][delconfirm].'</option>
+                                    </select>
+                                    <input type="submit" value="'.$admin_phrases[common][do_button].'" class="button" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>';
+}
+
+
+//////////////////////////////
 /// Partnerseite auswählen ///
 //////////////////////////////
-else
+if (!isset($_POST[partner_id]))
 {
+    $config_arr[small_x_width] = $config_arr[small_x] + 20;
+
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner ORDER BY partner_name", $db);
+    
+    if (mysql_num_rows($index) > 0)
+    {
         echo'
                     <form action="" method="post">
                         <input type="hidden" value="partneredit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
+                            <tr><td></td></tr>
                             <tr>
-                                <td class="config" width="70%">
-                                    Partnerseite
+                                <td class="config" width="'.$config_arr[small_x_width].'">
                                 </td>
-                                <td class="config" width="30%">
-                                    bearbeiten
+                                <td class="config">
+                                    '.$admin_phrases[partner][partnerpage].'
+                                </td>
+                                <td class="config" style="text-align:right;">
+                                    '.$admin_phrases[common][selection].'
                                 </td>
                             </tr>
         ';
-        $index = mysql_query("SELECT partner_id, partner_name FROM fs_partner ORDER BY partner_name", $db);
+
         while ($partner_arr = mysql_fetch_assoc($index))
         {
             echo'
-                            <tr>
+                            <tr style="cursor:pointer;"
+onmouseover=\'
+  colorOver (document.getElementById("input_'.$partner_arr[partner_id].'"), "#EEEEEE", "#64DC6A", this);\'
+onmouseout=\'
+  colorOut (document.getElementById("input_'.$partner_arr[partner_id].'"), "transparent", "#49c24f", this);\'
+onClick=\'
+  createClick (document.getElementById("input_'.$partner_arr[partner_id].'"));
+  resetUnclicked ("transparent", last, lastBox, this);
+  colorClick (document.getElementById("input_'.$partner_arr[partner_id].'"), "#EEEEEE", "#64DC6A", this);\'
+                            >
+                                <td class="configthin" height="'.$config_arr[small_y].'">
+                                    <img src="'.image_url("../images/partner/",$partner_arr[partner_id]."_small").'" alt="" />
+                                </td>
                                 <td class="configthin">
                                     '.$partner_arr[partner_name].'
                                 </td>
-                                <td class="configthin">
-                                    <input type="radio" name="partnerid" value="'.$partner_arr[partner_id].'">
+                                <td class="configthin" style="text-align:right;">
+                                    <input type="radio" name="partner_id" id="input_'.$partner_arr[partner_id].'" value="'.$partner_arr[partner_id].'" style="cursor:pointer;" onClick=\'createClick(this);\' />
                                 </td>
                             </tr>
             ';
-                }
+        }
         echo'
+                            <tr><td>&nbsp;</td></tr>
                             <tr>
-                                <td colspan="4">
-                                    &nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" align="center">
-                                   <input class="button" type="submit" value="editieren">
+                                <td class="config" colspan="4" style="text-align:center;">
+                                   <select name="partner_action" size="1">
+                                     <option value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                     <option value="delete">'.$admin_phrases[common][selection_del].'</option>
+                                   </select>
+                                   <input class="button" type="submit" value="'.$admin_phrases[common][do_button].'">
                                 </td>
                             </tr>
                         </table>
                     </form>
         ';
+    }
+    else
+    {
+        echo $admin_phrases[partner][note_nopages];
+    }
 }
 ?>

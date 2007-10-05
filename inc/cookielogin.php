@@ -1,11 +1,12 @@
 <?php
 function user_login($username, $password, $iscookie)
 {
+    global $global_config_arr;
     global $db;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("select * from fs_user where user_name = '$username'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_name = '$username'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -38,11 +39,12 @@ function user_login($username, $password, $iscookie)
 
 function set_cookie($username, $password)
 {
+    global $global_config_arr;
     global $db;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("select * from fs_user where user_name = '$username'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_name = '$username'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {

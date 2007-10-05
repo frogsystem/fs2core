@@ -6,17 +6,17 @@ settype($_GET[catid], 'integer');
 settype($_GET[screenid], 'integer');
 
 //config_arr
-$index = mysql_query("SELECT * FROM fs_screen_config", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config", $db);
 $config_arr = mysql_fetch_assoc($index);
 
 if (isset($_GET[screen]))
 {
-    $index = mysql_query("select * from fs_screen where screen_id = $_GET[screenid]", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen where screen_id = $_GET[screenid]", $db);
     $_GET[title] = mysql_result($index, 0, "screen_name");
-    $_GET[pic] = "images/screenshots/" . $_GET[screenid] . ".jpg";
+    $_GET[pic] = image_url("images/screenshots/", $_GET[screenid]);
 
     // gibt es ein nächstes Bild?
-    $index = mysql_query("select * from fs_screen
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen
                           where cat_id = $_GET[catid] and
                                 screen_id > $_GET[screenid]
                           order by screen_id
@@ -32,7 +32,7 @@ if (isset($_GET[screen]))
     }
 
     // Gibt es ein vorheriges Bild?
-    $index = mysql_query("select * from fs_screen
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen
                           where cat_id = $_GET[catid] and
                                 screen_id < $_GET[screenid]
                           order by screen_id desc
@@ -77,7 +77,7 @@ else    //Hochformat
 
 $close ="&nbsp;&nbsp;&nbsp;<a href='#ank' onclick='self.close();'>[Fenster schlie&szlig;en]</a>&nbsp;&nbsp;&nbsp;";
 
-$index = mysql_query("select pic_viewer from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select pic_viewer from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $template_viewer = stripslashes(mysql_result($index, 0, "pic_viewer"));
         
 $template_viewer = str_replace("{text}", $_GET[title], $template_viewer);
@@ -89,7 +89,7 @@ $template_viewer = str_replace("{close}", $close, $template_viewer);
 
 
 //Includes
-$index = mysql_query("select * from fs_includes where include_type = '2'", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."includes where include_type = '2'", $db);
 while ($include_arr = mysql_fetch_assoc($index))
 {
     // Include laden
@@ -98,7 +98,7 @@ while ($include_arr = mysql_fetch_assoc($index))
     unset($template);
 
     //Seitenvariablen
-    $index = mysql_query("select replace_string, replace_thing from fs_includes where include_type = '1' ORDER BY replace_string ASC", $db);
+    $index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
     while ($sv_arr = mysql_fetch_assoc($index))
     {
         // Include-URL laden
@@ -113,7 +113,7 @@ while ($include_arr = mysql_fetch_assoc($index))
 unset($include_arr);
 
 //Seitenvariablen
-$index = mysql_query("select replace_string, replace_thing from fs_includes where include_type = '1' ORDER BY replace_string ASC", $db);
+$index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
 while ($sv_arr = mysql_fetch_assoc($index))
 {
     // Include-URL laden

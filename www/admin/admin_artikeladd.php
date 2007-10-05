@@ -16,7 +16,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
     }
 
     $_POST[url] = savesql($_POST[url]);
-    $index = mysql_query("SELECT artikel_url FROM fs_artikel WHERE artikel_url = '$_POST[url]'");
+    $index = mysql_query("SELECT artikel_url FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$_POST[url]'");
     if (mysql_num_rows($index) == 0)
     {
         $_POST[title] = savesql($_POST[title]);
@@ -25,7 +25,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
         $_POST[search] = isset($_POST[search]) ? 1 : 0;
         $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
 
-        mysql_query("INSERT INTO fs_artikel
+        mysql_query("INSERT INTO ".$global_config_arr[pref]."artikel
                      VALUES ('$_POST[url]',
                              '$_POST[title]',
                              '$date',
@@ -33,7 +33,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
                              '$_POST[text]',
                              '$_POST[search]',
                              '$_POST[fscode]');", $db);
-        mysql_query("UPDATE fs_counter SET artikel = artikel + 1", $db);
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET artikel = artikel + 1", $db);
         systext("Artikel wurde gespeichert");
     }
     else
@@ -56,7 +56,7 @@ else
     //Poster Name für Anzeige bei fehlenden Daten
     if ($_POST[posterid])
     {
-      $index = mysql_query("SELECT user_name FROM fs_user WHERE user_id = '$_POST[posterid]'", $db);
+      $index = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_id = '$_POST[posterid]'", $db);
       $dbusername = mysql_result($index, 0, "user_name");
     }
 

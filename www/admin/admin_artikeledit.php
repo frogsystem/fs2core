@@ -18,7 +18,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
         }
 
         $_POST[url] = savesql($_POST[url]);
-        $index = mysql_query("SELECT artikel_url FROM fs_artikel WHERE artikel_url = '$_POST[url]'");
+        $index = mysql_query("SELECT artikel_url FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$_POST[url]'");
         if ((mysql_num_rows($index) == 0) ||
             ($_POST[oldurl] == $_POST[url])
            )
@@ -30,7 +30,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
             $_POST[search] = isset($_POST[search]) ? 1 : 0;
             $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
 
-            $update = "UPDATE fs_artikel
+            $update = "UPDATE ".$global_config_arr[pref]."artikel
                        SET artikel_url    = '".$_POST[url]."',
                            artikel_title  = '".$_POST[title]."',
                            artikel_date   = '$date',
@@ -50,8 +50,8 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
     }
     else
     {
-        mysql_query("DELETE FROM fs_artikel WHERE artikel_url = '$_POST[oldurl]'", $db);
-        mysql_query("UPDATE fs_counter SET artikel = artikel - 1", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$_POST[oldurl]'", $db);
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET artikel = artikel - 1", $db);
         systext("Der Artikel wurde gelöscht");
     }
 }
@@ -69,7 +69,7 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
     }
 
     // Artikel aus der DB holen
-    $index = mysql_query("SELECT * FROM fs_artikel WHERE artikel_url = '$_POST[oldurl]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$_POST[oldurl]'", $db);
     $artikel_arr = mysql_fetch_assoc($index);
     $artikel_arr[artikel_text] = ereg_replace ("<textarea>", "&lt;textarea&gt;", $artikel_arr[artikel_text]); 
     $artikel_arr[artikel_text] = ereg_replace ("</textarea>", "&lt;/textarea&gt;", $artikel_arr[artikel_text]);
@@ -86,12 +86,12 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
     //Poster Name für Anzeige bei fehlenden Daten
     if (!isset($_POST['posterid']) AND $artikel_arr[artikel_user] != 0)
     {
-    $index = mysql_query("SELECT user_id FROM fs_user WHERE user_id = '$artikel_arr[artikel_user]'", $db);
+    $index = mysql_query("SELECT user_id FROM ".$global_config_arr[pref]."user WHERE user_id = '$artikel_arr[artikel_user]'", $db);
     $_POST['posterid']= mysql_result($index, 0, "user_id");
     }
     if ($_POST[posterid])
     {
-      $index = mysql_query("SELECT user_name FROM fs_user WHERE user_id = '$_POST[posterid]'", $db);
+      $index = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_id = '$_POST[posterid]'", $db);
       $dbusername = mysql_result($index, 0, "user_name");
     }
 
@@ -269,10 +269,10 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT artikel_url, artikel_title, artikel_user FROM fs_artikel ORDER BY artikel_url", $db);
+    $index = mysql_query("SELECT artikel_url, artikel_title, artikel_user FROM ".$global_config_arr[pref]."artikel ORDER BY artikel_url", $db);
     while ($artikel_arr = mysql_fetch_assoc($index))
     {
-        $index2 = mysql_query("select user_name from fs_user where user_id = '$artikel_arr[artikel_user]'", $db);
+        $index2 = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = '$artikel_arr[artikel_user]'", $db);
         $dbartikeluservalue = mysql_num_rows($index2) ? mysql_result($index2, 0, "user_name") : "";
         echo'
                             <tr>

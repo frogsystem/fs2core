@@ -42,7 +42,7 @@ imagefilledrectangle($image,20,45,480,285,$farbe_rot);
 
 // Hitskurve
 $index = mysql_query("SELECT s_hits
-                      FROM fs_counter_stat
+                      FROM ".$global_config_arr[pref]."counter_stat
                       WHERE s_year  = $_GET[s_year] and
                             s_month = $_GET[s_month]
                       ORDER BY s_hits DESC
@@ -56,7 +56,7 @@ $anz_tage = date("t",mktime(0, 0, 0, $_GET[s_month], 1, $_GET[s_year]));
 for ($d=1; $d<$anz_tage+1; $d++)
 {
     $index = mysql_query("SELECT s_hits
-                          FROM fs_counter_stat
+                          FROM ".$global_config_arr[pref]."counter_stat
                           WHERE s_year  = $_GET[s_year] and
                                 s_month = $_GET[s_month] and
                                 s_day   = $d", $db);
@@ -110,7 +110,7 @@ imagefilledpolygon($image, $hitsarray, round($arraycount/2) , $farbe_hits);
 
 // Visitskurve
 $index = mysql_query("SELECT s_visits
-                      FROM fs_counter_stat
+                      FROM ".$global_config_arr[pref]."counter_stat
                       WHERE s_year  = $_GET[s_year] and
                             s_month = $_GET[s_month]
                       ORDER BY s_visits DESC
@@ -122,7 +122,7 @@ $startwert = 21 + $feldbreite/2;
 for ($d=1; $d<$anz_tage+1; $d++)
 {
     $index = mysql_query("SELECT s_visits
-                          FROM fs_counter_stat
+                          FROM ".$global_config_arr[pref]."counter_stat
                           WHERE s_year  = $_GET[s_year] AND
                                 s_month = $_GET[s_month] AND
                                 s_day   = $d", $db);

@@ -8,10 +8,10 @@ if ($_FILES['newsmilie']['name'] != "" AND $_POST['replace_string'])
 {
     $_POST[replace_string] = savesql(killhtml($_POST[replace_string]));
 
-    mysql_query("UPDATE fs_smilies
+    mysql_query("UPDATE ".$global_config_arr[pref]."smilies
                  SET `order`=`order`+1
                  WHERE `order`>$_POST[insert_after]", $db);
-    mysql_query("INSERT INTO fs_smilies
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."smilies
                  (replace_string, `order`)
                  VALUES ('$_POST[replace_string]', '$_POST[insert_after]'+1)", $db);
 
@@ -24,22 +24,22 @@ if ($_FILES['newsmilie']['name'] != "" AND $_POST['replace_string'])
 //// Del Smilie         ////
 ////////////////////////////
 
-elseif ($_POST['delsmilie'])
+elseif ($_POST['delete_smilies'])
 {
     foreach($_POST['delsmilie'] as $value)
     {
-            $index = mysql_query("SELECT id FROM fs_smilies
+            $index = mysql_query("SELECT id FROM ".$global_config_arr[pref]."smilies
                                   WHERE `order`=$value", $db);
             $id = mysql_result($index,0,"id");
 
-            mysql_query("DELETE FROM fs_smilies
+            mysql_query("DELETE FROM ".$global_config_arr[pref]."smilies
                          WHERE `order`=$value", $db);
             image_delete("../images/smilies/", $id);
     }
     $_POST['delsmilie'] = array_reverse($_POST['delsmilie']);
     foreach($_POST['delsmilie'] as $value)
     {
-            mysql_query("UPDATE fs_smilies
+            mysql_query("UPDATE ".$global_config_arr[pref]."smilies
                          SET `order`=`order`-1
                          WHERE `order`>$value", $db);
     }
@@ -54,21 +54,21 @@ elseif (($_GET['action']=="moveup" OR $_GET['action']=="movedown") AND isset($_G
 {
     if ($_GET['action']=="moveup")
     {
-        $index = "UPDATE fs_smilies SET `order`=0 WHERE `order`=$_GET[oid]";
+        $index = "UPDATE ".$global_config_arr[pref]."smilies SET `order`=0 WHERE `order`=$_GET[oid]";
         mysql_query($index);
-        $index = "UPDATE fs_smilies SET `order`=`order`+1 WHERE `order`=$_GET[oid]-1";
+        $index = "UPDATE ".$global_config_arr[pref]."smilies SET `order`=`order`+1 WHERE `order`=$_GET[oid]-1";
         mysql_query($index);
-        $index = "UPDATE fs_smilies SET `order`=$_GET[oid]-1 WHERE `order`=0";
+        $index = "UPDATE ".$global_config_arr[pref]."smilies SET `order`=$_GET[oid]-1 WHERE `order`=0";
         mysql_query($index);
     }
 
     if ($_GET['action']=="movedown")
     {
-        $index = "UPDATE fs_smilies SET `order`=0 WHERE `order`=$_GET[oid]";
+        $index = "UPDATE ".$global_config_arr[pref]."smilies SET `order`=0 WHERE `order`=$_GET[oid]";
         mysql_query($index);
-        $index = "UPDATE fs_smilies SET `order`=`order`-1 WHERE `order`=$_GET[oid]+1";
+        $index = "UPDATE ".$global_config_arr[pref]."smilies SET `order`=`order`-1 WHERE `order`=$_GET[oid]+1";
         mysql_query($index);
-        $index = "UPDATE fs_smilies SET `order`=$_GET[oid]+1 WHERE `order`=0";
+        $index = "UPDATE ".$global_config_arr[pref]."smilies SET `order`=$_GET[oid]+1 WHERE `order`=0";
         mysql_query($index);
     }
 }
@@ -76,16 +76,15 @@ elseif (($_GET['action']=="moveup" OR $_GET['action']=="movedown") AND isset($_G
 ////////////////////////////
 ////// smilie list    //////
 ////////////////////////////
-  $index = mysql_query("select * from fs_editor_config", $db);
+  $index = mysql_query("select * from ".$global_config_arr[pref]."editor_config", $db);
   $config_arr = mysql_fetch_assoc($index);
 
   $config_arr[num_smilies] = $config_arr[smilies_rows]*$config_arr[smilies_cols];
 
-  $index = mysql_query("SELECT * FROM fs_smilies ORDER BY `order` ASC", $db);
+  $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."smilies ORDER BY `order` ASC", $db);
 
   echo'<form action="" method="post" enctype="multipart/form-data">
          <input type="hidden" value="editorsmilies" name="go">
-         <input type="hidden" name="sended" value="">
          <input type="hidden" value="'.session_id().'" name="PHPSESSID">
          <table border="0" cellpadding="4" cellspacing="0" width="600">
            <tr align="left" valign="top">
@@ -149,10 +148,10 @@ if (mysql_num_rows($index)>0)
                                 <td class="config" width="100">
                                     Text
                                 </td>
-                                <td class="config">
+                                <td class="config" style="padding-right:30px;">
                                     Sortierung
                                 </td>
-                                <td class="config" style="padding-left:30px;">
+                                <td class="config" style="text-align:center;" width="70">
                                     Löschen
                                 </td>
                                 <td width="175"></td>
@@ -160,7 +159,7 @@ if (mysql_num_rows($index)>0)
     ';
 
     // Smilies auslesen
-    $index = mysql_query("SELECT * FROM fs_smilies ORDER BY `order` ASC", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."smilies ORDER BY `order` ASC", $db);
     $smilie_last = mysql_num_rows($index);
     $i=0;
     while ($smilie_arr = mysql_fetch_assoc($index))
@@ -176,8 +175,14 @@ if (mysql_num_rows($index)>0)
         }
         
         echo'
-                            <tr onmouseover="javascript:this.style.backgroundColor=\'#EEEEEE\'"
-                                onmouseout="javascript:this.style.backgroundColor=\'transparent\'">
+                            <tr
+onmouseover=\'
+  colorOver (document.getElementById("input_'.$smilie_arr[id].'"), "#EEEEEE", "#DE5B5B", document.getElementById("td_'.$smilie_arr[id].'"));
+  this.style.backgroundColor="#EEEEEE";\'
+onmouseout=\'
+  colorOut (document.getElementById("input_'.$smilie_arr[id].'"), "transparent", "#C24949", document.getElementById("td_'.$smilie_arr[id].'"));
+  this.style.backgroundColor="transparent";\'
+                            >
                                 <td></td>
                                 <td align="left">
                                     <img src="'.image_url("../images/smilies/", $smilie_arr[id]).'" alt="" />
@@ -185,12 +190,20 @@ if (mysql_num_rows($index)>0)
                                 <td class="configthin">
                                     '.$smilie_arr[replace_string].'
                                 </td>
-                                <td align="center">
+                                <td align="center" style="padding-right:30px;">
                                     '.$pointer_up.'
                                     '.$pointer_down.'
                                 </td>
-                                <td align="center" style="padding-left:30px;">
-                                    <input onClick=\'delalert ("delsmilie'.$smilie_arr[id].'","Soll der Smilie '.$smilie_arr[replace_string].' wirklich gelöscht werden?")\' type="checkbox" name="delsmilie[]" id="delsmilie'.$smilie_arr[id].'" value="'.$smilie_arr[order].'">
+                                <td align="center" style="cursor:pointer;" id="td_'.$smilie_arr[id].'"
+onmouseover=\'
+  colorOver (document.getElementById("input_'.$smilie_arr[id].'"), "#EEEEEE", "#DE5B5B", this);\'
+onmouseout=\'
+  colorOut (document.getElementById("input_'.$smilie_arr[id].'"), "transparent", "#C24949", this);\'
+onClick=\'
+  createClick (document.getElementById("input_'.$smilie_arr[id].'"));
+  colorClick (document.getElementById("input_'.$smilie_arr[id].'"), "#EEEEEE", "#DE5B5B", this);\'
+                                >
+                                    <input type="checkbox" name="delsmilie[]" id="input_'.$smilie_arr[id].'" value="'.$smilie_arr[order].'" style="cursor:pointer;" onClick=\'createClick(this);\' >
                                 </td>
                                 <td></td>
                             </tr>
@@ -210,10 +223,14 @@ if (mysql_num_rows($index)>0)
         
     }
     echo'
+                            <tr><td>&nbsp;</td></tr>
                             <tr>
-                                <td colspan="4"></td>
-                                <td align="center" style="padding-left:30px;">
-                                    <input class="button" type="submit" value="Löschen">
+                                <td align="right" colspan="5">
+                                    <select name="delete_smilies" size="1">
+                                        <option value="0">'.$admin_phrases[editor][smilies_delnotconfirm].'</option>
+                                        <option value="1">'.$admin_phrases[editor][smilies_delconfirm].'</option>
+                                    </select>
+                                    <input type="submit" value="'.$admin_phrases[common][do_button].'" class="button" />
                                 </td>
                                 <td></td>
                             </tr>

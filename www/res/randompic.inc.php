@@ -1,12 +1,12 @@
 <?php
-$index = mysql_query("SELECT * FROM fs_screen_random_config WHERE id = 1", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random_config WHERE id = 1", $db);
 $config_arr = mysql_fetch_assoc($index);
 
 if ($config_arr[active] == 1)
 {
-    $index_timed = mysql_query("SELECT * FROM fs_screen_random a INNER JOIN fs_screen b ON (a.screen_id = b.screen_id) AND a.start <= UNIX_TIMESTAMP() AND a.end >= UNIX_TIMESTAMP() ORDER BY RAND() LIMIT 1", $db);
+    $index_timed = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random a INNER JOIN ".$global_config_arr[pref]."screen b ON (a.screen_id = b.screen_id) AND a.start <= UNIX_TIMESTAMP() AND a.end >= UNIX_TIMESTAMP() ORDER BY RAND() LIMIT 1", $db);
 
-    $index_cat = mysql_query("SELECT * FROM fs_screen_cat a INNER JOIN fs_screen b ON (a.cat_id = b.cat_id) AND a.randompic = 1 AND a.cat_type != 2 ORDER BY RAND() LIMIT 1", $db); //cat_type = 2 => wallpaper!
+    $index_cat = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat a INNER JOIN ".$global_config_arr[pref]."screen b ON (a.cat_id = b.cat_id) AND a.randompic = 1 AND a.cat_type != 2 ORDER BY RAND() LIMIT 1", $db); //cat_type = 2 => wallpaper!
 
   if ($config_arr[type_priority] == 1)
   {
@@ -53,7 +53,7 @@ if ($config_arr[active] == 1)
       $link = "showimg.php?screen=1&amp;catid=$dbscreencat&amp;screenid=$dbscreenid";
     }
 
-    $tindex = mysql_query("select randompic_body from fs_template where id = '$global_config_arr[design]'", $db);
+    $tindex = mysql_query("select randompic_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $body = stripslashes(mysql_result($tindex, 0, "randompic_body"));
     $body = str_replace("{titel}", $dbpotmtitle, $body);
     $body = str_replace("{thumb}", $mini, $body);
@@ -63,7 +63,7 @@ if ($config_arr[active] == 1)
   }
   else
   {
-    $index = mysql_query("select randompic_nobody from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select randompic_nobody from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "randompic_nobody"));
   }
   

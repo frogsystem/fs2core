@@ -42,7 +42,7 @@ if (isset($_POST[filter]))
              <table border="0" cellpadding="2" cellspacing="0" width="287" style="padding-left:13px;">
     ';
     $_POST[filter] = savesql($_POST[filter]);
-    $index = mysql_query("SELECT * FROM fs_user WHERE user_name LIKE '%$_POST[filter]%' ORDER BY user_name", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name LIKE '%$_POST[filter]%' ORDER BY user_name", $db);
     while ($user_arr = mysql_fetch_array($index))
     {
         $user_arr[user_name] = $user_arr[user_name];

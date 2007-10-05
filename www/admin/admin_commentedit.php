@@ -26,7 +26,7 @@ if ($_POST[title] && $_POST[text])
             $_POST[commentposterid] = 0;
         }
 
-        $update = "UPDATE fs_news_comments
+        $update = "UPDATE ".$global_config_arr[pref]."news_comments
                    SET comment_id        = '$_POST[ecommentid]',
                        news_id           = '$_POST[newsid]',
                        comment_poster    = '$_POST[commentposter]',
@@ -40,8 +40,8 @@ if ($_POST[title] && $_POST[text])
     }
     else
     {
-        mysql_query("DELETE FROM fs_news_comments WHERE comment_id = $_POST[ecommentid]", $db);
-        mysql_query("UPDATE fs_counter SET comments = comments - 1", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."news_comments WHERE comment_id = $_POST[ecommentid]", $db);
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET comments = comments - 1", $db);
         systext("Der Kommentar wurde gelöscht");
     }
 }
@@ -53,13 +53,13 @@ if ($_POST[title] && $_POST[text])
 if (isset($_POST[commentid]))
 {
     settype($_POST[commentid], 'integer');
-    $index = mysql_query("SELECT * FROM fs_news_comments WHERE comment_id = $_POST[commentid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_comments WHERE comment_id = $_POST[commentid]", $db);
     $comment_arr = mysql_fetch_assoc($index);
 
     // Falls registrierter User, Name ermitteln
     if ($comment_arr[comment_poster_id] != 0)
     {
-        $index = mysql_query("select user_name from fs_user where user_id = $comment_arr[comment_poster_id]", $db);
+        $index = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $comment_arr[comment_poster_id]", $db);
         $comment_arr[comment_poster] = mysql_result($index, 0, "user_name");
     }
 
@@ -67,7 +67,7 @@ if (isset($_POST[commentid]))
     $comment_arr[comment_date] = date("d.m.Y" , $comment_arr[comment_date]) . " um " . date("H:i" , $comment_arr[comment_date]);
  
     // FS/HTML Code aktiv?
-    $index = mysql_query("SELECT html_code, fs_code FROM fs_news_config", $db);
+    $index = mysql_query("SELECT html_code, fs_code FROM ".$global_config_arr[pref]."news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     $config_arr[html_code] = ($config_arr[html_code] == 3) ? "an" : "aus";
     $config_arr[fs_code] = ($config_arr[fs_code] == 3) ? "an" : "aus";

@@ -21,7 +21,7 @@ $flash = '
      </object>
 ';
 
-$index = mysql_query("select community_map from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select community_map from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $template = stripslashes(mysql_result($index, 0, "community_map"));
 $template = str_replace("{karte}", $flash, $template); 
 ?>

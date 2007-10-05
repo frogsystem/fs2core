@@ -8,7 +8,7 @@ if ($_POST[user_per_page] && ($_POST[user_per_page]>0 OR $_POST[user_per_page]==
 {
     settype($_POST[user_per_page], 'integer');
     
-    $update = "UPDATE fs_userlist_config
+    $update = "UPDATE ".$global_config_arr[pref]."userlist_config
                SET user_per_page = '$_POST[user_per_page]'
                WHERE id = 1";
     mysql_query($update, $db);
@@ -21,7 +21,7 @@ if ($_POST[user_per_page] && ($_POST[user_per_page]>0 OR $_POST[user_per_page]==
 
 else
 {
-    $index = mysql_query("SELECT * FROM fs_userlist_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."userlist_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     echo'
                     <form action="" method="post">

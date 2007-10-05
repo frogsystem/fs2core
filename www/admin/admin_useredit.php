@@ -15,7 +15,7 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
     $regdate = mktime(0, 0, 0, $_POST[monat], $_POST[tag], $_POST[jahr]);
  
     // Username schon vorhanden?
-    $index = mysql_query("SELECT user_id FROM fs_user WHERE user_name = '$_POST[username]'", $db);
+    $index = mysql_query("SELECT user_id FROM ".$global_config_arr[pref]."user WHERE user_name = '$_POST[username]'", $db);
     $rows = mysql_num_rows($index);
     $dbexistid = mysql_result($index, 0, "user_id");
 
@@ -24,20 +24,20 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
     {
         if (!isset($_POST[deluser]))
         {
-            $index = mysql_query("select is_admin from fs_user where user_id = '$_POST[userid]'", $db);
+            $index = mysql_query("select is_admin from ".$global_config_arr[pref]."user where user_id = '$_POST[userid]'", $db);
             $dbisadmin = mysql_result($index, 0, "is_admin");
 
             // Wenn vorher kein Admin, jetzt aber wohl
             if (($_POST[isadmin] == 1) && ($dbisadmin == 0))
             {
-                mysql_query("INSERT INTO fs_permissions (user_id)
+                mysql_query("INSERT INTO ".$global_config_arr[pref]."permissions (user_id)
                              VALUES (".$_POST[userid].")", $db);
             }
 
             // Wenn vorher Admin, jetzt aber nicht mehr
             if (($_POST[isadmin] == 0) && ($dbisadmin == 1))
             {
-                $dbaction = "delete from fs_permissions where user_id = ".$_POST[userid];
+                $dbaction = "delete from ".$global_config_arr[pref]."permissions where user_id = ".$_POST[userid];
                 mysql_query($dbaction, $db);
             }
 
@@ -51,7 +51,7 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
                 $userpass = savesql($_POST[oldpass]);
             }
 
-            $update = "UPDATE fs_user
+            $update = "UPDATE ".$global_config_arr[pref]."user
                        SET user_name     = '$_POST[username]',
                            user_mail     = '$_POST[usermail]',
                            user_password = '$userpass',
@@ -65,13 +65,13 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
         } 
         elseif($_POST[userid] != 1 AND $_POST[userid] != $_SESSION[user_id])  // User löschen
         {
-            $dbaction = "delete from fs_permissions where user_id = ".$_POST[userid];
+            $dbaction = "delete from ".$global_config_arr[pref]."permissions where user_id = ".$_POST[userid];
             @mysql_query($dbaction, $db);
 
-            $dbaction = "delete from fs_user where user_id = ".$_POST[userid];
+            $dbaction = "delete from ".$global_config_arr[pref]."user where user_id = ".$_POST[userid];
             mysql_query($dbaction, $db);
 
-            mysql_query("update fs_counter set user=user-1", $db);
+            mysql_query("update ".$global_config_arr[pref]."counter set user=user-1", $db);
             systext('User wurde gelöscht');
         }
     }
@@ -88,7 +88,7 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
 elseif (isset($_POST[select_user]))
 {
     settype($_POST[select_user], 'integer');
-    $index = mysql_query("select * from fs_user where user_id = $_POST[select_user]", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_id = $_POST[select_user]", $db);
     $user_arr = mysql_fetch_assoc($index);
 
     $user_arr[is_admin] = ($user_arr[is_admin] == 1) ? "checked" : "";
@@ -223,7 +223,7 @@ else
         ';
 
         $_POST[filter] = savesql($_POST[filter]);
-        $index = mysql_query("SELECT * FROM fs_user
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user
                               WHERE user_name like '%$_POST[filter]%' AND user_id != 1 AND user_id != $_SESSION[user_id]
                               ORDER BY user_name", $db);
         while ($user_arr = mysql_fetch_assoc($index))

@@ -1,17 +1,17 @@
 <?php
 
 settype($_GET[fileid], 'integer');
-$index = mysql_query("select * from fs_dl where dl_id = $_GET[fileid] and dl_open = 1", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."dl where dl_id = $_GET[fileid] and dl_open = 1", $db);
 if (mysql_num_rows($index) > 0)
 {
     $file_arr = mysql_fetch_assoc($index);
 
     //Config einlesen
-    $index = mysql_query("select * from fs_dl_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
     $dl_config_arr = mysql_fetch_assoc($index);
 
     // Username auslesen
-    $index = mysql_query("select user_name from fs_user where user_id = $file_arr[user_id]", $db);
+    $index = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $file_arr[user_id]", $db);
     $file_arr[user_name] = mysql_result($index, 0, "user_name");
     $file_arr[user_url] = "?go=profil&userid=" . $file_arr[user_id];
 
@@ -40,7 +40,7 @@ if (mysql_num_rows($index) > 0)
     // Sonstige Daten ermitteln
     $file_arr[dl_date] = date("d.m.Y" , $file_arr[dl_date]);
     $file_arr[dl_text] = fscode($file_arr[dl_text], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-    $index3 = mysql_query("select cat_name from fs_dl_cat where cat_id = '$file_arr[cat_id]'", $db);
+    $index3 = mysql_query("select cat_name from ".$global_config_arr[pref]."dl_cat where cat_id = '$file_arr[cat_id]'", $db);
     $file_arr[cat_name] = stripslashes(mysql_result($index3, 0, "cat_name"));
 
 
@@ -89,20 +89,20 @@ if (mysql_num_rows($index) > 0)
 //    }
 
     // Files auslesen
-    if ($index = mysql_query("select * from fs_dl_files where dl_id = $file_arr[dl_id] $dl_use", $db))
+    if ($index = mysql_query("select * from ".$global_config_arr[pref]."dl_files where dl_id = $file_arr[dl_id] $dl_use", $db))
     {
         $stats_arr[number] = mysql_num_rows($index);
 
         while ($mirror_arr = mysql_fetch_assoc($index))
         {
-            $index2 = mysql_query("select dl_file from fs_template where id = '$global_config_arr[design]'", $db);
+            $index2 = mysql_query("select dl_file from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
             $template = stripslashes(mysql_result($index2, 0, "dl_file"));
             
             $stats_arr[size] = $stats_arr[size] + $mirror_arr[file_size];
             $stats_arr[hits] = $stats_arr[hits] + $mirror_arr[file_count];
             $stats_arr[traffic] = $stats_arr[traffic] + ($mirror_arr[file_count]*$mirror_arr[file_size]);
             
-            $index2 = mysql_query("select dl_file_is_mirror from fs_template where id = '$global_config_arr[design]'", $db);
+            $index2 = mysql_query("select dl_file_is_mirror from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
             $mirror_arr[template] = stripslashes(mysql_result($index2, 0, "dl_file_is_mirror"));
             
             $template = str_replace("{name}", $mirror_arr[file_name], $template);
@@ -126,7 +126,7 @@ if (mysql_num_rows($index) > 0)
     }
 
     // Stats erstellen
-    $index = mysql_query("select dl_stats from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select dl_stats from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "dl_stats"));
     if ($stats_arr[number] == 1)
        $template = str_replace("{number}", "$stats_arr[number] Datei", $template);
@@ -141,7 +141,7 @@ if (mysql_num_rows($index) > 0)
 
 
     // Suchfeld auslesen
-    $index = mysql_query("select dl_search_field from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select dl_search_field from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $suchfeld = stripslashes(mysql_result($index, 0, "dl_search_field"));
 
     // Navigation erzeugen
@@ -158,7 +158,7 @@ if (mysql_num_rows($index) > 0)
         {
             $icon = "dl_ordner.gif";
         }
-        $index = mysql_query("select dl_navigation from fs_template where id = '$global_config_arr[design]'", $db);
+        $index = mysql_query("select dl_navigation from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $template = stripslashes(mysql_result($index, 0, "dl_navigation"));
         $template = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]) . $template;
         $template = str_replace("{kategorie_url}", "?go=download&amp;catid=".$cat[cat_id], $template);
@@ -168,7 +168,7 @@ if (mysql_num_rows($index) > 0)
     }
     unset($valid_ids);
 
-    $index = mysql_query("select dl_file_body from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select dl_file_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "dl_file_body"));
     $template = str_replace("{navigation}", $navi, $template); 
     $template = str_replace("{suchfeld}", $suchfeld, $template); 

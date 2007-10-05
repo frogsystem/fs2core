@@ -6,16 +6,17 @@
 
 if ($_POST['design_id'] AND $_POST['name'] AND $_POST['sended'] == "edit")
 {
-  if (rename("../css/$_POST[oldname].css", "../css/$_POST[name].css"))
+  $index = mysql_query("SELECT COUNT(id) AS number FROM ".$global_config_arr[pref]."template WHERE name = '$_POST[name]'", $db);
+  if (mysql_result($index,0,"number") == 0)
   {
-    mysql_query("UPDATE fs_template
+    mysql_query("UPDATE ".$global_config_arr[pref]."template
                  SET name = '$_POST[name]'
                  WHERE id = '$_POST[design_id]'", $db);
-    systext("Das Template wurde aktualisiert!");
+    systext("Das Design wurde aktualisiert!");
   }
   else
   {
-    systext("Das Template konnte nicht aktualisiert werden!");
+    systext("Es existiert bereits ein Design mit diesem Namen!");
   }
 }
 
@@ -25,23 +26,17 @@ if ($_POST['design_id'] AND $_POST['name'] AND $_POST['sended'] == "edit")
 
 elseif ($_POST['design_id'] AND $_POST['sended'] == "delete")
 {
-  if (unlink("../css/$_POST[oldname].css"))
-  {
-    mysql_query("DELETE FROM fs_template
+    mysql_query("DELETE FROM ".$global_config_arr[pref]."template
                  WHERE id = '$_POST[design_id]'", $db);
 
     if ($_POST[design_id] == $global_config_arr[design] AND ($_POST[new_page_design] OR $_POST[new_page_design]==0))
     {
-    mysql_query("UPDATE fs_global_config
+    mysql_query("UPDATE ".$global_config_arr[pref]."global_config
                  SET design = '$_POST[new_page_design]'
                  WHERE id = '1'", $db);
     }
-    systext("Das Template wurde gelöscht!");
-  }
-  else
-  {
-    systext("Das Template konnte nicht gelöscht werden!");
-  }
+    systext("Das Design wurde gelöscht!");
+
 }
 
 //////////////////
@@ -53,7 +48,7 @@ elseif ($_POST['design_id'] AND $_POST['template_action'])
 
   if ($_POST['template_action'] == "edit")
   {
-    $index = mysql_query("select id, name from fs_template WHERE id = '$_POST[design_id]'", $db);
+    $index = mysql_query("select id, name from ".$global_config_arr[pref]."template WHERE id = '$_POST[design_id]'", $db);
     $admin_design_arr = mysql_fetch_assoc($index);
   
     $admin_design_arr['name'] = killhtml($admin_design_arr['name']);
@@ -94,7 +89,7 @@ elseif ($_POST['design_id'] AND $_POST['template_action'])
   }
   elseif ($_POST['template_action'] == "delete")
   {
-    $index = mysql_query("select id, name from fs_template WHERE id = '$_POST[design_id]'", $db);
+    $index = mysql_query("select id, name from ".$global_config_arr[pref]."template WHERE id = '$_POST[design_id]'", $db);
     $admin_design_arr = mysql_fetch_assoc($index);
 
     $admin_design_arr['name'] = killhtml($admin_design_arr['name']);
@@ -134,7 +129,7 @@ elseif ($_POST['design_id'] AND $_POST['template_action'])
              <td valign="middle">
                <select name="new_page_design" size="1"  class="text">';
 
-               $index = mysql_query("select id, name from fs_template WHERE id != '$admin_design_arr[id]' ORDER BY name", $db);
+               $index = mysql_query("select id, name from ".$global_config_arr[pref]."template WHERE id != '$admin_design_arr[id]' ORDER BY name", $db);
                while ($admin_new_page_design_arr = mysql_fetch_assoc($index))
                {
                  echo'<option value="'.$admin_new_page_design_arr[id].'">'.$admin_new_page_design_arr[name].'</option>';
@@ -166,7 +161,7 @@ else
          </tr>
          <tr><td></td></tr>';
 
-         $index = mysql_query("select id, name from fs_template WHERE id != '0' ORDER BY id", $db);
+         $index = mysql_query("select id, name from ".$global_config_arr[pref]."template WHERE id != '0' ORDER BY id", $db);
          if (mysql_num_rows($index) <= 0)
          {
            echo '<tr>

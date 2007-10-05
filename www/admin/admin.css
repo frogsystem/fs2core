@@ -1,18 +1,4 @@
-td.config
-  {
-   text-align:left;
-   font-size:9pt;
-   font-family:Verdana;
-   color:#000000;
-   font-weight:bold;
-  }
-td.configthin
-  {
-   text-align:left;
-   font-size:9pt;
-   font-family:Verdana;
-   color:#000000;
-  }
+
 td.h
   {
    font-size:8pt;
@@ -106,14 +92,36 @@ select
     border:1px solid #000000;
     background-color:#B7B7B7;
     font-weight:normal;
+    cursor:pointer;
 }
 
-  
 
+
+/**************************************************/
+/* standard formular-table styles */
+/**************************************************/
+td.config
+{
+    text-align:left;
+    font-size:9pt;
+    font-family:Verdana;
+    color:#000000;
+    font-weight:bold;
+}
+td.configthin
+{
+    text-align:left;
+    font-size:9pt;
+    font-family:Verdana;
+    color:#000000;
+}
+  
+  
+  
 /**************************************************/
 /* standard links styles */
 /**************************************************/
-a
+a, a.small
 {
     font-size:8pt;
     font-family:Verdana;
@@ -121,7 +129,13 @@ a
     font-weight:normal;
     text-decoration:none;
 }
-a:hover,a:focus { text-decoration:underline; }
+a:hover,a:focus,a.small:hover,a.small:focus { text-decoration:underline; }
+
+a.small
+{
+    font-size:7pt;
+}
+
 
 
 /**************************************************/
@@ -165,7 +179,6 @@ a.menu_link,a.menu_link_selected,a.menu_link_right
     font-size:9pt;
     font-family:Arial;
     color:#FFFFFF;
-    display:inline-block;
     margin-top:-4px;
     padding-top:4px;
     padding-bottom:10px;

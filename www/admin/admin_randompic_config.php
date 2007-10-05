@@ -32,12 +32,12 @@ if ($_POST['sended'] AND (($_POST['timed_deltime']==1 AND $_POST['deltime_time']
     $_POST[timed_deltime] = $_POST[deltime_time]*$deltime_mod;
   }
 
-  mysql_query("UPDATE fs_screen_random_config
+  mysql_query("UPDATE ".$global_config_arr[pref]."screen_random_config
                SET active = '$_POST[active]',
                    type_priority = '$_POST[type_priority]',
                    use_priority_only = '$_POST[use_priority_only]'
                WHERE id = '1'", $db);
-  mysql_query("UPDATE fs_global_config
+  mysql_query("UPDATE ".$global_config_arr[pref]."global_config
                SET random_timed_deltime = '$_POST[timed_deltime]'
                WHERE id = '1'", $db);
   systext("Die Konfiguration wurde aktualisiert");
@@ -49,10 +49,10 @@ if ($_POST['sended'] AND (($_POST['timed_deltime']==1 AND $_POST['deltime_time']
 
 else
 {
-  $index = mysql_query("SELECT * FROM fs_screen_random_config", $db);
+  $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random_config", $db);
   $config_arr = mysql_fetch_assoc($index);
 
-  $index = mysql_query("SELECT random_timed_deltime FROM fs_global_config", $db);
+  $index = mysql_query("SELECT random_timed_deltime FROM ".$global_config_arr[pref]."global_config", $db);
   $config_arr[timed_deltime] = mysql_result($index,0,"random_timed_deltime");
 
   if ($config_arr[timed_deltime]>0) {

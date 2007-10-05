@@ -8,11 +8,11 @@ if ($_POST['cat_id'] AND $_POST['cat_name'] AND $_POST['sended'] == "edit")
 {
     $_POST[cat_name] = savesql($_POST[cat_name]);
 
-    $index = mysql_query("SELECT cat_name FROM fs_screen_cat WHERE cat_name = '$_POST[cat_name]' AND cat_name != '$_POST[oldname]'", $db);
+    $index = mysql_query("SELECT cat_name FROM ".$global_config_arr[pref]."screen_cat WHERE cat_name = '$_POST[cat_name]' AND cat_name != '$_POST[oldname]'", $db);
     $rows = mysql_num_rows($index);
     if ($rows === 0)
     {
-        mysql_query("UPDATE fs_screen_cat
+        mysql_query("UPDATE ".$global_config_arr[pref]."screen_cat
                      SET cat_name = '$_POST[cat_name]',
                          cat_type = '$_POST[cat_type]',
                          cat_visibility = '$_POST[cat_visibility]'
@@ -23,10 +23,10 @@ if ($_POST['cat_id'] AND $_POST['cat_name'] AND $_POST['sended'] == "edit")
 }
 elseif ($_POST['cat_id'] AND $_POST['sended'] == "delete")
 {
-  mysql_query("DELETE FROM fs_screen_cat
+  mysql_query("DELETE FROM ".$global_config_arr[pref]."screen_cat
                WHERE cat_id = '$_POST[cat_id]'", $db);
 
-  mysql_query("UPDATE fs_screen
+  mysql_query("UPDATE ".$global_config_arr[pref]."screen
                SET cat_id = '$_POST[cat_move_to]'
                WHERE cat_id = '$_POST[cat_id]'", $db);
 
@@ -47,7 +47,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
 
   if ($_POST['cat_action'] == "edit")
   {
-    $index = mysql_query("select * from fs_screen_cat WHERE cat_id = '$_POST[cat_id]'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_id = '$_POST[cat_id]'", $db);
     $admin_cat_arr = mysql_fetch_assoc($index);
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
@@ -137,12 +137,12 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
   
   elseif ($_POST['cat_action'] == "delete")
   {
-    $index = mysql_query("select * from fs_screen_cat", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat", $db);
 
     if (mysql_num_rows($index) > 1)
     {
 
-    $index = mysql_query("select * from fs_screen_cat WHERE cat_id = '$_POST[cat_id]'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_id = '$_POST[cat_id]'", $db);
     $admin_cat_arr = mysql_fetch_assoc($index);
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
@@ -176,7 +176,7 @@ echo '
            <td>
              <select name="cat_move_to" size="1" class="text">';
 
-  $index = mysql_query("select * from fs_screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' ORDER BY cat_name", $db);
+  $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' ORDER BY cat_name", $db);
   while ($admin_cat_move_arr = mysql_fetch_assoc($index))
   {
     echo'<option value="'.$admin_cat_move_arr[cat_id].'">'.$admin_cat_move_arr[cat_name].'</option>';
@@ -232,11 +232,11 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("select * from fs_screen_cat order by cat_date desc", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat order by cat_date desc", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
-        $screen_index = mysql_query("select cat_id from fs_screen where cat_id = $cat_arr[cat_id]", $db);
+        $screen_index = mysql_query("select cat_id from ".$global_config_arr[pref]."screen where cat_id = $cat_arr[cat_id]", $db);
         $screen_rows = mysql_num_rows($screen_index);
         echo'
                     <form action="" method="post">

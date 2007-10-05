@@ -15,7 +15,7 @@ if ($_POST[tage] && $_POST[hits])
     else
     {
         $deldate = time() - ($_POST[tage] * 86400);
-        mysql_query("DELETE FROM fs_counter_ref
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."counter_ref
                      WHERE ref_date < '$deldate' AND
                            ref_count < '$_POST[hits]'", $db);
         systext("Alle Einträge älter als $_POST[tage] Tage und mit weniger als $_POST[hits] Hits wurden gelöscht<br>Dies betraf ".mysql_affected_rows()." Datensätze");
@@ -157,7 +157,7 @@ else
             break;
     }
 
-    $index = mysql_query("SELECT * FROM fs_counter_ref $query", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."counter_ref $query", $db);
     while ($referrer_arr = mysql_fetch_assoc($index))
     {
         $dburlfull = $referrer_arr[ref_url];

@@ -8,7 +8,7 @@ if (isset($_POST[change]))
 {
     $_POST[text] = addslashes($_POST[text]);
 
-    mysql_query("UPDATE fs_announcement SET text = '$_POST[text]'", $db);
+    mysql_query("UPDATE ".$global_config_arr[pref]."announcement SET text = '$_POST[text]'", $db);
 
     systext("Ankündigung wurde editiert");
 }
@@ -19,7 +19,7 @@ if (isset($_POST[change]))
 
 else
 {
-    $index = mysql_query("SELECT text FROM fs_announcement", $db);
+    $index = mysql_query("SELECT text FROM ".$global_config_arr[pref]."announcement", $db);
     $text = stripslashes(mysql_result($index, 0, "text"));
 
     echo'

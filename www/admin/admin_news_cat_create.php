@@ -2,7 +2,7 @@
 //////////////////////
 //// Config laden ////
 //////////////////////
-$index = mysql_query("select * from fs_news_config", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
 $admin_news_config_arr = mysql_fetch_assoc($index);
 
 //////////////////////////////////
@@ -14,7 +14,7 @@ if ($_POST['name'])
   $_POST[name] = savesql($_POST[name]);
   $_POST[description] = savesql($_POST[description]);
 
-  mysql_query("INSERT INTO fs_news_cat
+  mysql_query("INSERT INTO ".$global_config_arr[pref]."news_cat
                (cat_name, cat_description)
                VALUES ('$_POST[name]', '$_POST[description]')", $db);
   $id = mysql_insert_id();

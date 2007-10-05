@@ -12,12 +12,12 @@ if ($_POST['replace_thing'] AND $_POST['name'])
     $_POST[replace_string] = savesql($_POST[replace_string]);
     $_POST[replace_thing] = savesql($_POST[replace_thing]);
 
-    $index = mysql_query("SELECT * FROM fs_includes
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."includes
                           WHERE replace_string = '".$_POST[replace_string]."'", $db);
 
     if (mysql_num_rows($index) == 0)
     {
-        mysql_query("INSERT INTO fs_includes (replace_string, replace_thing, include_type)
+        mysql_query("INSERT INTO ".$global_config_arr[pref]."includes (replace_string, replace_thing, include_type)
                      VALUES ('".$_POST[replace_string]."',
                              '".$_POST[replace_thing]."',
                              '".$_POST[include_type]."')", $db);

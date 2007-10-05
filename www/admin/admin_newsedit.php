@@ -10,12 +10,12 @@ if ($_POST[newsedit] && $_POST[title] && $_POST[text])
 
     if (isset($_POST[delnews]))
     {
-        mysql_query("DELETE FROM fs_news WHERE news_id = '$_POST[enewsid]'", $db);
-        mysql_query("DELETE FROM fs_news_comments WHERE news_id = '$_POST[enewsid]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."news WHERE news_id = '$_POST[enewsid]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."news_comments WHERE news_id = '$_POST[enewsid]'", $db);
         $numcomments = mysql_affected_rows();
-        mysql_query("DELETE FROM fs_news_links WHERE news_id = '$_POST[enewsid]'", $db);
-        mysql_query("UPDATE fs_counter SET news = news - 1", $db);
-        mysql_query("UPDATE fs_counter SET comments = comments - $numcomments", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."news_links WHERE news_id = '$_POST[enewsid]'", $db);
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET news = news - 1", $db);
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET comments = comments - $numcomments", $db);
         systext("Die News wurde gelöscht");
     }
     else
@@ -28,7 +28,7 @@ if ($_POST[newsedit] && $_POST[title] && $_POST[text])
         $newsdate = mktime($_POST[stunde], $_POST[min], 0, $_POST[monat], $_POST[tag], $_POST[jahr]);
 
         // News in der DB aktualisieren
-        $update = "UPDATE fs_news
+        $update = "UPDATE ".$global_config_arr[pref]."news
                    SET cat_id       = '$_POST[catid]',
                        user_id      = '$_POST[posterid]',
                        news_date    = '$newsdate',
@@ -46,7 +46,7 @@ if ($_POST[newsedit] && $_POST[title] && $_POST[text])
             if (isset($_POST[dellink][$i]))
             {
                 settype($_POST[dellink][$i], 'integer');
-                mysql_query("DELETE FROM fs_news_links WHERE link_id = " . $_POST[dellink][$i], $db);
+                mysql_query("DELETE FROM ".$global_config_arr[pref]."news_links WHERE link_id = " . $_POST[dellink][$i], $db);
             }
             else
             {
@@ -57,7 +57,7 @@ if ($_POST[newsedit] && $_POST[title] && $_POST[text])
                 // Link erzeugen
                 if (!$_POST[linkid][$i] && $_POST[linkname][$i])
                 {
-                    mysql_query("INSERT INTO fs_news_links (news_id, link_name, link_url, link_target)
+                    mysql_query("INSERT INTO ".$global_config_arr[pref]."news_links (news_id, link_name, link_url, link_target)
                                  VALUES ('".$_POST[enewsid]."',
                                          '".$_POST[linkname][$i]."',
                                          '".$_POST[linkurl][$i]."',
@@ -66,7 +66,7 @@ if ($_POST[newsedit] && $_POST[title] && $_POST[text])
                 // Link aktualisieren
                 else
                 {
-                    $update = "UPDATE fs_news_links
+                    $update = "UPDATE ".$global_config_arr[pref]."news_links
                                SET link_name   = '".$_POST[linkname][$i]."',
                                    link_url    = '".$_POST[linkurl][$i]."',
                                    link_target = '".$_POST[linktarget][$i]."'
@@ -91,7 +91,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
     }
     settype($_POST[newsid], 'integer');
 
-    $index = mysql_query("SELECT * FROM fs_news WHERE news_id = '$_POST[newsid]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news WHERE news_id = '$_POST[newsid]'", $db);
     if (!isset($_POST[title]))
     {
         $_POST[title] = mysql_result($index, 0, "news_title");
@@ -128,7 +128,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
     }
 
     // User auslesen
-    $index = mysql_query("SELECT user_name, user_id FROM fs_user WHERE user_id = $userid", $db);
+    $index = mysql_query("SELECT user_name, user_id FROM ".$global_config_arr[pref]."user WHERE user_id = $userid", $db);
     if (!isset($_POST[poster]))
     {
         $_POST[poster] = mysql_result($index, 0, "user_name");
@@ -139,13 +139,13 @@ elseif ($_POST[newsid] OR $_POST[tempid])
     }
 
     // News Konfiguration lesen
-    $index = mysql_query("SELECT html_code, fs_code FROM fs_news_config", $db);
+    $index = mysql_query("SELECT html_code, fs_code FROM ".$global_config_arr[pref]."news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     $config_arr[html_code] = ($config_arr[html_code] > 1) ? "an" : "aus";
     $config_arr[fs_code] = ($config_arr[fs_code] > 1) ? "an" : "aus";
 
     // Links einlesen
-    $index = mysql_query("SELECT * FROM fs_news_links WHERE news_id = '$_POST[newsid]' ORDER BY link_id", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_links WHERE news_id = '$_POST[newsid]' ORDER BY link_id", $db);
     $rows = mysql_num_rows($index);
     for($i=0; $i<$rows; $i++)
     {
@@ -205,7 +205,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
     ';
 
     // Kategorien auslesen
-    $index = mysql_query("SELECT * FROM fs_news_cat", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_cat", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($cat_arr[cat_id] == $_POST[catid]) ? "selected" : "";
@@ -362,7 +362,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
 
     // Kommentare auflisten
     $index = mysql_query("SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id
-                          FROM fs_news_comments
+                          FROM ".$global_config_arr[pref]."news_comments
                           WHERE news_id = $_POST[newsid]
                           ORDER BY comment_date desc", $db);
     while ($comment_arr = mysql_fetch_assoc($index))
@@ -370,7 +370,7 @@ elseif ($_POST[newsid] OR $_POST[tempid])
         $dbcommentposterid = $comment_arr[comment_poster_id];
         if ($comment_arr[comment_poster_id] != 0)
         {
-            $userindex = mysql_query("SELECT user_name FROM fs_user WHERE user_id = $comment_arr[comment_poster_id]", $db);
+            $userindex = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_id = $comment_arr[comment_poster_id]", $db);
             $comment_arr[comment_poster] = mysql_result($userindex, 0, "user_name");
         }
         $comment_arr[comment_date] = date("d.m.Y" , $comment_arr[comment_date]) . " um " . date("H:i" , $comment_arr[comment_date]);
@@ -421,7 +421,7 @@ else
     settype($_GET[start], "integer");
     $zeilen = PERPAGE + 1;
     $index = mysql_query("SELECT news_id, news_title, news_date
-                          FROM fs_news
+                          FROM ".$global_config_arr[pref]."news
                           ORDER BY news_date DESC
                           LIMIT $_GET[start], $zeilen", $db);
     $rows = mysql_num_rows($index);
@@ -474,7 +474,7 @@ else
     while ($news_arr = mysql_fetch_assoc($index))
     {
         $news_arr[news_date] = date("d.m.Y" , $news_arr[news_date]) . " um " . date("H:i" , $news_arr[news_date]);
-        $cindex = mysql_query("SELECT comment_id FROM fs_news_comments WHERE news_id = $news_arr[news_id]", $db);
+        $cindex = mysql_query("SELECT comment_id FROM ".$global_config_arr[pref]."news_comments WHERE news_id = $news_arr[news_id]", $db);
         $rows = mysql_num_rows($cindex);
         echo'
                             <tr>

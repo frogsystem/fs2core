@@ -25,7 +25,7 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST
     $dldate = time();
 
     // Download eintragen
-    mysql_query("INSERT INTO fs_dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
                                     dl_autor_url, dl_open)
                  VALUES ('".$_POST[catid]."',
                          '".$_POST[userid]."',
@@ -39,10 +39,10 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST
     $id = mysql_insert_id();
     
     // Bild auswerten und hochladen
-    $index = mysql_query("select * from fs_dl_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
     $admin_dl_config_arr = mysql_fetch_assoc($index);
     
-    if ($_FILES[dlimg] && ($_FILES[dlimg] != "none"))
+    if (isset($_FILES[dlimg]))
     {
         $upload = upload_img($_FILES['dlimg'], "../images/downloads/", $id, 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
         systext(upload_img_notice($upload));
@@ -55,7 +55,7 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST
     {
         if ($_POST[fname][$i] != "" AND $_POST[furl][$i] != "" AND $_POST[fsize][$i] != "")
         {
-            mysql_query("INSERT INTO fs_dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
+            mysql_query("INSERT INTO ".$global_config_arr[pref]."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
                          VALUES ('$id',
                                  '".$_POST[fname][$i]."',
                                  '".$_POST[furl][$i]."',
@@ -78,7 +78,7 @@ else
     }
     $_POST[options] = $_POST[options] + $_POST[optionsadd];
 
-    $index = mysql_query("select * from fs_dl_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'

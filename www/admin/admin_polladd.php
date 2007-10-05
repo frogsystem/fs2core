@@ -19,19 +19,19 @@ if ($_POST[polladd] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
     $_POST[type] = ($_POST[type] == 1) ? 1 : 0;
 
     // Umfrage in die DB eintragen
-    mysql_query("INSERT INTO fs_poll (poll_quest, poll_start, poll_end, poll_type)
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."poll (poll_quest, poll_start, poll_end, poll_type)
                  VALUES ('".$_POST[frage]."',
                          '$adate',
                          '$edate',
                          '".$_POST[type]."');", $db);
 
     // Antworten in die DB eintragen
-    $index = mysql_query("SELECT poll_id FROM fs_poll WHERE poll_quest = '".$_POST[frage]."'");
+    $index = mysql_query("SELECT poll_id FROM ".$global_config_arr[pref]."poll WHERE poll_quest = '".$_POST[frage]."'");
     $id = mysql_result($index, 0, "poll_id");
 
     for ($i=0; $i<count($_POST[ant]); $i++)
     {
-        mysql_query("INSERT INTO fs_poll_answers (poll_id, answer)
+        mysql_query("INSERT INTO ".$global_config_arr[pref]."poll_answers (poll_id, answer)
                      VALUES ('$id',
                              '".$_POST[ant][$i]."');", $db);
     }

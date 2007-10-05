@@ -9,7 +9,7 @@ if (isset($_POST[catname]))
     if (isset($_POST[delcat]))
     {
         settype($_POST[catid], "integer");
-        mysql_query("DELETE FROM fs_dl_cat WHERE cat_id = ".$_POST[catid], $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_cat WHERE cat_id = ".$_POST[catid], $db);
         systext("Die Kategorie wurde gelöscht");
     }
     else
@@ -17,7 +17,7 @@ if (isset($_POST[catname]))
         $_POST[catname] = savesql($_POST[catname]);
         settype($_POST[subcatof], "integer");
 
-        $update = "UPDATE fs_dl_cat
+        $update = "UPDATE ".$global_config_arr[pref]."dl_cat
                    SET subcat_id = '$_POST[subcatof]',
                        cat_name = '$_POST[catname]'
                    WHERE cat_id = $_POST[catid]";
@@ -37,7 +37,7 @@ elseif (isset($_POST[editcatid]))
     $valid_ids = array();
     get_dl_categories (&$valid_ids, $_POST[editcatid]);
 
-    $index = mysql_query("SELECT * FROM fs_dl_cat WHERE cat_id = '$_POST[editcatid]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_cat WHERE cat_id = '$_POST[editcatid]'", $db);
     $cat_arr = mysql_fetch_assoc($index);
     echo'
                     <form action="" method="post">
@@ -116,7 +116,7 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT * FROM fs_dl_cat ORDER BY cat_name");
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_cat ORDER BY cat_name");
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sub = ($cat_arr[subcat_id] == 0) ? "Nein" : "Ja";

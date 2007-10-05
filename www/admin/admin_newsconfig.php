@@ -16,7 +16,7 @@ if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y]
     settype($_POST[com_rights], 'integer');
     settype($_POST[com_antispam], 'integer');
     
-    mysql_query("UPDATE fs_news_config
+    mysql_query("UPDATE ".$global_config_arr[pref]."news_config
                  SET num_news        = '$_POST[numnews]',
                      num_head        = '$_POST[numhead]',
                      html_code       = '$_POST[html_code]',
@@ -36,7 +36,7 @@ if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y]
 
 else
 {
-    $index = mysql_query("select * from fs_news_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
 
     switch ($config_arr[html_code])

@@ -2,7 +2,7 @@
 /////////////////////
 //// Config laden ///
 /////////////////////
-$index = mysql_query("SELECT * FROM fs_screen_config");  // Screenshot Konfiguration auslesen
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // Screenshot Konfiguration auslesen
 $config_arr = mysql_fetch_assoc($index);
 
 /////////////////////////////
@@ -15,7 +15,7 @@ if (isset($_FILES['screenimg']))
 
     settype($_POST[catid], 'integer');
     $_POST[title] = savesql($_POST[title]);
-    mysql_query("INSERT INTO fs_screen (cat_id, screen_name)
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."screen (cat_id, screen_name)
                  VALUES ('".$_POST[catid]."',
                          '".$_POST[title]."');", $db);
     $id = mysql_insert_id();
@@ -27,7 +27,7 @@ if (isset($_FILES['screenimg']))
       case 0:
         break;
       default:
-        mysql_query("DELETE FROM fs_screen WHERE screen_id = '$id'");
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."screen WHERE screen_id = '$id'");
         break;
     }
     $thumb = create_thumb_from(image_url("../images/screenshots/",$id,false), $config_arr[thumb_x], $config_arr[thumb_y]);
@@ -70,7 +70,7 @@ echo'
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = mysql_query("SELECT * FROM fs_screen_cat WHERE cat_type = 1", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $db);
 while ($cat_arr = mysql_fetch_assoc($index))
 {
     echo'

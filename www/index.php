@@ -17,9 +17,9 @@ delete_old_randoms ();
 
 
 // Hauptmenü aufbauen
-$index = mysql_query("select main_menu from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select main_menu from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $template_main_menu = stripslashes(mysql_result($index, 0, "main_menu"));
-
+$template_main_menu = killbraces($template_main_menu);
 
 // Inhalt einfügen
 if (!isset($_GET[go]))
@@ -29,7 +29,7 @@ if (!isset($_GET[go]))
 else
 {
   $goto = savesql($_GET[go]);
-  $index = mysql_query("select artikel_url from fs_artikel where artikel_url = '$goto'");
+  $index = mysql_query("select artikel_url from ".$global_config_arr[pref]."artikel where artikel_url = '$goto'");
 }
 
 //Go-Aliase
@@ -52,98 +52,101 @@ else
   include("data/404.php");
 }
 $template_content = $template;
+$template_content = killbraces($template_content);
 unset($template);
 
 
 // Ankündigung laden
 include("res/announcement.inc.php");
 $template_announcement = $template;
+$template_announcement = killbraces($template_announcement);
 unset($template);
 
 // User Menü laden
 include("res/user.inc.php");
 $template_user = $template;
+$template_user = killbraces($template_user);
 unset($template);
 
 // Zufallsbild laden
 include("res/randompic.inc.php");
 $template_randompic = $template;
+$template_randompic = killbraces($template_randompic);
 unset($template);
 
 // Poll laden
 include("res/poll.inc.php");
 $template_poll = $template;
+$template_poll = killbraces($template_poll);
 unset($template);
 
 // Statistik laden
 include("res/stats.inc.php");
 $template_stats = $template;
+$template_stats = killbraces($template_stats);
 unset($template);
 
 // Shop laden
 include("res/shop.inc.php");
 $template_shop = $template;
+$template_shop = killbraces($template_shop);
 unset($template);
 
 // Partner laden
 include("res/partner.inc.php");
 $template_partner = $template;
+$template_partner = killbraces($template_partner);
 unset($template);
 
-$template_main = "";
+$index = mysql_query("select doctype from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+$template_main = stripslashes(mysql_result($index, 0, "doctype"));
 $template_main .= '
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 
   <title>'.$global_config_arr[title].'</title>
   <base href="'.$global_config_arr['virtualhost'].'">
   
-  <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-  <META name="Description" content="'.$global_config_arr[description].'" />
-  <META name="Keywords" content="'.$global_config_arr[keywords].'" />
-  <META name="Author" content="'.$global_config_arr[author].'" />
-  <META name="Content-language" content="de" />
-  <META name="Revisit-after" content="3 days" />
-  <META name="Audience" content="Alle" />
-  <META name="Robots" content="INDEX,FOLLOW" />
+  <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <META name="Description" content="'.$global_config_arr[description].'">
+  <META name="Keywords" content="'.$global_config_arr[keywords].'">
+  <META name="Author" content="'.$global_config_arr[author].'">
+  <META name="Content-language" content="de">
+  <META name="Revisit-after" content="3 days">
+  <META name="Audience" content="Alle">
+  <META name="Robots" content="INDEX,FOLLOW">
   ';
 
 if ($global_config_arr[show_favicon] == 1)
-  $template_main .= '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico" />
-  ';
+  $template_main .= '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico">';
 
-  $template_main .= '<link rel="stylesheet" type="text/css" href="css/'.$global_config_arr['design_name'].'.css" />';
+  $template_main .= '<link rel="stylesheet" type="text/css" href="res/style_css.php">';
+  $template_main .= '<link rel="stylesheet" type="text/css" href="res/editor_css.php">';
+  $template_main .= '<link rel="alternate" type="application/rss+xml" href="feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr[title].' News Feed" />';
 
-  // Editor CSS laden
-  include("res/editor.css.php");
-  $template_main .= $template;
-  unset($template);
-  
-  $template_main .= '<script type="text/javascript" src="res/functions.js" ></script>';
-
-// <link rel="alternate" type="application/rss+xml" href="rss/rss.php" title="RSS Feed" />';
+  $template_main .= '<script type="text/javascript" src="res/js_functions.js"></script>';
+  $template_main .= '<script type="text/javascript" src="res/js_userfunctions.php"></script>';
 
 $template_main .= '</head>';
 
 // Template laden
-$index = mysql_query("select indexphp from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select indexphp from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $template_index = stripslashes(mysql_result($index, 0, "indexphp"));
 
-$template_index = str_replace("{main_menu}", $template_main_menu, $template_index);
-$template_index = str_replace("{content}", $template_content, $template_index);
 $template_index = str_replace("{user}", $template_user, $template_index);
 $template_index = str_replace("{randompic}", $template_randompic, $template_index);
 $template_index = str_replace("{poll}", $template_poll, $template_index);
 $template_index = str_replace("{stats}", $template_stats, $template_index);
 $template_index = str_replace("{shop}", $template_shop, $template_index);
 $template_index = str_replace("{partner}", $template_partner, $template_index);
+$template_index = str_replace("{main_menu}", $template_main_menu, $template_index);
+$template_index = str_replace("{content}", $template_content, $template_index);
 
 if ($global_config_arr[show_announcement]==1)
 {
   $template_index = str_replace("{announcement}", $template_announcement, $template_index);
 }
-elseif ($global_config_arr[show_announcement]==2 AND $_GET[go]=="news")
+elseif ($global_config_arr[show_announcement]==2 AND $goto=="news")
 {
   $template_index = str_replace("{announcement}", $template_announcement, $template_index);
 }
@@ -153,7 +156,7 @@ else
 }
 
 //Includes
-$index = mysql_query("select * from fs_includes where include_type = '2'", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."includes where include_type = '2'", $db);
 while ($include_arr = mysql_fetch_assoc($index))
 {
     // Include laden
@@ -162,7 +165,7 @@ while ($include_arr = mysql_fetch_assoc($index))
     unset($template);
     
     //Seitenvariablen
-    $index = mysql_query("select replace_string, replace_thing from fs_includes where include_type = '1' ORDER BY replace_string ASC", $db);
+    $index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
     while ($sv_arr = mysql_fetch_assoc($index))
     {
         // Include-URL laden
@@ -177,7 +180,7 @@ while ($include_arr = mysql_fetch_assoc($index))
 unset($include_arr);
 
 //Seitenvariablen
-$index = mysql_query("select replace_string, replace_thing from fs_includes where include_type = '1' ORDER BY replace_string ASC", $db);
+$index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
 while ($sv_arr = mysql_fetch_assoc($index))
 {
     // Include-URL laden

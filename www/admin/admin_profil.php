@@ -13,13 +13,13 @@ if ($_SESSION[user_level] == "authorised")  // Wenn eingeloggt
             if ($_POST[new_user_pass]) // Neues Passwort setzen
             {
                 $new_user_pass = md5($_POST[new_user_pass]);
-                $update = "UPDATE fs_user
+                $update = "UPDATE ".$global_config_arr[pref]."user
                            SET user_password = '$new_user_pass'
                            WHERE user_id = $_SESSION[user_id]";
                 mysql_query($update, $db);
             }
             $new_user_mail = savesql($_POST[new_user_mail]);
-            $update = "UPDATE fs_user
+            $update = "UPDATE ".$global_config_arr[pref]."user
                        SET user_mail = '$new_user_mail'
                        WHERE user_id = $_SESSION[user_id]";
             mysql_query($update, $db);

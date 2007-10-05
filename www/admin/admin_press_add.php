@@ -4,43 +4,71 @@
 //// Neues Pre-, Re oder Interview einstellen ////
 //////////////////////////////////////////////////
 
-if ($_POST['title'] && $_POST['url'] && $_POST['day'] && $_POST['month'] && $_POST['year'])
+if (($_POST['title'] AND $_POST['title'] != "")
+    && ($_POST['url'] AND $_POST['url'] != "")
+    && ($_POST['day'] AND $_POST['day'] != "")
+    && ($_POST['month'] AND $_POST['month'] != "")
+    && ($_POST['year'] AND $_POST['year'] != "")
+    && ($_POST['text'] AND $_POST['text'] != ""))
 {
-	$datum = mktime(0, 0, 0, $_POST['month'], $_POST['day'], $_POST['year']);
-  $_POST['title'] = savesql($_POST['title']);
-  $_POST['url'] = savesql($_POST['url']);
-  $_POST['date'] = savesql($_POST['date']);
-  $_POST['text'] = savesql($_POST['text']);
-  $_POST['lang'] = savesql($_POST['lang']);
-  $_POST['game'] = savesql($_POST['game']);
-  $_POST['cat'] = savesql($_POST['cat']);
-  $_POST['rating'] = savesql($_POST['rating']);
-  mysql_query("INSERT INTO fs_press (press_title, press_url, press_date, press_text, press_lang, press_game, press_cat, press_rating)
-    VALUES ('". $_POST['title'] ."', '". $_POST['url'] ."', '". $datum ."', '". $_POST['text'] ."', ". $_POST['lang'] .", ". $_POST['game'] .", ". $_POST['cat'] .", ". (!empty($_POST['rating']) ? "'". $_POST['rating'] ."'" : 'NULL') .")");
-  if ($error = mysql_error()) {
-    systext('Es ist ein Fehler aufgetreten.');
-  }
-  else {
-    systext("Pre-, Re- oder Interview wurde gespeichert.");
-  }
+    settype($_POST['day'], 'integer');
+    settype($_POST['month'], 'integer');
+    settype($_POST['year'], 'integer');
+    $datum = mktime(0, 0, 0, $_POST['month'], $_POST['day'], $_POST['year']);
+
+    $_POST['title'] = savesql($_POST['title']);
+    $_POST['url'] = savesql($_POST['url']);
+    $_POST['intro'] = savesql($_POST['intro']);
+    $_POST['text'] = savesql($_POST['text']);
+    $_POST['note'] = savesql($_POST['note']);
+    
+    settype($_POST['game'], 'integer');
+    settype($_POST['cat'], 'integer');
+    settype($_POST['lang'], 'integer');
+
+    mysql_query("INSERT INTO
+                 ".$global_config_arr[pref]."press (press_title,
+                           press_url,
+                           press_date,
+                           press_intro,
+                           press_text,
+                           press_note,
+                           press_lang,
+                           press_game,
+                           press_cat)
+                 VALUES ('$_POST[title]',
+                         '$_POST[url]',
+                         '$datum',
+                         '$_POST[intro]',
+                         '$_POST[text]',
+                         '$_POST[note]',
+                         '$_POST[lang]',
+                         '$_POST[game]',
+                         '$_POST[cat]')", $db);
+
+    systext("Pressebericht wurde gespeichert.");
 }
 
 ////////////////////////////////////////////
 ///// Pre-, Re oder Interview Formular /////
 ////////////////////////////////////////////
-
 else
 {
+    //Zeit-Array für Heute Button
+    $heute[time] = time();
+    $heute[tag] = date("d", $heute[time]);
+    $heute[monat] = date("m", $heute[time]);
+    $heute[jahr] = date("Y", $heute[time]);
+
     echo'
-                    <form action="'.$PHP_SELF.'" enctype="multipart/form-data" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="press_add" name="go">
-                        <input type="hidden" value="content" name="mid">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
                                     Titel:<br>
-                                    <font class="small">Der Name der Website. Kommt auch in den Hotlink.</font>
+                                    <font class="small">Der Name der Website.</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="title" size="51" maxlength="150">
@@ -52,55 +80,50 @@ else
                                     <font class="small">Link zum Artikel.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="url" size="51" maxlength="150">
+                                    <input class="text" name="url" size="51" maxlength="255" value="http://">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Datum:<br>
-                                    <font class="small">Datum der Originalver&ouml;ffentlichung. Wichtig f&uuml;r die Sortierung. (TT MM JJJJ)</font>
+                                    <font class="small">Datum der Veröffentlichung.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="2" name="day" maxlength="2">
-                                    <input class="text" size="2" name="month" maxlength="2">
-                                    <input class="text" size="4" name="year" maxlength="4">
+                                    <input class="text" size="1" name="day" id="day" maxlength="2"> .
+                                    <input class="text" size="1" name="month" id="month"  maxlength="2"> .
+                                    <input class="text" size="3" name="year" id="year"  maxlength="4">&nbsp;
+                                    <input class="button" type="button" value="Heute"
+                                     onClick=\'document.getElementById("day").value="'.$heute[tag].'";
+                                               document.getElementById("month").value="'.$heute[monat].'";
+                                               document.getElementById("year").value="'.$heute[jahr].'";\'>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top">
+                                    Einleitung: <font class="small">'.$admin_phrases[common][optional].'</font><br />
+                                    <font class="small">Eine kurze Einleitung zum Pressebericht.</font>
+                                </td>
+                                <td class="config" valign="top">
+                                    '.create_editor("intro", "", 408, 75, "", false).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Text:<br>
-                                    <font class="small">Ein kurzer Auszug aus dem Artikel.</font>
+                                    <font class="small">Ein kleiner Auszug aus dem vorgestellten Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <textarea class="text" name="text" rows="7" cols="49"></textarea>
+                                    '.create_editor("text", "", 330, 150).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Sprache:<br>
-                                    <font class="small">Sprache, in der der Artikel verfasst wurde.</font>
+                                    Anmerkungen: <font class="small">'.$admin_phrases[common][optional].'</font><br />
+                                    <font class="small">Anmerkungen zum Pressebericht.<br />
+                                    (z.B. die Wertung eines Tests)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                  <table width="100%">'; 
-    $sql = "SELECT lang_id, lang_name FROM fs_language ORDER BY lang_name";
-    $result = mysql_query($sql);
-    $i = 4;
-    while ($arr = mysql_fetch_assoc($result)) {
-      if ($i++ == 4) {
-        echo '
-                                    <tr>';
-        $i = 0;
-      }
-      echo '
-                                      <td><input type="radio" name="lang" value="'. $arr['lang_id'] .'">'. $arr['lang_name'] .'</td>';
-      if ($i++ == 4) {
-        echo '
-                                    </tr>';
-        $i = 4;
-      }
-    }
-    echo '
-                                  </table>
+                                    '.create_editor("note", "", 408, 75, "", false).'
                                 </td>
                             </tr>
                             <tr>
@@ -109,26 +132,16 @@ else
                                     <font class="small">Spiel, auf das sich der Artikel bezieht.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                  <table width="100%">';
-    $sql = "SELECT game_id, game_name FROM fs_game ORDER BY game_name";
-    $result = mysql_query($sql);
-    $i = 4;
-    while ($arr = mysql_fetch_assoc($result)) {
-      if ($i++ == 4) {
-        echo '
-                                    <tr>';
-        $i = 0;
-      }
-      echo '
-                                      <td><input type="radio" name="game" value="'. $arr['game_id'] .'">'. $arr['game_name'] .'</td>';
-      if ($i++ == 4) {
-        echo '
-                                    </tr>';
-        $i = 0;
-      }
+                                    <select name="game" size="1" class="text">';
+
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
+                          WHERE type = '1' ORDER BY title", $db);
+    while ($game_arr = mysql_fetch_assoc($index))
+    {
+        echo'<option value="'.$game_arr[id].'">'.$game_arr[title].'</option>';
     }
-    echo '
-                                </table>
+    echo'
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -137,41 +150,41 @@ else
                                     <font class="small">Die Kategorie, der der Artikel angeh&ouml;rt.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                  <table width="100%">';
-    $sql = "SELECT press_cat_id, press_cat_name FROM fs_press_cat ORDER BY press_cat_name";
-    $result = mysql_query($sql);
-    $i = 4;
-    while ($arr = mysql_fetch_assoc($result)) {
-      if ($i++ == 4) {
-        echo '
-                                    <tr>';
-        $i = 0;
-      }
-      echo '
-                                      <td><input type="radio" name="cat" value="'. $arr['press_cat_id'] .'">'. $arr['press_cat_name'] .'</td>';
-      if ($i++ == 4) {
-        echo '
-                                    </tr>';
-        $i = 0;
-      }
-    }
+                                    <select name="cat" size="1" class="text">';
 
-    echo '
-														      </table>
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
+                          WHERE type = '2' ORDER BY title", $db);
+    while ($cat_arr = mysql_fetch_assoc($index))
+    {
+        echo'<option value="'.$cat_arr[id].'">'.$cat_arr[title].'</option>';
+    }
+    echo'
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Rating:<br>
-                                    <font class="small">Nur f&uuml;r Reviews!</font>
+                                    Sprache:<br>
+                                    <font class="small">Sprache, in der der Artikel verfasst wurde.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="wertung" size="51" maxlength="150">
+                                    <select name="lang" size="1" class="text">';
+
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
+                          WHERE type = '3' ORDER BY title", $db);
+    while ($lang_arr = mysql_fetch_assoc($index))
+    {
+        echo'<option value="'.$lang_arr[id].'">'.$lang_arr[title].'</option>';
+    }
+    echo'
+                                    </select>
                                 </td>
                             </tr>
+                            <tr><td>&nbsp;</td></tr>
                             <tr>
-                                <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Hinzuf&uuml;gen">
+                                <td></td>
+                                <td align="left">
+                                    <input class="button" type="submit" value="Pressebericht hinzufügen">
                                 </td>
                             </tr>
                         </table>

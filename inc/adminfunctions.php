@@ -37,12 +37,12 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
     $zaehler = 0;
-    $index = mysql_query("SELECT * FROM fs_smilies ORDER by `order` ASC LIMIT 0, 10", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."smilies ORDER by `order` ASC LIMIT 0, 10", $db);
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $smilie_arr[url] = image_url("../images/smilies/", $smilie_arr[id]);
 
-        $smilie_template = '<td><img src="'.$smilie_arr[url].'" alt="" onClick="insert(\''.$name.'\', \''.$smilie_arr[replace_string].'\', \'\')" class="editor_smilies" /></td>';
+        $smilie_template = '<td><img src="'.$smilie_arr[url].'" alt="'.$smilie_arr[replace_string].'" onClick="insert(\''.$name.'\', \''.$smilie_arr[replace_string].'\', \'\')" class="editor_smilies" /></td>';
 
         $zaehler += 1;
         switch ($zaehler)
@@ -126,7 +126,7 @@ function create_editor_button($img_url, $alt, $title, $insert)
 
     $button = '
     <td class="editor_td">
-        <div class="editor_button" {javascript}>
+        <div class="ed_button" {javascript}>
             <img src="{img_url}" alt="{alt}" title="{title}" />
         </div>
     </td>';
@@ -156,12 +156,13 @@ function create_editor_seperator()
 
 function templatepage_save($template_arr)
 {
+    global $global_config_arr;
     global $db;
 
     foreach ($template_arr as $template)
     {
         $save_template = savesql($_POST[$template[name]]);
-        mysql_query("update fs_template
+        mysql_query("update ".$global_config_arr[pref]."template
                     set $template[name] = '".$_POST[$template[name]]."'
                     where id = '$_POST[design]'", $db);
     }
@@ -204,6 +205,7 @@ function templatepage_postcheck($template_arr)
 
 function create_templatepage($template_arr, $go)
 {
+    global $global_config_arr;
     global $db;
 
     unset ($return_template);
@@ -218,7 +220,7 @@ function create_templatepage($template_arr, $go)
                                 <option value="">------------------------</option>
     ';
 
-    $index = mysql_query("select id, name from fs_template ORDER BY id", $db);
+    $index = mysql_query("select id, name from ".$global_config_arr[pref]."template ORDER BY id", $db);
     while ($design_arr = mysql_fetch_assoc($index))
     {
       $return_template .= '<option value="'.$design_arr[id].'"';
@@ -242,7 +244,7 @@ function create_templatepage($template_arr, $go)
         {
             if ($template == true)
             {
-                $index = mysql_query("SELECT $template[name] FROM fs_template WHERE id = '$_POST[design]'", $db);
+                $index = mysql_query("SELECT $template[name] FROM ".$global_config_arr[pref]."template WHERE id = '$_POST[design]'", $db);
                 $template_arr[$template_key][template] = killhtml(mysql_result($index, 0, $template[name]));
             }
         }
@@ -496,10 +498,11 @@ function createnavi($navi_arr, $first)
 
 function createlink($page_call, $page_link_title = false, $page_link_url = false, $page_link_perm = false)
 {
+  global $global_config_arr;
   global $db;
   global $session_url;
 
-  $index = mysql_query("SELECT * FROM fs_admin_cp WHERE page_call = '$page_call' LIMIT 0,1", $db);
+  $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."admin_cp WHERE page_call = '$page_call' LIMIT 0,1", $db);
   $createlink_arr = mysql_fetch_assoc($index);
 
   if ($createlink_arr[permission]!=1)
@@ -684,123 +687,132 @@ function create_thumb_notice($upload)
   }
 }
 
-
 ///////////////////////////////////
 ///// Create Thumbnail from IMG ///
 ///////////////////////////////////
 
 function create_thumb_from($image, $thumb_max_width, $thumb_max_height, $quality=100)
 {
+  //Bilddaten ermitteln
   $image_info = pathinfo($image);
+  $image_info['name'] = basename ($image, ".".$image_info["extension"]);
+  $imgsize = getimagesize($image);
 
   //Dateityp ermitteln
-
-  switch ($image_info['extension'])
+  switch ($imgsize[2])
   {
-    case "jpeg":
-      $source_image = imagecreatefromjpeg($image);
-      $image_info['name'] = basename ($image,".jpeg");
+    // Bedeutung von $imgsize[2]:
+    // 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, etc.
+    case 1: //GIF
+      $source = ImageCreateFromGIF($image);
       break;
-    case "jpg":
-      $source_image = imagecreatefromjpeg($image);
-      $image_info['name'] = basename ($image,".jpg");
+    case 2: //JPG
+      $source = ImageCreateFromJPEG($image);
       break;
-    case "gif":
-      $source_image = imagecreatefromgif($image);
-      $image_info['name'] = basename ($image,".gif");
-      break;
-    case "png":
-      $source_image = imagecreatefrompng($image);
-      $image_info['name'] = basename ($image,".png");
+    case 3: //PNG
+      $source = ImageCreateFromPNG($image);
       break;
     default:
       return 1;  // Fehler 1: Ungültiger Dateityp!
       break 2;
   }
 
-  //Thumbnail erstellen
 
-    //Abmessungen des Thumbnails ermitteln
-
-    $imgratio = imagesx($source_image) / imagesy($source_image);
-
-    if ($imgratio > 1)  //Querformat
-    {
-      if ($thumb_max_width/$imgratio <= $thumb_max_height)
-      {
-        $newwidth = $thumb_max_width;
-        $newheight = $thumb_max_width/$imgratio;
-      }
-      else
-      {
-        $newheight = $thumb_max_height;
-        $newwidth = $thumb_max_height*$imgratio;
-      }
-    }
-
-    else  //Hochformat
-    {
-      if ($thumb_max_height*$imgratio <= $thumb_max_width)
-      {
-        $newheight = $thumb_max_height;
-        $newwidth = $thumb_max_height*$imgratio;
-      }
-      else
-      {
-        $newwidth = $thumb_max_width;
-        $newheight = $thumb_max_width/$imgratio;
-      }
-    }
+  //Abmessungen des Thumbnails ermitteln
+  $imgratio = $imgsize[0] / $imgsize[1];
+  $newwidth = $thumb_max_width;
+  $newheight = $thumb_max_height;
     
-
-    if (imagesx($source_image) <= $thumb_max_width AND imagesy($source_image) <= $thumb_max_height)
-    {
-        $newwidth = imagesx($source_image);
-        $newheight = imagesy($source_image);
+  //Querformat
+  if ($imgratio > 1)
+  {
+    if ($thumb_max_width/$imgratio <= $thumb_max_height) {
+      $newheight = $thumb_max_width/$imgratio;
+    } else {
+      $newwidth = $thumb_max_height*$imgratio;
     }
+  }
+  //Hochformat
+  else
+  {
+    if ($thumb_max_height*$imgratio <= $thumb_max_width) {
+      $newwidth = $thumb_max_height*$imgratio;
+    } else {
+      $newheight = $thumb_max_width/$imgratio;
+    }
+  }
+
+  //Bild ist kleiner als max. Thumbgröße
+  if ($imgsize[0] <= $thumb_max_width AND $imgsize[1] <= $thumb_max_height)
+  {
+    $newwidth = $imgsize[0];
+    $newheight = $imgsize[1];
+  }
 
 
-    //Thumbnail je nach Dateityp erstellen
+  //Thumbnail-Container erstellen
+  $thumb_path = $image_info['dirname']."/".$image_info['name']."_s.".$image_info['extension'];
+  $thumb = ImageCreateTrueColor($newwidth, $newheight);
 
-    if ($image_info['extension']=="jpg" OR $image_info['extension']=="jpeg")
-    {
-      $thumb = ImageCreateTrueColor($newwidth,$newheight);
-      $source = imagecreatefromjpeg($image);
-      imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, imagesx($source), imagesy($source));
-      $thumb_path = $image_info['dirname']."/".$image_info['name']."_s.".$image_info['extension'];
-      imagejpeg($thumb, $thumb_path, $quality);
-      chmod ($thumb_path, 0644);
-      clearstatcache();
-    }
-    elseif ($image_info['extension']=="gif")
-    {
-      $thumb = ImageCreateTrueColor($newwidth,$newheight);
-      $source = imagecreatefromgif($image);
-      imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, imagesx($source), imagesy($source));
-      $thumb_path = $image_info['dirname']."/".$image_info['name']."_s.".$image_info['extension'];
-      imagegif($thumb, $thumb_path, $quality);
-      chmod ($thumb_path, 0644);
-      clearstatcache();
-    }
-    elseif ($image_info['extension']=="png")
-    {
-      $thumb = ImageCreateTrueColor($newwidth,$newheight);
-      $source = imagecreatefrompng($image);
-      imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, imagesx($source), imagesy($source));
-      $thumb_path = $image_info['dirname']."/".$image_info['name']."_s.".$image_info['extension'];
-      imagepng($thumb, $thumb_path, $quality);
-      chmod ($thumb_path, 0644);
-      clearstatcache();
-    }
-    else
-    {
-      return 2;  // Fehler 2: Es konnte kein Thumbnail erstellt werden!
+  //Individuelle Funktionen je nach Dateityp aufrufen
+  switch ($imgsize[2])
+  {
+    case 1: //GIF
+      $gif_transparency = imagecolortransparent($source);
+      if ($gif_transparency >= 0) {
+        ImageColorTransparent($thumb, ImageColorAllocate($thumb, 0, 0, 0));
+        ImageAlphaBlending($thumb, true);
+        ImageSaveAlpha($thumb, true);
+      }
       break;
-    }
+    case 2: //JPG
+      break;
+    case 3: //PNG
+      ImageColorTransparent($thumb, ImageColorAllocate($thumb, 0, 0, 0));
+      ImageAlphaBlending($thumb, false);
+      ImageSaveAlpha($thumb, true);
+      break;
+    default:
+      return 1;  // Fehler 1: Ungültiger Dateityp!
+      break 2;
+  }
 
-  return 0; // Ausgabe 0: Das Bild wurde erfolgreich hochgeladen!
+  //Thumbnail verkleinern
+  imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $imgsize[0], $imgsize[1]);
+
+  //Thumbnail je nach Dateityp erstellen
+  switch ($imgsize[2])
+  {
+    case 1: //GIF
+      if (!imagegif($thumb, $thumb_path, $quality)) {
+        return 2;  // Fehler 2: Es konnte kein Thumbnail erstellt werden!
+        break 2;
+      }
+      break;
+    case 2: //JPG
+      if (!imagejpeg($thumb, $thumb_path, $quality)) {
+        return 2;  // Fehler 2: Es konnte kein Thumbnail erstellt werden!
+        break 2;
+      }
+      break;
+    case 3: //PNG
+      if (!imagepng($thumb, $thumb_path)) {
+        return 2;  // Fehler 2: Es konnte kein Thumbnail erstellt werden!
+        break 2;
+      }
+      break;
+    default:
+      return 1;  // Fehler 1: Ungültiger Dateityp!
+      break 2;
+  }
+
+  //Chmod setzen & Cache leeren
+  chmod ($thumb_path, 0644);
   clearstatcache();
+
+  return 0; // Ausgabe 0: Das Thumb wurde erfolgreich erstellt!
 }
+
 
 ////////////////////////////////
 //////// Cookie setzen /////////
@@ -808,11 +820,12 @@ function create_thumb_from($image, $thumb_max_width, $thumb_max_height, $quality
 
 function admin_set_cookie($username, $password)
 {
+    global $global_config_arr;
     global $db;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("select * from fs_user where user_name = '$username'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_name = '$username'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -850,11 +863,12 @@ function admin_set_cookie($username, $password)
 
 function admin_login($username, $password, $iscookie)
 {
+    global $global_config_arr;
     global $db;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM fs_user WHERE user_name = '$username'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name = '$username'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -895,9 +909,11 @@ function admin_login($username, $password, $iscookie)
 
 function fillsession($uid)
 {
+   global $global_config_arr;
    global $db;
    global $data;
-   $dbaction = "select * from fs_user where user_id = " . $uid;
+   
+   $dbaction = "select * from ".$global_config_arr[pref]."user where user_id = " . $uid;
    $usertableindex2 = mysql_query($dbaction, $db);
 
    $_SESSION["user_id"] = $uid;
@@ -908,12 +924,12 @@ function fillsession($uid)
    $dbusermail = mysql_result($usertableindex2, 0, "user_mail");
    $_SESSION["user_mail"] = $dbusermail;
 
-   $result = mysql_list_fields($data,"fs_permissions");
+   $result = mysql_list_fields($data,"".$global_config_arr[pref]."permissions");
    $menge = mysql_num_fields($result);
    for($x=1;$x<$menge;$x++)
    {
     $fieldname = mysql_field_name($result,$x);
-    $index = mysql_query("select $fieldname from fs_permissions where user_id = $uid", $db);
+    $index = mysql_query("select $fieldname from ".$global_config_arr[pref]."permissions where user_id = $uid", $db);
     $_SESSION[$fieldname] = mysql_result($index, 0, $fieldname);
    }
 }

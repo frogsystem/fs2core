@@ -2,7 +2,7 @@
 //////////////////////
 //// Config laden ////
 //////////////////////
-$index = mysql_query("select * from fs_news_config", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
 $admin_news_config_arr = mysql_fetch_assoc($index);
 
 //////////////////////////////////
@@ -14,7 +14,7 @@ if ($_POST['cat_id'] AND $_POST['name'] AND $_POST['sended'] == "edit")
     $_POST[name] = savesql($_POST[name]);
     $_POST[description] = savesql($_POST[description]);
 
-    mysql_query("UPDATE fs_news_cat
+    mysql_query("UPDATE ".$global_config_arr[pref]."news_cat
                  SET cat_name = '$_POST[name]',
                      cat_description = '$_POST[description]'
                  WHERE cat_id = '$_POST[cat_id]'", $db);
@@ -40,11 +40,11 @@ if ($_POST['cat_id'] AND $_POST['name'] AND $_POST['sended'] == "edit")
 }
 elseif ($_POST['cat_id'] AND $_POST['sended'] == "delete")
 {
-  mysql_query("DELETE FROM fs_news_cat
+  mysql_query("UPDATE ".$global_config_arr[pref]."news
+               SET cat_id = '$_POST[cat_move_to]'
                WHERE cat_id = '$_POST[cat_id]'", $db);
 
-  mysql_query("UPDATE fs_news
-               SET cat_id = '$_POST[cat_move_to]'
+  mysql_query("DELETE FROM ".$global_config_arr[pref]."news_cat
                WHERE cat_id = '$_POST[cat_id]'", $db);
 
   systext("Die Kategorie wurde gelöscht!");
@@ -60,7 +60,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
 
   if ($_POST['cat_action'] == "edit")
   {
-    $index = mysql_query("select * from fs_news_cat WHERE cat_id = '$_POST[cat_id]'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."news_cat WHERE cat_id = '$_POST[cat_id]'", $db);
     $admin_cat_arr = mysql_fetch_assoc($index);
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
@@ -137,12 +137,12 @@ echo '
   }
   elseif ($_POST['cat_action'] == "delete")
   {
-    $index = mysql_query("select * from fs_news_cat", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."news_cat", $db);
 
     if (mysql_num_rows($index) > 1)
     {
 
-    $index = mysql_query("select * from fs_news_cat WHERE cat_id = '$_POST[cat_id]'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."news_cat WHERE cat_id = '$_POST[cat_id]'", $db);
     $admin_cat_arr = mysql_fetch_assoc($index);
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
@@ -177,7 +177,7 @@ echo '
            <td>
              <select name="cat_move_to" size="1"  class="text">';
 
-  $index = mysql_query("select * from fs_news_cat WHERE cat_id != '$admin_cat_arr[cat_id]' ORDER BY cat_name", $db);
+  $index = mysql_query("select * from ".$global_config_arr[pref]."news_cat WHERE cat_id != '$admin_cat_arr[cat_id]' ORDER BY cat_name", $db);
   while ($admin_cat_move_arr = mysql_fetch_assoc($index))
   {
     echo'<option value="'.$admin_cat_move_arr[cat_id].'">'.$admin_cat_move_arr[cat_name].'</option>';
@@ -209,7 +209,7 @@ else
 {
   systext('Wählen Sie die Kategorie aus, die Sie verändern möchten:<br><br>');
   echo '<table width="100%" cellspacing="0" cellpadding="4">';
-  $index = mysql_query("select * from fs_news_cat ORDER BY cat_name", $db);
+  $index = mysql_query("select * from ".$global_config_arr[pref]."news_cat ORDER BY cat_name", $db);
   while ($admin_cat_arr = mysql_fetch_assoc($index))
   {
     echo '<form action="" method="post">

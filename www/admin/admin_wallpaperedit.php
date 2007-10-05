@@ -8,13 +8,13 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
     $_POST[wallpaper_name] = savesql($_POST[wallpaper_name]);
     $_POST[wallpaper_title] = savesql($_POST[wallpaper_title]);
 
-    $index = mysql_query("SELECT * FROM fs_wallpaper WHERE wallpaper_name = '$_POST[wallpaper_name]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper WHERE wallpaper_name = '$_POST[wallpaper_name]'", $db);
 
     if (count($_POST[size]) == count(array_unique($_POST[size])) AND (mysql_num_rows($index)==0 OR $_POST[wallpaper_name] == $_POST[oldname]))
     {
     //IF Beginn
     
-    $update = "UPDATE fs_wallpaper
+    $update = "UPDATE ".$global_config_arr[pref]."wallpaper
                SET wallpaper_name = '$_POST[wallpaper_name]',
                    wallpaper_title  = '$_POST[wallpaper_title]',
                    cat_id      = '$_POST[catid]'
@@ -27,9 +27,9 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
             if ($_POST[delwp][$i])
             {
                 settype($_POST[delwp][$i], 'integer');
-                $index = mysql_query("SELECT size FROM fs_wallpaper_sizes WHERE size_id = '".$_POST[delwp][$i]."'", $db);
+                $index = mysql_query("SELECT size FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE size_id = '".$_POST[delwp][$i]."'", $db);
                 $size_name = mysql_result($index, "size");
-                mysql_query("DELETE FROM fs_wallpaper_sizes WHERE size_id = '".$_POST[delwp][$i]."'", $db);
+                mysql_query("DELETE FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE size_id = '".$_POST[delwp][$i]."'", $db);
                 image_delete("../images/wallpaper/", "$_POST[oldname]_$size_name");
             }
             else
@@ -42,7 +42,7 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
                     switch ($upload)
                     {
                     case 0:
-                        $insert = "INSERT INTO fs_wallpaper_sizes (wallpaper_id, size)
+                        $insert = "INSERT INTO ".$global_config_arr[pref]."wallpaper_sizes (wallpaper_id, size)
                                    VALUES ('".$_POST[wallpaper_id]."',
                                        '".$_POST[size][$i]."')";
                         mysql_query($insert, $db);
@@ -51,11 +51,11 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
                 }
                 elseif ($_POST[wpnew][$i]==0)
                 {
-                    $index = mysql_query("SELECT size FROM fs_wallpaper_sizes WHERE size_id = '".$_POST[size_id][$i]."'", $db);
+                    $index = mysql_query("SELECT size FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE size_id = '".$_POST[size_id][$i]."'", $db);
                     $size_name = mysql_result($index, "size");
                     $rename_info = pathinfo(image_url("../images/wallpaper/", "$_POST[oldname]_$size_name", false));
                     rename(image_url("../images/wallpaper/", "$_POST[oldname]_$size_name", false), "../images/wallpaper/".$_POST[oldname]."_".$_POST[size][$i]."a.".$rename_info[extension]);
-                    $update = "UPDATE fs_wallpaper_sizes
+                    $update = "UPDATE ".$global_config_arr[pref]."wallpaper_sizes
                                SET size = '".$_POST[size][$i]."'
                                WHERE size_id = ".$_POST[size_id][$i];
                     mysql_query($update, $db);
@@ -70,7 +70,7 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
         }
 
      //Rename
-     $index2 = mysql_query("SELECT * FROM fs_wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
+     $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
      while ($sizes_arr = mysql_fetch_assoc($index2))
      {
           $rename_info = pathinfo(image_url("../images/wallpaper/", "$_POST[oldname]_$sizes_arr[size]a", false));
@@ -92,17 +92,17 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
 elseif ($_POST['wallpaper_id'] AND $_POST['sended'] == "delete")
 {
 
-    $index = mysql_query("SELECT * FROM fs_wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
     $wp_del_array = mysql_fetch_assoc($index);
-    mysql_query("DELETE FROM fs_wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
+    mysql_query("DELETE FROM ".$global_config_arr[pref]."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
     image_delete("../images/wallpaper/", $wp_del_array[wallpaper_name]."_s");
     
-    $index = mysql_query("SELECT * FROM fs_wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
     while ($wp_sizes_del_array = mysql_fetch_assoc($index))
     {
       image_delete("../images/wallpaper/", $wp_del_array[wallpaper_name]."_".$wp_sizes_del_array[size]);
     }
-    mysql_query("DELETE FROM fs_wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
+    mysql_query("DELETE FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
           
     systext('Wallpaper wurden gelöscht');
 }
@@ -121,7 +121,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
 
   if ($_POST['wp_action'] == "edit")
   {
-    $index = mysql_query("select * from fs_wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
     $admin_wp_arr = mysql_fetch_assoc($index);
 
     $admin_wp_arr['old_name'] = killhtml($admin_wp_arr['wallpaper_name']);
@@ -140,7 +140,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
     
     //EDIT ANFANG
 
-    $index2 = mysql_query("select * from fs_wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' ORDER BY size_id ASC", $db);
+    $index2 = mysql_query("select * from ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' ORDER BY size_id ASC", $db);
     $admin_sizes_arr = mysql_fetch_assoc($index2);
 
     for($i=0; $i<mysql_num_rows($index2); $i++)
@@ -200,7 +200,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = mysql_query("SELECT * FROM fs_screen_cat WHERE cat_type = 2", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 2", $db);
 while ($cat_arr = mysql_fetch_assoc($index))
 {
     echo'
@@ -297,7 +297,7 @@ echo'
 
   elseif ($_POST['wp_action'] == "delete")
   {
-    $index = mysql_query("select * from fs_wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
     $wallpaper_arr = mysql_fetch_assoc($index);
 
 echo '
@@ -326,13 +326,13 @@ echo '
            </td>
            <td class="configthin"><b>'.$wallpaper_arr[wallpaper_name].'</b>';
 
-           $index2 = mysql_query("SELECT * FROM fs_wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC", $db);
+           $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC", $db);
            while ($sizes_arr = mysql_fetch_assoc($index2))
            {
              echo "<br>".$sizes_arr[size];
            }
            echo'</td>';
-           $index2 = mysql_query("select cat_name from fs_screen_cat where cat_id = $wallpaper_arr[cat_id]", $db);
+           $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."screen_cat where cat_id = $wallpaper_arr[cat_id]", $db);
            $db_cat_name = mysql_result($index2, 0, "cat_name");
            echo'
            <td class="configthin">
@@ -365,7 +365,7 @@ else
                                     Dateien der Kategorie
                                     <select name="wpcatid">
     ';
-    $index = mysql_query("SELECT * FROM fs_screen_cat WHERE cat_type = 2", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 2", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($_POST[wpcatid] == $cat_arr[cat_id]) ? "selected" : "";
@@ -410,7 +410,7 @@ else
                                 </td>
                             </tr>
         ';
-        $index = mysql_query("SELECT * FROM fs_wallpaper $wherecat ORDER BY wallpaper_id DESC", $db);
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper $wherecat ORDER BY wallpaper_id DESC", $db);
         while ($wallpaper_arr = mysql_fetch_assoc($index))
         {
             echo'
@@ -425,13 +425,13 @@ else
                                 </td>
                                 <td class="configthin"><b>'.$wallpaper_arr[wallpaper_name].'</b>';
 
-            $index2 = mysql_query("SELECT * FROM fs_wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC", $db);
+            $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC", $db);
             while ($sizes_arr = mysql_fetch_assoc($index2))
             {
               echo "<br>".$sizes_arr[size];
             }
             echo'</td>';
-            $index2 = mysql_query("select cat_name from fs_screen_cat where cat_id = $wallpaper_arr[cat_id]", $db);
+            $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."screen_cat where cat_id = $wallpaper_arr[cat_id]", $db);
             $db_cat_name = mysql_result($index2, 0, "cat_name");
             echo'
                                 <td class="configthin">

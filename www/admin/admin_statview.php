@@ -25,11 +25,11 @@ echo'
 ';
 
 // Erstes Jahr ermitteln
-$index = mysql_query("SELECT s_year FROM fs_counter_stat ORDER BY s_year LIMIT 1", $db);
+$index = mysql_query("SELECT s_year FROM ".$global_config_arr[pref]."counter_stat ORDER BY s_year LIMIT 1", $db);
 $dbfirstyear = mysql_result($index, 0, "s_year");
 
 // Ersten Monat ermitteln
-$index = mysql_query("SELECT s_month FROM fs_counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1", $db);
+$index = mysql_query("SELECT s_month FROM ".$global_config_arr[pref]."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1", $db);
 $dbfirstmonth = mysql_result($index, 0, "s_month");
 
 echo '
@@ -82,7 +82,7 @@ echo'
 
 // Höchste PI diesen Monat ermitteln
 $index = mysql_query("SELECT s_hits
-                      FROM fs_counter_stat
+                      FROM ".$global_config_arr[pref]."counter_stat
                       WHERE s_year  = $_GET[s_year] AND s_month = $_GET[s_month]
                       ORDER BY s_hits desc
                       LIMIT 1", $db);
@@ -93,7 +93,7 @@ $dbmaxhits = mysql_result($index, 0, "s_hits");
 for ($d=1; $d<date("t",mktime(0, 0, 0, $s_month, 1, $s_year))+1; $d++)
 {
     $index = mysql_query("SELECT *
-                          FROM fs_counter_stat
+                          FROM ".$global_config_arr[pref]."counter_stat
                           WHERE s_year  = $_GET[s_year] AND
                                 s_month = $_GET[s_month] AND
                                 s_day   = $d", $db);
@@ -200,7 +200,7 @@ echo'
 
 // Maximale Montaszahl ermitteln
 $index = mysql_query("SELECT SUM(s_hits) AS sumhits
-                      FROM fs_counter_stat
+                      FROM ".$global_config_arr[pref]."counter_stat
                       WHERE s_year = $_GET[s_year]
                       GROUP BY s_month
                       ORDER BY sumhits desc", $db);
@@ -209,7 +209,7 @@ $maxhits = mysql_result($index, 0, "sumhits");
 for ($m=1; $m<13; $m++)
 {
     $index = mysql_query("SELECT SUM(s_visits) AS sumvisits, SUM(s_hits) AS sumhits
-                          FROM fs_counter_stat
+                          FROM ".$global_config_arr[pref]."counter_stat
                           WHERE s_year = $_GET[s_year] AND s_month = $m", $db);
     $sum_arr = mysql_fetch_assoc($index);
     if ($sum_arr[sumhits] > 0)
@@ -286,19 +286,19 @@ echo'
 //////////////////////////////////
 
 // Counter lesen
-$index=mysql_query("select * from fs_counter", $db);
+$index=mysql_query("select * from ".$global_config_arr[pref]."counter", $db);
 $counterdaten = mysql_fetch_assoc($index);
 
 // User online
-$index = mysql_query("select count(*) as total from fs_useronline", $db);
+$index = mysql_query("select count(*) as total from ".$global_config_arr[pref]."useronline", $db);
 $anzuseronline= mysql_fetch_assoc($index);
 
 // Best frequentierter Tag
-$index = mysql_query("select * from fs_counter_stat order by s_hits desc limit 1", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."counter_stat order by s_hits desc limit 1", $db);
 $mosthits = mysql_fetch_assoc($index);
 
 // Best besuchter Tag
-$index = mysql_query("select * from fs_counter_stat order by s_visits desc limit 1", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."counter_stat order by s_visits desc limit 1", $db);
 $mostvisits = mysql_fetch_assoc($index);
 
 echo'

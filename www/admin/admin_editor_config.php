@@ -12,7 +12,7 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 AND $_POST[smilies_cols] && $
     settype($_POST[textarea_width], 'integer');
     settype($_POST[textarea_height], 'integer');
     
-    $update = "UPDATE fs_editor_config
+    $update = "UPDATE ".$global_config_arr[pref]."editor_config
                SET smilies_rows = '$_POST[smilies_rows]',
                    smilies_cols = '$_POST[smilies_cols]',
                    textarea_width = '$_POST[textarea_width]',
@@ -66,7 +66,7 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 AND $_POST[smilies_cols] && $
 
 else
 {
-    $index = mysql_query("SELECT * FROM fs_editor_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."editor_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     echo'
                     <form action="" method="post">

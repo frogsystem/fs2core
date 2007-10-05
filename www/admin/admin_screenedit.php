@@ -4,21 +4,21 @@
 //// Screenshot editieren ////
 //////////////////////////////
 
-if (isset($_POST[title]))
+if (isset($_POST[title]) AND $_POST['do'] == "edit")
 {
     settype($_POST[catid], 'integer');
     settype($_POST[editscreenid], 'integer');
     $_POST[title] = savesql($_POST[title]);
     if ($_POST[delscreen])   // Screenshot löschen
     {
-        mysql_query("DELETE FROM fs_screen WHERE screen_id = $_POST[editscreenid]", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_POST[editscreenid]", $db);
         image_delete("../images/screenshots/", $_POST[editscreenid]);
         image_delete("../images/screenshots/", "$_POST[editscreenid]_s");
         systext('Screenshot wurde gelöscht');
     }
     else   // Screenshot editieren
     {
-        $update = "UPDATE fs_screen
+        $update = "UPDATE ".$global_config_arr[pref]."screen
                    SET cat_id = $_POST[catid],
                    screen_name = '$_POST[title]'
                    WHERE screen_id = $_POST[editscreenid]";
@@ -27,21 +27,40 @@ if (isset($_POST[title]))
     }
 }
 
+
 //////////////////////////////
 //// Screenshot anzeigen /////
 //////////////////////////////
 
 elseif (isset($_POST[screenid]))
 {
+
+/////////////////////////////
+//// Thumb neu erstellen ////
+/////////////////////////////
+
+    if ($_POST['do'] == "newthumb" AND $_POST['editscreenid'])
+    {
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // Screenshot Konfiguration auslesen
+        $config_arr = mysql_fetch_assoc($index);
+
+        image_delete("../images/screenshots/",$_POST['editscreenid']."_s");
+
+        $newthumb = create_thumb_from(image_url("../images/screenshots/",$_POST['editscreenid'],false),$config_arr[thumb_x],$config_arr[thumb_y]);
+        systext(create_thumb_notice($newthumb)."<br />(Cache leeren nicht vergessen!)");
+    }
+
     settype($_POST[screenid], 'integer');
 
-    $index = mysql_query("SELECT * FROM fs_screen WHERE screen_id = $_POST[screenid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_POST[screenid]", $db);
     $screen_arr = mysql_fetch_assoc($index);
 
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="screenedit" name="go">
+                        <input type="hidden" value="newthumb" name="do">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="'.$screen_arr[screen_id].'" name="screenid">
                         <input type="hidden" value="'.$screen_arr[screen_id].'" name="editscreenid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -50,9 +69,24 @@ elseif (isset($_POST[screenid]))
                                     <font class="small">Thumbnail des Screenshots</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="../images/screenshots/'.$_POST[screenid].'_s.jpg">
+                                   <img src="'.image_url("../images/screenshots/",$screen_arr[screen_id]."_s").'" />
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="config" valign="top">
+                                    Thumbnail neu erstellen:<br>
+                                    <font class="small">Erstellt ein neues Thumbnail von der Vorlage.</font>
+                                </td>
+                                <td class="config" valign="top" align="left">
+                                  <input class="button" type="submit" value="Jetzt neu erstellen">
+                                </td>
+                            </tr>
+                    </form>
+                    <form action="" method="post">
+                        <input type="hidden" value="screenedit" name="go">
+                        <input type="hidden" value="edit" name="do">
+                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="'.$screen_arr[screen_id].'" name="editscreenid">
                             <tr>
                                 <td class="config" valign="top">
                                     Bildtitel:<br>
@@ -70,7 +104,7 @@ elseif (isset($_POST[screenid]))
                                 <td class="config" valign="top">
                                     <select name="catid">
     ';
-    $index = mysql_query("SELECT * FROM fs_screen_cat WHERE cat_type = 1", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($screen_arr[cat_id] == $cat_arr[cat_id]) ? "selected" : "";
@@ -124,7 +158,7 @@ else
                                     Dateien der Kategorie
                                     <select name="screencatid">
     ';
-    $index = mysql_query("SELECT * FROM fs_screen_cat WHERE cat_type = 1", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($_POST[screencatid] == $cat_arr[cat_id]) ? "selected" : "";
@@ -169,10 +203,10 @@ else
                                 </td>
                             </tr>
         ';
-        $index = mysql_query("SELECT * FROM fs_screen $wherecat ORDER BY screen_id DESC", $db);
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen $wherecat ORDER BY screen_id DESC", $db);
         while ($screen_arr = mysql_fetch_assoc($index))
         {
-            $index2 = mysql_query("select cat_name from fs_screen_cat where cat_id = $screen_arr[cat_id]", $db);
+            $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."screen_cat where cat_id = $screen_arr[cat_id]", $db);
             $db_cat_name = mysql_result($index2, 0, "cat_name");
             echo'
                             <tr style="cursor:pointer;"
@@ -180,7 +214,7 @@ else
                                 onmouseout="javascript:this.style.backgroundColor=\'transparent\'"
                                 onClick=\'document.getElementById("'.$screen_arr[screen_id].'").checked="true";\'>
                                 <td class="configthin">
-                                    <img src="../images/screenshots/'.$screen_arr[screen_id].'_s.jpg" width="50" height="37" alt="">
+                                    <img src="'.image_url("../images/screenshots/",$screen_arr[screen_id]."_s").'" />
                                 </td>
                                 <td class="configthin">
                                     '.$screen_arr[screen_name].'

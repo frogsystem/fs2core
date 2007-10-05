@@ -16,7 +16,7 @@ if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_
     settype($_POST[show_img_x], 'integer');
     settype($_POST[show_img_y], 'integer');
     
-    $update = "UPDATE fs_screen_config
+    $update = "UPDATE ".$global_config_arr[pref]."screen_config
                SET screen_x = '$_POST[screenx]',
                    screen_y = '$_POST[screeny]',
                    thumb_x = '$_POST[thumbx]',
@@ -37,7 +37,7 @@ if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_
 
 else
 {
-    $index = mysql_query("SELECT * FROM fs_screen_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     echo'
                     <form action="" method="post">

@@ -4,10 +4,10 @@
 ////// Suchfeld erzeugen ///////
 ////////////////////////////////
 
-$index = mysql_query("select news_search_form from fs_template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("select news_search_form from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $template = stripslashes(mysql_result($index, 0, "news_search_form"));
 
-$index = mysql_query("select news_date from fs_news order by news_date asc LIMIT 0,1", $db);
+$index = mysql_query("select news_date from ".$global_config_arr[pref]."news order by news_date asc LIMIT 0,1", $db);
 if (mysql_num_rows($index) == 0) {
     $years = date("Y");
     $years = '<option value="'.$years.'">'.$years.'</option>';
@@ -34,11 +34,11 @@ if ($_POST[jahr] && $_POST[monat])
     $endtime = mktime(0, 0, 0, $_POST[monat]+1, 0, $_POST[jahr]);
 
     // News Konfiguration lesen
-    $index = mysql_query("select * from fs_news_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
 
     // News lesen und ausgeben
-    $index = mysql_query("select * from fs_news
+    $index = mysql_query("select * from ".$global_config_arr[pref]."news
                           where news_date > $starttime and
                                 news_date < $endtime
                           order by news_date desc", $db);
@@ -65,11 +65,11 @@ if ($_POST[keyword])
     $_POST[keyword] = savesql($_POST[keyword]);
 
     // News Konfiguration lesen
-    $index = mysql_query("select * from fs_news_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
 
     // News lesen und ausgeben
-    $index = mysql_query("select * from fs_news
+    $index = mysql_query("select * from ".$global_config_arr[pref]."news
                           where news_text like '%$_POST[keyword]%'
                           order by news_date desc", $db);
     if (mysql_num_rows($index) > 0)  // News vorhanden?

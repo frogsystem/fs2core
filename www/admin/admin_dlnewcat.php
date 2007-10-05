@@ -8,13 +8,13 @@ if (isset($_POST[catname]))
 {
     $_POST[catname] = savesql($_POST[catname]);
 
-    $index = mysql_query("SELECT cat_name FROM fs_dl_cat WHERE cat_name = '$_POST[catname]'", $db);
+    $index = mysql_query("SELECT cat_name FROM ".$global_config_arr[pref]."dl_cat WHERE cat_name = '$_POST[catname]'", $db);
     $rows = mysql_num_rows($index);
 
     if ($rows == 0)
     {
         settype($_POST[subcatof], 'integer');
-        mysql_query("INSERT INTO fs_dl_cat (subcat_id, cat_name)
+        mysql_query("INSERT INTO ".$global_config_arr[pref]."dl_cat (subcat_id, cat_name)
                      VALUES ('".$_POST[subcatof]."',
                              '".$_POST[catname]."');", $db);
         systext("Kategorie wurde hinzugefügt");

@@ -93,6 +93,14 @@ $tmp[perm] = "perm_polledit";
 $tmp[description] = "Umfragen bearbeiten";
 $all_perms[] = $tmp;
 
+$tmp[perm] = "perm_pressconfig";
+$tmp[description] = "Presseberichte Konfiguration";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_pressadmin";
+$tmp[description] = "Presseberichte Kategorie-Verwaltung";
+$all_perms[] = $tmp;
+
 $tmp[perm] = "perm_pressadd";
 $tmp[description] = "Presseberichte hinzufügen";
 $all_perms[] = $tmp;
@@ -152,7 +160,7 @@ $tmp[description] = "Zeitgesteuerte Zufallsbilder bearbeiten";
 $all_perms[] = $tmp;
 
 $tmp[perm] = "perm_randomconfig";
-$tmp[description] = "Zufallsbil Konfiguration";
+$tmp[description] = "Zufallsbild Konfiguration";
 $all_perms[] = $tmp;
 
 $tmp[perm] = "perm_dladd";
@@ -177,16 +185,16 @@ $all_perms[] = $tmp;
 
 
 
+$tmp[perm] = "perm_partnerconfig";
+$tmp[description] = "Partnerseiten Konfiguration";
+$all_perms[] = $tmp;
+
 $tmp[perm] = "perm_partneradd";
-$tmp[description] = "Partnerseiten hinzuügen";
+$tmp[description] = "Partnerseiten hinzufügen";
 $all_perms[] = $tmp;
 
 $tmp[perm] = "perm_partneredit";
 $tmp[description] = "Partnerseiten verwalten";
-$all_perms[] = $tmp;
-
-$tmp[perm] = "perm_partnerconfig";
-$tmp[description] = "Partnerseiten Konfiguration";
 $all_perms[] = $tmp;
 
 $tmp[perm] = "perm_shopadd";
@@ -231,12 +239,20 @@ $tmp[perm] = "perm_template_gallery";
 $tmp[description] = "Template bearbeiten: Galerie";
 $all_perms[] = $tmp;
 
+$tmp[perm] = "perm_template_js";
+$tmp[description] = "Template bearbeiten: Java Script";
+$all_perms[] = $tmp;
+
 $tmp[perm] = "perm_template_news";
 $tmp[description] = "Template bearbeiten: News";
 $all_perms[] = $tmp;
 
 $tmp[perm] = "perm_template_partner";
 $tmp[description] = "Template bearbeiten: Partnerseiten";
+$all_perms[] = $tmp;
+
+$tmp[perm] = "perm_template_press";
+$tmp[description] = "Template bearbeiten: Presseberichte";
 $all_perms[] = $tmp;
 
 $tmp[perm] = "perm_template_poll";
@@ -299,7 +315,7 @@ if (isset($_POST[userid]))
         foreach($all_perms AS $value)
         {
             $_POST[$value[perm]] = isset($_POST[$value[perm]]) ? 1 : 0;
-            $update = "UPDATE fs_permissions
+            $update = "UPDATE ".$global_config_arr[pref]."permissions
                        SET $value[perm] = '".$_POST[$value[perm]]."'
                        WHERE user_id = $_POST[userid]";
             mysql_query($update, $db);
@@ -319,10 +335,10 @@ if (isset($_POST[userid]))
 elseif (isset($_POST[edituserid]))
 {
     settype($_POST[edituserid], 'integer');
-    $userindex = mysql_query("SELECT user_name FROM fs_user WHERE user_id = $_POST[edituserid]", $db);
+    $userindex = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_id = $_POST[edituserid]", $db);
     $dbusername = mysql_result($userindex, 0, "user_name");
 
-    $index = mysql_query("SELECT * FROM fs_permissions WHERE user_id = $_POST[edituserid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."permissions WHERE user_id = $_POST[edituserid]", $db);
     $perm_arr = mysql_fetch_assoc($index);
 
     foreach($all_perms AS $value)
@@ -342,7 +358,7 @@ elseif (isset($_POST[edituserid]))
               </td>
             </tr>
             <tr>
-              <td width="50%">';
+              <td width="50%" valign="top">';
               
     $per_col = ceil(count($all_perms)/2);
     $i=0;
@@ -359,7 +375,7 @@ elseif (isset($_POST[edituserid]))
                  '.$value[description].'
                </td>
              </tr>';
-        if ($i==$per_col) {echo'</table></td><td width="50%"><table border="0" cellpadding="1" cellspacing="0">';}
+        if ($i==$per_col) {echo'</table></td><td width="50%" valign="top"><table border="0" cellpadding="1" cellspacing="0">';}
     }
               
     echo'       </table>
@@ -392,7 +408,7 @@ else
            </tr>
     ';
     $index = mysql_query("SELECT user_id, user_name
-                          FROM fs_user
+                          FROM ".$global_config_arr[pref]."user
                           WHERE is_admin = 1 AND user_id != 1 AND user_id != $_SESSION[user_id]
                           ORDER BY user_name", $db);
     while ($user_arr = mysql_fetch_assoc($index))

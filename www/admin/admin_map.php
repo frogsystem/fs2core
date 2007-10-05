@@ -9,7 +9,7 @@ if ($_POST[deluser])
     foreach ($_POST[deluser] as $id)
     {
         settype($id, 'integer');
-        mysql_query("DELETE FROM fs_cmap_user WHERE user_id = '$id'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."cmap_user WHERE user_id = '$id'", $db);
     }
     systext('User wurden gelöscht');
 }
@@ -38,7 +38,7 @@ else
                             </tr>
     ';
     $index = mysql_query("SELECT user_id, user_name, user_ort
-                          FROM fs_cmap_user
+                          FROM ".$global_config_arr[pref]."cmap_user
                           WHERE land_id = $_GET[landid]
                           ORDER BY user_name", $db);
     while($user_arr = mysql_fetch_assoc($index))

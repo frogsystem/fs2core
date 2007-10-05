@@ -11,8 +11,8 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
     // Download löschen
     if (isset($_POST[deldl]))
     {
-        mysql_query("DELETE FROM fs_dl WHERE dl_id = '$_POST[editdlid]'", $db);
-        mysql_query("DELETE FROM fs_dl_files WHERE dl_id = '$_POST[editdlid]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."dl WHERE dl_id = '$_POST[editdlid]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_files WHERE dl_id = '$_POST[editdlid]'", $db);
         image_delete("../images/dl/", "$_POST[editdlid]_s");
         image_delete("../images/dl/", $_POST[editdlid]);
         systext('Download wurde gelöscht');
@@ -34,9 +34,9 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         }
 
         // Neues Bild hochladen
-        $index = mysql_query("select * from fs_dl_config", $db);
+        $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
         $admin_dl_config_arr = mysql_fetch_assoc($index);
-        if ($_Files[dlimg] && ($_FILES[dlimg] != "none"))
+        if (isset($_FILES[dlimg]))
         {
             $upload = upload_img($_FILES['dlimg'], "../images/downloads/", $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
             systext(upload_img_notice($upload));
@@ -46,7 +46,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
 
         $dlopen = isset($_POST[dlopen]) ? 1 : 0;
 
-        $update = "UPDATE fs_dl
+        $update = "UPDATE ".$global_config_arr[pref]."dl
                    SET cat_id       = '$_POST[catid]',
                        dl_name      = '$_POST[title]',
                        dl_text      = '$_POST[text]',
@@ -62,7 +62,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
             if ($_POST[delf][$i])
             {
                 settype($_POST[delf][$i], 'integer');
-                mysql_query("DELETE FROM fs_dl_files WHERE file_id = " . $_POST[delf][$i], $db);
+                mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_files WHERE file_id = " . $_POST[delf][$i], $db);
             }
             else
             {
@@ -73,7 +73,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
 
                 if ($_POST[fnew][$i]==1 && $_POST[fname][$i]!="")
                 {
-                    $insert = "INSERT INTO fs_dl_files (dl_id, file_count, file_name, file_url, file_size, file_is_mirror)
+                    $insert = "INSERT INTO ".$global_config_arr[pref]."dl_files (dl_id, file_count, file_name, file_url, file_size, file_is_mirror)
                                VALUES ('".$_POST[editdlid]."',
                                        '".$_POST[fcount][$i]."',
                                        '".$_POST[fname][$i]."',
@@ -85,7 +85,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
                 }
                 elseif ($_POST[fnew][$i]==0)
                 {
-                    $update = "UPDATE fs_dl_files
+                    $update = "UPDATE ".$global_config_arr[pref]."dl_files
                                SET file_count       = '".$_POST[fcount][$i]."',
                                    file_name        = '".$_POST[fname][$i]."',
                                    file_url         = '".$_POST[furl][$i]."',
@@ -112,7 +112,7 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
     }
     settype($_POST[dlid], 'integer');
 
-    $index = mysql_query("SELECT * FROM fs_dl WHERE dl_id =  '$_POST[dlid]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl WHERE dl_id =  '$_POST[dlid]'", $db);
     if (!isset($_POST[title]))
     {
         $_POST[title] = mysql_result($index, 0, "dl_name");
@@ -140,7 +140,7 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
 
     $_POST[dlopen] = ($_POST[dlopen] == 1) ? "checked" : "";
 
-    $index = mysql_query("SELECT * FROM fs_dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id", $db);
     $rows = mysql_num_rows($index);
     for($i=0; $i<$rows; $i++)
     {
@@ -177,7 +177,7 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
     }
     $_POST[options] += $_POST[optionsadd];
     
-    $index = mysql_query("select * from fs_dl_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -365,7 +365,7 @@ else
     ';
 
     // Kategorie Auswahl erzeugen
-    $index = mysql_query("SELECT cat_id, cat_name FROM fs_dl_cat", $db);
+    $index = mysql_query("SELECT cat_id, cat_name FROM ".$global_config_arr[pref]."dl_cat", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($_POST[dlcatid] == $cat_arr[cat_id]) ? "selected" : "";
@@ -407,10 +407,10 @@ else
         settype($_POST[dlcatid], 'integer');
         $wherecat = "WHERE cat_id = " . $_POST[dlcatid];
     }
-    $index = mysql_query("SELECT dl_id, dl_name, cat_id FROM fs_dl $wherecat ORDER BY dl_name", $db);
+    $index = mysql_query("SELECT dl_id, dl_name, cat_id FROM ".$global_config_arr[pref]."dl $wherecat ORDER BY dl_name", $db);
     while ($dl_arr = mysql_fetch_assoc($index))
     {
-        $catindex = mysql_query("SELECT cat_name from fs_dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $db);
+        $catindex = mysql_query("SELECT cat_name from ".$global_config_arr[pref]."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $db);
         $dbcatname = mysql_result($catindex, 0, "cat_name");
         echo'
                             <tr>

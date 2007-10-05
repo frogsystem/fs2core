@@ -10,7 +10,7 @@ function delete_old_randoms()
   if ($global_config_arr[random_timed_deltime] != -1) {
     // Alte Zufallsbild-Einträge aus der Datenbank entfernen
     mysql_query("DELETE a
-                FROM fs_screen_random a, fs_global_config b
+                FROM ".$global_config_arr[pref]."screen_random a, ".$global_config_arr[pref]."global_config b
                 WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime", $db);
   }
 }
@@ -51,17 +51,17 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
         <legend class="small" align="left"><font class="small">Smilies</font></legend>
           <table cellpadding="2" cellspacing="0" border="0">';
 
-    $index = mysql_query("select * from fs_editor_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."editor_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     $config_arr[num_smilies] = $config_arr[smilies_rows]*$config_arr[smilies_cols];
             
     $zaehler = 0;
-    $index = mysql_query("SELECT * FROM fs_smilies ORDER by `order` ASC LIMIT 0, $config_arr[num_smilies]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."smilies ORDER by `order` ASC LIMIT 0, $config_arr[num_smilies]", $db);
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id]);
 
-        $smilie_template = '<td><img src="'.$smilie_arr[url].'" alt="" onClick="insert(\''.$name.'\', \''.$smilie_arr[replace_string].'\', \'\')" class="editor_smilies" /></td>';
+        $smilie_template = '<td><img src="'.$smilie_arr[url].'" alt="'.$smilie_arr[replace_string].'" onClick="insert(\''.$name.'\', \''.$smilie_arr[replace_string].'\', \'\')" class="editor_smilies" /></td>';
 
         $zaehler += 1;
         switch ($zaehler)
@@ -182,7 +182,7 @@ if ($all==true OR $fs_noparse==1) {
   $buttons .= create_textarea_button('images/icons/noparse.gif', "N", "Nicht umzuwandelnden Bereich einfügen", "insert('$name', '[noparse]', '[/noparse]')");
 }
 
-    $index = mysql_query("SELECT editor_design FROM fs_template WHERE id = '$global_config_arr[design]'");
+    $index = mysql_query("SELECT editor_design FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'");
     $textarea = stripslashes(mysql_result($index, 0, "editor_design"));
     $textarea = str_replace("{style}", $style, $textarea);
     $textarea = str_replace("{text}", $text, $textarea);
@@ -200,11 +200,9 @@ if ($all==true OR $fs_noparse==1) {
 function create_textarea_button($img_url, $alt, $title, $insert)
 {
     global $global_config_arr;
-    unset($button);
-    
     $javascript = 'onClick="'.$insert.'"';
 
-    $index = mysql_query("SELECT editor_button FROM fs_template WHERE id = '$global_config_arr[design]'");
+    $index = mysql_query("SELECT editor_button FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'");
     $button = stripslashes(mysql_result($index, 0, "editor_button"));
     $button = str_replace("{img_url}", $global_config_arr[virtualhost].$img_url, $button);
     $button = str_replace("{alt}", $alt, $button);
@@ -225,7 +223,7 @@ function create_textarea_seperator()
     global $global_config_arr;
     unset($seperator);
 
-    $index = mysql_query("SELECT editor_seperator FROM fs_template WHERE id = '$global_config_arr[design]'");
+    $index = mysql_query("SELECT editor_seperator FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'");
     $seperator = stripslashes(mysql_result($index, 0, "editor_seperator"));
 
     return $seperator;
@@ -258,6 +256,8 @@ function image_url($path, $name, $error=true)
 
   if (file_exists("$path"."$name.jpg"))
     $url = $path."$name.jpg";
+  elseif (file_exists("$path"."$name.jpeg"))
+    $url = $path."$name.jpeg";
   elseif (file_exists("$path"."$name.gif"))
     $url = $path."$name.gif";
   elseif (file_exists("$path"."$name.png"))
@@ -296,7 +296,7 @@ function sys_message ($title, $message)
     global $db;
     global $global_config_arr;
 
-    $index = mysql_query("select error from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select error from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "error"));
     $template = str_replace("{titel}", $title, $template);
     $template = str_replace("{meldung}", $message, $template);
@@ -317,28 +317,31 @@ function point_number ($zahl)
 /////////////////////////////////////////
 // String kürzen ohne Wort zuzerstören //
 /////////////////////////////////////////
-function truncate_string ($string, $maxlength, $extension) {
+function truncate_string ($string, $maxlength, $extension)
+{
 
-   // Set the replacement for the "string break" in the wordwrap function
    $cutmarker = "**F3rVRB,YQFrK6qpE**cut_here**cc3Z,7L,jVy9bDWY**";
 
-   // Checking if the given string is longer than $maxlength
-   if (strlen($string)+strlen($$extension) > $maxlength) {
-
-       // Using wordwrap() to set the cutmarker
-       // NOTE: wordwrap (PHP 4 >= 4.0.2, PHP 5)
-       $string = wordwrap($string, $maxlength, $cutmarker);
-
-       // Exploding the string at the cutmarker, set by wordwrap()
+   if (strlen($string) > $maxlength) {
+       $string = wordwrap($string, $maxlength-strlen($extension), $cutmarker);
        $string = explode($cutmarker, $string);
-
-       // Adding $extension to the first value of the array $string, returned by explode()
        $string = $string[0] . $extension;
    }
-
-   // returning $string
    return $string;
+}
 
+/////////////////////////////////////////
+// String innerhalb sich selbst kürzen //
+/////////////////////////////////////////
+function cut_in_string ($string, $maxlength, $replacement)
+{
+   if (strlen($string) > $maxlength) {
+       $part_lenght = ceil($maxlength/2)-ceil(strlen($extension)/2);
+       $string_start = substr($string, 0, $part_lenght);
+       $string_end = substr($string, -1*$part_lenght);
+       $string = $string_start . $replacement . $string_end;
+   }
+   return $string;
 }
 
 ////////////////////////////////
@@ -347,9 +350,10 @@ function truncate_string ($string, $maxlength, $extension) {
 
 function get_dl_categories (&$ids, $cat_id, $id=0, $ebene=-1)
 {
+    global $global_config_arr;
     global $db;
 
-    $index = mysql_query("select * from fs_dl_cat where subcat_id = '$id' ORDER BY cat_name", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_cat where subcat_id = '$id' ORDER BY cat_name", $db);
     while ($zeile = mysql_fetch_assoc($index))
     {
         if ($zeile[cat_id] != $cat_id)
@@ -373,7 +377,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr[comment_url] = "?go=comments&amp;id=$news_arr[news_id]";
 
     // Kategorie lesen
-    $index2 = mysql_query("select cat_name from fs_news_cat where cat_id = $news_arr[cat_id]", $db);
+    $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."news_cat where cat_id = $news_arr[cat_id]", $db);
     $news_arr[cat_name] = mysql_result($index2, 0, "cat_name");
     $news_arr[cat_pic] = image_url("images/news_cat/", $news_arr[cat_id]);
 
@@ -427,16 +431,16 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr[news_text] = fscode($news_arr[news_text],$fs,$html,$para);
 
     // User auslesen
-    $index2 = mysql_query("select user_name from fs_user where user_id = $news_arr[user_id]", $db);
+    $index2 = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $news_arr[user_id]", $db);
     $news_arr[user_name] = mysql_result($index2, 0, "user_name");
     $news_arr[user_url] = "?go=profil&amp;userid=$news_arr[user_id]";
 
     // Kommentare lesen
-    $index2 = mysql_query("select comment_id from fs_news_comments where news_id = $news_arr[news_id]", $db);
+    $index2 = mysql_query("select comment_id from ".$global_config_arr[pref]."news_comments where news_id = $news_arr[news_id]", $db);
     $news_arr[kommentare] = mysql_num_rows($index2);
 
     // Template lesen und füllen
-    $index2 = mysql_query("select news_body from fs_template where id = '$global_config_arr[design]'", $db);
+    $index2 = mysql_query("select news_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index2, 0, "news_body"));
     $template = str_replace("{newsid}", $news_arr[news_id], $template);
     $template = str_replace("{titel}", $news_arr[news_title], $template);
@@ -450,10 +454,10 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $template = str_replace("{kommentar_anzahl}", $news_arr[kommentare], $template);
 
     $link_tpl = "";
-    $index2 = mysql_query("select * from fs_news_links where news_id = $news_arr[news_id] order by link_id", $db);
+    $index2 = mysql_query("select * from ".$global_config_arr[pref]."news_links where news_id = $news_arr[news_id] order by link_id", $db);
     while ($link_arr = mysql_fetch_assoc($index2))
     {
-        $index3 = mysql_query("select news_link from fs_template where id = '$global_config_arr[design]'", $db);
+        $index3 = mysql_query("select news_link from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $link = stripslashes(mysql_result($index3, 0, "news_link"));
         $link = str_replace("{name}", $link_arr[link_name], $link);
         $link_arr[link_url] = str_replace("&","&amp;",$link_arr[link_url]);
@@ -473,7 +477,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
 
     if (mysql_num_rows($index2) > 0)
     {
-        $index2 = mysql_query("select news_related_links from fs_template where id = '$global_config_arr[design]'", $db);
+        $index2 = mysql_query("select news_related_links from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $related_links = stripslashes(mysql_result($index2, 0, "news_related_links"));
         $related_links = str_replace("{links}", $link_tpl, $related_links);
 
@@ -564,6 +568,19 @@ function killsv($text)
     return $text;
 }
 
+//////////////////////////////////
+// kill {} whre not allowed     //
+//////////////////////////////////
+
+function killbraces($text)
+{
+    global $global_config_arr;
+
+    $text = str_replace("{virtualhost}", $global_config_arr[virtualhost], $text);
+    $text = str_replace("{", "&#123;", $text);
+    $text = str_replace("}", "&#125;", $text);
+    return $text;
+}
 
 //////////////////////////////
 // Format text with FS Code //
@@ -694,7 +711,8 @@ function killfs($text)
 ///////////////////////////////////////////////////////////////
 function checkVotedPoll($pollid) {
 
-        global $db;
+    global $global_config_arr;
+    global $db;
 
         settype($pollid, 'integer');
 
@@ -706,8 +724,8 @@ function checkVotedPoll($pollid) {
             }
         }
         $one_day_ago = time()-60*60*24;
-        mysql_query("DELETE FROM fs_poll_voters WHERE time <= '".$one_day_ago."'", $db); //Delete old IPs
-        $query_id = mysql_query("SELECT voter_id FROM fs_poll_voters WHERE poll_id = $pollid AND ip_address = '".$_SERVER['REMOTE_ADDR']."' AND time > '".$one_day_ago."'", $db); //Save IP for 1 Day
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."poll_voters WHERE time <= '".$one_day_ago."'", $db); //Delete old IPs
+        $query_id = mysql_query("SELECT voter_id FROM ".$global_config_arr[pref]."poll_voters WHERE poll_id = $pollid AND ip_address = '".$_SERVER['REMOTE_ADDR']."' AND time > '".$one_day_ago."'", $db); //Save IP for 1 Day
         if (mysql_num_rows($query_id) > 0) {
                 return true;
         }
@@ -719,9 +737,12 @@ function checkVotedPoll($pollid) {
 //// Register the voter in the db to avoid multiple votes  ////
 ///////////////////////////////////////////////////////////////
 function registerVoter($pollid, $voter_ip) {
+
+        global $global_config_arr;
+
         settype($pollid, 'integer');
 
-        mysql_query("INSERT INTO fs_poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
+        mysql_query("INSERT INTO ".$global_config_arr[pref]."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
         if (!isset($_COOKIE['polls_voted'])) {
                 setcookie('polls_voted', $pollid, time()+60*60*24*60); //2 months
         } else {

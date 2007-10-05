@@ -44,6 +44,14 @@
 
     $TEMPLATE_EDIT[] = false;
 
+    $tmp[name] = "doctype";
+    $tmp[title] = $admin_phrases[template][doctype][title];
+    $tmp[description] = $admin_phrases[template][doctype][description];
+    $tmp[rows] = "3";
+    $tmp[cols] = "66";
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+
     $tmp[name] = "indexphp";
     $tmp[title] = $admin_phrases[template][indexphp][title];
     $tmp[description] = $admin_phrases[template][indexphp][description];

@@ -5,7 +5,7 @@
 /////////////////////////
 
 settype($_GET[userid], "integer");
-$index = mysql_query("select * from fs_user where user_id = $_GET[userid]", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."user where user_id = $_GET[userid]", $db);
 
 if (mysql_num_rows($index) > 0)
 {
@@ -17,15 +17,15 @@ if (mysql_num_rows($index) > 0)
     }
 
     // Geschriebene Kommentare
-    $index = mysql_query("select comment_id from fs_news_comments where comment_poster_id = $_GET[userid]", $db);
+    $index = mysql_query("select comment_id from ".$global_config_arr[pref]."news_comments where comment_poster_id = $_GET[userid]", $db);
     $user_arr[user_comments] = mysql_num_rows($index);
 
     // Geschriebene Artikel
-    $index = mysql_query("select artikel_url from fs_artikel where artikel_user = $_GET[userid]", $db);
+    $index = mysql_query("select artikel_url from ".$global_config_arr[pref]."artikel where artikel_user = $_GET[userid]", $db);
     $user_arr[user_artikel] = mysql_num_rows($index);
 
     // Geschriebene News
-    $index = mysql_query("select news_id from fs_news where user_id = $_GET[userid]", $db);
+    $index = mysql_query("select news_id from ".$global_config_arr[pref]."news where user_id = $_GET[userid]", $db);
     $user_arr[user_news] = mysql_num_rows($index);
 
     if (image_exists("images/avatare/",$_GET[userid]))
@@ -38,7 +38,7 @@ if (mysql_num_rows($index) > 0)
     }
 
     // Template aufbauen
-    $index = mysql_query("select user_profil from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select user_profil from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "user_profil"));
     $template = str_replace("{username}", killhtml($user_arr[user_name]), $template); 
     $template = str_replace("{avatar}", $user_arr[user_avatar], $template); 

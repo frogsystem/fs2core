@@ -11,7 +11,7 @@ if ($_POST[username] && $_POST[usermail])
     settype($_POST[regdate], "integer");
 
     // existiert dieser Username schon?
-    $index = mysql_query("SELECT user_name FROM fs_user WHERE user_name = '$_POST[username]'", $db);
+    $index = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_name = '$_POST[username]'", $db);
     $rows = mysql_num_rows($index);
 
     if ($rows == 0)
@@ -22,7 +22,7 @@ if ($_POST[username] && $_POST[usermail])
 
         $_POST[showmail] = isset($_POST[showmail]) ? 1 : 0;
 
-        $sqlquery = 'INSERT INTO fs_user (user_name, user_password, user_mail, reg_date, show_mail)
+        $sqlquery = 'INSERT INTO ".$global_config_arr[pref]."user (user_name, user_password, user_mail, reg_date, show_mail)
                      VALUES ("'.$_POST[username].'",
                              "'.$codedpass.'",
                              "'.$_POST[usermail].'",
@@ -31,7 +31,7 @@ if ($_POST[username] && $_POST[usermail])
         mysql_query($sqlquery, $db);
 
         // Mail versenden
-        $index = mysql_query("select email_register from fs_template where id = '$global_config_arr[design]'", $db);
+        $index = mysql_query("select email_register from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $template_mail = stripslashes(mysql_result($index, 0, "email_register"));
         $template_mail = str_replace("{username}", $_POST[username], $template_mail);
         $template_mail = str_replace("{password}", $newpass, $template_mail);
@@ -44,7 +44,7 @@ if ($_POST[username] && $_POST[usermail])
         $header .= "Content-Type: text/plain";
         mail($usermail, $email_betreff, $template_mail, $header);
 
-        mysql_query("UPDATE fs_counter SET user=user+1", $db);
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET user=user+1", $db);
         systext('User wurde hinzugefügt');
     }
     else

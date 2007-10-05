@@ -2,7 +2,7 @@
 
     //Load Poll Data
     $date = date("U");
-    $index = mysql_query("select * from fs_poll where poll_end > $date and poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."poll where poll_end > $date and poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $db);
     $poll_arr = mysql_fetch_assoc($index);
 
 //////////////////////////
@@ -21,7 +21,7 @@ if (!$_POST[pollid] AND !checkVotedPoll($poll_arr['poll_id']) AND mysql_num_rows
             }
 
 
-            $index2 = mysql_query("select * from fs_poll_answers where poll_id = $poll_arr[poll_id] ORDER BY answer_id ASC", $db);
+            $index2 = mysql_query("select * from ".$global_config_arr[pref]."poll_answers where poll_id = $poll_arr[poll_id] ORDER BY answer_id ASC", $db);
             while ($answer_arr = mysql_fetch_assoc($index2))
             {
                 if ($poll_arr[poll_type] == 0)
@@ -34,7 +34,7 @@ if (!$_POST[pollid] AND !checkVotedPoll($poll_arr['poll_id']) AND mysql_num_rows
                     $poll_arr[poll_type2] = "checkbox";
                     $poll_arr[poll_type3] = "[]";
                 }
-                $index3 = mysql_query("select poll_line from fs_template where id = '$global_config_arr[design]'", $db);
+                $index3 = mysql_query("select poll_line from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
                 $template = stripslashes(mysql_result($index3, 0, "poll_line"));
                 $template = str_replace("{answer_id}", $answer_arr[answer_id], $template);
                 $template = str_replace("{answer}", $answer_arr[answer], $template);
@@ -45,7 +45,7 @@ if (!$_POST[pollid] AND !checkVotedPoll($poll_arr['poll_id']) AND mysql_num_rows
             }
             unset($answer_arr);
 
-            $index2 = mysql_query("select poll_body from fs_template where id = '$global_config_arr[design]'", $db);
+            $index2 = mysql_query("select poll_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
             $template = stripslashes(mysql_result($index2, 0, "poll_body"));
             $template = str_replace("{poll_id}", $poll_arr[poll_id], $template);
             $template = str_replace("{question}", $poll_arr[poll_quest], $template);
@@ -72,7 +72,7 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
     $voter_ip = $_SERVER['REMOTE_ADDR'];
 
     $date = date("U");
-    $index = mysql_query("select * from fs_poll where poll_id = $_POST[pollid]", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."poll where poll_id = $_POST[pollid]", $db);
     $poll_arr = mysql_fetch_assoc($index);
 
     if ($poll_arr[poll_end] > $date && $voted == false)
@@ -80,10 +80,10 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
         if ($poll_arr[poll_type] == 0)
         {
             settype($_POST[answer], 'integer');
-            mysql_query("update fs_poll_answers set answer_count = answer_count + 1 where answer_id = '$_POST[answer]'", $db);
+            mysql_query("update ".$global_config_arr[pref]."poll_answers set answer_count = answer_count + 1 where answer_id = '$_POST[answer]'", $db);
             if ($_POST[answer] != 0) {
                 registerVoter($_POST['pollid'], $voter_ip); //Register Voter if voted
-                mysql_query("update fs_poll set poll_participants = poll_participants + 1 where poll_id = '$_POST[pollid]'", $db);
+                mysql_query("update ".$global_config_arr[pref]."poll set poll_participants = poll_participants + 1 where poll_id = '$_POST[pollid]'", $db);
             }
         }
         elseif (count($_POST[answer]) > 1)
@@ -91,10 +91,10 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
             foreach ($_POST[answer] as $id)
             {
                 settype($id, 'integer');
-                mysql_query("update fs_poll_answers set answer_count = answer_count + 1 where answer_id = '$id'", $db);
+                mysql_query("update ".$global_config_arr[pref]."poll_answers set answer_count = answer_count + 1 where answer_id = '$id'", $db);
             }
             registerVoter($_POST['pollid'], $voter_ip); //Register Voter if voted
-            mysql_query("update fs_poll set poll_participants = poll_participants + 1 where poll_id = '$_POST[pollid]'", $db);
+            mysql_query("update ".$global_config_arr[pref]."poll set poll_participants = poll_participants + 1 where poll_id = '$_POST[pollid]'", $db);
         }
         elseif (is_array($_POST[answer]))
         {
@@ -102,24 +102,24 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
             $id = each($_POST[answer]);
             $id = $id[value];
             settype($id, 'integer');
-            mysql_query("update fs_poll_answers set answer_count = answer_count + 1 where answer_id = '$id'", $db);
+            mysql_query("update ".$global_config_arr[pref]."poll_answers set answer_count = answer_count + 1 where answer_id = '$id'", $db);
             if (count($_POST[answer]) != 0) {
                 registerVoter($_POST['pollid'], $voter_ip); //Register Voter if voted
-                mysql_query("update fs_poll set poll_participants = poll_participants + 1 where poll_id = '$_POST[pollid]'", $db);
+                mysql_query("update ".$global_config_arr[pref]."poll set poll_participants = poll_participants + 1 where poll_id = '$_POST[pollid]'", $db);
             }
         }
     }
 
-    $index = mysql_query("select poll_participants from fs_poll where poll_id = $_POST[pollid]", $db);
+    $index = mysql_query("select poll_participants from ".$global_config_arr[pref]."poll where poll_id = $_POST[pollid]", $db);
     $poll_arr[poll_participants] = mysql_result($index, 0, "poll_participants");
 
-    $index = mysql_query("select * from fs_poll_answers where poll_id = $_POST[pollid]", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."poll_answers where poll_id = $_POST[pollid]", $db);
     while ($answer_arr = mysql_fetch_assoc($index))
     {
         $all_votes += $answer_arr[answer_count];
     }
 
-    $index = mysql_query("select * from fs_poll_answers where poll_id = $_POST[pollid] ORDER BY answer_id ASC", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."poll_answers where poll_id = $_POST[pollid] ORDER BY answer_id ASC", $db);
     while ($answer_arr = mysql_fetch_assoc($index))
     {
         if ($all_votes != 0)
@@ -132,7 +132,7 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
             $answer_arr[percentage] = 0;
             $answer_arr[bar_width] = 1;
         }
-        $index2 = mysql_query("select poll_result_line from fs_template where id = '$global_config_arr[design]'", $db);
+        $index2 = mysql_query("select poll_result_line from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $template = stripslashes(mysql_result($index2, 0, "poll_result_line"));
         $template = str_replace("{answer}", $answer_arr[answer], $template);
         $template = str_replace("{votes}", $answer_arr[answer_count], $template);
@@ -143,7 +143,7 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
     }
     unset($answer_arr);
 
-    $index = mysql_query("select poll_result from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select poll_result from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "poll_result"));
     $template = str_replace("{question}", $poll_arr[poll_quest], $template);
     $template = str_replace("{answers}", $antworten, $template);
@@ -160,7 +160,7 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
 
 else
 {
-    $index = mysql_query("select poll_no_poll from fs_template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("select poll_no_poll from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "poll_no_poll"));
 
     unset($poll_arr);

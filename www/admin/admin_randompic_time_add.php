@@ -10,12 +10,11 @@ if (!empty($_POST['screen_id'])) {
 }
 if ($startdate < $enddate) {
     settype($_POST['screen_id'], 'integer');
-    mysql_query("INSERT INTO fs_screen_random (screen_id, start, end) 
-        VALUES (
-            '". $_POST['screen_id'] ."',
-            '". $startdate ."',
-            '". $enddate ."'
-        )", $db);
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."screen_random (screen_id, start, end)
+                 VALUES ('". $_POST['screen_id'] ."',
+                         '". $startdate ."',
+                         '". $enddate ."'
+                        )", $db);
     systext("Zeitgesteuertes Zufallsbild wurde hinzugefügt");
 }
 /////////////////////////////
@@ -23,52 +22,35 @@ if ($startdate < $enddate) {
 /////////////////////////////
 else
 {
+
     //Zeit-Array für Jetzt Button
-    $jetzt[tag] = date("d");
-    $jetzt[monat] = date("m");
-    $jetzt[jahr] = date("Y");
-    $jetzt[stunde] = date("H");
-    $jetzt[minute] = date("i");
+    $jetzt[time] = time();
+    $jetzt[tag] = date("d", $jetzt[time]);
+    $jetzt[monat] = date("m", $jetzt[time]);
+    $jetzt[jahr] = date("Y", $jetzt[time]);
+    $jetzt[stunde] = date("H", $jetzt[time]);
+    $jetzt[minute] = date("i", $jetzt[time]);
 
-    if (!isset($_POST[nowtag]))
+    if (!$_POST[sended])
     {
-        $_POST[nowtag] = date("d");
-        $_POST[endtag] = date("d");
-    }
-    if (!isset($_POST[nowmonat]))
-    {
-        $_POST[nowmonat] = date("m");
-    }
-    if (!isset($_POST[nowjahr]))
-    {
-        $_POST[nowjahr] = date("Y");
-    }
-    if (!isset($_POST[nowstunde]))
-    {
-        $_POST[nowstunde] = date("H");
-        $_POST[endstunde] = date("H");
-    }
-    if (!isset($_POST[nowmin]))
-    {
-        $_POST[nowmin] = date("i");
-        $_POST[endmin] = date("i");
-    }
-    
-    if (!isset($_POST[endmonat]))
-    {
-        $_POST[endmonat] = ($_POST[nowmonat] < 12) ? ($_POST[nowmonat] + 1) : 1;
-        $enddate = mktime(0, 0, 0, $_POST[endmonat], $_POST[nowtag], $_POST[nowjahr]);
-        $_POST[endmonat] = date("m", $enddate);
-    }
+        $_POST[nowtag] = $jetzt[tag];
+        $_POST[nowmonat] = $jetzt[monat];
+        $_POST[nowjahr] = $jetzt[jahr];
+        $_POST[nowstunde] = $jetzt[stunde];
+        $_POST[nowmin] = $jetzt[minute];
 
-    if (!isset($_POST[endjahr]))
-    {
-        $_POST[endjahr] = ($_POST[nowmonat] > $_POST[endmonat]) ? ($_POST[nowjahr] + 1) : $_POST[nowjahr];
+        $end = $jetzt[time] + 7*24*60*60;
+        $_POST[endtag] = date("d", $end);
+        $_POST[endmonat] = date("m", $end);
+        $_POST[endjahr] = date("Y", $end);
+        $_POST[endstunde] = date("H", $end);
+        $_POST[endmin] = date("i", $end);
     }
     
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="randompic_time_add" name="go">
+                        <input type="hidden" value="1" name="sended">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -77,7 +59,8 @@ else
                                     <font class="small">Bild auswählen</font>
                                 </td>
                                 <td valign="top" width="240">
-                                    <input type="button" class="button" value="Bild ausw&auml;hlen" onClick=\'open("admin_findpicture.php","Bild","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\'"> <input type="text" id="screen_selectortext" value="'. (!empty($_POST['screen_id'])?'Bild ausgew&auml;hlt!':'Kein Bild gew&auml;hlt!') .'" size="17" readonly="readonly" class="text">
+                                    <input type="button" class="button" value="Bild ausw&auml;hlen" onClick=\'open("admin_findpicture.php","Bild","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\'">
+                                    <input type="text" id="screen_selectortext" value="'. (!empty($_POST['screen_id'])?'Bild ausgew&auml;hlt!':'Kein Bild gew&auml;hlt!') .'" size="17" readonly="readonly" class="text">
                                     <input type="hidden" id="screen_id" name="screen_id" value="'. $_POST['screen_id'] .'">
                                 </td>
                                 <td class="config" valign="top" width="200">
@@ -101,32 +84,8 @@ else
                                                      document.getElementById("startyear").value="'.$jetzt[jahr].'";
                                                      document.getElementById("starthour").value="'.$jetzt[stunde].'";
                                                      document.getElementById("startminute").value="'.$jetzt[minute].'";\' class="button" type="button" value="Jetzt">
-                                    <input onClick=\'var startdate = new Date(document.getElementById("startyear").value, document.getElementById("startmonth").value, document.getElementById("startday").value, document.getElementById("starthour").value, document.getElementById("startminute").value);
-                                                     var newmonth = startdate.getMonth();
-                                                     var Monat = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
-                                                     document.getElementById("startmonth").value = Monat[newmonth];
-                                                     if (Monat[newmonth] == "01")
-                                                     {
-                                                         document.getElementById("startyear").value = startdate.getFullYear();
-                                                     }
-                                                     \' class="button" type="button" value="+1 Monat">
-                                    <input onClick=\'var startdate = new Date(document.getElementById("startyear").value, document.getElementById("startmonth").value, document.getElementById("startday").value, document.getElementById("starthour").value, document.getElementById("startminute").value);
-                                                     var newmonth = startdate.getMonth() - 2;
-                                                     if (newmonth == -1)
-                                                     {
-                                                         newmonth = 11;
-                                                     }
-                                                     if (newmonth == -2)
-                                                     {
-                                                         newmonth = 10;
-                                                     }
-                                                     var Monat = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
-                                                     document.getElementById("startmonth").value = Monat[newmonth];
-                                                     if (Monat[newmonth] == "12")
-                                                     {
-                                                         document.getElementById("startyear").value = startdate.getFullYear() - 1;
-                                                     }
-                                                     \' class="button" type="button" value="-1 Monat">
+                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "7", "0", "0", "0", "0");\' class="button" type="button" value="+1 Woche">
+                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "-7", "0", "0", "0", "0");\' class="button" type="button" value="-1 Woche">
                                 </td>
                             </tr>
                             <tr>
@@ -146,32 +105,8 @@ else
                                                      document.getElementById("endyear").value="'.$jetzt[jahr].'";
                                                      document.getElementById("endhour").value="'.$jetzt[stunde].'";
                                                      document.getElementById("endminute").value="'.$jetzt[minute].'";\' class="button" type="button" value="Jetzt">
-                                    <input onClick=\'var enddate = new Date(document.getElementById("endyear").value, document.getElementById("endmonth").value, document.getElementById("endday").value, document.getElementById("endhour").value, document.getElementById("endminute").value);
-                                                     var newmonth = enddate.getMonth();
-                                                     var Monat = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
-                                                     document.getElementById("endmonth").value = Monat[newmonth];
-                                                     if (Monat[newmonth] == "01")
-                                                     {
-                                                         document.getElementById("endyear").value = enddate.getFullYear();
-                                                     }
-                                                     \' class="button" type="button" value="+1 Monat">
-                                    <input onClick=\'var enddate = new Date(document.getElementById("endyear").value, document.getElementById("endmonth").value, document.getElementById("endday").value, document.getElementById("endhour").value, document.getElementById("endminute").value);
-                                                     var newmonth = enddate.getMonth() - 2;
-                                                     if (newmonth == -1)
-                                                     {
-                                                         newmonth = 11;
-                                                     }
-                                                     if (newmonth == -2)
-                                                     {
-                                                         newmonth = 10;
-                                                     }
-                                                     var Monat = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
-                                                     document.getElementById("endmonth").value = Monat[newmonth];
-                                                     if (Monat[newmonth] == "12")
-                                                     {
-                                                         document.getElementById("endyear").value = enddate.getFullYear() - 1;
-                                                     }
-                                                     \' class="button" type="button" value="-1 Monat">
+                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "7", "0", "0", "0", "0");\' class="button" type="button" value="+1 Woche">
+                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "-7", "0", "0", "0", "0");\' class="button" type="button" value="-1 Woche">
                                 </td>
                             </tr>
 

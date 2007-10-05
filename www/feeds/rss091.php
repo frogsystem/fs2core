@@ -34,6 +34,7 @@ if ($db)
 
     $index = mysql_query("SELECT news_id, news_text, news_title, news_date
                           FROM ".$pref."news
+                          WHERE news_date <= UNIX_TIMESTAMP()
                           ORDER BY news_date DESC
                           LIMIT $news_config_arr[num_news]");
     while ($news_arr = mysql_fetch_assoc($index))

@@ -2,17 +2,17 @@
 
 $_GET[go] = savesql($_GET[go]);
 
-$index = mysql_query("select * from fs_artikel where artikel_url = '$_GET[go]'", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."artikel where artikel_url = '$_GET[go]'", $db);
 $dbartikeltitle = mysql_result($index, 0, "artikel_title");
 
 $dbartikeluser = mysql_result($index, 0, "artikel_user");
-$index2 = mysql_query("select user_id, user_name from fs_user where user_id = '$dbartikeluser'", $db);
+$index2 = mysql_query("select user_id, user_name from ".$global_config_arr[pref]."user where user_id = '$dbartikeluser'", $db);
 if (mysql_num_rows($index2) == 1)
 {
     $dbusername = mysql_result($index2, 0, "user_name");
     $userlink = '?go=profil&amp;userid=' . mysql_result($index2, 0, "user_id");
 
-    $tindex = mysql_query("select artikel_autor from fs_template where id = '$global_config_arr[design]'", $db);
+    $tindex = mysql_query("select artikel_autor from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $autor = stripslashes(mysql_result($tindex, 0, "artikel_autor"));
     $autor = str_replace("{profillink}", $userlink, $autor); 
     $autor = str_replace("{username}", $dbusername, $autor); 
@@ -33,7 +33,7 @@ else
     $dbartikeltext = stripslashes(mysql_result($index, 0, "artikel_text"));
 }
 
-$tindex = mysql_query("select artikel_body from fs_template where id = '$global_config_arr[design]'", $db);
+$tindex = mysql_query("select artikel_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $body = stripslashes(mysql_result($tindex, 0, "artikel_body"));
 $body = str_replace("{titel}", $dbartikeltitle, $body); 
 $body = str_replace("{datum}", $date, $body); 
