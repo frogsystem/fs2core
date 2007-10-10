@@ -3,9 +3,11 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 06. Oktober 2007 um 13:06
+-- Erstellungszeit: 10. Oktober 2007 um 23:45
 -- Server Version: 5.0.45
 -- PHP-Version: 5.2.3
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 -- 
 -- Datenbank: `frogsystem`
@@ -26,7 +28,7 @@ CREATE TABLE `fs_admin_cp` (
   `permission` varchar(255) NOT NULL default '',
   `file` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM  AUTO_INCREMENT=87 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=87 ;
 
 -- 
 -- Daten für Tabelle `fs_admin_cp`
@@ -123,7 +125,7 @@ REPLACE INTO `fs_admin_cp` VALUES (86, 'jstemplate', 'JAVA SCRIPT BEARBEITEN', '
 DROP TABLE IF EXISTS `fs_announcement`;
 CREATE TABLE `fs_announcement` (
   `text` text
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_announcement`
@@ -149,7 +151,7 @@ CREATE TABLE `fs_artikel` (
   `artikel_fscode` tinyint(4) default NULL,
   PRIMARY KEY  (`artikel_id`),
   UNIQUE KEY `artikel_url` (`artikel_url`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_artikel`
@@ -171,7 +173,7 @@ CREATE TABLE `fs_cmap_user` (
   `y_pos` smallint(5) default NULL,
   `user_ort` char(100) default NULL,
   PRIMARY KEY  (`user_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_cmap_user`
@@ -192,13 +194,13 @@ CREATE TABLE `fs_counter` (
   `artikel` smallint(6) unsigned NOT NULL default '0',
   `news` smallint(6) unsigned NOT NULL default '0',
   `comments` mediumint(8) unsigned NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_counter`
 -- 
 
-REPLACE INTO `fs_counter` VALUES (0, 0, 1, 0, 1, 0);
+REPLACE INTO `fs_counter` VALUES (3, 294, 1, 2, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -211,12 +213,38 @@ CREATE TABLE `fs_counter_ref` (
   `ref_url` char(255) default NULL,
   `ref_count` int(11) default NULL,
   `ref_date` int(11) default NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_counter_ref`
 -- 
 
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/', 14, 1191691087);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/', 16, 1191691091);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/', 6, 1191691092);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles', 4, 1191691094);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=alltemplate', 8, 1191691096);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=csstemplate', 3, 1191691119);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media', 4, 1191755991);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=screenconfig', 28, 1191756177);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general', 3, 1191756178);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=general&go=editorconfig', 1, 1191756421);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=screenedit', 21, 1191757679);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=screenadd', 2, 1191757685);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=wallpaperadd', 3, 1191758116);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=media&go=wallpaperedit', 53, 1191758156);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/?go=screenshots', 7, 1191758161);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content', 2, 1191762605);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=wallpapertemplate', 1, 1191762608);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=artikeladd', 8, 1191779580);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=content&go=artikeledit', 7, 1191779581);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=newstemplate', 6, 1191784097);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/witcher/www/', 1, 1191796721);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=template_manage', 1, 1191796728);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/fs2/www/admin/?mid=styles&go=template_create', 1, 1191796775);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/witcher/', 2, 1191796787);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/witcher/www/admin/', 1, 1191796800);
+REPLACE INTO `fs_counter_ref` VALUES ('http://localhost/witcher/www/admin/?mid=general', 1, 1191796802);
 
 -- --------------------------------------------------------
 
@@ -231,12 +259,16 @@ CREATE TABLE `fs_counter_stat` (
   `s_day` int(2) default NULL,
   `s_visits` int(11) default NULL,
   `s_hits` int(11) default NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_counter_stat`
 -- 
 
+REPLACE INTO `fs_counter_stat` VALUES (2007, 10, 6, 1, 35);
+REPLACE INTO `fs_counter_stat` VALUES (2007, 10, 7, 1, 222);
+REPLACE INTO `fs_counter_stat` VALUES (2007, 10, 8, 0, 31);
+REPLACE INTO `fs_counter_stat` VALUES (2007, 10, 10, 1, 6);
 
 -- --------------------------------------------------------
 
@@ -256,7 +288,7 @@ CREATE TABLE `fs_dl` (
   `dl_autor_url` varchar(255) default NULL,
   `dl_open` tinyint(4) default NULL,
   PRIMARY KEY  (`dl_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_dl`
@@ -275,7 +307,7 @@ CREATE TABLE `fs_dl_cat` (
   `subcat_id` mediumint(8) NOT NULL default '0',
   `cat_name` char(100) default NULL,
   PRIMARY KEY  (`cat_id`)
-) TYPE=MyISAM  AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_dl_cat`
@@ -299,7 +331,7 @@ CREATE TABLE `fs_dl_config` (
   `quickinsert` varchar(255) NOT NULL default '',
   `dl_rights` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_dl_config`
@@ -323,7 +355,7 @@ CREATE TABLE `fs_dl_files` (
   `file_size` mediumint(8) NOT NULL default '0',
   `file_is_mirror` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`file_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_dl_files`
@@ -382,7 +414,7 @@ CREATE TABLE `fs_editor_config` (
   `do_noparse` tinyint(1) NOT NULL,
   `do_smilies` tinyint(1) NOT NULL,
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_editor_config`
@@ -418,7 +450,7 @@ CREATE TABLE `fs_global_config` (
   `random_timed_deltime` int(12) NOT NULL default '0',
   `feed` varchar(15) NOT NULL,
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_global_config`
@@ -439,7 +471,7 @@ CREATE TABLE `fs_includes` (
   `replace_thing` text NOT NULL,
   `include_type` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM  AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_includes`
@@ -457,12 +489,13 @@ DROP TABLE IF EXISTS `fs_iplist`;
 CREATE TABLE `fs_iplist` (
   `deltime` int(20) default NULL,
   `ip` varchar(18) default NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_iplist`
 -- 
 
+REPLACE INTO `fs_iplist` VALUES (1192051904, '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -479,7 +512,7 @@ CREATE TABLE `fs_news` (
   `news_title` varchar(100) default NULL,
   `news_text` text,
   PRIMARY KEY  (`news_id`)
-) TYPE=MyISAM  AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_news`
@@ -499,7 +532,7 @@ CREATE TABLE `fs_news_cat` (
   `cat_name` varchar(100) default NULL,
   `cat_description` text NOT NULL,
   PRIMARY KEY  (`cat_id`)
-) TYPE=MyISAM  AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_news_cat`
@@ -523,7 +556,7 @@ CREATE TABLE `fs_news_comments` (
   `comment_title` varchar(100) default NULL,
   `comment_text` text,
   PRIMARY KEY  (`comment_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_news_comments`
@@ -548,7 +581,7 @@ CREATE TABLE `fs_news_config` (
   `com_rights` tinyint(1) NOT NULL default '1',
   `com_antispam` tinyint(1) NOT NULL default '1',
   `com_sort` varchar(40) NOT NULL default 'DESC'
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_news_config`
@@ -570,7 +603,7 @@ CREATE TABLE `fs_news_links` (
   `link_url` varchar(255) default NULL,
   `link_target` tinyint(4) default NULL,
   PRIMARY KEY  (`link_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_news_links`
@@ -591,7 +624,7 @@ CREATE TABLE `fs_partner` (
   `partner_beschreibung` text NOT NULL,
   `partner_permanent` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`partner_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_partner`
@@ -614,7 +647,7 @@ CREATE TABLE `fs_partner_config` (
   `big_y` int(4) NOT NULL default '0',
   `big_allow` tinyint(1) NOT NULL default '0',
   `file_size` int(4) NOT NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_partner_config`
@@ -704,7 +737,7 @@ CREATE TABLE `fs_permissions` (
   `perm_wpedit` tinyint(1) NOT NULL default '0',
   `perm_pressadmin` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`user_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_permissions`
@@ -727,7 +760,7 @@ CREATE TABLE `fs_poll` (
   `poll_type` tinyint(4) default NULL,
   `poll_participants` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`poll_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_poll`
@@ -747,7 +780,7 @@ CREATE TABLE `fs_poll_answers` (
   `answer` varchar(255) default NULL,
   `answer_count` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`answer_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_poll_answers`
@@ -767,7 +800,7 @@ CREATE TABLE `fs_poll_voters` (
   `ip_address` varchar(15) NOT NULL default '0.0.0.0',
   `time` int(32) NOT NULL default '0',
   PRIMARY KEY  (`voter_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_poll_voters`
@@ -793,7 +826,7 @@ CREATE TABLE `fs_press` (
   `press_game` tinyint(2) NOT NULL,
   `press_cat` tinyint(2) NOT NULL,
   PRIMARY KEY  (`press_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_press`
@@ -812,7 +845,7 @@ CREATE TABLE `fs_press_admin` (
   `type` tinyint(1) NOT NULL default '0',
   `title` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`,`type`)
-) TYPE=MyISAM  AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- 
 -- Daten für Tabelle `fs_press_admin`
@@ -837,10 +870,10 @@ CREATE TABLE `fs_press_config` (
   `lang_navi` tinyint(1) NOT NULL default '0',
   `show_press` tinyint(1) NOT NULL default '1',
   `show_root` tinyint(1) NOT NULL default '0',
-  `order_by` varchar(10) NOT NULL,
-  `order_type` varchar(4) NOT NULL,
+  `order_by` varchar(10) collate latin1_general_ci NOT NULL,
+  `order_type` varchar(4) collate latin1_general_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- 
 -- Daten für Tabelle `fs_press_config`
@@ -860,12 +893,13 @@ CREATE TABLE `fs_screen` (
   `cat_id` smallint(6) unsigned default NULL,
   `screen_name` char(100) default NULL,
   PRIMARY KEY  (`screen_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_screen`
 -- 
 
+REPLACE INTO `fs_screen` VALUES (1, 1, 'tet');
 
 -- --------------------------------------------------------
 
@@ -882,7 +916,7 @@ CREATE TABLE `fs_screen_cat` (
   `cat_date` int(11) NOT NULL default '0',
   `randompic` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`cat_id`)
-) TYPE=MyISAM  AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- 
 -- Daten für Tabelle `fs_screen_cat`
@@ -899,23 +933,31 @@ REPLACE INTO `fs_screen_cat` VALUES (2, 'Wallpaper', 2, 1, 1187549782, 0);
 
 DROP TABLE IF EXISTS `fs_screen_config`;
 CREATE TABLE `fs_screen_config` (
-  `screen_x` int(11) default NULL,
-  `screen_y` int(11) default NULL,
-  `thumb_x` int(11) default NULL,
-  `thumb_y` int(11) default NULL,
-  `max_size` int(11) NOT NULL default '0',
-  `pics_per_row` tinyint(1) NOT NULL,
-  `pics_per_page` tinyint(2) NOT NULL,
-  `sort` varchar(4) NOT NULL,
-  `show_img_x` int(4) NOT NULL,
-  `show_img_y` int(4) NOT NULL
-) TYPE=MyISAM;
+  `screen_x` int(4) default NULL,
+  `screen_y` int(4) default NULL,
+  `screen_thumb_x` int(4) default NULL,
+  `screen_thumb_y` int(4) default NULL,
+  `screen_size` int(4) default NULL,
+  `screen_rows` int(2) NOT NULL,
+  `screen_cols` int(2) NOT NULL,
+  `screen_sort` varchar(4) NOT NULL,
+  `show_img_x` int(4) default NULL,
+  `show_img_y` int(4) default NULL,
+  `wp_x` int(4) default NULL,
+  `wp_y` int(4) default NULL,
+  `wp_thumb_x` int(4) default NULL,
+  `wp_thumb_y` int(4) default NULL,
+  `wp_size` int(4) default NULL,
+  `wp_rows` int(2) NOT NULL,
+  `wp_cols` int(2) NOT NULL,
+  `wp_sort` varchar(4) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_screen_config`
 -- 
 
-REPLACE INTO `fs_screen_config` VALUES (1500, 1500, 120, 90, 1024, 3, 6, 'desc', 800, 600);
+REPLACE INTO `fs_screen_config` VALUES (1500, 1500, 120, 90, 1024, 6, 3, 'desc', 800, 600, 2000, 2000, 200, 150, 1536, 6, 2, 'desc');
 
 -- --------------------------------------------------------
 
@@ -930,7 +972,7 @@ CREATE TABLE `fs_screen_random` (
   `start` int(11) NOT NULL,
   `end` int(11) NOT NULL,
   PRIMARY KEY  (`random_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_screen_random`
@@ -949,7 +991,7 @@ CREATE TABLE `fs_screen_random_config` (
   `active` tinyint(1) NOT NULL default '1',
   `type_priority` tinyint(1) NOT NULL default '1',
   `use_priority_only` tinyint(1) NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_screen_random_config`
@@ -972,7 +1014,7 @@ CREATE TABLE `fs_shop` (
   `artikel_preis` varchar(10) default NULL,
   `artikel_hot` tinyint(4) default NULL,
   PRIMARY KEY  (`artikel_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_shop`
@@ -991,7 +1033,7 @@ CREATE TABLE `fs_smilies` (
   `replace_string` varchar(15) NOT NULL,
   `order` int(3) NOT NULL,
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM  AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- 
 -- Daten für Tabelle `fs_smilies`
@@ -1083,6 +1125,8 @@ CREATE TABLE `fs_template` (
   `statistik` text NOT NULL,
   `user_register` text NOT NULL,
   `news_body` text NOT NULL,
+  `news_container` text NOT NULL,
+  `news_comment_container` text NOT NULL,
   `announcement` text NOT NULL,
   `email_register` text NOT NULL,
   `email_passchange` text NOT NULL,
@@ -1105,13 +1149,13 @@ CREATE TABLE `fs_template` (
   `press_main_body` text NOT NULL,
   `press_container` text NOT NULL,
   KEY `id` (`id`)
-) TYPE=MyISAM PACK_KEYS=1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 PACK_KEYS=1;
 
 -- 
 -- Daten für Tabelle `fs_template`
 -- 
 
-REPLACE INTO `fs_template` VALUES (0, 'default', 'body\r\n{\r\n    background-color:#7EC46B;\r\n    margin:0px;\r\n    font-family:Verdana;\r\n    color:#000000;\r\n    font-size:8pt;\r\n}\r\n.small\r\n{\r\n    font-size:7pt;\r\n}\r\n\r\na\r\n{\r\n    color:#008800;\r\n    font-size:8pt;\r\n    text-decoration:none;\r\n}\r\na.small\r\n{\r\n    color:#008800;\r\n    font-size:7pt;\r\n    text-decoration:none;\r\n}\r\n\r\n.thumb\r\n{\r\n    cursor:pointer;\r\n}\r\n\r\n\r\n#head_shadow\r\n{\r\n    position:absolute;\r\n    z-index:1;\r\n    background-color:#2B4325;\r\n    top:26px;\r\n    height:86px;\r\n    left:50%;\r\n    width:870px;\r\n    margin-left:-433px;\r\n}\r\n#head\r\n{\r\n    position:absolute;\r\n    z-index:2;\r\n    background-color:#EEEEEE;\r\n    top:24px;\r\n    height:84px;\r\n    left:50%;\r\n    width:868px;\r\n    margin-left:-435px;\r\n    border:1px solid #000000;\r\n}\r\n\r\n#menu_l_shadow\r\n{\r\n    position:absolute;\r\n    z-index:1;\r\n    background-color:#2B4325;\r\n    top:120px;\r\n    left:50%;\r\n    width:120px;\r\n    margin-left:-433px;\r\n}\r\n#menu_l\r\n{\r\n    position:relative;\r\n    z-index:2;\r\n    background-color:#EEEEEE;\r\n    top:-2px;\r\n    left:-2px;;\r\n    width:112px;\r\n    border:1px solid #000000;\r\n    padding:3px;\r\n    font-size:7pt;\r\n}\r\n\r\n#main_container\r\n{\r\n    position:absolute;\r\n    z-index:0;\r\n    top:120px;\r\n    left:50%;\r\n    width:612px;\r\n    margin-left:-304px;\r\n}\r\n#main_shadow\r\n{\r\n    position:relative;\r\n    z-index:1;\r\n    background-color:#2B4325;\r\n    width:612px;\r\n}\r\n#main\r\n{\r\n    position:relative;\r\n    z-index:2;\r\n    background-color:#EEEEEE;\r\n    top:-2px;\r\n    left:-2px;;\r\n    width:600px;\r\n    border:1px solid #000000;\r\n    padding:5px;\r\n}\r\n\r\n#menu_r_shadow\r\n{\r\n    position:absolute;\r\n    z-index:1;\r\n    background-color:#2B4325;\r\n    top:120px;\r\n    left:50%;\r\n    width:120px;\r\n    margin-left:317px;\r\n}\r\n#menu_r\r\n{\r\n    position:relative;\r\n    z-index:2;\r\n    background-color:#EEEEEE;\r\n    top:-2px;\r\n    left:-2px;;\r\n    width:112px;\r\n    border:1px solid #000000;\r\n    padding:3px;\r\n    font-size:7pt;\r\n}\r\n\r\n.news_head\r\n{\r\n    padding-bottom:2px;\r\n    border-bottom:1px solid #000000;\r\n}\r\n.news_footer\r\n{\r\n    padding-top:2px;\r\n    border-top:1px solid #000000;\r\n}\r\n\r\n.text\r\n{\r\n    border:1px solid #000000;\r\n    background-color: #CCCCCC;\r\n    font-family:Verdana;\r\n    color:#000000;\r\n    font-size:8pt;\r\n}\r\n.button\r\n{\r\n    border:1px solid #000000;\r\n    background-color: #CCCCCC;\r\n    font-family:Verdana;\r\n    color:#000000;\r\n    font-size:7pt;\r\n}', '   function chkFormular()\r\n   {\r\n       if((document.getElementById("name").value == "") ||\r\n          (document.getElementById("title").value == "") ||\r\n          (document.getElementById("text").value == ""))\r\n       {\r\n           alert ("Du hast nicht alle Felder ausgefüllt");\r\n           return false;\r\n       }\r\n   }\r\n\r\n   function chkFormular()\r\n   {\r\n       if (document.getElementById("keyword").value.length < "4")\r\n       {\r\n           alert("Es müssen mehr als 3 Zeichen sein");\r\n           return false;\r\n       }\r\n   }', '<body>\r\n    <div id="head_shadow"></div>\r\n    <div id="head">\r\n        <img src="images/icons/logo.gif" alt="Frogsystem 2 - your way to nature" style="padding:3px;" />\r\n    </div>\r\n\r\n    <div id="menu_l_shadow">\r\n        <div id="menu_l">\r\n{main_menu}\r\n        </div>\r\n    </div>\r\n    <div id="main_container">\r\n        <div id="main_shadow">\r\n            <div id="main">\r\n{announcement}\r\n{content}\r\n            </div>\r\n        </div>\r\n        <p>\r\n    </div>\r\n\r\n    <div id="menu_r_shadow">\r\n        <div id="menu_r">\r\n{user}<br><br>\r\nZufallsbild:<br>\r\n{randompic}<br>\r\nShop:<br>\r\n{shop}<br><br>\r\nUmfrage:<br>\r\n{poll}<br>\r\nPartner:<br>\r\n{partner}\r\nStatistik:<br>\r\n{stats}<br><br>\r\nNetzwerk:<br>\r\n[%netzwerk%]<br><br>\r\nNews-Feeds:<br>\r\n[%feeds%]\r\n<br><br>\r\n\r\n\r\n        </div>\r\n    </div>\r\n</body>', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">', '<div class="news_head" style="height:10px;">\r\n   <span style="float:left;">\r\n       <b>{titel}</b>\r\n   </span>\r\n   <span class="small" style="float:right;">\r\n       <b>{datum}</b>\r\n   </span>\r\n</div>\r\n<div>\r\n   {text}\r\n</div>\r\n<div>\r\n   <span class="small" style="float:right;">\r\n       {autor}\r\n   </span>\r\n</div>\r\n<p></p>', 'geschrieben von <a class="small" href="{profillink}">{username}</a>', '<img class=\\"thumb\\" onClick=\\"open(\\''{link}\\'',\\''Picture\\'',\\''width=900,height=710,screenX=0,screenY=0\\'')\\" src=\\"{thumb}\\" alt=\\"{titel}\\">', '<div class=\\"small\\" align=\\"center\\">\r\n     Kein Zufallsbild aktiv\r\n</div>', '{hotlinks}', '<div align="center">\r\n    <a style="font-weight:bold;" class="small" target="_blank" href="{link}">{titel}</a>\r\n</div>', '<li><a href="{url}" target="{target}">{name}</a></li>', '<p>\r\n<b>Related Links:</b>\r\n<ul>\r\n    {links}\r\n</ul>', '<span class="small">{datum} </span><a class="small" href="{url}">{titel}</a><br>', '<b>Allgemein</b><br>\r\n<a class="small" href="{virtualhost}?go=news">- News</a><br>\r\n<a class="small" href="{virtualhost}?go=newsarchiv">- News Archiv</a><br>\r\n<a class="small" href="{virtualhost}?go=pollarchiv">- Umfragen Archiv</a><br>\r\n<a class="small" href="{virtualhost}?go=shop">- Shop</a><br>\r\n<a class="small" href="{virtualhost}?go=screenshots">- Screenshots</a><br>\r\n<a class="small" href="{virtualhost}?go=map">- Community Map</a><br>\r\n<a class="small" href="{virtualhost}?go=members">- Mitgliederliste</a><br>\r\n<a class="small" href="{virtualhost}?go=download">- Downloads</a><br>\r\n<a class="small" href="{virtualhost}?go=press">- Presseberichte</a><br>', '<div class="news_head" style="height:10px;">\r\n    <span style="float:left;">\r\n        <b>{titel}</b>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        <b>{datum}</b>\r\n    </span>\r\n</div>\r\n<div style="padding:3px;">\r\n    <table border="0" cellpadding="0" cellspacing="0" width="100%">\r\n        <tr>\r\n            <td align="left" valign="top">\r\n                {autor_avatar}\r\n            </td>\r\n            <td valign="top" align="left">\r\n                {text}\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="news_footer">\r\n    <span class="small" style="float:right;">\r\n        geschrieben von: {autor}</a>\r\n    </span>\r\n</div>\r\n<br /><br /><br />', '<a class="small" href="{url}">{name}</a>', '<b id="add">Kommentar hinzufügen</b><p>\r\n<div>\r\n   <form action="" method="post" onSubmit="return chkFormular()">\r\n       <input type="hidden" name="go" value="comments">\r\n       <input type="hidden" name="addcomment" value="1">\r\n       <input type="hidden" name="id" value="{newsid}">\r\n       <table width="100%">\r\n           <tr>\r\n               <td align="left">\r\n                   <b>Name: </b>\r\n               </td>\r\n               <td align="left">\r\n                   {name_input}\r\n               </td>\r\n           </tr>\r\n           <tr>\r\n               <td align="left">\r\n                   <b>Titel: </b>\r\n               </td>\r\n               <td align="left">\r\n                   <input class="text" name="title" id="title" size="32" maxlength="32">\r\n               </td>\r\n           </tr>\r\n{antispam}\r\n           <tr>\r\n               <td align="left" valign="top">\r\n                   <b>Text:</b><br />\r\n                     <font class="small">Html ist {html}.<br />\r\n                     FScode ist {fs_code}.</font>\r\n               </td>\r\n               <td align="left">\r\n                   {textarea}\r\n               </td>\r\n           </tr>\r\n           <tr>\r\n               <td></td>\r\n               <td align="left">\r\n                   <input class="button" type="submit" value="Absenden">\r\n               </td>\r\n           </tr>\r\n           <tr>\r\n               <td></td>\r\n               <td align="left">\r\n                  {antispamtext}\r\n               </td>\r\n           </tr>\r\n       </table>\r\n   </form>\r\n</div><p>', '<input class="text" name="name" id="name" size="32" maxlength="25">\r\n<span class="small"> Willst du dich </span>\r\n<a class="small" href="?go=login">einloggen?</a>', '<tr>\r\n                <td align="left">\r\n                    <img src="{captcha_url}">\r\n                </td>\r\n                <td align="left">\r\n                    <input class="text" name="spam" id="spam" size="32" maxlength="25">\r\n<span class="small">Bitte löse diese kleine Rechenaufgabe.</span> <a class="small" href="#antispam">Warum? *</a>\r\n                </td>\r\n            </tr>', '<br /><br />\r\n <table border="0" cellspacing="0" cellpadding="0" width="60%">\r\n  <tr>\r\n   <td valign="top" align="left">\r\n<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platziern. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>\r\n   </td>\r\n  </tr>\r\n </table>', '<b>NEWSARCHIV</b><p>\r\n<div>\r\n   <form action="" method="post">\r\n       <input type="hidden" name="go" value="newsarchiv">\r\n       <b>News aus dem: </b>\r\n       <select class="text" name="monat">\r\n           <option value="1">Januar</option>\r\n           <option value="2">Februar</option>\r\n           <option value="3">März</option>\r\n           <option value="4">April</option>\r\n           <option value="5">Mai</option>\r\n           <option value="6">Juni</option>\r\n           <option value="7">Juli</option>\r\n           <option value="8">August</option>\r\n           <option value="9">September</option>\r\n           <option value="10">Oktober</option>\r\n           <option value="11">November</option>\r\n           <option value="12">Dezember</option>\r\n       </select>\r\n       <select class="text" name="jahr">\r\n           {years}\r\n       </select>\r\n       <input class="button" type="submit" value="Anzeigen">\r\n   </form>\r\n   <p>\r\n   oder\r\n   <p>\r\n   <form action="" method="post" onSubmit="return chkFormular()">\r\n       <input type="hidden" name="go" value="newsarchiv">\r\n       <b>Nach: </b>\r\n       <input class="text" id="keyword" name="keyword" size="30" maxlength="20">\r\n       <input class="button" type="submit" value="Suchen">\r\n   </form>\r\n</div>\r\n<p></p>', '<b>{titel}</b><br>\r\n{meldung}\r\n<p></p>', '<b>NEWS</b><p>\r\n<div>\r\n    <b>Headlines:</b><br>\r\n    {headlines}\r\n</div>\r\n<div>\r\n    <b>Downloads:</b><br>\r\n    {downloads}\r\n</div>\r\n<p>', '<tr>\r\n    <b>Einloggen</b>\r\n</tr>\r\n<tr>\r\n    <td align="center">\r\n        <form action="" method="post">\r\n            <input type="hidden" name="go" value="login">\r\n            <input type="hidden" name="login" value="1">\r\n            <table align="center" border="0" cellpadding="0" cellspacing="0" width="120">\r\n                <tr>\r\n                    <td align="right">\r\n                        <font class="small">Name:</font>\r\n                    </td>\r\n                    <td>\r\n                        <input class="text" size="10" name="username" maxlength="100">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="right">\r\n                        <font class="small">Pass:</font>\r\n                    </td>\r\n                    <td>\r\n                        <input class="text" size="10" type="password" name="userpassword" maxlength="16">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="center" colspan="2">\r\n                        <input type="checkbox" name="stayonline" value="1" checked>\r\n                        <font class="small">eingeloggt bleiben</font>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="center" colspan="2">\r\n                        <input class="button" type="submit" value="Anmelden">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td colspan="2" align="center">\r\n                        <a class="small" href="?go=register">Noch nicht registriert?</a>\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </form>\r\n    </td>\r\n</tr>', '<b>SHOP</b><p>\r\n<table width="100%">\r\n    {artikel}\r\n</table>', '<tr>\r\n    <td align="left" valign="top" width="60" rowspan="4">\r\n        <img border="0" style="cursor:pointer;" onClick=open(''showimg.php?pic={bild}'',''Picture'',''width=900,height=710,screenX=0,screenY=0'') src="{thumbnail}">\r\n    </td>\r\n    <td align="left" width="100">\r\n        <b>Titel:</b>\r\n    </td>\r\n        <td align="left">\r\n            {titel}\r\n        </td>\r\n    </tr>\r\n<tr>\r\n    <td align="left" valign="top">\r\n        <b>Beschreibung:</b>\r\n    </td>\r\n    <td align="left" valign="top">\r\n        {beschreibung}</td>\r\n    </tr>\r\n<tr>\r\n    <td align="left">\r\n        <b>Preis:</b>\r\n    </td>\r\n    <td align="left">\r\n        {preis} ¤\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td align="left"></td>\r\n    <td align="left">\r\n        <a href="{bestell_url}" target="_blank">Jetzt bestellen!</a>\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td colspan="3">\r\n         \r\n    </td>\r\n</tr>', '<img border="0" src="images/design/{icon}">\r\n<a href="{kategorie_url}">{kategorie_name}</a><br>', '<form action="" method="get">\r\n<tr>\r\n  <td colspan="3" align="right"><br /> <b>Kategorie durchsuchen:</b></td>\r\n  <td colspan="1" align="left"><br /> \r\n    <input class="text" size="20" name="keyword" value="{keyword}">\r\n    <input class="button" type="submit" value="Go">\r\n    <input class="button" type="button" value="Alle anzeigen" onclick="location=''{all_url}''">\r\n    <input type="hidden" name="go" value="download">\r\n    {input_cat}</td>\r\n</tr>\r\n\r\n</form>', '<b>DOWNLOADS</b><p>\r\n{navigation}\r\n<table border="0" cellpadding="0" cellspacing="2" width="100%">\r\n<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Titel</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Kategorie</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Uploaddatum</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Beschreibung</strong></td>\r\n </tr>\r\n{dateien}\r\n{suchfeld}\r\n</table>', '<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><a href="{url}"><b>{name}</b></a></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle">{cat}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle">{datum}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{text}</td>\r\n </tr>', '<b>DOWNLOADS -> {titel}</b><p>\r\n{navigation}\r\n    <table width="100%">\r\n        <tr>\r\n            <td align="left" width="130" rowspan="6" valign="top">\r\n                <img class="thumb" onClick=open(''showimg.php?pic={bild}'',''Picture'',''width=900,height=710,screenX=0,screenY=0'') src="{thumbnail}">\r\n            </td>\r\n        </tr>\r\n         <tr>\r\n            <td align="left" colspan="2" height="20" valign="top">\r\n                <b>{titel}</b>\r\n            </td>\r\n        </tr>\r\n       <tr>\r\n            <td align="left" width="75">\r\n                <b>Kategorie:</b>\r\n            </td>\r\n            <td align="left">\r\n                {cat}\r\n            </td>\r\n        </tr>\r\n       <tr>\r\n            <td align="left" width="75">\r\n                <b>Datum:</b>\r\n            </td>\r\n            <td align="left">\r\n                {datum}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td align="left" width="75">\r\n                <b>Uploader:</b>\r\n            </td>\r\n            <td align="left">\r\n                <a href="{uploader_url}">{uploader}</a>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td align="left" width="75">\r\n                <b>Autor:</b>\r\n            </td>\r\n            <td align="left">\r\n                {autor_link}\r\n            </td>\r\n        </tr>\r\n    </table>\r\n    <br>\r\n    <table width="100%">\r\n        <tr>\r\n            <td align="left" valign="top" width="130">\r\n                <b>Beschreibung:</b>\r\n            </td>\r\n            <td align="left" valign="top">{text}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td colspan="2"></td>\r\n        </tr>\r\n        <tr>\r\n             <td align="left" valign="top">\r\n                 <b>Dateien:</b>\r\n             </td>\r\n             <td align="left">{messages}\r\n             </td>\r\n         </tr>\r\n         <tr>\r\n             <td colspan="2"></td>\r\n         </tr>\r\n    </table>\r\n\r\n<table border="0" cellpadding="0" cellspacing="2" width="100%">\r\n<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;" colspan="2" ><strong>Datei (Download)</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Größe</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Traffic</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Downloads</strong></td>\r\n</tr>\r\n{files}\r\n<tr>\r\n  <td colspan="5" style="border: 1px solid #000000; padding: 3px;"><img alt="" src="images/design/null.gif"></td>\r\n</tr>\r\n{stats}\r\n</table>', '<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"{mirror_col}><a target="_blank" href="{url}"><b>{name}</b></a></td>{mirror_ext}\r\n  <td style="border: 1px solid #000000; padding: 3px;">{size}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{traffic}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{hits}</td>\r\n</tr>', '<td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle"><b>Mirror!</b></td>', '<tr>\r\n              <td style="border: 1px solid #000000; padding: 3px;" colspan="2" >{number}</strong></td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{size}</td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{traffic}</td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{hits}</td>\r\n              </tr>', '<span class="small">{datum} </span><a class="small" href="{url}">{name}</a><br>', '<td align="center" valign="top">\r\n    <img class="thumb" onClick="open(''{url}'',''Picture'',''width=950,height=710,screenX=0,screenY=0'')" src="{thumbnail}" alt="{text}"><br>\r\n    {text}\r\n</td>', '<b>SCREENSHOT KATEGORIEN</b><p>\r\n<table width="100%">\r\n{cats}\r\n</table>', '<tr>\r\n    <td align="left">\r\n        <a href="{url}">{name}</a>\r\n    </td>\r\n    <td align="left">\r\n        erstellt am {datum}\r\n    </td>\r\n    <td align="left">\r\n        {menge} Bilder\r\n    </td>\r\n</tr>', '<b>SCREENSHOTS: {title}</b><p>\r\n<center>{page}</center><br />\r\n<table border="0" cellpadding="" cellspacing="10" width="100%">\r\n{screenshots}\r\n</table>', '<td align="center" valign="top">\r\n  <b>{text}</b><br />\r\n  <img src="{thumb_url}" alt="" />\r\n  <br /><br />\r\n  <b>Verfügbare Größen:</b>\r\n  {sizes}\r\n  <br />\r\n</td>', '<br />- <a href="{url}" target="_blank">{size}</a>', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">\r\n<html>\r\n<head>\r\n    <title>DSA-Drakensang</title>\r\n    <link rel="stylesheet" type="text/css" href="inc/fs.css">\r\n    <LINK REL="SHORTCUT ICON" HREF="images/design/dsa.ico">\r\n</head>\r\n<body style="background-image:url(images/design/bg.jpg); background-position:center top;" leftmargin="0" topmargin="0">\r\n<center>\r\n{bannercode}\r\n<table style="border-width:2px; border-style:solid; border-color:#774C1F;" cellspacing="0" cellpadding="3">\r\n <tr align="center">\r\n  <td>\r\n   <a href="{bild_url}" target="_blank">{bild}</a><br><b>{text}</b>\r\n  </td>\r\n </tr>\r\n <tr>\r\n</table>\r\n<table cellspacing="0" cellpadding="3">\r\n <tr>\r\n  <td width="33%" align="right">\r\n   <b>{weiter_grafik}</b>\r\n  </td>\r\n  <td width="33%" align="center">\r\n   <b>{close}</b>\r\n  </td>\r\n  <td width="33%" align="left">\r\n   <b>{zurück_grafik}</b>\r\n  </td>\r\n </tr>\r\n</table>\r\n</center>\r\n\r\n</body>\r\n</html>', '<b>Willkommen {username}</b><br>\r\n<a class="small" href="{virtualhost}?go=editprofil">- Mein Profil</a><br>\r\n{admin}\r\n<a class="small" href="{logout}">- Logout</a>', '<a class=''small'' href=''{adminlink}'' target="_self">- Admin-CP</a><br />', '<div class="field_head" style="padding-left:60px; width:516px;">\r\n    <font class="h1" style="float:left; padding-top:14px;">Login</font>\r\n</div>\r\n<div class="field_middle" align="left">\r\n    <form action="" method="post">\r\n        <input type="hidden" name="go" value="login">\r\n        <input type="hidden" name="login" value="1">\r\n        <table align="center" border="0" cellpadding="4" cellspacing="0">\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Name:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="33" name="username" maxlength="100">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="33" type="password" name="userpassword" maxlength="16">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Angemeldet bleiben:</b>\r\n                </td>\r\n                <td>\r\n                    <input type="checkbox" name="stayonline" value="1" checked>\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td colspan="2" align="center">\r\n                    <input class="button" type="submit" value="Login">\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n    <p>\r\n    Du hast dich noch nicht registriert? Dann wirds jetzt aber Zeit ;) -> \r\n    <a href="?go=register">registrieren</a>\r\n    <p>\r\n</div>\r\n<div class="field_footer"></div>\r\n<p></p>', '<b>PROFIL ÄNDERN ({username})</b><p>\r\n<form action="" method="post" enctype="multipart/form-data">\r\n    <input type="hidden" name="go" value="editprofil">\r\n    <table align="center" border="0" cellpadding="4" cellspacing="0">\r\n        <tr>\r\n            <td width="50%" valign="top">\r\n                <b>Benutzerbild:</b>\r\n            </td>\r\n            <td width="50%">\r\n                {avatar}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>Benutzerbild hochladen:</b><br>\r\n                <font class="small">Nur wenn das alte überschrieben werden soll (max 110x110 px)</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="16" type="file" name="userpic">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>E-Mail:</b><br>\r\n                <font class="small">Deine E-Mail Adresse</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="34" value="{email}" name="usermail" maxlength="100">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>E-Mail zeigen:</b><br>\r\n                <font class="small">Zeige die E-Mail im öffentlichen Profil</font>\r\n            </td>\r\n            <td>\r\n                <input value="1" name="showmail" type="checkbox" {email_zeigen}>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>Neues Passwort:</b><br>\r\n                <font class="small">Nur eintragen, wenn du ein neues Passwort erstellen willst</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="33" type="password" name="userpassword" maxlength="16" autocomplete="off">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td colspan="2" align="center">\r\n                <input class="button" type="submit" value="Absenden">\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</form>', '<b>Members List</b><br /><br />\r\n<table width="100%" border="0">\r\n<tr>\r\n  <td><b>Avatar</b></td>\r\n  <td><a href="?go=members&sort=name_{order_name}" style="color:#000;"><b>Benutzername</b> {arrow_name}</a></td>\r\n  <td><b>E-Mail</b></td>\r\n  <td><a href="?go=members&sort=regdate_{order_regdate}" style="color:#000;"><b>Registriert seit</b> {arrow_regdate}</a></td>\r\n  <td><a href="?go=members&sort=news_{order_news}" style="color:#000;"><b>News</b> {arrow_news}</a></td>\r\n  <td><a href="?go=members&sort=articles_{order_articles}" style="color:#000;"><b>Artikel</b> {arrow_articles}</a></td>\r\n  <td><a href="?go=members&sort=comments_{order_comments}" style="color:#000;"><b>Kommentare</b> {arrow_comments}</a></td>\r\n</tr>\r\n{members}\r\n</table><br /><br />\r\n<center>{page}</center>', '<tr>\r\n  <td align="center">{avatar}</td>\r\n  <td><a href="{userlink}" class="small">{username}</a></td>\r\n  <td>{email}</td>\r\n  <td align="center">{reg_date}</td>\r\n  <td align="center">{news}</td>\r\n  <td align="center">{articles}</td>\r\n  <td align="center">{comments}</td>\r\n</tr>', '<tr>\r\n  <td align="center">{avatar}</td>\r\n  <td><a href="{userlink}" class="small"><b><i>{username}</i></b></a></td>\r\n  <td>{email}</td>\r\n  <td align="center">{reg_date}</td>\r\n  <td align="center">{news}</td>\r\n  <td align="center">{articles}</td>\r\n  <td align="center">{comments}</td>\r\n</tr>', '<tr>\r\n                <td align="right">\r\n                    <img src="{captcha_url}">\r\n                </td>\r\n                <td>\r\n                    <input class="text" name="spam" id="spam" size="30" maxlength="25"><br />\r\n<span class="small">Bitte löse diese kleine Rechenaufgabe.</span>\r\n                </td>\r\n            </tr>', '<br /><br />\r\n <table border="0" cellspacing="0" cellpadding="0" width="60%">\r\n  <tr>\r\n   <td valign="top" align="left">\r\n<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>\r\n   </td>\r\n  </tr>\r\n </table>', '<div class="field_head" style="padding-left:60px; width:516px;">\r\n    <font class="h1" style="float:left; padding-top:14px;">Community Map</font>\r\n</div>\r\n<div class="field_middle" align="left">\r\n    {karte}\r\n    <div align="right">\r\n        <font class="small">Zum betrachten der Karte wird Flash benötigt: </font><br>\r\n        <img border="0" src="images/design/flash_rune.gif" align="middle">\r\n        <a target="_blank" href="http://www.adobe.com/go/getflashplayer">\r\n            <img border="0" src="images/design/flash_download_now.gif" align="middle">\r\n        </a>\r\n    </div>\r\n</div>\r\n<div class="field_footer"></div>\r\n<p></p>', '<form name=\\"poll\\" action=\\"\\" method=\\"post\\">\r\n    <input type=\\"hidden\\" name=\\"pollid\\" value=\\"{poll_id}\\">\r\n    <table align=\\"center\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">\r\n        <tr>\r\n            <td class=\\"small\\" colspan=\\"2\\" align=\\"center\\">\r\n                <b>{question}</b>\r\n            </td>\r\n        </tr>\r\n{answers}\r\n        <tr>\r\n            <td colspan=\\"2\\" align=\\"center\\" ><br />\r\n                <input class=\\"button\\" type=\\"submit\\" value=\\"Abstimmen\\" {button_state}><br />\r\n<a class=\\"small\\" href=\\"?go=pollarchiv&pollid={poll_id}\\"><b>Ergebnis anzeigen!</b></a>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</form>', '<tr>\r\n    <td valign=\\"top\\">\r\n        <input type=\\"{type}\\" name=\\"answer{multiple}\\" value=\\"{answer_id}\\">\r\n    </td>\r\n    <td align=\\"left\\" class=\\"small\\">\r\n        {answer}\r\n    </td>\r\n</tr>', '<b>UMFRAGEN ARCHIV</b><p>\r\n<b>{frage}</b><p>\r\n<table width=\\"100%\\">\r\n{antworten}\r\n   <tr><td> </td></tr>\r\n   <tr><td align=\\"left\\">Anzahl der Teilnehmer: </td><td align=\\"left\\" colspan=\\"2\\"><b>{participants}</b></td></tr>\r\n   <tr><td align=\\"left\\">Anzahl der Stimmen: </td><td align=\\"left\\" colspan=\\"2\\"><b>{stimmen}</b></td></tr>\r\n   <tr><td align=\\"left\\">Art der Umfrage: </td><td align=\\"left\\" colspan=\\"2\\">{typ}</td></tr>\r\n   <tr><td align=\\"left\\">Umfragedauer:</td><td align=\\"left\\" colspan=\\"2\\">{start_datum} bis {end_datum}</td></tr>\r\n</table>', '<tr>\r\n    <td align=\\"left\\">{antwort}</td>\r\n    <td align=\\"left\\">{stimmen}</td>\r\n    <td align=\\"left\\">\r\n        <div style=\\"width:{balken_breite}px; height:4px; font-size:1px; background-color:#00FF00;\\">\r\n    </td>\r\n</tr>', '<table align=\\"center\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">\r\n    <tr>\r\n        <td class=\\"small\\" colspan=\\"2\\" align=\\"center\\">\r\n            <b>{question}</b>\r\n        </td>\r\n    </tr>\r\n{answers}\r\n</table>\r\n<div class=\\"small\\">Teilnehmer: {participants}</div>\r\n<b>Bereits abgestimmt!</b>', '<tr>\r\n    <td align=\\"left\\" class=\\"small\\" colspan=\\"2\\">\r\n        {answer}\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td align=\\"left\\" class=\\"small\\">\r\n        {percentage}\r\n    </td>\r\n    <td align=\\"left\\">\r\n        <div style=\\"width:{bar_width}px; height:4px; font-size:1px; background-color:#00FF00;\\">\r\n    </td>\r\n</tr>', '<b>UMFRAGEN ARCHIV</b><p>\r\n<table border=\\"0\\" width=\\"100%\\" cellpadding=\\"2\\" cellspacing=\\"0\\">\r\n<tr>\r\n  <td align=\\"left\\"><a href=\\"?go=pollarchiv&sort=name_{order_name}\\" style=\\"color: #000\\"><b>Frage {arrow_name}</b></a></td>\r\n  <td align=\\"left\\" width=\\"100\\"><a href=\\"?go=pollarchiv&sort=voters_{order_voters}\\" style=\\"color: #000\\"><b>Teilnehmer {arrow_voters}</b></a></td>\r\n  <td align=\\"left\\" width=\\"70\\"><a href=\\"?go=pollarchiv&sort=startdate_{order_startdate}\\" style=\\"color: #000\\"><b>von {arrow_startdate}</b></a></td>\r\n  <td align=\\"left\\" width=\\"10\\"></td>\r\n  <td align=\\"left\\" width=\\"70\\"><a href=\\"?go=pollarchiv&sort=enddate_{order_enddate}\\" style=\\"color: #000\\"><b>bis {arrow_enddate}</b></a></td>\r\n</tr>\r\n{umfragen}\r\n</table>\r\n<p>', '  <tr>\r\n   <td align=\\"left\\"><a href=\\"{url}\\">{frage}</a></td>\r\n   <td align=\\"left\\">{voters}</td>\r\n   <td align=\\"left\\" class=\\"small\\">{start_datum}</td>\r\n   <td align=\\"left\\" class=\\"small\\">-</td>\r\n   <td align=\\"left\\" class=\\"small\\">{end_datum}</td>\r\n  </tr>', '<div class=\\"small\\" align=\\"center\\">\r\n    Zur Zeit keine<br>Umfrage aktiv\r\n</div>', '<b>PROFIL VON {username}</b><p>\r\n<table align="center" border="0" cellpadding="4" cellspacing="0">\r\n    <tr>\r\n        <td width="50%" valign="top">\r\n            <b>Benutzerbild:</b>\r\n        </td>\r\n        <td width="50%">\r\n            {avatar}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>E-Mail:</b>\r\n        </td>\r\n        <td>\r\n            {email}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Registriert seit:</b>\r\n        </td>\r\n        <td>\r\n            {reg_datum}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene Kommentare:</b>\r\n        </td>\r\n        <td>\r\n            {kommentare}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene News:</b>\r\n        </td>\r\n        <td>\r\n            {news}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene Artikel:</b>\r\n        </td>\r\n        <td>\r\n            {artikel}\r\n        </td>\r\n    </tr>\r\n</table>', '- <b>{visits}</b> Visits<br>\r\n- <b>{visits_heute}</b> Visits heute<br>\r\n- <b>{hits}</b> Hits<br>\r\n- <b>{hits_heute}</b> Hits heute<br>\r\n- <b>{user_online}</b> Besucher online<p>\r\n- <b>{user}</b> registrierte User<br>\r\n- <b>{news}</b> News<br>\r\n- <b>{kommentare}</b> Kommentare<br>\r\n- <b>{artikel}</b> Artikel', '<script type="text/javascript"> \r\n<!-- \r\nfunction chkFormular() \r\n{\r\n    if((document.getElementById("username").value == "") ||\r\n       (document.getElementById("usermail").value == "") ||\r\n       (document.getElementById("userpass1").value == "") ||\r\n       (document.getElementById("userpass2").value == ""))\r\n    {\r\n        alert("Du hast nicht alle Felder ausgefüllt"); \r\n        return false;\r\n    }\r\n    if(document.getElementById("userpass1").value != document.getElementById("userpass2").value)\r\n    {\r\n        alert("Passwöter sind verschieden"); \r\n        return false;\r\n    }\r\n} \r\n//--> \r\n</script> \r\n\r\n<b>REGISTRIEREN</b><p>\r\n<div>\r\n    Registriere dich im Frog System, um in den Genuss erweiterter Features zu kommen. Dazu zählen bisher:\r\n    <ul>\r\n        <li>Zugriff auf unsere Downloads</li>\r\n        <li>Hochladen eines eigenen Benutzerbildes, für die von dir geschriebenen Kommentare</li>\r\n    </ul>\r\n    Weitere Features werden folgen.\r\n    <p>\r\n    <form action="" method="post" onSubmit="return chkFormular()">\r\n        <input type="hidden" value="register" name="go">\r\n        <table border="0" cellpadding="2" cellspacing="0" align="center">\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Name:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="username" id="username" maxlength="100">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="userpass1" id="userpass1" type="password" maxlength="16" autocomplete="off">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort wiederholen:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="userpass2" id="userpass2" type="password" maxlength="16" autocomplete="off">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>E-Mail:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="usermail" id="usermail" maxlength="100">\r\n                </td>\r\n            </tr>\r\n{antispam}\r\n            <tr>\r\n                <td colspan="2" align="center">\r\n                    <input type="submit" class="button" value="Registrieren">\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n    <p>\r\n</div>', '<div class="news_head" style="height:10px;" id ="{newsid}">\r\n    <span style="float:left;">\r\n       <b>[{kategorie_name}] {titel}</b>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        <b>{datum}</b>\r\n    </span>\r\n</div>\r\n<div style="padding:3px;">\r\n    {text}\r\n    {related_links}\r\n</div>\r\n<div class="news_footer">\r\n    <span class="small" style="float:left;">\r\n        <a class="small" href="{kommentar_url}">Kommentare ({kommentar_anzahl})</a>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        geschrieben von: <a class="small" href="{autor_profilurl}">{autor}</a>\r\n    </span>\r\n</div>\r\n<br><br>', '<b>Ankündigung:</b>\r\n<br><br>\r\n    {meldung}\r\n<br><br>', 'Hallo {username}\r\n\r\nDu hast dich im Frog System registriert. Deine Logindaten sind:\r\nUsername: {username}\r\nPasswort: {passwort}', 'Hallo {username}\r\n\r\nDein Passwort im Frog System wurde geändert.\r\nDas neue Lautet: {passwort}', '<div align="center">\r\n  <b>{name}</b><br />\r\n  <a href="{url}" target="_blank">\r\n    <img src="{img_url}" border="0" alt="{name}"  title="{name}">\r\n  </a>\r\n  <br />\r\n  {text}\r\n</div>', 'Partner:\r\n{partner_all}', '<div align="center">\r\n  <a href="{url}" target="_blank">\r\n    <img src="{button_url}" border="0" alt="{name}"  title="{name}">\r\n  </a>\r\n  <br>\r\n</div>', '{permanents}\r\n\r\n<div align="center"><br><b>\r\nZufallsauswahl:</b><br>\r\n\r\n{non_permanents}\r\n\r\n<a href="?go=partner">alle Partner</a></div><br>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Code:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1"><font face="Courier New">{text}</font>\r\n</td></tr></table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Zitat:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1">{text}\r\n</td></tr></table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Zitat von {author}:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1">{text}\r\n</td></tr></table>', '<table cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px">\r\n  <tr valign="bottom">\r\n    {buttons}\r\n  </tr>\r\n</table>\r\n\r\n<table cellpadding="0" cellspacing="0" border="0">\r\n  <tr valign="top">\r\n    <td>\r\n      <textarea {style}>{text}</textarea>\r\n    </td>\r\n    <td style="width:4px; empty-cells:show;">\r\n    </td>\r\n    <td>\r\n      {smilies}\r\n    </td>\r\n  </tr>\r\n</table>\r\n<br />', '.editor_button {\r\n  font-size:8pt;\r\n  font-family:Verdana;\r\n  border:1px solid #000000;\r\n  background-color:#B7B7B7;\r\n  width:20px;\r\n  height:20px;\r\n  cursor:pointer;\r\n  text-align:center;\r\n}\r\n.editor_button:hover {\r\n  background-color:#A5E5A5;\r\n}\r\n.editor_td {\r\n  width:24px;\r\n  height:23px;\r\n  vertical-align:bottom;\r\n  text-align:left;\r\n}\r\n.editor_td_seperator {\r\n  width:5px;\r\n  height:23px;\r\n  background-image:url("images/icons/separator.gif");\r\n  background-repeat:no-repeat;\r\n  background-position:top left;\r\n}\r\n.editor_smilies {\r\n  cursor:pointer;\r\n  padding:0px;\r\n}', '<td class="editor_td">\r\n    <div class="editor_button" {javascript}>\r\n      <img src="{img_url}" alt="{alt}" title="{title}" />\r\n    </div>\r\n  </td>', '<td class="editor_td_seperator"></td>', '<a href="{navi_url}"><img src="{icon_url}" alt="" border="0">   {title}</a><br>', '{lines}', '<b>{intro_text}</b><br><br>', '<br><br><b>{note_text}</b>', '<tr valign="top">\r\n  <td>\r\n   <img src="{lang_img_url}" alt="{lang_title}" title="{lang_title}">\r\n  </td>\r\n  <td>\r\n   <a href="{url}" target="_blank">\r\n    <b>{title}</b>\r\n   </a>\r\n   <br>{date}\r\n  </td>\r\n  <td style="text-align: justify;">\r\n   {intro}\r\n   {text}\r\n   {note}\r\n  </td>\r\n </tr>', '<b>PRESSEBERICHTE</b>\r\n<br />\r\n{navigation}\r\n{press_container}', '<br /><br />\r\n<table cellspacing="12">\r\n <tr>\r\n  <td></td>\r\n  <td><b>Seite / Datum</b></td>\r\n  <td><b>Leseprobe</b></td>\r\n </tr>\r\n {press_releases}\r\n</table>');
+REPLACE INTO `fs_template` VALUES (0, 'default', 'body\r\n{\r\n    background-color:#7EC46B;\r\n    margin:0px;\r\n    font-family:Verdana;\r\n    color:#000000;\r\n    font-size:8pt;\r\n}\r\n.small\r\n{\r\n    font-size:7pt;\r\n}\r\n\r\na\r\n{\r\n    color:#008800;\r\n    font-size:8pt;\r\n    text-decoration:none;\r\n}\r\na.small\r\n{\r\n    color:#008800;\r\n    font-size:7pt;\r\n    text-decoration:none;\r\n}\r\n\r\n.thumb\r\n{\r\n    cursor:pointer;\r\n}\r\n\r\n\r\n#head_shadow\r\n{\r\n    position:absolute;\r\n    z-index:1;\r\n    background-color:#2B4325;\r\n    top:26px;\r\n    height:86px;\r\n    left:50%;\r\n    width:870px;\r\n    margin-left:-433px;\r\n}\r\n#head\r\n{\r\n    position:absolute;\r\n    z-index:2;\r\n    background-color:#EEEEEE;\r\n    background-image:url("images/icons/logo.gif");\r\n    top:24px;\r\n    height:84px;\r\n    left:50%;\r\n    width:868px;\r\n    margin-left:-435px;\r\n    border:1px solid #000000;\r\n}\r\n\r\n#menu_l_shadow\r\n{\r\n    position:absolute;\r\n    z-index:1;\r\n    background-color:#2B4325;\r\n    top:120px;\r\n    left:50%;\r\n    width:120px;\r\n    margin-left:-433px;\r\n}\r\n#menu_l\r\n{\r\n    position:relative;\r\n    z-index:2;\r\n    background-color:#EEEEEE;\r\n    top:-2px;\r\n    left:-2px;;\r\n    width:112px;\r\n    border:1px solid #000000;\r\n    padding:3px;\r\n    font-size:7pt;\r\n}\r\n\r\n#main_container\r\n{\r\n    position:absolute;\r\n    z-index:0;\r\n    top:120px;\r\n    left:50%;\r\n    width:612px;\r\n    margin-left:-304px;\r\n}\r\n#main_shadow\r\n{\r\n    position:relative;\r\n    z-index:1;\r\n    background-color:#2B4325;\r\n    width:612px;\r\n}\r\n#main\r\n{\r\n    position:relative;\r\n    z-index:2;\r\n    background-color:#EEEEEE;\r\n    top:-2px;\r\n    left:-2px;;\r\n    width:600px;\r\n    border:1px solid #000000;\r\n    padding:5px;\r\n}\r\n\r\n#menu_r_shadow\r\n{\r\n    position:absolute;\r\n    z-index:1;\r\n    background-color:#2B4325;\r\n    top:120px;\r\n    left:50%;\r\n    width:120px;\r\n    margin-left:317px;\r\n}\r\n#menu_r\r\n{\r\n    position:relative;\r\n    z-index:2;\r\n    background-color:#EEEEEE;\r\n    top:-2px;\r\n    left:-2px;;\r\n    width:112px;\r\n    border:1px solid #000000;\r\n    padding:3px;\r\n    font-size:7pt;\r\n}\r\n\r\n.news_head\r\n{\r\n    padding-bottom:2px;\r\n    border-bottom:1px solid #000000;\r\n}\r\n.news_footer\r\n{\r\n    padding-top:2px;\r\n    border-top:1px solid #000000;\r\n}\r\n\r\n.text\r\n{\r\n    border:1px solid #000000;\r\n    background-color: #CCCCCC;\r\n    font-family:Verdana;\r\n    color:#000000;\r\n    font-size:8pt;\r\n}\r\n.button\r\n{\r\n    border:1px solid #000000;\r\n    background-color: #CCCCCC;\r\n    font-family:Verdana;\r\n    color:#000000;\r\n    font-size:7pt;\r\n}', '   function chkFormular()\r\n   {\r\n       if((document.getElementById("name").value == "") ||\r\n          (document.getElementById("title").value == "") ||\r\n          (document.getElementById("text").value == ""))\r\n       {\r\n           alert ("Du hast nicht alle Felder ausgefüllt");\r\n           return false;\r\n       }\r\n   }\r\n\r\n   function chkFormular()\r\n   {\r\n       if (document.getElementById("keyword").value.length < "4")\r\n       {\r\n           alert("Es müssen mehr als 3 Zeichen sein");\r\n           return false;\r\n       }\r\n   }', '<body>\r\n    <div id="head_shadow"></div>\r\n    <div id="head"></div>\r\n\r\n    <div id="menu_l_shadow">\r\n        <div id="menu_l">\r\n{main_menu}\r\n        </div>\r\n    </div>\r\n    <div id="main_container">\r\n        <div id="main_shadow">\r\n            <div id="main">\r\n{announcement}\r\n{content}\r\n            </div>\r\n        </div>\r\n        <p>\r\n    </div>\r\n\r\n    <div id="menu_r_shadow">\r\n        <div id="menu_r">\r\n{user}<br><br>\r\nZufallsbild:<br>\r\n{randompic}<br>\r\nShop:<br>\r\n{shop}<br><br>\r\nUmfrage:<br>\r\n{poll}<br>\r\nPartner:<br>\r\n{partner}\r\nStatistik:<br>\r\n{stats}<br><br>\r\nNetzwerk:<br>\r\n[%netzwerk%]<br><br>\r\nNews-Feeds:<br>\r\n[%feeds%]\r\n<br><br>\r\n\r\n\r\n        </div>\r\n    </div>\r\n</body>', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">', '<div class="news_head" style="height:10px;">\r\n   <span style="float:left;">\r\n       <b>{titel}</b>\r\n   </span>\r\n   <span class="small" style="float:right;">\r\n       <b>{datum}</b>\r\n   </span>\r\n</div>\r\n<div>\r\n   {text}\r\n</div>\r\n<div>\r\n   <span class="small" style="float:right;">\r\n       {autor}\r\n   </span>\r\n</div>\r\n<p></p>', 'geschrieben von <a class="small" href="{profillink}">{username}</a>', '<img class=\\"thumb\\" onClick=\\"open(\\''{link}\\'',\\''Picture\\'',\\''width=900,height=710,screenX=0,screenY=0\\'')\\" src=\\"{thumb}\\" alt=\\"{titel}\\">', '<div class=\\"small\\" align=\\"center\\">\r\n     Kein Zufallsbild aktiv\r\n</div>', '{hotlinks}', '<div align="center">\r\n    <a style="font-weight:bold;" class="small" target="_blank" href="{link}">{titel}</a>\r\n</div>', '<li><a href="{url}" target="{target}">{name}</a></li>', '<p>\r\n<b>Related Links:</b>\r\n<ul>\r\n    {links}\r\n</ul>', '<span class="small">{datum} </span><a class="small" href="{url}">{titel}</a><br>', '<b>Allgemein</b><br>\r\n<a class="small" href="{virtualhost}?go=news">- News</a><br>\r\n<a class="small" href="{virtualhost}?go=newsarchiv">- News Archiv</a><br>\r\n<a class="small" href="{virtualhost}?go=pollarchiv">- Umfragen Archiv</a><br>\r\n<a class="small" href="{virtualhost}?go=shop">- Shop</a><br>\r\n<a class="small" href="{virtualhost}?go=screenshots">- Screenshots</a><br>\r\n<a class="small" href="{virtualhost}?go=map">- Community Map</a><br>\r\n<a class="small" href="{virtualhost}?go=members">- Mitgliederliste</a><br>\r\n<a class="small" href="{virtualhost}?go=download">- Downloads</a><br>\r\n<a class="small" href="{virtualhost}?go=press">- Presseberichte</a><br>', '<div class="news_head" style="height:10px;">\r\n    <span style="float:left;">\r\n        <b>{titel}</b>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        <b>{datum}</b>\r\n    </span>\r\n</div>\r\n<div style="padding:3px;">\r\n    <table border="0" cellpadding="0" cellspacing="0" width="100%">\r\n        <tr>\r\n            <td align="left" valign="top">\r\n                {autor_avatar}\r\n            </td>\r\n            <td valign="top" align="left">\r\n                {text}\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="news_footer">\r\n    <span class="small" style="float:right;">\r\n        geschrieben von: {autor}</a>\r\n    </span>\r\n</div>\r\n<br><br><br>', '<a class="small" href="{url}">{name}</a>', '<b id="add">Kommentar hinzufügen</b><p>\r\n<div>\r\n   <form action="" method="post" onSubmit="return chkFormular()">\r\n       <input type="hidden" name="go" value="comments">\r\n       <input type="hidden" name="addcomment" value="1">\r\n       <input type="hidden" name="id" value="{newsid}">\r\n       <table width="100%">\r\n           <tr>\r\n               <td align="left">\r\n                   <b>Name: </b>\r\n               </td>\r\n               <td align="left">\r\n                   {name_input}\r\n               </td>\r\n           </tr>\r\n           <tr>\r\n               <td align="left">\r\n                   <b>Titel: </b>\r\n               </td>\r\n               <td align="left">\r\n                   <input class="text" name="title" id="title" size="32" maxlength="32">\r\n               </td>\r\n           </tr>\r\n{antispam}\r\n           <tr>\r\n               <td align="left" valign="top">\r\n                   <b>Text:</b><br />\r\n                     <font class="small">Html ist {html}.<br />\r\n                     FScode ist {fs_code}.</font>\r\n               </td>\r\n               <td align="left">\r\n                   {textarea}\r\n               </td>\r\n           </tr>\r\n           <tr>\r\n               <td></td>\r\n               <td align="left">\r\n                   <input class="button" type="submit" value="Absenden">\r\n               </td>\r\n           </tr>\r\n           <tr>\r\n               <td></td>\r\n               <td align="left">\r\n                  {antispamtext}\r\n               </td>\r\n           </tr>\r\n       </table>\r\n   </form>\r\n</div><p>', '<input class="text" name="name" id="name" size="32" maxlength="25">\r\n<span class="small"> Willst du dich </span>\r\n<a class="small" href="?go=login">einloggen?</a>', '<tr>\r\n                <td align="left">\r\n                    <img src="{captcha_url}">\r\n                </td>\r\n                <td align="left">\r\n                    <input class="text" name="spam" id="spam" size="32" maxlength="25">\r\n<span class="small">Bitte löse diese kleine Rechenaufgabe.</span> <a class="small" href="#antispam">Warum? *</a>\r\n                </td>\r\n            </tr>', '<br /><br />\r\n <table border="0" cellspacing="0" cellpadding="0" width="60%">\r\n  <tr>\r\n   <td valign="top" align="left">\r\n<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platziern. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>\r\n   </td>\r\n  </tr>\r\n </table>', '<b>NEWSARCHIV</b><p>\r\n<div>\r\n   <form action="" method="post">\r\n       <input type="hidden" name="go" value="newsarchiv">\r\n       <b>News aus dem: </b>\r\n       <select class="text" name="monat">\r\n           <option value="1">Januar</option>\r\n           <option value="2">Februar</option>\r\n           <option value="3">März</option>\r\n           <option value="4">April</option>\r\n           <option value="5">Mai</option>\r\n           <option value="6">Juni</option>\r\n           <option value="7">Juli</option>\r\n           <option value="8">August</option>\r\n           <option value="9">September</option>\r\n           <option value="10">Oktober</option>\r\n           <option value="11">November</option>\r\n           <option value="12">Dezember</option>\r\n       </select>\r\n       <select class="text" name="jahr">\r\n           {years}\r\n       </select>\r\n       <input class="button" type="submit" value="Anzeigen">\r\n   </form>\r\n   <p>\r\n   oder\r\n   <p>\r\n   <form action="" method="post" onSubmit="return chkFormular()">\r\n       <input type="hidden" name="go" value="newsarchiv">\r\n       <b>Nach: </b>\r\n       <input class="text" id="keyword" name="keyword" size="30" maxlength="20">\r\n       <input class="button" type="submit" value="Suchen">\r\n   </form>\r\n</div>\r\n<p></p>', '<b>{titel}</b><br>\r\n{meldung}\r\n<p></p>', '<div>\r\n    <b>Headlines:</b><br>\r\n    {headlines}\r\n</div>\r\n<div>\r\n    <b>Downloads:</b><br>\r\n    {downloads}\r\n</div>', '<tr>\r\n    <b>Einloggen</b>\r\n</tr>\r\n<tr>\r\n    <td align="center">\r\n        <form action="" method="post">\r\n            <input type="hidden" name="go" value="login">\r\n            <input type="hidden" name="login" value="1">\r\n            <table align="center" border="0" cellpadding="0" cellspacing="0" width="120">\r\n                <tr>\r\n                    <td align="right">\r\n                        <font class="small">Name:</font>\r\n                    </td>\r\n                    <td>\r\n                        <input class="text" size="10" name="username" maxlength="100">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="right">\r\n                        <font class="small">Pass:</font>\r\n                    </td>\r\n                    <td>\r\n                        <input class="text" size="10" type="password" name="userpassword" maxlength="16">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="center" colspan="2">\r\n                        <input type="checkbox" name="stayonline" value="1" checked>\r\n                        <font class="small">eingeloggt bleiben</font>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td align="center" colspan="2">\r\n                        <input class="button" type="submit" value="Anmelden">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td colspan="2" align="center">\r\n                        <a class="small" href="?go=register">Noch nicht registriert?</a>\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </form>\r\n    </td>\r\n</tr>', '<b>SHOP</b><p>\r\n<table width="100%">\r\n    {artikel}\r\n</table>', '<tr>\r\n    <td align="left" valign="top" width="60" rowspan="4">\r\n        <img border="0" style="cursor:pointer;" onClick=open(''showimg.php?pic={bild}'',''Picture'',''width=900,height=710,screenX=0,screenY=0'') src="{thumbnail}">\r\n    </td>\r\n    <td align="left" width="100">\r\n        <b>Titel:</b>\r\n    </td>\r\n        <td align="left">\r\n            {titel}\r\n        </td>\r\n    </tr>\r\n<tr>\r\n    <td align="left" valign="top">\r\n        <b>Beschreibung:</b>\r\n    </td>\r\n    <td align="left" valign="top">\r\n        {beschreibung}</td>\r\n    </tr>\r\n<tr>\r\n    <td align="left">\r\n        <b>Preis:</b>\r\n    </td>\r\n    <td align="left">\r\n        {preis} ¤\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td align="left"></td>\r\n    <td align="left">\r\n        <a href="{bestell_url}" target="_blank">Jetzt bestellen!</a>\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td colspan="3">\r\n         \r\n    </td>\r\n</tr>', '<img border="0" src="images/design/{icon}">\r\n<a href="{kategorie_url}">{kategorie_name}</a><br>', '<form action="" method="get">\r\n<tr>\r\n  <td colspan="3" align="right"><br /> <b>Kategorie durchsuchen:</b></td>\r\n  <td colspan="1" align="left"><br /> \r\n    <input class="text" size="20" name="keyword" value="{keyword}">\r\n    <input class="button" type="submit" value="Go">\r\n    <input class="button" type="button" value="Alle anzeigen" onclick="location=''{all_url}''">\r\n    <input type="hidden" name="go" value="download">\r\n    {input_cat}</td>\r\n</tr>\r\n\r\n</form>', '<b>DOWNLOADS</b><p>\r\n{navigation}\r\n<table border="0" cellpadding="0" cellspacing="2" width="100%">\r\n<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Titel</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Kategorie</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Uploaddatum</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Beschreibung</strong></td>\r\n </tr>\r\n{dateien}\r\n{suchfeld}\r\n</table>', '<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><a href="{url}"><b>{name}</b></a></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle">{cat}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle">{datum}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{text}</td>\r\n </tr>', '<b>DOWNLOADS -> {titel}</b><p>\r\n{navigation}\r\n    <table width="100%">\r\n        <tr>\r\n            <td align="left" width="130" rowspan="6" valign="top">\r\n                <img class="thumb" onClick=open(''showimg.php?pic={bild}'',''Picture'',''width=900,height=710,screenX=0,screenY=0'') src="{thumbnail}">\r\n            </td>\r\n        </tr>\r\n         <tr>\r\n            <td align="left" colspan="2" height="20" valign="top">\r\n                <b>{titel}</b>\r\n            </td>\r\n        </tr>\r\n       <tr>\r\n            <td align="left" width="75">\r\n                <b>Kategorie:</b>\r\n            </td>\r\n            <td align="left">\r\n                {cat}\r\n            </td>\r\n        </tr>\r\n       <tr>\r\n            <td align="left" width="75">\r\n                <b>Datum:</b>\r\n            </td>\r\n            <td align="left">\r\n                {datum}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td align="left" width="75">\r\n                <b>Uploader:</b>\r\n            </td>\r\n            <td align="left">\r\n                <a href="{uploader_url}">{uploader}</a>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td align="left" width="75">\r\n                <b>Autor:</b>\r\n            </td>\r\n            <td align="left">\r\n                {autor_link}\r\n            </td>\r\n        </tr>\r\n    </table>\r\n    <br>\r\n    <table width="100%">\r\n        <tr>\r\n            <td align="left" valign="top" width="130">\r\n                <b>Beschreibung:</b>\r\n            </td>\r\n            <td align="left" valign="top">{text}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td colspan="2"></td>\r\n        </tr>\r\n        <tr>\r\n             <td align="left" valign="top">\r\n                 <b>Dateien:</b>\r\n             </td>\r\n             <td align="left">{messages}\r\n             </td>\r\n         </tr>\r\n         <tr>\r\n             <td colspan="2"></td>\r\n         </tr>\r\n    </table>\r\n\r\n<table border="0" cellpadding="0" cellspacing="2" width="100%">\r\n<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;" colspan="2" ><strong>Datei (Download)</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Größe</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Traffic</strong></td>\r\n  <td style="border: 1px solid #000000; padding: 3px;"><strong>Downloads</strong></td>\r\n</tr>\r\n{files}\r\n<tr>\r\n  <td colspan="5" style="border: 1px solid #000000; padding: 3px;"><img alt="" src="images/design/null.gif"></td>\r\n</tr>\r\n{stats}\r\n</table>', '<tr>\r\n  <td style="border: 1px solid #000000; padding: 3px;"{mirror_col}><a target="_blank" href="{url}"><b>{name}</b></a></td>{mirror_ext}\r\n  <td style="border: 1px solid #000000; padding: 3px;">{size}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{traffic}</td>\r\n  <td style="border: 1px solid #000000; padding: 3px;">{hits}</td>\r\n</tr>', '<td style="border: 1px solid #000000; padding: 3px;" align="center" valign="middle"><b>Mirror!</b></td>', '<tr>\r\n              <td style="border: 1px solid #000000; padding: 3px;" colspan="2" >{number}</strong></td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{size}</td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{traffic}</td>\r\n              <td style="border: 1px solid #000000; padding: 3px;">{hits}</td>\r\n              </tr>', '<span class="small">{datum} </span><a class="small" href="{url}">{name}</a><br>', '<td align="center" valign="top">\r\n    <img class="thumb" onClick="open(''{url}'',''Picture'',''width=950,height=710,screenX=0,screenY=0'')" src="{thumbnail}" alt="{text}"><br>\r\n    {text}\r\n</td>', '<b>SCREENSHOT KATEGORIEN</b><p>\r\n<table width="100%">\r\n{cats}\r\n</table>', '<tr>\r\n    <td align="left">\r\n        <a href="{url}">{name}</a>\r\n    </td>\r\n    <td align="left">\r\n        erstellt am {datum}\r\n    </td>\r\n    <td align="left">\r\n        {menge} Bilder\r\n    </td>\r\n</tr>', '<b>SCREENSHOTS: {title}</b><p>\r\n<center>{page}</center><br />\r\n<table border="0" cellpadding="" cellspacing="10" width="100%">\r\n{screenshots}\r\n</table>', '<td align="center" valign="top">\r\n  <b>{text}</b><br />\r\n  <img src="{thumb_url}" alt="" />\r\n  <br /><br />\r\n  <b>Verfügbare Größen:</b>\r\n  {sizes}\r\n  <br />\r\n</td>', '<br />- <a href="{url}" target="_blank">{size}</a>', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">\r\n<html>\r\n<head>\r\n    <title>DSA-Drakensang</title>\r\n    <link rel="stylesheet" type="text/css" href="inc/fs.css">\r\n    <LINK REL="SHORTCUT ICON" HREF="images/design/dsa.ico">\r\n</head>\r\n<body style="background-image:url(images/design/bg.jpg); background-position:center top;" leftmargin="0" topmargin="0">\r\n<center>\r\n{bannercode}\r\n<table style="border-width:2px; border-style:solid; border-color:#774C1F;" cellspacing="0" cellpadding="3">\r\n <tr align="center">\r\n  <td>\r\n   <a href="{bild_url}" target="_blank">{bild}</a><br><b>{text}</b>\r\n  </td>\r\n </tr>\r\n <tr>\r\n</table>\r\n<table cellspacing="0" cellpadding="3">\r\n <tr>\r\n  <td width="33%" align="right">\r\n   <b>{weiter_grafik}</b>\r\n  </td>\r\n  <td width="33%" align="center">\r\n   <b>{close}</b>\r\n  </td>\r\n  <td width="33%" align="left">\r\n   <b>{zurück_grafik}</b>\r\n  </td>\r\n </tr>\r\n</table>\r\n</center>\r\n\r\n</body>\r\n</html>', '<b>Willkommen {username}</b><br>\r\n<a class="small" href="{virtualhost}?go=editprofil">- Mein Profil</a><br>\r\n{admin}\r\n<a class="small" href="{logout}">- Logout</a>', '<a class=''small'' href=''{adminlink}'' target="_self">- Admin-CP</a><br />', '<div class="field_head" style="padding-left:60px; width:516px;">\r\n    <font class="h1" style="float:left; padding-top:14px;">Login</font>\r\n</div>\r\n<div class="field_middle" align="left">\r\n    <form action="" method="post">\r\n        <input type="hidden" name="go" value="login">\r\n        <input type="hidden" name="login" value="1">\r\n        <table align="center" border="0" cellpadding="4" cellspacing="0">\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Name:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="33" name="username" maxlength="100">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="33" type="password" name="userpassword" maxlength="16">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Angemeldet bleiben:</b>\r\n                </td>\r\n                <td>\r\n                    <input type="checkbox" name="stayonline" value="1" checked>\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td colspan="2" align="center">\r\n                    <input class="button" type="submit" value="Login">\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n    <p>\r\n    Du hast dich noch nicht registriert? Dann wirds jetzt aber Zeit ;) -> \r\n    <a href="?go=register">registrieren</a>\r\n    <p>\r\n</div>\r\n<div class="field_footer"></div>\r\n<p></p>', '<b>PROFIL ÄNDERN ({username})</b><p>\r\n<form action="" method="post" enctype="multipart/form-data">\r\n    <input type="hidden" name="go" value="editprofil">\r\n    <table align="center" border="0" cellpadding="4" cellspacing="0">\r\n        <tr>\r\n            <td width="50%" valign="top">\r\n                <b>Benutzerbild:</b>\r\n            </td>\r\n            <td width="50%">\r\n                {avatar}\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>Benutzerbild hochladen:</b><br>\r\n                <font class="small">Nur wenn das alte überschrieben werden soll (max 110x110 px)</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="16" type="file" name="userpic">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>E-Mail:</b><br>\r\n                <font class="small">Deine E-Mail Adresse</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="34" value="{email}" name="usermail" maxlength="100">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>E-Mail zeigen:</b><br>\r\n                <font class="small">Zeige die E-Mail im öffentlichen Profil</font>\r\n            </td>\r\n            <td>\r\n                <input value="1" name="showmail" type="checkbox" {email_zeigen}>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <b>Neues Passwort:</b><br>\r\n                <font class="small">Nur eintragen, wenn du ein neues Passwort erstellen willst</font>\r\n            </td>\r\n            <td>\r\n                <input class="text" size="33" type="password" name="userpassword" maxlength="16" autocomplete="off">\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td colspan="2" align="center">\r\n                <input class="button" type="submit" value="Absenden">\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</form>', '<b>Members List</b><br /><br />\r\n<table width="100%" border="0">\r\n<tr>\r\n  <td><b>Avatar</b></td>\r\n  <td><a href="?go=members&sort=name_{order_name}" style="color:#000;"><b>Benutzername</b> {arrow_name}</a></td>\r\n  <td><b>E-Mail</b></td>\r\n  <td><a href="?go=members&sort=regdate_{order_regdate}" style="color:#000;"><b>Registriert seit</b> {arrow_regdate}</a></td>\r\n  <td><a href="?go=members&sort=news_{order_news}" style="color:#000;"><b>News</b> {arrow_news}</a></td>\r\n  <td><a href="?go=members&sort=articles_{order_articles}" style="color:#000;"><b>Artikel</b> {arrow_articles}</a></td>\r\n  <td><a href="?go=members&sort=comments_{order_comments}" style="color:#000;"><b>Kommentare</b> {arrow_comments}</a></td>\r\n</tr>\r\n{members}\r\n</table><br /><br />\r\n<center>{page}</center>', '<tr>\r\n  <td align="center">{avatar}</td>\r\n  <td><a href="{userlink}" class="small">{username}</a></td>\r\n  <td>{email}</td>\r\n  <td align="center">{reg_date}</td>\r\n  <td align="center">{news}</td>\r\n  <td align="center">{articles}</td>\r\n  <td align="center">{comments}</td>\r\n</tr>', '<tr>\r\n  <td align="center">{avatar}</td>\r\n  <td><a href="{userlink}" class="small"><b><i>{username}</i></b></a></td>\r\n  <td>{email}</td>\r\n  <td align="center">{reg_date}</td>\r\n  <td align="center">{news}</td>\r\n  <td align="center">{articles}</td>\r\n  <td align="center">{comments}</td>\r\n</tr>', '<tr>\r\n                <td align="right">\r\n                    <img src="{captcha_url}">\r\n                </td>\r\n                <td>\r\n                    <input class="text" name="spam" id="spam" size="30" maxlength="25"><br />\r\n<span class="small">Bitte löse diese kleine Rechenaufgabe.</span>\r\n                </td>\r\n            </tr>', '<br /><br />\r\n <table border="0" cellspacing="0" cellpadding="0" width="60%">\r\n  <tr>\r\n   <td valign="top" align="left">\r\n<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>\r\n   </td>\r\n  </tr>\r\n </table>', '<div class="field_head" style="padding-left:60px; width:516px;">\r\n    <font class="h1" style="float:left; padding-top:14px;">Community Map</font>\r\n</div>\r\n<div class="field_middle" align="left">\r\n    {karte}\r\n    <div align="right">\r\n        <font class="small">Zum betrachten der Karte wird Flash benötigt: </font><br>\r\n        <img border="0" src="images/design/flash_rune.gif" align="middle">\r\n        <a target="_blank" href="http://www.adobe.com/go/getflashplayer">\r\n            <img border="0" src="images/design/flash_download_now.gif" align="middle">\r\n        </a>\r\n    </div>\r\n</div>\r\n<div class="field_footer"></div>\r\n<p></p>', '<form name=\\"poll\\" action=\\"\\" method=\\"post\\">\r\n    <input type=\\"hidden\\" name=\\"pollid\\" value=\\"{poll_id}\\">\r\n    <table align=\\"center\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">\r\n        <tr>\r\n            <td class=\\"small\\" colspan=\\"2\\" align=\\"center\\">\r\n                <b>{question}</b>\r\n            </td>\r\n        </tr>\r\n{answers}\r\n        <tr>\r\n            <td colspan=\\"2\\" align=\\"center\\" ><br />\r\n                <input class=\\"button\\" type=\\"submit\\" value=\\"Abstimmen\\" {button_state}><br />\r\n<a class=\\"small\\" href=\\"?go=pollarchiv&pollid={poll_id}\\"><b>Ergebnis anzeigen!</b></a>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</form>', '<tr>\r\n    <td valign=\\"top\\">\r\n        <input type=\\"{type}\\" name=\\"answer{multiple}\\" value=\\"{answer_id}\\">\r\n    </td>\r\n    <td align=\\"left\\" class=\\"small\\">\r\n        {answer}\r\n    </td>\r\n</tr>', '<b>UMFRAGEN ARCHIV</b><p>\r\n<b>{frage}</b><p>\r\n<table width=\\"100%\\">\r\n{antworten}\r\n   <tr><td> </td></tr>\r\n   <tr><td align=\\"left\\">Anzahl der Teilnehmer: </td><td align=\\"left\\" colspan=\\"2\\"><b>{participants}</b></td></tr>\r\n   <tr><td align=\\"left\\">Anzahl der Stimmen: </td><td align=\\"left\\" colspan=\\"2\\"><b>{stimmen}</b></td></tr>\r\n   <tr><td align=\\"left\\">Art der Umfrage: </td><td align=\\"left\\" colspan=\\"2\\">{typ}</td></tr>\r\n   <tr><td align=\\"left\\">Umfragedauer:</td><td align=\\"left\\" colspan=\\"2\\">{start_datum} bis {end_datum}</td></tr>\r\n</table>', '<tr>\r\n    <td align=\\"left\\">{antwort}</td>\r\n    <td align=\\"left\\">{stimmen}</td>\r\n    <td align=\\"left\\">\r\n        <div style=\\"width:{balken_breite}px; height:4px; font-size:1px; background-color:#00FF00;\\">\r\n    </td>\r\n</tr>', '<table align=\\"center\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">\r\n    <tr>\r\n        <td class=\\"small\\" colspan=\\"2\\" align=\\"center\\">\r\n            <b>{question}</b>\r\n        </td>\r\n    </tr>\r\n{answers}\r\n</table>\r\n<div class=\\"small\\">Teilnehmer: {participants}</div>\r\n<b>Bereits abgestimmt!</b>', '<tr>\r\n    <td align=\\"left\\" class=\\"small\\" colspan=\\"2\\">\r\n        {answer}\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td align=\\"left\\" class=\\"small\\">\r\n        {percentage}\r\n    </td>\r\n    <td align=\\"left\\">\r\n        <div style=\\"width:{bar_width}px; height:4px; font-size:1px; background-color:#00FF00;\\">\r\n    </td>\r\n</tr>', '<b>UMFRAGEN ARCHIV</b><p>\r\n<table border=\\"0\\" width=\\"100%\\" cellpadding=\\"2\\" cellspacing=\\"0\\">\r\n<tr>\r\n  <td align=\\"left\\"><a href=\\"?go=pollarchiv&sort=name_{order_name}\\" style=\\"color: #000\\"><b>Frage {arrow_name}</b></a></td>\r\n  <td align=\\"left\\" width=\\"100\\"><a href=\\"?go=pollarchiv&sort=voters_{order_voters}\\" style=\\"color: #000\\"><b>Teilnehmer {arrow_voters}</b></a></td>\r\n  <td align=\\"left\\" width=\\"70\\"><a href=\\"?go=pollarchiv&sort=startdate_{order_startdate}\\" style=\\"color: #000\\"><b>von {arrow_startdate}</b></a></td>\r\n  <td align=\\"left\\" width=\\"10\\"></td>\r\n  <td align=\\"left\\" width=\\"70\\"><a href=\\"?go=pollarchiv&sort=enddate_{order_enddate}\\" style=\\"color: #000\\"><b>bis {arrow_enddate}</b></a></td>\r\n</tr>\r\n{umfragen}\r\n</table>\r\n<p>', '  <tr>\r\n   <td align=\\"left\\"><a href=\\"{url}\\">{frage}</a></td>\r\n   <td align=\\"left\\">{voters}</td>\r\n   <td align=\\"left\\" class=\\"small\\">{start_datum}</td>\r\n   <td align=\\"left\\" class=\\"small\\">-</td>\r\n   <td align=\\"left\\" class=\\"small\\">{end_datum}</td>\r\n  </tr>', '<div class=\\"small\\" align=\\"center\\">\r\n    Zur Zeit keine<br>Umfrage aktiv\r\n</div>', '<b>PROFIL VON {username}</b><p>\r\n<table align="center" border="0" cellpadding="4" cellspacing="0">\r\n    <tr>\r\n        <td width="50%" valign="top">\r\n            <b>Benutzerbild:</b>\r\n        </td>\r\n        <td width="50%">\r\n            {avatar}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>E-Mail:</b>\r\n        </td>\r\n        <td>\r\n            {email}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Registriert seit:</b>\r\n        </td>\r\n        <td>\r\n            {reg_datum}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene Kommentare:</b>\r\n        </td>\r\n        <td>\r\n            {kommentare}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene News:</b>\r\n        </td>\r\n        <td>\r\n            {news}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>\r\n            <b>Geschriebene Artikel:</b>\r\n        </td>\r\n        <td>\r\n            {artikel}\r\n        </td>\r\n    </tr>\r\n</table>', '- <b>{visits}</b> Visits<br>\r\n- <b>{visits_heute}</b> Visits heute<br>\r\n- <b>{hits}</b> Hits<br>\r\n- <b>{hits_heute}</b> Hits heute<br>\r\n- <b>{user_online}</b> Besucher online<p>\r\n- <b>{user}</b> registrierte User<br>\r\n- <b>{news}</b> News<br>\r\n- <b>{kommentare}</b> Kommentare<br>\r\n- <b>{artikel}</b> Artikel', '<script type="text/javascript"> \r\n<!-- \r\nfunction chkFormular() \r\n{\r\n    if((document.getElementById("username").value == "") ||\r\n       (document.getElementById("usermail").value == "") ||\r\n       (document.getElementById("userpass1").value == "") ||\r\n       (document.getElementById("userpass2").value == ""))\r\n    {\r\n        alert("Du hast nicht alle Felder ausgefüllt"); \r\n        return false;\r\n    }\r\n    if(document.getElementById("userpass1").value != document.getElementById("userpass2").value)\r\n    {\r\n        alert("Passwöter sind verschieden"); \r\n        return false;\r\n    }\r\n} \r\n//--> \r\n</script> \r\n\r\n<b>REGISTRIEREN</b><p>\r\n<div>\r\n    Registriere dich im Frog System, um in den Genuss erweiterter Features zu kommen. Dazu zählen bisher:\r\n    <ul>\r\n        <li>Zugriff auf unsere Downloads</li>\r\n        <li>Hochladen eines eigenen Benutzerbildes, für die von dir geschriebenen Kommentare</li>\r\n    </ul>\r\n    Weitere Features werden folgen.\r\n    <p>\r\n    <form action="" method="post" onSubmit="return chkFormular()">\r\n        <input type="hidden" value="register" name="go">\r\n        <table border="0" cellpadding="2" cellspacing="0" align="center">\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Name:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="username" id="username" maxlength="100">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="userpass1" id="userpass1" type="password" maxlength="16" autocomplete="off">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>Passwort wiederholen:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="userpass2" id="userpass2" type="password" maxlength="16" autocomplete="off">\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td align="right">\r\n                    <b>E-Mail:</b>\r\n                </td>\r\n                <td>\r\n                    <input class="text" size="30" name="usermail" id="usermail" maxlength="100">\r\n                </td>\r\n            </tr>\r\n{antispam}\r\n            <tr>\r\n                <td colspan="2" align="center">\r\n                    <input type="submit" class="button" value="Registrieren">\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </form>\r\n    <p>\r\n</div>', '<div class="news_head" style="height:10px;" id ="{newsid}">\r\n    <span style="float:left;">\r\n       <b>[{kategorie_name}] {titel}</b>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        <b>{datum}</b>\r\n    </span>\r\n</div>\r\n<div style="padding:3px;">\r\n    {text}\r\n    {related_links}\r\n</div>\r\n<div class="news_footer">\r\n    <span class="small" style="float:left;">\r\n        <a class="small" href="{kommentar_url}">Kommentare ({kommentar_anzahl})</a>\r\n    </span>\r\n    <span class="small" style="float:right;">\r\n        geschrieben von: <a class="small" href="{autor_profilurl}">{autor}</a>\r\n    </span>\r\n</div>\r\n<br><br>', '<b>NEWS</b><p>\r\n{headlines}<p>\r\n{news}', '{news}<p>\r\n{comments}<p>\r\n{comment_form}', '<b>Ankündigung:</b>\r\n<br><br>\r\n    {meldung}\r\n<br><br>', 'Hallo {username}\r\n\r\nDu hast dich im Frog System registriert. Deine Logindaten sind:\r\nUsername: {username}\r\nPasswort: {passwort}', 'Hallo {username}\r\n\r\nDein Passwort im Frog System wurde geändert.\r\nDas neue Lautet: {passwort}', '<div align="center">\r\n  <b>{name}</b><br />\r\n  <a href="{url}" target="_blank">\r\n    <img src="{img_url}" border="0" alt="{name}"  title="{name}">\r\n  </a>\r\n  <br />\r\n  {text}\r\n</div>', 'Partner:\r\n{partner_all}', '<div align="center">\r\n  <a href="{url}" target="_blank">\r\n    <img src="{button_url}" border="0" alt="{name}"  title="{name}">\r\n  </a>\r\n  <br>\r\n</div>', '{permanents}\r\n\r\n<div align="center"><br><b>\r\nZufallsauswahl:</b><br>\r\n\r\n{non_permanents}\r\n\r\n<a href="?go=partner">alle Partner</a></div><br>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Code:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1"><font face="Courier New">{text}</font>\r\n</td></tr></table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Zitat:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1">{text}\r\n</td></tr></table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n<tr><td><b><font face="verdana" size="2">Zitat von {author}:</font></b></td></tr>\r\n<tr><td style="border-collapse: collapse; border-style: dotted; border-color:#000000; border-width: 1">{text}\r\n</td></tr></table>', '<table cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px">\r\n  <tr valign="bottom">\r\n    {buttons}\r\n  </tr>\r\n</table>\r\n\r\n<table cellpadding="0" cellspacing="0" border="0">\r\n  <tr valign="top">\r\n    <td>\r\n      <textarea {style}>{text}</textarea>\r\n    </td>\r\n    <td style="width:4px; empty-cells:show;">\r\n    </td>\r\n    <td>\r\n      {smilies}\r\n    </td>\r\n  </tr>\r\n</table>\r\n<br />', '.editor_button {\r\n  font-size:8pt;\r\n  font-family:Verdana;\r\n  border:1px solid #000000;\r\n  background-color:#B7B7B7;\r\n  width:20px;\r\n  height:20px;\r\n  cursor:pointer;\r\n  text-align:center;\r\n}\r\n.editor_button:hover {\r\n  background-color:#A5E5A5;\r\n}\r\n.editor_td {\r\n  width:24px;\r\n  height:23px;\r\n  vertical-align:bottom;\r\n  text-align:left;\r\n}\r\n.editor_td_seperator {\r\n  width:5px;\r\n  height:23px;\r\n  background-image:url("images/icons/separator.gif");\r\n  background-repeat:no-repeat;\r\n  background-position:top left;\r\n}\r\n.editor_smilies {\r\n  cursor:pointer;\r\n  padding:0px;\r\n}', '<td class="editor_td">\r\n    <div class="editor_button" {javascript}>\r\n      <img src="{img_url}" alt="{alt}" title="{title}" />\r\n    </div>\r\n  </td>', '<td class="editor_td_seperator"></td>', '<a href="{navi_url}"><img src="{icon_url}" alt="" border="0">   {title}</a><br>', '{lines}', '<b>{intro_text}</b><br><br>', '<br><br><b>{note_text}</b>', '<tr valign="top">\r\n  <td>\r\n   <img src="{lang_img_url}" alt="{lang_title}" title="{lang_title}">\r\n  </td>\r\n  <td>\r\n   <a href="{url}" target="_blank">\r\n    <b>{title}</b>\r\n   </a>\r\n   <br>{date}\r\n  </td>\r\n  <td style="text-align: justify;">\r\n   {intro}\r\n   {text}\r\n   {note}\r\n  </td>\r\n </tr>', '<b>PRESSEBERICHTE</b>\r\n<br />\r\n{navigation}\r\n{press_container}', '<br /><br />\r\n<table cellspacing="12">\r\n <tr>\r\n  <td></td>\r\n  <td><b>Seite / Datum</b></td>\r\n  <td><b>Leseprobe</b></td>\r\n </tr>\r\n {press_releases}\r\n</table>');
 
 -- --------------------------------------------------------
 
@@ -1129,7 +1173,7 @@ CREATE TABLE `fs_user` (
   `reg_date` int(11) default NULL,
   `show_mail` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`user_id`)
-) TYPE=MyISAM  AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_user`
@@ -1147,7 +1191,7 @@ DROP TABLE IF EXISTS `fs_userlist_config`;
 CREATE TABLE `fs_userlist_config` (
   `id` tinyint(1) NOT NULL,
   `user_per_page` tinyint(3) NOT NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_userlist_config`
@@ -1166,12 +1210,13 @@ CREATE TABLE `fs_useronline` (
   `ip` varchar(30) default NULL,
   `host` varchar(200) default NULL,
   `date` int(30) default NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Daten für Tabelle `fs_useronline`
 -- 
 
+REPLACE INTO `fs_useronline` VALUES ('127.0.0.1', NULL, 1192052254);
 
 -- --------------------------------------------------------
 
@@ -1186,12 +1231,13 @@ CREATE TABLE `fs_wallpaper` (
   `wallpaper_title` varchar(255) NOT NULL default '',
   `cat_id` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`wallpaper_id`)
-) TYPE=MyISAM PACK_KEYS=1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `fs_wallpaper`
 -- 
 
+REPLACE INTO `fs_wallpaper` VALUES (1, 'test', '', 2);
 
 -- --------------------------------------------------------
 
@@ -1205,12 +1251,14 @@ CREATE TABLE `fs_wallpaper_sizes` (
   `wallpaper_id` mediumint(8) NOT NULL default '0',
   `size` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`size_id`)
-) TYPE=MyISAM PACK_KEYS=1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 PACK_KEYS=1 AUTO_INCREMENT=3 ;
 
 -- 
 -- Daten für Tabelle `fs_wallpaper_sizes`
 -- 
 
+REPLACE INTO `fs_wallpaper_sizes` VALUES (1, 1, '1024x768');
+REPLACE INTO `fs_wallpaper_sizes` VALUES (2, 1, '1600x1200');
 
 -- --------------------------------------------------------
 
@@ -1225,7 +1273,7 @@ CREATE TABLE `fs_zones` (
   `design_id` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
-) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 PACK_KEYS=0 AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `fs_zones`
