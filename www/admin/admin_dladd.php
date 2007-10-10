@@ -116,7 +116,7 @@ else
                                     <font class="small">unter welchem Namen soll der Download erscheinen</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="53" value="'.$_POST[title].'" name="title" maxlength="100">
+                                    <input class="text" size="53" value="'.killhtml($_POST[title]).'" name="title" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -125,7 +125,7 @@ else
                                     <font class="small">Diese Beschreibung erscheint unter dem Download</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", $_POST[text], 330, 130).'
+                                    '.create_editor("text", killhtml($_POST[text]), 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -135,9 +135,9 @@ else
                                     [Homepage des Autors]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="autor" value="'.$_POST[autor].'" maxlength="100">
+                                    <input class="text" size="20" name="autor" value="'.killhtml($_POST[autor]).'" maxlength="100">
                                     <br />
-                                    <input class="text" size="30" value="'.$_POST[autorurl].'" name="autorurl" maxlength="255" id="test">
+                                    <input class="text" size="30" value="'.killhtml($_POST[autorurl]).'" name="autorurl" maxlength="255" id="test">
                                 </td>
                             </tr>
                             <tr>
@@ -168,9 +168,9 @@ else
                                     <font class="small">[Titel]<br />[URL]<br />[Groﬂe in KB]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" value="'.$_POST[fname][$j].'" maxlength="100"><br />
-                                    <input class="text" size="30" value="'.$_POST[furl][$j].'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
-                                    <input class="text" size="30" value="'.$_POST[fsize][$j].'" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST[fname][$j]).'" maxlength="100"><br />
+                                    <input class="text" size="30" value="'.killhtml($_POST[furl][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
+                                    <input class="text" size="30" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'">
                                 </td>
                             </tr>

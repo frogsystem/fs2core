@@ -96,7 +96,7 @@ echo'
                                     <font class="small">ohne Dateiendung</font>
                                 </td>
                                 <td valign="top" class="config">
-                                    <input class="text" name="name" id="newname" size="25" maxlength="100" value="'.$_POST['newname'].'"><br>
+                                    <input class="text" name="newname" id="newname" size="25" maxlength="100" value="'.$_POST['newname'].'"><br>
                                     <font class="small">Erstellt das Bild als <b>bildname.jpg/.gif/.png</b> (s.o.)</font>
                                 </td>
                             </tr>

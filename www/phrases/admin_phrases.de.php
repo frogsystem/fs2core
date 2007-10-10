@@ -238,7 +238,18 @@ $admin_phrases[template][news_related_links][title]             = "Related Links
 $admin_phrases[template][news_related_links][description]       = "Die Related Links unter einer News.";
 $admin_phrases[template][news_related_links][help_1]            = "Bindet nacheinander die angegebenen Links ein.";
 
-$admin_phrases[template][news_body][title]                      = "News Body";
+$admin_phrases[template][news_headline][title]                  = "Headline";
+$admin_phrases[template][news_headline][description]            = "Zeile im Headline Body.";
+$admin_phrases[template][news_headline][help_1]                 = "Der Titel der News.";
+$admin_phrases[template][news_headline][help_2]                 = "Das Datum an dem die News veröffentlicht wurde.";
+$admin_phrases[template][news_headline][help_3]                 = "URL zur News.";
+
+$admin_phrases[template][news_headline_body][title]             = "Headline Body";
+$admin_phrases[template][news_headline_body][description]       = "Headline Kasten oben auf der Seite.";
+$admin_phrases[template][news_headline_body][help_1]            = "Bindet die Headlines ein.";
+$admin_phrases[template][news_headline_body][help_2]            = "Bindet die Downloads ein.";
+
+$admin_phrases[template][news_body][title]                      = "News";
 $admin_phrases[template][news_body][description]                = "Das Erscheinungsbild einer News.";
 $admin_phrases[template][news_body][help_1]                     = "ID der News, für die eindeutige Ansteuerung auf der Startseite.";
 $admin_phrases[template][news_body][help_2]                     = "Der Titel der News.";
@@ -252,21 +263,16 @@ $admin_phrases[template][news_body][help_9]                     = "URL zur Komme
 $admin_phrases[template][news_body][help_10]                    = "Anzahl der zur News abgegebenen Kommentare.";
 $admin_phrases[template][news_body][help_11]                    = "Bindet die Related Links in der News ein.";
 
-$admin_phrases[template][news_headline][title]                  = "Headline";
-$admin_phrases[template][news_headline][description]            = "Zeile im Headline Body.";
-$admin_phrases[template][news_headline][help_1]                 = "Der Titel der News.";
-$admin_phrases[template][news_headline][help_2]                 = "Das Datum an dem die News veröffentlicht wurde.";
-$admin_phrases[template][news_headline][help_3]                 = "URL zur News.";
+$admin_phrases[template][news_container][title]                 = "News Container";
+$admin_phrases[template][news_container][description]           = "Das Erscheinungsbild der News-Seite.";
+$admin_phrases[template][news_container][help_1]                = "Bindet nacheinander alle News ein.";
+$admin_phrases[template][news_container][help_2]                = "Bindet den Headline-Kasten ein.";
 
-$admin_phrases[template][news_headline_body][title]             = "Headline Body";
-$admin_phrases[template][news_headline_body][description]       = "Headline Kasten oben auf der Seite.";
-$admin_phrases[template][news_headline_body][help_1]            = "Bindet die Headlines ein.";
-$admin_phrases[template][news_headline_body][help_2]            = "Bindet die Downloads ein.";
-
-$admin_phrases[template][news_comment_autor][title]             = "Kommentar Autor";
-$admin_phrases[template][news_comment_autor][description]       = "Link zum Kommentar Autor.";
-$admin_phrases[template][news_comment_autor][help_1]            = "Der Name des Kommentar-Schreibers.";
-$admin_phrases[template][news_comment_autor][help_2]            = "URL zum Profil des Autors.";
+$admin_phrases[template][news_comment_container][title]         = "Kommentar Container";
+$admin_phrases[template][news_comment_container][description]   = "Das Erscheinungsbild der Kommentar-Seite.";
+$admin_phrases[template][news_comment_container][help_1]        = "Bindet die News ein.";
+$admin_phrases[template][news_comment_container][help_2]        = "Bindet nacheinander alle Kommentare ein.";
+$admin_phrases[template][news_comment_container][help_3]        = "Bindet das Formular zum Schreiben von Kommentaren ein.";
 
 $admin_phrases[template][news_comment_body][title]              = "Kommentar Body";
 $admin_phrases[template][news_comment_body][description]        = "Das Erscheinungsbild eines Kommentars.";
@@ -275,6 +281,11 @@ $admin_phrases[template][news_comment_body][help_2]             = "Das Datum an 
 $admin_phrases[template][news_comment_body][help_3]             = "Der Text des Kommentars.";
 $admin_phrases[template][news_comment_body][help_4]             = "Bindet den Namen eines nicht registrierten Autors oder das Template \"Kommentar Autor\" ein.";
 $admin_phrases[template][news_comment_body][help_5]             = "Bindet einen evtl. Avatar des Autors ein.";
+
+$admin_phrases[template][news_comment_autor][title]             = "Kommentar Autor";
+$admin_phrases[template][news_comment_autor][description]       = "Link zum Kommentar Autor.";
+$admin_phrases[template][news_comment_autor][help_1]            = "Der Name des Kommentar-Schreibers.";
+$admin_phrases[template][news_comment_autor][help_2]            = "URL zum Profil des Autors.";
 
 $admin_phrases[template][news_comment_form_spam][title]         = "Anti Spam";
 $admin_phrases[template][news_comment_form_spam][description]   = "Captcha zum Schutz gegen Spam-Bots.";
@@ -287,7 +298,7 @@ $admin_phrases[template][news_comment_form_name][title]         = "Eingabefeld N
 $admin_phrases[template][news_comment_form_name][description]   = "Wird angezeigt, wenn der User nicht registriert ist.";
 
 $admin_phrases[template][news_comment_form][title]              = "Kommentar Formular";
-$admin_phrases[template][news_comment_form][description]        = "Formular zum schreiben von Kommentaren.";
+$admin_phrases[template][news_comment_form][description]        = "Formular zum Schreiben von Kommentaren.";
 $admin_phrases[template][news_comment_form][help_1]             = "ID der News, um sie eindeutig zu identifizieren.";
 $admin_phrases[template][news_comment_form][help_2]             = "Bindet den Namen des angemeldeten Users, bzw. das Template \"Eingabefeld Name\" ein.";
 $admin_phrases[template][news_comment_form][help_3]             = "Bindet das Anti Spam Captcha ein.";

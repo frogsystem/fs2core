@@ -1,8 +1,13 @@
 <?php
+/////////////////////
+//// Config laden ///
+/////////////////////
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // WP Konfiguration auslesen
+$config_arr = mysql_fetch_assoc($index);
 
-//////////////////////
-//// Wallpaper löschen ////
-//////////////////////
+////////////////////////////
+//// Wallpaper editieren ///
+////////////////////////////
 if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AND $_POST['wpedit'])
 {
     $_POST[wallpaper_name] = savesql($_POST[wallpaper_name]);
@@ -37,7 +42,7 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
                 $filesname = "sizeimg_$i";
                 if (isset($_FILES[$filesname]) && $_POST[wpnew][$i]==1 && $_POST[size][$i]!="")
                 {
-                    $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['oldname']."_".$_POST['size'][$i]."a", 5*1024*1024, 9999, 9999);
+                    $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['oldname']."_".$_POST['size'][$i]."a", $config_arr[wp_size]*1024, $config_arr[wp_x], $config_arr[wp_y]);
                     systext(upload_img_notice($upload));
                     switch ($upload)
                     {
@@ -53,8 +58,9 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
                 {
                     $index = mysql_query("SELECT size FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE size_id = '".$_POST[size_id][$i]."'", $db);
                     $size_name = mysql_result($index, "size");
-                    $rename_info = pathinfo(image_url("../images/wallpaper/", "$_POST[oldname]_$size_name", false));
-                    rename(image_url("../images/wallpaper/", "$_POST[oldname]_$size_name", false), "../images/wallpaper/".$_POST[oldname]."_".$_POST[size][$i]."a.".$rename_info[extension]);
+
+                    image_rename("../images/wallpaper/", $_POST[oldname]."_".$size_name, $_POST[oldname]."_".$_POST[size][$i]."a");
+                    
                     $update = "UPDATE ".$global_config_arr[pref]."wallpaper_sizes
                                SET size = '".$_POST[size][$i]."'
                                WHERE size_id = ".$_POST[size_id][$i];
@@ -62,7 +68,7 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
                     
                     if (isset($_FILES[$filesname]))
                     {
-                        $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['oldname']."_".$_POST['size'][$i]."a", 5*1024*1024, 9999, 9999);
+                        $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['oldname']."_".$_POST['size'][$i]."a", $config_arr[wp_size]*1024, $config_arr[wp_x], $config_arr[wp_y]);
                         systext(upload_img_notice($upload));
                     }
                 }
@@ -73,11 +79,9 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
      $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
      while ($sizes_arr = mysql_fetch_assoc($index2))
      {
-          $rename_info = pathinfo(image_url("../images/wallpaper/", "$_POST[oldname]_$sizes_arr[size]a", false));
-          rename(image_url("../images/wallpaper/", "$_POST[oldname]_$sizes_arr[size]a", false), "../images/wallpaper/".$_POST[wallpaper_name]."_".$sizes_arr[size].".".$rename_info[extension]);
+          image_rename("../images/wallpaper/", $_POST[oldname]."_".$sizes_arr[size]."a", $_POST[wallpaper_name]."_".$sizes_arr[size]);
      }
-     $rename_info = pathinfo(image_url("../images/wallpaper/", "$_POST[oldname]_s", false));
-     rename(image_url("../images/wallpaper/", "$_POST[oldname]_s", false), "../images/wallpaper/".$_POST[wallpaper_name]."_s.".$rename_info[extension]);
+     image_rename("../images/wallpaper/", $_POST[oldname]."_s", $_POST[wallpaper_name]."_s");
 
    //IF Ende
    }
@@ -89,6 +93,9 @@ if ($_POST['wallpaper_id'] AND $_POST['sended'] == "edit" AND $_POST[size][0] AN
        Da nicht beide Bedingungen nicht erfüllt sind, wurde die Bearbeitung abgebrochen!');
    }
 }
+//////////////////////////
+//// Wallpaper löschen ///
+//////////////////////////
 elseif ($_POST['wallpaper_id'] AND $_POST['sended'] == "delete")
 {
 
@@ -121,6 +128,28 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
 
   if ($_POST['wp_action'] == "edit")
   {
+
+    //Thumb neu erstellen
+    if ($_POST['sended'] == "newthumb")
+    {
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // WP Konfiguration auslesen
+        $config_arr = mysql_fetch_assoc($index);
+
+        $index = mysql_query("SELECT wallpaper_name FROM ".$global_config_arr[pref]."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
+        $wp_name = mysql_result($index,0,"wallpaper_name");
+
+        $index = mysql_query("SELECT size FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' LIMIT 1", $db);
+        $wp_size = mysql_result($index,0,"size");
+        
+        image_delete("../images/wallpaper/", $wp_name."_s");
+
+        $newthumb = create_thumb_from(image_url("../images/wallpaper/", $wp_name."_".$wp_size, false), $config_arr[wp_thumb_x], $config_arr[wp_thumb_y]);
+
+        image_rename("../images/wallpaper/", $wp_name."_".$wp_size."_s", $wp_name."_s");
+        
+        systext(create_thumb_notice($newthumb)."<br />(Cache leeren nicht vergessen!)");
+    }
+
     $index = mysql_query("select * from ".$global_config_arr[pref]."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $db);
     $admin_wp_arr = mysql_fetch_assoc($index);
 
@@ -128,7 +157,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
 
     $error_message = "";
 
-    if (isset($_POST['sended']))
+    if (isset($_POST['sended']) AND $_POST['sended'] !="newthumb")
     {
       $admin_wp_arr['wallpaper_name'] = $_POST['wallpaper_name'];
       $admin_wp_arr['wallpaper_title'] = $_POST['wallpaper_title'];
@@ -164,22 +193,48 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
     $_POST[options] = $_POST[options] + $_POST[optionsadd];
 
     echo'
+                    <form action="" enctype="multipart/form-data" method="post">
+                        <input type="hidden" value="'.$_POST[options].'" name="options">
+                        <input type="hidden" value="wallpaperedit" name="go">
+                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" name="sended" value="newthumb">
+                        <input type="hidden" name="wp_action" value="'.$_POST[wp_action].'" />
+                        <input type="hidden" name="wallpaper_id" value="'.$admin_wp_arr[wallpaper_id].'" />
+                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                            <tr>
+                                <td class="config" valign="top" width="190">
+                                    Wallpaper:<br>
+                                    <font class="small">Thumbnail des Wallpapers.</font>
+                                </td>
+                                <td class="config" valign="top" width="410">
+                                   <img src="'.image_url("../images/wallpaper/", $admin_wp_arr[wallpaper_name]."_s").'" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top">
+                                    Thumbnail neu erstellen:<br>
+                                    <font class="small">Erstellt ein neues Thumbnail von der Vorlage.</font>
+                                </td>
+                                <td class="config" valign="top" align="left">
+                                  <input class="button" type="submit" value="Jetzt neu erstellen">
+                                </td>
+                            </tr>
+                    </form>
                     <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input id="send" type="hidden" value="0" name="wpedit">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
                         <input type="hidden" value="wallpaperedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <input type="hidden" name="sended" value="edit" />
+                        <input type="hidden" name="sended" value="edit">
                         <input type="hidden" name="wp_action" value="'.$_POST[wp_action].'" />
                         <input type="hidden" name="wallpaper_id" value="'.$admin_wp_arr[wallpaper_id].'" />
                         <input type="hidden" name="oldname" value="'.$admin_wp_arr[old_name].'" />
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
-                                <td class="config" valign="top" width="150">
+                                <td class="config" valign="top">
                                     Dateiname:<br>
                                     <font class="small">Name unter dem gespeichert wird.</font>
                                 </td>
-                                <td class="config" valign="top" width="450">
+                                <td class="config" valign="top">
                                     <input class="text" name="wallpaper_name" size="33" maxlength="100" value="'.$admin_wp_arr[wallpaper_name].'">
                                 </td>
                             </tr>
@@ -420,7 +475,7 @@ else
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                             <tr>
                                 <td class="config">
-                                    <img src="'.image_url("../images/wallpaper/", $wallpaper_arr[wallpaper_name]."_s", false).'" width="100" height="75" alt=""><br>
+                                    <img src="'.image_url("../images/wallpaper/", $wallpaper_arr[wallpaper_name]."_s").'" width="100" height="75" alt=""><br>
 
                                 </td>
                                 <td class="configthin"><b>'.$wallpaper_arr[wallpaper_name].'</b>';

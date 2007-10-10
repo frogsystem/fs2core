@@ -103,17 +103,43 @@ $index = mysql_query("select * from ".$global_config_arr[pref]."news where news_
 
 $news_rows = mysql_num_rows($index);
 
-if ($news_rows >0) {
+if ($news_rows > 0) {
     $news_arr = mysql_fetch_assoc($index);
     $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
 } else {
     $news_template = sys_message($phrases[sysmessage], $phrases[news_not_exist]);
 }
 
-
-
 unset($news_arr);
 
+
+// Text formatieren
+switch ($config_arr[html_code])
+{
+    case 1: $html = false; break;
+    case 2: $html = false; break;
+    case 3: $html = true; break;
+    case 4: $html = true; break;
+}
+switch ($config_arr[fs_code])
+{
+    case 1: $fs = false; break;
+    case 2: $fs = false; break;
+    case 3: $fs = true; break;
+    case 4: $fs = true; break;
+}
+switch ($config_arr[para_handling])
+{
+    case 1: $para = false; break;
+    case 2: $para = false; break;
+    case 3: $para = true; break;
+    case 4: $para = true; break;
+}
+    
+//FScode-Html Anzeige
+$fs_active = ($fs) ? "an" : "aus";
+$html_active = ($html) ? "an" : "aus";
+    
 // Kommentare erzeugen
 $index = mysql_query("select * from ".$global_config_arr[pref]."news_comments where news_id = $_GET[id] order by comment_date $config_arr[com_sort]", $db);
 while ($comment_arr = mysql_fetch_assoc($index))
@@ -126,7 +152,7 @@ while ($comment_arr = mysql_fetch_assoc($index))
         $comment_arr[is_admin] = mysql_result($index2, 0, "is_admin");
         if (image_exists("images/avatare/",$comment_arr[comment_poster_id]))
         {
-            $comment_arr[comment_avatar] = '<div style="width:120px;"><img align="left" src="'.image_url("images/avatare/",$comment_arr[comment_poster_id]).'" alt="'.$comment_arr[comment_poster].'"></div>';
+            $comment_arr[comment_avatar] = '<img align="left" src="'.image_url("images/avatare/",$comment_arr[comment_poster_id]).'" alt="'.$comment_arr[comment_poster].'">';
         }
         if ($comment_arr[is_admin] == 1)
         {
@@ -144,53 +170,6 @@ while ($comment_arr = mysql_fetch_assoc($index))
         $comment_arr[comment_poster] = killhtml($comment_arr[comment_poster]);
     }
 
-    // Text formatieren
-    switch ($config_arr[html_code])
-    {
-        case 1:
-            $html = false;
-            break;
-        case 2:
-            $html = false;
-            break;
-        case 3:
-            $html = true;
-            break;
-        case 4:
-            $html = true;
-            break;
-    }
-    switch ($config_arr[fs_code])
-    {
-        case 1:
-            $fs = false;
-            break;
-        case 2:
-            $fs = false;
-            break;
-        case 3:
-            $fs = true;
-            break;
-        case 4:
-            $fs = true;
-            break;
-    }
-    switch ($config_arr[para_handling])
-    {
-        case 1:
-            $para = false;
-            break;
-        case 2:
-            $para = false;
-            break;
-        case 3:
-            $para = true;
-            break;
-        case 4:
-            $para = true;
-            break;
-    }
-
     if ($fs == true) {
         $comment_arr[comment_text] = fscode($comment_arr[comment_text],$fs,$html,$para, $editor_config[do_bold], $editor_config[do_italic], $editor_config[do_underline], $editor_config[do_strike], $editor_config[do_center], $editor_config[do_url], $editor_config[do_home], $editor_config[do_email], $editor_config[do_img], $editor_config[do_cimg], $editor_config[do_list], $editor_config[do_numlist], $editor_config[do_font], $editor_config[do_color], $editor_config[do_size], $editor_config[do_code], $editor_config[do_quote], $editor_config[do_noparse], $editor_config[do_smilies]);
     } else {
@@ -202,10 +181,6 @@ while ($comment_arr = mysql_fetch_assoc($index))
     
     $comment_arr[comment_title] =   killhtml($comment_arr[comment_title]);
     $comment_arr[comment_title] =   killsv($comment_arr[comment_title]);
-
-    //FScode-Html Anzeige
-    $fs_active = ($fs) ? "an" : "aus";
-    $html_active = ($html) ? "an" : "aus";
 
     // Template auslesen und füllen
     $index2 = mysql_query("select news_comment_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
@@ -219,6 +194,11 @@ while ($comment_arr = mysql_fetch_assoc($index))
     $comments_template .= $template;
 }
 unset($comment_arr);
+if (mysql_num_rows($index) <= 0)
+{
+    $comments_template = "Es wurden keine Kommentare gefunden!";
+}
+
 
 // Eingabeformular generieren
 $index = mysql_query("select news_comment_form_name from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
@@ -227,6 +207,7 @@ $form_name = stripslashes(mysql_result($index, 0, "news_comment_form_name"));
 $index = mysql_query("select news_comment_form_spam from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $form_spam = stripslashes(mysql_result($index, 0, "news_comment_form_spam"));
 $form_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php", $form_spam);
+$form_spam = str_replace("{newsid}", $_GET[id], $form_spam);
 
 $index = mysql_query("select news_comment_form_spamtext from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $form_spam_text = stripslashes(mysql_result($index, 0, "news_comment_form_spamtext"));
@@ -259,9 +240,16 @@ $template = str_replace("{antispamtext}", $form_spam_text, $template);
 
 $formular_template = $template;
 
-if ($news_rows>0 AND $news_arr[news_date]<=time()) {
-    $template = $news_template.$comments_template.$formular_template;
-} else {
+if ($news_rows>0 AND $news_arr[news_date]<=time())
+{
+    $index = mysql_query("SELECT news_comment_container FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
+    $template = stripslashes(mysql_result($index, 0, "news_comment_container"));
+    $template = str_replace("{news}", $news_template, $template);
+    $template = str_replace("{comments}", $comments_template, $template);
+    $template = str_replace("{comment_form}", $formular_template, $template);
+}
+else
+{
     $template = $news_template;
 }
 ?>

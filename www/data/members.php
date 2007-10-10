@@ -116,8 +116,8 @@ while ($user = mysql_fetch_assoc($users_sql))
 
     $temp = str_replace("{username}", $user['user_name'], $temp);
     $temp = str_replace("{userlink}", "?go=profil&userid=".$user['user_id'], $temp);
-    if (image_exists("",$user['user_id'])) {
-      $temp = str_replace("{avatar}", '<img src="'.image_url("images/avatare/",$_GET[userid],false).'" />', $temp);
+    if (image_exists("images/avatare/",$user['user_id'])) {
+      $temp = str_replace("{avatar}", '<img src="'.image_url("images/avatare/",$user['user_id'], false).'" />', $temp);
     } else {
       $temp = str_replace("{avatar}", "", $temp);
     }

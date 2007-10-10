@@ -33,13 +33,13 @@ if (mysql_num_rows($index) > 0)
     }
     else
     {
-        $file_arr[dl_bild] = "images/design/nopic120.gif";
-        $file_arr[dl_thumb] = "images/design/nopic120.gif";
+        $file_arr[dl_bild] = "images/icons/nopic_small.gif";
+        $file_arr[dl_thumb] = "images/icons/nopic_small.gif";
     }
 
     // Sonstige Daten ermitteln
     $file_arr[dl_date] = date("d.m.Y" , $file_arr[dl_date]);
-    $file_arr[dl_text] = fscode($file_arr[dl_text], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    $file_arr[dl_text] = fscode($file_arr[dl_text]);
     $index3 = mysql_query("select cat_name from ".$global_config_arr[pref]."dl_cat where cat_id = '$file_arr[cat_id]'", $db);
     $file_arr[cat_name] = stripslashes(mysql_result($index3, 0, "cat_name"));
 
@@ -78,16 +78,6 @@ if (mysql_num_rows($index) > 0)
     $messages_template .= $phrases[dl_not_save_as];
 
       
-    // User eingeloggt?
-//    if ($_SESSION[user_level] == "loggedin")
-//    {
-//        $file_arr[dl_link] = '<a target="_blank" href="?go=dl&amp;fileid='.$file_arr[dl_id].'&amp;dl=true"><b>Download</b></a><br><font color="red">Hinweis:</font> "Ziel speichern unter" ist nicht möglich.';
-//    }
-//    else
-//    {
-//        $file_arr[dl_link] = $phrases[dl_not_logged_in];
-//    }
-
     // Files auslesen
     if ($index = mysql_query("select * from ".$global_config_arr[pref]."dl_files where dl_id = $file_arr[dl_id] $dl_use", $db))
     {

@@ -8,7 +8,7 @@ echo'
 <head>
     <title>Frogsystem 2 - Vorschau</title>
 
-    <link rel="stylesheet" type="text/css" href="../css/'.$global_config_arr[design_name].'.css">
+    <link rel="stylesheet" type="text/css" href="../sytle_css.php">
     <script>
         function loaddata()
         {

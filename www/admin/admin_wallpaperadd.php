@@ -1,4 +1,9 @@
 <?php
+/////////////////////
+//// Config laden ///
+/////////////////////
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // WP Konfiguration auslesen
+$config_arr = mysql_fetch_assoc($index);
 
 /////////////////////////////
 //// Screenshot hochladen ///
@@ -26,7 +31,9 @@ if (mysql_num_rows($index)==0) {
                          '".$_POST[wallpaper_title]."',
                          '".$_POST[catid]."')", $db);
     $wp_id = mysql_insert_id();
-
+    
+    $message = "";
+    
     for ($i=1; $i<=$_POST[options]; $i++)
     {
       $j = $i - 1;
@@ -34,8 +41,8 @@ if (mysql_num_rows($index)==0) {
       if (isset($_FILES[$filesname]) AND $_POST['size'][$j] != "")
       {
         $j = $i - 1;
-        $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][$j], 5*1024*1024, 9999, 9999);
-        systext(upload_img_notice($upload));
+        $upload = upload_img($_FILES[$filesname], "../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][$j], $config_arr[wp_size]*1024, $config_arr[wp_x], $config_arr[wp_y]);
+        $message .= "WP Größe $i: ".upload_img_notice($upload)."<br>";
         switch ($upload)
         {
         case 0:
@@ -49,12 +56,13 @@ if (mysql_num_rows($index)==0) {
     }
     if (image_exists("../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][0]))
     {
-      create_thumb_from(image_url("../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][0], false), 200, 200);
-      systext(create_thumb_notice($upload));
-      rename(image_url("../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][0]."_s", false), "../images/wallpaper/$_POST[wallpaper_name]_s.jpg");
+      create_thumb_from(image_url("../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][0], false), $config_arr[wp_thumb_x], $config_arr[wp_thumb_y]);
+      $message .= create_thumb_notice($upload)."<br>";
+      image_rename("../images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][0]."_s", $_POST[wallpaper_name]."_s");
     }
-
-  systext("Weiteres Wallpaper hinzufügen:");
+    
+  $message .= "<br>Weiteres Wallpaper hinzufügen:";
+  systext($message);
   $_POST[wallpaper_name] = "";
   $_POST[wallpaper_title] = "";
   for ($i=1; $i<=$_POST[options]; $i++)

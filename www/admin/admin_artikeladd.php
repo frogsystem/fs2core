@@ -26,7 +26,8 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
         $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
 
         mysql_query("INSERT INTO ".$global_config_arr[pref]."artikel
-                     VALUES ('$_POST[url]',
+                     VALUES (NULL,
+                             '$_POST[url]',
                              '$_POST[title]',
                              '$date',
                              '$_POST[posterid]',
@@ -159,7 +160,7 @@ else
                                 <td></td>
                                 <td>
                                     <input class="button" type="button" value="Vorschau" onClick="javascript:open(\'about:blank\',\'prev\',\'width=700,height=710,screenX=0,screenY=0,scrollbars=yes\'); document.getElementById(\'send1\').action=\'admin_artikelprev.php\'; document.getElementById(\'send1\').target=\'prev\'; document.getElementById(\'send1\').submit();">
-                                    <input class="button" type="button" value="Absenden" onClick="javascript:document.getElementById(\'send1\').target=\'_self\'; document.getElementById(\'send1\').action=\''.$PHP_SELF.'\'; document.getElementById(\'send1\').submit();">
+                                    <input class="button" type="button" value="Absenden" onClick="javascript:document.getElementById(\'send1\').target=\'_self\'; document.getElementById(\'send1\').action=\'\'; document.getElementById(\'send1\').submit();">
                                 </td>
                             </tr>
                         </table>

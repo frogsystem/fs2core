@@ -219,7 +219,7 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
                                     <font class="small">Html ist an. FScode ist an</font>
                                 </td>
                                 <td valign="top">
-                                    <textarea rows="26" cols="66" name="text">'.stripslashes(killhtml($_POST[text])).'</textarea>
+                                    '.create_editor("text", stripslashes(killhtml($_POST[text])), 407, 380, "", false).'
                                 </td>
                             </tr>
                             <tr>
@@ -235,7 +235,7 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
                                 <td></td>
                                 <td>
                                     <input class="button" type="button" value="Vorschau" onClick="javascript:open(\'about:blank\',\'prev\',\'width=700,height=710,screenX=0,screenY=0,scrollbars=yes\'); document.getElementById(\'send1\').action=\'admin_artikelprev.php\'; document.getElementById(\'send1\').target=\'prev\'; document.getElementById(\'send1\').submit();">
-                                    <input class="button" type="button" value="Absenden" onClick="javascript:document.getElementById(\'send1\').target=\'_self\'; document.getElementById(\'send1\').action=\''.$PHP_SELF.'\'; document.getElementById(\'send1\').submit();">
+                                    <input class="button" type="button" value="Absenden" onClick="javascript:document.getElementById(\'send1\').target=\'_self\'; document.getElementById(\'send1\').action=\'\'; document.getElementById(\'send1\').submit();">
                                 </td>
                             </tr>
                         </table>
@@ -250,7 +250,7 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
 else
 {
     echo'
-                    <form action="'.$PHP_SELF.'" method="post">
+                    <form action="" method="post">
                         <input type="hidden" value="artikeledit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">

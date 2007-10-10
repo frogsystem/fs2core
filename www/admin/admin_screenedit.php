@@ -39,14 +39,14 @@ elseif (isset($_POST[screenid]))
 //// Thumb neu erstellen ////
 /////////////////////////////
 
-    if ($_POST['do'] == "newthumb" AND $_POST['editscreenid'])
+    if ($_POST['do'] == "newthumb")
     {
         $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // Screenshot Konfiguration auslesen
         $config_arr = mysql_fetch_assoc($index);
 
-        image_delete("../images/screenshots/",$_POST['editscreenid']."_s");
+        image_delete("../images/screenshots/",$_POST['screenid']."_s");
 
-        $newthumb = create_thumb_from(image_url("../images/screenshots/",$_POST['editscreenid'],false),$config_arr[thumb_x],$config_arr[thumb_y]);
+        $newthumb = create_thumb_from(image_url("../images/screenshots/",$_POST['screenid'],false),$config_arr[screen_thumb_x],$config_arr[screen_thumb_y]);
         systext(create_thumb_notice($newthumb)."<br />(Cache leeren nicht vergessen!)");
     }
 
@@ -61,7 +61,6 @@ elseif (isset($_POST[screenid]))
                         <input type="hidden" value="newthumb" name="do">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$screen_arr[screen_id].'" name="screenid">
-                        <input type="hidden" value="'.$screen_arr[screen_id].'" name="editscreenid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">

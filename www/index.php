@@ -118,10 +118,10 @@ $template_main .= '
   ';
 
 if ($global_config_arr[show_favicon] == 1)
-  $template_main .= '<LINK REL="SHORTCUT ICON" HREF="images/icons/favicon.ico">';
+  $template_main .= '<link rel="shortcut icon" href="images/icons/favicon.ico">';
 
-  $template_main .= '<link rel="stylesheet" type="text/css" href="res/style_css.php">';
-  $template_main .= '<link rel="stylesheet" type="text/css" href="res/editor_css.php">';
+  $template_main .= '<link rel="stylesheet" type="text/css" href="style_css.php">';
+  $template_main .= '<link rel="stylesheet" type="text/css" href="editor_css.php">';
   $template_main .= '<link rel="alternate" type="application/rss+xml" href="feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr[title].' News Feed" />';
 
   $template_main .= '<script type="text/javascript" src="res/js_functions.js"></script>';

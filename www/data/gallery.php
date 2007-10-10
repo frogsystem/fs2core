@@ -28,16 +28,22 @@ if (isset($_GET[catid]))
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_id = $_GET[catid]", $db);
     $cat_arr = mysql_fetch_assoc($index);
 
-    //Wieviele Screenshots
+    //WP/Screen unterscheidene Abfragen
     if ($cat_arr[cat_type]==2) {
         $index = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $_GET[catid]", $db);
+        $config_arr[rows] = $config_arr[wp_rows];
+        $config_arr[cols] = $config_arr[wp_cols];
     } else {
-        $index = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $_GET[catid]", $db);
+        $index = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $_GET[catid]", $db);;
+        $config_arr[rows] = $config_arr[screen_rows];
+        $config_arr[cols] = $config_arr[screen_cols];
     }
 
     $config_arr[number_of_screens] = mysql_result($index, 0, "number");
-    if ($config_arr[pics_per_page]==-1) {
+    if ($config_arr[rows]==-1) {
         $config_arr[pics_per_page] = $config_arr[number_of_screens];
+    } else {
+        $config_arr[pics_per_page] = $config_arr[rows]*$config_arr[cols];
     }
     $config_arr[number_of_pages] = ceil($config_arr[number_of_screens]/$config_arr[pics_per_page]);
 
@@ -59,7 +65,7 @@ if (isset($_GET[catid]))
         if ($cat_arr[cat_type]==2)
         {
             $zaehler = 0;
-            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $_GET[catid] ORDER BY wallpaper_id $config_arr[sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $db);
+            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id] ORDER BY wallpaper_id $config_arr[wp_sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $db);
             while ($wp_arr = mysql_fetch_assoc($index))
             {
                 $wp_arr[thumb_url] = image_url("images/wallpaper/", $wp_arr[wallpaper_name]."_s");
@@ -87,13 +93,13 @@ if (isset($_GET[catid]))
                 $zaehler += 1;
                 switch ($zaehler)
                 {
-                    case $config_arr[pics_per_row] == 1:
+                    case $config_arr[cols] == 1:
                         $zaehler = 0;
                         $pics .= "<tr>\n\r";
                         $pics .= $template;
                         $pics .= "</tr>\n\r";
                         break;
-                    case $config_arr[pics_per_row]:
+                    case $config_arr[cols]:
                         $zaehler = 0;
                         $pics .= $template;
                         $pics .= "</tr>\n\r";
@@ -112,7 +118,7 @@ if (isset($_GET[catid]))
         else
         {
             $zaehler = 0;
-            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE cat_id = $_GET[catid] ORDER by screen_id $config_arr[sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $db);
+            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id] ORDER by screen_id $config_arr[screen_sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $db);
 
             while ($screen_arr = mysql_fetch_assoc($index))
             {
@@ -129,13 +135,13 @@ if (isset($_GET[catid]))
                 $zaehler += 1;
                 switch ($zaehler)
                 {
-                    case $config_arr[pics_per_row] == 1:
+                    case $config_arr[cols] == 1:
                         $zaehler = 0;
                         $pics .= "<tr>\n\r";
                         $pics .= $template;
                         $pics .= "</tr>\n\r";
                         break;
-                    case $config_arr[pics_per_row]:
+                    case $config_arr[cols]:
                         $zaehler = 0;
                         $pics .= $template;
                         $pics .= "</tr>\n\r";

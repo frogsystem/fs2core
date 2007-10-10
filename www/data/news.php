@@ -50,6 +50,8 @@ $template = stripslashes(mysql_result($index, 0, "news_headline_body"));
 $template = str_replace("{headlines}", $headline_tpl, $template); 
 $template = str_replace("{downloads}", $downloads_tpl, $template); 
 
+$headline_template = $template;
+
 ////////////////////////////
 ////// News ausgeben ///////
 ////////////////////////////
@@ -64,5 +66,9 @@ while ($news_arr = mysql_fetch_assoc($index))
 }
 unset($news_arr);
 
-$template .= $news_template;
+$index = mysql_query("SELECT news_container FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
+$template = stripslashes(mysql_result($index, 0, "news_container"));
+$template = str_replace("{news}", $news_template, $template);
+$template = str_replace("{headlines}", $headline_template, $template);
+
 ?>
