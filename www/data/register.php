@@ -36,7 +36,7 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
     $_POST[userpass2] = md5(savesql($_POST[userpass1]));
 
     // Username schon vorhanden? oder anti spam falsch?
-    $index = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_name = '$_POST[username]'", $db);
+    $index = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_name = '$_POST[username]'", $db);
     if (mysql_num_rows($index) > 0 OR $anti_spam != true)
     {
         $sysmeldung = "";
@@ -46,14 +46,14 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
         $template .= sys_message($phrases[sysmessage], $sysmeldung);
         
         // Registerformular erneut ausgeben
-        $index = mysql_query("select user_spam from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+        $index = mysql_query("SELECT user_spam FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
         $user_spam = stripslashes(mysql_result($index, 0, "user_spam"));
         $user_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php", $user_spam);
 
-        $index = mysql_query("select user_spamtext from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+        $index = mysql_query("SELECT user_spamtext FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
         $user_spam_text = stripslashes(mysql_result($index, 0, "user_spamtext"));
 
-        $index = mysql_query("select user_register from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+        $index = mysql_query("SELECT user_register FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
         $template_form .= stripslashes(mysql_result($index, 0, "user_register"));
         $template_form = str_replace("{antispam}", $user_spam, $template_form);
         $template_form = str_replace("{antispamtext}", $user_spam_text, $template_form);
@@ -63,7 +63,7 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
     else
     {
         $regdate = time();
-        $index = mysql_query("select email_register from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+        $index = mysql_query("SELECT email_register FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
         $template_mail = stripslashes(mysql_result($index, 0, "email_register"));
         $template_mail = str_replace("{username}", $_POST[username], $template_mail);
         $template_mail = str_replace("{password}", $_POST[userpass1], $template_mail);
@@ -76,13 +76,17 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
         $header .= "Content-Type: text/plain";
         mail($_POST[usermail], $email_betreff, $template_mail, $header);
 
-        $adduser = 'INSERT INTO ".$global_config_arr[pref]."user (user_name, user_password, user_mail, reg_date)
-                    VALUES ("'.$_POST[username].'",
-                            "'.$_POST[userpass2].'",
-                            "'.$_POST[usermail].'",
-                            "'.$regdate.'");';
+        $adduser = "INSERT INTO ".$global_config_arr[pref]."user (user_name, user_password, user_mail, reg_date)
+                    VALUES ('".$_POST[username]."',
+                            '".$_POST[userpass2]."',
+                            '".$_POST[usermail]."',
+                            '".$regdate."')";
         mysql_query($adduser, $db);
-        mysql_query("update ".$global_config_arr[pref]."counter set user=user+1", $db);
+        
+        $index = mysql_query("SELECT COUNT(user_id) AS user FROM ".$global_config_arr[pref]."user", $db);
+        $new_user_num = mysql_result($index,0,"user");
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET user = '".$new_user_num."'", $db);
+        
         $template = sys_message($phrases[sysmessage], $phrases[registered]);
     }
 }
