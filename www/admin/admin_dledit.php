@@ -36,7 +36,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         // Neues Bild hochladen
         $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
         $admin_dl_config_arr = mysql_fetch_assoc($index);
-        if (isset($_FILES[dlimg]))
+        if ($_FILES[dlimg] != "")
         {
             $upload = upload_img($_FILES['dlimg'], "../images/downloads/", $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
             systext(upload_img_notice($upload));

@@ -408,11 +408,15 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
         $filterwhere = "WHERE" . $filterwhere;
     }
 
-    if (!isset($_POST['sort']))
+    if (!isset($_POST['order_by']))
     {
-        $_POST['sort'] = "press_date";
+        $_POST['order_by'] = "press_date";
     }
-
+    if (!isset($_POST['order_type']))
+    {
+        $_POST['order_type'] = "desc";
+    }
+    
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_edit" name="go">
@@ -420,8 +424,10 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr><td></td></tr>
                             <tr>
-                                <td class="config" style="text-align:center;">
+                                <td class="config">
                                     Spiele:
+                                </td>
+                                <td class="config">
                                     <select name="gameid" size="1">
                                         <option value="0"'.
                                         ($_POST['gameid'] == 0 ? ' selected="selected"' : '').
@@ -437,8 +443,34 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
     }
     echo '
                                     </select>
-
-                                    &nbsp;Kategorien:
+                                </td>
+                                <td class="config" style="text-align:center;" rowspan="3">
+                                    Sortieren nach:
+                                    <select name="order_by" size="1">
+                                        <option value="press_date"'.
+                                        ($_POST['order_by'] == "press_date" ? ' selected="selected"' : '').
+                                        '>Datum</option>
+                                        <option value="press_title"'.
+                                        ($_POST['order_by'] == "press_title" ? ' selected="selected"' : '').
+                                        '>Titel</option>
+                                    </select>&nbsp;
+                                    <select name="order_type" size="1">
+                                        <option value="asc"'.
+                                        ($_POST['order_type'] == "asc" ? ' selected="selected"' : '').
+                                        '>aufsteigend</option>
+                                        <option value="desc"'.
+                                        ($_POST['order_type'] == "desc" ? ' selected="selected"' : '').
+                                        '>absteigend</option>
+                                    </select>
+                                    <br /><br />
+                                    <input class="button" type="submit" value="Filter anwenden">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    Kategorien:
+                                </td>
+                                <td class="config">
                                     <select name="catid" size="1">
                                         <option value="0"'.
                                         ($_POST['catid'] == 0 ? ' selected="selected"' : '').
@@ -454,8 +486,13 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
     }
     echo '
                                     </select>
-
-                                    &nbsp;Sprachen:
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    Sprachen:
+                                </td>
+                                <td class="config">
                                     <select name="langid" size="1">
                                         <option value="0"'.
                                         ($_POST['langid'] == 0 ? ' selected="selected"' : '').
@@ -471,17 +508,6 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
     }
     echo '
                                     </select>
-                                    <br /><br />
-                                    Sortieren nach:
-                                    <select name="sort" size="1">
-                                        <option value="press_date"'.
-                                        ($_POST['sort'] == "press_date" ? ' selected="selected"' : '').
-                                        '>Datum</option>
-                                        <option value="press_title"'.
-                                        ($_POST['sort'] == "press_title" ? ' selected="selected"' : '').
-                                        '>Titel</option>
-                                    </select>&nbsp;
-                                      <input class="button" type="submit" value="Filter anwenden">
                                 </td>
                             </tr>
                         </table>
@@ -495,7 +521,7 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
     $index = mysql_query("SELECT press_id, press_title, press_date, press_game, press_cat, press_lang
                           FROM ".$global_config_arr[pref]."press
                           $filterwhere
-                          ORDER BY $_POST[sort]", $db);
+                          ORDER BY $_POST[order_by] $_POST[order_type]", $db);
     if (mysql_num_rows($index) > 0)
     {
         echo'

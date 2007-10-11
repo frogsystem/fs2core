@@ -46,7 +46,7 @@ $admin_phrases[random][delpic]                    = "Picture deleted";
 $admin_phrases[random][delpic_question]           = "Are you sure you want to delete the picture?";
 $admin_phrases[random][delconfirm]                = "Picture deleted";
 $admin_phrases[random][delnotconfirm]             = "Picture not deleted";
-$admin_phrases[random][delnote]                   = "(Hinweis: Es wird lediglich der Eintrag als zeitgesteuertes Zufallsbild gelöscht. Das Bild als solches bleibt erhalten.)";
+$admin_phrases[random][delnote]                   = "(Note: Es wird lediglich der Eintrag als zeitgesteuertes Zufallsbild gelöscht. The image itself will not be deleted!)";
 
 $admin_phrases[random][note_deleted]              = "Das zeitgesteuerte Zufallsbild wurde erfolgreich gelöscht!";
 $admin_phrases[random][note_notdeleted]           = "Das zeitgesteuerte Zufallsbild wurde nicht gelöscht!";

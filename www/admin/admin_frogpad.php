@@ -69,7 +69,7 @@ echo'
       <font style="font-size:8pt;"><b>FROGPAD</b></font>
     </div>
     <div id="pad_padding">
-      <textarea name="code" style="font-family:monospace; overflow:auto; width:604px; height:540px;"></textarea>
+      <textarea name="code" style="font-family:monospace; overflow:auto; width:600px; height:525px;"></textarea>
       <br /><br />
       <input type="button" class="button" value="Ändern" onClick="send();">
       <input type="button" class="button" value="Abbrechen" onClick="javascript:self.close()">

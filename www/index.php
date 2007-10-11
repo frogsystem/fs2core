@@ -6,7 +6,7 @@ if ($db)
     include("res/dl.inc.php");
     include("functions.php");
     include("cookielogin.php");
-    include("phrases/phrases.de.php");
+    include("phrases/phrases_de.php");
 
 /////////////////////////////
 //// Konstruktor aufrufe ////
