@@ -4,7 +4,7 @@
 //// DB Aktualisieren ////
 //////////////////////////
 
-if ($_POST[url] && $_POST[title] && $_POST[text])
+if ($_POST[url] && $_POST[title] && $_POST[text] && $_POST[cat_id])
 {
     if(!isset($_POST[delit]))
     {
@@ -26,6 +26,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
             $_POST[oldurl] = savesql($_POST[oldurl]);
             $_POST[title] = savesql($_POST[title]);
             $_POST[text] = savesql($_POST[text]);
+            settype($_POST[cat_id], 'integer');
             settype($_POST[posterid], 'integer');
             $_POST[search] = isset($_POST[search]) ? 1 : 0;
             $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
@@ -37,7 +38,8 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
                            artikel_user   = '".$_POST[posterid]."',
                            artikel_text   = '".$_POST[text]."',
                            artikel_index  = '".$_POST[search]."',
-                           artikel_fscode = '".$_POST[fscode]."'
+                           artikel_fscode = '".$_POST[fscode]."',
+                           artikel_cat_id =	'".$_POST[cat_id]."'
                        WHERE artikel_url = '".$_POST[oldurl]."'";
 
             mysql_query($update, $db);
@@ -139,6 +141,15 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
     {
       $_POST['text'] =  stripslashes($artikel_arr[artikel_text]);
     }
+    
+    // category id
+	$cats_options = '';
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."artikel_cat", $db);
+    
+    while ($arr = mysql_fetch_assoc($index)) {
+	    $state = ($artikel_arr[artikel_cat_id] == $arr[cat_id]) ? "selected" : "";
+	    $cats_options .= '<option value="'.$arr[cat_id].'" selected="'.$state.'">'.$arr[cat_name].'</option>';
+    }
 
     echo'
                     <form id="send1" action="" method="post" target="_self">
@@ -165,6 +176,17 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
                                     <input value="'.stripslashes(killhtml($_POST[title])).'" class="text" size="40" name="title" maxlength="100">
                                 </td>
                             </tr>
+                            <tr>
+                            	<td class="config" valign="top">
+                            		Kategorie:<br>
+                            		<font class="small">Kategorie</font>
+                            	</td>
+                            	<td class="config" valign="top">
+                            		<select name="cat_id">
+                            			'.$cats_options.'
+                            		</select>
+                            	</td>
+                            </tr>                            
                             <tr>
                                 <td class="config" valign="top">
                                     Autor:<br>

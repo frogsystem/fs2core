@@ -4,7 +4,7 @@
 //// Artikel in die DB schreiben ////
 /////////////////////////////////////
 
-if ($_POST[url] && $_POST[title] && $_POST[text])
+if ($_POST[url] && $_POST[title] && $_POST[text] && $_POST[cat_id])
 {
     if ($_POST[tag] && $_POST[monat] && $_POST[jahr])  // Datum überprüfen
     {
@@ -21,6 +21,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
     {
         $_POST[title] = savesql($_POST[title]);
         $_POST[text] = savesql($_POST[text]);
+        settype($_POST[cat_id], 'integer');
         settype($_POST[posterid], 'integer');
         $_POST[search] = isset($_POST[search]) ? 1 : 0;
         $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
@@ -33,7 +34,8 @@ if ($_POST[url] && $_POST[title] && $_POST[text])
                              '$_POST[posterid]',
                              '$_POST[text]',
                              '$_POST[search]',
-                             '$_POST[fscode]');", $db);
+                             '$_POST[fscode]',
+                             '$_POST[cat_id]');", $db);
         mysql_query("UPDATE ".$global_config_arr[pref]."counter SET artikel = artikel + 1", $db);
         systext("Artikel wurde gespeichert");
     }
@@ -74,6 +76,14 @@ else
     }
     // verwendet fs code
     $dbartikelfscode = ($_POST['fscode'] == 1) ? "checked" : "";
+    
+    // category id
+	$cats_options = '';
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."artikel_cat", $db);
+    
+    while ($arr = mysql_fetch_assoc($index)) {
+	    $cats_options .= '<option value="'.$arr[cat_id].'">'.$arr[cat_name].'</option>';
+    }
 
     echo'
                     <form id="send1" action="" method="post">
@@ -98,6 +108,17 @@ else
                                 <td class="config" valign="top">
                                     <input value="'.stripslashes(killhtml($_POST[title])).'" class="text" size="40" name="title" maxlength="100">
                                 </td>
+                            </tr>
+                            <tr>
+                            	<td class="config" valign="top">
+                            		Kategorie:<br>
+                            		<font class="small">Kategorie</font>
+                            	</td>
+                            	<td class="config" valign="top">
+                            		<select name="cat_id">
+                            			'.$cats_options.'
+                            		</select>
+                            	</td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
