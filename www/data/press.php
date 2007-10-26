@@ -366,7 +366,7 @@ if ($config_arr[show_press_sql] == true)
 
         $index2 = mysql_query("SELECT press_body FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
         $template = stripslashes(mysql_result($index2, 0, "press_body"));
-        $template = str_replace("{title}", $press_arr[press_title], $template);
+        $template = str_replace("{title}", killhtml($press_arr[press_title]), $template);
         $template = str_replace("{url}", $press_arr[press_url], $template);
         $template = str_replace("{date}", date($global_config_arr[date], $press_arr[press_date]), $template);
         $template = str_replace("{text}", fscode($press_arr[press_text]), $template);

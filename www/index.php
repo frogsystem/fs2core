@@ -4,8 +4,8 @@ include("config.inc.php");
 if ($db)
 {
     include("res/dl.inc.php");
-    include("functions.php");
-    include("cookielogin.php");
+    include("includes/functions.php");
+    include("includes/cookielogin.php");
     include("phrases/phrases_de.php");
 
 /////////////////////////////
@@ -13,11 +13,11 @@ if ($db)
 /////////////////////////////
 
 delete_old_randoms ();
-
+set_design();
 
 
 // Hauptmenü aufbauen
-$index = mysql_query("select main_menu from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("SELECT main_menu FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
 $template_main_menu = stripslashes(mysql_result($index, 0, "main_menu"));
 $template_main_menu = killbraces($template_main_menu);
 
@@ -29,7 +29,7 @@ if (!isset($_GET[go]))
 else
 {
   $goto = savesql($_GET[go]);
-  $index = mysql_query("select artikel_url from ".$global_config_arr[pref]."artikel where artikel_url = '$goto'");
+  $index = mysql_query("SELECT artikel_url FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$goto'");
 }
 
 //Go-Aliase
@@ -98,7 +98,7 @@ $template_partner = $template;
 $template_partner = killbraces($template_partner);
 unset($template);
 
-$index = mysql_query("select doctype from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+$index = mysql_query("SELECT doctype FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
 $template_main = stripslashes(mysql_result($index, 0, "doctype"));
 $template_main .= '
 <html>
@@ -118,14 +118,20 @@ $template_main .= '
   ';
 
 if ($global_config_arr[show_favicon] == 1)
-  $template_main .= '<link rel="shortcut icon" href="images/icons/favicon.ico">';
+  $template_main .= '<link rel="shortcut icon" href="images/icons/favicon.ico">
+  ';
 
-  $template_main .= '<link rel="stylesheet" type="text/css" href="style_css.php">';
-  $template_main .= '<link rel="stylesheet" type="text/css" href="editor_css.php">';
-  $template_main .= '<link rel="alternate" type="application/rss+xml" href="feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr[title].' News Feed" />';
+  $template_main .= '<link rel="stylesheet" type="text/css" href="style_css.php?id='.$global_config_arr['design'].'">
+  ';
+  $template_main .= '<link rel="stylesheet" type="text/css" href="editor_css.php?id='.$global_config_arr['design'].'">
+  ';
+  $template_main .= '<link rel="alternate" type="application/rss+xml" href="feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr[title].' News Feed" />
+  ';
 
-  $template_main .= '<script type="text/javascript" src="res/js_functions.js"></script>';
-  $template_main .= '<script type="text/javascript" src="res/js_userfunctions.php"></script>';
+  $template_main .= '<script type="text/javascript" src="res/js_functions.js"></script>
+  ';
+  $template_main .= '<script type="text/javascript" src="res/js_userfunctions.php?id='.$global_config_arr['design'].'"></script>
+  ';
 
 $template_main .= '</head>';
 

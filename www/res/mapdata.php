@@ -1,6 +1,6 @@
 <?php 
-include("config.inc.php");
-include("functions.php");
+include("../config.inc.php");
+include("../includes/functions.php");
 
 ////////////////////////
 //// Daten einfügen ////

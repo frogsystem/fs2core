@@ -2,27 +2,22 @@
 
 header("Content-type: application/atom+xml");
 
-include("login.inc.php");
+include("../login.inc.php");
 
-@$db = mysql_connect($host, $user, $pass);
 if ($db)
 {
-    include("functions.php");
-    mysql_select_db($data,$db);
+    include("../includes/functions.php");
 
-    // Allgemeine Config + Infos
-    $index = mysql_query("SELECT * FROM ".$pref."global_config", $db);
-    $global_config_arr = mysql_fetch_assoc($index);
     if ($global_config_arr[virtualhost] == "") {
-        $global_config_arr[virtualhost] = "http://notfound.com/";
+        $global_config_arr[virtualhost] = "http://example.com/";
     }
 
     // News Config + Infos
-    $index = mysql_query("SELECT * FROM ".$pref."news_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_config", $db);
     $news_config_arr = mysql_fetch_assoc($index);
 
     $index = mysql_query("SELECT news_date
-                          FROM ".$pref."news
+                          FROM ".$global_config_arr[pref]."news
                           WHERE news_date <= UNIX_TIMESTAMP()
                           ORDER BY news_date DESC
                           LIMIT 1");
@@ -44,14 +39,14 @@ if ($db)
     ';
 
     $index = mysql_query("SELECT news_id, news_text, news_title, news_date, user_id
-                          FROM ".$pref."news
+                          FROM ".$global_config_arr[pref]."news
                           WHERE news_date <= UNIX_TIMESTAMP()
                           ORDER BY news_date DESC
                           LIMIT $news_config_arr[num_news]");
 
     while ($news_arr = mysql_fetch_assoc($index))
     {
-        $index2 = mysql_query("SELECT user_name FROM ".$pref."user WHERE user_id = $news_arr[user_id]");
+        $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_id = $news_arr[user_id]");
         $news_arr[user_name] = mysql_result($index2,0,"user_name");
 
         $news_arr[old_time_zone] = date("O",$news_arr[news_date]);
@@ -71,7 +66,7 @@ if ($db)
                     <name>'.$news_arr[user_name].'</name>
                 </author>
                 <content>'.utf8_encode(killfs($news_arr[news_text])).'</content>
-                <link rel="alternate" href="'.$global_config_arr[virtualhost].'#'.$news_arr[news_id].'" />
+                <link rel="alternate" href="'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'" />
             </entry>
         ';
      }
@@ -79,13 +74,15 @@ if ($db)
     echo'
         </feed>
     ';
+
+mysql_close($db);
 }
 else
 {
     //"Keine Verbindung"-Feed
     echo'<?xml version="1.0" encoding="utf-8"?>
         <feed xmlns="http://www.w3.org/2005/Atom">
-        <id>http://notfound.com/</id>
+        <id>http://example.com/</id>
         <title>Fehler</title>
         <updated>'.date("r").'</updated>
         </feed>

@@ -1,8 +1,8 @@
 <?php
 session_start(); 
-include("config.inc.php");
-include("functions.php");
-include("adminfunctions.php");
+include("../config.inc.php");
+include("../includes/functions.php");
+include("../includes/adminfunctions.php");
 include("../phrases/phrases_de.php");
 include("../phrases/admin_phrases_de.php");
 
@@ -314,10 +314,22 @@ unset($NAVI_ARR);
 $NAVI_ARR[title] = "Zufallsbilder";
 $NAVI_ARR[menu_id] = "media";
 
+$NAVI_ARR[link][] = "randompic_config";
 $NAVI_ARR[link][] = "randompic_cat";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
+///// random pic timed
+//////////////////////////////
+
+$NAVI_ARR[title] = '<span style="font-size:9pt;">Zeitgesteuerte ZB</span>';
+$NAVI_ARR[menu_id] = "media";
+
 $NAVI_ARR[link][] = "randompic_time_add";
 $NAVI_ARR[link][] = "randompic_time";
-$NAVI_ARR[link][] = "randompic_config";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);

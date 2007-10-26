@@ -1,17 +1,24 @@
 <?php
 header("Content-type: text/javascript");
 
-include("login.inc.php");
+include("../login.inc.php");
 
-@$db = mysql_connect($host, $user, $pass);
 if ($db)
 {
-    mysql_select_db($data,$db);
+    if (isset ($_GET['id']) AND $global_config_arr[allow_other_designs] == 1)
+    {
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."template WHERE id = $_GET[id]", $db);
+        if (mysql_num_rows($index) > 0)
+        {
+            $global_config_arr[design] =  $_GET['id'];
+            settype($global_config_arr[design], "integer");
+        }
+    }
 
-    $global_config_arr[pref] = $pref;
-
-    $index = mysql_query("SELECT js_userfunctions FROM ".$global_config_arr[pref]."template WHERE id = (SELECT design FROM ".$global_config_arr[pref]."global_config WHERE id=1)",$db);
+    $index = mysql_query("SELECT js_userfunctions FROM ".$global_config_arr[pref]."template WHERE id = ".$global_config_arr[design]."", $db);
     $template = mysql_result($index, 0, "js_userfunctions");
     echo $template;
+
+mysql_close($db);
 }
 ?>

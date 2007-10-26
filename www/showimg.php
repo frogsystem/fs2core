@@ -1,7 +1,42 @@
 <?php
 include("config.inc.php");
-include("functions.php");
+if ($db)
+{
+    include("includes/functions.php");
 
+/////////////////////////////
+//// Konstruktor aufrufe ////
+/////////////////////////////
+set_design();
+
+
+//Template aufbauen
+$index = mysql_query("SELECT doctype FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
+$template_main = stripslashes(mysql_result($index, 0, "doctype"));
+$template_main .= '
+<html>
+<head>
+
+  <title>'.$global_config_arr[title].'</title>
+  <base href="'.$global_config_arr['virtualhost'].'">
+
+  <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <META name="Description" content="'.$global_config_arr[description].'">
+  <META name="Keywords" content="'.$global_config_arr[keywords].'">
+  ';
+
+if ($global_config_arr[show_favicon] == 1)
+  $template_main .= '<link rel="shortcut icon" href="images/icons/favicon.ico">
+  ';
+
+  $template_main .= '<link rel="stylesheet" type="text/css" href="style_css.php?id='.$global_config_arr['design'].'">
+  ';
+  $template_main .= '<link rel="stylesheet" type="text/css" href="editor_css.php?id='.$global_config_arr['design'].'">
+  ';
+
+$template_main .= '</head>';
+
+//Inhalt erzeugen
 settype($_GET[catid], 'integer');
 settype($_GET[screenid], 'integer');
 
@@ -11,16 +46,16 @@ $config_arr = mysql_fetch_assoc($index);
 
 if (isset($_GET[screen]))
 {
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen where screen_id = $_GET[screenid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_GET[screenid]", $db);
     $_GET[title] = mysql_result($index, 0, "screen_name");
     $_GET[pic] = image_url("images/screenshots/", $_GET[screenid]);
 
     // gibt es ein nächstes Bild?
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen
-                          where cat_id = $_GET[catid] and
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen
+                          WHERE cat_id = $_GET[catid] AND
                                 screen_id > $_GET[screenid]
-                          order by screen_id
-                          limit 1", $db);
+                          ORDER BY screen_id
+                          LIMIT 1", $db);
     if (mysql_num_rows($index) > 0)
     {
         $nextid = mysql_result($index, 0, "screen_id");
@@ -32,11 +67,11 @@ if (isset($_GET[screen]))
     }
 
     // Gibt es ein vorheriges Bild?
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen
-                          where cat_id = $_GET[catid] and
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen
+                          WHERE cat_id = $_GET[catid] AND
                                 screen_id < $_GET[screenid]
-                          order by screen_id desc
-                          limit 1", $db);
+                          ORDER BY screen_id DESC
+                          LIMIT 1", $db);
     if (mysql_num_rows($index) > 0)
     {
         $previd = mysql_result($index, 0, "screen_id");
@@ -122,9 +157,15 @@ while ($sv_arr = mysql_fetch_assoc($index))
 }
 unset($sv_arr);
 
-$template = $template_viewer;
+
+
+$template = $template_main.$template_viewer."</html>";
+
 unset($template_viewer);
+unset($template_main);
+
 echo $template;
 
 mysql_close($db);
+}
 ?>
