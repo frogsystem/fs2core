@@ -4,7 +4,16 @@
 //// News aktualisieren ////
 ////////////////////////////
 
-if ($_POST[newsedit] && $_POST[title] && $_POST[text])
+if ($_POST[newsedit]
+    && ($_POST[title]!="")
+    && ($_POST[text]!="")
+
+    && ($_POST[stunde]!="")
+    && ($_POST[min]!="")
+    && ($_POST[monat]!="" AND $_POST[monat]!=0)
+    && ($_POST[tag]!="" AND $_POST[tag]!=0)
+    && ($_POST[jahr]!="" AND $_POST[jahr]!=0)
+   )
 {
     settype($_POST[enewsid], 'integer');
 

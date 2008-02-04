@@ -24,7 +24,7 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
     {
         if (!isset($_POST[deluser]))
         {
-            $index = mysql_query("select is_admin from ".$global_config_arr[pref]."user where user_id = '$_POST[userid]'", $db);
+            $index = mysql_query("SELECT is_admin FROM ".$global_config_arr[pref]."user WHERE user_id = '$_POST[userid]'", $db);
             $dbisadmin = mysql_result($index, 0, "is_admin");
 
             // Wenn vorher kein Admin, jetzt aber wohl
@@ -37,41 +37,58 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
             // Wenn vorher Admin, jetzt aber nicht mehr
             if (($_POST[isadmin] == 0) && ($dbisadmin == 1))
             {
-                $dbaction = "delete from ".$global_config_arr[pref]."permissions where user_id = ".$_POST[userid];
+                $dbaction = "DELETE FROM ".$global_config_arr['pref']."permissions WHERE user_id = ".$_POST[userid];
                 mysql_query($dbaction, $db);
             }
 
+            $update = "UPDATE ".$global_config_arr['pref']."user
+                       SET user_name = '".$_POST['username']."',
+                           user_mail = '".$_POST['usermail']."',
+            ";
+            
             // Neues Passwort?
-            if ($_POST[newpass] != "")
-            {
-                $userpass = md5($_POST[newpass]);
+            if ( $_POST[newpass] != "" ) {
+                $newsalt = generate_pwd ( 10 );
+                $userpass = md5 ( $_POST[newpass].$newsalt );
+                $update .= "user_password = '".$userpass."',
+                            user_salt = '".$newsalt."',";
             }
-            else
-            {
-                $userpass = savesql($_POST[oldpass]);
-            }
-
-            $update = "UPDATE ".$global_config_arr[pref]."user
-                       SET user_name     = '$_POST[username]',
-                           user_mail     = '$_POST[usermail]',
-                           user_password = '$userpass',
-                           is_admin      = '$_POST[isadmin]',
-                           reg_date      = '$regdate',
-                           show_mail     = '$_POST[showmail]'
-                       WHERE user_id = $_POST[userid]";
+            
+            $update .= "   is_admin = '".$_POST['isadmin']."',
+                           reg_date = '".$regdate."',
+                           show_mail = '".$_POST['showmail']."'
+                       WHERE user_id = $_POST[userid]
+            ";
+                       
             mysql_query($update, $db);
+            
+            //Avatar löschen
+            if ($_POST['avatar_delete'] == 1)
+            {
+                if (image_delete("../images/avatare/", $_POST[userid])) {
+                    systext('Das Bild wurde erfolgreich gelöscht!');
+                } else {
+                    systext('Das Bild konnte nicht gelöscht werden, da es nicht existiert!');
+                }
+            }
+            //Avatar neu hochladen
+            elseif ($_FILES['avatar']['name'] != "")
+            {
+                $upload = upload_img($_FILES['avatar'], "../images/avatare/", $_POST[userid], 30*1024, 110, 110);
+                systext(upload_img_notice($upload));
+            }
 
             systext('User wurde geändert');
         } 
         elseif($_POST[userid] != 1 AND $_POST[userid] != $_SESSION[user_id])  // User löschen
         {
-            $dbaction = "delete from ".$global_config_arr[pref]."permissions where user_id = ".$_POST[userid];
+            $dbaction = "DELETE FROM ".$global_config_arr['pref']."permissions WHERE user_id = ".$_POST[userid];
             @mysql_query($dbaction, $db);
 
-            $dbaction = "delete from ".$global_config_arr[pref]."user where user_id = ".$_POST[userid];
+            $dbaction = "DELETE FROM ".$global_config_arr['pref']."user WHERE user_id = ".$_POST[userid];
             mysql_query($dbaction, $db);
 
-            mysql_query("update ".$global_config_arr[pref]."counter set user=user-1", $db);
+            mysql_query("UPDATE ".$global_config_arr['pref']."counter SET user = user - 1", $db);
             systext('User wurde gelöscht');
         }
     }
@@ -88,18 +105,18 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
 elseif (isset($_POST[select_user]))
 {
     settype($_POST[select_user], 'integer');
-    $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_id = $_POST[select_user]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_id = $_POST[select_user]", $db);
     $user_arr = mysql_fetch_assoc($index);
 
     $user_arr[is_admin] = ($user_arr[is_admin] == 1) ? "checked" : "";
     $user_arr[show_mail] = ($user_arr[show_mail] == 1) ? "checked" : "";
 
     echo'
-                    <form action="" method="post">
+                    <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" value="useredit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$user_arr[user_password].'" name="oldpass">
-                        <input type="hidden" value="'.$_POST[select_user].'" name="userid">
+                        <input type="hidden" value="'.$user_arr[user_id].'" name="userid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top" width="50%">
@@ -108,6 +125,28 @@ elseif (isset($_POST[select_user]))
                                 </td>
                                 <td class="config" width="50%" valign="top">
                                     <input class="text" size="30" name="username" value="'.$user_arr[user_name].'" maxlength="100">
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td class="config">
+                                    Bild: <font class="small">(optional)</font>';
+    if (image_exists("../images/avatare/", $user_arr[user_id])) {
+        echo'<br><br><img src="'.image_url("../images/avatare/", $user_arr[user_id]).'" alt=""                             border="0"><br><br>';
+    }
+    echo'
+                                </td>
+                                <td class="config">
+                                    <input name="avatar" type="file" size="35" class="text" /><br />
+                                    <font class="small">[max. 110 x 110 Pixel] [max. 30 KB]</font>';
+    if (image_exists("../images/avatare/", $user_arr[user_id]))
+    echo'
+                                    <br>
+                                    <font class="small">
+                                        <b>Nur auswählen, wenn das bisherige Bild überschrieben werden soll!</b>
+                                    </font><br><br>
+                                    <input type="checkbox" name="avatar_delete" id="avd" value="1" onClick=\'delalert ("avd", "Soll das Benutzerbild wirklich gelöscht werden?")\' />
+                                    <font class="small"><b>Bild löschen?</b></font><br><br>';
+    echo'
                                 </td>
                             </tr>
                             <tr>

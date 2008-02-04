@@ -144,7 +144,7 @@ else
     }
     $query .= $or_query . $and_query;
 
-    switch ($order)
+    switch ($_POST[order])
     {
         case "u":
             $query .=  " ORDER BY ref_url LIMIT " . $_POST[limit];

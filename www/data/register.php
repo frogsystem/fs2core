@@ -1,72 +1,54 @@
 <?php
+$show_form = true;
+$template = "";
+
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-session_start();
-function encrypt($string, $key) {
-$result = '';
-for($i=0; $i<strlen($string); $i++) {
-   $char = substr($string, $i, 1);
-   $keychar = substr($key, ($i % strlen($key))-1, 1);
-   $char = chr(ord($char)+ord($keychar));
-   $result.=$char;
-}
-return base64_encode($result);
-}
-$sicherheits_eingabe = encrypt($_POST["spam"], "3g9sp3hr45");
-$sicherheits_eingabe = str_replace("=", "", $sicherheits_eingabe);
+$anti_spam = check_captcha ($_POST['spam'], $global_config_arr['registration_antispam']);
 
 ///////////////////////////
 ///// User hinzufügen /////
 ///////////////////////////
 
-if ($global_config_arr[registration_antispam]==0) {
-    $anti_spam = true;
-} elseif ($sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] AND is_numeric($_POST["spam"]) == true AND $sicherheits_eingabe == true) {
-    $anti_spam = true;
-} else {
-    $anti_spam = false;
-}
-
-if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
+if ($_POST[username] && $_POST[usermail] && $_POST[newpwd] && $_POST[wdhpwd])
 {
-    $_POST[username] = savesql($_POST[username]);
-    $_POST[usermail] = savesql($_POST[usermail]);
-    $userpass = $_POST[userpass1];
-    $_POST[userpass2] = md5(savesql($_POST[userpass1]));
+    $_POST['username'] = savesql ( $_POST['username'] );
+    $_POST['usermail'] = savesql ( $_POST['usermail'] );
+    $user_salt = generate_pwd ( 10 );
+    $userpass = md5 ( $_POST['newpwd'].$user_salt );
+    $userpass_mail = $_POST['newpwd'];
 
+    
     // Username schon vorhanden? oder anti spam falsch?
-    $index = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_name = '$_POST[username]'", $db);
-    if (mysql_num_rows($index) > 0 OR $anti_spam != true)
+    $index = mysql_query("SELECT COUNT(user_id) AS number FROM ".$global_config_arr[pref]."user
+                          WHERE user_name = '$_POST[username]'", $db);
+    $existing_users = mysql_result($index, 0, "number");
+    
+    if ($existing_users > 0 || $anti_spam != true || $_POST[newpwd] != $_POST[wdhpwd])
     {
-        $sysmeldung = "";
-        if (mysql_num_rows($index) > 0) { $sysmeldung .= $phrases[user_exists]; }
-        if (mysql_num_rows($index) > 0 AND $anti_spam != true) { $sysmeldung .= "<br />"; }
-        if ($anti_spam != true) { $sysmeldung .= $phrases[user_antispam]; }
-        $template .= sys_message($phrases[sysmessage], $sysmeldung);
-        
-        // Registerformular erneut ausgeben
-        $index = mysql_query("SELECT user_spam FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-        $user_spam = stripslashes(mysql_result($index, 0, "user_spam"));
-        $user_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php", $user_spam);
-
-        $index = mysql_query("SELECT user_spamtext FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-        $user_spam_text = stripslashes(mysql_result($index, 0, "user_spamtext"));
-
-        $index = mysql_query("SELECT user_register FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-        $template_form .= stripslashes(mysql_result($index, 0, "user_register"));
-        $template_form = str_replace("{antispam}", $user_spam, $template_form);
-        $template_form = str_replace("{antispamtext}", $user_spam_text, $template_form);
-        $template .= $template_form;
+        unset($sysmeldung);
+        if ($existing_users > 0) {
+            $sysmeldung[] = $phrases[user_exists];
+        }
+        if ($anti_spam != true) {
+            $sysmeldung[] = $phrases[user_antispam];
+        }
+        if ($_POST[newpwd] != $_POST[wdhpwd]) {
+            $sysmeldung[] = $phrases[passnotequal];
+        }
+        $template .= sys_message($phrases[sysmessage], implode("<br>", $sysmeldung));
+        unset($_POST);
     }
 
     else
     {
         $regdate = time();
+        
         $index = mysql_query("SELECT email_register FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
         $template_mail = stripslashes(mysql_result($index, 0, "email_register"));
         $template_mail = str_replace("{username}", $_POST[username], $template_mail);
-        $template_mail = str_replace("{password}", $_POST[userpass1], $template_mail);
+        $template_mail = str_replace("{password}", $userpass_mail, $template_mail);
 
         $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtualhost];
         $header  = "From: ".$global_config_arr[admin_mail]."\n";
@@ -76,32 +58,47 @@ if ($_POST[username] && $_POST[userpass1] && $_POST[usermail])
         $header .= "Content-Type: text/plain";
         mail($_POST[usermail], $email_betreff, $template_mail, $header);
 
-        $adduser = "INSERT INTO ".$global_config_arr[pref]."user (user_name, user_password, user_mail, reg_date)
-                    VALUES ('".$_POST[username]."',
-                            '".$_POST[userpass2]."',
-                            '".$_POST[usermail]."',
+        $adduser = "INSERT INTO ".$global_config_arr['pref']."user (user_name, user_password, user_salt, user_mail, reg_date)
+                    VALUES ('".$_POST['username']."',
+                            '".$userpass."',
+                            '".$user_salt."',
+                            '".$_POST['usermail']."',
                             '".$regdate."')";
-        mysql_query($adduser, $db);
+        mysql_query ( $adduser, $db );
         
-        $index = mysql_query("SELECT COUNT(user_id) AS user FROM ".$global_config_arr[pref]."user", $db);
-        $new_user_num = mysql_result($index,0,"user");
-        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET user = '".$new_user_num."'", $db);
+        $index = mysql_query ( "SELECT COUNT(user_id) AS user FROM ".$global_config_arr['pref']."user", $db );
+        $new_user_num = mysql_result ( $index,0,"user" );
+        mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET user = '".$new_user_num."'", $db );
         
-        $template = sys_message($phrases[sysmessage], $phrases[registered]);
+        $template .= sys_message($phrases[sysmessage], $phrases[registered]);
+        
+        unset($_POST);
+        $show_form = false;
     }
 }
+
+/////////////////////////////
+//// Bereits Registriert ////
+/////////////////////////////
+
+if ($_SESSION["user_id"])
+{
+    $show_form = false;
+    $template .= sys_message($phrases[sysmessage], $phrases[not_twice]);
+}
+
 
 ///////////////////////////
 //// Register Formular ////
 ///////////////////////////
 
-else
+if ($show_form == true)
 {
-    $index = mysql_query("select user_spam from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("SELECT user_spam FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
     $user_spam = stripslashes(mysql_result($index, 0, "user_spam"));
-    $user_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php", $user_spam);
+    $user_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php?i=".generate_pwd(8), $user_spam);
 
-    $index = mysql_query("select user_spamtext from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+    $index = mysql_query("SELECT user_spamtext FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
     $user_spam_text = stripslashes(mysql_result($index, 0, "user_spamtext"));
 
     if ($global_config_arr[registration_antispam]==0)
@@ -110,9 +107,10 @@ else
         $user_spam_text = "";
     }
 
-    $index = mysql_query("select user_register from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $template = stripslashes(mysql_result($index, 0, "user_register"));
-    $template = str_replace("{antispam}", $user_spam, $template);
-    $template = str_replace("{antispamtext}", $user_spam_text, $template);
+    $index = mysql_query("SELECT user_register FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
+    $template_form = stripslashes(mysql_result($index, 0, "user_register"));
+    $template_form = str_replace("{antispam}", $user_spam, $template_form);
+    $template_form = str_replace("{antispamtext}", $user_spam_text, $template_form);
+    $template .= $template_form;
 }
 ?>

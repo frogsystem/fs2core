@@ -9,7 +9,8 @@ if (($_POST['title'] AND $_POST['title'] != "")
     && ($_POST['day'] AND $_POST['day'] != "")
     && ($_POST['month'] AND $_POST['month'] != "")
     && ($_POST['year'] AND $_POST['year'] != "")
-    && ($_POST['text'] AND $_POST['text'] != ""))
+    && ($_POST['text'] AND $_POST['text'] != "")
+    && $_POST['sended'] == "add")
 {
     settype($_POST['day'], 'integer');
     settype($_POST['month'], 'integer');
@@ -54,15 +55,53 @@ if (($_POST['title'] AND $_POST['title'] != "")
 ////////////////////////////////////////////
 else
 {
+    //Initialisiere Werte
+    unset($press_arr['press_title']);
+    unset($press_arr['press_url']); $press_arr['press_url'] = "http://";
+    unset($press_arr['press_intro']);
+    unset($press_arr['press_text']);
+    unset($press_arr['press_note']);
+    unset($press_arr['press_game']);
+    unset($press_arr['press_cat']);
+    unset($press_arr['press_lang']);
+    
+    unset($date['tag']);
+    unset($date['monat']);
+    unset($date['jahr']);
+
+
     //Zeit-Array für Heute Button
     $heute[time] = time();
     $heute[tag] = date("d", $heute[time]);
     $heute[monat] = date("m", $heute[time]);
     $heute[jahr] = date("Y", $heute[time]);
 
+    //Error Message
+    if ($_POST['sended'] == "add") {
+        systext ($admin_phrases[common][note_notfilled]);
+
+        $press_arr['press_title'] = killhtml($_POST['title']);
+        $press_arr['press_url'] = killhtml($_POST['url']);
+        $press_arr['press_intro'] = killhtml($_POST['intro']);
+        $press_arr['press_text'] = killhtml($_POST['text']);
+        $press_arr['press_note'] = killhtml($_POST['note']);
+
+        $date[tag] = $_POST['day']; settype($date[tag], 'integer'); if($date[tag]==0){$date[tag]="";}
+        $date[monat] = $_POST['month']; settype($date[month], 'integer'); if($date[month]==0){$date[month]="";}
+        $date[jahr] = $_POST['year']; settype($date[year], 'integer'); if($date[year]==0){$date[year]="";}
+
+        $press_arr['press_game'] = $_POST['game'];
+        $press_arr['press_cat'] = $_POST['cat'];
+        $press_arr['press_lang'] = $_POST['lang'];
+        settype($_POST[press_game], 'integer');
+        settype($_POST[press_cat], 'integer');
+        settype($_POST[press_lang], 'integer');
+    }
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_add" name="go">
+                        <input type="hidden" value="add" name="sended">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -71,7 +110,7 @@ else
                                     <font class="small">Der Name der Website.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="title" size="51" maxlength="150">
+                                    <input class="text" name="title" size="51" maxlength="150" value="'.$press_arr['press_title'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -80,7 +119,7 @@ else
                                     <font class="small">Link zum Artikel.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="url" size="51" maxlength="255" value="http://">
+                                    <input class="text" name="url" size="51" maxlength="255" value="'.$press_arr['press_url'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -89,9 +128,9 @@ else
                                     <font class="small">Datum der Veröffentlichung.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="1" name="day" id="day" maxlength="2"> .
-                                    <input class="text" size="1" name="month" id="month"  maxlength="2"> .
-                                    <input class="text" size="3" name="year" id="year"  maxlength="4">&nbsp;
+                                    <input class="text" size="1" name="day" id="day" maxlength="2" value="'.$date['tag'].'"> .
+                                    <input class="text" size="1" name="month" id="month"  maxlength="2" value="'.$date['monat'].'"> .
+                                    <input class="text" size="3" name="year" id="year"  maxlength="4" value="'.$date['jahr'].'">&nbsp;
                                     <input class="button" type="button" value="Heute"
                                      onClick=\'document.getElementById("day").value="'.$heute[tag].'";
                                                document.getElementById("month").value="'.$heute[monat].'";
@@ -104,7 +143,7 @@ else
                                     <font class="small">Eine kurze Einleitung zum Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("intro", "", 408, 75, "", false).'
+                                    '.create_editor("intro", $press_arr['press_intro'], 408, 75, "", false).'
                                 </td>
                             </tr>
                             <tr>
@@ -113,7 +152,7 @@ else
                                     <font class="small">Ein kleiner Auszug aus dem vorgestellten Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", "", 330, 150).'
+                                    '.create_editor("text", $press_arr['press_text'], 330, 150).'
                                 </td>
                             </tr>
                             <tr>
@@ -123,7 +162,7 @@ else
                                     (z.B. die Wertung eines Tests)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("note", "", 408, 75, "", false).'
+                                    '.create_editor("note", $press_arr['press_note'], 408, 75, "", false).'
                                 </td>
                             </tr>
                             <tr>
@@ -138,7 +177,9 @@ else
                           WHERE type = '1' ORDER BY title", $db);
     while ($game_arr = mysql_fetch_assoc($index))
     {
-        echo'<option value="'.$game_arr[id].'">'.$game_arr[title].'</option>';
+        echo'<option value="'.$game_arr[id].'"';
+        if ($game_arr[id] == $press_arr['press_game']) {echo' selected="selected"';}
+        echo'>'.$game_arr[title].'</option>';
     }
     echo'
                                     </select>
@@ -156,7 +197,9 @@ else
                           WHERE type = '2' ORDER BY title", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
-        echo'<option value="'.$cat_arr[id].'">'.$cat_arr[title].'</option>';
+        echo'<option value="'.$cat_arr[id].'"';
+        if ($cat_arr[id] == $press_arr['press_cat']) {echo' selected="selected"';}
+        echo'>'.$cat_arr[title].'</option>';
     }
     echo'
                                     </select>
@@ -174,7 +217,9 @@ else
                           WHERE type = '3' ORDER BY title", $db);
     while ($lang_arr = mysql_fetch_assoc($index))
     {
-        echo'<option value="'.$lang_arr[id].'">'.$lang_arr[title].'</option>';
+        echo'<option value="'.$lang_arr[id].'"';
+        if ($lang_arr[id] == $press_arr['press_lang']) {echo' selected="selected"';}
+        echo'>'.$lang_arr[title].'</option>';
     }
     echo'
                                     </select>

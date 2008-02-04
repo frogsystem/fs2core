@@ -74,7 +74,9 @@
         $tmp[help][7][tag] = "{shop}";
         $tmp[help][7][text] = $admin_phrases[template][indexphp][help_8];
         $tmp[help][8][tag] = "{partner}";
-        $tmp[help][8][text] = $admin_phrases[template][indexphp][help_9];
+        $tmp[help][8][text] = $admin_phrases[template][indexphp][help_10];
+        $tmp[help][9][tag] = "{copyright}";
+        $tmp[help][9][text] = $admin_phrases[template][indexphp][help_10];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
@@ -111,7 +113,7 @@
     $tmp[description] = $admin_phrases[template][announcement][description];
     $tmp[rows] = "10";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{meldung}";
+        $tmp[help][0][tag] = "{announcement_text}";
         $tmp[help][0][text] = $admin_phrases[template][announcement][help_1];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
@@ -159,13 +161,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-if (templatepage_postcheck($TEMPLATE_EDIT))
-{
-    templatepage_save($TEMPLATE_EDIT);
-    systext("Template wurde aktualisiert");
-}
-else
-{
-    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
-}
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, ensure_copyright("indexphp"));
 ?>

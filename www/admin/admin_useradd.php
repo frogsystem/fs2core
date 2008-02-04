@@ -16,18 +16,21 @@ if ($_POST[username] && $_POST[usermail])
 
     if ($rows == 0)
     {
-        srand ((double)microtime()*1001000);
-        $newpass = rand(10000000,99999999);
-        $codedpass = md5($newpass);
-
+        $newpass = generate_pwd ( 15 );
+        $user_salt = generate_pwd ( 10 );
+        $codedpass = md5 ( $newpass.$user_salt );
+        $_POST[username] = savesql($_POST[username]);
+        $_POST[usermail] = savesql($_POST[usermail]);
         $_POST[showmail] = isset($_POST[showmail]) ? 1 : 0;
 
-        $sqlquery = 'INSERT INTO ".$global_config_arr[pref]."user (user_name, user_password, user_mail, reg_date, show_mail)
-                     VALUES ("'.$_POST[username].'",
-                             "'.$codedpass.'",
-                             "'.$_POST[usermail].'",
-                             "'.$_POST[regdate].'",
-                             "'.$_POST[showmail].'");';
+        $sqlquery = "INSERT INTO ".$global_config_arr[pref]."user
+                     (user_name, user_password, user_mail, reg_date, show_mail)
+                     VALUES ('".$_POST[username]."',
+                             '".$codedpass."',
+                             '".$user_salt."',
+                             '".$_POST[usermail]."',
+                             '".$_POST[regdate]."',
+                             '".$_POST[showmail]."')";
         mysql_query($sqlquery, $db);
 
         // Mail versenden
@@ -44,7 +47,10 @@ if ($_POST[username] && $_POST[usermail])
         $header .= "Content-Type: text/plain";
         mail($usermail, $email_betreff, $template_mail, $header);
 
-        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET user=user+1", $db);
+        $index = mysql_query("SELECT COUNT(user_id) AS user FROM ".$global_config_arr[pref]."user", $db);
+        $new_user_num = mysql_result($index,0,"user");
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET user = '".$new_user_num."'", $db);
+
         systext('User wurde hinzugefügt');
     }
     else

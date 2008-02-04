@@ -4,8 +4,8 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 AND $_POST[smilies_cols] && $_POST[smilies_cols]>0
- AND $_POST[textarea_width] && $_POST[textarea_width]>0  AND $_POST[textarea_height] && $_POST[textarea_height]>0)
+if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_POST[smilies_cols]>0
+ AND $_POST[textarea_width] && $_POST[textarea_width]>0 && $_POST[textarea_height] && $_POST[textarea_height]>0)
 {
     settype($_POST[smilies_rows], 'integer');
     settype($_POST[smilies_cols], 'integer');
@@ -57,7 +57,8 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 AND $_POST[smilies_cols] && $
                    do_smilies = '$_POST[do_smilies]'
                WHERE id = 1";
     mysql_query($update, $db);
-    systext("Die Konfiguration wurde aktualisiert");
+    
+    systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
 }
 
 /////////////////////////////////////
@@ -68,17 +69,95 @@ else
 {
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."editor_config", $db);
     $config_arr = mysql_fetch_assoc($index);
+
+    if (isset($_POST['sended']))
+    {
+        $config_arr['smilies_rows'] = $_POST['smilies_rows'];
+        $config_arr['smilies_cols'] = $_POST['smilies_cols'];
+        $config_arr['textarea_width'] = $_POST['textarea_width'];
+        $config_arr['textarea_height'] = $_POST['textarea_height'];
+        $config_arr['bold'] = $_POST['bold'];
+        $config_arr['italic'] = $_POST['italic'];
+        $config_arr['underline'] = $_POST['underline'];
+        $config_arr['strike'] = $_POST['strike'];
+        $config_arr['center'] = $_POST['center'];
+        $config_arr['font'] = $_POST['font'];
+        $config_arr['color'] = $_POST['color'];
+        $config_arr['size'] = $_POST['size'];
+        $config_arr['list'] = $_POST['numlist'];
+        $config_arr['numlist'] = $_POST['numlist'];
+        $config_arr['img'] = $_POST['img'];
+        $config_arr['cimg'] = $_POST['cimg'];
+        $config_arr['url'] = $_POST['url'];
+        $config_arr['home'] = $_POST['home'];
+        $config_arr['email'] = $_POST['email'];
+        $config_arr['code'] = $_POST['code'];
+        $config_arr['quote'] = $_POST['quote'];
+        $config_arr['noparse'] = $_POST['noparse'];
+        $config_arr['smilies'] = $_POST['smilies'];
+        $config_arr['do_bold'] = $_POST['do_bold'];
+        $config_arr['do_italic'] = $_POST['do_italic'];
+        $config_arr['do_underline'] = $_POST['do_underline'];
+        $config_arr['do_strike'] = $_POST['do_strike'];
+        $config_arr['do_center'] = $_POST['do_center'];
+        $config_arr['do_font'] = $_POST['do_font'];
+        $config_arr['do_color'] = $_POST['do_color'];
+        $config_arr['do_size'] = $_POST['do_size'];
+        $config_arr['do_list'] = $_POST['do_list'];
+        $config_arr['do_numlist'] = $_POST['do_numlist'];
+        $config_arr['do_img'] = $_POST['do_img'];
+        $config_arr['do_cimg'] = $_POST['do_cimg'];
+        $config_arr['do_url'] = $_POST['do_url'];
+        $config_arr['do_home'] = $_POST['do_home'];
+        $config_arr['do_email'] = $_POST['do_email'];
+        $config_arr['do_code'] = $_POST['do_code'];
+        $config_arr['do_quote'] = $_POST['do_quote'];
+        $config_arr['do_noparse'] = $_POST['do_noparse'];
+        $config_arr['do_smilies'] = $_POST['do_smilies'];
+
+        systext($admin_phrases[common][note_notfilled]."<br />".$admin_phrases[common][only_allowed_values], $admin_phrases[common][error], TRUE);
+    }
+
+    $config_arr['smilies_rows'] = killhtml ( $config_arr['smilies_rows'] );
+    $config_arr['smilies_cols'] = killhtml ( $config_arr['smilies_cols'] );
+    $config_arr['textarea_width'] = killhtml ( $config_arr['textarea_width'] );
+    $config_arr['textarea_height'] = killhtml ( $config_arr['textarea_height'] );
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="editorconfig" name="go">
+                        <input type="hidden" name="sended" value="1">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr><td class="line" colspan="2">'.$admin_phrases[editor][view_settings_title].'</td></tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    Öffentliche Buttons:<br>
-                                    <font class="small">Buttons, die im öffentlichen Teil angezeigt werden.</font>
+                                    '.$admin_phrases[editor][textarea_size].': <span class="small">('.$admin_phrases[common][width_x_height].')</span><br>
+                                    <span class="small">'.$admin_phrases[editor][textarea_size_desc].'</span>
                                 </td>
                                 <td class="config" valign="top" width="50%">
+                                    <input class="text" size="2" name="textarea_width" value="'.$config_arr[textarea_width].'" maxlength="3"> '.$admin_phrases[common][resolution_x].' <input class="text" size="2" name="textarea_height" value="'.$config_arr[textarea_height].'" maxlength="3"> '.$admin_phrases[common][pixel].'<br />
+                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top" width="50%">
+                                    '.$admin_phrases[editor][smilies].':<br>
+                                    <span class="small">'.$admin_phrases[editor][smilies_desc].'</span>
+                                </td>
+                                <td class="config" valign="top" width="50%">
+                                    <input class="text" size="1" name="smilies_rows" value="'.$config_arr[smilies_rows].'" maxlength="2"> '.$admin_phrases[editor][smilies_rows].' <input class="text" size="1" name="smilies_cols" value="'.$config_arr[smilies_cols].'" maxlength="2"> '.$admin_phrases[editor][smilies_smilies].'<br />
+                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[editor][buttons_settings_title].'</td></tr>
+                            <tr>
+                                <td class="config">
+                                    '.$admin_phrases[editor][buttons].':<br>
+                                    <span class="small">'.$admin_phrases[editor][buttons_desc].'</span>
+                                </td>
+                                <td class="config">
 
                                     <table cellpadding="0" cellspacing="0">
                                       <tr>
@@ -235,29 +314,14 @@ else
 
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[editor][fscode_settings_title].'</td></tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    Textfeld Ausmaße: <font class="small">(Breite x Höhe)</font><br>
-                                    <font class="small">Welche Größe soll das Textfeld haben?</font>
-                                </td>
-                                <td class="config" valign="top" width="50%">
-                                    <input class="text" size="2" name="textarea_width" value="'.$config_arr[textarea_width].'" maxlength="3"> x <input class="text" size="2" name="textarea_height" value="'.$config_arr[textarea_height].'" maxlength="3"> Pixel<br /><font class="small">(0 ist nicht zulässig)</font>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top" width="50%">
-                                    Smilies:<br>
-                                    <font class="small">Wie viele Smilies werden im Editor angezeigt?</font>
-                                </td>
-                                <td class="config" valign="top" width="50%">
-                                    <input class="text" size="1" name="smilies_rows" value="'.$config_arr[smilies_rows].'" maxlength="2"> Reihen à <input class="text" size="1" name="smilies_cols" value="'.$config_arr[smilies_cols].'" maxlength="2"> Smilies<br /><font class="small">(0 ist nicht zulässig)</font>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top" width="50%">
-                                    Von Usern verwendbare FS-Codes:<br>
-                                    <font class="small">FS-Codes, die von Usern verwendet werden können.<br />
-                                    <b>Nicht gewählte FS-Codes werden in von Usern erstellten Beiträgen (z.B. Kommentaren) nicht umgewandelt!</b></font>
+                                    '.$admin_phrases[editor][fscode].':<br>
+                                    <span class="small">'.$admin_phrases[editor][fscode_desc].'</span>
+                                    <br /><br />
+                                    <span class="small"><b>'.$admin_phrases[editor][fscode_info].'</b></span>
                                 </td>
                                 <td class="config" valign="top" width="50%">
 
@@ -284,10 +348,10 @@ else
       <img src="'.$global_config_arr[virtualhost].'images/icons/font.gif" alt="" title="[font=xzy]text[/font]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/color.gif" alt="" title="[color=xzy]text[/font]">
+      <img src="'.$global_config_arr[virtualhost].'images/icons/color.gif" alt="" title="[color=xzy]text[/color]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/size.gif" alt="" title="[size=xzy]text[/font]">
+      <img src="'.$global_config_arr[virtualhost].'images/icons/size.gif" alt="" title="[size=xzy]text[/size]">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
@@ -361,13 +425,13 @@ else
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/url.gif" alt="" title="[url=Link-URL]text[/url]">
+      <img src="'.$global_config_arr[virtualhost].'images/icons/url.gif" alt="" title="[url=Link-URL]text[/url], [url]Link-URL[/url]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/home.gif" alt="" title="[url=Homelink]text[/url]">
+      <img src="'.$global_config_arr[virtualhost].'images/icons/home.gif" alt="" title="[home=Homelink]text[/home], [home]Homelink[/home]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/email.gif" alt="" title="[email=e@mail.de]text[/email]">
+      <img src="'.$global_config_arr[virtualhost].'images/icons/email.gif" alt="" title="[email=e@mail.com]text[/email], [email]e@mail.com[/email]">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
@@ -435,9 +499,12 @@ else
 
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    </button>
                                 </td>
                             </tr>
                         </table>

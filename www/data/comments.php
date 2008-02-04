@@ -1,21 +1,4 @@
 <?php
-///////////////////
-//// Anti-Spam ////
-///////////////////
-session_start();
-function encrypt($string, $key) {
-$result = '';
-for($i=0; $i<strlen($string); $i++) {
-   $char = substr($string, $i, 1);
-   $keychar = substr($key, ($i % strlen($key))-1, 1);
-   $char = chr(ord($char)+ord($keychar));
-   $result.=$char;
-}
-return base64_encode($result);
-}
-$sicherheits_eingabe = encrypt($_POST["spam"], "3g9sp3hr45");
-$sicherheits_eingabe = str_replace("=", "", $sicherheits_eingabe);
-
 //////////////////////////////
 //// Configs laden         ////
 //////////////////////////////
@@ -27,22 +10,23 @@ $config_arr = mysql_fetch_assoc($index);
 $index = mysql_query("select * from ".$global_config_arr[pref]."editor_config", $db);
 $editor_config = mysql_fetch_assoc($index);
 
+
+///////////////////
+//// Anti-Spam ////
+///////////////////
+if ($config_arr[com_antispam] == 1 && $_SESSION["user_id"]) {
+    $anti_spam = check_captcha ($_POST["spam"], 0);
+} else {
+    $anti_spam = check_captcha ($_POST["spam"], $config_arr[com_antispam]);
+}
+
+
 //////////////////////////////
 //// Kommentar hinzufügen ////
 //////////////////////////////
 
 if (isset($_POST[addcomment]))
 {
-    if ($config_arr[com_antispam]==0) {
-      $anti_spam = true;
-    } elseif ($config_arr[com_antispam]==1 AND $_SESSION["user_id"]) {
-      $anti_spam = true;
-    } elseif ($sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] AND is_numeric($_POST["spam"]) == true AND $sicherheits_eingabe == true) {
-      $anti_spam = true;
-    } else {
-      $anti_spam = false;
-    }
-
     if ($_POST[id]
          && ($_POST[name] != "" || $_SESSION["user_id"])
          && $_POST[title] != ""
@@ -65,10 +49,11 @@ if (isset($_POST[addcomment]))
             $userid = 0;
         }
 
-        mysql_query("INSERT INTO ".$global_config_arr[pref]."news_comments (news_id, comment_poster, comment_poster_id, comment_date, comment_title, comment_text)
+        mysql_query("INSERT INTO ".$global_config_arr[pref]."news_comments (news_id, comment_poster, comment_poster_id, comment_poster_ip, comment_date, comment_title, comment_text)
                      VALUES ('".$_POST[id]."',
                              '".$_POST[name]."',
                              '$userid',
+                             '".savesql($_SERVER['REMOTE_ADDR'])."',
                              '$commentdate',
                              '".$_POST[title]."',
                              '".$_POST[text]."');", $db);
@@ -206,7 +191,7 @@ $form_name = stripslashes(mysql_result($index, 0, "news_comment_form_name"));
 
 $index = mysql_query("select news_comment_form_spam from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $form_spam = stripslashes(mysql_result($index, 0, "news_comment_form_spam"));
-$form_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php", $form_spam);
+$form_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php?i=".generate_pwd(8), $form_spam);
 $form_spam = str_replace("{newsid}", $_GET[id], $form_spam);
 
 $index = mysql_query("select news_comment_form_spamtext from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);

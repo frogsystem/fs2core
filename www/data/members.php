@@ -143,9 +143,9 @@ while ($user = mysql_fetch_assoc($users_sql))
 }
 
 //Seitennavigation
-$pagenav = $global_config_arr[page];
-$prev = $global_config_arr[page_prev];
-$next = $global_config_arr[page_next];
+$pagenav = stripslashes($global_config_arr[page]);
+$prev = stripslashes($global_config_arr[page_prev]);
+$next = stripslashes($global_config_arr[page_next]);
 $pagenav = str_replace("{page_number}", $_GET[page], $pagenav );
 $pagenav = str_replace("{total_pages}", $config_arr[number_of_pages], $pagenav );
 //Zurück-Schaltfläche
@@ -160,7 +160,7 @@ if (($_GET['page']*$config_arr[user_per_page]) < $config_arr[number_of_users]) {
   $next = str_replace("{url}", "?go=members&sort=$_GET[sort]&page=$config_arr[newpage]", $next);
   $pagenav = str_replace("{next}", $next, $pagenav);
 } else {
-  $pagenav = str_replace("{next}", "", $pagenav);;
+  $pagenav = str_replace("{next}", "", $pagenav);
 }
 
 //Ausgabe der Seite

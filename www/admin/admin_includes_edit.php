@@ -122,13 +122,13 @@ if ($_POST[include_id])
             <input onClick=\'delalert ("include_del", "Soll das Ersetzungsmuster wirklich gelöscht werden?")\' type="checkbox" name="include_del" id="include_del" value="1">
             <br /><br />
             <font class="small">Name:</font><br>
-            <input class="text" size="23" name="name" id="sv_name" maxlength="255" value="'.$inc_arr[replace_string].'" onkeydown="actSV()" onkeypress="actSV()" onkeyup="actSV()" />
+            <input class="text" size="30" name="name" id="sv_name" maxlength="255" value="'.$inc_arr[replace_string].'" onkeydown="actSV()" onkeypress="actSV()" onkeyup="actSV()" />
             <br /><br />
             <font class="small">Suchmuster:</font><br>
-            <input class="text" size="23" name="replace_string" id="sv_syntax" maxlength="255"  value="[%'.$inc_arr[replace_string].'%]" readonly="readonly" />
+            <input class="text" size="20" name="replace_string" id="sv_syntax" maxlength="255"  value="[%'.$inc_arr[replace_string].'%]" readonly="readonly" />
             <br /><br />
             <font class="small">Ersetzung:</font><br>
-            <textarea name="replace_thing" rows="5" cols="20" wrap="virtual">'.$inc_arr[replace_thing].'</textarea>
+            <textarea name="replace_thing" wrap="virtual" style="width:500px; height:200px;">'.$inc_arr[replace_thing].'</textarea>
             <br /><br />
             <input class="button" type="submit" value="Änderung speichern" onclick="actSV()">
           </form>

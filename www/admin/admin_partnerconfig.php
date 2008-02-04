@@ -40,31 +40,23 @@ else
                         <input type="hidden" value="partnerconfig" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
+                            <tr><td colspan="2" class="line">Einstellungen</td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Anzahl zufälliger Partner:<br />
                                     <font class="small">Anzal der zusätzlich zufällig angezeigten Partnerbuttons.<br />
-                                    <b>Permante Partner werden immer angezeigt!</b></font>
+                                    <b>Permante Partner werden grundsätzlich immer angezeigt!</b></font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="partner_anzahl" size="1" value="'.$config_arr[partner_anzahl].'" maxlength="2"> Partnerseiten
                                     <br /><font class="small">(0 ist nicht zulässig)</font>
                                 </td>
                             </tr>
-                            <tr><td>&nbsp;</td></tr>
+                            <tr><td class="space"></td></tr>
+                            <tr><td colspan="2" class="line">Bilder</td></tr>
                             <tr>
                                 <td class="config" valign="top" width="70%">
-                                    Dateigröße:<br>
-                                    <font class="small">Dateigröße, bis zu der Bilder hochgeladen werden können.</font>
-                                </td>
-                                <td class="config" valign="top" width="30%">
-                                    <input class="text" size="5" name="file_size" value="'.$config_arr[file_size].'" maxlength="4"> KB
-                                </td>
-                            </tr>
-                            <tr><td>&nbsp;</td></tr>
-                            <tr>
-                                <td class="config" valign="top" width="70%">
-                                    Bildgröße kleine Bilder:<br>
+                                    Abmessungen kleine Bilder:<br>
                                     <font class="small">Stellt die Größe der kleinen Bilder ein.</font>
                                 </td>
                                 <td class="config" valign="top" width="30%">
@@ -93,7 +85,7 @@ else
                             </tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    Bildgröße große Bilder:<br>
+                                    Abmessungen große Bilder:<br>
                                     <font class="small">Stellt die Größe der großen Bilder ein.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
@@ -121,8 +113,20 @@ else
                                 </td>
                             </tr>
                             <tr>
-                                <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
+                                <td class="config" valign="top" width="70%">
+                                    Dateigröße:<br>
+                                    <font class="small">Dateigröße, bis zu der Bilder hochgeladen werden können.</font>
+                                </td>
+                                <td class="config" valign="top" width="30%">
+                                    <input class="text" size="5" name="file_size" value="'.$config_arr[file_size].'" maxlength="4"> KB
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td colspan="2" class="buttontd">
+                                    <button type="submit" value="" class="button_new">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    </button>
                                 </td>
                             </tr>
                         </table>

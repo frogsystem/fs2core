@@ -1,30 +1,3 @@
-
-td.h
-  {
-   font-size:8pt;
-   font-family:Verdana;
-   font-weight:bold;
-   color:#000000;
-   background:#AAAAAA;
-  }
-td.n
-  {
-   font-size:8pt;
-   font-family:Verdana;
-   color:#000000;
-   background:#CCCCCC;
-  }
-td.nw
-  {
-   font-size:8pt;
-   font-family:Verdana;
-   color:#000000;
-   background:#BBBBBB;
-  }
-
-
-
-
 /**************************************************/
 /* standard styles */
 /**************************************************/
@@ -62,7 +35,7 @@ body
 textarea
 {
     color:#000000;
-    font-size:9pt;
+    font-size:8pt;
     font-family:Verdana;
     border:1px solid #000000;
     background-color:#B7B7B7;
@@ -70,19 +43,25 @@ textarea
 select
 {
     color:#000000;
-    font-size:9pt;
+    font-size:8pt;
     font-family:Verdana;
     border:1px solid #000000;
     background-color:#B7B7B7;
+    cursor:pointer;
 }
-.text
+.text, .courier
 {
     color:#000000;
-    font-size:9pt;
+    font-size:8pt;
     font-family:Verdana;
     border:1px solid #000000;
     background-color:#B7B7B7;
     font-weight:normal;
+}
+.courier
+{
+    font-size:8pt;
+    font-family:Courier New,Courier,serif;
 }
 .button
 {
@@ -95,29 +74,147 @@ select
     cursor:pointer;
 }
 
+.button_new
+{
+    display:block;
+    padding:4px;
+    padding-right:9px;
+    width:100%;
+    background-image:url('img/button.jpg');
+    background-repeat:repeat;
+    font-weight:bold;
+    color:#FFFFFF;
+    font-size:9pt;
+    font-family:Arial;
+    border:1px solid #000000;
+    cursor:pointer;
+    text-align:right;
+    white-space:nowrap;
+}
+.button_new:hover, .button_new:focus
+{
+    text-decoration:none;
+    background-image:url('img/button_hover.jpg');
+}
+
 
 
 /**************************************************/
-/* standard formular-table styles */
+/* standard formular styles */
 /**************************************************/
-td.config
+table.configtable
+{
+    width:600px;
+    border:0px;
+}
+
+.config, .configthin, .configbig
 {
     text-align:left;
-    font-size:9pt;
+    vertical-align:top;
+    font-size:8pt;
     font-family:Verdana;
     color:#000000;
     font-weight:bold;
 }
-td.configthin
+.configthin
 {
+    font-weight:normal;
+}
+.configbig
+{
+    font-size:10pt;
+}
+
+td.line, td.line_red
+{
+    background-image:url('img/line_loop.jpg');
+    background-repeat:repeat-x;
+    background-position:left 22px;
+    height:40px;
+    padding:4px;
     text-align:left;
-    font-size:9pt;
+    vertical-align:top;
+    font-size:10pt;
     font-family:Verdana;
     color:#000000;
+    font-weight:bold;
 }
+td.line_red
+{
+    background-image:url('img/line_red_loop.jpg');
+}
+td.space
+{
+    height:15px;
+}
+td.buttontd
+{
+    padding:0px;
+}
+td.combi_button
+{
+    background-image:url('img/button.jpg');
+    background-repeat:repeat;
+    border:1px solid #000000;
+    white-space:nowrap;
+    vertical-align:middle;
+}
+
   
-  
-  
+/**************************************************/
+/* button link styles */
+/**************************************************/
+a.link_button
+{
+    display:block;
+    padding:5px;
+    padding-right:12px;
+    background-image:url('img/button.jpg');
+    background-repeat:repeat;
+    font-weight:bold;
+    color:#FFFFFF;
+    font-size:9pt;
+    font-family:Arial;
+    border:1px solid #000000;
+    cursor:pointer;
+    text-align:right;
+    white-space:nowrap;
+}
+a.link_button:hover,a.link_button:focus
+{
+    text-decoration:none;
+    background-image:url('img/button_hover.jpg');
+}
+
+/**************************************************/
+/* statistik table styles */
+/**************************************************/
+td.h
+{
+    font-size:8pt;
+    font-family:Verdana;
+    font-weight:bold;
+    color:#000000;
+    background:#AAAAAA;
+}
+td.n
+{
+    font-size:8pt;
+    font-family:Verdana;
+    color:#000000;
+    background:#CCCCCC;
+}
+td.nw
+{
+    font-size:8pt;
+    font-family:Verdana;
+    color:#000000;
+    background:#BBBBBB;
+} 
+ 
+
+ 
 /**************************************************/
 /* standard links styles */
 /**************************************************/
@@ -232,6 +329,16 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
     font-variant:small-caps;
     font-weight:normal;
     color:#363636;
+}
+#head_version
+{
+    position:absolute;
+    font-size:7pt;
+    font-family:Arial;
+    font-variant:normal;
+    color:#FFFFFF;
+    right:27px;
+    top:47px;
 }
 #head_link
 {
@@ -379,8 +486,8 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
     background-repeat:repeat-y;
     position:relative;
     margin-top:139px;
-    right:-44px;
-    width:684px;
+    right:-35px;
+    width:698px;
     z-index:3;
     float:left;
 }
@@ -395,18 +502,22 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
 {
     background-image:url('img/content_top.jpg');
     background-repeat:no-repeat;
-    width:684px;
-    height:45px;
+    width:698px;
+    height:30px;
     position:relative;
     top:0px;
     left:0px;
+    font-size:8pt;
+    font-variant:small-caps;
+    padding-top:35px;
+    padding-left:45px;
 }
 #content_foot
 {
     background-image:url('img/content_foot.jpg');
     background-repeat:no-repeat;
     background-color:#485247;
-    width:684px;
+    width:698px;
     height:83px;
     position:relative;
     bottom:0px;

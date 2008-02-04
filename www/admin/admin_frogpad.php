@@ -1,7 +1,7 @@
 <?php
-include("config.inc.php");
-include("functions.php");
-include("adminfunctions.php");
+include("../config.inc.php");
+include("../includes/functions.php");
+include("../includes/adminfunctions.php");
 
 echo'
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -14,7 +14,7 @@ echo'
       {
           background-image:url(img/content_loop.jpg);
           background-repeat:repeat-y;
-          width:684px;
+          width:698px;
           text-align:left;
           margin-top:5px;
       }
@@ -29,7 +29,7 @@ echo'
       {
           background-image:url(img/content_top.jpg);
           background-repeat:no-repeat;
-          width:684px;
+          width:698px;
           height:27px;
           padding-left:19px;
           padding-top:18px;
@@ -42,7 +42,7 @@ echo'
       {
           background-image:url(img/content_foot.jpg);
           background-repeat:no-repeat;
-          width:684px;
+          width:698px;
           height:53px;
       }
     </style>

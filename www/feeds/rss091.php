@@ -7,6 +7,7 @@ include("../login.inc.php");
 if ($db)
 {
     include("../includes/functions.php");
+    include("../includes/imagefunctions.php");
 
     if ($global_config_arr[virtualhost] == "") {
         $global_config_arr[virtualhost] = "http://example.com/";

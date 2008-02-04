@@ -1,6 +1,6 @@
 <?php
 
-include("config.inc.php");
+include("../config.inc.php");
 
 if (!isset($_GET[s_year]))
 {

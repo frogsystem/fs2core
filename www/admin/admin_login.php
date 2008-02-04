@@ -11,16 +11,16 @@ if ($_POST[username] &&
     switch ($loggedin)
     {
         case 0:
-            systext('Login war erfolgreich<br>Herzlich Willkommen im Admin-CP des Frogsystem 2!');
+            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Du bist nun eingeloggt.', 'Herzlich Willkommen!');
             break;
         case 1:
-            systext('Login fehlgeschlagen:<br>Username existiert nicht');
+            systext('Der Username existiert nicht', 'Fehler beim Login');
             break;
         case 2:
-            systext('Login fehlgeschlagen:<br>Passwort inkorrekt');
+            systext('Das Passwort ist nicht korrekt', 'Fehler beim Login');
             break;
         case 3:
-            systext('Login fehlgeschlagen:<br>Du hast keine Rechte für den Administartionsbereich');
+            systext('Du hast keine Rechte für das Admin-Control-Panel', 'Fehler beim Login');
             break;
     }
 }
@@ -31,7 +31,7 @@ if ($_POST[username] &&
 
 elseif ($_SESSION[user_level] == "authorised")
 {
-    systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!');
+    systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!');
 }
 
 ////////////////////////////

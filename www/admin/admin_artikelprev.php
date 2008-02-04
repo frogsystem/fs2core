@@ -1,13 +1,14 @@
 <?php
-include("config.inc.php");
-include("functions.php");
-include("adminfunctions.php");
+include("../config.inc.php");
+include("../includes/functions.php");
+include("../includes/adminfunctions.php");
 
 echo'
 <html>
 <head>
     <title>Frogsystem 2 - Vorschau</title>
-
+    <base href="'.$global_config_arr[virtualhost].'">
+    
     <link rel="stylesheet" type="text/css" href="../style_css.php">
     <script>
         function loaddata()

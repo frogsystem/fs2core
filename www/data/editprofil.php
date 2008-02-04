@@ -6,59 +6,86 @@
 
 if ($_POST[usermail] && $_SESSION[user_id])
 {
-    include("adminfunctions.php");
-
     settype($_POST[userid], "integer");
 
     // Avatar hochladen, wenn vorhanden
     if ($_FILES[userpic][tmp_name])
     {
-        image_delete("images/avatare/", $_SESSION[user_id]);
+        image_rename("images/avatare/", $_SESSION[user_id], $_SESSION[user_id]."_old");
         $upload = upload_img($_FILES[userpic], "images/avatare/", $_SESSION[user_id], 30*1024, 110, 110);
         $message = upload_img_notice($upload)."<br />";
+        if ($upload == 0) {
+          image_delete("images/avatare/", $_SESSION[user_id]."_old");
+        } else {
+          image_rename("images/avatare/", $_SESSION[user_id]."_old", $_SESSION[user_id]);
+        }
     }
 
+    //Email Daten
+    $mailto = $_POST[usermail];
+
     // User Daten aktualisieren
+    $_POST[usermail] = savesql($_POST[usermail]);
     $_POST[showmail] = isset($_POST[showmail]) ? 1 : 0;
-    $update = "update ".$global_config_arr[pref]."user
-               set user_mail = '$_POST[usermail]',
+    $update = "UPDATE ".$global_config_arr[pref]."user
+               SET user_mail = '$_POST[usermail]',
                    show_mail = '$_POST[showmail]'
-               where user_id = $_SESSION[user_id]";
+               WHERE user_id = $_SESSION[user_id]";
     mysql_query($update, $db);
     $message .= $phrases[profile_update];
 
     // Neues Passwort eintragen 
-    if ($_POST[userpassword])
+    if ($_POST[oldpwd] && $_POST[oldpwd] != ""
+        && $_POST[newpwd] && $_POST[newpwd] != ""
+        && $_POST[wdhpwd] && $_POST[wdhpwd] != "")
     {
-        $_POST[usermail] = savesql($_POST[usermail]);
-        $mailpass = $_POST[userpassword];
-        $_POST[userpassword] = md5($_POST[userpassword]);
-        
-        $index = mysql_query("SELECT user_password FROM ".$global_config_arr[pref]."user WHERE user_id = '$_SESSION[user_id]'", $db);
+        $index = mysql_query("SELECT user_password, user_salt FROM ".$global_config_arr['pref']."user WHERE user_id = '".$_SESSION['user_id']."'", $db);
         $oldpass = mysql_result($index, 0, "user_password");
+        $user_salt = mysql_result($index, 0, "user_salt");
         
-        if ($_POST[userpassword]!=$oldpass)
-        {
-            //MAIl TEMPLATE
-            $index = mysql_query("SELECT email_passchange FROM ".$global_config_arr[pref]."template WHERE id = $global_config_arr[design]", $db);
-            $template_mail = stripslashes(mysql_result($index, 0, "email_passchange"));
-            $template_mail = str_replace("{username}", $_SESSION[user_name], $template_mail);
-            $template_mail = str_replace("{password}", $mailpass, $template_mail);
+        $_POST[oldpwd] = md5 ( $_POST[oldpwd].$user_salt );
 
-            //SEND MAIL
-            $email_betreff = $phrases[pass_change] . " @ " . $global_config_arr[virtualhost];
-            $header="From: ".$global_config_arr[admin_mail]."\n";
-            $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
-            $header .= "X-Mailer: PHP/" . phpversion(). "\n";
-            $header .= "X-Sender-IP: $REMOTE_ADDR\n";
-            $header .= "Content-Type: text/plain";
-            mail($_POST[usermail], $email_betreff, $template_mail, $header);
-            
-            //UPDATE PASSWORD
-            $update = "UPDATE ".$global_config_arr[pref]."user SET user_password = '$_POST[userpassword]' WHERE user_id = $_SESSION[user_id]";
-            mysql_query($update, $db);
-            $message .= "<br />".$phrases[pass_update];
+        if ( $_POST[oldpwd] == $oldpass )
+        {
+            if ( $_POST[newpwd] == $_POST[wdhpwd] )
+            {
+               $new_salt = generate_pwd ( 10 );
+               $mailpass = $_POST[newpwd];
+               $codedpass = md5 ( $_POST[newpwd].$new_salt );
+               unset($_POST[newpwd]);
+               unset($_POST[wdhpwd]);
+               
+               //MAIl TEMPLATE
+               $index = mysql_query("SELECT email_passchange FROM ".$global_config_arr[pref]."template WHERE id = $global_config_arr[design]", $db);
+               $template_mail = stripslashes(mysql_result($index, 0, "email_passchange"));
+               $template_mail = str_replace("{username}", $_SESSION[user_name], $template_mail);
+               $template_mail = str_replace("{password}", $mailpass, $template_mail);
+
+               //SEND MAIL
+               $email_betreff = $phrases[pass_change] . " @ " . $global_config_arr[virtualhost];
+               $header="From: ".$global_config_arr[admin_mail]."\n";
+               $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
+               $header .= "X-Mailer: PHP/" . phpversion(). "\n";
+               $header .= "X-Sender-IP: $REMOTE_ADDR\n";
+               $header .= "Content-Type: text/plain";
+               mail($mailto, $email_betreff, $template_mail, $header);
+
+               //UPDATE PASSWORD
+               $update = "UPDATE ".$global_config_arr['pref']."user
+                          SET user_password = '".$codedpass."',
+                              user_salt = '".$new_salt."'
+                          WHERE user_id = ".$_SESSION['user_id']."";
+               mysql_query($update, $db);
+               $message .= "<br>".$phrases[pass_update];
+                
+            } else {
+                $message .= "<br>" . $phrases[pass_failed] . "<br>" . $phrases[pass_newwrong];
+            }
+
+        } else {
+            $message .= "<br>" . $phrases[pass_failed] . "<br>" . $phrases[pass_oldwrong];
         }
+
     }
 
     // Meldung ausgebena
@@ -73,7 +100,7 @@ else
 {
     if ($_SESSION[user_level] == "loggedin")
     {
-        $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_id = $_SESSION[user_id]", $db);
+        $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_id = $_SESSION[user_id]", $db);
         $user_arr = mysql_fetch_assoc($index);
         $dbshowmail = $user_arr[show_mail];
         $user_arr[show_mail] = ($user_arr[show_mail] == 1) ? "checked" : "";
@@ -89,7 +116,7 @@ else
         }
 
         // Template aufbauen
-        $index = mysql_query("select user_profiledit from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+        $index = mysql_query("SELECT user_profiledit FROM ".$global_config_arr['pref']."template WHERE id = '$global_config_arr[design]'", $db);
         $template = stripslashes(mysql_result($index, 0, "user_profiledit"));
         $template = str_replace("{avatar}", $user_arr[user_avatar], $template); 
         $template = str_replace("{email}", $user_arr[user_mail], $template); 

@@ -85,6 +85,10 @@ $tmp[perm] = "perm_artikeledit";
 $tmp[description] = "Artikel bearbeiten";
 $all_perms[] = $tmp;
 
+$tmp[perm] = "perm_pollconfig";
+$tmp[description] = "Umfragen Konfiguration";
+$all_perms[] = $tmp;
+
 $tmp[perm] = "perm_polladd";
 $tmp[description] = "Umfragen hinzufügen";
 $all_perms[] = $tmp;

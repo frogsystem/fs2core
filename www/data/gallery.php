@@ -177,9 +177,9 @@ if (isset($_GET[catid]))
     //Weiter-Schaltfläche
     if (($_GET['page']*$config_arr[pics_per_page]) < $config_arr[number_of_screens]) {
       $next = str_replace("{url}", "?go=$_GET[go]&catid=$_GET[catid]&page=$config_arr[newpage]", $next);
-      $pagenav = str_replace("{next}", "$next", $pagenav);
+      $pagenav = str_replace("{next}", $next, $pagenav);
     } else {
-      $pagenav = str_replace("{next}", "", $pagenav);;
+      $pagenav = str_replace("{next}", "", $pagenav);
     }
     
     //Keine Screenshots

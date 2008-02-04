@@ -1,10 +1,12 @@
 <?php
 session_start(); 
-include("../config.inc.php");
+include("../login.inc.php");
 include("../includes/functions.php");
 include("../includes/adminfunctions.php");
-include("../phrases/phrases_de.php");
-include("../phrases/admin_phrases_de.php");
+include("../includes/imagefunctions.php");
+include("../includes/templatefunctions.php");
+include("../phrases/phrases_".$global_config_arr['language'].".php");
+include("../phrases/admin_phrases_".$global_config_arr['language'].".php");
 
 //////////////////////////////
 ///// Cookie
@@ -80,7 +82,7 @@ echo'
 <html>
 <head>
     <title>Frogsystem 2 - '.$pagetitle.'</title>
-    
+    <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <link rel="stylesheet" type="text/css" href="admin.css">
     <link rel="stylesheet" type="text/css" href="editor.css">
     <script src="functions.js" type="text/javascript"></script>
@@ -91,6 +93,9 @@ echo'
 
 <div id="head">
      '.$global_config_arr[title].'
+     <div id="head_version">
+         version '.$global_config_arr[version].'
+     </div>
      <div id="head_link">
          <a href="'.$global_config_arr[virtualhost].'" target="_self" class="head_link">» zur Hauptseite</a>
      </div>
@@ -162,7 +167,7 @@ unset($NAVI_ARR);
 //////////////////////////////
 
 $NAVI_ARR[title] = "Includes";
-$NAVI_ARR[menu_id] = "general";
+$NAVI_ARR[menu_id] = "system";
 
 $NAVI_ARR[link][] = "includes_edit";
 $NAVI_ARR[link][] = "includes_new";
@@ -227,6 +232,7 @@ unset($NAVI_ARR);
 $NAVI_ARR[title] = "Umfragen";
 $NAVI_ARR[menu_id] = "content";
 
+$NAVI_ARR[link][] = "pollconfig";
 $NAVI_ARR[link][] = "polladd";
 $NAVI_ARR[link][] = "polledit";
 
@@ -543,6 +549,12 @@ $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
 
+$tmp_arr[title] = "System"; //title of menu
+$tmp_arr[id] = "system"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
 $tmp_arr[title] = "User"; //title of menu
 $tmp_arr[id] = "user"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
@@ -575,7 +587,7 @@ echo '</div>
 
 <div id="bg"><div id="bg_padding">
 
-     <div id="navi_container">';
+    <div id="navi_container">';
 
 if ($template_navi == "") {
     $template_navi = '
@@ -586,7 +598,7 @@ if ($template_navi == "") {
                im Admin-CP des Frogsystem 2!
             </div>
 
-    </div>';
+        </div>';
 }
 
 echo $template_navi;
@@ -598,11 +610,11 @@ echo '</div>';
 
 echo'
      <div id="content_container">
-         <div id="content_top"></div>
+         <div id="content_top">
+           <img border="0" src="img/pointer.png" alt="" style="vertical-align:text-top">
+           <b>'.$pagetitle.'</b>
+         </div>
          <div id="content_padding">
-             <img border="0" src="img/pointer.png" alt="" style="vertical-align:text-top">
-             <span style="font-size:8pt;"><b>'.$pagetitle.'</b></span>
-             <br /><br />
              <div align="center">
 ';
 
