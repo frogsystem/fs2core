@@ -1,4 +1,57 @@
 <?php
+/////////////////////////////////
+//// Passwort erzeugen ////
+/////////////////////////////////
+
+function generate_pwd ( $LENGHT = 10 )
+{
+    $charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
+    $code = "";
+    $real_strlen = strlen ( $charset ) - 1;
+    mt_srand ( (double)microtime () * 1001000 );
+
+    while ( strlen ( $code ) < $LENGHT ) {
+    	$code .= $charset[mt_rand ( 0,$real_strlen ) ];
+    }
+    return $code;
+}
+
+/////////////////////////////////
+//// Check Anti-Spam Captcha ////
+/////////////////////////////////
+
+function check_captcha ( $SOLUTION, $ACTIVATION )
+{
+    global $global_config_arr;
+    global $db;
+
+	session_start();
+
+	function encrypt_captcha ( $STRING, $KEY ) {
+		$result = '';
+		for ( $i = 0; $i < strlen ( $STRING ); $i++ ) {
+			$char = substr ( $STRING, $i, 1 );
+   			$keychar = substr ( $KEY, ( $i % strlen ( $KEY ) ) -1, 1 );
+   			$char = chr ( ord ( $char ) + ord ( $keychar ) );
+			$result .= $char;
+		}
+		return base64_encode($result);
+	}
+
+	$sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $global_config_arr['spam'] );
+	$sicherheits_eingabe = str_replace ("=", "", $sicherheits_eingabe );
+
+	if ( $ACTIVATION == 0 ) {
+		return TRUE;
+	} elseif ( $ACTIVATION == 1 && $_SESSION['user_id']) {
+		return TRUE;
+	} elseif ( $sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
 //////////////////////
 //// Get Template ////
 //////////////////////

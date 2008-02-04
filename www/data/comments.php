@@ -4,10 +4,10 @@
 //////////////////////////////
 
 //Kommentar-Config
-$index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
+$index = mysql_query("SELECT * from ".$global_config_arr[pref]."news_config", $db);
 $config_arr = mysql_fetch_assoc($index);
 //Editor config
-$index = mysql_query("select * from ".$global_config_arr[pref]."editor_config", $db);
+$index = mysql_query("SELECT * from ".$global_config_arr[pref]."editor_config", $db);
 $editor_config = mysql_fetch_assoc($index);
 
 
