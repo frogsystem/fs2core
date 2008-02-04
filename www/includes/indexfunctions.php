@@ -185,7 +185,7 @@ function set_design()
 ////////////////////////////////
 //// create copyright note  ////
 ////////////////////////////////
-function copyright()
+function copyright ()
 {
     global $db;
     global $global_config_arr;

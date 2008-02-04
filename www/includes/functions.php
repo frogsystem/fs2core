@@ -1,66 +1,15 @@
 <?php
-////////////////////////
-/// Designs & Zones ////
-////////////////////////
-function set_design()
+//////////////////////
+//// Get Template ////
+//////////////////////
+
+function get_template ( $TEMPLATE_NAME )
 {
-    global $db;
     global $global_config_arr;
-  
-    if (isset ($_GET['design_id']) AND $global_config_arr[allow_other_designs] == 1)
-    {
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."template WHERE id = $_GET[design_id]", $db);
-        if (mysql_num_rows($index) > 0)
-        {
-            $global_config_arr[design] =  $_GET['design_id'];
-            settype($global_config_arr[design], "integer");
-        }
-    }
-    elseif (isset ($_GET['design']) AND $global_config_arr[allow_other_designs] == 1)
-    {
-        $index = mysql_query("SELECT id FROM ".$global_config_arr[pref]."template WHERE name = '$_GET[design]'", $db);
-        if (mysql_num_rows($index) > 0)
-        {
-            $global_config_arr[design] =  mysql_result($index, "id");
-            settype($global_config_arr[design], "integer");
-        }
-    }
-
-    if (isset ($_GET['zone_id']) AND $global_config_arr[allow_other_designs] == 1)
-    {
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."zones WHERE id = $_GET[zone_id]", $db);
-        if (mysql_num_rows($index) > 0)
-        {
-            $global_config_arr[design] =  $_GET['design_id'];
-            settype($global_config_arr[design], "integer");
-        }
-    }
-    elseif (isset ($_GET['zone']) AND $global_config_arr[allow_other_designs] == 1)
-    {
-        $index = mysql_query("SELECT design_id FROM ".$global_config_arr[pref]."zones WHERE name = '$_GET[zone]'", $db);
-        if (mysql_num_rows($index) > 0)
-        {
-            $global_config_arr[design] =  mysql_result($index2, "design_id");
-            settype($global_config_arr[design], "integer");
-        }
-    }
-}
-
-
-////////////////////////////////
-//// del old timed randoms  ////
-////////////////////////////////
-function delete_old_randoms()
-{
-  global $db;
-  global $global_config_arr;
-
-  if ($global_config_arr[random_timed_deltime] != -1) {
-    // Alte Zufallsbild-Einträge aus der Datenbank entfernen
-    mysql_query("DELETE a
-                FROM ".$global_config_arr[pref]."screen_random a, ".$global_config_arr[pref]."global_config b
-                WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime", $db);
-  }
+    global $db;
+    
+	$index = mysql_query ( "SELECT `".$TEMPLATE_NAME."` FROM ".$global_config_arr['pref']."template WHERE id = '".$global_config_arr['design']."'", $db );
+	return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
 }
 
 
@@ -278,81 +227,6 @@ function create_textarea_seperator()
 
 }
 
-////////////////////////////////
-//// Image exists           ////
-////////////////////////////////
-
-function image_exists($path, $name)
-{
-  if ( file_exists("$path"."$name.jpg") OR file_exists("$path"."$name.gif") OR file_exists("$path"."$name.png") )
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-////////////////////////////////
-//// Create Image URL       ////
-////////////////////////////////
-
-function image_url($path, $name, $error=true)
-{
-  global $global_config_arr;
-
-  if (file_exists("$path"."$name.jpg"))
-    $url = $path."$name.jpg";
-  elseif (file_exists("$path"."$name.jpeg"))
-    $url = $path."$name.jpeg";
-  elseif (file_exists("$path"."$name.gif"))
-    $url = $path."$name.gif";
-  elseif (file_exists("$path"."$name.png"))
-    $url = $path."$name.png";
-  elseif ($error==true)
-    $url = $global_config_arr[virtualhost]."images/icons/nopic_small.gif";
-  else
-    $url = "";
-
-  return $url;
-}
-
-////////////////////////////////
-//// Delete Image           ////
-////////////////////////////////
-
-function image_delete($path, $name)
-{
-  if ( image_exists($path, $name) )
-  {
-    unlink(image_url($path, $name, false));
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-////////////////////////////////
-//// Rename Image           ////
-////////////////////////////////
-
-function image_rename($path, $name, $newname)
-{
-  if ( image_exists($path, $name) )
-  {
-    $extension = pathinfo(image_url($path, $name, false));
-    $extension = $extension[extension];
-    rename(image_url($path, $name, false), $path.$newname.".".$extension);
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
 
 ////////////////////////////////
 /////// System Message /////////

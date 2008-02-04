@@ -1,19 +1,29 @@
 <?php
 session_start();
-include("config.inc.php");
+include("login.inc.php");
 if ($db)
 {
     include("res/dl.inc.php");
+    
+    //Include Functions
     include("includes/functions.php");
     include("includes/cookielogin.php");
-    include("phrases/phrases_de.php");
+    include("includes/imagefunctions.php");
+    include("includes/indexfunctions.php");
+    include("phrases/phrases_".$global_config_arr['language'].".php");
 
 /////////////////////////////
 //// Konstruktor aufrufe ////
 /////////////////////////////
 
 delete_old_randoms ();
-set_design();
+set_design ();
+copyright ();
+count_hit ();
+count_visit ();
+save_referer ();
+save_visitors ();
+
 
 
 // Hauptmenü aufbauen
