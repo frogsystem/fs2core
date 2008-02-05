@@ -6,7 +6,7 @@ function user_login($username, $password, $iscookie)
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_name = '$username'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name = '$username'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -14,13 +14,17 @@ function user_login($username, $password, $iscookie)
     }
     else
     {
-        if ($iscookie===false)
-        {
-            $password = md5($password);
-        }
-        $dbuserpass = mysql_result($index, 0, "user_password");
+
+		$dbuserpass = mysql_result($index, 0, "user_password");
         $dbuserid = mysql_result($index, 0, "user_id");
         $username = mysql_result($index, 0, "user_name");
+        $usersalt = mysql_result($index, 0, "user_salt");
+        
+        if ($iscookie===false)
+        {
+            $password = md5 ( $password.$usersalt );
+        }
+
         if ($password == $dbuserpass)
         {
             $_SESSION["user_level"] = "loggedin";
@@ -44,7 +48,7 @@ function set_cookie($username, $password)
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_name = '$username'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name = '$username'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -52,9 +56,12 @@ function set_cookie($username, $password)
     }
     else
     {
-        $password = md5($password);
-        $dbuserpass = mysql_result($index, 0, "user_password");
+
+		$dbuserpass = mysql_result($index, 0, "user_password");
         $dbuserid = mysql_result($index, 0, "user_id");
+        $dbusersalt= mysql_result($index, 0, "user_salt");
+        $password = md5 ( $password.$dbusersalt );
+
         if ($password == $dbuserpass)
         {
             $inhalt = $password . $username;

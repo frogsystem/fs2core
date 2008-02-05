@@ -114,8 +114,7 @@ $template_main .= '
 <html>
 <head>
 
-  <title>'.$global_config_arr[title].'</title>
-  <base href="'.$global_config_arr['virtualhost'].'">
+  <title>'.$global_config_arr['title'].'</title>
   
   <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <META name="Description" content="'.$global_config_arr[description].'">
@@ -146,8 +145,7 @@ if ($global_config_arr[show_favicon] == 1)
 $template_main .= '</head>';
 
 // Template laden
-$index = mysql_query("select indexphp from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-$template_index = stripslashes(mysql_result($index, 0, "indexphp"));
+$template_index = get_template ( "indexphp" );
 
 $template_index = str_replace("{user}", $template_user, $template_index);
 $template_index = str_replace("{randompic}", $template_randompic, $template_index);
@@ -157,6 +155,9 @@ $template_index = str_replace("{shop}", $template_shop, $template_index);
 $template_index = str_replace("{partner}", $template_partner, $template_index);
 $template_index = str_replace("{main_menu}", $template_main_menu, $template_index);
 $template_index = str_replace("{content}", $template_content, $template_index);
+
+$template_index = str_replace("{copyright}", get_copyright(), $template_index);
+
 
 if ($global_config_arr[show_announcement]==1)
 {
@@ -189,7 +190,7 @@ while ($include_arr = mysql_fetch_assoc($index))
         $template_include = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_include);
     }
     unset($sv_arr);
-    $template_include =  killsv($template_include);
+    $template_include = killsv($template_include);
     $template_index = str_replace($include_arr['replace_string'], $template_include, $template_index);
     unset($template_include);
 }

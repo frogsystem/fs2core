@@ -416,9 +416,11 @@ function admin_set_cookie($username, $password)
         $dbisadmin = mysql_result($index, 0, "is_admin");
         if ($dbisadmin == 1)
         {
-            $password = md5($password);
             $dbuserpass = mysql_result($index, 0, "user_password");
             $dbuserid = mysql_result($index, 0, "user_id");
+            $dbusersalt= mysql_result($index, 0, "user_salt");
+            $password = md5 ( $password.$dbusersalt );
+            
             if ($password == $dbuserpass)
             {
                 $inhalt = $password . $username;

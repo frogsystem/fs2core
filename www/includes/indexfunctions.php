@@ -132,6 +132,14 @@ function delete_old_randoms()
   }
 }
 
+/////////////////////////////////
+//// create copyright note   ////
+/////////////////////////////////
+function get_copyright ()
+{
+    return '<span class="small">Powered by <a class="small" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007, 2008 Frogsystem-Team</span>';
+}
+
 
 ////////////////////////
 /// Designs & Zones ////
@@ -182,20 +190,17 @@ function set_design()
     copyright();
 }
 
-////////////////////////////////
-//// create copyright note  ////
-////////////////////////////////
+///////////////////////////////////
+//// copyright security check  ////
+///////////////////////////////////
 function copyright ()
 {
     global $db;
     global $global_config_arr;
 
-    $index = mysql_query("SELECT indexphp FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design']." ", $db);
-    $template_indexphp = stripslashes(mysql_result($index, 0, "indexphp"));
-
-    if ( strpos ( $template_indexphp, "{copyright}" ) == FALSE
-         || strpos ( get_template ( "indexphp" ), "Frogsystem 2" ) == FALSE || strpos ( get_template ( "indexphp" ), "© 2007, 2008 Frogsystem-Team" ) == FALSE
-          || strpos ( get_template ( "indexphp" ), "Powered by" ) == FALSE  || strpos ( get_template ( "indexphp" ), "frogsystem.de" ) == FALSE) {
+	if ( strpos ( get_template ( "indexphp" ), "{copyright}" ) == FALSE
+			|| strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007, 2008 Frogsystem-Team" ) == FALSE
+			|| strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE) {
         $global_config_arr[design] =  0;
     }
 }
