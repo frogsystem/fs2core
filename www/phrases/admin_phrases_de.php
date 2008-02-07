@@ -2,16 +2,93 @@
 ////////////
 // common //
 ////////////
+$admin_phrases[common][system_message]            = "Systemmeldung";
 $admin_phrases[common][note_notfilled]            = "Bitte füllen Sie alle Pflichtfelder aus!";
+$admin_phrases[common][info]                      = "Information";
+$admin_phrases[common][error]                     = "Es trat ein Fehler auf";
+
+$admin_phrases[common][changes_saved]             = "Änderungen wurden gespeichert";
+
 $admin_phrases[common][optional]                  = "(optional)";
 $admin_phrases[common][selection]                 = "Auswahl";
 $admin_phrases[common][selection_edit]            = "Auswahl bearbeiten";
 $admin_phrases[common][selection_del]             = "Auswahl löschen";
 $admin_phrases[common][do_button]                 = "Ausführen";
 $admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bisherige Bild überschrieben werden soll!";
+$admin_phrases[common][active]                    = "aktiv";
+
+$admin_phrases[common][arrow]                     = '<img border="0" src="img/pointer.png" align="top" alt="->">';
+$admin_phrases[common][save_long]                 = "Änderungen speichern";
 
 $admin_phrases[common][yes]                       = "Ja";
 $admin_phrases[common][no]                        = "Nein";
+
+
+
+///////////////
+// Allgemein //
+///////////////
+$admin_phrases[general][pageinfo_title]           = "Seiteninformationen";
+$admin_phrases[general][title]                    = "Titel";
+$admin_phrases[general][title_desc]               = "Der Titel der Seite.";
+$admin_phrases[general][virtualhost]              = "URL";
+$admin_phrases[general][virtualhost_desc]         = "Die Haupt-URL der Seite.";
+$admin_phrases[general][admin_mail]               = "Email-Adresse";
+$admin_phrases[general][admin_mail_desc]          = "Die Email-Adresse an die Probleme und Meldungen gesendet werden.";
+$admin_phrases[general][description]              = "Beschreibung";
+$admin_phrases[general][description_desc]         = "Ein kurzer Text über die Seite.";
+$admin_phrases[general][author]                   = "Autor";
+$admin_phrases[general][author_desc]              = "Der oder die Webmaster der Seite.";
+$admin_phrases[general][keywords]                 = "Keywords";
+$admin_phrases[general][keywords_desc]            = "Stichwörter zur Seite, bitte mit Kommas trennen.<br>Wichtig für Suchmaschinen!";
+
+$admin_phrases[general][design_title]             = "Design";
+$admin_phrases[general][design]                   = "Design";
+$admin_phrases[general][design_desc]              = "Design, in dem die Seite angezeigt wird.";
+$admin_phrases[general][allow_other_designs]      = "Andere Designs erlauben";
+$admin_phrases[general][allow_other_designs_desc] = "Ermöglicht das Anzeigen der Seite in anderen Designs.<br> (http://www.example.com/?design={design})";
+$admin_phrases[general][show_favicon]             = "Favicon verwenden";
+$admin_phrases[general][show_favicon_desc]        = "Bindet das Favicon ein.<br>([FS-Verzeichnis]/images/icons/favicon.ico)";
+
+$admin_phrases[general][settings_title]           = "Seiteneinstellungen";
+$admin_phrases[general][language]                 = "Sprache";
+$admin_phrases[general][language_desc]            = "Die Standard Sprache des Admin-CPs.";
+$admin_phrases[general][language_de]              = "Deutsch";
+$admin_phrases[general][language_en]              = "English";
+$admin_phrases[general][feed]                     = "Feed";
+$admin_phrases[general][feed_desc]                = "Standard Feed der Seite, der im Html-Kopf eingebunden wird.";
+$admin_phrases[general][feed_rss091]              = "RSS 0.91";
+$admin_phrases[general][feed_rss10]               = "RSS 1.0";
+$admin_phrases[general][feed_rss20]               = "RSS 2.0";
+$admin_phrases[general][feed_atom10]              = "Atom 1.0";
+$admin_phrases[general][show_announcement]        = "Ankündigung anzeigen";
+$admin_phrases[general][show_announcement_desc]   = "Seiten auf denen die Ankündigung angezeigt wird.";
+$admin_phrases[general][show_ann_always]          = "überall";
+$admin_phrases[general][show_ann_news]            = "Startseite (News)";
+$admin_phrases[general][show_ann_never]           = "nie";
+$admin_phrases[general][reg_antispam]             = "Anti-Spam bei Registrierung";
+$admin_phrases[general][reg_antispam_desc]        = "Aktiviert die Anti-Spam Abfrage bei der Registrierung.";
+$admin_phrases[general][date]                     = "Datum";
+$admin_phrases[general][date_desc]                = "Datumsformat, das auf der Seite verwendet werden soll.";
+$admin_phrases[general][date_info]                = 'verwendet den Syntax der PHP-Funktion <a href="http://www.php.net/manual/de/function.date.php" target="_blank" class="small">date()</a>';
+
+$admin_phrases[general][pagenav_title]            = "Seitennavigation";
+$admin_phrases[general][page]                     = "Seitenanzeige";
+$admin_phrases[general][page_desc]                = "Design der Seitenanzeige bei mehrseitigen Anzeigen.";
+$admin_phrases[general][page_info]                = "{page_number} = aktuelle Seite; {prev} = Seite zurück<br>{total_pages} = Seitenzahl; {next} = Seite weiter";
+$admin_phrases[general][page_prev]                = "Seite zurück";
+$admin_phrases[general][page_prev_desc]           = 'Design der "Seite zurück" Schaltfläche.';
+$admin_phrases[general][page_prev_info]           = "{url} = URL zur vorherigen Seite";
+$admin_phrases[general][page_next]                = "Seiter weiter";
+$admin_phrases[general][page_next_desc]           = 'Design der "Seite weiter" Schaltfläche. ';
+$admin_phrases[general][page_next_info]           = "{url} = URL zur nächsten Seite";
+
+
+$admin_phrases[general][ann_settings_title]       = "Einstellungen";
+$admin_phrases[general][activate_ann]             = "Annkündigung freischalten";
+$admin_phrases[general][activate_ann_desc]        = "Schaltet die Ankündigung zur Anzeige auf der Seite frei.";
+$admin_phrases[general][ann_title]                = "Ankündigung schreiben";
+$admin_phrases[general][ann_write_desc]           = "Eine leere Ankündigung wird nicht angezeigt. HTML und FSCode sind erlaubt.";
 
 
 

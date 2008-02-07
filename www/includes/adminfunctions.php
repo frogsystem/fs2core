@@ -1,5 +1,31 @@
 <?php
 ////////////////////////////////
+//// Systemmeldung ausgeben ////
+////////////////////////////////
+
+function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE )
+{
+	if ( $TITLE == FALSE ) {
+		$TITLE = $admin_phrases[common][system_message];
+	}
+
+	if ( $RED == TRUE ) {
+		$class = "line_red";
+	} else {
+		$class = "line";
+	}
+	
+
+	echo '
+					<table class="configtable" cellpadding="4" cellspacing="0">
+						<tr><td class="'.$class.'">'.$TITLE.'</td></tr>
+						<tr><td class="config">'.$MESSAGE.'</td></tr>
+						<tr><td class="space"></td></tr>
+                    </table>
+	';
+}
+
+////////////////////////////////
 //// Create textarea        ////
 ////////////////////////////////
 
@@ -14,13 +40,17 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
         return false;
     }
 
-    if ($width != "") {
+    if ( $width != "" && is_int ( $width ) ) {
         $width2 = 'width:'.$width.'px;';
-    }
+    } elseif ( $width != "" ) {
+        $width2 = 'width:'.$width.';';
+	}
 
-    if ($height != "") {
-        $height2 = 'height:'.$height.'px';
-    }
+    if ( $height != "" && is_int ( $height ) ) {
+        $height2 = 'height:'.$height.'px;';
+    } elseif ( $width != "" ) {
+        $height2 = 'height:'.$height.';';
+	}
 
     if ($class != "") {
         $class2 = 'class="'.$class.'"';
@@ -94,7 +124,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
                          {buttons}
                      </tr>
                  </table>
-                 <table cellpadding="0" cellspacing="0" border="0">
+                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                      <tr valign="top">
                          <td>
                              <textarea {style}>{text}</textarea>
@@ -167,24 +197,6 @@ function insert_tt($title,$text,$form)
    ';
 }
 
-
-////////////////////////////////
-//// Systemmeldung ausgeben ////
-////////////////////////////////
-
-function systext($text)
-{
-   echo '
-                    <table border="0" cellpadding="4" cellspacing="0" width="400">
-                        <tr>
-                            <td class="config" style="text-align:center;">
-                                '.$text.'
-                            </td>
-                        </tr>
-                    </table>
-                    <p>
-   ';
-}
 
 ////////////////////////////////
 //// Seitentitel generieren  ///

@@ -40,7 +40,7 @@ else
                         <input type="hidden" value="allannouncement" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][ann_settings_title] .'</td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[general][ann_settings_title].'</td></tr>
                             <tr>
                                 <td class="config">
                                     '.$admin_phrases[general][show_announcement].':<br>
@@ -76,15 +76,15 @@ else
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][ann_title] .'</td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[general][ann_title].'</td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    <span class="small">'.$admin_phrases[general][ann_write_desc] .'</span>
+                                    <span class="small">'.$admin_phrases[general][ann_write_desc].'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.create_editor("text", $config_arr[text], "100%", "250px", "", false).'
+                                    '.create_editor ( "text", $config_arr[text], "100%", "250px", "", FALSE ).'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

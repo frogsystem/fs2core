@@ -1,9 +1,18 @@
 <?php
+////////////////////////////
+/// Konfiguration laden ////
+////////////////////////////
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."poll_config", $db);
+$config_arr = mysql_fetch_assoc($index);
 
-    //Load Poll Data
-    $date = date("U");
-    $index = mysql_query("select * from ".$global_config_arr[pref]."poll where poll_end > $date and poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $db);
-    $poll_arr = mysql_fetch_assoc($index);
+
+///////////////////////
+/// Load Poll Data ////
+///////////////////////
+$date = date("U");
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $db);
+$poll_arr = mysql_fetch_assoc($index);
+
 
 //////////////////////////
 //// Display Poll     ////
@@ -119,18 +128,23 @@ elseif ($_POST[pollid] OR checkVotedPoll($poll_arr['poll_id']))
         $all_votes += $answer_arr[answer_count];
     }
 
-    $index = mysql_query("select * from ".$global_config_arr[pref]."poll_answers where poll_id = $_POST[pollid] ORDER BY answer_id ASC", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."poll_answers WHERE poll_id = $_POST[pollid] ORDER BY answer_id ASC", $db);
     while ($answer_arr = mysql_fetch_assoc($index))
     {
         if ($all_votes != 0)
         {
             $answer_arr[percentage] = round($answer_arr[answer_count] / $all_votes * 100, 1);
-            $answer_arr[bar_width] = round($answer_arr[percentage]);
+            $answer_arr[bar_width] = round($answer_arr[answer_count] / $all_votes * $config_arr['answerbar_width'] );
+            if ( $config_arr['answerbar_type'] == 1 ) {
+                $answer_arr[bar_width] .= "%";
+			} else {
+                $answer_arr[bar_width] .= "px";
+			}
         }
         else
         {
             $answer_arr[percentage] = 0;
-            $answer_arr[bar_width] = 1;
+            $answer_arr[bar_width] = "1px";
         }
         $index2 = mysql_query("select poll_result_line from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $template = stripslashes(mysql_result($index2, 0, "poll_result_line"));
