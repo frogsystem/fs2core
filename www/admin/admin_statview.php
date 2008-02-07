@@ -32,19 +32,23 @@ $dbfirstyear = mysql_result($index, 0, "s_year");
 $index = mysql_query("SELECT s_month FROM ".$global_config_arr[pref]."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1", $db);
 $dbfirstmonth = mysql_result($index, 0, "s_month");
 
-echo '
-                                <a href="'.$PHP_SELF.'?go=statview&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'&PHPSESSID='.session_id().'">'.$dbfirstyear.'</a>
-';
+echo '<a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=statview&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'&PHPSESSID='.session_id().'">';
+if ( $_GET['s_year'] == $dbfirstyear ) { echo '<b>'; }
+echo $dbfirstyear;
+if ( $_GET['s_year'] == $dbfirstyear ) { echo '</b>'; }
+echo '</a>';
+
 
 // Alle weiteren Jahre auflisten
 if ($dbfirstyear < date("Y"))
 {
     for ($y=$dbfirstyear+1; $y<=date("Y"); $y++)
     {
-        echo '
-                                |
-                                <a href="'.$PHP_SELF.'?go=statview&s_year='.$y.'&s_month=1&PHPSESSID='.session_id().'">'.$y.'</a>
-        ';
+        echo ' | <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=statview&s_year='.$y.'&s_month=1&PHPSESSID='.session_id().'">';
+        if ( $_GET['s_year'] == $y ) { echo '<b>'; }
+		echo $y;
+        if ( $_GET['s_year'] == $y ) { echo '</b>'; }
+		echo '</a>';
     }
 }
 
@@ -220,7 +224,7 @@ for ($m=1; $m<13; $m++)
         echo'
                                     <tr>
                                         <td class="n" align="center">
-                                            <a style="text-decoration:none;" href="'.$PHP_SELF.'?go=statview&PHPSESSID='.session_id().'&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
+                                            <a style="text-decoration:none;" href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=statview&PHPSESSID='.session_id().'&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
                                         </td>
                                         <td class="n" align="center">
                                             '.point_number($sum_arr[sumvisits]).'

@@ -4,6 +4,7 @@
 ////////////
 $admin_phrases[common][system_message]            = "Systemmeldung";
 $admin_phrases[common][note_notfilled]            = "Bitte füllen Sie alle Pflichtfelder aus!";
+$admin_phrases[common][only_allowed_values]       = "Bitte geben Sie nur erlaubte Werte ein!";
 $admin_phrases[common][info]                      = "Information";
 $admin_phrases[common][error]                     = "Es trat ein Fehler auf";
 $admin_phrases[common][changes_saved]             = "Änderungen wurden gespeichert";
@@ -17,8 +18,14 @@ $admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bis
 $admin_phrases[common][active]                    = "aktiv";
 $admin_phrases[common][valid_tags]                = "Gültige Tags";
 
+$admin_phrases[common][width_x_height]            = "Breite x Höhe";
+$admin_phrases[common][resolution_x]              = "x";
+$admin_phrases[common][pixel]                     = "Pixel";
+$admin_phrases[common][zero_not_allowed]          = "0 ist nicht erlaubt";
+
 $admin_phrases[common][arrow]                     = '<img border="0" src="img/pointer.png" align="top" alt="->">';
 $admin_phrases[common][save_long]                 = "Änderungen speichern";
+$admin_phrases[common][do_button_long]            = "Aktion ausführen";
 
 $admin_phrases[common][yes]                       = "Ja";
 $admin_phrases[common][no]                        = "Nein";
@@ -119,8 +126,58 @@ $admin_phrases[general][email_virtualhost]        = "URL zur Seite.";
 ////////////
 // Editor //
 ////////////
+$admin_phrases[editor][view_settings_title]       = "Anzeigeeinstellungen";
+$admin_phrases[editor][textarea_size]             = "Textfeld Abmessungen";
+$admin_phrases[editor][textarea_size_desc]        = "Die Abmessungen, des Textfeldes des öffentlichen Editors.";
+$admin_phrases[editor][smilies]                   = "Smilies";
+$admin_phrases[editor][smilies_desc]              = "Anzahl der Smilies, die im öffentlichen Editor angezeigt werden.";
+$admin_phrases[editor][smilies_rows]              = "Reihen à";
+$admin_phrases[editor][smilies_smilies]           = "Smilies";
+
+$admin_phrases[editor][buttons_settings_title]    = "Buttoneinstellungen";
+$admin_phrases[editor][buttons]                   = "Öffentliche Buttons";
+$admin_phrases[editor][buttons_desc]              = "Buttons, die im öffentlichen Editor angezeigt werden.";
+
+$admin_phrases[editor][fscode_settings_title]     = "FSCode-Einstellungen";
+$admin_phrases[editor][fscode]                    = "Von Usern verwendbare FSCodes";
+$admin_phrases[editor][fscode_desc]               = "FS-Codes, die von Usern verwendet werden können.";
+$admin_phrases[editor][fscode_info]               = "<b>Nicht gewählte FSCodes werden in von Usern erstellten Beiträgen (z.B. Kommentaren) nicht umgewandelt!</b>";
+
+
+$admin_phrases[editor][smilie_add_title]          = "Neuen Smilie hinzufügen";
+$admin_phrases[editor][smilie_add_select]         = "Smilie auswählen";
+$admin_phrases[editor][smilie_add_text]           = "Ersetungstext";
+$admin_phrases[editor][smilie_add_insert]         = "Einfügen nach";
+$admin_phrases[editor][smilie_add_at_beginn]      = "am Anfang";
+$admin_phrases[editor][smilie_add_at_end]         = "am Ende";
+$admin_phrases[editor][smilie_add_button]         = "hochladen & hinzufügen";
+
+$admin_phrases[editor][smilie_management_title]   = "Smilieverwaltung";
+$admin_phrases[editor][smilies_replacement]       = "Text";
+$admin_phrases[editor][smilies_order]             = "Sortierung";
+$admin_phrases[editor][smilies_delete]            = "Löschen";
+$admin_phrases[editor][smilies_up]                = "nach oben";
+$admin_phrases[editor][smilies_down]              = "nach unten";
+$admin_phrases[editor][smilies_shown]             = "werden angezeigt";
+$admin_phrases[editor][smilies_not_shown]         = "werden nicht angezeigt";
 $admin_phrases[editor][smilies_delnotconfirm]     = "gewählte Smilies nicht löschen";
 $admin_phrases[editor][smilies_delconfirm]        = "gewählte Smilies löschen";
+
+$admin_phrases[editor][smilies_no_smilies]        = "Keine Smilies gefunden";
+
+
+
+///////////////
+// Statistik //
+///////////////
+$admin_phrases[stats][edit_day_title]             = "Tagesstatistik bearbeiten";
+$admin_phrases[stats][edit_day_no_data]           = "Für das angegebenen Datum wurden keine Daten gefunden";
+$admin_phrases[stats][edit_day_visits]            = "Besucher";
+$admin_phrases[stats][edit_day_visits_desc]       = "Anzahl der Besucher am";
+$admin_phrases[stats][edit_day_hits]              = "Hits";
+$admin_phrases[stats][edit_day_hits_desc]         = "Anzahl der Seitenaufrufe am";
+
+$admin_phrases[stats][synchronised]               = "Statistik wurde synchronisiert";
 
 
 

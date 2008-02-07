@@ -1,8 +1,8 @@
 <?php
 
-////////////////////////////
-//// New Smilie         ////
-////////////////////////////
+////////////////////
+//// New Smilie ////
+////////////////////
 
 if ($_FILES['newsmilie']['name'] != "" AND $_POST['replace_string'])
 {
@@ -16,13 +16,13 @@ if ($_FILES['newsmilie']['name'] != "" AND $_POST['replace_string'])
                  VALUES ('$_POST[replace_string]', '$_POST[insert_after]'+1)", $db);
 
     $id = mysql_insert_id();
-    $upload = upload_img($_FILES['newsmilie'], "../images/smilies/", $id, 1024*1024, 9999, 9999);
+    $upload = upload_img($_FILES['newsmilie'], "../images/smilies/", $id, 1024*1024, 999, 999);
     systext(upload_img_notice($upload));
 }
 
-////////////////////////////
-//// Del Smilie         ////
-////////////////////////////
+///////////////////////
+//// Delete Smilie ////
+///////////////////////
 
 elseif ($_POST['delete_smilies'])
 {
@@ -88,7 +88,7 @@ elseif (($_GET['action']=="moveup" OR $_GET['action']=="movedown") AND isset($_G
          <input type="hidden" value="editorsmilies" name="go">
          <input type="hidden" value="'.session_id().'" name="PHPSESSID">
          <table class="configtable" cellpadding="4" cellspacing="0">
-           <tr><td class="line" colspan="3">'.$admin_phrases[editor][smilie_add_title].':</td></tr>
+           <tr><td class="line" colspan="3">'.$admin_phrases[editor][smilie_add_title].'</td></tr>
            <tr>
              <td class="config">
                <span class="small">'.$admin_phrases[editor][smilie_add_select].':</span>
@@ -115,7 +115,7 @@ elseif (($_GET['action']=="moveup" OR $_GET['action']=="movedown") AND isset($_G
                    echo'<option value="'.$insert_arr[order].'">'.$insert_arr[replace_string].'</option>';
                    $insert_last = $insert_arr[order];
                  }
-echo'
+  echo'
                  <option value="'.$insert_last.'" selected="selected">'.$admin_phrases[editor][smilie_add_at_end].'</option>
                </select>
              </td>
@@ -139,7 +139,7 @@ if (mysql_num_rows($index)>0)
 
     echo'
                     <table class="configtable" cellpadding="4" cellspacing="0">
-                      <tr><td class="line" colspan="3">'.$admin_phrases[editor][smilie_management_title].':</td></tr>
+                      <tr><td class="line" colspan="3">'.$admin_phrases[editor][smilie_management_title].'</td></tr>
                       <tr><td class="space"></td></tr>
                     </table>
                     

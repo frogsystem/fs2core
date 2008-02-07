@@ -17,7 +17,7 @@ if (($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h]) AND $_POST['
                  WHERE s_day   = $_POST[d] AND
                        s_month = $_POST[m] AND
                        s_year  = $_POST[y]", $db);
-    systext("Der Counter wurde aktualisiert");
+    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info] );
 }
 
 //////////////////////////////////////
@@ -26,7 +26,7 @@ if (($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h]) AND $_POST['
 
 elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
 {
-    settype($_POST[ed], 'integer');
+	settype($_POST[ed], 'integer');
     settype($_POST[em], 'integer');
     settype($_POST[ey], 'integer');
     $index = mysql_query("SELECT s_visits,
@@ -35,43 +35,53 @@ elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
                           WHERE s_day = $_POST[ed] and
                                 s_month = $_POST[em] and
                                 s_year = $_POST[ey]", $db);
+                                
+	$_POST['ed'] = date ( "d", mktime ( 0, 0, 0, $_POST['em'], $_POST['ed'], $_POST['ey'] ) );
+	$_POST['em'] = date ( "m", mktime ( 0, 0, 0, $_POST['em'], $_POST['ed'], $_POST['ey'] ) );
+	$_POST['ey'] = date ( "Y", mktime ( 0, 0, 0, $_POST['em'], $_POST['ed'], $_POST['ey'] ) );
+
     if (mysql_num_rows($index) == 0)
     {
-        systext("Keine Daten unter dem angegebenen Datum gefunden");
+        systext( $admin_phrases[stats][edit_day_no_data], $admin_phrases[stats][edit_day_title].' ('.$_POST[ed].'. '.$_POST[em].'. '.$_POST[ey].')' );
     }
     else
-    {
-        $counter_arr = mysql_fetch_assoc($index);
+	{
+		$counter_arr = mysql_fetch_assoc($index);
+		
         echo'
-                    <form action="" method="post">
-                        <input type="hidden" value="statedit" name="go">
-                        <input type="hidden" value="day" name="do">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <input type="hidden" value="'.$_POST[ed].'" name="d">
-                        <input type="hidden" value="'.$_POST[em].'" name="m">
-                        <input type="hidden" value="'.$_POST[ey].'" name="y">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" width="60%">
-                                    Besucher:<br>
-                                    <font class="small">Anzahl der Besucher am '.$_POST[ed].'.'.$_POST[em].'.'.$_POST[ey].'</font>
+					<form action="" method="post">
+						<input type="hidden" value="statedit" name="go">
+						<input type="hidden" value="day" name="do">
+						<input type="hidden" value="'.session_id().'" name="PHPSESSID">
+						<input type="hidden" value="'.$_POST[ed].'" name="d">
+						<input type="hidden" value="'.$_POST[em].'" name="m">
+						<input type="hidden" value="'.$_POST[ey].'" name="y">
+						<table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="2">'.$admin_phrases[stats][edit_day_title].' ('.$_POST[ed].'. '.$_POST[em].'. '.$_POST[ey].')</td></tr>
+						    <tr>
+                                <td class="config">
+                                    '.$admin_phrases[stats][edit_day_visits].':<br>
+                                    <span class="small">'.$admin_phrases[stats][edit_day_visits_desc].' '.$_POST[ed].'. '.$_POST[em].'. '.$_POST[ey].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="16" name="v" maxlength="16" value="'.$counter_arr[s_visits].'">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" width="60%">
-                                    Hits:<br>
-                                    <font class="small">Anzahl der Seitenaufrufe am '.$_POST[ed].'.'.$_POST[em].'.'.$_POST[ey].'</font>
+                                <td class="config">
+                                    '.$admin_phrases[stats][edit_day_hits].':<br>
+                                    <span class="small">'.$admin_phrases[stats][edit_day_hits_desc].' '.$_POST[ed].'.'.$_POST[em].'.'.$_POST[ey].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="16" name="h" maxlength="16" value="'.$counter_arr[s_hits].'">
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td colspan="2" align="center">
-                                    <input class="button" type="submit" value="Absenden">
+                                <td colspan="2" class="buttontd">
+                                    <button class="button_new" type="submit" value="1">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    </button>
                                 </td>
                             </tr>
                         </table>
@@ -105,7 +115,7 @@ elseif (($_POST[editvisits] != "" &&
                      news = '$_POST[editnews]',
                      artikel = '$_POST[editartikel]',
                      comments = '$_POST[editcomments]'", $db);
-    systext("Der Counter wurde aktualisiert");
+    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info] );
 }
 
 ////////////////////////////////////////
@@ -137,7 +147,7 @@ elseif ($_POST['do'] == "sync")
                      news = '$sync_arr[news]',
                      artikel = '$sync_arr[artikel]',
                      comments = '$sync_arr[comments]'", $db);
-    systext("Die Statistik wurde synchroniesiert.");
+    systext( $admin_phrases[stats][synchronised], $admin_phrases[common][info] );
 }
 //////////////////////////////////////
 ///// Gesamtstatistik editieren //////

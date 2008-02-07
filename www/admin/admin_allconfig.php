@@ -95,13 +95,13 @@ else
 
 
     echo'
-                    <form action="" method="post">
-                        <input type="hidden" value="allconfig" name="go">
+					<form action="" method="post">
+						<input type="hidden" value="allconfig" name="go">
                         <input type="hidden" name="sended" value="1">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][pageinfo_title].'</td></tr>
-                            <tr>
+						<tr><td class="line" colspan="2">'.$admin_phrases[general][pageinfo_title].'</td></tr>
+							<tr>
                                 <td class="config">
                                     '.$admin_phrases[general][title].':<br>
                                     <span class="small">'.$admin_phrases[general][title_desc].'</span>
