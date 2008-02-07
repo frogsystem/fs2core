@@ -6,7 +6,6 @@ $admin_phrases[common][system_message]            = "Systemmeldung";
 $admin_phrases[common][note_notfilled]            = "Bitte füllen Sie alle Pflichtfelder aus!";
 $admin_phrases[common][info]                      = "Information";
 $admin_phrases[common][error]                     = "Es trat ein Fehler auf";
-
 $admin_phrases[common][changes_saved]             = "Änderungen wurden gespeichert";
 
 $admin_phrases[common][optional]                  = "(optional)";
@@ -16,6 +15,7 @@ $admin_phrases[common][selection_del]             = "Auswahl löschen";
 $admin_phrases[common][do_button]                 = "Ausführen";
 $admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bisherige Bild überschrieben werden soll!";
 $admin_phrases[common][active]                    = "aktiv";
+$admin_phrases[common][valid_tags]                = "Gültige Tags";
 
 $admin_phrases[common][arrow]                     = '<img border="0" src="img/pointer.png" align="top" alt="->">';
 $admin_phrases[common][save_long]                 = "Änderungen speichern";
@@ -90,6 +90,30 @@ $admin_phrases[general][activate_ann_desc]        = "Schaltet die Ankündigung zu
 $admin_phrases[general][ann_title]                = "Ankündigung schreiben";
 $admin_phrases[general][ann_write_desc]           = "Eine leere Ankündigung wird nicht angezeigt. HTML und FSCode sind erlaubt.";
 
+
+$admin_phrases[general][phpinfo_title]            = "PHP & Serverinformationen";
+$admin_phrases[general][phpinfo_version]          = "PHP Version";
+$admin_phrases[general][phpinfo_zendversion]      = "Zend-Engine Version";
+$admin_phrases[general][phpinfo_phpuser]          = "PHP User";
+$admin_phrases[general][phpinfo_servername]       = "Servername";
+$admin_phrases[general][phpinfo_serverip]         = "IP-Adresse & Port";
+$admin_phrases[general][phpinfo_serverprotocol]   = "Protokoll";
+$admin_phrases[general][phpinfo_serversoftware]   = "Server Software";
+$admin_phrases[general][phpinfo_show_link]        = "vollständige PHP Info anzeigen";
+
+
+$admin_phrases[general][email_info]               = "Hinweise";
+$admin_phrases[general][email_info_text]          = "Als Absender wird die unter Konfiguration angegebene Email-Adresse verwendet.<br>HTML und FSCode sind erlaubt, sollten aber vermieden werden.";
+$admin_phrases[general][email_templates_title]    = "Email-Vorlagen";
+$admin_phrases[general][email_reg_title]          = "Registrierung";
+$admin_phrases[general][email_reg_desc]           = "Email, die der Benutzer bei der Registrierung auf der Seite erhält.";
+$admin_phrases[general][email_newpwd_title]       = "Passwortänderung";
+$admin_phrases[general][email_newpwd_desc]        = "Email, die der Benutzer bei einer Passwortänderung erhält.";
+$admin_phrases[general][email_delete_title]       = "Accountlöschung";
+$admin_phrases[general][email_delete_desc]        = "Email, die der Benutzer im Falle einer Löschung seines Accounts erhält.";
+$admin_phrases[general][email_username]           = "Der Benutzername des Users.";
+$admin_phrases[general][email_password]           = "Das Passwort des Users.";
+$admin_phrases[general][email_virtualhost]        = "URL zur Seite.";
 
 
 ////////////

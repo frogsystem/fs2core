@@ -370,7 +370,7 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
 {
     background-image:url('img/menubg.jpg');
     background-repeat:repeat-x;
-    width:526px;;
+    width:509px;
     height:38px;
     position:absolute;
     top:76px;
@@ -381,13 +381,14 @@ a.menu_link_selected:hover,a.menu_link_selected:focus
     font-size:9pt;
     font-family:Arial;
     color:#FFFFFF;
-    z-index:5;
+    z-index:6;
 }
 
 #menu_top_right
 {
     background-image:url('img/menu_top_r.jpg');
     background-repeat:no-repeat;
+    background-position: top right;
     width:104px;
     height:38px;
     position:absolute;

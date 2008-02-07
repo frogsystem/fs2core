@@ -49,7 +49,7 @@ else
         $config_arr['change_password'] = $_POST['change_password'];
         $config_arr['delete_account'] = $_POST['delete_account'];
 
-        systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error]);
+        systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
     }
 
     $config_arr['signup'] = killhtml ( $config_arr['signup'] );
@@ -62,17 +62,17 @@ else
                         <input type="hidden" name="sended" value="1">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][email_info] .'</td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[general][email_info].'</td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    <font class="small">'.$admin_phrases[general][email_info_text] .'</font>
+                                    <font class="small">'.$admin_phrases[general][email_info_text].'</font>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][email_templates_title] .'</td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[general][email_templates_title].'</td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[general][email_reg_title] .'<br />
+                                    '.$admin_phrases[general][email_reg_title].'<br />
                                     <font class="small">'.$admin_phrases[general][email_reg_desc].'</font>
                                 </td>
                             </tr>
@@ -92,7 +92,7 @@ else
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[general][email_newpwd_title] .'<br />
+                                    '.$admin_phrases[general][email_newpwd_title].'<br />
                                     <font class="small">'.$admin_phrases[general][email_newpwd_desc].'</font>
                                 </td>
                             </tr>
@@ -112,7 +112,7 @@ else
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[general][email_delete_title] .'<br />
+                                    '.$admin_phrases[general][email_delete_title].'<br />
                                     <font class="small">'.$admin_phrases[general][email_delete_desc].'</font>
                                 </td>
                             </tr>

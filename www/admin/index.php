@@ -230,7 +230,7 @@ unset($NAVI_ARR);
 //////////////////////////////
 
 $NAVI_ARR[title] = "Umfragen";
-$NAVI_ARR[menu_id] = "content";
+$NAVI_ARR[menu_id] = "interactive";
 
 $NAVI_ARR[link][] = "pollconfig";
 $NAVI_ARR[link][] = "polladd";
@@ -527,6 +527,12 @@ unset($tmp_arr);
 
 $tmp_arr[title] = "Inhalt"; //title of menu
 $tmp_arr[id] = "content"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+$tmp_arr[title] = "Interaktiv"; //title of menu
+$tmp_arr[id] = "interactive"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);

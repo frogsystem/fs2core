@@ -5,6 +5,8 @@
 
 function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE )
 {
+    global $admin_phrases;
+
 	if ( $TITLE == FALSE ) {
 		$TITLE = $admin_phrases[common][system_message];
 	}

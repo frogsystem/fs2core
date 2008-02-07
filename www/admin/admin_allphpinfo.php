@@ -7,7 +7,7 @@ else
 {
     echo'
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="4">'.$admin_phrases[general][phpinfo_title] .'</td></tr>
+                            <tr><td class="line" colspan="4">'.$admin_phrases[general][phpinfo_title].'</td></tr>
                             <tr>
                                 <td class="config" width="150">
                                     '.$admin_phrases[general][phpinfo_version].':
