@@ -168,111 +168,122 @@ else
                         <input type="hidden" value="statedit" name="go">
                         <input type="hidden" value="sync" name="do">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+						<table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="2">'.$admin_phrases[stats][overall_title].'</td></tr>
                             <tr>
-                                <td class="config" width="60%">
-                                    Statistik synchronisieren:<br>
-                                    <font class="small">Soll die Statistik mit den Datenbankwerten<br />
-                                    synchronisiert werden?</font>
+                                <td class="config">
+                                    '.$admin_phrases[stats][sync_now].':<br>
+                                    <span class="small">'.$admin_phrases[stats][sync_now_desc].'</span>
                                 </td>
-                                <td class="config" width="40%">
-                                    <input class="button" type="submit" value="Jetzt synchronisieren">
+                                <td class="config">
+                                    <input class="button" type="submit" value="'.$admin_phrases[stats][sync_now_button].'">
                                 </td>
                             </tr>
-                        </table>
+                            <tr><td class="space"></td></tr>
+
                     </form>
-                    <br />
-                    <form action="" method="post">
-                        <input type="hidden" value="statedit" name="go">
-                        <input type="hidden" value="edit" name="do">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" width="60%">
-                                    Besucher gesamt:<br>
-                                    <font class="small">Anzahl der Besucher die bisher auf der Site waren</font>
+
+
+					<form action="" method="post">
+						<input type="hidden" value="statedit" name="go">
+						<input type="hidden" value="edit" name="do">
+						<input type="hidden" value="'.session_id().'" name="PHPSESSID">
+
+							<tr>
+								<td class="config">
+									'.$admin_phrases[stats][overall_visits].':<br>
+                                    <span class="small">'.$admin_phrases[stats][overall_visits_desc].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="16" name="editvisits" maxlength="16" value="'.$counter_arr[visits].'">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" width="60%">
-                                    Hits gesamt:<br>
-                                    <font class="small">Anzahl der Seitenaufrufe</font>
+                                <td class="config">
+                                    '.$admin_phrases[stats][overall_hits].':<br>
+                                    <span class="small">'.$admin_phrases[stats][overall_hits_desc].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="16" name="edithits" maxlength="16" value="'.$counter_arr[hits].'">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" width="60%">
-                                    User gesamt:<br>
-                                    <font class="small">Anzahl der registrierten USer</font>
+                                <td class="config">
+                                    '.$admin_phrases[stats][overall_user].':<br>
+                                    <span class="small">'.$admin_phrases[stats][overall_user_desc].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="16" name="edituser" maxlength="16" value="'.$counter_arr[user].'">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" width="60%">
-                                    News gesamt:<br>
-                                    <font class="small">Anzahl der geschriebenen News</font>
+                                <td class="config">
+                                    '.$admin_phrases[stats][overall_news].':<br>
+                                    <span class="small">'.$admin_phrases[stats][overall_news_desc].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="16" name="editnews" maxlength="16" value="'.$counter_arr[news].'">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" width="60%">
-                                    Artikel gesamt:<br>
-                                    <font class="small">Anzahl der geschriebenen Artikel</font>
+                                <td class="config">
+                                    '.$admin_phrases[stats][overall_articles].':<br>
+                                    <span class="small">'.$admin_phrases[stats][overall_articles_desc].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="16" name="editartikel" maxlength="16" value="'.$counter_arr[artikel].'">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" width="60%">
-                                    Kommentare gesamt:<br>
-                                    <font class="small">Anzahl der geschriebenen News Kommentare</font>
+                                <td class="config">
+                                    '.$admin_phrases[stats][overall_comments].':<br>
+                                    <span class="small">'.$admin_phrases[stats][overall_comments_desc].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="16" name="editcomments" maxlength="16" value="'.$counter_arr[comments].'">
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td colspan="2" align="center">
-                                    <input class="button" type="submit" value="Absenden">
+                                <td colspan="2" class="buttontd">
+                                    <button class="button_new" type="submit" value="1">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    </button>
                                 </td>
                             </tr>
-                        </table>
+                            <tr><td class="space"></td></tr>
+                            <tr><td class="space"></td></tr>
+                            
+
                     </form>
-                    <br />
                     <form action="" method="post">
                         <input type="hidden" value="statedit" name="go">
                         <input type="hidden" value="day" name="do">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+
+							<tr><td class="line" colspan="2">'.$admin_phrases[stats][edit_day_title].'</td></tr>
                             <tr>
                                 <td class="config" width="60%">
-                                    Tag editieren:<br>
-                                    <font class="small">Gib das Datum ein, das du editieren möchtest.<br />
-                                    [TT].[MM].[JJJJ]</font>
+                                    '.$admin_phrases[stats][edit_day].':<br>
+                                    <span class="small">'.$admin_phrases[stats][edit_day_desc].'</span>
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config">
                                     <input class="text" size="1" name="ed" id="ed" maxlength="2"> .
                                     <input class="text" size="1" name="em" id="em"  maxlength="2"> .
                                     <input class="text" size="3" name="ey" id="ey"  maxlength="4">&nbsp;&nbsp;
-                                    <input class="button" type="button" value="Heute"
+                                    <input class="button" type="button" value="'.$admin_phrases[common][today].'"
                                            onClick=\'document.getElementById("ed").value="'.$heute[d].'";
                                                      document.getElementById("em").value="'.$heute[m].'";
-                                                     document.getElementById("ey").value="'.$heute[y].'";\'>
+                                                     document.getElementById("ey").value="'.$heute[y].'";\'><br>
+                                    <span class="small">'.$admin_phrases[stats][edit_day_info].'</span>
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td colspan="2" align="center">
-                                    <input class="button" type="submit" value="Auswählen">
+                                <td colspan="2" class="buttontd">
+                                    <button class="button_new" type="submit" value="1">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[stats][edit_day_button].'
+                                    </button>
                                 </td>
                             </tr>
                         </table>

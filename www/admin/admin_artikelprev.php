@@ -1,7 +1,12 @@
 <?php
-include("../config.inc.php");
+include("../login.inc.php");
 include("../includes/functions.php");
 include("../includes/adminfunctions.php");
+include("../includes/imagefunctions.php");
+include("../includes/indexfunctions.php");
+
+set_design ();
+copyright ();
 
 echo'
 <html>
@@ -9,7 +14,7 @@ echo'
     <title>Frogsystem 2 - Vorschau</title>
     <base href="'.$global_config_arr[virtualhost].'">
     
-    <link rel="stylesheet" type="text/css" href="../style_css.php">
+    <link rel="stylesheet" type="text/css" href="style_css.php?id='.$global_config_arr['design'].'">
     <script>
         function loaddata()
         {

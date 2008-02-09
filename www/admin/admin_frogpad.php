@@ -1,5 +1,5 @@
 <?php
-include("../config.inc.php");
+include("../login.inc.php");
 include("../includes/functions.php");
 include("../includes/adminfunctions.php");
 

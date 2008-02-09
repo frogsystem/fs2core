@@ -17,6 +17,7 @@ $admin_phrases[common][do_button]                 = "Ausführen";
 $admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bisherige Bild überschrieben werden soll!";
 $admin_phrases[common][active]                    = "aktiv";
 $admin_phrases[common][valid_tags]                = "Gültige Tags";
+$admin_phrases[common][today]                     = "Heute";
 
 $admin_phrases[common][width_x_height]            = "Breite x Höhe";
 $admin_phrases[common][resolution_x]              = "x";
@@ -171,13 +172,35 @@ $admin_phrases[editor][smilies_no_smilies]        = "Keine Smilies gefunden";
 // Statistik //
 ///////////////
 $admin_phrases[stats][edit_day_title]             = "Tagesstatistik bearbeiten";
+$admin_phrases[stats][edit_day]                   = "Tag auswählen";
+$admin_phrases[stats][edit_day_desc]              = "Datum, das bearbeitet werden soll.";
+$admin_phrases[stats][edit_day_info]              = "[TT] . [MM] . [JJJJ]";
+$admin_phrases[stats][edit_day_button]            = "Auswahl bearbeiten";
 $admin_phrases[stats][edit_day_no_data]           = "Für das angegebenen Datum wurden keine Daten gefunden";
 $admin_phrases[stats][edit_day_visits]            = "Besucher";
 $admin_phrases[stats][edit_day_visits_desc]       = "Anzahl der Besucher am";
 $admin_phrases[stats][edit_day_hits]              = "Hits";
 $admin_phrases[stats][edit_day_hits_desc]         = "Anzahl der Seitenaufrufe am";
 
+$admin_phrases[stats][sync_title]                 = "";
+$admin_phrases[stats][sync_now]                   = "Statistik synchronisieren";
+$admin_phrases[stats][sync_now_desc]              = "Synchronisiert die Statistik mit den Werten aus der Datenbank.";
+$admin_phrases[stats][sync_now_button]            = "Jetzt synchronisieren";
 $admin_phrases[stats][synchronised]               = "Statistik wurde synchronisiert";
+
+$admin_phrases[stats][overall_title]              = "Gesamtstatistik";
+$admin_phrases[stats][overall_visits]             = "Besucher gesamt";
+$admin_phrases[stats][overall_visits_desc]        = "Anzahl der Besucher die bisher auf der Seite waren.";
+$admin_phrases[stats][overall_hits]               = "Hits gesamt";
+$admin_phrases[stats][overall_hits_desc]          = "Anzahl der Seitenaufrufe.";
+$admin_phrases[stats][overall_user]               = "User gesamt";
+$admin_phrases[stats][overall_user_desc]          = "Anzahl der registrierten User.";
+$admin_phrases[stats][overall_news]               = "News gesamt";
+$admin_phrases[stats][overall_news_desc]          = "Anzahl der geschriebenen News.";
+$admin_phrases[stats][overall_articles]           = "Artikel gesamt";
+$admin_phrases[stats][overall_articles_desc]      = "Anzahl der geschriebenen Artikel.";
+$admin_phrases[stats][overall_comments]           = "Kommentare gesamt";
+$admin_phrases[stats][overall_comments_desc]      = "Anzahl der geschriebenen Kommentare.";
 
 
 

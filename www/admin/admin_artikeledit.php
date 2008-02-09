@@ -240,8 +240,10 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
                                     Text:<br>
                                     <font class="small">Html ist an. FScode ist an</font>
                                 </td>
-                                <td valign="top">
-                                    '.create_editor("text", stripslashes(killhtml($_POST[text])), 407, 380, "", false).'
+                            </tr>
+                            <tr>
+                                <td valign="top" colspan="2">
+                                    '.create_editor("text", stripslashes(killhtml($_POST[text])), "100%", 380, "", false).'
                                 </td>
                             </tr>
                             <tr>
