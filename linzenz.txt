@@ -56,7 +56,7 @@ Das Frogsystem 2 verwendet Teile anderer Software, die teilweise unter anderen L
 
 BBCode-Parserklasse für PHP von Christian Seiler
 aktuelle Version: http://www.christian-seiler.de/projekte/php/bbcode (Stand: 09.02.2008)
-Dateien: /includes/stringparser.class.php, includes/sstringparser_bbcode.class.php
+Dateien: /includes/stringparser.class.php, includes/stringparser_bbcode.class.php
 Lizenz: The MIT License
 
 Copyright (c) 2004-2007 Christian Seiler, webmaster@christian-seiler.de
