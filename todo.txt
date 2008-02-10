@@ -1,0 +1,24 @@
+bug-fixes und verbesserungen (Sweil)
+rechteverwaltung
+gästebuch
+kommentare & bewertung bei bildern
+kommentare & bewertung bei downloads
+newsarchiv neuorganisieren
+seiten suche (in news, artikeln, screenshots & download beschreibungen/titlen)
+fscodes komplett über die datenbank oragnisieren & selbst erstellbar
+editor verbessern und besser verwaltbar machen (buttons selbst hochladen etc. pp)
+backup-funktion
+design im- und export
+bilderverwaltung verbessern (ordner-system, neu hochladen, umbennen, etc.)
+kontaktforumlar
+template-system verbessern (letzte änderung, original anzeigen lassen, etc.)
+.htaccess verwendung
+zonen-system?!?
+counter für einzelne seiten (?go=xyz zählen)
+counter für alles (bilder, wallpaper, buchstaben...)
+kalendersystem (termine, veröffentlichungen, countdown...)
+statistik überarbeiten
+userprofil erweitern
+go-Aliase (?go=toll leitet auf ?go=super weiter)
+community map komplett neu machen (idee ort aus profil auf deutschlandkarte anzeigen lassen)
+druckansicht für artikel
