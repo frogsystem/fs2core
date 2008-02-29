@@ -18,7 +18,7 @@ if ($db)
     $news_config_arr = mysql_fetch_assoc($index);
     
     //Feed Header ausgeben
-    echo'<?xml version="1.0" encoding="ISO-8859-1"?>
+    echo'<?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE rss SYSTEM "http://my.netscape.com/publish/formats/rss-0.91.dtd">
         <rss version="0.91">
         <channel>
@@ -43,7 +43,7 @@ if ($db)
               <title>'.htmlspecialchars($news_arr[news_title]).'</title>
               <link>'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'</link>
               <pubDate>'.$news_arr[news_date].'</pubDate>
-              <description>'.killfs($news_arr[news_text]),500," ...".'</description>
+              <description>'.truncate_string(htmlspecialchars($news_arr[news_text]),500," ...").'</description>
               <comments>'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'</comments>
             </item>
         ';

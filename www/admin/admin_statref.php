@@ -4,125 +4,209 @@
 //// Referrer Löschen ////
 //////////////////////////
 
-if ($_POST[tage] && $_POST[hits])
+if ( $_POST['delete_referrer'] == 1 && isset ( $_POST['del_days'] ) && isset ( $_POST['del_hits'] ) )
 {
-    settype($_POST[tage], "integer");
-    settype($_POST[hits], "integer");
-    if ($_POST[tage] < 2)
+    settype ( $_POST['del_days'], "integer" );
+    settype ( $_POST['del_hits'], "integer" );
+    savesql ( $_POST['del_contact'] );
+    savesql ( $_POST['del_age'] );
+    savesql ( $_POST['del_amount'] );
+
+	if ( $_POST['del_days'] < 1 )
     {
-        systext("Es können nicht weniger als 2 Tage angegeben werden");
+        systext ( $admin_phrases[stats][referrer_not_enough_days], $admin_phrases[common][error], TRUE );
+    }
+	elseif ( $_POST['del_hits'] < 1 )
+    {
+        systext ( $admin_phrases[stats][referrer_not_enough_hits], $admin_phrases[common][error], TRUE );
     }
     else
     {
-        $deldate = time() - ($_POST[tage] * 86400);
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."counter_ref
-                     WHERE ref_date < '$deldate' AND
-                           ref_count < '$_POST[hits]'", $db);
-        systext("Alle Einträge älter als $_POST[tage] Tage und mit weniger als $_POST[hits] Hits wurden gelöscht<br>Dies betraf ".mysql_affected_rows()." Datensätze");
+        $del_date = time() - $_POST['del_days'] * 86400;
+
+    	switch ( $_POST['del_contact'] )
+    	{
+        	case "first": $contact = "first"; break;
+         	case "last": $contact = "last"; break;
+    	}
+    	switch ( $_POST['del_age'] )
+    	{
+        	case "older": $age = "<"; break;
+         	case "younger": $age = ">"; break;
+    	}
+    	switch ( $_POST['del_amount'] )
+    	{
+        	case "less": $amount = "<"; break;
+         	case "more": $amount = ">"; break;
+    	}
+    	
+		mysql_query("DELETE FROM ".$global_config_arr['pref']."counter_ref
+                     WHERE ref_".$contact." ".$age." '".$del_date."' AND
+                           ref_count ".$amount." '".$_POST['del_hits']."'", $db);
+                           
+		$message =  $admin_phrases[stats][referrer_deleted_entries] . ":<br>" .
+					'"'.$admin_phrases[stats]['referrer_'.$_POST['del_contact']] . " " .
+					$admin_phrases[stats]['referrer_delete_'.$_POST['del_age']] . " " .
+        			$_POST['del_days'] . " " .
+        			$admin_phrases[stats][referrer_delete_days] . " " .
+        			$admin_phrases[stats][referrer_delete_and] . " " .
+        			$admin_phrases[stats]['referrer_delete_'.$_POST['del_amount']] . " " .
+        			$_POST['del_hits'] . " " .
+        			$admin_phrases[stats][referrer_delete_hits].'"' . "<br><br>" .
+					$admin_phrases[common][affected_rows] . ": " .
+					mysql_affected_rows();
+
+        systext ( $message, $admin_phrases[common][info] );
+        
+        /*
+        Lösche ""Erster Kotankt" "älter als" "5" "Tage" "und" "weniger als 3 Hits""...
+        Betroffene Datensätze: mysql_affected_rows()
+        */
     }
 }
 
 //////////////////////////
-/// Referrer anzeigen ////
+/// Filter definieren ////
 //////////////////////////
 
 else
 {
-    if (!isset($_POST[limit]))
+    if ( !isset ( $_POST['limit'] ) )
     {
-        $_POST[limit] = 50;
+        $_POST['limit'] = 50;
     }
 
-    settype($_POST[limit], 'integer');
-    $filter = savesql($_POST[filter]);
-    $_POST[filter] = killhtml($_POST[filter]);
+    settype ( $_POST['limit'], 'integer' );
+    $filter = savesql ( $_POST['filter'] );
+    $_POST['filter'] = killhtml ( $_POST['filter'] );
 
-    switch ($_POST[order])
+    switch ( $_POST['order'] )
     {
-        case "u":
-            $usel = "selected";
-            break;
-        case "c":
-            $csel = "selected";
-            break;
+        case "u": $usel = "selected"; break;
+        case "c": $csel = "selected"; break;
+        case "l": $lsel = "selected"; break;
         default:
-            $dsel = "selected";
-            break;
+			$fsel = "selected";
+			$_POST['order'] = "f";
+			break;
+    }
+    switch ( $_POST['sort'] )
+    {
+        case "ASC": $ascsel = "selected"; break;
+        default:
+			$descsel = "selected";
+			$_POST['sort'] = "DESC";
+			break;
     }
 
     echo'
-                    <form action="" method="post">
+					<form action="" method="post">
                         <input type="hidden" value="statref" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" colspan="2">
-                                    Zeige
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="2">'.$admin_phrases[stats][referrer_filter_title].'</td></tr>
+							<tr>
+                                <td class="config">
+                                    '.$admin_phrases[stats][referrer_show].':
+                                </td>
+                                <td class="config" width="100%">
                                     <input name="limit" size="4" class="text" value="'.$_POST[limit].'">
-                                    Einträge sortiert nach 
+                                    '.$admin_phrases[stats][referrer_orderby].'
                                     <select name="order">
-                                        <option value="u" '.$usel.'>URL</option>
-                                        <option value="d" '.$dsel.'>Datum</option>
-                                        <option value="c" '.$csel.'>Counter</option>
+                                        <option value="c" '.$csel.'>'.$admin_phrases[stats][referrer_hits].'Counter</option>
+                                        <option value="f" '.$fsel.'>'.$admin_phrases[stats][referrer_first].'</option>
+                                        <option value="l" '.$lsel.'>'.$admin_phrases[stats][referrer_last].'</option>
+                                        <option value="u" '.$usel.'>'.$admin_phrases[stats][referrer_url].'</option>
+                                    </select>,
+                                    <select name="sort">
+                                        <option value="ASC" '.$ascsel.'>'.$admin_phrases[common][ascending].'</option>
+                                        <option value="DESC" '.$descsel.'>'.$admin_phrases[common][descending].'</option>
                                     </select>
-                                    &nbsp;Filter: <input name="filter" size="35" class="text" value="'.$_POST[filter].'">
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <font style="font-size:7pt;">Setzte im Filter ein ! an erster Stelle um den Suchbegriff komplett auszuschließen.<br />Mehrere Suchbegriffe können mit , oder Leerzeichen getrennt werden.</font>
+                                <td class="config">
+                                    '.$admin_phrases[stats][referrer_filter].':
                                 </td>
-                                <td align="right">
-                                    <input type="submit" value="Anzeigen" class="button">
+                                <td class="config" width="100%">
+                                    <input class="text" style="width: 100%;" name="filter" value="'.$_POST[filter].'">
+                                </td>
+                            </tr>
+						</table>
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr>
+                                <td class="config">
+                                    <span class="small">
+										'.$admin_phrases[stats][referrer_filter_info1].'<br>
+                                    	'.$admin_phrases[stats][referrer_filter_info2].'
+									</span>
+                                </td>
+                                <td align="right" valign="bottom">
+                                    <input type="submit" value="Localize: Anzeigen" class="button">
                                 </td>
                             </tr>
                         </table>
-                    </form>
-                    <table width="600" align="center" border="1" cellpadding="1" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000">
-                        <tr>
-                            <td class="h" align="center" colspan="4">
-                                <b>Referrer von externen Seiten</b>
+					</form>
+	';
+
+//////////////////////////
+/// Referrer anzeigen ////
+//////////////////////////
+	
+    echo'
+						<table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line">'.$admin_phrases[stats][referrer_list_title].'</td></tr>
+						</table>
+						
+						<table class="configtable" style="border-collapse: collapse; border: 1px solid #000000;" cellpadding="1" cellspacing="0" border="1">
+						<tr>
+                            <td class="h" align="center" colspan="5">
+                                <b>'.$admin_phrases[stats][referrer_table_title].'</b>
                             </td>
                         </tr>
                         <tr>
                             <td class="h" align="center">
-                                <b>Referrer URL</b>
+                                <b>'.$admin_phrases[stats][referrer_table_url].'</b>
                             </td>
                             <td class="h" align="center">
-                                <b>Counter</b>
+                                <b>'.$admin_phrases[stats][referrer_table_hits].'</b>
                             </td>
                             <td class="h" align="center">
-                                <b>Erstkontakt</b>
+                                <b>'.$admin_phrases[stats][referrer_table_first].'</b>
+                            </td>
+                            <td class="h" align="center">
+                                <b>'.$admin_phrases[stats][referrer_table_last].'</b>
                             </td>
                         </tr>
-    ';
+	';
 
-    $filter = str_replace(" ",",",$filter);
-    $filterarray = explode(",", $filter);
+    $filter = str_replace ( " ", ",", $filter );
+    $filterarray = explode ( ",", $filter );
 
-    $query = "";
-    $and_query = "";
-    $or_query = "";
+    unset ( $query );
+    unset ( $and_query );
+    unset ( $or_query );
 
     $first_and = true;
     $first_or = true;
-    foreach ($filterarray as $string)
+    
+    foreach ( $filterarray as $string )
     {
-        if (substr($string, 0, 1) == "!" AND substr($string, 1) != "")
+        if ( substr ( $string, 0, 1 ) == "!" && substr ( $string, 1 ) != "" )
         {
             $like = "ref_url NOT LIKE";
-            $string = substr($string, 1);
-            if (!$first_and)
+            $string = substr ( $string, 1 );
+            if ( !$first_and )
             {
                 $and_query .= " AND ";
             }
             $and_query .= $like . " '%" . $string . "%'";
             $first_and = false;
         }
-        elseif (substr($string, 0, 1) != "!" AND $string != "")
+        elseif ( substr ( $string, 0, 1 ) != "!" && $string != "" )
         {
             $like = "ref_url LIKE";
-            if (!$first_or)
+            if ( !$first_or )
             {
                 $or_query .= " OR ";
             }
@@ -132,59 +216,74 @@ else
         $i++;
     }
     
-    if ($or_query!="") {
+    if ( $or_query != "" )
+	{
         $or_query = "(".$or_query.")";
-        if ($and_query!="") {
+        if ( $and_query != "" )
+		{
             $and_query = " AND ".$and_query;
         }
     }
     
-    if ($or_query != "" OR $and_query != "") {
+    if ( $or_query != "" || $and_query != "" )
+	{
         $query = " WHERE ";
     }
     $query .= $or_query . $and_query;
 
-    switch ($_POST[order])
+    switch ( $_POST['order'] )
     {
         case "u":
-            $query .=  " ORDER BY ref_url LIMIT " . $_POST[limit];
+            $query .= " ORDER BY ref_url ".$_POST['sort']." LIMIT ".$_POST[limit];
             break;
         case "c":
-            $query .=  " ORDER BY ref_count DESC LIMIT " . $_POST[limit];
+            $query .= " ORDER BY ref_count ".$_POST['sort']." LIMIT ".$_POST[limit];
+            break;
+        case "l":
+            $query .= " ORDER BY ref_last ".$_POST['sort']." LIMIT ".$_POST[limit];
             break;
         default:
-            $query .=  " ORDER BY ref_date DESC LIMIT " . $_POST[limit];
+            $query .= " ORDER BY ref_first ".$_POST['sort']." LIMIT ".$_POST[limit];
             break;
     }
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."counter_ref $query", $db);
-    while ($referrer_arr = mysql_fetch_assoc($index))
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref ".$query."", $db );
+    while ( $referrer_arr = mysql_fetch_assoc ( $index ) )
     {
         $dburlfull = $referrer_arr[ref_url];
-        if (strlen($referrer_arr[ref_url]) > 60)
+
+		$referrer_arr[ref_url] = substr ( $referrer_arr[ref_url], 7 );
+		$referrer_maxlenght = 40;
+		if (strlen($referrer_arr[ref_url]) > $referrer_maxlenght)
         {
-            $referrer_arr[ref_url] = substr($referrer_arr[ref_url],0, 60) . "...";
+            $referrer_arr[ref_url] = substr($referrer_arr[ref_url],0, $referrer_maxlenght) . "...";
         }
-        $referrer_arr[ref_date] = date("d.m.Y H:i", $referrer_arr[ref_date]);
-        if($referrer_arr[ref_url] == "")
+
+		$referrer_arr[ref_first] = date("d.m.Y H:i", $referrer_arr[ref_first]);
+        $referrer_arr[ref_last] = date("d.m.Y H:i", $referrer_arr[ref_last]);
+
+		if($referrer_arr[ref_url] == "")
         {
             echo'
                         <tr>
                             <td class="n" align="left">
-                                Unbekannt
+                                '.$admin_phrases[stats][referrer_unknown].'
                             </td>
                             <td class="n" align="center">
                                 '.$referrer_arr[ref_count].'
                             </td>
                             <td class="n" align="center">
-                                '.$referrer_arr[ref_date].'
+                                '.$referrer_arr[ref_first].'
+                            </td>
+                            <td class="n" align="center">
+                                '.$referrer_arr[ref_last].'
                             </td>
                         </tr>
             ';
         }
         else
         {
-            echo'
+			echo'
                         <tr>
                             <td class="n" align="left">
                                 <a href="'.$dburlfull.'" style="text-decoration:none;" target="_blank" title="'.$dburlfull.'">
@@ -195,33 +294,77 @@ else
                                 '.$referrer_arr[ref_count].'
                             </td>
                             <td class="n" align="center">
-                                '.$referrer_arr[ref_date].'
+                                '.$referrer_arr[ref_first].'
+                            </td>
+                            <td class="n" align="center">
+                                '.$referrer_arr[ref_last].'
                             </td>
                         </tr>
-            ';
-        }
-    }
+			';
+		}
+	}
 
     echo'
-                    </table>
-                    <p>
+					</table>
+	';
+
+////////////////////////
+/// Referrer löschen ///
+////////////////////////
+
+    echo'
                     <form action="" method="post">
                         <input type="hidden" value="statref" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="space"></td></tr>
+							<tr><td class="line" colspan="3">'.$admin_phrases[stats][referrer_delete_title].'</td></tr>
+							<tr>
+                                <td class="config">
+                                    '.$admin_phrases[stats][referrer_delete_entries].'
+                                </td>
+                            </tr>
+							<tr>
+                                <td class="config">
+                                    '.$admin_phrases[stats][referrer_delete_with].'
+                                    &nbsp;
+                                    <select name="del_contact">
+                                        <option value="first">'.$admin_phrases[stats][referrer_first].'</option>
+                                        <option value="last">'.$admin_phrases[stats][referrer_last].'</option>
+                                    </select>
+                                    &nbsp;
+                              		<select name="del_age">
+                                        <option value="older">'.$admin_phrases[stats][referrer_delete_older].'</option>
+                                        <option value="younger">'.$admin_phrases[stats][referrer_delete_younger].'</option>
+                                    </select>
+                                    &nbsp;
+                                    <input class="text" name="del_days" size="3" value="5">
+                                    '.$admin_phrases[stats][referrer_delete_days].'
+                                </td>
+                            </tr>
+							<tr>
+                                <td class="config">
+                                    '.$admin_phrases[stats][referrer_delete_and].'
+                                    &nbsp;
+                                    <select name="del_amount">
+                                        <option value="less">'.$admin_phrases[stats][referrer_delete_less].'</option>
+                                        <option value="more">'.$admin_phrases[stats][referrer_delete_more].'</option>
+                                    </select>
+                                    &nbsp;
+                                    <input class="text" name="del_hits" size="3" value="3">
+                                    '.$admin_phrases[stats][referrer_delete_hits].'.
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td align="center" class="configthin" width="50%">
-                                    Einträge älter als 
-                                    <input class="text" name="tage" size="3" value="5">
-                                    Tage und weniger als
-                                    <input class="text" name="hits" size="3" value="3">
-                                    Hits
-                                    <input class="button" type="submit" value="entfernen">
+                                <td class="buttontd">
+                                    <button class="button_new" type="submit" name="delete_referrer" value="1">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[stats][referrer_delete_button].'
+                                    </button>
                                 </td>
                             </tr>
                         </table>
                     </form>
-                    <p>
-    ';
+	';
 }
 ?>

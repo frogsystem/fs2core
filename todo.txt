@@ -4,6 +4,7 @@ gästebuch
 kommentare & bewertung bei bildern
 kommentare & bewertung bei downloads
 newsarchiv neuorganisieren
+newsletter
 seiten suche (in news, artikeln, screenshots & download beschreibungen/titlen)
 fscodes komplett über die datenbank oragnisieren & selbst erstellbar
 editor verbessern und besser verwaltbar machen (buttons selbst hochladen etc. pp)
@@ -15,10 +16,13 @@ template-system verbessern (letzte änderung, original anzeigen lassen, etc.)
 .htaccess verwendung
 zonen-system?!?
 counter für einzelne seiten (?go=xyz zählen)
-counter für alles (bilder, wallpaper, buchstaben...)
+counter für alles (klicks auf partnerlink, bilder, wallpaper, buchstaben...)
 kalendersystem (termine, veröffentlichungen, countdown...)
 statistik überarbeiten
 userprofil erweitern
 go-Aliase (?go=toll leitet auf ?go=super weiter)
 community map komplett neu machen (idee ort aus profil auf deutschlandkarte anzeigen lassen)
 druckansicht für artikel
+No Java Script kompatbilität überprüfen
+sitemap und artikel kategorie system
+linksystem mit bannern klick-counter, bewertungen, etc. (evtl mit partnersystem verbinden?!)

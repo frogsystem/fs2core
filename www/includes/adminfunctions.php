@@ -231,7 +231,7 @@ function createmenu($menu_arr)
     {
         if ($value[show] == true AND $_SESSION["user_level"] == "authorised")
         {
-            $menu_class = "menu_link";
+            $menu_class = "menu_link".$align ;
             if ($_REQUEST['mid']==$value[id] AND ($go!="login" OR $_SESSION["user_level"] == "authorised")) {
                 $menu_class = "menu_link_selected";
             }

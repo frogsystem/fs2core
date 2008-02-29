@@ -8,6 +8,8 @@ $admin_phrases[common][only_allowed_values]       = "Bitte geben Sie nur erlaubt
 $admin_phrases[common][info]                      = "Information";
 $admin_phrases[common][error]                     = "Es trat ein Fehler auf";
 $admin_phrases[common][changes_saved]             = "Änderungen wurden gespeichert";
+$admin_phrases[common][affected_rows]             = "Betroffene Datensätze";
+
 
 $admin_phrases[common][optional]                  = "(optional)";
 $admin_phrases[common][selection]                 = "Auswahl";
@@ -18,6 +20,9 @@ $admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bis
 $admin_phrases[common][active]                    = "aktiv";
 $admin_phrases[common][valid_tags]                = "Gültige Tags";
 $admin_phrases[common][today]                     = "Heute";
+
+$admin_phrases[common][ascending]                 = "aufsteigend";
+$admin_phrases[common][descending]                = "absteigend";
 
 $admin_phrases[common][width_x_height]            = "Breite x Höhe";
 $admin_phrases[common][resolution_x]              = "x";
@@ -30,6 +35,21 @@ $admin_phrases[common][do_button_long]            = "Aktion ausführen";
 
 $admin_phrases[common][yes]                       = "Ja";
 $admin_phrases[common][no]                        = "Nein";
+
+
+
+////////////
+// menu  //
+////////////
+$admin_phrases[menu][general]                     = "Allgemein";
+$admin_phrases[menu][content]                     = "Inhalt";
+$admin_phrases[menu][interactive]                 = "Interaktiv";
+$admin_phrases[menu][media]                       = "Media";
+$admin_phrases[menu][promo]                       = "Promotion";
+$admin_phrases[menu][styles]                      = "Styles";
+$admin_phrases[menu][system]                      = "System";
+$admin_phrases[menu][user]                        = "User";
+$admin_phrases[menu][mods]                        = "Mods";
 
 
 
@@ -111,7 +131,7 @@ $admin_phrases[general][phpinfo_show_link]        = "vollständige PHP Info anzei
 
 
 $admin_phrases[general][email_info]               = "Hinweise";
-$admin_phrases[general][email_info_text]          = "Als Absender wird die unter Konfiguration angegebene Email-Adresse verwendet.<br>HTML und FSCode sind erlaubt, sollten aber vermieden werden.";
+$admin_phrases[general][email_info_text]          = "Als Absender wird die unter Konfiguration angegebene Email-Adresse verwendet.<br><s>HTML und FSCode sind erlaubt, sollten aber vermieden werden.</s>";
 $admin_phrases[general][email_templates_title]    = "Email-Vorlagen";
 $admin_phrases[general][email_reg_title]          = "Registrierung";
 $admin_phrases[general][email_reg_desc]           = "Email, die der Benutzer bei der Registrierung auf der Seite erhält.";
@@ -201,6 +221,39 @@ $admin_phrases[stats][overall_articles]           = "Artikel gesamt";
 $admin_phrases[stats][overall_articles_desc]      = "Anzahl der geschriebenen Artikel.";
 $admin_phrases[stats][overall_comments]           = "Kommentare gesamt";
 $admin_phrases[stats][overall_comments_desc]      = "Anzahl der geschriebenen Kommentare.";
+
+
+$admin_phrases[stats][referrer_filter_title]      = "Filter definieren";
+$admin_phrases[stats][referrer_list_title]        = "Referrer-Liste";
+$admin_phrases[stats][referrer_delete_title]      = "Einträge entfernen";
+$admin_phrases[stats][referrer_hits]              = "Hits";
+$admin_phrases[stats][referrer_first]             = "Erster Kontakt";
+$admin_phrases[stats][referrer_last]              = "Letzter Kontakt";
+$admin_phrases[stats][referrer_url]               = "URL";
+$admin_phrases[stats][referrer_show]              = "Anzeigen";
+$admin_phrases[stats][referrer_orderby]           = "Einträge sortiert nach";
+$admin_phrases[stats][referrer_filter]            = "Filter";
+$admin_phrases[stats][referrer_filter_info1]      = "Setzte im Filter ein ! an erster Stelle um den Suchbegriff komplett auszuschließen.";
+$admin_phrases[stats][referrer_filter_info2]      = "Mehrere Suchbegriffe können mit , oder Leerzeichen getrennt werden.";
+$admin_phrases[stats][referrer_table_title]       = "Referrer von externen Seiten";
+$admin_phrases[stats][referrer_table_url]         = "Referrer URL";
+$admin_phrases[stats][referrer_table_hits]        = "Hits";
+$admin_phrases[stats][referrer_table_first]       = "Erster Kontakt";
+$admin_phrases[stats][referrer_table_last]        = "Letzter Kontakt";
+$admin_phrases[stats][referrer_unknown]           = "Unbekannt";
+$admin_phrases[stats][referrer_delete_entries]    = "Entferne alle Einträge";
+$admin_phrases[stats][referrer_delete_with]       = "mit";
+$admin_phrases[stats][referrer_delete_older]      = "älter als";
+$admin_phrases[stats][referrer_delete_younger]    = "innerhalb der letzen";
+$admin_phrases[stats][referrer_delete_days]       = "Tage";
+$admin_phrases[stats][referrer_delete_and]        = "und";
+$admin_phrases[stats][referrer_delete_less]       = "weniger als";
+$admin_phrases[stats][referrer_delete_more]       = "mehr als";
+$admin_phrases[stats][referrer_delete_hits]       = "Hits";
+$admin_phrases[stats][referrer_delete_button]     = "definierte Einträge entfernen";
+$admin_phrases[stats][referrer_not_enough_days]   = "Es muss mindestens 1 Tag angegeben werden";
+$admin_phrases[stats][referrer_not_enough_hits]   = "Es muss mindestens 1 Hit angegeben werden";
+$admin_phrases[stats][referrer_deleted_entries]   = "Einträge mit diesen Eigenschaften wurden gelöscht";
 
 
 

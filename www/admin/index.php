@@ -463,7 +463,7 @@ unset($NAVI_ARR);
 //////////////////////////////
 
 $NAVI_ARR[title] = "Community Map";
-$NAVI_ARR[menu_id] = "user";
+$NAVI_ARR[menu_id] = "mods";
 
 $NAVI_ARR[link][] = "map&amp;landid=1";
 $NAVI_ARR[link][] = "map&amp;landid=2";
@@ -519,50 +519,56 @@ createmenu($MENU_ARR); //creates the menu-list
 unset($MENU_ARR); //deletes the variable
 */
 
-$tmp_arr[title] = "Allgemein"; //title of menu
+$tmp_arr[title] = $admin_phrases[menu][general]; //title of menu
 $tmp_arr[id] = "general"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
 
-$tmp_arr[title] = "Inhalt"; //title of menu
+$tmp_arr[title] = $admin_phrases[menu][content]; //title of menu
 $tmp_arr[id] = "content"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
 
-$tmp_arr[title] = "Interaktiv"; //title of menu
-$tmp_arr[id] = "interactive"; //id of menu, has to be unique
-$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
-$MENU_ARR[] = $tmp_arr;
-unset($tmp_arr);
-
-$tmp_arr[title] = "Media"; //title of menu
+$tmp_arr[title] = $admin_phrases[menu][media]; //title of menu
 $tmp_arr[id] = "media"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
 
-$tmp_arr[title] = "Promotion"; //title of menu
+$tmp_arr[title] = $admin_phrases[menu][interactive]; //title of menu
+$tmp_arr[id] = "interactive"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+$tmp_arr[title] = $admin_phrases[menu][promo]; //title of menu
 $tmp_arr[id] = "promo"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
 
-$tmp_arr[title] = "Styles"; //title of menu
+$tmp_arr[title] = $admin_phrases[menu][user]; //title of menu
+$tmp_arr[id] = "user"; //id of menu, has to be unique
+$tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
+$MENU_ARR[] = $tmp_arr;
+unset($tmp_arr);
+
+$tmp_arr[title] = $admin_phrases[menu][styles]; //title of menu
 $tmp_arr[id] = "styles"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
 
-$tmp_arr[title] = "System"; //title of menu
+$tmp_arr[title] = $admin_phrases[menu][system]; //title of menu
 $tmp_arr[id] = "system"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
 
-$tmp_arr[title] = "User"; //title of menu
-$tmp_arr[id] = "user"; //id of menu, has to be unique
+$tmp_arr[title] = $admin_phrases[menu][mods]; //title of menu
+$tmp_arr[id] = "mods"; //id of menu, has to be unique
 $tmp_arr[show] = createmenu_show($menu_show_arr,$tmp_arr[id]); //show menu?
 $MENU_ARR[] = $tmp_arr;
 unset($tmp_arr);
@@ -581,16 +587,16 @@ createmenu($MENU_ARR); //creates the menu-list
 unset($MENU_ARR); //deletes the variable
 
 echo '</div>
-<div id="menu_top_right">';
+<div id="menu_top_right"></div>';
 
-if ($_SESSION["user_level"] == "authorised") {
-    echo '<a href="'.$PHP_SELF.'?go=logout" target="_self" class="menu_link_right">Logout</a>';
-} else {
-    echo '<a href="'.$PHP_SELF.'?go=login" target="_self" class="menu_link_right">Login</a>';
-}
+#if ($_SESSION["user_level"] == "authorised") {
+#    echo '<a href="'.$PHP_SELF.'?go=logout" target="_self" class="menu_link_right"></a>';
+#} else {
+#    echo '<a href="'.$PHP_SELF.'?go=login" target="_self" class="menu_link_right"></a>';
+#}
 
-echo '</div>
 
+echo '
 <div id="bg"><div id="bg_padding">
 
     <div id="navi_container">';
