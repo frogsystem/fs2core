@@ -36,203 +36,201 @@ if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y]
 
 else
 {
-    $index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
-    $config_arr = mysql_fetch_assoc($index);
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config", $db );
+    $config_arr = mysql_fetch_assoc ( $index );
 
-    switch ($config_arr[html_code])
+    switch ( $config_arr['html_code'] )
     {
-        case 1:
-            $htmlop1 = "selected";
-            break;
-        case 2:
-            $htmlop2 = "selected";
-            break;
-        case 3:
-            $htmlop3 = "selected";
-            break;
-        case 4:
-            $htmlop4 = "selected";
-            break;
+        case 1: $htmlop1 = 'selected="selected"'; break;
+        case 2: $htmlop2 = 'selected="selected"'; break;
+        case 3: $htmlop3 = 'selected="selected"'; break;
+        case 4: $htmlop4 = 'selected="selected"'; break;
     }
-    switch ($config_arr[fs_code])
+    switch ( $config_arr['fs_code'] )
     {
-        case 1:
-            $fsop1 = "selected";
-            break;
-        case 2:
-            $fsop2 = "selected";
-            break;
-        case 3:
-            $fsop3 = "selected";
-            break;
-        case 4:
-            $fsop4 = "selected";
-            break;
+        case 1: $fsop1 = 'selected="selected"'; break;
+        case 2: $fsop2 = 'selected="selected"'; break;
+        case 3: $fsop3 = 'selected="selected"'; break;
+        case 4: $fsop4 = 'selected="selected"'; break;
     }
-    switch ($config_arr[para_handling])
+    switch ( $config_arr['para_handling'] )
     {
-        case 1:
-            $paraop1 = "selected";
-            break;
-        case 2:
-            $paraop2 = "selected";
-            break;
-        case 3:
-            $paraop3 = "selected";
-            break;
-        case 4:
-            $paraop4 = "selected";
-            break;
+        case 1: $paraop1 = 'selected="selected"'; break;
+        case 2: $paraop2 = 'selected="selected"'; break;
+        case 3: $paraop3 = 'selected="selected"'; break;
+        case 4: $paraop4 = 'selected="selected"'; break;
+    }
+    switch ( $config_arr['com_rights'] )
+    {
+        case 0: $rightsop0 = 'selected="selected"'; break;
+        case 1: $rightsop1 = 'selected="selected"'; break;
+        case 2: $rightsop2 = 'selected="selected"'; break;
+        case 3: $rightsop3 = 'selected="selected"'; break;
+    }
+    switch ( $config_arr['com_sort'] )
+    {
+        case "ASC": $sortop1 = 'selected="selected"'; break;
+        case "DESC": $sortop2 = 'selected="selected"'; break;
+    }
+    switch ( $config_arr['com_antispam'] )
+    {
+        case 0: $spamop0 = 'selected="selected"'; break;
+        case 1: $spamop1 = 'selected="selected"'; break;
+        case 2: $spamop2 = 'selected="selected"'; break;
+        case 3: $spamop3 = 'selected="selected"'; break;
     }
  
     echo'
-                    <form action="" method="post">
+					<form action="" method="post">
                         <input type="hidden" value="newsconfig" name="go">
+                        <input type="hidden" name="sended" value="1">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="2">'.$admin_phrases[news][settings_title].'</td></tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
-                                    News pro Seite:<br>
-                                    <font class="small">Anzahl der News die auf der Hauptseite angezeigt werden</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][news_per_page].':<br>
+                                    <span class="small">'.$admin_phrases[news][news_per_page_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
-                                    <input class="text" size="5" name="numnews" value="'.$config_arr[num_news].'" maxlength="2">
+                                <td class="config">
+                                    <input class="text" size="1" name="num_news" maxlength="2" value="'.$config_arr['num_news'].'"><br>
+                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top">
-                                    Headlines:<br>
-                                    <font class="small">Anzahl der Headlines auf der Seite</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][num_headlines].':<br>
+                                    <span class="small">'.$admin_phrases[news][num_headlines_desc].'</span>
                                 </td>
-                                <td class="config" valign="top">
-                                    <input class="text" size="5" name="numhead" value="'.$config_arr[num_head] .'" maxlength="2">
+                                <td class="config">
+                                    <input class="text" size="1" name="num_head" maxlength="2" value="'.$config_arr['num_head'] .'"><br>
+                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[news][post_settings_title].'</td></tr>
                             <tr>
-                                <td class="config" valign="top">
-                                    HTML code:<br>
-                                    <font class="small">Erlaubt Html code in</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][allow_html].':<br>
+                                    <span class="small">'.$admin_phrases[news][allow_html_desc].'</span>
                                 </td>
-                                <td class="config" valign="top">
+                                <td class="config">
                                     <select name="html_code">
-                                        <option '.$htmlop1.' value="1">Aus</option>
-                                        <option '.$htmlop2.' value="2">News</option>
-                                        <option '.$htmlop3.' value="3">Kommentaren</option>
-                                        <option '.$htmlop4.' value="4">News & Kommentaren</option>
+                                        <option '.$htmlop1.' value="1">'.$admin_phrases[news][allow_code_no].'</option>
+                                        <option '.$htmlop2.' value="2">'.$admin_phrases[news][allow_code_news].'</option>
+                                        <option '.$htmlop3.' value="3">'.$admin_phrases[news][allow_code_comments].'</option>
+                                        <option '.$htmlop4.' value="4">'.$admin_phrases[news][allow_code_both].'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top">
-                                    FS code:<br>
-                                    <font class="small">Erlaubt FS code in</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][allow_fs].':<br>
+                                    <span class="small">'.$admin_phrases[news][allow_fs_desc].'</span>
                                 </td>
-                                <td class="config" valign="top">
+                                <td class="config">
                                     <select name="fs_code">
-                                        <option '.$fsop1.' value="1">Aus</option>
-                                        <option '.$fsop2.' value="2">News</option>
-                                        <option '.$fsop3.' value="3">Kommentaren</option>
-                                        <option '.$fsop4.' value="4">News & Kommentaren</option>
+                                        <option '.$fsop1.' value="1">'.$admin_phrases[news][allow_code_no].'</option>
+                                        <option '.$fsop2.' value="2">'.$admin_phrases[news][allow_code_news].'</option>
+                                        <option '.$fsop3.' value="3">'.$admin_phrases[news][allow_code_comments].'</option>
+                                        <option '.$fsop4.' value="4">'.$admin_phrases[news][allow_code_both].'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top">
-                                    Absatzbehandlung:<br>
-                                    <font class="small">Aktiviert die Absatzbehandlung in</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][allow_para].':<br>
+                                    <span class="small">'.$admin_phrases[news][allow_para_desc].'</span>
                                 </td>
-                                <td class="config" valign="top">
+                                <td class="config">
                                     <select name="para_handling">
-                                        <option '.$paraop1.' value="1">Aus</option>
-                                        <option '.$paraop2.' value="2">News</option>
-                                        <option '.$paraop3.' value="3">Kommentaren</option>
-                                        <option '.$paraop4.' value="4">News & Kommentaren</option>
+                                        <option '.$paraop1.' value="1">'.$admin_phrases[news][allow_code_no].'</option>
+                                        <option '.$paraop2.' value="2">'.$admin_phrases[news][allow_code_news].'</option>
+                                        <option '.$paraop3.' value="3">'.$admin_phrases[news][allow_code_comments].'</option>
+                                        <option '.$paraop4.' value="4">'.$admin_phrases[news][allow_code_both].'</option>
                                     </select>
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[news][cat_settings_title].'</td></tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
-                                    Kategorie Bild - max. Breite:<br>
-                                    <font class="small">Wie breit ein Kategorie Bild max. sein darf</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][cat_img_max_width].':<br>
+                                    <span class="small">'.$admin_phrases[news][cat_img_max_width_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
-                                    <input class="text" size="5" name="cat_pic_x" value="'.$config_arr[cat_pic_x].'" maxlength="3"> Pixel
+                                <td class="config">
+                                    <input class="text" size="2" name="cat_pic_x" maxlength="3" value="'.$config_arr['cat_pic_x'].'"> '.$admin_phrases[common][pixel].'<br>
+                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
-                                    Kategorie Bild - max. Höhe:<br>
-                                    <font class="small">Wie hoch ein Kategorie Bild max. sein darf</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][cat_img_max_height].':<br>
+                                    <span class="small">'.$admin_phrases[news][cat_img_max_height_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
-                                    <input class="text" size="5" name="cat_pic_y" value="'.$config_arr[cat_pic_y].'" maxlength="3"> Pixel
+                                <td class="config">
+                                    <input class="text" size="2" name="cat_pic_y" maxlength="3" value="'.$config_arr['cat_pic_y'].'"> '.$admin_phrases[common][pixel].'<br>
+                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
-                                    Kommentare erlauben für:<br>
-                                    <font class="small">Wer darf Kommentare schreiben?</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][cat_img_max_size].':<br>
+                                    <span class="small">'.$admin_phrases[news][cat_img_max_size_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
+                                    <input class="text" size="3" name="cat_pic_size" maxlength="4" value="'.$config_arr['cat_pic_size'].'"> '.$admin_phrases[common][kib].'<br>
+                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[news][comment_settings_title].'</td></tr>
+                            <tr>
+                                <td class="config">
+                                    '.$admin_phrases[news][allow_comments].':<br>
+                                    <span class="small">'.$admin_phrases[news][allow_comments_desc].'</span>
+                                </td>
+                                <td class="config">
                                     <select name="com_rights">
-                                        <option value="2"';
-                                        if ($config_arr[com_rights] == 2)
-                                            echo ' selected="selected"';
-                                        echo'>alle User</option>
-                                        <option value="1"';
-                                        if ($config_arr[com_rights] == 1)
-                                            echo ' selected="selected"';
-                                        echo'>registrierte User</option>
-                                        <option value="0"';
-                                        if ($config_arr[com_rights] == 0)
-                                            echo ' selected="selected"';
-                                        echo'>niemanden</option>
+                                        <option '.$rightsop2.' value="2">'.$admin_phrases[news][allow_comments_all].'</option>
+                                        <option '.$rightsop3.' value="3">'.$admin_phrases[news][allow_comments_staff].'</option>
+                                        <option '.$rightsop1.' value="1">'.$admin_phrases[news][allow_comments_reg].'</option>
+                                        <option '.$rightsop0.' value="0">'.$admin_phrases[news][allow_comments_nobody].'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
-                                    Kommentare sortieren:<br>
-                                    <font class="small">Wie sollen die Kommentare sortiert werden?</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][sort_comments].':<br>
+                                    <span class="small">'.$admin_phrases[news][sort_comments_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     <select name="com_sort">
-                                        <option value="asc"';
-                                        if ($config_arr[com_sort] == "asc")
-                                            echo ' selected="selected"';
-                                        echo'>Alte zuerst</option>
-                                        <option value="desc"';
-                                        if ($config_arr[com_sort] == "desc")
-                                            echo ' selected="selected"';
-                                        echo'>Neue zuerst</option>
+                                        <option '.$sortsop1.' value="ASC">'.$admin_phrases[news][sort_comments_old_first].'</option>
+                                        <option '.$sortsop2.' value="DESC">'.$admin_phrases[news][sort_comments_new_first].'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
-                                    Anti Spam bei Kommentaren für:<br>
-                                    <font class="small">Soll Anti Spam bei Kommentaren aktiviert sein?</font>
+                                <td class="config">
+                                    '.$admin_phrases[news][anti_spam_comments].':<br>
+                                    <span class="small">'.$admin_phrases[news][anti_spam_comments_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     <select name="com_antispam">
-                                        <option value="2"';
-                                        if ($config_arr[com_antispam] == 2)
-                                            echo ' selected="selected"';
-                                        echo'>alle User</option>
-                                        <option value="1"';
-                                        if ($config_arr[com_antispam] == 1)
-                                            echo ' selected="selected"';
-                                        echo'>nicht registrierte User</option>
-                                        <option value="0"';
-                                        if ($config_arr[com_antispam] == 0)
-                                            echo ' selected="selected"';
-                                        echo'>niemanden</option>
+                                        <option '.$spamop2.' value="2">'.$admin_phrases[news][anti_spam_comments_all].'</option>
+                                        <option '.$spamop3.' value="3">'.$admin_phrases[news][anti_spam_comments_staff].'</option>
+                                        <option '.$spamop1.' value="1">'.$admin_phrases[news][anti_spam_comments_reg].'</option>
+                                        <option '.$spamop0.' value="0">'.$admin_phrases[news][anti_spam_comments_nobody].'</option>
                                     </select>
                                 </td>
                             </tr>
+							<tr><td class="space"></td></tr>
                             <tr>
-                                <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    </button>
                                 </td>
                             </tr>
                         </table>

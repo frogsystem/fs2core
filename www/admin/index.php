@@ -199,11 +199,12 @@ unset($NAVI_ARR);
 $NAVI_ARR[title] = "News";
 $NAVI_ARR[menu_id] = "content";
 
+$NAVI_ARR[link][] = "newsconfig";
 $NAVI_ARR[link][] = "newsadd";
 $NAVI_ARR[link][] = "newsedit";
 $NAVI_ARR[link][] = "news_cat_create";
 $NAVI_ARR[link][] = "news_cat_manage";
-$NAVI_ARR[link][] = "newsconfig";
+
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);

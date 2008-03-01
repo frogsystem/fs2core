@@ -29,6 +29,9 @@ $admin_phrases[common][resolution_x]              = "x";
 $admin_phrases[common][pixel]                     = "Pixel";
 $admin_phrases[common][zero_not_allowed]          = "0 ist nicht erlaubt";
 
+$admin_phrases[common][kib]                       = "KiB";
+$admin_phrases[common][mib]                       = "MiB";
+
 $admin_phrases[common][arrow]                     = '<img border="0" src="img/pointer.png" align="top" alt="->">';
 $admin_phrases[common][save_long]                 = "Änderungen speichern";
 $admin_phrases[common][do_button_long]            = "Aktion ausführen";
@@ -254,6 +257,55 @@ $admin_phrases[stats][referrer_delete_button]     = "definierte Einträge entfern
 $admin_phrases[stats][referrer_not_enough_days]   = "Es muss mindestens 1 Tag angegeben werden";
 $admin_phrases[stats][referrer_not_enough_hits]   = "Es muss mindestens 1 Hit angegeben werden";
 $admin_phrases[stats][referrer_deleted_entries]   = "Einträge mit diesen Eigenschaften wurden gelöscht";
+
+
+
+//////////
+// News //
+//////////
+$admin_phrases[news][settings_title]              = "Einstellungen";
+$admin_phrases[news][news_per_page]               = "News pro Seite";
+$admin_phrases[news][news_per_page_desc]          = "Anzahl der News, die pro Seite angezeigt werden.";
+$admin_phrases[news][num_headlines]               = "Headlines";
+$admin_phrases[news][num_headlines_desc]          = "Anzahl der Headlines, die angezeigt werden.";
+
+$admin_phrases[news][post_settings_title]         = "Beiträge";
+$admin_phrases[news][allow_html]                  = "HTML-Code";
+$admin_phrases[news][allow_html_desc]             = "Erlaubt HTML-Code in ...";
+$admin_phrases[news][allow_fs]                    = "FSCode";
+$admin_phrases[news][allow_fs_desc]               = "Erlaubt FSCode in ...";
+$admin_phrases[news][allow_para]                  = "Absatzbehandlung";
+$admin_phrases[news][allow_para_desc]             = "Aktiviert die Absatzbehandlung in ...";
+$admin_phrases[news][allow_code_no]               = "Aus";
+$admin_phrases[news][allow_code_news]             = "News";
+$admin_phrases[news][allow_code_comments]         = "Kommentaren";
+$admin_phrases[news][allow_code_both]             = "News & Kommentaren";
+
+$admin_phrases[news][cat_settings_title]          = "Kategorien";
+$admin_phrases[news][cat_img_max_width]           = "Kategorie Bild - max. Breite";
+$admin_phrases[news][cat_img_max_width_desc]      = "Max. Breite eines Kategorie Bildes in Pixeln.";
+$admin_phrases[news][cat_img_max_height]          = "Kategorie Bild - max. Höhe";
+$admin_phrases[news][cat_img_max_height_desc]     = "Max. Höhe eines Kategorie Bildes in Pixeln.";
+$admin_phrases[news][cat_img_max_size]            = "Kategorie Bild - max. Dateigröße";
+$admin_phrases[news][cat_img_max_size_desc]       = "Max. Dateigröße eines Kategorie Bildes in KiB.";
+
+$admin_phrases[news][comment_settings_title]      = "Kommentare";
+$admin_phrases[news][allow_comments]              = "Kommentare erlauben für";
+$admin_phrases[news][allow_comments_desc]         = "Kommentare schreiben erlauben für ...";
+$admin_phrases[news][allow_comments_all]          = "alle User";
+$admin_phrases[news][allow_comments_staff]        = "Mitarbeiter";
+$admin_phrases[news][allow_comments_reg]          = "registrierte User";
+$admin_phrases[news][allow_comments_nobody]       = "niemanden";
+$admin_phrases[news][sort_comments]               = "Kommentare sortieren";
+$admin_phrases[news][sort_comments_desc]          = "Die Anzeige-Reihenfolge der Kommentare.";
+$admin_phrases[news][sort_comments_old_first]     = "Alte zuerst";
+$admin_phrases[news][sort_comments_new_first]     = "Neue zuerst";
+$admin_phrases[news][anti_spam_comments]          = "Anti Spam bei Kommentaren für";
+$admin_phrases[news][anti_spam_comments_desc]     = "Anti Spam Captcha bei Kommentaren aktivieren für ...";
+$admin_phrases[news][anti_spam_comments_all]      = "alle User";
+$admin_phrases[news][anti_spam_comments_staff]    = "alle außer Mitarbeiter";
+$admin_phrases[news][anti_spam_comments_reg]      = "nicht registrierte User";
+$admin_phrases[news][anti_spam_comments_nobody]   = "niemanden";
 
 
 

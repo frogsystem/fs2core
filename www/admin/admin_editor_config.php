@@ -136,7 +136,7 @@ else
                                     <span class="small">'.$admin_phrases[editor][textarea_size_desc].'</span>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="2" name="textarea_width" value="'.$config_arr[textarea_width].'" maxlength="3"> '.$admin_phrases[common][resolution_x].' <input class="text" size="2" name="textarea_height" value="'.$config_arr[textarea_height].'" maxlength="3"> '.$admin_phrases[common][pixel].'<br />
+                                    <input class="text" size="2" name="textarea_width" value="'.$config_arr[textarea_width].'" maxlength="3"> '.$admin_phrases[common][resolution_x].' <input class="text" size="2" name="textarea_height" value="'.$config_arr[textarea_height].'" maxlength="3"> '.$admin_phrases[common][pixel].'<br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -146,7 +146,7 @@ else
                                     <span class="small">'.$admin_phrases[editor][smilies_desc].'</span>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="1" name="smilies_rows" value="'.$config_arr[smilies_rows].'" maxlength="2"> '.$admin_phrases[editor][smilies_rows].' <input class="text" size="1" name="smilies_cols" value="'.$config_arr[smilies_cols].'" maxlength="2"> '.$admin_phrases[editor][smilies_smilies].'<br />
+                                    <input class="text" size="1" name="smilies_rows" value="'.$config_arr[smilies_rows].'" maxlength="2"> '.$admin_phrases[editor][smilies_rows].' <input class="text" size="1" name="smilies_cols" value="'.$config_arr[smilies_cols].'" maxlength="2"> '.$admin_phrases[editor][smilies_smilies].'<br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>

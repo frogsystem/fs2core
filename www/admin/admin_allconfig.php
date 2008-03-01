@@ -353,7 +353,7 @@ else
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td colspan="2" class="buttontd">
-                                    <button class="button_new" type="submit" value="1">
+                                    <button class="button_new" type="submit">
                                         '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
                                     </button>
                                 </td>
