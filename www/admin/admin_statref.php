@@ -57,11 +57,6 @@ if ( $_POST['delete_referrer'] == 1 && isset ( $_POST['del_days'] ) && isset ( $
 					mysql_affected_rows();
 
         systext ( $message, $admin_phrases[common][info] );
-        
-        /*
-        Lösche ""Erster Kotankt" "älter als" "5" "Tage" "und" "weniger als 3 Hits""...
-        Betroffene Datensätze: mysql_affected_rows()
-        */
     }
 }
 

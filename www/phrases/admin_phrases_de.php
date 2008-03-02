@@ -52,7 +52,7 @@ $admin_phrases[menu][promo]                       = "Promotion";
 $admin_phrases[menu][styles]                      = "Styles";
 $admin_phrases[menu][system]                      = "System";
 $admin_phrases[menu][user]                        = "User";
-$admin_phrases[menu][mods]                        = "Mods";
+$admin_phrases[menu][mods]                        = "AddOns";
 
 
 
@@ -306,6 +306,10 @@ $admin_phrases[news][anti_spam_comments_all]      = "alle User";
 $admin_phrases[news][anti_spam_comments_staff]    = "alle auﬂer Mitarbeiter";
 $admin_phrases[news][anti_spam_comments_reg]      = "nicht registrierte User";
 $admin_phrases[news][anti_spam_comments_nobody]   = "niemanden";
+
+
+$admin_phrases[news][news_information_title]      = "Informationen";
+$admin_phrases[news][news_new_title]              = "News schreiben";
 
 
 

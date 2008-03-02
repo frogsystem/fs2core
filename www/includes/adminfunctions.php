@@ -28,6 +28,37 @@ function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE )
 }
 
 ////////////////////////////////
+//// Systemmeldung ausgeben ////
+////////////////////////////////
+
+function js_timebutton ( $DATA, $CAPTION, $CLASS = "button" )
+{
+	$template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
+
+	foreach ( $DATA as $key => $value )
+    {
+		$template .= "document.getElementById('".$key."').value='".$value."';";
+	}
+
+    $template .= '">';
+
+	return $template;
+}
+
+////////////////////////////
+//// Update from $_POST ////
+////////////////////////////
+
+function getfrompost ( $ARRAY )
+{
+	foreach ( $ARRAY as $key => $value  )
+	{
+        $ARRAY[$key] = $_POST[$key];
+	}
+	return $ARRAY;
+}
+
+////////////////////////////////
 //// Create textarea        ////
 ////////////////////////////////
 
@@ -64,6 +95,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
   if ($do_smilies == true)
   {
     $smilies = '
+    <td style="padding-left: 4px;">
       <fieldset style="width:46px;">
         <legend class="small" align="left"><font class="small">Smilies</font></legend>
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
@@ -94,7 +126,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
     unset($smilie_template);
     unset($config_arr);
 
-    $smilies .= '</table></fieldset>';
+    $smilies .= '</table></fieldset></td>';
   }
   
     $buttons = "";
@@ -128,13 +160,10 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
                  </table>
                  <table cellpadding="0" cellspacing="0" border="0" width="100%">
                      <tr valign="top">
-                         <td>
+                         <td width="100%">
                              <textarea {style}>{text}</textarea>
                          </td>
-                         <td style="width:4px; empty-cells:show;"></td>
-                         <td>
-                             {smilies}
-                         </td>
+                         {smilies}
                      </tr>
                  </table><br />';
     

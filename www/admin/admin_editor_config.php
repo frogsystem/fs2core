@@ -12,7 +12,7 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_
     settype($_POST[textarea_width], 'integer');
     settype($_POST[textarea_height], 'integer');
     
-    $update = "UPDATE ".$global_config_arr[pref]."editor_config
+    $update = "UPDATE ".$global_config_arr['pref']."editor_config
                SET smilies_rows = '$_POST[smilies_rows]',
                    smilies_cols = '$_POST[smilies_cols]',
                    textarea_width = '$_POST[textarea_width]',

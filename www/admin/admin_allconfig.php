@@ -26,7 +26,7 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
   $_POST[feed] = savesql($_POST[feed]);
   $_POST[language] = savesql($_POST[language]);
   
-  mysql_query("UPDATE ".$global_config_arr[pref]."global_config
+  mysql_query("UPDATE ".$global_config_arr['pref']."global_config
                SET virtualhost = '$_POST[virtualhost]',
                    admin_mail = '$_POST[admin_mail]',
                    title = '$_POST[title]',
@@ -54,7 +54,7 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
 
 else
 {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."global_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."global_config", $db);
     $config_arr = mysql_fetch_assoc($index);
 
     if (isset($_POST['sended']))

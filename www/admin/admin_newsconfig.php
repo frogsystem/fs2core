@@ -4,30 +4,42 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST[numhead] && $_POST[numnews] && $_POST[cat_pic_x] && $_POST[cat_pic_y])
+if (
+		$_POST['num_news'] && $_POST['num_news'] > 0 &&
+		$_POST['num_head'] && $_POST['num_head'] > 0 &&
+		$_POST['cat_pic_x'] && $_POST['cat_pic_x'] > 0 &&
+		$_POST['cat_pic_y'] && $_POST['cat_pic_y'] > 0 &&
+		$_POST['cat_pic_size'] && $_POST['cat_pic_size'] > 0
+	)
 {
-    settype($_POST[numnews], 'integer');
-    settype($_POST[numhead], 'integer');
-    settype($_POST[html_code], 'integer');
-    settype($_POST[fs_code], 'integer');
-    settype($_POST[para_handling], 'integer');
-    settype($_POST[cat_pic_x], 'integer');
-    settype($_POST[cat_pic_y], 'integer');
-    settype($_POST[com_rights], 'integer');
-    settype($_POST[com_antispam], 'integer');
+    settype($_POST['num_news'], 'integer');
+    settype($_POST['num_head'], 'integer');
+    settype($_POST['html_code'], 'integer');
+    settype($_POST['fs_code'], 'integer');
+    settype($_POST['para_handling'], 'integer');
+    settype($_POST['cat_pic_x'], 'integer');
+    settype($_POST['cat_pic_y'], 'integer');
+    settype($_POST['cat_pic_size'], 'integer');
+    settype($_POST['com_rights'], 'integer');
+    settype($_POST['com_antispam'], 'integer');
+
+	$_POST['com_sort'] = savesql ( $_POST['com_sort'] );
     
-    mysql_query("UPDATE ".$global_config_arr[pref]."news_config
-                 SET num_news        = '$_POST[numnews]',
-                     num_head        = '$_POST[numhead]',
-                     html_code       = '$_POST[html_code]',
-                     fs_code         = '$_POST[fs_code]',
-                     para_handling   = '$_POST[para_handling]',
-                     cat_pic_x       = '$_POST[cat_pic_x]',
-                     cat_pic_y       = '$_POST[cat_pic_y]',
-                     com_rights      = '$_POST[com_rights]',
-                     com_antispam    = '$_POST[com_antispam]',
-                     com_sort        = '$_POST[com_sort]'", $db);
-    systext("Die Konfiguration wurde aktualisiert");
+    mysql_query("UPDATE ".$global_config_arr['pref']."news_config
+                 SET num_news = '".$_POST['num_news']."',
+                     num_head = '".$_POST['num_head']."',
+                     html_code = '".$_POST['html_code']."',
+                     fs_code = '".$_POST['fs_code']."',
+                     para_handling = '".$_POST['para_handling']."',
+                     cat_pic_x = '".$_POST['cat_pic_x']."',
+                     cat_pic_y = '".$_POST['cat_pic_y']."',
+                     cat_pic_size = '".$_POST['cat_pic_size']."',
+                     com_rights = '".$_POST['com_rights']."',
+                     com_antispam = '".$_POST['com_antispam']."',
+                     com_sort = '".$_POST['com_sort']."'
+                 WHERE id = '1'", $db);
+
+	systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
 }
 
 /////////////////////////////////////
@@ -38,6 +50,14 @@ else
 {
     $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config", $db );
     $config_arr = mysql_fetch_assoc ( $index );
+
+    if ( isset ( $_POST['sended'] ) )
+    {
+        $config_arr = getfrompost ( $config_arr );
+
+        systext($admin_phrases[common][note_notfilled]."<br />".$admin_phrases[common][only_allowed_values], $admin_phrases[common][error], TRUE);
+    }
+
 
     switch ( $config_arr['html_code'] )
     {
@@ -93,7 +113,7 @@ else
                                     <span class="small">'.$admin_phrases[news][news_per_page_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="1" name="num_news" maxlength="2" value="'.$config_arr['num_news'].'"><br>
+                                    <input class="text" size="2" name="num_news" maxlength="2" value="'.$config_arr['num_news'].'"><br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -103,7 +123,7 @@ else
                                     <span class="small">'.$admin_phrases[news][num_headlines_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="1" name="num_head" maxlength="2" value="'.$config_arr['num_head'] .'"><br>
+                                    <input class="text" size="2" name="num_head" maxlength="2" value="'.$config_arr['num_head'] .'"><br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -159,7 +179,7 @@ else
                                     <span class="small">'.$admin_phrases[news][cat_img_max_width_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="2" name="cat_pic_x" maxlength="3" value="'.$config_arr['cat_pic_x'].'"> '.$admin_phrases[common][pixel].'<br>
+                                    <input class="text" size="3" name="cat_pic_x" maxlength="3" value="'.$config_arr['cat_pic_x'].'"> '.$admin_phrases[common][pixel].'<br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -169,7 +189,7 @@ else
                                     <span class="small">'.$admin_phrases[news][cat_img_max_height_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="2" name="cat_pic_y" maxlength="3" value="'.$config_arr['cat_pic_y'].'"> '.$admin_phrases[common][pixel].'<br>
+                                    <input class="text" size="3" name="cat_pic_y" maxlength="3" value="'.$config_arr['cat_pic_y'].'"> '.$admin_phrases[common][pixel].'<br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -179,7 +199,7 @@ else
                                     <span class="small">'.$admin_phrases[news][cat_img_max_size_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="3" name="cat_pic_size" maxlength="4" value="'.$config_arr['cat_pic_size'].'"> '.$admin_phrases[common][kib].'<br>
+                                    <input class="text" size="4" name="cat_pic_size" maxlength="4" value="'.$config_arr['cat_pic_size'].'"> '.$admin_phrases[common][kib].'<br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -206,8 +226,8 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="com_sort">
-                                        <option '.$sortsop1.' value="ASC">'.$admin_phrases[news][sort_comments_old_first].'</option>
-                                        <option '.$sortsop2.' value="DESC">'.$admin_phrases[news][sort_comments_new_first].'</option>
+                                        <option '.$sortop1.' value="ASC">'.$admin_phrases[news][sort_comments_old_first].'</option>
+                                        <option '.$sortop2.' value="DESC">'.$admin_phrases[news][sort_comments_new_first].'</option>
                                     </select>
                                 </td>
                             </tr>
