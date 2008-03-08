@@ -260,14 +260,14 @@ function createmenu($menu_arr)
     {
         if ($value[show] == true AND $_SESSION["user_level"] == "authorised")
         {
+        	if ($key == $end) {
+         		$align = "_right";
+            }
             $menu_class = "menu_link".$align ;
             if ($_REQUEST['mid']==$value[id] AND ($go!="login" OR $_SESSION["user_level"] == "authorised")) {
-                $menu_class = "menu_link_selected";
+                $menu_class = "menu_link_selected".$align;
             }
-            $template .= '<a href="'.$PHP_SELF.'?mid='.$value[id].$session_url.'" target="_self" class="'.$menu_class.'">'.$value[title].'</a>';
-            if ($key != $end) {
-                $template .= "&nbsp;&nbsp;&nbsp;&nbsp;";
-            }
+            $template .= '<td align="right"><a href="'.$PHP_SELF.'?mid='.$value[id].$session_url.'" target="_self" class="'.$menu_class.'">'.$value[title].'</a></td>';
         }
     }
 

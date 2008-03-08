@@ -52,7 +52,7 @@ $admin_phrases[menu][promo]                       = "Promotion";
 $admin_phrases[menu][styles]                      = "Styles";
 $admin_phrases[menu][system]                      = "System";
 $admin_phrases[menu][user]                        = "User";
-$admin_phrases[menu][mods]                        = "AddOns";
+$admin_phrases[menu][mods]                        = "Add Ons";
 
 
 
@@ -110,7 +110,7 @@ $admin_phrases[general][page_info]                = "{page_number} = aktuelle Se
 $admin_phrases[general][page_prev]                = "Seite zurück";
 $admin_phrases[general][page_prev_desc]           = 'Design der "Seite zurück" Schaltfläche.';
 $admin_phrases[general][page_prev_info]           = "{url} = URL zur vorherigen Seite";
-$admin_phrases[general][page_next]                = "Seiter weiter";
+$admin_phrases[general][page_next]                = "Seite weiter";
 $admin_phrases[general][page_next_desc]           = 'Design der "Seite weiter" Schaltfläche. ';
 $admin_phrases[general][page_next_info]           = "{url} = URL zur nächsten Seite";
 

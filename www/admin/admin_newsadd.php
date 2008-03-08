@@ -109,13 +109,13 @@ else
     	$_POST['y'] = date ( "Y" );
     	$_POST['h'] = date ( "H" );
     	$_POST['i'] = date ( "i" );
+	} else {
+		settype ( $_POST['d'], "integer" );
+    	settype ( $_POST['m'], "integer" );
+    	settype ( $_POST['y'], "integer" );
+    	settype ( $_POST['h'], "integer" );
+    	settype ( $_POST['i'], "integer" );
 	}
-	
-	settype ( $_POST['d'], "integer" );
-    settype ( $_POST['m'], "integer" );
-    settype ( $_POST['y'], "integer" );
-    settype ( $_POST['h'], "integer" );
-    settype ( $_POST['i'], "integer" );
 	
     $nowbutton_array['d'] = date ( "d" );
     $nowbutton_array['m'] = date ( "m" );

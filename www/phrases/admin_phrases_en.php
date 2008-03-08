@@ -14,6 +14,20 @@ $admin_phrases[common][yes]                       = "Yes";
 $admin_phrases[common][no]                        = "No";
 
 
+////////////
+// menu  //
+////////////
+$admin_phrases[menu][general]                     = "General";
+$admin_phrases[menu][content]                     = "Contents";
+$admin_phrases[menu][interactive]                 = "Interactive";
+$admin_phrases[menu][media]                       = "Media";
+$admin_phrases[menu][promo]                       = "Promotion";
+$admin_phrases[menu][styles]                      = "Styles";
+$admin_phrases[menu][system]                      = "System";
+$admin_phrases[menu][user]                        = "Users";
+$admin_phrases[menu][mods]                        = "Add Ons";
+
+
 
 ////////////
 // Editor //

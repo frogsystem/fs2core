@@ -464,7 +464,7 @@ unset($NAVI_ARR);
 //////////////////////////////
 
 $NAVI_ARR[title] = "Community Map";
-$NAVI_ARR[menu_id] = "mods";
+$NAVI_ARR[menu_id] = "interactive";
 
 $NAVI_ARR[link][] = "map&amp;landid=1";
 $NAVI_ARR[link][] = "map&amp;landid=2";
@@ -582,22 +582,56 @@ unset($tmp_arr);
 ### START OF MENU/NAVI DISPLAY ###
 ##################################
 echo'<div id="menu_top_left"></div>
-<div id="menu_top_loop">';
+<div id="menu_top_loop">
+<div id="menu_top_right">
+	<table cellpadding="0" cellspacing="0" id="menu_top_table" align="right">
+		<tr id="menu_top_tr" valign="top">';
 
 createmenu($MENU_ARR); //creates the menu-list
 unset($MENU_ARR); //deletes the variable
 
-echo '</div>
-<div id="menu_top_right"></div>';
-
-#if ($_SESSION["user_level"] == "authorised") {
-#    echo '<a href="'.$PHP_SELF.'?go=logout" target="_self" class="menu_link_right"></a>';
-#} else {
-#    echo '<a href="'.$PHP_SELF.'?go=login" target="_self" class="menu_link_right"></a>';
-#}
-
-
 echo '
+		</tr>
+	</table>
+</div>
+</div>
+<div id="menu_top_log">';
+
+if ( $_SESSION["user_level"] == "authorised" )
+{
+	$log_link = "logout";
+	$log_image = "logout.gif";
+	$log_text = "Logout";
+}
+else
+{
+	$log_link = "login";
+	$log_image = "login.gif";
+	$log_text = "Login";
+}
+
+echo'
+	<table cellpadding="0" cellspacing="0">
+		<tr valign="top">
+			<td id="menu_top_log_image_td">
+       			<a href="'.$PHP_SELF.'?go='.$log_link.'" target="_self" class="small">
+					<img src="img/'.$log_image.'" alt="" title="'.$log_text.'" border="0">
+				</a>
+			</td>
+			<td>
+	       		<a href="'.$PHP_SELF.'?go='.$log_link.'" target="_self" class="small">
+     				'.$log_text.'
+				</a>
+			</td>
+		</tr>
+	</table>
+';
+
+unset ( $log_link );
+unset ( $log_image );
+unset ( $log_text );
+
+echo '</div>
 <div id="bg"><div id="bg_padding">
 
     <div id="navi_container">';
