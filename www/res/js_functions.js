@@ -1,3 +1,32 @@
+/**
+* From http://www.massless.org/mozedit/
+*/
+function mozWrap(txtarea, open, close)
+{
+        var selLength = txtarea.textLength;
+        var selStart = txtarea.selectionStart;
+        var selEnd = txtarea.selectionEnd;
+        var scrollTop = txtarea.scrollTop;
+
+        if (selEnd == 1 || selEnd == 2)
+        {
+                selEnd = selLength;
+        }
+
+        var s1 = (txtarea.value).substring(0,selStart);
+        var s2 = (txtarea.value).substring(selStart, selEnd)
+        var s3 = (txtarea.value).substring(selEnd, selLength);
+
+        txtarea.value = s1 + open + s2 + close + s3;
+        txtarea.selectionStart = selEnd + open.length + close.length;
+        txtarea.selectionEnd = txtarea.selectionStart;
+        txtarea.focus();
+        txtarea.scrollTop = scrollTop;
+
+        return;
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////
 //Einfachen Code einfügen (B,I,U, etc.) => Keine Abfrage
 //////////////////////////////////////////////////////////////////////////////////////
@@ -22,18 +51,17 @@ function insert(eName, aTag, eTag) {
   /* für neuere auf Gecko basierende Browser */
   else if(typeof input.selectionStart != 'undefined')
   {
-    /* Einfügen des Formatierungscodes */
-    var start = input.selectionStart;
-    var end = input.selectionEnd;
-    var insText = input.value.substring(start, end);
-    input.value = input.value.substr(0, start) + aTag + insText + eTag + input.value.substr(end);
-    /* Anpassen der Cursorposition */
+    /* Anpassen der Cursorposition nach dem einfügen */
+    var selection_start = input.selectionStart;
+    var selection_end = input.selectionEnd;
+    var insText = input.value.substring(selection_start, selection_end);
     var pos;
     if (insText.length == 0) {
-      pos = start + aTag.length;
+      pos = selection_start + aTag.length;
     } else {
-      pos = start + aTag.length + insText.length + eTag.length;
+      pos = selection_start + aTag.length + insText.length + eTag.length;
     }
+    mozWrap(input, aTag, eTag)
     input.selectionStart = pos;
     input.selectionEnd = pos;
   }
@@ -78,25 +106,29 @@ function insert_mcom(eName, aTag, eTag, Frage, Vorgabe) {
   /* für neuere auf Gecko basierende Browser */
   else if(typeof input.selectionStart != 'undefined')
   {
-    /* Einfügen des Formatierungscodes */
-    var start = input.selectionStart;
-    var end = input.selectionEnd;
-    var insText = input.value.substring(start, end);
+    /* Anpassen der Cursorposition nach dem einfügen */
+    var selection_start = input.selectionStart;
+    var selection_end = input.selectionEnd;
+    var insText = input.value.substring(selection_start, selection_end);
+    var addText = "";
+
+    /* Ermittlung des einzufügenden Textes*/
     if (insText.length == 0) {
-      /* Ermittlung des einzufügenden Textes*/
-      insText = prompt(Frage, Vorgabe);
-      if (insText == null) {
-        insText = "";
+      addText = prompt(Frage, Vorgabe);
+      if (addText == null) {
+        addText = "";
       }
+      insText = addText;
     }
-    input.value = input.value.substr(0, start) + aTag + insText + eTag + input.value.substr(end);
-    /* Anpassen der Cursorposition */
+
     var pos;
     if (insText.length == 0) {
-      pos = start + aTag.length;
+      pos = selection_start + aTag.length;
     } else {
-      pos = start + aTag.length + insText.length + eTag.length;
+      pos = selection_start + aTag.length + insText.length + eTag.length;
     }
+
+    mozWrap(input, aTag+addText, eTag)
     input.selectionStart = pos;
     input.selectionEnd = pos;
   }
@@ -142,18 +174,23 @@ function insert_com(eName, Tag, Frage, Vorgabe) {
   /* für neuere auf Gecko basierende Browser */
   else if(typeof input.selectionStart != 'undefined')
   {
-    /* Einfügen des Formatierungscodes */
-    var start = input.selectionStart;
-    var end = input.selectionEnd;
-    var insText = input.value.substring(start, end);
-    input.value = input.value.substr(0, start) +"["+Tag+"="+attText+"]"+ insText +"[/"+Tag+"]"+ input.value.substr(end);
-    /* Anpassen der Cursorposition */
+    /* Tags definieren */
+    var aTag = "["+Tag+"="+attText+"]";
+    var eTag = "[/"+Tag+"]";
+
+    /* Anpassen der Cursorposition nach dem einfügen */
+    var selection_start = input.selectionStart;
+    var selection_end = input.selectionEnd;
+    var insText = input.value.substring(selection_start, selection_end);
+
     var pos;
     if (insText.length == 0) {
-      pos = start + Tag.length + 3 + attText.length;
+      pos = selection_start + aTag.length;
     } else {
-      pos = start + Tag.length + 3 + attText.length + insText.length + Tag.length + 3;
+      pos = selection_start + aTag.length + insText.length + eTag.length;
     }
+
+    mozWrap(input, aTag, eTag)
     input.selectionStart = pos;
     input.selectionEnd = pos;
   }
