@@ -33,6 +33,8 @@ if ( $db && mysql_select_db ( $data, $db ) ) {
     $global_config_arr['pref'] = $pref;
     //write $spam into $global_config_arr['spam']
     $global_config_arr['spam'] = $spam;
+    //write $data into $global_config_arr['data']
+    $global_config_arr['data'] = $data;
 
 }
 

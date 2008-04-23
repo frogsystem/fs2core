@@ -54,7 +54,6 @@ else
     if ( isset ( $_POST['sended'] ) )
     {
         $config_arr = getfrompost ( $config_arr );
-
         systext($admin_phrases[common][note_notfilled]."<br />".$admin_phrases[common][only_allowed_values], $admin_phrases[common][error], TRUE);
     }
 
@@ -121,7 +120,7 @@ else
                                 <td class="config">
                                     '.$admin_phrases[news][num_headlines].':<br>
                                     <span class="small">'.$admin_phrases[news][num_headlines_desc].'</span>
-                                </td>
+								</td>
                                 <td class="config">
                                     <input class="text" size="2" name="num_head" maxlength="2" value="'.$config_arr['num_head'] .'"><br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>

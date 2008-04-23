@@ -1,4 +1,68 @@
 <?php
+/////////////////////////////
+//// selected="selected" ////
+/////////////////////////////
+
+function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0 )
+{
+	settype ( $D, "integer" );
+	settype ( $M, "integer" );
+	settype ( $Y, "integer" );
+   	settype ( $H, "integer" );
+   	settype ( $I, "integer" );
+   	settype ( $S, "integer" );
+   	
+	$new_date = mktime ( $H, $I, $S, $M, $D, $Y );
+	
+	$savedate_arr['d'] = date ( "d", $new_date );
+	$savedate_arr['m'] = date ( "m", $new_date );
+	$savedate_arr['y'] = date ( "Y", $new_date );
+	$savedate_arr['h'] = date ( "H", $new_date );
+	$savedate_arr['i'] = date ( "i", $new_date );
+	$savedate_arr['s'] = date ( "s", $new_date );
+	
+	return $savedate_arr;
+}
+
+/////////////////////////////
+//// selected="selected" ////
+/////////////////////////////
+
+function openpopup ( $FILE, $WIDTH, $HEIGHT )
+{
+	$half_width = $WIDTH / 2;
+	$half_height = $HEIGHT / 2;
+	$javascript = 'open("'.$FILE.'","_blank","width='.$WIDTH.',height='.$HEIGHT.',top="+((screen.height/2)-'.$half_height.')+",left="+((screen.width/2)-'.$half_width.')+",scrollbars=YES,location=YES,status=YES")';
+
+	return $javascript;
+}
+
+/////////////////////////////
+//// selected="selected" ////
+/////////////////////////////
+
+function getselected ( $VALUE, $COMPAREWITH )
+{
+	if ( $VALUE == $COMPAREWITH ) {
+	    return 'selected="selected"';
+	} else {
+		return '';
+	}
+}
+
+/////////////////////////////
+//// checked="checked" ////
+/////////////////////////////
+
+function getchecked ( $VALUE, $COMPAREWITH )
+{
+	if ( $VALUE == $COMPAREWITH ) {
+	    return 'checked="checked"';
+	} else {
+		return '';
+	}
+}
+
 ////////////////////////////////
 //// Systemmeldung ausgeben ////
 ////////////////////////////////
@@ -27,17 +91,45 @@ function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE )
 	';
 }
 
-////////////////////////////////
-//// Systemmeldung ausgeben ////
-////////////////////////////////
+/////////////////////////////////
+//// JS Time-Button erzeugen ////
+/////////////////////////////////
 
 function js_timebutton ( $DATA, $CAPTION, $CLASS = "button" )
 {
 	$template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
 
-	foreach ( $DATA as $key => $value )
-    {
+	foreach ( $DATA as $key => $value ) {
 		$template .= "document.getElementById('".$key."').value='".$value."';";
+	}
+
+    $template .= '">';
+
+	return $template;
+}
+
+////////////////////////////////
+//// JS Now-Button erzeugen ////
+////////////////////////////////
+
+function js_nowbutton ( $DATA, $CAPTION, $CLASS = "button" )
+{
+	$template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
+
+	foreach ( $DATA as $key => $value ) {
+		$id[] = $value;
+	}
+	unset ( $value );
+
+	$value[] = "getCurDate()";
+	$value[] = "getCurMonth()";
+	$value[] = "getCurYear()";
+	$value[] = "getCurHours()";
+	$value[] = "getCurMinutes()";
+	$value[] = "getCurSeconds()";
+
+	for ( $i = 0; $i < count ( $id ) && $i < 6; $i++ ) {
+		$template .= "document.getElementById('".$id[$i]."').value=".$value[$i].";";
 	}
 
     $template .= '">';
@@ -51,8 +143,7 @@ function js_timebutton ( $DATA, $CAPTION, $CLASS = "button" )
 
 function getfrompost ( $ARRAY )
 {
-	foreach ( $ARRAY as $key => $value  )
-	{
+	foreach ( $ARRAY as $key => $value  ) {
         $ARRAY[$key] = $_POST[$key];
 	}
 	return $ARRAY;

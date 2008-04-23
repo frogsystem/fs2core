@@ -326,7 +326,7 @@ else
                                     <span class="small">'.$admin_phrases[general][page_desc].'</span>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <textarea class="courier" name="page" wrap="virtual" style="width:275px; height:50px;">'.$config_arr[page].'</textarea>
+                                    <textarea class="courier" name="page" wrap="virtual" style="width:275px; height:100px;">'.$config_arr[page].'</textarea>
                                     <br /><span class="small">'.$admin_phrases[general][page_info].'</span>
                                 </td>
                             </tr>

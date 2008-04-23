@@ -138,9 +138,8 @@ $NAVI_ARR[menu_id] = "general";
 
 $NAVI_ARR[link][] = "allconfig";
 $NAVI_ARR[link][] = "allannouncement";
-$NAVI_ARR[link][] = "allphpinfo";
 $NAVI_ARR[link][] = "emailtemplate";
-$NAVI_ARR[link][] = "permissionadd";
+$NAVI_ARR[link][] = "allphpinfo";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
@@ -202,8 +201,7 @@ $NAVI_ARR[menu_id] = "content";
 $NAVI_ARR[link][] = "newsconfig";
 $NAVI_ARR[link][] = "newsadd";
 $NAVI_ARR[link][] = "newsedit";
-$NAVI_ARR[link][] = "news_cat_create";
-$NAVI_ARR[link][] = "news_cat_manage";
+$NAVI_ARR[link][] = "newscat";
 
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));

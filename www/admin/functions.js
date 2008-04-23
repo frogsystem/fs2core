@@ -164,3 +164,55 @@ function changeDate (dayID, monthID, yearID, hourID, minID, dayShift, monthShift
     document.getElementById(minID).value = newMin;
     return true;
 }
+
+//getCurDate()
+function getCurDate () {
+  var curDateTime = new Date();
+  var curD = curDateTime.getDate();
+  if (curD < 10) {
+    curD = "0" + curD;
+  }
+  return curD;
+}
+//getCurMonth()
+function getCurMonth () {
+  var curDateTime = new Date();
+  var curM = curDateTime.getMonth() + 1;
+  if (curM < 10) {
+    curM = "0" + curM;
+  }
+  return curM;
+}
+//getCurYear()
+function getCurYear () {
+  var curDateTime = new Date();
+  var curY = curDateTime.getFullYear();
+  return curY;
+}
+//getCurHours()
+function getCurHours () {
+  var curDateTime = new Date();
+  var curH = curDateTime.getHours();
+  if (curH < 10) {
+    curH = "0" + curH;
+  }
+  return curH;
+}
+//getCurMinutes()
+function getCurMinutes () {
+  var curDateTime = new Date();
+  var curI = curDateTime.getMinutes();
+  if (curI < 10) {
+    curI = "0" + curI;
+  }
+  return curI;
+}
+//getCurSeconds()
+function getCurSeconds () {
+  var curDateTime = new Date();
+  var curS = curDateTime.getSeconds();
+  if (curS < 10) {
+    curS = "0" + curS;
+  }
+  return curS;
+}

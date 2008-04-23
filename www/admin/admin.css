@@ -73,6 +73,10 @@ select
     font-weight:normal;
     cursor:pointer;
 }
+.button:hover, .button:focus
+{
+    text-decoration:none;
+}
 
 .button_new
 {
@@ -621,10 +625,10 @@ a.tooltip:hover span {
     background-repeat:repeat-x;
     width:100%;
     height:34px;
-    font-size:9pt;
-    font-family:Arial;
+    font-size:8pt;
+    font-variant:small-caps;
     color:#FFFFFF;
-    padding-top:4px;
+    padding-top:3px;
 }
 
 #find_container
@@ -642,8 +646,8 @@ a.tooltip:hover span {
     height:25px;
     padding-left:15px;
     padding-top:20px;
-    font-size:9pt;
-    font-family:Verdana;
+    font-size:8pt;
+    font-variant:small-caps;
     color:#000000;
     font-weight:bold;
 }

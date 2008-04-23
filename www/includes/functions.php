@@ -422,7 +422,8 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
             break;
     }
 
-    $news_arr[news_text] = fscode($news_arr[news_text],$fs,$html,$para);
+    $news_arr[news_text] = fscode ( $news_arr[news_text], $fs, $html, $para );
+    $news_arr[news_title] = killhtml ( $news_arr[news_title] );
 
     // User auslesen
     $index2 = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $news_arr[user_id]", $db);
@@ -451,7 +452,9 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $index2 = mysql_query("select * from ".$global_config_arr[pref]."news_links where news_id = $news_arr[news_id] order by link_id", $db);
     while ($link_arr = mysql_fetch_assoc($index2))
     {
-        $index3 = mysql_query("select news_link from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+        $link_arr[link_name] = killhtml ( $link_arr[link_name] );
+        $link_arr[link_url] = killhtml ( $link_arr[link_url] );
+		$index3 = mysql_query("select news_link from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $link = stripslashes(mysql_result($index3, 0, "news_link"));
         $link = str_replace("{name}", $link_arr[link_name], $link);
         $link_arr[link_url] = str_replace("&","&amp;",$link_arr[link_url]);
@@ -492,7 +495,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
 // convert filesize //
 //////////////////////
 
-function getsize($size)
+function getsize ( $SIZE )
 {
     $mb = 1024;
     $gb = 1024 * $mb;
@@ -500,20 +503,20 @@ function getsize($size)
 
     switch (TRUE)
     {
-        case ($size < $mb):
-            $size = round($size, 1) . " KB";
+        case ($SIZE < $mb):
+            $SIZE = round ( $SIZE, 1 ) . " KB";
             break;
-        case ($size < $gb):
-            $size = round($size/$mb, 1)." MB";
+        case ($SIZE < $gb):
+            $SIZE = round ( $SIZE/$mb, 1 ). " MB";
             break;
-        case ($size < $tb):
-            $size = round($size/$gb, 1)." GB";
+        case ($SIZE < $tb):
+            $SIZE = round ( $SIZE/$gb, 1 ). " GB";
             break;
-        case ($size > $tb):
-            $size = round($size/$tb, 1)." TB";
+        case ($SIZE > $tb):
+            $SIZE = round ( $SIZE/$tb, 1 ). " TB";
             break;
     }
-    return $size;
+    return $SIZE;
 }
 
 /////////////////////////
@@ -531,49 +534,49 @@ function markword($text, $word)
 // create save strings for sql //
 /////////////////////////////////
 
-function savesql($text)
+function savesql ( $TEXT )
 {
-    $text = trim($text);
-    $text = mysql_real_escape_string($text);
-    return $text;
+    $TEXT = trim ( $TEXT );
+    $TEXT = mysql_real_escape_string ( $TEXT );
+    return $TEXT;
 }
 
 //////////////////////////////////
 // kill html in textareas, etc. //
 //////////////////////////////////
 
-function killhtml($text)
+function killhtml ( $TEXT )
 {
-    $text = trim($text);
-    $text = stripslashes($text);
-    $text = htmlspecialchars($text);
-    return $text;
+    $TEXT = trim ( $TEXT );
+    $TEXT = stripslashes ( $TEXT );
+    $TEXT = htmlspecialchars ( $TEXT );
+    return $TEXT;
 }
 
 //////////////////////////////////
 // kill sv whre not allowed     //
 //////////////////////////////////
 
-function killsv($text)
+function killsv ( $TEXT )
 {
-    $text = str_replace("[", "&#x5B;", $text);
-    $text = str_replace("]", "&#x5D;", $text);
-    $text = str_replace("%", "&#x25;", $text);
-    return $text;
+    $TEXT = str_replace ( "[", "&#x5B;", $TEXT );
+    $TEXT = str_replace ( "]", "&#x5D;", $TEXT );
+    $TEXT = str_replace ( "%", "&#x25;", $TEXT );
+    return $TEXT;
 }
 
 //////////////////////////////////
 // kill {} whre not allowed     //
 //////////////////////////////////
 
-function killbraces($text)
+function killbraces ( $TEXT )
 {
     global $global_config_arr;
 
-    $text = str_replace("{virtualhost}", $global_config_arr[virtualhost], $text);
-    $text = str_replace("{", "&#123;", $text);
-    $text = str_replace("}", "&#125;", $text);
-    return $text;
+    $TEXT = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $TEXT );
+    $TEXT = str_replace ( "{", "&#123;", $TEXT );
+    $TEXT = str_replace ( "}", "&#125;", $TEXT );
+    return $TEXT;
 }
 
 //////////////////////////////
@@ -588,8 +591,8 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
 
         if ($html==false) {
-            $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'strip_tags');
-            $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'htmlspecialchars');
+            #$bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'strip_tags');
+            $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
         }
 
 

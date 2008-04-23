@@ -234,14 +234,14 @@ onClick=\'
                          <tr><td class="space"></td></tr>
                          <tr><td class="space"></td></tr>
                          <tr>
-                           <td class="combi_button" width="50%" style="text-align: center; border-right:0px;">
+                           <td>
                              <select name="delete_smilies" size="1">
                                <option value="0">'.$admin_phrases[editor][smilies_delnotconfirm].'</option>
                                <option value="1">'.$admin_phrases[editor][smilies_delconfirm].'</option>
                              </select>
                            </td>
-                           <td class="buttontd" width="50%">
-                             <button class="button_new" type="submit" style="border-left:0px;">
+                           <td class="buttontd" style="width:100%;">
+                             <button class="button_new" type="submit">
                                '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
                              </button>
                            </td>

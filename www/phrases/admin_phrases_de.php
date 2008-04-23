@@ -10,16 +10,13 @@ $admin_phrases[common][error]                     = "Es trat ein Fehler auf";
 $admin_phrases[common][changes_saved]             = "Änderungen wurden gespeichert";
 $admin_phrases[common][affected_rows]             = "Betroffene Datensätze";
 
-
 $admin_phrases[common][optional]                  = "(optional)";
 $admin_phrases[common][selection]                 = "Auswahl";
 $admin_phrases[common][selection_edit]            = "Auswahl bearbeiten";
 $admin_phrases[common][selection_del]             = "Auswahl löschen";
-$admin_phrases[common][do_button]                 = "Ausführen";
 $admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bisherige Bild überschrieben werden soll!";
 $admin_phrases[common][active]                    = "aktiv";
 $admin_phrases[common][valid_tags]                = "Gültige Tags";
-$admin_phrases[common][today]                     = "Heute";
 
 $admin_phrases[common][ascending]                 = "aufsteigend";
 $admin_phrases[common][descending]                = "absteigend";
@@ -28,16 +25,37 @@ $admin_phrases[common][width_x_height]            = "Breite x Höhe";
 $admin_phrases[common][resolution_x]              = "x";
 $admin_phrases[common][pixel]                     = "Pixel";
 $admin_phrases[common][zero_not_allowed]          = "0 ist nicht erlaubt";
+$admin_phrases[common][max]                       = "max.";
+$admin_phrases[common][min]                       = "min.";
+$admin_phrases[common][exact]                     = "exakt";
+
+$admin_phrases[common][html]                      = "HTML ist";
+$admin_phrases[common][fscode]                    = "FSCode ist";
+$admin_phrases[common][para]                      = "Absatzbehandlung ist";
 
 $admin_phrases[common][kib]                       = "KiB";
 $admin_phrases[common][mib]                       = "MiB";
 
 $admin_phrases[common][arrow]                     = '<img border="0" src="img/pointer.png" align="top" alt="->">';
 $admin_phrases[common][save_long]                 = "Änderungen speichern";
+$admin_phrases[common][do_button]                 = "Ausführen";
 $admin_phrases[common][do_button_long]            = "Aktion ausführen";
+$admin_phrases[common][search_button]             = "Suchen";
+$admin_phrases[common][now_button]                = "Jetzt";
+$admin_phrases[common][today]                     = "Heute";
+$admin_phrases[common][change_button]             = "Ändern";
+$admin_phrases[common][add_button]                = "Hinzufügen";
+$admin_phrases[common][show_button]               = "Anzeigen";
 
 $admin_phrases[common][yes]                       = "Ja";
 $admin_phrases[common][no]                        = "Nein";
+$admin_phrases[common][on]                        = "an";
+$admin_phrases[common][off]                       = "aus";
+
+$admin_phrases[common][at]                        = "um";
+$admin_phrases[common][time_appendix]             = "Uhr";
+
+$admin_phrases[common][no_image]                  = "Es wurde kein Bild gefunden.";
 
 
 
@@ -53,6 +71,16 @@ $admin_phrases[menu][styles]                      = "Styles";
 $admin_phrases[menu][system]                      = "System";
 $admin_phrases[menu][user]                        = "User";
 $admin_phrases[menu][mods]                        = "Add Ons";
+
+
+
+////////////////
+// find user  //
+////////////////
+$admin_phrases[finduser][pagetitle]               = "User-Suche";
+$admin_phrases[finduser][searchforuser]           = "suche nach User ...";
+$admin_phrases[finduser][selectuser]              = "User auswählen";
+$admin_phrases[finduser][nousersfound]            = "Keine User gefunden!";
 
 
 
@@ -244,6 +272,7 @@ $admin_phrases[stats][referrer_table_hits]        = "Hits";
 $admin_phrases[stats][referrer_table_first]       = "Erster Kontakt";
 $admin_phrases[stats][referrer_table_last]        = "Letzter Kontakt";
 $admin_phrases[stats][referrer_unknown]           = "Unbekannt";
+$admin_phrases[stats][referrer_no_entries]        = "Keine passenden Einträge gefunden!";
 $admin_phrases[stats][referrer_delete_entries]    = "Entferne alle Einträge";
 $admin_phrases[stats][referrer_delete_with]       = "mit";
 $admin_phrases[stats][referrer_delete_older]      = "älter als";
@@ -309,7 +338,31 @@ $admin_phrases[news][anti_spam_comments_nobody]   = "niemanden";
 
 
 $admin_phrases[news][news_information_title]      = "Informationen";
+$admin_phrases[news][news_cat]                    = "Kategorie";
+$admin_phrases[news][news_cat_desc]               = "Die Kategorie, der die News angehört.";
+$admin_phrases[news][news_date]                   = "Datum & Uhrzeit";
+$admin_phrases[news][news_date_desc]              = "Erscheinungszeitpunkt der News.";
+$admin_phrases[news][news_poster]                 = "Poster";
+$admin_phrases[news][news_poster_desc]            = "Der Verfasser der News.";
+
 $admin_phrases[news][news_new_title]              = "News schreiben";
+$admin_phrases[news][news_title]                  = "Titel";
+$admin_phrases[news][news_text]                   = "Text";
+$admin_phrases[news][news_add_button]             = "News hinzufügen";
+
+$admin_phrases[news][news_link_add]               = "Link hinzufügen";
+$admin_phrases[news][news_link_title]             = "Titel";
+$admin_phrases[news][news_link_url]               = "URL";
+$admin_phrases[news][news_link_open]              = "Link öffnen in";
+$admin_phrases[news][news_link_blank]             = "neues Fenster";
+$admin_phrases[news][news_link_self]              = "gleiches Fenster";
+$admin_phrases[news][news_link_no]                = "keine Aktion";
+$admin_phrases[news][news_link_delete]            = "Auswahl löschen";
+$admin_phrases[news][news_link_up]                = "nach oben verschieben";
+$admin_phrases[news][news_link_down]              = "nach unten verschieben";
+$admin_phrases[news][news_link_edit]              = "zum Bearbeiten übernehmen";
+
+$admin_phrases[news][news_added]                  = "News wurde erfolgreich hinzugefügt";
 
 
 

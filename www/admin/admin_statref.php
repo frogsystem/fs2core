@@ -137,7 +137,7 @@ else
 									</span>
                                 </td>
                                 <td align="right" valign="bottom">
-                                    <input type="submit" value="Localize: Anzeigen" class="button">
+                                    <input type="submit" value="'.$admin_phrases[common][show_button].'" class="button">
                                 </td>
                             </tr>
                         </table>
@@ -243,7 +243,18 @@ else
     }
 
     $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref ".$query."", $db );
-    while ( $referrer_arr = mysql_fetch_assoc ( $index ) )
+    $referrer_number = mysql_num_rows ( $index );
+    if ( $referrer_number <= 0 ) {
+    	echo'
+                        <tr>
+                            <td class="n" align="center" colspan="4">
+                                '.$admin_phrases[stats][referrer_no_entries].'
+                            </td>
+                        </tr>
+		';
+	}
+
+	while ( $referrer_arr = mysql_fetch_assoc ( $index ) )
     {
         $dburlfull = $referrer_arr[ref_url];
 
@@ -257,8 +268,7 @@ else
 		$referrer_arr[ref_first] = date("d.m.Y H:i", $referrer_arr[ref_first]);
         $referrer_arr[ref_last] = date("d.m.Y H:i", $referrer_arr[ref_last]);
 
-		if($referrer_arr[ref_url] == "")
-        {
+		if ( $referrer_arr['ref_url'] == "" ) {
             echo'
                         <tr>
                             <td class="n" align="left">
@@ -275,9 +285,7 @@ else
                             </td>
                         </tr>
             ';
-        }
-        else
-        {
+        } else {
 			echo'
                         <tr>
                             <td class="n" align="left">

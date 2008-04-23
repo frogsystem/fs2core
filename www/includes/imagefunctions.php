@@ -5,38 +5,41 @@
 
 function image_exists($path, $name)
 {
-  if ( file_exists("$path"."$name.jpg") OR file_exists("$path"."$name.gif") OR file_exists("$path"."$name.png") )
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
+	if ( file_exists("$path"."$name.jpg") || file_exists("$path"."$name.jpeg") || file_exists("$path"."$name.gif") || file_exists("$path"."$name.png") ) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 ////////////////////////////////
 //// Create Image URL       ////
 ////////////////////////////////
 
-function image_url($path, $name, $error=true)
+function image_url ( $PATH, $NAME, $ERROR = TRUE )
 {
-  global $global_config_arr;
+	global $global_config_arr;
 
-  if (file_exists("$path"."$name.jpg"))
-    $url = $path."$name.jpg";
-  elseif (file_exists("$path"."$name.jpeg"))
-    $url = $path."$name.jpeg";
-  elseif (file_exists("$path"."$name.gif"))
-    $url = $path."$name.gif";
-  elseif (file_exists("$path"."$name.png"))
-    $url = $path."$name.png";
-  elseif ($error==true)
-    $url = $global_config_arr[virtualhost]."images/icons/nopic_small.gif";
-  else
-    $url = "";
-
-  return $url;
+	if ( file_exists ( $PATH . $NAME . ".jpg" ) ) {
+		$url = $PATH . $NAME . ".jpg";
+	}
+	elseif ( file_exists ( $PATH . $NAME . ".jpeg" ) ) {
+		$url = $PATH . $NAME . ".jpeg";
+	}
+	elseif ( file_exists ( $PATH . $NAME . ".gif" ) ) {
+		$url = $PATH . $NAME . ".gif";
+	}
+	elseif ( file_exists ( $PATH . $NAME . ".png" ) ) {
+		$url = $PATH . $NAME . ".png";
+	}
+	elseif ( $ERROR == TRUE ) {
+		$url = $global_config_arr['virtualhost'] . "images/icons/nopic_small.gif";
+	}
+	else {
+		$url = "";
+	}
+	
+	return $url;
 }
 
 ////////////////////////////////
@@ -113,20 +116,21 @@ function upload_img($image, $image_path, $image_name, $image_max_size, $image_ma
 {
 
   //Dateityp ermitteln
-
-  switch ($image['type'])
+  
+  $imgsize = getimagesize( $image['tmp_name'] );
+  switch ($imgsize[2])
   {
-    case "image/pjpeg":
-      $image['type'] = "image/jpeg";
-    case "image/jpeg":
-      $source_image = imagecreatefromjpeg($image['tmp_name']);
-      $type="jpg";
-      break;
-    case "image/gif":
+    // Bedeutung von $imgsize[2]:
+    // 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, etc.
+    case 1: //GIF
       $source_image = imagecreatefromgif($image['tmp_name']);
       $type="gif";
       break;
-    case "image/png":
+    case 2: //JPG
+      $source_image = imagecreatefromjpeg($image['tmp_name']);
+      $type="jpg";
+      break;
+    case 3: //PNG
       $source_image = imagecreatefrompng($image['tmp_name']);
       $type="png";
       break;
@@ -134,6 +138,7 @@ function upload_img($image, $image_path, $image_name, $image_max_size, $image_ma
       return 1;  // Fehler 1: Ungültiger Dateityp!
       break 2;
   }
+  
 
   //Fehler überprüfung
 

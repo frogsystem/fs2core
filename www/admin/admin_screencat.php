@@ -236,8 +236,17 @@ else
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
-        $screen_index = mysql_query("select cat_id from ".$global_config_arr[pref]."screen where cat_id = $cat_arr[cat_id]", $db);
-        $screen_rows = mysql_num_rows($screen_index);
+
+		if ( $cat_arr[cat_type] == 2 ) {
+			$number_index = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id]", $db);
+		} else {
+			$number_index = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id]", $db);
+		}
+		
+
+
+
+		$number_rows = mysql_result($number_index, 0, "number");
         echo'
                     <form action="" method="post">
                         <input type="hidden" name="cat_id" value="'.$cat_arr[cat_id].'" />
@@ -248,7 +257,7 @@ else
                                     '.$cat_arr[cat_name].'
                                 </td>
                                 <td class="configthin">
-                                    '.$screen_rows.'
+                                    '.$number_rows.'
                                 </td>
                                 <td class="configthin">';
                                     switch ($cat_arr[cat_type]) {
