@@ -1,11 +1,11 @@
 <?php
-///////////////////////
-// Load News Config  //
-///////////////////////
+//////////////////////////
+// Load Articles Config //
+//////////////////////////
 
-// Create News-Config-Array
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config", $db );
-$news_config_arr = mysql_fetch_assoc ( $index );
+// Create Articles-Config-Array
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_config", $db );
+$articles_config_arr = mysql_fetch_assoc ( $index );
 $showdefault = TRUE;
 
 
@@ -28,18 +28,18 @@ if (
 
 	// MySQL-Update-Query
     $insert_query = mysql_query ("
-					INSERT INTO ".$global_config_arr['pref']."news_cat (cat_name, cat_date, cat_user)
+					INSERT INTO ".$global_config_arr['pref']."articles_cat (cat_name, cat_date, cat_user)
 					VALUES (
 						'".$_POST['cat_name']."',
 						'".$cat_date."',
 						'".$_POST['cat_user']."'
 					)
 	", $db );
-    $message = $admin_phrases[news][new_cat_added];
+    $message = $admin_phrases[articles][new_cat_added];
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "articles_".$_POST['cat_id'], $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -78,7 +78,7 @@ elseif (
 
 	// MySQL-Update-Query
     mysql_query ("
-					UPDATE ".$global_config_arr['pref']."news_cat
+					UPDATE ".$global_config_arr['pref']."articles_cat
                  	SET
 					 	cat_name 			= '".$_POST['cat_name']."',
                      	cat_description 	= '".$_POST['cat_description']."',
@@ -91,13 +91,13 @@ elseif (
 
 	// Image-Operations
     if ( $_POST['cat_pic_delete'] == 1 ) {
-      if ( image_delete ( "../images/cat/", "news_".$_POST['cat_id'] ) ) {
+      if ( image_delete ( "../images/cat/", "articles_".$_POST['cat_id'] ) ) {
         $message .= "<br>" . $admin_phrases[common][image_deleted];
       } else {
 		$message .= "<br>" . $admin_phrases[common][image_not_deleted];
       }
     } elseif ( $_FILES['cat_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "articles_".$_POST['cat_id'], $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -124,9 +124,9 @@ elseif (
 		settype ( $_POST['cat_id'], "integer" );
 	    settype ( $_POST['cat_move_to'], "integer" );
 
-		// MySQL-Query move News to other Category
+		// MySQL-Query move Articles to other Category
 		mysql_query ("
-						UPDATE ".$global_config_arr['pref']."news
+						UPDATE ".$global_config_arr['pref']."articles
     	             	SET
 						 	cat_id 				= '".$_POST['cat_move_to']."'
             	     	WHERE
@@ -135,19 +135,19 @@ elseif (
 
 		// MySQL-Delete-Query
     	mysql_query ("
-						DELETE FROM ".$global_config_arr['pref']."news_cat
+						DELETE FROM ".$global_config_arr['pref']."articles_cat
                  		WHERE
 						 	cat_id 				= '".$_POST['cat_id']."'
 		", $db );
-		$message = $admin_phrases[news][cat_deleted];
+		$message = $admin_phrases[articles][cat_deleted];
 
 		// Delete Category Image
-		if ( image_delete ( "../images/cat/", "news_".$_POST['cat_id'] ) ) {
+		if ( image_delete ( "../images/cat/", "articles_".$_POST['cat_id'] ) ) {
 			$message .= "<br>" . $admin_phrases[common][image_deleted];
 		}
 
 	} else {
-		$message = $admin_phrases[news][cat_not_deleted];
+		$message = $admin_phrases[articles][cat_not_deleted];
 	}
 
     // Display Message
@@ -172,7 +172,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 	{
 
 		// Load Data from DB
-		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = '".$_POST['cat_id']."'", $db );
+		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat WHERE cat_id = '".$_POST['cat_id']."'", $db );
 		$cat_arr = mysql_fetch_assoc ( $index );
 
 		// Display Error Messages
@@ -204,14 +204,14 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						<input type="hidden" name="sended" value="edit">
 						<input type="hidden" name="cat_action" value="'.$_POST['cat_action'].'">
 						<input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'">
-						<input type="hidden" name="go" value="newscat">
+						<input type="hidden" name="go" value="articlescat">
 						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="2">'.$admin_phrases[news][edit_cat_title].'</td></tr>
+						    <tr><td class="line" colspan="2">'.$admin_phrases[articles][edit_cat_title].'</td></tr>
        						<tr>
            						<td class="config">
-               						'.$admin_phrases[news][edit_cat_name].':<br>
-               						<span class="small">'.$admin_phrases[news][edit_cat_name_desc].'</span>
+               						'.$admin_phrases[articles][edit_cat_name].':<br>
+               						<span class="small">'.$admin_phrases[articles][edit_cat_name_desc].'</span>
            						</td>
            						<td>
              						<input class="text" name="cat_name" size="40" maxlength="100" value="'.$cat_arr['cat_name'].'">
@@ -219,8 +219,8 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
        						</tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[news][edit_cat_date].':<br>
-                                    <span class="small">'.$admin_phrases[news][edit_cat_date_desc].'</span>
+                                    '.$admin_phrases[articles][edit_cat_date].':<br>
+                                    <span class="small">'.$admin_phrases[articles][edit_cat_date_desc].'</span>
                                 </td>
                                 <td class="config" valign="top">
 									<span class="small">
@@ -233,8 +233,8 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$admin_phrases[news][edit_cat_created_by].':<br>
-                                    <span class="small">'.$admin_phrases[news][edit_cat_created_by_desc].'</span>
+                                    '.$admin_phrases[articles][edit_cat_by].':<br>
+                                    <span class="small">'.$admin_phrases[articles][edit_cat_by_desc].'</span>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="cat_username" value="'.$cat_arr['cat_username'].'">
@@ -243,14 +243,14 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-       						<tr><td class="line" colspan="2">'.$admin_phrases[news][edit_cat_title_optional].'</td></tr>
+       						<tr><td class="line" colspan="2">'.$admin_phrases[articles][edit_cat_title_optional].'</td></tr>
        						<tr>
            						<td class="config">
-             						'.$admin_phrases[news][edit_cat_image].': <span class="small">'.$admin_phrases[common][optional].'</span><br><br>
+             						'.$admin_phrases[articles][edit_cat_image].': <span class="small">'.$admin_phrases[common][optional].'</span><br><br>
 	 	';
-		if ( image_exists ( "../images/cat/", "news_".$cat_arr['cat_id'] ) ) {
+		if ( image_exists ( "../images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
 		    echo '
-									<img src="'.image_url ( "../images/cat/", "news_".$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
+									<img src="'.image_url ( "../images/cat/", "articles_".$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
 		    						<table>
 										<tr>
 											<td>
@@ -270,19 +270,19 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 								<td class="config">
 									<input name="cat_pic" type="file" size="40" class="text"><br>
 		';
-		if ( image_exists ( "../images/cat/", "news_".$cat_arr['cat_id'] ) ) {
+		if ( image_exists ( "../images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
 			echo '<span class="small"><b>'.$admin_phrases[common][replace_img].'</b></span><br>';
 		}
 		echo'
 									<span class="small">
-										['.$admin_phrases[common][max].' '.$news_config_arr[cat_pic_x].' '.$admin_phrases[common][resolution_x].' '.$news_config_arr[cat_pic_y].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$news_config_arr[cat_pic_size].' '.$admin_phrases[common][kib].']
+										['.$admin_phrases[common][max].' '.$articles_config_arr[cat_pic_x].' '.$admin_phrases[common][resolution_x].' '.$articles_config_arr[cat_pic_y].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$articles_config_arr[cat_pic_size].' '.$admin_phrases[common][kib].']
 									</span>
 								</td>
 							</tr>
 							<tr align="left" valign="top">
 								<td class="config">
-            						'.$admin_phrases[news][edit_cat_description].': <span class="small">'.$admin_phrases[common][optional].'</span><br>
-									<span class="small">'.$admin_phrases[news][edit_cat_description_desc].'</span>
+            						'.$admin_phrases[articles][edit_cat_desc].': <span class="small">'.$admin_phrases[common][optional].'</span><br>
+									<span class="small">'.$admin_phrases[articles][edit_cat_desc_desc].'</span>
 								</td>
 								<td class="config">
 									<textarea class="text" name="cat_description" rows="5" cols="50" wrap="virtual">'.$cat_arr['cat_description'].'</textarea>
@@ -303,12 +303,12 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 	// Delete Category
 	elseif ( $_POST['cat_action'] == "delete" )
 	{
-		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
+		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );
 
 		// Not Last Category
 		if ( mysql_num_rows ( $index ) > 1 ) {
 
-			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = '".$_POST['cat_id']."'", $db );
+			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat WHERE cat_id = '".$_POST['cat_id']."'", $db );
 			$cat_arr = mysql_fetch_assoc ( $index );
 
 			$cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
@@ -318,13 +318,13 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						<input type="hidden" name="sended" value="delete">
 						<input type="hidden" name="cat_action" value="'.$_POST['cat_action'].'">
 						<input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'">
-						<input type="hidden" name="go" value="newscat">
+						<input type="hidden" name="go" value="articlescat">
 						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">'.$admin_phrases[news][delete_cat_title].'</td></tr>
+							<tr><td class="line" colspan="2">'.$admin_phrases[articles][delete_cat_title].'</td></tr>
 							<tr>
 								<td class="config" style="width: 100%;">
-									'.$admin_phrases[news][delete_cat_question].': "'.$cat_arr['cat_name'].'"
+									'.$admin_phrases[articles][delete_cat_question].': "'.$cat_arr['cat_name'].'"
 								</td>
 								<td class="config" style="text-align: right;">
 		    						<table>
@@ -356,13 +356,13 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 							</tr>
 							<tr>
 								<td class="config">
-									'.$admin_phrases[news][delete_cat_move_to].':
+									'.$admin_phrases[articles][delete_cat_move_to].':
 								</td>
 								<td style="text-align: right;">
 									<select class="text" name="cat_move_to" size="1">
 			';
 
-			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name", $db );
+			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name", $db );
 			while ( $move_arr = mysql_fetch_assoc ( $index ) ) {
 				echo '<option value="'.$move_arr['cat_id'].'">'.killhtml ( $move_arr['cat_name'] ).'</option>';
 			}
@@ -385,12 +385,12 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 
 		// Last Category
 		else {
-		    systext ( $admin_phrases[news][delete_cat_last], $admin_phrases[common][error], TRUE );
+		    systext ( $admin_phrases[articles][delete_cat_last], $admin_phrases[common][error], TRUE );
 		    echo '
 						<table class="configtable" cellpadding="4" cellspacing="0">
        						<tr>
            						<td class="config">
-									<a class="link_button" href="?mid=content&go=newscat">'.$admin_phrases[common][arrow].' '.$admin_phrases[news][delete_back_link].'</a>
+									<a class="link_button" href="?mid=content&go=articlescat">'.$admin_phrases[common][arrow].' '.$admin_phrases[articles][delete_back_link].'</a>
 								</td>
 							</tr>
 						</table>';
@@ -419,16 +419,16 @@ elseif ( $showdefault == TRUE )
 					<form action="" method="post">
 						<input type="hidden" name="sended" value="add">
 					    <input type="hidden" name="cat_action" value="add">
-						<input type="hidden" name="go" value="newscat">
+						<input type="hidden" name="go" value="articlescat">
 						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="2">'.$admin_phrases[news][new_cat_title].'</td></tr>
+						    <tr><td class="line" colspan="2">'.$admin_phrases[articles][new_cat_title].'</td></tr>
 						    <tr>
 								<td class="config">
-								    <span class="small">'.$admin_phrases[news][new_cat_name].':</span>
+								    <span class="small">'.$admin_phrases[articles][new_cat_name].':</span>
 								</td>
 								<td class="config">
-								    <span class="small">'.$admin_phrases[news][new_cat_image].': '.$admin_phrases[common][optional].'</span>
+								    <span class="small">'.$admin_phrases[articles][new_cat_image].': '.$admin_phrases[common][optional].'</span>
 								</td>
 							</tr>
 						    <tr valign="top">
@@ -438,7 +438,7 @@ elseif ( $showdefault == TRUE )
 								<td class="config">
 									<input name="cat_pic" type="file" size="30" class="text"><br>
 									<span class="small">
-										['.$admin_phrases[common][max].' '.$news_config_arr[cat_pic_x].' '.$admin_phrases[common][resolution_x].' '.$news_config_arr[cat_pic_y].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$news_config_arr[cat_pic_size].' '.$admin_phrases[common][kib].']
+										['.$admin_phrases[common][max].' '.$articles_config_arr[cat_pic_x].' '.$admin_phrases[common][resolution_x].' '.$articles_config_arr[cat_pic_y].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$articles_config_arr[cat_pic_size].' '.$admin_phrases[common][kib].']
 									</span>
 								</td>
 							</tr>
@@ -446,7 +446,7 @@ elseif ( $showdefault == TRUE )
 							<tr>
 								<td class="buttontd" colspan="2">
 									<button class="button_new" type="submit">
-										'.$admin_phrases[common][arrow].' '.$admin_phrases[news][new_cat_add_button].'
+										'.$admin_phrases[common][arrow].' '.$admin_phrases[articles][new_cat_add_button].'
 									</button>
 								</td>
 							</tr>
@@ -459,14 +459,14 @@ elseif ( $showdefault == TRUE )
 	// Category Listing
 	echo '
 					<form action="" method="post">
-						<input type="hidden" name="go" value="newscat">
+						<input type="hidden" name="go" value="articlescat">
 						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="3">'.$admin_phrases[news][list_cat_title].'</td></tr>
+						    <tr><td class="line" colspan="3">'.$admin_phrases[articles][list_cat_title].'</td></tr>
 	';
 
 	// Get Categories from DB
-	$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat ORDER BY cat_name", $db );
+	$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat ORDER BY cat_name", $db );
 	while ( $cat_arr = mysql_fetch_assoc ( $index ) )
 	{
 		$index_username = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = '".$cat_arr['cat_user']."'", $db );
@@ -486,13 +486,13 @@ elseif ( $showdefault == TRUE )
 							>
 								<td class="config">
 		';
-		if ( image_exists ( "../images/cat/", "news_".$cat_arr['cat_id'] ) ) {
-		    echo '<img src="'.image_url ( "../images/cat/", "news_".$cat_arr['cat_id'] ).'" alt="'.$admin_cat_arr['cat_name'].'" border="0">';
+		if ( image_exists ( "../images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
+		    echo '<img src="'.image_url ( "../images/cat/", "articles_".$cat_arr['cat_id'] ).'" alt="'.$admin_cat_arr['cat_name'].'" border="0">';
 		}
 		echo '
 								</td>
 								<td class="config" style="width: 100%;">
-									'.$cat_arr['cat_name'].' <span class="small">('.$admin_phrases[news][list_cat_created_by].' <b>'.$cat_arr['cat_user'].'</b> '.$admin_phrases[news][list_cat_created_on].' <b>'.date ( $global_config_arr['date'], $cat_arr['cat_date'] ).'</b>)</span><br>
+									'.$cat_arr['cat_name'].' <span class="small">('.$admin_phrases[articles][list_cat_created_by].' <b>'.$cat_arr['cat_user'].'</b> '.$admin_phrases[articles][list_cat_created_on].' <b>'.date ( $global_config_arr['date'], $cat_arr['cat_date'] ).'</b>)</span><br>
 									<span class="small">'.$cat_arr['cat_description'].'</span>
 								</td>
 								<td class="config" style="text-align: center; vertical-align: middle;">

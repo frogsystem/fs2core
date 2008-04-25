@@ -406,18 +406,83 @@ $admin_phrases[news][edit_cat_created_by_desc]    = "Die Kategorie wurde erstell
 $admin_phrases[news][edit_cat_title_optional]     = "Zusätzliche Einstellungen";
 $admin_phrases[news][edit_cat_image]              = "Bild";
 $admin_phrases[news][edit_cat_description]        = "Beschreibung";
-$admin_phrases[news][edit_cat_description_desc]   = "Ein kurzer Text, der die Katgorie beschreibt.";
+$admin_phrases[news][edit_cat_description_desc]   = "Ein kurzer Text über die Katgorie.";
 
 
 
 /////////////
 // Artikel //
 /////////////
-$admin_phrases[articles][settings_title]              = "Einstellungen";
-$admin_phrases[articles][news_per_page]               = "News pro Seite";
-$admin_phrases[articles][news_per_page_desc]          = "Anzahl der News, die pro Seite angezeigt werden.";
-$admin_phrases[articles][num_headlines]               = "Headlines";
-$admin_phrases[articles][num_headlines_desc]          = "Anzahl der Headlines, die angezeigt werden.";
+$admin_phrases[articles][post_settings_title]     = "Beiträge";
+$admin_phrases[articles][post_settings_info]      = "<b>Hinweis:</b> Hier wird nur die grundsätzliche Möglichkeit zur Verwendung eingstellt. Bei jedem Artikel kann die Verwendung von HTML, FSCode und der Absatzbehandlung auch noch seperat (de-)aktiviert werden.";
+$admin_phrases[articles][allow_html]              = "HTML-Code";
+$admin_phrases[articles][allow_html_desc]         = "Erlaubt HTML-Code in ...";
+$admin_phrases[articles][allow_fs]                = "FSCode";
+$admin_phrases[articles][allow_fs_desc]           = "Erlaubt FSCode in ...";
+$admin_phrases[articles][allow_para]              = "Absatzbehandlung";
+$admin_phrases[articles][allow_para_desc]         = "Aktiviert die Absatzbehandlung in ...";
+$admin_phrases[articles][allow_code_no]           = "Aus";
+$admin_phrases[articles][allow_code_articles]     = "Artikeln";
+$admin_phrases[articles][allow_code_comments]     = "Kommentaren";
+$admin_phrases[articles][allow_code_both]         = "Artikeln & Kommentaren";
+
+$admin_phrases[articles][cat_settings_title]      = "Kategorien";
+$admin_phrases[articles][cat_img_max_width]       = "Kategorie Bild - max. Breite";
+$admin_phrases[articles][cat_img_max_width_desc]  = "Max. Breite eines Kategorie Bildes in Pixeln.";
+$admin_phrases[articles][cat_img_max_height]      = "Kategorie Bild - max. Höhe";
+$admin_phrases[articles][cat_img_max_height_desc] = "Max. Höhe eines Kategorie Bildes in Pixeln.";
+$admin_phrases[articles][cat_img_max_size]        = "Kategorie Bild - max. Dateigröße";
+$admin_phrases[articles][cat_img_max_size_desc]   = "Max. Dateigröße eines Kategorie Bildes in KiB.";
+
+$admin_phrases[articles][comment_settings_title]  = "Kommentare";
+$admin_phrases[articles][allow_comments]          = "Kommentare erlauben für";
+$admin_phrases[articles][allow_comments_desc]     = "Kommentare schreiben erlauben für ...";
+$admin_phrases[articles][allow_comments_all]      = "alle User";
+$admin_phrases[articles][allow_comments_staff]    = "Mitarbeiter";
+$admin_phrases[articles][allow_comments_reg]      = "registrierte User";
+$admin_phrases[articles][allow_comments_nobody]   = "niemanden";
+$admin_phrases[articles][sort_comments]           = "Kommentare sortieren";
+$admin_phrases[articles][sort_comments_desc]      = "Die Anzeige-Reihenfolge der Kommentare.";
+$admin_phrases[articles][sort_comments_old_first] = "Alte zuerst";
+$admin_phrases[articles][sort_comments_new_first] = "Neue zuerst";
+$admin_phrases[articles][spam_comments]           = "Anti Spam bei Kommentaren für";
+$admin_phrases[articles][spam_comments_desc]      = "Anti Spam Captcha bei Kommentaren aktivieren für ...";
+$admin_phrases[articles][spam_comments_all]       = "alle User";
+$admin_phrases[articles][spam_comments_staff]     = "alle außer Mitarbeiter";
+$admin_phrases[articles][spam_comments_reg]       = "nicht registrierte User";
+$admin_phrases[articles][spam_comments_nobody]    = "niemanden";
+
+$admin_phrases[articles][new_cat_added]           = "Kategorie wurde erfolgreich hinzugefügt";
+$admin_phrases[articles][cat_deleted]             = "Kategorie wurde erfolgreich gelöscht";
+$admin_phrases[articles][cat_not_deleted]         = "Kategorie wurde nicht gelöscht";
+
+$admin_phrases[articles][new_cat_title]           = "Kategorie hinzufügen";
+$admin_phrases[articles][new_cat_name]            = "Name";
+$admin_phrases[articles][new_cat_image]           = "Bild";
+$admin_phrases[articles][new_cat_add_button]      = "Hinzufügen & weitere Einstellungen vornehmen";
+
+$admin_phrases[articles][list_cat_title]          = "Kategorieverwaltung";
+$admin_phrases[articles][list_cat_created_by]     = "erstellt von";
+$admin_phrases[articles][list_cat_created_on]     = "am";
+
+$admin_phrases[articles][delete_cat_title]        = "Kategorie löschen";
+$admin_phrases[articles][delete_cat_question]     = "Soll diese Kategorie wirklich gelöscht werden";
+$admin_phrases[articles][delete_cat_move_to]      = "News der gelöschten Kategorie verschieben nach";
+$admin_phrases[articles][delete_cat_last]         = "Die letzte Kategorie kann nicht gelöscht werden.<br>Bitte legen Sie zuerst eine neue Kategorie an.";
+$admin_phrases[articles][delete_back_link]        = "zurück zur Übersicht";
+
+$admin_phrases[articles][edit_cat_title]          = "Haupteinstellungen";
+$admin_phrases[articles][edit_cat_name]           = "Name";
+$admin_phrases[articles][edit_cat_name_desc]      = "Der Name der Kategorie.";
+$admin_phrases[articles][edit_cat_date]           = "Erstellungsdatum";
+$admin_phrases[articles][edit_cat_date_desc]      = "Die Kategorie wurde erstellt am ...";
+$admin_phrases[articles][edit_cat_by]             = "Ersteller";
+$admin_phrases[articles][edit_cat_by_desc]        = "Die Kategorie wurde erstellt von ...";
+$admin_phrases[articles][edit_cat_title_optional] = "Zusätzliche Einstellungen";
+$admin_phrases[articles][edit_cat_image]          = "Bild";
+$admin_phrases[articles][edit_cat_desc]           = "Beschreibung";
+$admin_phrases[articles][edit_cat_desc_desc]      = "Ein kurzer Text über die Katgorie.";
+
 
 
 ////////////////////

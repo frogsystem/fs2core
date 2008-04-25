@@ -110,7 +110,7 @@ else
     	$_POST['h'] = date ( "H" );
     	$_POST['i'] = date ( "i" );
 	}
-	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['Y'], $_POST['H'], $_POST['i'] );
+	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'] );
 	$nowbutton_array = array( "d", "m", "y", "h", "i" );
 
     // Display Page
