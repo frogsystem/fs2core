@@ -332,7 +332,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 											<td>
 												<input type="radio" name="cat_delete" id="del_yes" value="1" style="cursor:pointer;" onClick=\'createClick(this);\'>
 											</td>
-											<td class="config" style="vertical-align: middle; cursor:pointer;"
+											<td class="config" style="cursor:pointer;"
 	onClick=\'
 		createClick (document.getElementById("del_yes"));
 		resetUnclicked ("transparent", last, lastBox, this);\'
@@ -343,7 +343,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 											<td>
 												<input type="radio" name="cat_delete" id="del_no" value="0" style="cursor:pointer;" onClick=\'createClick(this);\' checked="checked">
 											</td>
-											<td class="config" style="vertical-align: middle; cursor:pointer;"
+											<td class="config" style="cursor:pointer;"
 	onClick=\'
 		createClick (document.getElementById("del_no"));
 		resetUnclicked ("transparent", last, lastBox, this);\'

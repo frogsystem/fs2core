@@ -35,7 +35,13 @@ if ( $db && mysql_select_db ( $data, $db ) ) {
     $global_config_arr['spam'] = $spam;
     //write $data into $global_config_arr['data']
     $global_config_arr['data'] = $data;
-
+    //write real home page into $global_config_arr['home_real']
+	if ( $global_config_arr['home'] == 1 ) {
+		$global_config_arr['home_real'] = stripslashes ( $global_config_arr['home_text'] );
+	} else {
+		$global_config_arr['home_real'] = "news";
+	}
+	
 }
 
 unset($host);

@@ -5,7 +5,8 @@
 /////////////////////////////////////
 
 if ($_POST['title'] AND $_POST['virtualhost'] AND $_POST['admin_mail']
-AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_prev'] )
+AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_prev']
+AND ($_POST['home'] == 0 || ( $_POST['home'] == 1 && $_POST['home_text'] != "" ) ) )
 {
 
   if (substr($_POST[virtualhost], -1) != "/")
@@ -25,6 +26,8 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
   $_POST[page_prev] = savesql($_POST[page_prev]);
   $_POST[feed] = savesql($_POST[feed]);
   $_POST[language] = savesql($_POST[language]);
+  settype ($_POST[home], "integer");
+  $_POST[home_text] = savesql($_POST[home_text]);
   
   mysql_query("UPDATE ".$global_config_arr['pref']."global_config
                SET virtualhost = '$_POST[virtualhost]',
@@ -43,7 +46,9 @@ AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_p
                    page_prev = '$_POST[page_prev]',
                    registration_antispam = '$_POST[registration_antispam]',
                    feed = '$_POST[feed]',
-                   language = '$_POST[language]'
+                   language = '$_POST[language]',
+                   home = '$_POST[home]',
+                   home_text = '$_POST[home_text]'
                WHERE id = 1", $db);
     systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
 }
@@ -102,11 +107,11 @@ else
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[general][pageinfo_title].'</td></tr>
 							<tr>
-                                <td class="config">
+                                <td class="config" style="width: 50%;">
                                     '.$admin_phrases[general][title].':<br>
                                     <span class="small">'.$admin_phrases[general][title_desc].'</span>
                                 </td>
-                                <td class="config">
+                                <td class="config" style="width: 50%;">
                                     <input class="text" size="40" name="title" maxlength="100" value="'.$config_arr[title].'" />
                                 </td>
                             </tr>
@@ -115,7 +120,7 @@ else
                                     '.$admin_phrases[general][virtualhost].':<br>
                                     <span class="small">'.$admin_phrases[general][virtualhost_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     <input class="text" size="40" name="virtualhost" maxlength="255" value="'.$config_arr[virtualhost].'">
                                 </td>
                             </tr>
@@ -133,7 +138,7 @@ else
                                     '.$admin_phrases[general][description].': <span class="small">'.$admin_phrases[common][optional].'</span><br>
                                     <span class="small">'.$admin_phrases[general][description_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     <input class="text" size="40" name="description" maxlength="255" value="'.$config_arr[description].'">
                                 </td>
                             </tr>
@@ -168,11 +173,7 @@ else
                                     $index = mysql_query("select id, name from ".$global_config_arr[pref]."template ORDER BY id", $db);
                                     while ($design_arr = mysql_fetch_assoc($index))
                                     {
-                                        echo '<option value="'.$design_arr[id].'"';
-                                        if ( $design_arr[id] == $global_config_arr[design] ) {
-                                            echo ' selected=selected';
-                                        }
-                                        echo '>'.$design_arr[name];
+                                        echo '<option value="'.$design_arr['id'].'" '.getselected ( $design_arr['id'], $global_config_arr['design'] ).'>'.$design_arr[name];
                                         if ( $design_arr[id] == $global_config_arr[design] ) {
                                             echo ' ('.$admin_phrases[common][active].')';
                                         }
@@ -188,11 +189,7 @@ else
                                     <span class="small">'.$admin_phrases[general][allow_other_designs_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="allow_other_designs" value="1"';
-                                    if ( $config_arr[allow_other_designs] == 1 ) {
-                                        echo " checked=checked";
-                                    }
-                                    echo'/>
+                                    <input type="checkbox" name="allow_other_designs" value="1" '.getchecked ( 1, $config_arr['allow_other_designs'] ).'>
                                 </td>
                             </tr>
                             <tr>
@@ -201,15 +198,55 @@ else
                                     <span class="small">'.$admin_phrases[general][show_favicon_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="show_favicon" value="1"';
-                                    if ( $config_arr[show_favicon] == 1 ) {
-                                        echo " checked=checked";
-                                    }
-                                    echo'/>
+                                    <input type="checkbox" name="show_favicon" value="1" '.getchecked ( 1, $config_arr['show_favicon'] ).'>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr><td class="line" colspan="2">'.$admin_phrases[general][settings_title].'</td></tr>
+                            <tr>
+                                <td class="config">
+                                    '.$admin_phrases[general][home_page].':<br>
+                                    <span class="small">'.$admin_phrases[general][home_page_desc].'</span>
+                                </td>
+                                <td class="config">
+                                    <table>
+										<tr valign="bottom">
+											<td class="config">
+												<input type="radio" name="home" value="0" style="cursor:pointer;" '.getchecked ( "0", $config_arr['home'] ).'>
+											</td>
+											<td class="config">
+												Standard (?go=news)
+											</td>
+										</tr>
+										<tr valign="bottom">
+ 											<td class="config">
+												<input type="radio" name="home" value="1" style="cursor:pointer;" '.getchecked ( "1", $config_arr['home'] ).'>
+											</td>
+											<td class="config">
+												?go = <input class="text" size="20" name="home_text" maxlength="100" value="'.$config_arr['home_text'].'">
+											</td>
+										</tr>
+									</table>
+									<br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '.$admin_phrases[general][show_announcement].':<br>
+                                    <span class="small">'.$admin_phrases[general][show_announcement_desc].'</span>
+                                </td>
+                                <td class="config">
+                                    <select name="show_announcement">
+
+                                        <option value="1" '.getselected ( "1", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_always].'</option>
+
+                                        <option value="2" '.getselected ( "2", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_news].'</option>
+
+                                        <option value="0" '.getselected ( "0", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_never].'</option>
+
+                                    </select>
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="config">
                                     '.$admin_phrases[general][language].':<br>
@@ -217,17 +254,9 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="language" size="1">';
-                                    echo '<option value="de"';
-                                    if ( $config_arr[language] == "de" ) {
-                                        echo ' selected="selected"';
-                                    }
-                                    echo '>'.$admin_phrases[general][language_de].'</option>';
+                                    echo '<option value="de" '.getselected ( "de", $config_arr['language'] ).'>'.$admin_phrases[general][language_de].'</option>';
 
-                                    echo '<option value="en"';
-                                    if ( $config_arr[language] == "en" ) {
-                                        echo ' selected="selected"';
-                                    }
-                                    echo '>'.$admin_phrases[general][language_en].'</option>';
+                                    echo '<option value="en" '.getselected ( "en", $config_arr['language'] ).'>'.$admin_phrases[general][language_en].'</option>';
     echo'
                                     </select>
                                 </td>
@@ -239,81 +268,32 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="feed" size="1">';
-                                        echo '<option value="rss091"';
-                                        if ( $config_arr[feed] == "rss091" ) {
-                                            echo ' selected="selected"';
-                                        }
-                                        echo '>'.$admin_phrases[general][feed_rss091].'</option>';
+                                        echo '<option value="rss091" '.getselected ( "rss091", $config_arr['feed'] ).'>'.$admin_phrases[general][feed_rss091].'</option>';
 
-                                        echo '<option value="rss10"';
-                                        if ( $config_arr[feed] == "rss10" ) {
-                                            echo ' selected="selected"';
-                                        }
-                                        echo '>'.$admin_phrases[general][feed_rss10].'</option>';
+                                        echo '<option value="rss10" '.getselected ( "rss10", $config_arr['feed'] ).'>'.$admin_phrases[general][feed_rss10].'</option>';
 
-                                        echo '<option value="rss20"';
-                                        if ( $config_arr[feed] == "rss20" )  {
-                                            echo ' selected="selected"';
-                                        }
-                                        echo '>'.$admin_phrases[general][feed_rss20].'</option>';
+                                        echo '<option value="rss20" '.getselected ( "rss20", $config_arr['feed'] ).'>'.$admin_phrases[general][feed_rss20].'</option>';
 
-                                        echo '<option value="atom10"';
-                                        if ( $config_arr[feed] == "atom10" ) {
-                                            echo ' selected="selected"';
-                                        }
-                                        echo '>'.$admin_phrases[general][feed_atom10].'</option>';
+                                        echo '<option value="atom10" '.getselected ( "atom10", $config_arr['feed'] ).'>'.$admin_phrases[general][feed_atom10].'</option>';
     echo'
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
-                                    '.$admin_phrases[general][show_announcement].':<br>
-                                    <span class="small">'.$admin_phrases[general][show_announcement_desc].'</span>
-                                </td>
-                                <td class="config" valign="top" width="50%">
-                                    <select name="show_announcement">
-
-                                        <option value="1"';
-                                        if ( $config_arr[show_announcement] == 1 ) {
-                                            echo ' selected="selected"';
-                                        }
-                                        echo'>'.$admin_phrases[general][show_ann_always].'</option>
-                                        
-                                        <option value="2"';
-                                        if ( $config_arr[show_announcement] == 2 ) {
-                                            echo ' selected="selected"';
-                                        }
-                                        echo'>'.$admin_phrases[general][show_ann_news].'</option>
-                                        
-                                        <option value="0"';
-                                        if ( $config_arr[show_announcement] == 0 ) {
-                                            echo ' selected="selected"';
-                                        }
-                                        echo'>'.$admin_phrases[general][show_ann_never].'</option>
-
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     '.$admin_phrases[general][reg_antispam].':<br>
                                     <span class="small">'.$admin_phrases[general][reg_antispam_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
-                                    <input type="checkbox" name="registration_antispam" value="1"';
-                                    if ($config_arr[registration_antispam] == 1 ) {
-                                        echo ' checked="checked"';
-                                    }
-                                    echo'/>
+                                <td class="config">
+                                    <input type="checkbox" name="registration_antispam" value="1" '.getchecked ( 1, $config_arr['registration_antispam'] ).'>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     '.$admin_phrases[general][date].': <br>
                                     <span class="small">'.$admin_phrases[general][date_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     <input class="text" size="40" name="date" maxlength="255" value="'.$config_arr[date].'"><br />
                                     <span class="small">'.$admin_phrases[general][date_info].'</span>
                                 </td>
@@ -321,31 +301,31 @@ else
                             <tr><td class="space"></td></tr>
                             <tr><td colspan="2" class="line">'.$admin_phrases[general][pagenav_title].'</td></tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     '.$admin_phrases[general][page].': <br>
                                     <span class="small">'.$admin_phrases[general][page_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     <textarea class="courier" name="page" wrap="virtual" style="width:275px; height:100px;">'.$config_arr[page].'</textarea>
                                     <br /><span class="small">'.$admin_phrases[general][page_info].'</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     '.$admin_phrases[general][page_prev].': <br>
                                     <span class="small">'.$admin_phrases[general][page_prev_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     <input class="courier" style="width:275px;" name="page_prev" maxlength="255" value="'.$config_arr[page_prev].'"><br />
                                     <span class="small">'.$admin_phrases[general][page_prev_info].'</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     '.$admin_phrases[general][page_next].': <br>
                                     <span class="small">'.$admin_phrases[general][page_next_desc].'</span>
                                 </td>
-                                <td class="config" valign="top" width="50%">
+                                <td class="config">
                                     <input class="courier" style="width:275px;" name="page_next" maxlength="255" value="'.$config_arr[page_next].'"><br />
                                     <span class="small">'.$admin_phrases[general][page_next_info].'</span>
                                 </td>

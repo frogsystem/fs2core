@@ -34,7 +34,11 @@ $template_main_menu = killbraces($template_main_menu);
 // Inhalt einfügen
 if (!isset($_GET[go]))
 {
-  $goto = "news";
+	if ( $global_config_arr['home'] == 1 ) {
+	    $goto = stripslashes ( $global_config_arr['home_text'] );
+	} else {
+	    $goto = "news";
+	}
 }
 else
 {
@@ -163,7 +167,7 @@ if ($global_config_arr[show_announcement]==1)
 {
   $template_index = str_replace("{announcement}", $template_announcement, $template_index);
 }
-elseif ($global_config_arr[show_announcement]==2 AND $goto=="news")
+elseif ($global_config_arr[show_announcement]==2 && $goto == $global_config_arr['home_real'] )
 {
   $template_index = str_replace("{announcement}", $template_announcement, $template_index);
 }
