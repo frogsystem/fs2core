@@ -215,10 +215,10 @@ unset($NAVI_ARR);
 $NAVI_ARR[title] = "Artikel";
 $NAVI_ARR[menu_id] = "content";
 
+$NAVI_ARR[link][] = "contentconfig";
 $NAVI_ARR[link][] = "artikeladd";
 $NAVI_ARR[link][] = "artikeledit";
-$NAVI_ARR[link][] = "artikelcat";
-$NAVI_ARR[link][] = "artikelnewcat";
+$NAVI_ARR[link][] = "contentcat";
 
 $template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
 $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);

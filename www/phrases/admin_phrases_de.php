@@ -10,11 +10,22 @@ $admin_phrases[common][error]                     = "Es trat ein Fehler auf";
 $admin_phrases[common][changes_saved]             = "Änderungen wurden gespeichert";
 $admin_phrases[common][affected_rows]             = "Betroffene Datensätze";
 
+$admin_phrases[common][image_0]                   = "Bild wurde erfolgreich hochgeladen";
+$admin_phrases[common][image_1]                   = "Fehler beim Bilder-Upload: Ungültiger Dateityp";
+$admin_phrases[common][image_2]                   = "Fehler beim Bilder-Upload: Bei der Bilderstellung trat ein Fehler auf";
+$admin_phrases[common][image_3]                   = "Fehler beim Bilder-Upload: Bild ist zu groß (Dateigröße)";
+$admin_phrases[common][image_4]                   = "Fehler beim Bilder-Upload: Bild ist zu groß (Abmessungen)";
+$admin_phrases[common][image_5]                   = "Fehler beim Bilder-Upload: Bild entspricht nicht den erforderlichen Abmessungen";
+$admin_phrases[common][image_deleted]             = "Bild wurde erfolgreich gelöscht";
+$admin_phrases[common][image_not_deleted]         = "Bild konnte nicht gelöscht werden";
+$admin_phrases[common][thumb_0]                   = "Thumbnail wurde erfolgreich erstellt";
+$admin_phrases[common][thumb_1]                   = "Thumbnail konnte nicht erstellt werden: Ungültiger Dateityp";
+$admin_phrases[common][thumb_2]                   = "Thumbnail konnte nicht erstellt werden: Es trat ein Fehler auf";
+
 $admin_phrases[common][optional]                  = "(optional)";
 $admin_phrases[common][selection]                 = "Auswahl";
 $admin_phrases[common][selection_edit]            = "Auswahl bearbeiten";
 $admin_phrases[common][selection_del]             = "Auswahl löschen";
-$admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bisherige Bild überschrieben werden soll!";
 $admin_phrases[common][active]                    = "aktiv";
 $admin_phrases[common][valid_tags]                = "Gültige Tags";
 
@@ -56,7 +67,9 @@ $admin_phrases[common][at]                        = "um";
 $admin_phrases[common][time_appendix]             = "Uhr";
 
 $admin_phrases[common][no_image]                  = "Es wurde kein Bild gefunden.";
-
+$admin_phrases[common][delete_image]              = "Bild löschen";
+$admin_phrases[common][js_delete_image]           = "Soll das Bild wirklich gelöscht werden?";
+$admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bisherige Bild überschrieben werden soll!";
 
 
 ////////////
@@ -349,6 +362,7 @@ $admin_phrases[news][news_new_title]              = "News schreiben";
 $admin_phrases[news][news_title]                  = "Titel";
 $admin_phrases[news][news_text]                   = "Text";
 $admin_phrases[news][news_add_button]             = "News hinzufügen";
+$admin_phrases[news][news_added]                  = "News wurde erfolgreich hinzugefügt";
 
 $admin_phrases[news][news_link_add]               = "Link hinzufügen";
 $admin_phrases[news][news_link_title]             = "Titel";
@@ -362,8 +376,48 @@ $admin_phrases[news][news_link_up]                = "nach oben verschieben";
 $admin_phrases[news][news_link_down]              = "nach unten verschieben";
 $admin_phrases[news][news_link_edit]              = "zum Bearbeiten übernehmen";
 
-$admin_phrases[news][news_added]                  = "News wurde erfolgreich hinzugefügt";
 
+$admin_phrases[news][new_cat_added]               = "Kategorie wurde erfolgreich hinzugefügt";
+$admin_phrases[news][cat_deleted]                 = "Kategorie wurde erfolgreich gelöscht";
+$admin_phrases[news][cat_not_deleted]             = "Kategorie wurde nicht gelöscht";
+
+$admin_phrases[news][new_cat_title]               = "Kategorie hinzufügen";
+$admin_phrases[news][new_cat_name]                = "Name";
+$admin_phrases[news][new_cat_image]               = "Bild";
+$admin_phrases[news][new_cat_add_button]          = "Hinzufügen & weitere Einstellungen vornehmen";
+
+$admin_phrases[news][list_cat_title]              = "Kategorieverwaltung";
+$admin_phrases[news][list_cat_created_by]         = "erstellt von";
+$admin_phrases[news][list_cat_created_on]         = "am";
+
+$admin_phrases[news][delete_cat_title]            = "Kategorie löschen";
+$admin_phrases[news][delete_cat_question]         = "Soll diese Kategorie wirklich gelöscht werden";
+$admin_phrases[news][delete_cat_move_to]          = "News der gelöschten Kategorie verschieben nach";
+$admin_phrases[news][delete_cat_last]             = "Die letzte Kategorie kann nicht gelöscht werden.<br>Bitte legen Sie zuerst eine neue Kategorie an.";
+$admin_phrases[news][delete_back_link]            = "zurück zur Übersicht";
+
+$admin_phrases[news][edit_cat_title]              = "Haupteinstellungen";
+$admin_phrases[news][edit_cat_name]               = "Name";
+$admin_phrases[news][edit_cat_name_desc]          = "Der Name der Kategorie.";
+$admin_phrases[news][edit_cat_date]               = "Erstellungsdatum";
+$admin_phrases[news][edit_cat_date_desc]          = "Die Kategorie wurde erstellt am ...";
+$admin_phrases[news][edit_cat_created_by]         = "Ersteller";
+$admin_phrases[news][edit_cat_created_by_desc]    = "Die Kategorie wurde erstellt von ...";
+$admin_phrases[news][edit_cat_title_optional]     = "Zusätzliche Einstellungen";
+$admin_phrases[news][edit_cat_image]              = "Bild";
+$admin_phrases[news][edit_cat_description]        = "Beschreibung";
+$admin_phrases[news][edit_cat_description_desc]   = "Ein kurzer Text, der die Katgorie beschreibt.";
+
+
+
+/////////////
+// Artikel //
+/////////////
+$admin_phrases[articles][settings_title]              = "Einstellungen";
+$admin_phrases[articles][news_per_page]               = "News pro Seite";
+$admin_phrases[articles][news_per_page_desc]          = "Anzahl der News, die pro Seite angezeigt werden.";
+$admin_phrases[articles][num_headlines]               = "Headlines";
+$admin_phrases[articles][num_headlines_desc]          = "Anzahl der Headlines, die angezeigt werden.";
 
 
 ////////////////////

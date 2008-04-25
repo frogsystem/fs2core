@@ -85,25 +85,27 @@ function image_rename($path, $name, $newname)
 
 function upload_img_notice($upload)
 {
+  global $admin_phrases;
+
   switch ($upload)
   {
     case 0:
-      return "Das Bild wurde erfolgreich hochgeladen!";
+      return $admin_phrases[common][image_0] ;
       break;
     case 1:
-      return "Ungültiger Dateityp!";
+      return $admin_phrases[common][image_1] ;
       break;
     case 2:
-      return "Fehler bei der Bilderstellung!";
+      return $admin_phrases[common][image_2] ;
       break;
     case 3:
-      return "Das Bild ist zu groß! (Dateigröße)";
+      return $admin_phrases[common][image_3] ;
       break;
     case 4:
-      return "Das Bild ist zu groß! (Abmessungen)";
+      return $admin_phrases[common][image_4] ;
       break;
     case 5:
-      return "Das Bild ist entspricht nicht den erforderlichen Abmessungen!";
+      return $admin_phrases[common][image_5] ;
       break;
   }
 }
@@ -182,13 +184,13 @@ function create_thumb_notice($upload)
   switch ($upload)
   {
     case 0:
-      return "Das Thumbnail wurde erfolgreich erstellt!";
+      return $admin_phrases[common][thumb_0];
       break;
     case 1:
-      return "Thumbnail: Ungültiger Dateityp!";
+      return $admin_phrases[common][thumb_1];
       break;
     case 2:
-      return "Fehler bei der Thumbnailerstellung!";
+      return $admin_phrases[common][thumb_2];
       break;
   }
 }

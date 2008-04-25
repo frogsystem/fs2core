@@ -45,7 +45,7 @@ if (
 
     // Display Message
     systext ( $message, $admin_phrases[common][info] );
-    
+
     // Unset Vars
     unset ( $_POST );
 
@@ -59,11 +59,11 @@ elseif (
 		isset ( $_POST['cat_id'] ) &&
 		isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
 		isset ( $_POST['cat_action'] ) && $_POST['cat_action'] == "edit" &&
-		
+
 		$_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
 		$_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
 		$_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
-		
+
 		$_POST['cat_name'] && $_POST['cat_name'] != "" &&
 		isset ( $_POST['cat_user'] )
 	)
@@ -100,10 +100,10 @@ elseif (
       $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
-    
+
     // Display Message
     systext ( $message, $admin_phrases[common][info] );
-    
+
     // Unset Vars
     unset ( $_POST );
     $showdefault = FALSE;
@@ -119,7 +119,7 @@ elseif (
 	)
 {
 	if ( $_POST['cat_delete'] == 1 ) {
-	
+
 		// Security-Functions
 		settype ( $_POST['cat_id'], "integer" );
 	    settype ( $_POST['cat_move_to'], "integer" );
@@ -145,7 +145,7 @@ elseif (
 		if ( image_delete ( "../images/cat/", "news_".$_POST['cat_id'] ) ) {
 			$message .= "<br>" . $admin_phrases[common][image_deleted];
 		}
-		
+
 	} else {
 		$message = $admin_phrases[news][cat_not_deleted];
 	}
@@ -170,7 +170,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 	// Edit Category
 	if ( $_POST['cat_action'] == "edit" )
 	{
-	
+
 		// Load Data from DB
 		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = '".$_POST['cat_id']."'", $db );
 		$cat_arr = mysql_fetch_assoc ( $index );
@@ -299,7 +299,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						</table>
 					</form>';
 	}
-	
+
 	// Delete Category
 	elseif ( $_POST['cat_action'] == "delete" )
 	{
@@ -382,7 +382,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 					</form>
 			';
 		}
-		
+
 		// Last Category
 		else {
 		    systext ( $admin_phrases[news][delete_cat_last], $admin_phrases[common][error], TRUE );
@@ -454,7 +454,7 @@ elseif ( $showdefault == TRUE )
 						</table>
 					</form>
 	';
-	
+
 
 	// Category Listing
 	echo '
@@ -464,7 +464,7 @@ elseif ( $showdefault == TRUE )
 						<table class="configtable" cellpadding="4" cellspacing="0">
 						    <tr><td class="line" colspan="3">'.$admin_phrases[news][list_cat_title].'</td></tr>
 	';
-	
+
 	// Get Categories from DB
 	$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat ORDER BY cat_name", $db );
 	while ( $cat_arr = mysql_fetch_assoc ( $index ) )
@@ -501,7 +501,7 @@ elseif ( $showdefault == TRUE )
 							</tr>
 		';
 	}
-	
+
 	// End of Form & Table incl. Submit-Button
  	echo '
 							<tr><td class="space"></td></tr>
