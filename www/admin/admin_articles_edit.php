@@ -18,7 +18,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text] && $_POST[cat_id])
         }
 
         $_POST[url] = savesql($_POST[url]);
-        $index = mysql_query("SELECT artikel_url FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$_POST[url]'");
+        $index = mysql_query("SELECT article_url FROM ".$global_config_arr[pref]."articles WHERE article_url = '$_POST[url]'");
         if ((mysql_num_rows($index) == 0) ||
             ($_POST[oldurl] == $_POST[url])
            )
@@ -31,16 +31,15 @@ if ($_POST[url] && $_POST[title] && $_POST[text] && $_POST[cat_id])
             $_POST[search] = isset($_POST[search]) ? 1 : 0;
             $_POST[fscode] = isset($_POST[fscode]) ? 1 : 0;
 
-            $update = "UPDATE ".$global_config_arr[pref]."artikel
-                       SET artikel_url    = '".$_POST[url]."',
-                           artikel_title  = '".$_POST[title]."',
-                           artikel_date   = '$date',
-                           artikel_user   = '".$_POST[posterid]."',
-                           artikel_text   = '".$_POST[text]."',
-                           artikel_index  = '".$_POST[search]."',
-                           artikel_fscode = '".$_POST[fscode]."',
-                           artikel_cat_id =	'".$_POST[cat_id]."'
-                       WHERE artikel_url = '".$_POST[oldurl]."'";
+            $update = "UPDATE ".$global_config_arr[pref]."articles
+                       SET article_url    = '".$_POST[url]."',
+                           article_title  = '".$_POST[title]."',
+                           article_date   = '$date',
+                           article_user   = '".$_POST[posterid]."',
+                           article_text   = '".$_POST[text]."',
+                           article_fscode = '".$_POST[fscode]."',
+                           article_cat_id =	'".$_POST[cat_id]."'
+                       WHERE article_url = '".$_POST[oldurl]."'";
 
             mysql_query($update, $db);
             systext("Artikel wurde geändert");
@@ -52,7 +51,7 @@ if ($_POST[url] && $_POST[title] && $_POST[text] && $_POST[cat_id])
     }
     else
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$_POST[oldurl]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."articles WHERE article_url = '$_POST[oldurl]'", $db);
         mysql_query("UPDATE ".$global_config_arr[pref]."counter SET artikel = artikel - 1", $db);
         systext("Der Artikel wurde gelöscht");
     }
@@ -71,24 +70,24 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
     }
 
     // Artikel aus der DB holen
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$_POST[oldurl]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."articles WHERE article_url = '$_POST[oldurl]'", $db);
     $artikel_arr = mysql_fetch_assoc($index);
-    $artikel_arr[artikel_text] = ereg_replace ("<textarea>", "&lt;textarea&gt;", $artikel_arr[artikel_text]); 
-    $artikel_arr[artikel_text] = ereg_replace ("</textarea>", "&lt;/textarea&gt;", $artikel_arr[artikel_text]);
+    $artikel_arr[article_text] = ereg_replace ("<textarea>", "&lt;textarea&gt;", $artikel_arr[article_text]);
+    $artikel_arr[article_text] = ereg_replace ("</textarea>", "&lt;/textarea&gt;", $artikel_arr[article_text]);
 
     if (!isset($_POST['title']))
     {
-      $_POST['title'] =  $artikel_arr[artikel_title];
+      $_POST['title'] =  $artikel_arr[article_title];
     }
     if (!isset($_POST['url']))
     {
-      $_POST['url'] =  $artikel_arr[artikel_url];
+      $_POST['url'] =  $artikel_arr[article_url];
     }
 
     //Poster Name für Anzeige bei fehlenden Daten
-    if (!isset($_POST['posterid']) AND $artikel_arr[artikel_user] != 0)
+    if (!isset($_POST['posterid']) AND $artikel_arr[article_user] != 0)
     {
-    $index = mysql_query("SELECT user_id FROM ".$global_config_arr[pref]."user WHERE user_id = '$artikel_arr[artikel_user]'", $db);
+    $index = mysql_query("SELECT user_id FROM ".$global_config_arr[pref]."user WHERE user_id = '$artikel_arr[article_user]'", $db);
     $_POST['posterid']= mysql_result($index, 0, "user_id");
     }
     if ($_POST[posterid])
@@ -98,11 +97,11 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
     }
 
     // Datum erzeugen
-    if ($artikel_arr[artikel_date] != 0)
+    if ($artikel_arr[article_date] != 0)
     {
-        $nowtag = date("d", $artikel_arr[artikel_date]);
-        $nowmonat = date("m", $artikel_arr[artikel_date]);
-        $nowjahr = date("Y", $artikel_arr[artikel_date]);
+        $nowtag = date("d", $artikel_arr[article_date]);
+        $nowmonat = date("m", $artikel_arr[article_date]);
+        $nowjahr = date("Y", $artikel_arr[article_date]);
     }
 
     if (!isset($_POST['tag']))
@@ -123,37 +122,31 @@ elseif (isset($_POST[artikelurl]) OR isset($_POST[sended]))
     $heute[monat] = date("m");
     $heute[jahr] = date("Y");
 
-    if (!isset($_POST['sended']))
-    {
-      $_POST['search'] =  $artikel_arr[artikel_index];
-    }
-    // Suchindex
-    $dbartikelindex = ($_POST['search'] == 1) ? "checked" : "";
 
     if (!isset($_POST['sended']))
     {
-      $_POST['fscode'] =  $artikel_arr[artikel_fscode];
+      $_POST['fscode'] =  $artikel_arr[article_fscode];
     }
     // verwendet fs code
     $dbartikelfscode = ($_POST['fscode'] == 1) ? "checked" : "";
 
     if (!isset($_POST['text']))
     {
-      $_POST['text'] =  stripslashes($artikel_arr[artikel_text]);
+      $_POST['text'] =  stripslashes($artikel_arr[article_text]);
     }
     
     // category id
 	$cats_options = '';
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."artikel_cat", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."articles_cat", $db);
     
     while ($arr = mysql_fetch_assoc($index)) {
-	    $state = ($artikel_arr[artikel_cat_id] == $arr[cat_id]) ? "selected" : "";
+	    $state = ($artikel_arr[article_cat_id] == $arr[cat_id]) ? "selected" : "";
 	    $cats_options .= '<option value="'.$arr[cat_id].'" selected="'.$state.'">'.$arr[cat_name].'</option>';
     }
 
     echo'
                     <form id="send1" action="" method="post" target="_self">
-                        <input type="hidden" value="artikeledit" name="go">
+                        <input type="hidden" value="articlesedit" name="go">
                         <input type="hidden" value="" name="sended">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$_POST[oldurl].'" name="oldurl">
@@ -275,7 +268,7 @@ else
 {
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="artikeledit" name="go">
+                        <input type="hidden" value="articlesedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
@@ -293,7 +286,7 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT artikel_url, artikel_title, artikel_user FROM ".$global_config_arr[pref]."artikel ORDER BY artikel_url", $db);
+    $index = mysql_query("SELECT article_url, article_title, article_user FROM ".$global_config_arr[pref]."articles ORDER BY article_url", $db);
     while ($artikel_arr = mysql_fetch_assoc($index))
     {
         $index2 = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = '$artikel_arr[artikel_user]'", $db);
@@ -301,16 +294,16 @@ else
         echo'
                             <tr>
                                 <td class="configthin">
-                                    '.$artikel_arr[artikel_url].'
+                                    '.$artikel_arr[article_url].'
                                 </td>
                                 <td class="configthin">
-                                    '.$artikel_arr[artikel_title].'
+                                    '.$artikel_arr[article_title].'
                                 </td>
                                 <td class="configthin">
                                     '.$dbartikeluservalue.'
                                 </td>
                                 <td class="config">
-                                    <input type="radio" name="artikelurl" value="'.$artikel_arr[artikel_url].'">
+                                    <input type="radio" name="artikelurl" value="'.$artikel_arr[article_url].'">
                                 </td>
                             </tr>
         ';

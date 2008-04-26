@@ -488,6 +488,22 @@ $admin_phrases[articles][edit_cat_image]          = "Bild";
 $admin_phrases[articles][edit_cat_desc]           = "Beschreibung";
 $admin_phrases[articles][edit_cat_desc_desc]      = "Ein kurzer Text über die Katgorie.";
 
+$admin_phrases[articles][articles_info_title]     = "Informationen";
+$admin_phrases[articles][articles_url]            = "URL";
+$admin_phrases[articles][articles_url_desc]       = "Teil der URL, der an ?go= angehängt wird.";
+$admin_phrases[articles][articles_cat]            = "Kategorie";
+$admin_phrases[articles][articles_cat_desc]       = "Die Kategorie, der der Artikel angehört.";
+$admin_phrases[articles][articles_date]           = "Erstellungsdatum";
+$admin_phrases[articles][articles_date_desc]      = "Erstellungsdatum des Artikels.";
+$admin_phrases[articles][articles_poster]         = "Autor";
+$admin_phrases[articles][articles_poster_desc]    = "Der Autor des Artikels.";
+
+$admin_phrases[articles][articles_new_title]      = "Artikel schreiben";
+$admin_phrases[articles][articles_title]          = "Titel";
+$admin_phrases[articles][articles_text]           = "Text";
+$admin_phrases[articles][articles_add_button]     = "Artikel hinzufügen";
+$admin_phrases[articles][articles_added]          = "Artikel wurde erfolgreich hinzugefügt";
+
 
 
 ////////////////////

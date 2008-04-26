@@ -1,5 +1,237 @@
 <?php
 
+/////////////////////
+//// Add Article ////
+/////////////////////
+
+if (
+		isset ( $_POST['articlesadd'] ) &&
+		$_POST['title'] && $_POST['title'] != "" &&
+		$_POST['text'] && $_POST['text'] != "" &&
+
+		$_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
+		$_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
+		$_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
+		$_POST['h'] && $_POST['h'] != "" && $_POST['h'] >= 0 &&
+		$_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
+
+		isset ( $_POST['catid'] ) &&
+		isset ( $_POST['posterid'] )
+	)
+{
+	$_POST['text'] = savesql ( $_POST['text'] );
+    $_POST['title'] = savesql ( $_POST['title'] );
+
+    settype ( $_POST['catid'], "integer" );
+    settype ( $_POST['posterid'], "integer" );
+
+    $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['Y'], $_POST['H'], $_POST['i'] );
+	$newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+
+
+	// MySQL-Insert-Query
+    mysql_query ("
+					INSERT INTO ".$global_config_arr['pref']."news (cat_id, user_id, news_date, news_title, news_text)
+					VALUES (
+						'".$_POST['catid']."',
+						'".$_POST['posterid']."',
+						'".$newsdate."',
+						'".$_POST['title']."',
+						'".$_POST['text']."'
+					)
+	", $db );
+
+    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news + 1", $db );
+    systext( $admin_phrases[news][news_added], $admin_phrases[common][info]);
+}
+
+//////////////////////////////
+//// Display Articel Form ////
+//////////////////////////////
+
+else
+{
+
+	// Display Error Messages
+	if ( isset ( $_POST['sended'] ) ) {
+  		systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+	}
+
+    // Load Article Config
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_config", $db );
+    $config_arr = mysql_fetch_assoc ( $index );
+
+	// Create HTML, FSCode & Para-Handling Vars
+    $config_arr[html_code_bool] = ($config_arr[html_code] == 2 || $config_arr[html_code] == 4);
+    $config_arr[fs_code_bool] = ($config_arr[fs_code] == 2 || $config_arr[fs_code] == 4);
+    $config_arr[para_handling_bool] = ($config_arr[para_handling] == 2 || $config_arr[para_handling] == 4);
+    
+    $config_arr[html_code_text] = ( $config_arr[html_code_bool] ) ? $admin_phrases[common][on] : $admin_phrases[common][off];
+    $config_arr[fs_code_text] = ( $config_arr[fs_code_bool] ) ? $admin_phrases[common][on] : $admin_phrases[common][off];
+    $config_arr[para_handling_text] = ( $config_arr[para_handling_bool] ) ? $admin_phrases[common][on] : $admin_phrases[common][off];
+
+	if ( !isset ( $_POST['article_html'] ) ) {
+		$_POST['article_html'] = 1;
+    }
+	if ( !isset ( $_POST['article_fscode'] ) ) {
+		$_POST['article_fscode'] = 1;
+    }
+	if ( !isset ( $_POST['article_para'] ) ) {
+		$_POST['article_para'] = 1;
+    }
+    
+	// Get User ID
+	if ( !isset ( $_POST['article_user'] ) ) {
+		$_POST['article_user'] = $_SESSION['user_id'];
+    }
+
+	// Security-Functions
+    $_POST['article_url'] = killhtml ( $_POST['article_url'] );
+    $_POST['article_title'] = killhtml ( $_POST['article_title'] );
+	$_POST['article_text'] = killhtml ( $_POST['article_text'] );
+	settype ( $_POST['article_user'], "integer" );
+    settype ( $_POST['article_html'], "integer" );
+	settype ( $_POST['article_fscode'], "integer" );
+    settype ( $_POST['article_para'], "integer" );
+	settype ( $_POST['article_cat_id'], "integer" );
+
+    // Get User
+    $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$_POST['article_user']."'", $db );
+    $_POST['article_user_name'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
+
+	// Create Date-Arrays
+    if ( !isset ( $_POST['d'] ) )
+    {
+    	$_POST['d'] = date ( "d" );
+    	$_POST['m'] = date ( "m" );
+    	$_POST['y'] = date ( "Y" );
+	}
+	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
+	$nowbutton_array = array( "d", "m", "y" );
+
+    // Display Page
+    echo'
+					<form action="" method="post">
+						<input type="hidden" value="articlesadd" name="go">
+                        <input type="hidden" name="sended" value="1">
+                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="2">'.$admin_phrases[articles][articles_info_title].'</td></tr>
+                            <tr>
+                                <td class="config">
+                                    '.$admin_phrases[articles][articles_url].': <span class="small">'.$admin_phrases[common][optional].'</span><br>
+                                    <span class="small">'.$admin_phrases[articles][articles_url_desc].'</span>
+                                </td>
+                                <td class="config">
+                                    ?go = <input class="text" size="45" maxlength="100" name="article_url" value="'.$_POST['article_url'].'">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '.$admin_phrases[articles][articles_cat].':<br>
+                                    <span class="small">'.$admin_phrases[articles][articles_cat_desc].'</span>
+                                </td>
+                                <td class="config">
+                                    <select name="article_cat_id">
+	';
+    									// Kategorien auflisten
+    									$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );
+    									while ( $cat_arr = mysql_fetch_assoc ( $index ) )
+    									{
+											echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['article_cat_id']).'>'.$cat_arr['cat_name'].'</option>';
+    									}
+	echo'
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '.$admin_phrases[articles][articles_date].': <span class="small">'.$admin_phrases[common][optional].'</span><br>
+                                    <span class="small">'.$admin_phrases[articles][articles_date_desc].'</span>
+                                </td>
+                                <td class="config">
+									<span class="small">
+										<input class="text" size="3" maxlength="2" id="d" name="d" value="'.$date_arr['d'].'"> .
+                                    	<input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
+                                    	<input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
+									</span>
+									'.js_nowbutton ( $nowbutton_array, $admin_phrases[common][today] ).'
+                                    <input onClick=\'document.getElementById("d").value="";
+                                                     document.getElementById("m").value="";
+                                                     document.getElementById("y").value="";\' class="button" type="button" value="Löschen">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '.$admin_phrases[articles][articles_poster].': <span class="small">'.$admin_phrases[common][optional].'</span><br>
+                                    <span class="small">'.$admin_phrases[articles][articles_poster_desc].'</span>
+                                </td>
+                                <td class="config">
+                                    <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="article_user_name" value="'.$_POST['article_user_name'].'">
+                                    <input type="hidden" id="userid" name="article_user" value="'.$_POST['article_user'].'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_finduser.php", 400, 400 ).'\' value="'.$admin_phrases[common][change_button].'">
+                                    <input onClick=\'document.getElementById("username").value="";
+                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="Löschen">
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+							<tr><td class="line" colspan="2">'.$admin_phrases[articles][articles_new_title].'</td></tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    '.$admin_phrases[articles][articles_title].':
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    <input class="text" size="75" maxlength="255" name="article_title" value="'.$_POST['article_title'].'">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    '.$admin_phrases[articles][articles_text].':<br>
+									<span class="small">'.
+									$admin_phrases[common][html].' '.$config_arr[html_code_text].'. '.
+									$admin_phrases[common][fscode].' '.$config_arr[fs_code_text].'. '.
+									$admin_phrases[common][para].' '.$config_arr[para_handling_text].'.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" colspan="2">
+	';
+	
+	if ( $config_arr[html_code_bool] ) {
+	    echo '<input type="checkbox" name="article_html" value="1" '.getchecked ( 1, $_POST['article_html'] ).'> HTML dekativieren';
+	}
+	if ( $config_arr[fs_code_bool] ) {
+	    echo '<input type="checkbox" name="article_fscode" value="1" '.getchecked ( 1, $_POST['article_fscode'] ).'> FSCode dekativieren';
+	}
+	if ( $config_arr[para_handling_bool] ) {
+	    echo '<input type="checkbox" name="article_para" value="1" '.getchecked ( 1, $_POST['article_para'] ).'> Absatzbehandlung dekativieren';
+	}
+	
+	echo '
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    '.create_editor ( "article_text", $_POST['article_text'], "100%", "500px", "", FALSE).'
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[articles][articles_add_button].'
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+    ';
+}
+?>
+
+<?php
+
 /////////////////////////////////////
 //// Artikel in die DB schreiben ////
 /////////////////////////////////////
@@ -93,88 +325,11 @@ else
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
-                                    URL:<br>
-                                    <font class="small">Teil der an ?go= angehängt wird</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <input class="text" size="33" value="'.stripslashes(killhtml($_POST[url])).'" name="url" maxlength="100">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Titel:<br>
-                                    <font class="small">Diesen Titel bekommt der Artikel</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <input value="'.stripslashes(killhtml($_POST[title])).'" class="text" size="40" name="title" maxlength="100">
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td class="config" valign="top">
-                            		Kategorie:<br>
-                            		<font class="small">Kategorie</font>
-                            	</td>
-                            	<td class="config" valign="top">
-                            		<select name="cat_id">
-                            			'.$cats_options.'
-                            		</select>
-                            	</td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Autor:<br>
-                                    <font class="small">Verfasser des Artikels (optional)</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <input class="text" size="30" id="username" name="poster" value="'.$dbusername.'" maxlength="100" readonly="readonly">
-                                    <input type="hidden" id="userid" name="posterid" value="'.$_POST[posterid].'">
-                                    <input onClick=\'open("admin_finduser.php","Poster","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\' class="button" type="button" value="Ändern">
-                                    <input onClick=\'document.getElementById("username").value="";
-                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="Löschen">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Datum:<br>
-                                    <font class="small">Datum des Artikels (optional)</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <input id="day" class="text" size="2" name="tag" value="'.stripslashes(killhtml($_POST[tag])).'" maxlength="2">
-                                    <input id="month" class="text" size="2" name="monat" value="'.stripslashes(killhtml($_POST[monat])).'" maxlength="2">
-                                    <input id="year" class="text" size="4" name="jahr" value="'.stripslashes(killhtml($_POST[jahr])).'" maxlength="4">
-                                    <input onClick=\'document.getElementById("day").value="'.$heute[tag].'";
-                                                     document.getElementById("month").value="'.$heute[monat].'";
-                                                     document.getElementById("year").value="'.$heute[jahr].'";\' class="button" type="button" value="Heute">
-                                    <input onClick=\'document.getElementById("day").value="";
-                                                     document.getElementById("month").value="";
-                                                     document.getElementById("year").value="";\' class="button" type="button" value="Löschen">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Such-Index:<br>
-                                    <font class="small">Diesen Artikel zum Such-Index hinzufügen</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <input type="checkbox" value="1" name="search" '.$dbartikelindex.'>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
                                     FS-Code:<br>
                                     <font class="small">FS-Code in diesem Artikel aktivieren</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="checkbox" value="1" name="fscode" '.$dbartikelfscode.'>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Text:<br>
-                                    <font class="small">Html ist an. FScode ist an</font>
-                                </td>
-                                <td valign="top">
-                                    '.create_editor("text", stripslashes(killhtml($_POST[text])), 407, 380, "", false).'
                                 </td>
                             </tr>
                             <tr>

@@ -371,7 +371,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr[comment_url] = "?go=comments&amp;id=$news_arr[news_id]";
 
     // Kategorie lesen
-    $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."news_cat where cat_id = $news_arr[cat_id]", $db);
+    $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."news_cat where cat_id = '".$news_arr['cat_id']."'", $db);
     $news_arr[cat_name] = mysql_result($index2, 0, "cat_name");
     $news_arr[cat_pic] = image_url("images/news_cat/", $news_arr[cat_id]);
 
