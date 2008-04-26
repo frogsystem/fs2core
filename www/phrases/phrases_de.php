@@ -12,6 +12,8 @@ $phrases[registration]      = "Registrierung";
 
 // News
 $phrases[news_not_exist]    = "News nicht vorhanden";
+$phrases[no_result_time]    = "Keine Einträge in diesem Zeitraum gefunden";
+$phrases[no_result_word]    = "Keine Einträge mit diesem Stichwort gefunden";
 
 // Kommentare
 $phrases[add_comment]       = "Kommentar hinzufügen";
@@ -44,9 +46,8 @@ $phrases[user_antispam]     = "Die Rechenaufgabe muss richtig gelöst werden.";
 $phrases[logged_in]         = "Du bist eingeloggt";
 $phrases[logged_out]        = "Du bist nun wieder ausgeloggt";
 
-// News
-$phrases[no_result_time]    = "Keine Einträge in diesem Zeitraum gefunden";
-$phrases[no_result_word]    = "Keine Einträge mit diesem Stichwort gefunden";
+// Artikel
+$phrases[article_not_found] = "Artikel nicht vorhanden";
 
 // Poll
 $phrases[multiple_choise]   = "Mehrfachauswahl";

@@ -35,10 +35,12 @@
     $tmp[description] = $admin_phrases[template][artikel_autor][description];
     $tmp[rows] = "4";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{username}";
+        $tmp[help][0][tag] = "{user_name}";
         $tmp[help][0][text] = $admin_phrases[template][artikel_autor][help_1];
-        $tmp[help][1][tag] = "{profillink}";
+        $tmp[help][1][tag] = "{user_id}";
         $tmp[help][1][text] = $admin_phrases[template][artikel_autor][help_2];
+        $tmp[help][2][tag] = "{profile_url}";
+        $tmp[help][2][text] = $admin_phrases[template][artikel_autor][help_3];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
@@ -47,14 +49,18 @@
     $tmp[description] = $admin_phrases[template][artikel_body][description];
     $tmp[rows] = "25";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{titel}";
+        $tmp[help][0][tag] = "{title}";
         $tmp[help][0][text] = $admin_phrases[template][artikel_body][help_1];
-        $tmp[help][1][tag] = "{datum}";
+        $tmp[help][1][tag] = "{date}";
         $tmp[help][1][text] = $admin_phrases[template][artikel_body][help_2];
         $tmp[help][2][tag] = "{text}";
         $tmp[help][2][text] = $admin_phrases[template][artikel_body][help_3];
-        $tmp[help][2][tag] = "{autor}";
-        $tmp[help][2][text] = $admin_phrases[template][artikel_body][help_4];
+        $tmp[help][3][tag] = "{author_template}";
+        $tmp[help][3][text] = $admin_phrases[template][artikel_body][help_4];
+        $tmp[help][4][tag] = "{user_name}";
+        $tmp[help][4][text] = $admin_phrases[template][artikel_body][help_5];
+        $tmp[help][5][tag] = "{user_id}";
+        $tmp[help][5][text] = $admin_phrases[template][artikel_body][help_6];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
         

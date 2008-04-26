@@ -309,7 +309,7 @@ function point_number ($zahl)
 }
 
 /////////////////////////////////////////
-// String kürzen ohne Wort zuzerstören //
+// String kürzen ohne Wort zuzerstören //  <= BAD FUNCTION HAS TO BE IMPROVED
 /////////////////////////////////////////
 function truncate_string ($string, $maxlength, $extension)
 {

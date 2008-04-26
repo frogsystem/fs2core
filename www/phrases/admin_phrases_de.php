@@ -635,14 +635,17 @@ $admin_phrases[template][community_map][help_1]                 = "Bindet die Ka
 $admin_phrases[template][artikel_autor][title]                  = "Autor";
 $admin_phrases[template][artikel_autor][description]            = "Das Erscheinungsbild der Autoren-Kennzeichnung.";
 $admin_phrases[template][artikel_autor][help_1]                 = "Der Username des Autors.";
-$admin_phrases[template][artikel_autor][help_2]                 = "URL zum Profil des Autors.";
+$admin_phrases[template][artikel_autor][help_2]                 = "Die User-ID des Autors.";
+$admin_phrases[template][artikel_autor][help_3]                 = "URL zum Profil des Autors.";
 
 $admin_phrases[template][artikel_body][title]                   = "Body";
 $admin_phrases[template][artikel_body][description]             = "Das Erscheinungsbild eines Artikels.";
 $admin_phrases[template][artikel_body][help_1]                  = "Die Überschrift des Artikels.";
 $admin_phrases[template][artikel_body][help_2]                  = "Das Datum an dem der Artikel geschrieben wurde.";
 $admin_phrases[template][artikel_body][help_3]                  = "Der Artikel-Text an sich.";
-$admin_phrases[template][artikel_body][help_4]                  = "Bindet das Autoren-Template ein.";
+$admin_phrases[template][artikel_body][help_4]                  = "Bindet das Autoren-Template (s.o.) ein.";
+$admin_phrases[template][artikel_body][help_5]                  = "Der Username des Autors.";
+$admin_phrases[template][artikel_body][help_6]                  = "Die User-ID des Autors.";
 
 
 

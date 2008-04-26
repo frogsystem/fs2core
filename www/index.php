@@ -43,7 +43,7 @@ if (!isset($_GET[go]))
 else
 {
   $goto = savesql($_GET[go]);
-  $index = mysql_query("SELECT artikel_url FROM ".$global_config_arr[pref]."artikel WHERE artikel_url = '$goto'");
+  $index = mysql_query("SELECT article_url FROM ".$global_config_arr[pref]."articles WHERE article_url = '".$goto."'", $db);
 }
 
 //Go-Aliase
@@ -59,7 +59,7 @@ if (file_exists("data/".$goto.".php"))
 }
 elseif (mysql_num_rows($index) == 1)
 {
-  include("res/artikel.inc.php");
+  include("data/articles.php");
 }
 else
 {
