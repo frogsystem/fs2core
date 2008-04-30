@@ -105,10 +105,10 @@ else
                                     '.$admin_phrases[stats][referrer_show].':
                                 </td>
                                 <td class="config" width="100%">
-                                    <input name="limit" size="4" class="text" value="'.$_POST[limit].'">
+                                    <input name="limit" size="4" maxlength="3" class="text" value="'.$_POST[limit].'">
                                     '.$admin_phrases[stats][referrer_orderby].'
                                     <select name="order">
-                                        <option value="c" '.$csel.'>'.$admin_phrases[stats][referrer_hits].'Counter</option>
+                                        <option value="c" '.$csel.'>'.$admin_phrases[stats][referrer_hits].'</option>
                                         <option value="f" '.$fsel.'>'.$admin_phrases[stats][referrer_first].'</option>
                                         <option value="l" '.$lsel.'>'.$admin_phrases[stats][referrer_last].'</option>
                                         <option value="u" '.$usel.'>'.$admin_phrases[stats][referrer_url].'</option>
@@ -124,7 +124,7 @@ else
                                     '.$admin_phrases[stats][referrer_filter].':
                                 </td>
                                 <td class="config" width="100%">
-                                    <input class="text" style="width: 100%;" name="filter" value="'.$_POST[filter].'">
+                                    <input class="text" style="width: 100%;" name="filter" maxlength="255" value="'.$_POST[filter].'">
                                 </td>
                             </tr>
 						</table>
@@ -341,7 +341,7 @@ else
                                         <option value="younger">'.$admin_phrases[stats][referrer_delete_younger].'</option>
                                     </select>
                                     &nbsp;
-                                    <input class="text" name="del_days" size="3" value="5">
+                                    <input class="text" name="del_days" size="3" maxlength="3" value="5">
                                     '.$admin_phrases[stats][referrer_delete_days].'
                                 </td>
                             </tr>
@@ -354,7 +354,7 @@ else
                                         <option value="more">'.$admin_phrases[stats][referrer_delete_more].'</option>
                                     </select>
                                     &nbsp;
-                                    <input class="text" name="del_hits" size="3" value="3">
+                                    <input class="text" name="del_hits" size="3" maxlength="3" value="3">
                                     '.$admin_phrases[stats][referrer_delete_hits].'.
                                 </td>
                             </tr>

@@ -80,16 +80,31 @@ function save_visitors ()
     global $db;
     global $global_config_arr;
 
-    $time = time();             // timestamp
-    
+    $time = time(); // timestamp
+    $ip = $_SERVER['REMOTE_ADDR']; // IP-Adress
+
+	// get user_id or set user_id=0
+	if ( isset ( $_SESSION['user_id'] ) && $_SESSION['user_level'] == "loggedin" ) {
+	    $user_id = $_SESSION['user_id'];
+	    settype ( $user_id, "integer");
+	} else {
+	    $user_id = 0;
+	}
+
     // delete offline users
     mysql_query ( "DELETE FROM ".$global_config_arr['pref']."useronline WHERE date < (".$time." - 300)", $db );
-
+    
     // save online users
     $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."useronline WHERE ip='".$_SERVER['REMOTE_ADDR']."'", $db );
 
-    if ( mysql_num_rows ( $index ) <= 0 ) {
-        mysql_query ( "INSERT INTO ".$global_config_arr['pref']."useronline (ip, host, date) VALUES ('".$_SERVER['REMOTE_ADDR']."', NULL, '".$time."')", $db );
+	// update existing users
+	if ( mysql_num_rows ( $index ) >= 1 && mysql_result ( $index, 0, "user_id" ) != $user_id ) {
+        mysql_query ( "UPDATE ".$global_config_arr['pref']."useronline SET user_id = '".$user_id."' WHERE ip = '".$ip."'", $db );
+    }
+	if ( mysql_num_rows ( $index ) >= 1 ) {
+        mysql_query ( "UPDATE ".$global_config_arr['pref']."useronline SET date = '".$time."' WHERE ip='".$ip."'", $db );
+    } else {
+        mysql_query ( "INSERT INTO ".$global_config_arr['pref']."useronline (ip, user_id, date) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".$user_id."', '".$time."')", $db );
     }
 }
 
