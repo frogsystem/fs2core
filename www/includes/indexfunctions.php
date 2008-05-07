@@ -1,7 +1,274 @@
 <?php
-////////////////////////////////////
-//// check if visit day exists  ////
-////////////////////////////////////
+///////////////////////////
+//// Replace Resources ////
+///////////////////////////
+function veraltet_includes ( $template_index )
+{
+	global $global_config_arr;
+	global $db;
+
+		// Veraltet!!!
+		//Includes
+		$index = mysql_query("select * from ".$global_config_arr[pref]."includes where include_type = '2'", $db);
+		while ($include_arr = mysql_fetch_assoc($index))
+		{
+		    // Include laden
+		    include("res/".$include_arr['replace_thing']);
+		    $template_include = $template;
+		    unset($template);
+
+		    //Seitenvariablen
+		    $index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
+		    while ($sv_arr = mysql_fetch_assoc($index))
+		    {
+		        // Include-URL laden
+		        $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
+		        $template_include = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_include);
+		    }
+		    unset($sv_arr);
+		    $template_include = killsv($template_include);
+		    $template_index = str_replace($include_arr['replace_string'], $template_include, $template_index);
+		    unset($template_include);
+		}
+		unset($include_arr);
+
+		//Seitenvariablen
+		$index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
+		while ($sv_arr = mysql_fetch_assoc($index))
+		{
+		    // Include-URL laden
+		    $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
+		    $template_index = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_index);
+		}
+		unset($sv_arr);
+
+		// Veraltet Ende!
+		
+	return $template_index;
+}
+
+
+///////////////////////////
+//// get Main-Template ////
+///////////////////////////
+function get_maintemplate ( $PATH_PREFIX = "" )
+{
+	global $global_config_arr;
+    global $db;
+
+	// Main Template
+	$template = '
+{doctype}
+<html>
+	<head>
+		{title}{meta}{link}{script}
+	</head>
+
+    {body}
+</html>
+';
+
+	// Create link-Rows
+	$template_link = "";
+	if ( $global_config_arr['show_favicon'] == 1 ) {
+		$template_link .= '
+		<link rel="shortcut icon" href="images/icons/favicon.ico">';
+	}
+	$template_link .= '
+		<link rel="stylesheet" type="text/css" href="'.$PATH_PREFIX .'style_css.php?id='.$global_config_arr['design'].'">
+		<link rel="stylesheet" type="text/css" href="'.$PATH_PREFIX .'editor_css.php?id='.$global_config_arr['design'].'">
+		<link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' News Feed">';
+
+	// Create script-Rows
+    $template_script = "";
+	$template_script .= '
+		<script type="text/javascript" src="'.$PATH_PREFIX .'res/js_functions.js"></script>
+		<script type="text/javascript" src="'.$PATH_PREFIX .'res/js_userfunctions.php?id='.$global_config_arr['design'].'"></script>';
+
+	// Replace Placeholders
+	$template = str_replace("{doctype}", get_template ( "doctype" ), $template);
+	$template = str_replace("{title}", "<title>".$global_config_arr['title']."</title>", $template);
+	$template = str_replace("{meta}", get_meta (), $template);
+	$template = str_replace("{link}", $template_link, $template);
+	$template = str_replace("{script}", $template_script, $template);
+
+	// Return Template
+	return $template;
+}
+
+
+///////////////////////
+//// get META-Tags ////
+///////////////////////
+function get_meta ()
+{
+	global $global_config_arr;
+
+	$keyword_arr = explode ( ",", $global_config_arr['keywords'] );
+	foreach ( $keyword_arr as $key => $value ) {
+	    $keyword_arr[$key] = trim ( $value );
+	}
+    $keywords = implode ( ", ", $keyword_arr );
+
+	$template = '
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<meta name="DC.Identifier" content="'.$global_config_arr['virtualhost'].'">
+		<meta name="DC.Creator" content="'.$global_config_arr['author'].'">
+		<meta name="DC.Description" content="'.$global_config_arr['description'].'">
+		<meta name="DC.Language" content="'.$global_config_arr['language'].'">
+		<meta name="title" content="'.$global_config_arr['title'].'">
+		<meta name="keywords" content="'.$keywords.'">
+		<meta name="robots" content="index,follow">
+		<meta name="Revisit-after" content="3 days">
+		<meta name="generator" content="Frogsystem 2 [http://www.frogsystem.de]">';
+
+	return $template;
+}
+
+
+/////////////////////
+//// get Content ////
+/////////////////////
+function get_content ( $GOTO )
+{
+    global $global_config_arr;
+    global $db;
+    global $phrases;
+
+	$index = mysql_query ( "SELECT COUNT(article_id) AS 'number' FROM ".$global_config_arr['pref']."articles WHERE article_url = '".$GOTO."'", $db );
+
+	// Display Content
+	if ( file_exists ( "data/".$GOTO.".php" ) ) {
+		include ( "data/".$GOTO.".php" );
+	} elseif ( mysql_result ( $index, 0, "number") >= 1 ) {
+		include ( "data/articles.php" );
+	} else {
+		include ( "data/404.php" );
+	}
+
+	// Replace Virtualhost & Kill Resources
+    $template = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template );
+	$template = killbraces($template);
+
+	// Return Content
+	return $template;
+}
+
+
+///////////////////////
+//// get main menu ////
+///////////////////////
+function get_mainmenu ( $PATH_PREFIX = "" )
+{
+	global $global_config_arr;
+    global $db;
+
+	$template = get_template ( "main_menu" );
+	$template = replace_resources ( $template, $PATH_PREFIX  );
+    $template = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template );
+	$template = killbraces($template);
+	return $template;
+}
+
+///////////////////////////
+//// Replace Resources ////
+///////////////////////////
+function replace_resources ( $TEMPLATE, $PATH_PREFIX = "" )
+{
+	global $global_config_arr;
+	global $db;
+
+	// Load Resources from DB
+	$index = mysql_query ( "
+							SELECT *
+							FROM ".$global_config_arr['pref']."resources
+	", $db );
+
+	// Write Resources into Array & get Resource Template
+	$i = 0;
+	while ( $result = mysql_fetch_assoc ( $index ) ) {
+        $resources_arr[$i]['id'] = $result['id'];
+        $resources_arr[$i]['resource_name'] = $result['resource_name'];
+        $resources_arr[$i]['resource_file'] = $result['resource_file'];
+        $resources_arr[$i]['hardcoded'] = $result['hardcoded'];
+        $resources_arr[$i]['template'] = get_resource ( $PATH_PREFIX."res/".$result['resource_file'] );
+        $i++;
+	}
+
+	// Replace Resources in $TEMPLATE
+	foreach ( $resources_arr as $resource ) {
+		$TEMPLATE = str_replace("{".$resource['resource_name']."}",  $resource['template'], $TEMPLATE);
+	}
+
+	// Return Content
+	return $TEMPLATE;
+}
+
+
+//////////////////////
+//// get resource ////
+//////////////////////
+function get_resource ( $FILE )
+{
+    global $global_config_arr;
+    global $db;
+
+	include( $FILE );
+	$template = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template );
+	$template = killbraces ( $template );
+	return $template;
+}
+
+
+///////////////////
+//// get $goto ////
+///////////////////
+function get_goto ( $GETGO )
+{
+    global $global_config_arr;
+    global $db;
+
+	// Check $_GET['go']
+	if ( !isset( $GETGO ) || $GETGO == "" ) {
+		$goto = $global_config_arr['home_real'];
+	} else {
+		$goto = savesql ( $GETGO ) ;
+	}
+
+	// Forward Aliases
+	$goto = forward_aliases ( $goto );
+
+	// Return $goto
+	return $goto;
+}
+
+
+/////////////////////////
+//// forward aliases ////
+/////////////////////////
+function forward_aliases ( $GOTO )
+{
+    global $global_config_arr;
+    global $db;
+
+    $index = mysql_query ( "
+							SELECT *
+							FROM ".$global_config_arr['pref']."aliases
+	", $db );
+	
+	while ( $aliases_arr = mysql_fetch_assoc ( $index ) ) {
+		if ( $GOTO == $aliases_arr['alias_go'] ) {
+            $GOTO = $aliases_arr['alias_forward_to'];
+		}
+	}
+	
+	return $GOTO;
+}
+
+
+///////////////////////////////////
+//// check if visit day exists ////
+///////////////////////////////////
 function visit_day_exists ( $YEAR, $MONTH, $DAY )
 {
     global $db;
@@ -19,9 +286,9 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
 }
 
 
-////////////////////
-//// count hit  ////
-////////////////////
+///////////////////
+//// count hit ////
+///////////////////
 function count_hit ()
 {
     global $db;
@@ -40,9 +307,10 @@ function count_hit ()
                    WHERE s_year = ".$hit_year." AND s_month = ".$hit_month." AND s_day = ".$hit_day."", $db );
 }
 
-//////////////////////
-//// count visit  ////
-//////////////////////
+
+/////////////////////
+//// count visit ////
+/////////////////////
 function count_visit ()
 {
     global $db;
@@ -72,9 +340,10 @@ function count_visit ()
     }
 }
 
-////////////////////////
-//// save visitors  ////
-////////////////////////
+
+///////////////////////
+//// save visitors ////
+///////////////////////
 function save_visitors ()
 {
     global $db;
@@ -109,9 +378,9 @@ function save_visitors ()
 }
 
 
-///////////////////////
-//// save referer  ////
-///////////////////////
+//////////////////////
+//// save referer ////
+//////////////////////
 function save_referer ()
 {
     global $db;
@@ -135,10 +404,10 @@ function save_referer ()
 }
 
 
-////////////////////////////////
-//// del old timed randoms  ////
-////////////////////////////////
-function delete_old_randoms()
+///////////////////////////////
+//// del old timed randoms ////
+///////////////////////////////
+function delete_old_randoms ()
 {
   global $db;
   global $global_config_arr;
@@ -151,9 +420,10 @@ function delete_old_randoms()
   }
 }
 
-/////////////////////////////////
-//// create copyright note   ////
-/////////////////////////////////
+
+///////////////////////////////
+//// create copyright note ////
+///////////////////////////////
 function get_copyright ()
 {
     return '<span class="small">Powered by <a class="small" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007, 2008 Frogsystem-Team</span>';
@@ -163,7 +433,7 @@ function get_copyright ()
 ////////////////////////
 /// Designs & Zones ////
 ////////////////////////
-function set_design()
+function set_design ()
 {
     global $db;
     global $global_config_arr;
@@ -206,12 +476,13 @@ function set_design()
         }
     }
     
-    copyright();
+    copyright ();
 }
 
-///////////////////////////////////
-//// copyright security check  ////
-///////////////////////////////////
+
+//////////////////////////////////
+//// copyright security check ////
+//////////////////////////////////
 function copyright ()
 {
     global $db;
@@ -220,7 +491,7 @@ function copyright ()
 	if ( strpos ( get_template ( "indexphp" ), "{copyright}" ) == FALSE
 			|| strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007, 2008 Frogsystem-Team" ) == FALSE
 			|| strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE) {
-        $global_config_arr[design] =  0;
+        $global_config_arr['design'] =  0;
     }
 }
 ?>

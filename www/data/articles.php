@@ -15,7 +15,7 @@ if ( $_GET['go'] != "articles" ) {
 }
 
 // Create $_GET['id'] if not exists
-if ( !isset ( $_GET['id'] ) ) {
+if ( !isset ( $_GET['id'] ) || $_GET['go'] == "" ) {
 	$_GET['id'] = 0;
 }
 
@@ -25,7 +25,7 @@ settype ( $_GET['id'], "integer" );
 // Check if Artilce exists
 $index = mysql_query ( "SELECT COUNT(article_id) AS 'number' FROM ".$global_config_arr['pref']."articles WHERE article_id = '".$_GET['id']."' LIMIT 0,1", $db);
 
-// Article not exists
+// Article doesn't exist
 if ( mysql_result ( $index, 0, "number" ) < 1 ) {
 	$article_arr['template'] = sys_message ( $phrases[sysmessage], $phrases[article_not_found] );
 }
@@ -33,7 +33,6 @@ if ( mysql_result ( $index, 0, "number" ) < 1 ) {
 // Article exists
 else
 {
-
 	// Load Article Data from DB
 	$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles WHERE article_id = '".$_GET['id']."' LIMIT 0,1", $db );
 	$article_arr = mysql_fetch_assoc ( $index );
@@ -73,7 +72,6 @@ else
 	$article_arr['template'] = str_replace ( "{user_name}", $user_arr['user_name'], $article_arr['template'] );
 	$article_arr['template'] = str_replace ( "{user_id}", $user_arr['user_id'], $article_arr['template'] );
 	$article_arr['template'] = str_replace ( "{author_template}", $user_arr['template'], $article_arr['template'] );
-
 }
 
 // Display Template

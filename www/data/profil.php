@@ -21,7 +21,7 @@ if (mysql_num_rows($index) > 0)
     $user_arr[user_comments] = mysql_num_rows($index);
 
     // Geschriebene Artikel
-    $index = mysql_query("select artikel_url from ".$global_config_arr[pref]."artikel where artikel_user = $_GET[userid]", $db);
+    $index = mysql_query("select article_url from ".$global_config_arr[pref]."articles where article_user = $_GET[userid]", $db);
     $user_arr[user_artikel] = mysql_num_rows($index);
 
     // Geschriebene News

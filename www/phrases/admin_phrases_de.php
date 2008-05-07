@@ -57,6 +57,7 @@ $admin_phrases[common][today]                     = "Heute";
 $admin_phrases[common][change_button]             = "Ändern";
 $admin_phrases[common][add_button]                = "Hinzufügen";
 $admin_phrases[common][show_button]               = "Anzeigen";
+$admin_phrases[common][preview_button]            = "Vorschau anzeigen";
 
 $admin_phrases[common][yes]                       = "Ja";
 $admin_phrases[common][no]                        = "Nein";
@@ -503,6 +504,7 @@ $admin_phrases[articles][articles_title]          = "Titel";
 $admin_phrases[articles][articles_text]           = "Text";
 $admin_phrases[articles][articles_add_button]     = "Artikel hinzufügen";
 $admin_phrases[articles][articles_added]          = "Artikel wurde erfolgreich hinzugefügt";
+$admin_phrases[articles][existing_url]            = "Die angegebene URL existiert bereits. Bitte ändern Sie ihre Eingabe!";
 
 
 

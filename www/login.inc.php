@@ -1,6 +1,6 @@
 <?php
 ///////////////////////
-//// DB Login Data ////
+//// DB Login Vars ////
 ///////////////////////
 $host = "localhost";                //Hostname
 $user = "frogsystem";                        //Database User
@@ -9,23 +9,23 @@ $pass = "frogsystem";                //Password
 $pref = "fs_";                //Password
 
 
-//////////////////////////
-//// Andere Variablen ////
-//////////////////////////
+//////////////////////////////
+//// Other Hardcoded Vars ////
+//////////////////////////////
 $spam = "QdbNFgEcn0";                //Anti-Spam Verschlüssungs-Code
 
 
-////////////////////////
-////// DB Connect //////
-////////////////////////
+////////////////////
+//// DB Connect ////
+////////////////////
 @$db = mysql_connect ( $host, $user, $pass );
 if ( $db && mysql_select_db ( $data, $db ) ) {
 
-    ////////////////////////
-    //// Seitenvariablen ///
-    ////////////////////////
+    /////////////////////
+    //// Global Vars ////
+    /////////////////////
 
-    // Allgemeine Config + Infos
+    // General Config + Infos
     $index = mysql_query ( "SELECT * FROM ".$pref."global_config", $db );
     $global_config_arr = mysql_fetch_assoc ( $index );
 
@@ -44,6 +44,10 @@ if ( $db && mysql_select_db ( $data, $db ) ) {
 	
 }
 
+
+///////////////////////////////////////////////////
+//// Unset Hardcoded Vars for Security Reasons ////
+///////////////////////////////////////////////////
 unset($host);
 unset($user);
 unset($pass);

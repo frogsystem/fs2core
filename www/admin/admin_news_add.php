@@ -25,13 +25,14 @@ if (
     settype ( $_POST['catid'], "integer" );
     settype ( $_POST['posterid'], "integer" );
 
-    $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['Y'], $_POST['H'], $_POST['i'] );
+    $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'] );
 	$newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
 
 	// MySQL-Insert-Query
     mysql_query ("
-					INSERT INTO ".$global_config_arr['pref']."news (cat_id, user_id, news_date, news_title, news_text)
+					INSERT INTO ".$global_config_arr['pref']."news
+						(cat_id, user_id, news_date, news_title, news_text)
 					VALUES (
 						'".$_POST['catid']."',
 						'".$_POST['posterid']."',

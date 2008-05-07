@@ -22,7 +22,15 @@ body
     font-family:Verdana;
     font-weight:normal;
 }
+.middle
+{
+    vertical-align: middle;
+}
 .thumb
+{
+    cursor:pointer;
+}
+.pointer
 {
     cursor:pointer;
 }
@@ -61,7 +69,7 @@ select
 .courier
 {
     font-size:8pt;
-    font-family:Courier New,Courier,serif;
+    font-family: "Courier New", Courier , serif;
 }
 .button
 {
@@ -265,7 +273,7 @@ a.navi_selected
 a.head_link
 {
     font-size:10pt;
-    font-family:Times New Roman;
+    font-family: "Times New Roman";
     color:#363636;
 }
 a.head_link:hover,a.head_link:focus { text-decoration:underline; }
@@ -332,7 +340,7 @@ a.menu_link_right:hover, a.menu_link_right:focus
     margin-left:-463px;
     z-index:5;
     font-size:14pt;
-    font-family:Times New Roman;
+    font-family: "Times New Roman";
     font-variant:small-caps;
     font-weight:normal;
     color:#363636;

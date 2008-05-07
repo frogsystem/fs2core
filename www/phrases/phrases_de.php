@@ -1,4 +1,7 @@
 <?php
+// Fehler
+$phrases[no_connection]     = "Beim Verbindungsaufbau zum Server ist ein Fehler aufgetreten. Bitte versuchen Sie es später nocheinmal.";
+$phrases[no_con_title]      = "Keine Verbindung!";
 
 // Allgemein
 $phrases[sysmessage]        = "Systemmeldung";

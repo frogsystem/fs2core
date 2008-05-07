@@ -37,6 +37,17 @@ function openpopup ( $FILE, $WIDTH, $HEIGHT )
 	return $javascript;
 }
 
+///////////////////////////////////
+//// Create JS-FullScreen-PoUp ////
+///////////////////////////////////
+
+function open_fullscreenpopup ( $FILE )
+{
+	$javascript = 'open("'.$FILE.'","_blank","width="+screen.availWidth+",height="+screen.availHeight+",top=0,left=0,scrollbars=YES,location=YES,status=YES")';
+
+	return $javascript;
+}
+
 /////////////////////////////
 //// selected="selected" ////
 /////////////////////////////

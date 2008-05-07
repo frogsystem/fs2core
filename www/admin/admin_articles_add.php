@@ -1,48 +1,74 @@
 <?php
+// Load existing "article_url"s in Array
+$index = mysql_query ("
+					SELECT article_url
+					FROM ".$global_config_arr['pref']."articles
+", $db );
+while ( $result = mysql_fetch_assoc ( $index ) ) {
+	if ( $result['article_url'] != "" ) {
+		$url_arr[] = $result['article_url'];
+	}
+}
 
 /////////////////////
 //// Add Article ////
 /////////////////////
 
 if (
-		isset ( $_POST['articlesadd'] ) &&
-		$_POST['title'] && $_POST['title'] != "" &&
-		$_POST['text'] && $_POST['text'] != "" &&
+		isset ( $_POST['sended'] ) &&
+		isset ( $_POST['article_cat_id'] ) &&
+		$_POST['article_title'] && $_POST['article_title'] != "" &&
+        !in_array ( savesql ( $_POST['article_url'] ), $url_arr ) &&
 
-		$_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
-		$_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
-		$_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
-		$_POST['h'] && $_POST['h'] != "" && $_POST['h'] >= 0 &&
-		$_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
-
-		isset ( $_POST['catid'] ) &&
-		isset ( $_POST['posterid'] )
+		( ( $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 ) || !isset ( $_POST['d'] ) ) &&
+		( ( $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 ) || !isset ( $_POST['m'] ) ) &&
+		( ( $_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 ) || !isset ( $_POST['y'] ) )
 	)
 {
-	$_POST['text'] = savesql ( $_POST['text'] );
-    $_POST['title'] = savesql ( $_POST['title'] );
+	// No User
+	if ( !isset ( $_POST['article_user'] ) ) {
+	    $_POST['article_user'] = 0;
+	}
 
-    settype ( $_POST['catid'], "integer" );
-    settype ( $_POST['posterid'], "integer" );
+	// Security Functions
+	$_POST['article_url'] = savesql ( trim ( $_POST['article_url'] ) );
+    $_POST['article_title'] = savesql ( $_POST['article_title'] );
+    $_POST['article_text'] = savesql ( $_POST['article_text'] );
 
-    $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['Y'], $_POST['H'], $_POST['i'] );
-	$newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+    settype ( $_POST['article_cat_id'], "integer" );
+    settype ( $_POST['article_html'], "integer" );
+    settype ( $_POST['article_user'], "integer" );
+    settype ( $_POST['article_fscode'], "integer" );
+    settype ( $_POST['article_para'], "integer" );
+
+	// Create Date
+	if ( isset ( $_POST['d'] ) && isset ( $_POST['m'] ) && isset ( $_POST['y'] ) ) {
+		$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
+		$articledate = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+	} else {
+		$articledate = 0;
+	}
 
 
 	// MySQL-Insert-Query
     mysql_query ("
-					INSERT INTO ".$global_config_arr['pref']."news (cat_id, user_id, news_date, news_title, news_text)
+					INSERT INTO ".$global_config_arr['pref']."articles
+						(article_url, article_title, article_date, article_user, article_text, article_html, article_fscode, article_para, article_cat_id)
 					VALUES (
-						'".$_POST['catid']."',
-						'".$_POST['posterid']."',
-						'".$newsdate."',
-						'".$_POST['title']."',
-						'".$_POST['text']."'
+						'".$_POST['article_url']."',
+						'".$_POST['article_title']."',
+						'".$articledate."',
+						'".$_POST['article_user']."',
+						'".$_POST['article_text']."',
+						'".$_POST['article_html']."',
+						'".$_POST['article_fscode']."',
+						'".$_POST['article_para']."',
+						'".$_POST['article_cat_id']."'
 					)
 	", $db );
 
-    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news + 1", $db );
-    systext( $admin_phrases[news][news_added], $admin_phrases[common][info]);
+    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET artikel = artikel + 1", $db );
+    systext( $admin_phrases[articles][articles_added], $admin_phrases[common][info]);
 }
 
 //////////////////////////////
@@ -54,7 +80,11 @@ else
 
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
-  		systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+		if ( in_array ( savesql ( $_POST['article_url'] ), $url_arr ) ) {
+		  systext ( $admin_phrases[articles][existing_url], $admin_phrases[common][error], TRUE );
+		} else {
+		  systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+		}
 	}
 
     // Load Article Config
@@ -96,11 +126,16 @@ else
 	settype ( $_POST['article_cat_id'], "integer" );
 
     // Get User
-    $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$_POST['article_user']."'", $db );
-    $_POST['article_user_name'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
+	if ( $_POST['article_user'] != 0 ) {
+		$index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$_POST['article_user']."'", $db );
+	    $_POST['article_user_name'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
+	} else {
+	    $_POST['article_user_name'] = "";
+	}
+
 
 	// Create Date-Arrays
-    if ( !isset ( $_POST['d'] ) )
+    if ( !isset ( $_POST['sended'] ) )
     {
     	$_POST['d'] = date ( "d" );
     	$_POST['m'] = date ( "m" );
@@ -112,17 +147,17 @@ else
     // Display Page
     echo'
 					<form action="" method="post">
-						<input type="hidden" value="articlesadd" name="go">
+						<input type="hidden" name="go" value="articlesadd">
                         <input type="hidden" name="sended" value="1">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[articles][articles_info_title].'</td></tr>
                             <tr>
-                                <td class="config">
+                                <td class="config" width="250">
                                     '.$admin_phrases[articles][articles_url].': <span class="small">'.$admin_phrases[common][optional].'</span><br>
                                     <span class="small">'.$admin_phrases[articles][articles_url_desc].'</span>
                                 </td>
-                                <td class="config">
+                                <td class="config" width="350">
                                     ?go = <input class="text" size="45" maxlength="100" name="article_url" value="'.$_POST['article_url'].'">
                                 </td>
                             </tr>
@@ -183,33 +218,47 @@ else
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    <input class="text" size="75" maxlength="255" name="article_title" value="'.$_POST['article_title'].'">
+                                    <input class="text" size="75" maxlength="255" name="article_title" id="article_title" value="'.$_POST['article_title'].'"><br><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[articles][articles_text].':<br>
-									<span class="small">'.
-									$admin_phrases[common][html].' '.$config_arr[html_code_text].'. '.
-									$admin_phrases[common][fscode].' '.$config_arr[fs_code_text].'. '.
-									$admin_phrases[common][para].' '.$config_arr[para_handling_text].'.</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
+                                
+                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+											<td class="config">
+												'.$admin_phrases[articles][articles_text].':
+											</td>
+											<td class="config" style="text-align:right;">
 	';
-	
+
 	if ( $config_arr[html_code_bool] ) {
-	    echo '<input type="checkbox" name="article_html" value="1" '.getchecked ( 1, $_POST['article_html'] ).'> HTML dekativieren';
+	    echo '<input class="pointer middle" type="checkbox" name="article_html" id="article_html" value="1" '.getchecked ( 1, $_POST['article_html'] ).'>
+		<span class="small middle">HTML verwenden</span>&nbsp;&nbsp;';
+	} else {
+	    echo '<input class="middle" type="checkbox" name="article_html" id="article_html" value="0" disabled="disabled">
+		<span class="small middle">'.$admin_phrases[common][html].' '.$config_arr[html_code_text].'</span>&nbsp;&nbsp;';
 	}
 	if ( $config_arr[fs_code_bool] ) {
-	    echo '<input type="checkbox" name="article_fscode" value="1" '.getchecked ( 1, $_POST['article_fscode'] ).'> FSCode dekativieren';
+	    echo '<input class="pointer middle" type="checkbox" name="article_fscode" id="article_fscode" value="1" '.getchecked ( 1, $_POST['article_fscode'] ).'>
+		<span class="small middle">FSCode verwenden</span>&nbsp;&nbsp;';
+	} else {
+	    echo '<input class="middle" type="checkbox" name="article_fscode" id="article_fscode" value="0" disabled="disabled">
+		<span class="small middle">'.$admin_phrases[common][fscode].' '.$config_arr[fs_code_text].'</span>&nbsp;&nbsp;';
 	}
 	if ( $config_arr[para_handling_bool] ) {
-	    echo '<input type="checkbox" name="article_para" value="1" '.getchecked ( 1, $_POST['article_para'] ).'> Absatzbehandlung dekativieren';
+	    echo '<input class="pointer middle" type="checkbox" name="article_para" id="article_para" value="1" '.getchecked ( 1, $_POST['article_para'] ).'>
+		<span class="small middle">Absatzbehandlung verwenden</span>';
+	} else {
+	    echo '<input class="middle" type="checkbox" name="article_para" id="article_para" value="0" disabled="disabled">
+		<span class="small middle">'.$admin_phrases[common][para].' '.$config_arr[para_handling_text].'</span>';
 	}
-	
+
 	echo '
+											</td>
+										</tr>
+									</table>
+
                                 </td>
                             </tr>
                             <tr>
@@ -217,6 +266,12 @@ else
                                     '.create_editor ( "article_text", $_POST['article_text'], "100%", "500px", "", FALSE).'
                                 </td>
                             </tr>
+                            <tr>
+								<td class="config" colspan="2">
+                                    <input class="button" type="button" onClick=\''.open_fullscreenpopup ( "admin_articles_prev.php" ).'\' value="'.$admin_phrases[common][preview_button].'">
+								</td>
+							</tr>
+							<tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
@@ -275,72 +330,5 @@ if ($_POST[url] && $_POST[title] && $_POST[text] && $_POST[cat_id])
     {
         systext("Diese Artikel URL exitiert bereits");
     }
-}
-
-/////////////////////////////////////
-///////// Artikel Formular //////////
-/////////////////////////////////////
-
-else
-{
-    //Datum-Array für Heute Button
-    $heute[tag] = date("d");
-    $heute[monat] = date("m");
-    $heute[jahr] = date("Y");
-    
-    //Poster Name für Anzeige bei fehlenden Daten
-    if ($_POST[posterid])
-    {
-      $index = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_id = '$_POST[posterid]'", $db);
-      $dbusername = mysql_result($index, 0, "user_name");
-    }
-
-    if (!isset($_POST['sended']))
-    {
-      $_POST['search'] =  1;
-    }
-    // Suchindex
-    $dbartikelindex = ($_POST['search'] == 1) ? "checked" : "";
-
-    if (!isset($_POST['sended']))
-    {
-      $_POST['fscode'] =  1;
-    }
-    // verwendet fs code
-    $dbartikelfscode = ($_POST['fscode'] == 1) ? "checked" : "";
-    
-    // category id
-	$cats_options = '';
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."artikel_cat", $db);
-    
-    while ($arr = mysql_fetch_assoc($index)) {
-	    $cats_options .= '<option value="'.$arr[cat_id].'">'.$arr[cat_name].'</option>';
-    }
-
-    echo'
-                    <form id="send1" action="" method="post">
-                        <input type="hidden" value="artikeladd" name="go">
-                        <input type="hidden" value="" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config" valign="top">
-                                    FS-Code:<br>
-                                    <font class="small">FS-Code in diesem Artikel aktivieren</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <input type="checkbox" value="1" name="fscode" '.$dbartikelfscode.'>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <input class="button" type="button" value="Vorschau" onClick="javascript:open(\'about:blank\',\'prev\',\'width=700,height=710,screenX=0,screenY=0,scrollbars=yes\'); document.getElementById(\'send1\').action=\'admin_artikelprev.php\'; document.getElementById(\'send1\').target=\'prev\'; document.getElementById(\'send1\').submit();">
-                                    <input class="button" type="button" value="Absenden" onClick="javascript:document.getElementById(\'send1\').target=\'_self\'; document.getElementById(\'send1\').action=\'\'; document.getElementById(\'send1\').submit();">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
 }
 ?>
