@@ -1,7 +1,94 @@
 <?php
-/////////////////////////////////
+/////////////////////////////////////////
+//// Pagenav Array with Start Number ////
+/////////////////////////////////////////
+function get_pagenav_start ( $NUM_OF_ENTRIES, $ENTRIES_PER_PAGE, $START )
+{
+	if ( ! isset ( $START ) ) { $START = 0; }
+	if ( ! is_int ( $START ) ) { $START = 0; }
+	if ( $START < 0 ) { $START = 0; }
+	if ( $START > $NUM_OF_ENTRIES ) { $START = $NUM_OF_ENTRIES - $ENTRIES_PER_PAGE; }
+
+    $OLDSTART = $START - $ENTRIES_PER_PAGE;
+	if ( $OLDSTART < 0 ) { $OLDSTART = 0; }
+    $NEWSTART = $START + $ENTRIES_PER_PAGE;
+	if ( $NEWSTART > $NUM_OF_ENTRIES ) { $NEWSTART = $NUM_OF_ENTRIES - $ENTRIES_PER_PAGE; }
+
+    $PAGENAV_DATA['total_entries'] = $NUM_OF_ENTRIES;
+    $PAGENAV_DATA['entries_per_page'] = $ENTRIES_PER_PAGE;
+    $PAGENAV_DATA['old_start'] = $OLDSTART;
+    $PAGENAV_DATA['cur_start'] = $START;
+    $PAGENAV_DATA['new_start'] = $NEWSTART;
+    
+    if ( $START > 1 ) { $PAGENAV_DATA['old_start_exists'] = TRUE; }
+    else { $PAGENAV_DATA['old_start_exists'] = FALSE; }
+    if ( ( $START + $ENTRIES_PER_PAGE ) < $NUM_OF_ENTRIES ) { $PAGENAV_DATA['newpage_exists'] = TRUE; }
+    else { $PAGENAV_DATA['newpage_exists'] = FALSE; }
+    
+    return $PAGENAV_DATA;
+}
+
+//////////////////////////////////////
+//// Where Clause for Text-Filter ////
+//////////////////////////////////////
+function get_filter_where ( $FILTER, $SEARCH_FIELD )
+{
+	$filterarray = explode ( ",", $FILTER );
+	$filterarray = array_map ( "trim", $filterarray );
+    unset ( $query );
+    unset ( $and_query );
+    unset ( $or_query );
+
+    $first_and = true;
+    $first_or = true;
+
+    foreach ( $filterarray as $string )
+    {
+        if ( substr ( $string, 0, 1 ) == "!" && substr ( $string, 1 ) != "" )
+        {
+            $like = $SEARCH_FIELD." NOT LIKE";
+            $string = substr ( $string, 1 );
+            if ( !$first_and )
+            {
+                $and_query .= " AND ";
+            }
+            $and_query .= $like . " '%" . $string . "%'";
+            $first_and = false;
+        }
+        elseif ( substr ( $string, 0, 1 ) != "!" && $string != "" )
+        {
+            $like = $SEARCH_FIELD." LIKE";
+            if ( !$first_or )
+            {
+                $or_query .= " OR ";
+            }
+            $or_query .= $like . " '%" . $string . "%'";
+            $first_or = false;
+        }
+        $i++;
+    }
+
+    if ( $or_query != "" )
+	{
+        $or_query = "(".$or_query.")";
+        if ( $and_query != "" )
+		{
+            $and_query = " AND ".$and_query;
+        }
+    }
+
+    if ( $or_query != "" || $and_query != "" )
+	{
+        $query = "WHERE ";
+    }
+    $query .= $or_query . $and_query;
+    
+    return $query;
+}
+
+///////////////////////////
 //// Passwort erzeugen ////
-/////////////////////////////////
+///////////////////////////
 
 function generate_pwd ( $LENGHT = 10 )
 {

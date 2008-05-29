@@ -101,7 +101,7 @@ else
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[stats][referrer_filter_title].'</td></tr>
 							<tr>
-                                <td class="config">
+                                <td class="config middle">
                                     '.$admin_phrases[stats][referrer_show].':
                                 </td>
                                 <td class="config" width="100%">
@@ -120,7 +120,7 @@ else
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config">
+                                <td class="config middle">
                                     '.$admin_phrases[stats][referrer_filter].':
                                 </td>
                                 <td class="config" width="100%">
@@ -175,56 +175,7 @@ else
                         </tr>
 	';
 
-    $filter = str_replace ( " ", ",", $filter );
-    $filterarray = explode ( ",", $filter );
-
-    unset ( $query );
-    unset ( $and_query );
-    unset ( $or_query );
-
-    $first_and = true;
-    $first_or = true;
-    
-    foreach ( $filterarray as $string )
-    {
-        if ( substr ( $string, 0, 1 ) == "!" && substr ( $string, 1 ) != "" )
-        {
-            $like = "ref_url NOT LIKE";
-            $string = substr ( $string, 1 );
-            if ( !$first_and )
-            {
-                $and_query .= " AND ";
-            }
-            $and_query .= $like . " '%" . $string . "%'";
-            $first_and = false;
-        }
-        elseif ( substr ( $string, 0, 1 ) != "!" && $string != "" )
-        {
-            $like = "ref_url LIKE";
-            if ( !$first_or )
-            {
-                $or_query .= " OR ";
-            }
-            $or_query .= $like . " '%" . $string . "%'";
-            $first_or = false;
-        }
-        $i++;
-    }
-    
-    if ( $or_query != "" )
-	{
-        $or_query = "(".$or_query.")";
-        if ( $and_query != "" )
-		{
-            $and_query = " AND ".$and_query;
-        }
-    }
-    
-    if ( $or_query != "" || $and_query != "" )
-	{
-        $query = " WHERE ";
-    }
-    $query .= $or_query . $and_query;
+    $query = get_filter_where ( $filter, "ref_url" );
 
     switch ( $_POST['order'] )
     {

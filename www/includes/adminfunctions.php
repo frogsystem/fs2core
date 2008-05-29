@@ -1,4 +1,46 @@
 <?php
+//////////////////////////////
+//// Color List Functions ////
+//////////////////////////////
+
+function color_list_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_ID )
+{
+	if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
+	if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
+	
+	return "colorEntry ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
+}
+
+function color_click_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_ID, $RESET = FALSE, $RESETCOLOR = "transparent" )
+{
+	if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
+	if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
+
+	$js = "createClick ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
+	
+	if ( $RESET == TRUE ) {
+    	$js .= " resetOld ( '".$RESETCOLOR."', last, lastBox, ".$ELEMENT_ID." );";
+	}
+	
+	$js .= " saveLast ( ".$CHECK_ID.", ".$ELEMENT_ID." );";
+	
+	return $js;
+}
+
+function color_pre_selected ( $CHECK_ID, $ELEMENT_ID )
+{
+	$CHECK_ID = "document.getElementById('".$CHECK_ID."')";
+	$ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')";
+
+	return '
+		<script type="text/javascript">
+			<!--
+	            savePreSelectedLast ( '.$CHECK_ID.', '.$ELEMENT_ID.' );
+			//-->
+		</script>
+	';
+}
+
 ///////////////////////
 //// Get Save Date ////
 ///////////////////////

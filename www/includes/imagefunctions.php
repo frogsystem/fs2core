@@ -107,6 +107,9 @@ function upload_img_notice($upload)
     case 5:
       return $admin_phrases[common][image_5] ;
       break;
+    case 6:
+      return $admin_phrases[common][image_6] ;
+      break;
   }
 }
 
@@ -114,65 +117,57 @@ function upload_img_notice($upload)
 ///// Pic Upload + Thumbnail ///
 ////////////////////////////////
 
-function upload_img($image, $image_path, $image_name, $image_max_size, $image_max_width, $image_max_height, $quality=100, $only_this_size = false)
+function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, $QUALITY = 100, $THIS_SIZE = false )
 {
+	// Get Image Data
+	$image_data = getimagesize ( $IMAGE['tmp_name'] );
+	switch ( $image_data[2] )
+	{
+		// Meaning of $imgsize[2]:
+		// 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, etc.
+		case 1: //GIF
+			$type = "gif";
+			break;
+		case 2: //JPG
+			$type = "jpg";
+			break;
+		case 3: //PNG
+ 			$type = "png";
+ 			break;
+ 		default:
+			return 1;  // Error 1: Ung¸ltiger Dateityp!
+ 			break 2;
+	}
 
-  //Dateityp ermitteln
-  
-  $imgsize = getimagesize( $image['tmp_name'] );
-  switch ($imgsize[2])
-  {
-    // Bedeutung von $imgsize[2]:
-    // 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, etc.
-    case 1: //GIF
-      $source_image = imagecreatefromgif($image['tmp_name']);
-      $type="gif";
-      break;
-    case 2: //JPG
-      $source_image = imagecreatefromjpeg($image['tmp_name']);
-      $type="jpg";
-      break;
-    case 3: //PNG
-      $source_image = imagecreatefrompng($image['tmp_name']);
-      $type="png";
-      break;
-    default:
-      return 1;  // Fehler 1: Ung¸ltiger Dateityp!
-      break 2;
-  }
-  
+	// Check Options
+ 	if ( $IMAGE['tmp_name'] != 0 ) {
+		return 2;  // Error 2: Fehler beim Datei-Upload!
+		break;
+	}
+	if ( $IMAGE['size'] > $MAX_SIZE ) {
+		return 3;  // Error 3: Das Bild ist zu groﬂ! (Dateigrˆﬂe)
+		break;
+	}
+	if ( $image_data[0] > $MAX_WIDTH || $image_data[1] > $MAX_HEIGHT ) {
+		return 4;  // Error 4: Das Bild ist zu groﬂ! (Abmessungen)
+		break;
+	}
+ 	if ( $THIS_SIZE == TRUE && ( $image_data[0] != $MAX_WIDTH || $image_data[1] != $MAX_HEIGHT ) ) {
+		return 5;  // Error 5: Das Bild ist entspricht nicht den erforderlichen Abmessungen!
+		break;
+	}
 
-  //Fehler ¸berpr¸fung
-
-  if (!isset($source_image))
-  {
-    return 2;  // Fehler 2: Fehler bei der Bilderstellung!
-    break;
-  }
-  if ($image['size'] > $image_max_size)
-  {
-    return 3;  // Fehler 3: Das Bild ist zu groﬂ! (Dateigrˆﬂe)
-    break;
-  }
-  if ( (imagesx($source_image) > $image_max_width) || (imagesy($source_image) > $image_max_height) )
-  {
-    return 4;  // Fehler 4: Das Bild ist zu groﬂ! (Abmessungen)
-    break;
-  }
-  if ( $only_this_size == true AND ( (imagesx($source_image) != $image_max_width) OR (imagesy($source_image) != $image_max_height) ) )
-  {
-    return 5;  // Fehler 6: Das Bild ist entspricht nicht den erforderlichen Abmessungen!
-    break;
-  }
-
-  //Bild erstellen
-
-  $full_path = $image_path . $image_name . "." . $type;
-  move_uploaded_file($image['tmp_name'], $full_path);
-  chmod ($full_path, 0644);
-
-  return 0; // Ausgabe 0: Das Bild wurde erfolgreich hochgeladen!
-  clearstatcache();
+	// Create Image
+	$full_path = $PATH . $NAME . "." . $type;
+	move_uploaded_file ( $IMAGE['tmp_name'], $full_path );
+	chmod ( $full_path, 0644 );
+	clearstatcache();
+	
+	if ( image_exists ( $PATH, $NAME) ) {
+		return 0; // Display 0: Das Bild wurde erfolgreich hochgeladen!
+	} else {
+		return 6; // Error 6: Fehler bei der Bild erstellung
+	}
 }
 
 ////////////////////////////

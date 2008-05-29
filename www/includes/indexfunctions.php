@@ -147,7 +147,6 @@ function get_content ( $GOTO )
 	}
 
 	// Replace Virtualhost & Kill Resources
-    $template = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template );
 	$template = killbraces($template);
 
 	// Return Content
@@ -165,7 +164,6 @@ function get_mainmenu ( $PATH_PREFIX = "" )
 
 	$template = get_template ( "main_menu" );
 	$template = replace_resources ( $template, $PATH_PREFIX  );
-    $template = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template );
 	$template = killbraces($template);
 	return $template;
 }
@@ -197,7 +195,7 @@ function replace_resources ( $TEMPLATE, $PATH_PREFIX = "" )
 
 	// Replace Resources in $TEMPLATE
 	foreach ( $resources_arr as $resource ) {
-		$TEMPLATE = str_replace("{".$resource['resource_name']."}",  $resource['template'], $TEMPLATE);
+		$TEMPLATE = str_replace ( "{".$resource['resource_name']."}",  $resource['template'], $TEMPLATE );
 	}
 
 	// Return Content
@@ -214,7 +212,6 @@ function get_resource ( $FILE )
     global $db;
 
 	include( $FILE );
-	$template = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template );
 	$template = killbraces ( $template );
 	return $template;
 }
@@ -238,8 +235,8 @@ function get_goto ( $GETGO )
 	// Forward Aliases
 	$goto = forward_aliases ( $goto );
 
-	// Return $goto
-	return $goto;
+	// write $goto into $global_config_arr['goto']
+	$global_config_arr['goto'] = $goto;
 }
 
 
@@ -289,7 +286,7 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
 ///////////////////
 //// count hit ////
 ///////////////////
-function count_hit ()
+function count_hit ( $GOTO )
 {
     global $db;
     global $global_config_arr;
@@ -300,18 +297,20 @@ function count_hit ()
     
     visit_day_exists ( $hit_year, $hit_month, $hit_day );
 
-    // count page_hits
-    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET hits = hits + 1", $db );
-    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_stat
-                   SET s_hits = s_hits + 1
-                   WHERE s_year = ".$hit_year." AND s_month = ".$hit_month." AND s_day = ".$hit_day."", $db );
+	if ( $GOTO != "404" && $GOTO != "403" ) {
+		// count page_hits
+	    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET hits = hits + 1", $db );
+	    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_stat
+	                   SET s_hits = s_hits + 1
+	                   WHERE s_year = ".$hit_year." AND s_month = ".$hit_month." AND s_day = ".$hit_day."", $db );
+	}
 }
 
 
 /////////////////////
 //// count visit ////
 /////////////////////
-function count_visit ()
+function count_visit ( $GOTO )
 {
     global $db;
     global $global_config_arr;
@@ -327,17 +326,20 @@ function count_visit ()
     // delete old IPs
     $deltime = $time - $counttime;
     mysql_query ( "DELETE FROM ".$global_config_arr['pref']."iplist WHERE deltime < ".$deltime."", $db );
-    
-    // save IP & visit
-    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."iplist WHERE ip = '".$_SERVER['REMOTE_ADDR']."'", $db );
 
-    if ( mysql_num_rows ( $index ) <= 0 ) {
-        mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET visits = visits + 1", $db );
-        mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_stat
-                       SET s_visits = s_visits + 1
-                       WHERE s_year = ".$visit_year." AND s_month = ".$visit_month." AND s_day = ".$visit_day."", $db );
-        mysql_query ( "INSERT INTO ".$global_config_arr['pref']."iplist (deltime, ip) VALUES ('".$time."', '".$_SERVER['REMOTE_ADDR']."')", $db );
-    }
+	// check if errorpage
+	if ( $GOTO != "404" && $GOTO != "403" ) {
+		// save IP & visit
+	    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."iplist WHERE ip = '".$_SERVER['REMOTE_ADDR']."'", $db );
+
+	    if ( mysql_num_rows ( $index ) <= 0 ) {
+	        mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET visits = visits + 1", $db );
+	        mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_stat
+	                       SET s_visits = s_visits + 1
+	                       WHERE s_year = ".$visit_year." AND s_month = ".$visit_month." AND s_day = ".$visit_day."", $db );
+	        mysql_query ( "INSERT INTO ".$global_config_arr['pref']."iplist (deltime, ip) VALUES ('".$time."', '".$_SERVER['REMOTE_ADDR']."')", $db );
+	    }
+	}
 }
 
 

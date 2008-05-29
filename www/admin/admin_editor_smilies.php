@@ -209,7 +209,7 @@ onClick=\'
   createClick (document.getElementById("input_'.$smilie_arr[id].'"));
   colorClick (document.getElementById("input_'.$smilie_arr[id].'"), "#EEEEEE", "#DE5B5B", this);\'
                                 >
-                                    <input type="checkbox" name="delsmilie[]" id="input_'.$smilie_arr[id].'" value="'.$smilie_arr[order].'" style="cursor:pointer;" onClick=\'createClick(this);\' >
+                                    <input type="checkbox" name="delsmilie[]" id="input_'.$smilie_arr[id].'" value="'.$smilie_arr[order].'" style="cursor:pointer;" onClick="createClick(this);" >
                                 </td>
                                 <td></td>
                             </tr>

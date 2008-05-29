@@ -16,25 +16,6 @@ body
     font-size:8pt;
     overflow-y: scroll;
 }
-.small
-{
-    font-size:7pt;
-    font-family:Verdana;
-    font-weight:normal;
-}
-.middle
-{
-    vertical-align: middle;
-}
-.thumb
-{
-    cursor:pointer;
-}
-.pointer
-{
-    cursor:pointer;
-}
-
 
 
 /**************************************************/
@@ -665,4 +646,71 @@ a.tooltip:hover span {
     background-repeat:no-repeat;
     width:308px;
     height:53px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/**************************************************/
+/* addtional secondary styles (has to be at the end */
+/**************************************************/
+.small
+{
+    font-size:7pt;
+    font-family:Verdana;
+    font-weight:normal;
+}
+
+.top
+{
+    vertical-align: top;
+}
+.middle
+{
+    vertical-align: middle;
+}
+.bottom
+{
+    vertical-align: bottom;
+}
+
+.left
+{
+    text-align: left;
+}
+.center
+{
+    text-align: center;
+}
+.right
+{
+    text-align: right;
+}
+.justify
+{
+    text-align: justify;
+}
+
+.thumb
+{
+    cursor: pointer;
+}
+.pointer
+{
+    cursor: pointer;
+}
+.red
+{
+    background-color: #C24949;
+}
+.green
+{
+    background-color: #49C24f;
 }

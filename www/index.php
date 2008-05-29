@@ -26,13 +26,11 @@ if ($db)
 	delete_old_randoms ();
 	set_design ();
 	copyright ();
-	count_hit ();
-	count_visit ();
+	get_goto ( $_GET['go'] );
+	count_hit ( $global_config_arr['goto'] );
+	count_visit ( $global_config_arr['goto'] );
 	save_referer ();
 	save_visitors ();
-
-	// Set goto
-	$global_config_arr['goto'] = get_goto ( $_GET['go'] );
 
 	// Create Index-Template
 	$template_index = get_template ( "indexphp" );
@@ -41,7 +39,8 @@ if ($db)
 	$template_index = str_replace ( "{copyright}", get_copyright (), $template_index );
 	$template_index = replace_resources ( $template_index );
 	$template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung
-
+	$template_index = killbraces ( $template_index );
+	
 	// Get Main Template
 	$template = get_maintemplate ();
 	$template = str_replace ( "{body}", $template_index, $template);

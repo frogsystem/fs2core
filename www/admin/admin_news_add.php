@@ -15,14 +15,14 @@ if (
 		$_POST['h'] && $_POST['h'] != "" && $_POST['h'] >= 0 &&
 		$_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
 		
-		isset ( $_POST['catid'] ) &&
+		isset ( $_POST['cat_id'] ) &&
 		isset ( $_POST['posterid'] )
 	)
 {
 	$_POST['text'] = savesql ( $_POST['text'] );
     $_POST['title'] = savesql ( $_POST['title'] );
     
-    settype ( $_POST['catid'], "integer" );
+    settype ( $_POST['cat_id'], "integer" );
     settype ( $_POST['posterid'], "integer" );
 
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'] );
@@ -34,7 +34,7 @@ if (
 					INSERT INTO ".$global_config_arr['pref']."news
 						(cat_id, user_id, news_date, news_title, news_text)
 					VALUES (
-						'".$_POST['catid']."',
+						'".$_POST['cat_id']."',
 						'".$_POST['posterid']."',
 						'".$newsdate."',
 						'".$_POST['title']."',
@@ -95,7 +95,7 @@ else
 	// Security-Functions
 	$_POST['text'] = killhtml ( $_POST['text'] );
     $_POST['title'] = killhtml ( $_POST['title'] );
-	settype ( $_POST['catid'], "integer" );
+	settype ( $_POST['cat_id'], "integer" );
     settype ( $_POST['posterid'], "integer" );
 	
     // Get User
@@ -128,13 +128,13 @@ else
                                     <span class="small">'.$admin_phrases[news][news_cat_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="catid">
+                                    <select name="cat_id">
 	';
     									// Kategorien auflisten
     									$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
     									while ( $cat_arr = mysql_fetch_assoc ( $index ) )
     									{
-											echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['catid']).'>'.$cat_arr['cat_name'].'</option>';
+											echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['cat_id']).'>'.$cat_arr['cat_name'].'</option>';
     									}
 	echo'
                                     </select>

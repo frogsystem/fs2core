@@ -11,11 +11,12 @@ $admin_phrases[common][changes_saved]             = "Änderungen wurden gespeiche
 $admin_phrases[common][affected_rows]             = "Betroffene Datensätze";
 
 $admin_phrases[common][image_0]                   = "Bild wurde erfolgreich hochgeladen";
-$admin_phrases[common][image_1]                   = "Fehler beim Bilder-Upload: Ungültiger Dateityp";
-$admin_phrases[common][image_2]                   = "Fehler beim Bilder-Upload: Bei der Bilderstellung trat ein Fehler auf";
-$admin_phrases[common][image_3]                   = "Fehler beim Bilder-Upload: Bild ist zu groß (Dateigröße)";
-$admin_phrases[common][image_4]                   = "Fehler beim Bilder-Upload: Bild ist zu groß (Abmessungen)";
-$admin_phrases[common][image_5]                   = "Fehler beim Bilder-Upload: Bild entspricht nicht den erforderlichen Abmessungen";
+$admin_phrases[common][image_1]                   = "Fehler beim Bilder-Upload: Ungültiger Dateityp [Code: IMGxU1]";
+$admin_phrases[common][image_2]                   = "Fehler beim Bilder-Upload: Bild konnte nicht hochgladen werden [Code: IMGxU2]";
+$admin_phrases[common][image_3]                   = "Fehler beim Bilder-Upload: Bild ist zu groß (Dateigröße) [Code: IMGxU3]";
+$admin_phrases[common][image_4]                   = "Fehler beim Bilder-Upload: Bild ist zu groß (Abmessungen) [Code: IMGxU4]";
+$admin_phrases[common][image_5]                   = "Fehler beim Bilder-Upload: Bild entspricht nicht den erforderlichen Abmessungen [Code: IMGxU5]";
+$admin_phrases[common][image_6]                   = "Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden [Code: IMGxU6]";
 $admin_phrases[common][image_deleted]             = "Bild wurde erfolgreich gelöscht";
 $admin_phrases[common][image_not_deleted]         = "Bild konnte nicht gelöscht werden";
 $admin_phrases[common][thumb_0]                   = "Thumbnail wurde erfolgreich erstellt";
@@ -56,6 +57,7 @@ $admin_phrases[common][now_button]                = "Jetzt";
 $admin_phrases[common][today]                     = "Heute";
 $admin_phrases[common][change_button]             = "Ändern";
 $admin_phrases[common][add_button]                = "Hinzufügen";
+$admin_phrases[common][delete_button]             = "Löschen";
 $admin_phrases[common][show_button]               = "Anzeigen";
 $admin_phrases[common][preview_button]            = "Vorschau anzeigen";
 
@@ -280,11 +282,11 @@ $admin_phrases[stats][referrer_hits]              = "Hits";
 $admin_phrases[stats][referrer_first]             = "Erster Kontakt";
 $admin_phrases[stats][referrer_last]              = "Letzter Kontakt";
 $admin_phrases[stats][referrer_url]               = "URL";
-$admin_phrases[stats][referrer_show]              = "Anzeigen";
+$admin_phrases[stats][referrer_show]              = "Zeige";
 $admin_phrases[stats][referrer_orderby]           = "Einträge sortiert nach";
 $admin_phrases[stats][referrer_filter]            = "Filter";
-$admin_phrases[stats][referrer_filter_info1]      = "Setzte im Filter ein ! an erster Stelle um den Suchbegriff komplett auszuschließen.";
-$admin_phrases[stats][referrer_filter_info2]      = "Mehrere Suchbegriffe können mit , oder Leerzeichen getrennt werden.";
+$admin_phrases[stats][referrer_filter_info1]      = "Setzten Sie ein Ausrufezeichen (!) an erster Stelle um den Suchbegriff auszuschließen.";
+$admin_phrases[stats][referrer_filter_info2]      = "Mehrere Suchbegriffe können mit Komma (,) voneinander getrennt werden.";
 $admin_phrases[stats][referrer_table_title]       = "Referrer von externen Seiten";
 $admin_phrases[stats][referrer_table_url]         = "Referrer URL";
 $admin_phrases[stats][referrer_table_hits]        = "Hits";
@@ -498,11 +500,14 @@ $admin_phrases[articles][articles_date]           = "Erstellungsdatum";
 $admin_phrases[articles][articles_date_desc]      = "Erstellungsdatum des Artikels.";
 $admin_phrases[articles][articles_poster]         = "Autor";
 $admin_phrases[articles][articles_poster_desc]    = "Der Autor des Artikels.";
-
 $admin_phrases[articles][articles_new_title]      = "Artikel schreiben";
 $admin_phrases[articles][articles_title]          = "Titel";
 $admin_phrases[articles][articles_text]           = "Text";
 $admin_phrases[articles][articles_add_button]     = "Artikel hinzufügen";
+$admin_phrases[articles][articles_use_html]       = "HTML verwenden";
+$admin_phrases[articles][articles_use_fscode]     = "FSCode verwenden";
+$admin_phrases[articles][articles_use_para]       = "Absatzbehandlung verwenden";
+
 $admin_phrases[articles][articles_added]          = "Artikel wurde erfolgreich hinzugefügt";
 $admin_phrases[articles][existing_url]            = "Die angegebene URL existiert bereits. Bitte ändern Sie ihre Eingabe!";
 

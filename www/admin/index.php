@@ -26,7 +26,7 @@ if ($_COOKIE["login"])
 }
 else
 {
-    $session_url = "&amp;sid=" . session_id();
+    #$session_url = "&amp;sid=" . session_id();
 }
 
 if ($_POST[login]==1)

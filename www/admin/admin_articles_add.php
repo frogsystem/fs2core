@@ -193,7 +193,7 @@ else
 									'.js_nowbutton ( $nowbutton_array, $admin_phrases[common][today] ).'
                                     <input onClick=\'document.getElementById("d").value="";
                                                      document.getElementById("m").value="";
-                                                     document.getElementById("y").value="";\' class="button" type="button" value="Löschen">
+                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$admin_phrases[common][delete_button].'">
                                 </td>
                             </tr>
                             <tr>
@@ -206,7 +206,7 @@ else
                                     <input type="hidden" id="userid" name="article_user" value="'.$_POST['article_user'].'">
                                     <input class="button" type="button" onClick=\''.openpopup ( "admin_finduser.php", 400, 400 ).'\' value="'.$admin_phrases[common][change_button].'">
                                     <input onClick=\'document.getElementById("username").value="";
-                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="Löschen">
+                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$admin_phrases[common][delete_button].'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -234,21 +234,21 @@ else
 
 	if ( $config_arr[html_code_bool] ) {
 	    echo '<input class="pointer middle" type="checkbox" name="article_html" id="article_html" value="1" '.getchecked ( 1, $_POST['article_html'] ).'>
-		<span class="small middle">HTML verwenden</span>&nbsp;&nbsp;';
+		<span class="small middle">'.$admin_phrases[articles][articles_use_html].'</span>&nbsp;&nbsp;';
 	} else {
 	    echo '<input class="middle" type="checkbox" name="article_html" id="article_html" value="0" disabled="disabled">
 		<span class="small middle">'.$admin_phrases[common][html].' '.$config_arr[html_code_text].'</span>&nbsp;&nbsp;';
 	}
 	if ( $config_arr[fs_code_bool] ) {
 	    echo '<input class="pointer middle" type="checkbox" name="article_fscode" id="article_fscode" value="1" '.getchecked ( 1, $_POST['article_fscode'] ).'>
-		<span class="small middle">FSCode verwenden</span>&nbsp;&nbsp;';
+		<span class="small middle">'.$admin_phrases[articles][articles_use_fscode].'</span>&nbsp;&nbsp;';
 	} else {
 	    echo '<input class="middle" type="checkbox" name="article_fscode" id="article_fscode" value="0" disabled="disabled">
 		<span class="small middle">'.$admin_phrases[common][fscode].' '.$config_arr[fs_code_text].'</span>&nbsp;&nbsp;';
 	}
 	if ( $config_arr[para_handling_bool] ) {
 	    echo '<input class="pointer middle" type="checkbox" name="article_para" id="article_para" value="1" '.getchecked ( 1, $_POST['article_para'] ).'>
-		<span class="small middle">Absatzbehandlung verwenden</span>';
+		<span class="small middle">'.$admin_phrases[articles][articles_use_para].'</span>';
 	} else {
 	    echo '<input class="middle" type="checkbox" name="article_para" id="article_para" value="0" disabled="disabled">
 		<span class="small middle">'.$admin_phrases[common][para].' '.$config_arr[para_handling_text].'</span>';

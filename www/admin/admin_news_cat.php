@@ -474,15 +474,10 @@ elseif ( $showdefault == TRUE )
 
 		// Display each Category
 		echo '
-							<tr style="cursor:pointer;"
-	onmouseover=\'
-		colorOver (document.getElementById("input_'.$cat_arr['cat_id'].'"), "#EEEEEE", "#64DC6A", this);\'
-	onmouseout=\'
-		colorOut (document.getElementById("input_'.$cat_arr['cat_id'].'"), "transparent", "#49c24f", this);\'
-	onClick=\'
-		createClick (document.getElementById("input_'.$cat_arr['cat_id'].'"));
-		resetUnclicked ("transparent", last, lastBox, this);
-		colorClick (document.getElementById("input_'.$cat_arr['cat_id'].'"), "#EEEEEE", "#64DC6A", this);\'
+							<tr class="pointer" id="tr_'.$cat_arr['cat_id'].'"
+								onmouseover="'.color_list_entry ( "input_".$cat_arr['cat_id'], "#EEEEEE", "#64DC6A", "this" ).'"
+								onmouseout="'.color_list_entry ( "input_".$cat_arr['cat_id'], "transparent", "#49c24f", "this" ).'"
+                                onclick="'.color_click_entry ( "input_".$cat_arr['cat_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
 							>
 								<td class="config">
 		';
@@ -495,8 +490,10 @@ elseif ( $showdefault == TRUE )
 									'.$cat_arr['cat_name'].' <span class="small">('.$admin_phrases[news][list_cat_created_by].' <b>'.$cat_arr['cat_user'].'</b> '.$admin_phrases[news][list_cat_created_on].' <b>'.date ( $global_config_arr['date'], $cat_arr['cat_date'] ).'</b>)</span><br>
 									<span class="small">'.$cat_arr['cat_description'].'</span>
 								</td>
-								<td class="config" style="text-align: center; vertical-align: middle;">
-                                    <input type="radio" name="cat_id" id="input_'.$cat_arr['cat_id'].'" value="'.$cat_arr['cat_id'].'" style="cursor:pointer;" onClick=\'createClick(this);\'>
+								<td class="config center middle">
+                                    <input class="pointer" type="radio" name="cat_id" id="input_'.$cat_arr['cat_id'].'" value="'.$cat_arr['cat_id'].'"
+										onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$cat_arr['cat_id'], TRUE ).'"
+									>
 								</td>
 							</tr>
 		';

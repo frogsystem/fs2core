@@ -68,10 +68,20 @@ else
 	$article_arr['article_title'] = killhtml ( $_POST['article_title'] );
 
 	// Create Article-Date
-	settype ( $_POST['d'], "integer" );
-	settype ( $_POST['m'], "integer" );
-	settype ( $_POST['y'], "integer" );
-	$article_arr['article_date'] = mktime ( 0, 0, 0, $_POST['m'], $_POST['d'], $_POST['y'] );
+	if (
+			( $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 ) &&
+			( $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 ) &&
+			( $_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 ) &&
+			( isset ( $_POST['d'] ) && isset ( $_POST['m'] ) && isset ( $_POST['y'] ) )
+		)
+    {
+		settype ( $_POST['d'], "integer" );
+		settype ( $_POST['m'], "integer" );
+		settype ( $_POST['y'], "integer" );
+		$article_arr['article_date'] = mktime ( 0, 0, 0, $_POST['m'], $_POST['d'], $_POST['y'] );
+	} else {
+	    $article_arr['article_date'] = 0;
+	}
 	if ( $article_arr['article_date'] != 0 ) {
 	    $article_arr['article_date_formated'] = date ( $global_config_arr['date'], $article_arr['article_date'] );
 	} else {
@@ -82,7 +92,7 @@ else
 	settype ( $_POST['article_html'], "integer" );
 	settype ( $_POST['article_fscode'], "integer" );
 	settype ( $_POST['article_para'], "integer" );
-	$article_arr['article_text'] = fscode ( $_POST['article_text'], $_POST['fscode_bool'], $_POST['html_bool'], $_POST['para_bool'] );
+	$article_arr['article_text'] = fscode ( $_POST['article_text'], $_POST['article_fscode'], $_POST['article_html'], $_POST['article_para'] );
 
 	// Format User
 	$article_arr['article_user_name'] = killhtml ( $_POST['article_user_name'] );
@@ -90,11 +100,18 @@ else
 	settype ( $article_arr['article_user'], "integer" );
 
 	// Create User Template
-	$article_arr['user_link'] = $global_config_arr['virtualhost'].'?go=profil&userid='.$article_arr['article_user'];
-	$article_arr['user_template'] = get_template ( "artikel_autor" );
-    $article_arr['user_template'] = str_replace ( "{profile_url}", $article_arr['user_link'], $article_arr['user_template'] );
-	$article_arr['user_template'] = str_replace ( "{user_name}", $article_arr['article_user_name'], $article_arr['user_template'] );
-	$article_arr['user_template'] = str_replace ( "{user_id}", $article_arr['article_user'], $article_arr['user_template'] );
+	if ( $article_arr['article_user_name'] != "" && $article_arr['article_user'] > 0 ) {
+		$article_arr['user_link'] = $global_config_arr['virtualhost'].'?go=profil&userid='.$article_arr['article_user'];
+		$article_arr['user_template'] = get_template ( "artikel_autor" );
+	    $article_arr['user_template'] = str_replace ( "{profile_url}", $article_arr['user_link'], $article_arr['user_template'] );
+		$article_arr['user_template'] = str_replace ( "{user_name}", $article_arr['article_user_name'], $article_arr['user_template'] );
+		$article_arr['user_template'] = str_replace ( "{user_id}", $article_arr['article_user'], $article_arr['user_template'] );
+	} else {
+    	$article_arr['article_user_name'] = "";
+    	$article_arr['article_user'] = "";
+    	$article_arr['user_link'] = "";
+    	$article_arr['user_template'] = "";
+	}
 
 	// Create Template
 	$article_arr['template'] = get_template ( "artikel_body" );
@@ -114,6 +131,7 @@ else
 	$template_index = str_replace ( "{copyright}", get_copyright (), $template_index );
 	$template_index = replace_resources ( $template_index, "../" );
 	$template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung
+	$template_index = killbraces ( $template_index );
 	$template = get_maintemplate ( "../" );
 	$template = str_replace ( "{body}", $template_index, $template);
 

@@ -13,11 +13,23 @@ function delalert (elementID, alertText) {
 }
 
 
+
+
 var last;
 var lastBox;
 
+//colorize Entry
+function colorEntry (theBox, defaultColor, checkedColor, object) {
+    if (theBox.checked == true) {
+        object.style.backgroundColor = checkedColor;
+    } else {
+        object.style.backgroundColor = defaultColor;
+    }
+    return true;
+}
+
 //create Change onClick
-function createClick (theBox) {
+function createClick (theBox, defaultColor, checkedColor, object) {
     if (theBox.type == 'radio') {
         if (theBox.checked != true) {
              theBox.checked = !(theBox.checked);
@@ -25,55 +37,39 @@ function createClick (theBox) {
     } else {
         theBox.checked = !(theBox.checked);
     }
+    colorEntry (theBox, defaultColor, checkedColor, object);
+    return true;
+}
+
+// save last objects
+function saveLast (theBox, object) {
+    if (theBox.checked == true) {
+        last = object;
+        lastBox = theBox;
+    }
+    return true;
+}
+
+// save preselcted object as las
+function savePreSelectedLast (theBox, object) {
+	last = object;
+	lastBox = theBox;
     return true;
 }
 
 //reset Not selected
-function resetUnclicked (resetColor, last, lastBox, object) {
-    if (object != last) {
-    if (last) {
-        last.style.backgroundColor = resetColor;
+function resetOld (resetColor, last, lastBox, object) {
+	if (object != last) {
+    	if (last) {
+        	last.style.backgroundColor = resetColor;
+    	}
+    	if (lastBox) {
+        	lastBox.checked = false;
+    	}
+    	return true;
     }
-    if (lastBox) {
-        lastBox.checked = false;
-    }
-    return true;
-    }
-
 }
 
-//colorize onClick
-function colorClick (theBox, overColor, clickColor, object) {
-
-    if (theBox.checked == true) {
-        object.style.backgroundColor = clickColor;
-        last = object;
-        lastBox = theBox;
-    } else {
-        object.style.backgroundColor = overColor;
-    }
-    return true;
-}
-
-//colorize onMouseOver
-function colorOver (theBox, overColor, clickOver, object) {
-    if (theBox.checked == true) {
-        object.style.backgroundColor = clickOver;
-    } else {
-        object.style.backgroundColor = overColor;
-    }
-    return true;
-}
-
-//colorize onMouseOut
-function colorOut (theBox, outColor, clickOut, object) {
-    if (theBox.checked == true) {
-        object.style.backgroundColor = clickOut;
-    } else {
-        object.style.backgroundColor = outColor;
-    }
-    return true;
-}
 
 
 
@@ -111,7 +107,7 @@ function changeDate (dayID, monthID, yearID, hourID, minID, dayShift, monthShift
                            parseInt(document.getElementById(hourID).value, 10),
                            parseInt(document.getElementById(minID).value, 10),
                            "0");
-    
+
     var newDate = new Date();
     newDate.setTime(oldDate.getTime());
 
@@ -137,16 +133,16 @@ function changeDate (dayID, monthID, yearID, hourID, minID, dayShift, monthShift
             newDate.setMonth(newDate.getMonth() - 1);
         }
     }
-    
+
     dayShift = parseInt(dayShift, 10)*24*60*60*1000;
     newDate.setTime(newDate.getTime() + dayShift);
-    
+
     hourShift = parseInt(hourShift, 10)*60*60*1000;
     newDate.setTime(newDate.getTime() + hourShift);
-    
+
     minShift = parseInt(minShift, 10)*60*1000;
     newDate.setTime(newDate.getTime() + minShift);
-    
+
     var newDay = newDate.getDate();
       if (newDay < 10) {newDay = "0" + newDay;}
     var newMonth = newDate.getMonth() + 1;
