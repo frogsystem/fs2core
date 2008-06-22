@@ -61,7 +61,7 @@ echo'
                             </td>
                         </tr>
                         <tr>
-                            <td width="50%" valign="top">
+                            <td>
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" colspan="4" align="center">
@@ -175,7 +175,7 @@ echo'
                             </td>
                         </tr>
                         <tr>
-                            <td width="50%" valign="top">
+                            <td>
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" colspan="4" align="center">
