@@ -48,13 +48,13 @@ if (($_POST['name'] AND $_POST['name'] != "")
     
     if ($_FILES['bild_small']['name'] != "")
     {
-      $upload = upload_img($_FILES['bild_small'], "../images/partner/", $_POST[partner_id]."_small", $config_arr[file_size]*1024, $config_arr[small_x], $config_arr[small_y], 100, $config_arr[small_allow_bool]);
+      $upload = upload_img($_FILES['bild_small'], "images/partner/", $_POST[partner_id]."_small", $config_arr[file_size]*1024, $config_arr[small_x], $config_arr[small_y], 100, $config_arr[small_allow_bool]);
       $message .= $admin_phrases[partner][small_pic] . ": " . upload_img_notice($upload) . "<br />";
     }
     
     if ($_FILES['bild_big']['name'] != "")
     {
-      $upload = upload_img($_FILES['bild_big'], "../images/partner/", $_POST[partner_id]."_big", $config_arr[file_size]*1024, $config_arr[big_x], $config_arr[big_y], 100, $config_arr[big_allow_bool]);
+      $upload = upload_img($_FILES['bild_big'], "images/partner/", $_POST[partner_id]."_big", $config_arr[file_size]*1024, $config_arr[big_x], $config_arr[big_y], 100, $config_arr[big_allow_bool]);
       $message .= $admin_phrases[partner][big_pic] . ": " . upload_img_notice($upload) . "<br />";
     }
     
@@ -81,8 +81,8 @@ elseif ($_POST['partner_action'] == "delete"
     if ($_POST['delete_partner'])   // Partnerseite löschen
     {
         mysql_query("DELETE FROM ".$global_config_arr[pref]."partner WHERE partner_id = '$_POST[partner_id]'", $db);
-        image_delete("../images/partner/", $_POST[partner_id]."_small");
-        image_delete("../images/partner/", $_POST[partner_id]."_big");
+        image_delete("images/partner/", $_POST[partner_id]."_small");
+        image_delete("images/partner/", $_POST[partner_id]."_big");
         systext($admin_phrases[partner][note_deleted]);
     }
     else
@@ -139,7 +139,7 @@ elseif ($_POST[partner_action] == "edit"
                                     <font class="small">'.$admin_phrases[partner][small_pic_desc].'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url("../images/partner/", $_POST[partner_id]."_small").'">
+                                   <img src="'.image_url("images/partner/", $_POST[partner_id]."_small").'">
                                    <br /><br />
                                    <input type="file" class="text" name="bild_small" size="50"><br />
                                    <font class="small">
@@ -156,7 +156,7 @@ elseif ($_POST[partner_action] == "edit"
                                     <font class="small">'.$admin_phrases[partner][big_pic_desc].'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url("../images/partner/", $_POST[partner_id]."_big").'">
+                                   <img src="'.image_url("images/partner/", $_POST[partner_id]."_big").'">
                                    <br /><br />
                                    <input type="file" class="text" name="bild_big" size="50"><br />
                                    <font class="small">
@@ -246,7 +246,7 @@ elseif ($_POST[partner_action] == "delete"
                             </tr>
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
-                                    <img src="'.image_url("../images/partner/", $partner_arr[partner_id]."_big").'">
+                                    <img src="'.image_url("images/partner/", $partner_arr[partner_id]."_big").'">
                                     <br /><br />
                                 </td>
                             </tr>
@@ -310,7 +310,7 @@ onClick=\'
   colorClick (document.getElementById("input_'.$partner_arr[partner_id].'"), "#EEEEEE", "#64DC6A", this);\'
                             >
                                 <td class="configthin" height="'.$config_arr[small_y].'">
-                                    <img src="'.image_url("../images/partner/",$partner_arr[partner_id]."_small").'" alt="" />
+                                    <img src="'.image_url("images/partner/",$partner_arr[partner_id]."_small").'" alt="" />
                                 </td>
                                 <td class="configthin">
                                     '.$partner_arr[partner_name].'

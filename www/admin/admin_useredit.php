@@ -65,7 +65,7 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
             //Avatar löschen
             if ($_POST['avatar_delete'] == 1)
             {
-                if (image_delete("../images/avatare/", $_POST[userid])) {
+                if (image_delete("images/avatare/", $_POST[userid])) {
                     systext('Das Bild wurde erfolgreich gelöscht!');
                 } else {
                     systext('Das Bild konnte nicht gelöscht werden, da es nicht existiert!');
@@ -74,7 +74,7 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
             //Avatar neu hochladen
             elseif ($_FILES['avatar']['name'] != "")
             {
-                $upload = upload_img($_FILES['avatar'], "../images/avatare/", $_POST[userid], 30*1024, 110, 110);
+                $upload = upload_img($_FILES['avatar'], "images/avatare/", $_POST[userid], 30*1024, 110, 110);
                 systext(upload_img_notice($upload));
             }
 
@@ -130,15 +130,15 @@ elseif (isset($_POST[select_user]))
                             <tr align="left" valign="top">
                                 <td class="config">
                                     Bild: <font class="small">(optional)</font>';
-    if (image_exists("../images/avatare/", $user_arr[user_id])) {
-        echo'<br><br><img src="'.image_url("../images/avatare/", $user_arr[user_id]).'" alt=""                             border="0"><br><br>';
+    if (image_exists("images/avatare/", $user_arr[user_id])) {
+        echo'<br><br><img src="'.image_url("images/avatare/", $user_arr[user_id]).'" alt=""                             border="0"><br><br>';
     }
     echo'
                                 </td>
                                 <td class="config">
                                     <input name="avatar" type="file" size="35" class="text" /><br />
                                     <font class="small">[max. 110 x 110 Pixel] [max. 30 KB]</font>';
-    if (image_exists("../images/avatare/", $user_arr[user_id]))
+    if (image_exists("images/avatare/", $user_arr[user_id]))
     echo'
                                     <br>
                                     <font class="small">

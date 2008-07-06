@@ -1,14 +1,6 @@
 <?php
 // Load existing "article_url"s in Array
-$index = mysql_query ("
-					SELECT article_url
-					FROM ".$global_config_arr['pref']."articles
-", $db );
-while ( $result = mysql_fetch_assoc ( $index ) ) {
-	if ( $result['article_url'] != "" ) {
-		$url_arr[] = $result['article_url'];
-	}
-}
+$url_arr = get_article_urls ();
 
 /////////////////////
 //// Add Article ////
@@ -20,9 +12,9 @@ if (
 		$_POST['article_title'] && $_POST['article_title'] != "" &&
         !in_array ( savesql ( $_POST['article_url'] ), $url_arr ) &&
 
-		( ( $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 ) || !isset ( $_POST['d'] ) ) &&
-		( ( $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 ) || !isset ( $_POST['m'] ) ) &&
-		( ( $_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 ) || !isset ( $_POST['y'] ) )
+		( ( $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
+		( ( $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
+		( ( $_POST['y'] && $_POST['y'] > 0 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) )
 	)
 {
 	// No User
@@ -42,7 +34,7 @@ if (
     settype ( $_POST['article_para'], "integer" );
 
 	// Create Date
-	if ( isset ( $_POST['d'] ) && isset ( $_POST['m'] ) && isset ( $_POST['y'] ) ) {
+	if ( $_POST['d'] != "" && $_POST['m'] != "" && $_POST['y'] != "" ) {
 		$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
 		$articledate = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 	} else {
@@ -52,7 +44,8 @@ if (
 
 	// MySQL-Insert-Query
     mysql_query ("
-					INSERT INTO ".$global_config_arr['pref']."articles
+					INSERT INTO
+						".$global_config_arr['pref']."articles
 						(article_url, article_title, article_date, article_user, article_text, article_html, article_fscode, article_para, article_cat_id)
 					VALUES (
 						'".$_POST['article_url']."',
@@ -77,7 +70,6 @@ if (
 
 else
 {
-
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
 		if ( in_array ( savesql ( $_POST['article_url'] ), $url_arr ) ) {
@@ -141,7 +133,7 @@ else
     	$_POST['m'] = date ( "m" );
     	$_POST['y'] = date ( "Y" );
 	}
-	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
+	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0, TRUE );
 	$nowbutton_array = array( "d", "m", "y" );
 
     // Display Page

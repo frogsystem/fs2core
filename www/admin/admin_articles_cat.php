@@ -39,7 +39,7 @@ if (
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "articles_".$_POST['cat_id'], $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['cat_pic'], "images/cat/", "articles_".$_POST['cat_id'], $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -91,13 +91,14 @@ elseif (
 
 	// Image-Operations
     if ( $_POST['cat_pic_delete'] == 1 ) {
-      if ( image_delete ( "../images/cat/", "articles_".$_POST['cat_id'] ) ) {
+      if ( image_delete ( "images/cat/", "articles_".$_POST['cat_id'] ) ) {
         $message .= "<br>" . $admin_phrases[common][image_deleted];
       } else {
 		$message .= "<br>" . $admin_phrases[common][image_not_deleted];
       }
     } elseif ( $_FILES['cat_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "articles_".$_POST['cat_id'], $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
+      image_delete ( "images/cat/", "articles_".$_POST['cat_id'] );
+	  $upload = upload_img ( $_FILES['cat_pic'], "images/cat/", "articles_".$_POST['cat_id'], $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -142,7 +143,7 @@ elseif (
 		$message = $admin_phrases[articles][cat_deleted];
 
 		// Delete Category Image
-		if ( image_delete ( "../images/cat/", "articles_".$_POST['cat_id'] ) ) {
+		if ( image_delete ( "images/cat/", "articles_".$_POST['cat_id'] ) ) {
 			$message .= "<br>" . $admin_phrases[common][image_deleted];
 		}
 
@@ -248,9 +249,9 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
            						<td class="config">
              						'.$admin_phrases[articles][edit_cat_image].': <span class="small">'.$admin_phrases[common][optional].'</span><br><br>
 	 	';
-		if ( image_exists ( "../images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
+		if ( image_exists ( "images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
 		    echo '
-									<img src="'.image_url ( "../images/cat/", "articles_".$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
+									<img src="'.image_url ( "images/cat/", "articles_".$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
 		    						<table>
 										<tr>
 											<td>
@@ -270,7 +271,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 								<td class="config">
 									<input name="cat_pic" type="file" size="40" class="text"><br>
 		';
-		if ( image_exists ( "../images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
+		if ( image_exists ( "images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
 			echo '<span class="small"><b>'.$admin_phrases[common][replace_img].'</b></span><br>';
 		}
 		echo'
@@ -474,20 +475,15 @@ elseif ( $showdefault == TRUE )
 
 		// Display each Category
 		echo '
-							<tr style="cursor:pointer;"
-	onmouseover=\'
-		colorOver (document.getElementById("input_'.$cat_arr['cat_id'].'"), "#EEEEEE", "#64DC6A", this);\'
-	onmouseout=\'
-		colorOut (document.getElementById("input_'.$cat_arr['cat_id'].'"), "transparent", "#49c24f", this);\'
-	onClick=\'
-		createClick (document.getElementById("input_'.$cat_arr['cat_id'].'"));
-		resetUnclicked ("transparent", last, lastBox, this);
-		colorClick (document.getElementById("input_'.$cat_arr['cat_id'].'"), "#EEEEEE", "#64DC6A", this);\'
+							<tr class="pointer" id="tr_'.$cat_arr['cat_id'].'"
+								onmouseover="'.color_list_entry ( "input_".$cat_arr['cat_id'], "#EEEEEE", "#64DC6A", "this" ).'"
+								onmouseout="'.color_list_entry ( "input_".$cat_arr['cat_id'], "transparent", "#49c24f", "this" ).'"
+                                onclick="'.color_click_entry ( "input_".$cat_arr['cat_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
 							>
 								<td class="config">
 		';
-		if ( image_exists ( "../images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
-		    echo '<img src="'.image_url ( "../images/cat/", "articles_".$cat_arr['cat_id'] ).'" alt="'.$admin_cat_arr['cat_name'].'" border="0">';
+		if ( image_exists ( "images/cat/", "articles_".$cat_arr['cat_id'] ) ) {
+		    echo '<img src="'.image_url ( "images/cat/", "articles_".$cat_arr['cat_id'] ).'" alt="'.$admin_cat_arr['cat_name'].'" border="0">';
 		}
 		echo '
 								</td>
@@ -496,7 +492,9 @@ elseif ( $showdefault == TRUE )
 									<span class="small">'.$cat_arr['cat_description'].'</span>
 								</td>
 								<td class="config" style="text-align: center; vertical-align: middle;">
-                                    <input type="radio" name="cat_id" id="input_'.$cat_arr['cat_id'].'" value="'.$cat_arr['cat_id'].'" style="cursor:pointer;" onClick=\'createClick(this);\'>
+                                    <input class="pointer" type="radio" name="cat_id" id="input_'.$cat_arr['cat_id'].'" value="'.$cat_arr['cat_id'].'"
+										onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$cat_arr['cat_id'], TRUE ).'"
+									>
 								</td>
 							</tr>
 		';

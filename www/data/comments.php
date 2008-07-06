@@ -20,7 +20,6 @@ if ($config_arr[com_antispam] == 1 && $_SESSION["user_id"]) {
     $anti_spam = check_captcha ($_POST["spam"], $config_arr[com_antispam]);
 }
 
-
 //////////////////////////////
 //// Kommentar hinzufügen ////
 //////////////////////////////
@@ -31,7 +30,7 @@ if (isset($_POST[addcomment]))
          && ($_POST[name] != "" || $_SESSION["user_id"])
          && $_POST[title] != ""
          && $_POST[text] != ""
-         && $anti_spam == true)
+         && $anti_spam == TRUE)
     {
         settype($_POST[id], 'integer');
         $_POST[name] = savesql($_POST[name]);
@@ -68,11 +67,11 @@ if (isset($_POST[addcomment]))
         {
             $reason = $phrases[comment_empty];
         }
-        if (!($anti_spam == true))
+        if (!($anti_spam == TRUE))
         {
-            $reason .= $phrases[comment_spam];
+			$reason .= $phrases[comment_spam];
         }
-        $template .= sys_message($phrases[comment_not_added], $reason);
+        $message_template = sys_message($phrases[comment_not_added], $reason);
     }
 }
 
@@ -203,7 +202,11 @@ if (isset($_SESSION[user_name]))
     $form_name .= '<input type="hidden" name="name" id="name" value="1">';
 }
 
-if ($config_arr[com_antispam]==0 OR ($config_arr[com_antispam]==1 AND $_SESSION["user_id"]))
+if (
+		$config_arr[com_antispam] == 0 ||
+		( $config_arr[com_antispam] == 1 && $_SESSION["user_id"] ) ||
+		( $config_arr[com_antispam] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
+	)
 {
     $form_spam = "";
     $form_spam_text ="";
@@ -232,6 +235,7 @@ if ($news_rows>0 AND $news_arr[news_date]<=time())
     $template = str_replace("{news}", $news_template, $template);
     $template = str_replace("{comments}", $comments_template, $template);
     $template = str_replace("{comment_form}", $formular_template, $template);
+    $template = $message_template . $template;
 }
 else
 {

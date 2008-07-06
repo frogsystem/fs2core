@@ -45,12 +45,12 @@ if ($_FILES['bild_small']['name'] != ""
                          '".$_POST[permanent]."')", $db);
     $id = mysql_insert_id();
 
-    $upload1 = upload_img($_FILES['bild_small'], "../images/partner/", $id."_small", $config_arr[file_size]*1024, $config_arr[small_x], $config_arr[small_y], 100, $config_arr[small_allow_bool]);
+    $upload1 = upload_img($_FILES['bild_small'], "images/partner/", $id."_small", $config_arr[file_size]*1024, $config_arr[small_x], $config_arr[small_y], 100, $config_arr[small_allow_bool]);
     
     switch ($upload1)
     {
       case 0:
-        $upload2 = upload_img($_FILES['bild_big'], "../images/partner/", $id."_big", $config_arr[file_size]*1024, $config_arr[big_x], $config_arr[big_y], 100, $config_arr[big_allow_bool]);
+        $upload2 = upload_img($_FILES['bild_big'], "images/partner/", $id."_big", $config_arr[file_size]*1024, $config_arr[big_x], $config_arr[big_y], 100, $config_arr[big_allow_bool]);
 
         switch ($upload2)
         {
@@ -71,8 +71,8 @@ if ($_FILES['bild_small']['name'] != ""
           systext ($admin_phrases[partner][big_pic]. ": " . upload_img_notice($upload2));
           systext ($admin_phrases[partner][note_notadded]);
           mysql_query("DELETE FROM ".$global_config_arr[pref]."partner WHERE partner_id = '$id'");
-          image_delete("../images/partner/", $id."_small");
-          image_delete("../images/partner/", $id."_big");
+          image_delete("images/partner/", $id."_small");
+          image_delete("images/partner/", $id."_big");
         }
     
         break;
@@ -80,8 +80,8 @@ if ($_FILES['bild_small']['name'] != ""
         systext ($admin_phrases[partner][small_pic] . ": " . upload_img_notice($upload1));
         systext ($admin_phrases[partner][note_notadded]);
         mysql_query("DELETE FROM ".$global_config_arr[pref]."partner WHERE partner_id = '$id'");
-        image_delete("../images/partner/", $id."_small");
-        image_delete("../images/partner/", $id."_big");
+        image_delete("images/partner/", $id."_small");
+        image_delete("images/partner/", $id."_big");
     }
     
 }

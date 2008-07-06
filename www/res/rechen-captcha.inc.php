@@ -1,17 +1,37 @@
 <?php
+include ( "../login.inc.php" );
+
 session_start();
 unset($_SESSION['rechen_captcha_spam']);
-$zahl1 = rand(10,20); //Erste Zahl 10-20
-$zahl2 = rand(1,10);  //Zweite Zahl 1-10
-$operator = rand(1,2); // + oder -
+$zahl1 = rand(1,5); //Erste Zahl 1-5
+$zahl2 = rand(1,5);  //Zweite Zahl 1-5
+$operator = rand(1,3); // + oder - oder *
 
-if($operator == "1"){
-   $operatorzeichen = " + ";
-   $ergebnis = $zahl1 + $zahl2;
-}else{
-   $operatorzeichen = " - ";
-   $ergebnis = $zahl1 - $zahl2;
+if ( $operator == 2 && $zahl2 > $zahl1 ) {
+	$temp = $zahl1;
+	$zahl1 = $zahl2;
+	$zahl2 = $temp;
 }
+
+if ( $operator == 2 && $zahl1 == $zahl2) {
+	$zahl1 = $zahl1 + 1;
+}
+
+switch ($operator) {
+	case 3:
+		$operatorzeichen = " * ";
+		$ergebnis = $zahl1 * $zahl2;
+		break;
+	case 2:
+		$operatorzeichen = " - ";
+		$ergebnis = $zahl1 - $zahl2;
+		break;
+	default:
+		$operatorzeichen = " + ";
+		$ergebnis = $zahl1 + $zahl2;
+		break;
+}
+
 
 function encrypt($string, $key) {
 $result = '';
@@ -24,7 +44,7 @@ for($i=0; $i<strlen($string); $i++) {
 return base64_encode($result);
 }
 
-$_SESSION['rechen_captcha_spam'] = encrypt($ergebnis, "3g9sp3hr45"); //Key
+$_SESSION['rechen_captcha_spam'] = encrypt( $ergebnis, $global_config_arr['spam'] ); //Key
 $_SESSION['rechen_captcha_spam'] = str_replace("=", "", $_SESSION['rechen_captcha_spam']);
 
 $rechnung = $zahl1.$operatorzeichen.$zahl2." = ?";

@@ -12,8 +12,8 @@ if (isset($_POST[title]) AND $_POST['do'] == "edit")
     if ($_POST[delscreen])   // Screenshot löschen
     {
         mysql_query("DELETE FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_POST[editscreenid]", $db);
-        image_delete("../images/screenshots/", $_POST[editscreenid]);
-        image_delete("../images/screenshots/", "$_POST[editscreenid]_s");
+        image_delete("images/screenshots/", $_POST[editscreenid]);
+        image_delete("images/screenshots/", "$_POST[editscreenid]_s");
         systext('Screenshot wurde gelöscht');
     }
     else   // Screenshot editieren
@@ -44,9 +44,9 @@ elseif (isset($_POST[screenid]))
         $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // Screenshot Konfiguration auslesen
         $config_arr = mysql_fetch_assoc($index);
 
-        image_delete("../images/screenshots/",$_POST['screenid']."_s");
+        image_delete("images/screenshots/",$_POST['screenid']."_s");
 
-        $newthumb = create_thumb_from(image_url("../images/screenshots/",$_POST['screenid'],false),$config_arr[screen_thumb_x],$config_arr[screen_thumb_y]);
+        $newthumb = create_thumb_from(image_url("images/screenshots/",$_POST['screenid'],FALSE, TRUE),$config_arr[screen_thumb_x],$config_arr[screen_thumb_y]);
         systext(create_thumb_notice($newthumb)."<br />(Cache leeren nicht vergessen!)");
     }
 
@@ -68,7 +68,7 @@ elseif (isset($_POST[screenid]))
                                     <font class="small">Thumbnail des Screenshots</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url("../images/screenshots/",$screen_arr[screen_id]."_s").'" />
+                                   <img src="'.image_url("images/screenshots/",$screen_arr[screen_id]."_s").'" />
                                 </td>
                             </tr>
                             <tr>
@@ -213,7 +213,7 @@ else
                                 onmouseout="javascript:this.style.backgroundColor=\'transparent\'"
                                 onClick=\'document.getElementById("'.$screen_arr[screen_id].'").checked="true";\'>
                                 <td class="configthin">
-                                    <img src="'.image_url("../images/screenshots/",$screen_arr[screen_id]."_s").'" />
+                                    <img src="'.image_url("images/screenshots/",$screen_arr[screen_id]."_s").'" />
                                 </td>
                                 <td class="configthin">
                                     '.$screen_arr[screen_name].'

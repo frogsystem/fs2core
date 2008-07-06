@@ -1,4 +1,29 @@
 <?php
+//////////////////////////
+//// Get Article URLs ////
+//////////////////////////
+
+function get_article_urls ()
+{
+    global $global_config_arr;
+    global $db;
+    
+	$index = mysql_query ( "
+							SELECT
+								article_url
+							FROM
+								".$global_config_arr['pref']."articles
+	", $db );
+	
+	while ( $result = mysql_fetch_assoc ( $index ) ) {
+		if ( $result['article_url'] != "" ) {
+			$url_arr[] = $result['article_url'];
+		}
+	}
+	
+	return $url_arr;
+}
+
 //////////////////////////////
 //// Color List Functions ////
 //////////////////////////////
@@ -45,7 +70,7 @@ function color_pre_selected ( $CHECK_ID, $ELEMENT_ID )
 //// Get Save Date ////
 ///////////////////////
 
-function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0 )
+function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FALSE )
 {
 	settype ( $D, "integer" );
 	settype ( $M, "integer" );
@@ -62,6 +87,25 @@ function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0 )
 	$savedate_arr['h'] = date ( "H", $new_date );
 	$savedate_arr['i'] = date ( "i", $new_date );
 	$savedate_arr['s'] = date ( "s", $new_date );
+	
+	if ( $WITHOUT_MKTIME == TRUE ) {
+		$savedate_arr['d'] = $D;
+		$savedate_arr['m'] = $M;
+		$savedate_arr['y'] = $Y;
+		$savedate_arr['h'] = $H;
+		$savedate_arr['i'] = $I;
+		$savedate_arr['s'] = $S;
+
+		foreach ( $savedate_arr as $key => $value ) {
+			if ( $value == 0 ) {
+                $savedate_arr[$key] = "";
+			} elseif ( $value < 10 ) {
+                $savedate_arr[$key] = "0" . $value;
+			}
+		}
+		
+		return $savedate_arr;
+	}
 	
 	return $savedate_arr;
 }

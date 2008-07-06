@@ -13,7 +13,7 @@ function do_bbcode_smilies ($text) {
 
     global $global_config_arr;
     global $db;
-
+    $global_config_arr['virtualhost'];
     $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr[pref]."global_config WHERE id = 1", $db);
     $page_url = stripslashes(mysql_result($index, 0, "virtualhost"));
     
@@ -21,7 +21,7 @@ function do_bbcode_smilies ($text) {
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $url = image_url("images/smilies/", $smilie_arr['id']);
-        $text = str_replace ($smilie_arr['replace_string'], '<img src="'.$page_url.$url.'" alt="'.$smilie_arr['replace_string'].'" />', $text);
+        $text = str_replace ($smilie_arr['replace_string'], '<img src="'.$url.'" alt="'.$smilie_arr['replace_string'].'" />', $text);
     }
     return $text;
 }

@@ -20,13 +20,13 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
   settype ($_POST['width'],integer);
   settype ($_POST['height'],integer);
   
-  if (!image_exists("../images/content/",$_POST[newname])  AND !image_exists("../images/content/",$_POST[newname]."_s"))
+  if (!image_exists("images/content/",$_POST[newname])  AND !image_exists("images/content/",$_POST[newname]."_s"))
   {
-    $upload = upload_img($_FILES['cimg'], "../images/content/", $_POST['newname'], 1024*1024, 9999, 9999);
-    systext(upload_img_notice($upload));
+    $upload = upload_img($_FILES['cimg'], "images/content/", $_POST['newname'], 1024*1024, 9999, 9999);
+    $message = upload_img_notice ( $upload );
     if ($make_thumb) {
-      $thumb = create_thumb_from(image_url("../images/content/",$_POST['newname'],false), $_POST['width'], $_POST['height']);
-      systext(create_thumb_notice($thumb));
+      $thumb = create_thumb_from ( image_url ( "images/content/", $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
+      $message .= "<br>" . create_thumb_notice ( $thumb );
     }
     unset($_POST['width']);
     unset($_POST['height']);
@@ -37,7 +37,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
   }
   else
   {
-    systext("Ein Bild mit gleichem Namen existiert bereits!");
+    $message = "Ein Bild mit gleichem Namen existiert bereits!";
     unset($_POST['sended']);
     if ($_POST['oldname'] == 1) {
         unset($_POST['newname']);
@@ -47,6 +47,8 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
         unset($_POST['height']);
     }
   }
+  
+	systext ( $message );
 }
 
 /////////////////////////////
@@ -57,9 +59,10 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
     if (isset($_POST['sended']))
     {
       $error_message = "Bitte füllen Sie <b>alle Pflichfelder</b> aus!";
+      systext($error_message);
     }
 
-    systext($error_message);
+
     
 echo'
                     <form action="" enctype="multipart/form-data" method="post">

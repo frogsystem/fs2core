@@ -30,10 +30,22 @@ if ( !$_POST['article_text'] && !$_POST['sended'] )
 	            document.getElementById(\'m\').value = opener.document.getElementById(\'m\').value;
 	            document.getElementById(\'y\').value = opener.document.getElementById(\'y\').value;
 
-	            document.getElementById(\'article_html\').value = opener.document.getElementById(\'article_html\').value;
-	            document.getElementById(\'article_fscode\').value = opener.document.getElementById(\'article_fscode\').value;
-	            document.getElementById(\'article_para\').value = opener.document.getElementById(\'article_para\').value;
-
+				if ( opener.document.getElementById(\'article_html\').checked == true ) {
+				    document.getElementById(\'article_html\').value = 1;
+				} else {
+				    document.getElementById(\'article_html\').value = 0;
+				}
+				if ( opener.document.getElementById(\'article_fscode\').checked == true ) {
+				    document.getElementById(\'article_fscode\').value = 1;
+				} else {
+				    document.getElementById(\'article_fscode\').value = 0;
+				}
+				if ( opener.document.getElementById(\'article_para\').checked == true ) {
+				    document.getElementById(\'article_para\').value = 1;
+				} else {
+				    document.getElementById(\'article_para\').value = 0;
+				}
+				
 	            document.getElementById(\'article_text\').value = opener.document.getElementById(\'article_text\').value;
 
 	            document.getElementById(\'form\').submit();

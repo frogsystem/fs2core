@@ -1,152 +1,609 @@
 <?php
-
-////////////////////////////
-//// News aktualisieren ////
-////////////////////////////
-
-if ($_POST[newsedit]
-    && ($_POST[title]!="")
-    && ($_POST[text]!="")
-
-    && ($_POST[stunde]!="")
-    && ($_POST[min]!="")
-    && ($_POST[monat]!="" AND $_POST[monat]!=0)
-    && ($_POST[tag]!="" AND $_POST[tag]!=0)
-    && ($_POST[jahr]!="" AND $_POST[jahr]!=0)
-   )
+///////////////////
+//// Functions ////
+///////////////////
+function default_set_filter_data ( $FORM )
 {
-    settype($_POST[enewsid], 'integer');
-
-    if (isset($_POST[delnews]))
-    {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."news WHERE news_id = '$_POST[enewsid]'", $db);
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."news_comments WHERE news_id = '$_POST[enewsid]'", $db);
-        $numcomments = mysql_affected_rows();
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."news_links WHERE news_id = '$_POST[enewsid]'", $db);
-        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET news = news - 1", $db);
-        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET comments = comments - $numcomments", $db);
-        systext("Die News wurde gelöscht");
-    }
-    else
-    {
-        settype($_POST[cat_id], 'integer');
-        settype($_POST[posterid], 'integer');
-        $_POST[title] = savesql($_POST[title]);
-        $_POST[text] = addslashes($_POST[text]);
-
-        $newsdate = mktime($_POST[stunde], $_POST[min], 0, $_POST[monat], $_POST[tag], $_POST[jahr]);
-
-        // News in der DB aktualisieren
-        $update = "UPDATE ".$global_config_arr[pref]."news
-                   SET cat_id       = '$_POST[cat_id]',
-                       user_id      = '$_POST[posterid]',
-                       news_date    = '$newsdate',
-                       news_title   = '$_POST[title]',
-                       news_text    = '$_POST[text]'
-                   WHERE news_id = $_POST[enewsid]";
-        mysql_query($update, $db);
-
-        // Links in der DB aktualisieren
-        for ($i=0; $i<count($_POST[linkname]); $i++)
-        {
-            $_POST[linktarget][$i] = isset($_POST[linktarget][$i]) ? 1 : 0;
-
-            // Link löschen
-            if (isset($_POST[dellink][$i]))
-            {
-                settype($_POST[dellink][$i], 'integer');
-                mysql_query("DELETE FROM ".$global_config_arr[pref]."news_links WHERE link_id = " . $_POST[dellink][$i], $db);
-            }
-            else
-            {
-                $_POST[linkname][$i] = savesql($_POST[linkname][$i]);
-                $_POST[linkurl][$i] = savesql($_POST[linkurl][$i]);
-                settype($_POST[linkid][$i], "integer");
-
-                // Link erzeugen
-                if (!$_POST[linkid][$i] && $_POST[linkname][$i])
-                {
-                    mysql_query("INSERT INTO ".$global_config_arr[pref]."news_links (news_id, link_name, link_url, link_target)
-                                 VALUES ('".$_POST[enewsid]."',
-                                         '".$_POST[linkname][$i]."',
-                                         '".$_POST[linkurl][$i]."',
-                                         '".$_POST[linktarget][$i]."');", $db);
-                }
-                // Link aktualisieren
-                else
-                {
-                    $update = "UPDATE ".$global_config_arr[pref]."news_links
-                               SET link_name   = '".$_POST[linkname][$i]."',
-                                   link_url    = '".$_POST[linkurl][$i]."',
-                                   link_target = '".$_POST[linktarget][$i]."'
-                               WHERE link_id = ".$_POST[linkid][$i];
-                    mysql_query($update, $db);
-                }
-            }
-        }
-        systext("Die News wurde editiert");
-    }
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+	
+    if ( !isset ( $FORM['order'] ) ) { $FORM['order'] = "news_date"; }
+    if ( !isset ( $FORM['sort'] ) ) { $FORM['sort'] = "DESC"; }
+    if ( !isset ( $FORM['cat_id'] ) ) { $FORM['cat_id'] = 0; }
+    
+    $FORM['order'] = savesql ( $FORM['order'] );
+    $FORM['sort'] = savesql ( $FORM['sort'] );
+    settype ( $FORM['cat_id'], "integer" );
+    
+    return $FORM;
 }
 
-///////////////////////////////
-//// Display Action-Pages  ////
-///////////////////////////////
-elseif ( $_POST['news_id'] && $_POST['news_action'] )
+function default_display_filter ( $FORM )
 {
-	// Edit News
-	if ( $_POST['news_action'] == "edit" )
-	{
-	    //Load News
-	    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$_POST['news_id']."' LIMIT 0, 1", $db );
-		$news_arr = mysql_fetch_assoc ( $index );
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+    echo'
+					<form action="?mid=content&go=newsedit" method="post">
+                        <input type="hidden" value="newsedit" name="go">
+
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="3">'.$admin_phrases[news][news_edit_filter_title].'</td></tr>
+							<tr>
+                                <td class="config" width="100%" colspan="2">
+									'.$admin_phrases[news][news_edit_filter_from].'
+                                    <select name="cat_id">
+                                    	<option value="0" '.getselected( 0, $FORM['cat_id'] ).'>'.$admin_phrases[news][news_edit_filter_all_cat].'</option>
+	';
+    									// List Categories
+    									$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
+    									while ( $cat_arr = mysql_fetch_assoc ( $index ) )
+    									{
+											echo '<option value="'.$cat_arr['cat_id'].'" '.getselected( $cat_arr['cat_id'], $FORM['cat_id'] ).'>'.$cat_arr['cat_name'].'</option>';
+    									}
+	echo'
+                                    </select>
+									'.$admin_phrases[news][news_edit_filter_sort].'
+                                    <select name="order">
+                                        <option value="news_id" '.getselected ( "news_id", $FORM['order'] ).'>'.$admin_phrases[news][news_edit_filter_id].'</option>
+                                        <option value="news_date" '.getselected ( "news_date", $FORM['order'] ).'>'.$admin_phrases[news][news_edit_filter_date].'</option>
+                                        <option value="news_title" '.getselected ( "news_title", $FORM['order'] ).'>'.$admin_phrases[news][news_edit_filter_newstitle].'</option>
+                                    </select>,
+                                    <select name="sort">
+                                        <option value="ASC" '.getselected ( "ASC", $FORM['sort'] ).'>'.$admin_phrases[common][ascending].'</option>
+                                        <option value="DESC" '.getselected ( "DESC", $FORM['sort'] ).'>'.$admin_phrases[common][descending].'</option>
+                                    </select>
+
+                                </td>
+                                <td class="right">
+                                    <input type="submit" value="'.$admin_phrases[common][apply_button].'" class="button">
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+						</table>
+					</form>
+	';
+}
+
+function default_get_pagenav_data ()
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
 	
-		// Sended or Link Action
-     	if ( isset ( $_POST['sended'] ) )
+	// Set Default Start Value
+    if ( !isset ( $_GET['start'] ) ) { $_GET['start'] = 0; }
+	settype ( $_GET['start'], 'integer' );
+	$limit = 15;
+
+	// Create Where Clause for Category Filter
+	unset ( $where_clause );
+    if ( $_REQUEST['cat_id'] != 0 )
+	{
+        $where_clause = "WHERE cat_id = '".$_REQUEST['cat_id']."'";
+    }
+
+	// Create Pagenavigation
+    $index = mysql_query ( "
+							SELECT COUNT(news_id) AS 'number'
+							FROM ".$global_config_arr['pref']."news
+							".$where_clause."
+	", $db);
+	
+	$pagenav_arr = get_pagenav_start ( mysql_result ( $index, 0, "number" ), $limit, $_GET['start'] );
+
+	return $pagenav_arr;
+}
+
+function default_display_pagenav ( $pagenav_arr )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	// Prev & Next Page Links
+    if ( $pagenav_arr['newpage_exists'] )
+    {
+        $next_page = '<a href="'.$PHP_SELF.'?mid=content&go=newsedit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['new_start'].'">'.$admin_phrases[news][news_edit_next_news].' »</a>';
+    }
+    if ( $pagenav_arr['old_start_exists'] )
+    {
+        $prev_page = '<a href="'.$PHP_SELF.'?mid=content&go=newsedit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['old_start'].'">« '.$admin_phrases[news][news_edit_prev_news].'</a>';
+    }
+
+    // Current Range
+    $range_begin = $pagenav_arr['cur_start'] + 1;
+    $range_end = $pagenav_arr['cur_start'] + $pagenav_arr['entries_per_page'];
+	if ( $range_end > $pagenav_arr['total_entries'] )
+	{
+        $range_end = $pagenav_arr['total_entries'];
+	}
+    $range = '<span class="small">'.$admin_phrases[news][news_edit_show_news].'<br><b>'.$range_begin.'</b> '.$admin_phrases[common][to].'bis <b>'.$range_end.'</b></span>';
+
+    // Pagenavigation Template
+    $pagenav = '
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr valign="middle">
+                                <td width="33%" class="configthin middle">
+                                    '.$prev_page.'
+                                </td>
+                                <td width="33%" align="center" class="middle">
+                                    '.$range.'
+                                </td>
+                                <td width="33%" style="text-align:right;" class="configthin middle">
+                                    '.$next_page.'
+                                </td>
+                            </tr>
+			           </table>
+    ';
+    
+	if ( $pagenav_arr['total_entries'] <= 0 )
+	{
+        $pagenav = $admin_phrases[news][news_edit_no_news];
+	}
+    
+    return $pagenav;
+}
+
+function default_get_entry_data ( $news_arr )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	// Get other Data
+	$news_arr['news_date_formated'] = "".$admin_phrases[common][on]." <b>" . date ( $admin_phrases[common][date_format] , $news_arr['news_date'] ) . "</b> ".$admin_phrases[common][at]." <b>" . date ( $admin_phrases[common][time_format] , $news_arr['news_date'] ) . "</b>";
+    $news_arr['news_text_short'] = truncate_string ( killfs (  $news_arr['news_text'] ) , 250, "..." );
+
+    $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $db );
+    $news_arr['num_comments'] = mysql_result ( $index2, 0, "number" );
+    
+    $index2 = mysql_query("SELECT COUNT(link_id) AS 'number' FROM ".$global_config_arr['pref']."news_links WHERE news_id = ".$news_arr['news_id']."", $db );
+    $news_arr['num_links'] = mysql_result ( $index2, 0, "number" );
+
+    $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$news_arr['user_id']."", $db );
+    $news_arr['user_name'] = mysql_result ( $index2, 0, "user_name" );
+
+	$index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = ".$news_arr['cat_id']."", $db );
+    $news_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
+    
+    return $news_arr;
+}
+
+function default_display_entry ( $news_arr )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	// Display News Entry
+	$entry = '
+							<tr class="pointer" id="tr_'.$news_arr['news_id'].'"
+								onmouseover="'.color_list_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this" ).'"
+								onmouseout="'.color_list_entry ( "input_".$news_arr['news_id'], "transparent", "#49c24f", "this" ).'"
+                                onclick="'.color_click_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+							>
+                                <td class="config justify" style="width: 375px; padding-right: 25px;">
+                                    #'.$news_arr['news_id'].' '.$news_arr['news_title'].'<br>
+                                    <span class="small">'.$news_arr['news_text_short'].'</span>
+                                </td>
+                                <td class="config middle" style="width: 180x;">
+                                    <span class="small">'.$admin_phrases[common][by].' <b>'.$news_arr['user_name'].'</b><br>
+									'.$news_arr['news_date_formated'].'</b><br>
+									'.$admin_phrases[common][in].' <b>'.$news_arr['cat_name'].'</b><br>
+									<b>'.$news_arr['num_comments'].'</b> '.$admin_phrases[common][comments].', <b>'.$news_arr['num_links'].'</b> '.$admin_phrases[common][links].'</span>
+                                </td>
+                                <td class="config middle center">
+                                    <input class="pointer" type="radio" name="news_id" id="input_'.$news_arr['news_id'].'" value="'.$news_arr['news_id'].'"
+										onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$news_arr['news_id'], TRUE ).'"
+									>
+                                </td>
+                            </tr>
+    ';
+    
+    return $entry;
+}
+
+function default_display_all_entries ( $pagenav_arr )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	unset ( $entries );
+
+	// Create Where Clause for Category Filter
+	unset ( $where_clause );
+    if ( $_REQUEST['cat_id'] != 0 )
+	{
+        $where_clause = "WHERE cat_id = '".$_REQUEST['cat_id']."'";
+    }
+
+	// Load News From DB
+	$index = mysql_query ( "
+							SELECT *
+							FROM ".$global_config_arr['pref']."news
+							".$where_clause."
+							ORDER BY ".$_REQUEST['order']." ".$_REQUEST['sort']."
+							LIMIT ".$pagenav_arr['cur_start'].", ".$pagenav_arr['entries_per_page']."
+	", $db);
+
+    while ($news_arr = mysql_fetch_assoc($index))
+    {
+		$entries .= default_display_entry ( default_get_entry_data ( $news_arr ) );
+    }
+    
+    return $entries;
+}
+
+function default_display_page ( $entries, $pagenav_arr, $FORM )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	// Display News List Header
+    echo'
+                    <form action="?mid=content&go=newsedit" method="post">
+                        <input type="hidden" name="go" value="newsedit">
+                        <input type="hidden" name="order" value="'.$FORM['order'].'" >
+                        <input type="hidden" name="sort" value="'.$FORM['sort'].'">
+                        <input type="hidden" name="cat_id" value="'.$FORM['cat_id'].'">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="4">'.$admin_phrases[news][news_edit_select_news].' ('.$pagenav_arr['total_entries'].' '.$admin_phrases[news][news_edit_entries_found].')</td></tr>
+
+    ';
+
+    echo $entries;
+
+    // Display News List Footer
+    echo'
+							<tr><td class="space"></td></tr>
+                        </table>
+						'.default_display_pagenav ( default_get_pagenav_data () ).'
+           ';
+
+	// End of Form & Table incl. Submit-Button
+ 	echo '
+                      <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr><td class="space"></td></tr>
+							<tr>
+								<td class="right">
+									<select name="news_action" size="1">
+										<option value="edit">'.$admin_phrases[common][selection_edit].'</option>
+										<option value="delete">'.$admin_phrases[common][selection_del].'</option>
+										<option value="comments">'.$admin_phrases[common][edit_comments].'</option>
+									</select>
+								</td>
+							</tr>
+							<tr><td class="space"></td></tr>
+							<tr>
+								<td class="buttontd">
+									<button class="button_new" type="submit">
+										'.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+									</button>
+								</td>
+							</tr>
+						</table>
+					</form>
+	';
+}
+
+function action_edit_get_data ( $NEWS_ID )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+    //Load News
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$NEWS_ID."' LIMIT 0, 1", $db );
+	$news_arr = mysql_fetch_assoc ( $index );
+
+	// Sended or Link Action
+ 	if ( isset ( $_POST['sended'] ) )
+    {
+        $news_arr = getfrompost ( $news_arr );
+     	if ( isset ( $_POST['editnews'] ) )
 	    {
-            $news_arr = getfrompost ( $news_arr );
-	     	if ( isset ( $_POST['editnews'] ) )
-		    {
-		        systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
-		    }
+	        systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
 	    }
+    }
 
-	    // News Konfiguration lesen
-	    $index = mysql_query ( "SELECT html_code, fs_code FROM ".$global_config_arr['pref']."news_config", $db );
-	    $config_arr = mysql_fetch_assoc ( $index );
-	    $config_arr[html_code] = ($config_arr[html_code] == 2 OR $config_arr[html_code] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
-	    $config_arr[fs_code] = ($config_arr[fs_code] == 2 OR $config_arr[fs_code] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
-	    $config_arr[para_handling] = ($config_arr[para_handling] == 2 OR $config_arr[para_handling] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
+    // News Konfiguration lesen
+    $index = mysql_query ( "SELECT html_code, fs_code FROM ".$global_config_arr['pref']."news_config", $db );
+    $config_arr = mysql_fetch_assoc ( $index );
+    $config_arr[html_code] = ($config_arr[html_code] == 2 OR $config_arr[html_code] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
+    $config_arr[fs_code] = ($config_arr[fs_code] == 2 OR $config_arr[fs_code] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
+    $config_arr[para_handling] = ($config_arr[para_handling] == 2 OR $config_arr[para_handling] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
 
-		// User ID ermittlen
-		if ( !isset ( $news_arr['user_id'] ) )
-	    {
-	        $news_arr['user_id'] = $_SESSION['user_id'];
-	    }
+	// User ID ermittlen
+	if ( !isset ( $news_arr['user_id'] ) )
+    {
+        $news_arr['user_id'] = $_SESSION['user_id'];
+    }
 
-		// Security-Functions
-		$news_arr['news_text'] = killhtml ( $news_arr['news_text'] );
-	    $news_arr['news_title'] = killhtml ( $news_arr['news_title'] );
-		settype ( $news_arr['cat_id'], "integer" );
-	    settype ( $news_arr['user_id'], "integer" );
+	// Security-Functions
+	$news_arr['news_text'] = killhtml ( $news_arr['news_text'] );
+    $news_arr['news_title'] = killhtml ( $news_arr['news_title'] );
+	settype ( $news_arr['cat_id'], "integer" );
+    settype ( $news_arr['user_id'], "integer" );
 
-	    // Get User
-	    $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$news_arr['user_id']."'", $db );
-	    $news_arr['poster'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
+    // Get User
+    $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$news_arr['user_id']."'", $db );
+    $news_arr['poster'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
 
-		// Create Date-Arrays
-	    if ( !isset ( $_POST['d'] ) )
-	    {
-	    	$_POST['d'] = date ( "d", $news_arr['news_date'] );
-	    	$_POST['m'] = date ( "m", $news_arr['news_date'] );
-	    	$_POST['y'] = date ( "Y", $news_arr['news_date'] );
-	    	$_POST['h'] = date ( "H", $news_arr['news_date'] );
-	    	$_POST['i'] = date ( "i", $news_arr['news_date'] );
+	// Create Date-Arrays
+    if ( !isset ( $news_arr['d'] ) )
+    {
+    	$news_arr['d'] = date ( "d", $news_arr['news_date'] );
+    	$news_arr['m'] = date ( "m", $news_arr['news_date'] );
+    	$news_arr['y'] = date ( "Y", $news_arr['news_date'] );
+    	$news_arr['h'] = date ( "H", $news_arr['news_date'] );
+    	$news_arr['i'] = date ( "i", $news_arr['news_date'] );
+	}
+	$date_arr = getsavedate ( $news_arr['d'], $news_arr['m'], $news_arr['y'], $news_arr['h'], $news_arr['i'] );
+	$nowbutton_array = array( "d", "m", "y", "h", "i" );
+	
+	$data_arr['news'] = $news_arr;
+	$data_arr['date'] = $date_arr;
+	$data_arr['nowbutton'] = $nowbutton_array;
+	$data_arr['config'] = $config_arr;
+	
+	return $data_arr;
+}
+
+function action_edit_display_links ( $NEWS_ID, $FORM )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+	
+	// Load Links from DB
+ 	if ( !isset ( $FORM['sended'] ) )
+    {
+		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_links WHERE news_id = '".$NEWS_ID."' ORDER BY link_id ASC", $db );
+		while ( $link_arr = mysql_fetch_assoc ( $index ) ) {
+            $FORM['linkname'][] = $link_arr['link_name'];
+  			$FORM['linkurl'][] = $link_arr['link_url'];
+            $FORM['linktarget'][] = $link_arr['link_target'];
 		}
-		$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'] );
-		$nowbutton_array = array( "d", "m", "y", "h", "i" );
+	}
 
-	    // Display Page
-	    echo'
+	//Zu löschende Links löschen
+	if ( isset ( $FORM['sended'] ) &&  isset ( $FORM['dolinkbutton'] ) && $FORM['do_links'] == "del" && count ( $FORM['dolink'] ) > 0 )
+	{
+		foreach ( $FORM['dolink'] as $key => $value )
+    	{
+			if ( $value == 1 )
+			{
+				$FORM['linkname'][$key] = "";
+    	    	$FORM['linkurl'][$key] = "";
+    	    	$FORM['linktarget'][$key] = "";
+			}
+    	}
+	}
+
+	//Links nach oben verschieben
+	if ( isset ( $FORM['sended'] ) &&  isset ( $FORM['dolinkbutton'] ) && $FORM['do_links'] == "up" && count ( $FORM['dolink'] ) > 0 )
+	{
+		foreach ( $FORM['dolink'] as $key => $value )
+    	{
+			if ( $value == 1 && $key != 0 )
+			{
+				$up_name = $FORM['linkname'][$key];
+    	    	$up_url = $FORM['linkurl'][$key];
+    	    	$up_target = $FORM['linktarget'][$key];
+    	    	$FORM['linkname'][$key] = $FORM['linkname'][$key-1];
+    	    	$FORM['linkurl'][$key] = $FORM['linkurl'][$key-1];
+    	    	$FORM['linktarget'][$key] = $FORM['linktarget'][$key-1];
+    	    	$FORM['linkname'][$key-1] = $up_name;
+    	    	$FORM['linkurl'][$key-1] = $up_url;
+    	    	$FORM['linktarget'][$key-1] = $up_target;
+			}
+    	}
+	}
+
+	//Links nach unten verschieben
+	if ( isset ( $FORM['sended'] ) &&  isset ( $FORM['dolinkbutton'] ) && $FORM['do_links'] == "down" && count ( $FORM['dolink'] ) > 0 )
+	{
+		foreach ( $FORM['dolink'] as $key => $value )
+    	{
+			if ( $value == 1 && $key != count ( $DATA['linkname'] ) - 1 )
+			{
+				$down_name = $FORM['linkname'][$key];
+    	    	$down_url = $FORM['linkurl'][$key];
+    	    	$down_target = $FORM['linktarget'][$key];
+    	    	$FORM['linkname'][$key] = $FORM['linkname'][$key+1];
+    	    	$FORM['linkurl'][$key] = $FORM['linkurl'][$key+1];
+    	    	$FORM['linktarget'][$key] = $FORM['linktarget'][$key+1];
+    	    	$FORM['linkname'][$key+1] = $down_name;
+    	    	$FORM['linkurl'][$key+1] = $down_url;
+    	    	$FORM['linktarget'][$key+1] = $down_target;
+			}
+    	}
+	}
+
+	//Zu bearbeitende Links löschen & Daten sichern
+	unset ( $edit_name );
+	unset ( $edit_url );
+	unset ( $edit_target );
+
+	if ( isset ( $FORM['sended'] ) &&  isset ( $FORM['dolinkbutton'] ) && $FORM['do_links'] == "edit" && count ( $FORM['dolink'] ) > 0 )
+	{
+		foreach ( $FORM['dolink'] as $key => $value )
+    	{
+			if ( $value == 1 )
+			{
+				$edit_name = $FORM['linkname'][$key];
+    	    	$edit_url = $FORM['linkurl'][$key];
+    	    	$edit_target = $FORM['linktarget'][$key];
+				$FORM['linkname'][$key] = "";
+    	    	$FORM['linkurl'][$key] = "";
+    	    	$FORM['linktarget'][$key] = "";
+			}
+    	}
+	}
+
+	// Erstellte Linkfelder ausgeben
+	if ( !isset ($FORM['linkname']) )
+ 	{
+        $FORM['linkname'][0] = "";
+	}
+	$linkid = 0;
+
+    foreach ( $FORM['linkname'] as $key => $value )
+    {
+        if ( $FORM['linkname'][$key] != "" && $FORM['linkurl'][$key] != "" )
+        {
+			$counter = $linkid + 1;
+
+			$link_name = killhtml ( $FORM['linkname'][$key] );
+
+			$link_maxlenght = 60;
+            $FORM['linkurl'][$key] = killhtml ( $FORM['linkurl'][$key] );
+			$link_fullurl = $FORM['linkurl'][$key];
+			if ( strlen ( $FORM['linkurl'][$key] ) > $link_maxlenght )
+        	{
+            	$FORM['linkurl'][$key] = substr ( $link_fullurl, 0, $link_maxlenght ) . "...";
+        	}
+
+			switch ( $FORM['linktarget'][$key] )
+    		{
+        		case 1: $link_target = $admin_phrases[news][news_link_blank]; break;
+        		default:
+					$FORM['linktarget'][$key] = 0;
+					$link_target = $admin_phrases[news][news_link_self];
+					break;
+    		}
+
+            echo'
+        								<tr class="pointer" id="tr_'.$linkid.'"
+											onmouseover="'.color_list_entry ( "input_".$linkid, "#EEEEEE", "#64DC6A", "this" ).'"
+											onmouseout="'.color_list_entry ( "input_".$linkid, "transparent", "#49C24f", "this" ).'"
+											onclick="'.color_click_entry ( "input_".$linkid, "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+                            			>
+											<td class="config" style="padding-left: 7px; padding-right: 7px; padding-bottom: 2px; padding-top: 2px;">
+												#'.$counter.'
+											</td>
+											<td class="config" width="100%" style="padding-right: 5px; padding-bottom: 2px; padding-top: 2px;">
+                                     			'.$link_name.' <span class="small">('.$link_target.')</span><br>
+                                    			<a href="'.$link_fullurl.'" target="_blank" title="'.$link_fullurl.'">'.$FORM['linkurl'][$key].'</a>
+                                    			<input type="hidden" name="linkname['.$linkid.']" value="'.$link_name.'">
+                                    			<input type="hidden" name="linkurl['.$linkid.']" value="'.$link_fullurl.'">
+                                    			<input type="hidden" name="linktarget['.$linkid.']" value="'.$FORM['linktarget'][$key].'">
+											</td>
+
+                                			<td align="center">
+												<input class="pointer" type="radio" name="dolink['.$linkid.']" id="input_'.$linkid.'" value="1"
+                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$linkid, TRUE ).'"
+												>
+											</td>
+										</tr>
+            ';
+			$linkid++;
+        }
+	}
+	
+    $data_arr['num_links'] = $linkid;
+    $data_arr['edit']['name'] = killhtml ( $edit_name );
+    $data_arr['edit']['url'] = killhtml ( $edit_url );
+    $data_arr['edit']['target'] = killhtml ( $edit_target );
+
+	return $data_arr;
+}
+
+function action_edit_display_new_link ( $NUM_LINKS, $EDIT )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	if ( $NUM_LINKS > 0 )
+	{
+		echo'
+										<tr valign="top">
+											<td style="padding-right: 5px; padding-top: 11px;" align="right" colspan="2">
+											    <select name="do_links" size="1">
+                                                    <option value="0">'.$admin_phrases[news][news_link_no].'</option>
+                                                    <option value="del">'.$admin_phrases[news][news_link_delete].'</option>
+                                                    <option value="up">'.$admin_phrases[news][news_link_up].'</option>
+                                                    <option value="down">'.$admin_phrases[news][news_link_down].'</option>
+													<option value="edit">'.$admin_phrases[news][news_link_edit].'</option>
+												</select>
+											</td>
+											<td style="padding-top: 11px;" align="center">
+                                                <input class="button" type="submit" name="dolinkbutton" value="'.$admin_phrases[common][do_button].'">
+											</td>
+										</tr>
+		';
+	}
+
+	if ( $EDIT['url'] == "" ) {
+    	$EDIT['url'] = "http://";
+	}
+
+	echo'
+									</table>
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+							<tr>
+                                <td class="config" colspan="2">
+                                    '.$admin_phrases[news][news_link_add].':
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    <table cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td class="config" style="padding-right: 5px;">
+                                                '.$admin_phrases[news][news_link_title].':
+											</td>
+											<td class="config" style="padding-bottom: 4px;" width="100%">
+                                                <input class="text" style="width: 100%;" maxlength="100" name="linkname['.$linkid.']" value="'.$EDIT['name'].'">
+											</td>
+											<td class="config"style="padding-left: 5px;">
+                                                '.$admin_phrases[news][news_link_open].':
+											</td>
+										</tr>
+										<tr>
+											<td class="config">
+                                                '.$admin_phrases[news][news_link_url].':
+											</td>
+											<td class="config" style="padding-bottom: 4px;">
+                                                <input class="text" style="width: 100%;" maxlength="255" name="linkurl['.$linkid.']" value="'.$EDIT['url'].'">
+											</td>
+											<td style="padding-left: 5px;" valign="top">
+												<select name="linktarget['.$linkid.']" size="1">
+                                                    <option value="0" '.getselected( 0, $EDIT['target'] ).'>'.$admin_phrases[news][news_link_self].'</option>
+                                                    <option value="1" '.getselected( 1, $EDIT['target'] ).'>'.$admin_phrases[news][news_link_blank].'</option>
+												</select>
+											</td>
+											<td align="right" valign="top" style="padding-left: 10px;">
+                                                <input class="button" type="submit" name="addlink" value="'.$admin_phrases[common][add_button].'">
+											</td>
+										</tr>
+									</table>
+								</td>
+                            </tr>
+	';
+}
+
+function action_edit_display_page ( $data_arr )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	$news_arr = $data_arr['news'];
+	$date_arr = $data_arr['date'];
+	$nowbutton_array = $data_arr['nowbutton'];
+	$config_arr = $data_arr['config'];
+
+    // Display Page
+    echo'
 					<form action="" method="post">
 						<input type="hidden" name="go" value="newsedit">
 						<input type="hidden" name="news_action" value="edit">
@@ -162,14 +619,14 @@ elseif ( $_POST['news_id'] && $_POST['news_action'] )
                                 </td>
                                 <td class="config">
                                     <select name="cat_id">
-		';
-    									// Kategorien auflisten
-    									$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
-    									while ( $cat_arr = mysql_fetch_assoc ( $index ) )
-    									{
-											echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $news_arr['cat_id']).'>'.$cat_arr['cat_name'].'</option>';
-    									}
-		echo'
+	';
+	// Kategorien auflisten
+	$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
+	while ( $cat_arr = mysql_fetch_assoc ( $index ) )
+	{
+		echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $news_arr['cat_id']).'>'.$cat_arr['cat_name'].'</option>';
+	}
+	echo'
                                     </select>
                                 </td>
                             </tr>
@@ -229,277 +686,76 @@ elseif ( $_POST['news_id'] && $_POST['news_action'] )
                             <tr>
                                 <td class="config" colspan="2">
                                     <table cellpadding="0" cellspacing="0" width="100%">
-	    ';
-	    
-		// Load Links from DB
-     	if ( !isset ( $_POST['sended'] ) )
-	    {
-			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_links WHERE news_id = '".$news_arr['news_id']."' ORDER BY link_id ASC", $db );
-			while ( $link_arr = mysql_fetch_assoc ( $index ) ) {
-	            $_POST['linkname'][] = $link_arr['link_name'];
-	  			$_POST['linkurl'][] = $link_arr['link_url'];
-	            $_POST['linktarget'][] = $link_arr['link_target'];
-			}
-		}
-		
-		//Zu löschende Links löschen
-		if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['dolinkbutton'] ) && $_POST['do_links'] == "del" && count ( $_POST['dolink'] ) > 0 )
-		{
-			foreach ( $_POST['dolink'] as $key => $value )
-	    	{
-				if ( $value == 1 )
-				{
-					$_POST['linkname'][$key] = "";
-	    	    	$_POST['linkurl'][$key] = "";
-	    	    	$_POST['linktarget'][$key] = "";
-				}
-	    	}
-		}
+    ';
 
-		//Links nach oben verschieben
-		if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['dolinkbutton'] ) && $_POST['do_links'] == "up" && count ( $_POST['dolink'] ) > 0 )
-		{
-			foreach ( $_POST['dolink'] as $key => $value )
-	    	{
-				if ( $value == 1 && $key != 0 )
-				{
-					$up_name = $_POST['linkname'][$key];
-	    	    	$up_url = $_POST['linkurl'][$key];
-	    	    	$up_target = $_POST['linktarget'][$key];
-	    	    	$_POST['linkname'][$key] = $_POST['linkname'][$key-1];
-	    	    	$_POST['linkurl'][$key] = $_POST['linkurl'][$key-1];
-	    	    	$_POST['linktarget'][$key] = $_POST['linktarget'][$key-1];
-	    	    	$_POST['linkname'][$key-1] = $up_name;
-	    	    	$_POST['linkurl'][$key-1] = $up_url;
-	    	    	$_POST['linktarget'][$key-1] = $up_target;
-				}
-	    	}
-		}
+	//Links
+	$linkdata_arr = action_edit_display_links ( $news_arr['news_id'], $_POST );
+	action_edit_display_new_link ( $linkdata_arr['num_links'], $linkdata_arr['edit'] );
 
-		//Links nach unten verschieben
-		if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['dolinkbutton'] ) && $_POST['do_links'] == "down" && count ( $_POST['dolink'] ) > 0 )
-		{
-			foreach ( $_POST['dolink'] as $key => $value )
-	    	{
-				if ( $value == 1 && $key != count ( $_POST['linkname'] ) - 1 )
-				{
-					$down_name = $_POST['linkname'][$key];
-	    	    	$down_url = $_POST['linkurl'][$key];
-	    	    	$down_target = $_POST['linktarget'][$key];
-	    	    	$_POST['linkname'][$key] = $_POST['linkname'][$key+1];
-	    	    	$_POST['linkurl'][$key] = $_POST['linkurl'][$key+1];
-	    	    	$_POST['linktarget'][$key] = $_POST['linktarget'][$key+1];
-	    	    	$_POST['linkname'][$key+1] = $down_name;
-	    	    	$_POST['linkurl'][$key+1] = $down_url;
-	    	    	$_POST['linktarget'][$key+1] = $down_target;
-				}
-	    	}
-		}
-
-		//Zu bearbeitende Links löschen & Daten sichern
-		unset ( $edit_name );
-		unset ( $edit_url );
-		unset ( $edit_target );
-
-		if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['dolinkbutton'] ) && $_POST['do_links'] == "edit" && count ( $_POST['dolink'] ) > 0 )
-		{
-			foreach ( $_POST['dolink'] as $key => $value )
-	    	{
-				if ( $value == 1 )
-				{
-					$edit_name = $_POST['linkname'][$key];
-	    	    	$edit_url = $_POST['linkurl'][$key];
-	    	    	$edit_target = $_POST['linktarget'][$key];
-					$_POST['linkname'][$key] = "";
-	    	    	$_POST['linkurl'][$key] = "";
-	    	    	$_POST['linktarget'][$key] = "";
-				}
-	    	}
-		}
-
-		// Erstellte Linkfelder ausgeben
-		if ( !isset ($_POST['linkname']) )
-	 	{
-	        $_POST['linkname'][0] = "";
-		}
-		$linkid = 0;
-
-	    foreach ( $_POST['linkname'] as $key => $value )
-	    {
-	        if ( $_POST['linkname'][$key] != "" && $_POST['linkurl'][$key] != "" )
-	        {
-				$counter = $linkid + 1;
-
-				$link_name = killhtml ( $_POST['linkname'][$key] );
-
-				$link_maxlenght = 60;
-	            $_POST['linkurl'][$key] = killhtml ( $_POST['linkurl'][$key] );
-				$link_fullurl = $_POST['linkurl'][$key];
-				if ( strlen ( $_POST['linkurl'][$key] ) > $link_maxlenght )
-	        	{
-	            	$_POST['linkurl'][$key] = substr ( $link_fullurl, 0, $link_maxlenght ) . "...";
-	        	}
-
-				switch ( $_POST['linktarget'][$key] )
-	    		{
-	        		case 1: $link_target = $admin_phrases[news][news_link_blank]; break;
-	        		default:
-						$_POST['linktarget'][$key] = 0;
-						$link_target = $admin_phrases[news][news_link_self];
-						break;
-	    		}
-
-	            echo'
-        								<tr style="cursor:pointer;"
-	onmouseover=\'
-		colorOver (document.getElementById("input_'.$linkid.'"), "#EEEEEE", "#64DC6A", this);\'
-	onmouseout=\'
-		colorOut (document.getElementById("input_'.$linkid.'"), "transparent", "#49c24f", this);\'
-	onClick=\'
-		createClick (document.getElementById("input_'.$linkid.'"));
-		resetUnclicked ("transparent", last, lastBox, this);
-		colorClick (document.getElementById("input_'.$linkid.'"), "#EEEEEE", "#64DC6A", this);\'
-                            			>
-											<td class="config" style="padding-left: 7px; padding-right: 7px; padding-bottom: 2px; padding-top: 2px;">
-												#'.$counter.'
-											</td>
-											<td class="config" width="100%" style="padding-right: 5px; padding-bottom: 2px; padding-top: 2px;">
-                                     			'.$link_name.' <span class="small">('.$link_target.')</span><br>
-                                    			<a href="'.$link_fullurl.'" target="_blank" title="'.$link_fullurl.'">'.$_POST['linkurl'][$key].'</a>
-                                    			<input type="hidden" name="linkname['.$linkid.']" value="'.$link_name.'">
-                                    			<input type="hidden" name="linkurl['.$linkid.']" value="'.$link_fullurl.'">
-                                    			<input type="hidden" name="linktarget['.$linkid.']" value="'.$_POST['linktarget'][$key].'">
-											</td>
-
-                                			<td align="center">
-                                                <input type="radio" name="dolink['.$linkid.']" id="input_'.$linkid.'" value="1" style="cursor:pointer;" onClick=\'createClick(this);\'>
-											</td>
-										</tr>
-	            ';
-				$linkid++;
-	        }
-		}
-
-		if ( $linkid > 0 )
-		{
-			echo'
-										<tr valign="top">
-											<td style="padding-right: 5px; padding-top: 11px;" align="right" colspan="2">
-											    <select name="do_links" size="1">
-                                                    <option value="0">'.$admin_phrases[news][news_link_no].'</option>
-                                                    <option value="del">'.$admin_phrases[news][news_link_delete].'</option>
-                                                    <option value="up">'.$admin_phrases[news][news_link_up].'</option>
-                                                    <option value="down">'.$admin_phrases[news][news_link_down].'</option>
-													<option value="edit">'.$admin_phrases[news][news_link_edit].'</option>
-												</select>
-											</td>
-											<td style="padding-top: 11px;" align="center">
-                                                <input class="button" type="submit" name="dolinkbutton" value="'.$admin_phrases[common][do_button].'">
-											</td>
-										</tr>
-			';
-		}
-
-		if ( $edit_url == "" ) {
-	    	$edit_url = "http://";
-		}
-
-		echo'
-									</table>
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-							<tr>
-                                <td class="config" colspan="2">
-                                    '.$admin_phrases[news][news_link_add].':
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <table cellpadding="0" cellspacing="0" width="100%">
-										<tr>
-											<td class="config" style="padding-right: 5px;">
-                                                '.$admin_phrases[news][news_link_title].':
-											</td>
-											<td class="config" style="padding-bottom: 4px;" width="100%">
-                                                <input class="text" style="width: 100%;" maxlength="100" name="linkname['.$linkid.']" value="'.$edit_name.'">
-											</td>
-											<td class="config"style="padding-left: 5px;">
-                                                '.$admin_phrases[news][news_link_open].':
-											</td>
-										</tr>
-										<tr>
-											<td class="config">
-                                                '.$admin_phrases[news][news_link_url].':
-											</td>
-											<td class="config" style="padding-bottom: 4px;">
-                                                <input class="text" style="width: 100%;" maxlength="255" name="linkurl['.$linkid.']" value="'.$edit_url.'">
-											</td>
-											<td style="padding-left: 5px;" valign="top">
-												<select name="linktarget['.$linkid.']" size="1">
-                                                    <option value="0" '.getselected(0, $edit_target).'>'.$admin_phrases[news][news_link_self].'</option>
-                                                    <option value="1" '.getselected(1, $edit_target).'>'.$admin_phrases[news][news_link_blank].'</option>
-												</select>
-											</td>
-											<td align="right" valign="top" style="padding-left: 10px;">
-                                                <input class="button" type="submit" name="addlink" value="'.$admin_phrases[common][add_button].'">
-											</td>
-										</tr>
-									</table>
-								</td>
-                            </tr>
-		';
-		echo'
+	echo'
 							<tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
-                                    <button class="button_new" type="submit" name="editnews">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[news][news_add_button].'
+                                    <button class="button_new" type="submit" name="news_edit" value="1">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
                                     </button>
                                 </td>
                             </tr>
                         </table>
                     </form>
-	    ';
+    ';
+}
 
-	}
+function action_delete_get_data ( $NEWS_ID )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
 
-	// Delete News
-	elseif ( $_POST['news_action'] == "delete" )
-	{
-		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$_POST['news_id']."'", $db );
-		$news_arr = mysql_fetch_assoc ( $index );
-		
-		$news_arr['news_date_formated'] = "am <b>" . date ( "d.m.Y" , $news_arr['news_date'] ) . "</b> um <b>" . date ( "H:i" , $news_arr['news_date'] );
-        $news_arr['news_text_short'] = killfs ( truncate_string ( $news_arr['news_text'], 250, "..." ) );
+	settype ( $NEWS_ID, "integer" );
 
-        $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $db );
-        $news_arr['num_comments'] = mysql_result ( $index2, 0, "number" );
+	$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$NEWS_ID."'", $db );
+	$news_arr = mysql_fetch_assoc ( $index );
 
-        $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$news_arr['user_id']."", $db );
-        $news_arr['user_name'] = mysql_result ( $index2, 0, "user_name" );
+	$news_arr['news_date_formated'] = "".$admin_phrases[common][on]." <b>" . date ( $admin_phrases[common][date_format] , $news_arr['news_date'] ) . "</b> ".$admin_phrases[common][at]." <b>" . date ( $admin_phrases[common][time_format] , $news_arr['news_date'] ) . "</b>";
+	
+    $news_arr['news_text_short'] = killfs ( truncate_string ( $news_arr['news_text'], 250, "..." ) );
 
-		$index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = ".$news_arr['cat_id']."", $db );
-        $news_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
-		
-		echo '
+    $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $db );
+    $news_arr['num_comments'] = mysql_result ( $index2, 0, "number" );
+
+    $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$news_arr['user_id']."", $db );
+    $news_arr['user_name'] = mysql_result ( $index2, 0, "user_name" );
+
+	$index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = ".$news_arr['cat_id']."", $db );
+    $news_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
+    
+    return $news_arr;
+}
+
+function action_delete_display_page ( $news_arr )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+	
+	echo '
 					<form action="" method="post">
 						<input type="hidden" name="sended" value="delete">
 						<input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
 						<input type="hidden" name="news_id" value="'.$news_arr['news_id'].'">
 						<input type="hidden" name="go" value="newsedit">
-						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line">News löschen</td></tr>
+							<tr><td class="line">'.$admin_phrases[news][news_delete_title].'</td></tr>
 							<tr>
                                 <td class="config">
                                     '.$news_arr['news_title'].' <span class="small">(#'.$news_arr['news_id'].')</span><br>
-                                    <span class="small">gepostet von <b>'.$news_arr['user_name'].'</b>
-									'.$news_arr['news_date_formated'].' Uhr</b>
-									in <b>'.$news_arr['cat_name'].'</b>,
-									<b>'.$news_arr['num_comments'].'</b> Kommentare</span><br><br>
+                                    <span class="small">'.$admin_phrases[common][by_posted].' <b>'.$news_arr['user_name'].'</b>
+									'.$news_arr['news_date_formated'].'</b>
+									'.$admin_phrases[common][in].' <b>'.$news_arr['cat_name'].'</b>,
+									<b>'.$news_arr['num_comments'].'</b> '.$admin_phrases[common][comments].'</span><br><br>
                                     <div class="small justify">'.$news_arr['news_text_short'].'</div>
-									<div class="right"><a href="'.$global_config_arr['virtualhost'].'?go=comments&id='.$news_arr['news_id'].'" target="_blank">» News komplett betrachten</a></div>
+									<div class="right"><a href="'.$global_config_arr['virtualhost'].'?go=comments&id='.$news_arr['news_id'].'" target="_blank">» '.$admin_phrases[news][news_delete_view_news].'</a></div>
                                 </td>
                             </tr>
 							<tr><td class="space"></td></tr>
@@ -507,7 +763,7 @@ elseif ( $_POST['news_id'] && $_POST['news_action'] )
 						<table class="configtable" cellpadding="4" cellspacing="0">
 							<tr>
 								<td class="config" style="width: 100%;">
-									Soll diese News (inklusive Links und Kommentaren) wirklich gelöscht werden:
+									'.$admin_phrases[news][news_delete_question].'
 								</td>
 								<td class="config right top" style="padding: 0px;">
 		    						<table width="100%" cellpadding="4" cellspacing="0">
@@ -553,7 +809,254 @@ elseif ( $_POST['news_id'] && $_POST['news_action'] )
 							</tr>
 						</table>
 					</form>
-		';
+	';
+}
+
+function db_edit_news ( $DATA )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+	
+	$DATA['news_text'] = savesql ( $DATA['news_text'] );
+    $DATA['news_title'] = savesql ( $DATA['news_title'] );
+
+    settype ( $DATA['news_id'], "integer" );
+	settype ( $DATA['cat_id'], "integer" );
+    settype ( $DATA['user_id'], "integer" );
+
+    $date_arr = getsavedate ( $DATA['d'], $DATA['m'], $DATA['y'], $DATA['h'], $DATA['i'] );
+	$newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+
+
+	// MySQL-Update-Query
+    mysql_query ( "
+					UPDATE
+						".$global_config_arr['pref']."news
+					SET
+						cat_id = '".$DATA['cat_id']."',
+						user_id = '".$DATA['user_id']."',
+						news_date = '".$newsdate."',
+						news_title = '".$DATA['news_title']."',
+						news_text = '".$DATA['news_text']."'
+					WHERE
+						news_id = '".$DATA['news_id']."'
+	", $db );
+
+    // Delete all Links
+    mysql_query ( "
+					DELETE FROM
+						".$global_config_arr['pref']."news_links
+					WHERE
+						news_id = '".$DATA['news_id']."'
+	", $db );
+                                 
+	// Write Links into DB
+    foreach ( $DATA['linkname'] as $key => $value )
+    {
+        if ( $DATA['linkname'][$key] != "" && $DATA['linkurl'][$key] != "" )
+        {
+            $DATA['linkname'][$key] = savesql ( $DATA['linkname'][$key] );
+            $DATA['linkurl'][$key] = savesql ( $DATA['linkurl'][$key] );
+			switch ( $DATA['linktarget'][$key] )
+    		{
+        		case 1: settype ( $$DATA['linktarget'][$key], "integer" ); break;
+        		default: $DATA['linktarget'][$key] = 0; break;
+    		}
+
+            mysql_query ( "
+							INSERT INTO
+								".$global_config_arr['pref']."news_links
+								(news_id, link_name, link_url, link_target)
+							VALUES (
+								'".$DATA['news_id']."',
+								'".$DATA['linkname'][$key]."',
+								'".$DATA['linkurl'][$key]."',
+								'".$DATA['linktarget'][$key]."'
+							)
+			", $db );
+		}
+    }
+
+    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+}
+
+function db_delete_news ( $DATA )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	if  ( $DATA['news_delete'] == 1 ) {
+		settype ( $DATA['news_id'], "integer" );
+
+		// MySQL-Delete-Query: News
+	    mysql_query ( "
+						DELETE FROM
+							".$global_config_arr['pref']."news
+						WHERE
+							news_id = '".$DATA['news_id']."'
+						LIMIT
+						    1
+		", $db );
+
+		// MySQL-Delete-Query: Links
+	    mysql_query ( "
+						DELETE FROM
+							".$global_config_arr['pref']."news_links
+						WHERE
+							news_id = '".$DATA['news_id']."'
+		", $db );
+
+		// MySQL-Delete-Query: Comments
+		mysql_query ( "
+						DELETE FROM
+							".$global_config_arr['pref']."news_comments
+						WHERE
+							news_id = '".$DATA['news_id']."'
+		", $db );
+		$affacted_rows = mysql_affected_rows ( $db );
+
+		// Update Counter
+		mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news - 1", $db );
+		mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET comments = comments - ".$affacted_rows."", $db );
+
+	    systext( $admin_phrases[news][news_deleted], $admin_phrases[common][info]);
+	} else {
+	    systext( $admin_phrases[news][news_not_deleted], $admin_phrases[common][info]);
+	}
+}
+
+function db_edit_comment ( $DATA )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+	$DATA['title'] = savesql ( $DATA['title'] );
+    $DATA['text'] = savesql ( $DATA['text'] );
+    settype ( $DATA['comment_id'], "integer" );
+
+
+	// MySQL-Update-Query: Comment
+    mysql_query ( "
+					UPDATE
+						".$global_config_arr['pref']."news_comments
+					SET
+						comment_title = '".$DATA['title']."',
+						comment_text = '".$DATA['text']."'
+					WHERE
+						comment_id = '".$DATA['comment_id']."'
+	", $db );
+
+    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+}
+
+function db_delete_comment ( $DATA )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+    settype ( $DATA['comment_id'], "integer" );
+
+	// MySQL-Delete-Query: Comment
+    mysql_query ( "
+					DELETE FROM
+						".$global_config_arr['pref']."news_comments
+					WHERE
+						comment_id = '".$DATA['comment_id']."'
+					LIMIT
+					    1
+	", $db );
+	mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET comments = comments -  1", $db );
+
+    systext( $admin_phrases[news][news_comment_deleted], $admin_phrases[common][info]);
+}
+
+//////////////////////////
+//// Database Actions ////
+//////////////////////////
+
+// Edit News
+if (
+		isset ( $_POST['news_id'] ) &&
+		isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
+		isset ( $_POST['news_action'] ) && $_POST['news_action'] == "edit" &&
+		isset ( $_POST['news_edit'] ) && $_POST['news_edit'] == 1 &&
+
+		$_POST['news_title'] && $_POST['news_title'] != "" &&
+		$_POST['news_text'] && $_POST['news_text'] != "" &&
+
+		$_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
+		$_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
+		$_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
+		$_POST['h'] && $_POST['h'] != "" && $_POST['h'] >= 0 &&
+		$_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
+
+		isset ( $_POST['cat_id'] ) &&
+		isset ( $_POST['user_id'] )
+	)
+{
+    db_edit_news ( $_POST );
+}
+
+// Delete News
+elseif (
+		isset ( $_POST['news_id'] ) &&
+		isset ( $_POST['sended'] ) && $_POST['sended'] == "delete" &&
+		isset ( $_POST['news_action'] ) && $_POST['news_action'] == "delete" &&
+		isset ( $_POST['news_delete'] )
+	)
+{
+    db_delete_news ( $_POST );
+}
+
+// Edit Comments
+elseif (
+		isset ( $_POST['news_id'] ) &&
+		isset ( $_POST['comment_id'] ) &&
+		isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
+		isset ( $_POST['news_action'] ) && $_POST['news_action'] == "comments" &&
+		isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == "edit" &&
+
+		$_POST['title'] && $_POST['title'] != "" &&
+		$_POST['text'] && $_POST['text'] != ""
+	)
+{
+    db_edit_comment ( $_POST );
+}
+
+// Delete Comments
+elseif (
+		isset ( $_POST['news_id'] ) &&
+		isset ( $_POST['comment_id'] ) &&
+		isset ( $_POST['sended'] ) && $_POST['sended'] == "delete" &&
+		isset ( $_POST['news_action'] ) && $_POST['news_action'] == "comments" &&
+		isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == "delete" &&
+		isset ( $_POST['comment_delete'] ) && $_POST['comment_delete'] == 1
+	)
+{
+    db_delete_comment ( $_POST );
+}
+
+
+//////////////////////////////
+//// Display Action-Pages ////
+//////////////////////////////
+elseif ( $_POST['news_id'] && $_POST['news_action'] )
+{
+	// Edit News
+	if ( $_POST['news_action'] == "edit" )
+	{
+		action_edit_display_page ( action_edit_get_data ( $_POST['news_id'] ) );
+	}
+
+	// Delete News
+	elseif ( $_POST['news_action'] == "delete" )
+	{
+        $news_arr = action_delete_get_data ( $_POST['news_id'] );
+		action_delete_display_page ( $news_arr );
 	}
 	
 	// Edit Comments
@@ -665,205 +1168,11 @@ elseif ( $_POST['news_id'] && $_POST['news_action'] )
 ////////////////////////////////////////
 else
 {
-	// Set Default Filter Data
-    if ( !isset ( $_REQUEST['order'] ) ) { $_REQUEST['order'] = "news_date"; }
-    if ( !isset ( $_REQUEST['sort'] ) ) { $_REQUEST['sort'] = "DESC"; }
-    if ( !isset ( $_REQUEST['cat_id'] ) ) { $_REQUEST['cat_id'] = 0; }
-    
-    // Security Functions for Filter Data
-    $_REQUEST['order'] = savesql ( $_REQUEST['order'] );
-    $_REQUEST['sort'] = savesql ( $_REQUEST['sort'] );
-    settype ( $_REQUEST['cat_id'], 'integer' );
-
-	// Display Filter Data Form
-    echo'
-					<form action="?mid=content&go=newsedit" method="post">
-                        <input type="hidden" value="newsedit" name="go">
-
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="3">Filter & Sortierung</td></tr>
-							<tr>
-                                <td class="config" width="100%" colspan="2">
-									News aus
-                                    <select name="cat_id">
-                                    	<option value="0" '.getselected( 0, $_REQUEST['cat_id'] ).'>allen Kategorien</option>
-	';
-    									// List Categories
-    									$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
-    									while ( $cat_arr = mysql_fetch_assoc ( $index ) )
-    									{
-											echo '<option value="'.$cat_arr['cat_id'].'" '.getselected( $cat_arr['cat_id'], $_REQUEST['cat_id'] ).'>'.$cat_arr['cat_name'].'</option>';
-    									}
-	echo'
-                                    </select>
-									und sortieren nach
-                                    <select name="order">
-                                        <option value="news_id" '.getselected ( "news_id", $_REQUEST['order'] ).'>News-ID</option>
-                                        <option value="news_date" '.getselected ( "news_date", $_REQUEST['order'] ).'>Datum</option>
-                                        <option value="news_title" '.getselected ( "news_title", $_REQUEST['order'] ).'>Titel</option>
-                                    </select>,
-                                    <select name="sort">
-                                        <option value="ASC" '.getselected ( "ASC", $_REQUEST['sort'] ).'>'.$admin_phrases[common][ascending].'</option>
-                                        <option value="DESC" '.getselected ( "DESC", $_REQUEST['sort'] ).'>'.$admin_phrases[common][descending].'</option>
-                                    </select>
-
-                                </td>
-                                <td class="right">
-                                    <input type="submit" value="Anwenden" class="button">
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-						</table>
-					</form>
-	';
-
-
-	// Set Default Start Value
-    if ( !isset ( $_GET['start'] ) ) { $_GET['start'] = 0; }
-	settype ( $_GET['start'], 'integer' );
-	$limit = 15;
+	// Filter
+    $_REQUEST = default_set_filter_data ( $_REQUEST );
+	default_display_filter ( $_REQUEST );
 	
-	// Create Where Clause for Category Filter
-	unset ( $where_clause );
-    if ( $_REQUEST['cat_id'] != 0 )
-	{
-        $where_clause = "WHERE cat_id = '".$_REQUEST['cat_id']."'";
-    }
-
-	// Create Pagenavigation
-    $index = mysql_query ( "
-							SELECT COUNT(news_id) AS 'number'
-							FROM ".$global_config_arr['pref']."news
-							".$where_clause."
-	", $db);
-	$pagenav_arr = get_pagenav_start ( mysql_result ( $index, 0, "number" ), $limit, $_GET['start'] );
-	
-	// Prev & Next Page Links
-    if ( $pagenav_arr['newpage_exists'] )
-    {
-        $next_page = '<a href="'.$PHP_SELF.'?mid=content&go=newsedit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['new_start'].'">weitere News »</a>';
-    }
-    if ( $pagenav_arr['old_start_exists'] )
-    {
-        $prev_page = '<a href="'.$PHP_SELF.'?mid=content&go=newsedit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['old_start'].'">« vorherige News</a>';
-    }
-
-    // Current Range
-    $range_begin = $pagenav_arr['cur_start'] + 1;
-    $range_end = $pagenav_arr['cur_start'] + $pagenav_arr['entries_per_page'];
-	if ( $range_end > $pagenav_arr['total_entries'] )
-	{
-        $range_end = $pagenav_arr['total_entries'];
-	}
-    $range = '<span class="small">zeige News<br><b>'.$range_begin.'</b> bis <b>'.$range_end.'</b></span>';
-    
-    // Pagenavigation Template
-    $pagenav = '
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr valign="middle">
-                                <td width="33%" class="configthin middle">
-                                    '.$prev_page.'
-                                </td>
-                                <td width="33%" align="center" class="middle">
-                                    '.$range.'
-                                </td>
-                                <td width="33%" style="text-align:right;" class="configthin middle">
-                                    '.$next_page.'
-                                </td>
-                            </tr>
-			           </table>
-    ';
-
-	// Display News List Header
-    echo'
-                    <form action="?mid=content&go=newsedit" method="post">
-                        <input type="hidden" value="newsedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="4">News auswählen ('.$pagenav_arr['total_entries'].' Datensätze gefunden)</td></tr>
-
-    ';
-    
-	// Load News From DB
-	$index = mysql_query ( "
-							SELECT *
-							FROM ".$global_config_arr['pref']."news
-							".$where_clause."
-							ORDER BY ".$_REQUEST['order']." ".$_REQUEST['sort']."
-							LIMIT ".$pagenav_arr['cur_start'].", ".$pagenav_arr['entries_per_page']."
-	", $db);
-
-    while ($news_arr = mysql_fetch_assoc($index))
-    {
-		// Get other Data
-		$news_arr['news_date_formated'] = "am <b>" . date ( "d.m.Y" , $news_arr['news_date'] ) . "</b> um <b>" . date ( "H:i" , $news_arr['news_date'] ) . " Uhr</b>";
-        $news_arr['news_text_short'] = killfs ( truncate_string ( $news_arr['news_text'], 250, "..." ) );
-        
-        $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $db );
-        $news_arr['num_comments'] = mysql_result ( $index2, 0, "number" );
-
-        $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$news_arr['user_id']."", $db );
-        $news_arr['user_name'] = mysql_result ( $index2, 0, "user_name" );
-
-		$index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = ".$news_arr['cat_id']."", $db );
-        $news_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
-        
-		// Display News Entrie
-		echo'
-							<tr class="pointer" id="tr_'.$news_arr['news_id'].'"
-								onmouseover="'.color_list_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this" ).'"
-								onmouseout="'.color_list_entry ( "input_".$news_arr['news_id'], "transparent", "#49c24f", "this" ).'"
-                                onclick="'.color_click_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
-							>
-                                <td class="config justify" style="width: 375px; padding-right: 25px;">
-                                    #'.$news_arr['news_id'].' '.$news_arr['news_title'].'<br>
-                                    <span class="small">'.$news_arr['news_text_short'].'</span>
-                                </td>
-                                <td class="config middle" style="width: 180x;">
-                                    <span class="small">von <b>'.$news_arr['user_name'].'</b><br>
-									'.$news_arr['news_date_formated'].'</b><br>
-									in <b>'.$news_arr['cat_name'].'</b><br>
-									<b>'.$news_arr['num_comments'].'</b> Kommentare</span>
-                                </td>
-                                <td class="config middle center">
-                                    <input class="pointer" type="radio" name="news_id" id="input_'.$news_arr['news_id'].'" value="'.$news_arr['news_id'].'"
-										onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$news_arr['news_id'], TRUE ).'"
-									>
-                                </td>
-                            </tr>
-        ';
-    }
-    
-    // Display News List Footer
-    echo'
-							<tr><td class="space"></td></tr>
-                        </table>
-						'.$pagenav.'
-           ';
-    
-	// End of Form & Table incl. Submit-Button
- 	echo '
-                      <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="space"></td></tr>
-							<tr>
-								<td class="right">
-									<select name="news_action" size="1">
-										<option value="edit">'.$admin_phrases[common][selection_edit].'</option>
-										<option value="delete">'.$admin_phrases[common][selection_del].'</option>
-										<option value="comments">Kommentare bearbeiten</option>
-									</select>
-								</td>
-							</tr>
-							<tr><td class="space"></td></tr>
-							<tr>
-								<td class="buttontd">
-									<button class="button_new" type="submit">
-										'.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
-									</button>
-								</td>
-							</tr>
-						</table>
-					</form>
-	';
+	// Display Page
+	default_display_page ( default_display_all_entries ( default_get_pagenav_data () ), default_get_pagenav_data (), $_REQUEST  );
 }
 ?>

@@ -39,7 +39,7 @@ if (
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['cat_pic'], "images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -91,13 +91,14 @@ elseif (
 
 	// Image-Operations
     if ( $_POST['cat_pic_delete'] == 1 ) {
-      if ( image_delete ( "../images/cat/", "news_".$_POST['cat_id'] ) ) {
+      if ( image_delete ( "images/cat/", "news_".$_POST['cat_id'] ) ) {
         $message .= "<br>" . $admin_phrases[common][image_deleted];
       } else {
 		$message .= "<br>" . $admin_phrases[common][image_not_deleted];
       }
     } elseif ( $_FILES['cat_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['cat_pic'], "../images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
+      image_delete ( "images/cat/", "news_".$_POST['cat_id'] );
+      $upload = upload_img ( $_FILES['cat_pic'], "images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
     
@@ -142,7 +143,7 @@ elseif (
 		$message = $admin_phrases[news][cat_deleted];
 
 		// Delete Category Image
-		if ( image_delete ( "../images/cat/", "news_".$_POST['cat_id'] ) ) {
+		if ( image_delete ( "images/cat/", "news_".$_POST['cat_id'] ) ) {
 			$message .= "<br>" . $admin_phrases[common][image_deleted];
 		}
 		
@@ -248,9 +249,9 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
            						<td class="config">
              						'.$admin_phrases[news][edit_cat_image].': <span class="small">'.$admin_phrases[common][optional].'</span><br><br>
 	 	';
-		if ( image_exists ( "../images/cat/", "news_".$cat_arr['cat_id'] ) ) {
+		if ( image_exists ( "images/cat/", "news_".$cat_arr['cat_id'] ) ) {
 		    echo '
-									<img src="'.image_url ( "../images/cat/", "news_".$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
+									<img src="'.image_url ( "images/cat/", "news_".$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
 		    						<table>
 										<tr>
 											<td>
@@ -270,7 +271,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 								<td class="config">
 									<input name="cat_pic" type="file" size="40" class="text"><br>
 		';
-		if ( image_exists ( "../images/cat/", "news_".$cat_arr['cat_id'] ) ) {
+		if ( image_exists ( "images/cat/", "news_".$cat_arr['cat_id'] ) ) {
 			echo '<span class="small"><b>'.$admin_phrases[common][replace_img].'</b></span><br>';
 		}
 		echo'
@@ -481,8 +482,8 @@ elseif ( $showdefault == TRUE )
 							>
 								<td class="config">
 		';
-		if ( image_exists ( "../images/cat/", "news_".$cat_arr['cat_id'] ) ) {
-		    echo '<img src="'.image_url ( "../images/cat/", "news_".$cat_arr['cat_id'] ).'" alt="'.$admin_cat_arr['cat_name'].'" border="0">';
+		if ( image_exists ( "images/cat/", "news_".$cat_arr['cat_id'] ) ) {
+		    echo '<img src="'.image_url ( "images/cat/", "news_".$cat_arr['cat_id'] ).'" alt="'.$admin_cat_arr['cat_name'].'" border="0">';
 		}
 		echo '
 								</td>

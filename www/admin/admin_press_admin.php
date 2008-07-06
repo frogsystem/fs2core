@@ -17,7 +17,7 @@ if ($_POST['entry_action'] == "add"
 
     if ($_FILES['entry_pic']['name'] != "") {
         $id = mysql_insert_id();
-        $upload = upload_img($_FILES['entry_pic'], "../images/press/", $_POST[entry_is]."_".$id, 1024*1024, 999, 999);
+        $upload = upload_img($_FILES['entry_pic'], "images/press/", $_POST[entry_is]."_".$id, 1024*1024, 999, 999);
         systext(upload_img_notice($upload));
     } else {
         systext('Es wurde kein Bild zum Upload ausgewählt.');
@@ -45,14 +45,14 @@ elseif (($_POST['title'] AND $_POST['title'] != "")
     
     if ($_POST['entry_pic_delete'] == 1)
     {
-      if (image_delete("../images/press/", $_POST[entry_is]."_".$_POST[entry_id]))
+      if (image_delete("images/press/", $_POST[entry_is]."_".$_POST[entry_id]))
       {
         systext('Das Bild wurde erfolgreich gelöscht!');
       }
     }
     elseif ($_FILES['entry_pic']['name'] != "")
     {
-        $upload = upload_img($_FILES['entry_pic'], "../images/press/", $_POST[entry_is]."_".$_POST[entry_id], 1024*1024, 999, 999);
+        $upload = upload_img($_FILES['entry_pic'], "images/press/", $_POST[entry_is]."_".$_POST[entry_id], 1024*1024, 999, 999);
         systext(upload_img_notice($upload));
     }
 
@@ -101,7 +101,7 @@ elseif ($_POST['entry_action'] == "delete"
 
         systext("Der Eintrag wurde gelöscht!");
 
-        if (image_delete("../images/press/", $entry_arr[type]."_".$_POST[entry_id]))
+        if (image_delete("images/press/", $entry_arr[type]."_".$_POST[entry_id]))
         {
             systext('Das Bild wurde erfolgreich gelöscht!');
         }
@@ -188,14 +188,14 @@ elseif ($_POST['entry_action'] == "edit"
                                 <td class="config">
     ';
 
-    if (image_exists("../images/press/", $entry_arr[type]."_".$entry_arr[id]))
+    if (image_exists("images/press/", $entry_arr[type]."_".$entry_arr[id]))
     {
-        echo'<img src="'.image_url("../images/press/", $entry_arr[type]."_".$entry_arr[id]).'" alt="" /><br /><br />';
+        echo'<img src="'.image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]).'" alt="" /><br /><br />';
     }
 
     echo'<input name="entry_pic" type="file" size="40" class="text" /><br />';
                                 
-    if (image_exists("../images/press/", $entry_arr[type]."_".$entry_arr[id]))
+    if (image_exists("images/press/", $entry_arr[type]."_".$entry_arr[id]))
     {
         echo'
                                     <font class="small">
@@ -277,8 +277,8 @@ elseif ($_POST['entry_action'] == "delete"
                                              </td>
                                             <td class="configthin">
         ';
-        if (image_exists("../images/press/", $entry_arr[type]."_".$entry_arr[id])) {
-            echo'<img src="'.image_url("../images/press/", $entry_arr[type]."_".$entry_arr[id]).'" alt="" />';
+        if (image_exists("images/press/", $entry_arr[type]."_".$entry_arr[id])) {
+            echo'<img src="'.image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]).'" alt="" />';
         }
         echo'
                                              </td>
@@ -472,8 +472,8 @@ onClick=\'
                             >
                                 <td class="configthin">
             ';
-            if (image_exists("../images/press/", $entry_arr[type]."_".$entry_arr[id])) {
-                echo'<img src="'.image_url("../images/press/", $entry_arr[type]."_".$entry_arr[id]).'" alt="" />';
+            if (image_exists("images/press/", $entry_arr[type]."_".$entry_arr[id])) {
+                echo'<img src="'.image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]).'" alt="" />';
             }
             echo'
                                 </td>

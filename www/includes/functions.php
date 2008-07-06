@@ -130,13 +130,38 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
 
 	if ( $ACTIVATION == 0 ) {
 		return TRUE;
-	} elseif ( $ACTIVATION == 1 && $_SESSION['user_id']) {
+	} elseif ( $ACTIVATION == 1 && $_SESSION['user_id'] ) {
+		return TRUE;
+	} elseif ( $ACTIVATION == 3 && $_SESSION['user_id'] && is_in_staff ( $_SESSION['user_id'] ) ) {
 		return TRUE;
 	} elseif ( $sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
 		return TRUE;
 	} else {
 		return FALSE;
 	}
+}
+
+//////////////////////////
+//// User is in Staff ////
+//////////////////////////
+
+function is_in_staff ( $USER_ID )
+{
+    global $global_config_arr;
+    global $db;
+    
+    settype ( $USER_ID, "integer" );
+    
+	if ( $USER_ID ) {
+	    $index = mysql_query ( " SELECT is_admin FROM ".$global_config_arr['pref']."user WHERE user_id = '".$USER_ID."'", $db );
+		if ( mysql_num_rows ( $index ) > 0 ) {
+			if ( mysql_result ( $index, 0, "is_admin" ) == 1 ) {
+				 return TRUE;
+		    }
+	    }
+	}
+	
+	return FALSE;
 }
 
 //////////////////////

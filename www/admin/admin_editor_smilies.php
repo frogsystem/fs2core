@@ -16,7 +16,7 @@ if ($_FILES['newsmilie']['name'] != "" AND $_POST['replace_string'])
                  VALUES ('$_POST[replace_string]', '$_POST[insert_after]'+1)", $db);
 
     $id = mysql_insert_id();
-    $upload = upload_img($_FILES['newsmilie'], "../images/smilies/", $id, 1024*1024, 999, 999);
+    $upload = upload_img($_FILES['newsmilie'], "images/smilies/", $id, 1024*1024, 999, 999);
     systext(upload_img_notice($upload));
 }
 
@@ -34,7 +34,7 @@ elseif ($_POST['delete_smilies'])
 
             mysql_query("DELETE FROM ".$global_config_arr[pref]."smilies
                          WHERE `order`=$value", $db);
-            image_delete("../images/smilies/", $id);
+            image_delete("images/smilies/", $id);
     }
     $_POST['delsmilie'] = array_reverse($_POST['delsmilie']);
     foreach($_POST['delsmilie'] as $value)
@@ -191,7 +191,7 @@ onmouseout=\'
                             >
                                 <td></td>
                                 <td align="left">
-                                    <img src="'.image_url("../images/smilies/", $smilie_arr[id]).'" alt="" />
+                                    <img src="'.image_url("images/smilies/", $smilie_arr[id]).'" alt="" />
                                 </td>
                                 <td class="configthin">
                                     '.$smilie_arr[replace_string].'

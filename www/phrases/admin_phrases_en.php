@@ -13,6 +13,9 @@ $admin_phrases[common][replace_img]               = "Select only if the former i
 $admin_phrases[common][yes]                       = "Yes";
 $admin_phrases[common][no]                        = "No";
 
+$admin_phrases[common][time_format]               = "H:i a";
+$admin_phrases[common][date_format]               = "d/m/Y";
+
 
 ////////////
 // menu  //

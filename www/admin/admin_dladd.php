@@ -44,9 +44,9 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST
     
     if ($_FILES[dlimg][name] != "")
     {
-        $upload = upload_img($_FILES['dlimg'], "../images/downloads/", $id, 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
+        $upload = upload_img($_FILES['dlimg'], "images/downloads/", $id, 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
         systext(upload_img_notice($upload));
-        $thumb = create_thumb_from(image_url("../images/downloads/",$id,false), $admin_dl_config_arr[thumb_x],  $admin_dl_config_arr[thumb_y]);
+        $thumb = create_thumb_from(image_url("images/downloads/",$id,FALSE, TRUE), $admin_dl_config_arr[thumb_x],  $admin_dl_config_arr[thumb_y]);
         systext(create_thumb_notice($thumb));
     }
 

@@ -136,7 +136,7 @@ elseif ($_POST[random_action] == "edit"
                                     <input type="hidden" id="screen_id" name="screen_id" value="'.$random_arr['screen_id'].'">
                                 </td>
                                 <td class="config" valign="top" width="200">
-                                    <img id="selected_pic" src="'.image_url("../images/screenshots/", $random_arr['screen_id']."_s").'" alt="" />
+                                    <img id="selected_pic" src="'.image_url("images/screenshots/", $random_arr['screen_id']."_s").'" alt="" />
                                 </td>
                             </tr>
                             <tr><td></td></tr>
@@ -238,7 +238,7 @@ elseif ($_POST[random_action] == "delete"
                             <tr><td></td></tr>
                             <tr valign="top">
                                 <td class="config" colspan="2">
-                                    <img src="'.image_url("../images/screenshots/", $random_arr[screen_id]."_s").'" alt=""  style="float:left; padding-right:10px;" />
+                                    <img src="'.image_url("images/screenshots/", $random_arr[screen_id]."_s").'" alt=""  style="float:left; padding-right:10px;" />
                                     '.$random_arr['title'].'
                                     <span class="small">aktiv vom <b>'.$random_arr[start].'</b><br />
                                     bis zum <b>'.$random_arr[end].'</b></span>
@@ -308,7 +308,7 @@ onClick=\'
   colorClick (document.getElementById("input_'.$random_arr[random_id].'"), "#EEEEEE", "#64DC6A", this);\'
                               >
                                 <td class="configthin">
-                                    <img src="'.image_url("../images/screenshots/", $random_arr['screen_id']."_s").'" alt="" />
+                                    <img src="'.image_url("images/screenshots/", $random_arr['screen_id']."_s").'" alt="" />
                                 </td>
                                  <td class="configthin">
                                     '.$random_arr['screen_name'].'

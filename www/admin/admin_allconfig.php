@@ -75,6 +75,8 @@ else
         $config_arr[language] = $_POST['language'];
         $config_arr[design] = $_POST['design'];
         $config_arr[allow_other_designs] = $_POST['allow_other_designs'];
+        $config_arr[home] = $_POST['home'];
+        $config_arr[home_text] = $_POST['home_text'];
         $config_arr[show_announcement] = $_POST['show_announcement'];
         $config_arr[registration_antispam] = $_POST['registration_antispam'];
         $config_arr[date] = $_POST['date'];
@@ -215,7 +217,7 @@ else
 												<input type="radio" name="home" value="0" style="cursor:pointer;" '.getchecked ( "0", $config_arr['home'] ).'>
 											</td>
 											<td class="config">
-												Standard (?go=news)
+												'.$admin_phrases[general][home_page_default].'
 											</td>
 										</tr>
 										<tr valign="bottom">
@@ -240,7 +242,7 @@ else
 
                                         <option value="1" '.getselected ( "1", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_always].'</option>
 
-                                        <option value="2" '.getselected ( "2", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_news].'</option>
+                                        <option value="2" '.getselected ( "2", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_home].'</option>
 
                                         <option value="0" '.getselected ( "0", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_never].'</option>
 

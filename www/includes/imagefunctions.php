@@ -3,9 +3,19 @@
 //// Image exists           ////
 ////////////////////////////////
 
-function image_exists($path, $name)
+function image_exists ( $PATH, $NAME )
 {
-	if ( file_exists("$path"."$name.jpg") || file_exists("$path"."$name.jpeg") || file_exists("$path"."$name.gif") || file_exists("$path"."$name.png") ) {
+	global $global_config_arr;
+
+	$CHECK_PATH = $global_config_arr['path'] . $PATH;
+	
+	if (
+			file_exists ( $CHECK_PATH . $NAME . ".jpg" ) ||
+			file_exists ( $CHECK_PATH . $NAME . ".jpeg" ) ||
+			file_exists ( $CHECK_PATH . $NAME . ".gif" ) ||
+			file_exists ( $CHECK_PATH . $NAME . ".png" )
+		)
+	{
 		return true;
 	} else {
 		return false;
@@ -16,29 +26,37 @@ function image_exists($path, $name)
 //// Create Image URL       ////
 ////////////////////////////////
 
-function image_url ( $PATH, $NAME, $ERROR = TRUE )
+function image_url ( $PATH, $NAME, $ERROR = TRUE, $NO_URL = FALSE )
 {
 	global $global_config_arr;
 
-	if ( file_exists ( $PATH . $NAME . ".jpg" ) ) {
+	$CHECK_PATH = $global_config_arr['path'] . $PATH;
+	
+	if ( file_exists ( $CHECK_PATH . $NAME . ".jpg" ) ) {
 		$url = $PATH . $NAME . ".jpg";
 	}
-	elseif ( file_exists ( $PATH . $NAME . ".jpeg" ) ) {
+	elseif ( file_exists ( $CHECK_PATH . $NAME . ".jpeg" ) ) {
 		$url = $PATH . $NAME . ".jpeg";
 	}
-	elseif ( file_exists ( $PATH . $NAME . ".gif" ) ) {
+	elseif ( file_exists ( $CHECK_PATH . $NAME . ".gif" ) ) {
 		$url = $PATH . $NAME . ".gif";
 	}
-	elseif ( file_exists ( $PATH . $NAME . ".png" ) ) {
+	elseif ( file_exists ( $CHECK_PATH . $NAME . ".png" ) ) {
 		$url = $PATH . $NAME . ".png";
 	}
 	elseif ( $ERROR == TRUE ) {
-		$url = $global_config_arr['virtualhost'] . "images/icons/nopic_small.gif";
+		$url = "images/icons/nopic_small.gif";
 	}
 	else {
 		$url = "";
 	}
-	
+
+	if ( $NO_URL == TRUE ) {
+		$url = $global_config_arr['path'] . $url;
+	} else {
+		$url = $global_config_arr['virtualhost'] . $url;
+	}
+
 	return $url;
 }
 
@@ -46,36 +64,47 @@ function image_url ( $PATH, $NAME, $ERROR = TRUE )
 //// Delete Image           ////
 ////////////////////////////////
 
-function image_delete($path, $name)
+function image_delete ( $PATH, $NAME )
 {
-  if ( image_exists($path, $name) )
-  {
-    unlink(image_url($path, $name, false));
-    return true;
-  }
-  else
-  {
-    return false;
-  }
+	global $global_config_arr;
+
+	$CHECK_PATH = $global_config_arr['path'] . $PATH;
+
+	if ( file_exists ( $CHECK_PATH . $NAME . ".jpg" ) ) {
+		$file = $CHECK_PATH . $NAME . ".jpg";
+	}
+	elseif ( file_exists ( $CHECK_PATH . $NAME . ".jpeg" ) ) {
+		$file = $CHECK_PATH . $NAME . ".jpeg";
+	}
+	elseif ( file_exists ( $CHECK_PATH . $NAME . ".gif" ) ) {
+		$file = $CHECK_PATH . $NAME . ".gif";
+	}
+	elseif ( file_exists ( $CHECK_PATH . $NAME . ".png" ) ) {
+		$file = $CHECK_PATH . $NAME . ".png";
+	} else {
+		return false;
+	}
+
+	unlink ( $file );
+	return true;
 }
 
 ////////////////////////////////
 //// Rename Image           ////
 ////////////////////////////////
 
-function image_rename($path, $name, $newname)
+function image_rename ( $PATH, $NAME, $NEWNAME )
 {
-  if ( image_exists($path, $name) && !image_exists($path, $newname) )
-  {
-    $extension = pathinfo(image_url($path, $name, false));
-    $extension = $extension[extension];
-    rename(image_url($path, $name, false), $path.$newname.".".$extension);
-    return true;
-  }
-  else
-  {
-    return false;
-  }
+	global $global_config_arr;
+
+	if ( image_exists ( $PATH, $NAME ) && !image_exists ( $PATH, $NEWNAME ) ) {
+		$extension = pathinfo ( image_url ( $PATH, $NAME, FALSE, TRUE ) );
+		$extension = $extension['extension'];
+		rename ( image_url ( $PATH, $NAME, FALSE, TRUE ), $global_config_arr['path'] . $PATH . $NEWNAME . "." . $extension );
+		return true;
+	} else {
+		return false;
+	}
 }
 
 
@@ -119,6 +148,8 @@ function upload_img_notice($upload)
 
 function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, $QUALITY = 100, $THIS_SIZE = false )
 {
+	global $global_config_arr;
+	
 	// Get Image Data
 	$image_data = getimagesize ( $IMAGE['tmp_name'] );
 	switch ( $image_data[2] )
@@ -158,7 +189,7 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
 	}
 
 	// Create Image
-	$full_path = $PATH . $NAME . "." . $type;
+	$full_path = $global_config_arr['path'] . $PATH . $NAME . "." . $type;
 	move_uploaded_file ( $IMAGE['tmp_name'], $full_path );
 	chmod ( $full_path, 0644 );
 	clearstatcache();
@@ -176,6 +207,8 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
 
 function create_thumb_notice($upload)
 {
+  global $admin_phrases;
+  
   switch ($upload)
   {
     case 0:
@@ -196,10 +229,10 @@ function create_thumb_notice($upload)
 
 function create_thumb_from($image, $thumb_max_width, $thumb_max_height, $quality=100)
 {
-  //Bilddaten ermitteln
-  $image_info = pathinfo($image);
-  $image_info['name'] = basename ($image, ".".$image_info["extension"]);
-  $imgsize = getimagesize($image);
+	//Bilddaten ermitteln
+	$image_info = pathinfo($image);
+	$image_info['name'] = basename ($image, ".".$image_info["extension"]);
+	$imgsize = getimagesize($image);
 
   //Dateityp ermitteln
   switch ($imgsize[2])

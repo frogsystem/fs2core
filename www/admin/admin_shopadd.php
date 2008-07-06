@@ -19,9 +19,9 @@ if ($_FILES[artikelimg] && $_POST[title] && $_POST[url] && $_POST[preis])
                          '".$_POST[hot]."');", $db);
     $id = mysql_insert_id();
 
-    $upload = upload_img($_FILES['artikelimg'], "../images/shop/", $id, 2*1024*1024, 400, 600);
+    $upload = upload_img($_FILES['artikelimg'], "images/shop/", $id, 2*1024*1024, 400, 600);
     systext(upload_img_notice($upload));
-    $thumb = create_thumb_from(image_url("../images/shop/",$id,false), 100, 100);
+    $thumb = create_thumb_from(image_url("images/shop/",$id,FALSE, TRUE), 100, 100);
     systext(create_thumb_notice($thumb));
 }
 

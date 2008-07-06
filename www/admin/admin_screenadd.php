@@ -20,7 +20,7 @@ if (isset($_FILES['screenimg']))
                          '".$_POST[title]."');", $db);
     $id = mysql_insert_id();
     
-    $upload = upload_img($_FILES['screenimg'], "../images/screenshots/", $id, $config_arr[screen_size]*1024, $config_arr[screen_x], $config_arr[screen_y]);
+    $upload = upload_img($_FILES['screenimg'], "images/screenshots/", $id, $config_arr[screen_size]*1024, $config_arr[screen_x], $config_arr[screen_y]);
     systext(upload_img_notice($upload));
     switch ($upload)
     {
@@ -30,7 +30,7 @@ if (isset($_FILES['screenimg']))
         mysql_query("DELETE FROM ".$global_config_arr[pref]."screen WHERE screen_id = '$id'");
         break;
     }
-    $thumb = create_thumb_from(image_url("../images/screenshots/", $id, false), $config_arr[screen_thumb_x], $config_arr[screen_thumb_y]);
+    $thumb = create_thumb_from(image_url("images/screenshots/", $id, FALSE, TRUE), $config_arr[screen_thumb_x], $config_arr[screen_thumb_y]);
     systext(create_thumb_notice($thumb));
 }
 

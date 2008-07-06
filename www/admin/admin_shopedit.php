@@ -10,8 +10,8 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
     if (isset($_POST[delartikel]))
     {
         mysql_query("DELETE FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[editartikelid]", $db);
-        unlink("../images/shop/".$_POST[editartikelid]."_s.jpg");
-        unlink("../images/shop/".$_POST[editartikelid].".jpg");
+        image_delete ("images/shop/", $_POST[editartikelid] );
+        image_delete( "images/shop/", $_POST[editartikelid] );
         systext('Artikel wurde gelöscht');
     }
     else
@@ -24,9 +24,9 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
 
         if (isset($_FILES[artikelimg]))
         {
-            $upload = upload_img($_FILES[artikelimg], "../images/shop/", $_POST[editartikelid], 2*1024*1024, 400, 600);
+            $upload = upload_img($_FILES[artikelimg], "images/shop/", $_POST[editartikelid], 2*1024*1024, 400, 600);
             systext(upload_img_notice($upload));
-            $thumb = create_thumb_from(image_url("../images/shop/",$_POST[editartikelid],false), 100, 100);
+            $thumb = create_thumb_from(image_url("images/shop/",$_POST[editartikelid],FALSE, TRUE), 100, 100);
             systext(create_thumb_notice($thumb));
         }
         $update = "UPDATE ".$global_config_arr[pref]."shop
@@ -174,7 +174,7 @@ else
         echo'
                             <tr>
                                 <td class="config">
-                                    <img src="../images/shop/'.$artikel_arr[artikel_id].'_s.jpg">
+                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id'] ).'" alt="'.$artikel_arr[artikel_name].'">
                                 </td>
                                 <td class="configthin">
                                     '.$artikel_arr[artikel_name].'

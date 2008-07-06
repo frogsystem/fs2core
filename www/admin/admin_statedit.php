@@ -124,28 +124,28 @@ elseif (($_POST[editvisits] != "" &&
 
 elseif ($_POST['do'] == "sync")
 {
-    $index = mysql_query("SELECT SUM(s_hits) AS hits, SUM(s_visits) AS visits FROM ".$global_config_arr[pref]."counter_stat", $db);
-    $sync_arr[hits] = mysql_result($index,0,"hits");
-    $sync_arr[visits] = mysql_result($index,0,"visits");
+    $index = mysql_query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$global_config_arr[pref]."counter_stat", $db);
+    $sync_arr['hits'] = mysql_result($index,0,"hits");
+    $sync_arr['visits'] = mysql_result($index,0,"visits");
 
-    $index = mysql_query("SELECT COUNT(user_id) AS user FROM ".$global_config_arr[pref]."user", $db);
-    $sync_arr[user] = mysql_result($index,0,"user");
+    $index = mysql_query("SELECT COUNT(user_id) AS 'user' FROM ".$global_config_arr[pref]."user", $db);
+    $sync_arr['user'] = mysql_result($index,0,"user");
     
-    $index = mysql_query("SELECT COUNT(news_id) AS news FROM ".$global_config_arr[pref]."news", $db);
-    $sync_arr[news] = mysql_result($index,0,"news");
+    $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$global_config_arr[pref]."news", $db);
+    $sync_arr['news'] = mysql_result($index,0,"news");
     
-    $index = mysql_query("SELECT COUNT(comment_id) AS comments FROM ".$global_config_arr[pref]."news_comments", $db);
-    $sync_arr[comments] = mysql_result($index,0,"comments");
+    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$global_config_arr[pref]."news_comments", $db);
+    $sync_arr['comments'] = mysql_result($index,0,"comments");
 
-    $index = mysql_query("SELECT COUNT(artikel_url) AS artikel FROM ".$global_config_arr[pref]."artikel", $db);
-    $sync_arr[artikel] = mysql_result($index,0,"artikel");
+    $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$global_config_arr[pref]."articles", $db);
+    $sync_arr['articles'] = mysql_result($index,0,"articles");
 
     mysql_query("UPDATE ".$global_config_arr[pref]."counter
                  SET visits = '$sync_arr[visits]',
                      hits = '$sync_arr[hits]',
                      user = '$sync_arr[user]',
                      news = '$sync_arr[news]',
-                     artikel = '$sync_arr[artikel]',
+                     artikel = '$sync_arr[articles]',
                      comments = '$sync_arr[comments]'", $db);
     systext( $admin_phrases[stats][synchronised], $admin_phrases[common][info] );
 }

@@ -25,10 +25,12 @@ $admin_phrases[common][thumb_2]                   = "Thumbnail konnte nicht erst
 
 $admin_phrases[common][optional]                  = "(optional)";
 $admin_phrases[common][selection]                 = "Auswahl";
-$admin_phrases[common][selection_edit]            = "Auswahl bearbeiten";
-$admin_phrases[common][selection_del]             = "Auswahl löschen";
 $admin_phrases[common][active]                    = "aktiv";
 $admin_phrases[common][valid_tags]                = "Gültige Tags";
+
+$admin_phrases[common][selection_edit]            = "Auswahl bearbeiten";
+$admin_phrases[common][selection_del]             = "Auswahl löschen";
+$admin_phrases[common][edit_comments]             = "Kommentare bearbeiten";
 
 $admin_phrases[common][ascending]                 = "aufsteigend";
 $admin_phrases[common][descending]                = "absteigend";
@@ -60,14 +62,28 @@ $admin_phrases[common][add_button]                = "Hinzufügen";
 $admin_phrases[common][delete_button]             = "Löschen";
 $admin_phrases[common][show_button]               = "Anzeigen";
 $admin_phrases[common][preview_button]            = "Vorschau anzeigen";
+$admin_phrases[common][apply_button]              = "Anwenden";
 
 $admin_phrases[common][yes]                       = "Ja";
 $admin_phrases[common][no]                        = "Nein";
 $admin_phrases[common][on]                        = "an";
 $admin_phrases[common][off]                       = "aus";
+$admin_phrases[common][to]                        = "bis";
+$admin_phrases[common][by]                        = "von";
+$admin_phrases[common][by_posted]                 = "geschrieben von";
+$admin_phrases[common][in]                        = "in";
 
+$admin_phrases[common][on]                        = "am";
 $admin_phrases[common][at]                        = "um";
 $admin_phrases[common][time_appendix]             = "Uhr";
+
+$admin_phrases[common][time_format]               = "H:i \U\h\\r";
+$admin_phrases[common][date_format]               = "d.m.Y";
+
+$admin_phrases[common][comment]                   = "Kommentar";
+$admin_phrases[common][comments]                  = "Kommentare";
+$admin_phrases[common][link]                      = "Link";
+$admin_phrases[common][links]                     = "Links";
 
 $admin_phrases[common][no_image]                  = "Es wurde kein Bild gefunden.";
 $admin_phrases[common][delete_image]              = "Bild löschen";
@@ -128,13 +144,11 @@ $admin_phrases[general][show_favicon_desc]        = "Bindet das Favicon ein.<br>
 $admin_phrases[general][settings_title]           = "Seiteneinstellungen";
 $admin_phrases[general][home_page]                = "Startseite";
 $admin_phrases[general][home_page_desc]           = "Legt die Seite fest, die standardmäßig angezeigt wird.";
-$admin_phrases[general][]          = "überall";
-$admin_phrases[general][]            = "Startseite";
-$admin_phrases[general][]           = "nie";
+$admin_phrases[general][home_page_default]        = "Standard (?go=news)";
 $admin_phrases[general][show_announcement]        = "Ankündigung anzeigen";
 $admin_phrases[general][show_announcement_desc]   = "Seiten auf denen die Ankündigung angezeigt wird.";
 $admin_phrases[general][show_ann_always]          = "überall";
-$admin_phrases[general][show_ann_news]            = "Startseite";
+$admin_phrases[general][show_ann_home]            = "Startseite";
 $admin_phrases[general][show_ann_never]           = "nie";
 $admin_phrases[general][language]                 = "Sprache";
 $admin_phrases[general][language_desc]            = "Die Standard Sprache des Admin-CPs.";
@@ -415,6 +429,29 @@ $admin_phrases[news][edit_cat_title_optional]     = "Zusätzliche Einstellungen";
 $admin_phrases[news][edit_cat_image]              = "Bild";
 $admin_phrases[news][edit_cat_description]        = "Beschreibung";
 $admin_phrases[news][edit_cat_description_desc]   = "Ein kurzer Text über die Katgorie.";
+
+
+$admin_phrases[news][news_edit_filter_title]      = "Filter & Sortierung";
+$admin_phrases[news][news_edit_filter_from]       = "News aus";
+$admin_phrases[news][news_edit_filter_all_cat]    = "allen Kategorien";
+$admin_phrases[news][news_edit_filter_sort]       = "und sortieren nach";
+$admin_phrases[news][news_edit_filter_id]         = "News-ID";
+$admin_phrases[news][news_edit_filter_date]       = "Datum";
+$admin_phrases[news][news_edit_filter_newstitle]  = "Titel";
+$admin_phrases[news][news_edit_next_news]         = "weitere News";
+$admin_phrases[news][news_edit_prev_news]         = "vorherige News";
+$admin_phrases[news][news_edit_show_news]         = "zeige News";
+$admin_phrases[news][news_edit_no_news]           = "Keine News gefunden!";
+$admin_phrases[news][news_edit_select_news]       = "News auswählen";
+$admin_phrases[news][news_edit_entries_found]     = "Datensätze gefunden";
+
+$admin_phrases[news][news_delete_title]           = "News löschen";
+$admin_phrases[news][news_delete_view_news]       = "News komplett betrachten";
+$admin_phrases[news][news_delete_question]        = "Soll diese News (inklusive Links und Kommentaren) wirklich gelöscht werden?";
+
+$admin_phrases[news][news_deleted]                = "News wurde erfolgreich gelöscht";
+$admin_phrases[news][news_not_deleted]            = "News wurde nicht gelöscht";
+$admin_phrases[news][news_comment_deleted]        = "Kommentar wurde erfolgreich gelöscht";
 
 
 

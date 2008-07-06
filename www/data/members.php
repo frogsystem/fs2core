@@ -130,13 +130,13 @@ while ($user = mysql_fetch_assoc($users_sql))
 
 
     // Written Comments
-    $index = mysql_query("SELECT COUNT(comment_id) AS number FROM ".$global_config_arr[pref]."news_comments WHERE comment_poster_id = $user[user_id]", $db);
+    $index = mysql_query("SELECT COUNT(comment_id) AS number FROM ".$global_config_arr[pref]."news_comments WHERE comment_poster_id = ".$user['user_id']."", $db);
     $temp = str_replace("{comments}", mysql_result($index, 0, "number"), $temp);
     // Written Articles
-    $index = mysql_query("SELECT COUNT(artikel_url) AS number FROM ".$global_config_arr[pref]."artikel WHERE artikel_user = $user[user_id]", $db);
+    $index = mysql_query("SELECT COUNT(article_id) AS number FROM ".$global_config_arr[pref]."articles WHERE article_user = ".$user['user_id']."", $db);
     $temp = str_replace("{articles}", mysql_result($index, 0, "number"), $temp);
     // Written News
-    $index = mysql_query("SELECT COUNT(news_id) AS number FROM ".$global_config_arr[pref]."news WHERE user_id = $user[user_id]", $db);
+    $index = mysql_query("SELECT COUNT(news_id) AS number FROM ".$global_config_arr[pref]."news WHERE user_id = ".$user['user_id']."", $db);
     $temp = str_replace("{news}", mysql_result($index, 0, "number"), $temp);
 
     $members_list .= $temp;

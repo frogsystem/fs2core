@@ -13,8 +13,8 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
     {
         mysql_query("DELETE FROM ".$global_config_arr[pref]."dl WHERE dl_id = '$_POST[editdlid]'", $db);
         mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_files WHERE dl_id = '$_POST[editdlid]'", $db);
-        image_delete("../images/dl/", "$_POST[editdlid]_s");
-        image_delete("../images/dl/", $_POST[editdlid]);
+        image_delete("images/dl/", "$_POST[editdlid]_s");
+        image_delete("images/dl/", $_POST[editdlid]);
         systext('Download wurde gelöscht');
     }
     else
@@ -38,9 +38,9 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         $admin_dl_config_arr = mysql_fetch_assoc($index);
         if ($_FILES[dlimg][name] != "")
         {
-            $upload = upload_img($_FILES['dlimg'], "../images/downloads/", $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
+            $upload = upload_img($_FILES['dlimg'], "images/downloads/", $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
             systext(upload_img_notice($upload));
-            $thumb = create_thumb_from(image_url("../images/downloads/",$_POST['editdlid'],false), $admin_dl_config_arr[thumb_x], $admin_dl_config_arr[thumb_y]);
+            $thumb = create_thumb_from(image_url("images/downloads/",$_POST['editdlid'],FALSE, TRUE), $admin_dl_config_arr[thumb_x], $admin_dl_config_arr[thumb_y]);
             systext(create_thumb_notice($thumb));
         }
 
