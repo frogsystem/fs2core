@@ -1,6 +1,18 @@
 <?php
+///////////////////////////////////
+//// PATH_SEPARATOR definieren ////
+///////////////////////////////////
+if ( ! defined( "PATH_SEPARATOR" ) ) {
+  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
+    define( "PATH_SEPARATOR", ";" );
+  else define( "PATH_SEPARATOR", ":" );
+}
+
 // Start Session
 session_start();
+
+// Set Include Path
+set_include_path( substr(__FILE__, 0, -10) );
 
 // Inlcude DB Connection File
 require("login.inc.php");
@@ -39,7 +51,7 @@ if ($db)
 	$template_index = str_replace ( "{copyright}", get_copyright (), $template_index );
 	$template_index = replace_resources ( $template_index );
 	$template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung
-	$template_index = killbraces ( $template_index );
+	//$template_index = killbraces ( $template_index );
 	
 	// Get Main Template
 	$template = get_maintemplate ();
