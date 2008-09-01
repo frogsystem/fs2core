@@ -358,6 +358,20 @@ $menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
 unset($NAVI_ARR);
 
 //////////////////////////////
+///// Videos
+//////////////////////////////
+
+$NAVI_ARR[title] = "Videos";
+$NAVI_ARR[menu_id] = "media";
+
+$NAVI_ARR[link][] = "playeradd";
+$NAVI_ARR[link][] = "playeredit";
+
+$template_navi .= createnavi($NAVI_ARR, createnavi_first($template_navi));
+$menu_show_arr[] = createmenu_show2arr($NAVI_ARR);
+unset($NAVI_ARR);
+
+//////////////////////////////
 ///// affiliates
 //////////////////////////////
 

@@ -1,4 +1,12 @@
 <?php
+// Alle Kategorien angeben, die nicht übermittelt werden sollen
+// Durch Komma getrennte IDs, am Ende kein Komma setzen
+
+$dontshow = "1,3,4";
+
+#######################
+#######################
+
 
 header("Content-type: application/rss+xml");
 
@@ -13,10 +21,20 @@ if ($db)
         $global_config_arr[virtualhost] = "http://example.com/";
     }
 
+	//Create WHERE Abfragen
+	$dontshow = explode ( ",", $dontshow );
+	unset ( $where );
+	$before = " WHERE ";
+	foreach ( $dontshow as $value ) {
+		$text = "cat_id != '".$value."'";
+		$where .= $before . $text;
+		$before = " AND ";
+	}
+
     // News Config + Infos
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."news_config".$where."", $db);
     $news_config_arr = mysql_fetch_assoc($index);
-    
+
     //Feed Header ausgeben
     echo'<?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE rss SYSTEM "http://my.netscape.com/publish/formats/rss-0.91.dtd">

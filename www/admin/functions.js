@@ -83,7 +83,11 @@ function openedit(what)
     window.open("admin_frogpad.php","editor","width=750,height=700,left=0,top=0,scrollbars=NO,resizable=YES");
 }
 
-
+//Open Edit-PopUp
+function openedit_original(what)
+{
+    window.open("admin_frogpadoriginal.php?tpl="+what,"editor","width=750,height=700,left=0,top=0,scrollbars=NO,resizable=YES");
+}
 
 
 //Schaltjahr
