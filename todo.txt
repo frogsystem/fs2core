@@ -29,4 +29,3 @@ linksystem mit bannern klick-counter, bewertungen, etc. (evtl mit partnersystem 
 antispam-code design- und schwierigkeitsverwaltung
 email-spamschutz mit javascript verschlüsselung und grafik
 web 2.0 / networking funktionen für user (profil, guestbook, pm, ...)
-test
