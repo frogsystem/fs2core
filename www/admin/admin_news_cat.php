@@ -36,10 +36,11 @@ if (
 					)
 	", $db );
     $message = $admin_phrases[news][new_cat_added];
+	$id = mysql_insert_id ( $db );
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['cat_pic'], "images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['cat_pic'], "images/cat/", "news_".$id, $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -417,7 +418,7 @@ elseif ( $showdefault == TRUE )
 
     // Display Add-Form
 	echo '
-					<form action="" method="post">
+					<form action="" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="sended" value="add">
 					    <input type="hidden" name="cat_action" value="add">
 						<input type="hidden" name="go" value="newscat">

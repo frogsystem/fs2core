@@ -282,7 +282,7 @@ else
 	
     foreach ( $_POST['linkname'] as $key => $value )
     {
-        if ( $_POST['linkname'][$key] != "" && $_POST['linkurl'][$key] != "" )
+        if ( $_POST['linkname'][$key] != "" && $_POST['linkurl'][$key] != "" && ( $_POST['linknew'][$key] == 0 || isset ( $_POST['addlink'] ) ) )
         {
 			$counter = $linkid + 1;
 
@@ -306,16 +306,11 @@ else
     		}
 
             echo'
-        								<tr style="cursor:pointer;"
-	onmouseover=\'
-		colorOver (document.getElementById("input_'.$linkid.'"), "#EEEEEE", "#64DC6A", this);\'
-	onmouseout=\'
-		colorOut (document.getElementById("input_'.$linkid.'"), "transparent", "#49c24f", this);\'
-	onClick=\'
-		createClick (document.getElementById("input_'.$linkid.'"));
-		resetUnclicked ("transparent", last, lastBox, this);
-		colorClick (document.getElementById("input_'.$linkid.'"), "#EEEEEE", "#64DC6A", this);\'
-                            			>
+										<tr class="pointer" id="tr_'.$linkid.'"
+											onmouseover="'.color_list_entry ( "input_".$linkid, "#EEEEEE", "#64DC6A", "this" ).'"
+											onmouseout="'.color_list_entry ( "input_".$linkid, "transparent", "#49c24f", "this" ).'"
+			                                onclick="'.color_click_entry ( "input_".$linkid, "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+										>
 											<td class="config" style="padding-left: 7px; padding-right: 7px; padding-bottom: 2px; padding-top: 2px;">
 												#'.$counter.'
 											</td>
@@ -325,10 +320,13 @@ else
                                     			<input type="hidden" name="linkname['.$linkid.']" value="'.$link_name.'">
                                     			<input type="hidden" name="linkurl['.$linkid.']" value="'.$link_fullurl.'">
                                     			<input type="hidden" name="linktarget['.$linkid.']" value="'.$_POST['linktarget'][$key].'">
+                                    			<input type="hidden" name="linknew['.$linkid.']" value="0">
 											</td>
 
                                 			<td align="center">
-                                                <input type="radio" name="dolink['.$linkid.']" id="input_'.$linkid.'" value="1" style="cursor:pointer;" onClick=\'createClick(this);\'>
+			                                    <input class="pointer" type="radio" name="dolink['.$linkid.']" id="input_'.$linkid.'" value="1"
+													onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$linkid, TRUE ).'"
+												>
 											</td>
 										</tr>
             ';
@@ -398,6 +396,7 @@ else
 												</select>
 											</td>
 											<td align="right" valign="top" style="padding-left: 10px;">
+												<input type="hidden" name="linknew['.$linkid.']" value="1">
                                                 <input class="button" type="submit" name="addlink" value="'.$admin_phrases[common][add_button].'">
 											</td>
 										</tr>
