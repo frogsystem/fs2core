@@ -211,7 +211,7 @@ function create_templateeditor($editor_arr)
                             <tr>
                                 <td class="config" valign="top"></td>
                                 <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\''.$editor_arr[name].'\')">
+                                    <input type="button" class="button" Value="Editor" onClick="openedit(\''.$editor_arr[name].'\')"> <input type="button" class="button" Value="Original anzeigen" onClick="openedit_original(\''.$editor_arr[name].'\')">
                                 </td>
                             </tr>
     ';

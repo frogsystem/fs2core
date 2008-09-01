@@ -18,8 +18,8 @@ function veraltet_includes ( $template_index )
 		    unset($template);
 
 		    //Seitenvariablen
-		    $index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
-		    while ($sv_arr = mysql_fetch_assoc($index))
+			$index2 = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
+			while ($sv_arr = mysql_fetch_assoc($index2))
 		    {
 		        // Include-URL laden
 		        $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
@@ -428,7 +428,7 @@ function delete_old_randoms ()
 ///////////////////////////////
 function get_copyright ()
 {
-    return '<span class="small">Powered by <a class="small" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007, 2008 Frogsystem-Team</span>';
+	return '<span class="small">Powered by <a class="small" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007, 2008 Frogsystem-Team</span>';
 }
 
 

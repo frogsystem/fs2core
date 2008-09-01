@@ -50,7 +50,7 @@ function image_url ( $PATH, $NAME, $ERROR = TRUE, $NO_URL = FALSE )
 	else {
 		$url = "";
 	}
-
+	
 	if ( $NO_URL == TRUE ) {
 		$url = $global_config_arr['path'] . $url;
 	} else {
