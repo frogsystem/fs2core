@@ -245,7 +245,7 @@ else
                                     &nbsp;
                                 </td>
                                 <td class="configthin">
-                                    <input size="2" class="text" name="optionsadd">
+                                    <input size="2" maxlength="2" class="text" name="optionsadd">
                                     Antwortfelder
                                     <input class="button" type="submit" value="Hinzufügen">
                                 </td>
