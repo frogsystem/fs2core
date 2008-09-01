@@ -127,134 +127,137 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
 
 
     //Navigation ausgeben
-    foreach ($navi_arr as $value)
+    if ( count ( $navi_arr ) > 0 )
     {
-        if (is_array($value) AND $open == true)
-        {
-            foreach ($value as $value2)
-            {
-                if (is_array($value2) AND $open2 == true)
-                {
-                    foreach ($value2 as $value3)
-                    {
-                        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value3", $db);
-                        $entry_arr = mysql_fetch_assoc($index);
+	    foreach ($navi_arr as $value)
+	    {
+	        if (is_array($value) AND $open == true)
+	        {
+	            foreach ($value as $value2)
+	            {
+	                if (is_array($value2) AND $open2 == true)
+	                {
+	                    foreach ($value2 as $value3)
+	                    {
+	                        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value3", $db);
+	                        $entry_arr = mysql_fetch_assoc($index);
 
-                        //Navi URL erstellen
-                        $navi_url = $navi_url2;
-                        switch ($entry_arr[type]) {
-                            case 3: $navi_url3 = $navi_url . "&lang=".$entry_arr[id]; break;
-                            case 2: $navi_url3 = $navi_url . "&cat=".$entry_arr[id]; break;
-                            default: $navi_url3 = $navi_url . "&game=".$entry_arr[id]; break;
-                        }
-                        
-                        //Icon URL erstellen
-                        $entry_arr[icon_url] = "images/icons/folder.gif";
-                        switch ($entry_arr[type]) {
-                            case 3:
-                                if ($_GET['lang']==$entry_arr[id])
-                                {$entry_arr[icon_url] = "images/icons/folder_open.gif";}
-                                break;
-                            case 2:
-                                if ($_GET['cat']==$entry_arr[id])
-                                {$entry_arr[icon_url] = "images/icons/folder_open.gif";}
-                                break;
-                            default:
-                                if ($_GET['game']==$entry_arr[id])
-                                {$entry_arr[icon_url] = "images/icons/folder_open.gif";}
-                                break;
-                        }
+	                        //Navi URL erstellen
+	                        $navi_url = $navi_url2;
+	                        switch ($entry_arr[type]) {
+	                            case 3: $navi_url3 = $navi_url . "&lang=".$entry_arr[id]; break;
+	                            case 2: $navi_url3 = $navi_url . "&cat=".$entry_arr[id]; break;
+	                            default: $navi_url3 = $navi_url . "&game=".$entry_arr[id]; break;
+	                        }
 
-                        $index = mysql_query("SELECT press_navi_line FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-                        $template = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".stripslashes(mysql_result($index, 0, "press_navi_line"));
-                        $template = str_replace("{navi_url}", $navi_url3, $template);
-                        $template = str_replace("{title}", $entry_arr[title], $template);
-                        $template = str_replace("{img_url}", image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]), $template);
-                        $template = str_replace("{icon_url}", $entry_arr[icon_url], $template);
-                        $lines .= $template;
-                    }
-                }
-                elseif (!is_array($value2))
-                {
-                    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value2", $db);
-                    $entry_arr = mysql_fetch_assoc($index);
+	                        //Icon URL erstellen
+	                        $entry_arr[icon_url] = "images/icons/folder.gif";
+	                        switch ($entry_arr[type]) {
+	                            case 3:
+	                                if ($_GET['lang']==$entry_arr[id])
+	                                {$entry_arr[icon_url] = "images/icons/folder_open.gif";}
+	                                break;
+	                            case 2:
+	                                if ($_GET['cat']==$entry_arr[id])
+	                                {$entry_arr[icon_url] = "images/icons/folder_open.gif";}
+	                                break;
+	                            default:
+	                                if ($_GET['game']==$entry_arr[id])
+	                                {$entry_arr[icon_url] = "images/icons/folder_open.gif";}
+	                                break;
+	                        }
 
-                    //Navi URL erstellen
-                    $navi_url = $navi_url1;
-                    switch ($entry_arr[type]) {
-                        case 3: $navi_url2 = $navi_url . "&lang=".$entry_arr[id]; break;
-                        case 2: $navi_url2 = $navi_url . "&cat=".$entry_arr[id]; break;
-                        default: $navi_url2 = $navi_url . "&game=".$entry_arr[id]; break;
-                    }
+	                        $index = mysql_query("SELECT press_navi_line FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
+	                        $template = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".stripslashes(mysql_result($index, 0, "press_navi_line"));
+	                        $template = str_replace("{navi_url}", $navi_url3, $template);
+	                        $template = str_replace("{title}", $entry_arr[title], $template);
+	                        $template = str_replace("{img_url}", image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]), $template);
+	                        $template = str_replace("{icon_url}", $entry_arr[icon_url], $template);
+	                        $lines .= $template;
+	                    }
+	                }
+	                elseif (!is_array($value2))
+	                {
+	                    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value2", $db);
+	                    $entry_arr = mysql_fetch_assoc($index);
 
-                    //Icon URL erstellen, nur Unterordner von geöffneten Ordner anzeigen
-                    $entry_arr[icon_url] = "images/icons/folder.gif";
-                    $open2 = false;
-                    switch ($entry_arr[type]) {
-                        case 3:
-                            if ($_GET['lang']==$entry_arr[id])
-                            {$entry_arr[icon_url] = "images/icons/folder_open.gif";$open2=true;}
-                            break;
-                        case 2:
-                            if ($_GET['cat']==$entry_arr[id])
-                            {$entry_arr[icon_url] = "images/icons/folder_open.gif";$open2=true;}
-                            break;
-                        default:
-                            if ($_GET['game']==$entry_arr[id])
-                            {$entry_arr[icon_url] = "images/icons/folder_open.gif";$open2=true;}
-                            break;
-                    }
+	                    //Navi URL erstellen
+	                    $navi_url = $navi_url1;
+	                    switch ($entry_arr[type]) {
+	                        case 3: $navi_url2 = $navi_url . "&lang=".$entry_arr[id]; break;
+	                        case 2: $navi_url2 = $navi_url . "&cat=".$entry_arr[id]; break;
+	                        default: $navi_url2 = $navi_url . "&game=".$entry_arr[id]; break;
+	                    }
 
-                    $index = mysql_query("SELECT press_navi_line FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-                    $template = "&nbsp;&nbsp;&nbsp;&nbsp;".stripslashes(mysql_result($index, 0, "press_navi_line"));
-                    $template = str_replace("{navi_url}", $navi_url2, $template);
-                    $template = str_replace("{title}", $entry_arr[title], $template);
-                    $template = str_replace("{img_url}", image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]), $template);
-                    $template = str_replace("{icon_url}", $entry_arr[icon_url], $template);
-                    $lines .= $template;
-                }
-            }
-        }
-        elseif (!is_array($value))
-        {
-            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value", $db);
-            $entry_arr = mysql_fetch_assoc($index);
-            
-            //Navi URL erstellen
-            $navi_url = "?go=press";
-            switch ($entry_arr[type]) {
-                case 3: $navi_url1 = $navi_url . "&lang=".$entry_arr[id]; break;
-                case 2: $navi_url1 = $navi_url . "&cat=".$entry_arr[id]; break;
-                default: $navi_url1 = $navi_url . "&game=".$entry_arr[id]; break;
-            }
-            
-            //Icon URL erstellen
-            $entry_arr[icon_url] = "images/icons/folder.gif";
-            $open = false;
-            switch ($entry_arr[type]) {
-                case 3:
-                    if ($_GET['lang']==$entry_arr[id])
-                    {$entry_arr[icon_url] = "images/icons/folder_open.gif"; $open=true;}
-                    break;
-                case 2:
-                    if ($_GET['cat']==$entry_arr[id])
-                    {$entry_arr[icon_url] = "images/icons/folder_open.gif"; $open=true;}
-                    break;
-                default:
-                    if ($_GET['game']==$entry_arr[id])
-                    {$entry_arr[icon_url] = "images/icons/folder_open.gif"; $open=true;}
-                    break;
-            }
-            
-            $index = mysql_query("SELECT press_navi_line FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-            $template = stripslashes(mysql_result($index, 0, "press_navi_line"));
-            $template = str_replace("{navi_url}", $navi_url1, $template);
-            $template = str_replace("{title}", $entry_arr[title], $template);
-            $template = str_replace("{img_url}", image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]), $template);
-            $template = str_replace("{icon_url}", $entry_arr[icon_url], $template);
-            $lines .= $template;
-        }
-    }
+	                    //Icon URL erstellen, nur Unterordner von geöffneten Ordner anzeigen
+	                    $entry_arr[icon_url] = "images/icons/folder.gif";
+	                    $open2 = false;
+	                    switch ($entry_arr[type]) {
+	                        case 3:
+	                            if ($_GET['lang']==$entry_arr[id])
+	                            {$entry_arr[icon_url] = "images/icons/folder_open.gif";$open2=true;}
+	                            break;
+	                        case 2:
+	                            if ($_GET['cat']==$entry_arr[id])
+	                            {$entry_arr[icon_url] = "images/icons/folder_open.gif";$open2=true;}
+	                            break;
+	                        default:
+	                            if ($_GET['game']==$entry_arr[id])
+	                            {$entry_arr[icon_url] = "images/icons/folder_open.gif";$open2=true;}
+	                            break;
+	                    }
+
+	                    $index = mysql_query("SELECT press_navi_line FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
+	                    $template = "&nbsp;&nbsp;&nbsp;&nbsp;".stripslashes(mysql_result($index, 0, "press_navi_line"));
+	                    $template = str_replace("{navi_url}", $navi_url2, $template);
+	                    $template = str_replace("{title}", $entry_arr[title], $template);
+	                    $template = str_replace("{img_url}", image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]), $template);
+	                    $template = str_replace("{icon_url}", $entry_arr[icon_url], $template);
+	                    $lines .= $template;
+	                }
+	            }
+	        }
+	        elseif (!is_array($value))
+	        {
+	            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value", $db);
+	            $entry_arr = mysql_fetch_assoc($index);
+
+	            //Navi URL erstellen
+	            $navi_url = "?go=press";
+	            switch ($entry_arr[type]) {
+	                case 3: $navi_url1 = $navi_url . "&lang=".$entry_arr[id]; break;
+	                case 2: $navi_url1 = $navi_url . "&cat=".$entry_arr[id]; break;
+	                default: $navi_url1 = $navi_url . "&game=".$entry_arr[id]; break;
+	            }
+
+	            //Icon URL erstellen
+	            $entry_arr[icon_url] = "images/icons/folder.gif";
+	            $open = false;
+	            switch ($entry_arr[type]) {
+	                case 3:
+	                    if ($_GET['lang']==$entry_arr[id])
+	                    {$entry_arr[icon_url] = "images/icons/folder_open.gif"; $open=true;}
+	                    break;
+	                case 2:
+	                    if ($_GET['cat']==$entry_arr[id])
+	                    {$entry_arr[icon_url] = "images/icons/folder_open.gif"; $open=true;}
+	                    break;
+	                default:
+	                    if ($_GET['game']==$entry_arr[id])
+	                    {$entry_arr[icon_url] = "images/icons/folder_open.gif"; $open=true;}
+	                    break;
+	            }
+
+	            $index = mysql_query("SELECT press_navi_line FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
+	            $template = stripslashes(mysql_result($index, 0, "press_navi_line"));
+	            $template = str_replace("{navi_url}", $navi_url1, $template);
+	            $template = str_replace("{title}", $entry_arr[title], $template);
+	            $template = str_replace("{img_url}", image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]), $template);
+	            $template = str_replace("{icon_url}", $entry_arr[icon_url], $template);
+	            $lines .= $template;
+	        }
+	    }
+	}
 
     $index = mysql_query("SELECT press_navi_main FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "press_navi_main"));
