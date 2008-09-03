@@ -45,8 +45,7 @@ if ($_POST[username] && $_POST[usermail] && $_POST[newpwd] && $_POST[wdhpwd])
     {
         $regdate = time();
         
-        $index = mysql_query("SELECT email_register FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-        $template_mail = stripslashes(mysql_result($index, 0, "email_register"));
+        $template_mail = get_template ( "email_register" );
         $template_mail = str_replace("{username}", $_POST[username], $template_mail);
         $template_mail = str_replace("{password}", $userpass_mail, $template_mail);
 
@@ -58,7 +57,8 @@ if ($_POST[username] && $_POST[usermail] && $_POST[newpwd] && $_POST[wdhpwd])
         $header .= "Content-Type: text/plain";
         mail($_POST[usermail], $email_betreff, $template_mail, $header);
 
-        $adduser = "INSERT INTO ".$global_config_arr['pref']."user (user_name, user_password, user_salt, user_mail, reg_date)
+        $adduser = "INSERT INTO ".$global_config_arr['pref']."user
+						(user_name, user_password, user_salt, user_mail, user_reg_date)
                     VALUES ('".$_POST['username']."',
                             '".$userpass."',
                             '".$user_salt."',

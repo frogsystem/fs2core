@@ -8,14 +8,23 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
 {
     $_POST[username] = savesql($_POST[username]);
     $_POST[usermail] = savesql($_POST[usermail]);
-    settype($_POST[userid], 'integer');
-    settype($_POST[isadmin], 'integer');
-    settype($_POST[showmail], 'integer');
+    settype($_POST['userid'], 'integer');
+    settype($_POST['user_is_staff'], 'integer');
+    settype($_POST['user_show_mail'], 'integer');
+    
+	if ( $_POST['user_group'] == "admin" && $_POST['user_is_staff'] == 1 ) {
+	    $_POST['user_group'] = 0;
+	    $_POST['user_is_admin'] = 1;
+	} else {
+	    $_POST['user_is_admin'] = 0;
+	}
+    settype($_POST['user_group'], 'integer');
+	
 
     $regdate = mktime(0, 0, 0, $_POST[monat], $_POST[tag], $_POST[jahr]);
  
     // Username schon vorhanden?
-    $index = mysql_query("SELECT user_id FROM ".$global_config_arr[pref]."user WHERE user_name = '$_POST[username]'", $db);
+    $index = mysql_query("SELECT user_id FROM ".$global_config_arr['pref']."user WHERE user_name = '$_POST[username]'", $db);
     $rows = mysql_num_rows($index);
     $dbexistid = mysql_result($index, 0, "user_id");
 
@@ -24,21 +33,18 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
     {
         if (!isset($_POST[deluser]))
         {
-            $index = mysql_query("SELECT is_admin FROM ".$global_config_arr[pref]."user WHERE user_id = '$_POST[userid]'", $db);
-            $dbisadmin = mysql_result($index, 0, "is_admin");
-
-            // Wenn vorher kein Admin, jetzt aber wohl
-            if (($_POST[isadmin] == 1) && ($dbisadmin == 0))
+            $index = mysql_query("SELECT user_is_staff FROM ".$global_config_arr['pref']."user WHERE user_id = '$_POST[userid]'", $db);
+            $dbisstaff = mysql_result($index, 0, "user_is_staff");
+            
+            // user is not longer in staff
+            if ( $_POST['user_is_staff'] == 0 && $dbisstaff == 1 )
             {
-                mysql_query("INSERT INTO ".$global_config_arr[pref]."permissions (user_id)
-                             VALUES (".$_POST[userid].")", $db);
-            }
-
-            // Wenn vorher Admin, jetzt aber nicht mehr
-            if (($_POST[isadmin] == 0) && ($dbisadmin == 1))
-            {
-                $dbaction = "DELETE FROM ".$global_config_arr['pref']."permissions WHERE user_id = ".$_POST[userid];
-                mysql_query($dbaction, $db);
+                $dbaction = mysql_query ("
+											DELETE
+											FROM ".$global_config_arr['pref']."user_permissions
+											WHERE `perm_for_group` = '0'
+											AND `x_id` = '".$_POST[userid]."'
+				", $db );
             }
 
             $update = "UPDATE ".$global_config_arr['pref']."user
@@ -54,14 +60,17 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
                             user_salt = '".$newsalt."',";
             }
             
-            $update .= "   is_admin = '".$_POST['isadmin']."',
-                           reg_date = '".$regdate."',
-                           show_mail = '".$_POST['showmail']."'
-                       WHERE user_id = $_POST[userid]
+            $update .= "
+							user_is_staff = '".$_POST['user_is_staff']."',
+							user_group = '".$_POST['user_group']."',
+				  			user_is_admin = '".$_POST['user_is_admin']."',
+							user_reg_date = '".$regdate."',
+							user_show_mail = '".$_POST['user_show_mail']."'
+							WHERE user_id = $_POST[userid]
             ";
                        
             mysql_query($update, $db);
-            
+            echo mysql_error();
             //Avatar löschen
             if ($_POST['avatar_delete'] == 1)
             {
@@ -82,9 +91,13 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
         } 
         elseif($_POST[userid] != 1 AND $_POST[userid] != $_SESSION[user_id])  // User löschen
         {
-            $dbaction = "DELETE FROM ".$global_config_arr['pref']."permissions WHERE user_id = ".$_POST[userid];
-            @mysql_query($dbaction, $db);
-
+            $dbaction = mysql_query ("
+										DELETE
+										FROM ".$global_config_arr['pref']."user_permissions
+										WHERE `perm_for_group` = '0'
+										AND `x_id` = '".$_POST['userid']."'
+			", $db );
+			
             $dbaction = "DELETE FROM ".$global_config_arr['pref']."user WHERE user_id = ".$_POST[userid];
             mysql_query($dbaction, $db);
 
@@ -108,13 +121,18 @@ elseif (isset($_POST[select_user]))
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_id = $_POST[select_user]", $db);
     $user_arr = mysql_fetch_assoc($index);
 
-    $user_arr[is_admin] = ($user_arr[is_admin] == 1) ? "checked" : "";
-    $user_arr[show_mail] = ($user_arr[show_mail] == 1) ? "checked" : "";
-
+    if ( $user_arr['user_is_staff'] == 1 ) {
+		$display_arr['group_tr'] = "";
+	} else {
+		$display_arr['group_tr'] = "none";
+	}
+	
+    if ( $user_arr['user_is_admin'] == 1 ) {
+		$user_arr['user_group'] = "admin";
+	}
     echo'
                     <form action="" method="post" enctype="multipart/form-data">
-                        <input type="hidden" value="useredit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="user_edit" name="go">
                         <input type="hidden" value="'.$user_arr[user_password].'" name="oldpass">
                         <input type="hidden" value="'.$user_arr[user_id].'" name="userid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
@@ -169,11 +187,39 @@ elseif (isset($_POST[select_user]))
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Admin Account:<br>
-                                    <font class="small">Erzeugt oder degradiert einen Admin Account</font>
+                                    Mitarbeiter:<br>
+                                    <font class="small">User arbeitet an der Seite mit</font>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="isadmin" value="1" '.$user_arr[is_admin].'>
+                                    <input type="checkbox" name="user_is_staff" value="1" '.getchecked ( $user_arr['user_is_staff'], 1 ).'
+									 onChange="show_hidden(document.getElementById(\'group_tr\'), this)">
+                                </td>
+                            </tr>
+                            <tr style="display: '.$display_arr['group_tr'].';" id="group_tr">
+                                <td class="config">
+                                    Gruppe:<br>
+                                    <font class="small">Gehört der User einer Gruppe an</font>
+                                </td>
+                                <td class="config">
+                                    <select name="user_group" size="1">
+                                        <option value="0"'.getselected ( $user_arr['user_group'], 0 ).'>keine Gruppe</option>
+	';
+	
+	$index = mysql_query ("
+							SELECT `user_group_id`, `user_group_name`
+							FROM ".$global_config_arr['pref']."user_groups
+							ORDER BY `user_group_name`
+	", $db );
+	
+	while ( $group_arr = mysql_fetch_assoc( $index ) ) {
+	    echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $user_arr['user_group'], $group_arr['user_group_id'] ).'>
+			'.$group_arr['user_group_name'].'</option>';
+	}
+	
+	echo '
+                                        
+                                        <option value="admin"'.getselected ( $user_arr['user_group'], "admin" ).'>Administrator (alle Rechte)</option>
+									</select>
                                 </td>
                             </tr>
                             <tr>
@@ -182,9 +228,9 @@ elseif (isset($_POST[select_user]))
                                     <font class="small">Registriert seit</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="2" value="'.date("d",$user_arr[reg_date]).'" name="tag" maxlength="2">
-                                    <input class="text" size="2" value="'.date("m",$user_arr[reg_date]).'" name="monat" maxlength="2">
-                                    <input class="text" size="4" value="'.date("Y",$user_arr[reg_date]).'" name="jahr" maxlength="4">
+                                    <input class="text" size="2" value="'.date("d",$user_arr[user_reg_date]).'" name="tag" maxlength="2">
+                                    <input class="text" size="2" value="'.date("m",$user_arr[user_reg_date]).'" name="monat" maxlength="2">
+                                    <input class="text" size="4" value="'.date("Y",$user_arr[user_reg_date]).'" name="jahr" maxlength="4">
                                 </td>
                             </tr>
                             <tr>
@@ -193,7 +239,7 @@ elseif (isset($_POST[select_user]))
                                     <font class="small">Zeigt die Email Adresse öffentlich</font>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="showmail" value="1" '.$user_arr[show_mail].'>
+                                    <input type="checkbox" name="user_show_mail" value="1" '.getchecked ( $user_arr['user_show_mail'], 1 ).'>
                                 </td>
                             </tr>
                             <tr>
@@ -223,8 +269,7 @@ else
 {
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="useredit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="user_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td align="center" class="config" width="50%">
@@ -248,8 +293,7 @@ else
     {
         echo'
                     <form action="" method="post">
-                        <input type="hidden" value="useredit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="user_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td align="center" class="config" width="50%">

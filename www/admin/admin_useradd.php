@@ -24,7 +24,7 @@ if ($_POST[username] && $_POST[usermail])
         $_POST[showmail] = isset($_POST[showmail]) ? 1 : 0;
 
         $sqlquery = "INSERT INTO ".$global_config_arr[pref]."user
-                     (user_name, user_password, user_mail, reg_date, show_mail)
+						(user_name, user_password, user_salt, user_mail, user_reg_date, user_show_mail)
                      VALUES ('".$_POST[username]."',
                              '".$codedpass."',
                              '".$user_salt."',
@@ -34,8 +34,7 @@ if ($_POST[username] && $_POST[usermail])
         mysql_query($sqlquery, $db);
 
         // Mail versenden
-        $index = mysql_query("select email_register from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-        $template_mail = stripslashes(mysql_result($index, 0, "email_register"));
+        $template_mail = get_template ( "email_register" );
         $template_mail = str_replace("{username}", $_POST[username], $template_mail);
         $template_mail = str_replace("{password}", $newpass, $template_mail);
 

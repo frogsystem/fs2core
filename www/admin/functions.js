@@ -1,3 +1,13 @@
+// show or hide an element
+function show_hidden (showObject, checkObject) {
+  if (checkObject.checked == true || checkObject.selected == true) {
+      showObject.style.display = "";
+    } else {
+      showObject.style.display = "none";
+    }
+  return true;
+}
+
 
 //delete alert
 function delalert (elementID, alertText) {
