@@ -241,7 +241,7 @@ a.navi
 }
 a.navi:hover,a.navi:focus { text-decoration:underline; }
 
-a.navi_selected
+span.navi_selected
 {
     font-weight:bold;
 }
@@ -302,7 +302,6 @@ a.menu_link_right:hover, a.menu_link_right:focus
     background-image:url('img/menu_top_r_hover.jpg');
     background-position:right top;
 }
-
 
 
 /**************************************************/
@@ -369,6 +368,7 @@ a.menu_link_right:hover, a.menu_link_right:focus
     background-repeat:repeat-x;
     width:630px;
     height:38px;
+    padding-top: 4px;
     position:absolute;
     top:76px;
     left:50%;

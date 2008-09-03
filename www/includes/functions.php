@@ -706,10 +706,10 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
             #$bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'strip_tags');
             $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
         }
-
-
         $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'stripslashes');
-        $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'nl2br');
+        if ($all==true) {
+      		$bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'nl2br');
+        }
         $bbcode->addParser ('list', 'bbcode_stripcontents');
 
         if ($all==true OR $do_smilies==1)

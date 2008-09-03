@@ -416,116 +416,152 @@ function insert_tt($title,$text,$form)
    ';
 }
 
-
 ////////////////////////////////
 //// Seitentitel generieren  ///
 //// und Berechtigung prüfen ///
 ////////////////////////////////
 
-function createpage($title, $permission, $page)
+function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
 {
- global $pagetitle;
- global $filetoinc;
- $pagetitle = $title; 
- if ($permission == 1) $filetoinc = $page; 
- else $filetoinc = 'admin_error.php';
+	if ( $PERMISSION == 1 ) {
+		$PAGE_DATA_ARR['title'] = $TITLE;
+		$PAGE_DATA_ARR['file'] = $FILE;
+		$PAGE_DATA_ARR['menu'] = $ACTIVE_MENU;
+	} else {
+		$PAGE_DATA_ARR['title'] = "Fehler";
+		$PAGE_DATA_ARR['file'] = "admin_error.php";
+		$PAGE_DATA_ARR['menu'] = "none";
+	}
+	$PAGE_DATA_ARR['created'] = TRUE;
+	return $PAGE_DATA_ARR;
 }
 
 ////////////////////////////////
 //// Menü erzeugen           ///
 ////////////////////////////////
 
-function createmenu($menu_arr)
+function create_menu ( $ACTIVE_MENU )
 {
-    global $go;
-    global $session_url;
-    
-    end ($menu_arr);
-    $end = key($menu_arr);
-    reset ($menu_arr);
+	global $global_config_arr;
+	global $db;
 
-    foreach ($menu_arr as $key => $value)
-    {
-        if ($value[show] == true AND $_SESSION["user_level"] == "authorised")
+    unset($MENU_ARR);
+
+    $index = mysql_query ( "
+                    		SELECT *
+                    		FROM `".$global_config_arr['pref']."admin_cp`
+                    		WHERE `group_id` = '-1'
+                    		ORDER BY `page_pos` ASC, `page_id` ASC
+    ", $db );
+
+    while ( $MENU_ARR = mysql_fetch_assoc ( $index ) ) {
+        $MENU_ARR['show'] = create_menu_show ( $MENU_ARR['page_link'] );
+
+        if ( $MENU_ARR['show'] == true && $_SESSION['user_level'] == "authorised" )
         {
-        	if ($key == $end) {
-         		$align = "_right";
+			if ( $ACTIVE_MENU == $MENU_ARR['page_link'] ) {
+                $MENU_ARR['class'] = "menu_link_selected";
+            } else {
+                $MENU_ARR['class'] = "menu_link";
             }
-            $menu_class = "menu_link".$align ;
-            if ($_REQUEST['mid']==$value[id] AND ($go!="login" OR $_SESSION["user_level"] == "authorised")) {
-                $menu_class = "menu_link_selected".$align;
-            }
-            $template .= '<td align="right"><a href="'.$PHP_SELF.'?mid='.$value[id].$session_url.'" target="_self" class="'.$menu_class.'">'.$value[title].'</a></td>';
+            $template .= '<a href="'.$PHP_SELF.'?go='.$MENU_ARR['page_id'].'" target="_self" class="'.$MENU_ARR['class'].'">'.$MENU_ARR['page_title'].'</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;';
         }
     }
 
-    echo $template;
-    unset($template);
+	$template = substr ( $template, 0, -24 );
+
+    return $template;
 }
 
-////////////////////////////////
-//// Menu ermitteln          ///
-////////////////////////////////
-
-function createmenu_show2arr($navi_arr)
-{
-    unset($template);
-
-    foreach ($navi_arr[link] as $value)
-    {
-        $template .= createlink($value);
-    }
-
-
-    if ($template == "") {
-        $show_arr[state] = false;
-    } else {
-        $show_arr[state] = true;
-    }
-    $show_arr[menu_id] = $navi_arr[menu_id];
-    return $show_arr;
-}
 
 ////////////////////////////////
 //// Menü anzeigen           ///
 ////////////////////////////////
 
-function createmenu_show($show_arr,$menu_id)
+function create_menu_show ( $MENU_ID )
 {
-    foreach ($show_arr as $value)
-    {
-        if ($value[menu_id] == $menu_id AND $value[state] == true) {
-            return true;
+    global $global_config_arr;
+	global $db;
+
+    $index = mysql_query ( "
+                                SELECT P.`page_id`
+                        		FROM `".$global_config_arr['pref']."admin_groups` G, `".$global_config_arr['pref']."admin_cp` P
+                        		WHERE G.`menu_id` = '".$MENU_ID."'
+                        		AND P.`group_id` = G.`group_id`
+                        		ORDER BY `page_id`
+    ", $db );
+    
+    while ( $page = mysql_fetch_assoc ( $index ) ) {
+        $page = $page['page_id'];
+        if ( $_SESSION[$page] == 1 ) {
+            return TRUE;
+            break;
         }
     }
-    return false;
+    
+    return FALSE;
 }
 
+/////////////////////////////////////////////////
+//// Create Navigation Groups from Database  ////
+/////////////////////////////////////////////////
+
+function create_navi (  $ACTIVE_MENU, $GO  )
+{
+	global $global_config_arr;
+	global $db;
+
+	unset ( $template );
+
+    $groupaction = mysql_query ( "
+		                            SELECT `group_id`, `group_title`
+		                            FROM `".$global_config_arr['pref']."admin_groups`
+		                            WHERE `menu_id` = '".$ACTIVE_MENU."'
+		                            AND `group_id` > 0
+		                            ORDER BY `group_pos` ASC, `group_title` ASC
+	", $db );
+
+	while ( $GROUP_ARR = mysql_fetch_assoc ( $groupaction ) ) {
+        $template .= create_group ( $GROUP_ARR, create_group_first ( $template ), $GO );
+	}
+
+	return $template;
+}
 ////////////////////////////////
 //// Navi erzeugen           ///
 ////////////////////////////////
 
-function createnavi($navi_arr, $first)
+function create_group ($GROUP_ARR, $IS_FIRST, $GO )
 {
-    unset($template);
+	global $global_config_arr;
+	global $db;
 
-    if ($navi_arr[menu_id] == $_REQUEST['mid'] AND $_SESSION["user_level"] == "authorised") {
-        foreach ($navi_arr[link] as $value)
-        {
-            $template .= createlink($value);
-        }
+	unset ( $template );
 
-        if ($first == true) {
-            $headline_img = "navi_top";
-        } else {
-            $headline_img = "navi_headline";
-        }
+	// get links from database
+	$pageaction = mysql_query ( "
+		                    		SELECT `page_id`, `page_link`
+		                    		FROM `".$global_config_arr['pref']."admin_cp`
+		                    		WHERE `group_id` = '".$GROUP_ARR['group_id']."'
+		                    		ORDER BY `page_pos` ASC, `page_id` ASC
+	", $db );
+	while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {
+	    $template .= create_link ( $PAGE_ARR['page_id'], $PAGE_ARR['page_link'], $GO );
+	}
+
+    // is group first in navi?
+    if ( $IS_FIRST == TRUE ) {
+        $headline_img = "navi_top";
+    } else {
+        $headline_img = "navi_headline";
     }
     
-    if ($template != "") {
-        $template = '
+    // put links into group
+    if ( strlen ( $template ) > 0 ) {
+		$template = '
             <div id="'.$headline_img.'">
-                <img src="img/pointer.png" alt="" style="vertical-align:text-bottom">&nbsp;<b>'.$navi_arr[title].'</b>
+                <img src="img/pointer.png" alt="->" style="vertical-align:text-bottom">&nbsp;<b>'.$GROUP_ARR['group_title'].'</b>
                 <div id="navi_link">
                     '.$template.'
                 </div>
@@ -535,93 +571,42 @@ function createnavi($navi_arr, $first)
     return $template;
 }
 
+////////////////////////////////
+//// Navi first              ///
+////////////////////////////////
+
+function create_group_first ( $TEMPLATE )
+{
+    if ( strlen ( $TEMPLATE ) == 0 ) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
 
 ////////////////////////////////
 //// Seitenlink generieren   ///
 //// und Berechtigung prüfen ///
 ////////////////////////////////
 
-function createlink($page_call, $page_link_title = false, $page_link_url = false, $page_link_perm = false)
+function create_link ( $PAGE_ID, $PAGE_LINK, $GO )
 {
-  global $global_config_arr;
-  global $db;
-  global $session_url;
-
-  $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."admin_cp WHERE page_call = '$page_call' LIMIT 0,1", $db);
-  $createlink_arr = mysql_fetch_assoc($index);
-
-  if ($createlink_arr[permission]!=1)
-  {
-      $createlink_arr[permission] = $_SESSION[$createlink_arr[permission]];
-  }
-
-  if ($page_link_perm!=false)
-  {
-      $createlink_arr[permission] = $page_link_perm;
-  }
-
-  if ($page_link_title!=false)
-  {
-      $createlink_arr[link_title] = $page_link_title;
-  }
-
-  if ($page_link_url!=false)
-  {
-      $createlink_arr[page_call] = $page_link_url;
-  }
-
-  $link_class = "navi";
-  if ($_GET['go'] == $page_call)
-  {
+  // is active page?
+  if ( $PAGE_ID == $GO ) {
       $link_class = "navi_selected";
+  } else {
+      $link_class = "navi";
   }
   
-  if ($createlink_arr[permission] == 1)
-  {
-      return'
-      <a href="'.$PHP_SELF.'?mid='.$_REQUEST['mid'].'&go='.$createlink_arr[page_call].$session_url.'" class="navi">- </a>
-      <a href="'.$PHP_SELF.'?mid='.$_REQUEST['mid'].'&go='.$createlink_arr[page_call].$session_url.'" class="'.$link_class.'">
-          '.$createlink_arr[link_title].'</a><br />';
+  // permission ok?
+  if ( $_SESSION[$PAGE_ID] ) {
+      return '<a href="'.$PHP_SELF.'?go='.$PAGE_ID.'" class="navi">- <span class="'.$link_class.'">'.$PAGE_LINK.'</span></a><br>';
   }
-  else
-  {
+  else {
       return "";
   }
 }
-
-////////////////////////////////
-//// Navi first              ///
-////////////////////////////////
-
-function createnavi_first($template)
-{
-    if (strlen($template) == 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-////////////////////////////////
-//// Navi Permission         ///
-////////////////////////////////
-
-function createnavi_perm($perm_arr)
-{
-    $givePermission = false;
-    foreach ($perm_arr as $value) {
-        if ($_SESSION[$value] == 1) {
-            $givePermission = true;
-        } else {
-            $givePermission = false;
-        }
-    }
-    if ($perm_arr[0] === true) {
-        $givePermission = true;
-    }
-    return $givePermission;
-}
-
 
 
 
@@ -644,7 +629,13 @@ function admin_set_cookie($username, $password)
     }
     else
     {
-        $dbisadmin = mysql_result($index, 0, "is_admin");
+        $USER_ARR = mysql_fetch_assoc ( $index );
+        if ( $USER_ARR['user_is_staff'] == 1 || $USER_ARR['user_is_admin'] == 1 || $USER_ARR['user_id'] == 1 ) {
+            $dbisadmin = 1;
+        } else {
+            $dbisadmin = 0;
+        }
+
         if ($dbisadmin == 1)
         {
             $dbuserpass = mysql_result($index, 0, "user_password");
@@ -689,7 +680,13 @@ function admin_login($username, $password, $iscookie)
     }
     else
     {
-        $dbisadmin = mysql_result($index, 0, "is_admin");
+        $USER_ARR = mysql_fetch_assoc ( $index );
+        if ( $USER_ARR['user_is_staff'] == 1 || $USER_ARR['user_is_admin'] == 1 || $USER_ARR['user_id'] == 1 ) {
+            $dbisadmin = 1;
+        } else {
+            $dbisadmin = 0;
+        }
+
         if ($dbisadmin == 1)
         {
             $dbuserpass = mysql_result($index, 0, "user_password");
@@ -725,29 +722,79 @@ function admin_login($username, $password, $iscookie)
 
 function fillsession($uid)
 {
-   global $global_config_arr;
-   global $db;
-   global $data;
-   
-   $dbaction = "select * from ".$global_config_arr[pref]."user where user_id = " . $uid;
-   $usertableindex2 = mysql_query($dbaction, $db);
+	global $global_config_arr;
+	global $db;
 
-   $_SESSION["user_id"] = $uid;
-   $dbusername = mysql_result($usertableindex2, 0, "user_name");
-   $_SESSION["user_name"] = $dbusername;
-   $dbuserpass = mysql_result($usertableindex2, 0, "user_password");
-   $_SESSION["user_pass"] = $dbuserpass;
-   $dbusermail = mysql_result($usertableindex2, 0, "user_mail");
-   $_SESSION["user_mail"] = $dbusermail;
+	$dbaction = mysql_query( "
+								SELECT `user_id`, `user_name`, `user_is_staff`, `user_group`, `user_is_admin`
+								FROM `".$global_config_arr['pref']."user`
+								WHERE `user_id` = '".$uid."'
+								LIMIT 0,1
+	", $db);
+	
+	$USER_ARR = mysql_fetch_assoc ( $dbaction );
+	
+	$_SESSION['user_id'] =  $USER_ARR['user_id'];
+	$_SESSION['user_name'] =  $USER_ARR['user_name'];
+	$_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
 
-   $result = mysql_list_fields($data,"".$global_config_arr[pref]."permissions");
-   $menge = mysql_num_fields($result);
-   for($x=1;$x<$menge;$x++)
-   {
-    $fieldname = mysql_field_name($result,$x);
-    $index = mysql_query("select $fieldname from ".$global_config_arr[pref]."permissions where user_id = $uid", $db);
-    $_SESSION[$fieldname] = mysql_result($index, 0, $fieldname);
-   }
+	$dbaction = mysql_query( "
+								SELECT `page_id`
+								FROM `".$global_config_arr['pref']."admin_cp`
+								ORDER BY `page_id`
+	", $db);
+
+	while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
+        $permission = $permission['page_id'];
+        if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
+            $_SESSION[$permission] = 1;
+        } else {
+        	$groupaction = mysql_query( "
+        								    SELECT COUNT(*) AS 'group_granted'
+        								    FROM `".$global_config_arr['pref']."user_permissions`
+                                            WHERE `perm_id` = '".$permission."'
+                                            AND `perm_for_group` = '1'
+                                            AND `x_id` = '".$USER_ARR['user_group']."'
+                                            AND `x_id` != '0'
+                                            LIMIT 0,1
+        	", $db);
+        	$group_granted = mysql_result ( $groupaction, 0, "group_granted" );
+        	
+        	$userpaction = mysql_query( "
+        								    SELECT COUNT(*) AS 'user_granted'
+        								    FROM `".$global_config_arr['pref']."user_permissions`
+                                            WHERE `perm_id` = '".$permission."'
+                                            AND `perm_for_group` = '0'
+                                            AND `x_id` = '".$USER_ARR['user_id']."'
+                                            AND `x_id` != '0'
+                                            LIMIT 0,1
+        	", $db);
+            $user_granted = mysql_result ( $groupaction, 0, "user_granted" );
+        	
+        	if ( $group_granted == 1 || $user_granted == 1 ) {
+                $_SESSION[$permission] = 1;
+            } else {
+                $_SESSION[$permission] = 0;
+            }
+        }
+	}
+/*  Alte Sache, zur Sicherheit mal gelassen
+	$_SESSION["user_id"] = $uid;
+	$dbusername = mysql_result($usertableindex2, 0, "user_name");
+ 	$_SESSION["user_name"] = $dbusername;
+	$dbuserpass = mysql_result($usertableindex2, 0, "user_password");
+	$_SESSION["user_pass"] = $dbuserpass;
+	$dbusermail = mysql_result($usertableindex2, 0, "user_mail");
+	$_SESSION["user_mail"] = $dbusermail;
+
+    $permissions = mysql_list_fields($data,"".$global_config_arr[pref]."permissions");
+    $menge = mysql_num_fields($result);
+    for($x=1;$x<$menge;$x++) {
+        $fieldname = mysql_field_name($result,$x);
+        $index = mysql_query("select $fieldname from ".$global_config_arr[pref]."permissions where user_id = $uid", $db);
+        $_SESSION[$fieldname] = mysql_result($index, 0, $fieldname);
+    }
+*/
 }
 
 ?>
