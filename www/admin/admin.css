@@ -714,3 +714,8 @@ a.tooltip:hover span {
 {
     background-color: #49C24f;
 }
+.default {}
+.hidden
+{
+    display: none;
+}

@@ -23,6 +23,9 @@ $phrases[add_comment]       = "Kommentar hinzufügen";
 $phrases[comment_not_added] = "Kommentar konnte nicht hinzugefügt werden.";
 $phrases[comment_empty]     = "<br>Es müssen alle Felder ausgefüllt sein.";
 $phrases[comment_spam]      = "<br>Die Rechenaufgabe muss richtig gelöst werden.";
+$phrases[no_comments]       = "Es wurden keine Kommentare gefunden";
+$phrases[comm_not_allowed]  = "Es ist dir nicht erlaubt Kommentare zu verfassen";
+$phrases[comm_not_activ]    = "Das Kommentarsystem ist bei dieser News deaktiviert";
 
 // Galerie
 $phrases[no_pics]           = "Es wurden keine Bilder gefunden.";
@@ -44,6 +47,7 @@ $phrases[user_not_exist]    = "Dieser User existiert nicht";
 $phrases[user_exists]       = "Username existiert bereits";
 $phrases[registered]        = "Du bist nun registriert und kannst dich auf der Seite einloggen";
 $phrases[user_antispam]     = "Die Rechenaufgabe muss richtig gelöst werden.";
+$phrases[not_twice]         = "Du hast dich bereits auf der Seite registriert.";
 
 // Login/out
 $phrases[logged_in]         = "Du bist eingeloggt";

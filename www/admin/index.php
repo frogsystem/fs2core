@@ -62,7 +62,7 @@ $index = mysql_query ( "
                         AND P.`page_id` = '".$go."'
                         LIMIT 0,1
 ", $db );
-$_SESSION[start_system] = 0;
+
 // if page exisits
 if ( mysql_num_rows ( $index ) == 1 ) {
 	$acp_arr = mysql_fetch_assoc ( $index );

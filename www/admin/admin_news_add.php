@@ -24,6 +24,8 @@ if (
     
     settype ( $_POST['cat_id'], "integer" );
     settype ( $_POST['posterid'], "integer" );
+    settype ( $_POST['news_active'], "integer" );
+    settype ( $_POST['news_comments_allowed'], "integer" );
 
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'] );
 	$newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
@@ -32,13 +34,15 @@ if (
 	// MySQL-Insert-Query
     mysql_query ("
 					INSERT INTO ".$global_config_arr['pref']."news
-						(cat_id, user_id, news_date, news_title, news_text)
+						(cat_id, user_id, news_date, news_title, news_text, news_active, news_comments_allowed)
 					VALUES (
 						'".$_POST['cat_id']."',
 						'".$_POST['posterid']."',
 						'".$newsdate."',
 						'".$_POST['title']."',
-						'".$_POST['text']."'
+						'".$_POST['text']."',
+						'".$_POST['news_active']."',
+						'".$_POST['news_comments_allowed']."'
 					)
 	", $db );
 
@@ -66,17 +70,22 @@ if (
 
     mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news + 1", $db );
     systext( $admin_phrases[news][news_added], $admin_phrases[common][info]);
+
+    // Unset Vars
+    unset ( $_POST );
 }
 
 /////////////////////////
 ///// News Formular /////
 /////////////////////////
 
-else
+if ( TRUE )
 {
-    if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['addnews'] ) )
-    {
+    if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['addnews'] ) ) {
         systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
+    } else {
+         $_POST['news_active'] = 1;
+		 $_POST['news_comments_allowed'] = 1;
     }
 
     // News Konfiguration lesen
@@ -117,7 +126,7 @@ else
     // Display Page
     echo'
 					<form action="" method="post">
-						<input type="hidden" value="newsadd" name="go">
+						<input type="hidden" value="news_add" name="go">
                         <input type="hidden" name="sended" value="1">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
@@ -147,11 +156,11 @@ else
                                 </td>
                                 <td class="config" valign="top">
 									<span class="small">
-										<input class="text" size="3" maxlength="2" id="d" name="d" value="'.$date_arr['d'].'"> .
-                                    	<input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
-                                    	<input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'"> '.$admin_phrases[common][at].'
-                                    	<input class="text" size="3" maxlength="2" id="h" name="h" value="'.$date_arr['h'].'"> :
-                                    	<input class="text" size="3" maxlength="2" id="i" name="i" value="'.$date_arr['i'].'"> '.$admin_phrases[common][time_appendix].'&nbsp;
+										<input class="text center" size="3" maxlength="2" id="d" name="d" value="'.$date_arr['d'].'"> .
+                                    	<input class="text center" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
+                                    	<input class="text center" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'"> '.$admin_phrases[common][at_time].'
+                                    	<input class="text center" size="3" maxlength="2" id="h" name="h" value="'.$date_arr['h'].'"> :
+                                    	<input class="text center" size="3" maxlength="2" id="i" name="i" value="'.$date_arr['i'].'"> '.$admin_phrases[common][time_appendix].'&nbsp;
 									</span>
 									'.js_nowbutton ( $nowbutton_array, $admin_phrases[common][now_button] ).'
                                 </td>
@@ -176,16 +185,30 @@ else
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    <input class="text" size="75" maxlength="255" name="title" value="'.$_POST['title'].'">
+                                    <input class="text" size="75" maxlength="255" name="title" value="'.$_POST['title'].'"><br><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[news][news_text].':<br>
-									<span class="small">'.
-									$admin_phrases[common][html].' '.$config_arr[html_code].'. '.
-									$admin_phrases[common][fscode].' '.$config_arr[fs_code].'. '.
-									$admin_phrases[common][para].' '.$config_arr[para_handling].'.</span>
+                                
+                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+											<td class="config top">
+                                                '.$admin_phrases[news][news_text].':<br>
+												<span class="small">'.
+												$admin_phrases[common][html].' '.$config_arr[html_code].'. '.
+												$admin_phrases[common][fscode].' '.$config_arr[fs_code].'. '.
+												$admin_phrases[common][para].' '.$config_arr[para_handling].'.</span>
+											</td>
+											<td class="config right bottom">
+											    <input class="pointer middle" type="checkbox" name="news_active" value="1" '.getchecked ( $_POST['news_active'], 1 ).'>
+											    <span class="small middle">'.$admin_phrases[news][news_active].'</span>&nbsp;&nbsp;
+											    <input class="pointer middle" type="checkbox" name="news_comments_allowed" value="1" '.getchecked ( $_POST['news_comments_allowed'], 1 ).'>
+											    <span class="small middle">'.$admin_phrases[news][news_comments_allowed].'</span>
+											</td>
+										</tr>
+									</table>
+
                                 </td>
                             </tr>
                             <tr>

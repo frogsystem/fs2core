@@ -27,7 +27,7 @@ if (
 
 	    echo'
                     <form action="" method="post">
-						<input type="hidden" name="go" value="newsedit">
+						<input type="hidden" name="go" value="news_edit">
 						<input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
 						<input type="hidden" name="comment_action" value="'.$_POST['comment_action'].'">
 						<input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
@@ -81,7 +81,7 @@ if (
 	    ';
 	}
 	
-	// Edit Comment
+	// Delete Comment
 	elseif ( $_POST['comment_action'] == "delete" )
 	{
         settype ( $_POST['comment_id'], 'integer' );
@@ -101,7 +101,7 @@ if (
 
 		echo '
 					<form action="" method="post">
-						<input type="hidden" name="go" value="newsedit">
+						<input type="hidden" name="go" value="news_edit">
 						<input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
 						<input type="hidden" name="comment_action" value="'.$_POST['comment_action'].'">
 						<input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
@@ -126,37 +126,7 @@ if (
 									Soll dieser Kommentar wirklich gelöscht werden:
 								</td>
 								<td class="config right top" style="padding: 0px;">
-		    						<table width="100%" cellpadding="4" cellspacing="0">
-										<tr class="bottom pointer" id="tr_yes"
-											onmouseover="'.color_list_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this" ).'"
-											onmouseout="'.color_list_entry ( "del_yes", "transparent", "#49C24f", "this" ).'"
-											onclick="'.color_click_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this", TRUE ).'"
-										>
-											<td>
-												<input class="pointer" type="radio" name="comment_delete" id="del_yes" value="1"
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_yes", TRUE ).'"
-												>
-											</td>
-											<td class="config middle">
-												'.$admin_phrases[common][yes].'
-											</td>
-										</tr>
-										<tr class="bottom red pointer" id="tr_no"
-											onmouseover="'.color_list_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this" ).'"
-											onmouseout="'.color_list_entry ( "del_no", "transparent", "#C24949", "this" ).'"
-											onclick="'.color_click_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this", TRUE ).'"
-										>
-											<td>
-												<input class="pointer" type="radio" name="comment_delete" id="del_no" value="0" checked="checked"
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#DE5B5B", "tr_no", TRUE ).'"
-												>
-											</td>
-											<td class="config middle">
-												'.$admin_phrases[common][no].'
-											</td>
-										</tr>
-										'.color_pre_selected ( "del_no", "tr_no" ).'
-									</table>
+									'.get_yesno_table ( "comment_delete" ).'
 								</td>
 							</tr>
 							<tr><td class="space"></td></tr>

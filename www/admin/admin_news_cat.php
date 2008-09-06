@@ -484,7 +484,7 @@ elseif ( $showdefault == TRUE )
 								<td class="config">
 		';
 		if ( image_exists ( "images/cat/", "news_".$cat_arr['cat_id'] ) ) {
-		    echo '<img src="'.image_url ( "images/cat/", "news_".$cat_arr['cat_id'] ).'" alt="'.$admin_cat_arr['cat_name'].'" border="0">';
+		    echo '<img src="'.image_url ( "images/cat/", "news_".$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">';
 		}
 		echo '
 								</td>

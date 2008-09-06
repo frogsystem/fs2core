@@ -134,6 +134,8 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
 		return TRUE;
 	} elseif ( $ACTIVATION == 3 && $_SESSION['user_id'] && is_in_staff ( $_SESSION['user_id'] ) ) {
 		return TRUE;
+	} elseif ( $ACTIVATION == 4 && $_SESSION['user_id'] && is_admin ( $_SESSION['user_id'] ) ) {
+		return TRUE;
 	} elseif ( $sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
 		return TRUE;
 	} else {
@@ -153,14 +155,45 @@ function is_in_staff ( $USER_ID )
     settype ( $USER_ID, "integer" );
     
 	if ( $USER_ID ) {
-	    $index = mysql_query ( " SELECT is_admin FROM ".$global_config_arr['pref']."user WHERE user_id = '".$USER_ID."'", $db );
+	    $index = mysql_query ( "
+								SELECT user_id, user_is_staff, user_is_admin
+								FROM ".$global_config_arr['pref']."user
+								WHERE user_id = '".$USER_ID."'
+								LIMIT 0,1
+		", $db );
 		if ( mysql_num_rows ( $index ) > 0 ) {
-			if ( mysql_result ( $index, 0, "is_admin" ) == 1 ) {
+			if ( mysql_result ( $index, 0, "user_is_staff" ) == 1 || mysql_result ( $index, 0, "user_is_admin" ) == 1 || mysql_result ( $index, 0, "user_id" ) == 1 ) {
 				 return TRUE;
 		    }
 	    }
 	}
-	
+	return FALSE;
+}
+
+///////////////////////
+//// User is Admin ////
+///////////////////////
+
+function is_admin ( $USER_ID )
+{
+    global $global_config_arr;
+    global $db;
+
+    settype ( $USER_ID, "integer" );
+
+	if ( $USER_ID ) {
+	    $index = mysql_query ( "
+								SELECT user_id, user_is_admin
+								FROM ".$global_config_arr['pref']."user
+								WHERE user_id = '".$USER_ID."'
+								LIMIT 0,1
+		", $db );
+		if ( mysql_num_rows ( $index ) > 0 ) {
+			if ( mysql_result ( $index, 0, "user_is_admin" ) == 1 || mysql_result ( $index, 0, "user_id" ) == 1 ) {
+				 return TRUE;
+		    }
+	    }
+	}
 	return FALSE;
 }
 
@@ -648,7 +681,6 @@ function markword($text, $word)
 
 function savesql ( $TEXT )
 {
-    $TEXT = trim ( $TEXT );
     $TEXT = mysql_real_escape_string ( $TEXT );
     return $TEXT;
 }
@@ -659,7 +691,6 @@ function savesql ( $TEXT )
 
 function killhtml ( $TEXT )
 {
-    $TEXT = trim ( $TEXT );
     $TEXT = stripslashes ( $TEXT );
     $TEXT = htmlspecialchars ( $TEXT );
     return $TEXT;

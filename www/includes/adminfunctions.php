@@ -1,4 +1,75 @@
 <?php
+/////////////////////////
+//// Get Yes/NO Table////
+/////////////////////////
+
+function get_yesno_table ( $NAME )
+{
+	global $admin_phrases;
+
+	return '
+		    						<table width="100%" cellpadding="4" cellspacing="0">
+										<tr class="bottom pointer" id="tr_yes"
+											onmouseover="'.color_list_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this" ).'"
+											onmouseout="'.color_list_entry ( "del_yes", "transparent", "#49C24f", "this" ).'"
+											onclick="'.color_click_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+										>
+											<td>
+												<input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1"
+                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_yes", TRUE ).'"
+												>
+											</td>
+											<td class="config middle">
+												'.$admin_phrases[common][yes].'
+											</td>
+										</tr>
+										<tr class="bottom red pointer" id="tr_no"
+											onmouseover="'.color_list_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this" ).'"
+											onmouseout="'.color_list_entry ( "del_no", "transparent", "#C24949", "this" ).'"
+											onclick="'.color_click_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this", TRUE ).'"
+										>
+											<td>
+												<input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked
+                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#DE5B5B", "tr_no", TRUE ).'"
+												>
+											</td>
+											<td class="config middle">
+												'.$admin_phrases[common][no].'
+											</td>
+										</tr>
+										'.color_pre_selected ( "del_no", "tr_no" ).'
+									</table>
+	';
+}
+
+//////////////////////////////////////
+//// Noscript - Do not use hidden ////
+//////////////////////////////////////
+
+function noscript_nohidden ()
+{
+	return '
+		<noscript>
+			<style type="text/css">
+				.hidden {display: table-row;}
+			</style>
+		</noscript>
+	';
+}
+
+////////////////////////////////////////////
+//// add zero to figures lower than 10  ////
+////////////////////////////////////////////
+
+function add_zero ( $FIGURE )
+{
+    settype ( $FIGURE, "integer" );
+    if ( $FIGURE >= 0 && $FIGURE < 10 ) {
+        $FIGURE = "0".$FIGURE;
+    }
+	return $FIGURE;
+}
+
 //////////////////////////
 //// Get Article URLs ////
 //////////////////////////
@@ -141,20 +212,46 @@ function open_fullscreenpopup ( $FILE )
 function getselected ( $VALUE, $COMPAREWITH )
 {
 	if ( $VALUE == $COMPAREWITH ) {
-	    return 'selected="selected"';
+	    return 'selected';
+	} else {
+		return '';
+	}
+}
+
+///////////////////////////
+//// checked="checked" ////
+///////////////////////////
+
+function getchecked ( $VALUE, $COMPAREWITH )
+{
+	if ( $VALUE == $COMPAREWITH ) {
+	    return 'checked';
 	} else {
 		return '';
 	}
 }
 
 /////////////////////////////
-//// checked="checked" ////
+//// disabled="disabled" ////
 /////////////////////////////
 
-function getchecked ( $VALUE, $COMPAREWITH )
+function getdisabled ( $VALUE, $COMPAREWITH )
 {
 	if ( $VALUE == $COMPAREWITH ) {
-	    return 'checked="checked"';
+	    return 'disabled';
+	} else {
+		return '';
+	}
+}
+
+/////////////////////////////
+//// readonly="readonly" ////
+/////////////////////////////
+
+function getreadonly ( $VALUE, $COMPAREWITH )
+{
+	if ( $VALUE == $COMPAREWITH ) {
+	    return 'readonly';
 	} else {
 		return '';
 	}
@@ -244,6 +341,17 @@ function getfrompost ( $ARRAY )
         $ARRAY[$key] = $_POST[$key];
 	}
 	return $ARRAY;
+}
+
+///////////////////////////////
+//// Update $_POST from DB ////
+///////////////////////////////
+
+function putintopost ( $ARRAY )
+{
+	foreach ( $ARRAY as $key => $value  ) {
+        $_POST[$key] = $ARRAY[$key];
+	}
 }
 
 ////////////////////////////////
@@ -738,19 +846,23 @@ function fillsession($uid)
 	$_SESSION['user_name'] =  $USER_ARR['user_name'];
 	$_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
 
+	// pages permissions
 	$dbaction = mysql_query( "
 								SELECT `page_id`
 								FROM `".$global_config_arr['pref']."admin_cp`
+								WHERE `group_id` > 0
 								ORDER BY `page_id`
 	", $db);
 
 	while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
-        $permission = $permission['page_id'];
+		$permission = $permission['page_id'];
         if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
             $_SESSION[$permission] = 1;
         } else {
-        	$groupaction = mysql_query( "
-        								    SELECT COUNT(*) AS 'group_granted'
+
+
+			$groupaction = mysql_query( "
+        								    SELECT *
         								    FROM `".$global_config_arr['pref']."user_permissions`
                                             WHERE `perm_id` = '".$permission."'
                                             AND `perm_for_group` = '1'
@@ -758,10 +870,10 @@ function fillsession($uid)
                                             AND `x_id` != '0'
                                             LIMIT 0,1
         	", $db);
-        	$group_granted = mysql_result ( $groupaction, 0, "group_granted" );
+        	$group_granted = mysql_num_rows ( $groupaction );
         	
         	$userpaction = mysql_query( "
-        								    SELECT COUNT(*) AS 'user_granted'
+        								    SELECT *
         								    FROM `".$global_config_arr['pref']."user_permissions`
                                             WHERE `perm_id` = '".$permission."'
                                             AND `perm_for_group` = '0'
@@ -769,8 +881,8 @@ function fillsession($uid)
                                             AND `x_id` != '0'
                                             LIMIT 0,1
         	", $db);
-            $user_granted = mysql_result ( $groupaction, 0, "user_granted" );
-        	
+            $user_granted = mysql_num_rows ( $userpaction );
+
         	if ( $group_granted == 1 || $user_granted == 1 ) {
                 $_SESSION[$permission] = 1;
             } else {
@@ -778,23 +890,29 @@ function fillsession($uid)
             }
         }
 	}
-/*  Alte Sache, zur Sicherheit mal gelassen
-	$_SESSION["user_id"] = $uid;
-	$dbusername = mysql_result($usertableindex2, 0, "user_name");
- 	$_SESSION["user_name"] = $dbusername;
-	$dbuserpass = mysql_result($usertableindex2, 0, "user_password");
-	$_SESSION["user_pass"] = $dbuserpass;
-	$dbusermail = mysql_result($usertableindex2, 0, "user_mail");
-	$_SESSION["user_mail"] = $dbusermail;
 
-    $permissions = mysql_list_fields($data,"".$global_config_arr[pref]."permissions");
-    $menge = mysql_num_fields($result);
-    for($x=1;$x<$menge;$x++) {
-        $fieldname = mysql_field_name($result,$x);
-        $index = mysql_query("select $fieldname from ".$global_config_arr[pref]."permissions where user_id = $uid", $db);
-        $_SESSION[$fieldname] = mysql_result($index, 0, $fieldname);
-    }
-*/
+	// startpage permissions
+	$dbaction = mysql_query( "
+								SELECT `page_id`, `group_id`, `page_link`
+								FROM `".$global_config_arr['pref']."admin_cp`
+								WHERE `group_id` <= 0
+								ORDER BY `page_id`
+	", $db);
+	
+	while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
+        if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
+            $_SESSION[$permission['page_id']] = 1;
+        } else {
+			if ( $permission['group_id'] == -1 ) {
+                if ( create_menu_show ( $permission['page_link'] ) == TRUE ) {
+                	$_SESSION[$permission['page_id']] = 1;
+            	}
+	        } else {
+				$_SESSION[$permission['page_id']] = 0;
+	        }
+        }
+	}
+
 }
 
 ?>

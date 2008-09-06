@@ -25,23 +25,28 @@ unset($template);
 /// News nach Datum anzeigen ///
 ////////////////////////////////
 
-if ($_POST[jahr] && $_POST[monat])
+if ($_REQUEST[jahr] && $_REQUEST[monat])
 {
-    settype($_POST[jahr], 'integer');
-    settype($_POST[monat], 'integer');
+    settype($_REQUEST[jahr], 'integer');
+    settype($_REQUEST[monat], 'integer');
 
-    $starttime = mktime(0, 0, 0, $_POST[monat], 0, $_POST[jahr]);
-    $endtime = mktime(0, 0, 0, $_POST[monat]+1, 0, $_POST[jahr]);
+    $starttime = mktime(0, 0, 0, $_REQUEST[monat], 0, $_REQUEST[jahr]);
+    $endtime = mktime(0, 0, 0, $_REQUEST[monat]+1, 0, $_REQUEST[jahr]);
 
     // News Konfiguration lesen
     $index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
 
     // News lesen und ausgeben
-    $index = mysql_query("select * from ".$global_config_arr[pref]."news
-                          where news_date > $starttime and
-                                news_date < $endtime
-                          order by news_date desc", $db);
+    $index = mysql_query ( "
+							SELECT *
+							FROM ".$global_config_arr['pref']."news
+							WHERE news_date > $starttime
+							AND news_date < $endtime
+							AND news_active = 1
+							ORDER BY news_date desc
+	", $db);
+	
     if (mysql_num_rows($index) > 0)  // News vorhanden?
     {
         while ($news_arr = mysql_fetch_assoc($index))
@@ -60,18 +65,23 @@ if ($_POST[jahr] && $_POST[monat])
 // News nach Keyword anzeigen //
 ////////////////////////////////
 
-if ($_POST[keyword])
+elseif ($_REQUEST[keyword])
 {
-    $_POST[keyword] = savesql($_POST[keyword]);
+    $_REQUEST[keyword] = savesql($_REQUEST[keyword]);
 
     // News Konfiguration lesen
     $index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
     $config_arr = mysql_fetch_assoc($index);
 
     // News lesen und ausgeben
-    $index = mysql_query("select * from ".$global_config_arr[pref]."news
-                          where news_text like '%$_POST[keyword]%'
-                          order by news_date desc", $db);
+    $index = mysql_query ( "
+							SELECT *
+							FROM ".$global_config_arr['pref']."news
+							WHERE ( news_text LIKE '%".$_REQUEST['keyword']."%'
+							OR news_title LIKE '%".$_REQUEST['keyword']."%' )
+							AND news_active = 1
+							ORDER BY news_date desc
+	", $db);
     if (mysql_num_rows($index) > 0)  // News vorhanden?
     {
         while ($news_arr = mysql_fetch_assoc($index))

@@ -28,6 +28,7 @@ if ( $db && mysql_select_db ( $data, $db ) ) {
     // General Config + Infos
     $index = mysql_query ( "SELECT * FROM ".$pref."global_config", $db );
     $global_config_arr = mysql_fetch_assoc ( $index );
+    $global_config_arr = array_map ("stripslashes", $global_config_arr );
 
     //write $pref into $global_config_arr['pref']
     $global_config_arr['pref'] = $pref;

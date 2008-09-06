@@ -12,16 +12,20 @@ $time = time();
 // Headlines erzeugen
 $index = mysql_query("select * from ".$global_config_arr[pref]."news
                       where news_date <= $time
+                      AND news_active = 1
                       order by news_date desc
                       limit $config_arr[num_head]", $db);
 while ($newshead_arr = mysql_fetch_assoc($index))
 {
-    $index2 = mysql_query("select news_headline from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $headline = stripslashes(mysql_result($index2, 0, "news_headline"));
-    $newshead_arr[news_date] = date("d.m.y" , $newshead_arr[news_date]) . " | " . date("H:i" , $newshead_arr[news_date]);
-    $headline = str_replace("{datum}", $newshead_arr[news_date], $headline); 
-    $headline = str_replace("{url}", "#".$newshead_arr[news_id], $headline); 
-    $headline = str_replace("{titel}", $newshead_arr[news_title], $headline); 
+    $newshead_arr['news_date'] = date("d.m.y" , $newshead_arr['news_date']) . " | " . date("H:i" , $newshead_arr['news_date']);
+	if ( strlen ( $newshead_arr['news_title'] ) > $config_arr['news_headline_lenght'] ) {
+        $newshead_arr['news_title'] = substr ( $newshead_arr['news_title'], 0, $config_arr['news_headline_lenght'] ) . $config_arr['news_headline_ext'];
+	}
+	
+    $headline = get_template ( "news_headline" );
+    $headline = str_replace("{datum}", $newshead_arr['news_date'], $headline);
+    $headline = str_replace("{url}", "#".$newshead_arr['news_id'], $headline);
+    $headline = str_replace("{titel}", stripslashes ( $newshead_arr['news_title'] ), $headline);
     $headline_tpl .= $headline;
 }
 unset($newshead_arr);
@@ -34,12 +38,15 @@ $index = mysql_query("select dl_name, dl_id, dl_date
                       limit $config_arr[num_head]", $db);
 while ($dlhead_arr = mysql_fetch_assoc($index))
 {
-    $index2 = mysql_query("select dl_quick_links from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $download = stripslashes(mysql_result($index2, 0, "dl_quick_links"));
-    $dlhead_arr[dl_date] = date("d.m.y" , $dlhead_arr[dl_date]) . " | " . date("H:i" , $dlhead_arr[dl_date]);
-    $download = str_replace("{datum}", $dlhead_arr[dl_date], $download); 
-    $download = str_replace("{url}", "?go=dlfile&amp;fileid=".$dlhead_arr[dl_id], $download); 
-    $download = str_replace("{name}", $dlhead_arr[dl_name], $download); 
+    $dlhead_arr['dl_date'] = date("d.m.y" , $dlhead_arr['dl_date']) . " | " . date("H:i" , $dlhead_arr['dl_date']);
+	if ( strlen ( $dlhead_arr['dl_name'] ) > $config_arr['news_headline_lenght'] ) {
+        $dlhead_arr['dl_name'] = substr ( $dlhead_arr['dl_name'], 0, $config_arr['news_headline_lenght'] ) . $config_arr['news_headline_ext'];
+	}
+
+	$download = get_template ( "dl_quick_links" );
+    $download = str_replace("{datum}", $dlhead_arr['dl_date'], $download);
+    $download = str_replace("{url}", "?go=dlfile&fileid=".$dlhead_arr['dl_id'], $download);
+    $download = str_replace("{name}", stripslashes ( $dlhead_arr['dl_name'] ), $download);
     $downloads_tpl .= $download;
 }
 unset($dlhead_arr);
@@ -58,6 +65,7 @@ $headline_template = $template;
 
 $index = mysql_query("select * from ".$global_config_arr[pref]."news
                       where news_date <= $time
+                      AND news_active = 1
                       order by news_date desc
                       limit $config_arr[num_news]", $db);
 while ($news_arr = mysql_fetch_assoc($index))

@@ -1,44 +1,54 @@
 <?php
-$show_form = true;
+/////////////////////
+//// Load Config ////
+/////////////////////
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config", $db );
+$config_arr = mysql_fetch_assoc($index);
+$show_form = TRUE;
 $template = "";
 
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-$anti_spam = check_captcha ($_POST['spam'], $global_config_arr['registration_antispam']);
+$anti_spam = check_captcha ( $_POST['spam'], $config_arr['registration_antispam'] );
 
-///////////////////////////
-///// User hinzufügen /////
-///////////////////////////
+//////////////////
+//// Add User ////
+//////////////////
 
-if ($_POST[username] && $_POST[usermail] && $_POST[newpwd] && $_POST[wdhpwd])
+if ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST['wdhpwd'] )
 {
     $_POST['username'] = savesql ( $_POST['username'] );
     $_POST['usermail'] = savesql ( $_POST['usermail'] );
     $user_salt = generate_pwd ( 10 );
     $userpass = md5 ( $_POST['newpwd'].$user_salt );
     $userpass_mail = $_POST['newpwd'];
-
     
-    // Username schon vorhanden? oder anti spam falsch?
-    $index = mysql_query("SELECT COUNT(user_id) AS number FROM ".$global_config_arr[pref]."user
-                          WHERE user_name = '$_POST[username]'", $db);
-    $existing_users = mysql_result($index, 0, "number");
+    // user exists or nagative anti spam
+    $index = mysql_query ( "
+							SELECT COUNT(`user_id`) AS 'number'
+							FROM ".$global_config_arr['pref']."user
+							WHERE user_name = '".$_POST['username']."'
+	", $db);
+    $existing_users = mysql_result ( $index, 0, "number" );
     
-    if ($existing_users > 0 || $anti_spam != true || $_POST[newpwd] != $_POST[wdhpwd])
+	// get error message
+	if ( $existing_users > 0 || $anti_spam != TRUE || $_POST['newpwd'] != $_POST['wdhpwd'] )
     {
-        unset($sysmeldung);
-        if ($existing_users > 0) {
+        unset( $sysmeldung );
+        if ( $existing_users > 0 ) {
             $sysmeldung[] = $phrases[user_exists];
         }
-        if ($anti_spam != true) {
+        if ( $anti_spam != TRUE ) {
             $sysmeldung[] = $phrases[user_antispam];
         }
-        if ($_POST[newpwd] != $_POST[wdhpwd]) {
+        if ( $_POST['newpwd'] != $_POST['wdhpwd']) {
             $sysmeldung[] = $phrases[passnotequal];
         }
-        $template .= sys_message($phrases[sysmessage], implode("<br>", $sysmeldung));
-        unset($_POST);
+        $template .= sys_message ( $phrases[sysmessage], implode ( "<br>", $sysmeldung ) );
+
+	    // Unset Vars
+	    unset ( $_POST );
     }
 
     else
@@ -101,7 +111,7 @@ if ($show_form == true)
     $index = mysql_query("SELECT user_spamtext FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
     $user_spam_text = stripslashes(mysql_result($index, 0, "user_spamtext"));
 
-    if ($global_config_arr[registration_antispam]==0)
+    if ($config_arr[registration_antispam]==0)
     {
         $user_spam = "";
         $user_spam_text = "";

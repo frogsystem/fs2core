@@ -1,10 +1,23 @@
 // show or hide an element
-function show_hidden (showObject, checkObject) {
-  if (checkObject.checked == true || checkObject.selected == true) {
-      showObject.style.display = "";
+function show_hidden (showObject, checkObject, compareWith) {
+  if (checkObject.checked == compareWith) {
+      showObject.className = "default";
     } else {
-      showObject.style.display = "none";
+      showObject.className = "hidden";
     }
+  return true;
+}
+
+function show_one (oneString, valueString, checkObject) {
+  oneArray = oneString.split("|");
+  valueArray = valueString.split("|");
+  for (var i = 0; i < oneArray.length && i < valueArray.length; ++i) {
+	if ( checkObject.value == valueArray[i] ) {
+	  document.getElementById(oneArray[i]).className = "default";
+	} else {
+      document.getElementById(oneArray[i]).className = "hidden";
+	}
+  }
   return true;
 }
 

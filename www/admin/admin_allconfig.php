@@ -4,117 +4,127 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST['title'] AND $_POST['virtualhost'] AND $_POST['admin_mail']
-AND $_POST['date'] AND $_POST['page'] AND $_POST['page_next'] AND $_POST['page_prev']
-AND ($_POST['home'] == 0 || ( $_POST['home'] == 1 && $_POST['home_text'] != "" ) ) )
+if (
+		$_POST['title'] && $_POST['title'] != ""
+		&& $_POST['virtualhost'] && $_POST['virtualhost'] != ""
+		&& $_POST['admin_mail'] && $_POST['admin_mail'] != ""
+		&& $_POST['date'] && $_POST['date'] != ""
+		&& $_POST['page'] && $_POST['page'] != ""
+		&& $_POST['page_next'] && $_POST['page_next'] != ""
+		&& $_POST['page_prev'] && $_POST['page_prev'] != ""
+		&& ( $_POST['home'] == 0 || ( $_POST['home'] == 1 && $_POST['home_text'] != "" ) )
+	)
 {
+	// security functions
+	if ( substr ( $_POST['virtualhost'], -1 ) != "/" ) {
+	  $_POST['virtualhost'] = $_POST['virtualhost']."/";
+	}
 
-  if (substr($_POST[virtualhost], -1) != "/")
-  {
-      $_POST[virtualhost] = $_POST[virtualhost]."/";
-  }
+	$_POST['virtualhost'] = savesql ( $_POST['virtualhost'] );
+	$_POST['admin_mail'] = savesql ( $_POST['admin_mail'] );
+	$_POST['title'] = savesql ( $_POST['title'] );
+	$_POST['description'] = savesql ( $_POST['description'] );
+	$_POST['keywords'] = savesql ( $_POST['keywords'] );
+	$_POST['author'] = savesql ( $_POST['author'] );
+	$_POST['date'] = savesql ( $_POST['date'] );
+	$_POST['page'] = savesql ( $_POST['page'] );
+	$_POST['page_next'] = savesql ( $_POST['page_next'] );
+	$_POST['page_prev'] = savesql ( $_POST['page_prev'] );
+	$_POST['feed'] = savesql ( $_POST['feed'] );
+	$_POST['language'] = savesql ( $_POST['language'] );;
+	$_POST['home_text'] = savesql ( $_POST['home_text'] );
 
-  $_POST[title] = savesql($_POST[title]);
-  $_POST[virtualhost] = savesql($_POST[virtualhost]);
-  $_POST[description] = savesql($_POST[description]);
-  $_POST[author] = savesql($_POST[author]);
-  $_POST[admin_mail] = savesql($_POST[admin_mail]);
-  $_POST[keywords] = savesql($_POST[keywords]);
-  $_POST[date] = savesql($_POST[date]);
-  $_POST[page] = savesql($_POST[page]);
-  $_POST[page_next] = savesql($_POST[page_next]);
-  $_POST[page_prev] = savesql($_POST[page_prev]);
-  $_POST[feed] = savesql($_POST[feed]);
-  $_POST[language] = savesql($_POST[language]);
-  settype ($_POST[home], "integer");
-  $_POST[home_text] = savesql($_POST[home_text]);
-  
-  mysql_query("UPDATE ".$global_config_arr['pref']."global_config
-               SET virtualhost = '$_POST[virtualhost]',
-                   admin_mail = '$_POST[admin_mail]',
-                   title = '$_POST[title]',
-                   description = '$_POST[description]',
-                   keywords = '$_POST[keywords]',
-                   author = '$_POST[author]',
-                   show_favicon = '$_POST[show_favicon]',
-                   design = '$_POST[design]',
-                   allow_other_designs = '$_POST[allow_other_designs]',
-                   show_announcement = '$_POST[show_announcement]',
-                   date = '$_POST[date]',
-                   page = '$_POST[page]',
-                   page_next = '$_POST[page_next]',
-                   page_prev = '$_POST[page_prev]',
-                   registration_antispam = '$_POST[registration_antispam]',
-                   feed = '$_POST[feed]',
-                   language = '$_POST[language]',
-                   home = '$_POST[home]',
-                   home_text = '$_POST[home_text]'
-               WHERE id = 1", $db);
+	settype ( $_POST['show_favicon'], "integer" );
+	settype ( $_POST['design'], "integer" );
+	settype ( $_POST['allow_other_designs'], "integer" );
+	settype ( $_POST['home'], "integer" );
+
+	// MySQL-Queries
+    mysql_query ( "
+					UPDATE `".$global_config_arr['pref']."global_config`
+					SET
+						`virtualhost` = '".$_POST['virtualhost']."',
+						`admin_mail` = '".$_POST['admin_mail']."',
+						`title` = '".$_POST['title']."',
+						`description` = '".$_POST['description']."',
+						`keywords` = '".$_POST['keywords']."',
+						`author` = '".$_POST['author']."',
+						`show_favicon` = '".$_POST['show_favicon']."',
+						`design` = '".$_POST['design']."',
+						`allow_other_designs` = '".$_POST['allow_other_designs']."',
+						`date` = '".$_POST['date']."',
+						`page` = '".$_POST['page']."',
+						`page_next` = '".$_POST['page_next']."',
+						`page_prev` = '".$_POST['page_prev']."',
+						`feed` = '".$_POST['feed']."',
+						`language` = '".$_POST['language']."',
+						`home` = '".$_POST['home']."',
+						`home_text` = '".$_POST['home_text']."'
+					WHERE `id` = '1'
+	", $db );
+	
+	// system messages
     systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+
+    // Unset Vars
+    unset ( $_POST );
 }
 
 /////////////////////////////////////
 ////// Konfiguration Formular ///////
 /////////////////////////////////////
 
-else
+if ( TRUE )
 {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."global_config", $db);
-    $config_arr = mysql_fetch_assoc($index);
+	// Display Error Messages
+	if ( isset ( $_POST['sended'] ) ) {
+		systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
 
-    if (isset($_POST['sended']))
-    {
-        $config_arr[title] = $_POST['title'];
-        $config_arr[virtualhost] = $_POST['virtualhost'];
-        $config_arr[admin_mail] = $_POST['admin_mail'];
-        $config_arr[description] = $_POST['description'];
-        $config_arr[author] = $_POST['author'];
-        $config_arr[keywords] = $_POST['keywords'];
-        $config_arr[show_favicon] = $_POST['show_favicon'];
-        $config_arr[feed] = $_POST['feed'];
-        $config_arr[language] = $_POST['language'];
-        $config_arr[design] = $_POST['design'];
-        $config_arr[allow_other_designs] = $_POST['allow_other_designs'];
-        $config_arr[home] = $_POST['home'];
-        $config_arr[home_text] = $_POST['home_text'];
-        $config_arr[show_announcement] = $_POST['show_announcement'];
-        $config_arr[registration_antispam] = $_POST['registration_antispam'];
-        $config_arr[date] = $_POST['date'];
-        $config_arr[page] = $_POST['page'];
-        $config_arr[page_next] = $_POST['page_next'];
-        $config_arr[page_prev] = $_POST['page_prev'];
-    
-        systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
-    }
+	// Load Data from DB into Post
+	} else {
+	    $index = mysql_query ( "
+								SELECT *
+								FROM ".$global_config_arr['pref']."global_config
+								WHERE `id` = '1'
+		", $db);
+	    $config_arr = mysql_fetch_assoc($index);
+	    putintopost ( $config_arr );
+	}
 
-        $config_arr[title] = killhtml($config_arr[title]);
-        $config_arr[virtualhost] = killhtml($config_arr[virtualhost]);
-        $config_arr[description] = killhtml($config_arr[description]);
-        $config_arr[author] = killhtml($config_arr[author]);
-        $config_arr[admin_mail] = killhtml($config_arr[admin_mail]);
-        $config_arr[keywords] = killhtml($config_arr[keywords]);
-        $config_arr[design] = killhtml($config_arr[design]);
-        $config_arr[allow_other_designs] = killhtml($config_arr[allow_other_designs]);
-        $config_arr[date] = killhtml($config_arr[date]);
-        $config_arr[page] = killhtml($config_arr[page]);
-        $config_arr[page_next] = killhtml($config_arr[page_next]);
-        $config_arr[page_prev] = killhtml($config_arr[page_prev]);
+	// security functions
+	$_POST['title'] = killhtml ( $_POST['title'] );
+	$_POST['virtualhost'] = killhtml ( $_POST['virtualhost'] );
+	$_POST['description'] = killhtml ( $_POST['description'] );
+	$_POST['author'] = killhtml ( $_POST['author'] );
+	$_POST['admin_mail'] = killhtml ( $_POST['admin_mail'] );
+	$_POST['keywords'] = killhtml ( $_POST['keywords'] );
+	$_POST['date'] = killhtml ( $_POST['date'] );
+	$_POST['page'] = killhtml ( $_POST['page'] );
+	$_POST['page_next'] = killhtml ( $_POST['page_next'] );
+	$_POST['page_prev'] = killhtml ( $_POST['page_prev'] );
+	$_POST['feed'] = killhtml ( $_POST['feed'] );
+	$_POST['language'] = killhtml ( $_POST['language'] );;
+	$_POST['home_text'] = killhtml ( $_POST['home_text'] );
 
+	settype ( $_POST['show_favicon'], "integer" );
+	settype ( $_POST['design'], "integer" );
+	settype ( $_POST['allow_other_designs'], "integer" );
+	settype ( $_POST['home'], "integer" );
 
-    echo'
+	// Display Form
+    echo '
 					<form action="" method="post">
-						<input type="hidden" value="allconfig" name="go">
-                        <input type="hidden" name="sended" value="1">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" name="go" value="gen_config">
+						<input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[general][pageinfo_title].'</td></tr>
 							<tr>
-                                <td class="config" style="width: 50%;">
+                                <td class="config">
                                     '.$admin_phrases[general][title].':<br>
                                     <span class="small">'.$admin_phrases[general][title_desc].'</span>
                                 </td>
-                                <td class="config" style="width: 50%;">
-                                    <input class="text" size="40" name="title" maxlength="100" value="'.$config_arr[title].'" />
+                                <td class="config">
+                                    <input class="text" size="40" name="title" maxlength="100" value="'.$_POST['title'].'" />
                                 </td>
                             </tr>
                             <tr>
@@ -123,7 +133,7 @@ else
                                     <span class="small">'.$admin_phrases[general][virtualhost_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="40" name="virtualhost" maxlength="255" value="'.$config_arr[virtualhost].'">
+                                    <input class="text" size="40" name="virtualhost" maxlength="255" value="'.$_POST['virtualhost'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -132,7 +142,7 @@ else
                                     <span class="small">'.$admin_phrases[general][admin_mail_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="40" name="admin_mail" maxlength="100" value="'.$config_arr[admin_mail].'">
+                                    <input class="text" size="40" name="admin_mail" maxlength="100" value="'.$_POST['admin_mail'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -141,7 +151,7 @@ else
                                     <span class="small">'.$admin_phrases[general][description_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="40" name="description" maxlength="255" value="'.$config_arr[description].'">
+                                    <input class="text" size="40" name="description" maxlength="255" value="'.$_POST['description'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -150,7 +160,7 @@ else
                                     <span class="small">'.$admin_phrases[general][author_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="40" name="author" maxlength="100" value="'.$config_arr[author].'">
+                                    <input class="text" size="40" name="author" maxlength="100" value="'.$_POST['author'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -159,7 +169,7 @@ else
                                     <span class="small">'.$admin_phrases[general][keywords_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="40" name="keywords" maxlength="255" value="'.$config_arr[keywords].'">
+                                    <input class="text" size="40" name="keywords" maxlength="255" value="'.$_POST['keywords'].'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -170,18 +180,21 @@ else
                                     <span class="small">'.$admin_phrases[general][design_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="design" size="1">';
-
-                                    $index = mysql_query("select id, name from ".$global_config_arr[pref]."template ORDER BY id", $db);
-                                    while ($design_arr = mysql_fetch_assoc($index))
-                                    {
-                                        echo '<option value="'.$design_arr['id'].'" '.getselected ( $design_arr['id'], $global_config_arr['design'] ).'>'.$design_arr[name];
-                                        if ( $design_arr[id] == $global_config_arr[design] ) {
-                                            echo ' ('.$admin_phrases[common][active].')';
-                                        }
-                                        echo '</option>';
-                                    }
-    echo'
+                                    <select name="design" size="1">
+	';
+    $index = mysql_query ( "
+							SELECT `id`, `name`
+							FROM `".$global_config_arr['pref']."template`
+							ORDER BY `id`
+	", $db );
+    while ( $design_arr = mysql_fetch_assoc ( $index ) ) {
+        echo '<option value="'.$design_arr['id'].'" '.getselected ( $design_arr['id'], $_POST['design'] ).'>'.$design_arr['name'];
+        if ( $design_arr['id'] == $_POST['design'] ) {
+            echo ' ('.$admin_phrases[common][active].')';
+        }
+        echo '</option>';
+    }
+    echo '
                                     </select>
                                 </td>
                             </tr>
@@ -191,7 +204,7 @@ else
                                     <span class="small">'.$admin_phrases[general][allow_other_designs_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="allow_other_designs" value="1" '.getchecked ( 1, $config_arr['allow_other_designs'] ).'>
+                                    <input type="checkbox" name="allow_other_designs" value="1" '.getchecked ( 1, $_POST['allow_other_designs'] ).'>
                                 </td>
                             </tr>
                             <tr>
@@ -200,7 +213,7 @@ else
                                     <span class="small">'.$admin_phrases[general][show_favicon_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="show_favicon" value="1" '.getchecked ( 1, $config_arr['show_favicon'] ).'>
+                                    <input type="checkbox" name="show_favicon" value="1" '.getchecked ( 1, $_POST['show_favicon'] ).'>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -214,7 +227,7 @@ else
                                     <table>
 										<tr valign="bottom">
 											<td class="config">
-												<input type="radio" name="home" value="0" style="cursor:pointer;" '.getchecked ( "0", $config_arr['home'] ).'>
+												<input class="pointer" type="radio" name="home" value="0" '.getchecked ( 0, $_POST['home'] ).'>
 											</td>
 											<td class="config">
 												'.$admin_phrases[general][home_page_default].'
@@ -222,10 +235,10 @@ else
 										</tr>
 										<tr valign="bottom">
  											<td class="config">
-												<input type="radio" name="home" value="1" style="cursor:pointer;" '.getchecked ( "1", $config_arr['home'] ).'>
+												<input class="pointer" type="radio" name="home" value="1" '.getchecked ( "1", $_POST['home'] ).'>
 											</td>
 											<td class="config">
-												?go = <input class="text" size="20" name="home_text" maxlength="100" value="'.$config_arr['home_text'].'">
+												?go = <input class="text" size="20" name="home_text" maxlength="100" value="'.$_POST['home_text'].'">
 											</td>
 										</tr>
 									</table>
@@ -234,32 +247,13 @@ else
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[general][show_announcement].':<br>
-                                    <span class="small">'.$admin_phrases[general][show_announcement_desc].'</span>
-                                </td>
-                                <td class="config">
-                                    <select name="show_announcement">
-
-                                        <option value="1" '.getselected ( "1", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_always].'</option>
-
-                                        <option value="2" '.getselected ( "2", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_home].'</option>
-
-                                        <option value="0" '.getselected ( "0", $config_arr['show_announcement'] ).'>'.$admin_phrases[general][show_ann_never].'</option>
-
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config">
                                     '.$admin_phrases[general][language].':<br>
                                     <span class="small">'.$admin_phrases[general][language_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="language" size="1">';
-                                    echo '<option value="de" '.getselected ( "de", $config_arr['language'] ).'>'.$admin_phrases[general][language_de].'</option>';
-
-                                    echo '<option value="en" '.getselected ( "en", $config_arr['language'] ).'>'.$admin_phrases[general][language_en].'</option>';
-    echo'
+                                    <select name="language" size="1">
+                                   		<option value="de" '.getselected ( "de", $_POST['language'] ).'>'.$admin_phrases[general][language_de].'</option>
+						   				<option value="en" '.getselected ( "en", $_POST['language'] ).'>'.$admin_phrases[general][language_en].'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -269,25 +263,12 @@ else
                                     <span class="small">'.$admin_phrases[general][feed_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="feed" size="1">';
-                                        echo '<option value="rss091" '.getselected ( "rss091", $config_arr['feed'] ).'>'.$admin_phrases[general][feed_rss091].'</option>';
-
-                                        echo '<option value="rss10" '.getselected ( "rss10", $config_arr['feed'] ).'>'.$admin_phrases[general][feed_rss10].'</option>';
-
-                                        echo '<option value="rss20" '.getselected ( "rss20", $config_arr['feed'] ).'>'.$admin_phrases[general][feed_rss20].'</option>';
-
-                                        echo '<option value="atom10" '.getselected ( "atom10", $config_arr['feed'] ).'>'.$admin_phrases[general][feed_atom10].'</option>';
-    echo'
+                                    <select name="feed" size="1">
+                                        <option value="rss091" '.getselected ( "rss091", $_POST['feed'] ).'>'.$admin_phrases[general][feed_rss091].'</option>
+                                        <option value="rss10" '.getselected ( "rss10", $_POST['feed'] ).'>'.$admin_phrases[general][feed_rss10].'</option>
+                                        <option value="rss20" '.getselected ( "rss20", $_POST['feed'] ).'>'.$admin_phrases[general][feed_rss20].'</option>
+                                        <option value="atom10" '.getselected ( "atom10", $_POST['feed'] ).'>'.$admin_phrases[general][feed_atom10].'</option>
                                     </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config">
-                                    '.$admin_phrases[general][reg_antispam].':<br>
-                                    <span class="small">'.$admin_phrases[general][reg_antispam_desc].'</span>
-                                </td>
-                                <td class="config">
-                                    <input type="checkbox" name="registration_antispam" value="1" '.getchecked ( 1, $config_arr['registration_antispam'] ).'>
                                 </td>
                             </tr>
                             <tr>
@@ -296,7 +277,7 @@ else
                                     <span class="small">'.$admin_phrases[general][date_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="40" name="date" maxlength="255" value="'.$config_arr[date].'"><br />
+                                    <input class="text" size="40" name="date" maxlength="255" value="'.$_POST['date'].'"><br>
                                     <span class="small">'.$admin_phrases[general][date_info].'</span>
                                 </td>
                             </tr>
@@ -308,8 +289,8 @@ else
                                     <span class="small">'.$admin_phrases[general][page_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <textarea class="courier" name="page" wrap="virtual" style="width:275px; height:100px;">'.$config_arr[page].'</textarea>
-                                    <br /><span class="small">'.$admin_phrases[general][page_info].'</span>
+                                    <textarea class="courier" name="page" wrap="virtual" style="width:275px; height:100px;">'.$_POST['page'].'</textarea><br>
+									<span class="small">'.$admin_phrases[general][page_info].'</span>
                                 </td>
                             </tr>
                             <tr>
@@ -318,7 +299,7 @@ else
                                     <span class="small">'.$admin_phrases[general][page_prev_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="courier" style="width:275px;" name="page_prev" maxlength="255" value="'.$config_arr[page_prev].'"><br />
+                                    <input class="courier" style="width:275px;" name="page_prev" maxlength="255" value="'.$_POST['page_prev'].'"><br>
                                     <span class="small">'.$admin_phrases[general][page_prev_info].'</span>
                                 </td>
                             </tr>
@@ -328,7 +309,7 @@ else
                                     <span class="small">'.$admin_phrases[general][page_next_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="courier" style="width:275px;" name="page_next" maxlength="255" value="'.$config_arr[page_next].'"><br />
+                                    <input class="courier" style="width:275px;" name="page_next" maxlength="255" value="'.$_POST['page_next'].'"><br>
                                     <span class="small">'.$admin_phrases[general][page_next_info].'</span>
                                 </td>
                             </tr>

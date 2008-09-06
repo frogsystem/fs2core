@@ -2,16 +2,20 @@
 ///////////////////////////
 //// Show Announcement ////
 ///////////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."announcement", $db );
-$announcement_arr = mysql_fetch_assoc ( $index );
+$index = mysql_query ( "
+						SELECT *
+						FROM `".$global_config_arr['pref']."announcement`
+						WHERE `id` = '1'
+", $db );
+$ann_arr = mysql_fetch_assoc ( $index );
 
-if ( $global_config_arr['activate_announcement'] == 1 ) {
-	$announcement_arr['text'] = fscode ( $announcement_arr['text'], true, true, true );
+if ( $ann_arr['show_announcement'] != 0 ) {
+	$ann_arr['announcement_text'] = fscode ( $ann_arr['announcement_text'], $ann_arr['ann_fscode'], $ann_arr['ann_html'], $ann_arr['ann_para'] );
 	$template = get_template ( "announcement" );
-	$template = str_replace ( "{announcement_text}", $announcement_arr['text'], $template );
+	$template = str_replace ( "{announcement_text}", $ann_arr['announcement_text'], $template );
 }
 
-if ( !( $global_config_arr['show_announcement'] == 1 || ( $global_config_arr['show_announcement'] == 2 && $global_config_arr['goto'] == $global_config_arr['home_real'] ) ) ) {
+if ( !( $ann_arr['show_announcement'] == 1 || ( $ann_arr['show_announcement'] == 2 && $global_config_arr['goto'] == $global_config_arr['home_real'] ) ) ) {
 	unset ( $template );
 }
 ?>

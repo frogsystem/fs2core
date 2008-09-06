@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "alltemplate";
+    $TEMPLATE_GO = "tpl_general";
     unset($tmp);
 
     $tmp[name] = "error";

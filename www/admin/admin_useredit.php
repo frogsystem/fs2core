@@ -19,6 +19,11 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
 	    $_POST['user_is_admin'] = 0;
 	}
     settype($_POST['user_group'], 'integer');
+    
+	if ( $_POST['user_is_staff'] == 0 ) {
+	    $_POST['user_group'] = 0;
+	    $_POST['user_is_admin'] = 0;
+	}
 	
 
     $regdate = mktime(0, 0, 0, $_POST[monat], $_POST[tag], $_POST[jahr]);
@@ -115,16 +120,16 @@ if ($_POST[username] AND $_POST[usermail] AND $_POST[monat] AND $_POST[tag] AND 
 ////// User editieren //////
 ////////////////////////////
 
-elseif (isset($_POST[select_user]))
+if ( isset ( $_POST['edit_user_id'] ) )
 {
     settype($_POST[select_user], 'integer');
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_id = $_POST[select_user]", $db);
     $user_arr = mysql_fetch_assoc($index);
 
     if ( $user_arr['user_is_staff'] == 1 ) {
-		$display_arr['group_tr'] = "";
+		$display_arr['group_tr'] = "default";
 	} else {
-		$display_arr['group_tr'] = "none";
+		$display_arr['group_tr'] = "hidden";
 	}
 	
     if ( $user_arr['user_is_admin'] == 1 ) {
@@ -195,7 +200,7 @@ elseif (isset($_POST[select_user]))
 									 onChange="show_hidden(document.getElementById(\'group_tr\'), this)">
                                 </td>
                             </tr>
-                            <tr style="display: '.$display_arr['group_tr'].';" id="group_tr">
+                            <tr class="'.$display_arr['group_tr'].'" id="group_tr">
                                 <td class="config">
                                     Gruppe:<br>
                                     <font class="small">Gehört der User einer Gruppe an</font>
@@ -208,6 +213,7 @@ elseif (isset($_POST[select_user]))
 	$index = mysql_query ("
 							SELECT `user_group_id`, `user_group_name`
 							FROM ".$global_config_arr['pref']."user_groups
+							WHERE `user_group_id` > 0
 							ORDER BY `user_group_name`
 	", $db );
 	
@@ -215,10 +221,18 @@ elseif (isset($_POST[select_user]))
 	    echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $user_arr['user_group'], $group_arr['user_group_id'] ).'>
 			'.$group_arr['user_group_name'].'</option>';
 	}
+
+	$index = mysql_query ("
+							SELECT `user_group_id`, `user_group_name`
+							FROM ".$global_config_arr['pref']."user_groups
+							WHERE `user_group_id` = 0
+							ORDER BY `user_group_name`
+							LIMIT 0,1
+	", $db );
+	$group_arr = mysql_fetch_assoc( $index );
+	echo '<option value="admin" '.getselected ( $user_arr['user_group'], "admin" ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
 	
 	echo '
-                                        
-                                        <option value="admin"'.getselected ( $user_arr['user_group'], "admin" ).'>Administrator (alle Rechte)</option>
 									</select>
                                 </td>
                             </tr>
@@ -267,80 +281,130 @@ elseif (isset($_POST[select_user]))
 
 else
 {
-    echo'
-                    <form action="" method="post">
-                        <input type="hidden" value="user_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
-                            <tr>
-                                <td align="center" class="config" width="50%">
-                                    User Suchen:
-                                </td>
-                                <td align="center" class="configthin" width="50%">
-                                    <input class="text" name="filter" size="30">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Suchen">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                    <p>
-    ';
+	//security functions
+	$_POST['filter'] = savesql ( $_POST['filter'] );
 
-    if (isset($_POST[filter]))
-    {
-        echo'
-                    <form action="" method="post">
-                        <input type="hidden" value="user_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+	// dislplay search form
+    echo '
+					<form action="" method="post">
+						<input type="hidden" name="go" value="user_edit">
+						<input type="hidden" name="search" value="1">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="2">Benutzer suchen</td></tr>
                             <tr>
-                                <td align="center" class="config" width="50%">
-                                    Username
-                                </td>
-                                <td align="center" class="config" width="50%">
-                                    bearbeiten
-                                </td>
-                            </tr>
-        ';
-
-        $_POST[filter] = savesql($_POST[filter]);
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user
-                              WHERE user_name like '%$_POST[filter]%' AND user_id != 1 AND user_id != $_SESSION[user_id]
-                              ORDER BY user_name", $db);
-        while ($user_arr = mysql_fetch_assoc($index))
-        {
-            $user_arr[user_name] = killhtml($user_arr[user_name]);
-            if ($user_arr[is_admin] == 1)
-            {
-                $user_arr[user_name] = '<b>' . $user_arr[user_name] . '</b>';
-            }
-            echo'
-                            <tr>
-                                <td class="configthin">
-                                    '.$user_arr[user_name].'
-                                </td>
                                 <td class="config">
-                                    <input type="radio" name="select_user" value="'.$user_arr[user_id].'">
+                                    Name oder E-Mail-Adresse enthält:
+                                </td>
+                                <td class="config right">
+                                    <input class="text" size="50" name="filter" value="'.$_POST['filter'].'">
                                 </td>
                             </tr>
-            ';
-        }
-        echo'
-                            <tr>
-                                <td colspan="3">
-                                    &nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" align="center">
-                                    <input class="button" type="submit" value="editieren">
-                                </td>
-                            </tr>
+							<tr><td class="space"></td></tr>
+							<tr>
+								<td class="buttontd" colspan="2">
+									<button class="button_new" type="submit">
+										'.$admin_phrases[common][arrow].' '."Nach Benutzern suchen".'
+									</button>
+								</td>
+							</tr>
                         </table>
                     </form>
-        ';
-    }
+	';
+
+	if ( isset ( $_POST['search'] ) ) {
+		// start display
+		echo '
+					<form action="" method="post">
+						<input type="hidden" name="go" value="user_edit">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr><td class="space"></td></tr>
+                            <tr><td class="space"></td></tr>
+							<tr><td class="line" colspan="5">Benutzer auswählen</td></tr>
+		';
+
+		// get users from db
+	    $index = mysql_query ( "
+								SELECT `user_id`, `user_name`, `user_mail`, `user_is_staff`, `user_is_admin`
+								FROM ".$global_config_arr['pref']."user
+								WHERE ( `user_name` LIKE '%".$_POST['filter']."%' OR `user_mail` LIKE '%".$_POST['filter']."%' )
+								AND `user_id` != '".$_SESSION['user_id']."'
+	                          	ORDER BY user_name
+		", $db );
+
+		// users found
+	    if ( mysql_num_rows ( $index ) > 0 ) {
+			// display table head
+			echo '
+							<tr>
+							    <td class="config">Name</td>
+							    <td class="config">E-Mail</td>
+							    <td class="config" width="20">&nbsp;&nbsp;Mitarbeiter&nbsp;&nbsp;</td>
+							    <td class="config" width="20">&nbsp;&nbsp;Administrator&nbsp;&nbsp;</td>
+							    <td class="config" width="20"></td>
+							</tr>
+			';
+
+			// display users
+		    while ( $user_arr = mysql_fetch_assoc ( $index ) ) {
+
+				// get other data
+				if ( $user_arr['user_is_staff'] == 1 ) {
+				    $user_arr['staff_text'] = "Ja";
+				} else {
+				    $user_arr['staff_text'] = "Nein";
+				}
+				
+				if ( $user_arr['user_is_admin'] == 1 ) {
+				    $user_arr['admin_text'] = "Ja";
+				} else {
+				    $user_arr['admin_text'] = "Nein";
+				}
+
+				echo '
+							<tr class="pointer" id="tr_'.$user_arr['user_id'].'"
+								onmouseover="'.color_list_entry ( "input_".$user_arr['user_id'], "#EEEEEE", "#64DC6A", "this" ).'"
+								onmouseout="'.color_list_entry ( "input_".$user_arr['user_id'], "transparent", "#49c24f", "this" ).'"
+                                onclick="'.color_click_entry ( "input_".$user_arr['user_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+							>
+								<td class="configthin middle">'.killhtml($user_arr['user_name']).'</td>
+								<td class="configthin middle">'.killhtml($user_arr['user_mail']).'</td>
+								<td class="configthin middle center">'.killhtml($user_arr['staff_text']).'</td>
+								<td class="configthin middle center">'.killhtml($user_arr['admin_text']).'</td>
+								<td class="config top center">
+									<input class="pointer" type="radio" name="edit_user_id" id="input_'.$user_arr['user_id'].'" value="'.$user_arr['user_id'].'"
+													onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$user_arr['user_id'], TRUE ).'"
+								</td>
+							</tr>
+				';
+		    }
+		    
+		    // display footer with button
+		    echo'
+							<tr><td class="space"></td></tr>
+							<tr>
+								<td class="buttontd" colspan="5">
+									<button class="button_new" type="submit">
+										'.$admin_phrases[common][arrow].' '."Benutzer bearbeiten".'
+									</button>
+								</td>
+							</tr>
+			';
+
+		// no users found
+	    } else {
+
+			echo'
+                            <tr><td class="space"></td></tr>
+							<tr>
+								<td class="config center" colspan="5">Keine Benutzer gefunden!</td>
+							</tr>
+							<tr><td class="space"></td></tr>
+	        ';
+	    }
+		echo '
+						</table>
+					</form>
+		';
+	}
 }
 ?>

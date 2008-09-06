@@ -9,7 +9,8 @@ if (
 		$_POST['num_head'] && $_POST['num_head'] > 0 &&
 		$_POST['cat_pic_x'] && $_POST['cat_pic_x'] > 0 &&
 		$_POST['cat_pic_y'] && $_POST['cat_pic_y'] > 0 &&
-		$_POST['cat_pic_size'] && $_POST['cat_pic_size'] > 0
+		$_POST['cat_pic_size'] && $_POST['cat_pic_size'] > 0 &&
+		$_POST['news_headline_lenght']
 	)
 {
     settype($_POST['num_news'], 'integer');
@@ -22,7 +23,9 @@ if (
     settype($_POST['cat_pic_size'], 'integer');
     settype($_POST['com_rights'], 'integer');
     settype($_POST['com_antispam'], 'integer');
-
+    settype($_POST['news_headline_lenght'], 'integer');
+    
+    $_POST['news_headline_ext'] = savesql ( $_POST['news_headline_ext'] );
 	$_POST['com_sort'] = savesql ( $_POST['com_sort'] );
     
     mysql_query("UPDATE ".$global_config_arr['pref']."news_config
@@ -36,17 +39,22 @@ if (
                      cat_pic_size = '".$_POST['cat_pic_size']."',
                      com_rights = '".$_POST['com_rights']."',
                      com_antispam = '".$_POST['com_antispam']."',
-                     com_sort = '".$_POST['com_sort']."'
+                     com_sort = '".$_POST['com_sort']."',
+                     news_headline_lenght = '".$_POST['news_headline_lenght']."',
+                     news_headline_ext = '".$_POST['news_headline_ext']."'
                  WHERE id = '1'", $db);
 
 	systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+
+    // Unset Vars
+    unset ( $_POST );
 }
 
 /////////////////////////////////////
 ////// Konfiguration Formular ///////
 /////////////////////////////////////
 
-else
+if ( TRUE )
 {
     $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config", $db );
     $config_arr = mysql_fetch_assoc ( $index );
@@ -54,54 +62,27 @@ else
     if ( isset ( $_POST['sended'] ) )
     {
         $config_arr = getfrompost ( $config_arr );
-        systext($admin_phrases[common][note_notfilled]."<br />".$admin_phrases[common][only_allowed_values], $admin_phrases[common][error], TRUE);
+        systext($admin_phrases[common][note_notfilled]."<br>".$admin_phrases[common][only_allowed_values], $admin_phrases[common][error], TRUE);
     }
 
+    settype($_POST['num_news'], 'integer');
+    settype($_POST['num_head'], 'integer');
+    settype($_POST['html_code'], 'integer');
+    settype($_POST['fs_code'], 'integer');
+    settype($_POST['para_handling'], 'integer');
+    settype($_POST['cat_pic_x'], 'integer');
+    settype($_POST['cat_pic_y'], 'integer');
+    settype($_POST['cat_pic_size'], 'integer');
+    settype($_POST['com_rights'], 'integer');
+    settype($_POST['com_antispam'], 'integer');
+    settype($_POST['news_headline_lenght'], 'integer');
+    
+    $_POST['news_headline_ext'] = killhtml ( $_POST['news_headline_ext'] );
+	$_POST['com_sort'] = savesql ( $_POST['com_sort'] );
 
-    switch ( $config_arr['html_code'] )
-    {
-        case 1: $htmlop1 = 'selected="selected"'; break;
-        case 2: $htmlop2 = 'selected="selected"'; break;
-        case 3: $htmlop3 = 'selected="selected"'; break;
-        case 4: $htmlop4 = 'selected="selected"'; break;
-    }
-    switch ( $config_arr['fs_code'] )
-    {
-        case 1: $fsop1 = 'selected="selected"'; break;
-        case 2: $fsop2 = 'selected="selected"'; break;
-        case 3: $fsop3 = 'selected="selected"'; break;
-        case 4: $fsop4 = 'selected="selected"'; break;
-    }
-    switch ( $config_arr['para_handling'] )
-    {
-        case 1: $paraop1 = 'selected="selected"'; break;
-        case 2: $paraop2 = 'selected="selected"'; break;
-        case 3: $paraop3 = 'selected="selected"'; break;
-        case 4: $paraop4 = 'selected="selected"'; break;
-    }
-    switch ( $config_arr['com_rights'] )
-    {
-        case 0: $rightsop0 = 'selected="selected"'; break;
-        case 1: $rightsop1 = 'selected="selected"'; break;
-        case 2: $rightsop2 = 'selected="selected"'; break;
-        case 3: $rightsop3 = 'selected="selected"'; break;
-    }
-    switch ( $config_arr['com_sort'] )
-    {
-        case "ASC": $sortop1 = 'selected="selected"'; break;
-        case "DESC": $sortop2 = 'selected="selected"'; break;
-    }
-    switch ( $config_arr['com_antispam'] )
-    {
-        case 0: $spamop0 = 'selected="selected"'; break;
-        case 1: $spamop1 = 'selected="selected"'; break;
-        case 2: $spamop2 = 'selected="selected"'; break;
-        case 3: $spamop3 = 'selected="selected"'; break;
-    }
- 
     echo'
 					<form action="" method="post">
-                        <input type="hidden" value="newsconfig" name="go">
+                        <input type="hidden" value="news_config" name="go">
                         <input type="hidden" name="sended" value="1">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
@@ -112,7 +93,7 @@ else
                                     <span class="small">'.$admin_phrases[news][news_per_page_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="2" name="num_news" maxlength="2" value="'.$config_arr['num_news'].'"><br>
+                                    <input class="text center" size="2" name="num_news" maxlength="2" value="'.$config_arr['num_news'].'"><br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -122,8 +103,28 @@ else
                                     <span class="small">'.$admin_phrases[news][num_headlines_desc].'</span>
 								</td>
                                 <td class="config">
-                                    <input class="text" size="2" name="num_head" maxlength="2" value="'.$config_arr['num_head'] .'"><br>
+                                    <input class="text center" size="2" name="num_head" maxlength="2" value="'.$config_arr['num_head'] .'"><br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '."Headlines kürzen auf".':<br>
+                                    <span class="small">'."Max. Zeichenzahl einer Headline.".'</span>
+								</td>
+                                <td class="config">
+                                    <input class="text center" size="3" name="news_headline_lenght" maxlength="3" value="'.$config_arr['news_headline_lenght'] .'"> Zeichen<br>
+                                    <span class="small">('."-1 um Headlins nicht zu kürzen".')</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="config">
+                                    '."Headline-Erweiterung".': <span class="small">'.$admin_phrases[common][optional].'</span><br>
+                                    <span class="small">'."Wird an eine gekürzte Headline angehängt.".'</span>
+								</td>
+                                <td class="config">
+                                    <input class="text" size="20" name="news_headline_ext" maxlength="30" value="'.$config_arr['news_headline_ext'] .'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -135,10 +136,10 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="html_code">
-                                        <option '.$htmlop1.' value="1">'.$admin_phrases[news][allow_code_no].'</option>
-                                        <option '.$htmlop2.' value="2">'.$admin_phrases[news][allow_code_news].'</option>
-                                        <option '.$htmlop3.' value="3">'.$admin_phrases[news][allow_code_comments].'</option>
-                                        <option '.$htmlop4.' value="4">'.$admin_phrases[news][allow_code_both].'</option>
+                                        <option value="1" '.getselected( $config_arr['html_code'], 1 ).'>'.$admin_phrases[news][allow_code_no].'</option>
+                                        <option value="2" '.getselected( $config_arr['html_code'], 2 ).'>'.$admin_phrases[news][allow_code_news].'</option>
+                                        <option value="3" '.getselected( $config_arr['html_code'], 3 ).'>'.$admin_phrases[news][allow_code_comments].'</option>
+                                        <option value="4" '.getselected( $config_arr['html_code'], 4 ).'>'.$admin_phrases[news][allow_code_both].'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -149,10 +150,10 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="fs_code">
-                                        <option '.$fsop1.' value="1">'.$admin_phrases[news][allow_code_no].'</option>
-                                        <option '.$fsop2.' value="2">'.$admin_phrases[news][allow_code_news].'</option>
-                                        <option '.$fsop3.' value="3">'.$admin_phrases[news][allow_code_comments].'</option>
-                                        <option '.$fsop4.' value="4">'.$admin_phrases[news][allow_code_both].'</option>
+                                        <option value="1" '.getselected( $config_arr['fs_code'], 1 ).'>'.$admin_phrases[news][allow_code_no].'</option>
+                                        <option value="2" '.getselected( $config_arr['fs_code'], 2 ).'>'.$admin_phrases[news][allow_code_news].'</option>
+                                        <option value="3" '.getselected( $config_arr['fs_code'], 3 ).'>'.$admin_phrases[news][allow_code_comments].'</option>
+                                        <option value="4" '.getselected( $config_arr['fs_code'], 4 ).'>'.$admin_phrases[news][allow_code_both].'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -163,10 +164,10 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="para_handling">
-                                        <option '.$paraop1.' value="1">'.$admin_phrases[news][allow_code_no].'</option>
-                                        <option '.$paraop2.' value="2">'.$admin_phrases[news][allow_code_news].'</option>
-                                        <option '.$paraop3.' value="3">'.$admin_phrases[news][allow_code_comments].'</option>
-                                        <option '.$paraop4.' value="4">'.$admin_phrases[news][allow_code_both].'</option>
+                                        <option value="1" '.getselected( $config_arr['para_handling'], 1 ).'>'.$admin_phrases[news][allow_code_no].'</option>
+                                        <option value="2" '.getselected( $config_arr['para_handling'], 2 ).'>'.$admin_phrases[news][allow_code_news].'</option>
+                                        <option value="3" '.getselected( $config_arr['para_handling'], 3 ).'>'.$admin_phrases[news][allow_code_comments].'</option>
+                                        <option value="4" '.getselected( $config_arr['para_handling'], 4 ).'>'.$admin_phrases[news][allow_code_both].'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -178,7 +179,7 @@ else
                                     <span class="small">'.$admin_phrases[news][cat_img_max_width_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="3" name="cat_pic_x" maxlength="3" value="'.$config_arr['cat_pic_x'].'"> '.$admin_phrases[common][pixel].'<br>
+                                    <input class="text center" size="3" name="cat_pic_x" maxlength="3" value="'.$config_arr['cat_pic_x'].'"> '.$admin_phrases[common][pixel].'<br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -188,7 +189,7 @@ else
                                     <span class="small">'.$admin_phrases[news][cat_img_max_height_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="3" name="cat_pic_y" maxlength="3" value="'.$config_arr['cat_pic_y'].'"> '.$admin_phrases[common][pixel].'<br>
+                                    <input class="text center" size="3" name="cat_pic_y" maxlength="3" value="'.$config_arr['cat_pic_y'].'"> '.$admin_phrases[common][pixel].'<br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -198,7 +199,7 @@ else
                                     <span class="small">'.$admin_phrases[news][cat_img_max_size_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="4" name="cat_pic_size" maxlength="4" value="'.$config_arr['cat_pic_size'].'"> '.$admin_phrases[common][kib].'<br>
+                                    <input class="text center" size="4" name="cat_pic_size" maxlength="4" value="'.$config_arr['cat_pic_size'].'"> '.$admin_phrases[common][kib].'<br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
@@ -211,10 +212,11 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="com_rights">
-                                        <option '.$rightsop2.' value="2">'.$admin_phrases[news][allow_comments_all].'</option>
-                                        <option '.$rightsop3.' value="3">'.$admin_phrases[news][allow_comments_staff].'</option>
-                                        <option '.$rightsop1.' value="1">'.$admin_phrases[news][allow_comments_reg].'</option>
-                                        <option '.$rightsop0.' value="0">'.$admin_phrases[news][allow_comments_nobody].'</option>
+                                        <option value="2" '.getselected( $config_arr['com_rights'], 2 ).'>'.$admin_phrases[news][allow_comments_all].'</option>
+                                        <option value="1" '.getselected( $config_arr['com_rights'], 1 ).'>'.$admin_phrases[news][allow_comments_reg].'</option>
+                                        <option value="3" '.getselected( $config_arr['com_rights'], 3 ).'>'.$admin_phrases[news][allow_comments_staff].'</option>
+                                        <option value="4" '.getselected( $config_arr['com_rights'], 4 ).'>'."Administratoren".'</option>
+                                        <option value="0" '.getselected( $config_arr['com_rights'], 0 ).'>'.$admin_phrases[news][allow_comments_nobody].'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -225,8 +227,8 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="com_sort">
-                                        <option '.$sortop1.' value="ASC">'.$admin_phrases[news][sort_comments_old_first].'</option>
-                                        <option '.$sortop2.' value="DESC">'.$admin_phrases[news][sort_comments_new_first].'</option>
+                                        <option value="ASC" '.getselected( $config_arr['com_sort'], "ASC" ).'>'.$admin_phrases[news][sort_comments_old_first].'</option>
+                                        <option value="DESC" '.getselected( $config_arr['com_sort'], "DESC" ).'>'.$admin_phrases[news][sort_comments_new_first].'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -237,10 +239,11 @@ else
                                 </td>
                                 <td class="config">
                                     <select name="com_antispam">
-                                        <option '.$spamop2.' value="2">'.$admin_phrases[news][anti_spam_comments_all].'</option>
-                                        <option '.$spamop3.' value="3">'.$admin_phrases[news][anti_spam_comments_staff].'</option>
-                                        <option '.$spamop1.' value="1">'.$admin_phrases[news][anti_spam_comments_reg].'</option>
-                                        <option '.$spamop0.' value="0">'.$admin_phrases[news][anti_spam_comments_nobody].'</option>
+                                        <option value="2" '.getselected( $config_arr['com_antispam'], 2 ).'>'.$admin_phrases[news][anti_spam_comments_all].'</option>
+                                        <option value="4" '.getselected( $config_arr['com_antispam'], 4 ).'>'."alle außer Administratoren".'</option>
+                                        <option value="3" '.getselected( $config_arr['com_antispam'], 3 ).'>'.$admin_phrases[news][anti_spam_comments_staff].'</option>
+                                        <option value="1" '.getselected( $config_arr['com_antispam'], 1 ).'>'.$admin_phrases[news][anti_spam_comments_reg].'</option>
+                                        <option value="0" '.getselected( $config_arr['com_antispam'], 0 ).'>'.$admin_phrases[news][anti_spam_comments_nobody].'</option>
                                     </select>
                                 </td>
                             </tr>

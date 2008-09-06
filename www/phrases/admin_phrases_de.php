@@ -73,12 +73,13 @@ $admin_phrases[common][by]                        = "von";
 $admin_phrases[common][by_posted]                 = "geschrieben von";
 $admin_phrases[common][in]                        = "in";
 
-$admin_phrases[common][on]                        = "am";
-$admin_phrases[common][at]                        = "um";
+$admin_phrases[common][on_date]                   = "am";
+$admin_phrases[common][at_time]                   = "um";
 $admin_phrases[common][time_appendix]             = "Uhr";
 
 $admin_phrases[common][time_format]               = "H:i \U\h\\r";
 $admin_phrases[common][date_format]               = "d.m.Y";
+$admin_phrases[common][date_time_format]          = "\a\m d.m.Y \u\m H:i \U\h\\r";
 
 $admin_phrases[common][comment]                   = "Kommentar";
 $admin_phrases[common][comments]                  = "Kommentare";
@@ -182,7 +183,7 @@ $admin_phrases[general][ann_settings_title]       = "Einstellungen";
 $admin_phrases[general][activate_ann]             = "Annkündigung freischalten";
 $admin_phrases[general][activate_ann_desc]        = "Schaltet die Ankündigung zur Anzeige auf der Seite frei.";
 $admin_phrases[general][ann_title]                = "Ankündigung schreiben";
-$admin_phrases[general][ann_write_desc]           = "Eine leere Ankündigung wird nicht angezeigt. HTML und FSCode sind erlaubt.";
+$admin_phrases[general][ann_write_desc]           = "Eine leere Ankündigung wird nicht angezeigt.";
 
 
 $admin_phrases[general][phpinfo_title]            = "PHP & Serverinformationen";
@@ -382,6 +383,8 @@ $admin_phrases[news][news_poster_desc]            = "Der Verfasser der News.";
 
 $admin_phrases[news][news_new_title]              = "News schreiben";
 $admin_phrases[news][news_title]                  = "Titel";
+$admin_phrases[news][news_active]                 = "News veröffentlichen";
+$admin_phrases[news][news_comments_allowed]       = "Kommentare erlauben";
 $admin_phrases[news][news_text]                   = "Text";
 $admin_phrases[news][news_add_button]             = "News hinzufügen";
 $admin_phrases[news][news_added]                  = "News wurde erfolgreich hinzugefügt";

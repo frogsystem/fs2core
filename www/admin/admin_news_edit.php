@@ -26,8 +26,8 @@ function default_display_filter ( $FORM )
 	global $admin_phrases;
 
     echo'
-					<form action="?mid=content&go=newsedit" method="post">
-                        <input type="hidden" value="newsedit" name="go">
+					<form action="?go=news_edit" method="post">
+                        <input type="hidden" value="news_edit" name="go">
 
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="3">'.$admin_phrases[news][news_edit_filter_title].'</td></tr>
@@ -106,11 +106,11 @@ function default_display_pagenav ( $pagenav_arr )
 	// Prev & Next Page Links
     if ( $pagenav_arr['newpage_exists'] )
     {
-        $next_page = '<a href="'.$PHP_SELF.'?mid=content&go=newsedit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['new_start'].'">'.$admin_phrases[news][news_edit_next_news].' »</a>';
+        $next_page = '<a href="'.$PHP_SELF.'?go=news_edit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['new_start'].'">'.$admin_phrases[news][news_edit_next_news].' »</a>';
     }
     if ( $pagenav_arr['old_start_exists'] )
     {
-        $prev_page = '<a href="'.$PHP_SELF.'?mid=content&go=newsedit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['old_start'].'">« '.$admin_phrases[news][news_edit_prev_news].'</a>';
+        $prev_page = '<a href="'.$PHP_SELF.'?go=news_edit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['old_start'].'">« '.$admin_phrases[news][news_edit_prev_news].'</a>';
     }
 
     // Current Range
@@ -154,7 +154,7 @@ function default_get_entry_data ( $news_arr )
 	global $admin_phrases;
 
 	// Get other Data
-	$news_arr['news_date_formated'] = "".$admin_phrases[common][on]." <b>" . date ( $admin_phrases[common][date_format] , $news_arr['news_date'] ) . "</b> ".$admin_phrases[common][at]." <b>" . date ( $admin_phrases[common][time_format] , $news_arr['news_date'] ) . "</b>";
+	$news_arr['news_date_formated'] = "".$admin_phrases[common][on_date]." <b>" . date ( $admin_phrases[common][date_format] , $news_arr['news_date'] ) . "</b> ".$admin_phrases[common][at_time]." <b>" . date ( $admin_phrases[common][time_format] , $news_arr['news_date'] ) . "</b>";
     $news_arr['news_text_short'] = truncate_string ( killfs (  $news_arr['news_text'] ) , 250, "..." );
 
     $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $db );
@@ -246,8 +246,8 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 
 	// Display News List Header
     echo'
-                    <form action="?mid=content&go=newsedit" method="post">
-                        <input type="hidden" name="go" value="newsedit">
+                    <form action="?go=news_edit" method="post">
+                        <input type="hidden" name="go" value="news_edit">
                         <input type="hidden" name="order" value="'.$FORM['order'].'" >
                         <input type="hidden" name="sort" value="'.$FORM['sort'].'">
                         <input type="hidden" name="cat_id" value="'.$FORM['cat_id'].'">
@@ -334,6 +334,8 @@ function action_edit_get_data ( $NEWS_ID )
     $news_arr['news_title'] = killhtml ( $news_arr['news_title'] );
 	settype ( $news_arr['cat_id'], "integer" );
     settype ( $news_arr['user_id'], "integer" );
+    settype ( $news_arr['news_active'], "integer" );
+    settype ( $news_arr['news_comments_allowed'], "integer" );
 
     // Get User
     $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$news_arr['user_id']."'", $db );
@@ -613,7 +615,7 @@ function action_edit_display_page ( $data_arr )
     // Display Page
     echo'
 					<form action="" method="post">
-						<input type="hidden" name="go" value="newsedit">
+						<input type="hidden" name="go" value="news_edit">
 						<input type="hidden" name="news_action" value="edit">
 						<input type="hidden" name="news_id" value="'.$news_arr['news_id'].'">
                         <input type="hidden" name="sended" value="edit">
@@ -645,11 +647,11 @@ function action_edit_display_page ( $data_arr )
                                 </td>
                                 <td class="config" valign="top">
 									<span class="small">
-										<input class="text" size="3" maxlength="2" id="d" name="d" value="'.$date_arr['d'].'"> .
-                                    	<input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
-                                    	<input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'"> '.$admin_phrases[common][at].'
-                                    	<input class="text" size="3" maxlength="2" id="h" name="h" value="'.$date_arr['h'].'"> :
-                                    	<input class="text" size="3" maxlength="2" id="i" name="i" value="'.$date_arr['i'].'"> '.$admin_phrases[common][time_appendix].'&nbsp;
+										<input class="text center" size="3" maxlength="2" id="d" name="d" value="'.$date_arr['d'].'"> .
+                                    	<input class="text center" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
+                                    	<input class="text center" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'"> '.$admin_phrases[common][at_time].'
+                                    	<input class="text center" size="3" maxlength="2" id="h" name="h" value="'.$date_arr['h'].'"> :
+                                    	<input class="text center" size="3" maxlength="2" id="i" name="i" value="'.$date_arr['i'].'"> '.$admin_phrases[common][time_appendix].'&nbsp;
 									</span>
 									'.js_nowbutton ( $nowbutton_array, $admin_phrases[common][now_button] ).'
                                 </td>
@@ -679,11 +681,25 @@ function action_edit_display_page ( $data_arr )
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[news][news_text].':<br>
-									<span class="small">'.
-									$admin_phrases[common][html].' '.$config_arr[html_code].'. '.
-									$admin_phrases[common][fscode].' '.$config_arr[fs_code].'. '.
-									$admin_phrases[common][para].' '.$config_arr[para_handling].'.</span>
+									
+                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+											<td class="config top">
+                                                '.$admin_phrases[news][news_text].':<br>
+												<span class="small">'.
+												$admin_phrases[common][html].' '.$config_arr[html_code].'. '.
+												$admin_phrases[common][fscode].' '.$config_arr[fs_code].'. '.
+												$admin_phrases[common][para].' '.$config_arr[para_handling].'.</span>
+											</td>
+											<td class="config right bottom">
+											    <input class="pointer middle" type="checkbox" name="news_active" value="1" '.getchecked ( $news_arr['news_active'], 1 ).'>
+											    <span class="small middle">'.$admin_phrases[news][news_active].'</span>&nbsp;&nbsp;
+											    <input class="pointer middle" type="checkbox" name="news_comments_allowed" value="1" '.getchecked ( $news_arr['news_comments_allowed'], 1 ).'>
+											    <span class="small middle">'.$admin_phrases[news][news_comments_allowed].'</span>
+											</td>
+										</tr>
+									</table>
+									
                                 </td>
                             </tr>
                             <tr>
@@ -752,7 +768,7 @@ function action_delete_display_page ( $news_arr )
 						<input type="hidden" name="sended" value="delete">
 						<input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
 						<input type="hidden" name="news_id" value="'.$news_arr['news_id'].'">
-						<input type="hidden" name="go" value="newsedit">
+						<input type="hidden" name="go" value="news_edit">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line">'.$admin_phrases[news][news_delete_title].'</td></tr>
 							<tr>
@@ -774,37 +790,7 @@ function action_delete_display_page ( $news_arr )
 									'.$admin_phrases[news][news_delete_question].'
 								</td>
 								<td class="config right top" style="padding: 0px;">
-		    						<table width="100%" cellpadding="4" cellspacing="0">
-										<tr class="bottom pointer" id="tr_yes"
-											onmouseover="'.color_list_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this" ).'"
-											onmouseout="'.color_list_entry ( "del_yes", "transparent", "#49C24f", "this" ).'"
-											onclick="'.color_click_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this", TRUE ).'"
-										>
-											<td>
-												<input class="pointer" type="radio" name="news_delete" id="del_yes" value="1"
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_yes", TRUE ).'"
-												>
-											</td>
-											<td class="config middle">
-												'.$admin_phrases[common][yes].'
-											</td>
-										</tr>
-										<tr class="bottom red pointer" id="tr_no"
-											onmouseover="'.color_list_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this" ).'"
-											onmouseout="'.color_list_entry ( "del_no", "transparent", "#C24949", "this" ).'"
-											onclick="'.color_click_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this", TRUE ).'"
-										>
-											<td>
-												<input class="pointer" type="radio" name="news_delete" id="del_no" value="0" checked="checked"
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#DE5B5B", "tr_no", TRUE ).'"
-												>
-											</td>
-											<td class="config middle">
-												'.$admin_phrases[common][no].'
-											</td>
-										</tr>
-										'.color_pre_selected ( "del_no", "tr_no" ).'
-									</table>
+									'.get_yesno_table ( "news_delete" ).'
 								</td>
 							</tr>
 							<tr><td class="space"></td></tr>
@@ -832,6 +818,8 @@ function db_edit_news ( $DATA )
     settype ( $DATA['news_id'], "integer" );
 	settype ( $DATA['cat_id'], "integer" );
     settype ( $DATA['user_id'], "integer" );
+    settype ( $DATA['news_active'], "integer" );
+    settype ( $DATA['news_comments_allowed'], "integer" );
 
     $date_arr = getsavedate ( $DATA['d'], $DATA['m'], $DATA['y'], $DATA['h'], $DATA['i'] );
 	$newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
@@ -846,7 +834,9 @@ function db_edit_news ( $DATA )
 						user_id = '".$DATA['user_id']."',
 						news_date = '".$newsdate."',
 						news_title = '".$DATA['news_title']."',
-						news_text = '".$DATA['news_text']."'
+						news_text = '".$DATA['news_text']."',
+						news_active = '".$DATA['news_active']."',
+						news_comments_allowed = '".$DATA['news_comments_allowed']."'
 					WHERE
 						news_id = '".$DATA['news_id']."'
 	", $db );
@@ -1007,6 +997,9 @@ if (
 	)
 {
     db_edit_news ( $_POST );
+
+    // Unset Vars
+    unset ( $_POST );
 }
 
 // Delete News
@@ -1018,6 +1011,9 @@ elseif (
 	)
 {
     db_delete_news ( $_POST );
+
+    // Unset Vars
+    unset ( $_POST );
 }
 
 // Edit Comments
@@ -1033,6 +1029,13 @@ elseif (
 	)
 {
     db_edit_comment ( $_POST );
+	$id = $_POST['news_id'];
+
+    // Unset Vars
+    unset ( $_POST );
+    $_POST['news_action'] = "comments";
+    $_POST['news_id'] = $id;
+    unset ( $id );
 }
 
 // Delete Comments
@@ -1046,13 +1049,20 @@ elseif (
 	)
 {
     db_delete_comment ( $_POST );
+	$id = $_POST['news_id'];
+	
+    // Unset Vars
+    unset ( $_POST );
+    $_POST['news_action'] = "comments";
+    $_POST['news_id'] = $id;
+    unset ( $id );
 }
 
 
 //////////////////////////////
 //// Display Action-Pages ////
 //////////////////////////////
-elseif ( $_POST['news_id'] && $_POST['news_action'] )
+if ( $_POST['news_id'] && $_POST['news_action'] )
 {
 	// Edit News
 	if ( $_POST['news_action'] == "edit" )
@@ -1077,8 +1087,7 @@ elseif ( $_POST['news_id'] && $_POST['news_action'] )
 						<input type="hidden" name="sended" value="comment">
 						<input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
 						<input type="hidden" name="news_id" value="'.$_POST['news_id'].'">
-						<input type="hidden" name="go" value="newscomments">
-						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
+						<input type="hidden" name="go" value="news_comments">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="4">Kommentare bearbeiten</td></tr>
                             <tr>

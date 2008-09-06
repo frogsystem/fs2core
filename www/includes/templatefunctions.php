@@ -81,6 +81,10 @@ function create_templatepage($template_arr, $go)
     unset ($return_template);
     unset ($select_template);
 
+	if ( !isset ( $_POST['design'] ) ) {
+	    $_POST['design'] = $global_config_arr['design'];
+	}
+
     // Design ermittlen
     $select_template .= '
                     <div align="left">

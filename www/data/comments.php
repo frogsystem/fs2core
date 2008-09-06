@@ -14,10 +14,31 @@ $editor_config = mysql_fetch_assoc($index);
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-if ($config_arr[com_antispam] == 1 && $_SESSION["user_id"]) {
-    $anti_spam = check_captcha ($_POST["spam"], 0);
+if ( $config_arr[com_antispam] == 1 && $_SESSION["user_id"] ) {
+    $anti_spam = check_captcha ( $_POST["spam"], 0 );
 } else {
-    $anti_spam = check_captcha ($_POST["spam"], $config_arr[com_antispam]);
+    $anti_spam = check_captcha ( $_POST["spam"], $config_arr[com_antispam] );
+}
+
+/////////////////////////
+//// User has rights ////
+/////////////////////////
+settype ( $_SESSION["user_id"], "integer" );
+$index = mysql_query ( "
+						SELECT *
+						FROM ".$global_config_arr['pref']."user
+						WHERE user_id = '".$_SESSION["user_id"]."'
+", $db);
+$user_arr = mysql_fetch_assoc($index);
+
+if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SESSION['user_id'] ) ) {
+    $comments_right = TRUE;
+} elseif ( $config_arr['com_rights'] == 3 && is_in_staff ( $_SESSION['user_id'] ) ) {
+    $comments_right = TRUE;
+} elseif ( $config_arr['com_rights'] == 4 && is_admin ( $_SESSION['user_id'] ) ) {
+	$comments_right = TRUE;
+} else {
+	$comments_right = FALSE;
 }
 
 //////////////////////////////
@@ -32,31 +53,44 @@ if (isset($_POST[addcomment]))
          && $_POST[text] != ""
          && $anti_spam == TRUE)
     {
-        settype($_POST[id], 'integer');
-        $_POST[name] = savesql($_POST[name]);
-        $_POST[title] = savesql($_POST[title]);
-        $_POST[text] = savesql($_POST[text]);
-        $commentdate = date("U");
+		settype($_POST[id], 'integer');
+		$index = mysql_query( "
+								SELECT `news_comments_allowed`
+								FROM ".$global_config_arr['pref']."news
+								WHERE news_id = ".$_POST['id']."
+								LIMIT 0,1
+		", $db);
+		
+		if ( mysql_result ( $index, 0, "news_comments_allowed" ) == 1 ) {
+	        settype($_POST[id], 'integer');
+	        $_POST[name] = savesql($_POST[name]);
+	        $_POST[title] = savesql($_POST[title]);
+	        $_POST[text] = savesql($_POST[text]);
+	        $commentdate = date("U");
 
-        if ($_SESSION["user_id"])
-        {
-            $userid = $_SESSION["user_id"];
-            $name = "";
-        }
-        else
-        {
-            $userid = 0;
-        }
+	        if ($_SESSION["user_id"])
+	        {
+	            $userid = $_SESSION["user_id"];
+	            $name = "";
+	        }
+	        else
+	        {
+	            $userid = 0;
+	        }
 
-        mysql_query("INSERT INTO ".$global_config_arr[pref]."news_comments (news_id, comment_poster, comment_poster_id, comment_poster_ip, comment_date, comment_title, comment_text)
-                     VALUES ('".$_POST[id]."',
-                             '".$_POST[name]."',
-                             '$userid',
-                             '".savesql($_SERVER['REMOTE_ADDR'])."',
-                             '$commentdate',
-                             '".$_POST[title]."',
-                             '".$_POST[text]."');", $db);
-        mysql_query("update ".$global_config_arr[pref]."counter set comments=comments+1", $db);
+	        mysql_query("INSERT INTO ".$global_config_arr[pref]."news_comments
+							(news_id, comment_poster, comment_poster_id, comment_poster_ip, comment_date, comment_title, comment_text)
+	                     VALUES ('".$_POST[id]."',
+	                             '".$_POST[name]."',
+	                             '$userid',
+	                             '".savesql($_SERVER['REMOTE_ADDR'])."',
+	                             '$commentdate',
+	                             '".$_POST[title]."',
+	                             '".$_POST[text]."');", $db);
+	        mysql_query("update ".$global_config_arr[pref]."counter set comments=comments+1", $db);
+		} else {
+		    $message_template = sys_message($phrases[sysmessage], $phrases[comm_not_allowd]);
+		}
     }
     else
     {
@@ -83,7 +117,14 @@ settype($_GET[id], 'integer');
 $time = time();
 
 // News anzeigen
-$index = mysql_query("select * from ".$global_config_arr[pref]."news where news_date <= $time and news_id = $_GET[id]", $db);
+$index = mysql_query( "
+						SELECT *
+						FROM ".$global_config_arr['pref']."news
+						WHERE news_date <= $time
+						AND news_active = 1
+						AND news_id = ".$_GET['id']."
+						LIMIT 0,1
+", $db);
 
 $news_rows = mysql_num_rows($index);
 
@@ -93,9 +134,6 @@ if ($news_rows > 0) {
 } else {
     $news_template = sys_message($phrases[sysmessage], $phrases[news_not_exist]);
 }
-
-unset($news_arr);
-
 
 // Text formatieren
 switch ($config_arr[html_code])
@@ -178,11 +216,10 @@ while ($comment_arr = mysql_fetch_assoc($index))
     $comments_template .= $template;
 }
 unset($comment_arr);
-if (mysql_num_rows($index) <= 0)
+if (mysql_num_rows($index) <= 0 && $news_arr[news_comments_allowed] == 1 )
 {
-    $comments_template = "Es wurden keine Kommentare gefunden!";
+    $comments_template = sys_message($phrases[sysmessage], $phrases[no_comments]);
 }
-
 
 // Eingabeformular generieren
 $index = mysql_query("select news_comment_form_name from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
@@ -228,13 +265,20 @@ $template = str_replace("{antispamtext}", $form_spam_text, $template);
 
 $formular_template = $template;
 
-if ($news_rows>0 AND $news_arr[news_date]<=time())
+if ( $news_rows > 0 && $news_arr['news_date'] <= time () && $news_arr['news_active'] == 1 )
 {
     $index = mysql_query("SELECT news_comment_container FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "news_comment_container"));
     $template = str_replace("{news}", $news_template, $template);
     $template = str_replace("{comments}", $comments_template, $template);
-    $template = str_replace("{comment_form}", $formular_template, $template);
+	if ( $news_arr[news_comments_allowed] == 1 && $comments_right == TRUE ) {
+        $template = str_replace("{comment_form}", $formular_template, $template);
+	} elseif ( $comments_right == FALSE ) {
+        $template = str_replace("{comment_form}", sys_message($phrases[sysmessage], $phrases[comm_not_allowed]), $template);
+	} else {
+        $template = str_replace("{comment_form}", sys_message($phrases[sysmessage], $phrases[comm_not_activ]), $template);
+	}
+
     $template = $message_template . $template;
 }
 else

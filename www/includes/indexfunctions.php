@@ -183,14 +183,12 @@ function replace_resources ( $TEMPLATE, $PATH_PREFIX = "" )
 	", $db );
 
 	// Write Resources into Array & get Resource Template
-	$i = 0;
-	while ( $result = mysql_fetch_assoc ( $index ) ) {
+	for ( $i = 0; $result = mysql_fetch_assoc ( $index ); $i++ ) {
         $resources_arr[$i]['id'] = $result['id'];
         $resources_arr[$i]['resource_name'] = $result['resource_name'];
         $resources_arr[$i]['resource_file'] = $result['resource_file'];
         $resources_arr[$i]['hardcoded'] = $result['hardcoded'];
         $resources_arr[$i]['template'] = get_resource ( $PATH_PREFIX."res/".$result['resource_file'] );
-        $i++;
 	}
 
 	// Replace Resources in $TEMPLATE
