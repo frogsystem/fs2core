@@ -719,3 +719,7 @@ a.tooltip:hover span {
 {
     display: none;
 }
+.red_text
+{
+    color: #FF0000;
+}

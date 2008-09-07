@@ -327,32 +327,8 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 								<td class="config" style="width: 100%;">
 									'.$admin_phrases[articles][delete_cat_question].': "'.$cat_arr['cat_name'].'"
 								</td>
-								<td class="config" style="text-align: right;">
-		    						<table>
-										<tr valign="bottom">
-											<td>
-												<input type="radio" name="cat_delete" id="del_yes" value="1" style="cursor:pointer;" onClick=\'createClick(this);\'>
-											</td>
-											<td class="config" style="cursor:pointer;"
-	onClick=\'
-		createClick (document.getElementById("del_yes"));
-		resetUnclicked ("transparent", last, lastBox, this);\'
-											>
-												'.$admin_phrases[common][yes].'
-											</td>
-											<td style="width: 20px;"></td>
-											<td>
-												<input type="radio" name="cat_delete" id="del_no" value="0" style="cursor:pointer;" onClick=\'createClick(this);\' checked="checked">
-											</td>
-											<td class="config" style="cursor:pointer;"
-	onClick=\'
-		createClick (document.getElementById("del_no"));
-		resetUnclicked ("transparent", last, lastBox, this);\'
->
-												'.$admin_phrases[common][no].'
-											</td>
-										</tr>
-									</table>
+								<td class="config right"">
+								    '.get_yesno_table ( "cat_delete" ).'
 								</td>
 							</tr>
 							<tr>

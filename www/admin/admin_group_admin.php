@@ -1,8 +1,9 @@
 <?php
-///////////////////////
-// Load group Config //
-///////////////////////
-
+/////////////////////
+//// Load Config ////
+/////////////////////
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $db );
+$config_arr = mysql_fetch_assoc ( $index );
 // Create group-Config-Array
 $group_config_arr[cat_pic_x] = 200;
 $group_config_arr[cat_pic_y] = 50;
@@ -41,7 +42,7 @@ if (
 	
 	// Image-Operations
     if ( $_FILES['user_group_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['user_group_pic'], "images/groups/", "staff_".$id, $group_config_arr['cat_pic_size']*1024, $group_config_arr['cat_pic_x'], $group_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['user_group_pic'], "images/groups/", "staff_".$id, $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -109,7 +110,7 @@ elseif (
       }
     } elseif ( $_FILES['user_group_pic']['name'] != "" ) {
       image_delete ( "images/groups/", "staff_".$_POST['user_group_id'] );
-	  $upload = upload_img ( $_FILES['user_group_pic'], "images/groups/", "staff_".$_POST['user_group_id'], $group_config_arr['cat_pic_size']*1024, $group_config_arr['cat_pic_x'], $group_config_arr['cat_pic_y'] );
+	  $upload = upload_img ( $_FILES['user_group_pic'], "images/groups/", "staff_".$_POST['user_group_id'], $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -298,7 +299,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
 		}
 		echo'
 									<span class="small">
-										['.$admin_phrases[common][max].' '.$group_config_arr[cat_pic_x].' '.$admin_phrases[common][resolution_x].' '.$group_config_arr[cat_pic_y].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$group_config_arr[cat_pic_size].' '.$admin_phrases[common][kib].']
+										['.$admin_phrases[common][max].' '.$config_arr['group_pic_x'].' '.$admin_phrases[common][resolution_x].' '.$config_arr['group_pic_y'].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$config_arr['group_pic_size'].' '.$admin_phrases[common][kib].']
 									</span>
 								</td>
 							</tr>
@@ -393,37 +394,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
 									(<b>'.$group_arr['user_group_num_users'].'</b> Mitglieder)
 								</td>
 								<td class="config right top" style="padding: 0px;">
-		    						<table width="100%" cellpadding="4" cellspacing="0">
-										<tr class="bottom pointer" id="tr_yes"
-											onmouseover="'.color_list_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this" ).'"
-											onmouseout="'.color_list_entry ( "del_yes", "transparent", "#49C24f", "this" ).'"
-											onclick="'.color_click_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this", TRUE ).'"
-										>
-											<td>
-												<input class="pointer" type="radio" name="user_group_delete" id="del_yes" value="1"
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_yes", TRUE ).'"
-												>
-											</td>
-											<td class="config middle">
-												'.$admin_phrases[common][yes].'
-											</td>
-										</tr>
-										<tr class="bottom red pointer" id="tr_no"
-											onmouseover="'.color_list_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this" ).'"
-											onmouseout="'.color_list_entry ( "del_no", "transparent", "#C24949", "this" ).'"
-											onclick="'.color_click_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this", TRUE ).'"
-										>
-											<td>
-												<input class="pointer" type="radio" name="user_group_delete" id="del_no" value="0" checked="checked"
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#DE5B5B", "tr_no", TRUE ).'"
-												>
-											</td>
-											<td class="config middle">
-												'.$admin_phrases[common][no].'
-											</td>
-										</tr>
-										'.color_pre_selected ( "del_no", "tr_no" ).'
-									</table>
+                                    '.get_yesno_table ( "user_group_delete" ).'
 								</td>
 							</tr>
 							<tr><td class="space"></td></tr>
@@ -479,7 +450,7 @@ else
 								<td class="config">
 									<input name="user_group_pic" type="file" size="30" class="text"><br>
 									<span class="small">
-										['.$admin_phrases[common][max].' '.$group_config_arr[cat_pic_x].' '.$admin_phrases[common][resolution_x].' '.$group_config_arr[cat_pic_y].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$group_config_arr[cat_pic_size].' '.$admin_phrases[common][kib].']
+										['.$admin_phrases[common][max].' '.$config_arr['group_pic_x'].' '.$admin_phrases[common][resolution_x].' '.$config_arr['group_pic_y'].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$config_arr['group_pic_size'].' '.$admin_phrases[common][kib].']
 									</span>
 								</td>
 							</tr>
@@ -640,7 +611,7 @@ else
 	$index_numusers = mysql_query ( "
 										SELECT COUNT(`user_id`) AS 'num_users'
 										FROM `".$global_config_arr['pref']."user`
-										WHERE `user_group` = '".$group_arr['user_group_id']."'
+										WHERE `user_is_admin` = '1'
 	", $db );
     $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, "num_users" );
 

@@ -78,13 +78,10 @@ if (
 	}
 	
 	if ( $_POST['gen_password'] == 1 ) {
-	    $newpwd = generate_pwd ( 15 );
-	} else {
-		$newpwd = $_POST['newpwd'];
+	    $_POST['newpwd'] = generate_pwd ( 15 );
 	}
 	$user_salt = generate_pwd ( 10 );
-	$codedpwd = md5 ( $newpwd.$user_salt );
-
+	$codedpwd = md5 ( $_POST['newpwd'].$user_salt );
 
 	// MySQL-Queries
     mysql_query ( "
@@ -408,65 +405,5 @@ if ( TRUE )
                         </table>
                     </form>
     ';
-}
-
-
-
-//////////////////////////
-//// Benutzer anlegen ////
-//////////////////////////
-
-if ($_POST[username] && $_POST[usermail])
-{
-    $_POST[username] = savesql($_POST[username]);
-    $_POST[usermail] = savesql($_POST[usermail]);
-    settype($_POST[regdate], "integer");
-
-    // existiert dieser Username schon?
-    $index = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_name = '$_POST[username]'", $db);
-    $rows = mysql_num_rows($index);
-
-    if ($rows == 0)
-    {
-        $newpass = generate_pwd ( 15 );
-        $user_salt = generate_pwd ( 10 );
-        $codedpass = md5 ( $newpass.$user_salt );
-        $_POST[username] = savesql($_POST[username]);
-        $_POST[usermail] = savesql($_POST[usermail]);
-        $_POST[showmail] = isset($_POST[showmail]) ? 1 : 0;
-
-        $sqlquery = "INSERT INTO ".$global_config_arr[pref]."user
-						(user_name, user_password, user_salt, user_mail, user_reg_date, user_show_mail)
-                     VALUES ('".$_POST[username]."',
-                             '".$codedpass."',
-                             '".$user_salt."',
-                             '".$_POST[usermail]."',
-                             '".$_POST[regdate]."',
-                             '".$_POST[showmail]."')";
-        mysql_query($sqlquery, $db);
-
-        // Mail versenden
-        $template_mail = get_template ( "email_register" );
-        $template_mail = str_replace("{username}", $_POST[username], $template_mail);
-        $template_mail = str_replace("{password}", $newpass, $template_mail);
-
-        $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtualhost];
-        $header  = "From: ".$global_config_arr[admin_mail]."\n";
-        $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
-        $header .= "X-Mailer: PHP/" . phpversion(). "\n"; 
-        $header .= "X-Sender-IP: $REMOTE_ADDR\n"; 
-        $header .= "Content-Type: text/plain";
-        mail($usermail, $email_betreff, $template_mail, $header);
-
-        $index = mysql_query("SELECT COUNT(user_id) AS user FROM ".$global_config_arr[pref]."user", $db);
-        $new_user_num = mysql_result($index,0,"user");
-        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET user = '".$new_user_num."'", $db);
-
-        systext('User wurde hinzugefügt');
-    }
-    else
-    {
-        systext('Username existiert bereits');
-    }
 }
 ?>

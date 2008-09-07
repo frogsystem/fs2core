@@ -211,7 +211,7 @@ function open_fullscreenpopup ( $FILE )
 
 function getselected ( $VALUE, $COMPAREWITH )
 {
-	if ( $VALUE == $COMPAREWITH ) {
+	if ( $VALUE === $COMPAREWITH ) {
 	    return 'selected';
 	} else {
 		return '';
@@ -224,7 +224,7 @@ function getselected ( $VALUE, $COMPAREWITH )
 
 function getchecked ( $VALUE, $COMPAREWITH )
 {
-	if ( $VALUE == $COMPAREWITH ) {
+	if ( $VALUE === $COMPAREWITH ) {
 	    return 'checked';
 	} else {
 		return '';
@@ -237,7 +237,7 @@ function getchecked ( $VALUE, $COMPAREWITH )
 
 function getdisabled ( $VALUE, $COMPAREWITH )
 {
-	if ( $VALUE == $COMPAREWITH ) {
+	if ( $VALUE === $COMPAREWITH ) {
 	    return 'disabled';
 	} else {
 		return '';
@@ -250,7 +250,7 @@ function getdisabled ( $VALUE, $COMPAREWITH )
 
 function getreadonly ( $VALUE, $COMPAREWITH )
 {
-	if ( $VALUE == $COMPAREWITH ) {
+	if ( $VALUE === $COMPAREWITH ) {
 	    return 'readonly';
 	} else {
 		return '';

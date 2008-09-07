@@ -139,7 +139,7 @@ else
     // Display Page
     echo'
 					<form action="" method="post">
-						<input type="hidden" name="go" value="articlesadd">
+						<input type="hidden" name="go" value="articles_add">
                         <input type="hidden" name="sended" value="1">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
