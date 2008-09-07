@@ -11,7 +11,7 @@ $phrases[time_at]           = "um";
 
 //Mails
 $phrases[pass_change]       = "Passwortänderung";
-$phrases[registration]      = "Registrierung";
+$phrases[registration]      = "Registrierung auf ";
 
 // News
 $phrases[news_not_exist]    = "News nicht vorhanden";

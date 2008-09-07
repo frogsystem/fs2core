@@ -1,7 +1,7 @@
 <?php
 
     //config_arr
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."userlist_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user_config", $db);
     $config_arr = mysql_fetch_assoc($index);
 
     //Wieviele User

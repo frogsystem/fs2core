@@ -1,4 +1,10 @@
 <?php
+/////////////////////
+//// Load Config ////
+/////////////////////
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_config WHERE `id` = '1'", $db );
+$config_arr = mysql_fetch_assoc ( $index );
+
 ///////////////////
 //// Functions ////
 ///////////////////
@@ -72,11 +78,12 @@ function default_get_pagenav_data ()
 	global $db;
 	global $global_config_arr;
 	global $admin_phrases;
+	global $config_arr;
 
 	// Set Default Start Value
     if ( !isset ( $_GET['start'] ) ) { $_GET['start'] = 0; }
 	settype ( $_GET['start'], 'integer' );
-	$limit = 15;
+	$limit = $config_arr['acp_per_page'];
 
 	// Create Where Clause for Category Filter
 	unset ( $where_clause );
@@ -186,6 +193,7 @@ function default_display_entry ( $articles_arr )
 	global $db;
 	global $global_config_arr;
 	global $admin_phrases;
+	global $config_arr;
 
 	// Display Article Entry
 	$entry = '
@@ -197,12 +205,19 @@ function default_display_entry ( $articles_arr )
 								<td>
 								    <table cellpadding="0" cellspacing="0">
 								        <tr>
-			                                <td class="config" width="100%" style="padding-right: 25px; padding-bottom: 4px;">
+			                                <td class="config" style="width: 100%; padding-right: 25px; padding-bottom: 4px;">
 			                                    <span style="float: left;">'.$articles_arr['article_title'].'</span>
-			                                    <span style="float: right;">'.$articles_arr['article_url'].' (#'.$articles_arr['article_id'].')</span><br>
+			                                    <span style="float: right;">'.$articles_arr['article_url'].' (#'.$articles_arr['article_id'].')</span>
+	';
+	if ( $config_arr['acp_view'] == 1 || $config_arr['acp_view'] == 2 ) {
+		$entry .= '
+												<br>
 			                                    <span class="small">'.$articles_arr['user_name'].'
 												'.$articles_arr['article_date_formated'].'
 												'.$admin_phrases[common][in].' <b>'.$articles_arr['cat_name'].'</b></span>
+		';
+	}
+	$entry .= '
 			                                </td>
 			                                <td class="config middle center" rowspan="2">
 			                                    <input class="pointer" type="radio" name="article_id" id="input_'.$articles_arr['article_id'].'" value="'.$articles_arr['article_id'].'"
@@ -210,11 +225,17 @@ function default_display_entry ( $articles_arr )
 												>
 			                                </td>
 										</tr>
+	';
+	if ( $config_arr['acp_view'] == 1 ) {
+		$entry .= '
 										<tr>
-			                                <td class="config justify" width="100%" style="padding-right: 25px;">
+			                                <td class="config justify" style="padding-right: 25px;">
 			                                    <span class="small">'.$articles_arr['article_text_short'].'</span>
 			                                </td>
 										</tr>
+		';
+	}
+	$entry .= '
 									</table>
 								</td>
                             </tr>

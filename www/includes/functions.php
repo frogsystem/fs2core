@@ -206,8 +206,29 @@ function get_template ( $TEMPLATE_NAME )
     global $global_config_arr;
     global $db;
     
-	$index = mysql_query ( "SELECT `".$TEMPLATE_NAME."` FROM ".$global_config_arr['pref']."template WHERE id = '".$global_config_arr['design']."'", $db );
+	$index = mysql_query ( "
+							SELECT `".$TEMPLATE_NAME."`
+							FROM ".$global_config_arr['pref']."template
+							WHERE `id` = '".$global_config_arr['design']."'
+	", $db );
 	return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
+}
+
+////////////////////////////
+//// get email template ////
+////////////////////////////
+
+function get_email_template ( $TEMPLATE_NAME )
+{
+    global $global_config_arr;
+    global $db;
+
+	$index = mysql_query ( "
+							SELECT `template_text`
+							FROM ".$global_config_arr['pref']."email_template
+							WHERE `template_name` = '".$TEMPLATE_NAME."'
+	", $db );
+	return stripslashes ( mysql_result ( $index, 0, "template_text" ) );
 }
 
 

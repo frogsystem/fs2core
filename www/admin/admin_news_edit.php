@@ -1,4 +1,10 @@
 <?php
+/////////////////////
+//// Load Config ////
+/////////////////////
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config WHERE `id` = '1'", $db );
+$config_arr = mysql_fetch_assoc ( $index );
+
 ///////////////////
 //// Functions ////
 ///////////////////
@@ -72,11 +78,12 @@ function default_get_pagenav_data ()
 	global $db;
 	global $global_config_arr;
 	global $admin_phrases;
+	global $config_arr;
 	
 	// Set Default Start Value
     if ( !isset ( $_GET['start'] ) ) { $_GET['start'] = 0; }
 	settype ( $_GET['start'], 'integer' );
-	$limit = 15;
+	$limit = $config_arr['acp_per_page'];
 
 	// Create Where Clause for Category Filter
 	unset ( $where_clause );
@@ -177,6 +184,7 @@ function default_display_entry ( $news_arr )
 	global $db;
 	global $global_config_arr;
 	global $admin_phrases;
+	global $config_arr;
 
 	// Display News Entry
 	$entry = '
@@ -186,14 +194,39 @@ function default_display_entry ( $news_arr )
                                 onclick="'.color_click_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
 							>
                                 <td class="config justify" style="width: 375px; padding-right: 25px;">
-                                    #'.$news_arr['news_id'].' '.$news_arr['news_title'].'<br>
-                                    <span class="small">'.$news_arr['news_text_short'].'</span>
+                                    #'.$news_arr['news_id'].' '.$news_arr['news_title'].'
+	';
+	if ( $config_arr['acp_view'] == 1 ) {
+		$entry .= '
+                                    <br><span class="small">'.$news_arr['news_text_short'].'</span>
+		';
+	} elseif ( $config_arr['acp_view'] == 2 ) {
+		$entry .= '
+                                    <br>
+                                    <span class="small">'.$admin_phrases[common][by].' <b>'.$news_arr['user_name'].'</b>,
+									'.$admin_phrases[common][in].' <b>'.$news_arr['cat_name'].'</b>,
+									<b>'.$news_arr['num_comments'].'</b> '.$admin_phrases[common][comments].',
+									<b>'.$news_arr['num_links'].'</b> '.$admin_phrases[common][links].'</span>
+		';
+	}
+	$entry .= '
                                 </td>
                                 <td class="config middle" style="width: 180x;">
+	';
+	if ( $config_arr['acp_view'] == 1 ) {
+		$entry .= '
                                     <span class="small">'.$admin_phrases[common][by].' <b>'.$news_arr['user_name'].'</b><br>
-									'.$news_arr['news_date_formated'].'</b><br>
+									'.$news_arr['news_date_formated'].'<br>
 									'.$admin_phrases[common][in].' <b>'.$news_arr['cat_name'].'</b><br>
-									<b>'.$news_arr['num_comments'].'</b> '.$admin_phrases[common][comments].', <b>'.$news_arr['num_links'].'</b> '.$admin_phrases[common][links].'</span>
+									<b>'.$news_arr['num_comments'].'</b> '.$admin_phrases[common][comments].',
+									<b>'.$news_arr['num_links'].'</b> '.$admin_phrases[common][links].'</span>
+		';
+	} else {
+		$entry .= '
+									<span class="small">'.$news_arr['news_date_formated'].'</span>
+		';
+	}
+	$entry .= '
                                 </td>
                                 <td class="config middle center">
                                     <input class="pointer" type="radio" name="news_id" id="input_'.$news_arr['news_id'].'" value="'.$news_arr['news_id'].'"

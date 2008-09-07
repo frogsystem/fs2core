@@ -1,31 +1,144 @@
 <?php
+///////////////////
+//// Functions ////
+///////////////////
+
+function user_name_free ( $USERNAME ) {
+    global $global_config_arr;
+    global $db;
+    
+    $USERNAME = savesql ( $USERNAME );
+	$index = mysql_query ( "
+							SELECT `user_id`
+							FROM `".$global_config_arr['pref']."user`
+							WHERE `user_name` = '".$USERNAME."'
+	", $db );
+	if ( mysql_num_rows ( $index ) > 0 ) {
+	    return FALSE;
+	} else {
+	    return TRUE;
+	}
+}
+
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config", $db );
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $db );
 $config_arr = mysql_fetch_assoc ( $index );
 
 //////////////////
 //// Add User ////
 //////////////////
 
-if ( $_POST['user_per_page'] && ( $_POST['user_per_page'] > 0 || $_POST['user_per_page'] == -1 ) )
+if (
+		$_POST['user_name'] && $_POST['user_name'] != "" && user_name_free ( $_POST['user_name'] ) == TRUE
+		&& $_POST['user_mail'] && $_POST['user_mail'] != ""
+		&& (
+			( $_POST['newpwd'] && $_POST['newpwd'] != "" && $_POST['wdhpwd'] && $_POST['wdhpwd'] != "" && $_POST['newpwd'] == $_POST['wdhpwd'] )
+			|| $_POST['gen_password'] == 1
+		)
+		&& $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31
+		&& $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12
+		&& $_POST['y'] && $_POST['y'] >= 0
+	)
 {
 	// security functions
-    settype ( $_POST['user_per_page'], "integer" );
-    settype ( $_POST['registration_antispam'], "integer" );
+	$_POST['user_name'] = savesql ( $_POST['user_name'] );
+    $_POST['user_mail'] = savesql ( $_POST['user_mail'] );
+    $_POST['user_homepage'] = savesql ( $_POST['user_homepage'] );
+    $_POST['user_icq'] = savesql ( $_POST['user_icq'] );
+    $_POST['user_aim'] = savesql ( $_POST['user_aim'] );
+    $_POST['user_wlm'] = savesql ( $_POST['user_wlm'] );
+    $_POST['user_yim'] = savesql ( $_POST['user_yim'] );
+    $_POST['user_skype'] = savesql ( $_POST['user_skype'] );
+
+	settype ( $_POST['gen_password'], "integer" );
+    settype ( $_POST['user_is_staff'], "integer" );
+    settype ( $_POST['user_show_mail'], "integer" );
+
+	// get other data
+	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0 );
+	$user_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+
+	if ( $_POST['user_group'] == "admin" && $_POST['user_is_staff'] == 1 ) {
+	    $_POST['user_group'] = 0;
+	    $_POST['user_is_admin'] = 1;
+	} else {
+	    $_POST['user_is_admin'] = 0;
+	}
+    settype($_POST['user_group'], 'integer');
+
+	if ( $_POST['user_is_staff'] == 0 ) {
+	    $_POST['user_group'] = 0;
+	    $_POST['user_is_admin'] = 0;
+	}
+	
+	if ( $_POST['user_homepage'] == "http://" ) {
+	    $_POST['user_homepage'] = "";
+	}
+	
+	if ( $_POST['gen_password'] == 1 ) {
+	    $newpwd = generate_pwd ( 15 );
+	} else {
+		$newpwd = $_POST['newpwd'];
+	}
+	$user_salt = generate_pwd ( 10 );
+	$codedpwd = md5 ( $newpwd.$user_salt );
+
 
 	// MySQL-Queries
     mysql_query ( "
-					UPDATE `".$global_config_arr['pref']."user_config`
-					SET
-						`user_per_page` = '".$_POST['user_per_page']."',
-						`registration_antispam` = '".$_POST['registration_antispam']."'
-					WHERE `id` = '1'
+					INSERT INTO `".$global_config_arr['pref']."user`
+					    ( `user_name`, `user_password`, `user_salt`,
+						`user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
+						`user_reg_date`, `user_show_mail`, `user_homepage`,
+						`user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype` )
+					VALUES (
+						'".$_POST['user_name']."',
+						'".$codedpwd."',
+						'".$user_salt."',
+						'".$_POST['user_mail']."',
+						'".$_POST['user_is_staff']."',
+						'".$_POST['user_group']."',
+						'".$_POST['user_is_admin']."',
+						'".$user_date."',
+						'".$_POST['user_show_mail']."',
+						'".$_POST['user_homepage']."',
+						'".$_POST['user_icq']."',
+						'".$_POST['user_aim']."',
+						'".$_POST['user_wlm']."',
+						'".$_POST['user_yim']."',
+						'".$_POST['user_skype']."'
+					)
 	", $db );
+	$user_id = mysql_insert_id ( $db );
+	$message = "Benutzer wurde erfolgreich hinzugefügt";
+
+	mysql_query ( "
+					UPDATE ".$global_config_arr['pref']."counter
+					SET `user` = `user`+1
+	", $db );
+	
+	// upload image
+	if ( $_FILES['user_pic']['name'] != "" ) {
+	    $upload = upload_img ( $_FILES['user_pic'], "images/avatare/", $user_id, $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+	    $message .= "<br>" . upload_img_notice ( $upload );
+	}
+	
+	// send email
+	$template_mail = get_email_template ( "signup" );
+	$template_mail = str_replace ( "{username}", stripslashes ( $_POST['user_name'] ), $template_mail );
+	$template_mail = str_replace ( "{password}", $_POST['newpwd'], $template_mail );
+	$template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
+	$email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
+	$header  = "From: " . $global_config_arr['admin_mail'] . "\n";
+	$header .= "X-Mailer: PHP/" . phpversion() . "\n";
+	$header .= "X-Sender-IP: " . $REMOTE_ADDR . "\n";
+	$header .= "Content-Type: text/plain";
+	@mail ( stripslashes ( $_POST['user_mail'] ), $email_betreff, $template_mail, $header );
 
 	// system messages
-    systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+    systext( $message, $admin_phrases[common][info] );
 
     // Unset Vars
     unset ( $_POST );
@@ -39,10 +152,23 @@ if ( TRUE )
 {
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+		if ( user_name_free ( $_POST['user_name'] ) == FALSE ) {
+		    $message[] = "Der angegebene Benutzername existiert bereits";
+		}
+		if ( $_POST['newpwd'] != $_POST['wdhpwd'] && $_POST['gen_password'] != 1 ) {
+		    $message[] = "Das Passwort muss zweimal identisch eingegeben werden";
+		}
+		$message = implode ( "<br>", $message );
+		if ( strlen ( $message ) == 0 ) {
+			$message = $admin_phrases[common][note_notfilled];
+		}
+		systext ( $message, $admin_phrases[common][error], TRUE );
 	} else {
 	    $_POST['gen_password'] = 1;
 	    $_POST['user_homepage'] = "http://";
+    	$_POST['d'] = date ( "d" );
+    	$_POST['m'] = date ( "m" );
+    	$_POST['y'] = date ( "Y" );
 	}
 
 	// get other data
@@ -63,23 +189,33 @@ if ( TRUE )
     $_POST['user_mail'] = killhtml ( $_POST['user_mail'] );
     $_POST['newpwd'] = killhtml ( $_POST['newpwd'] );
     $_POST['wdhpwd'] = killhtml ( $_POST['wdhpwd'] );
+    $_POST['user_homepage'] = killhtml ( $_POST['user_homepage'] );
+    $_POST['user_icq'] = killhtml ( $_POST['user_icq'] );
+    $_POST['user_aim'] = killhtml ( $_POST['user_aim'] );
+    $_POST['user_wlm'] = killhtml ( $_POST['user_wlm'] );
+    $_POST['user_yim'] = killhtml ( $_POST['user_yim'] );
+    $_POST['user_skype'] = killhtml ( $_POST['user_skype'] );
 
 	settype ( $_POST['gen_password'], "integer" );
     settype ( $_POST['user_is_staff'], "integer" );
     settype ( $_POST['user_group'], "integer" );
     settype ( $_POST['user_show_mail'], "integer" );
 
+	// get oterh data
+	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0, TRUE );
+	$nowbutton_array = array( "d", "m", "y" );
+
 	// Display Form
     echo'
-                    <form action="" method="post">
+                    <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="go" value="user_add">
 						<input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">Hauptinformationen</td></tr>
                             <tr>
                                 <td class="config">
-                                    Name:<br>
-                                    <span class="small">Der Name des Benutzers.</span>
+                                    Benutzername:<br>
+                                    <span class="small">Das Pseudonym des Benutzers.</span>
                                 </td>
                                 <td class="config">
                                     <input class="text" size="30" maxlength="100" name="user_name" value="'.$_POST['user_name'].'">
@@ -92,6 +228,20 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text" size="30" maxlength="100" name="user_mail" value="'.$_POST['user_mail'].'">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    Registrierdatum:<br>
+                                    <span class="small">Datum, an dem der Benutzer registriert wurde.</span>
+                                </td>
+                                <td class="config">
+									<span class="small">
+										<input class="text" size="3" maxlength="2" id="d" name="d" value="'.$date_arr['d'].'"> .
+                                    	<input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
+                                    	<input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
+									</span>
+									'.js_nowbutton ( $nowbutton_array, $admin_phrases[common][today] ).'
                                 </td>
                             </tr>
                             <tr>
@@ -112,7 +262,7 @@ if ( TRUE )
                                     <span class="small">Das Passwort des Benutzers.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="30" maxlength="100" name="newpwd" value="'.$_POST['newpwd'].'">
+                                    <input class="text" type="password" size="30" maxlength="100" name="newpwd" value="'.$_POST['newpwd'].'">
                                 </td>
                             </tr>
                             <tr class="'.$display_arr['pwd_tr'].'" id="wdhpwd_tr">
@@ -121,7 +271,7 @@ if ( TRUE )
                                     <span class="small">Sicherheits-Wiederholung des Passworts.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="30" maxlength="100" name="wdhpwd" value="'.$_POST['wdhpwd'].'">
+                                    <input class="text" type="password" size="30" maxlength="100" name="wdhpwd" value="'.$_POST['wdhpwd'].'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -195,7 +345,7 @@ if ( TRUE )
 							<tr><td class="line" colspan="2">Kontaktinformationen</td></tr>
                             <tr>
                                 <td class="config">
-                                    Homepage:<br>
+                                    Homepage: <span class="small">(optional)</span><br>
                                     <span class="small">Homepage des Benutzers.</span>
                                 </td>
                                 <td class="config">
@@ -204,47 +354,47 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    ICQ:<br>
+                                    ICQ: <span class="small">(optional)</span><br>
                                     <span class="small">ICQ-Nummer des Benutzers.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="15" maxlength="50" name="user_icq" value="'.$_POST['user_icq'].'">
+                                    <input class="text" size="20" maxlength="50" name="user_icq" value="'.$_POST['user_icq'].'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    AOL Instant Messenger:<br>
+                                    AOL Instant Messenger: <span class="small">(optional)</span><br>
                                     <span class="small">AIM-Name des Benutzers.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="15" maxlength="50" name="user_aim" value="'.$_POST['user_aim'].'">
+                                    <input class="text" size="20" maxlength="50" name="user_aim" value="'.$_POST['user_aim'].'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Windows Live Messenger:<br>
+                                    Windows Live Messenger: <span class="small">(optional)</span><br>
                                     <span class="small">Windows Live E-Mail-Adresse des Benutzers.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="15" maxlength="50" name="user_wlm" value="'.$_POST['user_wlm'].'">
+                                    <input class="text" size="20" maxlength="50" name="user_wlm" value="'.$_POST['user_wlm'].'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Yahoo! Messenger:<br>
+                                    Yahoo! Messenger: <span class="small">(optional)</span><br>
                                     <span class="small">Y!M-Username des Benutzers.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="15" maxlength="50" name="user_yim" value="'.$_POST['user_yim'].'">
+                                    <input class="text" size="20" maxlength="50" name="user_yim" value="'.$_POST['user_yim'].'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Skype:<br>
+                                    Skype: <span class="small">(optional)</span><br>
                                     <span class="small">Skype-ID des Benutzers.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="15" maxlength="50" name="user_skype" value="'.$_POST['user_skype'].'">
+                                    <input class="text" size="20" maxlength="50" name="user_skype" value="'.$_POST['user_skype'].'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -318,27 +468,5 @@ if ($_POST[username] && $_POST[usermail])
     {
         systext('Username existiert bereits');
     }
-}
-
-//////////////////////////
-//// Benutzer Formular ///
-//////////////////////////
-
-else
-{
-    echo'
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr>
-                                <td class="config">
-                                    Registrierdatum:<br>
-                                    <font class="small">Anmeldedatum des Users</font>
-                                </td>
-                                <td align="center" class="config">
-                                    '.date("d.m.Y", $reg_time).'
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
 }
 ?>
