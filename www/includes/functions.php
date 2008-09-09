@@ -92,7 +92,7 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
 
 function generate_pwd ( $LENGHT = 10 )
 {
-    $charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
+	$charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
     $code = "";
     $real_strlen = strlen ( $charset ) - 1;
     mt_srand ( (double)microtime () * 1001000 );

@@ -169,14 +169,15 @@ while ($comment_arr = mysql_fetch_assoc($index))
     // User auslesen
     if ($comment_arr[comment_poster_id] != 0)
     {
-        $index2 = mysql_query("select user_name, is_admin from ".$global_config_arr[pref]."user where user_id = $comment_arr[comment_poster_id]", $db);
+        $index2 = mysql_query("select user_name, user_is_admin, user_is_staff from ".$global_config_arr[pref]."user where user_id = $comment_arr[comment_poster_id]", $db);
         $comment_arr[comment_poster] = killhtml(mysql_result($index2, 0, "user_name"));
-        $comment_arr[is_admin] = mysql_result($index2, 0, "is_admin");
+        $comment_arr[user_is_admin] = mysql_result($index2, 0, "user_is_admin");
+        $comment_arr[user_is_staff] = mysql_result($index2, 0, "user_is_staff");
         if (image_exists("images/avatare/",$comment_arr[comment_poster_id]))
         {
             $comment_arr[comment_avatar] = '<img align="left" src="'.image_url("images/avatare/",$comment_arr[comment_poster_id]).'" alt="'.$comment_arr[comment_poster].'">';
         }
-        if ($comment_arr[is_admin] == 1)
+        if ( $comment_arr[user_is_staff] == 1 || $comment_arr[user_is_admin] == 1 )
         {
             $comment_arr[comment_poster] = "<b>" . $comment_arr[comment_poster] . "</b>";
         }
