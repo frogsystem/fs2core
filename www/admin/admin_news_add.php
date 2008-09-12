@@ -106,7 +106,9 @@ if ( TRUE )
     $_POST['title'] = killhtml ( $_POST['title'] );
 	settype ( $_POST['cat_id'], "integer" );
     settype ( $_POST['posterid'], "integer" );
-	
+	settype ( $_POST['news_active'], "integer" );
+    settype ( $_POST['news_comments_allowed'], "integer" );
+    
     // Get User
     $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$_POST['posterid']."'", $db );
     $_POST['poster'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );

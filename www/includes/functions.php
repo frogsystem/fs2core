@@ -747,7 +747,7 @@ function killbraces ( $TEXT )
 // Format text with FS Code //
 //////////////////////////////
 
-function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0)
+function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0)
 {
         include_once 'bbcodefunctions.php';
         $bbcode = new StringParser_BBCode ();
@@ -806,6 +806,10 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         if ($all==true OR $do_cimg==1)
         $bbcode->addCode ('cimg', 'usecontent?', 'do_bbcode_cimg', array (),
                           'image', array ('listitem', 'block', 'inline', 'link'), array ());
+
+        if ($all==true OR $do_player==1)
+        $bbcode->addCode ('player', 'usecontent?', 'do_bbcode_player', array (),
+                          'block', array ('block', 'inline'), array ('listitem', 'link'));
 
         if ($all==true OR $do_list==1)
         $bbcode->addCode ('list', 'simple_replace', null, array ('start_tag' => '<ul>', 'end_tag' => '</ul>'),
@@ -869,7 +873,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
 
 function killfs($text)
 {
-    $text = fscode($text);
+    $text = fscode ( $text, TRUE, TRUE, TRUE );
     $text = strip_tags($text);
     return $text;
 }

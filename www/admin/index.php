@@ -11,8 +11,10 @@ if ( ! defined( "PATH_SEPARATOR" ) ) {
 // Start Session
 session_start();
 
+// script path-length
+$delete_last = strlen ( "/admin/index.php" ) * -1;
 // Set Include Path
-set_include_path( substr(__FILE__, 0, -16) );
+set_include_path ( substr ( __FILE__, 0, $delete_last ) );
 
 require ( "login.inc.php" );
 require ( "includes/functions.php" );

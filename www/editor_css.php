@@ -1,7 +1,25 @@
 <?php
+///////////////////////////////////
+//// PATH_SEPARATOR definieren ////
+///////////////////////////////////
+if ( ! defined( "PATH_SEPARATOR" ) ) {
+  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
+    define( "PATH_SEPARATOR", ";" );
+  else define( "PATH_SEPARATOR", ":" );
+}
+
+// Start Session
+session_start();
+
+// script path-length
+$delete_last = strlen ( "/editor_css.php" ) * -1;
+// Set Include Path
+set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+
+// set header
 header("Content-type: text/css");
 
-include("login.inc.php");
+require("login.inc.php");
 
 if ($db)
 {

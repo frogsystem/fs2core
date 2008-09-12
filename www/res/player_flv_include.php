@@ -4,67 +4,113 @@ function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
 
 	global $global_config_arr, $db;
 
+	$template_own = '
+	<object type="application/x-shockwave-flash" data="'.$global_config_arr['virtualhost'].'res/player_flv_maxi.swf" width="{width}" height="{height}">
+	    <param name="movie" value="'.$global_config_arr['virtualhost'].'res/player_flv_maxi.swf"></param>
+	    <param name="allowFullScreen" value="true"></param>
+	    <param name="FlashVars" value="config='.$global_config_arr['virtualhost'].'res/player_flv_config.php&amp;flv={url}&amp;title={title}&amp;width={width}&amp;height={height}"></param>
+	</object>
+	';
+	
+	$template_youtube = '
+	<object width="{width}" height="{height}">
+		<param name="movie" value="http://www.youtube.com/v/{url}&hl=en&fs=1&rel=0"></param>
+		<param name="allowFullScreen" value="true"></param>
+		<embed src="http://www.youtube.com/v/{url}&hl=en&fs=1&rel=0" type="application/x-shockwave-flash" allowfullscreen="true" width="{width}" height="{height}"></embed>
+	</object>
+	';
+
+	$template_myvideo = "
+	<object style='width:{width_css};height:{height_css};' type='application/x-shockwave-flash' data='http://www.myvideo.de/movie/{url}'>
+		<param name='movie' value='http://www.myvideo.de/movie/{url}'></param>
+		<param name='AllowFullscreen' value='true'></param>
+	</object>
+	";
+
+
 	$display = FALSE;
 	
 	if ( is_numeric ( $MULTI ) ) {
 	    settype ( $MULTI, "integer" );
 		$index = mysql_query ( "
-								SELECT
-									*
-								FROM
-									".$global_config_arr['pref']."player
-								WHERE
-									video_id = '".$MULTI."'
-								LIMIT
-									0,1
+								SELECT *
+								FROM ".$global_config_arr['pref']."player
+								WHERE video_id = '".$MULTI."'
+								LIMIT 0,1
 		", $db );
 		if ( mysql_num_rows ( $index ) == 1 ) {
-			$url = mysql_result ( $index, 0, "video_url" );
-			$TITLE = mysql_result ( $index, 0, "video_title" );
-			$display = TRUE;
+		    $video_arr = mysql_fetch_assoc ( $index );
+
+			switch ( $video_arr['video_type'] ) {
+			    case -1:
+                    $template_player = stripslashes ( $video_arr['video_x'] );
+			        break;
+			    case 3:
+                    $template_player = $template_myvideo;
+			        break;
+			    case 2:
+                    $template_player = $template_youtube;
+			        break;
+			    case 1:
+                    $template_player = $template_own;
+			        break;
+			    default:
+                    $video_arr['video_type'] = 0;
+                    $template_player = "";
+					break;
+			}
+		} else {
+			$video_arr['video_type'] = 0;
 		}
 	} else {
     	$input = explode ( "|", $MULTI, 2 );
-		$url = $input[0];
-		$TITLE = $input[1];
-		$display = TRUE;
+		$video_arr['video_x'] = $input[0];
+		$video_arr['video_title'] = $input[1];
+		$template_player = $template_own;
+		$video_arr['video_type'] = 1;
 	}
 
-	$url = htmlspecialchars ( $url );
-	$TITLE = htmlspecialchars ( $TITLE );
- 	settype ( $WIDTH, "integer" );
- 	settype ( $HEIGHT, "integer" );
+	$video_arr['video_x'] = htmlspecialchars ( $video_arr['video_x'] );
+	$video_arr['video_title'] = htmlspecialchars ( $video_arr['video_title'] );
 
-	if ( $display ) {
-		$template = '
-<table cellpadding="0" cellspacing="0">
-	<tr>
-		<td style="background-image: url(images/design/player_lo.jpg); background-repeat: no-repeat; width: 15px; height: 17px;"></td>
-		<td style="background-image: url(images/design/player_o.jpg); background-repeat: repeat-x; height: 17px;" align="left">
-			<img src="images/design/player_o_extra.jpg" alt="">
-		</td>
-		<td style="background-image: url(images/design/player_ro.jpg); background-repeat: no-repeat; width: 16px; height: 17px;"></td>
-	</tr>
-	<tr>
-		<td style="background-image: url(images/design/player_l.jpg); background-repeat: repeat-y; width: 15px;"></td>
-		<td style="background-color: #000000;">
+	// get dimensions
+	if ( substr ( $WIDTH, -1 ) == "%" ) {
+        $WIDTH = substr ( $WIDTH, 0, -1 );
+        settype ( $WIDTH, "integer" );
+		$WIDTH = substr ( $WIDTH, 0, -1 ) . "%";
+		$WIDTH_CSS = substr ( $WIDTH, 0, -1 ) . "%";
+	} else {
+        settype ( $WIDTH, "integer" );
+		$WIDTH_CSS = $WIDTH . "px";
+	}
+	
+	if ( substr ( $HEIGHT, -1 ) == "%" ) {
+        $HEIGHT = substr ( $HEIGHT, 0, -1 );
+        settype ( $HEIGHT, "integer" );
+		$HEIGHT = substr ( $HEIGHT, 0, -1 ) . "%";
+		$HEIGHT_CSS = substr ( $HEIGHT, 0, -1 ) . "%";
+	} else {
+        settype ( $HEIGHT, "integer" );
+		$HEIGHT_CSS = $HEIGHT . "px";
+	}
 
-		<object type="application/x-shockwave-flash" data="'.$global_config_arr['virtualhost'].'res/player_flv_maxi.swf" width="'.$WIDTH.'" height="'.$HEIGHT.'">
-		    <param name="movie" value="'.$global_config_arr['virtualhost'].'res/player_flv_maxi.swf" />
-		    <param name="allowFullScreen" value="true" />
-		    <param name="FlashVars" value="config='.$global_config_arr['virtualhost'].'res/player_flv_config.txt&amp;flv='.$url.'&amp;title='.$TITLE.'&amp;width='.$WIDTH.'&amp;height='.$HEIGHT.'" />
-		</object>
+	//for really tricky people wanting to have an real player design, before the alix5-release ;)
+	$template_html = '{player}';
 
-		</td>
-		<td style="background-image: url(images/design/player_r.jpg); background-repeat: repeat-y; width: 16px;"></td>
-	</tr>
-	<tr>
-		<td style="background-image: url(images/design/player_lu.jpg); background-repeat: no-repeat; width: 15px; height: 18px;"></td>
-		<td style="background-image: url(images/design/player_u.jpg); background-repeat: repeat-x; height: 18px;"></td>
-		<td style="background-image: url(images/design/player_ru.jpg); background-repeat: no-repeat; width: 16px; height: 18px;"></td>
-	</tr>
-</table>
-		';
+	if ( $video_arr['video_type'] != 0 ) {
+	    $template_player = str_replace ( "{width}", $WIDTH, $template_player );
+	    $template_player = str_replace ( "{height}", $HEIGHT, $template_player );
+	    $template_player = str_replace ( "{width_css}", $WIDTH_CSS, $template_player );
+	    $template_player = str_replace ( "{height_css}", $HEIGHT_CSS, $template_player );
+
+		if ( $video_arr['video_type'] == 1 || $video_arr['video_type'] == 2 || $video_arr['video_type'] == 3 ) {
+		    $template_player = str_replace ( "{url}", $video_arr['video_x'], $template_player );
+		}
+		if ( $video_arr['video_type'] == 1 ) {
+		    $template_player = str_replace ( "{title}", $video_arr['video_title'], $template_player );
+		}
+
+		$template = str_replace ( "{player}", $template_player, $template_html );
 	} else {
 		$template = "";
 	}

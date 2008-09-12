@@ -33,7 +33,7 @@ function default_display_filter ( $FORM )
 
     echo'
 					<form action="" method="post">
-                        <input type="hidden" value="articlesedit" name="go">
+                        <input type="hidden" value="articles_edit" name="go">
 
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="3">'.$admin_phrases[articles][edit_filter_title].'</td></tr>
@@ -113,11 +113,11 @@ function default_display_pagenav ( $pagenav_arr )
 	// Prev & Next Page Links
     if ( $pagenav_arr['newpage_exists'] )
     {
-        $next_page = '<a href="'.$PHP_SELF.'?mid=content&go=articlesedit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['new_start'].'">'.$admin_phrases[articles][edit_next_article].' »</a>';
+        $next_page = '<a href="'.$PHP_SELF.'?go=articles_edit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['new_start'].'">'.$admin_phrases[articles][edit_next_article].' »</a>';
     }
     if ( $pagenav_arr['old_start_exists'] )
     {
-        $prev_page = '<a href="'.$PHP_SELF.'?mid=content&go=articlesedit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['old_start'].'">« '.$admin_phrases[articles][edit_prev_article].'</a>';
+        $prev_page = '<a href="'.$PHP_SELF.'?go=articles_edit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['old_start'].'">« '.$admin_phrases[articles][edit_prev_article].'</a>';
     }
 
     // Current Range
@@ -285,7 +285,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 	// Display News List Header
     echo'
                     <form action="" method="post">
-                        <input type="hidden" name="go" value="articlesedit">
+                        <input type="hidden" name="go" value="articles_edit">
                         <input type="hidden" name="order" value="'.$FORM['order'].'" >
                         <input type="hidden" name="sort" value="'.$FORM['sort'].'">
                         <input type="hidden" name="cat_id" value="'.$FORM['cat_id'].'">
@@ -418,7 +418,7 @@ function action_edit_display_page ( $data_arr )
     // Display Page
     echo'
 					<form action="" method="post">
-						<input type="hidden" name="go" value="articlesedit">
+						<input type="hidden" name="go" value="articles_edit">
 						<input type="hidden" name="article_action" value="edit">
 						<input type="hidden" name="article_id" value="'.$articles_arr['article_id'].'">
 						<input type="hidden" name="article_old_url" value="'.$articles_arr['article_old_url'].'">
@@ -607,7 +607,7 @@ function action_delete_display_page ( $articles_arr )
 						<input type="hidden" name="sended" value="delete">
 						<input type="hidden" name="article_action" value="'.$_POST['article_action'].'">
 						<input type="hidden" name="article_id" value="'.$articles_arr['article_id'].'">
-						<input type="hidden" name="go" value="articlesedit">
+						<input type="hidden" name="go" value="articles_edit">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line">'.$admin_phrases[articles][delete_title].'</td></tr>
 							<tr>

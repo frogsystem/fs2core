@@ -146,7 +146,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
-    $tmp[name] = "community_map";
+/*    $tmp[name] = "community_map";
     $tmp[title] = $admin_phrases[template][community_map][title];
     $tmp[description] = $admin_phrases[template][community_map][description];
     $tmp[rows] = "15";
@@ -154,7 +154,7 @@
         $tmp[help][0][tag] = "{karte}";
         $tmp[help][0][text] = $admin_phrases[template][community_map][help_1];
     $TEMPLATE_EDIT[] = $tmp;
-    unset($tmp);
+    unset($tmp);*/
 
 
 //////////////////////////

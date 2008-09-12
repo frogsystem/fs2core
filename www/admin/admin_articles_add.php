@@ -77,6 +77,10 @@ else
 		} else {
 		  systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
 		}
+	} else {
+		$_POST['article_html'] = 1;
+		$_POST['article_fscode'] = 1;
+		$_POST['article_para'] = 1;
 	}
 
     // Load Article Config
@@ -92,16 +96,6 @@ else
     $config_arr[fs_code_text] = ( $config_arr[fs_code_bool] ) ? $admin_phrases[common][on] : $admin_phrases[common][off];
     $config_arr[para_handling_text] = ( $config_arr[para_handling_bool] ) ? $admin_phrases[common][on] : $admin_phrases[common][off];
 
-	if ( !isset ( $_POST['article_html'] ) ) {
-		$_POST['article_html'] = 1;
-    }
-	if ( !isset ( $_POST['article_fscode'] ) ) {
-		$_POST['article_fscode'] = 1;
-    }
-	if ( !isset ( $_POST['article_para'] ) ) {
-		$_POST['article_para'] = 1;
-    }
-    
 	// Get User ID
 	if ( !isset ( $_POST['article_user'] ) ) {
 		$_POST['article_user'] = $_SESSION['user_id'];

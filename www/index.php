@@ -11,8 +11,10 @@ if ( ! defined( "PATH_SEPARATOR" ) ) {
 // Start Session
 session_start();
 
+// script path-length
+$delete_last = strlen ( "/index.php" ) * -1;
 // Set Include Path
-set_include_path( substr(__FILE__, 0, -10) );
+set_include_path ( substr ( __FILE__, 0, $delete_last ) );
 
 // Inlcude DB Connection File
 require("login.inc.php");
@@ -51,6 +53,7 @@ if ($db)
 	$template_index = str_replace ( "{copyright}", get_copyright (), $template_index );
 	$template_index = replace_resources ( $template_index );
 	$template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung
+	$template_index = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_index );
 	//$template_index = killbraces ( $template_index );
 	
 	// Get Main Template

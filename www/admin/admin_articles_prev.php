@@ -1,11 +1,28 @@
 <?php
+///////////////////////////////////
+//// PATH_SEPARATOR definieren ////
+///////////////////////////////////
+if ( ! defined( "PATH_SEPARATOR" ) ) {
+  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
+    define( "PATH_SEPARATOR", ";" );
+  else define( "PATH_SEPARATOR", ":" );
+}
+
+// Start Session
+session_start();
+
+// script path-length
+$delete_last = strlen ( "/admin/admin_articles_prev.php" ) * -1;
+// Set Include Path
+set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+
 // Include Files
-include("../login.inc.php");
-include("../includes/functions.php");
-include("../includes/cookielogin.php");
-include("../includes/imagefunctions.php");
-include("../includes/indexfunctions.php");
-include("../phrases/phrases_".$global_config_arr['language'].".php");
+require("login.inc.php");
+require("includes/functions.php");
+require("includes/cookielogin.php");
+require("includes/imagefunctions.php");
+require("includes/indexfunctions.php");
+require("phrases/phrases_".$global_config_arr['language'].".php");
 
 // Constructor Calls
 set_design ();

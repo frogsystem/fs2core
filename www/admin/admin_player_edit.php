@@ -398,7 +398,7 @@ else
 					<form action="" method="post">
 						<input type="hidden" name="go" value="player_edit">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="3">Video auswählen</td></tr>
+						    <tr><td class="line" colspan="4">Video auswählen</td></tr>
 	';
 
 	// Get Videos from DB
@@ -408,7 +408,8 @@ else
 		// display table head
 		echo '
 							<tr>
-							    <td class="config">Titel</td>
+                                <td class="config" width="10">ID</td>
+								<td class="config">Titel</td>
 							    <td class="config">Quelle</td>
 							    <td class="config" width="20"></td>
 							</tr>
@@ -443,6 +444,9 @@ else
 								onmouseout="'.color_list_entry ( "input_".$video_arr['video_id'], "transparent", "#49c24f", "this" ).'"
                                 onclick="'.color_click_entry ( "input_".$video_arr['video_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
 							>
+								<td class="configthin">
+                                    <b>#'.$video_arr['video_id'].'</b>
+								</td>
 								<td class="configthin middle">
                                     <b>'.$video_arr['video_title'].'</b>'.$video_arr['video_link'].'
 								</td>
@@ -471,7 +475,7 @@ else
 							</tr>
 							<tr><td class="space"></td></tr>
 							<tr>
-								<td class="buttontd" colspan="3">
+								<td class="buttontd" colspan="4">
 									<button class="button_new" type="submit">
 										'.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
 									</button>
@@ -484,7 +488,7 @@ else
 		echo '
                             <tr><td class="space"></td></tr>
 							<tr>
-								<td class="config center" colspan="3">Keine Videos gefunden!</td>
+								<td class="config center" colspan="4">Keine Videos gefunden!</td>
 							</tr>
 							<tr><td class="space"></td></tr>
 		';

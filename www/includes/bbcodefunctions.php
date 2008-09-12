@@ -1,5 +1,23 @@
 <?php
-include_once 'stringparser_bbcode.class.php';
+///////////////////////////////////
+//// PATH_SEPARATOR definieren ////
+///////////////////////////////////
+if ( ! defined( "PATH_SEPARATOR" ) ) {
+  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
+    define( "PATH_SEPARATOR", ";" );
+  else define( "PATH_SEPARATOR", ":" );
+}
+
+// Start Session
+session_start();
+
+// script path-length
+$delete_last = strlen ( "/includes/bbcodefunctions.php" ) * -1;
+// Set Include Path
+set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+
+require_once 'includes/stringparser_bbcode.class.php';
+require_once 'res/player_flv_include.php';
 
 function convertlinebreaks ($text) {
     return preg_replace ("/\015\012|\015|\012/", "\n", $text);
@@ -95,6 +113,24 @@ function do_bbcode_cimg ($action, $attributes, $content, $params, $node_object) 
     $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr[pref]."global_config WHERE id = 1", $db);
     $page_url = stripslashes(mysql_result($index, 0, "virtualhost"));
     return '<img src="'.$page_url."images/content/".htmlspecialchars($content).'" align="'.htmlspecialchars($attributes['default']).'" alt="">';
+}
+
+function do_bbcode_player ($action, $attributes, $content, $params, $node_object) {
+
+    global $global_config_arr;
+    global $db;
+
+    if ($action == 'validate') {
+        return true;
+    }
+
+    if (!isset ($attributes['default'])) {
+        return get_player ( $content );
+    }
+	$res = explode ( ",", $attributes['default'], 2 );
+    settype ( $res[0], "integer" );
+    settype ( $res[1], "integer" );
+	return get_player ( $content, $res[0], $res[1] );
 }
 
 function do_bbcode_font ($action, $attributes, $content, $params, $node_object) {

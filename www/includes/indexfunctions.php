@@ -277,6 +277,7 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
 
     if ( $rows <= 0 ) {
         mysql_query("INSERT INTO ".$global_config_arr['pref']."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')", $db );
+        mysql_query("DELETE FROM ".$global_config_arr['pref']."iplist", $db );
     }
 }
 
@@ -321,10 +322,6 @@ function count_visit ( $GOTO )
 
     visit_day_exists ( $visit_year, $visit_month, $visit_day );
 
-    // delete old IPs
-    $deltime = $time - $counttime;
-    mysql_query ( "DELETE FROM ".$global_config_arr['pref']."iplist WHERE deltime < ".$deltime."", $db );
-
 	// check if errorpage
 	if ( $GOTO != "404" && $GOTO != "403" ) {
 		// save IP & visit
@@ -335,7 +332,7 @@ function count_visit ( $GOTO )
 	        mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_stat
 	                       SET s_visits = s_visits + 1
 	                       WHERE s_year = ".$visit_year." AND s_month = ".$visit_month." AND s_day = ".$visit_day."", $db );
-	        mysql_query ( "INSERT INTO ".$global_config_arr['pref']."iplist (deltime, ip) VALUES ('".$time."', '".$_SERVER['REMOTE_ADDR']."')", $db );
+	        mysql_query ( "INSERT INTO ".$global_config_arr['pref']."iplist (`ip`) VALUES ('".savesql($_SERVER['REMOTE_ADDR'])."')", $db );
 	    }
 	}
 }
