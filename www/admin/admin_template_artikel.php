@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "artikeltemplate";
+    $TEMPLATE_GO = "tpl_articles";
     unset($tmp);
 
     $tmp[name] = "artikel_autor";

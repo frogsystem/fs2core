@@ -187,11 +187,10 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
 
     echo'
                     <form id="form" action="" method="post">
-                        <input type="hidden" value="polledit" name="go">
+                        <input type="hidden" value="poll_edit" name="go">
                         <input id="send" type="hidden" value="0" name="polledit">
                         <input type="hidden" value="'.$_POST[pollid].'" name="tempid">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$_POST[pollid].'" name="editpollid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -388,8 +387,7 @@ else
 {
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="polledit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="poll_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="50%">

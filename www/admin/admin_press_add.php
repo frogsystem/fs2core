@@ -102,7 +102,6 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="press_add" name="go">
                         <input type="hidden" value="add" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">

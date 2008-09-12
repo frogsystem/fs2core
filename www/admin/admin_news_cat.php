@@ -206,8 +206,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						<input type="hidden" name="sended" value="edit">
 						<input type="hidden" name="cat_action" value="'.$_POST['cat_action'].'">
 						<input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'">
-						<input type="hidden" name="go" value="newscat">
-						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
+						<input type="hidden" name="go" value="news_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 						    <tr><td class="line" colspan="2">'.$admin_phrases[news][edit_cat_title].'</td></tr>
        						<tr>
@@ -320,8 +319,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						<input type="hidden" name="sended" value="delete">
 						<input type="hidden" name="cat_action" value="'.$_POST['cat_action'].'">
 						<input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'">
-						<input type="hidden" name="go" value="newscat">
-						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
+						<input type="hidden" name="go" value="news_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[news][delete_cat_title].'</td></tr>
 							<tr>
@@ -392,7 +390,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						<table class="configtable" cellpadding="4" cellspacing="0">
        						<tr>
            						<td class="config">
-									<a class="link_button" href="?mid=content&go=newscat">'.$admin_phrases[common][arrow].' '.$admin_phrases[news][delete_back_link].'</a>
+									<a class="link_button" href="?go=news_cat">'.$admin_phrases[common][arrow].' '.$admin_phrases[news][delete_back_link].'</a>
 								</td>
 							</tr>
 						</table>';
@@ -421,8 +419,7 @@ elseif ( $showdefault == TRUE )
 					<form action="" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="sended" value="add">
 					    <input type="hidden" name="cat_action" value="add">
-						<input type="hidden" name="go" value="newscat">
-						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
+						<input type="hidden" name="go" value="news_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 						    <tr><td class="line" colspan="2">'.$admin_phrases[news][new_cat_title].'</td></tr>
 						    <tr>
@@ -461,8 +458,7 @@ elseif ( $showdefault == TRUE )
 	// Category Listing
 	echo '
 					<form action="" method="post">
-						<input type="hidden" name="go" value="newscat">
-						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
+						<input type="hidden" name="go" value="news_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 						    <tr><td class="line" colspan="3">'.$admin_phrases[news][list_cat_title].'</td></tr>
 	';

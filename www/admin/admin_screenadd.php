@@ -40,8 +40,7 @@ if (isset($_FILES['screenimg']))
 
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
-                        <input type="hidden" value="screenadd" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="screens_add" name="go">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">

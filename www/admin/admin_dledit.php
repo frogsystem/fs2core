@@ -182,11 +182,10 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
 
     echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">
-                        <input type="hidden" value="dledit" name="go">
+                        <input type="hidden" name="go" value="dl_edit">
                         <input id="send" type="hidden" value="0" name="dledit">
                         <input type="hidden" value="'.$_POST[dlid].'" name="tempid">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$_POST[dlid].'" name="editdlid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -355,7 +354,7 @@ else
 {
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="dledit" name="go">
+                        <input type="hidden" value="dl_edit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
@@ -385,8 +384,7 @@ else
 
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="dledit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="dl_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="40%">

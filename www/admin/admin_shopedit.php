@@ -54,8 +54,7 @@ elseif ($_POST[artikelid])
 
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
-                        <input type="hidden" value="shopedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="shop_edit" name="go">
                         <input type="hidden" value="'.$artikel_arr[artikel_id].'" name="editartikelid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -148,8 +147,7 @@ else
 {
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="shopedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="shop_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="20%">

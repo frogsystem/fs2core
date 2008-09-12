@@ -117,8 +117,7 @@ function list_dir (&$files, $dirname, $dirs=NULL, $ebene=-1)
                     <img border="0" src="admin_statspace.php?size='.$size.'" alt="">
                     <p>
                     <form id="form1" action="'.$PHP_SELF.'" method="post">
-                        <input type="hidden" value="statspace" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="stat_space" name="go">
                         <input type="hidden" id="closedir" value="" name="closedir">
                         <input type="hidden" id="newdir" value="" name="dirs[]">
     ';

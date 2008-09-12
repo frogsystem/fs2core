@@ -1,4 +1,4 @@
-<?php
+13.09.2008<?php
 ########################################
 #### explanation of editor creation ####
 ########################################
@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "partnertemplate";
+    $TEMPLATE_GO = "tpl_partner";
     unset($tmp);
 
     $tmp[name] = "partner_eintrag";

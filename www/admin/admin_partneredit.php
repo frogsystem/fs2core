@@ -127,10 +127,9 @@ elseif ($_POST[partner_action] == "edit"
 
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
-                        <input type="hidden" value="partneredit" name="go">
+                        <input type="hidden" value="partner_edit" name="go">
                         <input type="hidden" value="edit" name="partner_action">
                         <input type="hidden" value="edit" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$partner_arr[partner_id].'" name="partner_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -232,10 +231,9 @@ elseif ($_POST[partner_action] == "delete"
 
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="partneredit" name="go">
+                        <input type="hidden" value="partner_edit" name="go">
                         <input type="hidden" value="delete" name="partner_action">
                         <input type="hidden" value="delete" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$partner_arr[partner_id].'" name="partner_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr align="left" valign="top">
@@ -280,8 +278,7 @@ if (!isset($_POST[partner_id]))
     {
         echo'
                     <form action="" method="post">
-                        <input type="hidden" value="partneredit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="partner_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr><td></td></tr>
                             <tr>

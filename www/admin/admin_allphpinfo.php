@@ -1,11 +1,14 @@
 <?php
-if (isset($_GET[info]))
-{
-    phpinfo();
+if ( isset ( $_GET['info'] ) ) {
+	// Start Session
+	session_start();
+	if ( $_SESSION['gen_phpinfo'] == 1 ) {
+	    phpinfo();
+	}
+
 }
-else
-{
-    echo'
+elseif ( $_SESSION['gen_phpinfo'] == 1 ) {
+    echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="4">'.$admin_phrases[general][phpinfo_title].'</td></tr>
                             <tr>
@@ -75,6 +78,6 @@ else
                                 </td>
                             </tr>
                         </table>
-    ';
+	';
 }
 ?>

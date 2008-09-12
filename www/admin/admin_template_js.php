@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "jstemplate";
+    $TEMPLATE_GO = "design_javascript";
     unset($tmp);
     
     $tmp[name] = "js_userfunctions";

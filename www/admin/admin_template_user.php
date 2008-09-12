@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "usertemplate";
+    $TEMPLATE_GO = "tpl_user";
     unset($tmp);
     
     $tmp[name] = "user_mini_login";

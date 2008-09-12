@@ -41,8 +41,7 @@ elseif (isset($_POST[editcatid]))
     $cat_arr = mysql_fetch_assoc($index);
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="dlcat" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="dl_cat" name="go">
                         <input type="hidden" value="'.$cat_arr[cat_id].'" name="catid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -101,8 +100,7 @@ else
 {
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="dlcat" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="dl_cat" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="40%">

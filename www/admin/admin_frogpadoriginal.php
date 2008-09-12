@@ -1,7 +1,24 @@
 <?php
-include("../login.inc.php");
-include("../includes/functions.php");
-include("../includes/adminfunctions.php");
+///////////////////////////////////
+//// PATH_SEPARATOR definieren ////
+///////////////////////////////////
+if ( ! defined( "PATH_SEPARATOR" ) ) {
+  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
+    define( "PATH_SEPARATOR", ";" );
+  else define( "PATH_SEPARATOR", ":" );
+}
+
+// Start Session
+session_start();
+
+// script path-length
+$delete_last = strlen ( "/admin/admin_frogpadoriginal.php" ) * -1;
+// Set Include Path
+set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+
+require("login.inc.php");
+require("includes/functions.php");
+require("includes/adminfunctions.php");
 
 if ( isset ( $_GET['tpl'] ) ) {
 	$_GET['tpl'] = savesql ( $_GET['tpl'] );

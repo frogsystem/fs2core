@@ -320,7 +320,6 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						<input type="hidden" name="cat_action" value="'.$_POST['cat_action'].'">
 						<input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'">
 						<input type="hidden" name="go" value="articles_cat">
-						<input type="hidden" name="PHPSESSID" value="'.session_id().'">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[articles][delete_cat_title].'</td></tr>
 							<tr>

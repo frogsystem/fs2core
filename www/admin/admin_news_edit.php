@@ -47,11 +47,12 @@ function default_display_filter ( $FORM )
     									$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
     									while ( $cat_arr = mysql_fetch_assoc ( $index ) )
     									{
+											settype ( $cat_arr['cat_id'], "integer" );
 											echo '<option value="'.$cat_arr['cat_id'].'" '.getselected( $cat_arr['cat_id'], $FORM['cat_id'] ).'>'.$cat_arr['cat_name'].'</option>';
     									}
 	echo'
                                     </select>
-									'.$admin_phrases[news][news_edit_filter_sort].'
+									<br><br>'.$admin_phrases[news][news_edit_filter_sort].'
                                     <select name="order">
                                         <option value="news_id" '.getselected ( "news_id", $FORM['order'] ).'>'.$admin_phrases[news][news_edit_filter_id].'</option>
                                         <option value="news_date" '.getselected ( "news_date", $FORM['order'] ).'>'.$admin_phrases[news][news_edit_filter_date].'</option>
@@ -259,7 +260,7 @@ function default_display_all_entries ( $pagenav_arr )
 							SELECT *
 							FROM ".$global_config_arr['pref']."news
 							".$where_clause."
-							ORDER BY ".$_REQUEST['order']." ".$_REQUEST['sort']."
+							ORDER BY ".$_REQUEST['order']." ".$_REQUEST['sort'].", news_id ASC
 							LIMIT ".$pagenav_arr['cur_start'].", ".$pagenav_arr['entries_per_page']."
 	", $db);
 

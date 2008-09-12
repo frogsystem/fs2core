@@ -57,9 +57,8 @@ elseif (isset($_POST[screenid]))
 
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="screenedit" name="go">
+                        <input type="hidden" value="screens_edit" name="go">
                         <input type="hidden" value="newthumb" name="do">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$screen_arr[screen_id].'" name="screenid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -82,9 +81,8 @@ elseif (isset($_POST[screenid]))
                             </tr>
                     </form>
                     <form action="" method="post">
-                        <input type="hidden" value="screenedit" name="go">
+                        <input type="hidden" value="screens_edit" name="go">
                         <input type="hidden" value="edit" name="do">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$screen_arr[screen_id].'" name="editscreenid">
                             <tr>
                                 <td class="config" valign="top">
@@ -149,8 +147,7 @@ else
 
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="screenedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="screens_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="40%">
@@ -184,8 +181,7 @@ else
     {
         echo'<br>
                     <form action="" method="post">
-                        <input type="hidden" value="screenedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="screens_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="25%">

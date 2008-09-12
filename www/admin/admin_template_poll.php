@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "polltemplate";
+    $TEMPLATE_GO = "tpl_poll";
     unset($tmp);
     
     $tmp[name] = "poll_line";

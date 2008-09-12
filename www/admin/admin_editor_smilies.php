@@ -85,8 +85,7 @@ elseif (($_GET['action']=="moveup" OR $_GET['action']=="movedown") AND isset($_G
   $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."smilies ORDER BY `order` ASC", $db);
 
   echo'<form action="" method="post" enctype="multipart/form-data">
-         <input type="hidden" value="editorsmilies" name="go">
-         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+         <input type="hidden" value="editor_smilies" name="go">
          <table class="configtable" cellpadding="4" cellspacing="0">
            <tr><td class="line" colspan="3">'.$admin_phrases[editor][smilie_add_title].'</td></tr>
            <tr>
@@ -144,8 +143,7 @@ if (mysql_num_rows($index)>0)
                     </table>
                     
                     <form action="" method="post">
-                        <input type="hidden" value="editorsmilies" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="editor_smilies" name="go">
                         <table class="configtable" cellpadding="2" cellspacing="0">
                            <tr>
                                 <td width="175"></td>

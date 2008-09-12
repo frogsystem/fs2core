@@ -116,7 +116,6 @@ if ($_POST[include_id])
             <input type="hidden" name="include_type" value="'.$inc_arr[include_type].'">
             <input type="hidden" name="include_id" value="'.$inc_arr[id].'">
             <input type="hidden" name="old_name" value="'.$inc_arr[old_name].'">
-            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 
             <font class="small"><b>Ersetzungsmuster löschen:</b></font>
             <input onClick=\'delalert ("include_del", "Soll das Ersetzungsmuster wirklich gelöscht werden?")\' type="checkbox" name="include_del" id="include_del" value="1">
@@ -164,7 +163,6 @@ if ($_POST[include_id])
             <input type="hidden" name="include_type" value="'.$inc_arr[include_type].'">
             <input type="hidden" name="include_id" value="'.$inc_arr[id].'">
             <input type="hidden" name="old_name" value="'.$inc_arr[old_name].'">
-            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 
             <font class="small"><b>Ersetzungsmuster löschen:</b></font>
             <input onClick=\'delalert ("include_del", "Soll das Ersetzungsmuster wirklich gelöscht werden?")\' type="checkbox" name="include_del" id="include_del" value="1">

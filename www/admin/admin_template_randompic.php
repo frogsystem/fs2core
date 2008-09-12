@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "randompictemplate";
+    $TEMPLATE_GO = "tpl_randompic";
     unset($tmp);
     
     $tmp[name] = "randompic_body";

@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "csstemplate";
+    $TEMPLATE_GO = "designs_css";
     unset($tmp);
     
     $tmp[name] = "style_css";

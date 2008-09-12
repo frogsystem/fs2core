@@ -72,7 +72,6 @@ if (in_array($_POST['name'], $forbidden_names_array))
   echo'<form action="" method="post">
          <input type="hidden" value="zone_create" name="go">
          <input type="hidden" name="sended" value="">
-         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
          <table border="0" cellpadding="4" cellspacing="0" width="600">
            <tr align="left" valign="top">
              <td class="config" valign="top" width="30%">

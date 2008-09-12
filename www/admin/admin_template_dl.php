@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "dltemplate";
+    $TEMPLATE_GO = "tpl_dl";
     unset($tmp);
     
     $tmp[name] = "dl_search_field";

@@ -32,7 +32,7 @@ $dbfirstyear = mysql_result($index, 0, "s_year");
 $index = mysql_query("SELECT s_month FROM ".$global_config_arr[pref]."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1", $db);
 $dbfirstmonth = mysql_result($index, 0, "s_month");
 
-echo '<a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=statview&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'&PHPSESSID='.session_id().'">';
+echo '<a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=stat_view&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'&PHPSESSID='.session_id().'">';
 if ( $_GET['s_year'] == $dbfirstyear ) { echo '<b>'; }
 echo $dbfirstyear;
 if ( $_GET['s_year'] == $dbfirstyear ) { echo '</b>'; }
@@ -44,7 +44,7 @@ if ($dbfirstyear < date("Y"))
 {
     for ($y=$dbfirstyear+1; $y<=date("Y"); $y++)
     {
-        echo ' | <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=statview&s_year='.$y.'&s_month=1&PHPSESSID='.session_id().'">';
+        echo ' | <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=stat_view&s_year='.$y.'&s_month=1&PHPSESSID='.session_id().'">';
         if ( $_GET['s_year'] == $y ) { echo '<b>'; }
 		echo $y;
         if ( $_GET['s_year'] == $y ) { echo '</b>'; }
@@ -128,6 +128,7 @@ for ($d=1; $d<date("t",mktime(0, 0, 0, $s_month, 1, $s_year))+1; $d++)
                                         </td>
                                         <td '.$class.'align="left" style="font-size:1pt;">
                                             <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
+                                            <img border="0" src="img/chits.gif" height="4" width="'.round($hitswidth).'">
                                         </td>
                                     </tr>
         ';
@@ -224,7 +225,7 @@ for ($m=1; $m<13; $m++)
         echo'
                                     <tr>
                                         <td class="n" align="center">
-                                            <a style="text-decoration:none;" href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=statview&PHPSESSID='.session_id().'&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
+                                            <a style="text-decoration:none;" href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=stat_view&PHPSESSID='.session_id().'&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
                                         </td>
                                         <td class="n" align="center">
                                             '.point_number($sum_arr[sumvisits]).'

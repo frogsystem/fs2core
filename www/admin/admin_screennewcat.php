@@ -31,8 +31,7 @@ else
 {
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="screennewcat" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="gallery_newcat" name="go">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">

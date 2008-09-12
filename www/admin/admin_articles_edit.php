@@ -47,12 +47,14 @@ function default_display_filter ( $FORM )
     									$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );
     									while ( $cat_arr = mysql_fetch_assoc ( $index ) )
     									{
+											settype ( $cat_arr['cat_id'], "integer" );
 											echo '<option value="'.$cat_arr['cat_id'].'" '.getselected( $cat_arr['cat_id'], $FORM['cat_id'] ).'>'.$cat_arr['cat_name'].'</option>';
     									}
 	echo'
                                     </select>
-									'.$admin_phrases[articles][edit_filter_sort].'
+									<br><br>'.$admin_phrases[articles][edit_filter_sort].'
                                     <select name="order">
+                                        <option value="article_id" '.getselected ( "article_id", $FORM['order'] ).'>Artikel-ID</option>
                                         <option value="article_date" '.getselected ( "article_date", $FORM['order'] ).'>'.$admin_phrases[articles][edit_filter_date].'</option>
                                         <option value="article_title" '.getselected ( "article_title", $FORM['order'] ).'>'.$admin_phrases[articles][edit_filter_arttitle].'</option>
                                         <option value="article_url" '.getselected ( "article_url", $FORM['order'] ).'>'.$admin_phrases[articles][edit_filter_url].'</option>
@@ -89,7 +91,7 @@ function default_get_pagenav_data ()
 	unset ( $where_clause );
     if ( $_REQUEST['cat_id'] != 0 )
 	{
-        $where_clause = "WHERE cat_id = '".$_REQUEST['cat_id']."'";
+        $where_clause = "WHERE article_cat_id = '".$_REQUEST['cat_id']."'";
     }
 
 	// Create Pagenavigation
@@ -162,7 +164,7 @@ function default_get_entry_data ( $articles_arr )
 
 	// Get other Data
 	if ( $articles_arr['article_date'] != 0 ) {
-        $articles_arr['article_date_formated'] = "".$admin_phrases[common][on]." <b>" . date ( $admin_phrases[common][date_format] , $articles_arr['article_date'] ) . "</b>,";
+        $articles_arr['article_date_formated'] = "".$admin_phrases[common][on_date]." <b>" . date ( $admin_phrases[common][date_format] , $articles_arr['article_date'] ) . "</b>,";
 	} else {
 	    $articles_arr['article_date_formated'] = "";
 	}
@@ -256,7 +258,7 @@ function default_display_all_entries ( $pagenav_arr )
 	unset ( $where_clause );
     if ( $_REQUEST['cat_id'] != 0 )
 	{
-        $where_clause = "WHERE cat_id = '".$_REQUEST['cat_id']."'";
+        $where_clause = "WHERE article_cat_id = '".$_REQUEST['cat_id']."'";
     }
 
 	// Load News From DB
@@ -264,7 +266,7 @@ function default_display_all_entries ( $pagenav_arr )
 							SELECT *
 							FROM ".$global_config_arr['pref']."articles
 							".$where_clause."
-							ORDER BY ".$_REQUEST['order'].", article_title ".$_REQUEST['sort']."
+							ORDER BY ".$_REQUEST['order']." ".$_REQUEST['sort'].", article_title ASC
 							LIMIT ".$pagenav_arr['cur_start'].", ".$pagenav_arr['entries_per_page']."
 	", $db);
 

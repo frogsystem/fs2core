@@ -195,8 +195,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <input type="hidden" value="wallpaperedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="wp_edit" name="go">
                         <input type="hidden" name="sended" value="newthumb">
                         <input type="hidden" name="wp_action" value="'.$_POST[wp_action].'" />
                         <input type="hidden" name="wallpaper_id" value="'.$admin_wp_arr[wallpaper_id].'" />
@@ -223,8 +222,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
                     <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input id="send" type="hidden" value="0" name="wpedit">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <input type="hidden" value="wallpaperedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="wp_edit" name="go">
                         <input type="hidden" name="sended" value="edit">
                         <input type="hidden" name="wp_action" value="'.$_POST[wp_action].'" />
                         <input type="hidden" name="wallpaper_id" value="'.$admin_wp_arr[wallpaper_id].'" />
@@ -358,8 +356,7 @@ echo'
 echo '
 <form action="" method="post">
 <table width="100%" cellpadding="4" cellspacing="0">
-<input type="hidden" value="wallpaperedit" name="go">
-<input type="hidden" value="'.session_id().'" name="PHPSESSID">
+<input type="hidden" value="wp_edit" name="go">
 <input type="hidden" name="sended" value="delete" />
 <input type="hidden" name="wallpaper_id" value="'.$wallpaper_arr[wallpaper_id].'" />
        <tr align="left" valign="top">
@@ -372,7 +369,7 @@ echo '
                Soll das untenstehende Wallpaper wirklich gelöscht werden?
            </td>
            <td width="25%">
-             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?mid=media&go=wallpaperedit";\' value="Nein" class="button" />
+             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?go=wp_edit";\' value="Nein" class="button" />
            </td>
        <tr>
        <tr>
@@ -412,8 +409,7 @@ else
 
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="wallpaperedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="wp_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="40%">
@@ -448,8 +444,7 @@ else
     {
         echo'
                     <form action="" method="post">
-                        <input type="hidden" value="wallpaperedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="wp_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="25%">
@@ -471,8 +466,7 @@ else
             echo'
                     <form action="" method="post">
                         <input type="hidden" name="wallpaper_id" value="'.$wallpaper_arr[wallpaper_id].'" />
-                        <input type="hidden" value="wallpaperedit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="wp_edit" name="go">
                             <tr>
                                 <td class="config">
                                     <img src="'.image_url("images/wallpaper/", $wallpaper_arr[wallpaper_name]."_s").'" width="100" height="75" alt=""><br>

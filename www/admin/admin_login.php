@@ -11,16 +11,16 @@ if ($_POST[username] &&
     switch ($loggedin)
     {
         case 0:
-            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Du bist nun eingeloggt.', 'Herzlich Willkommen!');
+            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Sie sind jetzt eingeloggt', 'Herzlich Willkommen!');
             break;
         case 1:
-            systext('Der Username existiert nicht', 'Fehler beim Login');
+            systext('Der Benutzer existiert nicht', 'Fehler beim Login', TRUE );
             break;
         case 2:
-            systext('Das Passwort ist nicht korrekt', 'Fehler beim Login');
+            systext('Das Passwort ist nicht korrekt', 'Fehler beim Login', TRUE );
             break;
         case 3:
-            systext('Du hast keine Rechte für das Admin-Control-Panel', 'Fehler beim Login');
+            systext('Sie haben keine Rechte für diese Seite', 'Fehler beim Login', TRUE );
             break;
     }
 }
@@ -43,12 +43,13 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" name="login" value="1">
-                        <table width="600" border="0" cellpadding="4" cellspacing="0">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="2">Benutzerdaten eingeben</td></tr>
                             <tr>
-                                <td class="config" width="50%">
+                                <td class="config" width="200">
                                     Name:
                                 </td>
-                                <td class="config" width="50%">
+                                <td class="config">
                                     <input class="text" size="33" name="username" maxlength="100">
                                 </td>
                             </tr>
@@ -62,17 +63,20 @@ else
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Angemeldet bleiben?:
+                                    Angemeldet bleiben:
                                 </td>
                                 <td class="config">
                                     <input type="checkbox" name="stayonline" value="1" checked>
                                 </td>
                             </tr>
-                            <tr>
-                                <td colspan="2" align="center">
-                                    <input class="button" type="submit" value="Login">
-                                </td>
-                            </tr>
+							<tr><td class="space"></td></tr>
+							<tr>
+								<td class="buttontd" colspan="2">
+									<button class="button_new" type="submit">
+										'.$admin_phrases[common][arrow].' Einloggen
+									</button>
+								</td>
+							</tr>
                         </table>
                     </form>
     ';

@@ -33,8 +33,7 @@ else
 {
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
-                        <input type="hidden" value="shopadd" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="shop_add" name="go">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">

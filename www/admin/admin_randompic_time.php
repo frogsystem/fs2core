@@ -119,10 +119,9 @@ elseif ($_POST[random_action] == "edit"
     
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="randompic_time" name="go">
+                        <input type="hidden" value="timedpic_edit" name="go">
                         <input type="hidden" value="edit" name="random_action">
                         <input type="hidden" value="edit" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$random_arr[random_id].'" name="random_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -223,10 +222,9 @@ elseif ($_POST[random_action] == "delete"
 
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="randompic_time" name="go">
+                        <input type="hidden" value="timedpic_edit" name="go">
                         <input type="hidden" value="delete" name="random_action">
                         <input type="hidden" value="delete" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$random_arr[random_id].'" name="random_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr align="left" valign="top">
@@ -270,8 +268,7 @@ if (!isset($_POST[random_id]))
 {
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="randompic_time" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="timedpic_edit" name="go">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr><td></td></tr>
                             <tr>

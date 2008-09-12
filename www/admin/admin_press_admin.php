@@ -144,7 +144,6 @@ elseif ($_POST['entry_action'] == "edit"
                         <input type="hidden" value="press_admin" name="go">
                         <input type="hidden" value="edit" name="entry_action">
                         <input type="hidden" value="edit" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$entry_arr[id].'" name="entry_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr align="left" valign="top">
@@ -254,7 +253,6 @@ elseif ($_POST['entry_action'] == "delete"
                         <input type="hidden" value="press_admin" name="go">
                         <input type="hidden" value="delete" name="entry_action">
                         <input type="hidden" value="delete" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$entry_arr[id].'" name="entry_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr align="left" valign="top">
@@ -367,7 +365,6 @@ if (!isset($_POST[entry_id]))
                     <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" value="press_admin" name="go">
                         <input type="hidden" value="add" name="entry_action">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr align="left" valign="top">
                                 <td class="config" valign="top" colspan="4">
@@ -432,7 +429,6 @@ if (!isset($_POST[entry_id]))
             echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_admin" name="go">
-                        <input type="hidden" value="'. session_id() .'" name="PHPSESSID">
                             <tr><td>&nbsp;</td></tr>
                             <tr>
                                 <td class="config">'.$head.':</td>

@@ -101,10 +101,9 @@ else
     
     echo'
                     <form id="form" action="" method="post">
-                        <input type="hidden" value="polladd" name="go">
+                        <input type="hidden" name="go" value="poll_add">
                         <input id="send" type="hidden" value="0" name="polladd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">

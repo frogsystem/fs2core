@@ -912,7 +912,6 @@ function fillsession($uid)
 	        }
         }
 	}
-
 }
 
 ?>

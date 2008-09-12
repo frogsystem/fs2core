@@ -66,8 +66,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
     
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
-                        <input type="hidden" value="cimgadd" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="cimg_add" name="go">
                         <input type="hidden" name="sended" value="">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>

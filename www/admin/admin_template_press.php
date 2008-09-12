@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "press_template";
+    $TEMPLATE_GO = "tpl_press";
     unset($tmp);
 
     $tmp[name] = "press_navi_line";

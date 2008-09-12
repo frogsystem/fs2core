@@ -49,9 +49,8 @@ else
     
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
-                        <input type="hidden" value="randompic_time_add" name="go">
+                        <input type="hidden" value="timedpic_add" name="go">
                         <input type="hidden" value="1" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top" width="160">

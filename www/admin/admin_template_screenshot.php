@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "screenshottemplate";
+    $TEMPLATE_GO = "tpl_screens";
     unset($tmp);
     
     $tmp[name] = "screenshot_cat";

@@ -62,8 +62,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
     
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="screencat" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="gallery_cat" name="go">
                         <input type="hidden" name="sended" value="edit" />
                         <input type="hidden" name="cat_action" value="'.$_POST[cat_action].'" />
                         <input type="hidden" name="cat_id" value="'.$admin_cat_arr[cat_id].'" />
@@ -150,7 +149,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
 echo '
 <form action="" method="post">
 <table width="100%" cellpadding="4" cellspacing="0">
-<input type="hidden" value="screencat" name="go">
+<input type="hidden" value="gallery_cat" name="go">
 <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 <input type="hidden" name="sended" value="delete" />
 <input type="hidden" name="cat_id" value="'.$admin_cat_arr[cat_id].'" />
@@ -165,7 +164,7 @@ echo '
                Soll die Kategorie "'.$admin_cat_arr[cat_name].'" wirklich gelöscht werden?
            </td>
            <td width="50%">
-             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?mid=media&go=screencat";\' value="Nein" class="button" />
+             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?go=gallery_cat";\' value="Nein" class="button" />
            </td>
        </tr>
        <tr><td height="10px"></td></tr>
@@ -196,7 +195,7 @@ echo'
                 Die letzte Kategorie kann nicht gelöscht werden.<br>
                 Bitte legen Sie zuerst eine neue Kategorie an.</td>
               <td>
-                <input type="button" onclick=\'location.href="?mid=media&go=screencat";\' value="Zurück zur Übersicht" class="button" />
+                <input type="button" onclick=\'location.href="?go=gallery_cat";\' value="Zurück zur Übersicht" class="button" />
               </td>
             </tr>
 
@@ -250,8 +249,7 @@ else
         echo'
                     <form action="" method="post">
                         <input type="hidden" name="cat_id" value="'.$cat_arr[cat_id].'" />
-                        <input type="hidden" value="screencat" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="gallery_cat" name="go">
                             <tr>
                                 <td class="configthin">
                                     '.$cat_arr[cat_name].'

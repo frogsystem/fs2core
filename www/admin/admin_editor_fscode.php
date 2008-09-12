@@ -27,7 +27,11 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "editorfscode";
+	if ( $go == "tpl_fscodes" ) {
+        $TEMPLATE_GO = "tpl_fscodes";
+	} else {
+		$TEMPLATE_GO = "editor_fscodes";
+	}
     unset($tmp);
 
     $tmp[name] = "quote_tag";
@@ -69,13 +73,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-if (templatepage_postcheck($TEMPLATE_EDIT))
-{
-    templatepage_save($TEMPLATE_EDIT);
-    systext("Template wurde aktualisiert");
-}
-else
-{
-    echo create_templatepage ($TEMPLATE_EDIT, $TEMPLATE_GO);
-}
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
 ?>

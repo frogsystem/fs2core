@@ -28,7 +28,7 @@
 ##########################################
 
 
-    $TEMPLATE_GO = "shoptemplate";
+    $TEMPLATE_GO = "tpl_shop";
     unset($tmp); //unsets $tmp for safety-issues
     
     $tmp[name] = "shop_hot";

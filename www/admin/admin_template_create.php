@@ -56,8 +56,7 @@ else
 
   systext($error_message);
   echo'<form action="" method="post">
-         <input type="hidden" value="template_create" name="go">
-         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+         <input type="hidden" value="design_create" name="go">
          <table border="0" cellpadding="4" cellspacing="0" width="600">
            <tr align="left" valign="top">
              <td class="config" valign="top" width="30%">

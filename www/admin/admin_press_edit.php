@@ -154,7 +154,6 @@ elseif ($_POST[press_action] == "edit"
                         <input type="hidden" value="press_edit" name="go">
                         <input type="hidden" value="edit" name="press_action">
                         <input type="hidden" value="edit" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$press_arr[press_id].'" name="press_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
@@ -333,7 +332,6 @@ elseif ($_POST[press_action] == "delete"
                         <input type="hidden" value="press_edit" name="go">
                         <input type="hidden" value="delete" name="press_action">
                         <input type="hidden" value="delete" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$press_arr[press_id].'" name="press_id">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr align="left" valign="top">
@@ -420,7 +418,6 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_edit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr><td></td></tr>
                             <tr>
@@ -527,7 +524,6 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
         echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_edit" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr><td></td></tr>
                             <tr>

@@ -1,6 +1,22 @@
 <?php
+///////////////////////////////////
+//// PATH_SEPARATOR definieren ////
+///////////////////////////////////
+if ( ! defined( "PATH_SEPARATOR" ) ) {
+  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
+    define( "PATH_SEPARATOR", ";" );
+  else define( "PATH_SEPARATOR", ":" );
+}
 
-include("../login.inc.php");
+// Start Session
+session_start();
+
+// script path-length
+$delete_last = strlen ( "/admin/admin_statgfx.php" ) * -1;
+// Set Include Path
+set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+
+require("login.inc.php");
 
 if (!isset($_GET[s_year]))
 {
@@ -277,9 +293,9 @@ for ($i=0; $i<=$ovis; $i=$i+$add)
     imagestring($image,1,483,$maxx-5,$i/$add.$tvis,$farbe_text3);
 }
 
-
-header("Content-Type: image/png");
-imagepng($image);
-
+if ( $_SESSION['stat_view'] == 1 ) {
+	header("Content-Type: image/png");
+	imagepng($image);
+}
 mysql_close($db);
 ?>

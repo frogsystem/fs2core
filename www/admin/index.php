@@ -32,14 +32,14 @@ if ( $_POST['stayonline'] == 1 ) {
     admin_set_cookie ( $_POST['username'], $_POST['userpassword'] );
 }
 
-if ( $_COOKIE['login'] )
+if ( $_COOKIE['login'] && $_SESSION["user_level"] != "authorised" )
 {
     $userpassword = substr ( $_COOKIE['login'], 0, 32 );
     $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
     admin_login ( $username, $userpassword, TRUE );
 }
 
-if ( $_POST['login'] == 1 )
+if ( $_POST['login'] == 1 && $_SESSION["user_level"] != "authorised" )
 {
     admin_login ( $_POST['username'], $_POST['userpassword'], FALSE );
 }

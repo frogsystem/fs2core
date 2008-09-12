@@ -135,7 +135,6 @@ else
 					<form action="" method="post">
 						<input type="hidden" name="go" value="articles_add">
                         <input type="hidden" name="sended" value="1">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[articles][articles_info_title].'</td></tr>
                             <tr>

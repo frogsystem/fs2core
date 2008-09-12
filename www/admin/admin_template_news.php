@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "newstemplate";
+    $TEMPLATE_GO = "tpl_news";
     unset($tmp);
     
     $tmp[name] = "news_link";

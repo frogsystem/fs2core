@@ -50,9 +50,8 @@ elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
 		
         echo'
 					<form action="" method="post">
-						<input type="hidden" value="statedit" name="go">
+						<input type="hidden" value="stat_edit" name="go">
 						<input type="hidden" value="day" name="do">
-						<input type="hidden" value="'.session_id().'" name="PHPSESSID">
 						<input type="hidden" value="'.$_POST[ed].'" name="d">
 						<input type="hidden" value="'.$_POST[em].'" name="m">
 						<input type="hidden" value="'.$_POST[ey].'" name="y">
@@ -165,9 +164,8 @@ else
     
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="statedit" name="go">
+                        <input type="hidden" value="stat_edit" name="go">
                         <input type="hidden" value="sync" name="do">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[stats][overall_title].'</td></tr>
                             <tr>
@@ -185,10 +183,8 @@ else
 
 
 					<form action="" method="post">
-						<input type="hidden" value="statedit" name="go">
+						<input type="hidden" value="stat_edit" name="go">
 						<input type="hidden" value="edit" name="do">
-						<input type="hidden" value="'.session_id().'" name="PHPSESSID">
-
 							<tr>
 								<td class="config">
 									'.$admin_phrases[stats][overall_visits].':<br>
@@ -257,10 +253,8 @@ else
 
                     </form>
                     <form action="" method="post">
-                        <input type="hidden" value="statedit" name="go">
+                        <input type="hidden" value="stat_edit" name="go">
                         <input type="hidden" value="day" name="do">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-
 							<tr><td class="line" colspan="2">'.$admin_phrases[stats][edit_day_title].'</td></tr>
                             <tr>
                                 <td class="config" width="60%">

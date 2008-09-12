@@ -1,7 +1,24 @@
 <?php
-include("../login.inc.php");
-include("../includes/functions.php");
-include("../includes/adminfunctions.php");
+///////////////////////////////////
+//// PATH_SEPARATOR definieren ////
+///////////////////////////////////
+if ( ! defined( "PATH_SEPARATOR" ) ) {
+  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
+    define( "PATH_SEPARATOR", ";" );
+  else define( "PATH_SEPARATOR", ":" );
+}
+
+// Start Session
+session_start();
+
+// script path-length
+$delete_last = strlen ( "/admin/admin_frogpad.php" ) * -1;
+// Set Include Path
+set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+
+require("login.inc.php");
+require("includes/functions.php");
+require("includes/adminfunctions.php");
 
 echo'
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

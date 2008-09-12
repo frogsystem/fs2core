@@ -106,7 +106,6 @@ if (isset($_POST['include_type']) AND $_POST['include_type']==1) {
          <input type="hidden" value="includes_new" name="go">
          <input type="hidden" name="sended" value="">
          <input type="hidden" name="include_type" value="1">
-         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 
          <font class="small">Name:</font><br>
          <input class="text" size="23" name="name" id="sv_name" maxlength="255" value="'.$start_sv_name.'"
@@ -128,7 +127,6 @@ if (isset($_POST['include_type']) AND $_POST['include_type']==1) {
          <input type="hidden" value="includes_new" name="go">
          <input type="hidden" name="sended" value="">
          <input type="hidden" name="include_type" value="2">
-         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 
          <font class="small">Name:</font><br>
          <input class="text" size="23" name="name" id="in_name" maxlength="255" value="'.$start_in_name.'"

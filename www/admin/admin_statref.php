@@ -81,8 +81,8 @@ else
         case "c": $csel = "selected"; break;
         case "l": $lsel = "selected"; break;
         default:
-			$fsel = "selected";
-			$_POST['order'] = "f";
+			$lsel = "selected";
+			$_POST['order'] = "l";
 			break;
     }
     switch ( $_POST['sort'] )
@@ -96,8 +96,7 @@ else
 
     echo'
 					<form action="" method="post">
-                        <input type="hidden" value="statref" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="stat_ref" name="go">
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="line" colspan="2">'.$admin_phrases[stats][referrer_filter_title].'</td></tr>
 							<tr>
@@ -268,8 +267,7 @@ else
 
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="statref" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="stat_ref" name="go">
                         <table class="configtable" cellpadding="4" cellspacing="0">
 							<tr><td class="space"></td></tr>
 							<tr><td class="line" colspan="3">'.$admin_phrases[stats][referrer_delete_title].'</td></tr>

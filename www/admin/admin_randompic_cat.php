@@ -22,7 +22,6 @@ if ($_POST['sended'])
                     <form action="" method="post">
                         <input type="hidden" value="randompic_cat" name="go">
                         <input type="hidden" value="1" name="sended">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table border="0" cellpadding="2" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" width="30%">

@@ -83,10 +83,9 @@ else
 
     echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">
-                        <input type="hidden" value="dladd" name="go">
+                        <input type="hidden" value="dl_add" name="go">
                         <input id="send" type="hidden" value="0" name="dladd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$_SESSION[user_id].'" name="userid">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>

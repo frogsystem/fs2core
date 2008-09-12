@@ -27,7 +27,7 @@
 #### / explanation of editor creation ####
 ##########################################
 
-    $TEMPLATE_GO = "wallpapertemplate";
+    $TEMPLATE_GO = "tpl_wp";
     unset($tmp);
 
     $tmp[name] = "wallpaper_pic";

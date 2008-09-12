@@ -92,8 +92,7 @@ echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input id="send" type="hidden" value="0" name="wpadd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <input type="hidden" value="wallpaperadd" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="wp_add" name="go">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top" width="150">

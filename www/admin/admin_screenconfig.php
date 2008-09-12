@@ -95,8 +95,7 @@ else
     $config_arr = mysql_fetch_assoc($index);
     echo'
                     <form action="" method="post">
-                        <input type="hidden" value="screenconfig" name="go">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" value="gallery_config" name="go">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr><td colspan="2" class="line">Bildbetrachter</td></tr>
                             <tr>

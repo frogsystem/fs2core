@@ -188,7 +188,8 @@ if ( TRUE )
 							ORDER BY `id`
 	", $db );
     while ( $design_arr = mysql_fetch_assoc ( $index ) ) {
-        echo '<option value="'.$design_arr['id'].'" '.getselected ( $design_arr['id'], $_POST['design'] ).'>'.$design_arr['name'];
+		settype ( $design_arr['id'], "integer" );
+		echo '<option value="'.$design_arr['id'].'" '.getselected ( $design_arr['id'], $_POST['design'] ).'>'.killhtml($design_arr['name']);
         if ( $design_arr['id'] == $_POST['design'] ) {
             echo ' ('.$admin_phrases[common][active].')';
         }
@@ -235,7 +236,7 @@ if ( TRUE )
 										</tr>
 										<tr valign="bottom">
  											<td class="config">
-												<input class="pointer" type="radio" name="home" value="1" '.getchecked ( "1", $_POST['home'] ).'>
+												<input class="pointer" type="radio" name="home" value="1" '.getchecked ( 1, $_POST['home'] ).'>
 											</td>
 											<td class="config">
 												?go = <input class="text" size="20" name="home_text" maxlength="100" value="'.$_POST['home_text'].'">
