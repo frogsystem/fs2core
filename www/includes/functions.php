@@ -224,11 +224,55 @@ function get_email_template ( $TEMPLATE_NAME )
     global $db;
 
 	$index = mysql_query ( "
-							SELECT `template_text`
-							FROM ".$global_config_arr['pref']."email_template
-							WHERE `template_name` = '".$TEMPLATE_NAME."'
+							SELECT `".$TEMPLATE_NAME."`
+							FROM ".$global_config_arr['pref']."email
+							WHERE `id` = '1'
 	", $db );
-	return stripslashes ( mysql_result ( $index, 0, "template_text" ) );
+
+	return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
+}
+
+////////////////////
+//// send email ////
+////////////////////
+
+function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
+{
+    global $global_config_arr;
+    global $db;
+
+	$index = mysql_query ( "
+							SELECT `use_admin_mail`, `email`, `html`
+							FROM ".$global_config_arr['pref']."email
+							WHERE `id` = '1'
+	", $db );
+
+	if ( $FROM == FALSE ) {
+		if ( mysql_result ( $index, 0, "use_admin_mail" ) == 1 ) {
+			$header  = "From: " . $global_config_arr['admin_mail'] . "\n";
+		} else {
+		    $header  = "From: " . stripslashes ( mysql_result ( $index, 0, "email" ) ) . "\n";
+		}
+	} else {
+		$header  = "From: " . $FROM . "\n";
+	}
+
+	$header .= "X-Mailer: PHP/" . phpversion() . "\n";
+	$header .= "X-Sender-IP: " . $REMOTE_ADDR . "\n";
+	
+	if ( $HTML == FALSE || $HTML == "html" ) {
+		if ( mysql_result ( $index, 0, "html" ) == 1 ) {
+			$header .= "Content-Type: text/html";
+			$TEXT = fscode ( $TEXT, true, true, false );
+			$TEXT = "<html><body>" . $TEXT . "</body></html>";
+		} else {
+			$header .= "Content-Type: text/plain";
+		}
+	} else  {
+		$header .= "Content-Type: text/plain";
+	}
+
+	return @mail ( $TO, $SUBJECT, $TEXT, $header );
 }
 
 

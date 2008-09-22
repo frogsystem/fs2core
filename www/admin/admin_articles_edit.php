@@ -163,6 +163,8 @@ function default_get_entry_data ( $articles_arr )
 	global $admin_phrases;
 
 	// Get other Data
+	$articles_arr['article_title'] = killhtml ( $articles_arr['article_title'] );
+	
 	if ( $articles_arr['article_date'] != 0 ) {
         $articles_arr['article_date_formated'] = "".$admin_phrases[common][on_date]." <b>" . date ( $admin_phrases[common][date_format] , $articles_arr['article_date'] ) . "</b>,";
 	} else {

@@ -94,7 +94,7 @@ if (
 						`user_password` = '".md5 ( $_POST['newpwd'].$user_salt )."',
 						`user_salt` = '".$user_salt."',
 	";
-	if ( $_POST['gen_password'] != 1 ) {
+	if ( $_POST['new_password'] != 1 ) {
         $pw_update = "";
 	}
 
@@ -150,6 +150,20 @@ if (
     } elseif ( $_FILES['user_pic']['name'] != "" ) {
 	    $upload = upload_img ( $_FILES['user_pic'], "images/avatare/", $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
 	    $message .= "<br>" . upload_img_notice ( $upload );
+	}
+
+	if ( $_POST['new_password'] == 1 ) {
+		// send email
+		$template_mail = get_email_template ( "change_password" );
+		$template_mail = str_replace ( "{username}", stripslashes ( $_POST['user_name'] ), $template_mail );
+		$template_mail = str_replace ( "{password}", $_POST['newpwd'], $template_mail );
+		$template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
+		$email_betreff = $phrases['pass_change'] . $global_config_arr['virtualhost'];
+		if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_betreff, $template_mail ) ) {
+		    $message .= "<br>E-Mail mit neuen Zugangsdaten wurde erfolgreich gesendet";
+		} else {
+		    $message .= "<br>E-Mail mit neuen Zugangsdaten konnte nicht gesendet werden";
+		}
 	}
 
     // Display Message

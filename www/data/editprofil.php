@@ -49,35 +49,32 @@ if ($_POST[usermail] && $_SESSION[user_id])
         {
             if ( $_POST[newpwd] == $_POST[wdhpwd] )
             {
-               $new_salt = generate_pwd ( 10 );
-               $mailpass = $_POST[newpwd];
-               $codedpass = md5 ( $_POST[newpwd].$new_salt );
-               unset($_POST[newpwd]);
-               unset($_POST[wdhpwd]);
-               
-               //MAIl TEMPLATE
-               $index = mysql_query("SELECT email_passchange FROM ".$global_config_arr[pref]."template WHERE id = $global_config_arr[design]", $db);
-               $template_mail = stripslashes(mysql_result($index, 0, "email_passchange"));
-               $template_mail = str_replace("{username}", $_SESSION[user_name], $template_mail);
-               $template_mail = str_replace("{password}", $mailpass, $template_mail);
+				$new_salt = generate_pwd ( 10 );
+				$mailpass = $_POST[newpwd];
+				$codedpass = md5 ( $_POST[newpwd].$new_salt );
+				unset($_POST[newpwd]);
+				unset($_POST[wdhpwd]);
 
-               //SEND MAIL
-               $email_betreff = $phrases[pass_change] . " @ " . $global_config_arr[virtualhost];
-               $header="From: ".$global_config_arr[admin_mail]."\n";
-               $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
-               $header .= "X-Mailer: PHP/" . phpversion(). "\n";
-               $header .= "X-Sender-IP: $REMOTE_ADDR\n";
-               $header .= "Content-Type: text/plain";
-               mail($mailto, $email_betreff, $template_mail, $header);
+				//UPDATE PASSWORD
+				$update = "UPDATE ".$global_config_arr['pref']."user
+				          SET user_password = '".$codedpass."',
+				              user_salt = '".$new_salt."'
+				          WHERE user_id = ".$_SESSION['user_id']."";
+				mysql_query($update, $db);
+				$message .= "<br>".$phrases[pass_update];
+				
+				// send email
+				$template_mail = get_email_template ( "signup" );
+				$template_mail = str_replace ( "{username}", stripslashes ( $_SESSION['user_name'] ), $template_mail );
+				$template_mail = str_replace ( "{password}", $mailpass, $template_mail );
+				$template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
+				$email_betreff = $phrases['pass_change'] . $global_config_arr['virtualhost'];
+				if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail ) ) {
+				    $message .= "<br>E-Mail mit neuen Zugangsdaten wurde erfolgreich gesendet";
+				} else {
+				    $message .= "<br>E-Mail mit neuen Zugangsdaten konnte nicht gesendet werden";
+				}
 
-               //UPDATE PASSWORD
-               $update = "UPDATE ".$global_config_arr['pref']."user
-                          SET user_password = '".$codedpass."',
-                              user_salt = '".$new_salt."'
-                          WHERE user_id = ".$_SESSION['user_id']."";
-               mysql_query($update, $db);
-               $message .= "<br>".$phrases[pass_update];
-                
             } else {
                 $message .= "<br>" . $phrases[pass_failed] . "<br>" . $phrases[pass_newwrong];
             }

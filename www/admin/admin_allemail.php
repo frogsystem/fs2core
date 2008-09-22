@@ -4,67 +4,110 @@
 //// Datenbank aktualisieren ////
 /////////////////////////////////
 
-if (TRUE
+if ( TRUE
     && ( $_POST['signup'] && $_POST['signup'] != "" )
     && ( $_POST['change_password'] && $_POST['change_password'] != "" )
-    && ( $_POST['delete_account'] && $_POST['delete_account'] != "" )
+	&& ( $_POST['use_admin_mail'] == 1 || ( $_POST['use_admin_mail'] == 0 && $_POST['email'] != "" ) )
    )
 {
+	// security functions
+    settype ( $_POST['use_admin_mail'], "integer" );
+    settype ( $_POST['html'], "integer" );
+
     $_POST['signup'] = savesql ( $_POST['signup'] );
     $_POST['change_password'] = savesql ( $_POST['change_password'] );
-    $_POST['delete_account'] = savesql ( $_POST['delete_account'] );
+    #$_POST['delete_account'] = savesql ( $_POST['delete_account'] );
+    $_POST['email'] = savesql ( $_POST['email'] );
     
-    mysql_query ( "UPDATE ".$global_config_arr['pref']."email_template
-                   SET template_text = '".$_POST['signup']."'
-                   WHERE template_name = 'signup'", $db );
-                   
-    mysql_query ( "UPDATE ".$global_config_arr['pref']."email_template
-                   SET template_text = '".$_POST['change_password']."'
-                   WHERE template_name = 'change_password'", $db );
-                   
-    mysql_query ( "UPDATE ".$global_config_arr['pref']."email_template
-                   SET template_text = '".$_POST['delete_account']."'
-                   WHERE template_name = 'delete_account'", $db );
+	// MySQL-Queries
+    mysql_query ( "
+					UPDATE `".$global_config_arr['pref']."email`
+					SET
+						`signup` = '".$_POST['signup']."',
+						`change_password` = '".$_POST['change_password']."',
+						`use_admin_mail` = '".$_POST['use_admin_mail']."',
+						`email` = '".$_POST['email']."',
+						`html` = '".$_POST['html']."'
+					WHERE `id` = '1'
+	", $db );
 
-
+	// system messages
     systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+
+    // Unset Vars
+    unset ( $_POST );
 }
 
-/////////////////////////////////
-/////// Formular erzeugen ///////
-/////////////////////////////////
+/////////////////////
+//// Config Form ////
+/////////////////////
 
-else
+if ( TRUE )
 {
-    $index = mysql_query ( "SELECT template_text FROM ".$global_config_arr[pref]."email_template WHERE template_name = 'signup'", $db );
-    $config_arr['signup'] = mysql_result ( $index, 0, "template_text" );
-    $index = mysql_query ( "SELECT template_text FROM ".$global_config_arr[pref]."email_template WHERE template_name = 'change_password'", $db );
-    $config_arr['change_password'] = mysql_result ( $index, 0, "template_text" );
-    $index = mysql_query ( "SELECT template_text FROM ".$global_config_arr[pref]."email_template WHERE template_name = 'delete_account'", $db );
-    $config_arr['delete_account'] = mysql_result ( $index, 0, "template_text" );
+	// Display Error Messages
+	if ( isset ( $_POST['sended'] ) ) {
+		systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
 
-    if (isset($_POST['sended']))
-    {
-        $config_arr['signup'] = $_POST['signup'];
-        $config_arr['change_password'] = $_POST['change_password'];
-        $config_arr['delete_account'] = $_POST['delete_account'];
+	// Load Data from DB into Post
+	} else {
+	    $index = mysql_query ( "
+								SELECT *
+								FROM ".$global_config_arr['pref']."email
+								WHERE `id` = '1'
+		", $db);
+	    $email_arr = mysql_fetch_assoc($index);
+	    putintopost ( $email_arr );
+	}
 
-        systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
-    }
+	// security functions
+    settype ( $_POST['use_admin_mail'], "integer" );
+    settype ( $_POST['html'], "integer" );
 
-    $config_arr['signup'] = killhtml ( $config_arr['signup'] );
-    $config_arr['change_password'] = killhtml ( $config_arr['change_password'] );
-    $config_arr['delete_account'] = killhtml ( $config_arr['delete_account'] );
-
-    echo'
+    $_POST['signup'] = killhtml ( $_POST['signup'] );
+    $_POST['change_password'] = killhtml ( $_POST['change_password'] );
+    #$_POST['delete_account'] = killhtml ( $_POST['delete_account'] );
+    $_POST['email'] = killhtml ( $_POST['email'] );
+    
+    echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="gen_emails">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][email_info].'</td></tr>
+                            <tr><td class="line" colspan="2">Einstellungen</td></tr>
                             <tr>
-                                <td class="config" colspan="2">
-                                    <font class="small">'.$admin_phrases[general][email_info_text].'</font>
+                                <td class="config">
+                                    Abesender-Adresse:<br>
+                                    <span class="small">Absender-Adresse die bei gesendeten E-Mails angegeben wird.</span>
+                                </td>
+                                <td class="config">
+                                    <table>
+										<tr valign="bottom">
+											<td class="config">
+												<input class="pointer" type="radio" name="use_admin_mail" value="1" '.getchecked ( 1, $_POST['use_admin_mail'] ).'>
+											</td>
+											<td class="config">
+											    Standard ('.$global_config_arr['admin_mail'].')
+											</td>
+										</tr>
+										<tr valign="bottom">
+ 											<td class="config">
+												<input class="pointer" type="radio" name="use_admin_mail" value="0" '.getchecked ( 0, $_POST['use_admin_mail'] ).'>
+											</td>
+											<td class="config">
+												<input class="text" size="20" name="email" maxlength="100" value="'.$_POST['email'].'">
+											</td>
+										</tr>
+									</table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    als HTML senden:<br>
+                                    <span class="small">Sendet die E-Mails im HTML-Format.</span>
+                                </td>
+                                <td class="config">
+                                    &nbsp;<input class="pointer middle" type="checkbox" name="html" value="1" '.getchecked ( 1, $_POST['html'] ).'>
+									<span class="small">[Ermöglicht die Verwendung von HTML und FSCode.]</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -85,7 +128,7 @@ else
                                     </span>
                                 </td>
                                 <td class="config">
-                                    '.create_editor("signup", $config_arr['signup'], "100%", "150px", "", FALSE).'
+                                    '.create_editor("signup", $_POST['signup'], "100%", "200px", "", FALSE).'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -105,9 +148,23 @@ else
                                     </span>
                                 </td>
                                 <td class="config">
-                                    '.create_editor("change_password", $config_arr['change_password'], "100%", "150px", "", FALSE).'
+                                    '.create_editor("change_password", $_POST['change_password'], "100%", "200px", "", FALSE).'
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+    ';
+}
+
+/*
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config" colspan="2">
@@ -125,19 +182,8 @@ else
                                     </span>
                                 </td>
                                 <td class="config">
-                                    '.create_editor("delete_account", $config_arr['delete_account'], "100%", "150px", "", FALSE).'
+                                    '.create_editor("delete_account", $_POST['delete_account'], "100%", "200px", "", FALSE).'
                                 </td>
                             </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="buttontd" colspan="2">
-                                    <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
-}
+*/
 ?>

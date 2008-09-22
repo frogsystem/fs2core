@@ -94,7 +94,7 @@ if ( !$_POST['article_text'] && !$_POST['sended'] )
 else
 {
 	// Load Data from $_POST
-	$article_arr['article_title'] = killhtml ( $_POST['article_title'] );
+	$article_arr['article_title'] = stripslashes ( $_POST['article_title'] );
 
 	// Create Article-Date
 	if (

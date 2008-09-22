@@ -108,9 +108,10 @@ function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
 		}
 		if ( $video_arr['video_type'] == 1 ) {
 		    $template_player = str_replace ( "{title}", $video_arr['video_title'], $template_player );
+		    $template_player = str_replace ( "{player}", $template_player, $template_html );
 		}
 
-		$template = str_replace ( "{player}", $template_player, $template_html );
+		$template = $template_player;
 	} else {
 		$template = "";
 	}

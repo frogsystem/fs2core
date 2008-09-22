@@ -260,6 +260,22 @@ function forward_aliases ( $GOTO )
 	return $GOTO;
 }
 
+///////////////////
+//// count hit ////
+///////////////////
+function count_all ( $GOTO )
+{
+    global $db;
+    global $global_config_arr;
+
+    $hit_year = date ( "Y" );
+    $hit_month = date ( "m" );
+    $hit_day = date ( "d" );
+
+    visit_day_exists ( $hit_year, $hit_month, $hit_day );
+	count_hit ( $GOTO );
+	count_visit ( $GOTO );
+}
 
 ///////////////////////////////////
 //// check if visit day exists ////
@@ -293,8 +309,6 @@ function count_hit ( $GOTO )
     $hit_year = date ( "Y" );
     $hit_month = date ( "m" );
     $hit_day = date ( "d" );
-    
-    visit_day_exists ( $hit_year, $hit_month, $hit_day );
 
 	if ( $GOTO != "404" && $GOTO != "403" ) {
 		// count page_hits
@@ -319,9 +333,7 @@ function count_visit ( $GOTO )
     $visit_year = date ( "Y" );
     $visit_month = date(  "m" );
     $visit_day = date ( "d" );
-
-    visit_day_exists ( $visit_year, $visit_month, $visit_day );
-
+    
 	// check if errorpage
 	if ( $GOTO != "404" && $GOTO != "403" ) {
 		// save IP & visit

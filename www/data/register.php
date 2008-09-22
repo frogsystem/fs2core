@@ -55,17 +55,13 @@ if ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST['wdh
     {
         $regdate = time();
         
-        $template_mail = get_template ( "email_register" );
-        $template_mail = str_replace("{username}", $_POST[username], $template_mail);
-        $template_mail = str_replace("{password}", $userpass_mail, $template_mail);
-
-        $email_betreff = $phrases[registration] . " @ " . $global_config_arr[virtualhost];
-        $header  = "From: ".$global_config_arr[admin_mail]."\n";
-        $header .= "Reply-To: ".$global_config_arr[admin_mail]."\n";
-        $header .= "X-Mailer: PHP/" . phpversion(). "\n"; 
-        $header .= "X-Sender-IP: $REMOTE_ADDR\n"; 
-        $header .= "Content-Type: text/plain";
-        mail($_POST[usermail], $email_betreff, $template_mail, $header);
+		// send email
+		$template_mail = get_email_template ( "signup" );
+		$template_mail = str_replace ( "{username}", stripslashes ( $_POST['username'] ), $template_mail );
+		$template_mail = str_replace ( "{password}", $userpass_mail, $template_mail );
+		$template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
+		$email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
+		@send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail );
 
         $adduser = "INSERT INTO ".$global_config_arr['pref']."user
 						(user_name, user_password, user_salt, user_mail, user_reg_date)

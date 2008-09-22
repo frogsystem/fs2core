@@ -12,7 +12,7 @@ if ( ! defined( "PATH_SEPARATOR" ) ) {
 session_start();
 
 // script path-length
-$delete_last = strlen ( "/res/rechen-captcha.php" ) * -1;
+$delete_last = strlen ( "/res/rechen-captcha.inc.php" ) * -1;
 // Set Include Path
 set_include_path ( substr ( __FILE__, 0, $delete_last ) );
 

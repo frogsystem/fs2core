@@ -514,13 +514,13 @@ function create_editor_seperator()
 function insert_tt($title,$text,$form)
 {
    return '
-'.$title.' <a class="tooltip" href="#">
-<img border="0" src="img/help.png" align="top" />&nbsp;
+'.$title.' <a class="tooltip" href="#?">
+<img border="0" src="img/help.png" align="top" alt="?">&nbsp;
 <span>
- <img border="0" src="img/pointer.png" align="top" alt="->" /> <b>'.$title.'</b><br />'.$text.'
+ <img border="0" src="img/pointer.png" align="top" alt="->"> <b>'.$title.'</b><br>'.$text.'
 </span></a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:insert(\''.$form.'\',\''.$title.'\',\'\');"><img border="0" src="img/pointer.png" alt="->" title="einfügen" align="top" /></a>
-<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:insert(\''.$form.'\',\''.$title.'\',\'\');"><img border="0" src="img/pointer.png" alt="->" title="einfügen" align="top"></a>
+<br>
    ';
 }
 

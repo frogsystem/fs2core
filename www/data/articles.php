@@ -63,6 +63,7 @@ else
 
 	// Format Article-Text
 	$article_arr['article_text'] = fscode ( $article_arr['article_text'], $article_arr['fscode_bool'], $article_arr['html_bool'], $article_arr['para_bool'] );
+	$article_arr['article_title'] = stripslashes ( $article_arr['article_title'] );
 
 	// Create Template
 	$article_arr['template'] = get_template ( "artikel_body" );

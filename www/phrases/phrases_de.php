@@ -10,7 +10,7 @@ $phrases[file_not_found]    = "Das Angegebene Dokument kann nicht gefunden werde
 $phrases[time_at]           = "um";
 
 //Mails
-$phrases[pass_change]       = "Passwortänderung";
+$phrases[pass_change]       = "Passwortänderung auf ";
 $phrases[registration]      = "Registrierung auf ";
 
 // News

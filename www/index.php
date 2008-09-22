@@ -41,8 +41,7 @@ if ($db)
 	set_design ();
 	copyright ();
 	get_goto ( $_GET['go'] );
-	count_hit ( $global_config_arr['goto'] );
-	count_visit ( $global_config_arr['goto'] );
+	count_all ( $global_config_arr['goto'] );
 	save_referer ();
 	save_visitors ();
 
@@ -89,6 +88,6 @@ else
 	';
 
 	// Display No-Connection-Page
-	echo $template_main;
+	echo $template;
 }
 ?>

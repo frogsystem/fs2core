@@ -6,6 +6,25 @@
 
 if (isset($_GET[size]))
 {
+	///////////////////////////////////
+	//// PATH_SEPARATOR definieren ////
+	///////////////////////////////////
+	if ( ! defined( "PATH_SEPARATOR" ) ) {
+	  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
+	    define( "PATH_SEPARATOR", ";" );
+	  else define( "PATH_SEPARATOR", ":" );
+	}
+
+	// Start Session
+	session_start();
+
+	// script path-length
+	$delete_last = strlen ( "/admin/admin_statspace.php" ) * -1;
+	// Set Include Path
+	set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+
+	require ( "includes/functions.php" );
+	
     disk_free_space($_SERVER[DOCUMENT_ROOT]);
     disk_total_space($_SERVER[DOCUMENT_ROOT]);
 
@@ -55,6 +74,7 @@ if (isset($_GET[size]))
     imagestring ($image, 2, 180, 36, "belegter Speicherplatz (".getsize($size/1024).")", $farbe_schwarz);
 
     // Bildausgabe
+	header("Content-type: image/png");
     imagepng($image); 
 }
 

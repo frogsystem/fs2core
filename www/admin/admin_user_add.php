@@ -128,11 +128,11 @@ if (
 	$template_mail = str_replace ( "{password}", $_POST['newpwd'], $template_mail );
 	$template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
 	$email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
-	$header  = "From: " . $global_config_arr['admin_mail'] . "\n";
-	$header .= "X-Mailer: PHP/" . phpversion() . "\n";
-	$header .= "X-Sender-IP: " . $REMOTE_ADDR . "\n";
-	$header .= "Content-Type: text/plain";
-	@mail ( stripslashes ( $_POST['user_mail'] ), $email_betreff, $template_mail, $header );
+	if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_betreff, $template_mail ) ) {
+	    $message .= "<br>E-Mail mit Zugangsdaten wurde erfolgreich gesendet";
+	} else {
+	    $message .= "<br>E-Mail mit Zugangsdaten konnte nicht gesendet werden";
+	}
 
 	// system messages
     systext( $message, $admin_phrases[common][info] );
