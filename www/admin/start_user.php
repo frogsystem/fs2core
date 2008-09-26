@@ -89,7 +89,8 @@ echo '
                                 <td class="configthin">Anzahl Mitarbeiter:</td>
                                 <td class="configthin"><b>'.$num_staff .'</b></td>
                             </tr>
-                            <tr>
+                            <tr><td class="space"></td></tr>
+							<tr>
                                 <td class="configthin">Anzahl Gruppen:</td>
                                 <td class="configthin"><b>'.$num_groups .'</b></td>
                             </tr>
@@ -105,7 +106,8 @@ if ( $num_groups  > 0 && $temp_biggest_exists  > 0 ) {
 }
 
 echo '
-                            <tr>
+                            <tr><td class="space"></td></tr>
+							<tr>
                                 <td class="configthin">Anzahl Administratoren:</td>
                                 <td class="configthin"><b>'.$num_admin .'</b></td>
                             </tr>
