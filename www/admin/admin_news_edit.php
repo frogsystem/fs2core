@@ -840,6 +840,251 @@ function action_delete_display_page ( $news_arr )
 	';
 }
 
+function action_comments_select ( $DATA )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+	
+		// Comments Header
+		echo '
+					<form action="" method="post">
+						<input type="hidden" name="sended" value="comment">
+						<input type="hidden" name="news_action" value="'.$DATA['news_action'].'">
+						<input type="hidden" name="news_id" value="'.$DATA['news_id'].'">
+						<input type="hidden" name="go" value="news_edit">
+						<table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line" colspan="4">Kommentare bearbeiten</td></tr>
+                            <tr>
+                                <td class="config" width="35%">
+                                    Titel
+                                </td>
+                                <td class="config" width="25%">
+                                    Poster
+                                </td>
+                                <td class="config" width="25%">
+                                    Datum
+                                </td>
+                                <td class="config center" width="15%">
+									Auswahl
+                                </td>
+                            </tr>
+
+		';
+
+		// Get Number of Comments
+  		$index = mysql_query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$DATA['news_id']."", $db );
+  		$number = mysql_result ( $index, 0, "number" );
+
+  		if ( $number >= 1 ) {
+			$index = mysql_query ( "
+									SELECT *
+									FROM ".$global_config_arr['pref']."news_comments
+									WHERE news_id = ".$DATA['news_id']."
+									ORDER BY comment_date DESC
+			", $db);
+
+			// Display Comment-List
+			while ( $comment_arr = mysql_fetch_assoc ( $index ) ) {
+
+				// Get other Data
+				if ( $comment_arr['comment_poster_id'] != 0 ) {
+					$index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $db );
+					$comment_arr['comment_poster'] = mysql_result ( $index2, 0, "user_name" );
+				}
+				$comment_arr['comment_date_formated'] = date ( "d.m.Y" , $comment_arr['comment_date'] ) . " um " . date ( "H:i" , $comment_arr['comment_date'] );
+
+				echo'
+							<tr class="pointer" id="tr_'.$comment_arr['comment_id'].'"
+								onmouseover="'.color_list_entry ( "input_".$comment_arr['comment_id'], "#EEEEEE", "#64DC6A", "this" ).'"
+								onmouseout="'.color_list_entry ( "input_".$comment_arr['comment_id'], "transparent", "#49c24f", "this" ).'"
+                                onclick="'.color_click_entry ( "input_".$comment_arr['comment_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+							>
+								<td class="configthin">
+								    '.$comment_arr['comment_title'].'
+								</td>
+								<td class="config">
+								    <span class="small">'.$comment_arr['comment_poster'].'</span>
+								</td>
+								<td class="config">
+								    <span class="small">'.$comment_arr['comment_date_formated'].'</span>
+								</td>
+								<td class="config center">
+                                    <input class="pointer" type="radio" name="comment_id" id="input_'.$comment_arr['comment_id'].'" value="'.$comment_arr['comment_id'].'"
+										onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$comment_arr['comment_id'], TRUE ).'"
+									>
+								</td>
+							</tr>
+				';
+
+			}
+		}
+
+		// Footer
+		echo'
+                            <tr><td class="space"></td></tr>
+							<tr>
+								<td class="right" colspan="4">
+									<select name="comment_action" size="1">
+										<option value="edit">'.$admin_phrases[common][selection_edit].'</option>
+										<option value="delete">'.$admin_phrases[common][selection_del].'</option>
+									</select>
+								</td>
+							</tr>
+							<tr><td class="space"></td></tr>
+							<tr>
+								<td class="buttontd" colspan="4">
+									<button class="button_new" type="submit">
+										'.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+									</button>
+								</td>
+							</tr>
+						</table>
+					</form>
+		';
+}
+
+function action_comments_edit ( $DATA )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+    settype ( $_POST['comment_id'], 'integer' );
+    $index = mysql_query ( "
+							SELECT *
+							FROM ".$global_config_arr['pref']."news_comments
+							WHERE comment_id = ".$_POST['comment_id']."
+	", $db);
+    $comment_arr = mysql_fetch_assoc ( $index );
+
+	// Get other Data
+	if ( $comment_arr['comment_poster_id'] != 0 ) {
+			$index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $db );
+			$comment_arr['comment_poster'] = mysql_result ( $index2, 0, "user_name" );
+	}
+	$comment_arr['comment_date_formated'] = date ( "d.m.Y" , $comment_arr['comment_date'] ) . " um " . date ( "H:i" , $comment_arr['comment_date'] );
+
+    echo'
+                    <form action="" method="post">
+						<input type="hidden" name="go" value="news_edit">
+						<input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
+						<input type="hidden" name="comment_action" value="'.$_POST['comment_action'].'">
+						<input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
+						<input type="hidden" name="comment_id" value="'.$comment_arr['comment_id'].'">
+                        <input type="hidden" name="sended" value="edit">
+                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr>
+                                <td class="config" valign="top">
+                                    Datum:<br>
+                                    <font class="small">Das Kommentar wurde geschreiben am</font>
+                                </td>
+                                <td class="config" valign="top">
+                                    '.$comment_arr['comment_date_formated'].'
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top">
+                                    Poster:<br>
+                                    <font class="small">Diese Person hat das Komemntar geschreiben</font>
+                                </td>
+                                <td class="config" valign="top">
+                                    '.$comment_arr[comment_poster].'
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top">
+                                    Titel:<br>
+                                    <font class="small">Titel des Kommentars</font>
+                                </td>
+                                <td class="config" valign="top">
+                                    <input class="text" size="33" name="title" value="'.$comment_arr[comment_title].'" maxlength="100">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top">
+                                    Text:<br>
+                                </td>
+                                <td valign="top">
+                                    '.create_editor("text", killhtml($comment_arr[comment_text]), 330, 130).'
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center">
+                                    <br /><br />
+                                    <input class="button" type="submit" value="Änderungen speichern">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+    ';
+}
+
+function action_comments_delete ( $DATA )
+{
+	global $db;
+	global $global_config_arr;
+	global $admin_phrases;
+
+    settype ( $_POST['comment_id'], 'integer' );
+    $index = mysql_query ( "
+							SELECT *
+							FROM ".$global_config_arr['pref']."news_comments
+							WHERE comment_id = ".$_POST['comment_id']."
+	", $db);
+    $comment_arr = mysql_fetch_assoc ( $index );
+
+	// Get other Data
+	if ( $comment_arr['comment_poster_id'] != 0 ) {
+			$index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $db );
+			$comment_arr['comment_poster'] = mysql_result ( $index2, 0, "user_name" );
+	}
+	$comment_arr['comment_date_formated'] = date ( "d.m.Y" , $comment_arr['comment_date'] ) . " um " . date ( "H:i" , $comment_arr['comment_date'] );
+
+	echo '
+					<form action="" method="post">
+						<input type="hidden" name="go" value="news_edit">
+						<input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
+						<input type="hidden" name="comment_action" value="'.$_POST['comment_action'].'">
+						<input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
+						<input type="hidden" name="comment_id" value="'.$comment_arr['comment_id'].'">
+                        <input type="hidden" name="sended" value="delete">
+                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+						<table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="line">Kommentar löschen</td></tr>
+							<tr>
+                                <td class="config">
+                                    '.$comment_arr['comment_title'].' <span class="small">(#'.$news_arr['news_id'].')</span><br>
+                                    <span class="small">gepostet von <b>'.$comment_arr['comment_poster'].'</b>
+									'.$comment_arr['comment_date_formated'].' Uhr</b><br><br>
+                                    <div class="small">'.killhtml ( $comment_arr['comment_text'] ).'</div>
+                                </td>
+                            </tr>
+							<tr><td class="space"></td></tr>
+						</table>
+						<table class="configtable" cellpadding="4" cellspacing="0">
+							<tr>
+								<td class="config" style="width: 100%;">
+									Soll dieser Kommentar wirklich gelöscht werden:
+								</td>
+								<td class="config right top" style="padding: 0px;">
+									'.get_yesno_table ( "comment_delete" ).'
+								</td>
+							</tr>
+							<tr><td class="space"></td></tr>
+							<tr>
+								<td class="buttontd" colspan="2">
+									<button class="button_new" type="submit">
+										'.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+									</button>
+								</td>
+							</tr>
+						</table>
+					</form>
+	';
+}
+
 function db_edit_news ( $DATA )
 {
 	global $db;
@@ -1114,103 +1359,24 @@ if ( $_POST['news_id'] && $_POST['news_action'] )
 	// Edit Comments
 	elseif ( $_POST['news_action'] == "comments" )
 	{
-
-		// Comments Header
-		echo '
-					<form action="" method="post">
-						<input type="hidden" name="sended" value="comment">
-						<input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
-						<input type="hidden" name="news_id" value="'.$_POST['news_id'].'">
-						<input type="hidden" name="go" value="news_comments">
-						<table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="4">Kommentare bearbeiten</td></tr>
-                            <tr>
-                                <td class="config" width="35%">
-                                    Titel
-                                </td>
-                                <td class="config" width="25%">
-                                    Poster
-                                </td>
-                                <td class="config" width="25%">
-                                    Datum
-                                </td>
-                                <td class="config center" width="15%">
-									Auswahl
-                                </td>
-                            </tr>
-
-		';
-
-		// Get Number of Comments
-  		$index = mysql_query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$_POST['news_id']."", $db );
-  		$number = mysql_result ( $index, 0, "number" );
-
-  		if ( $number >= 1 ) {
-			$index = mysql_query ( "
-									SELECT *
-									FROM ".$global_config_arr['pref']."news_comments
-									WHERE news_id = ".$_POST['news_id']."
-									ORDER BY comment_date DESC
-			", $db);
-			
-			// Display Comment-List
-			while ( $comment_arr = mysql_fetch_assoc ( $index ) ) {
-
-				// Get other Data
-				if ( $comment_arr['comment_poster_id'] != 0 ) {
-					$index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $db );
-					$comment_arr['comment_poster'] = mysql_result ( $index2, 0, "user_name" );
-				}
-				$comment_arr['comment_date_formated'] = date ( "d.m.Y" , $comment_arr['comment_date'] ) . " um " . date ( "H:i" , $comment_arr['comment_date'] );
-				
-				echo'
-							<tr class="pointer" id="tr_'.$comment_arr['comment_id'].'"
-								onmouseover="'.color_list_entry ( "input_".$comment_arr['comment_id'], "#EEEEEE", "#64DC6A", "this" ).'"
-								onmouseout="'.color_list_entry ( "input_".$comment_arr['comment_id'], "transparent", "#49c24f", "this" ).'"
-                                onclick="'.color_click_entry ( "input_".$comment_arr['comment_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
-							>
-								<td class="configthin">
-								    '.$comment_arr['comment_title'].'
-								</td>
-								<td class="config">
-								    <span class="small">'.$comment_arr['comment_poster'].'</span>
-								</td>
-								<td class="config">
-								    <span class="small">'.$comment_arr['comment_date_formated'].'</span>
-								</td>
-								<td class="config center">
-                                    <input class="pointer" type="radio" name="comment_id" id="input_'.$comment_arr['comment_id'].'" value="'.$comment_arr['comment_id'].'"
-										onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$comment_arr['comment_id'], TRUE ).'"
-									>
-								</td>
-							</tr>
-				';
-				        
+		if (
+				$_POST['news_id'] && $_POST['news_action'] == "comments" &&
+				$_POST['comment_id'] && $_POST['comment_action']
+			)
+		{
+			// Edit Comment
+			if ( $_POST['comment_action'] == "edit" )
+			{
+		    	action_comments_edit ( $_POST );
 			}
+			elseif ( $_POST['comment_action'] == "delete" ) {
+            	action_comments_delete ( $_POST );
+			} else {
+    			action_comments_select ( $_POST );
+			}
+		} else {
+			action_comments_select ( $_POST );
 		}
-
-		// Footer
-		echo'
-                            <tr><td class="space"></td></tr>
-							<tr>
-								<td class="right" colspan="4">
-									<select name="comment_action" size="1">
-										<option value="edit">'.$admin_phrases[common][selection_edit].'</option>
-										<option value="delete">'.$admin_phrases[common][selection_del].'</option>
-									</select>
-								</td>
-							</tr>
-							<tr><td class="space"></td></tr>
-							<tr>
-								<td class="buttontd" colspan="4">
-									<button class="button_new" type="submit">
-										'.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
-									</button>
-								</td>
-							</tr>
-						</table>
-					</form>
-		';
 	}
 }
 
