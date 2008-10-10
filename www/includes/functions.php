@@ -1,4 +1,80 @@
 <?php
+function get_timed_pic ()
+{
+    global $global_config_arr;
+    global $db;
+
+	$time = time();
+	$index = mysql_query ( "
+							SELECT screen_id
+							FROM ".$global_config_arr['pref']."screen_random
+							WHERE start <= ".$time." AND end >= ".$time."
+	", $db);
+    $rows = mysql_num_rows ( $index );
+	if ( $rows > 0 ) {
+		while ( $data = mysql_fetch_assoc ( $index ) ) {
+		    $timed[] = $data['screen_id'];
+		}
+		$rand = rand ( 0, $rows -1 );
+		$timed = implode ( ",", $timed );
+	    $index = mysql_query ( "
+								SELECT screen_id, screen_name, cat_id
+								FROM ".$global_config_arr['pref']."screen
+								WHERE screen_id IN (".$timed.")
+								LIMIT ".$rand.",1
+		", $db);
+		$dbscreen['id'] = mysql_result ( $index, 0, "screen_id" );
+	    $dbscreen['name'] = mysql_result ( $index, 0, "screen_name" );
+	    $dbscreen['cat'] = mysql_result ( $index, 0, "cat_id" );
+	    return $dbscreen;
+	} else {
+	    return false;
+	}
+}
+
+function get_random_pic ()
+{
+    global $global_config_arr;
+    global $db;
+
+    $index = mysql_query ( "
+							SELECT cat_id
+							FROM ".$global_config_arr['pref']."screen_cat
+							WHERE randompic = 1
+	", $db);
+    $cat_rows = mysql_num_rows ( $index );
+	if ( $cat_rows > 0 ) {
+		while ( $data = mysql_fetch_assoc ( $index ) ) {
+		    $random_cat[] = $data['cat_id'];
+		}
+		$random_cat = implode ( ",", $random_cat );
+	    $index = mysql_query ( "
+								SELECT COUNT(screen_id) AS rows
+								FROM ".$global_config_arr['pref']."screen
+								WHERE cat_id IN (".$random_cat.")
+								LIMIT 0,1
+		", $db);
+    	$rows = mysql_result ( $index, 0, "rows" );
+		if ( $rows > 0 ) {
+			$rand = rand ( 0, $rows -1 );
+		    $index = mysql_query ( "
+									SELECT screen_id, screen_name, cat_id
+									FROM ".$global_config_arr['pref']."screen
+									WHERE cat_id IN (".$random_cat.")
+									LIMIT ".$rand.",1
+			", $db);
+			$dbscreen['id'] = mysql_result ( $index, 0, "screen_id" );
+		    $dbscreen['name'] = mysql_result ( $index, 0, "screen_name" );
+		    $dbscreen['cat'] = mysql_result ( $index, 0, "cat_id" );
+		    return $dbscreen;
+		} else {
+	    	return false;
+		}
+	} else {
+	    return false;
+	}
+}
+
 /////////////////////////////////////////
 //// Pagenav Array with Start Number ////
 /////////////////////////////////////////

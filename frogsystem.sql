@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 13. September 2008 um 01:07
+-- Erstellungszeit: 29. September 2008 um 20:05
 -- Server Version: 5.0.51
 -- PHP-Version: 5.2.5
 
@@ -19,6 +19,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Tabellenstruktur für Tabelle `fs_admin_cp`
 --
 
+DROP TABLE IF EXISTS `fs_admin_cp`;
 CREATE TABLE `fs_admin_cp` (
   `page_id` varchar(255) character set latin1 NOT NULL,
   `group_id` mediumint(8) NOT NULL,
@@ -63,7 +64,6 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('includes_new', 4, 'hinzufügen', 'hinzufügen', 'admin_includes_new.php', 1),
 ('news_add', 5, 'schreiben', 'schreiben', 'admin_news_add.php', 2),
 ('news_cat', 5, 'Kategorien verwalten', 'Kategorien', 'admin_news_cat.php', 4),
-('news_comments', 0, 'News &#187; bearbeiten', '', 'admin_news_comments.php', 0),
 ('news_config', 5, 'Konfiguration ändern', 'Konfiguration', 'admin_news_config.php', 1),
 ('news_edit', 5, 'bearbeiten', 'bearbeiten', 'admin_news_edit.php', 3),
 ('partner_add', 18, 'hinzufügen', 'hinzufügen', 'admin_partneradd.php', 2),
@@ -134,6 +134,7 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 -- Tabellenstruktur für Tabelle `fs_admin_groups`
 --
 
+DROP TABLE IF EXISTS `fs_admin_groups`;
 CREATE TABLE `fs_admin_groups` (
   `group_id` mediumint(8) NOT NULL auto_increment,
   `group_title` varchar(100) collate latin1_general_ci NOT NULL,
@@ -179,6 +180,7 @@ INSERT INTO `fs_admin_groups` (`group_id`, `group_title`, `menu_id`, `group_pos`
 -- Tabellenstruktur für Tabelle `fs_aliases`
 --
 
+DROP TABLE IF EXISTS `fs_aliases`;
 CREATE TABLE `fs_aliases` (
   `id` mediumint(8) NOT NULL auto_increment,
   `alias_go` varchar(100) collate latin1_general_ci NOT NULL,
@@ -200,6 +202,7 @@ INSERT INTO `fs_aliases` (`id`, `alias_go`, `alias_forward_to`) VALUES
 -- Tabellenstruktur für Tabelle `fs_announcement`
 --
 
+DROP TABLE IF EXISTS `fs_announcement`;
 CREATE TABLE `fs_announcement` (
   `id` smallint(4) NOT NULL,
   `announcement_text` text collate latin1_general_ci,
@@ -223,6 +226,7 @@ INSERT INTO `fs_announcement` (`id`, `announcement_text`, `show_announcement`, `
 -- Tabellenstruktur für Tabelle `fs_articles`
 --
 
+DROP TABLE IF EXISTS `fs_articles`;
 CREATE TABLE `fs_articles` (
   `article_id` mediumint(8) NOT NULL auto_increment,
   `article_url` varchar(100) default NULL,
@@ -244,7 +248,7 @@ CREATE TABLE `fs_articles` (
 INSERT INTO `fs_articles` (`article_id`, `article_url`, `article_title`, `article_date`, `article_user`, `article_text`, `article_html`, `article_fscode`, `article_para`, `article_cat_id`) VALUES
 (1, 'fscode', 'FSCode Liste', 0, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n\r\n<table width=\\"100%\\" cellpadding=\\"0\\" cellspacing=\\"10\\" border=\\"0\\"><tr><td width=\\"50%\\">[b][u][size=4]FS-Code:[/size][/u][/b]</td><td width=\\"50%\\">[b][u][size=4]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiverText[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe (0-7)[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][noparse]Text mit FSCode[/noparse][/noparse]</td><td>[noparse][b]kein fetter Text[/b][/noparse]</td></tr> <tr><td colspan=\\"2\\"><hr /></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan=\\"2\\"><hr /></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan=\\"2\\"><hr /></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]{virtualhost}images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]{virtualhost}images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]{virtualhost}images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>', 1, 1, 1, 1),
 (2, '', 'Video', 1220220000, 1, '[player]7[/player]', 1, 1, 1, 1),
-(3, '', 'test', 1220738400, 1, 'test', 1, 1, 1, 1),
+(3, '', 't\\''es\\''t', 1220738400, 1, 'te\\''st\\''', 1, 1, 1, 1),
 (4, '', 'test', 1220738400, 0, 'test', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
@@ -253,6 +257,7 @@ INSERT INTO `fs_articles` (`article_id`, `article_url`, `article_title`, `articl
 -- Tabellenstruktur für Tabelle `fs_articles_cat`
 --
 
+DROP TABLE IF EXISTS `fs_articles_cat`;
 CREATE TABLE `fs_articles_cat` (
   `cat_id` smallint(6) NOT NULL auto_increment,
   `cat_name` varchar(100) default NULL,
@@ -275,6 +280,7 @@ INSERT INTO `fs_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_dat
 -- Tabellenstruktur für Tabelle `fs_articles_config`
 --
 
+DROP TABLE IF EXISTS `fs_articles_config`;
 CREATE TABLE `fs_articles_config` (
   `id` tinyint(1) NOT NULL,
   `html_code` tinyint(4) NOT NULL default '1',
@@ -303,6 +309,7 @@ INSERT INTO `fs_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`,
 -- Tabellenstruktur für Tabelle `fs_counter`
 --
 
+DROP TABLE IF EXISTS `fs_counter`;
 CREATE TABLE `fs_counter` (
   `visits` int(11) unsigned NOT NULL default '0',
   `hits` int(11) unsigned NOT NULL default '0',
@@ -317,7 +324,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 10, 2, 4, 3, 1);
+(8, 65, 2, 4, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -325,6 +332,7 @@ INSERT INTO `fs_counter` (`visits`, `hits`, `user`, `artikel`, `news`, `comments
 -- Tabellenstruktur für Tabelle `fs_counter_ref`
 --
 
+DROP TABLE IF EXISTS `fs_counter_ref`;
 CREATE TABLE `fs_counter_ref` (
   `ref_url` char(255) default NULL,
   `ref_count` int(11) default NULL,
@@ -337,7 +345,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 57, 1215373816, 1221234749),
+('http://localhost/fs2/', 73, 1215373816, 1222708948),
 ('http://sweil.dyndns.org/fs2/', 1, 1221226472, 1221226472),
 ('http://sweil.dyndns.org/fs2/www/', 3, 1221227579, 1221228045),
 ('http://localhost/fs2/www/?go=news', 1, 1221228286, 1221228286);
@@ -348,6 +356,7 @@ INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) V
 -- Tabellenstruktur für Tabelle `fs_counter_stat`
 --
 
+DROP TABLE IF EXISTS `fs_counter_stat`;
 CREATE TABLE `fs_counter_stat` (
   `s_year` int(4) default NULL,
   `s_month` int(2) default NULL,
@@ -361,7 +370,13 @@ CREATE TABLE `fs_counter_stat` (
 --
 
 INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits`) VALUES
-(2008, 9, 13, 1, 10);
+(2008, 9, 13, 1, 16),
+(2008, 9, 14, 2, 22),
+(2008, 9, 15, 1, 14),
+(2008, 9, 22, 1, 5),
+(2008, 9, 27, 1, 6),
+(2008, 9, 28, 1, 1),
+(2008, 9, 29, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -369,6 +384,7 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 -- Tabellenstruktur für Tabelle `fs_dl`
 --
 
+DROP TABLE IF EXISTS `fs_dl`;
 CREATE TABLE `fs_dl` (
   `dl_id` mediumint(8) NOT NULL auto_increment,
   `cat_id` mediumint(8) default NULL,
@@ -395,6 +411,7 @@ INSERT INTO `fs_dl` (`dl_id`, `cat_id`, `user_id`, `dl_date`, `dl_name`, `dl_tex
 -- Tabellenstruktur für Tabelle `fs_dl_cat`
 --
 
+DROP TABLE IF EXISTS `fs_dl_cat`;
 CREATE TABLE `fs_dl_cat` (
   `cat_id` mediumint(8) NOT NULL auto_increment,
   `subcat_id` mediumint(8) NOT NULL default '0',
@@ -415,6 +432,7 @@ INSERT INTO `fs_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 -- Tabellenstruktur für Tabelle `fs_dl_config`
 --
 
+DROP TABLE IF EXISTS `fs_dl_config`;
 CREATE TABLE `fs_dl_config` (
   `id` tinyint(1) NOT NULL,
   `screen_x` int(11) default NULL,
@@ -439,6 +457,7 @@ INSERT INTO `fs_dl_config` (`id`, `screen_x`, `screen_y`, `thumb_x`, `thumb_y`, 
 -- Tabellenstruktur für Tabelle `fs_dl_files`
 --
 
+DROP TABLE IF EXISTS `fs_dl_files`;
 CREATE TABLE `fs_dl_files` (
   `dl_id` mediumint(8) default NULL,
   `file_id` mediumint(8) NOT NULL auto_increment,
@@ -448,12 +467,14 @@ CREATE TABLE `fs_dl_files` (
   `file_size` mediumint(8) NOT NULL default '0',
   `file_is_mirror` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`file_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs_dl_files`
 --
 
+INSERT INTO `fs_dl_files` (`dl_id`, `file_id`, `file_count`, `file_name`, `file_url`, `file_size`, `file_is_mirror`) VALUES
+(1, 1, 5, '333', 'http://example.com', 333, 0);
 
 -- --------------------------------------------------------
 
@@ -461,6 +482,7 @@ CREATE TABLE `fs_dl_files` (
 -- Tabellenstruktur für Tabelle `fs_editor_config`
 --
 
+DROP TABLE IF EXISTS `fs_editor_config`;
 CREATE TABLE `fs_editor_config` (
   `id` tinyint(1) NOT NULL default '1',
   `smilies_rows` int(2) NOT NULL,
@@ -518,23 +540,27 @@ INSERT INTO `fs_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea_
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_email_template`
+-- Tabellenstruktur für Tabelle `fs_email`
 --
 
-CREATE TABLE `fs_email_template` (
-  `template_name` varchar(255) collate latin1_general_ci NOT NULL,
-  `template_text` text collate latin1_general_ci NOT NULL,
-  PRIMARY KEY  (`template_name`)
+DROP TABLE IF EXISTS `fs_email`;
+CREATE TABLE `fs_email` (
+  `id` tinyint(1) NOT NULL default '1',
+  `signup` text collate latin1_general_ci NOT NULL,
+  `change_password` text collate latin1_general_ci NOT NULL,
+  `delete_account` text character set latin1 collate latin1_danish_ci NOT NULL,
+  `use_admin_mail` tinyint(1) NOT NULL default '1',
+  `email` varchar(100) collate latin1_general_ci NOT NULL,
+  `html` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
--- Daten für Tabelle `fs_email_template`
+-- Daten für Tabelle `fs_email`
 --
 
-INSERT INTO `fs_email_template` (`template_name`, `template_text`) VALUES
-('signup', 'Hallo {username},\r\n\r\nDu hast dich bei uns auf der Seite registriert. Deine Logindaten sind:\r\n\r\nUsername: {username}\r\nPasswort: {password}\r\n\r\nFalls du deine bei der Registrierung angegebenen Daten ändern möchtest, kannst du das gerne auf deiner [url={virtualhost}?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Webseiten-Team!'),
-('change_password', 'Hallo {username},\r\n\r\nDein Passwort bei uns auf der Seite wurde geändert. Deine neuen Logindaten sind:\r\n\r\nUsername: {username}\r\nPasswort: {password}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url={virtualhost}?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Webseiten-Team!'),
-('delete_account', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders überlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!');
+INSERT INTO `fs_email` (`id`, `signup`, `change_password`, `delete_account`, `use_admin_mail`, `email`, `html`) VALUES
+(1, 'Hallo {username},\r\n\r\nDu hast dich bei uns auf der Seite registriert. Deine Zugangsdaten sind:\r\n\r\nUsername: {username}\r\nPasswort: {password}\r\n\r\nFalls du deine bei der Registrierung angegebenen Daten ändern möchtest, kannst du das gerne auf deiner [url={virtualhost}?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Webseiten-Team!', 'Hallo {username},\r\n\r\nDein Passwort bei uns auf der Seite wurde geändert. Deine neuen Zugangsdaten sind:\r\n\r\nUsername: {username}\r\nPasswort: {password}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url={virtualhost}?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Webseiten-Team!', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders überlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!', 1, '', 1);
 
 -- --------------------------------------------------------
 
@@ -542,6 +568,7 @@ INSERT INTO `fs_email_template` (`template_name`, `template_text`) VALUES
 -- Tabellenstruktur für Tabelle `fs_global_config`
 --
 
+DROP TABLE IF EXISTS `fs_global_config`;
 CREATE TABLE `fs_global_config` (
   `id` tinyint(1) NOT NULL default '1',
   `version` varchar(10) NOT NULL default '0.9',
@@ -579,6 +606,7 @@ INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `t
 -- Tabellenstruktur für Tabelle `fs_includes`
 --
 
+DROP TABLE IF EXISTS `fs_includes`;
 CREATE TABLE `fs_includes` (
   `id` mediumint(8) NOT NULL auto_increment,
   `replace_string` varchar(255) NOT NULL default '',
@@ -600,6 +628,7 @@ INSERT INTO `fs_includes` (`id`, `replace_string`, `replace_thing`, `include_typ
 -- Tabellenstruktur für Tabelle `fs_iplist`
 --
 
+DROP TABLE IF EXISTS `fs_iplist`;
 CREATE TABLE `fs_iplist` (
   `ip` varchar(18) collate latin1_general_ci NOT NULL,
   PRIMARY KEY  (`ip`)
@@ -618,6 +647,7 @@ INSERT INTO `fs_iplist` (`ip`) VALUES
 -- Tabellenstruktur für Tabelle `fs_news`
 --
 
+DROP TABLE IF EXISTS `fs_news`;
 CREATE TABLE `fs_news` (
   `news_id` mediumint(8) NOT NULL auto_increment,
   `cat_id` smallint(6) default NULL,
@@ -636,7 +666,7 @@ CREATE TABLE `fs_news` (
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`) VALUES
 (1, 1, 1, 1215371760, 'Herzlich Willkommen!', '[b]Hallo Webmaster![/b]\r\n\r\nDiese News heißt dich herzlich in deinem frisch installierten Frogsystem 2 (Alix3-Release) Willkommen!\r\nWeitere Informationen und Hilfe bei Problemen findest du übrigens auf der Offiziellen Homepage des Frogsystem 2, die unten verlinkt ist. Schau doch mal vorbei.\r\n\r\nUnd jetzt viel Spaß damit! :-)', 1, 1),
-(2, 1, 1, 1220296920, 'test', '[player]7[/player]', 1, 1),
+(2, 1, 1, 1220296920, 'test', 'nö, kein player mehr!', 1, 1),
 (5, 1, 1, 1221222900, 'Stärke bedeutet nicht automatisch Intelligenz', '<a href=\\"/images/trolle/troll_offizier.jpg\\"><img border=\\"0\\" img style=\\"float: left; padding-right: 30px;\\"src=\\"/images/trolle/troll_offizier_small.gif\\"></a> \r\n \r\nZu diesem Ergebnis sind die Jäger Ancarias diese Woche gekommen, als sie sich den Troll Offizier genauer angeschaut haben. Wir haben ihre Forschungsberichte wie immer in aufbereiteter Form in unseren Artikel über die Völker Ancarias gestellt, sodass ihr sie bequem hier lesen und euch möglicherweise die ersten Taktiken gegen diese Gegner überlegen könnt. \r\nUnser Forum steht euch zum Äußern eurer Gedanken natürlich zur Verfügung.', 1, 1);
 
 -- --------------------------------------------------------
@@ -645,6 +675,7 @@ INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`
 -- Tabellenstruktur für Tabelle `fs_news_cat`
 --
 
+DROP TABLE IF EXISTS `fs_news_cat`;
 CREATE TABLE `fs_news_cat` (
   `cat_id` smallint(6) NOT NULL auto_increment,
   `cat_name` varchar(100) default NULL,
@@ -667,6 +698,7 @@ INSERT INTO `fs_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, 
 -- Tabellenstruktur für Tabelle `fs_news_comments`
 --
 
+DROP TABLE IF EXISTS `fs_news_comments`;
 CREATE TABLE `fs_news_comments` (
   `comment_id` mediumint(8) NOT NULL auto_increment,
   `news_id` mediumint(8) default NULL,
@@ -683,8 +715,6 @@ CREATE TABLE `fs_news_comments` (
 -- Daten für Tabelle `fs_news_comments`
 --
 
-INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(2, 2, '1', 1, '127.0.0.1', 1220829843, 'aa', 'aa');
 
 -- --------------------------------------------------------
 
@@ -692,6 +722,7 @@ INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comm
 -- Tabellenstruktur für Tabelle `fs_news_config`
 --
 
+DROP TABLE IF EXISTS `fs_news_config`;
 CREATE TABLE `fs_news_config` (
   `id` tinyint(1) NOT NULL,
   `num_news` int(11) default NULL,
@@ -724,6 +755,7 @@ INSERT INTO `fs_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_cod
 -- Tabellenstruktur für Tabelle `fs_news_links`
 --
 
+DROP TABLE IF EXISTS `fs_news_links`;
 CREATE TABLE `fs_news_links` (
   `news_id` mediumint(8) default NULL,
   `link_id` mediumint(8) NOT NULL auto_increment,
@@ -731,7 +763,7 @@ CREATE TABLE `fs_news_links` (
   `link_url` varchar(255) default NULL,
   `link_target` tinyint(4) default NULL,
   PRIMARY KEY  (`link_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
 
 --
 -- Daten für Tabelle `fs_news_links`
@@ -739,9 +771,9 @@ CREATE TABLE `fs_news_links` (
 
 INSERT INTO `fs_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `link_target`) VALUES
 (1, 13, 'Offizielle Frogsystem 2 Homepage', 'http://www.frogsystem.de', 1),
-(2, 31, 'test', 'http://test', 0),
-(2, 30, 'df', 'http://dfdf', 0),
-(2, 29, 'dfdf', 'http://dfdf', 0);
+(2, 34, 'test', 'http://test', 0),
+(2, 33, 'df', 'http://dfdf', 0),
+(2, 32, 'dfdf', 'http://dfdf', 0);
 
 -- --------------------------------------------------------
 
@@ -749,6 +781,7 @@ INSERT INTO `fs_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `lin
 -- Tabellenstruktur für Tabelle `fs_partner`
 --
 
+DROP TABLE IF EXISTS `fs_partner`;
 CREATE TABLE `fs_partner` (
   `partner_id` smallint(3) unsigned NOT NULL auto_increment,
   `partner_name` varchar(150) NOT NULL default '',
@@ -769,6 +802,7 @@ CREATE TABLE `fs_partner` (
 -- Tabellenstruktur für Tabelle `fs_partner_config`
 --
 
+DROP TABLE IF EXISTS `fs_partner_config`;
 CREATE TABLE `fs_partner_config` (
   `partner_anzahl` tinyint(2) NOT NULL default '0',
   `small_x` int(4) NOT NULL default '0',
@@ -793,6 +827,7 @@ INSERT INTO `fs_partner_config` (`partner_anzahl`, `small_x`, `small_y`, `small_
 -- Tabellenstruktur für Tabelle `fs_player`
 --
 
+DROP TABLE IF EXISTS `fs_player`;
 CREATE TABLE `fs_player` (
   `video_id` mediumint(8) NOT NULL auto_increment,
   `video_type` tinyint(1) NOT NULL default '1',
@@ -812,7 +847,7 @@ INSERT INTO `fs_player` (`video_id`, `video_type`, `video_x`, `video_title`, `vi
 (8, 3, '5062703', 'MyVideo-Test', 0, '', 0),
 (9, 2, '8zMbWStBphE', 'YouTube-Test', 0, '', 0),
 (10, -1, '<object classid=\\"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000\\"  codebase=\\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\\" id=\\"gtembed\\" width=\\"{width}\\" height=\\"{height}\\">	<param name=\\"allowScriptAccess\\" value=\\"sameDomain\\" /> 	<param name=\\"allowFullScreen\\" value=\\"true\\" /> <param name=\\"movie\\" value=\\"http://www.gametrailers.com/remote_wrap.php?mid=36375\\"/> <param name=\\"quality\\" value=\\"high\\" /> <embed src=\\"http://www.gametrailers.com/remote_wrap.php?mid=36375\\" swLiveConnect=\\"true\\" name=\\"gtembed\\" align=\\"middle\\" allowScriptAccess=\\"sameDomain\\" allowFullScreen=\\"true\\" quality=\\"high\\" pluginspage=\\"http://www.macromedia.com/go/getflashplayer\\" type=\\"application/x-shockwave-flash\\" width=\\"{width}\\" height=\\"{height}\\"></embed> </object>', 'Externer Test', 0, '', 0),
-(7, 1, 'http://localhost/fs2/www/test.flv', 'Test-Video', 0, '', 0);
+(7, 1, 'http://localhost/test.flv', 'Test-Video', 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -820,6 +855,7 @@ INSERT INTO `fs_player` (`video_id`, `video_type`, `video_x`, `video_title`, `vi
 -- Tabellenstruktur für Tabelle `fs_player_config`
 --
 
+DROP TABLE IF EXISTS `fs_player_config`;
 CREATE TABLE `fs_player_config` (
   `id` tinyint(1) NOT NULL default '1',
   `cfg_autoplay` tinyint(1) NOT NULL default '1',
@@ -882,6 +918,7 @@ INSERT INTO `fs_player_config` (`id`, `cfg_autoplay`, `cfg_autoload`, `cfg_buffe
 -- Tabellenstruktur für Tabelle `fs_poll`
 --
 
+DROP TABLE IF EXISTS `fs_poll`;
 CREATE TABLE `fs_poll` (
   `poll_id` mediumint(8) NOT NULL auto_increment,
   `poll_quest` char(255) default NULL,
@@ -890,7 +927,7 @@ CREATE TABLE `fs_poll` (
   `poll_type` tinyint(4) default NULL,
   `poll_participants` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`poll_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs_poll`
@@ -903,13 +940,14 @@ CREATE TABLE `fs_poll` (
 -- Tabellenstruktur für Tabelle `fs_poll_answers`
 --
 
+DROP TABLE IF EXISTS `fs_poll_answers`;
 CREATE TABLE `fs_poll_answers` (
   `poll_id` mediumint(8) default NULL,
   `answer_id` mediumint(8) NOT NULL auto_increment,
   `answer` varchar(255) default NULL,
   `answer_count` mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (`answer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_poll_answers`
@@ -922,6 +960,7 @@ CREATE TABLE `fs_poll_answers` (
 -- Tabellenstruktur für Tabelle `fs_poll_config`
 --
 
+DROP TABLE IF EXISTS `fs_poll_config`;
 CREATE TABLE `fs_poll_config` (
   `id` tinyint(1) NOT NULL,
   `answerbar_width` smallint(3) NOT NULL default '100',
@@ -942,13 +981,14 @@ INSERT INTO `fs_poll_config` (`id`, `answerbar_width`, `answerbar_type`) VALUES
 -- Tabellenstruktur für Tabelle `fs_poll_voters`
 --
 
+DROP TABLE IF EXISTS `fs_poll_voters`;
 CREATE TABLE `fs_poll_voters` (
   `voter_id` mediumint(8) unsigned NOT NULL auto_increment,
   `poll_id` mediumint(8) unsigned NOT NULL default '0',
   `ip_address` varchar(15) NOT NULL default '0.0.0.0',
   `time` int(32) NOT NULL default '0',
   PRIMARY KEY  (`voter_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs_poll_voters`
@@ -961,6 +1001,7 @@ CREATE TABLE `fs_poll_voters` (
 -- Tabellenstruktur für Tabelle `fs_press`
 --
 
+DROP TABLE IF EXISTS `fs_press`;
 CREATE TABLE `fs_press` (
   `press_id` smallint(6) NOT NULL auto_increment,
   `press_title` varchar(150) NOT NULL,
@@ -973,7 +1014,7 @@ CREATE TABLE `fs_press` (
   `press_game` tinyint(2) NOT NULL,
   `press_cat` tinyint(2) NOT NULL,
   PRIMARY KEY  (`press_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs_press`
@@ -986,6 +1027,7 @@ CREATE TABLE `fs_press` (
 -- Tabellenstruktur für Tabelle `fs_press_admin`
 --
 
+DROP TABLE IF EXISTS `fs_press_admin`;
 CREATE TABLE `fs_press_admin` (
   `id` mediumint(8) NOT NULL auto_increment,
   `type` tinyint(1) NOT NULL default '0',
@@ -1011,6 +1053,7 @@ INSERT INTO `fs_press_admin` (`id`, `type`, `title`) VALUES
 -- Tabellenstruktur für Tabelle `fs_press_config`
 --
 
+DROP TABLE IF EXISTS `fs_press_config`;
 CREATE TABLE `fs_press_config` (
   `id` mediumint(8) NOT NULL default '1',
   `game_navi` tinyint(1) NOT NULL default '0',
@@ -1036,6 +1079,7 @@ INSERT INTO `fs_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `show
 -- Tabellenstruktur für Tabelle `fs_resources`
 --
 
+DROP TABLE IF EXISTS `fs_resources`;
 CREATE TABLE `fs_resources` (
   `id` mediumint(8) NOT NULL auto_increment,
   `resource_name` varchar(100) collate latin1_general_ci NOT NULL,
@@ -1063,6 +1107,7 @@ INSERT INTO `fs_resources` (`id`, `resource_name`, `resource_file`, `hardcoded`)
 -- Tabellenstruktur für Tabelle `fs_screen`
 --
 
+DROP TABLE IF EXISTS `fs_screen`;
 CREATE TABLE `fs_screen` (
   `screen_id` mediumint(8) NOT NULL auto_increment,
   `cat_id` smallint(6) unsigned default NULL,
@@ -1083,6 +1128,7 @@ INSERT INTO `fs_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 -- Tabellenstruktur für Tabelle `fs_screen_cat`
 --
 
+DROP TABLE IF EXISTS `fs_screen_cat`;
 CREATE TABLE `fs_screen_cat` (
   `cat_id` smallint(6) unsigned NOT NULL auto_increment,
   `cat_name` char(100) default NULL,
@@ -1107,6 +1153,7 @@ INSERT INTO `fs_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`,
 -- Tabellenstruktur für Tabelle `fs_screen_config`
 --
 
+DROP TABLE IF EXISTS `fs_screen_config`;
 CREATE TABLE `fs_screen_config` (
   `id` tinyint(1) NOT NULL,
   `screen_x` int(4) default NULL,
@@ -1147,6 +1194,7 @@ INSERT INTO `fs_screen_config` (`id`, `screen_x`, `screen_y`, `screen_thumb_x`, 
 -- Tabellenstruktur für Tabelle `fs_screen_random`
 --
 
+DROP TABLE IF EXISTS `fs_screen_random`;
 CREATE TABLE `fs_screen_random` (
   `random_id` int(10) unsigned NOT NULL auto_increment,
   `screen_id` int(11) NOT NULL,
@@ -1166,6 +1214,7 @@ CREATE TABLE `fs_screen_random` (
 -- Tabellenstruktur für Tabelle `fs_screen_random_config`
 --
 
+DROP TABLE IF EXISTS `fs_screen_random_config`;
 CREATE TABLE `fs_screen_random_config` (
   `id` mediumint(9) NOT NULL default '1',
   `active` tinyint(1) NOT NULL default '1',
@@ -1186,6 +1235,7 @@ INSERT INTO `fs_screen_random_config` (`id`, `active`, `type_priority`, `use_pri
 -- Tabellenstruktur für Tabelle `fs_shop`
 --
 
+DROP TABLE IF EXISTS `fs_shop`;
 CREATE TABLE `fs_shop` (
   `artikel_id` smallint(6) unsigned NOT NULL auto_increment,
   `artikel_name` varchar(100) default NULL,
@@ -1207,6 +1257,7 @@ CREATE TABLE `fs_shop` (
 -- Tabellenstruktur für Tabelle `fs_smilies`
 --
 
+DROP TABLE IF EXISTS `fs_smilies`;
 CREATE TABLE `fs_smilies` (
   `id` mediumint(6) NOT NULL auto_increment,
   `replace_string` varchar(15) NOT NULL,
@@ -1236,6 +1287,7 @@ INSERT INTO `fs_smilies` (`id`, `replace_string`, `order`) VALUES
 -- Tabellenstruktur für Tabelle `fs_template`
 --
 
+DROP TABLE IF EXISTS `fs_template`;
 CREATE TABLE `fs_template` (
   `id` tinyint(4) NOT NULL default '0',
   `name` varchar(100) NOT NULL default '',
@@ -1345,6 +1397,7 @@ INSERT INTO `fs_template` (`id`, `name`, `style_css`, `js_userfunctions`, `index
 -- Tabellenstruktur für Tabelle `fs_user`
 --
 
+DROP TABLE IF EXISTS `fs_user`;
 CREATE TABLE `fs_user` (
   `user_id` mediumint(8) NOT NULL auto_increment,
   `user_name` char(100) collate latin1_general_ci default NULL,
@@ -1370,8 +1423,8 @@ CREATE TABLE `fs_user` (
 --
 
 INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
-(1, 'admin', '847f3f75c2491f3aca2846049e4fe613', 'FDK6wbMAiF', 'admin@admin.de', 1, 0, 1, 1207260000, 0, '', '', '', '', '', ''),
-(2, 'test', '0f3a54107e0131562f1e743edb4a7215', 'XWakmcztBo', 'test@sweil.de', 1, 0, 0, 1220392800, 0, '', '', '', '', '', '');
+(1, 'admin', '09bd41bf17fcd0e5b9829b4eab1af7ac', 'cHwDG0HngG', 'admin@admin.de', 1, 0, 1, 1207260000, 0, '', '', '', '', '', ''),
+(2, 'test', '0f3a54107e0131562f1e743edb4a7215', 'XWakmcztBo', 'test@sweil.de', 1, 5, 0, 1220392800, 0, '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1379,6 +1432,7 @@ INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `us
 -- Tabellenstruktur für Tabelle `fs_useronline`
 --
 
+DROP TABLE IF EXISTS `fs_useronline`;
 CREATE TABLE `fs_useronline` (
   `ip` varchar(30) default NULL,
   `user_id` mediumint(8) NOT NULL default '0',
@@ -1390,7 +1444,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1221257103);
+('127.0.0.1', 1, 1222708948);
 
 -- --------------------------------------------------------
 
@@ -1398,6 +1452,7 @@ INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
 -- Tabellenstruktur für Tabelle `fs_user_config`
 --
 
+DROP TABLE IF EXISTS `fs_user_config`;
 CREATE TABLE `fs_user_config` (
   `id` tinyint(1) NOT NULL,
   `user_per_page` tinyint(3) NOT NULL,
@@ -1424,6 +1479,7 @@ INSERT INTO `fs_user_config` (`id`, `user_per_page`, `registration_antispam`, `a
 -- Tabellenstruktur für Tabelle `fs_user_groups`
 --
 
+DROP TABLE IF EXISTS `fs_user_groups`;
 CREATE TABLE `fs_user_groups` (
   `user_group_id` mediumint(8) NOT NULL auto_increment,
   `user_group_name` varchar(50) collate latin1_general_ci NOT NULL,
@@ -1452,6 +1508,7 @@ INSERT INTO `fs_user_groups` (`user_group_id`, `user_group_name`, `user_group_de
 -- Tabellenstruktur für Tabelle `fs_user_permissions`
 --
 
+DROP TABLE IF EXISTS `fs_user_permissions`;
 CREATE TABLE `fs_user_permissions` (
   `perm_id` varchar(255) collate latin1_general_ci NOT NULL,
   `x_id` mediumint(8) NOT NULL,
@@ -1500,6 +1557,7 @@ INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 -- Tabellenstruktur für Tabelle `fs_wallpaper`
 --
 
+DROP TABLE IF EXISTS `fs_wallpaper`;
 CREATE TABLE `fs_wallpaper` (
   `wallpaper_id` mediumint(8) NOT NULL auto_increment,
   `wallpaper_name` varchar(255) NOT NULL default '',
@@ -1519,6 +1577,7 @@ CREATE TABLE `fs_wallpaper` (
 -- Tabellenstruktur für Tabelle `fs_wallpaper_sizes`
 --
 
+DROP TABLE IF EXISTS `fs_wallpaper_sizes`;
 CREATE TABLE `fs_wallpaper_sizes` (
   `size_id` mediumint(8) NOT NULL auto_increment,
   `wallpaper_id` mediumint(8) NOT NULL default '0',
@@ -1537,6 +1596,7 @@ CREATE TABLE `fs_wallpaper_sizes` (
 -- Tabellenstruktur für Tabelle `fs_zones`
 --
 
+DROP TABLE IF EXISTS `fs_zones`;
 CREATE TABLE `fs_zones` (
   `id` mediumint(8) NOT NULL auto_increment,
   `name` varchar(30) NOT NULL,
