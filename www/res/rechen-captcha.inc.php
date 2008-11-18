@@ -1,24 +1,15 @@
 <?php
-///////////////////////////////////
-//// PATH_SEPARATOR definieren ////
-///////////////////////////////////
-if ( ! defined( "PATH_SEPARATOR" ) ) {
-  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
-    define( "PATH_SEPARATOR", ";" );
-  else define( "PATH_SEPARATOR", ":" );
-}
-
 // Start Session
 session_start();
 
-// script path-length
-$delete_last = strlen ( "/res/rechen-captcha.inc.php" ) * -1;
-// Set Include Path
-set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+// fs2 include path
+set_include_path ( '.' );
+define ( FS2_ROOT_PATH, "./../", TRUE );
 
-require ( "login.inc.php" );
+// include db-data
+require ( FS2_ROOT_PATH . "login.inc.php" );
 
-session_start();
+
 unset($_SESSION['rechen_captcha_spam']);
 $zahl1 = rand(1,5); //Erste Zahl 1-5
 $zahl2 = rand(1,5);  //Zweite Zahl 1-5

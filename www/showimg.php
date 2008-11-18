@@ -1,27 +1,17 @@
 <?php
-///////////////////////////////////
-//// PATH_SEPARATOR definieren ////
-///////////////////////////////////
-if ( ! defined( "PATH_SEPARATOR" ) ) {
-  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
-    define( "PATH_SEPARATOR", ";" );
-  else define( "PATH_SEPARATOR", ":" );
-}
-
 // Start Session
 session_start();
 
-// script path-length
-$delete_last = strlen ( "/showimg.php" ) * -1;
-// Set Include Path
-set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+// fs2 include path
+set_include_path ( '.' );
+define ( FS2_ROOT_PATH, "./", TRUE );
 
-require("login.inc.php");
+require( FS2_ROOT_PATH . "login.inc.php");
 if ($db)
 {
-    require("includes/functions.php");
-    require("includes/indexfunctions.php");
-    require("includes/imagefunctions.php");
+    require( FS2_ROOT_PATH . "includes/functions.php");
+    require( FS2_ROOT_PATH . "includes/indexfunctions.php");
+    require( FS2_ROOT_PATH . "includes/imagefunctions.php");
 
 /////////////////////////////
 //// Konstruktor aufrufe ////
@@ -146,7 +136,7 @@ $index = mysql_query("select * from ".$global_config_arr[pref]."includes where i
 while ($include_arr = mysql_fetch_assoc($index))
 {
     // Include laden
-    include("res/".$include_arr['replace_thing']);
+    include( FS2_ROOT_PATH . "res/".$include_arr['replace_thing']);
     $template_include = $template;
     unset($template);
 

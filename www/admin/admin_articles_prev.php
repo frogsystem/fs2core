@@ -1,28 +1,18 @@
 <?php
-///////////////////////////////////
-//// PATH_SEPARATOR definieren ////
-///////////////////////////////////
-if ( ! defined( "PATH_SEPARATOR" ) ) {
-  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
-    define( "PATH_SEPARATOR", ";" );
-  else define( "PATH_SEPARATOR", ":" );
-}
-
 // Start Session
 session_start();
 
-// script path-length
-$delete_last = strlen ( "/admin/admin_articles_prev.php" ) * -1;
-// Set Include Path
-set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+// fs2 include path
+set_include_path ( '.' );
+define ( FS2_ROOT_PATH, "./../", TRUE );
 
 // Include Files
-require("login.inc.php");
-require("includes/functions.php");
-require("includes/cookielogin.php");
-require("includes/imagefunctions.php");
-require("includes/indexfunctions.php");
-require("phrases/phrases_".$global_config_arr['language'].".php");
+require( FS2_ROOT_PATH . "login.inc.php");
+require( FS2_ROOT_PATH . "includes/functions.php");
+require( FS2_ROOT_PATH . "includes/cookielogin.php");
+require( FS2_ROOT_PATH . "includes/imagefunctions.php");
+require( FS2_ROOT_PATH . "includes/indexfunctions.php");
+require( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php");
 
 // Constructor Calls
 set_design ();
@@ -155,10 +145,10 @@ else
 	// Preview Page Template
     $global_config_arr['title'] = "Frogsystem 2 - Artikelvorschau: " . $global_config_arr['title'];
 	$template_index = get_template ( "indexphp" );
-	$template_index = str_replace ( "{main_menu}", get_mainmenu ( "../" ), $template_index );
+	$template_index = str_replace ( "{main_menu}", get_mainmenu (), $template_index );
 	$template_index = str_replace ( "{content}", $template_preview, $template_index );
 	$template_index = str_replace ( "{copyright}", get_copyright (), $template_index );
-	$template_index = replace_resources ( $template_index, "../" );
+	$template_index = replace_resources ( $template_index );
 	$template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung
 	$template_index = killbraces ( $template_index );
 	$template = get_maintemplate ( "../" );

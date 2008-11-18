@@ -42,16 +42,18 @@ $index = mysql_query ( "
 ", $db);
 $ref_num = mysql_result ( $index, 0, "ref_num" );
 
-// last Ref
-$index = mysql_query ( "
-						SELECT ref_url, ref_last
-						FROM ".$global_config_arr['pref']."counter_ref
-						ORDER BY ref_last DESC
-						LIMIT 0,1
-", $db );
-$ref_last = stripslashes ( mysql_result ( $index, 0, "ref_url" ) );
-$ref_date = date ( "d. m. Y", mysql_result ( $index, 0, "ref_last" ) );
-$ref_time = date ( "h:i", mysql_result ( $index, 0, "ref_last" ) );
+if ( $ref_num  > 0) {
+	// last Ref
+	$index = mysql_query ( "
+							SELECT ref_url, ref_last
+							FROM ".$global_config_arr['pref']."counter_ref
+							ORDER BY ref_last DESC
+							LIMIT 0,1
+	", $db );
+	$ref_last = stripslashes ( mysql_result ( $index, 0, "ref_url" ) );
+	$ref_date = date ( "d. m. Y", mysql_result ( $index, 0, "ref_last" ) );
+	$ref_time = date ( "h:i", mysql_result ( $index, 0, "ref_last" ) );
+}
 
 echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
@@ -104,11 +106,20 @@ echo '
                                 <td class="configthin" width="200">Anzahl Referrer:</td>
                                 <td class="configthin"><b>'.$ref_num.'</b></td>
                             </tr>
+
+';
+
+if ( $ref_num  > 0) {
+	echo '
                             <tr>
                                 <td class="configthin" width="200">Letzter Kontakt von:</td>
                                 <td class="configthin"><b>'.$ref_last.'</b><br>
 								am <b>'.$ref_date.'</b> um <b>'.$ref_time.'</b> Uhr</td>
                             </tr>
+	';
+}
+
+echo '
 						</table>
 ';
 ?>

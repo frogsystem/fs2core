@@ -1,25 +1,15 @@
 <?php
-///////////////////////////////////
-//// PATH_SEPARATOR definieren ////
-///////////////////////////////////
-if ( ! defined( "PATH_SEPARATOR" ) ) {
-  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
-    define( "PATH_SEPARATOR", ";" );
-  else define( "PATH_SEPARATOR", ":" );
-}
-
 // Start Session
 session_start();
 
-// script path-length
-$delete_last = strlen ( "/admin/admin_finduser.php" ) * -1;
-// Set Include Path
-set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+// fs2 include path
+set_include_path ( '.' );
+define ( FS2_ROOT_PATH, "./../", TRUE );
 
-require("login.inc.php");
-require("includes/functions.php");
-require("includes/adminfunctions.php");
-require("phrases/admin_phrases_".$global_config_arr['language'].".php");
+require( FS2_ROOT_PATH . "login.inc.php");
+require( FS2_ROOT_PATH . "includes/functions.php");
+require( FS2_ROOT_PATH . "includes/adminfunctions.php");
+require( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php");
 
 echo'
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

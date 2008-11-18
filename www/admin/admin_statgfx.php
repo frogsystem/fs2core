@@ -1,22 +1,12 @@
 <?php
-///////////////////////////////////
-//// PATH_SEPARATOR definieren ////
-///////////////////////////////////
-if ( ! defined( "PATH_SEPARATOR" ) ) {
-  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
-    define( "PATH_SEPARATOR", ";" );
-  else define( "PATH_SEPARATOR", ":" );
-}
-
 // Start Session
 session_start();
 
-// script path-length
-$delete_last = strlen ( "/admin/admin_statgfx.php" ) * -1;
-// Set Include Path
-set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+// fs2 include path
+set_include_path ( '.' );
+define ( FS2_ROOT_PATH, "./../", TRUE );
 
-require("login.inc.php");
+require( FS2_ROOT_PATH . "login.inc.php");
 
 if (!isset($_GET[s_year]))
 {

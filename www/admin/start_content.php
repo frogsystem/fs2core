@@ -39,18 +39,30 @@ if ( $num_news  > 0 ) {
 	$best_news_cat = stripslashes ( mysql_result ( $index, 0, "cat_name" ) );
 	$best_news_cat_num = mysql_result ( $index, 0, "best_news_cat_num" );
 
-
-	$index = mysql_query ( "
-							SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
-							FROM ".$global_config_arr['pref']."news_comments C, ".$global_config_arr['pref']."news N
-							WHERE N.`news_id` = C.`news_id`
-							GROUP BY N.`news_title`
-							ORDER BY `best_news_com_num` DESC
-							LIMIT 0,1
-	", $db);
-	$best_news_com = stripslashes ( mysql_result ( $index, 0, "news_title" ) );
-	$best_news_com_num = mysql_result ( $index, 0, "best_news_com_num" );
-
+    if ( $num_comments  > 0 ) {
+		$index = mysql_query ( "
+								SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
+								FROM ".$global_config_arr['pref']."news_comments C, ".$global_config_arr['pref']."news N
+								WHERE N.`news_id` = C.`news_id`
+								GROUP BY N.`news_title`
+								ORDER BY `best_news_com_num` DESC
+								LIMIT 0,1
+		", $db);
+		$best_news_com = stripslashes ( mysql_result ( $index, 0, "news_title" ) );
+		$best_news_com_num = mysql_result ( $index, 0, "best_news_com_num" );
+		
+		$index = mysql_query ( "
+								SELECT COUNT(C.`comment_id`) AS 'best_com_poster_num', U.`user_name`
+								FROM ".$global_config_arr['pref']."user U, ".$global_config_arr['pref']."news_comments C
+								WHERE C.`comment_poster_id` = U.`user_id`
+								AND C.`comment_poster_id` > 0
+								GROUP BY U.`user_name`
+								ORDER BY `best_com_poster_num` DESC
+								LIMIT 0,1
+		", $db);
+		$best_com_poster = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
+		$best_com_poster_num = mysql_result ( $index, 0, "best_com_poster_num" );
+	}
 
 	$index = mysql_query ( "
 							SELECT COUNT(L.`link_id`) AS 'best_news_link_num', N.`news_title`
@@ -74,19 +86,6 @@ if ( $num_news  > 0 ) {
 	", $db);
 	$best_news_poster = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
 	$best_news_poster_num = mysql_result ( $index, 0, "best_news_poster_num" );
-
-
-	$index = mysql_query ( "
-							SELECT COUNT(C.`comment_id`) AS 'best_com_poster_num', U.`user_name`
-							FROM ".$global_config_arr['pref']."user U, ".$global_config_arr['pref']."news_comments C
-							WHERE C.`comment_poster_id` = U.`user_id`
-							AND C.`comment_poster_id` > 0
-							GROUP BY U.`user_name`
-							ORDER BY `best_com_poster_num` DESC
-							LIMIT 0,1
-	", $db);
-	$best_com_poster = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
-	$best_com_poster_num = mysql_result ( $index, 0, "best_com_poster_num" );
 }
 
 
@@ -162,10 +161,18 @@ if ( $num_news  > 0 ) {
                                 <td class="configthin">Größte Kategorie:</td>
                                 <td class="configthin"><b>'.$best_news_cat.'</b> mit <b>'.$best_news_cat_num.'</b> News</td>
                             </tr>
+	';
+
+	if ( $num_comments  > 0 ) {
+		echo '
                             <tr>
                                 <td class="configthin">Meisten Kommentare:</td>
                                 <td class="configthin"><b>'.$best_news_com.'</b> mit <b>'.$best_news_com_num.'</b> Kommentar(en)</td>
                             </tr>
+		';
+	}
+
+	echo '
                             <tr>
                                 <td class="configthin">Meisten Links:</td>
                                 <td class="configthin"><b>'.$best_news_link.'</b> mit <b>'.$best_news_link_num.'</b> Link(s)</td>
@@ -174,12 +181,16 @@ if ( $num_news  > 0 ) {
                                 <td class="configthin">Fleißigster News-Poster:</td>
                                 <td class="configthin"><b>'.$best_news_poster.'</b> mit <b>'.$best_news_poster_num.'</b> News</td>
                             </tr>
+	';
 
+	if ( $num_comments  > 0 ) {
+		echo '
                             <tr>
                                 <td class="configthin">Fleißigster Kommentar-Poster:</td>
                                 <td class="configthin"><b>'.$best_com_poster.'</b> mit <b>'.$best_com_poster_num.'</b> Kommentar(en)</td>
                             </tr>
-	';
+		';
+	}
 }
 
 echo '

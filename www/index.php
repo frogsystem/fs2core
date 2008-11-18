@@ -1,23 +1,13 @@
 <?php
-///////////////////////////////////
-//// PATH_SEPARATOR definieren ////
-///////////////////////////////////
-if ( ! defined( "PATH_SEPARATOR" ) ) {
-  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
-    define( "PATH_SEPARATOR", ";" );
-  else define( "PATH_SEPARATOR", ":" );
-}
-
 // Start Session
 session_start();
 
-// script path-length
-$delete_last = strlen ( "/index.php" ) * -1;
-// Set Include Path
-set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+// fs2 include path
+set_include_path ( '.' );
+define ( FS2_ROOT_PATH, "./", TRUE );
 
 // Inlcude DB Connection File
-require("login.inc.php");
+require( FS2_ROOT_PATH . "login.inc.php");
 
 //////////////////////////////////
 //// DB Connection etablished ////
@@ -25,16 +15,16 @@ require("login.inc.php");
 if ($db)
 {
 	//Include DL Catch
-	require("res/dl.inc.php");
+	require( FS2_ROOT_PATH . "res/dl.inc.php");
     
     //Include Functions-Files
-    require("includes/functions.php");
-    require("includes/cookielogin.php");
-    require("includes/imagefunctions.php");
-    require("includes/indexfunctions.php");
+    require( FS2_ROOT_PATH . "includes/functions.php");
+    require( FS2_ROOT_PATH . "includes/cookielogin.php");
+    require( FS2_ROOT_PATH . "includes/imagefunctions.php");
+    require( FS2_ROOT_PATH . "includes/indexfunctions.php");
 
 	//Include Phrases-Files
-    require("phrases/phrases_".$global_config_arr['language'].".php");
+    require( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php");
 
 	// Constructor Calls
 	delete_old_randoms ();
@@ -72,7 +62,7 @@ if ($db)
 else
 {
 	// Include German Phrases
-	require("phrases/phrases_de.php");
+	require( FS2_ROOT_PATH . "phrases/phrases_de.php");
 
 	// No-Connection-Page Template
 	$template = '

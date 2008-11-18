@@ -1,13 +1,18 @@
 <?php
-
+// Set header
 header("Content-type: application/atom+xml");
 
-include("../login.inc.php");
+// fs2 include path
+set_include_path ( '.' );
+define ( FS2_ROOT_PATH, "./../", TRUE );
+
+// Inlcude DB Connection File
+require( FS2_ROOT_PATH . "login.inc.php");
 
 if ($db)
 {
-    include("../includes/functions.php");
-    include("../includes/imagefunctions.php");
+    include( FS2_ROOT_PATH . "includes/functions.php");
+    include( FS2_ROOT_PATH . "includes/imagefunctions.php");
 
     if ($global_config_arr[virtualhost] == "") {
         $global_config_arr[virtualhost] = "http://example.com/";

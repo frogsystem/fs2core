@@ -1,4 +1,7 @@
 <?php
+// fs2 include path
+set_include_path ( '.' );
+$fs_root_path = "./";
 
 //////////////////////////////
 //// Profil aktualisieren ////
@@ -124,7 +127,7 @@ else
     else  // Login Formular anzeigen
     {
         $_SESSION[last_url] = "editprofil";
-        include("data/login.php");
+        include( FS2_ROOT_PATH . "data/login.php");
     }
 }
 

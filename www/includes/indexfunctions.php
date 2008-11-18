@@ -13,7 +13,7 @@ function veraltet_includes ( $template_index )
 		while ($include_arr = mysql_fetch_assoc($index))
 		{
 		    // Include laden
-		    include("res/".$include_arr['replace_thing']);
+		    include( FS2_ROOT_PATH . "res/".$include_arr['replace_thing']);
 		    $template_include = $template;
 		    unset($template);
 
@@ -139,11 +139,11 @@ function get_content ( $GOTO )
 
 	// Display Content
 	if ( file_exists ( "data/".$GOTO.".php" ) ) {
-		include ( "data/".$GOTO.".php" );
+		include ( FS2_ROOT_PATH . "data/".$GOTO.".php" );
 	} elseif ( mysql_result ( $index, 0, "number") >= 1 ) {
-		include ( "data/articles.php" );
+		include ( FS2_ROOT_PATH . "data/articles.php" );
 	} else {
-		include ( "data/404.php" );
+		include ( FS2_ROOT_PATH . "data/404.php" );
 	}
 
 	// Replace Virtualhost & Kill Resources
@@ -209,7 +209,7 @@ function get_resource ( $FILE )
     global $global_config_arr;
     global $db;
 
-	include( $FILE );
+	include( FS2_ROOT_PATH . $FILE );
 	$template = killbraces ( $template );
 	return $template;
 }

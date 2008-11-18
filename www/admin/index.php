@@ -1,28 +1,19 @@
 <?php
-///////////////////////////////////
-//// PATH_SEPARATOR definieren ////
-///////////////////////////////////
-if ( ! defined( "PATH_SEPARATOR" ) ) {
-  if ( strpos( $_ENV[ "OS" ], "Win" ) !== false )
-    define( "PATH_SEPARATOR", ";" );
-  else define( "PATH_SEPARATOR", ":" );
-}
-
 // Start Session
 session_start();
 
-// script path-length
-$delete_last = strlen ( "/admin/index.php" ) * -1;
-// Set Include Path
-set_include_path ( substr ( __FILE__, 0, $delete_last ) );
+// fs2 include path
+set_include_path ( '.' );
+define ( FS2_ROOT_PATH, "./../", TRUE );
 
-require ( "login.inc.php" );
-require ( "includes/functions.php" );
-require ( "includes/adminfunctions.php" );
-require ( "includes/imagefunctions.php" );
-require ( "includes/templatefunctions.php" );
-require ( "phrases/phrases_".$global_config_arr['language'].".php" );
-require ( "phrases/admin_phrases_".$global_config_arr['language'].".php" );
+// inlcude files
+require ( FS2_ROOT_PATH . "login.inc.php" );
+require ( FS2_ROOT_PATH . "includes/functions.php" );
+require ( FS2_ROOT_PATH . "includes/adminfunctions.php" );
+require ( FS2_ROOT_PATH . "includes/imagefunctions.php" );
+require ( FS2_ROOT_PATH . "includes/templatefunctions.php" );
+require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
+require ( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php" );
 
 ######################
 ### START OF LOGIN ###
@@ -227,7 +218,7 @@ echo'
 ///// content includes
 //////////////////////////////
 
-require ( "admin/".$PAGE_DATA_ARR['file'] );
+require ( FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file'] );
 
 //////////////////////////////
 ////// footer
