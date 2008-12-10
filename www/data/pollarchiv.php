@@ -35,8 +35,8 @@ if ($_GET[pollid])
     {
         if ($stimmen_gesamt != 0)
         {
-            $answer_arr[prozent] = $answer_arr[answer_count] / $stimmen_gesamt * 100;
-            $answer_arr[balken] = round($answer_arr[prozent] * 2);
+            $answer_arr[prozent] = round($answer_arr[answer_count] / $stimmen_gesamt * 100, 1);
+            $answer_arr[balken] = round($answer_arr[answer_count] / $stimmen_gesamt);
         }
         else
         {
@@ -46,7 +46,7 @@ if ($_GET[pollid])
 
         $index2 = mysql_query("select poll_main_line from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $template = stripslashes(mysql_result($index2, 0, "poll_main_line"));
-        $template = str_replace("{antwort}", $answer_arr[answer], $template); 
+        $template = str_replace("{antwort}", stripslashes ( $answer_arr[answer] ), $template);
         $template = str_replace("{stimmen}", $answer_arr[answer_count], $template); 
         $template = str_replace("{prozent}", $answer_arr[prozent]."%", $template); 
         $template = str_replace("{balken_breite}", $answer_arr[balken], $template); 
@@ -57,7 +57,7 @@ if ($_GET[pollid])
 
     $index = mysql_query("select poll_main_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
     $template = stripslashes(mysql_result($index, 0, "poll_main_body"));
-    $template = str_replace("{frage}", $poll_arr[poll_quest], $template); 
+    $template = str_replace("{frage}", stripslashes ( $poll_arr[poll_quest] ), $template);
     $template = str_replace("{antworten}", $antworten, $template); 
     $template = str_replace("{typ}", $poll_arr[poll_type], $template); 
     $template = str_replace("{stimmen}", $stimmen_gesamt, $template);
@@ -145,7 +145,7 @@ else
 
         $index2 = mysql_query("select poll_list_line from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $template = stripslashes(mysql_result($index2, 0, "poll_list_line"));
-        $template = str_replace("{frage}", $poll_arr[poll_quest], $template); 
+        $template = str_replace("{frage}", stripslashes ( $poll_arr[poll_quest] ), $template);
         $template = str_replace("{url}", $poll_arr[poll_url], $template); 
         $template = str_replace("{start_datum}", $poll_arr[poll_start], $template); 
         $template = str_replace("{end_datum}", $poll_arr[poll_end], $template); 
