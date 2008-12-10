@@ -112,10 +112,11 @@ $index = mysql_query ( "
 						ORDER BY `best_article_poster_num` DESC
 						LIMIT 0,1
 ", $db);
-$best_article_poster = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
-$best_article_poster_num = mysql_result ( $index, 0, "best_article_poster_num" );
-settype ( $best_article_poster_num, "integer" );
-
+if ( mysql_num_rows ( $index) > 0 ) {
+	$best_article_poster = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
+	$best_article_poster_num = mysql_result ( $index, 0, "best_article_poster_num" );
+	settype ( $best_article_poster_num, "integer" );
+}
 
 $index = mysql_query ( "
 						SELECT COUNT(`press_id`) AS 'num_press'

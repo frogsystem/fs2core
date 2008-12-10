@@ -52,7 +52,7 @@ if ( $ref_num  > 0) {
 	", $db );
 	$ref_last = stripslashes ( mysql_result ( $index, 0, "ref_url" ) );
 	$ref_date = date ( "d. m. Y", mysql_result ( $index, 0, "ref_last" ) );
-	$ref_time = date ( "h:i", mysql_result ( $index, 0, "ref_last" ) );
+	$ref_time = date ( "H:i", mysql_result ( $index, 0, "ref_last" ) );
 }
 
 echo '

@@ -108,8 +108,7 @@ if (
     $was_admin = mysql_result ( $index, 0, "user_is_admin" );
 
     // user is not longer in staff
-    if ( !( $was_staff == 1 && $was_admin == 0 && $_POST['user_is_staff'] == 1 && $_POST['user_is_admin'] == 0 ) )
-    {
+    if ( $was_staff == 1 && $_POST['user_is_staff'] == 0 ) {
         mysql_query ("
 						DELETE
 						FROM ".$global_config_arr['pref']."user_permissions
@@ -346,7 +345,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 	    	if ( $_POST['user_homepage'] == "" ) {
 	    		$_POST['user_homepage'] = "http://";
 			}
-	    	if ( $_POST['user_group'] == 0 && $_POST['user_is_admin'] == 1 ) {
+	    	if ( $user_arr['user_is_admin'] == 1 ) {
 	    		$_POST['user_group'] = "admin";
 			}
 		}
@@ -386,7 +385,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
 		settype ( $_POST['gen_password'], "integer" );
 	    settype ( $_POST['user_is_staff'], "integer" );
-	    settype ( $_POST['user_group'], "integer" );
+	    if ( $_POST['user_group'] != "admin" ) {
+	    	settype ( $_POST['user_group'], "integer" );
+		}
 	    settype ( $_POST['user_show_mail'], "integer" );
 
 		// filter

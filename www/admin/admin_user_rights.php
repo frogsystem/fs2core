@@ -126,7 +126,9 @@ if ( isset ( $_POST['edit_user_id'] ) )
 {
 	// security functions
 	settype ( $_POST['edit_user_id'], "integer" );
-	
+    unset ( $user_rights );
+    unset ( $group_rights );
+
 	// get user data
     $index = mysql_query ( "
 							SELECT `user_name`, `user_id`, `user_group`, `user_is_staff`, `user_is_admin`

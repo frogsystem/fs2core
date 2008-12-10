@@ -81,8 +81,8 @@ else
         case "c": $csel = "selected"; break;
         case "l": $lsel = "selected"; break;
         default:
-			$lsel = "selected";
-			$_POST['order'] = "l";
+			$fsel = "selected";
+			$_POST['order'] = "f";
 			break;
     }
     switch ( $_POST['sort'] )

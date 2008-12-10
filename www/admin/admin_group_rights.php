@@ -3,21 +3,12 @@
 //// functions ////
 ///////////////////
 
-function get_group_rights_array ( $GROUP_ID, $IS_USER = FALSE )
+function get_group_rights_array ( $GROUP_ID )
 {
     global $global_config_arr;
     global $db;
 
-    unset ( $group_rights );
-
-	if ( $IS_USER == TRUE ) {
-		$index = mysql_query ( "
-								SELECT `user_group`
-								FROM ".$global_config_arr['pref']."user
-								WHERE `user_id` = '".$GROUP_ID."'
-		", $db);
-        $GROUP_ID = mysql_result ( $index, 0, "user_group" );
-	}
+    unset ( $rights );
 
 	$index = mysql_query ( "
 							SELECT `perm_id`
@@ -26,13 +17,13 @@ function get_group_rights_array ( $GROUP_ID, $IS_USER = FALSE )
 							AND`perm_for_group` = '1'
 	", $db);
 	while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
-		    $group_rights[] = $temp_arr['perm_id'];
+		    $rights[] = $temp_arr['perm_id'];
 	}
-	if ( !is_array ( $group_rights ) ) {
-	    $group_rights = array ();
+	if ( !is_array ( $rights ) ) {
+	    $rights = array ();
 	}
 
-	return $group_rights;
+	return $rights;
 }
 
 
@@ -108,6 +99,7 @@ if ( isset( $_POST['user_group_id'] ) ) {
 if ( isset ( $_POST['edit_user_group_id'] ) )
 {
 	// security functions
+    unset ( $group_rights );
 	settype ( $_POST['edit_user_group_id'], "integer" );
 	
 	// get group data
