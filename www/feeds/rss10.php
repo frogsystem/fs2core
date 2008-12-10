@@ -69,9 +69,9 @@ if ($db)
         // Item ausgeben
         echo'
             <item rdf:about="'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'">
-            <title>'.utf8_encode(htmlspecialchars($news_arr[news_title])).'</title>
+            <title>'.utf8_encode(killhtml($news_arr[news_title])).'</title>
             <link>'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'</link>
-            <description>'.truncate_string(utf8_encode(killfs($news_arr[news_text])),500," ...").'</description>
+            <description><![CDATA['.utf8_encode(killfs($news_arr[news_text])).']]></description>
             </item>
         ';
      }

@@ -142,6 +142,8 @@ function get_content ( $GOTO )
 		include ( FS2_ROOT_PATH . "data/".$GOTO.".php" );
 	} elseif ( mysql_result ( $index, 0, "number") >= 1 ) {
 		include ( FS2_ROOT_PATH . "data/articles.php" );
+	} elseif ( $GOTO == "dl" && usset ( $_GET['fileid'] ) && isset ( $_GET['dl'] ) ) {
+		$template = "";
 	} else {
 		include ( FS2_ROOT_PATH . "data/404.php" );
 	}
@@ -400,7 +402,7 @@ function save_referer ()
     // save referer
     $referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
     $index =  mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref WHERE ref_url = '".$referer."'", $db );
-    echo mysql_error();
+    
     if ( mysql_num_rows ( $index ) <= 0 ) {
         if ( substr_count ( $referer, "http://" ) >= 1 && substr_count ( $referer, $global_config_arr['virtualhost'] ) < 1 ) {
             mysql_query ( "INSERT INTO ".$global_config_arr['pref']."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')", $db );

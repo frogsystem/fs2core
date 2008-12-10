@@ -46,10 +46,10 @@ if ($db)
         // Item ausgeben
         echo'
             <item>
-            <title>'.utf8_encode(htmlspecialchars($news_arr[news_title])).'</title>
+            <title>'.utf8_encode(killhtml($news_arr[news_title])).'</title>
             <link>'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'</link>
             <pubDate>'.date("r",$news_arr[news_date]).'</pubDate>
-            <description>'.truncate_string(utf8_encode(killfs($news_arr[news_text])),500," ...").'</description>
+            <description><![CDATA['.utf8_encode(killfs($news_arr[news_text])).']]></description>
             </item>
         ';
      }

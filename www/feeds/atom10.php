@@ -67,12 +67,12 @@ if ($db)
         echo'
             <entry>
                 <id>'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'</id>
-                <title>'.utf8_encode(htmlspecialchars($news_arr[news_title])).'</title>
+                <title>'.utf8_encode(killhtml($news_arr[news_title])).'</title>
                 <updated>'.$news_arr[news_updated].'</updated>
                 <author>
                     <name>'.$news_arr[user_name].'</name>
                 </author>
-                <content>'.utf8_encode(killfs($news_arr[news_text])).'</content>
+                <content><![CDATA['.utf8_encode(killfs($news_arr[news_text])).']]></content>
                 <link rel="alternate" href="'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'" />
             </entry>
         ';
