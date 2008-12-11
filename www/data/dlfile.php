@@ -6,6 +6,9 @@ if (mysql_num_rows($index) > 0)
 {
     $file_arr = mysql_fetch_assoc($index);
 
+    //Seitentitel
+    $global_config_arr['dyn_title_page'] = stripslashes ( $file_arr['dl_name'] );
+
     //Config einlesen
     $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
     $dl_config_arr = mysql_fetch_assoc($index);

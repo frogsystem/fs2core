@@ -1,10 +1,10 @@
 <?php
 // On since
 $index = mysql_query ( "
-						SELECT s_year, s_month, s_day
-						FROM ".$global_config_arr['pref']."counter_stat
-						ORDER BY s_year ASC, s_month ASC, s_day ASC
-						LIMIT 0,1
+                                                SELECT s_year, s_month, s_day
+                                                FROM ".$global_config_arr['pref']."counter_stat
+                                                ORDER BY s_year ASC, s_month ASC, s_day ASC
+                                                LIMIT 0,1
 ", $db );
 $page_on = mysql_result ( $index, 0, "s_day" ) . ". " . mysql_result ( $index, 0, "s_month" ) . ". " . mysql_result ( $index, 0, "s_year" );
 
@@ -36,28 +36,32 @@ $guest_on = $visitors_on - $user_on;
 
 // Referrer Num
 $index = mysql_query ( "
-						SELECT COUNT(`ref_url`) AS 'ref_num'
-						FROM ".$global_config_arr['pref']."counter_ref
-						LIMIT 0,1
+                                                SELECT COUNT(`ref_url`) AS 'ref_num'
+                                                FROM ".$global_config_arr['pref']."counter_ref
+                                                LIMIT 0,1
 ", $db);
 $ref_num = mysql_result ( $index, 0, "ref_num" );
 
 if ( $ref_num  > 0) {
-	// last Ref
-	$index = mysql_query ( "
-							SELECT ref_url, ref_last
-							FROM ".$global_config_arr['pref']."counter_ref
-							ORDER BY ref_last DESC
-							LIMIT 0,1
-	", $db );
-	$ref_last = stripslashes ( mysql_result ( $index, 0, "ref_url" ) );
-	$ref_date = date ( "d. m. Y", mysql_result ( $index, 0, "ref_last" ) );
-	$ref_time = date ( "H:i", mysql_result ( $index, 0, "ref_last" ) );
+        // last Ref
+        $index = mysql_query ( "
+                                                        SELECT ref_url, ref_last
+                                                        FROM ".$global_config_arr['pref']."counter_ref
+                                                        ORDER BY ref_last DESC
+                                                        LIMIT 0,1
+        ", $db );
+        $ref_last = stripslashes ( mysql_result ( $index, 0, "ref_url" ) );
+        $referrer_maxlenght = 55;
+        if ( strlen ( $ref_last ) > $referrer_maxlenght ) {
+            $ref_last = substr ( $ref_last , 0, $referrer_maxlenght ) . "...";
+        }
+        $ref_date = date ( "d. m. Y", mysql_result ( $index, 0, "ref_last" ) );
+        $ref_time = date ( "H:i", mysql_result ( $index, 0, "ref_last" ) );
 }
 
 echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">Informationen & Statistik</td></tr>
+                                                        <tr><td class="line" colspan="2">Informationen & Statistik</td></tr>
                             <tr>
                                 <td class="configthin" width="200">Titel:</td>
                                 <td class="configthin"><b>'.$global_config_arr['title'].'</b></td>
@@ -110,16 +114,16 @@ echo '
 ';
 
 if ( $ref_num  > 0) {
-	echo '
+        echo '
                             <tr>
                                 <td class="configthin" width="200">Letzter Kontakt von:</td>
                                 <td class="configthin"><b>'.$ref_last.'</b><br>
-								am <b>'.$ref_date.'</b> um <b>'.$ref_time.'</b> Uhr</td>
+                                                                am <b>'.$ref_date.'</b> um <b>'.$ref_time.'</b> Uhr</td>
                             </tr>
-	';
+        ';
 }
 
 echo '
-						</table>
+                                                </table>
 ';
 ?>

@@ -25,9 +25,9 @@ if ( $config_arr[com_antispam] == 1 && $_SESSION["user_id"] ) {
 /////////////////////////
 settype ( $_SESSION["user_id"], "integer" );
 $index = mysql_query ( "
-						SELECT *
-						FROM ".$global_config_arr['pref']."user
-						WHERE user_id = '".$_SESSION["user_id"]."'
+                                                SELECT *
+                                                FROM ".$global_config_arr['pref']."user
+                                                WHERE user_id = '".$_SESSION["user_id"]."'
 ", $db);
 $user_arr = mysql_fetch_assoc($index);
 
@@ -36,9 +36,9 @@ if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SES
 } elseif ( $config_arr['com_rights'] == 3 && is_in_staff ( $_SESSION['user_id'] ) ) {
     $comments_right = TRUE;
 } elseif ( $config_arr['com_rights'] == 4 && is_admin ( $_SESSION['user_id'] ) ) {
-	$comments_right = TRUE;
+        $comments_right = TRUE;
 } else {
-	$comments_right = FALSE;
+        $comments_right = FALSE;
 }
 
 //////////////////////////////
@@ -53,44 +53,44 @@ if (isset($_POST[addcomment]))
          && $_POST[text] != ""
          && $anti_spam == TRUE)
     {
-		settype($_POST[id], 'integer');
-		$index = mysql_query( "
-								SELECT `news_comments_allowed`
-								FROM ".$global_config_arr['pref']."news
-								WHERE news_id = ".$_POST['id']."
-								LIMIT 0,1
-		", $db);
-		
-		if ( mysql_result ( $index, 0, "news_comments_allowed" ) == 1 ) {
-	        settype($_POST[id], 'integer');
-	        $_POST[name] = savesql($_POST[name]);
-	        $_POST[title] = savesql($_POST[title]);
-	        $_POST[text] = savesql($_POST[text]);
-	        $commentdate = date("U");
+                settype($_POST[id], 'integer');
+                $index = mysql_query( "
+                                                                SELECT `news_comments_allowed`
+                                                                FROM ".$global_config_arr['pref']."news
+                                                                WHERE news_id = ".$_POST['id']."
+                                                                LIMIT 0,1
+                ", $db);
+                
+                if ( mysql_result ( $index, 0, "news_comments_allowed" ) == 1 ) {
+                settype($_POST[id], 'integer');
+                $_POST[name] = savesql($_POST[name]);
+                $_POST[title] = savesql($_POST[title]);
+                $_POST[text] = savesql($_POST[text]);
+                $commentdate = date("U");
 
-	        if ($_SESSION["user_id"])
-	        {
-	            $userid = $_SESSION["user_id"];
-	            $name = "";
-	        }
-	        else
-	        {
-	            $userid = 0;
-	        }
+                if ($_SESSION["user_id"])
+                {
+                    $userid = $_SESSION["user_id"];
+                    $name = "";
+                }
+                else
+                {
+                    $userid = 0;
+                }
 
-	        mysql_query("INSERT INTO ".$global_config_arr[pref]."news_comments
-							(news_id, comment_poster, comment_poster_id, comment_poster_ip, comment_date, comment_title, comment_text)
-	                     VALUES ('".$_POST[id]."',
-	                             '".$_POST[name]."',
-	                             '$userid',
-	                             '".savesql($_SERVER['REMOTE_ADDR'])."',
-	                             '$commentdate',
-	                             '".$_POST[title]."',
-	                             '".$_POST[text]."');", $db);
-	        mysql_query("update ".$global_config_arr[pref]."counter set comments=comments+1", $db);
-		} else {
-		    $message_template = sys_message($phrases[sysmessage], $phrases[comm_not_allowd]);
-		}
+                mysql_query("INSERT INTO ".$global_config_arr[pref]."news_comments
+                                                        (news_id, comment_poster, comment_poster_id, comment_poster_ip, comment_date, comment_title, comment_text)
+                             VALUES ('".$_POST[id]."',
+                                     '".$_POST[name]."',
+                                     '$userid',
+                                     '".savesql($_SERVER['REMOTE_ADDR'])."',
+                                     '$commentdate',
+                                     '".$_POST[title]."',
+                                     '".$_POST[text]."');", $db);
+                mysql_query("update ".$global_config_arr[pref]."counter set comments=comments+1", $db);
+                } else {
+                    $message_template = sys_message($phrases[sysmessage], $phrases[comm_not_allowd]);
+                }
     }
     else
     {
@@ -103,7 +103,7 @@ if (isset($_POST[addcomment]))
         }
         if (!($anti_spam == TRUE))
         {
-			$reason .= $phrases[comment_spam];
+                        $reason .= $phrases[comment_spam];
         }
         $message_template = sys_message($phrases[comment_not_added], $reason);
     }
@@ -118,12 +118,12 @@ $time = time();
 
 // News anzeigen
 $index = mysql_query( "
-						SELECT *
-						FROM ".$global_config_arr['pref']."news
-						WHERE news_date <= $time
-						AND news_active = 1
-						AND news_id = ".$_GET['id']."
-						LIMIT 0,1
+                                                SELECT *
+                                                FROM ".$global_config_arr['pref']."news
+                                                WHERE news_date <= $time
+                                                AND news_active = 1
+                                                AND news_id = ".$_GET['id']."
+                                                LIMIT 0,1
 ", $db);
 
 $news_rows = mysql_num_rows($index);
@@ -131,6 +131,7 @@ $news_rows = mysql_num_rows($index);
 if ($news_rows > 0) {
     $news_arr = mysql_fetch_assoc($index);
     $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
+    $global_config_arr['dyn_title_page'] = stripslashes ( $news_arr['news_title'] );
 } else {
     $news_template = sys_message($phrases[sysmessage], $phrases[news_not_exist]);
 }
@@ -241,10 +242,10 @@ if (isset($_SESSION[user_name]))
 }
 
 if (
-		$config_arr[com_antispam] == 0 ||
-		( $config_arr[com_antispam] == 1 && $_SESSION["user_id"] ) ||
-		( $config_arr[com_antispam] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
-	)
+                $config_arr[com_antispam] == 0 ||
+                ( $config_arr[com_antispam] == 1 && $_SESSION["user_id"] ) ||
+                ( $config_arr[com_antispam] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
+        )
 {
     $form_spam = "";
     $form_spam_text ="";
@@ -272,13 +273,13 @@ if ( $news_rows > 0 && $news_arr['news_date'] <= time () && $news_arr['news_acti
     $template = stripslashes(mysql_result($index, 0, "news_comment_container"));
     $template = str_replace("{news}", $news_template, $template);
     $template = str_replace("{comments}", $comments_template, $template);
-	if ( $news_arr[news_comments_allowed] == 1 && $comments_right == TRUE ) {
+        if ( $news_arr[news_comments_allowed] == 1 && $comments_right == TRUE ) {
         $template = str_replace("{comment_form}", $formular_template, $template);
-	} elseif ( $comments_right == FALSE ) {
+        } elseif ( $comments_right == FALSE ) {
         $template = str_replace("{comment_form}", sys_message($phrases[sysmessage], $phrases[comm_not_allowed]), $template);
-	} else {
+        } else {
         $template = str_replace("{comment_form}", sys_message($phrases[sysmessage], $phrases[comm_not_activ]), $template);
-	}
+        }
 
     $template = $message_template . $template;
 }
