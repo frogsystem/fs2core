@@ -5,41 +5,41 @@
 
 function get_yesno_table ( $NAME )
 {
-	global $admin_phrases;
+        global $admin_phrases;
 
-	return '
-		    						<table width="100%" cellpadding="4" cellspacing="0">
-										<tr class="bottom pointer" id="tr_yes"
-											onmouseover="'.color_list_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this" ).'"
-											onmouseout="'.color_list_entry ( "del_yes", "transparent", "#49C24f", "this" ).'"
-											onclick="'.color_click_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this", TRUE ).'"
-										>
-											<td>
-												<input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1"
+        return '
+                                                                    <table width="100%" cellpadding="4" cellspacing="0">
+                                                                                <tr class="bottom pointer" id="tr_yes"
+                                                                                        onmouseover="'.color_list_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this" ).'"
+                                                                                        onmouseout="'.color_list_entry ( "del_yes", "transparent", "#49C24f", "this" ).'"
+                                                                                        onclick="'.color_click_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+                                                                                >
+                                                                                        <td>
+                                                                                                <input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1"
                                                     onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_yes", TRUE ).'"
-												>
-											</td>
-											<td class="config middle">
-												'.$admin_phrases[common][yes].'
-											</td>
-										</tr>
-										<tr class="bottom red pointer" id="tr_no"
-											onmouseover="'.color_list_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this" ).'"
-											onmouseout="'.color_list_entry ( "del_no", "transparent", "#C24949", "this" ).'"
-											onclick="'.color_click_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this", TRUE ).'"
-										>
-											<td>
-												<input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked
+                                                                                                >
+                                                                                        </td>
+                                                                                        <td class="config middle">
+                                                                                                '.$admin_phrases[common][yes].'
+                                                                                        </td>
+                                                                                </tr>
+                                                                                <tr class="bottom red pointer" id="tr_no"
+                                                                                        onmouseover="'.color_list_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this" ).'"
+                                                                                        onmouseout="'.color_list_entry ( "del_no", "transparent", "#C24949", "this" ).'"
+                                                                                        onclick="'.color_click_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this", TRUE ).'"
+                                                                                >
+                                                                                        <td>
+                                                                                                <input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked
                                                     onclick="'.color_click_entry ( "this", "#EEEEEE", "#DE5B5B", "tr_no", TRUE ).'"
-												>
-											</td>
-											<td class="config middle">
-												'.$admin_phrases[common][no].'
-											</td>
-										</tr>
-										'.color_pre_selected ( "del_no", "tr_no" ).'
-									</table>
-	';
+                                                                                                >
+                                                                                        </td>
+                                                                                        <td class="config middle">
+                                                                                                '.$admin_phrases[common][no].'
+                                                                                        </td>
+                                                                                </tr>
+                                                                                '.color_pre_selected ( "del_no", "tr_no" ).'
+                                                                        </table>
+        ';
 }
 
 //////////////////////////////////////
@@ -48,13 +48,13 @@ function get_yesno_table ( $NAME )
 
 function noscript_nohidden ()
 {
-	return '
-		<noscript>
-			<style type="text/css">
-				.hidden {display: table-row;}
-			</style>
-		</noscript>
-	';
+        return '
+                <noscript>
+                        <style type="text/css">
+                                .hidden {display: table-row;}
+                        </style>
+                </noscript>
+        ';
 }
 
 ////////////////////////////////////////////
@@ -67,7 +67,7 @@ function add_zero ( $FIGURE )
     if ( $FIGURE >= 0 && $FIGURE < 10 ) {
         $FIGURE = "0".$FIGURE;
     }
-	return $FIGURE;
+        return $FIGURE;
 }
 
 //////////////////////////
@@ -79,20 +79,20 @@ function get_article_urls ()
     global $global_config_arr;
     global $db;
     
-	$index = mysql_query ( "
-							SELECT
-								article_url
-							FROM
-								".$global_config_arr['pref']."articles
-	", $db );
-	
-	while ( $result = mysql_fetch_assoc ( $index ) ) {
-		if ( $result['article_url'] != "" ) {
-			$url_arr[] = $result['article_url'];
-		}
-	}
-	
-	return $url_arr;
+        $index = mysql_query ( "
+                                                        SELECT
+                                                                article_url
+                                                        FROM
+                                                                ".$global_config_arr['pref']."articles
+        ", $db );
+        
+        while ( $result = mysql_fetch_assoc ( $index ) ) {
+                if ( $result['article_url'] != "" ) {
+                        $url_arr[] = $result['article_url'];
+                }
+        }
+        
+        return $url_arr;
 }
 
 //////////////////////////////
@@ -101,40 +101,40 @@ function get_article_urls ()
 
 function color_list_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_ID )
 {
-	if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
-	if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
-	
-	return "colorEntry ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
+        if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
+        if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
+        
+        return "colorEntry ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
 }
 
 function color_click_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_ID, $RESET = FALSE, $RESETCOLOR = "transparent" )
 {
-	if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
-	if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
+        if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
+        if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
 
-	$js = "createClick ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
-	
-	if ( $RESET == TRUE ) {
-    	$js .= " resetOld ( '".$RESETCOLOR."', last, lastBox, ".$ELEMENT_ID." );";
-	}
-	
-	$js .= " saveLast ( ".$CHECK_ID.", ".$ELEMENT_ID." );";
-	
-	return $js;
+        $js = "createClick ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
+        
+        if ( $RESET == TRUE ) {
+            $js .= " resetOld ( '".$RESETCOLOR."', last, lastBox, ".$ELEMENT_ID." );";
+        }
+
+        $js .= " saveLast ( ".$CHECK_ID.", ".$ELEMENT_ID." );";
+        
+        return $js;
 }
 
 function color_pre_selected ( $CHECK_ID, $ELEMENT_ID )
 {
-	$CHECK_ID = "document.getElementById('".$CHECK_ID."')";
-	$ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')";
+        $CHECK_ID = "document.getElementById('".$CHECK_ID."')";
+        $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')";
 
-	return '
-		<script type="text/javascript">
-			<!--
-	            savePreSelectedLast ( '.$CHECK_ID.', '.$ELEMENT_ID.' );
-			//-->
-		</script>
-	';
+        return '
+                <script type="text/javascript">
+                        <!--
+                    savePreSelectedLast ( '.$CHECK_ID.', '.$ELEMENT_ID.' );
+                        //-->
+                </script>
+        ';
 }
 
 ///////////////////////
@@ -143,42 +143,42 @@ function color_pre_selected ( $CHECK_ID, $ELEMENT_ID )
 
 function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FALSE )
 {
-	settype ( $D, "integer" );
-	settype ( $M, "integer" );
-	settype ( $Y, "integer" );
-   	settype ( $H, "integer" );
-   	settype ( $I, "integer" );
-   	settype ( $S, "integer" );
-   	
-	$new_date = mktime ( $H, $I, $S, $M, $D, $Y );
-	
-	$savedate_arr['d'] = date ( "d", $new_date );
-	$savedate_arr['m'] = date ( "m", $new_date );
-	$savedate_arr['y'] = date ( "Y", $new_date );
-	$savedate_arr['h'] = date ( "H", $new_date );
-	$savedate_arr['i'] = date ( "i", $new_date );
-	$savedate_arr['s'] = date ( "s", $new_date );
-	
-	if ( $WITHOUT_MKTIME == TRUE ) {
-		$savedate_arr['d'] = $D;
-		$savedate_arr['m'] = $M;
-		$savedate_arr['y'] = $Y;
-		$savedate_arr['h'] = $H;
-		$savedate_arr['i'] = $I;
-		$savedate_arr['s'] = $S;
+        settype ( $D, "integer" );
+        settype ( $M, "integer" );
+        settype ( $Y, "integer" );
+           settype ( $H, "integer" );
+           settype ( $I, "integer" );
+           settype ( $S, "integer" );
+           
+        $new_date = mktime ( $H, $I, $S, $M, $D, $Y );
+        
+        $savedate_arr['d'] = date ( "d", $new_date );
+        $savedate_arr['m'] = date ( "m", $new_date );
+        $savedate_arr['y'] = date ( "Y", $new_date );
+        $savedate_arr['h'] = date ( "H", $new_date );
+        $savedate_arr['i'] = date ( "i", $new_date );
+        $savedate_arr['s'] = date ( "s", $new_date );
+        
+        if ( $WITHOUT_MKTIME == TRUE ) {
+                $savedate_arr['d'] = $D;
+                $savedate_arr['m'] = $M;
+                $savedate_arr['y'] = $Y;
+                $savedate_arr['h'] = $H;
+                $savedate_arr['i'] = $I;
+                $savedate_arr['s'] = $S;
 
-		foreach ( $savedate_arr as $key => $value ) {
-			if ( $value == 0 ) {
+                foreach ( $savedate_arr as $key => $value ) {
+                        if ( $value == 0 ) {
                 $savedate_arr[$key] = "";
-			} elseif ( $value < 10 ) {
+                        } elseif ( $value < 10 ) {
                 $savedate_arr[$key] = "0" . $value;
-			}
-		}
-		
-		return $savedate_arr;
-	}
-	
-	return $savedate_arr;
+                        }
+                }
+                
+                return $savedate_arr;
+        }
+        
+        return $savedate_arr;
 }
 
 ////////////////////////
@@ -187,11 +187,11 @@ function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FAL
 
 function openpopup ( $FILE, $WIDTH, $HEIGHT )
 {
-	$half_width = $WIDTH / 2;
-	$half_height = $HEIGHT / 2;
-	$javascript = 'open("'.$FILE.'","_blank","width='.$WIDTH.',height='.$HEIGHT.',top="+((screen.height/2)-'.$half_height.')+",left="+((screen.width/2)-'.$half_width.')+",scrollbars=YES,location=YES,status=YES")';
+        $half_width = $WIDTH / 2;
+        $half_height = $HEIGHT / 2;
+        $javascript = 'open("'.$FILE.'","_blank","width='.$WIDTH.',height='.$HEIGHT.',top="+((screen.height/2)-'.$half_height.')+",left="+((screen.width/2)-'.$half_width.')+",scrollbars=YES,location=YES,status=YES")';
 
-	return $javascript;
+        return $javascript;
 }
 
 ///////////////////////////////////
@@ -200,9 +200,9 @@ function openpopup ( $FILE, $WIDTH, $HEIGHT )
 
 function open_fullscreenpopup ( $FILE )
 {
-	$javascript = 'open("'.$FILE.'","_blank","width="+screen.availWidth+",height="+screen.availHeight+",top=0,left=0,scrollbars=YES,location=YES,status=YES")';
+        $javascript = 'open("'.$FILE.'","_blank","width="+screen.availWidth+",height="+screen.availHeight+",top=0,left=0,scrollbars=YES,location=YES,status=YES")';
 
-	return $javascript;
+        return $javascript;
 }
 
 /////////////////////////////
@@ -211,11 +211,11 @@ function open_fullscreenpopup ( $FILE )
 
 function getselected ( $VALUE, $COMPAREWITH )
 {
-	if ( $VALUE === $COMPAREWITH ) {
-	    return 'selected';
-	} else {
-		return '';
-	}
+        if ( $VALUE === $COMPAREWITH ) {
+            return 'selected';
+        } else {
+                return '';
+        }
 }
 
 ///////////////////////////
@@ -224,11 +224,11 @@ function getselected ( $VALUE, $COMPAREWITH )
 
 function getchecked ( $VALUE, $COMPAREWITH )
 {
-	if ( $VALUE === $COMPAREWITH ) {
-	    return 'checked';
-	} else {
-		return '';
-	}
+        if ( $VALUE === $COMPAREWITH ) {
+            return 'checked';
+        } else {
+                return '';
+        }
 }
 
 /////////////////////////////
@@ -237,11 +237,11 @@ function getchecked ( $VALUE, $COMPAREWITH )
 
 function getdisabled ( $VALUE, $COMPAREWITH )
 {
-	if ( $VALUE === $COMPAREWITH ) {
-	    return 'disabled';
-	} else {
-		return '';
-	}
+        if ( $VALUE === $COMPAREWITH ) {
+            return 'disabled';
+        } else {
+                return '';
+        }
 }
 
 /////////////////////////////
@@ -250,11 +250,11 @@ function getdisabled ( $VALUE, $COMPAREWITH )
 
 function getreadonly ( $VALUE, $COMPAREWITH )
 {
-	if ( $VALUE === $COMPAREWITH ) {
-	    return 'readonly';
-	} else {
-		return '';
-	}
+        if ( $VALUE === $COMPAREWITH ) {
+            return 'readonly';
+        } else {
+                return '';
+        }
 }
 
 ////////////////////////////////
@@ -265,24 +265,24 @@ function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE )
 {
     global $admin_phrases;
 
-	if ( $TITLE == FALSE ) {
-		$TITLE = $admin_phrases[common][system_message];
-	}
+        if ( $TITLE == FALSE ) {
+                $TITLE = $admin_phrases[common][system_message];
+        }
 
-	if ( $RED == TRUE ) {
-		$class = "line_red";
-	} else {
-		$class = "line";
-	}
-	
+        if ( $RED == TRUE ) {
+                $class = "line_red";
+        } else {
+                $class = "line";
+        }
+        
 
-	echo '
-					<table class="configtable" cellpadding="4" cellspacing="0">
-						<tr><td class="'.$class.'">'.$TITLE.'</td></tr>
-						<tr><td class="config">'.$MESSAGE.'</td></tr>
-						<tr><td class="space"></td></tr>
+        echo '
+                                        <table class="configtable" cellpadding="4" cellspacing="0">
+                                                <tr><td class="'.$class.'">'.$TITLE.'</td></tr>
+                                                <tr><td class="config">'.$MESSAGE.'</td></tr>
+                                                <tr><td class="space"></td></tr>
                     </table>
-	';
+        ';
 }
 
 /////////////////////////////////
@@ -291,15 +291,15 @@ function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE )
 
 function js_timebutton ( $DATA, $CAPTION, $CLASS = "button" )
 {
-	$template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
+        $template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
 
-	foreach ( $DATA as $key => $value ) {
-		$template .= "document.getElementById('".$key."').value='".$value."';";
-	}
+        foreach ( $DATA as $key => $value ) {
+                $template .= "document.getElementById('".$key."').value='".$value."';";
+        }
 
     $template .= '">';
 
-	return $template;
+        return $template;
 }
 
 ////////////////////////////////
@@ -308,27 +308,27 @@ function js_timebutton ( $DATA, $CAPTION, $CLASS = "button" )
 
 function js_nowbutton ( $DATA, $CAPTION, $CLASS = "button" )
 {
-	$template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
+        $template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
 
-	foreach ( $DATA as $key => $value ) {
-		$id[] = $value;
-	}
-	unset ( $value );
+        foreach ( $DATA as $key => $value ) {
+                $id[] = $value;
+        }
+        unset ( $value );
 
-	$value[] = "getCurDate()";
-	$value[] = "getCurMonth()";
-	$value[] = "getCurYear()";
-	$value[] = "getCurHours()";
-	$value[] = "getCurMinutes()";
-	$value[] = "getCurSeconds()";
+        $value[] = "getCurDate()";
+        $value[] = "getCurMonth()";
+        $value[] = "getCurYear()";
+        $value[] = "getCurHours()";
+        $value[] = "getCurMinutes()";
+        $value[] = "getCurSeconds()";
 
-	for ( $i = 0; $i < count ( $id ) && $i < 6; $i++ ) {
-		$template .= "document.getElementById('".$id[$i]."').value=".$value[$i].";";
-	}
+        for ( $i = 0; $i < count ( $id ) && $i < 6; $i++ ) {
+                $template .= "document.getElementById('".$id[$i]."').value=".$value[$i].";";
+        }
 
     $template .= '">';
 
-	return $template;
+        return $template;
 }
 
 ////////////////////////////
@@ -337,10 +337,10 @@ function js_nowbutton ( $DATA, $CAPTION, $CLASS = "button" )
 
 function getfrompost ( $ARRAY )
 {
-	foreach ( $ARRAY as $key => $value  ) {
+        foreach ( $ARRAY as $key => $value  ) {
         $ARRAY[$key] = $_POST[$key];
-	}
-	return $ARRAY;
+        }
+        return $ARRAY;
 }
 
 ///////////////////////////////
@@ -349,9 +349,9 @@ function getfrompost ( $ARRAY )
 
 function putintopost ( $ARRAY )
 {
-	foreach ( $ARRAY as $key => $value  ) {
+        foreach ( $ARRAY as $key => $value  ) {
         $_POST[$key] = $ARRAY[$key];
-	}
+        }
 }
 
 ////////////////////////////////
@@ -373,13 +373,13 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
         $width2 = 'width:'.$width.'px;';
     } elseif ( $width != "" ) {
         $width2 = 'width:'.$width.';';
-	}
+        }
 
     if ( $height != "" && is_int ( $height ) ) {
         $height2 = 'height:'.$height.'px;';
     } elseif ( $width != "" ) {
         $height2 = 'height:'.$height.';';
-	}
+        }
 
     if ($class != "") {
         $class2 = 'class="'.$class.'"';
@@ -531,17 +531,17 @@ function insert_tt($title,$text,$form)
 
 function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
 {
-	if ( $PERMISSION == 1 ) {
-		$PAGE_DATA_ARR['title'] = $TITLE;
-		$PAGE_DATA_ARR['file'] = $FILE;
-		$PAGE_DATA_ARR['menu'] = $ACTIVE_MENU;
-	} else {
-		$PAGE_DATA_ARR['title'] = "Fehler";
-		$PAGE_DATA_ARR['file'] = "admin_error.php";
-		$PAGE_DATA_ARR['menu'] = "none";
-	}
-	$PAGE_DATA_ARR['created'] = TRUE;
-	return $PAGE_DATA_ARR;
+        if ( $PERMISSION == 1 ) {
+                $PAGE_DATA_ARR['title'] = $TITLE;
+                $PAGE_DATA_ARR['file'] = $FILE;
+                $PAGE_DATA_ARR['menu'] = $ACTIVE_MENU;
+        } else {
+                $PAGE_DATA_ARR['title'] = "Fehler";
+                $PAGE_DATA_ARR['file'] = "admin_error.php";
+                $PAGE_DATA_ARR['menu'] = "none";
+        }
+        $PAGE_DATA_ARR['created'] = TRUE;
+        return $PAGE_DATA_ARR;
 }
 
 ////////////////////////////////
@@ -550,16 +550,16 @@ function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
 
 function create_menu ( $ACTIVE_MENU )
 {
-	global $global_config_arr;
-	global $db;
+        global $global_config_arr;
+        global $db;
 
     unset($MENU_ARR);
 
     $index = mysql_query ( "
-                    		SELECT *
-                    		FROM `".$global_config_arr['pref']."admin_cp`
-                    		WHERE `group_id` = '-1'
-                    		ORDER BY `page_pos` ASC, `page_id` ASC
+                                    SELECT *
+                                    FROM `".$global_config_arr['pref']."admin_cp`
+                                    WHERE `group_id` = '-1'
+                                    ORDER BY `page_pos` ASC, `page_id` ASC
     ", $db );
 
     while ( $MENU_ARR = mysql_fetch_assoc ( $index ) ) {
@@ -567,17 +567,17 @@ function create_menu ( $ACTIVE_MENU )
 
         if ( $MENU_ARR['show'] == true && $_SESSION['user_level'] == "authorised" )
         {
-			if ( $ACTIVE_MENU == $MENU_ARR['page_link'] ) {
+                        if ( $ACTIVE_MENU == $MENU_ARR['page_link'] ) {
                 $MENU_ARR['class'] = "menu_link_selected";
             } else {
                 $MENU_ARR['class'] = "menu_link";
             }
             $template .= '<a href="'.$PHP_SELF.'?go='.$MENU_ARR['page_id'].'" target="_self" class="'.$MENU_ARR['class'].'">'.$MENU_ARR['page_title'].'</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;';
+                        &nbsp;&nbsp;&nbsp;&nbsp;';
         }
     }
 
-	$template = substr ( $template, 0, -24 );
+        $template = substr ( $template, 0, -24 );
 
     return $template;
 }
@@ -590,14 +590,14 @@ function create_menu ( $ACTIVE_MENU )
 function create_menu_show ( $MENU_ID )
 {
     global $global_config_arr;
-	global $db;
+        global $db;
 
     $index = mysql_query ( "
                                 SELECT P.`page_id`
-                        		FROM `".$global_config_arr['pref']."admin_groups` G, `".$global_config_arr['pref']."admin_cp` P
-                        		WHERE G.`menu_id` = '".$MENU_ID."'
-                        		AND P.`group_id` = G.`group_id`
-                        		ORDER BY `page_id`
+                                        FROM `".$global_config_arr['pref']."admin_groups` G, `".$global_config_arr['pref']."admin_cp` P
+                                        WHERE G.`menu_id` = '".$MENU_ID."'
+                                        AND P.`group_id` = G.`group_id`
+                                        ORDER BY `page_id`
     ", $db );
     
     while ( $page = mysql_fetch_assoc ( $index ) ) {
@@ -617,24 +617,24 @@ function create_menu_show ( $MENU_ID )
 
 function create_navi (  $ACTIVE_MENU, $GO  )
 {
-	global $global_config_arr;
-	global $db;
+        global $global_config_arr;
+        global $db;
 
-	unset ( $template );
+        unset ( $template );
 
     $groupaction = mysql_query ( "
-		                            SELECT `group_id`, `group_title`
-		                            FROM `".$global_config_arr['pref']."admin_groups`
-		                            WHERE `menu_id` = '".$ACTIVE_MENU."'
-		                            AND `group_id` > 0
-		                            ORDER BY `group_pos` ASC, `group_title` ASC
-	", $db );
+                                            SELECT `group_id`, `group_title`
+                                            FROM `".$global_config_arr['pref']."admin_groups`
+                                            WHERE `menu_id` = '".$ACTIVE_MENU."'
+                                            AND `group_id` > 0
+                                            ORDER BY `group_pos` ASC, `group_title` ASC
+        ", $db );
 
-	while ( $GROUP_ARR = mysql_fetch_assoc ( $groupaction ) ) {
+        while ( $GROUP_ARR = mysql_fetch_assoc ( $groupaction ) ) {
         $template .= create_group ( $GROUP_ARR, create_group_first ( $template ), $GO );
-	}
+        }
 
-	return $template;
+        return $template;
 }
 ////////////////////////////////
 //// Navi erzeugen           ///
@@ -642,21 +642,21 @@ function create_navi (  $ACTIVE_MENU, $GO  )
 
 function create_group ($GROUP_ARR, $IS_FIRST, $GO )
 {
-	global $global_config_arr;
-	global $db;
+        global $global_config_arr;
+        global $db;
 
-	unset ( $template );
+        unset ( $template );
 
-	// get links from database
-	$pageaction = mysql_query ( "
-		                    		SELECT `page_id`, `page_link`
-		                    		FROM `".$global_config_arr['pref']."admin_cp`
-		                    		WHERE `group_id` = '".$GROUP_ARR['group_id']."'
-		                    		ORDER BY `page_pos` ASC, `page_id` ASC
-	", $db );
-	while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {
-	    $template .= create_link ( $PAGE_ARR['page_id'], $PAGE_ARR['page_link'], $GO );
-	}
+        // get links from database
+        $pageaction = mysql_query ( "
+                                                    SELECT `page_id`, `page_link`
+                                                    FROM `".$global_config_arr['pref']."admin_cp`
+                                                    WHERE `group_id` = '".$GROUP_ARR['group_id']."'
+                                                    ORDER BY `page_pos` ASC, `page_id` ASC
+        ", $db );
+        while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {
+            $template .= create_link ( $PAGE_ARR['page_id'], $PAGE_ARR['page_link'], $GO );
+        }
 
     // is group first in navi?
     if ( $IS_FIRST == TRUE ) {
@@ -667,7 +667,7 @@ function create_group ($GROUP_ARR, $IS_FIRST, $GO )
     
     // put links into group
     if ( strlen ( $template ) > 0 ) {
-		$template = '
+                $template = '
             <div id="'.$headline_img.'">
                 <img src="img/pointer.png" alt="->" style="vertical-align:text-bottom">&nbsp;<b>'.$GROUP_ARR['group_title'].'</b>
                 <div id="navi_link">
@@ -830,88 +830,88 @@ function admin_login($username, $password, $iscookie)
 
 function fillsession($uid)
 {
-	global $global_config_arr;
-	global $db;
+        global $global_config_arr;
+        global $db;
 
-	$dbaction = mysql_query( "
-								SELECT `user_id`, `user_name`, `user_is_staff`, `user_group`, `user_is_admin`
-								FROM `".$global_config_arr['pref']."user`
-								WHERE `user_id` = '".$uid."'
-								LIMIT 0,1
-	", $db);
-	
-	$USER_ARR = mysql_fetch_assoc ( $dbaction );
-	
-	$_SESSION['user_id'] =  $USER_ARR['user_id'];
-	$_SESSION['user_name'] =  $USER_ARR['user_name'];
-	$_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
+        $dbaction = mysql_query( "
+                                                                SELECT `user_id`, `user_name`, `user_is_staff`, `user_group`, `user_is_admin`
+                                                                FROM `".$global_config_arr['pref']."user`
+                                                                WHERE `user_id` = '".$uid."'
+                                                                LIMIT 0,1
+        ", $db);
+        
+        $USER_ARR = mysql_fetch_assoc ( $dbaction );
+        
+        $_SESSION['user_id'] =  $USER_ARR['user_id'];
+        $_SESSION['user_name'] =  $USER_ARR['user_name'];
+        $_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
 
-	// pages permissions
-	$dbaction = mysql_query( "
-								SELECT `page_id`
-								FROM `".$global_config_arr['pref']."admin_cp`
-								WHERE `group_id` > 0
-								ORDER BY `page_id`
-	", $db);
+        // pages permissions
+        $dbaction = mysql_query( "
+                                                                SELECT `page_id`
+                                                                FROM `".$global_config_arr['pref']."admin_cp`
+                                                                WHERE `group_id` > 0
+                                                                ORDER BY `page_id`
+        ", $db);
 
-	while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
-		$permission = $permission['page_id'];
+        while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
+                $permission = $permission['page_id'];
         if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
             $_SESSION[$permission] = 1;
         } else {
 
 
-			$groupaction = mysql_query( "
-        								    SELECT *
-        								    FROM `".$global_config_arr['pref']."user_permissions`
+                        $groupaction = mysql_query( "
+                                                                            SELECT *
+                                                                            FROM `".$global_config_arr['pref']."user_permissions`
                                             WHERE `perm_id` = '".$permission."'
                                             AND `perm_for_group` = '1'
                                             AND `x_id` = '".$USER_ARR['user_group']."'
                                             AND `x_id` != '0'
                                             LIMIT 0,1
-        	", $db);
-        	$group_granted = mysql_num_rows ( $groupaction );
-        	
-        	$userpaction = mysql_query( "
-        								    SELECT *
-        								    FROM `".$global_config_arr['pref']."user_permissions`
+                ", $db);
+                $group_granted = mysql_num_rows ( $groupaction );
+                
+                $userpaction = mysql_query( "
+                                                                            SELECT *
+                                                                            FROM `".$global_config_arr['pref']."user_permissions`
                                             WHERE `perm_id` = '".$permission."'
                                             AND `perm_for_group` = '0'
                                             AND `x_id` = '".$USER_ARR['user_id']."'
                                             AND `x_id` != '0'
                                             LIMIT 0,1
-        	", $db);
+                ", $db);
             $user_granted = mysql_num_rows ( $userpaction );
 
-        	if ( $group_granted == 1 || $user_granted == 1 ) {
+                if ( $group_granted == 1 || $user_granted == 1 ) {
                 $_SESSION[$permission] = 1;
             } else {
                 $_SESSION[$permission] = 0;
             }
         }
-	}
+        }
 
-	// startpage permissions
-	$dbaction = mysql_query( "
-								SELECT `page_id`, `group_id`, `page_link`
-								FROM `".$global_config_arr['pref']."admin_cp`
-								WHERE `group_id` <= 0
-								ORDER BY `page_id`
-	", $db);
-	
-	while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
+        // startpage permissions
+        $dbaction = mysql_query( "
+                                                                SELECT `page_id`, `group_id`, `page_link`
+                                                                FROM `".$global_config_arr['pref']."admin_cp`
+                                                                WHERE `group_id` <= 0
+                                                                ORDER BY `page_id`
+        ", $db);
+        
+        while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
         if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
             $_SESSION[$permission['page_id']] = 1;
         } else {
-			if ( $permission['group_id'] == -1 ) {
+                        if ( $permission['group_id'] == -1 ) {
                 if ( create_menu_show ( $permission['page_link'] ) == TRUE ) {
-                	$_SESSION[$permission['page_id']] = 1;
-            	}
-	        } else {
-				$_SESSION[$permission['page_id']] = 0;
-	        }
+                        $_SESSION[$permission['page_id']] = 1;
+                    }
+                } else {
+                                $_SESSION[$permission['page_id']] = 0;
+                }
         }
-	}
+        }
 }
 
 ?>

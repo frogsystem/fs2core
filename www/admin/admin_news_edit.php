@@ -192,7 +192,7 @@ function default_display_entry ( $news_arr )
                                                         <tr class="pointer" id="tr_'.$news_arr['news_id'].'"
                                                                 onmouseover="'.color_list_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this" ).'"
                                                                 onmouseout="'.color_list_entry ( "input_".$news_arr['news_id'], "transparent", "#49c24f", "this" ).'"
-                                onclick="'.color_click_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+                                onclick="'.color_click_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this" ).'"
                                                         >
                                 <td class="config justify" style="width: 375px; padding-right: 25px;">
                                     #'.$news_arr['news_id'].' '.killhtml ( $news_arr['news_title'] ).'
@@ -230,8 +230,8 @@ function default_display_entry ( $news_arr )
         $entry .= '
                                 </td>
                                 <td class="config middle center">
-                                    <input class="pointer" type="radio" name="news_id" id="input_'.$news_arr['news_id'].'" value="'.$news_arr['news_id'].'"
-                                                                                onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$news_arr['news_id'], TRUE ).'"
+                                    <input class="pointer" type="checkbox" name="news_id['.$news_arr['news_id'].']" id="input_'.$news_arr['news_id'].'" value="'.$news_arr['news_id'].'"
+                                                                                onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$news_arr['news_id'] ).'"
                                                                         >
                                 </td>
                             </tr>
@@ -1345,7 +1345,7 @@ elseif (
 if ( $_POST['news_id'] && $_POST['news_action'] )
 {
         // Edit News
-        if ( $_POST['news_action'] == "edit" )
+        if ( $_POST['news_action'] == "edit" && count ( $_POST['news_id'] ) == 1 )
         {
                 action_edit_display_page ( action_edit_get_data ( $_POST['news_id'] ) );
         }
@@ -1358,7 +1358,7 @@ if ( $_POST['news_id'] && $_POST['news_action'] )
         }
         
         // Edit Comments
-        elseif ( $_POST['news_action'] == "comments" )
+        elseif ( $_POST['news_action'] == "comments" && count ( $_POST['news_id'] ) == 1 )
         {
                 if (
                                 $_POST['news_id'] && $_POST['news_action'] == "comments" &&
