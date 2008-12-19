@@ -230,7 +230,7 @@ function default_display_entry ( $news_arr )
         $entry .= '
                                 </td>
                                 <td class="config middle center">
-                                    <input class="pointer" type="checkbox" name="news_id['.$news_arr['news_id'].']" id="input_'.$news_arr['news_id'].'" value="'.$news_arr['news_id'].'"
+                                    <input class="pointer" type="checkbox" name="news_id[]" id="input_'.$news_arr['news_id'].'" value="'.$news_arr['news_id'].'"
                                                                                 onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$news_arr['news_id'] ).'"
                                                                         >
                                 </td>
@@ -1347,6 +1347,7 @@ if ( $_POST['news_id'] && $_POST['news_action'] )
         // Edit News
         if ( $_POST['news_action'] == "edit" && count ( $_POST['news_id'] ) == 1 )
         {
+                $_POST['news_id'] = $_POST['news_id'][0];
                 action_edit_display_page ( action_edit_get_data ( $_POST['news_id'] ) );
         }
 
@@ -1360,6 +1361,7 @@ if ( $_POST['news_id'] && $_POST['news_action'] )
         // Edit Comments
         elseif ( $_POST['news_action'] == "comments" && count ( $_POST['news_id'] ) == 1 )
         {
+                $_POST['news_id'] = $_POST['news_id'][0];
                 if (
                                 $_POST['news_id'] && $_POST['news_action'] == "comments" &&
                                 $_POST['comment_id'] && $_POST['comment_action']
@@ -1386,8 +1388,11 @@ if ( $_POST['news_id'] && $_POST['news_action'] )
 ////////////////////////////////////////
 else
 {
+        // Errors
+        echo "error";
+
         // Filter
-    $_REQUEST = default_set_filter_data ( $_REQUEST );
+        $_REQUEST = default_set_filter_data ( $_REQUEST );
         default_display_filter ( $_REQUEST );
         
         // Display Page
