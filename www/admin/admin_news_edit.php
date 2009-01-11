@@ -1,5 +1,10 @@
 <?php
 /////////////////////
+//// File Config ////
+/////////////////////
+$FILE_SHOW_START = TRUE;
+
+/////////////////////
 //// Load Config ////
 /////////////////////
 $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config WHERE `id` = '1'", $db );
@@ -10,9 +15,9 @@ $config_arr = mysql_fetch_assoc ( $index );
 ///////////////////
 function default_set_filter_data ( $FORM )
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
+    global $db;
+    global $global_config_arr;
+    global $admin_phrases;
         
     if ( !isset ( $FORM['order'] ) ) { $FORM['order'] = "news_date"; }
     if ( !isset ( $FORM['sort'] ) ) { $FORM['sort'] = "DESC"; }
@@ -765,79 +770,103 @@ function action_edit_display_page ( $data_arr )
     ';
 }
 
-function action_delete_get_data ( $NEWS_ID )
+function action_delete_get_data ( $IDS )
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
+    global $db;
+    global $global_config_arr;
+    global $admin_phrases;
 
+    unset ($return_arr);
+
+    foreach ( $IDS as $NEWS_ID ) {
+        unset ($news_arr);
         settype ( $NEWS_ID, "integer" );
 
         $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$NEWS_ID."'", $db );
         $news_arr = mysql_fetch_assoc ( $index );
 
         $news_arr['news_date_formated'] = "".$admin_phrases[common][on]." <b>" . date ( $admin_phrases[common][date_format] , $news_arr['news_date'] ) . "</b> ".$admin_phrases[common][at]." <b>" . date ( $admin_phrases[common][time_format] , $news_arr['news_date'] ) . "</b>";
-        
-    $news_arr['news_text_short'] = killfs ( truncate_string ( $news_arr['news_text'], 250, "..." ) );
 
-    $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $db );
-    $news_arr['num_comments'] = mysql_result ( $index2, 0, "number" );
+        $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $db );
+        $news_arr['num_comments'] = mysql_result ( $index2, 0, "number" );
 
-    $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$news_arr['user_id']."", $db );
-    $news_arr['user_name'] = mysql_result ( $index2, 0, "user_name" );
+        $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$news_arr['user_id']."", $db );
+        $news_arr['user_name'] = mysql_result ( $index2, 0, "user_name" );
 
         $index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = ".$news_arr['cat_id']."", $db );
-    $news_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
+        $news_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
+        
+        $return_arr[] = $news_arr;
+    }
     
-    return $news_arr;
+    return $return_arr;
 }
 
-function action_delete_display_page ( $news_arr )
+function action_delete_display_page ( $return_arr )
 {
         global $db;
         global $global_config_arr;
         global $admin_phrases;
         
+
+        
         echo '
-                                        <form action="" method="post">
-                                                <input type="hidden" name="sended" value="delete">
-                                                <input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
-                                                <input type="hidden" name="news_id" value="'.$news_arr['news_id'].'">
-                                                <input type="hidden" name="go" value="news_edit">
-                                                <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line">'.$admin_phrases[news][news_delete_title].'</td></tr>
-                                                        <tr>
-                                <td class="config">
-                                    '.$news_arr['news_title'].' <span class="small">(#'.$news_arr['news_id'].')</span><br>
-                                    <span class="small">'.$admin_phrases[common][by_posted].' <b>'.$news_arr['user_name'].'</b>
-                                                                        '.$news_arr['news_date_formated'].'</b>
-                                                                        '.$admin_phrases[common][in].' <b>'.$news_arr['cat_name'].'</b>,
-                                                                        <b>'.$news_arr['num_comments'].'</b> '.$admin_phrases[common][comments].'</span><br><br>
-                                    <div class="small justify">'.$news_arr['news_text_short'].'</div>
-                                                                        <div class="right"><a href="'.$global_config_arr['virtualhost'].'?go=comments&id='.$news_arr['news_id'].'" target="_blank">» '.$admin_phrases[news][news_delete_view_news].'</a></div>
-                                </td>
-                            </tr>
-                                                        <tr><td class="space"></td></tr>
-                                                </table>
-                                                <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr>
-                                                                <td class="config" style="width: 100%;">
-                                                                        '.$admin_phrases[news][news_delete_question].'
-                                                                </td>
-                                                                <td class="config right top" style="padding: 0px;">
-                                                                        '.get_yesno_table ( "news_delete" ).'
-                                                                </td>
-                                                        </tr>
-                                                        <tr><td class="space"></td></tr>
-                                                        <tr>
-                                                                <td class="buttontd" colspan="2">
-                                                                        <button class="button_new" type="submit">
-                                                                                '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
-                                                                        </button>
-                                                                </td>
-                                                        </tr>
-                                                </table>
-                                        </form>
+            <form action="" method="post">
+                <input type="hidden" name="sended" value="delete">
+                <input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
+                <input type="hidden" name="go" value="news_edit">
+                <table class="configtable" cellpadding="4" cellspacing="0">
+                    <tr><td class="line" colspan="2">'.$admin_phrases[news][news_delete_title].'</td></tr>
+                    <tr>
+                        <td class="config" style="width: 100%;">
+                            '.$admin_phrases[news][news_delete_question].'
+                        </td>
+                        <td class="config right top" style="padding: 0px;">
+                            '.get_yesno_table ( "news_delete" ).'
+                        </td>
+                    </tr>
+                </table>
+                <table class="configtable" cellpadding="4" cellspacing="0">
+        ';
+
+        foreach ($return_arr as $news_arr) {
+            echo '
+                    <tr>
+                        <td style="width:15px;"></td>
+                        <td class="config">
+                            <input type="hidden" name="news_id[]" value="'.$news_arr['news_id'].'">
+                            '.$news_arr['news_title'].' <span class="small">(#'.$news_arr['news_id'].')</span>
+                            <span class="right">
+                                <a class="small" href="'.$global_config_arr['virtualhost'].'?go=comments&id='.$news_arr['news_id'].'" target="_blank">
+                                    » '.$admin_phrases[news][news_delete_view_news].'
+                                </a>
+                            </span>
+                            <br>
+                            <span class="small">
+                                '.$admin_phrases[common][by_posted].' <b>'.$news_arr['user_name'].'</b>
+                                '.$news_arr['news_date_formated'].'</b>
+                                '.$admin_phrases[common][in].' <b>'.$news_arr['cat_name'].'</b>,
+                                <b>'.$news_arr['num_comments'].'</b> '.$admin_phrases[common][comments].'
+                            </span>
+                        </td>
+                        <td style="width:15px;"></td>
+                    </tr>
+                    <tr><td class="space"></td></tr>
+            ';
+        }
+
+        echo '
+                </table><br>
+                <table class="configtable" cellpadding="4" cellspacing="0">
+                    <tr>
+                        <td class="buttontd">
+                            <button class="button_new" type="submit">
+                                '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
         ';
 }
 
@@ -1088,168 +1117,165 @@ function action_comments_delete ( $DATA )
 
 function db_edit_news ( $DATA )
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
-        
-        $DATA['news_text'] = savesql ( $DATA['news_text'] );
+    global $db;
+    global $global_config_arr;
+    global $admin_phrases;
+    
+    $DATA['news_text'] = savesql ( $DATA['news_text'] );
     $DATA['news_title'] = savesql ( $DATA['news_title'] );
 
     settype ( $DATA['news_id'], "integer" );
-        settype ( $DATA['cat_id'], "integer" );
+    settype ( $DATA['cat_id'], "integer" );
     settype ( $DATA['user_id'], "integer" );
     settype ( $DATA['news_active'], "integer" );
     settype ( $DATA['news_comments_allowed'], "integer" );
 
     $date_arr = getsavedate ( $DATA['d'], $DATA['m'], $DATA['y'], $DATA['h'], $DATA['i'] );
-        $newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+    $newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
 
-        // MySQL-Update-Query
+    // MySQL-Update-Query
     mysql_query ( "
-                                        UPDATE
-                                                ".$global_config_arr['pref']."news
-                                        SET
-                                                cat_id = '".$DATA['cat_id']."',
-                                                user_id = '".$DATA['user_id']."',
-                                                news_date = '".$newsdate."',
-                                                news_title = '".$DATA['news_title']."',
-                                                news_text = '".$DATA['news_text']."',
-                                                news_active = '".$DATA['news_active']."',
-                                                news_comments_allowed = '".$DATA['news_comments_allowed']."'
-                                        WHERE
-                                                news_id = '".$DATA['news_id']."'
+                    UPDATE
+                            ".$global_config_arr['pref']."news
+                    SET
+                            cat_id = '".$DATA['cat_id']."',
+                            user_id = '".$DATA['user_id']."',
+                            news_date = '".$newsdate."',
+                            news_title = '".$DATA['news_title']."',
+                            news_text = '".$DATA['news_text']."',
+                            news_active = '".$DATA['news_active']."',
+                            news_comments_allowed = '".$DATA['news_comments_allowed']."'
+                    WHERE
+                            news_id = '".$DATA['news_id']."'
         ", $db );
 
     // Delete all Links
     mysql_query ( "
-                                        DELETE FROM
-                                                ".$global_config_arr['pref']."news_links
-                                        WHERE
-                                                news_id = '".$DATA['news_id']."'
-        ", $db );
+                    DELETE FROM
+                            ".$global_config_arr['pref']."news_links
+                    WHERE
+                            news_id = '".$DATA['news_id']."'
+    ", $db );
                                  
-        // Write Links into DB
-    foreach ( $DATA['linkname'] as $key => $value )
-    {
-        if ( $DATA['linkname'][$key] != "" && $DATA['linkurl'][$key] != "" )
-        {
+    // Write Links into DB
+    foreach ( $DATA['linkname'] as $key => $value ) {
+        if ( $DATA['linkname'][$key] != "" && $DATA['linkurl'][$key] != "" ) {
             $DATA['linkname'][$key] = savesql ( $DATA['linkname'][$key] );
             $DATA['linkurl'][$key] = savesql ( $DATA['linkurl'][$key] );
-                        switch ( $DATA['linktarget'][$key] )
-                    {
-                        case 1: settype ( $$DATA['linktarget'][$key], "integer" ); break;
-                        default: $DATA['linktarget'][$key] = 0; break;
-                    }
+            switch ( $DATA['linktarget'][$key] ) {
+                case 1: settype ( $$DATA['linktarget'][$key], "integer" ); break;
+                default: $DATA['linktarget'][$key] = 0; break;
+            }
 
             mysql_query ( "
-                                                        INSERT INTO
-                                                                ".$global_config_arr['pref']."news_links
-                                                                (news_id, link_name, link_url, link_target)
-                                                        VALUES (
-                                                                '".$DATA['news_id']."',
-                                                                '".$DATA['linkname'][$key]."',
-                                                                '".$DATA['linkurl'][$key]."',
-                                                                '".$DATA['linktarget'][$key]."'
-                                                        )
-                        ", $db );
-                }
+                INSERT INTO
+                        ".$global_config_arr['pref']."news_links
+                        (news_id, link_name, link_url, link_target)
+                VALUES (
+                        '".$DATA['news_id']."',
+                        '".$DATA['linkname'][$key]."',
+                        '".$DATA['linkurl'][$key]."',
+                        '".$DATA['linktarget'][$key]."'
+                )
+            ", $db );
+        }
     }
 
-    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
 }
 
 function db_delete_news ( $DATA )
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
+    global $db;
+    global $global_config_arr;
+    global $admin_phrases;
 
-        if  ( $DATA['news_delete'] == 1 ) {
-                settype ( $DATA['news_id'], "integer" );
+    if  ( $DATA['news_delete'] == 1 ) {
+        foreach ( $DATA['news_id'] as $news_id ) {
+            settype ( $news_id, "integer" );
 
-                // MySQL-Delete-Query: News
+            // MySQL-Delete-Query: News
             mysql_query ( "
-                                                DELETE FROM
-                                                        ".$global_config_arr['pref']."news
-                                                WHERE
-                                                        news_id = '".$DATA['news_id']."'
-                                                LIMIT
-                                                    1
-                ", $db );
+                            DELETE FROM
+                                    ".$global_config_arr['pref']."news
+                            WHERE
+                                    news_id = '".$news_id."'
+                            LIMIT
+                                    1
+            ", $db );
 
-                // MySQL-Delete-Query: Links
+            // MySQL-Delete-Query: Links
             mysql_query ( "
-                                                DELETE FROM
-                                                        ".$global_config_arr['pref']."news_links
-                                                WHERE
-                                                        news_id = '".$DATA['news_id']."'
-                ", $db );
+                            DELETE FROM
+                                    ".$global_config_arr['pref']."news_links
+                            WHERE
+                                    news_id = '".$news_id."'
+            ", $db );
 
-                // MySQL-Delete-Query: Comments
-                mysql_query ( "
-                                                DELETE FROM
-                                                        ".$global_config_arr['pref']."news_comments
-                                                WHERE
-                                                        news_id = '".$DATA['news_id']."'
-                ", $db );
-                $affacted_rows = mysql_affected_rows ( $db );
+            // MySQL-Delete-Query: Comments
+            mysql_query ( "
+                            DELETE FROM
+                                    ".$global_config_arr['pref']."news_comments
+                            WHERE
+                                    news_id = '".$news_id."'
+            ", $db );
+            $affacted_rows = mysql_affected_rows ( $db );
 
-                // Update Counter
-                mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news - 1", $db );
-                mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET comments = comments - ".$affacted_rows."", $db );
-
-            systext( $admin_phrases[news][news_deleted], $admin_phrases[common][info]);
-        } else {
-            systext( $admin_phrases[news][news_not_deleted], $admin_phrases[common][info]);
+            // Update Counter
+            mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news - 1", $db );
+            mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET comments = comments - ".$affacted_rows."", $db );
         }
+        systext( $admin_phrases[news][news_deleted], $admin_phrases[common][info], FALSE, $admin_phrases[icons][trash_ok] );
+    } else {
+        systext( $admin_phrases[news][news_not_deleted], $admin_phrases[common][info], FALSE, $admin_phrases[icons][trash_error] );
+    }
 }
 
 function db_edit_comment ( $DATA )
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
+    global $db;
+    global $global_config_arr;
+    global $admin_phrases;
 
-        $DATA['title'] = savesql ( $DATA['title'] );
+    $DATA['title'] = savesql ( $DATA['title'] );
     $DATA['text'] = savesql ( $DATA['text'] );
     settype ( $DATA['comment_id'], "integer" );
 
-
-        // MySQL-Update-Query: Comment
+    // MySQL-Update-Query: Comment
     mysql_query ( "
-                                        UPDATE
-                                                ".$global_config_arr['pref']."news_comments
-                                        SET
-                                                comment_title = '".$DATA['title']."',
-                                                comment_text = '".$DATA['text']."'
-                                        WHERE
-                                                comment_id = '".$DATA['comment_id']."'
-        ", $db );
+                    UPDATE
+                            ".$global_config_arr['pref']."news_comments
+                    SET
+                            comment_title = '".$DATA['title']."',
+                            comment_text = '".$DATA['text']."'
+                    WHERE
+                            comment_id = '".$DATA['comment_id']."'
+    ", $db );
 
-    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
 }
 
 function db_delete_comment ( $DATA )
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
+    global $db;
+    global $global_config_arr;
+    global $admin_phrases;
 
     settype ( $DATA['comment_id'], "integer" );
 
-        // MySQL-Delete-Query: Comment
+    // MySQL-Delete-Query: Comment
     mysql_query ( "
-                                        DELETE FROM
-                                                ".$global_config_arr['pref']."news_comments
-                                        WHERE
-                                                comment_id = '".$DATA['comment_id']."'
-                                        LIMIT
-                                            1
-        ", $db );
-        mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET comments = comments -  1", $db );
+                    DELETE FROM
+                            ".$global_config_arr['pref']."news_comments
+                    WHERE
+                            comment_id = '".$DATA['comment_id']."'
+                    LIMIT
+                            1
+    ", $db );
+    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET comments = comments -  1", $db );
 
-    systext( $admin_phrases[news][news_comment_deleted], $admin_phrases[common][info]);
+    systext( $admin_phrases[news][news_comment_deleted], $admin_phrases[common][info], FALSE, $admin_phrases[icons][trash_ok] );
 }
 
 //////////////////////////
@@ -1259,6 +1285,7 @@ function db_delete_comment ( $DATA )
 // Edit News
 if (
                 isset ( $_POST['news_id'] ) &&
+                count ( $_POST['news_id'] ) == 1 &&
                 isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
                 isset ( $_POST['news_action'] ) && $_POST['news_action'] == "edit" &&
                 isset ( $_POST['news_edit'] ) && $_POST['news_edit'] == 1 &&
@@ -1280,6 +1307,7 @@ if (
 
     // Unset Vars
     unset ( $_POST );
+    unset ( $_REQUEST );
 }
 
 // Delete News
@@ -1299,6 +1327,7 @@ elseif (
 // Edit Comments
 elseif (
                 isset ( $_POST['news_id'] ) &&
+                count ( $_POST['news_id'] ) == 1 &&
                 isset ( $_POST['comment_id'] ) &&
                 isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
                 isset ( $_POST['news_action'] ) && $_POST['news_action'] == "comments" &&
@@ -1309,18 +1338,20 @@ elseif (
         )
 {
     db_edit_comment ( $_POST );
-        $id = $_POST['news_id'];
+    $id = $_POST['news_id'];
 
     // Unset Vars
     unset ( $_POST );
     $_POST['news_action'] = "comments";
     $_POST['news_id'] = $id;
     unset ( $id );
+    $FILE_SHOW_START = FALSE;
 }
 
 // Delete Comments
 elseif (
                 isset ( $_POST['news_id'] ) &&
+                count ( $_POST['news_id'] ) == 1 &&
                 isset ( $_POST['comment_id'] ) &&
                 isset ( $_POST['sended'] ) && $_POST['sended'] == "delete" &&
                 isset ( $_POST['news_action'] ) && $_POST['news_action'] == "comments" &&
@@ -1329,13 +1360,14 @@ elseif (
         )
 {
     db_delete_comment ( $_POST );
-        $id = $_POST['news_id'];
+    $id = $_POST['news_id'];
         
     // Unset Vars
     unset ( $_POST );
     $_POST['news_action'] = "comments";
     $_POST['news_id'] = $id;
     unset ( $id );
+    $FILE_SHOW_START = FALSE;
 }
 
 
@@ -1344,53 +1376,52 @@ elseif (
 //////////////////////////////
 if ( $_POST['news_id'] && $_POST['news_action'] )
 {
-        // Edit News
-        if ( $_POST['news_action'] == "edit" && count ( $_POST['news_id'] ) == 1 )
-        {
-                $_POST['news_id'] = $_POST['news_id'][0];
-                action_edit_display_page ( action_edit_get_data ( $_POST['news_id'] ) );
-        }
+    $FILE_SHOW_START = FALSE;
+    // Edit News
+    if ( $_POST['news_action'] == "edit" && count ( $_POST['news_id'] ) == 1 )
+    {
+        $_POST['news_id'] = $_POST['news_id'][0];
+        action_edit_display_page ( action_edit_get_data ( $_POST['news_id'] ) );
+    }
 
-        // Delete News
-        elseif ( $_POST['news_action'] == "delete" )
-        {
+    // Delete News
+    elseif ( $_POST['news_action'] == "delete" )
+    {
         $news_arr = action_delete_get_data ( $_POST['news_id'] );
-                action_delete_display_page ( $news_arr );
-        }
-        
-        // Edit Comments
-        elseif ( $_POST['news_action'] == "comments" && count ( $_POST['news_id'] ) == 1 )
+        action_delete_display_page ( $news_arr );
+    }
+    
+    // Edit Comments
+    elseif ( $_POST['news_action'] == "comments" && count ( $_POST['news_id'] ) == 1 )
+    {
+        $_POST['news_id'] = $_POST['news_id'][0];
+        if (
+                $_POST['news_id'] && $_POST['news_action'] == "comments" &&
+                $_POST['comment_id'] && $_POST['comment_action']
+            )
         {
-                $_POST['news_id'] = $_POST['news_id'][0];
-                if (
-                                $_POST['news_id'] && $_POST['news_action'] == "comments" &&
-                                $_POST['comment_id'] && $_POST['comment_action']
-                        )
-                {
-                        // Edit Comment
-                        if ( $_POST['comment_action'] == "edit" )
-                        {
-                            action_comments_edit ( $_POST );
-                        }
-                        elseif ( $_POST['comment_action'] == "delete" ) {
-                    action_comments_delete ( $_POST );
-                        } else {
-                            action_comments_select ( $_POST );
-                        }
-                } else {
-                        action_comments_select ( $_POST );
-                }
+            // Edit Comment
+            if ( $_POST['comment_action'] == "edit" ) {
+                action_comments_edit ( $_POST );
+            } elseif ( $_POST['comment_action'] == "delete" ) {
+        action_comments_delete ( $_POST );
+            } else {
+                action_comments_select ( $_POST );
+            }
+        } else {
+                action_comments_select ( $_POST );
         }
+    } elseif ( $_POST['news_action'] != "delete" && count ( $_POST['news_id'] ) > 1 ) {
+        systext( "Sie können nur eine News gleichzeitig bearbeiten", $admin_phrases[common][error], TRUE, $admin_phrases[icons][error] );
+        $FILE_SHOW_START = TRUE;
+    }
 }
 
 ////////////////////////////////////////
 //// Display Default News List Page ////
 ////////////////////////////////////////
-else
+if ( $FILE_SHOW_START == TRUE )
 {
-        // Errors
-        echo "error";
-
         // Filter
         $_REQUEST = default_set_filter_data ( $_REQUEST );
         default_display_filter ( $_REQUEST );

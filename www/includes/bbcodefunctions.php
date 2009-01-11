@@ -1,7 +1,4 @@
 <?php
-// Start Session
-session_start();
-
 require ( FS2_ROOT_PATH . 'includes/stringparser_bbcode.class.php' );
 require ( FS2_ROOT_PATH . 'res/player_flv_include.php' );
 
@@ -113,10 +110,10 @@ function do_bbcode_player ($action, $attributes, $content, $params, $node_object
     if (!isset ($attributes['default'])) {
         return get_player ( $content );
     }
-	$res = explode ( ",", $attributes['default'], 2 );
+    $res = explode ( ",", $attributes['default'], 2 );
     settype ( $res[0], "integer" );
     settype ( $res[1], "integer" );
-	return get_player ( $content, $res[0], $res[1] );
+    return get_player ( $content, $res[0], $res[1] );
 }
 
 function do_bbcode_font ($action, $attributes, $content, $params, $node_object) {

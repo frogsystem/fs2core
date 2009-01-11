@@ -43,7 +43,7 @@ if (mysql_num_rows($index) > 0)
     $template = str_replace("{username}", killhtml($user_arr[user_name]), $template); 
     $template = str_replace("{avatar}", $user_arr[user_avatar], $template); 
     $template = str_replace("{email}", $user_arr[user_mail], $template); 
-    $template = str_replace("{reg_datum}", date("d.m.Y", $user_arr[reg_date]), $template); 
+    $template = str_replace("{reg_datum}", date($global_config_arr['date'], $user_arr[user_reg_date]), $template);
     $template = str_replace("{news}", $user_arr[user_news], $template); 
     $template = str_replace("{artikel}", $user_arr[user_artikel], $template); 
     $template = str_replace("{kommentare}", $user_arr[user_comments], $template);

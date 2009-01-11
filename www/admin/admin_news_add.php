@@ -69,7 +69,7 @@ if (
     }
 
     mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news + 1", $db );
-    systext( $admin_phrases[news][news_added], $admin_phrases[common][info]);
+    systext( $admin_phrases[news][news_added], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_add] );
 
     // Unset Vars
     unset ( $_POST );
@@ -82,7 +82,7 @@ if (
 if ( TRUE )
 {
     if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['addnews'] ) ) {
-        systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
+        systext ( $admin_phrases[news][news_not_added].'<br>'.$admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE, $admin_phrases[icons][save_error] );
     } else {
          $_POST['news_active'] = 1;
                  $_POST['news_comments_allowed'] = 1;

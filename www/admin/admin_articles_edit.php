@@ -446,13 +446,13 @@ function action_edit_display_page ( $data_arr )
                                 <td class="config">
                                     <select name="article_cat_id">
         ';
-                                                                            // Kategorien auflisten
-                                                                            $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );
-                                                                            while ( $cat_arr = mysql_fetch_assoc ( $index ) )
-                                                                            {
-                                                                                        settype ( $cat_arr['cat_id'], "integer" );
-                                                                                        echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $articles_arr['article_cat_id']).'>'.$cat_arr['cat_name'].'</option>';
-                                                                            }
+        // Kategorien auflisten
+        $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );
+        while ( $cat_arr = mysql_fetch_assoc ( $index ) )
+        {
+                    settype ( $cat_arr['cat_id'], "integer" );
+                    echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $articles_arr['article_cat_id']).'>'.$cat_arr['cat_name'].'</option>';
+        }
         echo'
                                     </select>
                                 </td>
@@ -781,52 +781,60 @@ $url_arr = get_article_urls ();
 
 // Edit Article
 if (
-                isset ( $_POST['article_id'] ) &&
-                isset ( $_POST['sended'] ) &&
-                isset ( $_POST['article_action'] ) && $_POST['article_action'] == "edit" &&
+        isset ( $_POST['article_id'] ) &&
+        isset ( $_POST['sended'] ) &&
+        isset ( $_POST['article_action'] ) && $_POST['article_action'] == "edit" &&
 
-                isset ( $_POST['article_cat_id'] ) &&
-                $_POST['article_title'] && $_POST['article_title'] != "" &&
-                
+        isset ( $_POST['article_cat_id'] ) &&
+        $_POST['article_title'] && $_POST['article_title'] != "" &&
+
         ( !in_array ( savesql ( $_POST['article_url'] ), $url_arr ) || $_POST['article_url'] == $_POST['article_old_url'] ) &&
 
-                ( ( $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
-                ( ( $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
-                ( ( $_POST['y'] && $_POST['y'] > 0 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) )
-        )
+        ( ( $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
+        ( ( $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
+        ( ( $_POST['y'] && $_POST['y'] > 0 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) )
+    )
 {
-        db_edit_article ( $_POST );
+    db_edit_article ( $_POST );
+
+    // Unset Vars
+    unset ( $_POST );
+    unset ( $_REQUEST );
 }
 
 // Delete Article
 elseif (
-                isset ( $_POST['article_id'] ) &&
-                isset ( $_POST['sended'] ) && $_POST['sended'] == "delete" &&
-                isset ( $_POST['article_action'] ) && $_POST['article_action'] == "delete" &&
-                isset ( $_POST['article_delete'] )
-        )
+        isset ( $_POST['article_id'] ) &&
+        isset ( $_POST['sended'] ) && $_POST['sended'] == "delete" &&
+        isset ( $_POST['article_action'] ) && $_POST['article_action'] == "delete" &&
+        isset ( $_POST['article_delete'] )
+    )
 {
     db_delete_article ( $_POST );
+
+    // Unset Vars
+    unset ( $_POST );;
+    unset ( $_REQUEST );
 }
 
 
 //////////////////////////////
 //// Display Action-Pages ////
 //////////////////////////////
-elseif ( $_POST['article_id'] && $_POST['article_action'] )
+if ( $_POST['article_id'] && $_POST['article_action'] )
 {
-        // Edit Article
-        if ( $_POST['article_action'] == "edit" )
-        {
-                action_edit_display_page ( action_edit_get_data ( $_POST['article_id'] ) );
-        }
+    // Edit Article
+    if ( $_POST['article_action'] == "edit" )
+    {
+        action_edit_display_page ( action_edit_get_data ( $_POST['article_id'] ) );
+    }
 
-        // Delete Article
-        elseif ( $_POST['article_action'] == "delete" )
-        {
+    // Delete Article
+    elseif ( $_POST['article_action'] == "delete" )
+    {
         $articles_arr = action_delete_get_data ( $_POST['article_id'] );
-                action_delete_display_page ( $articles_arr );
-        }
+        action_delete_display_page ( $articles_arr );
+    }
 }
 
 ////////////////////////////////////////////
@@ -834,11 +842,11 @@ elseif ( $_POST['article_id'] && $_POST['article_action'] )
 ////////////////////////////////////////////
 else
 {
-        // Filter
+    // Filter
     $_REQUEST = default_set_filter_data ( $_REQUEST );
-        default_display_filter ( $_REQUEST );
+    default_display_filter ( $_REQUEST );
 
-        // Display Page
-        default_display_page ( default_display_all_entries ( default_get_pagenav_data () ), default_get_pagenav_data (), $_REQUEST  );
+    // Display Page
+    default_display_page ( default_display_all_entries ( default_get_pagenav_data () ), default_get_pagenav_data (), $_REQUEST  );
 }
 ?>

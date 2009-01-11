@@ -8,6 +8,7 @@ $admin_phrases[common][only_allowed_values]       = "Bitte geben Sie nur erlaubt
 $admin_phrases[common][info]                      = "Information";
 $admin_phrases[common][error]                     = "Es trat ein Fehler auf";
 $admin_phrases[common][changes_saved]             = "Änderungen wurden gespeichert";
+$admin_phrases[common][changes_not_saved]         = "Änderungen wurden nicht gespeichert";
 $admin_phrases[common][affected_rows]             = "Betroffene Datensätze";
 
 $admin_phrases[common][image_0]                   = "Bild wurde erfolgreich hochgeladen";
@@ -50,7 +51,7 @@ $admin_phrases[common][para]                      = "Absatzbehandlung ist";
 $admin_phrases[common][kib]                       = "KiB";
 $admin_phrases[common][mib]                       = "MiB";
 
-$admin_phrases[common][arrow]                     = '<img border="0" src="img/pointer.png" align="top" alt="->">';
+$admin_phrases[common][arrow]                     = '<img border="0" src="img/pointer.png" align="absmiddle" alt="->">';
 $admin_phrases[common][save_long]                 = "Änderungen speichern";
 $admin_phrases[common][do_button]                 = "Ausführen";
 $admin_phrases[common][do_button_long]            = "Aktion ausführen";
@@ -90,6 +91,22 @@ $admin_phrases[common][no_image]                  = "Es wurde kein Bild gefunden
 $admin_phrases[common][delete_image]              = "Bild löschen";
 $admin_phrases[common][js_delete_image]           = "Soll das Bild wirklich gelöscht werden?";
 $admin_phrases[common][replace_img]               = "Nur auswählen, wenn das bisherige Bild überschrieben werden soll!";
+
+
+
+////////////
+// icons //
+////////////
+
+$admin_phrases[icons][error]                      = '<img src="icons/error.jpg" alt="" align="absmiddle">';
+$admin_phrases[icons][ok]                         = '<img src="icons/ok.jpg" alt="" align="absmiddle">';
+$admin_phrases[icons][arrow]                      = '<img src="icons/pointer.gif" alt="->" align="absmiddle">';
+$admin_phrases[icons][save_small]                 = '<img src="icons/save_small.gif" alt="" align="top">';
+$admin_phrases[icons][save_ok]                    = '<img src="icons/save_ok.jpg" alt="" align="absmiddle">';
+$admin_phrases[icons][save_add]                   = '<img src="icons/save_add.jpg" alt="" align="absmiddle">';
+$admin_phrases[icons][save_error]                 = '<img src="icons/save_error.jpg" alt="" align="absmiddle">';
+$admin_phrases[icons][trash_ok]                   = '<img src="icons/trash_ok.jpg" alt="" align="absmiddle">';
+$admin_phrases[icons][trash_error]                = '<img src="icons/trash_error.jpg" alt="" align="absmiddle">';
 
 
 ////////////
@@ -388,6 +405,7 @@ $admin_phrases[news][news_comments_allowed]       = "Kommentare erlauben";
 $admin_phrases[news][news_text]                   = "Text";
 $admin_phrases[news][news_add_button]             = "News hinzufügen";
 $admin_phrases[news][news_added]                  = "News wurde erfolgreich hinzugefügt";
+$admin_phrases[news][news_not_added]              = "News wurde nicht hinzugefügt";
 
 $admin_phrases[news][news_link_add]               = "Link hinzufügen";
 $admin_phrases[news][news_link_title]             = "Titel";
@@ -449,11 +467,11 @@ $admin_phrases[news][news_edit_select_news]       = "News auswählen";
 $admin_phrases[news][news_edit_entries_found]     = "Datensätze gefunden";
 
 $admin_phrases[news][news_delete_title]           = "News löschen";
-$admin_phrases[news][news_delete_view_news]       = "News komplett betrachten";
-$admin_phrases[news][news_delete_question]        = "Soll diese News (inklusive Links und Kommentaren) wirklich gelöscht werden?";
+$admin_phrases[news][news_delete_view_news]       = "anzeigen";
+$admin_phrases[news][news_delete_question]        = "Soll(en) die folgende(n) News (inklusive Links und Kommentaren) wirklich unwiderruflich gelöscht werden?";
 
-$admin_phrases[news][news_deleted]                = "News wurde erfolgreich gelöscht";
-$admin_phrases[news][news_not_deleted]            = "News wurde nicht gelöscht";
+$admin_phrases[news][news_deleted]                = "News wurde(n) erfolgreich gelöscht";
+$admin_phrases[news][news_not_deleted]            = "News wurde(n) nicht gelöscht";
 $admin_phrases[news][news_comment_deleted]        = "Kommentar wurde erfolgreich gelöscht";
 
 

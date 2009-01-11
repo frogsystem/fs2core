@@ -32,7 +32,7 @@ if ($_POST[usermail] && $_SESSION[user_id])
     $_POST[showmail] = isset($_POST[showmail]) ? 1 : 0;
     $update = "UPDATE ".$global_config_arr[pref]."user
                SET user_mail = '$_POST[usermail]',
-                   show_mail = '$_POST[showmail]'
+                   user_show_mail = '$_POST[showmail]'
                WHERE user_id = $_SESSION[user_id]";
     mysql_query($update, $db);
     $message .= $phrases[profile_update];
@@ -52,31 +52,31 @@ if ($_POST[usermail] && $_SESSION[user_id])
         {
             if ( $_POST[newpwd] == $_POST[wdhpwd] )
             {
-				$new_salt = generate_pwd ( 10 );
-				$mailpass = $_POST[newpwd];
-				$codedpass = md5 ( $_POST[newpwd].$new_salt );
-				unset($_POST[newpwd]);
-				unset($_POST[wdhpwd]);
+                $new_salt = generate_pwd ( 10 );
+                $mailpass = $_POST[newpwd];
+                $codedpass = md5 ( $_POST[newpwd].$new_salt );
+                unset($_POST[newpwd]);
+                unset($_POST[wdhpwd]);
 
-				//UPDATE PASSWORD
-				$update = "UPDATE ".$global_config_arr['pref']."user
-				          SET user_password = '".$codedpass."',
-				              user_salt = '".$new_salt."'
-				          WHERE user_id = ".$_SESSION['user_id']."";
-				mysql_query($update, $db);
-				$message .= "<br>".$phrases[pass_update];
-				
-				// send email
-				$template_mail = get_email_template ( "signup" );
-				$template_mail = str_replace ( "{username}", stripslashes ( $_SESSION['user_name'] ), $template_mail );
-				$template_mail = str_replace ( "{password}", $mailpass, $template_mail );
-				$template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
-				$email_betreff = $phrases['pass_change'] . $global_config_arr['virtualhost'];
-				if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail ) ) {
-				    $message .= "<br>E-Mail mit neuen Zugangsdaten wurde erfolgreich gesendet";
-				} else {
-				    $message .= "<br>E-Mail mit neuen Zugangsdaten konnte nicht gesendet werden";
-				}
+                //UPDATE PASSWORD
+                $update = "UPDATE ".$global_config_arr['pref']."user
+                          SET user_password = '".$codedpass."',
+                              user_salt = '".$new_salt."'
+                          WHERE user_id = ".$_SESSION['user_id']."";
+                mysql_query($update, $db);
+                $message .= "<br>".$phrases[pass_update];
+                
+                // send email
+                $template_mail = get_email_template ( "signup" );
+                $template_mail = str_replace ( "{username}", stripslashes ( $_SESSION['user_name'] ), $template_mail );
+                $template_mail = str_replace ( "{password}", $mailpass, $template_mail );
+                $template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
+                $email_betreff = $phrases['pass_change'] . $global_config_arr['virtualhost'];
+                if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail ) ) {
+                    $message .= "<br>E-Mail mit neuen Zugangsdaten wurde erfolgreich gesendet";
+                } else {
+                    $message .= "<br>E-Mail mit neuen Zugangsdaten konnte nicht gesendet werden";
+                }
 
             } else {
                 $message .= "<br>" . $phrases[pass_failed] . "<br>" . $phrases[pass_newwrong];
@@ -102,8 +102,8 @@ else
     {
         $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_id = $_SESSION[user_id]", $db);
         $user_arr = mysql_fetch_assoc($index);
-        $dbshowmail = $user_arr[show_mail];
-        $user_arr[show_mail] = ($user_arr[show_mail] == 1) ? "checked" : "";
+        $dbshowmail = $user_arr[user_show_mail];
+        $user_arr[user_show_mail] = ($user_arr[user_show_mail] == 1) ? "checked" : "";
 
         // Avatar vorhanden?
         if (image_exists("images/avatare/", $_SESSION[user_id]))
@@ -120,7 +120,7 @@ else
         $template = stripslashes(mysql_result($index, 0, "user_profiledit"));
         $template = str_replace("{avatar}", $user_arr[user_avatar], $template); 
         $template = str_replace("{email}", $user_arr[user_mail], $template); 
-        $template = str_replace("{email_zeigen}", $user_arr[show_mail], $template);
+        $template = str_replace("{email_zeigen}", $user_arr[user_show_mail], $template);
         $template = str_replace("{username}", $user_arr[user_name], $template);
 
     }

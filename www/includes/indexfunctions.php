@@ -153,24 +153,24 @@ function get_content ( $GOTO )
     global $db;
     global $phrases;
 
-        $index = mysql_query ( "SELECT COUNT(article_id) AS 'number' FROM ".$global_config_arr['pref']."articles WHERE article_url = '".$GOTO."'", $db );
+    $index = mysql_query ( "SELECT COUNT(article_id) AS 'number' FROM ".$global_config_arr['pref']."articles WHERE article_url = '".$GOTO."'", $db );
 
-        // Display Content
-        if ( file_exists ( "data/".$GOTO.".php" ) ) {
-                include ( FS2_ROOT_PATH . "data/".$GOTO.".php" );
-        } elseif ( mysql_result ( $index, 0, "number") >= 1 ) {
-                include ( FS2_ROOT_PATH . "data/articles.php" );
-        } elseif ( $GOTO == "dl" && usset ( $_GET['fileid'] ) && isset ( $_GET['dl'] ) ) {
-                $template = "";
-        } else {
-                include ( FS2_ROOT_PATH . "data/404.php" );
-        }
+    // Display Content
+    if ( file_exists ( "data/".$GOTO.".php" ) ) {
+        include ( FS2_ROOT_PATH . "data/".$GOTO.".php" );
+    } elseif ( mysql_result ( $index, 0, "number") >= 1 ) {
+        include ( FS2_ROOT_PATH . "data/articles.php" );
+    } elseif ( $GOTO == "dl" && isset ( $_GET['fileid'] ) && isset ( $_GET['dl'] ) ) {
+        $template = "";
+    } else {
+        include ( FS2_ROOT_PATH . "data/404.php" );
+    }
 
-        // Replace Virtualhost & Kill Resources
-        $template = killbraces($template);
+    // Replace Virtualhost & Kill Resources
+    $template = killbraces($template);
 
-        // Return Content
-        return $template;
+    // Return Content
+    return $template;
 }
 
 

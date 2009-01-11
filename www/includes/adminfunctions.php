@@ -261,28 +261,45 @@ function getreadonly ( $VALUE, $COMPAREWITH )
 //// Systemmeldung ausgeben ////
 ////////////////////////////////
 
-function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE )
+function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
 {
     global $admin_phrases;
 
-        if ( $TITLE == FALSE ) {
-                $TITLE = $admin_phrases[common][system_message];
-        }
+    if ( $TITLE == FALSE ) {
+        $TITLE = $admin_phrases[common][system_message];
+    }
 
-        if ( $RED == TRUE ) {
-                $class = "line_red";
-        } else {
-                $class = "line";
-        }
-        
+    if ( $RED == TRUE ) {
+        $class = "line_red";
+    } else {
+        $class = "line";
+    }
 
-        echo '
-                                        <table class="configtable" cellpadding="4" cellspacing="0">
-                                                <tr><td class="'.$class.'">'.$TITLE.'</td></tr>
-                                                <tr><td class="config">'.$MESSAGE.'</td></tr>
-                                                <tr><td class="space"></td></tr>
-                    </table>
+    if ( $IMAGE == FALSE ) {
+        return '
+            <table class="configtable" cellpadding="4" cellspacing="0">
+                <tr><td class="'.$class.'">'.$TITLE.'</td></tr>
+                <tr><td class="config">'.$MESSAGE.'</td></tr>
+                <tr><td class="space"></td></tr>
+            </table>
         ';
+    } else {
+        return '
+            <table class="configtable" cellpadding="4" cellspacing="0">
+                <tr><td class="'.$class.'" colspan="2">'.$TITLE.'</td></tr>
+                <tr>
+                    <td class="config middle">'.$IMAGE.'</td>
+                    <td class="config middle" width="100%">'.$MESSAGE.'</td>
+                </tr>
+                <tr><td class="space" colspan="2"></td></tr>
+            </table>
+        ';
+    }
+}
+
+function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
+{
+    echo get_systext ( $MESSAGE, $TITLE, $RED, $IMAGE );
 }
 
 /////////////////////////////////
@@ -382,7 +399,9 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
         }
 
     if ($class != "") {
-        $class2 = 'class="'.$class.'"';
+        $class2 = 'class="nomonospace '.$class.'"';
+    } else {
+        $class2 = 'class="nomonospace"';
     }
 
     $style = $name2.' '.$class2.' style="'.$width2.' '.$height2.'"';
@@ -426,27 +445,27 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
   }
   
     $buttons = "";
-    $buttons .= create_editor_button('images/icons/bold.gif', "B", "fett", "insert('$name', '[b]', '[/b]')");
-    $buttons .= create_editor_button('images/icons/italic.gif', "I", "kursiv", "insert('$name', '[i]', '[/i]')");
-    $buttons .= create_editor_button('images/icons/underline.gif', "U", "unterstrichen", "insert('$name','[u]','[/u]')");
-    $buttons .= create_editor_button('images/icons/strike.gif', "S", "durgestrichen", "insert('$name', '[s]', '[/s]')");
+    $buttons .= create_editor_button_new('admin/editor/b.jpg', "B", "fett", "insert('$name', '[b]', '[/b]')");
+    $buttons .= create_editor_button_new('admin/editor/i.jpg', "I", "kursiv", "insert('$name', '[i]', '[/i]')");
+    $buttons .= create_editor_button_new('admin/editor/u.jpg', "U", "unterstrichen", "insert('$name','[u]','[/u]')");
+    $buttons .= create_editor_button_new('admin/editor/s.jpg', "S", "durgestrichen", "insert('$name', '[s]', '[/s]')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button('images/icons/center.gif', "CENTER", "zentriert", "insert('$name', '[center]', '[/center]')");
+    $buttons .= create_editor_button_new('admin/editor/center.jpg', "CENTER", "zentriert", "insert('$name', '[center]', '[/center]')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button('images/icons/font.gif', "FONT", "Schriftart", "insert_com('$name', 'font', 'Bitte gib die gewünschte Schriftart ein:', '')");
-    $buttons .= create_editor_button('images/icons/color.gif', "COLOR", "Schriftfarbe", "insert_com('$name', 'color', 'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein:', '')");
-    $buttons .= create_editor_button('images/icons/size.gif', "SIZE", "Schriftgröße", "insert_com('$name', 'size', 'Bitte gib die gewünschte Schriftgröße (Zahl von 0-7) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/font.jpg', "FONT", "Schriftart", "insert_com('$name', 'font', 'Bitte gib die gewünschte Schriftart ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/color.jpg', "COLOR", "Schriftfarbe", "insert_com('$name', 'color', 'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/size.jpg', "SIZE", "Schriftgröße", "insert_com('$name', 'size', 'Bitte gib die gewünschte Schriftgröße (Zahl von 0-7) ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button('images/icons/img.gif', "IMG", "Bild einfügen", "insert_mcom('$name', '[img]', '[/img]', 'Bitte gib die URL zu der Grafik ein:', 'http://')");
-    $buttons .= create_editor_button('images/icons/cimg.gif', "CIMG", "Content-Image einfügen", "insert_mcom('$name', '[cimg]', '[/cimg]', 'Bitte gib den Namen des Content-Images (mit Endung) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/img.jpg', "IMG", "Bild einfügen", "insert_mcom('$name', '[img]', '[/img]', 'Bitte gib die URL zu der Grafik ein:', 'http://')");
+    $buttons .= create_editor_button_new('admin/editor/cimg.jpg', "CIMG", "Content-Image einfügen", "insert_mcom('$name', '[cimg]', '[/cimg]', 'Bitte gib den Namen des Content-Images (mit Endung) ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button('images/icons/url.gif', "URL", "Link einfügen", "insert_com('$name', 'url', 'Bitte gib die URL ein:', 'http://')");
-    $buttons .= create_editor_button('images/icons/home.gif', "HOME", "Projektinternen Link einfügen", "insert_com('$name', 'home', 'Bitte gib den projektinternen Verweisnamen ein:', '')");
-    $buttons .= create_editor_button('images/icons/email.gif', "@", "Email-Link einfügen", "insert_com('$name', 'email', 'Bitte gib die Email-Adresse ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/url.jpg', "URL", "Link einfügen", "insert_com('$name', 'url', 'Bitte gib die URL ein:', 'http://')");
+    $buttons .= create_editor_button_new('admin/editor/home.jpg', "HOME", "Projektinternen Link einfügen", "insert_com('$name', 'home', 'Bitte gib den projektinternen Verweisnamen ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/email.jpg', "@", "Email-Link einfügen", "insert_com('$name', 'email', 'Bitte gib die Email-Adresse ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button('images/icons/code.gif', "C", "Code-Bereich einfügen", "insert('$name', '[code]', '[/code]')");
-    $buttons .= create_editor_button('images/icons/quote.gif', "Q", "Zitat einfügen", "insert('$name', '[quote]', '[/quote]')");
-    $buttons .= create_editor_button('images/icons/noparse.gif', "N", "Nicht umzuwandelnden Bereich einfügen", "insert('$name', '[noparse]', '[/noparse]')");
+    $buttons .= create_editor_button_new('admin/editor/code.jpg', "C", "Code-Bereich einfügen", "insert('$name', '[code]', '[/code]')");
+    $buttons .= create_editor_button_new('admin/editor/quote.jpg', "Q", "Zitat einfügen", "insert('$name', '[quote]', '[/quote]')");
+    $buttons .= create_editor_button_new('admin/editor/noparse.jpg', "N", "Nicht umzuwandelnden Bereich einfügen", "insert('$name', '[noparse]', '[/noparse]')");
 
 
     $textarea = '<table cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px">
@@ -495,6 +514,29 @@ function create_editor_button($img_url, $alt, $title, $insert)
     return $button;
 }
 
+////////////////////////////////
+//// Create textarea Button ////
+////////////////////////////////
+
+function create_editor_button_new($img_url, $alt, $title, $insert)
+{
+    global $global_config_arr;
+    $javascript = 'javascript:'.$insert;
+
+    $button = '
+    <td class="editor_td">
+        <a class="ed_button_new" style="background-image:url({img_url});"  href="{javascript}">
+            <img border="0" src="'.$global_config_arr['virtualhost'].'images/design/null.gif" alt="{alt}" title="{title}" />
+        </a>
+    </td>';
+    $button = str_replace("{img_url}", $global_config_arr[virtualhost].$img_url, $button);
+    $button = str_replace("{alt}", $alt, $button);
+    $button = str_replace("{title}", $title, $button);
+    $button = str_replace("{javascript}", $javascript, $button);
+
+    return $button;
+}
+
 
 ////////////////////////////////////
 //// Create textarea  Seperator ////
@@ -511,17 +553,36 @@ function create_editor_seperator()
 //// Insert Tooltip ////
 ////////////////////////
 
-function insert_tt($title,$text,$form)
+function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, $BOLD_TITLE = TRUE, $SHOW_TITLE = TRUE   )
 {
-   return '
-'.$title.' <a class="tooltip" href="#?">
-<img border="0" src="img/help.png" align="top" alt="?">&nbsp;
-<span>
- <img border="0" src="img/pointer.png" align="top" alt="->"> <b>'.$title.'</b><br>'.$text.'
-</span></a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:insert(\''.$form.'\',\''.$title.'\',\'\');"><img border="0" src="img/pointer.png" alt="->" title="einfügen" align="top"></a>
-<br>
-   ';
+    if ( $NEW_LINE == TRUE ) {
+        $span_start = '<span style="padding-bottom:3px; display:block;">';
+        $span_end = '</span>';
+    }
+    if ( $INSERT == TRUE ) {
+        $insert_button = '
+        &nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfügen" align="top"></a>';
+    }
+    if ( $SHOW_TITLE == TRUE ) {
+        $first_title = $TITLE."&nbsp;";
+    }
+    if ( $BOLD_TITLE == TRUE ) {
+        $second_title = " <b>".$TITLE."</b>";
+    } else {
+        $second_title = "&nbsp;".$TITLE;
+    }
+
+    $template = $span_start.'
+            '.$first_title.'
+            <a class="tooltip" href="#?">
+                <img border="0" src="icons/help.gif" align="top" alt="?">&nbsp;
+                <span>
+                    <img border="0" src="img/pointer.png" align="top" alt="->">'.$second_title.'<br>'.$TEXT.'
+                </span>
+            </a> '.$insert_button.$span_end.'
+    ';
+
+   return $template;
 }
 
 ////////////////////////////////
