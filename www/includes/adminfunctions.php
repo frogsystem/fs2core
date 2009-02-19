@@ -525,11 +525,11 @@ function create_editor_button_new($img_url, $alt, $title, $insert)
 
     $button = '
     <td class="editor_td">
-        <a class="ed_button_new" style="background-image:url({img_url});"  href="{javascript}">
-            <img border="0" src="'.$global_config_arr['virtualhost'].'images/design/null.gif" alt="{alt}" title="{title}" />
+        <a class="ed_button_new" style="background-image:url({img_url});"  href="{javascript}" title="{title}">
+            <img border="0" src="'.$global_config_arr['virtualhost'].'images/design/null.gif" alt="{alt}">
         </a>
     </td>';
-    $button = str_replace("{img_url}", $global_config_arr[virtualhost].$img_url, $button);
+    $button = str_replace("{img_url}", $global_config_arr['virtualhost'].$img_url, $button);
     $button = str_replace("{alt}", $alt, $button);
     $button = str_replace("{title}", $title, $button);
     $button = str_replace("{javascript}", $javascript, $button);

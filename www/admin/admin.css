@@ -106,6 +106,15 @@ select
     background-image:url('img/button_hover.jpg');
 }
 
+a.image_hover {
+  display:block;
+  cursor:pointer;
+  background-position: bottom right;
+}
+a.image_hover:hover, a.image_hover:focus {
+  background-position: top left;
+}
+
 
 
 /**************************************************/

@@ -5,29 +5,29 @@
 
 if ( isset ( $_POST['sended'] ) )
 {
-	// security functions
-	settype ( $_POST['show_announcement'], "integer" );
-	settype ( $_POST['activate_announcement'], "integer" );
-	settype ( $_POST['ann_html'], "integer" );
-	settype ( $_POST['ann_fscode'], "integer" );
-	settype ( $_POST['ann_para'], "integer" );
-	$_POST['announcement_text'] = savesql ( $_POST['announcement_text'] );
+    // security functions
+    settype ( $_POST['show_announcement'], "integer" );
+    settype ( $_POST['activate_announcement'], "integer" );
+    settype ( $_POST['ann_html'], "integer" );
+    settype ( $_POST['ann_fscode'], "integer" );
+    settype ( $_POST['ann_para'], "integer" );
+    $_POST['announcement_text'] = savesql ( $_POST['announcement_text'] );
 
-	// MySQL-Queries
+    // MySQL-Queries
     mysql_query ( "
-					UPDATE `".$global_config_arr['pref']."announcement`
-					SET
+                    UPDATE `".$global_config_arr['pref']."announcement`
+                    SET
                         `announcement_text` = '".$_POST['announcement_text']."',
-						`show_announcement` = '".$_POST['show_announcement']."',
-						`activate_announcement` = '".$_POST['activate_announcement']."',
-						`ann_html` = '".$_POST['ann_html']."',
-						`ann_fscode` = '".$_POST['ann_fscode']."',
-						`ann_para` = '".$_POST['ann_para']."'
-					WHERE `id` = '1'
-	", $db);
+                        `show_announcement` = '".$_POST['show_announcement']."',
+                        `activate_announcement` = '".$_POST['activate_announcement']."',
+                        `ann_html` = '".$_POST['ann_html']."',
+                        `ann_fscode` = '".$_POST['ann_fscode']."',
+                        `ann_para` = '".$_POST['ann_para']."'
+                    WHERE `id` = '1'
+    ", $db);
 
-	// system messages
-    systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+    // system messages
+    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
 
     // Unset Vars
     unset ( $_POST );
@@ -39,34 +39,34 @@ if ( isset ( $_POST['sended'] ) )
 
 if ( TRUE )
 {
-	// Display Error Messages
-	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+    // Display Error Messages
+    if ( isset ( $_POST['sended'] ) ) {
+        systext ( $admin_phrases[common][changes_not_saved].'<br>'.$admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE, $admin_phrases[icons][save_error] );
 
-	// Load Data from DB into Post
-	} else {
-	    $index = mysql_query ( "
-								SELECT *
-								FROM `".$global_config_arr['pref']."announcement`
-								WHERE `id` = '1'
-		", $db);
-	    $config_arr = mysql_fetch_assoc($index);
-	    putintopost ( $config_arr );
-	}
+    // Load Data from DB into Post
+    } else {
+        $index = mysql_query ( "
+                                SELECT *
+                                FROM `".$global_config_arr['pref']."announcement`
+                                WHERE `id` = '1'
+        ", $db);
+        $config_arr = mysql_fetch_assoc($index);
+        putintopost ( $config_arr );
+    }
 
-	// security functions
-	settype ( $_POST['show_announcement'], "integer" );
-	settype ( $_POST['activate_announcement'], "integer" );
-	settype ( $_POST['ann_html'], "integer" );
-	settype ( $_POST['ann_fscode'], "integer" );
-	settype ( $_POST['ann_para'], "integer" );
-	$_POST['announcement_text'] = killhtml ( $_POST['announcement_text'] );
+    // security functions
+    settype ( $_POST['show_announcement'], "integer" );
+    settype ( $_POST['activate_announcement'], "integer" );
+    settype ( $_POST['ann_html'], "integer" );
+    settype ( $_POST['ann_fscode'], "integer" );
+    settype ( $_POST['ann_para'], "integer" );
+    $_POST['announcement_text'] = killhtml ( $_POST['announcement_text'] );
 
-	// Display Form
+    // Display Form
     echo'
                     <form action="" method="post">
                         <input type="hidden" name="go" value="gen_announcement">
-   						<input type="hidden" name="sended" value="1">
+                           <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="2">'.$admin_phrases[general][ann_settings_title].'</td></tr>
                             <tr>
@@ -95,12 +95,12 @@ if ( TRUE )
                             <tr><td class="line" colspan="2">'.$admin_phrases[general][ann_title].'</td></tr>
                             <tr>
                                 <td class="config right" colspan="2">
-								    <input class="pointer middle" type="checkbox" name="ann_html" value="1" '.getchecked ( $_POST['ann_html'], 1 ).'>
-								    <span class="small middle">'.$admin_phrases[articles][articles_use_html].'</span>&nbsp;&nbsp;
-								    <input class="pointer middle" type="checkbox" name="ann_fscode" value="1" '.getchecked ( $_POST['ann_fscode'], 1 ).'>
-								    <span class="small middle">'.$admin_phrases[articles][articles_use_fscode].'</span>&nbsp;&nbsp;
-								    <input class="pointer middle" type="checkbox" name="ann_para" value="1" '.getchecked ( $_POST['ann_para'], 1 ).'>
-								    <span class="small middle">'.$admin_phrases[articles][articles_use_para].'</span>
+                                    <input class="pointer middle" type="checkbox" name="ann_html" value="1" '.getchecked ( $_POST['ann_html'], 1 ).'>
+                                    <span class="small middle">'.$admin_phrases[articles][articles_use_html].'</span>&nbsp;&nbsp;
+                                    <input class="pointer middle" type="checkbox" name="ann_fscode" value="1" '.getchecked ( $_POST['ann_fscode'], 1 ).'>
+                                    <span class="small middle">'.$admin_phrases[articles][articles_use_fscode].'</span>&nbsp;&nbsp;
+                                    <input class="pointer middle" type="checkbox" name="ann_para" value="1" '.getchecked ( $_POST['ann_para'], 1 ).'>
+                                    <span class="small middle">'.$admin_phrases[articles][articles_use_para].'</span>
                                 </td>
                             </tr>
                             <tr>

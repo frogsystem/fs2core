@@ -7,10 +7,10 @@
 if ( TRUE
     && ( $_POST['signup'] && $_POST['signup'] != "" )
     && ( $_POST['change_password'] && $_POST['change_password'] != "" )
-	&& ( $_POST['use_admin_mail'] == 1 || ( $_POST['use_admin_mail'] == 0 && $_POST['email'] != "" ) )
+    && ( $_POST['use_admin_mail'] == 1 || ( $_POST['use_admin_mail'] == 0 && $_POST['email'] != "" ) )
    )
 {
-	// security functions
+    // security functions
     settype ( $_POST['use_admin_mail'], "integer" );
     settype ( $_POST['html'], "integer" );
 
@@ -19,20 +19,20 @@ if ( TRUE
     #$_POST['delete_account'] = savesql ( $_POST['delete_account'] );
     $_POST['email'] = savesql ( $_POST['email'] );
     
-	// MySQL-Queries
+    // MySQL-Queries
     mysql_query ( "
-					UPDATE `".$global_config_arr['pref']."email`
-					SET
-						`signup` = '".$_POST['signup']."',
-						`change_password` = '".$_POST['change_password']."',
-						`use_admin_mail` = '".$_POST['use_admin_mail']."',
-						`email` = '".$_POST['email']."',
-						`html` = '".$_POST['html']."'
-					WHERE `id` = '1'
-	", $db );
+                    UPDATE `".$global_config_arr['pref']."email`
+                    SET
+                        `signup` = '".$_POST['signup']."',
+                        `change_password` = '".$_POST['change_password']."',
+                        `use_admin_mail` = '".$_POST['use_admin_mail']."',
+                        `email` = '".$_POST['email']."',
+                        `html` = '".$_POST['html']."'
+                    WHERE `id` = '1'
+    ", $db );
 
-	// system messages
-    systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+    // system messages
+    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
 
     // Unset Vars
     unset ( $_POST );
@@ -44,22 +44,22 @@ if ( TRUE
 
 if ( TRUE )
 {
-	// Display Error Messages
-	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+    // Display Error Messages
+    if ( isset ( $_POST['sended'] ) ) {
+        systext ( $admin_phrases[common][changes_not_saved].'<br>'.$admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE, $admin_phrases[icons][save_error] );
 
-	// Load Data from DB into Post
-	} else {
-	    $index = mysql_query ( "
-								SELECT *
-								FROM ".$global_config_arr['pref']."email
-								WHERE `id` = '1'
-		", $db);
-	    $email_arr = mysql_fetch_assoc($index);
-	    putintopost ( $email_arr );
-	}
+    // Load Data from DB into Post
+    } else {
+        $index = mysql_query ( "
+                                SELECT *
+                                FROM ".$global_config_arr['pref']."email
+                                WHERE `id` = '1'
+        ", $db);
+        $email_arr = mysql_fetch_assoc($index);
+        putintopost ( $email_arr );
+    }
 
-	// security functions
+    // security functions
     settype ( $_POST['use_admin_mail'], "integer" );
     settype ( $_POST['html'], "integer" );
 
@@ -81,23 +81,23 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <table>
-										<tr valign="bottom">
-											<td class="config">
-												<input class="pointer" type="radio" name="use_admin_mail" value="1" '.getchecked ( 1, $_POST['use_admin_mail'] ).'>
-											</td>
-											<td class="config">
-											    Standard ('.$global_config_arr['admin_mail'].')
-											</td>
-										</tr>
-										<tr valign="bottom">
- 											<td class="config">
-												<input class="pointer" type="radio" name="use_admin_mail" value="0" '.getchecked ( 0, $_POST['use_admin_mail'] ).'>
-											</td>
-											<td class="config">
-												<input class="text" size="20" name="email" maxlength="100" value="'.$_POST['email'].'">
-											</td>
-										</tr>
-									</table>
+                                        <tr valign="bottom">
+                                            <td class="config">
+                                                <input class="pointer" type="radio" name="use_admin_mail" value="1" '.getchecked ( 1, $_POST['use_admin_mail'] ).'>
+                                            </td>
+                                            <td class="config">
+                                                Standard ('.$global_config_arr['admin_mail'].')
+                                            </td>
+                                        </tr>
+                                        <tr valign="bottom">
+                                             <td class="config">
+                                                <input class="pointer" type="radio" name="use_admin_mail" value="0" '.getchecked ( 0, $_POST['use_admin_mail'] ).'>
+                                            </td>
+                                            <td class="config">
+                                                <input class="text" size="20" name="email" maxlength="100" value="'.$_POST['email'].'">
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                             <tr>
@@ -107,7 +107,7 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     &nbsp;<input class="pointer middle" type="checkbox" name="html" value="1" '.getchecked ( 1, $_POST['html'] ).'>
-									<span class="small">[Ermöglicht die Verwendung von HTML und FSCode.]</span>
+                                    <span class="small">[Ermöglicht die Verwendung von HTML und FSCode.]</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

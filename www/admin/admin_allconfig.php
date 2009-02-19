@@ -84,54 +84,53 @@ if (
 
 if ( TRUE )
 {
-        // Display Error Messages
-        if ( isset ( $_POST['sended'] ) ) {
-                systext ( $admin_phrases[common][changes_not_saved].'<br>'.$admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE, $admin_phrases[icons][save_error] );
+    // Display Error Messages
+    if ( isset ( $_POST['sended'] ) ) {
+        systext ( $admin_phrases[common][changes_not_saved].'<br>'.$admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE, $admin_phrases[icons][save_error] );
 
-        // Load Data from DB into Post
-        } else {
-            $index = mysql_query ( "
-                                                                SELECT *
-                                                                FROM ".$global_config_arr['pref']."global_config
-                                                                WHERE `id` = '1'
-                ", $db);
-            $config_arr = mysql_fetch_assoc($index);
-            putintopost ( $config_arr );
-        }
+    // Load Data from DB into Post
+    } else {
+        $index = mysql_query ( "
+                                    SELECT *
+                                    FROM ".$global_config_arr['pref']."global_config
+                                    WHERE `id` = '1'
+        ", $db);
+        $config_arr = mysql_fetch_assoc($index);
+        putintopost ( $config_arr );
+    }
 
-        // security functions
-        $_POST['title'] = killhtml ( $_POST['title'] );
-        $_POST['virtualhost'] = killhtml ( $_POST['virtualhost'] );
-        $_POST['description'] = killhtml ( $_POST['description'] );
-        $_POST['author'] = killhtml ( $_POST['author'] );
-        $_POST['admin_mail'] = killhtml ( $_POST['admin_mail'] );
-        $_POST['keywords'] = killhtml ( $_POST['keywords'] );
-        $_POST['date'] = killhtml ( $_POST['date'] );
-        $_POST['time'] = killhtml ( $_POST['time'] );
-        $_POST['datetime'] = killhtml ( $_POST['datetime'] );
-        $_POST['page'] = killhtml ( $_POST['page'] );
-        $_POST['page_next'] = killhtml ( $_POST['page_next'] );
-        $_POST['page_prev'] = killhtml ( $_POST['page_prev'] );
-        $_POST['feed'] = killhtml ( $_POST['feed'] );
-        $_POST['language'] = killhtml ( $_POST['language'] );
-        $_POST['home_text'] = killhtml ( $_POST['home_text'] );
-        $_POST['dyn_title_ext'] = killhtml ( $_POST['dyn_title_ext'] );
+    // security functions
+    $_POST['title'] = killhtml ( $_POST['title'] );
+    $_POST['virtualhost'] = killhtml ( $_POST['virtualhost'] );
+    $_POST['description'] = killhtml ( $_POST['description'] );
+    $_POST['author'] = killhtml ( $_POST['author'] );
+    $_POST['admin_mail'] = killhtml ( $_POST['admin_mail'] );
+    $_POST['keywords'] = killhtml ( $_POST['keywords'] );
+    $_POST['date'] = killhtml ( $_POST['date'] );
+    $_POST['time'] = killhtml ( $_POST['time'] );
+    $_POST['datetime'] = killhtml ( $_POST['datetime'] );
+    $_POST['page'] = killhtml ( $_POST['page'] );
+    $_POST['page_next'] = killhtml ( $_POST['page_next'] );
+    $_POST['page_prev'] = killhtml ( $_POST['page_prev'] );
+    $_POST['feed'] = killhtml ( $_POST['feed'] );
+    $_POST['language'] = killhtml ( $_POST['language'] );
+    $_POST['home_text'] = killhtml ( $_POST['home_text'] );
+    $_POST['dyn_title_ext'] = killhtml ( $_POST['dyn_title_ext'] );
 
-        settype ( $_POST['show_favicon'], "integer" );
-        settype ( $_POST['design'], "integer" );
-        settype ( $_POST['allow_other_designs'], "integer" );
-        settype ( $_POST['home'], "integer" );
-        settype ( $_POST['dyn_title'], "integer" );
+    settype ( $_POST['show_favicon'], "integer" );
+    settype ( $_POST['design'], "integer" );
+    settype ( $_POST['allow_other_designs'], "integer" );
+    settype ( $_POST['home'], "integer" );
+    settype ( $_POST['dyn_title'], "integer" );
 
-        //get other data
-        if ( $_POST['dyn_title'] == 1 ) {
-                $display_arr['dyn_title_ext_tr'] = "default";
-        } else {
-                $display_arr['dyn_title_ext_tr'] = "hidden";
-        }
+    //get other data
+    if ( $_POST['dyn_title'] == 1 ) {
+        $display_arr['dyn_title_ext_tr'] = "default";
+    } else {
+        $display_arr['dyn_title_ext_tr'] = "hidden";
+    }
 
-
-        // Display Form
+    // Display Form
     echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="gen_config">
@@ -389,7 +388,7 @@ if ( TRUE )
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        <div style="margin-top:-2px;">'.$admin_phrases[common][save_long].'&nbsp;&nbsp;&nbsp;'.$admin_phrases[icons][save_small].'</div>
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
                                     </button>
                                 </td>
                             </tr>
