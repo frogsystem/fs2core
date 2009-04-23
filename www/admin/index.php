@@ -58,13 +58,13 @@ $index = mysql_query ( "
 
 // if page exisits
 if ( mysql_num_rows ( $index ) == 1 ) {
-	$acp_arr = mysql_fetch_assoc ( $index );
+    $acp_arr = mysql_fetch_assoc ( $index );
     $acp_arr['permission'] = $_SESSION[$acp_arr['page_id']];
     
     // if page is start page
     if ( $acp_arr['group_id'] == -1 ) {
         $acp_arr['menu_id'] = $acp_arr['page_link'];
-	}
+    }
     // get the page-data
     $PAGE_DATA_ARR = createpage ( $acp_arr['group_title']." &#187; ".$acp_arr['page_title'], $acp_arr['permission'], $acp_arr['page_file'], $acp_arr['menu_id'] );
 } else {
@@ -103,6 +103,7 @@ echo'
     <link rel="stylesheet" type="text/css" href="admin.css">
     <link rel="stylesheet" type="text/css" href="editor.css">
     <script src="functions.js" type="text/javascript"></script>
+    <script src="../res/jquery-1.3.1.min.js" type="text/javascript"></script>
     <script src="../res/js_functions.js" type="text/javascript"></script>
 </head>
 <body>
@@ -147,32 +148,32 @@ echo '
 
 if ( $_SESSION["user_level"] == "authorised" )
 {
-	$log_link = "logout";
-	$log_image = "logout.gif";
-	$log_text = "Logout";
+    $log_link = "logout";
+    $log_image = "logout.gif";
+    $log_text = "Logout";
 }
 else
 {
-	$log_link = "login";
-	$log_image = "login.gif";
-	$log_text = "Login";
+    $log_link = "login";
+    $log_image = "login.gif";
+    $log_text = "Login";
 }
 
 echo'
-	<table cellpadding="0" cellspacing="0">
-		<tr valign="top">
-			<td id="menu_top_log_image_td">
-       			<a href="'.$PHP_SELF.'?go='.$log_link.'" target="_self" class="small">
-					<img src="img/'.$log_image.'" alt="" title="'.$log_text.'" border="0">
-				</a>
-			</td>
-			<td>
-	       		<a href="'.$PHP_SELF.'?go='.$log_link.'" target="_self" class="small">
-     				'.$log_text.'
-				</a>
-			</td>
-		</tr>
-	</table>
+    <table cellpadding="0" cellspacing="0">
+        <tr valign="top">
+            <td id="menu_top_log_image_td">
+                   <a href="'.$PHP_SELF.'?go='.$log_link.'" target="_self" class="small">
+                    <img src="img/'.$log_image.'" alt="" title="'.$log_text.'" border="0">
+                </a>
+            </td>
+            <td>
+                   <a href="'.$PHP_SELF.'?go='.$log_link.'" target="_self" class="small">
+                     '.$log_text.'
+                </a>
+            </td>
+        </tr>
+    </table>
 ';
 
 unset ( $log_link );

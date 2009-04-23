@@ -82,6 +82,7 @@ function get_maintemplate ( $PATH_PREFIX = "" )
         // Create script-Rows
     $template_script = "";
         $template_script .= '
+                <script type="text/javascript" src="'.$PATH_PREFIX .'res/jquery-1.3.1.min.js"></script>
                 <script type="text/javascript" src="'.$PATH_PREFIX .'res/js_functions.js"></script>
                 <script type="text/javascript" src="'.$PATH_PREFIX .'res/js_userfunctions.php?id='.$global_config_arr['design'].'"></script>';
 
@@ -213,7 +214,7 @@ function replace_resources ( $TEMPLATE, $PATH_PREFIX = "" )
 
         // Replace Resources in $TEMPLATE
         foreach ( $resources_arr as $resource ) {
-                $TEMPLATE = str_replace ( "{".$resource['resource_name']."}",  $resource['template'], $TEMPLATE );
+                $TEMPLATE = str_replace ( "{..".$resource['resource_name']."..}",  $resource['template'], $TEMPLATE );
         }
 
         // Return Content
@@ -229,7 +230,7 @@ function get_resource ( $FILE )
     global $global_config_arr;
     global $db;
 
-        include( FS2_ROOT_PATH . $FILE );
+        include ( FS2_ROOT_PATH . $FILE );
         $template = killbraces ( $template );
         return $template;
 }
@@ -467,28 +468,34 @@ function set_design ()
     global $db;
     global $global_config_arr;
 
-    if (isset ($_GET['design_id']) AND $global_config_arr[allow_other_designs] == 1)
+    if (isset ($_GET['design_id']) && $global_config_arr['allow_other_designs'] == 1)
     {
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."template WHERE id = $_GET[design_id]", $db);
+        $index = mysql_query("SELECT id FROM ".$global_config_arr[pref]."template WHERE id = $_GET[design_id]", $db);
         if (mysql_num_rows($index) > 0)
         {
-            $global_config_arr[design] =  $_GET['design_id'];
-            settype($global_config_arr[design], "integer");
+            $global_config_arr['design'] =  $_GET['design_id'];
+            settype($global_config_arr['design'], "integer");
         }
     }
-    elseif (isset ($_GET['design']) AND $global_config_arr[allow_other_designs] == 1)
+    elseif (isset ($_GET['design']) && $global_config_arr['allow_other_designs'] == 1)
     {
         $index = mysql_query("SELECT id FROM ".$global_config_arr[pref]."template WHERE name = '$_GET[design]'", $db);
         if (mysql_num_rows($index) > 0)
         {
-            $global_config_arr[design] =  mysql_result($index, "id");
-            settype($global_config_arr[design], "integer");
+            $global_config_arr['design'] =  mysql_result($index, "id");
+            settype($global_config_arr['design'], "integer");
         }
     }
+    
+    $index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);
+    if (mysql_num_rows($index) > 0) {
+        $global_config_arr['style'] =  mysql_result($index, "name");
+    }
+    
 
-    if (isset ($_GET['zone_id']) AND $global_config_arr[allow_other_designs] == 1)
+  /*  if (isset ($_GET['zone_id']) AND $global_config_arr[allow_other_designs] == 1)
     {
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."zones WHERE id = $_GET[zone_id]", $db);
+        $index = mysql_query("SELECT design_id FROM ".$global_config_arr[pref]."zones WHERE id = $_GET[zone_id]", $db);
         if (mysql_num_rows($index) > 0)
         {
             $global_config_arr[design] =  $_GET['design_id'];
@@ -503,7 +510,7 @@ function set_design ()
             $global_config_arr[design] =  mysql_result($index2, "design_id");
             settype($global_config_arr[design], "integer");
         }
-    }
+    }   */
     
     copyright ();
 }
