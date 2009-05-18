@@ -167,9 +167,6 @@ function get_content ( $GOTO )
         include ( FS2_ROOT_PATH . "data/404.php" );
     }
 
-    // Replace Virtualhost & Kill Resources
-    $template = killbraces($template);
-
     // Return Content
     return $template;
 }

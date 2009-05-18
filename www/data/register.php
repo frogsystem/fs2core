@@ -18,22 +18,22 @@ $anti_spam = check_captcha ( $_POST['spam'], $config_arr['registration_antispam'
 
 if ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST['wdhpwd'] )
 {
-    $_POST['username'] = savesql ( $_POST['username'] );
+    $_POST['username'] = savesql ( htmlspecialchars ( $_POST['username'] ) );
     $_POST['usermail'] = savesql ( $_POST['usermail'] );
     $user_salt = generate_pwd ( 10 );
     $userpass = md5 ( $_POST['newpwd'].$user_salt );
     $userpass_mail = $_POST['newpwd'];
     
-    // user exists or nagative anti spam
+    // user exists or negative anti spam
     $index = mysql_query ( "
-							SELECT COUNT(`user_id`) AS 'number'
-							FROM ".$global_config_arr['pref']."user
-							WHERE user_name = '".$_POST['username']."'
-	", $db);
+                            SELECT COUNT(`user_id`) AS 'number'
+                            FROM ".$global_config_arr['pref']."user
+                            WHERE user_name = '".$_POST['username']."'
+    ", $db);
     $existing_users = mysql_result ( $index, 0, "number" );
     
-	// get error message
-	if ( $existing_users > 0 || $anti_spam != TRUE || $_POST['newpwd'] != $_POST['wdhpwd'] )
+    // get error message
+    if ( $existing_users > 0 || $anti_spam != TRUE || $_POST['newpwd'] != $_POST['wdhpwd'] )
     {
         unset( $sysmeldung );
         if ( $existing_users > 0 ) {
@@ -47,24 +47,24 @@ if ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST['wdh
         }
         $template .= sys_message ( $phrases[sysmessage], implode ( "<br>", $sysmeldung ) );
 
-	    // Unset Vars
-	    unset ( $_POST );
+        // Unset Vars
+        unset ( $_POST );
     }
 
     else
     {
         $regdate = time();
         
-		// send email
-		$template_mail = get_email_template ( "signup" );
-		$template_mail = str_replace ( "{username}", stripslashes ( $_POST['username'] ), $template_mail );
-		$template_mail = str_replace ( "{password}", $userpass_mail, $template_mail );
-		$template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
-		$email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
-		@send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail );
+        // send email
+        $template_mail = get_email_template ( "signup" );
+        $template_mail = str_replace ( "{username}", stripslashes ( $_POST['username'] ), $template_mail );
+        $template_mail = str_replace ( "{password}", $userpass_mail, $template_mail );
+        $template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
+        $email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
+        @send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail );
 
         $adduser = "INSERT INTO ".$global_config_arr['pref']."user
-						(user_name, user_password, user_salt, user_mail, user_reg_date)
+                        (user_name, user_password, user_salt, user_mail, user_reg_date)
                     VALUES ('".$_POST['username']."',
                             '".$userpass."',
                             '".$user_salt."',

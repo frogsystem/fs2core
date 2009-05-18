@@ -1,4 +1,20 @@
 <?php
+/////////////////////////////
+//// scandir with filter ////
+/////////////////////////////
+
+function scandir_filter ( $folder, $extra = array(), $bad = array ( ".", "..", ".DS_Store", "_notes", "Thumbs.db", ".svn" ) )
+{
+    $bad = array_merge ( $extra, $bad );
+    $contents = scandir ( $folder );
+    if ( is_array ( $contents ) ) {
+        return array_diff ( $contents, $bad );
+    } else {
+        return $contents;
+    }
+}
+
+
 /////////////////////////
 //// Get Yes/NO Table////
 /////////////////////////

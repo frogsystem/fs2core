@@ -592,6 +592,8 @@ function action_edit_display_new_link ( $NUM_LINKS, $EDIT )
             $EDIT['url'] = "http://";
         }
 
+        settype ( $EDIT['target'], "integer" );
+
         echo'
                                                                         </table>
                                 </td>

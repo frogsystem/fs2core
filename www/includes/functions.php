@@ -1,78 +1,226 @@
 <?php
+///////////////////////
+//// Localize Date ////
+///////////////////////
+function get_user_rank ( $GROUP_ID )
+{
+    global $db, $global_config_arr;
+
+    $index = mysql_query ( "
+        SELECT *
+        FROM `".$global_config_arr['pref']."user_groups`
+        WHERE `user_group_id` = '".$GROUP_ID."'
+    ", $db );
+    $group_arr = mysql_fetch_assoc ( $index );
+    
+    $group_arr['user_group_image'] = ( image_exists ( "images/groups/staff_", $group_arr['user_group_id'] ) ? '<img src="'.image_url ( "images/groups/staff_", $group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_id'].'">' : " " );
+
+    unset ( $title_style );
+    $title_style .= ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : "" );
+    switch ( $group_arr['user_group_highlight'] ) {
+        case 1:
+            $highlight_css = 'font-weight:bold;';
+            break;
+        case 2:
+            $highlight_css = 'font-style:italic;';
+            break;
+        case 5:
+            $highlight_css = 'font-weight:bold;font-style:italic;';
+            break;
+    }
+    $title_style .= ( $highlight_css != "" ? $highlight_css : "" );
+    $group_arr['user_group_title_colored'] = '<span style="'.$title_style.'">'.stripslashes ( $group_arr['user_group_title'] ).'</span>';
+    
+    $rank_template = new template();
+    $rank_template->setFile ( "0_user.tpl" );
+    $rank_template->load ( "USERRANK" );
+    $rank_template->tag ( "group_image", $group_arr['user_group_image'] );
+    $rank_template->tag ( "group_title", $group_arr['user_group_title_colored'] );
+    $rank_template->tag ( "group_pure_title", stripslashes ( $group_arr['user_group_title'] ) );
+    $rank_template = $rank_template->display ();
+
+    $retrun_arr['user_group_id'] = stripslashes ( $GROUP_ID );
+    $retrun_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
+    $retrun_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
+    $retrun_arr['user_group_rank'] = $rank_template;
+    
+    return $retrun_arr;
+}
+
+///////////////////////
+//// Localize Date ////
+///////////////////////
+function date_loc ( $DATE_STRING, $TIMESTAMP )
+{
+    global $db, $global_config_arr, $phrases;
+
+    $week_en = array ( "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" );
+    $month_en = array ( "January","February","March","April","May","June","July","August","September","October","November","December" );
+    
+    $localized_date = str_replace ( $week_en, $phrases['week_days'], date ( $DATE_STRING, $TIMESTAMP ) );
+    $localized_date = str_replace ( $month_en, $phrases['month_names'], $localized_date );
+
+    return $localized_date;
+}
+
+//////////////////////////////
+//// Get IDs of DL-Subcat ////
+//////////////////////////////
+function get_sub_cats ( $CAT_ID, $REC_SUB_CAT_ARRAY )
+{
+    global $db, $global_config_arr;
+    static $sub_cat_ids = array();
+    $sub_cat_ids = $REC_SUB_CAT_ARRAY;
+
+    $subcat_index = mysql_query ( "
+        SELECT `cat_id`
+        FROM `".$global_config_arr['pref']."dl_cat`
+        WHERE `subcat_id` = '".$CAT_ID."'
+    ", $db );
+
+    while ( $subcats = mysql_fetch_assoc ( $subcat_index ) ) {
+        $sub_cat_ids[] = $subcats['cat_id'];
+        get_sub_cats ( $subcats['cat_id'], $sub_cat_ids );
+    }
+    return $sub_cat_ids;
+}
+
+/////////////////////////////////
+//// Create DL-Folder-System ////
+/////////////////////////////////
+function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
+    global $db, $global_config_arr;
+    static $navi;
+    static $i = 0;
+    
+    $i++;
+    $data[$CAT_ID] = mysql_query ( "
+        SELECT *
+        FROM `".$global_config_arr['pref']."dl_cat`
+        WHERE `subcat_id` = '".$CAT_ID."'
+    ", $db );
+
+    while ( $array = mysql_fetch_assoc ( $data[$CAT_ID] ) ) {
+        $index = mysql_query ( "
+            SELECT `cat_id`
+            FROM `".$global_config_arr['pref']."dl_cat`
+            WHERE `subcat_id` = '".$array['cat_id']."'
+        ", $db );
+        $num_subcat = mysql_num_rows ( $index );
+
+        unset ( $ids );
+        $ids = get_sub_cats ( $array['cat_id'], array() );
+
+        $template = $NAVI_TEMPLATE;
+        $cat_url = '?go=download&catid='.$array['cat_id'];
+        $top_url = '?go=download&catid='.$array['subcat_id'];
+        $folder = ( $array['cat_id'] == $GET_ID ? "folder_open.gif" : "folder.gif" );
+        $open = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? "minus.gif" : "plus.gif" );
+        $open_url = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? $top_url : $cat_url );
+        $nbsp = str_repeat( '&nbsp;', $i-1);
+
+        $template = str_repeat( '<img class="textmiddle" src="images/design/null.gif" alt="" border="0" align="absmiddle" width="16" height="0">', $i-1) . $template;
+
+        if ( $num_subcat <= 0 ) {
+            $template = str_replace( "{open_link}", $nbsp.'<img class="textmiddle" src="images/design/null.gif" alt="" width="16" height="0">', $template );
+        }
+        $template = str_replace( "{open_link}", $nbsp.'<a class="textmiddle" href="'.$open_url.'"><img class="textmiddle" style="margin-left:4px; margin-right:3px;" src="images/icons/dl/'.$open.'" alt="" border="0" align="absmiddle"></a>', $template );
+        $template = str_replace( "{folder_link}", '&nbsp;<a class="textmiddle" href="'.$cat_url.'"><img class="textmiddle" src="images/icons/dl/'.$folder.'" alt="" border="0" align="absmiddle"></a>', $template );
+
+        $template = str_replace( "{cat_url}", $cat_url, $template);
+        $template = str_replace( "{cat_name}", $array['cat_name'], $template );
+        $template = str_replace( "{class}", ( $array['cat_id'] == $GET_ID ? " active" : "" ), $template);
+
+        $navi .= $template;
+        if ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) {
+            create_dl_cat ( $array['cat_id'], $GET_ID, $NAVI_TEMPLATE );
+        }
+    }
+    $i--;
+    return $navi;
+}
+
+
+////////////////////////////////////////
+//// Get Preview Image by Timetable ////
+////////////////////////////////////////
 function get_timed_pic ()
 {
     global $global_config_arr;
     global $db;
 
-	$time = time();
-	$index = mysql_query ( "
-							SELECT screen_id
-							FROM ".$global_config_arr['pref']."screen_random
-							WHERE start <= ".$time." AND end >= ".$time."
-	", $db);
+    $time = time();
+    $index = mysql_query ( "
+                            SELECT screen_id
+                            FROM ".$global_config_arr['pref']."screen_random
+                            WHERE start <= ".$time." AND end >= ".$time."
+    ", $db);
     $rows = mysql_num_rows ( $index );
-	if ( $rows > 0 ) {
-		while ( $data = mysql_fetch_assoc ( $index ) ) {
-		    $timed[] = $data['screen_id'];
-		}
-		$rand = rand ( 0, $rows -1 );
-		$timed = implode ( ",", $timed );
-	    $index = mysql_query ( "
-								SELECT screen_id, screen_name, cat_id
-								FROM ".$global_config_arr['pref']."screen
-								WHERE screen_id IN (".$timed.")
-								LIMIT ".$rand.",1
-		", $db);
-		$dbscreen['id'] = mysql_result ( $index, 0, "screen_id" );
-	    $dbscreen['name'] = mysql_result ( $index, 0, "screen_name" );
-	    $dbscreen['cat'] = mysql_result ( $index, 0, "cat_id" );
-	    return $dbscreen;
-	} else {
-	    return false;
-	}
+    if ( $rows > 0 ) {
+        while ( $data = mysql_fetch_assoc ( $index ) ) {
+            $timed[] = $data['screen_id'];
+        }
+        $rand = rand ( 0, $rows -1 );
+        $timed = implode ( ",", $timed );
+        $index = mysql_query ( "
+                                SELECT screen_id, screen_name, cat_id
+                                FROM ".$global_config_arr['pref']."screen
+                                WHERE screen_id IN (".$timed.")
+                                LIMIT ".$rand.",1
+        ", $db);
+        $dbscreen['id'] = mysql_result ( $index, 0, "screen_id" );
+        $dbscreen['name'] = mysql_result ( $index, 0, "screen_name" );
+        $dbscreen['cat'] = mysql_result ( $index, 0, "cat_id" );
+        return $dbscreen;
+    } else {
+        return false;
+    }
 }
 
+//////////////////////////////////
+//// Get Random Preview Image ////
+//////////////////////////////////
 function get_random_pic ()
 {
     global $global_config_arr;
     global $db;
 
     $index = mysql_query ( "
-							SELECT cat_id
-							FROM ".$global_config_arr['pref']."screen_cat
-							WHERE randompic = 1
-	", $db);
+                            SELECT cat_id
+                            FROM ".$global_config_arr['pref']."screen_cat
+                            WHERE randompic = 1
+    ", $db);
     $cat_rows = mysql_num_rows ( $index );
-	if ( $cat_rows > 0 ) {
-		while ( $data = mysql_fetch_assoc ( $index ) ) {
-		    $random_cat[] = $data['cat_id'];
-		}
-		$random_cat = implode ( ",", $random_cat );
-	    $index = mysql_query ( "
-								SELECT COUNT(screen_id) AS rows
-								FROM ".$global_config_arr['pref']."screen
-								WHERE cat_id IN (".$random_cat.")
-								LIMIT 0,1
-		", $db);
-    	$rows = mysql_result ( $index, 0, "rows" );
-		if ( $rows > 0 ) {
-			$rand = rand ( 0, $rows -1 );
-		    $index = mysql_query ( "
-									SELECT screen_id, screen_name, cat_id
-									FROM ".$global_config_arr['pref']."screen
-									WHERE cat_id IN (".$random_cat.")
-									LIMIT ".$rand.",1
-			", $db);
-			$dbscreen['id'] = mysql_result ( $index, 0, "screen_id" );
-		    $dbscreen['name'] = mysql_result ( $index, 0, "screen_name" );
-		    $dbscreen['cat'] = mysql_result ( $index, 0, "cat_id" );
-		    return $dbscreen;
-		} else {
-	    	return false;
-		}
-	} else {
-	    return false;
-	}
+    if ( $cat_rows > 0 ) {
+        while ( $data = mysql_fetch_assoc ( $index ) ) {
+            $random_cat[] = $data['cat_id'];
+        }
+        $random_cat = implode ( ",", $random_cat );
+        $index = mysql_query ( "
+                                SELECT COUNT(screen_id) AS rows
+                                FROM ".$global_config_arr['pref']."screen
+                                WHERE cat_id IN (".$random_cat.")
+                                LIMIT 0,1
+        ", $db);
+        $rows = mysql_result ( $index, 0, "rows" );
+        if ( $rows > 0 ) {
+            $rand = rand ( 0, $rows -1 );
+            $index = mysql_query ( "
+                                    SELECT screen_id, screen_name, cat_id
+                                    FROM ".$global_config_arr['pref']."screen
+                                    WHERE cat_id IN (".$random_cat.")
+                                    LIMIT ".$rand.",1
+            ", $db);
+            $dbscreen['id'] = mysql_result ( $index, 0, "screen_id" );
+            $dbscreen['name'] = mysql_result ( $index, 0, "screen_name" );
+            $dbscreen['cat'] = mysql_result ( $index, 0, "cat_id" );
+            return $dbscreen;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 /////////////////////////////////////////
@@ -80,15 +228,15 @@ function get_random_pic ()
 /////////////////////////////////////////
 function get_pagenav_start ( $NUM_OF_ENTRIES, $ENTRIES_PER_PAGE, $START )
 {
-	if ( ! isset ( $START ) ) { $START = 0; }
-	if ( ! is_int ( $START ) ) { $START = 0; }
-	if ( $START < 0 ) { $START = 0; }
-	if ( $START > $NUM_OF_ENTRIES ) { $START = $NUM_OF_ENTRIES - $ENTRIES_PER_PAGE; }
+    if ( ! isset ( $START ) ) { $START = 0; }
+    if ( ! is_int ( $START ) ) { $START = 0; }
+    if ( $START < 0 ) { $START = 0; }
+    if ( $START > $NUM_OF_ENTRIES ) { $START = $NUM_OF_ENTRIES - $ENTRIES_PER_PAGE; }
 
     $OLDSTART = $START - $ENTRIES_PER_PAGE;
-	if ( $OLDSTART < 0 ) { $OLDSTART = 0; }
+    if ( $OLDSTART < 0 ) { $OLDSTART = 0; }
     $NEWSTART = $START + $ENTRIES_PER_PAGE;
-	if ( $NEWSTART > $NUM_OF_ENTRIES ) { $NEWSTART = $NUM_OF_ENTRIES - $ENTRIES_PER_PAGE; }
+    if ( $NEWSTART > $NUM_OF_ENTRIES ) { $NEWSTART = $NUM_OF_ENTRIES - $ENTRIES_PER_PAGE; }
 
     $PAGENAV_DATA['total_entries'] = $NUM_OF_ENTRIES;
     $PAGENAV_DATA['entries_per_page'] = $ENTRIES_PER_PAGE;
@@ -109,8 +257,8 @@ function get_pagenav_start ( $NUM_OF_ENTRIES, $ENTRIES_PER_PAGE, $START )
 //////////////////////////////////////
 function get_filter_where ( $FILTER, $SEARCH_FIELD )
 {
-	$filterarray = explode ( ",", $FILTER );
-	$filterarray = array_map ( "trim", $filterarray );
+    $filterarray = explode ( ",", $FILTER );
+    $filterarray = array_map ( "trim", $filterarray );
     unset ( $query );
     unset ( $and_query );
     unset ( $or_query );
@@ -145,16 +293,16 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
     }
 
     if ( $or_query != "" )
-	{
+    {
         $or_query = "(".$or_query.")";
         if ( $and_query != "" )
-		{
+        {
             $and_query = " AND ".$and_query;
         }
     }
 
     if ( $or_query != "" || $and_query != "" )
-	{
+    {
         $query = "WHERE ";
     }
     $query .= $or_query . $and_query;
@@ -168,13 +316,13 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
 
 function generate_pwd ( $LENGHT = 10 )
 {
-	$charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
+    $charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
     $code = "";
     $real_strlen = strlen ( $charset ) - 1;
     mt_srand ( (double)microtime () * 1001000 );
 
     while ( strlen ( $code ) < $LENGHT ) {
-    	$code .= $charset[mt_rand ( 0,$real_strlen ) ];
+        $code .= $charset[mt_rand ( 0,$real_strlen ) ];
     }
     return $code;
 }
@@ -188,35 +336,35 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
     global $global_config_arr;
     global $db;
 
-	session_start();
+    session_start();
 
-	function encrypt_captcha ( $STRING, $KEY ) {
-		$result = '';
-		for ( $i = 0; $i < strlen ( $STRING ); $i++ ) {
-			$char = substr ( $STRING, $i, 1 );
-   			$keychar = substr ( $KEY, ( $i % strlen ( $KEY ) ) -1, 1 );
-   			$char = chr ( ord ( $char ) + ord ( $keychar ) );
-			$result .= $char;
-		}
-		return base64_encode($result);
-	}
+    function encrypt_captcha ( $STRING, $KEY ) {
+        $result = '';
+        for ( $i = 0; $i < strlen ( $STRING ); $i++ ) {
+            $char = substr ( $STRING, $i, 1 );
+               $keychar = substr ( $KEY, ( $i % strlen ( $KEY ) ) -1, 1 );
+               $char = chr ( ord ( $char ) + ord ( $keychar ) );
+            $result .= $char;
+        }
+        return base64_encode($result);
+    }
 
-	$sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $global_config_arr['spam'] );
-	$sicherheits_eingabe = str_replace ("=", "", $sicherheits_eingabe );
+    $sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $global_config_arr['spam'] );
+    $sicherheits_eingabe = str_replace ("=", "", $sicherheits_eingabe );
 
-	if ( $ACTIVATION == 0 ) {
-		return TRUE;
-	} elseif ( $ACTIVATION == 1 && $_SESSION['user_id'] ) {
-		return TRUE;
-	} elseif ( $ACTIVATION == 3 && $_SESSION['user_id'] && is_in_staff ( $_SESSION['user_id'] ) ) {
-		return TRUE;
-	} elseif ( $ACTIVATION == 4 && $_SESSION['user_id'] && is_admin ( $_SESSION['user_id'] ) ) {
-		return TRUE;
-	} elseif ( $sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
-		return TRUE;
-	} else {
-		return FALSE;
-	}
+    if ( $ACTIVATION == 0 ) {
+        return TRUE;
+    } elseif ( $ACTIVATION == 1 && $_SESSION['user_id'] ) {
+        return TRUE;
+    } elseif ( $ACTIVATION == 3 && $_SESSION['user_id'] && is_in_staff ( $_SESSION['user_id'] ) ) {
+        return TRUE;
+    } elseif ( $ACTIVATION == 4 && $_SESSION['user_id'] && is_admin ( $_SESSION['user_id'] ) ) {
+        return TRUE;
+    } elseif ( $sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 //////////////////////////
@@ -230,20 +378,20 @@ function is_in_staff ( $USER_ID )
     
     settype ( $USER_ID, "integer" );
     
-	if ( $USER_ID ) {
-	    $index = mysql_query ( "
-								SELECT user_id, user_is_staff, user_is_admin
-								FROM ".$global_config_arr['pref']."user
-								WHERE user_id = '".$USER_ID."'
-								LIMIT 0,1
-		", $db );
-		if ( mysql_num_rows ( $index ) > 0 ) {
-			if ( mysql_result ( $index, 0, "user_is_staff" ) == 1 || mysql_result ( $index, 0, "user_is_admin" ) == 1 || mysql_result ( $index, 0, "user_id" ) == 1 ) {
-				 return TRUE;
-		    }
-	    }
-	}
-	return FALSE;
+    if ( $USER_ID ) {
+        $index = mysql_query ( "
+                                SELECT user_id, user_is_staff, user_is_admin
+                                FROM ".$global_config_arr['pref']."user
+                                WHERE user_id = '".$USER_ID."'
+                                LIMIT 0,1
+        ", $db );
+        if ( mysql_num_rows ( $index ) > 0 ) {
+            if ( mysql_result ( $index, 0, "user_is_staff" ) == 1 || mysql_result ( $index, 0, "user_is_admin" ) == 1 || mysql_result ( $index, 0, "user_id" ) == 1 ) {
+                 return TRUE;
+            }
+        }
+    }
+    return FALSE;
 }
 
 ///////////////////////
@@ -257,20 +405,20 @@ function is_admin ( $USER_ID )
 
     settype ( $USER_ID, "integer" );
 
-	if ( $USER_ID ) {
-	    $index = mysql_query ( "
-								SELECT user_id, user_is_admin
-								FROM ".$global_config_arr['pref']."user
-								WHERE user_id = '".$USER_ID."'
-								LIMIT 0,1
-		", $db );
-		if ( mysql_num_rows ( $index ) > 0 ) {
-			if ( mysql_result ( $index, 0, "user_is_admin" ) == 1 || mysql_result ( $index, 0, "user_id" ) == 1 ) {
-				 return TRUE;
-		    }
-	    }
-	}
-	return FALSE;
+    if ( $USER_ID ) {
+        $index = mysql_query ( "
+                                SELECT user_id, user_is_admin
+                                FROM ".$global_config_arr['pref']."user
+                                WHERE user_id = '".$USER_ID."'
+                                LIMIT 0,1
+        ", $db );
+        if ( mysql_num_rows ( $index ) > 0 ) {
+            if ( mysql_result ( $index, 0, "user_is_admin" ) == 1 || mysql_result ( $index, 0, "user_id" ) == 1 ) {
+                 return TRUE;
+            }
+        }
+    }
+    return FALSE;
 }
 
 //////////////////////
@@ -282,12 +430,12 @@ function get_template ( $TEMPLATE_NAME )
     global $global_config_arr;
     global $db;
     
-	$index = mysql_query ( "
-							SELECT `".$TEMPLATE_NAME."`
-							FROM ".$global_config_arr['pref']."template
-							WHERE `id` = '".$global_config_arr['design']."'
-	", $db );
-	return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
+    $index = mysql_query ( "
+                            SELECT `".$TEMPLATE_NAME."`
+                            FROM ".$global_config_arr['pref']."template
+                            WHERE `id` = '".$global_config_arr['design']."'
+    ", $db );
+    return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
 }
 
 ////////////////////////////
@@ -299,13 +447,13 @@ function get_email_template ( $TEMPLATE_NAME )
     global $global_config_arr;
     global $db;
 
-	$index = mysql_query ( "
-							SELECT `".$TEMPLATE_NAME."`
-							FROM ".$global_config_arr['pref']."email
-							WHERE `id` = '1'
-	", $db );
+    $index = mysql_query ( "
+                            SELECT `".$TEMPLATE_NAME."`
+                            FROM ".$global_config_arr['pref']."email
+                            WHERE `id` = '1'
+    ", $db );
 
-	return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
+    return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
 }
 
 ////////////////////
@@ -317,38 +465,38 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
     global $global_config_arr;
     global $db;
 
-	$index = mysql_query ( "
-							SELECT `use_admin_mail`, `email`, `html`
-							FROM ".$global_config_arr['pref']."email
-							WHERE `id` = '1'
-	", $db );
+    $index = mysql_query ( "
+                            SELECT `use_admin_mail`, `email`, `html`
+                            FROM ".$global_config_arr['pref']."email
+                            WHERE `id` = '1'
+    ", $db );
 
-	if ( $FROM == FALSE ) {
-		if ( mysql_result ( $index, 0, "use_admin_mail" ) == 1 ) {
-			$header  = "From: " . $global_config_arr['admin_mail'] . "\n";
-		} else {
-		    $header  = "From: " . stripslashes ( mysql_result ( $index, 0, "email" ) ) . "\n";
-		}
-	} else {
-		$header  = "From: " . $FROM . "\n";
-	}
+    if ( $FROM == FALSE ) {
+        if ( mysql_result ( $index, 0, "use_admin_mail" ) == 1 ) {
+            $header  = "From: " . $global_config_arr['admin_mail'] . "\n";
+        } else {
+            $header  = "From: " . stripslashes ( mysql_result ( $index, 0, "email" ) ) . "\n";
+        }
+    } else {
+        $header  = "From: " . $FROM . "\n";
+    }
 
-	$header .= "X-Mailer: PHP/" . phpversion() . "\n";
-	$header .= "X-Sender-IP: " . $REMOTE_ADDR . "\n";
-	
-	if ( $HTML == FALSE || $HTML == "html" ) {
-		if ( mysql_result ( $index, 0, "html" ) == 1 ) {
-			$header .= "Content-Type: text/html";
-			$TEXT = fscode ( $TEXT, true, true, false );
-			$TEXT = "<html><body>" . $TEXT . "</body></html>";
-		} else {
-			$header .= "Content-Type: text/plain";
-		}
-	} else  {
-		$header .= "Content-Type: text/plain";
-	}
+    $header .= "X-Mailer: PHP/" . phpversion() . "\n";
+    $header .= "X-Sender-IP: " . $REMOTE_ADDR . "\n";
+    
+    if ( $HTML == FALSE || $HTML == "html" ) {
+        if ( mysql_result ( $index, 0, "html" ) == 1 ) {
+            $header .= "Content-Type: text/html";
+            $TEXT = fscode ( $TEXT, true, true, false );
+            $TEXT = "<html><body>" . $TEXT . "</body></html>";
+        } else {
+            $header .= "Content-Type: text/plain";
+        }
+    } else  {
+        $header .= "Content-Type: text/plain";
+    }
 
-	return @mail ( $TO, $SUBJECT, $TEXT, $header );
+    return @mail ( $TO, $SUBJECT, $TEXT, $header );
 }
 
 
@@ -567,22 +715,60 @@ function create_textarea_seperator()
 }
 
 
-////////////////////////////////
-/////// System Message /////////
-////////////////////////////////
+/////////////////////////
+//// System Message ////
+/////////////////////////
 
-function sys_message ($title, $message)
+function sys_message ( $TITLE, $MESSAGE )
 {
-    global $db;
-    global $global_config_arr;
+    global $db, $global_config_arr;
 
-    $index = mysql_query("select error from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $template = stripslashes(mysql_result($index, 0, "error"));
-    $template = str_replace("{titel}", $title, $template);
-    $template = str_replace("{meldung}", $message, $template);
+    $template = new template();
+
+    $template->setFile ( "0_general.tpl" );
+    $template->load ( "SYSTEMMESSAGE" );
+
+    $template->tag ( "message_title", $TITLE );
+    $template->tag ( "message", $MESSAGE );
+
+    $template = $template->display ();
     return $template;
-    unset($template);
 }
+
+/////////////////////////
+//// Forward Message ////
+/////////////////////////
+
+function forward_message ( $TITLE, $MESSAGE, $URL)
+{
+    global $db, $global_config_arr;
+
+    $forward_script = '
+<noscript>
+    <meta http-equiv="Refresh" content="'.$global_config_arr['auto_forward'].'; URL='.$URL.'">
+</noscript>
+<script type="text/javascript">
+    function auto_forward() {
+        window.location = "'.$URL.'";
+    }
+    window.setTimeout("auto_forward()", '.($global_config_arr['auto_forward']*1000).');
+</script>
+    ';
+
+    $template = new template();
+
+    $template->setFile ( "0_general.tpl" );
+    $template->load ( "FORWARDMESSAGE" );
+
+    $template->tag ( "message_title", $TITLE );
+    $template->tag ( "message", $MESSAGE );
+    $template->tag ( "forward_url", $URL );
+    $template->tag ( "forward_time", $global_config_arr['auto_forward'] );
+    
+    $template = $template->display ();
+    return $forward_script.$template;
+}
+
 
 ////////////////////////////////
 /////// Number Format   ////////
@@ -740,10 +926,10 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     {
         $link_arr[link_name] = killhtml ( $link_arr[link_name] );
         $link_arr[link_url] = killhtml ( $link_arr[link_url] );
-		$index3 = mysql_query("select news_link from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
+        $index3 = mysql_query("select news_link from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
         $link = stripslashes(mysql_result($index3, 0, "news_link"));
         $link = str_replace("{name}", $link_arr[link_name], $link);
-        $link_arr[link_url] = str_replace("&","&amp;",$link_arr[link_url]);
+        #$link_arr[link_url] = str_replace("&","&amp;",$link_arr[link_url]);
         $link = str_replace("{url}", $link_arr[link_url], $link);
         if ($link_arr[link_target] == 1)
         {
@@ -869,7 +1055,7 @@ function killbraces ( $TEXT )
 
 function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0)
 {
-		include_once ( FS2_ROOT_PATH . 'includes/bbcodefunctions.php');
+        include_once ( FS2_ROOT_PATH . 'includes/bbcodefunctions.php');
         $bbcode = new StringParser_BBCode ();
 
         $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
@@ -880,7 +1066,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         }
         $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'stripslashes');
         if ($all==true) {
-      		$bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'nl2br');
+              $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'nl2br');
         }
         $bbcode->addParser ('list', 'bbcode_stripcontents');
 

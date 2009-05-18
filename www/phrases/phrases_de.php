@@ -8,6 +8,10 @@ $phrases[sysmessage]        = "Systemmeldung";
 $phrases[access_denied]     = "Zugriff verweigert";
 $phrases[file_not_found]    = "Das Angegebene Dokument kann nicht gefunden werden";
 $phrases[time_at]           = "um";
+$phrases[yes]               = "Ja";
+$phrases[no]                = "Nein";
+$phrases[month_names]       = array ( "Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember" );
+$phrases[week_days]         = array ( "Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag" );
 
 //Mails
 $phrases[pass_change]       = "Passwortänderung auf ";
@@ -31,18 +35,18 @@ $phrases[comm_not_activ]    = "Das Kommentarsystem ist bei dieser News deaktivie
 $phrases[no_pics]           = "Es wurden keine Bilder gefunden.";
 
 // Download
-$phrases[dl_not_logged_in]  = "<font color=\"red\"><b>Hinweis:</b></font> Um Dateien runterzuladen musst du <a href=\"?go=login\">eingeloggt</a> sein. Ansonsten kannst du nur die Mirros nutzen.";
-$phrases[dl_not_allowed]    = "<font color=\"red\"><b>Hinweis:</b></font> Die Download-Funktion ist derzeit deaktiviert. Du kannst nur die Mirros nutzen.";
-$phrases[dl_not_save_as]    = "<font color=\"red\"><b>Hinweis:</b></font> \"Ziel speichern unter\" ist nicht möglich.";
+$phrases[dl_not_logged_in]  = "<font color=\"red\"><b>Hinweis:</b></font> Um Dateien herunterzuladen musst du <a href=\"?go=login\">eingeloggt</a> sein. Sonst kannst du nur die Mirrors nutzen.";
+$phrases[dl_not_allowed]    = "<font color=\"red\"><b>Hinweis:</b></font> Die Download-Funktion ist derzeit deaktiviert. Du kannst nur die Mirrors nutzen.";
+$phrases[dl_not_save_as]    = "<font color=\"red\"><b>Hinweis:</b></font> \"Ziel speichern unter...\" ist nicht möglich.";
 $phrases[dl_not_exist]      = "Download nicht vorhanden";
 
 // Profil
 $phrases[avatar_loaded]     = "Avatar wurde hochgeladen";
-$phrases[avatar_no_jpggif]  = "Avatar konnte nicht hocgeladen werden. Es muss ein JPG oder GIF sein";
-$phrases[avatar_to_big]     = "Avatar konnte nicht hocgeladen werden. Die Datei ist zu groß";
-$phrases[profile_update]    = "Profil wurde aktualisiert.";
-$phrases[pass_update]       = "Passwort wurde geändert.";
-$phrases[pass_failed]       = "Passwort ändern fehlgeschlagen";
+$phrases[avatar_no_jpggif]  = "Avatar konnte nicht hochgeladen werden. Es muss ein JPG, PNG oder GIF sein.";
+$phrases[avatar_to_big]     = "Avatar konnte nicht hochgeladen werden. Die Datei ist zu groß.";
+$phrases[profile_update]    = "Profil wurde aktualisiert";
+$phrases[pass_update]       = "Passwort wurde geändert";
+$phrases[pass_failed]       = "Passwort Änderung fehlgeschlagen";
 $phrases[pass_newwrong]     = "Das gewünschte Passwort wurde nicht zweimal gleich eingegeben";
 $phrases[pass_oldwrong]     = "Das bisherige Passwort wurde nicht korrekt eingegeben";
 $phrases[no_avatar]         = "Kein Bild gewählt";

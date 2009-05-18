@@ -12,8 +12,19 @@ require ( FS2_ROOT_PATH . "includes/functions.php" );
 require ( FS2_ROOT_PATH . "includes/adminfunctions.php" );
 require ( FS2_ROOT_PATH . "includes/imagefunctions.php" );
 require ( FS2_ROOT_PATH . "includes/templatefunctions.php" );
+
+//Include Library-Classes
+require ( FS2_ROOT_PATH . "libs/class_template.php");
+
+//Include Phrases-Files
 require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
 require ( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php" );
+
+$index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);
+if (mysql_num_rows($index) > 0) {
+    $global_config_arr['style'] =  mysql_result($index, "name");
+}
+
 
 ######################
 ### START OF LOGIN ###

@@ -7,7 +7,7 @@ set_include_path ( '.' );
 define ( FS2_ROOT_PATH, "./", TRUE );
 
 // Inlcude DB Connection File
-require( FS2_ROOT_PATH . "login.inc.php");
+require ( FS2_ROOT_PATH . "login.inc.php");
 
 //////////////////////////////////
 //// DB Connection etablished ////
@@ -15,19 +15,19 @@ require( FS2_ROOT_PATH . "login.inc.php");
 if ($db)
 {
     //Include DL Catch
-    require( FS2_ROOT_PATH . "res/dl.inc.php");
+    require ( FS2_ROOT_PATH . "res/dl.inc.php");
     
     //Include Functions-Files
-    require( FS2_ROOT_PATH . "includes/functions.php");
-    require( FS2_ROOT_PATH . "includes/cookielogin.php");
-    require( FS2_ROOT_PATH . "includes/imagefunctions.php");
-    require( FS2_ROOT_PATH . "includes/indexfunctions.php");
+    require ( FS2_ROOT_PATH . "includes/functions.php");
+    require ( FS2_ROOT_PATH . "includes/cookielogin.php");
+    require ( FS2_ROOT_PATH . "includes/imagefunctions.php");
+    require ( FS2_ROOT_PATH . "includes/indexfunctions.php");
 
     //Include Library-Classes
-    require( FS2_ROOT_PATH . "libs/class_template.php");
+    require ( FS2_ROOT_PATH . "libs/class_template.php");
 
     //Include Phrases-Files
-    require( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php");
+    require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php");
 
     // Constructor Calls
     delete_old_randoms ();
@@ -53,7 +53,6 @@ if ($db)
     $template_index = replace_resources ( $template_index );
     $template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung
     $template_index = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_index );
-    //$template_index = killbraces ( $template_index );
     
     // Get Main Template
     $template = get_maintemplate ();
@@ -72,7 +71,7 @@ if ($db)
 else
 {
     // Include German Phrases
-    require( FS2_ROOT_PATH . "phrases/phrases_de.php");
+    require ( FS2_ROOT_PATH . "phrases/phrases_de.php");
 
     // No-Connection-Page Template
     $template = '

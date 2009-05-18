@@ -383,6 +383,8 @@ if ( TRUE )
             $edit_url = "http://";
         }
     
+        settype ( $edit_target, "integer" );
+    
         echo'
                                                                         </table>
                                 </td>

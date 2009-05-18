@@ -42,6 +42,7 @@ if (
     settype ( $_POST['allow_other_designs'], "integer" );
     settype ( $_POST['home'], "integer" );
     settype ( $_POST['dyn_title'], "integer" );
+    settype ( $_POST['auto_forward'], "integer" );
 
     // MySQL-Queries
     mysql_query ( "
@@ -67,7 +68,8 @@ if (
                                             `feed` = '".$_POST['feed']."',
                                             `language` = '".$_POST['language']."',
                                             `home` = '".$_POST['home']."',
-                                            `home_text` = '".$_POST['home_text']."'
+                                            `home_text` = '".$_POST['home_text']."',
+                                            `auto_forward` = '".$_POST['auto_forward']."'
                                     WHERE `id` = '1'
     ", $db );
     
@@ -122,6 +124,7 @@ if ( TRUE )
     settype ( $_POST['allow_other_designs'], "integer" );
     settype ( $_POST['home'], "integer" );
     settype ( $_POST['dyn_title'], "integer" );
+    settype ( $_POST['auto_forward'], "integer" );
 
     //get other data
     if ( $_POST['dyn_title'] == 1 ) {
@@ -344,6 +347,15 @@ if ( TRUE )
                                 <td class="config">
                                     <input class="text input_width" name="datetime" maxlength="255" value="'.$_POST['datetime'].'"><br>
                                     <span class="small">'.$admin_phrases[general][date_info].'</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '."Automatische Weiterleitung".': <br>
+                                    <span class="small">Zeit, nach der die automatische Weiterleitung aktiviert wird.</span>
+                                </td>
+                                <td class="config">
+                                    <input class="text center" size="2" name="auto_forward" maxlength="2" value="'.$_POST['auto_forward'].'"> Sekunden
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

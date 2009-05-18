@@ -363,13 +363,24 @@ else
                                     <select name="dlcatid">
     ';
 
-    // Kategorie Auswahl erzeugen
+    /*/ Kategorie Auswahl erzeugen
     $index = mysql_query("SELECT cat_id, cat_name FROM ".$global_config_arr[pref]."dl_cat", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($_POST[dlcatid] == $cat_arr[cat_id]) ? "selected" : "";
         echo'
                                         <option value="'.$cat_arr[cat_id].'" '.$sele.'>'.$cat_arr[cat_name].'</option>
+        ';
+    }  */
+    
+    $valid_ids = array();
+    get_dl_categories (&$valid_ids, -1);
+
+    foreach ($valid_ids as $cat)
+    {
+        $sele = ($_POST[dlcatid] == $cat[cat_id]) ? "selected" : "";
+        echo'
+                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
         ';
     }
 

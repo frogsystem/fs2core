@@ -6,7 +6,7 @@
 
 if ($_SESSION[user_level] == "loggedin")
 {
-    $template = sys_message("Login<br>", $phrases[logged_in]);
+    $template = forward_message ( "Login", $phrases[logged_in], "?go=news" );
 }
 
 //////////////////////////////

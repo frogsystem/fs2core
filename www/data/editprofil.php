@@ -1,72 +1,90 @@
 <?php
-// fs2 include path
-set_include_path ( '.' );
-$fs_root_path = "./";
+///////////////////////////////////////////
+//// Security Functions & Config Array ////
+///////////////////////////////////////////
+settype ( $_POST['user_id'], "integer");
 
-//////////////////////////////
-//// Profil aktualisieren ////
-//////////////////////////////
+$index = mysql_query ( "
+    SELECT *
+    FROM `".$global_config_arr['pref']."user_config`
+    WHERE `id` = '1'
+", $db );
+$config_arr = mysql_fetch_assoc ( $index );
 
-if ($_POST[usermail] && $_SESSION[user_id])
-{
-    settype($_POST[userid], "integer");
+//////////////////////
+//// Save Changes ////
+//////////////////////
+if ( $_POST['user_mail'] && $_SESSION['user_id']) {
 
-    // Avatar hochladen, wenn vorhanden
-    if ($_FILES[userpic][tmp_name])
-    {
-        image_rename("images/avatare/", $_SESSION[user_id], $_SESSION[user_id]."_old");
-        $upload = upload_img($_FILES[userpic], "images/avatare/", $_SESSION[user_id], 30*1024, 110, 110);
-        $message = upload_img_notice($upload)."<br />";
-        if ($upload == 0) {
-          image_delete("images/avatare/", $_SESSION[user_id]."_old");
+    // Upload & Delete User Image
+    if ( isset ( $_POST['user_delete_image'] ) ) {
+        image_delete ( "images/avatare/", $_SESSION['user_id'] );
+    } elseif ( $_FILES['user_image']['tmp_name'] ) {
+        image_rename ( "images/avatare/", $_SESSION['user_id'], $_SESSION['user_id']."_old");
+        $upload = upload_img ( $_FILES['user_image'], "images/avatare/", $_SESSION['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        $message = upload_img_notice ( $upload )."<br>";
+        if ( !$upload ) {
+          image_delete ( "images/avatare/", $_SESSION['user_id']."_old" );
         } else {
-          image_rename("images/avatare/", $_SESSION[user_id]."_old", $_SESSION[user_id]);
+          image_rename ( "images/avatare/", $_SESSION['user_id']."_old", $_SESSION['user_id'] );
         }
     }
 
-    //Email Daten
-    $mailto = $_POST[usermail];
+    // Update Database
+    $_POST['user_show_mail'] = isset ( $_POST['user_show_mail'] ) ? 1 : 0;
+    if (  trim ( $user_arr['user_homepage'] ) == "http://" ) {
+        $user_arr['user_homepage'] = "";
+    }
+    if (  $user_arr['user_homepage'] && substr ( $user_arr['user_homepage'], 0, 7 ) != "http://" ) {
+        $user_arr['user_homepage'] = "http://".$user_arr['user_homepage'];
+    }
+    
+    mysql_query ( "
+        UPDATE ".$global_config_arr['pref']."user
+        SET `user_mail` = '".savesql ( $_POST['user_mail'] )."',
+            `user_show_mail` = '".$_POST['user_show_mail']."',
+            `user_homepage` = '".savesql ( $_POST['user_homepage'] )."',
+            `user_icq` = '".savesql ( $_POST['user_icq'] )."',
+            `user_aim` = '".savesql ( $_POST['user_aim'] )."',
+            `user_wlm` = '".savesql ( $_POST['user_wlm'] )."',
+            `user_yim` = '".savesql ( $_POST['user_yim'] )."',
+            `user_skype` = '".savesql ( $_POST['user_skype'] )."'
+        WHERE `user_id` = '".$_SESSION['user_id']."'
+    ", $db);
+    $message .= $phrases['profile_update'];
 
-    // User Daten aktualisieren
-    $_POST[usermail] = savesql($_POST[usermail]);
-    $_POST[showmail] = isset($_POST[showmail]) ? 1 : 0;
-    $update = "UPDATE ".$global_config_arr[pref]."user
-               SET user_mail = '$_POST[usermail]',
-                   user_show_mail = '$_POST[showmail]'
-               WHERE user_id = $_SESSION[user_id]";
-    mysql_query($update, $db);
-    $message .= $phrases[profile_update];
-
-    // Neues Passwort eintragen 
-    if ($_POST[oldpwd] && $_POST[oldpwd] != ""
-        && $_POST[newpwd] && $_POST[newpwd] != ""
-        && $_POST[wdhpwd] && $_POST[wdhpwd] != "")
-    {
-        $index = mysql_query("SELECT user_password, user_salt FROM ".$global_config_arr['pref']."user WHERE user_id = '".$_SESSION['user_id']."'", $db);
-        $oldpass = mysql_result($index, 0, "user_password");
+    // Save New Password
+    if ( $_POST['oldpwd'] && $_POST['newpwd'] && $_POST['wdhpwd'] ) {
+        $index = mysql_query ( "
+            SELECT `user_password`, `user_salt`
+            FROM `".$global_config_arr['pref']."user`
+            WHERE `user_id` = '".$_SESSION['user_id']."'
+        ", $db );
+        $old_password = mysql_result($index, 0, "user_password");
         $user_salt = mysql_result($index, 0, "user_salt");
         
-        $_POST[oldpwd] = md5 ( $_POST[oldpwd].$user_salt );
+        $_POST['oldpwd'] = md5 ( $_POST['oldpwd'].$user_salt );
 
-        if ( $_POST[oldpwd] == $oldpass )
+        if ( $_POST['oldpwd'] == $old_password )
         {
-            if ( $_POST[newpwd] == $_POST[wdhpwd] )
+            if ( $_POST['newpwd'] == $_POST['wdhpwd'] )
             {
                 $new_salt = generate_pwd ( 10 );
-                $mailpass = $_POST[newpwd];
-                $codedpass = md5 ( $_POST[newpwd].$new_salt );
-                unset($_POST[newpwd]);
-                unset($_POST[wdhpwd]);
+                $mail_password = $_POST['newpwd'];
+                $md5_password = md5 ( $_POST['newpwd'].$new_salt );
+                unset ( $_POST['newpwd'] );
+                unset ( $_POST['wdhpwd'] );
 
-                //UPDATE PASSWORD
-                $update = "UPDATE ".$global_config_arr['pref']."user
-                          SET user_password = '".$codedpass."',
-                              user_salt = '".$new_salt."'
-                          WHERE user_id = ".$_SESSION['user_id']."";
-                mysql_query($update, $db);
-                $message .= "<br>".$phrases[pass_update];
+                // Update Password
+                mysql_query ( "
+                    UPDATE ".$global_config_arr['pref']."user
+                    SET `user_password` = '".$md5_password."',
+                        `user_salt` = '".$new_salt."'
+                    WHERE `user_id` = '".$_SESSION['user_id']."'
+                ", $db);
+                $message .= "<br>".$phrases['pass_update'];
                 
-                // send email
+                // Send E-Mail
                 $template_mail = get_email_template ( "signup" );
                 $template_mail = str_replace ( "{username}", stripslashes ( $_SESSION['user_name'] ), $template_mail );
                 $template_mail = str_replace ( "{password}", $mailpass, $template_mail );
@@ -89,46 +107,54 @@ if ($_POST[usermail] && $_SESSION[user_id])
     }
 
     // Meldung ausgebena
-    $template .= sys_message("Profil", $message);
+    $template .= forward_message ( "Profil", $message, $_SERVER['REQUEST_URI'] );
 }
 
-//////////////////////////////
-////// Profil editieren //////
-//////////////////////////////
+//////////////////////
+//// Edit Profile ////
+//////////////////////
+else {
+    if ( $_SESSION['user_level'] == "loggedin" ) {
+        $index = mysql_query ( "
+            SELECT *
+            FROM `".$global_config_arr['pref']."user`
+            WHERE `user_id` = '".$_SESSION['user_id']."'
+        ", $db );
 
-else
-{
-    if ($_SESSION[user_level] == "loggedin")
-    {
-        $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_id = $_SESSION[user_id]", $db);
-        $user_arr = mysql_fetch_assoc($index);
-        $dbshowmail = $user_arr[user_show_mail];
-        $user_arr[user_show_mail] = ($user_arr[user_show_mail] == 1) ? "checked" : "";
+        if ( mysql_num_rows ( $index ) > 0 ) {
+            $user_arr = mysql_fetch_assoc ( $index );
+            
+            $user_arr['user_image'] = ( image_exists ( "images/avatare/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "images/avatare/", $user_arr['user_id'] ).'" alt="'.$user_arr['user_name'].'">' : $phrases['no_avatar'] );
+            $user_arr['user_homepage'] = ( $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != "http://" ? $user_arr['user_homepage'] : "http://" );
 
-        // Avatar vorhanden?
-        if (image_exists("images/avatare/", $_SESSION[user_id]))
-        {
-            $user_arr[user_avatar] = '<img src="'.image_url("images/avatare/",$_SESSION[user_id]).'" />';
+            // Create Template
+            $template = new template();
+
+            $template->setFile ( "0_user.tpl" );
+            $template->load ( "EDITPROFILE" );
+
+            $template->tag ( "user_id", $user_arr['user_id'] );
+            $template->tag ( "user_name", stripslashes ( $user_arr['user_name'] ) );
+            $template->tag ( "user_image", $user_arr['user_image'] );
+            $template->tag ( "image_max_width", $config_arr['avatar_x'] );
+            $template->tag ( "image_max_height", $config_arr['avatar_y'] );
+            $template->tag ( "image_max_size", $config_arr['avatar_size'] );
+            $template->tag ( "image_limits_text", 'max. '.$config_arr['avatar_x'].' x '.$config_arr['avatar_y'].' Pixel & max. '.$config_arr['avatar_size'].' KiB' );
+            $template->tag ( "user_mail", stripslashes ( $user_arr['user_mail'] ) );
+            $template->tag ( "show_mail_checked", ( $user_arr['user_show_mail'] == 1 ? " checked" : "" ) );
+
+            $template->tag ( "user_homepage_url", stripslashes ( $user_arr['user_homepage'] ) );
+            $template->tag ( "user_icq", stripslashes ( $user_arr['user_icq'] ) );
+            $template->tag ( "user_aim", stripslashes ( $user_arr['user_aim'] ) );
+            $template->tag ( "user_wlm", stripslashes ( $user_arr['user_wlm'] ) );
+            $template->tag ( "user_yim", stripslashes ( $user_arr['user_yim'] ) );
+            $template->tag ( "user_skype", stripslashes ( $user_arr['user_skype'] ) );
+
+            $template = $template->display ();
         }
-        else
-        {
-            $user_arr[user_avatar] = $phrases[no_avatar];
-        }
-
-        // Template aufbauen
-        $index = mysql_query("SELECT user_profiledit FROM ".$global_config_arr['pref']."template WHERE id = '$global_config_arr[design]'", $db);
-        $template = stripslashes(mysql_result($index, 0, "user_profiledit"));
-        $template = str_replace("{avatar}", $user_arr[user_avatar], $template); 
-        $template = str_replace("{email}", $user_arr[user_mail], $template); 
-        $template = str_replace("{email_zeigen}", $user_arr[user_show_mail], $template);
-        $template = str_replace("{username}", $user_arr[user_name], $template);
-
-    }
-    else  // Login Formular anzeigen
-    {
-        $_SESSION[last_url] = "editprofil";
-        include( FS2_ROOT_PATH . "data/login.php");
+    } else { // Show Login-Page
+        $_SESSION['last_url'] = "editprofil";
+        include ( FS2_ROOT_PATH . "data/login.php" );
     }
 }
-
 ?>

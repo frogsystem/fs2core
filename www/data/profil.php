@@ -1,61 +1,122 @@
 <?php
+///////////////////////////////////////////
+//// Security Functions & Config Array ////
+///////////////////////////////////////////
+$_GET['user_id'] = ( isset ( $_GET['userid'] ) ? $_GET['userid'] : $_GET['user_id'] );
+$_GET['user_id'] = ( !$_GET['user_id'] && $_SESSION['user_id'] ? $_SESSION['user_id'] : $_GET['user_id'] );
+settype ( $_GET['user_id'], "integer");
 
-/////////////////////////
-//// Profil anzeigen ////
-/////////////////////////
+$index = mysql_query ( "
+    SELECT *
+    FROM `".$global_config_arr['pref']."user_config`
+    WHERE `id` = '1'
+", $db );
+$config_arr = mysql_fetch_assoc ( $index );
 
-settype($_GET[userid], "integer");
-$index = mysql_query("select * from ".$global_config_arr[pref]."user where user_id = $_GET[userid]", $db);
+$index = mysql_query ( "
+    SELECT *
+    FROM `".$global_config_arr['pref']."user`
+    WHERE `user_id` = '".$_GET['user_id']."'
+", $db );
 
-if (mysql_num_rows($index) > 0)
-{
-    $user_arr = mysql_fetch_assoc($index);
+//////////////////////
+//// Show Profile ////
+//////////////////////
+if ( mysql_num_rows ( $index ) > 0 ) {
+    $user_arr = mysql_fetch_assoc ( $index );
 
-    if ($user_arr[show_mail] != 1)
-    {
-        $user_arr[user_mail] = "-";
+    $user_arr['user_name'] = stripslashes ( $user_arr['user_name'] );
+    $user_arr['user_image'] = ( image_exists ( "images/avatare/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "images/avatare/", $user_arr['user_id'] ).'" alt="'.$user_arr['user_name'].'">' : $phrases['no_avatar'] );
+    $user_arr['user_mail'] = ( $user_arr['user_show_mail'] == 1 ? stripslashes ( $user_arr['user_mail'] ) : "-" );
+    $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $phrases['yes'] : $phrases['no'] );
+    $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $phrases['yes'] : $phrases['no'] );
+    
+    $user_arr['rank_data'] = get_user_rank ( $user_arr['user_group'] );
+    $user_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
+    if ( $user_arr['user_group'] != 0 || ( $user_arr['user_group'] == 0 && $user_arr['user_is_admin'] == 1 ) ) {
+        $user_arr['user_group_text'] = $user_arr['rank_data']['user_group_name'];
     }
+    
+    $user_arr['user_reg_date_text'] = date_loc ( stripslashes ( $config_arr['reg_date_format'] ), $user_arr['user_reg_date'] );
 
-    // Geschriebene Kommentare
-    $index = mysql_query("select comment_id from ".$global_config_arr[pref]."news_comments where comment_poster_id = $_GET[userid]", $db);
-    $user_arr[user_comments] = mysql_num_rows($index);
-
-    // Geschriebene Artikel
-    $index = mysql_query("select article_url from ".$global_config_arr[pref]."articles where article_user = $_GET[userid]", $db);
-    $user_arr[user_artikel] = mysql_num_rows($index);
-
-    // Geschriebene News
-    $index = mysql_query("select news_id from ".$global_config_arr[pref]."news where user_id = $_GET[userid]", $db);
-    $user_arr[user_news] = mysql_num_rows($index);
-
-    if (image_exists("images/avatare/",$_GET[userid]))
-    {
-        $user_arr[user_avatar] = '<img src="'.image_url("images/avatare/",$_GET[userid]).'" />';
+    if (  $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != "http://" ) {
+        $user_arr['user_homepage_link'] = '<a href="'.stripslashes ( $user_arr['user_homepage'] ).'" target="_blank">'.$user_arr['user_homepage'].'</a>';
+    } else {
+        $user_arr['user_homepage_link'] = "-";
     }
-    else
-    {
-        $user_arr[user_avatar] = $phrases[no_avatar];
-    }
+    
+    $user_arr['user_icq'] = ( $user_arr['user_icq'] != "" ? stripslashes ( $user_arr['user_icq'] ) : "-" );
+    $user_arr['user_aim'] = ( $user_arr['user_aim'] != "" ? stripslashes ( $user_arr['user_aim'] ) : "-" );
+    $user_arr['user_wlm'] = ( $user_arr['user_wlm'] != "" ? stripslashes ( $user_arr['user_wlm'] ) : "-" );
+    $user_arr['user_yim'] = ( $user_arr['user_yim'] != "" ? stripslashes ( $user_arr['user_yim'] ) : "-" );
+    $user_arr['user_skype'] = ( $user_arr['user_skype'] != "" ? stripslashes ( $user_arr['user_skype'] ) : "-" );
 
-    // Template aufbauen
-    $index = mysql_query("select user_profil from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $template = stripslashes(mysql_result($index, 0, "user_profil"));
-    $template = str_replace("{username}", killhtml($user_arr[user_name]), $template); 
-    $template = str_replace("{avatar}", $user_arr[user_avatar], $template); 
-    $template = str_replace("{email}", $user_arr[user_mail], $template); 
-    $template = str_replace("{reg_datum}", date($global_config_arr['date'], $user_arr[user_reg_date]), $template);
-    $template = str_replace("{news}", $user_arr[user_news], $template); 
-    $template = str_replace("{artikel}", $user_arr[user_artikel], $template); 
-    $template = str_replace("{kommentare}", $user_arr[user_comments], $template);
+    $index = mysql_query ( "
+        SELECT COUNT(`news_id`) AS `number`
+        FROM `".$global_config_arr['pref']."news`
+        WHERE `user_id` = '".$user_arr['user_id']."'
+    ", $db );
+    $user_arr['user_num_news'] = mysql_result ( $index, 0, "number" );
+    
+    $index = mysql_query ( "
+        SELECT COUNT(`comment_id`) AS `number`
+        FROM `".$global_config_arr['pref']."news_comments`
+        WHERE `comment_poster_id` = '".$user_arr['user_id']."'
+    ", $db );
+    $user_arr['user_num_comments'] = mysql_result ( $index, 0, "number" );
 
+    $index = mysql_query ( "
+        SELECT COUNT(`article_id`) AS `number`
+        FROM `".$global_config_arr['pref']."articles`
+        WHERE `article_user` = '".$user_arr['user_id']."'
+    ", $db );
+    $user_arr['user_num_articles'] = mysql_result ( $index, 0, "number" );
+
+    $index = mysql_query ( "
+        SELECT COUNT(`dl_id`) AS `number`
+        FROM `".$global_config_arr['pref']."dl`
+        WHERE `user_id` = '".$user_arr['user_id']."'
+    ", $db );
+    $user_arr['user_num_downloads'] = mysql_result ( $index, 0, "number" );
+
+
+    // Create Template
+    $template = new template();
+
+    $template->setFile ( "0_user.tpl" );
+    $template->load ( "PROFILE" );
+
+    $template->tag ( "user_id", $user_arr['user_id'] );
+    $template->tag ( "user_name", $user_arr['user_name'] );
+    $template->tag ( "user_image", $user_arr['user_image'] );
+    $template->tag ( "user_rank", $user_arr['user_rank'] );
+    $template->tag ( "user_mail", $user_arr['user_mail'] );
+
+    $template->tag ( "user_is_staff", $user_arr['user_is_staff_text'] );
+    $template->tag ( "user_is_admin", $user_arr['user_is_admin_text'] );
+    $template->tag ( "user_group", $user_arr['user_group_text'] );
+    $template->tag ( "user_reg_date", $user_arr['user_reg_date_text'] );
+
+    $template->tag ( "user_homepage_link", $user_arr['user_homepage_link'] );
+    $template->tag ( "user_homepage_url", stripslashes ( $user_arr['user_homepage'] ) );
+    $template->tag ( "user_icq", $user_arr['user_icq'] );
+    $template->tag ( "user_aim", $user_arr['user_aim'] );
+    $template->tag ( "user_wlm", $user_arr['user_wlm'] );
+    $template->tag ( "user_yim", $user_arr['user_yim'] );
+    $template->tag ( "user_skype", $user_arr['user_skype'] );
+
+    $template->tag ( "user_num_news", $user_arr['user_num_news'] );
+    $template->tag ( "user_num_comments", $user_arr['user_num_comments'] );
+    $template->tag ( "user_num_articles", $user_arr['user_num_articles'] );
+    $template->tag ( "user_num_downloads", $user_arr['user_num_downloads'] );
+
+    $template = $template->display ();
 }
 
-/////////////////////////
-//// Falsche User ID ////
-/////////////////////////
-
-else
-{
-    $template = sys_message($phrases[sysmessage], $phrases[user_not_exist]);
+///////////////////////////
+//// User ID not found ////
+///////////////////////////
+else {
+    $template = sys_message ( $phrases['sysmessage'], $phrases['user_not_exist'] );
 }
 ?>

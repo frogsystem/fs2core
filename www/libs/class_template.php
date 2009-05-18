@@ -9,28 +9,11 @@
 * it's the base class for other template-related classes
 */
 
-interface iTemplate
-{
-    // functions to set & get default values
-    public function setFile($file);
-    public function setClearUnassigned($boolean);
-    
-    // functions to access templates
-    public function load($section);
-    public function clearSectionCache();
-    public function display();
-    
-    // functions to assign values to tags
-    public function tag($tag, $value);
-    public function clearTags();
-    public function deleteTag($tag);
-}
-
-class template implements iTemplate
+class template
 {
     /**
     * here you may change the values of the tag opener and closer
-    * I strictly recommend not to change these values, for all templates use the default values {.. and ..}
+    * I strictly recommend not to change these values, in all templates the default values {.. and ..} are used
     * opener and closer were changed from { and } to {.. and ..} because of some javascript incompatibilities
     **/
     const OPENER                = "{..";
@@ -50,11 +33,11 @@ class template implements iTemplate
     // constructor
     public function  __construct() {
          global $global_config_arr;
-         $this->setStyle($global_config_arr['style'] );
+         $this->setStyle($global_config_arr['style']);
     }
 
     // functions to set & get default values
-    private function setStyle($style) {
+    public function setStyle($style) {
         if (file_exists(FS2_ROOT_PATH."styles/".$style)) {
             $this->style = $style;
             $this->clearSectionCache();
@@ -134,7 +117,7 @@ class template implements iTemplate
     {
         $template = $this->getTemplate();
         foreach ($this->tags as $tag => $value) {
-            if ($value != null) {
+            if ($value !== null) {
                 $template = str_replace( self::OPENER . $tag . self::CLOSER, $value, $template);
             }
         }
