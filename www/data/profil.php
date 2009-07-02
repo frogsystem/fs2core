@@ -35,6 +35,8 @@ if ( mysql_num_rows ( $index ) > 0 ) {
     $user_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
     if ( $user_arr['user_group'] != 0 || ( $user_arr['user_group'] == 0 && $user_arr['user_is_admin'] == 1 ) ) {
         $user_arr['user_group_text'] = $user_arr['rank_data']['user_group_name'];
+    } else {
+        $user_arr['user_group_text'] = "-";
     }
     
     $user_arr['user_reg_date_text'] = date_loc ( stripslashes ( $config_arr['reg_date_format'] ), $user_arr['user_reg_date'] );

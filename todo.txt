@@ -1,5 +1,3 @@
-bug-fixes und verbesserungen (Sweil)
-rechteverwaltung
 gästebuch
 kommentare & bewertung bei bildern
 kommentare & bewertung bei downloads
@@ -19,9 +17,7 @@ counter für einzelne seiten (?go=xyz zählen)
 counter für alles (klicks auf partnerlink, bilder, wallpaper, buchstaben...)
 kalendersystem (termine, veröffentlichungen, countdown...)
 statistik überarbeiten
-userprofil erweitern
 go-Aliase (?go=toll leitet auf ?go=super weiter)
-community map komplett neu machen (idee ort aus profil auf deutschlandkarte anzeigen lassen)
 druckansicht für artikel
 No Java Script kompatbilität überprüfen
 sitemap und artikel kategorie system

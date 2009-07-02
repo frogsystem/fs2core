@@ -16,73 +16,67 @@ echo'
 <head>
     <title>Frogsystem 2 - Frogpad</title>
     <link rel="stylesheet" type="text/css" href="admin.css">
-    <style>
-      #pad_container
-      {
-          background-image:url(img/content_loop.jpg);
-          background-repeat:repeat-y;
-          width:698px;
-          text-align:left;
-          margin-top:5px;
-      }
-      #pad_padding
-      {
-          width:604px;
-          padding-left:35px;
-          padding-right:45px;
-          text-align:left;
-      }
-      #pad_top
-      {
-          background-image:url(img/content_top.jpg);
-          background-repeat:no-repeat;
-          width:698px;
-          height:27px;
-          padding-left:19px;
-          padding-top:18px;
-          font-size:9pt;
-          font-family:Verdana;
-          color:#000000;
-          font-weight:bold;
-      }
-      #pad_foot
-      {
-          background-image:url(img/content_foot.jpg);
-          background-repeat:no-repeat;
-          width:698px;
-          height:53px;
-      }
-    </style>
-    <script>
-        <!--
-        function fill()
-        {
-            what = opener.document.getElementsByName("editwhat")[0].value;
-            document.getElementsByName("code")[0].value = opener.document.getElementsByName(what)[0].value;
+    <script src="../resources/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+    <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var change = window.setInterval("send()", 500);
+        var sourceId = $("#section_select", opener.document).val();
+        
+        function fill() {
+            newheight = window.innerHeight-150;
+            $(".cs_text_content:first").css("height", newheight+"px");
+            $(".cs_text_content:first iframe").css("height", newheight-31+"px");
+
+            eval ( "$(\"#"+sourceId+"_content\", opener.document).css(\"visibility\", \"hidden\")" );
+            eval ( "$(\"#"+sourceId+"_inedit\", opener.document).show()" );
+
+            eval ( "var title = $(\"#"+sourceId+"_title\", opener.document).text()" );
+            $("#frogpad_title").text( "Frogpad - " + title );
+
+            var content = eval ( "opener.editor_"+sourceId+".getCode()" );
+            frogpad.setCode ( content );
         }
-        function send()
-        {
-            what = opener.document.getElementsByName("editwhat")[0].value;
-            opener.document.getElementsByName(what)[0].value = document.getElementsByName("code")[0].value;
-            self.close();
+        
+        function send() {
+            var new_content =  frogpad.getCode ();
+            eval ( "opener.editor_"+sourceId+".setCode(new_content)" );
         }
-        // -->
+
+        function close_window() {
+            window.clearInterval(change);
+            send();
+            eval ( "$(\"#"+sourceId+"_content\", opener.document).css(\"visibility\", \"visible\")" );
+            eval ( "$(\"#"+sourceId+"_inedit\", opener.document).hide()" );
+        }
     </script>
 </head>
-<body onLoad="fill()" id="find_body">
-  <center><div id="pad_container">
-    <div id="pad_top">
-      <img border="0" src="img/pointer.png" alt="" align="top" />
-      <font style="font-size:8pt;"><b>FROGPAD</b></font>
-    </div>
-    <div id="pad_padding">
-      <textarea name="code" style="font-family:monospace; overflow:auto; width:600px; height:525px;"></textarea>
-      <br /><br />
-      <input type="button" class="button" value="Ändern" onClick="send();">
-      <input type="button" class="button" value="Abbrechen" onClick="javascript:self.close()">
-    </div>
-    <div id="pad_foot"></div>
-  </div></center>
+<body onLoad="fill();" onUnload="close_window();" id="find_body">
+
+    '.get_content_container ( '
+        <img src="img/pointer.png" alt="" style="vertical-align: text-top;" border="0">
+        <span id="frogpad_title" style="font-weight:bold;">Frogpad</span>
+    ', '
+        <div id="frogpad_div" style="background-color:#ffffff; border: 1px solid black;">
+            <textarea id="frogpad" class="codepress html autocomplete-off" style="width:100%; height:100%;">d</textarea>
+        </div>
+            <br>
+            <input type="button" class="button" value="Schließen" onClick="close_window(); self.close();">
+    ', "margin-top:8px;" ).'
+
+    <script type="text/javascript">
+      var frogpad = CodeMirror.fromTextArea("frogpad", {
+        parserfile: "parsexml.js",
+        stylesheet: "../resources/codemirror/css/xmlcolors.css",
+        path: "../resources/codemirror/js/",
+        continuousScanning: 500,
+        lineNumbers: true,
+        textWrapping: false,
+        tabMode: "shift",
+        width: "100%",
+        height: "100%"
+      });
+    </script>
+    
 </body>
 </html>
 ';

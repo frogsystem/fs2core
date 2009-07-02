@@ -164,6 +164,7 @@ function get_content ( $GOTO )
     } elseif ( $GOTO == "dl" && isset ( $_GET['fileid'] ) && isset ( $_GET['dl'] ) ) {
         $template = "";
     } else {
+        $global_config_arr['goto'] = "404";
         include ( FS2_ROOT_PATH . "data/404.php" );
     }
 
@@ -453,7 +454,7 @@ function delete_old_randoms ()
 ///////////////////////////////
 function get_copyright ()
 {
-        return '<span class="small">Powered by <a class="small" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007, 2008 Frogsystem-Team</span>';
+        return '<span class="copyright">Powered by <a class="copyright_link" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007 - 2009 Frogsystem-Team</span>';
 }
 
 
@@ -522,7 +523,7 @@ function copyright ()
     global $global_config_arr;
 
         if ( strpos ( get_template ( "indexphp" ), "{copyright}" ) == FALSE
-                        || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007, 2008 Frogsystem-Team" ) == FALSE
+                        || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2009 Frogsystem-Team" ) == FALSE
                         || strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE) {
         $global_config_arr['design'] =  0;
     }

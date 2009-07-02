@@ -113,8 +113,8 @@ echo'
     <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <link rel="stylesheet" type="text/css" href="admin.css">
     <link rel="stylesheet" type="text/css" href="editor.css">
+    <script src="../resources/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="functions.js" type="text/javascript"></script>
-    <script src="../res/jquery-1.3.1.min.js" type="text/javascript"></script>
     <script src="../res/js_functions.js" type="text/javascript"></script>
 </head>
 <body>

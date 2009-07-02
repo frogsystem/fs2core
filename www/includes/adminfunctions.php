@@ -1,4 +1,50 @@
 <?php
+//////////////////////////////////
+//// create content container ////
+//////////////////////////////////
+
+function get_content_container ( $TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "width:100%;", $TOP_STYLE = FALSE, $CONTENT_STYLE = FALSE )
+{
+    $overall_width = ( $OVERALL_STYLE === FALSE ? '' : ' style="'.$OVERALL_STYLE.'"' );
+    $top_style = ( $TOP_STYLE === FALSE ? '' : ' style="'.$TOP_STYLE.'"' );
+    $content_style = ( $CONTENT_STYLE === FALSE ? '' : ' style="'.$CONTENT_STYLE.'"' );
+    
+    $template = '
+                <div'.$overall_width.'>
+                    <div class="cs_overall">
+                        <div class="cs_top_loop">
+                            <div class="cs_top_left">
+                                <div class="cs_top_right">
+                                    <div class="cs_text_top"'.$top_style.'>
+                                        '.$TOP_TEXT.'
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cs_mid_loop"
+                            <div class="cs_mid_left">
+                                <div class="cs_mid_right">
+                                    <div class="cs_text_content"'.$content_style.'>
+                                        '.$CONTENT_TEXT.'
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cs_bot_loop"
+                            <div class="cs_bot_left">
+                                <div class="cs_bot_right">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    ';
+    
+    return $template;
+}
+
+
+
 /////////////////////////////
 //// scandir with filter ////
 /////////////////////////////
@@ -577,10 +623,10 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
     }
     if ( $INSERT == TRUE ) {
         $insert_button = '
-        &nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfügen" align="top"></a>';
+        <a href="javascript:insert_tag('.$FORM_ID.',\''.$TITLE.'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfügen" align="absmiddle"></a>';
     }
     if ( $SHOW_TITLE == TRUE ) {
-        $first_title = $TITLE."&nbsp;";
+        $first_title = $TITLE."";
     }
     if ( $BOLD_TITLE == TRUE ) {
         $second_title = " <b>".$TITLE."</b>";
@@ -591,11 +637,11 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
     $template = $span_start.'
             '.$first_title.'
             <a class="tooltip" href="#?">
-                <img border="0" src="icons/help.gif" align="top" alt="?">&nbsp;
+                <img border="0" src="icons/help.gif" align="absmiddle" alt="?">
                 <span>
-                    <img border="0" src="img/pointer.png" align="top" alt="->">'.$second_title.'<br>'.$TEXT.'
+                    <img border="0" src="img/pointer.png" align="absmiddle" alt="->">'.$second_title.'<br>'.$TEXT.'
                 </span>
-            </a> '.$insert_button.$span_end.'
+            </a>'.$insert_button.$span_end.'
     ';
 
    return $template;

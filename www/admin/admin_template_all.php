@@ -30,29 +30,37 @@
     $TEMPLATE_GO = "tpl_general";
     unset($tmp);
 
-    $tmp[name] = "error";
+    $tmp[name] = "SYSTEMMESSAGE";
     $tmp[title] = $admin_phrases[template][error][title];
     $tmp[description] = $admin_phrases[template][error][description];
-    $tmp[rows] = "5";
+    $tmp[rows] = "10";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{titel}";
-        $tmp[help][0][text] = $admin_phrases[template][error][help_1];
-        $tmp[help][1][tag] = "{meldung}";
-        $tmp[help][1][text] = $admin_phrases[template][error][help_2];
+        $tmp[help][] = array ( tag => "{..message_title..}", text => $admin_phrases[template][error][help_1] );
+        $tmp[help][] = array ( tag => "{..message..}", text => $admin_phrases[template][error][help_2] );
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
+    $tmp[name] = "FORWARDMESSAGE";
+    $tmp[title] = "Weiterleitungs-Nachricht";
+    $tmp[description] = $admin_phrases[template][error][description];
+    $tmp[rows] = "10";
+    $tmp[cols] = "66";
+        $tmp[help][] = array ( tag => "{..message_title..}", text => $admin_phrases[template][error][help_1] );
+        $tmp[help][] = array ( tag => "{..message..}", text => $admin_phrases[template][error][help_2] );
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+    
     $TEMPLATE_EDIT[] = false;
 
-    $tmp[name] = "doctype";
+    $tmp[name] = "DOCTYPE";
     $tmp[title] = $admin_phrases[template][doctype][title];
     $tmp[description] = $admin_phrases[template][doctype][description];
-    $tmp[rows] = "3";
+    $tmp[rows] = "5";
     $tmp[cols] = "66";
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "indexphp";
+    $tmp[name] = "MAINPAGE";
     $tmp[title] = $admin_phrases[template][indexphp][title];
     $tmp[description] = $admin_phrases[template][indexphp][description];
     $tmp[rows] = "20";
@@ -80,7 +88,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "main_menu";
+    $tmp[name] = "MENU1";
     $tmp[title] = $admin_phrases[template][main_menu][title] ;
     $tmp[description] = $admin_phrases[template][main_menu][description] ;
     $tmp[rows] = "20";
@@ -92,7 +100,7 @@
 
     $TEMPLATE_EDIT[] = false;
     
-    $tmp[name] = "pic_viewer";
+    $tmp[name] = "PICTUREVIEWER";
     $tmp[title] = $admin_phrases[template][pic_viewer][title];
     $tmp[description] = $admin_phrases[template][pic_viewer][description];
     $tmp[rows] = "25";
@@ -108,7 +116,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
         
-    $tmp[name] = "announcement";
+    $tmp[name] = "ANNOUNCEMENT";
     $tmp[title] = $admin_phrases[template][announcement][title];
     $tmp[description] = $admin_phrases[template][announcement][description];
     $tmp[rows] = "10";
@@ -120,7 +128,7 @@
     
     $TEMPLATE_EDIT[] = false;
     
-    $tmp[name] = "statistik";
+    $tmp[name] = "STATISTICS";
     $tmp[title] = $admin_phrases[template][statistik][title];
     $tmp[description] = $admin_phrases[template][statistik][description];
     $tmp[rows] = "15";
@@ -145,16 +153,7 @@
         $tmp[help][8][text] = $admin_phrases[template][statistik][help_9];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
-    
-/*    $tmp[name] = "community_map";
-    $tmp[title] = $admin_phrases[template][community_map][title];
-    $tmp[description] = $admin_phrases[template][community_map][description];
-    $tmp[rows] = "15";
-    $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{karte}";
-        $tmp[help][0][text] = $admin_phrases[template][community_map][help_1];
-    $TEMPLATE_EDIT[] = $tmp;
-    unset($tmp);*/
+
 
 
 //////////////////////////

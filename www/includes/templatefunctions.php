@@ -76,46 +76,50 @@ function templatepage_postcheck($template_arr)
 function create_templatepage($template_arr, $go)
 {
     global $global_config_arr;
-    global $db;
+    global $db, $admin_phrases;
 
     unset ($return_template);
     unset ($select_template);
 
-	if ( !isset ( $_POST['design'] ) ) {
-	    $_POST['design'] = $global_config_arr['design'];
-	}
+    if ( !isset ( $_POST['style'] ) ) {
+        $_POST['style'] = $global_config_arr['style'];
+    }
 
     // Design ermittlen
     $select_template .= '
-                    <div align="left">
-                        <form action="" method="post">
-                            <input type="hidden" value="'.$go.'" name="go">
-                            <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                            <select name="design" onChange="this.form.submit();">
-                                <option value="">Design ausw‰hlen</option>
-                                <option value="">------------------------</option>
+                    <table class="configtable" cellpadding="4" cellspacing="0">
+                        <tr><td class="line">Style-Auswahl</td></tr>
+                        <tr>
+                            <td class="config left">
+                                <form action="" method="post">
+                                    <input type="hidden" value="'.$go.'" name="go">
+                                    <b>Zu bearbeitenden Style w‰hlen:</b>
+                                    <select name="style" onChange="this.form.submit();" style="width:200px;">
     ';
 
-    $index = mysql_query("SELECT id, name FROM ".$global_config_arr[pref]."template WHERE id != 0 ORDER BY id", $db);
-    while ($design_arr = mysql_fetch_assoc($index))
-    {
-      $select_template .= '<option value="'.$design_arr[id].'"';
-      if ($design_arr[id] == $_POST[design])
-        $select_template .= ' selected=selected';
-      $select_template .= '>'.$design_arr[name];
-      if ($design_arr[id] == $global_config_arr[design])
-        $select_template .= ' (aktiv)';
-      $select_template .= '</option>';
+    $styles = scandir_filter ( FS2_ROOT_PATH."styles", array ( "default" ) );
+    foreach ($styles as $style) {
+        if ( is_dir ( FS2_ROOT_PATH."styles/".$style ) == TRUE ) {
+            $select_template .= '<option value="'.$style.'" '.getselected ($style, $_POST['design']).'>'.$style;
+            $style == $global_config_arr['style'] ? $select_template .= ' (aktiv)' : $select_template .= "";
+            $select_template .= '</option>';
+        }
     }
 
     $select_template .= '
-                            </select> <input class="button" value="Los" type="submit">
-                        </form>
-                    </div>
+                                    </select>
+                                    <input class="button" value="W‰hle" type="submit">
+                                </form>
+                            </td>
+                        </tr>
+                        <tr><td class="space"></td></tr>
+                        <tr><td class="line">Templates bearbeiten</td></tr>
+                        <tr>
+                    </table>
     ';
 
     if (isset($_POST['save'])) {
-        unset ($_POST['design']);
+        unset ($_POST['style']);
         unset ($select_template);
     }
 
@@ -123,51 +127,58 @@ function create_templatepage($template_arr, $go)
         $select_template = "<br>" . $select_template;
     }
 
-    if ( $_POST[design] && $_POST[design] != 0 && $_POST[design] != "" )
+    if ( $_POST['style'] && is_dir ( FS2_ROOT_PATH."styles/".$_POST['style'] ) )
     {
         foreach ($template_arr as $template_key => $template)
         {
-            if ($template == true)
+            if ( is_array ( $template ) === true )
             {
-                $index = mysql_query("SELECT $template[name] FROM ".$global_config_arr[pref]."template WHERE id = '$_POST[design]'", $db);
-                $template_arr[$template_key][template] = killhtml(mysql_result($index, 0, $template[name]));
+                $template_data = new template();
+                $template_data->setFile("0_general.tpl");
+                $template_data->load($template['name']);
+                $template_data = $template_data->display();
+                $template_arr[$template_key][template] = killhtml ( $template_data );
             }
         }
         unset ($template_key);
         unset ($template);
 
         $return_template .= '
-        <input type="hidden" value="" name="editwhat">
+                    <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
                     <form action="" method="post">
                         <input type="hidden" value="'.$go.'" name="go">
                         <input type="hidden" value="'.$_POST[design].'" name="design">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
+                        <input type="hidden" id="section_select" value="">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
         ';
 
-        foreach ($template_arr as $template_key => $template)
-        {
-            if ($template != false)
-            {
+        foreach ($template_arr as $template_key => $template) {
+            if ($template != false) {
                 $return_template .= create_templateeditor($template);
-            }
-            else
-            {
+            } else {
                 $return_template .= '
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="config" colspan="2">
-                                    <hr>
+                                <td class="buttontd" align="right">
+                                    <button class="button_new" type="submit" name="reload">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    </button>
                                 </td>
-                            </tr>';
+                            </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr><td class="space"></td></tr>';
             }
         }
         unset ($template_key);
         unset ($template);
 
         $return_template .= '
-                                    <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Speichern" name="save"> <input class="button" type="submit" value="Speichern & Neuladen" name="reload">
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td class="buttontd" align="right">
+                                    <button class="button_new" type="submit" name="reload">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    </button>
                                 </td>
                             </tr>
                         </table>
@@ -187,37 +198,50 @@ function create_templateeditor($editor_arr)
 {
     global $db, $admin_phrases;
     unset ($editor_template);
+    unset ($tag_array);
 
-    $editor_template .= '
-                            <tr>
-                                <td class="config" valign="top">
-                                    '.$editor_arr[title].':<br>
-                                    <font class="small">'.$editor_arr[description];
-
-    if (count($editor_arr[help]) >= 1)
-    {
-        $editor_template .= '<br /><br /><span style="padding-bottom:5px; display:block;">'.$admin_phrases[common][valid_tags].':<br /></span>';
-        foreach ($editor_arr[help] as $help)
-        {
-            $editor_template .= insert_tt($help[tag],$help[text],$editor_arr[name]);
+    if ( count ( $editor_arr['help'] ) >= 1 ) {
+        foreach ( $editor_arr[help] as $help ) {
+            $tag_array[] = insert_tt ( $help['tag'], $help['text'], "editor_".$editor_arr['name'], FALSE );
         }
+        $help_template = '<div class="small" style="margin: 5px 0px; line-height:19px;">
+        <b>'.$admin_phrases[common][valid_tags].':</b>
+        '.implode ( ", ", $tag_array ).'</div>';
     }
-
-    unset ($help);
+    $editor_arr['height'] = 5 + ( $editor_arr['rows'] * 16 );
 
     $editor_template .= '
-                                    </font>
+                            <tr>
                                 <td class="config" valign="top">
-                                    <textarea style="padding:3px;" rows="'.$editor_arr[rows].'" cols="'.$editor_arr[cols].'" name="'.$editor_arr[name].'" id="'.$editor_arr[name].'"
+                                    <span id="'.$editor_arr[name].'_title">'.$editor_arr[title].'</span> <span class="small">('.$editor_arr[description].')</span>
+                                    '.$help_template.'
+                                    <div id="'.$editor_arr[name].'_inedit" style="display:none; position:absolute;">
+                                        <br>
+                                        Template in Bearbeitung...<br>
+                                        Bitte den Editor schlieﬂen oder <a href="javascript:switch2inline_editor(\''.$editor_arr[name].'\')">hier klicken</a>.
+                                    </div>
+                                    <div id="'.$editor_arr[name].'_content" style="background-color:#ffffff; border: 1px solid black; width:100%;">
+                                        <textarea style="height:'.$editor_arr['height'].';" cols="'.$editor_arr[cols].'" name="'.$editor_arr[name].'" id="'.$editor_arr[name].'"
                                     >'.$editor_arr[template].'</textarea>
+                                    <script type="text/javascript">
+                                        var editor_'.$editor_arr[name].' = new_editor ( "'.$editor_arr[name].'", "'.$editor_arr['height'].'", false );
+                                    </script>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config" valign="top"></td>
                                 <td class="config" valign="top">
-                                    <input type="button" class="button" Value="Editor" onClick="openedit(\''.$editor_arr[name].'\')"> <input type="button" class="button" Value="Original anzeigen" onClick="openedit_original(\''.$editor_arr[name].'\')">
+                                    <span style="float:left">
+                                        <input type="button" class="button" Value="in Editor ˆffnen" onClick="open_editor(\''.$editor_arr[name].'\')">
+                                        <input type="button" class="button" Value="Original anzeigen" onClick="openedit_original(\''.$editor_arr[name].'\')">
+                                    </span>
+                                    <span style="float:right">
+                                        <img class="pointer" src="icons/undo.gif" alt="<-" title="R¸ckg‰ngig" onClick="editor_'.$editor_arr[name].'.undo()">
+                                        <img class="pointer" src="icons/redo.gif" alt="->" title="Wiederholen" onClick="editor_'.$editor_arr[name].'.redo()">
+                                    </span>
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
     ';
 
     return $editor_template;

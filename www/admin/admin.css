@@ -115,7 +115,16 @@ a.image_hover:hover, a.image_hover:focus {
   background-position: top left;
 }
 
-
+.CodeMirror-line-numbers {
+    width: 2.2em;
+    color: #AAAAAA;
+    background-color: #EEEEEE;
+    text-align: right;
+    padding-right: .3em;
+    font-size: 10pt;
+    font-family: monospace;
+    padding-top: .4em;
+}
 
 /**************************************************/
 /* standard formular styles */
@@ -572,6 +581,91 @@ a.menu_link_right:hover, a.menu_link_right:focus
     left:0px;
 }
 
+/**************************************************/
+/* content generator styles */
+/**************************************************/
+.cs_overall {
+    margin-left:8px;
+}
+
+.cs_top_left {
+    background-image:url(img/cs_top_left.jpg);
+    background-position:top left;
+    background-repeat:no-repeat;
+    height:45px;
+    width:100%;
+}
+.cs_top_loop {
+    background-image:url(img/cs_top_loop.jpg);
+    background-position:top left;
+    background-repeat:repeat-x;
+    height:45px;
+}
+.cs_top_right {
+    background-image:url(img/cs_top_right.jpg);
+    background-position:top right;
+    background-repeat:no-repeat;
+    height:45px;
+    width:100%;
+}
+
+.cs_text_top {
+    padding-top:35px;
+    padding-left:45px;
+    font-size:8pt;
+    font-variant:small-caps;
+}
+
+.cs_mid_left {
+    background-image:url(img/cs_mid_left.jpg);
+    background-position:top left;
+    background-repeat:repeat-y;
+    width:100%;
+}
+.cs_mid_loop {
+    background-image:url(img/cs_mid_loop.jpg);
+    background-position:top center;
+    background-repeat:repeat;
+    width:100%;
+
+}
+.cs_mid_right {
+    background-image:url(img/cs_mid_right.jpg);
+    background-position:top right;
+    background-repeat:repeat-y;
+    width:100%;
+    text-align:left;
+}
+
+.cs_text_content {
+    padding-top:19px;
+    margin-left:45px;
+    margin-right:53px;
+    text-align:left;
+}
+
+.cs_bot_left {
+    background-image:url(img/cs_bot_left.jpg);
+    background-position:bottom left;
+    background-repeat:no-repeat;
+    height:53px;
+    width:100%;
+}
+.cs_bot_loop {
+    background-image:url(img/cs_bot_loop.jpg);
+    background-position:bottom left;
+    background-repeat:repeat-x;
+    height:53px;
+    width:100%;
+}
+.cs_bot_right {
+    background-image:url(img/cs_bot_right.jpg);
+    background-position:bottom right;
+    background-repeat:no-repeat;
+    height:53px;
+    width:100%;
+}
+
 
 
 /**************************************************/
@@ -579,7 +673,7 @@ a.menu_link_right:hover, a.menu_link_right:focus
 /**************************************************/
 
 a.tooltip {
- position: absolute;
+ position: relative;
  text-decoration: none;
  font-style: normal;
  font-weight: normal;

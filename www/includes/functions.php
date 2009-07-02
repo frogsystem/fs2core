@@ -57,8 +57,8 @@ function date_loc ( $DATE_STRING, $TIMESTAMP )
     $week_en = array ( "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" );
     $month_en = array ( "January","February","March","April","May","June","July","August","September","October","November","December" );
     
-    $localized_date = str_replace ( $week_en, $phrases['week_days'], date ( $DATE_STRING, $TIMESTAMP ) );
-    $localized_date = str_replace ( $month_en, $phrases['month_names'], $localized_date );
+    $localized_date = str_replace ( $week_en, explode ( ",", $phrases['week_days'] ), date ( $DATE_STRING, $TIMESTAMP ) );
+    $localized_date = str_replace ( $month_en, explode ( ",", $phrases['month_names'] ), $localized_date );
 
     return $localized_date;
 }

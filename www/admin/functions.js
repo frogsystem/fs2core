@@ -12,17 +12,17 @@ function show_one (oneString, valueString, checkObject) {
   oneArray = oneString.split("|");
   valueArray = valueString.split("|");
   for (var i = 0; i < oneArray.length && i < valueArray.length; ++i) {
-	if ( checkObject.value == valueArray[i] ) {
-	  document.getElementById(oneArray[i]).className = "default";
-	} else {
+    if ( checkObject.value == valueArray[i] ) {
+      document.getElementById(oneArray[i]).className = "default";
+    } else {
       document.getElementById(oneArray[i]).className = "hidden";
-	}
+    }
   }
   return true;
 }
 
 
-//delete alert
+//Use Confirm-Box on Checkbox
 function delalert (elementID, alertText) {
   if (document.getElementById(elementID).checked == true) {
     var Check = confirm(alertText);
@@ -75,41 +75,69 @@ function saveLast (theBox, object) {
 
 // save preselcted object as las
 function savePreSelectedLast (theBox, object) {
-	last = object;
-	lastBox = theBox;
+    last = object;
+    lastBox = theBox;
     return true;
 }
 
 //reset Not selected
 function resetOld (resetColor, last, lastBox, object) {
-	if (object != last) {
-    	if (last) {
-        	last.style.backgroundColor = resetColor;
-    	}
-    	if (lastBox) {
-        	lastBox.checked = false;
-    	}
-    	return true;
+    if (object != last) {
+        if (last) {
+            last.style.backgroundColor = resetColor;
+        }
+        if (lastBox) {
+            lastBox.checked = false;
+        }
+        return true;
     }
 }
 
 
 
-
-
-//Open Edit-PopUp
-function openedit(what)
-{
-    document.getElementsByName("editwhat")[0].value = what;
-    newWidth = screen.availWidth;
-    newHeight = screen.availHeight;
-    window.open("admin_frogpad.php","editor","width=750,height=700,left=0,top=0,scrollbars=NO,resizable=YES");
+//Open Editor-PopUp
+var EditorWindow;
+function open_editor(what) {
+    $("#section_select").val(what);
+    EditorWindow = window.open("admin_frogpad.php","editor","width="+screen.availWidth+",height="+screen.availHeight+",left=0,top=0");
 }
-
-//Open Edit-PopUp
+//Close Editor-PopUp
+function close_editor() {
+    EditorWindow.close();
+}
+//Open Original-PopUp
 function openedit_original(what)
 {
-    window.open("admin_frogpadoriginal.php?tpl="+what,"editor","width=750,height=700,left=0,top=0,scrollbars=NO,resizable=YES");
+    window.open("admin_frogpadoriginal.php?tpl="+what,"editor","width=750,height=700,left=0,top=0");
+}
+
+//Get Editor Object
+function new_editor ( textareaId, editorHeight, readOnlyState )
+{
+  var editor = CodeMirror.fromTextArea(textareaId, {
+    parserfile: "parsexml.js",
+    stylesheet: "../resources/codemirror/css/xmlcolors.css",
+    path: "../resources/codemirror/js/",
+    continuousScanning: 500,
+    lineNumbers: true,
+    textWrapping: false,
+    tabMode: "shift",
+    width: "100%",
+    height: editorHeight,
+    readOnly: readOnlyState
+  });
+  return editor;
+}
+//Switch to Inline-Editor
+function switch2inline_editor( editorId ) {
+    close_editor();
+    eval ( "$(\"#"+editorId+"_content\", opener.document).css(\"visibility\", \"visible\")" );
+    eval ( "$(\"#"+editorId+"_inedit\", opener.document).hide()" );
+}
+
+//Insert Tag into Editor
+function insert_tag( editorObject, insertText ) {
+    editorObject.replaceSelection(insertText);
 }
 
 

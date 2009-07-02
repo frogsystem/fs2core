@@ -683,7 +683,7 @@ $admin_phrases[template][js_userfunctions][description]= "Beinhaltet von Benutze
 
 //Allgemein
 $admin_phrases[template][error][title]                          = "Systemmeldung";
-$admin_phrases[template][error][description]                    = "Gibt Systemnachrichten aus.";
+$admin_phrases[template][error][description]                    = "Darstellung von Systemmeldungen";
 $admin_phrases[template][error][help_1]                         = "Der Titel der Systemmeldung.";
 $admin_phrases[template][error][help_2]                         = "Der Text der Systemmeldung.";
 
