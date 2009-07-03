@@ -28,6 +28,7 @@ echo'
             $(".cs_text_content:first iframe").css("height", newheight-31+"px");
 
             eval ( "$(\"#"+sourceId+"_content\", opener.document).css(\"visibility\", \"hidden\")" );
+            eval ( "$(\"#"+sourceId+"_editor-bar\", opener.document).css(\"visibility\", \"hidden\")" );
             eval ( "$(\"#"+sourceId+"_inedit\", opener.document).show()" );
 
             eval ( "var title = $(\"#"+sourceId+"_title\", opener.document).text()" );
@@ -46,6 +47,7 @@ echo'
             window.clearInterval(change);
             send();
             eval ( "$(\"#"+sourceId+"_content\", opener.document).css(\"visibility\", \"visible\")" );
+            eval ( "$(\"#"+sourceId+"_editor-bar\", opener.document).css(\"visibility\", \"visible\")" );
             eval ( "$(\"#"+sourceId+"_inedit\", opener.document).hide()" );
         }
     </script>

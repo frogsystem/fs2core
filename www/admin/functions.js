@@ -131,8 +131,9 @@ function new_editor ( textareaId, editorHeight, readOnlyState )
 //Switch to Inline-Editor
 function switch2inline_editor( editorId ) {
     close_editor();
-    eval ( "$(\"#"+editorId+"_content\", opener.document).css(\"visibility\", \"visible\")" );
-    eval ( "$(\"#"+editorId+"_inedit\", opener.document).hide()" );
+    eval ( "$(\"#"+editorId+"_content\").css(\"visibility\", \"visible\")" );
+    eval ( "$(\"#"+editorId+"_editor-bar\").css(\"visibility\", \"visible\")" );
+    eval ( "$(\"#"+editorId+"_inedit\").hide()" );
 }
 
 //Insert Tag into Editor

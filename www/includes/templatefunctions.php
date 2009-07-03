@@ -220,25 +220,32 @@ function create_templateeditor($editor_arr)
                                         Template in Bearbeitung...<br>
                                         Bitte den Editor schließen oder <a href="javascript:switch2inline_editor(\''.$editor_arr[name].'\')">hier klicken</a>.
                                     </div>
-                                    <div id="'.$editor_arr[name].'_content" style="background-color:#ffffff; border: 1px solid black; width:100%;">
+                                    <div class="html-editor-bar" id="'.$editor_arr[name].'_editor-bar">
+                                        <div class="html-editor-row">
+                                            <a onClick="open_editor(\''.$editor_arr[name].'\')" class="html-editor-button" style="background-image:url(html-editor/note-edit.gif)" title="In Editor-Fenster öffnen">
+                                                <img src="../images/design/null.gif" alt="In Editor-Fenster öffnen" border="0">
+                                            </a>
+                                            <a onClick="openedit_original(\''.$editor_arr[name].'\')" class="html-editor-button" style="background-image:url(html-editor/doc-search.gif)" title="Original anzeigen">
+                                                <img src="../images/design/null.gif" alt="Original anzeigen" border="0">
+                                            </a>
+                                            <div class="html-editor-line"></div>
+                                            <div class="html-editor-list-container"><a class="html-editor-list">Gültige Tags</a><a class="html-editor-arrow"></a></div>
+                                            <div class="html-editor-line"></div>
+                                            <a onClick="editor_'.$editor_arr[name].'.undo()" class="html-editor-button" style="background-image:url(html-editor/action-undo.gif)" title="Rückgängig (Strg+Z)">
+                                                <img src="../images/design/null.gif" alt="Rückgängig (Strg+Z)" border="0">
+                                            </a>
+                                            <a onClick="editor_'.$editor_arr[name].'.redo()" class="html-editor-button" style="background-image:url(html-editor/action-redo.gif)" title="Wiederholen (Strg+Y)">
+                                                <img src="../images/design/null.gif" alt="Wiederholen (Strg+Y)" border="0">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div id="'.$editor_arr[name].'_content" style="background-color:#ffffff; border: 1px solid #999999; width:100%;">
                                         <textarea style="height:'.$editor_arr['height'].';" cols="'.$editor_arr[cols].'" name="'.$editor_arr[name].'" id="'.$editor_arr[name].'"
                                     >'.$editor_arr[template].'</textarea>
                                     <script type="text/javascript">
                                         var editor_'.$editor_arr[name].' = new_editor ( "'.$editor_arr[name].'", "'.$editor_arr['height'].'", false );
                                     </script>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    <span style="float:left">
-                                        <input type="button" class="button" Value="in Editor öffnen" onClick="open_editor(\''.$editor_arr[name].'\')">
-                                        <input type="button" class="button" Value="Original anzeigen" onClick="openedit_original(\''.$editor_arr[name].'\')">
-                                    </span>
-                                    <span style="float:right">
-                                        <img class="pointer" src="icons/undo.gif" alt="<-" title="Rückgängig" onClick="editor_'.$editor_arr[name].'.undo()">
-                                        <img class="pointer" src="icons/redo.gif" alt="->" title="Wiederholen" onClick="editor_'.$editor_arr[name].'.redo()">
-                                    </span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
