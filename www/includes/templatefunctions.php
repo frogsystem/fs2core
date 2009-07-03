@@ -201,12 +201,10 @@ function create_templateeditor($editor_arr)
     unset ($tag_array);
 
     if ( count ( $editor_arr['help'] ) >= 1 ) {
-        foreach ( $editor_arr[help] as $help ) {
-            $tag_array[] = insert_tt ( $help['tag'], $help['text'], "editor_".$editor_arr['name'], FALSE );
+        foreach ( $editor_arr['help'] as $help ) {
+            $tag_array[] = "<b>".$help['tag']."</b><br>".$help['text']."</td><td>->";
         }
-        $help_template = '<div class="small" style="margin: 5px 0px; line-height:19px;">
-        <b>'.$admin_phrases[common][valid_tags].':</b>
-        '.implode ( ", ", $tag_array ).'</div>';
+        $help_template = '<table class="small html-editor-list-table" cellspacing="0"><tr><td>'.implode ( "</td></tr><tr><td>", $tag_array ).'</td></tr></table>';
     }
     $editor_arr['height'] = 5 + ( $editor_arr['rows'] * 16 );
 
@@ -214,7 +212,6 @@ function create_templateeditor($editor_arr)
                             <tr>
                                 <td class="config" valign="top">
                                     <span id="'.$editor_arr[name].'_title">'.$editor_arr[title].'</span> <span class="small">('.$editor_arr[description].')</span>
-                                    '.$help_template.'
                                     <div id="'.$editor_arr[name].'_inedit" style="display:none; position:absolute;">
                                         <br>
                                         Template in Bearbeitung...<br>
@@ -228,8 +225,21 @@ function create_templateeditor($editor_arr)
                                             <a onClick="openedit_original(\''.$editor_arr[name].'\')" class="html-editor-button" style="background-image:url(html-editor/doc-search.gif)" title="Original anzeigen">
                                                 <img src="../images/design/null.gif" alt="Original anzeigen" border="0">
                                             </a>
+						';
+	if ( $help_template != "" ) {
+    	$editor_template .= '
                                             <div class="html-editor-line"></div>
-                                            <div class="html-editor-list-container"><a class="html-editor-list">Gültige Tags</a><a class="html-editor-arrow"></a></div>
+                                            <div class="html-editor-list-container">
+												<a class="html-editor-list">Gültige Tags</a>
+												<a class="html-editor-list-arrow"></a>
+												<div class="html-editor-list-popup">
+                                                    '.$help_template.'
+												</div>
+											</div>
+							';
+	}
+    $editor_template .= '
+
                                             <div class="html-editor-line"></div>
                                             <a onClick="editor_'.$editor_arr[name].'.undo()" class="html-editor-button" style="background-image:url(html-editor/action-undo.gif)" title="Rückgängig (Strg+Z)">
                                                 <img src="../images/design/null.gif" alt="Rückgängig (Strg+Z)" border="0">

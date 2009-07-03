@@ -63,12 +63,9 @@ a.html-editor-list {
     font-size:11px;
     font-family:Tahoma;
     font-weight:normal;
-}
-a.html-editor-list:hover {
     text-decoration:none;
-    border:1px solid #555555;
 }
-a.html-editor-arrow {
+a.html-editor-list-arrow {
     height:14px;
     width:3px;
     cursor:pointer;
@@ -84,7 +81,25 @@ a.html-editor-arrow {
     float:left;
 }
 
-a.html-editor-arrow:hover {
-    border:1px solid #555555;
-    border-left:none;
+.html-editor-list-popup {
+    display:none;
+    cursor:default;
+    position:absolute;
+    margin-top:21px;
+    margin-left:1px;
+    background-color:#EEEEEE;
+    z-index:500;
+    padding:0px;
+    border:1px solid #BBBBBB;
+}
+
+.html-editor-list-table {
+	padding:0px;
+	margin:0px;
+	border:none;
+}
+
+.html-editor-list-table td {
+	padding:4px;
+	border-top:1px solid #BBBBBB;
 }
