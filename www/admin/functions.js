@@ -1,41 +1,45 @@
 // Document Ready Functions
 $().ready(function(){
 
-	// html-editor-list hover
-	$(".html-editor-list-container").hover (
-		function () {
-			$(this).find(".html-editor-list").css("border","1px solid #555555");
-			$(this).find(".html-editor-list-arrow").css("border","1px solid #555555");
-			$(this).find(".html-editor-list-arrow").css("border-left","none");
-			$(this).find(".html-editor-list-arrow").css("background-color","#CCCCCC");
-			$(this).find(".html-editor-list-popup").css("border","1px solid #555555");
-		},
-		function () {
-			$(this).find(".html-editor-list").css("border","1px solid #BBBBBB");
-			$(this).find(".html-editor-list-arrow").css("border","1px solid #BBBBBB");
-			$(this).find(".html-editor-list-arrow").css("border-left","none");
-			$(this).find(".html-editor-list-arrow").css("background-color","#EEEEEE");
-			$(this).find(".html-editor-list-popup").css("border","1px solid #BBBBBB");
-		}
-	);
-	
-	// html-editor-list click
-    $(".html-editor-list-container .html-editor-list-popup tr:nth-child(even)").css("background-color","#FFFFFF");
-    $(".html-editor-list-container .html-editor-list-popup tr:first-child").find("td").css("border","none");
-	$().bind("click", function(){
-	    if ( !($(this).find(".html-editor-list-popup").is(":hidden")) ) {
-			$(".html-editor-list-container > .html-editor-list-popup").hide();
-	    }
-	});
-	$(".html-editor-list-container").click ( function () {
-	    if ( $(this).find(".html-editor-list-popup").is(":hidden") ) {
-	    	$(this).find(".html-editor-list-popup").show();
-	    } else {
-            $(this).find(".html-editor-list-popup").hide();
-		}
-	});
-	
-	
+    // html-editor-list hover
+    $(".html-editor-container-list").hover (
+        function () {
+            $(this).find(".html-editor-list").css("border","1px solid #555555");
+            $(this).find(".html-editor-list-arrow").css("border","1px solid #555555");
+            $(this).find(".html-editor-list-arrow").css("border-left","none");
+            $(this).find(".html-editor-list-arrow").css("background-color","#CCCCCC");
+            $(this).find(".html-editor-list-popup").css("border","1px solid #555555");
+        },
+        function () {
+            $(this).find(".html-editor-list").css("border","1px solid #BBBBBB");
+            $(this).find(".html-editor-list-arrow").css("border","1px solid #BBBBBB");
+            $(this).find(".html-editor-list-arrow").css("border-left","none");
+            $(this).find(".html-editor-list-arrow").css("background-color","#EEEEEE");
+            $(this).find(".html-editor-list-popup").css("border","1px solid #BBBBBB");
+        }
+    );
+    
+    // html-editor-list click
+    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").css("background-color","#FFFFFF");
+    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").hover( function () {
+        $(this).css("background-color","#CCCCCC");
+    }, function () {
+        $(this).css("background-color","#FFFFFF");
+    });
+    $(".html-editor-container-list .html-editor-list-popup tr:first-child").find("td").css("border","none");
+    $("*").bind ( "click", function (globalEvent) {
+        if ( $(this).hasClass("html-editor-list") == false && $(this).hasClass("html-editor-list-arrow") == false && $(this).hasClass("html-editor-container-list") == false ) {
+            $(".html-editor-container-list .html-editor-list-popup").hide();
+            globalEvent.stopPropagation();
+        } else if ( $(this).hasClass("html-editor-container-list") ) {
+            var listState = $(this).find(".html-editor-list-popup").is(":hidden");
+            $(".html-editor-container-list .html-editor-list-popup").hide();
+            if ( listState ) {
+                $(this).find(".html-editor-list-popup").show();
+            }
+            globalEvent.stopPropagation();
+        }
+    });
 });
 
 // show or hide an element

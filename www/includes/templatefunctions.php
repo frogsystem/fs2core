@@ -202,22 +202,25 @@ function create_templateeditor($editor_arr)
 
     if ( count ( $editor_arr['help'] ) >= 1 ) {
         foreach ( $editor_arr['help'] as $help ) {
-            $tag_array[] = "<b>".$help['tag']."</b><br>".$help['text']."</td><td>->";
+            $tag_array[] = '<tr class="pointer" title="einfügen" onClick="insert_tag(editor_'.$editor_arr['name'].',\''.$help['tag'].'\');"><td><b>'.$help['tag'].'</b><br>'.$help['text'].'</td><td><img border="0" src="icons/pointer.gif" alt="->"></td></tr>';
         }
-        $help_template = '<table class="small html-editor-list-table" cellspacing="0"><tr><td>'.implode ( "</td></tr><tr><td>", $tag_array ).'</td></tr></table>';
+        $help_template = '<table class="small html-editor-list-table" cellspacing="0">'.implode ( "", $tag_array ).'</table>';
     }
     $editor_arr['height'] = 5 + ( $editor_arr['rows'] * 16 );
 
     $editor_template .= '
                             <tr>
                                 <td class="config" valign="top">
-                                    <span id="'.$editor_arr[name].'_title">'.$editor_arr[title].'</span> <span class="small">('.$editor_arr[description].')</span>
+
                                     <div id="'.$editor_arr[name].'_inedit" style="display:none; position:absolute;">
                                         <br>
                                         Template in Bearbeitung...<br>
-                                        Bitte den Editor schließen oder <a href="javascript:switch2inline_editor(\''.$editor_arr[name].'\')">hier klicken</a>.
+                                        Bitte den Editor schließen oder <a href="javascript:switch2inline_editor(\''.$editor_arr['name'].'\')">hier klicken</a>.
                                     </div>
                                     <div class="html-editor-bar" id="'.$editor_arr[name].'_editor-bar">
+                                        <div class="html-editor-row-header">
+                                            <span id="'.$editor_arr[name].'_title">'.$editor_arr[title].'</span> <span class="small">('.$editor_arr['description'].')</span>
+                                        </div>
                                         <div class="html-editor-row">
                                             <a onClick="open_editor(\''.$editor_arr[name].'\')" class="html-editor-button" style="background-image:url(html-editor/note-edit.gif)" title="In Editor-Fenster öffnen">
                                                 <img src="../images/design/null.gif" alt="In Editor-Fenster öffnen" border="0">
@@ -225,19 +228,19 @@ function create_templateeditor($editor_arr)
                                             <a onClick="openedit_original(\''.$editor_arr[name].'\')" class="html-editor-button" style="background-image:url(html-editor/doc-search.gif)" title="Original anzeigen">
                                                 <img src="../images/design/null.gif" alt="Original anzeigen" border="0">
                                             </a>
-						';
-	if ( $help_template != "" ) {
-    	$editor_template .= '
+                        ';
+    if ( $help_template != "" ) {
+        $editor_template .= '
                                             <div class="html-editor-line"></div>
-                                            <div class="html-editor-list-container">
-												<a class="html-editor-list">Gültige Tags</a>
-												<a class="html-editor-list-arrow"></a>
-												<div class="html-editor-list-popup">
+                                            <div class="html-editor-container-list">
+                                                <a class="html-editor-list">Gültige Tags</a>
+                                                <a class="html-editor-list-arrow"></a>
+                                                <div class="html-editor-list-popup">
                                                     '.$help_template.'
-												</div>
-											</div>
-							';
-	}
+                                                </div>
+                                            </div>
+                            ';
+    }
     $editor_template .= '
 
                                             <div class="html-editor-line"></div>

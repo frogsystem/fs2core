@@ -13,6 +13,12 @@
     height:24px;
     padding:1px;
 }
+.html-editor-row-header {
+    height:19px;
+    border-bottom:1px solid #999999;
+    padding:6px 5px 1px;
+    vertical-align:middle;
+}
 a.html-editor-button, a.html-editor-button-active {
     height:20px;
     width:20px;
@@ -46,7 +52,7 @@ a.html-editor-button:hover, a.html-editor-button:focus, a.html-editor-button-act
     display:block;
     float:left;
 }
-.html-editor-list-container {
+.html-editor-container-list {
     float:left;
 }
 a.html-editor-list {
@@ -94,12 +100,16 @@ a.html-editor-list-arrow {
 }
 
 .html-editor-list-table {
-	padding:0px;
-	margin:0px;
-	border:none;
+    padding:0px;
+    margin:0px;
+    border:none;
 }
 
 .html-editor-list-table td {
-	padding:4px;
-	border-top:1px solid #BBBBBB;
+    padding:4px;
+    border-top:1px solid #BBBBBB;
+}
+.html-editor-list-table tr:hover {
+    padding:4px;
+    background-color:#CCCCCC;
 }
