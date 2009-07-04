@@ -28,7 +28,9 @@ $().ready(function(){
     });
     $(".html-editor-container-list .html-editor-list-popup tr:first-child").find("td").css("border","none");
     $("*").bind ( "click", function (globalEvent) {
-        if ( $(this).hasClass("html-editor-list") == false && $(this).hasClass("html-editor-list-arrow") == false && $(this).hasClass("html-editor-container-list") == false ) {
+        if ( $(this).hasClass("tag_click_class") ) {;
+            $(".html-editor-container-list .html-editor-list-popup").hide();
+        } else if ( $(this).hasClass("html-editor-list") == false && $(this).hasClass("html-editor-list-arrow") == false && $(this).hasClass("html-editor-container-list") == false ) {
             $(".html-editor-container-list .html-editor-list-popup").hide();
             globalEvent.stopPropagation();
         } else if ( $(this).hasClass("html-editor-container-list") ) {
