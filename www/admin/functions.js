@@ -1,6 +1,16 @@
 // Document Ready Functions
 $().ready(function(){
 
+    // Colorize tag-list
+    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").css("background-color","#FFFFFF");
+    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").hover( function () {
+        $(this).css("background-color","#CCCCCC");
+    }, function () {
+        $(this).css("background-color","#FFFFFF");
+    });
+    $(".html-editor-container-list .html-editor-list-popup tr:first-child").find("td").css("border","none");
+
+
     // html-editor-list hover
     $(".html-editor-container-list").hover (
         function () {
@@ -18,31 +28,24 @@ $().ready(function(){
             $(this).find(".html-editor-list-popup").css("border","1px solid #BBBBBB");
         }
     );
-    
-    // html-editor-list click
-    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").css("background-color","#FFFFFF");
-    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").hover( function () {
-        $(this).css("background-color","#CCCCCC");
-    }, function () {
-        $(this).css("background-color","#FFFFFF");
-    });
-    $(".html-editor-container-list .html-editor-list-popup tr:first-child").find("td").css("border","none");
-    $("*").bind ( "click", function (globalEvent) {
-        if ( $(this).hasClass("tag_click_class") ) {;
-            $(".html-editor-container-list .html-editor-list-popup").hide();
-        } else if ( $(this).hasClass("html-editor-list") == false && $(this).hasClass("html-editor-list-arrow") == false && $(this).hasClass("html-editor-container-list") == false ) {
-            $(".html-editor-container-list .html-editor-list-popup").hide();
-            globalEvent.stopPropagation();
-        } else if ( $(this).hasClass("html-editor-container-list") ) {
-            var listState = $(this).find(".html-editor-list-popup").is(":hidden");
-            $(".html-editor-container-list .html-editor-list-popup").hide();
-            if ( listState ) {
-                $(this).find(".html-editor-list-popup").show();
-            }
-            globalEvent.stopPropagation();
+
+    // Show tag-list on hover
+    $(".html-editor-container-list").hover (
+        function () {
+            $(this).find(".html-editor-list-popup").show();
+        },
+        function () {
+            $(this).find(".html-editor-list-popup").hide();
         }
-    });
+    );
+
+    alert($(editor_FORWARDMESSAGE).getCode());
 });
+
+
+
+
+
 
 // show or hide an element
 function show_hidden (showObject, checkObject, compareWith) {
@@ -170,6 +173,8 @@ function new_editor ( textareaId, editorHeight, readOnlyState )
     tabMode: "shift",
     width: "100%",
     height: editorHeight,
+    onChange: checkHistory,
+    iframeClass:"html-editor-iframe",
     readOnly: readOnlyState
   });
   return editor;
@@ -186,6 +191,50 @@ function switch2inline_editor( editorId ) {
 function insert_tag( editorObject, insertText ) {
     editorObject.replaceSelection(insertText);
 }
+
+
+function html_editor_undo( editorObject, buttonObject ) {
+    editorObject.undo();
+    html_editor_set_history_buttons ( editorObject, buttonObject );
+}
+
+function html_editor_redo( editorObject, buttonObject ) {
+    editorObject.redo();
+    html_editor_set_history_buttons ( editorObject, buttonObject );
+}
+
+function checkHistory ( editorObject ) {
+    alert(editorObject);
+    alert(editorObject.historySize()['undo']+" - "+editorObject.historySize()['redo']);
+ if ( editorObject.historySize()['undo'] <= 0 ) {
+        $(editorObject).find(".undo:first").addClass("html-editor-button-deactive");
+        $(editorObject).find(".undo:first").css("background-image","url(html-editor/action-undo-grey.gif)");
+    }
+
+}
+
+function html_editor_set_history_buttons ( editorObject, buttonObject ) {
+  alert(editorObject.historySize()['undo']+" - "+editorObject.historySize()['redo']);
+
+        if ( $(buttonObject).hasClass("undo") && editorObject.historySize()['undo'] <= 0 ) {
+            $(buttonObject).addClass("html-editor-button-deactive");
+            $(buttonObject).css("background-image","url(html-editor/action-undo-grey.gif)");
+        } else if ( $(buttonObject).hasClass("undo") )  {
+            $(buttonObject).removeClass("html-editor-button-deactive");
+            $(buttonObject).css("background-image","url(html-editor/action-undo.gif)");
+        }
+        
+        
+        if ( $(buttonObject).hasClass("redo") && editorObject.historySize()['redo'] <= 0 ) {
+            $(buttonObject).addClass("html-editor-button-deactive");
+            $(buttonObject).css("background-image","url(html-editor/action-redo-grey.gif)");
+        } else if ( $(buttonObject).hasClass("redo") )  {
+            $(buttonObject).removeClass("html-editor-button-deactive");
+            $(buttonObject).css("background-image","url(html-editor/action-redo.gif)");
+        }
+}
+
+
 
 
 //Schaltjahr

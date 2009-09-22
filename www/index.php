@@ -1,6 +1,8 @@
 <?php
 // Start Session
-session_start();
+session_start ();
+// Disable magic_quotes_runtime
+set_magic_quotes_runtime ( FALSE );
 
 // fs2 include path
 set_include_path ( '.' );
@@ -25,9 +27,13 @@ if ($db)
 
     //Include Library-Classes
     require ( FS2_ROOT_PATH . "libs/class_template.php");
+    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php");
+    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
 
     //Include Phrases-Files
     require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php");
+    $TEXT = new langDataInit ( "de_DE", "frontend" );
+
 
     // Constructor Calls
     delete_old_randoms ();
@@ -71,17 +77,18 @@ if ($db)
 else
 {
     // Include German Phrases
-    require ( FS2_ROOT_PATH . "phrases/phrases_de.php");
+    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
+    $TEXT = new langDataInit ( "de_DE", "frontend" );
 
     // No-Connection-Page Template
     $template = '
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
-        <title>'.$phrases[no_connection].'</title>
+        <title>'.$TEXT->get("no_connection").'</title>
     </head>
     <body>
-        <b>'.$phrases[no_con_title].'</b>
+        <b>'.$TEXT->get("no_connection_to_the_server").'</b>
     </body>
 </html>
     ';

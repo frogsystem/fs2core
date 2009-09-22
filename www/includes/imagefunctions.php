@@ -154,15 +154,13 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
     $image_data = getimagesize ( $IMAGE['tmp_name'] );
     switch ( $image_data[2] )
     {
-        // Meaning of $image_data[2]:
-        // 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, etc.
-        case 1: //GIF
+        case "IMAGETYPE_GIF":
             $type = "gif";
             break;
-        case 2: //JPG
+        case "IMAGETYPE_JPEG":
             $type = "jpg";
             break;
-        case 3: //PNG
+        case "IMAGETYPE_PNG":
              $type = "png";
              break;
          default:

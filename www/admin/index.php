@@ -1,6 +1,8 @@
 <?php
 // Start Session
-session_start();
+session_start ();
+// Disable magic_quotes_runtime
+set_magic_quotes_runtime ( FALSE );
 
 // fs2 include path
 set_include_path ( '.' );
@@ -15,10 +17,16 @@ require ( FS2_ROOT_PATH . "includes/templatefunctions.php" );
 
 //Include Library-Classes
 require ( FS2_ROOT_PATH . "libs/class_template.php");
+require ( FS2_ROOT_PATH . "libs/class_fileaccess.php");
+require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
 
 //Include Phrases-Files
 require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
 require ( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php" );
+$TEXT['admin'] = new langDataInit ( "de_DE", "admin" );
+$TEXT['frontend'] = new langDataInit ( "de_DE", "frontend" );
+$TEXT['template'] = new langDataInit ( "de_DE", "template" );
+
 
 $index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);
 if (mysql_num_rows($index) > 0) {

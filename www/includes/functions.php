@@ -1008,7 +1008,19 @@ function markword($text, $word)
 
 function savesql ( $TEXT )
 {
-    $TEXT = mysql_real_escape_string ( $TEXT );
+    $TEXT = mysql_real_escape_string ( unquote ( $TEXT ) );
+    return $TEXT;
+}
+
+/////////////////////////////////
+// create save strings for sql //
+/////////////////////////////////
+
+function unquote ( $TEXT )
+{
+    if ( get_magic_quotes_gpc () ) {
+        $TEXT = stripslashes ( $TEXT );
+    }
     return $TEXT;
 }
 

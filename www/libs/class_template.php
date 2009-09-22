@@ -13,7 +13,7 @@ class template
 {
     /**
     * here you may change the values of the tag opener and closer
-    * I strictly recommend not to change these values, in all templates the default values {.. and ..} are used
+    * We strictly recommend to not change these values, in all templates the default values {.. and ..} are used
     * opener and closer were changed from { and } to {.. and ..} because of some javascript incompatibilities
     **/
     const OPENER                = "{..";
@@ -28,7 +28,7 @@ class template
     private $tags               = array();
     private $sections           = array();
     private $sections_content   = array();
-    private $template         = null;
+    private $template           = null;
 
     // constructor
     public function  __construct() {
@@ -45,6 +45,13 @@ class template
     }
     private function getStyle() {
         return $this->style;
+    }
+    
+    public function getOpener() {
+        return self::OPENER;
+    }
+    public function getCloser() {
+        return self::CLOSER;
     }
     
     public function setFile($file) {
@@ -104,8 +111,9 @@ class template
         if (count($this->sections) <= 0) {
             $file_path = FS2_ROOT_PATH."styles/".$this->getStyle()."/".$this->getFile();
             if (file_exists($file_path)) {
+                $ACCESS = new fileaccess();
                 $search_expression = '/<!--section-start::(.*)-->(.*)<!--section-end::(\1)-->/Uis';
-                $number_of_sections = preg_match_all($search_expression, file_get_contents($file_path), $sections);
+                $number_of_sections = preg_match_all($search_expression, $ACCESS->getFileData($file_path), $sections);
                 $this->setSections(array_flip($sections[1]));
                 $this->setSectionsContent($sections[2]);
             }
@@ -113,8 +121,7 @@ class template
         $this->setTemplate($this->getSectionContent($this->getSectionNumber($section)));
     }
     
-    public function display()
-    {
+    public function display() {
         $template = $this->getTemplate();
         foreach ($this->tags as $tag => $value) {
             if ($value !== null) {
