@@ -1,0 +1,163 @@
+body
+{
+    background-color:#7EC46B;
+    margin:0px;
+    font-family:Verdana;
+    color:#000000;
+    font-size:8pt;
+}
+.small
+{
+    font-size:7pt;
+}
+.pointer
+{
+    cursor:pointer;
+}
+
+a
+{
+    color:#008800;
+    font-size:8pt;
+    text-decoration:none;
+}
+a.small
+{
+    color:#008800;
+    font-size:7pt;
+    text-decoration:none;
+}
+
+.thumb
+{
+    cursor:pointer;
+}
+
+
+#head_shadow
+{
+    position:absolute;
+    z-index:1;
+    background-color:#2B4325;
+    top:26px;
+    height:86px;
+    left:50%;
+    width:870px;
+    margin-left:-433px;
+}
+#head
+{
+    position:absolute;
+    z-index:2;
+    background-color:#EEEEEE;
+    background-image:url("images/icons/logo.gif");
+    top:24px;
+    height:84px;
+    left:50%;
+    width:868px;
+    margin-left:-435px;
+    border:1px solid #000000;
+}
+
+#menu_l_shadow
+{
+    position:absolute;
+    z-index:1;
+    background-color:#2B4325;
+    top:120px;
+    left:50%;
+    width:120px;
+    margin-left:-433px;
+}
+#menu_l
+{
+    position:relative;
+    z-index:2;
+    background-color:#EEEEEE;
+    top:-2px;
+    left:-2px;;
+    width:112px;
+    border:1px solid #000000;
+    padding:3px;
+    font-size:7pt;
+}
+
+#main_container
+{
+    position:absolute;
+    z-index:0;
+    top:120px;
+    left:50%;
+    width:612px;
+    margin-left:-304px;
+}
+#main_shadow
+{
+    position:relative;
+    z-index:1;
+    background-color:#2B4325;
+    width:612px;
+}
+#main
+{
+    position:relative;
+    z-index:2;
+    background-color:#EEEEEE;
+    top:-2px;
+    left:-2px;;
+    width:600px;
+    border:1px solid #000000;
+    padding:5px;
+    padding-bottom:15px;
+}
+
+#menu_r_shadow
+{
+    position:absolute;
+    z-index:1;
+    background-color:#2B4325;
+    top:120px;
+    left:50%;
+    width:120px;
+    margin-left:317px;
+}
+#menu_r
+{
+    position:relative;
+    z-index:2;
+    background-color:#EEEEEE;
+    top:-2px;
+    left:-2px;;
+    width:112px;
+    border:1px solid #000000;
+    padding:3px;
+    font-size:7pt;
+}
+
+.news_head
+{
+    padding-bottom:2px;
+    border-bottom:1px solid #000000;
+}
+.news_footer
+{
+    padding-top:2px;
+    border-top:1px solid #000000;
+}
+
+.text
+{
+    border:1px solid #000000;
+    background-color: #CCCCCC;
+    font-family:Verdana;
+    color:#000000;
+    font-size:8pt;
+}
+.button
+{
+    border:1px solid #000000;
+    background-color: #CCCCCC;
+    font-family:Verdana;
+    color:#000000;
+    font-size:7pt;
+}

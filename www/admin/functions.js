@@ -173,7 +173,6 @@ function new_editor ( textareaId, editorHeight, readOnlyState )
     tabMode: "shift",
     width: "100%",
     height: editorHeight,
-    onChange: checkHistory,
     iframeClass:"html-editor-iframe",
     readOnly: readOnlyState
   });
@@ -193,46 +192,7 @@ function insert_tag( editorObject, insertText ) {
 }
 
 
-function html_editor_undo( editorObject, buttonObject ) {
-    editorObject.undo();
-    html_editor_set_history_buttons ( editorObject, buttonObject );
-}
 
-function html_editor_redo( editorObject, buttonObject ) {
-    editorObject.redo();
-    html_editor_set_history_buttons ( editorObject, buttonObject );
-}
-
-function checkHistory ( editorObject ) {
-    alert(editorObject);
-    alert(editorObject.historySize()['undo']+" - "+editorObject.historySize()['redo']);
- if ( editorObject.historySize()['undo'] <= 0 ) {
-        $(editorObject).find(".undo:first").addClass("html-editor-button-deactive");
-        $(editorObject).find(".undo:first").css("background-image","url(html-editor/action-undo-grey.gif)");
-    }
-
-}
-
-function html_editor_set_history_buttons ( editorObject, buttonObject ) {
-  alert(editorObject.historySize()['undo']+" - "+editorObject.historySize()['redo']);
-
-        if ( $(buttonObject).hasClass("undo") && editorObject.historySize()['undo'] <= 0 ) {
-            $(buttonObject).addClass("html-editor-button-deactive");
-            $(buttonObject).css("background-image","url(html-editor/action-undo-grey.gif)");
-        } else if ( $(buttonObject).hasClass("undo") )  {
-            $(buttonObject).removeClass("html-editor-button-deactive");
-            $(buttonObject).css("background-image","url(html-editor/action-undo.gif)");
-        }
-        
-        
-        if ( $(buttonObject).hasClass("redo") && editorObject.historySize()['redo'] <= 0 ) {
-            $(buttonObject).addClass("html-editor-button-deactive");
-            $(buttonObject).css("background-image","url(html-editor/action-redo-grey.gif)");
-        } else if ( $(buttonObject).hasClass("redo") )  {
-            $(buttonObject).removeClass("html-editor-button-deactive");
-            $(buttonObject).css("background-image","url(html-editor/action-redo.gif)");
-        }
-}
 
 
 

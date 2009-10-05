@@ -1,4 +1,4 @@
-13.09.2008<?php
+<?php
 ########################################
 #### explanation of editor creation ####
 ########################################
@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_partner";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_partner.tpl";
+    $TEMPLATE_EDIT = null;
 
     $tmp[name] = "partner_eintrag";
     $tmp[title] = $admin_phrases[template][partner_eintrag][title];
@@ -100,5 +101,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

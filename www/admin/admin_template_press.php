@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_press";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_press.tpl";
+    $TEMPLATE_EDIT = null;
 
     $tmp[name] = "press_navi_line";
     $tmp[title] = $admin_phrases[template][press_navi_line][title];
@@ -142,5 +143,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

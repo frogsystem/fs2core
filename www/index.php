@@ -17,27 +17,27 @@ require ( FS2_ROOT_PATH . "login.inc.php");
 if ($db)
 {
     //Include DL Catch
-    require ( FS2_ROOT_PATH . "res/dl.inc.php");
+    require ( FS2_ROOT_PATH . "res/dl.inc.php" );
     
     //Include Functions-Files
-    require ( FS2_ROOT_PATH . "includes/functions.php");
-    require ( FS2_ROOT_PATH . "includes/cookielogin.php");
-    require ( FS2_ROOT_PATH . "includes/imagefunctions.php");
-    require ( FS2_ROOT_PATH . "includes/indexfunctions.php");
+    require ( FS2_ROOT_PATH . "includes/functions.php" );
+    require ( FS2_ROOT_PATH . "includes/cookielogin.php" );
+    require ( FS2_ROOT_PATH . "includes/imagefunctions.php" );
+    require ( FS2_ROOT_PATH . "includes/indexfunctions.php" );
 
     //Include Library-Classes
-    require ( FS2_ROOT_PATH . "libs/class_template.php");
-    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php");
-    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
+    require ( FS2_ROOT_PATH . "libs/class_template.php" );
+    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
+    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
 
     //Include Phrases-Files
-    require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php");
+    require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
     $TEXT = new langDataInit ( "de_DE", "frontend" );
 
 
     // Constructor Calls
     delete_old_randoms ();
-    set_design ();
+    set_style ();
     copyright ();
     get_goto ( $_GET['go'] );
     count_all ( $global_config_arr['goto'] );
@@ -62,7 +62,7 @@ if ($db)
     
     // Get Main Template
     $template = get_maintemplate ();
-    $template = str_replace ( "{body}", $template_index, $template);
+    $template = str_replace ( "{..body..}", $template_index, $template);
 
     // Display Page
     echo $template;

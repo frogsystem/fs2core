@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_wp";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_wallpapers.tpl";
+    $TEMPLATE_EDIT = null;
 
     $tmp[name] = "wallpaper_pic";
     $tmp[title] = $admin_phrases[template][wallpaper_pic][title];
@@ -60,5 +61,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

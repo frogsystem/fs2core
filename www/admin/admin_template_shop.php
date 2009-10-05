@@ -29,7 +29,8 @@
 
 
     $TEMPLATE_GO = "tpl_shop";
-    unset($tmp); //unsets $tmp for safety-issues
+    $TEMPLATE_FILE = "0_shop.tpl";
+    $TEMPLATE_EDIT = null;
     
     $tmp[name] = "shop_hot";
     $tmp[title] = "Hot Link";
@@ -89,5 +90,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

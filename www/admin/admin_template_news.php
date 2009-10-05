@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_news";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_news.tpl";
+    $TEMPLATE_EDIT = null;
     
     $tmp[name] = "news_link";
     $tmp[title] = $admin_phrases[template][news_link][title];
@@ -234,5 +235,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

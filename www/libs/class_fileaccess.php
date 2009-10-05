@@ -17,7 +17,7 @@ class fileaccess
     
     // getFileData
     public function getFileData($filename, $flags = 0, $context = null, $offset = -1, $maxlen = -1) {
-        if($maxlen == -1) {
+        if ( $maxlen == -1 ) {
             return file_get_contents($filename, $flags, $context, $offset);
         } else {
             return file_get_contents($filename, $flags, $context, $offset, $maxlen);

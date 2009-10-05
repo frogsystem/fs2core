@@ -1,4 +1,45 @@
 <?php
+/////////////////////////////
+//// scandir with filter ////
+/////////////////////////////
+
+function scandir_filter ( $FOLDER, $EXTRA = array(), $BAD = array ( ".", "..", ".DS_Store", "_notes", "Thumbs.db", ".svn" ) )
+{
+    if ( !is_dir ( $FOLDER ) ) {
+        return FALSE;
+    }
+
+    $bad = array_merge ( $EXTRA, $BAD );
+    $contents = scandir ( $FOLDER );
+    if ( is_array ( $contents ) ) {
+        $contents = array_diff ( $contents, $bad );
+        natcasesort ( $contents );
+    } else {
+        $contents = array();
+    }
+    return $contents;
+}
+
+//////////////////////////////////////////////////
+//// scandir for files with certain extention ////
+//////////////////////////////////////////////////
+
+function scandir_ext ( $FOLDER, $FILE_EXT, $EXTRA = array(), $BAD = array ( ".", "..", ".DS_Store", "_notes", "Thumbs.db", ".svn" ) )
+{
+    if ( $files = scandir_filter ( $FOLDER, $EXTRA, $BAD ) ) {
+        $file_names = array();
+        foreach ( $files as $file ) {
+            if ( pathinfo ( $file, PATHINFO_EXTENSION ) == $FILE_EXT ) {
+                $file_names[] = pathinfo ( $file, PATHINFO_BASENAME );
+            }
+        }
+        return $file_names;
+    }
+    return FALSE;
+}
+
+
+
 ///////////////////////
 //// Localize Date ////
 ///////////////////////

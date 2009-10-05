@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_poll";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_polls.tpl";
+    $TEMPLATE_EDIT = null;
     
     $tmp[name] = "poll_line";
     $tmp[title] = $admin_phrases[template][poll_line][title];
@@ -208,5 +209,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

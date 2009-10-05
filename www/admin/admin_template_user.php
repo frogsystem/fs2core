@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_user";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_user.tpl";
+    $TEMPLATE_EDIT = null;
     
     $tmp[name] = "user_mini_login";
     $tmp[title] = $admin_phrases[template][user_mini_login][title];
@@ -229,5 +230,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

@@ -13,7 +13,7 @@ function veraltet_includes ( $template_index )
                 while ($include_arr = mysql_fetch_assoc($index))
                 {
                     // Include laden
-                    include( FS2_ROOT_PATH . "res/".$include_arr['replace_thing']);
+                    include ( FS2_ROOT_PATH . "res/".$include_arr['replace_thing']);
                     $template_include = $template;
                     unset($template);
 
@@ -54,19 +54,24 @@ function veraltet_includes ( $template_index )
 function get_maintemplate ( $PATH_PREFIX = "" )
 {
         global $global_config_arr;
-    global $db;
+        global $db;
 
         // Main Template
         $template = '
-{doctype}
+{..doctype..}
 <html>
         <head>
-                {title}{meta}{link}{script}
+                {..title..}{..meta..}{..link..}{..script..}
         </head>
 
-    {body}
+    {..body..}
 </html>
 ';
+        // Get Doctype
+        $template_doctype = new template();
+        $template_doctype->setFile("0_general.tpl");
+        $template_doctype->load("DOCTYPE");
+        $template_doctype = $template_doctype->display();
 
         // Create link-Rows
         $template_link = "";
@@ -75,28 +80,57 @@ function get_maintemplate ( $PATH_PREFIX = "" )
                 <link rel="shortcut icon" href="images/icons/favicon.ico">';
         }
         $template_link .= '
-                <link rel="stylesheet" type="text/css" href="'.$PATH_PREFIX .'style_css.php?id='.$global_config_arr['design'].'">
+                '. get_css ( $PATH_PREFIX ) .'
                 <link rel="stylesheet" type="text/css" href="'.$PATH_PREFIX .'editor_css.php?id='.$global_config_arr['design'].'">
                 <link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' News Feed">';
 
         // Create script-Rows
-    $template_script = "";
+        $template_script = "";
         $template_script .= '
                 <script type="text/javascript" src="'.$PATH_PREFIX .'res/jquery-1.3.1.min.js"></script>
                 <script type="text/javascript" src="'.$PATH_PREFIX .'res/js_functions.js"></script>
                 <script type="text/javascript" src="'.$PATH_PREFIX .'res/js_userfunctions.php?id='.$global_config_arr['design'].'"></script>';
 
         // Replace Placeholders
-        $template = str_replace("{doctype}", get_template ( "doctype" ), $template);
-        $template = str_replace("{title}", "<title>".get_title()."</title>", $template);
-        $template = str_replace("{meta}", get_meta (), $template);
-        $template = str_replace("{link}", $template_link, $template);
-        $template = str_replace("{script}", $template_script, $template);
+        $template = str_replace("{..doctype..}", $template_doctype, $template);
+        $template = str_replace("{..title..}", "<title>".get_title()."</title>", $template);
+        $template = str_replace("{..meta..}", get_meta (), $template);
+        $template = str_replace("{..link..}", $template_link, $template);
+        $template = str_replace("{..script..}", $template_script, $template);
 
         // Return Template
         return $template;
 }
 
+
+///////////////////////
+//// Get CSS-Links ////
+///////////////////////
+function get_css ( $PATH_PREFIX )
+{
+    global $global_config_arr;
+
+    // Get List of CSS-Files
+    $search_path =  FS2_ROOT_PATH . "styles/" . $global_config_arr['style'];
+    $link_path =  $PATH_PREFIX . "styles/" . $global_config_arr['style'];
+    $files = scandir_ext ( $search_path, "css" );
+
+    // Search for import.css
+    if ( in_array ( "import.css", $files ) ) {
+        // Create Template
+        $template_css .= '<link rel="stylesheet" type="text/css" href="'. $link_path .'/import.css">';
+    } else {
+        // Create Template
+        $template_css = "";
+        foreach ( $files as $file ) {
+            $template_css .= '<link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $file .'">
+                ';
+        }
+    }
+    
+    // Return Template
+    return $template_css;
+}
 
 ///////////////////////
 //// get META-Tags ////
@@ -462,53 +496,20 @@ function get_copyright ()
 /// Designs & Zones ////
 ////////////////////////
 function set_design ()
+{ set_style(); }
+function set_style ()
 {
     global $db;
     global $global_config_arr;
 
-    if (isset ($_GET['design_id']) && $global_config_arr['allow_other_designs'] == 1)
-    {
-        $index = mysql_query("SELECT id FROM ".$global_config_arr[pref]."template WHERE id = $_GET[design_id]", $db);
-        if (mysql_num_rows($index) > 0)
-        {
-            $global_config_arr['design'] =  $_GET['design_id'];
-            settype($global_config_arr['design'], "integer");
+    if ( isset ( $_GET['style'] ) && $global_config_arr['allow_other_designs'] == 1 ) {
+        $global_config_arr['style'] =  $_GET['style'];
+    } else {
+        $index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);
+        if (mysql_num_rows($index) > 0) {
+            $global_config_arr['style'] =  mysql_result($index, "name");
         }
     }
-    elseif (isset ($_GET['design']) && $global_config_arr['allow_other_designs'] == 1)
-    {
-        $index = mysql_query("SELECT id FROM ".$global_config_arr[pref]."template WHERE name = '$_GET[design]'", $db);
-        if (mysql_num_rows($index) > 0)
-        {
-            $global_config_arr['design'] =  mysql_result($index, "id");
-            settype($global_config_arr['design'], "integer");
-        }
-    }
-    
-    $index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);
-    if (mysql_num_rows($index) > 0) {
-        $global_config_arr['style'] =  mysql_result($index, "name");
-    }
-    
-
-  /*  if (isset ($_GET['zone_id']) AND $global_config_arr[allow_other_designs] == 1)
-    {
-        $index = mysql_query("SELECT design_id FROM ".$global_config_arr[pref]."zones WHERE id = $_GET[zone_id]", $db);
-        if (mysql_num_rows($index) > 0)
-        {
-            $global_config_arr[design] =  $_GET['design_id'];
-            settype($global_config_arr[design], "integer");
-        }
-    }
-    elseif (isset ($_GET['zone']) AND $global_config_arr[allow_other_designs] == 1)
-    {
-        $index = mysql_query("SELECT design_id FROM ".$global_config_arr[pref]."zones WHERE name = '$_GET[zone]'", $db);
-        if (mysql_num_rows($index) > 0)
-        {
-            $global_config_arr[design] =  mysql_result($index2, "design_id");
-            settype($global_config_arr[design], "integer");
-        }
-    }   */
     
     copyright ();
 }
@@ -522,10 +523,15 @@ function copyright ()
     global $db;
     global $global_config_arr;
 
-        if ( strpos ( get_template ( "indexphp" ), "{copyright}" ) == FALSE
-                        || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2009 Frogsystem-Team" ) == FALSE
-                        || strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE) {
-        $global_config_arr['design'] =  0;
+    $template_copyright = new template();
+    $template_copyright->setFile("0_general.tpl");
+    $template_copyright->load("MAINPAGE");
+    $copyright = $template_copyright->display();
+
+    if ( strpos ( $copyright, $template_copyright->getOpener()."copyright".$template_copyright->getCloser() ) == FALSE
+                    || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2009 Frogsystem-Team" ) == FALSE
+                    || strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE) {
+        $global_config_arr['style'] =  "default";
     }
 }
 ?>

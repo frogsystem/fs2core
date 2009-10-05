@@ -27,12 +27,14 @@
 #### / explanation of editor creation ####
 ##########################################
 
-	if ( $go == "tpl_fscodes" ) {
+    if ( $go == "tpl_fscodes" ) {
         $TEMPLATE_GO = "tpl_fscodes";
-	} else {
-		$TEMPLATE_GO = "editor_fscodes";
-	}
-    unset($tmp);
+    } else {
+        $TEMPLATE_GO = "editor_fscodes";
+    }
+    $TEMPLATE_FILE = "0_editor.tpl";
+    $TEMPLATE_EDIT = null;
+
 
     $tmp[name] = "quote_tag";
     $tmp[title] = $admin_phrases[template][quote_tag][title];
@@ -56,7 +58,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[] = false;
+
     
     $tmp[name] = "code_tag";
     $tmp[title] = $admin_phrases[template][code_tag][title];
@@ -73,5 +75,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

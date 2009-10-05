@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_dl";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_downloads.tpl";
+    $TEMPLATE_EDIT = null;
     
     $tmp[name] = "dl_search_field";
     $tmp[title] = $admin_phrases[template][dl_search_field][title];
@@ -192,5 +193,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

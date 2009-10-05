@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_randompic";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_randompic.tpl";
+    $TEMPLATE_EDIT = null;
     
     $tmp[name] = "randompic_body";
     $tmp[title] = $admin_phrases[template][randompic_body][title];
@@ -56,5 +57,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>

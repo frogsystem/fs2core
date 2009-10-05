@@ -28,7 +28,8 @@
 ##########################################
 
     $TEMPLATE_GO = "tpl_screens";
-    unset($tmp);
+    $TEMPLATE_FILE = "0_screenshots.tpl";
+    $TEMPLATE_EDIT = null;
     
     $tmp[name] = "screenshot_cat";
     $tmp[title] = $admin_phrases[template][screenshot_cat][title];
@@ -90,5 +91,5 @@
 //// Intialise Editor ////
 //////////////////////////
 
-echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO);
+echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>
