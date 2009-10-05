@@ -25,5 +25,32 @@ $TEXT = array (
 
     "icon_save_add" =>
     '<img src="icons/save_add.jpg" alt="" align="absmiddle">',
+    
+    "icon_trash_ok" =>
+    '<img src="icons/trash_ok.jpg" alt="" align="absmiddle">',
+    
+    "icon_trash_error" =>
+    '<img src="icons/trash_error.jpg" alt="" align="absmiddle">',
+    
+    
+//Template-Editor
+    "template_manyfile_delete_note" =>
+    "<b>Hinweis:</b> Zum Löschen, die Datei ohne Inhalt speichern",
+
+    "template_no_filename" =>
+    "Es wurde kein Dateiname eingegeben",
+
+    "template_dont_remove_copyright" =>
+    "Der Copyright-Hinweis darf nicht entfernt werden",
+
+
+
+    "template_selection_title_template" =>
+    "Style-Auswahl",
+
+    "template_selection_title_template_file" =>
+    "Style- & Datei-Auswahl",
+    
+    
 );
 ?>

@@ -43,6 +43,9 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
     global $TEXT;
     
     $file_data = null;
+    $access = new fileaccess();
+    $directory_path = FS2_ROOT_PATH . "styles/" . $_POST['style'] . "/";
+    
     if ( $MANYFILES ) {
         if ( $_POST['file'] == "new" ) {
             $_POST['file_name'] = unquote ( $_POST['file_name'] );
@@ -50,10 +53,28 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
                 systext ( $TEXT["admin"]->get("changes_not_saved")."<br>".$TEXT["admin"]->get("template_no_filename"),
                     $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
                 echo "<br>";
+                $_POST[$TEMPLATE_ARR[0]['name']] = unquote ( $_POST[$TEMPLATE_ARR[0]['name']] );
                 return "file_name";
             }
             $TEMPLATE_FILE = $_POST['file_name'] . "." . $TEMPLATE_FILE;
             $_POST['file'] = $TEMPLATE_FILE;
+        } elseif ( trim ( $_POST[$TEMPLATE_ARR[0]['name']] ) == "" ) {
+            $TEMPLATE_FILE = unquote ( $_POST['file'] );
+            $file_path =  $directory_path . $TEMPLATE_FILE;
+            if ( $access->deleteFile ( $file_path ) ) {
+                systext ( $TEXT["admin"]->get("file_deleted"),
+                    $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
+                echo "<br>";
+                $style = $_POST['style'];
+                unset ( $_POST );
+                $_POST['style'] = $style;
+                return "file_delete";
+            } else {
+                systext ( $TEXT["admin"]->get("file_not_deleted")."<br>".$TEXT["admin"]->get("error_file_access"),
+                    $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_trash_error") );
+                echo "<br>";
+                return "file_delete_error";
+            }
         } else {
             $TEMPLATE_FILE = unquote ( $_POST['file'] );
         }
@@ -66,11 +87,7 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
         }
     }
 
-
-
-    $directory_path = FS2_ROOT_PATH . "styles/" . $_POST['style'] . "/";
     $file_path =  $directory_path . $TEMPLATE_FILE;
-    $access = new fileaccess();
     if ( is_writable ( $file_path ) || ( file_exists ( $directory_path ) && is_writable ( $directory_path ) ) ) {
         $access->putFileData ( FS2_ROOT_PATH . "styles/" . $_POST['style'] . "/" . $TEMPLATE_FILE, $file_data );
         return TRUE;
@@ -129,6 +146,9 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES )
         $show_editor = FALSE;
     }
 
+    // Set Selection-Titel
+    $selection_title = $TEXT["admin"]->get("template_selection_title_template");
+
 
     // Special MANYFILES-Things
     if ( $MANYFILES === TRUE ) {
@@ -172,6 +192,9 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES )
         } else {
             $TEMPLATE_FILE = FALSE;
         }
+        
+        // Set Selection-Titel
+        $selection_title = $TEXT["admin"]->get("template_selection_title_template_file");
     }
     
     
@@ -200,7 +223,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES )
     // Selection Template
     $select_template = '
                     <table class="configtable" cellpadding="4" cellspacing="0">
-                        <tr><td class="line">Style- & Datei-Auswahl</td></tr>
+                        <tr><td class="line">'.$selection_title.'</td></tr>
                         <tr>
                             <td class="config left">
                                 <table cellpadding="0" cellspacing="0" border="0" class="config left" width="100%">
@@ -262,8 +285,19 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES )
                         <input type="hidden" id="section_select" value="">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr><td class="line">Templates bearbeiten</td></tr>
-                            <tr>
         ';
+        
+        // Special MANYFILES-Things
+        if ( $MANYFILES === TRUE ) {
+            $return_template .= '
+                            <tr>
+                                <td class="configthin">
+                                    '.$TEXT["admin"]->get("template_manyfile_delete_note").'
+                                </td>
+                            </tr>
+            
+            ';
+        }
 
         // Create Editor for each Template-Section
         foreach ($TEMPLATE_ARR as $template_key => $template) {

@@ -28,5 +28,14 @@ class fileaccess
     public function putFileData($filename, $data, $flags = 0, $context = null) {
         return file_put_contents($filename, $data, $flags, $context);
     }
+    
+    // deleteFile
+    public function deleteFile ( $filename, $context = null ) {
+        if ( is_resource ( $context ) ) {
+            return unlink( $filename, $context );
+        } else {
+            return unlink( $filename );
+        }
+    }
 
 }
