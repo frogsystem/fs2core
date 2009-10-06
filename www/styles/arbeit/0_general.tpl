@@ -39,7 +39,7 @@ Umfrage:<br>
 Partner:<br>
 {..partner..}
 Statistik:<br>
-{..stats..}<br><br>
+$APP[mini_statistics.php]<br><br>
 News-Feeds:<br>
 [%feeds%]
         </div>
@@ -91,17 +91,18 @@ News-Feeds:<br>
     {announcement_text}
 <br><br><!--section-end::ANNOUNCEMENT-->
 
-<!--section-start::STATISTICS-->- <b>{visits}</b> Visits<br>
-- <b>{visits_today}</b> Visits heute<br>
-- <b>{hits}</b> Hits<br>
-- <b>{hits_today}</b> Hits heute<br><br>
+<!--section-start::STATISTICS-->- <b>{..visits..}</b> Visits<br>
+- <b>{..visits_today..}</b> Visits heute<br>
+- <b>{..hits..}</b> Hits<br>
+- <b>{..hits_today..}</b> Hits heute<br><br>
 
-- <b>{visitors_online}</b> Besucher online<br>
-- <b>{registered_online}</b> registrierte <br>
-- <b>{guests_online}</b> Gäste<br><br>
+- <b>{..visitors_online..}</b> Besucher online<br>
+- <b>{..registered_online..}</b> registrierte <br>
+- <b>{..guests_online..}</b> Gäste<br><br>
 
-- <b>{registered_users}</b> registrierte User<br>
-- <b>{news}</b> News<br>
-- <b>{comments}</b> Kommentare<br>
-- <b>{articles}</b> Artikel<!--section-end::STATISTICS-->
+- <b>{..registered_users..}</b> registrierte User<br>
+- <b>{..news..}</b> News<br>
+- <b>{..comments..}</b> Kommentare<br>
+- <b>{..articles..}</b> Artikel
+<!--section-end::STATISTICS-->
 

@@ -221,6 +221,71 @@ function get_mainmenu ( $PATH_PREFIX = "" )
         return $template;
 }
 
+/////////////////////////
+//// Replace Applets ////
+/////////////////////////
+function replace_applets ( $TEMPLATE, $PATH_PREFIX = "" )
+{
+    global $global_config_arr, $db;
+
+    // Load Applets from DB
+    $index = mysql_query ( "
+                            SELECT *
+                            FROM ".$global_config_arr['pref']."applets
+    ", $db );
+
+    // Write Applets into Array & get Applet Template
+    for ( $i = 0; $result = mysql_fetch_assoc ( $index ); $i++ ) {
+        $data_arr[$i]['applet_id'] = $result['applet_id'];
+        $data_arr[$i]['applet_file'] = stripslashes ( $result['applet_file'] );
+        $data_arr[$i]['applet_active'] = $result['applet_active'];
+        $data_arr[$i]['applet_output'] = $result['applet_output'];
+        $data_arr[$i]['applet_template'] = ( $data_arr[$i]['applet_active'] == 1 ) ? get_applet ( $PATH_PREFIX . "applets/" . $data_arr[$i]['applet_file'] ) : "";
+        $data_arr[$i]['applet_template'] = ( $data_arr[$i]['applet_output'] == 1 ) ? $data_arr[$i]['applet_template'] : "";
+    }
+
+    // Replace active Applets in $TEMPLATE
+    foreach ( $data_arr as $applet ) {
+        $TEMPLATE = str_replace ( '$APP['.$applet['applet_file']."]", $applet['applet_template'], $TEMPLATE );
+    }
+
+    // Return Content
+    return $TEMPLATE;
+}
+
+////////////////////
+//// Get Applet ////
+////////////////////
+function get_applet ( $FILE )
+{
+    global $global_config_arr, $db;
+
+    include_once ( FS2_ROOT_PATH . $FILE );
+    $template = str_replace ( '$APP[', '&#x24;APP&#x5B;', $template );
+    return $template;
+}
+
+
+//////////////////////////////////
+//// Replace Global Variables ////
+//////////////////////////////////
+function replace_globalvars ( $TEMPLATE )
+{
+    global $global_config_arr, $db;
+
+    return $TEMPLATE;
+}
+
+/////////////////////////////
+//// Replace Snippets ////
+/////////////////////////////
+function replace_snippets ( $TEMPLATE )
+{
+    global $global_config_arr, $db;
+
+    return $TEMPLATE;
+}
+
 ///////////////////////////
 //// Replace Resources ////
 ///////////////////////////
@@ -237,11 +302,11 @@ function replace_resources ( $TEMPLATE, $PATH_PREFIX = "" )
 
         // Write Resources into Array & get Resource Template
         for ( $i = 0; $result = mysql_fetch_assoc ( $index ); $i++ ) {
-        $resources_arr[$i]['id'] = $result['id'];
-        $resources_arr[$i]['resource_name'] = $result['resource_name'];
-        $resources_arr[$i]['resource_file'] = $result['resource_file'];
-        $resources_arr[$i]['hardcoded'] = $result['hardcoded'];
-        $resources_arr[$i]['template'] = get_resource ( $PATH_PREFIX."res/".$result['resource_file'] );
+            $resources_arr[$i]['id'] = $result['id'];
+            $resources_arr[$i]['resource_name'] = $result['resource_name'];
+            $resources_arr[$i]['resource_file'] = $result['resource_file'];
+            $resources_arr[$i]['hardcoded'] = $result['hardcoded'];
+            $resources_arr[$i]['template'] = get_resource ( $PATH_PREFIX."res/".$result['resource_file'] );
         }
 
         // Replace Resources in $TEMPLATE
@@ -266,6 +331,8 @@ function get_resource ( $FILE )
         $template = killbraces ( $template );
         return $template;
 }
+
+
 
 
 ///////////////////

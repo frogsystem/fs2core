@@ -13,6 +13,12 @@ $TEXT = array (
     "changes_not_saved" =>
     "Änderungen wurden nicht gespeichert",
 
+    "form_not_filled" =>
+    "Bitte füllen Sie alle Pflichtfelder aus",
+
+    "form_only_allowed_values" =>
+    "Bitte geben Sie nur erlaubte Werte ein!",
+
 
 
 
@@ -25,6 +31,9 @@ $TEXT = array (
 
     "icon_save_add" =>
     '<img src="icons/save_add.jpg" alt="" align="absmiddle">',
+
+    "icon_save_error" =>
+    '<img src="icons/save_error.jpg" alt="" align="absmiddle">',
     
     "icon_trash_ok" =>
     '<img src="icons/trash_ok.jpg" alt="" align="absmiddle">',
