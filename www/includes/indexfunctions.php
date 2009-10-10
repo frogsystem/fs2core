@@ -237,7 +237,7 @@ function replace_applets ( $TEMPLATE, $PATH_PREFIX = "" )
     // Write Applets into Array & get Applet Template
     for ( $i = 0; $result = mysql_fetch_assoc ( $index ); $i++ ) {
         $data_arr[$i]['applet_id'] = $result['applet_id'];
-        $data_arr[$i]['applet_file'] = stripslashes ( $result['applet_file'] );
+        $data_arr[$i]['applet_file'] = stripslashes ( $result['applet_file'] ) . ".php";
         $data_arr[$i]['applet_active'] = $result['applet_active'];
         $data_arr[$i]['applet_output'] = $result['applet_output'];
         $data_arr[$i]['applet_template'] = ( $data_arr[$i]['applet_active'] == 1 ) ? get_applet ( $PATH_PREFIX . "applets/" . $data_arr[$i]['applet_file'] ) : "";

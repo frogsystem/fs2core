@@ -6,7 +6,7 @@
 if (
         isset ( $_POST['applet_file'] )
         && $_POST['applet_file'] != ""
-        && file_exists ( FS2_ROOT_PATH . "applets/" . $_POST['applet_file'] )
+        && file_exists ( FS2_ROOT_PATH . "applets/" . $_POST['applet_file'] . ".php" )
     )
 {
 
@@ -39,7 +39,7 @@ if (
         unset ( $_POST );
     // Applet already exists
     } else {
-        systext ( $TEXT["admin"]->get("applet_not_added")."<br>".$TEXT["admin"]->get("applet_exists"),
+        systext ( $TEXT["admin"]->get("applet_exists"),
             $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
         unset ( $_POST['sended'] );
     }
@@ -51,7 +51,7 @@ if (
 /////////////////////////
 
 // Security Functions
-$_POST['applet_file'] = savesql ( $_POST['applet_file'] );
+$_POST['applet_file'] = killhtml ( $_POST['applet_file'] );
 
 settype ( $_POST['applet_active'], "integer" );
 settype ( $_POST['applet_output'], "integer" );
@@ -59,7 +59,7 @@ settype ( $_POST['applet_output'], "integer" );
 
 // Check for Errors
 if ( isset ( $_POST['sended'] ) ) {
-    if ( isset ( $_POST['applet_file'] ) && !file_exists ( FS2_ROOT_PATH . "applets/" . $_POST['applet_file'] ) ) {
+    if ( isset ( $_POST['applet_file'] ) && $_POST['applet_file'] !=  "" && !file_exists ( FS2_ROOT_PATH . "applets/" . $_POST['applet_file'] . ".php" ) ) {
         $error_message = $TEXT["admin"]->get("applet_file_not_exists");
     } else {
         $error_message = $TEXT["admin"]->get("form_not_filled");
@@ -84,12 +84,12 @@ echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("applet_add_title").'</td></tr>
                             <tr>
-                                <td class="config right_space">
+                                <td class="config">
                                     '.$TEXT["admin"]->get("applets_file_title").':<br>
                                     <span class="small">'.$TEXT["admin"]->get("applets_file_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text input_width" name="applet_file" maxlength="100" value="'.$_POST['applet_file'].'">
+                                    <input class="text input_width" name="applet_file" maxlength="100" value="'.$_POST['applet_file'].'">&nbsp;.php
                                 </td>
                             </tr>
                             <tr>
@@ -114,7 +114,7 @@ echo '
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                        '.$admin_phrases[common][arrow].' '.$TEXT["admin"]->get("applet_add_title").'
                                     </button>
                                 </td>
                             </tr>

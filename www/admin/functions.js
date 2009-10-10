@@ -1,6 +1,79 @@
 // Document Ready Functions
 $().ready(function(){
 
+var lastJQBox;
+
+    // Add Pointer to clickable area
+    $(".select_entry").addClass("pointer");
+
+    // create mouseover effect depending on Box State and color
+    $(".select_entry").hover(
+        function () {
+            if ( $(this).find("input.select_box:first").is(":checked") ) {
+                setBGcolorCompare ( $(this), $(this).parents(".select_list:first select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
+            } else {
+                $(this).css("background-color", "#EEEEEE");
+            }
+        },
+        function () {
+            if ( $(this).find("input.select_box:first").is(":checked") ) {
+                setBGcolorCompare ( $(this), $(this).parents(".select_list:first select.select_type:first option:selected").hasClass("select_red"), "#C24949", "#49C24f" );
+            } else {
+                $(this).css("background-color", "transparent");
+            }
+        }
+    );
+
+    // Prevent "double-click" error, don't use default click functionality of boxes
+    $(".select_entry input.select_box").click(
+        function () {
+            if ( $(this).is(":checked") ) {
+                $(this).removeAttr("checked");
+            } else {
+                $(this).attr("checked","checked");
+            }
+        }
+    );
+
+    // Create Click depending on select type and color
+    $(".select_entry").click(
+        function () {
+            theTable = $(this).parents(".select_list:first");
+            if ( theTable.find("select.select_type:first option:selected").hasClass("select_one") ) {
+                theTable.find(".select_entry input.select_box").removeAttr("checked");
+                theTable.find(".select_entry").css("background-color", "transparent");
+            }
+
+            var theBox = $(this).find("input.select_box:first");
+
+            if ( theBox.is(":checked") ) {
+                theBox.removeAttr("checked");
+                $(this).css("background-color", "#EEEEEE");
+            } else {
+                theBox.attr("checked","checked");
+                setBGcolorCompare ( $(this), $(this).parents(".select_list:first select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
+                lastJQBox = theBox;
+            }
+        }
+    );
+
+    // Create change of select type and color
+    $(".select_list select.select_type:first").change(
+        function () {
+            theLines = $(this).parents(".select_list:first .select_entry");
+
+            if ( $(this).find("option:selected").hasClass("select_one") ) {
+                theLines.find("input.select_box").removeAttr("checked");
+                theLines.css("background-color", "transparent");
+                lastJQBox.attr("checked","checked");
+            }
+
+            setBGcolorCompare ( theLines.find("input.select_box:checked").parents(".select_entry:first"), $(this).find("option:selected").hasClass("select_red"), "#C24949", "#49C24f" );
+        }
+    );
+
+
+
     // Colorize tag-list
     $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").css("background-color","#FFFFFF");
     $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").hover( function () {
@@ -44,7 +117,15 @@ $().ready(function(){
 
 
 
-
+// set BG color depending on
+function setBGcolorCompare (theObject, theCompare, firstColor, secondColor) {
+    if (theCompare) {
+        theObject.css("background-color", firstColor);
+    } else {
+        theObject.css("background-color", secondColor);
+    }
+    return true;
+}
 
 
 // show or hide an element

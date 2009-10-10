@@ -757,7 +757,7 @@ function create_group ($GROUP_ARR, $IS_FIRST, $GO )
         $pageaction = mysql_query ( "
                                                     SELECT `page_id`, `page_link`
                                                     FROM `".$global_config_arr['pref']."admin_cp`
-                                                    WHERE `group_id` = '".$GROUP_ARR['group_id']."'
+                                                    WHERE `group_id` = '".$GROUP_ARR['group_id']."' AND `page_int_sub_perm` = 0
                                                     ORDER BY `page_pos` ASC, `page_id` ASC
         ", $db );
         while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {

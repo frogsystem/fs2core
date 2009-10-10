@@ -194,11 +194,7 @@ function default_display_entry ( $news_arr )
 
         // Display News Entry
         $entry = '
-                                                        <tr class="pointer" id="tr_'.$news_arr['news_id'].'"
-                                                                onmouseover="'.color_list_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this" ).'"
-                                                                onmouseout="'.color_list_entry ( "input_".$news_arr['news_id'], "transparent", "#49c24f", "this" ).'"
-                                onclick="'.color_click_entry ( "input_".$news_arr['news_id'], "#EEEEEE", "#64DC6A", "this" ).'"
-                                                        >
+                            <tr class="select_entry">
                                 <td class="config justify" style="width: 375px; padding-right: 25px;">
                                     #'.$news_arr['news_id'].' '.killhtml ( $news_arr['news_title'] ).'
         ';
@@ -235,9 +231,7 @@ function default_display_entry ( $news_arr )
         $entry .= '
                                 </td>
                                 <td class="config middle center">
-                                    <input class="pointer" type="checkbox" name="news_id[]" id="input_'.$news_arr['news_id'].'" value="'.$news_arr['news_id'].'"
-                                                                                onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$news_arr['news_id'] ).'"
-                                                                        >
+                                    <input class="pointer select_box" type="checkbox" name="news_id[]" value="'.$news_arr['news_id'].'">
                                 </td>
                             </tr>
     ';
@@ -290,8 +284,8 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                         <input type="hidden" name="order" value="'.$FORM['order'].'" >
                         <input type="hidden" name="sort" value="'.$FORM['sort'].'">
                         <input type="hidden" name="cat_id" value="'.$FORM['cat_id'].'">
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="4">'.$admin_phrases[news][news_edit_select_news].' ('.$pagenav_arr['total_entries'].' '.$admin_phrases[news][news_edit_entries_found].')</td></tr>
+                        <table class="configtable select_list" cellpadding="4" cellspacing="0">
+                            <tr><td class="line" colspan="4">'.$admin_phrases[news][news_edit_select_news].' ('.$pagenav_arr['total_entries'].' '.$admin_phrases[news][news_edit_entries_found].')</td></tr>
 
     ';
 
@@ -299,34 +293,36 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 
     // Display News List Footer
     echo'
-                                                        <tr><td class="space"></td></tr>
-                        </table>
-                                                '.default_display_pagenav ( default_get_pagenav_data () ).'
-           ';
-
-        // End of Form & Table incl. Submit-Button
-         echo '
-                      <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="space"></td></tr>
-                                                        <tr>
-                                                                <td class="right">
-                                                                        <select name="news_action" size="1">
-                                                                                <option value="edit">'.$admin_phrases[common][selection_edit].'</option>
-                                                                                <option value="delete">'.$admin_phrases[common][selection_del].'</option>
-                                                                                <option value="comments">'.$admin_phrases[common][edit_comments].'</option>
-                                                                        </select>
-                                                                </td>
-                                                        </tr>
-                                                        <tr><td class="space"></td></tr>
-                                                        <tr>
-                                                                <td class="buttontd">
-                                                                        <button class="button_new" type="submit">
-                                                                                '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
-                                                                        </button>
-                                                                </td>
-                                                        </tr>
-                                                </table>
-                                        </form>
+                            <tr>
+                                <td colspan="4">'.default_display_pagenav ( default_get_pagenav_data () ).'</td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+    ';
+
+    // End of Form & Table incl. Submit-Button
+    echo '
+         
+
+                            <tr>
+                                <td class="right" colspan="4">
+                                    <select class="select_type" name="news_action" size="1">
+                                        <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                        <option class="select_red" value="delete">'.$admin_phrases[common][selection_del].'</option>
+                                        <option class="select_one" value="comments">'.$admin_phrases[common][edit_comments].'</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td class="buttontd" colspan="4">
+                                    <button class="button_new" type="submit">
+                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
         ';
 }
 
