@@ -1,24 +1,22 @@
 <?php
-function user_login($username, $password, $iscookie)
+function user_login ( $username, $password, $iscookie )
 {
     global $global_config_arr;
     global $db;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name = '$username'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_name = '".$username."'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0) {
         $_GET['go'] = "login";
         return 1;  // Fehlercode 1: User nicht vorhanden
-    }
-    else {
-
+    } else {
         $dbuserpass = mysql_result($index, 0, "user_password");
         $dbuserid = mysql_result($index, 0, "user_id");
         $username = mysql_result($index, 0, "user_name");
         $usersalt = mysql_result($index, 0, "user_salt");
-        
+
         if ($iscookie===false) {
             $password = md5 ( $password.$usersalt );
         }
@@ -62,7 +60,7 @@ function set_cookie($username, $password)
         if ($password == $dbuserpass)
         {
             $inhalt = $password . $username;
-            setcookie ("login", $inhalt, time()+2592000, "/");
+            setcookie ("login", $inhalt, time()+2592000, "/" );
             return true;  // Login akzeptiert
         }
         else

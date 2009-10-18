@@ -112,32 +112,49 @@ function image_rename ( $PATH, $NAME, $NEWNAME )
 //// Pic Upload Meldung ////
 ////////////////////////////
 
-function upload_img_notice($upload)
+function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
 {
-  global $admin_phrases;
+  global $admin_phrases, $TEXT;
 
-  switch ($upload)
-  {
+  if ( $ADMIN ) {
+    $image0 = $TEXT['frontend']->get("image_upload_error_0");
+    $image1 = $TEXT['frontend']->get("image_upload_error_1");
+    $image2 = $TEXT['frontend']->get("image_upload_error_2");
+    $image3 = $TEXT['frontend']->get("image_upload_error_3");
+    $image4 = $TEXT['frontend']->get("image_upload_error_4");
+    $image5 = $TEXT['frontend']->get("image_upload_error_5");
+    $image6 = $TEXT['frontend']->get("image_upload_error_6");
+  } else {
+    $image0 = $TEXT->get("image_upload_error_0");
+    $image1 = $TEXT->get("image_upload_error_1");
+    $image2 = $TEXT->get("image_upload_error_2");
+    $image3 = $TEXT->get("image_upload_error_3");
+    $image4 = $TEXT->get("image_upload_error_4");
+    $image5 = $TEXT->get("image_upload_error_5");
+    $image6 = $TEXT->get("image_upload_error_6");
+  }
+  
+  switch ( $UPLOAD ) {
     case 0:
-      return $admin_phrases[common][image_0] ;
+      return $image0 ;
       break;
     case 1:
-      return $admin_phrases[common][image_1] ;
+      return $image1 ;
       break;
     case 2:
-      return $admin_phrases[common][image_2] ;
+      return $image2 ;
       break;
     case 3:
-      return $admin_phrases[common][image_3] ;
+      return $image3 ;
       break;
     case 4:
-      return $admin_phrases[common][image_4] ;
+      return $image4 ;
       break;
     case 5:
-      return $admin_phrases[common][image_5] ;
+      return $image5 ;
       break;
     case 6:
-      return $admin_phrases[common][image_6] ;
+      return $image6 ;
       break;
   }
 }
@@ -149,18 +166,18 @@ function upload_img_notice($upload)
 function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, $QUALITY = 100, $THIS_SIZE = false )
 {
     global $global_config_arr;
-    
+
     // Get Image Data
     $image_data = getimagesize ( $IMAGE['tmp_name'] );
     switch ( $image_data[2] )
     {
-        case "IMAGETYPE_GIF":
+        case 1:
             $type = "gif";
             break;
-        case "IMAGETYPE_JPEG":
+        case 2:
             $type = "jpg";
             break;
-        case "IMAGETYPE_PNG":
+        case 3:
              $type = "png";
              break;
          default:

@@ -1,37 +1,9 @@
 <?php
-########################################
-#### explanation of editor creation ####
-########################################
-/*
-    $TEMPLATE_GO = ""; //$_GET-variable "go", important to stay at the same page ;)
-    unset($tmp); //unsets $tmp for safety-issues
-
-    $tmp[name] = "name"; //name of the template's db-entry
-    $tmp[title] = "title"; //title of the template
-    $tmp[description] = "description"; //short description of what the template is for
-    $tmp[rows] = "x"; //number of rows of the textarea
-    $tmp[cols] = "y"; //number of cols of the textarea
-        $tmp[help][0][tag] = "{tag}"; //{tag}s which may be used in the template
-        $tmp[help][0][text] = "text"; //description of the tag, shown at the tooltip
-        $tmp[help][...][tag] = "{tag}"; //continue with numbers after [help]
-        $tmp[help][...][text] = "text"; //to add more possible tags
-    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
-    unset($tmp); //unsets $tmp for safety-issues
-
-    $TEMPLATE_EDIT[] = false; //creates a vertcal bar to separate templates, here is no need of $tmp
-
-    //continue with new templates
-    ...
-*/
-##########################################
-#### / explanation of editor creation ####
-##########################################
-
     $TEMPLATE_GO = "tpl_user";
     $TEMPLATE_FILE = "0_user.tpl";
     $TEMPLATE_EDIT = null;
     
-    $tmp[name] = "user_mini_login";
+    $tmp[name] = "APPLET_LOGIN";
     $tmp[title] = $admin_phrases[template][user_mini_login][title];
     $tmp[description] = $admin_phrases[template][user_mini_login][description];
     $tmp[rows] = "20";
@@ -39,32 +11,39 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "user_user_menu";
+    $tmp[name] = "APPLET_MENU";
     $tmp[title] = $admin_phrases[template][user_user_menu][title];
     $tmp[description] = $admin_phrases[template][user_user_menu][description];
     $tmp[rows] = "10";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{username}";
+        $tmp[help][0][tag] = "user_name";
         $tmp[help][0][text] = $admin_phrases[template][user_user_menu][help_1] ;
-        $tmp[help][1][tag] = "{admin}";
-        $tmp[help][1][text] = $admin_phrases[template][user_user_menu][help_2] ;
-        $tmp[help][2][tag] = "{logout}";
-        $tmp[help][2][text] = $admin_phrases[template][user_user_menu][help_3] ;
+        $tmp[help][1][tag] = "user_id";
+        $tmp[help][2][tag] = "user_image";
+        $tmp[help][3][tag] = "user_image_url";
+        $tmp[help][4][tag] = "admincp_line";
+        $tmp[help][4][text] = $admin_phrases[template][user_user_menu][help_2] ;
+        $tmp[help][5][tag] = "logout_url";
+        $tmp[help][5][text] = $admin_phrases[template][user_user_menu][help_3] ;
+
+
+
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "user_admin_link";
+    $tmp[name] = "APPLET_ADMINLINK";
     $tmp[title] = $admin_phrases[template][user_admin_link][title];
     $tmp[description] = $admin_phrases[template][user_admin_link][description];
     $tmp[rows] = "5";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{adminlink}";
-        $tmp[help][0][text] = $admin_phrases[template][user_admin_link][help_1];
+        $tmp[help][][tag] = "admincp_link";
+        $tmp[help][1][tag] = "admincp_url";
+        $tmp[help][1][text] = $admin_phrases[template][user_admin_link][help_1];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[] = false;
-    $tmp[name] = "user_login";
+
+    $tmp[name] = "LOGIN";
     $tmp[title] = $admin_phrases[template][user_login][title];
     $tmp[description] = $admin_phrases[template][user_login][description];
     $tmp[rows] = "20";
@@ -72,7 +51,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "user_register";
+    $tmp[name] = "REGISTER";
     $tmp[title] = $admin_phrases[template][user_register][title];
     $tmp[description] = $admin_phrases[template][user_register][description];
     $tmp[rows] = "20";
@@ -84,9 +63,9 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[] = false;
 
-    $tmp[name] = "user_spam";
+
+    $tmp[name] = "CAPTCHA_LINE";
     $tmp[title] = $admin_phrases[template][user_spam][title];
     $tmp[description] = $admin_phrases[template][user_spam][description];
     $tmp[rows] = "7";
@@ -96,7 +75,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "user_spamtext";
+    $tmp[name] = "CAPTCHA_TEXT";
     $tmp[title] = $admin_phrases[template][user_spamtext][title];
     $tmp[description] = $admin_phrases[template][user_spamtext][description];
     $tmp[rows] = "7";
@@ -104,9 +83,9 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[] = false;
 
-    $tmp[name] = "user_profil";
+
+    $tmp[name] = "PROFILE";
     $tmp[title] = $admin_phrases[template][user_profil][title];
     $tmp[description] = $admin_phrases[template][user_profil][description];
     $tmp[rows] = "20";
@@ -128,25 +107,34 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "user_profiledit";
+    $tmp[name] = "PROFILE_EDIT";
     $tmp[title] = $admin_phrases[template][user_profiledit][title];
     $tmp[description] = $admin_phrases[template][user_profiledit][description];
     $tmp[rows] = "20";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{username}";
-        $tmp[help][0][text] = $admin_phrases[template][user_profiledit][help_1];
-        $tmp[help][1][tag] = "{avatar}";
-        $tmp[help][1][text] = $admin_phrases[template][user_profiledit][help_2];
-        $tmp[help][2][tag] = "{email}";
-        $tmp[help][2][text] = $admin_phrases[template][user_profiledit][help_3];
-        $tmp[help][3][tag] = "{email_zeigen}";
-        $tmp[help][3][text] = $admin_phrases[template][user_profiledit][help_4];
+        $tmp[help][][tag] = "user_name";
+        $tmp[help][][tag] = "user_id";
+        $tmp[help][][tag] = "user_image";
+        $tmp[help][][tag] = "user_image_url";
+        $tmp[help][][tag] = "image_max_width";
+        $tmp[help][][tag] = "image_max_height";
+        $tmp[help][][tag] = "image_max_size";
+        $tmp[help][][tag] = "image_limits_text";
+        $tmp[help][][tag] = "user_mail";
+        $tmp[help][][tag] = "show_mail_checked";
+        
+        $tmp[help][][tag] = "user_homepage_url";
+        $tmp[help][][tag] = "user_icq";
+        $tmp[help][][tag] = "user_aim";
+        $tmp[help][][tag] = "user_wlm";
+        $tmp[help][][tag] = "user_yim";
+        $tmp[help][][tag] = "user_skype";
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $TEMPLATE_EDIT[] = false;
+
     
-    $tmp[name] = "user_memberlist_body";
+    $tmp[name] = "MEMBERSLIST";
     $tmp[title] = $admin_phrases[template][user_memberlist_body][title];
     $tmp[description] = $admin_phrases[template][user_memberlist_body][description];
     $tmp[rows] = "20";
@@ -178,7 +166,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
-    $tmp[name] = "user_memberlist_userline";
+    $tmp[name] = "MEMBERSLIST_USERLINE";
     $tmp[title] = $admin_phrases[template][user_memberlist_userline][title];
     $tmp[description] = $admin_phrases[template][user_memberlist_userline][description];
     $tmp[rows] = "10";
@@ -202,7 +190,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-    $tmp[name] = "user_memberlist_adminline";
+    $tmp[name] = "MEMBERSLIST_ADMINLINE";
     $tmp[title] = $admin_phrases[template][user_memberlist_adminline][title];
     $tmp[description] = $admin_phrases[template][user_memberlist_adminline][description];
     $tmp[rows] = "10";

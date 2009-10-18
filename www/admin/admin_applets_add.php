@@ -89,7 +89,8 @@ echo '
                                     <span class="small">'.$TEXT["admin"]->get("applets_file_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text input_width" name="applet_file" maxlength="100" value="'.$_POST['applet_file'].'">&nbsp;.php
+                                    <input class="text input_width_mini" name="applet_file" id="applet_file" maxlength="100" value="'.$_POST['applet_file'].'">&nbsp;.php
+                                    &nbsp;&nbsp;<input class="button" type="button" onClick=\''.openpopup ( "admin_find_applet.php", 400, 400 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">
                                 </td>
                             </tr>
                             <tr>

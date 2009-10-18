@@ -18,15 +18,15 @@ if ( $_POST['user_mail'] && $_SESSION['user_id']) {
 
     // Upload & Delete User Image
     if ( isset ( $_POST['user_delete_image'] ) ) {
-        image_delete ( "images/avatare/", $_SESSION['user_id'] );
+        image_delete ( "media/user-images/", $_SESSION['user_id'] );
     } elseif ( $_FILES['user_image']['tmp_name'] ) {
-        image_rename ( "images/avatare/", $_SESSION['user_id'], $_SESSION['user_id']."_old");
-        $upload = upload_img ( $_FILES['user_image'], "images/avatare/", $_SESSION['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
-        $message = upload_img_notice ( $upload )."<br>";
-        if ( !$upload ) {
-          image_delete ( "images/avatare/", $_SESSION['user_id']."_old" );
+        image_rename ( "media/user-images/", $_SESSION['user_id'], $_SESSION['user_id']."_old");
+        $upload = upload_img ( $_FILES['user_image'], "media/user-images/", $_SESSION['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        $message = upload_img_notice ( $upload, FALSE )."<br>";
+        if ( $upload != 0 ) {
+          image_delete ( "media/user-images/", $_SESSION['user_id']."_old" );
         } else {
-          image_rename ( "images/avatare/", $_SESSION['user_id']."_old", $_SESSION['user_id'] );
+          image_rename ( "media/user-images/", $_SESSION['user_id']."_old", $_SESSION['user_id'] );
         }
     }
 
@@ -51,7 +51,7 @@ if ( $_POST['user_mail'] && $_SESSION['user_id']) {
             `user_skype` = '".savesql ( $_POST['user_skype'] )."'
         WHERE `user_id` = '".$_SESSION['user_id']."'
     ", $db);
-    $message .= $phrases['profile_update'];
+    $message .= $TEXT->get("user_profile_updated");
 
     // Save New Password
     if ( $_POST['oldpwd'] && $_POST['newpwd'] && $_POST['wdhpwd'] ) {
@@ -82,32 +82,32 @@ if ( $_POST['user_mail'] && $_SESSION['user_id']) {
                         `user_salt` = '".$new_salt."'
                     WHERE `user_id` = '".$_SESSION['user_id']."'
                 ", $db);
-                $message .= "<br>".$phrases['pass_update'];
+                $message .= "<br>".$TEXT->get("user_password_changed");
                 
                 // Send E-Mail
                 $template_mail = get_email_template ( "signup" );
-                $template_mail = str_replace ( "{username}", stripslashes ( $_SESSION['user_name'] ), $template_mail );
-                $template_mail = str_replace ( "{password}", $mailpass, $template_mail );
-                $template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
-                $email_betreff = $phrases['pass_change'] . $global_config_arr['virtualhost'];
+                $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_SESSION['user_name'] ), $template_mail );
+                $template_mail = str_replace ( "{..new_password..}", $mailpass, $template_mail );
+                $template_mail = replace_globalvars ( $template_mail );
+                $email_betreff = $TEXT->get("mail_password_changed_on") . $global_config_arr['virtualhost'];
                 if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail ) ) {
-                    $message .= "<br>E-Mail mit neuen Zugangsdaten wurde erfolgreich gesendet";
+                    $message .= "<br>".$TEXT->get("mail_new_password_sended");
                 } else {
-                    $message .= "<br>E-Mail mit neuen Zugangsdaten konnte nicht gesendet werden";
+                    $message .= "<br>".$TEXT->get("mail_new_password_not_sended");
                 }
 
             } else {
-                $message .= "<br>" . $phrases[pass_failed] . "<br>" . $phrases[pass_newwrong];
+                $message .= "<br>" . $TEXT->get("user_password_change_failed") . "<br>" . $TEXT->get("user_password_change_error_new");
             }
 
         } else {
-            $message .= "<br>" . $phrases[pass_failed] . "<br>" . $phrases[pass_oldwrong];
+            $message .= "<br>" . $TEXT->get("user_password_change_failed") . "<br>" . $TEXT->get("user_password_change_error_old");
         }
 
     }
 
     // Meldung ausgebena
-    $template .= forward_message ( "Profil", $message, $_SERVER['REQUEST_URI'] );
+    $template .= forward_message ( $TEXT->get("user_profile"), $message, $_SERVER['REQUEST_URI'] );
 }
 
 //////////////////////
@@ -124,18 +124,19 @@ else {
         if ( mysql_num_rows ( $index ) > 0 ) {
             $user_arr = mysql_fetch_assoc ( $index );
             
-            $user_arr['user_image'] = ( image_exists ( "images/avatare/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "images/avatare/", $user_arr['user_id'] ).'" alt="'.$user_arr['user_name'].'">' : $phrases['no_avatar'] );
+            $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$user_arr['user_name'].'">' : $TEXT->get("user_image_not_found") );
             $user_arr['user_homepage'] = ( $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != "http://" ? $user_arr['user_homepage'] : "http://" );
 
             // Create Template
             $template = new template();
 
             $template->setFile ( "0_user.tpl" );
-            $template->load ( "EDITPROFILE" );
+            $template->load ( "PROFILE_EDIT" );
 
             $template->tag ( "user_id", $user_arr['user_id'] );
             $template->tag ( "user_name", stripslashes ( $user_arr['user_name'] ) );
             $template->tag ( "user_image", $user_arr['user_image'] );
+            $template->tag ( "user_image_url", image_url ( "media/user-images/", $user_arr['user_id'] ) );
             $template->tag ( "image_max_width", $config_arr['avatar_x'] );
             $template->tag ( "image_max_height", $config_arr['avatar_y'] );
             $template->tag ( "image_max_size", $config_arr['avatar_size'] );

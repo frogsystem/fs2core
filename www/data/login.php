@@ -1,30 +1,34 @@
 <?php
-///////////////////////
-//// User loggd in ////
-///////////////////////
+///////////////////////////////////
+//// User is already logged in ////
+///////////////////////////////////
 if ( $_SESSION['user_level'] == "loggedin" && $_POST['login'] == 1 ) {
-    $template = forward_message ( "Login", $phrases['logged_in'], "?go=news" );
+    $template = forward_message ( $TEXT->get("user_login"), $TEXT->get("user_login_ok"), "?go=news" );
 } elseif ( $_SESSION['user_level'] == "loggedin" ) {
-    $template = sys_message ( "Login", $phrases['logged_in'] );
+    $template = sys_message ( $TEXT->get("user_login"), $TEXT->get("user_login_ok") );
 }
 
-///////////////////////////
-//// Create Login Form ////
-///////////////////////////
+////////////////////////////
+//// Display Login Form ////
+////////////////////////////
 else {
+    // Error Messages
     switch ( $global_config_arr['login_state'] ) {
         case 2: // Wrong Password
-            $error_template = sys_message ( $phrases['wrong_login_title'], $phrases['wrong_login'] );
+            $error_message = $TEXT->get("user_login_error");
             break;
         case 1: // Wrong Username
-            $error_template = sys_message ( $phrases['wrong_login_title'], $phrases['wrong_login'] );
-            break;
-        default:
-            $error_template = "";
+            $error_message = $TEXT->get("user_login_error");
             break;
     }
 
-    $index = mysql_query("select user_login from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $template = $error_template . stripslashes(mysql_result($index, 0, "user_login"));
+    if ( $global_config_arr['login_state'] == 1 || $global_config_arr['login_state'] == 2 ) {
+        $template = forward_message ( $TEXT->get("user_login_error_title"), $error_message, "?go=login" );
+    } else {
+        $template = new template();
+        $template->setFile ( "0_user.tpl" );
+        $template->load ( "LOGIN" );
+        $template = $template->display ();
+    }
 }
 ?>

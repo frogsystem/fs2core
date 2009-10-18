@@ -9,41 +9,43 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
 <!--section-start::DOCTYPE--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!--section-end::DOCTYPE-->
 
 <!--section-start::MAINPAGE--><body>
-    <div id="head_shadow"></div>
-    <div id="head"></div>
+  <div id="main">
+    
+    <div id="header">
+      <div id="title">&nbsp;Frogsystem 2 (Alix 5)</div>
+    </div> 
 
-    <div id="menu_l_shadow">
-        <div id="menu_l">
-{..main_menu..}
-        </div>
+    <div id="menu_left">
+      {..main_menu..}      
     </div>
-    <div id="main_container">
-        <div id="main_shadow">
-            <div id="main">
-{..announcement..}
-{..content..}
-            </div>
-        </div>
-        <div style="width:100%; text-align:center; margin-top:10px; font-size:7pt; padding-bottom:10px;">{..copyright..}</div>
+    
+    <div id="menu_right">
+      $APP[usermenu.php]<br><br>
+      Zufallsbild:<br>
+      {..randompic..}<br>
+      Shop:<br>
+      {..shop..}<br><br>
+      Umfrage:<br>
+      {..poll..}<br>
+      Partner:<br>
+      {..partner..}
+      Statistik:<br>
+      $APP[mini_statistics.php]<br><br>
+      News-Feeds:<br>
+      [%feeds%]      
+    </div>   
+    
+    <div id="content">
+      {..announcement..}
+      {..content..}
     </div>
-
-    <div id="menu_r_shadow">
-        <div id="menu_r">
-{..user..}<br><br>
-Zufallsbild:<br>
-{..randompic..}<br>
-Shop:<br>
-{..shop..}<br><br>
-Umfrage:<br>
-{..poll..}<br>
-Partner:<br>
-{..partner..}
-Statistik:<br>
-$APP[mini_statistics.php]<br><br>
-News-Feeds:<br>
-[%feeds%]
-        </div>
+    
+    <div id="footer">
+      <span class="copyright">„Light Frog“-Style &copy; Stoffel &amp; Sweil | Frog-Photo &copy; <a href="http://www.flickr.com/photos/joi/1157708196/" target="_blank">Joi</a><br>
+      {..copyright..}</span>
     </div>
+    
+  </div>
 </body><!--section-end::MAINPAGE-->
 
 <!--section-start::MENU1--><b>Allgemein</b><br>

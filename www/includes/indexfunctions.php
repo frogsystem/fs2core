@@ -184,8 +184,7 @@ function get_title ()
 /////////////////////
 function get_content ( $GOTO )
 {
-    global $global_config_arr;
-    global $db;
+    global $global_config_arr, $db, $TEXT;
     global $phrases;
 
     $index = mysql_query ( "SELECT COUNT(article_id) AS 'number' FROM ".$global_config_arr['pref']."articles WHERE article_url = '".$GOTO."'", $db );
@@ -226,7 +225,7 @@ function get_mainmenu ( $PATH_PREFIX = "" )
 /////////////////////////
 function replace_applets ( $TEMPLATE, $PATH_PREFIX = "" )
 {
-    global $global_config_arr, $db;
+    global $global_config_arr, $db, $TEXT;
 
     // Load Applets from DB
     $index = mysql_query ( "
@@ -258,7 +257,7 @@ function replace_applets ( $TEMPLATE, $PATH_PREFIX = "" )
 ////////////////////
 function get_applet ( $FILE )
 {
-    global $global_config_arr, $db;
+    global $global_config_arr, $db, $TEXT;
 
     include_once ( FS2_ROOT_PATH . $FILE );
     $template = str_replace ( '$APP[', '&#x24;APP&#x5B;', $template );
@@ -272,6 +271,16 @@ function get_applet ( $FILE )
 function replace_globalvars ( $TEMPLATE )
 {
     global $global_config_arr, $db;
+    
+    $TEMPLATE = str_replace ( '$VAR(url)', $global_config_arr['virtualhost'], $TEMPLATE );
+    $TEMPLATE = str_replace ( '$VAR(style_url))', $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/", $TEMPLATE );
+    $TEMPLATE = str_replace ( '$VAR(style_images)', $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/images/", $TEMPLATE );
+    $TEMPLATE = str_replace ( '$VAR(style_icons)', $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/", $TEMPLATE );
+    $TEMPLATE = str_replace ( '$VAR(page_title)', $global_config_arr['title'], $TEMPLATE );
+    $TEMPLATE = str_replace ( '$VAR(page_dyn_title)', get_title (), $TEMPLATE );
+    $TEMPLATE = str_replace ( '$VAR(date)', date_loc ( $global_config_arr['date'], time() ), $TEMPLATE );
+    $TEMPLATE = str_replace ( '$VAR(time)', date_loc ( $global_config_arr['time'], time() ), $TEMPLATE );
+    $TEMPLATE = str_replace ( '$VAR(date_time)', date_loc ( $global_config_arr['datetime'], time() ), $TEMPLATE );
 
     return $TEMPLATE;
 }

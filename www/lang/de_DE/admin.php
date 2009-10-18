@@ -57,7 +57,11 @@ $TEXT = array (
     "save_changes_button" =>
     "Änderungen speichern",
     
+    "select_button" =>
+    "Auswählen",
 
+    "file_select_button" =>
+    "Datei auswählen",
     
 // Systemmeldungen
 
@@ -99,6 +103,28 @@ $TEXT = array (
     "icon_trash_error" =>
     '<img src="icons/trash_error.jpg" alt="" align="absmiddle">',
     
+//Bilder-Upload
+    "image_upload_error_0" =>
+    "Bild wurde erfolgreich hochgeladen",
+
+    "image_upload_error_1" =>
+    "Fehler beim Bilder-Upload: Ungültiger Dateityp [Code: IMGxU1]",
+
+    "image_upload_error_2" =>
+    "Fehler beim Bilder-Upload: Bild konnte nicht hochgladen werden [Code: IMGxU2]",
+
+    "image_upload_error_3" =>
+    "Fehler beim Bilder-Upload: Bild ist zu groß (Dateigröße) [Code: IMGxU3]",
+
+    "image_upload_error_4" =>
+    "Fehler beim Bilder-Upload: Bild ist zu groß (Abmessungen) [Code: IMGxU4]",
+
+    "image_upload_error_5" =>
+    "Fehler beim Bilder-Upload: Bild entspricht nicht den erforderlichen Abmessungen [Code: IMGxU5]",
+    
+    "image_upload_error_6" =>
+    "Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden [Code: IMGxU6]",
+
 
 //Applets
     "applet_add_title" =>
@@ -115,6 +141,12 @@ $TEXT = array (
 
     "applets_delete_question" =>
     "Sollen diese Applets wirklich gelöscht werden?",
+
+    "applets_find_pagetitle" =>
+    "Applet-Suche",
+
+    "applets_find_title" =>
+    "Suche nach Applets ...",
 
     "applets_file_title" =>
     "Dateiname",
@@ -160,6 +192,18 @@ $TEXT = array (
 
     "applet_not_active" =>
     "Applet deaktiviert",
+
+    "applets_not_active" =>
+    "Applet deaktiviert",
+
+    "applet_not_active" =>
+    "Applet deaktiviert",
+
+    "applet_not_active" =>
+    "Applet deaktiviert",
+    
+    
+    
     
 //Template-Editor
     "template_manyfile_delete_note" =>

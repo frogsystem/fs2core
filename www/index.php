@@ -46,7 +46,7 @@ if ($db)
 
     // Create Index-Template
     $template_general = new template();
-    
+
     $template_general->setFile("0_general.tpl");
     $template_general->load("MAINPAGE");
     
@@ -59,7 +59,8 @@ if ($db)
     $template_index = replace_applets ( $template_index );
     $template_index = replace_resources ( $template_index );
     $template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung
-    $template_index = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_index );
+
+    $template_index = replace_globalvars ( $template_index );
     
     // Get Main Template
     $template = get_maintemplate ();

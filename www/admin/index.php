@@ -1,6 +1,7 @@
 <?php
 // Start Session
 session_start ();
+
 // Disable magic_quotes_runtime
 set_magic_quotes_runtime ( FALSE );
 

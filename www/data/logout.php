@@ -1,7 +1,7 @@
 <?php
-if ($_POST['go'] != "login") {
-  $template = forward_message ( "Logout",$phrases[logged_out], "?go=login" );
+if ( $_POST['go'] != "login" ) {
+  $template = forward_message ( $TEXT->get("user_logout"), $TEXT->get("user_logout_ok"), "?go=login" );
 } else {
-  $template = forward_message ( "Login", $phrases[logged_in], "?go=news" );
+  $template = forward_message ( $TEXT->get("user_login"), $TEXT->get("user_login_ok"), "?go=news" );
 }
 ?>
