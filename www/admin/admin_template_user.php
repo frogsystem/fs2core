@@ -22,9 +22,11 @@
         $tmp[help][2][tag] = "user_image";
         $tmp[help][3][tag] = "user_image_url";
         $tmp[help][4][tag] = "admincp_line";
-        $tmp[help][4][text] = $admin_phrases[template][user_user_menu][help_2] ;
-        $tmp[help][5][tag] = "logout_url";
-        $tmp[help][5][text] = $admin_phrases[template][user_user_menu][help_3] ;
+        $tmp[help][4][text] = "" ;
+        $tmp[help][5][tag] = "user_edit_url";
+        $tmp[help][5][text] = "" ;
+        $tmp[help][6][tag] = "logout_url";
+        $tmp[help][6][text] = "" ;
 
 
 
@@ -84,26 +86,53 @@
     unset($tmp);
 
 
-
-    $tmp[name] = "PROFILE";
-    $tmp[title] = $admin_phrases[template][user_profil][title];
-    $tmp[description] = $admin_phrases[template][user_profil][description];
-    $tmp[rows] = "20";
-    $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{username}";
-        $tmp[help][0][text] = $admin_phrases[template][user_profil][help_1];
-        $tmp[help][1][tag] = "{avatar}";
-        $tmp[help][1][text] = $admin_phrases[template][user_profil][help_2];
-        $tmp[help][2][tag] = "{email}";
-        $tmp[help][2][text] = $admin_phrases[template][user_profil][help_3];
-        $tmp[help][3][tag] = "{reg_datum}";
-        $tmp[help][3][text] = $admin_phrases[template][user_profil][help_4];
-        $tmp[help][4][tag] = "{news}";
-        $tmp[help][4][text] = $admin_phrases[template][user_profil][help_5];
-        $tmp[help][5][tag] = "{artikel}";
-        $tmp[help][5][text] = $admin_phrases[template][user_profil][help_6];
-        $tmp[help][6][tag] = "{kommentare}";
-        $tmp[help][6][text] = $admin_phrases[template][user_profil][help_7];
+    $tmp = array (
+        name => "PROFILE",
+        title => $admin_phrases[template][user_profil][title],
+        description => $admin_phrases[template][user_profil][description],
+        rows => 30,
+        cols => 66,
+        help => array (
+            array ( tag => "user_id", text => $TEXT['template']->get("user_profile_user_id") ),
+            array ( tag => "user_name", text => $TEXT['template']->get("user_profile_user_name") ),
+            array ( tag => "user_image", text => $TEXT['template']->get("user_profile_user_image") ),
+            array ( tag => "user_image_url", text => $TEXT['template']->get("user_profile_user_image_url") ),
+            array ( tag => "user_rank", text => $TEXT['template']->get("user_profile_user_rank") ),
+            array ( tag => "user_mail", text => $TEXT['template']->get("user_profile_user_mail") ),
+            array ( tag => "user_is_staff", text => $TEXT['template']->get("user_profile_user_is_staff") ),
+            array ( tag => "user_is_admin", text => $TEXT['template']->get("user_profile_user_is_admin") ),
+            array ( tag => "user_group", text => $TEXT['template']->get("user_profile_user_group") ),
+            array ( tag => "user_reg_date", text => $TEXT['template']->get("user_profile_user_reg_date") ),
+            array ( tag => "user_homepage_link", text => $TEXT['template']->get("user_profile_user_homepage_link") ),
+            array ( tag => "user_homepage_url", text => $TEXT['template']->get("user_profile_user_homepage_url") ),
+            array ( tag => "user_icq", text => $TEXT['template']->get("user_profile_user_icq") ),
+            array ( tag => "user_aim", text => $TEXT['template']->get("user_profile_user_aim") ),
+            array ( tag => "user_wlm", text => $TEXT['template']->get("user_profile_user_wlm") ),
+            array ( tag => "user_yim", text => $TEXT['template']->get("user_profile_user_yim") ),
+            array ( tag => "user_skype", text => $TEXT['template']->get("user_profile_user_skype") ),
+            array ( tag => "user_num_news", text => $TEXT['template']->get("user_profile_user_num_news") ),
+            array ( tag => "user_num_comments", text => $TEXT['template']->get("user_profile_user_num_comments") ),
+            array ( tag => "user_num_articles", text => $TEXT['template']->get("user_profile_user_num_articles") ),
+            array ( tag => "user_num_downloads", text => $TEXT['template']->get("user_profile_user_num_downloads") ),
+        )
+    );
+    $TEMPLATE_EDIT[] = $tmp;
+    unset($tmp);
+    
+    $tmp = array (
+        name => "USERRANK",
+        title => $TEXT['template']->get("user_rank_title"),
+        description => $TEXT['template']->get("user_rank_description"),
+        rows => 10,
+        cols => 66,
+        help => array (
+            array ( tag => "group_name", text => $TEXT['template']->get("user_rank_group_name") ),
+            array ( tag => "group_image", text => $TEXT['template']->get("user_rank_group_image") ),
+            array ( tag => "group_image_url", text => $TEXT['template']->get("user_rank_group_image_url") ),
+            array ( tag => "group_title", text => $TEXT['template']->get("user_rank_group_title") ),
+            array ( tag => "group_title_text_only", text => $TEXT['template']->get("user_rank_title_text_only") ),
+        )
+    );
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 

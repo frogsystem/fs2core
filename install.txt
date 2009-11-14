@@ -1,11 +1,10 @@
 hi, hi there^^
 
-i tried to copy the server-structure with its inc and www folder. in www you can find the content. be safe you changed the include path in the .htaccess to your inc directory (No, not the inc in the www-folder, the one besides the www-folder).
+in www you can find the content.
 
-the mysql-zip contains the mysql data plus some exempal content. make sure you import it on an database called "frogsystem" (without ""), else the whole thing won't work.
+the frogsystem.sql contains the mysql data plus some exempal content. make sure you import it on an database called "frogsystem" (without ""), else the whole thing won't work.
 
-at last change the passowrd and username at the top of the inc/config.inc.php (again the inc-folder besides the www-folder).
-or even better use the same as a i do! ;)
+at last change the passowrd and username at the top of the www/login.inc.php or even better use the default values...
 
 hope everything it will work! ;)
 

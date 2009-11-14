@@ -32,11 +32,11 @@ if ( $_POST['user_mail'] && $_SESSION['user_id']) {
 
     // Update Database
     $_POST['user_show_mail'] = isset ( $_POST['user_show_mail'] ) ? 1 : 0;
-    if (  trim ( $user_arr['user_homepage'] ) == "http://" ) {
-        $user_arr['user_homepage'] = "";
+    if (  trim ( $_POST['user_homepage'] ) == "http://" ) {
+        $_POST['user_homepage'] = "";
     }
-    if (  $user_arr['user_homepage'] && substr ( $user_arr['user_homepage'], 0, 7 ) != "http://" ) {
-        $user_arr['user_homepage'] = "http://".$user_arr['user_homepage'];
+    if (  $_POST['user_homepage'] && substr ( $_POST['user_homepage'], 0, 7 ) != "http://" ) {
+        $_POST['user_homepage'] = "http://".$_POST['user_homepage'];
     }
     
     mysql_query ( "
@@ -124,7 +124,8 @@ else {
         if ( mysql_num_rows ( $index ) > 0 ) {
             $user_arr = mysql_fetch_assoc ( $index );
             
-            $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$user_arr['user_name'].'">' : $TEXT->get("user_image_not_found") );
+            $user_arr['user_name'] = stripslashes ( $user_arr['user_name'] );
+            $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$TEXT->get("user_image_of")." ".$user_arr['user_name'].'">' : $TEXT->get("user_image_not_found") );
             $user_arr['user_homepage'] = ( $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != "http://" ? $user_arr['user_homepage'] : "http://" );
 
             // Create Template
@@ -134,7 +135,7 @@ else {
             $template->load ( "PROFILE_EDIT" );
 
             $template->tag ( "user_id", $user_arr['user_id'] );
-            $template->tag ( "user_name", stripslashes ( $user_arr['user_name'] ) );
+            $template->tag ( "user_name", $user_arr['user_name'] );
             $template->tag ( "user_image", $user_arr['user_image'] );
             $template->tag ( "user_image_url", image_url ( "media/user-images/", $user_arr['user_id'] ) );
             $template->tag ( "image_max_width", $config_arr['avatar_x'] );

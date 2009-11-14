@@ -16,11 +16,11 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
     </div> 
 
     <div id="menu_left">
-      {..main_menu..}      
+    $NAV(left.nav)  
     </div>
     
     <div id="menu_right">
-      $APP[usermenu.php]<br><br>
+      $APP(usermenu.php)<br><br>
       Zufallsbild:<br>
       {..randompic..}<br>
       Shop:<br>
@@ -30,7 +30,7 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
       Partner:<br>
       {..partner..}
       Statistik:<br>
-      $APP[mini_statistics.php]<br><br>
+      $APP(mini_statistics.php)<br><br>
       News-Feeds:<br>
       [%feeds%]      
     </div>   

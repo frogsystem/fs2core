@@ -31,6 +31,9 @@ $TEXT = array (
 
     "week_days_array" =>
     "Montag,Dienstag,Mittwoch,Donnerstag,Freitag,Samstag,Sonntag",
+    
+    "news_feed" =>
+    "News-Feed",
 
 // E-Mail
     "mail_password_changed_on" =>
@@ -103,7 +106,16 @@ $TEXT = array (
     "user_logout_ok" =>
     "Abmeldevorgang war erfolgreich",
     
-
+//Gruppen
+    "group_image" =>
+    "Gruppen-Symbol",
+    
+    "group_image_of" =>
+    "Gruppen-Symbol von",
+    
+    "group_image_not_found" =>
+    "Kein Gruppen-Symbol gefunden",
+    
     
 //Bilder-Upload
     "image_upload_error_0" =>

@@ -53,53 +53,50 @@ function veraltet_includes ( $template_index )
 ///////////////////////////
 function get_maintemplate ( $PATH_PREFIX = "" )
 {
-        global $global_config_arr;
-        global $db;
+    global $global_config_arr, $db, $TEXT;
 
-        // Main Template
-        $template = '
+    // Main Template
+    $template = '
 {..doctype..}
 <html>
         <head>
                 {..title..}{..meta..}{..link..}{..script..}
         </head>
 
-    {..body..}
+        {..body..}
 </html>
-';
-        // Get Doctype
-        $template_doctype = new template();
-        $template_doctype->setFile("0_general.tpl");
-        $template_doctype->load("DOCTYPE");
-        $template_doctype = $template_doctype->display();
+    ';
+    // Get Doctype
+    $template_doctype = new template();
+    $template_doctype->setFile("0_general.tpl");
+    $template_doctype->load("DOCTYPE");
+    $template_doctype = $template_doctype->display();
 
-        // Create link-Rows
-        $template_link = "";
-        if ( $global_config_arr['show_favicon'] == 1 ) {
+    // Create link-Rows
+    $template_link = "";
+    if ( $global_config_arr['show_favicon'] == 1 ) {
                 $template_link .= '
                 <link rel="shortcut icon" href="images/icons/favicon.ico">';
-        }
-        $template_link .= '
-                '. get_css ( $PATH_PREFIX ) .'
-                <link rel="stylesheet" type="text/css" href="'.$PATH_PREFIX .'editor_css.php?id='.$global_config_arr['design'].'">
-                <link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' News Feed">';
+    }
+    $template_link .= '
+                <link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">
+                '. get_css ( $PATH_PREFIX );
 
-        // Create script-Rows
-        $template_script = "";
-        $template_script .= '
-                <script type="text/javascript" src="'.$PATH_PREFIX .'res/jquery-1.3.1.min.js"></script>
-                <script type="text/javascript" src="'.$PATH_PREFIX .'res/js_functions.js"></script>
-                <script type="text/javascript" src="'.$PATH_PREFIX .'res/js_userfunctions.php?id='.$global_config_arr['design'].'"></script>';
+    // Create script-Rows
+    $template_script = "";
+    $template_script .= '
+                <script type="text/javascript" src="'.$PATH_PREFIX .'res/jquery-1.3.1.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
+                <script type="text/javascript" src="'.$PATH_PREFIX .'res/js_functions.js"></script>';
 
-        // Replace Placeholders
-        $template = str_replace("{..doctype..}", $template_doctype, $template);
-        $template = str_replace("{..title..}", "<title>".get_title()."</title>", $template);
-        $template = str_replace("{..meta..}", get_meta (), $template);
-        $template = str_replace("{..link..}", $template_link, $template);
-        $template = str_replace("{..script..}", $template_script, $template);
+    // Replace Placeholders
+    $template = str_replace("{..doctype..}", $template_doctype, $template);
+    $template = str_replace("{..title..}", "<title>".get_title()."</title>", $template);
+    $template = str_replace("{..meta..}", get_meta (), $template);
+    $template = str_replace("{..link..}", $template_link, $template);
+    $template = str_replace("{..script..}", $template_script, $template);
 
-        // Return Template
-        return $template;
+    // Return Template
+    return $template;
 }
 
 
@@ -123,13 +120,36 @@ function get_css ( $PATH_PREFIX )
         // Create Template
         $template_css = "";
         foreach ( $files as $file ) {
-            $template_css .= '<link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $file .'">
-                ';
+            $template_css .= '
+                <link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $file .'">';
         }
     }
     
     // Return Template
     return $template_css;
+}
+
+///////////////////////
+//// Get JS-Links ////
+///////////////////////
+function get_js ( $PATH_PREFIX )
+{
+    global $global_config_arr;
+
+    // Get List of JS-Files
+    $search_path =  FS2_ROOT_PATH . "styles/" . $global_config_arr['style'];
+    $link_path =  $PATH_PREFIX . "styles/" . $global_config_arr['style'];
+    $files = scandir_ext ( $search_path, "js" );
+
+    // Create Template
+    $template_js = "";
+    foreach ( $files as $file ) {
+        $template_js .= '
+                <script type="text/javascript" src="'. $link_path . "/" . $file .'"></script>';
+    }
+
+    // Return Template
+    return $template_js;
 }
 
 ///////////////////////
@@ -211,14 +231,46 @@ function get_content ( $GOTO )
 ///////////////////////
 function get_mainmenu ( $PATH_PREFIX = "" )
 {
-        global $global_config_arr;
-    global $db;
+    global $global_config_arr, $db;
 
-        $template = get_template ( "main_menu" );
-        $template = replace_resources ( $template, $PATH_PREFIX  );
-        $template = killbraces($template);
-        return $template;
+    $template = get_template ( "main_menu" );
+    $template = replace_resources ( $template, $PATH_PREFIX  );
+    $template = killbraces($template);
+    return $template;
 }
+
+/////////////////////////////
+//// Replace Navigations ////
+/////////////////////////////
+function replace_navigations ( $TEMPLATE, $PATH_PREFIX = "" )
+{
+    global $global_config_arr;
+
+    $STYLE_PATH = "styles/".$global_config_arr['style']."/";
+    
+    // Replace Navigation-Files in $TEMPLATE
+    $files = scandir_ext ( FS2_ROOT_PATH . $STYLE_PATH, "nav" );
+    foreach ( $files as $file ) {
+        $nav_template = get_navigation( $PATH_PREFIX . $STYLE_PATH . $file );
+        $TEMPLATE = str_replace ( '$NAV('.$file.")", $nav_template, $TEMPLATE );
+    }
+
+    // Return Content
+    return $TEMPLATE;
+}
+
+////////////////////////
+//// Get Navigation ////
+////////////////////////
+function get_navigation( $FILE )
+{
+    $ACCESS = new fileaccess();
+    $template = $ACCESS->getFileData( FS2_ROOT_PATH . $FILE );
+    $template = str_replace ( '$NAV(', '&#x24;NAV&#x28;', $template );
+    return $template;
+}
+
+
 
 /////////////////////////
 //// Replace Applets ////
@@ -245,7 +297,7 @@ function replace_applets ( $TEMPLATE, $PATH_PREFIX = "" )
 
     // Replace active Applets in $TEMPLATE
     foreach ( $data_arr as $applet ) {
-        $TEMPLATE = str_replace ( '$APP['.$applet['applet_file']."]", $applet['applet_template'], $TEMPLATE );
+        $TEMPLATE = str_replace ( '$APP('.$applet['applet_file'].")", $applet['applet_template'], $TEMPLATE );
     }
 
     // Return Content
@@ -258,9 +310,9 @@ function replace_applets ( $TEMPLATE, $PATH_PREFIX = "" )
 function get_applet ( $FILE )
 {
     global $global_config_arr, $db, $TEXT;
-
+    
     include_once ( FS2_ROOT_PATH . $FILE );
-    $template = str_replace ( '$APP[', '&#x24;APP&#x5B;', $template );
+    $template = str_replace ( '$APP(', '&#x24;APP&#x28;', $template );
     return $template;
 }
 

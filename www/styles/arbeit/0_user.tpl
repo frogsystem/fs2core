@@ -48,14 +48,14 @@
 
 <!--section-start::APPLET_MENU--><b>Willkommen {..user_name..}</b><br>
 {..user_image..}
-<a class="small" href="?go=editprofil">- Mein Profil</a><br>
+<a class="small" href="{..user_edit_url..}">- Mein Profil</a><br>
 {..admincp_line..}
 <a class="small" href="{..logout_url..}">- Abmelden</a><!--section-end::APPLET_MENU-->
 
 <!--section-start::APPLET_ADMINLINK--><a class="small" href="{..admincp_url..}">- Admin CP</a><br>
 <!--section-end::APPLET_ADMINLINK-->
 
-<!--section-start::LOGIN-->  <b>Anmelden</b><br><br>
+<!--section-start::LOGIN--><b>Anmelden</b><br><br>
 
   <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
     <tr>
@@ -102,7 +102,7 @@
     </tr>
     <tr>
       <td align="left">
-        <input class="small input input_highlight" size="33" type="userpassword" name="userpassword" maxlength="50">
+        <input class="small input input_highlight" size="33" type="password" name="userpassword" maxlength="50">
       </td>
       <td align="left">
         <img src="$VAR(style_icons)user/key.gif" alt="" align="bottom">
@@ -239,60 +239,168 @@
   </tr>
  </table><!--section-end::CAPTCHA_TEXT-->
 
-<!--section-start::PROFILE--><b>Profil von {username}</b><br>
-<img src="images/design/line.jpg"><br><br>
+<!--section-start::PROFILE--><b>Profil von {..user_name..}</b><br><br>
 
-<div style="padding-left:10px;">
-  <table border="0" cellpadding="0" cellspacing="2">
+<table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
 
-    <tr>
-      <td colspan="2" width="225"><b>Benutzername:</b></td>
-      <td width="50"></td>
-      <td colspan="2" width="125"><b>News:</b></td>
-    </tr>
-    <tr>
-      <td>{username}</td>
-      <td align="right"><img src="{virtualhost}images/icons/user/user.gif" alt="" align="bottom"></td>
-      <td></td>
-      <td>{news}</td>
-      <td align="right"><img src="{virtualhost}images/icons/user/news.gif" alt="" align="bottom"></td>
-    </tr>
+  <tr>
+    <td colspan="2" width="225"><b>Benutzername:</b></td>
+    <td width="50"></td>
+    <td colspan="2" width="225"><b>Benutzerbild:</b></td>
+  </tr>
+  <tr>
+    <td>{..user_name..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/user.gif" alt="" align="bottom"></td>
+    <td></td>
+    <td rowspan="8" valign="top" style="padding-top:5px;">{..user_image..}</td>
+    <td></td>
+  </tr>
+  
+  <tr><td></td></tr>
+  
+  <tr>
+    <td colspan="2"><b>E-Mail:</b></td>
+    <td></td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>{..user_mail..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom"></td>
+    <td></td>
 
-    <tr><td></td></tr>
+    <td></td>
+  </tr>
+  
+  <tr><td></td></tr>
+  
+  <tr>
+    <td colspan="2"><b>Registriert seit:</b></td>
+    <td></td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>{..user_reg_date..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/date.gif" alt="" align="bottom"></td>
+    <td></td>
 
-    <tr>
-      <td colspan="2"><b>E-Mail:</b></td>
-      <td></td>
-      <td colspan="2"><b>Kommentare:</b></td>
-    </tr>
-    <tr>
-      <td>{email}</td>
-      <td align="right"><img src="{virtualhost}images/icons/user/mail.gif" alt="" align="bottom"></td>
-      <td></td>
-      <td>{kommentare}</td>
-      <td align="right"><img src="{virtualhost}images/icons/user/note.gif" alt="" align="bottom"></td>
-    </tr>
+    <td></td>
+  </tr>
+  
+  <tr><td>&nbsp;</td></tr>
 
-    <tr><td></td></tr>
+  <tr>
+    <td colspan="2"><b>Gruppe:</b></td>
+    <td></td>
+    <td colspan="2"><b>Rang:</b></td>
+  </tr>
+  <tr valign="top">
+    <td>{..user_group..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/group.gif" alt="" align="bottom"></td>
+    <td></td>
+    <td>{..user_rank..}</td>
+    <td></td>
+  </tr>
+  
+  <tr><td>&nbsp;</td></tr>
+  
+  <tr>
+    <td colspan="2"><b>Hompage:</b></td>
+    <td></td>
+    <td colspan="2"><b>News:</b></td>
+  </tr>
+  <tr>
+    <td>{..user_homepage_link..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/homepage.gif" alt="" align="bottom"></td>
+    <td></td>
+    <td>{..user_num_news..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/news.gif" alt="" align="bottom"></td>
+  </tr>
+  
+  <tr><td></td></tr>
+  
+  <tr>
+     <td colspan="2"><b>ICQ-Nummer:</b></td>
+     <td></td>
+     <td colspan="2"><b>Kommentare:</b></td>
+   </tr>
+   <tr>
+     <td>{..user_icq..}</td>
+     <td align="right"><img src="$VAR(style_icons)user/icq.gif" alt="" align="bottom"></td>
+     <td></td>
+     <td>{..user_num_comments..}</td>
+     <td align="right"><img src="$VAR(style_icons)user/comment.gif" alt="" align="bottom"></td>
+   </tr>
+  
+  <tr><td></td></tr>
+  
+  <tr>
+     <td colspan="2"><b>AIM E-Mail:</b></td>
+     <td></td>
+     <td colspan="2"><b>Artikel:</b></td>
+   </tr>
+   <tr>
+     <td>{..user_aim..}</td>
+     <td align="right"><img src="$VAR(style_icons)user/aim.gif" alt="" align="bottom"></td>
+     <td></td>
+     <td>{..user_num_articles..}</td>
+     <td align="right"><img src="$VAR(style_icons)user/article.gif" alt="" align="bottom"></td>
+   </tr>
+  
+  <tr><td></td></tr>
+  
+  <tr>
+     <td colspan="2"><b>Windows Live ID:</b></td>
+     <td></td>
+     <td colspan="2"><b>Downloads:</b></td>
+   </tr>
+   <tr>
+     <td>{..user_wlm..}</td>
+     <td align="right"><img src="$VAR(style_icons)user/wlm.gif" alt="" align="bottom"></td>
+     <td></td>
+     <td>{..user_num_downloads..}</td>
+     <td align="right"><img src="$VAR(style_icons)user/download.gif" alt="" align="bottom"></td>
+   </tr>
+  
+  <tr><td></td></tr>
+  
+  <tr>
+     <td colspan="2"><b>Yahoo!-ID:</b></td>
+     <td></td>
+     <td colspan="2"><b></b></td>
+   </tr>
+   <tr>
+     <td>{..user_yim..}</td>
+     <td align="right"><img src="$VAR(style_icons)user/yim.gif" alt="" align="bottom"></td>
+     <td></td>
+     <td></td>
+     <td></td>
+   </tr>
+  
+  <tr><td></td></tr>
+  
+  <tr>
+     <td colspan="2"><b>Skype-Name:</b></td>
+     <td></td>
+     <td colspan="2"><b></b></td>
+   </tr>
+   <tr>
+     <td>{..user_skype..}</td>
+     <td align="right"><img src="$VAR(style_icons)user/skype.gif" alt="" align="bottom"></td>
+     <td></td>
+     <td></td>
+     <td></td>
+   </tr>
 
-    <tr>
-      <td colspan="2"><b>Registriert seit:</b></td>
-      <td></td>
-      <td colspan="2"><b>Artikel:</b></td>
-    </tr>
-    <tr>
-      <td>{reg_datum}</td>
-      <td align="right"><img src="{virtualhost}images/icons/user/date.gif" alt="" align="bottom"></td>
-      <td></td>
-      <td>{artikel}</td>
-      <td align="right"><img src="{virtualhost}images/icons/user/article.gif" alt="" align="bottom"></td>
-    </tr>
-
-  </table>
-</div>
+</table>
 <!--section-end::PROFILE-->
 
-<!--section-start::PROFILE_EDIT--><b>Profil bearbeiten ({..user_name..})</b><br><br>
+<!--section-start::USERRANK-->{..group_image..}<br>
+{..group_title..}
+<!--section-end::USERRANK-->
+
+<!--section-start::PROFILE_EDIT--><b>Profil bearbeiten ({..user_name..})</b>
+<a href="?go=user&id={..user_id..}" class="small" style="float:right;">(Profil betrachten, wie es andere sehen)</a>
+<br><br>
 
 
 <form action="" method="post" enctype="multipart/form-data">

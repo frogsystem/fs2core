@@ -42,7 +42,7 @@ if (
     
     // Image-Operations
     if ( $_FILES['user_group_pic']['name'] != "" ) {
-      $upload = upload_img ( $_FILES['user_group_pic'], "images/groups/", "staff_".$id, $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
+      $upload = upload_img ( $_FILES['user_group_pic'], "media/group-images/", "staff_".$id, $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -103,14 +103,14 @@ elseif (
 
     // Image-Operations
     if ( $_POST['group_pic_delete'] == 1 ) {
-      if ( image_delete ( "images/groups/", "staff_".$_POST['user_group_id'] ) ) {
+      if ( image_delete ( "media/group-images/", "staff_".$_POST['user_group_id'] ) ) {
         $message .= "<br>" . $admin_phrases[common][image_deleted];
       } else {
         $message .= "<br>" . $admin_phrases[common][image_not_deleted];
       }
     } elseif ( $_FILES['user_group_pic']['name'] != "" ) {
-      image_delete ( "images/groups/", "staff_".$_POST['user_group_id'] );
-      $upload = upload_img ( $_FILES['user_group_pic'], "images/groups/", "staff_".$_POST['user_group_id'], $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
+      image_delete ( "media/group-images/", "staff_".$_POST['user_group_id'] );
+      $upload = upload_img ( $_FILES['user_group_pic'], "media/group-images/", "staff_".$_POST['user_group_id'], $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
       $message .= "<br>" . upload_img_notice ( $upload );
     }
 
@@ -156,7 +156,7 @@ elseif (
         $message = "Gruppe wurde erfolgreich gelöscht";
 
         // Delete Category Image
-        if ( image_delete ( "images/groups/", "staff_".$_POST['user_group_id'] ) ) {
+        if ( image_delete ( "media/group-images/", "staff_".$_POST['user_group_id'] ) ) {
             $message .= "<br>" . $admin_phrases[common][image_deleted];
         }
 
@@ -273,9 +273,9 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                    <td class="config">
                                      '."Symbol".': <span class="small">'.$admin_phrases[common][optional].'</span><br><br>
          ';
-        if ( image_exists ( "images/groups/", "staff_".$group_arr['user_group_id'] ) ) {
+        if ( image_exists ( "media/group-images/", "staff_".$group_arr['user_group_id'] ) ) {
             echo '
-                                    <img src="'.image_url ( "images/groups/", "staff_".$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">
+                                    <img src="'.image_url ( "media/group-images/", "staff_".$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">
                                     <table>
                                         <tr>
                                             <td>
@@ -295,7 +295,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                 <td class="config">
                                     <input name="user_group_pic" type="file" size="40" class="text"><br>
         ';
-        if ( image_exists ( "images/groups/", "staff_".$group_arr['user_group_id'] ) ) {
+        if ( image_exists ( "media/group-images/", "staff_".$group_arr['user_group_id'] ) ) {
             echo '<span class="small"><b>'.$admin_phrases[common][replace_img].'</b></span><br>';
         }
         echo'
@@ -526,8 +526,8 @@ else
                                 <td class="configthin middle">
                                     <b>'.$group_arr['user_group_name'].'</b>
             ';
-            if ( image_exists ( "images/groups/", "staff_".$group_arr['user_group_id'] ) ) {
-                echo '<br><img src="'.image_url ( "images/groups/", "staff_".$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
+            if ( image_exists ( "media/group-images/", "staff_".$group_arr['user_group_id'] ) ) {
+                echo '<br><img src="'.image_url ( "media/group-images/", "staff_".$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
             }
             echo '
                                 </td>
@@ -622,8 +622,8 @@ else
                                 <td class="configthin middle">
                                     <b>'.$group_arr['user_group_name'].'</b>
     ';
-    if ( image_exists ( "images/groups/", "staff_".$group_arr['user_group_id'] ) ) {
-        echo '<br><img src="'.image_url ( "images/groups/", "staff_".$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
+    if ( image_exists ( "media/group-images/", "staff_".$group_arr['user_group_id'] ) ) {
+        echo '<br><img src="'.image_url ( "media/group-images/", "staff_".$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
     }
     echo '
                                 </td>

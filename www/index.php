@@ -56,6 +56,7 @@ if ($db)
 
     $template_index = $template_general->display();
 
+    $template_index = replace_navigations ( $template_index );
     $template_index = replace_applets ( $template_index );
     $template_index = replace_resources ( $template_index );
     $template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung

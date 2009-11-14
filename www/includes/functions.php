@@ -45,7 +45,7 @@ function scandir_ext ( $FOLDER, $FILE_EXT, $EXTRA = array(), $BAD = array ( ".",
 ///////////////////////
 function get_user_rank ( $GROUP_ID )
 {
-    global $db, $global_config_arr;
+    global $db, $global_config_arr, $TEXT;
 
     $index = mysql_query ( "
         SELECT *
@@ -53,8 +53,11 @@ function get_user_rank ( $GROUP_ID )
         WHERE `user_group_id` = '".$GROUP_ID."'
     ", $db );
     $group_arr = mysql_fetch_assoc ( $index );
-    
-    $group_arr['user_group_image'] = ( image_exists ( "images/groups/staff_", $group_arr['user_group_id'] ) ? '<img src="'.image_url ( "images/groups/staff_", $group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_id'].'">' : " " );
+
+    settype ( $group_arr['user_group_id'], integer );
+    $group_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
+    $group_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
+    $group_arr['user_group_image'] = ( image_exists ( "media/group-images/staff_", $group_arr['user_group_id'] ) ? '<img src="'.image_url ( "media/group-images/staff_", $group_arr['user_group_id'] ).'" alt="'.$TEXT->get("group_image_of")." ".$group_arr['user_group_name'].'">' : "" );
 
     unset ( $title_style );
     $title_style .= ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : "" );
@@ -70,19 +73,21 @@ function get_user_rank ( $GROUP_ID )
             break;
     }
     $title_style .= ( $highlight_css != "" ? $highlight_css : "" );
-    $group_arr['user_group_title_colored'] = '<span style="'.$title_style.'">'.stripslashes ( $group_arr['user_group_title'] ).'</span>';
+    $group_arr['user_group_title_colored'] = '<span style="'.$title_style.'">'.$group_arr['user_group_title'].'</span>';
     
     $rank_template = new template();
     $rank_template->setFile ( "0_user.tpl" );
     $rank_template->load ( "USERRANK" );
+    $rank_template->tag ( "group_name", $group_arr['user_group_name'] );
     $rank_template->tag ( "group_image", $group_arr['user_group_image'] );
+    $rank_template->tag ( "group_image_url", image_url ( "media/group-images/staff_", $group_arr['user_group_id'] ) );
     $rank_template->tag ( "group_title", $group_arr['user_group_title_colored'] );
-    $rank_template->tag ( "group_pure_title", stripslashes ( $group_arr['user_group_title'] ) );
+    $rank_template->tag ( "group_title_text_only", $group_arr['user_group_title'] );
     $rank_template = $rank_template->display ();
 
-    $retrun_arr['user_group_id'] = stripslashes ( $GROUP_ID );
-    $retrun_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
-    $retrun_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
+    $retrun_arr['user_group_id'] = $group_arr['user_group_id'];
+    $retrun_arr['user_group_name'] = $group_arr['user_group_name'];
+    $retrun_arr['user_group_title'] = $group_arr['user_group_title'];
     $retrun_arr['user_group_rank'] = $rank_template;
     
     return $retrun_arr;
