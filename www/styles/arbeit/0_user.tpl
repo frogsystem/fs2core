@@ -46,8 +46,9 @@
 </form>
 <!--section-end::APPLET_LOGIN-->
 
-<!--section-start::APPLET_MENU--><b>Willkommen {..user_name..}</b><br>
-{..user_image..}
+<!--section-start::APPLET_MENU--><b>Willkommen {..user_name..}!</b><br>
+{..user_image..}<br>
+<b>Benutzermenü:</b><br>
 <a class="small" href="{..user_edit_url..}">- Mein Profil</a><br>
 {..admincp_line..}
 <a class="small" href="{..logout_url..}">- Abmelden</a><!--section-end::APPLET_MENU-->
@@ -129,105 +130,106 @@
 </form>
 <!--section-end::LOGIN-->
 
-<!--section-start::REGISTER--><b>Registrierung</b><br>
-<img src="images/design/line.jpg"><br><br>
+<!--section-start::REGISTER--><b>Registrierung</b><br><br>
 
-<div style="padding-left:10px;">
-  Du hast noch kein Benutzerkonto? Dann registriere dich jetzt auf <b>$VAR(page_title)</b> und genieße folgende Vorteile:
+<div>
+  Du hast noch kein Benutzerkonto?<br>
+  Dann registriere dich jetzt bei <b>$VAR(page_title)</b> und genieße folgende Vorteile:
 
-  <ul><li>Zugriff auf die Downloads</li>
-  <li>Keine Spam-Schutz Abfrage bei Kommentaren</li>
-  <li>auch ganz ordentlicher Vorteil drei</li></ul>
+  <ul>
+    <li>Zugriff auf Downloads</li>
+    <li>Kein CAPTCHA bei Kommentaren</li>
+    <li>Eigenes Benutzerbild</li>
+  </ul>
   <br>
-
-    <form action="" method="post" onSubmit="return chkFormularRegister()">
-        <input type="hidden" name="go" value="register">
-
-        <table border="0" cellpadding="2" cellspacing="0" align="center">
-            <tr>
-                <td align="left">
-                    <b>Benutzername:</b>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <input class="text" size="33" name="username" id="user_name" maxlength="25">
-                    <img src="{virtualhost}images/icons/user/user.gif" alt="" align="bottom">
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <b>E-Mail:</b>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <input class="text" size="33" name="usermail" id="user_mail" maxlength="100">
-                    <img src="{virtualhost}images/icons/user/mail.gif" alt="" align="bottom">
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <b>Passwort:</b>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <input class="text" size="33" name="newpwd" id="user_pass1" type="password" maxlength="50" autocomplete="off">
-                    <img src="{virtualhost}images/icons/user/key-add.gif" alt="" align="bottom">
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <b>Passwort wiederholen:</b>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <input class="text" size="33" name="wdhpwd" id="user_pass2" type="password" maxlength="50" autocomplete="off">
-                    <img src="{virtualhost}images/icons/user/key-action.gif" alt="" align="bottom">
-                </td>
-            </tr>
-{antispam}
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <button class="pointer" type="submit"><img src="{virtualhost}images/icons/user/user-new.gif" alt="" align="bottom"> Jetzt registrieren</button>
-                </td>
-            </tr>
-        </table>
-    </form>
+  
+  <form action="" method="post" onSubmit="return chkFormularRegister()">
+    <input type="hidden" name="go" value="register">
+  
+    <table border="0" cellpadding="2" cellspacing="0" align="center">
+      <tr>
+        <td align="left">
+          <b>Benutzername:</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">
+          <input class="small input input_highlight" size="33" name="username" id="user_name" maxlength="25">
+          <img src="$VAR(style_icons)user/user.gif" alt="" align="bottom">
+        </td>
+      </tr>
+      
+      <tr><td></td></tr>
+        
+      <tr>
+        <td align="left">
+          <b>E-Mail:</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">
+          <input class="small input input_highlight" size="33" name="usermail" id="user_mail" maxlength="100">
+          <img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom">
+        </td>
+      </tr>
+      
+      <tr><td></td></tr>
+        
+      <tr>
+        <td align="left">
+          <b>Passwort:</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">
+          <input class="small input input_highlight" size="33" name="newpwd" id="user_pass1" type="password" maxlength="50" autocomplete="off">
+          <img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom">
+        </td>
+      </tr>
+      
+      <tr><td></td></tr>
+        
+      <tr>
+        <td align="left">
+          <b>Passwort wiederholen:</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">
+          <input class="small input input_highlight" size="33" name="wdhpwd" id="user_pass2" type="password" maxlength="50" autocomplete="off">
+          <img src="$VAR(style_icons)user/key-action.gif" alt="" align="bottom">
+        </td>
+      </tr>
+      
+{..captcha_line..}
+      
+      <tr><td>&nbsp;</td></tr>
+      
+      <tr>
+        <td align="center">
+          <button class="pointer" type="submit" name="register"><img src="$VAR(style_icons)user/user-new.gif" alt="" align="bottom"> Jetzt registrieren</button>
+        </td>
+      </tr>
+    </table>
+  </form>
 
 </div>
 
 <!--section-end::REGISTER-->
 
-<!--section-start::CAPTCHA_LINE-->            <tr>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <b>Spam-Schutz:</b>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">
-                    <img class="textmiddle" src="{captcha_url}"> <input class="text textmiddle" size="20" name="spam" id="spam" type="password" maxlength="5" autocomplete="off">
-                    <img class="textmiddle" src="{virtualhost}images/icons/user/lock.gif" alt="">
-                    <div class="small" align="left">Bitte lösen Sie diese Rechenaufgabe.</div>
-                </td>
-            </tr>
+<!--section-start::CAPTCHA_LINE-->      <tr><td>&nbsp;</td></tr>
+      <tr>
+        <td align="left">
+          <b>Spam-Schutz:</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">
+          <img class="textmiddle" src="{..captcha_url..}"> <input class="small input input_highlight" size="20" name="captcha" maxlength="5" autocomplete="off">
+          <img class="textmiddle" src="$VAR(style_icons)user/lock.gif" alt="" align="bottom">
+          <div class="small" align="left">Bitte lösen Sie diese Rechenaufgabe.</div>
+        </td>
+      </tr>
 <!--section-end::CAPTCHA_LINE-->
 
 <!--section-start::CAPTCHA_TEXT--><br /><br />
@@ -428,7 +430,7 @@
         </tr>
         <tr><td></td></tr>
 
-        <tr><td align="left" colspan="2"><b>E-Mail:</b></td></tr>
+        <tr><td align="left" colspan="2"><b>E-Mail:</b> <span class="small">(Pflicht)</span></td></tr>
         <tr>
             <td align="left"><input class="small input input_highlight" size="33" value="{..user_mail..}" name="user_mail" maxlength="100"></td>
             <td align="center"><img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom"></td>

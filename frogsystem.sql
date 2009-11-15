@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 14. November 2009 um 01:18
+-- Erstellungszeit: 15. November 2009 um 15:08
 -- Server Version: 5.1.30
 -- PHP-Version: 5.2.8
 
@@ -42,63 +42,83 @@ CREATE TABLE `fs_admin_cp` (
 --
 
 INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `page_file`, `page_pos`, `page_int_sub_perm`) VALUES
-('articles_add', 6, 'schreiben', 'schreiben', 'admin_articles_add.php', 2, 0),
-('articles_cat', 6, 'Kategorien verwalten', 'Kategorien', 'admin_articles_cat.php', 4, 0),
-('articles_config', 6, 'Konfiguration ändern', 'Konfiguration', 'admin_articles_config.php', 1, 0),
-('articles_edit', 6, 'bearbeiten', 'bearbeiten', 'admin_articles_edit.php', 3, 0),
-('cimg_add', 8, 'hinzufügen', 'hinzufügen', 'admin_cimg.php', 1, 0),
-('cimg_admin', 8, 'verwalten', 'verwalten', 'admin_cimgdel.php', 2, 0),
-('style_css', 21, 'CSS-Dateien bearbeiten', 'CSS-Dateien', 'admin_template_css.php', 3, 0),
-('design_admin', 21, 'verwalten', 'verwalten', 'admin_template_manage.php', 2, 0),
-('design_create', 21, 'erstellen', 'erstellen', 'admin_template_create.php', 1, 0),
-('style_js', 21, 'Java Script-Dateien bearbeiten', 'JS-Dateien', 'admin_template_js.php', 4, 0),
-('dl_add', 14, 'hinzufügen', 'hinzufügen', 'admin_dladd.php', 2, 0),
-('dl_cat', 14, 'Kategorien verwalten', 'Kategorien', 'admin_dlcat.php', 4, 0),
-('dl_config', 14, 'Konfiguration ändern', 'Konfiguration', 'admin_dlconfig.php', 1, 0),
-('dl_edit', 14, 'bearbeiten', 'bearbeiten', 'admin_dledit.php', 3, 0),
-('dl_newcat', 14, 'Neue Kategorie', 'Neue Kategorie', 'admin_dlnewcat.php', 5, 0),
+('start_content', -1, 'Inhalt', 'content', 'start_content.php', 2, 0),
+('start_general', -1, 'Allgemein', 'general', 'start_general.php', 1, 0),
+('start_interactive', -1, 'Interaktiv', 'interactive', 'start_interactive.php', 4, 0),
+('start_media', -1, 'Media', 'media', 'start_media.php', 3, 0),
+('start_mods', -1, 'AddOns', 'mods', 'start_mods.php', 9, 0),
+('start_promo', -1, 'Promotion', 'promo', 'start_promo.php', 5, 0),
+('start_styles', -1, 'Styles', 'styles', 'start_styles.php', 7, 0),
+('start_system', -1, 'System', 'system', 'start_system.php', 8, 0),
+('start_user', -1, 'User', 'user', 'start_user.php', 6, 0),
+('zone_admin', 0, 'verwalten', 'verwalten', 'admin_zone_manage.php', 3, 0),
+('zone_config', 0, 'Konfiguration ändern', 'Konfiguration', 'admin_zone_config.php', 1, 0),
+('zone_create', 0, 'erstellen', 'erstellen', 'admin_zone_create.php', 2, 0),
+('gen_announcement', 1, 'Ankündigung', 'Ankündigung', 'admin_allannouncement.php', 2, 0),
+('gen_captcha', 1, 'Captcha Konfiguration', 'Captcha', 'admin_captcha_config.php', 2, 0),
+('gen_config', 1, 'Seitenkonfiguration', 'Konfiguration', 'admin_allconfig.php', 1, 0),
+('gen_emails', 1, 'E-Mail-Vorlagen bearbeiten', 'E-Mails', 'admin_allemail.php', 4, 0),
+('gen_phpinfo', 1, 'PHP & Server Informationen', 'PHP Info', 'admin_allphpinfo.php', 5, 0),
 ('editor_config', 2, 'Konfiguration ändern', 'Konfiguration', 'admin_editor_config.php', 1, 0),
 ('editor_design', 2, 'Darstellung bearbeiten', 'Darstellung', 'admin_editor_design.php', 2, 0),
 ('editor_fscodes', 2, 'FSCodes bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 4, 0),
 ('editor_smilies', 2, 'Smilies verwalten', 'Smilies', 'admin_editor_smilies.php', 3, 0),
-('gallery_cat', 9, 'Kategorien verwalten', 'Kategorien', 'admin_screencat.php', 2, 0),
-('gallery_config', 9, 'Konfiguration ändern', 'Konfiguration', 'admin_screenconfig.php', 1, 0),
-('gen_announcement', 1, 'Ankündigung', 'Ankündigung', 'admin_allannouncement.php', 2, 0),
-('gen_config', 1, 'Seitenkonfiguration', 'Konfiguration', 'admin_allconfig.php', 1, 0),
-('gen_emails', 1, 'E-Mail-Vorlagen bearbeiten', 'E-Mails', 'admin_allemail.php', 3, 0),
-('gen_phpinfo', 1, 'PHP & Server Informationen', 'PHP Info', 'admin_allphpinfo.php', 4, 0),
+('stat_edit', 3, 'bearbeiten', 'bearbeiten', 'admin_statedit.php', 2, 0),
+('stat_ref', 3, 'Referrer anzeigen & verwalten', 'Referrer', 'admin_statref.php', 3, 0),
+('stat_space', 3, 'Speicherplatz Übersicht', 'Speicherplatz', 'admin_statspace.php', 4, 0),
+('stat_view', 3, 'anzeigen', 'anzeigen', 'admin_statview.php', 1, 0),
 ('includes_edit', 4, 'bearbeiten', 'bearbeiten', 'admin_includes_edit.php', 2, 0),
 ('includes_new', 4, 'hinzufügen', 'hinzufügen', 'admin_includes_new.php', 1, 0),
 ('news_add', 5, 'schreiben', 'schreiben', 'admin_news_add.php', 2, 0),
 ('news_cat', 5, 'Kategorien verwalten', 'Kategorien', 'admin_news_cat.php', 4, 0),
 ('news_config', 5, 'Konfiguration ändern', 'Konfiguration', 'admin_news_config.php', 1, 0),
 ('news_edit', 5, 'bearbeiten', 'bearbeiten', 'admin_news_edit.php', 3, 0),
-('partner_add', 18, 'hinzufügen', 'hinzufügen', 'admin_partneradd.php', 2, 0),
-('partner_config', 18, 'Konfiguration ändern', 'Konfiguration', 'admin_partnerconfig.php', 1, 0),
-('partner_edit', 18, 'bearbeiten', 'bearbeiten', 'admin_partneredit.php', 3, 0),
+('articles_add', 6, 'schreiben', 'schreiben', 'admin_articles_add.php', 2, 0),
+('articles_cat', 6, 'Kategorien verwalten', 'Kategorien', 'admin_articles_cat.php', 4, 0),
+('articles_config', 6, 'Konfiguration ändern', 'Konfiguration', 'admin_articles_config.php', 1, 0),
+('articles_edit', 6, 'bearbeiten', 'bearbeiten', 'admin_articles_edit.php', 3, 0),
+('press_add', 7, 'hinzufügen', 'hinzufügen', 'admin_press_add.php', 2, 0),
+('press_admin', 7, 'Verwaltung', 'Verwaltung', 'admin_press_admin.php', 4, 0),
+('press_config', 7, 'Konfiguration ändern', 'Konfiguration', 'admin_press_config.php', 1, 0),
+('press_edit', 7, 'bearbeiten', 'bearbeiten', 'admin_press_edit.php', 3, 0),
+('cimg_add', 8, 'hinzufügen', 'hinzufügen', 'admin_cimg.php', 1, 0),
+('cimg_admin', 8, 'verwalten', 'verwalten', 'admin_cimgdel.php', 2, 0),
+('gallery_cat', 9, 'Kategorien verwalten', 'Kategorien', 'admin_screencat.php', 2, 0),
+('gallery_config', 9, 'Konfiguration ändern', 'Konfiguration', 'admin_screenconfig.php', 1, 0),
+('gallery_newcat', 9, 'Neue Kategorie', 'Neue Kategorie', 'admin_screennewcat.php', 3, 0),
+('screens_add', 10, 'hinzufügen', 'hinzufügen', 'admin_screenadd.php', 1, 0),
+('screens_edit', 10, 'bearbeiten', 'bearbeiten', 'admin_screenedit.php', 2, 0),
+('wp_add', 11, 'hinzufügen', 'hinzufügen', 'admin_wallpaperadd.php', 1, 0),
+('wp_edit', 11, 'bearbeiten', 'bearbeiten', 'admin_wallpaperedit.php', 2, 0),
+('randompic_cat', 12, 'Kategorien auswählen', 'Kategorie Auswahl', 'admin_randompic_cat.php', 2, 0),
+('randompic_config', 12, 'Konfiguration ändern', 'Konfiguration', 'admin_randompic_config.php', 1, 0),
+('timedpic_add', 13, 'hinzufügen', 'hinzufügen', 'admin_randompic_time_add.php', 1, 0),
+('timedpic_edit', 13, 'verwalten', 'verwalten', 'admin_randompic_time.php', 2, 0),
+('dl_add', 14, 'hinzufügen', 'hinzufügen', 'admin_dladd.php', 2, 0),
+('dl_cat', 14, 'Kategorien verwalten', 'Kategorien', 'admin_dlcat.php', 4, 0),
+('dl_config', 14, 'Konfiguration ändern', 'Konfiguration', 'admin_dlconfig.php', 1, 0),
+('dl_edit', 14, 'bearbeiten', 'bearbeiten', 'admin_dledit.php', 3, 0),
+('dl_newcat', 14, 'Neue Kategorie', 'Neue Kategorie', 'admin_dlnewcat.php', 5, 0),
 ('player_add', 15, 'hinzufügen', 'hinzufügen', 'admin_player_add.php', 2, 0),
 ('player_config', 15, 'Konfiguration ändern', 'Konfiguration', 'admin_player_config.php', 1, 0),
 ('player_edit', 15, 'bearbeiten', 'bearbeiten', 'admin_player_edit.php', 3, 0),
 ('poll_add', 16, 'hinzufügen', 'hinzufügen', 'admin_polladd.php', 2, 0),
 ('poll_config', 16, 'Konfiguration ändern', 'Konfiguration', 'admin_pollconfig.php', 1, 0),
 ('poll_edit', 16, 'bearbeiten', 'bearbeiten', 'admin_polledit.php', 3, 0),
-('press_add', 7, 'hinzufügen', 'hinzufügen', 'admin_press_add.php', 2, 0),
-('press_admin', 7, 'Verwaltung', 'Verwaltung', 'admin_press_admin.php', 4, 0),
-('press_config', 7, 'Konfiguration ändern', 'Konfiguration', 'admin_press_config.php', 1, 0),
-('press_edit', 7, 'bearbeiten', 'bearbeiten', 'admin_press_edit.php', 3, 0),
-('randompic_cat', 12, 'Kategorien auswählen', 'Kategorie Auswahl', 'admin_randompic_cat.php', 2, 0),
-('randompic_config', 12, 'Konfiguration ändern', 'Konfiguration', 'admin_randompic_config.php', 1, 0),
-('screens_add', 10, 'hinzufügen', 'hinzufügen', 'admin_screenadd.php', 1, 0),
-('screens_edit', 10, 'bearbeiten', 'bearbeiten', 'admin_screenedit.php', 2, 0),
-('gallery_newcat', 9, 'Neue Kategorie', 'Neue Kategorie', 'admin_screennewcat.php', 3, 0),
+('partner_add', 18, 'hinzufügen', 'hinzufügen', 'admin_partneradd.php', 2, 0),
+('partner_config', 18, 'Konfiguration ändern', 'Konfiguration', 'admin_partnerconfig.php', 1, 0),
+('partner_edit', 18, 'bearbeiten', 'bearbeiten', 'admin_partneredit.php', 3, 0),
 ('shop_add', 19, 'Produkt hinzufügen', 'Neues Produkt', 'admin_shopadd.php', 1, 0),
 ('shop_edit', 19, 'Produkt Übersicht', 'Übersicht', 'admin_shopedit.php', 2, 0),
-('stat_edit', 3, 'bearbeiten', 'bearbeiten', 'admin_statedit.php', 2, 0),
-('stat_ref', 3, 'Referrer anzeigen & verwalten', 'Referrer', 'admin_statref.php', 3, 0),
-('stat_space', 3, 'Speicherplatz Übersicht', 'Speicherplatz', 'admin_statspace.php', 4, 0),
-('stat_view', 3, 'anzeigen', 'anzeigen', 'admin_statview.php', 1, 0),
-('timedpic_add', 13, 'hinzufügen', 'hinzufügen', 'admin_randompic_time_add.php', 1, 0),
-('timedpic_edit', 13, 'verwalten', 'verwalten', 'admin_randompic_time.php', 2, 0),
+('user_add', 20, 'hinzufügen', 'hinzufügen', 'admin_user_add.php', 2, 0),
+('user_config', 20, 'Kofiguration ändern', 'Kofiguration', 'admin_user_config.php', 1, 0),
+('user_edit', 20, 'bearbeiten', 'bearbeiten', 'admin_user_edit.php', 3, 0),
+('user_rights', 20, 'Rechte ändern', 'Rechte', 'admin_user_rights.php', 4, 0),
+('design_admin', 21, 'verwalten', 'verwalten', 'admin_template_manage.php', 2, 0),
+('design_create', 21, 'erstellen', 'erstellen', 'admin_template_create.php', 1, 0),
+('style_css', 21, 'CSS-Dateien bearbeiten', 'CSS-Dateien', 'admin_template_css.php', 3, 0),
+('style_js', 21, 'Java Script-Dateien bearbeiten', 'JS-Dateien', 'admin_template_js.php', 4, 0),
+('style_nav', 21, 'Navigations-Dateien bearbeiten', 'Navigationen', 'admin_template_nav.php', 5, 0),
 ('tpl_articles', 22, '„Artikel“ bearbeiten', 'Artikel', 'admin_template_artikel.php', 3, 0),
 ('tpl_dl', 22, '„Downloads“ bearbeiten', 'Downloads', 'admin_template_dl.php', 9, 0),
 ('tpl_editor', 22, '„Editor“ bearbeiten', 'Editor', 'admin_editor_design.php', 13, 0),
@@ -113,33 +133,14 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('tpl_shop', 22, '„Shop“ bearbeiten', 'Shop', 'admin_template_shop.php', 10, 0),
 ('tpl_user', 22, '„Benutzer“ bearbeiten', 'Benutzer', 'admin_template_user.php', 12, 0),
 ('tpl_wp', 22, '„Wallpaper“ bearbeiten', 'Wallpaper', 'admin_template_wallpaper.php', 7, 0),
-('user_add', 20, 'hinzufügen', 'hinzufügen', 'admin_user_add.php', 2, 0),
-('user_config', 20, 'Kofiguration ändern', 'Kofiguration', 'admin_user_config.php', 1, 0),
-('user_edit', 20, 'bearbeiten', 'bearbeiten', 'admin_user_edit.php', 3, 0),
-('user_rights', 20, 'Rechte ändern', 'Rechte', 'admin_user_rights.php', 4, 0),
-('wp_add', 11, 'hinzufügen', 'hinzufügen', 'admin_wallpaperadd.php', 1, 0),
-('wp_edit', 11, 'bearbeiten', 'bearbeiten', 'admin_wallpaperedit.php', 2, 0),
-('zone_admin', 0, 'verwalten', 'verwalten', 'admin_zone_manage.php', 3, 0),
-('zone_config', 0, 'Konfiguration ändern', 'Konfiguration', 'admin_zone_config.php', 1, 0),
-('zone_create', 0, 'erstellen', 'erstellen', 'admin_zone_create.php', 2, 0),
-('start_general', -1, 'Allgemein', 'general', 'start_general.php', 1, 0),
-('start_content', -1, 'Inhalt', 'content', 'start_content.php', 2, 0),
-('start_media', -1, 'Media', 'media', 'start_media.php', 3, 0),
-('start_interactive', -1, 'Interaktiv', 'interactive', 'start_interactive.php', 4, 0),
-('start_promo', -1, 'Promotion', 'promo', 'start_promo.php', 5, 0),
-('start_user', -1, 'User', 'user', 'start_user.php', 6, 0),
-('start_styles', -1, 'Styles', 'styles', 'start_styles.php', 7, 0),
-('start_system', -1, 'System', 'system', 'start_system.php', 8, 0),
-('start_mods', -1, 'AddOns', 'mods', 'start_mods.php', 9, 0),
-('group_config', 23, 'Konfiguration ändern', 'Konfiguration', 'admin_group_config.php', 1, 0),
 ('group_admin', 23, 'Gruppenverwaltung', 'verwalten', 'admin_group_admin.php', 2, 0),
+('group_config', 23, 'Konfiguration ändern', 'Konfiguration', 'admin_group_config.php', 1, 0),
 ('group_rights', 23, 'Rechte ändern', 'Rechte', 'admin_group_rights.php', 3, 0),
-('style_nav', 21, 'Navigations-Dateien bearbeiten', 'Navigationen', 'admin_template_nav.php', 5, 0),
 ('applets_add', 24, 'hinzufügen', 'hinzufügen', 'admin_applets_add.php', 1, 0),
+('applets_delete', 24, 'löschen', 'löschen', 'applets_edit', 1, 1),
 ('applets_edit', 24, 'bearbeiten', 'bearbeiten', 'admin_applets_edit.php', 2, 0),
 ('snippets_add', 25, 'hinzufügen', 'hinzufügen', 'admin_snippets_add.php', 1, 0),
-('snippets_edit', 25, 'bearbeiten', 'bearbeiten', 'admin_snippets_edit.php', 2, 0),
-('applets_delete', 24, 'löschen', 'löschen', 'applets_edit', 1, 1);
+('snippets_edit', 25, 'bearbeiten', 'bearbeiten', 'admin_snippets_edit.php', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -291,7 +292,7 @@ CREATE TABLE `fs_articles` (
 --
 
 INSERT INTO `fs_articles` (`article_id`, `article_url`, `article_title`, `article_date`, `article_user`, `article_text`, `article_html`, `article_fscode`, `article_para`, `article_cat_id`) VALUES
-(1, 'fscode', 'FSCode Liste', 0, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n\r\n<table width=\\"100%\\" cellpadding=\\"0\\" cellspacing=\\"10\\" border=\\"0\\"><tr><td width=\\"50%\\">[b][u][size=4]FS-Code:[/size][/u][/b]</td><td width=\\"50%\\">[b][u][size=4]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiverText[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe (0-7)[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][noparse]Text mit FSCode[/noparse][/noparse]</td><td>[noparse][b]kein fetter Text[/b][/noparse]</td></tr> <tr><td colspan=\\"2\\"><hr /></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan=\\"2\\"><hr /></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan=\\"2\\"><hr /></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]{virtualhost}images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]{virtualhost}images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]{virtualhost}images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>', 1, 1, 0, 1);
+(1, 'fscode', 'FSCode Liste', 0, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n\r\n<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">[b][u][size=4]FS-Code:[/size][/u][/b]</td><td width="50%">[b][u][size=4]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiverText[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe (0-7)[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][noparse]Text mit FSCode[/noparse][/noparse]</td><td>[noparse][b]kein fetter Text[/b][/noparse]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan="2"><hr /></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]$VAR(url)images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>', 1, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -349,6 +350,45 @@ INSERT INTO `fs_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`,
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `fs_captcha_config`
+--
+
+DROP TABLE IF EXISTS `fs_captcha_config`;
+CREATE TABLE `fs_captcha_config` (
+  `id` tinyint(1) NOT NULL,
+  `captcha_bg_color` varchar(6) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'FFFFFF',
+  `captcha_bg_transparent` tinyint(1) NOT NULL DEFAULT '0',
+  `captcha_text_color` varchar(6) COLLATE utf8_unicode_ci NOT NULL DEFAULT '000000',
+  `captcha_first_lower` smallint(3) NOT NULL DEFAULT '1',
+  `captcha_first_upper` smallint(3) NOT NULL DEFAULT '5',
+  `captcha_second_lower` smallint(3) NOT NULL DEFAULT '1',
+  `captcha_second_upper` smallint(3) NOT NULL DEFAULT '5',
+  `captcha_use_addition` tinyint(1) NOT NULL DEFAULT '1',
+  `captcha_use_subtraction` tinyint(1) NOT NULL DEFAULT '0',
+  `captcha_use_multiplication` tinyint(1) NOT NULL DEFAULT '0',
+  `captcha_create_easy_arithmetics` tinyint(1) NOT NULL DEFAULT '1',
+  `captcha_x` smallint(3) NOT NULL DEFAULT '80',
+  `captcha_y` smallint(2) NOT NULL DEFAULT '15',
+  `captcha_show_questionmark` tinyint(1) NOT NULL DEFAULT '1',
+  `captcha_use_spaces` tinyint(1) NOT NULL DEFAULT '1',
+  `captcha_show_multiplication_as_x` tinyint(1) NOT NULL DEFAULT '1',
+  `captcha_start_text_x` smallint(3) NOT NULL DEFAULT '0',
+  `captcha_start_text_y` smallint(2) NOT NULL DEFAULT '0',
+  `captcha_font_size` smallint(2) NOT NULL DEFAULT '3',
+  `captcha_font_file` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Daten für Tabelle `fs_captcha_config`
+--
+
+INSERT INTO `fs_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transparent`, `captcha_text_color`, `captcha_first_lower`, `captcha_first_upper`, `captcha_second_lower`, `captcha_second_upper`, `captcha_use_addition`, `captcha_use_subtraction`, `captcha_use_multiplication`, `captcha_create_easy_arithmetics`, `captcha_x`, `captcha_y`, `captcha_show_questionmark`, `captcha_use_spaces`, `captcha_show_multiplication_as_x`, `captcha_start_text_x`, `captcha_start_text_y`, `captcha_font_size`, `captcha_font_file`) VALUES
+(1, 'FFFFFF', 1, '000000', 1, 5, 1, 5, 1, 1, 1, 1, 58, 18, 0, 0, 1, 0, 0, 0, 'trebuchet_ms.gdf');
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `fs_counter`
 --
 
@@ -369,7 +409,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 66, 2148, 2, 1, 1, 2);
+(1, 69, 2810, 5, 1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -391,7 +431,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 124, 1223919890, 1258142740),
+('http://localhost/fs2/', 131, 1223919890, 1258281089),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569);
@@ -470,7 +510,8 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2009, 10, 23, 1, 1),
 (2009, 11, 12, 1, 28),
 (2009, 11, 13, 1, 144),
-(2009, 11, 14, 1, 19);
+(2009, 11, 14, 2, 82),
+(2009, 11, 15, 2, 599);
 
 -- --------------------------------------------------------
 
@@ -652,7 +693,7 @@ CREATE TABLE `fs_email` (
 --
 
 INSERT INTO `fs_email` (`id`, `signup`, `change_password`, `delete_account`, `use_admin_mail`, `email`, `html`) VALUES
-(1, 'Hallo {username},\r\n\r\nDu hast dich bei uns auf der Seite registriert. Deine Zugangsdaten sind:\r\n\r\nUsername: {username}\r\nPasswort: {password}\r\n\r\nFalls du deine bei der Registrierung angegebenen Daten ändern möchtest, kannst du das gerne auf deiner [url={virtualhost}?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Webseiten-Team!', 'Hallo {..user_name..},\r\n\r\nDein Passwort auf $VAR(page_title) wurde geändert. Deine neuen Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders überlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!', 1, '', 1);
+(1, 'Hallo  {..user_name..},\r\n\r\nDu hast dich bei $VAR(page_title) registriert. Deine Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {..user_name..},\r\n\r\nDein Passwort bei $VAR(page_title) wurde geändert. Deine neuen Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders überlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!', 1, '', 1);
 
 -- --------------------------------------------------------
 
@@ -669,9 +710,10 @@ CREATE TABLE `fs_global_config` (
   `title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `dyn_title` tinyint(1) NOT NULL,
   `dyn_title_ext` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `keywords` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `author` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `keywords` text COLLATE utf8_unicode_ci NOT NULL,
+  `publisher` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `copyright` text COLLATE utf8_unicode_ci NOT NULL,
   `show_favicon` tinyint(1) NOT NULL DEFAULT '1',
   `design` tinyint(4) NOT NULL DEFAULT '0',
   `allow_other_designs` tinyint(1) NOT NULL DEFAULT '1',
@@ -694,8 +736,8 @@ CREATE TABLE `fs_global_config` (
 -- Daten für Tabelle `fs_global_config`
 --
 
-INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `author`, `show_favicon`, `design`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language`, `home`, `home_text`, `auto_forward`) VALUES
-(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 0, 1, 0, 'd.m.Y', 'H:i Uhr', 'd.m.Y H:i Uhr', '{prev}Seite {page_number} von {total_pages}{next}', ' <a href="{url}">weiter »</a>', '<a href="{url}">« zurück</a> ', 604800, 'rss20', 'de', 0, '', 4);
+INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `design`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language`, `home`, `home_text`, `auto_forward`) VALUES
+(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 0, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y H:i \\\\U\\\\h\\\\r', '{prev}Seite {page_number} von {total_pages}{next}', ' <a href=\\"{url}\\">weiter »</a>', '<a href=\\"{url}\\">« zurück</a> ', 604800, 'rss20', 'de', 0, '', 4);
 
 -- --------------------------------------------------------
 
@@ -807,7 +849,7 @@ CREATE TABLE `fs_news_comments` (
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_text` (`comment_text`),
   FULLTEXT KEY `comment_title` (`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fs_news_comments`
@@ -815,7 +857,9 @@ CREATE TABLE `fs_news_comments` (
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
 (2, 1, '1', 1, '127.0.0.1', 1242681258, 'sdfsdfdsf', 'dfsdf'),
-(3, 1, '1', 1, '127.0.0.1', 1242681268, 'fgdfgf', 'dfdffg');
+(3, 1, '1', 1, '127.0.0.1', 1242681268, 'fgdfgf', 'dfdffg'),
+(4, 1, 'f', 0, '127.0.0.1', 1258253322, 'f', 'f'),
+(5, 1, '1', 1, '127.0.0.1', 1258282603, '6', '6');
 
 -- --------------------------------------------------------
 
@@ -849,7 +893,7 @@ CREATE TABLE `fs_news_config` (
 --
 
 INSERT INTO `fs_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
-(1, 10, 5, 2, 4, 1, 150, 150, 1024, 2, 1, 'DESC', 40, ' ...', 15, 2);
+(1, 10, 5, 2, 4, 1, 150, 150, 1024, 2, 2, 'DESC', 40, ' ...', 15, 2);
 
 -- --------------------------------------------------------
 
@@ -1535,7 +1579,7 @@ CREATE TABLE `fs_user` (
   `user_yim` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_skype` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fs_user`
@@ -1543,7 +1587,10 @@ CREATE TABLE `fs_user` (
 
 INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
 (1, 'admin', '09bd41bf17fcd0e5b9829b4eab1af7ac', 'cHwDG0HngG', 'admin@frogsystem.de', 1, 0, 1, 1207260000, 0, 'http://www.frogsystem.de', '', '', '', '', ''),
-(2, 'test', 'ac2d2509f1252bec44964ae661266612', 'R5kesQsJ2i', 'test', 0, 0, 0, 1240783200, 0, '', '', '', '', '', '');
+(2, 'test', 'd2e01f7e9d4713340acad4a087fc0485', 'Rs2qe1v7IL', 'mail@sweil.de', 1, 0, 0, 1240783200, 0, '', '', '', '', '', ''),
+(3, 'super', 'ad568fff6880715044d6eb4e7ae26c07', 'fXEGPvDGs8', 'super', 0, 0, 0, 1258245681, 0, '', '', '', '', '', ''),
+(4, 'buh', 'c476b70654f68ce27b689305f40945da', '3EAttd60cA', 'buh', 0, 0, 0, 1258245858, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 'hoi', 'eeb1890ecd1d6da2bbf7e05ff7c4169b', 'BltilsgvlI', 'hoi', 0, 0, 0, 1258253105, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1564,7 +1611,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1258155432);
+('127.0.0.1', 1, 1258291216);
 
 -- --------------------------------------------------------
 
@@ -1640,6 +1687,7 @@ CREATE TABLE `fs_user_permissions` (
 --
 
 INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
+('applets_delete', 2, 0),
 ('group_admin', 1, 1),
 ('group_config', 1, 1);
 

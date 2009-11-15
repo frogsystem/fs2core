@@ -17,7 +17,7 @@ $editor_config = mysql_fetch_assoc($index);
 if ( $config_arr[com_antispam] == 1 && $_SESSION["user_id"] ) {
     $anti_spam = check_captcha ( $_POST["spam"], 0 );
 } else {
-    $anti_spam = check_captcha ( $_POST["spam"], $config_arr[com_antispam] );
+    $anti_spam = check_captcha ( $_POST["spam"], $config_arr['com_antispam'] );
 }
 
 /////////////////////////
@@ -36,9 +36,9 @@ if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SES
 } elseif ( $config_arr['com_rights'] == 3 && is_in_staff ( $_SESSION['user_id'] ) ) {
     $comments_right = TRUE;
 } elseif ( $config_arr['com_rights'] == 4 && is_admin ( $_SESSION['user_id'] ) ) {
-        $comments_right = TRUE;
+    $comments_right = TRUE;
 } else {
-        $comments_right = FALSE;
+    $comments_right = FALSE;
 }
 
 //////////////////////////////
@@ -229,7 +229,7 @@ $form_name = stripslashes(mysql_result($index, 0, "news_comment_form_name"));
 
 $index = mysql_query("select news_comment_form_spam from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
 $form_spam = stripslashes(mysql_result($index, 0, "news_comment_form_spam"));
-$form_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php?i=".generate_pwd(8), $form_spam);
+$form_spam = str_replace("{captcha_url}", FS2_ROOT_PATH . "resources/captcha/captcha.php?i=".generate_pwd(8), $form_spam);
 $form_spam = str_replace("{newsid}", $_GET[id], $form_spam);
 
 $index = mysql_query("select news_comment_form_spamtext from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);

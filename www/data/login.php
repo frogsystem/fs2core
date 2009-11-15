@@ -3,7 +3,7 @@
 //// User is already logged in ////
 ///////////////////////////////////
 if ( $_SESSION['user_level'] == "loggedin" && $_POST['login'] == 1 ) {
-    $template = forward_message ( $TEXT->get("user_login"), $TEXT->get("user_login_ok"), "?go=news" );
+    $template = forward_message ( $TEXT->get("user_login"), $TEXT->get("user_login_ok"), '?go='.$global_config_arr['home_real']);
 } elseif ( $_SESSION['user_level'] == "loggedin" ) {
     $template = sys_message ( $TEXT->get("user_login"), $TEXT->get("user_login_ok") );
 }

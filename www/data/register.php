@@ -5,18 +5,27 @@
 $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config", $db );
 $config_arr = mysql_fetch_assoc($index);
 $show_form = TRUE;
-$template = "";
+
 
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-$anti_spam = check_captcha ( $_POST['spam'], $config_arr['registration_antispam'] );
+$anti_spam = check_captcha ( $_POST['captcha'], $config_arr['registration_antispam'] );
+
+/////////////////////////////
+//// Bereits Registriert ////
+/////////////////////////////
+
+if ( $_SESSION['user_id'] ) {
+    $show_form = FALSE;
+    $messages = forward_message ( $TEXT->get("systemmessage"), $TEXT->get("user_register_not_twice"), '?go='.$global_config_arr['home_real'] );
+}
 
 //////////////////
 //// Add User ////
 //////////////////
 
-if ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST['wdhpwd'] )
+elseif ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST['wdhpwd'] )
 {
     $_POST['username'] = savesql ( htmlspecialchars ( $_POST['username'] ) );
     $_POST['usermail'] = savesql ( $_POST['usermail'] );
@@ -33,90 +42,114 @@ if ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST['wdh
     $existing_users = mysql_result ( $index, 0, "number" );
     
     // get error message
-    if ( $existing_users > 0 || $anti_spam != TRUE || $_POST['newpwd'] != $_POST['wdhpwd'] )
-    {
-        unset( $sysmeldung );
+    if ( $existing_users > 0 || $anti_spam != TRUE || $_POST['newpwd'] != $_POST['wdhpwd'] ) {
+        $error_array = array();
         if ( $existing_users > 0 ) {
-            $sysmeldung[] = $phrases[user_exists];
+            $error_array[] = $TEXT->get("user_name_exists");
         }
         if ( $anti_spam != TRUE ) {
-            $sysmeldung[] = $phrases[user_antispam];
+            $error_array[] = $TEXT->get("user_antispam");
         }
         if ( $_POST['newpwd'] != $_POST['wdhpwd']) {
-            $sysmeldung[] = $phrases[passnotequal];
+            $error_array[] = $TEXT->get("user_register_password_error");
         }
-        $template .= sys_message ( $phrases[sysmessage], implode ( "<br>", $sysmeldung ) );
+        $messages = sys_message ( $TEXT->get("systemmessage"), implode ( "<br>", $error_array ) ) . "<br><br>";
 
         // Unset Vars
         unset ( $_POST );
     }
 
-    else
-    {
+    // Register User
+    else {
         $regdate = time();
-        
-        // send email
-        $template_mail = get_email_template ( "signup" );
-        $template_mail = str_replace ( "{username}", stripslashes ( $_POST['username'] ), $template_mail );
-        $template_mail = str_replace ( "{password}", $userpass_mail, $template_mail );
-        $template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
-        $email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
-        @send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail );
 
-        $adduser = "INSERT INTO ".$global_config_arr['pref']."user
-                        (user_name, user_password, user_salt, user_mail, user_reg_date)
-                    VALUES ('".$_POST['username']."',
+        // Send Email
+        $template_mail = get_email_template ( "signup" );
+        $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_POST['username'] ), $template_mail );
+        $template_mail = str_replace ( "{..new_password..}", $userpass_mail, $template_mail );
+        $template_mail = replace_globalvars ( $template_mail );
+        $email_subject = $TEXT->get("mail_registerd_on") . $global_config_arr['virtualhost'];
+        if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_subject, $template_mail ) ) {
+            $email_message = "<br>".$TEXT->get("mail_registerd_sended");
+        } else {
+            $email_message = "<br>".$TEXT->get("mail_registerd_not_sended");
+        }
+
+        mysql_query ( "
+                        INSERT INTO
+                            `".$global_config_arr['pref']."user`
+                            (`user_name`, `user_password`, `user_salt`, `user_mail`, `user_reg_date`)
+                        VALUES (
+                            '".$_POST['username']."',
                             '".$userpass."',
                             '".$user_salt."',
                             '".$_POST['usermail']."',
-                            '".$regdate."')";
-        mysql_query ( $adduser, $db );
+                            '".$regdate."'
+                        )
+        ", $db );
         
-        $index = mysql_query ( "SELECT COUNT(user_id) AS user FROM ".$global_config_arr['pref']."user", $db );
-        $new_user_num = mysql_result ( $index,0,"user" );
-        mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET user = '".$new_user_num."'", $db );
+        $index = mysql_query ( "SELECT COUNT(`user_id`) AS `user_number` FROM ".$global_config_arr['pref']."user", $db );
+        $new_user_num = mysql_result ( $index, 0, "user_number" );
+        mysql_query ( "UPDATE `".$global_config_arr['pref']."counter` SET `user` = '".$new_user_num."'", $db );
         
-        $template .= sys_message($phrases[sysmessage], $phrases[registered]);
+        $messages = forward_message ( $TEXT->get("systemmessage"), $TEXT->get("user_registered").$email_message, "?go=login" );
         
         unset($_POST);
-        $show_form = false;
+        $show_form = FALSE;
     }
 }
 
-/////////////////////////////
-//// Bereits Registriert ////
-/////////////////////////////
+//////////////////////
+//// Fulfill Form ////
+//////////////////////
 
-if ($_SESSION["user_id"])
-{
-    $show_form = false;
-    $template .= sys_message($phrases[sysmessage], $phrases[not_twice]);
+elseif ( isset( $_POST['register'] ) ) {
+    $messages = sys_message ( $TEXT->get("systemmessage"), $TEXT->get("user_register_fulfill_form") ) . "<br><br>";
 }
 
+////////////////////////////
+//// Show Register Form ////
+////////////////////////////
 
-///////////////////////////
-//// Register Formular ////
-///////////////////////////
+if ( $show_form == TRUE ) {
+    // Get some Data
+    $captcha_url = FS2_ROOT_PATH . "resources/captcha/captcha.php?i=".generate_pwd(8);
 
-if ($show_form == true)
-{
-    $index = mysql_query("SELECT user_spam FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-    $user_spam = stripslashes(mysql_result($index, 0, "user_spam"));
-    $user_spam = str_replace("{captcha_url}", "res/rechen-captcha.inc.php?i=".generate_pwd(8), $user_spam);
+    // Check Cpatcha Use
+    if ( $config_arr['registration_antispam'] == 0 ) {
+        $captcha_template = "";
+        $captcha_text_template = "";
+    } else {
+        // Create Captcha Template
+        $captcha_template = new template();
 
-    $index = mysql_query("SELECT user_spamtext FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-    $user_spam_text = stripslashes(mysql_result($index, 0, "user_spamtext"));
+        $captcha_template->setFile ( "0_user.tpl" );
+        $captcha_template->load ( "CAPTCHA_LINE" );
+        $captcha_template->tag ( "captcha_url", $captcha_url );
+        $captcha_template = $captcha_template->display ();
 
-    if ($config_arr[registration_antispam]==0)
-    {
-        $user_spam = "";
-        $user_spam_text = "";
+        // Create Captcha-Text Template
+        $captcha_text_template = new template();
+        $captcha_text_template->setFile ( "0_user.tpl" );
+        $captcha_text_template->load ( "CAPTCHA_TEXT" );
+        $captcha_text_template = $captcha_text_template->display ();
     }
 
-    $index = mysql_query("SELECT user_register FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-    $template_form = stripslashes(mysql_result($index, 0, "user_register"));
-    $template_form = str_replace("{antispam}", $user_spam, $template_form);
-    $template_form = str_replace("{antispamtext}", $user_spam_text, $template_form);
-    $template .= $template_form;
+    // Create Template
+    $template = new template();
+
+    $template->setFile ( "0_user.tpl" );
+    $template->load ( "REGISTER" );
+
+    $template->tag ( "captcha_line", $captcha_template );
+    $template->tag ( "captcha_url", $captcha_url );
+    $template->tag ( "captcha_text", $captcha_text_template );
+
+    $template = $template->display ();
+
+    // Add Messages
+    $template =  $messages . $template;
+} else {
+    $template =  $messages;
 }
 ?>

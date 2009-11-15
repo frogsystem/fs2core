@@ -75,6 +75,7 @@ else
         $article_arr['template'] = str_replace ( "{author_template}", $user_arr['template'], $article_arr['template'] );
         
         $global_config_arr['dyn_title_page'] = $article_arr['article_title'];
+        $global_config_arr['content_author'] = stripslashes ( $user_arr['user_name'] );
 }
 
 // Display Template

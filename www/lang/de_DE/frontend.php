@@ -8,7 +8,7 @@ $TEXT = array (
     "Verbindung fehlgeschlagen",
 
 //Allgemein
-    "sysmessage" =>
+    "systemmessage" =>
     "Systemmeldung",
 
     "access_denied" =>
@@ -35,7 +35,7 @@ $TEXT = array (
     "news_feed" =>
     "News-Feed",
 
-// E-Mail
+//E-Mail
     "mail_password_changed_on" =>
     "Passwortänderung auf ",
     
@@ -44,8 +44,18 @@ $TEXT = array (
 
     "mail_new_password_not_sended" =>
     "E-Mail konnte nicht gesendet werden<br>Beim Senden einer E-Mail mit den geänderten Zugangsdaten trat ein Fehler auf",
+
+    "mail_registerd_on" =>
+    "Registrierung auf ",
+
+    "mail_registerd_sended" =>
+    "Eine Nachricht mit den Zugangsdaten wurde erfolgreich an die angegebene E-Mail-Adresse gesendet",
+
+    "mail_registerd_not_sended" =>
+    "E-Mail konnte nicht gesendet werden<br>Beim Senden einer E-Mail mit den Zugangsdaten trat ein Fehler auf",
+
     
-// User
+//User
     "user_image" =>
     "Benutzerbild",
     
@@ -88,6 +98,15 @@ $TEXT = array (
     "user_antispam" =>
     "FIX: Die Rechenaufgabe muss richtig gelöst werden",
 
+    "user_register_password_error" =>
+    "Das Passwort stimmt nicht mit der Wiederholung überein",
+
+    "user_register_not_twice" =>
+    "FIX: Du hast dich bereits auf der Seite registriert.",
+    
+    "user_register_fulfill_form" =>
+    "FIX: Alle Felder ausfüllen.",
+
     "user_login" =>
     "Anmelden",
     
@@ -105,6 +124,7 @@ $TEXT = array (
 
     "user_logout_ok" =>
     "Abmeldevorgang war erfolgreich",
+
     
 //Gruppen
     "group_image" =>

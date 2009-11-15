@@ -1,3 +1,15 @@
+User-JS-Funktionen überarbeiten
+Schnipsel (und Includes auf Schnipsel umstellen)
+Includes auf Applets umstellen
+Startseite (und News entsprechend...)
+Aliase
+PHP-Fonts
+HTML-Editor fertig (inkl. Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP und [%%]
+Templates anpassen
+Globale Suche
+Update von jquery
+
+
 gästebuch
 kommentare & bewertung bei bildern
 kommentare & bewertung bei downloads

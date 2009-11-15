@@ -7,6 +7,15 @@ $TEXT = array (
     "no" =>
     "Nein",
     
+    "from" =>
+    "von",
+    
+    "to" =>
+    "bis",
+
+    "with" =>
+    "mit",
+    
     "kib" =>
     "KiB",
 
@@ -15,6 +24,12 @@ $TEXT = array (
 
     "gib" =>
     "GiB",
+
+    "pixel" =>
+    "Pixel",
+
+    "resolution_x" =>
+    "x",
 
     "filename" =>
     "Dateiname",
@@ -37,8 +52,27 @@ $TEXT = array (
     "output" =>
     "Ausgabe",
     
-// Buttons & Auswahl-Buttons
+    
+//Erlaubte Werte
+    "width_x_height" =>
+    "Breite x Höhe",
 
+    "zero_not_allowed" =>
+    "0 ist nicht erlaubt",
+
+    "max" =>
+    "max.",
+
+    "min" =>
+    "min.",
+
+    "exact" =>
+    "exakt",
+
+    "hex_color" =>
+    'Hexadezimal Farbcode',
+    
+//Buttons & Auswahl-Buttons
     "button_arrow" =>
     '<img border="0" src="img/pointer.png" align="absmiddle" alt="->">',
     
@@ -62,8 +96,8 @@ $TEXT = array (
 
     "file_select_button" =>
     "Datei auswählen",
-    
-// Systemmeldungen
+
+//Systemmeldungen
 
     "error" =>
     "Es trat ein Fehler auf",
@@ -85,6 +119,9 @@ $TEXT = array (
     
 
 //Icons
+    "icon_small_help" =>
+    '<img src="icons/help.gif" alt="" align="absmiddle">',
+
     "icon_error" =>
     '<img src="icons/error.jpg" alt="" align="absmiddle">',
 
@@ -215,14 +252,116 @@ $TEXT = array (
     "template_dont_remove_copyright" =>
     "Der Copyright-Hinweis darf nicht entfernt werden",
 
-
-
     "template_selection_title_template" =>
     "Style-Auswahl",
 
     "template_selection_title_template_file" =>
     "Style- & Datei-Auswahl",
+
+
+    
+//Captcha Konfiguration
+    "captcha_config_title" =>
+    "Einstellungen",
+
+    "captcha_config_first_title" =>
+    "Zahlenbereich 1",
+
+    "captcha_config_first_desc" =>
+    "Bereich aus dem der erste Wert generiert wird.",
+
+    "captcha_config_second_title" =>
+    "Zahlenbereich 2",
+
+    "captcha_config_second_desc" =>
+    "Bereich aus dem der zweite Wert generiert wird.",
+
+    "captcha_config_use_operations_title" =>
+    "Erlaubte Rechenoperationen",
+    
+    "captcha_config_addition" =>
+    "Addition (+)",
+
+    "captcha_config_subtraction" =>
+    "Subtraktion (-)",
+
+    "captcha_config_multiplication" =>
+    "Multiplikation (*)",
+
+    "captcha_config_use_operations_desc" =>
+    "Legt fest, welche Rechenoperationen verwendet werden.",
+
+    "captcha_config_easy_arithmetics_title" =>
+    "Nur leichte Aufgaben",
+
+    "captcha_config_easy_arithmetics_desc" =>
+    "Aktiviert eine KI, um generierte Aufgaben zu vereinfachen.",
+
+    "captcha_config_design_title" =>
+    "Design",
+
+    "captcha_config_bg_color_title" =>
+    "Hintergrundfarbe",
+
+    "captcha_config_bg_color_desc" =>
+    "Die Hintergrundfarbe des Captcha-Bildes.",
+
+    "captcha_config_bg_transparent" =>
+    "Transparenter Hintergrund",
+
+    "captcha_config_text_color_title" =>
+    "Textfarbe",
+
+    "captcha_config_text_color_desc" =>
+    "Die Farbe in der die Aufgabe dargestellt wird.",
+
+    "captcha_config_dimensions_title" =>
+    "Abemessungen",
+
+    "captcha_config_dimensions_desc" =>
+    "Größe des Captcha-Bildes.",
+
+    "captcha_config_text_position_title" =>
+    "Text-Position",
+
+    "captcha_config_text_position_desc" =>
+    "Position des Textes relativ zur linken, oberen Ecke.",
+    
+    "captcha_config_text_position_help" =>
+    "Abstand nach links und oben",
+    
+    "captcha_config_text_style_title" =>
+    "Schriftart und -größe",
+
+    "captcha_config_text_style_desc" =>
+    "Standard-Schriftart in 5 Größen oder eingefügter PHP-Font.",
+    
+    "captcha_config_text_style_default" =>
+    "Standard, Größe",
+
+    "captcha_config_text_options_title" =>
+    "Text-Optionen",
+
+    "captcha_config_text_options_desc" =>
+    "Optionen um das Captcha zu formatieren.",
+
+    "captcha_config_questionmark" =>
+    "zeige Fragezeichen [1+1=?]",
+
+    "captcha_config_spaces" =>
+    "Leerzeichen einfügen [1 + 1 =]",
+
+    "captcha_config_multiplication_as_x" =>
+    "verwende x statt * [1x1=]",
+
+    "captcha_config_one_operation" =>
+    "Es muss mindestens eine Rechenoperation ausgewählt werden",
     
     
+
+
+
+
+
 );
 ?>

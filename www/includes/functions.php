@@ -1,4 +1,30 @@
 <?php
+//////////////////////////////////
+//// validation of a hexcolor ////
+//////////////////////////////////
+function hex2dec_color( $COLOR )
+{
+    if ( is_hexcolor( $COLOR ) ) {
+        $return['r'] = hexdec ( substr ( $COLOR, 0, 2 ) );
+        $return['g'] = hexdec ( substr ( $COLOR, 2, 2 ) );
+        $return['b'] = hexdec ( substr ( $COLOR, 4, 2 ) );
+        return $return;
+    } else {
+        return FALSE;
+    }
+}
+
+
+//////////////////////////////////
+//// validation of a hexcolor ////
+//////////////////////////////////
+function is_hexcolor( $COLOR )
+{
+    $COLOR = substr ( $COLOR, 0, 6 );
+    return preg_match ( '/[0-9a-fA-F]{6}$/', $COLOR );
+}
+
+
 /////////////////////////////
 //// scandir with filter ////
 /////////////////////////////
@@ -19,6 +45,7 @@ function scandir_filter ( $FOLDER, $EXTRA = array(), $BAD = array ( ".", "..", "
     }
     return $contents;
 }
+
 
 //////////////////////////////////////////////////
 //// scandir for files with certain extention ////
@@ -406,7 +433,7 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
         return TRUE;
     } elseif ( $ACTIVATION == 4 && $_SESSION['user_id'] && is_admin ( $_SESSION['user_id'] ) ) {
         return TRUE;
-    } elseif ( $sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
+    } elseif ( $sicherheits_eingabe == $_SESSION['captcha'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
         return TRUE;
     } else {
         return FALSE;
@@ -1054,7 +1081,7 @@ function markword($text, $word)
 
 function savesql ( $TEXT )
 {
-    $TEXT = mysql_real_escape_string ( unquote ( $TEXT ) );
+    $TEXT = mysql_real_escape_string ( $TEXT );
     return $TEXT;
 }
 

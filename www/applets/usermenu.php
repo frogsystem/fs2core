@@ -8,8 +8,8 @@ if ( $_SESSION['user_level'] == "loggedin" ) {
     // Get some data
     $user_id = $_SESSION["user_id"];
     settype ( $user_id, "integer" );
-    $image_url = image_url ( "images/avatare", $user_id ) ;
-    if ( image_exists ( "images/avatare", $user_id ) ) {
+    $image_url = image_url ( "media/user-images/", $user_id ) ;
+    if ( image_exists ( "media/user-images/", $user_id ) ) {
         $image_link = '<img src="'.$image_url .'" alt="'.$TEXT->get("user_image_of").' '.killhtml ( $_SESSION['user_name'] ).'">';
     } else {
         $image_link = '';
@@ -40,7 +40,7 @@ if ( $_SESSION['user_level'] == "loggedin" ) {
         $template_admincp->load("APPLET_ADMINLINK");
 
         $template_admincp->tag("admincp_link", '<a href="'.$global_config_arr['virtualhost'].'admin/">'.$TEXT->get("user_admincp_title").'</a>');
-        $template_admincp->tag("admincp_url", $global_config_arr['virtualhost']."admin");
+        $template_admincp->tag("admincp_url", $global_config_arr['virtualhost']."admin/");
         $template_admincp = $template_admincp->display();
     } else {
         $template_admincp = '';

@@ -48,17 +48,8 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
   </div>
 </body><!--section-end::MAINPAGE-->
 
-<!--section-start::MENU1--><b>Allgemein</b><br>
-<a class="small" href="{virtualhost}?go=news">- News</a><br>
-<a class="small" href="{virtualhost}?go=newsarchiv">- News Archiv</a><br>
-<a class="small" href="{virtualhost}?go=members">- Mitgliederliste</a><br>
-<a class="small" href="{virtualhost}?go=pollarchiv">- Umfragen Archiv</a><br>
-<a class="small" href="{virtualhost}?go=gallery">- Galerie</a><br>
-<a class="small" href="{virtualhost}?go=download">- Downloads</a><br>
-<a class="small" href="{virtualhost}?go=press">- Presseberichte</a><br>
-<a class="small" href="{virtualhost}?go=fscode">- FSCode</a><br>
-<a class="small" href="{virtualhost}?go=partner">- Partnerseiten</a><br>
-<a class="small" href="{virtualhost}?go=shop">- Shop</a><br><!--section-end::MENU1-->
+<!--section-start::MENU1-->
+<!--section-end::MENU1-->
 
 <!--section-start::PICTUREVIEWER--><body leftmargin="0" topmargin="0">
 

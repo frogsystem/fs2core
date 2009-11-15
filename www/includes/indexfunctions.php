@@ -157,27 +157,34 @@ function get_js ( $PATH_PREFIX )
 ///////////////////////
 function get_meta ()
 {
-        global $global_config_arr;
+    global $global_config_arr;
 
-        $keyword_arr = explode ( ",", $global_config_arr['keywords'] );
-        foreach ( $keyword_arr as $key => $value ) {
-            $keyword_arr[$key] = trim ( $value );
-        }
+    $keyword_arr = explode ( ",", $global_config_arr['keywords'] );
+    foreach ( $keyword_arr as $key => $value ) {
+        $keyword_arr[$key] = trim ( $value );
+    }
     $keywords = implode ( ", ", $keyword_arr );
 
-        $template = '
+    $template = '
+                <meta name="title" content="'.get_title ().'">'.get_meta_author ().'
+                <meta name="publisher" content="'.$global_config_arr['publisher'].'">
+                <meta name="copyright" content="'.$global_config_arr['copyright'].'">
+                <meta name="generator" content="Frogsystem 2 [http://www.frogsystem.de]">
+                <meta name="description" content="'.$global_config_arr['description'].'">'.get_meta_abstract ().'
+                <meta http-equiv="content-language" content="'.$global_config_arr['language'].'">
                 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-                <meta name="DC.Identifier" content="'.$global_config_arr['virtualhost'].'">
-                <meta name="DC.Creator" content="'.$global_config_arr['author'].'">
-                <meta name="DC.Description" content="'.$global_config_arr['description'].'">
-                <meta name="DC.Language" content="'.$global_config_arr['language'].'">
-                <meta name="title" content="'.$global_config_arr['title'].'">
-                <meta name="keywords" content="'.$keywords.'">
                 <meta name="robots" content="index,follow">
                 <meta name="Revisit-after" content="3 days">
-                <meta name="generator" content="Frogsystem 2 [http://www.frogsystem.de]">';
+                <meta name="DC.Title" content="'.get_title ().'">'.get_meta_author ( TRUE ).'
+                <meta name="DC.Rights" content="'.$global_config_arr['copyright'].'">
+                <meta name="DC.Publisher" content="'.$global_config_arr['publisher'].'">
+                <meta name="DC.Description" content="'.$global_config_arr['description'].'">
+                <meta name="DC.Language" content="'.$global_config_arr['language'].'">
+                <meta name="DC.Format" content="text/html">
+                <meta name="keywords" lang="'.$global_config_arr['language'].'" content="'.$keywords.'">
+    ';
 
-        return $template;
+    return $template;
 }
 
 ///////////////////
@@ -197,6 +204,46 @@ function get_title ()
                return $global_config_arr['title'];
         }
 }
+
+/////////////////////////////
+//// get Author Meta Tag ////
+/////////////////////////////
+function get_meta_author ( $DC = FALSE )
+{
+        global $global_config_arr;
+
+        if ( isset ( $global_config_arr['content_author'] ) && $global_config_arr['content_author'] != "" ) {
+            $author = $global_config_arr['content_author'];
+        } else {
+            $author = $global_config_arr['publisher'];
+        }
+        
+        if ( $DC ) {
+            $output = '<meta name="DC.Creator" content="'.$author.'">';
+        } else {
+            $output = '<meta name="author" content="'.$author.'">';
+        }
+        
+        return '
+                '.$output;
+}
+
+/////////////////////////////
+//// get Author Meta Tag ////
+/////////////////////////////
+function get_meta_abstract ()
+{
+        global $global_config_arr;
+
+        if ( isset ( $global_config_arr['content_abstract'] ) && $global_config_arr['content_abstract'] != "" ) {
+            return '
+                <meta name="abstract" content="'.$global_config_arr['content_abstract'].'">';
+        } else {
+            return '
+                <meta name="abstract" content="'.$global_config_arr['description'].'">';
+        }
+}
+
 
 
 /////////////////////

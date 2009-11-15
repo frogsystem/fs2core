@@ -2,8 +2,8 @@
 ///////////////////////////////////////////
 //// Security Functions & Config Array ////
 ///////////////////////////////////////////
-if ( isset ($_GET['user_id']) && !isset($_GET['id']) ) {
-    $_GET['id'] = $_GET['user_id'];
+if ( isset ($_GET['userid']) && !isset($_GET['id']) ) {
+    $_GET['id'] = $_GET['userid'];
 }
 
 $_GET['id'] = ( isset ( $_GET['id'] ) ? $_GET['id'] : $_GET['id'] );
@@ -124,6 +124,6 @@ if ( mysql_num_rows ( $index ) > 0 ) {
 //// User ID not found ////
 ///////////////////////////
 else {
-    $template = sys_message ( $phrases['sysmessage'], $phrases['user_not_exist'] );
+    $template = sys_message ( $TEXT->get("systemmessage"), $TEXT->get("user_not_found") );
 }
 ?>

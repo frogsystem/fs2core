@@ -14,7 +14,7 @@
     $tmp[name] = "APPLET_MENU";
     $tmp[title] = $admin_phrases[template][user_user_menu][title];
     $tmp[description] = $admin_phrases[template][user_user_menu][description];
-    $tmp[rows] = "10";
+    $tmp[rows] = "15";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "user_name";
         $tmp[help][0][text] = $admin_phrases[template][user_user_menu][help_1] ;
@@ -36,7 +36,7 @@
     $tmp[name] = "APPLET_ADMINLINK";
     $tmp[title] = $admin_phrases[template][user_admin_link][title];
     $tmp[description] = $admin_phrases[template][user_admin_link][description];
-    $tmp[rows] = "5";
+    $tmp[rows] = "10";
     $tmp[cols] = "66";
         $tmp[help][][tag] = "admincp_link";
         $tmp[help][1][tag] = "admincp_url";
@@ -48,7 +48,7 @@
     $tmp[name] = "LOGIN";
     $tmp[title] = $admin_phrases[template][user_login][title];
     $tmp[description] = $admin_phrases[template][user_login][description];
-    $tmp[rows] = "20";
+    $tmp[rows] = "30";
     $tmp[cols] = "66";
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
@@ -56,12 +56,14 @@
     $tmp[name] = "REGISTER";
     $tmp[title] = $admin_phrases[template][user_register][title];
     $tmp[description] = $admin_phrases[template][user_register][description];
-    $tmp[rows] = "20";
+    $tmp[rows] = "30";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{antispam}";
+        $tmp[help][0][tag] = "captcha_line";
         $tmp[help][0][text] = $admin_phrases[template][user_register][help_1];
-        $tmp[help][1][tag] = "{antispamtext}";
-        $tmp[help][1][text] = $admin_phrases[template][user_register][help_2];
+        $tmp[help][1][tag] = "captcha_url";
+        $tmp[help][1][text] = $admin_phrases[template][user_register][help_1];
+        $tmp[help][2][tag] = "captcha_text";
+        $tmp[help][2][text] = $admin_phrases[template][user_register][help_2];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
@@ -70,9 +72,9 @@
     $tmp[name] = "CAPTCHA_LINE";
     $tmp[title] = $admin_phrases[template][user_spam][title];
     $tmp[description] = $admin_phrases[template][user_spam][description];
-    $tmp[rows] = "7";
+    $tmp[rows] = "10";
     $tmp[cols] = "66";
-        $tmp[help][0][tag] = "{captcha_url}";
+        $tmp[help][0][tag] = "captcha_url";
         $tmp[help][0][text] = $admin_phrases[template][user_spam][help_1];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
@@ -80,7 +82,7 @@
     $tmp[name] = "CAPTCHA_TEXT";
     $tmp[title] = $admin_phrases[template][user_spamtext][title];
     $tmp[description] = $admin_phrases[template][user_spamtext][description];
-    $tmp[rows] = "7";
+    $tmp[rows] = "10";
     $tmp[cols] = "66";
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);

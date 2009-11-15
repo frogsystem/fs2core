@@ -25,7 +25,8 @@ if (
     $_POST['title'] = savesql ( $_POST['title'] );
     $_POST['description'] = savesql ( $_POST['description'] );
     $_POST['keywords'] = savesql ( $_POST['keywords'] );
-    $_POST['author'] = savesql ( $_POST['author'] );
+    $_POST['publisher'] = savesql ( $_POST['publisher'] );
+    $_POST['copyright'] = savesql ( $_POST['copyright'] );
     $_POST['date'] = savesql ( $_POST['date'] );
     $_POST['time'] = savesql ( $_POST['time'] );
     $_POST['datetime'] = savesql ( $_POST['datetime'] );
@@ -55,7 +56,8 @@ if (
                                             `dyn_title_ext` = '".$_POST['dyn_title_ext']."',
                                             `description` = '".$_POST['description']."',
                                             `keywords` = '".$_POST['keywords']."',
-                                            `author` = '".$_POST['author']."',
+                                            `publisher` = '".$_POST['publisher']."',
+                                            `copyright` = '".$_POST['copyright']."',
                                             `show_favicon` = '".$_POST['show_favicon']."',
                                             `design` = '".$_POST['design']."',
                                             `allow_other_designs` = '".$_POST['allow_other_designs']."',
@@ -105,7 +107,8 @@ if ( TRUE )
     $_POST['title'] = killhtml ( $_POST['title'] );
     $_POST['virtualhost'] = killhtml ( $_POST['virtualhost'] );
     $_POST['description'] = killhtml ( $_POST['description'] );
-    $_POST['author'] = killhtml ( $_POST['author'] );
+    $_POST['publisher'] = killhtml ( $_POST['publisher'] );
+    $_POST['copyright'] = killhtml ( $_POST['copyright'] );
     $_POST['admin_mail'] = killhtml ( $_POST['admin_mail'] );
     $_POST['keywords'] = killhtml ( $_POST['keywords'] );
     $_POST['date'] = killhtml ( $_POST['date'] );
@@ -155,7 +158,7 @@ if ( TRUE )
                                     <span class="small">Aktiviert dynamische Seitentitel.</span>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="dyn_title" value="1" '.getchecked ( 1, $_POST['dyn_title'] ).'
+                                    <input class="pointer" type="checkbox" name="dyn_title" value="1" '.getchecked ( 1, $_POST['dyn_title'] ).'
                                            onChange="show_hidden(document.getElementById(\'dyn_title_ext_tr\'), this, true)"
                                     >
                                 </td>
@@ -198,16 +201,7 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[general][description_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text input_width" name="description" maxlength="255" value="'.$_POST['description'].'">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config">
-                                    '.$admin_phrases[general][author].': <span class="small">'.$admin_phrases[common][optional].'</span><br>
-                                    <span class="small">'.$admin_phrases[general][author_desc].'</span>
-                                </td>
-                                <td class="config">
-                                    <input class="text input_width" name="author" maxlength="100" value="'.$_POST['author'].'">
+                                    <textarea class="text input_width" name="description" rows="5" wrap="virtual">'.$_POST['description'].'</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -216,7 +210,25 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[general][keywords_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text input_width" name="keywords" maxlength="255" value="'.$_POST['keywords'].'">
+                                    <textarea class="text input_width" name="keywords" rows="5" wrap="virtual">'.$_POST['keywords'].'</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '.$TEXT['admin']->get("config_publisher_title").': <span class="small">'.$admin_phrases[common][optional].'</span><br>
+                                    <span class="small">'.$TEXT['admin']->get("config_publisher_desc").'</span>
+                                </td>
+                                <td class="config">
+                                    <input class="text input_width" name="publisher" maxlength="100" value="'.$_POST['publisher'].'">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '.$TEXT['admin']->get("config_copyright_title").': <span class="small">'.$admin_phrases[common][optional].'</span><br>
+                                    <span class="small">'.$TEXT['admin']->get("config_copyright_desc").'</span>
+                                </td>
+                                <td class="config">
+                                    <textarea class="text input_width" name="copyright" rows="5" wrap="virtual">'.$_POST['copyright'].'</textarea>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
