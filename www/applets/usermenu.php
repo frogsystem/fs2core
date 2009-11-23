@@ -37,7 +37,7 @@ if ( $_SESSION['user_level'] == "loggedin" ) {
     if ( $data_arr['user_is_staff'] == 1 || $data_arr['user_is_admin'] == 1 || $data_arr['user_id'] == 1 ) {
         $template_admincp = new template();
         $template_admincp->setFile("0_user.tpl");
-        $template_admincp->load("APPLET_ADMINLINK");
+        $template_admincp->load("APPLET_ADMINLINE");
 
         $template_admincp->tag("admincp_link", '<a href="'.$global_config_arr['virtualhost'].'admin/">'.$TEXT->get("user_admincp_title").'</a>');
         $template_admincp->tag("admincp_url", $global_config_arr['virtualhost']."admin/");

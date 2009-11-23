@@ -9,6 +9,7 @@ if (
         && $_POST['avatar_y'] && $_POST['avatar_y'] > 0
         && $_POST['avatar_size'] && $_POST['avatar_size'] > 0
         && $_POST['reg_date_format'] && $_POST['reg_date_format'] != ""
+        && $_POST['user_list_reg_date_format'] && $_POST['user_list_reg_date_format'] != ""
     )
 {
     // security functions
@@ -18,6 +19,7 @@ if (
     settype ( $_POST['avatar_y'], "integer" );
     settype ( $_POST['avatar_size'], "integer" );
     $_POST['reg_date_format'] = savesql ( $_POST['reg_date_format'] );
+    $_POST['user_list_reg_date_format'] = savesql ( $_POST['user_list_reg_date_format'] );
 
     // MySQL-Queries
     mysql_query ( "
@@ -28,7 +30,8 @@ if (
                         `avatar_x` = '".$_POST['avatar_x']."',
                         `avatar_y` = '".$_POST['avatar_y']."',
                         `avatar_size` = '".$_POST['avatar_size']."',
-                        `reg_date_format` = '".$_POST['reg_date_format']."'
+                        `reg_date_format` = '".$_POST['reg_date_format']."',
+                        `user_list_reg_date_format` = '".$_POST['user_list_reg_date_format']."'
                     WHERE `id` = '1'
     ", $db );
     
@@ -67,6 +70,7 @@ if ( TRUE )
     settype ( $_POST['avatar_y'], "integer" );
     settype ( $_POST['avatar_size'], "integer" );
     $_POST['reg_date_format'] = stripslashes ( $_POST['reg_date_format'] );
+    $_POST['user_list_reg_date_format'] = stripslashes ( $_POST['user_list_reg_date_format'] );
     
     // Display Form
     echo'
@@ -113,7 +117,7 @@ if ( TRUE )
                             <tr>
                                 <td class="config">
                                     '."Registrierungs-Datum".':<br>
-                                    <span class="small">'."Datumsformat, das auf der Profilseite verwendet werden soll.".'</span>
+                                    <span class="small">'."Datumsformat, das auf der Profilseite verwendet wird.".'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text input_width" size="40" name="reg_date_format" maxlength="50" value="'.$_POST['reg_date_format'].'"><br>
@@ -131,6 +135,16 @@ if ( TRUE )
                                 <td class="config">
                                     <input class="text center" size="3" maxlength="3" name="user_per_page" value="'.$_POST['user_per_page'].'"> User<br>
                                     <span class="small">(0 ist nicht zulässig)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '."Registrierungs-Datum".':<br>
+                                    <span class="small">'."Datumsformat, das in der Userliste verwendet wird.".'</span>
+                                </td>
+                                <td class="config">
+                                    <input class="text input_width" size="40" name="user_list_reg_date_format" maxlength="50" value="'.$_POST['user_list_reg_date_format'].'"><br>
+                                    <span class="small">'.$admin_phrases[general][date_info].'</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

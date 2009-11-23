@@ -18,8 +18,29 @@ a:hover, a:focus, a.small:hover, a.small:focus {
 .pointer {
     cursor:pointer;
 }
-.textmiddle {
-    vertical-align:middle;
+
+
+.top {
+  vertical-align:top;
+}
+.middle, .textmiddle {
+  vertical-align:middle;
+}
+.bottom {
+  vertical-align:bottom;
+}
+
+.left {
+  text-align:left;
+}
+.center {
+  text-align:center;
+}
+.right {
+  text-align:right;
+}
+.justify{
+  text-align:justify;
 }
 
 

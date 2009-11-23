@@ -1,39 +1,73 @@
-User-JS-Funktionen überarbeiten
+alix5:
+
 Schnipsel (und Includes auf Schnipsel umstellen)
 Includes auf Applets umstellen
 Startseite (und News entsprechend...)
 Aliase
-PHP-Fonts
-HTML-Editor fertig (inkl. Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP und [%%]
+HTML-Editor fertig (Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP und [%%]...)
 Templates anpassen
-Globale Suche
+style-verwaltung
+Globale Suche (in news, artikeln, screenshots & download beschreibungen/titlen) inkl. Suchzeichen
 Update von jquery
+/-Bug bei den Templates
+kommentare auf neues auswahl system umstellen (mehrfache löschen ermöglichen!!!!)
+sämtliche auswahlen auf funktionalität testen
+JS-"einfügen" buttons auf funktionalität testen
+refresh bei kommentaren
+doppelte kommenatre unterbinden
+Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
 
 
+
+alix6:
+
+php-fonts
+großes galerie update (kommentare, bewertungen, counter, bilderserien [spiegel-online], diverese möglichkeiten zur bildanzeige, unterkategorie, verbesserter upload, verbesserte verwaltung)
+großes shop update
+
+
+
+alix7:
+
+großes User-Update (Benutzergruppen auch mehrere, Ränge nach Posts, Rechte im Frontend, Sperren, bannen, verwarnen, admin-kommentare zu usern, userkarte über googlemaps)
+pw zurücksetzen
+pw schwierigkeit festlegen
+email aktivierung inkl. check auf gültige email
+mail adresse aktivieren lassen bei neu registrierung (einstellbar)
+mail adresse aktivieren lassen bei nachträglicher änderung (einstellbar)
+
+
+
+darüberhinaus:
+
+neu:
 gästebuch
-kommentare & bewertung bei bildern
-kommentare & bewertung bei downloads
-newsarchiv neuorganisieren
-newsletter
-seiten suche (in news, artikeln, screenshots & download beschreibungen/titlen)
-fscodes komplett über die datenbank oragnisieren & selbst erstellbar
-editor verbessern und besser verwaltbar machen (buttons selbst hochladen etc. pp)
-backup-funktion
-design im- und export
-bilderverwaltung verbessern (ordner-system, neu hochladen, umbennen, etc.)
 kontaktforumlar
-template-system verbessern (letzte änderung, original anzeigen lassen, etc.)
-.htaccess verwendung
-zonen-system?!?
-counter für einzelne seiten (?go=xyz zählen)
-counter für alles (klicks auf partnerlink, bilder, wallpaper, buchstaben...)
+newsletter
 kalendersystem (termine, veröffentlichungen, countdown...)
-statistik überarbeiten
-go-Aliase (?go=toll leitet auf ?go=super weiter)
-druckansicht für artikel
-No Java Script kompatbilität überprüfen
 sitemap und artikel kategorie system
 linksystem mit bannern klick-counter, bewertungen, etc. (evtl mit partnersystem verbinden?!)
-antispam-code design- und schwierigkeitsverwaltung
-email-spamschutz mit javascript verschlüsselung und grafik
+.htaccess verwendung
+datenbank-backup-funktion
+zonen-system?!?
 web 2.0 / networking funktionen für user (profil, guestbook, pm, ...)
+
+reorganisation:
+fscodes komplett über die datenbank oragnisieren & selbst erstellbar
+editor verbessern und besser verwaltbar machen (buttons selbst hochladen etc. pp)
+
+verbesserung:
+kommentare & bewertung bei downloads
+Inhalts-Bilderverwaltung verbessern (ordner-system, neu hochladen, umbennen, etc.)
+counter für alles (klicks auf artikel, seiten, partnerlink, bilder, wallpaper, buchstaben...)
+statistik überarbeiten
+druckansicht für artikel
+No Java Script kompatbilität überprüfen
+email-spamschutz mit javascript verschlüsselung und grafik
+
+
+
+
+weit darüberhinaus (Frogsystem 3):
+oop
+modularisierung

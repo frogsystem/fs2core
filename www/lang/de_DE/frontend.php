@@ -81,7 +81,7 @@ $TEXT = array (
     "Das neue Passwort stimmt nicht mit der Wiederholung überein",
 
     "user_password_change_error_old" =>
-    "Das aktuelle Passwort wurde nicht korrekt eingegeben",
+    "Das aktuelle Passwort wurde nicht richtig eingegeben",
 
     "user_image_not_found" =>
     "Kein Benutzerbild gefunden",
@@ -90,22 +90,22 @@ $TEXT = array (
     "Benutzer wurde nicht gefunden",
 
     "user_name_exists" =>
-    "Der gewünschte Benutzername wird bereits verwendet",
+    "Der gewünschte Benutzername ist bereits vergeben",
 
     "user_registered" =>
-    "FIX: Du bist nun registriert und kannst dich auf der Seite einloggen",
+    "Die Registrierung war erfolgreich<br>Anmelden auf der Seite ist nun möglich",
 
     "user_antispam" =>
-    "FIX: Die Rechenaufgabe muss richtig gelöst werden",
+    "Die Rechenaufgabe wurde nicht richtig gelöst",
 
     "user_register_password_error" =>
     "Das Passwort stimmt nicht mit der Wiederholung überein",
 
     "user_register_not_twice" =>
-    "FIX: Du hast dich bereits auf der Seite registriert.",
+    "Benutzer können sich nicht mehrfach registieren",
     
     "user_register_fulfill_form" =>
-    "FIX: Alle Felder ausfüllen.",
+    "Es wurden nicht alle Pflichtfelder ausgefüllt",
 
     "user_login" =>
     "Anmelden",

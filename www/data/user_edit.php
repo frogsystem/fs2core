@@ -14,7 +14,11 @@ $config_arr = mysql_fetch_assoc ( $index );
 //////////////////////
 //// Save Changes ////
 //////////////////////
-if ( $_POST['user_mail'] && $_SESSION['user_id']) {
+if (
+        $_POST['user_mail']
+        && $_SESSION['user_id']
+        && ( $_POST['old_pwd'] == "" || ( $_POST['old_pwd'] != "" && $_POST['new_pwd'] != "" && $_POST['wdh_pwd'] != "" ) )
+    ) {
 
     // Upload & Delete User Image
     if ( isset ( $_POST['user_delete_image'] ) ) {
@@ -54,26 +58,27 @@ if ( $_POST['user_mail'] && $_SESSION['user_id']) {
     $message .= $TEXT->get("user_profile_updated");
 
     // Save New Password
-    if ( $_POST['oldpwd'] && $_POST['newpwd'] && $_POST['wdhpwd'] ) {
+    if ( $_POST['old_pwd'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] ) {
         $index = mysql_query ( "
-            SELECT `user_password`, `user_salt`
+            SELECT `user_name`, `user_password`, `user_salt`
             FROM `".$global_config_arr['pref']."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'
         ", $db );
         $old_password = mysql_result($index, 0, "user_password");
         $user_salt = mysql_result($index, 0, "user_salt");
+        $user_name = mysql_result($index, 0, "user_name");
         
-        $_POST['oldpwd'] = md5 ( $_POST['oldpwd'].$user_salt );
+        $_POST['old_pwd'] = md5 ( $_POST['old_pwd'].$user_salt );
 
-        if ( $_POST['oldpwd'] == $old_password )
+        if ( $_POST['old_pwd'] == $old_password )
         {
-            if ( $_POST['newpwd'] == $_POST['wdhpwd'] )
+            if ( $_POST['new_pwd'] == $_POST['wdh_pwd'] )
             {
                 $new_salt = generate_pwd ( 10 );
-                $mail_password = $_POST['newpwd'];
-                $md5_password = md5 ( $_POST['newpwd'].$new_salt );
-                unset ( $_POST['newpwd'] );
-                unset ( $_POST['wdhpwd'] );
+                $mail_password = $_POST['new_pwd'];
+                $md5_password = md5 ( $_POST['new_pwd'].$new_salt );
+                unset ( $_POST['new_pwd'] );
+                unset ( $_POST['wdh_pwd'] );
 
                 // Update Password
                 mysql_query ( "
@@ -83,6 +88,11 @@ if ( $_POST['user_mail'] && $_SESSION['user_id']) {
                     WHERE `user_id` = '".$_SESSION['user_id']."'
                 ", $db);
                 $message .= "<br>".$TEXT->get("user_password_changed");
+                
+                // Update Cookie
+                if ( $_COOKIE['login'] ) {
+                    set_cookie ( $user_name, $_POST['new_pwd'] );
+                }
                 
                 // Send E-Mail
                 $template_mail = get_email_template ( "signup" );
@@ -115,6 +125,14 @@ if ( $_POST['user_mail'] && $_SESSION['user_id']) {
 //////////////////////
 else {
     if ( $_SESSION['user_level'] == "loggedin" ) {
+    
+        //Error Messages
+        if ( isset( $_POST['user_edit'] ) ) {
+            $messages = sys_message ( $TEXT->get("systemmessage"), $TEXT->get("user_register_fulfill_form") ) . "<br><br>";
+        } else {
+            $messages = "";
+        }
+        
         $index = mysql_query ( "
             SELECT *
             FROM `".$global_config_arr['pref']."user`
@@ -152,7 +170,7 @@ else {
             $template->tag ( "user_yim", stripslashes ( $user_arr['user_yim'] ) );
             $template->tag ( "user_skype", stripslashes ( $user_arr['user_skype'] ) );
 
-            $template = $template->display ();
+            $template = $messages . $template->display ();
         }
     } else { // Show Login-Page
         $_SESSION['last_url'] = "editprofil";

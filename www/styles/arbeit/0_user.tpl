@@ -53,8 +53,7 @@
 {..admincp_line..}
 <a class="small" href="{..logout_url..}">- Abmelden</a><!--section-end::APPLET_MENU-->
 
-<!--section-start::APPLET_ADMINLINK--><a class="small" href="{..admincp_url..}">- Admin CP</a><br>
-<!--section-end::APPLET_ADMINLINK-->
+<!--section-start::APPLET_ADMINLINE--><a class="small" href="{..admincp_url..}">- Admin CP</a><br><!--section-end::APPLET_ADMINLINE-->
 
 <!--section-start::LOGIN--><b>Anmelden</b><br><br>
 
@@ -143,7 +142,7 @@
   </ul>
   <br>
   
-  <form action="" method="post" onSubmit="return chkFormularRegister()">
+  <form action="" method="post" onSubmit="return checkRegistrationForm()">
     <input type="hidden" name="go" value="register">
   
     <table border="0" cellpadding="2" cellspacing="0" align="center">
@@ -154,7 +153,7 @@
       </tr>
       <tr>
         <td align="left">
-          <input class="small input input_highlight" size="33" name="username" id="user_name" maxlength="25">
+          <input class="small input input_highlight" size="33" name="user_name" id="user_name" maxlength="25">
           <img src="$VAR(style_icons)user/user.gif" alt="" align="bottom">
         </td>
       </tr>
@@ -168,7 +167,7 @@
       </tr>
       <tr>
         <td align="left">
-          <input class="small input input_highlight" size="33" name="usermail" id="user_mail" maxlength="100">
+          <input class="small input input_highlight" size="33" name="user_mail" id="user_mail" maxlength="100">
           <img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom">
         </td>
       </tr>
@@ -182,7 +181,7 @@
       </tr>
       <tr>
         <td align="left">
-          <input class="small input input_highlight" size="33" name="newpwd" id="user_pass1" type="password" maxlength="50" autocomplete="off">
+          <input class="small input input_highlight" size="33" name="new_pwd" id="new_pwd" type="password" maxlength="50" autocomplete="off">
           <img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom">
         </td>
       </tr>
@@ -196,7 +195,7 @@
       </tr>
       <tr>
         <td align="left">
-          <input class="small input input_highlight" size="33" name="wdhpwd" id="user_pass2" type="password" maxlength="50" autocomplete="off">
+          <input class="small input input_highlight" size="33" name="wdh_pwd" id="wdh_pwd" type="password" maxlength="50" autocomplete="off">
           <img src="$VAR(style_icons)user/key-action.gif" alt="" align="bottom">
         </td>
       </tr>
@@ -405,8 +404,8 @@
 <br><br>
 
 
-<form action="" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="go" value="editprofil">
+<form action="" method="post" enctype="multipart/form-data" onSubmit="return checkUserEditForm()">
+    <input type="hidden" name="go" value="user_edit">
 
     <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
 
@@ -415,7 +414,9 @@
                 <b>Benutzername:</b>
             </td>
 
-            <td align="center" valign="middle" rowspan="24" width="90"><img src="$VAR(style_images)line.gif" alt=""></td>
+            <td align="center" valign="middle" rowspan="24" width="90">
+              <img src="$VAR(style_images)line.gif" alt="">
+            </td>
 
             <td align="left" colspan="2">
                 <b>Benutzerbild:</b>
@@ -432,7 +433,7 @@
 
         <tr><td align="left" colspan="2"><b>E-Mail:</b> <span class="small">(Pflicht)</span></td></tr>
         <tr>
-            <td align="left"><input class="small input input_highlight" size="33" value="{..user_mail..}" name="user_mail" maxlength="100"></td>
+            <td align="left"><input class="small input input_highlight" size="33" value="{..user_mail..}" id="user_mail"  name="user_mail" maxlength="100"></td>
             <td align="center"><img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom"></td>
             <td align="center" valign="middle" rowspan="9" colspan="2">{..user_image..}</td>
         </tr>
@@ -503,9 +504,9 @@
           <td align="left" colspan="2"><b>Neues Passwort:</b></td>
         </tr>
         <tr>
-            <td align="left"><input class="small input input_highlight" size="33" name="oldpwd" type="password" maxlength="50" autocomplete="off"></td>
+            <td align="left"><input class="small input input_highlight" size="33" id="old_pwd" name="old_pwd" type="password" maxlength="50" autocomplete="off"></td>
             <td align="center"><img src="$VAR(style_icons)user/key.gif" alt="" align="bottom"></td>
-            <td align="left"><input class="small input input_highlight" size="33" name="newpwd" type="password" maxlength="50" autocomplete="off"></td>
+            <td align="left"><input class="small input input_highlight" size="33" id="new_pwd" name="new_pwd" type="password" maxlength="50" autocomplete="off"></td>
             <td align="center"><img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom"></td>          
         </tr>
         <tr><td></td></tr>
@@ -515,24 +516,139 @@
           <td align="left" colspan="2"><b>Neues Passwort wiederholen:</b></td></tr>
         <tr>
           <td colspan="2"></td>
-          <td align="left"><input class="small input input_highlight" size="33" name="wdhpwd" type="password" maxlength="50" autocomplete="off"></td>
+          <td align="left"><input class="small input input_highlight" size="33" id="wdh_pwd" name="wdh_pwd" type="password" maxlength="50" autocomplete="off"></td>
           <td align="center"><img src="$VAR(style_icons)user/key-action.gif" alt="" align="bottom"></td>
         </tr>
         <tr><td>&nbsp;</td></tr>
         <tr><td align="center" colspan="5">
-                <button class="pointer" type="submit"><img src="$VAR(style_icons)user/unlock.gif" alt="" align="bottom"> Profil speichern</button>
+                <button class="pointer" type="submit" name="user_edit"><img src="$VAR(style_icons)user/unlock.gif" alt="" align="bottom"> Profil speichern</button>
        </td></tr>
 
     </table>
 </form>
 <!--section-end::PROFILE_EDIT-->
 
-<!--section-start::MEMBERSLIST-->
-<!--section-end::MEMBERSLIST-->
+<!--section-start::USERLIST--><b>Mitgliederliste</b><br><br>
 
-<!--section-start::MEMBERSLIST_USERLINE-->
-<!--section-end::MEMBERSLIST_USERLINE-->
+<table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0" width="100%">
 
-<!--section-start::MEMBERSLIST_ADMINLINE-->
-<!--section-end::MEMBERSLIST_ADMINLINE-->
+  <tr align="center">
+    <td class="left bottom" width="25%">
+      <a href="?go=user_list&sort=name&order={..order_name..}">
+        <img src="$VAR(style_icons)user/user.gif" alt="Benutzername" title="Benutzername" align="bottom">
+        <br>{..arrow_name..}
+      </a>
+    </td>
+    <td class="left bottom" width="35%">
+      <a href="?go=user_list&sort=mail&order={..order_mail..}">
+        <img src="$VAR(style_icons)user/mail.gif" alt="E-Mail" title="E-Mail" align="bottom">
+        <br>{..arrow_mail..}
+      </a>
+    </td>
+    <td class="left bottom" width="110">
+      <a href="?go=user_list&sort=reg_date&order={..order_reg_date..}">
+        <img src="$VAR(style_icons)user/date.gif" alt="Registriert seit" title="Registriert seit" align="bottom">
+        <br>{..arrow_reg_date..}
+      </a>
+    </td>
+    <td class="bottom" width="16">
+      <a href="?go=user_list&sort=num_news&order={..order_num_news..}">
+        <img src="$VAR(style_icons)user/news.gif" alt="News" title="News" align="bottom">
+        <br>{..arrow_num_news..}
+      </a>
+    </td>
+    <td class="bottom" width="16">
+      <a href="?go=user_list&sort=num_comments&order={..order_num_comments..}">
+        <img src="$VAR(style_icons)user/comment.gif" alt="Kommentare" title="Kommentare" align="bottom">
+        <br>{..arrow_num_comments..}
+      </a>
+    </td>
+    <td class="bottom" width="16">
+      <a href="?go=user_list&sort=num_articles&order={..order_num_articles..}">
+        <img src="$VAR(style_icons)user/article.gif" alt="Artikel" title="Artikel" align="bottom">
+        <br>{..arrow_num_articles..}
+      </a>
+    </td>
+    <td class="bottom" width="16">
+      <a href="?go=user_list&sort=num_downloads&order={..order_num_downloads..}">
+        <img src="$VAR(style_icons)user/download.gif" alt="Downloads" title="Downloads" align="bottom">
+        <br>{..arrow_num_downloads..}
+      </a>
+    </td>
+  </tr>
+  {..user_lines..}
+</table>
+<!--section-end::USERLIST-->
+
+<!--section-start::USERLIST_USERLINE-->  <tr class="small" align="center">
+    <td class="left">
+      <a href="{..user_url..}" class="small">{..user_name..}</a>
+    </td>
+    <td class="left">
+      {..user_mail..}
+    </td>
+    <td class="left">
+      {..user_reg_date..}
+    </td>
+    <td>
+      {..user_num_news..}
+    </td>
+    <td>
+      {..user_num_comments..}
+    </td>
+    <td>
+      {..user_num_articles..}
+    </td>
+     <td>
+       {..user_num_downloads..}
+     </td>
+  </tr><!--section-end::USERLIST_USERLINE-->
+
+<!--section-start::USERLIST_STAFFLINE-->  <tr class="small"  align="center">
+    <td class="left">
+      <a href="{..user_url..}" class="small"><b>{..user_name..}</b></a>
+    </td>
+    <td class="left">
+      {..user_mail..}
+    </td>
+    <td class="left">
+      {..user_reg_date..}
+    </td>
+    <td>
+      {..user_num_news..}
+    </td>
+    <td>
+      {..user_num_comments..}
+    </td>
+    <td>
+      {..user_num_articles..}
+    </td>
+     <td>
+       {..user_num_downloads..}
+     </td>
+  </tr><!--section-end::USERLIST_STAFFLINE-->
+
+<!--section-start::USERLIST_ADMINLINE-->  <tr class="small"  align="center">
+    <td class="left">
+      <a href="{..user_url..}" class="small"><b>{..user_name..}</b></a>
+    </td>
+    <td class="left">
+      {..user_mail..}
+    </td>
+    <td class="left">
+      {..user_reg_date..}
+    </td>
+    <td>
+      {..user_num_news..}
+    </td>
+    <td>
+      {..user_num_comments..}
+    </td>
+    <td>
+      {..user_num_articles..}
+    </td>
+     <td>
+       {..user_num_downloads..}
+     </td>
+  </tr><!--section-end::USERLIST_ADMINLINE-->
 

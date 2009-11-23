@@ -17,26 +17,27 @@ $index = mysql_query ( "
 ", $db );
 $config_arr = mysql_fetch_assoc ( $index );
 
+//////////////////////
+//// Show Profile ////
+//////////////////////
 $index = mysql_query ( "
     SELECT *
     FROM `".$global_config_arr['pref']."user`
     WHERE `user_id` = '".$_GET['id']."'
 ", $db );
 
-//////////////////////
-//// Show Profile ////
-//////////////////////
 if ( mysql_num_rows ( $index ) > 0 ) {
     $user_arr = mysql_fetch_assoc ( $index );
 
     $user_arr['user_name'] = stripslashes ( $user_arr['user_name'] );
-    $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$TEXT->get("user_image_of")." ".$user_arr['user_name'].'">' : $TEXT['frontend']->get("user_image_not_found") );
+    $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$TEXT->get("user_image_of")." ".$user_arr['user_name'].'">' : $TEXT->get("user_image_not_found") );
     $user_arr['user_mail'] = ( $user_arr['user_show_mail'] == 1 ? stripslashes ( $user_arr['user_mail'] ) : "-" );
     $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $phrases['yes'] : $phrases['no'] );
     $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $phrases['yes'] : $phrases['no'] );
     
-    $user_arr['rank_data'] = get_user_rank ( $user_arr['user_group'] );
+    $user_arr['rank_data'] = get_user_rank ( $user_arr['user_group'], $user_arr['user_is_admin'] );
     $user_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
+    $user_arr['user_rank'] = ( $user_arr['user_rank'] == "" ) ? "-" : $user_arr['user_rank'];
     if ( $user_arr['user_group'] != 0 || ( $user_arr['user_group'] == 0 && $user_arr['user_is_admin'] == 1 ) ) {
         $user_arr['user_group_text'] = $user_arr['rank_data']['user_group_name'];
     } else {

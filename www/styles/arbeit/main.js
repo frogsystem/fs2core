@@ -1,36 +1,51 @@
-function chkFormularComment()
-    {
-        if((document.getElementById("name").value == "") ||
-           (document.getElementById("title").value == "") ||
-           (document.getElementById("text").value == ""))
-        {
-            alert ("Du hast nicht alle Felder ausgefüllt");
-            return false;
-        }
-    }
-    
-function chkFormularNewsSearch()
-    {
-        if (document.getElementById("keyword").value.length < "4")
-        {
-            alert("Es müssen mehr als 3 Zeichen sein");
-            return false;
-        }
-    }
+function checkRegistrationForm() {
+  var error = false;;
+  var error_text = "";
 
-function chkFormularRegister() 
-{
-    if((document.getElementById("username").value == "") ||
-       (document.getElementById("usermail").value == "") ||
-       (document.getElementById("newpwd").value == "") ||
-       (document.getElementById("wdhpwd").value == ""))
-    {
-        alert("Du hast nicht alle Felder ausgefüllt"); 
-        return false;
-    }
-    if(document.getElementById("newpwd").value != document.getElementById("wdhpwd").value)
-    {
-        alert("Passwöter sind verschieden"); 
-        return false;
-    }
+  if (
+    $("#user_name").val() == ""
+    || $("#user_mail").val() == ""
+    || $("#new_pwd").val() == ""
+    || $("#wdh_pwd").val() == ""
+  ) {
+    error_text = "\nEs wurden nicht alle Pflichtfelder ausgefüllt";
+    error = true;
+  }
+
+  if ( $("#new_pwd").val() != $("#wdh_pwd").val() ) {
+    error_text = error_text + "\nDas Passwort stimmt nicht mit der Wiederholung überein";
+    error = true;
+  }
+
+  if ( error == true ) {
+    alert ( "Fehler bei der Registrierung:" + error_text ); 
+    return false;
+  }
+}
+
+function checkUserEditForm() {
+  var error = false;;
+  var error_text = "";
+
+  if (
+    $("#user_mail").val() == ""
+    || ($("#old_pwd").val() != ""
+        && ($("#new_pwd").val() == ""
+            || $("#wdh_pwd").val() == "" ))
+  ) {
+    error_text = "\nEs wurden nicht alle Pflichtfelder ausgefüllt";
+    error = true;
+  }
+
+  if ( 
+    $("#old_pwd").val() != ""
+    && $("#new_pwd").val() != $("#wdh_pwd").val() ) {
+    error_text = error_text + "\nDas Passwort stimmt nicht mit der Wiederholung überein";
+    error = true;
+  }
+
+  if ( error == true ) {
+    alert ( "Fehler bei der Registrierung:" + error_text ); 
+    return false;
+  }
 }

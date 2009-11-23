@@ -3,6 +3,10 @@ html,body,img {
   padding:0px;
 }
 
+img {
+  border: none;
+}
+
 body {
   background-color:#E7E7E7;
   font-family:"Trebuchet MS",Verdana,Arial,sans-serif;

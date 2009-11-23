@@ -25,24 +25,24 @@ if ( $_SESSION['user_id'] ) {
 //// Add User ////
 //////////////////
 
-elseif ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST['wdhpwd'] )
+elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] )
 {
-    $_POST['username'] = savesql ( htmlspecialchars ( $_POST['username'] ) );
-    $_POST['usermail'] = savesql ( $_POST['usermail'] );
+    $_POST['user_name'] = savesql ( htmlspecialchars ( $_POST['user_name'] ) );
+    $_POST['user_mail'] = savesql ( $_POST['user_mail'] );
     $user_salt = generate_pwd ( 10 );
-    $userpass = md5 ( $_POST['newpwd'].$user_salt );
-    $userpass_mail = $_POST['newpwd'];
+    $userpass = md5 ( $_POST['new_pwd'].$user_salt );
+    $userpass_mail = $_POST['new_pwd'];
     
     // user exists or negative anti spam
     $index = mysql_query ( "
                             SELECT COUNT(`user_id`) AS 'number'
                             FROM ".$global_config_arr['pref']."user
-                            WHERE user_name = '".$_POST['username']."'
+                            WHERE user_name = '".$_POST['user_name']."'
     ", $db);
     $existing_users = mysql_result ( $index, 0, "number" );
     
     // get error message
-    if ( $existing_users > 0 || $anti_spam != TRUE || $_POST['newpwd'] != $_POST['wdhpwd'] ) {
+    if ( $existing_users > 0 || $anti_spam != TRUE || $_POST['new_pwd'] != $_POST['wdh_pwd'] ) {
         $error_array = array();
         if ( $existing_users > 0 ) {
             $error_array[] = $TEXT->get("user_name_exists");
@@ -50,7 +50,7 @@ elseif ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST[
         if ( $anti_spam != TRUE ) {
             $error_array[] = $TEXT->get("user_antispam");
         }
-        if ( $_POST['newpwd'] != $_POST['wdhpwd']) {
+        if ( $_POST['new_pwd'] != $_POST['wdh_pwd']) {
             $error_array[] = $TEXT->get("user_register_password_error");
         }
         $messages = sys_message ( $TEXT->get("systemmessage"), implode ( "<br>", $error_array ) ) . "<br><br>";
@@ -65,11 +65,11 @@ elseif ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST[
 
         // Send Email
         $template_mail = get_email_template ( "signup" );
-        $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_POST['username'] ), $template_mail );
+        $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_POST['user_name'] ), $template_mail );
         $template_mail = str_replace ( "{..new_password..}", $userpass_mail, $template_mail );
         $template_mail = replace_globalvars ( $template_mail );
         $email_subject = $TEXT->get("mail_registerd_on") . $global_config_arr['virtualhost'];
-        if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_subject, $template_mail ) ) {
+        if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
             $email_message = "<br>".$TEXT->get("mail_registerd_sended");
         } else {
             $email_message = "<br>".$TEXT->get("mail_registerd_not_sended");
@@ -80,10 +80,10 @@ elseif ( $_POST['username'] && $_POST['usermail'] && $_POST['newpwd'] && $_POST[
                             `".$global_config_arr['pref']."user`
                             (`user_name`, `user_password`, `user_salt`, `user_mail`, `user_reg_date`)
                         VALUES (
-                            '".$_POST['username']."',
+                            '".$_POST['user_name']."',
                             '".$userpass."',
                             '".$user_salt."',
-                            '".$_POST['usermail']."',
+                            '".$_POST['user_mail']."',
                             '".$regdate."'
                         )
         ", $db );
