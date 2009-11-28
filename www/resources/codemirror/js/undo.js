@@ -26,10 +26,11 @@
 // delay (of no input) after which it commits a set of changes, and,
 // unfortunately, the 'parent' window -- a window that is not in
 // designMode, and on which setTimeout works in every browser.
-function History(container, maxDepth, commitDelay, editor) {
+function History(container, maxDepth, commitDelay, editor, onChange) {
   this.container = container;
   this.maxDepth = maxDepth; this.commitDelay = commitDelay;
   this.editor = editor; this.parent = editor.parent;
+  this.onChange = onChange;
   // This line object represents the initial, empty editor.
   var initial = {text: "", from: null, to: null};
   // As the borders between lines are represented by BR elements, the
@@ -72,7 +73,7 @@ History.prototype = {
       // shadow in the redo history.
       var item = this.history.pop();
       this.redoHistory.push(this.updateTo(item, "applyChain"));
-      this.notifyEnvironment();
+      if (this.onChange) this.onChange();
       return this.chainNode(item);
     }
   },
@@ -84,7 +85,7 @@ History.prototype = {
       // The inverse of undo, basically.
       var item = this.redoHistory.pop();
       this.addUndoLevel(this.updateTo(item, "applyChain"));
-      this.notifyEnvironment();
+      if (this.onChange) this.onChange();
       return this.chainNode(item);
     }
   },
@@ -108,7 +109,6 @@ History.prototype = {
       from = end;
     }
     this.pushChains([chain], from == null && to == null);
-    this.notifyEnvironment();
   },
 
   pushChains: function(chains, doNotHighlight) {
@@ -146,7 +146,7 @@ History.prototype = {
   // Commit unless there are pending dirty nodes.
   tryCommit: function() {
     if (!window.History) return; // Stop when frame has been unloaded
-    if (this.editor.highlightDirty()) this.commit(true);
+    if (this.editor.highlightDirty()) this.commit();
     else this.scheduleCommit();
   },
 
@@ -162,7 +162,7 @@ History.prototype = {
     if (chains.length) {
       this.addUndoLevel(this.updateTo(chains, "linkChain"));
       this.redoHistory = [];
-      this.notifyEnvironment();
+      if (this.onChange) this.onChange();
     }
   },
 
@@ -189,13 +189,6 @@ History.prototype = {
   notifyDirty: function(nodes) {
     forEach(nodes, method(this.editor, "addDirtyNode"))
     this.editor.scheduleHighlight();
-  },
-
-  notifyEnvironment: function() {
-    // Used by the line-wrapping line-numbering code.
-    if (window.frameElement && window.frameElement.CodeMirror.updateNumbers)
-      window.frameElement.CodeMirror.updateNumbers();
-    if (this.onChange) this.onChange();
   },
 
   // Link a chain into the DOM nodes (or the first/last links for null
@@ -257,7 +250,7 @@ History.prototype = {
     function buildLine(node) {
       var text = [];
       for (var cur = node ? node.nextSibling : self.container.firstChild;
-           cur && !isBR(cur); cur = cur.nextSibling)
+           cur && cur.nodeName != "BR"; cur = cur.nextSibling)
         if (cur.currentText) text.push(cur.currentText);
       return {from: node, to: cur, text: cleanText(text.join(""))};
     }
@@ -282,7 +275,7 @@ History.prototype = {
     // Get the BR element after/before the given node.
     function nextBR(node, dir) {
       var link = dir + "Sibling", search = node[link];
-      while (search && !isBR(search))
+      while (search && search.nodeName != "BR")
         search = search[link];
       return search;
     }
