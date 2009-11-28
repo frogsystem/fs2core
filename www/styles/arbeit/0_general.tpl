@@ -22,15 +22,15 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
     <div id="menu_right">
       $APP(usermenu.php)<br><br>
       Zufallsbild:<br>
-      {..randompic..}<br>
+      $APP(preview-image.php)<br>
       Shop:<br>
-      {..shop..}<br><br>
+      $APP(shop-system.php)<br><br>
       Umfrage:<br>
-      {..poll..}<br>
+      $APP(poll-system.php)<br>
       Partner:<br>
-      {..partner..}
+      $APP(affiliates.php)
       Statistik:<br>
-      $APP(mini_statistics.php)<br><br>
+      $APP(mini-statistics.php)<br><br>
       News-Feeds:<br>
       [%feeds%]      
     </div>   
