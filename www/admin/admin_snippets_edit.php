@@ -1,26 +1,27 @@
 <?php
 ////////////////////////////
-//// DB: Update Applets ////
+//// DB: Update Snippets ////
 ////////////////////////////
 
 if (
         isset ( $_POST['sended'] ) && $_POST['sended'] == "edit"
-        && isset ( $_POST['applet_action'] ) && $_POST['applet_action'] == "edit"
-        && isset ( $_POST['applet_id'] )
+        && isset ( $_POST['snippet_action'] ) && $_POST['snippet_action'] == "edit"
+        && isset ( $_POST['snippet_id'] )
     )
 {
     // Security-Functions
-    settype ( $_POST['applet_id'], "integer" );
-    settype ( $_POST['applet_active'], "integer" );
-    settype ( $_POST['applet_output'], "integer" );
+    $_POST['snippet_text'] = savesql ( $_POST['snippet_text'] );
+
+    settype ( $_POST['snippet_id'], "integer" );
+    settype ( $_POST['snippet_active'], "integer" );
 
     // MySQL-Queries
     mysql_query ( "
-                    UPDATE `".$global_config_arr['pref']."applets`
+                    UPDATE `".$global_config_arr['pref']."snippets`
                     SET
-                        `applet_active` = '".$_POST['applet_active']."',
-                        `applet_output` = '".$_POST['applet_output']."'
-                    WHERE `applet_id` = '".$_POST['applet_id']."'
+                        `snippet_text` = '".$_POST['snippet_text']."',
+                        `snippet_active` = '".$_POST['snippet_active']."'
+                    WHERE `snippet_id` = '".$_POST['snippet_id']."'
     ", $db );
 
     // Display Message
@@ -32,33 +33,33 @@ if (
 }
 
 ////////////////////////////
-//// DB: Delete Applets ////
+//// DB: Delete Snippets ////
 ////////////////////////////
 elseif (
-        $_SESSION['applets_delete']
+        $_SESSION['snippets_delete']
         && isset ( $_POST['sended'] ) && $_POST['sended'] == "delete"
-        && isset ( $_POST['applet_action'] ) && $_POST['applet_action'] == "delete"
-        && isset ( $_POST['applet_id'] )
-        && isset ( $_POST['applet_delete'] )
+        && isset ( $_POST['snippet_action'] ) && $_POST['snippet_action'] == "delete"
+        && isset ( $_POST['snippet_id'] )
+        && isset ( $_POST['snippet_delete'] )
     )
 {
-    if ( $_POST['applet_delete'] == 1 ) {
+    if ( $_POST['snippet_delete'] == 1 ) {
     
         // Security-Functions
-        $_POST['applet_id'] = array_map ( "intval", explode ( ",", $_POST['applet_id'] ) );
+        $_POST['snippet_id'] = array_map ( "intval", explode ( ",", $_POST['snippet_id'] ) );
 
         // MySQL-Delete-Query
         mysql_query ("
                         DELETE
-                        FROM ".$global_config_arr['pref']."applets
-                        WHERE `applet_id` IN (".implode ( ",", $_POST['applet_id'] ).")
+                        FROM `".$global_config_arr['pref']."snippets`
+                        WHERE `snippet_id` IN (".implode ( ",", $_POST['snippet_id'] ).")
         ", $db );
         
-        systext ( $TEXT["admin"]->get("applets_deleted"),
+        systext ( $TEXT["admin"]->get("snippets_deleted"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
 
     } else {
-        systext ( $TEXT["admin"]->get("applets_not_deleted"),
+        systext ( $TEXT["admin"]->get("snippets_not_deleted"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_error") );
     }
 
@@ -69,25 +70,20 @@ elseif (
 ///////////////////////
 //// Display Forms ////
 ///////////////////////
-if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POST['applet_action'] )
+if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_POST['snippet_action'] )
 {
     // Security Function
-    $_POST['applet_id'] = array_map ( "intval", $_POST['applet_id'] );
+    $_POST['snippet_id'] = array_map ( "intval", $_POST['snippet_id'] );
     
     //////////////////////////
     //// Edit Applet Form ////
     //////////////////////////
-    if ( $_POST['applet_action'] == "edit" && count ( $_POST['applet_id'] ) == 1 )
+    if ( $_POST['snippet_action'] == "edit" && count ( $_POST['snippet_id'] ) == 1 )
     {
-        $_POST['applet_id'] = $_POST['applet_id'][0];
+        $_POST['snippet_id'] = $_POST['snippet_id'][0];
 
         // Display Error Messages
         if ( $_POST['sended'] == "edit" ) {
-            if ( isset ( $_POST['applet_file'] ) && $_POST['applet_file'] !=  "" && !file_exists ( FS2_ROOT_PATH . "applets/" . $_POST['applet_file'] . ".php" ) ) {
-                $error_message = $TEXT["admin"]->get("applet_file_not_exists");
-            } else {
-                $error_message = $TEXT["admin"]->get("form_not_filled");
-            }
 
             // Display Error
             systext ( $TEXT["admin"]->get("applet_not_added")."<br>".$error_message,
@@ -97,8 +93,8 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         } else {
             $index = mysql_query ( "
                                     SELECT *
-                                    FROM ".$global_config_arr['pref']."applets
-                                    WHERE `applet_id` = '".$_POST['applet_id']."'
+                                    FROM `".$global_config_arr['pref']."snippets`
+                                    WHERE `snippet_id` = '".$_POST['snippet_id']."'
                                     LIMIT 0,1
             ", $db );
             $data_arr = mysql_fetch_assoc ( $index );
@@ -106,47 +102,48 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         }
 
         // Security Functions
-        $_POST['applet_file'] = killhtml ( $_POST['applet_file'] );
+        $_POST['snippet_tag'] = killhtml ( $_POST['snippet_tag'] );
+        $_POST['snippet_text'] = killhtml ( $_POST['snippet_text'] );
 
-        settype ( $_POST['applet_id'], "integer" );
-        settype ( $_POST['applet_active'], "integer" );
-        settype ( $_POST['applet_output'], "integer" );
-        
+        settype ( $_POST['snippet_id'], "integer" );
+        settype ( $_POST['snippet_active'], "integer" );
 
         // Display Form
         echo '
                     <form action="" method="post">
-                        <input type="hidden" name="go" value="applets_edit">
-                        <input type="hidden" name="applet_action" value="edit">
+                        <input type="hidden" name="go" value="snippets_edit">
+                        <input type="hidden" name="snippet_action" value="edit">
                         <input type="hidden" name="sended" value="edit">
-                        <input type="hidden" name="applet_id" value="'.$_POST['applet_id'].'">
+                        <input type="hidden" name="snippet_id" value="'.$_POST['snippet_id'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("applet_edit_title").'</td></tr>
+                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("snippet_edit_title").'</td></tr>
                             <tr>
-                                <td class="config">
-                                    '.$TEXT["admin"]->get("applets_file_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("applets_file_desc").'</span>
+                                <td class="config" width="50%">
+                                    '.$TEXT["admin"]->get("snippet_tag_title").':<br>
+                                    <span class="small">'.$TEXT["admin"]->get("snippet_tag_desc").'</span>
                                 </td>
-                                <td class="config">
-                                    '.$_POST['applet_file'].'.php
+                                <td class="config" width="50%">
+                                    '.$_POST['snippet_tag'].'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT["admin"]->get("applets_active_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("applets_active_desc").'</span>
+                                    '.$TEXT["admin"]->get("snippet_active_title").':<br>
+                                    <span class="small">'.$TEXT["admin"]->get("snippet_active_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="checkbox" name="applet_active" value="1" '.getchecked ( 1, $_POST['applet_active'] ).'>
+                                    <input class="pointer" type="checkbox" name="snippet_active" value="1" '.getchecked ( 1, $_POST['snippet_active'] ).'>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT["admin"]->get("applets_output_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("applets_output_desc").'</span>
+                                    '.$TEXT["admin"]->get("snippet_text_title").':<br>
+                                    <span class="small">'.$TEXT["admin"]->get("snippet_text_desc").'</span>
                                 </td>
-                                <td class="config">
-                                    <input class="pointer" type="checkbox" name="applet_output" value="1" '.getchecked ( 1, $_POST['applet_output'] ).'>
+                            </tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    <textarea style="width:100%;" name="snippet_text" rows="20" wrap="virtual">'.$_POST['snippet_text'].'</textarea>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -165,39 +162,39 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
     //////////////////////////////////////////////////////////////
     //// Show to much selected Error & Go back to Select Form ////
     //////////////////////////////////////////////////////////////
-    elseif ( $_POST['applet_action'] == "edit" && count ( $_POST['applet_id'] ) > 1 ) {
+    elseif ( $_POST['snippet_action'] == "edit" && count ( $_POST['snippet_id'] ) > 1 ) {
         // Display Error
         systext ( $TEXT["admin"]->get("select_only_one_to_edit"),
             $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
-        unset ( $_POST['applet_id'] );
+        unset ( $_POST['snippet_id'] );
     }
     
     ////////////////////////////
     //// Delete Applet Form ////
     ////////////////////////////
-    elseif ( $_SESSION['applets_delete'] && $_POST['applet_action'] == "delete" && count ( $_POST['applet_id'] ) >= 1 )
+    elseif ( $_SESSION['snippets_delete'] && $_POST['snippet_action'] == "delete" && count ( $_POST['snippet_id'] ) >= 1 )
     {
         // Display Head of Table
         echo '
                     <form action="" method="post">
-                        <input type="hidden" name="go" value="applets_edit">
-                        <input type="hidden" name="applet_action" value="delete">
+                        <input type="hidden" name="go" value="snippets_edit">
+                        <input type="hidden" name="snippet_action" value="delete">
                         <input type="hidden" name="sended" value="delete">
-                        <input type="hidden" name="applet_id" value="'.implode ( ",", $_POST['applet_id'] ).'">
+                        <input type="hidden" name="snippet_id" value="'.implode ( ",", $_POST['snippet_id'] ).'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("applets_delete_title").'</td></tr>
+                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("snippets_delete_title").'</td></tr>
                             <tr>
                                 <td class="configthin">
-                                    '.$TEXT["admin"]->get("applets_delete_question").'
+                                    '.$TEXT["admin"]->get("snippets_delete_question").'
                                     <br><br>
         ';
         
         // get applets from db
         $index = mysql_query ( "
                                 SELECT *
-                                FROM ".$global_config_arr['pref']."applets
-                                WHERE `applet_id` IN (".implode ( ",", $_POST['applet_id'] ).")
-                                ORDER BY `applet_file`
+                                FROM `".$global_config_arr['pref']."snippets`
+                                WHERE `snippet_id` IN (".implode ( ",", $_POST['snippet_id'] ).")
+                                ORDER BY `snippet_tag`
         ", $db );
         // applets found
         if ( mysql_num_rows ( $index ) > 0 ) {
@@ -206,11 +203,10 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
             while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
 
                 // get other data
-                $data_arr['active_text'] = ( $data_arr['applet_active'] == 1 ) ? $TEXT["admin"]->get("applet_active") : $TEXT["admin"]->get("applet_not_active");
-                $data_arr['output_text'] = ( $data_arr['applet_output'] == 1 ) ? $TEXT["admin"]->get("applet_output_enabled") : $TEXT["admin"]->get("applet_output_disabled");
+                $data_arr['active_text'] = ( $data_arr['snippet_active'] == 1 ) ? $TEXT["admin"]->get("snippet_active") : $TEXT["admin"]->get("snippet_not_active");
 
                 echo '
-                                    <b>'.killhtml ( $data_arr['applet_file'] ).'.php</b> ('.$data_arr['active_text'].' / '.$data_arr['output_text'].')<br>
+                                    <b>'.killhtml ( $data_arr['snippet_tag'] ).'</b> ('.$data_arr['active_text'].')<br>
                 ';
             }
         }
@@ -219,7 +215,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         echo '
                                 </td>
                                 <td class="config right top" style="padding: 0px;">
-                                    '.get_yesno_table ( "applet_delete" ).'
+                                    '.get_yesno_table ( "snippet_delete" ).'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -235,55 +231,52 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         ';
     }
 }
-////////////////////////////
-//// Select Applet Form ////
-////////////////////////////
-if ( !isset ( $_POST['applet_id'] ) )
+/////////////////////////////
+//// Select Snippet Form ////
+/////////////////////////////
+if ( !isset ( $_POST['snippet_id'] ) )
 {
 
     // start display
     echo '
                     <form action="" method="post">
-                        <input type="hidden" name="go" value="applets_edit">
+                        <input type="hidden" name="go" value="snippets_edit">
                         <table class="configtable select_list" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="5">'.$TEXT["admin"]->get("applet_select_title").'</td></tr>
+                            <tr><td class="line" colspan="5">'.$TEXT["admin"]->get("snippet_select_title").'</td></tr>
     ';
 
-    // get applets from db
+    // get snippets from db
     $index = mysql_query ( "
                             SELECT *
-                            FROM ".$global_config_arr['pref']."applets
-                            ORDER BY `applet_file`
+                            FROM `".$global_config_arr['pref']."snippets`
+                            ORDER BY `snippet_tag`
     ", $db );
 
-    // applets found
+    // snippets found
     if ( mysql_num_rows ( $index ) > 0 ) {
 
         // display table head
         echo '
                             <tr>
-                                <td class="config">'.$TEXT["admin"]->get("filename").'</td>
+                                <td class="config">'.$TEXT["admin"]->get("snippet_tag_title").'</td>
                                 <td class="config" width="20">&nbsp;&nbsp;'.$TEXT["admin"]->get("active").'&nbsp;&nbsp;</td>
-                                <td class="config" width="20">&nbsp;&nbsp;'.$TEXT["admin"]->get("output").'&nbsp;&nbsp;</td>
                                 <td class="config" width="20"></td>
                             </tr>
         ';
 
-        // display applets
+        // display Snippets
         while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
 
             // get other data
-            $data_arr['active_text'] = ( $data_arr['applet_active'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no");
-            $data_arr['output_text'] = ( $data_arr['applet_output'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no");
+            $data_arr['active_text'] = ( $data_arr['snippet_active'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no");
 
             echo '
 
                             <tr class="select_entry">
-                                <td class="configthin middle">'.killhtml ( $data_arr['applet_file'] ).'.php</td>
+                                <td class="configthin middle">'.killhtml ( $data_arr['snippet_tag'] ).'</td>
                                 <td class="configthin middle center">'.$data_arr['active_text'].'</td>
-                                <td class="configthin middle center">'.$data_arr['output_text'].'</td>
                                 <td class="config top center">
-                                    <input class="pointer select_box" type="checkbox" name="applet_id[]" value="'.$data_arr['applet_id'].'">
+                                    <input class="pointer select_box" type="checkbox" name="snippet_id[]" value="'.$data_arr['snippet_id'].'">
                                 </td>
                             </tr>
             ';
@@ -294,10 +287,10 @@ if ( !isset ( $_POST['applet_id'] ) )
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="right" colspan="4">
-                                    <select class="select_type" name="applet_action" size="1">
-                                        <option class="select_one" value="edit" '.getselected( "edit", $_POST['applet_action'] ).'>'.$TEXT["admin"]->get("selection_edit").'</option>
+                                    <select class="select_type" name="snippet_action" size="1">
+                                        <option class="select_one" value="edit" '.getselected( "edit", $_POST['snippet_action'] ).'>'.$TEXT["admin"]->get("selection_edit").'</option>
         ';
-        echo ( $_SESSION['applets_delete'] ) ? '<option class="select_red" value="delete" '.getselected ( "delete", $_POST['applet_action'] ).'>'.$TEXT["admin"]->get("selection_delete").'</option>' : "";
+        echo ( $_SESSION['snippets_delete'] ) ? '<option class="select_red" value="delete" '.getselected ( "delete", $_POST['snippet_action'] ).'>'.$TEXT["admin"]->get("selection_delete").'</option>' : "";
         echo'
                                     </select>
                                 </td>
@@ -312,13 +305,13 @@ if ( !isset ( $_POST['applet_id'] ) )
                             </tr>
         ';
 
-    // no Applets found
+    // no Snippets found
     } else {
 
            echo'
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="config center" colspan="4">'.$TEXT["admin"]->get("applets_not_found").'</td>
+                                <td class="config center" colspan="4">'.$TEXT["admin"]->get("snippets_not_found").'</td>
                             </tr>
                             <tr><td class="space"></td></tr>
         ';

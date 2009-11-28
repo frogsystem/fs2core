@@ -3,7 +3,6 @@
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
-
 if (
                 $_POST['title'] && $_POST['title'] != ""
                 && $_POST['virtualhost'] && $_POST['virtualhost'] != ""

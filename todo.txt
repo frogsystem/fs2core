@@ -1,6 +1,6 @@
 alix5:
 
-Schnipsel (und Includes auf Schnipsel umstellen)
+Schnipsel: Includes auf Schnipsel umstellen
 Includes auf Applets umstellen
 Startseite (und News entsprechend...)
 Aliase
@@ -8,14 +8,14 @@ HTML-Editor fertig (Update + anderer parser bei css und js/Original anzeige/Zeil
 Templates anpassen
 style-verwaltung
 Globale Suche (in news, artikeln, screenshots & download beschreibungen/titlen) inkl. Suchzeichen
-Update von jquery
-/-Bug bei den Templates
 kommentare auf neues auswahl system umstellen (mehrfache löschen ermöglichen!!!!)
-sämtliche auswahlen auf funktionalität testen
+sämtliche auswahlen auf farb-funktionalität testen
 JS-"einfügen" buttons auf funktionalität testen
 refresh bei kommentaren
 doppelte kommenatre unterbinden
 Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
+sprach-system fertigstellen (auswahl von sprache)
+sub-rechte checken (was passiert, wenn nur Subrecht aktiviert ist?) und zumindest einen hübschen pfeil basteln ;)
 
 
 

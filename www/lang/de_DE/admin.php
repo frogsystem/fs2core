@@ -209,6 +209,12 @@ $TEXT = array (
     "applet_not_added" =>
     "Applet wurde nicht hinzugefügt",
 
+    "applets_deleted" =>
+    "Applets wurden gelöscht",
+
+    "applets_not_deleted" =>
+    "Applets wurden nicht gelöscht",
+
     "applet_file_not_exists" =>
     "Datei konnte nicht gefunden werden",
 
@@ -229,16 +235,6 @@ $TEXT = array (
 
     "applet_not_active" =>
     "Applet deaktiviert",
-
-    "applets_not_active" =>
-    "Applet deaktiviert",
-
-    "applet_not_active" =>
-    "Applet deaktiviert",
-
-    "applet_not_active" =>
-    "Applet deaktiviert",
-    
     
     
     
@@ -357,9 +353,63 @@ $TEXT = array (
     "captcha_config_one_operation" =>
     "Es muss mindestens eine Rechenoperation ausgewählt werden",
     
+//Snippets
+    "snippet_add_title" =>
+    "Schnipsel hinzufügen",
+
+    "snippet_select_title" =>
+    "Schnipsel auswählen",
+
+    "snippet_edit_title" =>
+    "Schnipsel bearbeiten",
+
+    "snippets_delete_title" =>
+    "Schnipsel löschen",
+
+    "snippets_delete_question" =>
+    "Sollen diese Schnipsel wirklich gelöscht werden?",
+
+    "snippet_tag_title" =>
+    "Suchmuster",
+
+    "snippet_tag_desc" =>
+    "Suchmuster, das durch den Inhalt ersetzt wird.",
+
+    "snippet_active_title" =>
+    "Schnipsel aktivieren",
+
+    "snippet_active_desc" =>
+    "De-/Aktiviert die Verwendung dieses Schnipsels.",
+
+    "snippet_text_title" =>
+    "Ersetzungsinhalt",
+
+    "snippet_text_desc" =>
+    "Inhalt, durch den das Suchmuster ersetzt wird.",
+
+    "snippet_added" =>
+    "Schnipsel wurde hinzugefügt",
+
+    "snippet_not_added" =>
+    "Schnipsel wurde nicht hinzugefügt",
+
+    "snippets_deleted" =>
+    "Schnipsel wurden gelöscht",
     
+    "snippets_not_deleted" =>
+    "Schnipsel wurden nicht gelöscht",
 
+    "snippet_exists" =>
+    "Dieses Suchmuster existiert bereits",
 
+    "snippets_not_found" =>
+    "Keine Schnipsel gefunden!",
+
+    "snippet_active" =>
+    "aktiv",
+
+    "snippet_not_active" =>
+    "nicht aktiv",
 
 
 
