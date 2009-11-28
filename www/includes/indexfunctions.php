@@ -1,54 +1,5 @@
 <?php
 ///////////////////////////
-//// Replace Resources ////
-///////////////////////////
-function veraltet_includes ( $template_index )
-{
-        global $global_config_arr;
-        global $db;
-
-                // Veraltet!!!
-                //Includes
-                $index = mysql_query("select * from ".$global_config_arr[pref]."includes where include_type = '2'", $db);
-                while ($include_arr = mysql_fetch_assoc($index))
-                {
-                    // Include laden
-                    include ( FS2_ROOT_PATH . "res/".$include_arr['replace_thing']);
-                    $template_include = $template;
-                    unset($template);
-
-                    //Seitenvariablen
-                        $index2 = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
-                        while ($sv_arr = mysql_fetch_assoc($index2))
-                    {
-                        // Include-URL laden
-                        $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
-                        $template_include = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_include);
-                    }
-                    unset($sv_arr);
-                    $template_include = killsv($template_include);
-                    $template_index = str_replace($include_arr['replace_string'], $template_include, $template_index);
-                    unset($template_include);
-                }
-                unset($include_arr);
-
-                //Seitenvariablen
-                $index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
-                while ($sv_arr = mysql_fetch_assoc($index))
-                {
-                    // Include-URL laden
-                    $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
-                    $template_index = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_index);
-                }
-                unset($sv_arr);
-
-                // Veraltet Ende!
-                
-        return $template_index;
-}
-
-
-///////////////////////////
 //// get Main-Template ////
 ///////////////////////////
 function get_maintemplate ( $PATH_PREFIX = "" )
@@ -273,18 +224,29 @@ function get_content ( $GOTO )
 }
 
 
-///////////////////////
-//// get main menu ////
-///////////////////////
-function get_mainmenu ( $PATH_PREFIX = "" )
+//////////////////////////
+//// Replace Snippets ////
+//////////////////////////
+function replace_snippets ( $TEMPLATE )
 {
     global $global_config_arr, $db;
 
-    $template = get_template ( "main_menu" );
-    $template = replace_resources ( $template, $PATH_PREFIX  );
-    $template = killbraces($template);
-    return $template;
+    $index = mysql_query ( "
+                            SELECT *
+                            FROM `".$global_config_arr['pref']."snippets`
+                            WHERE `snippet_active` =  1
+    ", $db );
+
+    while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+        $data_arr['snippet_text'] = stripslashes ( $data_arr['snippet_text'] );
+        $data_arr['snippet_text'] = str_replace ( '[%', '&#x5B;&#x25;', $data_arr['snippet_text'] );
+        $data_arr['snippet_text'] = str_replace ( '%]', '&#x25;&#x5D;', $data_arr['snippet_text'] );
+        $TEMPLATE = str_replace ( stripslashes ( $data_arr['snippet_tag'] ), $data_arr['snippet_text'], $TEMPLATE );
+    }
+
+    return $TEMPLATE;
 }
+
 
 /////////////////////////////
 //// Replace Navigations ////
@@ -316,7 +278,6 @@ function get_navigation( $FILE )
     $template = str_replace ( '$NAV(', '&#x24;NAV&#x28;', $template );
     return $template;
 }
-
 
 
 /////////////////////////
@@ -384,64 +345,6 @@ function replace_globalvars ( $TEMPLATE )
     return $TEMPLATE;
 }
 
-/////////////////////////////
-//// Replace Snippets ////
-/////////////////////////////
-function replace_snippets ( $TEMPLATE )
-{
-    global $global_config_arr, $db;
-
-    return $TEMPLATE;
-}
-
-///////////////////////////
-//// Replace Resources ////
-///////////////////////////
-function replace_resources ( $TEMPLATE, $PATH_PREFIX = "" )
-{
-        global $global_config_arr;
-        global $db;
-
-        // Load Resources from DB
-        $index = mysql_query ( "
-                                                        SELECT *
-                                                        FROM ".$global_config_arr['pref']."resources
-        ", $db );
-
-        // Write Resources into Array & get Resource Template
-        for ( $i = 0; $result = mysql_fetch_assoc ( $index ); $i++ ) {
-            $resources_arr[$i]['id'] = $result['id'];
-            $resources_arr[$i]['resource_name'] = $result['resource_name'];
-            $resources_arr[$i]['resource_file'] = $result['resource_file'];
-            $resources_arr[$i]['hardcoded'] = $result['hardcoded'];
-            $resources_arr[$i]['template'] = get_resource ( $PATH_PREFIX."res/".$result['resource_file'] );
-        }
-
-        // Replace Resources in $TEMPLATE
-        foreach ( $resources_arr as $resource ) {
-                $TEMPLATE = str_replace ( "{..".$resource['resource_name']."..}",  $resource['template'], $TEMPLATE );
-        }
-
-        // Return Content
-        return $TEMPLATE;
-}
-
-
-//////////////////////
-//// get resource ////
-//////////////////////
-function get_resource ( $FILE )
-{
-    global $global_config_arr;
-    global $db;
-
-        include ( FS2_ROOT_PATH . $FILE );
-        $template = killbraces ( $template );
-        return $template;
-}
-
-
-
 
 ///////////////////
 //// get $goto ////
@@ -471,21 +374,21 @@ function get_goto ( $GETGO )
 /////////////////////////
 function forward_aliases ( $GOTO )
 {
-    global $global_config_arr;
-    global $db;
+    global $global_config_arr, $db;
 
     $index = mysql_query ( "
-                                                        SELECT *
-                                                        FROM ".$global_config_arr['pref']."aliases
-        ", $db );
-        
-        while ( $aliases_arr = mysql_fetch_assoc ( $index ) ) {
-                if ( $GOTO == $aliases_arr['alias_go'] ) {
+                            SELECT *
+                            FROM `".$global_config_arr['pref']."aliases`
+                            WHERE `alias_active` = 1
+    ", $db );
+
+    while ( $aliases_arr = mysql_fetch_assoc ( $index ) ) {
+        if ( $GOTO == $aliases_arr['alias_go'] ) {
             $GOTO = $aliases_arr['alias_forward_to'];
-                }
         }
-        
-        return $GOTO;
+    }
+
+    return $GOTO;
 }
 
 ///////////////////

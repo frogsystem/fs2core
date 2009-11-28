@@ -51,6 +51,9 @@ $TEXT = array (
 
     "output" =>
     "Ausgabe",
+
+    "informations_and_statistics" =>
+    "Informationen & Statistik",
     
     
 //Erlaubte Werte
@@ -71,6 +74,7 @@ $TEXT = array (
 
     "hex_color" =>
     'Hexadezimal Farbcode',
+    
     
 //Buttons & Auswahl-Buttons
     "button_arrow" =>
@@ -97,8 +101,8 @@ $TEXT = array (
     "file_select_button" =>
     "Datei auswählen",
 
-//Systemmeldungen
 
+//Systemmeldungen
     "error" =>
     "Es trat ein Fehler auf",
 
@@ -116,7 +120,7 @@ $TEXT = array (
 
     "form_only_allowed_values" =>
     "Bitte geben Sie nur erlaubte Werte ein",
-    
+
 
 //Icons
     "icon_small_help" =>
@@ -140,6 +144,7 @@ $TEXT = array (
     "icon_trash_error" =>
     '<img src="icons/trash_error.jpg" alt="" align="absmiddle">',
     
+    
 //Bilder-Upload
     "image_upload_error_0" =>
     "Bild wurde erfolgreich hochgeladen",
@@ -161,6 +166,26 @@ $TEXT = array (
     
     "image_upload_error_6" =>
     "Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden [Code: IMGxU6]",
+
+
+// Start-Seiten
+    "system_start_num_aliases" =>
+    "Anzahl Weiterleitungen",
+    
+    "system_start_num_aliases_active" =>
+    "Anzahl aktiver Weiterleitungen",
+
+    "system_start_num_applets" =>
+    "Anzahl Applets",
+
+    "system_start_num_applets_active" =>
+    "Anzahl aktiver Applets",
+
+    "system_start_num_snippets" =>
+    "Anzahl Schnipsel",
+
+    "system_start_num_snippets_active" =>
+    "Anzahl aktiver Schnipsel",
 
 
 //Applets
@@ -237,7 +262,6 @@ $TEXT = array (
     "Applet deaktiviert",
     
     
-    
 //Template-Editor
     "template_manyfile_delete_note" =>
     "<b>Hinweis:</b> Zum Löschen, die Datei ohne Inhalt speichern",
@@ -255,7 +279,6 @@ $TEXT = array (
     "Style- & Datei-Auswahl",
 
 
-    
 //Captcha Konfiguration
     "captcha_config_title" =>
     "Einstellungen",
@@ -352,6 +375,7 @@ $TEXT = array (
 
     "captcha_config_one_operation" =>
     "Es muss mindestens eine Rechenoperation ausgewählt werden",
+
     
 //Snippets
     "snippet_add_title" =>

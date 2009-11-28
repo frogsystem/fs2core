@@ -50,17 +50,17 @@ if ($db)
     $template_general->setFile("0_general.tpl");
     $template_general->load("MAINPAGE");
     
-    $template_general->tag("main_menu", get_mainmenu());
     $template_general->tag("content", get_content ( $global_config_arr['goto'] ));
     $template_general->tag("copyright",  get_copyright ());
 
     $template_index = $template_general->display();
 
+    $template_index = replace_snippets ( $template_index );
     $template_index = replace_navigations ( $template_index );
     $template_index = replace_applets ( $template_index );
-    $template_index = replace_resources ( $template_index );
-    $template_index = veraltet_includes ( $template_index ); // wird später zu seitenvariablen funktion, mit virtualhost umwandlung
-
+    $template_index = replace_navigations ( $template_index );
+    $template_index = replace_snippets ( $template_index );
+    
     $template_index = replace_globalvars ( $template_index );
     
     // Get Main Template

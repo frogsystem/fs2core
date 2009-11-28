@@ -1,22 +1,26 @@
 alix5:
 
-Schnipsel: Includes auf Schnipsel umstellen
-Includes auf Applets umstellen
-Startseite (und News entsprechend...)
 Aliase
-HTML-Editor fertig (Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP und [%%]...)
-Templates anpassen
 style-verwaltung
-Globale Suche (in news, artikeln, screenshots & download beschreibungen/titlen) inkl. Suchzeichen
+
 kommentare auf neues auswahl system umstellen (mehrfache löschen ermöglichen!!!!)
 sämtliche auswahlen auf farb-funktionalität testen
 JS-"einfügen" buttons auf funktionalität testen
 refresh bei kommentaren
 doppelte kommenatre unterbinden
-Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
 sprach-system fertigstellen (auswahl von sprache)
 sub-rechte checken (was passiert, wenn nur Subrecht aktiviert ist?) und zumindest einen hübschen pfeil basteln ;)
+Seitennavigation bei user_list
 
+Startseite (und News entsprechend...)
+Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
+Globale Suche (in news, artikeln, screenshots & download beschreibungen/titlen) inkl. Suchzeichen
+
+HTML-Editor fertig (Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP und [%%]...)
+Templates anpassen
+
+bug-fixes:
+user erstellen -> leeres Formular absenden
 
 
 alix6:

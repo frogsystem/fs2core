@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 15. November 2009 um 15:08
+-- Erstellungszeit: 28. November 2009 um 15:54
 -- Server Version: 5.1.30
 -- PHP-Version: 5.2.8
 
@@ -67,8 +67,6 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('stat_ref', 3, 'Referrer anzeigen & verwalten', 'Referrer', 'admin_statref.php', 3, 0),
 ('stat_space', 3, 'Speicherplatz Übersicht', 'Speicherplatz', 'admin_statspace.php', 4, 0),
 ('stat_view', 3, 'anzeigen', 'anzeigen', 'admin_statview.php', 1, 0),
-('includes_edit', 4, 'bearbeiten', 'bearbeiten', 'admin_includes_edit.php', 2, 0),
-('includes_new', 4, 'hinzufügen', 'hinzufügen', 'admin_includes_new.php', 1, 0),
 ('news_add', 5, 'schreiben', 'schreiben', 'admin_news_add.php', 2, 0),
 ('news_cat', 5, 'Kategorien verwalten', 'Kategorien', 'admin_news_cat.php', 4, 0),
 ('news_config', 5, 'Konfiguration ändern', 'Konfiguration', 'admin_news_config.php', 1, 0),
@@ -123,15 +121,15 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('tpl_dl', 22, '„Downloads“ bearbeiten', 'Downloads', 'admin_template_dl.php', 9, 0),
 ('tpl_editor', 22, '„Editor“ bearbeiten', 'Editor', 'admin_editor_design.php', 13, 0),
 ('tpl_fscodes', 22, '„FSCodes“ bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 14, 0),
-('tpl_general', 22, '„Allgemein“ bearbeiten', 'Allgemein', 'admin_template_all.php', 1, 0),
-('tpl_news', 22, '„News“ bearbeiten', 'News', 'admin_template_news.php', 2, 0),
+('tpl_general', 22, '„Allgemein“ bearbeiten', 'Allgemein', 'admin_template_general.php', 1, 0),
+('tpl_news', 22, '„News“ bearbeiten', 'News', 'admin_template_news.php', 3, 0),
 ('tpl_partner', 22, '„Partnerseiten“ bearbeiten', 'Partnerseiten', 'admin_template_partner.php', 11, 0),
 ('tpl_poll', 22, '„Umfragen“ bearbeiten', 'Umfragen', 'admin_template_poll.php', 4, 0),
 ('tpl_press', 22, '„Presseberichte“ bearbeiten', 'Presseberichte', 'admin_template_press.php', 5, 0),
 ('tpl_randompic', 22, '„Zufallsbilder“ bearbeiten', 'Zufallsbilder', 'admin_template_randompic.php', 8, 0),
 ('tpl_screens', 22, '„Screenshots“ bearbeiten', 'Screenshots', 'admin_template_screenshot.php', 6, 0),
 ('tpl_shop', 22, '„Shop“ bearbeiten', 'Shop', 'admin_template_shop.php', 10, 0),
-('tpl_user', 22, '„Benutzer“ bearbeiten', 'Benutzer', 'admin_template_user.php', 12, 0),
+('tpl_user', 22, '„Benutzer“ bearbeiten', 'Benutzer', 'admin_template_user.php', 2, 0),
 ('tpl_wp', 22, '„Wallpaper“ bearbeiten', 'Wallpaper', 'admin_template_wallpaper.php', 7, 0),
 ('group_admin', 23, 'Gruppenverwaltung', 'verwalten', 'admin_group_admin.php', 2, 0),
 ('group_config', 23, 'Konfiguration ändern', 'Konfiguration', 'admin_group_config.php', 1, 0),
@@ -140,7 +138,8 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('applets_delete', 24, 'löschen', 'löschen', 'applets_edit', 1, 1),
 ('applets_edit', 24, 'bearbeiten', 'bearbeiten', 'admin_applets_edit.php', 2, 0),
 ('snippets_add', 25, 'hinzufügen', 'hinzufügen', 'admin_snippets_add.php', 1, 0),
-('snippets_edit', 25, 'bearbeiten', 'bearbeiten', 'admin_snippets_edit.php', 2, 0);
+('snippets_edit', 25, 'bearbeiten', 'bearbeiten', 'admin_snippets_edit.php', 2, 0),
+('snippets_delete', 25, 'löschen', 'löschen', 'snippets_edit', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -198,22 +197,24 @@ INSERT INTO `fs_admin_groups` (`group_id`, `group_title`, `menu_id`, `group_pos`
 
 DROP TABLE IF EXISTS `fs_aliases`;
 CREATE TABLE `fs_aliases` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `alias_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `alias_go` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `alias_forward_to` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
+  `alias_active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`alias_id`),
   KEY `alias_go` (`alias_go`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fs_aliases`
 --
 
-INSERT INTO `fs_aliases` (`id`, `alias_go`, `alias_forward_to`) VALUES
-(1, 'screenshots', 'gallery'),
-(2, 'wallpaper', 'gallery'),
-(3, 'profil', 'user'),
-(4, 'editprofil', 'user_edit');
+INSERT INTO `fs_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_active`) VALUES
+(1, 'screenshots', 'gallery', 1),
+(2, 'wallpaper', 'gallery', 1),
+(3, 'profil', 'user', 1),
+(4, 'editprofil', 'user_edit', 1),
+(5, 'members', 'user_list', 1);
 
 -- --------------------------------------------------------
 
@@ -254,15 +255,20 @@ CREATE TABLE `fs_applets` (
   `applet_output` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`applet_id`),
   UNIQUE KEY `applet_file` (`applet_file`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=13 ;
 
 --
 -- Daten für Tabelle `fs_applets`
 --
 
 INSERT INTO `fs_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_output`) VALUES
-(1, 'mini_statistics', 1, 1),
-(5, 'usermenu', 1, 1);
+(7, 'affiliates', 1, 1),
+(6, 'usermenu', 1, 1),
+(8, 'announcement', 1, 1),
+(9, 'mini-statistics', 1, 1),
+(10, 'poll-system', 1, 1),
+(11, 'preview-image', 1, 1),
+(12, 'shop-system', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -384,7 +390,7 @@ CREATE TABLE `fs_captcha_config` (
 --
 
 INSERT INTO `fs_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transparent`, `captcha_text_color`, `captcha_first_lower`, `captcha_first_upper`, `captcha_second_lower`, `captcha_second_upper`, `captcha_use_addition`, `captcha_use_subtraction`, `captcha_use_multiplication`, `captcha_create_easy_arithmetics`, `captcha_x`, `captcha_y`, `captcha_show_questionmark`, `captcha_use_spaces`, `captcha_show_multiplication_as_x`, `captcha_start_text_x`, `captcha_start_text_y`, `captcha_font_size`, `captcha_font_file`) VALUES
-(1, 'FFFFFF', 1, '000000', 1, 5, 1, 5, 1, 1, 1, 1, 58, 18, 0, 0, 1, 0, 0, 0, 'trebuchet_ms.gdf');
+(1, 'FFFFFF', 1, '000000', 1, 5, 1, 5, 1, 1, 1, 1, 58, 18, 0, 1, 1, 0, 0, 3, '');
 
 -- --------------------------------------------------------
 
@@ -409,7 +415,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 69, 2810, 5, 1, 1, 4);
+(1, 77, 4403, 6, 1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -431,7 +437,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 131, 1223919890, 1258281089),
+('http://localhost/fs2/', 150, 1223919890, 1259411376),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569);
@@ -511,7 +517,10 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2009, 11, 12, 1, 28),
 (2009, 11, 13, 1, 144),
 (2009, 11, 14, 2, 82),
-(2009, 11, 15, 2, 599);
+(2009, 11, 15, 3, 951),
+(2009, 11, 16, 2, 568),
+(2009, 11, 23, 1, 655),
+(2009, 11, 28, 4, 18);
 
 -- --------------------------------------------------------
 
@@ -737,29 +746,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `design`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language`, `home`, `home_text`, `auto_forward`) VALUES
-(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 0, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y H:i \\\\U\\\\h\\\\r', '{prev}Seite {page_number} von {total_pages}{next}', ' <a href=\\"{url}\\">weiter »</a>', '<a href=\\"{url}\\">« zurück</a> ', 604800, 'rss20', 'de', 0, '', 4);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs_includes`
---
-
-DROP TABLE IF EXISTS `fs_includes`;
-CREATE TABLE `fs_includes` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `replace_string` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `replace_thing` text COLLATE utf8_unicode_ci NOT NULL,
-  `include_type` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
-
---
--- Daten für Tabelle `fs_includes`
---
-
-INSERT INTO `fs_includes` (`id`, `replace_string`, `replace_thing`, `include_type`) VALUES
-(1, '[%feeds%]', '<a href="$VAR(url)feeds/rss091.php" target="_self"><img src="$VAR(style_icons)feeds/rss091.gif" alt="RSS 0.91" title="RSS 0.91" border="0"></a><br>\r\n<a href="$VAR(url)feeds/rss10.php" target="_self"><img src="$VAR(style_icons)feeds/rss10.gif" alt="RSS 1.0" title="RSS 1.0" border="0"></a><br>\r\n<a href="$VAR(url)feeds/rss20.php" target="_self"><img src="$VAR(style_icons)feeds/rss20.gif" alt="RSS 2.0" title="RSS 2.0" border="0"></a><br>\r\n<a href="$VAR(url)feeds/atom10.php" target="_self"><img src="$VAR(style_icons)feeds/atom10.gif" alt="Atom 1.0" title="Atom 1.0" border="0"></a>', 1);
+(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 0, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y H:i \\\\U\\\\h\\\\r', '{prev}Seite {page_number} von {total_pagesnext}', ' <a href=\\"{url}\\">weiter »</a>', '<a href=\\"{url}\\">« zurück</a> ', 604800, 'rss20', 'de', 0, '', 4);
 
 -- --------------------------------------------------------
 
@@ -1217,34 +1204,6 @@ INSERT INTO `fs_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `show
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_resources`
---
-
-DROP TABLE IF EXISTS `fs_resources`;
-CREATE TABLE `fs_resources` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `resource_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `resource_file` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `hardcoded` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
-
---
--- Daten für Tabelle `fs_resources`
---
-
-INSERT INTO `fs_resources` (`id`, `resource_name`, `resource_file`, `hardcoded`) VALUES
-(1, 'announcement', 'announcement.inc.php', 1),
-(2, 'user', 'user.inc.php', 1),
-(3, 'poll', 'poll.inc.php', 1),
-(4, 'stats', 'stats.inc.php', 1),
-(5, 'randompic', 'randompic.inc.php', 1),
-(6, 'shop', 'shop.inc.php', 1),
-(7, 'partner', 'partner.inc.php', 1);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs_screen`
 --
 
@@ -1436,13 +1395,15 @@ CREATE TABLE `fs_snippets` (
   `snippet_text` text COLLATE utf8_unicode_ci NOT NULL,
   `snippet_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`snippet_id`),
-  UNIQUE KEY `applet_file` (`snippet_tag`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+  UNIQUE KEY `snippet_tag` (`snippet_tag`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `fs_snippets`
 --
 
+INSERT INTO `fs_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippet_active`) VALUES
+(4, '[%feeds%]', '<a href=\\"$VAR(url)feeds/rss091.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss091.gif\\" alt=\\"RSS 0.91\\" title=\\"RSS 0.91\\" border=\\"0\\"></a><br>\r\n\r\n<a href=\\"$VAR(url)feeds/rss10.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss10.gif\\" alt=\\"RSS 1.0\\" title=\\"RSS 1.0\\" border=\\"0\\"></a><br>\r\n\r\n<a href=\\"$VAR(url)feeds/rss20.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss20.gif\\" alt=\\"RSS 2.0\\" title=\\"RSS 2.0\\" border=\\"0\\"></a><br>\r\n\r\n<a href=\\"$VAR(url)feeds/atom10.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/atom10.gif\\" alt=\\"Atom 1.0\\" title=\\"Atom 1.0\\" border=\\"0\\"></a>', 1);
 
 -- --------------------------------------------------------
 
@@ -1579,18 +1540,19 @@ CREATE TABLE `fs_user` (
   `user_yim` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_skype` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- Daten für Tabelle `fs_user`
 --
 
 INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
-(1, 'admin', '09bd41bf17fcd0e5b9829b4eab1af7ac', 'cHwDG0HngG', 'admin@frogsystem.de', 1, 0, 1, 1207260000, 0, 'http://www.frogsystem.de', '', '', '', '', ''),
-(2, 'test', 'd2e01f7e9d4713340acad4a087fc0485', 'Rs2qe1v7IL', 'mail@sweil.de', 1, 0, 0, 1240783200, 0, '', '', '', '', '', ''),
+(1, 'admin', '72ce90aed8b19ef984eca6e0a0df977d', '5NdWu7dA6v', 'admin@frogsystem.de', 1, 0, 1, 1207260000, 1, 'http://www.frogsystem.de', '', '', '', '', ''),
+(2, 'test', '0b6d71e7ba83facb3081858c8a8d0c68', 'wDJ6w9JPIA', 'mail@sweil.de', 1, 0, 0, 1240783200, 0, '', '', '', '', '', ''),
 (3, 'super', 'ad568fff6880715044d6eb4e7ae26c07', 'fXEGPvDGs8', 'super', 0, 0, 0, 1258245681, 0, '', '', '', '', '', ''),
 (4, 'buh', 'c476b70654f68ce27b689305f40945da', '3EAttd60cA', 'buh', 0, 0, 0, 1258245858, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 'hoi', 'eeb1890ecd1d6da2bbf7e05ff7c4169b', 'BltilsgvlI', 'hoi', 0, 0, 0, 1258253105, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+(5, 'MaxiPower97', 'eeb1890ecd1d6da2bbf7e05ff7c4169b', 'BltilsgvlI', 'max.mustermann@example.com', 0, 0, 0, 1258239600, 1, '', '', '', '', '', ''),
+(6, '5', 'ab961e32b08740f3623f3c2b39e3ac34', 'E6cB0FSdG3', '5', 0, 0, 0, 1259007229, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1611,7 +1573,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1258291216);
+('127.0.0.1', 1, 1259419896);
 
 -- --------------------------------------------------------
 
@@ -1631,6 +1593,7 @@ CREATE TABLE `fs_user_config` (
   `group_pic_y` smallint(3) NOT NULL DEFAULT '25',
   `group_pic_size` smallint(4) NOT NULL DEFAULT '1024',
   `reg_date_format` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `user_list_reg_date_format` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -1638,8 +1601,8 @@ CREATE TABLE `fs_user_config` (
 -- Daten für Tabelle `fs_user_config`
 --
 
-INSERT INTO `fs_user_config` (`id`, `user_per_page`, `registration_antispam`, `avatar_x`, `avatar_y`, `avatar_size`, `group_pic_x`, `group_pic_y`, `group_pic_size`, `reg_date_format`) VALUES
-(1, 50, 1, 110, 110, 20, 250, 25, 50, 'l, j. F Y');
+INSERT INTO `fs_user_config` (`id`, `user_per_page`, `registration_antispam`, `avatar_x`, `avatar_y`, `avatar_size`, `group_pic_x`, `group_pic_y`, `group_pic_size`, `reg_date_format`, `user_list_reg_date_format`) VALUES
+(1, -1, 1, 110, 110, 20, 250, 25, 50, 'l, j. F Y', 'j. F Y');
 
 -- --------------------------------------------------------
 

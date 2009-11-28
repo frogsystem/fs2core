@@ -36,7 +36,7 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
     </div>   
     
     <div id="content">
-      {..announcement..}
+      $APP(announcement.php)
       {..content..}
     </div>
     
