@@ -170,10 +170,10 @@ $TEXT = array (
 
 // Start-Seiten
     "system_start_num_aliases" =>
-    "Anzahl Weiterleitungen",
+    "Anzahl Aliasse",
     
     "system_start_num_aliases_active" =>
-    "Anzahl aktiver Weiterleitungen",
+    "Anzahl aktiver Aliasse",
 
     "system_start_num_applets" =>
     "Anzahl Applets",

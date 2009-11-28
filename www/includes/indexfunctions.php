@@ -585,7 +585,7 @@ function set_style ()
     } else {
         $index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);
         if (mysql_num_rows($index) > 0) {
-            $global_config_arr['style'] =  mysql_result($index, "name");
+            $global_config_arr['style'] =  mysql_result($index, 0, "name");
         }
     }
     

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.1.1
+-- version 3.2.0.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 28. November 2009 um 15:54
--- Server Version: 5.1.30
--- PHP-Version: 5.2.8
+-- Erstellungszeit: 29. November 2009 um 00:44
+-- Server Version: 5.1.37
+-- PHP-Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -35,7 +35,7 @@ CREATE TABLE `fs_admin_cp` (
   `page_pos` tinyint(3) NOT NULL DEFAULT '0',
   `page_int_sub_perm` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`page_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Daten für Tabelle `fs_admin_cp`
@@ -139,7 +139,10 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('applets_edit', 24, 'bearbeiten', 'bearbeiten', 'admin_applets_edit.php', 2, 0),
 ('snippets_add', 25, 'hinzufügen', 'hinzufügen', 'admin_snippets_add.php', 1, 0),
 ('snippets_edit', 25, 'bearbeiten', 'bearbeiten', 'admin_snippets_edit.php', 2, 0),
-('snippets_delete', 25, 'löschen', 'löschen', 'snippets_edit', 1, 1);
+('snippets_delete', 25, 'löschen', 'löschen', 'snippets_edit', 1, 1),
+('aliases_add', 26, 'hinzufügen', 'hinzufügen', 'admin_aliases_add.php', 1, 0),
+('aliases_edit', 26, 'bearbeiten', 'bearbeiten', 'admin_aliases_edit.php', 2, 0),
+('aliases_delete', 26, 'löschen', 'löschen', 'aliases_edit', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -154,7 +157,7 @@ CREATE TABLE `fs_admin_groups` (
   `menu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `group_pos` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=26 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=27 ;
 
 --
 -- Daten für Tabelle `fs_admin_groups`
@@ -186,8 +189,9 @@ INSERT INTO `fs_admin_groups` (`group_id`, `group_title`, `menu_id`, `group_pos`
 (21, 'Styles', 'styles', 1),
 (22, 'Templates', 'styles', 2),
 (23, 'Gruppen', 'user', 2),
-(24, 'Applets', 'system', 1),
-(25, 'Schnipsel', 'system', 2);
+(24, 'Applets', 'system', 2),
+(25, 'Schnipsel', 'system', 3),
+(26, 'Aliasse', 'system', 1);
 
 -- --------------------------------------------------------
 
@@ -203,7 +207,7 @@ CREATE TABLE `fs_aliases` (
   `alias_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`alias_id`),
   KEY `alias_go` (`alias_go`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- Daten für Tabelle `fs_aliases`
@@ -415,7 +419,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 77, 4403, 6, 1, 1, 4);
+(1, 78, 4415, 6, 1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -437,10 +441,11 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 150, 1223919890, 1259411376),
+('http://localhost/fs2/', 152, 1223919890, 1259449194),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
-('http://localhost/', 1, 1235171569, 1235171569);
+('http://localhost/', 1, 1235171569, 1235171569),
+('http://localhost/fs2/src/', 3, 1259448679, 1259448933);
 
 -- --------------------------------------------------------
 
@@ -520,7 +525,8 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2009, 11, 15, 3, 951),
 (2009, 11, 16, 2, 568),
 (2009, 11, 23, 1, 655),
-(2009, 11, 28, 4, 18);
+(2009, 11, 28, 4, 25),
+(2009, 11, 29, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -1573,7 +1579,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1259419896);
+('127.0.0.1', 1, 1259449254);
 
 -- --------------------------------------------------------
 
@@ -1712,3 +1718,7 @@ CREATE TABLE `fs_zones` (
 -- Daten für Tabelle `fs_zones`
 --
 
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

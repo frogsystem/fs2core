@@ -1,7 +1,7 @@
 <?php
-////////////////////////////
+/////////////////////////////
 //// DB: Update Snippets ////
-////////////////////////////
+/////////////////////////////
 
 if (
         isset ( $_POST['sended'] ) && $_POST['sended'] == "edit"
@@ -32,9 +32,9 @@ if (
     unset ( $_POST );
 }
 
-////////////////////////////
+/////////////////////////////
 //// DB: Delete Snippets ////
-////////////////////////////
+/////////////////////////////
 elseif (
         $_SESSION['snippets_delete']
         && isset ( $_POST['sended'] ) && $_POST['sended'] == "delete"
@@ -85,9 +85,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         // Display Error Messages
         if ( $_POST['sended'] == "edit" ) {
 
-            // Display Error
-            systext ( $TEXT["admin"]->get("applet_not_added")."<br>".$error_message,
-                $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
+            // Shouldn't happen
 
         // Get Data from DB
         } else {
@@ -242,7 +240,7 @@ if ( !isset ( $_POST['snippet_id'] ) )
                     <form action="" method="post">
                         <input type="hidden" name="go" value="snippets_edit">
                         <table class="configtable select_list" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="5">'.$TEXT["admin"]->get("snippet_select_title").'</td></tr>
+                            <tr><td class="line" colspan="3">'.$TEXT["admin"]->get("snippet_select_title").'</td></tr>
     ';
 
     // get snippets from db
