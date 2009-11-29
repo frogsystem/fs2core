@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 29. November 2009 um 00:44
+-- Erstellungszeit: 29. November 2009 um 23:33
 -- Server Version: 5.1.37
 -- PHP-Version: 5.3.0
 
@@ -42,101 +42,103 @@ CREATE TABLE `fs_admin_cp` (
 --
 
 INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `page_file`, `page_pos`, `page_int_sub_perm`) VALUES
-('start_content', -1, 'Inhalt', 'content', 'start_content.php', 2, 0),
 ('start_general', -1, 'Allgemein', 'general', 'start_general.php', 1, 0),
-('start_interactive', -1, 'Interaktiv', 'interactive', 'start_interactive.php', 4, 0),
+('start_content', -1, 'Inhalt', 'content', 'start_content.php', 2, 0),
 ('start_media', -1, 'Media', 'media', 'start_media.php', 3, 0),
-('start_mods', -1, 'AddOns', 'mods', 'start_mods.php', 9, 0),
+('start_interactive', -1, 'Interaktiv', 'interactive', 'start_interactive.php', 4, 0),
 ('start_promo', -1, 'Promotion', 'promo', 'start_promo.php', 5, 0),
+('start_user', -1, 'User', 'user', 'start_user.php', 6, 0),
 ('start_styles', -1, 'Styles', 'styles', 'start_styles.php', 7, 0),
 ('start_system', -1, 'System', 'system', 'start_system.php', 8, 0),
-('start_user', -1, 'User', 'user', 'start_user.php', 6, 0),
-('zone_admin', 0, 'verwalten', 'verwalten', 'admin_zone_manage.php', 3, 0),
+('start_mods', -1, 'AddOns', 'mods', 'start_mods.php', 9, 0),
 ('zone_config', 0, 'Konfiguration ändern', 'Konfiguration', 'admin_zone_config.php', 1, 0),
 ('zone_create', 0, 'erstellen', 'erstellen', 'admin_zone_create.php', 2, 0),
+('zone_admin', 0, 'verwalten', 'verwalten', 'admin_zone_manage.php', 3, 0),
+('gen_config', 1, 'Seitenkonfiguration', 'Konfiguration', 'admin_allconfig.php', 1, 0),
 ('gen_announcement', 1, 'Ankündigung', 'Ankündigung', 'admin_allannouncement.php', 2, 0),
 ('gen_captcha', 1, 'Captcha Konfiguration', 'Captcha', 'admin_captcha_config.php', 2, 0),
-('gen_config', 1, 'Seitenkonfiguration', 'Konfiguration', 'admin_allconfig.php', 1, 0),
 ('gen_emails', 1, 'E-Mail-Vorlagen bearbeiten', 'E-Mails', 'admin_allemail.php', 4, 0),
 ('gen_phpinfo', 1, 'PHP & Server Informationen', 'PHP Info', 'admin_allphpinfo.php', 5, 0),
 ('editor_config', 2, 'Konfiguration ändern', 'Konfiguration', 'admin_editor_config.php', 1, 0),
 ('editor_design', 2, 'Darstellung bearbeiten', 'Darstellung', 'admin_editor_design.php', 2, 0),
-('editor_fscodes', 2, 'FSCodes bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 4, 0),
 ('editor_smilies', 2, 'Smilies verwalten', 'Smilies', 'admin_editor_smilies.php', 3, 0),
+('editor_fscodes', 2, 'FSCodes bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 4, 0),
+('stat_view', 3, 'anzeigen', 'anzeigen', 'admin_statview.php', 1, 0),
 ('stat_edit', 3, 'bearbeiten', 'bearbeiten', 'admin_statedit.php', 2, 0),
 ('stat_ref', 3, 'Referrer anzeigen & verwalten', 'Referrer', 'admin_statref.php', 3, 0),
 ('stat_space', 3, 'Speicherplatz Übersicht', 'Speicherplatz', 'admin_statspace.php', 4, 0),
-('stat_view', 3, 'anzeigen', 'anzeigen', 'admin_statview.php', 1, 0),
-('news_add', 5, 'schreiben', 'schreiben', 'admin_news_add.php', 2, 0),
-('news_cat', 5, 'Kategorien verwalten', 'Kategorien', 'admin_news_cat.php', 4, 0),
 ('news_config', 5, 'Konfiguration ändern', 'Konfiguration', 'admin_news_config.php', 1, 0),
+('news_add', 5, 'schreiben', 'schreiben', 'admin_news_add.php', 2, 0),
 ('news_edit', 5, 'bearbeiten', 'bearbeiten', 'admin_news_edit.php', 3, 0),
-('articles_add', 6, 'schreiben', 'schreiben', 'admin_articles_add.php', 2, 0),
-('articles_cat', 6, 'Kategorien verwalten', 'Kategorien', 'admin_articles_cat.php', 4, 0),
+('news_cat', 5, 'Kategorien verwalten', 'Kategorien', 'admin_news_cat.php', 4, 0),
+('news_delete', 5, 'löschen', 'löschen', 'news_edit', 1, 1),
+('news_comments', 5, 'Kommentare', 'Kommentare', 'news_edit', 2, 1),
 ('articles_config', 6, 'Konfiguration ändern', 'Konfiguration', 'admin_articles_config.php', 1, 0),
+('articles_add', 6, 'schreiben', 'schreiben', 'admin_articles_add.php', 2, 0),
 ('articles_edit', 6, 'bearbeiten', 'bearbeiten', 'admin_articles_edit.php', 3, 0),
-('press_add', 7, 'hinzufügen', 'hinzufügen', 'admin_press_add.php', 2, 0),
-('press_admin', 7, 'Verwaltung', 'Verwaltung', 'admin_press_admin.php', 4, 0),
+('articles_cat', 6, 'Kategorien verwalten', 'Kategorien', 'admin_articles_cat.php', 4, 0),
 ('press_config', 7, 'Konfiguration ändern', 'Konfiguration', 'admin_press_config.php', 1, 0),
+('press_add', 7, 'hinzufügen', 'hinzufügen', 'admin_press_add.php', 2, 0),
 ('press_edit', 7, 'bearbeiten', 'bearbeiten', 'admin_press_edit.php', 3, 0),
+('press_admin', 7, 'Verwaltung', 'Verwaltung', 'admin_press_admin.php', 4, 0),
 ('cimg_add', 8, 'hinzufügen', 'hinzufügen', 'admin_cimg.php', 1, 0),
 ('cimg_admin', 8, 'verwalten', 'verwalten', 'admin_cimgdel.php', 2, 0),
-('gallery_cat', 9, 'Kategorien verwalten', 'Kategorien', 'admin_screencat.php', 2, 0),
 ('gallery_config', 9, 'Konfiguration ändern', 'Konfiguration', 'admin_screenconfig.php', 1, 0),
+('gallery_cat', 9, 'Kategorien verwalten', 'Kategorien', 'admin_screencat.php', 2, 0),
 ('gallery_newcat', 9, 'Neue Kategorie', 'Neue Kategorie', 'admin_screennewcat.php', 3, 0),
 ('screens_add', 10, 'hinzufügen', 'hinzufügen', 'admin_screenadd.php', 1, 0),
 ('screens_edit', 10, 'bearbeiten', 'bearbeiten', 'admin_screenedit.php', 2, 0),
 ('wp_add', 11, 'hinzufügen', 'hinzufügen', 'admin_wallpaperadd.php', 1, 0),
 ('wp_edit', 11, 'bearbeiten', 'bearbeiten', 'admin_wallpaperedit.php', 2, 0),
-('randompic_cat', 12, 'Kategorien auswählen', 'Kategorie Auswahl', 'admin_randompic_cat.php', 2, 0),
 ('randompic_config', 12, 'Konfiguration ändern', 'Konfiguration', 'admin_randompic_config.php', 1, 0),
+('randompic_cat', 12, 'Kategorien auswählen', 'Kategorie Auswahl', 'admin_randompic_cat.php', 2, 0),
 ('timedpic_add', 13, 'hinzufügen', 'hinzufügen', 'admin_randompic_time_add.php', 1, 0),
 ('timedpic_edit', 13, 'verwalten', 'verwalten', 'admin_randompic_time.php', 2, 0),
-('dl_add', 14, 'hinzufügen', 'hinzufügen', 'admin_dladd.php', 2, 0),
-('dl_cat', 14, 'Kategorien verwalten', 'Kategorien', 'admin_dlcat.php', 4, 0),
 ('dl_config', 14, 'Konfiguration ändern', 'Konfiguration', 'admin_dlconfig.php', 1, 0),
+('dl_add', 14, 'hinzufügen', 'hinzufügen', 'admin_dladd.php', 2, 0),
 ('dl_edit', 14, 'bearbeiten', 'bearbeiten', 'admin_dledit.php', 3, 0),
+('dl_cat', 14, 'Kategorien verwalten', 'Kategorien', 'admin_dlcat.php', 4, 0),
 ('dl_newcat', 14, 'Neue Kategorie', 'Neue Kategorie', 'admin_dlnewcat.php', 5, 0),
-('player_add', 15, 'hinzufügen', 'hinzufügen', 'admin_player_add.php', 2, 0),
 ('player_config', 15, 'Konfiguration ändern', 'Konfiguration', 'admin_player_config.php', 1, 0),
+('player_add', 15, 'hinzufügen', 'hinzufügen', 'admin_player_add.php', 2, 0),
 ('player_edit', 15, 'bearbeiten', 'bearbeiten', 'admin_player_edit.php', 3, 0),
-('poll_add', 16, 'hinzufügen', 'hinzufügen', 'admin_polladd.php', 2, 0),
 ('poll_config', 16, 'Konfiguration ändern', 'Konfiguration', 'admin_pollconfig.php', 1, 0),
+('poll_add', 16, 'hinzufügen', 'hinzufügen', 'admin_polladd.php', 2, 0),
 ('poll_edit', 16, 'bearbeiten', 'bearbeiten', 'admin_polledit.php', 3, 0),
-('partner_add', 18, 'hinzufügen', 'hinzufügen', 'admin_partneradd.php', 2, 0),
 ('partner_config', 18, 'Konfiguration ändern', 'Konfiguration', 'admin_partnerconfig.php', 1, 0),
+('partner_add', 18, 'hinzufügen', 'hinzufügen', 'admin_partneradd.php', 2, 0),
 ('partner_edit', 18, 'bearbeiten', 'bearbeiten', 'admin_partneredit.php', 3, 0),
 ('shop_add', 19, 'Produkt hinzufügen', 'Neues Produkt', 'admin_shopadd.php', 1, 0),
 ('shop_edit', 19, 'Produkt Übersicht', 'Übersicht', 'admin_shopedit.php', 2, 0),
-('user_add', 20, 'hinzufügen', 'hinzufügen', 'admin_user_add.php', 2, 0),
 ('user_config', 20, 'Kofiguration ändern', 'Kofiguration', 'admin_user_config.php', 1, 0),
+('user_add', 20, 'hinzufügen', 'hinzufügen', 'admin_user_add.php', 2, 0),
 ('user_edit', 20, 'bearbeiten', 'bearbeiten', 'admin_user_edit.php', 3, 0),
 ('user_rights', 20, 'Rechte ändern', 'Rechte', 'admin_user_rights.php', 4, 0),
-('design_admin', 21, 'verwalten', 'verwalten', 'admin_template_manage.php', 2, 0),
 ('design_create', 21, 'erstellen', 'erstellen', 'admin_template_create.php', 1, 0),
+('design_admin', 21, 'verwalten', 'verwalten', 'admin_template_manage.php', 2, 0),
 ('style_css', 21, 'CSS-Dateien bearbeiten', 'CSS-Dateien', 'admin_template_css.php', 3, 0),
 ('style_js', 21, 'Java Script-Dateien bearbeiten', 'JS-Dateien', 'admin_template_js.php', 4, 0),
 ('style_nav', 21, 'Navigations-Dateien bearbeiten', 'Navigationen', 'admin_template_nav.php', 5, 0),
-('tpl_articles', 22, '„Artikel“ bearbeiten', 'Artikel', 'admin_template_artikel.php', 3, 0),
-('tpl_dl', 22, '„Downloads“ bearbeiten', 'Downloads', 'admin_template_dl.php', 9, 0),
-('tpl_editor', 22, '„Editor“ bearbeiten', 'Editor', 'admin_editor_design.php', 13, 0),
-('tpl_fscodes', 22, '„FSCodes“ bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 14, 0),
 ('tpl_general', 22, '„Allgemein“ bearbeiten', 'Allgemein', 'admin_template_general.php', 1, 0),
+('tpl_user', 22, '„Benutzer“ bearbeiten', 'Benutzer', 'admin_template_user.php', 2, 0),
+('tpl_articles', 22, '„Artikel“ bearbeiten', 'Artikel', 'admin_template_artikel.php', 3, 0),
 ('tpl_news', 22, '„News“ bearbeiten', 'News', 'admin_template_news.php', 3, 0),
-('tpl_partner', 22, '„Partnerseiten“ bearbeiten', 'Partnerseiten', 'admin_template_partner.php', 11, 0),
 ('tpl_poll', 22, '„Umfragen“ bearbeiten', 'Umfragen', 'admin_template_poll.php', 4, 0),
 ('tpl_press', 22, '„Presseberichte“ bearbeiten', 'Presseberichte', 'admin_template_press.php', 5, 0),
-('tpl_randompic', 22, '„Zufallsbilder“ bearbeiten', 'Zufallsbilder', 'admin_template_randompic.php', 8, 0),
 ('tpl_screens', 22, '„Screenshots“ bearbeiten', 'Screenshots', 'admin_template_screenshot.php', 6, 0),
-('tpl_shop', 22, '„Shop“ bearbeiten', 'Shop', 'admin_template_shop.php', 10, 0),
-('tpl_user', 22, '„Benutzer“ bearbeiten', 'Benutzer', 'admin_template_user.php', 2, 0),
 ('tpl_wp', 22, '„Wallpaper“ bearbeiten', 'Wallpaper', 'admin_template_wallpaper.php', 7, 0),
-('group_admin', 23, 'Gruppenverwaltung', 'verwalten', 'admin_group_admin.php', 2, 0),
+('tpl_randompic', 22, '„Zufallsbilder“ bearbeiten', 'Zufallsbilder', 'admin_template_randompic.php', 8, 0),
+('tpl_dl', 22, '„Downloads“ bearbeiten', 'Downloads', 'admin_template_dl.php', 9, 0),
+('tpl_shop', 22, '„Shop“ bearbeiten', 'Shop', 'admin_template_shop.php', 10, 0),
+('tpl_partner', 22, '„Partnerseiten“ bearbeiten', 'Partnerseiten', 'admin_template_partner.php', 11, 0),
+('tpl_editor', 22, '„Editor“ bearbeiten', 'Editor', 'admin_editor_design.php', 13, 0),
+('tpl_fscodes', 22, '„FSCodes“ bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 14, 0),
 ('group_config', 23, 'Konfiguration ändern', 'Konfiguration', 'admin_group_config.php', 1, 0),
+('group_admin', 23, 'Gruppenverwaltung', 'verwalten', 'admin_group_admin.php', 2, 0),
 ('group_rights', 23, 'Rechte ändern', 'Rechte', 'admin_group_rights.php', 3, 0),
 ('applets_add', 24, 'hinzufügen', 'hinzufügen', 'admin_applets_add.php', 1, 0),
-('applets_delete', 24, 'löschen', 'löschen', 'applets_edit', 1, 1),
 ('applets_edit', 24, 'bearbeiten', 'bearbeiten', 'admin_applets_edit.php', 2, 0),
+('applets_delete', 24, 'löschen', 'löschen', 'applets_edit', 1, 1),
 ('snippets_add', 25, 'hinzufügen', 'hinzufügen', 'admin_snippets_add.php', 1, 0),
 ('snippets_edit', 25, 'bearbeiten', 'bearbeiten', 'admin_snippets_edit.php', 2, 0),
 ('snippets_delete', 25, 'löschen', 'löschen', 'snippets_edit', 1, 1),
@@ -419,7 +421,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 78, 4415, 6, 1, 1, 4);
+(1, 79, 4418, 6, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -441,7 +443,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 152, 1223919890, 1259449194),
+('http://localhost/fs2/', 153, 1223919890, 1259497566),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569),
@@ -526,7 +528,7 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2009, 11, 16, 2, 568),
 (2009, 11, 23, 1, 655),
 (2009, 11, 28, 4, 25),
-(2009, 11, 29, 1, 5);
+(2009, 11, 29, 2, 8);
 
 -- --------------------------------------------------------
 
@@ -770,8 +772,6 @@ CREATE TABLE `fs_iplist` (
 -- Daten für Tabelle `fs_iplist`
 --
 
-INSERT INTO `fs_iplist` (`ip`) VALUES
-('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -791,14 +791,15 @@ CREATE TABLE `fs_news` (
   `news_comments_allowed` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_search` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
 
 --
 -- Daten für Tabelle `fs_news`
 --
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`) VALUES
-(1, 1, 1, 1223718060, 'Herzlich Willkommen!', '[b]Hallo Webmaster![/b]\r\n\r\nHerzlich Willkommen in deinem deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1);
+(1, 1, 1, 1223718060, 'Herzlich Willkommen!', '[b]Hallo Webmaster![/b]\r\n\r\nHerzlich Willkommen in deinem deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1),
+(9, 1, 1, 1259499240, 'fhfjgjhkljhgfhj', '[b]fdggfd[/b]', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -850,9 +851,7 @@ CREATE TABLE `fs_news_comments` (
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
 (2, 1, '1', 1, '127.0.0.1', 1242681258, 'sdfsdfdsf', 'dfsdf'),
-(3, 1, '1', 1, '127.0.0.1', 1242681268, 'fgdfgf', 'dfdffg'),
-(4, 1, 'f', 0, '127.0.0.1', 1258253322, 'f', 'f'),
-(5, 1, '1', 1, '127.0.0.1', 1258282603, '6', '6');
+(3, 1, '1', 1, '127.0.0.1', 1242681268, 'Hallo', 'Das freut micht!!!!');
 
 -- --------------------------------------------------------
 
@@ -1578,8 +1577,6 @@ CREATE TABLE `fs_useronline` (
 -- Daten für Tabelle `fs_useronline`
 --
 
-INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1259449254);
 
 -- --------------------------------------------------------
 
