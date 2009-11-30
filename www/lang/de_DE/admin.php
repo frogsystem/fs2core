@@ -143,7 +143,12 @@ $TEXT = array (
     
     "icon_trash_error" =>
     '<img src="icons/trash_error.jpg" alt="" align="absmiddle">',
-    
+
+    "icon_login" =>
+    '<img src="icons/login.jpg" alt="" align="absmiddle">',
+
+    "icon_logout" =>
+    '<img src="icons/logout.jpg" alt="" align="absmiddle">',
     
 //Bilder-Upload
     "image_upload_error_0" =>
@@ -186,6 +191,17 @@ $TEXT = array (
 
     "system_start_num_snippets_active" =>
     "Anzahl aktiver Schnipsel",
+
+
+// News
+    "news_edit_selection_comments" =>
+    "Kommentare verwalten",
+    
+    "news_comments_delete_title" =>
+    "Kommentare löschen",
+    
+    "news_comments_delete_question" =>
+    "Sollen diese Kommentare wirklich gelöscht werden?",
 
 
 //Applets
@@ -433,6 +449,62 @@ $TEXT = array (
     "aktiv",
 
     "snippet_not_active" =>
+    "nicht aktiv",
+    
+    
+    //Aliasse
+    "alias_add_title" =>
+    "Alias hinzufügen",
+
+    "alias_select_title" =>
+    "Aliasse auswählen",
+
+    "alias_edit_title" =>
+    "Alias bearbeiten",
+
+    "aliases_delete_title" =>
+    "Aliasse löschen",
+
+    "aliases_delete_question" =>
+    "Sollen diese Aliasse wirklich gelöscht werden?",
+
+    "alias_go_title" =>
+    "Alias",
+
+    "alias_go_desc" =>
+    "Alias-Adresse, die angelegt werden soll.",
+
+    "alias_forward_to_title" =>
+    "Weiterleitung auf",
+
+    "alias_forward_to_desc" =>
+    "Adresse, auf die der Alias weitergeleitet wird.",
+
+    "alias_active_title" =>
+    "Alias aktivieren",
+
+    "alias_active_desc" =>
+    "De-/Aktiviert die Weiterleitung des Aliasses.",
+
+    "alias_added" =>
+    "Alias wurde hinzugefügt",
+
+    "alias_not_added" =>
+    "Alias wurde nicht hinzugefügt",
+
+    "aliases_deleted" =>
+    "Aliasse wurden gelöscht",
+
+    "aliases_not_deleted" =>
+    "Aliasse wurden nicht gelöscht",
+
+    "aliases_not_found" =>
+    "Keine Aliasse gefunden!",
+
+    "alias_active" =>
+    "aktiv",
+
+    "alias_not_active" =>
     "nicht aktiv",
 
 

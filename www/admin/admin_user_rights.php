@@ -223,13 +223,15 @@ if ( isset ( $_POST['edit_user_id'] ) )
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="3">Benutzerrechte ändern für: '.$user_arr['user_name'].'</td></tr>
                             <tr><td align="left">
-                                <span class="small"><b>Hinweis:</b> Deaktivierte Felder markieren Rechte, die der User durch die Mitgliedschaft in einer Gruppe erhalten hat.</span>
+                                <span class="small"><b>Hinweise:</b><br>
+                                Deaktivierte Felder markieren Rechte, die der User durch die Mitgliedschaft in einer Gruppe erhalten hat.<br>
+                                Unter-Rechte werden nur wirksam, wenn auch das zugehörige Haupt-Recht erteilt wurde.</span>
                                 <table cellpadding="4" cellspacing="0" align="center">
                                     <tr><td class="config">
     ';
 
     // get data for col-divisor
-    $per_col = ceil ( $entries/3 ) +2; // +2 makes it more flexible
+    $per_col = ceil ( $entries/3 ) + 2; // +2 makes it more flexible
     $i = 0;
     $j = 1;
     
@@ -243,12 +245,12 @@ if ( isset ( $_POST['edit_user_id'] ) )
             }
             echo '<br>'.$GROUP_ARR['title'].'<br>';
             foreach ( $GROUP_ARR['links'] as $PAGE_ID => $PAGE_ARR ) {
-                echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="img/pointer.png" alt="->">' : "";
-                echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" name="'.$PAGE_ID.'" value="1"
+                echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="img/sub-right-arrow.gif" alt="->">' : "";
+                echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" id="'.$PAGE_ID.'" name="'.$PAGE_ID.'" value="1"
                 '.getchecked ( $PAGE_ARR['granted'], "group" ).'
                 '.getdisabled ( $PAGE_ARR['granted'], "group" ).'
                 '.getchecked ( $PAGE_ARR['granted'], "user" ).'
-                ><span class="small">'.$PAGE_ARR['page_link'].'</span><br>';
+                ><label class="small pointer" for="'.$PAGE_ID.'">'.$PAGE_ARR['page_link'].'</label><br>';
                  $i++;
             }
         }

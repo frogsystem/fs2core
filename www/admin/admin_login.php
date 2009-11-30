@@ -11,16 +11,16 @@ if ($_POST[username] &&
     switch ($loggedin)
     {
         case 0:
-            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Sie sind jetzt eingeloggt', 'Herzlich Willkommen!', FALSE, $admin_phrases[icons][ok]);
+            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Sie sind jetzt eingeloggt', 'Herzlich Willkommen!', FALSE, $TEXT['admin']->get("icon_login") );
             break;
         case 1:
-            systext('Der Benutzer existiert nicht', $admin_phrases[common][error], TRUE, $admin_phrases[icons][error] );
+            systext('Der Benutzer existiert nicht', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
             break;
         case 2:
-            systext('Das Passwort ist nicht korrekt',  $admin_phrases[common][error], TRUE, $admin_phrases[icons][error] );
+            systext('Das Passwort ist nicht korrekt', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
             break;
         case 3:
-            systext('Sie haben keine Rechte für diese Seite',  $admin_phrases[common][error], TRUE, $admin_phrases[icons][error] );
+            systext('Sie haben keine Rechte für diese Seite', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
             break;
     }
 }
@@ -41,7 +41,7 @@ elseif ($_SESSION[user_level] == "authorised")
 else
 {
     echo'
-                    <form action="" method="post">
+                    <form action="?go=login" method="post">
                         <input type="hidden" name="login" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="2">Benutzerdaten eingeben</td></tr>

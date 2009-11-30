@@ -124,7 +124,23 @@ $TEXT = array (
 
     "user_logout_ok" =>
     "Abmeldevorgang war erfolgreich",
+    
+    
+//News
+    "news_title" =>
+    "News",
+    
 
+//Kommentare
+    "comment_added" =>
+    "Kommentar wurde hinzugefügt",
+    
+    "comment_not_added" =>
+    "Kommentar wurde nicht hinzugefügt",
+    
+    "comment_duplicate" =>
+    "Dieser Kommentar ist das Duplikat eines Kommentars der gerade erst hinzugefügt wurde",
+    
     
 //Gruppen
     "group_image" =>

@@ -116,7 +116,7 @@ if (
 
     }
 
-    // Meldung ausgebena
+    // Meldung ausgeben
     $template .= forward_message ( $TEXT->get("user_profile"), $message, $_SERVER['REQUEST_URI'] );
 }
 

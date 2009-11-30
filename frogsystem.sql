@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 30. November 2009 um 01:11
+-- Erstellungszeit: 01. Dezember 2009 um 00:00
 -- Server Version: 5.1.30
 -- PHP-Version: 5.2.8
 
@@ -209,7 +209,7 @@ CREATE TABLE `fs_aliases` (
   `alias_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`alias_id`),
   KEY `alias_go` (`alias_go`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `fs_aliases`
@@ -421,7 +421,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 81, 4430, 6, 1, 2, 1);
+(1, 82, 4473, 6, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -443,7 +443,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 161, 1223919890, 1259539622),
+('http://localhost/fs2/', 162, 1223919890, 1259612170),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569),
@@ -529,7 +529,7 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2009, 11, 23, 1, 655),
 (2009, 11, 28, 4, 25),
 (2009, 11, 29, 3, 9),
-(2009, 11, 30, 1, 11);
+(2009, 11, 30, 2, 54);
 
 -- --------------------------------------------------------
 
@@ -801,8 +801,7 @@ CREATE TABLE `fs_news` (
 --
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`) VALUES
-(1, 1, 1, 1223718060, 'Herzlich Willkommen!', '[b]Hallo Webmaster![/b]\r\n\r\nHerzlich Willkommen in deinem deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1),
-(9, 1, 1, 1259499240, 'fhfjgjhkljhgfhj', '[b]fdggfd[/b]', 1, 1);
+(1, 1, 1, 1223718060, 'Herzlich Willkommen!', '[b]Hallo Webmaster![/b]\r\n\r\nHerzlich Willkommen in deinem deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -846,14 +845,14 @@ CREATE TABLE `fs_news_comments` (
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_text` (`comment_text`),
   FULLTEXT KEY `comment_title` (`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 --
 -- Daten für Tabelle `fs_news_comments`
 --
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(3, 1, '1', 1, '127.0.0.1', 1242681268, 'Hallo', 'Das freut micht!!!!');
+(14, 1, '1', 1, '127.0.0.1', 1259614099, 'neu', 'neu');
 
 -- --------------------------------------------------------
 
@@ -1555,7 +1554,7 @@ CREATE TABLE `fs_user` (
 
 INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
 (1, 'admin', '72ce90aed8b19ef984eca6e0a0df977d', '5NdWu7dA6v', 'admin@frogsystem.de', 1, 0, 1, 1207260000, 1, 'http://www.frogsystem.de', '', '', '', '', ''),
-(2, 'test', '0b6d71e7ba83facb3081858c8a8d0c68', 'wDJ6w9JPIA', 'mail@sweil.de', 1, 0, 0, 1240783200, 0, '', '', '', '', '', ''),
+(2, 'test', '0b6d71e7ba83facb3081858c8a8d0c68', 'wDJ6w9JPIA', 'mail@sweil.de', 1, 1, 0, 1240783200, 0, '', '', '', '', '', ''),
 (3, 'super', 'ad568fff6880715044d6eb4e7ae26c07', 'fXEGPvDGs8', 'super', 0, 0, 0, 1258245681, 0, '', '', '', '', '', ''),
 (4, 'buh', 'c476b70654f68ce27b689305f40945da', '3EAttd60cA', 'buh', 0, 0, 0, 1258245858, 0, NULL, NULL, NULL, NULL, NULL, NULL),
 (5, 'MaxiPower97', 'eeb1890ecd1d6da2bbf7e05ff7c4169b', 'BltilsgvlI', 'max.mustermann@example.com', 0, 0, 0, 1258239600, 1, '', '', '', '', '', ''),
@@ -1580,7 +1579,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1259539632);
+('127.0.0.1', 2, 1259619896);
 
 -- --------------------------------------------------------
 
@@ -1657,9 +1656,9 @@ CREATE TABLE `fs_user_permissions` (
 --
 
 INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
-('applets_delete', 2, 0),
-('group_admin', 1, 1),
-('group_config', 1, 1);
+('news_add', 1, 1),
+('news_comments', 2, 0),
+('news_edit', 1, 1);
 
 -- --------------------------------------------------------
 

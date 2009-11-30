@@ -8,16 +8,16 @@ function user_name_free ( $USERNAME ) {
     global $db;
     
     $USERNAME = savesql ( $USERNAME );
-	$index = mysql_query ( "
-							SELECT `user_id`
-							FROM `".$global_config_arr['pref']."user`
-							WHERE `user_name` = '".$USERNAME."'
-	", $db );
-	if ( mysql_num_rows ( $index ) > 0 ) {
-	    return FALSE;
-	} else {
-	    return TRUE;
-	}
+    $index = mysql_query ( "
+                            SELECT `user_id`
+                            FROM `".$global_config_arr['pref']."user`
+                            WHERE `user_name` = '".$USERNAME."'
+    ", $db );
+    if ( mysql_num_rows ( $index ) > 0 ) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
 }
 
 /////////////////////
@@ -31,19 +31,19 @@ $config_arr = mysql_fetch_assoc ( $index );
 //////////////////
 
 if (
-		$_POST['user_name'] && $_POST['user_name'] != "" && user_name_free ( $_POST['user_name'] ) == TRUE
-		&& $_POST['user_mail'] && $_POST['user_mail'] != ""
-		&& (
-			( $_POST['newpwd'] && $_POST['newpwd'] != "" && $_POST['wdhpwd'] && $_POST['wdhpwd'] != "" && $_POST['newpwd'] == $_POST['wdhpwd'] )
-			|| $_POST['gen_password'] == 1
-		)
-		&& $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31
-		&& $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12
-		&& $_POST['y'] && $_POST['y'] >= 0
-	)
+        $_POST['user_name'] && $_POST['user_name'] != "" && user_name_free ( $_POST['user_name'] ) == TRUE
+        && $_POST['user_mail'] && $_POST['user_mail'] != ""
+        && (
+            ( $_POST['newpwd'] && $_POST['newpwd'] != "" && $_POST['wdhpwd'] && $_POST['wdhpwd'] != "" && $_POST['newpwd'] == $_POST['wdhpwd'] )
+            || $_POST['gen_password'] == 1
+        )
+        && $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31
+        && $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12
+        && $_POST['y'] && $_POST['y'] >= 0
+    )
 {
-	// security functions
-	$_POST['user_name'] = savesql ( $_POST['user_name'] );
+    // security functions
+    $_POST['user_name'] = savesql ( $_POST['user_name'] );
     $_POST['user_mail'] = savesql ( $_POST['user_mail'] );
     $_POST['user_homepage'] = savesql ( $_POST['user_homepage'] );
     $_POST['user_icq'] = savesql ( $_POST['user_icq'] );
@@ -52,89 +52,89 @@ if (
     $_POST['user_yim'] = savesql ( $_POST['user_yim'] );
     $_POST['user_skype'] = savesql ( $_POST['user_skype'] );
 
-	settype ( $_POST['gen_password'], "integer" );
+    settype ( $_POST['gen_password'], "integer" );
     settype ( $_POST['user_is_staff'], "integer" );
     settype ( $_POST['user_show_mail'], "integer" );
 
-	// get other data
-	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0 );
-	$user_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+    // get other data
+    $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0 );
+    $user_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
-	if ( $_POST['user_group'] == "admin" && $_POST['user_is_staff'] == 1 ) {
-	    $_POST['user_group'] = 0;
-	    $_POST['user_is_admin'] = 1;
-	} else {
-	    $_POST['user_is_admin'] = 0;
-	}
+    if ( $_POST['user_group'] == "admin" && $_POST['user_is_staff'] == 1 ) {
+        $_POST['user_group'] = 0;
+        $_POST['user_is_admin'] = 1;
+    } else {
+        $_POST['user_is_admin'] = 0;
+    }
     settype($_POST['user_group'], 'integer');
 
-	if ( $_POST['user_is_staff'] == 0 ) {
-	    $_POST['user_group'] = 0;
-	    $_POST['user_is_admin'] = 0;
-	}
-	
-	if ( $_POST['user_homepage'] == "http://" ) {
-	    $_POST['user_homepage'] = "";
-	}
-	
-	if ( $_POST['gen_password'] == 1 ) {
-	    $_POST['newpwd'] = generate_pwd ( 15 );
-	}
-	$user_salt = generate_pwd ( 10 );
-	$codedpwd = md5 ( $_POST['newpwd'].$user_salt );
+    if ( $_POST['user_is_staff'] == 0 ) {
+        $_POST['user_group'] = 0;
+        $_POST['user_is_admin'] = 0;
+    }
+    
+    if ( $_POST['user_homepage'] == "http://" ) {
+        $_POST['user_homepage'] = "";
+    }
+    
+    if ( $_POST['gen_password'] == 1 ) {
+        $_POST['newpwd'] = generate_pwd ( 15 );
+    }
+    $user_salt = generate_pwd ( 10 );
+    $codedpwd = md5 ( $_POST['newpwd'].$user_salt );
 
-	// MySQL-Queries
+    // MySQL-Queries
     mysql_query ( "
-					INSERT INTO `".$global_config_arr['pref']."user`
-					    ( `user_name`, `user_password`, `user_salt`,
-						`user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
-						`user_reg_date`, `user_show_mail`, `user_homepage`,
-						`user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype` )
-					VALUES (
-						'".$_POST['user_name']."',
-						'".$codedpwd."',
-						'".$user_salt."',
-						'".$_POST['user_mail']."',
-						'".$_POST['user_is_staff']."',
-						'".$_POST['user_group']."',
-						'".$_POST['user_is_admin']."',
-						'".$user_date."',
-						'".$_POST['user_show_mail']."',
-						'".$_POST['user_homepage']."',
-						'".$_POST['user_icq']."',
-						'".$_POST['user_aim']."',
-						'".$_POST['user_wlm']."',
-						'".$_POST['user_yim']."',
-						'".$_POST['user_skype']."'
-					)
-	", $db );
-	$user_id = mysql_insert_id ( $db );
-	$message = "Benutzer wurde erfolgreich hinzugefügt";
+                    INSERT INTO `".$global_config_arr['pref']."user`
+                        ( `user_name`, `user_password`, `user_salt`,
+                        `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
+                        `user_reg_date`, `user_show_mail`, `user_homepage`,
+                        `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype` )
+                    VALUES (
+                        '".$_POST['user_name']."',
+                        '".$codedpwd."',
+                        '".$user_salt."',
+                        '".$_POST['user_mail']."',
+                        '".$_POST['user_is_staff']."',
+                        '".$_POST['user_group']."',
+                        '".$_POST['user_is_admin']."',
+                        '".$user_date."',
+                        '".$_POST['user_show_mail']."',
+                        '".$_POST['user_homepage']."',
+                        '".$_POST['user_icq']."',
+                        '".$_POST['user_aim']."',
+                        '".$_POST['user_wlm']."',
+                        '".$_POST['user_yim']."',
+                        '".$_POST['user_skype']."'
+                    )
+    ", $db );
+    $user_id = mysql_insert_id ( $db );
+    $message = "Benutzer wurde erfolgreich hinzugefügt";
 
-	mysql_query ( "
-					UPDATE ".$global_config_arr['pref']."counter
-					SET `user` = `user`+1
-	", $db );
-	
-	// upload image
-	if ( $_FILES['user_pic']['name'] != "" ) {
-	    $upload = upload_img ( $_FILES['user_pic'], "images/avatare/", $user_id, $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
-	    $message .= "<br>" . upload_img_notice ( $upload );
-	}
-	
-	// send email
-	$template_mail = get_email_template ( "signup" );
-	$template_mail = str_replace ( "{username}", stripslashes ( $_POST['user_name'] ), $template_mail );
-	$template_mail = str_replace ( "{password}", $_POST['newpwd'], $template_mail );
-	$template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
-	$email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
-	if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_betreff, $template_mail ) ) {
-	    $message .= "<br>E-Mail mit Zugangsdaten wurde erfolgreich gesendet";
-	} else {
-	    $message .= "<br>E-Mail mit Zugangsdaten konnte nicht gesendet werden";
-	}
+    mysql_query ( "
+                    UPDATE ".$global_config_arr['pref']."counter
+                    SET `user` = `user`+1
+    ", $db );
+    
+    // upload image
+    if ( $_FILES['user_pic']['name'] != "" ) {
+        $upload = upload_img ( $_FILES['user_pic'], "images/avatare/", $user_id, $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        $message .= "<br>" . upload_img_notice ( $upload );
+    }
+    
+    // send email
+    $template_mail = get_email_template ( "signup" );
+    $template_mail = str_replace ( "{username}", stripslashes ( $_POST['user_name'] ), $template_mail );
+    $template_mail = str_replace ( "{password}", $_POST['newpwd'], $template_mail );
+    $template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
+    $email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
+    if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_betreff, $template_mail ) ) {
+        $message .= "<br>E-Mail mit Zugangsdaten wurde erfolgreich gesendet";
+    } else {
+        $message .= "<br>E-Mail mit Zugangsdaten konnte nicht gesendet werden";
+    }
 
-	// system messages
+    // system messages
     systext( $message, $admin_phrases[common][info] );
 
     // Unset Vars
@@ -147,41 +147,42 @@ if (
 
 if ( TRUE )
 {
-	// Display Error Messages
-	if ( isset ( $_POST['sended'] ) ) {
-		if ( user_name_free ( $_POST['user_name'] ) == FALSE ) {
-		    $message[] = "Der angegebene Benutzername existiert bereits";
-		}
-		if ( $_POST['newpwd'] != $_POST['wdhpwd'] && $_POST['gen_password'] != 1 ) {
-		    $message[] = "Das Passwort muss zweimal identisch eingegeben werden";
-		}
-		$message = implode ( "<br>", $message );
-		if ( strlen ( $message ) == 0 ) {
-			$message = $admin_phrases[common][note_notfilled];
-		}
-		systext ( $message, $admin_phrases[common][error], TRUE );
-	} else {
-	    $_POST['gen_password'] = 1;
-	    $_POST['user_homepage'] = "http://";
-    	$_POST['d'] = date ( "d" );
-    	$_POST['m'] = date ( "m" );
-    	$_POST['y'] = date ( "Y" );
-	}
+    // Display Error Messages
+    if ( isset ( $_POST['sended'] ) ) {
+        $message = array();
+        if ( user_name_free ( $_POST['user_name'] ) == FALSE ) {
+            $message[] = "Der angegebene Benutzername existiert bereits";
+        }
+        if ( $_POST['newpwd'] != $_POST['wdhpwd'] && $_POST['gen_password'] != 1 ) {
+            $message[] = "Das Passwort muss zweimal identisch eingegeben werden";
+        }
+        $message = implode ( "<br>", $message );
+        if ( strlen ( $message ) == 0 ) {
+            $message = $admin_phrases[common][note_notfilled];
+        }
+        systext ( $message, $admin_phrases[common][error], TRUE );
+    } else {
+        $_POST['gen_password'] = 1;
+        $_POST['user_homepage'] = "http://";
+        $_POST['d'] = date ( "d" );
+        $_POST['m'] = date ( "m" );
+        $_POST['y'] = date ( "Y" );
+    }
 
-	// get other data
+    // get other data
     if ( $_POST['user_is_staff'] == 1 ) {
-		$display_arr['group_tr'] = "default";
-	} else {
-		$display_arr['group_tr'] = "hidden";
-	}
-	
+        $display_arr['group_tr'] = "default";
+    } else {
+        $display_arr['group_tr'] = "hidden";
+    }
+    
     if ( $_POST['gen_password'] == 1 ) {
-		$display_arr['pwd_tr'] = "hidden";
-	} else {
-		$display_arr['pwd_tr'] = "default";
-	}
+        $display_arr['pwd_tr'] = "hidden";
+    } else {
+        $display_arr['pwd_tr'] = "default";
+    }
 
-	// security functions
+    // security functions
     $_POST['user_name'] = killhtml ( $_POST['user_name'] );
     $_POST['user_mail'] = killhtml ( $_POST['user_mail'] );
     $_POST['newpwd'] = killhtml ( $_POST['newpwd'] );
@@ -193,22 +194,22 @@ if ( TRUE )
     $_POST['user_yim'] = killhtml ( $_POST['user_yim'] );
     $_POST['user_skype'] = killhtml ( $_POST['user_skype'] );
 
-	settype ( $_POST['gen_password'], "integer" );
+    settype ( $_POST['gen_password'], "integer" );
     settype ( $_POST['user_is_staff'], "integer" );
     settype ( $_POST['user_group'], "integer" );
     settype ( $_POST['user_show_mail'], "integer" );
 
-	// get oterh data
-	$date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0, TRUE );
-	$nowbutton_array = array( "d", "m", "y" );
+    // get oterh data
+    $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0, TRUE );
+    $nowbutton_array = array( "d", "m", "y" );
 
-	// Display Form
+    // Display Form
     echo'
                     <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="go" value="user_add">
-						<input type="hidden" name="sended" value="1">
+                        <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">Hauptinformationen</td></tr>
+                            <tr><td class="line" colspan="2">Hauptinformationen</td></tr>
                             <tr>
                                 <td class="config">
                                     Benutzername:<br>
@@ -233,12 +234,12 @@ if ( TRUE )
                                     <span class="small">Datum, an dem der Benutzer registriert wurde.</span>
                                 </td>
                                 <td class="config">
-									<span class="small">
-										<input class="text" size="3" maxlength="2" id="d" name="d" value="'.$date_arr['d'].'"> .
-                                    	<input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
-                                    	<input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
-									</span>
-									'.js_nowbutton ( $nowbutton_array, $admin_phrases[common][today] ).'
+                                    <span class="small">
+                                        <input class="text" size="3" maxlength="2" id="d" name="d" value="'.$date_arr['d'].'"> .
+                                        <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
+                                        <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
+                                    </span>
+                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases[common][today] ).'
                                 </td>
                             </tr>
                             <tr>
@@ -248,9 +249,9 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="gen_password" value="1" '.getchecked( $_POST['gen_password'], 1 ).'
-										onChange="show_hidden(document.getElementById(\'newpwd_tr\'), this, false);
-										show_hidden(document.getElementById(\'wdhpwd_tr\'), this, false)"
-									>
+                                        onChange="show_hidden(document.getElementById(\'newpwd_tr\'), this, false);
+                                        show_hidden(document.getElementById(\'wdhpwd_tr\'), this, false)"
+                                    >
                                 </td>
                             </tr>
                             <tr class="'.$display_arr['pwd_tr'].'" id="newpwd_tr">
@@ -272,7 +273,7 @@ if ( TRUE )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-							<tr><td class="line" colspan="2">Zusätzliche Einstellungen</td></tr>
+                            <tr><td class="line" colspan="2">Zusätzliche Einstellungen</td></tr>
                             <tr>
                                 <td class="config">
                                     Benutzer-Bild: <span class="small">(optional)</span>
@@ -289,8 +290,8 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="user_is_staff" value="1" '.getchecked ( $_POST['user_is_staff'], 1 ).'
-										onChange="show_hidden(document.getElementById(\'group_tr\'), this, true)"
-									>
+                                        onChange="show_hidden(document.getElementById(\'group_tr\'), this, true)"
+                                    >
                                 </td>
                             </tr>
                             <tr class="'.$display_arr['group_tr'].'" id="group_tr">
@@ -301,32 +302,32 @@ if ( TRUE )
                                 <td class="config">
                                     <select name="user_group" size="1">
                                         <option value="0"'.getselected ( $_POST['user_group'], 0 ).'>keine Gruppe</option>
-	';
+    ';
 
-	$index = mysql_query ("
-							SELECT `user_group_id`, `user_group_name`
-							FROM ".$global_config_arr['pref']."user_groups
-							WHERE `user_group_id` > 0
-							ORDER BY `user_group_name`
-	", $db );
+    $index = mysql_query ("
+                            SELECT `user_group_id`, `user_group_name`
+                            FROM ".$global_config_arr['pref']."user_groups
+                            WHERE `user_group_id` > 0
+                            ORDER BY `user_group_name`
+    ", $db );
 
-	while ( $group_arr = mysql_fetch_assoc( $index ) ) {
-	    echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $_POST['user_group'], $group_arr['user_group_id'] ).'>
-			'.$group_arr['user_group_name'].'</option>';
-	}
+    while ( $group_arr = mysql_fetch_assoc( $index ) ) {
+        echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $_POST['user_group'], $group_arr['user_group_id'] ).'>
+            '.$group_arr['user_group_name'].'</option>';
+    }
 
-	$index = mysql_query ("
-							SELECT `user_group_id`, `user_group_name`
-							FROM ".$global_config_arr['pref']."user_groups
-							WHERE `user_group_id` = 0
-							ORDER BY `user_group_name`
-							LIMIT 0,1
-	", $db );
-	$group_arr = mysql_fetch_assoc( $index );
-	echo '<option value="admin" '.getselected ( $_POST['user_group'], "admin" ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
+    $index = mysql_query ("
+                            SELECT `user_group_id`, `user_group_name`
+                            FROM ".$global_config_arr['pref']."user_groups
+                            WHERE `user_group_id` = 0
+                            ORDER BY `user_group_name`
+                            LIMIT 0,1
+    ", $db );
+    $group_arr = mysql_fetch_assoc( $index );
+    echo '<option value="admin" '.getselected ( $_POST['user_group'], "admin" ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
 
-	echo '
-									</select>
+    echo '
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -339,7 +340,7 @@ if ( TRUE )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-							<tr><td class="line" colspan="2">Kontaktinformationen</td></tr>
+                            <tr><td class="line" colspan="2">Kontaktinformationen</td></tr>
                             <tr>
                                 <td class="config">
                                     Homepage: <span class="small">(optional)</span><br>

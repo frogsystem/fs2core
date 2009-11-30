@@ -120,7 +120,7 @@ if (  isset ( $_POST['alias_id'] ) && $_POST['alias_action'] )
                         <input type="hidden" name="sended" value="edit">
                         <input type="hidden" name="alias_id" value="'.$_POST['alias_id'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("alias_id_edit_title").'</td></tr>
+                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("alias_edit_title").'</td></tr>
                             <tr>
                                 <td class="config">
                                     '.$TEXT["admin"]->get("alias_go_title").':<br>

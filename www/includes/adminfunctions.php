@@ -664,7 +664,7 @@ function create_menu ( $ACTIVE_MENU )
     $index = mysql_query ( "
                                     SELECT *
                                     FROM `".$global_config_arr['pref']."admin_cp`
-                                    WHERE `group_id` = '-1'
+                                    WHERE `group_id` = '-1' AND `page_int_sub_perm` = 0
                                     ORDER BY `page_pos` ASC, `page_id` ASC
     ", $db );
 
@@ -703,6 +703,7 @@ function create_menu_show ( $MENU_ID )
                                         FROM `".$global_config_arr['pref']."admin_groups` G, `".$global_config_arr['pref']."admin_cp` P
                                         WHERE G.`menu_id` = '".$MENU_ID."'
                                         AND P.`group_id` = G.`group_id`
+                                        AND P.`page_int_sub_perm` = 0
                                         ORDER BY `page_id`
     ", $db );
     
@@ -728,7 +729,7 @@ function create_navi (  $ACTIVE_MENU, $GO  )
 
         unset ( $template );
 
-    $groupaction = mysql_query ( "
+        $groupaction = mysql_query ( "
                                             SELECT `group_id`, `group_title`
                                             FROM `".$global_config_arr['pref']."admin_groups`
                                             WHERE `menu_id` = '".$ACTIVE_MENU."'
