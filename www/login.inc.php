@@ -44,6 +44,8 @@ if ( $db && mysql_select_db ( $dbc['data'], $db ) ) {
     } else {
         $global_config_arr['home_real'] = "news";
     }
+    //get short_language code
+    $global_config_arr['language'] = ( preg_match ( "/[a-z]{2}_[A-Z]{2}/", $global_config_arr['language_text'] ) === 1 ) ? substr ( $global_config_arr['language_text'], 0, 2 ) : $global_config_arr['language_text'];
 }
 
 

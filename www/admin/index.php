@@ -24,9 +24,9 @@ require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
 //Include Phrases-Files
 require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
 require ( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php" );
-$TEXT['admin'] = new langDataInit ( "de_DE", "admin" );
-$TEXT['frontend'] = new langDataInit ( "de_DE", "frontend" );
-$TEXT['template'] = new langDataInit ( "de_DE", "template" );
+$TEXT['admin'] = new langDataInit ( $global_config_arr['language_text'], "admin" );
+$TEXT['frontend'] = new langDataInit ( $global_config_arr['language_text'], "frontend" );
+$TEXT['template'] = new langDataInit ( $global_config_arr['language_text'], "template" );
 
 
 $index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);

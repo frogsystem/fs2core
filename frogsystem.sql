@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.1.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 29. November 2009 um 23:33
--- Server Version: 5.1.37
--- PHP-Version: 5.3.0
+-- Erstellungszeit: 30. November 2009 um 01:11
+-- Server Version: 5.1.30
+-- PHP-Version: 5.2.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -421,7 +421,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 79, 4418, 6, 1, 2, 2);
+(1, 81, 4430, 6, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -443,7 +443,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 153, 1223919890, 1259497566),
+('http://localhost/fs2/', 161, 1223919890, 1259539622),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569),
@@ -528,7 +528,8 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2009, 11, 16, 2, 568),
 (2009, 11, 23, 1, 655),
 (2009, 11, 28, 4, 25),
-(2009, 11, 29, 2, 8);
+(2009, 11, 29, 3, 9),
+(2009, 11, 30, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -742,7 +743,7 @@ CREATE TABLE `fs_global_config` (
   `page_prev` text COLLATE utf8_unicode_ci NOT NULL,
   `random_timed_deltime` int(12) NOT NULL DEFAULT '0',
   `feed` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `language` varchar(2) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'de',
+  `language_text` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'de_DE',
   `home` tinyint(1) NOT NULL DEFAULT '0',
   `home_text` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `auto_forward` int(2) NOT NULL DEFAULT '3',
@@ -753,8 +754,8 @@ CREATE TABLE `fs_global_config` (
 -- Daten für Tabelle `fs_global_config`
 --
 
-INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `design`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language`, `home`, `home_text`, `auto_forward`) VALUES
-(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 0, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y H:i \\\\U\\\\h\\\\r', '{prev}Seite {page_number} von {total_pagesnext}', ' <a href=\\"{url}\\">weiter »</a>', '<a href=\\"{url}\\">« zurück</a> ', 604800, 'rss20', 'de', 0, '', 4);
+INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `design`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`) VALUES
+(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 0, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y H:i \\\\U\\\\h\\\\r', '{prev}Seite {page_number} von {total_pagesnext}', ' <a href=\\"{url}\\">weiter »</a>', '<a href=\\"{url}\\">« zurück</a> ', 604800, 'rss20', 'de_DE', 0, '', 4);
 
 -- --------------------------------------------------------
 
@@ -772,6 +773,8 @@ CREATE TABLE `fs_iplist` (
 -- Daten für Tabelle `fs_iplist`
 --
 
+INSERT INTO `fs_iplist` (`ip`) VALUES
+('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -850,7 +853,6 @@ CREATE TABLE `fs_news_comments` (
 --
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(2, 1, '1', 1, '127.0.0.1', 1242681258, 'sdfsdfdsf', 'dfsdf'),
 (3, 1, '1', 1, '127.0.0.1', 1242681268, 'Hallo', 'Das freut micht!!!!');
 
 -- --------------------------------------------------------
@@ -1577,6 +1579,8 @@ CREATE TABLE `fs_useronline` (
 -- Daten für Tabelle `fs_useronline`
 --
 
+INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
+('127.0.0.1', 1, 1259539632);
 
 -- --------------------------------------------------------
 
@@ -1715,7 +1719,3 @@ CREATE TABLE `fs_zones` (
 -- Daten für Tabelle `fs_zones`
 --
 
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

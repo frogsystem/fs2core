@@ -11,6 +11,7 @@ if (
                 && $_POST['page'] && $_POST['page'] != ""
                 && $_POST['page_next'] && $_POST['page_next'] != ""
                 && $_POST['page_prev'] && $_POST['page_prev'] != ""
+                && is_language_text ( $_POST['language_text'] )
                 && ( $_POST['home'] == 0 || ( $_POST['home'] == 1 && $_POST['home_text'] != "" ) )
         )
 {
@@ -33,7 +34,7 @@ if (
     $_POST['page_next'] = savesql ( $_POST['page_next'] );
     $_POST['page_prev'] = savesql ( $_POST['page_prev'] );
     $_POST['feed'] = savesql ( $_POST['feed'] );
-    $_POST['language'] = savesql ( $_POST['language'] );
+    $_POST['language_text'] = savesql ( $_POST['language_text'] );
     $_POST['home_text'] = savesql ( $_POST['home_text'] );
     $_POST['dyn_title_ext'] = savesql ( $_POST['dyn_title_ext'] );
 
@@ -67,13 +68,13 @@ if (
                                             `page_next` = '".$_POST['page_next']."',
                                             `page_prev` = '".$_POST['page_prev']."',
                                             `feed` = '".$_POST['feed']."',
-                                            `language` = '".$_POST['language']."',
+                                            `language_text` = '".$_POST['language_text']."',
                                             `home` = '".$_POST['home']."',
                                             `home_text` = '".$_POST['home_text']."',
                                             `auto_forward` = '".$_POST['auto_forward']."'
                                     WHERE `id` = '1'
     ", $db );
-    
+
     // system messages
     systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
 
@@ -117,7 +118,7 @@ if ( TRUE )
     $_POST['page_next'] = killhtml ( $_POST['page_next'] );
     $_POST['page_prev'] = killhtml ( $_POST['page_prev'] );
     $_POST['feed'] = killhtml ( $_POST['feed'] );
-    $_POST['language'] = killhtml ( $_POST['language'] );
+    $_POST['language_text'] = killhtml ( $_POST['language_text'] );
     $_POST['home_text'] = killhtml ( $_POST['home_text'] );
     $_POST['dyn_title_ext'] = killhtml ( $_POST['dyn_title_ext'] );
 
@@ -239,20 +240,20 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <select name="design" size="1">
-        ';
-        $index = mysql_query ( "
-                                SELECT `id`, `name`
-                                FROM `".$global_config_arr['pref']."template`
-                                ORDER BY `id`
-        ", $db );
-        while ( $design_arr = mysql_fetch_assoc ( $index ) ) {
+    ';
+    $index = mysql_query ( "
+                            SELECT `id`, `name`
+                            FROM `".$global_config_arr['pref']."template`
+                            ORDER BY `id`
+    ", $db );
+    while ( $design_arr = mysql_fetch_assoc ( $index ) ) {
         settype ( $design_arr['id'], "integer" );
         echo '<option class="option_hover" value="'.$design_arr['id'].'" '.getselected ( $design_arr['id'], $_POST['design'] ).'>'.killhtml($design_arr['name']);
-            if ( $design_arr['id'] == $_POST['design'] ) {
-                echo ' ('.$admin_phrases[common][active].')';
-            }
-        echo '</option>';
+        if ( $design_arr['id'] == $_POST['design'] ) {
+            echo ' ('.$admin_phrases[common][active].')';
         }
+        echo '</option>';
+    }
     echo '
                                     </select>
                                 </td>
@@ -310,9 +311,17 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[general][language_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="language" size="1">
-                                        <option value="de" '.getselected ( "de", $_POST['language'] ).'>'.$admin_phrases[general][language_de].'</option>
-                                        <option value="en" '.getselected ( "en", $_POST['language'] ).'>'.$admin_phrases[general][language_en].' (doesn\'t work)</option>
+                                    <select name="language_text" size="1">
+    ';
+
+    $lang_dirs = scandir_filter ( FS2_ROOT_PATH . "lang", array () );
+    foreach ( $lang_dirs as $lang_dir ) {
+        if ( is_dir ( FS2_ROOT_PATH . "lang/" . $lang_dir ) == TRUE && is_language_text ( $lang_dir ) ) {
+            echo '<option value="'.$lang_dir.'" '.getselected ($lang_dir, $_POST['language_text']).'>'.$lang_dir.'</option>';
+        }
+    }
+    
+    echo '
                                     </select>
                                 </td>
                             </tr>

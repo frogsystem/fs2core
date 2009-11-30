@@ -1,4 +1,17 @@
 <?php
+
+/////////////////////////////////
+//// validation of lang dirs ////
+/////////////////////////////////
+function is_language_text ( $TEXT )
+{
+    if ( preg_match ( "/[a-z]{2}_[A-Z]{2}/", $TEXT ) === 1 ) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
 //////////////////////////////////
 //// validation of a hexcolor ////
 //////////////////////////////////

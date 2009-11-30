@@ -32,7 +32,7 @@ if ($db)
 
     //Include Phrases-Files
     require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
-    $TEXT = new langDataInit ( "de_DE", "frontend" );
+    $TEXT = new langDataInit ( $global_config_arr['language_text'], "frontend" );
 
 
     // Constructor Calls

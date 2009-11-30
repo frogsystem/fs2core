@@ -1,22 +1,26 @@
 alix5:
 
-Aliase
+Aliase => Texte einfügen
+News-Edit-Kommentare Text
 style-verwaltung
 
-kommentare auf neues auswahl system umstellen (mehrfache löschen ermöglichen!!!!)
-sämtliche auswahlen auf farb-funktionalität testen
+
+Auswahlen auf farb-funktionalität testen
 JS-"einfügen" buttons auf funktionalität testen
+
 refresh bei kommentaren
 doppelte kommenatre unterbinden
-sprach-system fertigstellen (auswahl von sprache)
+
 sub-rechte checken (was passiert, wenn nur Subrecht aktiviert ist?) und zumindest einen hübschen pfeil basteln ;)
+gruppen-sub rechte
 Seitennavigation bei user_list
+
 
 Startseite (und News entsprechend...)
 Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
 Globale Suche (in news, artikeln, screenshots & download beschreibungen/titlen) inkl. Suchzeichen
 
-HTML-Editor fertig (Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP und [%%]...)
+HTML-Editor fertig (Codemirror Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP.$NAV und[%*%]...)
 Templates anpassen
 
 bug-fixes:
