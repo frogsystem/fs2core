@@ -53,19 +53,19 @@ if ($db)
     $template_general->tag("content", get_content ( $global_config_arr['goto'] ));
     $template_general->tag("copyright",  get_copyright ());
 
-    $template_index = $template_general->display();
+    $template_general = $template_general->display();
 
-    $template_index = replace_snippets ( $template_index );
-    $template_index = replace_navigations ( $template_index );
-    $template_index = replace_applets ( $template_index );
-    $template_index = replace_navigations ( $template_index );
-    $template_index = replace_snippets ( $template_index );
+    $template_general = replace_snippets ( $template_general );
+    $template_general = replace_navigations ( $template_general );
+    $template_general = replace_applets ( $template_general );
+    $template_general = replace_navigations ( $template_general );
+    $template_general = replace_snippets ( $template_general );
     
-    $template_index = replace_globalvars ( $template_index );
+    $template_general = replace_globalvars ( $template_general );
     
     // Get Main Template
     $template = get_maintemplate ();
-    $template = str_replace ( "{..body..}", $template_index, $template);
+    $template = str_replace ( "{..body..}", $template_general, $template);
 
     // Display Page
     echo $template;

@@ -63,7 +63,7 @@ elseif ($_POST[artikelid])
                                     <font class="small">Aktuelles Artikelbild</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <img src="../images/shop/'.$_POST[artikelid].'_s.jpg">
+                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'">
                                 </td>
                             </tr>
                             <tr>
@@ -82,7 +82,7 @@ elseif ($_POST[artikelid])
                                     <font class="small">Name des Artikel. Kommt auch in den Hotlink</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="title" size="51" value="'.$artikel_arr[artikel_name].'" maxlength="100">
+                                    <input class="text" name="title" size="51" value="'.killhtml ( $artikel_arr[artikel_name] ).'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -91,7 +91,7 @@ elseif ($_POST[artikelid])
                                     <font class="small">Link zum Produkt</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="url" size="51" value="'.$artikel_arr[artikel_url].'" maxlength="255">
+                                    <input class="text" name="url" size="51" value="'.killhtml ( $artikel_arr[artikel_url] ).'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
@@ -100,16 +100,16 @@ elseif ($_POST[artikelid])
                                     <font class="small">Kurze Artikelbeschreibung (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", $artikel_arr[artikel_text], 330, 130).'
+                                    '.create_editor("text", killhtml ( $artikel_arr[artikel_text] ), 330, 130).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Preis:<br>
-                                    <font class="small">Preis in &euro; (bsp 7,99)</font>
+                                    <font class="small">Preis</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="preis" size="10" value="'.$artikel_arr[artikel_preis].'" maxlength="7"> &euro;
+                                    <input class="text" name="preis" size="10" value="'.killhtml ( $artikel_arr[artikel_preis] ).'" maxlength="10">
                                 </td>
                             </tr>
                             <tr>
@@ -172,16 +172,16 @@ else
         echo'
                             <tr>
                                 <td class="config">
-                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id'] ).'" alt="'.$artikel_arr[artikel_name].'">
+                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'" alt="'.stripslashes ( $artikel_arr[artikel_name] ).'">
                                 </td>
                                 <td class="configthin">
-                                    '.$artikel_arr[artikel_name].'
+                                    '.stripslashes ( $artikel_arr[artikel_name] ).'
                                 </td>
                                 <td class="configthin">
-                                    '.$artikel_arr[artikel_preis].'
+                                    '.stripslashes ( $artikel_arr[artikel_preis] ).'
                                 </td>
                                 <td class="config">
-                                    <input type="radio" name="artikelid" value="'.$artikel_arr[artikel_id].'">
+                                    <input class="pointer" type="radio" name="artikelid" value="'.$artikel_arr[artikel_id].'">
                                 </td>
                             </tr>
         ';

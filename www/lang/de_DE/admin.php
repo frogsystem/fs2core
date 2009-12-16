@@ -75,6 +75,9 @@ $TEXT = array (
     "hex_color" =>
     'Hexadezimal Farbcode',
     
+    "folder_name_info" =>
+    'nur a-z, 0-9, "-" und "_" erlaubt',
+    
     
 //Buttons & Auswahl-Buttons
     "button_arrow" =>
@@ -452,7 +455,7 @@ $TEXT = array (
     "nicht aktiv",
     
     
-    //Aliasse
+//Aliasse
     "alias_add_title" =>
     "Alias hinzufügen",
 
@@ -507,6 +510,13 @@ $TEXT = array (
     "alias_not_active" =>
     "nicht aktiv",
 
+
+// Template
+    "template_file_not_found" =>
+    "Template-Datei konnte nicht gefunden werden",
+
+    "template_file_created" =>
+    "Template-Datei wurde neu erstellt",
 
 
 );

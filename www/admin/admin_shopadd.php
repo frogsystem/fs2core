@@ -76,10 +76,10 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Preis:<br>
-                                    <font class="small">Preis in &euro; (bsp 7,99)</font>
+                                    <font class="small">Preis</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="preis" size="10" maxlength="7"> &euro;
+                                    <input class="text" name="preis" size="10" maxlength="10">
                                 </td>
                             </tr>
                             <tr>

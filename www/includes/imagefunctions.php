@@ -1,7 +1,34 @@
 <?php
-////////////////////////////////
-//// Image exists           ////
-////////////////////////////////
+////////////////////////
+//// Get Image HTML ////
+////////////////////////
+
+function get_image_html ( $PATH, $TITLE, $SHOW_TITLE = TRUE, $OTHER = FALSE )
+{
+    $img_html = '<img src="'.$PATH.'" alt="'.$TITLE.'"';
+    $img_html .= ( $SHOW_TITLE === TRUE ) ? ' title="'.$TITLE.'"' : "";
+    $img_html .= ( $OTHER != FALSE ) ? ' '.$OTHER.'>' : ">";
+
+    return $img_html;
+}
+
+//////////////////////////
+//// Get Image Output ////
+//////////////////////////
+
+function get_image_output ( $PATH, $NAME, $TITLE, $NO_TEXT = "", $SHOW_TITLE = TRUE, $OTHER = FALSE )
+{
+    if ( image_exists ( $PATH, $NAME ) ) {
+        return get_image_html ( image_url ( $PATH, $NAME, FALSE ), $TITLE, $SHOW_TITLE, $OTHER );
+    } else {
+        return $NO_TEXT;
+    }
+}
+
+
+//////////////////////
+//// Image exists ////
+//////////////////////
 
 function image_exists ( $PATH, $NAME )
 {
@@ -22,9 +49,9 @@ function image_exists ( $PATH, $NAME )
     }
 }
 
-////////////////////////////////
-//// Create Image URL       ////
-////////////////////////////////
+//////////////////////////
+//// Create Image URL ////
+//////////////////////////
 
 function image_url ( $PATH, $NAME, $ERROR = TRUE, $NO_URL = FALSE )
 {
@@ -45,7 +72,7 @@ function image_url ( $PATH, $NAME, $ERROR = TRUE, $NO_URL = FALSE )
         $url = $PATH . $NAME . ".png";
     }
     elseif ( $ERROR == TRUE ) {
-        $url = "images/icons/nopic_small.gif";
+        $url = "styles/".$global_config_arr['style']."/icons/image_error.gif";
     }
     else {
         $url = "";

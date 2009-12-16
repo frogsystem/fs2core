@@ -208,8 +208,11 @@ function get_content ( $GOTO )
     $index = mysql_query ( "SELECT COUNT(article_id) AS 'number' FROM ".$global_config_arr['pref']."articles WHERE article_url = '".$GOTO."'", $db );
 
     // Display Content
+    $template = "";
     if ( file_exists ( "data/".$GOTO.".php" ) ) {
         include ( FS2_ROOT_PATH . "data/".$GOTO.".php" );
+    } elseif ( file_exists ( "data/".$GOTO ) ) {
+        include ( FS2_ROOT_PATH . "data/".$GOTO );
     } elseif ( mysql_result ( $index, 0, "number") >= 1 ) {
         include ( FS2_ROOT_PATH . "data/articles.php" );
     } elseif ( $GOTO == "dl" && isset ( $_GET['fileid'] ) && isset ( $_GET['dl'] ) ) {

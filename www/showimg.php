@@ -1,179 +1,128 @@
 <?php
 // Start Session
-session_start();
+session_start ();
+// Disable magic_quotes_runtime
+set_magic_quotes_runtime ( FALSE );
 
 // fs2 include path
 set_include_path ( '.' );
 define ( FS2_ROOT_PATH, "./", TRUE );
 
-require( FS2_ROOT_PATH . "login.inc.php");
+// Inlcude DB Connection File
+require ( FS2_ROOT_PATH . "login.inc.php");
+
 if ($db)
 {
-    require( FS2_ROOT_PATH . "includes/functions.php");
-    require( FS2_ROOT_PATH . "includes/indexfunctions.php");
-    require( FS2_ROOT_PATH . "includes/imagefunctions.php");
+    //Include Functions-Files
+    require ( FS2_ROOT_PATH . "includes/functions.php" );
+    require ( FS2_ROOT_PATH . "includes/imagefunctions.php" );
+    require ( FS2_ROOT_PATH . "includes/indexfunctions.php" );
+    
+    //Include Library-Classes
+    require ( FS2_ROOT_PATH . "libs/class_template.php" );
+    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
+    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
+    
+    //Get TEXT-Data
+    $TEXT = new langDataInit ( $global_config_arr['language_text'], "frontend" );
 
-/////////////////////////////
-//// Konstruktor aufrufe ////
-/////////////////////////////
-set_design();
+    // Constructor Calls
+    set_style ();
 
 
-//Template aufbauen
-$index = mysql_query("SELECT doctype FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-$template_main = stripslashes(mysql_result($index, 0, "doctype"));
-$template_main .= '
-<html>
-<head>
+    // Security Functions
+    $_GET['cat_id'] = ( isset ( $_GET['catid'] ) ) ? $_GET['catid'] : $_GET['cat_id'];
+    $_GET['img_id'] = ( isset ( $_GET['screenid'] ) ) ? $_GET['screenid'] : $_GET['img_id'];
+    settype( $_GET['cat_id'], "integer" );
+    settype( $_GET['img_id'], "integer" );
 
-  <title>'.$global_config_arr[title].'</title>
-  <base href="'.$global_config_arr['virtualhost'].'">
+    // Config Array
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."screen_config", $db );
+    $config_arr = mysql_fetch_assoc ( $index ) ;
 
-  <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <META name="Description" content="'.$global_config_arr[description].'">
-  <META name="Keywords" content="'.$global_config_arr[keywords].'">
-  ';
+    // Get Image Data
+    if ( isset ( $_GET['screen'] ) ) {
+        $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."screen WHERE screen_id = ".$_GET['img_id']."", $db );
+        $data_array['caption'] = stripslashes ( mysql_result ( $index, 0, "screen_name" ) );
+        $data_array['image'] = image_url ( "images/screenshots/", $_GET['img_id'], FALSE );
+        $data_array['image_url'] = image_url ( "images/screenshots/", $_GET['img_id'] );
 
-if ($global_config_arr[show_favicon] == 1)
-  $template_main .= '<link rel="shortcut icon" href="images/icons/favicon.ico">
-  ';
-
-  $template_main .= '<link rel="stylesheet" type="text/css" href="style_css.php?id='.$global_config_arr['design'].'">
-  ';
-  $template_main .= '<link rel="stylesheet" type="text/css" href="editor_css.php?id='.$global_config_arr['design'].'">
-  ';
-
-$template_main .= '</head>';
-
-//Inhalt erzeugen
-settype($_GET[catid], 'integer');
-settype($_GET[screenid], 'integer');
-
-//config_arr
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config", $db);
-$config_arr = mysql_fetch_assoc($index);
-
-if (isset($_GET[screen]))
-{
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_GET[screenid]", $db);
-    $_GET[title] = mysql_result($index, 0, "screen_name");
-	$pic = image_url("images/screenshots/", $_GET[screenid], TRUE, TRUE);
-	$url = image_url("images/screenshots/", $_GET[screenid]);
-
-    // gibt es ein nächstes Bild?
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen
-                          WHERE cat_id = $_GET[catid] AND
-                                screen_id > $_GET[screenid]
-                          ORDER BY screen_id
-                          LIMIT 1", $db);
-    if (mysql_num_rows($index) > 0)
-    {
-        $nextid = mysql_result($index, 0, "screen_id");
-        $next = '
-                     <a href="'.$_SERVER[PHP_SELF].'?screen=1&amp;catid='.$_GET[catid].'&amp;screenid='.$nextid.'">
-                         << Vorheriges Bild
-                     </a>
-                ';
-    }
-
-    // Gibt es ein vorheriges Bild?
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen
-                          WHERE cat_id = $_GET[catid] AND
-                                screen_id < $_GET[screenid]
-                          ORDER BY screen_id DESC
-                          LIMIT 1", $db);
-    if (mysql_num_rows($index) > 0)
-    {
-        $previd = mysql_result($index, 0, "screen_id");
-        $prev = '
-                     <a href="'.$_SERVER[PHP_SELF].'?screen=1&amp;catid='.$_GET[catid].'&amp;screenid='.$previd.'">
-                         Nächstes Bild >>
-                     </a>
-                ';
-    }
-}
-
-$max_width = $config_arr[show_img_x];
-$max_height = $config_arr[show_img_y];
-
-list($width, $height) = getimagesize($pic);
-$imgratio=$width/$height;
-if ($width<=$max_width AND $height<=$max_height)
-{
-  $pic = "<img src='$url' border='0' alt='$_GET[title]'>";
-}
-elseif ($imgratio>1)   //Querformat
-{
-  if ($max_width/$imgratio > $max_height)
-  {
-    $pic = "<img src='$url' height='$max_height' border='0' alt='$_GET[title]'>";
-  }
-  else
-  {
-    $pic = "<img src='$url' width='$max_width' border='0' alt='$_GET[title]'>";
-  }
-}
-else    //Hochformat
-{
-  $pic = "<img src='$url' height='$max_height' border='0' alt='$_GET[title]'>";
-}
-
-$close ="&nbsp;&nbsp;&nbsp;<a href='#ank' onclick='self.close();'>[Fenster schlie&szlig;en]</a>&nbsp;&nbsp;&nbsp;";
-
-$index = mysql_query("select pic_viewer from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-$template_viewer = stripslashes(mysql_result($index, 0, "pic_viewer"));
+        // exists a NEXT image?
+        $index = mysql_query ( "
+                                SELECT * FROM `".$global_config_arr['pref']."screen`
+                                WHERE `cat_id` = ".$_GET['cat_id']."
+                                AND `screen_id` > ".$_GET['img_id']."
+                                ORDER BY `screen_id`
+                                LIMIT 1
+        ", $db );
         
-$template_viewer = str_replace("{text}", $_GET[title], $template_viewer);
-$template_viewer = str_replace("{weiter_grafik}", $next, $template_viewer);
-$template_viewer = str_replace("{zurück_grafik}", $prev, $template_viewer);
-$template_viewer = str_replace("{bild}", $pic, $template_viewer);
-$template_viewer = str_replace("{bild_url}", $url, $template_viewer);
-$template_viewer = str_replace("{close}", $close, $template_viewer);
+        if ( mysql_num_rows ( $index ) > 0 ) {
+            $next_id = mysql_result ( $index, 0, "screen_id" );
+            // Do some stuff for next image
+        }
 
+        // exists a PREVIOUS image?
+        $index = mysql_query ( "
+                                SELECT * FROM `".$global_config_arr['pref']."screen`
+                                WHERE `cat_id` = ".$_GET['cat_id']."
+                                AND `screen_id` < ".$_GET['img_id']."
+                                ORDER BY `screen_id` DESC
+                                LIMIT 1
+        ", $db );
+        
+        if ( mysql_num_rows ( $index ) > 0 ) {
+            $prev_id = mysql_result ( $index, 0, "screen_id" );
+            // Do some stuff for prev image
+        }
 
-//Includes
-$index = mysql_query("select * from ".$global_config_arr[pref]."includes where include_type = '2'", $db);
-while ($include_arr = mysql_fetch_assoc($index))
-{
-    // Include laden
-    include( FS2_ROOT_PATH . "res/".$include_arr['replace_thing']);
-    $template_include = $template;
-    unset($template);
-
-    //Seitenvariablen
-    $index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
-    while ($sv_arr = mysql_fetch_assoc($index))
-    {
-        // Include-URL laden
-        $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
-        $template_include = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_include);
     }
-    unset($sv_arr);
-    $template_include =  killsv($template_include);
-    $template_viewer = str_replace($include_arr['replace_string'], $template_include, $template_viewer);
-    unset($template_include);
-}
-unset($include_arr);
 
-//Seitenvariablen
-$index = mysql_query("select replace_string, replace_thing from ".$global_config_arr[pref]."includes where include_type = '1' ORDER BY replace_string ASC", $db);
-while ($sv_arr = mysql_fetch_assoc($index))
-{
-    // Include-URL laden
-    $sv_arr['replace_thing'] = killsv($sv_arr['replace_thing']);
-    $template_viewer = str_replace($sv_arr['replace_string'], stripslashes($sv_arr['replace_thing']), $template_viewer);
-}
-unset($sv_arr);
+    $max_width = $config_arr['show_img_x'];
+    $max_height = $config_arr['show_img_y'];
+
+    list ( $data_array['width'], $data_array['height'] ) = getimagesize ( $data_array['image_url'] );
+    $data_array['ratio'] = $data_array['width'] / $data_array['height'];
+    
+    if ( $data_array['width'] <= $config_arr['show_img_x'] && $data_array['height'] <= $config_arr['show_img_y'] ) {
+        $data_array['image'] = '<img src="'.$data_array['image'].'" alt="'.$data_array['caption'].'">';
+    } elseif ( $data_array['ratio'] > 1 && ( $config_arr['show_img_x'] / $data_array['ratio'] <= $config_arr['show_img_y'] ) ) { // landscape
+        $data_array['image'] = '<img src="'.$data_array['image'].'" width="'.$config_arr['show_img_x'].'" alt="'.$data_array['caption'].'">';
+    } else { // portait
+        $data_array['image'] = '<img src="'.$data_array['image'].'" height="'.$config_arr['show_img_y'].'" alt="'.$data_array['caption'].'">';
+    }
 
 
+    $template_viewer = str_replace("{weiter_grafik}", $next, $template_viewer);
+    $template_viewer = str_replace("{zurück_grafik}", $prev, $template_viewer);
 
-$template = $template_main.$template_viewer."</html>";
 
-unset($template_viewer);
-unset($template_main);
+    // Create PopUp-Viewer-Template
+    $template_popupviewer = new template();
 
-echo $template;
+    $template_popupviewer->setFile("0_general.tpl");
+    $template_popupviewer->load("POPUPVIEWER");
 
-mysql_close($db);
+    $template_popupviewer->tag( "image", $data_array['image'] );
+    $template_popupviewer->tag( "image_url", $data_array['image_url'] );
+    $template_popupviewer->tag( "caption", $data_array['caption'] );
+    $template_popupviewer->tag( "prev_url", $data_array[''] );
+    $template_popupviewer->tag( "prev_link", $data_array[''] );
+    $template_popupviewer->tag( "prev_image_link", $data_array[''] );
+    $template_popupviewer->tag( "next_url", $data_array[''] );
+    $template_popupviewer->tag( "next_link", $data_array[''] );
+    $template_popupviewer->tag( "next_image_link", $data_array[''] );
+
+    $template_popupviewer = $template_popupviewer->display();
+
+
+    // Get Main Template
+    $template = get_maintemplate ();
+    $template = str_replace ( "{..body..}", $template_popupviewer, $template);
+
+    // Display Page
+    echo $template;
+
+    // Close Connection
+    mysql_close ( $db );
 }
 ?>

@@ -69,8 +69,8 @@ if ( TRUE )
     settype ( $_POST['avatar_x'], "integer" );
     settype ( $_POST['avatar_y'], "integer" );
     settype ( $_POST['avatar_size'], "integer" );
-    $_POST['reg_date_format'] = stripslashes ( $_POST['reg_date_format'] );
-    $_POST['user_list_reg_date_format'] = stripslashes ( $_POST['user_list_reg_date_format'] );
+    $_POST['reg_date_format'] = killhtml ( $_POST['reg_date_format'] );
+    $_POST['user_list_reg_date_format'] = killhtml ( $_POST['user_list_reg_date_format'] );
     
     // Display Form
     echo'

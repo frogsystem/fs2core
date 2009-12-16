@@ -23,7 +23,6 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
       $APP(usermenu.php)<br><br>
       Zufallsbild:<br>
       $APP(preview-image.php)<br>
-      Shop:<br>
       $APP(shop-system.php)<br><br>
       Umfrage:<br>
       $APP(poll-system.php)<br>
@@ -48,36 +47,8 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
   </div>
 </body><!--section-end::MAINPAGE-->
 
-<!--section-start::MENU1-->
-<!--section-end::MENU1-->
-
-<!--section-start::PICTUREVIEWER--><body leftmargin="0" topmargin="0">
-
-<center>
-<table cellspacing="0" cellpadding="3">
- <tr align="center">
-  <td>
-   <a href="{bild_url}" target="_blank">{bild}</a><br><b>{text}</b>
-  </td>
- </tr>
-</table>
-  
-<table cellspacing="0" cellpadding="3">
- <tr>
-  <td width="33%" align="right">
-   <b>{weiter_grafik}</b>
-  </td>
-  <td width="33%" align="center">
-   <b>{close}</b>
-  </td>
-  <td width="33%" align="left">
-   <b>{zurück_grafik}</b>
-  </td>
- </tr>
-</table>
-</center>
-
-</body><!--section-end::PICTUREVIEWER-->
+<!--section-start::POPUPVIEWER-->
+<!--section-end::POPUPVIEWER-->
 
 <!--section-start::ANNOUNCEMENT--><b>Ankündigung:</b>
 <br><br>

@@ -1,30 +1,44 @@
 <?php
+// Get Data from DB
+$index = mysql_query ( "
+                        SELECT
+                            *
+                        FROM
+                            `".$global_config_arr['pref']."shop`
+", $db );
 
-$index = mysql_query("select * from ".$global_config_arr[pref]."shop", $db);
-while ($artikel_arr = mysql_fetch_assoc($index))
-{
-    $artikel_arr[artikel_text] = fscode($artikel_arr[artikel_text], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-    $artikel_arr[artikel_bild] = "images/shop/" . $artikel_arr[artikel_id] . ".jpg";
-    $artikel_arr[artikel_thumb] = "images/shop/" . $artikel_arr[artikel_id] . "_s.jpg";
+// Security Functions
+$shop_items = array();
 
-    $index2 = mysql_query("select shop_artikel from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $artikel = stripslashes(mysql_result($index2, 0, "shop_artikel"));
-    $artikel = str_replace("{titel}", $artikel_arr[artikel_name], $artikel); 
-    $artikel = str_replace("{beschreibung}", $artikel_arr[artikel_text], $artikel); 
-    $artikel = str_replace("{preis}", $artikel_arr[artikel_preis], $artikel); 
-    $artikel = str_replace("{bestell_url}", $artikel_arr[artikel_url], $artikel); 
-    $artikel = str_replace("{bild}", $artikel_arr[artikel_bild], $artikel); 
-    $artikel = str_replace("{thumbnail}", $artikel_arr[artikel_thumb], $artikel);
+// Get Item Templates
+while ( $shop_arr = mysql_fetch_assoc ( $index ) ) {
 
-    $artikel_list .= $artikel;
+    settype ( $shop_arr['artikel_id'], "integer" );
+    $shop_arr['artikel_name'] = stripslashes ( $shop_arr['artikel_name'] );
+    $shop_arr['artikel_text'] = fscode ( $shop_arr['artikel_text'], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 );
+
+    $template_item = new template();
+    $template_item->setFile("0_shop.tpl");
+    $template_item->load("SHOP_ITEM");
+
+    $template_item->tag("item_titel", $shop_arr['artikel_name'] );
+    $template_item->tag("item_text", $shop_arr['artikel_text'] );
+    $template_item->tag("item_url", stripslashes ( $shop_arr['artikel_url'] ) );
+    $template_item->tag("item_price", stripslashes ( $shop_arr['artikel_preis'] ) );
+    $template_item->tag("item_image", get_image_output ( "images/shop/", $shop_arr['artikel_id'], $shop_arr['artikel_name'] ) );
+    $template_item->tag("item_image_url", image_url ( "images/shop/", $shop_arr['artikel_id'] ) );
+    $template_item->tag("item_small_image", get_image_output ( "images/shop/", $shop_arr['artikel_id']."_s" , $shop_arr['artikel_name'] ) );
+    $template_item->tag("item_small_image_url", image_url ( "images/shop/", $shop_arr['artikel_id']."_s" ) );
+
+    $shop_items[] = $template_item->display();
 }
-unset($artikel_arr);
 
-$index = mysql_query("select shop_main_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-$template = stripslashes(mysql_result($index, 0, "shop_main_body"));
-$template = str_replace("{artikel}", $artikel_list, $template); 
+// Body Template
+$template = new template();
+$template->setFile("0_shop.tpl");
+$template->load("SHOP_BODY");
+$template->tag("shop_items", implode ( "", $shop_items ) );
 
-unset($artikel_list);
-
-
+// Display Page
+$template = $template->display();
 ?>
