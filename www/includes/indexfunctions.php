@@ -205,22 +205,48 @@ function get_content ( $GOTO )
     global $global_config_arr, $db, $TEXT;
     global $phrases;
 
-    $index = mysql_query ( "SELECT COUNT(article_id) AS 'number' FROM ".$global_config_arr['pref']."articles WHERE article_url = '".$GOTO."'", $db );
-
     // Display Content
-    $template = "";
+    unset ( $template );
+    
+    // Script-File in /data/
     if ( file_exists ( "data/".$GOTO.".php" ) ) {
         include ( FS2_ROOT_PATH . "data/".$GOTO.".php" );
     } elseif ( file_exists ( "data/".$GOTO ) ) {
         include ( FS2_ROOT_PATH . "data/".$GOTO );
-    } elseif ( mysql_result ( $index, 0, "number") >= 1 ) {
-        include ( FS2_ROOT_PATH . "data/articles.php" );
-    } elseif ( $GOTO == "dl" && isset ( $_GET['fileid'] ) && isset ( $_GET['dl'] ) ) {
-        $template = "";
     } else {
-        $global_config_arr['goto'] = "404";
-        include ( FS2_ROOT_PATH . "data/404.php" );
+
+        // Articles from DB
+        $index = mysql_query ( "
+                                SELECT COUNT(`article_id`) AS 'number'
+                                FROM `".$global_config_arr['pref']."articles`
+                                WHERE `article_url` = '".$GOTO."'
+        ", $db );
+
+        if ( mysql_result ( $index, 0, "number") >= 1 ) {
+            $index = mysql_query ( "
+                                    SELECT `alias_forward_to`
+                                    FROM `".$global_config_arr['pref']."aliases`
+                                    WHERE `alias_active` = 1
+                                    AND `alias_go` = 'articles.php'
+            ", $db );
+            if ( mysql_num_rows ( $index ) >= 1 ) {
+                include ( FS2_ROOT_PATH . "data/" . stripslashes ( mysql_result ( $index, 0, "alias_forward_to" ) ) );
+            } else {
+                include ( FS2_ROOT_PATH . "data/articles.php" );
+            }
+            
+        // File-Download
+        } elseif ( $GOTO == "dl" && isset ( $_GET['fileid'] ) && isset ( $_GET['dl'] ) ) {
+            unset ( $template );
+
+        // 404-Error Page, no content found
+        } else {
+            $global_config_arr['goto'] = "404";
+            include ( FS2_ROOT_PATH . "data/404.php" );
+        }
+    
     }
+
 
     // Return Content
     return $template;
@@ -380,9 +406,10 @@ function forward_aliases ( $GOTO )
     global $global_config_arr, $db;
 
     $index = mysql_query ( "
-                            SELECT *
+                            SELECT `alias_go`, `alias_forward_to`
                             FROM `".$global_config_arr['pref']."aliases`
                             WHERE `alias_active` = 1
+                            AND `alias_go` = '".$GOTO."'
     ", $db );
 
     while ( $aliases_arr = mysql_fetch_assoc ( $index ) ) {
@@ -576,25 +603,43 @@ function get_copyright ()
 ////////////////////////
 /// Designs & Zones ////
 ////////////////////////
-function set_design ()
-{ set_style(); }
 function set_style ()
 {
     global $db;
     global $global_config_arr;
 
     if ( isset ( $_GET['style'] ) && $global_config_arr['allow_other_designs'] == 1 ) {
-        $global_config_arr['style'] =  $_GET['style'];
-    } else {
-        $index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);
-        if (mysql_num_rows($index) > 0) {
-            $global_config_arr['style'] =  mysql_result($index, 0, "name");
+        $index = mysql_query ( "
+                                SELECT `style_id`, `style_tag`
+                                FROM `".$global_config_arr['pref']."styles`
+                                WHERE `style_tag` = '".savesql ( $_GET['style'] )."'
+                                AND `style_allow_use` = 1
+                                LIMIT 0,1
+        ", $db );
+        if ( mysql_num_rows ( $index ) == 1 ) {
+            $global_config_arr['style'] = stripslashes ( mysql_result($index, 0, "style_tag") );
+            $global_config_arr['style_tag'] = stripslashes ( mysql_result($index, 0, "style_tag") );
+            $global_config_arr['style_id'] = mysql_result($index, 0, "style_id");
+        }
+    } elseif ( isset ( $_GET['style_id'] ) && $global_config_arr['allow_other_designs'] == 1 ) {
+        settype ( $_GET['style_id'], "integer" );
+        $index = mysql_query ( "
+                                SELECT `style_id`, `style_tag`
+                                FROM `".$global_config_arr['pref']."styles`
+                                WHERE `style_id` = '".$_GET['style_id']."'
+                                AND `style_allow_use` = 1
+                                LIMIT 0,1
+        ", $db );
+        if ( mysql_num_rows ( $index ) == 1 ) {
+            $global_config_arr['style'] = stripslashes ( mysql_result($index, 0, "style_tag") );
+            $global_config_arr['style_tag'] = stripslashes ( mysql_result($index, 0, "style_tag") );
+            $global_config_arr['style_id'] = mysql_result($index, 0, "style_id");
         }
     }
-    
     copyright ();
 }
-
+function set_design ()
+{ set_style(); }
 
 //////////////////////////////////
 //// copyright security check ////

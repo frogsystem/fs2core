@@ -9,15 +9,17 @@ var lastJQBox;
     // create mouseover effect depending on Box State and color
     $(".select_entry").hover(
         function () {
+            theTable = $(this).parents(".select_list:first");
             if ( $(this).find("input.select_box:first").is(":checked") ) {
-                setBGcolorCompare ( $(this), $(this).parents(".select_list:first select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
+                setBGcolorCompare ( $(this), theTable.find("select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
             } else {
                 $(this).css("background-color", "#EEEEEE");
             }
         },
         function () {
+            theTable = $(this).parents(".select_list:first");
             if ( $(this).find("input.select_box:first").is(":checked") ) {
-                setBGcolorCompare ( $(this), $(this).parents(".select_list:first select.select_type:first option:selected").hasClass("select_red"), "#C24949", "#49C24f" );
+                setBGcolorCompare ( $(this), theTable.find("select.select_type:first option:selected").hasClass("select_red"), "#C24949", "#49C24f" );
             } else {
                 $(this).css("background-color", "transparent");
             }
@@ -51,16 +53,17 @@ var lastJQBox;
                 $(this).css("background-color", "#EEEEEE");
             } else {
                 theBox.attr("checked","checked");
-                setBGcolorCompare ( $(this), $(this).parents(".select_list:first select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
+                setBGcolorCompare ( $(this), theTable.find("select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
                 lastJQBox = theBox;
             }
         }
     );
-
+            //
     // Create change of select type and color
-    $(".select_list select.select_type:first").change(
+    $(".select_list select.select_type").change(
         function () {
-            theLines = $(this).parents(".select_list:first .select_entry");
+            theTable = $(this).parents(".select_list:first");
+            theLines = theTable.find(".select_entry");
 
             if ( $(this).find("option:selected").hasClass("select_one") ) {
                 theLines.find("input.select_box").removeAttr("checked");

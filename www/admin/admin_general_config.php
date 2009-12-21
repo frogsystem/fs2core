@@ -39,11 +39,29 @@ if (
     $_POST['dyn_title_ext'] = savesql ( $_POST['dyn_title_ext'] );
 
     settype ( $_POST['show_favicon'], "integer" );
-    settype ( $_POST['design'], "integer" );
+    settype ( $_POST['style_id'], "integer" );
     settype ( $_POST['allow_other_designs'], "integer" );
     settype ( $_POST['home'], "integer" );
     settype ( $_POST['dyn_title'], "integer" );
     settype ( $_POST['auto_forward'], "integer" );
+    
+    $index = mysql_query ( "
+                            SELECT `style_tag`
+                            FROM `".$global_config_arr['pref']."styles`
+                            WHERE `style_id` = ".$_POST['style_id']."
+                            AND `style_id` != 0
+                            AND `style_allow_use` = 1
+                            LIMIT 0,1
+    ", $db );
+    if ( mysql_num_rows ( $index ) == 1 ) {
+        $_POST['style_tag'] = stripslashes ( mysql_result ( $index, 0, "style_tag" ) );
+        $style_sql_insert = "
+                                            `style_id` = '".$_POST['style_id']."',
+                                            `style_tag` = '".$_POST['style_tag']."',
+        ";
+    } else {
+        $style_sql_insert = "";
+    }
 
     // MySQL-Queries
     mysql_query ( "
@@ -59,7 +77,7 @@ if (
                                             `publisher` = '".$_POST['publisher']."',
                                             `copyright` = '".$_POST['copyright']."',
                                             `show_favicon` = '".$_POST['show_favicon']."',
-                                            `design` = '".$_POST['design']."',
+                                            ".$style_sql_insert."
                                             `allow_other_designs` = '".$_POST['allow_other_designs']."',
                                             `date` = '".$_POST['date']."',
                                             `time` = '".$_POST['time']."',
@@ -123,7 +141,7 @@ if ( TRUE )
     $_POST['dyn_title_ext'] = killhtml ( $_POST['dyn_title_ext'] );
 
     settype ( $_POST['show_favicon'], "integer" );
-    settype ( $_POST['design'], "integer" );
+    settype ( $_POST['style_id'], "integer" );
     settype ( $_POST['allow_other_designs'], "integer" );
     settype ( $_POST['home'], "integer" );
     settype ( $_POST['dyn_title'], "integer" );
@@ -235,23 +253,31 @@ if ( TRUE )
                             <tr><td class="line" colspan="2">'.$admin_phrases[general][design_title].'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[general][design].':<br>
-                                    <span class="small">'.$admin_phrases[general][design_desc].'</span>
+                                    '.$TEXT['admin']->get("config_style_title").':<br>
+                                    <span class="small">'.$TEXT['admin']->get("config_style_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="design" size="1">
+                                    <select name="style_id" size="1">
     ';
+    $active_style = mysql_result (
+                                    mysql_query ( "
+                                                    SELECT `style_id`
+                                                    FROM `".$global_config_arr['pref']."global_config`
+                                                    WHERE `id` = 1
+                                    ", $db )
+    , 0, "style_id" );
+    settype ( $active_style, "integer" );
     $index = mysql_query ( "
-                            SELECT `id`, `name`
-                            FROM `".$global_config_arr['pref']."template`
-                            ORDER BY `id`
+                            SELECT `style_id`, `style_tag`
+                            FROM `".$global_config_arr['pref']."styles`
+                            WHERE `style_id` != 0
+                            AND `style_allow_use` = 1
+                            ORDER BY `style_tag`
     ", $db );
-    while ( $design_arr = mysql_fetch_assoc ( $index ) ) {
-        settype ( $design_arr['id'], "integer" );
-        echo '<option class="option_hover" value="'.$design_arr['id'].'" '.getselected ( $design_arr['id'], $_POST['design'] ).'>'.killhtml($design_arr['name']);
-        if ( $design_arr['id'] == $_POST['design'] ) {
-            echo ' ('.$admin_phrases[common][active].')';
-        }
+    while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
+        settype ( $style_arr['style_id'], "integer" );
+        echo '<option value="'.$style_arr['style_id'].'" '.getselected ( $style_arr['style_id'], $_POST['style_id'] ).'>'.killhtml ( $style_arr['style_tag'] );
+        echo ( $style_arr['style_id'] == $active_style ) ? ' ('.$TEXT['admin']->get("active").')' : "";
         echo '</option>';
     }
     echo '
@@ -264,7 +290,7 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[general][allow_other_designs_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="allow_other_designs" value="1" '.getchecked ( 1, $_POST['allow_other_designs'] ).'>
+                                    <input class="pointer" type="checkbox" name="allow_other_designs" value="1" '.getchecked ( 1, $_POST['allow_other_designs'] ).'>
                                 </td>
                             </tr>
                             <tr>
@@ -273,7 +299,7 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[general][show_favicon_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input type="checkbox" name="show_favicon" value="1" '.getchecked ( 1, $_POST['show_favicon'] ).'>
+                                    <input class="pointer" type="checkbox" name="show_favicon" value="1" '.getchecked ( 1, $_POST['show_favicon'] ).'>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

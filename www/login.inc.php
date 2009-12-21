@@ -46,6 +46,9 @@ if ( $db && mysql_select_db ( $dbc['data'], $db ) ) {
     }
     //get short_language code
     $global_config_arr['language'] = ( preg_match ( "/[a-z]{2}_[A-Z]{2}/", $global_config_arr['language_text'] ) === 1 ) ? substr ( $global_config_arr['language_text'], 0, 2 ) : $global_config_arr['language_text'];
+    // set style (but may be changed later)
+    $global_config_arr['style'] = $global_config_arr['style_tag'];
+    settype ( $global_config_arr['style_id'], "integer" );
 }
 
 

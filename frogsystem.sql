@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 01. Dezember 2009 um 00:00
+-- Erstellungszeit: 21. Dezember 2009 um 17:41
 -- Server Version: 5.1.30
 -- PHP-Version: 5.2.8
 
@@ -54,7 +54,7 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('zone_config', 0, 'Konfiguration ändern', 'Konfiguration', 'admin_zone_config.php', 1, 0),
 ('zone_create', 0, 'erstellen', 'erstellen', 'admin_zone_create.php', 2, 0),
 ('zone_admin', 0, 'verwalten', 'verwalten', 'admin_zone_manage.php', 3, 0),
-('gen_config', 1, 'Seitenkonfiguration', 'Konfiguration', 'admin_allconfig.php', 1, 0),
+('gen_config', 1, 'Seitenkonfiguration', 'Konfiguration', 'admin_general_config.php', 1, 0),
 ('gen_announcement', 1, 'Ankündigung', 'Ankündigung', 'admin_allannouncement.php', 2, 0),
 ('gen_captcha', 1, 'Captcha Konfiguration', 'Captcha', 'admin_captcha_config.php', 2, 0),
 ('gen_emails', 1, 'E-Mail-Vorlagen bearbeiten', 'E-Mails', 'admin_allemail.php', 4, 0),
@@ -114,8 +114,8 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('user_add', 20, 'hinzufügen', 'hinzufügen', 'admin_user_add.php', 2, 0),
 ('user_edit', 20, 'bearbeiten', 'bearbeiten', 'admin_user_edit.php', 3, 0),
 ('user_rights', 20, 'Rechte ändern', 'Rechte', 'admin_user_rights.php', 4, 0),
-('design_create', 21, 'erstellen', 'erstellen', 'admin_template_create.php', 1, 0),
-('design_admin', 21, 'verwalten', 'verwalten', 'admin_template_manage.php', 2, 0),
+('style_add', 21, 'erstellen', 'erstellen', 'admin_style_add.php', 1, 0),
+('style_management', 21, 'verwalten', 'verwalten', 'admin_style_management.php', 2, 0),
 ('style_css', 21, 'CSS-Dateien bearbeiten', 'CSS-Dateien', 'admin_template_css.php', 3, 0),
 ('style_js', 21, 'Java Script-Dateien bearbeiten', 'JS-Dateien', 'admin_template_js.php', 4, 0),
 ('style_nav', 21, 'Navigations-Dateien bearbeiten', 'Navigationen', 'admin_template_nav.php', 5, 0),
@@ -209,7 +209,7 @@ CREATE TABLE `fs_aliases` (
   `alias_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`alias_id`),
   KEY `alias_go` (`alias_go`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
 
 --
 -- Daten für Tabelle `fs_aliases`
@@ -421,7 +421,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 82, 4473, 6, 1, 1, 1);
+(1, 97, 4624, 6, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -443,7 +443,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 162, 1223919890, 1259612170),
+('http://localhost/fs2/', 185, 1223919890, 1261394209),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569),
@@ -529,7 +529,18 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2009, 11, 23, 1, 655),
 (2009, 11, 28, 4, 25),
 (2009, 11, 29, 3, 9),
-(2009, 11, 30, 2, 54);
+(2009, 11, 30, 2, 54),
+(2009, 12, 2, 1, 10),
+(2009, 12, 3, 1, 6),
+(2009, 12, 8, 1, 9),
+(2009, 12, 10, 1, 3),
+(2009, 12, 11, 2, 5),
+(2009, 12, 13, 1, 18),
+(2009, 12, 15, 1, 1),
+(2009, 12, 16, 2, 56),
+(2009, 12, 19, 2, 23),
+(2009, 12, 20, 1, 4),
+(2009, 12, 21, 2, 16);
 
 -- --------------------------------------------------------
 
@@ -733,7 +744,8 @@ CREATE TABLE `fs_global_config` (
   `publisher` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `copyright` text COLLATE utf8_unicode_ci NOT NULL,
   `show_favicon` tinyint(1) NOT NULL DEFAULT '1',
-  `design` tinyint(4) NOT NULL DEFAULT '0',
+  `style_id` mediumint(8) NOT NULL DEFAULT '0',
+  `style_tag` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default',
   `allow_other_designs` tinyint(1) NOT NULL DEFAULT '1',
   `date` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `time` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -754,8 +766,8 @@ CREATE TABLE `fs_global_config` (
 -- Daten für Tabelle `fs_global_config`
 --
 
-INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `design`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`) VALUES
-(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 0, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y H:i \\\\U\\\\h\\\\r', '{prev}Seite {page_number} von {total_pagesnext}', ' <a href=\\"{url}\\">weiter »</a>', '<a href=\\"{url}\\">« zurück</a> ', 604800, 'rss20', 'de_DE', 0, '', 4);
+INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`) VALUES
+(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 5, 'lightfrog', 0, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y H:i \\\\U\\\\h\\\\r', '{prev}Seite {page_number} von {total_pagesnext}', ' <a href=\\"{url}\\">weiter »</a>', '<a href=\\"{url}\\">« zurück</a> ', 604800, 'rss20', 'de_DE', 0, '', 4);
 
 -- --------------------------------------------------------
 
@@ -794,14 +806,15 @@ CREATE TABLE `fs_news` (
   `news_comments_allowed` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_search` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
 
 --
 -- Daten für Tabelle `fs_news`
 --
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`) VALUES
-(1, 1, 1, 1223718060, 'Herzlich Willkommen!', '[b]Hallo Webmaster![/b]\r\n\r\nHerzlich Willkommen in deinem deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1);
+(1, 1, 1, 1223718060, 'Herzlich Willkommen!', '[b]Hallo Webmaster![/b]\r\n\r\nHerzlich Willkommen in deinem deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1),
+(10, 1, 1, 1261395600, 'gdfdf', 'dffg', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -845,14 +858,15 @@ CREATE TABLE `fs_news_comments` (
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_text` (`comment_text`),
   FULLTEXT KEY `comment_title` (`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
 
 --
 -- Daten für Tabelle `fs_news_comments`
 --
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(14, 1, '1', 1, '127.0.0.1', 1259614099, 'neu', 'neu');
+(14, 1, '1', 1, '127.0.0.1', 1259614099, 'neu', 'neu'),
+(15, 1, '1', 1, '127.0.0.1', 1259878579, 'vvv', '[b]b[/b]\r\n[b][i]cc[/b][/i]\r\n[i]i[/i]');
 
 -- --------------------------------------------------------
 
@@ -1351,12 +1365,15 @@ CREATE TABLE `fs_shop` (
   `artikel_preis` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `artikel_hot` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`artikel_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `fs_shop`
 --
 
+INSERT INTO `fs_shop` (`artikel_id`, `artikel_name`, `artikel_url`, `artikel_text`, `artikel_preis`, `artikel_hot`) VALUES
+(3, 'Departed: Unter Feinden [Blu-ray]', 'http://www.amazon.de/Departed-Feinden-Blu-ray-Leonardo-DiCaprio/dp/B000PC6GRE/ref=sr_1_2?ie=UTF8&s=dvd&qid=1260977964&sr=8-2-spell', 'Meister-Regisseur Martin Scorsese kehrt mit Departed - Unter Feinden zu den Straßengangster-Wurzeln seiner Karriere zurück und liefert seinen vielleicht besten Film seit Casino (1995) ab. Da es sich bei diesem spannenden Krimi um ein Remake des hochgelobten Hongkong-Polizei-Thrillers Infernal Affairs (2002) handelt, wurde Scorseses Film von Kritikern und Kinoliebhabern sehr skeptisch unter die Lupe genommen. Und während Scorseses intensive Inszenierung und sein Star-gespicktes Ensemble reichlich Lob verdienen, bemängelten einige besonders aufmerksame Zuschauer auch schluderiges Handwerk in Bezug auf schlecht abgestimmte Einstellungswechsel und Anschlussfehler. Aber egal mit wieviel Bewunderung man Scorsese grundsätzlich begegnet, es ist kaum zu leugnen, dass einer der besten Filmemacher Amerikas mit Departed – Unter Feinden ein weiteres Markenzeichen seines meisterhaften Stils abgeliefert hat, für maximalen Effekt konstruiert mit einer atemberaubenden Serie von plötzlichen Wendungen und bösen Überraschungen.\r\n\r\nDie Geschichte ist ein verzwicktes Katz-und-Maus-Spiel, aber diesmal sind die Katze und die Maus beide Maulwürfe: Colin Sullivan (Matt Damon) ist ein ambitionierter Polizist, der schnell die Karriereleiter hochsteigt, doch tatsächlich unterwandert er die Polizei von Boston als Spitzel für den Gangsterboss Frank Costello (Jack Nicholson). Billy Costigan (Leonardo DiCaprio) ist ein heißblütiger Jungpolizist, der wiederum scheinbar entlassen wurde, um als vermeintlich vertrauenswürdiger Handlanger undercover in Costellos Verbrecherorganisation zu ermitteln. Während sich die vielschichtige Story entwickelt (brillant adaptiert und ausgearbeitet von Königreich der Himmel-Drehbuchautor William Monahan), werden Costigan und Sullivan jeweils mit der Suche nach dem Maulwurf betraut (sie suchen sich quasi selbst) und umgarnen gleichzeitig die Psychiaterin (Vera Farmiga), bei der sie beide in Behandlung sind. ', '13,97 €', 0),
+(2, 'Blade Runner - 2-Disc Special Edition [Blu-ray]', 'http://www.amazon.de/Blade-Runner-2-Disc-Special-Blu-ray/dp/B000X9WWVS/ref=sr_1_1?ie=UTF8&s=dvd&qid=1260977499&sr=8-1', 'Als Ridley Scotts Director\\''s Cut von Blade Runner 1993 veröffentlicht wurde, wunderten sich viele Kinogänger, warum das Studio diese Version nicht schon elf Jahre zuvor in die Kinos gebracht hatte. Diese neu geschnittene Version ist viel besser, vor allem, da Unnötiges eliminiert (zum Beispiel die albernen und überflüssigen Kommentare aus dem Off sowie das falsche Happy End) sowie wirklich Wichtiges erneuert wurde (die Charaktere werden ein bisschen schärfer gezeichnet und es gibt einen sehr schönen, kurzen Traum, in dem ein Einhorn auftritt.\r\n\r\nHarrison Ford hat die Kommentare einst gesprochen, da ihn das Studio dazu \\"genötigt\\" hatte. In den Chefetagen des produzierenden Studios hatte man geglaubt, der Zuschauer brauche weitere Erklärungen, um der Geschichte besser folgen zu können. Ford hat später zugegeben, diese Kommentare absichtlich sehr schlecht und lieblos gesprochen zu haben, weil er glaubte, sie würden dann keine weitere Verwendung finden (Moral: Überschätze niemals den Geschmack von Filmproduzenten.', '15,95 €', 1);
 
 -- --------------------------------------------------------
 
@@ -1383,10 +1400,10 @@ INSERT INTO `fs_smilies` (`id`, `replace_string`, `order`) VALUES
 (4, ':-P', 4),
 (5, 'xD', 5),
 (6, ':-o', 6),
-(7, '^_^', 8),
+(7, '^_^', 7),
 (8, ':-/', 10),
 (9, ':-]', 9),
-(10, '&gt;-(', 7);
+(10, '&gt;-(', 8);
 
 -- --------------------------------------------------------
 
@@ -1410,6 +1427,32 @@ CREATE TABLE `fs_snippets` (
 
 INSERT INTO `fs_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippet_active`) VALUES
 (4, '[%feeds%]', '<a href=\\"$VAR(url)feeds/rss091.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss091.gif\\" alt=\\"RSS 0.91\\" title=\\"RSS 0.91\\" border=\\"0\\"></a><br>\r\n\r\n<a href=\\"$VAR(url)feeds/rss10.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss10.gif\\" alt=\\"RSS 1.0\\" title=\\"RSS 1.0\\" border=\\"0\\"></a><br>\r\n\r\n<a href=\\"$VAR(url)feeds/rss20.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss20.gif\\" alt=\\"RSS 2.0\\" title=\\"RSS 2.0\\" border=\\"0\\"></a><br>\r\n\r\n<a href=\\"$VAR(url)feeds/atom10.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/atom10.gif\\" alt=\\"Atom 1.0\\" title=\\"Atom 1.0\\" border=\\"0\\"></a>', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `fs_styles`
+--
+
+DROP TABLE IF EXISTS `fs_styles`;
+CREATE TABLE `fs_styles` (
+  `style_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `style_tag` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `style_allow_use` tinyint(1) NOT NULL DEFAULT '1',
+  `style_allow_edit` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`style_id`),
+  UNIQUE KEY `style_tag` (`style_tag`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=14 ;
+
+--
+-- Daten für Tabelle `fs_styles`
+--
+
+INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allow_edit`) VALUES
+(0, 'default', 0, 0),
+(5, 'lightfrog', 1, 1),
+(11, 'darkfrog', 1, 1),
+(13, 'neu', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1579,7 +1622,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 2, 1259619896);
+('127.0.0.1', 1, 1261394210);
 
 -- --------------------------------------------------------
 

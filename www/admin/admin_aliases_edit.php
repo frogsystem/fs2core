@@ -74,7 +74,7 @@ elseif (
 ///////////////////////
 //// Display Forms ////
 ///////////////////////
-if (  isset ( $_POST['alias_id'] ) && $_POST['alias_action'] )
+if ( isset ( $_POST['alias_id'] ) && $_POST['alias_action'] )
 {
     // Security Function
     $_POST['alias_id'] = ( is_array ( $_POST['alias_id'] ) ) ? $_POST['alias_id'] : array ( $_POST['alias_id'] );

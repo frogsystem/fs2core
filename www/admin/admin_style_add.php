@@ -106,31 +106,45 @@ else
 /////////////////////////
 
 if (
-        $_POST['alias_go'] && $_POST['alias_go'] != ""
-        && $_POST['alias_forward_to'] && $_POST['alias_forward_to'] != ""
+        $_POST['style_tag'] && preg_match ( '/^[0-9a-z_\-]+$/', $_POST['style_tag'] ) === 1
+        && $_POST['style_name'] && $_POST['style_name'] != ""
+        && ( $_POST['style_create_as'] == "new" || ( $_POST['style_create_as'] == "copy" && $_POST['copy_style_id'] ) )
     )
 {
     // Security Functions
-    $_POST['alias_go'] = savesql ( $_POST['alias_go'] );
-    $_POST['alias_forward_to'] = savesql ( $_POST['alias_forward_to'] );
-
-    settype ( $_POST['alias_active'], "integer" );
-
+    $_POST['style_folder'] = $_POST['style_tag'];
+    $_POST['style_tag'] = savesql ( $_POST['style_tag'] );
+    $_POST['style_create_as'] = ( $_POST['style_create_as'] == "edit" ) ? "edit" : "new";
+    settype ( $_POST['style_allow_use'], "integer" );
+    settype ( $_POST['style_allow_edit'], "integer" );
+    settype ( $_POST['copy_style_id'], "integer" );
+    
     // MySQL-Queries
     mysql_query ( "
-                    INSERT INTO `".$global_config_arr['pref']."aliases` (
-                            `alias_go`,
-                            `alias_forward_to`,
-                            `alias_active`
-                    )
-                    VALUES (
-                            '".$_POST['alias_go']."',
-                            '".$_POST['alias_forward_to']."',
-                            '".$_POST['alias_active']."'
-                    )
+                    INSERT INTO
+                        `".$global_config_arr['pref']."styles`
+                        ( `style_tag`, `style_allow_use`, `style_allow_edit` )
+                    VALUES
+                        ( '".$_POST['style_tag']."', '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )
     ", $db );
+    
+    // Folder Operations
+    $new_ini_data = $_POST['style_name']."
+".$_POST['style_version']."
+".$_POST['style_copyright'];
 
-    systext ( $TEXT["admin"]->get("alias_added"),
+    $ACCESS = new fileaccess();
+    if ( $ACCESS->createDir( FS2_ROOT_PATH . "styles/" . $_POST['style_folder'] , 0755 ) ) {
+        if ( $ACCESS->createDir( FS2_ROOT_PATH . "styles/" . $_POST['style_folder'] . "/images", 0755 ) ) {
+            if ( $ACCESS->createDir( FS2_ROOT_PATH . "styles/" . $_POST['style_folder'] . "/icons", 0755 ) ) {
+                if ( $ACCESS->putFileData( FS2_ROOT_PATH . "styles/" . $_POST['style_folder'] . "/style.ini", $new_ini_data ) ) {
+
+                }
+            }
+        }
+    }
+
+    systext ( $TEXT["admin"]->get("style_added"),
         $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
     unset ( $_POST );
 }
@@ -139,45 +153,85 @@ if (
 //// Add Stlye Form ////
 ////////////////////////
 
-// Security Functions
-$_POST['style_name'] = killhtml ( $_POST['style_name'] );
-$_POST['style_version'] = killhtml ( $_POST['style_version'] );
-$_POST['style_copyright'] = killhtml ( $_POST['style_copyright'] );
-
-$_POST['style_tag'] = killhtml ( $_POST['style_tag'] );
-settype ( $_POST['style_allow_use'], "integer" );
-settype ( $_POST['style_allow_edit'], "integer" );
-
-// Check for Errors
-if ( isset ( $_POST['sended'] ) ) {
-
-    $error_message = $TEXT["admin"]->get("form_not_filled");
-    systext ( $TEXT["admin"]->get("alias_not_added")."<br>".$error_message,
-        $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
-
-// Set Data
+// Check for file rights
+if ( !is_writable ( FS2_ROOT_PATH . "styles/" ) ) {
+    systext ( $TEXT["admin"]->get("style_folder_not_writable")."<br>".$TEXT["admin"]->get("error_file_access"),
+        $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
 } else {
-    $_POST['style_allow_use'] = 1;
-    $_POST['style_allow_edit'] = 1;
-}
+
+    // Check for Errors
+    if ( isset ( $_POST['sended'] ) ) {
+
+        $error_message = array();
+        if ( $_POST['style_name'] == "" || $_POST['style_tag'] == "" ) {
+            $error_message[] = $TEXT["admin"]->get("form_not_filled");
+        }
+        if ( preg_match ( '/^[0-9a-z_\-]+$/', $_POST['style_tag'] ) !== 1 && $_POST['style_tag'] != "" ) {
+            $error_message[] = $TEXT["admin"]->get("form_only_allowed_values");
+        }
+
+        systext ( $TEXT["admin"]->get("style_not_added")."<br>".implode ( "<br>", $error_message ),
+            $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
+
+    // Set Data
+    } else {
+        $_POST['style_allow_use'] = 1;
+        $_POST['style_allow_edit'] = 1;
+        $_POST['copy_style_id'] = $global_config_arr['style_id'];
+        $_POST['style_create_as'] = "new";
+    }
 
 
-// Display Form
-echo '
+    // Security Functions
+    $_POST['style_name'] = killhtml ( $_POST['style_name'] );
+    $_POST['style_version'] = killhtml ( $_POST['style_version'] );
+    $_POST['style_copyright'] = killhtml ( $_POST['style_copyright'] );
+
+    $_POST['style_tag'] = killhtml ( $_POST['style_tag'] );
+    $_POST['style_create_as'] = ( $_POST['style_create_as'] == "edit" ) ? "edit" : "new";
+    settype ( $_POST['style_allow_use'], "integer" );
+    settype ( $_POST['style_allow_edit'], "integer" );
+    settype ( $_POST['copy_style_id'], "integer" );
+
+
+    // Display Form
+    echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="style_add">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("style_content_title").'</td></tr>
+                                <td class="config">
+                                    '.$TEXT["admin"]->get("style_create_as_title").':<br>
+                                    <span class="small">'.$TEXT["admin"]->get("style_create_as_desc").'</span>
+                                </td>
+                                <td class="config">
+                                    <input class="pointer middle" type="radio" name="style_create_as" id="style_create_as_new" value="new" '.getchecked ( "new", $_POST['style_create_as'] ).'>
+                                    <label class="pointer middle" for="style_create_as_new">'.$TEXT["admin"]->get("style_create_as_empty").'</label><br><br>
+                                    <input class="pointer middle" type="radio" name="style_create_as" id="style_create_as_copy" value="copy" '.getchecked ( "copy", $_POST['style_create_as'] ).'>
+                                    <label class="pointer middle" for="style_create_as_copy">'.$TEXT["admin"]->get("style_create_as_copy").':</label>
+                                    <br><br>
+                                    <div align="right">
+                                        <select class="input_width pointer middle" name="copy_style_id" size="1">';
+
+    $index = mysql_query ( "
+                            SELECT `style_id`, `style_tag`
+                            FROM `".$global_config_arr['pref']."styles`
+                            ORDER BY `style_id`
+    ", $db );
+    while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
+        settype ( $style_arr['style_id'], "integer" );
+        echo '<option value="'.$style_arr['style_id'].'" '.getselected( $style_arr['style_id'], $_POST['copy_style_id'] ).'>'.killhtml ( $style_arr['style_tag'] );
+        echo ( $style_arr['style_id'] == $global_config_arr['style_id'] ) ? ' ('.$TEXT['admin']->get("active").')' : "";
+        echo '</option>';
+    }
+    echo'
+                                        </select>
+                                    </div>
+                                </td>
+                            <tr><td class="space"></td></tr>
+                        
                             <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("style_info_title").'</td></tr>
-                            <tr>
-                                <td class="config">
-                                    '.$TEXT["admin"]->get("style_name_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("style_name_desc").'</span>
-                                </td>
-                                <td class="config">
-                                    <input class="text input_width" name="style_name" maxlength="100" value="'.$_POST['style_name'].'">
-                                </td>
-                            </tr>
                             <tr>
                                 <td class="config">
                                     '.$TEXT["admin"]->get("style_tag_title").':<br>
@@ -190,7 +244,16 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT["admin"]->get("style_version_title").':<br>
+                                    '.$TEXT["admin"]->get("style_name_title").':<br>
+                                    <span class="small">'.$TEXT["admin"]->get("style_name_desc").'</span>
+                                </td>
+                                <td class="config">
+                                    <input class="text input_width" name="style_name" maxlength="100" value="'.$_POST['style_name'].'">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    '.$TEXT["admin"]->get("style_version_title").': <span class="small">('.$TEXT["admin"]->get("optional").')</span><br>
                                     <span class="small">'.$TEXT["admin"]->get("style_version_desc").'</span>
                                 </td>
                                 <td class="config">
@@ -199,7 +262,7 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT["admin"]->get("style_copyright_title").':<br>
+                                    '.$TEXT["admin"]->get("style_copyright_title").': <span class="small">('.$TEXT["admin"]->get("optional").')</span><br>
                                     <span class="small">'.$TEXT["admin"]->get("style_copyright_desc").'</span>
                                 </td>
                                 <td class="config">
@@ -228,54 +291,15 @@ echo '
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            
-                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("style_content_title").'</td></tr>
-                                <td class="config">
-                                    '.$TEXT["admin"]->get("style_create_as_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("style_create_as_desc").'</span>
-                                </td>
-                                <td class="config">
-                                    <input class="pointer middle" type="radio" name="style_create_as" id="style_create_as_new" value="new" '.getchecked ( "new", $_POST['style_create_as'] ).'>
-                                    <label class="pointer middle" for="style_create_as_new">'.$TEXT["admin"]->get("style_create_as_empty").'</label><br><br>
-                                    <input class="pointer middle" type="radio" name="style_create_as" id="style_create_as_copy" value="copy" '.getchecked ( "copy", $_POST['style_create_as'] ).'>
-                                    <label class="pointer middle" for="style_create_as_copy">'.$TEXT["admin"]->get("style_create_as_copy").':</label>
-                                    <br><br>
-                                    <div align="right">
-                                        <select class="pointer middle" name="style_id" size="1">';
-
-                           $index = mysql_query ( "
-                                                    SELECT
-                                                        `style_tag`
-                                                    FROM
-                                                        `".$global_config_arr['pref']."styles`
-                                                    WHERE
-                                                        `style_id` != 0
-                                                    ORDER BY
-                                                        `style_tag`
-                           ", $db );
-                           while ($admin_design_arr = mysql_fetch_assoc($index))
-                           {
-                             echo '<option value="'.$admin_design_arr[id].'"';
-                             if ($admin_design_arr[id] == $global_config_arr[design]) {
-                               echo ' selected=selected'; }
-                             echo '>'.$admin_design_arr[name];
-                             if ($admin_design_arr[id] == $global_config_arr[design]) {
-                               echo ' (aktiv)'; }
-                             echo '</option>';
-                           }
-echo'
-                                        </select>
-                                    </div>
-                                </td>
-                            <tr><td class="space"></td></tr>
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$TEXT["admin"]->get("style_add_title").'
+                                        '.$TEXT["admin"]->get("button_arrow").' '.$TEXT["admin"]->get("style_add_title").'
                                     </button>
                                 </td>
                             </tr>
                         </table>
                     </form>
-';
+    ';
+}
 ?>

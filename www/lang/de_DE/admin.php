@@ -52,6 +52,9 @@ $TEXT = array (
     "output" =>
     "Ausgabe",
 
+    "version" =>
+    "Version",
+
     "informations_and_statistics" =>
     "Informationen & Statistik",
     
@@ -152,6 +155,15 @@ $TEXT = array (
 
     "icon_logout" =>
     '<img src="icons/logout.jpg" alt="" align="absmiddle">',
+
+    "icon_install_ok" =>
+    '<img src="icons/install_ok.jpg" alt="" align="absmiddle">',
+
+    "icon_uninstall_ok" =>
+    '<img src="icons/uninstall_ok.jpg" alt="" align="absmiddle">',
+
+    "icon_no_install_action" =>
+    '<img src="icons/no_install_action.jpg" alt="" align="absmiddle">',
     
 //Bilder-Upload
     "image_upload_error_0" =>
@@ -194,6 +206,26 @@ $TEXT = array (
 
     "system_start_num_snippets_active" =>
     "Anzahl aktiver Schnipsel",
+
+
+// Konfiguration
+    "config_publisher_title" =>
+    "Herausgeber",
+
+    "config_publisher_desc" =>
+    "Herausgeber (Webmaster) der Seite.",
+
+    "config_copyright_title" =>
+    "Copyright",
+
+    "config_copyright_desc" =>
+    "Copyright-Hinweise der Urheber.",
+
+    "config_style_title" =>
+    "Aktiver Style",
+
+    "config_style_desc" =>
+    "Style, der als Design der Hauptseite verwendet wird.",
 
 
 // News
@@ -509,6 +541,115 @@ $TEXT = array (
 
     "alias_not_active" =>
     "nicht aktiv",
+
+
+// Styles
+    "style_info_title" =>
+    "Informationen",
+    
+    "style_config_title" =>
+    "Einstellungen",
+
+    "style_content_title" =>
+    "Anfangsinhalt",
+
+    "styles_not_installed_title" =>
+    "Nicht installierte Styles",
+
+    "styles_installed_title" =>
+    "Installierte Styles",
+
+    "style_uninstall_title" =>
+    "Style deinstallieren",
+
+    "style_add_title" =>
+    "Neuen Style erstellen",
+
+    "style_installed" =>
+    "Style wurde erfolgreich installiert",
+
+    "style_uninstalled" =>
+    "Style wurde erfolgreich deinstalliert",
+
+    "style_not_installed" =>
+    "Neuen Style erstellen",
+
+    "style_not_uninstalled" =>
+    "Style wurde nicht deinstalliert",
+
+
+    "styles_no_not_installed" =>
+    "Keine nicht installierten Styles gefunden!",
+
+    "styles_no_installed" =>
+    "Keine installierten Styles gefunden!",
+
+    "styles_selection_install" =>
+    "Auswahl installieren",
+    
+    "styles_selection_uninstall" =>
+    "Auswahl deinstallieren",
+
+    "style_uninstall_question" =>
+    "Soll dieser Style wirklich deinstalliert werden?",
+
+    "style_is_active" =>
+    "Dieser Style ist zurzeit als Design der Hauptseite eingerichtet.",
+
+    "style_select_new_active" =>
+    "Bitte einen anderen Style als Design auswählen:",
+
+    "style_version_title" =>
+    "Version",
+
+    "style_version_desc" =>
+    "Die Versionsnummer des Styles.",
+
+    "style_folder_title" =>
+    "Ordner",
+
+    "style_tag_title" =>
+    "Style-Tag",
+
+    "style_tag_desc" =>
+    "Tag wird auch als Ordner-Name verwendet.",
+
+    "style_name_title" =>
+    "Style-Name",
+
+    "style_name_desc" =>
+    "Der vollständige Name des Styles.",
+
+    "style_copyright_title" =>
+    "Copyright",
+
+    "style_copyright_desc" =>
+    "Copyright-Hinweise der Urheber.",
+
+    "style_allow_use_title" =>
+    "Verwendung erlauben",
+
+    "style_allow_use_desc" =>
+    "Erlaubt die Verwendung als Design der Hauptseite.",
+
+    "style_allow_edit_title" =>
+    "Bearbeiten erlauben",
+
+    "style_allow_edit_desc" =>
+    "Erlaubt das Bearbeiten der Templates des Styles.",
+
+    "style_create_as_title" =>
+    "Erstellen als",
+
+    "style_create_as_desc" =>
+    "Erstellt den neuen Style als...",
+
+    "style_create_as_empty" =>
+    "leeren Style",
+
+    "style_create_as_copy" =>
+    "Kopie eines bestehenden Styles",
+    
 
 
 // Template

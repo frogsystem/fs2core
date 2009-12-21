@@ -41,6 +41,8 @@ class template
         if (file_exists(FS2_ROOT_PATH."styles/".$style)) {
             $this->style = $style;
             $this->clearSectionCache();
+        } elseif ( $style != "default" )  {
+            $this->setStyle("default");
         }
     }
     private function getStyle() {

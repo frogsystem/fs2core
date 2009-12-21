@@ -24,6 +24,11 @@ class fileaccess
         }
     }
     
+    // getFileArray
+    public function getFileArray($filename, $flags = 0, $context = null) {
+        return file($filename, $flags, $context);
+    }
+    
     // putFileData
     public function putFileData($filename, $data, $flags = 0, $context = null) {
         return file_put_contents($filename, $data, $flags, $context);
@@ -35,6 +40,15 @@ class fileaccess
             return unlink( $filename, $context );
         } else {
             return unlink( $filename );
+        }
+    }
+    
+    // createDir
+    public function createDir ( $pathname, $mode = 0777, $recursive = false, $context = null ) {
+        if ( is_resource ( $context ) ) {
+            return mkdir ( $pathname, $mode, $recursive, $context );
+        } else {
+            return mkdir ( $pathname, $mode, $recursive );
         }
     }
 

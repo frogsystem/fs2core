@@ -29,12 +29,6 @@ $TEXT['frontend'] = new langDataInit ( $global_config_arr['language_text'], "fro
 $TEXT['template'] = new langDataInit ( $global_config_arr['language_text'], "template" );
 
 
-$index = mysql_query("SELECT name FROM ".$global_config_arr['pref']."template WHERE id = ".$global_config_arr['design'], $db);
-if (mysql_num_rows($index) > 0) {
-    $global_config_arr['style'] = mysql_result($index, 0, "name");
-}
-
-
 ######################
 ### START OF LOGIN ###
 ######################

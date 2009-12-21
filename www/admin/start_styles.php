@@ -1,41 +1,39 @@
 <?php
-$index = mysql_query ( "
-						SELECT T.`name`
-						FROM ".$global_config_arr['pref']."template T, ".$global_config_arr['pref']."global_config C
-						WHERE T.`id` = C.`design`
-						LIMIT 0,1
-", $db);
-$active_design = stripslashes ( mysql_result ( $index, 0, "name" ) );
+$active_style = $global_config_arr['style_tag'];
 
 $index = mysql_query ( "
-						SELECT COUNT(`id`) AS 'num_designs'
-						FROM ".$global_config_arr['pref']."template
+                        SELECT COUNT(`style_id`) AS 'num_styles'
+                        FROM `".$global_config_arr['pref']."styles`
+                        WHERE `style_id` != 0
+                        AND `style_tag` != 'default'
 ", $db);
-$num_designs = mysql_result ( $index, 0, "num_designs" );
+$num_styles = mysql_result ( $index, 0, "num_styles" );
 
 $index = mysql_query ( "
-						SELECT `name`
-						FROM ".$global_config_arr['pref']."template
-						ORDER BY `id` DESC
-						LIMIT 0,1
+                        SELECT `style_tag`
+                        FROM `".$global_config_arr['pref']."styles`
+                        WHERE `style_id` != 0
+                        AND `style_tag` != 'default'
+                        ORDER BY `style_id` DESC
+                        LIMIT 0,1
 ", $db);
-$last_design = stripslashes ( mysql_result ( $index, 0, "name" ) );
+$last_style = killhtml ( mysql_result ( $index, 0, "style_tag" ) );
 
 echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">Informationen & Statistik</td></tr>
+                            <tr><td class="line" colspan="2">Informationen & Statistik</td></tr>
                             <tr>
                                 <td class="configthin" width="200">Aktives Design:</td>
-                                <td class="configthin"><b>'.$active_design.'</b></td>
+                                <td class="configthin"><b>'.$active_style.'</b></td>
                             </tr>
                             <tr>
                                 <td class="configthin">Anzahl Designs:</td>
-                                <td class="configthin"><b>'.$num_designs.'</b></td>
+                                <td class="configthin"><b>'.$num_styles.'</b></td>
                             </tr>
                             <tr>
                                 <td class="configthin">Neuestes Designs:</td>
-                                <td class="configthin"><b>'.$last_design.'</b></td>
+                                <td class="configthin"><b>'.$last_style.'</b></td>
                             </tr>
-						</table>
+                        </table>
 ';
 ?>
