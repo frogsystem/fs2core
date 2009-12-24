@@ -49,7 +49,7 @@ function scandir_filter ( $FOLDER, $EXTRA = array(), $BAD = array ( ".", "..", "
     }
 
     $bad = array_merge ( $EXTRA, $BAD );
-    $contents = scandir ( $FOLDER );
+    $contents = @scandir ( $FOLDER );
     if ( is_array ( $contents ) ) {
         $contents = array_diff ( $contents, $bad );
         natcasesort ( $contents );

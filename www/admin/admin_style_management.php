@@ -464,7 +464,7 @@ if ( !isset ( $_POST['style_id'] ) )
         if ( !in_array ( $style, $style_tag_arr ) && is_dir ( FS2_ROOT_PATH . "styles/" . $style ) == TRUE ) {
             $style_ini = FS2_ROOT_PATH . "styles/" . $style . "/style.ini";
             if ( is_readable ( $style_ini ) ) {
-                if ( $num_not_inc_style <= 0 ) {
+                if ( $num_not_inc_styles <= 0 ) {
                     echo '
                             <tr>
                                 <td class="config">

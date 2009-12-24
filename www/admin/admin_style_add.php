@@ -107,6 +107,7 @@ else
 
 if (
         $_POST['style_tag'] && preg_match ( '/^[0-9a-z_\-]+$/', $_POST['style_tag'] ) === 1
+        && $_POST['style_tag'] != "" && strlen ( $_POST['style_tag'] ) >= 1
         && $_POST['style_name'] && $_POST['style_name'] != ""
         && ( $_POST['style_create_as'] == "new" || ( $_POST['style_create_as'] == "copy" && $_POST['copy_style_id'] ) )
     )
@@ -114,38 +115,77 @@ if (
     // Security Functions
     $_POST['style_folder'] = $_POST['style_tag'];
     $_POST['style_tag'] = savesql ( $_POST['style_tag'] );
-    $_POST['style_create_as'] = ( $_POST['style_create_as'] == "edit" ) ? "edit" : "new";
+    $_POST['style_create_as'] = ( $_POST['style_create_as'] == "copy" ) ? "copy" : "new";
     settype ( $_POST['style_allow_use'], "integer" );
     settype ( $_POST['style_allow_edit'], "integer" );
     settype ( $_POST['copy_style_id'], "integer" );
-    
-    // MySQL-Queries
-    mysql_query ( "
-                    INSERT INTO
-                        `".$global_config_arr['pref']."styles`
-                        ( `style_tag`, `style_allow_use`, `style_allow_edit` )
-                    VALUES
-                        ( '".$_POST['style_tag']."', '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )
-    ", $db );
-    
+
     // Folder Operations
     $new_ini_data = $_POST['style_name']."
 ".$_POST['style_version']."
 ".$_POST['style_copyright'];
-
+    
+    // New Style Path
+    $new_style_path = FS2_ROOT_PATH . "styles/" . $_POST['style_folder'];
+    
+    // Create Sytle Folder
     $ACCESS = new fileaccess();
-    if ( $ACCESS->createDir( FS2_ROOT_PATH . "styles/" . $_POST['style_folder'] , 0755 ) ) {
-        if ( $ACCESS->createDir( FS2_ROOT_PATH . "styles/" . $_POST['style_folder'] . "/images", 0755 ) ) {
-            if ( $ACCESS->createDir( FS2_ROOT_PATH . "styles/" . $_POST['style_folder'] . "/icons", 0755 ) ) {
-                if ( $ACCESS->putFileData( FS2_ROOT_PATH . "styles/" . $_POST['style_folder'] . "/style.ini", $new_ini_data ) ) {
+    if (
+            @$ACCESS->createDir( $new_style_path , 0755 )
+            && @$ACCESS->putFileData( $new_style_path . "/style.ini", $new_ini_data )
+    ) {
+    
+        // MySQL-Queries
+        mysql_query ( "
+                        INSERT INTO
+                            `".$global_config_arr['pref']."styles`
+                            ( `style_tag`, `style_allow_use`, `style_allow_edit` )
+                        VALUES
+                            ( '".$_POST['style_tag']."', '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )
+        ", $db );
 
-                }
+        // Copy Style recursive
+        if ( $_POST['style_create_as'] == "copy" && $_POST['copy_style_id'] ) {
+            // MySQL-Queries
+            $index = mysql_query ( "
+                                    SELECT
+                                        `style_tag`
+                                    FROM
+                                        `".$global_config_arr['pref']."styles`
+                                    WHERE
+                                        `style_id` = ".$_POST['copy_style_id']."
+                                    LIMIT 0,1
+            ", $db );
+            $copy_style_path = FS2_ROOT_PATH . "styles/" . stripslashes ( mysql_result ( $index, 0, "style_tag" ) );
+            if (
+                    $ACCESS->copyAny( $copy_style_path, $new_style_path, 0755, 0644 )
+                    && $ACCESS->putFileData( $new_style_path . "/style.ini", $new_ini_data )
+            ) {
+                systext ( $TEXT["admin"]->get("style_added"),
+                    $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
+            } else {
+                systext ( $TEXT["admin"]->get("style_added")."<br>".$TEXT["admin"]->get("style_error_copy")."<br>".$TEXT["admin"]->get("error_file_access"),
+                    $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
+            }
+        // Create New Style
+        } else {
+            if (
+                    @$ACCESS->createDir( $new_style_path . "/images", 0755 )
+                    && @$ACCESS->createDir( $new_style_path . "/icons", 0755 )
+            ) {
+                systext ( $TEXT["admin"]->get("style_added"),
+                    $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
+            } else {
+                systext ( $TEXT["admin"]->get("style_added")."<br>".$TEXT["admin"]->get("style_error_folder_creation")."<br>".$TEXT["admin"]->get("error_file_access"),
+                    $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
             }
         }
-    }
 
-    systext ( $TEXT["admin"]->get("style_added"),
-        $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
+    } else {
+        @deleteAny ( $new_style_path );
+        systext ( $TEXT["admin"]->get("style_not_added")."<br>".$TEXT["admin"]->get("error_file_access"),
+            $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
+    }
     unset ( $_POST );
 }
 
@@ -188,7 +228,7 @@ if ( !is_writable ( FS2_ROOT_PATH . "styles/" ) ) {
     $_POST['style_copyright'] = killhtml ( $_POST['style_copyright'] );
 
     $_POST['style_tag'] = killhtml ( $_POST['style_tag'] );
-    $_POST['style_create_as'] = ( $_POST['style_create_as'] == "edit" ) ? "edit" : "new";
+    $_POST['style_create_as'] = ( $_POST['style_create_as'] == "copy" ) ? "copy" : "new";
     settype ( $_POST['style_allow_use'], "integer" );
     settype ( $_POST['style_allow_edit'], "integer" );
     settype ( $_POST['copy_style_id'], "integer" );
