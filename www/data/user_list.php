@@ -1,31 +1,4 @@
 <?php
- /*
- 
- //Seitennavigation
-$pagenav = stripslashes($global_config_arr[page]);
-$prev = stripslashes($global_config_arr[page_prev]);
-$next = stripslashes($global_config_arr[page_next]);
-$pagenav = str_replace("{page_number}", $_GET[page], $pagenav );
-$pagenav = str_replace("{total_pages}", $config_arr[number_of_pages], $pagenav );
-//Zurück-Schaltfläche
-if ($_GET['page'] > 1) {
-  $prev = str_replace("{url}", "?go=members&sort=$_GET[sort]&page=$config_arr[oldpage]", $prev);
-  $pagenav = str_replace("{prev}", $prev, $pagenav);
-} else {
-  $pagenav = str_replace("{prev}", "", $pagenav);
-}
-//Weiter-Schaltfläche
-if (($_GET['page']*$config_arr[user_per_page]) < $config_arr[number_of_users]) {
-  $next = str_replace("{url}", "?go=members&sort=$_GET[sort]&page=$config_arr[newpage]", $next);
-  $pagenav = str_replace("{next}", $next, $pagenav);
-} else {
-  $pagenav = str_replace("{next}", "", $pagenav);
-}
-
-*/
-
-
-
 //////////////////////////
 //// Locale Functions ////
 //////////////////////////
@@ -174,6 +147,10 @@ $config_arr['page_start'] = $config_arr['prev_page'] * $config_arr['user_per_pag
 $maximum = $config_arr['page_start'] + $config_arr['user_per_page'];
 $maximum = ( $maximum >= $config_arr['number_of_users'] ) ? $config_arr['number_of_users'] : $maximum;
 
+// Get Page Nav
+$template_page_nav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['user_per_page'], $config_arr['number_of_users'], "?go=user_list&sort=".$_GET['sort']."&order=".$_GET['order']."&page={..page_num..}" );
+
+
 // Create Sub-Template
 $userline_template = new template();
 $userline_template->setFile ( "0_user.tpl" );
@@ -226,6 +203,9 @@ $template = new template();
 
 $template->setFile ( "0_user.tpl" );
 $template->load ( "USERLIST" );
+
+$template->tag ( "page_nav", $template_page_nav );
+
 $template->tag ( "order_id", get_user_list_order ( "id", $_GET['sort'], $_GET['order'] ) );
 $template->tag ( "order_name", get_user_list_order ( "name", $_GET['sort'], $_GET['order'] ) );
 $template->tag ( "order_mail", get_user_list_order ( "mail", $_GET['sort'], $_GET['order'] ) );

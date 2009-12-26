@@ -1,25 +1,19 @@
 alix5:
 
-JS-"einfügen" buttons auf funktionalität testen
 
 Templates anpassen
 
 
-Startseite (und News entsprechend...)
-
-Globale Suche (in news, artikeln, screenshots & download beschreibungen/titlen) inkl. Suchzeichen
-
-Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
-Seitennavigation bei user_list
+Globale Suche (in news, artikeln, download beschreibungen/titlen) inkl. Suchzeichen
 
 
-style-verwaltung
 HTML-Editor fertig (Codemirror Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP.$NAV und[%*%]...)
 
 
 
 alix6:
-
+Startseite (und News entsprechend...)
+Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
 php-fonts
 großes galerie update (kommentare, bewertungen, counter, bilderserien [spiegel-online], diverese möglichkeiten zur bildanzeige, unterkategorie, verbesserter upload, verbesserte verwaltung)
 großes shop update

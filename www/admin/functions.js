@@ -271,12 +271,9 @@ function switch2inline_editor( editorId ) {
 }
 
 //Insert Tag into Editor
-function insert_tag( editorObject, insertText ) {
+function insert_editor_tag( editorObject, insertText ) {
     editorObject.replaceSelection(insertText);
 }
-
-
-
 
 
 

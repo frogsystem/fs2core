@@ -163,8 +163,8 @@ $TEMPLATE_EDIT[] = array (
     cols => 66,
     help => array (
         array ( tag => "user_lines", text => $TEXT['template']->get("user_list_lines") ),
-        /*array ( tag => "page_nav_1", text => $TEXT['template']->get("page_nav_1_help") ),
-        array ( tag => "page_nav_2", text => $TEXT['template']->get("page_nav_2_help") ),
+        array ( tag => "page_nav", text => $TEXT['template']->get("page_nav_help") ),
+        /*array ( tag => "page_nav_2", text => $TEXT['template']->get("page_nav_2_help") ),
         array ( tag => "page_nav_3", text => $TEXT['template']->get("page_nav_3_help") ),
         array ( tag => "page_nav_4", text => $TEXT['template']->get("page_nav_4_help") ),
         array ( tag => "page_nav_5", text => $TEXT['template']->get("page_nav_5_help") ),     */

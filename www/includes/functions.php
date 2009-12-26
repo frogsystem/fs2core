@@ -1,4 +1,40 @@
 <?php
+//////////////////////////
+//// get old page nav ////
+//////////////////////////
+function get_page_nav ( $PAGE, $NUM_OF_PAGES, $PER_PAGE, $NUM_OF_ENTRIES, $URL_TEMPLATE )
+{
+    global $global_config_arr;
+
+    // Security Functions
+    settype ( $PAGE, "integer" );
+    settype ( $NUM_OF_PAGES, "integer" );
+    settype ( $PER_PAGE, "integer" );
+    settype ( $NUM_OF_ENTRIES, "integer" );
+
+    // Prev Template
+    $template_prev = "";
+    $prev_url = str_replace ( "{..page_num..}", $PAGE-1, $URL_TEMPLATE );
+    if ( $PAGE > 1 ) {
+        $template_prev = str_replace ( "{..url..}", $prev_url, $global_config_arr['page_prev'] );
+    }
+
+    // Next Template
+    $template_next = "";
+    $next_url = str_replace ( "{..page_num..}", $PAGE+1, $URL_TEMPLATE );
+    if ( ( $PAGE*$PER_PAGE ) < $NUM_OF_ENTRIES ) {
+        $template_next = str_replace ( "{..url..}", $next_url, $global_config_arr['page_next'] );
+    }
+
+    // Main Template
+    $template = str_replace ( "{..page_number..}", $PAGE, $global_config_arr['page'] );
+    $template = str_replace ( "{..total_pages..}", $NUM_OF_PAGES, $template );
+    $template = str_replace ( "{..prev..}", $template_prev, $template );
+    $template = str_replace ( "{..next..}", $template_next, $template );
+    
+    return $template;
+}
+
 
 /////////////////////////////////
 //// validation of lang dirs ////

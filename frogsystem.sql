@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.1.1
+-- version 3.2.0.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 21. Dezember 2009 um 17:41
--- Server Version: 5.1.30
--- PHP-Version: 5.2.8
+-- Erstellungszeit: 26. Dezember 2009 um 01:46
+-- Server Version: 5.1.37
+-- PHP-Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -421,7 +421,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 97, 4624, 6, 1, 2, 2);
+(1, 100, 4821, 6, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -443,7 +443,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 185, 1223919890, 1261394209),
+('http://localhost/fs2/', 187, 1223919890, 1261784578),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569),
@@ -540,7 +540,10 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2009, 12, 16, 2, 56),
 (2009, 12, 19, 2, 23),
 (2009, 12, 20, 1, 4),
-(2009, 12, 21, 2, 16);
+(2009, 12, 21, 2, 16),
+(2009, 12, 23, 1, 1),
+(2009, 12, 24, 1, 1),
+(2009, 12, 26, 1, 195);
 
 -- --------------------------------------------------------
 
@@ -767,7 +770,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`) VALUES
-(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 5, 'lightfrog', 0, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y H:i \\\\U\\\\h\\\\r', '{prev}Seite {page_number} von {total_pagesnext}', ' <a href=\\"{url}\\">weiter »</a>', '<a href=\\"{url}\\">« zurück</a> ', 604800, 'rss20', 'de_DE', 0, '', 4);
+(1, '2.alix4', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Kermit, Sweil, rockfest, Wal, Don-Esteban, Fizzban', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 5, 'lightfrog', 0, 'd.m.Y', 'H:i Uhr', 'd.m.Y H:i Uhr', '<div align="center" style="width:270px;"><div style="width:70px; float:left;">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style="width:70px; float:right;">&nbsp;{..next..}</div></div>', '|&nbsp;<a href="{..url..}">weiter&nbsp;»</a>', '<a href="{..url..}">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4);
 
 -- --------------------------------------------------------
 
@@ -1442,7 +1445,7 @@ CREATE TABLE `fs_styles` (
   `style_allow_edit` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`style_id`),
   UNIQUE KEY `style_tag` (`style_tag`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=37 ;
 
 --
 -- Daten für Tabelle `fs_styles`
@@ -1451,8 +1454,7 @@ CREATE TABLE `fs_styles` (
 INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allow_edit`) VALUES
 (0, 'default', 0, 0),
 (5, 'lightfrog', 1, 1),
-(11, 'darkfrog', 1, 1),
-(13, 'neu', 1, 1);
+(11, 'darkfrog', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1622,7 +1624,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1261394210);
+('127.0.0.1', 1, 1261788215);
 
 -- --------------------------------------------------------
 
@@ -1761,3 +1763,7 @@ CREATE TABLE `fs_zones` (
 -- Daten für Tabelle `fs_zones`
 --
 
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -411,10 +411,10 @@ if ( TRUE )
                                     '.$admin_phrases[general][page].': <br>
                                     <span class="small">'.$admin_phrases[general][page_desc].'<br><br>
                                     <span style="padding-bottom:5px; display:block;">'.$admin_phrases[common][valid_tags].':<br></span>
-                                    '.insert_tt( "{page_number}", "aktuelle Seite", "page" ).'
-                                    '.insert_tt( "{total_pages}", "Seitenzahl", "page" ).'
-                                    '.insert_tt( "{prev}", "Seite zurück", "page" ).'
-                                    '.insert_tt( "{next}", "Seite weiter", "page" ).'</span>
+                                    '.insert_tt( "{..page_number..}", "aktuelle Seite", "page" ).'
+                                    '.insert_tt( "{..total_pages..}", "Seitenzahl", "page" ).'
+                                    '.insert_tt( "{..prev..}", "Seite zurück", "page" ).'
+                                    '.insert_tt( "{..next..}", "Seite weiter", "page" ).'</span>
                                 </td>
                                 <td class="config">
                                     <textarea class="input_width" name="page" id="page" wrap="virtual" style="height:125px;">'.$_POST['page'].'</textarea>
@@ -425,7 +425,7 @@ if ( TRUE )
                                     '.$admin_phrases[general][page_prev].': <br>
                                     <span class="small">'.$admin_phrases[general][page_prev_desc].'<br><br>
                                     <span style="padding-bottom:5px; display:block;">'.$admin_phrases[common][valid_tags].':<br></span>
-                                    '.insert_tt( "{url}", "URL zur vorherigen Seite", "page_prev" ).'</span>
+                                    '.insert_tt( "{..url..}", "URL zur vorherigen Seite", "page_prev" ).'</span>
                                 </td>
                                 <td class="config">
                                     <textarea class="input_width" name="page_prev" id="page_prev" wrap="virtual" style="height:75px;">'.$_POST['page_prev'].'</textarea>
@@ -436,7 +436,7 @@ if ( TRUE )
                                     '.$admin_phrases[general][page_next].': <br>
                                     <span class="small">'.$admin_phrases[general][page_next_desc].'<br><br>
                                     <span style="padding-bottom:5px; display:block;">'.$admin_phrases[common][valid_tags].':<br></span>
-                                    '.insert_tt( "{url}", "URL zur nächsten Seite", "page_next" ).'</span>
+                                    '.insert_tt( "{..url..}", "URL zur nächsten Seite", "page_next" ).'</span>
                                 </td>
                                 <td class="config">
                                     <textarea class="input_width" name="page_next" id="page_next" wrap="virtual" style="height:75px;">'.$_POST['page_next'].'</textarea>

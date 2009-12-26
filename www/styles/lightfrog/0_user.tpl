@@ -578,7 +578,12 @@
   </tr>
   {..user_lines..}
 </table>
-<!--section-end::USERLIST-->
+
+<br><br>
+
+<div align="center">
+  {..page_nav..}
+</div><!--section-end::USERLIST-->
 
 <!--section-start::USERLIST_USERLINE-->  <tr class="small" align="center">
     <td class="left">

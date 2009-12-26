@@ -439,7 +439,7 @@ function create_templateeditor ( $editor_arr )
 
     if ( count ( $editor_arr['help'] ) >= 1 ) {
         foreach ( $editor_arr['help'] as $help ) {
-            $tag_array[] = '<tr class="pointer tag_click_class" title="einfügen" onClick="insert_tag(editor_'.$editor_arr['name'].',\''.$OC->getOpener().$help['tag'].$OC->getCloser().'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$OC->getOpener().$help['tag'].$OC->getCloser().'</b><br>'.$help['text'].'</td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+            $tag_array[] = '<tr class="pointer tag_click_class" title="einfügen" onClick="insert_editor_tag(editor_'.$editor_arr['name'].',\''.$OC->getOpener().$help['tag'].$OC->getCloser().'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$OC->getOpener().$help['tag'].$OC->getCloser().'</b><br>'.$help['text'].'</td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
         }
         $help_template = '<table class="small html-editor-list-table" cellspacing="0">'.implode ( "", $tag_array ).'</table>';
     }

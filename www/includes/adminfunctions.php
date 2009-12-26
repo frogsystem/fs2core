@@ -606,7 +606,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
     }
     if ( $INSERT == TRUE ) {
         $insert_button = '
-        <a href="javascript:insert_tag('.$FORM_ID.',\''.$TITLE.'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfügen" align="absmiddle"></a>';
+        <a href="javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfügen" align="absmiddle"></a>';
     }
     if ( $SHOW_TITLE == TRUE ) {
         $first_title = $TITLE."";
