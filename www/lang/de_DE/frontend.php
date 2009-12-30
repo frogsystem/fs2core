@@ -126,6 +126,11 @@ $TEXT = array (
     "Abmeldevorgang war erfolgreich",
     
     
+// Artikel
+    "article_not_found" =>
+    "Artikel nicht vorhanden",
+    
+
 //News
     "news_title" =>
     "News",

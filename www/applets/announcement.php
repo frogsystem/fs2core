@@ -12,14 +12,15 @@ $ann_arr = mysql_fetch_assoc ( $index );
 if ( $ann_arr['show_announcement'] != 0 && $ann_arr['activate_announcement'] == 1 ) {
     $ann_arr['announcement_text'] = fscode ( $ann_arr['announcement_text'], $ann_arr['ann_fscode'], $ann_arr['ann_html'], $ann_arr['ann_para'] );
 
-	// Body Template
-	$template = new template();
-	$template->setFile("0_general.tpl");
-	$template->load("ANNOUNCEMENT");
-	$template->tag("announcement_text", $ann_arr['announcement_text'] );
+    // Body Template
+    $template = new template();
+    $template->setFile("0_general.tpl");
+    $template->load("ANNOUNCEMENT");
+    $template->tag("announcement_text", $ann_arr['announcement_text'] );
+    $template = $template->display ();
 }
 
 if ( !( $ann_arr['show_announcement'] == 1 || ( $ann_arr['show_announcement'] == 2 && $global_config_arr['goto'] == $global_config_arr['home_real'] ) ) ) {
-    unset ( $template );
+    $template == "";
 }
 ?>

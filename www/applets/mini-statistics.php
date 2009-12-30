@@ -71,10 +71,11 @@ $template->tag("hits_today", point_number ( $today_arr['s_hits'] ) );
 $template->tag("visitors_online", point_number ( $useronline_arr['total'] ) );
 $template->tag("registered_online", point_number ( $useronline_arr['registered'] ) );
 $template->tag("guests_online", point_number ( $useronline_arr['guests'] ) );
-$template->tag("registered_users", point_number ( $counter_arr['user'] ) );
-$template->tag("news", point_number ( $counter_arr['news'] ) );
-$template->tag("articles", point_number ( $counter_arr['artikel'] ) );
-$template->tag("comments", point_number ( $counter_arr['comments'] ) );
+
+$template->tag("num_users", point_number ( $counter_arr['user'] ) );
+$template->tag("num_news", point_number ( $counter_arr['news'] ) );
+$template->tag("num_comments", point_number ( $counter_arr['comments'] ) );
+$template->tag("num_articles", point_number ( $counter_arr['artikel'] ) );
 
 $template = $template->display();
 ?>

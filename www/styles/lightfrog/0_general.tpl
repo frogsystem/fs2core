@@ -51,9 +51,10 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
 <!--section-end::POPUPVIEWER-->
 
 <!--section-start::ANNOUNCEMENT--><b>Ankündigung:</b>
-<br><br>
-    {announcement_text}
-<br><br><!--section-end::ANNOUNCEMENT-->
+<p>
+  {..announcement_text..}
+  <br><br>
+</p><!--section-end::ANNOUNCEMENT-->
 
 <!--section-start::STATISTICS-->- <b>{..visits..}</b> Visits<br>
 - <b>{..visits_today..}</b> Visits heute<br>
@@ -64,9 +65,9 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
 - <b>{..registered_online..}</b> registrierte <br>
 - <b>{..guests_online..}</b> Gäste<br><br>
 
-- <b>{..registered_users..}</b> registrierte User<br>
-- <b>{..news..}</b> News<br>
-- <b>{..comments..}</b> Kommentare<br>
-- <b>{..articles..}</b> Artikel
+- <b>{..num_users..}</b> registrierte User<br>
+- <b>{..num_news..}</b> News<br>
+- <b>{..num_comments..}</b> Kommentare<br>
+- <b>{..num_articles..}</b> Artikel
 <!--section-end::STATISTICS-->
 
