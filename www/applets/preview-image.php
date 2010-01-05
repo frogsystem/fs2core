@@ -37,9 +37,9 @@ if ( $config_arr['active'] == 1 ) {
     if ( $data != FALSE ) {
 
         if ( $data['type'] == 1 ) {
-            $link = "showimg.php?id=".$data['id']."&single";
+            $link = "imageviewer.php?id=".$data['id']."&single";
         } else {
-            $link = "showimg.php?id=".$data['id'];
+            $link = "imageviewer.php?id=".$data['id'];
         }
         
         if ( $config_arr['show_type'] == 1 ) {

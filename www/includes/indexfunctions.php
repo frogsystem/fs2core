@@ -36,8 +36,8 @@ function get_maintemplate ( $PATH_PREFIX = "" )
     // Create script-Rows
     $template_script = "";
     $template_script .= '
-                <script type="text/javascript" src="'.$PATH_PREFIX .'res/jquery-1.3.1.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
-                <script type="text/javascript" src="'.$PATH_PREFIX .'res/js_functions.js"></script>';
+                <script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-1.3.2.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
+                <script type="text/javascript" src="'.$PATH_PREFIX .'includes/js_functions.js"></script>';
 
     // Replace Placeholders
     $template = str_replace("{..doctype..}", $template_doctype, $template);

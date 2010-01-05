@@ -1,23 +1,21 @@
 <!--section-start::BODY--><p>
   <b>Vorschaubild:</b>
 </p>
-<div align="center">
+<p align="center">
   <a href="{..viewer_url..}">
     {..previewimg..}
-  </a>
-  <p class="small">
+  </a><br>
+  <span class="small">
     <b>{..caption..}</b><br>
     (aus <b>{..cat_title..}</b>)
-  </p>  
-</div><!--section-end::BODY-->
+  </span>  
+</p><!--section-end::BODY-->
 
 <!--section-start::NOIMAGE_BODY--><p>
   <b>Vorschaubild:</b>
 </p>
-<div class="small" align="center">
+<p class="small" align="center">
   <b>Kein Vorschaubild gefunden</b>
-</div>
-
-
+</p>
 <!--section-end::NOIMAGE_BODY-->
 

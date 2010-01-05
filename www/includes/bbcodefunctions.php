@@ -1,6 +1,6 @@
 <?php
-require ( FS2_ROOT_PATH . 'includes/stringparser_bbcode.class.php' );
-require ( FS2_ROOT_PATH . 'res/player_flv_include.php' );
+require ( FS2_ROOT_PATH . 'libs/class_stringparser_bbcode.php' );
+require ( FS2_ROOT_PATH . 'resources/player/player_flv_include.php' );
 
 function convertlinebreaks ($text) {
     return preg_replace ("/\015\012|\015|\012/", "\n", $text);

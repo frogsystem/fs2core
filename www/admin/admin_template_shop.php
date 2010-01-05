@@ -44,6 +44,7 @@ $TEMPLATE_EDIT[] = array (
         array ( tag => "item_price", text => $TEXT['template']->get("shop_item_price") ),
         array ( tag => "item_image", text => $TEXT['template']->get("shop_item_image") ),
         array ( tag => "item_image_url", text => $TEXT['template']->get("shop_item_image_url") ),
+        array ( tag => "item_image_viewer_url", text => $TEXT['template']->get("shop_item_image_viewer_url") ),
         array ( tag => "item_small_image", text => $TEXT['template']->get("shop_item_small_image") ),
         array ( tag => "item_small_image_url", text => $TEXT['template']->get("shop_item_small_image_url") ),
     )

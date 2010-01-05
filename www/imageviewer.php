@@ -39,35 +39,54 @@ if ($db)
     $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."screen_config", $db );
     $config_arr = mysql_fetch_assoc ( $index ) ;
 
-    // Get Image Data
-    $index = mysql_query ( "
-                            SELECT `screen_name`, `cat_id` FROM `".$global_config_arr['pref']."screen`
-                            WHERE `screen_id` = ".$_GET['id']."
-                            LIMIT 0,1
-    ", $db );
+    // No Image found yet
+    $image_found = FALSE;
+    $data_array['caption'] = "";
+    $data_array['prev_url'] = "";
+    $data_array['prev_link'] = "";
+    $data_array['prev_image_link'] = "";
+    $data_array['next_url'] = "";
+    $data_array['next_link'] = "";
+    $data_array['next_image_link'] = "";
 
-    $data_array['image'] = image_url ( "images/screenshots/", $_GET['id'], FALSE );
-    $data_array['image_url'] = image_url ( "images/screenshots/", $_GET['id'] );
-    
-    if ( mysql_num_rows ( $index ) == 1 ) {
-        $data_array['caption'] = stripslashes ( mysql_result ( $index, 0, "screen_name" ) );
+    // Any Image?
+    if ( isset ( $_GET['file'] ) && $_GET['file'] != "" ) {
+        $path_parts = pathinfo ( $_GET['file'] );
+        $data_array['image'] = image_url ( $path_parts['dirname']."/", $path_parts['filename'], FALSE );
+        $data_array['image_url'] = image_url ( $path_parts['dirname']."/", $path_parts['filename'] );
+        $image_found = TRUE;
+        
+    // Gallery Image
+    } else {
+        // Get Image Data
+        $index = mysql_query ( "
+                                SELECT `screen_name`, `cat_id` FROM `".$global_config_arr['pref']."screen`
+                                WHERE `screen_id` = ".$_GET['id']."
+                                LIMIT 0,1
+        ", $db );
 
-        $data_array['prev_url'] = "";
-        $data_array['prev_link'] = "";
-        $data_array['prev_image_link'] = "";
-        $data_array['next_url'] = "";
-        $data_array['next_link'] = "";
-        $data_array['next_image_link'] = "";
+        $data_array['image'] = image_url ( "images/screenshots/", $_GET['id'], FALSE );
+        $data_array['image_url'] = image_url ( "images/screenshots/", $_GET['id'] );
+
+        if ( mysql_num_rows ( $index ) == 1 ) {
+            $data_array['caption'] = stripslashes ( mysql_result ( $index, 0, "screen_name" ) );
+            $cat_id = mysql_result ( $index, 0, "cat_id" );
+            settype( $cat_id, "integer" );
+            $image_found = TRUE;
+        }
+    }
+
+    // Gallery or Any Image
+    if ( $image_found === TRUE ) {
 
         // Single Image
         if ( $_GET['single'] === TRUE ) {
-        
-        // may be do sonthin' here
+
+            // Maybe do somethin'
 
         // No single Image
         } else {
-            $cat_id = mysql_result ( $index, 0, "cat_id" );
-            settype( $cat_id, "integer" );
+
             
             // exists a NEXT image?
             $index = mysql_query ( "
@@ -82,7 +101,7 @@ if ($db)
             if ( mysql_num_rows ( $index ) == 1 ) {
                 $next_id = mysql_result ( $index, 0, "screen_id" );
 
-                $data_array['next_url'] = "showimg.php?id=".$next_id;
+                $data_array['next_url'] = "imageviewer.php?id=".$next_id;
                 $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$TEXT->get("popupviewer_next_text").'</a>';
                 $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$TEXT->get("popupviewer_next_image").'</a>';
             }
@@ -100,7 +119,7 @@ if ($db)
             if ( mysql_num_rows ( $index ) == 1 ) {
                 $prev_id = mysql_result ( $index, 0, "screen_id" );
 
-                $data_array['prev_url'] = "showimg.php?id=".$prev_id;
+                $data_array['prev_url'] = "imageviewer.php?id=".$prev_id;
                 $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$TEXT->get("popupviewer_prev_text").'</a>';
                 $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$TEXT->get("popupviewer_prev_image").'</a>';
             }
@@ -124,14 +143,6 @@ if ($db)
             $data_array['image'] = '<img src="'.$data_array['image'].'" alt="'.$data_array['caption'].'">';
         }
         
-    } else {
-        $data_array['caption'] = "";
-        $data_array['prev_url'] = "";
-        $data_array['prev_link'] = "";
-        $data_array['prev_image_link'] = "";
-        $data_array['next_url'] = "";
-        $data_array['next_link'] = "";
-        $data_array['next_image_link'] = "";
     }
 
     // Create PopUp-Viewer-Template
@@ -156,7 +167,7 @@ if ($db)
     // Get Main Template
     $template = get_maintemplate ();
     $template = str_replace ( "{..body..}", $template_popupviewer, $template);
-
+    
     // Display Page
     echo $template;
 

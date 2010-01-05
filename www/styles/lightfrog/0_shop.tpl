@@ -1,12 +1,14 @@
-<!--section-start::APPLET_ITEM--><div align="center">
-  <a href="{..item_url..}" target="_blank">{..item_small_image..}</a>
-  <p class="small">
+<!--section-start::APPLET_ITEM--><p align="center">
+  <a href="{..item_url..}" target="_blank">
+    {..item_small_image..}
+  </a><br>
+  <span class="small">
     <a class="small" href="{..item_url..}" target="_blank">
       <b>{..item_titel..}</b>
     </a><br>
     Preis: <b>{..item_price..}</b>
-  </p>  
-</div><!--section-end::APPLET_ITEM-->
+  </span>  
+</p><!--section-end::APPLET_ITEM-->
 
 <!--section-start::APPLET_BODY--><p>
   <b>Shop:</b>
@@ -27,7 +29,7 @@
         {..item_small_image..}
       </p>
       <p>
-        <a href="{..item_image_url..}" target="_blank">
+        <a href="{..item_image_viewer_url..}">
           Bild in groﬂ betrachten...
         </a>
       </p>      

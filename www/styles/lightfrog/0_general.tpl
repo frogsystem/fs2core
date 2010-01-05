@@ -20,18 +20,15 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
     </div>
     
     <div id="menu_right">
-      $APP(usermenu.php)<br><br>
-      Zufallsbild:<br>
-      $APP(preview-image.php)<br>
-      $APP(shop-system.php)<br><br>
-      Umfrage:<br>
-      $APP(poll-system.php)<br>
-      Partner:<br>
+      $APP(user-menu.php)
+      $APP(preview-image.php)
+      $APP(shop-system.php)
       $APP(affiliates.php)
-      Statistik:<br>
-      $APP(mini-statistics.php)<br><br>
-      News-Feeds:<br>
-      [%feeds%]      
+      $APP(mini-statistics.php)
+      [%feeds%]
+      
+      <br><br>Umfrage:<br>
+      $APP(poll-system.php)  
     </div>   
     
     <div id="content">
@@ -80,18 +77,25 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
   <br><br>
 </p><!--section-end::ANNOUNCEMENT-->
 
-<!--section-start::STATISTICS-->- <b>{..visits..}</b> Visits<br>
-- <b>{..visits_today..}</b> Visits heute<br>
-- <b>{..hits..}</b> Hits<br>
-- <b>{..hits_today..}</b> Hits heute<br><br>
-
-- <b>{..visitors_online..}</b> Besucher online<br>
-- <b>{..registered_online..}</b> registrierte <br>
-- <b>{..guests_online..}</b> Gäste<br><br>
-
-- <b>{..num_users..}</b> registrierte User<br>
-- <b>{..num_news..}</b> News<br>
-- <b>{..num_comments..}</b> Kommentare<br>
-- <b>{..num_articles..}</b> Artikel
+<!--section-start::STATISTICS--><p>
+  <b>Statistik:</b>
+</p>
+<p class="small">
+  - <b>{..visits..}</b> Visits<br>
+  - <b>{..visits_today..}</b> Visits heute<br>
+  - <b>{..hits..}</b> Hits<br>
+  - <b>{..hits_today..}</b> Hits heute
+</p>
+<p class="small">  
+  - <b>{..visitors_online..}</b> Besucher online<br>
+  - <b>{..registered_online..}</b> registrierte <br>
+  - <b>{..guests_online..}</b> Gäste
+</p>
+<p class="small">  
+  - <b>{..num_users..}</b> registrierte User<br>
+  - <b>{..num_news..}</b> News<br>
+  - <b>{..num_comments..}</b> Kommentare<br>
+  - <b>{..num_articles..}</b> Artikel
+</p>
 <!--section-end::STATISTICS-->
 

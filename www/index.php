@@ -14,11 +14,7 @@ require ( FS2_ROOT_PATH . "login.inc.php");
 //////////////////////////////////
 //// DB Connection etablished ////
 //////////////////////////////////
-if ($db)
-{
-    //Include DL Catch
-    require ( FS2_ROOT_PATH . "res/dl.inc.php" );
-    
+if ( $db ) {
     //Include Functions-Files
     require ( FS2_ROOT_PATH . "includes/functions.php" );
     require ( FS2_ROOT_PATH . "includes/cookielogin.php" );
@@ -77,8 +73,7 @@ if ($db)
 //////////////////////////////
 //// DB Connection failed ////
 //////////////////////////////
-else
-{
+else {
     // Include German Phrases
     require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
     $TEXT = new langDataInit ( "de_DE", "frontend" );

@@ -19,14 +19,17 @@ http://creativecommons.org/licenses/by-sa/3.0/de/legalcode
 Die Software verwendet andere Software oder Teile anderer Software, die
 unter anderen, kompatiblen Lizenzen veröffentlicht wurden. ("Fremd-Software")
 Die verwendete Fremd-Software steht daher in keinem Fall unter oben stehender
-Lizenz, unter der die Software veröffentlicht wurde. Es folgt daher eine
-Auflistungen der verwendeten Fremd-Software und ihrer Lizenzen:
+Lizenz, unter der die Software veröffentlicht wurde.
+
+Es folgt daher eine Auflistungen der verwendeten Fremd-Software und ihrer
+Lizenzen:
 
 -----------------------------------------------------------
 
-BBCode-Parserklasse für PHP | Version: 0.3.3 | Copyright (c) 2004-2009 Christian Seiler
-aktuelle Version: http://www.christian-seiler.de/projekte/php/bbcode
-Dateien: /includes/stringparser.class.php, /includes/stringparser_bbcode.class.php
+BBCode-Parserklasse für PHP
+Version: 0.3.3 | Copyright (c) 2004-2009 Christian Seiler
+Homepage: http://www.christian-seiler.de/projekte/php/bbcode/
+Dateien: /libs/class_stringparser.php, /libs/class_stringparser_bbcode.php
 Lizenz: The MIT License
 
 Copyright (c) 2004-2009 Christian Seiler
@@ -51,16 +54,18 @@ THE SOFTWARE.
 
 -----------------------------------------------------------
 
-FLV Player Maxi | Version 1.6.0
-aktuelle Version: http://flv-player.net/players/maxi/
-Dateien: /res/player_flv_maxi.swf
+FLV Player Maxi
+Version 1.6.0
+Homepage: http://flv-player.net/players/maxi/
+Dateien: /resources/player/player_flv_maxi.swf
 Lizenz: Creative Commons Attribution-Share Alike 3.0 Unported
 Lizenztext: http://creativecommons.org/licenses/by-sa/3.0/deed
 
 -----------------------------------------------------------
 
-jQuery | Versin 1.3.2 | Copyright (c) 2009 John Resig
-aktuelle Version: http://jquery.com/
+jQuery
+Version 1.3.2 | Copyright (c) 2009 John Resig
+Homepage: http://jquery.com
 Dateien: /resources/jquery/jquery-1.3.2.min.js
 (nur entsprechend gekennzeichnete Teile)
 Lizenz: The MIT License
@@ -87,9 +92,9 @@ THE SOFTWARE.
 
 -----------------------------------------------------------
 
-Sizzle CSS Selector Engine | Version 0.9.3 | Copyright 2009, The Dojo Foundation
-als Teil von jQuery
-aktuelle Version: http://sizzlejs.com/
+Sizzle CSS Selector Engine (als Teil von jQuery)
+Version 0.9.3 | Copyright 2009, The Dojo Foundation
+Homepage: http://sizzlejs.com
 Dateien: /resources/jquery/jquery-1.3.2.min.js
 (nur entsprechend gekennzeichnete Teile)
 Lizenz: The MIT License
@@ -116,9 +121,11 @@ THE SOFTWARE.
 
 -----------------------------------------------------------
 
-codemirror | Version 0.65 | Copyright (c) 2007-2009 Marijn Haverbeke
-aktuelle Version: http://marijn.haverbeke.nl/codemirror/
+codemirror
+Version 0.65 | Copyright (c) 2007-2009 Marijn Haverbeke
+Homepage: http://marijn.haverbeke.nl/codemirror/
 Dateien: /resources/codemirror/*
+(ausgenommen /resources/codemirror/contrib/)
 Lizenz:
 
 Copyright (c) 2007-2009 Marijn Haverbeke
@@ -144,5 +151,51 @@ redistribute it freely, subject to the following restrictions:
 
 Marijn Haverbeke
 marijnh at gmail
+
+-----------------------------------------------------------
+
+codemirror PHP Parser (als Teil von codemirror)
+Copyright (c) 2008-2009, Yahoo! Inc.
+Homepage: http://marijn.haverbeke.nl/codemirror/contrib/php/index.html
+Dateien: /resources/codemirror/contrib/php/*
+Lizenz:
+
+Copyright (c) 2008-2009, Yahoo! Inc.
+All rights reserved.
+
+This software is provided for use in connection with the
+CodeMirror suite of modules and utilities, hosted and maintained
+at http://marijn.haverbeke.nl/codemirror/.
+
+Redistribution and use of this software in source and binary forms,
+with or without modification, are permitted provided that the
+following conditions are met:
+
+* Redistributions of source code must retain the above
+  copyright notice, this list of conditions and the
+  following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the
+  following disclaimer in the documentation and/or other
+  materials provided with the distribution.
+
+* Neither the name of Yahoo! Inc. nor the names of its
+  contributors may be used to endorse or promote products
+  derived from this software without specific prior
+  written permission of Yahoo! Inc.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
 
 -----------------------------------------------------------

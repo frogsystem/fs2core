@@ -47,11 +47,14 @@
 <!--section-end::APPLET_LOGIN-->
 
 <!--section-start::APPLET_MENU--><b>Willkommen {..user_name..}!</b><br>
-{..user_image..}<br>
-<b>Benutzermenü:</b><br>
-<a class="small" href="{..user_edit_url..}">- Mein Profil</a><br>
-{..admincp_line..}
-<a class="small" href="{..logout_url..}">- Abmelden</a><!--section-end::APPLET_MENU-->
+{..user_image..}
+
+<p>
+  <b>Benutzermenü:</b><br>
+  <a class="small" href="{..user_edit_url..}">- Mein Profil</a><br>
+  {..admincp_line..}
+  <a class="small" href="{..logout_url..}">- Abmelden</a>
+</p><!--section-end::APPLET_MENU-->
 
 <!--section-start::APPLET_ADMINLINE--><a class="small" href="{..admincp_url..}">- Admin CP</a><br><!--section-end::APPLET_ADMINLINE-->
 
@@ -243,11 +246,15 @@
 <!--section-start::PROFILE--><b>Profil von {..user_name..}</b><br><br>
 
 <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
-
+  
   <tr>
-    <td colspan="2" width="225"><b>Benutzername:</b></td>
-    <td width="50"></td>
-    <td colspan="2" width="225"><b>Benutzerbild:</b></td>
+    <td colspan="2" width="205"><b>Benutzername:</b></td>
+    
+    <td align="center" valign="middle" rowspan="28" width="90">
+      <img src="$VAR(style_images)line.gif" alt="">
+    </td>
+    
+    <td colspan="2" width="205"><b>Benutzerbild:</b></td>
   </tr>
   <tr>
     <td>{..user_name..}</td>
@@ -268,7 +275,7 @@
     <td>{..user_mail..}</td>
     <td align="right"><img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom"></td>
     <td></td>
-
+    
     <td></td>
   </tr>
   
@@ -283,7 +290,7 @@
     <td>{..user_reg_date..}</td>
     <td align="right"><img src="$VAR(style_icons)user/date.gif" alt="" align="bottom"></td>
     <td></td>
-
+    
     <td></td>
   </tr>
   
@@ -294,7 +301,7 @@
     <td></td>
     <td colspan="2"><b>Rang:</b></td>
   </tr>
-  <tr valign="top">
+    <tr valign="top">
     <td>{..user_group..}</td>
     <td align="right"><img src="$VAR(style_icons)user/group.gif" alt="" align="bottom"></td>
     <td></td>
@@ -320,77 +327,77 @@
   <tr><td></td></tr>
   
   <tr>
-     <td colspan="2"><b>ICQ-Nummer:</b></td>
-     <td></td>
-     <td colspan="2"><b>Kommentare:</b></td>
-   </tr>
-   <tr>
-     <td>{..user_icq..}</td>
-     <td align="right"><img src="$VAR(style_icons)user/icq.gif" alt="" align="bottom"></td>
-     <td></td>
-     <td>{..user_num_comments..}</td>
-     <td align="right"><img src="$VAR(style_icons)user/comment.gif" alt="" align="bottom"></td>
-   </tr>
+    <td colspan="2"><b>ICQ-Nummer:</b></td>
+    <td></td>
+    <td colspan="2"><b>Kommentare:</b></td>
+  </tr>
+  <tr>
+    <td>{..user_icq..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/icq.gif" alt="" align="bottom"></td>
+    <td></td>
+    <td>{..user_num_comments..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/comment.gif" alt="" align="bottom"></td>
+  </tr>
   
   <tr><td></td></tr>
   
   <tr>
-     <td colspan="2"><b>AIM E-Mail:</b></td>
-     <td></td>
-     <td colspan="2"><b>Artikel:</b></td>
-   </tr>
-   <tr>
-     <td>{..user_aim..}</td>
-     <td align="right"><img src="$VAR(style_icons)user/aim.gif" alt="" align="bottom"></td>
-     <td></td>
-     <td>{..user_num_articles..}</td>
-     <td align="right"><img src="$VAR(style_icons)user/article.gif" alt="" align="bottom"></td>
-   </tr>
+    <td colspan="2"><b>AIM E-Mail:</b></td>
+    <td></td>
+    <td colspan="2"><b>Artikel:</b></td>
+  </tr>
+  <tr>
+    <td>{..user_aim..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/aim.gif" alt="" align="bottom"></td>
+    <td></td>
+    <td>{..user_num_articles..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/article.gif" alt="" align="bottom"></td>
+  </tr>
   
   <tr><td></td></tr>
   
   <tr>
-     <td colspan="2"><b>Windows Live ID:</b></td>
-     <td></td>
-     <td colspan="2"><b>Downloads:</b></td>
-   </tr>
-   <tr>
-     <td>{..user_wlm..}</td>
-     <td align="right"><img src="$VAR(style_icons)user/wlm.gif" alt="" align="bottom"></td>
-     <td></td>
-     <td>{..user_num_downloads..}</td>
-     <td align="right"><img src="$VAR(style_icons)user/download.gif" alt="" align="bottom"></td>
-   </tr>
+    <td colspan="2"><b>Windows Live ID:</b></td>
+    <td></td>
+    <td colspan="2"><b>Downloads:</b></td>
+  </tr>
+  <tr>
+    <td>{..user_wlm..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/wlm.gif" alt="" align="bottom"></td>
+    <td></td>
+    <td>{..user_num_downloads..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/download.gif" alt="" align="bottom"></td>
+  </tr>
   
   <tr><td></td></tr>
   
   <tr>
-     <td colspan="2"><b>Yahoo!-ID:</b></td>
-     <td></td>
-     <td colspan="2"><b></b></td>
-   </tr>
-   <tr>
-     <td>{..user_yim..}</td>
-     <td align="right"><img src="$VAR(style_icons)user/yim.gif" alt="" align="bottom"></td>
-     <td></td>
-     <td></td>
-     <td></td>
-   </tr>
+    <td colspan="2"><b>Yahoo!-ID:</b></td>
+    <td></td>
+    <td colspan="2"><b></b></td>
+  </tr>
+  <tr>
+    <td>{..user_yim..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/yim.gif" alt="" align="bottom"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
   
   <tr><td></td></tr>
   
   <tr>
-     <td colspan="2"><b>Skype-Name:</b></td>
-     <td></td>
-     <td colspan="2"><b></b></td>
-   </tr>
-   <tr>
-     <td>{..user_skype..}</td>
-     <td align="right"><img src="$VAR(style_icons)user/skype.gif" alt="" align="bottom"></td>
-     <td></td>
-     <td></td>
-     <td></td>
-   </tr>
+    <td colspan="2"><b>Skype-Name:</b></td>
+    <td></td>
+    <td colspan="2"><b></b></td>
+  </tr>
+  <tr>
+    <td>{..user_skype..}</td>
+    <td align="right"><img src="$VAR(style_icons)user/skype.gif" alt="" align="bottom"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
 
 </table>
 <!--section-end::PROFILE-->
