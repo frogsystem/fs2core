@@ -1,3 +1,11 @@
+function popUp(url, target, width, height) {
+    x = screen.width/2 - width/2;
+    y = screen.height/2 - height/2;
+    window.open(url, target, 'width='+width+',height='+height+',left='+x+',top='+y+',screenX='+x+',screenY='+y+',scrollbars=YES,location=YES,status=YES');
+}
+
+
+
 /**
 * From http://www.massless.org/mozedit/
 */

@@ -5,7 +5,7 @@
 /////////////////////////////////////
 
 if (TRUE
-    && ($_POST[show_type] AND $_POST[show_type] != "")
+    && isset ($_POST[show_type])
     && ($_POST[show_size_x] AND $_POST[show_size_x] != "")
     && ($_POST[show_size_y] AND $_POST[show_size_y] != "")
     && ($_POST[show_img_x] AND $_POST[show_img_x] != "")
@@ -93,6 +93,33 @@ else
 {
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config", $db);
     $config_arr = mysql_fetch_assoc($index);
+    
+    settype($config_arr[show_type], 'integer');
+    settype($config_arr[show_size_x], 'integer');
+    settype($config_arr[show_size_y], 'integer');
+    settype($config_arr[show_img_x], 'integer');
+    settype($config_arr[show_img_y], 'integer');
+
+    settype($config_arr[screen_x], 'integer');
+    settype($config_arr[screen_y], 'integer');
+    settype($config_arr[screen_thumb_x], 'integer');
+    settype($config_arr[screen_thumb_y], 'integer');
+    settype($config_arr[screen_size], 'integer');
+    settype($config_arr[screen_rows], 'integer');
+    settype($config_arr[screen_cols], 'integer');
+    $config_arr[screen_order] = killhtml($config_arr[screen_order]);
+    $config_arr[screen_sort] = killhtml($config_arr[screen_sort]);
+
+    settype($config_arr[wp_x], 'integer');
+    settype($config_arr[wp_y], 'integer');
+    settype($config_arr[wp_thumb_x], 'integer');
+    settype($config_arr[wp_thumb_y], 'integer');
+    settype($config_arr[wp_size], 'integer');
+    settype($config_arr[wp_rows], 'integer');
+    settype($config_arr[wp_cols], 'integer');
+    $config_arr[wp_order] = killhtml($config_arr[wp_order]);
+    $config_arr[wp_sort] = killhtml($config_arr[wp_sort]);
+    
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="gallery_config" name="go">
@@ -106,13 +133,13 @@ else
                                 <td class="config" valign="top">
                                     <select name="show_type">
                                         <option value="0"';
-                                        if ($config_arr[show_type] == 0)
+                                        if ($config_arr[show_type] === 0)
                                           echo ' selected="selected"';
-                                        echo'>in neuem Fenster</option>
+                                        echo'>im Fenster (normaler Link)</option>
                                         <option value="1"';
-                                        if ($config_arr[show_type] == 1)
+                                        if ($config_arr[show_type] === 1)
                                           echo ' selected="selected"';
-                                        echo'>als PopUp</option>
+                                        echo'>als PopUp-Fenster</option>
                                     </select>
                                 </td>
                             </tr>

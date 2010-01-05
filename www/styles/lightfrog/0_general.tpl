@@ -47,7 +47,7 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
   </div>
 </body><!--section-end::MAINPAGE-->
 
-<!--section-start::POPUPVIEWER--><body id="pictureviewer">
+<!--section-start::POPUPVIEWER--><body id="imageviewer">
 
   <div style="width:100%;" align="center">
     <p><b>{..caption..}</b></p>

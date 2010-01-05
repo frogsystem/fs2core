@@ -1,4 +1,3 @@
-
 <!--
 
 function chkFormularComment()
@@ -20,4 +19,4 @@ function chkFormularNewsSearch()
             return false;
         }
     }
---!>
+-->

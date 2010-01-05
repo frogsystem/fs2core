@@ -124,7 +124,7 @@ function do_bbcode_font ($action, $attributes, $content, $params, $node_object) 
     }
 
     if (isset ($attributes['default'])) {
-        return '<font face="'.$attributes['default'].'">'.$content.'</font>';
+        return '<span style="font-family:'.$attributes['default'].';">'.$content.'</span>';
     }
 }
 
@@ -136,7 +136,7 @@ function do_bbcode_color ($action, $attributes, $content, $params, $node_object)
     }
 
     if (isset ($attributes['default'])) {
-        return '<font color="'.$attributes['default'].'">'.$content.'</font>';
+        return '<span style="color:'.$attributes['default'].';">'.$content.'</span>';
     }
 }
 
@@ -153,7 +153,8 @@ function do_bbcode_size ($action, $attributes, $content, $params, $node_object) 
 
     if (isset ($attributes['default'])) {
         $arr_num = $attributes['default'];
-        $font_sizes_values = array("6pt","7pt","8pt","10pt","12pt","14pt","18pt","24pt");
+        #$font_sizes_values = array("6pt","7pt","8pt","10pt","12pt","14pt","18pt","24pt");
+        $font_sizes_values = array("70%","85%","100%","125%","155%","195%","225%","300%");
         return '<span style="font-size:'.$font_sizes_values[$arr_num].';">'.$content.'</span>';
     }
 }
@@ -167,12 +168,14 @@ function do_bbcode_code ($action, $attributes, $content, $params, $node_object) 
                 return true;
         }
 
-        $index = mysql_query("SELECT code_tag FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-        $code_tag = stripslashes(mysql_result($index, 0, "code_tag"));
-
-        $parsed = str_replace('{text}', $content, $code_tag);
+        // Get Template
+        $template = new template();
+        $template->setFile("0_fscodes.tpl");
+        $template->load("CODE");
+        $template->tag("text", $content );
+        $template = $template->display ();
         
-        return $parsed;
+        return $template;
 }
 
 function do_bbcode_quote ($action, $attributes, $content, $params, $node_object) {
@@ -182,17 +185,24 @@ function do_bbcode_quote ($action, $attributes, $content, $params, $node_object)
         if ($action == 'validate') {
                 return true;
         }
-        
+
+        // Get Template
+        $template = new template();
+        $template->setFile("0_fscodes.tpl");
+            
         if (!isset ($attributes['default'])) {
-            $index = mysql_query("SELECT quote_tag FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-            $quote_tag = stripslashes(mysql_result($index, 0, "quote_tag"));
-            $parsed = str_replace('{text}', $content, $quote_tag);
+            $template->load("QUOTE");
+            $template->tag("text", $content );
+            $parsed = $template->display ();
+
+            return $parsed;
         } else {
-            $index = mysql_query("SELECT quote_tag_name FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-            $quote_tag_name = stripslashes(mysql_result($index, 0, "quote_tag_name"));
-            $parsed = $quote_tag_name;
-            $parsed = str_replace('{author}', $attributes['default'], $parsed);
-            $parsed = str_replace('{text}', $content, $parsed);
+            $template->load("QUOTE_SOURCE");
+            $template->tag("text", $content );
+            $template->tag("author", $attributes['default'] );
+            $parsed = $template->display ();
+
+            return $parsed;
         }
         
         return $parsed;
