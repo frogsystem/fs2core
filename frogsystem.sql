@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 05. Januar 2010 um 19:30
+-- Erstellungszeit: 07. Januar 2010 um 01:03
 -- Server Version: 5.1.30
 -- PHP-Version: 5.2.8
 
@@ -209,7 +209,7 @@ CREATE TABLE `fs_aliases` (
   `alias_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`alias_id`),
   KEY `alias_go` (`alias_go`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
 
 --
 -- Daten für Tabelle `fs_aliases`
@@ -221,7 +221,8 @@ INSERT INTO `fs_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_act
 (3, 'profil', 'user', 1),
 (4, 'editprofil', 'user_edit', 1),
 (5, 'members', 'user_list', 1),
-(11, 'partner', 'affiliates', 1);
+(11, 'partner', 'affiliates', 1),
+(12, 'pollarchiv', 'polls', 1);
 
 -- --------------------------------------------------------
 
@@ -423,7 +424,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 108, 5418, 6, 1, 2, 2);
+(1, 111, 6075, 6, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -445,7 +446,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 231, 1223919890, 1262706816),
+('http://localhost/fs2/', 234, 1223919890, 1262816133),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569),
@@ -551,7 +552,9 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 1, 2, 1, 3),
 (2010, 1, 3, 1, 3),
 (2010, 1, 4, 1, 191),
-(2010, 1, 5, 2, 312);
+(2010, 1, 5, 2, 312),
+(2010, 1, 6, 2, 213),
+(2010, 1, 7, 1, 444);
 
 -- --------------------------------------------------------
 
@@ -1093,12 +1096,15 @@ CREATE TABLE `fs_poll` (
   `poll_type` tinyint(4) DEFAULT NULL,
   `poll_participants` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`poll_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_poll`
 --
 
+INSERT INTO `fs_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll_type`, `poll_participants`) VALUES
+(1, 'Frage', 1260140700, 1270591500, 1, 0),
+(2, 'Noch ne Frage', 1262819100, 1263423900, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1113,12 +1119,18 @@ CREATE TABLE `fs_poll_answers` (
   `answer` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `answer_count` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`answer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fs_poll_answers`
 --
 
+INSERT INTO `fs_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`) VALUES
+(1, 1, '1', 0),
+(1, 2, '2', 0),
+(1, 3, '3', 0),
+(2, 4, 'eins', 1),
+(2, 5, 'zwei', 0);
 
 -- --------------------------------------------------------
 
@@ -1154,12 +1166,14 @@ CREATE TABLE `fs_poll_voters` (
   `ip_address` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `time` int(32) NOT NULL DEFAULT '0',
   PRIMARY KEY (`voter_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs_poll_voters`
 --
 
+INSERT INTO `fs_poll_voters` (`voter_id`, `poll_id`, `ip_address`, `time`) VALUES
+(1, 2, '127.0.0.1', 1262820840);
 
 -- --------------------------------------------------------
 
@@ -1180,12 +1194,15 @@ CREATE TABLE `fs_press` (
   `press_game` tinyint(2) NOT NULL,
   `press_cat` tinyint(2) NOT NULL,
   PRIMARY KEY (`press_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_press`
 --
 
+INSERT INTO `fs_press` (`press_id`, `press_title`, `press_url`, `press_date`, `press_intro`, `press_text`, `press_note`, `press_lang`, `press_game`, `press_cat`) VALUES
+(1, 'SFTlive.de', 'http://www.sftlive.de/aid,644393,page1.cfm', 1262732400, '', 'Nach Star Wars: Battlefront 2 arbeiten die Pandemic Studios an Der Herr der Ringe - Conquest! Der Sprung vom Science-Fiction-Hintergrund ins Fantasy-Lager erfüllt die kühnsten Träume aller Tolkien-Fans: In der Rolle eines Nahkämpfers, Bogenschützen, Zauberers, Spähers oder berühmten Helden greifen Sie selbst in die atemberaubenden Schlachten um Helms Klamm, auf den Pelelennor Feldern oder Osgiliath ein. Damit nicht genug, in der Mitte der Kampagne wechseln Sie die Seiten und verhelfen Sauron und seinen Schergen zum Sieg über ganz Mittelerde!', '', 1, 4, 6),
+(2, 'PCGames.de', 'http://www.pcgames.de/aid,645184/News/Actionspiel/Der_Herr_der_Ringe_Conquest_-_Neue_Infos/&page=1', 1260054000, '', 'In einem Interview mit crispygamer.com enthüllte Sean Soucy, Lead Designer bei den Pandemic Studios, neue Details zum kommenden Action-Spiel Der Herr der Ringe: Conquest. Wir haben übersetzt und zusammengefasst, was Sie voraussichtlich im Herbst dieses Jahres erwart', '', 1, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -1644,7 +1661,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1262716166);
+('127.0.0.1', 1, 1262822555);
 
 -- --------------------------------------------------------
 

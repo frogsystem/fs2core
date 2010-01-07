@@ -17,7 +17,7 @@ function get_user_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
 ///////////////////////////////////////////
 //// Security Functions & Config Array ////
 ///////////////////////////////////////////
-$_GET['order'] = ( $_GET['order'] === 0 || $_GET['order'] == "0" || $_GET['order'] == "desc" || $_GET['order'] == "down" ) ? 0 : 1;
+$_GET['order'] = ( in_array ( $_GET['order'], array ( "0", "desc", "DESC", "down", "DOWN" ) ) ) ? 0 : 1;
 settype ( $_GET['order'], "integer" );
 
 $_GET['sort'] = ( in_array ( $_GET['sort'], array ( "id", "name", "mail", "reg_date", "num_news", "num_comments", "num_articles", "num_downloads" ) ) ) ? $_GET['sort'] : "name";

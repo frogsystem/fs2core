@@ -2,7 +2,7 @@
 <a class="small" href="?go=news">- News</a><br>
 <a class="small" href="?go=newsarchiv">- News Archiv</a><br>
 <a class="small" href="?go=user_list">- Mitgliederliste</a><br>
-<a class="small" href="?go=pollarchiv">- Umfragen Archiv</a><br>
+<a class="small" href="?go=polls">- Umfragen</a><br>
 <a class="small" href="?go=gallery">- Galerie</a><br>
 <a class="small" href="?go=download">- Downloads</a><br>
 <a class="small" href="?go=press">- Presseberichte</a><br>

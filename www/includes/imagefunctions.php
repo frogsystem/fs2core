@@ -75,7 +75,7 @@ function image_url ( $PATH, $NAME, $ERROR = TRUE, $NO_URL = FALSE )
         $url = "styles/".$global_config_arr['style']."/icons/image_error.gif";
     }
     else {
-        $url = "";
+        return "";
     }
     
     if ( $NO_URL == TRUE ) {

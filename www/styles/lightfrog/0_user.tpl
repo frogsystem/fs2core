@@ -234,14 +234,16 @@
       </tr>
 <!--section-end::CAPTCHA_LINE-->
 
-<!--section-start::CAPTCHA_TEXT--><br /><br />
- <table border="0" cellspacing="0" cellpadding="0" width="60%">
+<!--section-start::CAPTCHA_TEXT--><br><br>
+<table border="0" cellspacing="0" cellpadding="0" width="60%">
   <tr>
-   <td valign="top" align="left">
-<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>
-   </td>
+    <td valign="top" align="left">
+      <div class="small" id="antispam">
+        * Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.
+      </div>
+    </td>
   </tr>
- </table><!--section-end::CAPTCHA_TEXT-->
+</table><!--section-end::CAPTCHA_TEXT-->
 
 <!--section-start::PROFILE--><b>Profil von {..user_name..}</b><br><br>
 

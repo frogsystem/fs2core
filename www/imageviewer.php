@@ -86,8 +86,6 @@ if ($db)
 
         // No single Image
         } else {
-
-            
             // exists a NEXT image?
             $index = mysql_query ( "
                                     SELECT `screen_id`
@@ -126,23 +124,24 @@ if ($db)
 
         }
 
-        $max_width = $config_arr['show_img_x'];
-        $max_height = $config_arr['show_img_y'];
+        if ( $data_array['image'] != "" ) {
+            $max_width = $config_arr['show_img_x'];
+            $max_height = $config_arr['show_img_y'];
 
-        if ( list ( $data_array['width'], $data_array['height'] ) = @getimagesize ( $data_array['image_url'] ) ) {
-        $data_array['ratio'] = $data_array['width'] / $data_array['height'];
+            if ( list ( $data_array['width'], $data_array['height'] ) = @getimagesize ( $data_array['image_url'] ) ) {
+            $data_array['ratio'] = $data_array['width'] / $data_array['height'];
 
-            if ( $data_array['width'] <= $config_arr['show_img_x'] && $data_array['height'] <= $config_arr['show_img_y'] ) {
+                if ( $data_array['width'] <= $config_arr['show_img_x'] && $data_array['height'] <= $config_arr['show_img_y'] ) {
+                    $data_array['image'] = '<img src="'.$data_array['image'].'" alt="'.$data_array['caption'].'">';
+                } elseif ( $data_array['ratio'] > 1 && ( $config_arr['show_img_x'] / $data_array['ratio'] <= $config_arr['show_img_y'] ) ) { // landscape
+                    $data_array['image'] = '<img src="'.$data_array['image'].'" width="'.$config_arr['show_img_x'].'" alt="'.$data_array['caption'].'">';
+                } else { // portait
+                    $data_array['image'] = '<img src="'.$data_array['image'].'" height="'.$config_arr['show_img_y'].'" alt="'.$data_array['caption'].'">';
+                }
+            } else {
                 $data_array['image'] = '<img src="'.$data_array['image'].'" alt="'.$data_array['caption'].'">';
-            } elseif ( $data_array['ratio'] > 1 && ( $config_arr['show_img_x'] / $data_array['ratio'] <= $config_arr['show_img_y'] ) ) { // landscape
-                $data_array['image'] = '<img src="'.$data_array['image'].'" width="'.$config_arr['show_img_x'].'" alt="'.$data_array['caption'].'">';
-            } else { // portait
-                $data_array['image'] = '<img src="'.$data_array['image'].'" height="'.$config_arr['show_img_y'].'" alt="'.$data_array['caption'].'">';
             }
-        } else {
-            $data_array['image'] = '<img src="'.$data_array['image'].'" alt="'.$data_array['caption'].'">';
         }
-        
     }
 
     // Create PopUp-Viewer-Template
