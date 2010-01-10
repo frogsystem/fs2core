@@ -4,6 +4,15 @@ $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."press_confi
 $config_arr = mysql_fetch_assoc ( $index );
 
 
+// Local Functions
+function get_num_of_levels ( $GAME, $CAT, $LANG ) {
+    $num = 0;
+    $num += ( isset ( $GAME ) ) ? 1 : 0;
+    $num += ( isset ( $CAT ) ) ? 1 : 0;
+    $num += ( isset ( $LANG ) ) ? 1 : 0;
+    return $num;
+}
+
 /////////////////////////////
 /// Navigation erzeugen /////
 /////////////////////////////
@@ -148,21 +157,30 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                                 default: $navi_url3 = $navi_url . "&game=".$entry_arr[id]; break;
                             }
 
-                            //Icon URL erstellen
+                            /*
                             $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder.gif";
                             switch ($entry_arr[type]) {
                                 case 3:
                                     if ($_GET['lang']==$entry_arr[id])
-                                    {$entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";}
+                                    {$entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";$open3=true;}
                                     break;
                                 case 2:
                                     if ($_GET['cat']==$entry_arr[id])
-                                    {$entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";}
+                                    {$entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";$open3=true;}
                                     break;
                                 default:
                                     if ($_GET['game']==$entry_arr[id])
-                                    {$entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";}
+                                    {$entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";$open3=true;}
                                     break;
+                            }
+                            */
+                            
+                            //Icon URL erstellen, nur Unterordner von geöffneten Ordner anzeigen
+                            $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder.gif";
+                            if ( $_GET['game']==$entry_arr[id] || $_GET['cat']==$entry_arr[id] || $_GET['lang']==$entry_arr[id] ) {
+                                if ( get_num_of_levels ( $_GET['game'], $_GET['cat'], $_GET['lang'] ) == 3 ) {
+                                    $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";
+                                }
                             }
 
                             // Get Template
@@ -176,7 +194,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                             $template->tag("icon_url", $entry_arr['icon_url'] );
                             
                             $template = $template->display ();
-                            $lines .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$template;
+                            $lines .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$template;
                         }
                     }
                     elseif (!is_array($value2))
@@ -192,9 +210,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                             default: $navi_url2 = $navi_url . "&game=".$entry_arr[id]; break;
                         }
 
-                        //Icon URL erstellen, nur Unterordner von geöffneten Ordner anzeigen
-                        $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder.gif";
-                        $open2 = false;
+                        /*
                         switch ($entry_arr[type]) {
                             case 3:
                                 if ($_GET['lang']==$entry_arr[id])
@@ -209,6 +225,17 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                                 {$entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";$open2=true;}
                                 break;
                         }
+                        */
+                        
+                        //Icon URL erstellen, nur Unterordner von geöffneten Ordner anzeigen
+                        $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder.gif";
+                        $open2 = FALSE;
+                        if ( $_GET['game']==$entry_arr[id] || $_GET['cat']==$entry_arr[id] || $_GET['lang']==$entry_arr[id] ) {
+                            $open2 = TRUE;
+                            if ( get_num_of_levels ( $_GET['game'], $_GET['cat'], $_GET['lang'] ) == 2 ) {
+                                $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";
+                            }
+                        }
                         
                         // Get Template
                         $template = new template();
@@ -221,7 +248,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                         $template->tag("icon_url", $entry_arr['icon_url'] );
 
                         $template = $template->display ();
-                        $lines .= "&nbsp;&nbsp;&nbsp;&nbsp;".$template;
+                        $lines .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$template;
                     }
                 }
             }
@@ -237,10 +264,8 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                     case 2: $navi_url1 = $navi_url . "&cat=".$entry_arr[id]; break;
                     default: $navi_url1 = $navi_url . "&game=".$entry_arr[id]; break;
                 }
-
-                //Icon URL erstellen
-                $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder.gif";
-                $open = false;
+                
+                /*
                 switch ($entry_arr[type]) {
                     case 3:
                         if ($_GET['lang']==$entry_arr[id])
@@ -254,6 +279,17 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                         if ($_GET['game']==$entry_arr[id])
                         {$entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif"; $open=true;}
                         break;
+                }
+                */
+
+                //Icon URL erstellen
+                $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder.gif";
+                $open = FALSE;
+                if ( $_GET['game'] == $entry_arr[id] || $_GET['cat'] == $entry_arr[id] || $_GET['lang'] == $entry_arr[id] ) {
+                    $open = TRUE;
+                    if ( get_num_of_levels ( $_GET['game'], $_GET['cat'], $_GET['lang'] ) == 1 ) {
+                        $entry_arr[icon_url] = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";
+                    }
                 }
                 
                 // Get Template

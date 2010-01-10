@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 07. Januar 2010 um 01:03
+-- Erstellungszeit: 10. Januar 2010 um 22:58
 -- Server Version: 5.1.30
 -- PHP-Version: 5.2.8
 
@@ -424,7 +424,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 111, 6075, 6, 1, 2, 2);
+(1, 115, 6799, 6, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -446,7 +446,7 @@ CREATE TABLE `fs_counter_ref` (
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/fs2/', 234, 1223919890, 1262816133),
+('http://localhost/fs2/', 280, 1223919890, 1263126622),
 ('http://sweil.dyndns.org/fs2/', 1, 1231250810, 1231250810),
 ('http://sweil.dyndns.org/fs2/www/', 1, 1231250815, 1231250815),
 ('http://localhost/', 1, 1235171569, 1235171569),
@@ -554,7 +554,10 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 1, 4, 1, 191),
 (2010, 1, 5, 2, 312),
 (2010, 1, 6, 2, 213),
-(2010, 1, 7, 1, 444);
+(2010, 1, 7, 2, 480),
+(2010, 1, 8, 1, 44),
+(2010, 1, 9, 1, 60),
+(2010, 1, 10, 1, 584);
 
 -- --------------------------------------------------------
 
@@ -582,7 +585,7 @@ CREATE TABLE `fs_dl` (
 --
 
 INSERT INTO `fs_dl` (`dl_id`, `cat_id`, `user_id`, `dl_date`, `dl_name`, `dl_text`, `dl_autor`, `dl_autor_url`, `dl_open`) VALUES
-(1, 1, 1, 1262712732, 'FS2', 'test', 'Test', '', 1);
+(1, 1, 1, 1262712732, 'Frogsystem 2.alix3', 'Mit dieser Version werden hauptsächlich Fehler korrigiert und kleinere, aber häufig gefragte Features implementiert. Außerdem wird durch sog. Passwort-Salts die Sicherheit weiter verbessert.\r\n\r\n[url=http://www.frogsystem.de/]» Hinweise zur Installation/zum Update[/url]\r\n\r\n[b]Paket mit Assistent MD5-Checksum:[/b]\r\n074c6b46d54b19d6f69b113a0ab13beb\r\n\r\n[b]Paket ohne Assistent MD5-Checksum:[/b]\r\n953fdde9c98b7e5346ddd0591f338350', 'Sweil', 'http://www.frogsystem.de/', 1);
 
 -- --------------------------------------------------------
 
@@ -596,14 +599,16 @@ CREATE TABLE `fs_dl_cat` (
   `subcat_id` mediumint(8) NOT NULL DEFAULT '0',
   `cat_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `fs_dl_cat`
 --
 
 INSERT INTO `fs_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
-(1, 0, 'Downloads');
+(1, 0, 'Kategorie 1'),
+(3, 0, 'test'),
+(4, 1, 'heallle');
 
 -- --------------------------------------------------------
 
@@ -647,14 +652,15 @@ CREATE TABLE `fs_dl_files` (
   `file_is_mirror` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`file_id`),
   KEY `dl_id` (`dl_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_dl_files`
 --
 
 INSERT INTO `fs_dl_files` (`dl_id`, `file_id`, `file_count`, `file_name`, `file_url`, `file_size`, `file_is_mirror`) VALUES
-(1, 1, 44, 'FS2', 'http://www.frogsystem.de/?go=dlfile&fileid=1', 605, 1);
+(1, 1, 45, 'Installationspaket', 'http://www.frogsystem.de/?go=dlfile&fileid=1', 605, 0),
+(1, 2, 0, 'Updatepaket', 'http://www.frogsystem.de/?go=dlfile&fileid=1', 544, 1);
 
 -- --------------------------------------------------------
 
@@ -1102,9 +1108,6 @@ CREATE TABLE `fs_poll` (
 -- Daten für Tabelle `fs_poll`
 --
 
-INSERT INTO `fs_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll_type`, `poll_participants`) VALUES
-(1, 'Frage', 1260140700, 1270591500, 1, 0),
-(2, 'Noch ne Frage', 1262819100, 1263423900, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1119,18 +1122,12 @@ CREATE TABLE `fs_poll_answers` (
   `answer` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `answer_count` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`answer_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `fs_poll_answers`
 --
 
-INSERT INTO `fs_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`) VALUES
-(1, 1, '1', 0),
-(1, 2, '2', 0),
-(1, 3, '3', 0),
-(2, 4, 'eins', 1),
-(2, 5, 'zwei', 0);
 
 -- --------------------------------------------------------
 
@@ -1166,14 +1163,12 @@ CREATE TABLE `fs_poll_voters` (
   `ip_address` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `time` int(32) NOT NULL DEFAULT '0',
   PRIMARY KEY (`voter_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_poll_voters`
 --
 
-INSERT INTO `fs_poll_voters` (`voter_id`, `poll_id`, `ip_address`, `time`) VALUES
-(1, 2, '127.0.0.1', 1262820840);
 
 -- --------------------------------------------------------
 
@@ -1346,7 +1341,7 @@ CREATE TABLE `fs_screen_config` (
 --
 
 INSERT INTO `fs_screen_config` (`id`, `screen_x`, `screen_y`, `screen_thumb_x`, `screen_thumb_y`, `screen_size`, `screen_rows`, `screen_cols`, `screen_order`, `screen_sort`, `show_type`, `show_size_x`, `show_size_y`, `show_img_x`, `show_img_y`, `wp_x`, `wp_y`, `wp_thumb_x`, `wp_thumb_y`, `wp_order`, `wp_size`, `wp_rows`, `wp_cols`, `wp_sort`) VALUES
-(1, 1500, 1500, 120, 90, 1024, 6, 3, 'id', 'desc', 1, 950, 700, 800, 600, 2000, 2000, 200, 150, 'id', 1536, 6, 2, 'desc');
+(1, 1500, 1500, 120, 90, 1024, 5, 3, 'id', 'desc', 1, 950, 700, 800, 600, 2000, 2000, 200, 150, 'id', 1536, 6, 2, 'desc');
 
 -- --------------------------------------------------------
 
@@ -1661,7 +1656,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1262822555);
+('127.0.0.1', 1, 1263160654);
 
 -- --------------------------------------------------------
 

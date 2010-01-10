@@ -7,7 +7,7 @@
     $tmp[name] = "APPLET_POLL_ANSWER_LINE";
     $tmp[title] = $admin_phrases[template][poll_line][title];
     $tmp[description] = $admin_phrases[template][poll_line][description];
-    $tmp[rows] = "10";
+    $tmp[rows] = "15";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "answer";
         $tmp[help][0][text] = $admin_phrases[template][poll_line][help_1];
@@ -23,7 +23,7 @@
     $tmp[name] = "APPLET_POLL_BODY";
     $tmp[title] = $admin_phrases[template][poll_body][title];
     $tmp[description] = $admin_phrases[template][poll_body][description];
-    $tmp[rows] = "15";
+    $tmp[rows] = "20";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "question";
         $tmp[help][0][text] = $admin_phrases[template][poll_body][help_1];
@@ -31,8 +31,8 @@
         $tmp[help][1][text] = $admin_phrases[template][poll_body][help_2];
         $tmp[help][2][tag] = "poll_id";
         $tmp[help][2][text] = $admin_phrases[template][poll_body][help_3];
-        $tmp[help][2][tag] = "type";
-        $tmp[help][2][text] = $admin_phrases[template][poll_body][help_4];
+        $tmp[help][3][tag] = "type";
+        $tmp[help][3][text] = $admin_phrases[template][poll_body][help_4];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
     
@@ -49,7 +49,7 @@
     $tmp[name] = "APPLET_RESULT_ANSWER_LINE";
     $tmp[title] = $admin_phrases[template][poll_result_line][title];
     $tmp[description] = $admin_phrases[template][poll_result_line][description];
-    $tmp[rows] = "10";
+    $tmp[rows] = "15";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "answer";
         $tmp[help][0][text] = $admin_phrases[template][poll_result_line][help_1];
@@ -65,7 +65,7 @@
     $tmp[name] = "APPLET_RESULT_BODY";
     $tmp[title] = $admin_phrases[template][poll_result][title];
     $tmp[description] = $admin_phrases[template][poll_result][description];
-    $tmp[rows] = "15";
+    $tmp[rows] = "20";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "question";
         $tmp[help][0][text] = $admin_phrases[template][poll_result][help_1];

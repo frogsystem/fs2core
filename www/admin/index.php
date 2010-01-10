@@ -119,7 +119,7 @@ echo'
     <link rel="stylesheet" type="text/css" href="html-editor.css">
     <script src="../resources/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="functions.js" type="text/javascript"></script>
-    <script src="../res/js_functions.js" type="text/javascript"></script>
+    <script src="../includes/js_functions.js" type="text/javascript"></script>
 </head>
 <body>
 

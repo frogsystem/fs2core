@@ -22,13 +22,11 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
     <div id="menu_right">
       $APP(user-menu.php)
       $APP(preview-image.php)
-      $APP(shop-system.php)
+      $APP(shop-system.php)      
+      $APP(poll-system.php)
       $APP(affiliates.php)
       $APP(mini-statistics.php)
       [%feeds%]
-      
-      <br><br>Umfrage:<br>
-      $APP(poll-system.php)  
     </div>   
     
     <div id="content">
@@ -48,10 +46,8 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
 
   <div style="width:100%;" align="center">
     <p><b>{..caption..}</b></p>
-    <div style="width:800px; height:600px; display:table-cell; vertical-align:middle; text-align:center;">
-      <a href="{..image_url..}" target="_blank" title="Bild in Originalgröße betrachten...">
-        {..image..}
-      </a>
+    <div class="center middle" style="width:800px; height:600px; display:table-cell;">
+      {..image..}
     </div>      
     <table style="width:100%;" cellspacing="0" cellpadding="3">
       <tr>

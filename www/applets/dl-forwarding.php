@@ -5,7 +5,7 @@ if (
         && ( isset ( $_GET['id'] ) || isset ( $_GET['fileid'] ) )
     )
 {
-    $_GET['id'] = ( isset ( $_GET['fileid'] ) ) ? $_GET['fileid'] : $_GET['id'];
+    $_GET['id'] = ( isset ( $_GET['fileid'] ) && !isset ( $_GET['id'] ) ) ? $_GET['fileid'] : $_GET['id'];
     settype( $_GET['id'], "integer" );
     $_GET['dl'] = ( $_GET['dl'] == "true" || $_GET['dl'] == "TRUE" ) ? TRUE : FALSE;
 }

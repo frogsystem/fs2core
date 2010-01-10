@@ -14,8 +14,8 @@
 <!--section-start::NOIMAGE_BODY--><p>
   <b>Vorschaubild:</b>
 </p>
-<p class="small" align="center">
-  <b>Kein Vorschaubild gefunden</b>
+<p align="center">
+  <b>Kein Vorschaubild gefunden!</b>
 </p>
 <!--section-end::NOIMAGE_BODY-->
 

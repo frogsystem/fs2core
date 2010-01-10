@@ -1,7 +1,7 @@
 alix5:
 
+News Template anpassen
 Artikel Vorschau
-Templates anpassen
 
 
 Globale Suche (in news, artikeln, download beschreibungen/titlen) inkl. Suchzeichen
@@ -9,7 +9,7 @@ Globale Suche (in news, artikeln, download beschreibungen/titlen) inkl. Suchzeic
 
 HTML-Editor fertig (Codemirror Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP.$NAV und[%*%]...)
 
-Texte verfassen
+Lang-Texte verfassen
 
 
 alix6:

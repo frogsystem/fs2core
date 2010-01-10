@@ -25,8 +25,6 @@ while ( $shop_arr = mysql_fetch_assoc ( $index ) ) {
 
     $shop_arr['viewer_url'] = "imageviewer.php?file=images/shop/". basename ( image_url ( "images/shop/", $shop_arr['artikel_id'] ) )."&single";
     if ( $screen_config_arr['show_type'] == 1 ) {
-        $half_x = floor ( $screen_config_arr['show_size_x'] / 2 );
-        $half_y = floor ( $screen_config_arr['show_size_y'] / 2 );
         $shop_arr['viewer_url'] = "javascript:popUp('".$shop_arr['viewer_url']."','popupviewer','".$screen_config_arr['show_size_x']."','".$screen_config_arr['show_size_y']."');";
     }
 

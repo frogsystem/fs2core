@@ -74,21 +74,30 @@ if (isset($_GET[catid]))
                 $sizes = "";
                 while ($sizes_arr = mysql_fetch_assoc($index2))
                 {
-                    $sizes_arr[url] = image_url("images/wallpaper/", $wp_arr[wallpaper_name]."_".$sizes_arr[size]);
+                    $sizes_arr[url] = image_url("images/wallpaper/", stripslashes ( $wp_arr[wallpaper_name] )."_".$sizes_arr[size]);
 
-                    $index3 = mysql_query("select wallpaper_sizes from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-                    $sizes_arr[template] = stripslashes(mysql_result($index3, 0, "wallpaper_sizes"));
-                    $sizes_arr[template] = str_replace("{url}", $sizes_arr[url], $sizes_arr[template]);
-                    $sizes_arr[template]= str_replace("{size}", $sizes_arr[size], $sizes_arr[template]);
-                    
-                    $sizes .= $sizes_arr[template];
+                    // Get Template
+                    $template = new template();
+                    $template->setFile("0_wallpapers.tpl");
+                    $template->load("SIZE");
+
+                    $template->tag("size",  $sizes_arr[url] );
+                    $template->tag("size", stripslashes ( $sizes_arr[size] ) );
+
+                    $template = $template->display ();
+                    $sizes .= $template;
                 }
-                
-                $index2 = mysql_query("select wallpaper_pic from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-                $template = stripslashes(mysql_result($index2, 0, "wallpaper_pic"));
-                $template = str_replace("{thumb_url}", $wp_arr[thumb_url], $template);
-                $template = str_replace("{text}", $wp_arr[wallpaper_title], $template);
-                $template = str_replace("{sizes}", $sizes, $template);
+
+                // Get Template
+                $template = new template();
+                $template->setFile("0_wallpapers.tpl");
+                $template->load("WALLPAPER");
+
+                $template->tag("thumb_url", $wp_arr[thumb_url] );
+                $template->tag("caption", stripslashes ( $wp_arr[wallpaper_title] ) );
+                $template->tag("sizes", $sizes );
+
+                $template = $template->display ();
 
                 $zaehler += 1;
                 switch ($zaehler)
@@ -123,14 +132,23 @@ if (isset($_GET[catid]))
             while ($screen_arr = mysql_fetch_assoc($index))
             {
                 $screen_arr[screen_thumb] = image_url("images/screenshots/", $screen_arr[screen_id]."_s");
-                ;
-                $screen_arr[screen_url] = "showimg.php?screen=1&amp;catid=$_GET[catid]&amp;screenid=$screen_arr[screen_id]";
+                $screen_arr[screen_url] = image_url("images/screenshots/", $screen_arr[screen_id] );
+                $screen_arr[img_link] = "imageviewer.php?id=".$screen_arr[screen_id];
+                if ( $config_arr['show_type'] == 1 ) {
+                    $screen_arr[img_link] = "javascript:popUp('".$screen_arr[img_link]."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";
+                }
 
-                $index2 = mysql_query("select screenshot_pic from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-                $template = stripslashes(mysql_result($index2, 0, "screenshot_pic"));
-                $template = str_replace("{url}", $screen_arr[screen_url], $template);
-                $template = str_replace("{text}", $screen_arr[screen_name], $template);
-                $template = str_replace("{thumbnail}", $screen_arr[screen_thumb], $template);
+                // Get Template
+                $template = new template();
+                $template->setFile("0_screenshots.tpl");
+                $template->load("IMAGE");
+
+                $template->tag("img_url", $screen_arr[screen_url] );
+                $template->tag("viewer_link", $screen_arr[img_link] );
+                $template->tag("thumb_url", $screen_arr[screen_thumb] );
+                $template->tag("caption", stripslashes ( $screen_arr[screen_name] ) );
+
+                $template = $template->display ();
 
                 $zaehler += 1;
                 switch ($zaehler)
@@ -161,48 +179,33 @@ if (isset($_GET[catid]))
     unset($wp_arr);
     unset($screen_arr);
 
+
     //Seitennavigation
-    $pagenav = stripslashes($global_config_arr[page]);
-    $prev = stripslashes($global_config_arr[page_prev]);
-    $next = stripslashes($global_config_arr[page_next]);
-    $pagenav = str_replace("{page_number}", $_GET[page], $pagenav );
-    $pagenav = str_replace("{total_pages}", $config_arr[number_of_pages], $pagenav );
-    //Zurück-Schaltfläche
-    if ($_GET['page'] > 1) {
-      $prev = str_replace("{url}", "?go=$_GET[go]&catid=$_GET[catid]&page=$config_arr[oldpage]", $prev);
-      $pagenav = str_replace("{prev}", $prev , $pagenav);
-    } else {
-      $pagenav = str_replace("{prev}", "", $pagenav);
-    }
-    //Weiter-Schaltfläche
-    if (($_GET['page']*$config_arr[pics_per_page]) < $config_arr[number_of_screens]) {
-      $next = str_replace("{url}", "?go=$_GET[go]&catid=$_GET[catid]&page=$config_arr[newpage]", $next);
-      $pagenav = str_replace("{next}", $next, $pagenav);
-    } else {
-      $pagenav = str_replace("{next}", "", $pagenav);
-    }
+    $pagenav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['pics_per_page'], $config_arr['number_of_screens'], "?go=".$_GET['go']."&catid=".$_GET['catid']."&page={..page_num..}" );
     
     //Keine Screenshots
     if ($config_arr[number_of_screens] <= 0) {
         $pics = sys_message($phrases[sysmessage], $phrases[no_pics]);
         $pagenav = "";
     }
+    
     //Ausgabe der Seite
-    $index = mysql_query("select screenshot_cat_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $template = stripslashes(mysql_result($index, 0, "screenshot_cat_body"));
-    $template = str_replace("{title}", $cat_arr[cat_name], $template);
-    $template = str_replace("{screenshots}", $pics, $template);
-    $template = str_replace("{page}", $pagenav, $template);
+    $template = new template();
+    $template->setFile("0_screenshots.tpl");
+    $template->load("BODY");
 
-    unset($pics);
+    $template->tag("name", stripslashes ( $cat_arr[cat_name] ) );
+    $template->tag("screenshots", $pics );
+    $template->tag("page_nav", $pagenav );
+
+    $template = $template->display ();
 }
 
 ////////////////////////////
 //// Kategorien listen /////
 ////////////////////////////
 
-else
-{
+else {
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_visibility = 1 ORDER BY cat_date DESC", $db);
     while ($cat_arr = mysql_fetch_assoc($index))
     {
@@ -212,22 +215,27 @@ else
             $index2 = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id]", $db);
         }
         $cat_arr[cat_menge] = mysql_result($index2,0,"number");
+        $cat_arr[cat_date] = date_loc( $global_config_arr['date'], $cat_arr[cat_date] );
 
-        $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
-        $index2 = mysql_query("select screenshot_cat from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-        $template = stripslashes(mysql_result($index2, 0, "screenshot_cat"));
-        $template = str_replace("{url}", "?go=screenshots&amp;catid=$cat_arr[cat_id]", $template); 
-        $template = str_replace("{datum}", $cat_arr[cat_date], $template); 
-        $template = str_replace("{name}", $cat_arr[cat_name], $template); 
-        $template = str_replace("{menge}", $cat_arr[cat_menge], $template); 
+        // Get Template
+        $template = new template();
+        $template->setFile("0_screenshots.tpl");
+        $template->load("CATEGORY");
+
+        $template->tag("url", "?go=".$_GET['go']."&catid=".$cat_arr[cat_id] );
+        $template->tag("name", stripslashes ( $cat_arr[cat_name] ) );
+        $template->tag("date", $cat_arr[cat_date] );
+        $template->tag("number", $cat_arr[cat_menge] );
+
+        $template = $template->display ();
         $cats .= $template;
     }
-    unset($cat_arr);
 
-    $index = mysql_query("select screenshot_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $template = stripslashes(mysql_result($index, 0, "screenshot_body"));
-    $template = str_replace("{cats}", $cats, $template);
-
-    unset($cats);
+    // Get Template
+    $template = new template();
+    $template->setFile("0_screenshots.tpl");
+    $template->load("CATEGORY_LIST_BODY");
+    $template->tag("cats", $cats );
+    $template = $template->display ();
 }
 ?>

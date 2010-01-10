@@ -1,17 +1,73 @@
-<!--section-start::APPLET_POLL_ANSWER_LINE-->
-<!--section-end::APPLET_POLL_ANSWER_LINE-->
+<!--section-start::APPLET_POLL_ANSWER_LINE-->    <tr>
+      <td valign="top">
+        <input class="pointer" id="id_{..answer_id..}" type="{..type..}" name="answer{..multiple..}" value="{..answer_id..}">
+      </td>
+      <td align="left" class="small">
+        <label class="pointer" for="id_{..answer_id..}">{..answer..}</label>
+      </td>
+    </tr><!--section-end::APPLET_POLL_ANSWER_LINE-->
 
-<!--section-start::APPLET_POLL_BODY-->
-<!--section-end::APPLET_POLL_BODY-->
+<!--section-start::APPLET_POLL_BODY--><p>
+  <b>Umfrage:</b>
+</p>
 
-<!--section-start::APPLET_NO_POLL-->
-<!--section-end::APPLET_NO_POLL-->
+<form method="post">
+  <input type="hidden" name="id" value="{..poll_id..}">
+  <input type="hidden" name="poll" value="1">
+  <table style="margin-left:-1px; width:100%;"  align="center" cellpadding="1" cellspacing="0">
+    <tr>
+      <td class="small" colspan="2" align="center">
+        <b>{..question..}</b>
+      </td>
+    </tr>
+    {..answers..}
+    <tr>
+      <td colspan="2" align="center">
+        <input class="pointer" type="submit" value="Abstimmen"><br>
+        <a class="small" href="?go=polls&id={..poll_id..}">
+          (Ergebnis anzeigen)
+        </a>
+      </td>
+    </tr>
+  </table>
+</form><!--section-end::APPLET_POLL_BODY-->
 
-<!--section-start::APPLET_RESULT_ANSWER_LINE-->
-<!--section-end::APPLET_RESULT_ANSWER_LINE-->
+<!--section-start::APPLET_NO_POLL--><p>
+  <b>Umfrage:</b>
+</p>
+<p align="center">
+    Keine Umfrage gefunden!
+</p><!--section-end::APPLET_NO_POLL-->
 
-<!--section-start::APPLET_RESULT_BODY-->
-<!--section-end::APPLET_RESULT_BODY-->
+<!--section-start::APPLET_RESULT_ANSWER_LINE-->  <tr>
+    <td align="left" class="small" colspan="2">
+      {..answer..}
+    </td>
+  </tr>
+  <tr>
+    <td align="right" class="small">
+      {..percentage..}
+    </td>
+    <td align="left" style="padding-left:3px; width:100%;">
+      <div style="width:{..bar_width..}; height:10px; background-color:#008800;"></div>
+    </td>
+  </tr><!--section-end::APPLET_RESULT_ANSWER_LINE-->
+
+<!--section-start::APPLET_RESULT_BODY--><p>
+  <b>Umfrage:</b>
+</p>
+<table style="margin-left:-2px; width:100%;" align="center" cellpadding="2" cellspacing="0">
+  <tr>
+    <td class="small" colspan="2" align="center">
+      <b>{..question..}</b>
+    </td>
+  </tr>
+{..answers..}
+</table>
+<p>
+  Teilnehmer: {..participants..}<br>
+  <b>Bereits abgestimmt!</b>
+</p><!--section-end::APPLET_RESULT_BODY-->
 
 <!--section-start::LIST_LINE-->  <tr>
     <td align="left">

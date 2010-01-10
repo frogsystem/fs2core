@@ -147,6 +147,20 @@ $TEXT = array (
     "Dieser Kommentar ist das Duplikat eines Kommentars der gerade erst hinzugefügt wurde",
     
     
+//Download
+    "download_file" =>
+    "Datei",
+    
+    "download_files" =>
+    "Dateien",
+    
+    "download_search_for" =>
+    "Suche nach",
+
+    "download_all_downloads" =>
+    "Alle Downloads",
+
+
 //Gruppen
     "group_image" =>
     "Gruppen-Symbol",
