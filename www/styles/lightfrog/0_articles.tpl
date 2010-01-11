@@ -11,7 +11,7 @@
 </div>
 <!--section-end::DATE-->
 
-<!--section-start::BODY--><b>{..title..}</b>
+<!--section-start::BODY--><b>{..title..}</b><img src="styles/lightfrog/icons/user/user.gif" alt="" align="bottom">
 <div style="float:right;">
   {..date_template..}{..author_template..}
 </div>

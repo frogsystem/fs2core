@@ -9,7 +9,7 @@ function get_poll_list_order ( $SORT, $GET_SORT, $GET_ORDER, $DEFAULT = 1 ) {
 
 function get_poll_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
     $arrow_direction = ( $GET_ORDER == "DESC" ) ? "down" : "up";
-    return ( $SORT == $GET_SORT ) ? '<img src="$VAR(style_icons)poll/arrow-' . $arrow_direction . '.gif" alt="">' : "";
+    return ( $SORT == $GET_SORT ) ? '<img src="$VAR(style_icons)arrow-' . $arrow_direction . '.gif" alt="">' : "";
 }
 
 // Get Config Array
@@ -124,7 +124,8 @@ else {
             break;
         }
     }
-    
+
+    $list_lines = "";
     while ( $poll_arr = mysql_fetch_assoc ( $index ) ) {
         $poll_arr[poll_url] = "?go=polls&id=" . $poll_arr['poll_id'];
         $poll_arr[poll_start] = date_loc ( $global_config_arr['date'] , $poll_arr[poll_start] );

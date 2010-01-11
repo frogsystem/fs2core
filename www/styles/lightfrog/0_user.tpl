@@ -404,8 +404,8 @@
 </table>
 <!--section-end::PROFILE-->
 
-<!--section-start::USERRANK-->{..group_image..}<br>
-{..group_title..}
+<!--section-start::USERRANK--><div>{..group_image..}<br>
+{..group_title..}</div>
 <!--section-end::USERRANK-->
 
 <!--section-start::PROFILE_EDIT--><b>Profil bearbeiten ({..user_name..})</b>

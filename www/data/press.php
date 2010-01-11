@@ -129,7 +129,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
         }
     }
     
-    unset($lines);
+    $lines = "";
 
 
 

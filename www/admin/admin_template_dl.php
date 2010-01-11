@@ -4,20 +4,19 @@
     $TEMPLATE_FILE = "0_downloads.tpl";
     $TEMPLATE_EDIT = null;
     
-    $tmp[name] = "APPLET_LINE";
-    $tmp[title] = $admin_phrases[template][dl_quick_links][title];
-    $tmp[description] = $admin_phrases[template][dl_quick_links][description];
-    $tmp[rows] = "10";
-    $tmp[cols] = "66";
-        $tmp[help][0][tag] = "date";
-        $tmp[help][0][text] = $admin_phrases[template][dl_quick_links][help_1];
-        $tmp[help][1][tag] = "url";
-        $tmp[help][1][text] = $admin_phrases[template][dl_quick_links][help_2];
-        $tmp[help][2][tag] = "title";
-        $tmp[help][2][text] = $admin_phrases[template][dl_quick_links][help_3];
-    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
-    unset($tmp); //unsets $tmp for safety-issues
-
+$TEMPLATE_EDIT[] = array (
+    name => "APPLET_LINE",
+    title => $TEXT['template']->get("dl_applet_line_title"),
+    description => $TEXT['template']->get("dl_applet_line_desc"),
+    rows => 10,
+    cols => 66,
+    help => array (
+        array ( tag => "title", text => $TEXT['template']->get("dl_applet_line_dl_title") ),
+        array ( tag => "date", text => $TEXT['template']->get("dl_applet_line_date") ),
+        array ( tag => "url", text => $TEXT['template']->get("dl_applet_line_url") ),
+        array ( tag => "download_id", text => $TEXT['template']->get("dl_applet_line_dl_id") ),
+    )
+);
 
     $tmp[name] = "SEARCH";
     $tmp[title] = $admin_phrases[template][dl_search_field][title];

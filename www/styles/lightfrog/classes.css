@@ -55,8 +55,40 @@ a:hover, a:focus, a.small:hover, a.small:focus {
   background-color: #88EE88;
 }
 
+textarea {
+  font-family:"Trebuchet MS",Verdana,Arial,sans-serif;
+  color:#000000;
+  font-size:9pt;
+}
+
 .dl_cell {
   border:1px solid #000000;
   padding:3px;
+}
+
+.comment_table {
+  margin: 0px -2px 15px -2px;
+  width:100%;
+  border-collapse:collapse;
+}
+.comment_td {
+  border:1px solid #A5ACB2;
+  padding:3px 5px;
+  vertical-align:top;
+}
+.comment_top {
+  border-bottom:1px solid #A5ACB2;
+  background-color:#F2F2F2;
+  text-align:right;
+  vertical-align:middle;
+  height:18px;
+  padding:3px 5px;
+  margin:-3px -5px 3px -5px;
+}
+.comment_left {
+  width:140px;
+  background-color:#F2F2F2;
+}
+.comment_right {
 }
 

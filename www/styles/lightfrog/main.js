@@ -49,3 +49,19 @@ function checkUserEditForm() {
     return false;
   }
 }
+
+function checkCommentForm() {
+  if ( $("#comment_name").val() == "" ||
+        $("#comment_title").val() == "" ||
+        $("#text").val() == "" ) {
+    alert ( "Es wurden nicht alle Pflichtfelder ausgefüllt" );
+    return false;
+  }
+}
+
+function checkNewsSearchForm() {
+  if ( $("#news_search_keyword").val().length <= 2 ) { 
+    alert ( "Das Schlüsselwort muss min. 3 Zeichen lang sein" ); 
+    return false;
+  }
+}

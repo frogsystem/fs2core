@@ -1,10 +1,15 @@
-<!--section-start::SYSTEMMESSAGE--><b>{..message_title..}</b><br>
-{..message..}<!--section-end::SYSTEMMESSAGE-->
+<!--section-start::SYSTEMMESSAGE--><div>
+  <b>{..message_title..}</b><br>
+  {..message..}
+</div><!--section-end::SYSTEMMESSAGE-->
 
-<!--section-start::FORWARDMESSAGE--><b>{..message_title..}</b><br>
-{..message..}<br>
-<br>Du wirst jetzt automatisch weitergeleitet.<br>
-Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..forward_url..}">klicke bitte hier</a>.<!--section-end::FORWARDMESSAGE-->
+<!--section-start::FORWARDMESSAGE--><div>
+  <b>{..message_title..}</b><br>
+  {..message..}<br>
+  <br>Du wirst jetzt automatisch weitergeleitet.<br>
+  Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..forward_url..}">klicke bitte hier</a>.
+</div>
+<!--section-end::FORWARDMESSAGE-->
 
 <!--section-start::DOCTYPE--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!--section-end::DOCTYPE-->
 
@@ -94,4 +99,3 @@ Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..for
   - <b>{..num_articles..}</b> Artikel
 </p>
 <!--section-end::STATISTICS-->
-

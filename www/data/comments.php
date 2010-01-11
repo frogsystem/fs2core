@@ -46,7 +46,7 @@ if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SES
 //// Kommentar hinzufügen ////
 //////////////////////////////
 
-if (isset($_POST[addcomment]))
+if (isset($_POST['add_comment']))
 {
     if ($_POST[id]
          && ($_POST[name] != "" || $_SESSION["user_id"])
@@ -128,18 +128,18 @@ if (isset($_POST[addcomment]))
     }
     else
     {
-        $reason = "";
+        $reason = array();
         if ( !($_POST[name] != "" || $_SESSION["user_id"])
             || $_POST[title] == ""
             || $_POST[text] == "")
         {
-            $reason = $phrases[comment_empty];
+            $reason[] = $phrases[comment_empty];
         }
         if (!($anti_spam == TRUE))
         {
-                        $reason .= $phrases[comment_spam];
+                        $reason[] = $phrases[comment_spam];
         }
-        $message_template = sys_message($phrases[comment_not_added], $reason);
+        $message_template = sys_message($phrases[comment_not_added], implode ( "<br>", $reason ) );
     }
 }
 
@@ -203,79 +203,104 @@ if ( $SHOW == TRUE ) {
     $index = mysql_query("select * from ".$global_config_arr[pref]."news_comments where news_id = $_GET[id] order by comment_date $config_arr[com_sort]", $db);
     while ($comment_arr = mysql_fetch_assoc($index))
     {
+
         // User auslesen
         if ($comment_arr[comment_poster_id] != 0)
         {
-            $index2 = mysql_query("select user_name, user_is_admin, user_is_staff from ".$global_config_arr[pref]."user where user_id = $comment_arr[comment_poster_id]", $db);
-            $comment_arr[comment_poster] = killhtml(mysql_result($index2, 0, "user_name"));
+            $index2 = mysql_query("select user_name, user_is_admin, user_is_staff, user_group from ".$global_config_arr[pref]."user where user_id = $comment_arr[comment_poster_id]", $db);
+            $comment_arr[comment_poster] = kill_replacements ( mysql_result($index2, 0, "user_name" ) );
             $comment_arr[user_is_admin] = mysql_result($index2, 0, "user_is_admin");
             $comment_arr[user_is_staff] = mysql_result($index2, 0, "user_is_staff");
-            if (image_exists("images/avatare/",$comment_arr[comment_poster_id]))
-            {
-                $comment_arr[comment_avatar] = '<img align="left" src="'.image_url("images/avatare/",$comment_arr[comment_poster_id]).'" alt="'.$comment_arr[comment_poster].'">';
+
+            if (image_exists("media/user-images/",$comment_arr[comment_poster_id])) {
+                $comment_arr[comment_avatar] = '<img align="left" src="'.image_url("media/user-images/",$comment_arr[comment_poster_id]).'" alt="'.$comment_arr[comment_poster].'">';
             }
-            if ( $comment_arr[user_is_staff] == 1 || $comment_arr[user_is_admin] == 1 )
-            {
+
+            if ( $comment_arr[user_is_staff] == 1 || $comment_arr[user_is_admin] == 1 ) {
                 $comment_arr[comment_poster] = "<b>" . $comment_arr[comment_poster] . "</b>";
             }
-            $index2 = mysql_query("select news_comment_autor from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-            $comment_autor = stripslashes(mysql_result($index2, 0, "news_comment_autor"));
-            $comment_autor = str_replace("{url}", "?go=profil&amp;userid=".$comment_arr[comment_poster_id], $comment_autor);
-            $comment_autor = str_replace("{name}", $comment_arr[comment_poster], $comment_autor);
-            $comment_arr[comment_poster] = $comment_autor;
+            
+            // Benutzer Rang
+            $user_arr['rank_data'] = get_user_rank ( $comment_arr['user_group'], $comment_arr['user_is_admin'] );
+            $comment_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
+            
+            // Get User Template
+            $template = new template();
+            $template->setFile("0_news.tpl");
+            $template->load("COMMENT_USER");
+
+            $template->tag("url", "?go=user&id=".$comment_arr[comment_poster_id] );
+            $template->tag("name", $comment_arr[comment_poster] );
+            $template->tag("image", $comment_arr[comment_avatar] );
+            $template->tag("rank", $comment_arr['user_rank'] );
+
+            $template = $template->display ();
+            $comment_arr[comment_poster] = $template;
         }
         else
         {
             $comment_arr[comment_avatar] = "";
-            $comment_arr[comment_poster] = killhtml($comment_arr[comment_poster]);
+            $comment_arr[comment_poster] = kill_replacements ( $comment_arr[comment_poster] );
+            $comment_arr['user_rank'] = "";
         }
 
         if ($fs == true) {
-            $comment_arr[comment_text] = fscode($comment_arr[comment_text],$fs,$html,$para, $editor_config[do_bold], $editor_config[do_italic], $editor_config[do_underline], $editor_config[do_strike], $editor_config[do_center], $editor_config[do_url], $editor_config[do_home], $editor_config[do_email], $editor_config[do_img], $editor_config[do_cimg], $editor_config[do_list], $editor_config[do_numlist], $editor_config[do_font], $editor_config[do_color], $editor_config[do_size], $editor_config[do_code], $editor_config[do_quote], $editor_config[do_noparse], $editor_config[do_smilies]);
+            $comment_arr[comment_text] = fscode( kill_replacements ( $comment_arr[comment_text] ),$fs,$html,$para, $editor_config[do_bold], $editor_config[do_italic], $editor_config[do_underline], $editor_config[do_strike], $editor_config[do_center], $editor_config[do_url], $editor_config[do_home], $editor_config[do_email], $editor_config[do_img], $editor_config[do_cimg], $editor_config[do_list], $editor_config[do_numlist], $editor_config[do_font], $editor_config[do_color], $editor_config[do_size], $editor_config[do_code], $editor_config[do_quote], $editor_config[do_noparse], $editor_config[do_smilies]);
         } else {
-            $comment_arr[comment_text] = fscode($comment_arr[comment_text],$fs,$html,$para);
+            $comment_arr[comment_text] = fscode( kill_replacements ( $comment_arr[comment_text] ),$fs,$html,$para);
         }
 
-        $comment_arr[comment_text] = killsv($comment_arr[comment_text]);
-        $comment_arr[comment_date] = date("d.m.Y" , $comment_arr[comment_date]) . " um " . date("H:i" , $comment_arr[comment_date]);
+        $comment_arr[comment_date] = date_loc ( $global_config_arr['datetime'] , $comment_arr[comment_date] );
+        $comment_arr[comment_title] = kill_replacements($comment_arr[comment_title]);
 
-        $comment_arr[comment_title] =   killhtml($comment_arr[comment_title]);
-        $comment_arr[comment_title] =   killsv($comment_arr[comment_title]);
+        // Get Comment Template
+        $template = new template();
+        $template->setFile("0_news.tpl");
+        $template->load("COMMMENT_ENTRY");
 
-        // Template auslesen und füllen
-        $index2 = mysql_query("select news_comment_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-        $template = stripslashes(mysql_result($index2, 0, "news_comment_body"));
-        $template = str_replace("{titel}", $comment_arr[comment_title], $template);
-        $template = str_replace("{datum}", $comment_arr[comment_date], $template);
-        $template = str_replace("{text}", $comment_arr[comment_text], $template);
-        $template = str_replace("{autor}", $comment_arr[comment_poster], $template);
-        $template = str_replace("{autor_avatar}", $comment_arr[comment_avatar], $template);
+        $template->tag("titel", $comment_arr[comment_title] );
+        $template->tag("date", $comment_arr[comment_date] );
+        $template->tag("text", $comment_arr[comment_text] );
+        $template->tag("user", $comment_arr[comment_poster] );
+        $template->tag("user_image", $comment_arr[comment_avatar] );
+        $template->tag("user_rank", $comment_arr['user_rank'] );
 
+        $template = $template->display ();
         $comments_template .= $template;
     }
     unset($comment_arr);
-    if (mysql_num_rows($index) <= 0 && $news_arr[news_comments_allowed] == 1 )
-    {
-        $comments_template = sys_message($phrases[sysmessage], $phrases[no_comments]);
+    if (mysql_num_rows($index) <= 0  ) {
+        if ( $news_arr[news_comments_allowed] == 1 ) {
+            $comments_template = sys_message($phrases[sysmessage], $phrases[no_comments]);
+        } else {
+            $comments_template = "";
+        }
     }
 
-    // Eingabeformular generieren
-    $index = mysql_query("select news_comment_form_name from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $form_name = stripslashes(mysql_result($index, 0, "news_comment_form_name"));
+    // Get Comments Form Name Template
+    $form_name = new template();
+    $form_name->setFile("0_news.tpl");
+    $form_name->load("COMMENT_FORM_NAME");
+    $form_name = $form_name->display ();
 
-    $index = mysql_query("select news_comment_form_spam from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $form_spam = stripslashes(mysql_result($index, 0, "news_comment_form_spam"));
-    $form_spam = str_replace("{captcha_url}", FS2_ROOT_PATH . "resources/captcha/captcha.php?i=".generate_pwd(8), $form_spam);
-    $form_spam = str_replace("{newsid}", $_GET[id], $form_spam);
-
-    $index = mysql_query("select news_comment_form_spamtext from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $form_spam_text = stripslashes(mysql_result($index, 0, "news_comment_form_spamtext"));
-
-    if (isset($_SESSION[user_name]))
-    {
-        $form_name = $_SESSION[user_name];
+    if ( isset ( $_SESSION['user_name'] ) ) {
+        $form_name = $_SESSION['user_name'];
         $form_name .= '<input type="hidden" name="name" id="name" value="1">';
     }
+
+    // Get Comments Captcha Template
+    $form_spam = new template();
+    $form_spam->setFile("0_news.tpl");
+    $form_spam->load("COMMENT_CAPTCHA");
+    $form_spam->tag("captcha_url", FS2_ROOT_PATH . "resources/captcha/captcha.php?i=".generate_pwd(8) );
+    $form_spam = $form_spam->display ();
+
+    // Get Comments Form Name Template
+    $form_spam_text = new template();
+    $form_spam_text->setFile("0_news.tpl");
+    $form_spam_text->load("COMMENT_CAPTCHA_TEXT");
+    $form_spam_text = $form_spam_text->display ();
+
 
     if (
                     $config_arr[com_antispam] == 0 ||
@@ -290,37 +315,45 @@ if ( $SHOW == TRUE ) {
     //Textarea
     $template_textarea = create_textarea("text", "", $editor_config[textarea_width], $editor_config[textarea_height], "text", false, $editor_config[smilies],$editor_config[bold],$editor_config[italic],$editor_config[underline],$editor_config[strike],$editor_config[center],$editor_config[font],$editor_config[color],$editor_config[size],$editor_config[img],$editor_config[cimg],$editor_config[url],$editor_config[home],$editor_config[email],$editor_config[code],$editor_config[quote],$editor_config[noparse]);
 
+    // Get Comment Form Template
+    $template = new template();
+    $template->setFile("0_news.tpl");
+    $template->load("COMMENT_FORM");
 
-    $index = mysql_query("select news_comment_form from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $template = stripslashes(mysql_result($index, 0, "news_comment_form"));
-    $template = str_replace("{newsid}", $_GET[id], $template);
-    $template = str_replace("{name_input}", $form_name, $template);
-    $template = str_replace("{textarea}", $template_textarea, $template);
-    $template = str_replace("{fs_code}", $fs_active, $template);
-    $template = str_replace("{html}", $html_active, $template);
-    $template = str_replace("{antispam}", $form_spam, $template);
-    $template = str_replace("{antispamtext}", $form_spam_text, $template);
+    $template->tag("news_id", $_GET[id] );
+    $template->tag("name_input", $form_name );
+    $template->tag("textarea", $template_textarea );
+    $template->tag("html", $html_active );
+    $template->tag("fs_code", $fs_active );
+    $template->tag("captcha", $form_spam );
+    $template->tag("captcha_text",$form_spam_text  );
 
+    $template = $template->display ();
     $formular_template = $template;
 
-    if ( $news_rows > 0 && $news_arr['news_date'] <= time () && $news_arr['news_active'] == 1 )
-    {
-        $index = mysql_query("SELECT news_comment_container FROM ".$global_config_arr[pref]."template WHERE id = '$global_config_arr[design]'", $db);
-        $template = stripslashes(mysql_result($index, 0, "news_comment_container"));
-        $template = str_replace("{news}", $news_template, $template);
-        $template = str_replace("{comments}", $comments_template, $template);
-            if ( $news_arr[news_comments_allowed] == 1 && $comments_right == TRUE ) {
-            $template = str_replace("{comment_form}", $formular_template, $template);
-            } elseif ( $comments_right == FALSE ) {
-            $template = str_replace("{comment_form}", sys_message($phrases[sysmessage], $phrases[comm_not_allowed]), $template);
-            } else {
-            $template = str_replace("{comment_form}", sys_message($phrases[sysmessage], $phrases[comm_not_activ]), $template);
-            }
 
-        $template = $message_template . $template;
-    }
-    else
-    {
+    if ( $news_rows > 0 && $news_arr['news_date'] <= time () && $news_arr['news_active'] == 1 ) {
+        // Check Comment Config
+        if ( $news_arr[news_comments_allowed] == 1 && $comments_right == TRUE ) {
+            $comment_form_template = $formular_template;
+        } elseif ( $comments_right == FALSE ) {
+            $comment_form_template = sys_message($phrases[sysmessage], $phrases[comm_not_allowed]);
+        } else {
+            $comment_form_template = sys_message($phrases[sysmessage], $phrases[comm_not_activ]);
+        }
+
+        // Get Comments Body Template
+        $template = new template();
+        $template->setFile("0_news.tpl");
+        $template->load("COMMENT_BODY");
+
+        $template->tag("news", $news_template );
+        $template->tag("comments", $comments_template );
+        $template->tag("comment_form", $comment_form_template );
+
+        $template = $template->display ();
+        $template = $message_template . "<br>" . $template;
+    } else {
         $template = $news_template;
     }
 }

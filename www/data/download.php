@@ -145,7 +145,7 @@ $suchfeld->setFile("0_downloads.tpl");
 $suchfeld->load("SEARCH");
 
 $suchfeld->tag("input_cat", '<input name="cat_id" value="'.$_GET['cat_id'].'" type="hidden">' );
-$suchfeld->tag("keyword", killhtml ( $_GET['keyword'] ) );
+$suchfeld->tag("keyword", kill_replacements ( $_GET['keyword'] ) );
 $suchfeld->tag("all_url", "?go=download&cat_id=".$_GET['cat_id'] );
 
 $suchfeld = $suchfeld->display ();

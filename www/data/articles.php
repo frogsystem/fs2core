@@ -65,7 +65,7 @@ else
 
     // Get Date & Create Date Template
     if ( $article_arr['article_date'] != 0 ) {
-        $article_arr['date_formated'] = date ( $global_config_arr['date'], $article_arr['article_date'] );
+        $article_arr['date_formated'] = date_loc ( $global_config_arr['date'], $article_arr['article_date'] );
         // Create Template
         $date_template = new template();
         $date_template->setFile ( "0_articles.tpl" );

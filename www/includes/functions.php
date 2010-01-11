@@ -1,4 +1,16 @@
 <?php
+/////////////////////////////////
+//// validation of lang dirs ////
+/////////////////////////////////
+function kill_replacements ( $TEXT, $HTML = TRUE )
+{
+    if ( $HTML === TRUE ) {
+        return killhtml ( $TEXT );
+    }
+    return $TEXT;
+}
+
+
 //////////////////////////
 //// get old page nav ////
 //////////////////////////
@@ -981,8 +993,8 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
 {
     global $db, $global_config_arr;
 
-    $news_arr[news_date] = date("d.m.Y" , $news_arr[news_date]) . " um " . date("H:i" , $news_arr[news_date]);
-    $news_arr[comment_url] = "?go=comments&amp;id=$news_arr[news_id]";
+    $news_arr[news_date] = date_loc( $global_config_arr['datetime'] , $news_arr[news_date]);
+    $news_arr[comment_url] = "?go=comments&id=".$news_arr[news_id];
 
     // Kategorie lesen
     $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."news_cat where cat_id = '".$news_arr['cat_id']."'", $db);
@@ -1042,66 +1054,63 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     // User auslesen
     $index2 = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $news_arr[user_id]", $db);
     $news_arr[user_name] = mysql_result($index2, 0, "user_name");
-    $news_arr[user_url] = "?go=profil&amp;userid=$news_arr[user_id]";
+    $news_arr[user_url] = "?go=user&id=".$news_arr[user_id];
 
     // Kommentare lesen
     $index2 = mysql_query("select comment_id from ".$global_config_arr[pref]."news_comments where news_id = $news_arr[news_id]", $db);
     $news_arr[kommentare] = mysql_num_rows($index2);
 
-    // Template lesen und füllen
-    $index2 = mysql_query("select news_body from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-    $template = stripslashes(mysql_result($index2, 0, "news_body"));
-    $template = str_replace("{newsid}", $news_arr[news_id], $template);
-    $template = str_replace("{titel}", $news_arr[news_title], $template);
-    $template = str_replace("{datum}", $news_arr[news_date], $template);
-    $template = str_replace("{text}", $news_arr[news_text], $template);
-    $template = str_replace("{autor}", $news_arr[user_name], $template);
-    $template = str_replace("{autor_profilurl}", $news_arr[user_url], $template);
-    $template = str_replace("{kategorie_bildname}", $news_arr[cat_pic], $template);
-    $template = str_replace("{kategorie_name}", $news_arr[cat_name], $template);
-    $template = str_replace("{kommentar_url}", $news_arr[comment_url], $template);
-    $template = str_replace("{kommentar_anzahl}", $news_arr[kommentare], $template);
-
+    // Get Related Links
     $link_tpl = "";
     $index2 = mysql_query("select * from ".$global_config_arr[pref]."news_links where news_id = $news_arr[news_id] order by link_id", $db);
     while ($link_arr = mysql_fetch_assoc($index2))
     {
         $link_arr[link_name] = killhtml ( $link_arr[link_name] );
         $link_arr[link_url] = killhtml ( $link_arr[link_url] );
-        $index3 = mysql_query("select news_link from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-        $link = stripslashes(mysql_result($index3, 0, "news_link"));
-        $link = str_replace("{name}", $link_arr[link_name], $link);
-        #$link_arr[link_url] = str_replace("&","&amp;",$link_arr[link_url]);
-        $link = str_replace("{url}", $link_arr[link_url], $link);
-        if ($link_arr[link_target] == 1)
-        {
-            $link_arr[link_target] = "_blank";
-        }
-        else
-        {
-            $link_arr[link_target] = "_self";
-        }
-        $link = str_replace("{target}", $link_arr[link_target], $link);
+        $link_arr[link_target] = ( $link_arr[link_target] == 1 ) ? "_blank" : "_self";
+
+        // Get Link Line Template
+        $link = new template();
+        $link->setFile("0_news.tpl");
+        $link->load("LINKS_LINE");
+
+        $link->tag("title", $link_arr[link_name] );
+        $link->tag("url", $link_arr[link_url] );
+        $link->tag("target", $link_arr[link_target] );
+
+        $link = $link->display ();
         $link_tpl .= $link;
     }
-    unset($link_arr);
-
-    if (mysql_num_rows($index2) > 0)
-    {
-        $index2 = mysql_query("select news_related_links from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-        $related_links = stripslashes(mysql_result($index2, 0, "news_related_links"));
-        $related_links = str_replace("{links}", $link_tpl, $related_links);
-
-        $template = str_replace("{related_links}", $related_links, $template);
-    }
-    else
-    {
-        $template = str_replace("{related_links}", "", $template);
+    if (mysql_num_rows($index2) > 0) {
+        // Get Links Body Template
+        $related_links = new template();
+        $related_links->setFile("0_news.tpl");
+        $related_links->load("LINKS_BODY");
+        $related_links->tag("links", $link_tpl );
+        $related_links = $related_links->display ();
+    } else {
+        $related_links = "";
     }
 
+    // Template lesen und füllen
+    $template = new template();
+    $template->setFile("0_news.tpl");
+    $template->load("NEWS_BODY");
+
+    $template->tag("news_id", $news_arr[news_id] );
+    $template->tag("titel", $news_arr[news_title] );
+    $template->tag("date", $news_arr[news_date] );
+    $template->tag("text", $news_arr[news_text] );
+    $template->tag("user_name", $news_arr[user_name] );
+    $template->tag("user_url", $news_arr[user_url] );
+    $template->tag("cat_name", $news_arr[cat_name] );
+    $template->tag("cat_image", $news_arr[cat_pic] );
+    $template->tag("comments_url", $news_arr[comment_url] );
+    $template->tag("comments_number", $news_arr[kommentare] );
+    $template->tag("related_links", $related_links );
+
+    $template = $template->display ();
     $news_template = $template;
-
-    unset ($template);
     return $news_template;
 }
 
@@ -1177,31 +1186,6 @@ function killhtml ( $TEXT )
     return $TEXT;
 }
 
-//////////////////////////////////
-// kill sv whre not allowed     //
-//////////////////////////////////
-
-function killsv ( $TEXT )
-{
-    $TEXT = str_replace ( "[", "&#x5B;", $TEXT );
-    $TEXT = str_replace ( "]", "&#x5D;", $TEXT );
-    $TEXT = str_replace ( "%", "&#x25;", $TEXT );
-    return $TEXT;
-}
-
-//////////////////////////////////
-// kill {} whre not allowed     //
-//////////////////////////////////
-
-function killbraces ( $TEXT )
-{
-    global $global_config_arr;
-
-    $TEXT = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $TEXT );
-    $TEXT = str_replace ( "{", "&#123;", $TEXT );
-    $TEXT = str_replace ( "}", "&#125;", $TEXT );
-    return $TEXT;
-}
 
 //////////////////////////////
 // Format text with FS Code //

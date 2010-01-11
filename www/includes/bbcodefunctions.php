@@ -22,7 +22,7 @@ function do_bbcode_smilies ($text) {
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $url = image_url("images/smilies/", $smilie_arr['id']);
-        $text = str_replace ($smilie_arr['replace_string'], '<img src="'.$url.'" alt="'.$smilie_arr['replace_string'].'" />', $text);
+        $text = str_replace ($smilie_arr['replace_string'], '<img src="'.$url.'" alt="'.$smilie_arr['replace_string'].'" align="top">', $text);
     }
     return $text;
 }

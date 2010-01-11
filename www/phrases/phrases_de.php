@@ -24,9 +24,9 @@ $phrases[no_result_word]    = "Keine Einträge mit diesem Stichwort gefunden";
 
 // Kommentare
 $phrases[add_comment]       = "Kommentar hinzufügen";
-$phrases[comment_not_added] = "Kommentar konnte nicht hinzugefügt werden.";
-$phrases[comment_empty]     = "<br>Es müssen alle Felder ausgefüllt sein.";
-$phrases[comment_spam]      = "<br>Die Rechenaufgabe muss richtig gelöst werden.";
+$phrases[comment_not_added] = "Kommentar wurde nicht hinzugefügt";
+$phrases[comment_empty]     = "Es müssen alle Felder ausgefüllt sein";
+$phrases[comment_spam]      = "Die Rechenaufgabe muss richtig gelöst werden";
 $phrases[no_comments]       = "Es wurden keine Kommentare gefunden";
 $phrases[comm_not_allowed]  = "Es ist dir nicht erlaubt Kommentare zu verfassen";
 $phrases[comm_not_activ]    = "Das Kommentarsystem ist bei dieser News deaktiviert";

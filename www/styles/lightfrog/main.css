@@ -1,9 +1,12 @@
-html,body,img {
+html,body {
+  height:100%;
   margin:0px;
   padding:0px;
 }
 
 img {
+  margin:0px;
+  padding:0px;
   border: none;
 }
 

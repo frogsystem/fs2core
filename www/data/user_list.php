@@ -9,7 +9,7 @@ function get_user_list_order ( $SORT, $GET_SORT, $GET_ORDER, $DEFAULT = 1 ) {
 
 function get_user_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
     $arrow_direction = ( $GET_ORDER == 0 ) ? "down" : "up";
-    return ( $SORT == $GET_SORT ) ? '<img src="$VAR(style_icons)user/arrow-' . $arrow_direction . '.gif" alt="">' : "";
+    return ( $SORT == $GET_SORT ) ? '<img src="$VAR(style_icons)arrow-' . $arrow_direction . '.gif" alt="">' : "";
 }
 
 

@@ -2,7 +2,7 @@
 ///////////////////////////
 //// get Main-Template ////
 ///////////////////////////
-function get_maintemplate ( $PATH_PREFIX = "" )
+function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
 {
     global $global_config_arr, $db, $TEXT;
 
@@ -11,7 +11,7 @@ function get_maintemplate ( $PATH_PREFIX = "" )
 {..doctype..}
 <html>
         <head>
-                {..title..}{..meta..}{..link..}{..script..}
+                {..base..}{..title..}{..meta..}{..link..}{..script..}
         </head>
 
         {..body..}
@@ -22,6 +22,14 @@ function get_maintemplate ( $PATH_PREFIX = "" )
     $template_doctype->setFile("0_general.tpl");
     $template_doctype->load("DOCTYPE");
     $template_doctype = $template_doctype->display();
+    
+    //
+    if ( $BASE != FALSE ) {
+        $template_base = '
+                <base href="'.$BASE .'">';
+    } else {
+        $template_base = "";
+    }
 
     // Create link-Rows
     $template_link = "";
@@ -41,6 +49,7 @@ function get_maintemplate ( $PATH_PREFIX = "" )
 
     // Replace Placeholders
     $template = str_replace("{..doctype..}", $template_doctype, $template);
+    $template = str_replace("{..base..}", $template_base, $template);
     $template = str_replace("{..title..}", "<title>".get_title()."</title>", $template);
     $template = str_replace("{..meta..}", get_meta (), $template);
     $template = str_replace("{..link..}", $template_link, $template);
@@ -596,7 +605,7 @@ function delete_old_randoms ()
 ///////////////////////////////
 function get_copyright ()
 {
-        return '<span class="copyright">Powered by <a class="copyright_link" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007 - 2009 Frogsystem-Team</span>';
+        return '<span class="copyright">Powered by <a class="copyright_link" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007 - 2010 Frogsystem-Team</span>';
 }
 
 
@@ -655,7 +664,7 @@ function copyright ()
     $copyright = $template_copyright->display();
 
     if ( strpos ( $copyright, $template_copyright->getOpener()."copyright".$template_copyright->getCloser() ) == FALSE
-                    || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2009 Frogsystem-Team" ) == FALSE
+                    || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2010 Frogsystem-Team" ) == FALSE
                     || strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE) {
         $global_config_arr['style'] =  "default";
     }

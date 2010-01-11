@@ -1,15 +1,17 @@
 alix5:
 
-News Template anpassen
-Artikel Vorschau
+
+Benutzereingaben auf Ersetzungen checken
 
 
 Globale Suche (in news, artikeln, download beschreibungen/titlen) inkl. Suchzeichen
 
 
-HTML-Editor fertig (Codemirror Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP.$NAV und[%*%]...)
+HTML-Editor fertig (Codemirror Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP.$NAV und[%*%]... Non java script design)
 
 Lang-Texte verfassen
+Artikel Vorschau, Fix für relative Bilder...
+default design noch bearbeiten
 
 
 alix6:

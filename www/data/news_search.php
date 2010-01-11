@@ -4,9 +4,6 @@
 ////// Suchfeld erzeugen ///////
 ////////////////////////////////
 
-$index = mysql_query("select news_search_form from ".$global_config_arr[pref]."template where id = '$global_config_arr[design]'", $db);
-$template = stripslashes(mysql_result($index, 0, "news_search_form"));
-
 $index = mysql_query("select news_date from ".$global_config_arr[pref]."news order by news_date asc LIMIT 0,1", $db);
 if (mysql_num_rows($index) == 0) {
     $years = date("Y");
@@ -17,21 +14,30 @@ if (mysql_num_rows($index) == 0) {
         $years .= '<option value="'.$years_arr[i].'">'.$years_arr[i].'</option>';
     }
 }
-$template = str_replace("{years}", $years, $template);
 
+// Get Template
+$template = new template();
+$template->setFile("0_news.tpl");
+$template->load("SEARCH");
+
+$template->tag("years", $years );
+$template->tag("keyword", kill_replacements ( $_REQUEST['keyword'] ) );
+
+$template = $template->display ();
 $searchform_template = $template;
-unset($template);
+
+
 ////////////////////////////////
 /// News nach Datum anzeigen ///
 ////////////////////////////////
 
-if ($_REQUEST[jahr] && $_REQUEST[monat])
+if ($_REQUEST[year] && $_REQUEST[month])
 {
-    settype($_REQUEST[jahr], 'integer');
-    settype($_REQUEST[monat], 'integer');
+    settype($_REQUEST[year], 'integer');
+    settype($_REQUEST[month], 'integer');
 
-    $starttime = mktime(0, 0, 0, $_REQUEST[monat], 0, $_REQUEST[jahr]);
-    $endtime = mktime(0, 0, 0, $_REQUEST[monat]+1, 0, $_REQUEST[jahr]);
+    $starttime = mktime(0, 0, 0, $_REQUEST[month], 0, $_REQUEST[year]);
+    $endtime = mktime(0, 0, 0, $_REQUEST[month]+1, 0, $_REQUEST[year]);
 
     // News Konfiguration lesen
     $index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
@@ -39,14 +45,14 @@ if ($_REQUEST[jahr] && $_REQUEST[monat])
 
     // News lesen und ausgeben
     $index = mysql_query ( "
-							SELECT *
-							FROM ".$global_config_arr['pref']."news
-							WHERE news_date > $starttime
-							AND news_date < $endtime
-							AND news_active = 1
-							ORDER BY news_date desc
-	", $db);
-	
+                            SELECT *
+                            FROM ".$global_config_arr['pref']."news
+                            WHERE news_date > $starttime
+                            AND news_date < $endtime
+                            AND news_active = 1
+                            ORDER BY news_date desc
+    ", $db);
+    
     if (mysql_num_rows($index) > 0)  // News vorhanden?
     {
         while ($news_arr = mysql_fetch_assoc($index))
@@ -75,13 +81,13 @@ elseif ($_REQUEST[keyword])
 
     // News lesen und ausgeben
     $index = mysql_query ( "
-							SELECT *
-							FROM ".$global_config_arr['pref']."news
-							WHERE ( news_text LIKE '%".$_REQUEST['keyword']."%'
-							OR news_title LIKE '%".$_REQUEST['keyword']."%' )
-							AND news_active = 1
-							ORDER BY news_date desc
-	", $db);
+                            SELECT *
+                            FROM ".$global_config_arr['pref']."news
+                            WHERE ( news_text LIKE '%".$_REQUEST['keyword']."%'
+                            OR news_title LIKE '%".$_REQUEST['keyword']."%' )
+                            AND news_active = 1
+                            ORDER BY news_date desc
+    ", $db);
     if (mysql_num_rows($index) > 0)  // News vorhanden?
     {
         while ($news_arr = mysql_fetch_assoc($index))
@@ -96,6 +102,6 @@ elseif ($_REQUEST[keyword])
     }
 }
 
-$template = $searchform_template.$news_template;
+$template = $searchform_template."<br><br>".$news_template;
 
 ?>

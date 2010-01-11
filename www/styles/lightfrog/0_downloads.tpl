@@ -1,4 +1,4 @@
-<!--section-start::APPLET_LINE--><span class="small">{..date..} </span><a class="small" href="{..url..}">{..title..}</a><br><!--section-end::APPLET_LINE-->
+<!--section-start::APPLET_LINE--><span class="small">{..date..} - </span><a class="small" href="{..url..}">{..title..}</a><br><!--section-end::APPLET_LINE-->
 
 <!--section-start::SEARCH--><table style="margin-left:-2px;" cellpadding="2" cellspacing="0">
   <tr>
