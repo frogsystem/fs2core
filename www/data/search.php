@@ -212,7 +212,7 @@ if ( isset ( $results_arr['news'] ) ) {
     // Get More Results Template
     if ( count ( $results_arr['news'] ) > $config_arr['search_num_previews'] ) {
         $news_more = $more_results_template;
-        $news_more->tag("main_search_url", "?go=news_search&keyword=".implode ( "+", $keyword_arr ) );
+        $news_more->tag("main_search_url", "?go=news_search&amp;keyword=".implode ( "+", $keyword_arr ) );
         $news_more = $news_more->display ();
     } else {
         $news_more = "";
@@ -242,7 +242,7 @@ if ( isset ( $results_arr['news'] ) ) {
     $replace_arr = sort_replace_arr ( $replace_arr );
 
     // Create Template for Entries
-    for ( $i = 0; $i < $num_data_sets; $i++ ) {
+    for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
         // Get Template
         $template = new template();
@@ -251,12 +251,13 @@ if ( isset ( $results_arr['news'] ) ) {
 
         $template->tag("id", $data['id'] );
         $template->tag("title", stripslashes ( $data['title'] ) );
-        $template->tag("url", "?go=comments&id=" . $data['id'] );
+        $template->tag("url", "?go=comments&amp;id=" . $data['id'] );
         $template->tag("date", date_loc ( $global_config_arr['date'], $data['date'] ) );
         $template->tag("num_results", $data['num_results'] );
 
         $news_entries .= $template->display ();
     }
+    $news_entries = ( count ( $replace_arr ) >= 1 ) ? $news_entries : $no_results_template;
 } else {
     $news_entries = $no_results_template;
     $news_more = "";
@@ -271,7 +272,7 @@ if ( isset ( $results_arr['articles'] ) ) {
     // Get More Results Template
     if ( count ( $results_arr['articles'] ) > $config_arr['search_num_previews'] ) {
         $articles_more = $more_results_template;
-        $articles_more->tag("main_search_url", "?go=articles_search&keyword=".implode ( "+", $keyword_arr ) );
+        $articles_more->tag("main_search_url", "?go=articles_search&amp;keyword=".implode ( "+", $keyword_arr ) );
         $articles_more = $articles_more->display ();
     } else {
         $articles_more = "";
@@ -291,7 +292,7 @@ if ( isset ( $results_arr['articles'] ) ) {
     ", $db );
     while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
         settype ( $data_arr['news_id'], "integer" );
-        $article_arr['article_url'] = ( $article_arr['article_url'] == "" ) ? "articles&id=".$article_arr['article_id'] : stripslashes ( $article_arr['article_url'] );
+        $article_arr['article_url'] = ( $article_arr['article_url'] == "" ) ? "articles&amp;id=".$article_arr['article_id'] : stripslashes ( $article_arr['article_url'] );
         $replace_arr[] = array (
             "id" => $data_arr['article_id'],
             "title" => $data_arr['article_title'],
@@ -305,7 +306,7 @@ if ( isset ( $results_arr['articles'] ) ) {
     $replace_arr = sort_replace_arr ( $replace_arr );
 
     // Create Template for Entries
-    for ( $i = 0; $i < $num_data_sets; $i++ ) {
+    for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
         // Get Template
         $template = new template();
@@ -320,6 +321,7 @@ if ( isset ( $results_arr['articles'] ) ) {
 
         $articles_entries .= $template->display ();
     }
+    $articles_entries = ( count ( $replace_arr ) >= 1 ) ? $articles_entries : $no_results_template;
 } else {
     $articles_entries = $no_results_template;
     $articles_more = "";
@@ -335,7 +337,7 @@ if ( isset ( $results_arr['dl'] ) ) {
     // Get More Results Template
     if ( count ( $results_arr['dl'] ) > $config_arr['search_num_previews'] ) {
         $downloads_more = $more_results_template;
-        $downloads_more->tag("main_search_url", "?go=download&cat_id=all&keyword=".implode ( "+", $keyword_arr ) );
+        $downloads_more->tag("main_search_url", "?go=download&amp;cat_id=all&amp;keyword=".implode ( "+", $keyword_arr ) );
         $downloads_more = $downloads_more->display ();
     } else {
         $downloads_more = "";
@@ -365,7 +367,7 @@ if ( isset ( $results_arr['dl'] ) ) {
     $replace_arr = sort_replace_arr ( $replace_arr );
 
     // Create Template for Entries
-    for ( $i = 0; $i < $num_data_sets; $i++ ) {
+    for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
         // Get Template
         $template = new template();
@@ -374,12 +376,13 @@ if ( isset ( $results_arr['dl'] ) ) {
 
         $template->tag("id", $data['id'] );
         $template->tag("title", stripslashes ( $data['title'] ) );
-        $template->tag("url", "?go=dlfile&id=" . $data['id'] );
+        $template->tag("url", "?go=dlfile&amp;id=" . $data['id'] );
         $template->tag("date", date_loc ( $global_config_arr['date'], $data['date'] ) );
         $template->tag("num_results", $data['num_results'] );
 
         $downloads_entries .= $template->display ();
     }
+    $downloads_entries = ( count ( $replace_arr ) >= 1 ) ? $downloads_entries : $no_results_template;
 } else {
     $downloads_entries = $no_results_template;
     $downloads_more = "";

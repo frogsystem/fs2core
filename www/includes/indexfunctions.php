@@ -62,7 +62,7 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     $template_link = "";
     if ( $global_config_arr['show_favicon'] == 1 ) {
                 $template_link .= '
-                <link rel="shortcut icon" href="images/icons/favicon.ico">';
+                <link rel="shortcut icon" href="styles/'.$global_config_arr['style'].'/favicon.ico">';
     }
     $template_link .= '
                 <link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">
@@ -692,8 +692,13 @@ function copyright ()
 
     if ( strpos ( $copyright, $template_copyright->getOpener()."copyright".$template_copyright->getCloser() ) == FALSE
                     || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2010 Frogsystem-Team" ) == FALSE
-                    || strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE) {
+                    || strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE ) {
         $global_config_arr['style'] =  "default";
+    } else {
+        $copyright_without_comments = preg_replace ( "/<!\s*--.*?--\s*>/s", "", $copyright );
+        if ( preg_match ( "/\{\.\.copyright\.\.\}/", $copyright_without_comments ) <= 0 ) {
+            $global_config_arr['style'] =  "default";
+        }
     }
 }
 ?>

@@ -154,10 +154,10 @@ $admin_phrases[general][keywords_desc]            = "Stichwörter zur Seite, bitt
 $admin_phrases[general][design_title]             = "Design";
 $admin_phrases[general][design]                   = "Design";
 $admin_phrases[general][design_desc]              = "Design, in dem die Seite angezeigt wird.";
-$admin_phrases[general][allow_other_designs]      = "Andere Designs erlauben";
-$admin_phrases[general][allow_other_designs_desc] = "Ermöglicht das Anzeigen der Seite in anderen Designs.<br> (http://www.example.com/?design={design})";
+$admin_phrases[general][allow_other_designs]      = "Andere Styles erlauben";
+$admin_phrases[general][allow_other_designs_desc] = "Ermöglicht das Anzeigen der Seite in anderen Styles.<br> (http://www.example.com/?style=xyz)";
 $admin_phrases[general][show_favicon]             = "Favicon verwenden";
-$admin_phrases[general][show_favicon_desc]        = "Bindet das Favicon ein.<br>([FS-Verzeichnis]/images/icons/favicon.ico)";
+$admin_phrases[general][show_favicon_desc]        = "Bindet das Favicon ein.<br>(\$VAR(style_icons)/favicon.ico)";
 
 $admin_phrases[general][settings_title]           = "Seiteneinstellungen";
 $admin_phrases[general][home_page]                = "Startseite";

@@ -1,3 +1,14 @@
+<!--section-start::APPLET--><b>Suche</b><br>
+<form method="get">
+  <input type="hidden" name="go" value="search">
+  <input type="hidden" name="in_news" value="1">
+  <input type="hidden" name="in_articles" value="1">
+  <input type="hidden" name="in_downloads" value="1">  
+  <input class="small input input_highlight middle" name="keyword" size="13" maxlength="100" value="{..keyword..}">
+  <input class="small pointer middle" type="submit" value="Go">
+</form>
+<!--section-end::APPLET-->
+
 <!--section-start::SEARCH--><b>Suche</b>
  <a href="?go=search" class="small" style="float:right;">(Neue Suche)</a>
  <br><br>

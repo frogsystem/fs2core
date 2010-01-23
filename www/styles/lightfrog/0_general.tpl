@@ -21,7 +21,8 @@
     </div> 
 
     <div id="menu_left">
-    $NAV(left.nav)  
+    $NAV(left.nav)<br>
+    $APP(mini-search.php)
     </div>
     
     <div id="menu_right">
@@ -32,18 +33,18 @@
       $APP(affiliates.php)
       $APP(mini-statistics.php)
       [%feeds%]
-    </div>   
-    
+    </div>
+
     <div id="content">
       $APP(announcement.php)
       {..content..}
     </div>
-    
+
     <div id="footer">
       <span class="copyright">&bdquo;Light Frog&ldquo;-Style &copy; Stoffel &amp; Sweil | Frog-Photo &copy; <a href="http://www.flickr.com/photos/joi/1157708196/" target="_blank">Joi</a><br>
-      {..copyright..}</span>
+       {..copyright..}</span>
     </div>
-    
+
   </div>
 </body><!--section-end::MAINPAGE-->
 

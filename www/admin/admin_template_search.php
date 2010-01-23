@@ -4,6 +4,18 @@ $TEMPLATE_FILE = "0_search.tpl";
 $TEMPLATE_EDIT = array();
 
 $TEMPLATE_EDIT[] = array (
+    name => "APPLET",
+    title => $TEXT['template']->get("search_applet_title"),
+    description => $TEXT['template']->get("search_applet_desc"),
+    rows => 15,
+    cols => 66,
+    help => array (
+        array ( tag => "keyword", text => $TEXT['template']->get("search_applet_keyword") ),
+    )
+);
+
+
+$TEMPLATE_EDIT[] = array (
     name => "SEARCH",
     title => $TEXT['template']->get("search_search_title"),
     description => $TEXT['template']->get("search_search_desc"),

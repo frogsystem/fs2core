@@ -1,7 +1,5 @@
 alix5:
 
-Such-Applet
-
 HTML-Editor fertig
 => Codemirror Update
 => Original anzeige (außer bei Nav/CSS/JS)
@@ -13,7 +11,6 @@ HTML-Editor fertig
 Lang-Texte verfassen
 Artikel Vorschau, Fix für relative Bilder...
 default design noch bearbeiten
-Copyright HTML-Kommentar verhindern...
 
 
 alix6:
