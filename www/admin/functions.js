@@ -245,11 +245,26 @@ function openedit_original(what)
 }
 
 //Get Editor Object
-function new_editor ( textareaId, editorHeight, readOnlyState )
+function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
 {
+  switch (syntaxHighlight) {
+    case 3:
+        var parser = ["tokenizejavascript.js", "parsejavascript.js"];
+        var css = "../resources/codemirror/css/jscolors.css";
+        break;
+    case 2:
+        var parser = "parsecss.js";
+        var css = "../resources/codemirror/css/csscolors.css";
+        break;
+    default:
+        var parser = "parsexml.js";
+        var css = "../resources/codemirror/css/xmlcolors.css";
+        break;
+  }
+
   var editor = CodeMirror.fromTextArea(textareaId, {
-    parserfile: "parsexml.js",
-    stylesheet: "../resources/codemirror/css/xmlcolors.css",
+    parserfile: parser,
+    stylesheet: css,
     path: "../resources/codemirror/js/",
     continuousScanning: 500,
     lineNumbers: true,

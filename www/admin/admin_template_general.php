@@ -45,23 +45,15 @@ $TEMPLATE_EDIT[] = array (
     rows => 30,
     cols => 66,
     help => array (
-        array ( tag => "main_menu", text => $admin_phrases[template][indexphp][help_1] ),
-        array ( tag => "announcement", text => $admin_phrases[template][indexphp][help_2] ),
-        array ( tag => "content", text => $admin_phrases[template][indexphp][help_3] ),
-        array ( tag => "user", text => $admin_phrases[template][indexphp][help_4] ),
-        array ( tag => "randompic", text => $admin_phrases[template][indexphp][help_5] ),
-        array ( tag => "poll", text => $admin_phrases[template][indexphp][help_6] ),
-        array ( tag => "stats", text => $admin_phrases[template][indexphp][help_7] ),
-        array ( tag => "shop", text => $admin_phrases[template][indexphp][help_8] ),
-        array ( tag => "partner", text => $TEXT['template']->get("general_mainpage_partner") ),
+        array ( tag => "content", text => $TEXT['template']->get("general_mainpage_content") ),
         array ( tag => "copyright", text => $TEXT['template']->get("general_mainpage_copyright") ),
     )
 );
 
 $TEMPLATE_EDIT[] = array (
     name => "POPUPVIEWER",
-    title => $admin_phrases[template][pic_viewer][title],
-    description => $admin_phrases[template][pic_viewer][description],
+    title => $TEXT['template']->get("general_popupviewer_title"),
+    description => $TEXT['template']->get("general_popupviewer_desc"),
     rows => 30,
     cols => 66,
     help => array (
@@ -90,8 +82,8 @@ $TEMPLATE_EDIT[] = array (
         
 $TEMPLATE_EDIT[] = array (
     name => "STATISTICS",
-    title => $admin_phrases[template][statistik][title],
-    description => $admin_phrases[template][statistik][description],
+    title => $TEXT['template']->get("general_statistics_title"),
+    description => $TEXT['template']->get("general_statistics_desc"),
     rows => 20,
     cols => 66,
     help => array (

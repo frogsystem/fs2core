@@ -122,9 +122,8 @@ if ( TRUE )
                                 <td class="config">
                                     <span class="small" style="padding-bottom:5px; display:block;"><b>'.$admin_phrases[common][valid_tags].':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{username}",$admin_phrases[general][email_username],"signup").'
-                                        '.insert_tt("{password}",$admin_phrases[general][email_password],"signup").'
-                                        '.insert_tt("{virtualhost}",$admin_phrases[general][email_virtualhost],"signup").'
+                                        '.insert_tt("{..user_name..}",$admin_phrases[general][email_username],"signup").'
+                                        '.insert_tt("{..new_password..}",$admin_phrases[general][email_password],"signup").'
                                     </span>
                                 </td>
                                 <td class="config">
@@ -142,9 +141,8 @@ if ( TRUE )
                                 <td class="config">
                                     <span class="small" style="padding-bottom:5px; display:block;"><b>'.$admin_phrases[common][valid_tags].':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{username}",$admin_phrases[general][email_username],"change_password").'
-                                        '.insert_tt("{password}",$admin_phrases[general][email_password],"change_password").'
-                                        '.insert_tt("{virtualhost}",$admin_phrases[general][email_virtualhost],"change_password").'
+                                        '.insert_tt("{..user_name..}",$admin_phrases[general][email_username],"change_password").'
+                                        '.insert_tt("{..new_password..}",$admin_phrases[general][email_password],"change_password").'
                                     </span>
                                 </td>
                                 <td class="config">
@@ -176,9 +174,9 @@ if ( TRUE )
                                 <td class="config">
                                     <span class="small" style="padding-bottom:5px; display:block;"><b>'.$admin_phrases[common][valid_tags].':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{username}",$admin_phrases[general][email_username],"delete_account").'
-                                        '.insert_tt("{password}",$admin_phrases[general][email_password],"delete_account").'
-                                        '.insert_tt("{virtualhost}",$admin_phrases[general][email_virtualhost],"delete_account").'
+                                        '.insert_tt("{..X..}",$admin_phrases[general][email_username],"delete_account").'
+                                        '.insert_tt("{..X..}",$admin_phrases[general][email_password],"delete_account").'
+                                        '.insert_tt("{..X..}",$admin_phrases[general][email_virtualhost],"delete_account").'
                                     </span>
                                 </td>
                                 <td class="config">

@@ -26,7 +26,7 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST
 
     // Download eintragen
     mysql_query("INSERT INTO ".$global_config_arr[pref]."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
-                                    dl_autor_url, dl_open)
+                                    dl_autor_url, dl_open, dl_search_update)
                  VALUES ('".$_POST[catid]."',
                          '".$_POST[userid]."',
                          '$dldate',
@@ -34,7 +34,16 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST
                          '".$_POST[text]."',
                          '".$_POST[autor]."',
                          '".$_POST[autorurl]."',
-                         '".$_POST[dlopen]."');", $db);
+                         '".$_POST[dlopen]."',
+                         '".time()."')
+    ", $db);
+    
+    // Update Search Index (or not)
+    if ( $global_config_arr['search_index_update'] === 1 ) {
+        // Include searchfunctions.php
+        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+        update_search_index ( "dl" );
+    }
                          
     $id = mysql_insert_id();
     

@@ -1,4 +1,31 @@
 <?php
+///////////////////////////////////
+//// Maybe Update Search Index ////
+///////////////////////////////////
+function search_index ()
+{
+    global $global_config_arr, $db;
+
+    $today_3am = mktime ( 3, 0, 0, date ( "m" ), date ( "d" ), date ( "Y" ) );
+    $today_3am = ( $today_3am > time() ) ? $today_3am - 24*60*60 : $today_3am;
+    if ( $global_config_arr['search_index_update'] === 2 &&  $global_config_arr['search_index_time'] < $today_3am) {
+        // Include searchfunctions.php
+        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+        update_search_index ( "news" );
+        update_search_index ( "articles" );
+        update_search_index ( "dl" );
+        
+        // Update config Value
+        $global_config_arr['search_index_time'] = time();
+        mysql_query ( "
+                        UPDATE `".$global_config_arr['pref']."global_config`
+                        SET
+                            `search_index_time` = '".$global_config_arr['search_index_time']."'
+                        WHERE `id` = '1'
+        ", $db );
+    }
+}
+
 ///////////////////////////
 //// get Main-Template ////
 ///////////////////////////
@@ -44,7 +71,7 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     // Create script-Rows
     $template_script = "";
     $template_script .= '
-                <script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-1.3.2.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
+                <script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-1.4.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
                 <script type="text/javascript" src="'.$PATH_PREFIX .'includes/js_functions.js"></script>';
 
     // Replace Placeholders

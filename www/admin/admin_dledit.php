@@ -6,7 +6,7 @@
 
 if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST[furl][0] && $_POST[fsize][0])
 {
-    settype ($_POST[editdlid], 'integer');
+    settype ($_POST['editdlid'], 'integer');
 
     // Download löschen
     if (isset($_POST[deldl]))
@@ -16,6 +16,10 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         image_delete("images/dl/", "$_POST[editdlid]_s");
         image_delete("images/dl/", $_POST[editdlid]);
         systext('Download wurde gelöscht');
+        
+        // Delete from Search Index
+        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+        delete_search_index_for_one ( $_POST['editdlid'], "dl" );
     }
     else
     {
@@ -52,9 +56,18 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
                        dl_text      = '$_POST[text]',
                        dl_autor     = '$_POST[autor]',
                        dl_autor_url = '$_POST[autorurl]',
-                       dl_open      = '$_POST[dlopen]'
+                       dl_open      = '$_POST[dlopen]',
+                       dl_search_update = '".time()."'
                    WHERE dl_id = $_POST[editdlid]";
         mysql_query($update, $db);
+        
+        // Update Search Index (or not)
+        if ( $global_config_arr['search_index_update'] === 1 ) {
+            // Include searchfunctions.php
+            require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+            update_search_index ( "dl" );
+        }
+        
 
         // Files  aktualisieren
         for ($i=0; $i<count($_POST[fname]); $i++)

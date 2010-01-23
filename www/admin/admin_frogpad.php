@@ -16,7 +16,7 @@ echo'
 <head>
     <title>Frogsystem 2 - Frogpad</title>
     <link rel="stylesheet" type="text/css" href="admin.css">
-    <script src="../resources/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+    <script src="../resources/jquery/jquery-1.4.min.js" type="text/javascript"></script>
     <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
     <script type="text/javascript">
         var change = window.setInterval("send()", 500);

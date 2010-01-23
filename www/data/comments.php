@@ -207,19 +207,22 @@ if ( $SHOW == TRUE ) {
         // User auslesen
         if ($comment_arr[comment_poster_id] != 0)
         {
-            $index2 = mysql_query("select user_name, user_is_admin, user_is_staff, user_group from ".$global_config_arr[pref]."user where user_id = $comment_arr[comment_poster_id]", $db);
-            $comment_arr[comment_poster] = kill_replacements ( mysql_result($index2, 0, "user_name" ) );
+            $index2 = mysql_query("select `user_name`, `user_is_admin`, `user_is_staff`, `user_group` from `".$global_config_arr[pref]."user` where user_id = ".$comment_arr[comment_poster_id]."", $db);
+            $comment_arr[comment_poster] = kill_replacements ( mysql_result($index2, 0, "user_name" ), TRUE );
             $comment_arr[user_is_admin] = mysql_result($index2, 0, "user_is_admin");
             $comment_arr[user_is_staff] = mysql_result($index2, 0, "user_is_staff");
+            $comment_arr[user_group] = mysql_result($index2, 0, "user_group");
 
             if (image_exists("media/user-images/",$comment_arr[comment_poster_id])) {
                 $comment_arr[comment_avatar] = '<img align="left" src="'.image_url("media/user-images/",$comment_arr[comment_poster_id]).'" alt="'.$comment_arr[comment_poster].'">';
+            } else {
+                $comment_arr[comment_avatar] = "";
             }
 
             if ( $comment_arr[user_is_staff] == 1 || $comment_arr[user_is_admin] == 1 ) {
                 $comment_arr[comment_poster] = "<b>" . $comment_arr[comment_poster] . "</b>";
             }
-            
+
             // Benutzer Rang
             $user_arr['rank_data'] = get_user_rank ( $comment_arr['user_group'], $comment_arr['user_is_admin'] );
             $comment_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
@@ -240,7 +243,7 @@ if ( $SHOW == TRUE ) {
         else
         {
             $comment_arr[comment_avatar] = "";
-            $comment_arr[comment_poster] = kill_replacements ( $comment_arr[comment_poster] );
+            $comment_arr[comment_poster] = kill_replacements ( $comment_arr[comment_poster], TRUE );
             $comment_arr['user_rank'] = "";
         }
 
@@ -251,7 +254,7 @@ if ( $SHOW == TRUE ) {
         }
 
         $comment_arr[comment_date] = date_loc ( $global_config_arr['datetime'] , $comment_arr[comment_date] );
-        $comment_arr[comment_title] = kill_replacements($comment_arr[comment_title]);
+        $comment_arr[comment_title] = kill_replacements( $comment_arr[comment_title], TRUE );
 
         // Get Comment Template
         $template = new template();
@@ -284,7 +287,7 @@ if ( $SHOW == TRUE ) {
     $form_name = $form_name->display ();
 
     if ( isset ( $_SESSION['user_name'] ) ) {
-        $form_name = $_SESSION['user_name'];
+        $form_name = kill_replacements ( $_SESSION['user_name'], TRUE );
         $form_name .= '<input type="hidden" name="name" id="name" value="1">';
     }
 

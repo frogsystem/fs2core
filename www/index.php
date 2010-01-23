@@ -33,6 +33,7 @@ if ( $db ) {
 
     // Constructor Calls
     delete_old_randoms ();
+    search_index ();
     set_style ();
     copyright ();
     get_goto ( $_GET['go'] );

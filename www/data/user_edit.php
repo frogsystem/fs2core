@@ -99,8 +99,8 @@ if (
                 $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_SESSION['user_name'] ), $template_mail );
                 $template_mail = str_replace ( "{..new_password..}", $mailpass, $template_mail );
                 $template_mail = replace_globalvars ( $template_mail );
-                $email_betreff = $TEXT->get("mail_password_changed_on") . $global_config_arr['virtualhost'];
-                if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_betreff, $template_mail ) ) {
+                $email_subject = $TEXT->get("mail_password_changed_on") . $global_config_arr['virtualhost'];
+                if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_subject, $template_mail ) ) {
                     $message .= "<br>".$TEXT->get("mail_new_password_sended");
                 } else {
                     $message .= "<br>".$TEXT->get("mail_new_password_not_sended");
@@ -142,9 +142,9 @@ else {
         if ( mysql_num_rows ( $index ) > 0 ) {
             $user_arr = mysql_fetch_assoc ( $index );
             
-            $user_arr['user_name'] = stripslashes ( $user_arr['user_name'] );
+            $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
             $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$TEXT->get("user_image_of")." ".$user_arr['user_name'].'">' : $TEXT->get("user_image_not_found") );
-            $user_arr['user_homepage'] = ( $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != "http://" ? $user_arr['user_homepage'] : "http://" );
+            $user_arr['user_homepage'] = ( $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != "http://" ? kill_replacements ( $user_arr['user_homepage'], TRUE ) : "http://" );
 
             // Create Template
             $template = new template();
@@ -160,15 +160,15 @@ else {
             $template->tag ( "image_max_height", $config_arr['avatar_y'] );
             $template->tag ( "image_max_size", $config_arr['avatar_size'] );
             $template->tag ( "image_limits_text", 'max. '.$config_arr['avatar_x'].' x '.$config_arr['avatar_y'].' Pixel & max. '.$config_arr['avatar_size'].' KiB' );
-            $template->tag ( "user_mail", stripslashes ( $user_arr['user_mail'] ) );
+            $template->tag ( "user_mail", kill_replacements ( $user_arr['user_mail'], TRUE ) );
             $template->tag ( "show_mail_checked", ( $user_arr['user_show_mail'] == 1 ? " checked" : "" ) );
 
-            $template->tag ( "user_homepage_url", stripslashes ( $user_arr['user_homepage'] ) );
-            $template->tag ( "user_icq", stripslashes ( $user_arr['user_icq'] ) );
-            $template->tag ( "user_aim", stripslashes ( $user_arr['user_aim'] ) );
-            $template->tag ( "user_wlm", stripslashes ( $user_arr['user_wlm'] ) );
-            $template->tag ( "user_yim", stripslashes ( $user_arr['user_yim'] ) );
-            $template->tag ( "user_skype", stripslashes ( $user_arr['user_skype'] ) );
+            $template->tag ( "user_homepage_url", $user_arr['user_homepage'] );
+            $template->tag ( "user_icq", kill_replacements ( $user_arr['user_icq'], TRUE ) );
+            $template->tag ( "user_aim", kill_replacements ( $user_arr['user_aim'], TRUE ) );
+            $template->tag ( "user_wlm", kill_replacements ( $user_arr['user_wlm'], TRUE ) );
+            $template->tag ( "user_yim", kill_replacements ( $user_arr['user_yim'], TRUE ) );
+            $template->tag ( "user_skype", kill_replacements ( $user_arr['user_skype'], TRUE ) );
 
             $template = $messages . $template->display ();
         }

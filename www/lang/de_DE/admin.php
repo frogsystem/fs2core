@@ -84,7 +84,7 @@ $TEXT = array (
     
 //Buttons & Auswahl-Buttons
     "button_arrow" =>
-    '<img border="0" src="img/pointer.png" align="absmiddle" alt="->">',
+    '<img class="middle" src="img/pointer.png" alt="->">',
     
     "selection_edit" =>
     "Auswahl bearbeiten",
@@ -126,6 +126,9 @@ $TEXT = array (
 
     "form_only_allowed_values" =>
     "Bitte geben Sie nur erlaubte Werte ein",
+    
+    "error_file_access" =>
+    "Bitte überprüfen sie die Dateirechte Einstellungen [text noch verbessern]",
 
 
 //Icons
@@ -577,6 +580,17 @@ $TEXT = array (
     "style_not_uninstalled" =>
     "Style wurde nicht deinstalliert",
 
+    "style_added" =>
+    "Style wurde erstellt",
+    
+    "style_not_added" =>
+    "Style konnte nicht erstellt werden",
+
+    "style_error_copy" =>
+    "Kopieren des gewählten Styles ist fehlgeschlagen",
+    
+    "style_error_folder_creation" =>
+    "Es konnten nicht alle Ordner erstellt werden",
 
     "styles_no_not_installed" =>
     "Keine nicht installierten Styles gefunden!",

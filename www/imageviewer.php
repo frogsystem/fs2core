@@ -67,6 +67,7 @@ if ($db)
 
         $data_array['image'] = image_url ( "images/screenshots/", $_GET['id'], FALSE );
         $data_array['image_url'] = image_url ( "images/screenshots/", $_GET['id'] );
+        $data_array['image_sizeinfo'] = image_url ( "images/screenshots/", $_GET['id'], FALSE, TRUE );
 
         if ( mysql_num_rows ( $index ) == 1 ) {
             $data_array['caption'] = stripslashes ( mysql_result ( $index, 0, "screen_name" ) );
@@ -128,7 +129,10 @@ if ($db)
             $max_width = $config_arr['show_img_x'];
             $max_height = $config_arr['show_img_y'];
 
-            if ( list ( $data_array['width'], $data_array['height'] ) = @getimagesize ( $data_array['image_url'] ) ) {
+            if ( @getimagesize ( $data_array['image_sizeinfo'] ) !== FALSE ) {
+            $data_array['image_sizeinfo'] = getimagesize ( $data_array['image_sizeinfo'] );
+            $data_array['width'] = $data_array['image_sizeinfo'][0];
+            $data_array['height'] = $data_array['image_sizeinfo'][1];
             $data_array['ratio'] = $data_array['width'] / $data_array['height'];
 
                 if ( $data_array['width'] <= $config_arr['show_img_x'] && $data_array['height'] <= $config_arr['show_img_y'] ) {

@@ -25,7 +25,7 @@ if (mysql_num_rows($index) > 0)
 
     // Username auslesen
     $index = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $dl_arr[user_id]", $db);
-    $dl_arr[user_name] = mysql_result($index, 0, "user_name");
+    $dl_arr[user_name] = kill_replacements ( mysql_result($index, 0, "user_name"), TRUE );
     $dl_arr[user_url] = "?go=user&id=" . $dl_arr[user_id];
 
     // Link zum Autor generieren

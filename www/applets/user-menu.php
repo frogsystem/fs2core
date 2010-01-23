@@ -10,7 +10,7 @@ if ( $_SESSION['user_level'] == "loggedin" ) {
     settype ( $user_id, "integer" );
     $image_url = image_url ( "media/user-images/", $user_id ) ;
     if ( image_exists ( "media/user-images/", $user_id ) ) {
-        $image_link = '<img src="'.$image_url .'" alt="'.$TEXT->get("user_image_of").' '.killhtml ( $_SESSION['user_name'] ).'">';
+        $image_link = '<img src="'.$image_url .'" alt="'.$TEXT->get("user_image_of").' '.kill_replacements ( $_SESSION['user_name'], TRUE ).'">';
     } else {
         $image_link = '';
     }
@@ -20,7 +20,7 @@ if ( $_SESSION['user_level'] == "loggedin" ) {
     $template->setFile("0_user.tpl");
     $template->load("APPLET_MENU");
 
-    $template->tag("user_name", killhtml ( $_SESSION['user_name'] ));
+    $template->tag("user_name", kill_replacements ( $_SESSION['user_name'], TRUE ));
     $template->tag("user_id", $user_id);
     $template->tag("user_image", $image_link);
     $template->tag("user_image_url", $image_url);

@@ -33,20 +33,19 @@ if (
     settype ( $_POST['article_fscode'], "integer" );
     settype ( $_POST['article_para'], "integer" );
 
-        // Create Date
-        if ( $_POST['d'] != "" && $_POST['m'] != "" && $_POST['y'] != "" ) {
-                $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
-                $articledate = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
-        } else {
-                $articledate = 0;
-        }
+    // Create Date
+    if ( $_POST['d'] != "" && $_POST['m'] != "" && $_POST['y'] != "" ) {
+            $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
+            $articledate = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+    } else {
+            $articledate = 0;
+    }
 
-
-        // MySQL-Insert-Query
+    // MySQL-Insert-Query
     mysql_query ("
                                         INSERT INTO
                                                 ".$global_config_arr['pref']."articles
-                                                (article_url, article_title, article_date, article_user, article_text, article_html, article_fscode, article_para, article_cat_id)
+                                                (article_url, article_title, article_date, article_user, article_text, article_html, article_fscode, article_para, article_cat_id, article_search_update)
                                         VALUES (
                                                 '".$_POST['article_url']."',
                                                 '".$_POST['article_title']."',
@@ -56,10 +55,18 @@ if (
                                                 '".$_POST['article_html']."',
                                                 '".$_POST['article_fscode']."',
                                                 '".$_POST['article_para']."',
-                                                '".$_POST['article_cat_id']."'
+                                                '".$_POST['article_cat_id']."',
+                                                '".time()."'
                                         )
-        ", $db );
-
+    ", $db );
+    
+    // Update Search Index (or not)
+    if ( $global_config_arr['search_index_update'] === 1 ) {
+        // Include searchfunctions.php
+        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+        update_search_index ( "articles" );
+    }
+    
     mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET artikel = artikel + 1", $db );
     systext( $admin_phrases[articles][articles_added], $admin_phrases[common][info]);
 }

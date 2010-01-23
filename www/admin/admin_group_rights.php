@@ -222,10 +222,10 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
             echo '<br>'.$GROUP_ARR['title'].'<br>';
             foreach ( $GROUP_ARR['links'] as $PAGE_ID => $PAGE_ARR ) {
                 echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="img/sub-right-arrow.gif" alt="->">' : "";
-                echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" name="'.$PAGE_ID.'" value="1"
+                echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" id="'.$PAGE_ID.'" name="'.$PAGE_ID.'" value="1"
                 '.getchecked ( $PAGE_ARR['granted'], "group" ).'
                 '.getdisabled ( $PAGE_ARR['granted'], "bad" ).'
-                ><span class="small">'.$PAGE_ARR['page_link'].'</span><br>';
+                ><label class="small pointer" for="'.$PAGE_ID.'">'.$PAGE_ARR['page_link'].'</span><br>';
                  $i++;
             }
         }

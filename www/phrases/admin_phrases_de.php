@@ -51,7 +51,7 @@ $admin_phrases[common][para]                      = "Absatzbehandlung ist";
 $admin_phrases[common][kib]                       = "KiB";
 $admin_phrases[common][mib]                       = "MiB";
 
-$admin_phrases[common][arrow]                     = '<img border="0" src="img/pointer.png" align="absmiddle" alt="->">';
+$admin_phrases[common][arrow]                     = '<img class="middle" src="img/pointer.png" alt="->">';
 $admin_phrases[common][save_long]                 = "Änderungen speichern";
 $admin_phrases[common][do_button]                 = "Ausführen";
 $admin_phrases[common][do_button_long]            = "Aktion ausführen";
@@ -682,36 +682,6 @@ $admin_phrases[template][js_userfunctions][description]= "Beinhaltet von Benutze
 
 
 //Allgemein
-$admin_phrases[template][error][title]                          = "Systemmeldung";
-$admin_phrases[template][error][description]                    = "Darstellung von Systemmeldungen";
-$admin_phrases[template][error][help_1]                         = "Der Titel der Systemmeldung.";
-$admin_phrases[template][error][help_2]                         = "Der Text der Systemmeldung.";
-
-$admin_phrases[template][doctype][title]                        = "HTML-Dokumenttyp";
-$admin_phrases[template][doctype][description]                  = "Definition des HTML-Dokumenttyps (HTML-Doctype).";
-
-$admin_phrases[template][indexphp][title]                       = "Index.php";
-$admin_phrases[template][indexphp][description]                 = "Hauptdesign der Seite.";
-$admin_phrases[template][indexphp][help_1]                      = "Bindet das Template \"Haupt Menü\" ein.";
-$admin_phrases[template][indexphp][help_2]                      = "Bindet die Ankündigung ein.";
-$admin_phrases[template][indexphp][help_3]                      = "Markiert die Stelle, an der Seiteninhalt eingefügt wird.";
-$admin_phrases[template][indexphp][help_4]                      = "Bindet das User-Menü ein.";
-$admin_phrases[template][indexphp][help_5]                      = "Bindet das Zufallsbild ein.";
-$admin_phrases[template][indexphp][help_6]                      = "Bindet das Umfragensystem ein.";
-$admin_phrases[template][indexphp][help_7]                      = "Bindet die Statistik ein.";
-$admin_phrases[template][indexphp][help_8]                      = "Bindet den Shop ein.";
-$admin_phrases[template][indexphp][help_9]                      = "Bindet das Partnersystem ein.";
-
-$admin_phrases[template][main_menu][title]                      = "Haupt Menü";
-$admin_phrases[template][main_menu][description]                = "Linke Navigationsleiste.";
-$admin_phrases[template][main_menu][help_1]                     = "Die unter Konfiguration angegebene Adresse der Seite, auf die Links umgeschaltet werden.";
-
-$admin_phrases[template][pic_viewer][title]                     = "Picture Viewer";
-$admin_phrases[template][pic_viewer][description]               = "Popup zum darstellen von Bildern";
-$admin_phrases[template][pic_viewer][help_1]                    = "Bindet den \"Weiter-Link\" mit der Grafik \"images/icons/weiter.gif\" ein.";
-$admin_phrases[template][pic_viewer][help_2]                    = "Bindet den \"Zurück-Link\" mit der Grafik \"images/icons/zurueck.gif\" ein.";
-$admin_phrases[template][pic_viewer][help_3]                    = "Bildadresse des Galerie-Bildes.";
-$admin_phrases[template][pic_viewer][help_4]                    = "Beschreibungs-Text des Bildes.";
 
 $admin_phrases[template][announcement][title]                   = "Ankündigung";
 $admin_phrases[template][announcement][description]             = "Ankündigung auf der Seite.";

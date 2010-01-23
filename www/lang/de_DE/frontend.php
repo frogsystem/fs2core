@@ -161,6 +161,17 @@ $TEXT = array (
     "Alle Downloads",
 
 
+//Suche
+    "search_news_title" =>
+    "News",
+
+    "search_articles_title" =>
+    "Artikel",
+
+    "search_downloads_title" =>
+    "Downloads",
+
+
 //Gruppen
     "group_image" =>
     "Gruppen-Symbol",

@@ -31,20 +31,28 @@ if (
         $newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
 
-        // MySQL-Insert-Query
+    // MySQL-Insert-Query
     mysql_query ("
-                                        INSERT INTO ".$global_config_arr['pref']."news
-                                                (cat_id, user_id, news_date, news_title, news_text, news_active, news_comments_allowed)
-                                        VALUES (
-                                                '".$_POST['cat_id']."',
-                                                '".$_POST['posterid']."',
-                                                '".$newsdate."',
-                                                '".$_POST['title']."',
-                                                '".$_POST['text']."',
-                                                '".$_POST['news_active']."',
-                                                '".$_POST['news_comments_allowed']."'
-                                        )
-        ", $db );
+                    INSERT INTO ".$global_config_arr['pref']."news
+                            (cat_id, user_id, news_date, news_title, news_text, news_active, news_comments_allowed, news_search_update)
+                    VALUES (
+                            '".$_POST['cat_id']."',
+                            '".$_POST['posterid']."',
+                            '".$newsdate."',
+                            '".$_POST['title']."',
+                            '".$_POST['text']."',
+                            '".$_POST['news_active']."',
+                            '".$_POST['news_comments_allowed']."',
+                            '".time()."'
+                    )
+    ", $db );
+    
+    // Update Search Index (or not)
+    if ( $global_config_arr['search_index_update'] === 1 ) {
+        // Include searchfunctions.php
+        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+        update_search_index ( "news" );
+    }
 
     // Links in die DB eintragen
     $newsid = mysql_insert_id ();

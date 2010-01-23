@@ -124,14 +124,14 @@ if (
     
     // send email
     $template_mail = get_email_template ( "signup" );
-    $template_mail = str_replace ( "{username}", stripslashes ( $_POST['user_name'] ), $template_mail );
-    $template_mail = str_replace ( "{password}", $_POST['newpwd'], $template_mail );
-    $template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
-    $email_betreff = $phrases['registration'] . $global_config_arr['virtualhost'];
-    if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_betreff, $template_mail ) ) {
-        $message .= "<br>E-Mail mit Zugangsdaten wurde erfolgreich gesendet";
+    $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_POST['user_name'] ), $template_mail );
+    $template_mail = str_replace ( "{..new_password..}", $_POST['newpwd'], $template_mail );
+    $template_mail = replace_globalvars ( $template_mail );
+    $email_subject = $TEXT->get("mail_registerd_on") . $global_config_arr['virtualhost'];
+    if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
+        $email_message = "<br>".$TEXT['frontend']->get("mail_registerd_sended");
     } else {
-        $message .= "<br>E-Mail mit Zugangsdaten konnte nicht gesendet werden";
+        $email_message = "<br>".$TEXT['frontend']->get("mail_registerd_not_sended");
     }
 
     // system messages

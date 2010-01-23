@@ -33,15 +33,15 @@
       </span><br>
       <span class="small">von <a href="{..user_url..}">{..user_name..}</a>, am {..date..}</span>
       
-      <p>{..text..}</p>
-      <p class="small">
+      {..text..}
+      <div class="small">
         {..related_links..}
         <span class="small" style="float:right;">
           <a href="{..comments_url..}">
              Kommentare ({..comments_number..})
            </a>
         </span>          
-      </p>
+      </div>
       
     </td>
   </tr>
@@ -68,7 +68,7 @@
     <td class="comment_td comment_left">
       {..user..}
     </td>
-    <td class="comment_td comment_right">
+    <td class="comment_td">
       <div class="comment_top">
         <span style="float:left;">
           <b>{..titel..}</b>

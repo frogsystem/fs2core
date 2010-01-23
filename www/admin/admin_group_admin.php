@@ -307,7 +307,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                <tr>
                                    <td class="config">
                                        '."Titel".': <span class="small">'.$admin_phrases[common][optional].'</span><br>
-                                       <span class="small">'."Titel den Mitglieder der Gruppe tragen.".'</span>
+                                       <span class="small">'."Titel den die Mitglieder der Gruppe tragen.".'</span>
                                    </td>
                                    <td>
                                      <input class="text" name="user_group_title" size="40" maxlength="50" value="'.$group_arr['user_group_title'].'">
@@ -316,18 +316,18 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                <tr>
                                    <td class="config">
                                        '."Einfärbung".': <span class="small">'.$admin_phrases[common][optional].'</span><br>
-                                       <span class="small">'."Farbliche Hervorhebung der Namen der Gruppenmitglieder.".'</span>
+                                       <span class="small">'."Farbliche Hervorhebung des Gruppentitels.".'</span>
                                    </td>
                                    <td class="configbig">
                                      <b>#</b> <input class="text" name="user_group_color" size="7" maxlength="6" value="'.$group_arr['user_group_color'].'">
-                                     <span class="small">'."freilassen um Namen nicht einzufärben".'</span><br>
+                                     <span class="small">'."freilassen um Titel nicht einzufärben".'</span><br>
                                      <span class="small">'."[Hexadezimal-Farbcode]".'</span>
                                    </td>
                                </tr>
                                <tr>
                                    <td class="config">
                                        '."Hervorhebung".': <span class="small">'.$admin_phrases[common][optional].'</span><br>
-                                       <span class="small">'."Besondere Hervorhebung der Namen der Gruppenmitglieder.".'</span>
+                                       <span class="small">'."Besondere Hervorhebung des Gruppentitels.".'</span>
                                    </td>
                                    <td>
                                        <select name="user_group_highlight" size="1">

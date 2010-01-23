@@ -4,7 +4,8 @@
 //////////////////////////
 function get_user_list_order ( $SORT, $GET_SORT, $GET_ORDER, $DEFAULT = 1 ) {
     $not_get_order = ( $GET_ORDER == 1 ) ? 0 : 1;
-    return ( $SORT == $GET_SORT ) ? $not_get_order : $DEFAULT;
+    $new_order = ( $SORT == $GET_SORT ) ? $not_get_order : $DEFAULT;
+    return "?go=user_list&sort=".$SORT."&order=" . $new_order;
 }
 
 function get_user_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
@@ -181,11 +182,11 @@ for ( $i = $config_arr['page_start']; $i < $maximum; $i++ )
     $temp_rank_data = ( $temp_rank_data == "" ) ? "-" : $temp_rank_data;
 
     $line_template->tag ( "user_id", $col_id[$i] );
-    $line_template->tag ( "user_name", stripslashes ( $col_name[$i] ) );
+    $line_template->tag ( "user_name", kill_replacements ( $col_name[$i], TRUE ) );
     $line_template->tag ( "user_url", "?go=user&id=".$col_id[$i] );
-    $line_template->tag ( "user_image", ( image_exists ( "media/user-images/", $col_id[$i] ) ) ? '<img src="'.image_url ( "media/user-images/", $col_id[$i] ).'" alt="'.$TEXT->get("user_image_of")." ".stripslashes ( $col_name[$i] ).'">' : $TEXT->get("user_image_not_found") );
+    $line_template->tag ( "user_image", ( image_exists ( "media/user-images/", $col_id[$i] ) ) ? '<img src="'.image_url ( "media/user-images/", $col_id[$i] ).'" alt="'.$TEXT->get("user_image_of")." ".kill_replacements ( $col_name[$i], TRUE ).'">' : $TEXT->get("user_image_not_found") );
     $line_template->tag ( "user_image_url", image_url ( "media/user-images/", $col_id[$i] ) );
-    $line_template->tag ( "user_mail", ( $col_show_mail[$i] == 1 ) ? stripslashes ( $col_mail[$i] ) : "-" );
+    $line_template->tag ( "user_mail", ( $col_show_mail[$i] == 1 ) ? kill_replacements ( $col_mail[$i], TRUE ) : "-" );
     $line_template->tag ( "user_rank", $temp_rank_data );
     $line_template->tag ( "user_reg_date", date_loc ( stripslashes ( $config_arr['user_list_reg_date_format'] ), $col_reg_date[$i] ) );
     $line_template->tag ( "user_num_news", $col_num_news[$i] );

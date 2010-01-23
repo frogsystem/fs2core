@@ -46,6 +46,8 @@
 </form>
 <!--section-end::APPLET_LOGIN-->
 
+<!--section-start::APPLET_ADMINLINE--><a class="small" href="{..admincp_url..}">- Admin CP</a><br><!--section-end::APPLET_ADMINLINE-->
+
 <!--section-start::APPLET_MENU--><b>Willkommen {..user_name..}!</b><br>
 {..user_image..}
 
@@ -55,8 +57,6 @@
   {..admincp_line..}
   <a class="small" href="{..logout_url..}">- Abmelden</a>
 </p><!--section-end::APPLET_MENU-->
-
-<!--section-start::APPLET_ADMINLINE--><a class="small" href="{..admincp_url..}">- Admin CP</a><br><!--section-end::APPLET_ADMINLINE-->
 
 <!--section-start::LOGIN--><b>Anmelden</b><br><br>
 
@@ -229,21 +229,20 @@
         <td align="right">
           <img class="textmiddle" src="{..captcha_url..}"> <input class="small input input_highlight" size="20" name="captcha" maxlength="5" autocomplete="off">
           <img class="textmiddle" src="$VAR(style_icons)user/lock.gif" alt="" align="bottom">
-          <div class="small" align="left">Bitte lösen Sie diese Rechenaufgabe.</div>
+          <div class="small" align="left">Bitte die Rechenaufgabe lösen.</div>
         </td>
       </tr>
 <!--section-end::CAPTCHA_LINE-->
 
-<!--section-start::CAPTCHA_TEXT--><br><br>
-<table border="0" cellspacing="0" cellpadding="0" width="60%">
-  <tr>
-    <td valign="top" align="left">
-      <div class="small" id="antispam">
-        * Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.
-      </div>
-    </td>
-  </tr>
-</table><!--section-end::CAPTCHA_TEXT-->
+<!--section-start::CAPTCHA_TEXT-->    <tr>
+      <td></td>
+      <td>
+        <p class="small" id="captcha_note">
+          <b>Hinweis:</b> Die Rechenaufgabe verhindert, dass Spam-Bots auf dieser Seite Werbung als Kommentar einstellen können. Um die Abfrage zu umgehen, kannst du dich <a href="?go=register">registrieren</a>.
+        </p>
+      </td>
+    </tr>
+<!--section-end::CAPTCHA_TEXT-->
 
 <!--section-start::PROFILE--><b>Profil von {..user_name..}</b><br><br>
 
@@ -447,7 +446,7 @@
             <td align="center" valign="middle" rowspan="9" colspan="2">{..user_image..}</td>
         </tr>
         <tr valign="middle">
-            <td align="left"><label for="user_show_mail" class="small pointer textmiddle" style="vertical-align:middle;">E-Mail im öffentlichen Profl anzeigen?</label></td>
+            <td align="left"><label for="user_show_mail" class="small pointer textmiddle" style="vertical-align:middle;">E-Mail im öffentlichen Profil anzeigen?</label></td>
             <td align="center"><input type="checkbox" class="pointer" name="user_show_mail" id="user_show_mail" value="1" {..show_mail_checked..}></td>
         </tr>
         <tr><td></td></tr>
@@ -543,43 +542,43 @@
 
   <tr align="center">
     <td class="left bottom" width="25%">
-      <a href="?go=user_list&sort=name&order={..order_name..}">
+      <a href="{..order_name..}">
         <img src="$VAR(style_icons)user/user.gif" alt="Benutzername" title="Benutzername" align="bottom">
         <br>{..arrow_name..}
       </a>
     </td>
     <td class="left bottom" width="35%">
-      <a href="?go=user_list&sort=mail&order={..order_mail..}">
+      <a href="{..order_mail..}">
         <img src="$VAR(style_icons)user/mail.gif" alt="E-Mail" title="E-Mail" align="bottom">
         <br>{..arrow_mail..}
       </a>
     </td>
     <td class="left bottom" width="110">
-      <a href="?go=user_list&sort=reg_date&order={..order_reg_date..}">
+      <a href="{..order_reg_date..}">
         <img src="$VAR(style_icons)user/date.gif" alt="Registriert seit" title="Registriert seit" align="bottom">
         <br>{..arrow_reg_date..}
       </a>
     </td>
     <td class="bottom" width="16">
-      <a href="?go=user_list&sort=num_news&order={..order_num_news..}">
+      <a href="{..order_num_news..}">
         <img src="$VAR(style_icons)user/news.gif" alt="News" title="News" align="bottom">
         <br>{..arrow_num_news..}
       </a>
     </td>
     <td class="bottom" width="16">
-      <a href="?go=user_list&sort=num_comments&order={..order_num_comments..}">
+      <a href="{..order_num_comments..}">
         <img src="$VAR(style_icons)user/comment.gif" alt="Kommentare" title="Kommentare" align="bottom">
         <br>{..arrow_num_comments..}
       </a>
     </td>
     <td class="bottom" width="16">
-      <a href="?go=user_list&sort=num_articles&order={..order_num_articles..}">
+      <a href="{..order_num_articles..}">
         <img src="$VAR(style_icons)user/article.gif" alt="Artikel" title="Artikel" align="bottom">
         <br>{..arrow_num_articles..}
       </a>
     </td>
     <td class="bottom" width="16">
-      <a href="?go=user_list&sort=num_downloads&order={..order_num_downloads..}">
+      <a href="{..order_num_downloads..}">
         <img src="$VAR(style_icons)user/download.gif" alt="Downloads" title="Downloads" align="bottom">
         <br>{..arrow_num_downloads..}
       </a>

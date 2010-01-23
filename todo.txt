@@ -1,17 +1,19 @@
 alix5:
 
+Such-Applet
 
-Benutzereingaben auf Ersetzungen checken
-
-
-Globale Suche (in news, artikeln, download beschreibungen/titlen) inkl. Suchzeichen
-
-
-HTML-Editor fertig (Codemirror Update + anderer parser bei css und js/Original anzeige/Zeilenumbruch/Nummern/$VAR,$APP.$NAV und[%*%]... Non java script design)
+HTML-Editor fertig
+=> Codemirror Update
+=> Original anzeige (außer bei Nav/CSS/JS)
+=> Zeilenumbruch umschaltbar
+=> Zeilennummern umschaltbar
+=> Einfügen von $VAR,$APP.$NAV und [%*%]
+=> Non java script design
 
 Lang-Texte verfassen
 Artikel Vorschau, Fix für relative Bilder...
 default design noch bearbeiten
+Copyright HTML-Kommentar verhindern...
 
 
 alix6:
@@ -27,6 +29,7 @@ lang-system fertig umstellen und vor allem menü punkte irgendwie einbinden (auße
 alix7:
 
 großes User-Update (Benutzergruppen auch mehrere, Ränge nach Posts, Rechte im Frontend, Sperren, bannen, verwarnen, admin-kommentare zu usern, userkarte über googlemaps)
+Rang-System: Möglichkeiten zur Namenseinfärbung wie bei Rang
 pw zurücksetzen
 pw schwierigkeit festlegen
 email aktivierung inkl. check auf gültige email

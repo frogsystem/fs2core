@@ -3,7 +3,7 @@
 <!--section-start::SEARCH--><table style="margin-left:-2px;" cellpadding="2" cellspacing="0">
   <tr>
     <td align="right">
-      <b>Downloads durchsuchen:</b>
+      <b>Kategorie durchsuchen:</b>
     </td>
     <td align="left">
       <form action="" method="get">

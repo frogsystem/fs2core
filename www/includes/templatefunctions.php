@@ -3,7 +3,7 @@
 //// Templatepage Save Template ////
 ////////////////////////////////////
 
-function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE = TRUE, $MANYFILES = FALSE )
+function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE = TRUE, $MANYFILES = FALSE, $HIGHLIGHTER = 1 )
 {
     global $TEXT;
     
@@ -31,7 +31,7 @@ function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE
         }
     }
 
-    return create_templatepage ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $MANYFILES );
+    return create_templatepage ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $MANYFILES, $HIGHLIGHTER );
 }
 
 ////////////////////////////////////
@@ -78,7 +78,7 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
         } else {
             $TEMPLATE_FILE = unquote ( $_POST['file'] );
         }
-        $file_data = unquote ( $_POST[$TEMPLATE_ARR[0]['name']] );
+        $file_data = "".unquote ( $_POST[$TEMPLATE_ARR[0]['name']] )."";
     } else {
         foreach ($TEMPLATE_ARR as $template) {
             $file_data .= "<!--section-start::" . $template['name'] . "-->" . unquote ( $_POST[$template['name']] ) . "<!--section-end::".$template['name'] . "-->
@@ -116,11 +116,10 @@ function templatepage_postcheck ( $TEMPLATE_ARR )
 //// Create Templatepage ////
 /////////////////////////////
 
-function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES )
+function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $HIGHLIGHTER )
 {
-    global $global_config_arr;
-    global $db, $admin_phrases;
-    global $TEXT;
+    global $global_config_arr, $db, $TEXT;
+    global $admin_phrases;
 
     unset ($return_template);
     unset ($select_template);
@@ -259,7 +258,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES )
                         $TEMPLATE_ARR[$template_key]['template'] = "";
                     } else {
                         $ACCESS = new fileaccess ();
-                        $TEMPLATE_ARR[$template_key]['template'] = $ACCESS->getFileData ( $file_path );
+                        $TEMPLATE_ARR[$template_key]['template'] = htmlspecialchars ( $ACCESS->getFileData ( $file_path ) );
                     }
                 }
             }
@@ -304,7 +303,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES )
                 $return_template .= '
                             <tr><td class="space"></td></tr>
                             
-                            ' . create_templateeditor ( $template ) . '
+                            ' . create_templateeditor ( $template, $HIGHLIGHTER ) . '
 
                             <tr><td class="space"></td></tr>
                             <tr>
@@ -347,9 +346,8 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES )
 ////////////////////////////////
 function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
 {
-    global $global_config_arr;
+    global $global_config_arr, $db, $TEXT;
     global $admin_phrases;
-    global $TEXT;
 
     switch ( $TYPE ) {
         case "style":
@@ -362,11 +360,18 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
                                             <select name="style" onChange="this.form.submit();" style="width:200px;">
             ';
 
-            $styles = scandir_filter ( FS2_ROOT_PATH . "styles", array ( "default" ) );
-            foreach ( $styles as $style ) {
-                if ( is_dir ( FS2_ROOT_PATH . "styles/" . $style ) == TRUE ) {
-                    $select_template .= '<option value="'.$style.'" '.getselected ($style, $_POST['style']).'>'.$style;
-                    $style == $global_config_arr['style'] ? $select_template .= ' (aktiv)' : $select_template .= "";
+            $index = mysql_query ( "
+                                    SELECT `style_tag`
+                                    FROM `".$global_config_arr['pref']."styles`
+                                    WHERE `style_id` != 0
+                                    AND `style_allow_use` = 1
+                                    ORDER BY `style_tag`
+            ", $db );
+            while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
+                $style_arr['style_tag'] = stripslashes ( $style_arr['style_tag'] );
+                if ( is_dir ( FS2_ROOT_PATH . "styles/" . $style_arr['style_tag'] ) == TRUE ) {
+                    $select_template .= '<option value="'.$style_arr['style_tag'].'" '.getselected ($style_arr['style_tag'], $_POST['style']).'>'.$style_arr['style_tag'];
+                    $style_arr['style_tag'] == $global_config_arr['style'] ? $select_template .= ' (aktiv)' : $select_template .= "";
                     $select_template .= '</option>';
                 }
             }
@@ -427,7 +432,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
 ////////////////////////////////
 //// create template editor ////
 ////////////////////////////////
-function create_templateeditor ( $editor_arr )
+function create_templateeditor ( $editor_arr, $HIGHLIGHTER )
 {
     global $db, $admin_phrases;
     unset ($editor_template);
@@ -485,7 +490,7 @@ function create_templateeditor ( $editor_arr )
                                         <textarea style="height:'.$editor_arr['height'].';" cols="'.$editor_arr[cols].'" name="'.$editor_arr[name].'" id="'.$editor_arr[name].'"
                                     >'.$editor_arr[template].'</textarea>
                                     <script type="text/javascript">
-                                        var editor_'.$editor_arr[name].' = new_editor ( "'.$editor_arr[name].'", "'.$editor_arr['height'].'", false );
+                                        var editor_'.$editor_arr[name].' = new_editor ( "'.$editor_arr[name].'", "'.$editor_arr['height'].'", false, '.$HIGHLIGHTER.' );
                                     </script>
                                     </div>
                                 </td>

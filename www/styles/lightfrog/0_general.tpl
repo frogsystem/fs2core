@@ -40,7 +40,7 @@
     </div>
     
     <div id="footer">
-      <span class="copyright">„Light Frog“-Style &copy; Stoffel &amp; Sweil | Frog-Photo &copy; <a href="http://www.flickr.com/photos/joi/1157708196/" target="_blank">Joi</a><br>
+      <span class="copyright">&bdquo;Light Frog&ldquo;-Style &copy; Stoffel &amp; Sweil | Frog-Photo &copy; <a href="http://www.flickr.com/photos/joi/1157708196/" target="_blank">Joi</a><br>
       {..copyright..}</span>
     </div>
     
@@ -99,3 +99,4 @@
   - <b>{..num_articles..}</b> Artikel
 </p>
 <!--section-end::STATISTICS-->
+

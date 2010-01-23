@@ -49,6 +49,9 @@ if ( $db && mysql_select_db ( $dbc['data'], $db ) ) {
     // set style (but may be changed later)
     $global_config_arr['style'] = $global_config_arr['style_tag'];
     settype ( $global_config_arr['style_id'], "integer" );
+    
+    // Security Funtcions for some important values
+    settype ( $global_config_arr['search_index_update'], "integer" );
 }
 
 

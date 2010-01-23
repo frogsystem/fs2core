@@ -6,7 +6,7 @@
     $tmp = array (
         name => "NAV",
         title => $TEXT['template']->get("nav_files_title"),
-        description => $TEXT['template']->get("nav_files_description"),
+        description => $TEXT['template']->get("nav_files_desc"),
         rows => 35,
         cols => 66,
         help => array (

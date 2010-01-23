@@ -1130,10 +1130,19 @@ function db_edit_news ( $DATA )
                             news_title = '".$DATA['news_title']."',
                             news_text = '".$DATA['news_text']."',
                             news_active = '".$DATA['news_active']."',
-                            news_comments_allowed = '".$DATA['news_comments_allowed']."'
+                            news_comments_allowed = '".$DATA['news_comments_allowed']."',
+                            news_search_update = '".time()."'
                     WHERE
                             news_id = '".$DATA['news_id']."'
-        ", $db );
+    ", $db );
+    
+    // Update Search Index (or not)
+    if ( $global_config_arr['search_index_update'] === 1 ) {
+        // Include searchfunctions.php
+        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+        update_search_index ( "news" );
+    }
+    
 
     // Delete all Links
     mysql_query ( "
@@ -1189,6 +1198,10 @@ function db_delete_news ( $DATA )
                             LIMIT
                                     1
             ", $db );
+            
+            // Delete from Search Index
+            require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+            delete_search_index_for_one ( $news_id, "news" );
 
             // MySQL-Delete-Query: Links
             mysql_query ( "

@@ -11,17 +11,19 @@ if ( !isset ( $_GET[cat_id] ) ) {
 }
 settype($_GET[cat_id], 'integer');
 
-if (isset($_GET[keyword]) && $_GET[keyword] != "")
+if (isset($_GET['keyword']) && $_GET['keyword'] != "")
 {
-    $_GET[keyword] = savesql($_GET[keyword]);
+    $sql_keyword = savesql( $_GET['keyword'] );
+    $_GET['keyword'] = kill_replacements ( $_GET['keyword'], TRUE );
     if ($_GET[cat_id] != 0) {
-        $query = "WHERE (dl_text LIKE '%".$_GET['keyword']."%' OR dl_name LIKE '%".$_GET['keyword']."%') AND cat_id = $_GET[cat_id] AND";
+        $query = "WHERE (dl_text LIKE '%".$sql_keyword."%' OR dl_name LIKE '%".$sql_keyword."%') AND cat_id = ".$_GET[cat_id]." AND";
         $page_titel = " - ";
     } else {
-        $query = "WHERE dl_text LIKE '%".$_GET['keyword']."%' OR dl_name LIKE '%".$_GET['keyword']."%' AND";
+        $query = "WHERE dl_text LIKE '%".$sql_keyword."%' OR dl_name LIKE '%".$sql_keyword."%' AND";
     }
     $page_titel .= $TEXT->get("download_search_for") . ' "' . $_GET['keyword'] . '"';
 } else {
+    $_GET['keyword'] = "";
     $query = "WHERE cat_id = $_GET[cat_id] AND";
     if ($_GET[cat_id] == 0) {
        $query = "WHERE";
@@ -145,7 +147,7 @@ $suchfeld->setFile("0_downloads.tpl");
 $suchfeld->load("SEARCH");
 
 $suchfeld->tag("input_cat", '<input name="cat_id" value="'.$_GET['cat_id'].'" type="hidden">' );
-$suchfeld->tag("keyword", kill_replacements ( $_GET['keyword'] ) );
+$suchfeld->tag("keyword", $_GET['keyword'] );
 $suchfeld->tag("all_url", "?go=download&cat_id=".$_GET['cat_id'] );
 
 $suchfeld = $suchfeld->display ();

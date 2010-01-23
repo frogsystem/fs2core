@@ -710,31 +710,39 @@ function db_edit_article ( $DATA )
     settype ( $DATA['article_fscode'], "integer" );
     settype ( $DATA['article_para'], "integer" );
 
-        // Create Date
-        if ( $DATA['d'] != "" && $DATA['m'] != "" && $DATA['y'] != "" ) {
-                $date_arr = getsavedate ( $DATA['d'], $DATA['m'], $DATA['y'] );
-                $articledate = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
-        } else {
-                $articledate = 0;
-        }
+    // Create Date
+    if ( $DATA['d'] != "" && $DATA['m'] != "" && $DATA['y'] != "" ) {
+        $date_arr = getsavedate ( $DATA['d'], $DATA['m'], $DATA['y'] );
+        $articledate = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+    } else {
+        $articledate = 0;
+    }
 
-        // MySQL-Update-Query
+    // MySQL-Update-Query
     mysql_query ("
-                                        UPDATE
-                                                ".$global_config_arr['pref']."articles
-                                        SET
-                                                article_url = '".$DATA['article_url']."',
-                                                article_title = '".$DATA['article_title']."',
-                                                article_date = '".$articledate."',
-                                                article_user = '".$DATA['article_user']."',
-                                                article_text = '".$DATA['article_text']."',
-                                                article_html = '".$DATA['article_html']."',
-                                                article_fscode = '".$DATA['article_fscode']."',
-                                                article_para = '".$DATA['article_para']."',
-                                                article_cat_id = '".$DATA['article_cat_id']."'
-                                        WHERE
-                                            article_id = '".$DATA['article_id']."'
-        ", $db );
+                    UPDATE
+                            ".$global_config_arr['pref']."articles
+                    SET
+                            article_url = '".$DATA['article_url']."',
+                            article_title = '".$DATA['article_title']."',
+                            article_date = '".$articledate."',
+                            article_user = '".$DATA['article_user']."',
+                            article_text = '".$DATA['article_text']."',
+                            article_html = '".$DATA['article_html']."',
+                            article_fscode = '".$DATA['article_fscode']."',
+                            article_para = '".$DATA['article_para']."',
+                            article_cat_id = '".$DATA['article_cat_id']."',
+                            article_search_update = '".time()."'
+                    WHERE
+                        article_id = '".$DATA['article_id']."'
+    ", $db );
+    
+    // Update Search Index (or not)
+    if ( $global_config_arr['search_index_update'] === 1 ) {
+        // Include searchfunctions.php
+        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+        update_search_index ( "articles" );
+    }
 
     systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info]);
 }
@@ -747,20 +755,25 @@ function db_delete_article ( $DATA )
 
         if  ( $DATA['article_delete'] == 1 ) {
         
-                settype ( $DATA['article_id'], "integer" );
+            settype ( $DATA['article_id'], "integer" );
 
-                // MySQL-Delete-Query: News
+            // MySQL-Delete-Query: News
             mysql_query ( "
-                                                DELETE FROM
-                                                        ".$global_config_arr['pref']."articles
-                                                WHERE
-                                                        article_id = '".$DATA['article_id']."'
-                                                LIMIT
-                                                    1
-                ", $db );
+                            DELETE FROM
+                                    ".$global_config_arr['pref']."articles
+                            WHERE
+                                    article_id = '".$DATA['article_id']."'
+                            LIMIT
+                                1
+            ", $db );
+            
+            // Delete from Search Index
+            require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+            delete_search_index_for_one ( $DATA['article_id'], "articles" );
+            
 
-                // Update Counter
-                mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET artikel = artikel - 1", $db );
+            // Update Counter
+            mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET artikel = artikel - 1", $db );
 
             systext( $admin_phrases[articles][article_deleted], $admin_phrases[common][info]);
         } else {

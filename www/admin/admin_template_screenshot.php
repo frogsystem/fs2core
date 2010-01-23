@@ -37,7 +37,7 @@
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "img_url";
         $tmp[help][0][text] = $admin_phrases[template][screenshot_pic][help_1];
-        $tmp[help][1][tag] = "img_link";
+        $tmp[help][1][tag] = "viewer_link";
         $tmp[help][1][text] = "Link zum Bild, je nach Anzeigeart URL oder JS";
         $tmp[help][2][tag] = "thumb_url";
         $tmp[help][2][text] = $admin_phrases[template][screenshot_pic][help_2];

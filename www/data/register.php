@@ -27,7 +27,7 @@ if ( $_SESSION['user_id'] ) {
 
 elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] )
 {
-    $_POST['user_name'] = savesql ( htmlspecialchars ( $_POST['user_name'] ) );
+    $_POST['user_name'] = savesql ( $_POST['user_name'] );
     $_POST['user_mail'] = savesql ( $_POST['user_mail'] );
     $user_salt = generate_pwd ( 10 );
     $userpass = md5 ( $_POST['new_pwd'].$user_salt );
@@ -104,7 +104,7 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
 //////////////////////
 
 elseif ( isset( $_POST['register'] ) ) {
-    $messages = sys_message ( $TEXT->get("systemmessage"), $TEXT->get("user_register_fulfill_form") ) . "<br><br>";
+    $messages = sys_message ( $TEXT->get("systemmessage"), $TEXT->get("user_register_fulfill_form") ) . "<br>";
 }
 
 ////////////////////////////

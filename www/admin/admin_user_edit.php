@@ -154,14 +154,14 @@ if (
     if ( $_POST['new_password'] == 1 ) {
         // send email
         $template_mail = get_email_template ( "change_password" );
-        $template_mail = str_replace ( "{username}", stripslashes ( $_POST['user_name'] ), $template_mail );
-        $template_mail = str_replace ( "{password}", $_POST['newpwd'], $template_mail );
-        $template_mail = str_replace ( "{virtualhost}", $global_config_arr['virtualhost'], $template_mail );
-        $email_betreff = $phrases['pass_change'] . $global_config_arr['virtualhost'];
-        if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_betreff, $template_mail ) ) {
-            $message .= "<br>E-Mail mit neuen Zugangsdaten wurde erfolgreich gesendet";
+        $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_POST['user_name'] ), $template_mail );
+        $template_mail = str_replace ( "{..new_password..}", $_POST['newpwd'], $template_mail );
+        $template_mail = replace_globalvars ( $template_mail );
+        $email_subject = $TEXT->get("mail_password_changed_on") . $global_config_arr['virtualhost'];
+        if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
+            $message .= "<br>".$TEXT['frontend']->get("mail_new_password_sended");
         } else {
-            $message .= "<br>E-Mail mit neuen Zugangsdaten konnte nicht gesendet werden";
+            $message .= "<br>".$TEXT['frontend']->get("mail_new_password_not_sended");
         }
     }
 

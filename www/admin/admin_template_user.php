@@ -13,6 +13,18 @@ $TEMPLATE_EDIT[] = array (
 );
 
 $TEMPLATE_EDIT[] = array (
+    name => "APPLET_ADMINLINE",
+    title => $TEXT['template']->get("user_applet_adminline_title"),
+    description => $TEXT['template']->get("user_applet_adminline_desc"),
+    rows => 10,
+    cols => 66,
+    help => array (
+        array ( tag => "admincp_link", text => $TEXT['template']->get("user_applet_adminline_admincp_link") ),
+        array ( tag => "admincp_url", text => $TEXT['template']->get("user_applet_adminline_admincp_url") ),
+    )
+);
+
+$TEMPLATE_EDIT[] = array (
     name => "APPLET_MENU",
     title => $TEXT['template']->get("user_applet_menu_title"),
     description => $TEXT['template']->get("user_applet_menu_desc"),
@@ -29,17 +41,6 @@ $TEMPLATE_EDIT[] = array (
     )
 );
 
-$TEMPLATE_EDIT[] = array (
-    name => "APPLET_ADMINLINE",
-    title => $TEXT['template']->get("user_applet_adminline_title"),
-    description => $TEXT['template']->get("user_applet_adminline_desc"),
-    rows => 10,
-    cols => 66,
-    help => array (
-        array ( tag => "admincp_link", text => $TEXT['template']->get("user_applet_adminline_admincp_link") ),
-        array ( tag => "admincp_url", text => $TEXT['template']->get("user_applet_adminline_admincp_url") ),
-    )
-);
 
 $TEMPLATE_EDIT[] = array (
     name => "LOGIN",
@@ -191,7 +192,7 @@ $TEMPLATE_EDIT[] = array (
     name => "USERLIST_USERLINE",
     title => $TEXT['template']->get("user_list_userline_title"),
     description => $TEXT['template']->get("user_list_userline_desc"),
-    rows => 10,
+    rows => 20,
     cols => 66,
     help => array (
         array ( tag => "user_id", text => $TEXT['template']->get("user_profile_user_id") ),
@@ -213,7 +214,7 @@ $TEMPLATE_EDIT[] = array (
     name => "USERLIST_STAFFLINE",
     title => $TEXT['template']->get("user_list_staffline_title"),
     description => $TEXT['template']->get("user_list_staffline_desc"),
-    rows => 10,
+    rows => 20,
     cols => 66,
     help => array (
         array ( tag => "user_id", text => $TEXT['template']->get("user_profile_user_id") ),
@@ -236,7 +237,7 @@ $TEMPLATE_EDIT[] = array (
     name => "USERLIST_ADMINLINE",
     title => $TEXT['template']->get("user_list_adminline_title"),
     description => $TEXT['template']->get("user_list_adminline_desc"),
-    rows => 10,
+    rows => 20,
     cols => 66,
     help => array (
         array ( tag => "user_id", text => $TEXT['template']->get("user_profile_user_id") ),

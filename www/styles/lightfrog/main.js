@@ -1,5 +1,5 @@
 function checkRegistrationForm() {
-  var error = false;;
+  var error = false;
   var error_text = "";
 
   if (

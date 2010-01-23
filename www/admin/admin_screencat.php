@@ -1,27 +1,25 @@
 <?php
 
-///////////////////////////
-//// Kategorie löschen ////
-///////////////////////////
+//////////////////////////////
+//// Kategorie bearbeiten ////
+//////////////////////////////
 
-if ($_POST['cat_id'] AND $_POST['cat_name'] AND $_POST['sended'] == "edit")
+if ($_POST['cat_id'] && $_POST['cat_name'] && $_POST['sended'] == "edit")
 {
     $_POST[cat_name] = savesql($_POST[cat_name]);
 
-    $index = mysql_query("SELECT cat_name FROM ".$global_config_arr[pref]."screen_cat WHERE cat_name = '$_POST[cat_name]' AND cat_name != '$_POST[oldname]'", $db);
-    $rows = mysql_num_rows($index);
-    if ($rows === 0)
-    {
-        mysql_query("UPDATE ".$global_config_arr[pref]."screen_cat
-                     SET cat_name = '$_POST[cat_name]',
-                         cat_type = '$_POST[cat_type]',
-                         cat_visibility = '$_POST[cat_visibility]'
-                     WHERE cat_id = '$_POST[cat_id]'", $db);
-        systext("Kategorie wurde aktualisiert");
-    }
-    else systext("Kategorie existiert bereits");
+    mysql_query("UPDATE ".$global_config_arr[pref]."screen_cat
+                 SET cat_name = '$_POST[cat_name]',
+                     cat_type = '$_POST[cat_type]',
+                     cat_visibility = '$_POST[cat_visibility]'
+                 WHERE cat_id = '$_POST[cat_id]'", $db);
+    systext("Kategorie wurde aktualisiert");
 }
-elseif ($_POST['cat_id'] AND $_POST['sended'] == "delete")
+
+///////////////////////////
+//// Kategorie löschen ////
+///////////////////////////
+elseif ($_POST['cat_id'] && $_POST['sended'] == "delete")
 {
   mysql_query("DELETE FROM ".$global_config_arr[pref]."screen_cat
                WHERE cat_id = '$_POST[cat_id]'", $db);
@@ -236,16 +234,16 @@ else
     {
         $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
 
-		if ( $cat_arr[cat_type] == 2 ) {
-			$number_index = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id]", $db);
-		} else {
-			$number_index = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id]", $db);
-		}
-		
+        if ( $cat_arr[cat_type] == 2 ) {
+            $number_index = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id]", $db);
+        } else {
+            $number_index = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id]", $db);
+        }
+        
 
 
 
-		$number_rows = mysql_result($number_index, 0, "number");
+        $number_rows = mysql_result($number_index, 0, "number");
         echo'
                     <form action="" method="post">
                         <input type="hidden" name="cat_id" value="'.$cat_arr[cat_id].'" />

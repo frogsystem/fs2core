@@ -8,19 +8,13 @@ if (isset($_POST[cat_name]))
 {
     $_POST[cat_name] = savesql($_POST[cat_name]);
 
-    $index = mysql_query("SELECT cat_name FROM ".$global_config_arr[pref]."screen_cat WHERE cat_name = '$_POST[cat_name]'", $db);
-    $rows = mysql_num_rows($index);
-    if ($rows === 0)
-    {
-        $time = time();
-        mysql_query("INSERT INTO ".$global_config_arr[pref]."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
-                     VALUES ('".$_POST[cat_name]."',
-                             '".$_POST[cat_type]."',
-                             '".$_POST[cat_visibility]."',
-                             '$time')", $db);
-        systext("Kategorie wurde hinzugefügt");
-    }
-    else systext("Kategorie existiert bereits");
+    $time = time();
+    mysql_query("INSERT INTO ".$global_config_arr[pref]."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
+                 VALUES ('".$_POST[cat_name]."',
+                         '".$_POST[cat_type]."',
+                         '".$_POST[cat_visibility]."',
+                         '$time')", $db);
+    systext("Kategorie wurde hinzugefügt");
 }
 
 //////////////////////////////

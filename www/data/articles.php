@@ -43,7 +43,7 @@ else
         $user_arr = mysql_fetch_assoc ( $index );
 
         settype ( $user_arr['user_id'], "integer" );
-        $user_arr['user_name'] = stripslashes ( $user_arr['user_name'] );
+        $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
         $user_arr['user_url'] = '?go=user&id='.$user_arr['user_id'];
         
         // Create Template

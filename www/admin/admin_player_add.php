@@ -225,7 +225,8 @@ if ( TRUE )
                 echo '<option value="'.$dl_arr['dl_id'].'" '.getselected($dl_arr['dl_id'], $_POST['dl_id']).'>'.$dl_arr['dl_name'].' ('.$dl_arr['cat_name'].')</option>';
         }
         echo'
-                                    </select>
+                                    </select><br>
+                                    <span class="small"><b>Hinweis:</b> Funktion noch nicht implementiert!</span>
                                 </td>
                             </tr>
                                                         <tr><td class="space">'.getselected($dl_arr['dl_id'], $_POST['dl_id']).'</td></tr>

@@ -2,10 +2,20 @@
 /////////////////////////////////
 //// validation of lang dirs ////
 /////////////////////////////////
-function kill_replacements ( $TEXT, $HTML = TRUE )
+function kill_replacements ( $TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE )
 {
-    if ( $HTML === TRUE ) {
+    $TEXT = str_replace ( '{..', '&#x7B;&#x2E;&#x2E;', $TEXT );
+    $TEXT = str_replace ( '..}', '&#x2E;&#x2E;&#x7D;', $TEXT );
+    $TEXT = str_replace ( '[%', '&#x5B;&#x25;', $TEXT );
+    $TEXT = str_replace ( '%]', '&#x25;&#x5D;', $TEXT );
+    $TEXT = str_replace ( '$NAV(', '&#x24;NAV&#x28;', $TEXT );
+    $TEXT = str_replace ( '$APP(', '&#x24;APP&#x28;', $TEXT );
+    $TEXT = str_replace ( '$VAR(', '&#x24;VAR&#x28;', $TEXT );
+
+    if ( $KILLHTML === TRUE ) {
         return killhtml ( $TEXT );
+    } elseif ( $STRIPSLASHES === TRUE ) {
+        return stripslashes ( $TEXT );
     }
     return $TEXT;
 }
@@ -994,7 +1004,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     global $db, $global_config_arr;
 
     $news_arr[news_date] = date_loc( $global_config_arr['datetime'] , $news_arr[news_date]);
-    $news_arr[comment_url] = "?go=comments&id=".$news_arr[news_id];
+    $news_arr[comment_url] = "?go=comments&amp;id=".$news_arr[news_id];
 
     // Kategorie lesen
     $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."news_cat where cat_id = '".$news_arr['cat_id']."'", $db);
@@ -1053,8 +1063,8 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
 
     // User auslesen
     $index2 = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $news_arr[user_id]", $db);
-    $news_arr[user_name] = mysql_result($index2, 0, "user_name");
-    $news_arr[user_url] = "?go=user&id=".$news_arr[user_id];
+    $news_arr[user_name] = kill_replacements ( mysql_result($index2, 0, "user_name"), TRUE );
+    $news_arr[user_url] = "?go=user&amp;id=".$news_arr[user_id];
 
     // Kommentare lesen
     $index2 = mysql_query("select comment_id from ".$global_config_arr[pref]."news_comments where news_id = $news_arr[news_id]", $db);
@@ -1182,7 +1192,7 @@ function unquote ( $TEXT )
 function killhtml ( $TEXT )
 {
     $TEXT = stripslashes ( $TEXT );
-    $TEXT = htmlspecialchars ( $TEXT );
+    $TEXT = htmlspecialchars ( $TEXT, ENT_COMPAT );
     return $TEXT;
 }
 

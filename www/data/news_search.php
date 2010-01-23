@@ -21,7 +21,7 @@ $template->setFile("0_news.tpl");
 $template->load("SEARCH");
 
 $template->tag("years", $years );
-$template->tag("keyword", kill_replacements ( $_REQUEST['keyword'] ) );
+$template->tag("keyword", kill_replacements ( $_REQUEST['keyword'], TRUE ) );
 
 $template = $template->display ();
 $searchform_template = $template;

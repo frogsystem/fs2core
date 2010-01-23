@@ -15,7 +15,7 @@
   <b>Vorschaubild:</b>
 </p>
 <p align="center">
-  <b>Kein Vorschaubild gefunden!</b>
+  Kein Vorschaubild gefunden!
 </p>
 <!--section-end::NOIMAGE_BODY-->
 

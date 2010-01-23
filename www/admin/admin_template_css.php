@@ -14,5 +14,5 @@
     );
     $TEMPLATE_EDIT[] = $tmp;
 
-    echo templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, TRUE, TRUE );
+    echo templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, TRUE, TRUE, 2 );
 ?>
