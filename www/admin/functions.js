@@ -3,6 +3,11 @@ $().ready(function(){
 
 var lastJQBox;
 
+///////////////////////////////////
+//// new select-list functions ////
+///////////////////////////////////
+
+
     // Add Pointer to clickable area
     $(".select_entry").addClass("pointer");
 
@@ -76,6 +81,9 @@ var lastJQBox;
     );
 
 
+///////////////////////////////////
+//// tag-list insert functions ////
+///////////////////////////////////
 
     // Colorize tag-list
     $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").css("background-color","#FFFFFF");
@@ -114,10 +122,13 @@ var lastJQBox;
             $(this).find(".html-editor-list-popup").hide();
         }
     );
-
-    alert($(editor_FORWARDMESSAGE).getCode());
 });
 
+
+
+///////////////////////////////////
+//// OLD select-list functions ////
+///////////////////////////////////
 
 
 // set BG color depending on
@@ -167,8 +178,6 @@ function delalert (elementID, alertText) {
   }
   return true;
 }
-
-
 
 
 var last;
@@ -228,20 +237,66 @@ function resetOld (resetColor, last, lastBox, object) {
 
 
 
+//////////////////////////
+//// Editor Functions ////
+//////////////////////////
+
+// Toggle textWrapping
+function toggelTextWrapping ( theButton, editorId ) {
+    if ($(theButton).hasClass("html-editor-button-active")) {
+        $(theButton).removeClass("html-editor-button-active");
+        var newBool = false;
+    } else {
+        $(theButton).addClass("html-editor-button-active");
+        var newBool = true;
+    }
+    eval ( ""+editorId+".setLineNumbers(newBool);" );
+}
+
+// Toggle Original
+function toggelOriginal ( editorId ) {
+    eval ( "var theCheck = $(\"#"+editorId+"_original\").is(\":visible\");" );
+
+    if (theCheck == true) {
+        eval ( "$(\"#"+editorId+"_original\").hide()" );
+        eval ( "$(\"#"+editorId+"_editor-bar .html-editor-row\").show()" );
+        eval ( "$(\"#"+editorId+"_content\").show()" );
+        eval ( "$(\"#"+editorId+"_original-row\").hide()" );
+    } else {
+        eval ( "$(\"#"+editorId+"_content\").hide()" );
+        eval ( "$(\"#"+editorId+"_editor-bar .html-editor-row\").hide()" );
+        eval ( "$(\"#"+editorId+"_original-row .html-editor-button\").addClass(\"html-editor-button-active\")" );
+        eval ( "$(\"#"+editorId+"_original-row\").show()" );
+        eval ( "$(\"#"+editorId+"_original\").show()" );
+    }
+}
+
+
 //Open Editor-PopUp
 var EditorWindow;
 function open_editor(what) {
     $("#section_select").val(what);
-    EditorWindow = window.open("admin_frogpad.php","editor","width="+screen.availWidth+",height="+screen.availHeight+",left=0,top=0");
+
+    if (screen.availWidth >= 1000) {
+        var editorWidth = 1000;
+    } else {
+        var editorWidth = screen.availWidth;
+    }
+    
+    if (screen.availHeight >= 800) {
+        var editorHeight = 800;
+    } else {
+        var editorHeight = screen.availHeight;
+    }
+
+    x = screen.width/2 - editorWidth/2;
+    y = screen.height/2 - editorHeight/2;
+    
+    EditorWindow = window.open("admin_frogpad.php?height="+editorHeight,"editor","width="+editorWidth+",height="+editorHeight+",left="+x+",top="+y+",screenX="+x+",screenY="+y+"");
 }
 //Close Editor-PopUp
 function close_editor() {
     EditorWindow.close();
-}
-//Open Original-PopUp
-function openedit_original(what)
-{
-    window.open("admin_frogpadoriginal.php?tpl="+what,"editor","width=750,height=700,left=0,top=0");
 }
 
 //Get Editor Object
@@ -257,8 +312,8 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
         var css = "../resources/codemirror/css/csscolors.css";
         break;
     default:
-        var parser = "parsexml.js";
-        var css = "../resources/codemirror/css/xmlcolors.css";
+        var parser = ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"];
+        var css = ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"];
         break;
   }
 
@@ -266,15 +321,15 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
     parserfile: parser,
     stylesheet: css,
     path: "../resources/codemirror/js/",
-    continuousScanning: 500,
     lineNumbers: true,
-    textWrapping: false,
+    //textWrapping: false
+    continuousScanning: 500,
     tabMode: "shift",
-    width: "100%",
     height: editorHeight,
     iframeClass:"html-editor-iframe",
-    readOnly: readOnlyState
+    readOnly: readOnlyState,
   });
+  //editor.setLineNumbers(true);
   return editor;
 }
 //Switch to Inline-Editor
@@ -292,6 +347,11 @@ function insert_editor_tag( editorObject, insertText ) {
 
 
 
+
+
+/////////////////////////
+//// Date Operations ////
+/////////////////////////
 
 //Schaltjahr
 function schaltJahr(Jhr)

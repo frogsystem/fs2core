@@ -21,7 +21,7 @@ function get_content_container ( $TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "wid
                                 </div>
                             </div>
                         </div>
-                        <div class="cs_mid_loop"
+                        <div class="cs_mid_loop">
                             <div class="cs_mid_left">
                                 <div class="cs_mid_right">
                                     <div class="cs_text_content"'.$content_style.'>
@@ -30,7 +30,7 @@ function get_content_container ( $TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "wid
                                 </div>
                             </div>
                         </div>
-                        <div class="cs_bot_loop"
+                        <div class="cs_bot_loop">
                             <div class="cs_bot_left">
                                 <div class="cs_bot_right">
                                 </div>

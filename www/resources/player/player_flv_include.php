@@ -94,8 +94,6 @@ function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
         $HEIGHT_CSS = $HEIGHT . "px";
     }
 
-    //for really tricky people wanting to have an real player design, before the alix5-release ;)
-    $template_html = '{..player..}';
 
     if ( $video_arr['video_type'] != 0 ) {
         $template_player = str_replace ( "{..width..}", $WIDTH, $template_player );
@@ -108,14 +106,19 @@ function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
         }
         if ( $video_arr['video_type'] == 1 ) {
             $template_player = str_replace ( "{..title..}", $video_arr['video_title'], $template_player );
-            $template_player = str_replace ( "{..player..}", $template_player, $template_html );
-        }
 
-        $template = $template_player;
+            // Get Player Template
+            $template = new template();
+            $template->setFile("0_player.tpl");
+            $template->load("PLAYER");
+            $template->tag("player", $template_player );
+            $template = $template->display ();
+            $template_player = $template;
+        }
     } else {
-        $template = "";
+        $template_player = "";
     }
     
-    return $template;
+    return $template_player;
 }
 ?>

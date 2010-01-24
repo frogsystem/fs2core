@@ -277,7 +277,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         
         unset ($template_key);
         unset ($template);
-
+        
         // Editor Form
         $return_template .= '
                     <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
@@ -303,7 +303,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                 $return_template .= '
                             <tr><td class="space"></td></tr>
                             
-                            ' . create_templateeditor ( $template, $HIGHLIGHTER ) . '
+                            ' . create_templateeditor ( $template, $HIGHLIGHTER, $TEMPLATE_FILE, $MANYFILES ) . '
 
                             <tr><td class="space"></td></tr>
                             <tr>
@@ -341,9 +341,9 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     return $select_template . $return_template;
 }
 
-////////////////////////////////
-//// get ////
-////////////////////////////////
+/////////////////////////////////
+//// get_templatepage_select ////
+/////////////////////////////////
 function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
 {
     global $global_config_arr, $db, $TEXT;
@@ -429,70 +429,258 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
 
 }
 
-////////////////////////////////
-//// create template editor ////
-////////////////////////////////
-function create_templateeditor ( $editor_arr, $HIGHLIGHTER )
+//////////////////////////////
+//// create dropdown-menu ////
+//////////////////////////////
+function create_dropdown ( $TITLE, $CONTENT )
 {
-    global $db, $admin_phrases;
-    unset ($editor_template);
-    unset ($tag_array);
+        return '
+                                            <div class="html-editor-line"></div>
+                                            <div class="html-editor-container-list">
+                                                <a class="html-editor-list">'.$TITLE.'</a>
+                                                <a class="html-editor-list-arrow"></a>
+                                                <div class="html-editor-list-popup">
+                                                     <table class="small html-editor-list-table" cellspacing="0">
+                                                        '.$CONTENT.'
+                                                     </table>
+                                                </div>
+                                            </div>
+        ';
+}
+
+///////////////////////////
+//// get all dropdowns ////
+//////////////////////////
+function get_dropdowns ( $EDITOR_NAME )
+{
+    global $db, $global_config_arr, $TEXT;
+    
+    // Security Functions
+    $global_vars_array = array ();
+    $applets_array = array ();
+    $snippets_array = array ();
+    $navs_array = array ();
+    
+    // Global Vars
+    $global_vars = array ( "url", "style_url", "style_images", "style_icons", "page_title", "page_dyn_title", "date", "time", "date_time" );
+    foreach ( $global_vars as $var ) {
+        $the_var = '$VAR('.$var.')';
+        $global_vars_array[] = '<tr class="pointer tag_click_class" title="'.$the_var.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_var.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$VAR(<b>'.$var.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+    }
+    $dropdowns['global_vars'] = create_dropdown ( "Globale Variablen", implode ( "", $global_vars_array ) );
+
+    // Applets
+    $index = mysql_query ( "
+                            SELECT `applet_file` FROM `".$global_config_arr['pref']."applets` WHERE `applet_active` = 1
+    ", $db );
+    while ( $app_arr = mysql_fetch_assoc ( $index ) ) {
+        $app = stripslashes ( $app_arr['applet_file'] );
+        $the_app = '$APP('.$app.'.php)';
+        $applets_array[] = '<tr class="pointer tag_click_class" title="'.$the_app.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+    }
+    $dropdowns['applets'] = create_dropdown ( "Applets", implode ( "", $applets_array ) );
+
+    // Snippets
+    $index = mysql_query ( "
+                            SELECT `snippet_tag` FROM `".$global_config_arr['pref']."snippets` WHERE `snippet_active` = 1
+    ", $db );
+    while ( $snippets_arr = mysql_fetch_assoc ( $index ) ) {
+        $the_snippet = stripslashes ( $snippets_arr['snippet_tag'] );
+        $snippets_array[] = '<tr class="pointer tag_click_class" title="'.$the_snippet.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+    }
+    $dropdowns['snippets'] = create_dropdown ( "Schnipsel", implode ( "", $snippets_array ) );
+
+    // Navigationen
+    $navs_arr = scandir_ext ( FS2_ROOT_PATH . "styles/" . $_POST['style'], "nav" );
+    foreach ( $navs_arr as $nav ) {
+        $the_nav = '$NAV('.$nav.')';
+        $navs_array[] = '<tr class="pointer tag_click_class" title="'.$the_nav.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+    }
+    $dropdowns['navigations'] = create_dropdown ( "Navigationen", implode ( "", $navs_array ) );
+    
+    return $dropdowns;
+}
+
+//////////////////////
+//// get tag list ////
+//////////////////////
+function get_taglist ( $TAG_ARR, $EDITOR_NAME )
+{
+    global $TEXT;
 
     $OC = new template ();
     $OC->getOpener();
     $OC->getCloser();
+    $tag_array = array ();
 
-    if ( count ( $editor_arr['help'] ) >= 1 ) {
-        foreach ( $editor_arr['help'] as $help ) {
-            $tag_array[] = '<tr class="pointer tag_click_class" title="einfügen" onClick="insert_editor_tag(editor_'.$editor_arr['name'].',\''.$OC->getOpener().$help['tag'].$OC->getCloser().'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$OC->getOpener().$help['tag'].$OC->getCloser().'</b><br>'.$help['text'].'</td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+    if ( count ( $TAG_ARR ) >= 1 ) {
+        foreach ( $TAG_ARR as $help ) {
+            $the_tag = $OC->getOpener().$help['tag'].$OC->getCloser();
+            $tag_array[] = '<tr class="pointer tag_click_class" title="'.$the_tag.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_tag.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_tag.'</b><br>'.$help['text'].'</td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
         }
-        $help_template = '<table class="small html-editor-list-table" cellspacing="0">'.implode ( "", $tag_array ).'</table>';
+        $help_template = create_dropdown ( "Gültige Tags", implode ( "", $tag_array ) );
+    } else {
+        $help_template = "";
     }
+    
+    return $help_template;
+}
+
+/////////////////////////
+//// get footer line ////
+/////////////////////////
+function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES )
+{
+    global $TEXT;
+
+    $highlighter_text = ( $HIGHLIGHTER == 3 ) ? "Javascript" : ( ( $HIGHLIGHTER == 2 ) ? "CSS" : "HTML" );
+    $section_text = ( $MANYFILES == FALSE ) ? ' &gt; '.$EDITOR_NAME : "";
+    $footer_template = '
+                                    <div class="html-editor-path" id="'.$EDITOR_NAME.'_footer">
+                                        <div style="padding:2px;" class="small">
+                                            <span>Pfad: '.$STYLE.' &gt; '.$FILE . $section_text .'</span>
+                                            <span class="html-editor-highlighter">'.$highlighter_text.'</span>
+                                        </div>
+                                    </div>
+    ';
+
+    return $footer_template;
+}
+
+/////////////////////////////
+//// get original things ////
+/////////////////////////////
+function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
+{
+    global $TEXT;
+
+    if ( file_exists ( FS2_ROOT_PATH . "styles/default/" . $FILE ) ) {
+        $original['button'] = '
+                                            <a class="html-editor-button html-editor-button-original" onClick="toggelOriginal(\''.$EDITOR_NAME.'\')" title="Original anzeigen">
+                                                <img src="../images/design/null.gif" alt="Original anzeigen" border="0">
+                                            </a>
+        ';
+
+        $original['template'] = new template();
+        $original['template']->setStyle("default");
+        $original['template']->setFile($FILE);
+        $original['template']->load($EDITOR_NAME);
+        $original['template'] = htmlspecialchars ( $original['template']->display() );
+
+        $original['template'] = '
+                                    <div id="'.$EDITOR_NAME.'_original" style="background-color:#ffffff; border: 1px solid #999999; width:100%; display:none;">
+                                        <textarea class="no-js-html-editor" wrap="off"  rows="'.$ROWS.'" cols="'.$COLS.'" name="'.$EDITOR_NAME.'_org" readonly>'.$original['template'].'</textarea>
+                                    </div>
+        ';
+        $original['row'] = '
+                                        <div class="html-editor-row" id="'.$EDITOR_NAME.'_original-row" style="display:none;">
+                                            '.$original['button'].'
+                                        </div>
+        ';
+        return $original;
+    }
+
+    return array ( "button" => "", "template" => "", "row" => "" );
+}
+
+////////////////////////////////
+//// create template editor ////
+////////////////////////////////
+function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
+{
+    global $db, $global_config_arr, $TEXT;
+    global $admin_phrases;
+    
+    // Get Tag-Menu
+    $help_template = get_taglist ( $editor_arr['help'], $editor_arr['name'] );
+
+    // Get dropdowns
+    $dropdowns = get_dropdowns ( $editor_arr['name'] );
+    if ( $MANYFILES == TRUE && $editor_arr['name'] == "NAV" ) {
+        $dropdowns['navigations'] = "";
+    }
+
+    // Make Editor Height
     $editor_arr['height'] = 5 + ( $editor_arr['rows'] * 16 );
 
-    $editor_template .= '
+    // Get Higlight text
+    $footer_template = get_footer_line ( $editor_arr['name'], $_POST['style'], $HIGHLIGHTER, $FILE, $MANYFILES );
+
+
+    // get original template array
+    if ( $MANYFILES == FALSE ) {
+        $original = get_original_array ( $editor_arr['name'], $FILE, $editor_arr['rows'], $editor_arr['cols'] );
+    } else {
+        $original = array ( "button" => "", "template" => "", "row" => "" );
+    }
+
+
+    // create the final template
+    $editor_template = '
                             <tr>
                                 <td class="config" valign="top">
 
-                                    <div id="'.$editor_arr[name].'_inedit" style="display:none; position:absolute;">
+                                    <!-- CSS-Definitions for Non-JS-Editor -->
+
+                                    <noscript>
+                                        <style type="text/css">
+                                            .html-editor-row {
+                                                display:none;
+                                            }
+                                            .html-editor-row-header {
+                                                border:none;
+                                            }
+                                            .html-editor-path .html-editor-highlighter {
+                                                display:none;
+                                            }
+                                        </style>
+                                    </noscript>
+                                    
+                                    <!-- Info while Frogpad is open -->
+                                    
+                                    <div id="'.$editor_arr['name'].'_inedit" style="display:none; position:absolute;">
                                         <br>
                                         Template in Bearbeitung...<br>
                                         Bitte den Editor schließen oder <a href="javascript:switch2inline_editor(\''.$editor_arr['name'].'\')">hier klicken</a>.
                                     </div>
-                                    <div class="html-editor-bar" id="'.$editor_arr[name].'_editor-bar">
+
+                                    <!-- Editor-Bars with Buttons and Dropdowns -->
+                                    
+                                    <div class="html-editor-bar" id="'.$editor_arr['name'].'_editor-bar">
                                         <div class="html-editor-row-header">
-                                            <span id="'.$editor_arr[name].'_title">'.$editor_arr[title].'</span> <span class="small">('.$editor_arr['description'].')</span>
+                                            <span id="'.$editor_arr['name'].'_title">'.$editor_arr['title'].'</span> <span class="small">('.$editor_arr['description'].')</span>
                                         </div>
+                                        '.$original['row'].'
                                         <div class="html-editor-row">
-                                            <a onClick="open_editor(\''.$editor_arr[name].'\')" class="html-editor-button" style="background-image:url(html-editor/note-edit.gif)" title="In Editor-Fenster öffnen">
+                                            <a class="html-editor-button html-editor-button-big" onClick="open_editor(\''.$editor_arr['name'].'\')" title="In Editor-Fenster öffnen">
                                                 <img src="../images/design/null.gif" alt="In Editor-Fenster öffnen" border="0">
                                             </a>
-                                            <a onClick="openedit_original(\''.$editor_arr[name].'\')" class="html-editor-button" style="background-image:url(html-editor/doc-search.gif)" title="Original anzeigen">
-                                                <img src="../images/design/null.gif" alt="Original anzeigen" border="0">
-                                            </a>
-                        ';
-    if ( $help_template != "" ) {
-        $editor_template .= '
+                                            '.$original['button'].'
                                             <div class="html-editor-line"></div>
-                                            <div class="html-editor-container-list">
-                                                <a class="html-editor-list">Gültige Tags</a>
-                                                <a class="html-editor-list-arrow"></a>
-                                                <div class="html-editor-list-popup">
-                                                    '.$help_template.'
-                                                </div>
-                                            </div>
-                            ';
-    }
-    $editor_template .= '
+                                            <a class="html-editor-button html-editor-button-active html-editor-button-textwrap" onClick="toggelTextWrapping(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilenumbruch">
+                                                <img src="../images/design/null.gif" alt="Zeilenumbruch" border="0">
+                                            </a>
+                                            '.$help_template.'
+                                            '.$dropdowns['global_vars'].'
+                                            '.$dropdowns['applets'].'
+                                            '.$dropdowns['snippets'].'
+                                            '.$dropdowns['navigations'].'
                                         </div>
                                     </div>
-                                    <div id="'.$editor_arr[name].'_content" style="background-color:#ffffff; border: 1px solid #999999; width:100%;">
-                                        <textarea style="height:'.$editor_arr['height'].';" cols="'.$editor_arr[cols].'" name="'.$editor_arr[name].'" id="'.$editor_arr[name].'"
-                                    >'.$editor_arr[template].'</textarea>
-                                    <script type="text/javascript">
-                                        var editor_'.$editor_arr[name].' = new_editor ( "'.$editor_arr[name].'", "'.$editor_arr['height'].'", false, '.$HIGHLIGHTER.' );
-                                    </script>
+                                    
+                                    <!-- Editor and original Editor -->
+                                    
+                                    <div id="'.$editor_arr['name'].'_content" style="background-color:#ffffff; border: 1px solid #999999; width:100%;">
+                                        <textarea class="no-js-html-editor" wrap="off"  rows="'.$editor_arr['rows'].'" cols="'.$editor_arr['cols'].'" name="'.$editor_arr['name'].'" id="'.$editor_arr['name'].'">'.$editor_arr['template'].'</textarea>
                                     </div>
+                                    <script type="text/javascript">
+                                        var editor_'.$editor_arr['name'].' = new_editor ( "'.$editor_arr['name'].'", "'.$editor_arr['height'].'", false, '.$HIGHLIGHTER.' );
+                                    </script>
+                                    '.$original['template'].'
+
+                                    <!-- Footer and the rest -->
+
+                                    '.$footer_template.'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

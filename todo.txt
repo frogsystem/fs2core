@@ -1,16 +1,14 @@
 alix5:
 
 HTML-Editor fertig
-=> Codemirror Update
-=> Original anzeige (außer bei Nav/CSS/JS)
-=> Zeilenumbruch umschaltbar
-=> Zeilennummern umschaltbar
-=> Einfügen von $VAR,$APP.$NAV und [%*%]
-=> Non java script design
+=> Frogpad Editor, Tag-List im Editor
 
 Lang-Texte verfassen
 Artikel Vorschau, Fix für relative Bilder...
 default design noch bearbeiten
+evtl. Kommentare, &quot;-bug => http://alix.worldofgothic.com/alix5/?go=comments&id=1
+
+
 
 
 alix6:
@@ -20,6 +18,11 @@ php-fonts
 großes galerie update (kommentare, bewertungen, counter, bilderserien [spiegel-online], diverese möglichkeiten zur bildanzeige, unterkategorie, verbesserter upload, verbesserte verwaltung)
 großes shop update
 lang-system fertig umstellen und vor allem menü punkte irgendwie einbinden (außerdem am besten automatisch alle php scripte aus dem ordner irgendwie einbinden...)
+
+bei neuer codemirror-version:
+=> Codemirror Update
+=> Zeilenumbruch umschaltbar
+=> Zeilennummern umschaltbar
 
 
 

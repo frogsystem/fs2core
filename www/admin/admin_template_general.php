@@ -31,7 +31,7 @@ $TEMPLATE_EDIT[] = array (
     name => "DOCTYPE",
     title => $TEXT['template']->get("general_doctype_title"),
     description => $TEXT['template']->get("general_doctype_desc"),
-    rows => 5,
+    rows => 10,
     cols => 66,
     help => array (
     )

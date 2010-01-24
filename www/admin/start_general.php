@@ -51,12 +51,13 @@ if ( $ref_num  > 0) {
                                                         LIMIT 0,1
         ", $db );
         $ref_last = stripslashes ( mysql_result ( $index, 0, "ref_url" ) );
+        $ref_last_long = $ref_last;
         $referrer_maxlenght = 55;
         if ( strlen ( $ref_last ) > $referrer_maxlenght ) {
             $ref_last = substr ( $ref_last , 0, $referrer_maxlenght ) . "...";
         }
-        $ref_date = date ( "d. m. Y", mysql_result ( $index, 0, "ref_last" ) );
-        $ref_time = date ( "H:i", mysql_result ( $index, 0, "ref_last" ) );
+        $ref_date = date_loc ( "d. m. Y", mysql_result ( $index, 0, "ref_last" ) );
+        $ref_time = date_loc ( "H:i", mysql_result ( $index, 0, "ref_last" ) );
 }
 
 echo '
@@ -68,7 +69,7 @@ echo '
                             </tr>
                             <tr>
                                 <td class="configthin" width="200">URL:</td>
-                                <td class="configthin"><b>'.$global_config_arr['virtualhost'].'</b></td>
+                                <td class="configthin"><a href="'.$global_config_arr['virtualhost'].'" target="_blank"><b>'.$global_config_arr['virtualhost'].'</b></a></td>
                             </tr>
                             <tr>
                                 <td class="configthin" width="200">Online seit:</td>
@@ -117,8 +118,8 @@ if ( $ref_num  > 0) {
         echo '
                             <tr>
                                 <td class="configthin" width="200">Letzter Kontakt von:</td>
-                                <td class="configthin"><b>'.$ref_last.'</b><br>
-                                                                am <b>'.$ref_date.'</b> um <b>'.$ref_time.'</b> Uhr</td>
+                                <td class="configthin"><a href="'.$ref_last_long.'" target="_blank"><b>'.$ref_last.'</b></a><br>
+                                am <b>'.$ref_date.'</b> um <b>'.$ref_time.'</b> Uhr</td>
                             </tr>
         ';
 }

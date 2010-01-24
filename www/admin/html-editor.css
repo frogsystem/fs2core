@@ -1,4 +1,50 @@
 /**************************************************/
+/* non-js html-editor styles */
+/**************************************************/
+textarea.no-js-html-editor {
+    width:100%;
+    color:#000000;
+    background-color:#FFFFFF;
+    border:none;
+    text-align:left;
+    font-size:10pt;
+    font-family:monospace;
+    padding:0px;
+    margin:0px;
+}
+
+
+/**************************************************/
+/* Button styles */
+/**************************************************/
+.html-editor-button-big {
+    background-image:url(html-editor/note-edit.gif);
+}
+.html-editor-button-textwrap {
+    background-image:url(html-editor/text-wrapping.gif);
+}
+.html-editor-button-original {
+    background-image:url(html-editor/doc-search.gif);
+}
+
+
+/**************************************************/
+/* special codemirror styles */
+/**************************************************/
+.CodeMirror-line-numbers {
+    width:2.2em;
+    color:#AAAAAA;
+    background-color:#EEEEEE;
+    text-align:right;
+    padding-right:.3em;
+    font-size:10pt;
+    font-family:monospace;
+    padding-top:.4em;
+    font-weight:bold;
+}
+
+
+/**************************************************/
 /* html-editor styles */
 /**************************************************/
 .html-editor-bar {
@@ -8,10 +54,23 @@
     width:100%;
     padding:0px;
     margin:0px;
+    font-weight:bold;
 }
 .html-editor-row {
     height:24px;
     padding:1px;
+}
+.html-editor-path {
+    background-color:#EEEEEE;
+    border: 1px solid #999999;
+    border-top:none;
+    width:100%;
+    padding:0px;
+    margin:0px;
+    font-weight:normal;
+}
+.html-editor-highlighter {
+    float:right;
 }
 .html-editor-row-header {
     height:19px;
@@ -20,7 +79,7 @@
     vertical-align:middle;
 }
 
-a.html-editor-button, a.html-editor-button-active, a.html-editor-button-deactive  {
+a.html-editor-button, a.html-editor-button-active, a.html-editor-button-deactive, a.html-editor-button-selected  {
     height:20px;
     width:20px;
     cursor:pointer;
@@ -34,17 +93,17 @@ a.html-editor-button, a.html-editor-button-active, a.html-editor-button-deactive
     float:left;
 }
 a.html-editor-button-active {
-    border:1px solid #555555;
+    border:1px solid #777777;
     background-color:#DDDDDD;
 }
-a.html-editor-button:hover, a.html-editor-button:focus, a.html-editor-button-active:hover, a.html-editor-button-active:focus {
+a.html-editor-button:hover, a.html-editor-button:focus,
+a.html-editor-button-active:hover, a.html-editor-button-active:focus {
     border:1px solid #555555;
     background-color:#CCCCCC;
 }
 a.html-editor-button-deactive {
     cursor:default;
 }
-
 
 .html-editor-line {
     height:20px;
