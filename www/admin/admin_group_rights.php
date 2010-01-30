@@ -225,7 +225,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                 echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" id="'.$PAGE_ID.'" name="'.$PAGE_ID.'" value="1"
                 '.getchecked ( $PAGE_ARR['granted'], "group" ).'
                 '.getdisabled ( $PAGE_ARR['granted'], "bad" ).'
-                ><label class="small pointer" for="'.$PAGE_ID.'">'.$PAGE_ARR['page_link'].'</span><br>';
+                ><label class="small pointer" for="'.$PAGE_ID.'">'.$PAGE_ARR['page_link'].'</label><br>';
                  $i++;
             }
         }

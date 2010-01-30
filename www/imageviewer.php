@@ -165,7 +165,11 @@ if ($db)
     $template_popupviewer->tag( "next_image_link", $data_array['next_image_link'] );
 
     $template_popupviewer = $template_popupviewer->display();
-
+    $template_popupviewer = replace_snippets ( $template_popupviewer );
+    $template_popupviewer = replace_navigations ( $template_popupviewer );
+    $template_popupviewer = replace_applets ( $template_popupviewer );
+    $template_popupviewer = replace_navigations ( $template_popupviewer );
+    $template_popupviewer = replace_snippets ( $template_popupviewer );
 
     // Get Main Template
     $template = get_maintemplate ();

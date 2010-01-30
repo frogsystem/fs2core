@@ -26,14 +26,13 @@ if (
     
     // New Style Path
     $new_style_path = FS2_ROOT_PATH . "styles/" . $_POST['style_folder'];
-    
+
     // Create Sytle Folder
     $ACCESS = new fileaccess();
     if (
-            @$ACCESS->createDir( $new_style_path , 0755 )
+            @$ACCESS->createDir( $new_style_path , 0777 )
             && @$ACCESS->putFileData( $new_style_path . "/style.ini", $new_ini_data )
     ) {
-    
         // MySQL-Queries
         mysql_query ( "
                         INSERT INTO
@@ -57,7 +56,7 @@ if (
             ", $db );
             $copy_style_path = FS2_ROOT_PATH . "styles/" . stripslashes ( mysql_result ( $index, 0, "style_tag" ) );
             if (
-                    $ACCESS->copyAny( $copy_style_path, $new_style_path, 0755, 0644 )
+                    $ACCESS->copyAny( $copy_style_path, $new_style_path, 0777, 0644 )
                     && $ACCESS->putFileData( $new_style_path . "/style.ini", $new_ini_data )
             ) {
                 systext ( $TEXT["admin"]->get("style_added"),
@@ -69,8 +68,8 @@ if (
         // Create New Style
         } else {
             if (
-                    @$ACCESS->createDir( $new_style_path . "/images", 0755 )
-                    && @$ACCESS->createDir( $new_style_path . "/icons", 0755 )
+                    @$ACCESS->createDir( $new_style_path . "/images", 0777 )
+                    && @$ACCESS->createDir( $new_style_path . "/icons", 0777 )
             ) {
                 systext ( $TEXT["admin"]->get("style_added"),
                     $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );

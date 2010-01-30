@@ -150,7 +150,9 @@ elseif (
         && isset ( $_POST['style_tag'] ) && $_POST['style_tag'] != ""
     )
 {
+
     if ( file_exists ( FS2_ROOT_PATH . "styles/" . $_POST['style_tag'] . "/style.ini" ) ) {
+        
         // Security-Functions
         $_POST['style_tag'] = savesql ( $_POST['style_tag'] );
 

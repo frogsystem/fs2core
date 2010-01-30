@@ -29,6 +29,7 @@ $index = mysql_query ( "
                         WHERE `user_group_id` > '0'
 ", $db);
 $num_groups = mysql_result ( $index, 0, "num_groups" );
+$num_groups++;
 
 if ( $num_groups  > 0 ) {
     $index = mysql_query ( "

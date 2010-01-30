@@ -69,7 +69,7 @@ if ( TRUE )
                                     <form action="" method="post">
                                         <input type="hidden" name="go" value="search_index">
                                         <input type="hidden" name="do" value="update">
-                                        <input class="button" type="submit" value="'.$TEXT['admin']->get("search_index_update_button").'">
+                                        <input class="button input_width" type="submit" value="'.$TEXT['admin']->get("search_index_update_button").'">
                                     </form>
                                 </td>
                             </tr>
@@ -82,7 +82,7 @@ if ( TRUE )
                                     <form action="" method="post">
                                         <input type="hidden" name="go" value="search_index">
                                         <input type="hidden" name="do" value="new">
-                                        <input class="button" type="submit" value="'.$TEXT['admin']->get("search_index_new_button").'"><br>
+                                        <input class="button input_width" type="submit" value="'.$TEXT['admin']->get("search_index_new_button").'"><br>
                                         <span class="small">'.$TEXT['admin']->get("search_index_new_note").'</span>
                                     </form>
                                 </td>
@@ -96,7 +96,7 @@ if ( TRUE )
                                     <form action="" method="post">
                                         <input type="hidden" name="go" value="search_index">
                                         <input type="hidden" name="do" value="delete">
-                                        <input class="button" type="submit" value="'.$TEXT['admin']->get("search_index_delete_button").'"><br>
+                                        <input class="button input_width" type="submit" value="'.$TEXT['admin']->get("search_index_delete_button").'"><br>
                                         <span class="small">'.$TEXT['admin']->get("search_index_delete_note").'</span>
                                     </form>
                                 </td>
@@ -110,7 +110,7 @@ if ( TRUE )
                                     <form action="" method="post">
                                         <input type="hidden" name="go" value="search_index">
                                         <input type="hidden" name="do" value="delete_with_word">
-                                        <input class="button" type="submit" value="'.$TEXT['admin']->get("search_index_delete_with_word_button").'"><br>
+                                        <input class="button input_width" type="submit" value="'.$TEXT['admin']->get("search_index_delete_with_word_button").'"><br>
                                         <span class="small">'.$TEXT['admin']->get("search_index_delete_with_word_note").'</span>
                                     </form>
                                 </td>

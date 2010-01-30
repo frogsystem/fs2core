@@ -102,6 +102,6 @@ elseif ($_REQUEST[keyword])
     }
 }
 
-$template = $searchform_template."<br><br>".$news_template;
+$template = $searchform_template.$news_template;
 
 ?>

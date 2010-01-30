@@ -111,6 +111,7 @@ function sort_replace_arr ( $REPLACE_ARR ) {
 $_REQUEST['in_news'] = ( $_REQUEST['in_news'] == 1 ) ? TRUE : FALSE;
 $_REQUEST['in_articles'] = ( $_REQUEST['in_articles'] == 1 ) ? TRUE : FALSE;
 $_REQUEST['in_downloads'] = ( $_REQUEST['in_downloads'] == 1 ) ? TRUE : FALSE;
+$_REQUEST['keyword'] = trim ( $_REQUEST['keyword'] );
 
 // Load Config Array
 $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."search_config` WHERE `id` = 1", $db);
@@ -121,7 +122,6 @@ if ( ( isset ( $_REQUEST['keyword'] ) && strlen ( trim ( $_REQUEST['keyword'] ) 
 
     // Include searchfunctions.php
     require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-    $_REQUEST['keyword'] = trim ( $_REQUEST['keyword'] );
     $keyword_arr = explode ( " ", $_REQUEST['keyword'] );
     $keyword_arr = create_search_word_arr ( $keyword_arr );
 
@@ -182,13 +182,15 @@ if ( ( isset ( $_REQUEST['keyword'] ) && strlen ( trim ( $_REQUEST['keyword'] ) 
         }
     }
 
-} elseif ( !isset ( $_REQUEST['keyword'] ) ) {
+}
+
+if ( $_REQUEST['keyword'] == "" ) {
     $_REQUEST['in_news'] = TRUE;
     $_REQUEST['in_articles'] = TRUE;
     $_REQUEST['in_downloads'] = TRUE;
-    $_REQUEST['keyword'] = trim ( $_REQUEST['keyword'] );
 } else {
-    $_REQUEST['keyword'] = trim ( $_REQUEST['keyword'] );
+    // Dynamic Title Settings
+    $global_config_arr['dyn_title_page'] = $TEXT->get("download_search_for") . ' "' . kill_replacements ( $_REQUEST['keyword'], TRUE ) . '"';
 }
 
 
@@ -435,7 +437,7 @@ if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_downloads'] === TRUE )
 $_REQUEST['in_news'] = ( $_REQUEST['in_news'] ) ? "checked" : "";
 $_REQUEST['in_articles'] = ( $_REQUEST['in_articles'] ) ? "checked" : "";
 $_REQUEST['in_downloads'] = ( $_REQUEST['in_downloads'] ) ? "checked" : "";
-$_REQUEST['keyword'] = killhtml ( $_REQUEST['keyword'] );
+$_REQUEST['keyword'] = kill_replacements ( $_REQUEST['keyword'], TRUE );
 
 // Get Template
 $template = new template();

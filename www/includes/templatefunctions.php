@@ -40,60 +40,72 @@ function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE
 
 function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
 {
-    global $TEXT;
+    global $global_config_arr, $db, $TEXT;
+
+    $_POST['style'] = savesql ( $_POST['style'] );
     
     $file_data = null;
     $access = new fileaccess();
     $directory_path = FS2_ROOT_PATH . "styles/" . $_POST['style'] . "/";
-    
-    if ( $MANYFILES ) {
-        if ( $_POST['file'] == "new" ) {
-            $_POST['file_name'] = unquote ( $_POST['file_name'] );
-            if ( trim ( $_POST['file_name'] ) == "" ) {
-                systext ( $TEXT["admin"]->get("changes_not_saved")."<br>".$TEXT["admin"]->get("template_no_filename"),
-                    $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
-                echo "<br>";
-                $_POST[$TEMPLATE_ARR[0]['name']] = unquote ( $_POST[$TEMPLATE_ARR[0]['name']] );
-                return "file_name";
-            }
-            $TEMPLATE_FILE = $_POST['file_name'] . "." . $TEMPLATE_FILE;
-            $_POST['file'] = $TEMPLATE_FILE;
-        } elseif ( trim ( $_POST[$TEMPLATE_ARR[0]['name']] ) == "" ) {
-            $TEMPLATE_FILE = unquote ( $_POST['file'] );
-            $file_path =  $directory_path . $TEMPLATE_FILE;
-            if ( $access->deleteFile ( $file_path ) ) {
-                systext ( $TEXT["admin"]->get("file_deleted"),
-                    $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
-                echo "<br>";
-                $style = $_POST['style'];
-                unset ( $_POST );
-                $_POST['style'] = $style;
-                return "file_delete";
+
+    $index = mysql_query ( "
+                            SELECT `style_id`
+                            FROM `".$global_config_arr['pref']."styles`
+                            WHERE `style_tag` = '".$_POST['style']."'
+                            AND `style_allow_edit` = 1
+                            LIMIT 0,1
+    ", $db );
+
+    if ( mysql_num_rows ( $index ) == 1 ) {
+        if ( $MANYFILES ) {
+            if ( $_POST['file'] == "new" ) {
+                $_POST['file_name'] = unquote ( $_POST['file_name'] );
+                if ( trim ( $_POST['file_name'] ) == "" ) {
+                    systext ( $TEXT["admin"]->get("changes_not_saved")."<br>".$TEXT["admin"]->get("template_no_filename"),
+                        $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
+                    echo "<br>";
+                    $_POST[$TEMPLATE_ARR[0]['name']] = unquote ( $_POST[$TEMPLATE_ARR[0]['name']] );
+                    return "file_name";
+                }
+                $TEMPLATE_FILE = $_POST['file_name'] . "." . $TEMPLATE_FILE;
+                $_POST['file'] = $TEMPLATE_FILE;
+            } elseif ( trim ( $_POST[$TEMPLATE_ARR[0]['name']] ) == "" ) {
+                $TEMPLATE_FILE = unquote ( $_POST['file'] );
+                $file_path =  $directory_path . $TEMPLATE_FILE;
+                if ( $access->deleteFile ( $file_path ) ) {
+                    systext ( $TEXT["admin"]->get("file_deleted"),
+                        $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
+                    echo "<br>";
+                    $style = $_POST['style'];
+                    unset ( $_POST );
+                    $_POST['style'] = $style;
+                    return "file_delete";
+                } else {
+                    systext ( $TEXT["admin"]->get("file_not_deleted")."<br>".$TEXT["admin"]->get("error_file_access"),
+                        $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_trash_error") );
+                    echo "<br>";
+                    return "file_delete_error";
+                }
             } else {
-                systext ( $TEXT["admin"]->get("file_not_deleted")."<br>".$TEXT["admin"]->get("error_file_access"),
-                    $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_trash_error") );
-                echo "<br>";
-                return "file_delete_error";
+                $TEMPLATE_FILE = unquote ( $_POST['file'] );
             }
+            $file_data = "".unquote ( $_POST[$TEMPLATE_ARR[0]['name']] )."";
         } else {
-            $TEMPLATE_FILE = unquote ( $_POST['file'] );
-        }
-        $file_data = "".unquote ( $_POST[$TEMPLATE_ARR[0]['name']] )."";
-    } else {
-        foreach ($TEMPLATE_ARR as $template) {
-            $file_data .= "<!--section-start::" . $template['name'] . "-->" . unquote ( $_POST[$template['name']] ) . "<!--section-end::".$template['name'] . "-->
+            foreach ($TEMPLATE_ARR as $template) {
+                $file_data .= "<!--section-start::" . $template['name'] . "-->" . unquote ( $_POST[$template['name']] ) . "<!--section-end::".$template['name'] . "-->
 
 ";
+            }
         }
-    }
 
-    $file_path =  $directory_path . $TEMPLATE_FILE;
-    if ( is_writable ( $file_path ) || ( file_exists ( $directory_path ) && is_writable ( $directory_path ) ) ) {
-        $access->putFileData ( FS2_ROOT_PATH . "styles/" . $_POST['style'] . "/" . $TEMPLATE_FILE, $file_data );
-        return TRUE;
-    } else {
-        return FALSE;
-    }
+        $file_path =  $directory_path . $TEMPLATE_FILE;
+        if ( is_writable ( $file_path ) || ( file_exists ( $directory_path ) && is_writable ( $directory_path ) ) ) {
+            $access->putFileData ( $file_path, $file_data );
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+     }
 }
 
 
@@ -135,11 +147,38 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         $_POST['style'] = unquote ( $_POST['style'] );
     }
 
+    // Check Edit Allowed
+    $index = mysql_query ( "
+                            SELECT COUNT(`style_id`) AS 'number'
+                            FROM `".$global_config_arr['pref']."styles`
+                            WHERE `style_tag` = '".savesql ( $_POST['style'] )."'
+                            AND `style_allow_edit` = 1
+                            LIMIT 0,1
+    ", $db );
+    if ( mysql_result ( $index, 0, "number" ) != 1 ) {
+        // Check Edit Allowed
+        $index = mysql_query ( "
+                                SELECT COUNT(`style_id`) AS 'number'
+                                FROM `".$global_config_arr['pref']."styles`
+                                WHERE `style_allow_edit` = 1
+                                LIMIT 0,1
+        ", $db );
+        if ( mysql_result ( $index, 0, "number" ) != 1 ) {
+            systext ( $TEXT["admin"]->get("template_no_editable_template"),
+                $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
+            $show_selection = FALSE;
+        } elseif ( $show_editor !== FALSE ) {
+            systext ( $TEXT["admin"]->get("template_select_template"),
+                $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_info") );
+        }
+        $show_editor = FALSE;
+    }
+
     // Set Style Path
     $style_path = FS2_ROOT_PATH . "styles/" . $_POST['style'];
 
     // Check if style exists
-    if ( !is_dir ( $style_path ) ) {
+    if ( ! ( is_dir ( $style_path ) ) ) {
         systext ( $TEXT["admin"]->get("template_style_not_found"),
             $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
         $show_editor = FALSE;
@@ -155,7 +194,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         $TMP = $TEMPLATE_ARR[0];
         unset ( $TEMPLATE_ARR );
         $TEMPLATE_ARR[0] = $TMP;
-        
+
         // Get File Array
         $file_arr = array();
         $files = scandir_filter ( $style_path );
@@ -180,9 +219,9 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         }
 
         // Selection-Forms
-        $select_forms = get_templatepage_select ( "file", $style_path, $TEMPLATE_FILE );
+        $select_forms = get_templatepage_select ( "file", $style_path, $TEMPLATE_FILE, $show_editor );
         if ( $_POST['file'] == "new" ) {
-            $select_forms .= get_templatepage_select ( "new", "", $TEMPLATE_FILE );
+            $select_forms .= get_templatepage_select ( "new", "", $TEMPLATE_FILE, $show_editor );
         }
 
         // Set Selected File
@@ -191,19 +230,20 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         } else {
             $TEMPLATE_FILE = FALSE;
         }
-        
+
         // Set Selection-Titel
         $selection_title = $TEXT["admin"]->get("template_selection_title_template_file");
     }
-    
-    
+
+
     // Set File Path
     $file_path = $style_path . "/" . $TEMPLATE_FILE;
-    
+
     // Create File if not exists
+    $access = new fileaccess();
     if ( $show_editor && !file_exists ( $file_path ) ) {
         if ( !$MANYFILES || $TEMPLATE_FILE != FALSE ) {
-            if ( file_put_contents ( $file_path, "" ) === FALSE ) {
+            if ( $access->putFileData ( $file_path, "" ) === FALSE ) {
                 systext ( $TEXT["admin"]->get("template_file_not_found")."<br>".$TEXT["admin"]->get("template_file_not_created")."<br>".$TEXT["admin"]->get("error_file_access"),
                     $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
                 $show_editor = FALSE;
@@ -221,30 +261,44 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
     // Selection Template
     $select_template = '
+                <form action="" method="post">
+                    <input type="hidden" name="go" value="'.$GO.'">
                     <table class="configtable" cellpadding="4" cellspacing="0">
                         <tr><td class="line">'.$selection_title.'</td></tr>
                         <tr>
                             <td class="config left">
                                 <table cellpadding="0" cellspacing="0" border="0" class="config left" width="100%">
-                <form action="" method="post">
-                    <input type="hidden" name="go" value="'.$GO.'">
-                                    '.get_templatepage_select ( "style" ).'
+                                        '.get_templatepage_select ( "style" ).'
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </form>
 
                 <form action="" method="post">
                     <input type="hidden" name="go" value="'.$GO.'">
                     <input type="hidden" name="style" value="'.$_POST['style'].'">
+                    <table class="configtable" cellpadding="4" cellspacing="0" style="margin-top:-19px;">
+                        <tr>
+                            <td class="config left">
+    ';
+    if ( $select_forms != "" ) {
+        $select_template .= '
+                                <table cellpadding="0" cellspacing="0" border="0" class="config left" width="100%">
                                     '.$select_forms.'
                                 </table>
+        ';
+    }
+    $select_template .= '
                             </td>
                         </tr>
                         <tr><td class="space"></td></tr>
                     </table>
     ';
-    
-    
+
+
     // Editor Template
-    if ( $_POST['style'] && is_dir ( $style_path ) ) {
+    if ( $_POST['style'] && is_dir ( $style_path ) && $show_editor ) {
 
         // Get Data from Post or tpl-File
         if ( templatepage_postcheck ( $TEMPLATE_ARR ) && isset( $_POST['reload'] ) ) {
@@ -274,46 +328,46 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                 }
             }
         }
-        
+
         unset ($template_key);
         unset ($template);
-        
+
         // Editor Form
         $return_template .= '
                     <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
-                        <input type="hidden" id="section_select" value="">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr><td class="line">Templates bearbeiten</td></tr>
+                    <input type="hidden" id="section_select" value="">
+                    <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <tr><td class="line">Templates bearbeiten</td></tr>
         ';
-        
+
         // Special MANYFILES-Things
         if ( $MANYFILES === TRUE ) {
             $return_template .= '
-                            <tr>
-                                <td class="configthin">
-                                    '.$TEXT["admin"]->get("template_manyfile_delete_note").'
-                                </td>
-                            </tr>
-            
+                        <tr>
+                            <td class="configthin">
+                                '.$TEXT["admin"]->get("template_manyfile_delete_note").'
+                            </td>
+                        </tr>
+
             ';
         }
 
         // Create Editor for each Template-Section
         foreach ($TEMPLATE_ARR as $template_key => $template) {
                 $return_template .= '
-                            <tr><td class="space"></td></tr>
-                            
-                            ' . create_templateeditor ( $template, $HIGHLIGHTER, $TEMPLATE_FILE, $MANYFILES ) . '
+                        <tr><td class="space"></td></tr>
 
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="buttontd" align="right">
-                                    <button class="button_new" type="submit" name="reload">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
+                        ' . create_templateeditor ( $template, $HIGHLIGHTER, $TEMPLATE_FILE, $MANYFILES ) . '
+
+                        <tr><td class="space"></td></tr>
+                        <tr>
+                            <td class="buttontd" align="right">
+                                <button class="button_new" type="submit" name="reload">
+                                    '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                </button>
+                            </td>
+                        </tr>
+                        <tr><td class="space"></td></tr>
                 ';
         }
         unset ($template_key);
@@ -321,7 +375,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
         // End of Editor Form
         $return_template .= '
-                        </table>
+                    </table>
                 </form>
         ';
 
@@ -331,9 +385,9 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         ';
     }
 
-    // check $show_editor
-    if ( !$show_editor ) {
-        $return_template = null;
+    // check $show_selection
+    if ( $show_selection === FALSE ) {
+        $select_template = null;
     }
 
     // Return Page
@@ -344,7 +398,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 /////////////////////////////////
 //// get_templatepage_select ////
 /////////////////////////////////
-function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
+function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "", $SHOW_REST = TRUE )
 {
     global $global_config_arr, $db, $TEXT;
     global $admin_phrases;
@@ -356,7 +410,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
                                         <td>
                                             <b>Zu bearbeitenden Style wählen:</b>
                                         </td>
-                                        <td>
+                                        <td style="width:350px;">
                                             <select name="style" onChange="this.form.submit();" style="width:200px;">
             ';
 
@@ -364,7 +418,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
                                     SELECT `style_tag`
                                     FROM `".$global_config_arr['pref']."styles`
                                     WHERE `style_id` != 0
-                                    AND `style_allow_use` = 1
+                                    AND `style_allow_edit` = 1
                                     ORDER BY `style_tag`
             ", $db );
             while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
@@ -386,13 +440,17 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
             return $select_template;
         
         case "file":
+            if ( $SHOW_REST === FALSE ) {
+                return "";
+            }
+        
             $select_template = '
                                     <tr><td class="space"></td></tr>
                                     <tr>
                                         <td>
                                             <b>Zu bearbeitende Datei wählen:</b>
                                         </td>
-                                        <td>
+                                        <td style="width:350px;">
                                             <select name="file" onChange="this.form.submit();" style="width:200px;">
             ';
 
@@ -411,13 +469,16 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "" )
 
             return $select_template;
         case "new":
+            if ( $SHOW_REST === FALSE ) {
+                return "";
+            }
             $select_template = '
                                     <tr><td class="space"></td></tr>
                                     <tr>
                                         <td>
                                             Dateiname:
                                         </td>
-                                        <td>
+                                        <td style="width:350px;">
                                             <input class="text" name="file_name" size="40" maxlength="60"> .'.$FILE_EXT.'
                                         </td>
                                     </tr>
@@ -465,7 +526,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $global_vars = array ( "url", "style_url", "style_images", "style_icons", "page_title", "page_dyn_title", "date", "time", "date_time" );
     foreach ( $global_vars as $var ) {
         $the_var = '$VAR('.$var.')';
-        $global_vars_array[] = '<tr class="pointer tag_click_class" title="'.$the_var.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_var.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$VAR(<b>'.$var.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $global_vars_array[] = '<tr class="pointer tag_click_class" title="'.$the_var.' einfügen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_var.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$VAR(<b>'.$var.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['global_vars'] = create_dropdown ( "Globale Variablen", implode ( "", $global_vars_array ) );
 
@@ -476,7 +537,7 @@ function get_dropdowns ( $EDITOR_NAME )
     while ( $app_arr = mysql_fetch_assoc ( $index ) ) {
         $app = stripslashes ( $app_arr['applet_file'] );
         $the_app = '$APP('.$app.'.php)';
-        $applets_array[] = '<tr class="pointer tag_click_class" title="'.$the_app.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $applets_array[] = '<tr class="pointer tag_click_class" title="'.$the_app.' einfügen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['applets'] = create_dropdown ( "Applets", implode ( "", $applets_array ) );
 
@@ -486,7 +547,7 @@ function get_dropdowns ( $EDITOR_NAME )
     ", $db );
     while ( $snippets_arr = mysql_fetch_assoc ( $index ) ) {
         $the_snippet = stripslashes ( $snippets_arr['snippet_tag'] );
-        $snippets_array[] = '<tr class="pointer tag_click_class" title="'.$the_snippet.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $snippets_array[] = '<tr class="pointer tag_click_class" title="'.$the_snippet.' einfügen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['snippets'] = create_dropdown ( "Schnipsel", implode ( "", $snippets_array ) );
 
@@ -494,7 +555,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $navs_arr = scandir_ext ( FS2_ROOT_PATH . "styles/" . $_POST['style'], "nav" );
     foreach ( $navs_arr as $nav ) {
         $the_nav = '$NAV('.$nav.')';
-        $navs_array[] = '<tr class="pointer tag_click_class" title="'.$the_nav.' einfügen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $navs_array[] = '<tr class="pointer tag_click_class" title="'.$the_nav.' einfügen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['navigations'] = create_dropdown ( "Navigationen", implode ( "", $navs_array ) );
     
@@ -595,7 +656,7 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
     $help_template = get_taglist ( $editor_arr['help'], $editor_arr['name'] );
 
     // Get dropdowns
-    $dropdowns = get_dropdowns ( $editor_arr['name'] );
+    $dropdowns = get_dropdowns ( "editor_".$editor_arr['name'] );
     if ( $MANYFILES == TRUE && $editor_arr['name'] == "NAV" ) {
         $dropdowns['navigations'] = "";
     }

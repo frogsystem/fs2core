@@ -81,7 +81,7 @@ if (isset($_GET[catid]))
                     $template->setFile("0_wallpapers.tpl");
                     $template->load("SIZE");
 
-                    $template->tag("size",  $sizes_arr[url] );
+                    $template->tag("url",  $sizes_arr[url] );
                     $template->tag("size", stripslashes ( $sizes_arr[size] ) );
 
                     $template = $template->display ();

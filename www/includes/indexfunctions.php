@@ -62,7 +62,7 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     $template_link = "";
     if ( $global_config_arr['show_favicon'] == 1 ) {
                 $template_link .= '
-                <link rel="shortcut icon" href="styles/'.$global_config_arr['style'].'/favicon.ico">';
+                <link rel="shortcut icon" href="styles/'.$global_config_arr['style'].'/icons/favicon.ico">';
     }
     $template_link .= '
                 <link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">
@@ -396,7 +396,7 @@ function get_applet ( $FILE )
 function replace_globalvars ( $TEMPLATE )
 {
     global $global_config_arr, $db;
-    
+
     $TEMPLATE = str_replace ( '$VAR(url)', $global_config_arr['virtualhost'], $TEMPLATE );
     $TEMPLATE = str_replace ( '$VAR(style_url))', $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/", $TEMPLATE );
     $TEMPLATE = str_replace ( '$VAR(style_images)', $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/images/", $TEMPLATE );

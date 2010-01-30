@@ -135,6 +135,9 @@ $TEXT = array (
     "icon_small_help" =>
     '<img src="icons/help.gif" alt="" align="absmiddle">',
 
+    "icon_info" =>
+    '<img src="icons/info.jpg" alt="" align="absmiddle">',
+
     "icon_error" =>
     '<img src="icons/error.jpg" alt="" align="absmiddle">',
 
@@ -544,6 +547,107 @@ $TEXT = array (
 
     "alias_not_active" =>
     "nicht aktiv",
+    
+    
+//Suchindex
+    "search_config_title" =>
+    "Einstellungen",
+    
+    "search_config_num_previews_title" =>
+    "Anzahl Ergebnisse",
+
+    "search_config_num_previews_desc" =>
+    "Die Zahl der max. angezeigten Ergebnisse.",
+
+    "search_config_num_previews_results" =>
+    "Ergebnisse",
+
+    "search_index_config_title" =>
+    "Suchindex-Einstellungen",
+
+    "search_index_config_update_title" =>
+    "Suchindex aktualisieren",
+
+    "search_index_config_update_desc" =>
+    "Zeit zu der der Suchindex aktualisert wird.",
+
+    "search_index_config_update_instantly" =>
+    "sofort",
+
+    "search_index_config_update_daily" =>
+    "täglich (um ca. 3 Uhr)",
+
+    "search_index_config_update_never" =>
+    "niemals",
+
+    "search_index_updated" =>
+    "Suchindex wurde aktualisiert",
+    
+    "search_index_renewed" =>
+    "Suchindex wurde neu erstellt",
+    
+    "search_index_deleted" =>
+    "Suchindex wurde gelöscht",
+    
+    "search_index_deleted_with_word_list" =>
+    "Suchindex und Wortliste wurden gelöscht",
+
+    "search_index_title" =>
+    "Suchindex-Funktionen",
+
+    "search_index_update_title" =>
+    "Suchindex Aktualisieren",
+
+    "search_index_update_desc" =>
+    "Akutalisiert den Suchindex.",
+
+    "search_index_new_title" =>
+    "Suchindex neu erstellen",
+
+    "search_index_new_desc" =>
+    "Löscht den Suchindex und erstellt ihn neu.",
+
+    "search_index_delete_title" =>
+    "Suchindex löschen",
+
+    "search_index_delete_desc" =>
+    "Löscht den Suchindex.",
+
+    "search_index_delete_with_word_title" =>
+    "Suchindex und Wortliste löschen",
+
+    "search_index_delete_with_word_desc" =>
+    "Löscht den Suchindex und die Wortliste.",
+
+    "search_index_update_button" =>
+    "Suchindex aktualisieren",
+
+    "search_index_new_button" =>
+    "Suchindex neu erstellen",
+
+    "search_index_new_note" =>
+    "<b>Achtung:</b> Kann den Server zeitweise voll auslasten",
+
+    "search_index_delete_button" =>
+    "Suchindex löschen",
+
+    "search_index_delete_note" =>
+    "<b>Achtung:</b> Kann nicht rückgängig gemacht werden",
+
+    "search_index_delete_with_word_button" =>
+    "Suchindex und Wortliste löschen",
+
+    "search_index_delete_with_word_note" =>
+    "<b>Achtung:</b> Kann nicht rückgängig gemacht werden",
+
+    "search_index_info_title" =>
+    "Informationen",
+
+    "search_index_info_words" =>
+    "Indizierte Wörter",
+
+    "search_index_info_docs" =>
+    "Indizierte Dokumente",
 
 
 // Styles
@@ -672,6 +776,12 @@ $TEXT = array (
 
     "template_file_created" =>
     "Template-Datei wurde neu erstellt",
+
+    "template_no_editable_template" =>
+    "Kein Template zum Bearbeiten gefunden",
+
+    "template_select_template" =>
+    "Template zum Bearbeiten auswählen",
 
 
 );

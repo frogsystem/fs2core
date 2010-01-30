@@ -33,19 +33,28 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
     $userpass = md5 ( $_POST['new_pwd'].$user_salt );
     $userpass_mail = $_POST['new_pwd'];
     
-    // user exists or negative anti spam
+    // user exists or existing email negative anti spam
     $index = mysql_query ( "
                             SELECT COUNT(`user_id`) AS 'number'
                             FROM ".$global_config_arr['pref']."user
                             WHERE user_name = '".$_POST['user_name']."'
     ", $db);
     $existing_users = mysql_result ( $index, 0, "number" );
+    $index = mysql_query ( "
+                            SELECT COUNT(`user_id`) AS 'number'
+                            FROM ".$global_config_arr['pref']."user
+                            WHERE user_mail = '".$_POST['user_mail']."'
+    ", $db);
+    $existing_mails = mysql_result ( $index, 0, "number" );
     
     // get error message
-    if ( $existing_users > 0 || $anti_spam != TRUE || $_POST['new_pwd'] != $_POST['wdh_pwd'] ) {
+    if ( $existing_users > 0 || $existing_mails > 0 || $anti_spam != TRUE || $_POST['new_pwd'] != $_POST['wdh_pwd'] ) {
         $error_array = array();
         if ( $existing_users > 0 ) {
             $error_array[] = $TEXT->get("user_name_exists");
+        }
+        if ( $existing_mails > 0 ) {
+            $error_array[] = $TEXT->get("user_mail_exists");
         }
         if ( $anti_spam != TRUE ) {
             $error_array[] = $TEXT->get("user_antispam");

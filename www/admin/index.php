@@ -15,6 +15,7 @@ require ( FS2_ROOT_PATH . "includes/functions.php" );
 require ( FS2_ROOT_PATH . "includes/adminfunctions.php" );
 require ( FS2_ROOT_PATH . "includes/imagefunctions.php" );
 require ( FS2_ROOT_PATH . "includes/templatefunctions.php" );
+require ( FS2_ROOT_PATH . "includes/indexfunctions.php" );
 
 //Include Library-Classes
 require ( FS2_ROOT_PATH . "libs/class_template.php");

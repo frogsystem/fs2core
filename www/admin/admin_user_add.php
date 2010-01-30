@@ -127,7 +127,7 @@ if (
     $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_POST['user_name'] ), $template_mail );
     $template_mail = str_replace ( "{..new_password..}", $_POST['newpwd'], $template_mail );
     $template_mail = replace_globalvars ( $template_mail );
-    $email_subject = $TEXT->get("mail_registerd_on") . $global_config_arr['virtualhost'];
+    $email_subject = $TEXT['frontend']->get("mail_registerd_on") . $global_config_arr['virtualhost'];
     if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
         $email_message = "<br>".$TEXT['frontend']->get("mail_registerd_sended");
     } else {

@@ -46,10 +46,14 @@ class fileaccess
     // createDir
     public function createDir ( $pathname, $mode = 0777, $recursive = false, $context = null ) {
         if ( is_resource ( $context ) ) {
-            return mkdir ( $pathname, $mode, $recursive, $context );
+            $return = mkdir ( $pathname, $mode, $recursive, $context );
         } else {
-            return mkdir ( $pathname, $mode, $recursive );
+            $return = mkdir ( $pathname, $mode, $recursive );
         }
+        if ( $return === TRUE ) {
+            chmod ( $pathname, $mode );
+        }
+        return $return;
     }
     
     // deleteAny
@@ -97,7 +101,7 @@ class fileaccess
                     $result = TRUE;
                     foreach ( $contents as $content ) {
                         $old_result = $result;
-                        $result = $this->copyAny( $source.$content, $destination.$content );
+                        $result = $this->copyAny( $source.$content, $destination.$content, $foldermode, $filemode );
                         $result = $result && $old_result;
                     }
                     return $result;
@@ -107,7 +111,7 @@ class fileaccess
             // Case 4: Dir -> not existent Dir
             } elseif ( !file_exists ( $destination ) ) {
                 $this->createDir ( $destination, $foldermode );
-                return $this->copyAny ( $source, $destination );
+                return $this->copyAny ( $source, $destination, $foldermode, $filemode );
             } else {
                 return FALSE;
             }

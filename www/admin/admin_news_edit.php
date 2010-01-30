@@ -1362,7 +1362,7 @@ elseif (
     } else {
          systext( "Kommentare wurden nicht gelöscht", $admin_phrases[common][error], FALSE, $admin_phrases[icons][trash_error] );
     }
-                       echo "buh";
+
     // Unset Vars
     $id = $_POST['news_id'];
     unset ( $_POST );

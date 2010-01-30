@@ -1,7 +1,7 @@
 <?php
 // Get save keyword
 $keyword = $_REQUEST['keyword'];
-$keyword = ( $_REQUEST['go'] == "search" ) ? trim ( $keyword ) : "";
+$keyword = ( $global_config_arr['goto'] == "search" ) ? trim ( $keyword ) : "";
 
 // Display Mini Search
 $template = new template();
