@@ -54,6 +54,7 @@ if ($db)
         $path_parts = pathinfo ( $_GET['file'] );
         $data_array['image'] = image_url ( $path_parts['dirname']."/", $path_parts['filename'], FALSE );
         $data_array['image_url'] = image_url ( $path_parts['dirname']."/", $path_parts['filename'] );
+        $data_array['image_sizeinfo'] = image_url ( $path_parts['dirname']."/", $path_parts['filename'], FALSE, TRUE );
         $image_found = TRUE;
         
     // Gallery Image

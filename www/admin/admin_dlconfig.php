@@ -18,7 +18,9 @@ if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_
                    thumb_x = '$_POST[thumbx]',
                    thumb_y = '$_POST[thumby]',
                    quickinsert = '$_POST[quickinsert]',
-                   dl_rights = '$_POST[dl_rights]'";
+                   dl_rights = '$_POST[dl_rights]',
+                   dl_show_sub_cats = '$_POST[dl_show_sub_cats]'
+               ";
     mysql_query($update, $db);
     systext("Die Konfiguration wurde aktualisiert");
 }
@@ -31,6 +33,9 @@ else
 {
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_config", $db);
     $config_arr = mysql_fetch_assoc($index);
+    
+    settype ( $config_arr['dl_show_sub_cats'], "integer" );
+    
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_config" name="go">
@@ -86,6 +91,15 @@ else
                                             echo ' selected="selected"';
                                         echo'>niemanden</option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top" width="50%">
+                                    Unterkategorien immer zeigen:<br>
+                                    <font class="small">Zeigt immer alle Unterkategorien an, auch wenn Ordner nicht geöffnet.</font>
+                                </td>
+                                <td class="config" valign="top" width="50%">
+                                    <input type="checkbox" name="dl_show_sub_cats" value="1" '.getchecked ( 1, $config_arr['dl_show_sub_cats'] ).'>
                                 </td>
                             </tr>
                             <tr>

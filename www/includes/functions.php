@@ -978,19 +978,21 @@ function cut_in_string ($string, $maxlength, $replacement)
 ///// Download Categories //////
 ////////////////////////////////
 
-function get_dl_categories (&$ids, $cat_id, $id=0, $ebene=-1)
+function get_dl_categories (&$IDs, $CAT_ID, $SHOW_SUB = 0, $ID = 0, $LEVEL = -1 )
 {
-    global $global_config_arr;
-    global $db;
+    global $global_config_arr, $db;
 
-    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_cat where subcat_id = '$id' ORDER BY cat_name", $db);
-    while ($zeile = mysql_fetch_assoc($index))
-    {
-        if ($zeile[cat_id] != $cat_id)
-        {
-            $zeile[ebene] = $ebene + 1;
-            $ids[] = $zeile;
-            get_dl_categories ($ids, $cat_id, $zeile[cat_id], $zeile[ebene]);
+    $index = mysql_query ( "
+                            SELECT * FROM `".$global_config_arr['pref']."dl_cat`
+                            WHERE `subcat_id` = '".$ID."'
+                            ORDER BY `cat_name`
+    ", $db );
+
+    while ( $line = mysql_fetch_assoc ( $index ) ) {
+        $line['level'] = $LEVEL + 1;
+        $IDs[] = $line;
+        if ( $SHOW_SUB == 1 || $line['cat_id'] == $CAT_ID || in_array ( $CAT_ID, get_sub_cats ( $line['cat_id'] ) ) ) {
+            get_dl_categories ( $IDs, $CAT_ID, $SHOW_SUB, $line['cat_id'], $line['level'] );
         }
     }
 }

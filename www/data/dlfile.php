@@ -1,6 +1,13 @@
 <?php
 // Load Config Array
 $index = mysql_query ( "
+                        SELECT *
+                        FROM `".$global_config_arr['pref']."dl_config`
+                        WHERE `id` = 1
+", $db);
+$config_arr = mysql_fetch_assoc ( $index );
+
+$index = mysql_query ( "
                         SELECT `show_type`, `show_size_x`, `show_size_y`
                         FROM `".$global_config_arr['pref']."screen_config`
                         WHERE `id` = 1
@@ -20,8 +27,7 @@ if (mysql_num_rows($index) > 0)
     $global_config_arr['dyn_title_page'] = stripslashes ( $dl_arr['dl_name'] );
 
     //Config einlesen
-    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
-    $dl_config_arr = mysql_fetch_assoc($index);
+    $dl_config_arr = $config_arr;
 
     // Username auslesen
     $index = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $dl_arr[user_id]", $db);
@@ -161,10 +167,10 @@ if (mysql_num_rows($index) > 0)
 
     // Navigation erzeugen
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, -1);
+    get_dl_categories (&$valid_ids, $dl_arr['cat_id'], $config_arr['dl_show_sub_cats'] );
 
     foreach ( $valid_ids as $cat ) {
-        if ($cat[cat_id] == $dl_arr[cat_id]) {
+        if ($cat['cat_id'] == $dl_arr['cat_id']) {
             $icon_url = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";
         } else {
             $icon_url = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder.gif";
@@ -175,11 +181,11 @@ if (mysql_num_rows($index) > 0)
         $template->load("NAVIGATION_LINE");
 
         $template->tag("icon_url", $icon_url );
-        $template->tag("cat_url", "?go=download&cat_id=".$cat[cat_id] );
-        $template->tag("cat_name", stripslashes ( $cat[cat_name] ) );
+        $template->tag("cat_url", "?go=download&cat_id=".$cat['cat_id'] );
+        $template->tag("cat_name", stripslashes ( $cat['cat_name'] ) );
 
         $template = $template->display ();
-        $navi_lines .= str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]) . $template;
+        $navi_lines .= str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cat['level']) . $template;
     }
     
     // Get Navigation Template

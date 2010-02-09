@@ -1,4 +1,12 @@
 <?php
+// Load Config Array
+$index = mysql_query ( "
+                        SELECT *
+                        FROM `".$global_config_arr['pref']."dl_config`
+                        WHERE `id` = 1
+", $db);
+$config_arr = mysql_fetch_assoc ( $index );
+
 
 if ( !isset ( $_GET[cat_id] ) ) {
    $show = FALSE;
@@ -38,14 +46,14 @@ if (isset($_GET['keyword']) && $_GET['keyword'] != "")
 /////////////////////////////
 
 $valid_ids = array();
-get_dl_categories (&$valid_ids, -1);
+get_dl_categories (&$valid_ids, $_GET['cat_id'], $config_arr['dl_show_sub_cats'] );
 
 foreach ($valid_ids as $cat) {
-    $cat[cat_name] = stripslashes ( $cat[cat_name] );
+    $cat['cat_name'] = stripslashes ( $cat['cat_name'] );
 
-    if ($cat[cat_id] == $_GET[cat_id]) {
+    if ($cat['cat_id'] == $_GET['cat_id']) {
         $icon_url = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder_open.gif";
-        $page_titel = $cat[cat_name] . $page_titel;
+        $page_titel = $cat['cat_name'] . $page_titel;
     } else {
         $icon_url = $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/folder.gif";
     }
@@ -55,11 +63,11 @@ foreach ($valid_ids as $cat) {
     $template->load("NAVIGATION_LINE");
 
     $template->tag("icon_url", $icon_url );
-    $template->tag("cat_url", "?go=download&cat_id=".$cat[cat_id] );
-    $template->tag("cat_name", $cat[cat_name] );
+    $template->tag("cat_url", "?go=download&cat_id=".$cat['cat_id'] );
+    $template->tag("cat_name", $cat['cat_name'] );
 
     $template = $template->display ();
-    $navi_lines .= str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]) . $template;
+    $navi_lines .= str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cat['level']) . $template;
 }
 
 // Get Navigation Template
@@ -107,7 +115,7 @@ if ($show == TRUE) {
         $template->setFile("0_downloads.tpl");
         $template->load("PREVIEW_LINE");
 
-        $template->tag("title", $dl_arr[dl_name] );
+        $template->tag("title", stripslashes ( $dl_arr[dl_name] ) );
         $template->tag("url", "?go=dlfile&id=".$dl_arr[dl_id] );
         $template->tag("cat_name", $dl_arr[cat_name] );
         $template->tag("date", $dl_arr[dl_date] );
