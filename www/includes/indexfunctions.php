@@ -36,7 +36,7 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     // Main Template
     $template = '
 {..doctype..}
-<html>
+<html lang="'.$global_config_arr['language'].'">
         <head>
                 {..base..}{..title..}{..meta..}{..link..}{..script..}
         </head>

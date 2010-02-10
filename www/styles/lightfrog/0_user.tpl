@@ -6,22 +6,22 @@
   <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
     <tr>
       <td>
-        <span class="small">Benutzername:</span>
+        <label class="small" for="username_mini">Benutzername:</label>
       </td>
     </tr>
     <tr>    
       <td>
-        <input class="small input input_highlight" size="20" name="username" maxlength="25">
+        <input class="small input input_highlight" size="20" id="username_mini" name="username" maxlength="25">
       </td>
     </tr>
     <tr>
       <td>
-        <span class="small">Passwort:</span>
+        <label class="small" for="password_mini">Passwort:</label>
       </td>
     </tr>
     <tr>    
       <td>
-        <input class="small input input_highlight" size="20" type="password" name="userpassword" maxlength="50">
+        <input class="small input input_highlight" size="20" id="password_mini" type="password" name="userpassword" maxlength="50">
       </td>
     </tr>
     <tr><td></td></tr>
@@ -63,7 +63,7 @@
   <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
     <tr>
       <td align="left" colspan="2">
-        <b>Benutzername:</b>
+        <label for="username_main"><b>Benutzername:</b></label>
       </td>
       <td align="center" valign="middle" rowspan="11" width="90"><img src="$VAR(style_images)line.gif" alt=""></td>
       <td align="left" valign="top" rowspan="11">
@@ -89,7 +89,7 @@
   
     <tr>
       <td align="left">
-        <input class="small input input_highlight" size="33" name="username" maxlength="25">
+        <input class="small input input_highlight" size="33" id="username_main" name="username" maxlength="25">
       </td>
       <td align="left">
         <img src="$VAR(style_icons)user/user.gif" alt="" align="bottom">
@@ -100,12 +100,12 @@
     </tr>
     <tr>
       <td align="left" colspan="2">
-        <b>Passwort:</b>
+        <label for="password_big"><b>Passwort:</b></label>
       </td>
     </tr>
     <tr>
       <td align="left">
-        <input class="small input input_highlight" size="33" type="password" name="userpassword" maxlength="50">
+        <input class="small input input_highlight" size="33" type="password" id="password_big" name="userpassword" maxlength="50">
       </td>
       <td align="left">
         <img src="$VAR(style_icons)user/key.gif" alt="" align="bottom">
