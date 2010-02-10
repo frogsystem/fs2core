@@ -146,6 +146,21 @@ $TEXT = array (
     "comment_duplicate" =>
     "Dieser Kommentar ist das Duplikat eines Kommentars der gerade erst hinzugefügt wurde",
     
+
+//Galerie
+
+
+
+// Bildbetrachter
+    "popupviewer_next_text" =>
+    "Nächstes Bild",
+    "popupviewer_next_image" =>
+    '<img src="styles/'.$global_config_arr['style'].'/icons/next_image.gif" alt="Nächstes Bild" title="Nächstes Bild">',
+    "popupviewer_prev_text" =>
+    "Vorheriges Bild",
+    "popupviewer_prev_image" =>
+    '<img src="styles/'.$global_config_arr['style'].'/icons/prev_image.gif" alt="Vorheriges Bild" title="Vorheriges Bild">',
+    
     
 //Download
     "download_file" =>

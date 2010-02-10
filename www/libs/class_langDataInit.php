@@ -18,6 +18,8 @@ class langDataInit
 
     // constructor
     public function  __construct ( $local, $type ) {
+        global $global_config_arr;
+        
         // set vars
         $this->local = $local;
         $this->type = $type;

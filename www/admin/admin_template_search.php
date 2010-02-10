@@ -31,19 +31,32 @@ $TEMPLATE_EDIT[] = array (
 
 
 $TEMPLATE_EDIT[] = array (
+    name => "RESULT_DATE_TEMPLATE",
+    title => $TEXT['template']->get("search_result_date_template_title"),
+    description => $TEXT['template']->get("search_result_date_template_desc"),
+    rows => 10,
+    cols => 66,
+    help => array (
+        array ( tag => "date", text => $TEXT['template']->get("search_result_line_date") ),
+    )
+);
+
+$TEMPLATE_EDIT[] = array (
     name => "RESULT_LINE",
-    title => $TEXT['template']->get("search_results_line_title"),
-    description => $TEXT['template']->get("search_results_line_desc"),
+    title => $TEXT['template']->get("search_result_line_title"),
+    description => $TEXT['template']->get("search_result_line_desc"),
     rows => 15,
     cols => 66,
     help => array (
-        array ( tag => "id", text => $TEXT['template']->get("search_results_line_id") ),
-        array ( tag => "title", text => $TEXT['template']->get("search_results_line_found_title") ),
-        array ( tag => "url", text => $TEXT['template']->get("search_results_line_url") ),
-        array ( tag => "date", text => $TEXT['template']->get("search_results_line_date") ),
-        array ( tag => "num_results", text => $TEXT['template']->get("search_results_line_num_results") ),
+        array ( tag => "id", text => $TEXT['template']->get("search_result_line_id") ),
+        array ( tag => "title", text => $TEXT['template']->get("search_result_line_found_title") ),
+        array ( tag => "url", text => $TEXT['template']->get("search_result_line_url") ),
+        array ( tag => "date", text => $TEXT['template']->get("search_result_line_date") ),
+        array ( tag => "date_template", text => $TEXT['template']->get("search_result_line_date_template") ),
+        array ( tag => "num_results", text => $TEXT['template']->get("search_result_line_num_results") ),
     )
 );
+
 
 $TEMPLATE_EDIT[] = array (
     name => "NO_RESULTS",

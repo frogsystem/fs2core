@@ -519,6 +519,113 @@ $TEXT = array (
     "news_search_keyword" =>
     "Schlüsselwort nach dem gesucht wurde",
     
+
+// Suche
+    "search_applet_title" =>
+    "Mini-Suche",
+    
+    "search_applet_desc" =>
+    "Kleines Suchfeld das überall verwendet werden kann",
+
+    "search_applet_keyword" =>
+    "Das Schlüsselwort, nach dem gesucht wurde.",
+
+    "search_search_title" =>
+    "Suchfeld",
+
+    "search_search_desc" =>
+    "Suchfeld auf der Hauptsuchseite",
+
+    "search_search_keyword" =>
+    "Das Schlüsselwort, nach dem gesucht wurde.",
+
+    "search_search_in_news" =>
+    "Setzt die „In News suchen“-Einstellung der HTML-Checkbox",
+
+    "search_search_in_articles" =>
+    "Setzt die „In Artikeln suchen“-Einstellung der HTML-Checkbox",
+
+    "search_search_in_downloads" =>
+    "Setzt die „In Downloads suchen“-Einstellung der HTML-Checkbox",
+
+    "search_result_date_template_title" =>
+    "Datum-Template",
+
+    "search_result_date_template_desc" =>
+    "Template für das Datum eines Suchergebnisses",
+
+    "search_result_line_title" =>
+    "Suchergebnis-Zeile",
+
+    "search_result_line_desc" =>
+    "Darstellung einer Zeile eines gefundenen Inhalts",
+
+    "search_result_line_id" =>
+    "Datenbank-ID des gefundenen Inhalts.",
+
+    "search_result_line_found_title" =>
+    "Der Titel des gefundenen Inhalts.",
+
+    "search_result_line_url" =>
+    "Die URL des gefundenen Inhalts.",
+
+    "search_result_line_date" =>
+    "Das Datum des gefundenen Inhalts",
+
+    "search_result_line_date_template" =>
+    "Datum-Template, wenn Datum vorhanden.",
+
+    "search_result_line_num_results" =>
+    "Anzahl der Fundstellen.",
+
+    "search_no_results_title" =>
+    "Keine Ergebnisse-Zeile",
+
+    "search_no_results_desc" =>
+    "Darstellung der Hinweis-Zeile, wenn keine Ergebnisse gefunden wurden",
+
+    "search_more_results_title" =>
+    "Mehr Ergebnisse-Link",
+
+    "search_more_results_desc" =>
+    "Link der auf die speziellen Suchseite ohne Ergebnis-Anzahl Beschränkung verweist",
+
+    "search_more_results_main_search_url" =>
+    "URL zur speziellen Suchseite der Art des Inhalts.",
+
+    "search_results_body_title" =>
+    "Suchergebnis-Block",
+
+    "search_results_body_desc" =>
+    "Block der Suchergebnisse einer Art des Inhalts",
+
+    "search_results_body_type_title" =>
+    "Titel der Art des Inhalts.",
+    
+    "search_results_body_results" =>
+    "Bindet die Ergebnis-Zeilen ein.",
+
+    "search_results_body_more_results" =>
+    "Bindet „Mehr Ergebnisse-Link“ ein, wenn nötig.",
+
+    "search_body_title" =>
+    "Suchseite",
+
+    "search_body_desc" =>
+    "Darstellung der gesamten Suchseite",
+
+    "search_body_search" =>
+    "Bindet das Suchfeld ein.",
+
+    "search_body_news" =>
+    "Bindet die News-Suchergebnisse ein.",
+
+    "search_body_articles" =>
+    "Bindet die Artikel-Suchergebnisse ein.",
+
+    "search_body_downloads" =>
+    "Bindet die Donwloads-Suchergebnisse ein.",
+    
     
 // Vorschaubild
     "previewimg_body_title" =>
@@ -528,22 +635,22 @@ $TEXT = array (
     "Darstellung des Vorschaubild-Applets",
 
     "previewimg_body_previewimg" =>
-    "HTML-Einbindung des kleinen Vorschaubildes",
+    "HTML-Einbindung des kleinen Vorschaubildes.",
 
     "previewimg_body_previewimg_url" =>
-    "URL des kleinen Vorschaubildes",
+    "URL des kleinen Vorschaubildes.",
 
     "previewimg_body_image_url" =>
-    "URL des Bildes",
+    "URL des Bildes.",
 
     "previewimg_body_viewer_url" =>
-    "URL oder JS des Bildbetrachters mit diesem Bild",
+    "URL oder JS des Bildbetrachters mit diesem Bild.",
 
     "previewimg_body_caption" =>
-    "Beschriftung des Bildes",
+    "Beschriftung des Bildes.",
 
     "previewimg_body_cat_title" =>
-    "Name der Kategorie des Bildes",
+    "Name der Kategorie des Bildes.",
 
     "previewimg_noimg_body_title" =>
     "Kein Vorschaubild",

@@ -43,7 +43,6 @@ function compare_founds_with_keywords ( $FOUNDS, $KEYWORDS ) {
 }
 
 function create_search_word_arr ( $ARR, $DEFAULT = "AND" ) {
-
     $ARR = (array) $ARR;
     $ARR = array_filter ( array_map ( "compress_keyword", $ARR ), "strlen" );
 
@@ -246,6 +245,19 @@ if ( isset ( $results_arr['news'] ) ) {
     // Create Template for Entries
     for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
+        $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
+
+        if ( $data['date'] != 0 ) {
+            // Get Date Template
+            $template = new template();
+            $template->setFile("0_search.tpl");
+            $template->load("RESULT_DATE_TEMPLATE");
+            $template->tag("date", $date_formated );
+            $date_template = $template->display ();
+        } else {
+            $date_template = "";
+        }
+
         // Get Template
         $template = new template();
         $template->setFile("0_search.tpl");
@@ -254,7 +266,8 @@ if ( isset ( $results_arr['news'] ) ) {
         $template->tag("id", $data['id'] );
         $template->tag("title", stripslashes ( $data['title'] ) );
         $template->tag("url", "?go=comments&amp;id=" . $data['id'] );
-        $template->tag("date", date_loc ( $global_config_arr['date'], $data['date'] ) );
+        $template->tag("date", $date_formated );
+        $template->tag("date_template", $date_template );
         $template->tag("num_results", $data['num_results'] );
 
         $news_entries .= $template->display ();
@@ -310,6 +323,19 @@ if ( isset ( $results_arr['articles'] ) ) {
     // Create Template for Entries
     for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
+        $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
+
+        if ( $data['date'] != 0 ) {
+            // Get Date Template
+            $template = new template();
+            $template->setFile("0_search.tpl");
+            $template->load("RESULT_DATE_TEMPLATE");
+            $template->tag("date", $date_formated );
+            $date_template = $template->display ();
+        } else {
+            $date_template = "";
+        }
+
         // Get Template
         $template = new template();
         $template->setFile("0_search.tpl");
@@ -318,7 +344,8 @@ if ( isset ( $results_arr['articles'] ) ) {
         $template->tag("id", $data['id'] );
         $template->tag("title", stripslashes ( $data['title'] ) );
         $template->tag("url", "?go=" . $data['url'] );
-        $template->tag("date", date_loc ( $global_config_arr['date'], $data['date'] ) );
+        $template->tag("date", $date_formated );
+        $template->tag("date_template", $date_template );
         $template->tag("num_results", $data['num_results'] );
 
         $articles_entries .= $template->display ();
@@ -371,6 +398,19 @@ if ( isset ( $results_arr['dl'] ) ) {
     // Create Template for Entries
     for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
+        $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
+
+        if ( $data['date'] != 0 ) {
+            // Get Date Template
+            $template = new template();
+            $template->setFile("0_search.tpl");
+            $template->load("RESULT_DATE_TEMPLATE");
+            $template->tag("date", $date_formated );
+            $date_template = $template->display ();
+        } else {
+            $date_template = "";
+        }
+
         // Get Template
         $template = new template();
         $template->setFile("0_search.tpl");
@@ -379,7 +419,8 @@ if ( isset ( $results_arr['dl'] ) ) {
         $template->tag("id", $data['id'] );
         $template->tag("title", stripslashes ( $data['title'] ) );
         $template->tag("url", "?go=dlfile&amp;id=" . $data['id'] );
-        $template->tag("date", date_loc ( $global_config_arr['date'], $data['date'] ) );
+        $template->tag("date", $date_formated );
+        $template->tag("date_template", $date_template );
         $template->tag("num_results", $data['num_results'] );
 
         $downloads_entries .= $template->display ();

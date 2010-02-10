@@ -31,9 +31,12 @@
  </fieldset>
 <!--section-end::SEARCH-->
 
+<!--section-start::RESULT_DATE_TEMPLATE-->vom {..date..} 
+<!--section-end::RESULT_DATE_TEMPLATE-->
+
 <!--section-start::RESULT_LINE--><p>
   <a href="{..url..}">{..title..}</a>
-  vom {..date..} <span class="small">(Funde: {..num_results..})</span>
+  {..date_template..}<span class="small">(Funde: {..num_results..})</span>
 </p>
 <!--section-end::RESULT_LINE-->
 

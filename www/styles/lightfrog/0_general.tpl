@@ -58,13 +58,13 @@
     <table style="width:100%;" cellspacing="0" cellpadding="3">
       <tr>
         <td width="33%" align="right">
-          {..prev_link..}
+          {..prev_image_link..}
         </td>
         <td width="33%" align="center">
           <a href="javascript:self.close()">Fenster&nbsp;schließen</a>   
         </td>
         <td width="33%" align="left">
-          {..next_link..}
+          {..next_image_link..}
         </td>
       </tr>
     </table>    
