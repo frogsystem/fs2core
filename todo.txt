@@ -1,7 +1,8 @@
 alix5:
 
-Suche einschränken für nicht veröffentlichte News/News in Zukunft und nicht veröffentlichte DLs
 Frogpad Editor, Tag-List im Editor
+
+check latest codemirror release
 
 
 Lang-Texte verfassen

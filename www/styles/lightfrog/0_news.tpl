@@ -201,5 +201,7 @@
     <input class="pointer" type="submit" value="Suchen">
   </form>
 </fieldset>
+
+<br><br>
 <!--section-end::SEARCH-->
 

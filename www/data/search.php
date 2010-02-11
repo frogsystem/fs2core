@@ -176,7 +176,6 @@ if ( ( isset ( $_REQUEST['keyword'] ) && strlen ( trim ( $_REQUEST['keyword'] ) 
         foreach ( $docs as $id => $founds ) {
             if ( compare_founds_with_keywords ( $founds, $keyword_arr ) ) {
                 $results_arr[$type][$id] = array_sum ( $founds );
-                #echo $type." - ".$id." - ". array_sum ( $founds ) ."<br>";
             }
         }
     }
@@ -209,15 +208,6 @@ if ( isset ( $results_arr['news'] ) ) {
     // Security Function
     $news_entries = "";
     $replace_arr = array();
-
-    // Get More Results Template
-    if ( count ( $results_arr['news'] ) > $config_arr['search_num_previews'] ) {
-        $news_more = $more_results_template;
-        $news_more->tag("main_search_url", "?go=news_search&amp;keyword=".implode ( "+", $keyword_arr ) );
-        $news_more = $news_more->display ();
-    } else {
-        $news_more = "";
-    }
                                          
     // Get max. num of data sets to select
     $num_data_sets = min ( $config_arr['search_num_previews'], count ( $results_arr['news'] ) );
@@ -227,6 +217,8 @@ if ( isset ( $results_arr['news'] ) ) {
                             SELECT `news_id`, `news_title`, `news_date`
                             FROM `".$global_config_arr['pref']."news`
                             WHERE `news_id` IN(" . implode ( ",", get_id_list_from_result_arr ( $results_arr['news'], $num_data_sets  ) ) . ")
+                            AND `news_date` <= ".time()."
+                            AND `news_active` = 1
                             ORDER BY `news_date` DESC
     ", $db );
     while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
@@ -241,8 +233,18 @@ if ( isset ( $results_arr['news'] ) ) {
 
     // Sort Data Array by Counter and Date
     $replace_arr = sort_replace_arr ( $replace_arr );
+    
+    // Get More Results Template
+    if ( count ( $replace_arr ) > $config_arr['search_num_previews'] ) {
+        $news_more = $more_results_template;
+        $news_more->tag("main_search_url", "?go=news_search&amp;keyword=".implode ( "+", $keyword_arr ) );
+        $news_more = $news_more->display ();
+    } else {
+        $news_more = "";
+    }
 
     // Create Template for Entries
+    $news_num_results = 0;
     for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
         $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
@@ -271,10 +273,13 @@ if ( isset ( $results_arr['news'] ) ) {
         $template->tag("num_results", $data['num_results'] );
 
         $news_entries .= $template->display ();
+        $news_num_results = $i;
     }
     $news_entries = ( count ( $replace_arr ) >= 1 ) ? $news_entries : $no_results_template;
+    $news_num_results++;
 } else {
     $news_entries = $no_results_template;
+    $news_num_results = 0;
     $news_more = "";
 }
 
@@ -283,16 +288,6 @@ if ( isset ( $results_arr['articles'] ) ) {
     // Security Function
     $articles_entries = "";
     $replace_arr = array();
-
-    // Get More Results Template
-    if ( count ( $results_arr['articles'] ) > $config_arr['search_num_previews'] ) {
-        $articles_more = $more_results_template;
-        $articles_more->tag("main_search_url", "?go=articles_search&amp;keyword=".implode ( "+", $keyword_arr ) );
-        $articles_more = $articles_more->display ();
-    } else {
-        $articles_more = "";
-    }
-    $articles_more = ""; // Remove Line when articles_search implemented
     
     // Get max. num of data sets to select
     $num_data_sets = min ( $config_arr['search_num_previews'], count ( $results_arr['articles'] ) );
@@ -316,11 +311,22 @@ if ( isset ( $results_arr['articles'] ) ) {
             "num_results" => $results_arr['articles'][$data_arr['article_id']],
         );
     }
-
+    
     // Sort Data Array by Counter and Date
     $replace_arr = sort_replace_arr ( $replace_arr );
+    
+    // Get More Results Template
+    if ( count ( $replace_arr ) > $config_arr['search_num_previews'] ) {
+        $articles_more = $more_results_template;
+        $articles_more->tag("main_search_url", "?go=articles_search&amp;keyword=".implode ( "+", $keyword_arr ) );
+        $articles_more = $articles_more->display ();
+    } else {
+        $articles_more = "";
+    }
+    $articles_more = ""; // Remove Line when articles_search implemented
 
     // Create Template for Entries
+    $articles_num_results = 0;
     for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
         $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
@@ -349,10 +355,13 @@ if ( isset ( $results_arr['articles'] ) ) {
         $template->tag("num_results", $data['num_results'] );
 
         $articles_entries .= $template->display ();
+        $articles_num_results = $i;
     }
     $articles_entries = ( count ( $replace_arr ) >= 1 ) ? $articles_entries : $no_results_template;
+    $articles_num_results++;
 } else {
     $articles_entries = $no_results_template;
+    $articles_num_results = 0;
     $articles_more = "";
 }
 
@@ -362,16 +371,7 @@ if ( isset ( $results_arr['dl'] ) ) {
     // Security Function
     $downloads_entries = "";
     $replace_arr = array();
-
-    // Get More Results Template
-    if ( count ( $results_arr['dl'] ) > $config_arr['search_num_previews'] ) {
-        $downloads_more = $more_results_template;
-        $downloads_more->tag("main_search_url", "?go=download&amp;cat_id=all&amp;keyword=".implode ( "+", $keyword_arr ) );
-        $downloads_more = $downloads_more->display ();
-    } else {
-        $downloads_more = "";
-    }
-
+    
     // Get max. num of data sets to select
     $num_data_sets = min ( $config_arr['search_num_previews'], count ( $results_arr['dl'] ) );
 
@@ -380,6 +380,7 @@ if ( isset ( $results_arr['dl'] ) ) {
                             SELECT `dl_id`, `dl_name`, `dl_date`
                             FROM `".$global_config_arr['pref']."dl`
                             WHERE `dl_id` IN(" . implode ( ",", get_id_list_from_result_arr ( $results_arr['dl'], $num_data_sets  ) ) . ")
+                            AND `dl_open` = 1
                             ORDER BY `dl_date` DESC
     ", $db );
     while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
@@ -395,7 +396,17 @@ if ( isset ( $results_arr['dl'] ) ) {
     // Sort Data Array by Counter and Date
     $replace_arr = sort_replace_arr ( $replace_arr );
 
+    // Get More Results Template
+    if ( count ( $replace_arr ) > $config_arr['search_num_previews'] ) {
+        $downloads_more = $more_results_template;
+        $downloads_more->tag("main_search_url", "?go=download&amp;cat_id=all&amp;keyword=".implode ( "+", $keyword_arr ) );
+        $downloads_more = $downloads_more->display ();
+    } else {
+        $downloads_more = "";
+    }
+
     // Create Template for Entries
+    $downloads_num_results = 0;
     for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
         $data = $replace_arr[$i];
         $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
@@ -424,10 +435,13 @@ if ( isset ( $results_arr['dl'] ) ) {
         $template->tag("num_results", $data['num_results'] );
 
         $downloads_entries .= $template->display ();
+        $downloads_num_results = $i;
     }
     $downloads_entries = ( count ( $replace_arr ) >= 1 ) ? $downloads_entries : $no_results_template;
+    $downloads_num_results++;
 } else {
     $downloads_entries = $no_results_template;
+    $downloads_num_results = 0;
     $downloads_more = "";
 }
 
@@ -443,6 +457,7 @@ if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_news'] === TRUE ) {
     $template = $results_template;
     $template->tag("type_title", $TEXT->get("search_news_title") );
     $template->tag("results", $news_entries );
+    $template->tag("num_results", $news_num_results );
     $template->tag("more_results", $news_more );
     $news_template = $template->display ();
 } else {
@@ -455,6 +470,7 @@ if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_articles'] === TRUE ) 
     $template = $results_template;
     $template->tag("type_title", $TEXT->get("search_articles_title") );
     $template->tag("results", $articles_entries );
+    $template->tag("num_results", $articles_num_results );
     $template->tag("more_results", $articles_more );
     $articles_template = $template->display ();
 } else {
@@ -467,6 +483,7 @@ if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_downloads'] === TRUE )
     $template = $results_template;
     $template->tag("type_title", $TEXT->get("search_downloads_title") );
     $template->tag("results", $downloads_entries );
+    $template->tag("num_results", $downloads_num_results );
     $template->tag("more_results", $downloads_more );
     $downloads_template = $template->display ();
 } else {

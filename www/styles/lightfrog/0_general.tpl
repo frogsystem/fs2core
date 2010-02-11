@@ -51,20 +51,26 @@
 <!--section-start::POPUPVIEWER--><body id="imageviewer">
 
   <div style="width:100%;" align="center">
-    <p><b>{..caption..}</b></p>
-    <div class="center middle" style="width:800px; height:600px; display:table-cell;">
+    <p><b>&nbsp;{..caption..}</b>&nbsp;</p>
+    <div class="center middle" style="width:800px; height:300px; display:table-cell;">
       {..image..}
     </div>      
     <table style="width:100%;" cellspacing="0" cellpadding="3">
-      <tr>
-        <td width="33%" align="right">
+      <tr valign="middle">
+        <td width="17%" align="right">
           {..prev_image_link..}
+        </td>
+        <td width="17%" align="left">
+          {..prev_link..}
         </td>
         <td width="33%" align="center">
           <a href="javascript:self.close()">Fenster&nbsp;schlieﬂen</a>   
         </td>
-        <td width="33%" align="left">
-          {..next_image_link..}
+        <td width="17%" align="right">
+          {..next_link..} 
+        </td>
+        <td width="17%" align="left">
+           {..next_image_link..}
         </td>
       </tr>
     </table>    

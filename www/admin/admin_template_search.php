@@ -88,6 +88,7 @@ $TEMPLATE_EDIT[] = array (
     help => array (
         array ( tag => "type_title", text => $TEXT['template']->get("search_results_body_type_title") ),
         array ( tag => "results", text => $TEXT['template']->get("search_results_body_results") ),
+        array ( tag => "num_results", text => $TEXT['template']->get("search_results_body_num_results") ),
         array ( tag => "more_results", text => $TEXT['template']->get("search_results_body_more_results") ),
     )
 );

@@ -47,9 +47,10 @@ if ($_REQUEST[year] && $_REQUEST[month])
     $index = mysql_query ( "
                             SELECT *
                             FROM ".$global_config_arr['pref']."news
-                            WHERE news_date > $starttime
-                            AND news_date < $endtime
-                            AND news_active = 1
+                            WHERE news_date > ".$starttime."
+                            AND `news_date` < ".$endtime."
+                            AND `news_active` = 1
+                            AND `news_date` <= ".time()."
                             ORDER BY news_date desc
     ", $db);
     
@@ -85,7 +86,8 @@ elseif ($_REQUEST[keyword])
                             FROM ".$global_config_arr['pref']."news
                             WHERE ( news_text LIKE '%".$_REQUEST['keyword']."%'
                             OR news_title LIKE '%".$_REQUEST['keyword']."%' )
-                            AND news_active = 1
+                            AND `news_active` = 1
+                            AND `news_date` <= ".time()."
                             ORDER BY news_date desc
     ", $db);
     if (mysql_num_rows($index) > 0)  // News vorhanden?

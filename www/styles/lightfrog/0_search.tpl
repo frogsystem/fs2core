@@ -54,7 +54,7 @@
 
 <!--section-start::RESULTS_BODY--><br>
 <div>
-  <b>{..type_title..}</b><br>
+  <b>{..type_title..}</b> <span class="small">(Gefundene Inhalte: <b>{..num_results..}</b>)</span><br>
   {..results..}
   {..more_results..}
 </div>
