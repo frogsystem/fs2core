@@ -250,6 +250,18 @@ function toggelTextWrapping ( theButton, editorId ) {
         $(theButton).addClass("html-editor-button-active");
         var newBool = true;
     }
+    eval ( ""+editorId+".setTextWrapping(newBool);" );
+}
+
+// Toggle lineNumbers
+function toggelLineNumbers ( theButton, editorId ) {
+    if ($(theButton).hasClass("html-editor-button-active")) {
+        $(theButton).removeClass("html-editor-button-active");
+        var newBool = false;
+    } else {
+        $(theButton).addClass("html-editor-button-active");
+        var newBool = true;
+    }
     eval ( ""+editorId+".setLineNumbers(newBool);" );
 }
 
@@ -316,18 +328,20 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
         var css = ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"];
         break;
   }
-
-  var editor = CodeMirror.fromTextArea(textareaId, {
+  
+  var textarea = document.getElementById(textareaId);
+  var editor = new CodeMirror(CodeMirror.replace(textareaId), {
     parserfile: parser,
     stylesheet: css,
     path: "../resources/codemirror/js/",
+    content: textarea.value,
     lineNumbers: true,
-    //textWrapping: false
+    //textWrapping: false,
     continuousScanning: 500,
     tabMode: "shift",
     height: editorHeight,
     iframeClass:"html-editor-iframe",
-    readOnly: readOnlyState,
+    readOnly: readOnlyState
   });
   //editor.setLineNumbers(true);
   return editor;

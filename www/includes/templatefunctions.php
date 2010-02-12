@@ -618,7 +618,7 @@ function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
     if ( file_exists ( FS2_ROOT_PATH . "styles/default/" . $FILE ) ) {
         $original['button'] = '
                                             <a class="html-editor-button html-editor-button-original" onClick="toggelOriginal(\''.$EDITOR_NAME.'\')" title="Original anzeigen">
-                                                <img src="../images/design/null.gif" alt="Original anzeigen" border="0">
+                                                <img src="img/null.gif" alt="Original anzeigen" border="0">
                                             </a>
         ';
 
@@ -714,12 +714,12 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
                                         '.$original['row'].'
                                         <div class="html-editor-row">
                                             <a class="html-editor-button html-editor-button-big" onClick="open_editor(\''.$editor_arr['name'].'\')" title="In Editor-Fenster öffnen">
-                                                <img src="../images/design/null.gif" alt="In Editor-Fenster öffnen" border="0">
+                                                <img src="img/null.gif" alt="In Editor-Fenster öffnen" border="0">
                                             </a>
                                             '.$original['button'].'
                                             <div class="html-editor-line"></div>
-                                            <a class="html-editor-button html-editor-button-active html-editor-button-textwrap" onClick="toggelTextWrapping(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilenumbruch">
-                                                <img src="../images/design/null.gif" alt="Zeilenumbruch" border="0">
+                                            <a class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilen-Nummerierung">
+                                                <img src="img/null.gif" alt="Zeilen-Nummerierung" border="0">
                                             </a>
                                             '.$help_template.'
                                             '.$dropdowns['global_vars'].'
@@ -735,7 +735,7 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
                                         <textarea class="no-js-html-editor" wrap="off"  rows="'.$editor_arr['rows'].'" cols="'.$editor_arr['cols'].'" name="'.$editor_arr['name'].'" id="'.$editor_arr['name'].'">'.$editor_arr['template'].'</textarea>
                                     </div>
                                     <script type="text/javascript">
-                                        var editor_'.$editor_arr['name'].' = new_editor ( "'.$editor_arr['name'].'", "'.$editor_arr['height'].'", false, '.$HIGHLIGHTER.' );
+                                        editor_'.$editor_arr['name'].' = new_editor ( "'.$editor_arr['name'].'", "'.$editor_arr['height'].'", false, '.$HIGHLIGHTER.' );
                                     </script>
                                     '.$original['template'].'
 

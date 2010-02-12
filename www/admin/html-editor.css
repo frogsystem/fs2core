@@ -23,6 +23,9 @@ textarea.no-js-html-editor {
 .html-editor-button-textwrap {
     background-image:url(html-editor/text-wrapping.gif);
 }
+.html-editor-button-line-numbers {
+    background-image:url(html-editor/line-numbers.gif);
+}
 .html-editor-button-original {
     background-image:url(html-editor/doc-search.gif);
 }

@@ -86,8 +86,8 @@ echo'
             <div class="html-editor-row-header">
             </div>
             <div class="html-editor-row">
-                <a class="html-editor-button html-editor-button-active html-editor-button-textwrap" onClick="toggelTextWrapping(this,\'frogpad\')" title="Zeilenumbruch">
-                    <img src="../images/design/null.gif" alt="Zeilenumbruch" border="0">
+                <a class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'frogpad\')" title="Zeilen-Nummerierung">
+                    <img src="img/null.gif" alt="Zeilen-Nummerierung" border="0">
                 </a>
                 '.$dropdowns['global_vars'].'
             </div>
@@ -115,7 +115,8 @@ echo'
     ', "margin-top:8px;" ).'
 
     <script type="text/javascript">
-      var frogpad = CodeMirror.fromTextArea("frogpad", {
+      var textarea = document.getElementById("frogpad");
+      var frogpad = new CodeMirror(CodeMirror.replace("frogpad"), {
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"],
         stylesheet: ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"],
         path: "../resources/codemirror/js/",

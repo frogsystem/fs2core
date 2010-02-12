@@ -1,11 +1,14 @@
 alix5:
 
 Pop Up-Editor, Tag-List im Editor
+Artikel Vorschau, Fix für relative Bilder...
+Test-Bild in Artikel Template entfernen
 
-check latest codemirror release
+Html Editor für IE anpassen
+Imageviewer für IE anpassen
+
 
 Lang-Texte verfassen (?)
-Artikel Vorschau, Fix für relative Bilder...
 default design noch bearbeiten
 
 
