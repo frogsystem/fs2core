@@ -53,7 +53,7 @@ $TEMPLATE_EDIT[] = array (
         array ( tag => "url", text => $TEXT['template']->get("search_result_line_url") ),
         array ( tag => "date", text => $TEXT['template']->get("search_result_line_date") ),
         array ( tag => "date_template", text => $TEXT['template']->get("search_result_line_date_template") ),
-        array ( tag => "num_results", text => $TEXT['template']->get("search_result_line_num_results") ),
+        array ( tag => "num_matches", text => $TEXT['template']->get("search_result_line_num_matches") ),
     )
 );
 

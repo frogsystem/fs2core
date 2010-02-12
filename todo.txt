@@ -1,15 +1,12 @@
 alix5:
 
-Frogpad Editor, Tag-List im Editor
+Pop Up-Editor, Tag-List im Editor
 
 check latest codemirror release
 
-
-Lang-Texte verfassen
+Lang-Texte verfassen (?)
 Artikel Vorschau, Fix für relative Bilder...
 default design noch bearbeiten
-
-
 
 
 alix6:

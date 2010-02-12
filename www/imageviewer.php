@@ -171,6 +171,8 @@ if ($db)
     $template_popupviewer = replace_applets ( $template_popupviewer );
     $template_popupviewer = replace_navigations ( $template_popupviewer );
     $template_popupviewer = replace_snippets ( $template_popupviewer );
+    
+    $template_popupviewer = replace_globalvars ( $template_popupviewer );
 
     // Get Main Template
     $template = get_maintemplate ();

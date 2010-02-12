@@ -575,8 +575,8 @@ $TEXT = array (
     "search_result_line_date_template" =>
     "Datum-Template, wenn Datum vorhanden.",
 
-    "search_result_line_num_results" =>
-    "Anzahl der Fundstellen.",
+    "search_result_line_num_matches" =>
+    "Anzahl der Fundstellen im Inhalt.",
 
     "search_no_results_title" =>
     "Keine Ergebnisse-Zeile",
@@ -604,6 +604,9 @@ $TEXT = array (
     
     "search_results_body_results" =>
     "Bindet die Ergebnis-Zeilen ein.",
+    
+    "search_results_body_num_results" =>
+    "Anzahl der gefundenen Inhalte einer Art.",
 
     "search_results_body_more_results" =>
     "Bindet „Mehr Ergebnisse-Link“ ein, wenn nötig.",

@@ -36,7 +36,7 @@
 
 <!--section-start::RESULT_LINE--><p>
   <a href="{..url..}">{..title..}</a>
-  {..date_template..}<span class="small">(Funde: {..num_results..})</span>
+  {..date_template..}<span class="small">(Funde: {..num_matches..})</span>
 </p>
 <!--section-end::RESULT_LINE-->
 
