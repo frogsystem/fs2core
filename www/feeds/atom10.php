@@ -11,8 +11,14 @@ require( FS2_ROOT_PATH . "login.inc.php");
 
 if ($db)
 {
+    //Include Functions-Files
     include( FS2_ROOT_PATH . "includes/functions.php");
     include( FS2_ROOT_PATH . "includes/imagefunctions.php");
+
+    //Include Library-Classes
+    require ( FS2_ROOT_PATH . "libs/class_template.php" );
+    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
+    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
 
     if ($global_config_arr[virtualhost] == "") {
         $global_config_arr[virtualhost] = "http://example.com/";
@@ -29,20 +35,17 @@ if ($db)
                           LIMIT 1");
 
     $last_date[news_date] = mysql_result($index,0,"news_date");
-    $last_date[old_time_zone] = date("O",$last_date[news_date]);
-    $last_date[time_zone] = substr($last_date[old_time_zone],0,strlen($last_date[old_time_zone]-2))
-                          .":".substr($last_date[old_time_zone],-2,2);
     $last_date[news_updated] = date("Y-m-d\TH:i:s",$last_date[news_date]);
-    $last_date[news_updated] .= $last_date[time_zone];
+    $last_date[news_updated] .= "Z";
     
     //Feed Header ausgeben
     echo'<?xml version="1.0" encoding="utf-8"?>
-        <feed xmlns="http://www.w3.org/2005/Atom">
-        <id>'.$global_config_arr[virtualhost].'</id>
-        <title>'.htmlspecialchars($global_config_arr[title]).'</title>
-        <updated>'.$last_date[news_updated].'</updated>
-        <link rel="self" href="atom10.php" />
-    ';
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>'.utf8_encode($global_config_arr[virtualhost]).'</id>
+    <title>'.utf8_encode(htmlspecialchars($global_config_arr[title])).'</title>
+    <updated>'.utf8_encode($last_date[news_updated]).'</updated>
+    <link rel="self" href="'.utf8_encode($global_config_arr[virtualhost].'feeds/atom10.php').'" />
+';
 
     $index = mysql_query("SELECT news_id, news_text, news_title, news_date, user_id
                           FROM ".$global_config_arr[pref]."news
@@ -51,41 +54,35 @@ if ($db)
                           ORDER BY news_date DESC
                           LIMIT $news_config_arr[num_news]");
 
-    while ($news_arr = mysql_fetch_assoc($index))
-    {
+    while ($news_arr = mysql_fetch_assoc($index)) {
         $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr[pref]."user WHERE user_id = $news_arr[user_id]");
         $news_arr[user_name] = mysql_result($index2,0,"user_name");
 
-        $news_arr[old_time_zone] = date("O",$news_arr[news_date]);
-        $news_arr[time_zone] = substr($news_arr[old_time_zone],0,2).":".substr($news_arr[old_time_zone],2,2);
-        $news_arr[time_zone] = substr($news_arr[old_time_zone],0,strlen($news_arr[old_time_zone]-2))
-                             .":".substr($news_arr[old_time_zone],-2,2);
         $news_arr[news_updated] = date("Y-m-d\TH:i:s",$news_arr[news_date]);
-        $news_arr[news_updated] .= $news_arr[time_zone];
+        $news_arr[news_updated] .= "Z";
         
         // Item ausgeben
         echo'
-            <entry>
-                <id>'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'</id>
-                <title>'.utf8_encode(killhtml($news_arr[news_title])).'</title>
-                <updated>'.$news_arr[news_updated].'</updated>
-                <author>
-                    <name>'.$news_arr[user_name].'</name>
-                </author>
-                <content><![CDATA['.utf8_encode(killfs($news_arr[news_text])).']]></content>
-                <link rel="alternate" href="'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'" />
-            </entry>
+    <entry>
+        <id>'.utf8_encode($global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id]).'</id>
+        <title>'.utf8_encode(killhtml($news_arr[news_title])).'</title>
+        <updated>'.utf8_encode($news_arr[news_updated]).'</updated>
+        <author>
+            <name>'.utf8_encode($news_arr[user_name]).'</name>
+        </author>
+        <content><![CDATA['.utf8_encode(killfs($news_arr[news_text])).']]></content>
+        <link rel="alternate" href="'.utf8_encode($global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id]).'" />
+    </entry>
         ';
      }
 
     echo'
-        </feed>
+</feed>
     ';
 
-mysql_close($db);
-}
-else
-{
+    mysql_close($db);
+    
+} else {
     //"Keine Verbindung"-Feed
     echo'<?xml version="1.0" encoding="utf-8"?>
         <feed xmlns="http://www.w3.org/2005/Atom">
@@ -95,5 +92,4 @@ else
         </feed>
     ';
 }
-
 ?>

@@ -2,7 +2,7 @@
 // Alle Kategorien angeben, die nicht übermittelt werden sollen
 // Durch Komma getrennte IDs, am Ende kein Komma setzen
 
-$dontshow = "1,3,4";
+$dontshow = "";
 
 #######################
 #######################
@@ -19,25 +19,28 @@ require( FS2_ROOT_PATH . "login.inc.php");
 
 if ($db)
 {
+    //Include Functions-Files
     include( FS2_ROOT_PATH . "includes/functions.php");
     include( FS2_ROOT_PATH . "includes/imagefunctions.php");
+
+    //Include Library-Classes
+    require ( FS2_ROOT_PATH . "libs/class_template.php" );
+    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
+    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
 
     if ($global_config_arr[virtualhost] == "") {
         $global_config_arr[virtualhost] = "http://example.com/";
     }
 
-	//Create WHERE Abfragen
-	$dontshow = explode ( ",", $dontshow );
-	unset ( $where );
-	$before = " WHERE ";
-	foreach ( $dontshow as $value ) {
-		$text = "cat_id != '".$value."'";
-		$where .= $before . $text;
-		$before = " AND ";
-	}
+    //Create WHERE Abfragen
+    if ( strlen ( $dontshow ) > 0 ) {
+        $where= "AND `cat_id` NOT IN (".$dontshow.")";
+    } else {
+        $where= "";
+    }
 
     // News Config + Infos
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."news_config".$where."", $db);
+    $index = mysql_query("SELECT `num_news` FROM ".$global_config_arr['pref']."news_config", $db);
     $news_config_arr = mysql_fetch_assoc($index);
 
     //Feed Header ausgeben
@@ -51,16 +54,17 @@ if ($db)
         <title>'.htmlspecialchars($global_config_arr[title]).'</title>
     ';
 
-    $index = mysql_query("SELECT news_id, news_text, news_title, news_date
-                          FROM ".$global_config_arr[pref]."news
-                          WHERE news_date <= UNIX_TIMESTAMP()
-                          AND news_active = 1
-                          ORDER BY news_date DESC
-                          LIMIT $news_config_arr[num_news]");
-    while ($news_arr = mysql_fetch_assoc($index))
-    {
+    $index = mysql_query ( "
+                            SELECT `news_id`, `news_text`, `news_title`, `news_date`
+                            FROM `".$global_config_arr['pref']."news`
+                            WHERE `news_date` <= ".time()."
+                            AND `news_active` = 1
+                            ".$where."
+                            ORDER BY `news_date` DESC
+                            LIMIT 0,".$news_config_arr['num_news']."
+    ", $db );
 
-
+    while ($news_arr = mysql_fetch_assoc($index)) {
         // Item ausgeben
         echo'
             <item>

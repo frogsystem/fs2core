@@ -1,6 +1,6 @@
 <?php
 // Set header
-header("Content-type: application/rss+xml");
+header("Content-type: application/xml");
 
 // fs2 include path
 set_include_path ( '.' );
@@ -11,8 +11,14 @@ require( FS2_ROOT_PATH . "login.inc.php");
 
 if ($db)
 {
+    //Include Functions-Files
     include( FS2_ROOT_PATH . "includes/functions.php");
     include( FS2_ROOT_PATH . "includes/imagefunctions.php");
+
+    //Include Library-Classes
+    require ( FS2_ROOT_PATH . "libs/class_template.php" );
+    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
+    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
     
     if ($global_config_arr[virtualhost] == "") {
         $global_config_arr[virtualhost] = "http://example.com/";
@@ -24,14 +30,14 @@ if ($db)
     
     //Feed Header ausgeben
     echo'<?xml version="1.0" encoding="utf-8"?>
-        <rdf:RDF
-            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-            xmlns="http://purl.org/rss/1.0/"
-        >
-        <channel rdf:about="'.$global_config_arr[virtualhost].'feeds/rss10.php">
-        <title>'.htmlspecialchars($global_config_arr[title]).'</title>
-        <link>'.$global_config_arr[virtualhost].'</link>
-        <description>'.htmlspecialchars($global_config_arr[description]).'</description>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://purl.org/rss/1.0/"
+>
+    <channel rdf:about="'.utf8_encode($global_config_arr['virtualhost'].'feeds/rss10.php').'">
+        <title>'.utf8_encode(htmlspecialchars($global_config_arr['title'])).'</title>
+        <link>'.utf8_encode($global_config_arr[virtualhost]).'</link>
+        <description>'.utf8_encode(htmlspecialchars($global_config_arr[description])).'</description>
         <items>
             <rdf:Seq>
     ';
@@ -43,18 +49,17 @@ if ($db)
                           ORDER BY news_date DESC
                           LIMIT $news_config_arr[num_news]", $db);
 
-    while ($news_arr = mysql_fetch_assoc($index))
-    {
+    while ($news_arr = mysql_fetch_assoc($index)) {
         // <items> ausgeben
         echo'
-            <rdf:li resource="'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'" />
+                <rdf:li resource="'.utf8_encode($global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id]).'" />
         ';
     }
 
     echo'
             </rdf:Seq>
         </items>
-        </channel>
+    </channel>
     ';
 
     $index = mysql_query("SELECT news_id, news_text, news_title, news_date
@@ -63,27 +68,24 @@ if ($db)
                           ORDER BY news_date DESC
                           LIMIT $news_config_arr[num_news]", $db);
 
-
-    while ($news_arr = mysql_fetch_assoc($index))
-    {
+    while ($news_arr = mysql_fetch_assoc($index)) {
         // Item ausgeben
         echo'
-            <item rdf:about="'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'">
-            <title>'.utf8_encode(killhtml($news_arr[news_title])).'</title>
-            <link>'.$global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id].'</link>
-            <description><![CDATA['.utf8_encode(killfs($news_arr[news_text])).']]></description>
-            </item>
+    <item rdf:about="'.utf8_encode($global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id]).'">
+        <title>'.utf8_encode(killhtml($news_arr[news_title])).'</title>
+        <link>'.utf8_encode($global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id]).'</link>
+        <description><![CDATA['.utf8_encode(killfs($news_arr[news_text])).']]></description>
+    </item>
         ';
      }
 
     echo'
-        </rdf:RDF>
+</rdf:RDF>
     ';
 
-mysql_close($db);
-}
-else
-{
+    mysql_close($db);
+
+} else {
     //"Keine Verbindung"-Feed
     echo'<?xml version="1.0" encoding="utf-8"?>
         <rdf:RDF
@@ -99,5 +101,4 @@ else
         </rdf:RDF>
     ';
 }
-
 ?>
