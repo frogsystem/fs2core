@@ -17,7 +17,7 @@
   <div id="main">
     
     <div id="header">
-      <div id="title">&nbsp;Frogsystem 2 (Alix 5)</div>
+      <h1 id="title">&nbsp;Frogsystem 2 (Alix 5)</h1>
     </div> 
 
     <div id="menu_left">

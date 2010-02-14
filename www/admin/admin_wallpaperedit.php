@@ -157,7 +157,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
 
     $error_message = "";
 
-    if (isset($_POST['sended']) AND $_POST['sended'] !="newthumb")
+    if (isset($_POST['sended']) && $_POST['sended'] !="newthumb" && !isset($_POST['wp_add']) )
     {
       $admin_wp_arr['wallpaper_name'] = $_POST['wallpaper_name'];
       $admin_wp_arr['wallpaper_title'] = $_POST['wallpaper_title'];
@@ -165,7 +165,10 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
       
       $error_message = "Bitte füllen Sie <b>alle Pflichfelder</b> aus!";
     }
-    systext($error_message);
+
+    if ( $error_message != "" ) {
+        systext($error_message);
+    }
     
     //EDIT ANFANG
 
@@ -201,11 +204,11 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
                         <input type="hidden" name="wallpaper_id" value="'.$admin_wp_arr[wallpaper_id].'" />
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
-                                <td class="config" valign="top" width="190">
+                                <td class="config" valign="top" width="170">
                                     Wallpaper:<br>
                                     <font class="small">Thumbnail des Wallpapers.</font>
                                 </td>
-                                <td class="config" valign="top" width="410">
+                                <td class="config" valign="top" width="550">
                                    <img src="'.image_url("images/wallpaper/", $admin_wp_arr[wallpaper_name]."_s").'" />
                                 </td>
                             </tr>
@@ -242,7 +245,7 @@ elseif ($_POST['wallpaper_id'] AND $_POST['wp_action'])
                                     <font class="small">Titel des Wallpapers.<br>(optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="wallpaper_title" size="33" maxlength="100" value="'.$admin_wp_arr[wallpaper_title].'">
+                                    <input class="text" name="wallpaper_title" size="33" maxlength="255" value="'.$admin_wp_arr[wallpaper_title].'">
                                 </td>
                             </tr>
                             <tr>
@@ -282,16 +285,23 @@ echo'
                                 <td class="config" valign="top">
                                     <input type="hidden" name="wpnew['.$j.']" value="'.$_POST[wpnew][$j].'">
                                     <input type="hidden" name="size_id['.$j.']" value="'.$_POST[size_id][$j].'" />
-                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="10" maxlength="30" value="'.$_POST[size][$j].'">
-                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="25">
-                                    Löschen:&nbsp;<input name="delwp['.$j.']" id="'.$j.'" value="'.$_POST[size_id][$j].'" type="checkbox" onClick=\'delalert ("'.$j.'", "Soll die Größe '.$i.' des Wallpapers wirklich gelöscht werden?")\'><br>
-                                    '.$admin_sizes_arr['wp_exists'][$j].'
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x960";\' value="1280x960">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1600x1200";\' value="1600x1200">
-                                    <br><br>
+                                    <input class="text center" id="size'.$j.'" name="size['.$j.']" size="13" maxlength="30" value="'.$_POST[size][$j].'">&nbsp;&nbsp;
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="25">&nbsp;
+                                    <label for="'.$j.'" class="small middle pointer"><b>Löschen:</b></label><input class="pointer middle" name="delwp['.$j.']" id="'.$j.'" value="'.$_POST[size_id][$j].'" type="checkbox" onClick=\'delalert ("'.$j.'", "Soll die Größe '.$i.' des Wallpapers wirklich gelöscht werden?")\'><br>
+                                    '.$admin_sizes_arr['wp_exists'][$j].'<br>
+                                    <fieldset>
+                                        <legend class="small"><b>Schnellauswahl</b></legend>
+                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
+                                    </fieldset><br>
                                 </td>
                             </tr>
             ';
@@ -306,13 +316,21 @@ echo'
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="hidden" name="wpnew['.$j.']" value="1">
-                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="10" maxlength="30" value=""> <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br>
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x960";\' value="1280x960">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1600x1200";\' value="1600x1200">
-                                    <br><br>
+                                    <input class="text center" id="size'.$j.'" name="size['.$j.']" size="13" maxlength="30" value="">&nbsp;&nbsp;
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br><br>
+                                    <fieldset>
+                                        <legend class="small"><b>Schnellauswahl</b></legend>
+                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
+                                    </fieldset><br>
                                 </td>
                             </tr>
             ';
@@ -327,7 +345,7 @@ echo'
                                 <td class="configthin">
                                     <input size="2" class="text" name="optionsadd">
                                     Wallpaper
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input class="button" type="submit" name="wp_add" value="Hinzufügen">
                                 </td>
                             </tr>
                             <tr>
@@ -369,7 +387,7 @@ echo '
                Soll das untenstehende Wallpaper wirklich gelöscht werden?
            </td>
            <td width="25%">
-             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?go=wp_edit";\' value="Nein" class="button" />
+             <input type="submit" value="Ja" class="button">  <input type="button" onclick=\'location.href="?go=wp_edit";\' value="Nein" class="button">
            </td>
        <tr>
        <tr>

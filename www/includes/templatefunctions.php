@@ -6,7 +6,7 @@
 function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE = TRUE, $MANYFILES = FALSE, $HIGHLIGHTER = 1 )
 {
     global $TEXT;
-    
+
     if ( templatepage_postcheck ( $TEMPLATE_EDIT ) && isset( $_POST['reload'] ) ) {
         if ( $SAVE === FALSE ) {
             systext ( $TEXT["admin"]->get("changes_not_saved")."<br>".$TEXT["admin"]->get("template_dont_remove_copyright"),

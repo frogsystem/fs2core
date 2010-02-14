@@ -50,10 +50,10 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     $template_doctype->load("DOCTYPE");
     $template_doctype = $template_doctype->display();
     
-    //
-    if ( $BASE != FALSE ) {
-        $template_base = '
-                <base href="'.$BASE .'">';
+    // Base for Images
+    if ( $BASE !== FALSE ) {  echo "a";
+        $template_base = '<base href="'.$BASE .'">
+                ';
     } else {
         $template_base = "";
     }

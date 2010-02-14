@@ -1,8 +1,6 @@
 alix5:
 
 Pop Up-Editor, Tag-List im Editor
-Artikel Vorschau, Fix für relative Bilder...
-Test-Bild in Artikel Template entfernen
 
 Html Editor für IE anpassen
 Imageviewer für IE anpassen
@@ -17,9 +15,10 @@ Startseite (und News entsprechend...)
 Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
 php-fonts
 großes galerie update (kommentare, bewertungen, counter, bilderserien [spiegel-online], diverese möglichkeiten zur bildanzeige, unterkategorie, verbesserter upload, verbesserte verwaltung)
-großes shop update
-lang-system fertig umstellen und vor allem menü punkte irgendwie einbinden (außerdem am besten automatisch alle php scripte aus dem ordner irgendwie einbinden...)
+shop update
+lang-system fertig umstellen und vor allem menü punkte irgendwie einbinden
 statistik-update
+Vorschau für News
 
 bei neuer codemirror-version:
 => Codemirror Update

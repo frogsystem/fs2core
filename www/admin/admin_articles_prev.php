@@ -183,7 +183,7 @@ if ( $db ) {
 
 
         // Preview Page Template
-        $global_config_arr['title'] = "Frogsystem 2 - Artikelvorschau: " . $global_config_arr['title'];
+        $global_config_arr['title'] = "Frogsystem 2 - Artikelvorschau: " . $article_arr['article_title'];
 
         $template_general = new template();
         $template_general->setFile("0_general.tpl");
@@ -200,7 +200,7 @@ if ( $db ) {
         $template_general = replace_globalvars ( $template_general );
 
         // Get Main Template
-        $template = get_maintemplate ( "../" );
+        $template = get_maintemplate ( "", $global_config_arr['virtualhost'] );
         $template = str_replace ( "{..body..}", $template_general, $template);
 
         // Display Preview Page

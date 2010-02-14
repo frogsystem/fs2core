@@ -330,7 +330,7 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
   }
   
   var textarea = document.getElementById(textareaId);
-  var editor = new CodeMirror(CodeMirror.replace(textareaId), {
+  var editor = CodeMirror.fromTextArea(textareaId, {
     parserfile: parser,
     stylesheet: css,
     path: "../resources/codemirror/js/",

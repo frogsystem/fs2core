@@ -58,7 +58,7 @@ echo'
                                     <font class="small">Bilduntertitel</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="title" size="33" maxlength="100">
+                                    <input class="text" name="title" size="33" maxlength="255">
                                 </td>
                             </tr>
                             <tr>

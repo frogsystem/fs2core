@@ -991,7 +991,7 @@ function get_dl_categories (&$IDs, $CAT_ID, $SHOW_SUB = 0, $ID = 0, $LEVEL = -1 
     while ( $line = mysql_fetch_assoc ( $index ) ) {
         $line['level'] = $LEVEL + 1;
         $IDs[] = $line;
-        if ( $SHOW_SUB == 1 || $line['cat_id'] == $CAT_ID || in_array ( $CAT_ID, get_sub_cats ( $line['cat_id'] ) ) ) {
+        if ( $SHOW_SUB == 1 || $line['cat_id'] == $CAT_ID || in_array ( $CAT_ID, get_sub_cats ( $line['cat_id'], array () ) ) ) {
             get_dl_categories ( $IDs, $CAT_ID, $SHOW_SUB, $line['cat_id'], $line['level'] );
         }
     }

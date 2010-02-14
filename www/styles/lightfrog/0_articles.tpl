@@ -11,11 +11,16 @@
 </div>
 <!--section-end::DATE-->
 
-<!--section-start::BODY--><b>{..title..}</b><img src="styles/lightfrog/icons/user/user.gif" alt="" align="bottom">
-<div style="float:right;">
-  {..date_template..}{..author_template..}
-</div>
-<br><br>
+<!--section-start::BODY--><table cellpadding="0" cellspacing="0" style="width:100%; margin:-10px 0px 0px 0px;">
+  <tr>
+    <td>
+      <h2>{..title..}</h2>
+    </td>
+    <td align="right" valign="bottom">
+      {..date_template..}{..author_template..}
+    </td>
+  </tr>
+</table>
 <div>
   {..text..}
 </div>

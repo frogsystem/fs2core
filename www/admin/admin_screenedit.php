@@ -90,7 +90,7 @@ elseif (isset($_POST[screenid]))
                                     <font class="small">Bilduntertiel (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="title" size="33" value="'.$screen_arr[screen_name].'" maxlength="100">
+                                    <input class="text" name="title" size="33" value="'.$screen_arr[screen_name].'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>

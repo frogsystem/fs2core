@@ -109,7 +109,7 @@ echo'
                                     <font class="small">Titel des Wallpapers.<br>(optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="wallpaper_title" size="33" maxlength="100" value="'.$_POST[wallpaper_title].'">
+                                    <input class="text" name="wallpaper_title" size="33" maxlength="255" value="'.$_POST[wallpaper_title].'">
                                 </td>
                             </tr>
                             <tr>
@@ -146,13 +146,21 @@ echo'
                                     <font class="small">Format und WP auswählen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="10" maxlength="30" value="'.$_POST[size][$j].'"> <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br>
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x960";\' value="1280x960">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1600x1200";\' value="1600x1200">
-                                    <br><br>
+                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="10" maxlength="30" value="'.$_POST[size][$j].'">&nbsp;&nbsp;
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br><br>
+                                    <fieldset>
+                                        <legend class="small"><b>Schnellauswahl</b></legend>
+                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
+                                    </fieldset><br>
                                 </td>
                             </tr>
             ';
@@ -166,13 +174,21 @@ echo'
                                     <font class="small">Format und WP auswählen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="10" maxlength="30" value=""> <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br>
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x960";\' value="1280x960">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                    <input class="button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1600x1200";\' value="1600x1200">
-                                    <br><br>
+                                    <input class="text center" id="size'.$j.'" name="size['.$j.']" size="13" maxlength="30" value="">&nbsp;&nbsp;
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br><br>
+                                    <fieldset>
+                                        <legend class="small"><b>Schnellauswahl</b></legend>
+                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
+                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
+                                    </fieldset><br>
                                 </td>
                             </tr>
             ';
