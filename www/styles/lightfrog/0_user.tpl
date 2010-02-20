@@ -559,25 +559,25 @@
         <br>{..arrow_reg_date..}
       </a>
     </td>
-    <td class="bottom" width="16">
+    <td class="bottom center" width="20">
       <a href="{..order_num_news..}">
         <img src="$VAR(style_icons)user/news.gif" alt="News" title="News" align="bottom">
         <br>{..arrow_num_news..}
       </a>
     </td>
-    <td class="bottom" width="16">
+    <td class="bottom center" width="20">
       <a href="{..order_num_comments..}">
         <img src="$VAR(style_icons)user/comment.gif" alt="Kommentare" title="Kommentare" align="bottom">
         <br>{..arrow_num_comments..}
       </a>
     </td>
-    <td class="bottom" width="16">
+    <td class="bottom center" width="20">
       <a href="{..order_num_articles..}">
         <img src="$VAR(style_icons)user/article.gif" alt="Artikel" title="Artikel" align="bottom">
         <br>{..arrow_num_articles..}
       </a>
     </td>
-    <td class="bottom" width="16">
+    <td class="bottom center" width="20">
       <a href="{..order_num_downloads..}">
         <img src="$VAR(style_icons)user/download.gif" alt="Downloads" title="Downloads" align="bottom">
         <br>{..arrow_num_downloads..}

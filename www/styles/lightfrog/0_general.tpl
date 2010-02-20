@@ -1,14 +1,14 @@
-<!--section-start::SYSTEMMESSAGE--><div>
+<!--section-start::SYSTEMMESSAGE--><p class="systemmessage">
   <b>{..message_title..}</b><br>
   {..message..}
-</div><!--section-end::SYSTEMMESSAGE-->
+</p><!--section-end::SYSTEMMESSAGE-->
 
-<!--section-start::FORWARDMESSAGE--><div>
+<!--section-start::FORWARDMESSAGE--><p class="systemmessage">
   <b>{..message_title..}</b><br>
   {..message..}<br>
   <br>Du wirst jetzt automatisch weitergeleitet.<br>
   Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..forward_url..}">klicke bitte hier</a>.
-</div>
+</p>
 <!--section-end::FORWARDMESSAGE-->
 
 <!--section-start::DOCTYPE--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!--section-end::DOCTYPE-->
@@ -36,8 +36,10 @@
     </div>
 
     <div id="content">
-      $APP(announcement.php)
-      {..content..}
+      <div id="content_inner">
+        $APP(announcement.php)
+        {..content..}
+      </div>
     </div>
 
     <div id="footer">

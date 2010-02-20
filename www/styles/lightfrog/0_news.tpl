@@ -17,26 +17,24 @@
 <!--section-start::LINKS_LINE--><li><a href="{..url..}" target="{..target..}">{..title..}</a></li><!--section-end::LINKS_LINE-->
 
 <!--section-start::LINKS_BODY--><b>Weiterführende Links:</b>
-<ul class="small">
+<ul>
   {..links..}
 </ul>
-
 <!--section-end::LINKS_BODY-->
 
-<!--section-start::NEWS_BODY--><table style="width:100%;" cellpadding="0" cellspacing="0">
+<!--section-start::NEWS_BODY--><table width="100%" cellpadding="0" cellspacing="0">
   <tr>
     <td>
-      
-      <b id="news_{..news_id..}">{..titel..}</b>
-      <span class="small" style="float:right;">
+      <b class="atleft" id="news_{..news_id..}">{..titel..}</b>
+      <span class="small atright">
         ({..cat_name..})
       </span><br>
       <span class="small">von <a href="{..user_url..}">{..user_name..}</a>, am {..date..}</span>
       
       {..text..}
-      <div class="small">
+      <div>
         {..related_links..}
-        <span class="small" style="float:right;">
+        <span class="small atright">
           <a href="{..comments_url..}">
              Kommentare ({..comments_number..})
            </a>
@@ -63,17 +61,17 @@
 
 <!--section-end::COMMENT_USER-->
 
-<!--section-start::COMMMENT_ENTRY--><table class="comment_table" cellpadding="0" cellspacing="0">
+<!--section-start::COMMMENT_ENTRY--><table align="center" class="comment_table" cellpadding="0" cellspacing="0">
   <tr>
-    <td class="comment_td comment_left">
+    <td class="comment_td comment_left" style="border-left:1px solid #A5ACB2;">
       {..user..}
     </td>
     <td class="comment_td">
       <div class="comment_top">
-        <span style="float:left;">
+        <span class="atleft">
           <b>{..titel..}</b>
         </span>
-        <span style="float:right;" class="small">
+        <span class="small atright">
           {..date..}
         </span>      
       </div>
@@ -111,7 +109,7 @@
   <b>Kommentar hinzufügen</b>
 </p>
 
-<form method="post" onSubmit="return checkCommentForm()">
+<form action="" method="post" onSubmit="return checkCommentForm()">
   <input type="hidden" name="go" value="comments">
   <input type="hidden" name="add_comment" value="1">
   <input type="hidden" name="id" value="{..news_id..}">
@@ -158,12 +156,12 @@
 <!--section-end::COMMENT_FORM-->
 
 <!--section-start::COMMENT_BODY-->{..news..}
-{..comments..}<br>
+{..comments..}
 {..comment_form..}
 <!--section-end::COMMENT_BODY-->
 
-<!--section-start::SEARCH--><b>News-Suche</b>
-<a href="?go=news_search" class="small" style="float:right;">(Neue Suche)</a>
+<!--section-start::SEARCH--><b class="atleft">News-Suche</b>
+<a href="?go=news_search" class="small atright">(Neue Suche)</a>
 <br><br>
 
 <fieldset>

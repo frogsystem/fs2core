@@ -1,6 +1,5 @@
 alix5:
 
-Pop Up-Editor, Tag-List im Editor
 
 Html Editor für IE anpassen
 Imageviewer für IE anpassen
@@ -19,6 +18,7 @@ shop update
 lang-system fertig umstellen und vor allem menü punkte irgendwie einbinden
 statistik-update
 Vorschau für News
+Pop Up-Editor, Tag-List im Editor
 
 bei neuer codemirror-version:
 => Codemirror Update

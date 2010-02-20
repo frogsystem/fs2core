@@ -270,7 +270,7 @@ if ( isset ( $results_arr['news'] ) ) {
         $template->tag("url", "?go=comments&amp;id=" . $data['id'] );
         $template->tag("date", $date_formated );
         $template->tag("date_template", $date_template );
-        $template->tag("num_results", $data['num_results'] );
+        $template->tag("num_matches", $data['num_results'] );
 
         $news_entries .= $template->display ();
         $news_num_results = $i;
@@ -352,7 +352,7 @@ if ( isset ( $results_arr['articles'] ) ) {
         $template->tag("url", "?go=" . $data['url'] );
         $template->tag("date", $date_formated );
         $template->tag("date_template", $date_template );
-        $template->tag("num_results", $data['num_results'] );
+        $template->tag("num_matches", $data['num_results'] );
 
         $articles_entries .= $template->display ();
         $articles_num_results = $i;
@@ -432,7 +432,7 @@ if ( isset ( $results_arr['dl'] ) ) {
         $template->tag("url", "?go=dlfile&amp;id=" . $data['id'] );
         $template->tag("date", $date_formated );
         $template->tag("date_template", $date_template );
-        $template->tag("num_results", $data['num_results'] );
+        $template->tag("num_matches", $data['num_results'] );
 
         $downloads_entries .= $template->display ();
         $downloads_num_results = $i;

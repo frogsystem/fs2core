@@ -27,7 +27,7 @@
   </tr>
   <tr>
     <td>
-      <textarea {..style..}>{..text..}</textarea>
+      <textarea rows="7" cols="50" {..style..}>{..text..}</textarea>
     </td>
     <td style="padding-left:3px;" valign="top"> 
       {..smilies..}

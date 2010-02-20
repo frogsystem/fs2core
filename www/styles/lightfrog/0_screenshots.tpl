@@ -23,8 +23,8 @@
     {..caption..}
   </td><!--section-end::IMAGE-->
 
-<!--section-start::BODY--><b>Galerie: {..name..}</b>
-<a href="?go=gallery" class="small" style="float:right;">(Alle Kategorien)</a>
+<!--section-start::BODY--><b class="atleft">Galerie: {..name..}</b>
+<a href="?go=gallery" class="small atright">(Alle Kategorien)</a>
 <br><br>
 
 <table border="0" cellpadding="" cellspacing="10" width="100%">

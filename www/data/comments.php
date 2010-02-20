@@ -232,7 +232,7 @@ if ( $SHOW == TRUE ) {
             $template->setFile("0_news.tpl");
             $template->load("COMMENT_USER");
 
-            $template->tag("url", "?go=user&id=".$comment_arr[comment_poster_id] );
+            $template->tag("url", "?go=user&amp;id=".$comment_arr[comment_poster_id] );
             $template->tag("name", $comment_arr[comment_poster] );
             $template->tag("image", $comment_arr[comment_avatar] );
             $template->tag("rank", $comment_arr['user_rank'] );
@@ -355,7 +355,7 @@ if ( $SHOW == TRUE ) {
         $template->tag("comment_form", $comment_form_template );
 
         $template = $template->display ();
-        $template = $message_template . "<br>" . $template;
+        $template = $message_template . $template;
     } else {
         $template = $news_template;
     }

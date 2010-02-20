@@ -1,7 +1,7 @@
 <?php
 require_once ( FS2_ROOT_PATH . 'libs/class_stringparser_bbcode.php' );
 require_once ( FS2_ROOT_PATH . 'resources/player/player_flv_include.php' );
-       echo "3";
+
 function convertlinebreaks ($text) {
     return preg_replace ("/\015\012|\015|\012/", "\n", $text);
 }
@@ -163,11 +163,7 @@ function do_bbcode_code ($action, $attributes, $content, $params, $node_object) 
 
         global $global_config_arr;
         global $db;
-                    echo "a";
-                    include( FS2_ROOT_PATH . "libs/class_template.php");
-                    echo "b";
-                    require( FS2_ROOT_PATH . "libs/class_template.php");
-                    echo "c";
+
         if ($action == 'validate') {
                 return true;
         }

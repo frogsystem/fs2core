@@ -128,7 +128,7 @@ else {
     
         //Error Messages
         if ( isset( $_POST['user_edit'] ) ) {
-            $messages = sys_message ( $TEXT->get("systemmessage"), $TEXT->get("user_register_fulfill_form") ) . "<br><br>";
+            $messages = sys_message ( $TEXT->get("systemmessage"), $TEXT->get("user_register_fulfill_form") );
         } else {
             $messages = "";
         }

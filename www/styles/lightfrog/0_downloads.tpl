@@ -54,8 +54,8 @@
 </table>
 <br><!--section-end::PREVIEW_LIST-->
 
-<!--section-start::BODY--><b>Downloads</b>
-<a href="?go=download&cat_id=all" class="small" style="float:right;">(Alle Downloads)</a>
+<!--section-start::BODY--><b class="atleft">Downloads</b>
+<a href="?go=download&cat_id=all" class="small atright">(Alle Downloads)</a><br>
 
 {..navigation..}
 {..entries..}
@@ -82,12 +82,10 @@
     <td class="dl_cell">{..hits..}</td>
   </tr><!--section-end::ENTRY_STATISTICS-->
 
-<!--section-start::ENTRY_BODY--><b>Downloads</b>
-<a href="?go=download&cat_id=all" class="small" style="float:right;">(Alle Downloads)</a>
+<!--section-start::ENTRY_BODY--><b class="atleft">Downloads</b>
+<a href="?go=download&cat_id=all" class="small atright">(Alle Downloads)</a><br>
 
-<p>
-  {..navigation..}
-</p>
+{..navigation..}
 <p>
   <b>{..title..}</b>
 </p>

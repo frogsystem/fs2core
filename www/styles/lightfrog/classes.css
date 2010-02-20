@@ -11,6 +11,11 @@ a:hover, a:focus, a.small:hover, a.small:focus {
 }
 
 
+p.systemmessage {
+  margin:0px 0px 20px 0px;
+  padding:0px;
+}
+
 
 .pointer {
     cursor:pointer;
@@ -41,6 +46,13 @@ a:hover, a:focus, a.small:hover, a.small:focus {
 }
 
 
+.atleft {
+  float:left;
+}
+.atright {
+  float:right;
+}
+
 .copyright {
   color:#363636;
   font-size:8pt;
@@ -70,6 +82,7 @@ textarea {
   margin: 0px -2px 15px -2px;
   width:100%;
   border-collapse:collapse;
+  border:1px solid #A5ACB2;
 }
 .comment_td {
   border:1px solid #A5ACB2;

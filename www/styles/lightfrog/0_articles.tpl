@@ -11,7 +11,7 @@
 </div>
 <!--section-end::DATE-->
 
-<!--section-start::BODY--><table cellpadding="0" cellspacing="0" style="width:100%; margin:-10px 0px 0px 0px;">
+<!--section-start::BODY--><table cellpadding="0" cellspacing="0" style="width:100%;">
   <tr>
     <td>
       <h2>{..title..}</h2>

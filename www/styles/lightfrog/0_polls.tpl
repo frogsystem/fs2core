@@ -137,8 +137,8 @@
     </td>
   </tr><!--section-end::ANSWER_LINE-->
 
-<!--section-start::BODY--><b>Umfragen</b>
-<a href="?go=polls" class="small" style="float:right;">(Alle Umfragen)</a>
+<!--section-start::BODY--><b class="atleft">Umfragen</b>
+<a href="?go=polls" class="small atright">(Alle Umfragen)</a>
 <br><br>
 
 <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
