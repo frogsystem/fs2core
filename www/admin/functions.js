@@ -1,12 +1,28 @@
-// Document Ready Functions
+//--------------------------------
+// START - Document Ready Functions
+//--------------------------------
 $().ready(function(){
 
 var lastJQBox;
 
-///////////////////////////////////
-//// new select-list functions ////
-///////////////////////////////////
+//////////////////////////////
+//// HTML-Editor: Buttons ////
+//////////////////////////////
 
+    //add hover class
+    $(".html-editor-button").hover(
+        function () {
+            $(this).addClass("html-editor-button-hover");
+        },
+        function () {
+            $(this).removeClass("html-editor-button-hover");
+        }
+    );
+    
+
+//////////////////////////////////
+//// HTML-Editor: Select-List ////
+//////////////////////////////////
 
     // Add Pointer to clickable area
     $(".select_entry").addClass("pointer");
@@ -123,6 +139,9 @@ var lastJQBox;
         }
     );
 });
+//--------------------------------
+// END - Document Ready Functions
+//--------------------------------
 
 
 

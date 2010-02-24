@@ -598,8 +598,8 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
     $section_text = ( $MANYFILES == FALSE ) ? ' &gt; '.$EDITOR_NAME : "";
     $footer_template = '
                                     <div class="html-editor-path" id="'.$EDITOR_NAME.'_footer">
-                                        <div style="padding:2px;" class="small">
-                                            <span>Pfad: '.$STYLE.' &gt; '.$FILE . $section_text .'</span>
+                                        <div style="padding:2px; height:13px;" class="small">
+                                            <span class="atleft">Pfad: '.$STYLE.' &gt; '.$FILE . $section_text .'</span>
                                             <span class="html-editor-highlighter">'.$highlighter_text.'</span>
                                         </div>
                                     </div>
@@ -617,9 +617,9 @@ function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 
     if ( file_exists ( FS2_ROOT_PATH . "styles/default/" . $FILE ) ) {
         $original['button'] = '
-                                            <a class="html-editor-button html-editor-button-original" onClick="toggelOriginal(\''.$EDITOR_NAME.'\')" title="Original anzeigen">
+                                            <div class="html-editor-button html-editor-button-original" onClick="toggelOriginal(\''.$EDITOR_NAME.'\')" title="Original anzeigen">
                                                 <img src="img/null.gif" alt="Original anzeigen" border="0">
-                                            </a>
+                                            </div>
         ';
 
         $original['template'] = new template();
@@ -713,14 +713,14 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
                                         </div>
                                         '.$original['row'].'
                                         <div class="html-editor-row">
-                                            <a class="html-editor-button html-editor-button-big" onClick="open_editor(\''.$editor_arr['name'].'\')" title="In Editor-Fenster öffnen">
+                                            <div class="html-editor-button html-editor-button-big" onClick="open_editor(\''.$editor_arr['name'].'\')" title="In Editor-Fenster öffnen">
                                                 <img src="img/null.gif" alt="In Editor-Fenster öffnen" border="0">
-                                            </a>
+                                            </div>
                                             '.$original['button'].'
                                             <div class="html-editor-line"></div>
-                                            <a class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilen-Nummerierung">
+                                            <div class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilen-Nummerierung">
                                                 <img src="img/null.gif" alt="Zeilen-Nummerierung" border="0">
-                                            </a>
+                                            </div>
                                             '.$help_template.'
                                             '.$dropdowns['global_vars'].'
                                             '.$dropdowns['applets'].'

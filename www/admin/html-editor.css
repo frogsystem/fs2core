@@ -82,31 +82,29 @@ textarea.no-js-html-editor {
     vertical-align:middle;
 }
 
-a.html-editor-button, a.html-editor-button-active, a.html-editor-button-deactive, a.html-editor-button-selected  {
+.html-editor-button, .html-editor-button-active, .html-editor-button-hover  {
     height:20px;
     width:20px;
     cursor:pointer;
     background-color:transparent;
     background-repeat:no-repeat;
     background-position:center;
-    border:1px solid transparent;
+    border:1px solid #EEEEEE;
     padding:0px;
     margin:1px;
     display:block;
     float:left;
+    z-index:100;
 }
-a.html-editor-button-active {
+.html-editor-button-active {
     border:1px solid #777777;
     background-color:#DDDDDD;
 }
-a.html-editor-button:hover, a.html-editor-button:focus,
-a.html-editor-button-active:hover, a.html-editor-button-active:focus {
+.html-editor-button-hover {
     border:1px solid #555555;
     background-color:#CCCCCC;
 }
-a.html-editor-button-deactive {
-    cursor:default;
-}
+
 
 .html-editor-line {
     height:20px;
@@ -114,7 +112,7 @@ a.html-editor-button-deactive {
     background-image:url("html-editor/line.gif");
     background-repeat:no-repeat;
     background-position:center;
-    border:1px solid transparent;
+    border:1px solid #EEEEEE;
     padding:0px;
     margin:1px;
     display:block;

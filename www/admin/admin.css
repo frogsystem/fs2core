@@ -792,65 +792,57 @@ a.tooltip:hover span, a.tooltip:focus span {
 /**************************************************/
 /* addtional secondary styles (has to be at the end */
 /**************************************************/
-.small
-{
+.small {
     font-size:7pt;
     font-family:Verdana;
     font-weight:normal;
 }
 
-.top
-{
+.top {
     vertical-align: top;
 }
-.middle
-{
+.middle {
     vertical-align: middle;
 }
-.bottom
-{
+.bottom {
     vertical-align: bottom;
 }
 
-.left
-{
+.left {
     text-align: left;
 }
-.center
-{
+.center {
     text-align: center;
 }
-.right
-{
+.right {
     text-align: right;
 }
-.justify
-{
+.justify {
     text-align: justify;
 }
 
-.thumb
-{
+.atleft {
+    float: left;
+}
+.atright {
+    float: right;
+}
+
+.pointer, .thumb {
     cursor: pointer;
 }
-.pointer
-{
-    cursor: pointer;
-}
-.red
-{
+
+.red {
     background-color: #C24949;
 }
-.green
-{
+.green {
     background-color: #49C24f;
 }
-.default {}
-.hidden
-{
-    display: none;
-}
-.red_text
-{
+.red_text {
     color: #FF0000;
+}
+
+.default {}
+.hidden {
+    display: none;
 }

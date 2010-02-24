@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.1.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 11. Februar 2010 um 17:16
--- Server Version: 5.1.37
--- PHP-Version: 5.3.0
+-- Erstellungszeit: 24. Februar 2010 um 11:48
+-- Server Version: 5.1.30
+-- PHP-Version: 5.2.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -431,7 +431,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 30, 2401, 1, 1, 5, 1);
+(1, 38, 3529, 1, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -454,7 +454,7 @@ CREATE TABLE `fs_counter_ref` (
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
-('http://localhost/fs2/', 51, 1263499887, 1265895157);
+('http://localhost/fs2/', 82, 1263499887, 1266871975);
 
 -- --------------------------------------------------------
 
@@ -493,7 +493,14 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 1, 29, 1, 4),
 (2010, 2, 9, 2, 9),
 (2010, 2, 10, 3, 16),
-(2010, 2, 11, 3, 75);
+(2010, 2, 11, 3, 82),
+(2010, 2, 12, 1, 178),
+(2010, 2, 13, 2, 2),
+(2010, 2, 14, 1, 13),
+(2010, 2, 19, 1, 489),
+(2010, 2, 20, 1, 436),
+(2010, 2, 22, 1, 2),
+(2010, 2, 24, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -723,7 +730,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1265895157);
+(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1267008499);
 
 -- --------------------------------------------------------
 
@@ -770,9 +777,7 @@ CREATE TABLE `fs_news` (
 --
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
-(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1264113995),
-(139, 1, 1, 1265895180, 'test', 'beispiel test', 1, 1, 1265896924),
-(140, 1, 1, 1297431180, 'hallo', 'test beispiel', 1, 1, 1265895769);
+(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1264113995);
 
 -- --------------------------------------------------------
 
@@ -816,14 +821,14 @@ CREATE TABLE `fs_news_comments` (
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_text` (`comment_text`),
   FULLTEXT KEY `comment_title` (`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_news_comments`
 --
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(1, 1, '1', 1, '127.0.0.1', 1264348947, 'test', 'also ich finds total \\"bombig\\" hier!');
+(2, 1, 'Hans Wurst', 0, '127.0.0.1', 1266663394, 'Geile Seite!!!', 'Ich liebe euch alle ;)');
 
 -- --------------------------------------------------------
 
@@ -1188,7 +1193,7 @@ DROP TABLE IF EXISTS `fs_screen`;
 CREATE TABLE `fs_screen` (
   `screen_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` smallint(6) unsigned DEFAULT NULL,
-  `screen_name` char(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `screen_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`screen_id`),
   KEY `cat_id` (`cat_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
@@ -1474,11 +1479,7 @@ INSERT INTO `fs_search_index` (`search_index_id`, `search_index_word_id`, `searc
 (7185, 17, 'articles', 1, 1),
 (7184, 16, 'articles', 1, 35),
 (7183, 14, 'articles', 1, 1),
-(7182, 11, 'articles', 1, 2),
-(7278, 119, 'news', 139, 2),
-(7277, 17, 'news', 139, 1),
-(7279, 17, 'news', 140, 1),
-(7280, 119, 'news', 140, 1);
+(7182, 11, 'articles', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1743,7 +1744,7 @@ CREATE TABLE `fs_styles` (
 INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allow_edit`) VALUES
 (0, 'default', 0, 0),
 (1, 'lightfrog', 1, 1),
-(3, 'darkfrog', 1, 1);
+(3, 'darkfrog', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1798,7 +1799,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1265902859);
+('127.0.0.1', 0, 1267008500);
 
 -- --------------------------------------------------------
 
@@ -1887,12 +1888,14 @@ CREATE TABLE `fs_wallpaper` (
   `wallpaper_title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `cat_id` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`wallpaper_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs_wallpaper`
 --
 
+INSERT INTO `fs_wallpaper` (`wallpaper_id`, `wallpaper_name`, `wallpaper_title`, `cat_id`) VALUES
+(1, 'test', 'test', 2);
 
 -- --------------------------------------------------------
 
@@ -1906,13 +1909,11 @@ CREATE TABLE `fs_wallpaper_sizes` (
   `wallpaper_id` mediumint(8) NOT NULL DEFAULT '0',
   `size` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`size_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs_wallpaper_sizes`
 --
 
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+INSERT INTO `fs_wallpaper_sizes` (`size_id`, `wallpaper_id`, `size`) VALUES
+(1, 1, '1920x1200');

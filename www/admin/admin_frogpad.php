@@ -27,6 +27,20 @@ echo'
     <script src="../resources/jquery/jquery-1.4.min.js" type="text/javascript"></script>
     <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
     <script type="text/javascript">
+        // Document Ready Functions
+        $().ready(function(){
+        
+            //add hover class
+            $(".html-editor-button").hover(
+                function () {
+                    $(this).addClass("html-editor-button-hover");
+                },
+                function () {
+                    $(this).removeClass("html-editor-button-hover");
+                }
+            );
+        });
+    
         var change = window.setInterval("send()", 500);
         var sourceId = $("#section_select", opener.document).val();
 
@@ -58,6 +72,7 @@ echo'
 
             var content = eval ( "opener.editor_"+sourceId+".getCode()" );
             frogpad.setCode ( content );
+            frogpad.focus();
         }
 
         function send() {
@@ -72,6 +87,7 @@ echo'
             eval ( "$(\"#"+sourceId+"_editor-bar\", opener.document).css(\"visibility\", \"visible\")" );
             eval ( "$(\"#"+sourceId+"_footer\", opener.document).css(\"visibility\", \"visible\")" );
             eval ( "$(\"#"+sourceId+"_inedit\", opener.document).hide()" );
+            eval ( "opener.editor_"+sourceId+".focus()" );
         }
     </script>
     <script src="functions.js" type="text/javascript"></script>
@@ -86,9 +102,9 @@ echo'
             <div class="html-editor-row-header">
             </div>
             <div class="html-editor-row">
-                <a class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'frogpad\')" title="Zeilen-Nummerierung">
+                <div class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'frogpad\')" title="Zeilen-Nummerierung">
                     <img src="img/null.gif" alt="Zeilen-Nummerierung" border="0">
-                </a>
+                </div>
                 '.$dropdowns['global_vars'].'
             </div>
         </div>
