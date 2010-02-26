@@ -46,6 +46,9 @@ textarea.no-js-html-editor {
     font-weight:bold;
 }
 
+.html-editor-iframe {
+    z-index:0;
+}
 
 /**************************************************/
 /* html-editor styles */
@@ -94,7 +97,6 @@ textarea.no-js-html-editor {
     margin:1px;
     display:block;
     float:left;
-    z-index:100;
 }
 .html-editor-button-active {
     border:1px solid #777777;
@@ -120,8 +122,9 @@ textarea.no-js-html-editor {
 }
 .html-editor-container-list {
     float:left;
+    position:relative;
 }
-a.html-editor-list {
+.html-editor-list {
     height:14px;
     cursor:pointer;
     background-color:#FFFFFF;
@@ -137,7 +140,7 @@ a.html-editor-list {
     font-weight:normal;
     text-decoration:none;
 }
-a.html-editor-list-arrow {
+.html-editor-list-arrow {
     height:14px;
     width:3px;
     cursor:pointer;
@@ -157,25 +160,38 @@ a.html-editor-list-arrow {
     display:none;
     cursor:default;
     position:absolute;
+    top:0px;
+    left:0px;
     margin-top:21px;
+    margin-left:1px;
+    padding:0px;
+    width:200px;
+    border:none;
+    z-index:100;
+}
+
+/*
+    display:none;
+    cursor:default;
+    position:absolute;
+    top:0px;
+    left:0px;
+    margin-top:20px;
     margin-left:1px;
     background-color:#EEEEEE;
     z-index:500;
     padding:0px;
-    border:1px solid #BBBBBB;
-}
-
+    width:200px;
+*/
 .html-editor-list-table {
     padding:0px;
     margin:0px;
-    border:none;
+    border:1px solid #555555;
+    background-color:#EEEEEE;
 }
+
 
 .html-editor-list-table td {
     padding:4px;
     border-top:1px solid #BBBBBB;
-}
-.html-editor-list-table tr:hover {
-    padding:4px;
-    background-color:#CCCCCC;
 }

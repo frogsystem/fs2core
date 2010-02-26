@@ -54,9 +54,13 @@
 
   <div style="width:100%;" align="center">
     <p><b>&nbsp;{..caption..}</b>&nbsp;</p>
-    <div class="center middle" style="width:800px; height:600px; display:table-cell;">
-      {..image..}
-    </div>      
+    <table style="width:100%;" cellspacing="0" cellpadding="3">
+      <tr valign="middle" align="center">
+        <td style="width:800px; height:600px;">
+          {..image..}
+        </td>
+      </tr>
+    </table>
     <table style="width:100%;" cellspacing="0" cellpadding="3">
       <tr valign="middle">
         <td width="40%" align="right">

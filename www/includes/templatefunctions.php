@@ -498,8 +498,8 @@ function create_dropdown ( $TITLE, $CONTENT )
         return '
                                             <div class="html-editor-line"></div>
                                             <div class="html-editor-container-list">
-                                                <a class="html-editor-list">'.$TITLE.'</a>
-                                                <a class="html-editor-list-arrow"></a>
+                                                <div class="html-editor-list">'.$TITLE.'</div>
+                                                <div class="html-editor-list-arrow"></div>
                                                 <div class="html-editor-list-popup">
                                                      <table class="small html-editor-list-table" cellspacing="0">
                                                         '.$CONTENT.'
@@ -681,8 +681,19 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
                             <tr>
                                 <td class="config" valign="top">
 
-                                    <!-- CSS-Definitions for Non-JS-Editor -->
+                                    <!-- CSS-Definitions for IE-Browsers -->
+                                    <!--[if IE]>
+                                        <style type="text/css">
+                                            .html-editor-list-popup {
+                                                margin-top:20px;
+                                            }
+                                            .html-editor-container-list {
+                                                z-index:1;
+                                            }
+                                        </style>
+                                    <![endif]-->
 
+                                    <!-- CSS-Definitions for Non-JS-Editor -->
                                     <noscript>
                                         <style type="text/css">
                                             .html-editor-row {

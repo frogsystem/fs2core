@@ -1,11 +1,6 @@
 alix5:
 
 
-Html Editor für IE anpassen
-Imageviewer für IE anpassen
-
-
-Lang-Texte verfassen (?) => Plsyer Template
 default design noch bearbeiten
 
 

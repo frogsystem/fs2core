@@ -18,11 +18,57 @@ var lastJQBox;
             $(this).removeClass("html-editor-button-hover");
         }
     );
+
+
+///////////////////////////////
+//// HTML-Editor: Tag-List ////
+///////////////////////////////
+
+    // Colorize tag-list
+    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").css("background-color","#FFFFFF");
+    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").hover( function () {
+        $(this).css("background-color","#CCCCCC");
+    }, function () {
+        $(this).css("background-color","#FFFFFF");
+    });
+    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(odd)").hover( function () {
+        $(this).css("background-color","#CCCCCC");
+    }, function () {
+        $(this).css("background-color","#EEEEEE");
+    });
+    $(".html-editor-container-list .html-editor-list-popup tr:first-child").find("td").css("border","none");
+
+
+    // html-editor-list hover
+    $(".html-editor-container-list").hover (
+        function () {
+            $(this).find(".html-editor-list").css("border","1px solid #555555");
+            $(this).find(".html-editor-list-arrow").css("border","1px solid #555555");
+            $(this).find(".html-editor-list-arrow").css("border-left","none");
+            $(this).find(".html-editor-list-arrow").css("background-color","#CCCCCC");
+        },
+        function () {
+            $(this).find(".html-editor-list").css("border","1px solid #BBBBBB");
+            $(this).find(".html-editor-list-arrow").css("border","1px solid #BBBBBB");
+            $(this).find(".html-editor-list-arrow").css("border-left","none");
+            $(this).find(".html-editor-list-arrow").css("background-color","#EEEEEE");
+        }
+    );
+
+    // Show tag-list on hover
+    $(".html-editor-container-list").hover (
+        function () {
+            $(this).find(".html-editor-list-popup").show();
+        },
+        function () {
+            $(this).find(".html-editor-list-popup").hide();
+        }
+    );
     
 
-//////////////////////////////////
-//// HTML-Editor: Select-List ////
-//////////////////////////////////
+/////////////////////
+//// Select-List ////
+/////////////////////
 
     // Add Pointer to clickable area
     $(".select_entry").addClass("pointer");
@@ -97,47 +143,6 @@ var lastJQBox;
     );
 
 
-///////////////////////////////////
-//// tag-list insert functions ////
-///////////////////////////////////
-
-    // Colorize tag-list
-    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").css("background-color","#FFFFFF");
-    $(".html-editor-container-list .html-editor-list-popup tr:nth-child(even)").hover( function () {
-        $(this).css("background-color","#CCCCCC");
-    }, function () {
-        $(this).css("background-color","#FFFFFF");
-    });
-    $(".html-editor-container-list .html-editor-list-popup tr:first-child").find("td").css("border","none");
-
-
-    // html-editor-list hover
-    $(".html-editor-container-list").hover (
-        function () {
-            $(this).find(".html-editor-list").css("border","1px solid #555555");
-            $(this).find(".html-editor-list-arrow").css("border","1px solid #555555");
-            $(this).find(".html-editor-list-arrow").css("border-left","none");
-            $(this).find(".html-editor-list-arrow").css("background-color","#CCCCCC");
-            $(this).find(".html-editor-list-popup").css("border","1px solid #555555");
-        },
-        function () {
-            $(this).find(".html-editor-list").css("border","1px solid #BBBBBB");
-            $(this).find(".html-editor-list-arrow").css("border","1px solid #BBBBBB");
-            $(this).find(".html-editor-list-arrow").css("border-left","none");
-            $(this).find(".html-editor-list-arrow").css("background-color","#EEEEEE");
-            $(this).find(".html-editor-list-popup").css("border","1px solid #BBBBBB");
-        }
-    );
-
-    // Show tag-list on hover
-    $(".html-editor-container-list").hover (
-        function () {
-            $(this).find(".html-editor-list-popup").show();
-        },
-        function () {
-            $(this).find(".html-editor-list-popup").hide();
-        }
-    );
 });
 //--------------------------------
 // END - Document Ready Functions

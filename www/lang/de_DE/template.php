@@ -873,6 +873,17 @@ $TEXT = array (
     "Bindet die Produkte ein",
 
 
+// Player
+    "player_player_title" =>
+    "Flash-Player",
+    
+    "player_player_desc" =>
+    "Darstellung eines einzelnen Flash-Players",
+
+    "player_player_player" =>
+    "Bindet die Flash-Player-Datei ein.",
+
+
 
 );
 ?>

@@ -110,7 +110,7 @@ echo'
         </div>
         
         <div style="background-color:#ffffff; border: 1px solid #999999; width:100%;">
-            <textarea id="frogpad" class="codepress html" style="width:100%;"></textarea>
+            <textarea id="frogpad" class="codepress html" rows="50" cols="50" style="width:100%;"></textarea>
         </div>
         
         <div class="html-editor-path" id="frogpad_footer">
@@ -139,7 +139,6 @@ echo'
         continuousScanning: 500,
         lineNumbers: true,
         tabMode: "shift",
-        width: "100%",
         height: "'.$use_height.'px"
       });
     </script>
