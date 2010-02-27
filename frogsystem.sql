@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 26. Februar 2010 um 16:03
+-- Erstellungszeit: 27. Februar 2010 um 14:03
 -- Server Version: 5.1.30
 -- PHP-Version: 5.2.8
 
@@ -431,7 +431,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 39, 3536, 1, 1, 2, 1);
+(1, 40, 3587, 1, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -454,7 +454,9 @@ CREATE TABLE `fs_counter_ref` (
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
-('http://localhost/fs2/', 83, 1263499887, 1267191773);
+('http://localhost/fs2/', 88, 1263499887, 1267231087),
+('http://alix.worldofgothic.com/beta4/admin/?go=gen_config', 2, 1267197504, 1267197505),
+('http://demo.frogsystem.de/admin/?go=gen_config', 1, 1267198063, 1267198063);
 
 -- --------------------------------------------------------
 
@@ -501,7 +503,8 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 2, 20, 1, 436),
 (2010, 2, 22, 1, 2),
 (2010, 2, 24, 1, 1),
-(2010, 2, 26, 1, 7);
+(2010, 2, 26, 1, 57),
+(2010, 2, 27, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -749,8 +752,6 @@ CREATE TABLE `fs_iplist` (
 -- Daten für Tabelle `fs_iplist`
 --
 
-INSERT INTO `fs_iplist` (`ip`) VALUES
-('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -778,7 +779,7 @@ CREATE TABLE `fs_news` (
 --
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
-(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei!\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1264113995);
+(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\n[center]Weitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei![/center]\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1267219359);
 
 -- --------------------------------------------------------
 
@@ -879,15 +880,15 @@ CREATE TABLE `fs_news_links` (
   `link_url` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `link_target` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`link_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=15 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=17 ;
 
 --
 -- Daten für Tabelle `fs_news_links`
 --
 
 INSERT INTO `fs_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `link_target`) VALUES
-(1, 14, 'Frogsystem 2 Supportforum', 'http://forum.sweil.de/viewforum.php?f=7', 1),
-(1, 13, 'Offizielle Frogsystem 2 Homepage', 'http://www.frogsystem.de', 1);
+(1, 16, 'Frogsystem 2 Supportforum', 'http://forum.sweil.de/viewforum.php?f=7', 1),
+(1, 15, 'Offizielle Frogsystem 2 Homepage', 'http://www.frogsystem.de', 1);
 
 -- --------------------------------------------------------
 
@@ -1779,7 +1780,7 @@ CREATE TABLE `fs_user` (
 --
 
 INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
-(1, 'admin', '72ce90aed8b19ef984eca6e0a0df977d', '5NdWu7dA6v', 'admin@frogsystem.de', 1, 0, 1, 1263252177, 1, 'http://www.frogsystem.de', '', '', '', '', '');
+(1, 'admin', '6cdd7286f7e3b73008cef8a887bb7b80', 'SWEempPQBm', 'admin@frogsystem.de', 1, 0, 1, 1263252177, 1, 'http://www.frogsystem.de', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1799,8 +1800,6 @@ CREATE TABLE `fs_useronline` (
 -- Daten für Tabelle `fs_useronline`
 --
 
-INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1267196340);
 
 -- --------------------------------------------------------
 
