@@ -2,7 +2,7 @@
   <b>Vorschaubild:</b>
 </p>
 <p align="center">
-  <a href="{..viewer_url..}">
+  <a href="{..viewer_url..}" title="{..caption..}">
     {..previewimg..}
   </a><br>
   <span class="small">

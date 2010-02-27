@@ -1,6 +1,6 @@
 <!--section-start::WALLPAPER--><td align="center" valign="top">
   <b>{..caption..}</b><br>
-  <img src="{..thumb_url..}" alt="">
+  <img src="{..thumb_url..}" alt="{..caption..}" title="{..caption..}">
   <br><br>
   <b>Verfügbare Größen:</b>
   {..sizes..}

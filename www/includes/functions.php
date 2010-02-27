@@ -1165,6 +1165,16 @@ function markword($text, $word)
     return $text;
 }
 
+//////////////////////////////////////////////////////////////
+// Inserts HTML line breaks before all newlines in a string //
+//////////////////////////////////////////////////////////////
+
+function html_nl2br ( $TEXT )
+{
+    $TEXT = str_replace ( array ( "\r\n", "\r", "\n" ), "<br>", $TEXT );
+    return $TEXT;
+}
+
 /////////////////////////////////
 // create save strings for sql //
 /////////////////////////////////
@@ -1216,7 +1226,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         }
         $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'stripslashes');
         if ($all==true) {
-              $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'nl2br');
+              $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
         }
         $bbcode->addParser ('list', 'bbcode_stripcontents');
 
@@ -1239,9 +1249,11 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         $bbcode->addCode ('s', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:line-through">', 'end_tag' => '</span>'),
                           'inline', array ('listitem', 'block', 'inline', 'link'), array ());
 
-        if ($all==true OR $do_center==1)
-        $bbcode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<center>', 'end_tag' => '</center>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+        if ($all==true OR $do_center==1) {
+            $bbcode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<p align="center">', 'end_tag' => '</p>'),
+                              'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+            $bbcode->setCodeFlag ('center', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+        }
 
         if ($all==true OR $do_url==1)
         $bbcode->addCode ('url', 'usecontent?', 'do_bbcode_url', array ('usecontent_param' => 'default'),
@@ -1276,13 +1288,14 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
                           'list', array ('block', 'listitem'), array ('link'));
 
         if ($all==true OR $do_list==1 OR $do_numlist==1) {
-        $bbcode->addCode ('*', 'simple_replace', null, array ('start_tag' => '<li>', 'end_tag' => '</li>'),
-                          'listitem', array ('list'), array ());
-        $bbcode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
-        $bbcode->setCodeFlag ('*', 'paragraphs', false);
-        $bbcode->setCodeFlag ('list', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-        $bbcode->setCodeFlag ('list', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
-        $bbcode->setCodeFlag ('list', 'closetag.before.newline', BBCODE_NEWLINE_DROP); }
+            $bbcode->addCode ('*', 'simple_replace', null, array ('start_tag' => '<li>', 'end_tag' => '</li>'),
+                              'listitem', array ('list'), array ());
+            $bbcode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
+            $bbcode->setCodeFlag ('*', 'paragraphs', false);
+            $bbcode->setCodeFlag ('list', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+            $bbcode->setCodeFlag ('list', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
+            $bbcode->setCodeFlag ('list', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
+        }
 
 
         if ($all==true OR $do_font==1)
@@ -1297,24 +1310,27 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         $bbcode->addCode ('size', 'callback_replace', 'do_bbcode_size', array (),
                           'inline', array ('listitem', 'block', 'inline', 'link'), array ());
 
-        if ($all==true OR $do_code==1)
-        $bbcode->addCode ('code', 'callback_replace', 'do_bbcode_code', array (),
-                          'block', array ('listitem', 'block', 'inline'), array ('link'));
-        if ($all==true OR $do_code==1)
-        $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
+        if ($all==true OR $do_code==1) {
+            $bbcode->addCode ('code', 'callback_replace', 'do_bbcode_code', array (),
+                              'block', array ('listitem', 'block', 'inline'), array ('link'));
+            $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+            $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
+        }
         
-        if ($all==true OR $do_quote==1)
-        $bbcode->addCode ('quote', 'callback_replace', 'do_bbcode_quote', array (),
-                          'block', array ('listitem', 'block', 'inline'), array ('link'));
-        if ($all==true OR $do_quote==1)
-        $bbcode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
+        if ($all==true OR $do_quote==1) {
+            $bbcode->addCode ('quote', 'callback_replace', 'do_bbcode_quote', array (),
+                              'block', array ('listitem', 'block', 'inline'), array ('link'));
+            $bbcode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+            $bbcode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
+        }
 
         if ($all==true OR $do_noparse==1)
         $bbcode->addCode ('noparse', 'usecontent', 'do_bbcode_noparse', array (),
                           'inline', array ('listitem', 'block', 'inline', 'link'), array ());
 
-        if ($para==true)
-        $bbcode->setRootParagraphHandling (true);
+        if ($para==true) {
+            $bbcode->setRootParagraphHandling (true);
+        }
 
         $bbcode->setGlobalCaseSensitive (false);
         $parsedtext = $bbcode->parse ($text);

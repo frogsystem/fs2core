@@ -72,11 +72,24 @@ function do_bbcode_img ($action, $attributes, $content, $params, $node_object) {
         return true;
     }
 
+    // Get alt and title text
+    $content_arr = array_map ( "htmlspecialchars", explode ( "|", $content, 3 ) );
+
+    // Always provide alt-text
+    if ( count ( $content_arr ) == 1 ) {
+        $content_arr[1] = $content_arr[0];
+    }
+     // title should be same like alt
+    if ( count ( $content_arr ) == 3 && strlen ( $content_arr[2] ) == 0 ) {
+        $content_arr[2] = $content_arr[1];
+    }
+    $content_arr[2] = isset ( $content_arr[2] ) ? ' title="'.$content_arr[2].'"' : '';
+
     if (!isset ($attributes['default'])) {
-            return '<img src="'.htmlspecialchars($content).'" alt="">';
+            return '<img src="'.$content_arr[0].'" alt="'.$content_arr[1].'"'.$content_arr[2].'>';
     }
 
-    return '<img src="'.htmlspecialchars($content).'" align="'.htmlspecialchars($attributes['default']).'" alt="">';
+    return '<img src="'.$content_arr[0].'" align="'.htmlspecialchars($attributes['default']).'" alt="'.$content_arr[1].'"'.$content_arr[2].'>';
 }
 
 function do_bbcode_cimg ($action, $attributes, $content, $params, $node_object) {
@@ -88,14 +101,23 @@ function do_bbcode_cimg ($action, $attributes, $content, $params, $node_object) 
         return true;
     }
 
-    if (!isset ($attributes['default'])) {
-        $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr[pref]."global_config WHERE id = 1", $db);
-        $page_url = stripslashes(mysql_result($index, 0, "virtualhost"));
-        return '<img src="'.$page_url."images/content/".htmlspecialchars($content).'" alt="">';
+    // Get alt and title text
+    $content_arr = array_map ( "htmlspecialchars", explode ( "|", $content, 3 ) );
+
+    // Always provide alt-text
+    if ( count ( $content_arr ) == 1 ) {
+        $content_arr[1] = $content_arr[0];
     }
-    $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr[pref]."global_config WHERE id = 1", $db);
-    $page_url = stripslashes(mysql_result($index, 0, "virtualhost"));
-    return '<img src="'.$page_url."images/content/".htmlspecialchars($content).'" align="'.htmlspecialchars($attributes['default']).'" alt="">';
+     // title should be same like alt
+    if ( count ( $content_arr ) == 3 && strlen ( $content_arr[2] ) == 0 ) {
+        $content_arr[2] = $content_arr[1];
+    }
+    $content_arr[2] = isset ( $content_arr[2] ) ? ' title="'.$content_arr[2].'"' : '';
+
+    if (!isset ($attributes['default'])) {
+        return '<img src="'.$global_config_arr['virtualhost']."images/content/".$content_arr[0].'" alt="'.$content_arr[1].'"'.$content_arr[2].'>';
+    }
+    return '<img src="'.$global_config_arr['virtualhost']."images/content/".$content_arr[0].'" align="'.htmlspecialchars($attributes['default']).'" alt="'.$content_arr[1].'"'.$content_arr[2].'>';
 }
 
 function do_bbcode_player ($action, $attributes, $content, $params, $node_object) {

@@ -17,8 +17,8 @@
 </table><!--section-end::CATEGORY_LIST_BODY-->
 
 <!--section-start::IMAGE-->  <td align="center" valign="top">
-    <a href="{..viewer_link..}">
-      <img class="pointer" src="{..thumb_url..}" alt="{..caption..}">
+    <a href="{..viewer_link..}" title="{..caption..}">
+      <img class="pointer" src="{..thumb_url..}" alt="{..caption..}" title="{..caption..}">
     </a><br>    
     {..caption..}
   </td><!--section-end::IMAGE-->

@@ -782,7 +782,14 @@ $TEXT = array (
 
     "template_select_template" =>
     "Template zum Bearbeiten auswählen",
+    
+    
+    
+// ????
+    "file_deleted" =>
+    "Datei wurde gelöscht",
 
-
+    "file_not_deleted" =>
+    "Datei wurde nicht gelöscht",
 );
 ?>

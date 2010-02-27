@@ -17,6 +17,10 @@ body
     overflow-y: scroll;
 }
 
+img {
+    border:none;
+}
+
 
 /**************************************************/
 /* formular styles */
