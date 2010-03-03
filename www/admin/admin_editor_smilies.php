@@ -171,17 +171,17 @@ if (mysql_num_rows($index)>0)
         $i++;
         $pointer_up = '
             <a class="image_hover" style="margin-right:3px; float:right; width:24px; height:24px; background-image:url('.$global_config_arr['virtualhost'].'admin/icons/arrow_up.png)" href="'.$PHP_SELF.'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=moveup" title="'.$admin_phrases[editor][smilies_up].'">
-                <img border="0" src="'.$global_config_arr['virtualhost'].'images/design/null.gif" alt="'.$admin_phrases[editor][smilies_up].'">
+                <img border="0" src="img/null.gif" alt="'.$admin_phrases[editor][smilies_up].'">
             </a>';
         $pointer_down = '
             <a class="image_hover" style="margin-right:36px; float:right; width:24px; height:24px; background-image:url('.$global_config_arr['virtualhost'].'admin/icons/arrow_down.png)" href="'.$PHP_SELF.'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=movedown" title="'.$admin_phrases[editor][smilies_down].'">
-                <img border="0" src="'.$global_config_arr['virtualhost'].'images/design/null.gif" alt="'.$admin_phrases[editor][smilies_down].'">
+                <img border="0" src="img/null.gif" alt="'.$admin_phrases[editor][smilies_down].'">
             </a>';
         if ($smilie_arr[order]==1) {
-            $pointer_up = '<img style="margin-right:3px; float:right; width:24px; height:24px; display:block;" src="'.$global_config_arr['virtualhost'].'images/design/null.gif" border="0" alt="">';
+            $pointer_up = '<img style="margin-right:3px; float:right; width:24px; height:24px; display:block;" src="img/null.gif" border="0" alt="">';
         }
         if ($smilie_arr[order]>=$smilie_last) {
-            $pointer_down = '<img style="margin-right:36px; float:right; width:24px; height:24px; display:block;" src="'.$global_config_arr['virtualhost'].'images/design/null.gif" border="0" alt="" width="24" height="24">';
+            $pointer_down = '<img style="margin-right:36px; float:right; width:24px; height:24px; display:block;" src="img/null.gif" border="0" alt="" width="24" height="24">';
         }
         
         echo'

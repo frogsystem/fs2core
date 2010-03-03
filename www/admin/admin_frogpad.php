@@ -13,7 +13,7 @@ require( FS2_ROOT_PATH . "includes/templatefunctions.php");
 require( FS2_ROOT_PATH . "phrases/admin_phrases_de.php");
 
 settype ( $_GET['height'], "integer" );
-$use_height = ( $_GET['height'] > 600 ) ? ($_GET['height'] - 250) : 300;
+$use_height = ( $_GET['height'] > 600 ) ? ($_GET['height'] - 250) : ($_GET['height'] - 325);
 
 $dropdowns = get_dropdowns ( "frogpad" );
 
