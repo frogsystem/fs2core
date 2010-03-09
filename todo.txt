@@ -5,6 +5,9 @@ default design noch bearbeiten
 
 
 alix6:
+
+noscript.css (special wie import.css)
+
 Startseite (und News entsprechend...)
 Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
 php-fonts
