@@ -63,7 +63,7 @@
 
 <!--section-start::ENTRY_FILE_LINE-->  <tr>
     <td {..mirror_col..} class="dl_cell">
-      <a target="_blank" href="{..url..}">
+      <a target="_blank" href="{..url..}" rel="nofollow">
         <b>{..name..}</b>
       </a>
     </td>

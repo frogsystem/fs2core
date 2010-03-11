@@ -6,15 +6,15 @@
 
 if (isset($_GET[size]))
 {
-	// Start Session
-	session_start();
+    // Start Session
+    session_start();
 
-	// fs2 include path
-	set_include_path ( '.' );
-	define ( FS2_ROOT_PATH, "./../", TRUE );
+    // fs2 include path
+    set_include_path ( '.' );
+    define ( FS2_ROOT_PATH, "./../", TRUE );
 
-	require ( FS2_ROOT_PATH . "includes/functions.php" );
-	
+    require ( FS2_ROOT_PATH . "includes/functions.php" );
+    
     disk_free_space($_SERVER[DOCUMENT_ROOT]);
     disk_total_space($_SERVER[DOCUMENT_ROOT]);
 
@@ -64,7 +64,7 @@ if (isset($_GET[size]))
     imagestring ($image, 2, 180, 36, "belegter Speicherplatz (".getsize($size/1024).")", $farbe_schwarz);
 
     // Bildausgabe
-	header("Content-type: image/png");
+    header("Content-type: image/png");
     imagepng($image); 
 }
 
@@ -178,7 +178,7 @@ function list_dir (&$files, $dirname, $dirs=NULL, $ebene=-1)
             echo'
                             <tr style="background-color:#'.$color.';">
                                 <td align="left" class="menu" style="padding-left:'.(5+$file[ebene]*20).'px;">
-                                    <img border="0" src="../images/design/dl_ordner_offen.gif" alt="" style="cursor:pointer;"
+                                    <img border="0" src="icons/folder_open.gif" alt="" style="cursor:pointer;"
                                          onClick="javascript:document.getElementById(\'closedir\').value=\''.$file[name].'\';
                                                              document.getElementById(\'form1\').submit();">
                                     '.$file[name].'
@@ -192,7 +192,7 @@ function list_dir (&$files, $dirname, $dirs=NULL, $ebene=-1)
             echo'
                             <tr style="background-color:#'.$color.';">
                                 <td align="left" class="menu" style="padding-left:'.(5+$file[ebene]*20).'px;">
-                                    <img border="0" src="../images/design/dl_ordner.gif" alt="" style="cursor:pointer;"
+                                    <img border="0" src="icons/folder.gif" alt="" style="cursor:pointer;"
                                          onClick="javascript:document.getElementById(\'newdir\').value=\''.$file[name].'\';
                                                              document.getElementById(\'form1\').submit();">
                                     '.$file[name].'
@@ -206,7 +206,7 @@ function list_dir (&$files, $dirname, $dirs=NULL, $ebene=-1)
             echo'
                             <tr style="background-color:#'.$color.';">
                                 <td align="left" class="menu" style="padding-left:'.(5+$file[ebene]*20).'px;">
-                                    <img border="0" src="../images/design/dl_file.gif" alt="">
+                                    <img border="0" src="icons/file.gif" alt="">
                                     '.$file[name].'
                                 </td>
                                 <td align="right" class="menu">'.getsize($file[size]/1024).'</td>
