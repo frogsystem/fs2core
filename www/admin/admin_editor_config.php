@@ -161,30 +161,30 @@ else
                                     <table cellpadding="0" cellspacing="0">
                                       <tr>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/bold.gif" alt="" title="fett">
+      <img src="icons/editor/bold.gif" alt="" title="fett">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/italic.gif" alt="" title="kursiv">
+      <img src="icons/editor/italic.gif" alt="" title="kursiv">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/underline.gif" alt="" title="unterstrichen">
+      <img src="icons/editor/underline.gif" alt="" title="unterstrichen">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/strike.gif" alt="" title="durchgestrichen">
-    </div></td>
-    <td class="editor_td_seperator"></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/center.gif" alt="" title="zentriert">
+      <img src="icons/editor/strike.gif" alt="" title="durchgestrichen">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/font.gif" alt="" title="Schriftart">
+      <img src="icons/editor/center.gif" alt="" title="zentriert">
+    </div></td>
+    <td class="editor_td_seperator"></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/font.gif" alt="" title="Schriftart">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/color.gif" alt="" title="Schriftfarbe">
+      <img src="icons/editor/color.gif" alt="" title="Schriftfarbe">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/size.gif" alt="" title="Schriftgröße">
+      <img src="icons/editor/size.gif" alt="" title="Schriftgröße">
     </div></td>
                                       </tr>
                                       <tr>
@@ -232,34 +232,34 @@ else
                                     <table cellpadding="0" cellspacing="0" style="padding-top:5px;">
                                       <tr>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/img.gif" alt="" title="Bild">
+      <img src="icons/editor/img.gif" alt="" title="Bild">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/cimg.gif" alt="" title="Content-Image">
-    </div></td>
-    <td class="editor_td_seperator"></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/url.gif" alt="" title="Link">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/home.gif" alt="" title="Home-Link">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/email.gif" alt="" title="Email">
+      <img src="icons/editor/cimg.gif" alt="" title="Content-Image">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/code.gif" alt="" title="Code">
+      <img src="icons/editor/url.gif" alt="" title="Link">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/quote.gif" alt="" title="Zitat">
+      <img src="icons/editor/home.gif" alt="" title="Home-Link">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/noparse.gif" alt="" title="Noparse-Bereich">
+      <img src="icons/editor/email.gif" alt="" title="Email">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/smilie.gif" alt="" title="Smilies">
+      <img src="icons/editor/code.gif" alt="" title="Code">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/quote.gif" alt="" title="Zitat">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/noparse.gif" alt="" title="Noparse-Bereich">
+    </div></td>
+    <td class="editor_td_seperator"></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/smilie.gif" alt="" title="Smilies">
     </div></td>
                                       </tr>
                                       <tr>
@@ -327,37 +327,37 @@ else
                                     <table cellpadding="0" cellspacing="0">
                                       <tr>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/bold.gif" alt="" title="[b]text[/b]">
+      <img src="icons/editor/bold.gif" alt="" title="[b]text[/b]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/italic.gif" alt="" title="[i]text[/i]">
+      <img src="icons/editor/italic.gif" alt="" title="[i]text[/i]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/underline.gif" alt="" title="[u]text[/u]">
+      <img src="icons/editor/underline.gif" alt="" title="[u]text[/u]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/strike.gif" alt="" title="[s]text[/s]">
-    </div></td>
-    <td class="editor_td_seperator"></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/center.gif" alt="" title="[center]text[/center]">
+      <img src="icons/editor/strike.gif" alt="" title="[s]text[/s]">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/font.gif" alt="" title="[font=xzy]text[/font]">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/color.gif" alt="" title="[color=xzy]text[/color]">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/size.gif" alt="" title="[size=xzy]text[/size]">
+      <img src="icons/editor/center.gif" alt="" title="[center]text[/center]">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/list.gif" alt="" title="[list][*]text1[*]text2[/list]">
+      <img src="icons/editor/font.gif" alt="" title="[font=xzy]text[/font]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/numlist.gif" alt="" title="[numlist][*]text1[*]text2[/numlist]">
+      <img src="icons/editor/color.gif" alt="" title="[color=xzy]text[/color]">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/size.gif" alt="" title="[size=xzy]text[/size]">
+    </div></td>
+    <td class="editor_td_seperator"></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/list.gif" alt="" title="[list][*]text1[*]text2[/list]">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/numlist.gif" alt="" title="[numlist][*]text1[*]text2[/numlist]">
     </div></td>
                                       </tr>
                                       <tr>
@@ -417,34 +417,34 @@ else
                                     <table cellpadding="0" cellspacing="0" style="padding-top:5px;">
                                       <tr>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/img.gif" alt="" title="[img]Img-URL[/img]">
+      <img src="icons/editor/img.gif" alt="" title="[img]Img-URL[/img]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/cimg.gif" alt="" title="[cimg]CImg-Name[/cimg]">
-    </div></td>
-    <td class="editor_td_seperator"></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/url.gif" alt="" title="[url=Link-URL]text[/url], [url]Link-URL[/url]">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/home.gif" alt="" title="[home=Homelink]text[/home], [home]Homelink[/home]">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/email.gif" alt="" title="[email=e@mail.com]text[/email], [email]e@mail.com[/email]">
+      <img src="icons/editor/cimg.gif" alt="" title="[cimg]CImg-Name[/cimg]">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/code.gif" alt="" title="[code]text[/code]">
+      <img src="icons/editor/url.gif" alt="" title="[url=Link-URL]text[/url], [url]Link-URL[/url]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/quote.gif" alt="" title="[quote]text[/quote]">
+      <img src="icons/editor/home.gif" alt="" title="[home=Homelink]text[/home], [home]Homelink[/home]">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/noparse.gif" alt="" title="[noparse]text[/noparse]">
+      <img src="icons/editor/email.gif" alt="" title="[email=e@mail.com]text[/email], [email]e@mail.com[/email]">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="'.$global_config_arr[virtualhost].'images/icons/smilie.gif" alt="" title=":-), ;-), :-p, etc.">
+      <img src="icons/editor/code.gif" alt="" title="[code]text[/code]">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/quote.gif" alt="" title="[quote]text[/quote]">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/noparse.gif" alt="" title="[noparse]text[/noparse]">
+    </div></td>
+    <td class="editor_td_seperator"></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/smilie.gif" alt="" title=":-), ;-), :-p, etc.">
     </div></td>
                                       </tr>
                                       <tr>

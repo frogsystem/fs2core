@@ -30,7 +30,7 @@ td.editor_td {
 td.editor_td_seperator {
   width:5px;
   height:23px;
-  background-image:url("../images/icons/separator.gif");
+  background-image:url("icons/editor/separator.gif");
   background-repeat:no-repeat;
   background-position:top left;
 }

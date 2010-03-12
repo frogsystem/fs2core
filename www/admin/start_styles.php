@@ -23,15 +23,15 @@ echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="2">Informationen & Statistik</td></tr>
                             <tr>
-                                <td class="configthin" width="200">Aktives Design:</td>
+                                <td class="configthin" width="200">Aktiver Style:</td>
                                 <td class="configthin"><b>'.$active_style.'</b></td>
                             </tr>
                             <tr>
-                                <td class="configthin">Anzahl Designs:</td>
+                                <td class="configthin">Anzahl Styles:</td>
                                 <td class="configthin"><b>'.$num_styles.'</b></td>
                             </tr>
                             <tr>
-                                <td class="configthin">Neuestes Designs:</td>
+                                <td class="configthin">Neuester Style:</td>
                                 <td class="configthin"><b>'.$last_style.'</b></td>
                             </tr>
                         </table>
