@@ -2,11 +2,11 @@
 ///////////////////////
 //// DB Login Vars ////
 ///////////////////////
-$dbc['host'] = "localhost";                //Datebase Hostname
-$dbc['user'] = "frogsystem";                //Database Username
-$dbc['pass'] = "frogsystem";                //Database User-Password
-$dbc['data'] = "frogsystem";                //Database Name
-$dbc['pref'] = "fs_";                //Table Prefix
+$dbc['host'] = "localhost"; //Database Hostname
+$dbc['user'] = "frogsystem"; //Database Username
+$dbc['pass'] = "frogsystem"; //Database User-Password
+$dbc['data'] = "frogsystem"; //Database Name
+$dbc['pref'] = "fs_"; //Table Prefix
 
 
 ////////////////////////

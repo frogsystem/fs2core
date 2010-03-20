@@ -532,7 +532,7 @@ function get_dropdowns ( $EDITOR_NAME )
 
     // Applets
     $index = mysql_query ( "
-                            SELECT `applet_file` FROM `".$global_config_arr['pref']."applets` WHERE `applet_active` = 1
+                            SELECT `applet_file` FROM `".$global_config_arr['pref']."applets` WHERE `applet_active` = 1 AND `applet_output` = 1
     ", $db );
     while ( $app_arr = mysql_fetch_assoc ( $index ) ) {
         $app = stripslashes ( $app_arr['applet_file'] );

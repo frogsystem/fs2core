@@ -1,12 +1,18 @@
 alix5:
 
-lizenz.txt
 default design noch bearbeiten
 
 
 alix6:
 
 noscript.css (special wie import.css)
+captcha-vorschau
+DL-QI-Pfad-Länger
+QI-Pfad für Video-Player
+standard-Größen für Video-Player festlegbar
+suche: stopp-wortliste nutzen
+index-suche auch bei normaler news/artikel/DL-Suche
+Suche: anzeigen von index-wörtern nach suche
 
 Startseite (und News entsprechend...)
 Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
@@ -17,6 +23,7 @@ lang-system fertig umstellen und vor allem menü punkte irgendwie einbinden
 statistik-update
 Vorschau für News
 Pop Up-Editor, Tag-List im Editor
+
 
 bei neuer codemirror-version:
 => Codemirror Update

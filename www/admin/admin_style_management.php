@@ -7,8 +7,9 @@ function get_style_ini_data ( $STYLE_INI_FILE ) {
 
     $ACCESS = new fileaccess();
     $ini_lines = $ACCESS->getFileArray( $STYLE_INI_FILE );
+    $ini_lines = array_map ( trim, $ini_lines );
     $ini_lines = array_map ( killhtml, $ini_lines );
-    $ini_lines[1] = ( $ini_lines[1] != "" ) ? $TEXT["admin"]->get("version").'&nbsp;'.$ini_lines[1] : "";
+    $ini_lines[1] = ( $ini_lines[1] != "" ) ? $ini_lines[1] : "";
     return $ini_lines;
 }
 
