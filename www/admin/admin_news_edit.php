@@ -657,7 +657,6 @@ function action_edit_display_page ( $data_arr )
                                                 <input type="hidden" name="news_action" value="edit">
                                                 <input type="hidden" name="news_id[]" value="'.$news_arr['news_id'].'">
                         <input type="hidden" name="sended" value="edit">
-                        <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                                                         <tr><td class="line" colspan="2">'.$admin_phrases[news][news_information_title].'</td></tr>
                             <tr>
