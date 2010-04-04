@@ -4,10 +4,9 @@
 /////// User prüfen ////////
 ////////////////////////////
 
-if ($_POST[username] &&
-    $_POST[userpassword])
+if ( isset ( $_POST['username'] ) && isset ( $_POST['userpassword'] ) )
 {
-    $loggedin = admin_login($_POST[username], $_POST[userpassword], false);
+    $loggedin = admin_login($_POST['username'], $_POST['userpassword'], false);
     switch ($loggedin)
     {
         case 0:
@@ -29,7 +28,7 @@ if ($_POST[username] &&
 ///// Schon eingeloggt /////
 ////////////////////////////
 
-elseif ($_SESSION[user_level] == "authorised")
+elseif ($_SESSION['user_level'] == "authorised")
 {
     systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!');
 }
@@ -73,7 +72,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' Einloggen
+                                        '.$admin_phrases['common']['arrow'].' Einloggen
                                     </button>
                                 </td>
                             </tr>

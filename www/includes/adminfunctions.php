@@ -461,7 +461,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
     $zaehler = 0;
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."smilies ORDER by `order` ASC LIMIT 0, 10", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies ORDER by `order` ASC LIMIT 0, 10", $db);
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id]);
@@ -667,7 +667,8 @@ function create_menu ( $ACTIVE_MENU )
                                     WHERE `group_id` = '-1' AND `page_int_sub_perm` = 0
                                     ORDER BY `page_pos` ASC, `page_id` ASC
     ", $db );
-
+    
+    $template = "";
     while ( $MENU_ARR = mysql_fetch_assoc ( $index ) ) {
         $MENU_ARR['show'] = create_menu_show ( $MENU_ARR['page_link'] );
 
@@ -678,7 +679,7 @@ function create_menu ( $ACTIVE_MENU )
             } else {
                 $MENU_ARR['class'] = "menu_link";
             }
-            $template .= '<a href="'.$PHP_SELF.'?go='.$MENU_ARR['page_id'].'" target="_self" class="'.$MENU_ARR['class'].'">'.$MENU_ARR['page_title'].'</a>
+            $template .= '<a href="?go='.$MENU_ARR['page_id'].'" target="_self" class="'.$MENU_ARR['class'].'">'.$MENU_ARR['page_title'].'</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;';
         }
     }
@@ -709,7 +710,7 @@ function create_menu_show ( $MENU_ID )
     
     while ( $page = mysql_fetch_assoc ( $index ) ) {
         $page = $page['page_id'];
-        if ( $_SESSION[$page] == 1 ) {
+        if ( isset($_SESSION[$page]) && $_SESSION[$page] == 1 ) {
             return TRUE;
             break;
         }
@@ -737,6 +738,7 @@ function create_navi (  $ACTIVE_MENU, $GO  )
                                             ORDER BY `group_pos` ASC, `group_title` ASC
         ", $db );
 
+        $template = "";
         while ( $GROUP_ARR = mysql_fetch_assoc ( $groupaction ) ) {
         $template .= create_group ( $GROUP_ARR, create_group_first ( $template ), $GO );
         }
@@ -761,6 +763,7 @@ function create_group ($GROUP_ARR, $IS_FIRST, $GO )
                                                     WHERE `group_id` = '".$GROUP_ARR['group_id']."' AND `page_int_sub_perm` = 0
                                                     ORDER BY `page_pos` ASC, `page_id` ASC
         ", $db );
+        $template = "";
         while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {
             $template .= create_link ( $PAGE_ARR['page_id'], $PAGE_ARR['page_link'], $GO );
         }
@@ -816,7 +819,7 @@ function create_link ( $PAGE_ID, $PAGE_LINK, $GO )
   
   // permission ok?
   if ( $_SESSION[$PAGE_ID] ) {
-      return '<a href="'.$PHP_SELF.'?go='.$PAGE_ID.'" class="navi">- <span class="'.$link_class.'">'.$PAGE_LINK.'</span></a><br>';
+      return '<a href="?go='.$PAGE_ID.'" class="navi">- <span class="'.$link_class.'">'.$PAGE_LINK.'</span></a><br>';
   }
   else {
       return "";
@@ -836,7 +839,7 @@ function admin_set_cookie($username, $password)
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("select * from ".$global_config_arr[pref]."user where user_name = '$username'", $db);
+    $index = mysql_query("select * from ".$global_config_arr['pref']."user where user_name = '$username'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -887,7 +890,7 @@ function admin_login($username, $password, $iscookie)
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name = '$username'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_name = '$username'", $db);
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {

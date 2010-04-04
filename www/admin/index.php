@@ -7,7 +7,7 @@ set_magic_quotes_runtime ( FALSE );
 
 // fs2 include path
 set_include_path ( '.' );
-define ( FS2_ROOT_PATH, "./../", TRUE );
+define ( 'FS2_ROOT_PATH', "./../", TRUE );
 
 // inlcude files
 require ( FS2_ROOT_PATH . "login.inc.php" );
@@ -34,18 +34,18 @@ $TEXT['template'] = new langDataInit ( $global_config_arr['language_text'], "tem
 ### START OF LOGIN ###
 ######################
 
-if ( $_POST['stayonline'] == 1 ) {
+if ( isset ( $_POST['stayonline'] ) && $_POST['stayonline'] == 1 ) {
     admin_set_cookie ( $_POST['username'], $_POST['userpassword'] );
 }
 
-if ( $_COOKIE['login'] && $_SESSION["user_level"] != "authorised" )
+if ( isset ( $_COOKIE['login'] ) && $_COOKIE['login'] && $_SESSION["user_level"] != "authorised" )
 {
     $userpassword = substr ( $_COOKIE['login'], 0, 32 );
     $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
     admin_login ( $username, $userpassword, TRUE );
 }
 
-if ( $_POST['login'] == 1 && $_SESSION["user_level"] != "authorised" )
+if ( isset ( $_POST['login'] ) && $_POST['login'] == 1 && $_SESSION["user_level"] != "authorised" )
 {
     admin_login ( $_POST['username'], $_POST['userpassword'], FALSE );
 }
@@ -60,7 +60,7 @@ if ( $_POST['login'] == 1 && $_SESSION["user_level"] != "authorised" )
 ##################################
 
 // security functions
-$go = savesql ( $_REQUEST['go'] );
+$go = isset ( $_REQUEST['go'] ) ? savesql ( $_REQUEST['go'] ) : "";
 
 // get page-data from database
 $index = mysql_query ( "
@@ -178,12 +178,12 @@ echo'
     <table cellpadding="0" cellspacing="0">
         <tr valign="top">
             <td id="menu_top_log_image_td">
-                   <a href="'.$PHP_SELF.'?go='.$log_link.'" target="_self" class="small">
+                   <a href="?go='.$log_link.'" target="_self" class="small">
                     <img src="img/'.$log_image.'" alt="" title="'.$log_text.'" border="0">
                 </a>
             </td>
             <td>
-                   <a href="'.$PHP_SELF.'?go='.$log_link.'" target="_self" class="small">
+                   <a href="?go='.$log_link.'" target="_self" class="small">
                      '.$log_text.'
                 </a>
             </td>

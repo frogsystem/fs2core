@@ -10,6 +10,9 @@ function user_login ( $username, $password, $iscookie )
     $rows = mysql_num_rows($index);
     if ($rows == 0) {
         $_GET['go'] = "login";
+        if ( $iscookie ) {
+            delete_cookie ();
+        }
         return 1;  // Fehlercode 1: User nicht vorhanden
     } else {
         $dbuserpass = mysql_result($index, 0, "user_password");
@@ -29,14 +32,16 @@ function user_login ( $username, $password, $iscookie )
         }
         else {
             $_GET['go'] = "login";
+            if ( $iscookie ) {
+                delete_cookie ();
+            }
             return 2;  // Fehlercode 2: Falsches Passwort
         }
     }
 }
 
 
-
-function set_cookie($username, $password)
+function set_cookie ( $username, $password )
 {
     global $global_config_arr;
     global $db;
@@ -70,13 +75,21 @@ function set_cookie($username, $password)
     }
 }
 
+
+function delete_cookie ()
+{
+    setcookie ( "login", "", time()-1000, "/" );
+}
+
+
 function logout_user()
 {
     session_unset ();
     session_destroy ();
     $_SESSION = array();
-    setcookie ( "login", "", time()-1000, "/" );
+    delete_cookie ();
 }
+
 
 /////////////////////////
 //// Do Cookie Stuff ////

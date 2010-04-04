@@ -1,12 +1,13 @@
 <?php
 // Start Session
 session_start ();
+
 // Disable magic_quotes_runtime
 set_magic_quotes_runtime ( FALSE );
 
 // fs2 include path
 set_include_path ( '.' );
-define ( FS2_ROOT_PATH, "./", TRUE );
+define ( 'FS2_ROOT_PATH', "./", TRUE );
 
 // Inlcude DB Connection File
 require ( FS2_ROOT_PATH . "login.inc.php");

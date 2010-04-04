@@ -655,7 +655,7 @@ function action_edit_display_page ( $data_arr )
                                         <form action="" method="post">
                                                 <input type="hidden" name="go" value="news_edit">
                                                 <input type="hidden" name="news_action" value="edit">
-                                                <input type="hidden" name="news_id" value="'.$news_arr['news_id'].'">
+                                                <input type="hidden" name="news_id[]" value="'.$news_arr['news_id'].'">
                         <input type="hidden" name="sended" value="edit">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <table class="configtable" cellpadding="4" cellspacing="0">
@@ -1109,6 +1109,7 @@ function db_edit_news ( $DATA )
     $DATA['news_text'] = savesql ( $DATA['news_text'] );
     $DATA['news_title'] = savesql ( $DATA['news_title'] );
 
+    $DATA['news_id'] = $DATA['news_id'][0];
     settype ( $DATA['news_id'], "integer" );
     settype ( $DATA['cat_id'], "integer" );
     settype ( $DATA['user_id'], "integer" );

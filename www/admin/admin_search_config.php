@@ -3,7 +3,9 @@
 //// Update Config ////
 ///////////////////////
 if (
-        $_POST['search_num_previews'] && $_POST['search_num_previews'] > 0 && $_POST['search_num_previews'] <= 25
+        isset ( $_POST['search_num_previews'] )
+        && $_POST['search_num_previews'] > 0
+        && $_POST['search_num_previews'] <= 25
     )
 {
     // Security-Functions
@@ -116,7 +118,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                        '.$TEXT["admin"]->get("button_arrow").' '.$TEXT["admin"]->get("save_changes_button").'
                                     </button>
                                 </td>
                             </tr>

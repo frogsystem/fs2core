@@ -1181,7 +1181,11 @@ function html_nl2br ( $TEXT )
 
 function savesql ( $TEXT )
 {
-    $TEXT = mysql_real_escape_string ( $TEXT );
+    global $db;
+
+    if ( !is_numeric ( $TEXT ) ) {
+        $TEXT = mysql_real_escape_string ( unquote ( $TEXT ), $db );
+    }
     return $TEXT;
 }
 
