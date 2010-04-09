@@ -4,6 +4,11 @@ default design noch bearbeiten
 
 
 alix6:
+magic quote support einstellen,
+wenn magic, dann unquote in savesql
+beim rausholen: neu: getsql oder killhtml, was getsql nutzt
+getsql = wrapper falls in zukunft was geändert werden muss
+
 
 noscript.css (special wie import.css)
 captcha-vorschau
