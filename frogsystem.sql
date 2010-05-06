@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 27. Februar 2010 um 14:03
+-- Erstellungszeit: 06. Mai 2010 um 22:09
 -- Server Version: 5.1.30
 -- PHP-Version: 5.2.8
 
@@ -431,7 +431,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 40, 3587, 1, 1, 2, 1);
+(1, 46, 3621, 2, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -454,7 +454,7 @@ CREATE TABLE `fs_counter_ref` (
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
-('http://localhost/fs2/', 88, 1263499887, 1267231087),
+('http://localhost/fs2/', 98, 1263499887, 1271879785),
 ('http://alix.worldofgothic.com/beta4/admin/?go=gen_config', 2, 1267197504, 1267197505),
 ('http://demo.frogsystem.de/admin/?go=gen_config', 1, 1267198063, 1267198063);
 
@@ -504,7 +504,13 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 2, 22, 1, 2),
 (2010, 2, 24, 1, 1),
 (2010, 2, 26, 1, 57),
-(2010, 2, 27, 1, 1);
+(2010, 2, 27, 1, 1),
+(2010, 3, 9, 1, 7),
+(2010, 3, 17, 1, 1),
+(2010, 3, 24, 1, 2),
+(2010, 4, 9, 1, 7),
+(2010, 4, 11, 1, 15),
+(2010, 4, 21, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -734,7 +740,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1267191773);
+(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1271879785);
 
 -- --------------------------------------------------------
 
@@ -772,14 +778,14 @@ CREATE TABLE `fs_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=141 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=143 ;
 
 --
 -- Daten für Tabelle `fs_news`
 --
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
-(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\n[center]Weitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei![/center]\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1267219359);
+(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\n[center]Weitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei![/center]\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1269453612);
 
 -- --------------------------------------------------------
 
@@ -823,14 +829,15 @@ CREATE TABLE `fs_news_comments` (
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_text` (`comment_text`),
   FULLTEXT KEY `comment_title` (`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `fs_news_comments`
 --
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(2, 1, 'Hans Wurst', 0, '127.0.0.1', 1266663394, 'Geile Seite!!!', 'Ich liebe euch alle ;)');
+(2, 1, 'Hans Wurst', 0, '127.0.0.1', 1266663394, 'Geile Seite!!!', 'Ich liebe euch alle ;)'),
+(3, 1, '1', 1, '127.0.0.1', 1270829419, 'me', '\\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\"');
 
 -- --------------------------------------------------------
 
@@ -880,15 +887,15 @@ CREATE TABLE `fs_news_links` (
   `link_url` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `link_target` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`link_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=17 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=23 ;
 
 --
 -- Daten für Tabelle `fs_news_links`
 --
 
 INSERT INTO `fs_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `link_target`) VALUES
-(1, 16, 'Frogsystem 2 Supportforum', 'http://forum.sweil.de/viewforum.php?f=7', 1),
-(1, 15, 'Offizielle Frogsystem 2 Homepage', 'http://www.frogsystem.de', 1);
+(1, 22, 'Frogsystem 2 Supportforum', 'http://forum.sweil.de/viewforum.php?f=7', 1),
+(1, 21, 'Offizielle Frogsystem 2 Homepage', 'http://www.frogsystem.de', 1);
 
 -- --------------------------------------------------------
 
@@ -1353,7 +1360,7 @@ CREATE TABLE `fs_search_index` (
   `search_index_count` smallint(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=7281 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=7341 ;
 
 --
 -- Daten für Tabelle `fs_search_index`
@@ -1422,36 +1429,36 @@ INSERT INTO `fs_search_index` (`search_index_id`, `search_index_word_id`, `searc
 (7214, 59, 'articles', 1, 1),
 (7213, 58, 'articles', 1, 1),
 (7212, 57, 'articles', 1, 1),
-(7089, 30, 'news', 1, 1),
-(7088, 29, 'news', 1, 1),
-(7087, 28, 'news', 1, 1),
-(7086, 27, 'news', 1, 1),
-(7085, 26, 'news', 1, 1),
-(7084, 25, 'news', 1, 1),
-(7083, 24, 'news', 1, 1),
-(7082, 23, 'news', 1, 1),
-(7081, 22, 'news', 1, 1),
-(7080, 21, 'news', 1, 1),
-(7079, 20, 'news', 1, 1),
-(7078, 19, 'news', 1, 1),
-(7077, 18, 'news', 1, 1),
-(7076, 17, 'news', 1, 1),
-(7075, 16, 'news', 1, 1),
-(7074, 15, 'news', 1, 1),
-(7073, 14, 'news', 1, 1),
-(7072, 13, 'news', 1, 1),
-(7071, 12, 'news', 1, 1),
-(7070, 11, 'news', 1, 2),
-(7069, 10, 'news', 1, 1),
-(7068, 9, 'news', 1, 1),
-(7067, 8, 'news', 1, 1),
-(7066, 7, 'news', 1, 3),
-(7065, 6, 'news', 1, 1),
-(7064, 5, 'news', 1, 1),
-(7063, 4, 'news', 1, 1),
-(7062, 3, 'news', 1, 1),
-(7061, 2, 'news', 1, 1),
-(7060, 1, 'news', 1, 1),
+(7340, 30, 'news', 1, 1),
+(7339, 29, 'news', 1, 1),
+(7338, 28, 'news', 1, 1),
+(7337, 27, 'news', 1, 1),
+(7336, 26, 'news', 1, 1),
+(7335, 25, 'news', 1, 1),
+(7334, 24, 'news', 1, 1),
+(7333, 23, 'news', 1, 1),
+(7332, 22, 'news', 1, 1),
+(7331, 21, 'news', 1, 1),
+(7330, 20, 'news', 1, 1),
+(7329, 19, 'news', 1, 1),
+(7328, 18, 'news', 1, 1),
+(7327, 17, 'news', 1, 1),
+(7326, 16, 'news', 1, 1),
+(7325, 15, 'news', 1, 1),
+(7324, 14, 'news', 1, 1),
+(7323, 13, 'news', 1, 1),
+(7322, 12, 'news', 1, 1),
+(7321, 11, 'news', 1, 2),
+(7320, 10, 'news', 1, 1),
+(7319, 9, 'news', 1, 1),
+(7318, 8, 'news', 1, 1),
+(7317, 7, 'news', 1, 3),
+(7316, 6, 'news', 1, 1),
+(7315, 5, 'news', 1, 1),
+(7314, 4, 'news', 1, 1),
+(7313, 3, 'news', 1, 1),
+(7312, 2, 'news', 1, 1),
+(7311, 1, 'news', 1, 1),
 (7211, 56, 'articles', 1, 1),
 (7210, 55, 'articles', 1, 1),
 (7209, 54, 'articles', 1, 1),
@@ -1504,7 +1511,7 @@ CREATE TABLE `fs_search_time` (
 --
 
 INSERT INTO `fs_search_time` (`search_time_id`, `search_time_type`, `search_time_document_id`, `search_time_date`) VALUES
-(157, 'news', 1, 1264807730),
+(157, 'news', 1, 1270826777),
 (158, 'articles', 1, 1265895157),
 (159, 'news', 139, 1265895773),
 (160, 'news', 140, 1265895773);
@@ -1714,7 +1721,7 @@ CREATE TABLE `fs_snippets` (
   `snippet_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`snippet_id`),
   UNIQUE KEY `snippet_tag` (`snippet_tag`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `fs_snippets`
@@ -1773,14 +1780,15 @@ CREATE TABLE `fs_user` (
   `user_yim` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_skype` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_user`
 --
 
 INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
-(1, 'admin', '6cdd7286f7e3b73008cef8a887bb7b80', 'SWEempPQBm', 'admin@frogsystem.de', 1, 0, 1, 1263252177, 1, 'http://www.frogsystem.de', '', '', '', '', '');
+(1, 'admin', '6cdd7286f7e3b73008cef8a887bb7b80', 'SWEempPQBm', 'admin@frogsystem.de', 1, 0, 1, 1263252177, 1, 'http://www.frogsystem.de', '', '', '', '', ''),
+(2, 'test', 'ae22d0fe766803a13abf01ba5bfab4e4', 'rU1cvt0uz7', 'test', 1, 1, 0, 1268089200, 0, '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1847,14 +1855,15 @@ CREATE TABLE `fs_user_groups` (
   `user_group_date` int(11) NOT NULL,
   `user_group_user` mediumint(8) NOT NULL DEFAULT '1',
   PRIMARY KEY (`user_group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs_user_groups`
 --
 
 INSERT INTO `fs_user_groups` (`user_group_id`, `user_group_name`, `user_group_description`, `user_group_title`, `user_group_color`, `user_group_highlight`, `user_group_date`, `user_group_user`) VALUES
-(0, 'Administrator', '', 'Chef vom Dienst', '008800', 1, 1223676000, 1);
+(0, 'Administrator', '', 'Chef vom Dienst', '008800', 1, 1223676000, 1),
+(1, 'Mitarbeiter', NULL, NULL, '-1', 0, 1268131619, 1);
 
 -- --------------------------------------------------------
 
@@ -1874,6 +1883,14 @@ CREATE TABLE `fs_user_permissions` (
 -- Daten für Tabelle `fs_user_permissions`
 --
 
+INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
+('news_add', 1, 1),
+('news_add', 2, 0),
+('news_cat', 1, 1),
+('news_comments', 1, 1),
+('news_delete', 1, 1),
+('news_edit', 1, 1),
+('news_edit', 2, 0);
 
 -- --------------------------------------------------------
 
