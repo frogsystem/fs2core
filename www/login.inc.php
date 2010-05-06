@@ -12,7 +12,7 @@ $dbc['pref'] = "fs_"; //Table Prefix
 ////////////////////////
 //// Hardcoded Vars ////
 ////////////////////////
-$spam = "QdbNFgEcn0";                //Anti-Spam Encryption-Code
+$spam = "QdbNFgEcn0"; //Anti-Spam Encryption-Code
 
 
 ///////////////////////

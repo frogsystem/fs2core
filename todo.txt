@@ -15,7 +15,7 @@ captcha-vorschau
 DL-QI-Pfad-Länger
 QI-Pfad für Video-Player
 standard-Größen für Video-Player festlegbar
-suche: stopp-wortliste nutzen
+suche: stopp-wortliste nutzen oder nicht
 index-suche auch bei normaler news/artikel/DL-Suche
 Suche: anzeigen von index-wörtern nach suche
 
