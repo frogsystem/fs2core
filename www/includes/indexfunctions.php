@@ -238,7 +238,7 @@ function get_meta_abstract ()
 /////////////////////
 function get_content ( $GOTO )
 {
-    global $global_config_arr, $db, $TEXT;
+    global $global_config_arr, $db, $TEXT, $sql;
     global $phrases;
 
     // Display Content

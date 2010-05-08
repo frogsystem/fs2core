@@ -8,11 +8,10 @@
  * this class provides several methods to improve sql-query-coding
  */
 class sql{
-  var $sql   = null;
-  var $db    = null;
-  var $pref  = null;
-  var $error = null;
-  var $qrystr;
+  private $sql   = null;
+  private $pref  = null;
+  public $error = null;
+  public $qrystr;
 
   /**
    * Speichert Die SQL-Verbindung, den Datenbank-Namen und das Präfix zur spätern Verwendung
@@ -25,16 +24,30 @@ class sql{
    *
    * @return bool
    */
-  function __construct($mysql_res, $mysql_db, $pref){
-    if(!is_resource($mysql_res) || empty($mysql_db)){
-      die($mysql_res."<br>".$mysql_db."<br>".$pref);
-      return false;
-    } else {
-      $this->sql  = $mysql_res;
-      $this->db   = $mysql_db;
+  public function __construct($host, $data, $user, $pass, $pref){
+	$this->sql = @mysql_connect($host, $user, $pass);
+    if($this->sql && mysql_select_db($data, $this->sql)){
+      $this->db = $data;
       $this->pref = $pref;
-      return true;
+    } else {
+      $this->sql = null;
     }
+  }
+  
+  /**
+   * Gibt die MySQL-Ressource zurück
+   *
+   * @name sql::__construct();
+   *
+   * @param void
+   *
+   * @return mixed
+   */
+  public function getRes(){
+    if($this->sql !== null)
+      return $this->sql;
+    else
+      return false;
   }
 
   /**
@@ -45,7 +58,7 @@ class sql{
   * @param String $qrystr
   * @return resource
   */
-  function query($qrystr){
+  public function query($qrystr){
     unset($this->error, $this->qrystr);                       // Error leeren
     $this->qrystr = str_replace("{..pref..}", $this->pref, $qrystr);
     @$qry = mysql_query($this->qrystr, $this->sql);  // Query durchführen
@@ -69,7 +82,7 @@ class sql{
   * @param int $addititional
   * @return mixed
   */
-  function getData($table, $row, $optional="", $addititional=0){
+  public function getData($table, $row, $optional="", $addititional=0){
     unset($this->error, $this->qrystr);                            // Error leeren
     $qrystr="SELECT ".$row." FROM `".$this->pref.$table."`";  // Querystring aufbauen
     if(!empty($optional)){
@@ -122,7 +135,7 @@ class sql{
   *
   * @return bool
   */
-  function setData($table, $rows, $values){
+  public function setData($table, $rows, $values){
     unset($this->error, $this->qrystr);
     $this->qrystr = "INSERT INTO `".$this->pref.$table."`(".$rows.") VALUES(".$values.")";
     @mysql_query($this->qrystr, $this->sql);
@@ -146,7 +159,7 @@ class sql{
   * @param String $addititional = ""
   * @return bool
   */
-  function updateData($table, $rows, $values, $addititional=""){
+  public function updateData($table, $rows, $values, $addititional=""){
     unset($this->error, $this->qrystr);
     $qrystr="UPDATE ".$this->pref.$table." SET ";
     $rows   = explode(",", $rows);
@@ -181,7 +194,7 @@ class sql{
   * @param Array &$array
   * @return void
   */
-  function arraytrim(&$array){
+  public function arraytrim(&$array){
     foreach($array as $key => $value){
       if(is_array($array[$key])){
         $this->arraytrim($array[$key]);

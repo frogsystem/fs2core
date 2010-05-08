@@ -9,6 +9,9 @@ set_magic_quotes_runtime ( FALSE );
 set_include_path ( '.' );
 define ( 'FS2_ROOT_PATH', "./", TRUE );
 
+// Initialize sql-class
+require ( FS2_ROOT_PATH . "libs/class_sql.php" );
+
 // Inlcude DB Connection File
 require ( FS2_ROOT_PATH . "login.inc.php");
 

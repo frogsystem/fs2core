@@ -18,8 +18,9 @@ $spam = "QdbNFgEcn0"; //Anti-Spam Encryption-Code
 ///////////////////////
 //// DB Connection ////
 ///////////////////////
-@$db = mysql_connect ( $dbc['host'], $dbc['user'], $dbc['pass'] );
-if ( $db && mysql_select_db ( $dbc['data'], $db ) ) {
+$sql = new sql($dbc[host], $dbc[data], $dbc[user], $dbc[pass], $dbc[pref]);
+$db = $sql->getRes();
+if ( $db ) {
 
     /////////////////////
     //// Global Vars ////
