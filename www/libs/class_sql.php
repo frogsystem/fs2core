@@ -100,7 +100,7 @@ class sql{
       }
       $ret=array();
       while($erg=mysql_fetch_assoc($qry)){
-        $ret[]=$erg;
+        $ret[]=array_map("stripslashes", $erg);
       }
       switch($addititional){
         case 0:             // Keine zusätzlichen Angaben
