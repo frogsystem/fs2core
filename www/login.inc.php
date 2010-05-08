@@ -18,6 +18,10 @@ $spam = "QdbNFgEcn0"; //Anti-Spam Encryption-Code
 ///////////////////////
 //// DB Connection ////
 ///////////////////////
+
+// Initialize sql-class
+require ( FS2_ROOT_PATH . "libs/class_sql.php" );
+
 $sql = new sql($dbc[host], $dbc[data], $dbc[user], $dbc[pass], $dbc[pref]);
 $db = $sql->getRes();
 if ( $db ) {

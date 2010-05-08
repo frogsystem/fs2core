@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 07. Mai 2010 um 23:24
+-- Erstellungszeit: 08. Mai 2010 um 20:32
 -- Server Version: 5.1.41
 -- PHP-Version: 5.3.1
 
@@ -13,7 +13,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES latin1 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Datenbank: `frogsystem`
@@ -22,7 +22,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_admin_cp`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_admin_cp`
 --
 
 DROP TABLE IF EXISTS `fs_admin_cp`;
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `fs_admin_cp` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_admin_cp`
+-- Daten fÃ¼r Tabelle `fs_admin_cp`
 --
 
 INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `page_file`, `page_pos`, `page_int_sub_perm`) VALUES
@@ -51,109 +51,109 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_title`, `page_link`, `pa
 ('start_styles', -1, 'Styles', 'styles', 'start_styles.php', 7, 0),
 ('start_system', -1, 'System', 'system', 'start_system.php', 8, 0),
 ('start_mods', -1, 'AddOns', 'mods', 'start_mods.php', 9, 0),
-('zone_config', 0, 'Konfiguration ändern', 'Konfiguration', 'admin_zone_config.php', 1, 0),
+('zone_config', 0, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_zone_config.php', 1, 0),
 ('zone_create', 0, 'erstellen', 'erstellen', 'admin_zone_create.php', 2, 0),
 ('zone_admin', 0, 'verwalten', 'verwalten', 'admin_zone_manage.php', 3, 0),
 ('gen_config', 1, 'Seitenkonfiguration', 'Konfiguration', 'admin_general_config.php', 1, 0),
-('gen_announcement', 1, 'Ankündigung', 'Ankündigung', 'admin_allannouncement.php', 2, 0),
+('gen_announcement', 1, 'AnkÃ¼ndigung', 'AnkÃ¼ndigung', 'admin_allannouncement.php', 2, 0),
 ('gen_captcha', 1, 'Captcha Konfiguration', 'Captcha', 'admin_captcha_config.php', 2, 0),
 ('gen_emails', 1, 'E-Mail-Vorlagen bearbeiten', 'E-Mails', 'admin_allemail.php', 4, 0),
 ('gen_phpinfo', 1, 'PHP & Server Informationen', 'PHP Info', 'admin_allphpinfo.php', 5, 0),
-('editor_config', 2, 'Konfiguration ändern', 'Konfiguration', 'admin_editor_config.php', 1, 0),
+('editor_config', 2, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_editor_config.php', 1, 0),
 ('editor_design', 2, 'Darstellung bearbeiten', 'Darstellung', 'admin_editor_design.php', 2, 0),
 ('editor_smilies', 2, 'Smilies verwalten', 'Smilies', 'admin_editor_smilies.php', 3, 0),
 ('editor_fscodes', 2, 'FSCodes bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 4, 0),
 ('stat_view', 3, 'anzeigen', 'anzeigen', 'admin_statview.php', 1, 0),
 ('stat_edit', 3, 'bearbeiten', 'bearbeiten', 'admin_statedit.php', 2, 0),
 ('stat_ref', 3, 'Referrer anzeigen & verwalten', 'Referrer', 'admin_statref.php', 3, 0),
-('stat_space', 3, 'Speicherplatz Übersicht', 'Speicherplatz', 'admin_statspace.php', 4, 0),
-('news_config', 5, 'Konfiguration ändern', 'Konfiguration', 'admin_news_config.php', 1, 0),
+('stat_space', 3, 'Speicherplatz Ãœbersicht', 'Speicherplatz', 'admin_statspace.php', 4, 0),
+('news_config', 5, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_news_config.php', 1, 0),
 ('news_add', 5, 'schreiben', 'schreiben', 'admin_news_add.php', 2, 0),
 ('news_edit', 5, 'bearbeiten', 'bearbeiten', 'admin_news_edit.php', 3, 0),
 ('news_cat', 5, 'Kategorien verwalten', 'Kategorien', 'admin_news_cat.php', 4, 0),
-('news_delete', 5, 'löschen', 'löschen', 'news_edit', 1, 1),
+('news_delete', 5, 'lÃ¶schen', 'lÃ¶schen', 'news_edit', 1, 1),
 ('news_comments', 5, 'Kommentare', 'Kommentare', 'news_edit', 2, 1),
-('articles_config', 6, 'Konfiguration ändern', 'Konfiguration', 'admin_articles_config.php', 1, 0),
+('articles_config', 6, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_articles_config.php', 1, 0),
 ('articles_add', 6, 'schreiben', 'schreiben', 'admin_articles_add.php', 2, 0),
 ('articles_edit', 6, 'bearbeiten', 'bearbeiten', 'admin_articles_edit.php', 3, 0),
 ('articles_cat', 6, 'Kategorien verwalten', 'Kategorien', 'admin_articles_cat.php', 4, 0),
-('press_config', 7, 'Konfiguration ändern', 'Konfiguration', 'admin_press_config.php', 1, 0),
-('press_add', 7, 'hinzufügen', 'hinzufügen', 'admin_press_add.php', 2, 0),
+('press_config', 7, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_press_config.php', 1, 0),
+('press_add', 7, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_press_add.php', 2, 0),
 ('press_edit', 7, 'bearbeiten', 'bearbeiten', 'admin_press_edit.php', 3, 0),
 ('press_admin', 7, 'Verwaltung', 'Verwaltung', 'admin_press_admin.php', 4, 0),
-('cimg_add', 8, 'hinzufügen', 'hinzufügen', 'admin_cimg.php', 1, 0),
+('cimg_add', 8, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_cimg.php', 1, 0),
 ('cimg_admin', 8, 'verwalten', 'verwalten', 'admin_cimgdel.php', 2, 0),
-('gallery_config', 9, 'Konfiguration ändern', 'Konfiguration', 'admin_screenconfig.php', 1, 0),
+('gallery_config', 9, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_screenconfig.php', 1, 0),
 ('gallery_cat', 9, 'Kategorien verwalten', 'Kategorien', 'admin_screencat.php', 2, 0),
 ('gallery_newcat', 9, 'Neue Kategorie', 'Neue Kategorie', 'admin_screennewcat.php', 3, 0),
-('screens_add', 10, 'hinzufügen', 'hinzufügen', 'admin_screenadd.php', 1, 0),
+('screens_add', 10, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_screenadd.php', 1, 0),
 ('screens_edit', 10, 'bearbeiten', 'bearbeiten', 'admin_screenedit.php', 2, 0),
-('wp_add', 11, 'hinzufügen', 'hinzufügen', 'admin_wallpaperadd.php', 1, 0),
+('wp_add', 11, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_wallpaperadd.php', 1, 0),
 ('wp_edit', 11, 'bearbeiten', 'bearbeiten', 'admin_wallpaperedit.php', 2, 0),
-('randompic_config', 12, 'Konfiguration ändern', 'Konfiguration', 'admin_randompic_config.php', 1, 0),
-('randompic_cat', 12, 'Kategorien auswählen', 'Kategorie Auswahl', 'admin_randompic_cat.php', 2, 0),
-('timedpic_add', 13, 'hinzufügen', 'hinzufügen', 'admin_randompic_time_add.php', 1, 0),
+('randompic_config', 12, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_randompic_config.php', 1, 0),
+('randompic_cat', 12, 'Kategorien auswÃ¤hlen', 'Kategorie Auswahl', 'admin_randompic_cat.php', 2, 0),
+('timedpic_add', 13, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_randompic_time_add.php', 1, 0),
 ('timedpic_edit', 13, 'verwalten', 'verwalten', 'admin_randompic_time.php', 2, 0),
-('dl_config', 14, 'Konfiguration ändern', 'Konfiguration', 'admin_dlconfig.php', 1, 0),
-('dl_add', 14, 'hinzufügen', 'hinzufügen', 'admin_dladd.php', 2, 0),
+('dl_config', 14, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_dlconfig.php', 1, 0),
+('dl_add', 14, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_dladd.php', 2, 0),
 ('dl_edit', 14, 'bearbeiten', 'bearbeiten', 'admin_dledit.php', 3, 0),
 ('dl_cat', 14, 'Kategorien verwalten', 'Kategorien', 'admin_dlcat.php', 4, 0),
 ('dl_newcat', 14, 'Neue Kategorie', 'Neue Kategorie', 'admin_dlnewcat.php', 5, 0),
-('player_config', 15, 'Konfiguration ändern', 'Konfiguration', 'admin_player_config.php', 1, 0),
-('player_add', 15, 'hinzufügen', 'hinzufügen', 'admin_player_add.php', 2, 0),
+('player_config', 15, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_player_config.php', 1, 0),
+('player_add', 15, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_player_add.php', 2, 0),
 ('player_edit', 15, 'bearbeiten', 'bearbeiten', 'admin_player_edit.php', 3, 0),
-('poll_config', 16, 'Konfiguration ändern', 'Konfiguration', 'admin_pollconfig.php', 1, 0),
-('poll_add', 16, 'hinzufügen', 'hinzufügen', 'admin_polladd.php', 2, 0),
+('poll_config', 16, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_pollconfig.php', 1, 0),
+('poll_add', 16, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_polladd.php', 2, 0),
 ('poll_edit', 16, 'bearbeiten', 'bearbeiten', 'admin_polledit.php', 3, 0),
-('partner_config', 18, 'Konfiguration ändern', 'Konfiguration', 'admin_partnerconfig.php', 1, 0),
-('partner_add', 18, 'hinzufügen', 'hinzufügen', 'admin_partneradd.php', 2, 0),
+('partner_config', 18, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_partnerconfig.php', 1, 0),
+('partner_add', 18, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_partneradd.php', 2, 0),
 ('partner_edit', 18, 'bearbeiten', 'bearbeiten', 'admin_partneredit.php', 3, 0),
-('shop_add', 19, 'Produkt hinzufügen', 'Neues Produkt', 'admin_shopadd.php', 1, 0),
-('shop_edit', 19, 'Produkt Übersicht', 'Übersicht', 'admin_shopedit.php', 2, 0),
-('user_config', 20, 'Kofiguration ändern', 'Kofiguration', 'admin_user_config.php', 1, 0),
-('user_add', 20, 'hinzufügen', 'hinzufügen', 'admin_user_add.php', 2, 0),
+('shop_add', 19, 'Produkt hinzufÃ¼gen', 'Neues Produkt', 'admin_shopadd.php', 1, 0),
+('shop_edit', 19, 'Produkt Ãœbersicht', 'Ãœbersicht', 'admin_shopedit.php', 2, 0),
+('user_config', 20, 'Kofiguration Ã¤ndern', 'Kofiguration', 'admin_user_config.php', 1, 0),
+('user_add', 20, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_user_add.php', 2, 0),
 ('user_edit', 20, 'bearbeiten', 'bearbeiten', 'admin_user_edit.php', 3, 0),
-('user_rights', 20, 'Rechte ändern', 'Rechte', 'admin_user_rights.php', 4, 0),
+('user_rights', 20, 'Rechte Ã¤ndern', 'Rechte', 'admin_user_rights.php', 4, 0),
 ('style_add', 21, 'erstellen', 'erstellen', 'admin_style_add.php', 1, 0),
 ('style_management', 21, 'verwalten', 'verwalten', 'admin_style_management.php', 2, 0),
 ('style_css', 21, 'CSS-Dateien bearbeiten', 'CSS-Dateien', 'admin_template_css.php', 3, 0),
 ('style_js', 21, 'Java Script-Dateien bearbeiten', 'JS-Dateien', 'admin_template_js.php', 4, 0),
 ('style_nav', 21, 'Navigations-Dateien bearbeiten', 'Navigationen', 'admin_template_nav.php', 5, 0),
-('tpl_general', 22, '"Allgemein" bearbeiten', 'Allgemein', 'admin_template_general.php', 1, 0),
-('tpl_user', 22, '"Benutzer" bearbeiten', 'Benutzer', 'admin_template_user.php', 2, 0),
-('tpl_articles', 22, '"Artikel" bearbeiten', 'Artikel', 'admin_template_articles.php', 3, 0),
-('tpl_news', 22, '"News" bearbeiten', 'News', 'admin_template_news.php', 3, 0),
-('tpl_poll', 22, '"Umfragen" bearbeiten', 'Umfragen', 'admin_template_poll.php', 4, 0),
-('tpl_press', 22, '"Presseberichte" bearbeiten', 'Presseberichte', 'admin_template_press.php', 5, 0),
-('tpl_screens', 22, '"Screenshots" bearbeiten', 'Screenshots', 'admin_template_screenshot.php', 6, 0),
-('tpl_wp', 22, '"Wallpaper" bearbeiten', 'Wallpaper', 'admin_template_wallpaper.php', 7, 0),
-('tpl_previewimg', 22, '"Vorschaubild" bearbeiten', 'Vorschaubild', 'admin_template_previewimg.php', 8, 0),
-('tpl_dl', 22, '"Downloads" bearbeiten', 'Downloads', 'admin_template_dl.php', 9, 0),
-('tpl_shop', 22, '"Shop" bearbeiten', 'Shop', 'admin_template_shop.php', 10, 0),
-('tpl_affiliates', 22, '"Partnerseiten" bearbeiten', 'Partnerseiten', 'admin_template_affiliates.php', 11, 0),
-('tpl_editor', 22, '"Editor" bearbeiten', 'Editor', 'admin_editor_design.php', 13, 0),
-('tpl_fscodes', 22, '"FSCodes" bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 14, 0),
-('group_config', 23, 'Konfiguration ändern', 'Konfiguration', 'admin_group_config.php', 1, 0),
+('tpl_general', 22, 'â€žAllgemeinâ€œ bearbeiten', 'Allgemein', 'admin_template_general.php', 1, 0),
+('tpl_user', 22, 'â€žBenutzerâ€œ bearbeiten', 'Benutzer', 'admin_template_user.php', 2, 0),
+('tpl_articles', 22, 'â€žArtikelâ€œ bearbeiten', 'Artikel', 'admin_template_articles.php', 3, 0),
+('tpl_news', 22, 'â€žNewsâ€œ bearbeiten', 'News', 'admin_template_news.php', 3, 0),
+('tpl_poll', 22, 'â€žUmfragenâ€œ bearbeiten', 'Umfragen', 'admin_template_poll.php', 4, 0),
+('tpl_press', 22, 'â€žPresseberichteâ€œ bearbeiten', 'Presseberichte', 'admin_template_press.php', 5, 0),
+('tpl_screens', 22, 'â€žScreenshotsâ€œ bearbeiten', 'Screenshots', 'admin_template_screenshot.php', 6, 0),
+('tpl_wp', 22, 'â€žWallpaperâ€œ bearbeiten', 'Wallpaper', 'admin_template_wallpaper.php', 7, 0),
+('tpl_previewimg', 22, 'â€žVorschaubildâ€œ bearbeiten', 'Vorschaubild', 'admin_template_previewimg.php', 8, 0),
+('tpl_dl', 22, 'â€žDownloadsâ€œ bearbeiten', 'Downloads', 'admin_template_dl.php', 9, 0),
+('tpl_shop', 22, 'â€žShopâ€œ bearbeiten', 'Shop', 'admin_template_shop.php', 10, 0),
+('tpl_affiliates', 22, 'â€žPartnerseitenâ€œ bearbeiten', 'Partnerseiten', 'admin_template_affiliates.php', 11, 0),
+('tpl_editor', 22, 'â€žEditorâ€œ bearbeiten', 'Editor', 'admin_editor_design.php', 13, 0),
+('tpl_fscodes', 22, 'â€žFSCodesâ€œ bearbeiten', 'FSCodes', 'admin_editor_fscode.php', 14, 0),
+('group_config', 23, 'Konfiguration Ã¤ndern', 'Konfiguration', 'admin_group_config.php', 1, 0),
 ('group_admin', 23, 'Gruppenverwaltung', 'verwalten', 'admin_group_admin.php', 2, 0),
-('group_rights', 23, 'Rechte ändern', 'Rechte', 'admin_group_rights.php', 3, 0),
-('applets_add', 24, 'hinzufügen', 'hinzufügen', 'admin_applets_add.php', 1, 0),
+('group_rights', 23, 'Rechte Ã¤ndern', 'Rechte', 'admin_group_rights.php', 3, 0),
+('applets_add', 24, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_applets_add.php', 1, 0),
 ('applets_edit', 24, 'bearbeiten', 'bearbeiten', 'admin_applets_edit.php', 2, 0),
-('applets_delete', 24, 'löschen', 'löschen', 'applets_edit', 1, 1),
-('snippets_add', 25, 'hinzufügen', 'hinzufügen', 'admin_snippets_add.php', 1, 0),
+('applets_delete', 24, 'lÃ¶schen', 'lÃ¶schen', 'applets_edit', 1, 1),
+('snippets_add', 25, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_snippets_add.php', 1, 0),
 ('snippets_edit', 25, 'bearbeiten', 'bearbeiten', 'admin_snippets_edit.php', 2, 0),
-('snippets_delete', 25, 'löschen', 'löschen', 'snippets_edit', 1, 1),
-('aliases_add', 26, 'hinzufügen', 'hinzufügen', 'admin_aliases_add.php', 1, 0),
+('snippets_delete', 25, 'lÃ¶schen', 'lÃ¶schen', 'snippets_edit', 1, 1),
+('aliases_add', 26, 'hinzufÃ¼gen', 'hinzufÃ¼gen', 'admin_aliases_add.php', 1, 0),
 ('aliases_edit', 26, 'bearbeiten', 'bearbeiten', 'admin_aliases_edit.php', 2, 0),
-('aliases_delete', 26, 'löschen', 'löschen', 'aliases_edit', 1, 1),
-('tpl_search', 22, '"Suche" bearbeiten', 'Suche', 'admin_template_search.php', 3, 0),
+('aliases_delete', 26, 'lÃ¶schen', 'lÃ¶schen', 'aliases_edit', 1, 1),
+('tpl_search', 22, 'â€žSucheâ€œ bearbeiten', 'Suche', 'admin_template_search.php', 3, 0),
 ('search_config', 27, 'Konfiguration', 'Konfiguration', 'admin_search_config.php', 1, 0),
 ('search_index', 27, 'Suchindex', 'Suchindex', 'admin_search_index.php', 2, 0),
-('tpl_player', 22, '"Flash-Player" bearbeiten', 'Flash-Player', 'admin_template_player.php', 20, 0);
+('tpl_player', 22, 'â€žFlash-Playerâ€œ bearbeiten', 'Flash-Player', 'admin_template_player.php', 20, 0);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_admin_groups`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_admin_groups`
 --
 
 DROP TABLE IF EXISTS `fs_admin_groups`;
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `fs_admin_groups` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=28 ;
 
 --
--- Daten für Tabelle `fs_admin_groups`
+-- Daten fÃ¼r Tabelle `fs_admin_groups`
 --
 
 INSERT INTO `fs_admin_groups` (`group_id`, `group_title`, `menu_id`, `group_pos`) VALUES
@@ -203,7 +203,7 @@ INSERT INTO `fs_admin_groups` (`group_id`, `group_title`, `menu_id`, `group_pos`
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_aliases`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_aliases`
 --
 
 DROP TABLE IF EXISTS `fs_aliases`;
@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `fs_aliases` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=9 ;
 
 --
--- Daten für Tabelle `fs_aliases`
+-- Daten fÃ¼r Tabelle `fs_aliases`
 --
 
 INSERT INTO `fs_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_active`) VALUES
@@ -233,7 +233,7 @@ INSERT INTO `fs_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_act
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_announcement`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_announcement`
 --
 
 DROP TABLE IF EXISTS `fs_announcement`;
@@ -249,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `fs_announcement` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_announcement`
+-- Daten fÃ¼r Tabelle `fs_announcement`
 --
 
 INSERT INTO `fs_announcement` (`id`, `announcement_text`, `show_announcement`, `activate_announcement`, `ann_html`, `ann_fscode`, `ann_para`) VALUES
@@ -258,7 +258,7 @@ INSERT INTO `fs_announcement` (`id`, `announcement_text`, `show_announcement`, `
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_applets`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_applets`
 --
 
 DROP TABLE IF EXISTS `fs_applets`;
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `fs_applets` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=10 ;
 
 --
--- Daten für Tabelle `fs_applets`
+-- Daten fÃ¼r Tabelle `fs_applets`
 --
 
 INSERT INTO `fs_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_output`) VALUES
@@ -289,7 +289,7 @@ INSERT INTO `fs_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_o
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_articles`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_articles`
 --
 
 DROP TABLE IF EXISTS `fs_articles`;
@@ -310,16 +310,16 @@ CREATE TABLE IF NOT EXISTS `fs_articles` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs_articles`
+-- Daten fÃ¼r Tabelle `fs_articles`
 --
 
 INSERT INTO `fs_articles` (`article_id`, `article_url`, `article_title`, `article_date`, `article_user`, `article_text`, `article_html`, `article_fscode`, `article_para`, `article_cat_id`, `article_search_update`) VALUES
-(1, 'fscode', 'FSCode Liste', 1265756400, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">[b][u][size=3]FS-Code:[/size][/u][/b]</td><td width="50%">[b][u][size=3]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiver Text[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 0[/size][/noparse]</td><td>[size=0]Text in Größe 0[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 1[/size][/noparse]</td><td>[size=1]Text in Größe 1[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 2[/size][/noparse]</td><td>[size=2]Text in Größe 2[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 3[/size][/noparse]</td><td>[size=3]Text in Größe 3[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 4[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 5[/size][/noparse]</td><td>[size=5]Text in Größe 5[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 6[/size][/noparse]</td><td>[size=6]Text in Größe 6[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 7[/size][/noparse]</td><td>[size=7]Text&nbsp;in&nbsp;Größe&nbsp;7[/size]</td></tr><tr><td>[noparse][noparse]Text mit [b]FS[/b]Code[/noparse][/noparse]</td><td>[noparse]kein [b]fetter[/b] Text[/noparse]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan="2"><hr /></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]$VAR(url)images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>', 1, 1, 1, 1, 1265787778);
+(1, 'fscode', 'FSCode Liste', 1265756400, 1, 'Das System dieser Webseite bietet dir die MÃ¶glichkeit einfache Codes zur besseren Darstellung deiner BeitrÃ¤ge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die MÃ¶glichkeit verschiedene Elemente in deine BeitrÃ¤ge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Ãœbersicht Ã¼ber alle verfÃ¼gbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es mÃ¶glich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">[b][u][size=3]FS-Code:[/size][/u][/b]</td><td width="50%">[b][u][size=3]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiver Text[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=GrÃ¶ÃŸe]Text in GrÃ¶ÃŸe 0[/size][/noparse]</td><td>[size=0]Text in GrÃ¶ÃŸe 0[/size]</td></tr><tr><td>[noparse][size=GrÃ¶ÃŸe]Text in GrÃ¶ÃŸe 1[/size][/noparse]</td><td>[size=1]Text in GrÃ¶ÃŸe 1[/size]</td></tr><tr><td>[noparse][size=GrÃ¶ÃŸe]Text in GrÃ¶ÃŸe 2[/size][/noparse]</td><td>[size=2]Text in GrÃ¶ÃŸe 2[/size]</td></tr><tr><td>[noparse][size=GrÃ¶ÃŸe]Text in GrÃ¶ÃŸe 3[/size][/noparse]</td><td>[size=3]Text in GrÃ¶ÃŸe 3[/size]</td></tr><tr><td>[noparse][size=GrÃ¶ÃŸe]Text in GrÃ¶ÃŸe 4[/size][/noparse]</td><td>[size=4]Text in GrÃ¶ÃŸe 4[/size]</td></tr><tr><td>[noparse][size=GrÃ¶ÃŸe]Text in GrÃ¶ÃŸe 5[/size][/noparse]</td><td>[size=5]Text in GrÃ¶ÃŸe 5[/size]</td></tr><tr><td>[noparse][size=GrÃ¶ÃŸe]Text in GrÃ¶ÃŸe 6[/size][/noparse]</td><td>[size=6]Text in GrÃ¶ÃŸe 6[/size]</td></tr><tr><td>[noparse][size=GrÃ¶ÃŸe]Text in GrÃ¶ÃŸe 7[/size][/noparse]</td><td>[size=7]Text&nbsp;in&nbsp;GrÃ¶ÃŸe&nbsp;7[/size]</td></tr><tr><td>[noparse][noparse]Text mit [b]FS[/b]Code[/noparse][/noparse]</td><td>[noparse]kein [b]fetter[/b] Text[/noparse]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan="2"><hr /></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]$VAR(url)images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text flieÃŸt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text flieÃŸt rechts um sie herum.</td></tr></table>', 1, 1, 1, 1, 1265787778);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_articles_cat`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_articles_cat`
 --
 
 DROP TABLE IF EXISTS `fs_articles_cat`;
@@ -333,7 +333,7 @@ CREATE TABLE IF NOT EXISTS `fs_articles_cat` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs_articles_cat`
+-- Daten fÃ¼r Tabelle `fs_articles_cat`
 --
 
 INSERT INTO `fs_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
@@ -342,7 +342,7 @@ INSERT INTO `fs_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_dat
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_articles_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_articles_config`
 --
 
 DROP TABLE IF EXISTS `fs_articles_config`;
@@ -363,7 +363,7 @@ CREATE TABLE IF NOT EXISTS `fs_articles_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_articles_config`
+-- Daten fÃ¼r Tabelle `fs_articles_config`
 --
 
 INSERT INTO `fs_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `acp_per_page`, `acp_view`) VALUES
@@ -372,7 +372,7 @@ INSERT INTO `fs_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`,
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_captcha_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_captcha_config`
 --
 
 DROP TABLE IF EXISTS `fs_captcha_config`;
@@ -402,7 +402,7 @@ CREATE TABLE IF NOT EXISTS `fs_captcha_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
--- Daten für Tabelle `fs_captcha_config`
+-- Daten fÃ¼r Tabelle `fs_captcha_config`
 --
 
 INSERT INTO `fs_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transparent`, `captcha_text_color`, `captcha_first_lower`, `captcha_first_upper`, `captcha_second_lower`, `captcha_second_upper`, `captcha_use_addition`, `captcha_use_subtraction`, `captcha_use_multiplication`, `captcha_create_easy_arithmetics`, `captcha_x`, `captcha_y`, `captcha_show_questionmark`, `captcha_use_spaces`, `captcha_show_multiplication_as_x`, `captcha_start_text_x`, `captcha_start_text_y`, `captcha_font_size`, `captcha_font_file`) VALUES
@@ -411,7 +411,7 @@ INSERT INTO `fs_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transpare
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_counter`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_counter`
 --
 
 DROP TABLE IF EXISTS `fs_counter`;
@@ -427,16 +427,16 @@ CREATE TABLE IF NOT EXISTS `fs_counter` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_counter`
+-- Daten fÃ¼r Tabelle `fs_counter`
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 48, 3638, 2, 1, 2, 2);
+(1, 51, 3729, 2, 1, 2, 2);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_counter_ref`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_counter_ref`
 --
 
 DROP TABLE IF EXISTS `fs_counter_ref`;
@@ -449,12 +449,12 @@ CREATE TABLE IF NOT EXISTS `fs_counter_ref` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_counter_ref`
+-- Daten fÃ¼r Tabelle `fs_counter_ref`
 --
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
-('http://localhost/fs2/', 100, 1263499887, 1273265874),
+('http://localhost/fs2/', 105, 1263499887, 1273335752),
 ('http://alix.worldofgothic.com/beta4/admin/?go=gen_config', 2, 1267197504, 1267197505),
 ('http://demo.frogsystem.de/admin/?go=gen_config', 1, 1267198063, 1267198063),
 ('http://localhost/', 1, 1273256730, 1273256730),
@@ -464,7 +464,7 @@ INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) V
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_counter_stat`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_counter_stat`
 --
 
 DROP TABLE IF EXISTS `fs_counter_stat`;
@@ -478,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `fs_counter_stat` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_counter_stat`
+-- Daten fÃ¼r Tabelle `fs_counter_stat`
 --
 
 INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits`) VALUES
@@ -514,12 +514,13 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 4, 9, 1, 7),
 (2010, 4, 11, 1, 15),
 (2010, 4, 21, 1, 2),
-(2010, 5, 7, 2, 17);
+(2010, 5, 7, 2, 22),
+(2010, 5, 8, 3, 86);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_dl`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_dl`
 --
 
 DROP TABLE IF EXISTS `fs_dl`;
@@ -539,14 +540,14 @@ CREATE TABLE IF NOT EXISTS `fs_dl` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_dl`
+-- Daten fÃ¼r Tabelle `fs_dl`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_dl_cat`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_dl_cat`
 --
 
 DROP TABLE IF EXISTS `fs_dl_cat`;
@@ -558,7 +559,7 @@ CREATE TABLE IF NOT EXISTS `fs_dl_cat` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs_dl_cat`
+-- Daten fÃ¼r Tabelle `fs_dl_cat`
 --
 
 INSERT INTO `fs_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
@@ -567,7 +568,7 @@ INSERT INTO `fs_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_dl_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_dl_config`
 --
 
 DROP TABLE IF EXISTS `fs_dl_config`;
@@ -583,7 +584,7 @@ CREATE TABLE IF NOT EXISTS `fs_dl_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_dl_config`
+-- Daten fÃ¼r Tabelle `fs_dl_config`
 --
 
 INSERT INTO `fs_dl_config` (`id`, `screen_x`, `screen_y`, `thumb_x`, `thumb_y`, `quickinsert`, `dl_rights`) VALUES
@@ -592,7 +593,7 @@ INSERT INTO `fs_dl_config` (`id`, `screen_x`, `screen_y`, `thumb_x`, `thumb_y`, 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_dl_files`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_dl_files`
 --
 
 DROP TABLE IF EXISTS `fs_dl_files`;
@@ -609,14 +610,14 @@ CREATE TABLE IF NOT EXISTS `fs_dl_files` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_dl_files`
+-- Daten fÃ¼r Tabelle `fs_dl_files`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_docs_classes`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_docs_classes`
 --
 
 DROP TABLE IF EXISTS `fs_docs_classes`;
@@ -628,7 +629,7 @@ CREATE TABLE IF NOT EXISTS `fs_docs_classes` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
--- Daten für Tabelle `fs_docs_classes`
+-- Daten fÃ¼r Tabelle `fs_docs_classes`
 --
 
 INSERT INTO `fs_docs_classes` (`id`, `name`, `desc`) VALUES
@@ -640,7 +641,7 @@ INSERT INTO `fs_docs_classes` (`id`, `name`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_docs_functions`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_docs_functions`
 --
 
 DROP TABLE IF EXISTS `fs_docs_functions`;
@@ -655,87 +656,87 @@ CREATE TABLE IF NOT EXISTS `fs_docs_functions` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=81 ;
 
 --
--- Daten für Tabelle `fs_docs_functions`
+-- Daten fÃ¼r Tabelle `fs_docs_functions`
 --
 
 INSERT INTO `fs_docs_functions` (`id`, `class`, `type`, `name`, `desc`, `ret`) VALUES
 (1, 1, 'public', '__construct', 'Diese Funktion initialisiert die Klasse.', 'void'),
-(2, 1, 'public', 'getFileData', 'Gibt den Inhalt der Datei filename als String der Länge maxlen Bytes von offset an aus.\r\n\r\nDiese Funktion ist ein Alias zu [php=file-get-contents]file_get_contents[/php].', 'string'),
+(2, 1, 'public', 'getFileData', 'Gibt den Inhalt der Datei filename als String der LÃ¤nge maxlen Bytes von offset an aus.\r\n\r\nDiese Funktion ist ein Alias zu [php=file-get-contents]file_get_contents[/php].', 'string'),
 (3, 1, 'public', 'getFileArray', 'Liest die Datei filename in ein Array.', 'array'),
-(4, 1, 'public', 'putFileData', 'Schreibt data in die Datei filename.\r\nWenn filename nicht existiert, wird die Datei angelegt.\r\nSonst wird die alte Datei überschrieben, wenn nicht das [b]FILE_APPEND[/b]-Flag gesetzt wurde.\r\n\r\nDiese Funktion ist ein Alias zu [php=file-put-contents]file_put_contents[/php].', 'int'),
-(5, 1, 'public', 'deleteFile', 'Löscht die Datei filename.', 'bool'),
+(4, 1, 'public', 'putFileData', 'Schreibt data in die Datei filename.\r\nWenn filename nicht existiert, wird die Datei angelegt.\r\nSonst wird die alte Datei Ã¼berschrieben, wenn nicht das [b]FILE_APPEND[/b]-Flag gesetzt wurde.\r\n\r\nDiese Funktion ist ein Alias zu [php=file-put-contents]file_put_contents[/php].', 'int'),
+(5, 1, 'public', 'deleteFile', 'LÃ¶scht die Datei filename.', 'bool'),
 (6, 1, 'public', 'createDir', 'Erzeugt ein neues Verzeichnis pathname.', 'bool'),
-(7, 1, 'public', 'deleteAny', 'Löscht das Verzeichnis bzw. die Datei filename.', 'bool'),
-(8, 1, 'public', 'copyAny', 'Kopiert ein vollständiges Verzeichnis oder eine Datei von source nach destination', 'bool'),
-(9, 2, 'public', '__construct', 'Initialisiert die Klasse.\r\n\r\nDiese Funktion setzt den Style auf den im AdminCP gewählten Style. (Siehe dazu [home=doc&f=10]setStyle[/home])', 'void'),
+(7, 1, 'public', 'deleteAny', 'LÃ¶scht das Verzeichnis bzw. die Datei filename.', 'bool'),
+(8, 1, 'public', 'copyAny', 'Kopiert ein vollstÃ¤ndiges Verzeichnis oder eine Datei von source nach destination', 'bool'),
+(9, 2, 'public', '__construct', 'Initialisiert die Klasse.\r\n\r\nDiese Funktion setzt den Style auf den im AdminCP gewÃ¤hlten Style. (Siehe dazu [home=doc&f=10]setStyle[/home])', 'void'),
 (10, 2, 'public', 'setStyle', 'Setzt den Style auf style.', 'void'),
-(11, 2, 'private', 'getStyle', 'Gibt den aktuellen [home=doc&v=3]Style[/home] zurück.', 'string'),
-(12, 2, 'public', 'getOpener', 'Gibt den [home=doc&v=1]Opener[/home] zurück.', 'string'),
-(13, 2, 'public', 'getCloser', 'Gibt den [home=doc&v=2]Closer[/home] zurück.', 'string'),
-(14, 2, 'public', 'setFile', 'Ändert die [home=doc&v=4]Datei[/home], aus denen die [home=doc&v=9]Templates[/home] ausgelesen werden in file.', 'void'),
-(15, 2, 'private', 'getFile', 'Gibt den mit [home=doc&f=14]setFile[/home] gesetzen [home=doc&v=4]Dateinamen[/home] zurück.', 'string'),
-(16, 2, 'private', 'setSections', 'Ändert die [home=doc&v=7]Sections[/home].', 'void'),
-(17, 2, 'private', 'getSectionNumber', 'Gibt die ID der [home=doc&v=7]Section[/home] section zurück.', 'string'),
+(11, 2, 'private', 'getStyle', 'Gibt den aktuellen [home=doc&v=3]Style[/home] zurÃ¼ck.', 'string'),
+(12, 2, 'public', 'getOpener', 'Gibt den [home=doc&v=1]Opener[/home] zurÃ¼ck.', 'string'),
+(13, 2, 'public', 'getCloser', 'Gibt den [home=doc&v=2]Closer[/home] zurÃ¼ck.', 'string'),
+(14, 2, 'public', 'setFile', 'Ã„ndert die [home=doc&v=4]Datei[/home], aus denen die [home=doc&v=9]Templates[/home] ausgelesen werden in file.', 'void'),
+(15, 2, 'private', 'getFile', 'Gibt den mit [home=doc&f=14]setFile[/home] gesetzen [home=doc&v=4]Dateinamen[/home] zurÃ¼ck.', 'string'),
+(16, 2, 'private', 'setSections', 'Ã„ndert die [home=doc&v=7]Sections[/home].', 'void'),
+(17, 2, 'private', 'getSectionNumber', 'Gibt die ID der [home=doc&v=7]Section[/home] section zurÃ¼ck.', 'string'),
 (18, 2, 'private', 'setSectionsContent', 'Setzt [home=doc&v=8]sections_content[/home] auf content.', 'void'),
-(19, 2, 'private', 'getSectionContent', 'Gibt das Template der ID section_number zurück.\r\n\r\nHinweis: Die ID kann mittels der [home=doc&v=7]section[/home] über [home=doc&f=17]getSectionNumber[/home] ermittelt werden.', 'string'),
-(20, 2, 'public', 'clearSectionCache', 'Setzt [home=doc&v=7]sections[/home] und [home=doc&v=8]sections_content[/home] auf ihre Initialwerte zurück.', 'void'),
-(21, 2, 'public', 'clearTags', 'Löscht alle mittels [home=doc&f=28]tag[/home] definierten Templatevariablen.', 'void'),
-(22, 2, 'public', 'deleteTag', 'Löscht den Tag tag aus [home=doc&v=6]tags[/home].', 'void'),
+(19, 2, 'private', 'getSectionContent', 'Gibt das Template der ID section_number zurÃ¼ck.\r\n\r\nHinweis: Die ID kann mittels der [home=doc&v=7]section[/home] Ã¼ber [home=doc&f=17]getSectionNumber[/home] ermittelt werden.', 'string'),
+(20, 2, 'public', 'clearSectionCache', 'Setzt [home=doc&v=7]sections[/home] und [home=doc&v=8]sections_content[/home] auf ihre Initialwerte zurÃ¼ck.', 'void'),
+(21, 2, 'public', 'clearTags', 'LÃ¶scht alle mittels [home=doc&f=28]tag[/home] definierten Templatevariablen.', 'void'),
+(22, 2, 'public', 'deleteTag', 'LÃ¶scht den Tag tag aus [home=doc&v=6]tags[/home].', 'void'),
 (23, 2, 'public', 'setClearUnassigned', 'Setzt [home=doc&v=5]clear_unassigned[/home] auf bool.\r\n\r\n[b]Hinweis:[/b] Diese Funktion hat momentan noch keine Auswirkungen auf die Templates.', 'void'),
 (24, 2, 'private', 'setTemplate', 'Setzt [home=doc&v=9]template[/home] auf template.', 'void'),
-(25, 2, 'private', 'getTemplate', 'Gibt [home=doc&v=9]template[/home] zurück.', 'string'),
-(26, 2, 'public', 'load', 'Lädt das Template section in [home=doc&v=9]template[/home].', 'void'),
-(27, 2, 'public', 'display', 'Gibt [home=doc&v=9]template[/home] zurück, nach dem alle [home=doc&v=6]Tags[/home] durch ihren Ersetzungstext ersetzt wurden.', 'string'),
+(25, 2, 'private', 'getTemplate', 'Gibt [home=doc&v=9]template[/home] zurÃ¼ck.', 'string'),
+(26, 2, 'public', 'load', 'LÃ¤dt das Template section in [home=doc&v=9]template[/home].', 'void'),
+(27, 2, 'public', 'display', 'Gibt [home=doc&v=9]template[/home] zurÃ¼ck, nach dem alle [home=doc&v=6]Tags[/home] durch ihren Ersetzungstext ersetzt wurden.', 'string'),
 (28, 2, 'public', 'tag', 'Definiert einen [home=doc&v=6]Tag[/home] namens tag mit dem Wert value.', 'void'),
-(29, 2, 'public', '__destruct', 'Löscht alle Tags und setzt [home=doc&v=7]sections[/home] und [home=doc&v=8]sections_content[/home] auf ihre Initialwerte zurück.', 'void'),
-(30, 0, 'public', 'kill_replacements', 'Ersetzt alle FS-Systemzeichenketten in TEXT.\r\nZu den FS-Systemzeichenketten gehörten:\r\n[b]{..[/b], [b]..}[/b], [b]&#x5B;%[/b], [b]%&#x5D;[/b], [b]$NAV([/b], [b]$APP([/b] und [b]$VAR[/b].\r\n\r\nIst KILLHTML auf TRUE gesetzt, wird anschließend die Funktion [php=htmlspecialchars]htmlspecialchars[/php] auf TEXT angewendet.\r\nIst STRIPSLASHES auf TRUE gesetzt, wird anschließend die Funktion [php=stripslashes]stripslashes[/php] auf TEXT angewendet.', 'string'),
-(31, 0, 'public', 'get_page_nav', 'Gibt das Seitennavigationstemplate zurück.\r\nDas Seitennavigationstemplate kann unter AdminCP » Allgemein » Allgemein » Konfiguration » Seitennavigation bearbeitet werden.', 'string'),
-(32, 0, 'public', 'is_language_text', 'Prüft, ob TEXT ein gültiges Sprachkürzel ist.\r\nEin gültiges Sprachkürzel wäre z.B. "de_DE".', 'bool'),
-(33, 0, 'public', 'hex2dec_color', 'Wandelt COLOR in eine Farbe des Dezimalsystems um.\r\nDie Farbe wird als Array von r (Rotanteil), g (Grünanteil) und b (Blauanteil) zurückgegeben.\r\nIst COLOR keine gültige Hexadezimalfarbe, wird false zurückgegeben.', 'Array'),
-(34, 0, 'public', 'is_hexcolor', 'Prüft, ob COLOR eine Gültige Hexadezimalfarbe ist.', 'bool'),
-(35, 0, 'public', 'scandir_filter', 'Führt die Funktion [php=scandir]scandir[/php] auf das Verzeichnis FOLDER aus, wobei alle in EXTRA und in BAD enthaltende Elemente nicht zurückgegeben werden', 'array'),
-(36, 0, 'public', 'scandir_ext', 'Gibt ein Array mit den Namen der Dateien im Verzeichnis FOLDER zurück, deren Dateiendung FILE_EXT ist.\r\nDie Dateien in EXTRA und BAD werden nicht mit angezeigt.\r\nWenn FOLDER kein Verzeichnis ist, wird false zurückgegeben.', 'array'),
-(37, 0, 'public', 'get_user_rank', 'Gibt in Array aus Informationen über der Gruppe GROUP_ID zurück.', 'array'),
-(38, 0, 'public', 'date_loc', 'Diese Funktion ist in Prinzip ein Alias zu [php=date]date[/php].\r\nDer Unterschied besteht darin, dass die englischen Wochentags- und Monatsnamen in die jeweils gewählte Sprache übersetzt werden und, dass TIMESTAMP nicht optional ist.', 'string'),
-(39, 0, 'public', 'get_sub_cats', 'Gibt ein Array aus den Downloadkategorien zurück, die Unterkategorien der Kategorie CAT_ID sind.\r\nDie Unterkategorien der Unterkategorien werden ebenfalls in das Array eingefügt.', 'array'),
+(29, 2, 'public', '__destruct', 'LÃ¶scht alle Tags und setzt [home=doc&v=7]sections[/home] und [home=doc&v=8]sections_content[/home] auf ihre Initialwerte zurÃ¼ck.', 'void'),
+(30, 0, 'public', 'kill_replacements', 'Ersetzt alle FS-Systemzeichenketten in TEXT.\r\nZu den FS-Systemzeichenketten gehÃ¶rten:\r\n[b]{..[/b], [b]..}[/b], [b]&#x5B;%[/b], [b]%&#x5D;[/b], [b]$NAV([/b], [b]$APP([/b] und [b]$VAR[/b].\r\n\r\nIst KILLHTML auf TRUE gesetzt, wird anschlieÃŸend die Funktion [php=htmlspecialchars]htmlspecialchars[/php] auf TEXT angewendet.\r\nIst STRIPSLASHES auf TRUE gesetzt, wird anschlieÃŸend die Funktion [php=stripslashes]stripslashes[/php] auf TEXT angewendet.', 'string'),
+(31, 0, 'public', 'get_page_nav', 'Gibt das Seitennavigationstemplate zurÃ¼ck.\r\nDas Seitennavigationstemplate kann unter AdminCP Â» Allgemein Â» Allgemein Â» Konfiguration Â» Seitennavigation bearbeitet werden.', 'string'),
+(32, 0, 'public', 'is_language_text', 'PrÃ¼ft, ob TEXT ein gÃ¼ltiges SprachkÃ¼rzel ist.\r\nEin gÃ¼ltiges SprachkÃ¼rzel wÃ¤re z.B. "de_DE".', 'bool'),
+(33, 0, 'public', 'hex2dec_color', 'Wandelt COLOR in eine Farbe des Dezimalsystems um.\r\nDie Farbe wird als Array von r (Rotanteil), g (GrÃ¼nanteil) und b (Blauanteil) zurÃ¼ckgegeben.\r\nIst COLOR keine gÃ¼ltige Hexadezimalfarbe, wird false zurÃ¼ckgegeben.', 'Array'),
+(34, 0, 'public', 'is_hexcolor', 'PrÃ¼ft, ob COLOR eine GÃ¼ltige Hexadezimalfarbe ist.', 'bool'),
+(35, 0, 'public', 'scandir_filter', 'FÃ¼hrt die Funktion [php=scandir]scandir[/php] auf das Verzeichnis FOLDER aus, wobei alle in EXTRA und in BAD enthaltende Elemente nicht zurÃ¼ckgegeben werden', 'array'),
+(36, 0, 'public', 'scandir_ext', 'Gibt ein Array mit den Namen der Dateien im Verzeichnis FOLDER zurÃ¼ck, deren Dateiendung FILE_EXT ist.\r\nDie Dateien in EXTRA und BAD werden nicht mit angezeigt.\r\nWenn FOLDER kein Verzeichnis ist, wird false zurÃ¼ckgegeben.', 'array'),
+(37, 0, 'public', 'get_user_rank', 'Gibt in Array aus Informationen Ã¼ber der Gruppe GROUP_ID zurÃ¼ck.', 'array'),
+(38, 0, 'public', 'date_loc', 'Diese Funktion ist in Prinzip ein Alias zu [php=date]date[/php].\r\nDer Unterschied besteht darin, dass die englischen Wochentags- und Monatsnamen in die jeweils gewÃ¤hlte Sprache Ã¼bersetzt werden und, dass TIMESTAMP nicht optional ist.', 'string'),
+(39, 0, 'public', 'get_sub_cats', 'Gibt ein Array aus den Downloadkategorien zurÃ¼ck, die Unterkategorien der Kategorie CAT_ID sind.\r\nDie Unterkategorien der Unterkategorien werden ebenfalls in das Array eingefÃ¼gt.', 'array'),
 (40, 0, 'public', 'create_dl_cat', '???\r\nDie Funktion wird nicht verwendet', 'string'),
-(41, 0, 'public', 'get_timed_pic', 'Gibt ein Array aus Informationen über ein zeitgesteuertes Zufallsbild aus.\r\n\r\nFalls kein zeitgesteuertes Zufallsbild existiert, wird false zurückgegeben.', 'array'),
-(42, 0, 'public', 'get_random_pic', 'Gibt ein Array aus Informationen über ein Zufallsbild aus.\r\n\r\nFalls kein Zufallsbild existiert, wird false zurückgegeben.', 'array'),
-(43, 0, 'public', 'get_pagenav_start', 'Gibt ein Array aus Informationen über die Seiten eine Mehrseitigen Auswahl im AdminCP aus. (z.B. Artikelauswahl auf der &bdquo;Artikel bearbeiten&rdquo;-Seite)', 'array'),
-(44, 0, 'public', 'get_filter_where', 'Generiert aus dem Filterausdruck der Referrersuche (AdminCP » Allgemein » Statistik » Referrer) eine Mysql-WHERE-Bedingung.', 'string'),
-(45, 0, 'public', 'generate_pwd', 'Generiert ein Passwort der Länge LENGHT', 'string'),
-(46, 0, 'public', 'check_captcha', 'Prüft, ob SOLUTION die Lösung des zuletzt geladenen Captchas ist.', 'bool'),
-(47, 0, 'public', 'is_in_staff', 'Prüft, ob der User der ID USER_ID ein Seitenmitarbeiter ist.', 'bool'),
-(48, 0, 'public', 'is_admin', 'Prüft, ob der Benutzer der ID USER_ID ein Administrator ist.', 'bool'),
-(49, 0, 'public', 'get_template', 'Ein nicht mehr verwendbares Überbleibsel aus alix4-Zeiten, das das Template namens TEMPLATE_NAME lädt.\r\n\r\n[b]Hinweis:[/b] Das benutzen dieser Funktion wird einen MySQL-Error provozieren, da die Tabelle &bdquo;fs2_template&rdquo; in alix5 entfernt wurde!', 'string'),
-(50, 0, 'public', 'get_email_template', 'Gibt das E-Mail-Template namens TEMPLATE_NAME zurück.', 'string'),
+(41, 0, 'public', 'get_timed_pic', 'Gibt ein Array aus Informationen Ã¼ber ein zeitgesteuertes Zufallsbild aus.\r\n\r\nFalls kein zeitgesteuertes Zufallsbild existiert, wird false zurÃ¼ckgegeben.', 'array'),
+(42, 0, 'public', 'get_random_pic', 'Gibt ein Array aus Informationen Ã¼ber ein Zufallsbild aus.\r\n\r\nFalls kein Zufallsbild existiert, wird false zurÃ¼ckgegeben.', 'array'),
+(43, 0, 'public', 'get_pagenav_start', 'Gibt ein Array aus Informationen Ã¼ber die Seiten eine Mehrseitigen Auswahl im AdminCP aus. (z.B. Artikelauswahl auf der &bdquo;Artikel bearbeiten&rdquo;-Seite)', 'array'),
+(44, 0, 'public', 'get_filter_where', 'Generiert aus dem Filterausdruck der Referrersuche (AdminCP Â» Allgemein Â» Statistik Â» Referrer) eine Mysql-WHERE-Bedingung.', 'string'),
+(45, 0, 'public', 'generate_pwd', 'Generiert ein Passwort der LÃ¤nge LENGHT', 'string'),
+(46, 0, 'public', 'check_captcha', 'PrÃ¼ft, ob SOLUTION die LÃ¶sung des zuletzt geladenen Captchas ist.', 'bool'),
+(47, 0, 'public', 'is_in_staff', 'PrÃ¼ft, ob der User der ID USER_ID ein Seitenmitarbeiter ist.', 'bool'),
+(48, 0, 'public', 'is_admin', 'PrÃ¼ft, ob der Benutzer der ID USER_ID ein Administrator ist.', 'bool'),
+(49, 0, 'public', 'get_template', 'Ein nicht mehr verwendbares Ãœberbleibsel aus alix4-Zeiten, das das Template namens TEMPLATE_NAME lÃ¤dt.\r\n\r\n[b]Hinweis:[/b] Das benutzen dieser Funktion wird einen MySQL-Error provozieren, da die Tabelle &bdquo;fs2_template&rdquo; in alix5 entfernt wurde!', 'string'),
+(50, 0, 'public', 'get_email_template', 'Gibt das E-Mail-Template namens TEMPLATE_NAME zurÃ¼ck.', 'string'),
 (51, 0, 'public', 'send_mail', 'Sendet eine E-Mail-Nachricht.', 'bool'),
 (52, 0, 'public', 'create_textarea', 'Erstellt einen IWAC-Editor.', 'string'),
 (53, 0, 'public', 'create_textarea_button', 'Erzeugt einen IWAC-Button.', 'string'),
-(54, 0, 'public', 'create_textarea_seperator', 'Erzeugt einen Gruppen-Teiler für die IWAC-Buttons ein.', 'string'),
+(54, 0, 'public', 'create_textarea_seperator', 'Erzeugt einen Gruppen-Teiler fÃ¼r die IWAC-Buttons ein.', 'string'),
 (55, 0, 'public', 'sys_message', 'Erzeugt eine Systemnachricht mit dem Titel TITLE.', 'string'),
 (56, 0, 'public', 'forward_message', 'Erzeugt einen Weiterleitungshinweis mit dem Titel TITLE.', 'string'),
 (57, 0, 'public', 'point_number', 'Formatiert zahl so, dass sie keine Nachkommstellen und die Tausenderstellen mit einem Punkt getrennt sind.', 'string'),
-(58, 0, 'public', 'truncate_string', 'Kürzt den Text in string auf maxlength ohne ein Wort zu zerstören.\r\nDer Rückgabestring ist (ohne extention) immer [b]höchstens[/b] maxlength Zeichen lang.\r\nAn das Ende des Rückgabestrings wird extention angehängt.', 'string'),
-(59, 0, 'public', 'cut_in_string', 'Kürzt eine Text so, dass nur der Anfang und das Ende des Strings zu sehen sind und der Mittelteil durch replacement ersetzt wird.', 'string'),
-(60, 0, 'public', 'get_dl_categories', 'Gibt, ähnlich wie [home=doc&f=39]get_sub_cats[/home], ein Array der Downloadkategorien zurück, wobei in diesem Fall auch das Level der Hierarchie, der Kategoriename und die Übergalerie zurückgegeben wird.', 'void'),
+(58, 0, 'public', 'truncate_string', 'KÃ¼rzt den Text in string auf maxlength ohne ein Wort zu zerstÃ¶ren.\r\nDer RÃ¼ckgabestring ist (ohne extention) immer [b]hÃ¶chstens[/b] maxlength Zeichen lang.\r\nAn das Ende des RÃ¼ckgabestrings wird extention angehÃ¤ngt.', 'string'),
+(59, 0, 'public', 'cut_in_string', 'KÃ¼rzt eine Text so, dass nur der Anfang und das Ende des Strings zu sehen sind und der Mittelteil durch replacement ersetzt wird.', 'string'),
+(60, 0, 'public', 'get_dl_categories', 'Gibt, Ã¤hnlich wie [home=doc&f=39]get_sub_cats[/home], ein Array der Downloadkategorien zurÃ¼ck, wobei in diesem Fall auch das Level der Hierarchie, der Kategoriename und die Ãœbergalerie zurÃ¼ckgegeben wird.', 'void'),
 (61, 0, 'public', 'display_news', 'Erzeugt die Darstellung einer News, deren Informationen in news_arr gespeichert sind.', 'string'),
-(62, 0, 'public', 'getsize', 'Konvertiert eine Dateigröße SIZE (in Bytes) in KB, MB, GB oder TB.', 'string'),
+(62, 0, 'public', 'getsize', 'Konvertiert eine DateigrÃ¶ÃŸe SIZE (in Bytes) in KB, MB, GB oder TB.', 'string'),
 (63, 0, 'public', 'markword', 'Markiert alle word in text.', 'string'),
-(64, 0, 'public', 'html_nl2br', 'Fügt für alle Zeilenumbrüche in TEXT &bdquo;&lt;br&gt;&rdquo; ein.', 'string'),
-(65, 0, 'public', 'savesql', 'Führt auf TEXT diverse Funktionen aus um die Möglichkeit von SQL-Injections möglichst klein zu halten.', 'string'),
-(66, 0, 'public', 'unquote', 'Entfernt Backslashes (\\) vor doppelten und einfachen Anführungszeichen, doppelten Backslashes sowie vor NULLs in TEXT, wenn [url=http://www.php.net/manual/info.configuration.php#ini.magic-quotes-gpc]magic_quotes_gpc[/url] aktiviert ist.', 'string'),
+(64, 0, 'public', 'html_nl2br', 'FÃ¼gt fÃ¼r alle ZeilenumbrÃ¼che in TEXT &bdquo;&lt;br&gt;&rdquo; ein.', 'string'),
+(65, 0, 'public', 'savesql', 'FÃ¼hrt auf TEXT diverse Funktionen aus um die MÃ¶glichkeit von SQL-Injections mÃ¶glichst klein zu halten.', 'string'),
+(66, 0, 'public', 'unquote', 'Entfernt Backslashes (\\\\) vor doppelten und einfachen AnfÃ¼hrungszeichen, doppelten Backslashes sowie vor NULLs in TEXT, wenn [url=http://www.php.net/manual/info.configuration.php#ini.magic-quotes-gpc]magic_quotes_gpc[/url] aktiviert ist.', 'string'),
 (67, 0, 'public', 'killhtml', 'Entfernt HTML-Zeichen (wie &lt;, &gt;, ...) und Backslashes in TEXT.', 'string'),
 (68, 0, 'public', 'fscode', 'Wandelt alle FS-Codes in text in ihre HTML-Darstellungen um.', 'string'),
-(69, 0, 'public', 'killfs', 'Löscht alle FS-Codes aus text', 'string'),
-(70, 0, 'public', 'checkVotedPoll', 'Prüft, ob der Besucher mit der aktuellen IP schon an der Umfrage pollid teilgenommen hat und löscht Einträge über Benutzer, die älter als einen Tag sind.', 'bool'),
-(71, 0, 'public', 'registerVoter', 'Registriert, dass ein Benutzer für die Umfrage pollid schon abgestimmt hat um Mehrfachvotigs zu unterbinden.', 'void'),
+(69, 0, 'public', 'killfs', 'LÃ¶scht alle FS-Codes aus text', 'string'),
+(70, 0, 'public', 'checkVotedPoll', 'PrÃ¼ft, ob der Besucher mit der aktuellen IP schon an der Umfrage pollid teilgenommen hat und lÃ¶scht EintrÃ¤ge Ã¼ber Benutzer, die Ã¤lter als einen Tag sind.', 'bool'),
+(71, 0, 'public', 'registerVoter', 'Registriert, dass ein Benutzer fÃ¼r die Umfrage pollid schon abgestimmt hat um Mehrfachvotigs zu unterbinden.', 'void'),
 (72, 3, 'public', '__construct', 'Diese Funktion initialisiert die Klasse.', 'void'),
-(73, 3, 'public', 'disableAdd', 'Sicherheitsfunktion ist das Hinzufügen von Sprachdaten unmöglich macht.', 'void'),
-(74, 3, 'public', 'getAllowState', 'Gibt den aktuellen Wert von [home=doc&v=12]allow_add[/home] zurück.', 'void'),
-(75, 3, 'public', 'add', 'Fügt eine Sprachausdruck hinzu.', 'void'),
-(76, 3, 'public', 'get', 'Gibt den Wert des Ausdruckes tag zurück.\r\nIst tag nicht Definiert, wird stattdessen "LOCALIZE: tag" zurückgegeben.', 'string'),
-(77, 3, 'public', '__destruct', 'Setzt [home=doc&v=13]phrases[/home] und [home=doc&v=10]local[/home] aus ihre Initialwerte zurück.', 'void'),
+(73, 3, 'public', 'disableAdd', 'Sicherheitsfunktion ist das HinzufÃ¼gen von Sprachdaten unmÃ¶glich macht.', 'void'),
+(74, 3, 'public', 'getAllowState', 'Gibt den aktuellen Wert von [home=doc&v=12]allow_add[/home] zurÃ¼ck.', 'void'),
+(75, 3, 'public', 'add', 'FÃ¼gt eine Sprachausdruck hinzu.', 'void'),
+(76, 3, 'public', 'get', 'Gibt den Wert des Ausdruckes tag zurÃ¼ck.\r\nIst tag nicht Definiert, wird stattdessen "LOCALIZE: tag" zurÃ¼ckgegeben.', 'string'),
+(77, 3, 'public', '__destruct', 'Setzt [home=doc&v=13]phrases[/home] und [home=doc&v=10]local[/home] aus ihre Initialwerte zurÃ¼ck.', 'void'),
 (78, 4, 'public', '__construct', 'Initialisiert mit Hilfe von [home=doc&c=3]lang[/home] die Sprachdaten der Sprache local und der Datei type.php', ''),
 (79, 4, 'public', 'get', 'Diese Funktion ist ein Alias zu [home=doc&f=76]lang::get[/home].', 'string'),
 (80, 4, 'public', '__destruct', 'Setzt alle Klassenvariablen auf null.', 'void');
@@ -743,7 +744,7 @@ INSERT INTO `fs_docs_functions` (`id`, `class`, `type`, `name`, `desc`, `ret`) V
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_docs_params`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_docs_params`
 --
 
 DROP TABLE IF EXISTS `fs_docs_params`;
@@ -759,7 +760,7 @@ CREATE TABLE IF NOT EXISTS `fs_docs_params` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Daten für Tabelle `fs_docs_params`
+-- Daten fÃ¼r Tabelle `fs_docs_params`
 --
 
 INSERT INTO `fs_docs_params` (`function`, `internal_id`, `name`, `type`, `initval`, `desc`, `isref`) VALUES
@@ -769,30 +770,30 @@ INSERT INTO `fs_docs_params` (`function`, `internal_id`, `name`, `type`, `initva
 (2, 4, 'offset', 'int', '-1', 'Index des ersten auszulesenden Zeichens.', 0),
 (2, 5, 'maxlen', 'int', '-1', 'Anzahl der auszulesenden Bytes.', 0),
 (3, 1, 'filename', 'string', '', 'Die einzulesende Datei.', 0),
-(3, 2, 'flags', 'int', '0', 'Ein oder mehrere Flags, die die Ausgabe beeinflussen.\r\nNäheres ist in der PHP-Dokumentation unter [php=file]file[/php] zu finden.', 0),
+(3, 2, 'flags', 'int', '0', 'Ein oder mehrere Flags, die die Ausgabe beeinflussen.\r\nNÃ¤heres ist in der PHP-Dokumentation unter [php=file]file[/php] zu finden.', 0),
 (3, 3, 'context', 'resource', 'null', 'Ein mit [php=stream-context-create]stream_context_create[/php] erzeugter Kontext.', 0),
 (4, 1, 'filename', 'string', '', 'Name der Datei, in die geschrieben werden soll.', 0),
 (4, 2, 'data', 'mixed', '', 'Die Daten, die in die Datei geschrieben werden sollen.', 0),
-(4, 3, 'flags', 'int', '0', 'Ein oder mehrere Flags, die das Schreiben beeinflussen.\r\nNäheres ist in der PHP-Dokumentation unter [php=file-put-contents]file_put_contents[/php] zu finden.', 0),
+(4, 3, 'flags', 'int', '0', 'Ein oder mehrere Flags, die das Schreiben beeinflussen.\r\nNÃ¤heres ist in der PHP-Dokumentation unter [php=file-put-contents]file_put_contents[/php] zu finden.', 0),
 (4, 4, 'context', 'resource', 'null', 'Ein mit [php=stream-context-create]stream_context_create[/php] erzeugter Kontext.', 0),
-(5, 1, 'filename', 'string', '', 'Die zu löschende Datei.', 0),
+(5, 1, 'filename', 'string', '', 'Die zu lÃ¶schende Datei.', 0),
 (5, 2, 'context', 'resource', 'null', 'Ein mit [php=stream-context-create]stream_context_create[/php] erzeugter Kontext.', 0),
 (6, 1, 'pathname', 'string', '', 'Der Pfad zum Verzeichnis.', 0),
-(6, 2, 'mode', 'int', '0777', 'Die Zugriffsrechte des Verzeichnisses.\r\n\r\nFür nähere Angaben siehe [php=chmod]chmod[/php].', 0),
-(6, 3, 'recursive', 'bool', 'false', 'Ermöglicht das Erstellen von verschachtelten Verzeichnissen.', 0),
+(6, 2, 'mode', 'int', '0777', 'Die Zugriffsrechte des Verzeichnisses.\r\n\r\nFÃ¼r nÃ¤here Angaben siehe [php=chmod]chmod[/php].', 0),
+(6, 3, 'recursive', 'bool', 'false', 'ErmÃ¶glicht das Erstellen von verschachtelten Verzeichnissen.', 0),
 (6, 4, 'context', 'resource', 'null', 'Ein mit [php=stream-context-create]stream_context_create[/php] erzeugter Kontext.', 0),
-(7, 1, 'filename', 'string', '', 'Die zu löschende Datei bzw. das zu löschende Verzeichnis.', 0),
-(7, 2, 'recursive', 'bool', 'false', 'Gibt an, ob das Verzeichnis rekursiv gelöscht werden soll.\r\n[b]Wichtig:[/b] Dies ist zwingend erforderlich, wenn das Verzeichnis Dateien enthält.', 0),
+(7, 1, 'filename', 'string', '', 'Die zu lÃ¶schende Datei bzw. das zu lÃ¶schende Verzeichnis.', 0),
+(7, 2, 'recursive', 'bool', 'false', 'Gibt an, ob das Verzeichnis rekursiv gelÃ¶scht werden soll.\r\n[b]Wichtig:[/b] Dies ist zwingend erforderlich, wenn das Verzeichnis Dateien enthÃ¤lt.', 0),
 (8, 1, 'source', 'string', '', 'Die Quelldatei bzw. das Quellverzeichnis, die/das kopiert werden soll.', 0),
-(8, 2, 'destination', 'string', '', 'Das Zielverzeichnis bzw. die Zieldatei.\r\nHinweis: Falls die [i]destination[/i] nicht existiert, wird es angelegt.\r\n[b]Hinweis:[/b] Existierende Dateien werden überschrieben.', 0),
-(8, 3, 'foldermode', 'int', '0777', 'Die Zugriffsrechte des Verzeichnisses bzw. der Verzeichnisse.\r\n\r\nFür nähere Angaben siehe [php=chmod]chmod[/php].', 0),
-(8, 4, 'filemode', 'int', '0777', 'Die Zugriffsrechte der Datei(en).\r\n\r\nFür nähere Angaben siehe [php=chmod]chmod[/php].', 0),
+(8, 2, 'destination', 'string', '', 'Das Zielverzeichnis bzw. die Zieldatei.\r\nHinweis: Falls die [i]destination[/i] nicht existiert, wird es angelegt.\r\n[b]Hinweis:[/b] Existierende Dateien werden Ã¼berschrieben.', 0),
+(8, 3, 'foldermode', 'int', '0777', 'Die Zugriffsrechte des Verzeichnisses bzw. der Verzeichnisse.\r\n\r\nFÃ¼r nÃ¤here Angaben siehe [php=chmod]chmod[/php].', 0),
+(8, 4, 'filemode', 'int', '0777', 'Die Zugriffsrechte der Datei(en).\r\n\r\nFÃ¼r nÃ¤here Angaben siehe [php=chmod]chmod[/php].', 0),
 (10, 1, 'style', 'string', '', 'Der Name des Styles, der aktiviert werden soll.', 0),
 (14, 1, 'file', 'string', '', 'Der Name der Datei, aus der die Templates ausgelesen werden sollen.', 0),
 (16, 1, 'section', 'array', '', 'Die [home=doc&v=7]Sections[/home].', 0),
 (17, 1, 'section', 'string', '', 'Name der [home=doc&v=7]Section[/home].', 0),
 (18, 1, 'content', 'array', '', 'Das [home=doc&v=8]Sections_Content[/home]-Array.', 0),
-(22, 1, 'tag', 'string', '', 'Der zu löschende Tag.', 0),
+(22, 1, 'tag', 'string', '', 'Der zu lÃ¶schende Tag.', 0),
 (19, 1, 'section_number', 'int', '', 'Die ID der [home=doc&v=7]Section[/home].', 0),
 (23, 1, 'bool', 'bool', '', 'Der Wert, der [home=doc&v=5]clear_unassigned[/home] zugewiesen wird.', 0),
 (24, 1, 'template', 'string', '', 'Setzt name des Templates.', 0),
@@ -800,75 +801,75 @@ INSERT INTO `fs_docs_params` (`function`, `internal_id`, `name`, `type`, `initva
 (28, 1, 'tag', 'string', '', 'Der Name des Tags.', 0),
 (28, 2, 'value', 'string', '', 'Der Wert, durch den tag ersetzt werden soll.', 0),
 (30, 1, 'TEXT', 'string', '', 'Der zu behandelnde Text', 0),
-(30, 2, 'KILLHTML', 'bool', 'false', 'Bestimmt, ob zusätzlich [php=htmlspecialchars]htmlspecialchars[/php] auf TEXT angewendet werden soll.', 0),
-(30, 3, 'STRIPSLASHES', 'bool', 'false', 'Bestimmt, ob zusätzlich [php=stripslashes]stripslashes[/php] auf TEXT angewendet werden soll.', 0),
+(30, 2, 'KILLHTML', 'bool', 'false', 'Bestimmt, ob zusÃ¤tzlich [php=htmlspecialchars]htmlspecialchars[/php] auf TEXT angewendet werden soll.', 0),
+(30, 3, 'STRIPSLASHES', 'bool', 'false', 'Bestimmt, ob zusÃ¤tzlich [php=stripslashes]stripslashes[/php] auf TEXT angewendet werden soll.', 0),
 (31, 1, 'PAGE', 'int', '', 'Die aktuelle Seite.', 0),
 (31, 2, 'NUM_OF_PAGES', 'int', '', 'Gesamtzahl der Seiten', 0),
-(31, 3, 'PER_PAGE', 'int', '', 'Anzahl der Einträge pro Seite.', 0),
-(31, 4, 'NUM_OF_ENTRIES', 'int', '', 'Gesamtzahl der Einträge.', 0),
-(31, 5, 'URL_TEMPLATE', 'string', '', 'Ein Template für die URL zu den Seiten.\r\nDas Template sollte die Variable {..page_num..} enthalten. Für sie wird dann die Seitenzahl eingefügt.', 0),
+(31, 3, 'PER_PAGE', 'int', '', 'Anzahl der EintrÃ¤ge pro Seite.', 0),
+(31, 4, 'NUM_OF_ENTRIES', 'int', '', 'Gesamtzahl der EintrÃ¤ge.', 0),
+(31, 5, 'URL_TEMPLATE', 'string', '', 'Ein Template fÃ¼r die URL zu den Seiten.\r\nDas Template sollte die Variable {..page_num..} enthalten. FÃ¼r sie wird dann die Seitenzahl eingefÃ¼gt.', 0),
 (32, 1, 'TEXT', 'string', '', 'Der zu untersuchende Text.', 0),
 (33, 1, 'COLOR', 'string', '', 'Die zu konvertierende Farbe.', 0),
-(34, 1, 'COLOR', 'string', '', 'Der zu prüfende String.', 0),
+(34, 1, 'COLOR', 'string', '', 'Der zu prÃ¼fende String.', 0),
 (35, 1, 'FOLDER', 'string', '', 'Das zu untersuchende Verzeichnis.', 0),
-(35, 2, 'EXTRA', 'array', 'array()', 'Ein Array aus Dateien, die nicht zurückgegeben werden sollen.', 0),
-(35, 3, 'BAD', 'array', 'array ( ".", "..", ".DS_Store", "_notes", "Thumbs.db", ".svn" )', 'Ein weiteres Array von Dateien, die nicht zurückgegeben werden sollen.', 0),
+(35, 2, 'EXTRA', 'array', 'array()', 'Ein Array aus Dateien, die nicht zurÃ¼ckgegeben werden sollen.', 0),
+(35, 3, 'BAD', 'array', 'array ( ".", "..", ".DS_Store", "_notes", "Thumbs.db", ".svn" )', 'Ein weiteres Array von Dateien, die nicht zurÃ¼ckgegeben werden sollen.', 0),
 (36, 1, 'FOLDER', 'string', '', 'Das zu durchsuchende Verzeichnis.', 0),
 (36, 2, 'FILE_EXT', 'string', '', 'Die Dateiendung der Dateien nach denen gesucht werden soll.', 0),
-(36, 3, 'EXTRA', 'array', 'array()', 'Ein Array aus Dateien, die nicht zurückgegeben werden sollen.', 0),
-(36, 4, 'BAD', 'array', 'array ( ".", "..", ".DS_Store", "_notes", "Thumbs.db", ".svn" )', 'Ein weiteres Array von Dateien, die nicht zurückgegeben werden sollen.', 0),
-(37, 1, 'GROUP_ID', 'int', '', 'Die Gruppenid der Gruppe, von der die Informationen zurückgegeben werden sollen', 0),
-(37, 2, 'IS_ADMIN', 'int', '0', 'Diese Variable wird hat nur die Funktion sicherzustellen, dass auch eine Gruppe ausgelesen wird, wenn der User Admin ist, aber keiner anderen Gruppe angehört.', 0),
+(36, 3, 'EXTRA', 'array', 'array()', 'Ein Array aus Dateien, die nicht zurÃ¼ckgegeben werden sollen.', 0),
+(36, 4, 'BAD', 'array', 'array ( ".", "..", ".DS_Store", "_notes", "Thumbs.db", ".svn" )', 'Ein weiteres Array von Dateien, die nicht zurÃ¼ckgegeben werden sollen.', 0),
+(37, 1, 'GROUP_ID', 'int', '', 'Die Gruppenid der Gruppe, von der die Informationen zurÃ¼ckgegeben werden sollen', 0),
+(37, 2, 'IS_ADMIN', 'int', '0', 'Diese Variable wird hat nur die Funktion sicherzustellen, dass auch eine Gruppe ausgelesen wird, wenn der User Admin ist, aber keiner anderen Gruppe angehÃ¶rt.', 0),
 (38, 1, 'DATE_STRING', 'string', '', 'Eine nach dem [php=date]date[/php]-Syntax formatierte Zeichenkette', 0),
 (38, 2, 'TIMESTAMP', 'string', '', 'Der zu formatierende Zeitstempel.', 0),
 (39, 1, 'CAT_ID', 'int', '', 'Die Kategorie nach deren Unterkategorien gesucht werden soll.', 0),
-(39, 2, 'REC_SUB_CAT_ARRAY', 'array', '', 'Ein Array aus schon vorhandenen Kategorien.\r\nDieser Parameter wird für den rekursiven Aufruf der Funktion benötigt, bei der die Unterkategorien zweiter und höherer Generation ermittelt werden.\r\nDer Startparameter sollte "array()" sein.', 0),
-(40, 1, 'CAT_ID', 'int', '', 'Die Kategorie für die die Funktion ausgeführt werden soll.', 0),
+(39, 2, 'REC_SUB_CAT_ARRAY', 'array', '', 'Ein Array aus schon vorhandenen Kategorien.\r\nDieser Parameter wird fÃ¼r den rekursiven Aufruf der Funktion benÃ¶tigt, bei der die Unterkategorien zweiter und hÃ¶herer Generation ermittelt werden.\r\nDer Startparameter sollte "array()" sein.', 0),
+(40, 1, 'CAT_ID', 'int', '', 'Die Kategorie fÃ¼r die die Funktion ausgefÃ¼hrt werden soll.', 0),
 (40, 2, 'GET_ID', 'int', '', 'Die aktuelle Kategorie.', 0),
 (40, 3, 'NAVI_TEMPLATE', 'string', '', 'Das Template.', 0),
-(43, 1, 'NUM_OF_ENTRIES', 'int', '', 'Gesamtzahl der Einträge.', 0),
-(43, 2, 'ENTRIES_PER_PAGE', 'int', '', 'Anzahl der Einträge pro Seite.', 0),
+(43, 1, 'NUM_OF_ENTRIES', 'int', '', 'Gesamtzahl der EintrÃ¤ge.', 0),
+(43, 2, 'ENTRIES_PER_PAGE', 'int', '', 'Anzahl der EintrÃ¤ge pro Seite.', 0),
 (43, 3, 'START', 'int', '', 'Nummer des ersten auszulesenden Eintrages.', 0),
 (44, 1, 'FILTER', 'string', '', 'Der Filerausdruck.', 0),
 (44, 2, 'SEARCH_FIELD', 'string', '', 'Die zu durchsuchende Spalte. (In der Referrersuche &bdquo;ref_url&rdquo;)', 0),
-(45, 1, 'LENGHT', 'int', '10', 'Die Länge des Passwortes.', 0),
+(45, 1, 'LENGHT', 'int', '10', 'Die LÃ¤nge des Passwortes.', 0),
 (46, 1, 'SOLUTION', 'string', '', 'Die eingegebene Zeichenkette.', 0),
-(46, 2, 'ACTIVATION', 'int', '', 'Eine Zahl, die die Strenge des Captchas setzt.\r\nMögliche Werte:\r\n0 - Niemand muss ein Captcha lösen.\r\n1 - Nur unangemeldete Benutzer müssen das Captcha lösen.\r\n3 - Alle nicht-Seitenmitarbeiter müssen das Captcha lösen.\r\n4 - Alle nicht-Administratoren müssen das Captcha lösen.', 0),
+(46, 2, 'ACTIVATION', 'int', '', 'Eine Zahl, die die Strenge des Captchas setzt.\r\nMÃ¶gliche Werte:\r\n0 - Niemand muss ein Captcha lÃ¶sen.\r\n1 - Nur unangemeldete Benutzer mÃ¼ssen das Captcha lÃ¶sen.\r\n3 - Alle nicht-Seitenmitarbeiter mÃ¼ssen das Captcha lÃ¶sen.\r\n4 - Alle nicht-Administratoren mÃ¼ssen das Captcha lÃ¶sen.', 0),
 (47, 1, 'USER_ID', 'int', '', 'Der zu untersuchende Benutzer.', 0),
 (48, 1, 'USER_ID', 'int', '', 'Der zu untersuchende Benutzer.', 0),
 (49, 1, 'TEMPLATE_NAME', 'string', '', 'Der Name des auszugebende Templates.', 0),
 (50, 1, 'TEMPLATE_NAME', 'string', '', 'Der Name des auszugebende Templates.', 0),
-(51, 1, 'TO', 'string', '', 'Der Empfänger der Mail.', 0),
+(51, 1, 'TO', 'string', '', 'Der EmpfÃ¤nger der Mail.', 0),
 (51, 2, 'SUBJECT', 'string', '', 'Der Betreff der Mail.', 0),
-(51, 3, 'TEXT', 'string', '', 'Der zu versendende Text.\r\nWenn <a href="#param_4">HTML</a> false ist &bdquo;html&rdquo; ist und das Verwenden von HTML im AdminCP aktiviert wurde, wird der Text zusätzlich mit [home=doc&f=68]FS-Codes[/home] formtiert.', 0),
+(51, 3, 'TEXT', 'string', '', 'Der zu versendende Text.\r\nWenn <a href="#param_4">HTML</a> false ist &bdquo;html&rdquo; ist und das Verwenden von HTML im AdminCP aktiviert wurde, wird der Text zusÃ¤tzlich mit [home=doc&f=68]FS-Codes[/home] formtiert.', 0),
 (51, 4, 'HTML', 'bool', 'false', 'Bestimmt, ob der Text mit HTML formatiert werden kann.', 0),
-(51, 5, 'FROM', 'string', 'false', 'Der Absender der Mail.\r\nFalls kein Empfänger angegeben wird oder die Admin-Mailadresse als Standard angegeben wurde, wird die Admin-Mailadresse verwendet.', 0),
+(51, 5, 'FROM', 'string', 'false', 'Der Absender der Mail.\r\nFalls kein EmpfÃ¤nger angegeben wird oder die Admin-Mailadresse als Standard angegeben wurde, wird die Admin-Mailadresse verwendet.', 0),
 (52, 1, 'name', 'string', '', 'Wert des Id- und Name-Attributes der Textarea.', 0),
 (52, 2, 'text', 'string', '""', 'Der Inhalt der Textarea.', 0),
 (52, 3, 'width', 'int', '""', 'Die Breite der Textarea in Pixeln.', 0),
-(52, 4, 'height', 'int', '""', 'Die Höhe der Textarea.', 0),
+(52, 4, 'height', 'int', '""', 'Die HÃ¶he der Textarea.', 0),
 (52, 5, 'class', 'string', '""', 'Der Wert des Class-Attributes der Textarea.', 0),
-(52, 6, 'all', 'bool', 'true', 'Legt fest, ob für alle FS-Codes ein IWAC-Button eingefügt werden soll.', 0),
+(52, 6, 'all', 'bool', 'true', 'Legt fest, ob fÃ¼r alle FS-Codes ein IWAC-Button eingefÃ¼gt werden soll.', 0),
 (52, 7, 'fs_smilies', 'int', '0', 'Legt fest, ob die Smilies auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 8, 'fs_b', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;b&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 9, 'fs_i', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;i&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 10, 'fs_u', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;u&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 11, 'fs_s', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;s&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 12, 'fs_center', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;center&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 13, 'fs_font', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;font&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 14, 'fs_color', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;color&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 15, 'fs_size', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;size&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 16, 'fs_img', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;img&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 17, 'fs_cimg', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;cimg&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 18, 'fs_url', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;url&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 19, 'fs_home', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;home&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 20, 'fs_email', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;email&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 21, 'fs_code', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;code&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 22, 'fs_quote', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;quote&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(52, 23, 'fs_noparse', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;noparse&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
-(53, 1, 'img_file_name', 'string', '', 'URL zum Bild für den Button.', 0),
-(53, 2, 'alt', 'string', '', 'Alternativer Text für den Button.', 0),
-(53, 3, 'title', 'string', '', 'Beschreibungstext für den Button.', 0),
+(52, 8, 'fs_b', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;b&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 9, 'fs_i', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;i&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 10, 'fs_u', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;u&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 11, 'fs_s', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;s&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 12, 'fs_center', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;center&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 13, 'fs_font', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;font&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 14, 'fs_color', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;color&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 15, 'fs_size', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;size&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 16, 'fs_img', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;img&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 17, 'fs_cimg', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;cimg&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 18, 'fs_url', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;url&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 19, 'fs_home', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;home&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 20, 'fs_email', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;email&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 21, 'fs_code', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;code&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 22, 'fs_quote', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;quote&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(52, 23, 'fs_noparse', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;noparse&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_5">all</a> false ist.', 0),
+(53, 1, 'img_file_name', 'string', '', 'URL zum Bild fÃ¼r den Button.', 0),
+(53, 2, 'alt', 'string', '', 'Alternativer Text fÃ¼r den Button.', 0),
+(53, 3, 'title', 'string', '', 'Beschreibungstext fÃ¼r den Button.', 0),
 (53, 4, 'insert', 'string', '', 'Wert der onClick-Attributes des Buttons.', 0),
 (55, 1, 'TITLE', 'string', '', 'Der Titel der Nachricht.', 0),
 (55, 2, 'MESSAGE', 'string', '', 'Die Nachricht.', 0),
@@ -876,22 +877,22 @@ INSERT INTO `fs_docs_params` (`function`, `internal_id`, `name`, `type`, `initva
 (56, 2, 'MESSAGE', 'string', '', 'Die Weiterleitungsnachricht.', 0),
 (56, 3, 'URL', 'string', '', 'Die URL zu der der Benutzer weitergeleitet werden soll.', 0),
 (57, 1, 'zahl', 'int', '', 'Die zu formatierende Zahl.', 0),
-(58, 1, 'string', 'string', '', 'Der zu kürzende Text.', 0),
-(58, 2, 'maxlength', 'int', '', 'Die maximale Länge des Rückgabestrings.', 0),
-(58, 3, 'extention', 'string', '', 'Ein String, der an das Ende der Rückgabe angehängt wird. (z.B. &bdquo;...&rdquo;)', 0),
-(59, 1, 'string', 'string', '', 'Der zu kürzende String.', 0),
-(59, 2, 'maxlength', 'int', '', 'Die maximale Länge des Ausgabestrings.', 0),
-(59, 3, 'replacement', 'string', '', 'Der Text, der in der Mitte des Strings eingefügt werden soll. (z.B. &bdquo;...&rdquo;)', 0),
+(58, 1, 'string', 'string', '', 'Der zu kÃ¼rzende Text.', 0),
+(58, 2, 'maxlength', 'int', '', 'Die maximale LÃ¤nge des RÃ¼ckgabestrings.', 0),
+(58, 3, 'extention', 'string', '', 'Ein String, der an das Ende der RÃ¼ckgabe angehÃ¤ngt wird. (z.B. &bdquo;...&rdquo;)', 0),
+(59, 1, 'string', 'string', '', 'Der zu kÃ¼rzende String.', 0),
+(59, 2, 'maxlength', 'int', '', 'Die maximale LÃ¤nge des Ausgabestrings.', 0),
+(59, 3, 'replacement', 'string', '', 'Der Text, der in der Mitte des Strings eingefÃ¼gt werden soll. (z.B. &bdquo;...&rdquo;)', 0),
 (60, 1, 'IDs', 'array', '', 'Das Array der Kategorien', 1),
 (60, 2, 'CAT_ID', 'int', '', 'Die ID der aktuellen Kategorie.', 0),
 (60, 3, 'SHOW_SUB', 'int', '0', 'Legt fest, ob die Unterkategorien aller Kategorien angezeigt werden sollen.', 0),
-(60, 4, 'ID', 'int', '0', 'ID der Kategorie, deren Informationen zurückgegeben werden sollen.\r\n\r\nHinweis: Sollte beim Aufruf der Funktion 0 bleiben. Dieser Parameter wird nur für den rekursiven Ausruf der Funktion benötigt.', 0),
-(60, 5, 'LEVEL', 'int', '-1', 'Das Level der Hierarchie der aktuellen Kategorie.\r\n\r\nHinweis: Sollte beim Aufruf der Funktion -1 bleiben. Dieser Parameter wird nur für den rekursiven Ausruf der Funktion benötigt.', 0),
-(61, 1, 'news_arr', 'array', '', 'Ein Array aus Informationen über die News.\r\nDieses Array entspricht dem Array, das mittels [php=mysql-query]mysql_query[/php] aus der Datenbank ausgelesen wurde.', 0),
-(61, 2, 'html_code', 'int', '', 'Legt fest, ob in der News HTML verwendet werden kann.\r\n2 und 4 stehen für true;\r\n1 und 3 für false.', 0),
-(61, 3, 'fs_code', 'int', '', 'Legt fest, ob in der News FS-Code verwendet werden kann.\r\n2 und 4 stehen für true;\r\n1 und 3 für false.', 0),
-(61, 4, 'para_handling', 'int', '', 'Legt fest, ob Zeilenumbrüche automatisch durch ein durch einen HTML-Zeilenumbruch ersetzt werden sollen.\r\n2 und 4 stehen für true;\r\n1 und 3 für false.', 0),
-(62, 1, 'SIZE', 'int', '', 'Die Größe der Datei in Bytes.', 0),
+(60, 4, 'ID', 'int', '0', 'ID der Kategorie, deren Informationen zurÃ¼ckgegeben werden sollen.\r\n\r\nHinweis: Sollte beim Aufruf der Funktion 0 bleiben. Dieser Parameter wird nur fÃ¼r den rekursiven Ausruf der Funktion benÃ¶tigt.', 0),
+(60, 5, 'LEVEL', 'int', '-1', 'Das Level der Hierarchie der aktuellen Kategorie.\r\n\r\nHinweis: Sollte beim Aufruf der Funktion -1 bleiben. Dieser Parameter wird nur fÃ¼r den rekursiven Ausruf der Funktion benÃ¶tigt.', 0),
+(61, 1, 'news_arr', 'array', '', 'Ein Array aus Informationen Ã¼ber die News.\r\nDieses Array entspricht dem Array, das mittels [php=mysql-query]mysql_query[/php] aus der Datenbank ausgelesen wurde.', 0),
+(61, 2, 'html_code', 'int', '', 'Legt fest, ob in der News HTML verwendet werden kann.\r\n2 und 4 stehen fÃ¼r true;\r\n1 und 3 fÃ¼r false.', 0),
+(61, 3, 'fs_code', 'int', '', 'Legt fest, ob in der News FS-Code verwendet werden kann.\r\n2 und 4 stehen fÃ¼r true;\r\n1 und 3 fÃ¼r false.', 0),
+(61, 4, 'para_handling', 'int', '', 'Legt fest, ob ZeilenumbrÃ¼che automatisch durch ein durch einen HTML-Zeilenumbruch ersetzt werden sollen.\r\n2 und 4 stehen fÃ¼r true;\r\n1 und 3 fÃ¼r false.', 0),
+(62, 1, 'SIZE', 'int', '', 'Die GrÃ¶ÃŸe der Datei in Bytes.', 0),
 (63, 1, 'text', 'string', '', 'Der Text, in dem <a href="#param_2">word</a> markiert werden soll.', 0),
 (63, 2, 'word', 'string', '', 'Der zu markierende Ausdruck.', 0),
 (64, 1, 'TEXT', 'string', '', 'Der zu formatierende Text.', 0),
@@ -901,44 +902,44 @@ INSERT INTO `fs_docs_params` (`function`, `internal_id`, `name`, `type`, `initva
 (68, 1, 'text', 'string', '', 'Der zu behandelnde Text.', 0),
 (68, 2, 'all', 'bool', 'true', 'Legt fest, ob alle FS-Codes umgewandelt werden sollen oder die Umwandlung pro FS-Code vorgenommen werden soll.', 0),
 (68, 3, 'html', 'bool', 'false', 'Legt fest, ob HTML in <a href="#param_1">text</a> erlaubt sein soll.', 0),
-(68, 4, 'para', 'bool', 'false', 'Legt fest, ob Zeilenumbrüche automatisch durch ein durch einen HTML-Zeilenumbruch ersetzt werden sollen.', 0),
-(68, 5, 'do_b', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;b&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 6, 'do_i', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;i&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 6, 'do_u', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;u&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 7, 'do_s', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;s&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 8, 'do_center', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;center&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 9, 'do_url', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;url&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 10, 'do_homelink', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;home&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 11, 'do_email', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;email&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 12, 'do_img', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;img&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 13, 'do_cimg', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;cimg&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 14, 'do_list', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;list&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 15, 'do_numlist', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;numlist&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 16, 'do_font', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;font&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 17, 'do_color', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;color&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 18, 'do_size', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;size&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 19, 'do_code', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;code&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 20, 'do_quote', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;quote&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 21, 'do_noparse', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;noparse&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 22, 'do_', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 23, 'do_smilies', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;smilies&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
-(68, 24, 'do_player', 'int', '0', 'Legt fest, ob der Button für den FS-Code &bdquo;player&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 4, 'para', 'bool', 'false', 'Legt fest, ob ZeilenumbrÃ¼che automatisch durch ein durch einen HTML-Zeilenumbruch ersetzt werden sollen.', 0),
+(68, 5, 'do_b', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;b&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 6, 'do_i', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;i&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 6, 'do_u', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;u&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 7, 'do_s', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;s&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 8, 'do_center', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;center&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 9, 'do_url', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;url&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 10, 'do_homelink', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;home&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 11, 'do_email', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;email&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 12, 'do_img', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;img&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 13, 'do_cimg', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;cimg&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 14, 'do_list', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;list&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 15, 'do_numlist', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;numlist&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 16, 'do_font', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;font&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 17, 'do_color', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;color&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 18, 'do_size', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;size&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 19, 'do_code', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;code&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 20, 'do_quote', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;quote&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 21, 'do_noparse', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;noparse&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 22, 'do_', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 23, 'do_smilies', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;smilies&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
+(68, 24, 'do_player', 'int', '0', 'Legt fest, ob der Button fÃ¼r den FS-Code &bdquo;player&rdquo; auch dann angezeigt werden sollen, wenn <a href="#param_2">all</a> false ist.', 0),
 (69, 1, 'text', 'string', '', 'Der zu formatierende String.', 0),
-(70, 1, 'pollid', 'int', '', 'ID der zu prüfenden Umfrage.', 0),
-(71, 1, 'pollid', 'int', '', 'ID der Umfrage für die der Benutzer abgestimmt hat.', 0),
+(70, 1, 'pollid', 'int', '', 'ID der zu prÃ¼fenden Umfrage.', 0),
+(71, 1, 'pollid', 'int', '', 'ID der Umfrage fÃ¼r die der Benutzer abgestimmt hat.', 0),
 (71, 2, 'voter_ip', 'string', '', 'IP des Benutzers.', 0),
 (72, 1, 'local', 'string', '', '???\r\nSinnlose Variable', 0),
 (75, 1, 'tag', 'string', '', 'Der Name des Ausdrucks.\r\nIst der Parameter von [home=doc&f=76]get[/home]', 0),
 (75, 2, 'text', 'string', '', 'Der Wert des Ausdruckes.', 0),
-(76, 1, 'tag', 'string', '', 'Name des Ausdruckes, der zurückgegeben werden soll.', 0),
-(78, 1, 'local', 'string', '', 'Sprachkürzel der Sprache, aus der die Sprachausdrücke importiert werden sollen.', 0),
+(76, 1, 'tag', 'string', '', 'Name des Ausdruckes, der zurÃ¼ckgegeben werden soll.', 0),
+(78, 1, 'local', 'string', '', 'SprachkÃ¼rzel der Sprache, aus der die SprachausdrÃ¼cke importiert werden sollen.', 0),
 (78, 2, 'type', 'string', '', 'Name der Sprachdatei.', 0),
-(79, 1, 'tag', 'string', '', 'Name des Ausdruckes, der zurückgegeben werden soll.', 0);
+(79, 1, 'tag', 'string', '', 'Name des Ausdruckes, der zurÃ¼ckgegeben werden soll.', 0);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_docs_variables`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_docs_variables`
 --
 
 DROP TABLE IF EXISTS `fs_docs_variables`;
@@ -954,31 +955,31 @@ CREATE TABLE IF NOT EXISTS `fs_docs_variables` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
--- Daten für Tabelle `fs_docs_variables`
+-- Daten fÃ¼r Tabelle `fs_docs_variables`
 --
 
 INSERT INTO `fs_docs_variables` (`id`, `type`, `name`, `desc`, `class`, `initval`, `content`) VALUES
 (1, 'const', 'OPENER', 'Der String, mit dem eine Template-Variable beginnt.', 2, '{..', 'string'),
 (2, 'const', 'CLOSER', 'Der String, mit dem eine Template-Variable endet.', 2, '..}', 'string'),
-(3, 'private', 'style', 'Der Style, aus dem die Templates geladen werden.\r\n\r\nDiese Variable kann mittels [home=doc&f=10]setStyle[/home] geändert werden.', 2, 'default', 'string'),
-(4, 'private', 'file', 'Die Datei aus denen die Templates geladen werden.\r\n\r\nDiese Variable kann mittels [hom=doc&f=14]setFile[/home] geändert werden.', 2, 'null', 'string'),
-(5, 'private', 'clear_unassigned', 'Legt fest, ob nicht definierte Tags aus dem Template entfernt werden.\r\n\r\nHinweis: Tags, die mit [home=doc&f=22]deleteTag[/home] gelöscht wurden werden nicht ersetzt.\r\n\r\n[b]Hinweis:[/b] Diese Funktion hat momentan noch keine Auswirkungen auf die Templates.', 2, 'false', 'bool'),
-(6, 'private', 'tags', 'Ein Array, das die definierten Template-Variablen und deren ersetzungstext enthält.\r\n\r\nEine neue Variable kann durch [home=doc&f=28]tag[/home] hinzugefügt werden.', 2, 'array()', 'array'),
-(7, 'private', 'sections', 'Ein Array, in dem die aus [home=doc&v=4]file[/home] ausgelesenen Templatebezeichnungen gespeichert werden.\r\n\r\nHinweis: Dieses Array enthält nur die [b]Bezeichnungen[/b] (z.B. MAINPAGE). Der Inhalt der Templates wird in [home=doc&v=8]sections_content[/home] gespeichert.', 2, 'array()', 'array'),
-(8, 'private', 'sections_content', 'Ein Array, in dem die aus [home=doc&v=4]file[/home] ausgelesenen Templates gespeichert werden.\r\n\r\nHinweis: Dieses Array enthält den [b]Inhalt[/b] der Templates. Die Bezeichnungen der Templates werden in [home=doc&v=7]sections[/home] gespeichert.', 2, 'array()', 'array'),
-(9, 'private', 'template', 'Ein String, in dem das das aktuelle Template gespeichert wird.\r\n\r\nDiese Variable wird mittels [home=doc&f=26]load[/home] geändert.', 2, 'null', 'string'),
+(3, 'private', 'style', 'Der Style, aus dem die Templates geladen werden.\r\n\r\nDiese Variable kann mittels [home=doc&f=10]setStyle[/home] geÃ¤ndert werden.', 2, 'default', 'string'),
+(4, 'private', 'file', 'Die Datei aus denen die Templates geladen werden.\r\n\r\nDiese Variable kann mittels [hom=doc&f=14]setFile[/home] geÃ¤ndert werden.', 2, 'null', 'string'),
+(5, 'private', 'clear_unassigned', 'Legt fest, ob nicht definierte Tags aus dem Template entfernt werden.\r\n\r\nHinweis: Tags, die mit [home=doc&f=22]deleteTag[/home] gelÃ¶scht wurden werden nicht ersetzt.\r\n\r\n[b]Hinweis:[/b] Diese Funktion hat momentan noch keine Auswirkungen auf die Templates.', 2, 'false', 'bool'),
+(6, 'private', 'tags', 'Ein Array, das die definierten Template-Variablen und deren ersetzungstext enthÃ¤lt.\r\n\r\nEine neue Variable kann durch [home=doc&f=28]tag[/home] hinzugefÃ¼gt werden.', 2, 'array()', 'array'),
+(7, 'private', 'sections', 'Ein Array, in dem die aus [home=doc&v=4]file[/home] ausgelesenen Templatebezeichnungen gespeichert werden.\r\n\r\nHinweis: Dieses Array enthÃ¤lt nur die [b]Bezeichnungen[/b] (z.B. MAINPAGE). Der Inhalt der Templates wird in [home=doc&v=8]sections_content[/home] gespeichert.', 2, 'array()', 'array'),
+(8, 'private', 'sections_content', 'Ein Array, in dem die aus [home=doc&v=4]file[/home] ausgelesenen Templates gespeichert werden.\r\n\r\nHinweis: Dieses Array enthÃ¤lt den [b]Inhalt[/b] der Templates. Die Bezeichnungen der Templates werden in [home=doc&v=7]sections[/home] gespeichert.', 2, 'array()', 'array'),
+(9, 'private', 'template', 'Ein String, in dem das das aktuelle Template gespeichert wird.\r\n\r\nDiese Variable wird mittels [home=doc&f=26]load[/home] geÃ¤ndert.', 2, 'null', 'string'),
 (10, 'private', 'local', '???\r\nSinnlose Variable', 3, 'null', 'string'),
 (11, 'private', 'type', '???\r\nSinnlose Variable', 3, '', ''),
-(12, 'private', 'allow_add', 'Legt fest, ob neue Sprachausdrücke definiert werden können.', 3, 'true', 'bool'),
-(13, 'private', 'phrases', 'Ein Array, das alle Sprachausdrücke beinhaltet.', 3, 'array()', 'array'),
-(14, 'private', 'local', 'Beinhaltet das Sprachkürzel.', 4, 'null', 'string'),
+(12, 'private', 'allow_add', 'Legt fest, ob neue SprachausdrÃ¼cke definiert werden kÃ¶nnen.', 3, 'true', 'bool'),
+(13, 'private', 'phrases', 'Ein Array, das alle SprachausdrÃ¼cke beinhaltet.', 3, 'array()', 'array'),
+(14, 'private', 'local', 'Beinhaltet das SprachkÃ¼rzel.', 4, 'null', 'string'),
 (15, 'private', 'type', 'Beinhaltet den Dateinamen.', 4, 'null', 'string'),
 (16, 'private', 'langData', 'Beinhaltet eine Referenz auf die Klasse [home=doc&c=3]lang[/home].', 4, '', 'object');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_editor_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_editor_config`
 --
 
 DROP TABLE IF EXISTS `fs_editor_config`;
@@ -1030,7 +1031,7 @@ CREATE TABLE IF NOT EXISTS `fs_editor_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_editor_config`
+-- Daten fÃ¼r Tabelle `fs_editor_config`
 --
 
 INSERT INTO `fs_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea_width`, `textarea_height`, `bold`, `italic`, `underline`, `strike`, `center`, `font`, `color`, `size`, `list`, `numlist`, `img`, `cimg`, `url`, `home`, `email`, `code`, `quote`, `noparse`, `smilies`, `do_bold`, `do_italic`, `do_underline`, `do_strike`, `do_center`, `do_font`, `do_color`, `do_size`, `do_list`, `do_numlist`, `do_img`, `do_cimg`, `do_url`, `do_home`, `do_email`, `do_code`, `do_quote`, `do_noparse`, `do_smilies`) VALUES
@@ -1039,7 +1040,7 @@ INSERT INTO `fs_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea_
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_email`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_email`
 --
 
 DROP TABLE IF EXISTS `fs_email`;
@@ -1055,16 +1056,109 @@ CREATE TABLE IF NOT EXISTS `fs_email` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_email`
+-- Daten fÃ¼r Tabelle `fs_email`
 --
 
 INSERT INTO `fs_email` (`id`, `signup`, `change_password`, `delete_account`, `use_admin_mail`, `email`, `html`) VALUES
-(1, 'Hallo  {..user_name..},\r\n\r\nDu hast dich bei $VAR(page_title) registriert. Deine Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {..user_name..},\r\n\r\nDein Passwort bei $VAR(page_title) wurde geändert. Deine neuen Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders überlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!', 1, '', 1);
+(1, 'Hallo  {..user_name..},\r\n\r\nDu hast dich bei $VAR(page_title) registriert. Deine Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten Ã¤ndern mÃ¶chtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {..user_name..},\r\n\r\nDein Passwort bei $VAR(page_title) wurde geÃ¤ndert. Deine neuen Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten Ã¤ndern mÃ¶chtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders Ã¼berlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!', 1, '', 1);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_global_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_fscodes`
+--
+
+DROP TABLE IF EXISTS `fs_fscodes`;
+CREATE TABLE IF NOT EXISTS `fs_fscodes` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL,
+  `contenttype` varchar(20) NOT NULL,
+  `callbacktype` tinyint(1) NOT NULL,
+  `allowin` varchar(100) NOT NULL,
+  `disallowin` varchar(100) NOT NULL,
+  `param_1` text NOT NULL,
+  `param_2` text NOT NULL,
+  `php` text NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `allowparagraphes` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+
+--
+-- Daten fÃ¼r Tabelle `fs_fscodes`
+--
+
+INSERT INTO `fs_fscodes` (`id`, `name`, `contenttype`, `callbacktype`, `allowin`, `disallowin`, `param_1`, `param_2`, `php`, `active`, `allowparagraphes`) VALUES
+(1, 'b', 'inline', 0, 'listitem, block, inline, link', '', '<b>', '</b>', '', 1, 1),
+(2, 'i', 'inline', 0, 'listitem, block, inline, link', '', '<i>', '</i>', '', 1, 1),
+(3, 'u', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:underline;">', '</span>', '', 1, 1),
+(4, 's', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:line-through;">', '</span>', '', 1, 1),
+(5, 'center', 'inline', 0, 'listitem, block, inline, link', '', '<p align="center">', '</p>', '', 1, 1),
+(6, 'url', 'link', 5, 'listitem, block, inline', 'link', '<a href="{..x..}" target="_blank">{..x..}</a>', '<a href="{..y..}" target="_blank">{..x..}</a>', '', 1, 1),
+(7, 'home', 'link', 5, 'listitem, block, inline', 'link', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($content).''" target="_self">''.$page_url."?go=".htmlspecialchars ($content).''</a>'';\r\n}\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($attributes[''default'']).''" target="_self">''.$content.''</a>'';', 1, 1),
+(8, 'email', 'link', 5, 'listitem, block, inline', 'link', '<a href="mailto:{..x..}">{..x..}</a>', '<a href="mailto:{..y..}">{..x..}</a>', '', 1, 1),
+(9, 'img', 'image', 5, 'listitem, block, inline, link', '', '<img src="{..x..}" alt="{..x..}">', '<img src="{..x..}" alt="{..x..}" align="{..y..}">', '', 1, 1),
+(10, 'cimg', 'image', 5, 'listitem, block, inline, link', '', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''">'';\r\n}\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''" align="''.htmlspecialchars($attributes[''default'']).''">'';', 1, 1),
+(11, 'noparse', 'inline', 5, 'listitem, block, inline, link', '', '', '', 'if ($action == ''validate'') {\r\nreturn true;\r\n}\r\nreturn $content;', 1, 1),
+(12, 'player', 'block', 5, 'block, inline', 'listitem, link', '', '', 'if ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn get_player ( $content );\r\n}\r\n$res = explode ( ",", $attributes[''default''], 2 );\r\nintval($res[0]);\r\nintval($res[1]);\r\nreturn get_player ( $content, $res[0], $res[1] );', 1, 1),
+(13, 'list', 'list', 0, 'block, listitem', 'link', '<ul>', '</ul>', '', 1, 1),
+(14, 'numlist', 'list', 0, 'block, listitem', 'link', '<ol>', '</ol>', '', 1, 1),
+(15, '*', 'listitem', 0, 'list', '', '<li>', '</li>', '', 1, 1),
+(16, 'font', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="font-family:{..y..};">{..x..}</span>', '', 1, 1),
+(17, 'color', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="color:{..y..};">{..x..}</span>', '', 1, 1),
+(18, 'size', 'inline', 2, 'listitem, block, inline, link', '', '', '', 'if ($action == ''validate'') {\r\nif (!isset ($attributes[''default''])) { return false; }\r\nelse {\r\n$font_sizes = array(0,1,2,3,4,5,6,7);\r\nif (!in_array($attributes[''default''], $font_sizes)) { return false; }\r\nelse { return true; }\r\n}\r\n}\r\nif (isset ($attributes[''default''])) {\r\n$arr_num = $attributes[''default''];\r\n$font_sizes_values = array("70%","85%","100%","125%","155%","195%","225%","300%");\r\nreturn ''<span style="font-size:''.$font_sizes_values[$arr_num].'';">''.$content.''</span>'';\r\n}', 1, 1),
+(19, 'code', 'block', 2, 'listitem, block, inline', 'link', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, 1),
+(20, 'quote', 'block', 2, 'listitem, block, inline', 'list', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="border-collapse:collapse; border:1px dotted #000000;">\r\n      <q>{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat von <cite>{..y..}</cite>:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="border-collapse:collapse; border:1px dotted #000000;">\r\n      <q cite="{..y..}">{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur fÃ¼r Tabelle `fs_fscodes_flag`
+--
+
+DROP TABLE IF EXISTS `fs_fscodes_flag`;
+CREATE TABLE IF NOT EXISTS `fs_fscodes_flag` (
+  `code` mediumint(8) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `value` smallint(2) NOT NULL,
+  KEY `code` (`code`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Daten fÃ¼r Tabelle `fs_fscodes_flag`
+--
+
+INSERT INTO `fs_fscodes_flag` (`code`, `name`, `value`) VALUES
+(15, 'closetag', 0),
+(13, 'paragraph_type', 2),
+(13, 'opentag.before.newline', 2),
+(13, 'closetag.before.newline', 2),
+(19, 'paragraph_type', 2),
+(19, 'paragraph_type', 1),
+(20, 'paragraph_type', 2),
+(20, 'paragraph_type', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur fÃ¼r Tabelle `fs_fscodes_ref`
+--
+
+DROP TABLE IF EXISTS `fs_fscodes_ref`;
+CREATE TABLE IF NOT EXISTS `fs_fscodes_ref` (
+  `code` mediumint(8) NOT NULL,
+  `refcode` mediumint(8) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Daten fÃ¼r Tabelle `fs_fscodes_ref`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur fÃ¼r Tabelle `fs_global_config`
 --
 
 DROP TABLE IF EXISTS `fs_global_config`;
@@ -1102,16 +1196,16 @@ CREATE TABLE IF NOT EXISTS `fs_global_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_global_config`
+-- Daten fÃ¼r Tabelle `fs_global_config`
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1273256730);
+(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;Â»</a>', '<a href=\\"{..url..}\\">Â«&nbsp;zurÃ¼ck</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1273307792);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_iplist`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_iplist`
 --
 
 DROP TABLE IF EXISTS `fs_iplist`;
@@ -1121,7 +1215,7 @@ CREATE TABLE IF NOT EXISTS `fs_iplist` (
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_iplist`
+-- Daten fÃ¼r Tabelle `fs_iplist`
 --
 
 INSERT INTO `fs_iplist` (`ip`) VALUES
@@ -1130,7 +1224,7 @@ INSERT INTO `fs_iplist` (`ip`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_news`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_news`
 --
 
 DROP TABLE IF EXISTS `fs_news`;
@@ -1149,16 +1243,16 @@ CREATE TABLE IF NOT EXISTS `fs_news` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=143 ;
 
 --
--- Daten für Tabelle `fs_news`
+-- Daten fÃ¼r Tabelle `fs_news`
 --
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
-(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\n[center]Weitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei![/center]\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1269453612);
+(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wÃ¼nscht dir viel SpaÃŸ und Erfolg mit deiner Seite. text beispiel\r\n\r\n[center]Weitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehÃ¶rigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei![/center]\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1269453612);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_news_cat`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_news_cat`
 --
 
 DROP TABLE IF EXISTS `fs_news_cat`;
@@ -1172,7 +1266,7 @@ CREATE TABLE IF NOT EXISTS `fs_news_cat` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs_news_cat`
+-- Daten fÃ¼r Tabelle `fs_news_cat`
 --
 
 INSERT INTO `fs_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
@@ -1181,7 +1275,7 @@ INSERT INTO `fs_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_news_comments`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_news_comments`
 --
 
 DROP TABLE IF EXISTS `fs_news_comments`;
@@ -1200,17 +1294,17 @@ CREATE TABLE IF NOT EXISTS `fs_news_comments` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
 --
--- Daten für Tabelle `fs_news_comments`
+-- Daten fÃ¼r Tabelle `fs_news_comments`
 --
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
 (2, 1, 'Hans Wurst', 0, '127.0.0.1', 1266663394, 'Geile Seite!!!', 'Ich liebe euch alle ;)'),
-(3, 1, '1', 1, '127.0.0.1', 1270829419, 'me', '\\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\"');
+(3, 1, '1', 1, '127.0.0.1', 1270829419, 'me', '\\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dÃŸasÃŸdsaÃŸ\\\\\\\\ÃŸ\\"\\"\\"');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_news_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_news_config`
 --
 
 DROP TABLE IF EXISTS `fs_news_config`;
@@ -1235,7 +1329,7 @@ CREATE TABLE IF NOT EXISTS `fs_news_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_news_config`
+-- Daten fÃ¼r Tabelle `fs_news_config`
 --
 
 INSERT INTO `fs_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
@@ -1244,7 +1338,7 @@ INSERT INTO `fs_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_cod
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_news_links`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_news_links`
 --
 
 DROP TABLE IF EXISTS `fs_news_links`;
@@ -1258,7 +1352,7 @@ CREATE TABLE IF NOT EXISTS `fs_news_links` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=23 ;
 
 --
--- Daten für Tabelle `fs_news_links`
+-- Daten fÃ¼r Tabelle `fs_news_links`
 --
 
 INSERT INTO `fs_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `link_target`) VALUES
@@ -1268,7 +1362,7 @@ INSERT INTO `fs_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `lin
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_partner`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_partner`
 --
 
 DROP TABLE IF EXISTS `fs_partner`;
@@ -1282,14 +1376,14 @@ CREATE TABLE IF NOT EXISTS `fs_partner` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_partner`
+-- Daten fÃ¼r Tabelle `fs_partner`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_partner_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_partner_config`
 --
 
 DROP TABLE IF EXISTS `fs_partner_config`;
@@ -1307,7 +1401,7 @@ CREATE TABLE IF NOT EXISTS `fs_partner_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_partner_config`
+-- Daten fÃ¼r Tabelle `fs_partner_config`
 --
 
 INSERT INTO `fs_partner_config` (`id`, `partner_anzahl`, `small_x`, `small_y`, `small_allow`, `big_x`, `big_y`, `big_allow`, `file_size`) VALUES
@@ -1316,7 +1410,7 @@ INSERT INTO `fs_partner_config` (`id`, `partner_anzahl`, `small_x`, `small_y`, `
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_player`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_player`
 --
 
 DROP TABLE IF EXISTS `fs_player`;
@@ -1332,14 +1426,14 @@ CREATE TABLE IF NOT EXISTS `fs_player` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_player`
+-- Daten fÃ¼r Tabelle `fs_player`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_player_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_player_config`
 --
 
 DROP TABLE IF EXISTS `fs_player_config`;
@@ -1393,7 +1487,7 @@ CREATE TABLE IF NOT EXISTS `fs_player_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_player_config`
+-- Daten fÃ¼r Tabelle `fs_player_config`
 --
 
 INSERT INTO `fs_player_config` (`id`, `cfg_autoplay`, `cfg_autoload`, `cfg_buffer`, `cfg_buffermessage`, `cfg_buffercolor`, `cfg_bufferbgcolor`, `cfg_buffershowbg`, `cfg_titlesize`, `cfg_titlecolor`, `cfg_margin`, `cfg_showstop`, `cfg_showvolume`, `cfg_showtime`, `cfg_showplayer`, `cfg_showloading`, `cfg_showfullscreen`, `cfg_showmouse`, `cfg_loop`, `cfg_playercolor`, `cfg_loadingcolor`, `cfg_bgcolor`, `cfg_bgcolor1`, `cfg_bgcolor2`, `cfg_buttoncolor`, `cfg_buttonovercolor`, `cfg_slidercolor1`, `cfg_slidercolor2`, `cfg_sliderovercolor`, `cfg_loadonstop`, `cfg_onclick`, `cfg_ondoubleclick`, `cfg_playertimeout`, `cfg_videobgcolor`, `cfg_volume`, `cfg_shortcut`, `cfg_playeralpha`, `cfg_top1_url`, `cfg_top1_x`, `cfg_top1_y`, `cfg_showiconplay`, `cfg_iconplaycolor`, `cfg_iconplaybgcolor`, `cfg_iconplaybgalpha`, `cfg_showtitleandstartimage`) VALUES
@@ -1402,7 +1496,7 @@ INSERT INTO `fs_player_config` (`id`, `cfg_autoplay`, `cfg_autoload`, `cfg_buffe
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_poll`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_poll`
 --
 
 DROP TABLE IF EXISTS `fs_poll`;
@@ -1417,14 +1511,14 @@ CREATE TABLE IF NOT EXISTS `fs_poll` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_poll`
+-- Daten fÃ¼r Tabelle `fs_poll`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_poll_answers`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_poll_answers`
 --
 
 DROP TABLE IF EXISTS `fs_poll_answers`;
@@ -1437,14 +1531,14 @@ CREATE TABLE IF NOT EXISTS `fs_poll_answers` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_poll_answers`
+-- Daten fÃ¼r Tabelle `fs_poll_answers`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_poll_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_poll_config`
 --
 
 DROP TABLE IF EXISTS `fs_poll_config`;
@@ -1456,7 +1550,7 @@ CREATE TABLE IF NOT EXISTS `fs_poll_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_poll_config`
+-- Daten fÃ¼r Tabelle `fs_poll_config`
 --
 
 INSERT INTO `fs_poll_config` (`id`, `answerbar_width`, `answerbar_type`) VALUES
@@ -1465,7 +1559,7 @@ INSERT INTO `fs_poll_config` (`id`, `answerbar_width`, `answerbar_type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_poll_voters`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_poll_voters`
 --
 
 DROP TABLE IF EXISTS `fs_poll_voters`;
@@ -1478,14 +1572,14 @@ CREATE TABLE IF NOT EXISTS `fs_poll_voters` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_poll_voters`
+-- Daten fÃ¼r Tabelle `fs_poll_voters`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_press`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_press`
 --
 
 DROP TABLE IF EXISTS `fs_press`;
@@ -1504,14 +1598,14 @@ CREATE TABLE IF NOT EXISTS `fs_press` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_press`
+-- Daten fÃ¼r Tabelle `fs_press`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_press_admin`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_press_admin`
 --
 
 DROP TABLE IF EXISTS `fs_press_admin`;
@@ -1523,7 +1617,7 @@ CREATE TABLE IF NOT EXISTS `fs_press_admin` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
--- Daten für Tabelle `fs_press_admin`
+-- Daten fÃ¼r Tabelle `fs_press_admin`
 --
 
 INSERT INTO `fs_press_admin` (`id`, `type`, `title`) VALUES
@@ -1537,7 +1631,7 @@ INSERT INTO `fs_press_admin` (`id`, `type`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_press_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_press_config`
 --
 
 DROP TABLE IF EXISTS `fs_press_config`;
@@ -1554,7 +1648,7 @@ CREATE TABLE IF NOT EXISTS `fs_press_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_press_config`
+-- Daten fÃ¼r Tabelle `fs_press_config`
 --
 
 INSERT INTO `fs_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `show_press`, `show_root`, `order_by`, `order_type`) VALUES
@@ -1563,7 +1657,7 @@ INSERT INTO `fs_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `show
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_screen`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_screen`
 --
 
 DROP TABLE IF EXISTS `fs_screen`;
@@ -1576,7 +1670,7 @@ CREATE TABLE IF NOT EXISTS `fs_screen` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
--- Daten für Tabelle `fs_screen`
+-- Daten fÃ¼r Tabelle `fs_screen`
 --
 
 INSERT INTO `fs_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
@@ -1587,7 +1681,7 @@ INSERT INTO `fs_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_screen_cat`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_screen_cat`
 --
 
 DROP TABLE IF EXISTS `fs_screen_cat`;
@@ -1602,7 +1696,7 @@ CREATE TABLE IF NOT EXISTS `fs_screen_cat` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `fs_screen_cat`
+-- Daten fÃ¼r Tabelle `fs_screen_cat`
 --
 
 INSERT INTO `fs_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`, `cat_date`, `randompic`) VALUES
@@ -1612,7 +1706,7 @@ INSERT INTO `fs_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`,
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_screen_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_screen_config`
 --
 
 DROP TABLE IF EXISTS `fs_screen_config`;
@@ -1645,7 +1739,7 @@ CREATE TABLE IF NOT EXISTS `fs_screen_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_screen_config`
+-- Daten fÃ¼r Tabelle `fs_screen_config`
 --
 
 INSERT INTO `fs_screen_config` (`id`, `screen_x`, `screen_y`, `screen_thumb_x`, `screen_thumb_y`, `screen_size`, `screen_rows`, `screen_cols`, `screen_order`, `screen_sort`, `show_type`, `show_size_x`, `show_size_y`, `show_img_x`, `show_img_y`, `wp_x`, `wp_y`, `wp_thumb_x`, `wp_thumb_y`, `wp_order`, `wp_size`, `wp_rows`, `wp_cols`, `wp_sort`) VALUES
@@ -1654,7 +1748,7 @@ INSERT INTO `fs_screen_config` (`id`, `screen_x`, `screen_y`, `screen_thumb_x`, 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_screen_random`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_screen_random`
 --
 
 DROP TABLE IF EXISTS `fs_screen_random`;
@@ -1667,14 +1761,14 @@ CREATE TABLE IF NOT EXISTS `fs_screen_random` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_screen_random`
+-- Daten fÃ¼r Tabelle `fs_screen_random`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_screen_random_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_screen_random_config`
 --
 
 DROP TABLE IF EXISTS `fs_screen_random_config`;
@@ -1687,7 +1781,7 @@ CREATE TABLE IF NOT EXISTS `fs_screen_random_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_screen_random_config`
+-- Daten fÃ¼r Tabelle `fs_screen_random_config`
 --
 
 INSERT INTO `fs_screen_random_config` (`id`, `active`, `type_priority`, `use_priority_only`) VALUES
@@ -1696,7 +1790,7 @@ INSERT INTO `fs_screen_random_config` (`id`, `active`, `type_priority`, `use_pri
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_search_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_search_config`
 --
 
 DROP TABLE IF EXISTS `fs_search_config`;
@@ -1707,7 +1801,7 @@ CREATE TABLE IF NOT EXISTS `fs_search_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED;
 
 --
--- Daten für Tabelle `fs_search_config`
+-- Daten fÃ¼r Tabelle `fs_search_config`
 --
 
 INSERT INTO `fs_search_config` (`id`, `search_num_previews`) VALUES
@@ -1716,7 +1810,7 @@ INSERT INTO `fs_search_config` (`id`, `search_num_previews`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_search_index`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_search_index`
 --
 
 DROP TABLE IF EXISTS `fs_search_index`;
@@ -1731,7 +1825,7 @@ CREATE TABLE IF NOT EXISTS `fs_search_index` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=7341 ;
 
 --
--- Daten für Tabelle `fs_search_index`
+-- Daten fÃ¼r Tabelle `fs_search_index`
 --
 
 INSERT INTO `fs_search_index` (`search_index_id`, `search_index_word_id`, `search_index_type`, `search_index_document_id`, `search_index_count`) VALUES
@@ -1861,7 +1955,7 @@ INSERT INTO `fs_search_index` (`search_index_id`, `search_index_word_id`, `searc
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_search_time`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_search_time`
 --
 
 DROP TABLE IF EXISTS `fs_search_time`;
@@ -1875,7 +1969,7 @@ CREATE TABLE IF NOT EXISTS `fs_search_time` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=161 ;
 
 --
--- Daten für Tabelle `fs_search_time`
+-- Daten fÃ¼r Tabelle `fs_search_time`
 --
 
 INSERT INTO `fs_search_time` (`search_time_id`, `search_time_type`, `search_time_document_id`, `search_time_date`) VALUES
@@ -1887,7 +1981,7 @@ INSERT INTO `fs_search_time` (`search_time_id`, `search_time_type`, `search_time
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_search_words`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_search_words`
 --
 
 DROP TABLE IF EXISTS `fs_search_words`;
@@ -1899,7 +1993,7 @@ CREATE TABLE IF NOT EXISTS `fs_search_words` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=120 ;
 
 --
--- Daten für Tabelle `fs_search_words`
+-- Daten fÃ¼r Tabelle `fs_search_words`
 --
 
 INSERT INTO `fs_search_words` (`search_word_id`, `search_word`) VALUES
@@ -2026,7 +2120,7 @@ INSERT INTO `fs_search_words` (`search_word_id`, `search_word`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_shop`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_shop`
 --
 
 DROP TABLE IF EXISTS `fs_shop`;
@@ -2041,14 +2135,14 @@ CREATE TABLE IF NOT EXISTS `fs_shop` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `fs_shop`
+-- Daten fÃ¼r Tabelle `fs_shop`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_smilies`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_smilies`
 --
 
 DROP TABLE IF EXISTS `fs_smilies`;
@@ -2060,7 +2154,7 @@ CREATE TABLE IF NOT EXISTS `fs_smilies` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
 
 --
--- Daten für Tabelle `fs_smilies`
+-- Daten fÃ¼r Tabelle `fs_smilies`
 --
 
 INSERT INTO `fs_smilies` (`id`, `replace_string`, `order`) VALUES
@@ -2078,7 +2172,7 @@ INSERT INTO `fs_smilies` (`id`, `replace_string`, `order`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_snippets`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_snippets`
 --
 
 DROP TABLE IF EXISTS `fs_snippets`;
@@ -2092,7 +2186,7 @@ CREATE TABLE IF NOT EXISTS `fs_snippets` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
 --
--- Daten für Tabelle `fs_snippets`
+-- Daten fÃ¼r Tabelle `fs_snippets`
 --
 
 INSERT INTO `fs_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippet_active`) VALUES
@@ -2101,7 +2195,7 @@ INSERT INTO `fs_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippet
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_styles`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_styles`
 --
 
 DROP TABLE IF EXISTS `fs_styles`;
@@ -2115,7 +2209,7 @@ CREATE TABLE IF NOT EXISTS `fs_styles` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
 --
--- Daten für Tabelle `fs_styles`
+-- Daten fÃ¼r Tabelle `fs_styles`
 --
 
 INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allow_edit`) VALUES
@@ -2126,7 +2220,7 @@ INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allo
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_user`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_user`
 --
 
 DROP TABLE IF EXISTS `fs_user`;
@@ -2151,7 +2245,7 @@ CREATE TABLE IF NOT EXISTS `fs_user` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `fs_user`
+-- Daten fÃ¼r Tabelle `fs_user`
 --
 
 INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
@@ -2161,7 +2255,7 @@ INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `us
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_useronline`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_useronline`
 --
 
 DROP TABLE IF EXISTS `fs_useronline`;
@@ -2173,16 +2267,16 @@ CREATE TABLE IF NOT EXISTS `fs_useronline` (
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_useronline`
+-- Daten fÃ¼r Tabelle `fs_useronline`
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 0, 1273265888);
+('127.0.0.1', 1, 1273343476);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_user_config`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_user_config`
 --
 
 DROP TABLE IF EXISTS `fs_user_config`;
@@ -2202,7 +2296,7 @@ CREATE TABLE IF NOT EXISTS `fs_user_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_user_config`
+-- Daten fÃ¼r Tabelle `fs_user_config`
 --
 
 INSERT INTO `fs_user_config` (`id`, `user_per_page`, `registration_antispam`, `avatar_x`, `avatar_y`, `avatar_size`, `group_pic_x`, `group_pic_y`, `group_pic_size`, `reg_date_format`, `user_list_reg_date_format`) VALUES
@@ -2211,7 +2305,7 @@ INSERT INTO `fs_user_config` (`id`, `user_per_page`, `registration_antispam`, `a
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_user_groups`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_user_groups`
 --
 
 DROP TABLE IF EXISTS `fs_user_groups`;
@@ -2228,7 +2322,7 @@ CREATE TABLE IF NOT EXISTS `fs_user_groups` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs_user_groups`
+-- Daten fÃ¼r Tabelle `fs_user_groups`
 --
 
 INSERT INTO `fs_user_groups` (`user_group_id`, `user_group_name`, `user_group_description`, `user_group_title`, `user_group_color`, `user_group_highlight`, `user_group_date`, `user_group_user`) VALUES
@@ -2238,7 +2332,7 @@ INSERT INTO `fs_user_groups` (`user_group_id`, `user_group_name`, `user_group_de
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_user_permissions`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_user_permissions`
 --
 
 DROP TABLE IF EXISTS `fs_user_permissions`;
@@ -2250,7 +2344,7 @@ CREATE TABLE IF NOT EXISTS `fs_user_permissions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `fs_user_permissions`
+-- Daten fÃ¼r Tabelle `fs_user_permissions`
 --
 
 INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
@@ -2265,7 +2359,7 @@ INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_wallpaper`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_wallpaper`
 --
 
 DROP TABLE IF EXISTS `fs_wallpaper`;
@@ -2278,7 +2372,7 @@ CREATE TABLE IF NOT EXISTS `fs_wallpaper` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs_wallpaper`
+-- Daten fÃ¼r Tabelle `fs_wallpaper`
 --
 
 INSERT INTO `fs_wallpaper` (`wallpaper_id`, `wallpaper_name`, `wallpaper_title`, `cat_id`) VALUES
@@ -2287,7 +2381,7 @@ INSERT INTO `fs_wallpaper` (`wallpaper_id`, `wallpaper_name`, `wallpaper_title`,
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_wallpaper_sizes`
+-- Tabellenstruktur fÃ¼r Tabelle `fs_wallpaper_sizes`
 --
 
 DROP TABLE IF EXISTS `fs_wallpaper_sizes`;
@@ -2299,7 +2393,7 @@ CREATE TABLE IF NOT EXISTS `fs_wallpaper_sizes` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs_wallpaper_sizes`
+-- Daten fÃ¼r Tabelle `fs_wallpaper_sizes`
 --
 
 INSERT INTO `fs_wallpaper_sizes` (`size_id`, `wallpaper_id`, `size`) VALUES
