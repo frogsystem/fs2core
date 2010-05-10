@@ -22,7 +22,7 @@ function get_user_rights_array ( $USER_ID )
     if ( !is_array ( $user_rights ) ) {
         $user_rights = array ();
     }
-    
+
     return $user_rights;
 }
 
@@ -69,7 +69,7 @@ if ( isset( $_POST['user_id'] ) ) {
     // security functions
     settype ( $_POST['user_id'], 'integer' );
      unset ( $user_rights );
-     
+
     // if user is not s-admin and not himself
     if ( $_POST['user_id'] != 1 && $_POST['user_id'] != $_SESSION['user_id'] ) {
 
@@ -92,7 +92,7 @@ if ( isset( $_POST['user_id'] ) ) {
                                 AND `x_id` = '".$_POST['user_id']."'
                                 AND `perm_for_group` = '0'
                 ", $db );
-                
+
             // permission is now granted
             } elseif ( $_POST[$page_arr['page_id']] == 1
                         && !in_array ( $page_arr['page_id'], $user_rights )
@@ -117,7 +117,7 @@ if ( isset( $_POST['user_id'] ) ) {
 }
 
 
-  
+
 //////////////////////////
 //// edit permissions ////
 //////////////////////////
@@ -145,7 +145,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
     // security functions
     unset ( $DATA_ARR );
     $entries = 0;
-    
+
     // get groups
     $groupaction = mysql_query ( "
                                     SELECT `group_id`, `group_title`
@@ -155,7 +155,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
     ", $db );
     while ( $group_arr = mysql_fetch_assoc ( $groupaction ) ) {
         $DATA_ARR[$group_arr['group_id']]['title'] = $group_arr['group_title'];
-        
+
         // get pages
         $pageaction = mysql_query ( "
                                         SELECT `page_id`, `page_link`
@@ -177,7 +177,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
             $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $page_arr_sub['page_link'];
         }
 
-        
+
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
             $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $page_arr['page_link'];
 
@@ -196,7 +196,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
                 foreach ( $SUB_ARR[$page_arr['page_id']] as $sub_id => $sub_link ) {
                     $DATA_ARR[$group_arr['group_id']]['links'][$sub_id]['page_link'] = $sub_link;
                     $DATA_ARR[$group_arr['group_id']]['links'][$sub_id]['sub'] = TRUE;
-                    
+
                     // is permission granted?
                     if ( $user_arr['user_is_admin'] == 1 || $user_arr['user_id'] == 1 ) {
                         $DATA_ARR[$group_arr['group_id']]['links'][$sub_id]['granted'] = "group";
@@ -209,8 +209,8 @@ if ( isset ( $_POST['edit_user_id'] ) )
                     }
                 }
             }
-            
-            
+
+
         }
         unset ( $SUB_ARR );
     }
@@ -234,7 +234,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
     $per_col = ceil ( $entries/3 ) + 2; // +2 makes it more flexible
     $i = 0;
     $j = 1;
-    
+
     // display data from data array
     foreach ( $DATA_ARR as $GROUP_ARR ) {
         if ( is_array ( $GROUP_ARR['links'] ) ) {
@@ -255,7 +255,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
             }
         }
     }
-              
+
     echo'
                                     </td></tr>
                                 </table>
@@ -288,7 +288,7 @@ else
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="4">Benutzer auswählen</td></tr>
     ';
-    
+
     // get staff-users from db
     $index = mysql_query ( "
                             SELECT `user_id`, `user_name`, `user_mail`, `user_group`, `user_is_admin`
@@ -296,7 +296,7 @@ else
                             WHERE `user_is_staff` = '1' AND `user_id` != '1' AND `user_id` != '".$_SESSION['user_id']."'
                               ORDER BY user_name
     ", $db );
-    
+
     // users found
     if ( mysql_num_rows ( $index ) > 0 ) {
         // display table head
@@ -308,7 +308,7 @@ else
                                 <td class="config" width="20"></td>
                             </tr>
         ';
-        
+
         // display users
         while ( $user_arr = mysql_fetch_assoc ( $index ) )
         {
@@ -356,7 +356,7 @@ else
                                 </td>
                             </tr>
         ';
-        
+
     // no users found
     } else {
 
@@ -368,7 +368,7 @@ else
                             <tr><td class="space"></td></tr>
         ';
     }
-    
+
     echo '
                         </table>
                     </form>

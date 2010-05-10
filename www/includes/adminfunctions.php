@@ -8,7 +8,7 @@ function get_content_container ( $TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "wid
     $overall_width = ( $OVERALL_STYLE === FALSE ? '' : ' style="'.$OVERALL_STYLE.'"' );
     $top_style = ( $TOP_STYLE === FALSE ? '' : ' style="'.$TOP_STYLE.'"' );
     $content_style = ( $CONTENT_STYLE === FALSE ? '' : ' style="'.$CONTENT_STYLE.'"' );
-    
+
     $template = '
                 <div'.$overall_width.'>
                     <div class="cs_overall">
@@ -39,7 +39,7 @@ function get_content_container ( $TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "wid
                     </div>
                 </div>
     ';
-    
+
     return $template;
 }
 
@@ -123,20 +123,20 @@ function get_article_urls ()
 {
     global $global_config_arr;
     global $db;
-    
+
         $index = mysql_query ( "
                                                         SELECT
                                                                 article_url
                                                         FROM
                                                                 ".$global_config_arr['pref']."articles
         ", $db );
-        
+
         while ( $result = mysql_fetch_assoc ( $index ) ) {
                 if ( $result['article_url'] != "" ) {
                         $url_arr[] = $result['article_url'];
                 }
         }
-        
+
         return $url_arr;
 }
 
@@ -148,7 +148,7 @@ function color_list_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_ID
 {
         if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
         if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
-        
+
         return "colorEntry ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
 }
 
@@ -158,13 +158,13 @@ function color_click_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_I
         if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
 
         $js = "createClick ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
-        
+
         if ( $RESET == TRUE ) {
             $js .= " resetOld ( '".$RESETCOLOR."', last, lastBox, ".$ELEMENT_ID." );";
         }
 
         $js .= " saveLast ( ".$CHECK_ID.", ".$ELEMENT_ID." );";
-        
+
         return $js;
 }
 
@@ -194,16 +194,16 @@ function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FAL
            settype ( $H, "integer" );
            settype ( $I, "integer" );
            settype ( $S, "integer" );
-           
+
         $new_date = mktime ( $H, $I, $S, $M, $D, $Y );
-        
+
         $savedate_arr['d'] = date ( "d", $new_date );
         $savedate_arr['m'] = date ( "m", $new_date );
         $savedate_arr['y'] = date ( "Y", $new_date );
         $savedate_arr['h'] = date ( "H", $new_date );
         $savedate_arr['i'] = date ( "i", $new_date );
         $savedate_arr['s'] = date ( "s", $new_date );
-        
+
         if ( $WITHOUT_MKTIME == TRUE ) {
                 $savedate_arr['d'] = $D;
                 $savedate_arr['m'] = $M;
@@ -219,10 +219,10 @@ function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FAL
                 $savedate_arr[$key] = "0" . $value;
                         }
                 }
-                
+
                 return $savedate_arr;
         }
-        
+
         return $savedate_arr;
 }
 
@@ -488,7 +488,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
 
     $smilies .= '</table></fieldset></td>';
   }
-  
+
     $buttons = "";
     $buttons .= create_editor_button_new('admin/editor/b.jpg', "B", "fett", "insert('$name', '[b]', '[/b]')");
     $buttons .= create_editor_button_new('admin/editor/i.jpg', "I", "kursiv", "insert('$name', '[i]', '[/i]')");
@@ -526,7 +526,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
                          {smilies}
                      </tr>
                  </table><br />';
-    
+
     $textarea = str_replace("{style}", $style, $textarea);
     $textarea = str_replace("{text}", $text, $textarea);
     $textarea = str_replace("{buttons}", $buttons, $textarea);
@@ -667,7 +667,7 @@ function create_menu ( $ACTIVE_MENU )
                                     WHERE `group_id` = '-1' AND `page_int_sub_perm` = 0
                                     ORDER BY `page_pos` ASC, `page_id` ASC
     ", $db );
-    
+
     $template = "";
     while ( $MENU_ARR = mysql_fetch_assoc ( $index ) ) {
         $MENU_ARR['show'] = create_menu_show ( $MENU_ARR['page_link'] );
@@ -707,7 +707,7 @@ function create_menu_show ( $MENU_ID )
                                         AND P.`page_int_sub_perm` = 0
                                         ORDER BY `page_id`
     ", $db );
-    
+
     while ( $page = mysql_fetch_assoc ( $index ) ) {
         $page = $page['page_id'];
         if ( isset($_SESSION[$page]) && $_SESSION[$page] == 1 ) {
@@ -715,7 +715,7 @@ function create_menu_show ( $MENU_ID )
             break;
         }
     }
-    
+
     return FALSE;
 }
 
@@ -774,18 +774,18 @@ function create_group ($GROUP_ARR, $IS_FIRST, $GO )
     } else {
         $headline_img = "navi_headline";
     }
-    
+
     // put links into group
     if ( strlen ( $template ) > 0 ) {
                 $template = '
-            <div id="'.$headline_img.'">
+            <div class="'.$headline_img.'">
                 <img src="img/pointer.png" alt="->" style="vertical-align:text-bottom">&nbsp;<b>'.$GROUP_ARR['group_title'].'</b>
-                <div id="navi_link">
+                <div class="navi_link">
                     '.$template.'
                 </div>
             </div>';
     }
-    
+
     return $template;
 }
 
@@ -816,7 +816,7 @@ function create_link ( $PAGE_ID, $PAGE_LINK, $GO )
   } else {
       $link_class = "navi";
   }
-  
+
   // permission ok?
   if ( $_SESSION[$PAGE_ID] ) {
       return '<a href="?go='.$PAGE_ID.'" class="navi">- <span class="'.$link_class.'">'.$PAGE_LINK.'</span></a><br>';
@@ -860,7 +860,7 @@ function admin_set_cookie($username, $password)
             $dbuserid = mysql_result($index, 0, "user_id");
             $dbusersalt= mysql_result($index, 0, "user_salt");
             $password = md5 ( $password.$dbusersalt );
-            
+
             if ($password == $dbuserpass)
             {
                 $inhalt = $password . $username;
@@ -910,7 +910,7 @@ function admin_login($username, $password, $iscookie)
             $dbuserpass = mysql_result($index, 0, "user_password");
             $dbuserid = mysql_result($index, 0, "user_id");
             $dbusersalt = mysql_result($index, 0, "user_salt");
-            
+
             if ($iscookie===false)
             {
                 $password = md5 ( $password.$dbusersalt );
@@ -949,9 +949,9 @@ function fillsession($uid)
                                                                 WHERE `user_id` = '".$uid."'
                                                                 LIMIT 0,1
         ", $db);
-        
+
         $USER_ARR = mysql_fetch_assoc ( $dbaction );
-        
+
         $_SESSION['user_id'] =  $USER_ARR['user_id'];
         $_SESSION['user_name'] =  $USER_ARR['user_name'];
         $_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
@@ -981,7 +981,7 @@ function fillsession($uid)
                                             LIMIT 0,1
                 ", $db);
                 $group_granted = mysql_num_rows ( $groupaction );
-                
+
                 $userpaction = mysql_query( "
                                                                             SELECT *
                                                                             FROM `".$global_config_arr['pref']."user_permissions`
@@ -1008,7 +1008,7 @@ function fillsession($uid)
                                                                 WHERE `group_id` <= 0
                                                                 ORDER BY `page_id`
         ", $db);
-        
+
         while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
         if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
             $_SESSION[$permission['page_id']] = 1;

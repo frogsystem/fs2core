@@ -76,7 +76,7 @@ $index = mysql_query ( "
 if ( mysql_num_rows ( $index ) == 1 ) {
     $acp_arr = mysql_fetch_assoc ( $index );
     $acp_arr['permission'] = $_SESSION[$acp_arr['page_id']];
-    
+
     // if page is start page
     if ( $acp_arr['group_id'] == -1 ) {
         $acp_arr['menu_id'] = $acp_arr['page_link'];
@@ -203,9 +203,9 @@ echo '</div>
 
 if ($template_navi == "") {
     $template_navi = '
-        <div id="navi_top" style="height:43px;">
+        <div class="navi_top" style="height:43px;">
             <img src="img/pointer.png" alt="" style="vertical-align:text-bottom">&nbsp;<b>Hallo Admin!</b>
-            <div id="navi_link">
+            <div class="navi_link">
                Herzlich Willkommen
                im Admin-CP des Frogsystem 2!
             </div>

@@ -64,7 +64,7 @@ var lastJQBox;
             $(this).find(".html-editor-list-popup").hide();
         }
     );
-    
+
 
 /////////////////////
 //// Select-List ////
@@ -318,7 +318,7 @@ function open_editor(what) {
     } else {
         var editorWidth = screen.availWidth;
     }
-    
+
     if (screen.availHeight >= 800) {
         var editorHeight = 800;
     } else {
@@ -327,7 +327,7 @@ function open_editor(what) {
 
     x = screen.width/2 - editorWidth/2;
     y = screen.height/2 - editorHeight/2;
-    
+
     EditorWindow = window.open("admin_frogpad.php?height="+editorHeight,"editor","width="+editorWidth+",height="+editorHeight+",left="+x+",top="+y+",screenX="+x+",screenY="+y+"");
 }
 //Close Editor-PopUp
@@ -339,6 +339,10 @@ function close_editor() {
 function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
 {
   switch (syntaxHighlight) {
+    case 4:
+        var parser = ["tokenizephp.js", "parsephp.js"];
+        var css = "../resources/codemirror/css/phpcolors.css";
+        break;
     case 3:
         var parser = ["tokenizejavascript.js", "parsejavascript.js"];
         var css = "../resources/codemirror/css/jscolors.css";
@@ -352,7 +356,7 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
         var css = ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"];
         break;
   }
-  
+
   var textarea = document.getElementById(textareaId);
   var editor = CodeMirror.fromTextArea(textareaId, {
     parserfile: parser,

@@ -204,7 +204,7 @@ td.combi_button
     vertical-align:middle;
 }
 
-  
+
 /**************************************************/
 /* button link styles */
 /**************************************************/
@@ -254,10 +254,10 @@ td.nw
     font-family:Verdana;
     color:#000000;
     background:#BBBBBB;
-} 
- 
+}
 
- 
+
+
 /**************************************************/
 /* standard links styles */
 /**************************************************/
@@ -515,7 +515,7 @@ a.menu_link_right:hover, a.menu_link_right:focus
     padding-bottom:30px;
 }
 
-#navi_top,#navi_headline
+.navi_top,.navi_headline
 {
     background-image:url('img/navi_top.jpg');
     background-repeat:no-repeat;
@@ -527,7 +527,7 @@ a.menu_link_right:hover, a.menu_link_right:focus
     font-family:Tahoma;
     color:#434343;
 }
-#navi_headline
+.navi_headline
 {
     background-image:url('img/navi_headline.jpg');
     background-repeat:no-repeat;
@@ -536,7 +536,7 @@ a.menu_link_right:hover, a.menu_link_right:focus
     padding-left:3px;
 }
 
-#navi_link
+.navi_link
 {
     padding-top:6px;
     padding-left:3px;
