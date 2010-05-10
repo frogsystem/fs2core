@@ -51,7 +51,7 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     $template_doctype = $template_doctype->display();
     
     // Base for Images
-    if ( $BASE !== FALSE ) {  echo "a";
+    if ( $BASE !== FALSE ) {
         $template_base = '<base href="'.$BASE .'">
                 ';
     } else {
@@ -99,18 +99,47 @@ function get_css ( $PATH_PREFIX )
     $link_path =  $PATH_PREFIX . "styles/" . $global_config_arr['style'];
     $files = scandir_ext ( $search_path, "css" );
 
+    // Filter Go-CSS-Files
+    $files_go_css = array_filter ( $files, create_function ( '$FILE', '
+        if ( preg_match ( "/go_(.+).css/", $FILE ) ) {
+            return TRUE;
+        }
+        return FALSE;
+    ') );
+    
+    // Special CSS-Files
+    $files_special = array ( "import.css", "noscript.css" );
+    $files_all_special = array_merge ( $files_special, $files_go_css );
+    
+    // Filter special Files
+    $files_without_special = array_diff ( $files, $files_all_special );
+
+    // Unset template for security reasons
+    $template_css = "";
+
     // Search for import.css
     if ( in_array ( "import.css", $files ) ) {
-        // Create Template
         $template_css .= '<link rel="stylesheet" type="text/css" href="'. $link_path .'/import.css">';
+    // Else import other CSS-Files
     } else {
-        // Create Template
-        $template_css = "";
-        foreach ( $files as $file ) {
+        foreach ( $files_without_special as $file ) {
             $template_css .= '
                 <link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $file .'">';
         }
     }
+    
+    // Other Special CSS
+    if ( in_array ( "noscript.css", $files ) ) {
+        $template_css .= '
+                <link rel="stylesheet" type="text/css" id="noscriptcss" href="'. $link_path . '/noscript.css">';
+    }
+    
+    // Go-CSS-Files
+    $go_css = "go_".$global_config_arr['goto'].".css";
+    if ( in_array ( $go_css, $files_go_css ) ) {
+        $template_css .= '
+                <link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $go_css .'">';
+        }
     
     // Return Template
     return $template_css;
@@ -419,18 +448,18 @@ function get_goto ( $GETGO )
     global $global_config_arr;
     global $db;
 
-        // Check $_GET['go']
-        if ( !isset( $GETGO ) || $GETGO == "" ) {
-                $goto = $global_config_arr['home_real'];
-        } else {
-                $goto = savesql ( $GETGO ) ;
-        }
+    // Check $_GET['go']
+    if ( !isset( $GETGO ) || $GETGO == "" ) {
+            $goto = $global_config_arr['home_real'];
+    } else {
+            $goto = savesql ( $GETGO ) ;
+    }
+    
+    // Forward Aliases
+    $goto = forward_aliases ( $goto );
 
-        // Forward Aliases
-        $goto = forward_aliases ( $goto );
-
-        // write $goto into $global_config_arr['goto']
-        $global_config_arr['goto'] = $goto;
+    // write $goto into $global_config_arr['goto']
+    $global_config_arr['goto'] = $goto;
 }
 
 

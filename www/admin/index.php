@@ -68,6 +68,7 @@ $index = mysql_query ( "
                         FROM `".$global_config_arr['pref']."admin_cp` P, `".$global_config_arr['pref']."admin_groups` G
                         WHERE P.`group_id` = G.`group_id`
                         AND P.`page_id` = '".$go."'
+                        AND P.`page_int_sub_perm` != 1
                         LIMIT 0,1
 ", $db );
 
