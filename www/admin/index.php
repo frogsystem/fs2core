@@ -25,7 +25,9 @@ require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
 //Include Phrases-Files
 require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
 require ( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php" );
+
 $TEXT['admin'] = new langDataInit ( $global_config_arr['language_text'], "admin" );
+$TEXT['menu'] = new langDataInit ( $global_config_arr['language_text'], "menu" );
 $TEXT['frontend'] = new langDataInit ( $global_config_arr['language_text'], "frontend" );
 $TEXT['template'] = new langDataInit ( $global_config_arr['language_text'], "template" );
 
@@ -64,7 +66,7 @@ $go = isset ( $_REQUEST['go'] ) ? savesql ( $_REQUEST['go'] ) : "";
 
 // get page-data from database
 $index = mysql_query ( "
-                        SELECT P.`page_id`, P.`page_title`, P.`page_file`, P.`page_link`, P.`group_id`, G.`menu_id`, G.`group_title`
+                        SELECT P.`page_id`, P.`page_file`, P.`group_id`, G.`menu_id`
                         FROM `".$global_config_arr['pref']."admin_cp` P, `".$global_config_arr['pref']."admin_groups` G
                         WHERE P.`group_id` = G.`group_id`
                         AND P.`page_id` = '".$go."'
@@ -79,10 +81,11 @@ if ( mysql_num_rows ( $index ) == 1 ) {
 
     // if page is start page
     if ( $acp_arr['group_id'] == -1 ) {
-        $acp_arr['menu_id'] = $acp_arr['page_link'];
+        $acp_arr['menu_id'] = $acp_arr['page_file'];
+        $acp_arr['page_file'] = $acp_arr['page_id'].".php";
     }
     // get the page-data
-    $PAGE_DATA_ARR = createpage ( $acp_arr['group_title']." &#187; ".$acp_arr['page_title'], $acp_arr['permission'], $acp_arr['page_file'], $acp_arr['menu_id'] );
+    $PAGE_DATA_ARR = createpage ( $TEXT['menu']->get("group_".$acp_arr['group_id'])." &#187; ".$TEXT['menu']->get("page_title_".$acp_arr['page_id']), $acp_arr['permission'], $acp_arr['page_file'], $acp_arr['menu_id'] );
 } else {
     $PAGE_DATA_ARR['created'] = FALSE;
 }
@@ -91,13 +94,13 @@ if ( mysql_num_rows ( $index ) == 1 ) {
 if ( $PAGE_DATA_ARR['created'] == FALSE && $go == 'logout' ) {
     setcookie ( "login", "", time() - 3600, "/" );
     $_SESSION = array();
-    $PAGE_DATA_ARR = createpage( 'Logout', 1, 'admin_logout.php', "none" );
+    $PAGE_DATA_ARR = createpage( $TEXT['menu']->get("admin_logout_text"), 1, 'admin_logout.php', "none" );
 }
 
 // login
 if ( $PAGE_DATA_ARR['created'] == FALSE ) {
     $go = "login";
-    $PAGE_DATA_ARR = createpage( 'Login', 1, 'admin_login.php', "none" );
+    $PAGE_DATA_ARR = createpage( $TEXT['menu']->get("admin_login_text"), 1, 'admin_login.php', "none" );
 }
 
 ################################
@@ -132,7 +135,7 @@ echo'
          version '.$global_config_arr['version'].'
      </div>
      <div id="head_link">
-         <a href="'.$global_config_arr['virtualhost'].'" target="_self" class="head_link">» zur Hauptseite</a>
+         <a href="'.$global_config_arr['virtualhost'].'" target="_self" class="head_link">» '.$TEXT['menu']->get("admin_link_to_page").'</a>
      </div>
 </div>';
 
@@ -166,13 +169,13 @@ if ( $_SESSION["user_level"] == "authorised" )
 {
     $log_link = "logout";
     $log_image = "logout.gif";
-    $log_text = "Logout";
+    $log_text = $TEXT['menu']->get("admin_logout_text");
 }
 else
 {
     $log_link = "login";
     $log_image = "login.gif";
-    $log_text = "Login";
+    $log_text = $TEXT['menu']->get("admin_login_text");
 }
 
 echo'

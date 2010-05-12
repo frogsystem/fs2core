@@ -1195,6 +1195,8 @@ function savesql ( $TEXT )
 
 function unquote ( $TEXT )
 {
+    global $global_config_arr;
+
     if ( get_magic_quotes_gpc () ) {
         $TEXT = stripslashes ( $TEXT );
     }

@@ -1,5 +1,8 @@
 <?php
 $TEXT = array (
+    "type" => "admin",
+    "data" => array (
+
 //Allgemein
     "yes" =>
     "Ja",
@@ -57,7 +60,7 @@ $TEXT = array (
 
     "informations_and_statistics" =>
     "Informationen & Statistik",
-    
+
     
 //Erlaubte Werte
     "width_x_height" =>
@@ -791,5 +794,8 @@ $TEXT = array (
 
     "file_not_deleted" =>
     "Datei wurde nicht gelöscht",
-);
+    
+    
+    
+) );
 ?>

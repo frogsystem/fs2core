@@ -1,5 +1,7 @@
 <?php
 $TEXT = array (
+    "type" => "template",
+    "data" => array (
 
 // Old Page Nav
     "page_nav_help" =>
@@ -885,5 +887,5 @@ $TEXT = array (
 
 
 
-);
+) );
 ?>

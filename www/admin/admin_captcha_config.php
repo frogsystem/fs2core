@@ -187,6 +187,16 @@ if ( TRUE )
                         <input type="hidden" name="go" value="gen_captcha">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get("captcha_preview_title").'</td></tr>
+                            <tr>
+                                <td class="config">
+                                    '.$TEXT['admin']->get("captcha_preview_title").':
+                                </td>
+                                <td class="config">
+                                    <img src="'.FS2_ROOT_PATH . "resources/captcha/captcha.php?i=".generate_pwd(8).'" alt="'.$TEXT['admin']->get("captcha_preview_title").'">
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
                             <tr><td class="line" colspan="2">'.$TEXT['admin']->get("captcha_config_title").'</td></tr>
                             <tr>
                                 <td class="config">

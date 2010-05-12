@@ -1,5 +1,8 @@
 <?php
 $TEXT = array (
+    "type" => "frontend",
+    "data" => array (
+    
 //Verbindungsfehler
     "no_connection_to_the_server" =>
     "Es konnte keine Verbindung zum Server hergestellt werden. Bitte versuchen Sie es später wieder.",
@@ -220,5 +223,5 @@ $TEXT = array (
     "image_upload_error_6" =>
     "Bild-Upload fehgeschlagen<br>Das Bild konnte nicht erstellt werden",
 
-);
+) );
 ?>
