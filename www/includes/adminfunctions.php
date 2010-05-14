@@ -638,7 +638,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
 function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
 {
     global $TEXT;
-    
+
     if ( $PERMISSION == 1 ) {
             $PAGE_DATA_ARR['title'] = $TITLE;
             $PAGE_DATA_ARR['file'] = $FILE;
@@ -1003,24 +1003,24 @@ function fillsession($uid)
 
         // startpage permissions
         $dbaction = mysql_query( "
-                                                                SELECT `page_id`, `group_id`, `page_link`
+                                                                SELECT `page_id`, `group_id`, `page_file`
                                                                 FROM `".$global_config_arr['pref']."admin_cp`
                                                                 WHERE `group_id` <= 0
                                                                 ORDER BY `page_id`
         ", $db);
 
         while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
-        if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
+          if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
             $_SESSION[$permission['page_id']] = 1;
-        } else {
-                        if ( $permission['group_id'] == -1 ) {
-                if ( create_menu_show ( $permission['page_link'] ) == TRUE ) {
-                        $_SESSION[$permission['page_id']] = 1;
-                    }
-                } else {
-                                $_SESSION[$permission['page_id']] = 0;
-                }
-        }
+          } else {
+            if ( $permission['group_id'] == -1 ) {
+              if ( create_menu_show ( $permission['page_file'] ) == TRUE ) {
+                $_SESSION[$permission['page_id']] = 1;
+              }
+            } else {
+              $_SESSION[$permission['page_id']] = 0;
+            }
+          }
         }
 }
 
