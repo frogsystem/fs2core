@@ -11,7 +11,7 @@ $config_arr = mysql_fetch_assoc ( $index );
 $index = mysql_query ( "
                         SELECT *
                         FROM `".$global_config_arr['pref']."articles`
-                        WHERE `article_url` = '".$_GET['go']."'
+                        WHERE `article_url` = '".$global_config_arr['goto']."'
                         ORDER BY `article_id`
                         LIMIT 0,1
 ", $db );
