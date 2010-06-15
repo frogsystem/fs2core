@@ -9,14 +9,35 @@
  */
 class search {
 
-    // Set Class Consts
-
-
     // Set Class Vars
     private $theConfig;
     private $theSql;
-    private $searchTypes = array ( "news", "articles", "downloads" );
     private $searchType;
+    private $searchDataArray;
+
+    // set search data for preconfiged searchTypes
+    private $preconfigedSearchData = array (
+        "dl" => array (
+            "table" => "dl",
+            "contentIdField" => "dl_id",
+            "updateTimeField" => "dl_search_update",
+            "searchData" => array (
+                array ( "field", "dl_name" ),
+                array ( "text", " " ),
+                array ( "field", "dl_text" )
+            )
+        ),
+        "articles" => array (
+            "table" => "articles",
+            "contentIdField" => "article_id",
+            "updateTimeField" => "article_search_update",
+            "searchData" => array (
+                array ( "field", "article_title" ),
+                array ( "text", " " ),
+                array ( "field", "article_text" )
+            )
+        )
+    );
     
     /**
      * Creates an object for specified Search Type
@@ -27,12 +48,35 @@ class search {
      *
      * @return bool
      */
-    public function  __construct ( $searchType ) {
+    public function  __construct ( $searchType, $searchDataArray = null ) {
         // Include global Data
         global $global_config_arr, $sql;
         $this->theConfig = $global_config_arr;
         $this->theSql = $sql;
         $this->searchType = $searchType;
+        if ( !is_null ( $searchDataArray ) ) {
+            $this->searchDataArray = $searchDataArray;
+        } else  {
+            $this->searchDataArray = $this->getPreconfigedSearchData();
+        }
+    }
+
+    // function for rebuilding the Search-Index
+    private function getPreconfigedSearchData () {
+        if ( isset ( $this->preconfigedSearchData[$this->searchType] ) ) {
+            return $this->preconfigedSearchData[$this->searchType];
+        } else  {
+            return array (
+                "table" => $this->searchType,
+                "contentIdField" => $this->searchType."_id",
+                "updateTimeField" => $this->searchType."_search_update",
+                "searchData" => array (
+                    array ( "field", $this->searchType."_title" ),
+                    array ( "text", " " ),
+                    array ( "field", $this->searchType."_text" )
+                )
+            );
+        }
     }
 
     // function for rebuilding the Search-Index
@@ -59,43 +103,25 @@ class search {
 
     public function updateIndex () {
 
-        $data = $this->get_make_search_index ( $FOR );
+        $data = $this->getIndexQuery ();
+        print_r ( $this->theSql->getError() );
         while ( $data_arr = mysql_fetch_assoc ( $data ) ) {
             // Compress Text and filter Stopwords
             $data_arr['search_data'] = $this->removeStopwords ( $this->compressSearchData ( $data_arr['search_data'] ) );
 
             // Remove Old Indexes & Update Timestamp
             if ( $data_arr['search_time_id'] != null ) {
-                 mysql_query ( "
-                                DELETE FROM `".$this->theConfig['pref']."search_index`
-                                WHERE `search_index_type` = '".$data_arr['search_time_type']."'
-                                AND `search_index_document_id` = ".$data_arr['search_time_document_id']."
-                 ", $db );
-                 mysql_query ( "
-                                UPDATE `".$this->theConfig['pref']."search_time`
-                                SET `search_time_date` = '".time()."'
-                                WHERE `search_time_id` = '".$data_arr['search_time_id']."'
-                 ", $db );
+                 $this->theSql->deleteData ( "search_index", "`search_index_type` = '".$data_arr['search_time_type']."' AND `search_index_document_id` = ".$data_arr['search_time_document_id'] );
+                 $this->theSql->updateData ( "search_time", "search_time_date", time(), "WHERE `search_time_id` = '".$data_arr['search_time_id']."'" );
             } else {
-                 mysql_query ( "
-                                INSERT INTO
-                                    `".$this->theConfig['pref']."search_time`
-                                    (`search_time_type`, `search_time_document_id`, `search_time_date`)
-                                VALUES (
-                                    '".$data_arr['search_time_type']."',
-                                    '".$data_arr['search_time_document_id']."',
-                                    '".time()."'
-                                )
-                 ", $db );
+                $this->theSql->setData ( "search_time", "search_time_type,search_time_document_id,search_time_date", $data_arr['search_time_type'].",".$data_arr['search_time_type'].",".time() );
             }
 
             // Pass through word list
             $word_arr = explode ( " ", $data_arr['search_data'] );
             $index_arr = array();
             foreach ( $word_arr  as $word )  {
-                if (strlen ( $word ) > 32) {
-                    $word = substr ( $word, 0, 32 );
-                }
+                $word = substr ( $word, 0, 32 );
                 
                 $word_id = $this->getSearchWordId ( $word );
                 if ( $word_id === FALSE ) {
@@ -120,88 +146,46 @@ class search {
             }
 
             // Insert Indexes
-            mysql_query ( "
-                            INSERT INTO
-                                `".$this->theConfig['pref']."search_index`
-                                (`search_index_word_id`, `search_index_type`, `search_index_document_id`, `search_index_count`)
-                            VALUES
-                                " . implode ( ",", $insert_values ) . "
-            ", $db );
+            $this->theSql->setData ( "search_index", "search_index_word_id,search_index_type,search_index_document_id,search_index_count", implode ( ",", $insert_values ) );
         }
     }
 
-
-    private function get_make_search_index ( $FOR ) {
-        global  $db;
-
-        switch ( $FOR ) {
-            case "dl":
-                // DL
-                return mysql_query ( "
-                    SELECT
-                        `dl_id` AS 'search_time_document_id',
-                        `search_time_id`,
-                        'dl' AS 'search_time_type',
-                        CONCAT(`dl_name`, ' ', `dl_text`) AS 'search_data'
-                    FROM `".$this->theConfig['pref']."dl`
-                    LEFT JOIN `".$this->theConfig['pref']."search_time`
-                        ON `search_time_document_id` = `dl_id`
-                        AND FIND_IN_SET('dl', `search_time_type`)
-                    WHERE 1
-                        AND ( `search_time_id` IS NULL OR `dl_search_update` > `search_time_date` )
-                    ORDER BY `dl_search_update`
-                ", $db );
-                break;
-            case "articles":
-                // Articles
-                return mysql_query ( "
-                    SELECT
-                        `article_id` AS 'search_time_document_id',
-                        `search_time_id`,
-                        'articles' AS 'search_time_type',
-                        CONCAT(`article_title`, ' ', `article_text`) AS 'search_data'
-                    FROM `".$this->theConfig['pref']."articles`
-                    LEFT JOIN `".$this->theConfig['pref']."search_time`
-                        ON `search_time_document_id` = `article_id`
-                        AND FIND_IN_SET('articles', `search_time_type`)
-                    WHERE 1
-                        AND ( `search_time_id` IS NULL OR `article_search_update` > `search_time_date` )
-                    ORDER BY `article_search_update`
-                ", $db );
-                break;
-            case "news":
-                // News
-                return mysql_query ( "
-                    SELECT
-                        `news_id` AS 'search_time_document_id',
-                        `search_time_id`,
-                        'news' AS 'search_time_type',
-                        CONCAT(`news_title`, ' ', `news_text`) AS 'search_data'
-                    FROM `".$this->theConfig['pref']."news`
-                    LEFT JOIN `".$this->theConfig['pref']."search_time`
-                        ON `search_time_document_id` = `news_id`
-                        AND FIND_IN_SET('news', `search_time_type`)
-                    WHERE 1
-                        AND ( `search_time_id` IS NULL OR `news_search_update` > `search_time_date` )
-                    ORDER BY `news_search_update`
-                ", $db );
-                break;
+    private function getIndexQuery () {
+        $theConcatedData = array ();
+        foreach ( $this->searchDataArray['searchData'] as $aConcatData ) {
+            if ( $aConcatData[0] == "field" ) $theConcatedData[] = "`".$aConcatData[1]."`";
+            if ( $aConcatData[0] == "text" ) $theConcatedData[] = "'".$aConcatData[1]."'";
         }
+        $theConcatedData = "CONCAT(" . implode ( ", ", $theConcatedData ) . ")";
+
+        return $this->theSql->query ( "
+            SELECT
+                `".$this->searchDataArray['contentIdField']."` AS 'search_time_document_id',
+                `search_time_id`,
+                '".$this->searchType."' AS 'search_time_type',
+                ".$theConcatedData." AS 'search_data'
+            FROM `{..pref..}".$this->searchDataArray['table']."`
+            LEFT JOIN `{..pref..}search_time`
+                ON `search_time_document_id` = `".$this->searchDataArray['contentIdField']."`
+                AND FIND_IN_SET('".$this->searchType."', `search_time_type`)
+            WHERE 1
+                AND ( `search_time_id` IS NULL OR `".$this->searchDataArray['updateTimeField']."` > `search_time_date` )
+            ORDER BY `".$this->searchDataArray['updateTimeField']."`
+        " );
     }
 
     private function getSearchWordId ( $WORD ) {
-        $theData = $this->theSql->getData ( "search_words", "search_word_id", "WHERE `search_word` = '".savesql ( $WORD )."'", 1 );
-        if ( count ( $theData ) >= 1 ) {
-            return $theData[0]['search_word_id'];
+        $theData = $this->theSql->query ( "SELECT `search_word_id` FROM `{..pref..}search_words` WHERE `search_word` = '".savesql ( $WORD )."'" );
+        if ( mysql_num_rows ( $theData ) >= 1 ) {
+            return mysql_result ( $theData, 0, "search_word_id" );
         } else {
-            $this->addSearchWord ( $WORD );
             return FALSE;
         }
     }
     
     private function addSearchWord ( $WORD ) {
         if ( $this->theSql->setData ( "search_words", "search_word", savesql ( $WORD ) ) ) {
-            return $this->getInsertId ();
+            return $this->theSql->getInsertId ();
         } else {
             return FALSE;
         }
@@ -270,5 +254,21 @@ class search {
         return $return_arr;
     }
 
+    /**********************************************************
+    / No need for news, because it is also represented by default data-structure
+    /**********************************************************
+        static $preconfigedSearchData = array (
+            "news" => array (
+                "table" => "news",
+                "contentIdField" => "news_id",
+                "updateTimeField" => "news_search_update",
+                "searchData" => array (
+                    array ( "field", "news_title" ),
+                    array ( "text", " " ),
+                    array ( "field", "news_text" )
+                )
+            )
+        );
+    /*********************************************************/
 }
 ?>

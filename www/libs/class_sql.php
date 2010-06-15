@@ -100,14 +100,14 @@ class sql {
             return FALSE;
         }
         
-        mysql_query ( $this->qrystr, $this->sql );          // execute the query
+        $theQuery = mysql_query ( $this->qrystr, $this->sql );          // execute the query
         unset( $this->qrystr, $this->error );               // unset query string and error
         if ( mysql_error ( $this->sql ) !== "" ) {          // list errors
             $this->error[0] = mysql_errno ( $this->sql );
             $this->error[1] = mysql_error ( $this->sql );
             return FALSE;
         } else {
-            return TRUE;
+            return $theQuery;
         }
     }
 
@@ -152,7 +152,7 @@ class sql {
   */
   public function getData($table, $row, $optional="", $addititional=0){
     unset($this->error, $this->qrystr);                            // Error leeren
-    $qrystr="SELECT ".$row." FROM `".$this->pref.$table."`";  // Querystring aufbauen
+    $qrystr="SELECT `".$row."` FROM `".$this->pref.$table."`";  // Querystring aufbauen
     if(!empty($optional)){
       $qrystr.=" ".$optional;                           // Optionale Angaben (WHERE, LIMT, etc.) anhängen)
     }
@@ -207,7 +207,7 @@ class sql {
 
     $rows   = explode ( ",", $rows );
     $values = explode ( ",", $values );
-    if ( count ( $rows ) !== count ( $values ) || count ( $rows ) === 0 || count ( $values ) === 0 ) {
+    if ( count ( $rows ) !== count ( $values ) || count ( $rows ) === 0 ) {
       return FALSE;
     }
     $this->arraytrim ( $rows );

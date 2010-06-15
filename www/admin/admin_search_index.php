@@ -4,42 +4,53 @@
 //////////////////////
 if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( "update", "new", "delete", "delete_with_word" ) ) ) ) {
 
-    // Include searchfunctions.php
-    require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+    // Create the Objects
+    $indexObjects['news'] = new search ( "news" );
+    $indexObjects['articles'] = new search ( "articles" );
+    $indexObjects['dl'] = new search ( "dl" );
 
     // Update
     if ( $_POST['do'] == "update" ) {
-        update_search_index ( "news" );
-        update_search_index ( "articles" );
-        update_search_index ( "dl" );
+    
+        // Update the Index
+        foreach ( $indexObjects as $aObject ) {
+            $aObject->updateIndex();
+        }
         // Display Message
         systext ( $TEXT["admin"]->get("search_index_updated"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_ok") );
 
     // New
     } elseif ( $_POST['do'] == "new" ) {
-        new_search_index ( "news" );
-        new_search_index ( "articles" );
-        new_search_index ( "dl" );
+    
+        // Rebuild the Index
+        foreach ( $indexObjects as $aObject ) {
+            $aObject->rebuildIndex();
+        }
         // Display Message
         systext ( $TEXT["admin"]->get("search_index_renewed"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
 
     // Delete
     } elseif ( $_POST['do'] == "delete" ) {
-        delete_search_index ( "news" );
-        delete_search_index ( "articles" );
-        delete_search_index ( "dl" );
+    
+        // Delete the Index
+        foreach ( $indexObjects as $aObject ) {
+            $aObject->deleteIndex();
+        }
         // Display Message
         systext ( $TEXT["admin"]->get("search_index_deleted"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
     
     // Delete with word List
     } elseif ( $_POST['do'] == "delete_with_word" ) {
-        delete_search_index ( "news" );
-        delete_search_index ( "articles" );
-        delete_search_index ( "dl" );
-        delete_word_list();
+
+        // Delete the Index
+        foreach ( $indexObjects as $aObject ) {
+            $aObject->deleteIndex();
+        }
+        $aObject->clearWordTable();
+
         // Display Message
         systext ( $TEXT["admin"]->get("search_index_deleted_with_word_list"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
