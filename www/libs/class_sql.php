@@ -7,7 +7,7 @@
  *
  * this class provides several methods to improve sql-query-coding
  */
-class sql{
+class sql {
   private $sql   = null;
   private $pref  = null;
   public $error = null;
@@ -25,7 +25,7 @@ class sql{
    * @return bool
    */
   public function __construct($host, $data, $user, $pass, $pref){
-	$this->sql = @mysql_connect($host, $user, $pass);
+    $this->sql = @mysql_connect($host, $user, $pass);
     if($this->sql && mysql_select_db($data, $this->sql)){
       $this->db = $data;
       $this->pref = $pref;
@@ -159,7 +159,7 @@ class sql{
   * @param String $addititional = ""
   * @return bool
   */
-  public function updateData($table, $rows, $values, $addititional=""){
+  public function updateData($table, $rows, $values, $addititional="") {
     unset($this->error, $this->qrystr);
     $qrystr="UPDATE ".$this->pref.$table." SET ";
     $rows   = explode(",", $rows);
@@ -188,7 +188,7 @@ class sql{
   }
 
   /**
-  * Wendet die Methode "trim" auf alle Werte in einem Array an.
+  * Wendet die Methode "trim" rekrusiv auf alle Werte in einem Array an.
   *
   * @name sql::arraytrim();
   * @param Array &$array
