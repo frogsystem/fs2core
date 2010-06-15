@@ -62,9 +62,9 @@ if (
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
-        // Include searchfunctions.php
-        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-        update_search_index ( "articles" );
+        // Update Search Index
+        $indexObject = new search ( "articles" );
+        $indexObject->updateIndex();
     }
     
     mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET artikel = artikel + 1", $db );

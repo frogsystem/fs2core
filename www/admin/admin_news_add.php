@@ -49,9 +49,9 @@ if (
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
-        // Include searchfunctions.php
-        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-        update_search_index ( "news" );
+        // Update Search Index
+        $indexObject = new search ( "news" );
+        $indexObject->updateIndex();
     }
 
     // Links in die DB eintragen

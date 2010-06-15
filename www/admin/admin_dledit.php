@@ -18,8 +18,8 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         systext('Download wurde gelöscht');
         
         // Delete from Search Index
-        require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-        delete_search_index_for_one ( $_POST['editdlid'], "dl" );
+        $indexObject = new search ( "dl" );
+        $indexObject->deleteIndexForContent ( $_POST['editdlid'] );
     }
     else
     {
@@ -63,9 +63,8 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         
         // Update Search Index (or not)
         if ( $global_config_arr['search_index_update'] === 1 ) {
-            // Include searchfunctions.php
-            require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-            update_search_index ( "dl" );
+            // Update Search Index
+            $indexObject->updateIndex();
         }
         
 

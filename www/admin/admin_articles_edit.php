@@ -739,9 +739,9 @@ function db_edit_article ( $DATA )
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
-        // Include searchfunctions.php
-        require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-        update_search_index ( "articles" );
+        // Update Search Index
+        $indexObject = new search ( "articles" );
+        $indexObject->updateIndex();
     }
 
     systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info]);
@@ -768,8 +768,8 @@ function db_delete_article ( $DATA )
             ", $db );
             
             // Delete from Search Index
-            require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-            delete_search_index_for_one ( $DATA['article_id'], "articles" );
+            $indexObject = new search ( "articles" );
+            $indexObject->deleteIndexForContent ( $DATA['article_id'] );
             
 
             // Update Counter

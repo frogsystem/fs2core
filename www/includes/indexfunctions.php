@@ -9,11 +9,14 @@ function search_index ()
     $today_3am = mktime ( 3, 0, 0, date ( "m" ), date ( "d" ), date ( "Y" ) );
     $today_3am = ( $today_3am > time() ) ? $today_3am - 24*60*60 : $today_3am;
     if ( $global_config_arr['search_index_update'] === 2 &&  $global_config_arr['search_index_time'] < $today_3am) {
-        // Include searchfunctions.php
-        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-        update_search_index ( "news" );
-        update_search_index ( "articles" );
-        update_search_index ( "dl" );
+        // Create the Objects
+        $indexObjects['news'] = new search ( "news" );
+        $indexObjects['articles'] = new search ( "articles" );
+        $indexObjects['dl'] = new search ( "dl" );
+        // Update the Index
+        foreach ( $indexObjects as $aObject ) {
+            $aObject->updateIndex();
+        }
         
         // Update config Value
         $global_config_arr['search_index_time'] = time();

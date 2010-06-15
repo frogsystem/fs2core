@@ -40,9 +40,9 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
-        // Include searchfunctions.php
-        require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-        update_search_index ( "dl" );
+        // Update Search Index
+        $indexObject = new search ( "dl" );
+        $indexObject->updateIndex();
     }
                          
     $id = mysql_insert_id();

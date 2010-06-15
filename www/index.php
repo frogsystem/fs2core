@@ -26,6 +26,7 @@ if ( $db ) {
     require ( FS2_ROOT_PATH . "libs/class_template.php" );
     require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
     require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
+    require ( FS2_ROOT_PATH . "libs/class_search.php" );
 
     //Include Phrases-Files
     require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );

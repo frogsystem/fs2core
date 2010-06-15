@@ -1138,9 +1138,9 @@ function db_edit_news ( $DATA )
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
-        // Include searchfunctions.php
-        require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-        update_search_index ( "news" );
+        // Update Search Index
+        $indexObject = new search ( "news" );
+        $indexObject->updateIndex();
     }
     
 
@@ -1200,8 +1200,8 @@ function db_delete_news ( $DATA )
             ", $db );
             
             // Delete from Search Index
-            require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-            delete_search_index_for_one ( $news_id, "news" );
+            $indexObject = new search ( "news" );
+            $indexObject->deleteIndexForContent ( $news_id );
 
             // MySQL-Delete-Query: Links
             mysql_query ( "
