@@ -16,64 +16,53 @@ class search {
     private $theConfig;
     private $theSql;
     private $searchTypes = array ( "news", "articles", "downloads" );
-
-    // constructor
-    public function  __construct() {
+    private $searchType;
+    
+    /**
+     * Creates an object for specified Search Type
+     *
+     * @name sql::__construct();
+     *
+     * @param String $searchType
+     *
+     * @return bool
+     */
+    public function  __construct ( $searchType ) {
         // Include global Data
         global $global_config_arr, $sql;
         $this->theConfig = $global_config_arr;
         $this->theSql = $sql;
+        $this->searchType = $searchType;
+    }
+
+    // function for rebuilding the Search-Index
+    public function rebuildIndex () {
+        $this->deleteIndex ();
+        $this->updateIndex ();
+    }
+
+    // function for deleting the Search-Index
+    public function deleteIndex () {
+        $this->theSql->deleteData ( "search_index", "`search_index_type` = '".$this->searchType."'" );
+        $this->theSql->deleteData ( "search_time", "`search_time_type` = '".$this->searchType."'" );
     }
     
-    public function new_search_index ( $FOR ) {
-        $this->delete_search_index ( $FOR );
-        $this->update_search_index ( $FOR );
-    }
-
-    public function delete_search_index ( $FOR ) {
-        global $db;
-
-        mysql_query ( "
-                        DELETE FROM `".$this->theConfig['pref']."search_index`
-                        WHERE `search_index_type` = '".$FOR."'
-        ", $db );
-        mysql_query ( "
-                        DELETE FROM `".$this->theConfig['pref']."search_time`
-                        WHERE `search_time_type` = '".$FOR."'
-        ", $db );
-    }
-    
-    public function delete_search_index_for_one ( $ID, $TYPE ) {
-        global  $db;
-
-        mysql_query ( "
-                        DELETE FROM `".$this->theConfig['pref']."search_index`
-                        WHERE `search_index_type` = '".$TYPE."'
-                        AND `search_index_document_id` = '".$ID."'
-        ", $db );
-        mysql_query ( "
-                        DELETE FROM `".$this->theConfig['pref']."search_time`
-                        WHERE `search_time_type` = '".$TYPE."'
-                        AND `search_time_document_id` = '".$$ID."'
-        ", $db );
+    public function deleteIndexForContent ( $ID ) {
+        $this->theSql->deleteData ( "search_index", "`search_index_type` = '".$this->searchType."' AND `search_index_document_id` = '".$ID."'" );
+        $this->theSql->deleteData ( "search_time", "`search_time_type` = '".$this->searchType."' AND `search_time_document_id` = '".$ID."'" );
     }
 
 
-    public function delete_word_list () {
-        global  $db;
-
-        mysql_query ( "
-                        TRUNCATE TABLE `".$this->theConfig['pref']."search_words`
-        ", $db );
+    public function clearWordTable () {
+        $this->theSql->query ( "TRUNCATE TABLE `{..pref..}search_words`" );
     }
 
-    public function update_search_index ( $FOR ) {
-        global  $db;
+    public function updateIndex () {
 
         $data = $this->get_make_search_index ( $FOR );
         while ( $data_arr = mysql_fetch_assoc ( $data ) ) {
             // Compress Text and filter Stopwords
-            $data_arr['search_data'] = $this->delete_stopwords ( $this->compress_search_data ( $data_arr['search_data'] ) );
+            $data_arr['search_data'] = $this->removeStopwords ( $this->compressSearchData ( $data_arr['search_data'] ) );
 
             // Remove Old Indexes & Update Timestamp
             if ( $data_arr['search_time_id'] != null ) {
@@ -107,7 +96,11 @@ class search {
                 if (strlen ( $word ) > 32) {
                     $word = substr ( $word, 0, 32 );
                 }
-                $word_id = $this->get_search_word_id ( $word );
+                
+                $word_id = $this->getSearchWordId ( $word );
+                if ( $word_id === FALSE ) {
+                    $word_id = $this->addSearchWord ( $word );
+                }
 
                 if ( isset ( $index_arr[$word_id] ) ) {
                     $index_arr[$word_id]["search_index_count"] = $index_arr[$word_id]["search_index_count"] + 1;
@@ -196,25 +189,25 @@ class search {
         }
     }
 
-    private function get_search_word_id ( $WORD ) {
-        global $db;
-
-        $index = mysql_query ( "
-                                SELECT `search_word_id` FROM `".$this->theConfig['pref']."search_words`
-                                WHERE `search_word` = '".savesql ( $WORD )."'
-        ", $db );
-        if ( mysql_num_rows ( $index ) >= 1 ) {
-            return mysql_result ( $index, 0, "search_word_id" );
+    private function getSearchWordId ( $WORD ) {
+        $theData = $this->theSql->getData ( "search_words", "search_word_id", "WHERE `search_word` = '".savesql ( $WORD )."'", 1 );
+        if ( count ( $theData ) >= 1 ) {
+            return $theData[0]['search_word_id'];
         } else {
-            mysql_query ( "
-                            INSERT INTO `".$this->theConfig['pref']."search_words` (`search_word`)
-                            VALUES ('".savesql ( $WORD )."')
-            ", $db );
-            return mysql_insert_id ( $db );
+            $this->addSearchWord ( $WORD );
+            return FALSE;
+        }
+    }
+    
+    private function addSearchWord ( $WORD ) {
+        if ( $this->theSql->setData ( "search_words", "search_word", savesql ( $WORD ) ) ) {
+            return $this->getInsertId ();
+        } else {
+            return FALSE;
         }
     }
 
-    private function compress_search_data ( $TEXT ) {
+    private function compressSearchData ( $TEXT ) {
         $locSearch[] = "=ß=i";
         $locSearch[] = "=ä|Ä=i";
         $locSearch[] = "=ö|Ö=i";
@@ -226,9 +219,9 @@ class search {
         $locSearch[] = "=í|ì|î|Î|Í|Ì|ï=i";
         $locSearch[] = "=ñ=i";
         $locSearch[] = "=ç=i";
-        #$locSearch[] = "=([0-9/.,+-]*\s)=";
-        $locSearch[] = "=([^A-Za-z])=";
+        $locSearch[] = "=([^A-Za-z0-9])=";
         $locSearch[] = "= +=";
+        #$locSearch[] = "=([0-9/.,+-]*\s)=";
 
         $locReplace[] = "ss";
         $locReplace[] = "ae";
@@ -241,18 +234,18 @@ class search {
         $locReplace[] = "i";
         $locReplace[] = "n";
         $locReplace[] = "c";
+        $locReplace[] = " ";
+        $locReplace[] = " ";
         #$locReplace[] = " ";
-        $locReplace[] = " ";
-        $locReplace[] = " ";
 
         $TEXT = trim ( strtolower ( stripslashes ( killfs ( $TEXT ) ) ) );
         $TEXT = preg_replace ( $locSearch, $locReplace, $TEXT );
         return $TEXT;
     }
 
-    private function delete_stopwords ( $TEXT ) {
+    private function removeStopwords ( $TEXT ) {
         $locSearch[] = "=(\s[A-Za-z0-9]{1,2})\s=";
-        $locSearch[] = "= " . implode ( " | ", $this->get_stopwords () ) . " =i";
+        $locSearch[] = "= " . implode ( " | ", $this->getStopwords () ) . " =i";
         $locSearch[] = "= +=";
 
         $locReplace[] = " ";
@@ -265,7 +258,7 @@ class search {
     }
 
 
-    private function get_stopwords () {
+    private function getStopwords () {
         $stopfilespath =  FS2_ROOT_PATH . "resources/stopwords/";
         $stopfiles = scandir_ext ( $stopfilespath, ".txt" );
         $ACCESS = new fileaccess();
