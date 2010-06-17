@@ -2,7 +2,7 @@
 $TEXT = array (
     "type" => "menu",
     "data" => array (
-    
+
 // General
     "admin_logout_text" =>
     "Logout",
@@ -12,14 +12,14 @@ $TEXT = array (
 
     "admin_link_to_page" =>
     "zur Hauptseite",
-    
+
     "admin_error_page_title" =>
     "Fehler",
-    
+
 // Menüs
     "menu_general" =>
     "Allgemein",
-    
+
     "menu_content" =>
     "Inhalt",
 
@@ -40,14 +40,14 @@ $TEXT = array (
 
     "menu_system" =>
     "System",
-    
+
     "menu_mods" =>
     "AddOns",
-    
+
 // Gruppen
     "group_0" =>
     "versteckt",
-    
+
     "group_-1" =>
     "Startseite",
 
@@ -128,7 +128,7 @@ $TEXT = array (
 
     "group_fscodes" =>
     "FS Codes",
-    
+
 // Seiten
     "page_title_start_general" =>
     "Allgemein",
@@ -663,5 +663,10 @@ $TEXT = array (
     "löschen",
     "page_link_fscode_edit_remove" =>
     "löschen",
+
+    "page_title_fscode_settings" =>
+    "Einstellungen",
+    "page_link_fscode_settings" =>
+    "Einstellungen",
 
 ) );

@@ -1,0 +1,35 @@
+# Language-Definition for [FS2]/admin/template/admin_fscode_edit.tpl
+overview_topic:               FS Code bearbeiten
+overview_table_name:          Name
+overview_table_added:         Erstellt am
+overview_table_added_by:      von
+overview_table_edited:        Zuletzt bearbeitet am
+overview_table_edited_by:     von
+overview_table_edited_never:  Nie
+overview_table_action:        Aktion
+overview_table_action_edit:   bearbeiten
+overview_table_action_remove: löschen
+
+detail_head:          FS-Code bearbeiten
+detail_name:          Name des Codes
+detail_name_hint_1:   Hinweis: Ein FS-Code mit diesem Namen existiert bereits.
+detail_name_hint_2:   Hinweis: Der Name des Codes ist nicht erlaubt!
+detail_contenttype:   Inhaltstyp
+detail_allowin:       Erlaubt in
+detail_disallowin:    Nicht erlaubt in
+detail_callbacktype:  Ersetzungsart
+detail_icon:          FS Code-Icon:
+detail_icon_text:     Das Icon, das im Editor angezeigt wird.<br>Wird f&uuml;r den zur Zeit aktiven Style gespeichert.
+detail_active:        Code aktivieren
+detail_active_y:      Ja
+detail_active_n:      Nein
+detail_flag:          Flags
+detail_flag_name:     Name
+detail_flag_value:    Wert
+detail_flag_choose:   W&auml;hle ein Flag!
+detail_replace:       Ersetzungstext
+detail_replace_1_1:   Ersetzung wenn ein Parameter angegeben ist
+detail_replace_1_2:   Syntax: [code]Parameter[/code]
+detail_replace_2_1:   Ersetzung wenn beide Parameter angegeben sind
+detail_replace_2_2:   Syntax: [code='Parameter']Inhalt[/code]
+detail_replace_3:     PHP-Code

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.1.3.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 12. Mai 2010 um 19:10
--- Server Version: 5.1.37
--- PHP-Version: 5.3.0
+-- Erstellungszeit: 17. Juni 2010 um 17:31
+-- Server Version: 5.1.33
+-- PHP-Version: 5.2.9
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -148,7 +148,8 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `page
 ('fscode_add_php', 'fscodes', 'fscode_add', 1, 1),
 ('fscode_edit', 'fscodes', 'admin_fscode_edit.php', 2, 0),
 ('fscode_edit_php', 'fscodes', 'fscode_edit', 2, 1),
-('fscode_edit_remove', 'fscodes', 'fscode_edit', 2, 1);
+('fscode_edit_remove', 'fscodes', 'fscode_edit', 2, 1),
+('fscode_settings', 'fscodes', 'admin_fscode_config', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -161,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `fs_admin_groups` (
   `group_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `menu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `group_pos` tinyint(3) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Daten für Tabelle `fs_admin_groups`
@@ -428,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 57, 3746, 2, 1, 2, 2);
+(1, 82, 3824, 2, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -451,10 +452,10 @@ CREATE TABLE IF NOT EXISTS `fs_counter_ref` (
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
-('http://localhost/fs2/', 113, 1263499887, 1273680943),
+('http://localhost/fs2/', 120, 1263499887, 1274366422),
 ('http://alix.worldofgothic.com/beta4/admin/?go=gen_config', 2, 1267197504, 1267197505),
 ('http://demo.frogsystem.de/admin/?go=gen_config', 1, 1267198063, 1267198063),
-('http://localhost/', 1, 1273256730, 1273256730),
+('http://localhost/', 28, 1273256730, 1276781709),
 ('http://localhost/fs/', 2, 1273256740, 1273256922),
 ('http://localhost/fs/www/', 1, 1273256927, 1273256927);
 
@@ -516,7 +517,25 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 5, 9, 2, 3),
 (2010, 5, 10, 1, 4),
 (2010, 5, 11, 2, 5),
-(2010, 5, 12, 1, 5);
+(2010, 5, 12, 1, 5),
+(2010, 5, 14, 2, 6),
+(2010, 5, 16, 1, 8),
+(2010, 5, 17, 1, 2),
+(2010, 5, 18, 1, 2),
+(2010, 5, 19, 1, 2),
+(2010, 5, 20, 1, 4),
+(2010, 5, 25, 3, 8),
+(2010, 5, 26, 1, 2),
+(2010, 5, 27, 2, 6),
+(2010, 5, 28, 1, 2),
+(2010, 6, 7, 1, 4),
+(2010, 6, 8, 1, 4),
+(2010, 6, 9, 2, 5),
+(2010, 6, 10, 1, 4),
+(2010, 6, 14, 2, 6),
+(2010, 6, 15, 1, 4),
+(2010, 6, 16, 2, 7),
+(2010, 6, 17, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1081,7 +1100,8 @@ CREATE TABLE IF NOT EXISTS `fs_fscodes` (
   `param_2` text NOT NULL,
   `php` text NOT NULL,
   `active` tinyint(1) NOT NULL,
-  `allowparagraphes` tinyint(1) NOT NULL,
+  `added` varchar(25) NOT NULL,
+  `edited` varchar(25) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
@@ -1090,27 +1110,27 @@ CREATE TABLE IF NOT EXISTS `fs_fscodes` (
 -- Daten für Tabelle `fs_fscodes`
 --
 
-INSERT INTO `fs_fscodes` (`id`, `name`, `contenttype`, `callbacktype`, `allowin`, `disallowin`, `param_1`, `param_2`, `php`, `active`, `allowparagraphes`) VALUES
-(1, 'b', 'inline', 0, 'listitem, block, inline, link', '', '<b>', '</b>', '', 1, 1),
-(2, 'i', 'inline', 0, 'listitem, block, inline, link', '', '<i>', '</i>', '', 1, 1),
-(3, 'u', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:underline;">', '</span>', '', 1, 1),
-(4, 's', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:line-through;">', '</span>', '', 1, 1),
-(5, 'center', 'inline', 0, 'listitem, block, inline, link', '', '<p align="center">', '</p>', '', 1, 1),
-(6, 'url', 'link', 5, 'listitem, block, inline', 'link', '<a href="{..x..}" target="_blank">{..x..}</a>', '<a href="{..y..}" target="_blank">{..x..}</a>', '', 1, 1),
-(7, 'home', 'link', 5, 'listitem, block, inline', 'link', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($content).''" target="_self">''.$page_url."?go=".htmlspecialchars ($content).''</a>'';\r\n}\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($attributes[''default'']).''" target="_self">''.$content.''</a>'';', 1, 1),
-(8, 'email', 'link', 5, 'listitem, block, inline', 'link', '<a href="mailto:{..x..}">{..x..}</a>', '<a href="mailto:{..y..}">{..x..}</a>', '', 1, 1),
-(9, 'img', 'image', 5, 'listitem, block, inline, link', '', '<img src="{..x..}" alt="{..x..}">', '<img src="{..x..}" alt="{..x..}" align="{..y..}">', '', 1, 1),
-(10, 'cimg', 'image', 5, 'listitem, block, inline, link', '', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''">'';\r\n}\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''" align="''.htmlspecialchars($attributes[''default'']).''">'';', 1, 1),
-(11, 'player', 'block', 5, 'block, inline', 'listitem, link', '', '', 'if ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn get_player ( $content );\r\n}\r\n$res = explode ( ",", $attributes[''default''], 2 );\r\nintval($res[0]);\r\nintval($res[1]);\r\nreturn get_player ( $content, $res[0], $res[1] );', 1, 1),
-(12, 'list', 'list', 0, 'block, listitem', 'link', '<ul>', '</ul>', '', 1, 1),
-(13, 'numlist', 'list', 0, 'block, listitem', 'link', '<ol>', '</ol>', '', 1, 1),
-(14, '*', 'listitem', 0, 'list', '', '<li>', '</li>', '', 1, 1),
-(15, 'font', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="font-family:{..y..};">{..x..}</span>', '', 1, 1),
-(16, 'color', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="color:{..y..};">{..x..}</span>', '', 1, 1),
-(17, 'size', 'inline', 2, 'listitem, block, inline, link', '', '', '', 'if ($action == ''validate'') {\r\nif (!isset ($attributes[''default''])) { return false; }\r\nelse {\r\n$font_sizes = array(0,1,2,3,4,5,6,7);\r\nif (!in_array($attributes[''default''], $font_sizes)) { return false; }\r\nelse { return true; }\r\n}\r\n}\r\nif (isset ($attributes[''default''])) {\r\n$arr_num = $attributes[''default''];\r\n$font_sizes_values = array("70%","85%","100%","125%","155%","195%","225%","300%");\r\nreturn ''<span style="font-size:''.$font_sizes_values[$arr_num].'';">''.$content.''</span>'';\r\n}', 1, 1),
-(18, 'code', 'block', 2, 'listitem, block, inline', 'link', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, 1),
-(19, 'quote', 'block', 2, 'listitem, block, inline', 'list', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="border-collapse:collapse; border:1px dotted #000000;">\r\n      <q>{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat von <cite>{..y..}</cite>:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="border-collapse:collapse; border:1px dotted #000000;">\r\n      <q cite="{..y..}">{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, 1),
-(20, 'noparse', 'inline', 5, 'listitem, block, inline, link', '', '', '', 'if ($action == \\''validate\\'') {\r\nreturn true;\r\n}\r\nreturn $content;\r\n', 1, 1);
+INSERT INTO `fs_fscodes` (`id`, `name`, `contenttype`, `callbacktype`, `allowin`, `disallowin`, `param_1`, `param_2`, `php`, `active`, `added`, `edited`) VALUES
+(1, 'b', 'inline', 0, 'listitem, block, inline, link', '', '<b>', '</b>', '', 1, '1 1265756400', '0'),
+(2, 'i', 'inline', 0, 'listitem, block, inline, link', '', '<i>', '</i>', '', 1, '1 1265756400', '0'),
+(3, 'u', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:underline;">', '</span>', '', 1, '1 1265756400', '0'),
+(4, 's', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:line-through;">', '</span>', '', 1, '1 1265756400', '0'),
+(5, 'center', 'inline', 0, 'listitem, block, inline, link', '', '<p align="center">', '</p>', '', 1, '1 1265756400', '0'),
+(6, 'url', 'link', 5, 'listitem, block, inline', 'link', '<a href="{..x..}" target="_blank">{..x..}</a>', '<a href="{..y..}" target="_blank">{..x..}</a>', '', 1, '1 1265756400', '0'),
+(7, 'home', 'link', 5, 'listitem, block, inline', 'link', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($content).''" target="_self">''.$page_url."?go=".htmlspecialchars ($content).''</a>'';\r\n}\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($attributes[''default'']).''" target="_self">''.$content.''</a>'';', 1, '1 1265756400', '0'),
+(8, 'email', 'link', 5, 'listitem, block, inline', 'link', '<a href="mailto:{..x..}">{..x..}</a>', '<a href="mailto:{..y..}">{..x..}</a>', '', 1, '1 1265756400', '0'),
+(9, 'img', 'image', 5, 'listitem, block, inline, link', '', '<img src="{..x..}" alt="{..x..}">', '<img src="{..x..}" alt="{..x..}" align="{..y..}">', '', 1, '1 1265756400', '0'),
+(10, 'cimg', 'image', 5, 'listitem, block, inline, link', '', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''">'';\r\n}\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''" align="''.htmlspecialchars($attributes[''default'']).''">'';', 1, '1 1265756400', '0'),
+(11, 'player', 'block', 5, 'block, inline', 'listitem, link', '', '', 'if ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn get_player ( $content );\r\n}\r\n$res = explode ( ",", $attributes[''default''], 2 );\r\nintval($res[0]);\r\nintval($res[1]);\r\nreturn get_player ( $content, $res[0], $res[1] );', 1, '1 1265756400', '0'),
+(12, 'list', 'list', 0, 'block, listitem', 'link', '<ul>', '</ul>', '', 1, '1 1265756400', '0'),
+(13, 'numlist', 'list', 0, 'block, listitem', 'link', '<ol>', '</ol>', '', 1, '1 1265756400', '0'),
+(14, '*', 'listitem', 0, 'list', '', '<li>', '</li>', '', 1, '1 1265756400', '0'),
+(15, 'font', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="font-family:{..y..};">{..x..}</span>', '', 1, '1 1265756400', '0'),
+(16, 'color', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="color:{..y..};">{..x..}</span>', '', 1, '1 1265756400', '0'),
+(17, 'size', 'inline', 2, 'listitem, block, inline, link', '', '', '', 'if ($action == ''validate'') {\r\nif (!isset ($attributes[''default''])) { return false; }\r\nelse {\r\n$font_sizes = array(0,1,2,3,4,5,6,7);\r\nif (!in_array($attributes[''default''], $font_sizes)) { return false; }\r\nelse { return true; }\r\n}\r\n}\r\nif (isset ($attributes[''default''])) {\r\n$arr_num = $attributes[''default''];\r\n$font_sizes_values = array("70%","85%","100%","125%","155%","195%","225%","300%");\r\nreturn ''<span style="font-size:''.$font_sizes_values[$arr_num].'';">''.$content.''</span>'';\r\n}', 1, '1 1265756400', '0'),
+(18, 'code', 'block', 2, 'listitem, block, inline', 'link', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, '1 1265756400', '0'),
+(19, 'quote', 'block', 2, 'listitem&#44; block&#44; inline', 'list', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q>{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat von <cite>{..y..}</cite>:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q cite=\\"{..y..}\\">{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, '1 1265756400', '0'),
+(20, 'noparse', 'inline', 5, 'listitem, block, inline, link', '', '', '', 'if ($action == \\''validate\\'') {\r\nreturn true;\r\n}\r\nreturn $content;\r\n', 1, '1 1265756400', '0');
 
 -- --------------------------------------------------------
 
@@ -1121,7 +1141,7 @@ INSERT INTO `fs_fscodes` (`id`, `name`, `contenttype`, `callbacktype`, `allowin`
 DROP TABLE IF EXISTS `fs_fscodes_flag`;
 CREATE TABLE IF NOT EXISTS `fs_fscodes_flag` (
   `code` mediumint(8) NOT NULL,
-  `name` varchar(50) NOT NULL,
+  `name` smallint(2) NOT NULL,
   `value` smallint(2) NOT NULL,
   KEY `code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -1131,31 +1151,38 @@ CREATE TABLE IF NOT EXISTS `fs_fscodes_flag` (
 --
 
 INSERT INTO `fs_fscodes_flag` (`code`, `name`, `value`) VALUES
-(15, 'closetag', 0),
-(13, 'paragraph_type', 2),
-(13, 'opentag.before.newline', 2),
-(13, 'closetag.before.newline', 2),
-(19, 'paragraph_type', 2),
-(19, 'paragraph_type', 1),
-(20, 'paragraph_type', 2),
-(20, 'paragraph_type', 1);
+(5, 7, 2),
+(12, 3, 2),
+(12, 5, 2),
+(12, 7, 2),
+(14, 2, 1),
+(14, 8, 1),
+(18, 7, 1),
+(18, 7, 2),
+(19, 7, 1),
+(19, 7, 2);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_fscodes_ref`
+-- Tabellenstruktur für Tabelle `fs_fscode_config`
 --
 
-DROP TABLE IF EXISTS `fs_fscodes_ref`;
-CREATE TABLE IF NOT EXISTS `fs_fscodes_ref` (
-  `code` mediumint(8) NOT NULL,
-  `refcode` mediumint(8) NOT NULL
+DROP TABLE IF EXISTS `fs_fscode_config`;
+CREATE TABLE IF NOT EXISTS `fs_fscode_config` (
+  `type` varchar(25) NOT NULL,
+  `value` varchar(50) NOT NULL,
+  UNIQUE KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Daten für Tabelle `fs_fscodes_ref`
+-- Daten für Tabelle `fs_fscode_config`
 --
 
+INSERT INTO `fs_fscode_config` (`type`, `value`) VALUES
+('file_height', '50'),
+('file_size', '99'),
+('file_width', '50');
 
 -- --------------------------------------------------------
 
@@ -1202,7 +1229,7 @@ CREATE TABLE IF NOT EXISTS `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1273669199);
+(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1276781709);
 
 -- --------------------------------------------------------
 
@@ -2273,7 +2300,7 @@ CREATE TABLE IF NOT EXISTS `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1273680943);
+('127.0.0.1', 1, 1276781732);
 
 -- --------------------------------------------------------
 
@@ -2399,7 +2426,3 @@ CREATE TABLE IF NOT EXISTS `fs_wallpaper_sizes` (
 
 INSERT INTO `fs_wallpaper_sizes` (`size_id`, `wallpaper_id`, `size`) VALUES
 (1, 1, '1920x1200');
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

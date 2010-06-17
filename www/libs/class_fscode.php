@@ -2,8 +2,8 @@
 /**
 * @file     class_fscode.php
 * @folder   /libs
-* @version  0.1
-* @author   Sweil
+* @version  0.2
+* @author   Satans Krümelmonster
 *
 * this class is responsible for to fs-code transformation
 */
@@ -38,7 +38,7 @@ class fscode{
     $this->parser->addParser ('list', 'bbcode_stripcontents');
     $this->parser->setGlobalCaseSensitive (false);
 	}
-  
+
   public function disableCode($codename){
   // delete code
     if(in_array($codename, $this->codes)){
@@ -52,30 +52,30 @@ class fscode{
       unset($this->codes[$codeid]);
     }
   }
-  
+
   public function setHTML($value){
     if(is_bool($value)){
       $this->html = $value;
     }
   }
-  
+
   public function setPara($value){
     if(is_bool($value)){
       $this->para = $value;
     }
   }
-  
+
   public function disableSmilie($value){
     if(is_bool($value)){
       $this->smilie = $value;
     }
   }
-  
+
   public function parse($text){
     global $sql;
     if($this->fullyinitialized == false){
       foreach($this->codes as $code){
-        if($code[active] == 1 && (!$this->isRef($code[id]) || ($this->isRef($code[id]) && $this->refDefined($code[id])))){ // fs-code ist definiert
+        if($code[active] == 1){ // fs-code ist definiert
           // callback funktion erzeugen
           if($code[callbacktype] == 0 || $code[callbacktype] == 1)
             $callbackfunc = null;
@@ -83,7 +83,7 @@ class fscode{
             $callbackfunc = create_function('$action, $attributes, $content, $params, $node_object', $code[php]);
           else
             $callbackfunc = create_function('$action, $attributes, $content, $params, $node_object', 'if($action==\'validate\'){return true;}if(isset($attributes[\'default\'])){return str_replace(array("{..x..}","{..y..}"),array(htmlspecialchars($content),htmlspecialchars($attributes[\'default\'])),"'.addslashes($code[param_2]).'");}return str_replace("{..x..}",htmlspecialchars($content),"'.addslashes($code[param_1]).'");');
-          
+
           // usercontent? und callback_replace?-attribute
           if($code[callbacktype] == 5)
             $params = array ('usecontent_param' => 'default');
@@ -93,30 +93,30 @@ class fscode{
             $params = array ('start_tag' => $code[param_1], 'end_tag' => $code[param_2]);
           else
             $params = array();
-          
+
           // allow in...
           if(!empty($code[allowin])){
             $allowin = explode(",", $code[allowin]);
             $allowin = (is_array($allowin))?array_map("trim", $allowin):array();
           } else
             $allowin = array();
-          
+
           // disallow in...
           if(!empty($code[disallowin])){
             $disallowin = explode(",", $code[disallowin]);
             $disallowin = (is_array($disallowin))?array_map("trim", $disallowin):array();
           } else
             $disallowin = array();
-          
+
           // add code
           $this->parser->addCode($code[name], $this->callbacktypes[$code[callbacktype]], $callbackfunc, $params, $code[contenttype], $allowin, $disallowin);
-          
+
           // unset vars
           unset($callbackfunc, $params, $allowin, $disallowin);
-          
-          // absatzbehandlung
+
+          /*// absatzbehandlung
           if($code[allowparagraphes] == 0)
-            $this->parser->setCodeFlag($code[name], 'paragraphs', false);
+            $this->parser->setCodeFlag($code[name], 'paragraphs', false);*/
         }
       }
 
@@ -138,41 +138,10 @@ class fscode{
       $this->parser->addParser(array ('block', 'inline', 'link', 'listitem'), $smiliefunc);
       unset($smiliefunc);
     }
-    
-    $this->parser->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
-    
-    return $this->parser->parse($text);
-  }
-  
-  private function isRef($codeid){
-    global $sql;
-    return ($sql->getData("fscode_ref", "*", "WHERE `code`=".$codeid, 2) == 0) ? false : true;
-  }
-  
-  private function refDefined($codeid){
-    global $sql;
-    if($this->isRef($codeid)){
-      $refs = $sql->getData("fscodes_ref", "*", "WHERE `code`=".$codeid);
-      foreach($refs as $ref)
-        if($this->codeDefined($sql->getData("fscode", "`name`", "WHERE `id`=".$ref[refcode], 1)))
-          return true;
-        else
-          continue;
 
-      return false;
-    } else {
-      return true;
-    }
-  }
-  
-  private function codeDefined($codename){
-    foreach($this->codes as $code)
-      if($code[name] == $codename)
-        return true;
-      else
-        continue;
-    
-    return false;
+    $this->parser->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
+
+    return $this->parser->parse($text);
   }
 }
 ?>

@@ -34,7 +34,7 @@ class sql {
             $this->sql = null;
         }
     }
-  
+
     /**
     * Gibt die MySQL-Ressource zurück
     *
@@ -51,7 +51,7 @@ class sql {
             return FALSE;
         }
     }
-    
+
     /**
     * Gibt einen den Error zurück
     *
@@ -68,7 +68,7 @@ class sql {
             return FALSE;
         }
     }
-    
+
     /**
     * Gibt den Query-String zurück
     *
@@ -85,7 +85,7 @@ class sql {
             return FALSE;
         }
     }
-  
+
     /**
     * Executes the actual query
     *
@@ -99,7 +99,7 @@ class sql {
         if ( !isset ( $this->qrystr ) ) {                   // break if no query string exists
             return FALSE;
         }
-        
+
         $theQuery = mysql_query ( $this->qrystr, $this->sql );          // execute the query
         unset( $this->qrystr, $this->error );               // unset query string and error
         if ( mysql_error ( $this->sql ) !== "" ) {          // list errors
@@ -123,7 +123,7 @@ class sql {
         $this->qrystr = str_replace ( "{..pref..}", $this->pref, $qrystr );
         return $this->doQuery();
     }
-    
+
     /**
     * Gibt die Insert ID zurück
     *
@@ -139,85 +139,85 @@ class sql {
         return mysql_insert_id ( $this->sql );
     }
 
-  /**
-  * Führt ein SELECT-Query durch
-  *
-  * @name sql::getData();
-  *
-  * @param String $table
-  * @param String $row
-  * @param String $optional
-  * @param int $addititional
-  * @return mixed
-  */
-  public function getData($table, $row, $optional="", $addititional=0){
-    unset($this->error, $this->qrystr);                            // Error leeren
-    $qrystr="SELECT `".$row."` FROM `".$this->pref.$table."`";  // Querystring aufbauen
-    if(!empty($optional)){
-      $qrystr.=" ".$optional;                           // Optionale Angaben (WHERE, LIMT, etc.) anhängen)
+    /**
+    * Führt ein SELECT-Query durch
+    *
+    * @name sql::getData();
+    *
+    * @param String $table
+    * @param String $row
+    * @param String $optional
+    * @param int $addititional
+    * @return mixed
+    */
+    public function getData($table, $row, $optional="", $addititional=0){
+      unset($this->error, $this->qrystr);                            // Error leeren
+      $qrystr="SELECT ".$row." FROM `".$this->pref.$table."`";  // Querystring aufbauen
+      if(!empty($optional)){
+        $qrystr.=" ".$optional;                           // Optionale Angaben (WHERE, LIMT, etc.) anhängen)
+      }
+      $this->qrystr = $qrystr;
+      $qry = mysql_query($qrystr, $this->sql);       // Query durchführen
+      if(mysql_error($this->sql) !== ""){             // Fehler listen
+        $this->error[0] = mysql_errno($this->sql);
+        $this->error[1] = mysql_error($this->sql);
+        return false;
+      } else {
+        if(mysql_num_rows($qry) == 0 || $addititional == 2){
+          return mysql_num_rows($qry);
+        }
+        $ret=array();
+        while($erg=mysql_fetch_assoc($qry)){
+          $ret[]=array_map("stripslashes", $erg);
+        }
+        switch($addititional){
+          case 0:             // Keine zusätzlichen Angaben
+            return $ret;
+            break;
+          case 1:             // Einzelnes Resultat zurückgeben
+            if(count($ret[0]) === 1){                 // eine oder mehrere Zeilen angegeben?
+              $keys = array_keys($ret[0]);
+              return $ret[0][$keys[0]];
+            } else {
+              return $ret[0];
+            }
+            break;
+          case 3:
+            return $qry;
+            break;
+          default:            // nicht implementierte Angabe
+            return false;
+            break;
+        }
+      }
     }
-    $this->qrystr = $qrystr;
-    $qry = mysql_query($qrystr, $this->sql);       // Query durchführen
-    if(mysql_error($this->sql) !== ""){             // Fehler listen
-      $this->error[0] = mysql_errno($this->sql);
-      $this->error[1] = mysql_error($this->sql);
-      return false;
-    } else {
-      if(mysql_num_rows($qry) == 0 || $addititional == 2){
-        return mysql_num_rows($qry);
-      }
-      $ret=array();
-      while($erg=mysql_fetch_assoc($qry)){
-        $ret[]=array_map("stripslashes", $erg);
-      }
-      switch($addititional){
-        case 0:             // Keine zusätzlichen Angaben
-          return $ret;
-          break;
-        case 1:             // Einzelnes Resultat zurückgeben
-          if(count($ret[0]) === 1){                 // eine oder mehrere Zeilen angegeben?
-            $keys = array_keys($ret[0]);
-            return $ret[0][$keys[0]];
-          } else {
-            return $ret[0];
-          }
-          break;
-        case 3:
-          return $qry;
-          break;
-        default:            // nicht implementierte Angabe
-          return false;
-          break;
-      }
-    }
-  }
 
-  /**
-  * Führt ein Insert-Query durch
-  *
-  * @name sql::setData();
-  *
-  * @param String $table
-  * @param String $rows
-  * @param String $values
-  *
-  * @return bool
-  */
-  public function setData ( $table, $rows, $values ) {
+    /**
+    * Führt ein Insert-Query durch
+    *
+    * @name sql::setData();
+    *
+    * @param String $table
+    * @param String $rows
+    * @param String $values
+    *
+    * @return bool
+    */
+    public function setData ( $table, $rows, $values ) {
 
-    $rows   = explode ( ",", $rows );
-    $values = explode ( ",", $values );
-    if ( count ( $rows ) !== count ( $values ) || count ( $rows ) === 0 ) {
-      return FALSE;
+      $rows   = explode ( ",", $rows );
+      $values = explode ( ",", $values );
+      if ( count ( $rows ) !== count ( $values ) || count ( $rows ) === 0 ) {
+        return FALSE;
+      }
+      $this->arraytrim ( $rows );
+      $this->arraytrim ( $values );
+      $rows   = "`" . implode ( "`, `", $rows ) . "`";
+      $values = "'" . implode ( "', '", $values ) . "'";
+
+      $this->qrystr = "INSERT INTO `".$this->pref.$table."` (".$rows.") VALUES (".$values.")";
+      return $this->doQuery();
     }
-    $this->arraytrim ( $rows );
-    $this->arraytrim ( $values );
-    $rows   = "`" . implode ( "`, `", $rows ) . "`";
-    $values = "'" . implode ( "', '", $values ) . "'";
-    
-    $this->qrystr = "INSERT INTO `".$this->pref.$table."` (".$rows.") VALUES (".$values.")";
-    return $this->doQuery();
-  }
 
     /**
     * Führt ein Update-Query durch
@@ -249,7 +249,7 @@ class sql {
         $this->qrystr = $qrystr;
         return $this->doQuery();
     }
-  
+
     /**
     * Führt ein Delete-Query durch
     *
