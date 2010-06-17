@@ -44,7 +44,8 @@ if(isset($_POST[addcode])){
           systext("Code erfolgreich gespeichert.", $TEXT["admin"]->get("changes_saved"), FALSE, $TEXT["admin"]->get("icon_save_ok"));
         } else {
           unset($name, $content, $allow, $disallow, $callback, $active, $paragraphes, $param_1, $param_2, $php);
-          systext("Der Code konnte nicht hinzugefügt werden.<br>SQL meldet: ".$sql->error[0]." : ".$sql->error[1], $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
+          $error = $sql->getError();
+          systext("Der Code konnte nicht hinzugefügt werden.<br>SQL meldet: ".$error[0]." : ".$error[1], $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
         }
 
       } else {
