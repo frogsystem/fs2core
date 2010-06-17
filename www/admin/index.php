@@ -21,14 +21,15 @@ require ( FS2_ROOT_PATH . "includes/indexfunctions.php" );
 require ( FS2_ROOT_PATH . "libs/class_template.php");
 require ( FS2_ROOT_PATH . "libs/class_fileaccess.php");
 require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
+require ( FS2_ROOT_PATH . "libs/class_adminpage.php");
 require ( FS2_ROOT_PATH . "libs/class_search.php");
 
 //Include Phrases-Files
 require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
 require ( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php" );
 
-$TEXT['admin'] = new langDataInit ( $global_config_arr['language_text'], "admin" );
-$TEXT['menu'] = new langDataInit ( $global_config_arr['language_text'], "menu" );
+$TEXT['admin']    = new langDataInit ( $global_config_arr['language_text'], "admin" );
+$TEXT['menu']     = new langDataInit ( $global_config_arr['language_text'], "menu" );
 $TEXT['frontend'] = new langDataInit ( $global_config_arr['language_text'], "frontend" );
 $TEXT['template'] = new langDataInit ( $global_config_arr['language_text'], "template" );
 
@@ -87,6 +88,8 @@ if ( mysql_num_rows ( $index ) == 1 ) {
     }
     // get the page-data
     $PAGE_DATA_ARR = createpage ( $TEXT['menu']->get("group_".$acp_arr['group_id'])." &#187; ".$TEXT['menu']->get("page_title_".$acp_arr['page_id']), $acp_arr['permission'], $acp_arr['page_file'], $acp_arr['menu_id'] );
+    // initialise templatesystem
+    $adminpage = new adminpage($acp_arr[page_file]);
 } else {
     $PAGE_DATA_ARR['created'] = FALSE;
 }
