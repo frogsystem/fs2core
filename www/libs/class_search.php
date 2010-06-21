@@ -60,6 +60,20 @@ class search {
             $this->searchDataArray = $this->getPreconfigedSearchData();
         }
     }
+    
+    // check for search opertors
+    private function isSearchOp ( $CHECK, $OP_ARR = array ( "AND", "OR", "NOT", "XOR" ) ) {
+        return in_array ( $CHECK, $OP_ARR );
+    }
+    
+    private function compressKeyword ( $TEXT ) {
+        if ( $this->isSearchOp ( $TEXT ) ) {
+            return $TEXT;
+        }
+        return $this->removeStopwords ( $this->compressSearchData ( $TEXT ) );
+    }
+    
+    
 
     // function for rebuilding the Search-Index
     private function getPreconfigedSearchData () {
@@ -240,7 +254,6 @@ class search {
         $TEXT = trim ( preg_replace ( $locSearch, $locReplace, $TEXT ) );
         return $TEXT;
     }
-
 
     private function getStopwords () {
         $stopfilespath =  FS2_ROOT_PATH . "resources/stopwords/";
