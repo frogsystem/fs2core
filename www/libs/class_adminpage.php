@@ -156,5 +156,12 @@ class adminpage{
       unset($match);
     }
   }
+
+  public function lang($name){
+    if(array_key_exists($name, $this->lang))
+      return $this->lang[$name];
+    else
+      return "Localize: LANG::".$name;
+  }
 }
 ?>

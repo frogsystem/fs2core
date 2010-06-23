@@ -80,7 +80,7 @@
                   var td2 = document.createElement("td");
                   td1.setAttribute("class", "config");
                   td2.setAttribute("class", "config");
-                  td1.innerHTML = '<select name="flag[0][]" onchange="setflag(this.parentNode.parentNode.childNodes[1], this.value);">\n<option value="0"></option>\n<option value="1">case_sensitive</option>\n<option value="2">closetag</option>\n<option value="3">opentag.before.newline</option>\n<option value="4">opentag.after.newline</option>\n<option value="5">closetag.before.newline</option>\n<option value="6">closetag.after.newline</option>\n<option value="7">paragraph_type</option>\n<option value="8">paragraphs</option>\n<option value="9">occurrence_type</option>\n</select>\n';
+                  td1.innerHTML = '<select name="flag[0][]" onchange="setflag(this.parentNode.parentNode.childNodes[1], this.value);">\n<option value="0"></option>\n<option value="1">case_sensitive</option>\n<option value="2">closetag</option>\n<option value="3">opentag.before.newline</option>\n<option value="4">opentag.after.newline</option>\n<option value="5">closetag.before.newline</option>\n<option value="6">closetag.after.newline</option>\n<option value="7">paragraph_type</option>\n<option value="8">paragraphs</option>\n</select>\n';
                   td2.innerHTML = 'Wähle ein Flag!';
                   flag.appendChild(td1);
                   flag.appendChild(td2);

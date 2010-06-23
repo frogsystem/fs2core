@@ -157,11 +157,11 @@ if(!isset($_GET[code]) || empty($_GET[code])){ // kein fscode gewählt
               }
             }
             if($_FILES[icon][error] != 4){ // es wurde ein icon hochgeladen
-              $tmp = $sql->getData("fscode_config", "*");
+              $tmp = $sql->getData("fscodes_config", "*");
               foreach($tmp as $conf)
                 $fileconfig[$conf[type]] = $conf[value];
               unset($conf, $tmp);
-              if($notice = upload_img($_FILES[icon], "styles/".$global_config_arr[style_tag]."/icons/fscode/", $name, $fileconfig[file_size], $fileconfig[file_width], $fileconfig[file_height]) != 0)
+              if($notice = upload_img($_FILES[icon], "media/fscode-images/", $name, $fileconfig[file_size], $fileconfig[file_width], $fileconfig[file_height]) != 0)
                 systext(upload_img_notice($notice), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
             }
             systext("Code erfolgreich bearbeitet.", $TEXT["admin"]->get("changes_saved"), FALSE, $TEXT["admin"]->get("icon_save_ok"));

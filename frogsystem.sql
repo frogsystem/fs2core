@@ -1,11 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 3.1.3.1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Erstellungszeit: 17. Juni 2010 um 17:31
--- Server Version: 5.1.33
--- PHP-Version: 5.2.9
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -15,15 +7,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- Datenbank: `frogsystem`
---
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_admin_cp`
---
 
 DROP TABLE IF EXISTS `fs_admin_cp`;
 CREATE TABLE IF NOT EXISTS `fs_admin_cp` (
@@ -35,9 +20,6 @@ CREATE TABLE IF NOT EXISTS `fs_admin_cp` (
   PRIMARY KEY (`page_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_admin_cp`
---
 
 INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `page_int_sub_perm`) VALUES
 ('start_general', '-1', 'general', 1, 0),
@@ -149,13 +131,9 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `page
 ('fscode_edit', 'fscodes', 'admin_fscode_edit.php', 2, 0),
 ('fscode_edit_php', 'fscodes', 'fscode_edit', 2, 1),
 ('fscode_edit_remove', 'fscodes', 'fscode_edit', 2, 1),
-('fscode_settings', 'fscodes', 'admin_fscode_config', 3, 0);
+('fscode_settings', 'fscodes', 'admin_fscode_config.php', 3, 0);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_admin_groups`
---
 
 DROP TABLE IF EXISTS `fs_admin_groups`;
 CREATE TABLE IF NOT EXISTS `fs_admin_groups` (
@@ -164,9 +142,6 @@ CREATE TABLE IF NOT EXISTS `fs_admin_groups` (
   `group_pos` tinyint(3) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
---
--- Daten für Tabelle `fs_admin_groups`
---
 
 INSERT INTO `fs_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 ('-1', 'none', 0),
@@ -198,11 +173,7 @@ INSERT INTO `fs_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 ('search', 'general', 4),
 ('fscodes', 'system', 4);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_aliases`
---
 
 DROP TABLE IF EXISTS `fs_aliases`;
 CREATE TABLE IF NOT EXISTS `fs_aliases` (
@@ -214,9 +185,6 @@ CREATE TABLE IF NOT EXISTS `fs_aliases` (
   KEY `alias_go` (`alias_go`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=9 ;
 
---
--- Daten für Tabelle `fs_aliases`
---
 
 INSERT INTO `fs_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_active`) VALUES
 (1, 'screenshots', 'gallery', 1),
@@ -228,11 +196,7 @@ INSERT INTO `fs_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_act
 (7, 'pollarchiv', 'polls', 1),
 (8, 'newsarchiv', 'news_search', 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_announcement`
---
 
 DROP TABLE IF EXISTS `fs_announcement`;
 CREATE TABLE IF NOT EXISTS `fs_announcement` (
@@ -246,18 +210,11 @@ CREATE TABLE IF NOT EXISTS `fs_announcement` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_announcement`
---
 
 INSERT INTO `fs_announcement` (`id`, `announcement_text`, `show_announcement`, `activate_announcement`, `ann_html`, `ann_fscode`, `ann_para`) VALUES
 (1, '', 2, 0, 1, 1, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_applets`
---
 
 DROP TABLE IF EXISTS `fs_applets`;
 CREATE TABLE IF NOT EXISTS `fs_applets` (
@@ -269,9 +226,6 @@ CREATE TABLE IF NOT EXISTS `fs_applets` (
   UNIQUE KEY `applet_file` (`applet_file`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=10 ;
 
---
--- Daten für Tabelle `fs_applets`
---
 
 INSERT INTO `fs_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_output`) VALUES
 (1, 'affiliates', 1, 1),
@@ -284,11 +238,7 @@ INSERT INTO `fs_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_o
 (8, 'dl-forwarding', 1, 0),
 (9, 'mini-search', 1, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_articles`
---
 
 DROP TABLE IF EXISTS `fs_articles`;
 CREATE TABLE IF NOT EXISTS `fs_articles` (
@@ -307,18 +257,11 @@ CREATE TABLE IF NOT EXISTS `fs_articles` (
   KEY `article_url` (`article_url`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
---
--- Daten für Tabelle `fs_articles`
---
 
 INSERT INTO `fs_articles` (`article_id`, `article_url`, `article_title`, `article_date`, `article_user`, `article_text`, `article_html`, `article_fscode`, `article_para`, `article_cat_id`, `article_search_update`) VALUES
 (1, 'fscode', 'FSCode Liste', 1265756400, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">[b][u][size=3]FS-Code:[/size][/u][/b]</td><td width="50%">[b][u][size=3]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiver Text[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 0[/size][/noparse]</td><td>[size=0]Text in Größe 0[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 1[/size][/noparse]</td><td>[size=1]Text in Größe 1[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 2[/size][/noparse]</td><td>[size=2]Text in Größe 2[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 3[/size][/noparse]</td><td>[size=3]Text in Größe 3[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 4[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 5[/size][/noparse]</td><td>[size=5]Text in Größe 5[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 6[/size][/noparse]</td><td>[size=6]Text in Größe 6[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 7[/size][/noparse]</td><td>[size=7]Text&nbsp;in&nbsp;Größe&nbsp;7[/size]</td></tr><tr><td>[noparse][noparse]Text mit [b]FS[/b]Code[/noparse][/noparse]</td><td>[noparse]kein [b]fetter[/b] Text[/noparse]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan="2"><hr /></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]$VAR(url)images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>', 1, 1, 1, 1, 1265787778);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_articles_cat`
---
 
 DROP TABLE IF EXISTS `fs_articles_cat`;
 CREATE TABLE IF NOT EXISTS `fs_articles_cat` (
@@ -330,18 +273,11 @@ CREATE TABLE IF NOT EXISTS `fs_articles_cat` (
   PRIMARY KEY (`cat_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
---
--- Daten für Tabelle `fs_articles_cat`
---
 
 INSERT INTO `fs_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
 (1, 'Artikel', '', 1215295200, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_articles_config`
---
 
 DROP TABLE IF EXISTS `fs_articles_config`;
 CREATE TABLE IF NOT EXISTS `fs_articles_config` (
@@ -360,18 +296,11 @@ CREATE TABLE IF NOT EXISTS `fs_articles_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_articles_config`
---
 
 INSERT INTO `fs_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `acp_per_page`, `acp_view`) VALUES
 (1, 2, 4, 2, 150, 150, 1024, 2, 1, 'DESC', 15, 2);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_captcha_config`
---
 
 DROP TABLE IF EXISTS `fs_captcha_config`;
 CREATE TABLE IF NOT EXISTS `fs_captcha_config` (
@@ -399,18 +328,11 @@ CREATE TABLE IF NOT EXISTS `fs_captcha_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
---
--- Daten für Tabelle `fs_captcha_config`
---
 
 INSERT INTO `fs_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transparent`, `captcha_text_color`, `captcha_first_lower`, `captcha_first_upper`, `captcha_second_lower`, `captcha_second_upper`, `captcha_use_addition`, `captcha_use_subtraction`, `captcha_use_multiplication`, `captcha_create_easy_arithmetics`, `captcha_x`, `captcha_y`, `captcha_show_questionmark`, `captcha_use_spaces`, `captcha_show_multiplication_as_x`, `captcha_start_text_x`, `captcha_start_text_y`, `captcha_font_size`, `captcha_font_file`) VALUES
 (1, 'FFFFFF', 1, '000000', 1, 5, 1, 5, 1, 1, 0, 1, 58, 18, 0, 1, 1, 0, 0, 3, '');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_counter`
---
 
 DROP TABLE IF EXISTS `fs_counter`;
 CREATE TABLE IF NOT EXISTS `fs_counter` (
@@ -424,18 +346,11 @@ CREATE TABLE IF NOT EXISTS `fs_counter` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_counter`
---
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 82, 3824, 2, 1, 2, 2);
+(1, 86, 3858, 2, 1, 2, 2);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_counter_ref`
---
 
 DROP TABLE IF EXISTS `fs_counter_ref`;
 CREATE TABLE IF NOT EXISTS `fs_counter_ref` (
@@ -446,24 +361,17 @@ CREATE TABLE IF NOT EXISTS `fs_counter_ref` (
   KEY `ref_url` (`ref_url`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_counter_ref`
---
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
 ('http://localhost/fs2/', 120, 1263499887, 1274366422),
 ('http://alix.worldofgothic.com/beta4/admin/?go=gen_config', 2, 1267197504, 1267197505),
 ('http://demo.frogsystem.de/admin/?go=gen_config', 1, 1267198063, 1267198063),
-('http://localhost/', 28, 1273256730, 1276781709),
+('http://localhost/', 35, 1273256730, 1277230404),
 ('http://localhost/fs/', 2, 1273256740, 1273256922),
 ('http://localhost/fs/www/', 1, 1273256927, 1273256927);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_counter_stat`
---
 
 DROP TABLE IF EXISTS `fs_counter_stat`;
 CREATE TABLE IF NOT EXISTS `fs_counter_stat` (
@@ -475,9 +383,6 @@ CREATE TABLE IF NOT EXISTS `fs_counter_stat` (
   PRIMARY KEY (`s_year`,`s_month`,`s_day`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_counter_stat`
---
 
 INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits`) VALUES
 (2010, 1, 12, 3, 5),
@@ -535,13 +440,11 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 6, 14, 2, 6),
 (2010, 6, 15, 1, 4),
 (2010, 6, 16, 2, 7),
-(2010, 6, 17, 1, 2);
+(2010, 6, 17, 1, 6),
+(2010, 6, 18, 2, 4),
+(2010, 6, 22, 2, 26);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_dl`
---
 
 DROP TABLE IF EXISTS `fs_dl`;
 CREATE TABLE IF NOT EXISTS `fs_dl` (
@@ -559,16 +462,9 @@ CREATE TABLE IF NOT EXISTS `fs_dl` (
   FULLTEXT KEY `dl_name_text` (`dl_name`,`dl_text`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_dl`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_dl_cat`
---
 
 DROP TABLE IF EXISTS `fs_dl_cat`;
 CREATE TABLE IF NOT EXISTS `fs_dl_cat` (
@@ -578,18 +474,11 @@ CREATE TABLE IF NOT EXISTS `fs_dl_cat` (
   PRIMARY KEY (`cat_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
---
--- Daten für Tabelle `fs_dl_cat`
---
 
 INSERT INTO `fs_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 (1, 0, 'Downloads');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_dl_config`
---
 
 DROP TABLE IF EXISTS `fs_dl_config`;
 CREATE TABLE IF NOT EXISTS `fs_dl_config` (
@@ -603,18 +492,11 @@ CREATE TABLE IF NOT EXISTS `fs_dl_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_dl_config`
---
 
 INSERT INTO `fs_dl_config` (`id`, `screen_x`, `screen_y`, `thumb_x`, `thumb_y`, `quickinsert`, `dl_rights`) VALUES
 (1, 1024, 768, 120, 90, 'http://example.com', 2);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_dl_files`
---
 
 DROP TABLE IF EXISTS `fs_dl_files`;
 CREATE TABLE IF NOT EXISTS `fs_dl_files` (
@@ -629,16 +511,9 @@ CREATE TABLE IF NOT EXISTS `fs_dl_files` (
   KEY `dl_id` (`dl_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_dl_files`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_docs_classes`
---
 
 DROP TABLE IF EXISTS `fs_docs_classes`;
 CREATE TABLE IF NOT EXISTS `fs_docs_classes` (
@@ -648,9 +523,6 @@ CREATE TABLE IF NOT EXISTS `fs_docs_classes` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
---
--- Daten für Tabelle `fs_docs_classes`
---
 
 INSERT INTO `fs_docs_classes` (`id`, `name`, `desc`) VALUES
 (1, 'fileaccess', 'Regelt den Zugriff auf Dateien'),
@@ -658,11 +530,7 @@ INSERT INTO `fs_docs_classes` (`id`, `name`, `desc`) VALUES
 (3, 'lang', 'Verwaltet das die Sprach-Dateien.\r\nDiese Klasse wird von [home=doc&c=4]langDataInit[/home] verwendet.'),
 (4, 'langDataInit', 'Initialisiert die Sprach-Dateien.');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_docs_functions`
---
 
 DROP TABLE IF EXISTS `fs_docs_functions`;
 CREATE TABLE IF NOT EXISTS `fs_docs_functions` (
@@ -675,9 +543,6 @@ CREATE TABLE IF NOT EXISTS `fs_docs_functions` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=81 ;
 
---
--- Daten für Tabelle `fs_docs_functions`
---
 
 INSERT INTO `fs_docs_functions` (`id`, `class`, `type`, `name`, `desc`, `ret`) VALUES
 (1, 1, 'public', '__construct', 'Diese Funktion initialisiert die Klasse.', 'void'),
@@ -761,11 +626,7 @@ INSERT INTO `fs_docs_functions` (`id`, `class`, `type`, `name`, `desc`, `ret`) V
 (79, 4, 'public', 'get', 'Diese Funktion ist ein Alias zu [home=doc&f=76]lang::get[/home].', 'string'),
 (80, 4, 'public', '__destruct', 'Setzt alle Klassenvariablen auf null.', 'void');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_docs_params`
---
 
 DROP TABLE IF EXISTS `fs_docs_params`;
 CREATE TABLE IF NOT EXISTS `fs_docs_params` (
@@ -779,9 +640,6 @@ CREATE TABLE IF NOT EXISTS `fs_docs_params` (
   KEY `function` (`function`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Daten für Tabelle `fs_docs_params`
---
 
 INSERT INTO `fs_docs_params` (`function`, `internal_id`, `name`, `type`, `initval`, `desc`, `isref`) VALUES
 (2, 1, 'filename', 'string', '', 'Der Name der auszulesenden Datei.', 0),
@@ -956,11 +814,7 @@ INSERT INTO `fs_docs_params` (`function`, `internal_id`, `name`, `type`, `initva
 (78, 2, 'type', 'string', '', 'Name der Sprachdatei.', 0),
 (79, 1, 'tag', 'string', '', 'Name des Ausdruckes, der zurückgegeben werden soll.', 0);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_docs_variables`
---
 
 DROP TABLE IF EXISTS `fs_docs_variables`;
 CREATE TABLE IF NOT EXISTS `fs_docs_variables` (
@@ -974,9 +828,6 @@ CREATE TABLE IF NOT EXISTS `fs_docs_variables` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
---
--- Daten für Tabelle `fs_docs_variables`
---
 
 INSERT INTO `fs_docs_variables` (`id`, `type`, `name`, `desc`, `class`, `initval`, `content`) VALUES
 (1, 'const', 'OPENER', 'Der String, mit dem eine Template-Variable beginnt.', 2, '{..', 'string'),
@@ -996,11 +847,7 @@ INSERT INTO `fs_docs_variables` (`id`, `type`, `name`, `desc`, `class`, `initval
 (15, 'private', 'type', 'Beinhaltet den Dateinamen.', 4, 'null', 'string'),
 (16, 'private', 'langData', 'Beinhaltet eine Referenz auf die Klasse [home=doc&c=3]lang[/home].', 4, '', 'object');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_editor_config`
---
 
 DROP TABLE IF EXISTS `fs_editor_config`;
 CREATE TABLE IF NOT EXISTS `fs_editor_config` (
@@ -1050,18 +897,11 @@ CREATE TABLE IF NOT EXISTS `fs_editor_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_editor_config`
---
 
 INSERT INTO `fs_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea_width`, `textarea_height`, `bold`, `italic`, `underline`, `strike`, `center`, `font`, `color`, `size`, `list`, `numlist`, `img`, `cimg`, `url`, `home`, `email`, `code`, `quote`, `noparse`, `smilies`, `do_bold`, `do_italic`, `do_underline`, `do_strike`, `do_center`, `do_font`, `do_color`, `do_size`, `do_list`, `do_numlist`, `do_img`, `do_cimg`, `do_url`, `do_home`, `do_email`, `do_code`, `do_quote`, `do_noparse`, `do_smilies`) VALUES
 (1, 5, 2, 355, 120, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_email`
---
 
 DROP TABLE IF EXISTS `fs_email`;
 CREATE TABLE IF NOT EXISTS `fs_email` (
@@ -1075,18 +915,11 @@ CREATE TABLE IF NOT EXISTS `fs_email` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_email`
---
 
 INSERT INTO `fs_email` (`id`, `signup`, `change_password`, `delete_account`, `use_admin_mail`, `email`, `html`) VALUES
 (1, 'Hallo  {..user_name..},\r\n\r\nDu hast dich bei $VAR(page_title) registriert. Deine Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {..user_name..},\r\n\r\nDein Passwort bei $VAR(page_title) wurde geändert. Deine neuen Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders überlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!', 1, '', 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_fscodes`
---
 
 DROP TABLE IF EXISTS `fs_fscodes`;
 CREATE TABLE IF NOT EXISTS `fs_fscodes` (
@@ -1102,41 +935,51 @@ CREATE TABLE IF NOT EXISTS `fs_fscodes` (
   `active` tinyint(1) NOT NULL,
   `added` varchar(25) NOT NULL,
   `edited` varchar(25) NOT NULL DEFAULT '0',
+  `userusage` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
---
--- Daten für Tabelle `fs_fscodes`
---
 
-INSERT INTO `fs_fscodes` (`id`, `name`, `contenttype`, `callbacktype`, `allowin`, `disallowin`, `param_1`, `param_2`, `php`, `active`, `added`, `edited`) VALUES
-(1, 'b', 'inline', 0, 'listitem, block, inline, link', '', '<b>', '</b>', '', 1, '1 1265756400', '0'),
-(2, 'i', 'inline', 0, 'listitem, block, inline, link', '', '<i>', '</i>', '', 1, '1 1265756400', '0'),
-(3, 'u', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:underline;">', '</span>', '', 1, '1 1265756400', '0'),
-(4, 's', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:line-through;">', '</span>', '', 1, '1 1265756400', '0'),
-(5, 'center', 'inline', 0, 'listitem, block, inline, link', '', '<p align="center">', '</p>', '', 1, '1 1265756400', '0'),
-(6, 'url', 'link', 5, 'listitem, block, inline', 'link', '<a href="{..x..}" target="_blank">{..x..}</a>', '<a href="{..y..}" target="_blank">{..x..}</a>', '', 1, '1 1265756400', '0'),
-(7, 'home', 'link', 5, 'listitem, block, inline', 'link', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($content).''" target="_self">''.$page_url."?go=".htmlspecialchars ($content).''</a>'';\r\n}\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($attributes[''default'']).''" target="_self">''.$content.''</a>'';', 1, '1 1265756400', '0'),
-(8, 'email', 'link', 5, 'listitem, block, inline', 'link', '<a href="mailto:{..x..}">{..x..}</a>', '<a href="mailto:{..y..}">{..x..}</a>', '', 1, '1 1265756400', '0'),
-(9, 'img', 'image', 5, 'listitem, block, inline, link', '', '<img src="{..x..}" alt="{..x..}">', '<img src="{..x..}" alt="{..x..}" align="{..y..}">', '', 1, '1 1265756400', '0'),
-(10, 'cimg', 'image', 5, 'listitem, block, inline, link', '', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''">'';\r\n}\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''" align="''.htmlspecialchars($attributes[''default'']).''">'';', 1, '1 1265756400', '0'),
-(11, 'player', 'block', 5, 'block, inline', 'listitem, link', '', '', 'if ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn get_player ( $content );\r\n}\r\n$res = explode ( ",", $attributes[''default''], 2 );\r\nintval($res[0]);\r\nintval($res[1]);\r\nreturn get_player ( $content, $res[0], $res[1] );', 1, '1 1265756400', '0'),
-(12, 'list', 'list', 0, 'block, listitem', 'link', '<ul>', '</ul>', '', 1, '1 1265756400', '0'),
-(13, 'numlist', 'list', 0, 'block, listitem', 'link', '<ol>', '</ol>', '', 1, '1 1265756400', '0'),
-(14, '*', 'listitem', 0, 'list', '', '<li>', '</li>', '', 1, '1 1265756400', '0'),
-(15, 'font', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="font-family:{..y..};">{..x..}</span>', '', 1, '1 1265756400', '0'),
-(16, 'color', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="color:{..y..};">{..x..}</span>', '', 1, '1 1265756400', '0'),
-(17, 'size', 'inline', 2, 'listitem, block, inline, link', '', '', '', 'if ($action == ''validate'') {\r\nif (!isset ($attributes[''default''])) { return false; }\r\nelse {\r\n$font_sizes = array(0,1,2,3,4,5,6,7);\r\nif (!in_array($attributes[''default''], $font_sizes)) { return false; }\r\nelse { return true; }\r\n}\r\n}\r\nif (isset ($attributes[''default''])) {\r\n$arr_num = $attributes[''default''];\r\n$font_sizes_values = array("70%","85%","100%","125%","155%","195%","225%","300%");\r\nreturn ''<span style="font-size:''.$font_sizes_values[$arr_num].'';">''.$content.''</span>'';\r\n}', 1, '1 1265756400', '0'),
-(18, 'code', 'block', 2, 'listitem, block, inline', 'link', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, '1 1265756400', '0'),
-(19, 'quote', 'block', 2, 'listitem&#44; block&#44; inline', 'list', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q>{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat von <cite>{..y..}</cite>:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q cite=\\"{..y..}\\">{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, '1 1265756400', '0'),
-(20, 'noparse', 'inline', 5, 'listitem, block, inline, link', '', '', '', 'if ($action == \\''validate\\'') {\r\nreturn true;\r\n}\r\nreturn $content;\r\n', 1, '1 1265756400', '0');
+INSERT INTO `fs_fscodes` (`id`, `name`, `contenttype`, `callbacktype`, `allowin`, `disallowin`, `param_1`, `param_2`, `php`, `active`, `added`, `edited`, `userusage`) VALUES
+(1, 'b', 'inline', 0, 'listitem, block, inline, link', '', '<b>', '</b>', '', 1, '1 1265756400', '0', 1),
+(2, 'i', 'inline', 0, 'listitem, block, inline, link', '', '<i>', '</i>', '', 1, '1 1265756400', '0', 1),
+(3, 'u', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:underline;">', '</span>', '', 1, '1 1265756400', '0', 1),
+(4, 's', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:line-through;">', '</span>', '', 1, '1 1265756400', '0', 1),
+(5, 'center', 'inline', 0, 'listitem, block, inline, link', '', '<p align="center">', '</p>', '', 1, '1 1265756400', '0', 1),
+(6, 'url', 'link', 5, 'listitem, block, inline', 'link', '<a href="{..x..}" target="_blank">{..x..}</a>', '<a href="{..y..}" target="_blank">{..x..}</a>', '', 1, '1 1265756400', '0', 1),
+(7, 'home', 'link', 5, 'listitem, block, inline', 'link', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($content).''" target="_self">''.$page_url."?go=".htmlspecialchars ($content).''</a>'';\r\n}\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($attributes[''default'']).''" target="_self">''.$content.''</a>'';', 1, '1 1265756400', '0', 1),
+(8, 'email', 'link', 5, 'listitem, block, inline', 'link', '<a href="mailto:{..x..}">{..x..}</a>', '<a href="mailto:{..y..}">{..x..}</a>', '', 1, '1 1265756400', '0', 1),
+(9, 'img', 'image', 5, 'listitem, block, inline, link', '', '<img src="{..x..}" alt="{..x..}">', '<img src="{..x..}" alt="{..x..}" align="{..y..}">', '', 1, '1 1265756400', '0', 1),
+(10, 'cimg', 'image', 5, 'listitem, block, inline, link', '', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''">'';\r\n}\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''" align="''.htmlspecialchars($attributes[''default'']).''">'';', 1, '1 1265756400', '0', 1),
+(11, 'player', 'block', 5, 'block, inline', 'listitem, link', '', '', 'if ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn get_player ( $content );\r\n}\r\n$res = explode ( ",", $attributes[''default''], 2 );\r\nintval($res[0]);\r\nintval($res[1]);\r\nreturn get_player ( $content, $res[0], $res[1] );', 1, '1 1265756400', '0', 1),
+(12, 'list', 'list', 0, 'block&#44; listitem', 'link', '<ul>', '</ul>', '', 1, '1 1265756400', '0', 1),
+(13, 'numlist', 'list', 0, 'block, listitem', 'link', '<ol>', '</ol>', '', 1, '1 1265756400', '0', 1),
+(14, '*', 'listitem', 0, 'list', '', '<li>', '</li>', '', 1, '1 1265756400', '0', 1),
+(15, 'font', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="font-family:{..y..};">{..x..}</span>', '', 1, '1 1265756400', '0', 1),
+(16, 'color', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="color:{..y..};">{..x..}</span>', '', 1, '1 1265756400', '0', 1),
+(17, 'size', 'inline', 2, 'listitem, block, inline, link', '', '', '', 'if ($action == ''validate'') {\r\nif (!isset ($attributes[''default''])) { return false; }\r\nelse {\r\n$font_sizes = array(0,1,2,3,4,5,6,7);\r\nif (!in_array($attributes[''default''], $font_sizes)) { return false; }\r\nelse { return true; }\r\n}\r\n}\r\nif (isset ($attributes[''default''])) {\r\n$arr_num = $attributes[''default''];\r\n$font_sizes_values = array("70%","85%","100%","125%","155%","195%","225%","300%");\r\nreturn ''<span style="font-size:''.$font_sizes_values[$arr_num].'';">''.$content.''</span>'';\r\n}', 1, '1 1265756400', '0', 1),
+(18, 'code', 'block', 2, 'listitem, block, inline', 'link', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, '1 1265756400', '0', 1),
+(19, 'quote', 'block', 2, 'listitem&#44; block&#44; inline', 'list', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q>{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat von <cite>{..y..}</cite>:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q cite=\\"{..y..}\\">{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, '1 1265756400', '0', 1),
+(20, 'noparse', 'inline', 5, 'listitem, block, inline, link', '', '', '', 'if ($action == \\''validate\\'') {\r\nreturn true;\r\n}\r\nreturn $content;\r\n', 1, '1 1265756400', '0', 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_fscodes_flag`
---
+
+DROP TABLE IF EXISTS `fs_fscodes_config`;
+CREATE TABLE IF NOT EXISTS `fs_fscodes_config` (
+  `type` varchar(25) NOT NULL,
+  `value` varchar(50) NOT NULL,
+  UNIQUE KEY `type` (`type`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+INSERT INTO `fs_fscodes_config` (`type`, `value`) VALUES
+('file_height', '50'),
+('file_size', '99'),
+('file_width', '50'),
+('image', '0');
+
+
 
 DROP TABLE IF EXISTS `fs_fscodes_flag`;
 CREATE TABLE IF NOT EXISTS `fs_fscodes_flag` (
@@ -1146,49 +989,20 @@ CREATE TABLE IF NOT EXISTS `fs_fscodes_flag` (
   KEY `code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Daten für Tabelle `fs_fscodes_flag`
---
 
 INSERT INTO `fs_fscodes_flag` (`code`, `name`, `value`) VALUES
-(5, 7, 2),
-(12, 3, 2),
-(12, 5, 2),
-(12, 7, 2),
-(14, 2, 1),
-(14, 8, 1),
+(19, 7, 1),
+(19, 7, 2),
 (18, 7, 1),
 (18, 7, 2),
-(19, 7, 1),
-(19, 7, 2);
+(14, 2, 1),
+(14, 8, 1),
+(12, 7, 2),
+(12, 3, 2),
+(12, 5, 2),
+(5, 7, 2);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_fscode_config`
---
-
-DROP TABLE IF EXISTS `fs_fscode_config`;
-CREATE TABLE IF NOT EXISTS `fs_fscode_config` (
-  `type` varchar(25) NOT NULL,
-  `value` varchar(50) NOT NULL,
-  UNIQUE KEY `type` (`type`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Daten für Tabelle `fs_fscode_config`
---
-
-INSERT INTO `fs_fscode_config` (`type`, `value`) VALUES
-('file_height', '50'),
-('file_size', '99'),
-('file_width', '50');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs_global_config`
---
 
 DROP TABLE IF EXISTS `fs_global_config`;
 CREATE TABLE IF NOT EXISTS `fs_global_config` (
@@ -1224,18 +1038,11 @@ CREATE TABLE IF NOT EXISTS `fs_global_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_global_config`
---
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1276781709);
+(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1277205375);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_iplist`
---
 
 DROP TABLE IF EXISTS `fs_iplist`;
 CREATE TABLE IF NOT EXISTS `fs_iplist` (
@@ -1243,18 +1050,9 @@ CREATE TABLE IF NOT EXISTS `fs_iplist` (
   PRIMARY KEY (`ip`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_iplist`
---
 
-INSERT INTO `fs_iplist` (`ip`) VALUES
-('127.0.0.1');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_news`
---
 
 DROP TABLE IF EXISTS `fs_news`;
 CREATE TABLE IF NOT EXISTS `fs_news` (
@@ -1271,18 +1069,11 @@ CREATE TABLE IF NOT EXISTS `fs_news` (
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=143 ;
 
---
--- Daten für Tabelle `fs_news`
---
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
 (1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\n[center]Weitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei![/center]\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1269453612);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_news_cat`
---
 
 DROP TABLE IF EXISTS `fs_news_cat`;
 CREATE TABLE IF NOT EXISTS `fs_news_cat` (
@@ -1294,18 +1085,11 @@ CREATE TABLE IF NOT EXISTS `fs_news_cat` (
   PRIMARY KEY (`cat_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
---
--- Daten für Tabelle `fs_news_cat`
---
 
 INSERT INTO `fs_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
 (1, 'News', '', 1263251923, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_news_comments`
---
 
 DROP TABLE IF EXISTS `fs_news_comments`;
 CREATE TABLE IF NOT EXISTS `fs_news_comments` (
@@ -1322,19 +1106,12 @@ CREATE TABLE IF NOT EXISTS `fs_news_comments` (
   FULLTEXT KEY `comment_title` (`comment_title`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
---
--- Daten für Tabelle `fs_news_comments`
---
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
 (2, 1, 'Hans Wurst', 0, '127.0.0.1', 1266663394, 'Geile Seite!!!', 'Ich liebe euch alle ;)'),
 (3, 1, '1', 1, '127.0.0.1', 1270829419, 'me', '\\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\"');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_news_config`
---
 
 DROP TABLE IF EXISTS `fs_news_config`;
 CREATE TABLE IF NOT EXISTS `fs_news_config` (
@@ -1357,18 +1134,11 @@ CREATE TABLE IF NOT EXISTS `fs_news_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_news_config`
---
 
 INSERT INTO `fs_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
 (1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 2, 'DESC', 40, ' ...', 15, 2);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_news_links`
---
 
 DROP TABLE IF EXISTS `fs_news_links`;
 CREATE TABLE IF NOT EXISTS `fs_news_links` (
@@ -1380,19 +1150,12 @@ CREATE TABLE IF NOT EXISTS `fs_news_links` (
   PRIMARY KEY (`link_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=23 ;
 
---
--- Daten für Tabelle `fs_news_links`
---
 
 INSERT INTO `fs_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `link_target`) VALUES
 (1, 22, 'Frogsystem 2 Supportforum', 'http://forum.sweil.de/viewforum.php?f=7', 1),
 (1, 21, 'Offizielle Frogsystem 2 Homepage', 'http://www.frogsystem.de', 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_partner`
---
 
 DROP TABLE IF EXISTS `fs_partner`;
 CREATE TABLE IF NOT EXISTS `fs_partner` (
@@ -1404,16 +1167,9 @@ CREATE TABLE IF NOT EXISTS `fs_partner` (
   PRIMARY KEY (`partner_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_partner`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_partner_config`
---
 
 DROP TABLE IF EXISTS `fs_partner_config`;
 CREATE TABLE IF NOT EXISTS `fs_partner_config` (
@@ -1429,18 +1185,11 @@ CREATE TABLE IF NOT EXISTS `fs_partner_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_partner_config`
---
 
 INSERT INTO `fs_partner_config` (`id`, `partner_anzahl`, `small_x`, `small_y`, `small_allow`, `big_x`, `big_y`, `big_allow`, `file_size`) VALUES
 (1, 5, 88, 31, 1, 468, 60, 1, 1024);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_player`
---
 
 DROP TABLE IF EXISTS `fs_player`;
 CREATE TABLE IF NOT EXISTS `fs_player` (
@@ -1454,16 +1203,9 @@ CREATE TABLE IF NOT EXISTS `fs_player` (
   PRIMARY KEY (`video_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_player`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_player_config`
---
 
 DROP TABLE IF EXISTS `fs_player_config`;
 CREATE TABLE IF NOT EXISTS `fs_player_config` (
@@ -1515,18 +1257,11 @@ CREATE TABLE IF NOT EXISTS `fs_player_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_player_config`
---
 
 INSERT INTO `fs_player_config` (`id`, `cfg_autoplay`, `cfg_autoload`, `cfg_buffer`, `cfg_buffermessage`, `cfg_buffercolor`, `cfg_bufferbgcolor`, `cfg_buffershowbg`, `cfg_titlesize`, `cfg_titlecolor`, `cfg_margin`, `cfg_showstop`, `cfg_showvolume`, `cfg_showtime`, `cfg_showplayer`, `cfg_showloading`, `cfg_showfullscreen`, `cfg_showmouse`, `cfg_loop`, `cfg_playercolor`, `cfg_loadingcolor`, `cfg_bgcolor`, `cfg_bgcolor1`, `cfg_bgcolor2`, `cfg_buttoncolor`, `cfg_buttonovercolor`, `cfg_slidercolor1`, `cfg_slidercolor2`, `cfg_sliderovercolor`, `cfg_loadonstop`, `cfg_onclick`, `cfg_ondoubleclick`, `cfg_playertimeout`, `cfg_videobgcolor`, `cfg_volume`, `cfg_shortcut`, `cfg_playeralpha`, `cfg_top1_url`, `cfg_top1_x`, `cfg_top1_y`, `cfg_showiconplay`, `cfg_iconplaycolor`, `cfg_iconplaybgcolor`, `cfg_iconplaybgalpha`, `cfg_showtitleandstartimage`) VALUES
 (1, 0, 1, 5, 'Buffering _n_', 'FFFFFF', '000000', 1, 20, 'FFFFFF', 5, 1, 1, 1, 'autohide', 'autohide', 1, 'always', 0, '000000', 'FFFF00', 'EEEEEE', '7C7C7C', '333333', 'FFFFFF', 'FFFF00', 'cccccc', '888888', 'FFFF00', 1, 'playpause', 'fullscreen', 1500, '000000', 100, 1, 100, '', 0, 0, 1, 'FFFFFF', '000000', 75, 0);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_poll`
---
 
 DROP TABLE IF EXISTS `fs_poll`;
 CREATE TABLE IF NOT EXISTS `fs_poll` (
@@ -1539,16 +1274,9 @@ CREATE TABLE IF NOT EXISTS `fs_poll` (
   PRIMARY KEY (`poll_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_poll`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_poll_answers`
---
 
 DROP TABLE IF EXISTS `fs_poll_answers`;
 CREATE TABLE IF NOT EXISTS `fs_poll_answers` (
@@ -1559,16 +1287,9 @@ CREATE TABLE IF NOT EXISTS `fs_poll_answers` (
   PRIMARY KEY (`answer_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_poll_answers`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_poll_config`
---
 
 DROP TABLE IF EXISTS `fs_poll_config`;
 CREATE TABLE IF NOT EXISTS `fs_poll_config` (
@@ -1578,18 +1299,11 @@ CREATE TABLE IF NOT EXISTS `fs_poll_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_poll_config`
---
 
 INSERT INTO `fs_poll_config` (`id`, `answerbar_width`, `answerbar_type`) VALUES
 (1, 100, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_poll_voters`
---
 
 DROP TABLE IF EXISTS `fs_poll_voters`;
 CREATE TABLE IF NOT EXISTS `fs_poll_voters` (
@@ -1600,16 +1314,9 @@ CREATE TABLE IF NOT EXISTS `fs_poll_voters` (
   PRIMARY KEY (`voter_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_poll_voters`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_press`
---
 
 DROP TABLE IF EXISTS `fs_press`;
 CREATE TABLE IF NOT EXISTS `fs_press` (
@@ -1626,16 +1333,9 @@ CREATE TABLE IF NOT EXISTS `fs_press` (
   PRIMARY KEY (`press_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_press`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_press_admin`
---
 
 DROP TABLE IF EXISTS `fs_press_admin`;
 CREATE TABLE IF NOT EXISTS `fs_press_admin` (
@@ -1645,9 +1345,6 @@ CREATE TABLE IF NOT EXISTS `fs_press_admin` (
   PRIMARY KEY (`id`,`type`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
---
--- Daten für Tabelle `fs_press_admin`
---
 
 INSERT INTO `fs_press_admin` (`id`, `type`, `title`) VALUES
 (1, 3, 'Deutsch'),
@@ -1657,11 +1354,7 @@ INSERT INTO `fs_press_admin` (`id`, `type`, `title`) VALUES
 (5, 2, 'Review'),
 (6, 2, 'Interview');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_press_config`
---
 
 DROP TABLE IF EXISTS `fs_press_config`;
 CREATE TABLE IF NOT EXISTS `fs_press_config` (
@@ -1676,18 +1369,11 @@ CREATE TABLE IF NOT EXISTS `fs_press_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_press_config`
---
 
 INSERT INTO `fs_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `show_press`, `show_root`, `order_by`, `order_type`) VALUES
 (1, 1, 1, 0, 0, 0, 'press_date', 'desc');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_screen`
---
 
 DROP TABLE IF EXISTS `fs_screen`;
 CREATE TABLE IF NOT EXISTS `fs_screen` (
@@ -1698,20 +1384,13 @@ CREATE TABLE IF NOT EXISTS `fs_screen` (
   KEY `cat_id` (`cat_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
---
--- Daten für Tabelle `fs_screen`
---
 
 INSERT INTO `fs_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 (1, 1, ''),
 (2, 1, '22222'),
 (3, 1, 'test');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_screen_cat`
---
 
 DROP TABLE IF EXISTS `fs_screen_cat`;
 CREATE TABLE IF NOT EXISTS `fs_screen_cat` (
@@ -1724,19 +1403,12 @@ CREATE TABLE IF NOT EXISTS `fs_screen_cat` (
   PRIMARY KEY (`cat_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=3 ;
 
---
--- Daten für Tabelle `fs_screen_cat`
---
 
 INSERT INTO `fs_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`, `cat_date`, `randompic`) VALUES
 (1, 'Screenshots', 1, 1, 1263252062, 1),
 (2, 'Wallpaper', 2, 1, 1263252062, 0);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_screen_config`
---
 
 DROP TABLE IF EXISTS `fs_screen_config`;
 CREATE TABLE IF NOT EXISTS `fs_screen_config` (
@@ -1767,18 +1439,11 @@ CREATE TABLE IF NOT EXISTS `fs_screen_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_screen_config`
---
 
 INSERT INTO `fs_screen_config` (`id`, `screen_x`, `screen_y`, `screen_thumb_x`, `screen_thumb_y`, `screen_size`, `screen_rows`, `screen_cols`, `screen_order`, `screen_sort`, `show_type`, `show_size_x`, `show_size_y`, `show_img_x`, `show_img_y`, `wp_x`, `wp_y`, `wp_thumb_x`, `wp_thumb_y`, `wp_order`, `wp_size`, `wp_rows`, `wp_cols`, `wp_sort`) VALUES
 (1, 1500, 1500, 120, 90, 1024, 5, 3, 'id', 'desc', 1, 950, 700, 800, 600, 2000, 2000, 200, 150, 'id', 1536, 6, 2, 'desc');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_screen_random`
---
 
 DROP TABLE IF EXISTS `fs_screen_random`;
 CREATE TABLE IF NOT EXISTS `fs_screen_random` (
@@ -1789,16 +1454,9 @@ CREATE TABLE IF NOT EXISTS `fs_screen_random` (
   PRIMARY KEY (`random_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_screen_random`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_screen_random_config`
---
 
 DROP TABLE IF EXISTS `fs_screen_random_config`;
 CREATE TABLE IF NOT EXISTS `fs_screen_random_config` (
@@ -1809,18 +1467,11 @@ CREATE TABLE IF NOT EXISTS `fs_screen_random_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_screen_random_config`
---
 
 INSERT INTO `fs_screen_random_config` (`id`, `active`, `type_priority`, `use_priority_only`) VALUES
 (1, 1, 2, 0);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_search_config`
---
 
 DROP TABLE IF EXISTS `fs_search_config`;
 CREATE TABLE IF NOT EXISTS `fs_search_config` (
@@ -1829,18 +1480,11 @@ CREATE TABLE IF NOT EXISTS `fs_search_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED;
 
---
--- Daten für Tabelle `fs_search_config`
---
 
 INSERT INTO `fs_search_config` (`id`, `search_num_previews`) VALUES
 (1, 10);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_search_index`
---
 
 DROP TABLE IF EXISTS `fs_search_index`;
 CREATE TABLE IF NOT EXISTS `fs_search_index` (
@@ -1853,9 +1497,6 @@ CREATE TABLE IF NOT EXISTS `fs_search_index` (
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=7341 ;
 
---
--- Daten für Tabelle `fs_search_index`
---
 
 INSERT INTO `fs_search_index` (`search_index_id`, `search_index_word_id`, `search_index_type`, `search_index_document_id`, `search_index_count`) VALUES
 (7273, 118, 'articles', 1, 1),
@@ -1981,11 +1622,7 @@ INSERT INTO `fs_search_index` (`search_index_id`, `search_index_word_id`, `searc
 (7183, 14, 'articles', 1, 1),
 (7182, 11, 'articles', 1, 2);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_search_time`
---
 
 DROP TABLE IF EXISTS `fs_search_time`;
 CREATE TABLE IF NOT EXISTS `fs_search_time` (
@@ -1997,9 +1634,6 @@ CREATE TABLE IF NOT EXISTS `fs_search_time` (
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=161 ;
 
---
--- Daten für Tabelle `fs_search_time`
---
 
 INSERT INTO `fs_search_time` (`search_time_id`, `search_time_type`, `search_time_document_id`, `search_time_date`) VALUES
 (157, 'news', 1, 1270826777),
@@ -2007,11 +1641,7 @@ INSERT INTO `fs_search_time` (`search_time_id`, `search_time_type`, `search_time
 (159, 'news', 139, 1265895773),
 (160, 'news', 140, 1265895773);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_search_words`
---
 
 DROP TABLE IF EXISTS `fs_search_words`;
 CREATE TABLE IF NOT EXISTS `fs_search_words` (
@@ -2021,9 +1651,6 @@ CREATE TABLE IF NOT EXISTS `fs_search_words` (
   UNIQUE KEY `search_word` (`search_word`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=120 ;
 
---
--- Daten für Tabelle `fs_search_words`
---
 
 INSERT INTO `fs_search_words` (`search_word_id`, `search_word`) VALUES
 (1, 'webmaster'),
@@ -2146,11 +1773,7 @@ INSERT INTO `fs_search_words` (`search_word_id`, `search_word`) VALUES
 (118, 'left'),
 (119, 'test');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_shop`
---
 
 DROP TABLE IF EXISTS `fs_shop`;
 CREATE TABLE IF NOT EXISTS `fs_shop` (
@@ -2163,16 +1786,9 @@ CREATE TABLE IF NOT EXISTS `fs_shop` (
   PRIMARY KEY (`artikel_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs_shop`
---
 
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_smilies`
---
 
 DROP TABLE IF EXISTS `fs_smilies`;
 CREATE TABLE IF NOT EXISTS `fs_smilies` (
@@ -2182,9 +1798,6 @@ CREATE TABLE IF NOT EXISTS `fs_smilies` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
 
---
--- Daten für Tabelle `fs_smilies`
---
 
 INSERT INTO `fs_smilies` (`id`, `replace_string`, `order`) VALUES
 (1, ':-)', 1),
@@ -2198,11 +1811,7 @@ INSERT INTO `fs_smilies` (`id`, `replace_string`, `order`) VALUES
 (9, ':-]', 9),
 (10, '&gt;-(', 8);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_snippets`
---
 
 DROP TABLE IF EXISTS `fs_snippets`;
 CREATE TABLE IF NOT EXISTS `fs_snippets` (
@@ -2214,18 +1823,11 @@ CREATE TABLE IF NOT EXISTS `fs_snippets` (
   UNIQUE KEY `snippet_tag` (`snippet_tag`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
---
--- Daten für Tabelle `fs_snippets`
---
 
 INSERT INTO `fs_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippet_active`) VALUES
 (1, '[%feeds%]', '<p>\r\n  <b>News-Feeds:</b>\r\n</p>\r\n<p align=\\"center\\">\r\n  <a href=\\"$VAR(url)feeds/rss091.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss091.gif\\" alt=\\"RSS 0.91\\" title=\\"RSS 0.91\\" border=\\"0\\"></a><br>\r\n  <a href=\\"$VAR(url)feeds/rss10.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss10.gif\\" alt=\\"RSS 1.0\\" title=\\"RSS 1.0\\" border=\\"0\\"></a><br>\r\n  <a href=\\"$VAR(url)feeds/rss20.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss20.gif\\" alt=\\"RSS 2.0\\" title=\\"RSS 2.0\\" border=\\"0\\"></a><br>\r\n  <a href=\\"$VAR(url)feeds/atom10.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/atom10.gif\\" alt=\\"Atom 1.0\\" title=\\"Atom 1.0\\" border=\\"0\\"></a>\r\n</p>', 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_styles`
---
 
 DROP TABLE IF EXISTS `fs_styles`;
 CREATE TABLE IF NOT EXISTS `fs_styles` (
@@ -2237,20 +1839,13 @@ CREATE TABLE IF NOT EXISTS `fs_styles` (
   UNIQUE KEY `style_tag` (`style_tag`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
---
--- Daten für Tabelle `fs_styles`
---
 
 INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allow_edit`) VALUES
 (0, 'default', 0, 0),
 (1, 'lightfrog', 1, 1),
 (3, 'darkfrog', 0, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_user`
---
 
 DROP TABLE IF EXISTS `fs_user`;
 CREATE TABLE IF NOT EXISTS `fs_user` (
@@ -2273,19 +1868,12 @@ CREATE TABLE IF NOT EXISTS `fs_user` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=3 ;
 
---
--- Daten für Tabelle `fs_user`
---
 
 INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
 (1, 'admin', '6cdd7286f7e3b73008cef8a887bb7b80', 'SWEempPQBm', 'admin@frogsystem.de', 1, 0, 1, 1263252177, 1, 'http://www.frogsystem.de', '', '', '', '', ''),
 (2, 'test', 'ae22d0fe766803a13abf01ba5bfab4e4', 'rU1cvt0uz7', 'test', 1, 1, 0, 1268089200, 0, '', '', '', '', '', '');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_useronline`
---
 
 DROP TABLE IF EXISTS `fs_useronline`;
 CREATE TABLE IF NOT EXISTS `fs_useronline` (
@@ -2295,18 +1883,9 @@ CREATE TABLE IF NOT EXISTS `fs_useronline` (
   PRIMARY KEY (`ip`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_useronline`
---
 
-INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1276781732);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_user_config`
---
 
 DROP TABLE IF EXISTS `fs_user_config`;
 CREATE TABLE IF NOT EXISTS `fs_user_config` (
@@ -2324,18 +1903,11 @@ CREATE TABLE IF NOT EXISTS `fs_user_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_user_config`
---
 
 INSERT INTO `fs_user_config` (`id`, `user_per_page`, `registration_antispam`, `avatar_x`, `avatar_y`, `avatar_size`, `group_pic_x`, `group_pic_y`, `group_pic_size`, `reg_date_format`, `user_list_reg_date_format`) VALUES
 (1, -1, 1, 110, 110, 20, 250, 25, 50, 'l, j. F Y', 'j. F Y');
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_user_groups`
---
 
 DROP TABLE IF EXISTS `fs_user_groups`;
 CREATE TABLE IF NOT EXISTS `fs_user_groups` (
@@ -2350,19 +1922,12 @@ CREATE TABLE IF NOT EXISTS `fs_user_groups` (
   PRIMARY KEY (`user_group_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
---
--- Daten für Tabelle `fs_user_groups`
---
 
 INSERT INTO `fs_user_groups` (`user_group_id`, `user_group_name`, `user_group_description`, `user_group_title`, `user_group_color`, `user_group_highlight`, `user_group_date`, `user_group_user`) VALUES
 (0, 'Administrator', '', 'Chef vom Dienst', '008800', 1, 1223676000, 1),
 (1, 'Mitarbeiter', NULL, NULL, '-1', 0, 1268131619, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_user_permissions`
---
 
 DROP TABLE IF EXISTS `fs_user_permissions`;
 CREATE TABLE IF NOT EXISTS `fs_user_permissions` (
@@ -2372,9 +1937,6 @@ CREATE TABLE IF NOT EXISTS `fs_user_permissions` (
   PRIMARY KEY (`perm_id`,`x_id`,`perm_for_group`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Daten für Tabelle `fs_user_permissions`
---
 
 INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 ('fscode_add', 2, 0),
@@ -2384,11 +1946,7 @@ INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 ('news_delete', 1, 1),
 ('news_edit', 1, 1);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_wallpaper`
---
 
 DROP TABLE IF EXISTS `fs_wallpaper`;
 CREATE TABLE IF NOT EXISTS `fs_wallpaper` (
@@ -2399,18 +1957,11 @@ CREATE TABLE IF NOT EXISTS `fs_wallpaper` (
   PRIMARY KEY (`wallpaper_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
---
--- Daten für Tabelle `fs_wallpaper`
---
 
 INSERT INTO `fs_wallpaper` (`wallpaper_id`, `wallpaper_name`, `wallpaper_title`, `cat_id`) VALUES
 (1, 'test', 'test', 2);
 
--- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `fs_wallpaper_sizes`
---
 
 DROP TABLE IF EXISTS `fs_wallpaper_sizes`;
 CREATE TABLE IF NOT EXISTS `fs_wallpaper_sizes` (
@@ -2420,9 +1971,6 @@ CREATE TABLE IF NOT EXISTS `fs_wallpaper_sizes` (
   PRIMARY KEY (`size_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
---
--- Daten für Tabelle `fs_wallpaper_sizes`
---
 
 INSERT INTO `fs_wallpaper_sizes` (`size_id`, `wallpaper_id`, `size`) VALUES
 (1, 1, '1920x1200');

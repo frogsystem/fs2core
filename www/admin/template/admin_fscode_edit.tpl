@@ -21,14 +21,14 @@
                 <td class="config">
                   <!--PHRASE::add_date-->
                   <!--LANG::overview_table_added_by-->
-                  <a href="../?go=profil&amp;userid=<!--PHRASE::add_user_id-->" target=\"_blank\">
+                  <a href="../?go=profil&amp;userid=<!--PHRASE::add_user_id-->" target="_blank">
                     <!--PHRASE::add_user_name-->
                   </a>
                 </td>
                 <td class="config">
                   <!--IF::edited?1--><!--PHRASE::edit_date-->
                   <!--LANG::overview_table_edited_by-->
-                  <a href="../?go=profil&amp;userid=<!--PHRASE::edit_user_id-->" target=\"_blank\">
+                  <a href="../?go=profil&amp;userid=<!--PHRASE::edit_user_id-->" target="_blank">
                     <!--PHRASE::edit_user_name-->
                   </a><!--ELSE--><!--LANG::overview_table_edited_never--><!--ENDIF-->
                 </td>

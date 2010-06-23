@@ -32,29 +32,33 @@ if(isset($_POST[addcode])){
             }
           }
           if($_FILES[icon][error] != 4){ // es wurde ein icon hochgeladen
-            $tmp = $sql->getData("fscode_config", "*");
+            $tmp = $sql->getData("fscodes_config", "*");
             foreach($tmp as $conf)
               $fileconfig[$conf[type]] = $conf[value];
             unset($conf, $tmp);
-            if($notice = upload_img($_FILES[icon], "styles/".$global_config_arr[style_tag]."/icons/fscode/", $name, $fileconfig[file_size], $fileconfig[file_width], $fileconfig[file_height]) != 0)
+            if($notice = upload_img($_FILES[icon], "media/fscode-images/", $name, $fileconfig[file_size], $fileconfig[file_width], $fileconfig[file_height]) != 0)
               systext(upload_img_notice($notice), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
           }
 
           unset($_POST, $name, $content, $allow, $disallow, $callback, $active, $paragraphes, $param_1, $param_2, $php);
-          systext("Code erfolgreich gespeichert.", $TEXT["admin"]->get("changes_saved"), FALSE, $TEXT["admin"]->get("icon_save_ok"));
+          systext($adminpage->lang("save_ok"), $TEXT["admin"]->get("changes_saved"), FALSE, $TEXT["admin"]->get("icon_save_ok"));
         } else {
           unset($name, $content, $allow, $disallow, $callback, $active, $paragraphes, $param_1, $param_2, $php);
           $error = $sql->getError();
-          systext("Der Code konnte nicht hinzugefügt werden.<br>SQL meldet: ".$error[0]." : ".$error[1], $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
+          $txt = $adminpage->lang("save_error_1");
+          $txt = str_replace("{..err_msg..}", $error[0], $txt);
+          $txt = str_replace("{..err_no..}", $error[1], $txt);
+          systext($txt, $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
+          unset($error, $txt);
         }
 
       } else {
-        systext("Der Name des Code enthält ungültige Zeichen!", $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
+        systext($adminpage->lang("save_error_2"), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
       }
     } else
-      systext("Ein Code mit diesem Namen existiert bereits!", $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
+      systext($adminpage->lang("save_error_3"), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
   } else
-    systext("Fülle alle Pflichtfelder aus!", $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
+    systext($TEXT["admin"]->get("form_not_filled"), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error"));
 }
 $flags = "";
 if(isset($_POST[flag])){
@@ -104,7 +108,7 @@ $adminpage->addPhrase("param_2_val",  $_POST[param_2]);
 $adminpage->addPhrase("param_3_val",  $_POST[php]);
 $adminpage->addPhrase("submitarrow",  $admin_phrases[common][arrow]);
 $adminpage->addPhrase("submittext",   $admin_phrases[common][save_long]);
-$adminpage->addPhrase("tag_1", get_taglist(array(array(tag => "x", text => "Der angegebene Parameter")), "param_1" ));
-$adminpage->addPhrase("tag_2", get_taglist(array(array(tag => "x", text => "Der \"Inhalt\" des Codes.<br>[code='Parameter']<b>Inhalt</b>[/code]"), array(tag => "y", text  => "Der Parameter des Codes.<br>[code='<b>Parameter</b>']Inhalt[/code]")), "param_2" ));
+$adminpage->addPhrase("tag_1", get_taglist(array(array(tag => "x", text => $adminpage->lang("tag_1"))), "param_1" ));
+$adminpage->addPhrase("tag_2", get_taglist(array(array(tag => "x", text => $adminpage->lang("tag_2_1")), array(tag => "y", text  => $adminpage->lang("tag_2_2"))), "param_2" ));
 echo $adminpage->get("main");
 ?>

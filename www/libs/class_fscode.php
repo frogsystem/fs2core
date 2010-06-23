@@ -39,20 +39,6 @@ class fscode{
     $this->parser->setGlobalCaseSensitive (false);
 	}
 
-  public function disableCode($codename){
-  // delete code
-    if(in_array($codename, $this->codes)){
-      $codeid = 0;
-      foreach($this->codes as $code){
-        if($code[name] == $codename)
-          break;
-        else
-          $codeid++;
-      }
-      unset($this->codes[$codeid]);
-    }
-  }
-
   public function setHTML($value){
     if(is_bool($value)){
       $this->html = $value;
@@ -65,17 +51,11 @@ class fscode{
     }
   }
 
-  public function disableSmilie($value){
-    if(is_bool($value)){
-      $this->smilie = $value;
-    }
-  }
-
-  public function parse($text){
+  public function parse($text, $user = false){
     global $sql;
     if($this->fullyinitialized == false){
       foreach($this->codes as $code){
-        if($code[active] == 1){ // fs-code ist definiert
+        if($code[active] == 1 && (($user == true && $code[userusage] == 1) || $user == false)){ // fs-code ist definiert & darf benutzt werden
           // callback funktion erzeugen
           if($code[callbacktype] == 0 || $code[callbacktype] == 1)
             $callbackfunc = null;
@@ -114,17 +94,20 @@ class fscode{
           // unset vars
           unset($callbackfunc, $params, $allowin, $disallowin);
 
-          /*// absatzbehandlung
+          // absatzbehandlung
           if($code[allowparagraphes] == 0)
-            $this->parser->setCodeFlag($code[name], 'paragraphs', false);*/
+            $this->parser->setCodeFlag($code[name], 'paragraphs', false);
         }
       }
 
       foreach($this->flags as $flag){
-        $codename = $sql->getData("fscodes", "name", "WHERE `id`=".$flag[code],1);
-        #print_r($sql->qrystr);
-        if($this->codeDefined($codename)){
-          $this->parser->setCodeFlag($codename, $flag[name], $flag[value]);
+        $codename = $sql->getData("fscodes", "`name`, `active`, `userusage`", "WHERE `id`=".$flag[code],1);
+        unset($convert);
+        $convert = $this->convert($flag[name], $flag[value]);
+        if($codename[name] == 'list')
+          print_r($convert);
+        if($convert != false && $codename[active] == 1 && (($codename[userusage] == 1 && $user == true) || $user == false)){
+          $this->parser->setCodeFlag($codename[name], $convert[0], $convert[1]);
         }
       }
       $this->fullyinitialized = true;
@@ -142,6 +125,45 @@ class fscode{
     $this->parser->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
 
     return $this->parser->parse($text);
+  }
+
+  private function convert($name, $value){
+    $name = intval($name);
+    if($name > 0 && $name < 9){
+      $value = intval($value);
+      switch($name){
+        case 1: #case_sensitive
+          return array("case_sensitive", ($value == 1) ? false : true);
+          break;
+        case 2: #closetag
+          return array( "closetag",
+            ($value == 0) ? BBCODE_CLOSETAG_FORBIDDEN :
+            ($value == 1) ? BBCODE_CLOSETAG_OPTIONAL :
+            ($value == 3) ? BBCODE_CLOSETAG_IMPLICIT_ON_CLOSE_ONLY :
+            ($value == 4) ? BBCODE_CLOSETAG_MUSTEXIST:
+            BBCODE_CLOSETAG_IMPLICIT);
+          break;
+        case 7: #paragraph_type
+          return array("paragraph_type",
+            ($value == 1) ? BBCODE_PARAGRAPH_ALLOW_INSIDE :
+            ($value == 2) ? BBCODE_PARAGRAPH_BLOCK_ELEMENT :
+            BBCODE_PARAGRAPH_ALLOW_BREAKUP);
+          break;
+        case 8: #paragraphes
+          return array("paragraphes", ($value == 0) ? true : false);
+          break;
+        default: #opentag... , closetag...
+          return array(
+            ($name == 3) ? "opentag.before.newline" :
+            ($name == 4) ? "opentag.after.newline" :
+            ($name == 5) ? "closetag.before.newline" :
+            "closetag.after.newline",
+            ($value == 1) ? BBCODE_NEWLINE_IGNORE :
+            ($value == 2) ? BBCODE_NEWLINE_DROP :
+            BBCODE_NEWLINE_PARSE);
+      }
+    } else
+      return false;
   }
 }
 ?>
