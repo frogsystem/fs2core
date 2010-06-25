@@ -664,7 +664,7 @@ function delete_old_randoms ()
 ///////////////////////////////
 function get_copyright ()
 {
-        return '<span class="copyright">Powered by <a class="copyright_link" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007 - 2010 Frogsystem-Team</span>';
+        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - 2010 Frogsystem-Team</span>';
 }
 
 
@@ -723,7 +723,7 @@ function copyright ()
     $copyright = $template_copyright->display();
 
     if ( strpos ( $copyright, $template_copyright->getOpener()."copyright".$template_copyright->getCloser() ) == FALSE
-                    || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2010 Frogsystem-Team" ) == FALSE
+                    || strpos ( get_copyright (), "Frogsystem&nbsp;2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2010 Frogsystem-Team" ) == FALSE
                     || strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE ) {
         $global_config_arr['style'] =  "default";
     } else {
