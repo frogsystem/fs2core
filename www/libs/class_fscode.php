@@ -76,14 +76,16 @@ class fscode{
 
           // allow in...
           if(!empty($code[allowin])){
-            $allowin = explode(",", $code[allowin]);
+            $allowin = str_replace("&#44;", ",", $code[allowin]);
+            $allowin = explode(",", $allowin);
             $allowin = (is_array($allowin))?array_map("trim", $allowin):array();
           } else
             $allowin = array();
 
           // disallow in...
           if(!empty($code[disallowin])){
-            $disallowin = explode(",", $code[disallowin]);
+            $disallowin = str_replace("&#44;", ",", $code[disallowin]);
+            $disallowin = explode(",", $disallowin);
             $disallowin = (is_array($disallowin))?array_map("trim", $disallowin):array();
           } else
             $disallowin = array();
@@ -103,9 +105,7 @@ class fscode{
       foreach($this->flags as $flag){
         $codename = $sql->getData("fscodes", "`name`, `active`, `userusage`", "WHERE `id`=".$flag[code],1);
         unset($convert);
-        $convert = $this->convert($flag[name], $flag[value]);
-        if($codename[name] == 'list')
-          print_r($convert);
+        $convert = $this->convert($flag[name], $flag[value], $flag[code]);
         if($convert != false && $codename[active] == 1 && (($codename[userusage] == 1 && $user == true) || $user == false)){
           $this->parser->setCodeFlag($codename[name], $convert[0], $convert[1]);
         }
@@ -127,7 +127,7 @@ class fscode{
     return $this->parser->parse($text);
   }
 
-  private function convert($name, $value){
+  private function convert($name, $value, $code){
     $name = intval($name);
     if($name > 0 && $name < 9){
       $value = intval($value);
@@ -136,18 +136,10 @@ class fscode{
           return array("case_sensitive", ($value == 1) ? false : true);
           break;
         case 2: #closetag
-          return array( "closetag",
-            ($value == 0) ? BBCODE_CLOSETAG_FORBIDDEN :
-            ($value == 1) ? BBCODE_CLOSETAG_OPTIONAL :
-            ($value == 3) ? BBCODE_CLOSETAG_IMPLICIT_ON_CLOSE_ONLY :
-            ($value == 4) ? BBCODE_CLOSETAG_MUSTEXIST:
-            BBCODE_CLOSETAG_IMPLICIT);
+          return array( "closetag", $value-1);
           break;
         case 7: #paragraph_type
-          return array("paragraph_type",
-            ($value == 1) ? BBCODE_PARAGRAPH_ALLOW_INSIDE :
-            ($value == 2) ? BBCODE_PARAGRAPH_BLOCK_ELEMENT :
-            BBCODE_PARAGRAPH_ALLOW_BREAKUP);
+          return array("paragraph_type", $value);
           break;
         case 8: #paragraphes
           return array("paragraphes", ($value == 0) ? true : false);
@@ -157,10 +149,7 @@ class fscode{
             ($name == 3) ? "opentag.before.newline" :
             ($name == 4) ? "opentag.after.newline" :
             ($name == 5) ? "closetag.before.newline" :
-            "closetag.after.newline",
-            ($value == 1) ? BBCODE_NEWLINE_IGNORE :
-            ($value == 2) ? BBCODE_NEWLINE_DROP :
-            BBCODE_NEWLINE_PARSE);
+            "closetag.after.newline", $value);
       }
     } else
       return false;
