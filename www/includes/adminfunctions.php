@@ -764,7 +764,7 @@ function create_group ($GROUP_ARR, $IS_FIRST, $GO )
     ", $db );
     $template = "";
     while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {
-        $template .= create_link ( $PAGE_ARR['page_id'], $PAGE_ARR['page_link'], $GO );
+        $template .= create_link ( $PAGE_ARR['page_id'], $GO );
     }
 
     // is group first in navi?

@@ -18,8 +18,8 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         systext('Download wurde gelöscht');
         
         // Delete from Search Index
-        $indexObject = new search ( "dl" );
-        $indexObject->deleteIndexForContent ( $_POST['editdlid'] );
+        require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+        delete_search_index_for_one ( $_POST['editdlid'], "dl" );
     }
     else
     {
@@ -63,8 +63,9 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POS
         
         // Update Search Index (or not)
         if ( $global_config_arr['search_index_update'] === 1 ) {
-            // Update Search Index
-            $indexObject->updateIndex();
+            // Include searchfunctions.php
+            require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+            update_search_index ( "dl" );
         }
         
 
@@ -210,13 +211,13 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
     ';
     // Kategorien auflisten
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, -1);
+    get_dl_categories (&$valid_ids, -1, 1);
 
     foreach ($valid_ids as $cat)
     {
         $sele = ($_POST[catid] == $cat[cat_id]) ? "selected" : "";
         echo'
-                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
+                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
         ';
     }
     echo'
@@ -386,13 +387,13 @@ else
     }  */
     
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, -1);
+    get_dl_categories (&$valid_ids, -1, 1);
 
     foreach ($valid_ids as $cat)
     {
         $sele = ($_POST[dlcatid] == $cat[cat_id]) ? "selected" : "";
         echo'
-                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
+                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
         ';
     }
 

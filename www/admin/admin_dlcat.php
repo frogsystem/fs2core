@@ -35,7 +35,7 @@ elseif (isset($_POST[editcatid]))
     settype ($_POST[editcatid], 'integer');
 
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, $_POST[editcatid]);
+    get_dl_categories (&$valid_ids, $_POST[editcatid], 1);
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_cat WHERE cat_id = '$_POST[editcatid]'", $db);
     $cat_arr = mysql_fetch_assoc($index);
@@ -65,10 +65,12 @@ elseif (isset($_POST[editcatid]))
     ';
     foreach ($valid_ids as $cat)
     {
-        $sele = ($cat_arr[subcat_id] == $cat[cat_id]) ? "selected" : "";
-        echo'
-                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
-        ';
+        if ( $cat_arr[cat_id] != $cat[cat_id] ) {
+            $sele = ($cat_arr[subcat_id] == $cat[cat_id]) ? "selected" : "";
+            echo'
+                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
+            ';
+        }
     }
     echo'
                                     </select>

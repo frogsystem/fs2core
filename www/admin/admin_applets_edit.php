@@ -233,92 +233,34 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
 ////////////////////////////
 if ( !isset ( $_POST['applet_id'] ) )
 {
-
-    // start display
-    echo '
-                    <form action="" method="post">
-                        <input type="hidden" name="go" value="applets_edit">
-                        <table class="configtable select_list" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="4">'.$TEXT["admin"]->get("applet_select_title").'</td></tr>
-    ';
-
     // get applets from db
-    $index = mysql_query ( "
-                            SELECT *
-                            FROM ".$global_config_arr['pref']."applets
-                            ORDER BY `applet_file`
-    ", $db );
+    $applets = $sql->query ( "SELECT * FROM `{..pref..}applets` ORDER BY `applet_file`" );
+
+    // generate list
+    $theList = new SelectList ( "applet", $TEXT["admin"]->get("applet_select_title"), "applets_edit", 4 );
+    $theList->setColumns ( array (
+        array ( $TEXT["admin"]->get("filename") ),
+        array ( '&nbsp;&nbsp;'.$TEXT["admin"]->get("active").'&nbsp;&nbsp;', array(), 20 ),
+        array ( '&nbsp;&nbsp;'.$TEXT["admin"]->get("output").'&nbsp;&nbsp;', array(), 20 ),
+        array ( "", array(), 20 )
+    ) );
+    $theList->setNoLinesText ( $TEXT["admin"]->get("applets_not_found") );
+    $theList->addAction ( "edit", $TEXT["admin"]->get("selection_edit"), array ( "select_one" ), TRUE, TRUE );
+    $theList->addAction ( "delete", $TEXT["admin"]->get("selection_delete"), array ( "select_red" ), $_SESSION['applets_delete'] );
+    $theList->addButton();
 
     // applets found
-    if ( mysql_num_rows ( $index ) > 0 ) {
-
-        // display table head
-        echo '
-                            <tr>
-                                <td class="config">'.$TEXT["admin"]->get("filename").'</td>
-                                <td class="config" width="20">&nbsp;&nbsp;'.$TEXT["admin"]->get("active").'&nbsp;&nbsp;</td>
-                                <td class="config" width="20">&nbsp;&nbsp;'.$TEXT["admin"]->get("output").'&nbsp;&nbsp;</td>
-                                <td class="config" width="20"></td>
-                            </tr>
-        ';
-
-        // display applets
-        while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
-
-            // get other data
-            $data_arr['active_text'] = ( $data_arr['applet_active'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no");
-            $data_arr['output_text'] = ( $data_arr['applet_output'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no");
-
-            echo '
-
-                            <tr class="select_entry">
-                                <td class="configthin middle">'.killhtml ( $data_arr['applet_file'] ).'.php</td>
-                                <td class="configthin middle center">'.$data_arr['active_text'].'</td>
-                                <td class="configthin middle center">'.$data_arr['output_text'].'</td>
-                                <td class="config top center">
-                                    <input class="pointer select_box" type="checkbox" name="applet_id[]" value="'.$data_arr['applet_id'].'">
-                                </td>
-                            </tr>
-            ';
+    if ( $applets !== FALSE && mysql_num_rows ( $applets ) > 0 ) {
+        while ( $data_arr = mysql_fetch_assoc ( $applets ) ) {
+            $theList->addLine ( array (
+                array ( killhtml ( $data_arr['applet_file'] ).'.php', array ( "middle" ) ),
+                array ( ( $data_arr['applet_active'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no"), array ( "middle", "center" ) ),
+                array ( ( $data_arr['applet_output'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no"), array ( "middle", "center" ) ),
+                array ( TRUE, $data_arr['applet_id'] )
+            ) );
         }
-
-        // display footer with button
-        echo'
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="right" colspan="4">
-                                    <select class="select_type" name="applet_action" size="1">
-                                        <option class="select_one" value="edit" '.getselected( "edit", $_POST['applet_action'] ).'>'.$TEXT["admin"]->get("selection_edit").'</option>
-        ';
-        echo ( $_SESSION['applets_delete'] ) ? '<option class="select_red" value="delete" '.getselected ( "delete", $_POST['applet_action'] ).'>'.$TEXT["admin"]->get("selection_delete").'</option>' : "";
-        echo'
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="buttontd" colspan="4">
-                                    <button class="button_new" type="submit">
-                                        '.$TEXT["admin"]->get("button_arrow").' '.$TEXT["admin"]->get("do_action_button_long").'
-                                    </button>
-                                </td>
-                            </tr>
-        ';
-
-    // no Applets found
-    } else {
-
-           echo'
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="config center" colspan="4">'.$TEXT["admin"]->get("applets_not_found").'</td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-        ';
     }
-    echo '
-                        </table>
-                </form>
-    ';
+    // Output
+    echo $theList;
 }
 ?>

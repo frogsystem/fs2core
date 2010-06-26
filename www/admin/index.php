@@ -23,6 +23,7 @@ require ( FS2_ROOT_PATH . "libs/class_fileaccess.php");
 require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
 require ( FS2_ROOT_PATH . "libs/class_adminpage.php");
 require ( FS2_ROOT_PATH . "libs/class_search.php");
+require ( FS2_ROOT_PATH . "libs/class_admin_selectlist.php");
 
 //Include Phrases-Files
 require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );

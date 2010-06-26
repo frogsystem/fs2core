@@ -21,18 +21,21 @@ class SelectList
     private $cols = 2;
     private $captions = array();
     private $lines = array();
-    private $noLines = "DUMMY DEFAULT TEXT FOR NO CONTENT";
+    private $noLines;
 
-    private $selection = FALSE;
+    private $selection = TRUE;
     private $actions = array();
     private $defaultAction;
     
     private $button = FALSE;
 
     
-    
-    //
+    // Constructor
     public function __construct ( $formName, $title, $go, $cols = 2, $formMethod = "post", $formAction = "" ) {
+        // Include global Data
+        global $TEXT;
+        $this->text = $TEXT;
+
         $this->formName = $formName;
         $this->title = $title;
         $this->go = $go;
@@ -60,14 +63,14 @@ class SelectList
     * $col_array1, $col_array2, ... each representing one col which is an Array of this kind:
     * array ( String $html_label, [ Array $css_classes, [ Integer $col_width ]]  )
     */
-    public function addCaptions ( $ARRAY ) {
+    public function setColumns ( $ARRAY ) {
         try {
-            $this->addCaptionsInner ( $ARRAY );
+            $this->setColumnsInner ( $ARRAY );
         } catch ( Exception $e ) {
             echo 'Error: ',  $e->getMessage(), "\n";
         }
     }
-    private function addCaptionsInner ( $ARRAY ) {
+    private function setColumnsInner ( $ARRAY ) {
         if ( count ( $ARRAY ) != $this->cols ) {
             throw new Exception('Tried to use more cols than defined.');
         }
@@ -76,12 +79,13 @@ class SelectList
     
     /**
     * needs Array of this kind:
-    * array ( $col_array1, $col_array2, ... )
+    * array ( $col_array1, [ $col_array2, [ ... ] ] )
     *
     * $col_array1, $col_array2, ... each representing one col which is an Array of this kind:
-    * array ( String $html_content, Array $css_classes )
+    * array ( String $html_content, [ Array $css_classes ] )
     *
-    * Set FALSE instead of a $col_array for the Checkbox!
+    * For the Checkbox, give an arry of this kind:
+    * array ( TRUE, mixed $input_value )
     */
     public function addLine ( $ARRAY ) {
         try {
@@ -107,13 +111,18 @@ class SelectList
         $this->defaultAction = $ACTION;
        }
     }
-
-    public function addSelection () {
-        $this->selection = TRUE;
+    
+    // Boolean $STATE
+    public function setSelection ( $STATE ) {
+        $this->selection = $STATE;
     }
     
-    public function addButon ( $TEXT = "DEFAULT" ) {
-        $this->button = $TEXT;
+    public function addButton ( $TEXT = "" ) {
+        if ( $TEXT != "" ) {
+            $this->button = $TEXT;
+        } else {
+            $this->button = $this->text["admin"]->get("do_action_button_long");
+        }
     }
     
 
@@ -149,7 +158,7 @@ class SelectList
                             <tr>';
             foreach ( $this->captions as $aCaption ) {
                 $width = ( isset ( $aCaption[2] ) ) ? ' width="'.$aCaption[2].'"' : '';
-                $css = ( isset ( $aCaption[1] ) ) ? ' '.implode( " ",  $aCaption[2] ) : '';
+                $css = ( isset ( $aCaption[1] ) ) ? ' '.implode( " ",  $aCaption[1] ) : '';
                 $template .= '
                                 <td class="config'.$css.'"'.$width.'>'.$aCaption[0].'</td>';
             }
@@ -157,11 +166,35 @@ class SelectList
                             </tr>';
             
             // Genarate Content
-            // TODO
+            foreach ( $this->lines as $aLine ) {
+                $template .= '
+                            <tr class="select_entry">';
+
+                foreach ( $aLine as $aCol ) {
+                    // Checkbox
+                    if ( $aCol[0] === TRUE ) {
+                        $template .= '
+                                <td class="configthin top center">
+                                    <input class="pointer select_box" type="checkbox" name="'.$this->formName.'_id[]" value="'.$aCol[1].'">
+                                </td>';
+                    // Entry
+                    } else {
+                        $css = ( isset ( $aCol[1] ) ) ? ' '.implode( " ",  $aCol[1] ) : '';
+                        $template .= '
+                                <td class="configthin'.$css.'">'.$aCol[0].'</td>';
+                    }
+                }
+                $template .= '
+                            </tr>';
+            }
 
             // Generate Action Selection
-            // TODO: default auswahl
             if ( $this->selection !== FALSE && count ( $this->actions ) >= 1 ) {
+                // default action
+                if ( !isset ( $_POST[$this->formName.'_action'] ) && isset ( $this->defaultAction ) ) {
+                    $_POST[$this->formName.'_action'] = $this->defaultAction;
+                }
+
                 $template .= '
                             <tr><td class="space"></td></tr>
                             <tr>
@@ -174,7 +207,7 @@ class SelectList
                             $theFlags = ' class="'.implode ( " ", $aAction['flags'] ).'"';
                         }
                         $template .= '
-                        <option'.$flag.' value="'.$aAction['action'].'" '.getselected( $aAction['action'], $_POST[$this->formName.'_action'] ).'>'.$aAction['label'].'</option>';
+                                        <option'.$theFlags.' value="'.$aAction['action'].'" '.getselected( $aAction['action'], $_POST[$this->formName.'_action'] ).'>'.$aAction['label'].'</option>';
                     }
                 }
                 $template .= '
@@ -190,7 +223,7 @@ class SelectList
                             <tr>
                                 <td class="buttontd" colspan="'.$this->cols.'">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT["admin"]->get("button_arrow").' '.$this->button.'
+                                        '.$this->text["admin"]->get("button_arrow").' '.$this->button.'
                                     </button>
                                 </td>
                             </tr>';
