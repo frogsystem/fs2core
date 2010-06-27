@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 26. Juni 2010 um 20:08
+-- Erstellungszeit: 27. Juni 2010 um 13:39
 -- Server Version: 5.1.37
 -- PHP-Version: 5.3.0
 
@@ -429,7 +429,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 88, 3863, 2, 1, 2, 2);
+(1, 89, 3871, 2, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -452,7 +452,7 @@ CREATE TABLE `fs_counter_ref` (
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
-('http://localhost/fs2/', 124, 1263499887, 1277575678),
+('http://localhost/fs2/', 125, 1263499887, 1277634297),
 ('http://alix.worldofgothic.com/beta4/admin/?go=gen_config', 2, 1267197504, 1267197505),
 ('http://demo.frogsystem.de/admin/?go=gen_config', 1, 1267198063, 1267198063),
 ('http://localhost/', 35, 1273256730, 1277230404),
@@ -539,7 +539,8 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 6, 18, 2, 4),
 (2010, 6, 22, 2, 26),
 (2010, 6, 25, 1, 1),
-(2010, 6, 26, 1, 4);
+(2010, 6, 26, 1, 4),
+(2010, 6, 27, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -1253,7 +1254,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1277564623);
+(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1277634297);
 
 -- --------------------------------------------------------
 
@@ -1363,11 +1364,12 @@ INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comm
 DROP TABLE IF EXISTS `fs_news_config`;
 CREATE TABLE `fs_news_config` (
   `id` tinyint(1) NOT NULL,
-  `num_news` int(11) DEFAULT NULL,
-  `num_head` int(11) DEFAULT NULL,
-  `html_code` tinyint(4) DEFAULT NULL,
-  `fs_code` tinyint(4) DEFAULT NULL,
-  `para_handling` tinyint(4) DEFAULT NULL,
+  `num_news` smallint(4) NOT NULL DEFAULT '10',
+  `num_applet` smallint(4) NOT NULL DEFAULT '5',
+  `num_head` smallint(4) NOT NULL DEFAULT '5',
+  `html_code` tinyint(4) NOT NULL DEFAULT '2',
+  `fs_code` tinyint(4) NOT NULL DEFAULT '4',
+  `para_handling` tinyint(4) NOT NULL DEFAULT '4',
   `cat_pic_x` smallint(4) NOT NULL DEFAULT '0',
   `cat_pic_y` smallint(4) NOT NULL DEFAULT '0',
   `cat_pic_size` smallint(4) NOT NULL DEFAULT '0',
@@ -1385,8 +1387,8 @@ CREATE TABLE `fs_news_config` (
 -- Daten für Tabelle `fs_news_config`
 --
 
-INSERT INTO `fs_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
-(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 2, 'DESC', 40, ' ...', 15, 2);
+INSERT INTO `fs_news_config` (`id`, `num_news`, `num_applet`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
+(1, 10, 5, 5, 2, 4, 4, 150, 150, 1024, 2, 2, 'DESC', 40, ' ...', 15, 2);
 
 -- --------------------------------------------------------
 
@@ -2324,7 +2326,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1277575678);
+('127.0.0.1', 1, 1277634603);
 
 -- --------------------------------------------------------
 

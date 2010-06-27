@@ -5,17 +5,19 @@
 
 // Write Data into DB
 if (
-		$_POST['num_news'] && $_POST['num_news'] > 0
-		&& $_POST['num_head'] && $_POST['num_head'] > 0
-		&& $_POST['cat_pic_x'] && $_POST['cat_pic_x'] > 0
-		&& $_POST['cat_pic_y'] && $_POST['cat_pic_y'] > 0
-		&& $_POST['cat_pic_size'] && $_POST['cat_pic_size'] > 0
-		&& $_POST['news_headline_lenght']
-		&& $_POST['acp_per_page'] && $_POST['acp_per_page'] > 0
-	)
+        $_POST['num_news'] && $_POST['num_news'] > 0
+        && $_POST['num_applet'] && $_POST['num_applet'] > 0
+        && $_POST['num_head'] && $_POST['num_head'] > 0
+        && $_POST['cat_pic_x'] && $_POST['cat_pic_x'] > 0
+        && $_POST['cat_pic_y'] && $_POST['cat_pic_y'] > 0
+        && $_POST['cat_pic_size'] && $_POST['cat_pic_size'] > 0
+        && $_POST['news_headline_lenght']
+        && $_POST['acp_per_page'] && $_POST['acp_per_page'] > 0
+    )
 {
-	// security functions
+    // security functions
     settype ( $_POST['num_news'], "integer" );
+    settype ( $_POST['num_applet'], "integer" );
     settype ( $_POST['num_head'], "integer" );
     settype ( $_POST['html_code'], "integer" );
     settype ( $_POST['fs_code'], "integer" );
@@ -32,30 +34,31 @@ if (
     $_POST['com_sort'] = savesql ( $_POST['com_sort'] );
     $_POST['news_headline_ext'] = savesql ( $_POST['news_headline_ext'] );
 
-	// MySQL-Update-Query
+    // MySQL-Update-Query
     mysql_query ("
-					UPDATE `".$global_config_arr['pref']."news_config`
-                 	SET
-					 	`num_news` = '".$_POST['num_news']."',
-                     	`num_head` = '".$_POST['num_head']."',
-                     	`html_code` = '".$_POST['html_code']."',
-                     	`fs_code` = '".$_POST['fs_code']."',
-                     	`para_handling` = '".$_POST['para_handling']."',
-                     	`cat_pic_x` = '".$_POST['cat_pic_x']."',
-                     	`cat_pic_y` = '".$_POST['cat_pic_y']."',
-                     	`cat_pic_size` = '".$_POST['cat_pic_size']."',
-                     	`com_rights` = '".$_POST['com_rights']."',
-                     	`com_antispam` = '".$_POST['com_antispam']."',
-                     	`com_sort` = '".$_POST['com_sort']."',
-                     	`news_headline_lenght` = '".$_POST['news_headline_lenght']."',
-                     	`news_headline_ext` = '".$_POST['news_headline_ext']."',
-                     	`acp_per_page` = '".$_POST['acp_per_page']."',
-                     	`acp_view` = '".$_POST['acp_view']."'
-                 	WHERE
-					 	`id` = '1'
-	", $db );
+                    UPDATE `".$global_config_arr['pref']."news_config`
+                     SET
+                         `num_news` = '".$_POST['num_news']."',
+                         `num_applet` = '".$_POST['num_applet']."',
+                         `num_head` = '".$_POST['num_head']."',
+                         `html_code` = '".$_POST['html_code']."',
+                         `fs_code` = '".$_POST['fs_code']."',
+                         `para_handling` = '".$_POST['para_handling']."',
+                         `cat_pic_x` = '".$_POST['cat_pic_x']."',
+                         `cat_pic_y` = '".$_POST['cat_pic_y']."',
+                         `cat_pic_size` = '".$_POST['cat_pic_size']."',
+                         `com_rights` = '".$_POST['com_rights']."',
+                         `com_antispam` = '".$_POST['com_antispam']."',
+                         `com_sort` = '".$_POST['com_sort']."',
+                         `news_headline_lenght` = '".$_POST['news_headline_lenght']."',
+                         `news_headline_ext` = '".$_POST['news_headline_ext']."',
+                         `acp_per_page` = '".$_POST['acp_per_page']."',
+                         `acp_view` = '".$_POST['acp_view']."'
+                     WHERE
+                         `id` = '1'
+    ", $db );
 
-	// system messages
+    // system messages
     systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
 
     // Unset Vars
@@ -68,23 +71,24 @@ if (
 
 if ( TRUE )
 {
-	// Display Error Messages
-	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $admin_phrases[common][note_notfilled] . "<br>" . $admin_phrases[common][only_allowed_values], $admin_phrases[common][error], TRUE );
+    // Display Error Messages
+    if ( isset ( $_POST['sended'] ) ) {
+        systext ( $admin_phrases[common][note_notfilled] . "<br>" . $admin_phrases[common][only_allowed_values], $admin_phrases[common][error], TRUE );
 
-	// Load Data from DB into Post
-	} else {
-	    $index = mysql_query ( "
-								SELECT *
-								FROM ".$global_config_arr['pref']."news_config
-								WHERE `id` = '1'
-		", $db);
-	    $config_arr = mysql_fetch_assoc($index);
-	    putintopost ( $config_arr );
-	}
+    // Load Data from DB into Post
+    } else {
+        $index = mysql_query ( "
+                                SELECT *
+                                FROM ".$global_config_arr['pref']."news_config
+                                WHERE `id` = '1'
+        ", $db);
+        $config_arr = mysql_fetch_assoc($index);
+        putintopost ( $config_arr );
+    }
 
-	// security functions
+    // security functions
     settype ( $_POST['num_news'], "integer" );
+    settype ( $_POST['num_applet'], "integer" );
     settype ( $_POST['num_head'], "integer" );
     settype ( $_POST['html_code'], "integer" );
     settype ( $_POST['fs_code'], "integer" );
@@ -101,13 +105,13 @@ if ( TRUE )
     $_POST['com_sort'] = killhtml ( $_POST['com_sort'] );
     $_POST['news_headline_ext'] = killhtml ( $_POST['news_headline_ext'] );
 
-	// Display Form
+    // Display Form
     echo'
-					<form action="" method="post">
+                    <form action="" method="post">
                         <input type="hidden" name="go" value="news_config">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">'.$admin_phrases[news][settings_title].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$admin_phrases[news][settings_title].'</td></tr>
                             <tr>
                                 <td class="config">
                                     '.$admin_phrases[news][news_per_page].':<br>
@@ -120,9 +124,19 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config">
+                                    News im Applet:<br>
+                                    <span class="small">Anzahl der News, die im Applet angezeigt werden.</span>
+                                </td>
+                                <td class="config">
+                                    <input class="text center" size="2" name="num_applet" maxlength="2" value="'.$_POST['num_applet'].'"><br>
+                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
                                     '.$admin_phrases[news][num_headlines].':<br>
                                     <span class="small">'.$admin_phrases[news][num_headlines_desc].'</span>
-								</td>
+                                </td>
                                 <td class="config">
                                     <input class="text center" size="2" name="num_head" maxlength="2" value="'.$_POST['num_head'] .'"><br>
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
@@ -132,7 +146,7 @@ if ( TRUE )
                                 <td class="config">
                                     '."Headlines kürzen auf".':<br>
                                     <span class="small">'."Max. Zeichenzahl einer Headline.".'</span>
-								</td>
+                                </td>
                                 <td class="config">
                                     <input class="text center" size="3" name="news_headline_lenght" maxlength="3" value="'.$_POST['news_headline_lenght'] .'"> Zeichen<br>
                                     <span class="small">('."-1 um Headlins nicht zu kürzen".')</span>
@@ -143,7 +157,7 @@ if ( TRUE )
                                 <td class="config">
                                     '."Headline-Erweiterung".': <span class="small">'.$admin_phrases[common][optional].'</span><br>
                                     <span class="small">'."Wird an eine gekürzte Headline angehängt.".'</span>
-								</td>
+                                </td>
                                 <td class="config">
                                     <input class="text" size="20" name="news_headline_ext" maxlength="30" value="'.$_POST['news_headline_ext'] .'">
                                 </td>
@@ -268,7 +282,7 @@ if ( TRUE )
                                     </select>
                                 </td>
                             </tr>
-							<tr><td class="space"></td></tr>
+                            <tr><td class="space"></td></tr>
                             <tr><td class="line" colspan="2">Admin-CP Einstellungen</td></tr>
                             <tr>
                                 <td class="config">
@@ -293,7 +307,7 @@ if ( TRUE )
                                     <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
                                 </td>
                             </tr>
-							<tr><td class="space"></td></tr>
+                            <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">

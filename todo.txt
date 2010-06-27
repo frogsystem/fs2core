@@ -7,18 +7,25 @@ alix6:
 DL-QI-Pfad-Länger
 QI-Pfad für Video-Player
 standard-Größen für Video-Player festlegbar
+
 suche: stopp-wortliste nutzen oder nicht
 index-suche auch bei normaler news/artikel/DL-Suche
 Suche: anzeigen von index-wörtern nach suche
 
 Startseite (und News entsprechend...)
+
 Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
-php-fonts
+
+[php-fonts]
+
 großes galerie update (kommentare, bewertungen, counter, bilderserien [spiegel-online], diverese möglichkeiten zur bildanzeige, unterkategorie, verbesserter upload, verbesserte verwaltung)
+
 shop update
-lang-system fertig umstellen und vor allem menü punkte irgendwie einbinden
+lang-system fertig umstellen
+
 statistik-update
 Vorschau für News
+
 Pop Up-Editor, Tag-List im Editor
 
 
