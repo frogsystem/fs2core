@@ -732,6 +732,9 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
                                             <div class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilen-Nummerierung">
                                                 <img src="img/null.gif" alt="Zeilen-Nummerierung" border="0">
                                             </div>
+                                            <div class="html-editor-button html-editor-button-active html-editor-button-textwrap" onClick="toggelTextWrapping(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilen-Nummerierung">
+                                                <img src="img/null.gif" alt="Zeilen-Umbruch" border="0">
+                                            </div>
                                             '.$help_template.'
                                             '.$dropdowns['global_vars'].'
                                             '.$dropdowns['applets'].'

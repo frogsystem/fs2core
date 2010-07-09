@@ -850,3 +850,8 @@ a.tooltip:hover span, a.tooltip:focus span {
 .hidden {
     display: none;
 }
+
+.highlight {
+    background-color: #C24949;
+    font-weight:bold;
+}

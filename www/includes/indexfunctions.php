@@ -74,7 +74,7 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     // Create script-Rows
     $template_script = "";
     $template_script .= '
-                <script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-1.4.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
+                <script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery.tools.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
                 <script type="text/javascript" src="'.$PATH_PREFIX .'includes/js_functions.js"></script>';
 
     // Replace Placeholders

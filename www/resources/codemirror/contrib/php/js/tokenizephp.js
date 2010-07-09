@@ -120,10 +120,11 @@ var tokenizePHP = (function() {
 
     result["const"] = token("const", "php-keyword");
 
-    ["abstract", "final", "private", "protected", "public", "global", "static"].forEach(function(element, index, array) {
+    ["final", "private", "protected", "public", "global", "static"].forEach(function(element, index, array) {
       result[element] = token("modifier", "php-keyword");
     });
     result["var"] = token("modifier", "php-keyword deprecated");
+    result["abstract"] = token("abstract", "php-keyword");
 
     result["foreach"] = token("foreach", "php-keyword");
     result["as"] = token("as", "php-keyword");
@@ -828,12 +829,11 @@ var tokenizePHP = (function() {
     // backslash) is encountered, or the end of the line is reached.
     function nextUntilUnescaped(source, end) {
       var escaped = false;
-      var next;
       while(!source.endOfLine()){
         var next = source.next();
         if (next == end && !escaped)
           return false;
-        escaped = next == "\\";
+        escaped = next == "\\" && !escaped;
       }
       return escaped;
     }
@@ -882,7 +882,7 @@ var tokenizePHP = (function() {
           newInside = null;  // we're outside of the string now
           break;
         }
-        escaped = (next == "\\");
+        escaped = (next == "\\" && !escaped);
       }
       setInside(newInside);
       return {

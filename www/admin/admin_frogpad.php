@@ -24,7 +24,7 @@ echo'
     <title>Frogsystem 2 - Template-Editor</title>
     <link rel="stylesheet" type="text/css" href="admin.css">
     <link rel="stylesheet" type="text/css" href="html-editor.css">
-    <script src="../resources/jquery/jquery-1.4.min.js" type="text/javascript"></script>
+    <script src="../resources/jquery/jquery.tools.min.js" type="text/javascript"></script>
     <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
     <script type="text/javascript">
         // Document Ready Functions

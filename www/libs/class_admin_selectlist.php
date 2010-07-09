@@ -20,10 +20,11 @@ class SelectList
 
     private $cols = 2;
     private $captions = array();
+    private $spaceAfterCaptions = FALSE;
     private $lines = array();
     private $noLines;
 
-    private $selection = TRUE;
+    private $actionSelection = TRUE;
     private $actions = array();
     private $defaultAction;
     
@@ -31,14 +32,14 @@ class SelectList
 
     
     // Constructor
-    public function __construct ( $formName, $title, $go, $cols = 2, $formMethod = "post", $formAction = "" ) {
+    public function __construct ( $formName, $title, $go = TRUE, $cols = 2, $formMethod = "post", $formAction = "" ) {
         // Include global Data
         global $TEXT;
         $this->text = $TEXT;
 
         $this->formName = $formName;
         $this->title = $title;
-        $this->go = $go;
+        $this->go = ( $go === TRUE ) ? $_REQUEST['go'] : $go;
         $this->cols = $cols;
         $this->formMethod = $formMethod;
         $this->formAction = $formAction;
@@ -52,7 +53,7 @@ class SelectList
         $this->addInputHTML ( '<input'.$class.' type="'.$type.'" name="'.$name.'"'.$id.$value.'>' );
     }
     
-    public function addInputHTML ( $HTML ) {
+    private function addInputHTML ( $HTML ) {
         $this->inputs[] = $HTML;
     }
 
@@ -75,6 +76,10 @@ class SelectList
             throw new Exception('Tried to use more cols than defined.');
         }
         $this->captions = $ARRAY;
+    }
+    
+    public function setSpaceAfterCaptions ( $BOOLEAN ) {
+        $this->spaceAfterCaptions = $BOOLEAN;
     }
     
     /**
@@ -113,8 +118,8 @@ class SelectList
     }
     
     // Boolean $STATE
-    public function setSelection ( $STATE ) {
-        $this->selection = $STATE;
+    public function setActionSelection ( $STATE ) {
+        $this->actionSelection = $STATE;
     }
     
     public function addButton ( $TEXT = "" ) {
@@ -127,10 +132,10 @@ class SelectList
     
 
     // create HTML/String representation for List
-    public function __toString () {
+    private function __toString () {
 
         // Add Default Input for ?go=
-        if ( !$this->selection && isset ( $this->defaultAction ) ) {
+        if ( !$this->actionSelection && isset ( $this->defaultAction ) ) {
             $this->addInput ( "hidden", $this->formName."_action", $this->defaultAction );
         }
 
@@ -164,6 +169,11 @@ class SelectList
             }
             $template .= '
                             </tr>';
+                            
+            if ( $this->spaceAfterCaptions ) {
+                $template .= '
+                            <tr><td class="space"></td></tr>';
+            }
             
             // Genarate Content
             foreach ( $this->lines as $aLine ) {
@@ -189,7 +199,7 @@ class SelectList
             }
 
             // Generate Action Selection
-            if ( $this->selection !== FALSE && count ( $this->actions ) >= 1 ) {
+            if ( $this->actionSelection !== FALSE && count ( $this->actions ) >= 1 ) {
                 // default action
                 if ( !isset ( $_POST[$this->formName.'_action'] ) && isset ( $this->defaultAction ) ) {
                     $_POST[$this->formName.'_action'] = $this->defaultAction;

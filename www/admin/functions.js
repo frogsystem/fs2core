@@ -340,8 +340,8 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
 {
   switch (syntaxHighlight) {
     case 4:
-        var parser = ["tokenizephp.js", "parsephp.js"];
-        var css = "../resources/codemirror/css/phpcolors.css";
+        var parser = ["../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js"];
+        var css = "../resources/codemirror/contrib/php/css/phpcolors.css";
         break;
     case 3:
         var parser = ["tokenizejavascript.js", "parsejavascript.js"];
