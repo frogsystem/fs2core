@@ -1,4 +1,63 @@
 <?php
+// Formular Daten auf Plausibilität überprüfen
+function checkFormData ( $DATA, $TYPE, $REQUIRED = FALSE, $CHECK = FALSE ) {
+    $DATA = trim ( $DATA );
+
+    // Wenn Pflichtfeld und nicht angegben
+    if ( $REQUIRED && ( !isset ( $DATA ) || $DATA == "" ) ) {
+        return FALSE;
+    }
+
+    // Feld Arten switchen
+    switch ( $TYPE ) {
+        case "email": // Kein zusäzliches Pattern erlaubt
+            // Quelle: http://fightingforalostcause.net/misc/2006/compare-email-regex.php
+            $regexp = '/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i';
+            if ( preg_match ( $regexp, $DATA ) ){
+                return TRUE;
+            }
+            break;
+        case "integer": // Integer Zahl
+            $regexp = "/^[\d]+$/";
+            if ( preg_match ( $regexp, $DATA ) ) {
+                return TRUE;
+            }
+            break;
+        case "float": // Float Zahl
+            $regexp = "/^[\d]+[\.]?[\d]*$/";
+            if ( preg_match ( $regexp, $DATA ) ) {
+                return TRUE;
+            }
+            break;
+        case "between": // Zahl zwischen 2 Werten
+            $regexp = "/^[\d]+$/";
+            if ( preg_match ( $regexp, $DATA ) ) {
+                $DATA = floatval ( $DATA );
+                $CHECK = count ( $CHECK ) == 2 ? $CHECK : array ( 0, $CHECK[0] );
+                if ( $DATA >= $CHECK[0] && $DATA <= $CHECK[1] ) {
+                    return TRUE;
+                }
+            }
+            break;
+        case "notzero": // Wert ist nicht 0
+            if ( floatval ( $DATA ) != 0 ) {
+                return TRUE;
+            }
+            break;
+        case "text": // gegen Pattern checken
+            if ( preg_match ( $CHECK, $DATA ) ) {
+                return TRUE;
+            }
+            break;
+    }
+    // weitere Daten-Arten (z.B. URL, ...) sollten implementiert werden
+
+
+    // sonst
+    return FALSE;
+}
+
+
 /////////////////////////////////
 //// validation of lang dirs ////
 /////////////////////////////////
