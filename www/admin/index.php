@@ -90,7 +90,7 @@ if ( mysql_num_rows ( $index ) == 1 ) {
     // get the page-data
     $PAGE_DATA_ARR = createpage ( $TEXT['menu']->get("group_".$acp_arr['group_id'])." &#187; ".$TEXT['menu']->get("page_title_".$acp_arr['page_id']), $acp_arr['permission'], $acp_arr['page_file'], $acp_arr['menu_id'] );
     // initialise templatesystem
-    $adminpage = new adminpage($acp_arr[page_file]);
+    $adminpage = new adminpage($acp_arr['page_file']);
 } else {
     $PAGE_DATA_ARR['created'] = FALSE;
 }
@@ -107,6 +107,9 @@ if ( $PAGE_DATA_ARR['created'] == FALSE ) {
     $go = "login";
     $PAGE_DATA_ARR = createpage( $TEXT['menu']->get("admin_login_text"), 1, 'admin_login.php', "none" );
 }
+
+// Define Constant
+define ( ACP_GO, $go );
 
 ################################
 ### END OF DETECTING SUBPAGE ###
@@ -151,7 +154,7 @@ echo'
 ##############################
 
 // get navi from DB
-$template_navi = create_navi ( $PAGE_DATA_ARR['menu'], $go );
+$template_navi = create_navi ( $PAGE_DATA_ARR['menu'], ACP_GO );
 
 ############################
 ### END OF NAVI CREATION ###

@@ -49,7 +49,7 @@ class sql {
     }
 
     // Gibt den Query-String der letzten Abfrage oder FALSE zurück
-    public function getLastQueryString () {
+    public function lastQueryString () {
         if ( isset ( $this->qrystr ) && $this->qrystr !== null ) {
             return $this->qrystr;
         } else {
@@ -57,7 +57,7 @@ class sql {
         }
     }
     public function getQueryString () {
-        return $this->getLastQueryString();
+        return $this->lastQueryString();
     }
 
     // Führt den gespeicherten Query-String tatsächlich aus
@@ -66,7 +66,7 @@ class sql {
             return FALSE;
         }
 
-        $theQuery = mysql_query ( savesql ( $this->qrystr ), $this->sql); // Query ausführen
+        $theQuery = mysql_query($this->qrystr, $this->sql); // Query ausführen
         unset( $this->error ); // Fehler-Array zurücksetzen
         $this->useful = FALSE; // Nützlichkeit auf FALSE setzen
         if ( mysql_error ( $this->sql ) !== "" ) { // Falls ein Fehler auftritt

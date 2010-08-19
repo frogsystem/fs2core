@@ -29,23 +29,16 @@ class langDataInit
         $this->langData = new lang($type);
 
         // include language data file
-        $filepath = FS2_ROOT_PATH . "lang/" . $this->local . "/";
-        $langfiles = scandir_ext ( $filepath, "php" );
-
-        foreach ( $langfiles as $file ) {
-            if ( file_exists ( $filepath.$file ) ) {
-                unset ( $TEXT );
-                include ( $filepath.$file );
-                // file fits type
-                if ( $TEXT['type'] == $this->type ) {
-                    // map data to object
-                    foreach ( $TEXT['data'] as $tag => $phrase ) {
-                        $this->langData->add($tag,$phrase);
-                    }
-                }
-            }
+        $langDataPath = FS2_ROOT_PATH . "lang/" . $this->local . "/" . $this->type . ".txt";
+        $langData = file_get_contents ( $langDataPath );
+        $langData = str_replace ( array ( "\r\n", "\r"), "\n", $langData ); // unify linebreaks
+        $langData = preg_replace ( "/#.*?\n/is", "", $langData );
+        $langData = explode ( "\n", $langData );
+        foreach ( $langData as $line ) {
+            preg_match ( "#([a-z0-9_-]+?)\s*?:\s*(.*)#is", $line, $match );
+            $this->langData->add( $match[1], $match[2] );
+            unset ( $match );
         }
-        unset ( $TEXT );
 
         // secure object for manipulation
         $this->langData->disableAdd();

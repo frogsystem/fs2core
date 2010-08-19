@@ -1,66 +1,84 @@
 <?php
-// Formular Daten auf Plausibilität überprüfen
-function checkFormData ( $DATA, $TYPE, $REQUIRED = FALSE, $CHECK = FALSE ) {
-    $DATA = trim ( $DATA );
+////////////////////////////
+//// Validate Form Data ////
+////////////////////////////
+function validateFormData ( $DATA, $TYPE, $CHECK = FALSE ) {
+    // Global Validation State
+    $validation_state = TRUE;
 
-    // Wenn Pflichtfeld und nicht angegben
-    if ( $REQUIRED && ( !isset ( $DATA ) || $DATA == "" ) ) {
-        return FALSE;
-    }
+    // more than one type is possible
+    $TYPE  = ( is_array ( $TYPE ) ) ? $TYPE : explode ( ",", $TYPE );
 
-    // Feld Arten switchen
-    switch ( $TYPE ) {
-        case "email": // Kein zusäzliches Pattern erlaubt
+    // $DATA is Array
+    if ( is_array($DATA) && ( !$CHECK || ( is_array($CHECK) && count($DATA) == count($CHECK) ) ) ) {
+        foreach ( $DATA as $key => $value ) {
+            $validation_state = $validation_state && validateFormData ( $value, $TYPE, $REQUIRED, $CHECK[$key] );
+        }
+        return $validation_state;
+    // $DATA is $value
+    } else {
+
+        // trim spaces
+        $DATA = trim($DATA);
+
+        // mandatory field
+        if ( in_array("required", $TYPE) ) {
+            $validation_state = $validation_state && isset($DATA) && $DATA != "";
+        }
+        
+        // E-Mail, kein zusäzlicher Check erlaubt
+        if ( in_array("email", $TYPE) ) {
             // Quelle: http://fightingforalostcause.net/misc/2006/compare-email-regex.php
             $regexp = '/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i';
-            if ( preg_match ( $regexp, $DATA ) ){
-                return TRUE;
-            }
-            break;
-        case "integer": // Integer Zahl
-            $regexp = "/^[\d]+$/";
-            if ( preg_match ( $regexp, $DATA ) ) {
-                return TRUE;
-            }
-            break;
-        case "float": // Float Zahl
-            $regexp = "/^[\d]+[\.]?[\d]*$/";
-            if ( preg_match ( $regexp, $DATA ) ) {
-                return TRUE;
-            }
-            break;
-        case "between": // Zahl zwischen 2 Werten
-            $regexp = "/^[\d]+$/";
-            if ( preg_match ( $regexp, $DATA ) ) {
-                $DATA = floatval ( $DATA );
-                $CHECK = count ( $CHECK ) == 2 ? $CHECK : array ( 0, $CHECK[0] );
-                if ( $DATA >= $CHECK[0] && $DATA <= $CHECK[1] ) {
-                    return TRUE;
-                }
-            }
-            break;
-        case "notzero": // Wert ist nicht 0
-            if ( floatval ( $DATA ) != 0 ) {
-                return TRUE;
-            }
-            break;
-        case "text": // gegen Pattern checken
-            if ( preg_match ( $CHECK, $DATA ) ) {
-                return TRUE;
-            }
-            break;
+            $validation_state = $validation_state && preg_match ( $regexp, $DATA );
+        }
+        
+        // Integer Value
+        if ( in_array("integer", $TYPE) ) {
+            $regexp = "/^[-]?[\d]+$/";
+            $validation_state = $validation_state && preg_match ( $regexp, $DATA );
+        }
+        // Float Value
+        if ( in_array("float", $TYPE) ) {
+            $regexp = "/^[-]?[\d]+[\.]?[\d]*$/";
+            $validation_state = $validation_state && preg_match ( $regexp, $DATA );
+        }
+        // Number between 2 Values
+        if ( in_array("between", $TYPE) && ( ( is_array($CHECK) && count($CHECK) >= 1 ) || is_numeric($CHECK) ) ) {
+            $DATA = floatval ( $DATA );
+            $CHECK = is_numeric($CHECK) ? array($CHECK) : $CHECK;
+            $CHECK = count($CHECK) == 2 ? $CHECK : array(0, $CHECK[0]);
+            return ( $DATA >= $CHECK[0] && $DATA <= $CHECK[1] );
+        }
+        // Value is not 0
+        if ( in_array("notzero", $TYPE) ) {
+            $validation_state = $validation_state && floatval ( $DATA ) !== 0;
+        }
+        // Positive Value (incl. 0)
+        if ( in_array("positive", $TYPE) ) {
+            $validation_state = $validation_state && floatval ( $DATA ) >= 0;
+        }
+        // Negative Value
+        if ( in_array("negative", $TYPE) ) {
+            $validation_state = $validation_state && floatval ( $DATA ) < 0;
+        }
+        
+        // Check Free-Text against RegExpression Pattern
+        if ( in_array("text", $TYPE) ) {
+            $validation_state = $validation_state && preg_match ( $CHECK, $DATA );
+        }
+
+        // weitere Daten-Arten (z.B. URL, ...) sollten implementiert werden
+        
+        // sonst
+        return $validation_state;
     }
-    // weitere Daten-Arten (z.B. URL, ...) sollten implementiert werden
-
-
-    // sonst
-    return FALSE;
 }
 
 
-/////////////////////////////////
-//// validation of lang dirs ////
-/////////////////////////////////
+////////////////////////////////////////////////////////
+//// remove all kinds of replacements from a string ////
+////////////////////////////////////////////////////////
 function kill_replacements ( $TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE )
 {
     $TEXT = str_replace ( '{..', '&#x7B;&#x2E;&#x2E;', $TEXT );

@@ -132,7 +132,7 @@ class SelectList
     
 
     // create HTML/String representation for List
-    private function __toString () {
+    public function __toString () {
 
         // Add Default Input for ?go=
         if ( !$this->actionSelection && isset ( $this->defaultAction ) ) {

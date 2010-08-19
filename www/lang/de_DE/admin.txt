@@ -4,11 +4,15 @@ no:                                      Nein
 from:                                    von
 to:                                      bis
 with:                                    mit
+byte:                                    Byte
 kib:                                     KiB
 mib:                                     MiB
 gib:                                     GiB
 pixel:                                   Pixel
 resolution_x:                            x
+asc:                                     aufsteigend
+desc:                                    absteigend
+
 filename:                                Dateiname
 optional:                                optional
 selection:                               Auswahl
@@ -19,12 +23,14 @@ output:                                  Ausgabe
 version:                                 Version
 informations_and_statistics:             Informationen & Statistik
 width_x_height:                          Breite x Höhe
+rows_at:                                 Reihen à
 zero_not_allowed:                        0 ist nicht erlaubt
 max:                                     max.
 min:                                     min.
 exact:                                   exakt
 hex_color:                               Hexadezimal Farbcode
 folder_name_info:                        nur a-z, 0-9, "-" und "_" erlaubt
+
 button_arrow:                            <img class="middle" src="img/pointer.png" alt="->">
 selection_edit:                          Auswahl bearbeiten
 selection_delete:                        Auswahl löschen
@@ -32,6 +38,7 @@ do_action_button:                        Ausführen
 do_action_button_long:                   Aktion ausführen
 save_changes_button:                     Änderungen speichern
 select_button:                           Auswählen
+
 file_select_button:                      Datei auswählen
 error:                                   Es trat ein Fehler auf
 info:                                    Information
@@ -39,20 +46,22 @@ changes_saved:                           Änderungen wurden gespeichert
 changes_not_saved:                       Änderungen wurden nicht gespeichert
 form_not_filled:                         Bitte füllen Sie alle Pflichtfelder aus
 form_only_allowed_values:                Bitte geben Sie nur erlaubte Werte ein
-error_file_access:                       Bitte überprüfen sie die Dateirechte Einstellungen [text noch verbessern]
-icon_small_help:                         <img src="icons/help.gif" alt="" align="absmiddle">
-icon_info:                               <img src="icons/info.jpg" alt="" align="absmiddle">
-icon_error:                              <img src="icons/error.jpg" alt="" align="absmiddle">
-icon_save_ok:                            <img src="icons/save_ok.jpg" alt="" align="absmiddle">
-icon_save_add:                           <img src="icons/save_add.jpg" alt="" align="absmiddle">
-icon_save_error:                         <img src="icons/save_error.jpg" alt="" align="absmiddle">
-icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="" align="absmiddle">
-icon_trash_error:                        <img src="icons/trash_error.jpg" alt="" align="absmiddle">
-icon_login:                              <img src="icons/login.jpg" alt="" align="absmiddle">
-icon_logout:                             <img src="icons/logout.jpg" alt="" align="absmiddle">
-icon_install_ok:                         <img src="icons/install_ok.jpg" alt="" align="absmiddle">
-icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="" align="absmiddle">
+error_file_access:                       Bitte überprüfen Sie die Datei- und Ordnerrechte
+
+icon_small_help:                         <img src="icons/help.gif" alt="Hilfe" align="absmiddle">
+icon_info:                               <img src="icons/info.jpg" alt="Information" align="absmiddle">
+icon_error:                              <img src="icons/error.jpg" alt="Fehler" align="absmiddle">
+icon_save_ok:                            <img src="icons/save_ok.jpg" alt="Ok" align="absmiddle">
+icon_save_add:                           <img src="icons/save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
+icon_save_error:                         <img src="icons/save_error.jpg" alt="Fehler beim Speichern" align="absmiddle">
+icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="Löschen erfolgreich" align="absmiddle">
+icon_trash_error:                        <img src="icons/trash_error.jpg" alt="Fehler beim Löschen" align="absmiddle">
+icon_login:                              <img src="icons/login.jpg" alt="Login" align="absmiddle">
+icon_logout:                             <img src="icons/logout.jpg" alt="Logout" align="absmiddle">
+icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
+icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
 icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="" align="absmiddle">
+
 image_upload_error_0:                    Bild wurde erfolgreich hochgeladen
 image_upload_error_1:                    Fehler beim Bilder-Upload: Ungültiger Dateityp [Code: IMGxU1]
 image_upload_error_2:                    Fehler beim Bilder-Upload: Bild konnte nicht hochgladen werden [Code: IMGxU2]
@@ -60,6 +69,8 @@ image_upload_error_3:                    Fehler beim Bilder-Upload: Bild ist zu 
 image_upload_error_4:                    Fehler beim Bilder-Upload: Bild ist zu groß (Abmessungen) [Code: IMGxU4]
 image_upload_error_5:                    Fehler beim Bilder-Upload: Bild entspricht nicht den erforderlichen Abmessungen [Code: IMGxU5]
 image_upload_error_6:                    Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden [Code: IMGxU6]
+
+
 system_start_num_aliases:                Anzahl Aliasse
 system_start_num_aliases_active:         Anzahl aktiver Aliasse
 system_start_num_applets:                Anzahl Applets

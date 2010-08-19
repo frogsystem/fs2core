@@ -3,8 +3,8 @@
 /**
  * @file     class_adminpage.php
  * @folder   /libs
- * @version  0.1
- * @author   Satans Krümelmonster
+ * @version  0.2
+ * @author   Satans Krümelmonster, Sweil
  *
  * provides functions to manage admin-cp display-issues
  */
@@ -13,8 +13,9 @@ include_once(FS2_ROOT_PATH."libs/class_adminpage_children.php");
 class adminpage{
   protected $tpl    = array();
   protected $cond   = array();
-  protected $phrase = array();
+  protected $text   = array();
   protected $lang   = array();
+  protected $common = array();
   protected $analysed = null;
 
   function __construct($pagefile){
@@ -23,16 +24,11 @@ class adminpage{
     if(is_readable(FS2_ROOT_PATH."admin/template/".$file_name.".tpl"))
       $this->searchTpls(file_get_contents(FS2_ROOT_PATH."admin/template/".$file_name.".tpl"));
 
-    if(is_readable(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin/".$file_name.".lang"))
-      $this->getLang(file_get_contents(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin/".$file_name.".lang"));
-  }
-
-  protected function searchTpls($tplcontents){
-    preg_match_all("#<!--DEF::([a-z-_]+)-->(.*?)<!--ENDDEF-->#is", $tplcontents, $dev);
-    for($i=0;$i<count($dev[1]);$i++){
-      $this->tpl[$dev[1][$i]] = $dev[2][$i];
-    }
-    unset($dev);
+    if(is_readable(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin/".$file_name.".txt"))
+      $this->getLang(file_get_contents(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin/".$file_name.".txt"));
+      
+    if(is_readable(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin.txt"))
+      $this->getCommon(file_get_contents(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin.txt"));
   }
 
   public function addCond($name, $value){
@@ -44,14 +40,29 @@ class adminpage{
     $this->cond = array();
   }
 
-  public function addPhrase($name, $value){
-    $this->phrase[$name] = $value;
+  public function addText($name, $value){
+    $this->text[$name] = $value;
   }
 
-  public function clearPhrase(){
-    unset($this->phrase);
-    $this->phrase = array();
+  public function clearTexts(){
+    unset($this->text);
+    $this->text = array();
   }
+
+  private function langValue($name){
+    if(array_key_exists($name, $this->lang))
+      return $this->lang[$name];
+    else
+      return "Localize: LANG::".$name;
+  }
+  
+  private function commonValue($name){
+    if(array_key_exists($name, $this->common))
+      return $this->common[$name];
+    else
+      return "Localize: COMMON::".$name;
+  }
+
 
   public function get($tplname, $clearempty = true){
     if(array_key_exists($tplname, $this->tpl)){
@@ -59,21 +70,52 @@ class adminpage{
       $this->analyse($this->tpl[$tplname]);
       // replace conditions
       $tmpval = $this->analysed->get($this->cond);
-      // replace phrases
-      foreach($this->phrase as $key => $value)
-        $tmpval = str_replace("<!--PHRASE::$key-->", $value, $tmpval);
+      // replace texts
+      foreach($this->text as $key => $value)
+        $tmpval = str_replace("<!--TEXT::$key-->", $value, $tmpval);
       // replace language
-      foreach($this->lang as $key => $value)
-        $tmpval = str_replace("<!--LANG::$key-->", $value, $tmpval);
+      $tmpval = preg_replace ( "/<!--LANG::(.*)-->/e", '$this->langValue(\'$1\')', $tmpval);
+      // replace common
+      $tmpval = preg_replace ( "/<!--COMMON::(.*)-->/e", '$this->commonValue(\'$1\')', $tmpval);
 
       if($clearempty == true)
-        $tmpval = preg_replace("#<!--PHRASE::[^-]+-->#is", "", $tmpval);
+        $tmpval = preg_replace("#<!--TEXT::[^-]+-->#is", "", $tmpval);
     } else die("template does not exist!");
 
     $this->clearCond();
-    $this->clearPhrase();
+    $this->clearTexts();
 
     return $tmpval;
+  }
+
+  protected function searchTpls($tplcontents){
+    preg_match_all("#<!--DEF::([a-z-_]+)-->(.*?)<!--ENDDEF-->#is", $tplcontents, $dev);
+    for($i=0;$i<count($dev[1]);$i++){
+      $this->tpl[$dev[1][$i]] = $dev[2][$i];
+    }
+    unset($dev);
+  }
+
+  protected function getLangData($string){
+    $string = str_replace(array("\r\n", "\r"), "\n", $string); // unify linebreaks
+    $string = preg_replace("/#.*?\n/is", "", $string);
+    $string = explode("\n", $string);
+
+    $langData = array();
+    foreach($string as $str){
+      preg_match("#([a-z0-9_]+?)\s*?:\s*(.*)#is", $str, $match);
+      $langData[$match[1]] = $match[2];
+      unset($match);
+    }
+    return $langData;
+  }
+
+  protected function getLang($string){
+    $this->lang = $this->getLangData($string);
+  }
+
+  protected function getCommon($string){
+    $this->common = $this->getLangData($string);
   }
 
   protected function analyse($string, $parent = -1, $result = array(array(), array()), $type=0, $inif = array(-1 => false)){
@@ -144,24 +186,6 @@ class adminpage{
     }
 
     $this->analyse($string, $parent, $result, $type, $inif);
-  }
-
-  protected function getLang($string){
-    $string = str_replace(array("\r\n", "\r"), "\n", $string); // unify linebreaks
-    $string = preg_replace("/#.*?\n/is", "", $string);
-    $string = explode("\n", $string);
-    foreach($string as $str){
-      preg_match("#([a-z0-9_]+?)\s*?:\s*(.*)#is", $str, $match);
-      $this->lang[$match[1]] = $match[2];
-      unset($match);
-    }
-  }
-
-  public function lang($name){
-    if(array_key_exists($name, $this->lang))
-      return $this->lang[$name];
-    else
-      return "Localize: LANG::".$name;
   }
 }
 ?>
