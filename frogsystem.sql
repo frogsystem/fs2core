@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 27. Juni 2010 um 13:39
+-- Erstellungszeit: 19. August 2010 um 23:09
 -- Server Version: 5.1.37
 -- PHP-Version: 5.3.0
 
@@ -78,17 +78,9 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `page
 ('press_admin', 'press', 'admin_press_admin.php', 4, 0),
 ('cimg_add', 'cimg', 'admin_cimg.php', 1, 0),
 ('cimg_admin', 'cimg', 'admin_cimgdel.php', 2, 0),
-('gallery_config', 'gallery', 'admin_screenconfig.php', 1, 0),
-('gallery_cat', 'gallery', 'admin_screencat.php', 2, 0),
-('gallery_newcat', 'gallery', 'admin_screennewcat.php', 3, 0),
-('screens_add', 'gallery_img', 'admin_screenadd.php', 1, 0),
-('screens_edit', 'gallery_img', 'admin_screenedit.php', 2, 0),
-('wp_add', 'gallery_wp', 'admin_wallpaperadd.php', 1, 0),
-('wp_edit', 'gallery_wp', 'admin_wallpaperedit.php', 2, 0),
-('randompic_config', 'gallery_preview', 'admin_randompic_config.php', 1, 0),
-('randompic_cat', 'gallery_preview', 'admin_randompic_cat.php', 2, 0),
-('timedpic_add', 'gallery_timed', 'admin_randompic_time_add.php', 1, 0),
-('timedpic_edit', 'gallery_timed', 'admin_randompic_time.php', 2, 0),
+('gallery_folder', 'gallery', 'admin_gallery_folder.php', 3, 0),
+('gallery_cat', 'gallery', 'admin_gallery_cat.php', 2, 0),
+('gallery_config', 'gallery', 'admin_gallery_config.php', 1, 0),
 ('dl_config', 'downloads', 'admin_dlconfig.php', 1, 0),
 ('dl_add', 'downloads', 'admin_dladd.php', 2, 0),
 ('dl_edit', 'downloads', 'admin_dledit.php', 3, 0),
@@ -182,7 +174,6 @@ INSERT INTO `fs_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 ('gallery_img', 'media', 2),
 ('gallery_wp', 'media', 3),
 ('gallery_preview', 'media', 4),
-('gallery_timed', 'media', 5),
 ('downloads', 'media', 6),
 ('player', 'media', 7),
 ('polls', 'interactive', 1),
@@ -429,7 +420,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 89, 3871, 2, 1, 2, 2);
+(1, 91, 3893, 2, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -452,7 +443,7 @@ CREATE TABLE `fs_counter_ref` (
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
-('http://localhost/fs2/', 125, 1263499887, 1277634297),
+('http://localhost/fs2/', 139, 1263499887, 1282227581),
 ('http://alix.worldofgothic.com/beta4/admin/?go=gen_config', 2, 1267197504, 1267197505),
 ('http://demo.frogsystem.de/admin/?go=gen_config', 1, 1267198063, 1267198063),
 ('http://localhost/', 35, 1273256730, 1277230404),
@@ -540,7 +531,8 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 6, 22, 2, 26),
 (2010, 6, 25, 1, 1),
 (2010, 6, 26, 1, 4),
-(2010, 6, 27, 1, 8);
+(2010, 6, 27, 1, 8),
+(2010, 8, 19, 2, 22);
 
 -- --------------------------------------------------------
 
@@ -1212,6 +1204,50 @@ CREATE TABLE `fs_fscodes_ref` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `fs_gallery_config`
+--
+
+DROP TABLE IF EXISTS `fs_gallery_config`;
+CREATE TABLE `fs_gallery_config` (
+  `id` tinyint(1) NOT NULL,
+  `img_max_x` int(4) NOT NULL,
+  `img_max_y` int(4) NOT NULL,
+  `img_small_max_x` int(4) NOT NULL,
+  `img_small_max_y` int(4) NOT NULL,
+  `img_max_size` int(4) NOT NULL,
+  `img_rows` int(2) NOT NULL,
+  `img_cols` int(2) NOT NULL,
+  `img_order` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `img_sort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `img_group` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `viewer_type` tinyint(1) NOT NULL,
+  `viewer_x` smallint(4) NOT NULL,
+  `viewer_y` smallint(4) NOT NULL,
+  `viewer_img_x` int(4) NOT NULL,
+  `viewer_img_y` int(4) NOT NULL,
+  `wp_max_x` int(4) NOT NULL,
+  `wp_max_y` int(4) NOT NULL,
+  `wp_small_max_x` int(4) NOT NULL,
+  `wp_small_max_y` int(4) NOT NULL,
+  `wp_order` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `wp_max_size` int(4) NOT NULL,
+  `wp_rows` int(2) NOT NULL,
+  `wp_cols` int(2) NOT NULL,
+  `wp_sort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `wp_group` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `fs_gallery_config`
+--
+
+INSERT INTO `fs_gallery_config` (`id`, `img_max_x`, `img_max_y`, `img_small_max_x`, `img_small_max_y`, `img_max_size`, `img_rows`, `img_cols`, `img_order`, `img_sort`, `img_group`, `viewer_type`, `viewer_x`, `viewer_y`, `viewer_img_x`, `viewer_img_y`, `wp_max_x`, `wp_max_y`, `wp_small_max_x`, `wp_small_max_y`, `wp_order`, `wp_max_size`, `wp_rows`, `wp_cols`, `wp_sort`, `wp_group`) VALUES
+(1, 2000, 2000, 200, 150, 2048, 6, 2, 'date', 'DESC', '0', 2, 950, 700, 800, 600, 2000, 2000, 200, 150, 'date', 2048, 6, 2, 'DESC', '0');
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `fs_global_config`
 --
 
@@ -1254,7 +1290,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1277634297);
+(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1282187314);
 
 -- --------------------------------------------------------
 
@@ -2326,7 +2362,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1277634603);
+('127.0.0.1', 1, 1282227729);
 
 -- --------------------------------------------------------
 
