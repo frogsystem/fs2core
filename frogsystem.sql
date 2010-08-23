@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.2.4
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 19. August 2010 um 23:09
--- Server Version: 5.1.37
--- PHP-Version: 5.3.0
+-- Erstellungszeit: 23. August 2010 um 20:51
+-- Server Version: 5.1.41
+-- PHP-Version: 5.3.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -26,7 +26,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 DROP TABLE IF EXISTS `fs_admin_cp`;
-CREATE TABLE `fs_admin_cp` (
+CREATE TABLE IF NOT EXISTS `fs_admin_cp` (
   `page_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `group_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `page_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -141,7 +141,9 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `page
 ('fscode_edit', 'fscodes', 'admin_fscode_edit.php', 2, 0),
 ('fscode_edit_php', 'fscodes', 'fscode_edit', 2, 1),
 ('fscode_edit_remove', 'fscodes', 'fscode_edit', 2, 1),
-('fscode_settings', 'fscodes', 'admin_fscode_config.php', 3, 0);
+('fscode_settings', 'fscodes', 'admin_fscode_config.php', 3, 0),
+('fscode_groups', 'fscodes', 'admin_fscode_groups.php', 4, 0),
+('fscode_groups_delete', 'fscodes', 'fscode_groups', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -150,7 +152,7 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `page
 --
 
 DROP TABLE IF EXISTS `fs_admin_groups`;
-CREATE TABLE `fs_admin_groups` (
+CREATE TABLE IF NOT EXISTS `fs_admin_groups` (
   `group_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `menu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `group_pos` tinyint(3) NOT NULL DEFAULT '0'
@@ -196,7 +198,7 @@ INSERT INTO `fs_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_aliases`;
-CREATE TABLE `fs_aliases` (
+CREATE TABLE IF NOT EXISTS `fs_aliases` (
   `alias_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `alias_go` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `alias_forward_to` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -226,7 +228,7 @@ INSERT INTO `fs_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_act
 --
 
 DROP TABLE IF EXISTS `fs_announcement`;
-CREATE TABLE `fs_announcement` (
+CREATE TABLE IF NOT EXISTS `fs_announcement` (
   `id` smallint(4) NOT NULL,
   `announcement_text` text COLLATE utf8_unicode_ci,
   `show_announcement` tinyint(1) NOT NULL DEFAULT '0',
@@ -251,7 +253,7 @@ INSERT INTO `fs_announcement` (`id`, `announcement_text`, `show_announcement`, `
 --
 
 DROP TABLE IF EXISTS `fs_applets`;
-CREATE TABLE `fs_applets` (
+CREATE TABLE IF NOT EXISTS `fs_applets` (
   `applet_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `applet_file` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `applet_active` tinyint(1) NOT NULL DEFAULT '1',
@@ -282,7 +284,7 @@ INSERT INTO `fs_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_o
 --
 
 DROP TABLE IF EXISTS `fs_articles`;
-CREATE TABLE `fs_articles` (
+CREATE TABLE IF NOT EXISTS `fs_articles` (
   `article_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `article_url` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `article_title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -312,7 +314,7 @@ INSERT INTO `fs_articles` (`article_id`, `article_url`, `article_title`, `articl
 --
 
 DROP TABLE IF EXISTS `fs_articles_cat`;
-CREATE TABLE `fs_articles_cat` (
+CREATE TABLE IF NOT EXISTS `fs_articles_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cat_description` text COLLATE utf8_unicode_ci NOT NULL,
@@ -335,7 +337,7 @@ INSERT INTO `fs_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_dat
 --
 
 DROP TABLE IF EXISTS `fs_articles_config`;
-CREATE TABLE `fs_articles_config` (
+CREATE TABLE IF NOT EXISTS `fs_articles_config` (
   `id` tinyint(1) NOT NULL,
   `html_code` tinyint(4) NOT NULL DEFAULT '1',
   `fs_code` tinyint(4) NOT NULL DEFAULT '1',
@@ -365,7 +367,7 @@ INSERT INTO `fs_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`,
 --
 
 DROP TABLE IF EXISTS `fs_captcha_config`;
-CREATE TABLE `fs_captcha_config` (
+CREATE TABLE IF NOT EXISTS `fs_captcha_config` (
   `id` tinyint(1) NOT NULL,
   `captcha_bg_color` varchar(6) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'FFFFFF',
   `captcha_bg_transparent` tinyint(1) NOT NULL DEFAULT '0',
@@ -404,7 +406,7 @@ INSERT INTO `fs_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transpare
 --
 
 DROP TABLE IF EXISTS `fs_counter`;
-CREATE TABLE `fs_counter` (
+CREATE TABLE IF NOT EXISTS `fs_counter` (
   `id` tinyint(1) NOT NULL,
   `visits` int(11) unsigned NOT NULL DEFAULT '0',
   `hits` int(11) unsigned NOT NULL DEFAULT '0',
@@ -420,7 +422,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 91, 3893, 2, 1, 2, 2);
+(1, 117, 4009, 2, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -429,7 +431,7 @@ INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `co
 --
 
 DROP TABLE IF EXISTS `fs_counter_ref`;
-CREATE TABLE `fs_counter_ref` (
+CREATE TABLE IF NOT EXISTS `fs_counter_ref` (
   `ref_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `ref_count` int(11) DEFAULT NULL,
   `ref_first` int(11) DEFAULT NULL,
@@ -443,10 +445,10 @@ CREATE TABLE `fs_counter_ref` (
 
 INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://alix.worldofgothic.com/alix5/admin/?go=gen_config', 1, 1263252925, 1263252925),
-('http://localhost/fs2/', 139, 1263499887, 1282227581),
+('http://localhost/fs2/', 125, 1263499887, 1277634297),
 ('http://alix.worldofgothic.com/beta4/admin/?go=gen_config', 2, 1267197504, 1267197505),
 ('http://demo.frogsystem.de/admin/?go=gen_config', 1, 1267198063, 1267198063),
-('http://localhost/', 35, 1273256730, 1277230404),
+('http://localhost/', 66, 1273256730, 1282565835),
 ('http://localhost/fs/', 2, 1273256740, 1273256922),
 ('http://localhost/fs/www/', 1, 1273256927, 1273256927);
 
@@ -457,7 +459,7 @@ INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) V
 --
 
 DROP TABLE IF EXISTS `fs_counter_stat`;
-CREATE TABLE `fs_counter_stat` (
+CREATE TABLE IF NOT EXISTS `fs_counter_stat` (
   `s_year` int(4) NOT NULL DEFAULT '0',
   `s_month` int(2) NOT NULL DEFAULT '0',
   `s_day` int(2) NOT NULL DEFAULT '0',
@@ -532,7 +534,25 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 6, 25, 1, 1),
 (2010, 6, 26, 1, 4),
 (2010, 6, 27, 1, 8),
-(2010, 8, 19, 2, 22);
+(2010, 6, 28, 1, 13),
+(2010, 6, 29, 1, 4),
+(2010, 6, 30, 2, 4),
+(2010, 7, 1, 1, 2),
+(2010, 7, 2, 2, 6),
+(2010, 7, 6, 1, 4),
+(2010, 7, 13, 2, 11),
+(2010, 7, 14, 1, 2),
+(2010, 7, 15, 2, 5),
+(2010, 7, 16, 2, 5),
+(2010, 7, 18, 2, 4),
+(2010, 7, 19, 1, 2),
+(2010, 7, 20, 2, 4),
+(2010, 7, 21, 1, 2),
+(2010, 7, 24, 1, 2),
+(2010, 7, 25, 3, 9),
+(2010, 7, 26, 1, 6),
+(2010, 8, 2, 1, 10),
+(2010, 8, 23, 1, 43);
 
 -- --------------------------------------------------------
 
@@ -541,7 +561,7 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 --
 
 DROP TABLE IF EXISTS `fs_dl`;
-CREATE TABLE `fs_dl` (
+CREATE TABLE IF NOT EXISTS `fs_dl` (
   `dl_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` mediumint(8) DEFAULT NULL,
   `user_id` mediumint(8) DEFAULT NULL,
@@ -568,7 +588,7 @@ CREATE TABLE `fs_dl` (
 --
 
 DROP TABLE IF EXISTS `fs_dl_cat`;
-CREATE TABLE `fs_dl_cat` (
+CREATE TABLE IF NOT EXISTS `fs_dl_cat` (
   `cat_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `subcat_id` mediumint(8) NOT NULL DEFAULT '0',
   `cat_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -589,7 +609,7 @@ INSERT INTO `fs_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_dl_config`;
-CREATE TABLE `fs_dl_config` (
+CREATE TABLE IF NOT EXISTS `fs_dl_config` (
   `id` tinyint(1) NOT NULL,
   `screen_x` int(11) DEFAULT NULL,
   `screen_y` int(11) DEFAULT NULL,
@@ -615,7 +635,7 @@ INSERT INTO `fs_dl_config` (`id`, `screen_x`, `screen_y`, `thumb_x`, `thumb_y`, 
 --
 
 DROP TABLE IF EXISTS `fs_dl_files`;
-CREATE TABLE `fs_dl_files` (
+CREATE TABLE IF NOT EXISTS `fs_dl_files` (
   `dl_id` mediumint(8) DEFAULT NULL,
   `file_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `file_count` mediumint(8) NOT NULL DEFAULT '0',
@@ -639,7 +659,7 @@ CREATE TABLE `fs_dl_files` (
 --
 
 DROP TABLE IF EXISTS `fs_docs_classes`;
-CREATE TABLE `fs_docs_classes` (
+CREATE TABLE IF NOT EXISTS `fs_docs_classes` (
   `id` tinyint(2) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `desc` text NOT NULL,
@@ -663,7 +683,7 @@ INSERT INTO `fs_docs_classes` (`id`, `name`, `desc`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_docs_functions`;
-CREATE TABLE `fs_docs_functions` (
+CREATE TABLE IF NOT EXISTS `fs_docs_functions` (
   `id` tinyint(3) NOT NULL AUTO_INCREMENT,
   `class` tinyint(2) NOT NULL,
   `type` varchar(10) NOT NULL DEFAULT 'public',
@@ -766,7 +786,7 @@ INSERT INTO `fs_docs_functions` (`id`, `class`, `type`, `name`, `desc`, `ret`) V
 --
 
 DROP TABLE IF EXISTS `fs_docs_params`;
-CREATE TABLE `fs_docs_params` (
+CREATE TABLE IF NOT EXISTS `fs_docs_params` (
   `function` tinyint(3) NOT NULL,
   `internal_id` mediumint(8) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -961,7 +981,7 @@ INSERT INTO `fs_docs_params` (`function`, `internal_id`, `name`, `type`, `initva
 --
 
 DROP TABLE IF EXISTS `fs_docs_variables`;
-CREATE TABLE `fs_docs_variables` (
+CREATE TABLE IF NOT EXISTS `fs_docs_variables` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `type` varchar(15) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -1001,7 +1021,7 @@ INSERT INTO `fs_docs_variables` (`id`, `type`, `name`, `desc`, `class`, `initval
 --
 
 DROP TABLE IF EXISTS `fs_editor_config`;
-CREATE TABLE `fs_editor_config` (
+CREATE TABLE IF NOT EXISTS `fs_editor_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `smilies_rows` int(2) NOT NULL,
   `smilies_cols` int(2) NOT NULL,
@@ -1062,7 +1082,7 @@ INSERT INTO `fs_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea_
 --
 
 DROP TABLE IF EXISTS `fs_email`;
-CREATE TABLE `fs_email` (
+CREATE TABLE IF NOT EXISTS `fs_email` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `signup` text COLLATE utf8_unicode_ci NOT NULL,
   `change_password` text COLLATE utf8_unicode_ci NOT NULL,
@@ -1087,49 +1107,51 @@ INSERT INTO `fs_email` (`id`, `signup`, `change_password`, `delete_account`, `us
 --
 
 DROP TABLE IF EXISTS `fs_fscodes`;
-CREATE TABLE `fs_fscodes` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `fs_fscodes` (
   `name` varchar(10) NOT NULL,
-  `contenttype` varchar(20) NOT NULL,
-  `callbacktype` tinyint(1) NOT NULL,
-  `allowin` varchar(100) NOT NULL,
+  `contenttype` varchar(20) NOT NULL DEFAULT 'inline',
+  `callbacktype` tinyint(1) NOT NULL DEFAULT '0',
+  `allowin` varchar(100) NOT NULL DEFAULT 'inline&#44; block&#44; listitem&#44; link',
   `disallowin` varchar(100) NOT NULL,
   `param_1` text NOT NULL,
   `param_2` text NOT NULL,
   `php` text NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `added` varchar(25) NOT NULL,
-  `edited` varchar(25) NOT NULL DEFAULT '0',
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   `userusage` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
+  `group` mediumint(8) NOT NULL DEFAULT '0',
+  `added_date` int(11) NOT NULL,
+  `added_user` mediumint(8) NOT NULL,
+  `edited_date` int(11) NOT NULL DEFAULT '0',
+  `edited_user` mediumint(8) NOT NULL DEFAULT '0',
+  `example` text NOT NULL,
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `fs_fscodes`
 --
 
-INSERT INTO `fs_fscodes` (`id`, `name`, `contenttype`, `callbacktype`, `allowin`, `disallowin`, `param_1`, `param_2`, `php`, `active`, `added`, `edited`, `userusage`) VALUES
-(1, 'b', 'inline', 0, 'listitem, block, inline, link', '', '<b>', '</b>', '', 1, '1 1265756400', '0', 1),
-(2, 'i', 'inline', 0, 'listitem, block, inline, link', '', '<i>', '</i>', '', 1, '1 1265756400', '0', 1),
-(3, 'u', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:underline;">', '</span>', '', 1, '1 1265756400', '0', 1),
-(4, 's', 'inline', 0, 'listitem, block, inline, link', '', '<span style="text-decoration:line-through;">', '</span>', '', 1, '1 1265756400', '0', 1),
-(5, 'center', 'inline', 0, 'listitem, block, inline, link', '', '<p align="center">', '</p>', '', 1, '1 1265756400', '0', 1),
-(6, 'url', 'link', 5, 'listitem, block, inline', 'link', '<a href="{..x..}" target="_blank">{..x..}</a>', '<a href="{..y..}" target="_blank">{..x..}</a>', '', 1, '1 1265756400', '0', 1),
-(7, 'home', 'link', 5, 'listitem, block, inline', 'link', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($content).''" target="_self">''.$page_url."?go=".htmlspecialchars ($content).''</a>'';\r\n}\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($attributes[''default'']).''" target="_self">''.$content.''</a>'';', 1, '1 1265756400', '0', 1),
-(8, 'email', 'link', 5, 'listitem, block, inline', 'link', '<a href="mailto:{..x..}">{..x..}</a>', '<a href="mailto:{..y..}">{..x..}</a>', '', 1, '1 1265756400', '0', 1),
-(9, 'img', 'image', 5, 'listitem, block, inline, link', '', '<img src="{..x..}" alt="{..x..}">', '<img src="{..x..}" alt="{..x..}" align="{..y..}">', '', 1, '1 1265756400', '0', 1),
-(10, 'cimg', 'image', 5, 'listitem, block, inline, link', '', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''">'';\r\n}\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''" align="''.htmlspecialchars($attributes[''default'']).''">'';', 1, '1 1265756400', '0', 1),
-(11, 'player', 'block', 5, 'block, inline', 'listitem, link', '', '', 'if ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn get_player ( $content );\r\n}\r\n$res = explode ( ",", $attributes[''default''], 2 );\r\nintval($res[0]);\r\nintval($res[1]);\r\nreturn get_player ( $content, $res[0], $res[1] );', 1, '1 1265756400', '0', 1),
-(12, 'list', 'list', 0, 'block&#44; listitem', 'link', '<ul>', '</ul>', '', 1, '1 1265756400', '0', 1),
-(13, 'numlist', 'list', 0, 'block, listitem', 'link', '<ol>', '</ol>', '', 1, '1 1265756400', '0', 1),
-(14, '*', 'listitem', 0, 'list', '', '<li>', '</li>', '', 1, '1 1265756400', '0', 1),
-(15, 'font', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="font-family:{..y..};">{..x..}</span>', '', 1, '1 1265756400', '0', 1),
-(16, 'color', 'inline', 2, 'listitem, block, inline, link', '', '{..x..}', '<span style="color:{..y..};">{..x..}</span>', '', 1, '1 1265756400', '0', 1),
-(17, 'size', 'inline', 2, 'listitem, block, inline, link', '', '', '', 'if ($action == ''validate'') {\r\nif (!isset ($attributes[''default''])) { return false; }\r\nelse {\r\n$font_sizes = array(0,1,2,3,4,5,6,7);\r\nif (!in_array($attributes[''default''], $font_sizes)) { return false; }\r\nelse { return true; }\r\n}\r\n}\r\nif (isset ($attributes[''default''])) {\r\n$arr_num = $attributes[''default''];\r\n$font_sizes_values = array("70%","85%","100%","125%","155%","195%","225%","300%");\r\nreturn ''<span style="font-size:''.$font_sizes_values[$arr_num].'';">''.$content.''</span>'';\r\n}', 1, '1 1265756400', '0', 1),
-(18, 'code', 'block', 2, 'listitem, block, inline', 'link', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding="5" align="center" border="0" width="90%">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style="font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, '1 1265756400', '0', 1),
-(19, 'quote', 'block', 2, 'listitem&#44; block&#44; inline', 'list', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q>{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat von <cite>{..y..}</cite>:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q cite=\\"{..y..}\\">{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, '1 1265756400', '0', 1),
-(20, 'noparse', 'inline', 5, 'listitem, block, inline, link', '', '', '', 'if ($action == \\''validate\\'') {\r\nreturn true;\r\n}\r\nreturn $content;\r\n', 1, '1 1265756400', '0', 1);
+INSERT INTO `fs_fscodes` (`name`, `contenttype`, `callbacktype`, `allowin`, `disallowin`, `param_1`, `param_2`, `php`, `active`, `userusage`, `group`, `added_date`, `added_user`, `edited_date`, `edited_user`, `example`) VALUES
+('b', 'inline', 0, 'listitem&#44; block&#44; inline&#44; link', '', '<b>{..x..}</b>', '', '', 1, 1, 1, 1265756400, 1, 0, 0, '[b]fetter Text[/b]'),
+('i', 'inline', 0, 'listitem&#44; block&#44; inline&#44; link', '', '<i>{..x..}</i>', '', '', 1, 1, 1, 1265756400, 1, 0, 0, '[i]kursiver Text[/i]'),
+('u', 'inline', 0, 'listitem&#44; block&#44; inline&#44; link', '', '<span style="text-decoration:underline;">{..x..}</span>', '', '', 1, 1, 1, 1265756400, 1, 0, 0, '[u]unterstrichener Text[/u]'),
+('s', 'inline', 0, 'listitem&#44; block&#44; inline&#44; link', '', '<span style="text-decoration:line-through;">{..x..}</span>', '', '', 1, 1, 1, 1265756400, 1, 0, 0, '[s]durchgestrichener Text[/s]'),
+('center', 'inline', 0, 'listitem&#44; block&#44; inline&#44; link', '', '<p align="center">{..x..}</p>', '', '', 1, 1, 2, 1265756400, 1, 0, 0, '[center]zentrierter Text[/center]'),
+('url', 'link', 1, 'listitem&#44; block&#44; inline', 'link', '<a href="{..x..}" target="_blank">{..x..}</a>', '<a href="{..y..}" target="_blank">{..x..}</a>', '', 1, 1, 3, 1265756400, 1, 0, 0, '[url]http://www.example.com/[/url]|[url=http://www.example.com/]Linktext[/url]'),
+('home', 'link', 1, 'listitem&#44; block&#44; inline', 'link', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($content).''" target="_self">''.$page_url."?go=".htmlspecialchars ($content).''</a>'';\r\n}\r\nreturn ''<a href="''.$global_config_arr[virtualhost]."?go=".htmlspecialchars ($attributes[''default'']).''" target="_self">''.$content.''</a>'';', 1, 1, 3, 1265756400, 1, 0, 0, '[home]news[/home]|[home=news]Linktext[/home]'),
+('email', 'link', 1, 'listitem&#44; block&#44; inline', 'link', '<a href="mailto:{..x..}">{..x..}</a>', '<a href="mailto:{..y..}">{..x..}</a>', '', 1, 1, 3, 1265756400, 1, 0, 0, '[email]max.mustermann@example.com[/email]|[email=max.mustermann@example.com]Linktext[/email]'),
+('img', 'image', 1, 'listitem&#44; block&#44; inline&#44; link', '', '<img src="{..x..}" alt="{..x..}">', '<img src="{..x..}" alt="{..x..}" align="{..y..}">', '', 1, 1, 4, 1265756400, 1, 0, 0, '[img]./images/icons/logo.gif[/img]|[img=right]./images/icons/logo.gif[/img]Fluss rechts|[img=left]./images/icons/logo.gif[/img]Fluss links'),
+('cimg', 'image', 1, 'listitem&#44; block&#44; inline&#44; link', '', '', '', 'global $global_config_arr;\r\nif ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''">'';\r\n}\r\nreturn ''<img src="''.$global_config_arr[virtualhost]."images/content/".htmlspecialchars ($content).''" alt="''.htmlspecialchars ($content).''" align="''.htmlspecialchars($attributes[''default'']).''">'';', 1, 1, 4, 1265756400, 1, 0, 0, ''),
+('player', 'block', 1, 'block&#44; inline', 'listitem&#44; link', '', '', 'if ($action == ''validate'') {\r\nreturn true;\r\n}\r\nif (!isset ($attributes[''default''])) {\r\nreturn get_player ( $content );\r\n}\r\n$res = explode ( ",", $attributes[''default''], 2 );\r\nintval($res[0]);\r\nintval($res[1]);\r\nreturn get_player ( $content, $res[0], $res[1] );', 1, 1, 6, 1265756400, 1, 0, 0, ''),
+('list', 'list', 0, 'block&#44; listitem', 'link', '<ul>{..x..}</ul>', '<ul>{..x..}</ul>', '', 1, 1, 5, 1265756400, 1, 0, 0, '[list]\r\n[*]Listenpunkt\r\n[*]Listenpunkt\r\n[/list]'),
+('numlist', 'list', 0, 'listitem&#44; block', 'link', '<ol>{..x..}</ol>', '', '', 1, 1, 5, 1265756400, 1, 0, 0, '[numlist]\r\n[*]Listenpunkt\r\n[*]Listenpunkt\r\n[/numlist]'),
+('*', 'listitem', 0, 'list', '', '<li>{..x..}</li>', '<li>{..x..}</li>', '', 1, 1, 5, 1265756400, 1, 0, 0, ''),
+('font', 'inline', 0, 'listitem&#44; block&#44; inline&#44; link', '', '{..x..}', '<span style="font-family:{..y..};">{..x..}</span>', '', 1, 1, 1, 1265756400, 1, 0, 0, '[font=Arial]Text in Arial[/font]'),
+('color', 'inline', 0, 'listitem&#44; block&#44; inline&#44; link', '', '{..x..}', '<span style="color:{..y..};">{..x..}</span>', '', 1, 1, 1, 1265756400, 1, 0, 0, '[color=#f00]Text in rot (#ff0000)[/color]'),
+('size', 'inline', 0, 'listitem&#44; block&#44; inline&#44; link', '', '', '', 'if ($action == ''validate'') {\r\nif (!isset ($attributes[''default''])) { return false; }\r\nelse {\r\n$font_sizes = array(0,1,2,3,4,5,6,7);\r\nif (!in_array($attributes[''default''], $font_sizes)) { return false; }\r\nelse { return true; }\r\n}\r\n}\r\nif (isset ($attributes[''default''])) {\r\n$arr_num = $attributes[''default''];\r\n$font_sizes_values = array("70%","85%","100%","125%","155%","195%","225%","300%");\r\nreturn ''<span style="font-size:''.$font_sizes_values[$arr_num].'';">''.$content.''</span>'';\r\n}', 1, 1, 1, 1265756400, 1, 0, 0, '[size=1]Text in Größe 1[/size]|[size=2]Text in Größe 2[/size]|[size=3]Text in Größe 3[/size]|[size=4]Text in Größe 4[/size]|[size=5]Text in Größe 5[/size]|[size=6]Text in Größe 6[/size]|[size=7]Text in Größe 7[/size]'),
+('code', 'block', 0, 'listitem&#44; block&#44; inline', 'link', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;\\">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Code:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"font-family:Courier New; border-collapse: collapse; border:1px dotted #000000;\\">\r\n      <code>{..x..}</code>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, 1, 6, 1265756400, 1, 0, 0, '[code]Schrift mit fester Breite[/code]'),
+('quote', 'block', 0, 'listitem&#44; block&#44; inline', 'list', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q>{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '<table cellpadding=\\"5\\" align=\\"center\\" border=\\"0\\" width=\\"90%\\">\r\n  <tr>\r\n    <td>\r\n      <b>Zitat von <cite>{..y..}</cite>:</b>\r\n    </td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\\"border-collapse:collapse; border:1px dotted #000000;\\">\r\n      <q cite=\\"{..y..}\\">{..x..}</q>\r\n    </td>\r\n  </tr>\r\n</table>', '', 1, 1, 6, 1265756400, 1, 0, 0, '[quote]Ein Zitat[/quote]|[quote=Quelle]Ein Zitat mit Quellenangabe[/quote]'),
+('noparse', 'inline', 1, 'listitem&#44; block&#44; inline&#44; link', '', '{..x..}', '', '', 1, 1, 6, 1265756400, 1, 0, 0, '[noparse]kein [b]fetter[/b] Text[/noparse]');
 
 -- --------------------------------------------------------
 
@@ -1138,7 +1160,7 @@ INSERT INTO `fs_fscodes` (`id`, `name`, `contenttype`, `callbacktype`, `allowin`
 --
 
 DROP TABLE IF EXISTS `fs_fscodes_config`;
-CREATE TABLE `fs_fscodes_config` (
+CREATE TABLE IF NOT EXISTS `fs_fscodes_config` (
   `type` varchar(25) NOT NULL,
   `value` varchar(50) NOT NULL,
   UNIQUE KEY `type` (`type`)
@@ -1161,8 +1183,8 @@ INSERT INTO `fs_fscodes_config` (`type`, `value`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_fscodes_flag`;
-CREATE TABLE `fs_fscodes_flag` (
-  `code` mediumint(8) NOT NULL,
+CREATE TABLE IF NOT EXISTS `fs_fscodes_flag` (
+  `code` varchar(10) NOT NULL,
   `name` smallint(2) NOT NULL,
   `value` smallint(2) NOT NULL,
   KEY `code` (`code`)
@@ -1173,33 +1195,38 @@ CREATE TABLE `fs_fscodes_flag` (
 --
 
 INSERT INTO `fs_fscodes_flag` (`code`, `name`, `value`) VALUES
-(19, 7, 1),
-(19, 7, 2),
-(18, 7, 1),
-(18, 7, 2),
-(14, 2, 1),
-(14, 8, 1),
-(12, 7, 2),
-(12, 3, 2),
-(12, 5, 2),
-(5, 7, 2);
+('quote', 7, 1),
+('code', 7, 1),
+('*', 8, 1),
+('*', 2, 1),
+('list', 5, 2),
+('list', 3, 2),
+('list', 7, 2);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs_fscodes_ref`
+-- Tabellenstruktur für Tabelle `fs_fscodes_groups`
 --
 
-DROP TABLE IF EXISTS `fs_fscodes_ref`;
-CREATE TABLE `fs_fscodes_ref` (
-  `code` mediumint(8) NOT NULL,
-  `refcode` mediumint(8) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `fs_fscodes_groups`;
+CREATE TABLE IF NOT EXISTS `fs_fscodes_groups` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
--- Daten für Tabelle `fs_fscodes_ref`
+-- Daten für Tabelle `fs_fscodes_groups`
 --
 
+INSERT INTO `fs_fscodes_groups` (`id`, `name`) VALUES
+(1, 'Style'),
+(2, 'Ausrichtung'),
+(3, 'Links'),
+(4, 'Bilder'),
+(5, 'Listen'),
+(6, 'Diverses');
 
 -- --------------------------------------------------------
 
@@ -1208,7 +1235,7 @@ CREATE TABLE `fs_fscodes_ref` (
 --
 
 DROP TABLE IF EXISTS `fs_gallery_config`;
-CREATE TABLE `fs_gallery_config` (
+CREATE TABLE IF NOT EXISTS `fs_gallery_config` (
   `id` tinyint(1) NOT NULL,
   `img_max_x` int(4) NOT NULL,
   `img_max_y` int(4) NOT NULL,
@@ -1252,7 +1279,7 @@ INSERT INTO `fs_gallery_config` (`id`, `img_max_x`, `img_max_y`, `img_small_max_
 --
 
 DROP TABLE IF EXISTS `fs_global_config`;
-CREATE TABLE `fs_global_config` (
+CREATE TABLE IF NOT EXISTS `fs_global_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `version` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.9',
   `virtualhost` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -1290,7 +1317,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1282187314);
+(1, '2.alix5', 'http://localhost/fs2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{title} - {ext}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1282565835);
 
 -- --------------------------------------------------------
 
@@ -1299,7 +1326,7 @@ INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `t
 --
 
 DROP TABLE IF EXISTS `fs_iplist`;
-CREATE TABLE `fs_iplist` (
+CREATE TABLE IF NOT EXISTS `fs_iplist` (
   `ip` varchar(18) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`ip`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -1318,7 +1345,7 @@ INSERT INTO `fs_iplist` (`ip`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_news`;
-CREATE TABLE `fs_news` (
+CREATE TABLE IF NOT EXISTS `fs_news` (
   `news_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` smallint(6) DEFAULT NULL,
   `user_id` mediumint(8) DEFAULT NULL,
@@ -1346,7 +1373,7 @@ INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`
 --
 
 DROP TABLE IF EXISTS `fs_news_cat`;
-CREATE TABLE `fs_news_cat` (
+CREATE TABLE IF NOT EXISTS `fs_news_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cat_description` text COLLATE utf8_unicode_ci NOT NULL,
@@ -1369,7 +1396,7 @@ INSERT INTO `fs_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, 
 --
 
 DROP TABLE IF EXISTS `fs_news_comments`;
-CREATE TABLE `fs_news_comments` (
+CREATE TABLE IF NOT EXISTS `fs_news_comments` (
   `comment_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `news_id` mediumint(8) DEFAULT NULL,
   `comment_poster` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1398,7 +1425,7 @@ INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comm
 --
 
 DROP TABLE IF EXISTS `fs_news_config`;
-CREATE TABLE `fs_news_config` (
+CREATE TABLE IF NOT EXISTS `fs_news_config` (
   `id` tinyint(1) NOT NULL,
   `num_news` smallint(4) NOT NULL DEFAULT '10',
   `num_applet` smallint(4) NOT NULL DEFAULT '5',
@@ -1433,7 +1460,7 @@ INSERT INTO `fs_news_config` (`id`, `num_news`, `num_applet`, `num_head`, `html_
 --
 
 DROP TABLE IF EXISTS `fs_news_links`;
-CREATE TABLE `fs_news_links` (
+CREATE TABLE IF NOT EXISTS `fs_news_links` (
   `news_id` mediumint(8) DEFAULT NULL,
   `link_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `link_name` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
@@ -1457,7 +1484,7 @@ INSERT INTO `fs_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `lin
 --
 
 DROP TABLE IF EXISTS `fs_partner`;
-CREATE TABLE `fs_partner` (
+CREATE TABLE IF NOT EXISTS `fs_partner` (
   `partner_id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,
   `partner_name` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `partner_link` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
@@ -1478,7 +1505,7 @@ CREATE TABLE `fs_partner` (
 --
 
 DROP TABLE IF EXISTS `fs_partner_config`;
-CREATE TABLE `fs_partner_config` (
+CREATE TABLE IF NOT EXISTS `fs_partner_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `partner_anzahl` tinyint(2) NOT NULL DEFAULT '0',
   `small_x` int(4) NOT NULL DEFAULT '0',
@@ -1505,7 +1532,7 @@ INSERT INTO `fs_partner_config` (`id`, `partner_anzahl`, `small_x`, `small_y`, `
 --
 
 DROP TABLE IF EXISTS `fs_player`;
-CREATE TABLE `fs_player` (
+CREATE TABLE IF NOT EXISTS `fs_player` (
   `video_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `video_type` tinyint(1) NOT NULL DEFAULT '1',
   `video_x` text COLLATE utf8_unicode_ci NOT NULL,
@@ -1528,7 +1555,7 @@ CREATE TABLE `fs_player` (
 --
 
 DROP TABLE IF EXISTS `fs_player_config`;
-CREATE TABLE `fs_player_config` (
+CREATE TABLE IF NOT EXISTS `fs_player_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `cfg_autoplay` tinyint(1) NOT NULL DEFAULT '1',
   `cfg_autoload` tinyint(1) NOT NULL DEFAULT '1',
@@ -1591,7 +1618,7 @@ INSERT INTO `fs_player_config` (`id`, `cfg_autoplay`, `cfg_autoload`, `cfg_buffe
 --
 
 DROP TABLE IF EXISTS `fs_poll`;
-CREATE TABLE `fs_poll` (
+CREATE TABLE IF NOT EXISTS `fs_poll` (
   `poll_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `poll_quest` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `poll_start` int(11) DEFAULT NULL,
@@ -1613,7 +1640,7 @@ CREATE TABLE `fs_poll` (
 --
 
 DROP TABLE IF EXISTS `fs_poll_answers`;
-CREATE TABLE `fs_poll_answers` (
+CREATE TABLE IF NOT EXISTS `fs_poll_answers` (
   `poll_id` mediumint(8) DEFAULT NULL,
   `answer_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `answer` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1633,7 +1660,7 @@ CREATE TABLE `fs_poll_answers` (
 --
 
 DROP TABLE IF EXISTS `fs_poll_config`;
-CREATE TABLE `fs_poll_config` (
+CREATE TABLE IF NOT EXISTS `fs_poll_config` (
   `id` tinyint(1) NOT NULL,
   `answerbar_width` smallint(3) NOT NULL DEFAULT '100',
   `answerbar_type` tinyint(1) NOT NULL,
@@ -1654,7 +1681,7 @@ INSERT INTO `fs_poll_config` (`id`, `answerbar_width`, `answerbar_type`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_poll_voters`;
-CREATE TABLE `fs_poll_voters` (
+CREATE TABLE IF NOT EXISTS `fs_poll_voters` (
   `voter_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `poll_id` mediumint(8) NOT NULL DEFAULT '0',
   `ip_address` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
@@ -1674,7 +1701,7 @@ CREATE TABLE `fs_poll_voters` (
 --
 
 DROP TABLE IF EXISTS `fs_press`;
-CREATE TABLE `fs_press` (
+CREATE TABLE IF NOT EXISTS `fs_press` (
   `press_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `press_title` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `press_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -1700,7 +1727,7 @@ CREATE TABLE `fs_press` (
 --
 
 DROP TABLE IF EXISTS `fs_press_admin`;
-CREATE TABLE `fs_press_admin` (
+CREATE TABLE IF NOT EXISTS `fs_press_admin` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -1726,7 +1753,7 @@ INSERT INTO `fs_press_admin` (`id`, `type`, `title`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_press_config`;
-CREATE TABLE `fs_press_config` (
+CREATE TABLE IF NOT EXISTS `fs_press_config` (
   `id` mediumint(8) NOT NULL DEFAULT '1',
   `game_navi` tinyint(1) NOT NULL DEFAULT '0',
   `cat_navi` tinyint(1) NOT NULL DEFAULT '0',
@@ -1752,7 +1779,7 @@ INSERT INTO `fs_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `show
 --
 
 DROP TABLE IF EXISTS `fs_screen`;
-CREATE TABLE `fs_screen` (
+CREATE TABLE IF NOT EXISTS `fs_screen` (
   `screen_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` smallint(6) unsigned DEFAULT NULL,
   `screen_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1776,7 +1803,7 @@ INSERT INTO `fs_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_screen_cat`;
-CREATE TABLE `fs_screen_cat` (
+CREATE TABLE IF NOT EXISTS `fs_screen_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` char(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cat_type` tinyint(1) NOT NULL DEFAULT '0',
@@ -1801,7 +1828,7 @@ INSERT INTO `fs_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`,
 --
 
 DROP TABLE IF EXISTS `fs_screen_config`;
-CREATE TABLE `fs_screen_config` (
+CREATE TABLE IF NOT EXISTS `fs_screen_config` (
   `id` tinyint(1) NOT NULL,
   `screen_x` int(4) DEFAULT NULL,
   `screen_y` int(4) DEFAULT NULL,
@@ -1843,7 +1870,7 @@ INSERT INTO `fs_screen_config` (`id`, `screen_x`, `screen_y`, `screen_thumb_x`, 
 --
 
 DROP TABLE IF EXISTS `fs_screen_random`;
-CREATE TABLE `fs_screen_random` (
+CREATE TABLE IF NOT EXISTS `fs_screen_random` (
   `random_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `screen_id` mediumint(8) NOT NULL,
   `start` int(11) NOT NULL,
@@ -1863,7 +1890,7 @@ CREATE TABLE `fs_screen_random` (
 --
 
 DROP TABLE IF EXISTS `fs_screen_random_config`;
-CREATE TABLE `fs_screen_random_config` (
+CREATE TABLE IF NOT EXISTS `fs_screen_random_config` (
   `id` mediumint(8) NOT NULL DEFAULT '1',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `type_priority` tinyint(1) NOT NULL DEFAULT '1',
@@ -1885,7 +1912,7 @@ INSERT INTO `fs_screen_random_config` (`id`, `active`, `type_priority`, `use_pri
 --
 
 DROP TABLE IF EXISTS `fs_search_config`;
-CREATE TABLE `fs_search_config` (
+CREATE TABLE IF NOT EXISTS `fs_search_config` (
   `id` int(1) NOT NULL,
   `search_num_previews` smallint(2) NOT NULL,
   PRIMARY KEY (`id`)
@@ -1905,7 +1932,7 @@ INSERT INTO `fs_search_config` (`id`, `search_num_previews`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_search_index`;
-CREATE TABLE `fs_search_index` (
+CREATE TABLE IF NOT EXISTS `fs_search_index` (
   `search_index_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `search_index_word_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `search_index_type` enum('news','articles','dl') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'news',
@@ -2050,7 +2077,7 @@ INSERT INTO `fs_search_index` (`search_index_id`, `search_index_word_id`, `searc
 --
 
 DROP TABLE IF EXISTS `fs_search_time`;
-CREATE TABLE `fs_search_time` (
+CREATE TABLE IF NOT EXISTS `fs_search_time` (
   `search_time_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `search_time_type` enum('news','articles','dl') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'news',
   `search_time_document_id` mediumint(8) NOT NULL,
@@ -2076,7 +2103,7 @@ INSERT INTO `fs_search_time` (`search_time_id`, `search_time_type`, `search_time
 --
 
 DROP TABLE IF EXISTS `fs_search_words`;
-CREATE TABLE `fs_search_words` (
+CREATE TABLE IF NOT EXISTS `fs_search_words` (
   `search_word_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `search_word` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
@@ -2215,7 +2242,7 @@ INSERT INTO `fs_search_words` (`search_word_id`, `search_word`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_shop`;
-CREATE TABLE `fs_shop` (
+CREATE TABLE IF NOT EXISTS `fs_shop` (
   `artikel_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `artikel_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `artikel_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -2237,7 +2264,7 @@ CREATE TABLE `fs_shop` (
 --
 
 DROP TABLE IF EXISTS `fs_smilies`;
-CREATE TABLE `fs_smilies` (
+CREATE TABLE IF NOT EXISTS `fs_smilies` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `replace_string` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   `order` mediumint(8) NOT NULL,
@@ -2267,7 +2294,7 @@ INSERT INTO `fs_smilies` (`id`, `replace_string`, `order`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_snippets`;
-CREATE TABLE `fs_snippets` (
+CREATE TABLE IF NOT EXISTS `fs_snippets` (
   `snippet_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `snippet_tag` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `snippet_text` text COLLATE utf8_unicode_ci NOT NULL,
@@ -2290,7 +2317,7 @@ INSERT INTO `fs_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippet
 --
 
 DROP TABLE IF EXISTS `fs_styles`;
-CREATE TABLE `fs_styles` (
+CREATE TABLE IF NOT EXISTS `fs_styles` (
   `style_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `style_tag` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `style_allow_use` tinyint(1) NOT NULL DEFAULT '1',
@@ -2315,7 +2342,7 @@ INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allo
 --
 
 DROP TABLE IF EXISTS `fs_user`;
-CREATE TABLE `fs_user` (
+CREATE TABLE IF NOT EXISTS `fs_user` (
   `user_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `user_name` char(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_password` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -2350,7 +2377,7 @@ INSERT INTO `fs_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `us
 --
 
 DROP TABLE IF EXISTS `fs_useronline`;
-CREATE TABLE `fs_useronline` (
+CREATE TABLE IF NOT EXISTS `fs_useronline` (
   `ip` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` mediumint(8) NOT NULL DEFAULT '0',
   `date` int(30) DEFAULT NULL,
@@ -2362,7 +2389,7 @@ CREATE TABLE `fs_useronline` (
 --
 
 INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1282227729);
+('127.0.0.1', 1, 1282589377);
 
 -- --------------------------------------------------------
 
@@ -2371,7 +2398,7 @@ INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_user_config`;
-CREATE TABLE `fs_user_config` (
+CREATE TABLE IF NOT EXISTS `fs_user_config` (
   `id` tinyint(1) NOT NULL,
   `user_per_page` tinyint(3) NOT NULL,
   `registration_antispam` tinyint(1) NOT NULL DEFAULT '0',
@@ -2400,7 +2427,7 @@ INSERT INTO `fs_user_config` (`id`, `user_per_page`, `registration_antispam`, `a
 --
 
 DROP TABLE IF EXISTS `fs_user_groups`;
-CREATE TABLE `fs_user_groups` (
+CREATE TABLE IF NOT EXISTS `fs_user_groups` (
   `user_group_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `user_group_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `user_group_description` text COLLATE utf8_unicode_ci,
@@ -2427,7 +2454,7 @@ INSERT INTO `fs_user_groups` (`user_group_id`, `user_group_name`, `user_group_de
 --
 
 DROP TABLE IF EXISTS `fs_user_permissions`;
-CREATE TABLE `fs_user_permissions` (
+CREATE TABLE IF NOT EXISTS `fs_user_permissions` (
   `perm_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `x_id` mediumint(8) NOT NULL,
   `perm_for_group` tinyint(1) NOT NULL DEFAULT '1',
@@ -2440,6 +2467,7 @@ CREATE TABLE `fs_user_permissions` (
 
 INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 ('fscode_add', 2, 0),
+('fscode_groups', 2, 0),
 ('news_add', 1, 1),
 ('news_cat', 1, 1),
 ('news_comments', 1, 1),
@@ -2453,7 +2481,7 @@ INSERT INTO `fs_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs_wallpaper`;
-CREATE TABLE `fs_wallpaper` (
+CREATE TABLE IF NOT EXISTS `fs_wallpaper` (
   `wallpaper_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `wallpaper_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `wallpaper_title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -2475,7 +2503,7 @@ INSERT INTO `fs_wallpaper` (`wallpaper_id`, `wallpaper_name`, `wallpaper_title`,
 --
 
 DROP TABLE IF EXISTS `fs_wallpaper_sizes`;
-CREATE TABLE `fs_wallpaper_sizes` (
+CREATE TABLE IF NOT EXISTS `fs_wallpaper_sizes` (
   `size_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `wallpaper_id` mediumint(8) NOT NULL DEFAULT '0',
   `size` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

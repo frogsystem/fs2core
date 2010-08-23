@@ -25,14 +25,14 @@ function validateFormData ( $DATA, $TYPE, $CHECK = FALSE ) {
         if ( in_array("required", $TYPE) ) {
             $validation_state = $validation_state && isset($DATA) && $DATA != "";
         }
-        
+
         // E-Mail, kein zusäzlicher Check erlaubt
         if ( in_array("email", $TYPE) ) {
             // Quelle: http://fightingforalostcause.net/misc/2006/compare-email-regex.php
             $regexp = '/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i';
             $validation_state = $validation_state && preg_match ( $regexp, $DATA );
         }
-        
+
         // Integer Value
         if ( in_array("integer", $TYPE) ) {
             $regexp = "/^[-]?[\d]+$/";
@@ -62,14 +62,14 @@ function validateFormData ( $DATA, $TYPE, $CHECK = FALSE ) {
         if ( in_array("negative", $TYPE) ) {
             $validation_state = $validation_state && floatval ( $DATA ) < 0;
         }
-        
+
         // Check Free-Text against RegExpression Pattern
         if ( in_array("text", $TYPE) ) {
             $validation_state = $validation_state && preg_match ( $CHECK, $DATA );
         }
 
         // weitere Daten-Arten (z.B. URL, ...) sollten implementiert werden
-        
+
         // sonst
         return $validation_state;
     }
@@ -130,7 +130,7 @@ function get_page_nav ( $PAGE, $NUM_OF_PAGES, $PER_PAGE, $NUM_OF_ENTRIES, $URL_T
     $template = str_replace ( "{..total_pages..}", $NUM_OF_PAGES, $template );
     $template = str_replace ( "{..prev..}", $template_prev, $template );
     $template = str_replace ( "{..next..}", $template_next, $template );
-    
+
     return $template;
 }
 
@@ -283,7 +283,7 @@ function date_loc ( $DATE_STRING, $TIMESTAMP )
 
     $week_en = array ( "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" );
     $month_en = array ( "January","February","March","April","May","June","July","August","September","October","November","December" );
-    
+
     $localized_date = str_replace ( $week_en, explode ( ",", $phrases['week_days'] ), date ( $DATE_STRING, $TIMESTAMP ) );
     $localized_date = str_replace ( $month_en, explode ( ",", $phrases['month_names'] ), $localized_date );
 
@@ -319,7 +319,7 @@ function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
     global $db, $global_config_arr;
     static $navi;
     static $i = 0;
-    
+
     $i++;
     $data[$CAT_ID] = mysql_query ( "
         SELECT *
@@ -435,7 +435,7 @@ function get_random_pic ()
                                 AND C.`cat_id` = S.`cat_id`
                                 LIMIT ".$rand.",1
         ", $db);
-        
+
         $dbscreen['id'] = mysql_result ( $index, 0, "screen_id" );
         settype ( $dbscreen['id'], "integer" );
         $dbscreen['caption'] = stripslashes ( mysql_result ( $index, 0, "screen_name" ) );
@@ -443,7 +443,7 @@ function get_random_pic ()
         settype ( $dbscreen['cat_id'], "integer" );
         $dbscreen['cat_title'] = stripslashes ( mysql_result ( $index, 0, "cat_name" ) );
         $dbscreen['type'] = 2;
-        
+
         return $dbscreen;
     } else {
         return FALSE;
@@ -470,12 +470,12 @@ function get_pagenav_start ( $NUM_OF_ENTRIES, $ENTRIES_PER_PAGE, $START )
     $PAGENAV_DATA['old_start'] = $OLDSTART;
     $PAGENAV_DATA['cur_start'] = $START;
     $PAGENAV_DATA['new_start'] = $NEWSTART;
-    
+
     if ( $START > 1 ) { $PAGENAV_DATA['old_start_exists'] = TRUE; }
     else { $PAGENAV_DATA['old_start_exists'] = FALSE; }
     if ( ( $START + $ENTRIES_PER_PAGE ) < $NUM_OF_ENTRIES ) { $PAGENAV_DATA['newpage_exists'] = TRUE; }
     else { $PAGENAV_DATA['newpage_exists'] = FALSE; }
-    
+
     return $PAGENAV_DATA;
 }
 
@@ -533,7 +533,7 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
         $query = "WHERE ";
     }
     $query .= $or_query . $and_query;
-    
+
     return $query;
 }
 
@@ -602,9 +602,9 @@ function is_in_staff ( $USER_ID )
 {
     global $global_config_arr;
     global $db;
-    
+
     settype ( $USER_ID, "integer" );
-    
+
     if ( $USER_ID ) {
         $index = mysql_query ( "
                                 SELECT user_id, user_is_staff, user_is_admin
@@ -656,7 +656,7 @@ function get_template ( $TEMPLATE_NAME )
 {
     global $global_config_arr;
     global $db;
-    
+
     $index = mysql_query ( "
                             SELECT `".$TEMPLATE_NAME."`
                             FROM ".$global_config_arr['pref']."template
@@ -710,7 +710,7 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
 
     $header .= "X-Mailer: PHP/" . phpversion() . "\n";
     $header .= "X-Sender-IP: " . $REMOTE_ADDR . "\n";
-    
+
     if ( $HTML == FALSE || $HTML == "html" ) {
         if ( mysql_result ( $index, 0, "html" ) == 1 ) {
             $header .= "Content-Type: text/html";
@@ -741,15 +741,15 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
     } else {
         return false;
     }
-    
+
     if ($width != "") {
         $width2 = 'width:'.$width.'px;';
     }
-    
+
     if ($height != "") {
         $height2 = 'height:'.$height.'px';
     }
-    
+
     if ($class != "") {
         $class2 = 'class="'.$class.'"';
     }
@@ -763,7 +763,7 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
     $index = mysql_query ( " SELECT * FROM `".$global_config_arr['pref']."editor_config` ", $db );
     $config_arr = mysql_fetch_assoc ( $index );
     $config_arr['num_smilies'] = $config_arr['smilies_rows']*$config_arr['smilies_cols'];
-            
+
     $zaehler = 0;
     $index = mysql_query ( "
                             SELECT *
@@ -776,7 +776,7 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
         $smilie_arr['url'] = image_url ( "images/smilies/", $smilie_arr['id'] );
         $smilie_template = '<td><img src="'.$smilie_arr['url'].'" alt="'.$smilie_arr['replace_string'].'" onClick="insert(\''.$name.'\', \''.$smilie_arr['replace_string'].'\', \'\')" class="editor_smilies"></td>';
         $zaehler += 1;
-        
+
         switch ( $zaehler )
         {
             case $config_arr['smilies_cols'] == 1:
@@ -800,7 +800,7 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
         }
     }
     $smilies_table .= '</table>';
-    
+
     // Get Smilie Template
     $smilies = new template();
     $smilies->setFile("0_editor.tpl");
@@ -814,7 +814,7 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
   }
 
 $buttons = "";
-  
+
 if ($all==true OR $fs_b==1) {
   $buttons .= create_textarea_button('bold.gif', "B", "fett", "insert('$name', '[b]', '[/b]')");
 }
@@ -903,12 +903,12 @@ if ($all==true OR $fs_noparse==1) {
     $textarea = new template();
     $textarea->setFile("0_editor.tpl");
     $textarea->load("BODY");
-    
+
     $textarea->tag("style", $style );
     $textarea->tag("text", $text );
     $textarea->tag("buttons", $buttons );
     $textarea->tag("smilies", $smilies );
-    
+
     $textarea = $textarea->display ();
 
     return $textarea;
@@ -928,14 +928,14 @@ function create_textarea_button($img_file_name, $alt, $title, $insert)
     $button = new template();
     $button->setFile("0_editor.tpl");
     $button->load("BUTTON");
-    
+
     $button->tag("img_file_name", $img_file_name );
     $button->tag("alt", $alt );
     $button->tag("title", $title );
     $button->tag("javascript", $javascript );
-    
+
     $button = $button->display ();
-    
+
     return $button;
 }
 
@@ -1005,7 +1005,7 @@ function forward_message ( $TITLE, $MESSAGE, $URL)
     $template->tag ( "message", $MESSAGE );
     $template->tag ( "forward_url", $URL );
     $template->tag ( "forward_time", $global_config_arr['auto_forward'] );
-    
+
     $template = $template->display ();
     return $forward_script.$template;
 }
@@ -1237,7 +1237,7 @@ function getsize ( $SIZE )
 
 function markword($text, $word)
 {
-    $text = preg_replace("=(.*?)$word(.*?)=i", 
+    $text = preg_replace("=(.*?)$word(.*?)=i",
                          "\\1<font color=\"red\"><b>$word</b></font>\\2",$text);
     return $text;
 }
@@ -1256,14 +1256,27 @@ function html_nl2br ( $TEXT )
 // create save strings for sql //
 /////////////////////////////////
 
-function savesql ( $TEXT )
-{
-    global $db;
-
-    if ( !is_numeric ( $TEXT ) ) {
-        $TEXT = mysql_real_escape_string ( addslashes ( unquote ( $TEXT ) ), $db );
+function savesql($TEXT){
+    global $sql;
+    $was_string = false;
+    if(!is_array($TEXT)){ // transform $TEXT into array, if it isn't
+        $was_string = true;
+        $TEXT = array($TEXT);
     }
-    return $TEXT;
+    foreach($TEXT as $key => $value){
+        if(is_array($TEXT[$key])){ // if array is multidimensional, apply function to all other dimensions, too
+            $TEXT[$key] = savesql($TEXT[$key]);
+        } elseif(!is_numeric($TEXT[$key])) { // numeric values haven't to be saved
+            $TEXT[$key] = mysql_real_escape_string(addslashes(unquote($TEXT[$key])), $sql->getRes());
+        }
+    }
+
+    if($was_string === true){ // if input was a string, rturn a string
+        $keys = array_keys($TEXT);
+        return $TEXT[$keys[0]];
+    } else { // return array if input wasn't a string
+        return $TEXT;
+    }
 }
 
 /////////////////////////////////
@@ -1296,130 +1309,17 @@ function killhtml ( $TEXT )
 // Format text with FS Code //
 //////////////////////////////
 
-function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0)
-{
-        include_once ( FS2_ROOT_PATH . 'includes/bbcodefunctions.php');
-        $bbcode = new StringParser_BBCode ();
-
-        $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
-
-        if ($html==false) {
-            #$bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'strip_tags');
-            $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
-        }
-        $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'stripslashes');
-        if ($all==true) {
-              $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
-        }
-        $bbcode->addParser ('list', 'bbcode_stripcontents');
-
-        if ($all==true OR $do_smilies==1)
-        $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'do_bbcode_smilies');
-
-        if ($all==true OR $do_b==1)
-        $bbcode->addCode ('b', 'simple_replace', null, array ('start_tag' => '<b>', 'end_tag' => '</b>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_i==1)
-        $bbcode->addCode ('i', 'simple_replace', null, array ('start_tag' => '<i>', 'end_tag' => '</i>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_u==1)
-        $bbcode->addCode ('u', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:underline">', 'end_tag' => '</span>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_s==1)
-        $bbcode->addCode ('s', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:line-through">', 'end_tag' => '</span>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_center==1) {
-            $bbcode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<p align="center">', 'end_tag' => '</p>'),
-                              'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-            $bbcode->setCodeFlag ('center', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-        }
-
-        if ($all==true OR $do_url==1)
-        $bbcode->addCode ('url', 'usecontent?', 'do_bbcode_url', array ('usecontent_param' => 'default'),
-                          'link', array ('listitem', 'block', 'inline'), array ('link'));
-
-        if ($all==true OR $do_homelink==1)
-        $bbcode->addCode ('home', 'usecontent?', 'do_bbcode_homelink', array ('usecontent_param' => 'default'),
-                          'link', array ('listitem', 'block', 'inline'), array ('link'));
-
-        if ($all==true OR $do_email==1)
-        $bbcode->addCode ('email', 'usecontent?', 'do_bbcode_email', array ('usecontent_param' => 'default'),
-                          'link', array ('listitem', 'block', 'inline'), array ('link'));
-
-        if ($all==true OR $do_img==1)
-        $bbcode->addCode ('img', 'usecontent?', 'do_bbcode_img', array (),
-                          'image', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_cimg==1)
-        $bbcode->addCode ('cimg', 'usecontent?', 'do_bbcode_cimg', array (),
-                          'image', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_player==1)
-        $bbcode->addCode ('player', 'usecontent?', 'do_bbcode_player', array (),
-                          'block', array ('block', 'inline'), array ('listitem', 'link'));
-
-        if ($all==true OR $do_list==1)
-        $bbcode->addCode ('list', 'simple_replace', null, array ('start_tag' => '<ul>', 'end_tag' => '</ul>'),
-                          'list', array ('block', 'listitem'), array ('link'));
-
-        if ($all==true OR $do_numlist==1)
-        $bbcode->addCode ('numlist', 'simple_replace', null, array ('start_tag' => '<ol>', 'end_tag' => '</ol>'),
-                          'list', array ('block', 'listitem'), array ('link'));
-
-        if ($all==true OR $do_list==1 OR $do_numlist==1) {
-            $bbcode->addCode ('*', 'simple_replace', null, array ('start_tag' => '<li>', 'end_tag' => '</li>'),
-                              'listitem', array ('list'), array ());
-            $bbcode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
-            $bbcode->setCodeFlag ('*', 'paragraphs', false);
-            $bbcode->setCodeFlag ('list', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-            $bbcode->setCodeFlag ('list', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
-            $bbcode->setCodeFlag ('list', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
-        }
-
-
-        if ($all==true OR $do_font==1)
-        $bbcode->addCode ('font', 'callback_replace', 'do_bbcode_font', array (),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_color==1)
-        $bbcode->addCode ('color', 'callback_replace', 'do_bbcode_color', array (),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_size==1)
-        $bbcode->addCode ('size', 'callback_replace', 'do_bbcode_size', array (),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_code==1) {
-            $bbcode->addCode ('code', 'callback_replace', 'do_bbcode_code', array (),
-                              'block', array ('listitem', 'block', 'inline'), array ('link'));
-            $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-            $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
-        }
-        
-        if ($all==true OR $do_quote==1) {
-            $bbcode->addCode ('quote', 'callback_replace', 'do_bbcode_quote', array (),
-                              'block', array ('listitem', 'block', 'inline'), array ('link'));
-            $bbcode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-            $bbcode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
-        }
-
-        if ($all==true OR $do_noparse==1)
-        $bbcode->addCode ('noparse', 'usecontent', 'do_bbcode_noparse', array (),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($para==true) {
-            $bbcode->setRootParagraphHandling (true);
-        }
-
-        $bbcode->setGlobalCaseSensitive (false);
-        $parsedtext = $bbcode->parse ($text);
-        unset($bbcode);
-
-        return $parsedtext;
+function fscode($text, $all=true, $html=false, $para=false){
+  global $fscode, $sql;
+  $html = ($html == true  || $html == 1) ? true : false;
+  $para = ($para == true  || $para == 1) ? true : false;
+  $all  = ($all  == false || $all  == 0) ? false : true;
+  $fscode->setHTML($html);
+  $fscode->setPara($para);
+  if($all === true)
+    return $fscode->parse($text);
+  else
+    return $fscode->parse($text, true);
 }
 
 //////////////////////////

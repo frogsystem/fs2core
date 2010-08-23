@@ -15,7 +15,7 @@ class SelectList
     private $formName;
     private $formAction;
     private $formMethod;
-    
+
     private $inputs = array();
 
     private $cols = 2;
@@ -27,10 +27,10 @@ class SelectList
     private $actionSelection = TRUE;
     private $actions = array();
     private $defaultAction;
-    
+
     private $button = FALSE;
 
-    
+
     // Constructor
     public function __construct ( $formName, $title, $go = TRUE, $cols = 2, $formMethod = "post", $formAction = "" ) {
         // Include global Data
@@ -52,7 +52,7 @@ class SelectList
 
         $this->addInputHTML ( '<input'.$class.' type="'.$type.'" name="'.$name.'"'.$id.$value.'>' );
     }
-    
+
     private function addInputHTML ( $HTML ) {
         $this->inputs[] = $HTML;
     }
@@ -77,11 +77,11 @@ class SelectList
         }
         $this->captions = $ARRAY;
     }
-    
+
     public function setSpaceAfterCaptions ( $BOOLEAN ) {
         $this->spaceAfterCaptions = $BOOLEAN;
     }
-    
+
     /**
     * needs Array of this kind:
     * array ( $col_array1, [ $col_array2, [ ... ] ] )
@@ -105,7 +105,7 @@ class SelectList
         }
         $this->lines[] = $ARRAY;
     }
-    
+
     public function setNoLinesText ( $TEXT ) {
         $this->noLines = $TEXT;
     }
@@ -116,12 +116,12 @@ class SelectList
         $this->defaultAction = $ACTION;
        }
     }
-    
+
     // Boolean $STATE
     public function setActionSelection ( $STATE ) {
         $this->actionSelection = $STATE;
     }
-    
+
     public function addButton ( $TEXT = "" ) {
         if ( $TEXT != "" ) {
             $this->button = $TEXT;
@@ -129,10 +129,11 @@ class SelectList
             $this->button = $this->text["admin"]->get("do_action_button_long");
         }
     }
-    
+
 
     // create HTML/String representation for List
     public function __toString () {
+
 
         // Add Default Input for ?go=
         if ( !$this->actionSelection && isset ( $this->defaultAction ) ) {
@@ -149,15 +150,15 @@ class SelectList
             $template .= '
                         '.$aInput;
         }
-        
+
         // Start Table
         $template .= '
                         <table class="configtable select_list" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="'.$this->cols.'">'.$this->title.'</td></tr>';
-                            
+
         // Generate Content
         if ( count ( $this->lines ) >= 1 ) {
-        
+
             // Genarate Captions
             $template .= '
                             <tr>';
@@ -169,12 +170,12 @@ class SelectList
             }
             $template .= '
                             </tr>';
-                            
+
             if ( $this->spaceAfterCaptions ) {
                 $template .= '
                             <tr><td class="space"></td></tr>';
             }
-            
+
             // Genarate Content
             foreach ( $this->lines as $aLine ) {
                 $template .= '
@@ -225,7 +226,7 @@ class SelectList
                                 </td>
                             </tr>';
             }
-            
+
             // Generate Button
             if ( $this->button !== FALSE ) {
                 $template .= '
@@ -248,12 +249,12 @@ class SelectList
                             </tr>
                             <tr><td class="space"></td></tr>';
         }
-        
+
         // End of Table and Form
         $template .= '
                         </table>
                 </form>';
-        
+
         return $template;
     }
 }

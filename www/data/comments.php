@@ -61,7 +61,7 @@ if (isset($_POST['add_comment']))
                                         WHERE news_id = ".$_POST['id']."
                                         LIMIT 0,1
                 ", $db);
-                
+
                 if ( mysql_result ( $index, 0, "news_comments_allowed" ) == 1 ) {
 
                     // Security Functions
@@ -226,7 +226,7 @@ if ( $SHOW == TRUE ) {
             // Benutzer Rang
             $user_arr['rank_data'] = get_user_rank ( $comment_arr['user_group'], $comment_arr['user_is_admin'] );
             $comment_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
-            
+
             // Get User Template
             $template = new template();
             $template->setFile("0_news.tpl");
@@ -248,9 +248,9 @@ if ( $SHOW == TRUE ) {
         }
 
         if ($fs == true) {
-            $comment_arr[comment_text] = fscode( kill_replacements ( $comment_arr[comment_text] ),$fs,$html,$para, $editor_config[do_bold], $editor_config[do_italic], $editor_config[do_underline], $editor_config[do_strike], $editor_config[do_center], $editor_config[do_url], $editor_config[do_home], $editor_config[do_email], $editor_config[do_img], $editor_config[do_cimg], $editor_config[do_list], $editor_config[do_numlist], $editor_config[do_font], $editor_config[do_color], $editor_config[do_size], $editor_config[do_code], $editor_config[do_quote], $editor_config[do_noparse], $editor_config[do_smilies]);
+            $comment_arr[comment_text] = fscode( kill_replacements ( $comment_arr[comment_text] ),false,$html,$para);
         } else {
-            $comment_arr[comment_text] = fscode( kill_replacements ( $comment_arr[comment_text] ),$fs,$html,$para);
+            $comment_arr[comment_text] = fscode( kill_replacements ( $comment_arr[comment_text] ),true,$html,$para);
         }
 
         $comment_arr[comment_date] = date_loc ( $global_config_arr['datetime'] , $comment_arr[comment_date] );

@@ -25,10 +25,13 @@ if ( $db ) {
     require ( FS2_ROOT_PATH . "libs/class_template.php" );
     require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
     require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
+    require ( FS2_ROOT_PATH . "libs/class_fscode.php" );
 
     //Include Phrases-Files
     require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
     $TEXT = new langDataInit ( $global_config_arr['language_text'], "frontend" );
+
+    $fscode = new fscode();
 
 
     // Constructor Calls
@@ -69,7 +72,7 @@ if ( $db ) {
                 } else {
                     document.getElementById(\'article_para\').value = 0;
                 }
-                
+
                 document.getElementById(\'article_text\').value = opener.document.getElementById(\'article_text\').value;
 
                 document.getElementById(\'form\').submit();
@@ -148,7 +151,7 @@ if ( $db ) {
             $user_arr['user_id'] = $article_arr['article_user'];
             $user_arr['user_name'] = $article_arr['article_user_name'];
             $user_arr['user_url'] = '?go=user&id='.$user_arr['user_id'];
-            
+
             // Create Template
             $author_template = new template();
             $author_template->setFile ( "0_articles.tpl" );

@@ -27,11 +27,14 @@ if ( $db ) {
     require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
     require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
     require ( FS2_ROOT_PATH . "libs/class_search.php" );
+    require ( FS2_ROOT_PATH . "libs/class_fscode.php" );
 
     //Include Phrases-Files
     require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
     $TEXT = new langDataInit ( $global_config_arr['language_text'], "frontend" );
 
+    // Load FS-Codes
+    $fscode = new fscode();
 
     // Constructor Calls
     delete_old_randoms ();
@@ -48,7 +51,7 @@ if ( $db ) {
 
     $template_general->setFile("0_general.tpl");
     $template_general->load("MAINPAGE");
-    
+
     $template_general->tag("content", get_content ( $global_config_arr['goto'] ));
     $template_general->tag("copyright",  get_copyright ());
 
@@ -59,9 +62,9 @@ if ( $db ) {
     $template_general = replace_applets ( $template_general );
     $template_general = replace_navigations ( $template_general );
     $template_general = replace_snippets ( $template_general );
-    
+
     $template_general = replace_globalvars ( $template_general );
-    
+
     // Get Main Template
     $template = get_maintemplate ();
     $template = str_replace ( "{..body..}", $template_general, $template);

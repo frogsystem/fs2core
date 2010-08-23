@@ -259,7 +259,20 @@ function resetOld (resetColor, last, lastBox, object) {
     }
 }
 
+function yesNoColors(yBox, nBox, yInput, nInput){
+  document.getElementById(yBox).setAttribute('onclick', "createClick(document.getElementById('"+yInput+"'), '#EEEEEE', '#64DC6A', this); resetOld('transparent', last, lastBox, this); saveLast(document.getElementById('"+yInput+"'), this);");
+  document.getElementById(yBox).setAttribute('onmouseover', "colorEntry(document.getElementById('"+yInput+"'), '#EEEEEE', '#64DC6A', this);");
+  document.getElementById(yBox).setAttribute('onmouseout', "colorEntry(document.getElementById('"+yInput+"'), 'transparent', '#49C24f', this);");
+  document.getElementById(yBox).style.cursor="pointer";
 
+  document.getElementById(nBox).setAttribute('onclick', "createClick(document.getElementById('"+nInput+"'), '#EEEEEE', '#DE5B5B', this); resetOld('transparent', last, lastBox, this); saveLast(document.getElementById('"+nInput+"'), this);");
+  document.getElementById(nBox).setAttribute('onmouseover', "colorEntry(document.getElementById('"+nInput+"'), '#EEEEEE', '#DE5B5B', this);");
+  document.getElementById(nBox).setAttribute('onmouseout', "colorEntry(document.getElementById('"+nInput+"'), 'transparent', '#C24949', this);");
+  document.getElementById(nBox).style.cursor="pointer";
+
+  savePreSelectedLast(document.getElementById(nInput), document.getElementById(nBox));
+  createClick(document.getElementById(nInput), 'transparent', '#C24949', document.getElementById(nBox));
+}
 
 //////////////////////////
 //// Editor Functions ////
@@ -340,8 +353,8 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
 {
   switch (syntaxHighlight) {
     case 4:
-        var parser = ["../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js"];
-        var css = "../resources/codemirror/contrib/php/css/phpcolors.css";
+        var parser = ["tokenizephp.js", "parsephp.js"];
+        var css = "../resources/codemirror/css/phpcolors.css";
         break;
     case 3:
         var parser = ["tokenizejavascript.js", "parsejavascript.js"];
@@ -515,9 +528,29 @@ function getCurMinutes () {
 //getCurSeconds()
 function getCurSeconds () {
   var curDateTime = new Date();
+  var curDateTime = new Date();
   var curS = curDateTime.getSeconds();
   if (curS < 10) {
     curS = "0" + curS;
   }
   return curS;
+}
+
+// setup tooltip
+function setupToolTip(tipel, caption, content, margin){
+  if (!margin)
+    margin = "-138px 0 0 -331px";
+  var parent = $(tipel).parent().get(0);
+  var node = document.createElement("div");
+  node.setAttribute("class", "tooltip");
+  node.setAttribute("style", "display: none; margin: "+margin+";");
+  node.innerHTML = '<img src="./img/tt_1.png"><br><div><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td style="width: 0px;"><img src="./img/tt_h1.jpg"></td><td>'+caption+'</td></tr><tr><td colspan="2">'+content+'</td></tr></tbody></table></div><img src="./img/tt_3.png">';
+
+  if($(tipel).get(0).nextSibling == null)
+    parent.appendChild(node);
+  else
+    parent.insertBefore(node, $(tipel).get(0).nextSibling);
+
+  $(tipel).removeAttr("title");
+  $(tipel).tooltip({position: "top left"});
 }

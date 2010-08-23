@@ -6,10 +6,11 @@ allowin:          Erlaubt in
 disallowin:       Nicht erlaubt in
 callbacktype:     Ersetzungsart
 icon:             FS Code-Icon
-icon_desc:        Das Icon, das im Editor angezeigt wird.<br>Wird für den zur Zeit aktiven Style gespeichert.
+example:          Beispiel
 active:           Code aktivieren
 active_y:         Ja
 active_n:         Nein
+userusage:        Code verwendbar
 flags:            Flags
 flags_name:       Name
 flags_value:      Wert
@@ -30,3 +31,17 @@ save_ok:          Code erfolgreich gespeichert.
 save_error_1:     Der Code konnte nicht hinzugefügt werden.<br>SQL meldet: {..err_msg..} : {..err_no..}
 save_error_2:     Der Name des Code enthält ungültige Zeichen!
 save_error_3:     Ein Code mit diesem Namen existiert bereits!
+nogroup:          Keine
+group:            Gruppe
+simple:           Einfache Ansicht
+advanced:         Erweiterte Ansicht
+helpnote:         Um die Hilfe anzuzeigen muss Javascript aktiviert sein.
+help:             Hilfe
+help_1:           Der Inhaltstyp ist maßgebend für die Optionen \"Erlaubt in\" und \"Nicht erlaubt in\" der in diesem Code eingeschlossenen Codes.
+help_2:           Inhaltstypen der Codes, die diesen Code enthalten dürfen. In anderen Inhaltstypen wird dieser Code ignoriert.<br>Mehrere Inahltstypen werden durch Kommata getrennt.
+help_3:           Inhaltstypen der Codes, die diesen Code nicht enthalten dürfen. Der Code wird auch ignoriert, wenn ein im <i>Codebaum</i> übergeordneter Code einen der hier angegebenen Inhaltstypen aufweist.<br>Mehrere Inahltstypen werden durch Kommata getrennt.
+help_4:           Die Ersetzungsart.<br>Nähere Informationen können im entsprechenden Kapitel auf <a href=\"http://www.christian-seiler.de/projekte/php/bbcode/doc/de/kapitel2.php#behandlungsarten\">Christian-Seiler.de</a> eingeholt werden.
+help_5:           Das Icon, das im Editor angezeigt wird.<br>Wird für den zur Zeit aktiven Style gespeichert.
+help_6:           Ein Beispiel, das in der <a href=\"../?go=fscode\">Übersicht der FS Codes</a> angezeigt wird.<br>Leerlassen um Code nicht in der Übersicht anzeigen zu lassen.
+help_7:           Der Code ist von den Benutzern in Kommentaren etc. verwendbar.<br>In News, Artikeln etc. ist der Code auch verwendbar, wenn hier \"Nein\" gewähle wurde.
+help_8:           Ein Code-Flag.<br>Nähere Informationen können im entsprechenden Kapitel auf <a href=\"http://www.christian-seiler.de/projekte/php/bbcode/doc/de/kapitel6.php#flags\">Christian-Seiler.de</a> eingeholt werden.

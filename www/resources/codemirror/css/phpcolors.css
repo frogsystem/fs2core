@@ -35,7 +35,8 @@ span.php-punctuation {
 }
 
 span.php-keyword {
-  color: #000080;
+  color: black;
+  font-weight: bold;
 }
 
 span.php-operator {
@@ -44,7 +45,7 @@ span.php-operator {
 
 /* __FILE__ etc.; http://php.net/manual/en/reserved.php */
 span.php-compile-time-constant {
-  color: #black;
+  color: #800080;
   font-weight: bold;
 }
 
@@ -70,7 +71,8 @@ span.php-predefined-class {
 }
 
 span.php-atom {
-  color: red;
+  color: #800080;
+  font-weight: bold;
 }
 
 /* class, interface, namespace or function names, but not $variables */

@@ -17,7 +17,7 @@ function search_index ()
         foreach ( $indexObjects as $aObject ) {
             $aObject->updateIndex();
         }
-        
+
         // Update config Value
         $global_config_arr['search_index_time'] = time();
         mysql_query ( "
@@ -52,7 +52,7 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     $template_doctype->setFile("0_general.tpl");
     $template_doctype->load("DOCTYPE");
     $template_doctype = $template_doctype->display();
-    
+
     // Base for Images
     if ( $BASE !== FALSE ) {
         $template_base = '<base href="'.$BASE .'">
@@ -109,11 +109,11 @@ function get_css ( $PATH_PREFIX )
         }
         return FALSE;
     ') );
-    
+
     // Special CSS-Files
     $files_special = array ( "import.css", "noscript.css" );
     $files_all_special = array_merge ( $files_special, $files_go_css );
-    
+
     // Filter special Files
     $files_without_special = array_diff ( $files, $files_all_special );
 
@@ -130,20 +130,20 @@ function get_css ( $PATH_PREFIX )
                 <link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $file .'">';
         }
     }
-    
+
     // Other Special CSS
     if ( in_array ( "noscript.css", $files ) ) {
         $template_css .= '
                 <link rel="stylesheet" type="text/css" id="noscriptcss" href="'. $link_path . '/noscript.css">';
     }
-    
+
     // Go-CSS-Files
     $go_css = "go_".$global_config_arr['goto'].".css";
     if ( in_array ( $go_css, $files_go_css ) ) {
         $template_css .= '
                 <link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $go_css .'">';
         }
-    
+
     // Return Template
     return $template_css;
 }
@@ -236,13 +236,13 @@ function get_meta_author ( $DC = FALSE )
         } else {
             $author = $global_config_arr['publisher'];
         }
-        
+
         if ( $DC ) {
             $output = '<meta name="DC.Creator" content="'.$author.'">';
         } else {
             $output = '<meta name="author" content="'.$author.'">';
         }
-        
+
         return '
                 '.$output;
 }
@@ -270,12 +270,12 @@ function get_meta_abstract ()
 /////////////////////
 function get_content ( $GOTO )
 {
-    global $global_config_arr, $db, $TEXT, $sql;
+    global $global_config_arr, $db, $TEXT, $sql, $fscode;
     global $phrases;
 
     // Display Content
     unset ( $template );
-    
+
     // Script-File in /data/
     if ( file_exists ( "data/".$GOTO.".php" ) ) {
         include ( FS2_ROOT_PATH . "data/".$GOTO.".php" );
@@ -302,7 +302,7 @@ function get_content ( $GOTO )
             } else {
                 include ( FS2_ROOT_PATH . "data/articles.php" );
             }
-            
+
         // File-Download
         } elseif ( $GOTO == "dl" && isset ( $_GET['fileid'] ) && isset ( $_GET['dl'] ) ) {
             unset ( $template );
@@ -312,7 +312,7 @@ function get_content ( $GOTO )
             $global_config_arr['goto'] = "404";
             include ( FS2_ROOT_PATH . "data/404.php" );
         }
-    
+
     }
 
 
@@ -353,7 +353,7 @@ function replace_navigations ( $TEMPLATE, $PATH_PREFIX = "" )
     global $global_config_arr;
 
     $STYLE_PATH = "styles/".$global_config_arr['style']."/";
-    
+
     // Replace Navigation-Files in $TEMPLATE
     $files = scandir_ext ( FS2_ROOT_PATH . $STYLE_PATH, "nav" );
     foreach ( $files as $file ) {
@@ -415,7 +415,7 @@ function replace_applets ( $TEMPLATE, $PATH_PREFIX = "" )
 function get_applet ( $FILE )
 {
     global $global_config_arr, $db, $TEXT;
-    
+
     include_once ( FS2_ROOT_PATH . $FILE );
     $template = str_replace ( '$APP(', '&#x24;APP&#x28;', $template );
     return $template;
@@ -457,7 +457,7 @@ function get_goto ( $GETGO )
     } else {
             $goto = savesql ( $GETGO ) ;
     }
-    
+
     // Forward Aliases
     $goto = forward_aliases ( $goto );
 
@@ -517,7 +517,7 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
     // check if visit-day exists
     $daycounter = mysql_query ("SELECT * FROM ".$global_config_arr['pref']."counter_stat
                                 WHERE s_year = ".$YEAR." AND s_month = ".$MONTH." AND s_day = ".$DAY."", $db );
-                                
+
     $rows = mysql_num_rows ( $daycounter );
 
     if ( $rows <= 0 ) {
@@ -562,7 +562,7 @@ function count_visit ( $GOTO )
     $visit_year = date ( "Y" );
     $visit_month = date(  "m" );
     $visit_day = date ( "d" );
-    
+
         // check if errorpage
         if ( $GOTO != "404" && $GOTO != "403" ) {
                 // save IP & visit
@@ -600,7 +600,7 @@ function save_visitors ()
 
     // delete offline users
     mysql_query ( "DELETE FROM ".$global_config_arr['pref']."useronline WHERE date < (".$time." - 300)", $db );
-    
+
     // save online users
     $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."useronline WHERE ip='".$_SERVER['REMOTE_ADDR']."'", $db );
 
@@ -629,7 +629,7 @@ function save_referer ()
     // save referer
     $referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
     $index =  mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref WHERE ref_url = '".$referer."'", $db );
-    
+
     if ( mysql_num_rows ( $index ) <= 0 ) {
         if ( substr_count ( $referer, "http://" ) >= 1 && substr_count ( $referer, $global_config_arr['virtualhost'] ) < 1 ) {
             mysql_query ( "INSERT INTO ".$global_config_arr['pref']."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')", $db );

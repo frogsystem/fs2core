@@ -26,7 +26,7 @@ class adminpage{
 
     if(is_readable(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin/".$file_name.".txt"))
       $this->getLang(file_get_contents(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin/".$file_name.".txt"));
-      
+
     if(is_readable(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin.txt"))
       $this->getCommon(file_get_contents(FS2_ROOT_PATH."lang/".$global_config_arr['language_text']."/admin.txt"));
   }
@@ -49,13 +49,13 @@ class adminpage{
     $this->text = array();
   }
 
-  private function langValue($name){
+  public function langValue($name){
     if(array_key_exists($name, $this->lang))
       return $this->lang[$name];
     else
       return "Localize: LANG::".$name;
   }
-  
+
   private function commonValue($name){
     if(array_key_exists($name, $this->common))
       return $this->common[$name];
@@ -70,16 +70,19 @@ class adminpage{
       $this->analyse($this->tpl[$tplname]);
       // replace conditions
       $tmpval = $this->analysed->get($this->cond);
-      // replace texts
-      foreach($this->text as $key => $value)
-        $tmpval = str_replace("<!--TEXT::$key-->", $value, $tmpval);
-      // replace language
-      $tmpval = preg_replace ( "/<!--LANG::(.*)-->/e", '$this->langValue(\'$1\')', $tmpval);
-      // replace common
-      $tmpval = preg_replace ( "/<!--COMMON::(.*)-->/e", '$this->commonValue(\'$1\')', $tmpval);
 
-      if($clearempty == true)
-        $tmpval = preg_replace("#<!--TEXT::[^-]+-->#is", "", $tmpval);
+      // replace texts
+      foreach($this->text as $key => $value){
+        $tmpval = str_replace("<!--TEXT::$key-->", $value, $tmpval);
+      }
+      // replace language
+      $tmpval = preg_replace ( "/<!--LANG::([^>]*)-->/e", '$this->langValue(\'$1\')', $tmpval);
+      // replace common
+      $tmpval = preg_replace ( "/<!--COMMON::([^>]*)-->/e", '$this->commonValue(\'$1\')', $tmpval);
+
+      if($clearempty == true){
+        $tmpval = preg_replace("#<!--TEXT::[^>]+-->#is", "", $tmpval);
+      }
     } else die("template does not exist!");
 
     $this->clearCond();
@@ -97,17 +100,18 @@ class adminpage{
   }
 
   protected function getLangData($string){
-    $string = str_replace(array("\r\n", "\r"), "\n", $string); // unify linebreaks
-    $string = preg_replace("/#.*?\n/is", "", $string);
-    $string = explode("\n", $string);
+      $string = str_replace(array("\r\n", "\r"), "\n", $string); // unify linebreaks
+      $string = explode("\n", $string);
 
-    $langData = array();
-    foreach($string as $str){
-      preg_match("#([a-z0-9_]+?)\s*?:\s*(.*)#is", $str, $match);
-      $langData[$match[1]] = $match[2];
-      unset($match);
-    }
-    return $langData;
+      $langData = array();
+      foreach($string as $str){
+          if(substr($str,0,1) !== "#"){ // line is not a comment
+              preg_match("#([a-z0-9_]+?)\s*?:\s*(.*)#is", $str, $match);
+              $langData[$match[1]] = $match[2];
+              unset($match);
+          }
+      }
+      return $langData;
   }
 
   protected function getLang($string){
