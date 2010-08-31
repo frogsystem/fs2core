@@ -1,4 +1,40 @@
 <?php
+
+////////////////////////////////
+//// highlight part of text ////
+////////////////////////////////
+function highlight_part ( $TEXT, $PART, $KILLHTML = FALSE, $STRIPSLASHES = FALSE )
+{
+    if ( $KILLHTML === TRUE ) {
+        $TEXT = killhtml ( $TEXT );
+        $PART = killhtml ( $PART );
+    } elseif ( $STRIPSLASHES === TRUE ) {
+        $TEXT = stripslashes ( $TEXT );
+        $PART = stripslashes ( $PART );
+    }
+    return str_ireplace_use ( $PART, '<span class="highlight">$1</span>', $TEXT );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//// Repleace String Case-insensetive with option to use found phrase ////
+//// Use $1 for the search string like found in the subject           ////
+//////////////////////////////////////////////////////////////////////////
+function str_ireplace_use ( $SEARCH, $REPLACE, $SUBJECT )
+{
+    $startpos = stripos ( $SUBJECT, $SEARCH );
+    if ( $startpos !== FALSE ) {
+        $search_length = strlen ( $SEARCH ); // length of search string
+        $start = substr ( $SUBJECT, 0, $startpos ); // get part before $SEARCH
+        $rest = substr ( $SUBJECT, $startpos+$search_length ); // get part after $SEARCH
+        $r1 = substr ( $SUBJECT, $startpos, $search_length ); // get $SEARCH for use as $1
+        // concat String and go recursive over the rest
+        return $start.str_replace ( '$1', $r1, $REPLACE ).str_ireplace_use ( $SEARCH, $REPLACE, $rest );
+    }
+    // Nothing found
+    return $SUBJECT;
+}
+
+
 ////////////////////////////
 //// Validate Form Data ////
 ////////////////////////////

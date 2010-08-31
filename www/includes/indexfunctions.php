@@ -10,9 +10,9 @@ function search_index ()
     $today_3am = ( $today_3am > time() ) ? $today_3am - 24*60*60 : $today_3am;
     if ( $global_config_arr['search_index_update'] === 2 &&  $global_config_arr['search_index_time'] < $today_3am) {
         // Create the Objects
-        $indexObjects['news'] = new search ( "news" );
-        $indexObjects['articles'] = new search ( "articles" );
-        $indexObjects['dl'] = new search ( "dl" );
+        $indexObjects['news'] = new searchIndex ( "news" );
+        $indexObjects['articles'] = new searchIndex ( "articles" );
+        $indexObjects['dl'] = new searchIndex ( "dl" );
         // Update the Index
         foreach ( $indexObjects as $aObject ) {
             $aObject->updateIndex();

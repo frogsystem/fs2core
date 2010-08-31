@@ -50,7 +50,7 @@ if (
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
         // Update Search Index
-        $indexObject = new search ( "news" );
+        $indexObject = new searchIndex ( "news" );
         $indexObject->updateIndex();
     }
 

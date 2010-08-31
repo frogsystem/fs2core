@@ -27,6 +27,7 @@ if ( $db ) {
     require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
     require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
     require ( FS2_ROOT_PATH . "libs/class_search.php" );
+    require ( FS2_ROOT_PATH . "libs/class_searchIndex.php" );
     require ( FS2_ROOT_PATH . "libs/class_fscode.php" );
 
     //Include Phrases-Files

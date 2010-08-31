@@ -1,9 +1,9 @@
-<!--section-start::APPLET--><label for="mini_search_keyword"><b>Suche</b></label><br>
+<!--section-start::APPLET--><label for="mini_search_keyword"><h2>Suche</h2></label>
 <form method="get" action="">
   <input type="hidden" name="go" value="search">
-  <input type="hidden" name="in_news" value="1">
-  <input type="hidden" name="in_articles" value="1">
-  <input type="hidden" name="in_downloads" value="1">  
+  <input type="hidden" name="in[]" value="news">
+  <input type="hidden" name="in[]" value="articles">
+  <input type="hidden" name="in[]" value="downloads">
   <input class="small input input_highlight middle" id="mini_search_keyword" name="keyword" size="13" maxlength="100" value="{..keyword..}">
   <input class="small pointer middle" type="submit" value="Go">
 </form>
@@ -19,12 +19,16 @@
     <input type="hidden" name="go" value="search">
     <input class="input input_highlight middle" name="keyword" size="30" maxlength="100" value="{..keyword..}">
     <input class="pointer middle" type="submit" value="Suchen">
+    
     <b class="middle">in</b>
-    <input class="pointer middle" type="checkbox" id="search_news" name="in_news" value="1" {..search_in_news..}>
+    
+    <input class="pointer middle" type="checkbox" id="search_news" name="in[]" value="news" {..search_in_news..}>
     <label class="pointer middle" for="search_news">News</label>
-    <input class="pointer middle" type="checkbox" id="search_articles" name="in_articles" value="1" {..search_in_articles..}>
+    
+    <input class="pointer middle" type="checkbox" id="search_articles" name="in[]" value="articles" {..search_in_articles..}>
     <label class="pointer middle" for="search_articles">Artikeln</label>
-    <input class="pointer middle" type="checkbox" id="search_downloads" name="in_downloads" value="1" {..search_in_downloads..}>
+    
+    <input class="pointer middle" type="checkbox" id="search_downloads" name="in[]" value="downloads" {..search_in_downloads..}>
     <label class="pointer middle" for="search_downloads">Downloads</label>
   </form>
   <span class="small">Erlaubte Operatoren: <b>AND</b>, <b>OR</b>, <b>XOR</b>, <b>NOT</b></span>

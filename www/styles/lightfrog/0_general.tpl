@@ -21,7 +21,7 @@
     </div> 
 
     <div id="menu_left">
-    $NAV(left.nav)<br>
+    $NAV(left.nav)
     $APP(mini-search.php)
     </div>
     

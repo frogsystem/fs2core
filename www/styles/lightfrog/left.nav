@@ -1,18 +1,22 @@
-<b>Allgemein</b><br>
-<a class="small" href="?go=news">- News</a><br>
-<a class="small" href="?go=news_search">- News-Suche</a><br>
-<a class="small" href="?go=user_list">- Mitgliederliste</a><br>
-<a class="small" href="?go=polls">- Umfragen</a><br>
-<a class="small" href="?go=search">- Suche</a><br>
-<br>
+<h2>Allgemein</h2>
+<ul>
+  <li><a href="?go=news">News</a></li>
+  <li><a href="?go=news_search">News-Suche</a></li>
+  <li><a href="?go=user_list">Mitgliederliste</a></li>
+  <li><a href="?go=polls">Umfragen</a></li>
+  <li><a href="?go=search">Suche</a></li>
+</ul>
 
-<b>Inhalt &amp; Media</b><br>
-<a class="small" href="?go=fscode">- FSCode</a><br>
-<a class="small" href="?go=gallery">- Galerie</a><br>
-<a class="small" href="?go=download&amp;cat_id=all">- Downloads</a><br>
-<a class="small" href="?go=press">- Presseberichte</a><br>
-<br>
- 
-<b>Promotion</b><br>
-<a class="small" href="?go=shop">- Shop</a><br>
-<a class="small" href="?go=affiliates">- Partnerseiten</a><br>
+<h2>Media</h2>
+<ul>
+  <li><a href="?go=fscode">FSCode</a></li>
+  <li><a href="?go=gallery">Galerie</a></li>
+  <li><a href="?go=download&amp;cat_id=all">Downloads</a></li>
+  <li><a href="?go=press">Presseberichte</a></li>
+</ul>
+
+<h2>Promotion</h2>
+<ul>
+  <li><a href="?go=shop">Shop</a></li>
+  <li><a href="?go=affiliates">Partnerseiten</a></li>
+</ul>

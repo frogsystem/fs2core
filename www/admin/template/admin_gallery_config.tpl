@@ -1,7 +1,7 @@
 <!--DEF::main-->                    <form action="" method="post">
                         <input type="hidden" name="go" value="<!--TEXT::ACP_GO-->">
 
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr>
                                 <td colspan="2" class="line">
                                     <!--LANG::viewer_title-->
