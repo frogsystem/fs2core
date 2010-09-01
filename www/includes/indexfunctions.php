@@ -10,9 +10,9 @@ function search_index ()
     $today_3am = ( $today_3am > time() ) ? $today_3am - 24*60*60 : $today_3am;
     if ( $global_config_arr['search_index_update'] === 2 &&  $global_config_arr['search_index_time'] < $today_3am) {
         // Create the Objects
-        $indexObjects['news'] = new search ( "news" );
-        $indexObjects['articles'] = new search ( "articles" );
-        $indexObjects['dl'] = new search ( "dl" );
+        $indexObjects['news'] = new searchIndex ( "news" );
+        $indexObjects['articles'] = new searchIndex ( "articles" );
+        $indexObjects['dl'] = new searchIndex ( "dl" );
         // Update the Index
         foreach ( $indexObjects as $aObject ) {
             $aObject->updateIndex();
@@ -32,26 +32,17 @@ function search_index ()
 ///////////////////////////
 //// get Main-Template ////
 ///////////////////////////
-function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
+function get_maintemplate ( $BODY, $PATH_PREFIX = "", $BASE = FALSE )
 {
-    global $global_config_arr, $db, $TEXT;
+    global $global_config_arr, $TEXT;
 
-    // Main Template
-    $template = '
-{..doctype..}
-<html lang="'.$global_config_arr['language'].'">
-        <head>
-                {..base..}{..title..}{..meta..}{..link..}{..script..}
-        </head>
+    // Load Template Object
+    $theTemplate = new template();
+    $theTemplate->setFile("0_main.tpl");
 
-        {..body..}
-</html>
-    ';
     // Get Doctype
-    $template_doctype = new template();
-    $template_doctype->setFile("0_general.tpl");
-    $template_doctype->load("DOCTYPE");
-    $template_doctype = $template_doctype->display();
+    $theTemplate->load("DOCTYPE");
+    $template_doctype = (string) $theTemplate;
     
     // Base for Images
     if ( $BASE !== FALSE ) {
@@ -85,8 +76,19 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     $template = str_replace("{..link..}", $template_link, $template);
     $template = str_replace("{..script..}", $template_script, $template);
 
+    // Get HTML-Matrix
+    $theTemplate->load("MATRIX");
+    $theTemplate->tag("doctype", $template_doctype);
+    $theTemplate->tag("language", $global_config_arr['language']);
+    $theTemplate->tag("base", $template_base);
+    $theTemplate->tag("title", "<title>".get_title()."</title>");
+    $theTemplate->tag("meta", get_meta());
+    $theTemplate->tag("link", $template_link);
+    $theTemplate->tag("script", $template_script);
+    $theTemplate->tag("body", $BODY);
+    
     // Return Template
-    return $template;
+    return (string) $theTemplate;
 }
 
 
@@ -216,8 +218,8 @@ function get_title ()
         settype ( $global_config_arr['dyn_title'], "integer" );
 
         if ( $global_config_arr['dyn_title'] == 1 && $global_config_arr['dyn_title_page'] != "" ) {
-           $dyn_title = str_replace ( "{title}", $global_config_arr['title'], $global_config_arr['dyn_title_ext'] );
-           $dyn_title = str_replace ( "{ext}", $global_config_arr['dyn_title_page'], $dyn_title );
+           $dyn_title = str_replace ( "{..title..}", $global_config_arr['title'], $global_config_arr['dyn_title_ext'] );
+           $dyn_title = str_replace ( "{..ext..}", $global_config_arr['dyn_title_page'], $dyn_title );
            return $dyn_title;
         } else {
                return $global_config_arr['title'];
@@ -718,8 +720,8 @@ function copyright ()
     global $global_config_arr;
 
     $template_copyright = new template();
-    $template_copyright->setFile("0_general.tpl");
-    $template_copyright->load("MAINPAGE");
+    $template_copyright->setFile("0_main.tpl");
+    $template_copyright->load("MAIN");
     $copyright = $template_copyright->display();
 
     if ( strpos ( $copyright, $template_copyright->getOpener()."copyright".$template_copyright->getCloser() ) == FALSE

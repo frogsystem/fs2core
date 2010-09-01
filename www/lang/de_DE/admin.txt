@@ -1,6 +1,6 @@
-# Language-Definition for admin.php
-yes:                                     Ja
-no:                                      Nein
+# Language-Definition for Admin-CP
+
+# Form-Values
 from:                                    von
 to:                                      bis
 with:                                    mit
@@ -10,18 +10,6 @@ mib:                                     MiB
 gib:                                     GiB
 pixel:                                   Pixel
 resolution_x:                            x
-asc:                                     aufsteigend
-desc:                                    absteigend
-
-filename:                                Dateiname
-optional:                                optional
-selection:                               Auswahl
-active:                                  aktiv
-active_big:                              Aktiv
-valid_tags:                              Gültige Tags
-output:                                  Ausgabe
-version:                                 Version
-informations_and_statistics:             Informationen & Statistik
 width_x_height:                          Breite x Höhe
 rows_at:                                 Reihen à
 zero_not_allowed:                        0 ist nicht erlaubt
@@ -31,15 +19,47 @@ exact:                                   exakt
 hex_color:                               Hexadezimal Farbcode
 folder_name_info:                        nur a-z, 0-9, "-" und "_" erlaubt
 
+
+# Frequently used Phrases
+yes:                                     Ja
+no:                                      Nein
+optional:                                optional
+filename:                                Dateiname
+show:                                    anzeigen
+selection:                               Auswahl
+active:                                  aktiv
+active_big:                              Aktiv
+valid_tags:                              Gültige Tags
+output:                                  Ausgabe
+version:                                 Version
+informations_and_statistics:             Informationen & Statistik
+asc:                                     aufsteigend
+desc:                                    absteigend
+
+
+# Frequently used Images
+sub_arrow:                               <img class="middle" src="img/sub-right-arrow.gif" alt="'->">
+
+
+# Action Selection
+selected:                                Ausgewählte
+selection_noaction:                      Bitte wählen
+selection_edit:                          bearbeiten
+selection_delete:                        löschen
+selection_up:                            nach oben
+selection_down:                          nach unten
+
+
+# Button Captions
 button_arrow:                            <img class="middle" src="img/pointer.png" alt="->">
-selection_edit:                          Auswahl bearbeiten
-selection_delete:                        Auswahl löschen
 do_action_button:                        Ausführen
 do_action_button_long:                   Aktion ausführen
 save_changes_button:                     Änderungen speichern
 select_button:                           Auswählen
-
 file_select_button:                      Datei auswählen
+
+
+# Messages
 error:                                   Es trat ein Fehler auf
 info:                                    Information
 changes_saved:                           Änderungen wurden gespeichert
@@ -47,7 +67,11 @@ changes_not_saved:                       Änderungen wurden nicht gespeichert
 form_not_filled:                         Bitte füllen Sie alle Pflichtfelder aus
 form_only_allowed_values:                Bitte geben Sie nur erlaubte Werte ein
 error_file_access:                       Bitte überprüfen Sie die Datei- und Ordnerrechte
+file_deleted:                            Datei wurde gelöscht
+file_not_deleted:                        Datei wurde nicht gelöscht
 
+
+# Message-Images
 icon_small_help:                         <img src="icons/help.gif" alt="Hilfe" align="absmiddle">
 icon_info:                               <img src="icons/info.jpg" alt="Information" align="absmiddle">
 icon_error:                              <img src="icons/error.jpg" alt="Fehler" align="absmiddle">
@@ -62,6 +86,8 @@ icon_install_ok:                         <img src="icons/install_ok.jpg" alt="In
 icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
 icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="" align="absmiddle">
 
+
+# Upload-Messages
 image_upload_error_0:                    Bild wurde erfolgreich hochgeladen
 image_upload_error_1:                    Fehler beim Bilder-Upload: Ungültiger Dateityp [Code: IMGxU1]
 image_upload_error_2:                    Fehler beim Bilder-Upload: Bild konnte nicht hochgladen werden [Code: IMGxU2]
@@ -71,6 +97,23 @@ image_upload_error_5:                    Fehler beim Bilder-Upload: Bild entspri
 image_upload_error_6:                    Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden [Code: IMGxU6]
 
 
+# Frequently used Category-Related Phrases
+cat:                                     Kategorie
+cats:                                    Kategorien
+cats_select:                             Kategorien auswählen
+cats_not_found:                          Keine Kategorien gefunden!
+
+
+
+
+
+
+
+
+
+
+
+# Old
 system_start_num_aliases:                Anzahl Aliasse
 system_start_num_aliases_active:         Anzahl aktiver Aliasse
 system_start_num_applets:                Anzahl Applets
@@ -260,5 +303,3 @@ template_file_not_found:                 Template-Datei konnte nicht gefunden we
 template_file_created:                   Template-Datei wurde neu erstellt
 template_no_editable_template:           Kein Template zum Bearbeiten gefunden
 template_select_template:                Template zum Bearbeiten auswählen
-file_deleted:                            Datei wurde gelöscht
-file_not_deleted:                        Datei wurde nicht gelöscht

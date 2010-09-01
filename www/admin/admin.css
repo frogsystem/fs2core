@@ -27,7 +27,7 @@ img {
 /**************************************************/
 .input_width
 {
-    width:275px;
+    width:250px;
 }
 .input_width_small
 {
@@ -98,15 +98,13 @@ select
     width:80px;
 }
 
-.button_new
-{
+.button_new {
     display:block;
     padding:3px;
     padding-right:9px;
     width:100%;
-    height: 27px;
-    background-image:url('img/button.jpg');
-    background-repeat:repeat;
+    height:27px;
+    background:#008800 url('img/button.jpg') repeat top left;
     font-weight:bold;
     color:#FFFFFF;
     font-size:9pt;
@@ -116,10 +114,9 @@ select
     text-align:right;
     white-space:nowrap;
 }
-.button_new:hover, .button_new:focus
-{
-    text-decoration:none;
-    background-image:url('img/button_hover.jpg');
+.button_new:hover, .button_new:focus {
+    background-color:#00AA00;
+    background-position:bottom left;
 }
 
 a.image_hover {
@@ -145,14 +142,12 @@ a.image_hover:hover, a.image_hover:focus {
 /**************************************************/
 /* standard formular styles */
 /**************************************************/
-table.configtable
-{
+table.configtable {
     width:600px;
     border:0px;
 }
 
-.config, .configthin, .configbig
-{
+.config, .configthin, .configbig {
     text-align:left;
     vertical-align:top;
     font-size:8pt;
@@ -160,12 +155,10 @@ table.configtable
     color:#000000;
     font-weight:bold;
 }
-.configthin
-{
+.configthin {
     font-weight:normal;
 }
-.configbig
-{
+.configbig {
     font-size:10pt;
 }
 
@@ -183,22 +176,17 @@ td.line, td.line_red
     color:#000000;
     font-weight:bold;
 }
-td.line_red
-{
+td.line_red {
     background-image:url('img/line_red_loop.jpg');
 }
-td.space
-{
+td.space {
     height:15px;
 }
-td.buttontd
-{
+td.buttontd {
     padding:0px;
 }
-td.combi_button
-{
-    background-image:url('img/button.jpg');
-    background-repeat:repeat;
+td.combi_button {
+    background:#008800 url('img/button.jpg') repeat top left;
     border:1px solid #000000;
     white-space:nowrap;
     vertical-align:middle;
@@ -213,8 +201,7 @@ a.link_button
     display:block;
     padding:5px;
     padding-right:12px;
-    background-image:url('img/button.jpg');
-    background-repeat:repeat;
+    background:#008800 url('img/button.jpg') repeat top left;
     font-weight:bold;
     color:#FFFFFF;
     font-size:9pt;
@@ -227,7 +214,8 @@ a.link_button
 a.link_button:hover,a.link_button:focus
 {
     text-decoration:none;
-    background-image:url('img/button_hover.jpg');
+    background-color:#00AA00;
+    background-position:bottom left;
 }
 
 /**************************************************/
@@ -314,8 +302,7 @@ a.head_link:hover,a.head_link:focus { text-decoration:underline; }
 /**************************************************/
 /* menu links styles */
 /**************************************************/
-a.menu_link, a.menu_link_selected, a.menu_link_right, a.menu_link_selected_right
-{
+a.menu_link, a.menu_link_selected {
     font-size:9pt;
     font-family:Arial;
     color:#FFFFFF;
@@ -325,32 +312,19 @@ a.menu_link, a.menu_link_selected, a.menu_link_right, a.menu_link_selected_right
     padding-right:7px;
     text-align:center;
     text-decoration:none;
-    background-color:transparent;
+    background:#008800 url('img/menubg.jpg') top left;
 }
-a.menu_link_selected, a.menu_link_selected:hover, a.menu_link_selected:focus
-{
+a.menu_link_selected, a.menu_link_selected:hover, a.menu_link_selected:focus {
     font-weight:bold;
-    background-image:url('img/menubg_hover.jpg');
-}
-a.menu_link_selected_right, a.menu_link_selected_right:hover, a.menu_link_selected_right:focus
-{
-    font-weight:bold;
-    background-image:url('img/menu_top_r_hover.jpg');
-    background-position:right top;
+    background-color:#00AA00;
+    background-position:0px 50px;
 }
 
-a.menu_link:hover, a.menu_link:focus
-{
+a.menu_link:hover, a.menu_link:focus {
     text-decoration:none;
     font-weight:normal;
-    background-image:url('img/menubg_hover.jpg');
-}
-a.menu_link_right:hover, a.menu_link_right:focus
-{
-    text-decoration:none;
-    font-weight:normal;
-    background-image:url('img/menu_top_r_hover.jpg');
-    background-position:right top;
+    background-color:#00AA00;
+    background-position:0px 50px;
 }
 
 
@@ -414,8 +388,7 @@ a.menu_link_right:hover, a.menu_link_right:focus
 
 #menu_top_loop
 {
-    background-image:url('img/menubg.jpg');
-    background-repeat:repeat-x;
+    background:#008800 url('img/menubg.jpg') repeat-x top left;
     width:630px;
     height:38px;
     padding-top: 4px;
@@ -429,30 +402,10 @@ a.menu_link_right:hover, a.menu_link_right:focus
     z-index:5;
 }
 
-#menu_top_right
-{
-    background-image:url('img/menu_top_r.jpg');
-    background-repeat:no-repeat;
-    background-position: top right;
-    position:relative;
-    width:630px;
-    height:38px;
-    font-size:9pt;
-    font-family:Arial;
-    color:#FFFFFF;
-    text-align:right;
-    z-index:6;
-}
-
 #menu_top_table
 {
     width: 100%;
     padding-top: 4px;
-}
-#menu_top_tr
-{
-    height: 38px;
-    vertical-align: top;
 }
 
 #menu_top_log
@@ -787,8 +740,13 @@ a.tooltip:hover span, a.tooltip:focus span {
 
 
 
-
-
+.select_list .select_entry td {
+    border:1px dotted black;
+    border-width:1px 0px;
+}
+.select_list {
+    border-collapse:collapse;
+}
 
 
 

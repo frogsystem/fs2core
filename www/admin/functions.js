@@ -108,13 +108,15 @@ var lastJQBox;
     $(".select_entry").click(
         function () {
             theTable = $(this).parents(".select_list:first");
+
+            // Delete Selection if List is on select_one state
             if ( theTable.find("select.select_type:first option:selected").hasClass("select_one") ) {
                 theTable.find(".select_entry input.select_box").removeAttr("checked");
                 theTable.find(".select_entry").css("background-color", "transparent");
             }
 
+            // Colorize Entries
             var theBox = $(this).find("input.select_box:first");
-
             if ( theBox.is(":checked") ) {
                 theBox.removeAttr("checked");
                 $(this).css("background-color", "#EEEEEE");
@@ -123,9 +125,13 @@ var lastJQBox;
                 setBGcolorCompare ( $(this), theTable.find("select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
                 lastJQBox = theBox;
             }
+            
+            // Update Number
+            var n = theTable.find(".select_entry input.select_box:checked").length;
+            theTable.find(".selected_number").text(n);
         }
     );
-            //
+
     // Create change of select type and color
     $(".select_list select.select_type").change(
         function () {
@@ -138,10 +144,66 @@ var lastJQBox;
                 lastJQBox.attr("checked","checked");
             }
 
-            setBGcolorCompare ( theLines.find("input.select_box:checked").parents(".select_entry:first"), $(this).find("option:selected").hasClass("select_red"), "#C24949", "#49C24f" );
+            setBGcolorCompare ( theLines.find("input.select_box:checked").parents(".select_entry"), $(this).find("option:selected").hasClass("select_red"), "#C24949", "#49C24f" );
+        }
+    );
+    
+    
+/////////////////////
+//// YesNo-Table ////
+/////////////////////
+
+    // create mouseover effect depending on Box State and color
+    $(".yesno_table .yesno_entry").hover(
+        function () {
+            if ( $(this).find("input.select_box:first").is(":checked") ) {
+                setBGcolorCompare ( $(this), $(this).hasClass("red_entry"), "#DE5B5B", "#64DC6A" );
+            } else {
+                $(this).css("background-color", "#EEEEEE");
+            }
+        },
+        function () {
+            if ( $(this).find("input.select_box:first").is(":checked") ) {
+                setBGcolorCompare ( $(this), $(this).hasClass("red_entry"), "#C24949", "#49C24f" );
+            } else {
+                $(this).css("background-color", "transparent");
+            }
         }
     );
 
+    // Prevent "double-click" error, don't use default click functionality of boxes
+    $(".yesno_table .yesno_entry input.select_box").click(
+        function () {
+            if ( $(this).is(":checked") ) {
+                $(this).removeAttr("checked");
+            } else {
+                $(this).attr("checked","checked");
+            }
+        }
+    );
+
+    // Create Click depending on select type and color
+    $(".yesno_table .yesno_entry").click(
+        function () {
+            theTable = $(this).parents(".yesno_table:first");
+            if ( theTable.hasClass("select_one") ) {
+                theTable.find(".yesno_entry input.select_box").removeAttr("checked");
+                theTable.find(".yesno_entry").css("background-color", "transparent");
+            }
+
+            var theBox = $(this).find("input.select_box:first");
+
+            if ( theBox.is(":checked") ) {
+                theBox.removeAttr("checked");
+                $(this).css("background-color", "#EEEEEE");
+            } else {
+                theBox.attr("checked","checked");
+                setBGcolorCompare ( $(this), $(this).hasClass("red_entry"), "#DE5B5B", "#64DC6A" );
+                lastJQBox = theBox;
+            }
+        }
+    );
+    
 
 });
 //--------------------------------

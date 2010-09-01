@@ -1,6 +1,8 @@
-alix5:
+todo:
 
 default design noch bearbeiten
+links zu original-ansicht in artikel, news, etc.
+option zum speicher und schließen, sowie speichern und erneut bearbeiten
 
 
 alix6:
@@ -8,7 +10,6 @@ DL-QI-Pfad-Länger
 QI-Pfad für Video-Player
 standard-Größen für Video-Player festlegbar
 
-suche: stopp-wortliste nutzen oder nicht
 index-suche auch bei normaler news/artikel/DL-Suche
 Suche: anzeigen von index-wörtern nach suche
 
@@ -27,12 +28,6 @@ statistik-update
 Vorschau für News
 
 Pop Up-Editor, Tag-List im Editor
-
-
-bei neuer codemirror-version:
-=> Codemirror Update
-=> Zeilenumbruch umschaltbar
-=> Zeilennummern umschaltbar
 
 
 

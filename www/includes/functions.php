@@ -1,5 +1,80 @@
 <?php
 ////////////////////////////
+//// Get any Cat-System ////
+////////////////////////////
+function get_cat_system(&$IDs, $SQL, $CAT_ID = -1, $SHOW_SUB = 1, $ID = 0, $LEVEL = -1)
+{
+    global $sql;
+
+    // Load SQL Data
+    $lines = $sql->getData($SQL['table'], $SQL['select'], "WHERE `".$SQL['sub']."` = '".$ID."' ".$SQL['order']);
+    $lines = $sql->lastUseful() ? $lines : array();
+
+    foreach ($lines as $line) {
+        $line['level'] = $LEVEL + 1;
+        $IDs[] = $line;
+        if ( $SHOW_SUB == 1 || $line['cat_id'] == $CAT_ID || in_array( $CAT_ID, get_sub_cats($line['cat_id'], $SQL, array()) ) ) {
+            get_cat_system($IDs, $SQL, $CAT_ID, $SHOW_SUB, $line['cat_id'], $line['level']);
+        }
+    }
+}
+
+///////////////////////////////////////////////
+//// Get IDs of Sub-Cats of any Cat-System ////
+///////////////////////////////////////////////
+function get_all_sub_cats($CAT_ID, $SQL, &$REC_SUB_CAT_ARRAY)
+{
+    global $sql;
+    #static $sub_cat_ids = array();
+    #$sub_cat_ids = $REC_SUB_CAT_ARRAY;
+
+    $subcats = $sql->getData($SQL['table'], $SQL['id'], "WHERE `".$SQL['sub']."` = '".$CAT_ID."'");
+    $subcats = $sql->lastUseful() ? $subcats : array();
+
+    foreach ($subcats as $subcat) {
+        $REC_SUB_CAT_ARRAY[] = $subcat['cat_id'];
+        get_all_sub_cats($subcat['cat_id'], $SQL, $REC_SUB_CAT_ARRAY);
+    }
+    return $REC_SUB_CAT_ARRAY;
+}
+
+
+////////////////////////////////
+//// highlight part of text ////
+////////////////////////////////
+function highlight_part ( $TEXT, $PART, $KILLHTML = FALSE, $STRIPSLASHES = FALSE )
+{
+    if ( $KILLHTML === TRUE ) {
+        $TEXT = killhtml ( $TEXT );
+        $PART = killhtml ( $PART );
+    } elseif ( $STRIPSLASHES === TRUE ) {
+        $TEXT = stripslashes ( $TEXT );
+        $PART = stripslashes ( $PART );
+    }
+    return str_ireplace_use ( $PART, '<span class="highlight">$1</span>', $TEXT );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//// Repleace String Case-insensetive with option to use found phrase ////
+//// Use $1 for the search string like found in the subject           ////
+//////////////////////////////////////////////////////////////////////////
+function str_ireplace_use ( $SEARCH, $REPLACE, $SUBJECT )
+{
+    $startpos = stripos ( $SUBJECT, $SEARCH );
+    if ( $startpos !== FALSE ) {
+        $search_length = strlen ( $SEARCH ); // length of search string
+        $start = substr ( $SUBJECT, 0, $startpos ); // get part before $SEARCH
+        $rest = substr ( $SUBJECT, $startpos+$search_length ); // get part after $SEARCH
+        $r1 = substr ( $SUBJECT, $startpos, $search_length ); // get $SEARCH for use as $1
+        // concat String and go recursive over the rest
+        return $start.str_replace ( '$1', $r1, $REPLACE ).str_ireplace_use ( $SEARCH, $REPLACE, $rest );
+    }
+    // Nothing found
+    return $SUBJECT;
+}
+
+
+////////////////////////////
 //// Validate Form Data ////
 ////////////////////////////
 function validateFormData ( $DATA, $TYPE, $CHECK = FALSE ) {
@@ -66,6 +141,11 @@ function validateFormData ( $DATA, $TYPE, $CHECK = FALSE ) {
         // Check Free-Text against RegExpression Pattern
         if ( in_array("text", $TYPE) ) {
             $validation_state = $validation_state && preg_match ( $CHECK, $DATA );
+        }
+        
+        // Check Free-Text against RegExpression Pattern
+        if ( in_array("oneof", $TYPE) ) {
+            $validation_state = $validation_state && in_array($DATA, $CHECK);
         }
 
         // weitere Daten-Arten (z.B. URL, ...) sollten implementiert werden
@@ -295,19 +375,16 @@ function date_loc ( $DATE_STRING, $TIMESTAMP )
 //////////////////////////////
 function get_sub_cats ( $CAT_ID, $REC_SUB_CAT_ARRAY )
 {
-    global $db, $global_config_arr;
+    global $sql;
     static $sub_cat_ids = array();
     $sub_cat_ids = $REC_SUB_CAT_ARRAY;
 
-    $subcat_index = mysql_query ( "
-        SELECT `cat_id`
-        FROM `".$global_config_arr['pref']."dl_cat`
-        WHERE `subcat_id` = '".$CAT_ID."'
-    ", $db );
+    $subcats = $sql->getData("dl_cat", "cat_id", "WHERE `subcat_id` = '".$CAT_ID."'");
+    $subcats = $sql->lastUseful() ? $subcats : array();
 
-    while ( $subcats = mysql_fetch_assoc ( $subcat_index ) ) {
-        $sub_cat_ids[] = $subcats['cat_id'];
-        get_sub_cats ( $subcats['cat_id'], $sub_cat_ids );
+    foreach ($subcats as $subcat) {
+        $sub_cat_ids[] = $subcat['cat_id'];
+        get_sub_cats ( $subcat['cat_id'], $sub_cat_ids );
     }
     return $sub_cat_ids;
 }
@@ -1040,16 +1117,33 @@ function truncate_string ($string, $maxlength, $extension)
 /////////////////////////////////////////
 // String innerhalb sich selbst kürzen //
 /////////////////////////////////////////
+function shortening_in_string($STRING, $MAXLENGTH, $REPLACEMENT)
+{
+    if (strlen($STRING) > $MAXLENGTH) {
+        $part_lenght = ceil($MAXLENGTH/2) - ceil(strlen($REPLACEMENT)/2);
+        $string_start = substr($STRING, 0, $part_lenght);
+        $string_end = substr($STRING, -1*$part_lenght);
+        $STRING = $string_start . $REPLACEMENT . $string_end;
+    }
+    return $STRING;
+}
 function cut_in_string ($string, $maxlength, $replacement)
 {
-   if (strlen($string) > $maxlength) {
-       $part_lenght = ceil($maxlength/2)-ceil(strlen($extension)/2);
-       $string_start = substr($string, 0, $part_lenght);
-       $string_end = substr($string, -1*$part_lenght);
-       $string = $string_start . $replacement . $string_end;
-   }
-   return $string;
+   return shortening_in_string ($string, $maxlength, $replacement);
 }
+
+///////////////////////
+//// String kürzen ////
+///////////////////////
+function shortening_string($STRING, $MAXLENGTH, $EXTENSION)
+{
+    if (strlen($STRING) > $MAXLENGTH) {
+        $STRING = substr($STRING, 0, $MAXLENGTH) . $EXTENSION;
+    }
+    return $STRING;
+}
+
+
 
 ////////////////////////////////
 ///// Download Categories //////
@@ -1232,14 +1326,12 @@ function getsize ( $SIZE )
 }
 
 /////////////////////////
-// mark word in a text //  <=== BAD FUNCTION *HAS TO BE IMPROVED*
+// mark word in a text //  <=== DEPRECATED
 /////////////////////////
 
 function markword($text, $word)
 {
-    $text = preg_replace("=(.*?)$word(.*?)=i", 
-                         "\\1<font color=\"red\"><b>$word</b></font>\\2",$text);
-    return $text;
+    return highlight_part($text, $word);
 }
 
 //////////////////////////////////////////////////////////////

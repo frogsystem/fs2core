@@ -8,7 +8,7 @@ body {
   background-color:#E7E7E7;
   font-family:"Trebuchet MS",Verdana,Arial,sans-serif;
   color:#000000;
-  font-size:9pt;
+  font-size:10pt;
 }
 
 img {
@@ -20,6 +20,7 @@ img {
 h1, h2, h3, h4, h5, h6, form {
   margin:0px;
   padding:0px;
+  font-weight:normal;
 }
 
 p {
@@ -70,6 +71,23 @@ p {
   padding:10px 10px 10px 25px;
   margin:0px;
 }
+
+#menu_left ul {
+  padding:0px;
+  padding-left:10px;
+  margin-top:3px;
+}
+
+#menu_left li {
+  list-style:none inside;
+}
+
+#menu_left li a:before {
+  content:"- ";
+}
+
+
+
 
 #menu_right {
   width:130px;

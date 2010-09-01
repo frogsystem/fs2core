@@ -13,7 +13,8 @@ class sql {
     private $pref;                  // Tabellen-Präfix (siehe inc_login.php)
     private $error;                 // evtl. aufgetretene SQL-Fehler
     private $qrystr;                // Speicher für den zusammengebauten SQL-Query-String
-    private $useful = FALSE;        // Speicher für den zusammengebauten SQL-Query-String
+    private $resultres = FALSE;     // Speichert die Ergebnis-Resource einer Abfrage
+    private $useful = FALSE;        // Ergebnis ist umgangsprachlich nützlich
 
     // Der Konstrukter
     // Speichert Die SQL-Verbindung, den Datenbank-Namen und das Präfix zur spätern Verwendung und stellt eine Verbindung her
@@ -65,34 +66,45 @@ class sql {
         if ( !isset ( $this->qrystr ) ) { // Abbruch, wenn kein Query-String gespeichert ist
             return FALSE;
         }
-
-        $theQuery = mysql_query($this->qrystr, $this->sql); // Query ausführen
+        
+        $this->resultres = mysql_query($this->qrystr, $this->sql); // Query ausführen
         unset( $this->error ); // Fehler-Array zurücksetzen
         $this->useful = FALSE; // Nützlichkeit auf FALSE setzen
         if ( mysql_error ( $this->sql ) !== "" ) { // Falls ein Fehler auftritt
-            $this->error[0] = mysql_errno ( $this->sql ); // Fehler Nummer
-            $this->error[1] = mysql_error ( $this->sql ); // Text-Beschreibung des Fehlers
+            $this->error[0] = mysql_errno($this->sql); // Fehler Nummer
+            $this->error[1] = mysql_error($this->sql); // Text-Beschreibung des Fehlers
             return FALSE;
         } else {
-            return $theQuery;
+            return $this->resultres;
         }
     }
 
     // Eine beliebige Abfrage
-    public function query ( $qrystr ) { // DEPRECATED
-        return $this->executeQuery( $qrystr );
-    }
     public function executeQuery ( $qrystr ) {
         $this->qrystr = str_replace ( "{..pref..}", $this->pref, $qrystr ); // {..pref..} wird automatisch ersetzt, so dass flexibel programmiert werden kann
         return $this->doQuery();
     }
+    public function query ( $qrystr ) { // DEPRECATED
+        return $this->executeQuery( $qrystr );
+    }
 
     // Gibt die letzte Insert-ID zurück
-    public function getInsertId (){
+    public function lastInsertId (){
         if ( $this->getResource() === FALSE ) {
             return FALSE;
         }
         return mysql_insert_id ( $this->sql );
+    }
+    public function getInsertId (){  // DEPRECATED
+        return $this->lastInsertId();
+    }
+    
+    // Gibt Anzahl der Reihen der letzten Abfrage zurück
+    public function lastNumRows (){
+        if ( $this->resultres === FALSE ) {
+            return FALSE;
+        }
+        return mysql_num_rows ( $this->resultres );
     }
 
     // Eine SELECT-Abfrage ausführen
@@ -245,8 +257,11 @@ class sql {
     // Funktion die prüft ob eine getData-Abfrage im umgangsprachlichen Sinne nützlich war
     // d.h. dass Sie keinen Fehler erzeugt und min. 1 Ergebnis liefert
     // vereint letzendliche nur die Abfrage  mysql_error() == "" && mysql_num_rows(..) > 0 zu einer Methode
-    public function isUsefulGet () {
+    public function lastUseful() {
         return $this->useful;
+    }
+    public function isUsefulGet () {
+        return $this->lastUseful();
     }
 
     // Wendet die Methode "trim" rekrusiv auf alle Werte in einem Array an

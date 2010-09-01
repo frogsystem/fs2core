@@ -740,7 +740,7 @@ function db_edit_article ( $DATA )
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
         // Update Search Index
-        $indexObject = new search ( "articles" );
+        $indexObject = new searchIndex ( "articles" );
         $indexObject->updateIndex();
     }
 
@@ -768,7 +768,7 @@ function db_delete_article ( $DATA )
             ", $db );
             
             // Delete from Search Index
-            $indexObject = new search ( "articles" );
+            $indexObject = new searchIndex ( "articles" );
             $indexObject->deleteIndexForContent ( $DATA['article_id'] );
             
 

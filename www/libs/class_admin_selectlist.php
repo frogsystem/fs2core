@@ -9,6 +9,8 @@
 */
 class SelectList
 {
+    private $text;
+
     private $title;
     private $go;
 
@@ -208,8 +210,9 @@ class SelectList
                 $template .= '
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="right" colspan="'.$this->cols.'">
-                                    <select class="select_type" name="'.$this->formName.'_action" size="1">';
+                                <td class="config right" colspan="'.$this->cols.'">
+                                    '.$this->text["admin"]->get("selected").' (<span class="selected_number">0</span>):
+                                    <select class="select_type input_width_mini" name="'.$this->formName.'_action" size="1">';
                 foreach ( $this->actions as $aAction ) {
                     if ( $aAction['perm'] ) {
                         $theFlags = "";

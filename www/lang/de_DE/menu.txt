@@ -238,8 +238,12 @@ page_title_style_nav:           Navigations-Dateien bearbeiten
 page_link_style_nav:            Navigationen
 
 # Templates
+page_title_tpl_main:            „Haupt-Template“ bearbeiten
+page_link_tpl_main:             Haupt-Template
 page_title_tpl_general:         „Allgemein“ bearbeiten
 page_link_tpl_general:          Allgemein
+page_title_tpl_viewer:          „Bildbetrachter“ bearbeiten
+page_link_tpl_viewer:           Bildbetrachter
 page_title_tpl_user:            „Benutzer“ bearbeiten
 page_link_tpl_user:             Benutzer
 page_title_tpl_articles:        „Artikel“ bearbeiten

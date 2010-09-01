@@ -30,16 +30,18 @@ class langDataInit
 
         // include language data file
         $langDataPath = FS2_ROOT_PATH . "lang/" . $this->local . "/" . $this->type . ".txt";
-        $langData = file_get_contents ( $langDataPath );
-        $langData = str_replace ( array ( "\r\n", "\r"), "\n", $langData ); // unify linebreaks
-        $langData = preg_replace ( "/#.*?\n/is", "", $langData );
-        $langData = explode ( "\n", $langData );
-        foreach ( $langData as $line ) {
-            preg_match ( "#([a-z0-9_-]+?)\s*?:\s*(.*)#is", $line, $match );
-            $this->langData->add( $match[1], $match[2] );
-            unset ( $match );
+        if (file_exists($langDataPath)) {
+            $langData = file_get_contents ( $langDataPath );
+            $langData = str_replace ( array ( "\r\n", "\r"), "\n", $langData ); // unify linebreaks
+            $langData = preg_replace ( "/#.*?\n/is", "", $langData );
+            $langData = explode ( "\n", $langData );
+            foreach ( $langData as $line ) {
+                preg_match ( "#([a-z0-9_-]+?)\s*?:\s*(.*)#is", $line, $match );
+                $this->langData->add( $match[1], $match[2] );
+                unset ( $match );
+            }
         }
-
+        
         // secure object for manipulation
         $this->langData->disableAdd();
     }

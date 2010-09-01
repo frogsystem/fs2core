@@ -157,7 +157,7 @@ class template
             preg_replace ( $regexp, "", $data );
         }
         
-        return $data;
+        return (string) $data;
     }
     public function display() {
         return $this->__toString();

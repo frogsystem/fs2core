@@ -1,0 +1,17 @@
+# Language-Definition for [FS2]/admin/admin_gallery_cat.php
+
+# Language-Definition for [FS2]/admin/template/admin_gallery_cat.tpl
+no_subcat:                  Keine Unterkategorie
+subcat_separator:           ----------------------------------------
+
+type_img:                   Bild
+type_wp:                    Wallpaper
+
+visibility_full:            vollständig
+visibility_notinlist:       nicht in Auswahl
+visibility_none:            keine
+
+id:                         ID
+cat_name:                   Kategorie
+select_type:                Art
+select_viewable:            Sichtbarkeit

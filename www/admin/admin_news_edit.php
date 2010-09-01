@@ -1139,7 +1139,7 @@ function db_edit_news ( $DATA )
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
         // Update Search Index
-        $indexObject = new search ( "news" );
+        $indexObject = new searchIndex ( "news" );
         $indexObject->updateIndex();
     }
     
@@ -1200,7 +1200,7 @@ function db_delete_news ( $DATA )
             ", $db );
             
             // Delete from Search Index
-            $indexObject = new search ( "news" );
+            $indexObject = new searchIndex ( "news" );
             $indexObject->deleteIndexForContent ( $news_id );
 
             // MySQL-Delete-Query: Links

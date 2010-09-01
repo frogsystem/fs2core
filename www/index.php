@@ -27,6 +27,7 @@ if ( $db ) {
     require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
     require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
     require ( FS2_ROOT_PATH . "libs/class_search.php" );
+    require ( FS2_ROOT_PATH . "libs/class_searchIndex.php" );
 
     //Include Phrases-Files
     require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
@@ -43,17 +44,14 @@ if ( $db ) {
     save_referer ();
     save_visitors ();
 
-    // Create Index-Template
-    $template_general = new template();
-
-    $template_general->setFile("0_general.tpl");
-    $template_general->load("MAINPAGE");
+    // Get Body-Template
+    $theTemplate = new template();
+    $theTemplate->setFile("0_main.tpl");
+    $theTemplate->load("MAIN");
+    $theTemplate->tag("content", get_content ( $global_config_arr['goto'] ));
+    $theTemplate->tag("copyright",  get_copyright ());
     
-    $template_general->tag("content", get_content ( $global_config_arr['goto'] ));
-    $template_general->tag("copyright",  get_copyright ());
-
-    $template_general = $template_general->display();
-
+    $template_general = (string) $theTemplate;
     $template_general = replace_snippets ( $template_general );
     $template_general = replace_navigations ( $template_general );
     $template_general = replace_applets ( $template_general );
@@ -61,16 +59,12 @@ if ( $db ) {
     $template_general = replace_snippets ( $template_general );
     
     $template_general = replace_globalvars ( $template_general );
-    
-    // Get Main Template
-    $template = get_maintemplate ();
-    $template = str_replace ( "{..body..}", $template_general, $template);
 
     // Display Page
-    echo $template;
+    echo get_maintemplate($template_general);
 
     // Close Connection
-    mysql_close ( $db );
+    mysql_close($db);
 }
 
 //////////////////////////////

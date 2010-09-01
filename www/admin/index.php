@@ -23,7 +23,9 @@ require ( FS2_ROOT_PATH . "libs/class_fileaccess.php");
 require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
 require ( FS2_ROOT_PATH . "libs/class_adminpage.php");
 require ( FS2_ROOT_PATH . "libs/class_search.php");
+require ( FS2_ROOT_PATH . "libs/class_searchIndex.php" );
 require ( FS2_ROOT_PATH . "libs/class_admin_selectlist.php");
+require ( FS2_ROOT_PATH . "libs/class_admin_deletepage.php");
 
 //Include Phrases-Files
 require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
@@ -68,17 +70,17 @@ if ( isset ( $_POST['login'] ) && $_POST['login'] == 1 && $_SESSION["user_level"
 $go = isset ( $_REQUEST['go'] ) ? savesql ( $_REQUEST['go'] ) : "";
 
 // get page-data from database
-$index = mysql_query ( "
-                        SELECT P.`page_id`, P.`page_file`, P.`group_id`, G.`menu_id`
-                        FROM `".$global_config_arr['pref']."admin_cp` P, `".$global_config_arr['pref']."admin_groups` G
-                        WHERE P.`group_id` = G.`group_id`
-                        AND P.`page_id` = '".$go."'
-                        AND P.`page_int_sub_perm` != 1
-                        LIMIT 0,1
-", $db );
+$index = $sql->executeQuery("
+    SELECT P.`page_id`, P.`page_file`, P.`group_id`, G.`menu_id`
+    FROM `{..pref..}admin_cp` P, `{..pref..}admin_groups` G
+    WHERE P.`group_id` = G.`group_id`
+    AND P.`page_id` = '".$go."'
+    AND P.`page_int_sub_perm` != 1
+    LIMIT 0,1
+");
 
 // if page exisits
-if ( mysql_num_rows ( $index ) == 1 ) {
+if ($sql->lastNumRows() == 1) {
     $acp_arr = mysql_fetch_assoc ( $index );
     $acp_arr['permission'] = $_SESSION[$acp_arr['page_id']];
 
@@ -91,6 +93,8 @@ if ( mysql_num_rows ( $index ) == 1 ) {
     $PAGE_DATA_ARR = createpage ( $TEXT['menu']->get("group_".$acp_arr['group_id'])." &#187; ".$TEXT['menu']->get("page_title_".$acp_arr['page_id']), $acp_arr['permission'], $acp_arr['page_file'], $acp_arr['menu_id'] );
     // initialise templatesystem
     $adminpage = new adminpage($acp_arr['page_file']);
+    // Get Special Page Lang-Text-Files
+    $TEXT['page'] = new langDataInit($global_config_arr['language_text'], "admin/".str_replace(".php", "", $acp_arr['page_file']));
 } else {
     $PAGE_DATA_ARR['created'] = FALSE;
 }

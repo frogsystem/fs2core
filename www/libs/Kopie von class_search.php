@@ -10,9 +10,8 @@
 class Search {
 
     // Set Class Vars
-    protected $theConfig;
-    protected $theGlobalConfig;
-    protected $theSql;
+    private $theConfig;
+    private $theSql;
     private $searchTypeArray;
     private $searchTypeArraySQL = array ();
     
@@ -25,12 +24,11 @@ class Search {
      *
      * @return bool
      */
-    public function  __construct ( $searchTypeArray = array() ) {
+    public function  __construct ( $searchTypeArray ) {
         // Include global Data
         global $global_config_arr, $sql;
-        $this->theGlobalConfig = $global_config_arr;
+        $this->theConfig = $global_config_arr;
         $this->theSql = $sql;
-        $this->theConfig = $this->theSql->getData ( "search_config", "*", "", 1 );
         $this->searchTypeArray = $searchTypeArray;
         foreach ( $this->searchTypeArray as $aType ) {
             $this->searchTypeArraySQL[] = str_replace ( '$1', $aType, "FIND_IN_SET('\$1',I.`search_index_type`)" );
@@ -108,42 +106,6 @@ class Search {
         }
         return  FALSE;
     }
-
-    function getIdList ( $RESULTS_ARR, $SOFT_MAX_SELECT ) {
-        // Security Function
-        $results_id_list = array();
-        $counter_of_last_found = -1;
-
-        // Sort Array by num of founds
-        asort ( $RESULTS_ARR, SORT_NUMERIC );
-        $RESULTS_ARR = array_reverse ( $RESULTS_ARR, TRUE );
-        reset ( $RESULTS_ARR );
-
-        // Get List of IDs to select
-        for ( $i = 0; $i < $SOFT_MAX_SELECT || ( current ( $RESULTS_ARR ) == $counter_of_last_found ) ; $i++ ) {
-            $id = key ( $RESULTS_ARR );
-            $results_id_list[] = $id;
-            if ( $i == ( $SOFT_MAX_SELECT - 1 ) ) {
-                $counter_of_last_found = current ( $RESULTS_ARR );
-            }
-            next ( $RESULTS_ARR );
-        }
-
-        if ( count ( $results_id_list ) <= 0 ) {
-            $results_id_list = array ( -100 );
-        }
-        return $results_id_list;
-    }
-    
-    function sortReplaceArr ( $REPLACE_ARR ) {
-        foreach ( $REPLACE_ARR as $key => $row ) {
-            $col_date[$key] = $row['date'];
-            $col_num_results[$key] = $row['num_results'];
-        }
-        array_multisort ( (array)$col_num_results, SORT_DESC, SORT_NUMERIC, (array)$col_date, SORT_DESC, SORT_NUMERIC, $REPLACE_ARR );
-        return $REPLACE_ARR;
-    }
-    
 
 
     // make a search
@@ -233,19 +195,12 @@ class Search {
     }
 
     protected function removeStopwords ( $TEXT ) {
-        $locSearch = array ();
-        $locReplace = array ();
-        
-        $locSearch[] = "=(\s[A-Za-z0-9]{1,".$this->theConfig['search_min_length']."})\s=";
-        $locReplace[] = " ";
-        
-        // Use Stopwords?
-        if ( $this->theConfig['	search_use_stopwords'] == 1 ) {
-            $locSearch[] = "= " . implode ( " | ", $this->getStopwords () ) . " =i";
-            $locReplace[] = " ";
-        }
-        
+        $locSearch[] = "=(\s[A-Za-z0-9]{1,2})\s=";
+        $locSearch[] = "= " . implode ( " | ", $this->getStopwords () ) . " =i";
         $locSearch[] = "= +=";
+
+        $locReplace[] = " ";
+        $locReplace[] = " ";
         $locReplace[] = " ";
 
         $TEXT = " " . str_replace ( " ", "  ", $TEXT ) . " ";
@@ -264,5 +219,22 @@ class Search {
         }
         return $return_arr;
     }
+
+    /**********************************************************
+    / No need for news, because it is also represented by default data-structure
+    /**********************************************************
+        static $preconfigedSearchData = array (
+            "news" => array (
+                "table" => "news",
+                "contentIdField" => "news_id",
+                "updateTimeField" => "news_search_update",
+                "searchData" => array (
+                    array ( "field", "news_title" ),
+                    array ( "text", " " ),
+                    array ( "field", "news_text" )
+                )
+            )
+        );
+    /*********************************************************/
 }
 ?>

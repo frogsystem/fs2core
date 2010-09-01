@@ -5,9 +5,9 @@
 if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( "update", "new", "delete", "delete_with_word" ) ) ) ) {
 
     // Create the Objects
-    $indexObjects['news'] = new search ( "news" );
-    $indexObjects['articles'] = new search ( "articles" );
-    $indexObjects['dl'] = new search ( "dl" );
+    $indexObjects['news'] = new searchIndex ( "news" );
+    $indexObjects['articles'] = new searchIndex ( "articles" );
+    $indexObjects['dl'] = new searchIndex ( "dl" );
 
     // Update
     if ( $_POST['do'] == "update" ) {

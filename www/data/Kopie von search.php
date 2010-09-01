@@ -1,23 +1,160 @@
 <?php
-print_r ( $_REQUEST );
+// Locale Functions
+
+function compare_founds_with_keywords ( $FOUNDS, $KEYWORDS ) {
+    $bool_arr = array ();
+    foreach ( $KEYWORDS as $word ) {
+        if ( !is_search_op ( $word ) ) {
+            $bool_arr[] = ( array_key_exists ( $word, $FOUNDS ) ) ? "TRUE" : "FALSE";
+        } else {
+            switch ( $word ) {
+                case "NOT":
+                    $bool_arr[] = " && !";
+                    break;
+                case "OR":
+                    $bool_arr[] = " || ";
+                    break;
+                case "AND":
+                    $bool_arr[] = " && ";
+                    break;
+                case "XOR":
+                    $bool_arr[] = " xor ";
+                    break;
+            }
+        }
+    }
+    $bool_return = FALSE;
+    $bool_string = implode ( "", $bool_arr );
+    eval ("\$bool_return = (".$bool_string.");" );
+    if ( $bool_return ) {
+        return TRUE;
+    }
+    return  FALSE;
+}
+
+
+function get_id_list_from_result_arr ( $RESULTS_ARR, $SOFT_MAX_SELECT ) {
+    // Security Function
+    $results_id_list = array();
+    $counter_of_last_found = -1;
+
+    // Sort Array by num of founds
+    asort ( $RESULTS_ARR, SORT_NUMERIC );
+    $RESULTS_ARR = array_reverse ( $RESULTS_ARR, TRUE );
+    reset ( $RESULTS_ARR );
+
+    // Get List of IDs to select
+    for ( $i = 0; $i < $SOFT_MAX_SELECT || ( current ( $RESULTS_ARR ) == $counter_of_last_found )  ; $i++ ) {
+        $id = key ( $RESULTS_ARR );
+        $results_id_list[] = $id;
+        if ( $i == ( $SOFT_MAX_SELECT - 1 ) ) {
+            $counter_of_last_found = current ( $RESULTS_ARR );
+        }
+        next ( $RESULTS_ARR );
+    }
+
+    if ( count ( $results_id_list ) <= 0 ) {
+        $results_id_list = array ( -100 );
+    }
+    return $results_id_list;
+}
+
+function sort_replace_arr ( $REPLACE_ARR ) {
+    foreach ( $REPLACE_ARR as $key => $row ) {
+        $col_date[$key] = $row['date'];
+        $col_num_results[$key] = $row['num_results'];
+    }
+    array_multisort ( (array)$col_num_results, SORT_DESC, SORT_NUMERIC, (array)$col_date, SORT_DESC, SORT_NUMERIC, $REPLACE_ARR );
+    return $REPLACE_ARR;
+}
+
 // Security Functions
-$_REQUEST['in'] = ( !is_array ( $_REQUEST['in'] ) ) ? array () : $_REQUEST['in'];
+$_REQUEST['in_news'] = ( $_REQUEST['in_news'] == 1 ) ? TRUE : FALSE;
+$_REQUEST['in_articles'] = ( $_REQUEST['in_articles'] == 1 ) ? TRUE : FALSE;
+$_REQUEST['in_downloads'] = ( $_REQUEST['in_downloads'] == 1 ) ? TRUE : FALSE;
 $_REQUEST['keyword'] = trim ( $_REQUEST['keyword'] );
 
 // Load Config Array
-$config_arr = $sql->getData ( "search_config", "*", "", 1 );
+$index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."search_config` WHERE `id` = 1", $db);
+$config_arr = mysql_fetch_assoc ( $index );
 
 // Create SQL Queries
-if ( strlen ( $_REQUEST['keyword'] ) >= $config_arr['search_min_length'] && ( count ( $_REQUEST['in'] ) >= 1 ) ) {
+if ( ( isset ( $_REQUEST['keyword'] ) && strlen ( trim ( $_REQUEST['keyword'] ) ) >= 3 ) && ( $_REQUEST['in_news'] || $_REQUEST['in_articles'] || $_REQUEST['in_downloads'] ) ) {
 
     // Create Search class
-    $theSearch = new Search ();
+    $theSearch = new Search ( array ( "news", "articles" );
     $theSearch->makeSearch ( $_REQUEST['keyword'] );
+
+
+    // Include searchfunctions.php
+    require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+    
+    
+    $keyword_arr = explode ( " ", $_REQUEST['keyword'] );
+    $keyword_arr = create_search_word_arr ( $keyword_arr );
+
+    // Get Search Types
+    $type_arr = array();
+    if ( $_REQUEST['in_news'] ) {
+        $type_arr[] = "FIND_IN_SET('news',I.`search_index_type`)";
+    }
+    if ( $_REQUEST['in_articles'] ) {
+        $type_arr[] = "FIND_IN_SET('articles',I.`search_index_type`)";
+    }
+    if ( $_REQUEST['in_downloads'] ) {
+        $type_arr[] = "FIND_IN_SET('dl',I.`search_index_type`)";
+    }
+    if ( count ( $type_arr ) > 0 && count ( $type_arr ) < 3 ) {
+        $type_check = "AND ( " . implode ( " OR ", $type_arr ) . " )";
+    } else {
+        $type_check = "";
+    }
+
+
+    $founds_arr = array ();
+    foreach ( $keyword_arr as $word ) {
+        if ( !is_search_op ( $word ) ) {
+            $query = "
+                        SELECT
+                                I.`search_index_document_id` AS 'document_id',
+                                I.`search_index_type` AS 'type',
+                                SUM(I.`search_index_count`) AS 'count'
+
+                        FROM
+                                `".$global_config_arr['pref']."search_index` AS I,
+                                `".$global_config_arr['pref']."search_words` AS W
+
+                        WHERE   1
+                                " . $type_check  . "
+                                AND W.`search_word_id` = I.`search_index_word_id`
+                                AND W.`search_word` LIKE '%".$word."%'
+
+                        GROUP BY `document_id`, `type`
+                        ORDER BY `type`, `count` DESC
+            ";
+            $index = mysql_query ( $query, $db );
+
+            while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+                $founds_arr[$data_arr['type']][$data_arr['document_id']][$word] = $data_arr['count'];
+            }
+        }
+    }
+
+    $results_arr = array ();
+    foreach ( $founds_arr as $type => $docs ) {
+        foreach ( $docs as $id => $founds ) {
+            if ( compare_founds_with_keywords ( $founds, $keyword_arr ) ) {
+                $results_arr[$type][$id] = array_sum ( $founds );
+            }
+        }
+    }
 
 }
 
 if ( $_REQUEST['keyword'] == "" ) {
-    $_REQUEST['in'] = array ( "news", "articles", "downloads" );
+    $_REQUEST['in_news'] = TRUE;
+    $_REQUEST['in_articles'] = TRUE;
+    $_REQUEST['in_downloads'] = TRUE;
 } else {
     // Dynamic Title Settings
     $global_config_arr['dyn_title_page'] = $TEXT->get("download_search_for") . ' "' . kill_replacements ( $_REQUEST['keyword'], TRUE ) . '"';

@@ -2,6 +2,11 @@
 /////////////////////////////
 //// Kategorie existiert  ///
 /////////////////////////////
+if (isset($_GET[cat_id])) {
+    $_GET[catid] = $_GET[cat_id];
+}
+
+
 if (isset($_GET[catid]))
 {
     $index = mysql_query("SELECT cat_name, cat_visibility FROM ".$global_config_arr[pref]."screen_cat WHERE cat_id = $_GET[catid]", $db);

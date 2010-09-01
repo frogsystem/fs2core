@@ -19,9 +19,8 @@ $visits_all = mysql_result ( $index, 0, "visits" );
 $hits_all = mysql_result ( $index, 0, "hits" );
 
 // Besucher heute
-$index = mysql_query("SELECT s_hits, s_visits FROM ".$global_config_arr[pref]."counter_stat WHERE s_year = $stats_year and s_month = $stats_month and s_day = $stats_day", $db);
-$visits_today = mysql_result ( $index, 0, "s_visits" );
-$hits_today = mysql_result ( $index, 0, "s_hits" );
+$today_arr = $sql->getData("counter_stat", "s_hits,s_visits", "WHERE `s_year` = '".$stats_year."' AND `s_month` = '".$stats_month."' AND `s_day` = '".$stats_day."'", 1);
+$today_arr = $sql->isUsefulGet() ? $today_arr : array("s_visits" => 0, "s_hits" => 0);
 
 // Besucher online
 $index = mysql_query("SELECT count(*) AS visitors_on FROM ".$global_config_arr[pref]."useronline", $db);
@@ -95,7 +94,7 @@ echo '
                             </tr>
                             <tr>
                                 <td class="configthin" width="200">Besucher heute:</td>
-                                <td class="configthin"><b>'.$visits_today.'</b></td>
+                                <td class="configthin"><b>'.$today_arr['s_visits'].'</b></td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
@@ -104,7 +103,7 @@ echo '
                             </tr>
                             <tr>
                                 <td class="configthin" width="200">Hits heute:</td>
-                                <td class="configthin"><b>'.$hits_today.'</b></td>
+                                <td class="configthin"><b>'.$today_arr['s_hits'].'</b></td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
