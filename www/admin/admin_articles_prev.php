@@ -1,15 +1,16 @@
 <?php
 // Start Session
 session_start();
+
 // Disable magic_quotes_runtime
-set_magic_quotes_runtime ( FALSE );
+set_magic_quotes_runtime(FALSE);
 
 // fs2 include path
-set_include_path ( '.' );
-define ( FS2_ROOT_PATH, "./../", TRUE );
+set_include_path('.');
+define('FS2_ROOT_PATH', "./../", TRUE);
 
 // Inlcude DB Connection File
-require ( FS2_ROOT_PATH . "login.inc.php");
+require(FS2_ROOT_PATH."login.inc.php");
 
 //////////////////////////////////
 //// DB Connection etablished ////
@@ -25,7 +26,9 @@ if ( $db ) {
     require ( FS2_ROOT_PATH . "libs/class_template.php" );
     require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
     require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
-
+    require ( FS2_ROOT_PATH . "libs/class_search.php" );
+    require ( FS2_ROOT_PATH . "libs/class_searchIndex.php" );
+    
     //Include Phrases-Files
     require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
     $TEXT = new langDataInit ( $global_config_arr['language_text'], "frontend" );
@@ -185,26 +188,23 @@ if ( $db ) {
         // Preview Page Template
         $global_config_arr['title'] = "Frogsystem 2 - Artikelvorschau: " . $article_arr['article_title'];
 
-        $template_general = new template();
-        $template_general->setFile("0_general.tpl");
-        $template_general->load("MAINPAGE");
-        $template_general->tag("content", $template_preview );
-        $template_general->tag("copyright",  get_copyright ());
-        $template_general = $template_general->display();
+        $theTemplate = new template();
+        $theTemplate->setFile("0_main.tpl");
+        $theTemplate->load("MAIN");
+        $theTemplate->tag("content", $template_preview);
+        $theTemplate->tag("copyright",  get_copyright ());
 
+        $template_general = (string) $theTemplate;
         $template_general = replace_snippets ( $template_general );
         $template_general = replace_navigations ( $template_general );
         $template_general = replace_applets ( $template_general );
         $template_general = replace_navigations ( $template_general );
         $template_general = replace_snippets ( $template_general );
+
         $template_general = replace_globalvars ( $template_general );
 
-        // Get Main Template
-        $template = get_maintemplate ( "", $global_config_arr['virtualhost'] );
-        $template = str_replace ( "{..body..}", $template_general, $template);
-
-        // Display Preview Page
-        echo $template;
+        // Display Page
+        echo get_maintemplate($template_general, "", $global_config_arr['virtualhost']);
     }
     mysql_close ( $db );
 }

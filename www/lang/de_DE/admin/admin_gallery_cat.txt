@@ -4,14 +4,26 @@
 no_subcat:                  Keine Unterkategorie
 subcat_separator:           ----------------------------------------
 
-type_img:                   Bild
+type_img:                   Bilder
 type_wp:                    Wallpaper
 
 visibility_full:            vollständig
 visibility_notinlist:       nicht in Auswahl
 visibility_none:            keine
 
+visibility_full_long:       vollständig sichtbar
+visibility_notinlist_long:  nicht in Auswahl verfügbar
+visibility_none_long:       keine Sichtbarkeit
+
 id:                         ID
 cat_name:                   Kategorie
 select_type:                Art
 select_viewable:            Sichtbarkeit
+
+
+
+
+
+delete_title:               Kategorien löschen
+delete_question:            Sollen die folgenden Kategorien wirklich gelöscht werden?
+delete_info:                Die den Kategorien zugeordneten Bilder und Wallpaper finden Sie nach dem Löschen unter dem Eintrag "unsortiert".

@@ -124,11 +124,11 @@ function get_article_urls ()
     global $global_config_arr;
     global $db;
 
-        $index = mysql_query ( "
-                                                        SELECT
-                                                                article_url
-                                                        FROM
-                                                                ".$global_config_arr['pref']."articles
+       $index = mysql_query ( "
+            SELECT
+                    article_url
+            FROM
+                ".$global_config_arr['pref']."articles
         ", $db );
 
         while ( $result = mysql_fetch_assoc ( $index ) ) {
@@ -306,7 +306,7 @@ function getreadonly ( $VALUE, $COMPAREWITH )
 //// Systemmeldung ausgeben ////
 ////////////////////////////////
 
-function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
+function get_systext ( $MESSAGE, $TITLE = FALSE, $COLOR = "green", $IMAGE = FALSE )
 {
     global $admin_phrases;
 
@@ -314,16 +314,15 @@ function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
         $TITLE = $admin_phrases[common][system_message];
     }
 
-    if ( $RED == TRUE ) {
-        $class = "line_red";
-    } else {
-        $class = "line";
-    }
-
+    // TRUE was old for "red"
+    $COLOR = $COLOR === TRUE ? "red" : $COLOR;
+    // FALSE was old for "green"
+    $COLOR = $COLOR === FALSE ? "green" : $COLOR;
+    
     if ( $IMAGE == FALSE ) {
         return '
             <table class="configtable" cellpadding="4" cellspacing="0">
-                <tr><td class="'.$class.'">'.$TITLE.'</td></tr>
+                <tr><td class="line_'.$COLOR.'">'.$TITLE.'</td></tr>
                 <tr><td class="config">'.$MESSAGE.'</td></tr>
                 <tr><td class="space"></td></tr>
             </table>
@@ -331,7 +330,7 @@ function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
     } else {
         return '
             <table class="configtable" cellpadding="4" cellspacing="0">
-                <tr><td class="'.$class.'" colspan="2">'.$TITLE.'</td></tr>
+                <tr><td class="line_'.$COLOR.'" colspan="2">'.$TITLE.'</td></tr>
                 <tr>
                     <td class="config middle">'.$IMAGE.'</td>
                     <td class="config middle" width="100%">'.$MESSAGE.'</td>
@@ -342,9 +341,9 @@ function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
     }
 }
 
-function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
+function systext ( $MESSAGE, $TITLE = FALSE, $COLOR = "green", $IMAGE = FALSE )
 {
-    echo get_systext ( $MESSAGE, $TITLE, $RED, $IMAGE );
+    echo get_systext ( $MESSAGE, $TITLE, $COLOR, $IMAGE );
 }
 
 /////////////////////////////////
@@ -391,6 +390,16 @@ function js_nowbutton ( $DATA, $CAPTION, $CLASS = "button" )
     $template .= '">';
 
         return $template;
+}
+
+////////////////////////////////
+//// JS Now-Button erzeugen ////
+////////////////////////////////
+
+function get_datebutton($DATA, $CAPTION, $CLASS = "button")
+{
+    $template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="$(\'#'.$DATA[0].'\').data(\'dateinput\').setValue(new Date('.$DATA[1].'));">';
+    return $template;
 }
 
 ////////////////////////////

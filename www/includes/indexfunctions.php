@@ -56,7 +56,7 @@ function get_maintemplate ( $BODY, $PATH_PREFIX = "", $BASE = FALSE )
     $template_link = "";
     if ( $global_config_arr['show_favicon'] == 1 ) {
                 $template_link .= '
-                <link rel="shortcut icon" href="styles/'.$global_config_arr['style'].'/icons/favicon.ico">';
+                <link rel="shortcut icon" href="'.$PATH_PREFIX .'styles/'.$global_config_arr['style'].'/icons/favicon.ico">';
     }
     $template_link .= '
                 <link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">

@@ -4,6 +4,8 @@
 //// Locale Secure Data Function ////
 /////////////////////////////////////
 function secureData ( $DATA, $OUTPUT = FALSE ) {
+    global $sql;
+
     // Common
     settype($DATA['cat_id'], 'integer');
     settype($DATA['cat_subcat_of'], 'integer');
@@ -16,8 +18,21 @@ function secureData ( $DATA, $OUTPUT = FALSE ) {
     $DATA['cat_text'] = $OUTPUT ? killhtml($DATA['cat_text']) : savesql($DATA['cat_text']);
     $DATA['cat_type'] = $OUTPUT ? killhtml($DATA['cat_type']) : savesql($DATA['cat_type']);
 
-    // TODO cat_date
+    $DATA['cat_date'] = strtotime ( $DATA['cat_date'] );
+    $DATA['cat_user_name'] = killhtml($sql->getData("user", "user_name", "WHERE `user_id` = '".$DATA['cat_user']."' LIMIT 0,1", 1));
 
+
+    // TODO cat_date
+    /*
+
+        // Create Date-Arrays
+        if ( !isset ( $_POST['d'] ) ) {
+            $_POST['d'] = date ( "d", $cat_arr['cat_date'] );
+            $_POST['m'] = date ( "m", $cat_arr['cat_date'] );
+            $_POST['y'] = date ( "Y", $cat_arr['cat_date'] );
+        }
+        $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
+        $nowbutton_array = array( "d", "m", "y" );*/
     return $DATA;
 }
 
@@ -37,7 +52,7 @@ if ( TRUE
     && validateFormData( $_POST['cat_name'], "required,text", "(.{3,100})" )
     && validateFormData( array($_POST['cat_subcat_of'], $_POST['cat_visibility']), "required,integer,positive" )
     && validateFormData( $_POST['cat_type'], "required,oneof", array("img", "wp") )
-) {           echo "a";
+) {
     // Secure Data
     secureData(&$_POST);
 
@@ -120,61 +135,65 @@ elseif (
 ////////////////////////
 //// DB: Delete Cat ////
 ////////////////////////
-elseif (
-        isset ( $_POST['cat_id'] ) &&
-        isset ( $_POST['sended'] ) && $_POST['sended'] == "delete" &&
-        isset ( $_POST['cat_action'] ) && $_POST['cat_action'] == "delete" &&
-        isset ( $_POST['cat_move_to'] ) &&
-        isset ( $_POST['cat_delete'] )
-    )
-{
-    if ( $_POST['cat_delete'] == 1 ) {
-    
-        // Security-Functions
-        settype ( $_POST['cat_id'], "integer" );
-        settype ( $_POST['cat_move_to'], "integer" );
+elseif ( TRUE
+    && validateFormData( $_POST['sended'], "required,oneof", array("delete") )
+    && validateFormData( $_POST['cat_action'], "required,oneof", array("delete") )
+) {
+    // Check Yes-No-Ansert
+    if ($_POST['cat_delete'] == 1) { // Yes
 
-        // MySQL-Query move News to other Category
-        mysql_query ("
-                        UPDATE ".$global_config_arr['pref']."news
-                         SET
-                             cat_id                 = '".$_POST['cat_move_to']."'
-                         WHERE
-                             cat_id                 = '".$_POST['cat_id']."'
-        ", $db );
+        // Security Function
+        $_POST['cat_id'] = array_map("intval", explode(",", $_POST['cat_id']));
+        $messages = array();
 
-        // MySQL-Delete-Query
-        mysql_query ("
-                        DELETE FROM ".$global_config_arr['pref']."news_cat
-                         WHERE
-                             cat_id                 = '".$_POST['cat_id']."'
-        ", $db );
-        $message = $admin_phrases[news][cat_deleted];
+        // get cats from db
+        $cat_arr = $sql->getData("gallery_cat", "cat_id,cat_subcat_of", "WHERE `cat_id` IN (".implode(",", $_POST['cat_id']).") ORDER BY `cat_id`");
 
-        // Delete Category Image
-        if ( image_delete ( "images/cat/", "news_".$_POST['cat_id'] ) ) {
-            $message .= "<br>" . $admin_phrases[common][image_deleted];
+        // cats found
+        if ($sql->isUsefulGet()) {
+            $successful = array("db" => TRUE, "img" => TRUE);
+            foreach ($cat_arr as $aCat) {
+                 if ( TRUE
+                     && FALSE !== $sql->updateData("gallery_cat", "cat_subcat_of", $aCat['cat_subcat_of'], "WHERE `cat_subcat_of` = '".$aCat['cat_id']."'")
+                     && FALSE !== $sql->updateData("gallery_img", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
+                     && FALSE !== $sql->updateData("gallery_wp", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
+                     #&& FALSE !== $sql->deleteData("gallery_cat", "`cat_id` = '".$aCat['cat_id']."'", "LIMIT 0,1")
+                 ) {
+                    // Delete Cat Image
+                    if (!image_delete("media/gallery/cat/", $aCat['cat_id'])) {
+                        $successful['img'] = FALSE;
+                    }
+                 } else {
+                    $successful['db'] = FALSE;
+                 }
+            }
         }
+        $messages[] = $successful['db'] ? $TEXT["admin"]->get("cats_deleted") : $TEXT["admin"]->get("cats_not_all_deleted");
+        $messages[] = $successful['img'] ? $TEXT["admin"]->get("images_deleted") : $TEXT["admin"]->get("images_not_all_deleted");
+
+        $color = !$successful['db'] ? "red"                                   : (!$successful['img'] ? "yellow"                                  : "green");
+        $title = !$successful['db'] ? $TEXT["admin"]->get("error")            : (!$successful['img'] ? $TEXT["admin"]->get("caution")            : $TEXT["admin"]->get("info"));
+        $icon  = !$successful['db'] ? $TEXT["admin"]->get("icon_trash_error") : (!$successful['img'] ? $TEXT["admin"]->get("icon_trash_caution") : $TEXT["admin"]->get("icon_trash_ok"));
         
+        systext(implode("<br>", $messages), $title, $color, $icon);
+
+    // Don't delete
     } else {
-        $message = $admin_phrases[news][cat_not_deleted];
+        //TODO
+        systext ( $TEXT["admin"]->get("cats_not_deleted"), $TEXT["admin"]->get("info"), "green", $TEXT["admin"]->get("icon_trash_error") );
     }
 
-    // Display Message
-    systext ( $message, $admin_phrases[common][info] );
-
     // Unset Vars
-    unset ( $_POST );
-    $showdefault = FALSE;
+    unset($_POST);
 }
 
+// ???  //TODO
 if ($_POST['cat_action']=="add") {
     unset ( $_POST['cat_action'], $_POST['cat_id'] );
 }
 
 //////////////////////
 //// DB: Order Up ////
-
 //////////////////////
 
 ////////////////////////
@@ -197,36 +216,54 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
 
         // Only First ID of Array
         $_POST['cat_id'] = $_POST['cat_id'][0];
-    
-        // Load Data from DB
-        $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = '".$_POST['cat_id']."'", $db );
-        $cat_arr = mysql_fetch_assoc ( $index );
 
         // Display Error Messages
-        if ( isset ( $_POST['sended'] ) ) {
-            $cat_arr = getfrompost ( $cat_arr );
-            systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+        if($_POST['sended']=="edit") {
+            systext($TEXT["admin"]->get("note_notfilled"), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
+
+        // Get Data from DB
+        } else {
+            $cat_arr = $sql->getData("gallery_cat", "*", "WHERE `cat_id` = '".$_POST['cat_id']."'", 1);
+            $cat_arr = $sql->lastUseful() ? $cat_arr : array();
+            putintopost($cat_arr);
         }
+        
+        // Secure Data for Output
+        secureData(&$_POST, TRUE);
 
-        // Security-Functions
-        $cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
-        $cat_arr['cat_description'] = killhtml ( $cat_arr['cat_description'] );
-
-        // Get User
-        $index = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = '".$cat_arr['cat_user']."'", $db );
-        $cat_arr['cat_username'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
-
-        // Create Date-Arrays
-        if ( !isset ( $_POST['d'] ) ) {
-            $_POST['d'] = date ( "d", $cat_arr['cat_date'] );
-            $_POST['m'] = date ( "m", $cat_arr['cat_date'] );
-            $_POST['y'] = date ( "Y", $cat_arr['cat_date'] );
+        // Get Subcats
+        $subcat_arr = array();
+        $SQL = array("table" => "gallery_cat", "select" => "*", "id" => "cat_id", "sub" => "cat_subcat_of", "order" => "ORDER BY `cat_order`, `cat_id`");
+        get_cat_system(&$subcat_arr, $SQL);
+        $sub_cat_ids = array();
+        get_all_sub_cats($_POST['cat_id'], $SQL, $sub_cat_ids);
+        $subcat_options = array();
+        foreach ($subcat_arr as $aCat) {
+            if ($aCat['cat_id'] != $_POST['cat_id'] && !in_array($aCat['cat_id'], $sub_cat_ids)) {
+                settype($aCat['cat_id'], "integer");
+                $subcat_options[] = '
+                                            <option value="'.$aCat['cat_id'].'" '.getselected($aCat['cat_id'], $_POST['cat_subcat_of']).'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $aCat['level']).killhtml($aCat['cat_name']).'</option>';
+            }
         }
-        $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
-        $nowbutton_array = array( "d", "m", "y" );
 
         // Display Page
 
+        // Template Conditions
+        $adminpage->addCond("image_exists",     image_exists("media/gallery/cat/", $_POST['cat_id']));
+        // Template Texts
+        $adminpage->addText("ACP_GO",           ACP_GO);
+        $adminpage->addText("cat_name",         $_POST['cat_name']);
+        $adminpage->addText("subcat_options",   implode("", $subcat_options));
+        $adminpage->addText("cat_date",         date("Y-m-d", $cat_arr['cat_date']));
+        $adminpage->addText("today",            get_datebutton(array("cat_date", ""), $TEXT["admin"]->get("today")));
+        $adminpage->addText("reset_date",       get_datebutton(array("cat_date", $cat_arr['cat_date']*1000), $TEXT["admin"]->get("reset")));
+        $adminpage->addText("cat_user",         $_POST['cat_user']);
+        $adminpage->addText("cat_user_name",    $_POST['cat_user_name']);
+        $adminpage->addText("find_user",        openpopup("admin_finduser.php", 400, 400));
+        
+        // Display Template
+        echo $adminpage->get("edit");
+    
     }
     //////////////////////////////////////////////////////////////
     //// Show to much selected Error & Go back to Select Form ////
@@ -246,26 +283,54 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
 
         // get cats from db
         $cat_arr = $sql->getData("gallery_cat", "*", "WHERE `cat_id` IN (".implode(",", $_POST['cat_id']).") ORDER BY `cat_order`,`cat_id`");
-
+        
         // cats found
         $cat_ids = array();
-        $cat_previews = array();
+        $cat_preview = array();
         if ($sql->isUsefulGet()) {
             // Get Data
             foreach ($cat_arr as $aCat) {
+                // Secutity Functions
                 settype($aCat['cat_id'], "integer");
+                $aCat['cat_name'] = killhtml($aCat['cat_name']);
+
+                // Cat-ID-Array
                 $cat_ids[]      = $aCat['cat_id'];
-                $cat_previews[] = "<b>".killhtml($aCat['cat_name'])."</b> (#".$aCat['cat_id'].", Art: ".killhtml($aCat['cat_type']).")";
+
+                // Create Entry
+                // Template Texts
+                $adminpage->addText("cat_id",           $aCat['cat_id']);
+                $adminpage->addText("cat_name",         '<span title="'.$aCat['cat_name'].'"><b>'.shortening_string($aCat['cat_name'], 40, "...").'</b></span>');
+                $adminpage->addText("cat_url",          $global_config_arr['virtualhost'].'?go=gallery&amp;cat_id='.$aCat['cat_id']);
+                $adminpage->addText("cat_type",         str_replace(array("img", "wp"), array($TEXT["page"]->get("type_img"), $TEXT["page"]->get("type_wp")), $aCat['cat_type']));
+                $adminpage->addText("cat_visibility",   str_replace(array(0, 1, 2), array($TEXT["page"]->get("visibility_none_long"), $TEXT["page"]->get("visibility_full_long"), $TEXT["page"]->get("visibility_notinlist_long")), $aCat['cat_visibility']));
+                // Display Template
+                $cat_preview[] = $adminpage->get("delete_entry");
             }
-            
+
+            // Create Preivew-List
+            $adminpage->clearCond();
+            $adminpage->clearTexts();
+            $adminpage->addText("previews",         implode("<br>", $cat_preview));
+
             // Get DeletePage
-            $deletePage = new DeletePage("cat", $TEXT["page"]->get("delete_title"), $TEXT["page"]->get("delete_question"), $cat_ids, $cat_previews, "<br>" );
+            $deletePage = new DeletePage("cat", $TEXT["page"]->get("delete_title"), $TEXT["page"]->get("delete_question"), $cat_ids, $adminpage->get("delete"));
             echo $deletePage;
             
         } else {
             unset($_POST['cat_id'], $_POST['cat_action']);
         }
     }
+    
+    // Reset data and go to default page
+    else {
+        unset($_POST['cat_id'], $_POST['cat_action']);
+    }
+}
+
+// Reset data and go to default page
+else {
+    unset($_POST['cat_id'], $_POST['cat_action']);
 }
 
 //////////////////////////////
@@ -326,7 +391,7 @@ if (!isset($_POST['cat_id']) && !isset($_POST['cat_action'])) {
     $theList = new SelectList ( "cat", $TEXT["admin"]->get("cats_select"), "gallery_cat", 6 );
     $theList->setColumns ( array (
         array ( '&nbsp;&nbsp;'.$TEXT["page"]->get("id").'&nbsp;&nbsp;', array(), 20 ),
-        array ( "&nbsp;".$TEXT["admin"]->get("cat") ),
+        array ( $TEXT["admin"]->get("cat") ),
         array ( "" ),
         array ( $TEXT["page"]->get("select_type") ),
         array ( $TEXT["page"]->get("select_viewable") ),
@@ -341,14 +406,14 @@ if (!isset($_POST['cat_id']) && !isset($_POST['cat_action'])) {
     $theList->addButton();
 
     // Display Cats
-        foreach ($cat_arr as $aCat) {
+    foreach ($cat_arr as $aCat) {
         
         // Arrow for Sub-Cats
-        $sub_arrow = ($aCat['level'] >= 1) ? $TEXT["admin"]->get("sub_arrow")."&nbsp;&nbsp;" : "&nbsp;";
+        $sub_arrow = ($aCat['level'] >= 1) ? $TEXT["admin"]->get("sub_arrow")."&nbsp;" : "";
         $aCat['new_level'] = $aCat['level'] >= 1 ? $aCat['level']-1 : $aCat['level'];
-        $aCat['level_add'] = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $aCat['new_level']).$sub_arrow;
+        $aCat['level_add'] = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $aCat['new_level']).$sub_arrow;
          // Cat-Name
-        $aCat['cat_name_text'] = ($aCat['level'] >= 5) ? shortening_string($aCat['cat_name'],20,"...") : shortening_string($aCat['cat_name'],45,"...");
+        $aCat['cat_name_text'] = ($aCat['level'] >= 5) ? shortening_string($aCat['cat_name'],25,"...") : shortening_string($aCat['cat_name'],45,"...");
         $aCat['cat_name_text'] = $aCat['level_add'].'<span title="'.killhtml($aCat['cat_name']).'">'.killhtml($aCat['cat_name_text']).'</span>';
         // Cat-Type-Text
         $aCat['cat_type_text'] = str_replace(array("img", "wp"), array($TEXT["page"]->get("type_img"), $TEXT["page"]->get("type_wp")), $aCat['cat_type']);

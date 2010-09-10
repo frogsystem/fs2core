@@ -20,13 +20,11 @@ class DeletePage
     private $formMethod;
     
     private $ids = array();
-    private $previews = array();
-    
-    private $glue;
+    private $previewList;
 
     
     // Constructor
-    public function __construct ( $formName, $title, $question, $ids, $previews, $glue = "", $go = TRUE, $formMethod = "post", $formAction = "" ) {
+    public function __construct ( $formName, $title, $question, $ids, $previewList, $go = TRUE, $formMethod = "post", $formAction = "" ) {
         // Include global Data
         global $TEXT;
         $this->text = $TEXT;
@@ -35,8 +33,7 @@ class DeletePage
         $this->title = $title;
         $this->question = $question;
         $this->IDs = $ids;
-        $this->previews = $previews;
-        $this->glue = $glue;
+        $this->previewList = $previewList;
         
         $this->go = ( $go === TRUE ) ? $_REQUEST['go'] : $go;
         $this->formMethod = $formMethod;
@@ -59,12 +56,10 @@ class DeletePage
                             <tr><td class="line" colspan="2">'.$this->title.'</td></tr>
                             <tr>
                                 <td class="configthin">
-                                    <p>'.$this->question.'</p>';
+                                    <p><b>'.$this->question.'</b></p>';
 
-        if (count($this->previews) > 0) {
-            // display previews
-            $template .= implode($this->glue, $this->previews);
-        }
+        // display previews
+        $template .= $this->previewList;
 
         // Display End of Table
         $template .= '

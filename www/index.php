@@ -1,16 +1,16 @@
 <?php
 // Start Session
-session_start ();
+session_start();
 
 // Disable magic_quotes_runtime
-set_magic_quotes_runtime ( FALSE );
+set_magic_quotes_runtime(FALSE);
 
 // fs2 include path
-set_include_path ( '.' );
-define ( 'FS2_ROOT_PATH', "./", TRUE );
+set_include_path('.');
+define('FS2_ROOT_PATH', "./", TRUE);
 
 // Inlcude DB Connection File
-require ( FS2_ROOT_PATH . "login.inc.php");
+require(FS2_ROOT_PATH."login.inc.php");
 
 //////////////////////////////////
 //// DB Connection etablished ////

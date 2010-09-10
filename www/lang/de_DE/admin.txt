@@ -35,10 +35,14 @@ version:                                 Version
 informations_and_statistics:             Informationen & Statistik
 asc:                                     aufsteigend
 desc:                                    absteigend
+today:                                   Heute
+reset:                                   Zurücksetzen
+now:                                     Jetzt
+change:                                  Ändern
 
 
 # Frequently used Images
-sub_arrow:                               <img class="middle" src="img/sub-right-arrow.gif" alt="'->">
+sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">
 
 
 # Action Selection
@@ -69,6 +73,8 @@ form_only_allowed_values:                Bitte geben Sie nur erlaubte Werte ein
 error_file_access:                       Bitte überprüfen Sie die Datei- und Ordnerrechte
 file_deleted:                            Datei wurde gelöscht
 file_not_deleted:                        Datei wurde nicht gelöscht
+images_deleted:                          Bilder wurden gelöscht
+images_not_all_deleted:                  Nicht alle Bilder konnten gelöscht werden
 
 
 # Message-Images
@@ -80,6 +86,7 @@ icon_save_add:                           <img src="icons/save_add.jpg" alt="Hinz
 icon_save_error:                         <img src="icons/save_error.jpg" alt="Fehler beim Speichern" align="absmiddle">
 icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="Löschen erfolgreich" align="absmiddle">
 icon_trash_error:                        <img src="icons/trash_error.jpg" alt="Fehler beim Löschen" align="absmiddle">
+icon_trash_caution:                      <img src="icons/trash_caution.jpg" alt="Löschen erfolgreich, aber beachten Sie die Hinweise" align="absmiddle">
 icon_login:                              <img src="icons/login.jpg" alt="Login" align="absmiddle">
 icon_logout:                             <img src="icons/logout.jpg" alt="Logout" align="absmiddle">
 icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
@@ -102,8 +109,9 @@ cat:                                     Kategorie
 cats:                                    Kategorien
 cats_select:                             Kategorien auswählen
 cats_not_found:                          Keine Kategorien gefunden!
-
-
+cats_deleted:                            Kategorien wurden gelöscht
+cats_not_deleted:                        Kategorien wurden nicht gelöscht
+cats_not_all_deleted:                    Nicht alle Kategorien konnten gelöscht werden
 
 
 

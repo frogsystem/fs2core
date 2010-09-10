@@ -3,7 +3,28 @@
 //--------------------------------
 $().ready(function(){
 
-var lastJQBox;
+    var lastJQBox;
+
+
+////////////////////////////
+////jQueryTOOLS - Form ////
+///////////////////////////
+    // the german localization
+    $.tools.dateinput.localize("de",  {
+       months:        'Januar,Februar,M&auml;rz,April,Mai,Juni,Juli,August,September,Oktober,November,Dezember',
+       shortMonths:   'Jan,Feb,M&auml;r,Apr,Mai,Jun,Jul,Aug,Sep,Okt,Nov,Dez',
+       days:          'Sonntag,Montag,Dienstag,Mittwoch,Donnerstag,Freitag,Samstag',
+       shortDays:     'So,Mo,Di,Mi,Do,Fr,Sa'
+    });
+
+    $(":date").dateinput({
+    	lang: 'de',
+    	format: 'dd. mmmm yyyy',
+    	offset: [5, 0],
+        firstDay: 1,
+        yearRange: [-500, 500]
+    });
+    
 
 //////////////////////////////
 //// HTML-Editor: Buttons ////

@@ -1,4 +1,10 @@
 /**************************************************/
+/* imports */
+/**************************************************/
+@import url("forms.css");
+
+
+/**************************************************/
 /* standard styles */
 /**************************************************/
 html,body
@@ -162,7 +168,7 @@ table.configtable {
     font-size:10pt;
 }
 
-td.line, td.line_red
+td.line, td.line_green, td.line_red, td.line_yellow
 {
     background-image:url('img/line_loop.jpg');
     background-repeat:repeat-x;
@@ -176,9 +182,17 @@ td.line, td.line_red
     color:#000000;
     font-weight:bold;
 }
+td.line_green {
+    background-image:url('img/line_green_loop.jpg');
+}
 td.line_red {
     background-image:url('img/line_red_loop.jpg');
 }
+td.line_yellow {
+    background-image:url('img/line_yellow_loop.jpg');
+}
+
+
 td.space {
     height:15px;
 }

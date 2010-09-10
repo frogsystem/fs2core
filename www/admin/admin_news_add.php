@@ -7,7 +7,7 @@
 if (
                 isset ( $_POST['addnews'] ) &&
                 $_POST['title'] && $_POST['title'] != "" &&
-                $_POST['text'] && $_POST['text'] != "" &&
+                $_POST['news_text'] && $_POST['news_text'] != "" &&
                 
                 $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
                 $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
@@ -19,7 +19,7 @@ if (
                 isset ( $_POST['posterid'] )
         )
 {
-        $_POST['text'] = savesql ( $_POST['text'] );
+        $_POST['news_text'] = savesql ( $_POST['news_text'] );
     $_POST['title'] = savesql ( $_POST['title'] );
     
     settype ( $_POST['cat_id'], "integer" );
@@ -40,12 +40,13 @@ if (
                             '".$_POST['posterid']."',
                             '".$newsdate."',
                             '".$_POST['title']."',
-                            '".$_POST['text']."',
+                            '".$_POST['news_text']."',
                             '".$_POST['news_active']."',
                             '".$_POST['news_comments_allowed']."',
                             '".time()."'
                     )
     ", $db );
+    $newsid = mysql_insert_id ();
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
@@ -55,7 +56,6 @@ if (
     }
 
     // Links in die DB eintragen
-    $newsid = mysql_insert_id ();
     foreach ( $_POST['linkname'] as $key => $value )
     {
         if ( $_POST['linkname'][$key] != "" && $_POST['linkurl'][$key] != "" )
@@ -110,7 +110,7 @@ if ( TRUE )
     }
 
         // Security-Functions
-        $_POST['text'] = killhtml ( $_POST['text'] );
+        $_POST['news_text'] = killhtml ( $_POST['news_text'] );
     $_POST['title'] = killhtml ( $_POST['title'] );
         settype ( $_POST['cat_id'], "integer" );
     settype ( $_POST['posterid'], "integer" );
@@ -195,7 +195,7 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    <input class="text" size="75" maxlength="255" name="title" value="'.$_POST['title'].'"><br><br>
+                                    <input class="text" size="75" maxlength="255" id="news_title" name="title" value="'.$_POST['title'].'"><br><br>
                                 </td>
                             </tr>
                             <tr>
@@ -223,7 +223,7 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.create_editor ( "text", $_POST['text'], "100%", "250px", "", FALSE).'
+                                    '.create_editor ( "news_text", $_POST['news_text'], "100%", "250px", "", FALSE).'
                                 </td>
                             </tr>
                             <tr>
@@ -438,10 +438,17 @@ if ( TRUE )
                                                                         </table>
                                                                 </td>
                             </tr>
-         ';
-            
+        ';
         echo'
-                                                        <tr><td class="space"></td></tr>
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    <input class="button" type="button" onClick=\''.open_fullscreenpopup ( "admin_news_prev.php?i=".$linkid ).'\' value="'.$admin_phrases[common][preview_button].'">
+                                </td>
+                            </tr>
+        ';
+        echo'
+                            <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit" name="addnews">

@@ -260,11 +260,11 @@ else
                                 </td>
                             </tr>
                             <tr>
-                                                                <td class="config" colspan="2">
+                                <td class="config" colspan="2">
                                     <input class="button" type="button" onClick=\''.open_fullscreenpopup ( "admin_articles_prev.php" ).'\' value="'.$admin_phrases[common][preview_button].'">
-                                                                </td>
-                                                        </tr>
-                                                        <tr><td class="space"></td></tr>
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">

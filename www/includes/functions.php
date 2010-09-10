@@ -7,13 +7,13 @@ function get_cat_system(&$IDs, $SQL, $CAT_ID = -1, $SHOW_SUB = 1, $ID = 0, $LEVE
     global $sql;
 
     // Load SQL Data
-    $lines = $sql->getData($SQL['table'], $SQL['select'], "WHERE `".$SQL['sub']."` = '".$ID."' ".$SQL['order']);
+    $lines = $sql->getData($SQL['table'], $SQL['select'], "WHERE `".$SQL['sub']."` = '".$ID."' ".$SQL['ext']." ".$SQL['order']);
     $lines = $sql->lastUseful() ? $lines : array();
 
     foreach ($lines as $line) {
         $line['level'] = $LEVEL + 1;
         $IDs[] = $line;
-        if ( $SHOW_SUB == 1 || $line['cat_id'] == $CAT_ID || in_array( $CAT_ID, get_sub_cats($line['cat_id'], $SQL, array()) ) ) {
+        if ( $SHOW_SUB == 1 || $line['cat_id'] == $CAT_ID || in_array( $CAT_ID, get_all_sub_cats($line['cat_id'], $SQL, array()) ) ) {
             get_cat_system($IDs, $SQL, $CAT_ID, $SHOW_SUB, $line['cat_id'], $line['level']);
         }
     }
@@ -25,8 +25,6 @@ function get_cat_system(&$IDs, $SQL, $CAT_ID = -1, $SHOW_SUB = 1, $ID = 0, $LEVE
 function get_all_sub_cats($CAT_ID, $SQL, &$REC_SUB_CAT_ARRAY)
 {
     global $sql;
-    #static $sub_cat_ids = array();
-    #$sub_cat_ids = $REC_SUB_CAT_ARRAY;
 
     $subcats = $sql->getData($SQL['table'], $SQL['id'], "WHERE `".$SQL['sub']."` = '".$CAT_ID."'");
     $subcats = $sql->lastUseful() ? $subcats : array();
