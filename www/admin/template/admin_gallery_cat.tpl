@@ -52,12 +52,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config right_space">
+                                <td class="config">
                                     <!--LANG::name-->:<br>
                                     <span class="small"><!--LANG::name_desc--></span>
                                 </td>
                                 <td>
-                                    <input class="text" name="cat_name" size="40" maxlength="100" value="<!--TEXT::cat_name-->">
+                                    <input class="text input_width" name="cat_name" size="30" maxlength="100" value="<!--TEXT::cat_name-->">
                                 </td>
                             </tr>
                             <tr>
@@ -66,10 +66,35 @@
                                     <span class="small"><!--LANG::subcat_desc--></span>
                                 </td>
                                 <td>
-                                    <select name="cat_subcat_of" size="1">
+                                    <select class="input_width" name="cat_subcat_of" size="1">
                                         <option value="0"><!--COMMON::no_subcat--></option>
-                                        <option value="-1">------</option>
+                                        <option value="-1"><!--COMMON::-----></option>
                                         <!--TEXT::subcat_options-->
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::type-->:<br>
+                                    <span class="small"><!--LANG::type_desc--></span>
+                                </td>
+                                <td>
+                                    <select class="input_width" name="cat_type" size="1">
+                                        <option value="img"<!--IF::type?img--> selected<!--ENDIF-->><!--LANG::type_img--></option>
+                                        <option value="wp"<!--IF::type?wp--> selected<!--ENDIF-->><!--LANG::type_wp--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::visibility-->:<br>
+                                    <span class="small"><!--LANG::visibility_desc--></span>
+                                </td>
+                                <td>
+                                    <select class="input_width" name="cat_visibility" size="1">
+                                        <option value="1"<!--IF::visibility?1--> selected<!--ENDIF-->><!--LANG::visibility_full_long--></option>
+                                        <option value="2"<!--IF::visibility?2--> selected<!--ENDIF-->><!--LANG::visibility_notinlist_long--></option>
+                                        <option value="0"<!--IF::visibility?0--> selected<!--ENDIF-->><!--LANG::visibility_none_long--></option>
                                     </select>
                                 </td>
                             </tr>
@@ -79,20 +104,20 @@
                                     <span class="small"><!--LANG::date_desc--></span>
                                 </td>
                                 <td class="config">
-                                    <input type="date" class="text" size="30" maxlength="10" id="cat_date" name="cat_date" value="<!--TEXT::cat_date-->">
+                                    <input type="date" class="text input_width_mini" size="25" maxlength="10" id="cat_date" name="cat_date" value="<!--TEXT::cat_date-->">
                                     <!--TEXT::today-->
                                     <!--TEXT::reset_date-->
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config"
+                                <td class="config">
                                     <!--LANG::user-->:<br>
                                     <span class="small"><!--LANG::user_desc--></span>
                                 </td>
                                 <td class="config">
-                                    <input type="text" class="text" size="30" maxlength="255" id="username" name="cat_user_name" value="<!--TEXT::cat_user_name-->">
+                                    <input type="text" class="text input_width_small" size="25" maxlength="255" id="username" name="cat_user_name" value="<!--TEXT::cat_user_name-->">
                                     <input type="hidden" id="userid" name="cat_user" value="<!--TEXT::cat_user-->">
-                                    <input type="button" class="button" onClick='<!--TEXT::find_user-->' value="<!--COMMON::change-->">
+                                    <input type="button" class="button" onClick='<!--TEXT::find_user_popup-->' value="<!--COMMON::change-->">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -126,7 +151,7 @@
                                     <br>
                                 </td>
                                 <td class="config">
-                                    <input name="cat_img" type="file" size="40" class="text"><br>
+                                    <input name="cat_img" type="file" size="20" class="text"><br>
                                 <!--IF::image_exists?true-->
                                     <span class="small"><b><!--COMMON::replace_img--></b></span><br>
                                 <!--ENDIF-->
@@ -144,13 +169,13 @@
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <!--LANG::description-->:
+                                    <!--LANG::text-->:
                                     <span class="small">(<!--COMMON::optional-->)</span><br>
-                                    <span class="small"><!--LANG::description_desc--></span>
+                                    <span class="small"><!--LANG::text_desc--></span>
                                 </td>
                                 <td class="config">
-                                    <textarea class="text" name="cat_description" rows="5" cols="50" wrap="virtual">
-                                        <!--TEXT::cat_description-->
+                                    <textarea class="text input_width" name="cat_text" rows="10" cols="30" wrap="virtual">
+                                        <!--TEXT::cat_text-->
                                     </textarea>
                                 </td>
                             </tr>

@@ -125,7 +125,7 @@ function validateFormData ( $DATA, $TYPE, $CHECK = FALSE ) {
         }
         // Value is not 0
         if ( in_array("notzero", $TYPE) ) {
-            $validation_state = $validation_state && floatval ( $DATA ) !== 0;
+            $validation_state = $validation_state && floatval ( $DATA ) != 0;
         }
         // Positive Value (incl. 0)
         if ( in_array("positive", $TYPE) ) {

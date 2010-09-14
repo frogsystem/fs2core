@@ -55,6 +55,7 @@
                                     <input class="text" size="5" name="img_max_x" value="<!--TEXT::img_max_x-->" maxlength="4">
                                     <!--COMMON::resolution_x-->
                                     <input class="text" size="5" name="img_max_y" value="<!--TEXT::img_max_y-->" maxlength="4"> <!--COMMON::pixel-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -66,6 +67,7 @@
                                     <input class="text" size="5" name="img_small_max_x" value="<!--TEXT::img_small_max_x-->" maxlength="3">
                                     <!--COMMON::resolution_x-->
                                     <input class="text" size="5" name="img_small_max_y" value="<!--TEXT::img_small_max_y-->" maxlength="3"> <!--COMMON::pixel-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -75,6 +77,7 @@
                                 </td>
                                 <td class="config">
                                     <input class="text" size="12" name="img_max_size" value="<!--TEXT::img_max_size-->" maxlength="7"> <!--COMMON::kib-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -132,6 +135,7 @@
                                     <input class="text" size="5" name="wp_max_x" value="<!--TEXT::wp_max_x-->" maxlength="4">
                                     <!--COMMON::resolution_x-->
                                     <input class="text" size="5" name="wp_max_y" value="<!--TEXT::wp_max_y-->" maxlength="4"> <!--COMMON::pixel-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -143,6 +147,7 @@
                                     <input class="text" size="5" name="wp_small_max_x" value="<!--TEXT::wp_small_max_x-->" maxlength="3">
                                     <!--COMMON::resolution_x-->
                                     <input class="text" size="5" name="wp_small_max_y" value="<!--TEXT::wp_small_max_y-->" maxlength="3"> <!--COMMON::pixel-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -152,6 +157,7 @@
                                 </td>
                                 <td class="config">
                                     <input class="text" size="12" name="wp_max_size" value="<!--TEXT::wp_max_size-->" maxlength="7"> <!--COMMON::kib-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -161,8 +167,8 @@
                                 </td>
                                 <td class="config">
                                     <input class="text" size="1" name="wp_rows" value="<!--TEXT::wp_rows-->" maxlength="2"> <!--COMMON::rows_at-->
-                                    <input class="text" size="1" name="wp_cols" value="<!--TEXT::wp_cols-->" maxlength="2"> <!--LANG::wallpapers--></span><br>
-                                    <span class="small">(<!--COMMON::zero_not_allowed-->)
+                                    <input class="text" size="1" name="wp_cols" value="<!--TEXT::wp_cols-->" maxlength="2"> <!--LANG::wallpapers--><br>
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -197,6 +203,32 @@
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
+
+                            <tr><td colspan="2" class="line"><!--LANG::cat_title--></td></tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::cat_res--><br>
+                                    <span class="small"><!--LANG::cat_res_info--></span>
+                                </td>
+                                <td class="config">
+                                    <input class="text" size="5" name="cat_img_x" value="<!--TEXT::cat_img_x-->" maxlength="4">
+                                    <!--COMMON::resolution_x-->
+                                    <input class="text" size="5" name="cat_img_y" value="<!--TEXT::cat_img_y-->" maxlength="4"> <!--COMMON::pixel-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::cat_size--><br>
+                                    <span class="small"><!--LANG::cat_size_info--></span>
+                                </td>
+                                <td class="config">
+                                    <input class="text" size="12" name="cat_img_size" value="<!--TEXT::cat_img_size-->" maxlength="7"> <!--COMMON::kib-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+                            
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button type="submit" name="sended" value="1" class="button_new">

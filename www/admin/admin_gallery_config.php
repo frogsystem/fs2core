@@ -35,6 +35,11 @@ function secureData ( $DATA, $OUTPUT = FALSE ) {
     $DATA['wp_sort'] = $OUTPUT ? killhtml ( $DATA['img_sort'] ) : savesql ( $DATA['wp_sort'] );
     $DATA['wp_group'] = $OUTPUT ? killhtml ( $DATA['wp_group'] ) : savesql ( $DATA['wp_group'] );
 
+    // Categories
+    settype ( $DATA['cat_img_x'], 'integer' );
+    settype ( $DATA['cat_img_y'], 'integer' );
+    settype ( $DATA['cat_img_size'], 'integer' );
+
     return $DATA;
 }
 
@@ -44,14 +49,15 @@ function secureData ( $DATA, $OUTPUT = FALSE ) {
 if ( TRUE
     && validateFormData( $_POST['viewer_type'], "required,integer,between", array(0,2) )
     && validateFormData( array($_POST['viewer_x'], $_POST['viewer_y'], $_POST['viewer_img_x'], $_POST['viewer_img_y']), "required,integer,positive" )
-    && validateFormData( array($_POST['img_max_x'], $_POST['img_max_y'], $_POST['img_small_max_x'], $_POST['img_small_max_y'], $_POST['img_max_size']), "required,integer,positive" )
-    && validateFormData( array($_POST['wp_max_x'], $_POST['wp_max_y'], $_POST['wp_small_max_x'], $_POST['wp_small_max_y'], $_POST['wp_max_size']), "required,integer,positive" )
+    && validateFormData( array($_POST['img_max_x'], $_POST['img_max_y'], $_POST['img_small_max_x'], $_POST['img_small_max_y'], $_POST['img_max_size']), "required,integer,positive,notzero" )
+    && validateFormData( array($_POST['wp_max_x'], $_POST['wp_max_y'], $_POST['wp_small_max_x'], $_POST['wp_small_max_y'], $_POST['wp_max_size']), "required,integer,positive,notzero" )
+    && validateFormData( array($_POST['cat_img_x'], $_POST['cat_img_y'], $_POST['cat_img_size']), "required,integer,positive,notzero" )
     && validateFormData( array($_POST['img_rows'], $_POST['img_cols'], $_POST['wp_rows'], $_POST['wp_cols']), "required,integer,positive,notzero" )
     && validateFormData( array($_POST['img_order'], $_POST['img_sort'], $_POST['img_group'], $_POST['wp_order'], $_POST['wp_sort'], $_POST['wp_group']), "required" )
 ) {
     // Update Query
-    $updateCols = array( "viewer_type", "viewer_x", "viewer_y", "viewer_img_x", "viewer_img_y", "img_max_x", "img_max_y", "img_small_max_x", "img_small_max_y", "img_max_size", "img_rows", "img_cols", "img_order", "img_group", "img_sort", "wp_max_x", "wp_max_y", "wp_small_max_x", "wp_small_max_y", "wp_max_size", "wp_rows", "wp_cols", "wp_order", "wp_sort", "wp_group" );
-    $updateValues = array( $_POST['viewer_type'], $_POST['viewer_x'], $_POST['viewer_y'], $_POST['viewer_img_x'], $_POST['viewer_img_y'], $_POST['img_max_x'], $_POST['img_max_y'], $_POST['img_small_max_x'], $_POST['img_small_max_y'], $_POST['img_max_size'], $_POST['img_rows'], $_POST['img_cols'], $_POST['img_order'], $_POST['img_group'], $_POST['img_sort'], $_POST['wp_max_x'], $_POST['wp_max_y'], $_POST['wp_small_max_x'], $_POST['wp_small_max_y'], $_POST['wp_max_size'], $_POST['wp_rows'], $_POST['wp_cols'], $_POST['wp_order'], $_POST['wp_sort'], $_POST['wp_group'] );
+    $updateCols = array( "viewer_type", "viewer_x", "viewer_y", "viewer_img_x", "viewer_img_y", "img_max_x", "img_max_y", "img_small_max_x", "img_small_max_y", "img_max_size", "img_rows", "img_cols", "img_order", "img_group", "img_sort", "wp_max_x", "wp_max_y", "wp_small_max_x", "wp_small_max_y", "wp_max_size", "wp_rows", "wp_cols", "wp_order", "wp_sort", "wp_group", "cat_img_x", "cat_img_y", "cat_img_size" );
+    $updateValues = array( $_POST['viewer_type'], $_POST['viewer_x'], $_POST['viewer_y'], $_POST['viewer_img_x'], $_POST['viewer_img_y'], $_POST['img_max_x'], $_POST['img_max_y'], $_POST['img_small_max_x'], $_POST['img_small_max_y'], $_POST['img_max_size'], $_POST['img_rows'], $_POST['img_cols'], $_POST['img_order'], $_POST['img_group'], $_POST['img_sort'], $_POST['wp_max_x'], $_POST['wp_max_y'], $_POST['wp_small_max_x'], $_POST['wp_small_max_y'], $_POST['wp_max_size'], $_POST['wp_rows'], $_POST['wp_cols'], $_POST['wp_order'], $_POST['wp_sort'], $_POST['wp_group'], $_POST['cat_img_x'], $_POST['cat_img_y'], $_POST['cat_img_size'] );
     
     if ( FALSE !== $sql->updateData ( "gallery_config", $updateCols, $updateValues, "WHERE `id` = 1" ) ) {
         // Update ok
@@ -110,6 +116,10 @@ $adminpage->addText("wp_small_max_y",   $_POST['wp_small_max_y']);
 $adminpage->addText("wp_max_size",      $_POST['wp_max_size']);
 $adminpage->addText("wp_rows",          $_POST['wp_rows']);
 $adminpage->addText("wp_cols",          $_POST['wp_cols']);
+
+$adminpage->addText("cat_img_x",        $_POST['cat_img_x']);
+$adminpage->addText("cat_img_y",        $_POST['cat_img_y']);
+$adminpage->addText("cat_img_size",     $_POST['cat_img_size']);
 
 // Display Template
 echo $adminpage->get("main");

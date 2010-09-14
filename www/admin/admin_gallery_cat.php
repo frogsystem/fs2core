@@ -39,7 +39,7 @@ function secureData ( $DATA, $OUTPUT = FALSE ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$config_arr = $sql->getData("gallery_config", "*", 1);
+$config_arr = $sql->getData("gallery_config", "*", "", 1);
 
 
 /////////////////////
@@ -233,11 +233,12 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
 
         // Get Subcats
         $subcat_arr = array();
+        $sub_cat_ids = array();
+        $subcat_options = array();
+        
         $SQL = array("table" => "gallery_cat", "select" => "*", "id" => "cat_id", "sub" => "cat_subcat_of", "order" => "ORDER BY `cat_order`, `cat_id`");
         get_cat_system(&$subcat_arr, $SQL);
-        $sub_cat_ids = array();
         get_all_sub_cats($_POST['cat_id'], $SQL, $sub_cat_ids);
-        $subcat_options = array();
         foreach ($subcat_arr as $aCat) {
             if ($aCat['cat_id'] != $_POST['cat_id'] && !in_array($aCat['cat_id'], $sub_cat_ids)) {
                 settype($aCat['cat_id'], "integer");
@@ -250,8 +251,12 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
 
         // Template Conditions
         $adminpage->addCond("image_exists",     image_exists("media/gallery/cat/", $_POST['cat_id']));
+        $adminpage->addCond("type",             $_POST['cat_type']);
+        $adminpage->addCond("visibility",       $_POST['cat_visibility']);
+        
         // Template Texts
         $adminpage->addText("ACP_GO",           ACP_GO);
+        $adminpage->addText("cat_id",           $_POST['cat_id']);
         $adminpage->addText("cat_name",         $_POST['cat_name']);
         $adminpage->addText("subcat_options",   implode("", $subcat_options));
         $adminpage->addText("cat_date",         date("Y-m-d", $cat_arr['cat_date']));
@@ -259,7 +264,13 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
         $adminpage->addText("reset_date",       get_datebutton(array("cat_date", $cat_arr['cat_date']*1000), $TEXT["admin"]->get("reset")));
         $adminpage->addText("cat_user",         $_POST['cat_user']);
         $adminpage->addText("cat_user_name",    $_POST['cat_user_name']);
-        $adminpage->addText("find_user",        openpopup("admin_finduser.php", 400, 400));
+        $adminpage->addText("find_user_popup",  openpopup("admin_finduser.php", 400, 400));
+        $adminpage->addText("image_url",        $_POST['cat_id']);
+        $adminpage->addText("cat_text",         $_POST['cat_text']);
+
+        $adminpage->addText("config_img_x",     $config_arr['cat_img_x']);
+        $adminpage->addText("config_img_y",     $config_arr['cat_img_y']);
+        $adminpage->addText("config_img_size",  $config_arr['cat_img_size']);
         
         // Display Template
         echo $adminpage->get("edit");
