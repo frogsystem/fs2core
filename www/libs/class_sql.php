@@ -7,8 +7,12 @@
  *
  * this class provides several methodes for database-access
  */
-class sql {
+ 
 
+ 
+ 
+class sql {
+ #FFFFFF
     private $sql;                   // Die Verbindungs-Resource
     private $pref;                  // Tabellen-Präfix (siehe inc_login.php)
     private $error;                 // evtl. aufgetretene SQL-Fehler
@@ -224,7 +228,7 @@ class sql {
         }
 
         // Daten für Query vorbereiten
-        $this->arraytrim ( &$cols ) ;
+        $this->arraytrim ( &$cols ) 
         $this->arraytrim ( &$values ) ;
 
         // Query-String aufbauen ...
