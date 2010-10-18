@@ -40,7 +40,12 @@ reset:                                   Zurücksetzen
 now:                                     Jetzt
 change:                                  Ändern
 select_hr:                               ----------------------------------
+id:                                      ID
 
+# Date and Time for Admin CP
+date:                                    d.m.Y
+time:                                    H:i \U\h\r
+date_time:                               d.m.Y \u\m H:i \U\h\r
 
 # Frequently used Images
 sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">
@@ -92,7 +97,9 @@ icon_login:                              <img src="icons/login.jpg" alt="Login" 
 icon_logout:                             <img src="icons/logout.jpg" alt="Logout" align="absmiddle">
 icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
 icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
-icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="" align="absmiddle">
+icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
+icon_up:                                 <img src="icons/up.jpg" alt="Nach oben verschieben" align="absmiddle">
+icon_down:                               <img src="icons/down.jpg" alt="Nach unten verschieben" align="absmiddle">
 
 
 # Upload-Messages
@@ -113,7 +120,7 @@ cats_not_found:                          Keine Kategorien gefunden!
 cats_deleted:                            Kategorien wurden gelöscht
 cats_not_deleted:                        Kategorien wurden nicht gelöscht
 cats_not_all_deleted:                    Nicht alle Kategorien konnten gelöscht werden
-
+no_subcat:                               Keine Unterkategorie
 
 
 

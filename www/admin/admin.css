@@ -31,20 +31,19 @@ img {
 /**************************************************/
 /* formular styles */
 /**************************************************/
-.input_width
-{
+.input_width {
     width:250px;
 }
-.input_width_small
-{
+.input_width_small {
     width:200px;
 }
-.input_width_mini
-{
+.input_width_mini {
     width:150px;
 }
-.input_highlight:focus, input_highlight:active
-{
+.input_width_big {
+    width:300px;
+}
+.input_highlight:focus, input_highlight:active {
     background-color:#64DC6A;
 }
 

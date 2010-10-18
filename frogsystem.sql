@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.1.1
+-- version 3.2.0.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 30. August 2010 um 23:01
--- Server Version: 5.1.30
--- PHP-Version: 5.2.8
+-- Erstellungszeit: 20. Oktober 2010 um 07:26
+-- Server Version: 5.1.36
+-- PHP-Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Datenbank: `frogsystem`
+-- Datenbank: `frogsystem_alix6`
 --
 
 -- --------------------------------------------------------
@@ -143,7 +143,13 @@ INSERT INTO `fs_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `page
 ('fscode_edit_remove', 'fscodes', 'fscode_edit', 2, 1),
 ('fscode_settings', 'fscodes', 'admin_fscode_config.php', 3, 0),
 ('tpl_main', 'templates', 'admin_template_main.php', 1, 0),
-('tpl_viewer', 'templates', 'admin_template_viewer.php', 3, 0);
+('tpl_viewer', 'templates', 'admin_template_viewer.php', 3, 0),
+('gallery_img', 'gallery', 'admin_gallery_img.php', 3, 0),
+('gallery_wp', 'gallery', 'admin_gallery_wp.php', 4, 0),
+('gallery_img_add', 'gallery', 'gallery_img', 1, 1),
+('gallery_img_edit', 'gallery', 'gallery_img', 2, 1),
+('gallery_wp_add', 'gallery', 'gallery_wp', 1, 1),
+('gallery_wp_edit', 'gallery', 'gallery_wp', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -289,14 +295,15 @@ CREATE TABLE `fs_articles` (
   `article_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`article_id`),
   KEY `article_url` (`article_url`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_articles`
 --
 
 INSERT INTO `fs_articles` (`article_id`, `article_url`, `article_title`, `article_date`, `article_user`, `article_text`, `article_html`, `article_fscode`, `article_para`, `article_cat_id`, `article_search_update`) VALUES
-(1, 'fscode', 'FSCode Liste', 1265756400, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">[b][u][size=3]FS-Code:[/size][/u][/b]</td><td width="50%">[b][u][size=3]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiver Text[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 0[/size][/noparse]</td><td>[size=0]Text in Größe 0[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 1[/size][/noparse]</td><td>[size=1]Text in Größe 1[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 2[/size][/noparse]</td><td>[size=2]Text in Größe 2[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 3[/size][/noparse]</td><td>[size=3]Text in Größe 3[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 4[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 5[/size][/noparse]</td><td>[size=5]Text in Größe 5[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 6[/size][/noparse]</td><td>[size=6]Text in Größe 6[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 7[/size][/noparse]</td><td>[size=7]Text&nbsp;in&nbsp;Größe&nbsp;7[/size]</td></tr><tr><td>[noparse][noparse]Text mit [b]FS[/b]Code[/noparse][/noparse]</td><td>[noparse]kein [b]fetter[/b] Text[/noparse]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan="2"><hr /></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]$VAR(url)images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>', 1, 1, 1, 1, 1265787778);
+(1, 'fscode', 'FSCode Liste', 1265756400, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">[b][u][size=3]FS-Code:[/size][/u][/b]</td><td width="50%">[b][u][size=3]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiver Text[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 0[/size][/noparse]</td><td>[size=0]Text in Größe 0[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 1[/size][/noparse]</td><td>[size=1]Text in Größe 1[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 2[/size][/noparse]</td><td>[size=2]Text in Größe 2[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 3[/size][/noparse]</td><td>[size=3]Text in Größe 3[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 4[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 5[/size][/noparse]</td><td>[size=5]Text in Größe 5[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 6[/size][/noparse]</td><td>[size=6]Text in Größe 6[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 7[/size][/noparse]</td><td>[size=7]Text&nbsp;in&nbsp;Größe&nbsp;7[/size]</td></tr><tr><td>[noparse][noparse]Text mit [b]FS[/b]Code[/noparse][/noparse]</td><td>[noparse]kein [b]fetter[/b] Text[/noparse]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan="2"><hr /></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan="2"><hr /></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]$VAR(url)images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>', 1, 1, 1, 1, 1265787778),
+(2, 'sdfsdfsdf', 'sdfsdf', 1286409600, 1, 'sdfsdfsdf', 1, 1, 1, 1, 1286414636);
 
 -- --------------------------------------------------------
 
@@ -333,6 +340,7 @@ CREATE TABLE `fs_articles_config` (
   `html_code` tinyint(4) NOT NULL DEFAULT '1',
   `fs_code` tinyint(4) NOT NULL DEFAULT '1',
   `para_handling` tinyint(4) NOT NULL DEFAULT '1',
+  `cat_force_select` tinyint(1) NOT NULL,
   `cat_pic_x` smallint(4) NOT NULL DEFAULT '0',
   `cat_pic_y` smallint(4) NOT NULL DEFAULT '0',
   `cat_pic_size` smallint(4) NOT NULL DEFAULT '0',
@@ -348,8 +356,8 @@ CREATE TABLE `fs_articles_config` (
 -- Daten für Tabelle `fs_articles_config`
 --
 
-INSERT INTO `fs_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `acp_per_page`, `acp_view`) VALUES
-(1, 2, 4, 2, 150, 150, 1024, 2, 1, 'DESC', 15, 2);
+INSERT INTO `fs_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`, `cat_force_select`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `acp_per_page`, `acp_view`) VALUES
+(1, 2, 4, 2, 1, 150, 150, 1024, 2, 1, 'DESC', 15, 2);
 
 -- --------------------------------------------------------
 
@@ -413,7 +421,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 94, 3921, 2, 1, 2, 2);
+(1, 113, 4006, 2, 2, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -442,7 +450,8 @@ INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) V
 ('http://localhost/', 35, 1273256730, 1277230404),
 ('http://localhost/fs/', 2, 1273256740, 1273256922),
 ('http://localhost/fs/www/', 1, 1273256927, 1273256927),
-('http://localhost/Frogsystem-2/', 4, 1283112790, 1283171590);
+('http://localhost/Frogsystem-2/', 5, 1283112790, 1283267235),
+('http://localhost/Frogsystem-2.alix6/', 21, 1283524528, 1287515373);
 
 -- --------------------------------------------------------
 
@@ -529,7 +538,20 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 8, 19, 2, 22),
 (2010, 8, 23, 1, 2),
 (2010, 8, 29, 1, 9),
-(2010, 8, 30, 1, 17);
+(2010, 8, 30, 1, 17),
+(2010, 8, 31, 2, 25),
+(2010, 9, 3, 1, 2),
+(2010, 9, 5, 1, 11),
+(2010, 9, 9, 2, 21),
+(2010, 9, 10, 1, 1),
+(2010, 9, 14, 1, 1),
+(2010, 9, 16, 1, 1),
+(2010, 9, 24, 1, 1),
+(2010, 10, 7, 4, 5),
+(2010, 10, 14, 1, 1),
+(2010, 10, 15, 1, 4),
+(2010, 10, 18, 1, 1),
+(2010, 10, 19, 2, 11);
 
 -- --------------------------------------------------------
 
@@ -604,7 +626,7 @@ CREATE TABLE `fs_dl_config` (
 --
 
 INSERT INTO `fs_dl_config` (`id`, `screen_x`, `screen_y`, `thumb_x`, `thumb_y`, `quickinsert`, `dl_rights`, `dl_show_sub_cats`) VALUES
-(1, 1024, 768, 120, 90, 'http://example.com', 2, 0);
+(1, 1024, 768, 120, 90, 'http://example.com', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -854,27 +876,23 @@ CREATE TABLE `fs_gallery_cat` (
   `cat_date` int(14) NOT NULL DEFAULT '0',
   `cat_user` mediumint(8) NOT NULL DEFAULT '1',
   `cat_preview` tinyint(1) NOT NULL DEFAULT '0',
-  `cat_order` int(11) NOT NULL,
+  `cat_order` smallint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=112 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=120 ;
 
 --
 -- Daten für Tabelle `fs_gallery_cat`
 --
 
 INSERT INTO `fs_gallery_cat` (`cat_id`, `cat_name`, `cat_text`, `cat_subcat_of`, `cat_type`, `cat_visibility`, `cat_date`, `cat_user`, `cat_preview`, `cat_order`) VALUES
-(1, 'Screenshots', '', 0, 'img', 1, 1263252062, 1, 1, 2),
-(2, 'Wallpaper', '', 0, 'wp', 1, 1263252062, 1, 0, 1),
-(3, 'Sub-kategorie', '', 1, 'img', 1, 456456456, 1, 0, 1),
-(4, 'dfgdfg', '', 0, 'img', 0, 1283183577, 1, 0, 0),
-(5, 'Test', '', 3, 'img', 0, 1283183620, 1, 0, 0),
-(6, 'Test', '', 3, 'img', 0, 1283183649, 1, 0, 0),
-(7, 'blubb', '', 0, 'img', 0, 1283184208, 1, 0, 7),
-(8, 'The Witcher: Versus', '', 1, 'img', 0, 1283184221, 1, 0, 7),
-(9, 'dsfsdf', '', 6, 'img', 1, 1283185114, 1, 0, 7),
-(10, 'gfgfhgfh', '', 0, 'img', 1, 1283186689, 1, 0, 7),
-(111, 'kkkkkkkkkk', '', 9, 'img', 2, 1283186756, 1, 0, 7),
-(12, 'Lorem Ipsum dolret it amos et cetera', '', 111, 'img', 1, 1283186810, 1, 0, 7);
+(1, 'Screenshots', '\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n', 0, 'img', 1, 1287446400, 1, 1, 0),
+(2, 'Wallpaper', '\r\n\r\n', 12, 'wp', 1, 1287532800, 1, 0, 0),
+(3, 'Sub-Category', 'test', 12, 'img', 1, 1286323200, 2, 0, 1),
+(8, 'The Witcher: Versus', '\r\n\r\n', 1, 'img', 0, 1283126400, 1, 0, 0),
+(12, 'Lorem Ipsum dolret it amos et cetera', '\r\n\r\n', 8, 'img', 1, 1287446400, 1, 0, 0),
+(114, 'TEST', '', 12, 'img', 1, 1287486888, 1, 0, 2),
+(115, 'blubb', '', 0, 'img', 1, 1287488671, 1, 0, 1),
+(116, 'Hans', '', 114, 'wp', 1, 1287489306, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -885,31 +903,42 @@ INSERT INTO `fs_gallery_cat` (`cat_id`, `cat_name`, `cat_text`, `cat_subcat_of`,
 DROP TABLE IF EXISTS `fs_gallery_config`;
 CREATE TABLE `fs_gallery_config` (
   `id` tinyint(1) NOT NULL,
-  `img_max_x` int(4) NOT NULL,
-  `img_max_y` int(4) NOT NULL,
-  `img_small_max_x` int(4) NOT NULL,
-  `img_small_max_y` int(4) NOT NULL,
-  `img_max_size` int(4) NOT NULL,
-  `img_rows` int(2) NOT NULL,
-  `img_cols` int(2) NOT NULL,
+  `img_max_x` mediumint(4) NOT NULL,
+  `img_max_y` mediumint(4) NOT NULL,
+  `img_max_size` mediumint(4) NOT NULL,
+  `img_mid_x` mediumint(4) NOT NULL,
+  `img_mid_y` mediumint(4) NOT NULL,
+  `img_small_x` mediumint(4) NOT NULL,
+  `img_small_y` mediumint(4) NOT NULL,
+  `img_rows` smallint(2) NOT NULL,
+  `img_cols` smallint(2) NOT NULL,
   `img_order` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `img_sort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
   `img_group` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `img_sub_contents` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `img_default_folder` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `viewer_type` tinyint(1) NOT NULL,
-  `viewer_x` smallint(4) NOT NULL,
-  `viewer_y` smallint(4) NOT NULL,
-  `viewer_img_x` int(4) NOT NULL,
-  `viewer_img_y` int(4) NOT NULL,
-  `wp_max_x` int(4) NOT NULL,
-  `wp_max_y` int(4) NOT NULL,
-  `wp_small_max_x` int(4) NOT NULL,
-  `wp_small_max_y` int(4) NOT NULL,
+  `viewer_x` mediumint(4) NOT NULL,
+  `viewer_y` mediumint(4) NOT NULL,
+  `viewer_img_x` mediumint(4) NOT NULL,
+  `viewer_img_y` mediumint(4) NOT NULL,
+  `wp_max_x` mediumint(4) NOT NULL,
+  `wp_max_y` mediumint(4) NOT NULL,
+  `wp_max_size` mediumint(4) NOT NULL,
+  `wp_mid_x` mediumint(4) NOT NULL,
+  `wp_mid_y` mediumint(4) NOT NULL,
+  `wp_small_x` mediumint(4) NOT NULL,
+  `wp_small_y` mediumint(4) NOT NULL,
+  `wp_rows` smallint(2) NOT NULL,
+  `wp_cols` smallint(2) NOT NULL,
   `wp_order` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `wp_max_size` int(4) NOT NULL,
-  `wp_rows` int(2) NOT NULL,
-  `wp_cols` int(2) NOT NULL,
   `wp_sort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
   `wp_group` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `wp_sub_contents` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `wp_default_folder` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `cat_img_x` mediumint(4) NOT NULL,
+  `cat_img_y` mediumint(4) NOT NULL,
+  `cat_img_size` mediumint(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -917,8 +946,77 @@ CREATE TABLE `fs_gallery_config` (
 -- Daten für Tabelle `fs_gallery_config`
 --
 
-INSERT INTO `fs_gallery_config` (`id`, `img_max_x`, `img_max_y`, `img_small_max_x`, `img_small_max_y`, `img_max_size`, `img_rows`, `img_cols`, `img_order`, `img_sort`, `img_group`, `viewer_type`, `viewer_x`, `viewer_y`, `viewer_img_x`, `viewer_img_y`, `wp_max_x`, `wp_max_y`, `wp_small_max_x`, `wp_small_max_y`, `wp_order`, `wp_max_size`, `wp_rows`, `wp_cols`, `wp_sort`, `wp_group`) VALUES
-(1, 2000, 2000, 200, 150, 2048, 6, 2, 'date', 'DESC', '0', 2, 950, 700, 800, 600, 2000, 2000, 200, 150, 'date', 2048, 6, 2, 'DESC', '0');
+INSERT INTO `fs_gallery_config` (`id`, `img_max_x`, `img_max_y`, `img_max_size`, `img_mid_x`, `img_mid_y`, `img_small_x`, `img_small_y`, `img_rows`, `img_cols`, `img_order`, `img_sort`, `img_group`, `img_sub_contents`, `img_default_folder`, `viewer_type`, `viewer_x`, `viewer_y`, `viewer_img_x`, `viewer_img_y`, `wp_max_x`, `wp_max_y`, `wp_max_size`, `wp_mid_x`, `wp_mid_y`, `wp_small_x`, `wp_small_y`, `wp_rows`, `wp_cols`, `wp_order`, `wp_sort`, `wp_group`, `wp_sub_contents`, `wp_default_folder`, `cat_img_x`, `cat_img_y`, `cat_img_size`) VALUES
+(1, 2000, 2000, 2048, 800, 600, 200, 150, 6, 2, 'date', 'DESC', 'date', '0', '/', 2, 950, 700, 800, 600, 2000, 2000, 2048, 800, 600, 200, 150, 6, 2, 'date', 'DESC', 'date', '0', '/', 200, 150, 1024);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `fs_gallery_img`
+--
+
+DROP TABLE IF EXISTS `fs_gallery_img`;
+CREATE TABLE `fs_gallery_img` (
+  `img_id` int(8) NOT NULL AUTO_INCREMENT,
+  `img_title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `img_caption` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `img_text` text COLLATE utf8_unicode_ci NOT NULL,
+  `img_date` int(14) NOT NULL,
+  `img_user` mediumint(8) NOT NULL,
+  `cat_id` mediumint(8) NOT NULL,
+  PRIMARY KEY (`img_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=46 ;
+
+--
+-- Daten für Tabelle `fs_gallery_img`
+--
+
+INSERT INTO `fs_gallery_img` (`img_id`, `img_title`, `img_caption`, `img_text`, `img_date`, `img_user`, `cat_id`) VALUES
+(1, '', '', '', 1287152226, 1, 0),
+(2, '', '', '', 1287152227, 1, 0),
+(3, '', '', '', 1287152229, 1, 0),
+(4, '', '', '', 1287152580, 1, 0),
+(5, '', '', '', 1287152582, 1, 0),
+(6, '', '', '', 1287152583, 1, 0),
+(7, '', '', '', 1287152696, 1, 0),
+(8, '', '', '', 1287152729, 1, 0),
+(9, '', '', '', 1287152774, 1, 0),
+(10, '', '', '', 1287152821, 1, 0),
+(11, '', '', '', 1287153096, 1, 0),
+(12, '', '', '', 1287153720, 1, 0),
+(13, '', '', '', 1287153872, 1, 0),
+(14, '', '', '', 1287153957, 1, 0),
+(15, '', '', '', 1287154000, 1, 0),
+(16, '', '', '', 1287154000, 1, 0),
+(17, '', '', '', 1287154000, 1, 0),
+(18, '', '', '', 1287154000, 1, 0),
+(19, '', '', '', 1287154000, 1, 0),
+(20, '', '', '', 1287154000, 1, 0),
+(21, '', '', '', 1287154000, 1, 0),
+(22, '', '', '', 1287154000, 1, 0),
+(23, '', '', '', 1287154000, 1, 0),
+(24, '', '', '', 1287154053, 1, 0),
+(25, '', '', '', 1287154053, 1, 0),
+(26, '', '', '', 1287154053, 1, 0),
+(27, '', '', '', 1287154202, 1, 0),
+(28, '', '', '', 1287154258, 1, 0),
+(29, '', '', '', 1287154276, 1, 0),
+(30, '', '', '', 1287154306, 1, 0),
+(31, '', '', '', 1287154328, 1, 0),
+(32, '', '', '', 1287154376, 1, 0),
+(33, '', '', '', 1287154388, 1, 0),
+(34, '', '', '', 1287154399, 1, 0),
+(35, '', '', '', 1287154425, 1, 0),
+(36, '', '', '', 1287154489, 1, 0),
+(37, '', '', '', 1287154490, 1, 0),
+(38, '', '', '', 1287154492, 1, 0),
+(39, '', '', '', 1287154493, 1, 0),
+(40, '', '', '', 1287154495, 1, 0),
+(41, '', '', '', 1287154497, 1, 0),
+(42, '', '', '', 1287154498, 1, 0),
+(43, '', '', '', 1287154500, 1, 0),
+(44, '', '', '', 1287154501, 1, 0),
+(45, '', '', '', 1287154681, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -965,7 +1063,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/Frogsystem-2/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{..title..} - {..ext..}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1283162731);
+(1, '2.alix5', 'http://localhost/Frogsystem-2.alix6/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{..title..} - {..ext..}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1287486116);
 
 -- --------------------------------------------------------
 
@@ -983,8 +1081,6 @@ CREATE TABLE `fs_iplist` (
 -- Daten für Tabelle `fs_iplist`
 --
 
-INSERT INTO `fs_iplist` (`ip`) VALUES
-('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -1005,14 +1101,15 @@ CREATE TABLE `fs_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=143 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=144 ;
 
 --
 -- Daten für Tabelle `fs_news`
 --
 
 INSERT INTO `fs_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
-(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\n[center]Weitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei![/center]\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1269453612);
+(1, 1, 1, 1263251880, 'Hallo Webmaster!', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2.alix4! Das Frogsystem 2-Team wünscht dir viel Spaß und Erfolg mit deiner Seite. text beispiel\r\n\r\n[center]Weitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2 und in den zugehörigen Supportforen. Wir haben dir beides unten verlinkt. Schau doch mal vorbei![/center]\r\n\r\nUnd jetzt an die Arbeit! ;-)', 1, 1, 1269453612),
+(143, 2, 1, 1286414340, 'sdfsdfsdf', 'sdfsdfsdfsdf', 1, 1, 1286414362);
 
 -- --------------------------------------------------------
 
@@ -1028,14 +1125,15 @@ CREATE TABLE `fs_news_cat` (
   `cat_date` int(11) NOT NULL,
   `cat_user` mediumint(8) NOT NULL DEFAULT '1',
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `fs_news_cat`
 --
 
 INSERT INTO `fs_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
-(1, 'News', '', 1263251923, 1);
+(1, 'News', '', 1263251923, 1),
+(2, 'cvbcvb', '', 1283700520, 1);
 
 -- --------------------------------------------------------
 
@@ -1064,7 +1162,7 @@ CREATE TABLE `fs_news_comments` (
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
 (2, 1, 'Hans Wurst', 0, '127.0.0.1', 1266663394, 'Geile Seite!!!', 'Ich liebe euch alle ;)'),
-(3, 1, '1', 1, '127.0.0.1', 1270829419, 'me', '\\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\"');
+(3, 1, '1', 1, '127.0.0.1', 1270829419, 'me', '\\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\"');
 
 -- --------------------------------------------------------
 
@@ -1081,6 +1179,7 @@ CREATE TABLE `fs_news_config` (
   `html_code` tinyint(4) NOT NULL DEFAULT '2',
   `fs_code` tinyint(4) NOT NULL DEFAULT '4',
   `para_handling` tinyint(4) NOT NULL DEFAULT '4',
+  `cat_force_select` tinyint(1) NOT NULL,
   `cat_pic_x` smallint(4) NOT NULL DEFAULT '0',
   `cat_pic_y` smallint(4) NOT NULL DEFAULT '0',
   `cat_pic_size` smallint(4) NOT NULL DEFAULT '0',
@@ -1098,8 +1197,8 @@ CREATE TABLE `fs_news_config` (
 -- Daten für Tabelle `fs_news_config`
 --
 
-INSERT INTO `fs_news_config` (`id`, `num_news`, `num_applet`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
-(1, 10, 5, 5, 2, 4, 4, 150, 150, 1024, 2, 2, 'DESC', 40, ' ...', 15, 2);
+INSERT INTO `fs_news_config` (`id`, `num_news`, `num_applet`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_force_select`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
+(1, 10, 5, 5, 2, 4, 4, 1, 150, 150, 1024, 2, 2, 'DESC', 40, ' ...', 15, 2);
 
 -- --------------------------------------------------------
 
@@ -1429,7 +1528,7 @@ INSERT INTO `fs_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `show
 DROP TABLE IF EXISTS `fs_screen`;
 CREATE TABLE `fs_screen` (
   `screen_id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `cat_id` smallint(6) unsigned DEFAULT NULL,
+  `cat_id` mediumint(8) unsigned DEFAULT NULL,
   `screen_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`screen_id`),
   KEY `cat_id` (`cat_id`)
@@ -1732,7 +1831,7 @@ CREATE TABLE `fs_search_time` (
   `search_time_date` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_time_id`),
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=161 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=163 ;
 
 --
 -- Daten für Tabelle `fs_search_time`
@@ -1742,7 +1841,9 @@ INSERT INTO `fs_search_time` (`search_time_id`, `search_time_type`, `search_time
 (157, 'news', 1, 1270826777),
 (158, 'articles', 1, 1265895157),
 (159, 'news', 139, 1265895773),
-(160, 'news', 140, 1265895773);
+(160, 'news', 140, 1265895773),
+(161, 'news', 0, 1287054544),
+(162, 'articles', 0, 1287054545);
 
 -- --------------------------------------------------------
 
@@ -1756,7 +1857,7 @@ CREATE TABLE `fs_search_words` (
   `search_word` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
   UNIQUE KEY `search_word` (`search_word`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=120 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=121 ;
 
 --
 -- Daten für Tabelle `fs_search_words`
@@ -1881,7 +1982,8 @@ INSERT INTO `fs_search_words` (`search_word_id`, `search_word`) VALUES
 (116, 'links'),
 (117, 'herum'),
 (118, 'left'),
-(119, 'test');
+(119, 'test'),
+(120, '');
 
 -- --------------------------------------------------------
 
@@ -1972,14 +2074,14 @@ CREATE TABLE `fs_styles` (
   `style_allow_edit` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`style_id`),
   UNIQUE KEY `style_tag` (`style_tag`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `fs_styles`
 --
 
 INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allow_edit`) VALUES
-(0, 'default', 0, 0),
+(4, 'default', 0, 0),
 (1, 'lightfrog', 1, 1),
 (3, 'darkfrog', 0, 1);
 
@@ -1992,10 +2094,10 @@ INSERT INTO `fs_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allo
 DROP TABLE IF EXISTS `fs_user`;
 CREATE TABLE `fs_user` (
   `user_id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `user_name` char(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_password` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_password` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_salt` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `user_mail` char(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_mail` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_is_staff` tinyint(1) NOT NULL DEFAULT '0',
   `user_group` mediumint(8) NOT NULL DEFAULT '0',
   `user_is_admin` tinyint(1) NOT NULL DEFAULT '0',
@@ -2036,8 +2138,6 @@ CREATE TABLE `fs_useronline` (
 -- Daten für Tabelle `fs_useronline`
 --
 
-INSERT INTO `fs_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1283187988);
 
 -- --------------------------------------------------------
 
@@ -2085,14 +2185,14 @@ CREATE TABLE `fs_user_groups` (
   `user_group_date` int(11) NOT NULL,
   `user_group_user` mediumint(8) NOT NULL DEFAULT '1',
   PRIMARY KEY (`user_group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs_user_groups`
 --
 
 INSERT INTO `fs_user_groups` (`user_group_id`, `user_group_name`, `user_group_description`, `user_group_title`, `user_group_color`, `user_group_highlight`, `user_group_date`, `user_group_user`) VALUES
-(0, 'Administrator', '', 'Chef vom Dienst', '008800', 1, 1223676000, 1),
+(2, 'Administrator', '', 'Chef vom Dienst', '008800', 1, 1223676000, 1),
 (1, 'Mitarbeiter', NULL, NULL, '-1', 0, 1268131619, 1);
 
 -- --------------------------------------------------------

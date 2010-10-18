@@ -1,0 +1,7 @@
+# Language-Definition for [FS2]/admin/admin_news_edit.php
+comments_select_title:              Kommentare bearbeiten
+comments_content:                   Inhalt
+comments_info:                      Informationen
+comments_not_found:                 Keine Kommentare gefunden!
+
+# Language-Definition for [FS2]/admin/template/admin_news_edit.tpl

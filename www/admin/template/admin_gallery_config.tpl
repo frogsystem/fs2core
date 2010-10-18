@@ -129,8 +129,33 @@
                                     <select name="img_group">
                                         <option value="0"<!--IF::img_group?0--> selected<!--ENDIF-->><!--LANG::img_group_none--></option>
                                         <option value="date"<!--IF::img_group?date--> selected<!--ENDIF-->><!--LANG::img_group_date--></option>
-                                        <option value="id"<!--IF::img_group?id--> selected<!--ENDIF-->><!--LANG::img_group_id--></option>
                                         <option value="title"<!--IF::img_group?title--> selected<!--ENDIF-->><!--LANG::img_group_title--></option>
+                                        <option value="user"<!--IF::img_group?user--> selected<!--ENDIF-->><!--LANG::img_group_user--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::img_sub_contents--><br>
+                                    <span class="small"><!--LANG::img_sub_contents_info--></span>
+                                </td>
+                                <td class="config">
+                                    <select name="img_sub_contents">
+                                        <option value="0"<!--IF::img_sub_contents?0--> selected<!--ENDIF-->><!--LANG::img_sub_contents_none--></option>
+                                        <option value="first"<!--IF::img_sub_contents?first--> selected<!--ENDIF-->><!--LANG::img_sub_contents_first--></option>
+                                        <option value="all"<!--IF::img_sub_contents?all--> selected<!--ENDIF-->><!--LANG::img_sub_contents_all--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::img_folder--><br>
+                                    <span class="small"><!--LANG::img_folder_info--></span>
+                                </td>
+                                <td class="config">
+                                    <select name="img_default_folder">
+                                        <option value="/"<!--IF::img_folder?0--> selected<!--ENDIF-->><!--LANG::img_folder_root--></option>
+                                        <!--TEXT::folder_options-->
                                     </select>
                                 </td>
                             </tr>
@@ -152,23 +177,35 @@
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <!--LANG::wp_small_res--><br>
-                                    <span class="small"><!--LANG::wp_small_res_info--></span>
-                                </td>
-                                <td class="config">
-                                    <input class="text" size="5" name="wp_small_max_x" value="<!--TEXT::wp_small_max_x-->" maxlength="3">
-                                    <!--COMMON::resolution_x-->
-                                    <input class="text" size="5" name="wp_small_max_y" value="<!--TEXT::wp_small_max_y-->" maxlength="3"> <!--COMMON::pixel-->
-                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config">
                                     <!--LANG::wp_size--><br>
                                     <span class="small"><!--LANG::wp_size_info--></span>
                                 </td>
                                 <td class="config">
                                     <input class="text" size="12" name="wp_max_size" value="<!--TEXT::wp_max_size-->" maxlength="7"> <!--COMMON::kib-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::wp_mid_res--><br>
+                                    <span class="small"><!--LANG::wp_mid_res_info--></span>
+                                </td>
+                                <td class="config">
+                                    <input class="text" size="5" name="wp_mid_x" value="<!--TEXT::wp_mid_x-->" maxlength="3">
+                                    <!--COMMON::resolution_x-->
+                                    <input class="text" size="5" name="wp_mid_y" value="<!--TEXT::wp_mid_y-->" maxlength="3"> <!--COMMON::pixel-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::wp_small_res--><br>
+                                    <span class="small"><!--LANG::wp_small_res_info--></span>
+                                </td>
+                                <td class="config">
+                                    <input class="text" size="5" name="wp_small_x" value="<!--TEXT::wp_small_x-->" maxlength="3">
+                                    <!--COMMON::resolution_x-->
+                                    <input class="text" size="5" name="wp_small_y" value="<!--TEXT::wp_small_y-->" maxlength="3"> <!--COMMON::pixel-->
                                     <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>
@@ -209,8 +246,33 @@
                                     <select name="wp_group">
                                         <option value="0"<!--IF::wp_group?0--> selected<!--ENDIF-->><!--LANG::wp_group_none--></option>
                                         <option value="date"<!--IF::wp_group?date--> selected<!--ENDIF-->><!--LANG::wp_group_date--></option>
-                                        <option value="id"<!--IF::wp_group?id--> selected<!--ENDIF-->><!--LANG::wp_group_id--></option>
                                         <option value="title"<!--IF::wp_group?title--> selected<!--ENDIF-->><!--LANG::wp_group_title--></option>
+                                        <option value="user"<!--IF::wp_group?user--> selected<!--ENDIF-->><!--LANG::wp_group_user--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::wp_sub_contents--><br>
+                                    <span class="small"><!--LANG::wp_sub_contents_info--></span>
+                                </td>
+                                <td class="config">
+                                    <select name="wp_sub_contents">
+                                        <option value="0"<!--IF::wp_sub_contents?0--> selected<!--ENDIF-->><!--LANG::wp_sub_contents_none--></option>
+                                        <option value="first"<!--IF::wp_sub_contents?first--> selected<!--ENDIF-->><!--LANG::wp_sub_contents_first--></option>
+                                        <option value="all"<!--IF::wp_sub_contents?all--> selected<!--ENDIF-->><!--LANG::wp_sub_contents_all--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::img_folder--><br>
+                                    <span class="small"><!--LANG::wp_folder_info--></span>
+                                </td>
+                                <td class="config">
+                                    <select name="wp_default_folder">
+                                        <option value="/"<!--IF::wp_folder?0--> selected<!--ENDIF-->><!--LANG::folder_root--></option>
+                                        <!--TEXT::folder_options-->
                                     </select>
                                 </td>
                             </tr>

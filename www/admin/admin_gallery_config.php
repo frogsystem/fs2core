@@ -24,18 +24,24 @@ function secureData ( $DATA, $OUTPUT = FALSE ) {
     $DATA['img_order'] = $OUTPUT ? killhtml ( $DATA['img_order'] ) : savesql ( $DATA['img_order'] );
     $DATA['img_sort'] = $OUTPUT ? killhtml ( $DATA['img_sort'] ) : savesql ( $DATA['img_sort'] );
     $DATA['img_group'] = $OUTPUT ? killhtml ( $DATA['img_group'] ) : savesql ( $DATA['img_group'] );
+    $DATA['img_sub_contents'] = $OUTPUT ? killhtml ( $DATA['img_sub_contents'] ) : savesql ( $DATA['img_sub_contents'] );
+    $DATA['img_default_folder'] = $OUTPUT ? killhtml ( $DATA['img_default_folder'] ) : savesql ( $DATA['img_default_folder'] );
 
     // Wallpapers
     settype ( $DATA['wp_max_x'], 'integer' );
     settype ( $DATA['wp_max_y'], 'integer' );
-    settype ( $DATA['wp_small_max_x'], 'integer' );
-    settype ( $DATA['wp_small_max_y'], 'integer' );
     settype ( $DATA['wp_max_size'], 'integer' );
+    settype ( $DATA['wp_mid_x'], 'integer' );
+    settype ( $DATA['wp_mid_y'], 'integer' );
+    settype ( $DATA['wp_small_x'], 'integer' );
+    settype ( $DATA['wp_small_y'], 'integer' );
     settype ( $DATA['wp_rows'], 'integer' );
     settype ( $DATA['wp_cols'], 'integer' );
     $DATA['wp_order'] = $OUTPUT ? killhtml ( $DATA['wp_order'] ) : savesql ( $DATA['wp_order'] );
     $DATA['wp_sort'] = $OUTPUT ? killhtml ( $DATA['img_sort'] ) : savesql ( $DATA['wp_sort'] );
     $DATA['wp_group'] = $OUTPUT ? killhtml ( $DATA['wp_group'] ) : savesql ( $DATA['wp_group'] );
+    $DATA['wp_sub_contents'] = $OUTPUT ? killhtml ( $DATA['wp_sub_contents'] ) : savesql ( $DATA['wp_sub_contents'] );
+    $DATA['wp_default_folder'] = $OUTPUT ? killhtml ( $DATA['wp_default_folder'] ) : savesql ( $DATA['wp_default_folder'] );
 
     // Categories
     settype ( $DATA['cat_img_x'], 'integer' );
@@ -52,16 +58,17 @@ if ( TRUE
     && validateFormData( $_POST['viewer_type'], "required,integer,between", array(0,2) )
     && validateFormData( array($_POST['viewer_x'], $_POST['viewer_y'], $_POST['viewer_img_x'], $_POST['viewer_img_y']), "required,integer,positive" )
     && validateFormData( array($_POST['img_max_x'], $_POST['img_max_y'], $_POST['img_max_size'], $_POST['img_mid_x'], $_POST['img_mid_y'], $_POST['img_small_x'], $_POST['img_small_y']), "required,integer,positive,notzero" )
-    && validateFormData( array($_POST['wp_max_x'], $_POST['wp_max_y'], $_POST['wp_small_max_x'], $_POST['wp_small_max_y'], $_POST['wp_max_size']), "required,integer,positive,notzero" )
+    && validateFormData( array($_POST['wp_max_x'], $_POST['wp_max_y'], $_POST['wp_max_size'], $_POST['wp_mid_x'], $_POST['wp_mid_y'], $_POST['wp_small_x'], $_POST['wp_small_y']), "required,integer,positive,notzero" )
     && validateFormData( array($_POST['cat_img_x'], $_POST['cat_img_y'], $_POST['cat_img_size']), "required,integer,positive,notzero" )
     && validateFormData( array($_POST['img_rows'], $_POST['img_cols'], $_POST['wp_rows'], $_POST['wp_cols']), "required,integer,positive,notzero" )
-    && validateFormData( array($_POST['img_order'], $_POST['img_sort'], $_POST['img_group'], $_POST['wp_order'], $_POST['wp_sort'], $_POST['wp_group']), "required" )
+    && validateFormData( array($_POST['img_order'], $_POST['img_sort'], $_POST['img_group'], $_POST['img_sub_contents'], $_POST['img_default_folder'], $_POST['wp_order'], $_POST['wp_sort'], $_POST['wp_group'], $_POST['wp_sub_contents'], $_POST['wp_default_folder']), "required" )
 ) {
     // Update Query
-    $updateCols = array( "viewer_type", "viewer_x", "viewer_y", "viewer_img_x", "viewer_img_y", "img_max_x", "img_max_y", "img_max_size", "img_mid_x", "img_mid_y", "img_small_x", "img_small_y", "img_rows", "img_cols", "img_order", "img_group", "img_sort", "wp_max_x", "wp_max_y", "wp_small_max_x", "wp_small_max_y", "wp_max_size", "wp_rows", "wp_cols", "wp_order", "wp_sort", "wp_group", "cat_img_x", "cat_img_y", "cat_img_size" );
-    $updateValues = array( $_POST['viewer_type'], $_POST['viewer_x'], $_POST['viewer_y'], $_POST['viewer_img_x'], $_POST['viewer_img_y'], $_POST['img_max_x'], $_POST['img_max_y'], $_POST['img_max_size'], $_POST['img_mid_x'], $_POST['img_mid_y'], $_POST['img_small_x'], $_POST['img_small_y'], $_POST['img_rows'], $_POST['img_cols'], $_POST['img_order'], $_POST['img_group'], $_POST['img_sort'], $_POST['wp_max_x'], $_POST['wp_max_y'], $_POST['wp_small_max_x'], $_POST['wp_small_max_y'], $_POST['wp_max_size'], $_POST['wp_rows'], $_POST['wp_cols'], $_POST['wp_order'], $_POST['wp_sort'], $_POST['wp_group'], $_POST['cat_img_x'], $_POST['cat_img_y'], $_POST['cat_img_size'] );
-    
-    if ( FALSE !== $sql->updateData ( "gallery_config", $updateCols, $updateValues, "WHERE `id` = 1" ) ) {
+    $updateCols = array( "viewer_type", "viewer_x", "viewer_y", "viewer_img_x", "viewer_img_y", "img_max_x", "img_max_y", "img_max_size", "img_mid_x", "img_mid_y", "img_small_x", "img_small_y", "img_rows", "img_cols", "img_order", "img_sort", "img_group", "img_sub_contents", "img_default_folder", "wp_max_x", "wp_max_y", "wp_max_size", "wp_mid_x", "wp_mid_y", "wp_small_x", "wp_small_y", "wp_rows", "wp_cols", "wp_order", "wp_sort", "wp_group", "wp_sub_contents", "wp_default_folder", "cat_img_x", "cat_img_y", "cat_img_size" );
+    $updateValues = array( $_POST['viewer_type'], $_POST['viewer_x'], $_POST['viewer_y'], $_POST['viewer_img_x'], $_POST['viewer_img_y'], $_POST['img_max_x'], $_POST['img_max_y'], $_POST['img_max_size'], $_POST['img_mid_x'], $_POST['img_mid_y'], $_POST['img_small_x'], $_POST['img_small_y'], $_POST['img_rows'], $_POST['img_cols'], $_POST['img_order'], $_POST['img_sort'], $_POST['img_group'], $_POST['img_sub_contents'], $_POST['img_default_folder'], $_POST['wp_max_x'], $_POST['wp_max_y'], $_POST['wp_max_size'], $_POST['wp_mid_x'], $_POST['wp_mid_y'], $_POST['wp_small_x'], $_POST['wp_small_y'], $_POST['wp_rows'], $_POST['wp_cols'], $_POST['wp_order'], $_POST['wp_sort'], $_POST['wp_group'], $_POST['wp_sub_contents'], $_POST['wp_default_folder'], $_POST['cat_img_x'], $_POST['cat_img_y'], $_POST['cat_img_size'] );
+    #$test = $sql->updateData("gallery_config", $updateCols, $updateValues, "WHERE `id` = 1");
+
+    if (FALSE !== $sql->updateData("gallery_config", $updateCols, $updateValues, "WHERE `id` = 1")) {
         // Update ok
         systext( $TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), FALSE, $TEXT["admin"]->get("icon_save_ok") );
     } else {
@@ -89,13 +96,17 @@ elseif ( isset($_POST['sended']) ) {
 secureData(&$_POST, TRUE);
 
 // Template Conditions
-$adminpage->addCond("viewer_type",      $_POST['viewer_type']);
-$adminpage->addCond("img_order",        $_POST['img_order']);
-$adminpage->addCond("img_sort",         $_POST['img_sort']);
-$adminpage->addCond("img_group",        $_POST['img_group']);
-$adminpage->addCond("wp_order",         $_POST['wp_order']);
-$adminpage->addCond("wp_sort",          $_POST['wp_sort']);
-$adminpage->addCond("wp_group",         $_POST['wp_group']);
+$adminpage->addCond("viewer_type",          $_POST['viewer_type']);
+$adminpage->addCond("img_order",            $_POST['img_order']);
+$adminpage->addCond("img_sort",             $_POST['img_sort']);
+$adminpage->addCond("img_group",            $_POST['img_group']);
+$adminpage->addCond("img_sub_contents",     $_POST['img_sub_contents']);
+$adminpage->addCond("img_default_folder",   $_POST['img_default_folder']);
+$adminpage->addCond("wp_order",             $_POST['wp_order']);
+$adminpage->addCond("wp_sort",              $_POST['wp_sort']);
+$adminpage->addCond("wp_group",             $_POST['wp_group']);
+$adminpage->addCond("wp_sub_contents",      $_POST['wp_sub_contents']);
+$adminpage->addCond("wp_default_folder",    $_POST['wp_default_folder']);
 
 // Template Texts
 $adminpage->addText("ACP_GO",           ACP_GO);
@@ -117,9 +128,11 @@ $adminpage->addText("img_cols",         $_POST['img_cols']);
 
 $adminpage->addText("wp_max_x",         $_POST['wp_max_x']);
 $adminpage->addText("wp_max_y",         $_POST['wp_max_y']);
-$adminpage->addText("wp_small_max_x",   $_POST['wp_small_max_x']);
-$adminpage->addText("wp_small_max_y",   $_POST['wp_small_max_y']);
 $adminpage->addText("wp_max_size",      $_POST['wp_max_size']);
+$adminpage->addText("wp_mid_x",         $_POST['wp_mid_x']);
+$adminpage->addText("wp_mid_y",         $_POST['wp_mid_y']);
+$adminpage->addText("wp_small_x",       $_POST['wp_small_x']);
+$adminpage->addText("wp_small_y",       $_POST['wp_small_y']);
 $adminpage->addText("wp_rows",          $_POST['wp_rows']);
 $adminpage->addText("wp_cols",          $_POST['wp_cols']);
 

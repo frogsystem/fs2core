@@ -185,8 +185,9 @@ class SelectList
                 foreach ( $aLine as $aCol ) {
                     // Checkbox
                     if ( $aCol[0] === TRUE ) {
+                        $css = isset($aCol[2]) ? ' '.implode(" ",  $aCol[2]) : ' top center';
                         $template .= '
-                                <td class="configthin top center">
+                                <td class="configthin'.$css.'">
                                     <input class="pointer select_box" type="checkbox" name="'.$this->formName.'_id[]" value="'.$aCol[1].'">
                                 </td>';
                     // Entry

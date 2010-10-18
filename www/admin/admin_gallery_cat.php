@@ -1,9 +1,17 @@
 <?php if ( ACP_GO === "gallery_cat" ) {
 
+//TODO
+//- übernahme von werten beim unvollständigen abschicken des add-forms
+//- datum beim editieren
+//- datum in secureData
+//- nach oben bei kategorien die schon ganz oben sind
+
+
+
 /////////////////////////////////////
 //// Locale Secure Data Function ////
 /////////////////////////////////////
-function secureData ( $DATA, $OUTPUT = FALSE ) {
+function secureData(&$DATA, $OUTPUT = FALSE) {
     global $sql;
 
     // Common
@@ -18,22 +26,27 @@ function secureData ( $DATA, $OUTPUT = FALSE ) {
     $DATA['cat_text'] = $OUTPUT ? killhtml($DATA['cat_text']) : savesql($DATA['cat_text']);
     $DATA['cat_type'] = $OUTPUT ? killhtml($DATA['cat_type']) : savesql($DATA['cat_type']);
 
-    $DATA['cat_date'] = strtotime ( $DATA['cat_date'] );
     $DATA['cat_user_name'] = killhtml($sql->getData("user", "user_name", "WHERE `user_id` = '".$DATA['cat_user']."' LIMIT 0,1", 1));
 
+    $DATA['cat_date'] = $OUTPUT ? $DATA['cat_date'] : strtotime($DATA['cat_date']);
+    $DATA['cat_date_format'] = date("Y-m-d", $DATA['cat_date']);
 
-    // TODO cat_date
-    /*
-
-        // Create Date-Arrays
-        if ( !isset ( $_POST['d'] ) ) {
-            $_POST['d'] = date ( "d", $cat_arr['cat_date'] );
-            $_POST['m'] = date ( "m", $cat_arr['cat_date'] );
-            $_POST['y'] = date ( "Y", $cat_arr['cat_date'] );
-        }
-        $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
-        $nowbutton_array = array( "d", "m", "y" );*/
     return $DATA;
+}
+
+function orderSubCategories($cat_id) {
+    global $sql;
+    
+    settype($cat_id, "integer");
+    $cat_arr = $sql->getData("gallery_cat", "cat_id", "WHERE `cat_subcat_of` = '".$cat_id."' ORDER BY `cat_order`, `cat_id`");
+    
+    $i = 0;
+            
+    foreach($cat_arr as $aCat){
+        $sql->updateData("gallery_cat", "cat_order", $i, "WHERE `cat_id` = '".$aCat['cat_id']."'");
+        $i++;
+    }
+    
 }
 
 /////////////////////
@@ -54,19 +67,22 @@ if ( TRUE
     && validateFormData( $_POST['cat_type'], "required,oneof", array("img", "wp") )
 ) {
     // Secure Data
-    secureData(&$_POST);
+    secureData($_POST);
 
     // Insert Data
     $insertCols= array("cat_name", "cat_subcat_of", "cat_type", "cat_visibility", "cat_date", "cat_user", "cat_preview", "cat_order");
-    $insertValues = array($_POST['cat_name'], $_POST['cat_subcat_of'], $_POST['cat_type'], $_POST['cat_visibility'], time(), $_SESSION['user_id'], 0, 7);
+    $insertValues = array($_POST['cat_name'], $_POST['cat_subcat_of'], $_POST['cat_type'], $_POST['cat_visibility'], time(), $_SESSION['user_id'], 0, 32767);
 
     if ( FALSE !== $sql->setData("gallery_cat", $insertCols, $insertValues) ) {
+        // Get Insert ID
+        $new_id = $sql->lastInsertId();
         // Insert ok
         systext( $TEXT['admin']->get("cat_added"), $TEXT['admin']->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
+        orderSubCategories($_POST['cat_subcat_of']);
         // Set Vars For Edit
         unset($_POST);
         $_POST['cat_action'] = "edit";
-        $_POST['cat_id'] = array($sql->lastInsertId());
+        $_POST['cat_id'] = array($new_id);
     } else {
         // Insert failed
         unset($_POST['cat_action'],$_POST['cat_id']);
@@ -77,59 +93,61 @@ if ( TRUE
 //////////////////////
 //// DB: Edit Cat ////
 //////////////////////
-elseif (
-        isset ( $_POST['cat_id'] ) &&
-        isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
-        isset ( $_POST['cat_action'] ) && $_POST['cat_action'] == "edit" &&
+elseif (TRUE
+        && validateFormData($_POST['cat_id'], "required,integer")
+        && validateFormData($_POST['sended'], "required,oneof", array("edit"))
+        && validateFormData($_POST['cat_action'], "required,oneof", array("edit"))        
+
+        && validateFormData($_POST['cat_name'], "required,text", "(.{3,100})")
+        && validateFormData(array($_POST['cat_subcat_of'], $_POST['cat_visibility']), "required,integer,positive")
+        && validateFormData($_POST['cat_type'], "required,oneof", array("img", "wp"))        
         
-        $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
-        $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
-        $_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
-        
-        $_POST['cat_name'] && $_POST['cat_name'] != "" &&
-        isset ( $_POST['cat_user'] )
+        && validateFormData($_POST['cat_date'], "required")
+        && (validateFormData($_POST['cat_user'], "required,integer,positive,notzero") || validateFormData($_POST['cat_user_name'], "required,text", "(.{1,100})"))
     )
 {
-    // Security-Functions
-    $_POST['cat_name'] = savesql ( $_POST['cat_name'] );
-    $_POST['cat_description'] = savesql ( $_POST['cat_description'] );
-    settype ( $_POST['cat_id'], "integer" );
-    settype ( $_POST['cat_user'], "integer" );
-    $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
-    $cat_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
-
-    // MySQL-Update-Query
-    mysql_query ("
-                    UPDATE ".$global_config_arr['pref']."news_cat
-                     SET
-                         cat_name             = '".$_POST['cat_name']."',
-                         cat_description     = '".$_POST['cat_description']."',
-                         cat_date             = '".$cat_date."',
-                         cat_user             = '".$_POST['cat_user']."'
-                     WHERE
-                         cat_id                 = '".$_POST['cat_id']."'
-    ", $db );
-    $message = $admin_phrases[common][changes_saved];
-
-    // Image-Operations
-    if ( $_POST['cat_pic_delete'] == 1 ) {
-      if ( image_delete ( "images/cat/", "news_".$_POST['cat_id'] ) ) {
-        $message .= "<br>" . $admin_phrases[common][image_deleted];
-      } else {
-        $message .= "<br>" . $admin_phrases[common][image_not_deleted];
-      }
-    } elseif ( $_FILES['cat_pic']['name'] != "" ) {
-      image_delete ( "images/cat/", "news_".$_POST['cat_id'] );
-      $upload = upload_img ( $_FILES['cat_pic'], "images/cat/", "news_".$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
-      $message .= "<br>" . upload_img_notice ( $upload );
+    // Get User Data
+    settype($_POST['cat_user'], 'integer');
+    $_POST['cat_user_name'] = savesql($_POST['cat_user_name']);
+    $user_arr = $sql->getData("user", "user_id", "WHERE `user_name` = '".$_POST['cat_user_name']."'", 1);
+    if (FALSE !== $user_arr) {
+        $_POST['cat_user'] = $user_arr['user_id'];
     }
     
-    // Display Message
-    systext ( $message, $admin_phrases[common][info] );
+    // Secure Data
+    secureData($_POST);
+
+    // MySQL-Update-Query
+    $cols   = "cat_name,cat_text,cat_subcat_of,cat_type,cat_visibility,cat_date,cat_user";
+    $values = array($_POST['cat_name'], $_POST['cat_text'], $_POST['cat_subcat_of'], $_POST['cat_type'], $_POST['cat_visibility'], $_POST['cat_date'], $_POST['cat_user']);
     
-    // Unset Vars
-    unset ( $_POST );
-    $showdefault = FALSE;
+    if (FALSE !== $sql->updateData("gallery_cat", $cols, $values, "WHERE `cat_id` = '".$_POST['cat_id']."' LIMIT 1")) {
+        // Image Operations
+        if ($_POST['cat_img_delete'] == 1) {
+            // Delete Image
+            if (image_delete("....", $_POST['cat_id'])) {
+                #$messages[];
+            } else {
+                #$messages[];
+            }
+            
+        // Upload new Image
+        } elseif($_FILES['cat_img']['name'] != "") {
+            image_delete("....", $_POST['cat_id']);
+            $upload = upload_img($_FILES['cat_img'], "...", $_POST['cat_id'], $config_arr['cat_img_size']*1024, $config_arr['cat_img_x'], $config_arr['cat_img_y']);
+            #$messages[] = upload_img_notice($upload);
+        }        
+        
+        // Update ok
+        systext( $TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
+        orderSubCategories($_POST['cat_subcat_of']);
+        
+        // Reset Vars
+        unset($_POST);
+    } else {
+        // Update failed
+        systext( $TEXT['admin']->get("changes_not_saved"), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
+    }
 }
 
 ////////////////////////
@@ -153,14 +171,14 @@ elseif ( TRUE
         if ($sql->isUsefulGet()) {
             $successful = array("db" => TRUE, "img" => TRUE);
             foreach ($cat_arr as $aCat) {
-                 if ( TRUE
+                 if (TRUE
                      && FALSE !== $sql->updateData("gallery_cat", "cat_subcat_of", $aCat['cat_subcat_of'], "WHERE `cat_subcat_of` = '".$aCat['cat_id']."'")
-                     && FALSE !== $sql->updateData("gallery_img", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
-                     && FALSE !== $sql->updateData("gallery_wp", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
-                     #&& FALSE !== $sql->deleteData("gallery_cat", "`cat_id` = '".$aCat['cat_id']."'", "LIMIT 0,1")
+                     #&& FALSE !== $sql->updateData("gallery_img", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
+                     #&& FALSE !== $sql->updateData("gallery_wp", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
+                     && FALSE !== $sql->deleteData("gallery_cat", "`cat_id` = '".$aCat['cat_id']."'", "LIMIT 1")
                  ) {
                     // Delete Cat Image
-                    if (!image_delete("media/gallery/cat/", $aCat['cat_id'])) {
+                    if (image_exists("media/gallery/cat/", $aCat['cat_id']) && !image_delete("media/gallery/cat/", $aCat['cat_id'])) {
                         $successful['img'] = FALSE;
                     }
                  } else {
@@ -187,19 +205,57 @@ elseif ( TRUE
     unset($_POST);
 }
 
-// ???  //TODO
-if ($_POST['cat_action']=="add") {
-    unset ( $_POST['cat_action'], $_POST['cat_id'] );
-}
 
 //////////////////////
 //// DB: Order Up ////
 //////////////////////
+elseif ( TRUE
+    && !isset($_POST['sended'])
+    && validateFormData($_POST['cat_action'], "required,oneof", array("up"))
+    && is_array($_POST['cat_id'])
+) {
+    // Security Function
+    $_POST['cat_id'] = array_map ( "intval", $_POST['cat_id'] );    
+    
+    // Update for each Category
+    foreach($_POST['cat_id'] as $catId) {
+        $cat_arr = $sql->getData("gallery_cat", "cat_id,cat_order,cat_subcat_of", "WHERE `cat_id` = '".$catId."' AND `cat_order` != '0'", 1);
+        if (FALSE !== $cat_arr) {
+            // Update Categories, above the selected
+            if ($sql->updateData("gallery_cat", "cat_order", $cat_arr['cat_order'], "WHERE `cat_subcat_of` = '".$cat_arr['cat_subcat_of']."' AND `cat_order` = '".($cat_arr['cat_order']-1)."'")
+                && $sql->updateData("gallery_cat", "cat_order", ($cat_arr['cat_order']-1), "WHERE `cat_id` = '".$cat_arr['cat_id']."'")) {
+                systext($TEXT["admin"]->get("cats_up"), $TEXT["admin"]->get("info"), "green", $TEXT["admin"]->get("icon_up"));
+            }
+            orderSubCategories($cat_arr['cat_subcat_of']);
+        }
+    }
+}
+
 
 ////////////////////////
 //// DB: Order Down ////
 ////////////////////////
-
+elseif ( TRUE
+    && !isset($_POST['sended'])
+    && validateFormData($_POST['cat_action'], "required,oneof", array("down"))
+    && is_array($_POST['cat_id'])
+) {
+    // Security Function
+    $_POST['cat_id'] = array_reverse(array_map("intval", $_POST['cat_id']));    
+    
+    // Update for each Category
+    foreach($_POST['cat_id'] as $catId) {
+        $cat_arr = $sql->getData("gallery_cat", "cat_id,cat_order,cat_subcat_of", "WHERE `cat_id` = '".$catId."'", 1);
+        if (FALSE !== $cat_arr) {
+            // Update Categories, below the selected
+            if ($sql->updateData("gallery_cat", "cat_order", $cat_arr['cat_order'], "WHERE `cat_subcat_of` = '".$cat_arr['cat_subcat_of']."' AND `cat_order` = '".($cat_arr['cat_order']+1)."'")
+                && $sql->updateData("gallery_cat", "cat_order", ($cat_arr['cat_order']+1), "WHERE `cat_id` = '".$cat_arr['cat_id']."'")) {
+                systext($TEXT["admin"]->get("cats_down"), $TEXT["admin"]->get("info"), "green", $TEXT["admin"]->get("icon_down"));                
+            }
+            orderSubCategories($cat_arr['cat_subcat_of']);
+        }
+    }
+}
 
 //////////////////////////////
 //// Display Action-Pages ////
@@ -229,7 +285,7 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
         }
         
         // Secure Data for Output
-        secureData(&$_POST, TRUE);
+        secureData($_POST, TRUE);
 
         // Get Subcats
         $subcat_arr = array();
@@ -237,7 +293,7 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
         $subcat_options = array();
         
         $SQL = array("table" => "gallery_cat", "select" => "*", "id" => "cat_id", "sub" => "cat_subcat_of", "order" => "ORDER BY `cat_order`, `cat_id`");
-        get_cat_system(&$subcat_arr, $SQL);
+        get_cat_system($subcat_arr, $SQL);
         get_all_sub_cats($_POST['cat_id'], $SQL, $sub_cat_ids);
         foreach ($subcat_arr as $aCat) {
             if ($aCat['cat_id'] != $_POST['cat_id'] && !in_array($aCat['cat_id'], $sub_cat_ids)) {
@@ -259,9 +315,9 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
         $adminpage->addText("cat_id",           $_POST['cat_id']);
         $adminpage->addText("cat_name",         $_POST['cat_name']);
         $adminpage->addText("subcat_options",   implode("", $subcat_options));
-        $adminpage->addText("cat_date",         date("Y-m-d", $cat_arr['cat_date']));
-        $adminpage->addText("today",            get_datebutton(array("cat_date", ""), $TEXT["admin"]->get("today")));
-        $adminpage->addText("reset_date",       get_datebutton(array("cat_date", $cat_arr['cat_date']*1000), $TEXT["admin"]->get("reset")));
+        $adminpage->addText("cat_date_format",  $_POST['cat_date_format']);
+        $adminpage->addText("today",            get_datebutton(array("cat_date_format", ""), $TEXT["admin"]->get("today")));
+        $adminpage->addText("reset_date",       get_datebutton(array("cat_date_format", $cat_arr['cat_date']*1000), $TEXT["admin"]->get("reset")));
         $adminpage->addText("cat_user",         $_POST['cat_user']);
         $adminpage->addText("cat_user_name",    $_POST['cat_user_name']);
         $adminpage->addText("find_user_popup",  openpopup("admin_finduser.php", 400, 400));
@@ -293,6 +349,7 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
     elseif ($_POST['cat_action'] == "delete" && count($_POST['cat_id']) >= 1) {
 
         // get cats from db
+        array_map("intval", $_POST['cat_id']);
         $cat_arr = $sql->getData("gallery_cat", "*", "WHERE `cat_id` IN (".implode(",", $_POST['cat_id']).") ORDER BY `cat_order`,`cat_id`");
         
         // cats found
@@ -353,7 +410,7 @@ if (!isset($_POST['cat_id']) && !isset($_POST['cat_action'])) {
     //// Load Cat-System ////
     /////////////////////////
     $cat_arr = array();
-    get_cat_system( &$cat_arr, array("table" => "gallery_cat", "select" => "*", "id" => "cat_id", "sub" => "cat_subcat_of", "order" => "ORDER BY `cat_order`, `cat_id`") );
+    get_cat_system( $cat_arr, array("table" => "gallery_cat", "select" => "*", "id" => "cat_id", "sub" => "cat_subcat_of", "order" => "ORDER BY `cat_order`, `cat_id`") );
 
 
     //////////////////////
@@ -371,7 +428,7 @@ if (!isset($_POST['cat_id']) && !isset($_POST['cat_action'])) {
     }
 
     // Secure Data
-    secureData(&$_POST, TRUE);
+    secureData($_POST, TRUE);
 
     // Get Options
     $subcat_options = array();
@@ -401,11 +458,11 @@ if (!isset($_POST['cat_id']) && !isset($_POST['cat_action'])) {
     // Get the List
     $theList = new SelectList ( "cat", $TEXT["admin"]->get("cats_select"), "gallery_cat", 6 );
     $theList->setColumns ( array (
-        array ( '&nbsp;&nbsp;'.$TEXT["page"]->get("id").'&nbsp;&nbsp;', array(), 20 ),
+        array ( '&nbsp;&nbsp;'.$TEXT["admin"]->get("id").'&nbsp;&nbsp;', array(), 20 ),
         array ( $TEXT["admin"]->get("cat") ),
         array ( "" ),
-        array ( $TEXT["page"]->get("select_type") ),
-        array ( $TEXT["page"]->get("select_viewable") ),
+        array ( $TEXT["page"]->get("type") ),
+        array ( $TEXT["page"]->get("visibility") ),
         array ( "", array(), 20 )
     ) );
     $theList->setNoLinesText($TEXT["admin"]->get("cats_not_found"));

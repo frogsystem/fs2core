@@ -22,7 +22,12 @@ $().ready(function(){
     	format: 'dd. mmmm yyyy',
     	offset: [5, 0],
         firstDay: 1,
-        yearRange: [-500, 500]
+        yearRange: [-500, 500],
+        // a different format is sent to the server
+        change: function() {
+            var isoDate = this.getValue('yyyy-mm-dd');
+            this.getInput().nextAll("input:hidden").val(isoDate);
+        }
     });
     
 

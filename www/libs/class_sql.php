@@ -66,7 +66,7 @@ class sql {
     }
 
     // Führt den gespeicherten Query-String tatsächlich aus
-    private function doQuery () {
+    private function doQuery () { 
         if ( !isset ( $this->qrystr ) ) { // Abbruch, wenn kein Query-String gespeichert ist
             return FALSE;
         }
@@ -78,7 +78,7 @@ class sql {
             $this->error[0] = mysql_errno($this->sql); // Fehler Nummer
             $this->error[1] = mysql_error($this->sql); // Text-Beschreibung des Fehlers
             return FALSE;
-        } else {
+        } else { 
             return $this->resultres;
         }
     }
@@ -156,6 +156,8 @@ class sql {
             if ( $addititional == 2 ) {
                 $this->useful = TRUE; // Ergebnis ist nützlich
                 return mysql_num_rows ( $qry );
+            } elseif ( mysql_num_rows ( $qry ) == 0 && $addititional == 1 ) {
+                return FALSE;
             } elseif ( mysql_num_rows ( $qry ) == 0 ) {
                 return array();  // Ergebnis ist nicht nützlich, da keine Inhalte gefunden wurden
             }
@@ -205,9 +207,9 @@ class sql {
         }
 
         // Daten für Query vorbereiten
-        $this->arraytrim ( &$cols ) ;
+        $this->arraytrim ( $cols ) ;
         $cols   = "`" . implode ( "`, `", $cols ) . "`";
-        $this->arraytrim ( &$values ) ;
+        $this->arraytrim ( $values ) ;
         $values = "'" . implode ( "', '", $values ) . "'";
 
         // Query-String aufbauen ...
@@ -224,12 +226,14 @@ class sql {
 
         // Darf natürlich nur soviele Werte wie Spalten geben
         if ( count ( $values ) !== count ( $cols ) || count ( $cols ) === 0 ) {
+            $this->error[0] = "SQL-UPDATE-1";
+            $this->error[1] = "Different count for col and value arrays";
             return FALSE;
         }
 
         // Daten für Query vorbereiten
-        $this->arraytrim ( &$cols ); 
-        $this->arraytrim ( &$values ) ;
+        $this->arraytrim ( $cols ); 
+        $this->arraytrim ( $values ) ;
 
         // Query-String aufbauen ...
         $qrystr = "UPDATE `".$this->pref.$table."` SET ";
@@ -269,7 +273,7 @@ class sql {
     }
 
     // Wendet die Methode "trim" rekrusiv auf alle Werte in einem Array an
-    private function arraytrim ( $array ) {
+    private function arraytrim ( &$array ) {
         foreach ( $array as $key => $value ) { // Array durchgehen
             if ( is_array ( $array[$key] ) ) {  // Wenn der Wert ein Array ist...
                 $this->arraytrim ( $array[$key] ); // ... die Funktion rekusriv aufrufen

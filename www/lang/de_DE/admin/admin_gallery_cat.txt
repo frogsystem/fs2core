@@ -16,11 +16,33 @@ visibility_notinlist_long:  nicht in Auswahl verfügbar
 visibility_none_long:       keine Sichtbarkeit
 
 id:                         ID
-cat_name:                   Kategorie
-select_type:                Art
-select_viewable:            Sichtbarkeit
 
 
+
+add_title:                  Kategorie hinzufügen
+
+
+main_settings:              Haupteinstellungen
+additional_infos:           Zusätzliche Informationen
+sort_options:               Sortierungseinstellungen
+
+
+name:                       Name
+name_desc:                  Der Name der Kategorie.
+subcat:                     Unterkategorie von
+subcat_desc:                Legt die Kategorie als Unterkategorie einer anderen Kategorie fest.
+type:                       Art
+type_desc:                  Um welche Kategorie-Art handelt es sich.
+visibility:                 Sichtbarkeit
+visibility_desc:            Legt die Sicherbarkeit der Kategorie fest.
+date:                       Datum
+date_desc:                  Legt fest an welchem Datum die Kategorie erstellt wurde.
+user:                       Benutzer
+user_desc:                  Legt fest von wem die Kategorie erstellt wurde.
+cat_img:                    Bild
+cat_img_desc:               Ein Bild, das als Symbol für die Kategorie steht.
+text:                       Beschreibung
+text_desc:                  Eine Beschreibung der Inhalte der Kategorie.
 
 
 

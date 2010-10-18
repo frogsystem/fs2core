@@ -879,85 +879,49 @@ function action_delete_display_page ( $return_arr )
 
 function action_comments_select ( $DATA )
 {
-        global $global_config_arr, $db, $TEXT;
-        global $admin_phrases;
-        
-                // Comments Header
-                echo '
-                                        <form action="" method="post">
-                                                <input type="hidden" name="sended" value="comment">
-                                                <input type="hidden" name="news_action" value="'.$DATA['news_action'].'">
-                                                <input type="hidden" name="news_id" value="'.$DATA['news_id'].'">
-                                                <input type="hidden" name="go" value="news_edit">
-                                                <table class="configtable select_list" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="4">Kommentare bearbeiten</td></tr>
-                                                        <tr>
-                                                            <td class="config" width="35%">Titel</td>
-                                                            <td class="config" width="25%">Verfasser</td>
-                                                            <td class="config" width="25%">Datum</td>
-                                                            <td class="config center" width="15%">Auswahl</td>
-                                                        </tr>
+    global $global_config_arr, $sql, $TEXT;        
 
-                ';
+    // get applets from db
+    $comments = $sql->getData("news_comments", "comment_id,comment_poster,comment_poster_id,comment_date,comment_title,comment_text", "WHERE `news_id` = '".$DATA['news_id']."' ORDER BY `comment_date` DESC");
 
-                // Get Number of Comments
-                  $index = mysql_query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$DATA['news_id']."", $db );
-                  $number = mysql_result ( $index, 0, "number" );
+    // generate list
+    $theList = new SelectList ( "comment", $TEXT['page']->get("comments_select_title"), TRUE, 4 );
+    $theList->setColumns ( array (
+        array ( '&nbsp;&nbsp;'.$TEXT['admin']->get("id").'&nbsp;&nbsp;', array(), 20 ),
+        array ( $TEXT['page']->get("comments_content") ),        
+        array ( $TEXT['page']->get("comments_info"), array(), 170 ),
+        array ( "", array(), 20 )
+    ) );
+    $theList->addInput("hidden", "sended", "comment");
+    $theList->addInput("hidden", "news_action", $DATA['news_action']);
+    $theList->addInput("hidden", "news_id", $DATA['news_id']);
+    $theList->addInput("hidden", "go", "news_edit");
+    $theList->setNoLinesText ( $TEXT['page']->get("comments_not_found") );
+    $theList->addAction("0", $TEXT['admin']->get("selection_noaction"), array(), $_SESSION['news_comments'], TRUE);
+    $theList->addAction ( "edit", $TEXT['admin']->get("selection_edit"), array ( "select_one" ), $_SESSION['news_comments']);
+    $theList->addAction ( "delete", $TEXT['admin']->get("selection_delete"), array ( "select_red" ), $_SESSION['news_comments']);
+    $theList->addButton();
 
-                  if ( $number >= 1 ) {
-                        $index = mysql_query ( "
-                                                                        SELECT *
-                                                                        FROM ".$global_config_arr['pref']."news_comments
-                                                                        WHERE news_id = ".$DATA['news_id']."
-                                                                        ORDER BY comment_date DESC
-                        ", $db);
-
-                        // Display Comment-List
-                        while ( $comment_arr = mysql_fetch_assoc ( $index ) ) {
-
-                                // Get other Data
-                                if ( $comment_arr['comment_poster_id'] != 0 ) {
-                                        $index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $db );
-                                        $comment_arr['comment_poster'] = mysql_result ( $index2, 0, "user_name" );
-                                }
-                                $comment_arr['comment_date_formated'] = date ( "d.m.Y" , $comment_arr['comment_date'] ) . " um " . date ( "H:i" , $comment_arr['comment_date'] );
-
-                                echo'
-                                                        <tr class="select_entry">
-                                                            <td class="configthin middle">'.$comment_arr['comment_title'].'</td>
-                                                            <td class="configthin middle"><span class="small">'.$comment_arr['comment_poster'].'</span></td>
-                                                            <td class="configthin middle"><span class="small">'.$comment_arr['comment_date_formated'].'</span></td>
-                                                            <td class="config top center">
-                                                                <input class="pointer select_box" type="checkbox" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
-                                                            </td>
-                                                        </tr>
-                                ';
-
-                        }
-                }
-
-                // Footer
-                echo'
-                                                        <tr><td class="space"></td></tr>
-                                                        <tr>
-                                                            <td class="right" colspan="4">
-                                                                <select class="select_type" name="comment_action" size="1">
-                                                                    <option class="select_one" value="edit" '.getselected( "edit", $_POST['comment_action'] ).'>'.$TEXT["admin"]->get("selection_edit").'</option>
-                                                                    <option class="select_red" value="delete" '.getselected( "delete", $_POST['comment_action'] ).'>'.$TEXT["admin"]->get("selection_delete").'</option>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                        <tr><td class="space"></td></tr>
-                                                        <tr>
-                                                                <td class="buttontd" colspan="4">
-                                                                        <button class="button_new" type="submit">
-                                                                                '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
-                                                                        </button>
-                                                                </td>
-                                                        </tr>
-                                                </table>
-                                        </form>
-                ';
+    // comments found
+    foreach ($comments as $data_arr) {
+        // Get other Data
+        if ($data_arr['comment_poster_id'] != 0) {
+            $data_arr['comment_poster'] = $sql->getData("user", "user_name", "WHERE `user_id` = '".$data_arr['comment_poster_id']."'", 1);
+            $data_arr['comment_poster'] = '<a href="'.$global_config_arr['virtualhost'].'?go=user&amp;id='.$data_arr['comment_poster_id'].'" target="_blank">» '.killhtml($data_arr['comment_poster']).'</a>';
+        }
+        $data_arr['comment_date_formated'] = date_loc($TEXT['admin']->get("date_time"), $data_arr['comment_date']);
+        $data_arr['comment_title'] = "<b>".killhtml($data_arr['comment_title'])."</b>";
+        $data_arr['comment_text'] = killhtml(shortening_string($data_arr['comment_text'], 100, "..."));
+    
+        $theList->addLine ( array (
+            array ( "#".$data_arr['comment_id'], array ( "middle", "center" ) ),
+            array ( $data_arr['comment_title']."<br>".$data_arr['comment_text'], array ( "top", "left" ) ),
+            array ( $data_arr['comment_poster']."<br>".$data_arr['comment_date_formated'], array ( "top", "left" ) ),
+            array ( TRUE, $data_arr['comment_id'], array("middle", "center"))
+        ) );
+    }
+    // Output
+    echo $theList;
 }
 
 function action_comments_edit ( $DATA )
