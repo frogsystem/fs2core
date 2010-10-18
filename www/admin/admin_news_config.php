@@ -30,6 +30,7 @@ if (
     settype ( $_POST['news_headline_lenght'], "integer" );
     settype ( $_POST['acp_per_page'], "integer" );
     settype ( $_POST['acp_view'], "integer" );
+    $_POST['cat_force_select'] = $_POST['cat_force_select'] == 1 ? 1 : 0;
 
     $_POST['com_sort'] = savesql ( $_POST['com_sort'] );
     $_POST['news_headline_ext'] = savesql ( $_POST['news_headline_ext'] );
@@ -44,6 +45,7 @@ if (
                          `html_code` = '".$_POST['html_code']."',
                          `fs_code` = '".$_POST['fs_code']."',
                          `para_handling` = '".$_POST['para_handling']."',
+                         `cat_force_select` = '".$_POST['cat_force_select']."',
                          `cat_pic_x` = '".$_POST['cat_pic_x']."',
                          `cat_pic_y` = '".$_POST['cat_pic_y']."',
                          `cat_pic_size` = '".$_POST['cat_pic_size']."',
@@ -101,6 +103,7 @@ if ( TRUE )
     settype ( $_POST['news_headline_lenght'], "integer" );
     settype ( $_POST['acp_per_page'], "integer" );
     settype ( $_POST['acp_view'], "integer" );
+    $_POST['cat_force_select'] = $_POST['cat_force_select'] == 1 ? 1 : 0;
 
     $_POST['com_sort'] = killhtml ( $_POST['com_sort'] );
     $_POST['news_headline_ext'] = killhtml ( $_POST['news_headline_ext'] );
@@ -208,6 +211,15 @@ if ( TRUE )
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr><td class="line" colspan="2">'.$admin_phrases[news][cat_settings_title].'</td></tr>
+                            <tr>
+                                <td class="config">
+                                   Auswahl der Kategorie erzwingen<br>
+                                    <span class="small">Erzwingt beim Erstellen von News das Auswählen einer Kategorie</span>
+                                </td>
+                                <td class="config">
+                                    <input type="checkbox" class="pointer" name="cat_force_select" value="1" '.getchecked(1, $_POST['cat_force_select']).'>
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="config">
                                     '.$admin_phrases[news][cat_img_max_width].':<br>

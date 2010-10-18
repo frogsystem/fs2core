@@ -39,6 +39,7 @@ today:                                   Heute
 reset:                                   Zurücksetzen
 now:                                     Jetzt
 change:                                  Ändern
+select_hr:                               ----------------------------------
 
 
 # Frequently used Images
@@ -75,7 +76,7 @@ file_deleted:                            Datei wurde gelöscht
 file_not_deleted:                        Datei wurde nicht gelöscht
 images_deleted:                          Bilder wurden gelöscht
 images_not_all_deleted:                  Nicht alle Bilder konnten gelöscht werden
-
+sql_error:                               SQL-Fehler:
 
 # Message-Images
 icon_small_help:                         <img src="icons/help.gif" alt="Hilfe" align="absmiddle">

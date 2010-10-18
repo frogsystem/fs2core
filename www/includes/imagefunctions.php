@@ -144,13 +144,15 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
   global $admin_phrases, $TEXT;
 
   if ( $ADMIN ) {
-    $image0 = $TEXT['frontend']->get("image_upload_error_0");
-    $image1 = $TEXT['frontend']->get("image_upload_error_1");
-    $image2 = $TEXT['frontend']->get("image_upload_error_2");
-    $image3 = $TEXT['frontend']->get("image_upload_error_3");
-    $image4 = $TEXT['frontend']->get("image_upload_error_4");
-    $image5 = $TEXT['frontend']->get("image_upload_error_5");
-    $image6 = $TEXT['frontend']->get("image_upload_error_6");
+    $image0 = $TEXT['admin']->get("image_upload_error_0");
+    $image1 = $TEXT['admin']->get("image_upload_error_1");
+    $image2 = $TEXT['admin']->get("image_upload_error_2");
+    $image3 = $TEXT['admin']->get("image_upload_error_3");
+    $image4 = $TEXT['admin']->get("image_upload_error_4");
+    $image5 = $TEXT['admin']->get("image_upload_error_5");
+    $image6 = $TEXT['admin']->get("image_upload_error_6");
+    $image7 = $TEXT['admin']->get("image_upload_error_7");
+    #$image8 = $TEXT['admin']->get("image_upload_error_8");
   } else {
     $image0 = $TEXT->get("image_upload_error_0");
     $image1 = $TEXT->get("image_upload_error_1");
@@ -159,6 +161,8 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
     $image4 = $TEXT->get("image_upload_error_4");
     $image5 = $TEXT->get("image_upload_error_5");
     $image6 = $TEXT->get("image_upload_error_6");
+    $image7 = $TEXT->get("image_upload_error_7");
+   # $image8 = $TEXT->get("image_upload_error_8");
   }
   
   switch ( $UPLOAD ) {
@@ -183,6 +187,12 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
     case 6:
       return $image6 ;
       break;
+    case 7:
+      return $image7 ;
+      break;
+   /* case 8:
+      return $image8 ;
+      break;*/
   }
 }
 
@@ -193,6 +203,27 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
 function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, $QUALITY = 100, $THIS_SIZE = false )
 {
     global $global_config_arr;
+
+    // Check Abort Options 1
+    switch($IMAGE['error']) {
+        case 0:
+            break;
+        case UPLOAD_ERR_FORM_SIZE:
+            return 3; // Error 3: Das Bild ist zu groﬂ! (Dateigrˆﬂe)
+            break;
+        case UPLOAD_ERR_INI_SIZE:
+            return 7; // Error 7: File is bigger than PHP Upload Size
+            break;
+        default:
+            return 2; // Error 2: Fehler beim Datei-Upload!
+            break;
+    }   
+    if ( $IMAGE['tmp_name'] != 0 ) {
+        return 2; // Error 2: Fehler beim Datei-Upload!
+    }
+    if ( $IMAGE['size'] > $MAX_SIZE ) {
+        return 3; // Error 3: Das Bild ist zu groﬂ! (Dateigrˆﬂe)
+    }
 
     // Get Image Data
     $image_data = getimagesize ( $IMAGE['tmp_name'] );
@@ -205,29 +236,19 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
             $type = "jpg";
             break;
         case 3:
-             $type = "png";
-             break;
-         default:
+            $type = "png";
+            break;
+        default:
             return 1;  // Error 1: Ung¸ltiger Dateityp!
-             break 2;
+            break 2;
     }
 
-    // Check Options
-     if ( $IMAGE['tmp_name'] != 0 ) {
-        return 2;  // Error 2: Fehler beim Datei-Upload!
-        break;
-    }
-    if ( $IMAGE['size'] > $MAX_SIZE ) {
-        return 3;  // Error 3: Das Bild ist zu groﬂ! (Dateigrˆﬂe)
-        break;
-    }
+    // Check Abort Options 2
     if ( $image_data[0] > $MAX_WIDTH || $image_data[1] > $MAX_HEIGHT ) {
-        return 4;  // Error 4: Das Bild ist zu groﬂ! (Abmessungen)
-        break;
+        return 4; // Error 4: Das Bild ist zu groﬂ! (Abmessungen)
     }
-     if ( $THIS_SIZE == TRUE && ( $image_data[0] != $MAX_WIDTH || $image_data[1] != $MAX_HEIGHT ) ) {
-        return 5;  // Error 5: Das Bild ist entspricht nicht den erforderlichen Abmessungen!
-        break;
+    if ( $THIS_SIZE == TRUE && ( $image_data[0] != $MAX_WIDTH || $image_data[1] != $MAX_HEIGHT ) ) {
+        return 5; // Error 5: Das Bild ist entspricht nicht den erforderlichen Abmessungen!
     }
 
     // Create Image
@@ -268,8 +289,10 @@ function create_thumb_notice($upload)
 ///////////////////////////////////
 ///// Create Thumbnail from IMG ///
 ///////////////////////////////////
-
-function create_thumb_from($image, $thumb_max_width, $thumb_max_height, $quality=100)
+function create_img_from($image, $x, $y, $ext, $quality=100) {
+    return create_thumb_from($image, $x, $y, $quality, $ext);
+}
+function create_thumb_from($image, $thumb_max_width, $thumb_max_height, $quality=100, $ext="_s")
 {
     //Bilddaten ermitteln
     $image_info = pathinfo($image);
@@ -329,7 +352,7 @@ function create_thumb_from($image, $thumb_max_width, $thumb_max_height, $quality
 
 
   //Thumbnail-Container erstellen
-  $thumb_path = $image_info['dirname']."/".$image_info['name']."_s.".$image_info['extension'];
+  $thumb_path = $image_info['dirname']."/".$image_info['name'].$ext.".".$image_info['extension'];
   $thumb = ImageCreateTrueColor($newwidth, $newheight);
 
   //Individuelle Funktionen je nach Dateityp aufrufen

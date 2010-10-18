@@ -233,6 +233,39 @@ $().ready(function(){
 
 
 
+//////////////////////////////////
+
+
+
+//--------------------------------
+// START - Admin Page Functions
+//--------------------------------
+
+// Adds new Upload Lines for Gallery Images
+function galleryImgAddUploadLines() {
+    // Get Number of Lines
+    old_num = $("input[name=num_of_lines]").first().val()*1;
+    add_num = $("select[name=new_lines]").first().val()*1;
+    new_num = old_num + add_num;
+    
+    // Set new Number of Lines
+    $("input[name=num_of_lines]").first().val(new_num);
+   //alert(""+old_num+" "+add_num+" "+new_num);
+    // Insert new Fields
+    for(var i=old_num; i<new_num; i++) {
+        var html_content = '<tr><td class="config" colspan="2"><input type="file" class="text" name="img_file['+i+']" size="45"></td><td class="config"><input type="text" class="text full_width" name= "img_title['+i+']" size="30" maxlength="100"></td></tr>';       
+    $("#after_add_lines").before(html_content);    
+    }
+}
+
+//--------------------------------
+// END - Admin Page Functions
+//--------------------------------
+
+
+
+
+
 ///////////////////////////////////
 //// OLD select-list functions ////
 ///////////////////////////////////

@@ -5,7 +5,7 @@
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr>
                                 <td class="line" colspan="2">
-                                    <!--LANG::viewer_title-->
+                                    <!--LANG::add_title-->
                                 </td>
                             </tr>
                             <tr>
@@ -16,7 +16,7 @@
                                     <span class="small">'.$admin_phrases[news][new_cat_image].': '.$admin_phrases[common][optional].'</span>
                                 </td>
                             </tr>
-                            <tr valign="top">
+                            <tr>
                                 <td class="config">
                                     <input class="text" name="cat_name" size="40" maxlength="100" value="'.$_POST['cat_name'].'">
                                 </td>
@@ -98,6 +98,13 @@
                                     </select>
                                 </td>
                             </tr>
+                            <tr><td class="space"></td></tr>
+                            
+                            <tr>
+                                <td class="line" colspan="2">
+                                    <!--LANG::optional_settings-->
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="config">
                                     <!--LANG::date-->:<br>
@@ -118,13 +125,6 @@
                                     <input type="text" class="text input_width_small" size="25" maxlength="255" id="username" name="cat_user_name" value="<!--TEXT::cat_user_name-->">
                                     <input type="hidden" id="userid" name="cat_user" value="<!--TEXT::cat_user-->">
                                     <input type="button" class="button" onClick='<!--TEXT::find_user_popup-->' value="<!--COMMON::change-->">
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            
-                            <tr>
-                                <td class="line" colspan="2">
-                                    <!--LANG::optional_settings-->
                                 </td>
                             </tr>
                             <tr>

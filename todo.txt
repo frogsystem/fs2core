@@ -4,6 +4,8 @@ default design noch bearbeiten
 links zu original-ansicht in artikel, news, etc.
 option zum speicher und schließen, sowie speichern und erneut bearbeiten
 
+jquery und jquery tools einbindung über checkbox
+
 
 alix6:
 DL-QI-Pfad-Länger

@@ -143,17 +143,19 @@ page_link_gallery_cat:          Kategorien
 page_title_gallery_folder:      Ordner verwalten
 page_link_gallery_folder:       Ordner
 
-# Galerie > Bilder
-page_title_screens_add:         hinzufügen
-page_link_screens_add:          hinzufügen
-page_title_screens_edit:        bearbeiten
-page_link_screens_edit:         bearbeiten
+page_title_gallery_img:         Bilder verwalten
+page_link_gallery_img:          Bilder
+page_title_gallery_img_add:     Bilder hinzufügen
+page_link_gallery_img_add:      hinzufügen
+page_title_gallery_img_edit:    Bilder bearbeiten
+page_link_gallery_img_edit:     bearbeiten
 
-# Galerie > Wallpaper
-page_title_wp_add:              hinzufügen
-page_link_wp_add:               hinzufügen
-page_title_wp_edit:             bearbeiten
-page_link_wp_edit:              bearbeiten
+page_title_gallery_wp:          Wallpaper verwalten
+page_link_gallery_wp:           Wallpaper
+page_title_gallery_wp_add:      Wallpaper hinzufügen
+page_link_gallery_wp_add:       hinzufügen
+page_title_gallery_wp_edit:     Wallpaper bearbeiten
+page_link_gallery_wp_edit:      bearbeiten
 
 # Galerie > Vorschaubilder
 page_title_randompic_config:    Konfiguration ändern

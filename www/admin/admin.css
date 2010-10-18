@@ -168,6 +168,13 @@ table.configtable {
     font-size:10pt;
 }
 
+td.right_space {
+    padding-right:10px;
+}
+td.left_space {
+    padding-left:10px;
+}
+
 td.line, td.line_green, td.line_red, td.line_yellow
 {
     background-image:url('img/line_loop.jpg');
@@ -816,6 +823,10 @@ a.tooltip:hover span, a.tooltip:focus span {
 }
 .red_text {
     color: #FF0000;
+}
+
+.full_width {
+    width: 100%;
 }
 
 .default {}

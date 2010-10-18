@@ -286,10 +286,10 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST[fname][$j]).'" maxlength="100"><br />
-                                    <input class="text" size="30" value="'.killhtml($_POST[furl][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
+                                    <input class="text" size="42" value="'.killhtml($_POST[furl][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
                                     <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
-                                    <input class="text" size="30" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8"> KB<br />
-                                    <input class="text" size="30" value="'.$_POST[fcount][$j].'" name="fcount['.$j.']" maxlength="100"> Downloads<br />
+                                    <input class="text" size="42" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="42" value="'.$_POST[fcount][$j].'" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'"><br />
                                     Löschen: <input name="delf['.$j.']" id="delf['.$j.']" value="'.$_POST[fid][$j].'" type="checkbox"
                                     onClick=\'delalert ("delf['.$j.']", "Soll das File (Nr. '.$i.') wirklich gelöscht werden?")\'>
@@ -309,10 +309,10 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />
-                                    <input class="text" size="30" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
+                                    <input class="text" size="42" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
                                     <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
-                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8"> KB<br />
-                                    <input class="text" size="30" name="fcount['.$j.']" maxlength="100"> Downloads<br />
+                                    <input class="text" size="42" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="42" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                     <input type="hidden" name="fnew['.$j.']" value="1">
                                 </td>

@@ -8,7 +8,7 @@ $url_arr = get_article_urls ();
 
 if (
                 isset ( $_POST['sended'] ) &&
-                isset ( $_POST['article_cat_id'] ) &&
+                isset ( $_POST['article_cat_id'] )  && $_POST['article_cat_id'] != -1 &&
                 $_POST['article_title'] && $_POST['article_title'] != "" &&
         !in_array ( savesql ( $_POST['article_url'] ), $url_arr ) &&
 
@@ -159,16 +159,21 @@ else
                                     <span class="small">'.$admin_phrases[articles][articles_cat_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="article_cat_id">
-        ';
-                                                                            // Kategorien auflisten
-                                                                            $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );
-                                                                            while ( $cat_arr = mysql_fetch_assoc ( $index ) )
-                                                                            {
-                                                                                        settype ( $cat_arr['cat_id'], "integer" );
-                                                                                        echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['article_cat_id']).'>'.$cat_arr['cat_name'].'</option>';
-                                                                            }
-        echo'
+                                    <select class="input_width" name="article_cat_id">';
+                                    
+    // Kategorien auflisten
+    if ($config_arr['cat_force_select'] == 1) {
+        echo '
+                                    <option value="-1"></option>';
+    }
+        
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );
+    while ( $cat_arr = mysql_fetch_assoc ( $index ) ) {
+                settype ( $cat_arr['cat_id'], "integer" );
+                echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['article_cat_id']).'>'.$cat_arr['cat_name'].'</option>';
+    }
+        
+    echo'
                                     </select>
                                 </td>
                             </tr>

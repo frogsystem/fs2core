@@ -157,7 +157,7 @@ class sql {
                 $this->useful = TRUE; // Ergebnis ist nützlich
                 return mysql_num_rows ( $qry );
             } elseif ( mysql_num_rows ( $qry ) == 0 ) {
-                return mysql_num_rows ( $qry );  // Ergebnis ist nicht nützlich, da keine Inhalte gefunden wurden
+                return array();  // Ergebnis ist nicht nützlich, da keine Inhalte gefunden wurden
             }
 
             // Die ganzen Ergebnisse laden
@@ -228,7 +228,7 @@ class sql {
         }
 
         // Daten für Query vorbereiten
-        $this->arraytrim ( &$cols ) 
+        $this->arraytrim ( &$cols ); 
         $this->arraytrim ( &$values ) ;
 
         // Query-String aufbauen ...

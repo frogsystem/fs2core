@@ -5,21 +5,21 @@
 /////////////////////////
 
 if (
-                isset ( $_POST['addnews'] ) &&
-                $_POST['title'] && $_POST['title'] != "" &&
-                $_POST['news_text'] && $_POST['news_text'] != "" &&
-                
-                $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
-                $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
-                $_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
-                $_POST['h'] && $_POST['h'] != "" && $_POST['h'] >= 0 &&
-                $_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
-                
-                isset ( $_POST['cat_id'] ) &&
-                isset ( $_POST['posterid'] )
-        )
+        isset ( $_POST['addnews'] ) &&
+        $_POST['title'] && $_POST['title'] != "" &&
+        $_POST['news_text'] && $_POST['news_text'] != "" &&
+
+        $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
+        $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
+        $_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
+        $_POST['h'] && $_POST['h'] != "" && $_POST['h'] >= 0 &&
+        $_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
+
+        isset ( $_POST['cat_id'] ) && $_POST['cat_id'] != -1 &&
+        isset ( $_POST['posterid'] )
+    )
 {
-        $_POST['news_text'] = savesql ( $_POST['news_text'] );
+    $_POST['news_text'] = savesql ( $_POST['news_text'] );
     $_POST['title'] = savesql ( $_POST['title'] );
     
     settype ( $_POST['cat_id'], "integer" );
@@ -28,7 +28,7 @@ if (
     settype ( $_POST['news_comments_allowed'], "integer" );
 
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'] );
-        $newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+    $newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
 
     // MySQL-Insert-Query
@@ -62,18 +62,18 @@ if (
         {
             $_POST['linkname'][$key] = savesql ( $_POST['linkname'][$key] );
             $_POST['linkurl'][$key] = savesql ( $_POST['linkurl'][$key] );
-                        switch ( $_POST['linktarget'][$key] )
-                    {
-                        case 1: settype ( $$_POST['linktarget'][$key], "integer" ); break;
-                        default: $_POST['linktarget'][$key] = 0; break;
-                    }
+            switch ( $_POST['linktarget'][$key] )
+            {
+                case 1: settype ( $$_POST['linktarget'][$key], "integer" ); break;
+                default: $_POST['linktarget'][$key] = 0; break;
+            }
 
             mysql_query("INSERT INTO ".$global_config_arr['pref']."news_links (news_id, link_name, link_url, link_target)
                          VALUES ('".$newsid."',
                                  '".$_POST['linkname'][$key]."',
                                  '".$_POST['linkurl'][$key]."',
                                  '".$_POST['linktarget'][$key]."')", $db);
-                }
+        }
     }
 
     mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news + 1", $db );
@@ -97,7 +97,7 @@ if ( TRUE )
     }
 
     // News Konfiguration lesen
-    $index = mysql_query ( "SELECT html_code, fs_code FROM ".$global_config_arr['pref']."news_config", $db );
+    $index = mysql_query ( "SELECT html_code, fs_code, cat_force_select FROM ".$global_config_arr['pref']."news_config", $db );
     $config_arr = mysql_fetch_assoc ( $index );
     $config_arr[html_code] = ($config_arr[html_code] == 2 OR $config_arr[html_code] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
     $config_arr[fs_code] = ($config_arr[fs_code] == 2 OR $config_arr[fs_code] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
@@ -146,16 +146,22 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[news][news_cat_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="cat_id">
-        ';
-                                                                            // Kategorien auflisten
-                                                                            $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
-                                                                            while ( $cat_arr = mysql_fetch_assoc ( $index ) )
-                                                                            {
-                                                                                        settype ( $cat_arr['cat_id'], "integer" );
-                                                                                        echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['cat_id']).'>'.$cat_arr['cat_name'].'</option>';
-                                                                            }
-        echo'
+                                    <select class="input_width" name="cat_id">';
+                                    
+    // Kategorien auflisten
+    if ($config_arr['cat_force_select'] == 1) {
+        echo '
+                                    <option value="-1"></option>';
+    }
+    
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
+    while ( $cat_arr = mysql_fetch_assoc ( $index ) ) {
+                settype ( $cat_arr['cat_id'], "integer" );
+                echo '
+                                        <option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['cat_id']).'>'.$cat_arr['cat_name'].'</option>';
+    }
+                                        
+    echo'
                                     </select>
                                 </td>
                             </tr>

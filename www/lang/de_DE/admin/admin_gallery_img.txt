@@ -1,0 +1,16 @@
+# Language-Definition for [FS2]/admin/admin_gallery_img.php
+
+# Language-Definition for [FS2]/admin/template/admin_gallery_img.tpl
+
+add_title:                      Bilder hinzufügen
+
+add_select_images:              Bilder auswählen
+add_img_title:                  Titel
+
+more_uploads:                   Weitere Upload-Felder
+more_uploads_button:            +
+more_uploads_title:             Upload-Felder hinzufügen
+
+unsorted:                       (unsortiert)
+
+upload_images:                  Bilder hinzufügen

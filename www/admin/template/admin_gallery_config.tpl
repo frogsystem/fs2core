@@ -60,23 +60,35 @@
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <!--LANG::img_small_res--><br>
-                                    <span class="small"><!--LANG::img_small_res_info--></span>
-                                </td>
-                                <td class="config">
-                                    <input class="text" size="5" name="img_small_max_x" value="<!--TEXT::img_small_max_x-->" maxlength="3">
-                                    <!--COMMON::resolution_x-->
-                                    <input class="text" size="5" name="img_small_max_y" value="<!--TEXT::img_small_max_y-->" maxlength="3"> <!--COMMON::pixel-->
-                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config">
                                     <!--LANG::img_size--><br>
                                     <span class="small"><!--LANG::img_size_info--></span>
                                 </td>
                                 <td class="config">
                                     <input class="text" size="12" name="img_max_size" value="<!--TEXT::img_max_size-->" maxlength="7"> <!--COMMON::kib-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::img_mid_res--><br>
+                                    <span class="small"><!--LANG::img_mid_res_info--></span>
+                                </td>
+                                <td class="config">
+                                    <input class="text" size="5" name="img_mid_x" value="<!--TEXT::img_mid_x-->" maxlength="3">
+                                    <!--COMMON::resolution_x-->
+                                    <input class="text" size="5" name="img_mid_y" value="<!--TEXT::img_mid_y-->" maxlength="3"> <!--COMMON::pixel-->
+                                    <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::img_small_res--><br>
+                                    <span class="small"><!--LANG::img_small_res_info--></span>
+                                </td>
+                                <td class="config">
+                                    <input class="text" size="5" name="img_small_x" value="<!--TEXT::img_small_x-->" maxlength="3">
+                                    <!--COMMON::resolution_x-->
+                                    <input class="text" size="5" name="img_small_y" value="<!--TEXT::img_small_y-->" maxlength="3"> <!--COMMON::pixel-->
                                     <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
                                 </td>
                             </tr>

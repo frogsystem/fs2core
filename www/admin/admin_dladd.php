@@ -177,8 +177,8 @@ else
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST[fname][$j]).'" maxlength="100"><br />
-                                    <input class="text" size="30" value="'.killhtml($_POST[furl][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
-                                    <input class="text" size="30" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="42" value="'.killhtml($_POST[furl][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
+                                    <input class="text" size="42" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'">
                                 </td>
                             </tr>
@@ -194,9 +194,9 @@ else
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />
-                                    <input class="text" size="30" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
+                                    <input class="text" size="42" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
                                     <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
-                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="42" name="fsize['.$j.']" maxlength="8"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                 </td>
                             </tr>
