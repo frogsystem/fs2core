@@ -153,14 +153,14 @@ elseif ( TRUE
         if ($sql->isUsefulGet()) {
             $successful = array("db" => TRUE, "img" => TRUE);
             foreach ($cat_arr as $aCat) {
-                 if ( TRUE
+                 if (TRUE
                      && FALSE !== $sql->updateData("gallery_cat", "cat_subcat_of", $aCat['cat_subcat_of'], "WHERE `cat_subcat_of` = '".$aCat['cat_id']."'")
-                     && FALSE !== $sql->updateData("gallery_img", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
-                     && FALSE !== $sql->updateData("gallery_wp", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
-                     #&& FALSE !== $sql->deleteData("gallery_cat", "`cat_id` = '".$aCat['cat_id']."'", "LIMIT 0,1")
+                     #&& FALSE !== $sql->updateData("gallery_img", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
+                     #&& FALSE !== $sql->updateData("gallery_wp", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
+                     && FALSE !== $sql->deleteData("gallery_cat", "`cat_id` = '".$aCat['cat_id']."'", "LIMIT 1")
                  ) {
                     // Delete Cat Image
-                    if (!image_delete("media/gallery/cat/", $aCat['cat_id'])) {
+                    if (image_exists("media/gallery/cat/", $aCat['cat_id']) && !image_delete("media/gallery/cat/", $aCat['cat_id'])) {
                         $successful['img'] = FALSE;
                     }
                  } else {
@@ -293,6 +293,7 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
     elseif ($_POST['cat_action'] == "delete" && count($_POST['cat_id']) >= 1) {
 
         // get cats from db
+        array_map("intval", $_POST['cat_id']);
         $cat_arr = $sql->getData("gallery_cat", "*", "WHERE `cat_id` IN (".implode(",", $_POST['cat_id']).") ORDER BY `cat_order`,`cat_id`");
         
         // cats found

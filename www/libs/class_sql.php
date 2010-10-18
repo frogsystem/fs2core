@@ -156,6 +156,8 @@ class sql {
             if ( $addititional == 2 ) {
                 $this->useful = TRUE; // Ergebnis ist nützlich
                 return mysql_num_rows ( $qry );
+            } elseif ( mysql_num_rows ( $qry ) == 0 && $addititional == 1 ) {
+                return "";
             } elseif ( mysql_num_rows ( $qry ) == 0 ) {
                 return array();  // Ergebnis ist nicht nützlich, da keine Inhalte gefunden wurden
             }

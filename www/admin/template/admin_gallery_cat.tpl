@@ -9,28 +9,53 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="config right_space">
-                                    <span class="small">'.$admin_phrases[news][new_cat_name].':</span>
+                                <td class="config" width="50%">
+                                    <!--LANG::name-->:
                                 </td>
                                 <td class="config">
-                                    <span class="small">'.$admin_phrases[news][new_cat_image].': '.$admin_phrases[common][optional].'</span>
+                                    <!--LANG::subcat-->:
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <input class="text" name="cat_name" size="40" maxlength="100" value="'.$_POST['cat_name'].'">
+                                    <input class="text full_width" name="cat_name" size="30" maxlength="100" value="<!--TEXT::cat_name-->">
                                 </td>
                                 <td class="config">
-                                    <input name="cat_pic" type="file" size="30" class="text"><br>
-                                    <span class="small">
-                                        ['.$admin_phrases[common][max].' '.$news_config_arr[cat_pic_x].' '.$admin_phrases[common][resolution_x].' '.$news_config_arr[cat_pic_y].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$news_config_arr[cat_pic_size].' '.$admin_phrases[common][kib].']
-                                    </span>
+                                    <select class="full_width" name="cat_subcat_of" size="1">
+                                        <option value="0"><!--COMMON::no_subcat--></option>
+                                        <option value="-1"><!--COMMON::-----></option>
+                                        <!--TEXT::subcat_options-->
+                                    </select>
                                 </td>
                             </tr>
+                            <tr>
+								<td class="config">
+									<!--LANG::type-->:
+								</td>
+								<td class="config">
+									<!--LANG::visibility-->:
+								</td>
+                            </tr>
+                            <tr>
+								<td class="config">
+                                    <select class="full_width" name="cat_type" size="1">
+                                        <option value="img"<!--IF::type?img--> selected<!--ENDIF-->><!--LANG::type_img--></option>
+                                        <option value="wp"<!--IF::type?wp--> selected<!--ENDIF-->><!--LANG::type_wp--></option>
+                                    </select>
+                                </td>
+								<td class="config">
+                                    <select class="full_width" name="cat_visibility" size="1">
+                                        <option value="1"<!--IF::visibility?1--> selected<!--ENDIF-->><!--LANG::visibility_full_long--></option>
+                                        <option value="2"<!--IF::visibility?2--> selected<!--ENDIF-->><!--LANG::visibility_notinlist_long--></option>
+                                        <option value="0"<!--IF::visibility?0--> selected<!--ENDIF-->><!--LANG::visibility_none_long--></option>
+                                    </select>
+								</td>
+                            </tr>                        
                             <tr><td class="space"></td></tr>
+
                             <tr>
                                 <td class="buttontd" colspan="2">
-                                    <button type="submit" name="sended" value="1" class="button_new">
+                                    <button type="submit" name="sended" value="add" class="button_new">
                                         <!--COMMON::button_arrow-->
                                         <!--COMMON::save_changes_button-->
                                     </button>
