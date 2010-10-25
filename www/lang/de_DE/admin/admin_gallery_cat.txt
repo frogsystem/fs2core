@@ -24,7 +24,7 @@ add_title:                  Kategorie hinzufügen
 
 main_settings:              Haupteinstellungen
 additional_infos:           Zusätzliche Informationen
-sort_options:               Sortierungseinstellungen
+sort_options:               Darstellungs- und Sortierungsoptionen
 
 
 name:                       Name

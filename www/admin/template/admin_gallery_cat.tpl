@@ -11,6 +11,13 @@
                             <tr>
                                 <td class="config" width="50%">
                                     <!--LANG::name-->:
+                                    <span class="small">
+                                         [<!--COMMON::min-->
+                                         3
+                                         <!--COMMON::and-->
+                                         <!--COMMON::max-->
+                                         100
+                                         <!--COMMON::chars-->]</span>
                                 </td>
                                 <td class="config">
                                     <!--LANG::subcat-->:
@@ -22,8 +29,8 @@
                                 </td>
                                 <td class="config">
                                     <select class="full_width" name="cat_subcat_of" size="1">
-                                        <option value="0"><!--COMMON::no_subcat--></option>
-                                        <option value="-1"><!--COMMON::-----></option>
+                                        <option value="0"<!--IF::subcat_of?0--> selected<!--ENDIF-->><!--COMMON::no_subcat--></option>
+                                        <option value="-1"><!--COMMON::select_hr--></option>
                                         <!--TEXT::subcat_options-->
                                     </select>
                                 </td>
@@ -68,7 +75,7 @@
 <!--DEF::edit-->                    <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="go" value="<!--TEXT::ACP_GO-->">
                         <input type="hidden" name="cat_action" value="edit">
-                        <input type="hidden" name="cat_id" value="<!--TEXT::cat_id-->">
+                        <input type="hidden" name="cat_id[0]" value="<!--TEXT::cat_id-->">
 
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr>
@@ -82,7 +89,14 @@
                                     <span class="small"><!--LANG::name_desc--></span>
                                 </td>
                                 <td>
-                                    <input class="text input_width_big" name="cat_name" size="30" maxlength="100" value="<!--TEXT::cat_name-->">
+                                    <input class="text input_width_big" name="cat_name" size="30" maxlength="100" value="<!--TEXT::cat_name-->"><br>
+                                    <span class="small">
+                                         [<!--COMMON::min-->
+                                         3
+                                         <!--COMMON::and-->
+                                         <!--COMMON::max-->
+                                         100
+                                         <!--COMMON::chars-->]</span>
                                 </td>
                             </tr>
                             <tr>
@@ -162,12 +176,14 @@
                                 <!--IF::image_exists?true-->
                                     <img src="<!--TEXT::image_url-->" alt="<!--TEXT::cat_name-->" border="0">
                                     <table>
-                                        <tr>
+                                        <tr valign="middle">
                                             <td>
-                                                <input type="checkbox" name="cat_pic_delete" id="cpd" value="1" onClick='delalert("cpd", "<!--COMMON::js_delete_image-->")'>
+                                                <input type="checkbox" class="pointer" name="cat_img_delete" id="cid" value="1" onClick='delalert("cid", "<!--COMMON::js_delete_image-->")'>
                                             </td>
                                             <td>
-                                                <span class="small"><b><!--COMMON::delete_image--></b></span>
+                                                <label class="small pointer" for="cid">
+                                                    <b><!--COMMON::delete_image--></b>
+                                                </label>
                                             </td>
                                         </tr>
                                     </table>
@@ -201,6 +217,74 @@
                                 </td>
                                 <td class="config">
                                     <textarea class="text input_width_big" name="cat_text" rows="10" cols="30" wrap="virtual"><!--TEXT::cat_text--></textarea>
+                                </td>
+                            </tr>
+                            <tr><td class="space"></td></tr>
+                            
+                            <tr>
+                                <td class="line" colspan="2">
+                                    <!--LANG::sort_options-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::content_order--><br>
+                                    <span class="small"><!--LANG::content_order_info--></span>
+                                </td>
+                                <td class="config">
+                                    <select class="input_width_big" name="content_order">
+                                        <option value="0"<!--IF::content_order?0--> selected<!--ENDIF-->><!--COMMON::default--></option>
+                                        <option value="date"<!--IF::content_order?date--> selected<!--ENDIF-->><!--LANG::content_order_date--></option>
+                                        <option value="id"<!--IF::content_order?id--> selected<!--ENDIF-->><!--LANG::content_order_id--></option>
+                                        <option value="title"<!--IF::content_order?title--> selected<!--ENDIF-->><!--LANG::content_order_title--></option>
+                                    </select><br>                                                                       
+                                    <select class="input_width_mini" name="content_sort" style="margin-top:5px;">
+                                        <option value="0"<!--IF::content_sort?0--> selected<!--ENDIF-->><!--COMMON::default--></option>
+                                        <option value="ASC"<!--IF::content_sort?ASC--> selected<!--ENDIF-->><!--COMMON::asc--></option>
+                                        <option value="DESC"<!--IF::img_sort?DESC--> selected<!--ENDIF-->><!--COMMON::desc--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::content_group--><br>
+                                    <span class="small"><!--LANG::content_group_info--></span>
+                                </td>
+                                <td class="config">
+                                    <select class="input_width_big" name="content_group">
+                                        <option value="0"<!--IF::content_group?0--> selected<!--ENDIF-->><!--COMMON::default--></option>
+                                        <option value="none"<!--IF::content_group?none--> selected<!--ENDIF-->><!--LANG::content_group_none--></option>
+                                        <option value="date"<!--IF::content_group?date--> selected<!--ENDIF-->><!--LANG::content_group_date--></option>
+                                        <option value="title"<!--IF::content_group?title--> selected<!--ENDIF-->><!--LANG::content_group_title--></option>
+                                        <option value="user"<!--IF::content_group?user--> selected<!--ENDIF-->><!--LANG::content_group_user--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::content_sub_contents--><br>
+                                    <span class="small"><!--LANG::content_sub_contents_info--></span>
+                                </td>
+                                <td class="config">
+                                    <select class="input_width_big" name="content_sub_contents">
+                                        <option value="0"<!--IF::content_sub_contents?0--> selected<!--ENDIF-->><!--COMMON::default--></option>
+                                        <option value="none"<!--IF::content_sub_contents?none--> selected<!--ENDIF-->><!--LANG::content_sub_contents_none--></option>
+                                        <option value="first"<!--IF::content_sub_contents?first--> selected<!--ENDIF-->><!--LANG::content_sub_contents_first--></option>
+                                        <option value="all"<!--IF::content_sub_contents?all--> selected<!--ENDIF-->><!--LANG::content_sub_contents_all--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::content_folder--><br>
+                                    <span class="small"><!--LANG::content_folder_info--></span>
+                                </td>
+                                <td class="config">
+                                    <select class="input_width_big" name="content_default_folder">
+                                        <option value="0"<!--IF::content_default_folder?0--> selected<!--ENDIF-->><!--COMMON::default--></option>
+                                        <option value="/"<!--IF::content_default_folder?/--> selected<!--ENDIF-->><!--LANG::content_folder_root--></option>
+                                        <!--TEXT::folder_options-->
+                                    </select>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

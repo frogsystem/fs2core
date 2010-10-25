@@ -1,11 +1,8 @@
-<?php if ( ACP_GO === "gallery_cat" ) {
+<?php if (ACP_GO === "gallery_cat") {
 
 //TODO
-//- übernahme von werten beim unvollständigen abschicken des add-forms
-//- datum beim editieren
-//- datum in secureData
-//- nach oben bei kategorien die schon ganz oben sind
-
+//- nach oben/unten von den 2. obersten/untersten kategorien führt zum tausch der beiden kategorien
+//- Ordner
 
 
 /////////////////////////////////////
@@ -28,8 +25,15 @@ function secureData(&$DATA, $OUTPUT = FALSE) {
 
     $DATA['cat_user_name'] = killhtml($sql->getData("user", "user_name", "WHERE `user_id` = '".$DATA['cat_user']."' LIMIT 0,1", 1));
 
-    $DATA['cat_date'] = $OUTPUT ? $DATA['cat_date'] : strtotime($DATA['cat_date']);
+    $DATA['cat_date'] = strtotime($DATA['cat_date']);
     $DATA['cat_date_format'] = date("Y-m-d", $DATA['cat_date']);
+
+
+    $DATA['content_order'] = $OUTPUT ? killhtml($DATA['content_order']) : savesql($DATA['content_order']);
+    $DATA['content_sort'] = $OUTPUT ? killhtml($DATA['content_sort']) : savesql($DATA['content_sort']);
+    $DATA['content_group'] = $OUTPUT ? killhtml($DATA['content_group']) : savesql($DATA['content_group']);
+    $DATA['content_sub_contents'] = $OUTPUT ? killhtml($DATA['content_sub_contents']) : savesql($DATA['content_sub_contents']);
+    $DATA['content_default_folder'] = $OUTPUT ? killhtml($DATA['content_default_folder']) : savesql($DATA['content_default_folder']);
 
     return $DATA;
 }
@@ -58,7 +62,7 @@ $config_arr = $sql->getData("gallery_config", "*", "", 1);
 /////////////////////
 //// DB: Add Cat ////
 /////////////////////
-if ( TRUE
+if (TRUE
     && validateFormData( $_POST['sended'], "required,oneof", array("add") )
     && validateFormData( $_POST['cat_action'], "required,oneof", array("add") )
 
@@ -70,8 +74,8 @@ if ( TRUE
     secureData($_POST);
 
     // Insert Data
-    $insertCols= array("cat_name", "cat_subcat_of", "cat_type", "cat_visibility", "cat_date", "cat_user", "cat_preview", "cat_order");
-    $insertValues = array($_POST['cat_name'], $_POST['cat_subcat_of'], $_POST['cat_type'], $_POST['cat_visibility'], time(), $_SESSION['user_id'], 0, 32767);
+    $insertCols= array("cat_name", "cat_subcat_of", "cat_type", "cat_visibility", "cat_date", "cat_user", "cat_preview", "cat_order", "content_order", "content_sort", "content_group", "content_sub_contents", "content_default_folder");
+    $insertValues = array($_POST['cat_name'], $_POST['cat_subcat_of'], $_POST['cat_type'], $_POST['cat_visibility'], time(), $_SESSION['user_id'], 0, 32767, 0, 0, 0, 0, 0);
 
     if ( FALSE !== $sql->setData("gallery_cat", $insertCols, $insertValues) ) {
         // Get Insert ID
@@ -94,7 +98,8 @@ if ( TRUE
 //// DB: Edit Cat ////
 //////////////////////
 elseif (TRUE
-        && validateFormData($_POST['cat_id'], "required,integer")
+        && is_array($_POST['cat_id'])
+        && validateFormData($_POST['cat_id'][0], "required,integer")
         && validateFormData($_POST['sended'], "required,oneof", array("edit"))
         && validateFormData($_POST['cat_action'], "required,oneof", array("edit"))        
 
@@ -104,6 +109,12 @@ elseif (TRUE
         
         && validateFormData($_POST['cat_date'], "required")
         && (validateFormData($_POST['cat_user'], "required,integer,positive,notzero") || validateFormData($_POST['cat_user_name'], "required,text", "(.{1,100})"))
+        
+        && validateFormData( $_POST['content_order'], "required,oneof", array("0", "date", "id", "title") )
+        && validateFormData( $_POST['content_sort'], "required,oneof", array("0", "ASC", "DESC") )
+        && validateFormData( $_POST['content_group'], "required,oneof", array("0", "none", "date", "title", "user") )
+        && validateFormData( $_POST['content_sub_contents'], "required,oneof", array("0", "none", "first", "all") )
+        && validateFormData( $_POST['content_default_folder'], "required" )
     )
 {
     // Get User Data
@@ -115,31 +126,38 @@ elseif (TRUE
     }
     
     // Secure Data
+    $_POST['cat_id'] = $_POST['cat_id'][0];
     secureData($_POST);
 
     // MySQL-Update-Query
-    $cols   = "cat_name,cat_text,cat_subcat_of,cat_type,cat_visibility,cat_date,cat_user";
-    $values = array($_POST['cat_name'], $_POST['cat_text'], $_POST['cat_subcat_of'], $_POST['cat_type'], $_POST['cat_visibility'], $_POST['cat_date'], $_POST['cat_user']);
+    $cols   = "cat_name,cat_text,cat_subcat_of,cat_type,cat_visibility,cat_date,cat_user,content_order,content_sort,content_group,content_sub_contents,content_default_folder";
+    $values = array($_POST['cat_name'], $_POST['cat_text'], $_POST['cat_subcat_of'], $_POST['cat_type'], $_POST['cat_visibility'], $_POST['cat_date'], $_POST['cat_user'], $_POST['content_order'], $_POST['content_sort'], $_POST['content_group'], $_POST['content_sub_contents'], $_POST['content_default_folder']);
     
     if (FALSE !== $sql->updateData("gallery_cat", $cols, $values, "WHERE `cat_id` = '".$_POST['cat_id']."' LIMIT 1")) {
+        // Messages
+        $messages = array ($TEXT['admin']->get("changes_saved"));
+        $color = "green";
+        
         // Image Operations
+        $image_folder = "media/gallery/cat/";
         if ($_POST['cat_img_delete'] == 1) {
             // Delete Image
-            if (image_delete("....", $_POST['cat_id'])) {
-                #$messages[];
-            } else {
-                #$messages[];
+            if (image_delete($image_folder, $_POST['cat_id'])) {
+                $messages[] = $TEXT["admin"]->get("cat_image_deleted");
+            } elseif(image_exists($image_folder, $_POST['cat_id'])) {
+                $messages[] = $TEXT["admin"]->get("cat_image_not_deleted");
+                $color = "yellow";
             }
             
         // Upload new Image
         } elseif($_FILES['cat_img']['name'] != "") {
-            image_delete("....", $_POST['cat_id']);
-            $upload = upload_img($_FILES['cat_img'], "...", $_POST['cat_id'], $config_arr['cat_img_size']*1024, $config_arr['cat_img_x'], $config_arr['cat_img_y']);
-            #$messages[] = upload_img_notice($upload);
+            image_delete($image_folder, $_POST['cat_id']);
+            $upload = upload_img($_FILES['cat_img'], $image_folder, $_POST['cat_id'], $config_arr['cat_img_size']*1024, $config_arr['cat_img_x'], $config_arr['cat_img_y']);
+            $messages[] = upload_img_notice($upload);
         }        
         
-        // Update ok
-        systext( $TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
+        // Update ok        
+        systext(implode("<br>", $messages), $TEXT['admin']->get("info"), $color, $TEXT["admin"]->get("icon_save_ok"));
         orderSubCategories($_POST['cat_subcat_of']);
         
         // Reset Vars
@@ -173,7 +191,7 @@ elseif ( TRUE
             foreach ($cat_arr as $aCat) {
                  if (TRUE
                      && FALSE !== $sql->updateData("gallery_cat", "cat_subcat_of", $aCat['cat_subcat_of'], "WHERE `cat_subcat_of` = '".$aCat['cat_id']."'")
-                     #&& FALSE !== $sql->updateData("gallery_img", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
+                     && FALSE !== $sql->updateData("gallery_img", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
                      #&& FALSE !== $sql->updateData("gallery_wp", "cat_id", 0, "WHERE `cat_id` = '".$aCat['cat_id']."'")
                      && FALSE !== $sql->deleteData("gallery_cat", "`cat_id` = '".$aCat['cat_id']."'", "LIMIT 1")
                  ) {
@@ -187,7 +205,7 @@ elseif ( TRUE
             }
         }
         $messages[] = $successful['db'] ? $TEXT["admin"]->get("cats_deleted") : $TEXT["admin"]->get("cats_not_all_deleted");
-        $messages[] = $successful['img'] ? $TEXT["admin"]->get("images_deleted") : $TEXT["admin"]->get("images_not_all_deleted");
+        $messages[] = $successful['img'] ? $TEXT["admin"]->get("cat_images_deleted") : $TEXT["admin"]->get("cat_images_not_all_deleted");
 
         $color = !$successful['db'] ? "red"                                   : (!$successful['img'] ? "yellow"                                  : "green");
         $title = !$successful['db'] ? $TEXT["admin"]->get("error")            : (!$successful['img'] ? $TEXT["admin"]->get("caution")            : $TEXT["admin"]->get("info"));
@@ -219,16 +237,18 @@ elseif ( TRUE
     
     // Update for each Category
     foreach($_POST['cat_id'] as $catId) {
-        $cat_arr = $sql->getData("gallery_cat", "cat_id,cat_order,cat_subcat_of", "WHERE `cat_id` = '".$catId."' AND `cat_order` != '0'", 1);
+        $cat_arr = $sql->getData("gallery_cat", "cat_id,cat_order,cat_subcat_of", "WHERE `cat_id` = '".$catId."'", 1);
         if (FALSE !== $cat_arr) {
-            // Update Categories, above the selected
-            if ($sql->updateData("gallery_cat", "cat_order", $cat_arr['cat_order'], "WHERE `cat_subcat_of` = '".$cat_arr['cat_subcat_of']."' AND `cat_order` = '".($cat_arr['cat_order']-1)."'")
-                && $sql->updateData("gallery_cat", "cat_order", ($cat_arr['cat_order']-1), "WHERE `cat_id` = '".$cat_arr['cat_id']."'")) {
-                systext($TEXT["admin"]->get("cats_up"), $TEXT["admin"]->get("info"), "green", $TEXT["admin"]->get("icon_up"));
+            if ($cat_arr['cat_order'] != 0) {
+                // Update Categories, above the selected
+                if ($sql->updateData("gallery_cat", "cat_order", $cat_arr['cat_order'], "WHERE `cat_subcat_of` = '".$cat_arr['cat_subcat_of']."' AND `cat_order` = '".($cat_arr['cat_order']-1)."'")
+                    && $sql->updateData("gallery_cat", "cat_order", ($cat_arr['cat_order']-1), "WHERE `cat_id` = '".$cat_arr['cat_id']."'")) {
+                }
+                orderSubCategories($cat_arr['cat_subcat_of']);
             }
-            orderSubCategories($cat_arr['cat_subcat_of']);
         }
     }
+    systext($TEXT["admin"]->get("cats_up"), $TEXT["admin"]->get("info"), "green", $TEXT["admin"]->get("icon_up"));
 }
 
 
@@ -250,11 +270,11 @@ elseif ( TRUE
             // Update Categories, below the selected
             if ($sql->updateData("gallery_cat", "cat_order", $cat_arr['cat_order'], "WHERE `cat_subcat_of` = '".$cat_arr['cat_subcat_of']."' AND `cat_order` = '".($cat_arr['cat_order']+1)."'")
                 && $sql->updateData("gallery_cat", "cat_order", ($cat_arr['cat_order']+1), "WHERE `cat_id` = '".$cat_arr['cat_id']."'")) {
-                systext($TEXT["admin"]->get("cats_down"), $TEXT["admin"]->get("info"), "green", $TEXT["admin"]->get("icon_down"));                
             }
             orderSubCategories($cat_arr['cat_subcat_of']);
         }
     }
+    systext($TEXT["admin"]->get("cats_down"), $TEXT["admin"]->get("info"), "green", $TEXT["admin"]->get("icon_down"));
 }
 
 //////////////////////////////
@@ -275,12 +295,13 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
 
         // Display Error Messages
         if($_POST['sended']=="edit") {
-            systext($TEXT["admin"]->get("note_notfilled"), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
+            systext($TEXT["admin"]->get("form_not_filled")."<br>".$TEXT["admin"]->get("form_only_allowed_values"), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
 
         // Get Data from DB
         } else {
             $cat_arr = $sql->getData("gallery_cat", "*", "WHERE `cat_id` = '".$_POST['cat_id']."'", 1);
             $cat_arr = $sql->lastUseful() ? $cat_arr : array();
+            $cat_arr['cat_date'] = date("Y-m-d", $cat_arr['cat_date']);
             putintopost($cat_arr);
         }
         
@@ -302,13 +323,21 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
                                             <option value="'.$aCat['cat_id'].'" '.getselected($aCat['cat_id'], $_POST['cat_subcat_of']).'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $aCat['level']).killhtml($aCat['cat_name']).'</option>';
             }
         }
+        
+        // Get Old Date
+        $cat_arr['date_old'] = $sql->getData("gallery_cat", "cat_date", "WHERE `cat_id` = '".$_POST['cat_id']."'", 1);
 
         // Display Page
 
         // Template Conditions
         $adminpage->addCond("image_exists",     image_exists("media/gallery/cat/", $_POST['cat_id']));
-        $adminpage->addCond("type",             $_POST['cat_type']);
-        $adminpage->addCond("visibility",       $_POST['cat_visibility']);
+        $adminpage->addCond("type",                         $_POST['cat_type']);
+        $adminpage->addCond("visibility",                   $_POST['cat_visibility']);
+        $adminpage->addCond("content_order",                $_POST['content_order']);
+        $adminpage->addCond("content_sort",                 $_POST['content_sort']);
+        $adminpage->addCond("content_group",                $_POST['content_group']);
+        $adminpage->addCond("content_sub_contents",         $_POST['content_sub_contents']);
+        $adminpage->addCond("content_default_folder",       $_POST['content_default_folder']);
         
         // Template Texts
         $adminpage->addText("ACP_GO",           ACP_GO);
@@ -317,16 +346,18 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
         $adminpage->addText("subcat_options",   implode("", $subcat_options));
         $adminpage->addText("cat_date_format",  $_POST['cat_date_format']);
         $adminpage->addText("today",            get_datebutton(array("cat_date_format", ""), $TEXT["admin"]->get("today")));
-        $adminpage->addText("reset_date",       get_datebutton(array("cat_date_format", $cat_arr['cat_date']*1000), $TEXT["admin"]->get("reset")));
+        $adminpage->addText("reset_date",       get_datebutton(array("cat_date_format", $cat_arr['date_old']*1000), $TEXT["admin"]->get("reset")));
         $adminpage->addText("cat_user",         $_POST['cat_user']);
         $adminpage->addText("cat_user_name",    $_POST['cat_user_name']);
         $adminpage->addText("find_user_popup",  openpopup("admin_finduser.php", 400, 400));
-        $adminpage->addText("image_url",        $_POST['cat_id']);
+        $adminpage->addText("image_url",        image_url("media/gallery/cat/", $_POST['cat_id']));
         $adminpage->addText("cat_text",         $_POST['cat_text']);
 
         $adminpage->addText("config_img_x",     $config_arr['cat_img_x']);
         $adminpage->addText("config_img_y",     $config_arr['cat_img_y']);
         $adminpage->addText("config_img_size",  $config_arr['cat_img_size']);
+        
+        $adminpage->addText("folder_options",   "");
         
         // Display Template
         echo $adminpage->get("edit");
@@ -392,13 +423,13 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
     
     // Reset data and go to default page
     else {
-        unset($_POST['cat_id'], $_POST['cat_action']);
+        unset($_POST);
     }
 }
 
 // Reset data and go to default page
 else {
-    unset($_POST['cat_id'], $_POST['cat_action']);
+    unset($_POST);
 }
 
 //////////////////////////////
@@ -440,9 +471,9 @@ if (!isset($_POST['cat_id']) && !isset($_POST['cat_action'])) {
 
     // Display Add-Form
     // Template Conditions
-    $adminpage->addCond("cat_subcat_of",    $_POST['cat_subcat_of']);
-    $adminpage->addCond("cat_type",         $_POST['cat_type']);
-    $adminpage->addCond("cat_visibility",   $_POST['cat_visibility']);
+    $adminpage->addCond("subcat_of",        $_POST['cat_subcat_of']);
+    $adminpage->addCond("type",             $_POST['cat_type']);
+    $adminpage->addCond("visibility",       $_POST['cat_visibility']);
     // Template Texts
     $adminpage->addText("ACP_GO",           ACP_GO);
     $adminpage->addText("cat_name",         $_POST['cat_name']);

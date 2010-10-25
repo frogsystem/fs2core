@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 20. Oktober 2010 um 07:26
+-- Erstellungszeit: 25. Oktober 2010 um 08:55
 -- Server Version: 5.1.36
 -- PHP-Version: 5.3.0
 
@@ -421,7 +421,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 113, 4006, 2, 2, 3, 2);
+(1, 115, 4013, 2, 2, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -551,7 +551,9 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 10, 14, 1, 1),
 (2010, 10, 15, 1, 4),
 (2010, 10, 18, 1, 1),
-(2010, 10, 19, 2, 11);
+(2010, 10, 19, 2, 11),
+(2010, 10, 21, 1, 4),
+(2010, 10, 24, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -877,22 +879,27 @@ CREATE TABLE `fs_gallery_cat` (
   `cat_user` mediumint(8) NOT NULL DEFAULT '1',
   `cat_preview` tinyint(1) NOT NULL DEFAULT '0',
   `cat_order` smallint(4) NOT NULL DEFAULT '0',
+  `content_order` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `content_sort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `content_group` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `content_sub_contents` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `content_default_folder` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=120 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=121 ;
 
 --
 -- Daten für Tabelle `fs_gallery_cat`
 --
 
-INSERT INTO `fs_gallery_cat` (`cat_id`, `cat_name`, `cat_text`, `cat_subcat_of`, `cat_type`, `cat_visibility`, `cat_date`, `cat_user`, `cat_preview`, `cat_order`) VALUES
-(1, 'Screenshots', '\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n', 0, 'img', 1, 1287446400, 1, 1, 0),
-(2, 'Wallpaper', '\r\n\r\n', 12, 'wp', 1, 1287532800, 1, 0, 0),
-(3, 'Sub-Category', 'test', 12, 'img', 1, 1286323200, 2, 0, 1),
-(8, 'The Witcher: Versus', '\r\n\r\n', 1, 'img', 0, 1283126400, 1, 0, 0),
-(12, 'Lorem Ipsum dolret it amos et cetera', '\r\n\r\n', 8, 'img', 1, 1287446400, 1, 0, 0),
-(114, 'TEST', '', 12, 'img', 1, 1287486888, 1, 0, 2),
-(115, 'blubb', '', 0, 'img', 1, 1287488671, 1, 0, 1),
-(116, 'Hans', '', 114, 'wp', 1, 1287489306, 1, 0, 0);
+INSERT INTO `fs_gallery_cat` (`cat_id`, `cat_name`, `cat_text`, `cat_subcat_of`, `cat_type`, `cat_visibility`, `cat_date`, `cat_user`, `cat_preview`, `cat_order`, `content_order`, `content_sort`, `content_group`, `content_sub_contents`, `content_default_folder`) VALUES
+(1, 'Screenshots', '\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n', 0, 'img', 1, 1287446400, 1, 1, 0, '', '', '', '', ''),
+(2, 'Wallpaper', '\r\n\r\n', 12, 'wp', 1, 1287532800, 1, 0, 1, '', '', '', '', ''),
+(3, 'Sub-Category', 'test', 12, 'img', 1, 1286323200, 2, 0, 2, '', '', '', '', ''),
+(12, 'Lorem Ipsum dolret it amos et cetera', '\r\n\r\n', 1, 'img', 1, 1287446400, 1, 0, 0, '', '', '', '', ''),
+(114, 'TEST', '', 12, 'img', 1, 1287486888, 1, 0, 0, '', '', '', '', ''),
+(120, 'Wurst', 'hans wurst', 116, 'img', 1, 1287619200, 1, 0, 0, '', '', '', '', ''),
+(115, 'blubb', '', 0, 'img', 1, 1287878400, 1, 0, 1, 'title', 'ASC', 'date', 'all', '/'),
+(116, 'Hans', '', 114, 'wp', 1, 1287489306, 1, 0, 0, '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1016,7 +1023,7 @@ INSERT INTO `fs_gallery_img` (`img_id`, `img_title`, `img_caption`, `img_text`, 
 (42, '', '', '', 1287154498, 1, 0),
 (43, '', '', '', 1287154500, 1, 0),
 (44, '', '', '', 1287154501, 1, 0),
-(45, '', '', '', 1287154681, 1, 8);
+(45, '', '', '', 1287154681, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1063,7 +1070,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/Frogsystem-2.alix6/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{..title..} - {..ext..}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1287486116);
+(1, '2.alix5', 'http://localhost/Frogsystem-2.alix6/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{..title..} - {..ext..}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1287930269);
 
 -- --------------------------------------------------------
 
@@ -1132,7 +1139,7 @@ CREATE TABLE `fs_news_cat` (
 --
 
 INSERT INTO `fs_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
-(1, 'News', '', 1263251923, 1),
+(1, 'News', '', 1263168000, 1),
 (2, 'cvbcvb', '', 1283700520, 1);
 
 -- --------------------------------------------------------

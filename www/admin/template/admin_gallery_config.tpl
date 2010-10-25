@@ -127,7 +127,7 @@
                                 </td>
                                 <td class="config">
                                     <select name="img_group">
-                                        <option value="0"<!--IF::img_group?0--> selected<!--ENDIF-->><!--LANG::img_group_none--></option>
+                                        <option value="none"<!--IF::img_group?none--> selected<!--ENDIF-->><!--LANG::img_group_none--></option>
                                         <option value="date"<!--IF::img_group?date--> selected<!--ENDIF-->><!--LANG::img_group_date--></option>
                                         <option value="title"<!--IF::img_group?title--> selected<!--ENDIF-->><!--LANG::img_group_title--></option>
                                         <option value="user"<!--IF::img_group?user--> selected<!--ENDIF-->><!--LANG::img_group_user--></option>
@@ -141,7 +141,7 @@
                                 </td>
                                 <td class="config">
                                     <select name="img_sub_contents">
-                                        <option value="0"<!--IF::img_sub_contents?0--> selected<!--ENDIF-->><!--LANG::img_sub_contents_none--></option>
+                                        <option value="none"<!--IF::img_sub_contents?none--> selected<!--ENDIF-->><!--LANG::img_sub_contents_none--></option>
                                         <option value="first"<!--IF::img_sub_contents?first--> selected<!--ENDIF-->><!--LANG::img_sub_contents_first--></option>
                                         <option value="all"<!--IF::img_sub_contents?all--> selected<!--ENDIF-->><!--LANG::img_sub_contents_all--></option>
                                     </select>
@@ -154,7 +154,7 @@
                                 </td>
                                 <td class="config">
                                     <select name="img_default_folder">
-                                        <option value="/"<!--IF::img_folder?0--> selected<!--ENDIF-->><!--LANG::img_folder_root--></option>
+                                        <option value="/"<!--IF::img_folder?/--> selected<!--ENDIF-->><!--LANG::img_folder_root--></option>
                                         <!--TEXT::folder_options-->
                                     </select>
                                 </td>
@@ -244,7 +244,7 @@
                                 </td>
                                 <td class="config">
                                     <select name="wp_group">
-                                        <option value="0"<!--IF::wp_group?0--> selected<!--ENDIF-->><!--LANG::wp_group_none--></option>
+                                        <option value="none"<!--IF::wp_group?none--> selected<!--ENDIF-->><!--LANG::wp_group_none--></option>
                                         <option value="date"<!--IF::wp_group?date--> selected<!--ENDIF-->><!--LANG::wp_group_date--></option>
                                         <option value="title"<!--IF::wp_group?title--> selected<!--ENDIF-->><!--LANG::wp_group_title--></option>
                                         <option value="user"<!--IF::wp_group?user--> selected<!--ENDIF-->><!--LANG::wp_group_user--></option>
@@ -258,7 +258,7 @@
                                 </td>
                                 <td class="config">
                                     <select name="wp_sub_contents">
-                                        <option value="0"<!--IF::wp_sub_contents?0--> selected<!--ENDIF-->><!--LANG::wp_sub_contents_none--></option>
+                                        <option value="none"<!--IF::wp_sub_contents?none--> selected<!--ENDIF-->><!--LANG::wp_sub_contents_none--></option>
                                         <option value="first"<!--IF::wp_sub_contents?first--> selected<!--ENDIF-->><!--LANG::wp_sub_contents_first--></option>
                                         <option value="all"<!--IF::wp_sub_contents?all--> selected<!--ENDIF-->><!--LANG::wp_sub_contents_all--></option>
                                     </select>
@@ -271,7 +271,7 @@
                                 </td>
                                 <td class="config">
                                     <select name="wp_default_folder">
-                                        <option value="/"<!--IF::wp_folder?0--> selected<!--ENDIF-->><!--LANG::folder_root--></option>
+                                        <option value="/"<!--IF::wp_folder?/--> selected<!--ENDIF-->><!--LANG::folder_root--></option>
                                         <!--TEXT::folder_options-->
                                     </select>
                                 </td>
