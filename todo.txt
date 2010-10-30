@@ -1,6 +1,4 @@
-test2
-
-todo:
+alix6:
 
 default design noch bearbeiten
 links zu original-ansicht in artikel, news, etc.
@@ -9,7 +7,6 @@ option zum speicher und schließen, sowie speichern und erneut bearbeiten
 jquery und jquery tools einbindung über checkbox
 
 
-alix6:
 DL-QI-Pfad-Länger
 QI-Pfad für Video-Player
 standard-Größen für Video-Player festlegbar
@@ -28,7 +25,6 @@ großes galerie update (kommentare, bewertungen, counter, bilderserien [spiegel-o
 shop update
 lang-system fertig umstellen
 
-statistik-update
 Vorschau für News
 
 Pop Up-Editor, Tag-List im Editor
@@ -44,7 +40,7 @@ pw schwierigkeit festlegen
 email aktivierung inkl. check auf gültige email
 mail adresse aktivieren lassen bei neu registrierung (einstellbar)
 mail adresse aktivieren lassen bei nachträglicher änderung (einstellbar)
-
+statistik-update
 
 darüberhinaus:
 

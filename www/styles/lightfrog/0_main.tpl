@@ -38,11 +38,15 @@
 <!--section-start::MATRIX-->{..doctype..}
 <html lang="{..language..}">
   <head>
-    {..base..}
-    {..title..}
-    {..meta..}
-    {..link..}
-    {..script..}
+    {..base_tag..}
+    {..title_tag..}
+    {..meta_tags..}
+    {..css_links..}
+    {..favicon_link..}
+    {..feed_link..}
+    {..jquery..}
+    {..jquerytools..}
+    {..javascript..}
   </head>
   {..body..}
 </html><!--section-end::MATRIX-->

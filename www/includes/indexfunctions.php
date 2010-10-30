@@ -46,45 +46,49 @@ function get_maintemplate ( $BODY, $PATH_PREFIX = "", $BASE = FALSE )
     
     // Base for Images
     if ( $BASE !== FALSE ) {
-        $template_base = '<base href="'.$BASE .'">
-                ';
+        $template_base = '<base href="'.$BASE .'">';
     } else {
         $template_base = "";
     }
-
-    // Create link-Rows
-    $template_link = "";
+	
+	// Get Titel
+	$template_title = get_title();
+	
+    // Create link-Rows    
     if ( $global_config_arr['show_favicon'] == 1 ) {
-                $template_link .= '
-                <link rel="shortcut icon" href="'.$PATH_PREFIX .'styles/'.$global_config_arr['style'].'/icons/favicon.ico">';
+		$template_favicon = '<link rel="shortcut icon" href="'.$PATH_PREFIX .'styles/'.$global_config_arr['style'].'/icons/favicon.ico">';
+    } else {
+        $template_favicon = "";
     }
-    $template_link .= '
-                <link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">
-                '. get_css ( $PATH_PREFIX );
+	$template_feed = '<link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">';
 
     // Create script-Rows
     $template_script = "";
-    $template_script .= '
-                <script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery.tools.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
+    $template_javascript .= '
+                '. get_js ( $PATH_PREFIX ) .'
                 <script type="text/javascript" src="'.$PATH_PREFIX .'includes/js_functions.js"></script>';
-
-    // Replace Placeholders
-    $template = str_replace("{..doctype..}", $template_doctype, $template);
-    $template = str_replace("{..base..}", $template_base, $template);
-    $template = str_replace("{..title..}", "<title>".get_title()."</title>", $template);
-    $template = str_replace("{..meta..}", get_meta (), $template);
-    $template = str_replace("{..link..}", $template_link, $template);
-    $template = str_replace("{..script..}", $template_script, $template);
+                
+	// Create jQuery & jQueryTool-Rows
+    $template_jquery = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery.min.js"></script>';
+    $template_jquerytools = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquerytools/jquery.tools.min.js"></script>';
 
     // Get HTML-Matrix
     $theTemplate->load("MATRIX");
     $theTemplate->tag("doctype", $template_doctype);
     $theTemplate->tag("language", $global_config_arr['language']);
-    $theTemplate->tag("base", $template_base);
-    $theTemplate->tag("title", "<title>".get_title()."</title>");
-    $theTemplate->tag("meta", get_meta());
-    $theTemplate->tag("link", $template_link);
-    $theTemplate->tag("script", $template_script);
+    $theTemplate->tag("base_tag", $template_base);
+    $theTemplate->tag("title", $template_title);
+    $theTemplate->tag("title_tag", "<title>".$template_title."</title>");
+    $theTemplate->tag("meta_tags", get_meta());
+    
+    $theTemplate->tag("css_links", get_css($PATH_PREFIX));
+    $theTemplate->tag("favicon_link", $template_favicon);
+    $theTemplate->tag("feed_link", $template_feed);
+    
+    $theTemplate->tag("javascript", $template_javascript);
+    $theTemplate->tag("jquery", $template_jquery);
+    $theTemplate->tag("jquerytools", $template_jquerytools);
+    
     $theTemplate->tag("body", $BODY);
     
     // Return Template
