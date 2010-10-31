@@ -3,35 +3,26 @@ alix6:
 default design noch bearbeiten
 links zu original-ansicht in artikel, news, etc.
 option zum speicher und schließen, sowie speichern und erneut bearbeiten
-
-jquery und jquery tools einbindung über checkbox
-
-
 DL-QI-Pfad-Länger
 QI-Pfad für Video-Player
 standard-Größen für Video-Player festlegbar
+Vorschau für News
+Pop Up-Editor, Tag-List im Editor
 
 index-suche auch bei normaler news/artikel/DL-Suche
 Suche: anzeigen von index-wörtern nach suche
 
-Startseite (und News entsprechend...)
-
 Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
-
-[php-fonts]
 
 großes galerie update (kommentare, bewertungen, counter, bilderserien [spiegel-online], diverese möglichkeiten zur bildanzeige, unterkategorie, verbesserter upload, verbesserte verwaltung)
 
-shop update
-lang-system fertig umstellen
 
-Vorschau für News
-
-Pop Up-Editor, Tag-List im Editor
 
 
 
 alix7:
+[php-fonts]
+lang-system fertig umstellen
 
 großes User-Update (Benutzergruppen auch mehrere, Ränge nach Posts, Rechte im Frontend, Sperren, bannen, verwarnen, admin-kommentare zu usern, userkarte über googlemaps)
 Rang-System: Möglichkeiten zur Namenseinfärbung wie bei Rang
@@ -40,7 +31,10 @@ pw schwierigkeit festlegen
 email aktivierung inkl. check auf gültige email
 mail adresse aktivieren lassen bei neu registrierung (einstellbar)
 mail adresse aktivieren lassen bei nachträglicher änderung (einstellbar)
+
+shop update
 statistik-update
+Startseite (und News entsprechend...)
 
 darüberhinaus:
 
@@ -64,7 +58,6 @@ verbesserung:
 kommentare & bewertung bei downloads
 Inhalts-Bilderverwaltung verbessern (ordner-system, neu hochladen, umbennen, etc.)
 counter für alles (klicks auf artikel, seiten, partnerlink, bilder, wallpaper, buchstaben...)
-statistik überarbeiten
 druckansicht für artikel
 No Java Script kompatbilität überprüfen
 email-spamschutz mit javascript verschlüsselung und grafik
@@ -72,6 +65,18 @@ email-spamschutz mit javascript verschlüsselung und grafik
 
 
 
+
 weit darüberhinaus (Frogsystem 3):
 oop
-modularisierung
+
+
+
+modularisierung:
+- einheitliche offzielle DB
+- module können andere moduel voraussetzen, auch Oder verknüpfung möglich, (auch NOT aber selten)
+- module kopieren dateien hoch
+- datenbank operationen wird über schnittstelle gemacht, db-deinstallierung der module wird auch mitgeliefert
+- schnittstelle zu event-system
+- schnittstelle zu config system
+- modul kann optionen zum datenimport aus anderen modulen anbieten (während der installation und aus dem modul menü heraus.)
+- es gitb core-module die aber evtl. ersetzt werden können (z.b. seitenzahlen, klassen für upload)

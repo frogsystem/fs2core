@@ -1,0 +1,38 @@
+idee 1:
+- entspricht der kompletten Darstellung der Seiten navigation
+- alle module sollen dieses modul nutzen
+- es stehen 3(+x) templates zur auswahl zur verfügung, die sich sinngemäß aufteilen lassen, z.b. in "spartanisch" "komfortabel" "alle möglichkeiten" oder aber auch "News" "Galerie", etc.
+- die 3+x templates werden daher auch nummeriert und nicht benann
+- lightfrog setzt per default auf das kleinmittel-groß konzept
+vorteil:
+- drei vollkommen unabhängige darstellungen
+- template muss nur einmal definiert werden (nr 2+3 kann man ignorieren, wenn man eh nur template 1 nutzt)
+- leicht erweiterbar um mehr templates
+nachteile:
+- nicht jedes modul hat eigene pagenav
+- elemente müssten u.U. auch 3 mal definiert werden auch wenn sie gleich aussehen sollen und nur die aggregation unterschiedlich ist
+
+alternative:
+- seitenzahlen werden ohnehin als klasse definiert
+=> klasse muss unten definierte costumizaations liefern
+- einmaliges template für die darstelung der einzelnen elemente
+- jedes modul greift auf klasse zu
+- bietet selbst ein template zur kombinierung der elemente zu einer pagenav für das jeweilige modul 
+problem:
+- einzelne elemente können nicht flexibel gestaltet werden, nur die kombination daraus ist frei
+- template muss für jedes modul exta gemacht werden
+vorteil:
+- template kann für jedes modul extra gemacht werden
+- es gibt für jedes element nur einedarstellung
+
+Was brauchen die templates:
+- aktuelle Seitennummer
+- gesamt seiten zahl
+- next link, prev link
+- first link, last link
+- direct link +3 seiten und -3 seiten von der aktuellen aus
+- direct link +3seiten von first und -3 seiten von last page
+- auslassungszeichen für zwischen geschaltete seiten
+
+- möglichkeit seiten per dropdown auszuwählen (inkl. vorauswahl der aktuellen seite
+- möglichkeit seiten zahl einzugeben und abzusenden
