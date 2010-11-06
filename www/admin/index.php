@@ -131,10 +131,14 @@ echo'
 <head>
     <title>Frogsystem 2 - '.$PAGE_DATA_ARR['title'].'</title>
     <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    
     <link rel="stylesheet" type="text/css" href="admin.css">
     <link rel="stylesheet" type="text/css" href="editor.css">
     <link rel="stylesheet" type="text/css" href="html-editor.css">
-    <script src="../resources/jquery/jquery.tools.min.js" type="text/javascript"></script>
+    
+    <script src="../resources/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="../resources/jquerytools/jquery.tools.min.js" type="text/javascript"></script>
+    
     <script src="functions.js" type="text/javascript"></script>
     <script src="../includes/js_functions.js" type="text/javascript"></script>
 </head>

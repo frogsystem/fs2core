@@ -50,7 +50,7 @@ if ( $db ) {
 <html>
     <head>
         <title>Frogsystem 2 - Newsvorschau</title>
-        <script type="text/javascript" src="../resources/jquery/jquery.tools.min.js"></script>
+        <script type="text/javascript" src="../resources/jquery/jquery.min.js"></script>
         <script>
             function loaddata()
             {
@@ -165,8 +165,11 @@ if ( $db ) {
 
         // Kategorie lesen
         settype($_POST['news_cat_id'], "integer");
-        $cat_arr = $sql->getData("news_cat", "cat_name,cat_id", "WHERE `cat_id` = '".$_POST['news_cat_id']."'", 1);
-        killhtml(&$cat_arr['cat_name']);
+        if (FALSE != $cat_arr = $sql->getData("news_cat", "cat_name,cat_id", "WHERE `cat_id` = '".$_POST['news_cat_id']."'", 1)) {
+			$cat_arr['cat_name'] = killhtml($cat_arr['cat_name']);
+		} else {
+			$cat_arr['cat_name'] = "?";
+		}
         $cat_arr['cat_pic'] = image_url("images/cat/", "news_".$cat_arr['cat_id']);
 
 

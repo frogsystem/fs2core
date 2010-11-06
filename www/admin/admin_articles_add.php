@@ -164,7 +164,8 @@ else
     // Kategorien auflisten
     if ($config_arr['cat_force_select'] == 1) {
         echo '
-                                    <option value="-1"></option>';
+										<option value="-1">'.$TEXT['admin']->get("please_select").'</option>
+										<option value="-1">'.$TEXT['admin']->get("select_hr").'</option>';
     }
         
     $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );

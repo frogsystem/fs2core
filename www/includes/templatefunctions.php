@@ -334,7 +334,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
         // Editor Form
         $return_template .= '
-                    <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
+                    <script src="../resources/codemirror/codemirror.js" type="text/javascript"></script>
                     <input type="hidden" id="section_select" value="">
                     <table border="0" cellpadding="4" cellspacing="0" width="600">
                         <tr><td class="line">Templates bearbeiten</td></tr>

@@ -1,13 +1,21 @@
+done:
+- Vorschau für News
+- Kategorieauswahl bei News/Arikeln erzwingen option
+- standard-Größen für Video-Player festlegbar
+
 alix6:
 
-default design noch bearbeiten
-links zu original-ansicht in artikel, news, etc.
-option zum speicher und schließen, sowie speichern und erneut bearbeiten
-DL-QI-Pfad-Länger
-QI-Pfad für Video-Player
-standard-Größen für Video-Player festlegbar
-Vorschau für News
-Pop Up-Editor, Tag-List im Editor
+- default design noch bearbeiten
+- links zu original-ansicht in artikel, news, etc.
+- option zum speicher und schließen, sowie speichern und erneut bearbeiten
+- DL-QI-Pfad-Länger
+- QI-Pfad für Video-Player
+
+
+
+- codemirror 0.9 integrieren
+- Pop Up-Editor mit lightbox, Tag-List im Editor
+- tag hilfe als weiteres popup
 
 index-suche auch bei normaler news/artikel/DL-Suche
 Suche: anzeigen von index-wörtern nach suche

@@ -41,6 +41,7 @@ today:                                   Heute
 reset:                                   Reset
 now:                                     Jetzt
 change:                                  Ändern
+please_select:							 Bitte auswählen
 select_hr:                               ----------------------------------
 id:                                      ID
 default:                                 Standard
