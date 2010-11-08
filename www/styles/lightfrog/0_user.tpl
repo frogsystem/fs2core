@@ -128,8 +128,8 @@
         <input type="checkbox" class="pointer textmiddle" name="stayonline" id="stayonline" value="1" checked>
       </td>
     </tr>
-  </table>
 </form>
+  </table>
 <!--section-end::LOGIN-->
 
 <!--section-start::REGISTER--><b>Registrierung</b><br><br>

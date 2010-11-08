@@ -429,7 +429,8 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
 
 // Reset data and go to default page
 else {
-    unset($_POST);
+    unset($_POST['cat_id'], $_POST['cat_action']);
+   # unset($_POST);
 }
 
 //////////////////////////////
@@ -450,7 +451,9 @@ if (!isset($_POST['cat_id']) && !isset($_POST['cat_action'])) {
 
     // Display Error Messages
     if (isset($_POST['sended']) && $_POST['sended'] == "add") {
-        systext( $TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
+        $_POST['cat_name'] = trim($_POST['cat_name']);
+        $error = (strlen($_POST['cat_name']) === 0) ? $TEXT['admin']->get("form_not_filled") : $TEXT['admin']->get("form_only_allowed_values");
+        systext( $TEXT['admin']->get("cat_not_added")."<br>".$error, $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
     // Set Defaults
     } else {
         $_POST['cat_type'] = "img";

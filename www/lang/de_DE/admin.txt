@@ -126,6 +126,8 @@ cat:                                     Kategorie
 cats:                                    Kategorien
 cats_select:                             Kategorien auswählen
 cats_not_found:                          Keine Kategorien gefunden!
+cat_added:                               Kategorie wurde hinzugefügt
+cat_not_added:                           Kategorie wurde nicht hinzugefügt
 cats_deleted:                            Kategorien wurden gelöscht
 cats_not_deleted:                        Kategorien wurden nicht gelöscht
 cats_not_all_deleted:                    Nicht alle Kategorien konnten gelöscht werden

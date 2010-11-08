@@ -1,48 +1,106 @@
-done:
+done alix6:
+
+System:
+- sql-klasse
+- adminpage-klasse
+- verbessertes lang-system
+- select-list-klasse
+- deletepage-klasse
+
+Template-Editor:
+- codemirror 0.9 integriert
+
+Kleinigkeiten:
 - Vorschau für News
 - Kategorieauswahl bei News/Arikeln erzwingen option
 - standard-Größen für Video-Player festlegbar
 
-alix6:
 
+todo alix6:
+
+Kleinigkeiten:
 - default design noch bearbeiten
 - links zu original-ansicht in artikel, news, etc.
 - option zum speicher und schließen, sowie speichern und erneut bearbeiten
 - DL-QI-Pfad-Länger
-- QI-Pfad für Video-Player
+- QI-Pfad für Videos
 
-
-
-- codemirror 0.9 integrieren
-- Pop Up-Editor mit lightbox, Tag-List im Editor
+Template-Editor:
+- template Pop-Up-Editor mit lightbox
+- Tag-List auch im pop-up-Editor
 - tag hilfe als weiteres popup
 
-index-suche auch bei normaler news/artikel/DL-Suche
-Suche: anzeigen von index-wörtern nach suche
+Suche:
+- index-suche als klasse
+- index-suche auch bei normaler news/artikel/DL-Suche
+- Suche: anzeigen von index-wörtern nach suche
+- verbesserung der schlüsselwörter
 
-Seitenzahlen => http://forum.sweil.de/viewtopic.php?p=494#p494
+Seitenzahlen:
+- http://forum.sweil.de/viewtopic.php?p=494#p494
+- siehe auch seitenzahlen.txt
 
-großes galerie update (kommentare, bewertungen, counter, bilderserien [spiegel-online], diverese möglichkeiten zur bildanzeige, unterkategorie, verbesserter upload, verbesserte verwaltung)
+großes galerie update:
+- kommentare
+- bewertungen
+- counter
+- bilderserien [spiegel-online]
+- diverese möglichkeiten zur bildanzeige
+- unterkategorie
+- verbesserter upload
+- verbesserte verwaltung
 
 
 
 
 
 alix7:
-[php-fonts]
-lang-system fertig umstellen
 
-großes User-Update (Benutzergruppen auch mehrere, Ränge nach Posts, Rechte im Frontend, Sperren, bannen, verwarnen, admin-kommentare zu usern, userkarte über googlemaps)
-Rang-System: Möglichkeiten zur Namenseinfärbung wie bei Rang
-pw zurücksetzen
-pw schwierigkeit festlegen
-email aktivierung inkl. check auf gültige email
-mail adresse aktivieren lassen bei neu registrierung (einstellbar)
-mail adresse aktivieren lassen bei nachträglicher änderung (einstellbar)
+System:
+- php-fonts
+- lang-system fertig umstellen
+- apps: parameter übergeben
 
-shop update
-statistik-update
-Startseite (und News entsprechend...)
+großes User-Update:
+- Benutzergruppen (auch mehrere)
+- Rechte im Frontend
+- Ränge nach Posts
+- Rang-System: Möglichkeit den Titel einzufärben wie beim Benutezrnamen
+- verwarnen, sperren, bannen
+- admin-kommentare zu usern
+- weitere User-Infos, wie Name, Vorname, selbst definierte felder...
+- userkarte über googlemaps
+- pw zurücksetzen
+- pw schwierigkeit festlegen
+- pw erlaubt zeichen festlegen
+- email aktivierung inkl. check auf gültige email
+- email adresse aktivieren lassen bei neu registrierung (einstellbar)
+- email adresse aktivieren lassen bei nachträglicher änderung (einstellbar)
+- username: erlaubte zeichen festlegen
+- option: email als username und/oder als loginname
+
+News:
+- als eigenes modul
+- news.php => alle news mit seitenscrollen
+- news.php => nach kategorien filtern
+- newssearch.php => suche nach stichworten, zeiträumen, kategorien
+- app: letzte headlines
+- app: letzte news
+- app: top-news
+
+startseite:
+- unabhängig von inhalt
+- ein design, aufgefüllt mir apps
+- app: ankündigung
+- app: letzte downloads
+- app: umfrage
+- app: forenticker
+
+
+
+shop update!?
+statistik-update!?
+
 
 darüberhinaus:
 
@@ -53,7 +111,7 @@ newsletter
 kalendersystem (termine, veröffentlichungen, countdown...)
 sitemap und artikel kategorie system
 linksystem mit bannern klick-counter, bewertungen, etc. (evtl mit partnersystem verbinden?!)
-.htaccess verwendung
+.htaccess verwendung zwecks schönen URLs
 datenbank-backup-funktion
 zonen-system?!?
 web 2.0 / networking funktionen für user (profil, guestbook, pm, ...)
@@ -61,6 +119,10 @@ web 2.0 / networking funktionen für user (profil, guestbook, pm, ...)
 reorganisation:
 fscodes komplett über die datenbank oragnisieren & selbst erstellbar
 editor verbessern und besser verwaltbar machen (buttons selbst hochladen etc. pp)
+admin-tamplate umstellung fertig stellen
+lang-system umstellung abschließen
+styles-irgendwie sprach unabhängig machen
+
 
 verbesserung:
 kommentare & bewertung bei downloads

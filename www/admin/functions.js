@@ -461,38 +461,38 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
 {
   switch (syntaxHighlight) {
     case 4:
-        var parser = ["../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js"];
-        var css = "../resources/codemirror/contrib/php/css/phpcolors.css";
+        var base = ["base.js", "php.js"];
+        var css = "../resources/codemirror/css/phpcolors.css";
         break;
     case 3:
-        var parser = ["tokenizejavascript.js", "parsejavascript.js"];
+        var base = ["base.js", "javascript.js"];
         var css = "../resources/codemirror/css/jscolors.css";
         break;
     case 2:
-        var parser = "parsecss.js";
+        var base = ["base.js", "css.js"];
         var css = "../resources/codemirror/css/csscolors.css";
         break;
     default:
-        var parser = ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"];
+        var base = ["base.js", "html.js"];
         var css = ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"];
         break;
   }
 
   var textarea = document.getElementById(textareaId);
   var editor = CodeMirror.fromTextArea(textareaId, {
-    parserfile: parser,
-    stylesheet: css,
     path: "../resources/codemirror/js/",
+    basefiles: base,
+    parserfile: [],
+    stylesheet: css,
     content: textarea.value,
     lineNumbers: true,
-    //textWrapping: false,
+    textWrapping: false,
     continuousScanning: 500,
     tabMode: "shift",
     height: editorHeight,
     iframeClass:"html-editor-iframe",
     readOnly: readOnlyState
   });
-  //editor.setLineNumbers(true);
   return editor;
 }
 //Switch to Inline-Editor
