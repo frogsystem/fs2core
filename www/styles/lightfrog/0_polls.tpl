@@ -7,9 +7,7 @@
       </td>
     </tr><!--section-end::APPLET_POLL_ANSWER_LINE-->
 
-<!--section-start::APPLET_POLL_BODY--><p>
-  <b>Umfrage:</b>
-</p>
+<!--section-start::APPLET_POLL_BODY--><h2>Umfrage</h2>
 
 <form method="post">
   <input type="hidden" name="id" value="{..poll_id..}">
@@ -32,10 +30,8 @@
   </table>
 </form><!--section-end::APPLET_POLL_BODY-->
 
-<!--section-start::APPLET_NO_POLL--><p>
-  <b>Umfrage:</b>
-</p>
-<p align="center">
+<!--section-start::APPLET_NO_POLL--><h2>Umfrage</h2>
+<p>
     Keine Umfrage gefunden!
 </p><!--section-end::APPLET_NO_POLL-->
 

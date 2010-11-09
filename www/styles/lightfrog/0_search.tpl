@@ -7,6 +7,7 @@
   <input class="small input input_highlight middle" id="mini_search_keyword" name="keyword" size="13" maxlength="100" value="{..keyword..}">
   <input class="small pointer middle" type="submit" value="Go">
 </form>
+<p></p>
 <!--section-end::APPLET-->
 
 <!--section-start::SEARCH--><b class="atleft">Suche</b>

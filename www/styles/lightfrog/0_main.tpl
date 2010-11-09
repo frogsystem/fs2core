@@ -6,8 +6,9 @@
     </div>
 
     <div id="menu_left">
-    $NAV(left.nav)
     $APP(mini-search.php)
+    $NAV(left.nav)
+    [%feeds%]
     </div>
     
     <div id="menu_right">
@@ -17,7 +18,6 @@
       $APP(poll-system.php)
       $APP(affiliates.php)
       $APP(mini-statistics.php)
-      [%feeds%]
     </div>
 
     <div id="content">

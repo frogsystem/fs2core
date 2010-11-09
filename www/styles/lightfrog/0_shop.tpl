@@ -1,4 +1,4 @@
-<!--section-start::APPLET_ITEM--><p align="center">
+<!--section-start::APPLET_ITEM--><p>
   <a href="{..item_url..}" target="_blank">
     {..item_small_image..}
   </a><br>
@@ -10,9 +10,7 @@
   </span>  
 </p><!--section-end::APPLET_ITEM-->
 
-<!--section-start::APPLET_BODY--><p>
-  <b>Shop:</b>
-</p>
+<!--section-start::APPLET_BODY--><h2>Shop</h2>
 {..applet_items..}
 <!--section-end::APPLET_BODY-->
 

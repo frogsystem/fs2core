@@ -1,13 +1,15 @@
-<!--section-start::APPLET_LINE--><span class="small">{..date..} - </span><a class="small" href="#news_{..news_id..}">{..title..}</a><br><!--section-end::APPLET_LINE-->
+<!--section-start::APPLET_LINE--><li><a href="#news_{..news_id..}">{..title..}</a></li><!--section-end::APPLET_LINE-->
 
 <!--section-start::APPLET_BODY--><table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
   <tr valign="top">
     <td width="50%">
-      <b>Aktuelle News:</b><br>
-      {..news_lines..}
+      <h3><b>Aktuelle News</b></h3>
+      <ul class="related">
+        {..news_lines..}
+      </ul>
     </td>
     <td width="50%">
-      <b>Downloads:</b><br>
+      <h3><b>Letzte Downloads</b></h3>
       {..download_lines..}
     </td>
   </tr>
@@ -16,35 +18,33 @@
 
 <!--section-start::LINKS_LINE--><li><a href="{..url..}" target="{..target..}">{..title..}</a></li><!--section-end::LINKS_LINE-->
 
-<!--section-start::LINKS_BODY--><b>Weiterführende Links:</b>
-<ul>
+<!--section-start::LINKS_BODY--><h3><b>Weiterführende Links</b></h3>
+<ul class="related">
   {..links..}
 </ul>
 <!--section-end::LINKS_BODY-->
 
-<!--section-start::NEWS_BODY--><table width="100%" cellpadding="0" cellspacing="0">
-  <tr>
-    <td>
-      <b class="atleft" id="news_{..news_id..}">{..titel..}</b>
-      <span class="small atright">
-        ({..cat_name..})
-      </span><br>
-      <span class="small">von <a href="{..user_url..}">{..user_name..}</a>, am {..date..}</span>
-      
-      {..text..}
-      <div>
-        {..related_links..}
-        <span class="small atright">
-          <a href="{..comments_url..}">
-             Kommentare ({..comments_number..})
-           </a>
-        </span>          
-      </div>
-      
-    </td>
-  </tr>
-</table>
-<br><!--section-end::NEWS_BODY-->
+<!--section-start::NEWS_BODY--><div style="position:relative;">
+  <h2 id="news_{..news_id..}">{..titel..}</h2>
+  <span class="atright" style="position:absolute;top:0px;right:0px;">
+    ({..cat_name..})
+  </span>
+  
+  <span>
+    von <a href="{..user_url..}">{..user_name..}</a>,
+    am {..date..}
+  </span>
+</div>
+
+{..text..}
+{..related_links..}
+
+<p align="right">
+  <a href="{..comments_url..}">
+    Kommentare ({..comments_number..})
+  </a>
+</p>
+<!--section-end::NEWS_BODY-->
 
 <!--section-start::BODY-->{..headlines..}
 <br>
@@ -63,15 +63,13 @@
 
 <!--section-start::COMMMENT_ENTRY--><table align="center" class="comment_table" cellpadding="0" cellspacing="0">
   <tr>
-    <td class="comment_td comment_left" style="border-left:1px solid #A5ACB2;">
+    <td class="comment_td comment_left">
       {..user..}
     </td>
     <td class="comment_td">
       <div class="comment_top">
-        <span class="atleft">
-          <b>{..titel..}</b>
-        </span>
-        <span class="small atright">
+        <h4 class="atleft"><b>{..titel..}</b></h4>
+        <span class="atright">
           {..date..}
         </span>      
       </div>
@@ -80,30 +78,24 @@
   </tr>  
 </table><!--section-end::COMMMENT_ENTRY-->
 
-<!--section-start::COMMENT_CAPTCHA-->    <tr>
-      <td>
-        <img src="{..captcha_url..}" alt="CAPTCHA">
-      </td>
-      <td>
-        <input class="small input input_highlight" name="spam" size="30" maxlength="10">
-        <span class="small">Bitte die Rechenaufgabe lösen!</span>
-        <a class="small" href="#captcha_note">(Hinweis)</a>
-      </td>
-    </tr><!--section-end::COMMENT_CAPTCHA-->
+<!--section-start::COMMENT_CAPTCHA--><p>
+  <span class="small">Bitte die Rechenaufgabe lösen:</span><br>
+  <label for="comment_captcha">
+    <img src="{..captcha_url..}" alt="CAPTCHA" class="middle">
+  </label>
+  <input class="small input input_highlight" name="spam" 
+id="comment_captcha" size="15" maxlength="5">
+</p>
+<!--section-end::COMMENT_CAPTCHA-->
 
-<!--section-start::COMMENT_CAPTCHA_TEXT-->    <tr>
-      <td></td>
-      <td>
-        <p class="small" id="captcha_note">
-          <b>Hinweis:</b> Die Rechenaufgabe verhindert, dass Spam-Bots auf dieser Seite Werbung als Kommentar einstellen können. Um die Abfrage zu umgehen, kannst du dich <a href="?go=register">registrieren</a>.
-        </p>
-      </td>
-    </tr>
+<!--section-start::COMMENT_CAPTCHA_TEXT--><p class="small" id="captcha_note">
+  <b>Hinweis:</b> Die Rechenaufgabe verhindert, dass Spam-Bots auf dieser Seite Werbung einstellen können. Um die Abfrage zu umgehen, kannst du dich <a href="?go=register">registrieren</a>.
+</p>
 <!--section-end::COMMENT_CAPTCHA_TEXT-->
 
-<!--section-start::COMMENT_FORM_NAME--><input class="small input input_highlight" id="comment_name" name="name" size="30" maxlength="100">
-<span class="small">Jetzt</span>
-<a class="small" href="?go=login">anmelden?</a><!--section-end::COMMENT_FORM_NAME-->
+<!--section-start::COMMENT_FORM_NAME-->Name:<br>
+<input class="small input input_highlight" id="comment_name" name="name" size="30" maxlength="100">
+<a class="small" href="?go=login">Jetzt anmelden?</a><!--section-end::COMMENT_FORM_NAME-->
 
 <!--section-start::COMMENT_FORM--><p>
   <b>Kommentar hinzufügen</b>
@@ -114,44 +106,34 @@
   <input type="hidden" name="add_comment" value="1">
   <input type="hidden" name="id" value="{..news_id..}">
   
-  <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
+  <table align="center" class="comment_table" cellpadding="0" cellspacing="0">
     <tr>
-      <td>
-        <b>Name: </b>
-      </td>
-      <td>
+      <td class="comment_td comment_left" style="font-size:120%; font-weight:bold;">
         {..name_input..}
       </td>
-    </tr>
-    <tr>
-      <td>
-        <b>Titel:</b>
-      </td>
-      <td>
-        <input class="small input input_highlight" id="comment_title" name="title" size="30" maxlength="100">
-      </td>
-    </tr>
-    <tr>
-      <td valign="top">
-        <b>Text:</b>
-        <p class="small">
-          Html&nbsp;ist&nbsp;<b>{..html..}</b>.<br>
-          <a href="?go=fscode">FScode</a>&nbsp;ist&nbsp;<b>{..fs_code..}.</b>
+      <td class="comment_td">
+        <div class="comment_top">
+          <span class="atleft">
+            Titel:
+            <input class="small input input_highlight" id="comment_title" name="title" size="40" maxlength="100">
+            </span>
+          <span class="atright">
+            $VAR(date_time)
+          </span>      
+        </div>
+        {..textarea..}
+        <span class="small">
+          Html&nbsp;ist&nbsp;<b>{..html..}</b>.
+          <a href="?go=fscode" title="neues Fenster">FSCode</a>&nbsp;ist&nbsp;<b>{..fs_code..}.</b>
+        </span>
+        {..captcha..}
+        <p align="center">
+          <input class="pointer" type="submit" value="Abschicken">
         </p>
       </td>
-      <td>
-        {..textarea..}
-      </td>
     </tr>
-    {..captcha..}
-    <tr>
-      <td></td>
-      <td>
-        <input class="pointer" type="submit" value="Abschicken">
-      </td>
-    </tr>    
-    {..captcha_text..}
   </table>
+{..captcha_text..}
 </form>
 <!--section-end::COMMENT_FORM-->
 

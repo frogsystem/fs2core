@@ -1,4 +1,4 @@
-<!--section-start::APPLET_LOGIN--><b>Anmelden</b>
+<!--section-start::APPLET_LOGIN--><h2>Anmelden</h2>
 
 <form action="" method="post">
   <input type="hidden" name="go" value="login">
@@ -46,17 +46,17 @@
 </form>
 <!--section-end::APPLET_LOGIN-->
 
-<!--section-start::APPLET_ADMINLINE--><a class="small" href="{..admincp_url..}">- Admin CP</a><br><!--section-end::APPLET_ADMINLINE-->
+<!--section-start::APPLET_ADMINLINE--><li><a href="{..admincp_url..}">Admin CP</a></li><!--section-end::APPLET_ADMINLINE-->
 
-<!--section-start::APPLET_MENU--><b>Willkommen {..user_name..}!</b><br>
+<!--section-start::APPLET_MENU--><h2>Willkommen {..user_name..}!</h2>
 {..user_image..}
 
-<p>
-  <b>Benutzermenü:</b><br>
-  <a class="small" href="{..user_edit_url..}">- Mein Profil</a><br>
+<h2>Benutzermenü</h2>
+<ul>
+  <li><a href="{..user_edit_url..}">Mein Profil</a></li>
   {..admincp_line..}
-  <a class="small" href="{..logout_url..}">- Abmelden</a>
-</p><!--section-end::APPLET_MENU-->
+  <li><a href="{..logout_url..}">Abmelden</a></li>
+</ul><!--section-end::APPLET_MENU-->
 
 <!--section-start::LOGIN--><b>Anmelden</b><br><br>
 

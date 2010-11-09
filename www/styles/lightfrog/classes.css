@@ -101,4 +101,5 @@ textarea {
 .comment_left {
   width:140px;
   background-color:#F2F2F2;
+  border-left:1px solid #A5ACB2;
 }

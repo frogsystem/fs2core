@@ -17,21 +17,20 @@
   <br><br>
 </p><!--section-end::ANNOUNCEMENT-->
 
-<!--section-start::STATISTICS--><p>
-  <b>Statistik:</b>
-</p>
-<p class="small">
+<!--section-start::STATISTICS--><h2>Statistik</h2>
+
+<p>
   - <b>{..visits..}</b> Visits<br>
   - <b>{..visits_today..}</b> Visits heute<br>
   - <b>{..hits..}</b> Hits<br>
   - <b>{..hits_today..}</b> Hits heute
 </p>
-<p class="small">  
+<p>  
   - <b>{..visitors_online..}</b> Besucher online<br>
   - <b>{..registered_online..}</b> registrierte <br>
   - <b>{..guests_online..}</b> Gäste
 </p>
-<p class="small">  
+<p>  
   - <b>{..num_users..}</b> registrierte User<br>
   - <b>{..num_news..}</b> News<br>
   - <b>{..num_comments..}</b> Kommentare<br>

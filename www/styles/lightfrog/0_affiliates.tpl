@@ -4,16 +4,9 @@
   </a>
 </div><!--section-end::APPLET_ENTRY-->
 
-<!--section-start::APPLET_BODY--><p>
-  <b>Partnerseiten:</b>
-</p>
+<!--section-start::APPLET_BODY--><h2>Partnerseiten</h2>
 <p>
   {..permanents..}
-</p>
-<p>
-  <b>Zufallsauswahl:</b>
-</p>
-<p>
   {..non_permanents..}
 </p>
 <!--section-end::APPLET_BODY-->
