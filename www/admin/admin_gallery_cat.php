@@ -2,8 +2,15 @@
 
 //TODO
 //- nach oben/unten von den 2. obersten/untersten kategorien führt zum tausch der beiden kategorien
-//- Ordner
+//- Update Wallpapers on delete
+//- Cat image
+//- catimage from content
 
+//////////////////////////
+//// Locale Constants ////
+//////////////////////////
+define("IMAGE_FOLDER", "../media/gallery_cat/");
+define("CONTENT_FOLDER", "../media/gallery/");
 
 /////////////////////////////////////
 //// Locale Secure Data Function ////
@@ -139,20 +146,19 @@ elseif (TRUE
         $color = "green";
         
         // Image Operations
-        $image_folder = "media/gallery/cat/";
         if ($_POST['cat_img_delete'] == 1) {
             // Delete Image
-            if (image_delete($image_folder, $_POST['cat_id'])) {
+            if (image_delete(IMAGE_FOLDER, $_POST['cat_id'])) {
                 $messages[] = $TEXT["admin"]->get("cat_image_deleted");
-            } elseif(image_exists($image_folder, $_POST['cat_id'])) {
+            } elseif(image_exists(IMAGE_FOLDER, $_POST['cat_id'])) {
                 $messages[] = $TEXT["admin"]->get("cat_image_not_deleted");
                 $color = "yellow";
             }
             
         // Upload new Image
         } elseif($_FILES['cat_img']['name'] != "") {
-            image_delete($image_folder, $_POST['cat_id']);
-            $upload = upload_img($_FILES['cat_img'], $image_folder, $_POST['cat_id'], $config_arr['cat_img_size']*1024, $config_arr['cat_img_x'], $config_arr['cat_img_y']);
+            image_delete(IMAGE_FOLDER, $_POST['cat_id']);
+            $upload = upload_img($_FILES['cat_img'], IMAGE_FOLDER, $_POST['cat_id'], $config_arr['cat_img_size']*1024, $config_arr['cat_img_x'], $config_arr['cat_img_y']);
             $messages[] = upload_img_notice($upload);
         }        
         
@@ -196,7 +202,7 @@ elseif ( TRUE
                      && FALSE !== $sql->deleteData("gallery_cat", "`cat_id` = '".$aCat['cat_id']."'", "LIMIT 1")
                  ) {
                     // Delete Cat Image
-                    if (image_exists("media/gallery/cat/", $aCat['cat_id']) && !image_delete("media/gallery/cat/", $aCat['cat_id'])) {
+                    if (image_exists(IMAGE_FOLDER, $aCat['cat_id']) && !image_delete(IMAGE_FOLDER, $aCat['cat_id'])) {
                         $successful['img'] = FALSE;
                     }
                  } else {
@@ -324,13 +330,21 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
             }
         }
         
+        // Get Folders
+        $FA = new fileaccess();
+        $folder_arr = $FA->getSubDirArray(CONTENT_FOLDER, FALSE, TRUE);
+        foreach ($folder_arr as $aOption) {
+            $aOption = killhtml($aOption['path']);
+            $folder_arr[] = '<option value="'.$aOption.'" '.getselected($aOption, $_POST['content_default_folder']).'>'.$aOption.'</option>';
+        }        
+        
         // Get Old Date
         $cat_arr['date_old'] = $sql->getData("gallery_cat", "cat_date", "WHERE `cat_id` = '".$_POST['cat_id']."'", 1);
 
         // Display Page
 
         // Template Conditions
-        $adminpage->addCond("image_exists",     image_exists("media/gallery/cat/", $_POST['cat_id']));
+        $adminpage->addCond("image_exists",     image_exists(IMAGE_FOLDER, $_POST['cat_id']));
         $adminpage->addCond("type",                         $_POST['cat_type']);
         $adminpage->addCond("visibility",                   $_POST['cat_visibility']);
         $adminpage->addCond("content_order",                $_POST['content_order']);
@@ -350,14 +364,14 @@ if (is_array($_POST['cat_id']) && isset($_POST['cat_action'])) {
         $adminpage->addText("cat_user",         $_POST['cat_user']);
         $adminpage->addText("cat_user_name",    $_POST['cat_user_name']);
         $adminpage->addText("find_user_popup",  openpopup("admin_finduser.php", 400, 400));
-        $adminpage->addText("image_url",        image_url("media/gallery/cat/", $_POST['cat_id']));
+        $adminpage->addText("image_url",        image_url(IMAGE_FOLDER, $_POST['cat_id']));
         $adminpage->addText("cat_text",         $_POST['cat_text']);
 
         $adminpage->addText("config_img_x",     $config_arr['cat_img_x']);
         $adminpage->addText("config_img_y",     $config_arr['cat_img_y']);
         $adminpage->addText("config_img_size",  $config_arr['cat_img_size']);
         
-        $adminpage->addText("folder_options",   "");
+        $adminpage->addText("folder_options",   implode($folder_arr));
         
         // Display Template
         echo $adminpage->get("edit");

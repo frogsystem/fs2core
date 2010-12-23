@@ -1,9 +1,15 @@
 <?php if ( ACP_GO === "gallery_config" ) {
 
+//////////////////////////
+//// Locale Constants ////
+//////////////////////////
+define("IMAGE_FOLDER", "../media/gallery/");
+
+
 /////////////////////////////////////
 //// Locale Secure Data Function ////
 /////////////////////////////////////
-function secureData ( $DATA, $OUTPUT = FALSE ) {
+function secureData(&$DATA, $OUTPUT = FALSE) {
     // Common
     settype ( $DATA['viewer_type'], 'integer' );
     settype ( $DATA['viewer_x'], 'integer' );
@@ -93,7 +99,19 @@ elseif ( isset($_POST['sended']) ) {
 }
 
 // Secure Data for Output
-secureData(&$_POST, TRUE);
+secureData($_POST, TRUE);
+
+// Get Folders
+$FA = new fileaccess();
+$folder_arr = $FA->getSubDirArray(IMAGE_FOLDER, FALSE, TRUE);
+$img_folder_arr = array();
+$wp_folder_arr = array();
+foreach ($folder_arr as $aOption) {
+    $aOption = killhtml($aOption['path']);
+    $img_folder_arr[] = '<option value="'.$aOption.'" '.getselected($aOption, $_POST['img_default_folder']).'>'.$aOption.'</option>';
+    $wp_folder_arr[] = '<option value="'.$aOption.'" '.getselected($aOption, $_POST['wp_default_folder']).'>'.$aOption.'</option>';
+}
+
 
 // Template Conditions
 $adminpage->addCond("viewer_type",          $_POST['viewer_type']);
@@ -101,12 +119,10 @@ $adminpage->addCond("img_order",            $_POST['img_order']);
 $adminpage->addCond("img_sort",             $_POST['img_sort']);
 $adminpage->addCond("img_group",            $_POST['img_group']);
 $adminpage->addCond("img_sub_contents",     $_POST['img_sub_contents']);
-$adminpage->addCond("img_default_folder",   $_POST['img_default_folder']);
 $adminpage->addCond("wp_order",             $_POST['wp_order']);
 $adminpage->addCond("wp_sort",              $_POST['wp_sort']);
 $adminpage->addCond("wp_group",             $_POST['wp_group']);
 $adminpage->addCond("wp_sub_contents",      $_POST['wp_sub_contents']);
-$adminpage->addCond("wp_default_folder",    $_POST['wp_default_folder']);
 
 // Template Texts
 $adminpage->addText("ACP_GO",           ACP_GO);
@@ -125,6 +141,7 @@ $adminpage->addText("img_small_x",      $_POST['img_small_x']);
 $adminpage->addText("img_small_y",      $_POST['img_small_y']);
 $adminpage->addText("img_rows",         $_POST['img_rows']);
 $adminpage->addText("img_cols",         $_POST['img_cols']);
+$adminpage->addText("img_folders",      implode($img_folder_arr));
 
 $adminpage->addText("wp_max_x",         $_POST['wp_max_x']);
 $adminpage->addText("wp_max_y",         $_POST['wp_max_y']);
@@ -135,6 +152,7 @@ $adminpage->addText("wp_small_x",       $_POST['wp_small_x']);
 $adminpage->addText("wp_small_y",       $_POST['wp_small_y']);
 $adminpage->addText("wp_rows",          $_POST['wp_rows']);
 $adminpage->addText("wp_cols",          $_POST['wp_cols']);
+$adminpage->addText("wp_folders",       implode($wp_folder_arr));
 
 $adminpage->addText("cat_img_x",        $_POST['cat_img_x']);
 $adminpage->addText("cat_img_y",        $_POST['cat_img_y']);

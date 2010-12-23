@@ -78,14 +78,18 @@
   </tr>  
 </table><!--section-end::COMMMENT_ENTRY-->
 
-<!--section-start::COMMENT_CAPTCHA--><p>
-  <span class="small">Bitte die Rechenaufgabe lösen:</span><br>
-  <label for="comment_captcha">
-    <img src="{..captcha_url..}" alt="CAPTCHA" class="middle">
-  </label>
-  <input class="small input input_highlight" name="spam" 
-id="comment_captcha" size="15" maxlength="5">
-</p>
+<!--section-start::COMMENT_CAPTCHA--><div class="comment_right" style="height:20px; text-align:right;">
+  <span class="atleft">
+    <label for="comment_captcha">
+      <img src="{..captcha_url..}" alt="CAPTCHA" class="bottom">
+    </label>
+    <input class="input input_highlight" name="spam" 
+id="comment_captcha" size="10" maxlength="5">
+  </span>
+  <span class="atright">
+    Bitte die Rechenaufgabe lösen!
+  </span>
+</div>
 <!--section-end::COMMENT_CAPTCHA-->
 
 <!--section-start::COMMENT_CAPTCHA_TEXT--><p class="small" id="captcha_note">
@@ -114,22 +118,22 @@ id="comment_captcha" size="15" maxlength="5">
       <td class="comment_td">
         <div class="comment_top">
           <span class="atleft">
-            Titel:
-            <input class="small input input_highlight" id="comment_title" name="title" size="40" maxlength="100">
-            </span>
+            <span class="small">Titel:</span>
+            <input class="input input_highlight" id="comment_title" name="title" size="27" maxlength="100">
+          </span>
           <span class="atright">
             $VAR(date_time)
-          </span>      
+          </span>     
         </div>
         {..textarea..}
-        <span class="small">
+        <div class="comment_right small" style="margin-top:-3px;">
           Html&nbsp;ist&nbsp;<b>{..html..}</b>.
           <a href="?go=fscode" title="neues Fenster">FSCode</a>&nbsp;ist&nbsp;<b>{..fs_code..}.</b>
-        </span>
+        </div>        
         {..captcha..}
-        <p align="center">
+        <div class="comment_right center" style="border:none; margin-bottom:-3px; padding-top:8px; padding-bottom:8px;">
           <input class="pointer" type="submit" value="Abschicken">
-        </p>
+        </div>
       </td>
     </tr>
   </table>

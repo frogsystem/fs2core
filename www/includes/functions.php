@@ -811,26 +811,9 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
     global $global_config_arr;
     global $db;
 
-    if ($name != "") {
-        $name2 = 'name="'.$name.'" id="'.$name.'"';
-    } else {
-        return false;
-    }
     
-    if ($width != "") {
-        $width2 = 'width:'.$width.'px;';
-    }
+    $name = killhtml($name);
     
-    if ($height != "") {
-        $height2 = 'height:'.$height.'px';
-    }
-    
-    if ($class != "") {
-        $class2 = 'class="'.$class.'"';
-    }
-
-    $style = $name2.' '.$class2.' style="'.$width2.' '.$height2.'"';
-
   if ($all==true OR $fs_smilies==1) {
     $smilies_table = '
           <table cellpadding="2" cellspacing="0" border="0">';
@@ -979,7 +962,8 @@ if ($all==true OR $fs_noparse==1) {
     $textarea->setFile("0_editor.tpl");
     $textarea->load("BODY");
     
-    $textarea->tag("style", $style );
+    $textarea->tag("name", $name );
+    $textarea->tag("id", $name );
     $textarea->tag("text", $text );
     $textarea->tag("buttons", $buttons );
     $textarea->tag("smilies", $smilies );

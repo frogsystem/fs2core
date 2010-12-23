@@ -153,9 +153,8 @@
                                     <span class="small"><!--LANG::img_folder_info--></span>
                                 </td>
                                 <td class="config">
-                                    <select name="img_default_folder">
-                                        <option value="/"<!--IF::img_folder?/--> selected<!--ENDIF-->><!--LANG::img_folder_root--></option>
-                                        <!--TEXT::folder_options-->
+                                    <select class="input_width" name="img_default_folder">
+                                        <!--TEXT::img_folders-->
                                     </select>
                                 </td>
                             </tr>
@@ -270,9 +269,8 @@
                                     <span class="small"><!--LANG::wp_folder_info--></span>
                                 </td>
                                 <td class="config">
-                                    <select name="wp_default_folder">
-                                        <option value="/"<!--IF::wp_folder?/--> selected<!--ENDIF-->><!--LANG::folder_root--></option>
-                                        <!--TEXT::folder_options-->
+                                    <select class="input_width" name="wp_default_folder">
+                                        <!--TEXT::wp_folders-->
                                     </select>
                                 </td>
                             </tr>

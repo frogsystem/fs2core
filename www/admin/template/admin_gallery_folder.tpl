@@ -1,6 +1,6 @@
 <!--DEF::add-->                    <form action="" method="post">
                         <input type="hidden" name="go" value="<!--TEXT::ACP_GO-->">
-                        <input type="hidden" name="cat_action" value="add">
+                        <input type="hidden" name="folder_action" value="add">
 
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr>
@@ -11,8 +11,17 @@
                             <tr>
                                 <td class="config" width="50%">
                                     <!--LANG::name-->:
+                                </td>
+                                <td class="config">
+                                    <!--LANG::subfolder-->:
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <input class="text full_width" name="folder_name" size="30" maxlength="100" value="<!--TEXT::folder_name-->"><br>           
                                     <span class="small">
-                                         [<!--COMMON::min-->
+                                         [<!--COMMON::folder_name_info-->,
+                                         <!--COMMON::min-->
                                          3
                                          <!--COMMON::and-->
                                          <!--COMMON::max-->
@@ -20,44 +29,13 @@
                                          <!--COMMON::chars-->]</span>
                                 </td>
                                 <td class="config">
-                                    <!--LANG::subcat-->:
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config">
-                                    <input class="text full_width" name="cat_name" size="30" maxlength="100" value="<!--TEXT::cat_name-->">
-                                </td>
-                                <td class="config">
-                                    <select class="full_width" name="cat_subcat_of" size="1">
-                                        <option value="0"<!--IF::subcat_of?0--> selected<!--ENDIF-->><!--COMMON::no_subcat--></option>
+                                    <select class="full_width" name="folder_path" size="1">
+                                        <option value="/"<!--IF::path?/--> selected<!--ENDIF-->><!--COMMON::content_folder_root--></option>
                                         <option value="-1"><!--COMMON::select_hr--></option>
                                         <!--TEXT::subcat_options-->
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
-								<td class="config">
-									<!--LANG::type-->:
-								</td>
-								<td class="config">
-									<!--LANG::visibility-->:
-								</td>
-                            </tr>
-                            <tr>
-								<td class="config">
-                                    <select class="full_width" name="cat_type" size="1">
-                                        <option value="img"<!--IF::type?img--> selected<!--ENDIF-->><!--LANG::type_img--></option>
-                                        <option value="wp"<!--IF::type?wp--> selected<!--ENDIF-->><!--LANG::type_wp--></option>
-                                    </select>
-                                </td>
-								<td class="config">
-                                    <select class="full_width" name="cat_visibility" size="1">
-                                        <option value="1"<!--IF::visibility?1--> selected<!--ENDIF-->><!--LANG::visibility_full_long--></option>
-                                        <option value="2"<!--IF::visibility?2--> selected<!--ENDIF-->><!--LANG::visibility_notinlist_long--></option>
-                                        <option value="0"<!--IF::visibility?0--> selected<!--ENDIF-->><!--LANG::visibility_none_long--></option>
-                                    </select>
-								</td>
-                            </tr>                        
+                            </tr>                     
                             <tr><td class="space"></td></tr>
 
                             <tr>
@@ -282,6 +260,7 @@
                                 <td class="config">
                                     <select class="input_width_big" name="content_default_folder">
                                         <option value="0"<!--IF::content_default_folder?0--> selected<!--ENDIF-->><!--COMMON::default--></option>
+                                        <option value="/"<!--IF::content_default_folder?/--> selected<!--ENDIF-->><!--LANG::content_folder_root--></option>
                                         <!--TEXT::folder_options-->
                                     </select>
                                 </td>

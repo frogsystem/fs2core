@@ -1,4 +1,10 @@
 <?php if ( ACP_GO === "gallery_img" ) {
+    
+//////////////////////////
+//// Locale Constants ////
+//////////////////////////
+define("IMAGE_FOLDER", "../media/gallery/");
+
 
 /////////////////////////////////////
 //// Locale Secure Data Function ////
@@ -152,6 +158,14 @@ if (!isset($_POST['img_id']) && !isset($_POST['img_action'])) {
         $add_lines[] = $adminpage->get("add_line");       
     }
     
+    // Get Folders
+    $FA = new fileaccess();
+    $folder_arr = $FA->getSubDirArray(IMAGE_FOLDER, FALSE, TRUE);
+    foreach ($folder_arr as $aOption) {
+        $aOption = killhtml($aOption['path']);
+        $folder_arr[] = '<option value="'.$aOption.'" '.getselected($aOption, $_POST['img_folder']).'>'.$aOption.'</option>';
+    }     
+    
     
     // Display Add-Form
     // Template Conditions
@@ -159,13 +173,14 @@ if (!isset($_POST['img_id']) && !isset($_POST['img_action'])) {
 
     // Template Texts
     $adminpage->addText("ACP_GO",           ACP_GO);
-    $adminpage->addText("cat_options",      implode("", $cat_options));
-    $adminpage->addText("lines",            implode("", $add_lines));
+    $adminpage->addText("cat_options",      implode($cat_options));
+    $adminpage->addText("lines",            implode($add_lines));
     $adminpage->addText("more_uploads_js",  ' onClick="galleryImgAddUploadLines();"');
     $adminpage->addText("config_max_x",     $config_arr['img_max_x']);
     $adminpage->addText("config_max_y",     $config_arr['img_max_y']);
     $adminpage->addText("config_max_size",  $config_arr['img_max_size']);
     $adminpage->addText("MAX_FILE_SIZE",    $config_arr['img_max_size']*1024);
+    $adminpage->addText("folder_options",   implode($folder_arr));
     // Display Template
     echo $adminpage->get("add");
     

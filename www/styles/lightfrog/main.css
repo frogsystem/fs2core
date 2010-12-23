@@ -28,6 +28,12 @@ p {
   padding:0px;
 }
 
+textarea {
+  font-family:"Trebuchet MS",Verdana,Arial,sans-serif;
+  color:#000000;
+  font-size:10pt;
+}
+
 
 #header {
   background-color:#F2F2F2;

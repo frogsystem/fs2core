@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 25. Oktober 2010 um 08:55
+-- Erstellungszeit: 23. Dezember 2010 um 12:49
 -- Server Version: 5.1.36
 -- PHP-Version: 5.3.0
 
@@ -421,7 +421,7 @@ CREATE TABLE `fs_counter` (
 --
 
 INSERT INTO `fs_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 115, 4013, 2, 2, 3, 2);
+(1, 121, 4207, 2, 2, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -451,7 +451,7 @@ INSERT INTO `fs_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) V
 ('http://localhost/fs/', 2, 1273256740, 1273256922),
 ('http://localhost/fs/www/', 1, 1273256927, 1273256927),
 ('http://localhost/Frogsystem-2/', 5, 1283112790, 1283267235),
-('http://localhost/Frogsystem-2.alix6/', 21, 1283524528, 1287515373);
+('http://localhost/Frogsystem-2.alix6/', 27, 1283524528, 1290352996);
 
 -- --------------------------------------------------------
 
@@ -553,7 +553,12 @@ INSERT INTO `fs_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits
 (2010, 10, 18, 1, 1),
 (2010, 10, 19, 2, 11),
 (2010, 10, 21, 1, 4),
-(2010, 10, 24, 1, 3);
+(2010, 10, 24, 1, 3),
+(2010, 11, 7, 2, 3),
+(2010, 11, 9, 1, 186),
+(2010, 11, 11, 1, 1),
+(2010, 11, 13, 1, 3),
+(2010, 11, 21, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -713,7 +718,7 @@ CREATE TABLE `fs_editor_config` (
 --
 
 INSERT INTO `fs_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea_width`, `textarea_height`, `bold`, `italic`, `underline`, `strike`, `center`, `font`, `color`, `size`, `list`, `numlist`, `img`, `cimg`, `url`, `home`, `email`, `code`, `quote`, `noparse`, `smilies`, `do_bold`, `do_italic`, `do_underline`, `do_strike`, `do_center`, `do_font`, `do_color`, `do_size`, `do_list`, `do_numlist`, `do_img`, `do_cimg`, `do_url`, `do_home`, `do_email`, `do_code`, `do_quote`, `do_noparse`, `do_smilies`) VALUES
-(1, 5, 2, 355, 120, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1);
+(1, 5, 2, 300, 300, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -883,23 +888,24 @@ CREATE TABLE `fs_gallery_cat` (
   `content_sort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
   `content_group` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `content_sub_contents` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `content_default_folder` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `content_default_folder` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=121 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=FIXED AUTO_INCREMENT=122 ;
 
 --
 -- Daten für Tabelle `fs_gallery_cat`
 --
 
 INSERT INTO `fs_gallery_cat` (`cat_id`, `cat_name`, `cat_text`, `cat_subcat_of`, `cat_type`, `cat_visibility`, `cat_date`, `cat_user`, `cat_preview`, `cat_order`, `content_order`, `content_sort`, `content_group`, `content_sub_contents`, `content_default_folder`) VALUES
-(1, 'Screenshots', '\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n', 0, 'img', 1, 1287446400, 1, 1, 0, '', '', '', '', ''),
-(2, 'Wallpaper', '\r\n\r\n', 12, 'wp', 1, 1287532800, 1, 0, 1, '', '', '', '', ''),
-(3, 'Sub-Category', 'test', 12, 'img', 1, 1286323200, 2, 0, 2, '', '', '', '', ''),
+(1, 'Screenshots', '\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n', 0, 'img', 1, 1287446400, 1, 1, 0, '0', '0', '0', '0', '/img/nix/'),
+(2, 'Wallpaper', '\r\n\r\n', 12, 'wp', 1, 1287532800, 1, 0, 2, '', '', '', '', ''),
+(3, 'Sub-Category', 'test', 12, 'img', 1, 1286323200, 2, 0, 1, '', '', '', '', ''),
 (12, 'Lorem Ipsum dolret it amos et cetera', '\r\n\r\n', 1, 'img', 1, 1287446400, 1, 0, 0, '', '', '', '', ''),
 (114, 'TEST', '', 12, 'img', 1, 1287486888, 1, 0, 0, '', '', '', '', ''),
-(120, 'Wurst', 'hans wurst', 116, 'img', 1, 1287619200, 1, 0, 0, '', '', '', '', ''),
+(120, 'Wurst', 'hans wurst', 116, 'img', 1, 1287619200, 1, 0, 0, '0', '0', '0', '0', '0'),
 (115, 'blubb', '', 0, 'img', 1, 1287878400, 1, 0, 1, 'title', 'ASC', 'date', 'all', '/'),
-(116, 'Hans', '', 114, 'wp', 1, 1287489306, 1, 0, 0, '', '', '', '', '');
+(116, 'Hans', '', 114, 'wp', 1, 1287489306, 1, 0, 0, '', '', '', '', ''),
+(121, 'Test', '', 0, 'img', 1, 1289146454, 1, 0, 2, '0', '0', '0', '0', '0');
 
 -- --------------------------------------------------------
 
@@ -923,7 +929,7 @@ CREATE TABLE `fs_gallery_config` (
   `img_sort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
   `img_group` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `img_sub_contents` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `img_default_folder` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `img_default_folder` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `viewer_type` tinyint(1) NOT NULL,
   `viewer_x` mediumint(4) NOT NULL,
   `viewer_y` mediumint(4) NOT NULL,
@@ -942,7 +948,7 @@ CREATE TABLE `fs_gallery_config` (
   `wp_sort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
   `wp_group` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `wp_sub_contents` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `wp_default_folder` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `wp_default_folder` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `cat_img_x` mediumint(4) NOT NULL,
   `cat_img_y` mediumint(4) NOT NULL,
   `cat_img_size` mediumint(4) NOT NULL,
@@ -954,7 +960,7 @@ CREATE TABLE `fs_gallery_config` (
 --
 
 INSERT INTO `fs_gallery_config` (`id`, `img_max_x`, `img_max_y`, `img_max_size`, `img_mid_x`, `img_mid_y`, `img_small_x`, `img_small_y`, `img_rows`, `img_cols`, `img_order`, `img_sort`, `img_group`, `img_sub_contents`, `img_default_folder`, `viewer_type`, `viewer_x`, `viewer_y`, `viewer_img_x`, `viewer_img_y`, `wp_max_x`, `wp_max_y`, `wp_max_size`, `wp_mid_x`, `wp_mid_y`, `wp_small_x`, `wp_small_y`, `wp_rows`, `wp_cols`, `wp_order`, `wp_sort`, `wp_group`, `wp_sub_contents`, `wp_default_folder`, `cat_img_x`, `cat_img_y`, `cat_img_size`) VALUES
-(1, 2000, 2000, 2048, 800, 600, 200, 150, 6, 2, 'date', 'DESC', 'date', '0', '/', 2, 950, 700, 800, 600, 2000, 2000, 2048, 800, 600, 200, 150, 6, 2, 'date', 'DESC', 'date', '0', '/', 200, 150, 1024);
+(1, 2000, 2000, 2048, 800, 600, 200, 150, 6, 2, 'date', 'DESC', 'date', 'none', '/img/', 2, 950, 700, 800, 600, 2000, 2000, 2048, 800, 600, 200, 150, 6, 2, 'date', 'DESC', 'date', 'none', '/wp/', 200, 150, 1024);
 
 -- --------------------------------------------------------
 
@@ -970,6 +976,7 @@ CREATE TABLE `fs_gallery_img` (
   `img_text` text COLLATE utf8_unicode_ci NOT NULL,
   `img_date` int(14) NOT NULL,
   `img_user` mediumint(8) NOT NULL,
+  `img_folder` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `cat_id` mediumint(8) NOT NULL,
   PRIMARY KEY (`img_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=46 ;
@@ -978,52 +985,52 @@ CREATE TABLE `fs_gallery_img` (
 -- Daten für Tabelle `fs_gallery_img`
 --
 
-INSERT INTO `fs_gallery_img` (`img_id`, `img_title`, `img_caption`, `img_text`, `img_date`, `img_user`, `cat_id`) VALUES
-(1, '', '', '', 1287152226, 1, 0),
-(2, '', '', '', 1287152227, 1, 0),
-(3, '', '', '', 1287152229, 1, 0),
-(4, '', '', '', 1287152580, 1, 0),
-(5, '', '', '', 1287152582, 1, 0),
-(6, '', '', '', 1287152583, 1, 0),
-(7, '', '', '', 1287152696, 1, 0),
-(8, '', '', '', 1287152729, 1, 0),
-(9, '', '', '', 1287152774, 1, 0),
-(10, '', '', '', 1287152821, 1, 0),
-(11, '', '', '', 1287153096, 1, 0),
-(12, '', '', '', 1287153720, 1, 0),
-(13, '', '', '', 1287153872, 1, 0),
-(14, '', '', '', 1287153957, 1, 0),
-(15, '', '', '', 1287154000, 1, 0),
-(16, '', '', '', 1287154000, 1, 0),
-(17, '', '', '', 1287154000, 1, 0),
-(18, '', '', '', 1287154000, 1, 0),
-(19, '', '', '', 1287154000, 1, 0),
-(20, '', '', '', 1287154000, 1, 0),
-(21, '', '', '', 1287154000, 1, 0),
-(22, '', '', '', 1287154000, 1, 0),
-(23, '', '', '', 1287154000, 1, 0),
-(24, '', '', '', 1287154053, 1, 0),
-(25, '', '', '', 1287154053, 1, 0),
-(26, '', '', '', 1287154053, 1, 0),
-(27, '', '', '', 1287154202, 1, 0),
-(28, '', '', '', 1287154258, 1, 0),
-(29, '', '', '', 1287154276, 1, 0),
-(30, '', '', '', 1287154306, 1, 0),
-(31, '', '', '', 1287154328, 1, 0),
-(32, '', '', '', 1287154376, 1, 0),
-(33, '', '', '', 1287154388, 1, 0),
-(34, '', '', '', 1287154399, 1, 0),
-(35, '', '', '', 1287154425, 1, 0),
-(36, '', '', '', 1287154489, 1, 0),
-(37, '', '', '', 1287154490, 1, 0),
-(38, '', '', '', 1287154492, 1, 0),
-(39, '', '', '', 1287154493, 1, 0),
-(40, '', '', '', 1287154495, 1, 0),
-(41, '', '', '', 1287154497, 1, 0),
-(42, '', '', '', 1287154498, 1, 0),
-(43, '', '', '', 1287154500, 1, 0),
-(44, '', '', '', 1287154501, 1, 0),
-(45, '', '', '', 1287154681, 1, 0);
+INSERT INTO `fs_gallery_img` (`img_id`, `img_title`, `img_caption`, `img_text`, `img_date`, `img_user`, `img_folder`, `cat_id`) VALUES
+(1, '', '', '', 1287152226, 1, '/img/', 0),
+(2, '', '', '', 1287152227, 1, '/img/', 0),
+(3, '', '', '', 1287152229, 1, '/img/', 0),
+(4, '', '', '', 1287152580, 1, '/img/', 0),
+(5, '', '', '', 1287152582, 1, '/img/', 0),
+(6, '', '', '', 1287152583, 1, '/img/', 0),
+(7, '', '', '', 1287152696, 1, '/img/', 0),
+(8, '', '', '', 1287152729, 1, '/img/', 0),
+(9, '', '', '', 1287152774, 1, '/img/', 0),
+(10, '', '', '', 1287152821, 1, '/img/', 0),
+(11, '', '', '', 1287153096, 1, '/img/', 0),
+(12, '', '', '', 1287153720, 1, '/img/', 0),
+(13, '', '', '', 1287153872, 1, '/img/', 0),
+(14, '', '', '', 1287153957, 1, '/img/', 0),
+(15, '', '', '', 1287154000, 1, '/img/', 0),
+(16, '', '', '', 1287154000, 1, '/img/', 0),
+(17, '', '', '', 1287154000, 1, '/img/', 0),
+(18, '', '', '', 1287154000, 1, '/img/', 0),
+(19, '', '', '', 1287154000, 1, '/img/', 0),
+(20, '', '', '', 1287154000, 1, '/img/', 0),
+(21, '', '', '', 1287154000, 1, '/img/', 0),
+(22, '', '', '', 1287154000, 1, '/img/', 0),
+(23, '', '', '', 1287154000, 1, '/img/', 0),
+(24, '', '', '', 1287154053, 1, '/img/', 0),
+(25, '', '', '', 1287154053, 1, '/img/', 0),
+(26, '', '', '', 1287154053, 1, '/img/', 0),
+(27, '', '', '', 1287154202, 1, '/img/', 0),
+(28, '', '', '', 1287154258, 1, '/img/', 0),
+(29, '', '', '', 1287154276, 1, '/img/', 0),
+(30, '', '', '', 1287154306, 1, '/img/', 0),
+(31, '', '', '', 1287154328, 1, '/img/', 0),
+(32, '', '', '', 1287154376, 1, '/img/', 0),
+(33, '', '', '', 1287154388, 1, '/img/', 0),
+(34, '', '', '', 1287154399, 1, '/img/', 0),
+(35, '', '', '', 1287154425, 1, '/img/', 0),
+(36, '', '', '', 1287154489, 1, '/img/', 0),
+(37, '', '', '', 1287154490, 1, '/img/', 0),
+(38, '', '', '', 1287154492, 1, '/img/', 0),
+(39, '', '', '', 1287154493, 1, '/img/', 0),
+(40, '', '', '', 1287154495, 1, '/img/', 0),
+(41, '', '', '', 1287154497, 1, '/img/', 0),
+(42, '', '', '', 1287154498, 1, '/img/', 0),
+(43, '', '', '', 1287154500, 1, '/img/', 0),
+(44, '', '', '', 1287154501, 1, '/img/', 0),
+(45, '', '', '', 1287154681, 1, '/img/', 0);
 
 -- --------------------------------------------------------
 
@@ -1070,7 +1077,7 @@ CREATE TABLE `fs_global_config` (
 --
 
 INSERT INTO `fs_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix5', 'http://localhost/Frogsystem-2.alix6/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{..title..} - {..ext..}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1287930269);
+(1, '2.alix5', 'http://localhost/Frogsystem-2.alix6/www/', 'admin@admin.de', 'Frogsystem 2', 1, '{..title..} - {..ext..}', 'Frogsystem 2 - your way to nature', 'CMS, Content, Management, System, Frog, Alix', 'Sweil, Kermit, rockfest, Wal', 'Frogsystem-Team [http://www.frogsystem.de]', 0, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1290352996);
 
 -- --------------------------------------------------------
 
@@ -1161,7 +1168,7 @@ CREATE TABLE `fs_news_comments` (
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_text` (`comment_text`),
   FULLTEXT KEY `comment_title` (`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `fs_news_comments`
@@ -1169,7 +1176,8 @@ CREATE TABLE `fs_news_comments` (
 
 INSERT INTO `fs_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
 (2, 1, 'Hans Wurst', 0, '127.0.0.1', 1266663394, 'Geile Seite!!!', 'Ich liebe euch alle ;)'),
-(3, 1, '1', 1, '127.0.0.1', 1270829419, 'me', '\\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\"');
+(3, 1, '1', 1, '127.0.0.1', 1270829419, 'me', '\\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\" \\''sdfsdfSD\\'' FDS\\''f\\''DsF\\''\\''\\\\\\\\\\\\\\\\dßasßdsaß\\\\\\\\ß\\"\\"\\"'),
+(4, 1, '1', 1, '127.0.0.1', 1289325219, 'Test', 'Hier kommt der Text hin...');
 
 -- --------------------------------------------------------
 
@@ -1205,7 +1213,7 @@ CREATE TABLE `fs_news_config` (
 --
 
 INSERT INTO `fs_news_config` (`id`, `num_news`, `num_applet`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_force_select`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
-(1, 10, 5, 5, 2, 4, 4, 1, 150, 150, 1024, 2, 2, 'DESC', 40, ' ...', 15, 2);
+(1, 10, 5, 5, 2, 4, 4, 1, 150, 150, 1024, 2, 0, 'DESC', 40, ' ...', 15, 2);
 
 -- --------------------------------------------------------
 

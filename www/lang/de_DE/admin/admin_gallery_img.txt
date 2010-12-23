@@ -12,5 +12,7 @@ more_uploads_button:            +
 more_uploads_title:             Upload-Felder hinzufügen
 
 unsorted:                       (unsortiert)
-
+img_folder:                     Ordner
+cat_default:                    Kategorie-Standard
+global_default:                 Galerie-Standard
 upload_images:                  Bilder hinzufügen

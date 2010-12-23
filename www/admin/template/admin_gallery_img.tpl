@@ -69,6 +69,23 @@
                                     </button>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="config">
+                                    <!--LANG::img_folder-->:
+                                </td>
+                                <td class="config right right_space">
+                                    <select class="input_width" name="img_folder">
+                                        <option value="0"><!--LANG::cat_default--></option>
+                                        <option value="1"><!--LANG::global_default--></option>
+                                        <option value="-1"><!--COMMON::select_hr--></option>
+                                        <!--TEXT::folder_options-->
+                                    </select>                                
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
                             <tr><td class="space"></td></tr>
                             
                             <tr>

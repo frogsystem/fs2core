@@ -119,6 +119,89 @@ class fileaccess
             return FALSE;
         }
     }
+    
+    // get array of all sub dirs from given dir
+    //
+    // $REC = TRUE: Returns an array representing directory structure
+    // $REC = FALSE: Returns an arry (depth 1) and additional level information
+    // $ROOT: If TRUE, return array starts with given root-dir
+    
+    public function getSubDirArray($DIR, $REC=FALSE, $ROOT=FALSE, $PATH_FROM_ROOT=TRUE) {
+        // no dir
+        if (!is_dir($DIR)) {
+            return array();
+        }
+        
+        // Change Slashes on Windows
+        if (DIRECTORY_SEPARATOR === "\\") {
+            $DIR = str_replace("\\", "/", $DIR);
+        }
+        
+        // Add slash at end
+        if (substr($DIR, -1) != "/") {
+            $DIR .= "/";
+        }
+        
+        // get dirname
+        $dirname = basename($DIR);
+        
+        // set path
+        $path = $PATH_FROM_ROOT ? "/" : $DIR;
+        
+        // call different functions
+        if ($REC) {
+            $RETURN = $this->getSubDirArrayRec($DIR, 1, $path);
+            // add root level
+            if ($ROOT) {
+                $RETURN = array("name" => $dirname,
+                                "path" => $path,
+                                "level" => 0,
+                                "content" => $RETURN);
+            }
+        } else {
+            $RETURN = array();
+            $this->getSubDirArrayLvl($DIR, $RETURN, 1, $path);
+            // add root level
+            if ($ROOT) {
+                array_unshift($RETURN, array("name" => $dirname,
+                                             "path" => $path,
+                                             "level" => 0));
+            }         
+        } 
+        return $RETURN;
+    }
+    
+    private function getSubDirArrayRec($DIR, $LEVEL, $PATH) {
+        $RETURN = array();
+        $dir_data = scandir($DIR);
+        foreach ($dir_data as $aDir) {
+            $realpath = $DIR.$aDir."/";
+            $textpath = $PATH.$aDir."/";
+            if (is_dir($realpath) && !in_array($aDir, array(".", ".."))) {
+                $RETURN[] = array("name" => $aDir,
+                                  "path" => $textpath,
+                                  "level" => $LEVEL,
+                                  "content" => $this->getSubDirArrayRec($realpath, ($LEVEL+1), $textpath));
+            }
+        }
+        return $RETURN;
+    }
+    
+    private function getSubDirArrayLvl($DIR, &$RETURN, $LEVEL, $PATH) {
+        $dir_data = scandir($DIR);
+        foreach ($dir_data as $aDir) {
+            $realpath = $DIR.$aDir."/";
+            $textpath = $PATH.$aDir."/";
+            if (is_dir($realpath) && !in_array($aDir, array(".", ".."))) {
+                $RETURN[] = array("name" => $aDir,
+                                  "path" => $textpath,
+                                  "level" => $LEVEL);
+                $this->getSubDirArrayLvl($realpath, $RETURN, ($LEVEL+1), $textpath);
+            }
+        }
+        return $RETURN;
+    }
+
 }
 
 ?>
