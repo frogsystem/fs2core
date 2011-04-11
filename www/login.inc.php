@@ -2,17 +2,17 @@
 ///////////////////////
 //// DB Login Vars ////
 ///////////////////////
-$dbc['host'] = ""; //Database Hostname
-$dbc['user'] = ""; //Database Username
-$dbc['pass'] = ""; //Database User-Password
-$dbc['data'] = ""; //Database Name
-$dbc['pref'] = ""; //Table Prefix
+$dbc['host'] = "localhost"; //Database Hostname
+$dbc['user'] = "frogsystem"; //Database Username
+$dbc['pass'] = "frogsystem"; //Database User-Password
+$dbc['data'] = "test"; //Database Name
+$dbc['pref'] = "fs2_"; //Table Prefix
 
 
 ////////////////////////
 //// Hardcoded Vars ////
 ////////////////////////
-$spam = ""; //Anti-Spam Encryption-Code
+$spam = "wKAztWWB2Z"; //Anti-Spam Encryption-Code
 
 
 ///////////////////////

@@ -1,4 +1,0 @@
-FTP-Zugangsdaten, die Sie eventuell während der Installations eingegeben haben wurden nur für den Installationsvorgang benötigt und nach Abschluss der Installation gelöscht.
-wieder gelöscht.
-
-Die Zugangsdaten der MySQL-Datenbank werden zum Betrieb der Seite benötigt und wurden daher in einer entsprechenden Datei gespeichert.
