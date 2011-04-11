@@ -1,0 +1,5 @@
+Das <b>Frogsystem&nbsp;2.alix5</b> legt seinen Fokus auf das neue <b>dateibasierte Style-System</b> und fügt darüberhinaus einige <b>oft gewünschte Features</b> hinzu. Desweiteren wurden alle bekannten <b>Fehler</b> der vorherigen Version behoben. Eine Auflistung aller Änderungen finden Sie unter <a href="?go=start&step=4"><b>» Change Log</b></a>.
+
+Dieser <b>Assistent</b> wird Sie durch die Installation und Erstkonfiguration des <b>Frogsystem&nbsp;2.alix5</b> führen. Bitte lesen Sie die <a href="?go=start&step=2"><b>»Installationshinweise</b></a> und beachten Sie unser <a href="?go=start&step=3"><b>»Copyright</b></a>.
+
+<b>Vielen Dank, dass Sie sich für das Frogsystem&nbsp;2 entschieden haben!</b>

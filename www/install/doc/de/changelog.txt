@@ -1,0 +1,31 @@
+<b>Features:</b><ul><li>Neues Style- und Template-System, das auf Dateien basiert
+</li><li>Neuer Default-Style „Light Frog“
+</li><li>Neuer HTML-Template-Editor mit Syntaxhervorhebung
+</li><li>Neues CSS-Datei System, das beliebig viele CSS-Dateien pro Style erlaubt und das bisherige System ersetzt
+</li><li>Neues Javascript-Datei System, das beliebig viele Javascript-Dateien pro Style erlaubt und das bisherige System ersetzt
+</li><li>Neues <a href="http://wiki.frogsystem.de/nav-templates" target="_blank">Navigations-Template</a>-System, das beliebig viele Navigations-Templates pro Style erlaubt und das bisher verwendete Template "main_menu" ersetzt
+</li><li>Änderung der Syntax für <a href="http://wiki.frogsystem.de/template-tags" target="_blank">Template-Definitionen</a> (Template-Tags) von {*} zu {..*..} um bessere Kompatibilität mit Javascript zu gewährleisten
+</li><li>Die erweiterten Kontaktinformationen im User-Profil (Messenger, Homepage) sind nun vollständig implementiert
+</li><li>Weitere zusätzliche Informationen im User-Profil (Teamstatus, Gruppenmitgliedschaft, Benutzer-Rang)
+</li><li>Automatische Weiterleitung (sog. "Refresh") nach Formulareingaben
+</li><li>Ausgabe einer Fehlermeldung nach Anmeldung mit falschen Benutzerdaten
+</li><li>Titel von Artikeln und News können im Browser-Seitentitel angezeigt werden
+</li><li>Mehrere News können nun gleichzeitig gelöscht werden
+</li><li>Das doppelte Absenden von Kommentaren wird nun verhindert (Weiterleitungs-Seite und Überprüfung auf Duplikate)
+</li><li>Mehrere Kommentare können nun gleichzeitig gelöscht werden
+</li><li><a href="http://wiki.frogsystem.de/applets" target="_blank">Applets</a> werden eingeführt, dafür entfallen die sog. Echten Includes
+</li><li><a href="http://wiki.frogsystem.de/globalvars" target="_blank">Globale Variablen</a> werden eingeführt
+</li><li><a href="http://wiki.frogsystem.de/snippets" target="_blank">Schnipsel</a> werden eingeführt, dafür entfallen die Seitenvariablen
+</li><li>Neues flexibleres Text-System, dass v.a. beim Erstellen von AddOns das Arbeiten erleichtert (nicht vollständig implementiert, beide System laufen erstmal parallel)
+</li><li>Das Captcha kann jetzt vollständig individualisiert werden
+</li><li>Verwaltung für das Alias-System wurde hinzugefügt
+</li><li>Erweiterung der Rechte-Verwaltung um Sub-Rechte
+</li><li>Seitensuche für News, Artikel und Downloads mit einem Suchindex
+</li><li>Mehr Standard-Größen im Wallpaper-System als Schnellauswahl</li></ul>
+<b>Behobene Fehler:</b><ul><li>Download-Kategorien mit gleichem Namen können jetzt direkt angelegt werden (ohne Umweg über nachträgliches Umbenennen)
+</li><li>Im Auswahl-Filter der Downloads werden die Kategorien jetzt wie ebenfalls in der Sub-Kategorie-Struktur angezeigt
+</li><li>Beim Bearbeiten von News-Links wird das Link-Ziel jetzt übernommen
+</li><li>Die Statistik der Interaktiv-Startseite zeigt nun korrekte Daten
+</li><li>Das De-/Aktivieren der Ankündigung funktioniert nun korrekt
+</li><li>Fehler behoben, der unter bestimmten Umständen bei der Style-Ermittlung auftrat
+</li><li>Fehlerhafte Darstellungen in der Shop-Verwaltung wurden behoben</li></ul>

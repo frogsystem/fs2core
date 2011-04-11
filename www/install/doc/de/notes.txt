@@ -1,0 +1,9 @@
+Um die Sicherheit Ihrer <b>Frogsystem&nbsp;2</b>-Installation zu gewährleisten, ist es unbedingt erforderlich nach Abschluss der Installation das Installationsverzeichnis <b>/install</b> umgehend von Ihrem Server zu löschen.
+
+<b>Anderenfalls ist es Angreifern möglich, die Installation zu manipulieren, zu zerstören oder eingebenen Zugangsdaten auszulesen.</b>
+
+-----------------------------------------------------------
+
+<b>DIE SOFTWARE WIRD "SO WIE SIE IST" BEREIT GESTELLT. ES BESTEHT KEINERLEI GARANTIE ODER GEWÄHR JEGLICHER ART ZUR BENUTZUNG DER SOFTWARE FÜR EINEN BETIMMTEN ZWECK.</b>
+
+<b>IN KEINEM FALL SIND DIE AUTOREN UND/ODER COPYRIGHTINHABER DER SOFTWARE FÜR SCHÄDEN UND/ODER RECHTSVERLETZUNGEN JEGLICHER ART VERANTWORTLICH, DIE DURCH DIE NUTZUNG DER SOFTWARE ENTSTEHEN.</b>
