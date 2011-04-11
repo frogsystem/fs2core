@@ -75,8 +75,10 @@ if ( $num_news  > 0 ) {
                             ORDER BY `best_news_link_num` DESC
                             LIMIT 0,1
     ", $db);
-    $best_news_link = stripslashes ( mysql_result ( $index, 0, "news_title" ) );
-    $best_news_link_num = mysql_result ( $index, 0, "best_news_link_num" );
+    if (mysql_num_rows($index) == 1) {
+        $best_news_link = stripslashes ( mysql_result ( $index, 0, "news_title" ) );
+        $best_news_link_num = mysql_result ( $index, 0, "best_news_link_num" );
+    }
 
 
     $index = mysql_query ( "
@@ -175,12 +177,17 @@ if ( $num_news  > 0 ) {
                             </tr>
         ';
     }
+    
+    if ( $best_news_link_num  > 0 ) {
+        echo '
+                                <tr>
+                                    <td class="configthin">Meisten Links:</td>
+                                    <td class="configthin"><b>'.$best_news_link.'</b> mit <b>'.$best_news_link_num.'</b> Link(s)</td>
+                                </tr>
+        ';
+    }                       
 
-    echo '
-                            <tr>
-                                <td class="configthin">Meisten Links:</td>
-                                <td class="configthin"><b>'.$best_news_link.'</b> mit <b>'.$best_news_link_num.'</b> Link(s)</td>
-                            </tr>
+    echo '                                
                             <tr>
                                 <td class="configthin">Fleißigster News-Poster:</td>
                                 <td class="configthin"><b>'.$best_news_poster.'</b> mit <b>'.$best_news_poster_num.'</b> News</td>

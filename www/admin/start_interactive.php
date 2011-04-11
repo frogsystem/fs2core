@@ -1,8 +1,8 @@
 <?php
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."poll_config", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."poll_config", $db);
 $config_arr = mysql_fetch_assoc($index);
 $date = date("U");
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $db);
 if ( $poll_arr = mysql_fetch_assoc($index) ) {
 
     $poll_arr[poll_start] = date("d.m.Y" , $poll_arr[poll_start]);

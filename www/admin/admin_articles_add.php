@@ -10,7 +10,7 @@ if (
                 isset ( $_POST['sended'] ) &&
                 isset ( $_POST['article_cat_id'] ) &&
                 $_POST['article_title'] && $_POST['article_title'] != "" &&
-        !in_array ( savesql ( $_POST['article_url'] ), $url_arr ) &&
+                (empty($url_arr) || !in_array ( savesql ( $_POST['article_url'] ), $url_arr )) &&
 
                 ( ( $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
                 ( ( $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&

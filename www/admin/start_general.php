@@ -14,21 +14,21 @@ $stats_month = date ( "m" );
 $stats_day = date ( "d" );
 
 // Statsistiken
-$index = mysql_query("SELECT visits, hits FROM ".$global_config_arr[pref]."counter", $db);
+$index = mysql_query("SELECT visits, hits FROM ".$global_config_arr['pref']."counter", $db);
 $visits_all = mysql_result ( $index, 0, "visits" );
 $hits_all = mysql_result ( $index, 0, "hits" );
 
 // Besucher heute
-$index = mysql_query("SELECT s_hits, s_visits FROM ".$global_config_arr[pref]."counter_stat WHERE s_year = $stats_year and s_month = $stats_month and s_day = $stats_day", $db);
+$index = mysql_query("SELECT s_hits, s_visits FROM ".$global_config_arr['pref']."counter_stat WHERE s_year = $stats_year and s_month = $stats_month and s_day = $stats_day", $db);
 $visits_today = mysql_result ( $index, 0, "s_visits" );
 $hits_today = mysql_result ( $index, 0, "s_hits" );
 
 // Besucher online
-$index = mysql_query("SELECT count(*) AS visitors_on FROM ".$global_config_arr[pref]."useronline", $db);
+$index = mysql_query("SELECT count(*) AS visitors_on FROM ".$global_config_arr['pref']."useronline", $db);
 $visitors_on = mysql_result ( $index, 0, "visitors_on" );
 
 // Registrierte online
-$index = mysql_query("SELECT count(*) AS user_on FROM ".$global_config_arr[pref]."useronline WHERE user_id != 0", $db);
+$index = mysql_query("SELECT count(*) AS user_on FROM ".$global_config_arr['pref']."useronline WHERE user_id != 0", $db);
 $user_on = mysql_result ( $index, 0, "user_on" );
 
 // Gäste online

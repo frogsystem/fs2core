@@ -3,7 +3,7 @@
 session_start ();
 
 // Disable magic_quotes_runtime
-set_magic_quotes_runtime ( FALSE );
+ini_set('magic_quotes_runtime', 0);
 
 // fs2 include path
 set_include_path ( '.' );
