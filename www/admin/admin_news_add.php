@@ -5,21 +5,21 @@
 /////////////////////////
 
 if (
-                isset ( $_POST['addnews'] ) &&
-                $_POST['title'] && $_POST['title'] != "" &&
-                $_POST['text'] && $_POST['text'] != "" &&
-                
-                $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
-                $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
-                $_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
-                $_POST['h'] && $_POST['h'] != "" && $_POST['h'] >= 0 &&
-                $_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
-                
-                isset ( $_POST['cat_id'] ) &&
-                isset ( $_POST['posterid'] )
-        )
+        isset ( $_POST['addnews'] ) &&
+        $_POST['title'] && $_POST['title'] != "" &&
+        $_POST['news_text'] && $_POST['news_text'] != "" &&
+
+        $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
+        $_POST['m'] && $_POST['m'] != "" && $_POST['m'] > 0 &&
+        $_POST['y'] && $_POST['y'] != "" && $_POST['y'] > 0 &&
+        $_POST['h'] && $_POST['h'] != "" && $_POST['h'] >= 0 &&
+        $_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
+
+        isset ( $_POST['cat_id'] ) && $_POST['cat_id'] != -1 &&
+        isset ( $_POST['posterid'] )
+    )
 {
-        $_POST['text'] = savesql ( $_POST['text'] );
+    $_POST['news_text'] = savesql ( $_POST['news_text'] );
     $_POST['title'] = savesql ( $_POST['title'] );
     
     settype ( $_POST['cat_id'], "integer" );
@@ -28,7 +28,7 @@ if (
     settype ( $_POST['news_comments_allowed'], "integer" );
 
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'] );
-        $newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
+    $newsdate = mktime ( $date_arr['h'], $date_arr['i'], 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
 
     // MySQL-Insert-Query
@@ -40,12 +40,13 @@ if (
                             '".$_POST['posterid']."',
                             '".$newsdate."',
                             '".$_POST['title']."',
-                            '".$_POST['text']."',
+                            '".$_POST['news_text']."',
                             '".$_POST['news_active']."',
                             '".$_POST['news_comments_allowed']."',
                             '".time()."'
                     )
     ", $db );
+    $newsid = mysql_insert_id ();
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
@@ -55,25 +56,24 @@ if (
     }
 
     // Links in die DB eintragen
-    $newsid = mysql_insert_id ();
     foreach ( $_POST['linkname'] as $key => $value )
     {
         if ( $_POST['linkname'][$key] != "" && $_POST['linkurl'][$key] != "" )
         {
             $_POST['linkname'][$key] = savesql ( $_POST['linkname'][$key] );
             $_POST['linkurl'][$key] = savesql ( $_POST['linkurl'][$key] );
-                        switch ( $_POST['linktarget'][$key] )
-                    {
-                        case 1: settype ( $$_POST['linktarget'][$key], "integer" ); break;
-                        default: $_POST['linktarget'][$key] = 0; break;
-                    }
+            switch ( $_POST['linktarget'][$key] )
+            {
+                case 1: settype ( $$_POST['linktarget'][$key], "integer" ); break;
+                default: $_POST['linktarget'][$key] = 0; break;
+            }
 
             mysql_query("INSERT INTO ".$global_config_arr['pref']."news_links (news_id, link_name, link_url, link_target)
                          VALUES ('".$newsid."',
                                  '".$_POST['linkname'][$key]."',
                                  '".$_POST['linkurl'][$key]."',
                                  '".$_POST['linktarget'][$key]."')", $db);
-                }
+        }
     }
 
     mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET news = news + 1", $db );
@@ -110,7 +110,7 @@ if ( TRUE )
     }
 
         // Security-Functions
-        $_POST['text'] = killhtml ( $_POST['text'] );
+        $_POST['news_text'] = killhtml ( $_POST['news_text'] );
     $_POST['title'] = killhtml ( $_POST['title'] );
         settype ( $_POST['cat_id'], "integer" );
     settype ( $_POST['posterid'], "integer" );
@@ -146,16 +146,16 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[news][news_cat_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <select name="cat_id">
-        ';
-                                                                            // Kategorien auflisten
-                                                                            $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
-                                                                            while ( $cat_arr = mysql_fetch_assoc ( $index ) )
-                                                                            {
-                                                                                        settype ( $cat_arr['cat_id'], "integer" );
-                                                                                        echo '<option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['cat_id']).'>'.$cat_arr['cat_name'].'</option>';
-                                                                            }
-        echo'
+                                    <select class="input_width" name="cat_id">';
+    
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
+    while ( $cat_arr = mysql_fetch_assoc ( $index ) ) {
+                settype ( $cat_arr['cat_id'], "integer" );
+                echo '
+                                        <option value="'.$cat_arr['cat_id'].'" '.getselected($cat_arr['cat_id'], $_POST['cat_id']).'>'.$cat_arr['cat_name'].'</option>';
+    }
+                                        
+    echo'
                                     </select>
                                 </td>
                             </tr>
@@ -195,7 +195,7 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    <input class="text" size="75" maxlength="255" name="title" value="'.$_POST['title'].'"><br><br>
+                                    <input class="text" size="75" maxlength="255" id="news_title" name="title" value="'.$_POST['title'].'"><br><br>
                                 </td>
                             </tr>
                             <tr>
@@ -223,7 +223,7 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.create_editor ( "text", $_POST['text'], "100%", "250px", "", FALSE).'
+                                    '.create_editor ( "news_text", $_POST['news_text'], "100%", "250px", "", FALSE).'
                                 </td>
                             </tr>
                             <tr>
@@ -438,10 +438,17 @@ if ( TRUE )
                                                                         </table>
                                                                 </td>
                             </tr>
-         ';
-            
+        ';
         echo'
-                                                        <tr><td class="space"></td></tr>
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    <input class="button" type="button" onClick=\''.open_fullscreenpopup ( "admin_news_prev.php?i=".$linkid ).'\' value="'.$admin_phrases[common][preview_button].'">
+                                </td>
+                            </tr>
+        ';
+        echo'
+                            <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit" name="addnews">

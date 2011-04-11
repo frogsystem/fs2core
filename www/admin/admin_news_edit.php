@@ -656,7 +656,7 @@ function action_edit_display_page ( $data_arr )
                                                 <input type="hidden" name="go" value="news_edit">
                                                 <input type="hidden" name="news_action" value="edit">
                                                 <input type="hidden" name="news_id[]" value="'.$news_arr['news_id'].'">
-                        <input type="hidden" name="sended" value="edit">
+                                                <input type="hidden" name="sended" value="edit">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                                                         <tr><td class="line" colspan="2">'.$admin_phrases[news][news_information_title].'</td></tr>
                             <tr>
@@ -714,7 +714,7 @@ function action_edit_display_page ( $data_arr )
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    <input class="text" size="75" maxlength="255" name="news_title" value="'.$news_arr['news_title'].'">
+                                    <input class="text" size="75" maxlength="255" id="news_title" name="news_title" value="'.$news_arr['news_title'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -755,10 +755,19 @@ function action_edit_display_page ( $data_arr )
         action_edit_display_new_link ( $linkdata_arr['num_links'], $linkdata_arr['edit'] );
 
         echo'
-                                                        <tr><td class="space"></td></tr>
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td class="config" colspan="2">
+                                    <input class="button" type="button" onClick=\''.open_fullscreenpopup ( "admin_news_prev.php?i=".$linkdata_arr['num_links'] ).'\' value="'.$admin_phrases[common][preview_button].'">
+                                </td>
+                            </tr>
+        ';
+
+        echo'
+                            <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
-                                    <button class="button_new" type="submit" name="news_edit" value="1">
+                                    <button class="button_new" type="submit" name="news_edit">
                                         '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
                                     </button>
                                 </td>
@@ -1287,7 +1296,6 @@ if (
                 count ( $_POST['news_id'] ) == 1 &&
                 isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
                 isset ( $_POST['news_action'] ) && $_POST['news_action'] == "edit" &&
-                isset ( $_POST['news_edit'] ) && $_POST['news_edit'] == 1 &&
 
                 $_POST['news_title'] && $_POST['news_title'] != "" &&
                 $_POST['news_text'] && $_POST['news_text'] != "" &&

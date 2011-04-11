@@ -51,7 +51,7 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
     $template_doctype = $template_doctype->display();
     
     // Base for Images
-    if ( $BASE !== FALSE ) {  echo "a";
+    if ( $BASE !== FALSE ) {
         $template_base = '<base href="'.$BASE .'">
                 ';
     } else {
