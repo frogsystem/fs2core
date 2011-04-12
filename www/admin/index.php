@@ -128,7 +128,7 @@ echo'
 <div id="head">
      '.$global_config_arr['title'].'
      <div id="head_version">
-         version '.$global_config_arr['version'].'
+         version '.$global_config_arr['version'].'b
      </div>
      <div id="head_link">
          <a href="'.$global_config_arr['virtualhost'].'" target="_self" class="head_link">» zur Hauptseite</a>

@@ -4,7 +4,7 @@
 //// Download hinzufügen ////
 /////////////////////////////
 
-if ($_POST[dladd] && $_POST[title] && $_POST[text] && $_POST[fname][0] && $_POST[furl][0] && $_POST[fsize][0])
+if ($_POST[dladd] && $_POST[title] && $_POST[text])
 {
     $_POST[title] = savesql($_POST[title]);
     $_POST[text] = savesql($_POST[text]);
@@ -106,7 +106,7 @@ else
                                     <select name="catid">
     ';
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, -1);
+    get_dl_categories ($valid_ids, -1);
 
     foreach ($valid_ids as $cat)
     {
@@ -138,7 +138,7 @@ else
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Autor:<br>
+                                    Autor:<span class="small">(optional)</span><br>
                                     <font class="small">[Autor der Datei]<br />
                                     [Homepage des Autors]</font>
                                 </td>
@@ -159,6 +159,9 @@ else
                                 </td>
                             </tr>
     ';
+    $index = mysql_query("SELECT `ftp_id` FROM ".$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $db);
+    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);  
+    
     for ($i=1; $i<=$_POST[options]; $i++)
     {
         $j = $i - 1;
@@ -176,9 +179,17 @@ else
                                     <font class="small">[Titel]<br />[URL]<br />[Große in KB]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST[fname][$j]).'" maxlength="100"><br />
-                                    <input class="text" size="30" value="'.killhtml($_POST[furl][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
-                                    <input class="text" size="30" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST[fname][$j]).'" maxlength="100"><br />                                    
+                                    <input class="text" size="70" value="'.killhtml($_POST[furl][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><br>
+            ';
+            if ($ftp) {
+                echo '                                    
+                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                ';
+            }
+            echo '
+                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
+                                    <input class="text" size="30" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'">
                                 </td>
                             </tr>
@@ -193,10 +204,17 @@ else
                                     <font class="small">[Titel]<br />[URL]<br />[Große in KB]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />
-                                    <input class="text" size="30" name="furl['.$j.']" maxlength="255" id="furl'.$j.'">
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br />
-                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8"> KB<br />
+                                    <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />                                    
+                                    <input class="text" size="70" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><br>
+            ';
+            if ($ftp) {
+                echo '
+                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                ';
+            }
+            echo '
+                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
+                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                 </td>
                             </tr>
