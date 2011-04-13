@@ -33,57 +33,53 @@ function get_maintemplate ( $PATH_PREFIX = "", $BASE = FALSE )
 {
     global $global_config_arr, $db, $TEXT;
 
-    // Main Template
-    $template = '
-{..doctype..}
-<html lang="'.$global_config_arr['language'].'">
-        <head>
-                {..base..}{..title..}{..meta..}{..link..}{..script..}
-        </head>
+    // Load Template Object
+    $theTemplate = new template();
+    $theTemplate->setFile("0_general.tpl");
 
-        {..body..}
-</html>
-    ';
     // Get Doctype
-    $template_doctype = new template();
-    $template_doctype->setFile("0_general.tpl");
-    $template_doctype->load("DOCTYPE");
-    $template_doctype = $template_doctype->display();
+    $theTemplate->load("DOCTYPE");
+    $template_doctype = $theTemplate->display();
     
     // Base for Images
-    if ( $BASE !== FALSE ) {
-        $template_base = '<base href="'.$BASE .'">
-                ';
-    } else {
-        $template_base = "";
-    }
+    $template_base = ($BASE !== FALSE) ? '<base href="'.$BASE .'">' : "";
+	
+	// Get Titel
+	$template_title = get_title();
+	
+    // Create Link-Lines
+    $template_favicon = ($global_config_arr['show_favicon'] == 1) ? '<link rel="shortcut icon" href="'.$PATH_PREFIX .'styles/'.$global_config_arr['style'].'/icons/favicon.ico">' : "";
 
-    // Create link-Rows
-    $template_link = "";
-    if ( $global_config_arr['show_favicon'] == 1 ) {
-                $template_link .= '
-                <link rel="shortcut icon" href="styles/'.$global_config_arr['style'].'/icons/favicon.ico">';
-    }
-    $template_link .= '
-                <link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">
-                '. get_css ( $PATH_PREFIX );
+	$template_feed = '<link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">';
 
-    // Create script-Rows
+    // Create Script-Lines
     $template_script = "";
-    $template_script .= '
-                <script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-1.4.min.js"></script>'. get_js ( $PATH_PREFIX ) .'
-                <script type="text/javascript" src="'.$PATH_PREFIX .'includes/js_functions.js"></script>';
-
-    // Replace Placeholders
-    $template = str_replace("{..doctype..}", $template_doctype, $template);
-    $template = str_replace("{..base..}", $template_base, $template);
-    $template = str_replace("{..title..}", "<title>".get_title()."</title>", $template);
-    $template = str_replace("{..meta..}", get_meta (), $template);
-    $template = str_replace("{..link..}", $template_link, $template);
-    $template = str_replace("{..script..}", $template_script, $template);
-
+    $template_javascript .= get_js ( $PATH_PREFIX ) .'
+    <script type="text/javascript" src="'.$PATH_PREFIX.'includes/js_functions.js"></script>';
+	// Create jQuery-Line
+    $template_jquery = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-1.4.min.js"></script>';
+    
+    // Get HTML-Matrix
+    $theTemplate->load("MATRIX");
+    $theTemplate->tag("doctype", $template_doctype);
+    $theTemplate->tag("language", $global_config_arr['language']);
+    $theTemplate->tag("base_tag", $template_base);
+    $theTemplate->tag("title", $template_title);
+    $theTemplate->tag("title_tag", "<title>".$template_title."</title>");
+    $theTemplate->tag("meta_tags", get_meta());
+    
+    $theTemplate->tag("css_links", get_css($PATH_PREFIX));
+    $theTemplate->tag("favicon_link", $template_favicon);
+    $theTemplate->tag("feed_link", $template_feed);
+    
+    $theTemplate->tag("javascript", $template_javascript);
+    $theTemplate->tag("jquery", $template_jquery);
+    #$theTemplate->tag("jquerytools", $template_jquerytools);
+    
+    #$theTemplate->tag("body", $BODY);
+    
     // Return Template
-    return $template;
+    return $theTemplate->display();
 }
 
 
@@ -99,17 +95,46 @@ function get_css ( $PATH_PREFIX )
     $link_path =  $PATH_PREFIX . "styles/" . $global_config_arr['style'];
     $files = scandir_ext ( $search_path, "css" );
 
+    // Filter Go-CSS-Files
+    $files_go_css = array_filter ( $files, create_function ( '$FILE', '
+        if ( preg_match ( "/go_(.+).css/", $FILE ) ) {
+            return TRUE;
+        }
+        return FALSE;
+    ') );
+    
+    // Special CSS-Files
+    $files_special = array ( "import.css", "noscript.css" );
+    $files_all_special = array_merge ( $files_special, $files_go_css );
+    
+    // Filter special Files
+    $files_without_special = array_diff ( $files, $files_all_special );
+
+    // Unset template for security reasons
+    $template_css = "";
+
     // Search for import.css
     if ( in_array ( "import.css", $files ) ) {
-        // Create Template
         $template_css .= '<link rel="stylesheet" type="text/css" href="'. $link_path .'/import.css">';
+    // Else import other CSS-Files
     } else {
-        // Create Template
-        $template_css = "";
-        foreach ( $files as $file ) {
+        foreach ( $files_without_special as $file ) {
             $template_css .= '
                 <link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $file .'">';
         }
+    }
+    
+    // Other Special CSS
+    if ( in_array ( "noscript.css", $files ) ) {
+        $template_css .= '
+                <link rel="stylesheet" type="text/css" id="noscriptcss" href="'. $link_path . '/noscript.css">';
+    }
+    
+    // Go-CSS-Files
+    $go_css = "go_".$global_config_arr['goto'].".css";
+    if ( in_array ( $go_css, $files_go_css ) ) {
+        $template_css .= '
+                <link rel="stylesheet" type="text/css" href="'. $link_path . "/" . $go_css .'">';
     }
     
     // Return Template
@@ -132,7 +157,7 @@ function get_js ( $PATH_PREFIX )
     $template_js = "";
     foreach ( $files as $file ) {
         $template_js .= '
-                <script type="text/javascript" src="'. $link_path . "/" . $file .'"></script>';
+    <script type="text/javascript" src="'. $link_path . "/" . $file .'"></script>';
     }
 
     // Return Template
@@ -153,22 +178,22 @@ function get_meta ()
     $keywords = implode ( ", ", $keyword_arr );
 
     $template = '
-                <meta name="title" content="'.get_title ().'">'.get_meta_author ().'
-                <meta name="publisher" content="'.$global_config_arr['publisher'].'">
-                <meta name="copyright" content="'.$global_config_arr['copyright'].'">
-                <meta name="generator" content="Frogsystem 2 [http://www.frogsystem.de]">
-                <meta name="description" content="'.$global_config_arr['description'].'">'.get_meta_abstract ().'
-                <meta http-equiv="content-language" content="'.$global_config_arr['language'].'">
-                <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-                <meta name="robots" content="index,follow">
-                <meta name="Revisit-after" content="3 days">
-                <meta name="DC.Title" content="'.get_title ().'">'.get_meta_author ( TRUE ).'
-                <meta name="DC.Rights" content="'.$global_config_arr['copyright'].'">
-                <meta name="DC.Publisher" content="'.$global_config_arr['publisher'].'">
-                <meta name="DC.Description" content="'.$global_config_arr['description'].'">
-                <meta name="DC.Language" content="'.$global_config_arr['language'].'">
-                <meta name="DC.Format" content="text/html">
-                <meta name="keywords" lang="'.$global_config_arr['language'].'" content="'.$keywords.'">
+    <meta name="title" content="'.get_title ().'">'.get_meta_author ().'
+    <meta name="publisher" content="'.$global_config_arr['publisher'].'">
+    <meta name="copyright" content="'.$global_config_arr['copyright'].'">
+    <meta name="generator" content="Frogsystem 2 [http://www.frogsystem.de]">
+    <meta name="description" content="'.$global_config_arr['description'].'">'.get_meta_abstract ().'
+    <meta http-equiv="content-language" content="'.$global_config_arr['language'].'">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="robots" content="index,follow">
+    <meta name="Revisit-after" content="3 days">
+    <meta name="DC.Title" content="'.get_title ().'">'.get_meta_author ( TRUE ).'
+    <meta name="DC.Rights" content="'.$global_config_arr['copyright'].'">
+    <meta name="DC.Publisher" content="'.$global_config_arr['publisher'].'">
+    <meta name="DC.Description" content="'.$global_config_arr['description'].'">
+    <meta name="DC.Language" content="'.$global_config_arr['language'].'">
+    <meta name="DC.Format" content="text/html">
+    <meta name="keywords" lang="'.$global_config_arr['language'].'" content="'.$keywords.'">
     ';
 
     return $template;
@@ -188,7 +213,7 @@ function get_title ()
            $dyn_title = str_replace ( "{ext}", $global_config_arr['dyn_title_page'], $dyn_title );
            return $dyn_title;
         } else {
-               return $global_config_arr['title'];
+            return $global_config_arr['title'];
         }
 }
 
@@ -212,7 +237,7 @@ function get_meta_author ( $DC = FALSE )
         }
         
         return '
-                '.$output;
+    '.$output;
 }
 
 /////////////////////////////
@@ -224,10 +249,10 @@ function get_meta_abstract ()
 
         if ( isset ( $global_config_arr['content_abstract'] ) && $global_config_arr['content_abstract'] != "" ) {
             return '
-                <meta name="abstract" content="'.$global_config_arr['content_abstract'].'">';
+    <meta name="abstract" content="'.$global_config_arr['content_abstract'].'">';
         } else {
             return '
-                <meta name="abstract" content="'.$global_config_arr['description'].'">';
+    <meta name="abstract" content="'.$global_config_arr['description'].'">';
         }
 }
 
@@ -632,7 +657,7 @@ function delete_old_randoms ()
 ///////////////////////////////
 function get_copyright ()
 {
-        return '<span class="copyright">Powered by <a class="copyright_link" href="http://www.frogsystem.de" target="_blank">Frogsystem 2</a> &copy; 2007 - 2010 Frogsystem-Team</span>';
+        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - 2010 Frogsystem-Team</span>';
 }
 
 
@@ -691,7 +716,7 @@ function copyright ()
     $copyright = $template_copyright->display();
 
     if ( strpos ( $copyright, $template_copyright->getOpener()."copyright".$template_copyright->getCloser() ) == FALSE
-                    || strpos ( get_copyright (), "Frogsystem 2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2010 Frogsystem-Team" ) == FALSE
+                    || strpos ( get_copyright (), "Frogsystem&nbsp;2" ) == FALSE || strpos ( get_copyright (), "&copy; 2007 - 2010 Frogsystem-Team" ) == FALSE
                     || strpos ( get_copyright (), "Powered by" ) == FALSE  || strpos ( get_copyright (), "frogsystem.de" ) == FALSE ) {
         $global_config_arr['style'] =  "default";
     } else {

@@ -56,6 +56,37 @@ $TEXT = array (
 
     "general_mainpage_copyright" =>
     "Copyright-Hinweis des Frogsystem 2",
+    
+    
+    
+    "main_matrix_title" =>
+    "HTML-Matrix",
+    "main_matrix_desc" =>
+    "Die HTML-Matrix der Seite",
+    "matrix_help_doctype" =>
+    "Bindet den HTML-Doctype ein",
+    "matrix_help_language" =>
+    "ISO Sprachcode der Seite",
+    "matrix_help_base_tag" =>
+    "Bindet evtl. Base-Tag ein (wichtig für Vorschau)",
+    "matrix_help_title" =>
+    "Der Titel der Seite",
+    "matrix_help_title_tag" =>
+    "Der Titel der Seite als &lt;title&gt;-tag",
+    "matrix_help_meta_tags" =>
+    "Bindet die generierten Meta-Tags ein",
+    "matrix_help_css_links" =>
+    "Bindet die CSS-Stylesheets ein",
+    "matrix_help_favicon_link" =>
+    "Bindet evtl. das Favicon ein",
+    "matrix_help_feed_link" =>
+    "Bindet den Standard-Feed ein",
+    "matrix_help_javascript" =>
+    "Bindet die Javascript-Dateien ein",
+    "matrix_help_jquery" =>
+    "Bindet die jQuery-Bibliothek ein",
+    "matrix_help_body" =>
+    "Bindet das Template Hauptseite ein",
 
     "general_popupviewer_title" =>
     "Bildbetrachter",

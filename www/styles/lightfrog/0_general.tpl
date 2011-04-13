@@ -1,16 +1,3 @@
-<!--section-start::SYSTEMMESSAGE--><p class="systemmessage">
-  <b>{..message_title..}</b><br>
-  {..message..}
-</p><!--section-end::SYSTEMMESSAGE-->
-
-<!--section-start::FORWARDMESSAGE--><p class="systemmessage">
-  <b>{..message_title..}</b><br>
-  {..message..}<br>
-  <br>Du wirst jetzt automatisch weitergeleitet.<br>
-  Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..forward_url..}">klicke bitte hier</a>.
-</p>
-<!--section-end::FORWARDMESSAGE-->
-
 <!--section-start::DOCTYPE--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!--section-end::DOCTYPE-->
 
 <!--section-start::MAINPAGE--><body>
@@ -50,6 +37,21 @@
   </div>
 </body><!--section-end::MAINPAGE-->
 
+<!--section-start::MATRIX-->{..doctype..}
+<html lang="{..language..}">
+  <head>
+    {..base_tag..}
+    {..title_tag..}
+    {..meta_tags..}
+    {..css_links..}
+    {..favicon_link..}
+    {..feed_link..}
+    {..jquery..}
+    {..javascript..}
+  </head>
+  {..body..}
+</html><!--section-end::MATRIX-->
+
 <!--section-start::POPUPVIEWER--><body id="imageviewer">
 
   <div style="width:100%;" align="center">
@@ -79,6 +81,19 @@
 </body>
 <!--section-end::POPUPVIEWER-->
 
+<!--section-start::SYSTEMMESSAGE--><p class="systemmessage">
+  <b>{..message_title..}</b><br>
+  {..message..}
+</p><!--section-end::SYSTEMMESSAGE-->
+
+<!--section-start::FORWARDMESSAGE--><p class="systemmessage">
+  <b>{..message_title..}</b><br>
+  {..message..}<br>
+  <br>Du wirst jetzt automatisch weitergeleitet.<br>
+  Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..forward_url..}">klicke bitte hier</a>.
+</p>
+<!--section-end::FORWARDMESSAGE-->
+
 <!--section-start::ANNOUNCEMENT--><b>Ankündigung:</b>
 <p>
   {..announcement_text..}
@@ -106,3 +121,4 @@
   - <b>{..num_articles..}</b> Artikel
 </p>
 <!--section-end::STATISTICS-->
+

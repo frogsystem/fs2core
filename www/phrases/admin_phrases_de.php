@@ -673,7 +673,7 @@ $admin_phrases['partner']['note_nopages']             = "Es wurden keine Partner
 
 //CSS
 $admin_phrases['template']['style_css']['title']        = "CSS";
-$admin_phrases['template']['style_css']['description']  = "Beinhaltet die CSS-Definitionen des Designs.";
+$admin_phrases['template']['style_css']['description']  = 'Beinhaltet die CSS-Definitionen des Designs. Bitte beachten Sie die <a class="small" href="http://wiki.frogsystem.de/special-css-filenames" target="_blank">&raquo;speziellen CSS-Dateinamen</a>.';
 
 //Java Script
 $admin_phrases['template']['js_userfunctions']['title'] = "Java Script";

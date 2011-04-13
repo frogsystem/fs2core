@@ -46,6 +46,21 @@
   </div>
 </body><!--section-end::MAINPAGE-->
 
+<!--section-start::MATRIX-->{..doctype..}
+<html lang="{..language..}">
+  <head>
+    {..base_tag..}
+    {..title_tag..}
+    {..meta_tags..}
+    {..css_links..}
+    {..favicon_link..}
+    {..feed_link..}
+    {..jquery..}
+    {..javascript..}
+  </head>
+  {..body..}
+</html><!--section-end::MATRIX-->
+
 <!--section-start::POPUPVIEWER--><body id="imageviewer">
 
   <div style="width:100%;" align="center">
