@@ -161,35 +161,64 @@ function default_get_entry_data ( $articles_arr )
         global $db;
         global $global_config_arr;
         global $admin_phrases;
+        global $config_arr;
 
-        // Get other Data
+        // Load Data From DB
+        switch($config_arr['acp_view']) {
+            case 1:
+                $fields = "`article_id`, `article_title`, `article_date`, `article_text`, `article_user`, `article_url`, `article_cat_id`";
+                break;
+            case 2:
+                $fields = "`article_id`, `article_title`, `article_date`, `article_user`, `article_url`, `article_cat_id`";
+                break;
+            default:
+                $fields = "`article_id`, `article_title`, `article_url`";
+                break;
+        }
+        
+        
+        $index = mysql_query ( "
+                                SELECT ".$fields."
+                                FROM ".$global_config_arr['pref']."articles
+                                WHERE `article_id` = '".$articles_arr['article_id']."'
+                                LIMIT 0,1
+        ", $db);     
+        $articles_arr = mysql_fetch_assoc($index);
+
+        // Prepare Data
         $articles_arr['article_title'] = killhtml ( $articles_arr['article_title'] );
-        
-        if ( $articles_arr['article_date'] != 0 ) {
-        $articles_arr['article_date_formated'] = "".$admin_phrases[common][on_date]." <b>" . date ( $admin_phrases[common][date_format] , $articles_arr['article_date'] ) . "</b>,";
-        } else {
-            $articles_arr['article_date_formated'] = "";
-        }
-        
-    $articles_arr['article_text_short'] = truncate_string ( killfs (  $articles_arr['article_text'] ) , 250, "..." );
-
-        if ( $articles_arr['article_user'] != 0 ) {
-            $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$articles_arr['article_user']."", $db );
-            $articles_arr['user_name'] = $admin_phrases[common][by] .' <b>' . mysql_result ( $index2, 0, "user_name" ) . '</b>,';
-        } else {
-            $articles_arr['user_name'] = "";
-        }
         
         if ( $articles_arr['article_url'] != "" ) {
                 $articles_arr['article_url'] = '?go=' . $articles_arr['article_url'];
         } else {
             $articles_arr['article_url'] = "";
+        }        
+        
+        // Only for full and extended view
+        if ($config_arr['acp_view'] == 1 || $config_arr['acp_view'] == 2) {
+            if ( $articles_arr['article_date'] != 0 ) {
+                $articles_arr['article_date_formated'] = "".$admin_phrases[common][on_date]." <b>" . date ( $admin_phrases[common][date_format] , $articles_arr['article_date'] ) . "</b>,";
+            } else {
+                $articles_arr['article_date_formated'] = "";
+            }
+            
+            if ( $articles_arr['article_user'] != 0 ) {
+                $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$articles_arr['article_user']."", $db );
+                $articles_arr['user_name'] = $admin_phrases[common][by] .' <b>' . mysql_result ( $index2, 0, "user_name" ) . '</b>,';
+            } else {
+                $articles_arr['user_name'] = "";
+            }
+            
+             $index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."articles_cat WHERE cat_id = ".$articles_arr['article_cat_id']."", $db );
+            $articles_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
+        }
+        
+        // Only for full view
+        if ($config_arr['acp_view'] == 1) {
+            $articles_arr['article_text_short'] = truncate_string ( killfs (  $articles_arr['article_text'] ) , 250, "..." );
         }
 
-        $index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."articles_cat WHERE cat_id = ".$articles_arr['article_cat_id']."", $db );
-    $articles_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
-
-    return $articles_arr;
+        return $articles_arr;
 }
 
 function default_display_entry ( $articles_arr )
@@ -258,14 +287,14 @@ function default_display_all_entries ( $pagenav_arr )
 
         // Create Where Clause for Category Filter
         unset ( $where_clause );
-    if ( $_REQUEST['cat_id'] != 0 )
-        {
-        $where_clause = "WHERE article_cat_id = '".$_REQUEST['cat_id']."'";
-    }
+        if ( $_REQUEST['cat_id'] != 0 )
+            {
+            $where_clause = "WHERE article_cat_id = '".$_REQUEST['cat_id']."'";
+        }
 
         // Load News From DB
         $index = mysql_query ( "
-                                                        SELECT *
+                                                        SELECT `article_id`
                                                         FROM ".$global_config_arr['pref']."articles
                                                         ".$where_clause."
                                                         ORDER BY ".$_REQUEST['order']." ".$_REQUEST['sort'].", article_title ASC
@@ -340,9 +369,8 @@ function action_edit_get_data ( $ARTICLE_ID )
 
     //Load Article
     $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1", $db );
-        $articles_arr = mysql_fetch_assoc ( $index );
+    $articles_arr = mysql_fetch_assoc ( $index );
     $old_url = $articles_arr['article_url'];
-        $url_arr = get_article_urls ();
     
         // Sended or Link Action
         if ( isset ( $_POST['sended'] ) ) {
@@ -350,11 +378,18 @@ function action_edit_get_data ( $ARTICLE_ID )
             $articles_arr['d'] = $_POST['d'];
             $articles_arr['m'] = $_POST['m'];
             $articles_arr['y'] = $_POST['y'];
-                if ( in_array ( savesql ( $articles_arr['article_url'] ), $url_arr ) && $articles_arr['article_url'] != $old_url ) {
-                  systext ( $admin_phrases[articles][existing_url], $admin_phrases[common][error], TRUE );
-                } else {
-                  systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
-                }
+            
+            if (
+                isset ($articles_arr['article_url']) &&
+                trim($articles_arr['article_url']) != "" &&
+                ($index2 = mysql_query("SELECT `article_id` FROM `".$global_config_arr['pref']."articles` WHERE `article_url` = '".savesql($articles_arr['article_url'])."'", $db)) !== FALSE &&
+                mysql_num_rows($index2) != 0 &&
+                mysql_result($index2, 0, "article_id") != $ARTICLE_ID
+            ) {
+                systext ( $admin_phrases[articles][existing_url], $admin_phrases[common][error], TRUE );
+            } else {
+                systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+            }
         }
     $articles_arr['article_old_url'] = $old_url;
 
@@ -690,17 +725,15 @@ function action_delete_display_page ( $articles_arr )
 
 function db_edit_article ( $DATA )
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
+    global $db, $global_config_arr, $admin_phrases;
 
-        // No User
-        if ( !isset ( $DATA['article_user'] ) ) {
-            $DATA['article_user'] = 0;
-        }
+    // No User
+    if ( !isset ( $DATA['article_user'] ) ) {
+        $DATA['article_user'] = 0;
+    }
 
-        // Security Functions
-        $DATA['article_url'] = savesql ( trim ( $DATA['article_url'] ) );
+    // Security Functions
+    $DATA['article_url'] = savesql ( trim ( $DATA['article_url'] ) );
     $DATA['article_title'] = savesql ( $DATA['article_title'] );
     $DATA['article_text'] = savesql ( $DATA['article_text'] );
 
@@ -785,7 +818,6 @@ function db_delete_article ( $DATA )
 ///////////////////////////////
 //// Constructor Functions ////
 ///////////////////////////////
-$url_arr = get_article_urls ();
 
 
 //////////////////////////
@@ -800,8 +832,15 @@ if (
 
         isset ( $_POST['article_cat_id'] ) &&
         $_POST['article_title'] && $_POST['article_title'] != "" &&
-
-        ( !in_array ( savesql ( $_POST['article_url'] ), $url_arr ) || $_POST['article_url'] == $_POST['article_old_url'] ) &&
+        
+        isset ($_POST['article_url']) &&
+        (trim($_POST['article_url']) == "" ||
+            (
+                settype($_POST['article_id'], "integer") &&
+                ($index = mysql_query("SELECT `article_id` FROM `".$global_config_arr['pref']."articles` WHERE `article_url` = '".savesql($_POST['article_url'])."'", $db)) !== FALSE &&
+                (mysql_num_rows($index) == 0 || mysql_result($index, 0, "article_id") == $_POST['article_id'])
+            )
+        ) &&
 
         ( ( $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
         ( ( $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12 ) || ( $_POST['d'] == "" && $_POST['m'] == "" && $_POST['y'] == "" ) ) &&
@@ -829,7 +868,6 @@ elseif (
     unset ( $_POST );;
     unset ( $_REQUEST );
 }
-
 
 //////////////////////////////
 //// Display Action-Pages ////
