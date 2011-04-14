@@ -9,29 +9,49 @@ $config_arr = mysql_fetch_assoc($index);
 //// Screenshot hochladen ///
 /////////////////////////////
 
-if (isset($_FILES['screenimg']))
+if (isset($_POST['sended']))
 {
-
-
-    settype($_POST[catid], 'integer');
-    $_POST[title] = savesql($_POST[title]);
-    mysql_query("INSERT INTO ".$global_config_arr[pref]."screen (cat_id, screen_name)
-                 VALUES ('".$_POST[catid]."',
-                         '".$_POST[title]."');", $db);
-    $id = mysql_insert_id();
+    settype($_POST['catid'], 'integer');
+    $log = array();
     
-    $upload = upload_img($_FILES['screenimg'], "images/screenshots/", $id, $config_arr[screen_size]*1024, $config_arr[screen_x], $config_arr[screen_y]);
-    systext(upload_img_notice($upload));
-    switch ($upload)
-    {
-      case 0:
-        break;
-      default:
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."screen WHERE screen_id = '$id'");
-        break;
+    for ($i=1; $i<=5; $i++) {
+        if ($_FILES['img'.$i]['name'] != "") {
+            // Insert into DB
+            $title = savesql($_POST['title'.$i]);
+            mysql_query("INSERT INTO ".$global_config_arr['pref']."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $db);
+            $id = mysql_insert_id();
+            
+            // File Operations
+            $upload = upload_img($_FILES['img'.$i], "images/screenshots/", $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
+            $log[$i][] = upload_img_notice($upload);
+            
+            // Upload Failed => Delete from DB
+            if ($upload != 0) {
+                mysql_query("DELETE FROM ".$global_config_arr['pref']."screen WHERE screen_id = '".$id."'");
+            
+            // Else create Thumb
+            } else {
+                $thumb = create_thumb_from(image_url("images/screenshots/", $id, FALSE, TRUE), $config_arr['screen_thumb_x'], $config_arr['screen_thumb_y']);
+                $log[$i][] = create_thumb_notice($thumb);
+            }           
+                        
+        }        
     }
-    $thumb = create_thumb_from(image_url("images/screenshots/", $id, FALSE, TRUE), $config_arr[screen_thumb_x], $config_arr[screen_thumb_y]);
-    systext(create_thumb_notice($thumb));
+    
+    $systext = "";
+    foreach ($log as $num => $msg) {
+        $systext .= "<p>Bild ".$num.":<br>";
+        foreach ($msg as $text) {
+            $systext .= "&nbsp;&nbsp;&nbsp;".$text."<br>";
+        }
+        $systext .= "</p>";
+    }
+    
+    if ($systext != "") {
+        systext($systext);
+    } else {
+        systext("Sie müssen schon auch ein Bild auswählen...");        
+    }
 }
 
 /////////////////////////////
@@ -43,31 +63,12 @@ echo'
                         <input type="hidden" value="screens_add" name="go">
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
-                                <td class="config" valign="top">
-                                    Bild:<br>
-                                    <font class="small">Bild auswählen, dass hochgeladen werden soll</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <input type="file" class="text" name="screenimg" size="33"><br />
-                                    <font class="small">[max. '.$config_arr[screen_x].' x '.$config_arr[screen_y].' Pixel] [max. '.$config_arr[max_size].' KB]</font>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
-                                    Bildtitel: <font class="small">(optional)</font><br>
-                                    <font class="small">Bilduntertitel</font>
-                                </td>
-                                <td class="config" valign="top">
-                                    <input class="text" name="title" size="33" maxlength="255">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" valign="top">
+                                <td class="config">
                                     Kategorie:<br>
-                                    <font class="small">In welche Kategorie soll der Screenshot eingeordnet werden</font>
+                                    <font class="small">In welche Kategorie werden die Bilder eingeordnet</font>
                                 </td>
-                                <td class="config" valign="top">
-                                    <select name="catid">
+                                <td class="config">
+                                    <select class="input_width" name="catid">
 ';
 $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $db);
 while ($cat_arr = mysql_fetch_assoc($index))
@@ -82,12 +83,40 @@ echo'
                                     </select>
                                 </td>
                             </tr>
+                        </table>                        
+                        <br>
+                        <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
-                                <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                <td class="config">#</td>
+                                <td class="config">
+                                    Bilddateien <span class="small">[max. '.$config_arr[screen_x].' x '.$config_arr[screen_y].' Pixel] [max. '.$config_arr[screen_size].' KB]</span>
+                                </td>
+                                <td class="config">Titel</td>
+                            </tr>
+';
+
+for ($i=1; $i<=5; $i++) {
+    echo '
+                            <tr class="config">
+                                <td valign="middle">'.$i.'</td>
+                                <td>
+                                    <input type="file" class="text" name="img'.$i.'" size="40">
+                                </td>
+                                <td>
+                                     <input type="text" class="text" name="title'.$i.'" size="40" maxlength="255">
                                 </td>
                             </tr>
+    ';
+}
+echo '
                         </table>
+                        <br>
+                        <input name="sended" class="button input_width" type="submit" value="Bilder hochladen">
+                        
+                        <p>
+                            <b>Hinweis:</b> Alle Billder zusammen dürfen nicht größer als '.ini_get("post_max_size").'B sein (Server-Vorgabe).
+                        </p>
+                        
                     </form>
 ';
 ?>
