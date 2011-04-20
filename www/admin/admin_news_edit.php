@@ -1296,6 +1296,7 @@ if (
                 count ( $_POST['news_id'] ) == 1 &&
                 isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
                 isset ( $_POST['news_action'] ) && $_POST['news_action'] == "edit" &&
+                isset ( $_POST['news_edit'] ) &&
 
                 $_POST['news_title'] && $_POST['news_title'] != "" &&
                 $_POST['news_text'] && $_POST['news_text'] != "" &&
