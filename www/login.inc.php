@@ -18,40 +18,83 @@ $spam = "wKAztWWB2Z"; //Anti-Spam Encryption-Code
 ///////////////////////
 //// DB Connection ////
 ///////////////////////
-@$db = mysql_connect ( $dbc['host'], $dbc['user'], $dbc['pass'] );
-if ( $db !== FALSE && mysql_select_db ( $dbc['data'], $db ) ) {
+
+// Initialize sql-class
+require(FS2_ROOT_PATH . "libs/class_sql.php");
+
+try {
+    // Connect to DB-Server
+    $sql = new sql($dbc['host'], $dbc['data'], $dbc['user'], $dbc['pass'], $dbc['pref']);
+    $db = $sql->conn();
+
 
     /////////////////////
     //// Global Vars ////
     /////////////////////
 
     // General Config + Infos
-    $index = mysql_query ( "SELECT * FROM ".$dbc['pref']."global_config", $db );
-    $global_config_arr = mysql_fetch_assoc ( $index );
-    $global_config_arr = array_map ("stripslashes", $global_config_arr );
+    $global_config_arr = $sql->getById("global_config", "*", 1);
+    $global_config_arr = array_map("stripslashes", $global_config_arr);
 
-    //write $pref into $global_config_arr['pref']
+    //write vars into $global_config_arr
     $global_config_arr['pref'] = $dbc['pref'];
-    //write $spam into $global_config_arr['spam']
     $global_config_arr['spam'] = $spam;
-    //write $data into $global_config_arr['data']
     $global_config_arr['data'] = $dbc['data'];
-    //write systemüath into $global_config_arr['path']
     $global_config_arr['path'] = dirname(__FILE__) . "/";
+    
     //write real home page into $global_config_arr['home_real']
-    if ( $global_config_arr['home'] == 1 ) {
-        $global_config_arr['home_real'] = stripslashes ( $global_config_arr['home_text'] );
+    if ($global_config_arr['home'] == 1) {
+        $global_config_arr['home_real'] = stripslashes($global_config_arr['home_text']);
     } else {
         $global_config_arr['home_real'] = "news";
     }
+    
     //get short_language code
-    $global_config_arr['language'] = ( preg_match ( "/[a-z]{2}_[A-Z]{2}/", $global_config_arr['language_text'] ) === 1 ) ? substr ( $global_config_arr['language_text'], 0, 2 ) : $global_config_arr['language_text'];
-    // set style (but may be changed later)
+    $global_config_arr['language'] = (preg_match("/[a-z]{2}_[A-Z]{2}/", $global_config_arr['language_text']) === 1) ? substr($global_config_arr['language_text'], 0, 2) : $global_config_arr['language_text'];
+    
+    // set default style (but may be changed later)
     $global_config_arr['style'] = $global_config_arr['style_tag'];
-    settype ( $global_config_arr['style_id'], "integer" );
+    settype($global_config_arr['style_id'], "integer");
 
     // Security Funtcions for some important values
-    settype ( $global_config_arr['search_index_update'], "integer" );
+    settype($global_config_arr['search_index_update'], "integer");
+    
+    // get other configs
+    $global_config_arr['system'] = $sql->getById("config_system", "*", 1);
+    
+
+//////////////////////////////
+//// DB Connection failed ////
+//////////////////////////////
+} catch (Exception $e) {
+    
+    // Include lang-class
+    require(FS2_ROOT_PATH . "libs/class_lang.php");
+
+    // get language
+    $de = strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], "de");
+    $en = strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], "en");
+
+    if ($de !== false && $de < $en)
+        $TEXT = new lang ("de_DE", "frontend");
+    else
+        $TEXT = new lang ("en_US", "frontend");
+
+    // No-Connection-Page Template
+    $template = '
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>'.$TEXT->get("no_connection").'</title>
+    </head>
+    <body>
+        <b>'.$TEXT->get("no_connection_to_the_server").'</b>
+    </body>
+</html>
+    ';
+
+    // Display No-Connection-Page
+    echo $template;
 }
 
 

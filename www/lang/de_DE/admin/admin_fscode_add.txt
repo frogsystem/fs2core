@@ -1,0 +1,32 @@
+# Language-Definition for [FS2]/admin/template/admin_fscode_add.tpl
+head:             FS-Code definieren
+name:             Name des Codes
+contenttype:      Inhaltstyp
+allowin:          Erlaubt in
+disallowin:       Nicht erlaubt in
+callbacktype:     Ersetzungsart
+icon:             FS Code-Icon
+icon_desc:        Das Icon, das im Editor angezeigt wird.<br>Wird für den zur Zeit aktiven Style gespeichert.
+active:           Code aktivieren
+active_y:         Ja
+active_n:         Nein
+flags:            Flags
+flags_name:       Name
+flags_value:      Wert
+flags_choose:     Wähle ein Flag!
+flags_add:        Flag hinzufügen
+replacement:      Ersetzungstext
+replacement_1_1:  Ersetzung wenn ein Parameter angegeben ist.
+replacement_1_2:  Syntax: [code]Parameter[/code]
+replacement_2_1:  Ersetzung wenn beide Parameter angegeben sind
+replacement_2_2:  Syntax: [code='Parameter']Inhalt[/code]
+replacement_3:    PHP-Code
+note_1:           Hinweis: Ein FS-Code mit diesem Namen existiert bereits.
+note_2:           Hinweis: Der Name des Codes ist nicht erlaubt!
+tag_1:            Der angegebene Parameter
+tag_2_1:          Der "Inhalt" des Codes.<br>[code='Parameter']<b>Inhalt</b>[/code]
+tag_2_2:          Der Parameter des Codes.<br>[code='<b>Parameter</b>']Inhalt[/code]
+save_ok:          Code erfolgreich gespeichert.
+save_error_1:     Der Code konnte nicht hinzugefügt werden.<br>SQL meldet: {..err_msg..} : {..err_no..}
+save_error_2:     Der Name des Code enthält ungültige Zeichen!
+save_error_3:     Ein Code mit diesem Namen existiert bereits!

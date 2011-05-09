@@ -1,0 +1,3 @@
+# Language-Definition for frontend.php
+no_connection_to_the_server:     Could not connect to server. Please try again later.
+no_connection:                   Connection Error
