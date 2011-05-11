@@ -77,26 +77,56 @@ class sql {
            $return[] = "LIMIT ".$options['L'];
 
         // return as string
-        return implode(" ", $return);
+        return " ".implode(" ", $return);
     }
     
     // execute SELECT
     private function select ($table, $cols, $options = array(), $distinct = false) {
         // empty cols
         if (empty($cols))
-            Throw new Exception("MySQL Error: Can't select nothing.");    
+            Throw new Exception("MySQL Error: Can't select nothing.");
+        if (is_array($table) && count($table) <= 0)
+            Throw new Exception("MySQL Error: Can't select from nothing.");                
                     
+                    
+        // Table list
+        if (is_array($table)) {
+            // Computes to FROM `table1` ONE, `table2` TWO ...
+            $table_list = array();
+            foreach ($table as $as => $name) {
+                $table_list[] = "`".$this->pref.$name."` ".$as;
+            }
+            $table_list = implode(", ", $table_list);
+        } else {
+            $table_list = "`".$this->pref.$table."`";
+        }
+                
         // prepare data
-        if (is_array($cols))
-            $cols = "`".implode("`, `", $cols)."`";
-        elseif ($cols !== "*")
-            Throw new Exception("MySQL Error: Can't select because of bad data.");    
+        if (is_array($cols)) {
+            #if (is_array($table) && false !== ($r = array_diff_key($cols, $table)) && empty($r)) {
+            if (is_array($table) && array_diff_key($cols, $table) === array()) {
+                // Computes to SELECT ONE.`field1`, TWO.`field2` ...
+                $cols_list = array();
+                foreach ($cols as $from => $name) {
+                    $cols_list[] = $from.".`".$name."`";
+                }
+                $cols_list = implode(", ", $cols_list);
+            } else {
+                $cols_list = "`".implode("`, `", $cols)."`";
+            }
+            
+        // error
+        } elseif ($cols == "*") {
+            $cols_list = $cols;
+        } else {
+            Throw new Exception("MySQL Error: Can't select because of bad data.");
+        }
 
         // DISTINCT or not
         $select = ($distinct) ? "SELECT DISTINCT " : "SELECT ";
-
+        
         // build query string...
-        $qrystr = $select.$cols." FROM `".$this->pref.$table."`"." ".$this->opt($options);
+        $qrystr = $select.$cols_list." FROM ".$table_list.$this->opt($options);
         
         try {
             return $this->doQuery($qrystr); // ... and execute
@@ -234,7 +264,7 @@ class sql {
         }
         
         // build query string...
-        $qrystr = "UPDATE `".$this->pref.$table."` SET ".implode(",", $list)." ".$this->opt($options);
+        $qrystr = "UPDATE `".$this->pref.$table."` SET ".implode(",", $list).$this->opt($options);
         
         try {
             return $this->doQuery($qrystr); // ... and execute
@@ -259,7 +289,7 @@ class sql {
     
     // delete statement
     public function delete ($table, $options = array()) {
-        $qrystr = "DELETE FROM `".$this->pref.$table."` ".$this->opt($options);
+        $qrystr = "DELETE FROM `".$this->pref.$table."`".$this->opt($options);
         
         try {
             return $this->doQuery($qrystr);

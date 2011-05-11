@@ -8,7 +8,7 @@ function get_content_container ( $TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "wid
     $overall_width = ( $OVERALL_STYLE === FALSE ? '' : ' style="'.$OVERALL_STYLE.'"' );
     $top_style = ( $TOP_STYLE === FALSE ? '' : ' style="'.$TOP_STYLE.'"' );
     $content_style = ( $CONTENT_STYLE === FALSE ? '' : ' style="'.$CONTENT_STYLE.'"' );
-    
+
     $template = '
                 <div'.$overall_width.'>
                     <div class="cs_overall">
@@ -39,7 +39,7 @@ function get_content_container ( $TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "wid
                     </div>
                 </div>
     ';
-    
+
     return $template;
 }
 
@@ -314,16 +314,15 @@ function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
         $TITLE = $admin_phrases[common][system_message];
     }
 
-    if ( $RED == TRUE ) {
-        $class = "line_red";
-    } else {
-        $class = "line";
-    }
-
+    // TRUE was old for "red"
+    $COLOR = $COLOR === TRUE ? "red" : $COLOR;
+    // FALSE was old for "green"
+    $COLOR = $COLOR === FALSE ? "green" : $COLOR;
+    
     if ( $IMAGE == FALSE ) {
         return '
             <table class="configtable" cellpadding="4" cellspacing="0">
-                <tr><td class="'.$class.'">'.$TITLE.'</td></tr>
+                <tr><td class="line_'.$COLOR.'">'.$TITLE.'</td></tr>
                 <tr><td class="config">'.$MESSAGE.'</td></tr>
                 <tr><td class="space"></td></tr>
             </table>
@@ -331,7 +330,7 @@ function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
     } else {
         return '
             <table class="configtable" cellpadding="4" cellspacing="0">
-                <tr><td class="'.$class.'" colspan="2">'.$TITLE.'</td></tr>
+                <tr><td class="line_'.$COLOR.'" colspan="2">'.$TITLE.'</td></tr>
                 <tr>
                     <td class="config middle">'.$IMAGE.'</td>
                     <td class="config middle" width="100%">'.$MESSAGE.'</td>
@@ -342,9 +341,9 @@ function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
     }
 }
 
-function systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
+function systext ( $MESSAGE, $TITLE = FALSE, $COLOR = "green", $IMAGE = FALSE )
 {
-    echo get_systext ( $MESSAGE, $TITLE, $RED, $IMAGE );
+    echo get_systext ( $MESSAGE, $TITLE, $COLOR, $IMAGE );
 }
 
 /////////////////////////////////
@@ -391,6 +390,16 @@ function js_nowbutton ( $DATA, $CAPTION, $CLASS = "button" )
     $template .= '">';
 
         return $template;
+}
+
+////////////////////////////////
+//// JS Now-Button erzeugen ////
+////////////////////////////////
+
+function get_datebutton($DATA, $CAPTION, $CLASS = "button")
+{
+    $template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="$(\'#'.$DATA[0].'\').data(\'dateinput\').setValue(new Date('.$DATA[1].'));">';
+    return $template;
 }
 
 ////////////////////////////
@@ -637,17 +646,19 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
 
 function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
 {
-        if ( $PERMISSION == 1 ) {
-                $PAGE_DATA_ARR['title'] = $TITLE;
-                $PAGE_DATA_ARR['file'] = $FILE;
-                $PAGE_DATA_ARR['menu'] = $ACTIVE_MENU;
-        } else {
-                $PAGE_DATA_ARR['title'] = "Fehler";
-                $PAGE_DATA_ARR['file'] = "admin_error.php";
-                $PAGE_DATA_ARR['menu'] = "none";
-        }
-        $PAGE_DATA_ARR['created'] = TRUE;
-        return $PAGE_DATA_ARR;
+    global $TEXT;
+
+    if ( $PERMISSION == 1 ) {
+            $PAGE_DATA_ARR['title'] = $TITLE;
+            $PAGE_DATA_ARR['file'] = $FILE;
+            $PAGE_DATA_ARR['menu'] = $ACTIVE_MENU;
+    } else {
+            $PAGE_DATA_ARR['title'] = $TEXT['menu']->get("admin_error_page_title");
+            $PAGE_DATA_ARR['file'] = "admin_error.php";
+            $PAGE_DATA_ARR['menu'] = "none";
+    }
+    $PAGE_DATA_ARR['created'] = TRUE;
+    return $PAGE_DATA_ARR;
 }
 
 ////////////////////////////////
@@ -656,25 +667,24 @@ function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
 
 function create_menu ( $ACTIVE_MENU )
 {
-        global $global_config_arr;
-        global $db;
+    global $global_config_arr, $db, $TEXT;
 
     unset($MENU_ARR);
 
     $index = mysql_query ( "
-                                    SELECT *
+                                    SELECT `page_id`, `page_file`
                                     FROM `".$global_config_arr['pref']."admin_cp`
                                     WHERE `group_id` = '-1' AND `page_int_sub_perm` = 0
-                                    ORDER BY `page_pos` ASC, `page_id` ASC
+                                    ORDER BY `page_pos` ASC, `page_file` ASC
     ", $db );
     
     $template = "";
     while ( $MENU_ARR = mysql_fetch_assoc ( $index ) ) {
-        $MENU_ARR['show'] = create_menu_show ( $MENU_ARR['page_link'] );
+        $MENU_ARR['show'] = create_menu_show ( $MENU_ARR['page_file'] );
 
         if ( $MENU_ARR['show'] == true && $_SESSION['user_level'] == "authorised" )
         {
-                        if ( $ACTIVE_MENU == $MENU_ARR['page_link'] ) {
+            if ( $ACTIVE_MENU == $MENU_ARR['page_file'] ) {
                 $MENU_ARR['class'] = "menu_link_selected";
             } else {
                 $MENU_ARR['class'] = "menu_link";
@@ -696,8 +706,7 @@ function create_menu ( $ACTIVE_MENU )
 
 function create_menu_show ( $MENU_ID )
 {
-    global $global_config_arr;
-        global $db;
+    global $global_config_arr, $db;
 
     $index = mysql_query ( "
                                 SELECT P.`page_id`
@@ -725,22 +734,22 @@ function create_menu_show ( $MENU_ID )
 
 function create_navi (  $ACTIVE_MENU, $GO  )
 {
-        global $global_config_arr;
-        global $db;
+        global $global_config_arr, $db;
 
         unset ( $template );
 
         $groupaction = mysql_query ( "
-                                            SELECT `group_id`, `group_title`
+                                            SELECT `group_id`
                                             FROM `".$global_config_arr['pref']."admin_groups`
                                             WHERE `menu_id` = '".$ACTIVE_MENU."'
-                                            AND `group_id` > 0
-                                            ORDER BY `group_pos` ASC, `group_title` ASC
+                                            AND `group_id` != '0'
+                                            AND `group_id` != '-1'
+                                            ORDER BY `group_pos` ASC
         ", $db );
 
         $template = "";
         while ( $GROUP_ARR = mysql_fetch_assoc ( $groupaction ) ) {
-        $template .= create_group ( $GROUP_ARR, create_group_first ( $template ), $GO );
+            $template .= create_group ( $GROUP_ARR, create_group_first ( $template ), $GO );
         }
 
         return $template;
@@ -751,22 +760,21 @@ function create_navi (  $ACTIVE_MENU, $GO  )
 
 function create_group ($GROUP_ARR, $IS_FIRST, $GO )
 {
-        global $global_config_arr;
-        global $db;
+    global $global_config_arr, $db, $TEXT;
 
-        unset ( $template );
+    unset ( $template );
 
-        // get links from database
-        $pageaction = mysql_query ( "
-                                                    SELECT `page_id`, `page_link`
-                                                    FROM `".$global_config_arr['pref']."admin_cp`
-                                                    WHERE `group_id` = '".$GROUP_ARR['group_id']."' AND `page_int_sub_perm` = 0
-                                                    ORDER BY `page_pos` ASC, `page_id` ASC
-        ", $db );
-        $template = "";
-        while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {
-            $template .= create_link ( $PAGE_ARR['page_id'], $PAGE_ARR['page_link'], $GO );
-        }
+    // get links from database
+    $pageaction = mysql_query ( "
+                                    SELECT `page_id`
+                                    FROM `".$global_config_arr['pref']."admin_cp`
+                                    WHERE `group_id` = '".$GROUP_ARR['group_id']."' AND `page_int_sub_perm` = 0
+                                    ORDER BY `page_pos` ASC, `page_id` ASC
+    ", $db );
+    $template = "";
+    while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {
+        $template .= create_link ( $PAGE_ARR['page_id'], $GO );
+    }
 
     // is group first in navi?
     if ( $IS_FIRST == TRUE ) {
@@ -774,18 +782,18 @@ function create_group ($GROUP_ARR, $IS_FIRST, $GO )
     } else {
         $headline_img = "navi_headline";
     }
-    
+
     // put links into group
     if ( strlen ( $template ) > 0 ) {
                 $template = '
-            <div id="'.$headline_img.'">
-                <img src="img/pointer.png" alt="->" style="vertical-align:text-bottom">&nbsp;<b>'.$GROUP_ARR['group_title'].'</b>
-                <div id="navi_link">
+            <div class="'.$headline_img.'">
+                <img src="img/pointer.png" alt="->" style="vertical-align:text-bottom">&nbsp;<b>'.$TEXT['menu']->get("group_".$GROUP_ARR['group_id']).'</b>
+                <div class="navi_link">
                     '.$template.'
                 </div>
             </div>';
     }
-    
+
     return $template;
 }
 
@@ -808,22 +816,23 @@ function create_group_first ( $TEMPLATE )
 //// und Berechtigung prüfen ///
 ////////////////////////////////
 
-function create_link ( $PAGE_ID, $PAGE_LINK, $GO )
+function create_link ( $PAGE_ID, $GO )
 {
-  // is active page?
-  if ( $PAGE_ID == $GO ) {
-      $link_class = "navi_selected";
-  } else {
-      $link_class = "navi";
-  }
-  
-  // permission ok?
-  if ( $_SESSION[$PAGE_ID] ) {
-      return '<a href="?go='.$PAGE_ID.'" class="navi">- <span class="'.$link_class.'">'.$PAGE_LINK.'</span></a><br>';
-  }
-  else {
-      return "";
-  }
+    global $TEXT;
+
+    // is active page?
+    if ( $PAGE_ID == $GO ) {
+        $link_class = "navi_selected";
+    } else {
+        $link_class = "navi";
+    }
+
+    // permission ok?
+    if ( $_SESSION[$PAGE_ID] ) {
+        return '<a href="?go='.$PAGE_ID.'" class="navi">- <span class="'.$link_class.'">'.$TEXT['menu']->get("page_link_".$PAGE_ID).'</span></a><br>';
+    } else {
+        return "";
+    }
 }
 
 
@@ -1003,24 +1012,24 @@ function fillsession($uid)
 
         // startpage permissions
         $dbaction = mysql_query( "
-                                                                SELECT `page_id`, `group_id`, `page_link`
+                                                                SELECT `page_id`, `group_id`, `page_file`
                                                                 FROM `".$global_config_arr['pref']."admin_cp`
                                                                 WHERE `group_id` <= 0
                                                                 ORDER BY `page_id`
         ", $db);
-        
+
         while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
-        if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
+          if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
             $_SESSION[$permission['page_id']] = 1;
-        } else {
-                        if ( $permission['group_id'] == -1 ) {
-                if ( create_menu_show ( $permission['page_link'] ) == TRUE ) {
-                        $_SESSION[$permission['page_id']] = 1;
-                    }
-                } else {
-                                $_SESSION[$permission['page_id']] = 0;
-                }
-        }
+          } else {
+            if ( $permission['group_id'] == -1 ) {
+              if ( create_menu_show ( $permission['page_file'] ) == TRUE ) {
+                $_SESSION[$permission['page_id']] = 1;
+              }
+            } else {
+              $_SESSION[$permission['page_id']] = 0;
+            }
+          }
         }
 }
 
