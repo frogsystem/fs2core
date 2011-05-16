@@ -117,10 +117,10 @@ if (isset($_POST['add_comment']))
                         ", $db );
                         mysql_query("update ".$global_config_arr[pref]."counter set comments=comments+1", $db);
                         $SHOW = FALSE;
-                        $template = forward_message ( $TEXT->get("news_title"), $TEXT->get("comment_added"), $_SERVER['REQUEST_URI'] );
+                        $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_added"), $_SERVER['REQUEST_URI'] );
                     } else {
                         $SHOW = FALSE;
-                        $template = forward_message ( $TEXT->get("news_title"), $TEXT->get("comment_not_added")."<br>".$TEXT->get("comment_duplicate"), $_SERVER['REQUEST_URI'] );
+                        $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_not_added")."<br>".$TEXT['frontend']->get("comment_duplicate"), $_SERVER['REQUEST_URI'] );
                     }
                 } else {
                     $message_template = sys_message($phrases[sysmessage], $phrases[comm_not_allowd]);

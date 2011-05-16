@@ -1,24 +1,5 @@
 <?php
-/////////////////////////////////
-//// validation of lang dirs ////
-/////////////////////////////////
-function kill_replacements ( $TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE )
-{
-    $TEXT = str_replace ( '{..', '&#x7B;&#x2E;&#x2E;', $TEXT );
-    $TEXT = str_replace ( '..}', '&#x2E;&#x2E;&#x7D;', $TEXT );
-    $TEXT = str_replace ( '[%', '&#x5B;&#x25;', $TEXT );
-    $TEXT = str_replace ( '%]', '&#x25;&#x5D;', $TEXT );
-    $TEXT = str_replace ( '$NAV(', '&#x24;NAV&#x28;', $TEXT );
-    $TEXT = str_replace ( '$APP(', '&#x24;APP&#x28;', $TEXT );
-    $TEXT = str_replace ( '$VAR(', '&#x24;VAR&#x28;', $TEXT );
 
-    if ( $KILLHTML === TRUE ) {
-        return killhtml ( $TEXT );
-    } elseif ( $STRIPSLASHES === TRUE ) {
-        return stripslashes ( $TEXT );
-    }
-    return $TEXT;
-}
 
 
 //////////////////////////
@@ -161,7 +142,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         settype ( $group_arr['user_group_id'], integer );
         $group_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
         $group_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
-        $group_arr['user_group_image'] = ( image_exists ( "media/group-images/staff_", $group_arr['user_group_id'] ) ? '<img src="'.image_url ( "media/group-images/staff_", $group_arr['user_group_id'] ).'" alt="'.$TEXT->get("group_image_of")." ".$group_arr['user_group_name'].'">' : "" );
+        $group_arr['user_group_image'] = ( image_exists ( "media/group-images/staff_", $group_arr['user_group_id'] ) ? '<img src="'.image_url ( "media/group-images/staff_", $group_arr['user_group_id'] ).'" alt="'.$TEXT['frontend']->get("group_image_of")." ".$group_arr['user_group_name'].'">' : "" );
 
         unset ( $title_style );
         $title_style .= ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : "" );
@@ -197,21 +178,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
     return $retrun_arr;
 }
 
-///////////////////////
-//// Localize Date ////
-///////////////////////
-function date_loc ( $DATE_STRING, $TIMESTAMP )
-{
-    global $db, $global_config_arr, $phrases;
 
-    $week_en = array ( "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" );
-    $month_en = array ( "January","February","March","April","May","June","July","August","September","October","November","December" );
-    
-    $localized_date = str_replace ( $week_en, explode ( ",", $phrases['week_days'] ), date ( $DATE_STRING, $TIMESTAMP ) );
-    $localized_date = str_replace ( $month_en, explode ( ",", $phrases['month_names'] ), $localized_date );
-
-    return $localized_date;
-}
 
 //////////////////////////////
 //// Get IDs of DL-Subcat ////
@@ -460,22 +427,7 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
     return $query;
 }
 
-///////////////////////////
-//// Passwort erzeugen ////
-///////////////////////////
 
-function generate_pwd ( $LENGHT = 10 )
-{
-    $charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
-    $code = "";
-    $real_strlen = strlen ( $charset ) - 1;
-    mt_srand ( (double)microtime () * 1001000 );
-
-    while ( strlen ( $code ) < $LENGHT ) {
-        $code .= $charset[mt_rand ( 0,$real_strlen ) ];
-    }
-    return $code;
-}
 
 /////////////////////////////////
 //// Check Anti-Spam Captcha ////
@@ -945,7 +897,7 @@ function point_number ($zahl)
 }
 
 /////////////////////////////////////////
-// String kürzen ohne Wort zuzerstören //  <= BAD FUNCTION HAS TO BE IMPROVED
+// String kürzen ohne Wort zuzerstören //  <= BAD FUNCTION HAS TO BE IMPROVED TODO
 /////////////////////////////////////////
 function truncate_string ($string, $maxlength, $extension)
 {
@@ -1155,7 +1107,7 @@ function getsize ( $SIZE )
 }
 
 /////////////////////////
-// mark word in a text //  <=== BAD FUNCTION *HAS TO BE IMPROVED*
+// mark word in a text //  <=== BAD FUNCTION *HAS TO BE IMPROVED* TODO
 /////////////////////////
 
 function markword($text, $word)

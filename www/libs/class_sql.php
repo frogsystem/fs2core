@@ -107,8 +107,10 @@ class sql {
             if (is_array($table) && array_diff_key($cols, $table) === array()) {
                 // Computes to SELECT ONE.`field1`, TWO.`field2` ...
                 $cols_list = array();
-                foreach ($cols as $from => $name) {
-                    $cols_list[] = $from.".`".$name."`";
+                foreach ($cols as $from => $targets) {
+                    foreach($targets as $name) {
+                        $cols_list[] = $from.".`".$name."`";
+                    }
                 }
                 $cols_list = implode(", ", $cols_list);
             } else {
@@ -158,11 +160,11 @@ class sql {
     public function getRow ($table, $cols, $options = array(), $start = 0) {
         // Set Limit
         $options['L'] = "$start,1";
-        
+
         // Get Result
-        $result = $this->select($table, $cols, $options);
-        if (mysql_num_rows($result) > 0)
-            return mysql_fetch_assoc($result);
+        $result = $this->get($table, $cols, $options);
+        if (count($result['data']) >= 1) 
+            return $result['data'][0];
         else
             return array();
     }
@@ -309,6 +311,18 @@ class sql {
             return false;
         }
     }
+    
+    // print or return last query
+    public function last ($return = false) {
+        if (!empty($this->query)) {
+            if ($return)
+                return $this->query;
+            else
+                var_dump($this->query);
+        } else {
+            return false;
+        }
+    }    
 
     // return sql-resource
     public function conn() {

@@ -91,6 +91,9 @@ image_not_deleted:                       Bild konnte nicht gelöscht werden
 images_deleted:                          Bilder wurden gelöscht
 images_not_all_deleted:                  Nicht alle Bilder konnten gelöscht werden
 sql_error:                               SQL-Fehler:
+access_denied:                           Zugriff verweigert
+403_error:                               Sie haben keine Rechte, um auf diese Seite zuzugreifen.
+
 
 # Message-Images
 icon_small_help:                         <img src="icons/help.gif" alt="Hilfe" align="absmiddle">
@@ -107,6 +110,8 @@ icon_logout:                             <img src="icons/logout.jpg" alt="Logout
 icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
 icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
 icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
+icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Zugriff gewährt" align="absmiddle">
+icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Zugriff verweigert">
 icon_up:                                 <img src="icons/up.jpg" alt="Nach oben verschieben" align="absmiddle">
 icon_down:                               <img src="icons/down.jpg" alt="Nach unten verschieben" align="absmiddle">
 

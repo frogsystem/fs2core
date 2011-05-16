@@ -184,7 +184,7 @@ for ( $i = $config_arr['page_start']; $i < $maximum; $i++ )
     $line_template->tag ( "user_id", $col_id[$i] );
     $line_template->tag ( "user_name", kill_replacements ( $col_name[$i], TRUE ) );
     $line_template->tag ( "user_url", "?go=user&id=".$col_id[$i] );
-    $line_template->tag ( "user_image", ( image_exists ( "media/user-images/", $col_id[$i] ) ) ? '<img src="'.image_url ( "media/user-images/", $col_id[$i] ).'" alt="'.$TEXT->get("user_image_of")." ".kill_replacements ( $col_name[$i], TRUE ).'">' : $TEXT->get("user_image_not_found") );
+    $line_template->tag ( "user_image", ( image_exists ( "media/user-images/", $col_id[$i] ) ) ? '<img src="'.image_url ( "media/user-images/", $col_id[$i] ).'" alt="'.$TEXT['frontend']->get("user_image_of")." ".kill_replacements ( $col_name[$i], TRUE ).'">' : $TEXT['frontend']->get("user_image_not_found") );
     $line_template->tag ( "user_image_url", image_url ( "media/user-images/", $col_id[$i] ) );
     $line_template->tag ( "user_mail", ( $col_show_mail[$i] == 1 ) ? kill_replacements ( $col_mail[$i], TRUE ) : "-" );
     $line_template->tag ( "user_rank", $temp_rank_data );

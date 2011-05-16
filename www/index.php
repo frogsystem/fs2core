@@ -31,7 +31,7 @@ if ($db !== false && isset($global_config_arr)) {
     
 
     // Load Text 
-    $TEXT = new lang ($global_config_arr['language_text'], "frontend");
+    $TEXT['frontend'] = new lang ($global_config_arr['language_text'], "frontend");
 
 
     // Constructor Calls

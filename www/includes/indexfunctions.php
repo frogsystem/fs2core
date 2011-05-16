@@ -49,14 +49,14 @@ function get_maintemplate ($BODY, $PATH_PREFIX = "", $BASE = FALSE)
 	
     // Create Link-Lines
     $template_favicon = ($global_config_arr['show_favicon'] == 1) ? '<link rel="shortcut icon" href="'.$PATH_PREFIX .'styles/'.$global_config_arr['style'].'/icons/favicon.ico">' : "";
-	$template_feed = '<link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT->get("news_feed").'">';
+	$template_feed = '<link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT['frontend']->get("news_feed").'">';
 
     // Create Script-Lines
     $template_javascript = get_js($PATH_PREFIX).'
     <script type="text/javascript" src="'.$PATH_PREFIX.'includes/js_functions.js"></script>';
     
 	// Create jQuery-Line
-    $template_jquery = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-1.4.min.js"></script>';
+    $template_jquery = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery.min.js"></script>';
     
     // Get HTML-Matrix
     $theTemplate->load("MATRIX");

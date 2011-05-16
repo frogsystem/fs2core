@@ -2,42 +2,20 @@
 //////////////////////////////////
 //// create content container ////
 //////////////////////////////////
-
-function get_content_container ( $TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "width:100%;", $TOP_STYLE = FALSE, $CONTENT_STYLE = FALSE )
+function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "width:100%;", $TOP_STYLE = FALSE, $CONTENT_STYLE = FALSE)
 {
-    $overall_width = ( $OVERALL_STYLE === FALSE ? '' : ' style="'.$OVERALL_STYLE.'"' );
     $top_style = ( $TOP_STYLE === FALSE ? '' : ' style="'.$TOP_STYLE.'"' );
     $content_style = ( $CONTENT_STYLE === FALSE ? '' : ' style="'.$CONTENT_STYLE.'"' );
 
     $template = '
-                <div'.$overall_width.'>
-                    <div class="cs_overall">
-                        <div class="cs_top_loop">
-                            <div class="cs_top_left">
-                                <div class="cs_top_right">
-                                    <div class="cs_text_top"'.$top_style.'>
-                                        '.$TOP_TEXT.'
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="cs_mid_loop">
-                            <div class="cs_mid_left">
-                                <div class="cs_mid_right">
-                                    <div class="cs_text_content"'.$content_style.'>
-                                        '.$CONTENT_TEXT.'
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="cs_bot_loop">
-                            <div class="cs_bot_left">
-                                <div class="cs_bot_right">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="cb">
+            <div class="cb-title">
+                '.$TOP_TEXT.'
+            </div>
+            <div class="cb-content">
+                '.$CONTENT_TEXT.'
+            </div>
+        </div>
     ';
 
     return $template;
@@ -95,9 +73,9 @@ function noscript_nohidden ()
 {
         return '
                 <noscript>
-                        <style type="text/css">
-                                .hidden {display: table-row;}
-                        </style>
+                    <style type="text/css">
+                        .hidden {display: table-row;}
+                    </style>
                 </noscript>
         ';
 }
@@ -306,37 +284,36 @@ function getreadonly ( $VALUE, $COMPAREWITH )
 //// Systemmeldung ausgeben ////
 ////////////////////////////////
 
-function get_systext ( $MESSAGE, $TITLE = FALSE, $RED = FALSE, $IMAGE = FALSE )
+function get_systext ($MESSAGE, $TITLE = false, $COLOR = "green", $IMAGE = false)
 {
-    global $admin_phrases;
+    global $TEXT;
 
-    if ( $TITLE == FALSE ) {
-        $TITLE = $admin_phrases[common][system_message];
-    }
+    if (!$TITLE)
+        $TITLE = $TEXT['admin']->get("info");
 
     // TRUE was old for "red"
     $COLOR = $COLOR === TRUE ? "red" : $COLOR;
     // FALSE was old for "green"
     $COLOR = $COLOR === FALSE ? "green" : $COLOR;
-    
-    if ( $IMAGE == FALSE ) {
+
+
+    if ($IMAGE == false) {
         return '
-            <table class="configtable" cellpadding="4" cellspacing="0">
-                <tr><td class="line_'.$COLOR.'">'.$TITLE.'</td></tr>
-                <tr><td class="config">'.$MESSAGE.'</td></tr>
-                <tr><td class="space"></td></tr>
-            </table>
+            <div class="systext">
+                <h4>'.$TITLE.'</h4>
+                <hr class="'.$COLOR.'">
+                <div>'.$MESSAGE.'</div>
+            </div>
         ';
     } else {
         return '
-            <table class="configtable" cellpadding="4" cellspacing="0">
-                <tr><td class="line_'.$COLOR.'" colspan="2">'.$TITLE.'</td></tr>
-                <tr>
-                    <td class="config middle">'.$IMAGE.'</td>
-                    <td class="config middle" width="100%">'.$MESSAGE.'</td>
-                </tr>
-                <tr><td class="space" colspan="2"></td></tr>
-            </table>
+            <div class="systext">
+                <h4>'.$TITLE.'</h4>
+                <hr class="'.$COLOR.'">
+                <div>
+                    '.$IMAGE.'<span class="middle">'.$MESSAGE.'</span>
+                </div>
+            </div>
         ';
     }
 }
@@ -644,170 +621,134 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
 //// und Berechtigung prüfen ///
 ////////////////////////////////
 
-function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
+function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
 {
     global $TEXT;
 
-    if ( $PERMISSION == 1 ) {
-            $PAGE_DATA_ARR['title'] = $TITLE;
-            $PAGE_DATA_ARR['file'] = $FILE;
-            $PAGE_DATA_ARR['menu'] = $ACTIVE_MENU;
+    if ($PERMISSION) {
+        $page_data = array(
+            'title' => $TITLE,
+            'file'  => $FILE,
+            'menu'  => $ACTIVE_MENU
+        );
     } else {
-            $PAGE_DATA_ARR['title'] = $TEXT['menu']->get("admin_error_page_title");
-            $PAGE_DATA_ARR['file'] = "admin_error.php";
-            $PAGE_DATA_ARR['menu'] = "none";
+        $page_data = array(
+            'title' => $TEXT['menu']->get("admin_error_page_title"),
+            'file'  => "admin_error.php",
+            'menu'  => "none"
+        );
     }
-    $PAGE_DATA_ARR['created'] = TRUE;
-    return $PAGE_DATA_ARR;
+    $page_data['created'] = true;
+    return $page_data;
 }
 
-////////////////////////////////
-//// Menü erzeugen           ///
-////////////////////////////////
-
-function create_menu ( $ACTIVE_MENU )
+/////////////////////////////////
+//// Create HTML for topmenu ////
+/////////////////////////////////
+function get_topmenu ($ACTIVE_MENU)
 {
-    global $global_config_arr, $db, $TEXT;
+    global $sql, $TEXT;
 
-    unset($MENU_ARR);
-
-    $index = mysql_query ( "
-                                    SELECT `page_id`, `page_file`
-                                    FROM `".$global_config_arr['pref']."admin_cp`
-                                    WHERE `group_id` = '-1' AND `page_int_sub_perm` = 0
-                                    ORDER BY `page_pos` ASC, `page_file` ASC
-    ", $db );
+    $menu_arr = $sql->get("admin_cp", array("page_id", "page_file"), array('W' => "`group_id` = '-1' AND `page_int_sub_perm` = 0", 'O' => "`page_pos`, `page_file`"));
     
-    $template = "";
-    while ( $MENU_ARR = mysql_fetch_assoc ( $index ) ) {
-        $MENU_ARR['show'] = create_menu_show ( $MENU_ARR['page_file'] );
-
-        if ( $MENU_ARR['show'] == true && $_SESSION['user_level'] == "authorised" )
-        {
-            if ( $ACTIVE_MENU == $MENU_ARR['page_file'] ) {
-                $MENU_ARR['class'] = "menu_link_selected";
-            } else {
-                $MENU_ARR['class'] = "menu_link";
-            }
-            $template .= '<a href="?go='.$MENU_ARR['page_id'].'" target="_self" class="'.$MENU_ARR['class'].'">'.$MENU_ARR['page_title'].'</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;';
+    $template = '<ul class="topmenu">';
+    foreach($menu_arr['data'] as $menu) {
+        // check permissions
+        if (is_authorized() && check_topmenu_permissions($menu['page_file'])) {
+            // highlight the active menu
+            initstr($class);
+            if ($ACTIVE_MENU == $menu['page_file'])
+                $class = ' class="selected"';
+            
+            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$TEXT['menu']->get("menu_".$menu['page_file']).'</a></li>';
         }
     }
 
-        $template = substr ( $template, 0, -24 );
+    #$template = substr ( $template, 0, -24 );
+    $template .= "\n".'    </ul>';
 
     return $template;
 }
 
 
-////////////////////////////////
-//// Menü anzeigen           ///
-////////////////////////////////
-
-function create_menu_show ( $MENU_ID )
+/////////////////////////////////////////////////////////
+//// Check rights, wheter user may see topmenu entry ////
+/////////////////////////////////////////////////////////
+function check_topmenu_permissions ($MENU_ID)
 {
-    global $global_config_arr, $db;
+    global $sql;
 
-    $index = mysql_query ( "
-                                SELECT P.`page_id`
-                                        FROM `".$global_config_arr['pref']."admin_groups` G, `".$global_config_arr['pref']."admin_cp` P
-                                        WHERE G.`menu_id` = '".$MENU_ID."'
-                                        AND P.`group_id` = G.`group_id`
-                                        AND P.`page_int_sub_perm` = 0
-                                        ORDER BY `page_id`
-    ", $db );
+    $page_arr = $sql->get(
+        array('P' => "admin_cp", 'G' => "admin_groups"),
+        array(
+            'P' => array("page_id")
+        ),
+        array('W' => "G.`menu_id` = '".$MENU_ID."' AND P.`group_id` = G.`group_id` AND P.`page_int_sub_perm` = 0",
+        'O' => "P.`page_id`")
+    );
+
     
-    while ( $page = mysql_fetch_assoc ( $index ) ) {
-        $page = $page['page_id'];
-        if ( isset($_SESSION[$page]) && $_SESSION[$page] == 1 ) {
-            return TRUE;
-            break;
+    foreach($page_arr['data'] as $page) {
+        if (has_perm($page['page_id'])) {
+            return true;
         }
     }
     
-    return FALSE;
+    return false;
 }
 
-/////////////////////////////////////////////////
-//// Create Navigation Groups from Database  ////
-/////////////////////////////////////////////////
-
-function create_navi (  $ACTIVE_MENU, $GO  )
+//////////////////////////////////
+//// Create HTML for Leftmenu ////
+//////////////////////////////////
+function get_leftmenu ($ACTIVE_MENU, $GO)
 {
-        global $global_config_arr, $db;
+    global $sql;
 
-        unset ( $template );
+    // get data from db
+    $group_arr = $sql->get("admin_groups", array("group_id"), array('W' => "`menu_id` = '".$ACTIVE_MENU."' AND `group_id` NOT IN ('0', '-1')", 'O' => "`group_pos`"));
+    
+    // get template
+    initstr($template);
+    foreach($group_arr['data'] as $group) {
+        $template .= get_leftmenu_group($group['group_id'], empty($template), $GO);
+    }
 
-        $groupaction = mysql_query ( "
-                                            SELECT `group_id`
-                                            FROM `".$global_config_arr['pref']."admin_groups`
-                                            WHERE `menu_id` = '".$ACTIVE_MENU."'
-                                            AND `group_id` != '0'
-                                            AND `group_id` != '-1'
-                                            ORDER BY `group_pos` ASC
-        ", $db );
-
-        $template = "";
-        while ( $GROUP_ARR = mysql_fetch_assoc ( $groupaction ) ) {
-            $template .= create_group ( $GROUP_ARR, create_group_first ( $template ), $GO );
-        }
-
-        return $template;
+    return $template;
 }
-////////////////////////////////
-//// Navi erzeugen           ///
-////////////////////////////////
 
-function create_group ($GROUP_ARR, $IS_FIRST, $GO )
+//////////////////////////////////////////////
+//// Create Leftmenu Groups from Database ////
+//////////////////////////////////////////////
+function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
 {
-    global $global_config_arr, $db, $TEXT;
-
-    unset ( $template );
+    global $sql, $TEXT;
 
     // get links from database
-    $pageaction = mysql_query ( "
-                                    SELECT `page_id`
-                                    FROM `".$global_config_arr['pref']."admin_cp`
-                                    WHERE `group_id` = '".$GROUP_ARR['group_id']."' AND `page_int_sub_perm` = 0
-                                    ORDER BY `page_pos` ASC, `page_id` ASC
-    ", $db );
-    $template = "";
-    while ( $PAGE_ARR = mysql_fetch_assoc ( $pageaction ) ) {
-        $template .= create_link ( $PAGE_ARR['page_id'], $GO );
+    $page_arr = $sql->get("admin_cp", array("page_id"), array('W' => "`group_id` = '".$GROUP_ID."' AND `page_int_sub_perm` = 0", 'O' => "`page_pos`, `page_id`"));
+    
+    // get template
+    initstr($template);
+    foreach($page_arr['data'] as $page) {
+        $template .= get_link($page['page_id'], $GO);
     }
 
     // is group first in navi?
-    if ( $IS_FIRST == TRUE ) {
-        $headline_img = "navi_top";
-    } else {
-        $headline_img = "navi_headline";
+    initstr($class);
+    if ($IS_FIRST) {
+        $class = " top";
     }
 
     // put links into group
-    if ( strlen ( $template ) > 0 ) {
-                $template = '
-            <div class="'.$headline_img.'">
-                <img src="img/pointer.png" alt="->" style="vertical-align:text-bottom">&nbsp;<b>'.$TEXT['menu']->get("group_".$GROUP_ARR['group_id']).'</b>
-                <div class="navi_link">
-                    '.$template.'
-                </div>
-            </div>';
+    if (!empty($template)) {
+        $template = '
+        <div class="leftmenu'.$class.'">
+            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$TEXT['menu']->get("group_".$GROUP_ID).'</strong>
+            <ul>'.$template.'
+            </ul>
+        </div>';
     }
 
     return $template;
-}
-
-////////////////////////////////
-//// Navi first              ///
-////////////////////////////////
-
-function create_group_first ( $TEMPLATE )
-{
-    if ( strlen ( $TEMPLATE ) == 0 ) {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
 }
 
 
@@ -816,20 +757,16 @@ function create_group_first ( $TEMPLATE )
 //// und Berechtigung prüfen ///
 ////////////////////////////////
 
-function create_link ( $PAGE_ID, $GO )
+function get_link ($PAGE_ID, $GO)
 {
     global $TEXT;
 
-    // is active page?
-    if ( $PAGE_ID == $GO ) {
-        $link_class = "navi_selected";
-    } else {
-        $link_class = "navi";
-    }
-
     // permission ok?
-    if ( $_SESSION[$PAGE_ID] ) {
-        return '<a href="?go='.$PAGE_ID.'" class="navi">- <span class="'.$link_class.'">'.$TEXT['menu']->get("page_link_".$PAGE_ID).'</span></a><br>';
+    if (has_perm($PAGE_ID)) {
+        // active page?
+        $class = ($PAGE_ID == $GO) ? ' class="selected"' : "";
+                    
+        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$TEXT['menu']->get("page_link_".$PAGE_ID).'</a></li>';
     } else {
         return "";
     }
@@ -927,7 +864,7 @@ function admin_login($username, $password, $iscookie)
 
             if ($password == $dbuserpass)
             {
-                $_SESSION["user_level"] = "authorised";
+                $_SESSION["user_level"] = "authorized";
                 fillsession($dbuserid);
                 return 0;  // Login akzeptiert
             }

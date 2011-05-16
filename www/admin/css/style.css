@@ -1,0 +1,139 @@
+/**************************************************/
+/* background design styles */
+/**************************************************/
+body {
+    background-image:url('../images/bg.jpg');
+}
+
+#bg {
+    background-image:url('../images/bg_loop.jpg');
+    background-repeat:repeat-y;
+    position:absolute;
+    width:991px;
+    left:50%;
+    margin-left:-495px;
+    min-height:100%;
+    height:auto !important;
+    height:100%;
+    z-index:1;
+}
+
+#bg_padding {
+    position:relative;
+    width:927px;
+    left:32px;
+}
+
+/**************************************************/
+/* head design styles */
+/**************************************************/
+#head {
+    position:absolute;
+    z-index:5;
+    left:50%;   
+    width:927px;
+    height:76px;
+    margin-left:-463px;
+    padding-top:5px;
+    padding-left:10px;     
+    background:url('../images/head.jpg') no-repeat;
+    color:#363636;
+    font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
+    font-size:20pt;
+    font-weight:normal;  
+    line-height:120%;  
+}
+#head h1 {
+    font-size:20pt;
+    font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
+    margin:0px;
+}
+
+#head_version {
+    position:absolute;
+    left:860px;
+    top:36px;
+    width:90px;
+    font:normal 9px Arial;
+    color:#FFFFFF;
+    line-height:100%;
+}
+#head_link {
+    position:absolute;
+    left:12px;
+    top:36px;
+}
+#head_link a { 
+    font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
+    font-size:9pt;
+    color:#363636;
+}
+#head_link a:hover, #head_link a:focus {
+    text-decoration:underline;
+}
+
+/**************************************************/
+/* content box styles */
+/**************************************************/
+.cb {
+    padding:15px 25px 30px;
+    margin:30px 10px 30px 30px;
+    background:#123456 url(../images/cb_bg.jpg) repeat;
+    text-align:left;
+    border-radius:25px;
+    box-shadow: 3px 3px 5px #444;
+    z-index:3000;
+}
+
+.cb-title h2 {
+    font-size:10pt;
+    margin:0px;
+    text-align:right;
+}
+
+.cb-content {
+    margin-top:-5px;
+}
+
+/**************************************************/
+/* Systemmessage design */
+/**************************************************/
+div.systext+*{
+    margin-top:24px;
+}
+
+div.systext hr {
+    background-repeat:repeat-x;
+    background-position:left top;
+    height:9px;
+    border:none;
+    margin-top:5px;
+}
+
+div.systext hr.green {
+    background-color:#008800;
+    background-image:url('../images/line_green.jpg');
+}
+div.systext hr.red {
+    background-color:#FF0000;
+    background-image:url('../images/line_red.jpg');
+}
+
+div.systext hr+div {
+    font-size:12pt;
+}
+
+div.systext>div {
+    display:table-row;
+}
+
+div.systext>div>span {
+    font-size:12pt;
+    display:table-cell;
+}
+
+div.systext>div>img {
+    padding:3px 10px 3px 0px;
+    display:table-cell;
+}
+

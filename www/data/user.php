@@ -30,7 +30,7 @@ if ( mysql_num_rows ( $index ) > 0 ) {
     $user_arr = mysql_fetch_assoc ( $index );
 
     $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
-    $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$TEXT->get("user_image_of")." ".$user_arr['user_name'].'">' : $TEXT->get("user_image_not_found") );
+    $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$TEXT['frontend']->get("user_image_of")." ".$user_arr['user_name'].'">' : $TEXT['frontend']->get("user_image_not_found") );
     $user_arr['user_mail'] = ( $user_arr['user_show_mail'] == 1 ? kill_replacements ( $user_arr['user_mail'], TRUE ) : "-" );
     $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $phrases['yes'] : $phrases['no'] );
     $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $phrases['yes'] : $phrases['no'] );
@@ -125,6 +125,6 @@ if ( mysql_num_rows ( $index ) > 0 ) {
 //// User ID not found ////
 ///////////////////////////
 else {
-    $template = sys_message ( $TEXT->get("systemmessage"), $TEXT->get("user_not_found") );
+    $template = sys_message ( $TEXT['frontend']->get("systemmessage"), $TEXT['frontend']->get("user_not_found") );
 }
 ?>

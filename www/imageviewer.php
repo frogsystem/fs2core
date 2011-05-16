@@ -102,8 +102,8 @@ if ($db)
                 $next_id = mysql_result ( $index, 0, "screen_id" );
 
                 $data_array['next_url'] = "imageviewer.php?id=".$next_id;
-                $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$TEXT->get("popupviewer_next_text").'</a>';
-                $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$TEXT->get("popupviewer_next_image").'</a>';
+                $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$TEXT['frontend']->get("popupviewer_next_text").'</a>';
+                $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$TEXT['frontend']->get("popupviewer_next_image").'</a>';
             }
 
             // exists a PREVIOUS image?
@@ -120,8 +120,8 @@ if ($db)
                 $prev_id = mysql_result ( $index, 0, "screen_id" );
 
                 $data_array['prev_url'] = "imageviewer.php?id=".$prev_id;
-                $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$TEXT->get("popupviewer_prev_text").'</a>';
-                $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$TEXT->get("popupviewer_prev_image").'</a>';
+                $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$TEXT['frontend']->get("popupviewer_prev_text").'</a>';
+                $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$TEXT['frontend']->get("popupviewer_prev_image").'</a>';
             }
 
         }

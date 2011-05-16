@@ -143,7 +143,6 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
 {
   global $admin_phrases, $TEXT;
 
-  if ( $ADMIN ) {
     $image0 = $TEXT['frontend']->get("image_upload_error_0");
     $image1 = $TEXT['frontend']->get("image_upload_error_1");
     $image2 = $TEXT['frontend']->get("image_upload_error_2");
@@ -151,15 +150,6 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
     $image4 = $TEXT['frontend']->get("image_upload_error_4");
     $image5 = $TEXT['frontend']->get("image_upload_error_5");
     $image6 = $TEXT['frontend']->get("image_upload_error_6");
-  } else {
-    $image0 = $TEXT->get("image_upload_error_0");
-    $image1 = $TEXT->get("image_upload_error_1");
-    $image2 = $TEXT->get("image_upload_error_2");
-    $image3 = $TEXT->get("image_upload_error_3");
-    $image4 = $TEXT->get("image_upload_error_4");
-    $image5 = $TEXT->get("image_upload_error_5");
-    $image6 = $TEXT->get("image_upload_error_6");
-  }
   
   switch ( $UPLOAD ) {
     case 0:

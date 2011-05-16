@@ -176,9 +176,10 @@ if ( TRUE )
                                     <span class="small">Aktiviert dynamische Seitentitel.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="checkbox" name="dyn_title" value="1" '.getchecked ( 1, $_POST['dyn_title'] ).'
-                                           onChange="show_hidden(document.getElementById(\'dyn_title_ext_tr\'), this, true)"
-                                    >
+                                    <img class="checkbox pointer" src="img/test.png">
+                                    <input class="hidden pointer" type="checkbox" name="dyn_title" value="1" '.getchecked(1, $_POST['dyn_title']).'
+                                   onChange="show_hidden(document.getElementById(\'dyn_title_ext_tr\'), this, true)">
+                                   
                                 </td>
                             </tr>
                             <tr class="'.$display_arr['dyn_title_ext_tr'].'" id="dyn_title_ext_tr">
@@ -290,7 +291,8 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[general][allow_other_designs_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="checkbox" name="allow_other_designs" value="1" '.getchecked ( 1, $_POST['allow_other_designs'] ).'>
+                                    <img class="checkbox pointer" src="img/test.png">
+                                    <input class="hidden pointer" type="checkbox" name="allow_other_designs" value="1" '.getchecked ( 1, $_POST['allow_other_designs'] ).'>
                                 </td>
                             </tr>
                             <tr>
@@ -299,7 +301,8 @@ if ( TRUE )
                                     <span class="small">'.$admin_phrases[general][show_favicon_desc].'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="checkbox" name="show_favicon" value="1" '.getchecked ( 1, $_POST['show_favicon'] ).'>
+                                    <img class="checkbox pointer" src="img/test.png">
+                                    <input class="hidden pointer" type="checkbox" name="show_favicon" value="1" '.getchecked ( 1, $_POST['show_favicon'] ).'>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

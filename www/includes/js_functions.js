@@ -1,3 +1,14 @@
+//--------------------------------
+// START - Document Ready Functions
+//--------------------------------
+$().ready(function(){
+    $("head > link#noscriptcss").remove();
+});
+//--------------------------------
+// END - Document Ready Functions
+//--------------------------------
+
+
 function popUp(url, target, width, height) {
     x = screen.width/2 - width/2;
     y = screen.height/2 - height/2;

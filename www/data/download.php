@@ -29,13 +29,13 @@ if (isset($_GET['keyword']) && $_GET['keyword'] != "")
     } else {
         $query = "WHERE dl_text LIKE '%".$sql_keyword."%' OR dl_name LIKE '%".$sql_keyword."%' AND";
     }
-    $page_titel .= $TEXT->get("download_search_for") . ' "' . $_GET['keyword'] . '"';
+    $page_titel .= $TEXT['frontend']->get("download_search_for") . ' "' . $_GET['keyword'] . '"';
 } else {
     $_GET['keyword'] = "";
     $query = "WHERE cat_id = $_GET[cat_id] AND";
     if ($_GET[cat_id] == 0) {
        $query = "WHERE";
-       $page_titel = $TEXT->get("download_all_downloads");
+       $page_titel = $TEXT['frontend']->get("download_all_downloads");
     }
 
 }

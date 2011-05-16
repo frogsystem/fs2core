@@ -188,7 +188,7 @@ if ( $_REQUEST['keyword'] == "" ) {
     $_REQUEST['in_downloads'] = TRUE;
 } else {
     // Dynamic Title Settings
-    $global_config_arr['dyn_title_page'] = $TEXT->get("download_search_for") . ' "' . kill_replacements ( $_REQUEST['keyword'], TRUE ) . '"';
+    $global_config_arr['dyn_title_page'] = $TEXT['frontend']->get("download_search_for") . ' "' . kill_replacements ( $_REQUEST['keyword'], TRUE ) . '"';
 }
 
 
@@ -455,7 +455,7 @@ $results_template->load("RESULTS_BODY");
 if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_news'] === TRUE ) {
     // Get Template
     $template = $results_template;
-    $template->tag("type_title", $TEXT->get("search_news_title") );
+    $template->tag("type_title", $TEXT['frontend']->get("search_news_title") );
     $template->tag("results", $news_entries );
     $template->tag("num_results", $news_num_results );
     $template->tag("more_results", $news_more );
@@ -468,7 +468,7 @@ if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_news'] === TRUE ) {
 if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_articles'] === TRUE ) {
     // Get Template
     $template = $results_template;
-    $template->tag("type_title", $TEXT->get("search_articles_title") );
+    $template->tag("type_title", $TEXT['frontend']->get("search_articles_title") );
     $template->tag("results", $articles_entries );
     $template->tag("num_results", $articles_num_results );
     $template->tag("more_results", $articles_more );
@@ -481,7 +481,7 @@ if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_articles'] === TRUE ) 
 if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_downloads'] === TRUE ) {
     // Get Template
     $template = $results_template;
-    $template->tag("type_title", $TEXT->get("search_downloads_title") );
+    $template->tag("type_title", $TEXT['frontend']->get("search_downloads_title") );
     $template->tag("results", $downloads_entries );
     $template->tag("num_results", $downloads_num_results );
     $template->tag("more_results", $downloads_more );
