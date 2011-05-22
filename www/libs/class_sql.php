@@ -80,7 +80,54 @@ class sql {
         return " ".implode(" ", $return);
     }
     
-    // execute SELECT
+    // build select expression
+    /* array (
+     * 	array (
+     * 		'COL' => "fieldname",
+     * 		'FROM' => "tablealias",
+     * 		'AS' => "colalias",
+     * 		'FUNC' => "count",
+     * 		'ARG' => "last_name,', ',first_name"
+     *      'MATH' => "+"
+     *      'LEFT' => array (...)
+     *      'RIGHT' => array (...)
+     * 	)
+     * );
+     * 
+     * => make := Funktion die String baut
+     * => S = make(LEFT) + MATH + make(RIGHT) END;// if MATH, LEFT && RIGHT
+     * => S = FUNC(ARG)// if FUNC && ARG
+     * => S = COL // if COL == * && !FUNC && ARG
+     * => S = `COL` // if !FUNC && ARG
+     * => S = FROM.S  // if FROM
+     * => S = FUNC(S) // if FUNC
+     * => S = S AS "AS" END;// if AS
+     */ 
+    private function select_expr ($col) {
+        initstr($cols_list);
+        if (isset($col['MATH'], $col['LEFT'], $col['RIGHT'])) {
+            $cols_list = "(".$this->select_expr($col['LEFT']).") ".$col['MATH']." (".$this->select_expr($col['RIGHT']).")";
+        } else {
+            
+            //=> S = FUNC(ARG)// if FUNC && ARG
+            if  (isset($col['FUNC'], $col['ARG'])) {
+                $cols_list = $col['FUNC']."(".$col['ARG'].")";
+                
+            } else {
+                //=> S = COL || `COL`
+                $cols_list = $col['COL'] == "*" ? $col['COL'] : "`".$col['COL']."`";
+                //=> S = FROM.S  // if FROM
+                $cols_list = isset($col['FROM']) ? $col['FROM'].".".$cols_list : $cols_list;
+                //=> S = FUNC(S) // if FUNC
+                $cols_list = isset($col['FUNC']) ? $col['FUNC']."(".$cols_list.")" : $cols_list;
+                //=> S = S AS "AS" // if AS
+                $cols_list = isset($col['AS']) ? $cols_list." AS '".$col['AS']."'" : $cols_list;
+            }
+        }
+        return $cols_list;
+    }
+    
+    // execute SELECT   
     private function select ($table, $cols, $options = array(), $distinct = false) {
         // empty cols
         if (empty($cols))
@@ -103,19 +150,16 @@ class sql {
                 
         // prepare data
         if (is_array($cols)) {
-            #if (is_array($table) && false !== ($r = array_diff_key($cols, $table)) && empty($r)) {
-            if (is_array($table) && array_diff_key($cols, $table) === array()) {
-                // Computes to SELECT ONE.`field1`, TWO.`field2` ...
-                $cols_list = array();
-                foreach ($cols as $from => $targets) {
-                    foreach($targets as $name) {
-                        $cols_list[] = $from.".`".$name."`";
-                    }
-                }
-                $cols_list = implode(", ", $cols_list);
-            } else {
-                $cols_list = "`".implode("`, `", $cols)."`";
+            $cols_list = array();
+            foreach ($cols as $col) {
+                if (is_array($col)) {
+                    $cols_list[] = $this->select_expr($col);
+                } else {
+                    $cols_list[] = $col;
+                }            
             }
+            
+            $cols_list = implode(", ", $cols_list);
             
         // error
         } elseif ($cols == "*") {
@@ -177,16 +221,14 @@ class sql {
     // only a single data field
     public function getField ($table, $field, $options = array(), $start = 0) {
         // check for string
-        if (!is_string($field))
-            Throw new Exception("MySQL Error: Can't select because of bad data.");         
-        
-        // Set Limit
-        $options['L'] = "$start,1";
+        if (!is_array($field)) {
+            $field = array($field);
+        }
     
         // Get Result
-        $result = $this->select($table, array($field), $options);
-        if (mysql_num_rows($result) > 0)     
-            return mysql_result($result, 0, $field);
+        $result = $this->getRow($table, array($field), $options);
+        if (count($result) >= 1) 
+            return array_shift($result);
         else
             Throw new Exception("MySQL Error: Field not found");
     }

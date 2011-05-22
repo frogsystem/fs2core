@@ -65,6 +65,22 @@ a:hover, a:focus, a:active {
 
 
 /**************************************************/
+/* standard form styles */
+/**************************************************/
+img.checkbox {
+    cursor:pointer;
+}
+
+input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="reset"], input[type="button"] {
+    cursor:pointer;
+}
+
+select, option {
+    cursor:pointer;
+    width:100%;
+}
+
+/**************************************************/
 /* addtional secondary styles (has to be at the end */
 /**************************************************/
 strong {

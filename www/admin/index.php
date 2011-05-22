@@ -64,28 +64,13 @@ $go = isset($_REQUEST['go']) ? savesql($_REQUEST['go']) : "";
 $acp_arr = $sql->getRow(
     array('P' => "admin_cp", 'G' => "admin_groups"),
     array(
-        'P' => array("page_id", "page_file", "group_id"),
-        'G' => array("menu_id")
+        array('COL' => "page_id", 'FROM' => "P"),
+        array('COL' => "page_file", 'FROM' => "P"),
+        array('COL' => "group_id", 'FROM' => "P"),
+        array('COL' => "menu_id", 'FROM' => "G"),
     ),
     array('W' => "P.`group_id` = G.`group_id` AND P.`page_id` = '".$go."' AND P.`page_int_sub_perm` != 1")
 );
-
-/* array (
- * 	array (
- * 		'COL' => "fieldname",
- * 		'FROM' => "P",
- * 		'AS' => "alias",
- * 		'FUNC' => "count",
- * 		'ARG' => "last_name,', ',first_name"
- * 	)
- * );
- * 
- * => SEL = COL
- * => SEL = FROM.SEL  // if FROM
- * => SEL = FUNC(ARG) // if FUNC && ARG
- * => SEL = FUNC(SEL) // if FUNC
- * => SEL = SEL AS "AS" // if AS
- */
 
 // if page exisits
 if (!empty($acp_arr)) {
@@ -236,11 +221,11 @@ echo'
 
 if ($template_navi == "") {
     $template_navi = '
-        <div class="navi_top" style="height:43px;">
-            <img src="img/pointer.png" alt="" style="vertical-align:text-bottom">&nbsp;<b>Hallo Admin!</b>
-            <div class="navi_link">
-               Herzlich Willkommen
-               im Admin-CP des Frogsystem 2!
+        <div class="leftmenu top" style="height:43px;">
+            <img src="icons/arrow.gif" alt="->">&nbsp;<b>Hallo Admin!</b>
+            <div><br>
+               Herzlich<br>Willkommen
+               im<br>Admin-CP des<br>Frogsystem 2!
             </div>
         </div>';
 }

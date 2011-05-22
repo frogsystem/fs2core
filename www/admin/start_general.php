@@ -11,8 +11,11 @@ $today = $sql->getRow("counter_stat", array("s_hits", "s_visits"), array('W' => 
 
 
 // Visitors online
-$index = $sql->doQuery("SELECT count(user_id) AS visitors_on FROM {..pref..}useronline");
-$online['visitors'] = mysql_result($index, 0, "visitors_on");
+$online['visitors'] = $sql->getField(
+    "useronline",
+    array('COL' => "user_id", 'FUNC' => "COUNT", 'AS' => "visitors_on")
+);
+
 
 // Users online
 $index = $sql->doQuery("SELECT count(user_id) AS user_on FROM {..pref..}useronline WHERE user_id != 0");

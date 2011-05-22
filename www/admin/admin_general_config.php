@@ -176,8 +176,8 @@ if ( TRUE )
                                     <span class="small">Aktiviert dynamische Seitentitel.</span>
                                 </td>
                                 <td class="config">
-                                    <img class="checkbox pointer" src="img/test.png">
-                                    <input class="hidden pointer" type="checkbox" name="dyn_title" value="1" '.getchecked(1, $_POST['dyn_title']).'
+                                    <img class="checkbox" src="images/checkbox.png">
+                                    <input class="hidden" type="checkbox" name="dyn_title" value="1" '.getchecked(1, $_POST['dyn_title']).'
                                    onChange="show_hidden(document.getElementById(\'dyn_title_ext_tr\'), this, true)">
                                    
                                 </td>
@@ -316,18 +316,22 @@ if ( TRUE )
                                     <table>
                                         <tr valign="bottom">
                                             <td class="config middle">
-                                                    <input class="pointer" type="radio" name="home" value="0" '.getchecked ( 0, $_POST['home'] ).'>
+                                                    <img class="checkbox" src="images/radio.png">
+                                                    <input class="hidden pointer" type="radio" id="home_0" name="home" value="0" '.getchecked ( 0, $_POST['home'] ).'>
                                             </td>
                                             <td class="config middle">
-                                                    '.$admin_phrases[general][home_page_default].'
+                                                    <label for="home_0" class="pointer">'.$admin_phrases[general][home_page_default].'</label>
                                             </td>
                                         </tr>
                                         <tr valign="bottom">
                                              <td class="config">
-                                                    <input class="pointer" type="radio" name="home" value="1" '.getchecked ( 1, $_POST['home'] ).'>
+                                                    <img class="checkbox" src="images/radio.png">
+                                                    <input class="hidden pointer" type="radio" id="home_1" name="home" value="1" '.getchecked ( 1, $_POST['home'] ).'>
                                             </td>
                                             <td class="config">
+                                                <label for="home_1" class="pointer">
                                                     ?go = <input class="text" size="20" name="home_text" maxlength="100" value="'.$_POST['home_text'].'">
+                                                </label>
                                             </td>
                                         </tr>
                                     </table>

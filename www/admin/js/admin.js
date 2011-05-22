@@ -8,35 +8,40 @@ $().ready(function(){
     
     //~ Image Checkboxes
     $("input[type='checkbox']:enabled").prev("img.checkbox").each(function(){
-        colorcb($(this));
+        colorcb($(this), false, "checkbox");
     ;});
-    $("img.checkbox").hover(function(){
-        var checkbox = $(this).next("input[type='checkbox']:enabled");
-        if (checkbox.is(":checked")) {
-            $(this).attr("src", "img/test-active-hover.png");
-        } else {
-            $(this).attr("src", "img/test-hover.png");
-        }            
+    $("input[type='checkbox']:enabled").prev("img.checkbox").hover(function(){
+        colorcb($(this), true, "checkbox");            
     }, function(){
-        var checkbox = $(this).next("input[type='checkbox']:enabled");
-        if (checkbox.is(":checked")) {
-            $(this).attr("src", "img/test-active.png");
-        } else {
-            $(this).attr("src", "img/test.png");
-        }  
+        colorcb($(this), false, "checkbox");
     });
-    $("img.checkbox").click(function(){
+    $("input[type='checkbox']:enabled").prev("img.checkbox").click(function(){
         var checkbox = $(this).next("input[type='checkbox']:enabled");
-        if (checkbox.is(":checked")) {
-            checkbox.removeProp("checked");
-        } else {
-            checkbox.prop("checked", true);
-        }
-        checkbox.trigger('change'); 
+        checkbox.trigger('click'); 
         $(this).trigger('mouseenter');  
     });
     $("img.checkbox+input[type='checkbox']:enabled").change(function(){
-        colorcb($(this).prev("img.checkbox"));
+        colorcb($(this).prev("img.checkbox"), false, "checkbox");
+    ;});
+    
+    //~ Image Radios
+    $("input[type='radio']:enabled").prev("img.checkbox").each(function(){
+        colorcb($(this), false, "radio");
+    ;});
+    $("input[type='radio']:enabled").prev("img.checkbox").hover(function(){
+        colorcb ($(this), true, "radio");            
+    }, function(){
+        colorcb($(this), false, "radio");
+    });
+    $("input[type='radio']:enabled").prev("img.checkbox").click(function(){
+        var checkbox = $(this).next("input[type='radio']:enabled");
+        checkbox.trigger('click'); 
+        $(this).trigger('mouseenter');  
+    });
+    $("img.checkbox+input[type='radio']:enabled").change(function(){
+        $("input[type='radio'][name='"+$(this).attr("name")+"']:enabled").prev("img.checkbox").each(function(index, img){
+            colorcb($(img), false, "radio");
+        ;});
     ;});    
 });
 //--------------------------------
@@ -49,12 +54,26 @@ $().ready(function(){
 //--------------------------------
 
     //~ Image Checkboxes
-    function colorcb (cb) {
-        var checkbox = cb.next("input[type='checkbox']:enabled");
-        if (checkbox.is(":checked")) {
-            cb.attr("src", "img/test-active.png");
+    function colorcb (cb, hover, type) {
+        if (cb.hasClass("cb-red")) {
+            var color = "red";
         } else {
-            cb.attr("src", "img/test.png");
+            var color = "green";
+        }
+        
+        var checkbox = cb.next("input[type='"+type+"']:enabled");
+        if (checkbox.is(":checked")) {
+            if (hover) {
+                cb.attr("src", "images/"+type+"-"+color+"-active-hover.png");
+            } else {
+                cb.attr("src", "images/"+type+"-"+color+"-active.png");                
+            }
+        } else {
+            if (hover) {
+                cb.attr("src", "images/"+type+"-"+color+"-hover.png");
+            } else {
+                cb.attr("src", "images/"+type+".png");                
+            }
         }
     }
 //--------------------------------

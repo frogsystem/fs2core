@@ -276,7 +276,8 @@ if ( !isset ( $_POST['applet_id'] ) )
                                 <td class="configthin middle center">'.$data_arr['active_text'].'</td>
                                 <td class="configthin middle center">'.$data_arr['output_text'].'</td>
                                 <td class="config top center">
-                                    <input class="pointer select_box" type="checkbox" name="applet_id[]" value="'.$data_arr['applet_id'].'">
+                                    <img class="checkbox pointer" src="images/checkbox.png">
+                                    <input class="hidden pointer select_box" type="checkbox" name="applet_id[]" value="'.$data_arr['applet_id'].'">
                                 </td>
                             </tr>
             ';

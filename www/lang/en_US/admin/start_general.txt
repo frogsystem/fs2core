@@ -1,0 +1,12 @@
+title:                  Website title
+url:                    URL
+online_since:           Online since
+online_visitors:        Visitors online
+online_guests:          Guests online
+online_registered:      Registered users online
+visits_total:           Visits (total)
+visits_today:           Visits (today)
+hits_total:             Hits (total)
+hits_today:             Hits (today)
+num_of_refs:            Number of referrers
+last_ref:               Last referrer   

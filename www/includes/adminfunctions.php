@@ -681,7 +681,7 @@ function check_topmenu_permissions ($MENU_ID)
     $page_arr = $sql->get(
         array('P' => "admin_cp", 'G' => "admin_groups"),
         array(
-            'P' => array("page_id")
+            array('COL' => "page_id", 'FROM' => "P")
         ),
         array('W' => "G.`menu_id` = '".$MENU_ID."' AND P.`group_id` = G.`group_id` AND P.`page_int_sub_perm` = 0",
         'O' => "P.`page_id`")

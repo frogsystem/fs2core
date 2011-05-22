@@ -38,12 +38,11 @@ select, option, .text, textarea
     font-weight:normal;
     padding:2px 3px;
 }
-select {
-    cursor:pointer;
-}
+
 option {
     border:none;
     padding:1px;
+    padding-left:6px;
 }
 textarea {
     font-family: "Courier New", Courier, monospace;
