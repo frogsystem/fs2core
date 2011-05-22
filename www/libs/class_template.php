@@ -1,4 +1,6 @@
 <?php
+//TODO: Beinhaltet fileaccess
+
 /**
 * @file     class_template.php
 * @folder   /libs
@@ -57,7 +59,7 @@ class template
     }
     
     public function setFile($file) {
-        if ( file_exists ( FS2_ROOT_PATH."styles/".$this->getStyle()."/".$file ) ) {
+        if ( is_readable ( FS2_ROOT_PATH."styles/".$this->getStyle()."/".$file ) ) {
             $this->file = $file;
             $this->clearSectionCache ();
         } else {
@@ -146,13 +148,15 @@ class template
         }
         
         if ( $this->clear_unassigned ) {
-            $replacement_arr = array (
+            /*$replacement_arr = array (
                 array ( "[","]","(",")","{","}","|","?","+","-","*","^","$","." ),
                 array ( "\[","\]","\(","\)","\{","\}","\|","\?","\+","\-","\*","\^","\$","\." )
-            );
+            );*/
 
-            $safe_opener = str_replace ( $replacement_arr[0], $replacement_arr[1], self::OPENER );
-            $safe_closer = str_replace ( $replacement_arr[0], $replacement_arr[1], self::CLOSER );
+            //$safe_opener = str_replace ( $replacement_arr[0], $replacement_arr[1], self::OPENER );
+            //$safe_closer = str_replace ( $replacement_arr[0], $replacement_arr[1], self::CLOSER );
+            $safe_opener = preg_quote(self::OPENER);
+            $safe_closer = preg_quote(self::CLOSER);
             $regexp = "/".$safe_opener."(.+)".$safe_closer."/U";
             preg_replace ( $regexp, "", $data );
         }

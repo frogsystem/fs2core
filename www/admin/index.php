@@ -22,10 +22,11 @@ require(FS2_ROOT_PATH . "includes/indexfunctions.php");
 require(FS2_ROOT_PATH . "libs/class_template.php");
 require(FS2_ROOT_PATH . "libs/class_fileaccess.php");
 require(FS2_ROOT_PATH . "libs/class_lang.php");
+require(FS2_ROOT_PATH . "libs/class_adminpage.php");
 
 //Include Phrases-Files
 require(FS2_ROOT_PATH . "lang/de_DE/admin/admin_phrases_de.php");
-$TEXT['admin'] = new lang($global_config_arr['language_text'], "admin");
+$TEXT['admin']    = new lang($global_config_arr['language_text'], "admin");
 $TEXT['frontend'] = new lang($global_config_arr['language_text'], "frontend");
 $TEXT['template'] = new lang($global_config_arr['language_text'], "template");
 $TEXT['menu']     = new lang($global_config_arr['language_text'], "menu");
@@ -82,10 +83,15 @@ if (!empty($acp_arr)) {
     }
     // get the page-data
     $PAGE_DATA_ARR = createpage($TEXT['menu']->get("group_".$acp_arr['group_id'])." &#187; ".$TEXT['menu']->get("page_title_".$acp_arr['page_id']), has_perm($acp_arr['page_id']), $acp_arr['page_file'], $acp_arr['menu_id']);
+    
     // initialise templatesystem
-    // $adminpage = new adminpage($acp_arr['page_file']);
+    $adminpage = new adminpage($acp_arr['page_file']);
+    
     // Get Special Page Lang-Text-Files
-    $TEXT['page'] = new lang($global_config_arr['language_text'], "admin/".substr($acp_arr['page_file'], 0, -4));
+    if (!isset($TEXT['page'])) {
+        $TEXT['page'] = new lang($global_config_arr['language_text'], "admin/".substr($acp_arr['page_file'], 0, -4));
+    }
+    
 } else {
     $PAGE_DATA_ARR['created'] = false;
 }
@@ -244,14 +250,16 @@ echo '
 ### START OF CONTENT DISPLAY ###
 ################################
 // Include Content File
-ob_start();
-require ( FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file'] );
-$content = ob_get_clean();
+
+
 $top = '<h2 class="cb-text">('.$PAGE_DATA_ARR['title'].')</h2>';
 echo '
     <!-- Content Container -->
     <div id="content_container">';
     
+ob_start();
+require ( FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file'] );
+$content = ob_get_clean();
 echo get_content_container($top, $content);
 
 echo '

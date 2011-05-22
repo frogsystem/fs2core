@@ -1,4 +1,5 @@
-<?php
+<?php if ( ACP_GO === "start_general" ) {
+    
 // Online since
 $online_since = $sql->getRow("counter_stat", array("s_year", "s_month", "s_day"), array('O' => "`s_year`, `s_month`, `s_day`"));
 $online_since = date_loc($global_config_arr['date'], strtotime($online_since['s_year']."-".$online_since['s_month']."-".$online_since['s_day']));
@@ -37,71 +38,25 @@ if ($ref['num'] > 0) {
 	$ref['date_time'] = date_loc($TEXT['admin']->get("date_time"), mysql_result($index, 0, "ref_last"));
 }
 
-echo '
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="2">'.$TEXT['admin']->get("informations_and_statistics").'</td></tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("title").':</td>
-                                <td class="configthin"><b>'.$global_config_arr['title'].'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("url").':</td>
-                                <td class="configthin"><a href="'.$global_config_arr['virtualhost'].'" target="_blank"><b>'.$global_config_arr['virtualhost'].'</b></a></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("online_since").':</td>
-                                <td class="configthin"><b>'.$online_since.'</b></td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("online_visitors").':</td>
-                                <td class="configthin"><b>'.$online['visitors'].'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("online_guests").':</td>
-                                <td class="configthin"><b>'.$online['guests'].'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("online_registered").':</td>
-                                <td class="configthin"><b>'.$online['users'].'</b></td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("visits_total").':</td>
-                                <td class="configthin"><b>'.$total['visits'].'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("visits_today").':</td>
-                                <td class="configthin"><b>'.$today['s_visits'].'</b></td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("hits_total").':</td>
-                                <td class="configthin"><b>'.$total['hits'].'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("hits_today").':</td>
-                                <td class="configthin"><b>'.$today['s_hits'].'</b></td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("num_of_refs").':</td>
-                                <td class="configthin"><b>'.$ref['num'].'</b></td>
-                            </tr>
+// Conditions
+$adminpage->addCond("ref_link",($ref['num'] > 0));
 
-';
+// Values
+$adminpage->addText("title", $global_config_arr['title']);
+$adminpage->addText("url", $global_config_arr['virtualhost']);
+$adminpage->addText("online_since", $online_since);
+$adminpage->addText("online_visitors", $online['visitors']);
+$adminpage->addText("online_guests", $online['guests']);
+$adminpage->addText("online_registered", $online['users']);
+$adminpage->addText("visits_total", $total['visits']);
+$adminpage->addText("visits_today", $today['s_visits']);
+$adminpage->addText("hits_total", $total['hits']);
+$adminpage->addText("hits_today", $today['s_hits']);
+$adminpage->addText("num_of_refs", $ref['num']);
+$adminpage->addText("ref_url", $ref['url']);
+$adminpage->addText("ref_shorturl", $ref['shorturl']);
+$adminpage->addText("ref_date", $ref['date_time']);
 
-if ($ref['num'] > 0) {
-        echo '
-                            <tr>
-                                <td class="configthin" width="200">'.$TEXT['page']->get("last_ref").':</td>
-                                <td class="configthin"><a href="'.$ref['url'].'" target="_blank"><b>'.$ref['shorturl'].'</b></a><br>
-                                <strong>'.$ref['date_time'].'</strong></td>
-                            </tr>
-        ';
-}
+echo $adminpage->get("main");
 
-echo '
-                                                </table>
-';
-?>
+} ?>
