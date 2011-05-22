@@ -61,7 +61,14 @@ try {
     
     // get other configs
     $global_config_arr['system'] = $sql->getById("config_system", "*", 1);
-    
+   
+    $global_config_arr['env']['date'] = time();
+    $global_config_arr['env']['year'] = date("Y", $global_config_arr['env']['date']);
+    $global_config_arr['env']['month'] = date("m", $global_config_arr['env']['date']);
+    $global_config_arr['env']['day'] = date("d", $global_config_arr['env']['date']);
+    $global_config_arr['env']['hour'] = date("H", $global_config_arr['env']['date']);
+    $global_config_arr['env']['min'] = date("i", $global_config_arr['env']['date']);
+
 
 //////////////////////////////
 //// DB Connection failed ////
@@ -76,9 +83,9 @@ try {
     $en = strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], "en");
 
     if ($de !== false && $de < $en)
-        $TEXT = new lang ("de_DE", "frontend");
+        $TEXT['frontend'] = new lang ("de_DE", "frontend");
     else
-        $TEXT = new lang ("en_US", "frontend");
+        $TEXT['frontend'] = new lang ("en_US", "frontend");
 
     // No-Connection-Page Template
     $template = '

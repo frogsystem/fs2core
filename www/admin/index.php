@@ -70,6 +70,23 @@ $acp_arr = $sql->getRow(
     array('W' => "P.`group_id` = G.`group_id` AND P.`page_id` = '".$go."' AND P.`page_int_sub_perm` != 1")
 );
 
+/* array (
+ * 	array (
+ * 		'COL' => "fieldname",
+ * 		'FROM' => "P",
+ * 		'AS' => "alias",
+ * 		'FUNC' => "count",
+ * 		'ARG' => "last_name,', ',first_name"
+ * 	)
+ * );
+ * 
+ * => SEL = COL
+ * => SEL = FROM.SEL  // if FROM
+ * => SEL = FUNC(ARG) // if FUNC && ARG
+ * => SEL = FUNC(SEL) // if FUNC
+ * => SEL = SEL AS "AS" // if AS
+ */
+
 // if page exisits
 if (!empty($acp_arr)) {
     

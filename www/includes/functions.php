@@ -912,19 +912,7 @@ function truncate_string ($string, $maxlength, $extension)
    return $string;
 }
 
-/////////////////////////////////////////
-// String innerhalb sich selbst kürzen //
-/////////////////////////////////////////
-function cut_in_string ($string, $maxlength, $replacement)
-{
-   if (strlen($string) > $maxlength) {
-       $part_lenght = ceil($maxlength/2)-ceil(strlen($extension)/2);
-       $string_start = substr($string, 0, $part_lenght);
-       $string_end = substr($string, -1*$part_lenght);
-       $string = $string_start . $replacement . $string_end;
-   }
-   return $string;
-}
+
 
 ////////////////////////////////
 ///// Download Categories //////

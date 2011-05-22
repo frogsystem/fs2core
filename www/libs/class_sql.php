@@ -40,7 +40,7 @@ class sql {
     
     
     // run any query
-    private function doQuery ($qrystr) {
+    public function doQuery ($qrystr) {
         $this->query = str_replace("{..pref..}", $this->pref, $qrystr); // replace {..pref..}
         $this->result = mysql_query($this->query, $this->sql); // execute query
         

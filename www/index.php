@@ -15,7 +15,7 @@ require(FS2_ROOT_PATH . "login.inc.php");
 //////////////////////////////////
 //// DB Connection etablished ////
 //////////////////////////////////
-if ($db !== false && isset($global_config_arr)) {
+if (isset($db) && $db !== false && isset($global_config_arr)) {
     
     //Include Functions-Files
     require(FS2_ROOT_PATH . "includes/functions.php");

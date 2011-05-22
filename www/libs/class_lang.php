@@ -58,7 +58,9 @@ class lang
             // Run through lines
             foreach ($langData as $line) {
                 preg_match ("#([a-z0-9_-]+?)\s*?:\s*(.*)#is", $line, $match);
-                $this->add($match[1], $match[2]);
+                if (count($match) >= 2) {
+					$this->add($match[1], $match[2]);
+				}
                 unset($match);
             }
         } else {
