@@ -1217,4 +1217,17 @@ $admin_phrases['template']['quote_tag_name']['help_2']                = "Name de
 $admin_phrases['template']['code_tag']['title']                       = "Code";
 $admin_phrases['template']['code_tag']['description']                 = "Darstellung des \"Code\" - FSCodes ['code']text['/code'] ";
 $admin_phrases['template']['code_tag']['help_1']                      = "Text der vom Code-Block umschlossen wird.";
+
+/*
+$line = 50;
+echo "<pre>";
+foreach($admin_phrases['template'] as $cat => $entries) {
+    echo "\n#$cat";
+    foreach ($entries as $name => $val) {
+        echo "\n$name:".str_repeat(" ", $line-strlen($name)).htmlspecialchars($val)."";
+    }
+    echo "\n\n";
+}
+echo "</pre>";
+* */
 ?>

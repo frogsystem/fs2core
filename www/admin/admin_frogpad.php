@@ -10,7 +10,7 @@ require( FS2_ROOT_PATH . "login.inc.php");
 require( FS2_ROOT_PATH . "includes/functions.php");
 require( FS2_ROOT_PATH . "includes/adminfunctions.php");
 require( FS2_ROOT_PATH . "includes/templatefunctions.php");
-require( FS2_ROOT_PATH . "phrases/admin_phrases_de.php");
+require(FS2_ROOT_PATH . "lang/de_DE/admin/admin_phrases_de.php");
 
 settype ( $_GET['height'], "integer" );
 $use_height = ( $_GET['height'] > 600 ) ? ($_GET['height'] - 250) : ($_GET['height'] - 325);

@@ -4,25 +4,23 @@
 #topmenu_left {
     position:absolute;
     top:76px;
-    left:50%;
     width:159px;
     height:38px;
     z-index:5;
-    background-image:url('../images/topmenu_left.jpg');
+    background:#019934 url('../images/topmenu_left.jpg');
     background-repeat:no-repeat;
-    margin-left:-325px;
+    margin-left:170px;
 }
 
 #topmenu_loop {
     position:absolute;
     top:76px;
-    left:50%;
     width:630px;
-    height:38px;
+    height:35px;
     z-index:5;
-    background-image:url('../images/topmenu.jpg');
+    background:#019934 url('../images/topmenu.jpg');
     background-repeat:repeat-x;
-    margin-left:-166px;
+    margin-left:329px;
     padding:0px;
     padding-top:3px;
     font-size:13px;
@@ -51,15 +49,16 @@ ul.topmenu li a {
     margin:0px;
     text-decoration:none;
     cursor:pointer;
+    height:10px;
 }
 ul.topmenu li a:hover, ul.topmenu li a:focus, ul.topmenu li a:active {
     text-decoration:none;
-    background:url('../images/topmenu_hover.jpg') left top repeat-x;
+    background:#14A643 url('../images/topmenu_hover.jpg') left top repeat-x;
 }
 
 ul.topmenu li.selected a{
     font-weight:bold;
-    background:url('../images/topmenu_hover.jpg') left top repeat-x;
+    background:#14A643 url('../images/topmenu_hover.jpg') left top repeat-x;
 }
 
 
@@ -69,13 +68,12 @@ ul.topmenu li.selected a{
 #topmenu_login {
     position:absolute;
     top:98px;
-    left:50%;
-    width:71px;
-    height:30px;
+    width:59px;
+    height:29px;
     z-index:5;
-    background-image:url('../images/login_bg.jpg');
+    background:#DDDDDD url('../images/login_bg.jpg');
     background-repeat:no-repeat;
-    margin-left:393px;
+    margin-left:888px;
     padding-left:12px;
     padding-top:1px;
     text-align:left;
@@ -95,8 +93,9 @@ ul.topmenu li.selected a{
 /**************************************************/
 #navi_container {
     position:relative;
-    width:153px;
+    width:138px;
     margin-top:76px;
+    margin-right:15px;
     float:left;
     padding-bottom:30px;
 }
@@ -105,7 +104,7 @@ ul.topmenu li.selected a{
     position:relative;
     min-height:45px;
     padding:12px 0px 0px 7px;
-    background:url('../images/leftmenu.jpg') no-repeat;
+    background:#DDDDDD url('../images/leftmenu.jpg') no-repeat;
     background-repeat:no-repeat;
 }
 .leftmenu * {

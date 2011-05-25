@@ -41,7 +41,7 @@ today:                                   Heute
 reset:                                   Reset
 now:                                     Jetzt
 change:                                  Ändern
-please_select:				 Bitte auswählen
+please_select:				             Bitte auswählen
 select_hr:                               ----------------------------------
 id:                                      ID
 default:                                 Standard
@@ -53,9 +53,12 @@ js_delete_image:
 date:                                    d.m.Y
 time:                                    H:i \U\h\r
 date_time:                               d.m.Y \u\m H:i \U\h\r
+seconds:                                 Sekunden
 
 # Frequently used Images
 sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">
+checkbox:                                <img class="checkbox" src="images/checkbox.png" alt="[_]">
+radio:                                   <img class="checkbox" src="images/radio.png" alt="(_)">
 
 
 # Action Selection
@@ -155,12 +158,7 @@ system_start_num_applets:                Anzahl Applets
 system_start_num_applets_active:         Anzahl aktiver Applets
 system_start_num_snippets:               Anzahl Schnipsel
 system_start_num_snippets_active:        Anzahl aktiver Schnipsel
-config_publisher_title:                  Herausgeber
-config_publisher_desc:                   Herausgeber (Webmaster) der Seite.
-config_copyright_title:                  Copyright
-config_copyright_desc:                   Copyright-Hinweise der Urheber.
-config_style_title:                      Aktiver Style
-config_style_desc:                       Style, der als Design der Hauptseite verwendet wird.
+
 news_edit_selection_comments:            Kommentare verwalten
 news_comments_delete_title:              Kommentare löschen
 news_comments_delete_question:           Sollen diese Kommentare wirklich gelöscht werden?
@@ -244,22 +242,22 @@ snippet_exists:                          Dieses Suchmuster existiert bereits
 snippets_not_found:                      Keine Schnipsel gefunden!
 snippet_active:                          aktiv
 snippet_not_active:                      nicht aktiv
-alias_add_title:                         Alias hinzufügen
-alias_select_title:                      Aliasse auswählen
-alias_edit_title:                        Alias bearbeiten
-aliases_delete_title:                    Aliasse löschen
-aliases_delete_question:                 Sollen diese Aliasse wirklich gelöscht werden?
-alias_go_title:                          Alias
-alias_go_desc:                           Alias-Adresse, die angelegt werden soll.
-alias_forward_to_title:                  Weiterleitung auf
-alias_forward_to_desc:                   Adresse, auf die der Alias weitergeleitet wird.
-alias_active_title:                      Alias aktivieren
-alias_active_desc:                       De-/Aktiviert die Weiterleitung des Aliasses.
-alias_added:                             Alias wurde hinzugefügt
-alias_not_added:                         Alias wurde nicht hinzugefügt
-aliases_deleted:                         Aliasse wurden gelöscht
-aliases_not_deleted:                     Aliasse wurden nicht gelöscht
-aliases_not_found:                       Keine Aliasse gefunden!
+alias_add_title:                         Weiterleitung hinzufügen
+alias_select_title:                      Weiterleitungen auswählen
+alias_edit_title:                        Weiterleitung bearbeiten
+aliases_delete_title:                    Weiterleitungen löschen
+aliases_delete_question:                 Sollen diese Weiterleitungen wirklich gelöscht werden?
+alias_go_title:                          Weiterleitung
+alias_go_desc:                           Adresse, für die eine Weiterleitung angelegt werden soll.
+alias_forward_to_title:                  Original
+alias_forward_to_desc:                   Adresse, auf die weitergeleitet wird.
+alias_active_title:                      Weiterleitung aktivieren
+alias_active_desc:                       De-/Aktiviert die Weiterleitung.
+alias_added:                             Weiterleitung wurde hinzugefügt
+alias_not_added:                         Weiterleitung wurde nicht hinzugefügt
+aliases_deleted:                         Weiterleitungen wurden gelöscht
+aliases_not_deleted:                     Weiterleitungen wurden nicht gelöscht
+aliases_not_found:                       Keine Weiterleitungen gefunden!
 alias_active:                            aktiv
 alias_not_active:                        nicht aktiv
 search_config_title:                     Einstellungen

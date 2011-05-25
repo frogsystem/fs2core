@@ -148,23 +148,23 @@ if ( isset ( $_POST['edit_user_id'] ) )
     
     // get groups
     $groupaction = mysql_query ( "
-                                    SELECT `group_id`, `group_title`
+                                    SELECT `group_id`
                                     FROM `".$global_config_arr['pref']."admin_groups`
-                                    WHERE `group_id` > 0
-                                    ORDER BY `group_title` ASC
+                                    WHERE `menu_id` != 'none'
+                                    ORDER BY `menu_id`, `group_pos`
     ", $db );
     while ( $group_arr = mysql_fetch_assoc ( $groupaction ) ) {
-        $DATA_ARR[$group_arr['group_id']]['title'] = $group_arr['group_title'];
-        
+        $DATA_ARR[$group_arr['group_id']]['title'] = $TEXT['menu']->get("group_".$group_arr['group_id']);
+
         // get pages
         $pageaction = mysql_query ( "
-                                        SELECT `page_id`, `page_link`
+                                        SELECT `page_id`
                                         FROM `".$global_config_arr['pref']."admin_cp`
                                         WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0
                                         ORDER BY `page_pos` ASC, `page_id` ASC
         ", $db );
         $pageaction_sub = mysql_query ( "
-                                        SELECT `page_id`, `page_link`, `page_file`
+                                        SELECT `page_id`, `page_file`
                                         FROM `".$global_config_arr['pref']."admin_cp`
                                         WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1
                                         ORDER BY `page_file` ASC, `page_pos` ASC, `page_id` ASC
@@ -174,12 +174,12 @@ if ( isset ( $_POST['edit_user_id'] ) )
 
 
         while ( $page_arr_sub = mysql_fetch_assoc ( $pageaction_sub ) ) {
-            $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $page_arr_sub['page_link'];
+            $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $TEXT['menu']->get("page_link_".$page_arr_sub['page_id']);
         }
 
-        
+
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
-            $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $page_arr['page_link'];
+            $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $TEXT['menu']->get("page_link_".$page_arr['page_id']);
 
             // is permission granted?
             if ( $user_arr['user_is_admin'] == 1 || $user_arr['user_id'] == 1 ) {
@@ -245,7 +245,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
             }
             echo '<br>'.$GROUP_ARR['title'].'<br>';
             foreach ( $GROUP_ARR['links'] as $PAGE_ID => $PAGE_ARR ) {
-                echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="img/sub-right-arrow.gif" alt="->">' : "";
+                echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="icons/sub-right-arrow.gif" alt="->">' : "";
                 echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" id="'.$PAGE_ID.'" name="'.$PAGE_ID.'" value="1"
                 '.getchecked ( $PAGE_ARR['granted'], "group" ).'
                 '.getdisabled ( $PAGE_ARR['granted'], "group" ).'

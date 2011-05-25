@@ -29,14 +29,51 @@ class sql {
             $this->pref = $pref;
         } else {
             $this->sql = false;
-            Throw new Exception("No Connection to Database"); 
+            Throw new ErrorException("No Connection to Database"); 
         }
     }
     
     // Destructor closes SQL-Connection
     public function __destruct (){
         mysql_close($this->sql);
-    }    
+    } 
+
+
+    // save sql data
+    private function escape ($VAL) {
+      
+        // remove fucking magic quotes
+        if (get_magic_quotes_gpc())
+            $VAL = stripslashes($VAL);
+        
+        // fallback    
+        if (SLASH)
+            $VAL = addslashes($VAL);
+        
+        // save data
+        if (is_numeric($VAL)) {
+            if (floatval($VAL) == intval($VAL)) {
+                $VAL = intval($VAL);
+                settype($VAL, "integer");
+            } else {
+                $VAL = floatval($VAL);
+                settype($VAL, "float");
+            }
+        } else {
+            $VAL = mysql_real_escape_string(strval($VAL), $this->conn());
+        }
+            
+        return $VAL;
+    }
+
+    // "unsave" sql data (stripslash if on old systems)
+    private function unslash ($VAL) {
+        // fallback    
+        if (SLASH) {
+            $VAL = stripslashes($VAL);
+        }
+        return $VAL;
+    }
     
     
     // run any query
@@ -51,7 +88,7 @@ class sql {
             $this->error[0] = mysql_errno($this->sql); // error number
             $this->error[1] = mysql_error($this->sql); // error text
             $this->error[2] = $this->query;            // query causing the error
-            Throw new Exception("MySQL Error: [".$this->error[0]."] ".$this->error[1]."\n".$this->error[2]); 
+            Throw new ErrorException("MySQL Error: [".$this->error[0]."] ".$this->error[1]."\n".$this->error[2]); 
         }
     }
     
@@ -131,9 +168,9 @@ class sql {
     private function select ($table, $cols, $options = array(), $distinct = false) {
         // empty cols
         if (empty($cols))
-            Throw new Exception("MySQL Error: Can't select nothing.");
+            Throw new ErrorException("MySQL Error: Can't select nothing.");
         if (is_array($table) && count($table) <= 0)
-            Throw new Exception("MySQL Error: Can't select from nothing.");                
+            Throw new ErrorException("MySQL Error: Can't select from nothing.");                
                     
                     
         // Table list
@@ -165,7 +202,7 @@ class sql {
         } elseif ($cols == "*") {
             $cols_list = $cols;
         } else {
-            Throw new Exception("MySQL Error: Can't select because of bad data.");
+            Throw new ErrorException("MySQL Error: Can't select because of bad data.");
         }
 
         // DISTINCT or not
@@ -192,11 +229,20 @@ class sql {
         while ($row = mysql_fetch_assoc($result)) {
             $rows[] = $row;
         }
+        $num = count($rows);
         
-        // Return the result
+        // Unslash the result
+        if ($num > 0)
+            array_map(
+                create_function('$row,$t', 'array_map($t->unslash, $row);'),
+                $rows,
+                array_fill(0, $num, $this)
+            );
+            
+        // Return the result     
         return array (
             'data' => $rows,
-            'num' => count($rows),
+            'num' => $num,
         );
     }
 
@@ -207,10 +253,11 @@ class sql {
 
         // Get Result
         $result = $this->get($table, $cols, $options);
-        if (count($result['data']) >= 1) 
-            return $result['data'][0];
-        else
+        if (count($result['data']) >= 1) {
+            return array_map(array(&$this, "unslash"), $result['data'][0]);       
+        } else {
             return array();
+        }
     }
     // single row by Id  
     public function getById ($table, $cols, $id) {
@@ -220,17 +267,12 @@ class sql {
     
     // only a single data field
     public function getField ($table, $field, $options = array(), $start = 0) {
-        // check for string
-        if (!is_array($field)) {
-            $field = array($field);
-        }
-    
         // Get Result
         $result = $this->getRow($table, array($field), $options);
         if (count($result) >= 1) 
             return array_shift($result);
         else
-            Throw new Exception("MySQL Error: Field not found");
+            Throw new ErrorException("MySQL Error: Field not found");
     }
     // single field by Id  
     public function getFieldById ($table, $field, $id) {
@@ -245,14 +287,14 @@ class sql {
     
     // num of rows
     public function num ($table, $cols, $options = array(), $distinct = false) {
-        return mysql_num_rows($this->select($table, $cols, $options, $distinct));
+        return $this->unslash(mysql_num_rows($this->select($table, $cols, $options, $distinct)));
     }
 
     // Saving to DB by Id
     // existing entry => update, else => insert
     public function save ($table, $data) {
         // Update
-        if (isset($data['id']) && $this->getFieldById($table, "id", $data['id']) !== false) {
+        if (isset($data['id']) && $this->getFieldById($table, "id", $this->escape($data['id'])) !== false) {
             return $this->updateById($table, $data);
                     
         // Insert
@@ -266,7 +308,7 @@ class sql {
     public function insert ($table, $data) {
         // empty data
         if (empty($data))
-            Throw new Exception("MySQL Error: Can't insert empty data."); 
+            Throw new ErrorException("MySQL Error: Can't insert empty data."); 
         
         // prepare data
         $cols = ($vals = array());
@@ -274,15 +316,12 @@ class sql {
             $cols[] = "`".$column."`";
             $vals[] = "'".$value."'";            
         }
+        $vals = array_map($this->escape, $vals);
 
         // build query string...
         $qrystr = "INSERT INTO `".$this->pref.$table."` (".implode(",", $cols).") VALUES (".implode(",", $vals).")";
         
-        try {
-            return $this->doQuery($qrystr); // ... and execute
-        } catch (Exception $e) {
-            print_r($e->getMessage());
-        }
+        return $this->doQuery($qrystr); // ... and execute
     }
     // insert with returning auto increment value
     public function insertId ($table, $data) {
@@ -299,12 +338,12 @@ class sql {
     public function update ($table, $data, $options = array()) {
         // empty data
         if (empty($data))
-            Throw new Exception("MySQL Error: Can't update empty data.");         
+            Throw new ErrorException("MySQL Error: Can't update empty data.");         
         
         // prepare data
         $list = array();
         foreach($data as $column => $value) {
-            $list[] = "`".$column."` = '".$value."'";        
+            $list[] = "`".$column."` = '".$this->escape($value)."'";        
         }
         
         // build query string...
@@ -320,9 +359,9 @@ class sql {
     public function updateById ($table, $data) {
         // check for id
         if (!isset($data['id']))
-            Throw new Exception("MySQL Error: Can't update because of bad data.");             
+            Throw new ErrorException("MySQL Error: Can't update because of bad data.");             
         
-        $options = array ('W' => "`id`=".$data['id']);
+        $options = array ('W' => "`id`=".$this->escape($data['id']));
         
         try {
             return $this->update($table, $data, $options);
@@ -371,7 +410,7 @@ class sql {
         if ($this->sql !== false)
             return $this->sql;
         else
-            Throw new Exception("Lost Connection to Database");
+            Throw new ErrorException("Lost Connection to Database");
     }
 }
 ?>

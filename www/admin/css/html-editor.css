@@ -18,16 +18,16 @@ textarea.no-js-html-editor {
 /* Button styles */
 /**************************************************/
 .html-editor-button-big {
-    background-image:url(html-editor/note-edit.gif);
+    background-image:url(../html-editor/note-edit.gif);
 }
 .html-editor-button-textwrap {
-    background-image:url(html-editor/text-wrapping.gif);
+    background-image:url(../html-editor/text-wrapping.gif);
 }
 .html-editor-button-line-numbers {
-    background-image:url(html-editor/line-numbers.gif);
+    background-image:url(../html-editor/line-numbers.gif);
 }
 .html-editor-button-original {
-    background-image:url(html-editor/doc-search.gif);
+    background-image:url(../html-editor/doc-search.gif);
 }
 
 
@@ -111,7 +111,7 @@ textarea.no-js-html-editor {
 .html-editor-line {
     height:20px;
     width:5px;
-    background-image:url("html-editor/line.gif");
+    background-image:url("../html-editor/line.gif");
     background-repeat:no-repeat;
     background-position:center;
     border:1px solid #EEEEEE;
@@ -147,7 +147,7 @@ textarea.no-js-html-editor {
     padding:2px 4px;
     margin:2px 1px 1px 0px;
     background-color:#EEEEEE;
-    background-image:url("html-editor/arrow.gif");
+    background-image:url("../html-editor/arrow.gif");
     background-repeat:no-repeat;
     background-position:center;
     border:1px solid #BBBBBB;
@@ -170,19 +170,6 @@ textarea.no-js-html-editor {
     z-index:100;
 }
 
-/*
-    display:none;
-    cursor:default;
-    position:absolute;
-    top:0px;
-    left:0px;
-    margin-top:20px;
-    margin-left:1px;
-    background-color:#EEEEEE;
-    z-index:500;
-    padding:0px;
-    width:200px;
-*/
 .html-editor-list-table {
     padding:0px;
     margin:0px;

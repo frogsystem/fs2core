@@ -68,14 +68,27 @@ $().ready(function(){
             } else {
                 cb.attr("src", "images/"+type+"-"+color+"-active.png");                
             }
+            
+            if (type == "radio") {
+                cb.attr("alt", "(x)");
+            } else {
+                cb.attr("alt", "[x]");                    
+            }
         } else {
             if (hover) {
                 cb.attr("src", "images/"+type+"-"+color+"-hover.png");
             } else {
                 cb.attr("src", "images/"+type+".png");                
             }
+            
+            if (type == "radio") {
+                cb.attr("alt", "(_)");
+            } else {
+                cb.attr("alt", "[_]");                    
+            }
         }
     }
+    
 //--------------------------------
 // END - Functions
 //--------------------------------

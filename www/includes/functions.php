@@ -39,44 +39,6 @@ function get_page_nav ( $PAGE, $NUM_OF_PAGES, $PER_PAGE, $NUM_OF_ENTRIES, $URL_T
 }
 
 
-/////////////////////////////////
-//// validation of lang dirs ////
-/////////////////////////////////
-function is_language_text ( $TEXT )
-{
-    if ( preg_match ( "/[a-z]{2}_[A-Z]{2}/", $TEXT ) === 1 ) {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
-}
-
-//////////////////////////////////
-//// validation of a hexcolor ////
-//////////////////////////////////
-function hex2dec_color( $COLOR )
-{
-    if ( is_hexcolor( $COLOR ) ) {
-        $return['r'] = hexdec ( substr ( $COLOR, 0, 2 ) );
-        $return['g'] = hexdec ( substr ( $COLOR, 2, 2 ) );
-        $return['b'] = hexdec ( substr ( $COLOR, 4, 2 ) );
-        return $return;
-    } else {
-        return FALSE;
-    }
-}
-
-
-//////////////////////////////////
-//// validation of a hexcolor ////
-//////////////////////////////////
-function is_hexcolor( $COLOR )
-{
-    $COLOR = substr ( $COLOR, 0, 6 );
-    return preg_match ( '/[0-9a-fA-F]{6}$/', $COLOR );
-}
-
-
 /////////////////////////////
 //// scandir with filter ////
 /////////////////////////////
@@ -1121,10 +1083,14 @@ function html_nl2br ( $TEXT )
 
 function savesql ( $TEXT )
 {
-    global $db;
-
+    global $db, $global_config_arr;
+    
+    $TEXT = unquote($TEXT);
+    if ($global_config_arr['env']['slash'])
+         $TEXT = addslashes($TEXT);
+    
     if ( !is_numeric ( $TEXT ) ) {
-        $TEXT = mysql_real_escape_string ( addslashes ( unquote ( $TEXT ) ), $db );
+        $TEXT = mysql_real_escape_string($TEXT, $db );
     }
     return $TEXT;
 }
@@ -1133,25 +1099,30 @@ function savesql ( $TEXT )
 // create save strings for sql //
 /////////////////////////////////
 
-function unquote ( $TEXT )
+function unslash($TEXT)
 {
-    if ( get_magic_quotes_gpc () ) {
-        $TEXT = stripslashes ( $TEXT );
+    global $global_config_arr;
+    
+    if ($global_config_arr['env']['slash'])
+         $TEXT = stripslashes($TEXT);
+         
+    return $TEXT;
+}
+
+
+/////////////////////////////////
+// create save strings for sql //
+/////////////////////////////////
+
+function unquote ($TEXT)
+{
+    global $global_config_arr;
+    
+    if (get_magic_quotes_gpc()) {
+        $TEXT = stripslashes($TEXT);
     }
     return $TEXT;
 }
-
-//////////////////////////////////
-// kill html in textareas, etc. //
-//////////////////////////////////
-
-function killhtml ( $TEXT )
-{
-    $TEXT = stripslashes ( $TEXT );
-    $TEXT = htmlspecialchars ( $TEXT, ENT_COMPAT );
-    return $TEXT;
-}
-
 
 //////////////////////////////
 // Format text with FS Code //

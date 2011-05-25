@@ -13,6 +13,7 @@ $dbc['pref'] = "fs2_"; //Table Prefix
 //// Hardcoded Vars ////
 ////////////////////////
 $spam = "wKAztWWB2Z"; //Anti-Spam Encryption-Code
+define('SLASH', TRUE);
 
 
 ///////////////////////
@@ -34,7 +35,6 @@ try {
 
     // General Config + Infos
     $global_config_arr = $sql->getById("global_config", "*", 1);
-    $global_config_arr = array_map("stripslashes", $global_config_arr);
 
     //write vars into $global_config_arr
     $global_config_arr['pref'] = $dbc['pref'];
@@ -68,6 +68,10 @@ try {
     $global_config_arr['env']['day'] = date("d", $global_config_arr['env']['date']);
     $global_config_arr['env']['hour'] = date("H", $global_config_arr['env']['date']);
     $global_config_arr['env']['min'] = date("i", $global_config_arr['env']['date']);
+    $global_config_arr['env']['pref'] = $global_config_arr['pref'];
+    $global_config_arr['env']['spam'] = $global_config_arr['spam'];
+    $global_config_arr['env']['data'] = $global_config_arr['data'];
+    $global_config_arr['env']['path'] = $global_config_arr['path'];
 
 
 //////////////////////////////

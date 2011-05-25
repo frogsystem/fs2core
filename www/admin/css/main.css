@@ -12,8 +12,9 @@ html,body {
 }
 
 body {
-
     overflow-y: scroll;
+    margin: 0px auto;
+    width:991px;
 }
 
 img {
@@ -75,9 +76,8 @@ input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="r
     cursor:pointer;
 }
 
-select, option {
+select, option, label {
     cursor:pointer;
-    width:100%;
 }
 
 /**************************************************/
@@ -146,9 +146,4 @@ em {
 }
 .red_text {
     color:#FF0000;
-}
-
-.default {}
-.hidden {
-    display:none;
 }

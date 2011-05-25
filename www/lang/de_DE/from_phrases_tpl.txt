@@ -1,0 +1,658 @@
+#style_css
+title:                                             CSS
+description:                                       Beinhaltet die CSS-Definitionen des Designs. Bitte beachten Sie die <a class="small" href="http://wiki.frogsystem.de/special-css-filenames" target="_blank">&raquo;speziellen CSS-Dateinamen</a>.
+
+
+#js_userfunctions
+title:                                             Java Script
+description:                                       Beinhaltet von Benutzern definierten Java Script Code.
+
+
+#announcement
+title:                                             Ankündigung
+description:                                       Ankündigung auf der Seite.
+help_1:                                            Bindet die verfasste Ankündigung ein.
+
+
+#statistik
+title:                                             Statistik
+description:                                       Besucher und Seiten Statistik
+help_1:                                            Anzahl aller Besucher der Seite.
+help_2:                                            Zahl aller Besucher am aktuellen Tag.
+help_3:                                            Anzahl aller Seitenaufrufe.
+help_4:                                            Zahl aller Seitenaufrufe am aktuellen Tag.
+help_5:                                            Zahl aller Besucher die sich zurzeit auf der Seite befinden.
+help_6:                                            Anzahl der geschriebenen News.
+help_7:                                            Anzahl der registrierten User.
+help_8:                                            Anzahl der geschriebenen Artikel.
+help_9:                                            Anzahl der abgegebenen Kommentare.
+
+
+#community_map
+title:                                             Community Map
+description:                                       Gerüst für die Community Map.
+help_1:                                            Bindet die Karte ein.
+
+
+#artikel_autor
+title:                                             Autor
+description:                                       Das Erscheinungsbild der Autoren-Kennzeichnung.
+help_1:                                            Der Username des Autors.
+help_2:                                            Die User-ID des Autors.
+help_3:                                            URL zum Profil des Autors.
+
+
+#artikel_body
+title:                                             Body
+description:                                       Das Erscheinungsbild eines Artikels.
+help_1:                                            Die Überschrift des Artikels.
+help_2:                                            Das Datum an dem der Artikel geschrieben wurde.
+help_3:                                            Der Artikel-Text an sich.
+help_4:                                            Bindet das Autoren-Template (s.o.) ein.
+help_5:                                            Der Username des Autors.
+help_6:                                            Die User-ID des Autors.
+
+
+#press_navi_line
+title:                                             Navigation Zeile
+description:                                       Eine Zeile der Navigation.
+help_1:                                            URL zum Öffnen/Anzeigen des Navigationsordners.
+help_2:                                            Der Titel des Navigationsordners.
+help_3:                                            URL zum Bild des Navigationsordners.
+help_4:                                            URL zu einem entsprechenden Standard-Ordnersymbol.
+
+
+#press_navi_main
+title:                                             Navigation
+description:                                       Das Erscheinungsbild der Navigation.
+help_1:                                            Bindet nacheinander die Ordner/Zeilen der Navigation ein.
+
+
+#press_intro
+title:                                             Einleitung
+description:                                       Das Erscheinungsbild des Einleitungstextes.
+help_1:                                            Der unformatierte Einleitungstext.
+
+
+#press_note
+title:                                             Anmerkungen
+description:                                       Das Erscheinungsbild der Anmerkungen.
+help_1:                                            Die unformatierten Anmerkungen.
+
+
+#press_body
+title:                                             Pressebericht
+description:                                       Das Erscheinungsbild eines Presseberichtes.
+help_1:                                            Der Titel des Presseberichtes.
+help_2:                                            URL zum Pressebericht.
+help_3:                                            Datum an dem der Pressebericht veröffentlicht wurde.
+help_4:                                            Die (formatierte) Einleitung des Presseberichtes.
+help_5:                                            Der kurze Vorschautext des Presseberichtes.
+help_6:                                            Die (formatierten) Anmerkungen zum Presseberichtes.
+help_7:                                            Titel des Spiels, zu dem der Pressebericht veröffentlicht wurde.
+help_8:                                            URL zum Bild des Spiels, zu dem der Pressebericht veröffentlicht wurde.
+help_9:                                            Titel der Kategorie, zu der der Pressebericht zugeordnet wurde.
+help_10:                                           URL zum Bild der Kategorie, zu der der Pressebericht zugeordnet wurde.
+help_11:                                           Sprache, in der der Pressebericht verfasst wurde.
+help_12:                                           URL zum Bild der Sprache, in der der Pressebericht verfasst wurde.
+
+
+#press_container
+title:                                             Presseberichte Container
+description:                                       Container um die angezeigten Presseberichte.
+help_1:                                            Bindet nacheinander alle passenden Presseberichte ein.
+
+
+#press_main_body
+title:                                             Übersicht
+description:                                       Das Erscheinungsbild der ganzen Seite.
+help_1:                                            Bindet die Navigation ein.
+help_2:                                            Bindet den Pressebericht Container mit allen passenden Presseberichte ein.
+
+
+#news_link
+title:                                             Related Link Zeile
+description:                                       Eine Zeile der Related Links.
+help_1:                                            Der Titel den der Link trägt.
+help_2:                                            Das Ziel-Fenster des Links.
+help_3:                                            Die URL auf die verlinkt wird.
+
+
+#news_related_links
+title:                                             Related Links Body
+description:                                       Die Related Links unter einer News.
+help_1:                                            Bindet nacheinander die angegebenen Links ein.
+
+
+#news_headline
+title:                                             Headline
+description:                                       Zeile im Headline Body.
+help_1:                                            Der Titel der News.
+help_2:                                            Das Datum an dem die News veröffentlicht wurde.
+help_3:                                            URL zur News.
+
+
+#news_headline_body
+title:                                             Headline Body
+description:                                       Headline Kasten oben auf der Seite.
+help_1:                                            Bindet die Headlines ein.
+help_2:                                            Bindet die Downloads ein.
+
+
+#news_body
+title:                                             News
+description:                                       Das Erscheinungsbild einer News.
+help_1:                                            ID der News, für die eindeutige Ansteuerung auf der Startseite.
+help_2:                                            Der Titel der News.
+help_3:                                            Das Datum an dem die News veröffentlicht wurde.
+help_4:                                            Der Text der News.
+help_5:                                            Der Name des News-Schreibers.
+help_6:                                            URL zum Profil des Autors.
+help_7:                                            URL zum Kategorie-Bild.
+help_8:                                            Der Titel der Kategorie.
+help_9:                                            URL zur Kommentaransicht der News.
+help_10:                                           Anzahl der zur News abgegebenen Kommentare.
+help_11:                                           Bindet die Related Links in der News ein.
+
+
+#news_container
+title:                                             News Container
+description:                                       Das Erscheinungsbild der News-Seite.
+help_1:                                            Bindet nacheinander alle News ein.
+help_2:                                            Bindet den Headline-Kasten ein.
+
+
+#news_comment_container
+title:                                             Kommentar Container
+description:                                       Das Erscheinungsbild der Kommentar-Seite.
+help_1:                                            Bindet die News ein.
+help_2:                                            Bindet nacheinander alle Kommentare ein.
+help_3:                                            Bindet das Formular zum Schreiben von Kommentaren ein.
+
+
+#news_comment_body
+title:                                             Kommentar Body
+description:                                       Das Erscheinungsbild eines Kommentars.
+help_1:                                            Der Titel des Kommentars.
+help_2:                                            Das Datum an dem der Kommentar geschrieben wurde.
+help_3:                                            Der Text des Kommentars.
+help_4:                                            Bindet den Namen eines nicht registrierten Autors oder das Template "Kommentar Autor" ein.
+help_5:                                            Bindet einen evtl. Avatar des Autors ein.
+
+
+#news_comment_autor
+title:                                             Kommentar Autor
+description:                                       Link zum Kommentar Autor.
+help_1:                                            Der Name des Kommentar-Schreibers.
+help_2:                                            URL zum Profil des Autors.
+
+
+#news_comment_form_spam
+title:                                             Anti Spam
+description:                                       Captcha zum Schutz gegen Spam-Bots.
+help_1:                                            URL zum Anti Spam Captcha Bild.
+
+
+#news_comment_form_spamtext
+title:                                             Anti Spam Text
+description:                                       Erklärungstext, warum Anti Spam verwendet wird.
+
+
+#news_comment_form_name
+title:                                             Eingabefeld Name
+description:                                       Wird angezeigt, wenn der User nicht registriert ist.
+
+
+#news_comment_form
+title:                                             Kommentar Formular
+description:                                       Formular zum Schreiben von Kommentaren.
+help_1:                                            ID der News, um sie eindeutig zu identifizieren.
+help_2:                                            Bindet den Namen des angemeldeten Users, bzw. das Template "Eingabefeld Name" ein.
+help_3:                                            Bindet das Anti Spam Captcha ein.
+help_4:                                            Bindet den Erklärungstext, warum Anti Spam verwendet wird ein.
+
+
+#news_search_form
+title:                                             Newsarchiv Suche
+description:                                       Formular für die Suche im Archiv.
+help_1:                                            Fügt alle Jahre ein, für die News verfügbar sind.
+
+
+#screenshot_cat
+title:                                             Kategorie
+description:                                       Zeile einer Kategorie in der Kategorie-Übersicht
+help_1:                                            URL zur Kategorie-Ansicht.
+help_2:                                            Name der Kategorie.
+help_3:                                            Datum an dem die Kategorie erstellt wurde.
+help_4:                                            Anzahl der Bilder in der Kategorie.
+
+
+#screenshot_body
+title:                                             Kategorie-Übersicht Body
+description:                                       Aussehen der Kategorie-Übersicht.
+help_1:                                            Ausgabe der einzelnen Kategorienen.
+
+
+#screenshot_pic
+title:                                             Screenshot
+description:                                       Aussehen eines einzelnen Screenshots.
+help_1:                                            URL zum Bild.
+help_2:                                            URL zum Thumbnail des Bildes.
+help_3:                                            Beschreibungstext des Bildes.
+
+
+#screenshot_cat_body
+title:                                             Kategorie Body
+description:                                       Aussehen der Screenshot-Kategorie.
+help_1:                                            Name der Kategorie.
+help_2:                                            Ausgabe der einzelnen Screenshots.
+help_3:                                            Ausgabe der Seiten-Navigation.
+
+
+#wallpaper_pic
+title:                                             Wallpaper
+description:                                       Aussehen eines einzelnen Wallpapers.
+help_1:                                            URL zum Thumbnail des Wallpapers.
+help_2:                                            Beschreibungstext des Wallpapers.
+help_3:                                            Bindet nacheinander die einzelnen Größen des Wallpapers ein.
+
+
+#wallpaper_sizes
+title:                                             Wallpaper Größen
+description:                                       Aussehen der Wallpaper Größen.
+help_1:                                            URL zum Wallpaper in dieser Größe.
+help_2:                                            Die Größe des Wallpapers als Text.
+
+
+#randompic_body
+title:                                             Zufallsbild Body
+description:                                       Aussehen des Zufallsbilds im Menü.
+help_1:                                            URL zum Zufallsbild.
+help_2:                                            URL zum Thumbnail des Zufallsbilds.
+help_3:                                            Beschreibungstext des Zufallsbilds.
+
+
+#randompic_nobody
+title:                                             Kein Zufallsbild
+description:                                       Ausgabe, wenn kein Zufallsbild gefunden wurde.
+
+
+#dl_search_field
+title:                                             Suche
+description:                                       Kleines Suchfeld, dass auf jeder Seite angezeigt werden kann.
+help_1:                                            Teilt dem Script die zu durchsuchende Kategorie mit.
+help_2:                                            Stichwort, nach dem gesucht wird.
+help_3:                                            URL zur Anzeige aller Downloads.
+
+
+#dl_navigation
+title:                                             Navigation
+description:                                       Einzelne Zeile der Navigation.
+help_1:                                            Dateiname des angezeigten Icons (geöffneter Ordner, geschlossener Ordner, etc.).
+help_2:                                            URL die auf die Kategorie verweist.
+help_3:                                            Titel der Kategorie.
+
+
+#dl_quick_links
+title:                                             Quick Links
+description:                                       Download Quick Links auf der Newsseite.
+help_1:                                            Zeitpunkt, zu dem der Download veröffentlicht wurde.
+help_2:                                            URL zur Downloadseite.
+help_3:                                            Titel des Downloads.
+
+
+#dl_datei_preview
+title:                                             Datei Vorschau
+description:                                       Vorschau einer Datei in der Übersicht.
+help_1:                                            Titel des Downloads.
+help_2:                                            URL zur Downloadseite.
+help_3:                                            Titel der Kategorie des Downloads.
+help_4:                                            Zeitpunkt, zu dem der Download veröffentlicht wurde.
+help_5:                                            Beschreibungstext des Downloads.
+
+
+#dl_body
+title:                                             Download Übersicht
+description:                                       Übersichtsseite für die Downloads. Wird auch für Suchergebnisse genutzt.
+help_1:                                            Bindet die Kategorie-Navigation ein.
+help_2:                                            Bindet das Downloads-Suchfeld ein.
+help_3:                                            Bindet die einzelnen Datei-Vorschauen ein.
+
+
+#dl_file
+title:                                             File
+description:                                       Zeile für ein File.
+help_1:                                            Titel des Files.
+help_2:                                            Link zum Download des Files.
+help_3:                                            Größe des Files.
+help_4:                                            Vom File verursachter Traffic (Größe*Downloads).
+help_5:                                            Anzahl der Downloads.
+help_6:                                            Hinweis darauf, dass das File auf einen Mirror weiterleitet.
+help_7:                                            Colspan (über 2 Zellen) der evtl. nötig ist, damit der Mirror-Hinweis korrekt angezeigt wird.
+
+
+#dl_stats
+title:                                             Statistik
+description:                                       Zeile für die Statistik unter den Files.
+help_1:                                            Gesamtzahl aller Files.
+help_2:                                            Größe aller Files zusammen.
+help_3:                                            Insgesamt verursachter Traffic.
+help_4:                                            Gesamtzahl der Downloads aller Files.
+
+
+#dl_file_is_mirror
+title:                                             Mirror
+description:                                       Anzeige, falls das File ein Mirror ist.
+
+
+#dl_file_body
+title:                                             Datei Body
+description:                                       Detailseite eines Downloads.
+help_1:                                            Titel des Downloads.
+help_2:                                            URL zum Vorschaubild des Downloads.
+help_3:                                            URL zum Thumbnails des Downloads.
+help_4:                                            Ordner-Baum der Download Navigation.
+help_5:                                            Download Suchfeld.
+help_6:                                            Name des Uploaders.
+help_7:                                            URL zum Profil des Uploaders.
+help_8:                                            Name des Autors.
+help_9:                                            URL zur Homepage des Autors.
+help_10:                                           Datum des Download.
+help_11:                                           Kategorie des Downloads.
+help_12:                                           Beschreibungstext des Downloads.
+help_13:                                           Ausgabe der einzelnen Files des Downloads.
+
+
+#email_register
+title:                                             Registrierung
+description:                                       Email die bei der Registrierung eines Users verschickt wird.
+help_1:                                            Der gewählte Benutzername des Users.
+help_2:                                            Das gewählte Passworts des Users.
+
+
+#email_passchange
+title:                                             Passwortänderung
+description:                                       Email die bei einer Passwortänderung verschickt wird.
+help_1:                                            Der gewählte Benutzername des Users.
+help_2:                                            Das gewählte Passworts des Users.
+
+
+#partner_eintrag
+title:                                             Übersicht Eintrag
+description:                                       Aussehen eines Eintrags in der Gesamtübersicht.
+help_1:                                            URL zur Partnerseite.
+help_2:                                            URL zum großen Banner der Partnerseite.
+help_3:                                            URL zum kleinen Button der Partnerseite
+help_4:                                            Name der Partnerseite.
+help_5:                                            Beschreibungstext der Partnerseite.
+
+
+#partner_main_body
+title:                                             Partner Übersicht Body
+description:                                       Aussehen der Liste aller eingetragenen Partner.
+help_1:                                            Einzelne Ausgabe aller Partner.
+help_2:                                            Einzelne Ausgabe der Partner, die permanent angezeigt werden sollen.
+help_3:                                            Einzelne Ausgabe der Partner, die nicht permanent angezeigt werden sollen.
+
+
+#partner_navi_eintrag
+title:                                             Menü Eintrag
+description:                                       Aussehen eines Eintrags im Menü.
+help_1:                                            URL zur Partnerseite.
+help_2:                                            URL zum großen Banner der Partnerseite.
+help_3:                                            URL zum kleinen Button der Partnerseite
+help_4:                                            Name der Partnerseite.
+help_5:                                            Beschreibungstext der Partnerseite.
+
+
+#partner_navi_body
+title:                                             Menü Body
+description:                                       Aussehen der Partnerliste im Menü.
+help_1:                                            Einzelne Ausgabe aller Partner.
+help_2:                                            Einzelne Ausgabe der Partner, die permanent angezeigt werden sollen.
+help_3:                                            Einzelne Ausgabe der Partner, die nicht permanent angezeigt werden sollen.
+
+
+#poll_line
+title:                                             Antwort Zeile
+description:                                       Antwortmöglichkeit der Umfrage.
+help_1:                                            Der Antworttext.
+help_2:                                            Die ID der Antwort, damit das Script auch weiß, für was abgestimmt wurde.
+help_3:                                            Der Umfragentyp. Notwendig, da die beiden Typen verschiedene Auswahlmöglichkeiten erfordern.
+help_4:                                            Erweiterung für Multiple-Choice Umfragen.
+
+
+#poll_body
+title:                                             Umfrage Body
+description:                                       Aussehen der Umfrage im Menü.
+help_1:                                            Die Frage, nach der in der Umfrage gefragt wird.
+help_2:                                            Bindet hintereinander alle Antworten ein.
+help_3:                                            ID zur eindeutigen Identifizierung der Umfrage.
+help_4:                                            Der Typ der Umfrage. (Einzel- od. Mehrfachauswahl)
+
+
+#poll_no_poll
+title:                                             Keine Umfrage
+description:                                       Meldung wenn keine Umfrage aktiv ist.
+
+
+#poll_result_line
+title:                                             Ergebnis Zeile
+description:                                       Eine Zeile des Umfrage-Ergebnis.
+help_1:                                            Der Antworttext.
+help_2:                                            Die Anzahl der Stimmen die eine Antwort erhalten hat.
+help_3:                                            Der Stimmenanteil einer Antwort in Prozent. (Mit Prozentzeichen!)
+help_4:                                            Die Breite des Balkens bei grafischer Stimmendarstellung.
+
+
+#poll_result
+title:                                             Ergebnis Body
+description:                                       Aussehen des Umfrage-Ergebnis im Menü.
+help_1:                                            Die Frage, nach der in der Umfrage gefragt wird.
+help_2:                                            Bindet hintereinander alle Antworten mit dem jeweiligen Ergebnis ein.
+help_3:                                            Die Anzahl aller abgegebenen Stimmen.
+help_4:                                            Die Anzahl aller Umfrageteilnehmer.
+help_5:                                            Der Typ der Umfrage. (Einzel- od. Mehrfachauswahl)
+
+
+#poll_list_line
+title:                                             Umfrage Übersicht Zeile
+description:                                       Zeile in der Übersichtsseite des Umfragenarchivs.
+help_1:                                            Die Frage, nach der in der Umfrage gefragt wird.
+help_2:                                            URL zur Detailansicht der archivierten Umfrage.
+help_3:                                            Die Anzahl aller abgegebenen Stimmen.
+help_4:                                            Die Anzahl aller Umfrageteilnehmer.
+help_5:                                            Der Typ der Umfrage. (Einzel- od. Mehrfachauswahl)
+help_6:                                            Datum an dem die Umfrage startet.
+help_7:                                            Datum an dem die Umfrage endet.
+
+
+#poll_list
+title:                                             Umfragen Übersicht Body
+description:                                       Übersichtsseite des Umfragenarchivs.
+help_1:                                            Bindet hintereinander alle Umfragen ein.
+help_2:                                            Sortierparameter für alphabetische Sortierung nach der Frage.
+help_3:                                            Bindet den der Sortierung entsprechenden Pfeil ein.
+help_4:                                            Sortierparameter für die Anzahl aller abgegebenen Stimmen.
+help_5:                                            Bindet den der Sortierung entsprechenden Pfeil ein.
+help_6:                                            Sortierparameter für die Anzahl aller Teilnehmer.
+help_7:                                            Bindet den der Sortierung entsprechenden Pfeil ein.
+help_8:                                            Sortierparameter für den Umfragentyp.
+help_9:                                            Bindet den der Sortierung entsprechenden Pfeil ein.
+help_10:                                           Sortierparameter für das Startdatum der Umfrage.
+help_11:                                           Bindet den der Sortierung entsprechenden Pfeil ein.
+help_12:                                           Sortierparameter für das Enddatum der Umfrage.
+help_13:                                           Bindet den der Sortierung entsprechenden Pfeil ein.
+
+
+#poll_main_line
+title:                                             Archiv Antwort Zeile
+description:                                       Antwort Zeile einer archivierten Umfrage.
+help_1:                                            Der Antworttext.
+help_2:                                            Die Anzahl der Stimmen die eine Antwort erhalten hat.
+help_3:                                            Der Stimmenanteil einer Antwort in Prozent. (Mit Prozentzeichen!)
+help_4:                                            Die Breite des Balkens bei grafischer Stimmendarstellung.
+
+
+#poll_main_body
+title:                                             Archiv Umfrage Body
+description:                                       Ansicht einer archivierten Umfrage.
+help_1:                                            Die Frage, nach der in der Umfrage gefragt wird.
+help_2:                                            Bindet hintereinander alle Antworten mit dem jeweiligen Ergebnis ein.
+help_3:                                            Die Anzahl aller abgegebenen Stimmen.
+help_4:                                            Die Anzahl aller Umfrageteilnehmer.
+help_5:                                            Der Typ der Umfrage. (Einzel- od. Mehrfachauswahl)
+help_6:                                            Datum an dem die Umfrage startet.
+help_7:                                            Datum an dem die Umfrage endet.
+
+
+#user_mini_login
+title:                                             Mini Login Menü
+description:                                       Das kleine Login Menü in der Navigation der Seite.
+
+
+#user_user_menu
+title:                                             User Menü
+description:                                       User Links in der Navigation der Seite.
+help_1:                                            Nickname des Users.
+help_2:                                            Linkzeile zum Admin-CP.
+help_3:                                            URL um den User abzumelden.
+
+
+#user_admin_link
+title:                                             Admin Link
+description:                                       Link zum Admin-CP der nur Admins gezeigt wird.
+help_1:                                            URL zum Admin-CP
+
+
+#user_login
+title:                                             Login Formular
+description:                                       Großes User-Login Forumlar.
+
+
+#user_register
+title:                                             Registrieren
+description:                                       Forumlar zur Registrierung auf der Seite.
+help_1:                                            Bindet das Anti Spam Captcha ein.
+help_2:                                            Bindet den Erklärungstext, warum Anti Spam verwendet wird ein.
+
+
+#user_spam
+title:                                             Anti Spam
+description:                                       Captcha zum Schutz gegen Spam-Bots.
+help_1:                                            URL zum Anti Spam Captcha Bild.
+
+
+#user_spamtext
+title:                                             Anti Spam Text
+description:                                       Erklärungstext, warum Anti Spam verwendet wird.
+
+
+#user_profil
+title:                                             Profil
+description:                                       Öffentliche Profilseite der User.
+help_1:                                            Nickname des Users.
+help_2:                                            URL zum Benutzerbild des Users.
+help_3:                                            Email-Adresse des Users.
+help_4:                                            Anmeldedatum des Users.
+help_5:                                            Zahl der vom User verfassten News.
+help_6:                                            Zahl der vom User verfassten Artikel.
+help_7:                                            Zahl der vom User verfassten Kommentare.
+
+
+#user_profiledit
+title:                                             Profil editieren
+description:                                       Formularseite um die Profildaten zu bearbeiten.
+help_1:                                            Nickname des Users.
+help_2:                                            URL zum Benutzerbild des Users.
+help_3:                                            Email-Adresse des Users.
+help_4:                                            Setzt den Status des Auswahlfelds "Zeige die E-Mail im öffentlichen Profil" entsprechend der gespeicherten Einstellung.
+
+
+#user_memberlist_body
+title:                                             Mitgliederliste Body
+description:                                       Template der Mitgliederliste.
+help_1:                                            Bindet nacheinander alle Mitglieder ein.
+help_2:                                            Bindet die Seitenavigaion ein.
+help_3:                                            Sortierparameter für den Username.
+help_4:                                            Bindet den der Sortierung entsprechenden Pfeil ein.
+help_5:                                            Sortierparameter für das Anmeldedatum.
+help_6:                                            Bindet den der Sortierung entsprechenden Pfeil ein.
+help_7:                                            Sortierparameter für die Zahl geschriebene News.
+help_8:                                            Bindet den der Sortierung entsprechenden Pfeil ein.
+help_9:                                            Sortierparameter für die Zahl geschriebene Artikel.
+help_10:                                           Bindet den der Sortierung entsprechenden Pfeil ein.
+help_11:                                           Sortierparameter für die Zahl geschriebene Kommentare.
+help_12:                                           Bindet den der Sortierung entsprechenden Pfeil ein.
+
+
+#user_memberlist_userline
+title:                                             Zeile User
+description:                                       Zeile eines Users in der Mitgliederliste.
+help_1:                                            Nickname des Users.
+help_2:                                            URL zum Profil des Users.
+help_3:                                            URL zum Benutzerbild des Users.
+help_4:                                            Email-Adresse des Users.
+help_5:                                            Anmeldedatum des Users.
+help_6:                                            Zahl der vom User verfassten News.
+help_7:                                            Zahl der vom User verfassten Artikel.
+help_8:                                            Zahl der vom User verfassten Kommentare.
+
+
+#user_memberlist_adminline
+title:                                             Zeile Admin
+description:                                       Zeile eines Admins in der Mitgliederliste.
+help_1:                                            Nickname des Users.
+help_2:                                            URL zum Profil des Users.
+help_3:                                            URL zum Benutzerbild des Users.
+help_4:                                            Email-Adresse des Users.
+help_5:                                            Anmeldedatum des Users.
+help_6:                                            Zahl der vom User verfassten News.
+help_7:                                            Zahl der vom User verfassten Artikel.
+help_8:                                            Zahl der vom User verfassten Kommentare.
+
+
+#editor_design
+title:                                             Editor Darstellung
+description:                                       Anordnung des IWAC-Editors auf der Seite.
+help_1:                                            CSS-Style des Textareas (siehe Konfiguration).
+help_2:                                            Evtl. vorgegebener Text.
+help_3:                                            Bindet die Smilie-Liste ein.
+
+
+#editor_css
+title:                                             Editor CSS
+description:                                       CSS Datei des IWAC-Editors.
+
+
+#editor_button
+title:                                             Button Darstellung
+description:                                       Anordnung des IWAC-Editors auf der Seite.
+help_1:                                            URL zum Button Bild.
+help_2:                                            Alternativer Anzeige Text.
+help_3:                                            Javascript-Teil zur Funktion des Buttons.
+
+
+#editor_seperator
+title:                                             Teiler Darstellung
+description:                                       Darstellung des Teilers zwischen Button-Gruppen.
+
+
+#quote_tag
+title:                                             Zitat
+description:                                       Darstellung des "Zitat" - FSCodes ['quote']text['/quote'] 
+help_1:                                            Text der vom Zitat-Block umschlossen wird.
+
+
+#quote_tag_name
+title:                                             Zitat von
+description:                                       Darstellung des "Zitat von" - FSCodes ['quote=author']text['/quote'] 
+help_1:                                            Text der vom Zitat-Block umschlossen wird.
+help_2:                                            Name des Autors, des zitierten Textes.
+
+
+#code_tag
+title:                                             Code
+description:                                       Darstellung des "Code" - FSCodes ['code']text['/code'] 
+help_1:                                            Text der vom Code-Block umschlossen wird.
+

@@ -1,11 +1,36 @@
 <?php
-//////////////////////////////////
-//// Initialize empty string  ////
-//////////////////////////////////
+/////////////////////////////////
+//// Initialize empty string ////
+/////////////////////////////////
 function initstr (&$string) {
     settype($string, "string");
     $string = "";
 }
+
+///////////////////////////////////////////////////////////////////
+//// Kill HTML for output in textareas and inputs empty string ////
+///////////////////////////////////////////////////////////////////
+function killhtml ($VAL, $ARR = true) {
+    // save data
+    if (is_numeric($VAL)) {
+        if (floatval($VAL) == intval($VAL)) {
+            $VAL = intval($VAL);
+            settype($VAL, "integer");
+        } else {
+            $VAL = floatval($VAL);
+            settype($VAL, "float");
+        }
+    } elseif (is_array($VAL) && $ARR) {   
+        $VAL = array_map("killhtml", $VAL);
+        
+    } else {
+        $VAL = htmlspecialchars(strval($VAL), ENT_COMPAT);
+        settype($VAL, "string");
+    }
+    
+    return $VAL;
+}
+
 
 ///////////////////////////////////////////////
 //// Short string by cutting in the middle ////
@@ -31,7 +56,6 @@ function cut_string ($string, $maxlength, $replacement)
 	}
 	return $string;
 }
-
 
 ///////////////////////
 //// Localize Date ////
@@ -72,6 +96,26 @@ function kill_replacements ($TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE)
 
 
 
+/////////////////////////////////
+//// validation of lang dirs ////
+/////////////////////////////////
+function is_language_text ($TEXT) {
+    if (preg_match("/[a-z]{2}_[A-Z]{2}/", $TEXT ) === 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//////////////////////////////////
+//// validation of a hexcolor ////
+//////////////////////////////////
+function is_hexcolor ($COLOR) {
+    $COLOR = substr($COLOR, 0, 6);
+    return preg_match ( '/[0-9a-fA-F]{6}$/', $COLOR );
+}
+
+
 
 /////////////////////////////////////
 //// Check for User Permissions  ////
@@ -97,5 +141,21 @@ function generate_pwd ($LENGHT = 10)
         $code .= $charset[mt_rand (0,$real_strlen)];
     }
     return $code;
+}
+
+
+
+//////////////////////////////////
+//// convert hex to rgb color ////
+//////////////////////////////////
+function hex2dec_color ($COLOR) {
+    if (is_hexcolor($COLOR)) {
+        $return['r'] = hexdec(substr($COLOR, 0, 2));
+        $return['g'] = hexdec(substr($COLOR, 2, 2));
+        $return['b'] = hexdec(substr($COLOR, 4, 2));
+        return $return;
+    } else {
+        return false;
+    }
 }
 ?>

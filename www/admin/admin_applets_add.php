@@ -90,7 +90,7 @@ echo '
                                 </td>
                                 <td class="config">
                                     <input class="text input_width_mini" name="applet_file" id="applet_file" maxlength="100" value="'.$_POST['applet_file'].'">&nbsp;.php
-                                    &nbsp;&nbsp;<input class="button" type="button" onClick=\''.openpopup ( "admin_find_applet.php", 400, 400 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">
+                                    &nbsp;&nbsp;<input class="button" type="button" onClick=\''.openpopup ( "?go=find_applet", 400, 400 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">
                                 </td>
                             </tr>
                             <tr>

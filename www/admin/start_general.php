@@ -40,6 +40,9 @@ if ($ref['num'] > 0) {
 
 // Conditions
 $adminpage->addCond("ref_link",($ref['num'] > 0));
+$adminpage->addCond("hans", true);
+$adminpage->addCond("wurst", false);
+$adminpage->addCond("thomas", false);
 
 // Values
 $adminpage->addText("title", $global_config_arr['title']);

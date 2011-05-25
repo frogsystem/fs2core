@@ -6,7 +6,7 @@
 if (
         $_POST['alias_go'] && $_POST['alias_go'] != ""
         && $_POST['alias_forward_to'] && $_POST['alias_forward_to'] != ""
-    )g
+    )
 {
     // Security Functions
     $_POST['alias_go'] = savesql ( $_POST['alias_go'] );

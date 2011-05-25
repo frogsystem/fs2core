@@ -1,257 +1,4 @@
 /**************************************************/
-/* formular styles */
-/**************************************************/
-.input_width
-{
-    width:275px;
-}
-.input_width_small
-{
-    width:200px;
-}
-.input_width_mini
-{
-    width:150px;
-}
-.input_highlight:focus, input_highlight:active
-{
-    background-color:#64DC6A;
-}
-
-
-.nomonospace
-{
-    font-family: Arial, sans-serif;
-}
-.monospace
-{
-    font-family: "Courier New", Courier, monospace;
-}
-
-select, option, .text, textarea
-{
-    color:#000000;
-    font-size:10pt;
-    font-family:Verdana;
-    border:2px solid #999999;
-    background-color:#ffffff;
-    font-weight:normal;
-    padding:2px 3px;
-}
-
-option {
-    border:none;
-    padding:1px;
-    padding-left:6px;
-}
-textarea {
-    font-family: "Courier New", Courier, monospace;
-    line-height:140%;
-    font-size:11pt;
-}
-
-.button, .size-button
-{
-    color:#000000;
-    font-size:8pt;
-    font-family:Verdana;
-    border:1px solid #000000;
-    background-color:#B7B7B7;
-    font-weight:normal;
-    cursor:pointer;
-}
-.button:hover, .button:focus, .size-button:hover, .size-button:focus
-{
-    text-decoration:none;
-}
-.size-button {
-    font-size:7pt;
-    width:80px;
-}
-
-.button_new
-{
-    display:block;
-    padding:3px;
-    padding-right:9px;
-    width:100%;
-    height: 27px;
-    background-image:url('img/button.jpg');
-    background-repeat:repeat;
-    font-weight:bold;
-    color:#FFFFFF;
-    font-size:9pt;
-    font-family:Arial;
-    border:1px solid #000000;
-    cursor:pointer;
-    text-align:right;
-    white-space:nowrap;
-}
-.button_new:hover, .button_new:focus
-{
-    text-decoration:none;
-    background-image:url('img/button_hover.jpg');
-}
-
-a.image_hover {
-  display:block;
-  cursor:pointer;
-  background-position: bottom right;
-}
-a.image_hover:hover, a.image_hover:focus {
-  background-position: top left;
-}
-
-.CodeMirror-line-numbers {
-    width: 2.2em;
-    color: #AAAAAA;
-    background-color: #EEEEEE;
-    text-align: right;
-    padding-right: .3em;
-    font-size: 10pt;
-    font-family: monospace;
-    padding-top: .4em;
-}
-
-/**************************************************/
-/* standard formular styles */
-/**************************************************/
-table.configtable {
-    width:100%;
-    border:0px;
-}
-
-.config, .configthin, .configbig {
-    text-align:left;
-    vertical-align:top;
-    color:#000000;    
-    font-size:11pt;
-    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
-    padding-left:0px;
-    font-weight:bold;
-}
-.configthin {
-    font-weight:normal;
-}
-.configbig {
-    font-size:13pt;
-}
-
-.config .small, .configthin .small, .configbig .small {
-    font-size:10pt;
-    font-weight:normal;
-    font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
-
-}
-
-td.line, td.line_red
-{
-    background-image:url('images/line_green.jpg');
-    background-repeat:repeat-x;
-    background-position:left 25px;
-    height:45px;
-    padding:0px 0px;
-    text-align:left;
-    vertical-align:top;
-    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;    
-    font-size:160%; 
-}
-td.line_red
-{
-    background-image:url('images/line_red.jpg');
-}
-td.space
-{
-    height:15px;
-}
-td.right_space
-{
-    width:50%;
-}
-td.buttontd
-{
-    padding:0px;
-}
-td.combi_button
-{
-    background-image:url('img/button.jpg');
-    background-repeat:repeat;
-    border:1px solid #000000;
-    white-space:nowrap;
-    vertical-align:middle;
-}
-
-  
-/**************************************************/
-/* button link styles */
-/**************************************************/
-a.link_button
-{
-    display:block;
-    padding:5px;
-    padding-right:12px;
-    background-image:url('img/button.jpg');
-    background-repeat:repeat;
-    font-weight:bold;
-    color:#FFFFFF;
-    font-size:9pt;
-    font-family:Arial;
-    border:1px solid #000000;
-    cursor:pointer;
-    text-align:right;
-    white-space:nowrap;
-}
-a.link_button:hover,a.link_button:focus
-{
-    text-decoration:none;
-    background-image:url('img/button_hover.jpg');
-}
-
-/**************************************************/
-/* statistik table styles */
-/**************************************************/
-td.h
-{
-    font-size:8pt;
-    font-family:Verdana;
-    font-weight:bold;
-    color:#000000;
-    background:#AAAAAA;
-}
-td.n
-{
-    font-size:8pt;
-    font-family:Verdana;
-    color:#000000;
-    background:#CCCCCC;
-}
-td.nw
-{
-    font-size:8pt;
-    font-family:Verdana;
-    color:#000000;
-    background:#BBBBBB;
-} 
- 
-
-/**************************************************/
-/* content design styles */
-/**************************************************/
-#content_container {
-    position:relative;
-    left:-15px;
-    margin-top:102px;
-    width:770px;
-    float:left;
-}
-
-
-
-
-
-
-
-/**************************************************/
 /* tooltip */
 /**************************************************/
 
@@ -300,52 +47,144 @@ a.tooltip:hover span, a.tooltip:focus span {
 }
 
 
-
 /**************************************************/
-/* find_xyz styles */
+/* statistik table styles */
 /**************************************************/
-#find_body
-{
-    background-image:none;
-    background-color:#495144;
-}
-
-#find_head
-{
-    background-image:url('img/menubg.jpg');
-    background-repeat:repeat-x;
-    width:100%;
-    height:34px;
+td.h, td.n, td.nw {
     font-size:8pt;
-    font-variant:small-caps;
-    color:#FFFFFF;
-    padding-top:3px;
-}
-
-#find_container
-{
-    background-image:url('img/content_loop_small.jpg');
-    background-repeat:repeat-y;
-    width:308px;
-    text-align:left;
-}
-#find_top
-{
-    background-image:url('img/content_top_small.jpg');
-    background-repeat:no-repeat;
-    width:308px;
-    height:25px;
-    padding-left:15px;
-    padding-top:20px;
-    font-size:8pt;
-    font-variant:small-caps;
+    font-family:Verdana;
+    font-weight:bold;
     color:#000000;
+    background:#AAAAAA;
+}
+td.n {
+    background:#CCCCCC;
+}
+td.nw {
+    background:#BBBBBB;
+} 
+
+
+
+/**************************************************/
+/* old formular styles */
+/**************************************************/
+.input_width{
+    width:275px;
+}
+.input_width_small{
+    width:200px;
+}
+.input_width_mini{
+    width:150px;
+}
+.input_highlight:focus, input_highlight:active{
+    background-color:#64DC6A;
+}
+.nomonospace {
+    font-family: Arial, sans-serif;
+}
+.monospace {
+    font-family: "Courier New", Courier, monospace;
+}
+
+.button_new
+{
+    display:block;
+    padding:3px;
+    padding-right:9px;
+    width:100%;
+    height: 27px;
+    background-image:url('img/button.jpg');
+    background-repeat:repeat;
+    font-weight:bold;
+    color:#FFFFFF;
+    font-size:9pt;
+    font-family:Arial;
+    border:1px solid #000000;
+    cursor:pointer;
+    text-align:right;
+    white-space:nowrap;
+}
+.button_new:hover, .button_new:focus
+{
+    text-decoration:none;
+    background-image:url('img/button_hover.jpg');
+}
+
+a.image_hover {
+  display:block;
+  cursor:pointer;
+  background-position: bottom right;
+}
+a.image_hover:hover, a.image_hover:focus {
+  background-position: top left;
+}
+
+/**************************************************/
+/* old standard formular styles */
+/**************************************************/
+table.configtable {
+    width:100%;
+    border:0px;
+}
+
+table.configtable .config, table.configtable  .configthin, table.configtable .configbig {
+    text-align:left;
+    vertical-align:top;
+    color:#000000;    
+    font-size:11pt;
+    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
+    padding-left:0px;
     font-weight:bold;
 }
-#find_foot
+table.configtable .configthin {
+    font-weight:normal;
+}
+table.configtable .configbig  {
+    font-size:13pt;
+}
+
+table.configtable .config .small, table.configtable .configthin .small, table.configtable .configbig .small {
+    font-size:10pt;
+    font-weight:normal;
+    font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
+
+}
+
+td.line, td.line_red 
 {
-    background-image:url('img/content_foot_small.jpg');
-    background-repeat:no-repeat;
-    width:308px;
-    height:53px;
+    background-image:url('images/line_green.jpg');
+    background-repeat:repeat-x;
+    background-position:left 25px;
+    height:45px;
+    padding:0px 0px;
+    text-align:left;
+    vertical-align:top;
+    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;    
+    font-size:160%; 
+}
+td.line_red
+{
+    background-image:url('images/line_red.jpg');
+}
+td.space
+{
+    height:15px;
+}
+td.right_space
+{
+    width:50%;
+}
+td.buttontd
+{
+    padding:0px;
+}
+td.combi_button
+{
+    background-image:url('img/button.jpg');
+    background-repeat:repeat;
+    border:1px solid #000000;
+    white-space:nowrap;
+    vertical-align:middle;
 }

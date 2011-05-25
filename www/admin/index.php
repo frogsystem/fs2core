@@ -10,13 +10,13 @@ set_include_path('.');
 define('FS2_ROOT_PATH', "./../", TRUE);
 
 // inlcude files
-require(FS2_ROOT_PATH . "login.inc.php");
 require(FS2_ROOT_PATH . "includes/functions.php");
 require(FS2_ROOT_PATH . "includes/newfunctions.php");
 require(FS2_ROOT_PATH . "includes/adminfunctions.php");
 require(FS2_ROOT_PATH . "includes/imagefunctions.php");
 require(FS2_ROOT_PATH . "includes/templatefunctions.php");
 require(FS2_ROOT_PATH . "includes/indexfunctions.php");
+require(FS2_ROOT_PATH . "login.inc.php");
 
 //Include Library-Classes
 require(FS2_ROOT_PATH . "libs/class_template.php");
@@ -77,12 +77,22 @@ $acp_arr = $sql->getRow(
 if (!empty($acp_arr)) {
     
     // if page is start page
-    if ( $acp_arr['group_id'] == -1 ) {
+    if ($acp_arr['group_id'] == -1) {
         $acp_arr['menu_id'] = $acp_arr['page_file'];
         $acp_arr['page_file'] = $acp_arr['page_id'].".php";
     }
+    
+    //if popup
+    if ($acp_arr['group_id'] == "popup") {
+        define('POPUP', true);
+        $title = $TEXT['menu']->get("page_title_".$acp_arr['page_id']);
+    } else {
+        define('POPUP', false);
+        $title = $TEXT['menu']->get("group_".$acp_arr['group_id'])." &#187; ".$TEXT['menu']->get("page_title_".$acp_arr['page_id']);
+    }
+
     // get the page-data
-    $PAGE_DATA_ARR = createpage($TEXT['menu']->get("group_".$acp_arr['group_id'])." &#187; ".$TEXT['menu']->get("page_title_".$acp_arr['page_id']), has_perm($acp_arr['page_id']), $acp_arr['page_file'], $acp_arr['menu_id']);
+    $PAGE_DATA_ARR = createpage($title, has_perm($acp_arr['page_id']), $acp_arr['page_file'], $acp_arr['menu_id']);
     
     // initialise templatesystem
     $adminpage = new adminpage($acp_arr['page_file']);
@@ -100,13 +110,13 @@ if (!empty($acp_arr)) {
 if ( $PAGE_DATA_ARR['created'] === false && $go == "logout" ) {
     setcookie ("login", "", time() - 3600, "/");
     $_SESSION = array();
-    $PAGE_DATA_ARR = createpage($TEXT['menu']->get("admin_logout_text"), true, 'admin_logout.php', "none");
+    $PAGE_DATA_ARR = createpage($TEXT['menu']->get("admin_logout_text"), true, 'admin_logout.php', "dash");
 }
 
 // login
 if ( $PAGE_DATA_ARR['created'] === false ) {
     $go = "login";
-    $PAGE_DATA_ARR = createpage($TEXT['menu']->get("admin_login_text"), true, 'admin_login.php', "none");
+    $PAGE_DATA_ARR = createpage($TEXT['menu']->get("admin_login_text"), true, 'admin_login.php', "dash");
 }
 
 // Define Constant
@@ -117,10 +127,9 @@ define('ACP_GO', $go);
 ################################
 
 
-############################
-### START OF HTML HEADER ###
-############################
-
+##########################
+### START OF HTML HEAD ###
+##########################
 echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -130,13 +139,13 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     
     <link rel="stylesheet" type="text/css" href="admin_old.css">
-    <link rel="stylesheet" type="text/css" href="css/admin.css">
     <link rel="stylesheet" type="text/css" href="editor.css">
-    <link rel="stylesheet" type="text/css" href="html-editor.css">
     
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/menu.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/functional.css"> 
+    <link rel="stylesheet" type="text/css" href="css/html-editor.css">   
     
     <link rel="stylesheet" type="text/css" href="css/noscript.css" id="noscriptcss">
     
@@ -146,7 +155,16 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
     <script src="js/admin.js" type="text/javascript"></script>
 </head>
 <!-- /HTML Head -->
+';
+########################
+### END OF HTML HEAD ###
+########################
 
+if (POPUP !== true) {
+##########################
+### START OF PAGE HEAD ###
+##########################
+echo'
 <body>
 
 <!-- Page Head -->
@@ -160,10 +178,10 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
      </div>
 </div>
 <!-- /Page Head -->';
+########################
+### END OF PAGE HEAD ###
+########################
 
-##########################
-### END OF HTML HEADER ###
-##########################
 
 ##############################
 ### START OF NAVI CREATION ###
@@ -252,14 +270,15 @@ echo '
 // Include Content File
 
 
-$top = '<h2 class="cb-text">('.$PAGE_DATA_ARR['title'].')</h2>';
 echo '
     <!-- Content Container -->
     <div id="content_container">';
     
 ob_start();
-require ( FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file'] );
+require(FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file']);
 $content = ob_get_clean();
+
+$top = '<h2 class="cb-text">('.$PAGE_DATA_ARR['title'].')</h2>';
 echo get_content_container($top, $content);
 
 echo '
@@ -276,6 +295,34 @@ echo '
 ##############################
 ### END OF CONTENT DISPLAY ###
 ##############################
+
+} else {
+######################################
+### START OF DISPLAY POPUP CONTENT ###
+######################################
+echo'
+<body id="find_body">
+    <div id="find_head">
+        &nbsp;<img border="0" src="img/pointer.png" alt="->" class="middle">&nbsp;
+        <strong>'.$PAGE_DATA_ARR['title'].'</strong>
+    </div>
+    <div align="left">
+';
+
+ob_start();
+require(FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file']);
+echo ob_get_clean();
+
+echo'
+    </div>
+</body>
+</html>
+';
+
+####################################
+### END OF DISPLAY POPUP CONTENT ###
+####################################
+}
 
 unset($sql);
 

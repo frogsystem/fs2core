@@ -390,16 +390,22 @@ function getfrompost ( $ARRAY )
         }
         return $ARRAY;
 }
+function frompost ($KEYS) {
+    foreach ($KEYS as $key) {
+        $return[$key] = isset($_POST[$key]) ? $_POST[$key] : 0;
+    }
+    return $return;
+}
 
 ///////////////////////////////
 //// Update $_POST from DB ////
 ///////////////////////////////
 
-function putintopost ( $ARRAY )
+function putintopost ($ARRAY)
 {
-        foreach ( $ARRAY as $key => $value  ) {
+    foreach ($ARRAY as $key => $value ) {
         $_POST[$key] = $ARRAY[$key];
-        }
+    }
 }
 
 ////////////////////////////////
@@ -884,90 +890,86 @@ function admin_login($username, $password, $iscookie)
 //////// Session füllen ////////
 ////////////////////////////////
 
-function fillsession($uid)
-{
-        global $global_config_arr;
-        global $db;
+function fillsession ($uid) {
+    global $global_config_arr, $db;
+    global $sql;
+       
+    $USER_ARR = $sql->getRow("user", array("user_id", "user_name", "user_is_staff", "user_group", "user_group"),
+        array('W' => "`user_id` = '".$uid."'")
+    );
+    
+    $_SESSION['user_id'] =  $USER_ARR['user_id'];
+    $_SESSION['user_name'] =  $USER_ARR['user_name'];
+    $_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
 
-        $dbaction = mysql_query( "
-                                                                SELECT `user_id`, `user_name`, `user_is_staff`, `user_group`, `user_is_admin`
-                                                                FROM `".$global_config_arr['pref']."user`
-                                                                WHERE `user_id` = '".$uid."'
-                                                                LIMIT 0,1
-        ", $db);
+    // get user permissions
+    $group_granted = $sql->get("user_permissions", array("perm_id"),
+        array('W' => "`perm_for_group` = '1' AND `x_id` = '".$USER_ARR['user_group']."' AND `x_id` != '0'")
+    );
+    $user_granted = $sql->get("user_permissions", array("perm_id"),
+        array('W' => "`perm_for_group` = '0' AND `x_id` = '".$USER_ARR['user_id']."' AND `x_id` != '0'")
+    );
+    
+    $fold_perms = function ($arr, $ele) {
+        array_push($arr, $ele['perm_id']);
+        return $arr;
+    };
+    
+    $group_granted = array_reduce ($group_granted['data'], $fold_perms, array());
+    $user_granted = array_reduce ($user_granted['data'], $fold_perms, array());
+    
+    $granted = array_unique(array_merge($group_granted, $user_granted));
+    
+    
+    $inherited = $sql->get(
+        array('I' => "admin_inherited", 'A' => "admin_cp"),
+        array(array('COL' => "pass_to", 'AS' => "perm_id", 'FROM' => "I")),
+        array('W' => "A.`group_id`= I.`group_id` AND A.`page_id` IN ('".implode("','", $granted)."')"), true
+    );
+    $inherited = array_reduce ($inherited['data'], $fold_perms, array());
+    $granted = array_unique(array_merge($granted, $inherited));
+
+    // pages permissions
+    $permissions = $sql->get("admin_cp", array("page_id"),
+        array('W' => "`group_id` != -1", 'O' => "`page_id`")
+    );
+
+    foreach ($permissions['data'] as $permission) {
+        $permission = $permission['page_id'];
         
-        $USER_ARR = mysql_fetch_assoc ( $dbaction );
-        
-        $_SESSION['user_id'] =  $USER_ARR['user_id'];
-        $_SESSION['user_name'] =  $USER_ARR['user_name'];
-        $_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
-
-        // pages permissions
-        $dbaction = mysql_query( "
-                                                                SELECT `page_id`
-                                                                FROM `".$global_config_arr['pref']."admin_cp`
-                                                                WHERE `group_id` > 0
-                                                                ORDER BY `page_id`
-        ", $db);
-
-        while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
-                $permission = $permission['page_id'];
-        if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
+        // admin
+        if($USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1) {
             $_SESSION[$permission] = 1;
-        } else {
-
-
-                        $groupaction = mysql_query( "
-                                                                            SELECT *
-                                                                            FROM `".$global_config_arr['pref']."user_permissions`
-                                            WHERE `perm_id` = '".$permission."'
-                                            AND `perm_for_group` = '1'
-                                            AND `x_id` = '".$USER_ARR['user_group']."'
-                                            AND `x_id` != '0'
-                                            LIMIT 0,1
-                ", $db);
-                $group_granted = mysql_num_rows ( $groupaction );
-                
-                $userpaction = mysql_query( "
-                                                                            SELECT *
-                                                                            FROM `".$global_config_arr['pref']."user_permissions`
-                                            WHERE `perm_id` = '".$permission."'
-                                            AND `perm_for_group` = '0'
-                                            AND `x_id` = '".$USER_ARR['user_id']."'
-                                            AND `x_id` != '0'
-                                            LIMIT 0,1
-                ", $db);
-            $user_granted = mysql_num_rows ( $userpaction );
-
-                if ( $group_granted == 1 || $user_granted == 1 ) {
+        
+        // user
+        } else { 
+            if (in_array($permission, $granted)) {
                 $_SESSION[$permission] = 1;
             } else {
                 $_SESSION[$permission] = 0;
             }
         }
-        }
+    }
+    
+    // startpage permissions
+    $permissions = $sql->get("admin_cp", array("page_id", "page_file"),
+        array('W' => "`group_id` = -1", 'O' => "`page_id`")
+    );
 
-        // startpage permissions
-        $dbaction = mysql_query( "
-                                                                SELECT `page_id`, `group_id`, `page_file`
-                                                                FROM `".$global_config_arr['pref']."admin_cp`
-                                                                WHERE `group_id` <= 0
-                                                                ORDER BY `page_id`
-        ", $db);
-
-        while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
-          if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
+    foreach ($permissions['data'] as $permission) {       
+        // admin
+        if($USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1) {
             $_SESSION[$permission['page_id']] = 1;
-          } else {
-            if ( $permission['group_id'] == -1 ) {
-              if ( create_menu_show ( $permission['page_file'] ) == TRUE ) {
+        
+        // user
+        } else {
+            if (check_topmenu_permissions($permission['page_file'])) {
                 $_SESSION[$permission['page_id']] = 1;
-              }
             } else {
-              $_SESSION[$permission['page_id']] = 0;
+                $_SESSION[$permission['page_id']] = 0;
             }
-          }
         }
+    }
 }
 
 ?>

@@ -18,6 +18,7 @@ menu_mods:                      AddOns
 # Groups
 group_0:                        versteckt
 group_-1:                       Startseite
+group_popup:                    Popups
 group_general:                  Allgemein
 group_fseditor:                 Editor
 group_stats:                    Statistik
@@ -40,7 +41,7 @@ group_templates:                Templates
 group_groups:                   Gruppen
 group_applets:                  Applets
 group_snippets:                 Schnipsel
-group_aliases:                  Aliasse
+group_aliases:                  Weiterleitungen
 group_search:                   Suche
 group_fscodes:                  FS Codes
 
@@ -293,7 +294,7 @@ page_link_snippets_delete:      löschen
 page_title_snippets_edit:       bearbeiten
 page_link_snippets_edit:        bearbeiten
 
-# Aliasse
+# Weiterleitungen
 page_title_aliases_add:         hinzufügen
 page_link_aliases_add:          hinzufügen
 page_title_aliases_delete:      löschen
@@ -320,3 +321,6 @@ page_title_fscode_edit_remove:  löschen
 page_link_fscode_edit_remove:   löschen
 page_title_fscode_settings:     Einstellungen
 page_link_fscode_settings:      Einstellungen
+
+# PopUps
+page_title_find_applet:         Suche nach Applets ...

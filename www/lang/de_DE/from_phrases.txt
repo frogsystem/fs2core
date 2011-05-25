@@ -1,0 +1,560 @@
+#common
+system_message:                                    Systemmeldung
+note_notfilled:                                    Bitte füllen Sie alle Pflichtfelder aus!
+only_allowed_values:                               Bitte geben Sie nur erlaubte Werte ein!
+info:                                              Information
+error:                                             Es trat ein Fehler auf
+changes_saved:                                     Änderungen wurden gespeichert
+changes_not_saved:                                 Änderungen wurden nicht gespeichert
+affected_rows:                                     Betroffene Datensätze
+image_0:                                           Bild wurde erfolgreich hochgeladen
+image_1:                                           Fehler beim Bilder-Upload: Ungültiger Dateityp ['Code: IMGxU1']
+image_2:                                           Fehler beim Bilder-Upload: Bild konnte nicht hochgladen werden ['Code: IMGxU2']
+image_3:                                           Fehler beim Bilder-Upload: Bild ist zu groß (Dateigröße) ['Code: IMGxU3']
+image_4:                                           Fehler beim Bilder-Upload: Bild ist zu groß (Abmessungen) ['Code: IMGxU4']
+image_5:                                           Fehler beim Bilder-Upload: Bild entspricht nicht den erforderlichen Abmessungen ['Code: IMGxU5']
+image_6:                                           Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden ['Code: IMGxU6']
+image_deleted:                                     Bild wurde erfolgreich gelöscht
+image_not_deleted:                                 Bild konnte nicht gelöscht werden
+thumb_0:                                           Thumbnail wurde erfolgreich erstellt
+thumb_1:                                           Thumbnail konnte nicht erstellt werden: Ungültiger Dateityp
+thumb_2:                                           Thumbnail konnte nicht erstellt werden: Es trat ein Fehler auf
+optional:                                          (optional)
+selection:                                         Auswahl
+active:                                            aktiv
+valid_tags:                                        Gültige Tags
+selection_edit:                                    Auswahl bearbeiten
+selection_del:                                     Auswahl löschen
+edit_comments:                                     Kommentare bearbeiten
+ascending:                                         aufsteigend
+descending:                                        absteigend
+width_x_height:                                    Breite x Höhe
+resolution_x:                                      x
+pixel:                                             Pixel
+zero_not_allowed:                                  0 ist nicht erlaubt
+max:                                               max.
+min:                                               min.
+exact:                                             exakt
+html:                                              HTML ist
+fscode:                                            FSCode ist
+para:                                              Absatzbehandlung ist
+kib:                                               KiB
+mib:                                               MiB
+arrow:                                             <img class="middle" src="img/pointer.png" alt="->">
+save_long:                                         Änderungen speichern
+do_button:                                         Ausführen
+do_button_long:                                    Aktion ausführen
+search_button:                                     Suchen
+now_button:                                        Jetzt
+today:                                             Heute
+change_button:                                     Ändern
+add_button:                                        Hinzufügen
+delete_button:                                     Löschen
+show_button:                                       Anzeigen
+preview_button:                                    Vorschau anzeigen
+apply_button:                                      Anwenden
+yes:                                               Ja
+no:                                                Nein
+on:                                                an
+off:                                               aus
+to:                                                bis
+by:                                                von
+by_posted:                                         geschrieben von
+in:                                                in
+on_date:                                           am
+at_time:                                           um
+time_appendix:                                     Uhr
+time_format:                                       H:i \U\h\r
+date_format:                                       d.m.Y
+date_time_format:                                  \a\m d.m.Y \u\m H:i \U\h\r
+comment:                                           Kommentar
+comments:                                          Kommentare
+link:                                              Link
+links:                                             Links
+no_image:                                          Es wurde kein Bild gefunden.
+delete_image:                                      Bild löschen
+js_delete_image:                                   Soll das Bild wirklich gelöscht werden?
+replace_img:                                       Nur auswählen, wenn das bisherige Bild überschrieben werden soll!
+
+
+#icons
+error:                                             <img src="icons/error.jpg" alt="" align="absmiddle">
+ok:                                                <img src="icons/ok.jpg" alt="" align="absmiddle">
+arrow:                                             <img src="icons/pointer.gif" alt="->" align="absmiddle">
+save_small:                                        <img src="icons/save_small.gif" alt="" align="top">
+save_ok:                                           <img src="icons/save_ok.jpg" alt="" align="absmiddle">
+save_add:                                          <img src="icons/save_add.jpg" alt="" align="absmiddle">
+save_error:                                        <img src="icons/save_error.jpg" alt="" align="absmiddle">
+trash_ok:                                          <img src="icons/trash_ok.jpg" alt="" align="absmiddle">
+trash_error:                                       <img src="icons/trash_error.jpg" alt="" align="absmiddle">
+
+
+#menu
+general:                                           Allgemein
+content:                                           Inhalt
+interactive:                                       Interaktiv
+media:                                             Media
+promo:                                             Promotion
+styles:                                            Styles
+system:                                            System
+user:                                              User
+mods:                                              Add Ons
+
+
+#finduser
+pagetitle:                                         User-Suche
+searchforuser:                                     suche nach User ...
+selectuser:                                        User auswählen
+nousersfound:                                      Keine User gefunden!
+
+
+#general
+pageinfo_title:                                    Seiteninformationen
+title:                                             Titel
+title_desc:                                        Der Titel der Seite.
+virtualhost:                                       URL
+virtualhost_desc:                                  Die Haupt-URL der Seite.
+admin_mail:                                        Email-Adresse
+admin_mail_desc:                                   Die Email-Adresse an die Probleme und Meldungen gesendet werden.
+description:                                       Beschreibung
+description_desc:                                  Ein kurzer Text über die Seite.
+author:                                            Autor
+author_desc:                                       Der oder die Webmaster der Seite.
+keywords:                                          Keywords
+keywords_desc:                                     Stichwörter zur Seite, bitte mit Kommas trennen.<br>Wichtig für Suchmaschinen!
+design_title:                                      Design
+design:                                            Design
+design_desc:                                       Design, in dem die Seite angezeigt wird.
+allow_other_designs:                               Andere Styles erlauben
+allow_other_designs_desc:                          Ermöglicht das Anzeigen der Seite in anderen Styles.<br> (http://www.example.com/?style=xyz)
+show_favicon:                                      Favicon verwenden
+show_favicon_desc:                                 Bindet das Favicon ein.<br>($VAR(style_icons)/favicon.ico)
+settings_title:                                    Seiteneinstellungen
+home_page:                                         Startseite
+home_page_desc:                                    Legt die Seite fest, die standardmäßig angezeigt wird.
+home_page_default:                                 Standard (?go=news)
+show_announcement:                                 Ankündigung anzeigen
+show_announcement_desc:                            Seiten auf denen die Ankündigung angezeigt wird.
+show_ann_always:                                   überall
+show_ann_home:                                     Startseite
+show_ann_never:                                    nie
+language:                                          Sprache
+language_desc:                                     Die Standard Sprache des Admin-CPs.
+language_de:                                       Deutsch
+language_en:                                       English
+feed:                                              Feed
+feed_desc:                                         Standard Feed der Seite, der im Html-Kopf eingebunden wird.
+feed_rss091:                                       RSS 0.91
+feed_rss10:                                        RSS 1.0
+feed_rss20:                                        RSS 2.0
+feed_atom10:                                       Atom 1.0
+reg_antispam:                                      Anti-Spam bei Registrierung
+reg_antispam_desc:                                 Aktiviert die Anti-Spam Abfrage bei der Registrierung.
+date:                                              Datum
+date_desc:                                         Datumsformat, das auf der Seite verwendet werden soll.
+date_info:                                         verwendet den Syntax der PHP-Funktion <a href="http://www.php.net/manual/de/function.date.php" target="_blank" class="small">date()</a>
+pagenav_title:                                     Seitennavigation
+page:                                              Seitenanzeige
+page_desc:                                         Design der Seitenanzeige bei mehrseitigen Anzeigen.
+page_info:                                         {page_number} = aktuelle Seite; {prev} = Seite zurück<br>{total_pages} = Seitenzahl; {next} = Seite weiter
+page_prev:                                         Seite zurück
+page_prev_desc:                                    Design der "Seite zurück" Schaltfläche.
+page_prev_info:                                    {url} = URL zur vorherigen Seite
+page_next:                                         Seite weiter
+page_next_desc:                                    Design der "Seite weiter" Schaltfläche. 
+page_next_info:                                    {url} = URL zur nächsten Seite
+ann_settings_title:                                Einstellungen
+activate_ann:                                      Annkündigung freischalten
+activate_ann_desc:                                 Schaltet die Ankündigung zur Anzeige auf der Seite frei.
+ann_title:                                         Ankündigung schreiben
+ann_write_desc:                                    Eine leere Ankündigung wird nicht angezeigt.
+phpinfo_title:                                     PHP & Serverinformationen
+phpinfo_version:                                   PHP Version
+phpinfo_zendversion:                               Zend-Engine Version
+phpinfo_phpuser:                                   PHP User
+phpinfo_servername:                                Servername
+phpinfo_serverip:                                  IP-Adresse & Port
+phpinfo_serverprotocol:                            Protokoll
+phpinfo_serversoftware:                            Server Software
+phpinfo_show_link:                                 vollständige PHP Info anzeigen
+email_info:                                        Hinweise
+email_info_text:                                   Als Absender wird die unter Konfiguration angegebene Email-Adresse verwendet.<br><s>HTML und FSCode sind erlaubt, sollten aber vermieden werden.</s>
+email_templates_title:                             Email-Vorlagen
+email_reg_title:                                   Registrierung
+email_reg_desc:                                    Email, die der Benutzer bei der Registrierung auf der Seite erhält.
+email_newpwd_title:                                Passwortänderung
+email_newpwd_desc:                                 Email, die der Benutzer bei einer Passwortänderung erhält.
+email_delete_title:                                Accountlöschung
+email_delete_desc:                                 Email, die der Benutzer im Falle einer Löschung seines Accounts erhält.
+email_username:                                    Der Benutzername des Users.
+email_password:                                    Das Passwort des Users.
+email_virtualhost:                                 URL zur Seite.
+
+
+#editor
+view_settings_title:                               Anzeigeeinstellungen
+textarea_size:                                     Textfeld Abmessungen
+textarea_size_desc:                                Die Abmessungen, des Textfeldes des öffentlichen Editors.
+smilies:                                           Smilies
+smilies_desc:                                      Anzahl der Smilies, die im öffentlichen Editor angezeigt werden.
+smilies_rows:                                      Reihen à
+smilies_smilies:                                   Smilies
+buttons_settings_title:                            Buttoneinstellungen
+buttons:                                           Öffentliche Buttons
+buttons_desc:                                      Buttons, die im öffentlichen Editor angezeigt werden.
+fscode_settings_title:                             FSCode-Einstellungen
+fscode:                                            Von Usern verwendbare FSCodes
+fscode_desc:                                       FS-Codes, die von Usern verwendet werden können.
+fscode_info:                                       <b>Nicht gewählte FSCodes werden in von Usern erstellten Beiträgen (z.B. Kommentaren) nicht umgewandelt!</b>
+smilie_add_title:                                  Neuen Smilie hinzufügen
+smilie_add_select:                                 Smilie auswählen
+smilie_add_text:                                   Ersetungstext
+smilie_add_insert:                                 Einfügen nach
+smilie_add_at_beginn:                              am Anfang
+smilie_add_at_end:                                 am Ende
+smilie_add_button:                                 hochladen & hinzufügen
+smilie_management_title:                           Smilieverwaltung
+smilies_replacement:                               Text
+smilies_order:                                     Sortierung
+smilies_delete:                                    Löschen
+smilies_up:                                        nach oben
+smilies_down:                                      nach unten
+smilies_shown:                                     werden angezeigt
+smilies_not_shown:                                 werden nicht angezeigt
+smilies_delnotconfirm:                             gewählte Smilies nicht löschen
+smilies_delconfirm:                                gewählte Smilies löschen
+smilies_no_smilies:                                Keine Smilies gefunden
+
+
+#stats
+edit_day_title:                                    Tagesstatistik bearbeiten
+edit_day:                                          Tag auswählen
+edit_day_desc:                                     Datum, das bearbeitet werden soll.
+edit_day_info:                                     ['TT'] . ['MM'] . ['JJJJ']
+edit_day_button:                                   Auswahl bearbeiten
+edit_day_no_data:                                  Für das angegebenen Datum wurden keine Daten gefunden
+edit_day_visits:                                   Besucher
+edit_day_visits_desc:                              Anzahl der Besucher am
+edit_day_hits:                                     Hits
+edit_day_hits_desc:                                Anzahl der Seitenaufrufe am
+sync_title:                                        
+sync_now:                                          Statistik synchronisieren
+sync_now_desc:                                     Synchronisiert die Statistik mit den Werten aus der Datenbank.
+sync_now_button:                                   Jetzt synchronisieren
+synchronised:                                      Statistik wurde synchronisiert
+overall_title:                                     Gesamtstatistik
+overall_visits:                                    Besucher gesamt
+overall_visits_desc:                               Anzahl der Besucher die bisher auf der Seite waren.
+overall_hits:                                      Hits gesamt
+overall_hits_desc:                                 Anzahl der Seitenaufrufe.
+overall_user:                                      User gesamt
+overall_user_desc:                                 Anzahl der registrierten User.
+overall_news:                                      News gesamt
+overall_news_desc:                                 Anzahl der geschriebenen News.
+overall_articles:                                  Artikel gesamt
+overall_articles_desc:                             Anzahl der geschriebenen Artikel.
+overall_comments:                                  Kommentare gesamt
+overall_comments_desc:                             Anzahl der geschriebenen Kommentare.
+referrer_filter_title:                             Filter definieren
+referrer_list_title:                               Referrer-Liste
+referrer_delete_title:                             Einträge entfernen
+referrer_hits:                                     Hits
+referrer_first:                                    Erster Kontakt
+referrer_last:                                     Letzter Kontakt
+referrer_url:                                      URL
+referrer_show:                                     Zeige
+referrer_orderby:                                  Einträge sortiert nach
+referrer_filter:                                   Filter
+referrer_filter_info1:                             Setzten Sie ein Ausrufezeichen (!) an erster Stelle um den Suchbegriff auszuschließen.
+referrer_filter_info2:                             Mehrere Suchbegriffe können mit Komma (,) voneinander getrennt werden.
+referrer_table_title:                              Referrer von externen Seiten
+referrer_table_url:                                Referrer URL
+referrer_table_hits:                               Hits
+referrer_table_first:                              Erster Kontakt
+referrer_table_last:                               Letzter Kontakt
+referrer_unknown:                                  Unbekannt
+referrer_no_entries:                               Keine passenden Einträge gefunden!
+referrer_delete_entries:                           Entferne alle Einträge
+referrer_delete_with:                              mit
+referrer_delete_older:                             älter als
+referrer_delete_younger:                           innerhalb der letzen
+referrer_delete_days:                              Tage
+referrer_delete_and:                               und
+referrer_delete_less:                              weniger als
+referrer_delete_more:                              mehr als
+referrer_delete_hits:                              Hits
+referrer_delete_button:                            definierte Einträge entfernen
+referrer_not_enough_days:                          Es muss mindestens 1 Tag angegeben werden
+referrer_not_enough_hits:                          Es muss mindestens 1 Hit angegeben werden
+referrer_deleted_entries:                          Einträge mit diesen Eigenschaften wurden gelöscht
+
+
+#news
+settings_title:                                    Einstellungen
+news_per_page:                                     News pro Seite
+news_per_page_desc:                                Anzahl der News, die pro Seite angezeigt werden.
+num_headlines:                                     Headlines
+num_headlines_desc:                                Anzahl der Headlines, die angezeigt werden.
+post_settings_title:                               Beiträge
+allow_html:                                        HTML-Code
+allow_html_desc:                                   Erlaubt HTML-Code in ...
+allow_fs:                                          FSCode
+allow_fs_desc:                                     Erlaubt FSCode in ...
+allow_para:                                        Absatzbehandlung
+allow_para_desc:                                   Aktiviert die Absatzbehandlung in ...
+allow_code_no:                                     Aus
+allow_code_news:                                   News
+allow_code_comments:                               Kommentaren
+allow_code_both:                                   News & Kommentaren
+cat_settings_title:                                Kategorien
+cat_img_max_width:                                 Kategorie Bild - max. Breite
+cat_img_max_width_desc:                            Max. Breite eines Kategorie Bildes in Pixeln.
+cat_img_max_height:                                Kategorie Bild - max. Höhe
+cat_img_max_height_desc:                           Max. Höhe eines Kategorie Bildes in Pixeln.
+cat_img_max_size:                                  Kategorie Bild - max. Dateigröße
+cat_img_max_size_desc:                             Max. Dateigröße eines Kategorie Bildes in KiB.
+comment_settings_title:                            Kommentare
+allow_comments:                                    Kommentare erlauben für
+allow_comments_desc:                               Kommentare schreiben erlauben für ...
+allow_comments_all:                                alle User
+allow_comments_staff:                              Mitarbeiter
+allow_comments_reg:                                registrierte User
+allow_comments_nobody:                             niemanden
+sort_comments:                                     Kommentare sortieren
+sort_comments_desc:                                Die Anzeige-Reihenfolge der Kommentare.
+sort_comments_old_first:                           Alte zuerst
+sort_comments_new_first:                           Neue zuerst
+anti_spam_comments:                                Anti Spam bei Kommentaren für
+anti_spam_comments_desc:                           Anti Spam Captcha bei Kommentaren aktivieren für ...
+anti_spam_comments_all:                            alle User
+anti_spam_comments_staff:                          alle außer Mitarbeiter
+anti_spam_comments_reg:                            nicht registrierte User
+anti_spam_comments_nobody:                         niemanden
+news_information_title:                            Informationen
+news_cat:                                          Kategorie
+news_cat_desc:                                     Die Kategorie, der die News angehört.
+news_date:                                         Datum & Uhrzeit
+news_date_desc:                                    Erscheinungszeitpunkt der News.
+news_poster:                                       Poster
+news_poster_desc:                                  Der Verfasser der News.
+news_new_title:                                    News schreiben
+news_title:                                        Titel
+news_active:                                       News veröffentlichen
+news_comments_allowed:                             Kommentare erlauben
+news_text:                                         Text
+news_add_button:                                   News hinzufügen
+news_added:                                        News wurde erfolgreich hinzugefügt
+news_not_added:                                    News wurde nicht hinzugefügt
+news_link_add:                                     Link hinzufügen
+news_link_title:                                   Titel
+news_link_url:                                     URL
+news_link_open:                                    Link öffnen in
+news_link_blank:                                   neues Fenster
+news_link_self:                                    gleiches Fenster
+news_link_no:                                      keine Aktion
+news_link_delete:                                  Auswahl löschen
+news_link_up:                                      nach oben verschieben
+news_link_down:                                    nach unten verschieben
+news_link_edit:                                    zum Bearbeiten übernehmen
+new_cat_added:                                     Kategorie wurde erfolgreich hinzugefügt
+cat_deleted:                                       Kategorie wurde erfolgreich gelöscht
+cat_not_deleted:                                   Kategorie wurde nicht gelöscht
+new_cat_title:                                     Kategorie hinzufügen
+new_cat_name:                                      Name
+new_cat_image:                                     Bild
+new_cat_add_button:                                Hinzufügen & weitere Einstellungen vornehmen
+list_cat_title:                                    Kategorieverwaltung
+list_cat_created_by:                               erstellt von
+list_cat_created_on:                               am
+delete_cat_title:                                  Kategorie löschen
+delete_cat_question:                               Soll diese Kategorie wirklich gelöscht werden
+delete_cat_move_to:                                News der gelöschten Kategorie verschieben nach
+delete_cat_last:                                   Die letzte Kategorie kann nicht gelöscht werden.<br>Bitte legen Sie zuerst eine neue Kategorie an.
+delete_back_link:                                  zurück zur Übersicht
+edit_cat_title:                                    Haupteinstellungen
+edit_cat_name:                                     Name
+edit_cat_name_desc:                                Der Name der Kategorie.
+edit_cat_date:                                     Erstellungsdatum
+edit_cat_date_desc:                                Die Kategorie wurde erstellt am ...
+edit_cat_created_by:                               Ersteller
+edit_cat_created_by_desc:                          Die Kategorie wurde erstellt von ...
+edit_cat_title_optional:                           Zusätzliche Einstellungen
+edit_cat_image:                                    Bild
+edit_cat_description:                              Beschreibung
+edit_cat_description_desc:                         Ein kurzer Text über die Kategorie.
+news_edit_filter_title:                            Filter & Sortierung
+news_edit_filter_from:                             News aus
+news_edit_filter_all_cat:                          allen Kategorien
+news_edit_filter_sort:                             und sortieren nach
+news_edit_filter_id:                               News-ID
+news_edit_filter_date:                             Datum
+news_edit_filter_newstitle:                        Titel
+news_edit_next_news:                               weitere News
+news_edit_prev_news:                               vorherige News
+news_edit_show_news:                               zeige News
+news_edit_no_news:                                 Keine News gefunden!
+news_edit_select_news:                             News auswählen
+news_edit_entries_found:                           Datensätze gefunden
+news_delete_title:                                 News löschen
+news_delete_view_news:                             anzeigen
+news_delete_question:                              Soll(en) die folgende(n) News (inklusive Links und Kommentaren) wirklich unwiderruflich gelöscht werden?
+news_deleted:                                      News wurde(n) erfolgreich gelöscht
+news_not_deleted:                                  News wurde(n) nicht gelöscht
+news_comment_deleted:                              Kommentar wurde erfolgreich gelöscht
+
+
+#articles
+post_settings_title:                               Beiträge
+post_settings_info:                                <b>Hinweis:</b> Hier wird nur die grundsätzliche Möglichkeit zur Verwendung eingstellt. Bei jedem Artikel kann die Verwendung von HTML, FSCode und der Absatzbehandlung auch noch seperat (de-)aktiviert werden.
+allow_html:                                        HTML-Code
+allow_html_desc:                                   Erlaubt HTML-Code in ...
+allow_fs:                                          FSCode
+allow_fs_desc:                                     Erlaubt FSCode in ...
+allow_para:                                        Absatzbehandlung
+allow_para_desc:                                   Aktiviert die Absatzbehandlung in ...
+allow_code_no:                                     Aus
+allow_code_articles:                               Artikeln
+allow_code_comments:                               Kommentaren
+allow_code_both:                                   Artikeln & Kommentaren
+cat_settings_title:                                Kategorien
+cat_img_max_width:                                 Kategorie Bild - max. Breite
+cat_img_max_width_desc:                            Max. Breite eines Kategorie Bildes in Pixeln.
+cat_img_max_height:                                Kategorie Bild - max. Höhe
+cat_img_max_height_desc:                           Max. Höhe eines Kategorie Bildes in Pixeln.
+cat_img_max_size:                                  Kategorie Bild - max. Dateigröße
+cat_img_max_size_desc:                             Max. Dateigröße eines Kategorie Bildes in KiB.
+comment_settings_title:                            Kommentare
+allow_comments:                                    Kommentare erlauben für
+allow_comments_desc:                               Kommentare schreiben erlauben für ...
+allow_comments_all:                                alle User
+allow_comments_staff:                              Mitarbeiter
+allow_comments_reg:                                registrierte User
+allow_comments_nobody:                             niemanden
+sort_comments:                                     Kommentare sortieren
+sort_comments_desc:                                Die Anzeige-Reihenfolge der Kommentare.
+sort_comments_old_first:                           Alte zuerst
+sort_comments_new_first:                           Neue zuerst
+spam_comments:                                     Anti Spam bei Kommentaren für
+spam_comments_desc:                                Anti Spam Captcha bei Kommentaren aktivieren für ...
+spam_comments_all:                                 alle User
+spam_comments_staff:                               alle außer Mitarbeiter
+spam_comments_reg:                                 nicht registrierte User
+spam_comments_nobody:                              niemanden
+new_cat_added:                                     Kategorie wurde erfolgreich hinzugefügt
+cat_deleted:                                       Kategorie wurde erfolgreich gelöscht
+cat_not_deleted:                                   Kategorie wurde nicht gelöscht
+new_cat_title:                                     Kategorie hinzufügen
+new_cat_name:                                      Name
+new_cat_image:                                     Bild
+new_cat_add_button:                                Hinzufügen & weitere Einstellungen vornehmen
+list_cat_title:                                    Kategorieverwaltung
+list_cat_created_by:                               erstellt von
+list_cat_created_on:                               am
+delete_cat_title:                                  Kategorie löschen
+delete_cat_question:                               Soll diese Kategorie wirklich gelöscht werden
+delete_cat_move_to:                                News der gelöschten Kategorie verschieben nach
+delete_cat_last:                                   Die letzte Kategorie kann nicht gelöscht werden.<br>Bitte legen Sie zuerst eine neue Kategorie an.
+delete_back_link:                                  zurück zur Übersicht
+edit_cat_title:                                    Haupteinstellungen
+edit_cat_name:                                     Name
+edit_cat_name_desc:                                Der Name der Kategorie.
+edit_cat_date:                                     Erstellungsdatum
+edit_cat_date_desc:                                Die Kategorie wurde erstellt am ...
+edit_cat_by:                                       Ersteller
+edit_cat_by_desc:                                  Die Kategorie wurde erstellt von ...
+edit_cat_title_optional:                           Zusätzliche Einstellungen
+edit_cat_image:                                    Bild
+edit_cat_desc:                                     Beschreibung
+edit_cat_desc_desc:                                Ein kurzer Text über die Kategorie.
+articles_info_title:                               Informationen
+articles_url:                                      URL
+articles_url_desc:                                 Teil der URL, der an ?go= angehängt wird.
+articles_cat:                                      Kategorie
+articles_cat_desc:                                 Die Kategorie, der der Artikel angehört.
+articles_date:                                     Erstellungsdatum
+articles_date_desc:                                Erstellungsdatum des Artikels.
+articles_poster:                                   Autor
+articles_poster_desc:                              Der Autor des Artikels.
+articles_new_title:                                Artikel schreiben
+articles_title:                                    Titel
+articles_text:                                     Text
+articles_add_button:                               Artikel hinzufügen
+articles_use_html:                                 HTML verwenden
+articles_use_fscode:                               FSCode verwenden
+articles_use_para:                                 Absatzbehandlung verwenden
+articles_added:                                    Artikel wurde erfolgreich hinzugefügt
+existing_url:                                      Die angegebene URL existiert bereits. Bitte ändern Sie ihre Eingabe!
+edit_filter_title:                                 Filter & Sortierung
+edit_filter_from:                                  Artikel aus
+edit_filter_all_cat:                               allen Kategorien
+edit_filter_sort:                                  und sortieren nach
+edit_filter_arttitle:                              Titel
+edit_filter_date:                                  Datum
+edit_filter_url:                                   URL
+edit_next_article:                                 weitere Artikel
+edit_prev_article:                                 vorherige Artikel
+edit_show_articles:                                zeige Artikel
+edit_no_articles:                                  Keine Artikel gefunden!
+edit_select_article:                               Artikel auswählen
+edit_entries_found:                                Datensätze gefunden
+delete_title:                                      Artikel löschen
+delete_view_article:                               Artikel komplett betrachten
+delete_question:                                   Soll dieser Artikel wirklich gelöscht werden?
+article_deleted:                                   Artikel wurde erfolgreich gelöscht
+article_not_deleted:                               Artikel wurde nicht gelöscht
+
+
+#press
+delpage:                                           Eintrag löschen
+delpage_question:                                  Soll der Eintrag wirklich gelöscht werden?
+delconfirm:                                        Eintrag löschen
+delnotconfirm:                                     Eintrag nicht löschen
+note_noreleases:                                   Es wurden keine Presseberichte gefunden!
+
+
+#random
+start_time:                                        Startzeit
+end_time:                                          Endzeit
+title:                                             Titel
+delpic:                                            Zeitgesteuertes Zufallsbild löschen
+delpic_question:                                   Soll das zeitgesteuertes Zufallsbild wirklich gelöscht werden?
+delconfirm:                                        Zufallsbild löschen
+delnotconfirm:                                     Zufallsbild nicht löschen
+delnote:                                           (Hinweis: Es wird lediglich der Eintrag als zeitgesteuertes Zufallsbild gelöscht. Das Bild als solches bleibt erhalten.)
+note_deleted:                                      Das zeitgesteuerte Zufallsbild wurde erfolgreich gelöscht!
+note_notdeleted:                                   Das zeitgesteuerte Zufallsbild wurde nicht gelöscht!
+
+
+#partner
+small_pic:                                         Partnerbild klein
+small_pic_desc:                                    Kleines Partnerbild für die Navigation.
+big_pic:                                           Partnerbild groß
+big_pic_desc:                                      Großes Partnerbild für die Übersichtsseite.
+name:                                              Partnername
+name_desc:                                         Name der Partnerseite.
+link:                                              Link
+link_desc:                                         URL der Partnerseite.
+desc:                                              Beschreibung
+desc_desc:                                         Kurze Beschreibung der Partnerseite.
+perm:                                              Permanent angezeigen
+perm_desc:                                         Kleines Partnerbild wird in der Navigation permanent angezeigt.
+partnerpage:                                       Partnerseite
+delpage:                                           Partnerseite löschen
+delpage_question:                                  Soll die Partnerseite wirklich gelöscht werden?
+delconfirm:                                        Partnerseite löschen
+delnotconfirm:                                     Partnerseite nicht löschen
+add:                                               Partnerseite hinzufügen
+save:                                              Änderungen speichern
+exact:                                             exakt
+max:                                               max.
+px:                                                Pixel
+kb:                                                KB
+note_notadded:                                     Partnerseite konnte nicht hinzugefügt werden!
+note_addmore:                                      Weitere Partnerseite hinzufügen:
+note_uploaded:                                     Bilder wurden hochgeladen!
+note_added:                                        Partnerseite wurde hinzugefügt!
+note_edited:                                       Änderungen wurden erfolgreich gespeichert!
+note_deleted:                                      Die Partnerseite wurde erfolgreich gelöscht!
+note_notdeleted:                                   Die Partnerseite wurde nicht gelöscht!
+note_nopages:                                      Es wurden keine Partnerseiten gefunden!
+

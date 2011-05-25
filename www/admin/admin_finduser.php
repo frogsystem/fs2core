@@ -9,14 +9,15 @@ define ( FS2_ROOT_PATH, "./../", TRUE );
 require( FS2_ROOT_PATH . "login.inc.php");
 require( FS2_ROOT_PATH . "includes/functions.php");
 require( FS2_ROOT_PATH . "includes/adminfunctions.php");
-require( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php");
+require(FS2_ROOT_PATH . "lang/de_DE/admin/admin_phrases_de.php");
 
 echo'
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <title>'.$admin_phrases[finduser][pagetitle].'</title>
-    <link rel="stylesheet" type="text/css" href="admin.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body id="find_body">
 
