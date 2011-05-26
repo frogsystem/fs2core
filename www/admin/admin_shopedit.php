@@ -4,14 +4,14 @@
 //// Artikel aktualiesieren ////
 ////////////////////////////////
 
-if ($_POST[title] && $_POST[url] && $_POST[preis])
+if ($_POST[title] && $_POST[url] && $_POST[preis] && $_POST[sended] == "edit")
 {
-    settype($_POST[editartikelid], 'integer');
+    settype($_POST[artikelid], 'integer');
     if (isset($_POST[delartikel]))
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[editartikelid]", $db);
-        image_delete ("images/shop/", $_POST[editartikelid] );
-        image_delete( "images/shop/", $_POST[editartikelid] );
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $db);
+        image_delete ("images/shop/", $_POST[artikelid] );
+        image_delete( "images/shop/", $_POST[artikelid] );
         systext('Artikel wurde gelöscht');
     }
     else
@@ -22,12 +22,14 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
         $_POST[text] = savesql($_POST[text]);
         $_POST[hot] = isset($_POST[hot]) ? 1 : 0;
 
-        if (isset($_FILES[artikelimg]))
+        $messages = array();
+
+        if (!empty($_FILES[artikelimg][name]))
         {
-            $upload = upload_img($_FILES[artikelimg], "images/shop/", $_POST[editartikelid], 2*1024*1024, 400, 600);
-            systext(upload_img_notice($upload));
-            $thumb = create_thumb_from(image_url("images/shop/",$_POST[editartikelid],FALSE, TRUE), 100, 100);
-            systext(create_thumb_notice($thumb));
+            $upload = upload_img($_FILES[artikelimg], "images/shop/", $_POST[artikelid], 2*1024*1024, 400, 600);
+            $messages[] = upload_img_notice($upload);
+            $thumb = create_thumb_from(image_url("images/shop/",$_POST[artikelid],FALSE, TRUE), 100, 100);
+            $messages[] = create_thumb_notice($thumb);
         }
         $update = "UPDATE ".$global_config_arr[pref]."shop
                    SET artikel_name  = '$_POST[title]',
@@ -35,18 +37,27 @@ if ($_POST[title] && $_POST[url] && $_POST[preis])
                        artikel_text  = '$_POST[text]',
                        artikel_preis = '$_POST[preis]',
                        artikel_hot   = '$_POST[hot]'
-                   WHERE artikel_id = '$_POST[editartikelid]'";
+                   WHERE artikel_id = '$_POST[artikelid]'";
         mysql_query($update, $db);
-        systext("Artikel wurde aktualisiert");
+        $messages[] = $TEXT['admin']->get("changes_saved");
+        
+        echo get_systext(implode("<br>", $messages), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
     }
+    
+    unset($_POST);
 }
 
 ////////////////////////////////
 ////// Artikel editieren ///////
 ////////////////////////////////
 
-elseif ($_POST[artikelid])
+if ($_POST[artikelid])
 {
+    $_POST[artikelid] = $_POST[artikelid][0];
+    if(isset($_POST['sended'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }    
+    
     settype($_POST[artikelid], 'integer');
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $db);
     $artikel_arr = mysql_fetch_assoc($index);
@@ -55,8 +66,10 @@ elseif ($_POST[artikelid])
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shop_edit" name="go">
-                        <input type="hidden" value="'.$artikel_arr[artikel_id].'" name="editartikelid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="edit" name="sended">
+                        <input type="hidden" value="'.$artikel_arr[artikel_id].'" name="artikelid">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Produkt bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
@@ -148,7 +161,8 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="shop_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content select_list" cellpadding="3" cellspacing="0" >
+                            <tr><td colspan="4"><h3>Produkt auswählen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="20%">
                                     Bild
@@ -170,7 +184,7 @@ else
     while ($artikel_arr = mysql_fetch_assoc($index))
     {
         echo'
-                            <tr>
+                            <tr class="select_entry thin">
                                 <td class="config">
                                     <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'" alt="'.stripslashes ( $artikel_arr[artikel_name] ).'">
                                 </td>
@@ -181,15 +195,17 @@ else
                                     '.stripslashes ( $artikel_arr[artikel_preis] ).'
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="radio" name="artikelid" value="'.$artikel_arr[artikel_id].'">
+                                    <input class="select_box" type="checkbox" name="artikelid[]" value="'.$artikel_arr[artikel_id].'">
                                 </td>
                             </tr>
         ';
     }
     echo'
-                            <tr>
+                            <tr style="display:none">
                                 <td colspan="4">
-                                    &nbsp;
+                                    <select class="select_type" name="shop_action" size="1">
+                                        <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>

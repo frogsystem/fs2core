@@ -38,7 +38,7 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="partner_config" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table border="0" cellpadding="4" cellspacing="0" >
                             <tr><td colspan="2" class="line">Einstellungen</td></tr>
                             <tr>
                                 <td class="config" valign="top">

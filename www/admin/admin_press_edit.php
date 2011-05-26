@@ -11,9 +11,10 @@ if (($_POST['title'] AND $_POST['title'] != "")
     && ($_POST['text'] AND $_POST['text'] != "")
     && $_POST['press_action'] == "edit"
     && $_POST['sended'] == "edit"
-    && isset($_POST['press_id'])
+    && isset($_POST['press_id'][0])
    )
 {
+    $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST['press_id'], 'integer');
 
     settype($_POST['day'], 'integer');
@@ -59,6 +60,7 @@ elseif ($_POST['press_action'] == "delete"
     && isset($_POST['press_id'])
    )
 {
+    $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST[press_id], 'integer');
 
     if ($_POST['delete_press'])   // Partnerseite löschen
@@ -85,6 +87,7 @@ elseif ($_POST[press_action] == "edit"
         && isset($_POST[press_id])
        )
 {
+    $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST[press_id], 'integer');
 
     // Pressebericht laden
@@ -125,7 +128,8 @@ elseif ($_POST[press_action] == "edit"
 
     //Error Message
     if ($_POST['sended'] == "edit") {
-        systext ($admin_phrases[common][note_notfilled]);
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+
 
         $press_arr['press_title'] = killhtml($_POST['title']);
         $press_arr['press_url'] = killhtml($_POST['url']);
@@ -154,8 +158,9 @@ elseif ($_POST[press_action] == "edit"
                         <input type="hidden" value="press_edit" name="go">
                         <input type="hidden" value="edit" name="press_action">
                         <input type="hidden" value="edit" name="sended">
-                        <input type="hidden" value="'.$press_arr[press_id].'" name="press_id">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="'.$press_arr[press_id].'" name="press_id[0]">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Pressebericht bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Titel:<br>
@@ -183,11 +188,11 @@ elseif ($_POST[press_action] == "edit"
                                     <input class="text" size="1" name="day" id="day" maxlength="2" value="'.$date[tag].'"> .
                                     <input class="text" size="1" name="month" id="month"  maxlength="2" value="'.$date[monat].'"> .
                                     <input class="text" size="3" name="year" id="year"  maxlength="4" value="'.$date[jahr].'">&nbsp;
-                                    <input class="button" type="button" value="Heute"
+                                    <input  type="button" value="Heute"
                                      onClick=\'document.getElementById("day").value="'.$heute[tag].'";
                                                document.getElementById("month").value="'.$heute[monat].'";
                                                document.getElementById("year").value="'.$heute[jahr].'";\'>&nbsp;
-                                    <input class="button" type="button" value="Zurücksetzen"
+                                    <input  type="button" value="Zurücksetzen"
                                      onClick=\'document.getElementById("day").value="'.$date[tag].'";
                                                document.getElementById("month").value="'.$date[monat].'";
                                                document.getElementById("year").value="'.$date[jahr].'";\'>
@@ -289,8 +294,7 @@ elseif ($_POST[press_action] == "edit"
                             </tr>
                             <tr><td>&nbsp;</td></tr>
                             <tr>
-                                <td></td>
-                                <td align="left">
+                                <td colspan="2">
                                     <input class="button" type="submit" value="Änderungen speichern">
                                 </td>
                             </tr>
@@ -307,6 +311,7 @@ elseif ($_POST[press_action] == "delete"
         && isset($_POST[press_id])
        )
 {
+    $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST[press_id], 'integer');
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press WHERE press_id = $_POST[press_id]", $db);
@@ -333,7 +338,8 @@ elseif ($_POST[press_action] == "delete"
                         <input type="hidden" value="delete" name="press_action">
                         <input type="hidden" value="delete" name="sended">
                         <input type="hidden" value="'.$press_arr[press_id].'" name="press_id">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Pressebericht löschen</h3><hr></td></tr>
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
                                     Pressebericht löschen: '.$press_arr[press_title].'
@@ -350,7 +356,7 @@ elseif ($_POST[press_action] == "delete"
                                         <option value="0">Pressebericht nicht löschen</option>
                                         <option value="1">Pressebericht löschen</option>
                                     </select>
-                                    <input type="submit" value="'.$admin_phrases[common][do_button].'" class="button" />
+                                    <input type="submit" value="'.$admin_phrases[common][do_button].'">
                                 </td>
                             </tr>
                             <tr><td>&nbsp;</td></tr>
@@ -376,6 +382,8 @@ $index = mysql_query("SELECT press_id FROM ".$global_config_arr[pref]."press", $
 
 if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
 {
+
+
     unset($filterwhere);
     if (isset($_POST['gameid']) AND $_POST['gameid'] != 0)
     {
@@ -418,8 +426,8 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
-                            <tr><td></td></tr>
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan=4"><h3>Auswahl filtern</h3><hr></td></tr>
                             <tr>
                                 <td class="config">
                                     Spiele:
@@ -460,7 +468,7 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
                                         '>absteigend</option>
                                     </select>
                                     <br /><br />
-                                    <input class="button" type="submit" value="Filter anwenden">
+                                    <input  type="submit" value="Filter anwenden">
                                 </td>
                             </tr>
                             <tr>
@@ -507,6 +515,7 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
                                     </select>
                                 </td>
                             </tr>
+                            <tr><td>&nbsp;</td></tr>
                         </table>
                     </form>
     ';
@@ -524,8 +533,8 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
         echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
-                            <tr><td></td></tr>
+                        <table class="content select_list" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="4"><h3>Presseberichte auswählen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="40%">
                                     Titel
@@ -552,27 +561,18 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
         
             $press_arr['press_date'] = date("d.m.Y", $press_arr['press_date']);
             echo'
-                            <tr style="cursor:pointer;"
-onmouseover=\'
-  colorOver (document.getElementById("input_'.$press_arr[press_id].'"), "#EEEEEE", "#64DC6A", this);\'
-onmouseout=\'
-  colorOut (document.getElementById("input_'.$press_arr[press_id].'"), "transparent", "#49c24f", this);\'
-onClick=\'
-  createClick (document.getElementById("input_'.$press_arr[press_id].'"));
-  resetUnclicked ("transparent", last, lastBox, this);
-  colorClick (document.getElementById("input_'.$press_arr[press_id].'"), "#EEEEEE", "#64DC6A", this);\'
-                            >
+                            <tr class="thin select_entry">
                                 <td class="configthin">
                                     '.$press_arr['press_title'].'
                                 </td>
-                                <td class="configthin">
+                                <td class="">
                                     <span class="small">('.$press_arr['press_game'].', '.$press_arr['press_cat'].', '.$press_arr['press_lang'].')</span>
                                 </td>
-                                <td class="configthin">
+                                <td class="">
                                     '.$press_arr['press_date'].'
                                 </td>
-                                <td class="config" style="text-align:right;">
-                                    <input type="radio" id="input_'.$press_arr[press_id].'" name="press_id" value="'.$press_arr['press_id'].'" style="cursor:pointer;" onClick=\'createClick(this);\'>
+                                <td class="top right">
+                                    <input class="select_box" type="checkbox" name="press_id[]" value="'.$press_arr['press_id'].'">
                                 </td>
                             </tr>
             ';
@@ -580,10 +580,10 @@ onClick=\'
         echo'
                             <tr><td>&nbsp;</td></tr>
                             <tr>
-                                <td class="config" colspan="4" style="text-align:center;">
-                                   <select name="press_action" size="1">
-                                     <option value="edit">'.$admin_phrases[common][selection_edit].'</option>
-                                     <option value="delete">'.$admin_phrases[common][selection_del].'</option>
+                                <td class="right" colspan="4">
+                                   <select class="select_type" name="press_action" size="1">
+                                     <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                     <option class="select_red select_one" value="delete">'.$admin_phrases[common][selection_del].'</option>
                                    </select>
                                    <input class="button" type="submit" value="'.$admin_phrases[common][do_button].'">
                                 </td>

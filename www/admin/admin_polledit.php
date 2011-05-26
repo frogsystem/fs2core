@@ -75,14 +75,23 @@ if ($_POST[polledit] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
         }
     }
     systext("Umfrage wurde aktualisiert");
+    unset($_POST);
 }
 
 ///////////////////////////////
 ////// Umfrage editieren //////
 ///////////////////////////////
 
-elseif ($_POST[pollid] || $_POST[optionsadd])
+if ($_POST[pollid] || $_POST[optionsadd])
 {
+    $_POST['pollid'] = $_POST['pollid'][0];
+ 
+     if(isset($_POST['sended']) && !isset($_POST['ant_add'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }
+    
+ 
+    
     //Zeit-Array für Jetzt Button
     $jetzt[tag] = date("d");
     $jetzt[monat] = date("m");
@@ -189,10 +198,13 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                     <form id="form" action="" method="post">
                         <input type="hidden" value="poll_edit" name="go">
                         <input id="send" type="hidden" value="0" name="polledit">
+                        <input id="send" type="hidden" value="edit" name="sended">
                         <input type="hidden" value="'.$_POST[pollid].'" name="tempid">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
                         <input type="hidden" value="'.$_POST[pollid].'" name="editpollid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="'.$_POST[pollid].'" name="pollid[0]">
+                        <table class="content select_list" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="5"><h3>Umfrage bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Frage:<br>
@@ -218,7 +230,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                                      document.getElementById("startmonth").value="'.$jetzt[monat].'";
                                                      document.getElementById("startyear").value="'.$jetzt[jahr].'";
                                                      document.getElementById("starthour").value="'.$jetzt[stunde].'";
-                                                     document.getElementById("startminute").value="'.$jetzt[minute].'";\' class="button" type="button" value="Jetzt">
+                                                     document.getElementById("startminute").value="'.$jetzt[minute].'";\'  type="button" value="Jetzt">
                                     <input onClick=\'var startdate = new Date(document.getElementById("startyear").value, document.getElementById("startmonth").value, document.getElementById("startday").value, document.getElementById("starthour").value, document.getElementById("startminute").value);
                                                      var newmonth = startdate.getMonth();
                                                      var Monat = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
@@ -227,7 +239,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                                      {
                                                          document.getElementById("startyear").value = startdate.getFullYear();
                                                      }
-                                                     \' class="button" type="button" value="+1 Monat">
+                                                     \'  type="button" value="+1 Monat">
                                     <input onClick=\'var startdate = new Date(document.getElementById("startyear").value, document.getElementById("startmonth").value, document.getElementById("startday").value, document.getElementById("starthour").value, document.getElementById("startminute").value);
                                                      var newmonth = startdate.getMonth() - 2;
                                                      if (newmonth == -1)
@@ -244,7 +256,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                                      {
                                                          document.getElementById("startyear").value = startdate.getFullYear() - 1;
                                                      }
-                                                     \' class="button" type="button" value="-1 Monat">
+                                                     \'  type="button" value="-1 Monat">
                                 </td>
                             </tr>
                             <tr>
@@ -263,7 +275,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                                      document.getElementById("endmonth").value="'.$jetzt[monat].'";
                                                      document.getElementById("endyear").value="'.$jetzt[jahr].'";
                                                      document.getElementById("endhour").value="'.$jetzt[stunde].'";
-                                                     document.getElementById("endminute").value="'.$jetzt[minute].'";\' class="button" type="button" value="Jetzt">
+                                                     document.getElementById("endminute").value="'.$jetzt[minute].'";\'  type="button" value="Jetzt">
                                     <input onClick=\'var enddate = new Date(document.getElementById("endyear").value, document.getElementById("endmonth").value, document.getElementById("endday").value, document.getElementById("endhour").value, document.getElementById("endminute").value);
                                                      var newmonth = enddate.getMonth();
                                                      var Monat = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
@@ -272,7 +284,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                                      {
                                                          document.getElementById("endyear").value = enddate.getFullYear();
                                                      }
-                                                     \' class="button" type="button" value="+1 Monat">
+                                                     \'  type="button" value="+1 Monat">
                                     <input onClick=\'var enddate = new Date(document.getElementById("endyear").value, document.getElementById("endmonth").value, document.getElementById("endday").value, document.getElementById("endhour").value, document.getElementById("endminute").value);
                                                      var newmonth = enddate.getMonth() - 2;
                                                      if (newmonth == -1)
@@ -289,7 +301,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                                      {
                                                          document.getElementById("endyear").value = enddate.getFullYear() - 1;
                                                      }
-                                                     \' class="button" type="button" value="-1 Monat">
+                                                     \'  type="button" value="-1 Monat">
                                 </td>
                             </tr>
     ';
@@ -340,7 +352,7 @@ elseif ($_POST[pollid] || $_POST[optionsadd])
                                 <td class="configthin">
                                     <input size="2" maxlength="2" class="text" name="optionsadd">
                                     Antwortfelder
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input name="ant_add"  type="submit" value="Hinzufügen">
                                 </td>
                             </tr>
                             <tr>
@@ -388,7 +400,8 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="poll_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content select_list" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="5"><h3>Umfrage auswählen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="50%">
                                     Frage
@@ -416,14 +429,14 @@ else
         $poll_arr[poll_end] = date("d.m.Y" , $poll_arr[poll_end]);
         if ($poll_arr[poll_type] == 1)
         {
-            $poll_arr[poll_type] = $phrases[multiple_choise];
+            $poll_arr[poll_type] = $TEXT['page']->get("multiple_choice");
         }
         else
         {
-            $poll_arr[poll_type] = $phrases[single_choice];
+            $poll_arr[poll_type] = $TEXT['page']->get("single_choice");
         }
         echo'
-                            <tr>
+                            <tr class="select_entry thin">
                                 <td class="configthin">
                                     '.$poll_arr[poll_quest].'
                                 </td>
@@ -436,20 +449,22 @@ else
                                 <td class="configthin">
                                     <font class="small">'.$poll_arr[poll_end].'</font>
                                 </td>
-                                <td class="configthin">
-                                    <input type="radio" name="pollid" value="'.$poll_arr[poll_id].'">
+                                <td class="top center">
+                                    <input class="select_box" type="checkbox" name="pollid[]" value="'.$poll_arr[poll_id].'">
                                 </td>
                             </tr>
         ';
     }
     echo'
-                            <tr>
-                                <td colspan="4">
-                                    &nbsp;
+                            <tr style="display:none">
+                                <td colspan="5">
+                                    <select class="select_type" name="poll_action" size="1">
+                                        <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4" align="center">
+                                <td colspan="5" align="center">
                                     <input class="button" type="submit" value="editieren">
                                 </td>
                             </tr>

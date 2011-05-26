@@ -13,15 +13,18 @@ if ($_POST['entry_action'] == "add"
     mysql_query("INSERT INTO ".$global_config_arr[pref]."press_admin
                  (type, title)
                  VALUES ('$_POST[entry_is]', '$_POST[title]')", $db);
-    systext('Eintrag wurde hinzugefügt!');
+    $msg = array();
+    $msg[] = 'Eintrag wurde hinzugefügt!';
 
     if ($_FILES['entry_pic']['name'] != "") {
         $id = mysql_insert_id();
         $upload = upload_img($_FILES['entry_pic'], "images/press/", $_POST[entry_is]."_".$id, 1024*1024, 999, 999);
-        systext(upload_img_notice($upload));
+        $msg[] = upload_img_notice($upload);
     } else {
-        systext('Es wurde kein Bild zum Upload ausgewählt.');
+        $msg[] = 'Es wurde kein Bild zum Upload ausgewählt.';
     }
+    
+    echo get_systext(implode("<br>", $msg), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_add"));
 }
 
 ////////////////////////////
@@ -30,9 +33,10 @@ if ($_POST['entry_action'] == "add"
 elseif (($_POST['title'] AND $_POST['title'] != "")
     && $_POST['entry_action'] == "edit"
     && $_POST['sended'] == "edit"
-    && isset($_POST['entry_id'])
+    && isset($_POST['entry_id'][0])
    )
 {
+    $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST[entry_id], 'integer');
     settype($_POST[entry_is], 'integer');
     $_POST['title'] = savesql($_POST['title']);
@@ -99,17 +103,22 @@ elseif ($_POST['entry_action'] == "delete"
         mysql_query("DELETE FROM ".$global_config_arr[pref]."press_admin
                      WHERE id = '$_POST[entry_id]'", $db);
 
-        systext("Der Eintrag wurde gelöscht!");
+        $msg[] = "Der Eintrag wurde gelöscht!";
 
         if (image_delete("images/press/", $entry_arr[type]."_".$_POST[entry_id]))
         {
-            systext('Das Bild wurde erfolgreich gelöscht!');
+            $msg[] = 'Das Bild wurde erfolgreich gelöscht!';
         }
+        
+        echo get_systext(implode("<br>", $msg), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_trash_ok"));
+
     }
     else
     {
-        systext("Der Eintrag wurde nicht gelöscht!");
+        $msg[] = "Der Eintrag wurde nicht gelöscht!";
+        echo get_systext(implode("<br>", $msg), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_info"));        
     }
+     
     unset($_POST['delete_press_admin']);
     unset($_POST['entry_action']);
     unset($_POST['sended']);
@@ -124,6 +133,7 @@ elseif ($_POST['entry_action'] == "edit"
     && isset($_POST['entry_id'])
    )
 {
+    $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST[entry_id], 'integer');
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id]", $db);
     $entry_arr = mysql_fetch_assoc($index);
@@ -144,14 +154,10 @@ elseif ($_POST['entry_action'] == "edit"
                         <input type="hidden" value="press_admin" name="go">
                         <input type="hidden" value="edit" name="entry_action">
                         <input type="hidden" value="edit" name="sended">
-                        <input type="hidden" value="'.$entry_arr[id].'" name="entry_id">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr align="left" valign="top">
-                                <td class="config">
-                                    <b>Eintrag bearbeiten:</b><br /><br />
-                                </td>
-                                <td></td>
-                            </tr>
+                        <input type="hidden" value="'.$entry_arr[id].'" name="entry_id[0]">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Eintrag bearbeiten</h3><hr></td></tr>
+
                             <tr align="left" valign="top">
                                 <td class="config">
                                     Titel:<br />
@@ -208,9 +214,9 @@ elseif ($_POST['entry_action'] == "edit"
     echo'
                                 </td>
                             </tr>
-                            <tr align="left" valign="top"><td></td>
-                                <td class="config">
-                                    <input type="submit" value="Änderungen Speichern" class="button" />
+                            <tr align="left" valign="top">
+                                <td class="config" colspan="2">
+                                    <input type="submit" value="Änderungen Speichern" class="button">
                                 </td>
                             </tr>
                         </table>
@@ -225,6 +231,7 @@ elseif ($_POST['entry_action'] == "delete"
     && isset($_POST['entry_id'])
    )
 {
+    $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST[entry_id], 'integer');
     $index = mysql_query("SELECT COUNT(id) AS number FROM ".$global_config_arr[pref]."press_admin
                           WHERE type = (SELECT type FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id])", $db);
@@ -254,13 +261,9 @@ elseif ($_POST['entry_action'] == "delete"
                         <input type="hidden" value="delete" name="entry_action">
                         <input type="hidden" value="delete" name="sended">
                         <input type="hidden" value="'.$entry_arr[id].'" name="entry_id">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr align="left" valign="top">
-                                <td class="config" colspan="2">
-                                    '.$admin_phrases[press][delpage].': '.$entry_arr[type_text].'
-                                </td>
-                            </tr>
-                            <tr><td></td></tr>
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>'.$admin_phrases[press][delpage].': '.$entry_arr[type_text].'</h3><hr></td></tr>
+                            
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2" style="padding:0px; margin:0px;">
                                     <table border="0" cellpadding="4" cellspacing="0" width="600">
@@ -294,7 +297,7 @@ elseif ($_POST['entry_action'] == "delete"
                                         <option value="0">'.$admin_phrases[press][delnotconfirm].'</option>
                                         <option value="1">'.$admin_phrases[press][delconfirm].'</option>
                                     </select>
-                                    <input type="submit" value="'.$admin_phrases[common][do_button].'" class="button" />
+                                    <input type="submit" value="'.$admin_phrases[common][do_button].'">
                                 </td>
                             </tr>
                             <tr><td>&nbsp;</td></tr>
@@ -365,12 +368,8 @@ if (!isset($_POST[entry_id]))
                     <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" value="press_admin" name="go">
                         <input type="hidden" value="add" name="entry_action">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr align="left" valign="top">
-                                <td class="config" valign="top" colspan="4">
-                                    Neuen Eintrag hinzufügen:
-                                </td>
-                            </tr>
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="4"><h3>Neuen Eintrag hinzufügen</h3><hr></td></tr>
                             <tr align="left" valign="top">
                                 <td valign="top">
                                     <span class="small">Bild auswählen: (optional)</span>
@@ -399,14 +398,17 @@ if (!isset($_POST[entry_id]))
                                     </select>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input type="submit" value="Hinzufügen">
                                 </td>
                             </tr>
                         </table>
                     </form>
     ';
 
-    echo'<table border="0" cellpadding="4" cellspacing="0" width="600">';
+    echo'<p></p>
+                        <table class="content " cellpadding="3" cellspacing="0">
+                            <tr><td colspan="4"><h3>Spiele bearbeiten</h3><hr></td></tr>
+    ';
 
     for ($i=1;$i<=3;$i++)
     {
@@ -429,6 +431,9 @@ if (!isset($_POST[entry_id]))
             echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_admin" name="go">
+                        
+                        
+                        <tbody class="select_list">
                             <tr><td>&nbsp;</td></tr>
                             <tr>
                                 <td class="config">'.$head.':</td>
@@ -456,27 +461,18 @@ if (!isset($_POST[entry_id]))
             }
 
             echo '
-                            <tr style="cursor:pointer;"
-onmouseover=\'
-  colorOver (document.getElementById("input_'.$entry_arr[id].'"), "#EEEEEE", "#64DC6A", this);\'
-onmouseout=\'
-  colorOut (document.getElementById("input_'.$entry_arr[id].'"), "transparent", "#49c24f", this);\'
-onClick=\'
-  createClick (document.getElementById("input_'.$entry_arr[id].'"));
-  resetUnclicked ("transparent", last, lastBox, this);
-  colorClick (document.getElementById("input_'.$entry_arr[id].'"), "#EEEEEE", "#64DC6A", this);\'
-                            >
-                                <td class="configthin">
+                            <tr class="thin select_entry">
+                                <td>
             ';
             if (image_exists("images/press/", $entry_arr[type]."_".$entry_arr[id])) {
-                echo'<img src="'.image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]).'" alt="" />';
+                echo'<img src="'.image_url("images/press/", $entry_arr[type]."_".$entry_arr[id]).'" alt="">';
             }
             echo'
                                 </td>
-                                <td class="configthin">'.$entry_arr[title].'</td>
-                                <td class="configthin">'.$entry_arr[type_text].'</td>
-                                <td class="configthin" style="text-align:right;">
-                                    <input type="radio" id="input_'.$entry_arr[id].'" name="entry_id" value="'. $entry_arr['id'] .'" style="cursor:pointer;" onClick=\'createClick(this);\'>
+                                <td>'.$entry_arr[title].'</td>
+                                <td>'.$entry_arr[type_text].'</td>
+                                <td>
+                                    <input class="select_box" type="checkbox" name="entry_id[]" value="'. $entry_arr['id'] .'">
                                 </td>
                             </tr>
             ';
@@ -487,13 +483,14 @@ onClick=\'
             echo'
                             <tr>
                                 <td class="config" colspan="4" style="text-align:right;">
-                                   <select name="entry_action" size="1">
-                                     <option value="edit">'.$admin_phrases[common][selection_edit].'</option>
-                                     <option value="delete">'.$admin_phrases[common][selection_del].'</option>
+                                   <select class="select_type" name="entry_action" size="1">
+                                     <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                     <option class="select_red select_one" value="delete">'.$admin_phrases[common][selection_del].'</option>
                                    </select>
                                    <input class="button" type="submit" value="'.$admin_phrases[common][do_button].'">
                                 </td>
                             </tr>
+                        </tbody>
                     </form>
             ';
         

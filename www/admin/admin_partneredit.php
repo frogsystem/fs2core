@@ -104,6 +104,7 @@ elseif ($_POST[partner_action] == "edit"
         && isset($_POST[partner_id])
        )
 {
+    $_POST['partner_id'] = $_POST['partner_id'][0];
     settype($_POST[partner_id], 'integer');
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner WHERE partner_id = $_POST[partner_id]", $db);
@@ -131,7 +132,8 @@ elseif ($_POST[partner_action] == "edit"
                         <input type="hidden" value="edit" name="partner_action">
                         <input type="hidden" value="edit" name="sended">
                         <input type="hidden" value="'.$partner_arr[partner_id].'" name="partner_id">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>'.$admin_phrases[partner][delpage].'</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     '.$admin_phrases[partner][small_pic].':<br />
@@ -204,8 +206,7 @@ elseif ($_POST[partner_action] == "edit"
                             </tr>
                             <tr><td></td></tr>
                             <tr>
-                                <td></td>
-                                <td align="left">
+                                <td align="left" colspan="2">
                                     <input class="button" type="submit" value="'.$admin_phrases[partner][save].'">
                                 </td>
                             </tr>
@@ -221,6 +222,7 @@ elseif ($_POST[partner_action] == "delete"
         && isset($_POST[partner_id])
        )
 {
+    $_POST['partner_id'] = $_POST['partner_id'][0];
     settype($_POST[partner_id], 'integer');
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner WHERE partner_id = $_POST[partner_id]", $db);
@@ -235,10 +237,11 @@ elseif ($_POST[partner_action] == "delete"
                         <input type="hidden" value="delete" name="partner_action">
                         <input type="hidden" value="delete" name="sended">
                         <input type="hidden" value="'.$partner_arr[partner_id].'" name="partner_id">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>'.$admin_phrases[partner][delpage].'</h3><hr></td></tr>
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[partner][delpage].': '.$partner_arr[partner_name].'
+                                    '.$partner_arr[partner_name].'
                                     <span class="small">('.$partner_arr[partner_link].')</span>
                                 </td>
                             </tr>
@@ -257,7 +260,11 @@ elseif ($_POST[partner_action] == "delete"
                                         <option value="0">'.$admin_phrases[partner][delnotconfirm].'</option>
                                         <option value="1">'.$admin_phrases[partner][delconfirm].'</option>
                                     </select>
-                                    <input type="submit" value="'.$admin_phrases[common][do_button].'" class="button" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input type="submit" value="'.$admin_phrases[common][do_button].'" class="button">
                                 </td>
                             </tr>
                         </table>
@@ -279,10 +286,11 @@ if (!isset($_POST[partner_id]))
         echo'
                     <form action="" method="post">
                         <input type="hidden" value="partner_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
-                            <tr><td></td></tr>
+                        <table class="content select_list" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="3"><h3>Partnerseite auswählen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="'.$config_arr[small_x_width].'">
+                                    Bild
                                 </td>
                                 <td class="config">
                                     '.$admin_phrases[partner][partnerpage].'
@@ -296,16 +304,7 @@ if (!isset($_POST[partner_id]))
         while ($partner_arr = mysql_fetch_assoc($index))
         {
             echo'
-                            <tr style="cursor:pointer;"
-onmouseover=\'
-  colorOver (document.getElementById("input_'.$partner_arr[partner_id].'"), "#EEEEEE", "#64DC6A", this);\'
-onmouseout=\'
-  colorOut (document.getElementById("input_'.$partner_arr[partner_id].'"), "transparent", "#49c24f", this);\'
-onClick=\'
-  createClick (document.getElementById("input_'.$partner_arr[partner_id].'"));
-  resetUnclicked ("transparent", last, lastBox, this);
-  colorClick (document.getElementById("input_'.$partner_arr[partner_id].'"), "#EEEEEE", "#64DC6A", this);\'
-                            >
+                            <tr class="select_entry thin">
                                 <td class="configthin" height="'.$config_arr[small_y].'">
                                     <img src="'.image_url("images/partner/",$partner_arr[partner_id]."_small").'" alt="" />
                                 </td>
@@ -313,7 +312,7 @@ onClick=\'
                                     '.$partner_arr[partner_name].'
                                 </td>
                                 <td class="configthin" style="text-align:right;">
-                                    <input type="radio" name="partner_id" id="input_'.$partner_arr[partner_id].'" value="'.$partner_arr[partner_id].'" style="cursor:pointer;" onClick=\'createClick(this);\' />
+                                    <input class="select_box" type="checkbox" name="partner_id[]"  value="'.$partner_arr[partner_id].'">
                                 </td>
                             </tr>
             ';
@@ -321,10 +320,10 @@ onClick=\'
         echo'
                             <tr><td>&nbsp;</td></tr>
                             <tr>
-                                <td class="config" colspan="4" style="text-align:center;">
-                                   <select name="partner_action" size="1">
-                                     <option value="edit">'.$admin_phrases[common][selection_edit].'</option>
-                                     <option value="delete">'.$admin_phrases[common][selection_del].'</option>
+                                <td class="right" colspan="4">
+                                   <select class="select_type" name="partner_action" size="1">
+                                     <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                     <option class="select_red" value="delete">'.$admin_phrases[common][selection_del].'</option>
                                    </select>
                                    <input class="button" type="submit" value="'.$admin_phrases[common][do_button].'">
                                 </td>

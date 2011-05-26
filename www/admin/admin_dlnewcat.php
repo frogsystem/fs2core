@@ -4,7 +4,7 @@
 //// Kategorie in die DB eintragen ////
 ///////////////////////////////////////
 
-if (isset($_POST[catname]))
+if (!empty($_POST[catname]))
 {
     $_POST[catname] = savesql($_POST[catname]);
 
@@ -13,18 +13,26 @@ if (isset($_POST[catname]))
                  VALUES ('".$_POST[subcatof]."',
                          '".$_POST[catname]."');", $db);
     systext("Kategorie wurde hinzugefügt");
+    
+    unset($_POST);
 }
 
 ///////////////////////////////////////
 ///////// Kategorie Formular //////////
 ///////////////////////////////////////
 
-else
+if(true)
 {
+    if(isset($_POST['sended'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }       
+    
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_newcat" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="add" name="sended">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Kategorie hinzufügen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Name:<br>

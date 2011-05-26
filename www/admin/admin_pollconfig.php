@@ -19,7 +19,7 @@ if ($_POST[answerbar_width])
 ////// Konfiguration Formular ///////
 /////////////////////////////////////
 
-else
+if(true)
 {
     $index = mysql_query("select * from ".$global_config_arr[pref]."poll_config", $db);
     $config_arr = mysql_fetch_assoc($index);
@@ -27,7 +27,8 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="poll_config" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Einstellungen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
                                     Antwortbalken - Breite:<br>

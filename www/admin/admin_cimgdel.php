@@ -34,28 +34,40 @@ while(($datei=readdir($ordner))!== false)
   }
 }
 
-echo '   <table border="0" cellpadding="4" cellspacing="0" width="600">';
+
 
 if (count($bildnamen)!=0)
 {
+echo '
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Inhaltsbilder</h3><hr></td></tr>
+';    
+    
   sort($bildnamen);
   foreach ($bildnamen as $datei)
   {
-    echo '<tr align="left" valign="top">
-             <td class="config" width="75%">
+    echo '<tr class="left middle" valign="middle">
+             <td width="100%">
                '.$datei.' <font class="small">(<a href="../images/content/'.$datei.'" target="_blank">ansehen</a>)</font>
              </td>
-             <td class="config" width="25%">
-             <input onClick="cimgdel(\''.$datei.'\')" class="button" type="button" value="Löschen">
+             <td>
+                <input onClick="cimgdel(\''.$datei.'\')" type="button" value="Löschen">
              </td>
            </tr>';
   }
+
+echo '</table>';
 }
 else
 {
-  systext("Es wurden keine weiteren Bilder gefunden!");
+    echo '
+        <table class="content" cellpadding="3" cellspacing="0">
+            <tr><td><h3>Inhaltsbilder</h3><hr></td></tr>
+            <tr><td>Es wurden keine weiteren Bilder gefunden!</td></tr>
+        </table>                  
+    ';
 }
 
-echo '</table>';
+
 
 ?>

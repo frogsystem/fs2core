@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 19. Mai 2011 um 14:45
+-- Erstellungszeit: 26. Mai 2011 um 14:59
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -27,13 +27,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 DROP TABLE IF EXISTS `fs2_admin_cp`;
 CREATE TABLE `fs2_admin_cp` (
-  `page_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `group_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `page_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `page_id` varchar(255) NOT NULL,
+  `group_id` varchar(20) NOT NULL,
+  `page_file` varchar(255) NOT NULL,
   `page_pos` tinyint(3) NOT NULL DEFAULT '0',
   `page_int_sub_perm` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`page_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Daten für Tabelle `fs2_admin_cp`
@@ -61,7 +61,6 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('stat_view', 'stats', 'admin_statview.php', 1, 0),
 ('stat_edit', 'stats', 'admin_statedit.php', 2, 0),
 ('stat_ref', 'stats', 'admin_statref.php', 3, 0),
-('stat_space', 'stats', 'admin_statspace.php', 4, 0),
 ('news_config', 'news', 'admin_news_config.php', 1, 0),
 ('news_delete', 'news', 'news_edit', 1, 1),
 ('news_add', 'news', 'admin_news_add.php', 2, 0),
@@ -136,12 +135,11 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('aliases_edit', 'aliases', 'admin_aliases_edit.php', 2, 0),
 ('search_config', 'search', 'admin_search_config.php', 1, 0),
 ('search_index', 'search', 'admin_search_index.php', 2, 0),
-('fscode_add', 'fscodes', 'admin_fscode_add.php', 1, 0),
-('fscode_add_php', 'fscodes', 'fscode_add', 1, 1),
-('fscode_edit', 'fscodes', 'admin_fscode_edit.php', 2, 0),
-('fscode_edit_php', 'fscodes', 'fscode_edit', 2, 1),
-('fscode_edit_remove', 'fscodes', 'fscode_edit', 2, 1),
-('fscode_settings', 'fscodes', 'admin_fscode_config.php', 3, 0),
+('frogpad', 'popup', 'admin_frogpad.php', 0, 0),
+('find_user', 'popup', 'admin_finduser.php', 0, 0),
+('find_gallery_img', 'popup', 'admin_findpicture.php', 0, 0),
+('find_file', 'popup', 'admin_find_file.php', 0, 0),
+('find_applet', 'popup', 'admin_find_applet.php', 0, 0),
 ('tpl_main', 'templates', 'admin_template_main.php', 1, 0),
 ('tpl_viewer', 'templates', 'admin_template_viewer.php', 3, 0),
 ('gallery_img', 'gallery', 'admin_gallery_img.php', 3, 0),
@@ -159,10 +157,10 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 
 DROP TABLE IF EXISTS `fs2_admin_groups`;
 CREATE TABLE `fs2_admin_groups` (
-  `group_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `menu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `group_id` varchar(20) NOT NULL,
+  `menu_id` varchar(20) NOT NULL,
   `group_pos` tinyint(3) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 --
 -- Daten für Tabelle `fs2_admin_groups`
@@ -191,11 +189,32 @@ INSERT INTO `fs2_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 ('styles', 'styles', 1),
 ('templates', 'styles', 2),
 ('groups', 'user', 2),
-('applets', 'system', 2),
-('snippets', 'system', 3),
-('aliases', 'system', 1),
+('applets', 'system', 1),
+('snippets', 'system', 2),
+('aliases', 'system', 3),
 ('search', 'general', 4),
-('fscodes', 'system', 4);
+('popup', 'none', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `fs2_admin_inherited`
+--
+
+DROP TABLE IF EXISTS `fs2_admin_inherited`;
+CREATE TABLE `fs2_admin_inherited` (
+  `group_id` varchar(255) NOT NULL,
+  `pass_to` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `fs2_admin_inherited`
+--
+
+INSERT INTO `fs2_admin_inherited` (`group_id`, `pass_to`) VALUES
+('applets', 'find_applet'),
+('news', 'find_user'),
+('articles', 'find_user');
 
 -- --------------------------------------------------------
 
@@ -442,7 +461,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 14, 216, 1, 4, 3, 0);
+(1, 19, 249, 2, 4, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -464,7 +483,7 @@ CREATE TABLE `fs2_counter_ref` (
 --
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/', 19, 1302557491, 1305579172);
+('http://localhost/', 29, 1302557491, 1306411895);
 
 -- --------------------------------------------------------
 
@@ -497,7 +516,12 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 5, 12, 1, 5),
 (2011, 5, 13, 1, 11),
 (2011, 5, 15, 1, 1),
-(2011, 5, 16, 1, 17);
+(2011, 5, 16, 1, 17),
+(2011, 5, 22, 1, 8),
+(2011, 5, 23, 1, 3),
+(2011, 5, 24, 1, 5),
+(2011, 5, 25, 1, 12),
+(2011, 5, 26, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -519,7 +543,7 @@ CREATE TABLE `fs2_dl` (
   `dl_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`dl_id`),
   FULLTEXT KEY `dl_name_text` (`dl_name`,`dl_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Daten für Tabelle `fs2_dl`
@@ -533,7 +557,8 @@ INSERT INTO `fs2_dl` (`dl_id`, `cat_id`, `user_id`, `dl_date`, `dl_name`, `dl_te
 (5, 1, 1, 1302597816, 'sdfsdf', 'sdf', '', '', 1, 1302597816),
 (6, 1, 1, 1302597870, 'wsd', 'sdf', '', '', 1, 1302597870),
 (7, 1, 1, 1302597934, 'sdf', 'sd', '', '', 1, 1302597934),
-(8, 1, 1, 1302598836, '42', '42', '', '', 1, 1302598836);
+(9, 1, 1, 1306417405, 'Frogsystem 2.alix6', 'asda', 'asd', 'asd', 1, 1306417405),
+(10, 1, 1, 1306417420, 'Hansens wunderbare Weasddes Wissensasd', 'asdasd', 'asdas', 'asd', 1, 1306417420);
 
 -- --------------------------------------------------------
 
@@ -547,14 +572,16 @@ CREATE TABLE `fs2_dl_cat` (
   `subcat_id` mediumint(8) NOT NULL DEFAULT '0',
   `cat_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `fs2_dl_cat`
 --
 
 INSERT INTO `fs2_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
-(1, 0, 'Downloads');
+(1, 0, 'Downloads'),
+(2, 1, 'test2'),
+(4, 0, 'sdfsdf');
 
 -- --------------------------------------------------------
 
@@ -599,7 +626,7 @@ CREATE TABLE `fs2_dl_files` (
   `file_is_mirror` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`file_id`),
   KEY `dl_id` (`dl_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Daten für Tabelle `fs2_dl_files`
@@ -611,7 +638,8 @@ INSERT INTO `fs2_dl_files` (`dl_id`, `file_id`, `file_count`, `file_name`, `file
 (3, 3, 0, 'ie7', '123', 23, 0),
 (4, 4, 0, 'ie6', 'sdf', 234, 0),
 (6, 5, 0, '3', 'd', 45, 0),
-(8, 6, 0, '42', '42', 42, 0);
+(9, 7, 0, 'asd', 'test', 33, 0),
+(10, 8, 0, 'sd', 'asd', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -716,7 +744,7 @@ CREATE TABLE `fs2_ftp` (
   `ftp_ssl` tinyint(1) NOT NULL,
   `ftp_http_url` varchar(255) NOT NULL,
   PRIMARY KEY (`ftp_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs2_ftp`
@@ -770,7 +798,7 @@ CREATE TABLE `fs2_global_config` (
 --
 
 INSERT INTO `fs2_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix6', 'http://localhost/fs2.6/', 'mail@sweil.de', 'Hansens wunderbare Welt des Wissens', 1, '{..title..} - {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i Uhr', 'd.m.Y, H:i Uhr', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'en_US', 0, '', 4, 2, 1305541231);
+(1, '2.alix6', 'http://localhost/fs2.6/', 'mail@sweil.de', 'Hans wunderbare Welt des Wissens', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1306411895);
 
 -- --------------------------------------------------------
 
@@ -788,6 +816,8 @@ CREATE TABLE `fs2_iplist` (
 -- Daten für Tabelle `fs2_iplist`
 --
 
+INSERT INTO `fs2_iplist` (`ip`) VALUES
+('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -942,12 +972,14 @@ CREATE TABLE `fs2_partner` (
   `partner_beschreibung` text NOT NULL,
   `partner_permanent` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`partner_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs2_partner`
 --
 
+INSERT INTO `fs2_partner` (`partner_id`, `partner_name`, `partner_link`, `partner_beschreibung`, `partner_permanent`) VALUES
+(1, 'asdasd', 'http://asasdasd', 'asdasdasasdasd', 0);
 
 -- --------------------------------------------------------
 
@@ -1077,12 +1109,16 @@ CREATE TABLE `fs2_poll` (
   `poll_type` tinyint(4) DEFAULT NULL,
   `poll_participants` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`poll_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `fs2_poll`
 --
 
+INSERT INTO `fs2_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll_type`, `poll_participants`) VALUES
+(1, 'wurst', 1306414980, 1309093380, 1, 0),
+(2, 'ok', 1306414980, 1306416540, 0, 0),
+(3, 'test2', 1306416480, 1309094880, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1097,12 +1133,21 @@ CREATE TABLE `fs2_poll_answers` (
   `answer` varchar(255) DEFAULT NULL,
   `answer_count` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`answer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Daten für Tabelle `fs2_poll_answers`
 --
 
+INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`) VALUES
+(1, 1, 'test', 0),
+(1, 2, 'test', 0),
+(1, 3, 'test', 0),
+(1, 4, 'test', 0),
+(3, 5, '1', 0),
+(3, 6, '1', 0),
+(2, 7, 'd', 0),
+(2, 8, 'd', 0);
 
 -- --------------------------------------------------------
 
@@ -1164,12 +1209,15 @@ CREATE TABLE `fs2_press` (
   `press_game` tinyint(2) NOT NULL,
   `press_cat` tinyint(2) NOT NULL,
   PRIMARY KEY (`press_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `fs2_press`
 --
 
+INSERT INTO `fs2_press` (`press_id`, `press_title`, `press_url`, `press_date`, `press_intro`, `press_text`, `press_note`, `press_lang`, `press_game`, `press_cat`) VALUES
+(1, 'nix', 'http://ASDASD', 1306368000, '', 'ASD', '', 2, 4, 6),
+(3, 'TEST', '3', 1306368000, '', 'ASD', '', 2, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -1183,14 +1231,14 @@ CREATE TABLE `fs2_press_admin` (
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL,
   PRIMARY KEY (`id`,`type`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Daten für Tabelle `fs2_press_admin`
 --
 
 INSERT INTO `fs2_press_admin` (`id`, `type`, `title`) VALUES
-(1, 3, 'Deutsch'),
+(1, 3, 'Test'),
 (2, 3, 'Englisch'),
 (3, 2, 'Preview'),
 (4, 1, 'Beispiel-Spiel'),
@@ -1550,7 +1598,6 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 (140, 125, 'dl', 1, 1),
 (141, 128, 'dl', 1, 1),
 (142, 132, 'dl', 1, 1),
-(143, 133, 'dl', 8, 1),
 (144, 130, 'articles', 3, 1),
 (145, 134, 'articles', 3, 1),
 (146, 129, 'articles', 4, 1);
@@ -1761,12 +1808,14 @@ CREATE TABLE `fs2_shop` (
   `artikel_preis` varchar(10) DEFAULT NULL,
   `artikel_hot` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`artikel_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Daten für Tabelle `fs2_shop`
 --
 
+INSERT INTO `fs2_shop` (`artikel_id`, `artikel_name`, `artikel_url`, `artikel_text`, `artikel_preis`, `artikel_hot`) VALUES
+(1, 'test', 'Amazon', 'Tolles Handy', 'EUR 12', 0);
 
 -- --------------------------------------------------------
 
@@ -1780,7 +1829,7 @@ CREATE TABLE `fs2_smilies` (
   `replace_string` varchar(15) NOT NULL,
   `order` mediumint(8) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Daten für Tabelle `fs2_smilies`
@@ -1870,14 +1919,15 @@ CREATE TABLE `fs2_user` (
   `user_yim` varchar(50) DEFAULT NULL,
   `user_skype` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs2_user`
 --
 
 INSERT INTO `fs2_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
-(1, 'admin', 'fed81761ca322b59c39599ab264e9129', '5Y5FNoZlgO', 'mail@sweil.de', 1, 0, 1, 1302517173, 0, '', '', '', '', '', '');
+(1, 'admin', 'fed81761ca322b59c39599ab264e9129', '5Y5FNoZlgO', 'mail@sweil.de', 1, 0, 1, 1302517173, 0, '', '', '', '', '', ''),
+(2, 'test', '387b018e822b1936bbc114a2b9347396', 'XMg4s6acP6', 'asd@hallo.de', 1, 0, 0, 1306281600, 0, '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1897,6 +1947,8 @@ CREATE TABLE `fs2_useronline` (
 -- Daten für Tabelle `fs2_useronline`
 --
 
+INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
+('127.0.0.1', 1, 1306421689);
 
 -- --------------------------------------------------------
 
@@ -1944,14 +1996,15 @@ CREATE TABLE `fs2_user_groups` (
   `user_group_date` int(11) NOT NULL,
   `user_group_user` mediumint(8) NOT NULL DEFAULT '1',
   PRIMARY KEY (`user_group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs2_user_groups`
 --
 
 INSERT INTO `fs2_user_groups` (`user_group_id`, `user_group_name`, `user_group_description`, `user_group_title`, `user_group_color`, `user_group_highlight`, `user_group_date`, `user_group_user`) VALUES
-(0, 'Administrator', '', 'Administrator', '008800', 1, 1302517148, 1);
+(0, 'Administrator', '', 'Administrator', '008800', 1, 1302517148, 1),
+(1, 'sdfsdf', '', '', '-1', 0, 1306281600, 1);
 
 -- --------------------------------------------------------
 
@@ -1971,6 +2024,20 @@ CREATE TABLE `fs2_user_permissions` (
 -- Daten für Tabelle `fs2_user_permissions`
 --
 
+INSERT INTO `fs2_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
+('applets_add', 2, 0),
+('applets_delete', 2, 0),
+('applets_edit', 2, 0),
+('news_add', 2, 0),
+('news_comments', 2, 0),
+('news_config', 2, 0),
+('news_delete', 2, 0),
+('news_edit', 2, 0),
+('partner_add', 2, 0),
+('partner_config', 2, 0),
+('partner_edit', 2, 0),
+('style_add', 2, 0),
+('style_css', 2, 0);
 
 -- --------------------------------------------------------
 

@@ -36,14 +36,19 @@ if ($_POST[polladd] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
                              '".$_POST[ant][$i]."');", $db);
     }
     systext("Umfrage wurde hinzugefügt");
+    unset($_POST);
 }
 
 ////////////////////////////
 ///// Umfrage Formular /////
 ////////////////////////////
 
-else
+if(true)
 {
+    if(isset($_POST['sended'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }
+    
     //Zeit-Array für Jetzt Button
     $jetzt[tag] = date("d");
     $jetzt[monat] = date("m");
@@ -102,9 +107,11 @@ else
     echo'
                     <form id="form" action="" method="post">
                         <input type="hidden" name="go" value="poll_add">
+                        <input type="hidden" name="sended" value="add">
                         <input id="send" type="hidden" value="0" name="polladd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Umfrage hinzufügen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Frage:<br>
@@ -130,7 +137,7 @@ else
                                                      document.getElementById("startmonth").value="'.$jetzt[monat].'";
                                                      document.getElementById("startyear").value="'.$jetzt[jahr].'";
                                                      document.getElementById("starthour").value="'.$jetzt[stunde].'";
-                                                     document.getElementById("startminute").value="'.$jetzt[minute].'";\' class="button" type="button" value="Jetzt">
+                                                     document.getElementById("startminute").value="'.$jetzt[minute].'";\' type="button" value="Jetzt">
                                     <input onClick=\'var startdate = new Date(document.getElementById("startyear").value, document.getElementById("startmonth").value, document.getElementById("startday").value, document.getElementById("starthour").value, document.getElementById("startminute").value);
                                                      var newmonth = startdate.getMonth();
                                                      var Monat = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
@@ -139,7 +146,7 @@ else
                                                      {
                                                          document.getElementById("startyear").value = startdate.getFullYear();
                                                      }
-                                                     \' class="button" type="button" value="+1 Monat">
+                                                     \'  type="button" value="+1 Monat">
                                     <input onClick=\'var startdate = new Date(document.getElementById("startyear").value, document.getElementById("startmonth").value, document.getElementById("startday").value, document.getElementById("starthour").value, document.getElementById("startminute").value);
                                                      var newmonth = startdate.getMonth() - 2;
                                                      if (newmonth == -1)
@@ -156,7 +163,7 @@ else
                                                      {
                                                          document.getElementById("startyear").value = startdate.getFullYear() - 1;
                                                      }
-                                                     \' class="button" type="button" value="-1 Monat">
+                                                     \'  type="button" value="-1 Monat">
                                 </td>
                             </tr>
                             <tr>
@@ -175,7 +182,7 @@ else
                                                      document.getElementById("endmonth").value="'.$jetzt[monat].'";
                                                      document.getElementById("endyear").value="'.$jetzt[jahr].'";
                                                      document.getElementById("endhour").value="'.$jetzt[stunde].'";
-                                                     document.getElementById("endminute").value="'.$jetzt[minute].'";\' class="button" type="button" value="Jetzt">
+                                                     document.getElementById("endminute").value="'.$jetzt[minute].'";\'  type="button" value="Jetzt">
                                     <input onClick=\'var enddate = new Date(document.getElementById("endyear").value, document.getElementById("endmonth").value, document.getElementById("endday").value, document.getElementById("endhour").value, document.getElementById("endminute").value);
                                                      var newmonth = enddate.getMonth();
                                                      var Monat = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
@@ -184,7 +191,7 @@ else
                                                      {
                                                          document.getElementById("endyear").value = enddate.getFullYear();
                                                      }
-                                                     \' class="button" type="button" value="+1 Monat">
+                                                     \'  type="button" value="+1 Monat">
                                     <input onClick=\'var enddate = new Date(document.getElementById("endyear").value, document.getElementById("endmonth").value, document.getElementById("endday").value, document.getElementById("endhour").value, document.getElementById("endminute").value);
                                                      var newmonth = enddate.getMonth() - 2;
                                                      if (newmonth == -1)
@@ -201,7 +208,7 @@ else
                                                      {
                                                          document.getElementById("endyear").value = enddate.getFullYear() - 1;
                                                      }
-                                                     \' class="button" type="button" value="-1 Monat">
+                                                     \'  type="button" value="-1 Monat">
                                 </td>
                             </tr>
     ';
@@ -246,7 +253,7 @@ else
                                 <td class="configthin">
                                     <input size="2" maxlength="2" class="text" name="optionsadd">
                                     Antwortfelder
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input  type="submit" value="Hinzufügen">
                                 </td>
                             </tr>
                             <tr>
@@ -260,7 +267,7 @@ else
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">
-                                    <br><input class="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" type="button" value="Hinzufügen">
+                                    <br><input   class="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" type="button" value="Hinzufügen">
                                 </td>
                             </tr>
                         </table>

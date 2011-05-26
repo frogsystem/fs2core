@@ -24,14 +24,22 @@ if (isset($_POST[catname]))
         mysql_query($update, $db);
         systext("Die Kategorie wurde editiert");
     }
+    unset($_POST);
 }
 
 //////////////////////////
 /// Kategorie Formular ///
 //////////////////////////
 
-elseif (isset($_POST[editcatid]))
+if (isset($_POST[editcatid]))
 {
+    $_POST[editcatid] = $_POST[editcatid][0];
+    if(isset($_POST['sended'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }    
+        
+    
+    
     settype ($_POST[editcatid], 'integer');
 
     $valid_ids = array();
@@ -42,8 +50,12 @@ elseif (isset($_POST[editcatid]))
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_cat" name="go">
+                        <input type="hidden" value="edit" name="sended">
                         <input type="hidden" value="'.$cat_arr[cat_id].'" name="catid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="'.$cat_arr[cat_id].'" name="editcatid[0]">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Kategorie bearbeiten</h3><hr></td></tr>
+
                             <tr>
                                 <td class="config" valign="top">
                                     Name:<br>
@@ -101,7 +113,8 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_cat" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content select_list" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="3"><h3>Produkt bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="40%">
                                     Name
@@ -119,7 +132,7 @@ else
     {
         $sub = ($cat_arr[subcat_id] == 0) ? "Nein" : "Ja";
         echo'
-                            <tr>
+                            <tr class="thin select_entry">
                                 <td class="configthin">
                                     '.$cat_arr[cat_name].'
                                 </td>
@@ -127,15 +140,17 @@ else
                                     '.$sub.'
                                 </td>
                                 <td class="config">
-                                    <input type="radio" name="editcatid" value="'.$cat_arr[cat_id].'">
+                                    <input class="select_box" type="checkbox" name="editcatid[]" value="'.$cat_arr[cat_id].'">
                                 </td>
                             </tr>
         ';
     }
     echo'
-                            <tr>
+                            <tr style="display:none">
                                 <td colspan="3">
-                                    &nbsp;
+                                    <select class="select_type" name="cat_action" size="1">
+                                        <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>

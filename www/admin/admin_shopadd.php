@@ -18,23 +18,39 @@ if ($_FILES[artikelimg] && $_POST[title] && $_POST[url] && $_POST[preis])
                          '".$_POST[preis]."',
                          '".$_POST[hot]."');", $db);
     $id = mysql_insert_id();
-
-    $upload = upload_img($_FILES['artikelimg'], "images/shop/", $id, 2*1024*1024, 400, 600);
-    systext(upload_img_notice($upload));
-    $thumb = create_thumb_from(image_url("images/shop/",$id,FALSE, TRUE), 100, 100);
-    systext(create_thumb_notice($thumb));
+    
+    $messages = array();
+    if (!empty($_FILES[artikelimg][name]))
+    {
+        $upload = upload_img($_FILES['artikelimg'], "images/shop/", $id, 2*1024*1024, 400, 600);
+        $messages[] = upload_img_notice($upload);
+        $thumb = create_thumb_from(image_url("images/shop/",$id,FALSE, TRUE), 100, 100);
+        $messages[] = create_thumb_notice($thumb);
+    }
+    
+    $messages[] = $TEXT['admin']->get("changes_saved");
+    
+    echo get_systext(implode("<br>", $messages), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+    unset($_POST);
 }
 
 ////////////////////////////
 ///// Artikel Formular /////
 ////////////////////////////
 
-else
+if(true)
 {
+    if(isset($_POST['sended'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }
+    
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shop_add" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="1" name="sended">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Produkt hinzufügen</h3><hr></td></tr>
+                            
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>

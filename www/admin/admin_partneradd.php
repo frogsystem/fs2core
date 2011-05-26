@@ -91,7 +91,7 @@ if ($_FILES['bild_small']['name'] != ""
 //// Error Message    ////
 //////////////////////////
 elseif ($_POST['sended']) {
-    systext ($admin_phrases[common][note_notfilled]);
+    echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
     
     $_POST['name'] = killhtml($_POST['name']);
     $_POST['link'] = killhtml($_POST['link']);
@@ -107,7 +107,8 @@ echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="partner_add" name="go">
                         <input type="hidden" value="1" name="sended">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>'.$admin_phrases[partner][add].'</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     '.$admin_phrases[partner][small_pic].':<br />
@@ -168,10 +169,9 @@ echo'
                                     <input type="checkbox" value="1" name="permanent" '.$_POST[permanent].'>
                                 </td>
                             </tr>
-                            <tr><td></td></tr>
+
                             <tr>
-                                <td></td>
-                                <td align="left">
+                                <td align="left" colspan="2">
                                     <input class="button" type="submit" value="'.$admin_phrases[partner][add].'">
                                 </td>
                             </tr>

@@ -23,14 +23,19 @@ if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_
                ";
     mysql_query($update, $db);
     systext("Die Konfiguration wurde aktualisiert");
+    unset($_POST);
 }
 
 /////////////////////////////////////
 ////// Konfiguration Formular ///////
 /////////////////////////////////////
 
-else
+if(true)
 {
+    if(isset($_POST['sended'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }        
+    
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_config", $db);
     $config_arr = mysql_fetch_assoc($index);
     
@@ -39,7 +44,9 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_config" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="save" name="sended">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Einstellungen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="70%">
                                     Max. Bildgröße:<br>

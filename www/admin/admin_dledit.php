@@ -111,14 +111,21 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text])
         }
         systext("Download wurde aktualisiert");
     }
+    unset($_POST);
 }
   
 ////////////////////////////////
 ////// Download editieren //////
 ////////////////////////////////
 
-elseif ($_POST[dlid] || $_POST[optionsadd])
+if ($_POST[dlid] || $_POST[optionsadd])
 {
+    $_POST[dlid] = $_POST[dlid][0];
+    if(isset($_POST['sended']) && !isset($_POST['files_add'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }     
+    
+    
     if (isset($_POST[tempid]))
     {
         $_POST[dlid] = $_POST[tempid];
@@ -196,11 +203,14 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
     echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" name="go" value="dl_edit">
+                        <input type="hidden" name="sended" value="edit">
                         <input id="send" type="hidden" value="0" name="dledit">
                         <input type="hidden" value="'.$_POST[dlid].'" name="tempid">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
                         <input type="hidden" value="'.$_POST[dlid].'" name="editdlid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="'.$_POST[dlid].'" name="dlid[0]">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Download bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="40%">
                                     Kategorie:<br>
@@ -292,11 +302,11 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
             ';
             if ($ftp) {
                 echo '  
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
                 ';
             }
             echo '
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
+                                    <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
                                     <input class="text" size="30" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />                                    
                                     <input class="text" size="30" value="'.$_POST[fcount][$j].'" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'"><br />
@@ -322,11 +332,11 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
             ';
             if ($ftp) {
                 echo '
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
                 ';
             }
             echo '
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
+                                    <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
                                     <input class="text" size="30" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />                                    
                                     <input class="text" size="30" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
@@ -345,7 +355,7 @@ elseif ($_POST[dlid] || $_POST[optionsadd])
                                 <td class="configthin">
                                     <input size="2" class="text" name="optionsadd">
                                     Files
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input name="files_add"  type="submit" value="Hinzufügen">
                                 </td>
                             </tr>
                             <tr>
@@ -415,7 +425,7 @@ else
 
     echo'
                                     </select>
-                                    <input class="button" type="submit" value="Anzeigen">
+                                    <input  type="submit" value="Anzeigen">
                                 </td>
                             </tr>
                         </table>
@@ -425,7 +435,8 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content select_list" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="3"><h3>Download auswählen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="40%">
                                     Titel
@@ -451,24 +462,26 @@ else
         $catindex = mysql_query("SELECT cat_name from ".$global_config_arr[pref]."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $db);
         $dbcatname = mysql_result($catindex, 0, "cat_name");
         echo'
-                            <tr>
+                            <tr class="thin select_entry">
                                 <td class="configthin">
                                     '.$dl_arr[dl_name].'
                                 </td>
                                 <td class="configthin">
                                     '.$dbcatname.'
                                 </td>
-                                <td class="configthin">
-                                    <input type="radio" name="dlid" value="'.$dl_arr[dl_id].'">
+                                <td class="top center">
+                                    <input class="select_box" type="checkbox" name="dlid[]" value="'.$dl_arr[dl_id].'">
                                 </td>
                             </tr>
         ';
     }
 
     echo'
-                            <tr>
+                            <tr style="display:none">
                                 <td colspan="3">
-                                    &nbsp;
+                                    <select class="select_type" name="dl_action" size="1">
+                                        <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>

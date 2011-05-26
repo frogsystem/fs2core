@@ -4,7 +4,7 @@
 //// Screenshot hochladen ///
 /////////////////////////////
 
-if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
+if (!empty($_FILES['cimg']['name']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
 {
   if ($_POST['thumb'] == 1) {
       $make_thumb = true;
@@ -62,13 +62,18 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
       systext($error_message);
     }
 
-
+    if (!isset($_POST['oldname']))
+        $_POST['oldname'] = 1;
+        
+    if (!isset($_POST['thumb']))
+        $_POST['thumb'] = 0;        
     
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="cimg_add" name="go">
-                        <input type="hidden" name="sended" value="">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" name="sended" value="upload">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Inhaltsbilder hinzufügen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
@@ -85,14 +90,19 @@ echo'
                                     <font class="small">Soll das Bild den ursprünglichen Namen behalten?</font>
                                 </td>
                                 <td class="config" valign="middle">
-                                  <input class="text" type="checkbox" name="oldname" id="newname" value="1" ';
+                                  <img class="checkbox" src="images/checkbox.png" alt="[_]">
+                                  <input class="hidden" type="checkbox" name="oldname" id="newname" value="1"';
                                   if ($_POST['oldname'] == 1)
-                                    echo 'checked=cehcked';
+                                    echo ' checked ';
 echo'
-                                   />
+                                   onChange="$(\'#new_name_tr\').toggle(!$(this).prop(\'checked\'))">
                                 </td>
                             </tr>
-                            <tr>
+                            <tr id="new_name_tr" class="';
+                                  if ($_POST['oldname'] == 1)
+                                    echo 'hidden';
+echo'
+                            ">
                                 <td valign="top" class="config">
                                     Neuer Bildname:<br>
                                     <font class="small">ohne Dateiendung</font>
@@ -108,15 +118,20 @@ echo'
                                     <font class="small">Soll ein Thumbnail (Vorschaubild) erstellt werden?</font>
                                 </td>
                                 <td class="config" valign="middle">
-                                  <input class="text" style="vertical-align:middle;" type="checkbox" name="thumb" value="1" ';
+                                  <img class="checkbox middle" src="images/checkbox.png" alt="[_]">
+                                  <input class="hidden" type="checkbox" name="thumb" id="thumb" value="1"';
                                   if ($_POST['thumb'] == 1)
-                                    echo 'checked=cehcked';
+                                    echo ' checked ';
 echo'
-                                   />
-                                  <font class="small">Erstellt ein Thumbnail als <b>bildname_s.jpg/.gif/.png</b> (s.o.)</font>
+                                   onChange="$(\'#thumb_tr\').toggle($(this).prop(\'checked\'))" >
+                                  <label class="small" for="thumb">Erstellt ein Thumbnail als <b>bildname_s.jpg/.gif/.png</b> (s.o.)</label>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr id="thumb_tr" class="';
+                                  if ($_POST['thumb'] != 1)
+                                    echo 'hidden';
+echo'
+                            ">
                                 <td class="config" valign="top">
                                     Thumbnail-Maße: <font class="small">(Breite x Höhe)</font><br />
                                     <font class="small">Max. Abemsseungen des Thumbnails.</font>

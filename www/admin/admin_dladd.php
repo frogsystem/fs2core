@@ -73,14 +73,20 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text])
         }
     }
     systext("Download wurde hinzugefügt");
+    
+    unset($_POST);
 }
 
 /////////////////////////////
 ///// Download Formular /////
 /////////////////////////////
 
-else
+if(true)
 {
+    if(isset($_POST['sended']) && !isset($_POST['files_add'])) {
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+    }        
+    
     if (!isset($_POST[options]))
     {
         $_POST[options] = 1;
@@ -93,10 +99,13 @@ else
     echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="dl_add" name="go">
+                        <input type="hidden" value="add" name="sended">
                         <input id="send" type="hidden" value="0" name="dladd">
                         <input type="hidden" value="'.$_POST[options].'" name="options">
                         <input type="hidden" value="'.$_SESSION[user_id].'" name="userid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Download hinzufügen</h3><hr></td></tr>
+
                             <tr>
                                 <td class="config" valign="top" width="40%">
                                     Kategorie:<br>
@@ -184,11 +193,11 @@ else
             ';
             if ($ftp) {
                 echo '                                    
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
                 ';
             }
             echo '
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
+                                    <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
                                     <input class="text" size="30" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'">
                                 </td>
@@ -209,11 +218,11 @@ else
             ';
             if ($ftp) {
                 echo '
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
                 ';
             }
             echo '
-                                    <input class="button" type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
+                                    <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
                                     <input class="text" size="30" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                 </td>
@@ -230,7 +239,7 @@ else
                                 <td class="configthin">
                                     <input size="2" class="text" name="optionsadd">
                                     Files
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input name="files_add" type="submit" value="Hinzufügen">
                                 </td>
                             </tr>
                             <tr>

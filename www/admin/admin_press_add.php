@@ -48,12 +48,13 @@ if (($_POST['title'] AND $_POST['title'] != "")
                          '$_POST[cat]')", $db);
 
     systext("Pressebericht wurde gespeichert.");
+    unset($_POST);
 }
 
 ////////////////////////////////////////////
 ///// Pre-, Re oder Interview Formular /////
 ////////////////////////////////////////////
-else
+if(true)
 {
     //Initialisiere Werte
     unset($press_arr['press_title']);
@@ -78,7 +79,8 @@ else
 
     //Error Message
     if ($_POST['sended'] == "add") {
-        systext ($admin_phrases[common][note_notfilled]);
+        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+
 
         $press_arr['press_title'] = killhtml($_POST['title']);
         $press_arr['press_url'] = killhtml($_POST['url']);
@@ -102,7 +104,8 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="press_add" name="go">
                         <input type="hidden" value="add" name="sended">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Pressebreicht hinzufügen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Titel:<br>
@@ -130,7 +133,7 @@ else
                                     <input class="text" size="1" name="day" id="day" maxlength="2" value="'.$date['tag'].'"> .
                                     <input class="text" size="1" name="month" id="month"  maxlength="2" value="'.$date['monat'].'"> .
                                     <input class="text" size="3" name="year" id="year"  maxlength="4" value="'.$date['jahr'].'">&nbsp;
-                                    <input class="button" type="button" value="Heute"
+                                    <input  type="button" value="Heute"
                                      onClick=\'document.getElementById("day").value="'.$heute[tag].'";
                                                document.getElementById("month").value="'.$heute[monat].'";
                                                document.getElementById("year").value="'.$heute[jahr].'";\'>
@@ -224,10 +227,9 @@ else
                                     </select>
                                 </td>
                             </tr>
-                            <tr><td>&nbsp;</td></tr>
+
                             <tr>
-                                <td></td>
-                                <td align="left">
+                                <td colspan="2">
                                     <input class="button" type="submit" value="Pressebericht hinzufügen">
                                 </td>
                             </tr>
