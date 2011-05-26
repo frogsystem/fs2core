@@ -38,7 +38,7 @@
             <td>
                 <input class="half" name="dyn_title_ext" id="dyn_title_ext" maxlength="100" value="<!--TEXT::dyn_title_ext-->"><br>
                 <span class="small" style="padding-top: 3px; display: block;">
-                    <!--COMMON::valid_tags-->:&nbsp;&nbsp;
+                    <strong><!--COMMON::valid_tags-->:</strong>&nbsp;&nbsp;
                     <!--TEXT::dyn_title_ext_tt-->
                 </span>
             </td>
@@ -220,7 +220,7 @@
             </td>
             <td>
                 <input class="half" name="date" maxlength="255" value="<!--TEXT::date-->"><br>
-                <span class="small"><!--LANG::date_info--></span>
+                <span class="small"><!--COMMON::date_info--></span>
             </td>
         </tr>
         
@@ -231,7 +231,7 @@
             </td>
             <td>
                 <input class="half" name="time" maxlength="255" value="<!--TEXT::time-->"><br>
-                <span class="small"><!--LANG::date_info--></span>
+                <span class="small"><!--COMMON::date_info--></span>
             </td>
         </tr>
         
@@ -242,7 +242,7 @@
             </td>
             <td>
                 <input class="half" name="datetime" maxlength="255" value="<!--TEXT::datetime-->"><br>
-                <span class="small"><!--LANG::date_info--></span>
+                <span class="small"><!--COMMON::date_info--></span>
             </td>
         </tr>
         
@@ -265,7 +265,7 @@
                     <span class="small"><!--LANG::page_desc-->
                 </p>
                 <p class="small">
-                    <!--COMMON::valid_tags-->:<br>
+                    <strong><!--COMMON::valid_tags-->:</strong><br>
                     <!--TEXT::page_tt-->
                 </p>                
             </td>
@@ -281,7 +281,7 @@
                     <span class="small"><!--LANG::page_prev_desc-->
                 </p>
                 <p class="small">
-                    <!--COMMON::valid_tags-->:<br>
+                    <strong><!--COMMON::valid_tags-->:</strong><br>
                     <!--TEXT::page_prev_tt-->
                 </p>
             </td>
@@ -297,7 +297,7 @@
                     <span class="small"><!--LANG::page_next_desc-->
                 </p>
                 <p class="small">
-                    <!--COMMON::valid_tags-->:<br>
+                    <strong><!--COMMON::valid_tags-->:</strong><br>
                     <!--TEXT::page_next_tt-->
                 </p>
             </td>

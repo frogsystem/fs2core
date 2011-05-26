@@ -41,7 +41,6 @@ reg_antispam:                                      Anti-Spam bei Registrierung
 reg_antispam_desc:                                 Aktiviert die Anti-Spam Abfrage bei der Registrierung.
 date:                                              Datum
 date_desc:                                         Datumsformat, das auf der Seite verwendet werden soll.
-date_info:                                         verwendet den Syntax der PHP-Funktion <a href="http://www.php.net/manual/de/function.date.php" target="_blank" class="small">date()</a>
 pagenav_title:                                     Seitennavigation
 page:                                              Seitenanzeige
 page_desc:                                         Design der Seitenanzeige bei mehrseitigen Anzeigen.

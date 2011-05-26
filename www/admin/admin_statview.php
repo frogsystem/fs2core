@@ -19,7 +19,7 @@ $month_arr = array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", 
 //////////////////////////////////
 
 echo'
-                    <table border="0" cellpadding="10" cellspacing="0" width="600">
+                    <table border="0" cellpadding="10" cellspacing="0" width="600" align="center">
                         <tr>
                             <td width="100%" colspan="2" align="center">
 ';
@@ -225,7 +225,7 @@ for ($m=1; $m<13; $m++)
         echo'
                                     <tr>
                                         <td class="n" align="center">
-                                            <a style="text-decoration:none;" href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=stat_view&PHPSESSID='.session_id().'&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
+                                            <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=stat_view&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
                                         </td>
                                         <td class="n" align="center">
                                             '.point_number($sum_arr[sumvisits]).'
@@ -233,8 +233,9 @@ for ($m=1; $m<13; $m++)
                                         <td class="n" align="center">
                                             '.point_number($sum_arr[sumhits]).'
                                         </td>
-                                        <td class="n" align="left" style="font-size:1pt;">
-                                            <img align="left" onClick=\'open("admin_statgfx.php?s_year='.$_GET[s_year].'&s_month='.$m.'","Picture","width=520,height=330,screenX=200,screenY=150")\' style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
+                                        <td class="n" align="left" style="font-size:1pt;" class="bottom">
+                                            <img align="left" title="Diagramm anzeigen" class="bottom" onClick=\'open("admin_statgfx.php?s_year='.$_GET[s_year].'&s_month='.$m.'","Picture","width=520,height=330,screenX=200,screenY=150")\' style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
+                                            <img border="0" src="img/null.gif" height="4" width="1"><br>
                                             <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
                                             <img border="0" src="img/chits.gif" height="4" width="'.round($hitswidth).'">
                                         </td>

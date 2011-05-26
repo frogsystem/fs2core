@@ -89,6 +89,13 @@ $().ready(function(){
         }
     }
     
+    //~ Image Checkboxes
+    function permselect (obj, checked) {    
+        obj.parents("p:first").find("input[type=checkbox]:enabled").each(function (index, ele) {          
+            $(ele).prop("checked", checked);
+        });
+    }
+    
 //--------------------------------
 // END - Functions
 //--------------------------------

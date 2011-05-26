@@ -1,0 +1,190 @@
+/**************************************************/
+/* tooltip */
+/**************************************************/
+
+a.tooltip {
+ position: relative;
+ text-decoration: none;
+ font-style: normal;
+ font-weight: normal;
+ border: none;
+}
+a.tooltip:hover, a.tooltip:focus {
+ z-index: 1000;
+ background: transparent;
+ cursor:help;
+ text-decoration: none;
+ font-style: normal;
+ font-weight: normal;
+ border: none;
+}
+a.tooltip span {
+ display: none;
+ position: absolute;
+ text-decoration: none;
+ font-style: normal;
+ font-weight: normal;
+ border: none;
+ font-size:7pt;
+}
+a.tooltip:hover span, a.tooltip:focus span {
+ display: block;
+ position: absolute;
+ top: 25px;
+ left: 0px;
+ width: 150px;
+ z-index: 100;
+ color: #000000;
+ border: 1px solid;
+ border-color: #000000 #000000 #000000 #000000;
+ padding: 3px;
+ background: #EEEEEE;
+ font-family: Verdana, Arial, Helvetica, Sans-serif;
+ text-align: left;
+ text-decoration: none;
+ font-style: normal;
+ font-weight: normal;
+}
+
+
+/**************************************************/
+/* statistik table styles */
+/**************************************************/
+td.h, td.n, td.nw {
+    font-size:8pt;
+    font-family:Verdana;
+    font-weight:bold;
+    color:#000000;
+    background:#AAAAAA;
+}
+td.n {
+    background:#CCCCCC;
+}
+td.nw {
+    background:#BBBBBB;
+} 
+
+
+
+/**************************************************/
+/* old formular styles */
+/**************************************************/
+.input_width{
+    width:275px;
+}
+.input_width_small{
+    width:200px;
+}
+.input_width_mini{
+    width:150px;
+}
+.input_highlight:focus, input_highlight:active{
+    background-color:#64DC6A;
+}
+.nomonospace {
+    font-family: Arial, sans-serif;
+}
+.monospace {
+    font-family: "Courier New", Courier, monospace;
+}
+
+.button_new
+{
+    display:block;
+    padding:3px;
+    padding-right:9px;
+    width:100%;
+    height: 27px;
+    background-image:url('../img/button.jpg');
+    background-repeat:repeat;
+    font-weight:bold;
+    color:#FFFFFF;
+    font-size:9pt;
+    font-family:Arial;
+    border:1px solid #000000;
+    cursor:pointer;
+    text-align:right;
+    white-space:nowrap;
+}
+.button_new:hover, .button_new:focus
+{
+    text-decoration:none;
+    background-image:url('../img/button_hover.jpg');
+}
+
+a.image_hover {
+  display:block;
+  cursor:pointer;
+  background-position: bottom right;
+}
+a.image_hover:hover, a.image_hover:focus {
+  background-position: top left;
+}
+
+/**************************************************/
+/* old standard formular styles */
+/**************************************************/
+table.configtable {
+    width:100%;
+    border:0px;
+}
+
+table.configtable .config, table.configtable  .configthin, table.configtable .configbig {
+    text-align:left;
+    vertical-align:top;
+    color:#000000;    
+    font-size:11pt;
+    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
+    padding-left:0px;
+    font-weight:bold;
+}
+table.configtable .configthin {
+    font-weight:normal;
+}
+table.configtable .configbig  {
+    font-size:13pt;
+}
+
+table.configtable .config .small, table.configtable .configthin .small, table.configtable .configbig .small {
+    font-size:10pt;
+    font-weight:normal;
+    font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
+
+}
+
+td.line, td.line_red 
+{
+    background-image:url('../images/line_green.jpg');
+    background-repeat:repeat-x;
+    background-position:left 25px;
+    height:45px;
+    padding:0px 0px;
+    text-align:left;
+    vertical-align:top;
+    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;    
+    font-size:160%; 
+}
+td.line_red
+{
+    background-image:url('../images/line_red.jpg');
+}
+td.space
+{
+    height:15px;
+}
+td.right_space
+{
+    width:50%;
+}
+td.buttontd
+{
+    padding:0px;
+}
+td.combi_button
+{
+    background-image:url('../img/button.jpg');
+    background-repeat:repeat;
+    border:1px solid #000000;
+    white-space:nowrap;
+    vertical-align:middle;
+}

@@ -203,7 +203,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                                 <span class="small"><b>Hinweise:</b><br>
                                 Unter-Rechte werden nur wirksam, wenn auch das zugehörige Haupt-Recht erteilt wurde.</span>
                                 <table cellpadding="4" cellspacing="0" align="center">
-                                    <tr><td class="config">
+                                    <tr><td class="config"><p></p>
     ';
 
     // get data for col-divisor
@@ -215,11 +215,11 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
     foreach ( $DATA_ARR as $GROUP_ARR ) {
         if ( is_array ( $GROUP_ARR['links'] ) ) {
             if ( $per_col < $i + count ( $GROUP_ARR['links'] ) && $j < 3 ) {
-                echo '</td><td width="30" class="config"></td><td class="config">';
+                echo '</td><td width="30" class="config"></td><td class="config"><p></p>';
                 $i = 1;
                 $j++;
             }
-            echo '<br>'.$GROUP_ARR['title'].'<br>';
+            echo '<p>'.$GROUP_ARR['title'].' <span class="small">(<span class="link" onclick="permselect($(this), true)">alle</span>/<span class="link" onclick="permselect($(this), false)">keine</span>)</span><br>';
             foreach ( $GROUP_ARR['links'] as $PAGE_ID => $PAGE_ARR ) {
                 echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="icons/sub-right-arrow.gif" alt="->">' : "";
                 echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" id="'.$PAGE_ID.'" name="'.$PAGE_ID.'" value="1"
@@ -228,6 +228,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                 ><label class="small pointer" for="'.$PAGE_ID.'">'.$PAGE_ARR['page_link'].'</label><br>';
                  $i++;
             }
+            echo '</p>';
         }
     }
               

@@ -7,6 +7,9 @@ set_include_path ( '.' );
 define ( FS2_ROOT_PATH, "./../", TRUE );
 
 require( FS2_ROOT_PATH . "login.inc.php");
+require( FS2_ROOT_PATH . "includes/newfunctions.php");
+
+if (has_perm("stat_view")) {
 
 if (!isset($_GET[s_year]))
 {
@@ -288,4 +291,5 @@ if ( $_SESSION['stat_view'] == 1 ) {
 	imagepng($image);
 }
 mysql_close($db);
+}
 ?>

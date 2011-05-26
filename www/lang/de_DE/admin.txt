@@ -19,6 +19,8 @@ exact:                                   exakt
 hex_color:                               Hexadezimal Farbcode
 folder_name_info:                        nur a-z, 0-9, "-" und "_" erlaubt
 chars:                                   Zeichen
+date_info:                               verwendet den Syntax der PHP-Funktion <a class="s" href="http://www.php.net/manual/de/function.date.php" target="_blank" class="small">date()</a>
+
 
 
 # Frequently used Phrases
