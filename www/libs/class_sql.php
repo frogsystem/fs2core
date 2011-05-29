@@ -40,7 +40,7 @@ class sql {
 
 
     // save sql data
-    private function escape ($VAL) {
+    public function escape ($VAL) {
       
         // remove fucking magic quotes
         if (get_magic_quotes_gpc())

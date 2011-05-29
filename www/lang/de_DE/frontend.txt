@@ -1,4 +1,49 @@
-# Language-Definition for frontend.php
+# old Language-Definition for frontend
+no_connection:                                     Beim Verbindungsaufbau zum Server ist ein Fehler aufgetreten. Bitte versuchen Sie es später nocheinmal.
+no_con_title:                                      Keine Verbindung!
+sysmessage:                                        Systemmeldung
+access_denied:                                     Zugriff verweigert
+file_not_found:                                    Das Angegebene Dokument kann nicht gefunden werden
+time_at:                                           um
+pass_change:                                       Passwortänderung auf 
+registration:                                      Registrierung auf 
+news_not_exist:                                    News nicht vorhanden
+no_result_time:                                    Keine Einträge in diesem Zeitraum gefunden
+no_result_word:                                    Keine Einträge mit diesem Stichwort gefunden
+add_comment:                                       Kommentar hinzufügen
+comment_not_added:                                 Kommentar konnte nicht hinzugefügt werden.
+comment_empty:                                     <br>Es müssen alle Felder ausgefüllt sein.
+comment_spam:                                      <br>Die Rechenaufgabe muss richtig gelöst werden.
+no_comments:                                       Es wurden keine Kommentare gefunden
+comm_not_allowed:                                  Es ist dir nicht erlaubt Kommentare zu verfassen
+comm_not_activ:                                    Das Kommentarsystem ist bei dieser News deaktiviert
+no_pics:                                           Es wurden keine Bilder gefunden.
+dl_not_logged_in:                                  <font color="red"><b>Hinweis:</b></font> Um Dateien runterzuladen musst du <a href="?go=login">eingeloggt</a> sein. Ansonsten kannst du nur die Mirros nutzen.
+dl_not_allowed:                                    <font color="red"><b>Hinweis:</b></font> Die Download-Funktion ist derzeit deaktiviert. Du kannst nur die Mirros nutzen.
+dl_not_save_as:                                    <font color="red"><b>Hinweis:</b></font> "Ziel speichern unter" ist nicht möglich.
+dl_not_exist:                                      Download nicht vorhanden
+avatar_loaded:                                     Avatar wurde hochgeladen
+avatar_no_jpggif:                                  Avatar konnte nicht hocgeladen werden. Es muss ein JPG oder GIF sein
+avatar_to_big:                                     Avatar konnte nicht hocgeladen werden. Die Datei ist zu groß
+profile_update:                                    Profil wurde aktualisiert.
+pass_update:                                       Passwort wurde geändert.
+pass_failed:                                       Passwort ändern fehlgeschlagen
+pass_newwrong:                                     Das gewünschte Passwort wurde nicht zweimal gleich eingegeben
+pass_oldwrong:                                     Das bisherige Passwort wurde nicht korrekt eingegeben
+no_avatar:                                         Kein Bild gewählt
+user_not_exist:                                    Dieser User existiert nicht
+user_exists:                                       Username existiert bereits
+registered:                                        Du bist nun registriert und kannst dich auf der Seite einloggen
+user_antispam:                                     Die Rechenaufgabe muss richtig gelöst werden.
+not_twice:                                         Du hast dich bereits auf der Seite registriert.
+logged_in:                                         Du bist eingeloggt
+logged_out:                                        Du bist nun wieder ausgeloggt
+article_not_found:                                 Artikel nicht vorhanden
+multiple_choise:                                   Mehrfachauswahl
+single_choice:                                     Einzelauswahl
+
+
+# new Language-Definition for frontend
 no_connection_to_the_server:     Es konnte keine Verbindung zum Server hergestellt werden. Bitte versuchen Sie es später wieder.
 no_connection:                   Verbindung fehlgeschlagen
 systemmessage:                   Systemmeldung

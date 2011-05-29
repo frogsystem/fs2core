@@ -123,7 +123,7 @@ if (isset($_POST['add_comment']))
                         $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_not_added")."<br>".$TEXT['frontend']->get("comment_duplicate"), $_SERVER['REQUEST_URI'] );
                     }
                 } else {
-                    $message_template = sys_message($phrases[sysmessage], $phrases[comm_not_allowd]);
+                    $message_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("comm_not_allowd"));
                 }
     }
     else
@@ -133,13 +133,13 @@ if (isset($_POST['add_comment']))
             || $_POST[title] == ""
             || $_POST[text] == "")
         {
-            $reason[] = $phrases[comment_empty];
+            $reason[] = $TEXT['frontend']->get("comment_empty");
         }
         if (!($anti_spam == TRUE))
         {
-                        $reason[] = $phrases[comment_spam];
+                        $reason[] = $TEXT['frontend']->get("comment_spam");
         }
-        $message_template = sys_message($phrases[comment_not_added], implode ( "<br>", $reason ) );
+        $message_template = sys_message($TEXT['frontend']->get("comment_not_added"), implode ( "<br>", $reason ) );
     }
 }
 
@@ -169,7 +169,7 @@ if ( $SHOW == TRUE ) {
         $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
         $global_config_arr['dyn_title_page'] = stripslashes ( $news_arr['news_title'] );
     } else {
-        $news_template = sys_message($phrases[sysmessage], $phrases[news_not_exist]);
+        $news_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("news_not_exist"));
     }
 
     // Text formatieren
@@ -274,7 +274,7 @@ if ( $SHOW == TRUE ) {
     unset($comment_arr);
     if (mysql_num_rows($index) <= 0  ) {
         if ( $news_arr[news_comments_allowed] == 1 ) {
-            $comments_template = sys_message($phrases[sysmessage], $phrases[no_comments]);
+            $comments_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("no_comments"));
         } else {
             $comments_template = "";
         }
@@ -340,9 +340,9 @@ if ( $SHOW == TRUE ) {
         if ( $news_arr[news_comments_allowed] == 1 && $comments_right == TRUE ) {
             $comment_form_template = $formular_template;
         } elseif ( $comments_right == FALSE ) {
-            $comment_form_template = sys_message($phrases[sysmessage], $phrases[comm_not_allowed]);
+            $comment_form_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("comm_not_allowed"));
         } else {
-            $comment_form_template = sys_message($phrases[sysmessage], $phrases[comm_not_activ]);
+            $comment_form_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("comm_not_activ"));
         }
 
         // Get Comments Body Template

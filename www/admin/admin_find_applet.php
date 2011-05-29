@@ -12,7 +12,7 @@ if (count($files) < 1) {
     // display error
     $adminpage->clearConds();
     $adminpage->clearTexts();
-    echo $adminpage->get("no");
+    $content = $adminpage->get("no");
 } else {
     // get lines
     initstr($lines);

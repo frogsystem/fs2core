@@ -240,7 +240,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="cat_username" value="'.$cat_arr['cat_username'].'">
                                     <input type="hidden" id="userid" name="cat_user" value="'.$cat_arr['cat_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_finduser.php", 400, 400 ).'\' value="'.$admin_phrases[common][change_button].'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( "?go=find_user", 400, 400 ).'\' value="'.$admin_phrases[common][change_button].'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

@@ -197,7 +197,7 @@ else
                                 <td class="config">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="article_user_name" value="'.$_POST['article_user_name'].'">
                                     <input type="hidden" id="userid" name="article_user" value="'.$_POST['article_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_finduser.php", 400, 400 ).'\' value="'.$admin_phrases[common][change_button].'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( "?go=find_user", 400, 400 ).'\' value="'.$admin_phrases[common][change_button].'">
                                     <input onClick=\'document.getElementById("username").value="";
                                                      document.getElementById("userid").value="0";\' class="button" type="button" value="'.$admin_phrases[common][delete_button].'">
                                 </td>

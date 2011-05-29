@@ -800,7 +800,7 @@ function create_textarea_seperator()
 function sys_message ( $TITLE, $MESSAGE )
 {
     global $db, $global_config_arr;
-
+    
     $template = new template();
 
     $template->setFile ( "0_general.tpl" );
@@ -809,8 +809,7 @@ function sys_message ( $TITLE, $MESSAGE )
     $template->tag ( "message_title", $TITLE );
     $template->tag ( "message", $MESSAGE );
 
-    $template = $template->display ();
-    return $template;
+    return (string) $template;
 }
 
 /////////////////////////

@@ -183,7 +183,7 @@ if ( TRUE )
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="poster" value="'.$_POST['poster'].'">
                                     <input type="hidden" id="userid" name="posterid" value="'.$_POST['posterid'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_finduser.php", 400, 400 ).'\' value="'.$admin_phrases[common][change_button].'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( "?go=find_user", 400, 400 ).'\' value="'.$admin_phrases[common][change_button].'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

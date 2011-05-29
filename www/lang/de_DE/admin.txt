@@ -30,6 +30,7 @@ and:                                     und
 optional:                                optional
 filename:                                Dateiname
 show:                                    anzeigen
+select:                                  auswählen
 selection:                               Auswahl
 active:                                  aktiv
 active_big:                              Aktiv
@@ -79,6 +80,7 @@ do_action_button_long:                   Aktion ausführen
 save_changes_button:                     Änderungen speichern
 select_button:                           Auswählen
 file_select_button:                      Datei auswählen
+search_button:                           Suchen
 
 
 # Messages

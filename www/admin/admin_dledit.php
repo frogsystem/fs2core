@@ -302,7 +302,7 @@ if ($_POST[dlid] || $_POST[optionsadd])
             ';
             if ($ftp) {
                 echo '  
-                                    <input  type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( "?go=find_file&amp;id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
                 ';
             }
             echo '
@@ -332,7 +332,7 @@ if ($_POST[dlid] || $_POST[optionsadd])
             ';
             if ($ftp) {
                 echo '
-                                    <input  type="button" onClick=\''.openpopup ( "admin_find_file.php?id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( "?go=find_file&amp;id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
                 ';
             }
             echo '
