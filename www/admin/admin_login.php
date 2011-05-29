@@ -31,7 +31,7 @@ if ( isset ( $_POST['username'] ) && isset ( $_POST['userpassword'] ) )
 
 elseif (is_authorized()) 
 {
-    echo systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!');
+            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!', FALSE, $TEXT['admin']->get("icon_login") );
 }
 
 ////////////////////////////

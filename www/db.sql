@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 29. Mai 2011 um 11:19
+-- Erstellungszeit: 29. Mai 2011 um 20:47
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -461,7 +461,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 20, 272, 2, 4, 4, 3);
+(1, 22, 339, 2, 4, 5, 3);
 
 -- --------------------------------------------------------
 
@@ -483,7 +483,7 @@ CREATE TABLE `fs2_counter_ref` (
 --
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/', 32, 1302557491, 1306662345);
+('http://localhost/', 33, 1302557491, 1306687838);
 
 -- --------------------------------------------------------
 
@@ -522,7 +522,7 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 5, 24, 1, 5),
 (2011, 5, 25, 1, 12),
 (2011, 5, 26, 1, 27),
-(2011, 5, 29, 1, 1);
+(2011, 5, 29, 3, 68);
 
 -- --------------------------------------------------------
 
@@ -544,7 +544,7 @@ CREATE TABLE `fs2_dl` (
   `dl_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`dl_id`),
   FULLTEXT KEY `dl_name_text` (`dl_name`,`dl_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Daten für Tabelle `fs2_dl`
@@ -559,7 +559,8 @@ INSERT INTO `fs2_dl` (`dl_id`, `cat_id`, `user_id`, `dl_date`, `dl_name`, `dl_te
 (6, 1, 1, 1302597870, 'wsd', 'sdf', '', '', 1, 1302597870),
 (7, 1, 1, 1302597934, 'sdf', 'sd', '', '', 1, 1302597934),
 (9, 1, 1, 1306417405, 'Frogsystem 2.alix6', 'asda', 'asd', 'asd', 1, 1306417405),
-(10, 1, 1, 1306417420, 'Hansens wunderbare Weasddes Wissensasd', 'asdasd', 'asdas', 'asd', 1, 1306417420);
+(10, 1, 1, 1306417420, 'Hansens wunderbare Weasddes Wissensasd', 'asdasd', 'asdas', 'asd', 1, 1306417420),
+(11, 1, 1, 1306684436, 'A Download', 'libapr1-1.2.2-1.1.src.rpm', 'Suse', '', 1, 1306684436);
 
 -- --------------------------------------------------------
 
@@ -573,7 +574,7 @@ CREATE TABLE `fs2_dl_cat` (
   `subcat_id` mediumint(8) NOT NULL DEFAULT '0',
   `cat_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Daten für Tabelle `fs2_dl_cat`
@@ -582,7 +583,9 @@ CREATE TABLE `fs2_dl_cat` (
 INSERT INTO `fs2_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 (1, 0, 'Downloads'),
 (2, 1, 'test2'),
-(4, 0, 'sdfsdf');
+(4, 0, 'sdfsdf'),
+(5, 4, 'hans'),
+(6, 5, 'wurst');
 
 -- --------------------------------------------------------
 
@@ -627,7 +630,7 @@ CREATE TABLE `fs2_dl_files` (
   `file_is_mirror` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`file_id`),
   KEY `dl_id` (`dl_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Daten für Tabelle `fs2_dl_files`
@@ -640,7 +643,8 @@ INSERT INTO `fs2_dl_files` (`dl_id`, `file_id`, `file_count`, `file_name`, `file
 (4, 4, 0, 'ie6', 'sdf', 234, 0),
 (6, 5, 0, '3', 'd', 45, 0),
 (9, 7, 0, 'asd', 'test', 33, 0),
-(10, 8, 0, 'sd', 'asd', 3, 0);
+(10, 8, 0, 'sd', 'asd', 3, 0),
+(11, 10, 1, 'libapr1-1.2libapr1-1.2.2-1.1.src.rpm.2-1.1.src.rpm', 'ftp://ftp.suse.de/pub/projects/apache/libapr1/10.0-x86_64/libapr1-1.2.2-1.1.src.rpm', 906, 0);
 
 -- --------------------------------------------------------
 
@@ -817,6 +821,8 @@ CREATE TABLE `fs2_iplist` (
 -- Daten für Tabelle `fs2_iplist`
 --
 
+INSERT INTO `fs2_iplist` (`ip`) VALUES
+('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -837,7 +843,7 @@ CREATE TABLE `fs2_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Daten für Tabelle `fs2_news`
@@ -845,6 +851,7 @@ CREATE TABLE `fs2_news` (
 
 INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
 (1, 1, 1, 1302517148, 'Frogsystem 2.alix5 - Installation erfolgreich', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2!\r\nDas Frogsystem 2-Team wünscht viel Spaß und Erfolg mit der Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2, in den zugehörigen Supportforen und dem neuen Dokumentations-Wiki. Die wichtigsten Links haben wir unten zusammengefasst. Einfach mal vorbei schauen!\r\n\r\nDein Frogsystem 2-Team', 1, 1, 0),
+(10, 1, 1, 1306700880, 'video test', '[player]1[/player]\r\n\r\n[player=300,500]1[/player]', 1, 1, 1306700959),
 (5, 1, 1, 1302567540, 'ie 8 test update', 'ie 8 test update', 1, 1, 1303288547),
 (7, 1, 1, 1302560460, 'safari test uüpdate', 'safari testvuüpdate', 1, 1, 1302560525),
 (9, 1, 2, 1306663620, 'fsdfsdfds', 'sdfsdfsd', 1, 1, 1306663666);
@@ -933,7 +940,7 @@ CREATE TABLE `fs2_news_config` (
 --
 
 INSERT INTO `fs2_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
-(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 25, ' ...', 15, 2);
+(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 20, ' ...', 15, 2);
 
 -- --------------------------------------------------------
 
@@ -1028,12 +1035,14 @@ CREATE TABLE `fs2_player` (
   `video_desc` text NOT NULL,
   `dl_id` mediumint(8) NOT NULL,
   PRIMARY KEY (`video_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs2_player`
 --
 
+INSERT INTO `fs2_player` (`video_id`, `video_type`, `video_x`, `video_title`, `video_lenght`, `video_desc`, `dl_id`) VALUES
+(1, 1, 'http://dl.worldofplayers.de/wop/witcher/witcher2/sonstiges/ausgepackt.flv', 'Test', 80, 'Test', 0);
 
 -- --------------------------------------------------------
 
@@ -1044,15 +1053,17 @@ CREATE TABLE `fs2_player` (
 DROP TABLE IF EXISTS `fs2_player_config`;
 CREATE TABLE `fs2_player_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
+  `cfg_player_x` mediumint(9) NOT NULL,
+  `cfg_player_y` mediumint(9) NOT NULL,
   `cfg_autoplay` tinyint(1) NOT NULL DEFAULT '1',
   `cfg_autoload` tinyint(1) NOT NULL DEFAULT '1',
   `cfg_buffer` smallint(2) NOT NULL DEFAULT '5',
   `cfg_buffermessage` varchar(100) NOT NULL DEFAULT 'Buffering _n_',
-  `cfg_buffercolor` varchar(6) NOT NULL DEFAULT 'FFFFFF',
-  `cfg_bufferbgcolor` varchar(6) NOT NULL DEFAULT '000000',
+  `cfg_buffercolor` varchar(7) NOT NULL DEFAULT '#FFFFFF',
+  `cfg_bufferbgcolor` varchar(7) NOT NULL DEFAULT '#000000',
   `cfg_buffershowbg` tinyint(1) NOT NULL DEFAULT '1',
   `cfg_titlesize` smallint(2) NOT NULL DEFAULT '20',
-  `cfg_titlecolor` varchar(6) NOT NULL DEFAULT 'FFFFFF',
+  `cfg_titlecolor` varchar(7) NOT NULL DEFAULT '#FFFFFF',
   `cfg_margin` smallint(2) NOT NULL DEFAULT '0',
   `cfg_showstop` tinyint(1) NOT NULL DEFAULT '1',
   `cfg_showvolume` tinyint(1) NOT NULL DEFAULT '1',
@@ -1062,21 +1073,21 @@ CREATE TABLE `fs2_player_config` (
   `cfg_showfullscreen` tinyint(1) NOT NULL DEFAULT '1',
   `cfg_showmouse` varchar(8) NOT NULL DEFAULT 'autohide',
   `cfg_loop` tinyint(1) NOT NULL DEFAULT '0',
-  `cfg_playercolor` varchar(6) NOT NULL,
-  `cfg_loadingcolor` varchar(6) NOT NULL,
-  `cfg_bgcolor` varchar(6) NOT NULL,
-  `cfg_bgcolor1` varchar(6) NOT NULL,
-  `cfg_bgcolor2` varchar(6) NOT NULL,
-  `cfg_buttoncolor` varchar(6) NOT NULL,
-  `cfg_buttonovercolor` varchar(6) NOT NULL,
-  `cfg_slidercolor1` varchar(6) NOT NULL,
-  `cfg_slidercolor2` varchar(6) NOT NULL,
-  `cfg_sliderovercolor` varchar(6) NOT NULL,
+  `cfg_playercolor` varchar(7) NOT NULL,
+  `cfg_loadingcolor` varchar(7) NOT NULL,
+  `cfg_bgcolor` varchar(7) NOT NULL,
+  `cfg_bgcolor1` varchar(7) NOT NULL,
+  `cfg_bgcolor2` varchar(7) NOT NULL,
+  `cfg_buttoncolor` varchar(7) NOT NULL,
+  `cfg_buttonovercolor` varchar(7) NOT NULL,
+  `cfg_slidercolor1` varchar(7) NOT NULL,
+  `cfg_slidercolor2` varchar(7) NOT NULL,
+  `cfg_sliderovercolor` varchar(7) NOT NULL,
   `cfg_loadonstop` tinyint(1) NOT NULL DEFAULT '0',
   `cfg_onclick` varchar(9) NOT NULL DEFAULT 'playpause',
   `cfg_ondoubleclick` varchar(10) NOT NULL DEFAULT 'fullscreen',
   `cfg_playertimeout` mediumint(6) NOT NULL DEFAULT '1500',
-  `cfg_videobgcolor` varchar(6) NOT NULL,
+  `cfg_videobgcolor` varchar(7) NOT NULL,
   `cfg_volume` smallint(3) NOT NULL DEFAULT '80',
   `cfg_shortcut` tinyint(1) NOT NULL DEFAULT '0',
   `cfg_playeralpha` smallint(3) NOT NULL DEFAULT '0',
@@ -1084,8 +1095,8 @@ CREATE TABLE `fs2_player_config` (
   `cfg_top1_x` smallint(4) NOT NULL,
   `cfg_top1_y` smallint(4) NOT NULL,
   `cfg_showiconplay` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_iconplaycolor` varchar(6) NOT NULL,
-  `cfg_iconplaybgcolor` varchar(6) NOT NULL,
+  `cfg_iconplaycolor` varchar(7) NOT NULL,
+  `cfg_iconplaybgcolor` varchar(7) NOT NULL,
   `cfg_iconplaybgalpha` smallint(3) NOT NULL DEFAULT '100',
   `cfg_showtitleandstartimage` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
@@ -1095,8 +1106,8 @@ CREATE TABLE `fs2_player_config` (
 -- Daten für Tabelle `fs2_player_config`
 --
 
-INSERT INTO `fs2_player_config` (`id`, `cfg_autoplay`, `cfg_autoload`, `cfg_buffer`, `cfg_buffermessage`, `cfg_buffercolor`, `cfg_bufferbgcolor`, `cfg_buffershowbg`, `cfg_titlesize`, `cfg_titlecolor`, `cfg_margin`, `cfg_showstop`, `cfg_showvolume`, `cfg_showtime`, `cfg_showplayer`, `cfg_showloading`, `cfg_showfullscreen`, `cfg_showmouse`, `cfg_loop`, `cfg_playercolor`, `cfg_loadingcolor`, `cfg_bgcolor`, `cfg_bgcolor1`, `cfg_bgcolor2`, `cfg_buttoncolor`, `cfg_buttonovercolor`, `cfg_slidercolor1`, `cfg_slidercolor2`, `cfg_sliderovercolor`, `cfg_loadonstop`, `cfg_onclick`, `cfg_ondoubleclick`, `cfg_playertimeout`, `cfg_videobgcolor`, `cfg_volume`, `cfg_shortcut`, `cfg_playeralpha`, `cfg_top1_url`, `cfg_top1_x`, `cfg_top1_y`, `cfg_showiconplay`, `cfg_iconplaycolor`, `cfg_iconplaybgcolor`, `cfg_iconplaybgalpha`, `cfg_showtitleandstartimage`) VALUES
-(1, 0, 1, 5, 'Buffering _n_', 'FFFFFF', '000000', 0, 20, 'FFFFFF', 5, 1, 1, 1, 'autohide', 'always', 1, 'autohide', 0, 'a6a6a6', '000000', 'FAFCF1', 'E7E7E7', 'cccccc', '000000', 'E7E7E7', 'cccccc', 'bbbbbb', 'E7E7E7', 1, 'playpause', 'fullscreen', 1500, '000000', 100, 1, 100, '', 0, 0, 1, 'FFFFFF', '000000', 75, 0);
+INSERT INTO `fs2_player_config` (`id`, `cfg_player_x`, `cfg_player_y`, `cfg_autoplay`, `cfg_autoload`, `cfg_buffer`, `cfg_buffermessage`, `cfg_buffercolor`, `cfg_bufferbgcolor`, `cfg_buffershowbg`, `cfg_titlesize`, `cfg_titlecolor`, `cfg_margin`, `cfg_showstop`, `cfg_showvolume`, `cfg_showtime`, `cfg_showplayer`, `cfg_showloading`, `cfg_showfullscreen`, `cfg_showmouse`, `cfg_loop`, `cfg_playercolor`, `cfg_loadingcolor`, `cfg_bgcolor`, `cfg_bgcolor1`, `cfg_bgcolor2`, `cfg_buttoncolor`, `cfg_buttonovercolor`, `cfg_slidercolor1`, `cfg_slidercolor2`, `cfg_sliderovercolor`, `cfg_loadonstop`, `cfg_onclick`, `cfg_ondoubleclick`, `cfg_playertimeout`, `cfg_videobgcolor`, `cfg_volume`, `cfg_shortcut`, `cfg_playeralpha`, `cfg_top1_url`, `cfg_top1_x`, `cfg_top1_y`, `cfg_showiconplay`, `cfg_iconplaycolor`, `cfg_iconplaybgcolor`, `cfg_iconplaybgalpha`, `cfg_showtitleandstartimage`) VALUES
+(1, 500, 280, 0, 1, 5, 'Buffering _n_', '#FFFFFF', '#000000', 0, 20, '#FFFFFF', 5, 1, 1, 1, 'autohide', 'always', 1, 'autohide', 0, '#a6a6a6', '#000000', '#FAFCF1', '#E7E7E7', '#cccccc', '#000000', '#E7E7E7', '#cccccc', '#bbbbbb', '#E7E7E7', 1, 'playpause', 'fullscreen', 1500, '#000000', 100, 1, 100, '', 0, 0, 1, '#FFFFFF', '#000000', 75, 0);
 
 -- --------------------------------------------------------
 
@@ -1122,7 +1133,7 @@ CREATE TABLE `fs2_poll` (
 INSERT INTO `fs2_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll_type`, `poll_participants`) VALUES
 (1, 'wurst', 1306414980, 1309093380, 1, 0),
 (2, 'ok', 1306414980, 1306416540, 0, 0),
-(3, 'test2', 1306416480, 1309094880, 1, 0);
+(3, 'test2', 1306416480, 1309094880, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1148,8 +1159,8 @@ INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`
 (1, 2, 'test', 0),
 (1, 3, 'test', 0),
 (1, 4, 'test', 0),
-(3, 5, '1', 0),
-(3, 6, '1', 0),
+(3, 5, '1', 1),
+(3, 6, '1', 1),
 (2, 7, 'd', 0),
 (2, 8, 'd', 0);
 
@@ -1187,12 +1198,14 @@ CREATE TABLE `fs2_poll_voters` (
   `ip_address` varchar(15) NOT NULL DEFAULT '0.0.0.0',
   `time` int(32) NOT NULL DEFAULT '0',
   PRIMARY KEY (`voter_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs2_poll_voters`
 --
 
+INSERT INTO `fs2_poll_voters` (`voter_id`, `poll_id`, `ip_address`, `time`) VALUES
+(1, 3, '127.0.0.1', 1306685207);
 
 -- --------------------------------------------------------
 
@@ -1967,6 +1980,8 @@ CREATE TABLE `fs2_useronline` (
 -- Daten für Tabelle `fs2_useronline`
 --
 
+INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
+('127.0.0.1', 1, 1306701922);
 
 -- --------------------------------------------------------
 

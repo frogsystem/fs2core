@@ -11,15 +11,11 @@ header("Content-type: text/plain");
 
 // include db-data
 require ( FS2_ROOT_PATH . "login.inc.php" );
+require ( FS2_ROOT_PATH . "includes/newfunctions.php" );
 
 if ( $db )
 {
-    $index = mysql_query ( "
-                            SELECT *
-                            FROM ".$global_config_arr['pref']."player_config
-                            WHERE `id` = '1'
-    ", $db);
-    $config_arr = mysql_fetch_assoc ( $index );
+    $config_arr = $sql->getById("player_config", "*", 1);
     
     // security functions
     settype ( $config_arr['cfg_loop'], "integer" );
@@ -74,6 +70,13 @@ if ( strlen ( $config_arr['cfg_top1_url'] ) > 0 ) {
     $config_arr['cfg_top1'] = "";
 }
 
+// kill color hashes
+$config_arr = array_map(function($ele) {
+    if (is_hexcolor($ele))
+        $ele = substr($ele, 1);
+    return $ele;
+},  $config_arr);
+
     echo 'autoplay='.$config_arr['cfg_autoplay'].'
 autoload='.$config_arr['cfg_autoload'].'
 buffer='.$config_arr['cfg_buffer'].'
@@ -117,6 +120,6 @@ iconplaybgcolor='.$config_arr['cfg_iconplaybgcolor'].'
 iconplaybgalpha='.$config_arr['cfg_iconplaybgalpha'].'
 showtitleandstartimage='.$config_arr['cfg_showtitleandstartimage'].'';
 
-    mysql_close ( $db );
+    unset($sql);
 }
 ?>

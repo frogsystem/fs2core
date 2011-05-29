@@ -1,8 +1,8 @@
 <?php
 
-function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
+function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true ) {
 
-    global $global_config_arr, $db;
+    global $global_config_arr, $db, $sql;
 
     $template_own = '
     <object type="application/x-shockwave-flash" data="'.$global_config_arr['virtualhost'].'resources/player/player_flv_maxi.swf" width="{..width..}" height="{..height..}">
@@ -27,6 +27,13 @@ function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
     </object>
     ";
 
+
+    // default width/height
+    if ($WIDTH === true || $HEIGHT === true) {
+        $config_arr = $sql->getById("player_config", array("cfg_player_x", "cfg_player_y"), 1);
+        $WIDTH = $WIDTH ? $config_arr['cfg_player_x'] : $WIDTH;
+        $HEIGHT = $HEIGHT ? $config_arr['cfg_player_y'] : $HEIGHT;
+    }
 
     $display = FALSE;
     

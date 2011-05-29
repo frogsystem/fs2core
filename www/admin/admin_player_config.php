@@ -25,6 +25,8 @@ if (
 		&& $_POST['cfg_iconplaycolor'] && $_POST['cfg_iconplaycolor'] != ""
 		&& $_POST['cfg_iconplaybgcolor'] && $_POST['cfg_iconplaybgcolor'] != ""
 		
+		&& isset ( $_POST['cfg_player_x'] ) && $_POST['cfg_player_x'] >= 0
+		&& isset ( $_POST['cfg_player_y'] ) && $_POST['cfg_player_y'] >= 0
 		&& isset ( $_POST['cfg_margin'] ) && $_POST['cfg_margin'] >= 0
 		&& isset ( $_POST['cfg_playertimeout'] ) && $_POST['cfg_playertimeout'] >= 0
 		&& isset ( $_POST['cfg_playeralpha'] ) && $_POST['cfg_playeralpha'] >= 0 && $_POST['cfg_playeralpha'] <= 100
@@ -36,6 +38,8 @@ if (
 	)
 {
 	// security functions
+	settype ( $_POST['cfg_player_x'], "integer" );
+	settype ( $_POST['cfg_player_y'], "integer" );
 	settype ( $_POST['cfg_loop'], "integer" );
 	settype ( $_POST['cfg_autoplay'], "integer" );
 	settype ( $_POST['cfg_autoload'], "integer" );
@@ -58,34 +62,36 @@ if (
 	settype ( $_POST['cfg_top1_y'], "integer" );
 	settype ( $_POST['cfg_loadonstop'], "integer" );
 
-	$_POST['cfg_videobgcolor'] = savesql ( $_POST['cfg_videobgcolor'] );
-	$_POST['cfg_bgcolor1'] = savesql ( $_POST['cfg_bgcolor1'] );
-	$_POST['cfg_bgcolor2'] = savesql ( $_POST['cfg_bgcolor2'] );
-	$_POST['cfg_bgcolor'] = savesql ( $_POST['cfg_bgcolor'] );
+	$_POST['cfg_videobgcolor'] = savesql ( "#".$_POST['cfg_videobgcolor'] );
+	$_POST['cfg_bgcolor1'] = savesql ( "#".$_POST['cfg_bgcolor1'] );
+	$_POST['cfg_bgcolor2'] = savesql ( "#".$_POST['cfg_bgcolor2'] );
+	$_POST['cfg_bgcolor'] = savesql ( "#".$_POST['cfg_bgcolor'] );
 	$_POST['cfg_showplayer'] = savesql ( $_POST['cfg_showplayer'] );
 	$_POST['cfg_showloading'] = savesql ( $_POST['cfg_showloading'] );
-	$_POST['cfg_playercolor'] = savesql ( $_POST['cfg_playercolor'] );
-	$_POST['cfg_loadingcolor'] = savesql ( $_POST['cfg_loadingcolor'] );
-	$_POST['cfg_buttoncolor'] = savesql ( $_POST['cfg_buttoncolor'] );
-	$_POST['cfg_buttonovercolor'] = savesql ( $_POST['cfg_buttonovercolor'] );
-	$_POST['cfg_slidercolor1'] = savesql ( $_POST['cfg_slidercolor1'] );
-	$_POST['cfg_slidercolor2'] = savesql ( $_POST['cfg_slidercolor2'] );
-	$_POST['cfg_sliderovercolor'] = savesql ( $_POST['cfg_sliderovercolor'] );
+	$_POST['cfg_playercolor'] = savesql ( "#".$_POST['cfg_playercolor'] );
+	$_POST['cfg_loadingcolor'] = savesql ( "#".$_POST['cfg_loadingcolor'] );
+	$_POST['cfg_buttoncolor'] = savesql ( "#".$_POST['cfg_buttoncolor'] );
+	$_POST['cfg_buttonovercolor'] = savesql ( "#".$_POST['cfg_buttonovercolor'] );
+	$_POST['cfg_slidercolor1'] = savesql ( "#".$_POST['cfg_slidercolor1'] );
+	$_POST['cfg_slidercolor2'] = savesql ( "#".$_POST['cfg_slidercolor2'] );
+	$_POST['cfg_sliderovercolor'] = savesql ( "#".$_POST['cfg_sliderovercolor'] );
 	$_POST['cfg_buffermessage'] = savesql ( $_POST['cfg_buffermessage'] );
-	$_POST['cfg_buffercolor'] = savesql ( $_POST['cfg_buffercolor'] );
-	$_POST['cfg_bufferbgcolor'] = savesql ( $_POST['cfg_bufferbgcolor'] );
-	$_POST['cfg_titlecolor'] = savesql ( $_POST['cfg_titlecolor'] );
+	$_POST['cfg_buffercolor'] = savesql ( "#".$_POST['cfg_buffercolor'] );
+	$_POST['cfg_bufferbgcolor'] = savesql ( "#".$_POST['cfg_bufferbgcolor'] );
+	$_POST['cfg_titlecolor'] = savesql ( "#".$_POST['cfg_titlecolor'] );
 	$_POST['cfg_onclick'] = savesql ( $_POST['cfg_onclick'] );
 	$_POST['cfg_ondoubleclick'] = savesql ( $_POST['cfg_ondoubleclick'] );
 	$_POST['cfg_showmouse'] = savesql ( $_POST['cfg_showmouse'] );
-	$_POST['cfg_iconplaycolor'] = savesql ( $_POST['cfg_iconplaycolor'] );
-	$_POST['cfg_iconplaybgcolor'] = savesql ( $_POST['cfg_iconplaybgcolor'] );
+	$_POST['cfg_iconplaycolor'] = savesql ( "#".$_POST['cfg_iconplaycolor'] );
+	$_POST['cfg_iconplaybgcolor'] = savesql ( "#".$_POST['cfg_iconplaybgcolor'] );
 	$_POST['cfg_top1_url'] = savesql ( $_POST['cfg_top1_url'] );
 
 	// MySQL-Queries
     mysql_query ( "
 					UPDATE `".$global_config_arr['pref']."player_config`
 					SET
+						`cfg_player_x` = '".$_POST['cfg_player_x']."',
+						`cfg_player_y` = '".$_POST['cfg_player_y']."',
 						`cfg_loop` = '".$_POST['cfg_loop']."',
 						`cfg_autoplay` = '".$_POST['cfg_autoplay']."',
 						`cfg_autoload` = '".$_POST['cfg_autoload']."',
@@ -163,51 +169,12 @@ if ( TRUE )
 	}
 	
 	// security functions
-	settype ( $_POST['cfg_loop'], "integer" );
-	settype ( $_POST['cfg_autoplay'], "integer" );
-	settype ( $_POST['cfg_autoload'], "integer" );
-	settype ( $_POST['cfg_volume'], "integer" );
-	settype ( $_POST['cfg_margin'], "integer" );
-	settype ( $_POST['cfg_showstop'], "integer" );
-	settype ( $_POST['cfg_showvolume'], "integer" );
-	settype ( $_POST['cfg_showtime'], "integer" );
-	settype ( $_POST['cfg_playertimeout'], "integer" );
-	settype ( $_POST['cfg_showfullscreen'], "integer" );
-	settype ( $_POST['cfg_playeralpha'], "integer" );
-	settype ( $_POST['cfg_buffer'], "integer" );
-	settype ( $_POST['cfg_buffershowbg'], "integer" );
-	settype ( $_POST['cfg_titlesize'], "integer" );
-	settype ( $_POST['cfg_shortcut'], "integer" );
-	settype ( $_POST['cfg_showiconplay'], "integer" );
-	settype ( $_POST['cfg_showtitleandstartimage'], "integer" );
-	settype ( $_POST['cfg_iconplaybgalpha'], "integer" );
-	settype ( $_POST['cfg_top1_x'], "integer" );
-	settype ( $_POST['cfg_top1_y'], "integer" );
-	settype ( $_POST['cfg_loadonstop'], "integer" );
-	
-	$_POST['cfg_videobgcolor'] = killhtml ( $_POST['cfg_videobgcolor'] );
-	$_POST['cfg_bgcolor1'] = killhtml ( $_POST['cfg_bgcolor1'] );
-	$_POST['cfg_bgcolor2'] = killhtml ( $_POST['cfg_bgcolor2'] );
-	$_POST['cfg_bgcolor'] = killhtml ( $_POST['cfg_bgcolor'] );
-	$_POST['cfg_showplayer'] = killhtml ( $_POST['cfg_showplayer'] );
-	$_POST['cfg_showloading'] = killhtml ( $_POST['cfg_showloading'] );
-	$_POST['cfg_playercolor'] = killhtml ( $_POST['cfg_playercolor'] );
-	$_POST['cfg_loadingcolor'] = killhtml ( $_POST['cfg_loadingcolor'] );
-	$_POST['cfg_buttoncolor'] = killhtml ( $_POST['cfg_buttoncolor'] );
-	$_POST['cfg_buttonovercolor'] = killhtml ( $_POST['cfg_buttonovercolor'] );
-	$_POST['cfg_slidercolor1'] = killhtml ( $_POST['cfg_slidercolor1'] );
-	$_POST['cfg_slidercolor2'] = killhtml ( $_POST['cfg_slidercolor2'] );
-	$_POST['cfg_sliderovercolor'] = killhtml ( $_POST['cfg_sliderovercolor'] );
-	$_POST['cfg_buffermessage'] = killhtml ( $_POST['cfg_buffermessage'] );
-	$_POST['cfg_buffercolor'] = killhtml ( $_POST['cfg_buffercolor'] );
-	$_POST['cfg_bufferbgcolor'] = killhtml ( $_POST['cfg_bufferbgcolor'] );
-	$_POST['cfg_titlecolor'] = killhtml ( $_POST['cfg_titlecolor'] );
-	$_POST['cfg_onclick'] = killhtml ( $_POST['cfg_onclick'] );
-	$_POST['cfg_ondoubleclick'] = killhtml ( $_POST['cfg_ondoubleclick'] );
-	$_POST['cfg_showmouse'] = killhtml ( $_POST['cfg_showmouse'] );
-	$_POST['cfg_iconplaycolor'] = killhtml ( $_POST['cfg_iconplaycolor'] );
-	$_POST['cfg_iconplaybgcolor'] = killhtml ( $_POST['cfg_iconplaybgcolor'] );
-	$_POST['cfg_top1_url'] = killhtml ( $_POST['cfg_top1_url'] );
+    $_POST = array_map("killhtml", $_POST);
+    $_POST = array_map(function($ele) {
+        if (is_hexcolor($ele))
+            $ele = substr($ele, 1);
+        return $ele;
+    },  $_POST);
 
 	// Display Form
     echo'
@@ -215,7 +182,61 @@ if ( TRUE )
                         <input type="hidden" name="go" value="player_config">
 						<input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="4">Allgemeine Einstellungen</td></tr>
+                            
+							<tr><td class="line" colspan="4">Darstellungsoptionen</td></tr>
+                            <tr>
+                                <td class="config">
+                                    Player-Größe<br>
+                                    <span class="small">Standard-Größe des Players.</span>
+                                </td>
+                                <td class="config">
+                                    <input class="text" size="5" name="cfg_player_x" value="'.$_POST['cfg_player_x'].'" maxlength="4">
+                                    '.$TEXT['admin']->get("resolution_x").'
+                                    <input class="text" size="5" name="cfg_player_y" value="'.$_POST['cfg_player_y'].'" maxlength="4"> '.$TEXT['admin']->get("pixel").'
+                                </td>
+                            </tr>
+       						<tr>
+           						<td class="config">
+               						Video-Hintergundfarbe:<br>
+               						<span class="small">Die Hintergundfarbe, des Videofensters.</span>
+           						</td>
+           						<td class="configbig">
+             						<b>#</b> <input class="text" name="cfg_videobgcolor" size="6" maxlength="6" value="'.$_POST['cfg_videobgcolor'].'"><br>
+             						<span class="small">'."[Hexadezimal-Farbcode]".'</span>
+           						</td>
+       						</tr>
+       						<tr>
+           						<td class="config">
+               						Farbe des Titels:<br>
+               						<span class="small">Die Farbe, in der der Video-Titel angezeigt wird.</span>
+           						</td>
+           						<td class="configbig">
+             						<b>#</b> <input class="text" name="cfg_titlecolor" size="6" maxlength="6" value="'.$_POST['cfg_titlecolor'].'"><br>
+             						<span class="small">'."[Hexadezimal-Farbcode]".'</span>
+           						</td>
+       						</tr>
+       						<tr>
+           						<td class="config">
+               						Schriftgröße des Titels:<br>
+               						<span class="small">Die Schriftgröße, in der der Video-Titel angezeigt wird.</span>
+           						</td>
+           						<td class="config">
+             						<input class="text" name="cfg_titlesize" size="2" maxlength="2" value="'.$_POST['cfg_titlesize'].'"> pt<br>
+             						<span class="small">[Empfohlener Wert zwischen 8pt und 26pt]</span>
+           						</td>
+       						</tr>
+                            <tr>
+                                <td class="config">
+                                    Titel trotz Vorschaubild:<br>
+                                    <span class="small">Zeigt den Video-Titel trotz eines Vorschaubildes an.</span>
+                                </td>
+                                <td class="config">
+                                    <input type="checkbox" name="cfg_showtitleandstartimage" value="1" '.getchecked ( 1, $_POST['cfg_showtitleandstartimage'] ).'>
+                                </td>
+                            </tr>       						
+                            <tr><td class="space"></td></tr>
+                            
+							<tr><td class="line" colspan="4">Abspiel-Optionen</td></tr>
                             <tr>
                                 <td class="config">
                                     Dauerschleife:<br>
@@ -264,16 +285,6 @@ if ( TRUE )
 									</select>
                                 </td>
                             </tr>
-       						<tr>
-           						<td class="config">
-               						Video-Hintergundfarbe:<br>
-               						<span class="small">Die Hintergundfarbe, des Videofensters.</span>
-           						</td>
-           						<td class="configbig">
-             						<b>#</b> <input class="text" name="cfg_videobgcolor" size="6" maxlength="6" value="'.$_POST['cfg_videobgcolor'].'"><br>
-             						<span class="small">'."[Hexadezimal-Farbcode]".'</span>
-           						</td>
-       						</tr>
                             <tr><td class="space"></td></tr>
 							<tr><td class="line" colspan="4">Rahmen</td></tr>
                             <tr>
@@ -535,37 +546,7 @@ if ( TRUE )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-							<tr><td class="line" colspan="4">Video-Titel</td></tr>
-       						<tr>
-           						<td class="config">
-               						Farbe des Titels:<br>
-               						<span class="small">Die Farbe, in der der Video-Titel angezeigt wird.</span>
-           						</td>
-           						<td class="configbig">
-             						<b>#</b> <input class="text" name="cfg_titlecolor" size="6" maxlength="6" value="'.$_POST['cfg_titlecolor'].'"><br>
-             						<span class="small">'."[Hexadezimal-Farbcode]".'</span>
-           						</td>
-       						</tr>
-       						<tr>
-           						<td class="config">
-               						Schriftgröße des Titels:<br>
-               						<span class="small">Die Schriftgröße, in der der Video-Titel angezeigt wird.</span>
-           						</td>
-           						<td class="config">
-             						<input class="text" name="cfg_titlesize" size="2" maxlength="2" value="'.$_POST['cfg_titlesize'].'"> pt<br>
-             						<span class="small">[Empfohlener Wert zwischen 8pt und 26pt]</span>
-           						</td>
-       						</tr>
-                            <tr>
-                                <td class="config">
-                                    Titel trotz Vorschaubild:<br>
-                                    <span class="small">Zeigt den Video-Titel trotz eines Vorschaubildes an.</span>
-                                </td>
-                                <td class="config">
-                                    <input type="checkbox" name="cfg_showtitleandstartimage" value="1" '.getchecked ( 1, $_POST['cfg_showtitleandstartimage'] ).'>
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
+                            
 							<tr><td class="line" colspan="4">Steuerung</td></tr>
 							<tr>
                                 <td class="config">
@@ -637,7 +618,7 @@ if ( TRUE )
        						</tr>
        						<tr>
            						<td class="config">
-               						Hintergundfarbe des Abspiel-Symbols:<br>
+               						Hintergundfarbe des Abspielsymbols:<br>
                						<span class="small">Die Hintergundfarbe, mit der das Abspiel-Symbol hinterlegt wird.</span>
            						</td>
            						<td class="configbig">

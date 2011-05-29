@@ -79,7 +79,7 @@ if (isset($_POST[editcatid]))
     {
         $sele = ($cat_arr[subcat_id] == $cat[cat_id]) ? "selected" : "";
         echo'
-                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
+                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
         ';
     }
     echo'

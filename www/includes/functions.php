@@ -879,7 +879,7 @@ function truncate_string ($string, $maxlength, $extension)
 ///// Download Categories //////
 ////////////////////////////////
 
-function get_dl_categories (&$IDs, $CAT_ID, $SHOW_SUB = 0, $ID = 0, $LEVEL = -1 )
+function get_dl_categories (&$IDs, $CAT_ID, $SHOW_SUB = 1, $ID = 0, $LEVEL = -1 )
 {
     global $global_config_arr, $db;
 

@@ -227,7 +227,7 @@ if ($_POST[dlid] || $_POST[optionsadd])
     {
         $sele = ($_POST[catid] == $cat[cat_id]) ? "selected" : "";
         echo'
-                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
+                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
         ';
     }
     echo'
@@ -395,11 +395,12 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="dl_edit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Filter</h3><hr></td></tr>
                             <tr>
-                                <td class="config" width="40%">
-                                    Nur dateien der Kategorie
-                                    <select name="dlcatid">
+                                <td class="thin">
+                                    Nur Dateien der Kategorie
+                                    <select name="dlcatid" class="third">
     ';
 
     /*/ Kategorie Auswahl erzeugen
@@ -419,20 +420,20 @@ else
     {
         $sele = ($_POST[dlcatid] == $cat[cat_id]) ? "selected" : "";
         echo'
-                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
+                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
         ';
     }
 
     echo'
                                     </select>
-                                    <input  type="submit" value="Anzeigen">
+                                    <input type="submit" value="anzeigen">
                                 </td>
                             </tr>
                         </table>
                     </form>
     ';
 
-    echo'
+    echo'<p>&nbsp;</p>
                     <form action="" method="post">
                         <input type="hidden" value="dl_edit" name="go">
                         <table class="content select_list" cellpadding="3" cellspacing="0">

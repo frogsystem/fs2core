@@ -19,7 +19,9 @@ function htmlenclose ($TEXT, $TAG) {
 ///////////////////////////////////////////////////////////////////
 function killhtml ($VAL, $ARR = true) {
     // save data
-    if (is_numeric($VAL)) {
+    if (is_hexcolor($VAL)) {
+    }
+    elseif (is_numeric($VAL)) {
         if (floatval($VAL) == intval($VAL)) {
             $VAL = intval($VAL);
             settype($VAL, "integer");
@@ -118,8 +120,7 @@ function is_language_text ($TEXT) {
 //// validation of a hexcolor ////
 //////////////////////////////////
 function is_hexcolor ($COLOR) {
-    $COLOR = substr($COLOR, 0, 6);
-    return preg_match ( '/[0-9a-fA-F]{6}$/', $COLOR );
+    return (preg_match ('/\#([a-fA-F0-9]{6})$/', $COLOR) > 0);
 }
 
 

@@ -59,7 +59,7 @@ if (isset($_POST['login']) && $_POST['login'] == 1 && !is_authorized()) {
 ##################################
 
 // security functions
-$go = isset($_REQUEST['go']) ? savesql($_REQUEST['go']) : "";
+$go = $sql->escape($_REQUEST['go']);
 
 // get page-data from database
 $acp_arr = $sql->getRow(
@@ -114,10 +114,18 @@ if ( $PAGE_DATA_ARR['created'] === false && $go == "logout" ) {
 }
 
 // login
-if ( $PAGE_DATA_ARR['created'] === false ) {
+elseif ( $PAGE_DATA_ARR['created'] === false && ($go == "login" || empty($go)) ) {
     $go = "login";
     $PAGE_DATA_ARR = createpage($TEXT['menu']->get("admin_login_text"), true, 'admin_login.php', "dash");
 }
+
+// error
+elseif ( $PAGE_DATA_ARR['created'] === false ) {
+    $go = "404";
+    $PAGE_DATA_ARR = createpage($TEXT['menu']->get("admin_error_page_title"), true, 'admin_404.php', "error");
+}
+
+
 
 // Define Constant
 define('ACP_GO', $go);

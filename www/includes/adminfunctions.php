@@ -640,8 +640,8 @@ function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
     } else {
         $page_data = array(
             'title' => $TEXT['menu']->get("admin_error_page_title"),
-            'file'  => "admin_error.php",
-            'menu'  => "none"
+            'file'  => "admin_403.php",
+            'menu'  => "error"
         );
     }
     $page_data['created'] = true;

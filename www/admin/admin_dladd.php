@@ -120,7 +120,7 @@ if(true)
     foreach ($valid_ids as $cat)
     {
         echo'
-                                        <option value="'.$cat[cat_id].'">'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
+                                        <option value="'.$cat[cat_id].'">'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
         ';
     }
     echo'
