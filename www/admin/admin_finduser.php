@@ -3,6 +3,9 @@
 // get script
 $adminpage->clearConds();
 $adminpage->clearTexts();
+
+$adminpage->addText("name", isset($_GET['name']) ? $_GET['name'] : "username");
+$adminpage->addText("id", isset($_GET['id']) ? $_GET['id'] : "username");
 echo $adminpage->get("script"); 
  
 // get search

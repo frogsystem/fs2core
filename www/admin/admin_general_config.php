@@ -5,7 +5,7 @@
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array("id", "title", "dyn_title", "dyn_title_ext", "virtualhost", "admin_mail", "description", "keywords", "publisher", "copyright", "style_id", "allow_other_designs", "show_favicon", "home", "home_text", "language_text", "feed", "date", "time", "datetime", "auto_forward", "page", "page_prev", "page_next");
+$used_cols = array("id", "title", "dyn_title", "dyn_title_ext", "virtualhost", "admin_mail", "description", "keywords", "publisher", "copyright", "style_id", "allow_other_designs", "show_favicon", "home", "home_text", "language_text", "feed", "date", "time", "datetime", "timezone", "auto_forward", "page", "page_prev", "page_next");
     
 
 /////////////////////////////////////
@@ -82,7 +82,8 @@ if ( TRUE )
     $adminpage->addCond("feed_atom10", $_POST['feed'] == "atom10");
     $adminpage->addCond("home_0", $_POST['home'] === 0);
     $adminpage->addCond("home_1", $_POST['home'] === 1);
-
+    $adminpage->addCond("timezone", $_POST['timezone'] === "default");
+ 
     // Values
     foreach ($_POST as $key => $value) {
         $adminpage->addText($key, $value);
@@ -113,11 +114,10 @@ if ( TRUE )
         .'</option>'."\n";
     }
     $adminpage->addText("style_options", $style_options);
-    
+   
     // languages
     initstr($lang_options);
     $lang_dirs = scandir_filter(FS2_ROOT_PATH."lang");
-    
     foreach($lang_dirs as $lang_dir) {
         if (is_dir(FS2_ROOT_PATH."lang/".$lang_dir) && is_language_text($lang_dir)) {
             $lang_options .=
@@ -127,6 +127,15 @@ if ( TRUE )
         }
     }
     $adminpage->addText("language_options", $lang_options); 
+    
+    //timezones
+    initstr($timezone_options);
+    foreach(get_timezones() as $timezone => $val) {
+            $timezone_options .= '<option value="'.$timezone.'" '
+            .getselected($timezone, $_POST['timezone'])
+            .'>'.$timezone.'</option>'."\n";
+    }
+    $adminpage->addText("timezones", $timezone_options); 
 
     //pagenav
     $adminpage->addText("page_tt",

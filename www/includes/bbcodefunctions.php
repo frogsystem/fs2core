@@ -46,14 +46,10 @@ function do_bbcode_homelink ($action, $attributes, $content, $params, $node_obje
         return true;
     }
     if (!isset ($attributes['default'])) {
-        $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr[pref]."global_config WHERE id = 1", $db);
-        $page_url = stripslashes(mysql_result($index, 0, "virtualhost"));
-        return '<a href="'.$page_url."?go=".htmlspecialchars ($content).'" target="_self">'.$page_url."?go=".htmlspecialchars ($content).'</a>';
+        return '<a href="'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($content).'" target="_self">'.$page_url."?go=".htmlspecialchars ($content).'</a>';
     }
         
-    $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr[pref]."global_config WHERE id = 1", $db);
-    $page_url = stripslashes(mysql_result($index, 0, "virtualhost"));
-    return '<a href="'.$page_url."?go=".htmlspecialchars ($attributes['default']).'" target="_self">'.$content.'</a>';
+    return '<a href="'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($attributes['default']).'" target="_self">'.$content.'</a>';
 }
 
 function do_bbcode_email ($action, $attributes, $content, $params, $node_object) {

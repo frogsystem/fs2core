@@ -53,8 +53,8 @@
         );
         $("tr.pointer").click(
             function () {
-                $(opener.document).find("#username").val( $(this).find("span:first").text() );
-                $(opener.document).find("#userid").val( $(this).find("input:hidden").val() );
+                $(opener.document).find("#<!--TEXT::name-->").val( $(this).find("span:first").text() );
+                $(opener.document).find("#<!--TEXT::id-->").val( $(this).find("input:hidden").val() );
                 self.close();
             }
         );

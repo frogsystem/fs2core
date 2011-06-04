@@ -260,8 +260,8 @@ class sql {
         }
     }
     // single row by Id  
-    public function getById ($table, $cols, $id) {
-        $options = array ('W' => "`id`=".$id);
+    public function getById ($table, $cols, $id, $id_col = "id") {
+        $options = array ('W' => "`".$id_col."`=".$this->escape($id));
         return $this->getRow($table, $cols, $options);
     }
     
@@ -275,13 +275,13 @@ class sql {
             Throw new ErrorException("MySQL Error: Field not found");
     }
     // single field by Id  
-    public function getFieldById ($table, $field, $id) {
-        $options = array ('W' => "`id`=".$id);
+    public function getFieldById ($table, $field, $id, $id_col = "id") {
+        $options = array ('W' => "`".$id_col."`=".$this->escape($id));
         
         try {
             return $this->getField($table, $field, $options);
         } catch (Exception $e) {
-            print_r($e->getMessage());
+            Throw $e;
         }
     }
     
@@ -292,15 +292,23 @@ class sql {
 
     // Saving to DB by Id
     // existing entry => update, else => insert
-    public function save ($table, $data) {
+    public function save ($table, $data, $id = "id") {
         // Update
-        if (isset($data['id']) && $this->getFieldById($table, "id", $this->escape($data['id'])) !== false) {
-            return $this->updateById($table, $data);
+        if (isset($data[$id]) && $this->getFieldById($table, $id, $this->escape($data[$id])) !== false) {
+            try {
+                return $this->updateById($table, $data, $id);
+            } catch (Exception $e) {
+                throw $e;
+            }
                     
         // Insert
         } else  {
-            unset($data['id']);
-            return $this->insertId($table, $data);
+            try {
+                unset($data['id']);
+                return $this->insertId($table, $data);
+            } catch (Exception $e) {
+                throw $e;
+            }
         }
     }
 
@@ -330,7 +338,7 @@ class sql {
         try {
             return mysql_insert_id($this->sql);
         } catch (Exception $e) {
-            print_r($e->getMessage());
+            throw $e;
         } 
     }    
 
@@ -356,17 +364,18 @@ class sql {
         }         
     }
     // update by Id
-    public function updateById ($table, $data) {
+    public function updateById ($table, $data, $id = "id") {
         // check for id
-        if (!isset($data['id']))
+        if (!isset($data[$id]))
             Throw new ErrorException("MySQL Error: Can't update because of bad data.");             
         
-        $options = array ('W' => "`id`=".$this->escape($data['id']));
+        $options = array ('W' => "`".$id."`=".$this->escape($data[$id]));
         
         try {
-            return $this->update($table, $data, $options);
+            $this->update($table, $data, $options);
+            return $data[$id];
         } catch (Exception $e) {
-            print_r($e->getMessage());
+            throw $e;
         }         
     }
     

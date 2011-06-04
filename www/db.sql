@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 29. Mai 2011 um 20:47
+-- Erstellungszeit: 04. Juni 2011 um 13:38
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -461,7 +461,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 22, 339, 2, 4, 5, 3);
+(1, 25, 352, 2, 4, 6, 3);
 
 -- --------------------------------------------------------
 
@@ -483,7 +483,7 @@ CREATE TABLE `fs2_counter_ref` (
 --
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/', 33, 1302557491, 1306687838);
+('http://localhost/', 45, 1302557491, 1307185130);
 
 -- --------------------------------------------------------
 
@@ -522,7 +522,10 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 5, 24, 1, 5),
 (2011, 5, 25, 1, 12),
 (2011, 5, 26, 1, 27),
-(2011, 5, 29, 3, 68);
+(2011, 5, 29, 3, 77),
+(2011, 6, 2, 1, 1),
+(2011, 6, 3, 1, 2),
+(2011, 6, 4, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -784,6 +787,7 @@ CREATE TABLE `fs2_global_config` (
   `date` varchar(255) NOT NULL,
   `time` varchar(255) NOT NULL,
   `datetime` varchar(255) NOT NULL,
+  `timezone` varchar(255) NOT NULL DEFAULT 'default',
   `page` text NOT NULL,
   `page_next` text NOT NULL,
   `page_prev` text NOT NULL,
@@ -802,8 +806,8 @@ CREATE TABLE `fs2_global_config` (
 -- Daten für Tabelle `fs2_global_config`
 --
 
-INSERT INTO `fs2_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix6', 'http://localhost/fs2.6/', 'mail@sweil.de', 'Hans wunderbare Welt des Wissens', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1306662345);
+INSERT INTO `fs2_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `timezone`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
+(1, '2.alix6', 'http://localhost/fs2.6/', 'mail@sweil.de', 'Hans wunderbare Welt des Wissens', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', 'Europe/Berlin', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1307185130);
 
 -- --------------------------------------------------------
 
@@ -843,7 +847,7 @@ CREATE TABLE `fs2_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Daten für Tabelle `fs2_news`
@@ -854,7 +858,8 @@ INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title
 (10, 1, 1, 1306700880, 'video test', '[player]1[/player]\r\n\r\n[player=300,500]1[/player]', 1, 1, 1306700959),
 (5, 1, 1, 1302567540, 'ie 8 test update', 'ie 8 test update', 1, 1, 1303288547),
 (7, 1, 1, 1302560460, 'safari test uüpdate', 'safari testvuüpdate', 1, 1, 1302560525),
-(9, 1, 2, 1306663620, 'fsdfsdfds', 'sdfsdfsd', 1, 1, 1306663666);
+(9, 1, 2, 1306663620, 'fsdfsdfds', 'sdfsdfsd', 1, 1, 1306663666),
+(11, 1, 1, 1307099520, 'sdfsdfsdf', 'sdsdf', 1, 1, 1307099575);
 
 -- --------------------------------------------------------
 
@@ -932,6 +937,7 @@ CREATE TABLE `fs2_news_config` (
   `news_headline_ext` varchar(30) NOT NULL,
   `acp_per_page` smallint(3) NOT NULL DEFAULT '15',
   `acp_view` tinyint(1) NOT NULL DEFAULT '1',
+  `acp_force_cat_selection` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -939,8 +945,8 @@ CREATE TABLE `fs2_news_config` (
 -- Daten für Tabelle `fs2_news_config`
 --
 
-INSERT INTO `fs2_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`) VALUES
-(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 20, ' ...', 15, 2);
+INSERT INTO `fs2_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`, `acp_force_cat_selection`) VALUES
+(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 20, ' ...', 15, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1466,7 +1472,7 @@ CREATE TABLE `fs2_search_index` (
   `search_index_count` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=249 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=259 ;
 
 --
 -- Daten für Tabelle `fs2_search_index`
@@ -1625,7 +1631,17 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 (245, 137, 'dl', 10, 1),
 (246, 138, 'dl', 10, 1),
 (247, 139, 'dl', 10, 1),
-(248, 140, 'dl', 10, 1);
+(248, 140, 'dl', 10, 1),
+(249, 141, 'news', 9, 1),
+(250, 142, 'news', 9, 1),
+(251, 125, 'news', 10, 1),
+(252, 143, 'news', 10, 1),
+(253, 144, 'dl', 11, 1),
+(254, 145, 'dl', 11, 1),
+(255, 146, 'dl', 11, 1),
+(256, 147, 'dl', 11, 1),
+(257, 148, 'news', 11, 1),
+(258, 149, 'news', 11, 1);
 
 -- --------------------------------------------------------
 
@@ -1641,7 +1657,7 @@ CREATE TABLE `fs2_search_time` (
   `search_time_date` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_time_id`),
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
 --
 -- Daten für Tabelle `fs2_search_time`
@@ -1664,7 +1680,11 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 (14, 'articles', 3, 1303288510),
 (15, 'articles', 4, 1303288510),
 (16, 'dl', 9, 1306662345),
-(17, 'dl', 10, 1306662345);
+(17, 'dl', 10, 1306662345),
+(18, 'news', 9, 1307022293),
+(19, 'news', 10, 1307022293),
+(20, 'dl', 11, 1307022293),
+(21, 'news', 11, 1307185130);
 
 -- --------------------------------------------------------
 
@@ -1678,7 +1698,7 @@ CREATE TABLE `fs2_search_words` (
   `search_word` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
   UNIQUE KEY `search_word` (`search_word`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=141 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=150 ;
 
 --
 -- Daten für Tabelle `fs2_search_words`
@@ -1824,7 +1844,16 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 (137, 'wunderbare'),
 (138, 'weasddes'),
 (139, 'wissensasd'),
-(140, 'asdasd');
+(140, 'asdasd'),
+(141, 'fsdfsdfds'),
+(142, 'sdfsdfsd'),
+(143, 'video'),
+(144, 'download'),
+(145, 'libapr'),
+(146, 'src'),
+(147, 'rpm'),
+(148, 'sdfsdfsdf'),
+(149, 'sdsdf');
 
 -- --------------------------------------------------------
 
@@ -1981,7 +2010,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1306701922);
+('127.0.0.1', 1, 1307185130);
 
 -- --------------------------------------------------------
 

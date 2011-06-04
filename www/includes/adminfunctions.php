@@ -1,4 +1,35 @@
 <?php
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//// get timezonelist                                                                        ////
+//// thx@Rob Kaper <http://de.php.net/manual/en/function.date-default-timezone-set.php#84459>////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function get_timezones () {
+    $timezones = DateTimeZone::listAbbreviations();
+
+    $cities = array();
+    foreach( $timezones as $key => $zones )
+    {
+        foreach( $zones as $id => $zone )
+        {
+            if ( preg_match( '/^(America|Antartica|Arctic|Asia|Atlantic|Europe|Indian|Pacific)\//', $zone['timezone_id'] ) )
+                $cities[$zone['timezone_id']][] = $key;
+        }
+    }
+
+    // For each city, have a comma separated list of all possible timezones for that city.
+    foreach( $cities as $key => $value )
+        $cities[$key] = join( ', ', $value);
+
+    // Only keep one city (the first and also most important) for each set of possibilities.
+    $cities = array_unique( $cities );
+
+    // Sort by area/city name.
+    ksort($cities);
+    
+    return $cities;
+}
+
 //////////////////////////////////
 //// create content container ////
 //////////////////////////////////
@@ -166,42 +197,42 @@ function color_pre_selected ( $CHECK_ID, $ELEMENT_ID )
 
 function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FALSE )
 {
-        settype ( $D, "integer" );
-        settype ( $M, "integer" );
-        settype ( $Y, "integer" );
-           settype ( $H, "integer" );
-           settype ( $I, "integer" );
-           settype ( $S, "integer" );
+    settype ( $D, "integer" );
+    settype ( $M, "integer" );
+    settype ( $Y, "integer" );
+    settype ( $H, "integer" );
+    settype ( $I, "integer" );
+    settype ( $S, "integer" );
+    
+    if ($WITHOUT_MKTIME !== TRUE) {
            
         $new_date = mktime ( $H, $I, $S, $M, $D, $Y );
-        
+            
         $savedate_arr['d'] = date ( "d", $new_date );
         $savedate_arr['m'] = date ( "m", $new_date );
         $savedate_arr['y'] = date ( "Y", $new_date );
         $savedate_arr['h'] = date ( "H", $new_date );
         $savedate_arr['i'] = date ( "i", $new_date );
         $savedate_arr['s'] = date ( "s", $new_date );
+    
+    } else {
         
-        if ( $WITHOUT_MKTIME == TRUE ) {
-                $savedate_arr['d'] = $D;
-                $savedate_arr['m'] = $M;
-                $savedate_arr['y'] = $Y;
-                $savedate_arr['h'] = $H;
-                $savedate_arr['i'] = $I;
-                $savedate_arr['s'] = $S;
+        $savedate_arr['d'] = $D;
+        $savedate_arr['m'] = $M;
+        $savedate_arr['y'] = $Y;
+        $savedate_arr['h'] = $H;
+        $savedate_arr['i'] = $I;
+        $savedate_arr['s'] = $S;
+        
+        $savedate_arr = array_map(function ($ele) {
+            if ($ele == 0)
+                return "";
+        return sprintf('%02d', $ele);
+            
+        }, $savedate_arr);
+    }
 
-                foreach ( $savedate_arr as $key => $value ) {
-                        if ( $value == 0 ) {
-                $savedate_arr[$key] = "";
-                        } elseif ( $value < 10 ) {
-                $savedate_arr[$key] = "0" . $value;
-                        }
-                }
-                
-                return $savedate_arr;
-        }
-        
-        return $savedate_arr;
+    return $savedate_arr;
 }
 
 ////////////////////////

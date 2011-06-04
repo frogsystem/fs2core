@@ -19,14 +19,21 @@ exact:                                   exakt
 hex_color:                               Hexadezimal Farbcode
 folder_name_info:                        nur a-z, 0-9, "-" und "_" erlaubt
 chars:                                   Zeichen
+entry:                                   Eintrag
+entries:                                 Einträge
 date_info:                               verwendet den Syntax der PHP-Funktion <a class="s" href="http://www.php.net/manual/de/function.date.php" target="_blank" class="small">date()</a>
-
+html:                                    HTML
+fscode:                                  FSCode
+para:                                    Absatzbehandlung
 
 
 # Frequently used Phrases
 yes:                                     Ja
 no:                                      Nein
 and:                                     und
+on:                                      an
+off:                                     aus
+is:                                      ist
 optional:                                optional
 filename:                                Dateiname
 show:                                    anzeigen
@@ -44,6 +51,7 @@ today:                                   Heute
 reset:                                   Reset
 now:                                     Jetzt
 change:                                  Ändern
+preview:                                 Vorschau anzeigen
 please_select:				             Bitte auswählen
 select_hr:                               ----------------------------------
 id:                                      ID
@@ -52,11 +60,14 @@ replace_img:                             Ersetzt das bisherige Bild!
 delete_image:                            Bild löschen
 js_delete_image:
 
+
 # Date and Time for Admin CP
 date:                                    d.m.Y
 time:                                    H:i \U\h\r
 date_time:                               d.m.Y \u\m H:i \U\h\r
 seconds:                                 Sekunden
+at_time:                                 um
+time_appendix:                           Uhr
 
 # Frequently used Images
 sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">

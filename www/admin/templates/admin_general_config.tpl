@@ -1,5 +1,4 @@
 <!--section-start::main-->
-
 <form action="" method="post">
 <input type="hidden" name="go" value="gen_config">
 <input type="hidden" name="sended" value="1">
@@ -248,6 +247,19 @@
         
         <tr>
             <td>
+                <!--LANG::timezone-->: <br>
+                <span class="small"><!--LANG::timezone_desc--></span>
+            </td>
+            <td>
+                <select class="half" name="timezone">
+                    <option value="default" <!--IF::timezone-->selected<!--ENDIF-->><!--LANG::server_default--></option>
+                    <!--TEXT::timezones-->
+                </select>
+            </td>
+        </tr>        
+        
+        <tr>
+            <td>
                 <!--LANG::auto_forward-->: <br>
                 <span class="small"><!--LANG::auto_forward_desc--></span>
             </td>
@@ -309,11 +321,10 @@
         <tr>
             <td colspan="2">
                 <button class="button" type="submit">
-                    <!--COMMON::button_arrow--> <!--COMMON::save_changes_button-->                    
+                    <!--COMMON::button_arrow--> <!--COMMON::save_changes_button-->
                 </button>
             </td>
         </tr>
     </table>
 </form>
-                            
 <!--section-end::main-->

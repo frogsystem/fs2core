@@ -49,6 +49,11 @@ try {
         $global_config_arr['home_real'] = "news";
     }
     
+    //set timezone
+    if ($global_config_arr['timezone'] == "default")
+        $global_config_arr['timezone'] = date_default_timezone_get();
+    date_default_timezone_set($global_config_arr['timezone']);
+    
     //get short_language code
     $global_config_arr['language'] = (preg_match("/[a-z]{2}_[A-Z]{2}/", $global_config_arr['language_text']) === 1) ? substr($global_config_arr['language_text'], 0, 2) : $global_config_arr['language_text'];
     

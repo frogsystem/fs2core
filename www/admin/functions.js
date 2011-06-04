@@ -466,6 +466,28 @@ function changeDate (dayID, monthID, yearID, hourID, minID, dayShift, monthShift
     return true;
 }
 
+//setNow
+function setNow(y, m, d, h, i, s) {
+    if (document.getElementById(y) != null)
+        document.getElementById(y).value=getCurYear();
+        
+    if (document.getElementById(m) != null)        
+        document.getElementById(m).value=getCurMonth();
+        
+    if (document.getElementById(d) != null)
+        document.getElementById(d).value=getCurDate();
+        
+    if (document.getElementById(h) != null)
+        document.getElementById(h).value=getCurHours();
+        
+    if (document.getElementById(i) != null)
+        document.getElementById(i).value=getCurMinutes();
+        
+    if (document.getElementById(s) != null)
+        document.getElementById(s).value=getCurSeconds();
+}
+
+
 //getCurDate()
 function getCurDate () {
   var curDateTime = new Date();

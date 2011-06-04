@@ -68,4 +68,8 @@ date_time_desc:Format, das für Datums- und Zeitangaben auf der Seite verwendet w
 auto_forward:Automatische Weiterleitung
 auto_forward_desc:Zeit, nach der die automatische Weiterleitung aktiviert wird.
 
+timezone: Zeitzone
+timezone_desc:
+server_default: Server-Standard
+
 
