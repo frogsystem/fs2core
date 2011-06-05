@@ -59,7 +59,20 @@ function cut_in_string (string, maxlength, replacement)
 	return string;
 }
 
-
+//////////////////////////
+//// htmlspecialchars ////
+//////////////////////////
+function htmlspecialchars(str,typ) {
+    if(typeof str=="undefined") str="";
+    if(typeof typ!="number") typ=2;
+    typ=Math.max(0,Math.min(3,parseInt(typ)));
+    var from=new Array(/&/g,/</g,/>/g);
+    var to=new Array("&amp;","&lt;","&gt;");
+    if(typ==1 || typ==3) {from.push(/'/g); to.push("&#039;");}
+    if(typ==2 || typ==3) {from.push(/"/g); to.push("&quot;");}
+    for(var i in from) str= str.replace(from[i],to[i]);
+    return str;
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////

@@ -16,10 +16,23 @@ $config_arr['short_url_rep'] = "...";
 
 
 // script
+$adminpage->addCond("target_0", false);
+$adminpage->addCond("target_1", false);
+$adminpage->addCond("button", false);
+$adminpage->addText("name_name", "edit_name");
+$adminpage->addText("url_name", "edit_url");
+$adminpage->addText("target_name", "edit_target");
+$adminpage->addText("class", "space");
+$edit_table = $adminpage->get("edit_table", false);
+
+$adminpage->addText("table", $edit_table);
+$script_edit = $adminpage->get("link_edit", false);
+
 $script_entry = $adminpage->get("link_entry", false);
 $adminpage->addText("sul", $config_arr['short_url_len']);
 $adminpage->addText("sur", $config_arr['short_url_rep']);
 $adminpage->addText("link_entry", str_replace(array("\n","\r"), array("",""), $script_entry));
+$adminpage->addText("link_edit", str_replace(array("\n","\r"), array("",""), $script_edit));
 echo $adminpage->get("script", false);
 
 
@@ -233,10 +246,17 @@ if ( TRUE ) {
     //link add
     $adminpage->addCond("target_0", $_POST['new_link_target'] === 0);
     $adminpage->addCond("target_1", $_POST['new_link_target'] === 1);
-    $adminpage->addText("url", $_POST['new_link_url']);
+    $adminpage->addCond("button", true);
     $adminpage->addText("name", $_POST['new_link_name']);
-    $link_add = $adminpage->get("link_add");
+    $adminpage->addText("name_name", "new_link_name");
+    $adminpage->addText("url", $_POST['new_link_url']);
+    $adminpage->addText("url_name", "new_link_url");
+    $adminpage->addText("target_name", "new_link_target");
+    $adminpage->addText("class", "spacebottom");
+    $edit_table = $adminpage->get("edit_table");
     
+    $adminpage->addText("table", $edit_table);
+    $link_add = $adminpage->get("link_add");
     
     // Conditions
     $adminpage->addCond("news_active", $_POST['news_active'] === 1);

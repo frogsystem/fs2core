@@ -34,6 +34,10 @@ and:                                     und
 on:                                      an
 off:                                     aus
 is:                                      ist
+up:                                      nach oben
+down:                                    nach unten
+edit:                                    bearbeiten
+delete:                                  löschen
 optional:                                optional
 filename:                                Dateiname
 show:                                    anzeigen
@@ -93,6 +97,7 @@ select_button:                           Auswählen
 file_select_button:                      Datei auswählen
 search_button:                           Suchen
 add_button:                              Hinzufügen
+save_button:                             Speichern
 
 
 # Messages
