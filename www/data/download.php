@@ -7,6 +7,9 @@ $index = mysql_query ( "
 ", $db);
 $config_arr = mysql_fetch_assoc ( $index );
 
+if (!isset($_GET['cat_id']) && isset($_GET['catid'])) {
+    $_GET['cat_id'] = $_GET['catid'];
+}
 
 if ( !isset ( $_GET[cat_id] ) ) {
    $show = FALSE;
@@ -46,7 +49,7 @@ if (isset($_GET['keyword']) && $_GET['keyword'] != "")
 /////////////////////////////
 
 $valid_ids = array();
-get_dl_categories (&$valid_ids, $_GET['cat_id'], $config_arr['dl_show_sub_cats'] );
+get_dl_categories ($valid_ids, $_GET['cat_id'], $config_arr['dl_show_sub_cats'] );
 
 foreach ($valid_ids as $cat) {
     $cat['cat_name'] = stripslashes ( $cat['cat_name'] );

@@ -194,6 +194,17 @@ table.content h3+hr {
     background-image:url('../images/line_green.jpg');
 }
 
+table.content .space {
+    margin-top:15px;
+    margin-bottom:15px;    
+}
+table.content .spacetop {
+    margin-top:15px;
+}
+table.content .spacebottom{
+    margin-bottom:15px;
+}
+
 /**************************************************/
 /* special config page styles */
 /**************************************************/
@@ -310,27 +321,45 @@ textarea.nomono {
 input.full, textarea.full {
     width:670px;
 }
+input.threequarter, textarea.threequarter {
+    width:500px;
+}
+input.twothird, textarea.twothird {
+    width:443px;
+}
 input.half, textarea.half {
     width:330px;
 }
 input.third, textarea.third {
-    width:215px;
+    width:216px;
 }
 input.quarter, textarea.quarter {
     width:160px;
+}
+input.eighth, textarea.eighth {
+    width:75px;
 }
 
 select.full {
     width:680px;
 }
+select.threequarter {
+    width:510px;
+}
+select.twothird {
+    width:453px;
+}
 select.half {
     width:340px;
 }
 select.third {
-    width:225px;
+    width:226px;
 }
 select.quarter {
     width:170px;
+}
+select.eighth {
+    width:85px;
 }
 
 /**************************************************/

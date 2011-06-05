@@ -19,7 +19,10 @@ function htmlenclose ($TEXT, $TAG) {
 ///////////////////////////////////////////////////////////////////
 function killhtml ($VAL, $ARR = true) {
     // save data
-    if (is_hexcolor($VAL)) {
+    if (is_array($VAL)) {
+        if ($ARR)
+            $VAL = array_map("killhtml", $VAL);
+    } elseif (is_hexcolor($VAL)) {
     }
     elseif (is_numeric($VAL)) {
         if (floatval($VAL) == intval($VAL)) {
@@ -29,9 +32,6 @@ function killhtml ($VAL, $ARR = true) {
             $VAL = floatval($VAL);
             settype($VAL, "float");
         }
-    } elseif (is_array($VAL) && $ARR) {   
-        $VAL = array_map("killhtml", $VAL);
-        
     } else {
         $VAL = htmlspecialchars(strval($VAL), ENT_COMPAT);
         settype($VAL, "string");

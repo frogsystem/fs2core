@@ -458,13 +458,13 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
         $width2 = 'width:'.$width.'px;';
     } elseif ( $width != "" ) {
         $width2 = 'width:'.$width.';';
-        }
+    }
 
-    if ( $height != "" && is_int ( $height ) ) {
+    if ($height != "" && is_int($height)) {
         $height2 = 'height:'.$height.'px;';
-    } elseif ( $width != "" ) {
+    } elseif ( $height != "" ) {
         $height2 = 'height:'.$height.';';
-        }
+    }
 
     if ($class != "") {
         $class2 = 'class="nomonospace '.$class.'"';

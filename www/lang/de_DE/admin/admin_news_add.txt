@@ -13,6 +13,7 @@ news_text:                                         Text
 news_add_button:                                   News hinzufügen
 news_added:                                        News wurde erfolgreich hinzugefügt
 news_not_added:                                    News wurde nicht hinzugefügt
+link_not_added:                                    Link wurde nicht hinzugefügt
 news_link_add:                                     Link hinzufügen
 news_link_title:                                   Titel
 news_link_url:                                     URL

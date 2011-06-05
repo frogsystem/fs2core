@@ -11,6 +11,16 @@ $config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $TEXT['a
 $config_arr['fs'] = in_array($config_arr['fs_code'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
 $config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
 
+$config_arr['short_url_len'] = 50;
+$config_arr['short_url_rep'] = "...";
+
+
+// script
+$script_entry = $adminpage->get("link_entry", false);
+$adminpage->addText("sul", $config_arr['short_url_len']);
+$adminpage->addText("sur", $config_arr['short_url_rep']);
+$adminpage->addText("link_entry", str_replace(array("\n","\r"), array("",""), $script_entry));
+echo $adminpage->get("script", false);
 
 
 /////////////////////////////
@@ -18,8 +28,8 @@ $config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $TEX
 /////////////////////////////
 
 if (
-        !isset($_POST['dolinkbutton']) && !isset($_POST['addlink']) &&
-        $_POST['title'] && $_POST['title'] != "" &&
+        !isset($_POST['edit_link']) && !isset($_POST['add_link']) &&
+        $_POST['news_title'] && $_POST['news_title'] != "" &&
         $_POST['news_text'] && $_POST['news_text'] != "" &&
 
         $_POST['d'] && $_POST['d'] != "" && $_POST['d'] > 0 &&
@@ -29,7 +39,7 @@ if (
         $_POST['i'] && $_POST['i'] != "" && $_POST['i'] >= 0 &&
 
         isset ( $_POST['cat_id'] ) && $_POST['cat_id'] != -1 &&
-        isset ( $_POST['posterid'] )
+        isset ( $_POST['user_id'] ) && $_POST['cat_id'] != 0
     )
 {
     // Prepare data
@@ -50,21 +60,18 @@ if (
         }
 
         // Insert Links to database
-        foreach ($_POST['linkname'] as $key => $value)
+        foreach ($_POST['link_name'] as $id => $val)
         {
-            if (!empty($_POST['linkname'][$key]) && !empty($_POST['linkurl'][$key]) && !in_array($_POST['linkurl'][$key], array("http://", "https://"))) {
-                
+            if (!empty($_POST['link_name'][$id]) && !empty($_POST['link_url'][$id]) && !in_array($_POST['link_url'][$id], array("http://", "https://"))) {
+
                 // secure link target
-                switch ($_POST['linktarget'][$key]) {
-                    case 1: settype ( $_POST['linktarget'][$key], "integer" ); break;
-                    default: $_POST['linktarget'][$key] = 0; break;
-                }                
-                
+                $_POST['link_target'][$id] = ($_POST['link_target'][$id] == 1 ? 1 : 0);           
+
                 $linkdata = array(
                     'news_id' => $newsid,
-                    'link_name' => $_POST['linkname'][$key],
-                    'link_url' => $_POST['linkurl'][$key],
-                    'link_target' => $_POST['linktarget'][$key]
+                    'link_name' => $_POST['link_name'][$id],
+                    'link_url' => $_POST['link_url'][$id],
+                    'link_target' => $_POST['link_target'][$id]
                 );
                 
                 // insert into db                
@@ -103,8 +110,62 @@ if ( TRUE ) {
     // link functions or error
     if (isset($_POST['sended'])) {
         
+        //add link
+        if (isset($_POST['add_link'])) {
+            if (!empty($_POST['new_link_name']) && !empty($_POST['new_link_url']) && !in_array($_POST['new_link_url'], array("http://", "https://"))) {
+                $_POST['link_name'][] = $_POST['new_link_name'];
+                $_POST['link_url'][] = $_POST['new_link_url'];
+                $_POST['link_target'][] = $_POST['new_link_target'];
+                
+                unset($_POST['new_link_name'], $_POST['new_link_url'], $_POST['new_link_target']);
+                $_POST['new_link_url'] = "http://";
+            } else {
+                echo get_systext($TEXT['page']->get("link_not_added")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_link_error"));
+            }
+            
+        } elseif (isset($_POST['edit_link'])) {
+        
+            if(isset($_POST['link']) && !empty($_POST['link_action'])) {
+            
+                // löschen
+                if ($_POST['link_action'] == "del") {
+                    unset($_POST['link_name'][$_POST['link']], $_POST['link_url'][$_POST['link']], $_POST['link_target'][$_POST['link']]);
+                }
+                
+                //up
+                elseif ($_POST['link_action'] == "up" && $_POST['link'] != 0) {
+                    // werte tauschen
+                    list($_POST['link_name'][$_POST['link']-1], $_POST['link_name'][$_POST['link']])
+                        = array($_POST['link_name'][$_POST['link']], $_POST['link_name'][$_POST['link']-1]);
+                    list($_POST['link_url'][$_POST['link']-1], $_POST['link_url'][$_POST['link']])
+                        = array($_POST['link_url'][$_POST['link']], $_POST['link_url'][$_POST['link']-1]);
+                    list($_POST['link_target'][$_POST['link']-1], $_POST['link_target'][$_POST['link']])
+                        = array($_POST['link_target'][$_POST['link']], $_POST['link_target'][$_POST['link']-1]);
+                }
+                
+                //down
+                elseif ($_POST['link_action'] == "down" && $_POST['link'] < count($_POST['link_name'])-1) {
+                    // werte tauschen
+                    list($_POST['link_name'][$_POST['link']+1], $_POST['link_name'][$_POST['link']])
+                        = array($_POST['link_name'][$_POST['link']], $_POST['link_name'][$_POST['link']+1]);
+                    list($_POST['link_url'][$_POST['link']+1], $_POST['link_url'][$_POST['link']])
+                        = array($_POST['link_url'][$_POST['link']], $_POST['link_url'][$_POST['link']+1]);
+                    list($_POST['link_target'][$_POST['link']+1], $_POST['link_target'][$_POST['link']])
+                        = array($_POST['link_target'][$_POST['link']], $_POST['link_target'][$_POST['link']+1]);
+                }
+                
+                //bearbeiten
+                elseif ($_POST['link_action'] == "edit") {
+                    $_POST['new_link_name'] = $_POST['link_name'][$_POST['link']];
+                    $_POST['new_link_url'] = $_POST['link_url'][$_POST['link']];
+                    $_POST['new_link_target'] = $_POST['link_target'][$_POST['link']];
+                    
+                    unset($_POST['link_name'][$_POST['link']], $_POST['link_url'][$_POST['link']], $_POST['link_target'][$_POST['link']]);
+                }
+            }
+        
         // display error
-        if (!isset($_POST['dolinkbutton']) && !isset($_POST['addlink'])) {
+        } else {
             echo get_systext($TEXT['page']->get("news_not_added")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
         }
         
@@ -119,6 +180,8 @@ if ( TRUE ) {
         $_POST['y'] = date("Y");
         $_POST['h'] = date("H");
         $_POST['i'] = date("i");
+        
+        $_POST['new_link_url'] = "http://";    
     }
     
     // Get User
@@ -143,9 +206,38 @@ if ( TRUE ) {
         settype ($cat['cat_id'], "integer");
         $cat_options .= '<option value="'.$cat['cat_id'].'" '.getselected($cat['cat_id'], $_POST['cat_id']).'>'.$cat['cat_name'].'</option>'."\n";
     }
-
-
-
+    
+    
+    //link entries
+    initstr($link_entries);
+    $c = 0;
+    if (!is_array($_POST['link_name']))
+        $_POST['link_name'] = array();
+        
+    foreach($_POST['link_name'] as $id => $val) {       
+        $adminpage->addText("name", killhtml($_POST['link_name'][$id]));
+        $adminpage->addText("url", killhtml($_POST['link_url'][$id]));
+        $adminpage->addText("target", killhtml($_POST['link_target'][$id]));
+        $adminpage->addText("short_url", killhtml(cut_in_string($_POST['link_url'][$id], $config_arr['short_url_len'], $config_arr['short_url_rep'])));
+        $adminpage->addText("target_text", $_POST['link_target'][$id] == 1 ? $TEXT['page']->get("news_link_blank") : $TEXT['page']->get("news_link_self"));
+        $adminpage->addText("id", $c++);
+        $adminpage->addText("num", $c);
+        $link_entries .= $adminpage->get("link_entry")."\n";
+    }
+    
+    // link list
+    $adminpage->addCond("link_edit", $c >= 1);    
+    $adminpage->addText("link_entries", $link_entries);
+    $link_list = $adminpage->get("link_list");    
+    
+    //link add
+    $adminpage->addCond("target_0", $_POST['new_link_target'] === 0);
+    $adminpage->addCond("target_1", $_POST['new_link_target'] === 1);
+    $adminpage->addText("url", $_POST['new_link_url']);
+    $adminpage->addText("name", $_POST['new_link_name']);
+    $link_add = $adminpage->get("link_add");
+    
+    
     // Conditions
     $adminpage->addCond("news_active", $_POST['news_active'] === 1);
     $adminpage->addCond("news_comments_allowed", $_POST['news_comments_allowed'] === 1);
@@ -159,231 +251,12 @@ if ( TRUE ) {
     $adminpage->addText("html", $config_arr['html']);
     $adminpage->addText("fs", $config_arr['fs']);
     $adminpage->addText("para", $config_arr['para']);
-    $adminpage->addText("the_editor", create_editor("news_text", $_POST['news_text'], "100%", "250px", "", FALSE));
+    $adminpage->addText("the_editor", create_editor("news_text", $_POST['news_text'], "", "250px", "full", FALSE));
+    $adminpage->addText("link_list", $link_list);
+    $adminpage->addText("link_add", $link_add);
 
     // display page
     echo $adminpage->get("main");
-    
-
-/*
-
-
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <table cellpadding="0" cellspacing="0" width="100%">
-    ';
-
-        //Zu löschende Links löschen
-        if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['dolinkbutton'] ) && $_POST['do_links'] == "del" && count ( $_POST['dolink'] ) > 0 )
-        {
-                foreach ( $_POST['dolink'] as $key => $value )
-            {
-                        if ( $value == 1 )
-                        {
-                                $_POST['linkname'][$key] = "";
-                        $_POST['linkurl'][$key] = "";
-                        $_POST['linktarget'][$key] = "";
-                        }
-            }
-        }
-        
-        //Links nach oben verschieben
-        if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['dolinkbutton'] ) && $_POST['do_links'] == "up" && count ( $_POST['dolink'] ) > 0 )
-        {
-                foreach ( $_POST['dolink'] as $key => $value )
-            {
-                        if ( $value == 1 && $key != 0 )
-                        {
-                                $up_name = $_POST['linkname'][$key];
-                        $up_url = $_POST['linkurl'][$key];
-                        $up_target = $_POST['linktarget'][$key];
-                        $_POST['linkname'][$key] = $_POST['linkname'][$key-1];
-                        $_POST['linkurl'][$key] = $_POST['linkurl'][$key-1];
-                        $_POST['linktarget'][$key] = $_POST['linktarget'][$key-1];
-                        $_POST['linkname'][$key-1] = $up_name;
-                        $_POST['linkurl'][$key-1] = $up_url;
-                        $_POST['linktarget'][$key-1] = $up_target;
-                        }
-            }
-        }
-        
-        //Links nach unten verschieben
-        if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['dolinkbutton'] ) && $_POST['do_links'] == "down" && count ( $_POST['dolink'] ) > 0 )
-        {
-                foreach ( $_POST['dolink'] as $key => $value )
-            {
-                        if ( $value == 1 && $key != count ( $_POST['linkname'] ) - 1 )
-                        {
-                                $down_name = $_POST['linkname'][$key];
-                        $down_url = $_POST['linkurl'][$key];
-                        $down_target = $_POST['linktarget'][$key];
-                        $_POST['linkname'][$key] = $_POST['linkname'][$key+1];
-                        $_POST['linkurl'][$key] = $_POST['linkurl'][$key+1];
-                        $_POST['linktarget'][$key] = $_POST['linktarget'][$key+1];
-                        $_POST['linkname'][$key+1] = $down_name;
-                        $_POST['linkurl'][$key+1] = $down_url;
-                        $_POST['linktarget'][$key+1] = $down_target;
-                        }
-            }
-        }
-        
-        //Zu bearbeitende Links löschen & Daten sichern
-        unset ( $edit_name );
-        unset ( $edit_url );
-        unset ( $edit_target );
-        
-        if ( isset ( $_POST['sended'] ) &&  isset ( $_POST['dolinkbutton'] ) && $_POST['do_links'] == "edit" && count ( $_POST['dolink'] ) > 0 )
-        {
-                foreach ( $_POST['dolink'] as $key => $value )
-            {
-                        if ( $value == 1 )
-                        {
-                                $edit_name = $_POST['linkname'][$key];
-                        $edit_url = $_POST['linkurl'][$key];
-                        $edit_target = $_POST['linktarget'][$key];
-                                $_POST['linkname'][$key] = "";
-                        $_POST['linkurl'][$key] = "";
-                        $_POST['linktarget'][$key] = "";
-                        }
-            }
-        }
-
-        // Erstellte Linkfelder ausgeben
-        if ( !isset ($_POST['linkname']) )
-         {
-        $_POST['linkname'][0] = "";
-        }
-        $linkid = 0;
-        
-    foreach ( $_POST['linkname'] as $key => $value )
-    {
-        if ( $_POST['linkname'][$key] != "" && $_POST['linkurl'][$key] != "" && ( $_POST['linknew'][$key] == 0 || isset ( $_POST['addlink'] ) ) )
-        {
-                        $counter = $linkid + 1;
-
-                        $link_name = killhtml ( $_POST['linkname'][$key] );
-
-                        $link_maxlenght = 60;
-            $_POST['linkurl'][$key] = killhtml ( $_POST['linkurl'][$key] );
-                        $link_fullurl = $_POST['linkurl'][$key];
-                        if ( strlen ( $_POST['linkurl'][$key] ) > $link_maxlenght )
-                {
-                    $_POST['linkurl'][$key] = substr ( $link_fullurl, 0, $link_maxlenght ) . "...";
-                }
-
-                        switch ( $_POST['linktarget'][$key] )
-                    {
-                        case 1: $link_target = $admin_phrases[news][news_link_blank]; break;
-                        default:
-                                        $_POST['linktarget'][$key] = 0;
-                                        $link_target = $admin_phrases[news][news_link_self];
-                                        break;
-                    }
-
-            echo'
-                                                                                <tr class="pointer" id="tr_'.$linkid.'"
-                                                                                        onmouseover="'.color_list_entry ( "input_".$linkid, "#EEEEEE", "#64DC6A", "this" ).'"
-                                                                                        onmouseout="'.color_list_entry ( "input_".$linkid, "transparent", "#49c24f", "this" ).'"
-                                                        onclick="'.color_click_entry ( "input_".$linkid, "#EEEEEE", "#64DC6A", "this", TRUE ).'"
-                                                                                >
-                                                                                        <td class="config" style="padding-left: 7px; padding-right: 7px; padding-bottom: 2px; padding-top: 2px;">
-                                                                                                #'.$counter.'
-                                                                                        </td>
-                                                                                        <td class="config" width="100%" style="padding-right: 5px; padding-bottom: 2px; padding-top: 2px;">
-                                                             '.$link_name.' <span class="small">('.$link_target.')</span><br>
-                                                            <a href="'.$link_fullurl.'" target="_blank" title="'.$link_fullurl.'">'.$_POST['linkurl'][$key].'</a>
-                                                            <input type="hidden" name="linkname['.$linkid.']" value="'.$link_name.'">
-                                                            <input type="hidden" name="linkurl['.$linkid.']" value="'.$link_fullurl.'">
-                                                            <input type="hidden" name="linktarget['.$linkid.']" value="'.$_POST['linktarget'][$key].'">
-                                                            <input type="hidden" name="linknew['.$linkid.']" value="0">
-                                                                                        </td>
-
-                                                        <td align="center">
-                                                            <input class="pointer" type="radio" name="dolink['.$linkid.']" id="input_'.$linkid.'" value="1"
-                                                                                                        onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$linkid, TRUE ).'"
-                                                                                                >
-                                                                                        </td>
-                                                                                </tr>
-            ';
-                        $linkid++;
-        }
-        }
-
-        if ( $linkid > 0 )
-        {
-                echo'
-                                                                                <tr valign="top">
-                                                                                        <td style="padding-right: 5px; padding-top: 11px;" align="right" colspan="2">
-                                                                                            <select name="do_links" size="1">
-                                                    <option value="0">'.$admin_phrases[news][news_link_no].'</option>
-                                                    <option value="del">'.$admin_phrases[news][news_link_delete].'</option>
-                                                    <option value="up">'.$admin_phrases[news][news_link_up].'</option>
-                                                    <option value="down">'.$admin_phrases[news][news_link_down].'</option>
-                                                                                                        <option value="edit">'.$admin_phrases[news][news_link_edit].'</option>
-                                                                                                </select>
-                                                                                        </td>
-                                                                                        <td style="padding-top: 11px;" align="center">
-                                                <input class="button" type="submit" name="dolinkbutton" value="'.$admin_phrases[common][do_button].'">
-                                                                                        </td>
-                                                                                </tr>
-                ';
-        }
-
-        if ( $edit_url == "" ) {
-            $edit_url = "http://";
-        }
-    
-        settype ( $edit_target, "integer" );
-    
-        echo'
-                                                                        </table>
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                                                        <tr>
-                                <td class="config" colspan="2">
-                                    '.$admin_phrases[news][news_link_add].':
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config" colspan="2">
-                                    <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tr>
-                                                                                        <td class="config" style="padding-right: 5px;">
-                                                '.$admin_phrases[news][news_link_title].':
-                                                                                        </td>
-                                                                                        <td class="config" style="padding-bottom: 4px;" width="100%">
-                                                <input class="text" style="width: 100%;" maxlength="100" name="linkname['.$linkid.']" value="'.$edit_name.'">
-                                                                                        </td>
-                                                                                        <td class="config"style="padding-left: 5px;">
-                                                '.$admin_phrases[news][news_link_open].':
-                                                                                        </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                        <td class="config">
-                                                '.$admin_phrases[news][news_link_url].':
-                                                                                        </td>
-                                                                                        <td class="config" style="padding-bottom: 4px;">
-                                                <input class="text" style="width: 100%;" maxlength="255" name="linkurl['.$linkid.']" value="'.$edit_url.'">
-                                                                                        </td>
-                                                                                        <td style="padding-left: 5px;" valign="top">
-                                                                                                <select name="linktarget['.$linkid.']" size="1">
-                                                    <option value="0" '.getselected(0, $edit_target).'>'.$admin_phrases[news][news_link_self].'</option>
-                                                    <option value="1" '.getselected(1, $edit_target).'>'.$admin_phrases[news][news_link_blank].'</option>
-                                                                                                </select>
-                                                                                        </td>
-                                                                                        <td align="right" valign="top" style="padding-left: 10px;">
-                                                                                                <input type="hidden" name="linknew['.$linkid.']" value="1">
-                                                <input class="button" type="submit" name="addlink" value="'.$admin_phrases[common][add_button].'">
-                                                                                        </td>
-                                                                                </tr>
-                                                                        </table>
-                                                                </td>
-                            </tr>
-        ';
-
-
-*/
 }
 
 } ?>

@@ -92,6 +92,7 @@ save_changes_button:                     Änderungen speichern
 select_button:                           Auswählen
 file_select_button:                      Datei auswählen
 search_button:                           Suchen
+add_button:                              Hinzufügen
 
 
 # Messages
@@ -132,6 +133,7 @@ icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Zugri
 icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Zugriff verweigert">
 icon_up:                                 <img src="icons/up.jpg" alt="Nach oben verschieben" align="absmiddle">
 icon_down:                               <img src="icons/down.jpg" alt="Nach unten verschieben" align="absmiddle">
+icon_link_error:                         <img src="icons/link_error.jpg" alt="Link Fehler" align="absmiddle">
 
 
 # Upload-Messages

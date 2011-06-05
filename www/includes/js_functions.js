@@ -45,6 +45,22 @@ function mozWrap(txtarea, open, close)
         return;
 }
 
+///////////////////////////////////////////////
+//// Short string by cutting in the middle ////
+///////////////////////////////////////////////
+function cut_in_string (string, maxlength, replacement)
+{
+	if (string.length > maxlength) {
+		var part_lenght = Math.ceil(maxlength/2)-Math.ceil(replacement.length/2);
+		var string_start = string.substr(0, part_lenght);
+		var string_end = string.substr(-1*part_lenght);
+		string = string_start+replacement+string_end;
+	}
+	return string;
+}
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 //Einfachen Code einfügen (B,I,U, etc.) => Keine Abfrage
