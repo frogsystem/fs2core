@@ -38,6 +38,22 @@ class lang
     private function add($tag, $text) {
         $this->phrases[$tag] = $text;
     }
+    
+    // load text data
+    private function import(&$data) {
+        $imports = array();
+        preg_match_all('/#@([-a-z\/_]+)/is', $data, $imports, PREG_SET_ORDER);
+        foreach ($imports as $import) {
+            $importPath = FS2_ROOT_PATH . "lang/" . $this->local . "/" . $import[1] . ".txt";
+            $importData = file_get_contents($importPath);
+            $importData = str_replace(array("\r\n", "\r"), "\n", $importData); // unify linebreaks
+            $this->import($importData);
+            $replace = '/#@'.preg_quote($import[1], "/").'/i';
+            $data = preg_replace($replace, $importData, $data);
+           // replace all imports recursive
+        }
+        unset($imports);
+    }        
 
     // load text data
     private function load() {    
@@ -49,9 +65,22 @@ class lang
         
         // include language data file
         if (file_exists($langDataPath)) {
-            // load content
+            // load file
             $langData = file_get_contents($langDataPath);
             $langData = str_replace(array("\r\n", "\r"), "\n", $langData); // unify linebreaks
+            $this->import($langData);
+            
+            //import files
+            preg_match_all('/<!--section-import(\-nolang)?::([a-z-_]+)::([a-z-_]+)-->/is', $tmpval, $imports, PREG_SET_ORDER);
+            foreach ($imports as $import) {
+               $importlang = (empty($import[1]) ? true: false);
+               $page = new adminpage($import[2].".tpl");
+               $tmpval = preg_replace('/<!--section-import::'.$import[2].'::'.$import[3].'-->/is', $page->get($import[3], false, false, $importlang), $tmpval);
+               // replace all imports, recursive but don't touch conds or TEXTs
+            }
+            unset($imports);            
+            
+            // get lines
             $langData = preg_replace("/#.*?\n/is", "", $langData);
             $langData = explode("\n", $langData);
             

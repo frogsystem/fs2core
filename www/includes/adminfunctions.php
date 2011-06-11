@@ -422,6 +422,7 @@ function getfrompost ( $ARRAY )
         return $ARRAY;
 }
 function frompost ($KEYS) {
+    $return = array();
     foreach ($KEYS as $key) {
         $return[$key] = isset($_POST[$key]) ? $_POST[$key] : 0;
     }

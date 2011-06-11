@@ -1,14 +1,21 @@
-<?php
+<?php if (ACP_GO == "news_edit") {
 /////////////////////
 //// File Config ////
 /////////////////////
 $FILE_SHOW_START = TRUE;
 
-/////////////////////
-//// Load Config ////
-/////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config WHERE `id` = '1'", $db );
-$config_arr = mysql_fetch_assoc ( $index );
+###################
+## Page Settings ##
+###################
+$news_cols = array("cat_id", "user_id", "news_date", "news_title", "news_text", "news_active", "news_comments_allowed", "news_search_update");
+
+$config_arr = $sql->getById("news_config", array("html_code", "fs_code", "para_handling", "acp_force_cat_selection"), 1);
+$config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
+$config_arr['fs'] = in_array($config_arr['fs_code'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
+$config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
+
+$config_arr['short_url_len'] = 50;
+$config_arr['short_url_rep'] = "...";
 
 ///////////////////
 //// Functions ////
@@ -327,74 +334,43 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
         ';
 }
 
-function action_edit_get_data ( $NEWS_ID )
+function action_edit_get_data ($NEWS_ID)
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
-
-    //Load News
-    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$NEWS_ID."' LIMIT 0, 1", $db );
-        $news_arr = mysql_fetch_assoc ( $index );
-
-        // Sended or Link Action
-         if ( isset ( $_POST['sended'] ) )
-    {
-        $news_arr = getfrompost ( $news_arr );
-            $news_arr['d'] = $_POST['d'];
-            $news_arr['m'] = $_POST['m'];
-            $news_arr['y'] = $_POST['y'];
-            $news_arr['h'] = $_POST['h'];
-            $news_arr['i'] = $_POST['i'];
-             if ( isset ( $_POST['editnews'] ) )
-            {
-                systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
-            }
+    global $sql, $TEXT;
+    global $news_cols, $config_arr;
+    
+    //load news
+    if(isset($_POST['sended'])) {
+        $data = frompost($news_cols);
+        
+        // not filled error TODO
+        if (isset($_POST['editnews'])) {
+            systext($admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE);
+        }        
+      
+    } else {
+        $data = $sql->getRowById("news", $news_cols, $NEWS_ID);
+        
+        $data['d'] = date("d", $data['news_date']);
+        $data['m'] = date("m", $data['news_date']);
+        $data['y'] = date("Y", $data['news_date']);
+        $data['h'] = date("H", $data['news_date']);
+        $data['i'] = date("i", $data['news_date']);
+        
+        $data['new_link_url'] = "http://";        
     }
 
-    // News Konfiguration lesen
-    $index = mysql_query ( "SELECT html_code, fs_code FROM ".$global_config_arr['pref']."news_config", $db );
-    $config_arr = mysql_fetch_assoc ( $index );
-    $config_arr[html_code] = ($config_arr[html_code] == 2 OR $config_arr[html_code] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
-    $config_arr[fs_code] = ($config_arr[fs_code] == 2 OR $config_arr[fs_code] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
-    $config_arr[para_handling] = ($config_arr[para_handling] == 2 OR $config_arr[para_handling] == 4) ? $admin_phrases[common][on] : $admin_phrases[common][off];
-
-        // User ID ermittlen
-        if ( !isset ( $news_arr['user_id'] ) )
-    {
-        $news_arr['user_id'] = $_SESSION['user_id'];
-    }
-
-        // Security-Functions
-        $news_arr['news_text'] = killhtml ( $news_arr['news_text'] );
-    $news_arr['news_title'] = killhtml ( $news_arr['news_title'] );
-        settype ( $news_arr['cat_id'], "integer" );
-    settype ( $news_arr['user_id'], "integer" );
-    settype ( $news_arr['news_active'], "integer" );
-    settype ( $news_arr['news_comments_allowed'], "integer" );
-
+    // security functions
+    $data = array_map("killhtml", $data);   
+    
     // Get User
-    $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$news_arr['user_id']."'", $db );
-    $news_arr['poster'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
+    $data['user_name'] = $sql->getFieldById("user", "user_name", $data['user_id'], "user_id");
 
-        // Create Date-Arrays
-    if ( !isset ( $news_arr['d'] ) )
-    {
-            $news_arr['d'] = date ( "d", $news_arr['news_date'] );
-            $news_arr['m'] = date ( "m", $news_arr['news_date'] );
-            $news_arr['y'] = date ( "Y", $news_arr['news_date'] );
-            $news_arr['h'] = date ( "H", $news_arr['news_date'] );
-            $news_arr['i'] = date ( "i", $news_arr['news_date'] );
-        }
-        $date_arr = getsavedate ( $news_arr['d'], $news_arr['m'], $news_arr['y'], $news_arr['h'], $news_arr['i'] );
-        $nowbutton_array = array( "d", "m", "y", "h", "i" );
+    // Create Date-Arrays
+    list($data['d'], $data['m'], $data['y'], $data['h'], $data['i']) 
+        = array_values(getsavedate($data['d'], $data['m'], $data['y'], $data['h'], $data['i'], 0, true));
         
-        $data_arr['news'] = $news_arr;
-        $data_arr['date'] = $date_arr;
-        $data_arr['nowbutton'] = $nowbutton_array;
-        $data_arr['config'] = $config_arr;
-        
-        return $data_arr;
+    return $data;
 }
 
 function action_edit_display_links ( $NEWS_ID, $FORM )
@@ -639,16 +615,81 @@ function action_edit_display_new_link ( $NUM_LINKS, $EDIT )
         ';
 }
 
-function action_edit_display_page ( $data_arr )
+function action_edit_display_page ($data)
 {
-        global $db;
-        global $global_config_arr;
-        global $admin_phrases;
+    global $sql, $TEXT, $adminpage;
+    
+    // cat options
+    initstr($cat_options);
+    if ($config_arr['acp_force_cat_selection'] == 1) {
+        $cat_options .= '<option value="-1" '.getselected(-1, $_POST['cat_id']).'>'.$TEXT['admin']->get("please_select").'</option>'."\n";
+        $cat_options .= '<option value="-1">'.$TEXT['admin']->get("select_hr").'</option>'."\n";
+    }
 
-        $news_arr = $data_arr['news'];
-        $date_arr = $data_arr['date'];
-        $nowbutton_array = $data_arr['nowbutton'];
-        $config_arr = $data_arr['config'];
+    $cats = $sql->get("news_cat", array("cat_id", "cat_name"));
+    foreach ($cats['data'] as $cat) {
+        settype ($cat['cat_id'], "integer");
+        $cat_options .= '<option value="'.$cat['cat_id'].'" '.getselected($cat['cat_id'], $_POST['cat_id']).'>'.$cat['cat_name'].'</option>'."\n";
+    }
+    
+    
+    //link entries
+    initstr($link_entries);
+    $c = 0;
+    if (!is_array($_POST['link_name']))
+        $_POST['link_name'] = array();
+        
+    foreach($_POST['link_name'] as $id => $val) {       
+        $adminpage->addText("name", killhtml($_POST['link_name'][$id]));
+        $adminpage->addText("url", killhtml($_POST['link_url'][$id]));
+        $adminpage->addText("target", killhtml($_POST['link_target'][$id]));
+        $adminpage->addText("short_url", killhtml(cut_in_string($_POST['link_url'][$id], $config_arr['short_url_len'], $config_arr['short_url_rep'])));
+        $adminpage->addText("target_text", $_POST['link_target'][$id] == 1 ? $TEXT['page']->get("news_link_blank") : $TEXT['page']->get("news_link_self"));
+        $adminpage->addText("id", $c++);
+        $adminpage->addText("num", $c);
+        $link_entries .= $adminpage->get("link_entry")."\n";
+    }
+    
+    // link list
+    $adminpage->addCond("link_edit", $c >= 1);    
+    $adminpage->addText("link_entries", $link_entries);
+    $link_list = $adminpage->get("link_list");    
+    
+    //link add
+    $adminpage->addCond("target_0", $_POST['new_link_target'] === 0);
+    $adminpage->addCond("target_1", $_POST['new_link_target'] === 1);
+    $adminpage->addCond("button", true);
+    $adminpage->addText("name", $_POST['new_link_name']);
+    $adminpage->addText("name_name", "new_link_name");
+    $adminpage->addText("url", $_POST['new_link_url']);
+    $adminpage->addText("url_name", "new_link_url");
+    $adminpage->addText("target_name", "new_link_target");
+    $adminpage->addText("class", "spacebottom");
+    $edit_table = $adminpage->get("edit_table");
+    
+    $adminpage->addText("table", $edit_table);
+    $link_add = $adminpage->get("link_add");
+    
+    // Conditions
+    $adminpage->addCond("news_active", $_POST['news_active'] === 1);
+    $adminpage->addCond("news_comments_allowed", $_POST['news_comments_allowed'] === 1);
+        
+    // Values
+    foreach ($_POST as $key => $value) {
+        $adminpage->addText($key, $value);
+    }
+    
+    $adminpage->addText("cat_options", $cat_options);
+    $adminpage->addText("html", $config_arr['html']);
+    $adminpage->addText("fs", $config_arr['fs']);
+    $adminpage->addText("para", $config_arr['para']);
+    $adminpage->addText("the_editor", create_editor("news_text", $_POST['news_text'], "", "250px", "full", FALSE));
+    $adminpage->addText("link_list", $link_list);
+    $adminpage->addText("link_add", $link_add);
+
+    // display page
+    echo $adminpage->get("main");
+    
 
     // Display Page
     echo'
@@ -1445,4 +1486,5 @@ if ( $FILE_SHOW_START == TRUE )
         // Display Page
         default_display_page ( default_display_all_entries ( default_get_pagenav_data () ), default_get_pagenav_data (), $_REQUEST  );
 }
-?>
+
+} ?>

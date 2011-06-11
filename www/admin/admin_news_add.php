@@ -135,7 +135,8 @@ if ( TRUE ) {
             } else {
                 echo get_systext($TEXT['page']->get("link_not_added")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_link_error"));
             }
-            
+        
+        //edit links
         } elseif (isset($_POST['edit_link'])) {
         
             if(isset($_POST['link']) && !empty($_POST['link_action'])) {

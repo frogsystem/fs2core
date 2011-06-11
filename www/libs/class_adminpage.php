@@ -51,47 +51,74 @@ class adminpage {
         unset($this->text);
         $this->text = array();
     }
+    
+    public function getRaw ($tplname) {
+        if (array_key_exists($tplname, $this->tpl)) {
+            return $this->tpl[$tplname];
+        } else {
+            return "ERROR: Template '$tplname' does not exist!";
+        }
+    }
 
-    public function get ($tplname, $clearempty = true) {
+    public function get ($tplname, $clearempty = true, $conds = true, $lang = true) {
         
         if (array_key_exists($tplname, $this->tpl)) {
             
+            $tmpval = $this->tpl[$tplname];
+            
+            // Get Importet Templates
+            //<!--section-import::tpl_file::section_name-->
+            preg_match_all('/<!--section-import(\-nolang)?::([a-z-_]+)::([a-z-_]+)-->/is', $tmpval, $imports, PREG_SET_ORDER);
+            foreach ($imports as $import) {
+                $importlang = (empty($import[1]) ? true: false);
+                $page = new adminpage($import[2].".tpl");
+                $tmpval = preg_replace('/<!--section-import'.$import[1].'::'.$import[2].'::'.$import[3].'-->/is', $page->get($import[3], false, false, $importlang), $tmpval);
+                // replace all imports, recursive but don't touch conds or TEXTs
+            }
+            unset($imports);
+            
+            
             // Get Template with Lambda-Style-IFs
-            $lambdas = array();
-            $tmpval = $this->lambdavars($this->tpl[$tplname], $lambdas);
+            if ($conds) {
+                $lambdas = array();
+                $tmpval = $this->lambdavars($tmpval, $lambdas);
+                
+                // closure for replace callback
+                require_once(FS2_ROOT_PATH."libs/class_fullaccesswrapper.php");
+                $self = giveAccess($this);  // $self := $this
+                $getcond = function ($match) use ($lambdas, $self, &$getcond) {
+                    if ($self->cond[$lambdas[$match[1]]]) { // IF-branch
+                        return $self->replacer($match[2], $getcond); // call replacer recursiv
+                    } elseif (isset($match[3])) { // ELSE-branch
+                        return $self->replacer($match[3], $getcond);
+                    }
+                    return ""; // remove all undefined conds
+                };
             
-            // closure for replace callback
-            require_once(FS2_ROOT_PATH."libs/class_fullaccesswrapper.php");
-            $self = giveAccess($this);  
-            $getcond = function ($match) use ($lambdas, $self, &$getcond) {
-                if ($self->cond[$lambdas[$match[1]]]) { // IF-branch
-                    return $self->replacer($match[2], $getcond); // call replacer recursiv
-                } elseif (isset($match[3])) { // ELSE-branch
-                    return $self->replacer($match[3], $getcond);
-                }
-                return "";
-            };
-            
-            //replace ifs
-            $tmpval = $this->replacer($tmpval, $getcond);
+                //replace ifs
+                $tmpval = $this->replacer($tmpval, $getcond);
+            }
 
 
             // replace texts
             foreach($this->text as $key => $value)
                 $tmpval = str_replace("<!--TEXT::$key-->", $value, $tmpval);
-                
-            // replace language
-            $tmpval = preg_replace("/<!--LANG::(.*?)-->/e", '$this->langValue(\'$1\')', $tmpval);
-        
-            // replace common
-            $tmpval = preg_replace("/<!--COMMON::(.*?)-->/e", '$this->commonValue(\'$1\')', $tmpval);
+            
+            // replace data from langfiles
+            if ($lang) {
+                // replace language
+                $tmpval = preg_replace("/<!--LANG::(.*?)-->/e", '$this->langValue(\'$1\')', $tmpval);
+            
+                // replace common
+                $tmpval = preg_replace("/<!--COMMON::(.*?)-->/e", '$this->commonValue(\'$1\')', $tmpval);
+            }
 
             // clear rest
             if ($clearempty == true)
                 $tmpval = preg_replace("#<!--TEXT::[^-]+-->#is", "", $tmpval);
                 
         } else {
-            throw new ErrorException("Template does not exist!");
+            throw new ErrorException("Template '$tplname' does not exist!");
         }
 
         $this->clearConds();
