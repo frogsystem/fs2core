@@ -42,7 +42,7 @@ class lang
     // load text data
     private function import(&$data) {
         $imports = array();
-        preg_match_all('/#@([-a-z\/_]+)/is', $data, $imports, PREG_SET_ORDER);
+        preg_match_all('/#@([-a-z0-9\/_]+)\\n/is', $data, $imports, PREG_SET_ORDER);
         foreach ($imports as $import) {
             $importPath = FS2_ROOT_PATH . "lang/" . $this->local . "/" . $import[1] . ".txt";
             $importData = file_get_contents($importPath);

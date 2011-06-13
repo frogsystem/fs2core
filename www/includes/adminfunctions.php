@@ -60,39 +60,85 @@ function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "widt
 function get_yesno_table ( $NAME )
 {
         global $admin_phrases;
-
+        
         return '
-                                                                    <table width="100%" cellpadding="4" cellspacing="0">
-                                                                                <tr class="bottom pointer" id="tr_yes"
-                                                                                        onmouseover="'.color_list_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this" ).'"
-                                                                                        onmouseout="'.color_list_entry ( "del_yes", "transparent", "#49C24f", "this" ).'"
-                                                                                        onclick="'.color_click_entry ( "del_yes", "#EEEEEE", "#64DC6A", "this", TRUE ).'"
-                                                                                >
-                                                                                        <td>
-                                                                                                <input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1"
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_yes", TRUE ).'"
-                                                                                                >
-                                                                                        </td>
-                                                                                        <td class="config middle">
-                                                                                                '.$admin_phrases[common][yes].'
-                                                                                        </td>
-                                                                                </tr>
-                                                                                <tr class="bottom red pointer" id="tr_no"
-                                                                                        onmouseover="'.color_list_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this" ).'"
-                                                                                        onmouseout="'.color_list_entry ( "del_no", "transparent", "#C24949", "this" ).'"
-                                                                                        onclick="'.color_click_entry ( "del_no", "#EEEEEE", "#DE5B5B", "this", TRUE ).'"
-                                                                                >
-                                                                                        <td>
-                                                                                                <input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#DE5B5B", "tr_no", TRUE ).'"
-                                                                                                >
-                                                                                        </td>
-                                                                                        <td class="config middle">
-                                                                                                '.$admin_phrases[common][no].'
-                                                                                        </td>
-                                                                                </tr>
-                                                                                '.color_pre_selected ( "del_no", "tr_no" ).'
-                                                                        </table>
+            <table width="100%" cellpadding="4" cellspacing="0">
+                <tr class="bottom pointer" id="yes">
+                    <td>
+                        <script type="text/javascript">
+                            jQuery(document).ready(function(){
+                                $("tr#yes").hover(function(event) {
+                                    if ($("input#del_yes").prop("checked")) {
+                                        $("tr#yes").css("background-color", "#64DC6A");
+                                    } else {
+                                        $("tr#yes").css("background-color", "#EEEEEE");
+                                    }
+                                }, function(event) {
+                                    if ($("input#del_yes").prop("checked")) {
+                                        $("tr#yes").css("background-color", "#49C24f");
+                                    } else {
+                                        $("tr#yes").css("background-color", "transparent");
+                                    } 
+                                });
+                                $("tr#no").hover(function(event) {
+                                    if ($("input#del_no").prop("checked")) {
+                                        $("tr#no").css("background-color", "#DE5B5B");
+                                    } else {
+                                        $("tr#no").css("background-color", "#EEEEEE");
+                                    }
+                                }, function(event) {
+                                       if ($("input#del_no").prop("checked")) {
+                                        $("tr#no").css("background-color", "#C24949");
+                                    } else {
+                                        $("tr#no").css("background-color", "transparent");
+                                    } 
+                                });                                
+                                
+                                $("input#del_yes").change(function(event) {
+                                    if ($(this).prop("checked")) {
+                                        $("tr#yes").css("background-color", "#49C24f");
+                                        $("input#del_no").trigger("change"); 
+                                        $("tr#yes").trigger("mouseenter"); 
+                                    } else {
+                                        $("tr#yes").css("background-color", "transparent"); 
+                                        $("tr#yes").trigger("mouseout"); 
+                                    }               
+                                });
+                                $("input#del_no").change(function(event) {
+                                    if ($(this).prop("checked")) {
+                                        $("tr#no").css("background-color", "#C24949");
+                                        $("input#del_yes").trigger("change"); 
+                                        $("tr#no").trigger("mouseenter");  
+                                    } else {
+                                        $("tr#no").css("background-color", "transparent"); 
+                                        $("tr#no").trigger("mouseout");  
+                                    }                                
+                                });
+                                
+                                $("input#del_yes").trigger("change");                              
+                                $("input#del_no").trigger("change"); 
+                                $("tr#no").trigger("mouseout");                             
+                                
+                            });
+                            
+
+                        </script>
+                        
+                        <input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1">
+                    </td>
+                    <td class="config middle">
+                            <label for="del_yes">'.$admin_phrases[common][yes].'</label>
+                    </td>
+                </tr>
+                <tr class="bottom pointer" id="no">
+                    <td>
+                        <input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked>
+                    </td>
+                    <td class="config middle">
+                            <label for="del_no">'.$admin_phrases[common][no].'</label>
+                    </td>
+                </tr>
+                </table>
         ';
 }
 

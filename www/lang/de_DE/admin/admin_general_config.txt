@@ -1,75 +1,85 @@
-pageinfo_title:                                    Seiteninformationen
-title:                                             Titel
-title_desc:                                        Der Titel der Seite.
-virtualhost:                                       URL
-virtualhost_desc:                                  Die Haupt-URL der Seite.
-admin_mail:                                        Email-Adresse
-admin_mail_desc:                                   Die Email-Adresse an die Probleme und Meldungen gesendet werden.
-description:                                       Beschreibung
-description_desc:                                  Ein kurzer Text über die Seite.
-author:                                            Autor
-author_desc:                                       Der oder die Webmaster der Seite.
-keywords:                                          Keywords
-keywords_desc:                                     Stichwörter zur Seite, bitte mit Kommas trennen.<br>Wichtig für Suchmaschinen!
-design_title:                                      Design
-design:                                            Design
-design_desc:                                       Design, in dem die Seite angezeigt wird.
-allow_other_designs:                               Andere Styles erlauben
-allow_other_designs_desc:                          Ermöglicht das Anzeigen der Seite in anderen Styles.<br> (http://www.example.com/?style=xyz)
-show_favicon:                                      Favicon verwenden
-show_favicon_desc:                                 Bindet das Favicon ein.<br>($VAR(style_icons)/favicon.ico)
-settings_title:                                    Seiteneinstellungen
-home_page:                                         Startseite
-home_page_desc:                                    Legt die Seite fest, die standardmäßig angezeigt wird.
-home_page_default:                                 Standard (?go=news)
-show_announcement:                                 Ankündigung anzeigen
-show_announcement_desc:                            Seiten auf denen die Ankündigung angezeigt wird.
-show_ann_always:                                   überall
-show_ann_home:                                     Startseite
-show_ann_never:                                    nie
-language:                                          Sprache
-language_desc:                                     Die Standard Sprache des Admin-CPs.
-language_de:                                       Deutsch
-language_en:                                       English
-feed:                                              Feed
-feed_desc:                                         Standard Feed der Seite, der im Html-Kopf eingebunden wird.
-feed_rss091:                                       RSS 0.91
-feed_rss10:                                        RSS 1.0
-feed_rss20:                                        RSS 2.0
-feed_atom10:                                       Atom 1.0
-reg_antispam:                                      Anti-Spam bei Registrierung
-reg_antispam_desc:                                 Aktiviert die Anti-Spam Abfrage bei der Registrierung.
-date:                                              Datum
-date_desc:                                         Datumsformat, das auf der Seite verwendet werden soll.
-pagenav_title:                                     Seitennavigation
-page:                                              Seitenanzeige
-page_desc:                                         Design der Seitenanzeige bei mehrseitigen Anzeigen.
-page_info:                                         {page_number} = aktuelle Seite; {prev} = Seite zurück<br>{total_pages} = Seitenzahl; {next} = Seite weiter
-page_prev:                                         Seite zurück
-page_prev_desc:                                    Design der "Seite zurück" Schaltfläche.
-page_prev_info:                                    {url} = URL zur vorherigen Seite
-page_next:                                         Seite weiter
-page_next_desc:                                    Design der "Seite weiter" Schaltfläche. 
-page_next_info:                                    {url} = URL zur nächsten Seite
-config_publisher_title:                            Herausgeber
-config_publisher_desc:                   Herausgeber (Webmaster) der Seite.
-config_copyright_title:                  Copyright
-config_copyright_desc:                   Copyright-Hinweise der Urheber.
-config_style_title:                      Aktiver Style
-config_style_desc:                       Style, der als Design der Hauptseite verwendet wird.
-dyn_title:  Dynamischer Titel
-dyn_title_desc:Aktiviert dynamische Seitentitel.
-dyn_title_ext:Dynamischer Titel-Schema
-dyn_title_ext_desc:Schema des dynamischen Seitentitels.
-time:Zeit
-time_desc:Format, das für Zeitangaben auf der Seite verwendet wird.
-date_time:Datum &amp; Zeit
-date_time_desc:Format, das für Datums- und Zeitangaben auf der Seite verwendet wird.
-auto_forward:Automatische Weiterleitung
-auto_forward_desc:Zeit, nach der die automatische Weiterleitung aktiviert wird.
-
-timezone: Zeitzone
-timezone_desc:
-server_default: Server-Standard
+pageinfo_title:             Seiteninformationen
+settings_title:             Seiteneinstellungen
+design_title:               Design
+pagenav_title:              Seitennavigation
 
 
+title:                      Titel
+title_desc:                 Der Titel der Seite.
+
+dyn_title:                  Dynamischer Titel
+dyn_title_desc:             Aktiviert dynamische Seitentitel.
+dyn_title_ext:              Dynamischer Titel-Schema
+dyn_title_ext_desc:         Schema des dynamischen Seitentitels.
+dyn_title_page_title:       Standard Seitentitel
+dyn_title_page_title_ext:   Seitenspezifische Titel-Erweiterung
+
+virtualhost:                URL
+virtualhost_desc:           Die Haupt-URL der Seite.
+
+admin_mail:                 Email-Adresse
+admin_mail_desc:            Die Email-Adresse an die Probleme und Meldungen gesendet werden.
+
+description:                Beschreibung
+description_desc:           Ein kurzer Text über die Seite.
+
+author:                     Autor
+author_desc:                Der oder die Webmaster der Seite.
+
+keywords:                   Keywords
+keywords_desc:              Stichwörter zur Seite, bitte mit Kommas trennen.<br>Wichtig für Suchmaschinen!
+
+config_publisher_title:     Herausgeber
+config_publisher_desc:      Herausgeber (Webmaster) der Seite.
+
+config_copyright_title:     Copyright
+config_copyright_desc:      Copyright-Hinweise der Urheber.
+
+style_title:                Aktiver Style
+style_desc:                 Style, der als Design der Hauptseite verwendet wird.
+
+allow_other_styles:         Andere Styles erlauben
+allow_other_styles_desc:    Ermöglicht das Anzeigen der Seite in anderen Styles.<br> (http://www.example.com/?style=xyz)
+
+show_favicon:               Favicon verwenden
+show_favicon_desc:          Bindet das Favicon ein.<br>($VAR(style_icons)/favicon.ico)
+
+home_page:                  Startseite
+home_page_desc:             Legt die Seite fest, die standardmäßig angezeigt wird.
+home_page_default:          Standard (?go=news)
+
+language:                   Sprache
+language_desc:              Die Standard Sprache des Admin-CPs.
+
+feed:                       Feed
+feed_desc:                  Standard Feed der Seite, der im Html-Kopf eingebunden wird.
+feed_rss091:                RSS 0.91
+feed_rss10:                 RSS 1.0
+feed_rss20:                 RSS 2.0
+feed_atom10:                Atom 1.0
+
+date:                       Datum
+date_desc:                  Datumsformat, das auf der Seite verwendet werden soll.
+time:                       Zeit
+time_desc:                  Format, das für Zeitangaben auf der Seite verwendet wird.
+date_time:                  Datum &amp; Zeit
+date_time_desc:             Format, das für Datums- und Zeitangaben auf der Seite verwendet wird.
+timezone:                   Zeitzone
+timezone_desc:              Zeitzone in der die Webseite ausgeführt wird.
+server_default:             Server-Standard
+
+auto_forward:               Automatische Weiterleitung
+auto_forward_desc:          Zeit, nach der die automatische Weiterleitung aktiviert wird.
+
+page:                       Seitenanzeige
+page_desc:                  Design der Seitenanzeige bei mehrseitigen Anzeigen.
+page_prev:                  Seite zurück
+page_prev_desc:             Design der "Seite zurück" Schaltfläche.
+page_next:                  Seite weiter
+page_next_desc:             Design der "Seite weiter" Schaltfläche. 
+page_text_page_num:         Nummer der aktuelle Seite    
+page_text_total_pages:      Gesamtzahl der Seiten
+page_text_next:             "Seite zurück" Schaltfläche
+page_text_prev:             "Seite weiter" Schaltfläche
+page_prev_url:              URL zur vorherigen Seite
+page_next_url:              URL zur nächsten Seite

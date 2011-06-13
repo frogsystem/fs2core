@@ -89,6 +89,7 @@ class sql {
             $this->error[1] = mysql_error($this->sql); // error text
             $this->error[2] = $this->query;            // query causing the error
             Throw new ErrorException("MySQL Error: [".$this->error[0]."] ".$this->error[1]."\n".$this->error[2]); 
+            return false;
         }
     }
     
@@ -384,9 +385,11 @@ class sql {
         $qrystr = "DELETE FROM `".$this->pref.$table."`".$this->opt($options);
         
         try {
-            return $this->doQuery($qrystr);
+            $this->doQuery($qrystr);
+            return mysql_affected_rows($this->conn());
         } catch (Exception $e) {
             print_r($e->getMessage());
+            return false;
         }        
     }
     

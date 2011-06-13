@@ -1,87 +1,44 @@
-<?php
-// Start Session
-session_start();
-
-// Disable magic_quotes_runtime
-set_magic_quotes_runtime(FALSE);
-
-// fs2 include path
-set_include_path('.');
-define('FS2_ROOT_PATH', "./../", TRUE);
-
-// Inlcude DB Connection File
-require(FS2_ROOT_PATH."login.inc.php");
-
-//////////////////////////////////
-//// DB Connection etablished ////
-//////////////////////////////////
-if ( $db ) {
-    //Include Functions-Files
-    require ( FS2_ROOT_PATH . "includes/functions.php" );
-    require ( FS2_ROOT_PATH . "includes/cookielogin.php" );
-    require ( FS2_ROOT_PATH . "includes/imagefunctions.php" );
-    require ( FS2_ROOT_PATH . "includes/indexfunctions.php" );
-
-    //Include Library-Classes
-    require ( FS2_ROOT_PATH . "libs/class_template.php" );
-    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
-    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
-    
-    //Include Phrases-Files
-    $TEXT = new langDataInit ( $global_config_arr['language_text'], "frontend" );
-
-
-    // Constructor Calls
-    set_style ();
-    copyright ();
+<?php if (ACP_GO == "news_preview") {
 
     // Reload Page
-    if ( !$_POST['sended'] )
-    {
-        // Set Number of Links
-        $num_links = $_GET['i'];
-        settype($num_links, "integer");
+    if ( !$_POST['sended'] ) {
 
         // Reload Page Template
         $template = '
-<html>
-    <head>
-        <title>Frogsystem 2 - Newsvorschau</title>
-        <script type="text/javascript" src="../resources/jquery/jquery-1.4.min.js"></script>
-        <script>
-            function loaddata()
-            {
-                document.getElementById(\'news_title\').value = $(opener.document).find("#news_title").val();
-                document.getElementById(\'news_text\').value = $(opener.document).find("#news_text").val();
-
-                document.getElementById(\'news_user\').value = $(opener.document).find("#userid").val();
-                document.getElementById(\'news_user_name\').value = $(opener.document).find("[name=poster]").val();
-                
-                document.getElementById(\'news_cat_id\').value = $(opener.document).find("[name=cat_id]").val();
-
-                document.getElementById(\'d\').value = $(opener.document).find("[name=d]").val();
-                document.getElementById(\'m\').value = $(opener.document).find("[name=m]").val();
-                document.getElementById(\'y\').value = $(opener.document).find("[name=y]").val();
-                document.getElementById(\'h\').value = $(opener.document).find("[name=h]").val();
-                document.getElementById(\'i\').value = $(opener.document).find("[name=i]").val();';
-
-        for($i=0;$i<$num_links;$i++) {
-            $template .= '
-
-                document.getElementById(\'linkname_'.$i.'\').value      = $(opener.document).find("[name=linkname['.$i.']]").val();
-                document.getElementById(\'linkurl_'.$i.'\').value       = $(opener.document).find("[name=linkurl['.$i.']]").val();
-                document.getElementById(\'linktarget_'.$i.'\').value    = $(opener.document).find("[name=linktarget['.$i.']]").val();';
-            }
-
-        $template .= '
+        <script type="text/javascript">
+            $().ready(function(){
+                loaddata();
                 document.getElementById(\'form\').submit();
+            });        
+        
+            function loaddata() {
+                $("#news_title").val($(opener.document).find("#news_title").val());
+                $("#news_text").val($(opener.document).find("#news_text").val());
+                $("#news_user").val($(opener.document).find("#user_id").val());
+                $("#news_user_name").val($(opener.document).find("#user_name").val());
+                $("#news_cat_id").val($(opener.document).find("#cat_id").val());
+                
+                $("#d").val($(opener.document).find("#d").val());
+                $("#m").val($(opener.document).find("#m").val());
+                $("#y").val($(opener.document).find("#y").val());
+                $("#h").val($(opener.document).find("#h").val());
+                $("#i").val($(opener.document).find("#i").val());
+
+                $(opener.document).find("[name^=link_name]").each(function (num, ele) {
+                    $("#form").append(\'<input id="link_name[\'+num+\']" name="link_name[\'+num+\']" type="hidden" value="\'+$(ele).val()+\'">\');
+                });
+                $(opener.document).find("[name^=link_url]").each(function (num, ele) {
+                    $("#form").append(\'<input id="link_url[\'+num+\']" name="link_url[\'+num+\']" type="hidden" value="\'+$(ele).val()+\'">\');
+                });
+                $(opener.document).find("[name^=link_target]").each(function (num, ele) {
+                    $("#form").append(\'<input id="link_target[\'+num+\']" name="link_target[\'+num+\']" type="hidden" value="\'+$(ele).val()+\'">\');
+                });
             }
         </script>
-    </head>
-    <body onLoad="loaddata()">
-        <form action="'.$global_config_arr['virtualhost'].'admin/admin_news_prev.php" method="post" id="form">
-            <input type="hidden" name="sended" id="sended" value="1">
-            <input type="hidden" name="num_links" value="'.$num_links.'">
+
+        <form action="" method="post" id="form">
+            <input type="hidden" name="go" value="news_preview">
+            <input type="hidden" name="sended" value="1">
             
             <input type="hidden" name="news_title" id="news_title" value="">
             <input type="hidden" name="news_text" id="news_text" value="">
@@ -95,20 +52,14 @@ if ( $db ) {
             <input type="hidden" name="m" id="m" value="">
             <input type="hidden" name="y" id="y" value="">
             <input type="hidden" name="h" id="h" value="">
-            <input type="hidden" name="i" id="i" value="">';
+            <input type="hidden" name="i" id="i" value="">
 
-        for($i=0;$i<$num_links;$i++) {
-            $template .= '
-
-            <input type="hidden" name="linkname['.$i.']" id="linkname_'.$i.'" value="">
-            <input type="hidden" name="linkurl['.$i.']" id="linkurl_'.$i.'" value="">
-            <input type="hidden" name="linktarget['.$i.']" id="linktarget_'.$i.'" value="">';
-        }
-
-        $template .= '
         </form>
-    </body>
-</html>';
+        
+        <p>
+            '.$TEXT['page']->get("preview_note").'
+        </p>
+        ';
 
         // "Display" Reload Page
         echo $template;
@@ -116,15 +67,13 @@ if ( $db ) {
 
     // Preview Page
     else {
-        // Set Number of Links
-        settype($_POST['num_links'], "integer");
-        
+
         // Get News Config
         $index = mysql_query("SELECT * FROM `".$global_config_arr['pref']."news_config` WHERE `id` = '1'", $db);
         $config_arr = mysql_fetch_assoc($index);
 
         // Load Data from $_POST
-        $news_arr['comment_url'] = "admin/admin_news_prev.php?i=".$_POST['num_links'];
+        $news_arr['comment_url'] = "?go=news_preview";
         $news_arr['kommentare'] = "?";
         
         // Create New-Date
@@ -151,7 +100,7 @@ if ( $db ) {
         // Create User Template
         $news_arr['user_name'] = killhtml($_POST['news_user_name']);
         settype($_POST['news_user'], "integer");
-        $news_arr['user_url'] = '?go=user&amp;id='.$_POST['news_user'];
+        $news_arr['user_url'] = '../?go=user&amp;id='.$_POST['news_user'];
 
         // Text formatieren
         $html = ($config_arr['html_code'] == 2 || $config_arr['html_code'] == 4) ? TRUE : FALSE;
@@ -176,13 +125,13 @@ if ( $db ) {
         // Get Related Links
         $link_tpl = "";
 
-        if (isset($_POST['linkname'],$_POST['linkurl'],$_POST['linktarget'])) {
-            foreach($_POST['linkname'] as $key => $linkname)
+        if (isset($_POST['link_name'],$_POST['link_url'],$_POST['link_target'])) {
+            foreach($_POST['link_name'] as $key => $linkname)
             {
-                if ( $_POST['linkname'][$key] != "" && $_POST['linkurl'][$key] != "" ) {
-                    $link_arr['link_name'] = killhtml ($_POST['linkname'][$key] );
-                    $link_arr['link_url'] = killhtml ($_POST['linkurl'][$key]);
-                    $link_arr['link_target'] = ( $_POST['linktarget'][$key] == 1 ) ? "_blank" : "_self";
+                if ( $_POST['link_name'][$key] != "" && $_POST['link_url'][$key] != "" ) {
+                    $link_arr['link_name'] = killhtml ($_POST['link_name'][$key] );
+                    $link_arr['link_url'] = killhtml ($_POST['link_url'][$key]);
+                    $link_arr['link_target'] = ( $_POST['link_target'][$key] == 1 ) ? "_blank" : "_self";
 
                     // Get Link Line Template
                     $link = new template();
@@ -230,29 +179,21 @@ if ( $db ) {
 
         // Preview Page Template
         $global_config_arr['dyn_title'] == 1;
-        $global_config_arr['dyn_title_ext'] = "{ext}";
-        $global_config_arr['dyn_title_page'] = "Frogsystem 2 - Newsvorschau: " . $news_arr['news_title'];
+        $global_config_arr['dyn_title_ext'] = "{..ext..}";
+        $global_config_arr['dyn_title_page'] = $TEXT['page']->get("preview_title").": ".$news_arr['news_title'];
 
-        $theTemplate = new template();
-        $theTemplate->setFile("0_general.tpl");
-        $theTemplate->load("MAINPAGE");
+        $theTemplate = new template();       
+        $theTemplate->setFile("0_main.tpl");
+        $theTemplate->load("MAIN");
         $theTemplate->tag("content", $template_preview);
-        $theTemplate->tag("copyright",  get_copyright ());
+        $theTemplate->tag("copyright", get_copyright());        
 
-        $template_general = $theTemplate->display();
-        $template_general = replace_snippets ( $template_general );
-        $template_general = replace_navigations ( $template_general );
-        $template_general = replace_applets ( $template_general );
-        $template_general = replace_navigations ( $template_general );
-        $template_general = replace_snippets ( $template_general );
-
-        $template_general = replace_globalvars ( $template_general );
+        $template_general = (string) $theTemplate;
+        $template_general = tpl_replacements($template_general);
 
         // Get Main Template
-        $template = get_maintemplate ($global_config_arr['virtualhost'], "../");
-        $template = str_replace ( "{..body..}", $template_general, $template);
-        echo $template;
+        echo get_maintemplate ($template_general, "../");
+        $JUST_CONTENT = true; //preview has own html head
     }
-    mysql_close ( $db );
-}
-?>
+
+} ?>

@@ -1,7 +1,24 @@
-# Language-Definition for [FS2]/admin/admin_news_edit.php
+# Kommentare
 comments_select_title:              Kommentare bearbeiten
 comments_content:                   Inhalt
 comments_info:                      Informationen
 comments_not_found:                 Keine Kommentare gefunden!
 
-# Language-Definition for [FS2]/admin/template/admin_news_edit.tpl
+#filter
+filter_title:               Filter &amp; Sortierung
+cat_filter:                 Filter:
+all_cats:                   Alle Kategorien
+filter_order:               Sortierung:
+filter_date:                Datum
+filter_id:                  ID
+filter_newstitle:           Titel
+
+# Auswahlliste
+select_news:                News auswählen
+comments:                   Kommentare
+links:                      Links
+selection_comments:         Kommentare bearbeiten
+
+#Löschen
+news_deleted:               News wurden gelöscht
+news_not_deleted:           News wurden nicht gelöscht

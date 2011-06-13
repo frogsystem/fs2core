@@ -138,6 +138,7 @@ define('ACP_GO', $go);
 ##########################
 ### START OF HTML HEAD ###
 ##########################
+ob_start();
 echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -161,6 +162,7 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
 </head>
 <!-- /HTML Head -->
 ';
+$head = ob_get_clean();
 ########################
 ### END OF HTML HEAD ###
 ########################
@@ -169,6 +171,7 @@ if (POPUP !== true) {
 ##########################
 ### START OF PAGE HEAD ###
 ##########################
+echo $head;
 echo'
 <body>
 
@@ -305,6 +308,15 @@ echo '
 ######################################
 ### START OF DISPLAY POPUP CONTENT ###
 ######################################
+$JUST_CONTENT = false;
+
+ob_start();
+require(FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file']);
+$popup = ob_get_clean();
+
+if ($JUST_CONTENT !== true) {
+
+echo $head;
 echo'
 <body id="find_body">
     <div id="find_head">
@@ -314,15 +326,16 @@ echo'
     <div align="left">
 ';
 
-ob_start();
-require(FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file']);
-echo ob_get_clean();
+echo $popup;
 
 echo'
     </div>
 </body>
 </html>
 ';
+} else {
+    echo $popup;
+}
 
 ####################################
 ### END OF DISPLAY POPUP CONTENT ###

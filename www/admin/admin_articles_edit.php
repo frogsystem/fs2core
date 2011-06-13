@@ -581,7 +581,7 @@ function action_edit_display_page ( $data_arr )
                             </tr>
                             <tr>
                                                                 <td class="config" colspan="2">
-                                    <input class="button" type="button" onClick=\''.open_fullscreenpopup ( "admin_articles_prev.php" ).'\' value="'.$admin_phrases[common][preview_button].'">
+                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$admin_phrases[common][preview_button].'">
                                                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>

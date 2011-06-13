@@ -108,8 +108,8 @@
         
         <tr>
             <td>
-                <!--LANG::config_style_title-->:<br>
-                <span class="small"><!--LANG::config_style_desc--></span>
+                <!--LANG::style_title-->:<br>
+                <span class="small"><!--LANG::style_desc--></span>
             </td>
             <td>
                 <select class="half" name="style_id" size="1">
@@ -120,8 +120,8 @@
         
         <tr>
             <td>
-                <!--LANG::allow_other_designs-->:<br>
-                <span class="small"><!--LANG::allow_other_designs_desc--></span>
+                <!--LANG::allow_other_styles-->:<br>
+                <span class="small"><!--LANG::allow_other_styles_desc--></span>
             </td>
             <td>
                 <!--COMMON::checkbox-->

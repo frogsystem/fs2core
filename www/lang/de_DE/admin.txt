@@ -21,6 +21,9 @@ folder_name_info:                        nur a-z, 0-9, "-" und "_" erlaubt
 chars:                                   Zeichen
 entry:                                   Eintrag
 entries:                                 Einträge
+record_found:                            Datensatz gefunden
+records_found:                           Datensätze gefunden
+deleted_records:                         Gelöschte Datensätze
 date_info:                               verwendet den Syntax der PHP-Funktion <a class="s" href="http://www.php.net/manual/de/function.date.php" target="_blank" class="small">date()</a>
 html:                                    HTML
 fscode:                                  FSCode
@@ -34,6 +37,8 @@ and:                                     und
 on:                                      an
 off:                                     aus
 is:                                      ist
+by:                                      von
+in:                                      in
 up:                                      nach oben
 down:                                    nach unten
 edit:                                    bearbeiten
@@ -72,6 +77,7 @@ date_time:                               d.m.Y \u\m H:i \U\h\r
 seconds:                                 Sekunden
 at_time:                                 um
 time_appendix:                           Uhr
+at_date:                                 am
 
 # Frequently used Images
 sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">
@@ -82,8 +88,8 @@ radio:                                   <img class="checkbox" src="images/radio
 # Action Selection
 selected:                                Ausgewählte
 selection_noaction:                      Bitte wählen
-selection_edit:                          bearbeiten
-selection_delete:                        löschen
+selection_edit:                          Auswahl bearbeiten
+selection_delete:                        Auswahl löschen
 selection_up:                            nach oben
 selection_down:                          nach unten
 
@@ -154,6 +160,7 @@ image_upload_error_6:                    Fehler beim Bilder-Upload: Bild konnte 
 # Frequently used Category-Related Phrases
 cat:                                     Kategorie
 cats:                                    Kategorien
+all_cats:                                Alle Kategorien
 cats_select:                             Kategorien auswählen
 cats_not_found:                          Keine Kategorien gefunden!
 cat_added:                               Kategorie wurde hinzugefügt

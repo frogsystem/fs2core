@@ -228,7 +228,8 @@ if ( TRUE ) {
     if (!is_array($_POST['link_name']))
         $_POST['link_name'] = array();
         
-    foreach($_POST['link_name'] as $id => $val) {       
+    foreach($_POST['link_name'] as $id => $val) {         
+        $adminpage->addCond("notscript", true);    
         $adminpage->addText("name", killhtml($_POST['link_name'][$id]));
         $adminpage->addText("url", killhtml($_POST['link_url'][$id]));
         $adminpage->addText("target", killhtml($_POST['link_target'][$id]));

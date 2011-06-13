@@ -24,4 +24,5 @@ news_link_down:                                    nach unten verschieben
 news_link_edit:                                    zum Bearbeiten übernehmen
 
 link_not_added:                                    Link wurde nicht hinzugefügt
+link_not_saved:                                    Link wurde nicht gespeichert
 news_button:                                       <!--COMMON::save_changes_button-->

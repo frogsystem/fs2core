@@ -9,10 +9,44 @@ $().ready(function(){
 //--------------------------------
 
 
-function popUp(url, target, width, height) {
-    x = screen.width/2 - width/2;
-    y = screen.height/2 - height/2;
+function popUp(url, target, width, height, pos_x, pos_y) {
+    if (typeof pos_x =="undefined") { pos_x = "center"; }
+    if (typeof pos_y =="undefined") { pos_y = "middle"; }
+    
+    var x;
+    var y;
+    
+    // get x pos
+    switch (pos_x) {
+        case "left":
+            x = 0;
+            break;        
+        case "right":
+            x = screen.width - width;
+            break;        
+        default: //center
+            x = screen.width/2 - width/2;
+            break;
+    }
+    
+    // get y pos
+    switch (pos_y) {
+        case "top":
+            y = 0;
+            break;        
+        case "bottom":
+            y = screen.height - height;
+            break;        
+        default: //middle
+            y = screen.height/2 - height/2;
+            break;
+    }    
+    
     window.open(url, target, 'width='+width+',height='+height+',left='+x+',top='+y+',screenX='+x+',screenY='+y+',scrollbars=YES,location=YES,status=YES');
+}
+
+function popTab(url, target) {
+    window.open(url, target);
 }
 
 

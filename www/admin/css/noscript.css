@@ -4,6 +4,12 @@
 .hidden {
     display:block;
 }
+tr.hidden {
+    display:table-row;
+}
+td.hidden {
+    display:table-cell;
+}
 
 img.checkbox {
     display:none;

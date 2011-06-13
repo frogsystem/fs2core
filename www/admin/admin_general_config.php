@@ -144,8 +144,8 @@ if ( TRUE )
         insert_tt("{..prev..}", $TEXT['page']->get("page_text_next"), "page").
         insert_tt("{..next..}", $TEXT['page']->get("page_text_prev"), "page")
     ); 
-    $adminpage->addText("page_prev_tt", insert_tt("{..url..}", $TEXT['page']->get("page_prev_text"), "page_prev")); 
-    $adminpage->addText("page_next_tt", insert_tt("{..url..}", $TEXT['page']->get("page_next_text"), "page_next")); 
+    $adminpage->addText("page_prev_tt", insert_tt("{..url..}", $TEXT['page']->get("page_prev_url"), "page_prev")); 
+    $adminpage->addText("page_next_tt", insert_tt("{..url..}", $TEXT['page']->get("page_next_url"), "page_next")); 
 
     // Display page
     echo $adminpage->get("main");
