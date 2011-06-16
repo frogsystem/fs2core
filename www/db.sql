@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 04. Juni 2011 um 13:38
+-- Erstellungszeit: 13. Juni 2011 um 16:34
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -49,67 +49,92 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('start_styles', '-1', 'styles', 7, 0),
 ('start_system', '-1', 'system', 8, 0),
 ('start_mods', '-1', 'mods', 9, 0),
+('partner_config', 'affiliates', 'admin_partnerconfig.php', 1, 0),
+('partner_add', 'affiliates', 'admin_partneradd.php', 2, 0),
+('partner_edit', 'affiliates', 'admin_partneredit.php', 3, 0),
+('aliases_add', 'aliases', 'admin_aliases_add.php', 1, 0),
+('aliases_delete', 'aliases', 'aliases_edit', 1, 1),
+('aliases_edit', 'aliases', 'admin_aliases_edit.php', 2, 0),
+('applets_add', 'applets', 'admin_applets_add.php', 1, 0),
+('applets_delete', 'applets', 'applets_edit', 1, 1),
+('applets_edit', 'applets', 'admin_applets_edit.php', 2, 0),
+('articles_config', 'articles', 'admin_articles_config.php', 1, 0),
+('articles_add', 'articles', 'admin_articles_add.php', 2, 0),
+('articles_edit', 'articles', 'admin_articles_edit.php', 3, 0),
+('articles_cat', 'articles', 'admin_articles_cat.php', 4, 0),
+('cimg_add', 'cimg', 'admin_cimg.php', 1, 0),
+('cimg_admin', 'cimg', 'admin_cimgdel.php', 2, 0),
+('dl_config', 'downloads', 'admin_dlconfig.php', 1, 0),
+('dl_add', 'downloads', 'admin_dladd.php', 2, 0),
+('dl_edit', 'downloads', 'admin_dledit.php', 3, 0),
+('dl_cat', 'downloads', 'admin_dlcat.php', 4, 0),
+('dl_newcat', 'downloads', 'admin_dlnewcat.php', 5, 0),
+('editor_config', 'fseditor', 'admin_editor_config.php', 1, 0),
+('editor_design', 'fseditor', 'admin_editor_design.php', 2, 0),
+('editor_smilies', 'fseditor', 'admin_editor_smilies.php', 3, 0),
+('editor_fscodes', 'fseditor', 'admin_editor_fscode.php', 4, 0),
+('gallery_config', 'gallery', 'admin_gallery_config.php', 1, 0),
+('gallery_img_add', 'gallery', 'gallery_img', 1, 1),
+('gallery_wp_add', 'gallery', 'gallery_wp', 1, 1),
+('gallery_cat', 'gallery', 'admin_gallery_cat.php', 2, 0),
+('gallery_img_edit', 'gallery', 'gallery_img', 2, 1),
+('gallery_wp_edit', 'gallery', 'gallery_wp', 2, 1),
+('gallery_folder', 'gallery', 'admin_gallery_folder.php', 3, 0),
+('gallery_img', 'gallery', 'admin_gallery_img.php', 3, 0),
+('gallery_wp', 'gallery', 'admin_gallery_wp.php', 4, 0),
 ('gen_config', 'general', 'admin_general_config.php', 1, 0),
 ('gen_announcement', 'general', 'admin_allannouncement.php', 2, 0),
 ('gen_captcha', 'general', 'admin_captcha_config.php', 2, 0),
 ('gen_emails', 'general', 'admin_allemail.php', 4, 0),
 ('gen_phpinfo', 'general', 'admin_allphpinfo.php', 5, 0),
-('editor_config', 'fseditor', 'admin_editor_config.php', 1, 0),
-('editor_design', 'fseditor', 'admin_editor_design.php', 2, 0),
-('editor_smilies', 'fseditor', 'admin_editor_smilies.php', 3, 0),
-('editor_fscodes', 'fseditor', 'admin_editor_fscode.php', 4, 0),
-('stat_view', 'stats', 'admin_statview.php', 1, 0),
-('stat_edit', 'stats', 'admin_statedit.php', 2, 0),
-('stat_ref', 'stats', 'admin_statref.php', 3, 0),
+('group_config', 'groups', 'admin_group_config.php', 1, 0),
+('group_admin', 'groups', 'admin_group_admin.php', 2, 0),
+('group_rights', 'groups', 'admin_group_rights.php', 3, 0),
 ('news_config', 'news', 'admin_news_config.php', 1, 0),
 ('news_delete', 'news', 'news_edit', 1, 1),
 ('news_add', 'news', 'admin_news_add.php', 2, 0),
 ('news_comments', 'news', 'news_edit', 2, 1),
 ('news_edit', 'news', 'admin_news_edit.php', 3, 0),
 ('news_cat', 'news', 'admin_news_cat.php', 4, 0),
-('articles_config', 'articles', 'admin_articles_config.php', 1, 0),
-('articles_add', 'articles', 'admin_articles_add.php', 2, 0),
-('articles_edit', 'articles', 'admin_articles_edit.php', 3, 0),
-('articles_cat', 'articles', 'admin_articles_cat.php', 4, 0),
-('press_config', 'press', 'admin_press_config.php', 1, 0),
-('press_add', 'press', 'admin_press_add.php', 2, 0),
-('press_edit', 'press', 'admin_press_edit.php', 3, 0),
-('press_admin', 'press', 'admin_press_admin.php', 4, 0),
-('cimg_add', 'cimg', 'admin_cimg.php', 1, 0),
-('cimg_admin', 'cimg', 'admin_cimgdel.php', 2, 0),
-('gallery_folder', 'gallery', 'admin_gallery_folder.php', 3, 0),
-('gallery_cat', 'gallery', 'admin_gallery_cat.php', 2, 0),
-('gallery_config', 'gallery', 'admin_gallery_config.php', 1, 0),
-('dl_config', 'downloads', 'admin_dlconfig.php', 1, 0),
-('dl_add', 'downloads', 'admin_dladd.php', 2, 0),
-('dl_edit', 'downloads', 'admin_dledit.php', 3, 0),
-('dl_cat', 'downloads', 'admin_dlcat.php', 4, 0),
-('dl_newcat', 'downloads', 'admin_dlnewcat.php', 5, 0),
 ('player_config', 'player', 'admin_player_config.php', 1, 0),
 ('player_add', 'player', 'admin_player_add.php', 2, 0),
 ('player_edit', 'player', 'admin_player_edit.php', 3, 0),
 ('poll_config', 'polls', 'admin_pollconfig.php', 1, 0),
 ('poll_add', 'polls', 'admin_polladd.php', 2, 0),
 ('poll_edit', 'polls', 'admin_polledit.php', 3, 0),
-('partner_config', 'affiliates', 'admin_partnerconfig.php', 1, 0),
-('partner_add', 'affiliates', 'admin_partneradd.php', 2, 0),
-('partner_edit', 'affiliates', 'admin_partneredit.php', 3, 0),
+('article_preview', 'popup', 'admin_articles_prev.php', 0, 0),
+('find_applet', 'popup', 'admin_find_applet.php', 0, 0),
+('find_file', 'popup', 'admin_find_file.php', 0, 0),
+('find_gallery_img', 'popup', 'admin_findpicture.php', 0, 0),
+('find_user', 'popup', 'admin_finduser.php', 0, 0),
+('frogpad', 'popup', 'admin_frogpad.php', 0, 0),
+('news_preview', 'popup', 'admin_news_prev.php', 0, 0),
+('press_config', 'press', 'admin_press_config.php', 1, 0),
+('press_add', 'press', 'admin_press_add.php', 2, 0),
+('press_edit', 'press', 'admin_press_edit.php', 3, 0),
+('press_admin', 'press', 'admin_press_admin.php', 4, 0),
+('search_config', 'search', 'admin_search_config.php', 1, 0),
+('search_index', 'search', 'admin_search_index.php', 2, 0),
 ('shop_add', 'shop', 'admin_shopadd.php', 1, 0),
 ('shop_edit', 'shop', 'admin_shopedit.php', 2, 0),
-('user_config', 'users', 'admin_user_config.php', 1, 0),
-('user_add', 'users', 'admin_user_add.php', 2, 0),
-('user_edit', 'users', 'admin_user_edit.php', 3, 0),
-('user_rights', 'users', 'admin_user_rights.php', 4, 0),
+('snippets_add', 'snippets', 'admin_snippets_add.php', 1, 0),
+('snippets_delete', 'snippets', 'snippets_edit', 1, 1),
+('snippets_edit', 'snippets', 'admin_snippets_edit.php', 2, 0),
+('stat_view', 'stats', 'admin_statview.php', 1, 0),
+('stat_edit', 'stats', 'admin_statedit.php', 2, 0),
+('stat_ref', 'stats', 'admin_statref.php', 3, 0),
 ('style_add', 'styles', 'admin_style_add.php', 1, 0),
 ('style_management', 'styles', 'admin_style_management.php', 2, 0),
 ('style_css', 'styles', 'admin_template_css.php', 3, 0),
 ('style_js', 'styles', 'admin_template_js.php', 4, 0),
 ('style_nav', 'styles', 'admin_template_nav.php', 5, 0),
+('tpl_main', 'templates', 'admin_template_main.php', 1, 0),
 ('tpl_general', 'templates', 'admin_template_general.php', 2, 0),
 ('tpl_user', 'templates', 'admin_template_user.php', 2, 0),
 ('tpl_articles', 'templates', 'admin_template_articles.php', 3, 0),
 ('tpl_news', 'templates', 'admin_template_news.php', 3, 0),
 ('tpl_search', 'templates', 'admin_template_search.php', 3, 0),
+('tpl_viewer', 'templates', 'admin_template_viewer.php', 3, 0),
 ('tpl_poll', 'templates', 'admin_template_poll.php', 4, 0),
 ('tpl_press', 'templates', 'admin_template_press.php', 5, 0),
 ('tpl_screens', 'templates', 'admin_template_screenshot.php', 6, 0),
@@ -121,33 +146,10 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('tpl_editor', 'templates', 'admin_editor_design.php', 13, 0),
 ('tpl_fscodes', 'templates', 'admin_editor_fscode.php', 14, 0),
 ('tpl_player', 'templates', 'admin_template_player.php', 20, 0),
-('group_config', 'groups', 'admin_group_config.php', 1, 0),
-('group_admin', 'groups', 'admin_group_admin.php', 2, 0),
-('group_rights', 'groups', 'admin_group_rights.php', 3, 0),
-('applets_add', 'applets', 'admin_applets_add.php', 1, 0),
-('applets_delete', 'applets', 'applets_edit', 1, 1),
-('applets_edit', 'applets', 'admin_applets_edit.php', 2, 0),
-('snippets_add', 'snippets', 'admin_snippets_add.php', 1, 0),
-('snippets_delete', 'snippets', 'snippets_edit', 1, 1),
-('snippets_edit', 'snippets', 'admin_snippets_edit.php', 2, 0),
-('aliases_add', 'aliases', 'admin_aliases_add.php', 1, 0),
-('aliases_delete', 'aliases', 'aliases_edit', 1, 1),
-('aliases_edit', 'aliases', 'admin_aliases_edit.php', 2, 0),
-('search_config', 'search', 'admin_search_config.php', 1, 0),
-('search_index', 'search', 'admin_search_index.php', 2, 0),
-('frogpad', 'popup', 'admin_frogpad.php', 0, 0),
-('find_user', 'popup', 'admin_finduser.php', 0, 0),
-('find_gallery_img', 'popup', 'admin_findpicture.php', 0, 0),
-('find_file', 'popup', 'admin_find_file.php', 0, 0),
-('find_applet', 'popup', 'admin_find_applet.php', 0, 0),
-('tpl_main', 'templates', 'admin_template_main.php', 1, 0),
-('tpl_viewer', 'templates', 'admin_template_viewer.php', 3, 0),
-('gallery_img', 'gallery', 'admin_gallery_img.php', 3, 0),
-('gallery_wp', 'gallery', 'admin_gallery_wp.php', 4, 0),
-('gallery_img_add', 'gallery', 'gallery_img', 1, 1),
-('gallery_img_edit', 'gallery', 'gallery_img', 2, 1),
-('gallery_wp_add', 'gallery', 'gallery_wp', 1, 1),
-('gallery_wp_edit', 'gallery', 'gallery_wp', 2, 1);
+('user_config', 'users', 'admin_user_config.php', 1, 0),
+('user_add', 'users', 'admin_user_add.php', 2, 0),
+('user_edit', 'users', 'admin_user_edit.php', 3, 0),
+('user_rights', 'users', 'admin_user_rights.php', 4, 0);
 
 -- --------------------------------------------------------
 
@@ -214,7 +216,9 @@ CREATE TABLE `fs2_admin_inherited` (
 INSERT INTO `fs2_admin_inherited` (`group_id`, `pass_to`) VALUES
 ('applets', 'find_applet'),
 ('news', 'find_user'),
-('articles', 'find_user');
+('articles', 'find_user'),
+('news', 'news_preview'),
+('articles', 'article_preview');
 
 -- --------------------------------------------------------
 
@@ -461,7 +465,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 25, 352, 2, 4, 6, 3);
+(1, 31, 387, 2, 4, 65519, 1);
 
 -- --------------------------------------------------------
 
@@ -483,7 +487,7 @@ CREATE TABLE `fs2_counter_ref` (
 --
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
-('http://localhost/', 45, 1302557491, 1307185130);
+('http://localhost/', 55, 1302557491, 1307980522);
 
 -- --------------------------------------------------------
 
@@ -525,7 +529,12 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 5, 29, 3, 77),
 (2011, 6, 2, 1, 1),
 (2011, 6, 3, 1, 2),
-(2011, 6, 4, 1, 1);
+(2011, 6, 4, 1, 2),
+(2011, 6, 5, 1, 16),
+(2011, 6, 10, 1, 2),
+(2011, 6, 11, 1, 3),
+(2011, 6, 12, 2, 3),
+(2011, 6, 13, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -807,7 +816,7 @@ CREATE TABLE `fs2_global_config` (
 --
 
 INSERT INTO `fs2_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `timezone`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix6', 'http://localhost/fs2.6/', 'mail@sweil.de', 'Hans wunderbare Welt des Wissens', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', 'Europe/Berlin', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1307185130);
+(1, '2.alix6', 'http://localhost/fs2.6/', 'mail@sweil.de', 'Hansens wunderbare Welt', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', 'Europe/Berlin', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1307969075);
 
 -- --------------------------------------------------------
 
@@ -847,7 +856,7 @@ CREATE TABLE `fs2_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
 
 --
 -- Daten für Tabelle `fs2_news`
@@ -855,11 +864,8 @@ CREATE TABLE `fs2_news` (
 
 INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
 (1, 1, 1, 1302517148, 'Frogsystem 2.alix5 - Installation erfolgreich', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2!\r\nDas Frogsystem 2-Team wünscht viel Spaß und Erfolg mit der Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2, in den zugehörigen Supportforen und dem neuen Dokumentations-Wiki. Die wichtigsten Links haben wir unten zusammengefasst. Einfach mal vorbei schauen!\r\n\r\nDein Frogsystem 2-Team', 1, 1, 0),
-(10, 1, 1, 1306700880, 'video test', '[player]1[/player]\r\n\r\n[player=300,500]1[/player]', 1, 1, 1306700959),
 (5, 1, 1, 1302567540, 'ie 8 test update', 'ie 8 test update', 1, 1, 1303288547),
-(7, 1, 1, 1302560460, 'safari test uüpdate', 'safari testvuüpdate', 1, 1, 1302560525),
-(9, 1, 2, 1306663620, 'fsdfsdfds', 'sdfsdfsd', 1, 1, 1306663666),
-(11, 1, 1, 1307099520, 'sdfsdfsdf', 'sdsdf', 1, 1, 1307099575);
+(7, 1, 1, 1302560460, 'safari test uüpdate', 'safari testvuüpdate', 1, 1, 1302560525);
 
 -- --------------------------------------------------------
 
@@ -875,14 +881,15 @@ CREATE TABLE `fs2_news_cat` (
   `cat_date` int(11) NOT NULL,
   `cat_user` mediumint(8) NOT NULL DEFAULT '1',
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs2_news_cat`
 --
 
 INSERT INTO `fs2_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
-(1, 'News', '', 1302517148, 1);
+(1, 'News', '', 1302517148, 1),
+(2, 'The Witcher: Assassins of Kings', '', 1307814857, 1);
 
 -- --------------------------------------------------------
 
@@ -909,9 +916,7 @@ CREATE TABLE `fs2_news_comments` (
 --
 
 INSERT INTO `fs2_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(1, 5, '1', 1, '127.0.0.1', 1306441156, 'sdfsdf', 'sdfsdf'),
-(2, 5, '1', 1, '127.0.0.1', 1306441170, 'gdfgdf', 'gdfgdf'),
-(3, 5, '1', 1, '127.0.0.1', 1306441173, 'gdfgdf', 'gdfgfd');
+(3, 5, '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans');
 
 -- --------------------------------------------------------
 
@@ -946,7 +951,7 @@ CREATE TABLE `fs2_news_config` (
 --
 
 INSERT INTO `fs2_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`, `acp_force_cat_selection`) VALUES
-(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 20, ' ...', 15, 2, 1);
+(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 20, ' ...', 25, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -962,7 +967,7 @@ CREATE TABLE `fs2_news_links` (
   `link_url` varchar(255) DEFAULT NULL,
   `link_target` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`link_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=63 ;
 
 --
 -- Daten für Tabelle `fs2_news_links`
@@ -973,7 +978,22 @@ INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `li
 (1, 2, 'Frogsystem 2 Supportforum', 'http://forum.sweil.de/viewforum.php?f=7', 1),
 (1, 3, 'Frogsystem 2 Dokumentations-Wiki', 'http://wiki.frogsystem.de/', 1),
 (5, 7, 'sdfsdfsdf', 'http://', 0),
-(2, 6, 'sdfsdf', 'http://', 0);
+(2, 6, 'sdfsdf', 'http://', 0),
+(27, 49, 'WoP', 'http://www.worldofplayers.de', 1),
+(27, 48, 'Test', 'http://www.test.de', 1),
+(27, 50, 'Home', 'http://localhost/fs2.6/', 0),
+(28, 51, 'Test', 'http://www.test.de', 1),
+(28, 52, 'Home', 'http://localhost/fs2.6/', 0),
+(28, 53, 'WoP', 'http://www.worldofplayers.de', 1),
+(29, 54, 'Test', 'http://www.test.de', 1),
+(29, 55, 'Home', 'http://localhost/fs2.6/', 0),
+(29, 56, 'WoP', 'http://www.worldofplayers.de', 1),
+(31, 62, 'WoP', 'http://www.worldofplayers.de', 1),
+(31, 61, 'Home', 'http://localhost/fs2.6/', 0),
+(31, 60, 'Test', 'http://www.test.de', 1),
+(30, 59, 'WoP', 'http://www.worldofplayers.de', 1),
+(30, 58, 'Home', 'http://localhost/fs2.6/', 0),
+(30, 57, 'Test', 'http://www.test.de', 1);
 
 -- --------------------------------------------------------
 
@@ -1210,8 +1230,6 @@ CREATE TABLE `fs2_poll_voters` (
 -- Daten für Tabelle `fs2_poll_voters`
 --
 
-INSERT INTO `fs2_poll_voters` (`voter_id`, `poll_id`, `ip_address`, `time`) VALUES
-(1, 3, '127.0.0.1', 1306685207);
 
 -- --------------------------------------------------------
 
@@ -1472,7 +1490,7 @@ CREATE TABLE `fs2_search_index` (
   `search_index_count` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=259 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=265 ;
 
 --
 -- Daten für Tabelle `fs2_search_index`
@@ -1632,16 +1650,16 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 (246, 138, 'dl', 10, 1),
 (247, 139, 'dl', 10, 1),
 (248, 140, 'dl', 10, 1),
-(249, 141, 'news', 9, 1),
-(250, 142, 'news', 9, 1),
-(251, 125, 'news', 10, 1),
-(252, 143, 'news', 10, 1),
+(260, 150, 'news', 27, 1),
+(259, 129, 'news', 27, 1),
+(262, 150, 'news', 28, 1),
+(261, 129, 'news', 28, 1),
 (253, 144, 'dl', 11, 1),
 (254, 145, 'dl', 11, 1),
 (255, 146, 'dl', 11, 1),
 (256, 147, 'dl', 11, 1),
-(257, 148, 'news', 11, 1),
-(258, 149, 'news', 11, 1);
+(264, 152, 'news', 29, 1),
+(263, 151, 'news', 29, 1);
 
 -- --------------------------------------------------------
 
@@ -1657,7 +1675,7 @@ CREATE TABLE `fs2_search_time` (
   `search_time_date` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_time_id`),
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Daten für Tabelle `fs2_search_time`
@@ -1684,7 +1702,10 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 (18, 'news', 9, 1307022293),
 (19, 'news', 10, 1307022293),
 (20, 'dl', 11, 1307022293),
-(21, 'news', 11, 1307185130);
+(21, 'news', 11, 1307185130),
+(22, 'news', 27, 1307884434),
+(23, 'news', 28, 1307884434),
+(24, 'news', 29, 1307884434);
 
 -- --------------------------------------------------------
 
@@ -1698,7 +1719,7 @@ CREATE TABLE `fs2_search_words` (
   `search_word` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
   UNIQUE KEY `search_word` (`search_word`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=150 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=153 ;
 
 --
 -- Daten für Tabelle `fs2_search_words`
@@ -1853,7 +1874,10 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 (146, 'src'),
 (147, 'rpm'),
 (148, 'sdfsdfsdf'),
-(149, 'sdsdf');
+(149, 'sdsdf'),
+(150, 'fsdfsd'),
+(151, 'hans'),
+(152, 'wurst');
 
 -- --------------------------------------------------------
 
@@ -2010,7 +2034,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1307185130);
+('127.0.0.1', 1, 1307982128);
 
 -- --------------------------------------------------------
 
