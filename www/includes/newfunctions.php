@@ -166,4 +166,23 @@ function hex2dec_color ($COLOR) {
         return false;
     }
 }
+
+
+
+
+///////////////
+//// oneof ////
+///////////////
+function oneof () {
+	$numargs = func_num_args();
+	if ($numargs >= 2) {
+		$comp = func_get_arg(0);
+		for ($i=1; $i<$numargs; $i++) {
+			if ($comp == func_get_arg($i))
+				return true;
+		}
+	}
+	return false;
+}
+
 ?>

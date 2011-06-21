@@ -5,12 +5,12 @@
 ////////////////////////////
 
 // News Konfiguration lesen
-$index = mysql_query("select * from ".$global_config_arr[pref]."news_config", $db);
+$index = mysql_query("select * from ".$global_config_arr['pref']."news_config", $db);
 $config_arr = mysql_fetch_assoc($index);
 $time = time();
 
 // Headlines erzeugen
-$index = mysql_query("select * from ".$global_config_arr[pref]."news
+$index = mysql_query("select * from ".$global_config_arr['pref']."news
                       where news_date <= $time
                       AND news_active = 1
                       order by news_date desc
@@ -40,7 +40,7 @@ unset($newshead_arr);
 
 // Neuste Downloads erzeugen
 $index = mysql_query("select dl_name, dl_id, dl_date
-                      from ".$global_config_arr[pref]."dl
+                      from ".$global_config_arr['pref']."dl
                       where dl_open = 1
                       order by dl_date desc
                       limit $config_arr[num_head]", $db);
@@ -82,14 +82,15 @@ $headline_template = $template;
 ////// News ausgeben ///////
 ////////////////////////////
 
-$index = mysql_query("select * from ".$global_config_arr[pref]."news
+$index = mysql_query("select * from ".$global_config_arr['pref']."news
                       where news_date <= $time
                       AND news_active = 1
                       order by news_date desc
                       limit $config_arr[num_news]", $db);
+initstr($news_template);
 while ($news_arr = mysql_fetch_assoc($index))
 {
-    $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
+    $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
 }
 unset($news_arr);
 

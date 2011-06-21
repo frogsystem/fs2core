@@ -50,7 +50,7 @@ try {
     }
     
     //set timezone
-    if ($global_config_arr['timezone'] == "default")
+    if (empty($global_config_arr['timezone']) || $global_config_arr['timezone'] == "default")
         $global_config_arr['timezone'] = date_default_timezone_get();
     date_default_timezone_set($global_config_arr['timezone']);
     
@@ -119,4 +119,12 @@ try {
 ///////////////////////////////////////////////////
 unset($dbc);
 unset($spam);
+
+////////////////////////
+//// Init Some Vars ////
+////////////////////////
+$_GET['go'] = !isset($_GET['go']) ? "" : $_GET['go'];
+$_POST['go'] = !isset($_POST['go']) ? "" : $_POST['go'];
+$_REQUEST['go'] = !isset($_REQUEST['go']) ? "" : $_REQUEST['go'];
+$_SESSION['user_level'] = !isset($_SESSION['user_level']) ? "unknown" : $_SESSION['user_level'];
 ?>

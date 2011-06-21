@@ -227,7 +227,7 @@ function get_title ()
 
     settype($global_config_arr['dyn_title'], "integer");
 
-    if ($global_config_arr['dyn_title'] === 1 && $global_config_arr['dyn_title_page'] != "") {
+    if ($global_config_arr['dyn_title'] === 1 && isset($global_config_arr['dyn_title_page'])) {
         $dyn_title = str_replace("{..title..}", $global_config_arr['title'], $global_config_arr['dyn_title_ext']);
         $dyn_title = str_replace("{..ext..}", $global_config_arr['dyn_title_page'], $dyn_title);
         return $dyn_title;
@@ -372,7 +372,7 @@ function load_applets ()
     $ld = $data['data'];
 
     // Write Applets into Array & get Applet Template
-    unset($template);
+    initstr($template);
     foreach ($ld as $ldk => $lde) {
         // prepare data
         $lde['applet_file'] = stripslashes($lde['applet_file']).".php";
@@ -381,7 +381,7 @@ function load_applets ()
         // include applets & load template
         include_once(FS2_ROOT_PATH."applets/".$lde['applet_file']);
         $lde['applet_template'] = $template;
-        unset($template);
+        initstr($template);
 
         $ld[$ldk] = $lde;
     }
@@ -694,21 +694,23 @@ function save_referer ()
     global $db;
     global $global_config_arr;
 
-    $time = time();             // timestamp
-
-    // save referer
-    $referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
-    $index =  mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref WHERE ref_url = '".$referer."'", $db );
-    
-    if ( mysql_num_rows ( $index ) <= 0 ) {
-        if ( substr_count ( $referer, "http://" ) >= 1 && substr_count ( $referer, $global_config_arr['virtualhost'] ) < 1 ) {
-            mysql_query ( "INSERT INTO ".$global_config_arr['pref']."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')", $db );
-        }
-    } else {
-        if ( substr_count ( $referer, "http://" ) >= 1 && substr_count ( $referer, $global_config_arr['virtualhost'] ) < 1 ) {
-                mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = '".$referer."'", $db );
-        }
-    }
+	if (isset($_SERVER['HTTP_REFERER'])) {
+		
+		$time = time();             // timestamp
+		// save referer
+		$referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
+		$index =  mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref WHERE ref_url = '".$referer."'", $db );
+		
+		if ( mysql_num_rows ( $index ) <= 0 ) {
+			if ( substr_count ( $referer, "http://" ) >= 1 && substr_count ( $referer, $global_config_arr['virtualhost'] ) < 1 ) {
+				mysql_query ( "INSERT INTO ".$global_config_arr['pref']."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')", $db );
+			}
+		} else {
+			if ( substr_count ( $referer, "http://" ) >= 1 && substr_count ( $referer, $global_config_arr['virtualhost'] ) < 1 ) {
+					mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = '".$referer."'", $db );
+			}
+		}
+	}
 }
 
 
@@ -720,10 +722,10 @@ function delete_old_randoms ()
   global $db;
   global $global_config_arr;
 
-  if ($global_config_arr[random_timed_deltime] != -1) {
+  if ($global_config_arr['random_timed_deltime'] != -1) {
     // Alte Zufallsbild-Einträge aus der Datenbank entfernen
     mysql_query("DELETE a
-                FROM ".$global_config_arr[pref]."screen_random a, ".$global_config_arr[pref]."global_config b
+                FROM ".$global_config_arr['pref']."screen_random a, ".$global_config_arr['pref']."global_config b
                 WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime", $db);
   }
 }

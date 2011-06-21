@@ -400,8 +400,6 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
     global $global_config_arr;
     global $db;
 
-    session_start();
-
     function encrypt_captcha ( $STRING, $KEY ) {
         $result = '';
         for ( $i = 0; $i < strlen ( $STRING ); $i++ ) {
@@ -906,13 +904,13 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
 {
     global $db, $global_config_arr;
 
-    $news_arr[news_date] = date_loc( $global_config_arr['datetime'] , $news_arr[news_date]);
-    $news_arr[comment_url] = "?go=comments&amp;id=".$news_arr[news_id];
+    $news_arr['news_date'] = date_loc( $global_config_arr['datetime'] , $news_arr['news_date']);
+    $news_arr['comment_url'] = "?go=comments&amp;id=".$news_arr['news_id'];
 
     // Kategorie lesen
-    $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."news_cat where cat_id = '".$news_arr['cat_id']."'", $db);
-    $news_arr[cat_name] = mysql_result($index2, 0, "cat_name");
-    $news_arr[cat_pic] = image_url("images/cat/", "news_".$news_arr[cat_id]);
+    $index2 = mysql_query("select cat_name from ".$global_config_arr['pref']."news_cat where cat_id = '".$news_arr['cat_id']."'", $db);
+    $news_arr['cat_name'] = mysql_result($index2, 0, "cat_name");
+    $news_arr['cat_pic'] = image_url("images/cat/", "news_".$news_arr['cat_id']);
 
     // Text formatieren
     switch ($html_code)
@@ -961,35 +959,35 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
             break;
     }
 
-    $news_arr[news_text] = fscode ( $news_arr[news_text], $fs, $html, $para );
-    $news_arr[news_title] = killhtml ( $news_arr[news_title] );
+    $news_arr['news_text'] = fscode ( $news_arr['news_text'], $fs, $html, $para );
+    $news_arr['news_title'] = killhtml ( $news_arr['news_title'] );
 
     // User auslesen
-    $index2 = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $news_arr[user_id]", $db);
-    $news_arr[user_name] = kill_replacements ( mysql_result($index2, 0, "user_name"), TRUE );
-    $news_arr[user_url] = "?go=user&amp;id=".$news_arr[user_id];
+    $index2 = mysql_query("select user_name from ".$global_config_arr['pref']."user where user_id = ".$news_arr['user_id']."", $db);
+    $news_arr['user_name'] = kill_replacements ( mysql_result($index2, 0, "user_name"), TRUE );
+    $news_arr['user_url'] = "?go=user&amp;id=".$news_arr['user_id'];
 
     // Kommentare lesen
-    $index2 = mysql_query("select comment_id from ".$global_config_arr[pref]."news_comments where news_id = $news_arr[news_id]", $db);
-    $news_arr[kommentare] = mysql_num_rows($index2);
+    $index2 = mysql_query("select comment_id from ".$global_config_arr['pref']."news_comments where news_id = ".$news_arr['news_id']."", $db);
+    $news_arr['kommentare'] = mysql_num_rows($index2);
 
     // Get Related Links
     $link_tpl = "";
-    $index2 = mysql_query("select * from ".$global_config_arr[pref]."news_links where news_id = $news_arr[news_id] order by link_id", $db);
+    $index2 = mysql_query("select * from ".$global_config_arr['pref']."news_links where news_id = ".$news_arr['news_id']." order by link_id", $db);
     while ($link_arr = mysql_fetch_assoc($index2))
     {
-        $link_arr[link_name] = killhtml ( $link_arr[link_name] );
-        $link_arr[link_url] = killhtml ( $link_arr[link_url] );
-        $link_arr[link_target] = ( $link_arr[link_target] == 1 ) ? "_blank" : "_self";
+        $link_arr['link_name'] = killhtml ( $link_arr['link_name'] );
+        $link_arr['link_url'] = killhtml ( $link_arr['link_url'] );
+        $link_arr['link_target'] = ( $link_arr['link_target'] == 1 ) ? "_blank" : "_self";
 
         // Get Link Line Template
         $link = new template();
         $link->setFile("0_news.tpl");
         $link->load("LINKS_LINE");
 
-        $link->tag("title", $link_arr[link_name] );
-        $link->tag("url", $link_arr[link_url] );
-        $link->tag("target", $link_arr[link_target] );
+        $link->tag("title", $link_arr['link_name'] );
+        $link->tag("url", $link_arr['link_url'] );
+        $link->tag("target", $link_arr['link_target'] );
 
         $link = $link->display ();
         $link_tpl .= $link;
@@ -1010,16 +1008,16 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $template->setFile("0_news.tpl");
     $template->load("NEWS_BODY");
 
-    $template->tag("news_id", $news_arr[news_id] );
-    $template->tag("titel", $news_arr[news_title] );
-    $template->tag("date", $news_arr[news_date] );
-    $template->tag("text", $news_arr[news_text] );
-    $template->tag("user_name", $news_arr[user_name] );
-    $template->tag("user_url", $news_arr[user_url] );
-    $template->tag("cat_name", $news_arr[cat_name] );
-    $template->tag("cat_image", $news_arr[cat_pic] );
-    $template->tag("comments_url", $news_arr[comment_url] );
-    $template->tag("comments_number", $news_arr[kommentare] );
+    $template->tag("news_id", $news_arr['news_id'] );
+    $template->tag("titel", $news_arr['news_title'] );
+    $template->tag("date", $news_arr['news_date'] );
+    $template->tag("text", $news_arr['news_text'] );
+    $template->tag("user_name", $news_arr['user_name'] );
+    $template->tag("user_url", $news_arr['user_url'] );
+    $template->tag("cat_name", $news_arr['cat_name'] );
+    $template->tag("cat_image", $news_arr['cat_pic'] );
+    $template->tag("comments_url", $news_arr['comment_url'] );
+    $template->tag("comments_number", $news_arr['kommentare'] );
     $template->tag("related_links", $related_links );
 
     $template = $template->display ();
@@ -1085,7 +1083,7 @@ function savesql ( $TEXT )
     global $db, $global_config_arr;
     
     $TEXT = unquote($TEXT);
-    if ($global_config_arr['env']['slash'])
+    if (SLASH)
          $TEXT = addslashes($TEXT);
     
     if ( !is_numeric ( $TEXT ) ) {
@@ -1282,8 +1280,8 @@ function checkVotedPoll($pollid) {
             }
         }
         $one_day_ago = time()-60*60*24;
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."poll_voters WHERE time <= '".$one_day_ago."'", $db); //Delete old IPs
-        $query_id = mysql_query("SELECT voter_id FROM ".$global_config_arr[pref]."poll_voters WHERE poll_id = $pollid AND ip_address = '".$_SERVER['REMOTE_ADDR']."' AND time > '".$one_day_ago."'", $db); //Save IP for 1 Day
+        mysql_query("DELETE FROM ".$global_config_arr['pref']."poll_voters WHERE time <= '".$one_day_ago."'", $db); //Delete old IPs
+        $query_id = mysql_query("SELECT voter_id FROM ".$global_config_arr['pref']."poll_voters WHERE poll_id = $pollid AND ip_address = '".$_SERVER['REMOTE_ADDR']."' AND time > '".$one_day_ago."'", $db); //Save IP for 1 Day
         if (mysql_num_rows($query_id) > 0) {
                 return true;
         }
@@ -1300,7 +1298,7 @@ function registerVoter($pollid, $voter_ip) {
 
         settype($pollid, 'integer');
 
-        mysql_query("INSERT INTO ".$global_config_arr[pref]."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
+        mysql_query("INSERT INTO ".$global_config_arr['pref']."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
         if (!isset($_COOKIE['polls_voted'])) {
                 setcookie('polls_voted', $pollid, time()+60*60*24*60); //2 months
         } else {

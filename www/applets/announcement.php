@@ -23,6 +23,6 @@ if ( $ann_arr['show_announcement'] != 0 && $ann_arr['activate_announcement'] == 
         $template = $template->display ();
     }
 } else {
-    $template == "";
+    $template = "";
 }
 ?>

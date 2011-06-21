@@ -68,17 +68,7 @@ class lang
             // load file
             $langData = file_get_contents($langDataPath);
             $langData = str_replace(array("\r\n", "\r"), "\n", $langData); // unify linebreaks
-            $this->import($langData);
-            
-            //import files
-            preg_match_all('/<!--section-import(\-nolang)?::([a-z-_]+)::([a-z-_]+)-->/is', $tmpval, $imports, PREG_SET_ORDER);
-            foreach ($imports as $import) {
-               $importlang = (empty($import[1]) ? true: false);
-               $page = new adminpage($import[2].".tpl");
-               $tmpval = preg_replace('/<!--section-import::'.$import[2].'::'.$import[3].'-->/is', $page->get($import[3], false, false, $importlang), $tmpval);
-               // replace all imports, recursive but don't touch conds or TEXTs
-            }
-            unset($imports);            
+            $this->import($langData);        
             
             // get lines
             $langData = preg_replace("/#.*?\n/is", "", $langData);

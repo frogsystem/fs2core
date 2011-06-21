@@ -104,6 +104,7 @@ if (!empty($acp_arr)) {
     
 } else {
     $PAGE_DATA_ARR['created'] = false;
+    define('POPUP', false);
 }
 
 // logout

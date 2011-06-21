@@ -233,12 +233,16 @@ class sql {
         $num = count($rows);
         
         // Unslash the result
-        if ($num > 0)
-            array_map(
-                create_function('$row,$t', 'array_map($t->unslash, $row);'),
-                $rows,
-                array_fill(0, $num, $this)
-            );
+        if ($num > 0) {
+			require_once(FS2_ROOT_PATH."libs/class_fullaccesswrapper.php");
+			$self = giveAccess($this);  // $self := $this
+			$lokal = function ($row) use ($self) {
+				return array_map(function($r) use($self) {
+					return $self->unslash($r);
+				}, $row);
+			};			
+            $rows = array_map($lokal, $rows);
+        }
             
         // Return the result     
         return array (

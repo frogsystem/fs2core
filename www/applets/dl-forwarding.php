@@ -1,7 +1,7 @@
 <?php
 // Security Functions
 if (
-        ( $_GET['dl'] == "true" || $_GET['dl'] == "TRUE" )
+        ( isset($_GET['dl']) && oneof($_GET['dl'], "true", "TRUE") )
         && ( isset ( $_GET['id'] ) || isset ( $_GET['fileid'] ) )
     )
 {
@@ -12,8 +12,8 @@ if (
 
 // Download-Link clicked
 if (
-        isset ( $_GET['id'] )
-        && $_GET['dl'] === TRUE
+        isset ($_GET['id'])
+        && isset ($_GET['dl']) && $_GET['dl'] === TRUE
         && ( $_SERVER['HTTP_REFERER'] == "" || strstr ( $_SERVER['HTTP_REFERER'], "?go=dlfile" ) )
     )
 {

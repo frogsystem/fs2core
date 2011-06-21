@@ -4,10 +4,10 @@
 ///////////////////////
 
 //Kommentar-Config
-$index = mysql_query("SELECT * from ".$global_config_arr[pref]."news_config", $db);
+$index = mysql_query("SELECT * from ".$global_config_arr['pref']."news_config", $db);
 $config_arr = mysql_fetch_assoc($index);
 //Editor config
-$index = mysql_query("SELECT * from ".$global_config_arr[pref]."editor_config", $db);
+$index = mysql_query("SELECT * from ".$global_config_arr['pref']."editor_config", $db);
 $editor_config = mysql_fetch_assoc($index);
 
 $SHOW = TRUE;
@@ -15,10 +15,12 @@ $SHOW = TRUE;
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-if ( $config_arr[com_antispam] == 1 && $_SESSION["user_id"] ) {
-    $anti_spam = check_captcha ( $_POST["spam"], 0 );
+if ( $config_arr['com_antispam'] == 1 && $_SESSION["user_id"] && isset($_POST['spam']) ) {
+    $anti_spam = check_captcha ( $_POST['spam'], 0 );
 } else {
-    $anti_spam = check_captcha ( $_POST["spam"], $config_arr['com_antispam'] );
+	if (!isset($_POST['spam']))
+		$_POST['spam'] = "";
+    $anti_spam = check_captcha ( $_POST['spam'], $config_arr['com_antispam'] );
 }
 
 /////////////////////////
@@ -45,16 +47,16 @@ if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SES
 //////////////////////////////
 //// Kommentar hinzufügen ////
 //////////////////////////////
-
+initstr($message_template);
 if (isset($_POST['add_comment']))
 {
-    if ($_POST[id]
-         && ($_POST[name] != "" || $_SESSION["user_id"])
-         && $_POST[title] != ""
-         && $_POST[text] != ""
+    if ($_POST['id']
+         && ($_POST['name'] != "" || $_SESSION["user_id"])
+         && $_POST['title'] != ""
+         && $_POST['text'] != ""
          && $anti_spam == TRUE)
     {
-                settype($_POST[id], 'integer');
+                settype($_POST['id'], 'integer');
                 $index = mysql_query( "
                                         SELECT `news_comments_allowed`
                                         FROM ".$global_config_arr['pref']."news
@@ -95,7 +97,7 @@ if (isset($_POST['add_comment']))
 
                         mysql_query ( "
                                         INSERT INTO
-                                            `".$global_config_arr[pref]."news_comments` (
+                                            `".$global_config_arr['pref']."news_comments` (
                                                 news_id,
                                                 comment_poster,
                                                 comment_poster_id,
@@ -115,7 +117,7 @@ if (isset($_POST['add_comment']))
                                                 '".$_POST['text']."'
                                             )
                         ", $db );
-                        mysql_query("update ".$global_config_arr[pref]."counter set comments=comments+1", $db);
+                        mysql_query("update ".$global_config_arr['pref']."counter set comments=comments+1", $db);
                         $SHOW = FALSE;
                         $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_added"), $_SERVER['REQUEST_URI'] );
                     } else {
@@ -129,9 +131,9 @@ if (isset($_POST['add_comment']))
     else
     {
         $reason = array();
-        if ( !($_POST[name] != "" || $_SESSION["user_id"])
-            || $_POST[title] == ""
-            || $_POST[text] == "")
+        if ( !($_POST['name'] != "" || $_SESSION["user_id"])
+            || $_POST['title'] == ""
+            || $_POST['text'] == "")
         {
             $reason[] = $TEXT['frontend']->get("comment_empty");
         }
@@ -149,7 +151,7 @@ if (isset($_POST['add_comment']))
 if ( $SHOW == TRUE ) {
 
 
-    settype($_GET[id], 'integer');
+    settype($_GET['id'], 'integer');
     $time = time();
 
     // News anzeigen
@@ -163,31 +165,32 @@ if ( $SHOW == TRUE ) {
     ", $db);
 
     $news_rows = mysql_num_rows($index);
-
+	
+	initstr($news_template);
     if ($news_rows > 0) {
         $news_arr = mysql_fetch_assoc($index);
-        $news_template .= display_news($news_arr, $config_arr[html_code], $config_arr[fs_code], $config_arr[para_handling]);
+        $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
         $global_config_arr['dyn_title_page'] = stripslashes ( $news_arr['news_title'] );
     } else {
         $news_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("news_not_exist"));
     }
 
     // Text formatieren
-    switch ($config_arr[html_code])
+    switch ($config_arr['html_code'])
     {
         case 1: $html = false; break;
         case 2: $html = false; break;
         case 3: $html = true; break;
         case 4: $html = true; break;
     }
-    switch ($config_arr[fs_code])
+    switch ($config_arr['fs_code'])
     {
         case 1: $fs = false; break;
         case 2: $fs = false; break;
         case 3: $fs = true; break;
         case 4: $fs = true; break;
     }
-    switch ($config_arr[para_handling])
+    switch ($config_arr['para_handling'])
     {
         case 1: $para = false; break;
         case 2: $para = false; break;
@@ -200,27 +203,27 @@ if ( $SHOW == TRUE ) {
     $html_active = ($html) ? "an" : "aus";
 
     // Kommentare erzeugen
-    $index = mysql_query("select * from ".$global_config_arr[pref]."news_comments where news_id = $_GET[id] order by comment_date $config_arr[com_sort]", $db);
+    $index = mysql_query("select * from ".$global_config_arr['pref']."news_comments where news_id = ".$_GET['id']." order by comment_date ".$config_arr['com_sort']."", $db);
     while ($comment_arr = mysql_fetch_assoc($index))
     {
 
         // User auslesen
-        if ($comment_arr[comment_poster_id] != 0)
+        if ($comment_arr['comment_poster_id'] != 0)
         {
-            $index2 = mysql_query("select `user_name`, `user_is_admin`, `user_is_staff`, `user_group` from `".$global_config_arr[pref]."user` where user_id = ".$comment_arr[comment_poster_id]."", $db);
-            $comment_arr[comment_poster] = kill_replacements ( mysql_result($index2, 0, "user_name" ), TRUE );
-            $comment_arr[user_is_admin] = mysql_result($index2, 0, "user_is_admin");
-            $comment_arr[user_is_staff] = mysql_result($index2, 0, "user_is_staff");
-            $comment_arr[user_group] = mysql_result($index2, 0, "user_group");
+            $index2 = mysql_query("select `user_name`, `user_is_admin`, `user_is_staff`, `user_group` from `".$global_config_arr['pref']."user` where user_id = ".$comment_arr['comment_poster_id']."", $db);
+            $comment_arr['comment_poster'] = kill_replacements ( mysql_result($index2, 0, "user_name" ), TRUE );
+            $comment_arr['user_is_admin'] = mysql_result($index2, 0, "user_is_admin");
+            $comment_arr['user_is_staff'] = mysql_result($index2, 0, "user_is_staff");
+            $comment_arr['user_group'] = mysql_result($index2, 0, "user_group");
 
-            if (image_exists("media/user-images/",$comment_arr[comment_poster_id])) {
-                $comment_arr[comment_avatar] = '<img align="left" src="'.image_url("media/user-images/",$comment_arr[comment_poster_id]).'" alt="'.$comment_arr[comment_poster].'">';
+            if (image_exists("media/user-images/",$comment_arr['comment_poster_id'])) {
+                $comment_arr['comment_avatar'] = '<img align="left" src="'.image_url("media/user-images/",$comment_arr['comment_poster_id']).'" alt="'.$comment_arr['comment_poster'].'">';
             } else {
-                $comment_arr[comment_avatar] = "";
+                $comment_arr['comment_avatar'] = "";
             }
 
-            if ( $comment_arr[user_is_staff] == 1 || $comment_arr[user_is_admin] == 1 ) {
-                $comment_arr[comment_poster] = "<b>" . $comment_arr[comment_poster] . "</b>";
+            if ( $comment_arr['user_is_staff'] == 1 || $comment_arr['user_is_admin'] == 1 ) {
+                $comment_arr['comment_poster'] = "<b>" . $comment_arr['comment_poster'] . "</b>";
             }
 
             // Benutzer Rang
@@ -232,40 +235,40 @@ if ( $SHOW == TRUE ) {
             $template->setFile("0_news.tpl");
             $template->load("COMMENT_USER");
 
-            $template->tag("url", "?go=user&amp;id=".$comment_arr[comment_poster_id] );
-            $template->tag("name", $comment_arr[comment_poster] );
-            $template->tag("image", $comment_arr[comment_avatar] );
+            $template->tag("url", "?go=user&amp;id=".$comment_arr['comment_poster_id'] );
+            $template->tag("name", $comment_arr['comment_poster'] );
+            $template->tag("image", $comment_arr['comment_avatar'] );
             $template->tag("rank", $comment_arr['user_rank'] );
 
             $template = $template->display ();
-            $comment_arr[comment_poster] = $template;
+            $comment_arr['comment_poster'] = $template;
         }
         else
         {
-            $comment_arr[comment_avatar] = "";
-            $comment_arr[comment_poster] = kill_replacements ( $comment_arr[comment_poster], TRUE );
+            $comment_arr['comment_avatar'] = "";
+            $comment_arr['comment_poster'] = kill_replacements ( $comment_arr['comment_poster'], TRUE );
             $comment_arr['user_rank'] = "";
         }
 
         if ($fs == true) {
-            $comment_arr[comment_text] = fscode( kill_replacements ( $comment_arr[comment_text] ),$fs,$html,$para, $editor_config[do_bold], $editor_config[do_italic], $editor_config[do_underline], $editor_config[do_strike], $editor_config[do_center], $editor_config[do_url], $editor_config[do_home], $editor_config[do_email], $editor_config[do_img], $editor_config[do_cimg], $editor_config[do_list], $editor_config[do_numlist], $editor_config[do_font], $editor_config[do_color], $editor_config[do_size], $editor_config[do_code], $editor_config[do_quote], $editor_config[do_noparse], $editor_config[do_smilies]);
+            $comment_arr['comment_text'] = fscode( kill_replacements ( $comment_arr['comment_text'] ),$fs,$html,$para, $editor_config['do_bold'], $editor_config['do_italic'], $editor_config['do_underline'], $editor_config['do_strike'], $editor_config['do_center'], $editor_config['do_url'], $editor_config['do_home'], $editor_config['do_email'], $editor_config['do_img'], $editor_config['do_cimg'], $editor_config['do_list'], $editor_config['do_numlist'], $editor_config['do_font'], $editor_config['do_color'], $editor_config['do_size'], $editor_config['do_code'], $editor_config['do_quote'], $editor_config['do_noparse'], $editor_config['do_smilies']);
         } else {
-            $comment_arr[comment_text] = fscode( kill_replacements ( $comment_arr[comment_text] ),$fs,$html,$para);
+            $comment_arr['comment_text'] = fscode( kill_replacements ( $comment_arr['comment_text'] ),$fs,$html,$para);
         }
 
-        $comment_arr[comment_date] = date_loc ( $global_config_arr['datetime'] , $comment_arr[comment_date] );
-        $comment_arr[comment_title] = kill_replacements( $comment_arr[comment_title], TRUE );
+        $comment_arr['comment_date'] = date_loc ( $global_config_arr['datetime'] , $comment_arr['comment_date'] );
+        $comment_arr['comment_title'] = kill_replacements( $comment_arr['comment_title'], TRUE );
 
         // Get Comment Template
         $template = new template();
         $template->setFile("0_news.tpl");
         $template->load("COMMMENT_ENTRY");
 
-        $template->tag("titel", $comment_arr[comment_title] );
-        $template->tag("date", $comment_arr[comment_date] );
-        $template->tag("text", $comment_arr[comment_text] );
-        $template->tag("user", $comment_arr[comment_poster] );
-        $template->tag("user_image", $comment_arr[comment_avatar] );
+        $template->tag("titel", $comment_arr['comment_title'] );
+        $template->tag("date", $comment_arr['comment_date'] );
+        $template->tag("text", $comment_arr['comment_text'] );
+        $template->tag("user", $comment_arr['comment_poster'] );
+        $template->tag("user_image", $comment_arr['comment_avatar'] );
         $template->tag("user_rank", $comment_arr['user_rank'] );
 
         $template = $template->display ();
@@ -273,7 +276,7 @@ if ( $SHOW == TRUE ) {
     }
     unset($comment_arr);
     if (mysql_num_rows($index) <= 0  ) {
-        if ( $news_arr[news_comments_allowed] == 1 ) {
+        if ( $news_arr['news_comments_allowed'] == 1 ) {
             $comments_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("no_comments"));
         } else {
             $comments_template = "";
@@ -306,9 +309,9 @@ if ( $SHOW == TRUE ) {
 
 
     if (
-                    $config_arr[com_antispam] == 0 ||
-                    ( $config_arr[com_antispam] == 1 && $_SESSION["user_id"] ) ||
-                    ( $config_arr[com_antispam] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
+                    $config_arr['com_antispam'] == 0 ||
+                    ( $config_arr['com_antispam'] == 1 && $_SESSION["user_id"] ) ||
+                    ( $config_arr['com_antispam'] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
             )
     {
         $form_spam = "";
@@ -316,14 +319,14 @@ if ( $SHOW == TRUE ) {
     }
 
     //Textarea
-    $template_textarea = create_textarea("text", "", $editor_config[textarea_width], $editor_config[textarea_height], "text", false, $editor_config[smilies],$editor_config[bold],$editor_config[italic],$editor_config[underline],$editor_config[strike],$editor_config[center],$editor_config[font],$editor_config[color],$editor_config[size],$editor_config[img],$editor_config[cimg],$editor_config[url],$editor_config[home],$editor_config[email],$editor_config[code],$editor_config[quote],$editor_config[noparse]);
+    $template_textarea = create_textarea("text", "", $editor_config['textarea_width'], $editor_config['textarea_height'], "text", false, $editor_config['smilies'],$editor_config['bold'],$editor_config['italic'],$editor_config['underline'],$editor_config['strike'],$editor_config['center'],$editor_config['font'],$editor_config['color'],$editor_config['size'],$editor_config['img'],$editor_config['cimg'],$editor_config['url'],$editor_config['home'],$editor_config['email'],$editor_config['code'],$editor_config['quote'],$editor_config['noparse']);
 
     // Get Comment Form Template
     $template = new template();
     $template->setFile("0_news.tpl");
     $template->load("COMMENT_FORM");
 
-    $template->tag("news_id", $_GET[id] );
+    $template->tag("news_id", $_GET['id'] );
     $template->tag("name_input", $form_name );
     $template->tag("textarea", $template_textarea );
     $template->tag("html", $html_active );
@@ -337,7 +340,7 @@ if ( $SHOW == TRUE ) {
 
     if ( $news_rows > 0 && $news_arr['news_date'] <= time () && $news_arr['news_active'] == 1 ) {
         // Check Comment Config
-        if ( $news_arr[news_comments_allowed] == 1 && $comments_right == TRUE ) {
+        if ( $news_arr['news_comments_allowed'] == 1 && $comments_right == TRUE ) {
             $comment_form_template = $formular_template;
         } elseif ( $comments_right == FALSE ) {
             $comment_form_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("comm_not_allowed"));

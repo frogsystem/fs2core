@@ -15,10 +15,10 @@ function do_bbcode_smilies ($text) {
     global $global_config_arr;
     global $db;
     $global_config_arr['virtualhost'];
-    $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr[pref]."global_config WHERE id = 1", $db);
+    $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr['pref']."global_config WHERE id = 1", $db);
     $page_url = stripslashes(mysql_result($index, 0, "virtualhost"));
     
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."smilies", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies", $db);
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $url = image_url("images/smilies/", $smilie_arr['id']);
