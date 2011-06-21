@@ -41,6 +41,15 @@ function killhtml ($VAL, $ARR = true) {
 }
 
 
+///////////////////////////////
+//// Make User String safe ////
+///////////////////////////////
+function usersave ($string, $HTMLOK = false) {
+	$string = kill_replacements($string);
+	return $HTMLOK ? $string : htmlspecialchars($string, ENT_QUOTES);
+}
+
+
 ///////////////////////////////////////////////
 //// Short string by cutting in the middle ////
 ///////////////////////////////////////////////

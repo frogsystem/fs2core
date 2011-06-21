@@ -20,9 +20,10 @@ $poll_arr = mysql_fetch_assoc($index);
 
 if (!isset($_POST['poll']) && !checkVotedPoll($poll_arr['poll_id']) && mysql_num_rows($index) > 0) {
 
-    $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $phrases['multiple_choise'] : $phrases['single_choice'];
+    $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $TEXT['frontend']->get("multiple_choise") : $TEXT['frontend']->get("single_choice");
 
     $index2 = mysql_query("select * from ".$global_config_arr['pref']."poll_answers where poll_id = ".$poll_arr['poll_id']." ORDER BY answer_id ASC", $db);
+    initstr($antworten);
     while ($answer_arr = mysql_fetch_assoc($index2)) {
         if ($poll_arr['poll_type'] == 0) {
             $poll_arr['poll_type2'] = "radio";
