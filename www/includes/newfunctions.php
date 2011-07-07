@@ -176,7 +176,21 @@ function hex2dec_color ($COLOR) {
     }
 }
 
-
+///////////////////////////
+//// recursic in_array ////
+///////////////////////////
+function in_arrayr ($value, $array) {
+    foreach($array as $item) {
+        if(!is_array($item)) {
+            if ($item == $value) return true;
+            else continue;
+        }
+       
+        if(in_array($value, $item)) return true;
+        else if(in_arrayr($value, $item)) return true;
+    }
+    return false;
+}  
 
 
 ///////////////
@@ -194,4 +208,22 @@ function oneof () {
 	return false;
 }
 
+//////////////////////////////////////////////
+//// make cross product of array elements ////
+//////////////////////////////////////////////
+function array_cross ($arr1, $arr2, $func) {
+    $new = array();
+	foreach ($arr1 as $ele1) {
+        foreach ($arr2 as $ele2) {
+            $result = $func($ele1, $ele2);
+            if ($result > 0)
+                continue 2;
+            if ($result < 0)
+                continue;
+
+            $new[] = $ele1;    
+        }
+    }
+    return $new;
+}
 ?>

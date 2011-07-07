@@ -7,14 +7,32 @@
 $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_config", $db);
 $config_arr = mysql_fetch_assoc ( $index );
 
-// Load Article Data from DB
-$index = mysql_query ( "
-                        SELECT *
-                        FROM `".$global_config_arr['pref']."articles`
-                        WHERE `article_url` = '".$_GET['go']."'
-                        ORDER BY `article_id`
-                        LIMIT 0,1
-", $db );
+if ($global_config_arr['goto'] == "articles") {
+    
+    settype($_GET['id'], "integer");
+    
+     // Load Article Data from DB
+    $index = mysql_query ( "
+                            SELECT *
+                            FROM `".$global_config_arr['pref']."articles`
+                            WHERE `article_id` = '".$_GET['id']."'
+                            ORDER BY `article_id`
+                            LIMIT 0,1
+    ", $db );      
+    
+} else {
+ 
+    // Load Article Data from DB
+    $index = mysql_query ( "
+                            SELECT *
+                            FROM `".$global_config_arr['pref']."articles`
+                            WHERE `article_url` = '".$_GET['go']."'
+                            ORDER BY `article_id`
+                            LIMIT 0,1
+    ", $db );   
+    
+}
+
 
 // Article doesn't exist
 if ( mysql_num_rows ( $index ) != 1 ) {

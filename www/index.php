@@ -28,6 +28,8 @@ if (isset($db) && $db !== false && isset($global_config_arr)) {
     require(FS2_ROOT_PATH . "libs/class_template.php");
     require(FS2_ROOT_PATH . "libs/class_fileaccess.php");
     require(FS2_ROOT_PATH . "libs/class_lang.php");
+    require(FS2_ROOT_PATH . "libs/class_search.php");
+    require(FS2_ROOT_PATH . "libs/class_searchquery.php");
     
 
     // Load Text 

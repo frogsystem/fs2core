@@ -1,6 +1,6 @@
 <!--section-start::APPLET--><label for="mini_search_keyword"><b>Suche</b></label><br>
 <form method="get" action="">
-  <input type="hidden" name="go" value="search">
+  <input type="hidden" name="go" value="search2">
   <input type="hidden" name="in_news" value="1">
   <input type="hidden" name="in_articles" value="1">
   <input type="hidden" name="in_downloads" value="1">  
@@ -10,13 +10,13 @@
 <!--section-end::APPLET-->
 
 <!--section-start::SEARCH--><b class="atleft">Suche</b>
-<a href="?go=search" class="small atright">(Neue Suche)</a>
+<a href="?go=search2" class="small atright">(Neue Suche)</a>
 <br><br>
 
 <fieldset>
   <legend style="color:#000000;"><b>Nach Inhalten mit dem Schlüsselwort...</b></legend>
   <form method="get" action="">
-    <input type="hidden" name="go" value="search">
+    <input type="hidden" name="go" value="search2">
     <input class="input input_highlight middle" name="keyword" size="30" maxlength="100" value="{..keyword..}">
     <input class="pointer middle" type="submit" value="Suchen">
     <b class="middle">in</b>
