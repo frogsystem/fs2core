@@ -299,7 +299,7 @@ class sql {
     // existing entry => update, else => insert
     public function save ($table, $data, $id = "id") {
         // Update
-        if (isset($data[$id]) && $this->getFieldById($table, $id, $this->escape($data[$id])) !== false) {
+        if (isset($data[$id]) && $this->getFieldById($table, $id, $this->escape($data[$id]), $id) !== false) {
             try {
                 return $this->updateById($table, $data, $id);
             } catch (Exception $e) {
@@ -309,7 +309,7 @@ class sql {
         // Insert
         } else  {
             try {
-                unset($data['id']);
+                unset($data[$id]);
                 return $this->insertId($table, $data);
             } catch (Exception $e) {
                 throw $e;

@@ -475,7 +475,7 @@ function db_delete_comment ( $DATA )
 ## Page Settings ##
 ###################
 $FILE_SHOW_START = true;
-$news_cols = array("cat_id", "user_id", "news_date", "news_title", "news_text", "news_active", "news_comments_allowed", "news_search_update");
+$news_cols = array("news_id", "cat_id", "user_id", "news_date", "news_title", "news_text", "news_active", "news_comments_allowed", "news_search_update");
 
 $config_arr = $sql->getById("news_config", array("html_code", "fs_code", "para_handling", "acp_view"), 1);
 $config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
@@ -514,6 +514,7 @@ if (
 {
     // Prepare data
     $_POST['news_date'] = mktime($_POST['h'], $_POST['i'], 0, $_POST['m'], $_POST['d'], $_POST['y']);
+    $_POST['news_id'] = $_POST['news_id'][0];
     $data = frompost($news_cols);
 
     // MySQL-Insert-Query
@@ -531,6 +532,8 @@ if (
         $sql->delete("news_links", array('W' => "`news_id` = '".$newsid."'"));
         
         // Insert Links to database
+        if (!is_array($_POST['link_name']))
+            $_POST['link_name'] = array();
         foreach ($_POST['link_name'] as $id => $val) {
             if (!empty($_POST['link_name'][$id]) && !empty($_POST['link_url'][$id]) && !in_array($_POST['link_url'][$id], array("http://", "https://"))) {
 
