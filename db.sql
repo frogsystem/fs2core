@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 21. Juni 2011 um 09:08
--- Server Version: 5.5.8
--- PHP-Version: 5.3.5
+-- Erstellungszeit: 11. Juli 2011 um 19:05
+-- Server Version: 5.1.53
+-- PHP-Version: 5.3.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -25,8 +25,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Tabellenstruktur für Tabelle `fs2_admin_cp`
 --
 
-DROP TABLE IF EXISTS `fs2_admin_cp`;
-CREATE TABLE `fs2_admin_cp` (
+CREATE TABLE IF NOT EXISTS `fs2_admin_cp` (
   `page_id` varchar(255) NOT NULL,
   `group_id` varchar(20) NOT NULL,
   `page_file` varchar(255) NOT NULL,
@@ -157,8 +156,7 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 -- Tabellenstruktur für Tabelle `fs2_admin_groups`
 --
 
-DROP TABLE IF EXISTS `fs2_admin_groups`;
-CREATE TABLE `fs2_admin_groups` (
+CREATE TABLE IF NOT EXISTS `fs2_admin_groups` (
   `group_id` varchar(20) NOT NULL,
   `menu_id` varchar(20) NOT NULL,
   `group_pos` tinyint(3) NOT NULL DEFAULT '0'
@@ -203,8 +201,7 @@ INSERT INTO `fs2_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_admin_inherited`
 --
 
-DROP TABLE IF EXISTS `fs2_admin_inherited`;
-CREATE TABLE `fs2_admin_inherited` (
+CREATE TABLE IF NOT EXISTS `fs2_admin_inherited` (
   `group_id` varchar(255) NOT NULL,
   `pass_to` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -226,8 +223,7 @@ INSERT INTO `fs2_admin_inherited` (`group_id`, `pass_to`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_aliases`
 --
 
-DROP TABLE IF EXISTS `fs2_aliases`;
-CREATE TABLE `fs2_aliases` (
+CREATE TABLE IF NOT EXISTS `fs2_aliases` (
   `alias_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `alias_go` varchar(100) NOT NULL,
   `alias_forward_to` varchar(100) NOT NULL,
@@ -247,8 +243,7 @@ CREATE TABLE `fs2_aliases` (
 -- Tabellenstruktur für Tabelle `fs2_announcement`
 --
 
-DROP TABLE IF EXISTS `fs2_announcement`;
-CREATE TABLE `fs2_announcement` (
+CREATE TABLE IF NOT EXISTS `fs2_announcement` (
   `id` smallint(4) NOT NULL,
   `announcement_text` text,
   `show_announcement` tinyint(1) NOT NULL DEFAULT '0',
@@ -272,8 +267,7 @@ INSERT INTO `fs2_announcement` (`id`, `announcement_text`, `show_announcement`, 
 -- Tabellenstruktur für Tabelle `fs2_applets`
 --
 
-DROP TABLE IF EXISTS `fs2_applets`;
-CREATE TABLE `fs2_applets` (
+CREATE TABLE IF NOT EXISTS `fs2_applets` (
   `applet_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `applet_file` varchar(100) NOT NULL,
   `applet_active` tinyint(1) NOT NULL DEFAULT '1',
@@ -303,8 +297,7 @@ INSERT INTO `fs2_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_
 -- Tabellenstruktur für Tabelle `fs2_articles`
 --
 
-DROP TABLE IF EXISTS `fs2_articles`;
-CREATE TABLE `fs2_articles` (
+CREATE TABLE IF NOT EXISTS `fs2_articles` (
   `article_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `article_url` varchar(100) DEFAULT NULL,
   `article_title` varchar(255) NOT NULL,
@@ -337,8 +330,7 @@ INSERT INTO `fs2_articles` (`article_id`, `article_url`, `article_title`, `artic
 -- Tabellenstruktur für Tabelle `fs2_articles_cat`
 --
 
-DROP TABLE IF EXISTS `fs2_articles_cat`;
-CREATE TABLE `fs2_articles_cat` (
+CREATE TABLE IF NOT EXISTS `fs2_articles_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(100) DEFAULT NULL,
   `cat_description` text NOT NULL,
@@ -360,8 +352,7 @@ INSERT INTO `fs2_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_da
 -- Tabellenstruktur für Tabelle `fs2_articles_config`
 --
 
-DROP TABLE IF EXISTS `fs2_articles_config`;
-CREATE TABLE `fs2_articles_config` (
+CREATE TABLE IF NOT EXISTS `fs2_articles_config` (
   `id` tinyint(1) NOT NULL,
   `html_code` tinyint(4) NOT NULL DEFAULT '1',
   `fs_code` tinyint(4) NOT NULL DEFAULT '1',
@@ -390,8 +381,7 @@ INSERT INTO `fs2_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`
 -- Tabellenstruktur für Tabelle `fs2_captcha_config`
 --
 
-DROP TABLE IF EXISTS `fs2_captcha_config`;
-CREATE TABLE `fs2_captcha_config` (
+CREATE TABLE IF NOT EXISTS `fs2_captcha_config` (
   `id` tinyint(1) NOT NULL,
   `captcha_bg_color` varchar(6) NOT NULL DEFAULT 'FFFFFF',
   `captcha_bg_transparent` tinyint(1) NOT NULL DEFAULT '0',
@@ -429,8 +419,7 @@ INSERT INTO `fs2_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transpar
 -- Tabellenstruktur für Tabelle `fs2_config_system`
 --
 
-DROP TABLE IF EXISTS `fs2_config_system`;
-CREATE TABLE `fs2_config_system` (
+CREATE TABLE IF NOT EXISTS `fs2_config_system` (
   `id` smallint(2) NOT NULL,
   `var_loop` mediumint(8) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -448,8 +437,7 @@ INSERT INTO `fs2_config_system` (`id`, `var_loop`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_counter`
 --
 
-DROP TABLE IF EXISTS `fs2_counter`;
-CREATE TABLE `fs2_counter` (
+CREATE TABLE IF NOT EXISTS `fs2_counter` (
   `id` tinyint(1) NOT NULL,
   `visits` int(11) unsigned NOT NULL DEFAULT '0',
   `hits` int(11) unsigned NOT NULL DEFAULT '0',
@@ -465,7 +453,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 31, 387, 2, 4, 65519, 1);
+(1, 40, 1050, 2, 4, 65520, 1);
 
 -- --------------------------------------------------------
 
@@ -473,8 +461,7 @@ INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `c
 -- Tabellenstruktur für Tabelle `fs2_counter_ref`
 --
 
-DROP TABLE IF EXISTS `fs2_counter_ref`;
-CREATE TABLE `fs2_counter_ref` (
+CREATE TABLE IF NOT EXISTS `fs2_counter_ref` (
   `ref_url` varchar(255) DEFAULT NULL,
   `ref_count` int(11) DEFAULT NULL,
   `ref_first` int(11) DEFAULT NULL,
@@ -495,8 +482,7 @@ INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) 
 -- Tabellenstruktur für Tabelle `fs2_counter_stat`
 --
 
-DROP TABLE IF EXISTS `fs2_counter_stat`;
-CREATE TABLE `fs2_counter_stat` (
+CREATE TABLE IF NOT EXISTS `fs2_counter_stat` (
   `s_year` int(4) NOT NULL DEFAULT '0',
   `s_month` int(2) NOT NULL DEFAULT '0',
   `s_day` int(2) NOT NULL DEFAULT '0',
@@ -534,7 +520,14 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 6, 10, 1, 2),
 (2011, 6, 11, 1, 3),
 (2011, 6, 12, 2, 3),
-(2011, 6, 13, 1, 10);
+(2011, 6, 13, 1, 10),
+(2011, 6, 22, 1, 32),
+(2011, 6, 27, 1, 2),
+(2011, 6, 30, 1, 13),
+(2011, 7, 1, 2, 141),
+(2011, 7, 7, 1, 267),
+(2011, 7, 8, 1, 56),
+(2011, 7, 11, 2, 152);
 
 -- --------------------------------------------------------
 
@@ -542,8 +535,7 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 -- Tabellenstruktur für Tabelle `fs2_dl`
 --
 
-DROP TABLE IF EXISTS `fs2_dl`;
-CREATE TABLE `fs2_dl` (
+CREATE TABLE IF NOT EXISTS `fs2_dl` (
   `dl_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` mediumint(8) DEFAULT NULL,
   `user_id` mediumint(8) DEFAULT NULL,
@@ -580,8 +572,7 @@ INSERT INTO `fs2_dl` (`dl_id`, `cat_id`, `user_id`, `dl_date`, `dl_name`, `dl_te
 -- Tabellenstruktur für Tabelle `fs2_dl_cat`
 --
 
-DROP TABLE IF EXISTS `fs2_dl_cat`;
-CREATE TABLE `fs2_dl_cat` (
+CREATE TABLE IF NOT EXISTS `fs2_dl_cat` (
   `cat_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `subcat_id` mediumint(8) NOT NULL DEFAULT '0',
   `cat_name` varchar(100) DEFAULT NULL,
@@ -605,8 +596,7 @@ INSERT INTO `fs2_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_dl_config`
 --
 
-DROP TABLE IF EXISTS `fs2_dl_config`;
-CREATE TABLE `fs2_dl_config` (
+CREATE TABLE IF NOT EXISTS `fs2_dl_config` (
   `id` tinyint(1) NOT NULL,
   `screen_x` int(11) DEFAULT NULL,
   `screen_y` int(11) DEFAULT NULL,
@@ -631,8 +621,7 @@ INSERT INTO `fs2_dl_config` (`id`, `screen_x`, `screen_y`, `thumb_x`, `thumb_y`,
 -- Tabellenstruktur für Tabelle `fs2_dl_files`
 --
 
-DROP TABLE IF EXISTS `fs2_dl_files`;
-CREATE TABLE `fs2_dl_files` (
+CREATE TABLE IF NOT EXISTS `fs2_dl_files` (
   `dl_id` mediumint(8) DEFAULT NULL,
   `file_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `file_count` mediumint(8) NOT NULL DEFAULT '0',
@@ -664,8 +653,7 @@ INSERT INTO `fs2_dl_files` (`dl_id`, `file_id`, `file_count`, `file_name`, `file
 -- Tabellenstruktur für Tabelle `fs2_editor_config`
 --
 
-DROP TABLE IF EXISTS `fs2_editor_config`;
-CREATE TABLE `fs2_editor_config` (
+CREATE TABLE IF NOT EXISTS `fs2_editor_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `smilies_rows` int(2) NOT NULL,
   `smilies_cols` int(2) NOT NULL,
@@ -725,8 +713,7 @@ INSERT INTO `fs2_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea
 -- Tabellenstruktur für Tabelle `fs2_email`
 --
 
-DROP TABLE IF EXISTS `fs2_email`;
-CREATE TABLE `fs2_email` (
+CREATE TABLE IF NOT EXISTS `fs2_email` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `signup` text NOT NULL,
   `change_password` text NOT NULL,
@@ -750,8 +737,7 @@ INSERT INTO `fs2_email` (`id`, `signup`, `change_password`, `delete_account`, `u
 -- Tabellenstruktur für Tabelle `fs2_ftp`
 --
 
-DROP TABLE IF EXISTS `fs2_ftp`;
-CREATE TABLE `fs2_ftp` (
+CREATE TABLE IF NOT EXISTS `fs2_ftp` (
   `ftp_id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `ftp_title` varchar(100) NOT NULL,
   `ftp_type` varchar(10) NOT NULL,
@@ -776,8 +762,7 @@ INSERT INTO `fs2_ftp` (`ftp_id`, `ftp_title`, `ftp_type`, `ftp_url`, `ftp_user`,
 -- Tabellenstruktur für Tabelle `fs2_global_config`
 --
 
-DROP TABLE IF EXISTS `fs2_global_config`;
-CREATE TABLE `fs2_global_config` (
+CREATE TABLE IF NOT EXISTS `fs2_global_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `version` varchar(10) NOT NULL DEFAULT '0.9',
   `virtualhost` varchar(255) NOT NULL,
@@ -816,7 +801,7 @@ CREATE TABLE `fs2_global_config` (
 --
 
 INSERT INTO `fs2_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `timezone`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix6', 'http://localhost/fs2/www/', 'mail@sweil.de', 'Hansens wunderbare Welt', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', 'Europe/Berlin', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 2, 1307969075);
+(1, '2.alix6', 'http://localhost/fs2/www/', 'mail@sweil.de', 'Hansens wunderbare Welt', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', 'Europe/Berlin', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 1, 1310056241);
 
 -- --------------------------------------------------------
 
@@ -824,8 +809,7 @@ INSERT INTO `fs2_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `
 -- Tabellenstruktur für Tabelle `fs2_iplist`
 --
 
-DROP TABLE IF EXISTS `fs2_iplist`;
-CREATE TABLE `fs2_iplist` (
+CREATE TABLE IF NOT EXISTS `fs2_iplist` (
   `ip` varchar(18) NOT NULL,
   PRIMARY KEY (`ip`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
@@ -834,8 +818,6 @@ CREATE TABLE `fs2_iplist` (
 -- Daten für Tabelle `fs2_iplist`
 --
 
-INSERT INTO `fs2_iplist` (`ip`) VALUES
-('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -843,8 +825,7 @@ INSERT INTO `fs2_iplist` (`ip`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_news`
 --
 
-DROP TABLE IF EXISTS `fs2_news`;
-CREATE TABLE `fs2_news` (
+CREATE TABLE IF NOT EXISTS `fs2_news` (
   `news_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` smallint(6) DEFAULT NULL,
   `user_id` mediumint(8) DEFAULT NULL,
@@ -856,7 +837,7 @@ CREATE TABLE `fs2_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 --
 -- Daten für Tabelle `fs2_news`
@@ -864,8 +845,13 @@ CREATE TABLE `fs2_news` (
 
 INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
 (1, 1, 1, 1302517148, 'Frogsystem 2.alix5 - Installation erfolgreich', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2!\r\nDas Frogsystem 2-Team wünscht viel Spaß und Erfolg mit der Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2, in den zugehörigen Supportforen und dem neuen Dokumentations-Wiki. Die wichtigsten Links haben wir unten zusammengefasst. Einfach mal vorbei schauen!\r\n\r\nDein Frogsystem 2-Team', 1, 1, 0),
-(5, 1, 1, 1302567540, 'ie 8 test update', 'ie 8 test update', 1, 1, 1303288547),
-(7, 1, 1, 1302560460, 'safari test uüpdate', 'safari testvuüpdate', 1, 1, 1302560525);
+(5, 1, 1, 1302567540, 'ie 8 test update2', 'ie 8 test update', 1, 1, 0),
+(7, 1, 1, 1302560460, 'safari test uüpdate', 'safari testvuüpdate', 1, 1, 1302560525),
+(32, 1, 1, 1302571260, 'safari test uüpdate', 'spaß', 1, 1, 0),
+(33, 1, 1, 1302571260, 'safari test uüpdate', 'spaß', 1, 1, 0),
+(34, 1, 1, 1302517140, 'Frogsystem 2.alix5 - Installation erfolgreich', 'Herzlich Willkommen in deinem frisch installierten Frogsystem 2!\r\nDas Frogsystem 2-Team wünscht viel Spaß und Erfolg mit der Seite.\r\n\r\nWeitere Informationen und Hilfe bei Problemen gibt es auf der offiziellen Homepage des Frogsystem 2, in den zugehörigen Supportforen und dem neuen Dokumentations-Wiki. Die wichtigsten Links haben wir unten zusammengefasst. Einfach mal vorbei schauen!\r\n\r\nDein Frogsystem 2-Team\r\n\r\ntest', 1, 1, 0),
+(35, 1, 1, 1310069220, 'frisch2', 'frisch2', 1, 1, 0),
+(36, 1, 1, 1310069220, 'frisch2', 'frisch2', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -873,8 +859,7 @@ INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title
 -- Tabellenstruktur für Tabelle `fs2_news_cat`
 --
 
-DROP TABLE IF EXISTS `fs2_news_cat`;
-CREATE TABLE `fs2_news_cat` (
+CREATE TABLE IF NOT EXISTS `fs2_news_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(100) DEFAULT NULL,
   `cat_description` text NOT NULL,
@@ -897,8 +882,7 @@ INSERT INTO `fs2_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`,
 -- Tabellenstruktur für Tabelle `fs2_news_comments`
 --
 
-DROP TABLE IF EXISTS `fs2_news_comments`;
-CREATE TABLE `fs2_news_comments` (
+CREATE TABLE IF NOT EXISTS `fs2_news_comments` (
   `comment_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `news_id` mediumint(8) DEFAULT NULL,
   `comment_poster` varchar(32) DEFAULT NULL,
@@ -924,8 +908,7 @@ INSERT INTO `fs2_news_comments` (`comment_id`, `news_id`, `comment_poster`, `com
 -- Tabellenstruktur für Tabelle `fs2_news_config`
 --
 
-DROP TABLE IF EXISTS `fs2_news_config`;
-CREATE TABLE `fs2_news_config` (
+CREATE TABLE IF NOT EXISTS `fs2_news_config` (
   `id` tinyint(1) NOT NULL,
   `num_news` int(11) DEFAULT NULL,
   `num_head` int(11) DEFAULT NULL,
@@ -959,15 +942,14 @@ INSERT INTO `fs2_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_co
 -- Tabellenstruktur für Tabelle `fs2_news_links`
 --
 
-DROP TABLE IF EXISTS `fs2_news_links`;
-CREATE TABLE `fs2_news_links` (
+CREATE TABLE IF NOT EXISTS `fs2_news_links` (
   `news_id` mediumint(8) DEFAULT NULL,
   `link_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `link_name` varchar(100) DEFAULT NULL,
   `link_url` varchar(255) DEFAULT NULL,
   `link_target` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`link_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=63 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=70 ;
 
 --
 -- Daten für Tabelle `fs2_news_links`
@@ -977,7 +959,6 @@ INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `li
 (1, 1, 'Offizielle Frogsystem 2 Homepage', 'http://www.frogsystem.de', 1),
 (1, 2, 'Frogsystem 2 Supportforum', 'http://forum.sweil.de/viewforum.php?f=7', 1),
 (1, 3, 'Frogsystem 2 Dokumentations-Wiki', 'http://wiki.frogsystem.de/', 1),
-(5, 7, 'sdfsdfsdf', 'http://', 0),
 (2, 6, 'sdfsdf', 'http://', 0),
 (27, 49, 'WoP', 'http://www.worldofplayers.de', 1),
 (27, 48, 'Test', 'http://www.test.de', 1),
@@ -993,7 +974,13 @@ INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `li
 (31, 60, 'Test', 'http://www.test.de', 1),
 (30, 59, 'WoP', 'http://www.worldofplayers.de', 1),
 (30, 58, 'Home', 'http://localhost/fs2.6/', 0),
-(30, 57, 'Test', 'http://www.test.de', 1);
+(30, 57, 'Test', 'http://www.test.de', 1),
+(34, 63, 'Offizielle Frogsystem 2 Homepage', 'http://www.frogsystem.de', 1),
+(34, 64, 'Frogsystem 2 Supportforum', 'http://forum.sweil.de/viewforum.php?f=7', 1),
+(34, 65, 'Frogsystem 2 Dokumentations-Wiki', 'http://wiki.frogsystem.de/', 1),
+(36, 67, 'Diskussion im Forum', 'http://www.sweil.de', 0),
+(5, 68, 'dd', 'http://ff', 0),
+(5, 69, 'gdfg', 'http://ff', 1);
 
 -- --------------------------------------------------------
 
@@ -1001,8 +988,7 @@ INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `li
 -- Tabellenstruktur für Tabelle `fs2_partner`
 --
 
-DROP TABLE IF EXISTS `fs2_partner`;
-CREATE TABLE `fs2_partner` (
+CREATE TABLE IF NOT EXISTS `fs2_partner` (
   `partner_id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,
   `partner_name` varchar(150) NOT NULL,
   `partner_link` varchar(250) NOT NULL,
@@ -1024,8 +1010,7 @@ INSERT INTO `fs2_partner` (`partner_id`, `partner_name`, `partner_link`, `partne
 -- Tabellenstruktur für Tabelle `fs2_partner_config`
 --
 
-DROP TABLE IF EXISTS `fs2_partner_config`;
-CREATE TABLE `fs2_partner_config` (
+CREATE TABLE IF NOT EXISTS `fs2_partner_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `partner_anzahl` tinyint(2) NOT NULL DEFAULT '0',
   `small_x` int(4) NOT NULL DEFAULT '0',
@@ -1051,8 +1036,7 @@ INSERT INTO `fs2_partner_config` (`id`, `partner_anzahl`, `small_x`, `small_y`, 
 -- Tabellenstruktur für Tabelle `fs2_player`
 --
 
-DROP TABLE IF EXISTS `fs2_player`;
-CREATE TABLE `fs2_player` (
+CREATE TABLE IF NOT EXISTS `fs2_player` (
   `video_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `video_type` tinyint(1) NOT NULL DEFAULT '1',
   `video_x` text NOT NULL,
@@ -1076,8 +1060,7 @@ INSERT INTO `fs2_player` (`video_id`, `video_type`, `video_x`, `video_title`, `v
 -- Tabellenstruktur für Tabelle `fs2_player_config`
 --
 
-DROP TABLE IF EXISTS `fs2_player_config`;
-CREATE TABLE `fs2_player_config` (
+CREATE TABLE IF NOT EXISTS `fs2_player_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `cfg_player_x` mediumint(9) NOT NULL,
   `cfg_player_y` mediumint(9) NOT NULL,
@@ -1141,8 +1124,7 @@ INSERT INTO `fs2_player_config` (`id`, `cfg_player_x`, `cfg_player_y`, `cfg_auto
 -- Tabellenstruktur für Tabelle `fs2_poll`
 --
 
-DROP TABLE IF EXISTS `fs2_poll`;
-CREATE TABLE `fs2_poll` (
+CREATE TABLE IF NOT EXISTS `fs2_poll` (
   `poll_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `poll_quest` varchar(255) DEFAULT NULL,
   `poll_start` int(11) DEFAULT NULL,
@@ -1167,8 +1149,7 @@ INSERT INTO `fs2_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll
 -- Tabellenstruktur für Tabelle `fs2_poll_answers`
 --
 
-DROP TABLE IF EXISTS `fs2_poll_answers`;
-CREATE TABLE `fs2_poll_answers` (
+CREATE TABLE IF NOT EXISTS `fs2_poll_answers` (
   `poll_id` mediumint(8) DEFAULT NULL,
   `answer_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `answer` varchar(255) DEFAULT NULL,
@@ -1196,8 +1177,7 @@ INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`
 -- Tabellenstruktur für Tabelle `fs2_poll_config`
 --
 
-DROP TABLE IF EXISTS `fs2_poll_config`;
-CREATE TABLE `fs2_poll_config` (
+CREATE TABLE IF NOT EXISTS `fs2_poll_config` (
   `id` tinyint(1) NOT NULL,
   `answerbar_width` smallint(3) NOT NULL DEFAULT '100',
   `answerbar_type` tinyint(1) NOT NULL,
@@ -1217,8 +1197,7 @@ INSERT INTO `fs2_poll_config` (`id`, `answerbar_width`, `answerbar_type`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_poll_voters`
 --
 
-DROP TABLE IF EXISTS `fs2_poll_voters`;
-CREATE TABLE `fs2_poll_voters` (
+CREATE TABLE IF NOT EXISTS `fs2_poll_voters` (
   `voter_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `poll_id` mediumint(8) NOT NULL DEFAULT '0',
   `ip_address` varchar(15) NOT NULL DEFAULT '0.0.0.0',
@@ -1237,8 +1216,7 @@ CREATE TABLE `fs2_poll_voters` (
 -- Tabellenstruktur für Tabelle `fs2_press`
 --
 
-DROP TABLE IF EXISTS `fs2_press`;
-CREATE TABLE `fs2_press` (
+CREATE TABLE IF NOT EXISTS `fs2_press` (
   `press_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `press_title` varchar(255) NOT NULL,
   `press_url` varchar(255) NOT NULL,
@@ -1266,8 +1244,7 @@ INSERT INTO `fs2_press` (`press_id`, `press_title`, `press_url`, `press_date`, `
 -- Tabellenstruktur für Tabelle `fs2_press_admin`
 --
 
-DROP TABLE IF EXISTS `fs2_press_admin`;
-CREATE TABLE `fs2_press_admin` (
+CREATE TABLE IF NOT EXISTS `fs2_press_admin` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL,
@@ -1292,8 +1269,7 @@ INSERT INTO `fs2_press_admin` (`id`, `type`, `title`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_press_config`
 --
 
-DROP TABLE IF EXISTS `fs2_press_config`;
-CREATE TABLE `fs2_press_config` (
+CREATE TABLE IF NOT EXISTS `fs2_press_config` (
   `id` mediumint(8) NOT NULL DEFAULT '1',
   `game_navi` tinyint(1) NOT NULL DEFAULT '0',
   `cat_navi` tinyint(1) NOT NULL DEFAULT '0',
@@ -1318,8 +1294,7 @@ INSERT INTO `fs2_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `sho
 -- Tabellenstruktur für Tabelle `fs2_screen`
 --
 
-DROP TABLE IF EXISTS `fs2_screen`;
-CREATE TABLE `fs2_screen` (
+CREATE TABLE IF NOT EXISTS `fs2_screen` (
   `screen_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` smallint(6) unsigned DEFAULT NULL,
   `screen_name` varchar(255) DEFAULT NULL,
@@ -1352,8 +1327,7 @@ INSERT INTO `fs2_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_screen_cat`
 --
 
-DROP TABLE IF EXISTS `fs2_screen_cat`;
-CREATE TABLE `fs2_screen_cat` (
+CREATE TABLE IF NOT EXISTS `fs2_screen_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(255) DEFAULT NULL,
   `cat_type` tinyint(1) NOT NULL DEFAULT '0',
@@ -1377,8 +1351,7 @@ INSERT INTO `fs2_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`
 -- Tabellenstruktur für Tabelle `fs2_screen_config`
 --
 
-DROP TABLE IF EXISTS `fs2_screen_config`;
-CREATE TABLE `fs2_screen_config` (
+CREATE TABLE IF NOT EXISTS `fs2_screen_config` (
   `id` tinyint(1) NOT NULL,
   `screen_x` int(4) DEFAULT NULL,
   `screen_y` int(4) DEFAULT NULL,
@@ -1419,8 +1392,7 @@ INSERT INTO `fs2_screen_config` (`id`, `screen_x`, `screen_y`, `screen_thumb_x`,
 -- Tabellenstruktur für Tabelle `fs2_screen_random`
 --
 
-DROP TABLE IF EXISTS `fs2_screen_random`;
-CREATE TABLE `fs2_screen_random` (
+CREATE TABLE IF NOT EXISTS `fs2_screen_random` (
   `random_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `screen_id` mediumint(8) NOT NULL,
   `start` int(11) NOT NULL,
@@ -1439,8 +1411,7 @@ CREATE TABLE `fs2_screen_random` (
 -- Tabellenstruktur für Tabelle `fs2_screen_random_config`
 --
 
-DROP TABLE IF EXISTS `fs2_screen_random_config`;
-CREATE TABLE `fs2_screen_random_config` (
+CREATE TABLE IF NOT EXISTS `fs2_screen_random_config` (
   `id` mediumint(8) NOT NULL DEFAULT '1',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `type_priority` tinyint(1) NOT NULL DEFAULT '1',
@@ -1461,8 +1432,7 @@ INSERT INTO `fs2_screen_random_config` (`id`, `active`, `type_priority`, `use_pr
 -- Tabellenstruktur für Tabelle `fs2_search_config`
 --
 
-DROP TABLE IF EXISTS `fs2_search_config`;
-CREATE TABLE `fs2_search_config` (
+CREATE TABLE IF NOT EXISTS `fs2_search_config` (
   `id` tinyint(1) NOT NULL,
   `search_num_previews` smallint(2) NOT NULL,
   PRIMARY KEY (`id`)
@@ -1481,8 +1451,7 @@ INSERT INTO `fs2_search_config` (`id`, `search_num_previews`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_search_index`
 --
 
-DROP TABLE IF EXISTS `fs2_search_index`;
-CREATE TABLE `fs2_search_index` (
+CREATE TABLE IF NOT EXISTS `fs2_search_index` (
   `search_index_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `search_index_word_id` mediumint(8) NOT NULL DEFAULT '0',
   `search_index_type` enum('news','articles','dl') NOT NULL DEFAULT 'news',
@@ -1490,7 +1459,7 @@ CREATE TABLE `fs2_search_index` (
   `search_index_count` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=265 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=308 ;
 
 --
 -- Daten für Tabelle `fs2_search_index`
@@ -1659,7 +1628,50 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 (255, 146, 'dl', 11, 1),
 (256, 147, 'dl', 11, 1),
 (264, 152, 'news', 29, 1),
-(263, 151, 'news', 29, 1);
+(263, 151, 'news', 29, 1),
+(265, 12, 'news', 32, 1),
+(266, 124, 'news', 32, 1),
+(267, 125, 'news', 32, 1),
+(268, 126, 'news', 32, 1),
+(269, 12, 'news', 33, 1),
+(270, 124, 'news', 33, 1),
+(271, 125, 'news', 33, 1),
+(272, 126, 'news', 33, 1),
+(273, 1, 'news', 34, 5),
+(274, 2, 'news', 34, 1),
+(275, 3, 'news', 34, 1),
+(276, 4, 'news', 34, 1),
+(277, 5, 'news', 34, 1),
+(278, 6, 'news', 34, 1),
+(279, 7, 'news', 34, 1),
+(280, 8, 'news', 34, 1),
+(281, 9, 'news', 34, 1),
+(282, 10, 'news', 34, 2),
+(283, 11, 'news', 34, 1),
+(284, 12, 'news', 34, 1),
+(285, 13, 'news', 34, 1),
+(286, 14, 'news', 34, 1),
+(287, 15, 'news', 34, 1),
+(288, 16, 'news', 34, 1),
+(289, 17, 'news', 34, 1),
+(290, 18, 'news', 34, 1),
+(291, 19, 'news', 34, 1),
+(292, 20, 'news', 34, 1),
+(293, 21, 'news', 34, 1),
+(294, 22, 'news', 34, 1),
+(295, 23, 'news', 34, 1),
+(296, 24, 'news', 34, 1),
+(297, 25, 'news', 34, 1),
+(298, 26, 'news', 34, 1),
+(299, 27, 'news', 34, 1),
+(300, 28, 'news', 34, 1),
+(301, 29, 'news', 34, 1),
+(302, 30, 'news', 34, 1),
+(303, 31, 'news', 34, 1),
+(304, 32, 'news', 34, 1),
+(305, 125, 'news', 34, 1),
+(306, 8, 'news', 35, 2),
+(307, 8, 'news', 36, 2);
 
 -- --------------------------------------------------------
 
@@ -1667,15 +1679,14 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 -- Tabellenstruktur für Tabelle `fs2_search_time`
 --
 
-DROP TABLE IF EXISTS `fs2_search_time`;
-CREATE TABLE `fs2_search_time` (
+CREATE TABLE IF NOT EXISTS `fs2_search_time` (
   `search_time_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `search_time_type` enum('news','articles','dl') NOT NULL DEFAULT 'news',
   `search_time_document_id` mediumint(8) NOT NULL,
   `search_time_date` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_time_id`),
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
 -- Daten für Tabelle `fs2_search_time`
@@ -1705,7 +1716,12 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 (21, 'news', 11, 1307185130),
 (22, 'news', 27, 1307884434),
 (23, 'news', 28, 1307884434),
-(24, 'news', 29, 1307884434);
+(24, 'news', 29, 1307884434),
+(25, 'news', 32, 1309127525),
+(26, 'news', 33, 1309127525),
+(27, 'news', 34, 1310062029),
+(28, 'news', 35, 1310069300),
+(29, 'news', 36, 1310394417);
 
 -- --------------------------------------------------------
 
@@ -1713,8 +1729,7 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 -- Tabellenstruktur für Tabelle `fs2_search_words`
 --
 
-DROP TABLE IF EXISTS `fs2_search_words`;
-CREATE TABLE `fs2_search_words` (
+CREATE TABLE IF NOT EXISTS `fs2_search_words` (
   `search_word_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `search_word` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
@@ -1885,8 +1900,7 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_shop`
 --
 
-DROP TABLE IF EXISTS `fs2_shop`;
-CREATE TABLE `fs2_shop` (
+CREATE TABLE IF NOT EXISTS `fs2_shop` (
   `artikel_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `artikel_name` varchar(100) DEFAULT NULL,
   `artikel_url` varchar(255) DEFAULT NULL,
@@ -1909,8 +1923,7 @@ INSERT INTO `fs2_shop` (`artikel_id`, `artikel_name`, `artikel_url`, `artikel_te
 -- Tabellenstruktur für Tabelle `fs2_smilies`
 --
 
-DROP TABLE IF EXISTS `fs2_smilies`;
-CREATE TABLE `fs2_smilies` (
+CREATE TABLE IF NOT EXISTS `fs2_smilies` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `replace_string` varchar(15) NOT NULL,
   `order` mediumint(8) NOT NULL,
@@ -1939,8 +1952,7 @@ INSERT INTO `fs2_smilies` (`id`, `replace_string`, `order`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_snippets`
 --
 
-DROP TABLE IF EXISTS `fs2_snippets`;
-CREATE TABLE `fs2_snippets` (
+CREATE TABLE IF NOT EXISTS `fs2_snippets` (
   `snippet_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `snippet_tag` varchar(100) NOT NULL,
   `snippet_text` text NOT NULL,
@@ -1962,8 +1974,7 @@ INSERT INTO `fs2_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippe
 -- Tabellenstruktur für Tabelle `fs2_styles`
 --
 
-DROP TABLE IF EXISTS `fs2_styles`;
-CREATE TABLE `fs2_styles` (
+CREATE TABLE IF NOT EXISTS `fs2_styles` (
   `style_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `style_tag` varchar(30) NOT NULL,
   `style_allow_use` tinyint(1) NOT NULL DEFAULT '1',
@@ -1986,8 +1997,7 @@ INSERT INTO `fs2_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_all
 -- Tabellenstruktur für Tabelle `fs2_user`
 --
 
-DROP TABLE IF EXISTS `fs2_user`;
-CREATE TABLE `fs2_user` (
+CREATE TABLE IF NOT EXISTS `fs2_user` (
   `user_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `user_name` char(100) DEFAULT NULL,
   `user_password` char(32) DEFAULT NULL,
@@ -2021,8 +2031,7 @@ INSERT INTO `fs2_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `u
 -- Tabellenstruktur für Tabelle `fs2_useronline`
 --
 
-DROP TABLE IF EXISTS `fs2_useronline`;
-CREATE TABLE `fs2_useronline` (
+CREATE TABLE IF NOT EXISTS `fs2_useronline` (
   `ip` varchar(30) NOT NULL,
   `user_id` mediumint(8) NOT NULL DEFAULT '0',
   `date` int(30) DEFAULT NULL,
@@ -2033,8 +2042,6 @@ CREATE TABLE `fs2_useronline` (
 -- Daten für Tabelle `fs2_useronline`
 --
 
-INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1307982128);
 
 -- --------------------------------------------------------
 
@@ -2042,8 +2049,7 @@ INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_user_config`
 --
 
-DROP TABLE IF EXISTS `fs2_user_config`;
-CREATE TABLE `fs2_user_config` (
+CREATE TABLE IF NOT EXISTS `fs2_user_config` (
   `id` tinyint(1) NOT NULL,
   `user_per_page` tinyint(3) NOT NULL,
   `registration_antispam` tinyint(1) NOT NULL DEFAULT '0',
@@ -2071,8 +2077,7 @@ INSERT INTO `fs2_user_config` (`id`, `user_per_page`, `registration_antispam`, `
 -- Tabellenstruktur für Tabelle `fs2_user_groups`
 --
 
-DROP TABLE IF EXISTS `fs2_user_groups`;
-CREATE TABLE `fs2_user_groups` (
+CREATE TABLE IF NOT EXISTS `fs2_user_groups` (
   `user_group_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `user_group_name` varchar(50) NOT NULL,
   `user_group_description` text,
@@ -2098,8 +2103,7 @@ INSERT INTO `fs2_user_groups` (`user_group_id`, `user_group_name`, `user_group_d
 -- Tabellenstruktur für Tabelle `fs2_user_permissions`
 --
 
-DROP TABLE IF EXISTS `fs2_user_permissions`;
-CREATE TABLE `fs2_user_permissions` (
+CREATE TABLE IF NOT EXISTS `fs2_user_permissions` (
   `perm_id` varchar(255) NOT NULL,
   `x_id` mediumint(8) NOT NULL,
   `perm_for_group` tinyint(1) NOT NULL DEFAULT '1',
@@ -2131,8 +2135,7 @@ INSERT INTO `fs2_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 -- Tabellenstruktur für Tabelle `fs2_wallpaper`
 --
 
-DROP TABLE IF EXISTS `fs2_wallpaper`;
-CREATE TABLE `fs2_wallpaper` (
+CREATE TABLE IF NOT EXISTS `fs2_wallpaper` (
   `wallpaper_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `wallpaper_name` varchar(255) NOT NULL,
   `wallpaper_title` varchar(255) NOT NULL,
@@ -2151,8 +2154,7 @@ CREATE TABLE `fs2_wallpaper` (
 -- Tabellenstruktur für Tabelle `fs2_wallpaper_sizes`
 --
 
-DROP TABLE IF EXISTS `fs2_wallpaper_sizes`;
-CREATE TABLE `fs2_wallpaper_sizes` (
+CREATE TABLE IF NOT EXISTS `fs2_wallpaper_sizes` (
   `size_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `wallpaper_id` mediumint(8) NOT NULL DEFAULT '0',
   `size` varchar(255) NOT NULL,
