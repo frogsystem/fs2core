@@ -226,4 +226,29 @@ function array_cross ($arr1, $arr2, $func) {
     }
     return $new;
 }
+
+////////////////////////////////////////////////////////
+//// make sym diff of two arrays with user callback ////
+////////////////////////////////////////////////////////
+function array_symdiff ($arr1, $arr2, $func) {
+    return array_udiff(
+        array_merge($arr1, $arr2),
+        array_uintersect($arr1, $arr2, $func),
+        $func
+    );
+}
+
+/////////////////////////////////////////////////////////////
+//// merge two arrays with real union and user-callbacks ////
+//// it merges the intersection with the sym diff, so    ////
+//// each element is unique                              ////
+//// first callback is used for the intersection         ////
+//// second callback is used for the sym diff            ////
+/////////////////////////////////////////////////////////////
+function array_real_merge ($arr1, $arr2, $intersect, $symdiff) {
+    return array_merge(
+        array_cross($arr1, $arr2, $intersect),
+        array_symdiff($arr1, $arr2, $symdiff)
+    );
+}
 ?>

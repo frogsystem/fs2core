@@ -226,13 +226,13 @@ function compress_search_data ( $TEXT ) {
 
 function delete_stopwords ($TEXT) {
     //work arounds
-    $config['search_min_length'] = 2;
+    $config['search_min_length'] = 3;
     $config['search_use_stopwords'] = 1;
     
     $locSearch = array();
     $locReplace = array();
     
-    $locSearch[] = "=(\s[A-Za-z0-9]{1,".$config['search_min_length']."})\s=";
+    $locSearch[] = "=(\s[A-Za-z0-9]{1,".($config['search_min_length']-1)."})\s=";
     $locReplace[] = " ";
     
     // Use Stopwords?
@@ -261,4 +261,20 @@ function get_stopwords () {
     }
     return array_map("trim", $return_arr);
 }
+
+// fucntion to compare found-data-arrays
+function compare_found_data ($v1, $v2) {
+    return compare_update_rank($v1, $v2, create_function('$v1,$v2', 'return $v1;'));
+}; 
+
+// fucntion to compare found-data-arrays and update rank
+function compare_update_rank (&$v1, $v2, $func) {
+    if ($v1['id'] > $v2['id'])
+        return -1;
+    if ($v1['id'] == $v2['id']) {
+        $v1['rank'] = $func($v1['rank'], $v2['rank']);
+        return 0;
+    }
+    return 1;
+}; 
 ?>

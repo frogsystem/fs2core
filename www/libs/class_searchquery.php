@@ -52,7 +52,12 @@ class SearchQuery
     public function parse($searchstring) {
         $this->searchstring = trim($searchstring);
         $this->tokenize();
-        $this->root = $this->interpret();  
+        $this->root = $this->interpret();
+        
+        $tree = (string) $this->root;
+        if (empty($tree))
+            Throw new Exception("Invalid searchstring. "
+            ."No valid input data found.");
     }
     
     // get searchquery tree 
@@ -108,6 +113,7 @@ class SearchQuery
                 $this->tokens[] =  $lasttoken;
                 continue;            
             }
+            
             
             //String seems to be normal => check for modifiers
             

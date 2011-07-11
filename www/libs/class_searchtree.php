@@ -51,74 +51,54 @@ class SearchOperator extends SearchTree
         switch ($this->operation) {
             case "and":
                 if ($leftnot && $rightnot)
-                    Throw Exception("Prohibited use of NOT in your Searchquery."
+                    Throw new Exception("Prohibited use of NOT in your Searchquery."
                     ."Don't use NOT on both sides of AND.");
                 break;
                 
             // No not here
             default:
                 if ($leftnot || $rightnot)
-                    Throw Exception("Prohibited use of NOT in your Searchquery."
+                    Throw new Exception("Prohibited use of NOT in your Searchquery."
                     ."Neither use NOT with OR nor XOR.");
                 break;
         }
         
-        
+        // Get left and right Set
         $left = $this->left->getSet();
         $right = $this->right->getSet();
-        var_dump($left, $right);
-        // fucntion to compare found-data-arrays
-        $cmp = function ($v1, $v2) {
-            if ($v1['id'] > $v2['id']) return -1;
-            if ($v1['id'] == $v2['id']) return 0;    
-            return 1;
+
+        //compare on average
+        $cmp_avg = function (&$v1, $v2) {
+            return compare_update_rank ($v1, $v2, function ($v1, $v2) {return ($v1+$v2)/2;});
         };
         
-        $cmp_newrank = function (&$v1, $v2) {
-            if ($v1['id'] > $v2['id'])
-                return -1;
-            if ($v1['id'] == $v2['id']) {
-                $v1['rank'] = ($v1['rank']+$v2['rank'])/2;
-                return 0;
-            }
-            return 1;
-        };
         
+        // switch through operations and call set-functions
         switch ($this->operation) {
             case "and":
                 // ziehe linke elemente ab
                 if ($leftnot)
-                    return array_udiff($right, $left, $cmp);
+                    return array_udiff($right, $left, "compare_found_data");
                 // ziehe rechte elemente ab
                 if ($rightnot)
-                    return array_udiff($left, $right, $cmp);
+                    return array_udiff($left, $right,"compare_found_data");
                 // normaler schnitt
                 // rank = avg(rank)                
                 else
-                    return array_cross($left, $right, $cmp_newrank);
-                break;
+                    return array_cross($left, $right, $cmp_avg);
+
             case "or":
                 // verinigung des schnitts und der symetrische differenz
                 // zwecks rank berechnung und entfernen doppelter werte
-                return array_merge(
-                    array_cross($left, $right, $cmp_newrank),
-                    array_udiff(
-                        array_merge($left, $right),
-                        array_uintersect($left, $right, $cmp),
-                        $cmp
-                    )
-                );
-                break;
+                return array_real_merge($left, $right, $cmp_avg, "compare_found_data");
+
             case "xor":
                 // symetrische differenz
                 // rank bleibt unverändert
-                return array_udiff(
-                    array_merge($left, $right),
-                    array_uintersect($left, $right, $cmp),
-                    $cmp
-                ); 
-                break;               
+                return array_symdiff($left, $right, "compare_found_data");         
                 
+            default:
+                return array();
                 
         }
     }    
@@ -199,7 +179,10 @@ class SearchLeaf extends SearchTree
 
     // get set
     public function getSet() {
-        return $this->dbdata;
+        if (is_array($this->dbdata))
+            return $this->dbdata;
+        
+        return array();
     }    
     
     
@@ -234,6 +217,11 @@ class SearchLeaf extends SearchTree
     public function hasNot() {
         return $this->not;
     }
+     
+    // getter for type
+    public function getType() {
+        return $this->type;
+    }    
     
     // to string
     public function __toString() {
@@ -241,7 +229,7 @@ class SearchLeaf extends SearchTree
         if ($this->not)
             $pref = "!";
 
-        return $pref.$this->evaluate();
+        return $pref.str_replace("%", "*", $this->evaluate());
     }    
      
 }
