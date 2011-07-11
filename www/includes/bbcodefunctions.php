@@ -46,7 +46,7 @@ function do_bbcode_homelink ($action, $attributes, $content, $params, $node_obje
         return true;
     }
     if (!isset ($attributes['default'])) {
-        return '<a href="'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($content).'" target="_self">'.$page_url."?go=".htmlspecialchars ($content).'</a>';
+        return '<a href="'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($content).'" target="_self">'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($content).'</a>';
     }
         
     return '<a href="'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($attributes['default']).'" target="_self">'.$content.'</a>';
