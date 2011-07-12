@@ -124,7 +124,7 @@ class Search
             $words = array();
             while ($found = mysql_fetch_assoc($result)) {
                 // create array for each word
-                if (!is_array($words[$found['word']]))
+                if (!isset($words[$found['word']]) || !is_array($words[$found['word']]))
                     $words[$found['word']] = array();
             
                 $words[$found['word']][] = array('id' =>$found['id'], 'rank' =>$found['rank']);
@@ -189,8 +189,9 @@ class Search
     // combine results for leafs
     private function getResultsForLeaf(&$leaf, &$wordarr) {
         // no wildcards
-        if ($leaf->getType() == SQEXACT)
-            return $wordarr[$leaf->label()];
+        if ($leaf->getType() == SQEXACT) {
+            return isset($wordarr[$leaf->label()]) ? $wordarr[$leaf->label()] : array();
+        }
         
         //some wildcards
         // Front or Both

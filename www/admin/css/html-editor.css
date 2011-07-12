@@ -65,6 +65,8 @@ textarea.no-js-html-editor {
 .html-editor-row {
     height:24px;
     padding:1px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-weight:normal;
 }
 .html-editor-path {
     background-color:#EEEEEE;
@@ -73,8 +75,14 @@ textarea.no-js-html-editor {
     width:100%;
     padding:0px;
     margin:0px;
-    font-weight:normal;
 }
+.html-editor-path div.small span {
+    font-size:11px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-weight:normal;
+    line-height:110%;
+}
+
 .html-editor-highlighter {
     float:right;
 }
@@ -82,7 +90,10 @@ textarea.no-js-html-editor {
     height:19px;
     border-bottom:1px solid #999999;
     padding:6px 5px 1px;
-    vertical-align:middle;
+    vertical-align:top;
+}
+.html-editor-row-header .small {
+    vertical-align:top;
 }
 
 .html-editor-button, .html-editor-button-active, .html-editor-button-hover  {
@@ -136,9 +147,10 @@ textarea.no-js-html-editor {
     float:left;
     vertical-align:middle;
     font-size:11px;
-    font-family:Tahoma;
+
     font-weight:normal;
     text-decoration:none;
+    line-height:110%;
 }
 .html-editor-list-arrow {
     height:14px;
@@ -165,7 +177,7 @@ textarea.no-js-html-editor {
     margin-top:21px;
     margin-left:1px;
     padding:0px;
-    width:200px;
+    max-width:350px;
     border:none;
     z-index:100;
 }
@@ -181,4 +193,14 @@ textarea.no-js-html-editor {
 .html-editor-list-table td {
     padding:4px;
     border-top:1px solid #BBBBBB;
+    line-height:130%;
 }
+.html-editor-list-table td, .html-editor-list-table td * {
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size:12px !important;
+}
+.html-editor-list-table td, .html-editor-list-table span {
+	font-weight:normal;
+}
+
+    

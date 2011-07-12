@@ -27,7 +27,7 @@
     <input class="pointer middle" type="checkbox" id="search_downloads" name="in_downloads" value="1" {..search_in_downloads..}>
     <label class="pointer middle" for="search_downloads">Downloads</label>
   </form>
-  <span class="small">Erlaubte Operatoren: <b>AND</b>, <b>OR</b>, <b>XOR</b>, <b>!</b>, <b>*</b></span>
+  <span class="small">Erlaubte Operatoren: <b>{..operators..}</b></span>
 </fieldset>
 <!--section-end::SEARCH-->
 

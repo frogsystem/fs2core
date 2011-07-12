@@ -310,6 +310,10 @@ $template->tag("search_in_downloads", $_REQUEST['in_downloads'] );
 
 $search_template = (string) $template;
 
+// error or search query
+$result_info = isset($search) ? $search->getQuery() : "";
+$result_info = !empty($error_template) ? $error_template : $result_info;
+
 
 // Get Main Template
 $template = new template();
@@ -317,7 +321,7 @@ $template->setFile("0_search.tpl");
 $template->load("BODY");
 
 $template->tag("search", $search_template );
-$template->tag("result_info", !empty($error_template) ? $error_template : $search->getQuery());
+$template->tag("result_info", $result_info);
 $template->tag("news", $news_template );
 $template->tag("articles", $articles_template );
 $template->tag("downloads", $downloads_template );

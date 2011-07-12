@@ -8,10 +8,10 @@
 * in this file you can find all classes for the search tree
 * 
 */
-define(SQEXACT, 1);
-define(SQFRONT, 2);
-define(SQEND,   3);
-define(SQBOTH,  4);
+define("SQEXACT", 1);
+define("SQFRONT", 2);
+define("SQEND",   3);
+define("SQBOTH",  4);
 
 
 abstract class SearchTree
@@ -129,7 +129,7 @@ class SearchOperator extends SearchTree
     
     // to string
     public function __toString() {
-        return "(".$this->left.") ".$this->operation." (".$this->right.")";
+        return "(".$this->left." ".strtoupper($this->operation)." ".$this->right.")";
     }    
 }
 

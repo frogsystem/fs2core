@@ -133,11 +133,12 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     global $global_config_arr, $db, $TEXT;
     global $admin_phrases;
 
-    unset ($return_template);
+    initstr ($return_template);
     unset ($select_template);
     
     $select_forms = "";
     $show_editor = TRUE;
+    $show_selection = true;
 
 
     // Set Default Style
@@ -263,7 +264,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     $select_template = '
                 <form action="" method="post">
                     <input type="hidden" name="go" value="'.$GO.'">
-                    <table class="configtable" cellpadding="4" cellspacing="0">
+                    <table class="content" cellpadding="4" cellspacing="0">
                         <tr><td class="line">'.$selection_title.'</td></tr>
                         <tr>
                             <td class="config left">
@@ -278,7 +279,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                 <form action="" method="post">
                     <input type="hidden" name="go" value="'.$GO.'">
                     <input type="hidden" name="style" value="'.$_POST['style'].'">
-                    <table class="configtable" cellpadding="4" cellspacing="0" style="margin-top:-19px;">
+                    <table class="content" cellpadding="4" cellspacing="0" style="margin-top:-10px;">
                         <tr>
                             <td class="config left">
     ';
@@ -336,7 +337,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         $return_template .= '
                     <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
                     <input type="hidden" id="section_select" value="">
-                    <table border="0" cellpadding="4" cellspacing="0" width="600">
+                    <table class="content" border="0" cellpadding="4" cellspacing="0">
                         <tr><td class="line">Templates bearbeiten</td></tr>
         ';
 
@@ -363,7 +364,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                         <tr>
                             <td class="buttontd" align="right">
                                 <button class="button_new" type="submit" name="reload">
-                                    '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                    '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
                                 </button>
                             </td>
                         </tr>
@@ -432,7 +433,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "", $SHO
 
             $select_template .= '
                                             </select>
-                                            <input class="button" value="Auswählen" type="submit">
+                                            <input value="Auswählen" type="submit">
                                         </td>
                                     </tr>
             ';
@@ -462,7 +463,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "", $SHO
             $select_template .= '
                                                 <option value="new" '.getselected ( "new", $_POST['file'] ).'>Neue Datei erstellen...</option>
                                             </select>
-                                            <input class="button" value="Auswählen" type="submit">
+                                            <input value="Auswählen" type="submit">
                                         </td>
                                     </tr>
             ';

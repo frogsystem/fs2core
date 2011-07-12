@@ -83,7 +83,7 @@ class SearchQuery
         foreach($tokenarr as $string) {
             // get bool for type of actual and last token
             $isop = in_arrayr($string, $this->operators);
-            $wasop = in_array($lasttoken['type'], array_keys($this->operators));
+            $wasop = isset($lasttoken['type']) && in_array($lasttoken['type'], array_keys($this->operators));
         
             //check for and/or/not
             if (in_array($string, $this->operators['and'])) {
@@ -193,17 +193,27 @@ class SearchQuery
         // switch type
         switch ($token['type']) {
             case "and":
-                return new SearchOperator($token['type'], $old, $this->interpretHelper(++$pos, ""));
+				if (isset($this->tokens[$pos+2])) {
+					return $this->interpretHelper($pos+2, new SearchOperator($token['type'], $old, $this->createSearchLeaf($this->tokens[$pos+1])));	
+				} else {
+					return new SearchOperator($token['type'], $old, $this->interpretHelper(++$pos, ""));
+				}
+            
             case "or":
                 return new SearchOperator($token['type'], $old, $this->interpretHelper(++$pos, ""));
             case "xor":
                 return new SearchOperator($token['type'], $old, $this->interpretHelper(++$pos, ""));
             default:
-                return $this->interpretHelper(++$pos, new SearchLeaf($token['string'], $token['type'], $token['not']));
+                return $this->interpretHelper(++$pos, $this->createSearchLeaf($token));
                 break;
         }
 
-    }    
+    }
+    
+    // return a SearchLeaf build from a Token
+    private function createSearchLeaf($token) {
+		return new SearchLeaf($token['string'], $token['type'], $token['not']);
+	} 
     
     // set operations
     private function setOperators($operators) {
