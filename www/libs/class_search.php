@@ -15,6 +15,7 @@ class Search
 {
     // global vars
     private $sql;
+    private $config;
     
     // vars for class options
     private $type;
@@ -35,20 +36,42 @@ class Search
     }     
 
     // constructor
-    public function  __construct ($type, $query) {
+    public function  __construct ($type, $query, $phonetic = false) {
         // get searchtree classe if not loaded
-        require_once(FS2_ROOT_PATH . "libs/class_searchquery.php");               
+        require_once(FS2_ROOT_PATH . "libs/class_searchquery.php");       
+        require_once(FS2_ROOT_PATH . "includes/searchfunctions.php");                  
         
         // assign global vars
         global $sql;
         $this->sql = $sql;
+        $config_cols = array("search_num_previews", "search_and", "search_or", "search_xor", "search_not", "search_wildcard", "search_min_word_length", "search_allow_phonetic", "search_use_stopwords");
+        $this->config = $sql->getById("search_config", $config_cols, 1);  
 
         // assign vars
         $this->type = $type;
+        $this->phonetic = $phonetic;
         $this->original_query = $query;
+
+        //compute operators and modifiers
+        $rectrim = function ($ele) {
+            return array_map("trim", $ele);
+        };
+        
+        $operators = array (
+            'and' => explode(",", $this->config['search_and']),
+            'or' => explode(",", $this->config['search_or']),
+            'xor' => explode(",", $this->config['search_xor']),
+        );
+        $operators = array_map($rectrim, $operators);
+        
+        $modifiers = array (
+            'not' => explode(",", $this->config['search_not']),
+            'wc' => explode(",", $this->config['search_wildcard']),
+        );
+        $modifiers = array_map($rectrim, $modifiers);
         
         // Create SearchQuery
-        $sq = new SearchQuery();
+        $sq = new SearchQuery($operators, $modifiers);
         $sq->parse($_REQUEST['keyword']);        
         $this->tree = $sq->getTree();
         
@@ -107,14 +130,20 @@ class Search
         
         // get all words
         while ($word = $this->tree->nextLeaf()) {
+            
             $query .= "   
-                OR `search_word` LIKE '".$word->evaluate()."'";
+                OR `search_word`";
+            
+            if ($this->phonetic)
+                $query .= " SOUNDS";
+                
+            $query .= " LIKE '".$word->evaluate()."'";
         }
         $this->tree->reset();
         
         $query .= "
             )";
-        
+
         // try to execute the query
         try {
             // execute query
@@ -189,21 +218,41 @@ class Search
     // combine results for leafs
     private function getResultsForLeaf(&$leaf, &$wordarr) {
         // no wildcards
-        if ($leaf->getType() == SQEXACT) {
+        if ($leaf->getType() == SQEXACT && !$this->phonetic) {
             return isset($wordarr[$leaf->label()]) ? $wordarr[$leaf->label()] : array();
         }
         
-        //some wildcards
+        //some wildcards or phonetic
         // Front or Both
-        $keys = array_keys($wordarr);
+        $keys = $search_keys = array_keys($wordarr);
         $front = $end = array();
+        $label = $leaf->label();
+     
+        //phonetic search
+        if ($this->phonetic) {
+            $label = soundex($leaf->label());
+            $search_keys = array_map("soundex", $keys);
+        }    
+        
+            
         if ($leaf->getType() == SQFRONT || $leaf->getType() == SQBOTH) {
-            $front = preg_grep('/(.+)'.$leaf->label().'/', $keys);
+            $front = preg_grep('/(.+)'.$label.'/', $search_keys);
+            if ($this->phonetic)
+                $front = array_values_by_keys($keys, array_keys($front));            
         }
         // End or Both
-        if ($leaf->getType() == SQEND || $leaf->getType() == SQBOTH) {
-            $end = preg_grep('/'.$leaf->label().'(.+)/', $keys);
+        elseif ($leaf->getType() == SQEND || $leaf->getType() == SQBOTH) {
+            $end = preg_grep('/'.$label.'(.+)/', $search_keys);
+            if ($this->phonetic)
+                $end = array_values_by_keys($keys, array_keys($end));            
         }
+        // "Exact"  phonetic
+        else {
+            $front = preg_grep('/'.$label.'/', $search_keys); 
+            if ($this->phonetic)
+                $front = array_values_by_keys($keys, array_keys($front));
+        }
+   
         $keys = array_unique(array_merge($front, $end), SORT_STRING);
         
         // fucntion to compare found-data-arrays
@@ -227,7 +276,7 @@ class Search
         $cmp_plus = function (&$v1, $v2) {
             return compare_update_rank ($v1, $v2, function ($v1, $v2) {return $v1+$v2;});
         };        
-        
+
         // get data for matching keys 
         $return_array = array();
         foreach($keys as $key) {

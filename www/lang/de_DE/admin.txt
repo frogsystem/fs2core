@@ -19,6 +19,8 @@ exact:                                   exakt
 hex_color:                               Hexadezimal Farbcode
 folder_name_info:                        nur a-z, 0-9, "-" und "_" erlaubt
 chars:                                   Zeichen
+result:                                  Ergebniss
+results:                                 Ergebnisse
 entry:                                   Eintrag
 entries:                                 Einträge
 record_found:                            Datensatz gefunden
@@ -28,6 +30,7 @@ date_info:                               verwendet den Syntax der PHP-Funktion <
 html:                                    HTML
 fscode:                                  FSCode
 para:                                    Absatzbehandlung
+csv:                                     Kommagetrennte Werte
 
 
 # Frequently used Phrases
@@ -65,9 +68,9 @@ please_select:				             Bitte auswählen
 select_hr:                               ----------------------------------
 id:                                      ID
 default:                                 Standard
-replace_img:                             Ersetzt das bisherige Bild!
+replace_img:                             Ersetzt das bisherige Bild
 delete_image:                            Bild löschen
-js_delete_image:
+js_delete_image:                         Bild löschen?
 
 
 # Date and Time for Admin CP

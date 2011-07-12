@@ -30,9 +30,9 @@ class SearchQuery
     private $root;
 
     // constructor
-    public function  __construct ($operators = array()) {
+    public function  __construct ($operators = array(), $modifiers = array()) {
         // get searchtree classe if not loaded
-        require_once(FS2_ROOT_PATH . "libs/class_searchtree.php");        
+        require_once(FS2_ROOT_PATH . "libs/class_searchtree.php");      
         
         // assign global vars
         global $sql;
@@ -41,6 +41,8 @@ class SearchQuery
         // set local vars
         if (!empty($operators)) 
           $this->setOperators($operators);
+        if (!empty($modifiers)) 
+          $this->setModifiers($modifiers);     
     }
     
     // destructor
@@ -217,10 +219,11 @@ class SearchQuery
     
     // set operations
     private function setOperators($operators) {
-        $operators = array_map( function($ele) {
-            return array(substr($ele, 0, 1), substr($ele, 1, 1));
-        }, $operators ['bracket']);
         $this->operators = $operators;
+    }
+    // set modifiers
+    private function setModifiers($modifiers) {
+        $this->modifiers = $modifiers;
     }
     
     private function compressKeyword ($text) {

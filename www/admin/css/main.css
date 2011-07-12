@@ -25,6 +25,12 @@ em {
 .small {
     font-size:9pt;
 }
+.smaller {
+    font-size:8pt;
+}
+.mini {
+    font-size:7pt;
+}
 
 .top {
     vertical-align:top !important;

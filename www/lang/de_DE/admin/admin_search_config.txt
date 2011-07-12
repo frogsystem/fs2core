@@ -1,0 +1,27 @@
+search_config_title:                     Einstellungen
+num_previews_title:                      Anzahl Ergebnisse
+num_previews_desc:                       Die Zahl der max. angezeigten Ergebnisse.
+allow_phonetic_title:                    Phonetische Suche
+allow_phonetic_desc:                     Erlaubt die phonetische Suche.
+and_title:                               AND-Operatoren
+and_desc:                                Erlaubte Operatoren der AND-Verknüpfung.
+or_title:                                OR-Operatoren
+or_desc:                                 Erlaubte Operatoren der OR-Verknüpfung.
+xor_title:                               XOR-Operatoren
+xor_desc:                                Erlaubte Operatoren der XOR-Verknüpfung.
+not_title:                               NOT-Operatoren
+not_desc:                                Erlaubte Negierungs-Operatoren.
+wildcard_title:                          Wildcards
+wildcard_desc:                           Legt die erlaubten Wildcard-Zeichen fest.
+
+
+search_index_title:                      Suchindex-Einstellungen
+index_update_title:                      Suchindex aktualisieren
+index_update_desc:                       Zeit zu der der Suchindex aktualisert wird.
+index_update_instantly:                  sofort
+index_update_daily:                      täglich (um ca. 3 Uhr)
+index_update_never:                      niemals
+min_word_length_title:                   Minimale Wortlänge
+min_word_length_desc:                    Länge ab der Wörter in den Suchindex aufgenommen werden.
+use_stopwords_title:                     Stoppwörter verwenden
+use_stopwords_desc:                      Schließt Stoppwörter von der Indizierung und Suche aus.

@@ -157,6 +157,7 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
     <link rel="shortcut icon" href="icons/favicon.ico">
     
     <script src="../resources/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="../resources/jquery/jquery-ui.min.js" type="text/javascript"></script>
     <script src="functions.js" type="text/javascript"></script>
     <script src="../includes/js_functions.js" type="text/javascript"></script>
     <script src="js/admin.js" type="text/javascript"></script>

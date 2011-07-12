@@ -2,11 +2,12 @@
   font-size: 8pt;
 }
 
-a {
+a, .link {
   color:#478747;
   text-decoration:none;
+  cursor:pointer;
 }
-a:hover, a:focus, a.small:hover, a.small:focus {
+a:hover, a:focus, a.small:hover, a.small:focus, .link:hover {
  text-decoration:underline;
 }
 
@@ -71,6 +72,11 @@ textarea {
   font-family:"Trebuchet MS",Verdana,Arial,sans-serif;
   color:#000000;
   font-size:9pt;
+}
+
+
+.hidden{
+  display:none;
 }
 
 .dl_cell {

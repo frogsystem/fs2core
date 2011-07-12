@@ -27,6 +27,7 @@ $TEMPLATE_EDIT[] = array (
         array ( 'tag' => "search_in_news", 'text' => $TEXT['template']->get("search_search_in_news") ),
         array ( 'tag' => "search_in_articles", 'text' => $TEXT['template']->get("search_search_in_articles") ),
         array ( 'tag' => "search_in_downloads", 'text' => $TEXT['template']->get("search_search_in_downloads") ),
+        array ( 'tag' => "phonetic_search", 'text' => $TEXT['template']->get("search_phonetic_search") ),
     )
 );
 
@@ -54,7 +55,7 @@ $TEMPLATE_EDIT[] = array (
         array ( 'tag' => "url", 'text' => $TEXT['template']->get("search_result_line_url") ),
         array ( 'tag' => "date", 'text' => $TEXT['template']->get("search_result_line_date") ),
         array ( 'tag' => "date_template", 'text' => $TEXT['template']->get("search_result_line_date_template") ),
-        array ( 'tag' => "num_matches", 'text' => $TEXT['template']->get("search_result_line_num_matches") ),
+        array ( 'tag' => "rank", 'text' => $TEXT['template']->get("search_result_line_rank") ),
     )
 );
 
@@ -94,6 +95,18 @@ $TEMPLATE_EDIT[] = array (
     )
 );
 
+$TEMPLATE_EDIT[] = array (
+    'name' => "INFO",
+    'title' => $TEXT['template']->get("search_info_title"),
+    'description' => $TEXT['template']->get("search_info_desc"),
+    'rows' => 10,
+    'cols' => 66,
+    'help' => array (
+        array ( 'tag' => "query", 'text' => $TEXT['template']->get("search_info_query") ),
+        array ( 'tag' => "num_results", 'text' => $TEXT['template']->get("search_info_num_results") ),
+    )
+);
+
 
 $TEMPLATE_EDIT[] = array (
     'name' => "BODY",
@@ -103,6 +116,7 @@ $TEMPLATE_EDIT[] = array (
     'cols' => 66,
     'help' => array (
         array ( 'tag' => "search", 'text' => $TEXT['template']->get("search_body_search") ),
+        array ( 'tag' => "info", 'text' => $TEXT['template']->get("search_body_info") ),
         array ( 'tag' => "news", 'text' => $TEXT['template']->get("search_body_news") ),
         array ( 'tag' => "articles", 'text' => $TEXT['template']->get("search_body_articles") ),
         array ( 'tag' => "downloads", 'text' => $TEXT['template']->get("search_body_downloads") ),

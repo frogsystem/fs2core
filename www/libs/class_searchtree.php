@@ -31,6 +31,9 @@ class SearchOperator extends SearchTree
     
     // constructor
     public function  __construct ($operation, $left, $right) {
+        // get searchfunctions if not loaded   
+        require_once(FS2_ROOT_PATH . "includes/searchfunctions.php"); 
+        
         $this->left = $left;
         $this->right = $right;
         $this->operation = $operation;
@@ -129,7 +132,9 @@ class SearchOperator extends SearchTree
     
     // to string
     public function __toString() {
-        return "(".$this->left." ".strtoupper($this->operation)." ".$this->right.")";
+        $ops = get_default_operators();
+        
+        return "(".$this->left.' <span class="search-operator">'.$ops[$this->operation].'</span> '.$this->right.")";
     }    
 }
 
@@ -143,7 +148,7 @@ class SearchLeaf extends SearchTree
     private $dbdata = array();
 
     // constructor
-    public function  __construct ($label, $type, $not) {
+    public function  __construct ($label, $type, $not) {        
         $this->label = $label;
         $this->type = $type;
         $this->not = $not;
@@ -225,11 +230,13 @@ class SearchLeaf extends SearchTree
     
     // to string
     public function __toString() {
+        $ops = get_default_operators();
+
         $pref = "";
         if ($this->not)
-            $pref = "!";
+            $pref = '<span class="search-modifier">'.$ops['not'].'</span>';
 
-        return $pref.str_replace("%", "*", $this->evaluate());
+        return '<span class="search-leaf">'.$pref.str_replace("%", '<span class="search-modifier">'.$ops['wildcard'].'</span>', $this->evaluate()).'</span>';
     }    
      
 }

@@ -150,11 +150,14 @@ div.systext>div>img {
 /**************************************************/
 /* default page desgin */
 /**************************************************/
-table.content {
+table.content_width, table.content {
     width:680px;
 }
 
-table.content td {
+table.content {
+}
+
+table.content tr td {
     padding-top:3px;
     padding-bottom:3px;
     text-align:left;
@@ -163,10 +166,10 @@ table.content td {
     font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
     font-weight:bold;
 }
-table.content td.thin, table.content tr.thin td {
+table.content tr td.thin, table.content tr.thin td {
     font-weight:normal;
 }
-table.content td.big, table.content tr.big td {
+table.content tr td.big, table.content tr.big td {
     font-size:13pt;
 }
 
@@ -176,16 +179,16 @@ table.content td .small, table.content tr .small {
     font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
 }
 
-table.content h3 {
+table.content tr h3, tr.line h3 {
     font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;    
     font-size:160%;
     font-weight:normal;
 }
-table.content tr + tr td h3 {
+table.content tr + tr td h3, tr.line + tr td h3 {
     margin-top:15px;
 }
 
-table.content h3+hr {
+table.content tr h3+hr, tr.line h3+hr {
     background-repeat:repeat-x;
     background-position:left top;
     height:9px;

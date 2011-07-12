@@ -14,6 +14,14 @@ function htmlenclose ($TEXT, $TAG) {
     return "<".$TAG.">".$TEXT."</".$TAG.">";
 }
 
+/////////////////////////////////////
+//// empty with trim for strings ////
+/////////////////////////////////////
+function emptystr ($text) {
+    $text = trim($text);
+    return empty($text);
+}
+
 ///////////////////////////////////////////////////////////////////
 //// Kill HTML for output in textareas and inputs empty string ////
 ///////////////////////////////////////////////////////////////////
@@ -206,6 +214,18 @@ function oneof () {
 		}
 	}
 	return false;
+}
+
+//////////////////////////////////////////////
+//// make cross product of array elements ////
+//////////////////////////////////////////////
+function array_values_by_keys ($arr, $keys) {
+    $new = array();
+	foreach ($arr as $key => $ele) {
+        if (in_array($key, $keys))
+            $new[] = $ele;
+    }    
+    return $new;
 }
 
 //////////////////////////////////////////////

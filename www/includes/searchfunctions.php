@@ -1,4 +1,26 @@
 <?php
+function get_default_operators () {
+    global $sql;
+    $config_arr = $sql->getById("search_config", array("search_and", "search_or", "search_xor", "search_not", "search_wildcard"), 1);
+    
+    $and = explode(",", $config_arr['search_and']);
+    $or  = explode(",", $config_arr['search_or']);
+    $xor = explode(",", $config_arr['search_xor']);
+    $not = explode(",", $config_arr['search_not']);
+    $wc  = explode(",", $config_arr['search_wildcard']);
+
+    $ops = array(
+        'and' => trim(array_shift($and)),
+        'or'  => trim(array_shift($or)),
+        'xor' => trim(array_shift($xor)),
+        'not' => trim(array_shift($not)),
+        'wildcard' => trim(array_shift($wc))
+    );
+    
+    return $ops;   
+}
+
+
 function new_search_index ( $FOR ) {
     delete_search_index ( $FOR );
     update_search_index ( $FOR );
@@ -200,9 +222,9 @@ function compress_search_data ( $TEXT ) {
     $locSearch[] = "=í|ì|î|Î|Í|Ì|ï=i";
     $locSearch[] = "=ñ=i";
     $locSearch[] = "=ç=i";
-    #$locSearch[] = "=([0-9/.,+-]*\s)=";
+    $locSearch[] = "=([0-9/.,+-]*\s)=";
     $locSearch[] = "=([^A-Za-z])=";
-    $locSearch[] = "= +=";
+    $locSearch[] = "=\s+=";
 
     $locReplace[] = "ss";
     $locReplace[] = "ae";
@@ -215,28 +237,28 @@ function compress_search_data ( $TEXT ) {
     $locReplace[] = "i";
     $locReplace[] = "n";
     $locReplace[] = "c";
-    #$locReplace[] = " ";
+    $locReplace[] = " ";
     $locReplace[] = " ";
     $locReplace[] = " ";
 
-    $TEXT = trim ( strtolower ( stripslashes ( killfs ( $TEXT ) ) ) );
+    $TEXT = trim(strtolower (stripslashes (killfs ($TEXT))));
     $TEXT = preg_replace ( $locSearch, $locReplace, $TEXT );
     return $TEXT;
 }
 
 function delete_stopwords ($TEXT) {
-    //work arounds
-    $config['search_min_length'] = 3;
-    $config['search_use_stopwords'] = 1;
+    global $sql;
+    $config_cols = array("search_min_word_length", "search_use_stopwords");
+    $config_arr = $sql->getById("search_config", $config_cols, 1);
     
     $locSearch = array();
     $locReplace = array();
     
-    $locSearch[] = "=(\s[A-Za-z0-9]{1,".($config['search_min_length']-1)."})\s=";
+    $locSearch[] = "=(\s[A-Za-z]{1,".($config_arr['search_min_word_length']-1)."})\s=";
     $locReplace[] = " ";
     
     // Use Stopwords?
-    if ( $config['search_use_stopwords'] == 1 ) {
+    if ( $config_arr['search_use_stopwords'] == 1 ) {
         $locSearch[] = "= " . implode ( " | ", get_stopwords() ) . " =i";
         $locReplace[] = " ";
     }

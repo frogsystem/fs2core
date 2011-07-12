@@ -516,17 +516,13 @@ if (
     $_POST['news_date'] = mktime($_POST['h'], $_POST['i'], 0, $_POST['m'], $_POST['d'], $_POST['y']);
     $_POST['news_id'] = $_POST['news_id'][0];
     $data = frompost($news_cols);
+    
+    // set edit time
+    $data['news_search_update'] = time();
 
     // MySQL-Insert-Query
     try {
         $newsid = $sql->save("news", $data, "news_id");
-        
-        // Update Search Index (or not)
-        if ( $global_config_arr['search_index_update'] === 1 ) {
-            // Include searchfunctions.php
-            require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-            update_search_index ("news");
-        }
 
         // delete all links
         $sql->delete("news_links", array('W' => "`news_id` = '".$newsid."'"));
@@ -554,7 +550,14 @@ if (
                     Throw $e;
                 }
             }
-        }        
+        }
+        
+        // Update Search Index (or not)
+        if ( $global_config_arr['search_index_update'] === 1 ) {
+            // Include searchfunctions.php
+            require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
+            update_search_index ("news");
+        }             
         
         echo get_systext($TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
 

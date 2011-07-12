@@ -363,8 +363,8 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
     //textWrapping: false,
     continuousScanning: 500,
     tabMode: "shift",
-    height: editorHeight,
-    iframeClass:"html-editor-iframe",
+    height: editorHeight+"px",
+    iframeClass:"CodeMirror-iframe",
     readOnly: readOnlyState
   });
   //editor.setLineNumbers(true);

@@ -55,8 +55,9 @@ function get_maintemplate ($BODY, $PATH_PREFIX = "", $BASE = FALSE)
     $template_javascript = get_js($PATH_PREFIX).'
     <script type="text/javascript" src="'.$PATH_PREFIX.'includes/js_functions.js"></script>';
     
-	// Create jQuery-Line
+	// Create jQuery-Lines
     $template_jquery = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery.min.js"></script>';
+    $template_jquery_ui = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-ui.min.js"></script>';    
     
     // Get HTML-Matrix
     $theTemplate->load("MATRIX");
@@ -73,6 +74,7 @@ function get_maintemplate ($BODY, $PATH_PREFIX = "", $BASE = FALSE)
     
     $theTemplate->tag("javascript", $template_javascript);
     $theTemplate->tag("jquery", $template_jquery);
+    $theTemplate->tag("jquery-ui", $template_jquery_ui);
     
     $theTemplate->tag("body", $BODY);
     

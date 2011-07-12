@@ -337,8 +337,8 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         $return_template .= '
                     <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
                     <input type="hidden" id="section_select" value="">
-                    <table class="content" border="0" cellpadding="4" cellspacing="0">
-                        <tr><td class="line">Templates bearbeiten</td></tr>
+                    <table class="content_width" border="0" cellpadding="4" cellspacing="0">
+                        <tr class="line"><td colspan="2"><h3>Templates bearbeiten</h3><hr></td></tr>
         ';
 
         // Special MANYFILES-Things
@@ -497,16 +497,16 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "", $SHO
 function create_dropdown ( $TITLE, $CONTENT )
 {
         return '
-                                            <div class="html-editor-line"></div>
-                                            <div class="html-editor-container-list">
-                                                <div class="html-editor-list">'.$TITLE.'</div>
-                                                <div class="html-editor-list-arrow"></div>
-                                                <div class="html-editor-list-popup">
-                                                     <table class="small html-editor-list-table" cellspacing="0">
-                                                        '.$CONTENT.'
-                                                     </table>
-                                                </div>
-                                            </div>
+        <div class="html-editor-line"></div>
+        <div class="html-editor-container-list">
+            <div class="html-editor-list">'.$TITLE.'</div>
+            <div class="html-editor-list-arrow"></div>
+            <div class="html-editor-list-popup">
+                 <table class="smaller html-editor-list-table" cellspacing="0">
+                    '.$CONTENT.'
+                 </table>
+            </div>
+        </div>
         ';
 }
 
@@ -599,7 +599,7 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
     $section_text = ( $MANYFILES == FALSE ) ? ' &gt; '.$EDITOR_NAME : "";
     $footer_template = '
                                     <div class="html-editor-path" id="'.$EDITOR_NAME.'_footer">
-                                        <div style="padding:2px; height:13px;" class="small">
+                                        <div style="padding:2px; height:13px;" class="smaller">
                                             <span class="atleft">Pfad: '.$STYLE.' &gt; '.$FILE . $section_text .'</span>
                                             <span class="html-editor-highlighter">'.$highlighter_text.'</span>
                                         </div>

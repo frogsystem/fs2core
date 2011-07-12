@@ -1,4 +1,13 @@
-<?php
+<?php if (ACP_GO == "search_config") {
+#TODO: 
+    
+###################
+## Page Settings ##
+###################
+$search_cols = array("id", "search_num_previews", "search_and", "search_or", "search_xor", "search_not", "search_wildcard", "search_min_word_length", "search_allow_phonetic", "search_use_stopwords");
+$global_cols = array("search_index_update");
+      
+
 ///////////////////////
 //// Update Config ////
 ///////////////////////
@@ -6,32 +15,28 @@ if (
         isset ( $_POST['search_num_previews'] )
         && $_POST['search_num_previews'] > 0
         && $_POST['search_num_previews'] <= 25
+        && !emptystr($_POST['search_and'])
+        && !emptystr($_POST['search_or'])
+        && !emptystr($_POST['search_xor'])
+        && !emptystr($_POST['search_not'])
+        && !emptystr($_POST['search_wildcard'])
     )
 {
-    // Security-Functions
-    settype ( $_POST['search_num_previews'], "integer" );
-    settype ( $_POST['search_index_update'], "integer" );
-
-    // MySQL-Queries
-    mysql_query ( "
-                    UPDATE `".$global_config_arr['pref']."search_config`
-                    SET
-                        `search_num_previews` = '".$_POST['search_num_previews']."'
-                    WHERE `id` = '1'
-    ", $db );
-    mysql_query ( "
-                    UPDATE `".$global_config_arr['pref']."global_config`
-                    SET
-                        `search_index_update` = '".$_POST['search_index_update']."'
-                    WHERE `id` = '1'
-    ", $db );
+    // prepare data
+    $search = frompost($search_cols);
+    $search['id'] = 1;
+    $global = frompost($global_cols);
+    $global['id'] = 1;    
+ 
+     // save to db
+    try {
+        $sql->save("search_config", $search);
+        $sql->save("global_config", $global);
+        systext($TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+    } catch (Exception $e) {}
     
-    // Display Message
-    systext ( $TEXT["admin"]->get("changes_saved"),
-        $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_ok") );
-
     // Unset Vars
-    unset ( $_POST );
+    unset($_POST);
 }
 
 /////////////////////
@@ -41,89 +46,33 @@ if (
 if ( TRUE )
 {
     // Display Error Messages
-    if ( isset ( $_POST['sended'] ) ) {
-        $error_message = array();
-        if (
-               FALSE
-            )
-        {
-            $error_messages[] = $TEXT["admin"]->get("form_not_filled");
-        }
+    if (isset($_POST['sended'])) {
+        systext($TEXT['admin']->get("changes_not_saved").'<br>'.$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
 
-        if (
-                $_POST['search_num_previews'] < 0 || $_POST['search_num_previews'] > 25
-            )
-        {
-            $error_messages[] = $TEXT["admin"]->get("form_only_allowed_values");
-        }
-
-        systext ( $TEXT["admin"]->get("changes_not_saved")."<br>".implode ( "<br>", $error_messages ),
-            $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
-            
     // Load Data from DB into Post
     } else {
-        $index = mysql_query ( "
-                                SELECT *
-                                FROM `".$global_config_arr['pref']."search_config`
-                                WHERE `id` = '1'
-        ", $db);
-        $config_arr = mysql_fetch_assoc($index);
-        $index = mysql_query ( "
-                                SELECT `search_index_update`
-                                FROM `".$global_config_arr['pref']."global_config`
-                                WHERE `id` = '1'
-        ", $db);
-        $config_arr['search_index_update'] = mysql_result ( $index, 0, "search_index_update" );
-        putintopost ( $config_arr );
+        $search = $sql->getRow("search_config", $search_cols, array('W' => "`id` = 1"));
+        $global = $sql->getRow("global_config", $global_cols, array('W' => "`id` = 1"));
+        $data = array_merge($global, $search);
+        putintopost($data);
+    }   
+    
+    // security functions
+    $_POST = array_map("killhtml", $_POST);    
+     
+    // Conditions
+    $adminpage->addCond("search_allow_phonetic", $_POST['search_allow_phonetic'] == 1);
+    $adminpage->addCond("search_use_stopwords", $_POST['search_use_stopwords'] == 1);
+    for ($i=1;$i<=3;$i++)
+        $adminpage->addCond("search_index_update_".$i, $_POST['search_index_update'] == $i);  
+    
+    // Values
+    foreach ($_POST as $key => $value) {
+        $adminpage->addText($key, $value);
     }
     
-    // Security-Functions
-    settype ( $_POST['search_num_previews'], "integer" );
-    settype ( $_POST['search_index_update'], "integer" );
-    
-    // Display Form
-    echo '
-                    <form action="" method="post">
-                        <input type="hidden" name="go" value="search_config">
-                        <input type="hidden" name="sended" value="1">
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get("search_config_title").'</td></tr>
-                            <tr>
-                                <td class="config right_space">
-                                    '.$TEXT['admin']->get("search_config_num_previews_title").':<br>
-                                    <span class="small">'.$TEXT['admin']->get("search_config_num_previews_desc").'</span>
-                                </td>
-                                <td class="config">
-                                    <input class="text center" name="search_num_previews" maxlength="2" size="2" value="'.$_POST['search_num_previews'].'">
-                                    '.$TEXT['admin']->get("search_config_num_previews_results").'<br>
-                                    <span class="small">('.$TEXT['admin']->get("max").' 25)</span>
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get("search_index_config_title").'</td></tr>
-                            <tr>
-                                <td class="config right_space">
-                                    '.$TEXT['admin']->get("search_index_config_update_title").':<br>
-                                    <span class="small">'.$TEXT['admin']->get("search_index_config_update_desc").'</span>
-                                </td>
-                                <td class="config">
-                                    <select name="search_index_update" size="1">
-                                        <option value="1" '.getselected ( 1, $_POST['search_index_update'] ).'>'.$TEXT['admin']->get("search_index_config_update_instantly").'</option>
-                                        <option value="2" '.getselected ( 2, $_POST['search_index_update'] ).'>'.$TEXT['admin']->get("search_index_config_update_daily").'</option>
-                                        <option value="3" '.getselected ( 3, $_POST['search_index_update'] ).'>'.$TEXT['admin']->get("search_index_config_update_never").'</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="buttontd" colspan="2">
-                                    <button class="button_new" type="submit">
-                                        '.$TEXT["admin"]->get("button_arrow").' '.$TEXT["admin"]->get("save_changes_button").'
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-    ';
+    // Display page
+    echo $adminpage->get("main");
 }
-?>
+
+} ?>
