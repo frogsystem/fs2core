@@ -90,7 +90,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->tag("url", "?go=comments&amp;id=".$news['news_id']);
                     $template->tag("date", $date_formated);
                     $template->tag("date_template", $date_template);
-                    $template->tag("rank", $found['rank']);
+                    $template->tag("rank", sprintf("%.1F", $found['rank']));
 
                     $news_entries .= (string) $template;		
                 }
@@ -153,7 +153,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->tag("url", "?go=".$article['article_url']);
                     $template->tag("date", $date_formated);
                     $template->tag("date_template", $date_template);
-                    $template->tag("rank", $found['rank']);
+                    $template->tag("rank", sprintf("%.1F", $found['rank']));
 
                     $articles_entries .= (string) $template;		
                 }
@@ -216,7 +216,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->tag("url", "?go=dlfile&amp;id=".$dl['dl_id']);
                     $template->tag("date", $date_formated);
                     $template->tag("date_template", $date_template);
-                    $template->tag("rank", $found['rank']);
+                    $template->tag("rank", sprintf("%.1F", $found['rank']));
 
                     $downloads_entries .= (string) $template;		
                 }

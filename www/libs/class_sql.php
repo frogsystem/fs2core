@@ -259,7 +259,7 @@ class sql {
         // Get Result
         $result = $this->get($table, $cols, $options);
         if (count($result['data']) >= 1) {
-            return array_map(array(&$this, "unslash"), $result['data'][0]);       
+            return $result['data'][0];       
         } else {
             return array();
         }
