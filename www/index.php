@@ -55,7 +55,7 @@ if (isset($db) && $db !== false && isset($global_config_arr)) {
     $theTemplate->tag("copyright", get_copyright());
     
     $template_general = (string) $theTemplate;
-    $template_general = tpl_replacements($template_general);
+    $template_general = tpl_functions_init($template_general);
     
     // Display Page
     echo get_maintemplate($template_general);

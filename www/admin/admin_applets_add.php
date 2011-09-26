@@ -1,4 +1,14 @@
-<?php
+<?php if (ACP_GO == "applets_add") {
+    
+#TODO: fileaccess
+    
+###################
+## Page Settings ##
+###################
+define('INCLUDE_ALWAYS', 1);
+define('INCLUDE_ONDEMAND', 2);
+  
+    
 /////////////////////////
 //// Save Data to DB ////
 /////////////////////////
@@ -14,6 +24,7 @@ if (
     
     settype ( $_POST['applet_active'], "integer" );
     settype ( $_POST['applet_output'], "integer" );
+    settype ( $_POST['applet_include'], "integer" );
 
     // Check if Applet exists
     $index = mysql_query ( "SELECT `applet_id` FROM `".$global_config_arr['pref']."applets` WHERE `applet_file` = '".$_POST['applet_file']."'", $db );
@@ -25,11 +36,13 @@ if (
                                         INSERT INTO `".$global_config_arr['pref']."applets` (
                                                 `applet_file`,
                                                 `applet_active`,
+                                                `applet_include`,
                                                 `applet_output`
                                         )
                                         VALUES (
                                                 '".$_POST['applet_file']."',
                                                 '".$_POST['applet_active']."',
+                                                '".$_POST['applet_include']."',
                                                 '".$_POST['applet_output']."'
                                         )
         ", $db );
@@ -85,6 +98,16 @@ echo '
                             <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("applet_add_title").'</td></tr>
                             <tr>
                                 <td class="config">
+                                    '.$TEXT["admin"]->get("applets_active_title").':<br>
+                                    <span class="small">'.$TEXT["admin"]->get("applets_active_desc").'</span>
+                                </td>
+                                <td class="config">
+                                    '.$TEXT["admin"]->get("checkbox").'
+                                    <input class="hidden" type="checkbox" name="applet_active" value="1" '.getchecked ( 1, $_POST['applet_active'] ).'>
+                                </td>
+                            </tr>                            
+                            <tr>
+                                <td class="config">
                                     '.$TEXT["admin"]->get("applets_file_title").':<br>
                                     <span class="small">'.$TEXT["admin"]->get("applets_file_desc").'</span>
                                 </td>
@@ -95,20 +118,24 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT["admin"]->get("applets_active_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("applets_active_desc").'</span>
+                                    '.$TEXT["page"]->get("applets_include_title").':<br>
+                                    <span class="small">'.$TEXT["page"]->get("applets_include_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="checkbox" name="applet_active" value="1" '.getchecked ( 1, $_POST['applet_active'] ).'>
+                                    <select name="applet_include">
+                                        <option value="'.INCLUDE_ALWAYS.'" '.getselected(INCLUDE_ALWAYS, $_POST['applet_include']).'>'.$TEXT["page"]->get("applets_include_always").'</option>
+                                        <option value="'.INCLUDE_ONDEMAND.'" '.getselected(INCLUDE_ONDEMAND, $_POST['applet_include']).'>'.$TEXT["page"]->get("applets_include_ondemand").'</option>
+                                    </select>
                                 </td>
-                            </tr>
+                            </tr>                            
                             <tr>
                                 <td class="config">
                                     '.$TEXT["admin"]->get("applets_output_title").':<br>
                                     <span class="small">'.$TEXT["admin"]->get("applets_output_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="checkbox" name="applet_output" value="1" '.getchecked ( 1, $_POST['applet_output'] ).'>
+                                    '.$TEXT["admin"]->get("checkbox").'
+                                    <input class="hidden" type="checkbox" name="applet_output" value="1" '.getchecked ( 1, $_POST['applet_output'] ).'>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -122,4 +149,5 @@ echo '
                         </table>
                     </form>
 ';
-?>
+
+} ?>

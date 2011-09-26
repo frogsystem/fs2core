@@ -250,6 +250,14 @@ class sql {
             'num' => $num,
         );
     }
+    
+    // get data from database
+    public function getData ($table, $cols, $options = array(), $distinct = false) {
+        // Get Result
+        $result = $this->get($table, $cols, $options, $distinct);
+        return $result['data'];             
+    }    
+    
 
     // only a single data row
     public function getRow ($table, $cols, $options = array(), $start = 0) {

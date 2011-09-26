@@ -1,4 +1,14 @@
-<?php
+<?php if (ACP_GO == "applets_edit") {
+      
+#TODO: fileaccess
+    
+###################
+## Page Settings ##
+###################
+define('INCLUDE_ALWAYS', 1);
+define('INCLUDE_ONDEMAND', 2);
+
+  
 ////////////////////////////
 //// DB: Update Applets ////
 ////////////////////////////
@@ -13,12 +23,14 @@ if (
     settype ( $_POST['applet_id'], "integer" );
     settype ( $_POST['applet_active'], "integer" );
     settype ( $_POST['applet_output'], "integer" );
+    settype ( $_POST['applet_include'], "integer" );
 
     // MySQL-Queries
     mysql_query ( "
                     UPDATE `".$global_config_arr['pref']."applets`
                     SET
                         `applet_active` = '".$_POST['applet_active']."',
+                        `applet_include` = '".$_POST['applet_include']."',
                         `applet_output` = '".$_POST['applet_output']."'
                     WHERE `applet_id` = '".$_POST['applet_id']."'
     ", $db );
@@ -103,6 +115,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
 
         settype ( $_POST['applet_id'], "integer" );
         settype ( $_POST['applet_active'], "integer" );
+        settype ( $_POST['applet_include'], "integer" );
         settype ( $_POST['applet_output'], "integer" );
         
 
@@ -130,16 +143,30 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
                                     <span class="small">'.$TEXT["admin"]->get("applets_active_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="checkbox" name="applet_active" value="1" '.getchecked ( 1, $_POST['applet_active'] ).'>
+                                    '.$TEXT["admin"]->get("checkbox").'
+                                    <input class="hidden" type="checkbox" name="applet_active" value="1" '.getchecked ( 1, $_POST['applet_active'] ).'>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="config">
+                                    '.$TEXT["page"]->get("applets_include_title").':<br>
+                                    <span class="small">'.$TEXT["page"]->get("applets_include_desc").'</span>
+                                </td>
+                                <td class="config">
+                                    <select name="applet_include">
+                                        <option value="'.INCLUDE_ALWAYS.'" '.getselected(INCLUDE_ALWAYS, $_POST['applet_include']).'>'.$TEXT["page"]->get("applets_include_always").'</option>
+                                        <option value="'.INCLUDE_ONDEMAND.'" '.getselected(INCLUDE_ONDEMAND, $_POST['applet_include']).'>'.$TEXT["page"]->get("applets_include_ondemand").'</option>
+                                    </select>
+                                </td>
+                            </tr> 
                             <tr>
                                 <td class="config">
                                     '.$TEXT["admin"]->get("applets_output_title").':<br>
                                     <span class="small">'.$TEXT["admin"]->get("applets_output_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="checkbox" name="applet_output" value="1" '.getchecked ( 1, $_POST['applet_output'] ).'>
+                                    '.$TEXT["admin"]->get("checkbox").'
+                                    <input class="hidden" type="checkbox" name="applet_output" value="1" '.getchecked ( 1, $_POST['applet_output'] ).'>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -199,11 +226,14 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
             while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
 
                 // get other data
-                $data_arr['active_text'] = ( $data_arr['applet_active'] == 1 ) ? $TEXT["admin"]->get("applet_active") : $TEXT["admin"]->get("applet_not_active");
-                $data_arr['output_text'] = ( $data_arr['applet_output'] == 1 ) ? $TEXT["admin"]->get("applet_output_enabled") : $TEXT["admin"]->get("applet_output_disabled");
+                $data_arr['text'] = array (
+                    (($data_arr['applet_active'] == 1 )  ? $TEXT["admin"]->get("applet_active") : $TEXT["admin"]->get("applet_not_active")),
+                    (($data_arr['applet_include'] == 1 ) ? $TEXT["page"]->get("delete_include_always") : $TEXT["page"]->get("delete_include_ondemand")),
+                    (($data_arr['applet_output'] == 1 )  ? $TEXT["admin"]->get("applet_output_enabled") : $TEXT["admin"]->get("applet_output_disabled"))
+                );
 
                 echo '
-                                    <b>'.killhtml ( $data_arr['applet_file'] ).'.php</b> ('.$data_arr['active_text'].' / '.$data_arr['output_text'].')<br>
+                                    <b>'.killhtml ( $data_arr['applet_file'] ).'.php</b> ('.implode(" / ", $data_arr['text']).')<br>
                 ';
             }
         }
@@ -239,7 +269,7 @@ if ( !isset ( $_POST['applet_id'] ) )
                     <form action="" method="post">
                         <input type="hidden" name="go" value="applets_edit">
                         <table class="configtable select_list" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="4">'.$TEXT["admin"]->get("applet_select_title").'</td></tr>
+                            <tr><td class="line" colspan="5">'.$TEXT["admin"]->get("applet_select_title").'</td></tr>
     ';
 
     // get applets from db
@@ -256,8 +286,9 @@ if ( !isset ( $_POST['applet_id'] ) )
         echo '
                             <tr>
                                 <td class="config">'.$TEXT["admin"]->get("filename").'</td>
-                                <td class="config" width="20">&nbsp;&nbsp;'.$TEXT["admin"]->get("active").'&nbsp;&nbsp;</td>
+                                <td class="config" width="150">'.$TEXT["page"]->get("applets_include_title").'</td>
                                 <td class="config" width="20">&nbsp;&nbsp;'.$TEXT["admin"]->get("output").'&nbsp;&nbsp;</td>
+                                <td class="config" width="20">&nbsp;&nbsp;'.$TEXT["admin"]->get("active").'&nbsp;&nbsp;</td>
                                 <td class="config" width="20"></td>
                             </tr>
         ';
@@ -267,14 +298,16 @@ if ( !isset ( $_POST['applet_id'] ) )
 
             // get other data
             $data_arr['active_text'] = ( $data_arr['applet_active'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no");
+            $data_arr['include_text'] = ( $data_arr['applet_include'] == 1 ) ? $TEXT["page"]->get("applets_include_always") : $TEXT["page"]->get("applets_include_ondemand");
             $data_arr['output_text'] = ( $data_arr['applet_output'] == 1 ) ? $TEXT["admin"]->get("yes") : $TEXT["admin"]->get("no");
 
             echo '
 
                             <tr class="select_entry">
                                 <td class="configthin middle">'.killhtml ( $data_arr['applet_file'] ).'.php</td>
-                                <td class="configthin middle center">'.$data_arr['active_text'].'</td>
+                                <td class="configthin middle left">'.$data_arr['include_text'].'</td>
                                 <td class="configthin middle center">'.$data_arr['output_text'].'</td>
+                                <td class="configthin middle center">'.$data_arr['active_text'].'</td>
                                 <td class="config top center">
                                     <input class="pointer select_box" type="checkbox" name="applet_id[]" value="'.$data_arr['applet_id'].'">
                                 </td>
@@ -286,7 +319,7 @@ if ( !isset ( $_POST['applet_id'] ) )
         echo'
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="right" colspan="4">
+                                <td class="right" colspan="5">
                                     <select class="select_type" name="applet_action" size="1">
                                         <option class="select_one" value="edit" '.getselected( "edit", $_POST['applet_action'] ).'>'.$TEXT["admin"]->get("selection_edit").'</option>
         ';
@@ -297,7 +330,7 @@ if ( !isset ( $_POST['applet_id'] ) )
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="buttontd" colspan="4">
+                                <td class="buttontd" colspan="5">
                                     <button class="button_new" type="submit">
                                         '.$TEXT["admin"]->get("button_arrow").' '.$TEXT["admin"]->get("do_action_button_long").'
                                     </button>
@@ -321,4 +354,6 @@ if ( !isset ( $_POST['applet_id'] ) )
                 </form>
     ';
 }
-?>
+
+
+} ?>

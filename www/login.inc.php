@@ -5,7 +5,7 @@
 $dbc['host'] = "localhost"; //Database Hostname
 $dbc['user'] = "frogsystem"; //Database Username
 $dbc['pass'] = "frogsystem"; //Database User-Password
-$dbc['data'] = "test"; //Database Name
+$dbc['data'] = "fs2"; //Database Name
 $dbc['pref'] = "fs2_"; //Table Prefix
 
 

@@ -271,4 +271,24 @@ function array_real_merge ($arr1, $arr2, $intersect, $symdiff) {
         array_symdiff($arr1, $arr2, $symdiff)
     );
 }
+
+
+
+///////////////////////
+//// debug print_r ////
+///////////////////////
+function print_d ($text, $return = false) {    
+    if ($return) {
+        $string = "<pre>";
+        $string .= print_r($text, true);
+        $string .= "</pre>";
+        return $string;
+    } else {
+        echo "<pre>";
+        print_r($text);
+        echo "</pre>";   
+    }
+}
+
+
 ?>

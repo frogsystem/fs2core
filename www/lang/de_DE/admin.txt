@@ -204,8 +204,8 @@ applets_find_title:                      Suche nach Applets ...
 applets_file_title:                      Dateiname
 applets_file_desc:                       Der Dateiname des Applets ohne die Dateiendung.
 applets_active_title:                    Applet aktivieren
-applets_active_desc:                     De-/Aktiviert die Einbindung der Applet-Datei.
-applets_output_title:                    Ausgabe aktivieren
+applets_active_desc:                     De-/Aktiviert das Applet.
+applets_output_title:                    Ausgabe
 applets_output_desc:                     De-/Aktiviert die Ausgabe von Daten/Inhalt.
 applet_added:                            Applet wurde hinzugefügt
 applet_not_added:                        Applet wurde nicht hinzugefügt

@@ -12,8 +12,7 @@
 </p>
 
 <form method="post">
-  <input type="hidden" name="id" value="{..poll_id..}">
-  <input type="hidden" name="poll" value="1">
+  <input type="hidden" name="poll_id" value="{..poll_id..}">
   <table style="margin-left:-1px; width:100%;"  align="center" cellpadding="1" cellspacing="0">
     <tr>
       <td class="small" colspan="2" align="center">

@@ -1,4 +1,8 @@
 <?php
+// predefined vars:
+// $SCRIPT['argc'] = number of passed arguments
+// $SCRIPT['argv'] = array of passed arguments (index 0 is the name of the applet)
+
 ////////////////////////////
 /// Konfiguration laden ////
 ////////////////////////////
@@ -9,77 +13,60 @@ $config_arr = mysql_fetch_assoc($index);
 ///////////////////////
 /// Load Poll Data ////
 ///////////////////////
-$date = date("U");
-$index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $db);
-$poll_arr = mysql_fetch_assoc($index);
 
-
-//////////////////////////
-//// Display Poll     ////
-//////////////////////////
-
-if (!isset($_POST['poll']) && !checkVotedPoll($poll_arr['poll_id']) && mysql_num_rows($index) > 0) {
-
-    $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $TEXT['frontend']->get("multiple_choise") : $TEXT['frontend']->get("single_choice");
-
-    $index2 = mysql_query("select * from ".$global_config_arr['pref']."poll_answers where poll_id = ".$poll_arr['poll_id']." ORDER BY answer_id ASC", $db);
-    initstr($antworten);
-    while ($answer_arr = mysql_fetch_assoc($index2)) {
-        if ($poll_arr['poll_type'] == 0) {
-            $poll_arr['poll_type2'] = "radio";
-            $poll_arr['poll_type3'] = "";
-        }
-        if ($poll_arr['poll_type'] == 1) {
-            $poll_arr['poll_type2'] = "checkbox";
-            $poll_arr['poll_type3'] = "[]";
-        }
-
-        // Get Template
-        $template = new template();
-        $template->setFile("0_polls.tpl");
-        $template->load("APPLET_POLL_ANSWER_LINE");
-
-        $template->tag("answer_id", $answer_arr['answer_id'] );
-        $template->tag("answer", stripslashes ( $answer_arr['answer'] ) );
-        $template->tag("type", $poll_arr['poll_type2'] );
-        $template->tag("multiple", $poll_arr['poll_type3'] );
-
-        $template = $template->display ();
-        $antworten .= $template;
+//poll id given
+if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
+    try {
+        $poll_arr = $sql->getById("poll", "*", $SCRIPT['argv'][1], "poll_id");
+    } catch (Exception $e) {
     }
 
-    // Get Template
-    $template = new template();
-    $template->setFile("0_polls.tpl");
-    $template->load("APPLET_POLL_BODY");
+// random option    
+} elseif ($SCRIPT['argc'] >= 2 && $SCRIPT['argv'][1] == "random") {
+    $date = time();
+    try {   
+        $poll_ids = $sql->getData("poll", array("poll_id"), array('W' => "`poll_end` > ".$date." AND `poll_start` < ".$date));
+        $filterd_ids = array_filter($poll_ids, function ($poll) {
+            return !checkVotedPoll($poll['poll_id']);
+        });
+        if (count($filterd_ids) == 0)
+            $filterd_ids = $poll_ids;
+        
+        $poll_arr = $sql->getById("poll", "*", $poll_ids[array_rand($filterd_ids)]['poll_id'], "poll_id");
+        $poll_arr['random'] = true;
+    } catch (Exception $e) {
+    }
 
-    $template->tag("poll_id", $poll_arr['poll_id'] );
-    $template->tag("question", $poll_arr['poll_quest'] );
-    $template->tag("answers", $antworten );
-    $template->tag("type", $poll_arr['poll_type_text'] );
-
-    $template = $template->display ();
+// last poll
+} else {
+    $date = time();
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC, poll_id DESC LIMIT 0,1 ", $db);
+    $poll_arr = mysql_fetch_assoc($index);
 }
 
 
 //////////////////////////
 //// View Result      ////
 //////////////////////////
-
-elseif ( ( isset($_POST['poll']) &&  isset($_POST['id']) ) || checkVotedPoll($poll_arr['poll_id']))
+if ((isset($_POST['poll_id']) && ($_POST['poll_id'] == $poll_arr['poll_id'] || $poll_arr['random'] === true))
+    || checkVotedPoll($poll_arr['poll_id'])
+    || time() > $poll_arr['poll_end']
+)
 {
-    if ( isset($_POST['poll']) &&  isset($_POST['id']) ) {
-        $poll_arr['poll_id'] = $_POST['id'];
+    if ($poll_arr['random'] === true && isset($_POST['poll_id'])) {
+        $poll_arr['poll_id'] = $_POST['poll_id'];
+        settype($poll_arr['poll_id'], "integer");
     }
+    
     $voted = checkVotedPoll($poll_arr['poll_id']);
-                
-    settype($poll_arr['poll_id'], 'integer');
     $voter_ip = $_SERVER['REMOTE_ADDR'];
 
-    $date = date("U");
+    $date = time();
     $index = mysql_query("select * from ".$global_config_arr['pref']."poll where poll_id = ".$poll_arr['poll_id']."", $db);
     $poll_arr = mysql_fetch_assoc($index);
-
+    
+    echo "fuer ".$_POST['answer'];
+    // Yay! New vote
     if ($poll_arr['poll_end'] > $date && $voted == false)
     {
         if ($poll_arr['poll_type'] == 0)
@@ -169,6 +156,53 @@ elseif ( ( isset($_POST['poll']) &&  isset($_POST['id']) ) || checkVotedPoll($po
 
 
 //////////////////////////
+//// Display Poll     ////
+//////////////////////////
+elseif (!checkVotedPoll($poll_arr['poll_id']) && !empty($poll_arr)) {
+
+    $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $TEXT['frontend']->get("multiple_choise") : $TEXT['frontend']->get("single_choice");
+
+    $index2 = mysql_query("select * from ".$global_config_arr['pref']."poll_answers where poll_id = ".$poll_arr['poll_id']." ORDER BY answer_id ASC", $db);
+    initstr($antworten);
+    while ($answer_arr = mysql_fetch_assoc($index2)) {
+        if ($poll_arr['poll_type'] == 0) {
+            $poll_arr['poll_type2'] = "radio";
+            $poll_arr['poll_type3'] = "";
+        }
+        if ($poll_arr['poll_type'] == 1) {
+            $poll_arr['poll_type2'] = "checkbox";
+            $poll_arr['poll_type3'] = "[]";
+        }
+
+        // Get Template
+        $template = new template();
+        $template->setFile("0_polls.tpl");
+        $template->load("APPLET_POLL_ANSWER_LINE");
+
+        $template->tag("answer_id", $answer_arr['answer_id'] );
+        $template->tag("answer", stripslashes ( $answer_arr['answer'] ) );
+        $template->tag("type", $poll_arr['poll_type2'] );
+        $template->tag("multiple", $poll_arr['poll_type3'] );
+
+        $template = $template->display ();
+        $antworten .= $template;
+    }
+
+    // Get Template
+    $template = new template();
+    $template->setFile("0_polls.tpl");
+    $template->load("APPLET_POLL_BODY");
+
+    $template->tag("poll_id", $poll_arr['poll_id'] );
+    $template->tag("question", $poll_arr['poll_quest'] );
+    $template->tag("answers", $antworten );
+    $template->tag("type", $poll_arr['poll_type_text'] );
+
+    $template = $template->display ();
+}
+
+
+//////////////////////////
 //// No active poll   ////
 //////////////////////////
 else {
@@ -178,4 +212,9 @@ else {
     $template->load("APPLET_NO_POLL");
     $template = $template->display ();
 }
+
+
+echo $template;
+unset($template);
+
 ?>

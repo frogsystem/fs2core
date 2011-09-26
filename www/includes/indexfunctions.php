@@ -317,203 +317,298 @@ function get_content ($GOTO)
     return $template;
 }
 
+
+////////////////////////////////////
+//// Jnit Template Replacements ////
+////////////////////////////////////
+function tpl_functions_init ($TEMPLATE)
+{
+    global $global_config_arr, $sql, $NAV, $APP;
+    
+    // data arrays
+    $NAV = array();
+    $APP = load_applets();
+    
+    // Snippets
+    $SNP = array();
+
+    return tpl_functions($TEMPLATE, $global_config_arr['system']['var_loop']);
+}
+
 ///////////////////////////////
 //// Template Replacements ////
 ///////////////////////////////
-function tpl_replacements ($TEMPLATE)
+function tpl_functions ($TEMPLATE, $COUNT)
 {
     global $global_config_arr, $sql;
-    global $APP, $SNP, $NAV;
     
-    $APP = load_applets();
-    $SNP = load_snippets();
-    $NAV = load_navigations(); 
-
-    $TEMPLATE = replace_x($TEMPLATE, $global_config_arr['system']['var_loop']);
-    $TEMPLATE = replace_x_chars($TEMPLATE);
-    $TEMPLATE = replace_globalvars($TEMPLATE);
+    // hardcoded functions
+    // this is the only way atm
+    $functions = array(
+        'APP'   => array("tpl_func_applets",        true),
+        'NAV'   => array("tpl_func_navigations",    true),
+        'DATE'  => array("tpl_func_date",           false),
+        'VAR'   => array("tpl_func_globalvars",     false),
+    );
+    //Snippet
+    $snippet_functions = array(
+        'SNP'   => array("tpl_func_snippets",       true)
+    );
+    
+    
+    // Set Pattern and Replacment Code
+    $PATTERN = array(
+        '/\$('.implode("|", array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/e',
+        '/\[%(.*?)%\]/e',
+    );
+    
+    $REPLACEMENT = array(
+        'call_tpl_function($functions, $COUNT, array(\'$1\', \'$0\', \'$2\', \'$3\'));',
+        'call_tpl_function($snippet_functions, $COUNT, array("SNP", "$0", "$1", ""));',
+    );
+    
+    // Replace Functions with computed values
+    $TEMPLATE = preg_replace($PATTERN, $REPLACEMENT, $TEMPLATE);
     
     return $TEMPLATE;
 }
 
 
-///////////////////////////////
-//// Replace X in Template ////
-///////////////////////////////
-function replace_x ($TEMPLATE, $COUNT)
+function call_tpl_function ($functions, $COUNT, $called_function)
 {
-    $TEMPLATE = replace_applets($TEMPLATE, $COUNT);
-    $TEMPLATE = replace_navigations($TEMPLATE, $COUNT);
-    $TEMPLATE = replace_snippets($TEMPLATE, $COUNT);
-    return $TEMPLATE;
+    // call function with arguments
+    $replacement = call_user_func($functions[$called_function[0]][0], $called_function[1], $called_function[2], $called_function[3]);
+
+    // only for recursive functions & recursion-counter > 0  
+    if($functions[$called_function[0]][1] && $COUNT > 0) {
+        $replacement = tpl_functions($replacement, $COUNT-1);
+    } else {
+        $replacement = escape_tpl_functions($replacement, $functions);
+    }
+    return $replacement;
 }
+
 
 /////////////////////////////////////////
 //// Replace all special chars for X ////
 //// in Templates with htmlentities  ////
 /////////////////////////////////////////
-function replace_x_chars ($TEMPLATE)
+function escape_tpl_functions ($TEMPLATE, $FUNCTIONS)
 {
-    $TEMPLATE = str_replace('$APP(', '&#x24;APP&#x28;', $TEMPLATE);
-    $TEMPLATE = str_replace('$NAV(', '&#x24;NAV&#x28;', $TEMPLATE);
-    $TEMPLATE = str_replace('[%', '&#x5B;&#x25;', $TEMPLATE);
-    $TEMPLATE = str_replace('%]', '&#x25;&#x5D;', $TEMPLATE);
+    $PATTERNS = array(
+        '/\[%/',
+        '/%\]/',
+        '/\$('.implode("|", array_keys($FUNCTIONS)).')\(/',
+    );
+    
+    $REPLACEMENTS = array(
+        '&#x5B;&#x25;',
+        '&#x25;&#x5D;',
+        '&#x24;$1&#x28;'
+    );
 
-    return $TEMPLATE;
+    return preg_replace($PATTERNS, $REPLACEMENTS, $TEMPLATE);
 }
 
 //////////////////////
 //// Load Applets ////
 //////////////////////
-function load_applets ()
+function load_applets()
 {
     global $global_config_arr, $sql, $db, $TEXT;
 
     // Load Applets from DB
-    $data = $sql->get("applets", array("applet_file", "applet_output"), array('W' => "`applet_active` = 1"));
-    $ld = $data['data'];
+    $applet_data = $sql->getData("applets", array("applet_include", "applet_file", "applet_output"), array('W' => "`applet_active` = 1"));
 
     // Write Applets into Array & get Applet Template
     initstr($template);
-    foreach ($ld as $ldk => $lde) {
+    $new_applet_data = array();
+    foreach ($applet_data as $key => $entry) {
         // prepare data
-        $lde['applet_file'] = stripslashes($lde['applet_file']).".php";
-        settype($lde['applet_output'], "integer");
+        $entry['applet_file'] .= ".php";
+        settype($entry['applet_output'], "boolean");
         
         // include applets & load template
-        include_once(FS2_ROOT_PATH."applets/".$lde['applet_file']);
-        $lde['applet_template'] = $template;
-        initstr($template);
-
-        $ld[$ldk] = $lde;
+        if ($entry['applet_include'] == 1) {
+            $entry['applet_template'] = load_a_applet($entry['applet_file'], $entry['applet_output'], array());
+        }
+        
+        $new_applet_data[$entry['applet_file']] = $entry;
     }
 
     // Return Content
-    return $ld;
+    return $new_applet_data;
+}
+
+//////////////////////
+//// Load Applets ////
+//////////////////////
+function load_a_applet($file, $output, $args) {
+    
+    global $global_config_arr, $sql, $db, $TEXT;
+    
+    // Setup $SCRIPT Var
+    unset($SCRIPT);
+    $SCRIPT['argc'] = array_unshift($args, $file);
+    $SCRIPT['argv'] = $args;
+    
+    // set empty str
+    initstr($template);
+
+    //start output buffering
+    ob_start();
+    
+    // include applet & load template
+    try {
+        include(FS2_ROOT_PATH."applets/".$file);
+    } catch (Exception $e) {}
+    
+    //end & clean output buffering
+    $return_data = ob_get_clean();
+    
+    //create return value
+    if ($output) {
+        return($return_data.$template);
+    }
+    return "";
 }
 
 
 //////////////////////////
-//// Load Navigations ////
+//// Replace Snippets ////
 //////////////////////////
-function load_navigations ()
+function tpl_func_snippets($original, $main_argument, $other_arguments)
 {
-    global $global_config_arr;
+    global $SNP, $global_config_arr, $sql;
 
-    $STYLE_PATH = "styles/".$global_config_arr['style']."/";
-    
-    // Write Navigations into Array
-    $ACCESS = new fileaccess();
-    $files = scandir_ext(FS2_ROOT_PATH . $STYLE_PATH, "nav");
-    $NAV = array();
-    foreach ($files as $file) {
-        $template = $ACCESS->getFileData(FS2_ROOT_PATH.$STYLE_PATH.$file);
-        $NAV[] = array('file' => $file, 'template' => $template);
+    // Load Navigation on demand
+    if (!isset($SNP[$main_argument])) {
+        // Get Snippet and write into Array
+        $data = $sql->getRow("snippets", array("snippet_tag","snippet_text"), array('W' => "`snippet_tag` = '".$original."' AND `snippet_active` =  1"));
+        
+        // Snippet not found?
+        if (empty($data)) {
+            //$data['snippet_text'] = "Error: Snippet not found!";
+            $data['snippet_text'] = $original;
+        }
+            
+        $SNP[$main_argument] = $data['snippet_text'];
     }
-
+    
     // Return Content
-    return $NAV;
-}
-
-///////////////////////
-//// Load Snippets ////
-///////////////////////
-function load_snippets ()
-{
-    global $global_config_arr, $sql;
-    
-    // Load Snippets from DB
-    $data = $sql->get("snippets", array("snippet_tag","snippet_text"), array('W' => "`snippet_active` =  1"));
-    $ld = $data['data'];
-    
-    // Write Snippets into Array
-    foreach ($ld as $ldk => $lde) {
-        $lde['snippet_text'] = stripslashes($lde['snippet_text']);
-        $lde['snippet_tag'] = stripslashes($lde['snippet_tag']);
-        $ld[$ldk] = $lde;
-    }
-
-    return $ld;
+    return $SNP[$main_argument];
 }
 
 
 /////////////////////////
 //// Replace Applets ////
 /////////////////////////
-function replace_applets ($TEMPLATE, $COUNT)
+function tpl_func_applets($original, $main_argument, $other_arguments)
 {
     global $APP, $global_config_arr, $sql, $db, $TEXT;
     
-    // Replace active Applets in $TEMPLATE
-    foreach ($APP as $applet) {
-        if ($applet['applet_output'] === 1) {
-            $search = '$APP('.$applet['applet_file'].')';
-            if ($COUNT > 0 && strpos($TEMPLATE, $search) !== false) {
-                $TEMPLATE = str_replace($search, replace_x($applet['applet_template'], $COUNT-1), $TEMPLATE);
-            }
-        }
+    // Applet does not exists
+    if (!isset($APP[$main_argument])) {
+        //return "Error: Applet not found!";
+        return $original;
     }
-
-    // Return Content
-    return $TEMPLATE;
+    
+    // compute Arguments
+    if (!empty($other_arguments)) {
+        $other_arguments = explode(" ", $other_arguments);
+    } else {
+        $other_arguments = array();
+    }
+        
+    // Maybe load Applet on demand
+    if ($APP[$main_argument]['applet_include'] != 1 || count($other_arguments) > 0) {   
+        // Return Content
+        return load_a_applet($main_argument, $APP[$main_argument]['applet_output'], $other_arguments);
+    } else {
+        // Return Content
+        return $APP[$main_argument]['applet_template'];
+    }
 }
+
 
 /////////////////////////////
 //// Replace Navigations ////
 /////////////////////////////
-function replace_navigations ($TEMPLATE, $COUNT)
+function tpl_func_navigations($original, $main_argument, $other_arguments)
 {
     global $NAV, $global_config_arr;
 
-    // Replace Navigations in $TEMPLATE
-    foreach ($NAV as $navi) {
-        $search = '$NAV('.$navi['file'].')';
-        if ($COUNT > 0 && strpos($TEMPLATE, $search ) !== false) {
-            $TEMPLATE = str_replace($search , replace_x($navi['template'], $COUNT-1), $TEMPLATE);
+    // Load Navigation on demand
+    if (!isset($NAV[$main_argument])) {
+        // Write navigation into Array
+        $STYLE_PATH = "styles/".$global_config_arr['style']."/";
+        $ACCESS = new fileaccess();
+        $template = $ACCESS->getFileData(FS2_ROOT_PATH.$STYLE_PATH.$main_argument);
+        
+        // File not found?
+        if ($template === false) {
+            //$template = "Error: Navi File not found!";
+            $template = $original;
         }
+            
+        $NAV[$main_argument] = $template;
     }
-
+    
     // Return Content
-    return $TEMPLATE;
+    return $NAV[$main_argument];
 }
-
-//////////////////////////
-//// Replace Snippets ////
-//////////////////////////
-function replace_snippets ($TEMPLATE, $COUNT)
-{
-    global $SNP, $global_config_arr;
-
-    // Replace active Snippets in $TEMPLATE
-    foreach ($SNP as $snippet) {
-        if ($COUNT > 0 && strpos($TEMPLATE, $snippet['snippet_tag']) !== false) {
-            $TEMPLATE = str_replace($snippet['snippet_tag'], replace_x($snippet['snippet_text'], $COUNT-1), $TEMPLATE);
-        }
-    }
-    // Return Content
-    return $TEMPLATE;
-}
-
 
 //////////////////////////////////
 //// Replace Global Variables ////
 //////////////////////////////////
-function replace_globalvars ($TEMPLATE)
+function tpl_func_globalvars($original, $main_argument, $other_arguments)
 {
     global $global_config_arr;
-
-    $TEMPLATE = str_replace('$VAR(url)', $global_config_arr['virtualhost'], $TEMPLATE);
-    $TEMPLATE = str_replace('$VAR(style_url))', $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/", $TEMPLATE);
-    $TEMPLATE = str_replace('$VAR(style_images)', $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/images/", $TEMPLATE);
-    $TEMPLATE = str_replace('$VAR(style_icons)', $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/", $TEMPLATE);
-    $TEMPLATE = str_replace('$VAR(page_title)', $global_config_arr['title'], $TEMPLATE);
-    $TEMPLATE = str_replace('$VAR(page_dyn_title)', get_title(), $TEMPLATE);
-    $TEMPLATE = str_replace('$VAR(date)', date_loc($global_config_arr['date'], time()), $TEMPLATE);
-    $TEMPLATE = str_replace('$VAR(time)', date_loc($global_config_arr['time'], time()), $TEMPLATE);
-    $TEMPLATE = str_replace('$VAR(date_time)', date_loc($global_config_arr['datetime'], time()), $TEMPLATE);
-
-    return $TEMPLATE;
+        
+    // hardcoded list of global vars
+    $var_data = array (
+        'url'                           => $global_config_arr['virtualhost'],
+        'style_url'                     => $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/",
+        'style_images'                  => $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/images/",
+        'style_icons'                   => $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/",
+        'page_title'                    => $global_config_arr['title'],
+        'page_dyn_title'                => get_title(),
+        'date'                          => date_loc($global_config_arr['date'], time()),
+        'time'                          => date_loc($global_config_arr['time'], time()),
+        'page_dyndate_time_title'       => date_loc($global_config_arr['datetime'], time()),
+    );
+    
+    //set error msg
+    //$error = "Error: Unknown global Var!";
+    $error = $original;
+    
+    
+    //return var or false
+    return (isset($var_data[$main_argument])) ? $var_data[$main_argument] : $error;
 }
+
+/////////////////////////////////////
+//// Template Function for Dates ////
+/////////////////////////////////////
+function tpl_func_date($original, $main_argument, $other_arguments)
+{
+    // current timestamp if no other timestamp is passed
+    if (empty($other_arguments))
+        $other_arguments = time();
+            
+    //return var or false
+    return date_loc($main_argument, intval($other_arguments));
+}
+
+
+
+
+
+
+
+
+
+
 
 
 ///////////////////

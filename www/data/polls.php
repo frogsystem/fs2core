@@ -31,7 +31,7 @@ if ( $_GET['id'] ) {
 
     $poll_arr[poll_start] = date_loc ( $global_config_arr['date'] , $poll_arr[poll_start]);
     $poll_arr[poll_end] = date_loc ( $global_config_arr['date'] , $poll_arr[poll_end]);
-    $poll_arr[poll_type] = ( $poll_arr[poll_type] == 1 ) ? $phrases[multiple_choise] : $phrases[single_choice];
+    $poll_arr[poll_type] = ( $poll_arr[poll_type] == 1 ) ? $TEXT['frontend']->get('multiple_choise') : $TEXT['frontend']->get('single_choice');
     // all votes
     $index = mysql_query ( "
                             SELECT SUM(`answer_count`) AS 'all_votes'
@@ -130,7 +130,7 @@ else {
         $poll_arr[poll_url] = "?go=polls&id=" . $poll_arr['poll_id'];
         $poll_arr[poll_start] = date_loc ( $global_config_arr['date'] , $poll_arr[poll_start] );
         $poll_arr[poll_end] = date_loc ( $global_config_arr['date'] , $poll_arr[poll_end] );
-        $poll_arr[poll_type] = ( $poll_arr[poll_type] == 1 ) ? $phrases[multiple_choise] : $phrases[single_choice];
+        $poll_arr[poll_type] = ( $poll_arr[poll_type] == 1 ) ? $TEXT['frontend']->get('multiple_choise') : $TEXT['frontend']->get('single_choice');
 
         // all votes
         $index2 = mysql_query ( "

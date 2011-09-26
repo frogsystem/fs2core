@@ -9,13 +9,15 @@
     $APP(mini-search.php)
     $NAV(left.nav)
     [%feeds%]
+    $DATE(d.m.Y H:i \U\h\r)<br>
+    $DATE(Y-m-d[1216908484])
     </div>
     
     <div id="menu_right">
       $APP(user-menu.php)
       $APP(preview-image.php)
       $APP(shop-system.php)      
-      $APP(poll-system.php)
+      $APP(poll-system.php[random])
       $APP(affiliates.php)
       $APP(mini-statistics.php)
     </div>
