@@ -4,7 +4,7 @@ $index = mysql_query ( "
                         SELECT *
                         FROM `".$global_config_arr['pref']."screen_random_config`
                         WHERE `id` = 1
-", $db);
+", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 // Load Config Array
@@ -12,7 +12,7 @@ $index = mysql_query ( "
                         SELECT *
                         FROM `".$global_config_arr['pref']."screen_config`
                         WHERE `id` = 1
-", $db);
+", $FD->sql()->conn() );
 $config_arr = array_merge ( (array)$config_arr, (array)mysql_fetch_assoc ( $index ) );
 
 // Check System

@@ -58,7 +58,7 @@ if (
                                             dl_id = '".$_POST['dl_id']."'
                          WHERE
                                                  video_id = '".$_POST['video_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
 
     $message = "Video bearbeitet";
 
@@ -89,7 +89,7 @@ elseif (
                                                          video_id = '".$_POST['video_id']."'
                                                 LIMIT
                                                     1
-                ", $db );
+                ", $FD->sql()->conn() );
                 
                 $message = "Video wurde gelöscht";
 
@@ -125,7 +125,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                                         SELECT *
                                                                         FROM ".$global_config_arr['pref']."player
                                                                         WHERE video_id = '".$_POST['video_id']."'
-                        ", $db );
+                        ", $FD->sql()->conn() );
                     $video_arr = mysql_fetch_assoc ( $index );
                         putintopost ( $video_arr );
                         switch ( $_POST['video_type'] ) {
@@ -297,7 +297,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                                 FROM ".$global_config_arr['pref']."dl D, ".$global_config_arr['pref']."dl_cat AS C
                                                                 WHERE D.cat_id = C.cat_id
                                                                 ORDER BY D.dl_name ASC
-                ", $db );
+                ", $FD->sql()->conn() );
                 while ( $dl_arr = mysql_fetch_assoc ( $index ) )
                 {
                         settype ( $dl_arr['dl_id'], "integer" );
@@ -329,7 +329,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                                 FROM ".$global_config_arr['pref']."player
                                                                 WHERE video_id = '".$_POST['video_id']."'
                                                                 LIMIT 0,1
-                ", $db );
+                ", $FD->sql()->conn() );
                 $video_arr = mysql_fetch_assoc ( $index );
 
                         // Create Link and Source
@@ -404,7 +404,7 @@ else
         ';
 
         // Get Videos from DB
-        $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."player ORDER BY video_title", $db );
+        $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."player ORDER BY video_title", $FD->sql()->conn() );
 
         if ( mysql_num_rows ( $index ) > 0 ) {
                 // display table head

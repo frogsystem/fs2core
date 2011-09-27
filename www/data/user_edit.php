@@ -8,7 +8,7 @@ $index = mysql_query ( "
     SELECT *
     FROM `".$global_config_arr['pref']."user_config`
     WHERE `id` = '1'
-", $db );
+", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 //////////////////////
@@ -54,7 +54,7 @@ if (
             `user_yim` = '".savesql ( $_POST['user_yim'] )."',
             `user_skype` = '".savesql ( $_POST['user_skype'] )."'
         WHERE `user_id` = '".$_SESSION['user_id']."'
-    ", $db);
+    ", $FD->sql()->conn() );
     $message .= $TEXT['frontend']->get("user_profile_updated");
 
     // Save New Password
@@ -63,7 +63,7 @@ if (
             SELECT `user_name`, `user_password`, `user_salt`
             FROM `".$global_config_arr['pref']."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         $old_password = mysql_result($index, 0, "user_password");
         $user_salt = mysql_result($index, 0, "user_salt");
         $user_name = mysql_result($index, 0, "user_name");
@@ -86,7 +86,7 @@ if (
                     SET `user_password` = '".$md5_password."',
                         `user_salt` = '".$new_salt."'
                     WHERE `user_id` = '".$_SESSION['user_id']."'
-                ", $db);
+                ", $FD->sql()->conn() );
                 $message .= "<br>".$TEXT['frontend']->get("user_password_changed");
                 
                 // Update Cookie
@@ -137,7 +137,7 @@ else {
             SELECT *
             FROM `".$global_config_arr['pref']."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
 
         if ( mysql_num_rows ( $index ) > 0 ) {
             $user_arr = mysql_fetch_assoc ( $index );

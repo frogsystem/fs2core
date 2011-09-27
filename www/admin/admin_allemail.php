@@ -7,6 +7,7 @@
 if ( TRUE
     && ( $_POST['signup'] && $_POST['signup'] != "" )
     && ( $_POST['change_password'] && $_POST['change_password'] != "" )
+    && !empty($_POST['change_password_ack'])
     && ( $_POST['use_admin_mail'] == 1 || ( $_POST['use_admin_mail'] == 0 && $_POST['email'] != "" ) )
    )
 {
@@ -16,6 +17,7 @@ if ( TRUE
 
     $_POST['signup'] = savesql ( $_POST['signup'] );
     $_POST['change_password'] = savesql ( $_POST['change_password'] );
+    $_POST['change_password_ack'] = savesql ( $_POST['change_password_ack'] );
     #$_POST['delete_account'] = savesql ( $_POST['delete_account'] );
     $_POST['email'] = savesql ( $_POST['email'] );
     
@@ -25,11 +27,12 @@ if ( TRUE
                     SET
                         `signup` = '".$_POST['signup']."',
                         `change_password` = '".$_POST['change_password']."',
+                        `change_password_ack` = '".$_POST['change_password_ack']."',
                         `use_admin_mail` = '".$_POST['use_admin_mail']."',
                         `email` = '".$_POST['email']."',
                         `html` = '".$_POST['html']."'
                     WHERE `id` = '1'
-    ", $db );
+    ", $sql->conn() );
 
     // system messages
     systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
@@ -54,7 +57,7 @@ if ( TRUE )
                                 SELECT *
                                 FROM ".$global_config_arr['pref']."email
                                 WHERE `id` = '1'
-        ", $db);
+        ", $sql->conn());
         $email_arr = mysql_fetch_assoc($index);
         putintopost ( $email_arr );
     }
@@ -65,6 +68,7 @@ if ( TRUE )
 
     $_POST['signup'] = killhtml ( $_POST['signup'] );
     $_POST['change_password'] = killhtml ( $_POST['change_password'] );
+    $_POST['change_password_ack'] = killhtml ( $_POST['change_password_ack'] );
     #$_POST['delete_account'] = killhtml ( $_POST['delete_account'] );
     $_POST['email'] = killhtml ( $_POST['email'] );
     
@@ -151,6 +155,26 @@ if ( TRUE )
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
+                                <td class="config" colspan="2">
+                                    '.$TEXT['page']->get("change_password_ack_title").'<br />
+                                    <font class="small">'.$TEXT['page']->get("change_password_ack_desc").'</font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config">
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$admin_phrases[common][valid_tags].':</b></span>
+                                    <span class="small">
+                                        '.insert_tt("{..user_name..}",$admin_phrases[general][email_username],"change_password_ack").'
+                                        '.insert_tt("{..new_password_url...}",$TEXT['page']->get("new_password_url"),"change_password_ack").'
+                                    </span>
+                                </td>
+                                <td class="config">
+                                    '.create_editor("change_password_ack", $_POST['change_password_ack'], "100%", "200px", "", FALSE).'
+                                </td>
+                            </tr>     
+                            <tr><td class="space"></td></tr>                       
+
+                            <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
                                         '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
@@ -163,7 +187,6 @@ if ( TRUE )
 }
 
 /*
-                            <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config" colspan="2">
                                     '.$admin_phrases[general][email_delete_title].'<br />
@@ -182,6 +205,7 @@ if ( TRUE )
                                 <td class="config">
                                     '.create_editor("delete_account", $_POST['delete_account'], "100%", "200px", "", FALSE).'
                                 </td>
-                            </tr>
+                            </tr>     
+                            <tr><td class="space"></td></tr>     
 */
 ?>

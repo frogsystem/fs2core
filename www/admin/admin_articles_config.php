@@ -42,7 +42,7 @@ if (
                      	`acp_view` = '".$_POST['acp_view']."'
                  	WHERE
 					 	`id` = '1'
-	", $db );
+	", $FD->sql()->conn() );
 	
 	// system messages
     systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
@@ -67,7 +67,7 @@ if ( TRUE )
 								SELECT *
 								FROM ".$global_config_arr['pref']."articles_config
 								WHERE `id` = '1'
-		", $db);
+		", $FD->sql()->conn() );
 	    $config_arr = mysql_fetch_assoc($index);
 	    putintopost ( $config_arr );
 	}

@@ -2,11 +2,11 @@
 function user_login ( $username, $password, $iscookie )
 {
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_name = '".$username."'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_name = '".$username."'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0) {
         $_GET['go'] = "login";
@@ -44,11 +44,11 @@ function user_login ( $username, $password, $iscookie )
 function set_cookie ( $username, $password )
 {
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name = '$username'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -95,11 +95,11 @@ function logout_user()
 //// Do Cookie Stuff ////
 /////////////////////////
 if ( isset($_POST['login']) && $_POST['login'] == 1 ) {
-    $global_config_arr['login_state'] = user_login ( $_POST['username'], $_POST['userpassword'], FALSE );
+    $FD->setConfig('login_state', user_login ( $_POST['username'], $_POST['userpassword'], FALSE));
 } elseif ( isset($_COOKIE['login']) && $_GET['go'] != "logout" && $_SESSION['user_level'] != "loggedin") {
     $userpassword = substr ( $_COOKIE['login'], 0, 32 );
     $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
-    $global_config_arr['login_state'] = user_login ( $username, $userpassword, TRUE );
+    $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));
 }
 
 if ( isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $global_config_arr['login_state'] == 0 ) {

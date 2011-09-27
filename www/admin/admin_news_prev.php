@@ -69,7 +69,7 @@
     else {
 
         // Get News Config
-        $index = mysql_query("SELECT * FROM `".$global_config_arr['pref']."news_config` WHERE `id` = '1'", $db);
+        $index = mysql_query("SELECT * FROM `".$global_config_arr['pref']."news_config` WHERE `id` = '1'", $FD->sql()->conn() );
         $config_arr = mysql_fetch_assoc($index);
 
         // Load Data from $_POST
@@ -112,7 +112,7 @@
 
         // Kategorie lesen
         settype($_POST['news_cat_id'], "integer");
-        $index = mysql_query("SELECT `cat_name`, `cat_id` FROM `".$global_config_arr['pref']."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'", $db);
+        $index = mysql_query("SELECT `cat_name`, `cat_id` FROM `".$global_config_arr['pref']."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'", $FD->sql()->conn() );
         $cat_arr = mysql_fetch_assoc($index);
         if (!empty($cat_arr)) {
 			$cat_arr['cat_name'] = killhtml($cat_arr['cat_name']);

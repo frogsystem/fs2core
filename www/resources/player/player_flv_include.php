@@ -2,7 +2,7 @@
 
 function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true ) {
 
-    global $global_config_arr, $db, $sql;
+    global $global_config_arr, $FD, $sql;
 
     $template_own = '
     <object type="application/x-shockwave-flash" data="'.$global_config_arr['virtualhost'].'resources/player/player_flv_maxi.swf" width="{..width..}" height="{..height..}">
@@ -44,7 +44,7 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true ) {
                                 FROM ".$global_config_arr['pref']."player
                                 WHERE video_id = '".$MULTI."'
                                 LIMIT 0,1
-        ", $db );
+        ", $FD->sql()->conn() );
         if ( mysql_num_rows ( $index ) == 1 ) {
             $video_arr = mysql_fetch_assoc ( $index );
 

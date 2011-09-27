@@ -2,7 +2,7 @@
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config", $db );
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 $show_form = TRUE;
 
@@ -38,13 +38,13 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
                             SELECT COUNT(`user_id`) AS 'number'
                             FROM ".$global_config_arr['pref']."user
                             WHERE user_name = '".$_POST['user_name']."'
-    ", $db);
+    ", $FD->sql()->conn() );
     $existing_users = mysql_result ( $index, 0, "number" );
     $index = mysql_query ( "
                             SELECT COUNT(`user_id`) AS 'number'
                             FROM ".$global_config_arr['pref']."user
                             WHERE user_mail = '".$_POST['user_mail']."'
-    ", $db);
+    ", $FD->sql()->conn() );
     $existing_mails = mysql_result ( $index, 0, "number" );
     
     // get error message
@@ -95,11 +95,11 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
                             '".$_POST['user_mail']."',
                             '".$regdate."'
                         )
-        ", $db );
+        ", $FD->sql()->conn() );
         
-        $index = mysql_query ( "SELECT COUNT(`user_id`) AS `user_number` FROM ".$global_config_arr['pref']."user", $db );
+        $index = mysql_query ( "SELECT COUNT(`user_id`) AS `user_number` FROM ".$global_config_arr['pref']."user", $FD->sql()->conn() );
         $new_user_num = mysql_result ( $index, 0, "user_number" );
-        mysql_query ( "UPDATE `".$global_config_arr['pref']."counter` SET `user` = '".$new_user_num."'", $db );
+        mysql_query ( "UPDATE `".$global_config_arr['pref']."counter` SET `user` = '".$new_user_num."'", $FD->sql()->conn() );
         
         $messages = forward_message ( $TEXT['frontend']->get("systemmessage"), $TEXT['frontend']->get("user_registered").$email_message, "?go=login" );
         

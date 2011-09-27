@@ -18,7 +18,7 @@ if (isset($_POST['sended']))
         if ($_FILES['img'.$i]['name'] != "") {
             // Insert into DB
             $title = savesql($_POST['title'.$i]);
-            mysql_query("INSERT INTO ".$global_config_arr['pref']."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $db);
+            mysql_query("INSERT INTO ".$global_config_arr['pref']."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $FD->sql()->conn() );
             $id = mysql_insert_id();
             
             // File Operations
@@ -70,7 +70,7 @@ echo'
                                 <td class="config">
                                     <select class="input_width" name="catid">
 ';
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $FD->sql()->conn() );
 while ($cat_arr = mysql_fetch_assoc($index))
 {
     echo'

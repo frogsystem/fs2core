@@ -4,7 +4,7 @@
 ///////////////////////
 
 // Create News-Config-Array
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config", $db );
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_config", $FD->sql()->conn() );
 $news_config_arr = mysql_fetch_assoc ( $index );
 $showdefault = TRUE;
 
@@ -34,9 +34,9 @@ if (
 						'".$cat_date."',
 						'".$_POST['cat_user']."'
 					)
-	", $db );
+	", $FD->sql()->conn() );
     $message = $admin_phrases[news][new_cat_added];
-	$id = mysql_insert_id ( $db );
+	$id = mysql_insert_id ( $FD->sql()->conn() );
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != "" ) {
@@ -52,7 +52,7 @@ if (
 
 	// Set Vars
 	$_POST['cat_action'] = "edit";
-	$_POST['cat_id'] = mysql_insert_id ( $db );
+	$_POST['cat_id'] = mysql_insert_id ( $FD->sql()->conn() );
 }
 
 // Update Category
@@ -87,7 +87,7 @@ elseif (
                      	cat_user 			= '".$_POST['cat_user']."'
                  	WHERE
 					 	cat_id 				= '".$_POST['cat_id']."'
-	", $db );
+	", $FD->sql()->conn() );
     $message = $admin_phrases[common][changes_saved];
 
 	// Image-Operations
@@ -133,14 +133,14 @@ elseif (
 						 	cat_id 				= '".$_POST['cat_move_to']."'
             	     	WHERE
 						 	cat_id 				= '".$_POST['cat_id']."'
-		", $db );
+		", $FD->sql()->conn() );
 
 		// MySQL-Delete-Query
     	mysql_query ("
 						DELETE FROM ".$global_config_arr['pref']."news_cat
                  		WHERE
 						 	cat_id 				= '".$_POST['cat_id']."'
-		", $db );
+		", $FD->sql()->conn() );
 		$message = $admin_phrases[news][cat_deleted];
 
 		// Delete Category Image
@@ -174,7 +174,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 	{
 	
 		// Load Data from DB
-		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = '".$_POST['cat_id']."'", $db );
+		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = '".$_POST['cat_id']."'", $FD->sql()->conn() );
 		$cat_arr = mysql_fetch_assoc ( $index );
 
 		// Display Error Messages
@@ -188,7 +188,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 		$cat_arr['cat_description'] = killhtml ( $cat_arr['cat_description'] );
 
     	// Get User
-    	$index = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = '".$cat_arr['cat_user']."'", $db );
+    	$index = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = '".$cat_arr['cat_user']."'", $FD->sql()->conn() );
     	$cat_arr['cat_username'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
 
 		// Create Date-Arrays
@@ -304,12 +304,12 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 	// Delete Category
 	elseif ( $_POST['cat_action'] == "delete" )
 	{
-		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $db );
+		$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat", $FD->sql()->conn() );
 
 		// Not Last Category
 		if ( mysql_num_rows ( $index ) > 1 ) {
 
-			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = '".$_POST['cat_id']."'", $db );
+			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = '".$_POST['cat_id']."'", $FD->sql()->conn() );
 			$cat_arr = mysql_fetch_assoc ( $index );
 
 			$cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
@@ -362,7 +362,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 									<select class="text" name="cat_move_to" size="1">
 			';
 
-			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name", $db );
+			$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name", $FD->sql()->conn() );
 			while ( $move_arr = mysql_fetch_assoc ( $index ) ) {
 				echo '<option value="'.$move_arr['cat_id'].'">'.killhtml ( $move_arr['cat_name'] ).'</option>';
 			}
@@ -464,10 +464,10 @@ elseif ( $showdefault == TRUE )
 	';
 	
 	// Get Categories from DB
-	$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat ORDER BY cat_name", $db );
+	$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news_cat ORDER BY cat_name", $FD->sql()->conn() );
 	while ( $cat_arr = mysql_fetch_assoc ( $index ) )
 	{
-		$index_username = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = '".$cat_arr['cat_user']."'", $db );
+		$index_username = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = '".$cat_arr['cat_user']."'", $FD->sql()->conn() );
         $cat_arr['cat_user'] = mysql_result ( $index_username, 0, "user_name" );
 
 		// Display each Category

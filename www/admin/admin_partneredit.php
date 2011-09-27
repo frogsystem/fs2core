@@ -2,7 +2,7 @@
 //////////////////////////////
 /// Config laden /////////////
 //////////////////////////////
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner_config", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 if ($config_arr[small_allow] == 0) {
     $config_arr[small_allow_bool] = true;
@@ -44,7 +44,7 @@ if (($_POST['name'] AND $_POST['name'] != "")
                    partner_beschreibung = '$_POST[description]',
                    partner_permanent = '$_POST[permanent]'
                WHERE partner_id = '$_POST[partner_id]'";
-    mysql_query($update, $db);
+    mysql_query($update, $FD->sql()->conn() );
     
     if ($_FILES['bild_small']['name'] != "")
     {
@@ -80,7 +80,7 @@ elseif ($_POST['partner_action'] == "delete"
     
     if ($_POST['delete_partner'])   // Partnerseite löschen
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."partner WHERE partner_id = '$_POST[partner_id]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."partner WHERE partner_id = '$_POST[partner_id]'", $FD->sql()->conn() );
         image_delete("images/partner/", $_POST[partner_id]."_small");
         image_delete("images/partner/", $_POST[partner_id]."_big");
         systext($admin_phrases[partner][note_deleted]);
@@ -107,7 +107,7 @@ elseif ($_POST[partner_action] == "edit"
     $_POST['partner_id'] = $_POST['partner_id'][0];
     settype($_POST[partner_id], 'integer');
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner WHERE partner_id = $_POST[partner_id]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner WHERE partner_id = $_POST[partner_id]", $FD->sql()->conn() );
     $partner_arr = mysql_fetch_assoc($index);
         
     $partner_arr['partner_name'] = killhtml($partner_arr['partner_name']);
@@ -225,7 +225,7 @@ elseif ($_POST[partner_action] == "delete"
     $_POST['partner_id'] = $_POST['partner_id'][0];
     settype($_POST[partner_id], 'integer');
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner WHERE partner_id = $_POST[partner_id]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner WHERE partner_id = $_POST[partner_id]", $FD->sql()->conn() );
     $partner_arr = mysql_fetch_assoc($index);
 
     $partner_arr['partner_name'] = killhtml($partner_arr['partner_name']);
@@ -279,7 +279,7 @@ if (!isset($_POST[partner_id]))
 {
     $config_arr[small_x_width] = $config_arr[small_x] + 20;
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner ORDER BY partner_name", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner ORDER BY partner_name", $FD->sql()->conn() );
     
     if (mysql_num_rows($index) > 0)
     {

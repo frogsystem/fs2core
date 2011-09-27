@@ -13,7 +13,7 @@ require ( FS2_ROOT_PATH . "includes/functions.php" );
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."captcha_config", $db );
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."captcha_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 
 

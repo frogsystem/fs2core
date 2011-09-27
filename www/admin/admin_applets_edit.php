@@ -33,7 +33,7 @@ if (
                         `applet_include` = '".$_POST['applet_include']."',
                         `applet_output` = '".$_POST['applet_output']."'
                     WHERE `applet_id` = '".$_POST['applet_id']."'
-    ", $db );
+    ", $sql->conn() );
 
     // Display Message
     systext ( $TEXT["admin"]->get("changes_saved"),
@@ -64,7 +64,7 @@ elseif (
                         DELETE
                         FROM ".$global_config_arr['pref']."applets
                         WHERE `applet_id` IN (".implode ( ",", $_POST['applet_id'] ).")
-        ", $db );
+        ", $FD->sql()->conn() );
         
         systext ( $TEXT["admin"]->get("applets_deleted"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
@@ -105,7 +105,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
                                     FROM `".$global_config_arr['pref']."applets`
                                     WHERE `applet_id` = '".$_POST['applet_id']."'
                                     LIMIT 0,1
-            ", $db );
+            ", $FD->sql()->conn() );
             $data_arr = mysql_fetch_assoc ( $index );
             putintopost ( $data_arr );
         }
@@ -218,7 +218,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
                                 FROM ".$global_config_arr['pref']."applets
                                 WHERE `applet_id` IN (".implode ( ",", $_POST['applet_id'] ).")
                                 ORDER BY `applet_file`
-        ", $db );
+        ", $FD->sql()->conn() );
         // applets found
         if ( mysql_num_rows ( $index ) > 0 ) {
         
@@ -277,7 +277,7 @@ if ( !isset ( $_POST['applet_id'] ) )
                             SELECT *
                             FROM ".$global_config_arr['pref']."applets
                             ORDER BY `applet_file`
-    ", $db );
+    ", $FD->sql()->conn() );
 
     // applets found
     if ( mysql_num_rows ( $index ) > 0 ) {

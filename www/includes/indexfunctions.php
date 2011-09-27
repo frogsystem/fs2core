@@ -1,10 +1,20 @@
 <?php
+//////////////////////////////
+//// Set correct Timezone ////
+//////////////////////////////
+function setTimezone ($timezone) {
+    if (empty($timezone) || $timezone == "default")
+        date_default_timezone_get();
+    date_default_timezone_set($timezone);
+}
+
+
 ///////////////////////////////////
 //// Maybe Update Search Index ////
 ///////////////////////////////////
 function search_index ()
 {
-    global $global_config_arr, $db;
+    global $global_config_arr, $FD;
 
     $today_3am = mktime ( 3, 0, 0, date ( "m" ), date ( "d" ), date ( "Y" ) );
     $today_3am = ( $today_3am > time() ) ? $today_3am - 24*60*60 : $today_3am;
@@ -16,13 +26,7 @@ function search_index ()
         update_search_index ( "dl" );
         
         // Update config Value
-        $global_config_arr['search_index_time'] = time();
-        mysql_query ( "
-                        UPDATE `".$global_config_arr['pref']."global_config`
-                        SET
-                            `search_index_time` = '".$global_config_arr['search_index_time']."'
-                        WHERE `id` = '1'
-        ", $db );
+        $FD->saveConfig("main", array('search_index_time' => time()));
     }
 }
 
@@ -279,7 +283,7 @@ function get_meta_abstract ()
 /////////////////////
 function get_content ($GOTO)
 {
-    global $global_config_arr, $db, $sql, $TEXT;
+    global $global_config_arr, $FD, $sql, $TEXT;
 
     // Display Content
     initstr($template);
@@ -323,7 +327,7 @@ function get_content ($GOTO)
 ////////////////////////////////////
 function tpl_functions_init ($TEMPLATE)
 {
-    global $global_config_arr, $sql, $NAV, $APP;
+    global $global_config_arr, $sql, $NAV, $APP, $FD;
     
     // data arrays
     $NAV = array();
@@ -332,13 +336,13 @@ function tpl_functions_init ($TEMPLATE)
     // Snippets
     $SNP = array();
 
-    return tpl_functions($TEMPLATE, $global_config_arr['system']['var_loop']);
+    return tpl_functions($TEMPLATE, $FD->cfg('system', 'var_loop'));
 }
 
 ///////////////////////////////
 //// Template Replacements ////
 ///////////////////////////////
-function tpl_functions ($TEMPLATE, $COUNT)
+function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
 {
     global $global_config_arr, $sql;
     
@@ -354,6 +358,12 @@ function tpl_functions ($TEMPLATE, $COUNT)
     $snippet_functions = array(
         'SNP'   => array("tpl_func_snippets",       true)
     );
+    
+    //Filter functions
+    if (!empty($filter)) {
+        $functions = array_filter_keys($functions, $filter);
+        $snippet_functions = array_filter_keys($snippet_functions, $filter);
+    }
     
     
     // Set Pattern and Replacment Code
@@ -415,7 +425,7 @@ function escape_tpl_functions ($TEMPLATE, $FUNCTIONS)
 //////////////////////
 function load_applets()
 {
-    global $global_config_arr, $sql, $db, $TEXT;
+    global $global_config_arr, $sql, $FD, $TEXT;
 
     // Load Applets from DB
     $applet_data = $sql->getData("applets", array("applet_include", "applet_file", "applet_output"), array('W' => "`applet_active` = 1"));
@@ -445,7 +455,7 @@ function load_applets()
 //////////////////////
 function load_a_applet($file, $output, $args) {
     
-    global $global_config_arr, $sql, $db, $TEXT;
+    global $global_config_arr, $sql, $FD, $TEXT;
     
     // Setup $SCRIPT Var
     unset($SCRIPT);
@@ -505,7 +515,7 @@ function tpl_func_snippets($original, $main_argument, $other_arguments)
 /////////////////////////
 function tpl_func_applets($original, $main_argument, $other_arguments)
 {
-    global $APP, $global_config_arr, $sql, $db, $TEXT;
+    global $APP, $global_config_arr, $sql, $FD, $TEXT;
     
     // Applet does not exists
     if (!isset($APP[$main_argument])) {
@@ -563,25 +573,24 @@ function tpl_func_navigations($original, $main_argument, $other_arguments)
 //////////////////////////////////
 function tpl_func_globalvars($original, $main_argument, $other_arguments)
 {
-    global $global_config_arr;
-        
+    global $FD;
+
     // hardcoded list of global vars
     $var_data = array (
-        'url'                           => $global_config_arr['virtualhost'],
-        'style_url'                     => $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/",
-        'style_images'                  => $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/images/",
-        'style_icons'                   => $global_config_arr['virtualhost']."styles/".$global_config_arr['style']."/icons/",
-        'page_title'                    => $global_config_arr['title'],
+        'url'                           => $FD->cfg('virtualhost'),
+        'style_url'                     => $FD->cfg('virtualhost')."styles/".$FD->cfg('style')."/",
+        'style_images'                  => $FD->cfg('virtualhost')."styles/".$FD->cfg('style')."/images/",
+        'style_icons'                   => $FD->cfg('virtualhost')."styles/".$FD->cfg('style')."/icons/",
+        'page_title'                    => $FD->cfg('title'),
         'page_dyn_title'                => get_title(),
-        'date'                          => date_loc($global_config_arr['date'], time()),
-        'time'                          => date_loc($global_config_arr['time'], time()),
-        'page_dyndate_time_title'       => date_loc($global_config_arr['datetime'], time()),
+        'date'                          => date_loc($FD->cfg('date'), $FD->cfg('env', 'date')),
+        'time'                          => date_loc($FD->cfg('time'), $FD->cfg('env', 'date')),
+        'page_dyndate_time_title'       => date_loc($FD->cfg('datetime'), $FD->cfg('env', 'date')),
     );
-    
+
     //set error msg
     //$error = "Error: Unknown global Var!";
     $error = $original;
-    
     
     //return var or false
     return (isset($var_data[$main_argument])) ? $var_data[$main_argument] : $error;
@@ -614,22 +623,22 @@ function tpl_func_date($original, $main_argument, $other_arguments)
 ///////////////////
 //// get $goto ////
 ///////////////////
-function get_goto ( $GETGO )
+function get_goto ($GETGO)
 {
-    global $global_config_arr, $db;
+    global $FD;
 
-        // Check $_GET['go']
-        if ( !isset( $GETGO ) || $GETGO == "" ) {
-                $goto = $global_config_arr['home_real'];
-        } else {
-                $goto = savesql ( $GETGO ) ;
-        }
+    // Check $_GET['go']
+    if (empty($GETGO)) {
+        $goto = $FD->cfg("home_real");
+    } else {
+        $goto = savesql($GETGO) ;
+    }
 
-        // Forward Aliases
-        $goto = forward_aliases ( $goto );
+    // Forward Aliases
+    $goto = forward_aliases($goto);
 
-        // write $goto into $global_config_arr['goto']
-        $global_config_arr['goto'] = $goto;
+    // write $goto into $global_config_arr['goto']
+    $FD->setConfig("goto", $goto);
 }
 
 
@@ -638,14 +647,14 @@ function get_goto ( $GETGO )
 /////////////////////////
 function forward_aliases ( $GOTO )
 {
-    global $global_config_arr, $db;
+    global $global_config_arr, $FD;
 
     $index = mysql_query ( "
                             SELECT `alias_go`, `alias_forward_to`
                             FROM `".$global_config_arr['pref']."aliases`
                             WHERE `alias_active` = 1
                             AND `alias_go` = '".$GOTO."'
-    ", $db );
+    ", $FD->sql()->conn() );
 
     while ( $aliases_arr = mysql_fetch_assoc ( $index ) ) {
         if ( $GOTO == $aliases_arr['alias_go'] ) {
@@ -661,7 +670,7 @@ function forward_aliases ( $GOTO )
 ///////////////////
 function count_all ( $GOTO )
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
 
     $hit_year = date ( "Y" );
@@ -678,18 +687,18 @@ function count_all ( $GOTO )
 ///////////////////////////////////
 function visit_day_exists ( $YEAR, $MONTH, $DAY )
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
 
     // check if visit-day exists
     $daycounter = mysql_query ("SELECT * FROM ".$global_config_arr['pref']."counter_stat
-                                WHERE s_year = ".$YEAR." AND s_month = ".$MONTH." AND s_day = ".$DAY."", $db );
+                                WHERE s_year = ".$YEAR." AND s_month = ".$MONTH." AND s_day = ".$DAY."", $FD->sql()->conn() );
                                 
     $rows = mysql_num_rows ( $daycounter );
 
     if ( $rows <= 0 ) {
-        mysql_query("INSERT INTO ".$global_config_arr['pref']."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')", $db );
-        mysql_query("DELETE FROM ".$global_config_arr['pref']."iplist", $db );
+        mysql_query("INSERT INTO ".$global_config_arr['pref']."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')", $FD->sql()->conn() );
+        mysql_query("DELETE FROM ".$global_config_arr['pref']."iplist", $FD->sql()->conn() );
     }
 }
 
@@ -699,7 +708,7 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
 ///////////////////
 function count_hit ( $GOTO )
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
 
     $hit_year = date ( "Y" );
@@ -708,10 +717,10 @@ function count_hit ( $GOTO )
 
         if ( $GOTO != "404" && $GOTO != "403" ) {
                 // count page_hits
-            mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET hits = hits + 1", $db );
+            mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET hits = hits + 1", $FD->sql()->conn() );
             mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_stat
                            SET s_hits = s_hits + 1
-                           WHERE s_year = ".$hit_year." AND s_month = ".$hit_month." AND s_day = ".$hit_day."", $db );
+                           WHERE s_year = ".$hit_year." AND s_month = ".$hit_month." AND s_day = ".$hit_day."", $FD->sql()->conn() );
         }
 }
 
@@ -721,7 +730,7 @@ function count_hit ( $GOTO )
 /////////////////////
 function count_visit ( $GOTO )
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
 
     $time = time ();             // timestamp
@@ -733,14 +742,14 @@ function count_visit ( $GOTO )
         // check if errorpage
         if ( $GOTO != "404" && $GOTO != "403" ) {
                 // save IP & visit
-            $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."iplist WHERE ip = '".$_SERVER['REMOTE_ADDR']."'", $db );
+            $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."iplist WHERE ip = '".$_SERVER['REMOTE_ADDR']."'", $FD->sql()->conn() );
 
             if ( mysql_num_rows ( $index ) <= 0 ) {
-                mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET visits = visits + 1", $db );
+                mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET visits = visits + 1", $FD->sql()->conn() );
                 mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_stat
                                SET s_visits = s_visits + 1
-                               WHERE s_year = ".$visit_year." AND s_month = ".$visit_month." AND s_day = ".$visit_day."", $db );
-                mysql_query ( "INSERT INTO ".$global_config_arr['pref']."iplist (`ip`) VALUES ('".savesql($_SERVER['REMOTE_ADDR'])."')", $db );
+                               WHERE s_year = ".$visit_year." AND s_month = ".$visit_month." AND s_day = ".$visit_day."", $FD->sql()->conn() );
+                mysql_query ( "INSERT INTO ".$global_config_arr['pref']."iplist (`ip`) VALUES ('".savesql($_SERVER['REMOTE_ADDR'])."')", $FD->sql()->conn() );
             }
         }
 }
@@ -751,7 +760,7 @@ function count_visit ( $GOTO )
 ///////////////////////
 function save_visitors ()
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
 
     $time = time(); // timestamp
@@ -766,19 +775,19 @@ function save_visitors ()
         }
 
     // delete offline users
-    mysql_query ( "DELETE FROM ".$global_config_arr['pref']."useronline WHERE date < (".$time." - 300)", $db );
+    mysql_query ( "DELETE FROM ".$global_config_arr['pref']."useronline WHERE date < (".$time." - 300)", $FD->sql()->conn() );
     
     // save online users
-    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."useronline WHERE ip='".$_SERVER['REMOTE_ADDR']."'", $db );
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."useronline WHERE ip='".$_SERVER['REMOTE_ADDR']."'", $FD->sql()->conn() );
 
         // update existing users
         if ( mysql_num_rows ( $index ) >= 1 && mysql_result ( $index, 0, "user_id" ) != $user_id ) {
-        mysql_query ( "UPDATE ".$global_config_arr['pref']."useronline SET user_id = '".$user_id."' WHERE ip = '".$ip."'", $db );
+        mysql_query ( "UPDATE ".$global_config_arr['pref']."useronline SET user_id = '".$user_id."' WHERE ip = '".$ip."'", $FD->sql()->conn() );
     }
         if ( mysql_num_rows ( $index ) >= 1 ) {
-        mysql_query ( "UPDATE ".$global_config_arr['pref']."useronline SET date = '".$time."' WHERE ip='".$ip."'", $db );
+        mysql_query ( "UPDATE ".$global_config_arr['pref']."useronline SET date = '".$time."' WHERE ip='".$ip."'", $FD->sql()->conn() );
     } else {
-        mysql_query ( "INSERT INTO ".$global_config_arr['pref']."useronline (ip, user_id, date) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".$user_id."', '".$time."')", $db );
+        mysql_query ( "INSERT INTO ".$global_config_arr['pref']."useronline (ip, user_id, date) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".$user_id."', '".$time."')", $FD->sql()->conn() );
     }
 }
 
@@ -788,7 +797,7 @@ function save_visitors ()
 //////////////////////
 function save_referer ()
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
 
 	if (isset($_SERVER['HTTP_REFERER'])) {
@@ -796,15 +805,15 @@ function save_referer ()
 		$time = time();             // timestamp
 		// save referer
 		$referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
-		$index =  mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref WHERE ref_url = '".$referer."'", $db );
+		$index =  mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref WHERE ref_url = '".$referer."'", $FD->sql()->conn() );
 		
 		if ( mysql_num_rows ( $index ) <= 0 ) {
 			if ( substr_count ( $referer, "http://" ) >= 1 && substr_count ( $referer, $global_config_arr['virtualhost'] ) < 1 ) {
-				mysql_query ( "INSERT INTO ".$global_config_arr['pref']."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')", $db );
+				mysql_query ( "INSERT INTO ".$global_config_arr['pref']."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')", $FD->sql()->conn() );
 			}
 		} else {
 			if ( substr_count ( $referer, "http://" ) >= 1 && substr_count ( $referer, $global_config_arr['virtualhost'] ) < 1 ) {
-					mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = '".$referer."'", $db );
+					mysql_query ( "UPDATE ".$global_config_arr['pref']."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = '".$referer."'", $FD->sql()->conn() );
 			}
 		}
 	}
@@ -816,14 +825,14 @@ function save_referer ()
 ///////////////////////////////
 function delete_old_randoms ()
 {
-  global $db;
+  global $FD;
   global $global_config_arr;
 
   if ($global_config_arr['random_timed_deltime'] != -1) {
     // Alte Zufallsbild-Einträge aus der Datenbank entfernen
     mysql_query("DELETE a
                 FROM ".$global_config_arr['pref']."screen_random a, ".$global_config_arr['pref']."global_config b
-                WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime", $db);
+                WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime", $FD->sql()->conn() );
   }
 }
 
@@ -842,7 +851,7 @@ function get_copyright ()
 ////////////////////////
 function set_style ()
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
 
     if ( isset ( $_GET['style'] ) && $global_config_arr['allow_other_designs'] == 1 ) {
@@ -852,7 +861,7 @@ function set_style ()
                                 WHERE `style_tag` = '".savesql ( $_GET['style'] )."'
                                 AND `style_allow_use` = 1
                                 LIMIT 0,1
-        ", $db );
+        ", $FD->sql()->conn() );
         if ( mysql_num_rows ( $index ) == 1 ) {
             $global_config_arr['style'] = stripslashes ( mysql_result($index, 0, "style_tag") );
             $global_config_arr['style_tag'] = stripslashes ( mysql_result($index, 0, "style_tag") );
@@ -866,7 +875,7 @@ function set_style ()
                                 WHERE `style_id` = '".$_GET['style_id']."'
                                 AND `style_allow_use` = 1
                                 LIMIT 0,1
-        ", $db );
+        ", $FD->sql()->conn() );
         if ( mysql_num_rows ( $index ) == 1 ) {
             $global_config_arr['style'] = stripslashes ( mysql_result($index, 0, "style_tag") );
             $global_config_arr['style_tag'] = stripslashes ( mysql_result($index, 0, "style_tag") );

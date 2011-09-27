@@ -4,7 +4,7 @@ $index = mysql_query ( "
                         SELECT *
                         FROM `".$global_config_arr['pref']."dl_config`
                         WHERE `id` = 1
-", $db);
+", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 if (!isset($_GET['cat_id']) && isset($_GET['catid'])) {
@@ -100,7 +100,7 @@ if ($show == TRUE) {
                                  cat_id
                           FROM ".$global_config_arr[pref]."dl
                           $query dl_open = 1
-                          ORDER BY dl_name", $db);
+                          ORDER BY dl_name", $FD->sql()->conn() );
 
     if ( mysql_num_rows ( $index ) > 0 ) {
         $dateien = "";
@@ -110,7 +110,7 @@ if ($show == TRUE) {
         $dl_arr[dl_text] = killfs($dl_arr[dl_text]);
         $dl_arr[dl_text] = truncate_string($dl_arr[dl_text], 250, "...");
         $dl_arr[dl_date] = date_loc( $global_config_arr['date'] , $dl_arr[dl_date] );
-        $index3 = mysql_query("select cat_name from ".$global_config_arr[pref]."dl_cat where cat_id = '$dl_arr[cat_id]'", $db);
+        $index3 = mysql_query("select cat_name from ".$global_config_arr[pref]."dl_cat where cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
         $dl_arr[cat_name] = stripslashes(mysql_result($index3, 0, "cat_name"));
         
         // Get Template

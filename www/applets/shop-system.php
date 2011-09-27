@@ -7,7 +7,7 @@ $index = mysql_query ( "
                             `".$global_config_arr['pref']."shop`
                         WHERE
                             `artikel_hot` = 1
-", $db );
+", $FD->sql()->conn() );
 
 // Security Functions
 $applet_items = array();

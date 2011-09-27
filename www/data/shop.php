@@ -4,14 +4,14 @@ $index = mysql_query ( "
                         SELECT `show_type`, `show_size_x`, `show_size_y`
                         FROM `".$global_config_arr['pref']."screen_config`
                         WHERE `id` = 1
-", $db);
+", $FD->sql()->conn() );
 $screen_config_arr = mysql_fetch_assoc ( $index );
 
 // Get Data from DB
 $index = mysql_query ( "
                         SELECT *
                         FROM `".$global_config_arr['pref']."shop`
-", $db );
+", $FD->sql()->conn() );
 
 // Security Functions
 $shop_items = array();

@@ -11,7 +11,7 @@ if (isset($_POST[title]) AND $_POST['do'] == "edit")
     $_POST[title] = savesql($_POST[title]);
     if ($_POST[delscreen])   // Screenshot löschen
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_POST[editscreenid]", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_POST[editscreenid]", $FD->sql()->conn() );
         image_delete("images/screenshots/", $_POST[editscreenid]);
         image_delete("images/screenshots/", "$_POST[editscreenid]_s");
         systext('Screenshot wurde gelöscht');
@@ -22,7 +22,7 @@ if (isset($_POST[title]) AND $_POST['do'] == "edit")
                    SET cat_id = $_POST[catid],
                    screen_name = '$_POST[title]'
                    WHERE screen_id = $_POST[editscreenid]";
-        mysql_query($update, $db);
+        mysql_query($update, $FD->sql()->conn() );
         systext("Der Screenshot wurde editiert");
     }
 }
@@ -52,7 +52,7 @@ elseif (isset($_POST[screenid]))
 
     settype($_POST[screenid], 'integer');
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_POST[screenid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE screen_id = $_POST[screenid]", $FD->sql()->conn() );
     $screen_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -101,7 +101,7 @@ elseif (isset($_POST[screenid]))
                                 <td class="config" valign="top">
                                     <select name="catid">
     ';
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($screen_arr[cat_id] == $cat_arr[cat_id]) ? "selected" : "";
@@ -154,7 +154,7 @@ else
                                     Dateien der Kategorie
                                     <select name="screencatid">
     ';
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($_POST[screencatid] == $cat_arr[cat_id]) ? "selected" : "";
@@ -198,11 +198,11 @@ else
                                 </td>
                             </tr>
         ';
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen $wherecat ORDER BY screen_id DESC", $db);
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen $wherecat ORDER BY screen_id DESC", $FD->sql()->conn() );
         while ($screen_arr = mysql_fetch_assoc($index))
         {
-            $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."screen_cat where cat_id = $screen_arr[cat_id]", $db);
-            $db_cat_name = mysql_result($index2, 0, "cat_name");
+            $index2 = mysql_query("select cat_name from ".$global_config_arr[pref]."screen_cat where cat_id = $screen_arr[cat_id]", $FD->sql()->conn() );
+            $FD->sql()->conn() );
             echo'
                             <tr style="cursor:pointer;"
                                 onmouseover="javascript:this.style.backgroundColor=\'#EEEEEE\'"

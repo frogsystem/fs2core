@@ -21,7 +21,8 @@
     </tr>
     <tr>    
       <td>
-        <input class="small input input_highlight" size="20" id="password_mini" type="password" name="userpassword" maxlength="50">
+        <input class="small input input_highlight" size="20" id="password_mini" type="password" name="userpassword" maxlength="50"><br>
+        <a href="?go=login&amp;newpassword" class="small">Passwort vergessen?</a>
       </td>
     </tr>
     <tr><td></td></tr>
@@ -105,9 +106,10 @@
     </tr>
     <tr>
       <td align="left">
-        <input class="small input input_highlight" size="33" type="password" id="password_big" name="userpassword" maxlength="50">
+        <input class="small input input_highlight" size="33" type="password" id="password_big" name="userpassword" maxlength="50"><br>
+        <a href="?go=login&amp;newpassword" class="small">Passwort vergessen?</a>
       </td>
-      <td align="left">
+      <td align="left" valign="top">
         <img src="$VAR(style_icons)user/key.gif" alt="" align="bottom">
       </td>
     </tr>
@@ -131,6 +133,33 @@
   </table>
 </form>
 <!--section-end::LOGIN-->
+
+<!--section-start::NEW_PASSWORD--><h2>Neue Zugangsdaten anfordern</h2>
+
+<p>Wenn du dein Passwort oder Benutzernamen vergessen hast, kannst du hier neue Zugangdaten anfordern. Wir benötigen dazu nur die E-Mail-Adresse, mit der du dich bei uns registriert hast.</p>
+
+<form action="" method="post">
+  <input type="hidden" name="go" value="login">
+  <input type="hidden" name="newpassword" value="">
+  
+  <table border="0" cellpadding="2" cellspacing="0">
+    <tr>
+      <td align="left" colspan="2">
+        <label for="newpassword_mail"><b>E-Mail-Adresse:</b></label>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <input class="input input_highlight" size="33" type="text" id="newpassword_mail" name="newpassword_mail" maxlength="50">
+      </td>
+      <td align="center">
+        <button class="pointer" type="submit"><img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom"> Neue Zugangsdaten anfordern</button>
+      </td>
+    </tr>
+  </table>
+
+<p>Falls du keinen Zugriff mehr auf diese E-Mail-Adresse haben solltest, musst du dir leider einen <a href="?go=register">neuen Account</a> anlegen.</p>
+<!--section-end::NEW_PASSWORD-->
 
 <!--section-start::REGISTER--><b>Registrierung</b><br><br>
 

@@ -4,10 +4,10 @@
 ///////////////////////
 
 //Kommentar-Config
-$index = mysql_query("SELECT * from ".$global_config_arr['pref']."news_config", $db);
+$index = mysql_query("SELECT * from ".$global_config_arr['pref']."news_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 //Editor config
-$index = mysql_query("SELECT * from ".$global_config_arr['pref']."editor_config", $db);
+$index = mysql_query("SELECT * from ".$global_config_arr['pref']."editor_config", $FD->sql()->conn() );
 $editor_config = mysql_fetch_assoc($index);
 
 $SHOW = TRUE;
@@ -31,7 +31,7 @@ $index = mysql_query ( "
                                                 SELECT *
                                                 FROM ".$global_config_arr['pref']."user
                                                 WHERE user_id = '".$_SESSION["user_id"]."'
-", $db);
+", $FD->sql()->conn() );
 $user_arr = mysql_fetch_assoc($index);
 
 if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SESSION['user_id'] ) ) {
@@ -62,7 +62,7 @@ if (isset($_POST['add_comment']))
                                         FROM ".$global_config_arr['pref']."news
                                         WHERE news_id = ".$_POST['id']."
                                         LIMIT 0,1
-                ", $db);
+                ", $FD->sql()->conn() );
                 
                 if ( mysql_result ( $index, 0, "news_comments_allowed" ) == 1 ) {
 
@@ -84,7 +84,7 @@ if (isset($_POST['add_comment']))
                                             AND
                                                 `comment_date` >  '".$duplicate_time."'
                                             LIMIT 0,1
-                    ", $db);
+                    ", $FD->sql()->conn() );
                                              echo mysql_error();
                     if ( mysql_num_rows ( $index ) == 0 ) {
 
@@ -116,8 +116,8 @@ if (isset($_POST['add_comment']))
                                                 '".$_POST['title']."',
                                                 '".$_POST['text']."'
                                             )
-                        ", $db );
-                        mysql_query("update ".$global_config_arr['pref']."counter set comments=comments+1", $db);
+                        ", $FD->sql()->conn() );
+                        mysql_query("update ".$global_config_arr['pref']."counter set comments=comments+1", $FD->sql()->conn() );
                         $SHOW = FALSE;
                         $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_added"), $_SERVER['REQUEST_URI'] );
                     } else {
@@ -162,7 +162,7 @@ if ( $SHOW == TRUE ) {
                                                     AND news_active = 1
                                                     AND news_id = ".$_GET['id']."
                                                     LIMIT 0,1
-    ", $db);
+    ", $FD->sql()->conn() );
 
     $news_rows = mysql_num_rows($index);
 	
@@ -203,14 +203,14 @@ if ( $SHOW == TRUE ) {
     $html_active = ($html) ? "an" : "aus";
 
     // Kommentare erzeugen
-    $index = mysql_query("select * from ".$global_config_arr['pref']."news_comments where news_id = ".$_GET['id']." order by comment_date ".$config_arr['com_sort']."", $db);
+    $index = mysql_query("select * from ".$global_config_arr['pref']."news_comments where news_id = ".$_GET['id']." order by comment_date ".$config_arr['com_sort']."", $FD->sql()->conn() );
     while ($comment_arr = mysql_fetch_assoc($index))
     {
 
         // User auslesen
         if ($comment_arr['comment_poster_id'] != 0)
         {
-            $index2 = mysql_query("select `user_name`, `user_is_admin`, `user_is_staff`, `user_group` from `".$global_config_arr['pref']."user` where user_id = ".$comment_arr['comment_poster_id']."", $db);
+            $index2 = mysql_query("select `user_name`, `user_is_admin`, `user_is_staff`, `user_group` from `".$global_config_arr['pref']."user` where user_id = ".$comment_arr['comment_poster_id']."", $FD->sql()->conn() );
             $comment_arr['comment_poster'] = kill_replacements ( mysql_result($index2, 0, "user_name" ), TRUE );
             $comment_arr['user_is_admin'] = mysql_result($index2, 0, "user_is_admin");
             $comment_arr['user_is_staff'] = mysql_result($index2, 0, "user_is_staff");

@@ -9,7 +9,7 @@ if ($_POST[title] && $_POST[url] && $_POST[preis] && $_POST[sended] == "edit")
     settype($_POST[artikelid], 'integer');
     if (isset($_POST[delartikel]))
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
         image_delete ("images/shop/", $_POST[artikelid] );
         image_delete( "images/shop/", $_POST[artikelid] );
         systext('Artikel wurde gelöscht');
@@ -38,7 +38,7 @@ if ($_POST[title] && $_POST[url] && $_POST[preis] && $_POST[sended] == "edit")
                        artikel_preis = '$_POST[preis]',
                        artikel_hot   = '$_POST[hot]'
                    WHERE artikel_id = '$_POST[artikelid]'";
-        mysql_query($update, $db);
+        mysql_query($update, $FD->sql()->conn() );
         $messages[] = $TEXT['admin']->get("changes_saved");
         
         echo get_systext(implode("<br>", $messages), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
@@ -59,7 +59,7 @@ if ($_POST[artikelid])
     }    
     
     settype($_POST[artikelid], 'integer');
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
     $artikel_arr = mysql_fetch_assoc($index);
     $dbartikelhot = ($artikel_arr[artikel_hot] == 1) ? "checked" : "";
 
@@ -180,7 +180,7 @@ else
     ';
     $index = mysql_query("SELECT artikel_id, artikel_name, artikel_preis
                           FROM ".$global_config_arr[pref]."shop
-                          ORDER BY artikel_name DESC", $db);
+                          ORDER BY artikel_name DESC", $FD->sql()->conn() );
     while ($artikel_arr = mysql_fetch_assoc($index))
     {
         echo'

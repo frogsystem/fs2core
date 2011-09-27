@@ -13,7 +13,7 @@ function get_poll_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
 }
 
 // Get Config Array
-$index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll_config`", $db );
+$index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll_config`", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 ////////////////////////////
@@ -26,7 +26,7 @@ if ( isset ($_GET['pollid']) && !isset($_GET['id']) ) {
 
 if ( $_GET['id'] ) {
     settype ( $_GET['id'], 'integer' );
-    $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` WHERE `poll_id` = ".$_GET['id']."", $db );
+    $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` WHERE `poll_id` = ".$_GET['id']."", $FD->sql()->conn() );
     $poll_arr = mysql_fetch_assoc($index);
 
     $poll_arr[poll_start] = date_loc ( $global_config_arr['date'] , $poll_arr[poll_start]);
@@ -37,11 +37,11 @@ if ( $_GET['id'] ) {
                             SELECT SUM(`answer_count`) AS 'all_votes'
                             FROM `".$global_config_arr['pref']."poll_answers`
                             WHERE `poll_id` = ".$poll_arr['poll_id']."
-    ", $db );
+    ", $FD->sql()->conn() );
     $poll_arr['all_votes'] = mysql_result ( $index, 0, "all_votes");
         
     //Prozentzahlen errechnen und template generieren
-    $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll_answers` WHERE `poll_id` = ".$_GET['id']."", $db );
+    $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll_answers` WHERE `poll_id` = ".$_GET['id']."", $FD->sql()->conn() );
     while($answer_arr = mysql_fetch_assoc($index))
     {
         if ($poll_arr['all_votes'] != 0) {
@@ -95,7 +95,7 @@ else {
 
     switch ( $_GET['sort'] ) {
         case "question": {
-            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_quest` ".$_GET['order']."", $db );
+            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_quest` ".$_GET['order']."", $FD->sql()->conn() );
             break;
         }
         case "all_votes": {
@@ -104,23 +104,23 @@ else {
                                     FROM `".$global_config_arr['pref']."poll` P, `".$global_config_arr['pref']."poll_answers` A
                                     WHERE P.`poll_id` = A.`poll_id`
                                     ORDER BY `all_votes` ".$_GET['order'].", P.`poll_quest` ASC
-            ", $db );
+            ", $FD->sql()->conn() );
             break;
         }
         case "participants": {
-            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_participants` ".$_GET['order'].", `poll_quest` ASC", $db );
+            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_participants` ".$_GET['order'].", `poll_quest` ASC", $FD->sql()->conn() );
             break;
         }
         case "type": {
-            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_type` ".$_GET['order'].", `poll_quest` ASC", $db );
+            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_type` ".$_GET['order'].", `poll_quest` ASC", $FD->sql()->conn() );
             break;
         }
         case "start_date": {
-            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_start` ".$_GET['order'].", `poll_quest` ASC", $db );
+            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_start` ".$_GET['order'].", `poll_quest` ASC", $FD->sql()->conn() );
             break;
         }
         case "end_date": {
-            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_end` ".$_GET['order'].", `poll_quest` ASC", $db );
+            $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."poll` ORDER BY `poll_end` ".$_GET['order'].", `poll_quest` ASC", $FD->sql()->conn() );
             break;
         }
     }
@@ -137,7 +137,7 @@ else {
                                 SELECT SUM(`answer_count`) AS 'all_votes'
                                 FROM `".$global_config_arr['pref']."poll_answers`
                                 WHERE `poll_id` = ".$poll_arr['poll_id']."
-        ", $db );
+        ", $FD->sql()->conn() );
         $poll_arr['all_votes'] = mysql_result ( $index2, 0, "all_votes");
         
         // Get Template

@@ -5,7 +5,7 @@
 ////////////////////////////
 
 // News Konfiguration lesen
-$index = mysql_query("select * from ".$global_config_arr['pref']."news_config", $db);
+$index = mysql_query("select * from ".$global_config_arr['pref']."news_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 $time = time();
 
@@ -14,7 +14,7 @@ $index = mysql_query("select * from ".$global_config_arr['pref']."news
                       where news_date <= $time
                       AND news_active = 1
                       order by news_date desc
-                      limit $config_arr[num_head]", $db);
+                      limit $config_arr[num_head]", $FD->sql()->conn() );
 $news_line_tpl = "";
 while ($newshead_arr = mysql_fetch_assoc($index))
 {
@@ -43,7 +43,7 @@ $index = mysql_query("select dl_name, dl_id, dl_date
                       from ".$global_config_arr['pref']."dl
                       where dl_open = 1
                       order by dl_date desc
-                      limit $config_arr[num_head]", $db);
+                      limit $config_arr[num_head]", $FD->sql()->conn() );
 $downloads_tpl = "";
 while ($dlhead_arr = mysql_fetch_assoc($index))
 {
@@ -86,7 +86,7 @@ $index = mysql_query("select * from ".$global_config_arr['pref']."news
                       where news_date <= $time
                       AND news_active = 1
                       order by news_date desc
-                      limit $config_arr[num_news]", $db);
+                      limit $config_arr[num_news]", $FD->sql()->conn() );
 initstr($news_template);
 while ($news_arr = mysql_fetch_assoc($index))
 {

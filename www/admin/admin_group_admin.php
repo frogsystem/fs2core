@@ -2,7 +2,7 @@
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $db );
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 // Create group-Config-Array
 $group_config_arr[cat_pic_x] = 200;
@@ -35,10 +35,10 @@ if (
                         '".$group_date."',
                         '".$_POST['user_group_user']."'
                     )
-    ", $db );
+    ", $FD->sql()->conn() );
 
     $message = "Gruppe wurde erfolgreich hinzugefügt";
-    $id = mysql_insert_id ( $db );
+    $id = mysql_insert_id ( $FD->sql()->conn() );
     
     // Image-Operations
     if ( $_FILES['user_group_pic']['name'] != "" ) {
@@ -54,7 +54,7 @@ if (
 
     // Set Vars
     $_POST['group_action'] = "edit";
-    $_POST['user_group_id'] = mysql_insert_id ( $db );
+    $_POST['user_group_id'] = mysql_insert_id ( $FD->sql()->conn() );
 }
 
 // Update group
@@ -98,7 +98,7 @@ elseif (
                          user_group_user = '".$_POST['user_group_user']."'
                      WHERE
                          user_group_id = '".$_POST['user_group_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
     $message = $admin_phrases[common][changes_saved];
 
     // Image-Operations
@@ -139,20 +139,20 @@ elseif (
                         UPDATE ".$global_config_arr['pref']."user
                         SET user_group = '0'
                          WHERE user_group = '".$_POST['user_group_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         
         // Delete Permissions
         mysql_query ("
                         DELETE FROM ".$global_config_arr['pref']."user_permissions
                          WHERE x_id = '".$_POST['user_group_id']."'
                          AND perm_for_group = '1'
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // MySQL-Delete-Query
         mysql_query ("
                         DELETE FROM ".$global_config_arr['pref']."user_groups
                          WHERE user_group_id = '".$_POST['user_group_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         $message = "Gruppe wurde erfolgreich gelöscht";
 
         // Delete Category Image
@@ -190,7 +190,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
         $index = mysql_query ( "
                                 SELECT *
                                 FROM ".$global_config_arr['pref']."user_groups
-                                WHERE user_group_id = '".$_POST['user_group_id']."'", $db );
+                                WHERE user_group_id = '".$_POST['user_group_id']."'", $FD->sql()->conn() );
         $group_arr = mysql_fetch_assoc ( $index );
 
         // Display Error Messages
@@ -212,7 +212,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
         }
 
         // Get User
-        $index = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = '".$group_arr['user_group_user']."'", $db );
+        $index = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = '".$group_arr['user_group_user']."'", $FD->sql()->conn() );
         $group_arr['user_group_user_name'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
 
         // Create Date-Arrays
@@ -369,7 +369,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                 SELECT `user_group_id`, `user_group_name`
                                 FROM ".$global_config_arr['pref']."user_groups
                                 WHERE user_group_id = '".$_POST['user_group_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         $group_arr = mysql_fetch_assoc ( $index );
 
         $group_arr['user_group_name'] = killhtml ( $group_arr['user_group_name'] );
@@ -378,7 +378,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                             SELECT COUNT(`user_id`) AS 'num_users'
                                             FROM `".$global_config_arr['pref']."user`
                                             WHERE `user_group` = '".$group_arr['user_group_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, "num_users" );
 
         echo '
@@ -483,7 +483,7 @@ else
                             FROM `".$global_config_arr['pref']."user_groups`
                             WHERE `user_group_id` > 0
                             ORDER BY `user_group_name`
-    ", $db );
+    ", $FD->sql()->conn() );
     
     // groups found
     if ( mysql_num_rows ( $index ) > 0 ) {
@@ -504,14 +504,14 @@ else
                                                 SELECT `user_name`
                                                 FROM `".$global_config_arr['pref']."user`
                                                 WHERE `user_id` = '".$group_arr['user_group_user']."'
-            ", $db );
+            ", $FD->sql()->conn() );
             $group_arr['user_group_user_name'] = mysql_result ( $index_username, 0, "user_name" );
 
             $index_numusers = mysql_query ( "
                                                 SELECT COUNT(`user_id`) AS 'num_users'
                                                 FROM `".$global_config_arr['pref']."user`
                                                 WHERE `user_group` = '".$group_arr['user_group_id']."'
-            ", $db );
+            ", $FD->sql()->conn() );
             $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, "num_users" );
 
             // Display each Group
@@ -597,7 +597,7 @@ else
                             FROM `".$global_config_arr['pref']."user_groups`
                             WHERE `user_group_id` = 0
                             LIMIT 0,1
-    ", $db );
+    ", $FD->sql()->conn() );
 
     // get group data
     $group_arr = mysql_fetch_assoc ( $index );
@@ -606,14 +606,14 @@ else
                                         SELECT `user_name`
                                         FROM `".$global_config_arr['pref']."user`
                                         WHERE `user_id` = '".$group_arr['user_group_user']."'
-    ", $db );
+    ", $FD->sql()->conn() );
     $group_arr['user_group_user_name'] = mysql_result ( $index_username, 0, "user_name" );
 
     $index_numusers = mysql_query ( "
                                         SELECT COUNT(`user_id`) AS 'num_users'
                                         FROM `".$global_config_arr['pref']."user`
                                         WHERE `user_is_admin` = '1'
-    ", $db );
+    ", $FD->sql()->conn() );
     $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, "num_users" );
 
     // Display the Group

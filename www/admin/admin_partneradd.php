@@ -2,7 +2,7 @@
 //////////////////////////////
 /// Config laden /////////////
 //////////////////////////////
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner_config", $db);
+$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 if ($config_arr[small_allow] == 0) {
     $config_arr[small_allow_bool] = true;
@@ -42,7 +42,7 @@ if ($_FILES['bild_small']['name'] != ""
                  VALUES ('".$_POST[name]."',
                          '".$_POST[link]."',
                          '".$_POST[description]."',
-                         '".$_POST[permanent]."')", $db);
+                         '".$_POST[permanent]."')", $FD->sql()->conn() );
     $id = mysql_insert_id();
 
     $upload1 = upload_img($_FILES['bild_small'], "images/partner/", $id."_small", $config_arr[file_size]*1024, $config_arr[small_x], $config_arr[small_y], 100, $config_arr[small_allow_bool]);

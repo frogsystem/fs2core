@@ -21,7 +21,7 @@ if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_
                    dl_rights = '$_POST[dl_rights]',
                    dl_show_sub_cats = '$_POST[dl_show_sub_cats]'
                ";
-    mysql_query($update, $db);
+    mysql_query($update, $FD->sql()->conn() );
     systext("Die Konfiguration wurde aktualisiert");
     unset($_POST);
 }
@@ -36,7 +36,7 @@ if(true)
         echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
     }        
     
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
     
     settype ( $config_arr['dl_show_sub_cats'], "integer" );

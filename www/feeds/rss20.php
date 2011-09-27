@@ -9,7 +9,7 @@ define ( FS2_ROOT_PATH, "./../", TRUE );
 // Inlcude DB Connection File
 require( FS2_ROOT_PATH . "login.inc.php");
 
-if ($db)
+if (isset($sql) && $sql->conn() !== false)
 {
     //Include Functions-Files
     include( FS2_ROOT_PATH . "includes/functions.php");
@@ -25,7 +25,7 @@ if ($db)
     }
 
     // News Config + Infos
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_config", $FD->sql()->conn() );
     $news_config_arr = mysql_fetch_assoc($index);
     
     //Feed Header ausgeben
@@ -42,7 +42,7 @@ if ($db)
                           WHERE news_date <= UNIX_TIMESTAMP()
                           AND news_active = 1
                           ORDER BY news_date DESC
-                          LIMIT $news_config_arr[num_news]", $db);
+                          LIMIT $news_config_arr[num_news]", $FD->sql()->conn() );
 
     while ($news_arr = mysql_fetch_assoc($index)) {
         // Item ausgeben
@@ -60,7 +60,7 @@ if ($db)
     </channel>
 </rss>';
 
-    mysql_close($db);
+    mysql_close($FD->sql()->conn() );
     
 } else {
     //"Keine Verbindung"-Feed

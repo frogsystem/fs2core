@@ -3,21 +3,21 @@ $index = mysql_query ( "
 						SELECT COUNT(`cat_id`) AS 'num_gallery'
 						FROM ".$global_config_arr['pref']."screen_cat
 						LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_gallery = mysql_result ( $index, 0, "num_gallery" );
 
 $index = mysql_query ( "
 						SELECT COUNT(`screen_id`) AS 'num_gallery_img'
 						FROM ".$global_config_arr['pref']."screen
 						LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_gallery_img = mysql_result ( $index, 0, "num_gallery_img" );
 
 $index = mysql_query ( "
 						SELECT COUNT(`wallpaper_id`) AS 'num_gallery_wp'
 						FROM ".$global_config_arr['pref']."wallpaper
 						LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_gallery_wp = mysql_result ( $index, 0, "num_gallery_wp" );
 
 $num_gallery_entries = $num_gallery_wp + $num_gallery_img;
@@ -31,7 +31,7 @@ if ( $num_gallery_img > 0 ) {
 							GROUP BY C.`cat_name`
 							ORDER BY `best_gallery_num` DESC
 							LIMIT 0,1
-	", $db);
+	", $FD->sql()->conn() );
 	$best_gallery = stripslashes ( mysql_result ( $index, 0, "cat_name" ) );
 	$best_gallery_num = mysql_result ( $index, 0, "best_gallery_num" );
 }
@@ -44,7 +44,7 @@ if ( $num_gallery_wp > 0 ) {
 							GROUP BY C.`cat_name`
 							ORDER BY `best_gallery_num` DESC
 							LIMIT 0,1
-	", $db);
+	", $FD->sql()->conn() );
 	$best_gallery2 = stripslashes ( mysql_result ( $index, 0, "cat_name" ) );
 	$best_gallery_num2 = mysql_result ( $index, 0, "best_gallery_num" );
 }
@@ -59,14 +59,14 @@ $index = mysql_query ( "
 						SELECT COUNT(`dl_id`) AS 'num_dl'
 						FROM ".$global_config_arr['pref']."dl
 						LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_dl = mysql_result ( $index, 0, "num_dl" );
 
 $index = mysql_query ( "
 						SELECT COUNT(`file_id`) AS 'num_dl_file'
 						FROM ".$global_config_arr['pref']."dl_files
 						LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_dl_files = mysql_result ( $index, 0, "num_dl_file" );
 
 
@@ -78,7 +78,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 							GROUP BY D.`dl_name`
 							ORDER BY `best_dl_files_num` DESC
 							LIMIT 0,1
-	", $db);
+	", $FD->sql()->conn() );
 	$best_dl_files = stripslashes ( mysql_result ( $index, 0, "dl_name" ) );
 	$best_dl_files_num = mysql_result ( $index, 0, "best_dl_files_num" );
 	
@@ -89,7 +89,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 							GROUP BY D.`dl_name`
 							ORDER BY `best_dl_count_num` DESC
 							LIMIT 0,1
-	", $db);
+	", $FD->sql()->conn() );
 	$best_dl_count = stripslashes ( mysql_result ( $index, 0, "dl_name" ) );
 	$best_dl_count_num = mysql_result ( $index, 0, "best_dl_count_num" );
 	
@@ -100,7 +100,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 							GROUP BY D.`dl_name`
 							ORDER BY `best_dl_traffic_num` DESC
 							LIMIT 0,1
-	", $db);
+	", $FD->sql()->conn() );
 	$best_dl_traffic = stripslashes ( mysql_result ( $index, 0, "dl_name" ) );
 	$best_dl_traffic_num = getsize ( mysql_result ( $index, 0, "best_dl_traffic_num" ) );
 
@@ -111,7 +111,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 							GROUP BY U.`user_name`
 							ORDER BY `best_dl_uploader_num` DESC
 							LIMIT 0,1
-	", $db);
+	", $FD->sql()->conn() );
 	$best_dl_uploader = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
 	$best_dl_uploader_num = mysql_result ( $index, 0, "best_dl_uploader_num" );
 	echo mysql_error();
@@ -122,7 +122,7 @@ $index = mysql_query ( "
 						SELECT COUNT(`video_id`) AS 'num_video'
 						FROM ".$global_config_arr['pref']."player
 						LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_video = mysql_result ( $index, 0, "num_video" );
 
 $index = mysql_query ( "
@@ -130,7 +130,7 @@ $index = mysql_query ( "
 						FROM ".$global_config_arr['pref']."player
 						WHERE `video_type` = 1
 						LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_video_int = mysql_result ( $index, 0, "num_video_int" );
 
 $num_video_ext = $num_video - $num_video_int;

@@ -13,7 +13,7 @@ if (isset($_POST[cat_name]))
                  VALUES ('".$_POST[cat_name]."',
                          '".$_POST[cat_type]."',
                          '".$_POST[cat_visibility]."',
-                         '$time')", $db);
+                         '$time')", $FD->sql()->conn() );
     systext("Kategorie wurde hinzugefügt");
 }
 

@@ -6,7 +6,7 @@ $index = mysql_query ( "
                         FROM `".$global_config_arr['pref']."styles`
                         WHERE `style_id` != 0
                         AND `style_tag` != 'default'
-", $db);
+", $FD->sql()->conn());
 $num_styles = mysql_result ( $index, 0, "num_styles" );
 
 $index = mysql_query ( "
@@ -16,7 +16,7 @@ $index = mysql_query ( "
                         AND `style_tag` != 'default'
                         ORDER BY `style_id` DESC
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn());
 $last_style = killhtml ( mysql_result ( $index, 0, "style_tag" ) );
 
 echo '

@@ -23,7 +23,7 @@ if ($_POST[polladd] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
                  VALUES ('".$_POST[frage]."',
                          '$adate',
                          '$edate',
-                         '".$_POST[type]."');", $db);
+                         '".$_POST[type]."');", $FD->sql()->conn() );
 
     // Antworten in die DB eintragen
     $index = mysql_query("SELECT poll_id FROM ".$global_config_arr[pref]."poll WHERE poll_quest = '".$_POST[frage]."'");
@@ -33,7 +33,7 @@ if ($_POST[polladd] && $_POST[frage] && $_POST[ant][0] && $_POST[ant][1])
     {
         mysql_query("INSERT INTO ".$global_config_arr[pref]."poll_answers (poll_id, answer)
                      VALUES ('$id',
-                             '".$_POST[ant][$i]."');", $db);
+                             '".$_POST[ant][$i]."');", $FD->sql()->conn() );
     }
     systext("Umfrage wurde hinzugefügt");
     unset($_POST);

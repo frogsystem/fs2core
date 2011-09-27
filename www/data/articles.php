@@ -4,7 +4,7 @@
 /////////////////////////
 
 // Load Article Config
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_config", $db);
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 if ($global_config_arr['goto'] == "articles") {
@@ -18,7 +18,7 @@ if ($global_config_arr['goto'] == "articles") {
                             WHERE `article_id` = '".$_GET['id']."'
                             ORDER BY `article_id`
                             LIMIT 0,1
-    ", $db );      
+    ", $FD->sql()->conn() );      
     
 } else {
  
@@ -29,7 +29,7 @@ if ($global_config_arr['goto'] == "articles") {
                             WHERE `article_url` = '".$_GET['go']."'
                             ORDER BY `article_id`
                             LIMIT 0,1
-    ", $db );   
+    ", $FD->sql()->conn() );   
     
 }
 
@@ -54,7 +54,7 @@ else
                             FROM `".$global_config_arr['pref']."user`
                             WHERE `user_id` = '".$article_arr['article_user']."'
                             LIMIT 0,1
-    ", $db);
+    ", $FD->sql()->conn() );
     // User exists
     if ( mysql_num_rows ( $index ) == 1 ) {
         // Get User Data

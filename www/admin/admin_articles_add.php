@@ -58,7 +58,7 @@ if (
                                                 '".$_POST['article_cat_id']."',
                                                 '".time()."'
                                         )
-    ", $db );
+    ", $FD->sql()->conn() );
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
@@ -67,7 +67,7 @@ if (
         update_search_index ( "articles" );
     }
     
-    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET artikel = artikel + 1", $db );
+    mysql_query ( "UPDATE ".$global_config_arr['pref']."counter SET artikel = artikel + 1", $FD->sql()->conn() );
     systext( $admin_phrases[articles][articles_added], $admin_phrases[common][info]);
 }
 
@@ -91,7 +91,7 @@ else
         }
 
     // Load Article Config
-    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_config", $db );
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc ( $index );
 
         // Create HTML, FSCode & Para-Handling Vars
@@ -120,7 +120,7 @@ else
 
     // Get User
         if ( $_POST['article_user'] != 0 ) {
-                $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$_POST['article_user']."'", $db );
+                $index = mysql_query ( "SELECT user_name, user_id FROM ".$global_config_arr['pref']."user WHERE user_id = '".$_POST['article_user']."'", $FD->sql()->conn() );
             $_POST['article_user_name'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
         } else {
             $_POST['article_user_name'] = "";
@@ -162,7 +162,7 @@ else
                                     <select name="article_cat_id">
         ';
                                                                             // Kategorien auflisten
-                                                                            $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $db );
+                                                                            $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."articles_cat", $FD->sql()->conn() );
                                                                             while ( $cat_arr = mysql_fetch_assoc ( $index ) )
                                                                             {
                                                                                         settype ( $cat_arr['cat_id'], "integer" );
@@ -315,8 +315,8 @@ if ($_POST[url] && $_POST[title] && $_POST[text] && $_POST[cat_id])
                              '$_POST[text]',
                              '$_POST[search]',
                              '$_POST[fscode]',
-                             '$_POST[cat_id]');", $db);
-        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET artikel = artikel + 1", $db);
+                             '$_POST[cat_id]');", $FD->sql()->conn() );
+        mysql_query("UPDATE ".$global_config_arr[pref]."counter SET artikel = artikel + 1", $FD->sql()->conn() );
         systext("Artikel wurde gespeichert");
     }
     else

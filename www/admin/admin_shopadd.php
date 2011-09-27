@@ -16,7 +16,7 @@ if ($_FILES[artikelimg] && $_POST[title] && $_POST[url] && $_POST[preis])
                          '".$_POST[url]."',
                          '".$_POST[text]."',
                          '".$_POST[preis]."',
-                         '".$_POST[hot]."');", $db);
+                         '".$_POST[hot]."');", $FD->sql()->conn() );
     $id = mysql_insert_id();
     
     $messages = array();

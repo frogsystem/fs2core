@@ -54,7 +54,7 @@ if (
                                                 '".$_POST['video_desc']."',
                                                 '".$_POST['dl_id']."'
                                          )
-        ", $db );
+        ", $FD->sql()->conn() );
     systext ( "Video erfolgreich eingetragen", $admin_phrases[common][info] );
 
     // Unset Vars
@@ -218,7 +218,7 @@ if ( TRUE )
                                                         FROM ".$global_config_arr['pref']."dl D, ".$global_config_arr['pref']."dl_cat AS C
                                                         WHERE D.cat_id = C.cat_id
                                                         ORDER BY D.dl_name ASC
-        ", $db );
+        ", $FD->sql()->conn() );
         while ( $dl_arr = mysql_fetch_assoc ( $index ) )
         {
                 settype ( $dl_arr['dl_id'], "integer" );

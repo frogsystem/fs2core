@@ -55,8 +55,8 @@ $index = mysql_query("SELECT s_hits
                       WHERE s_year  = $_GET[s_year] and
                             s_month = $_GET[s_month]
                       ORDER BY s_hits DESC
-                      LIMIT 1", $db);
-$dbmaxhits = mysql_result($index, 0, "s_hits");
+                      LIMIT 1", $FD->sql()->conn() );
+$FD->sql()->conn() );
 
 $hitsarray = array(0);
 $arraycount = 2;
@@ -68,17 +68,17 @@ for ($d=1; $d<$anz_tage+1; $d++)
                           FROM ".$global_config_arr[pref]."counter_stat
                           WHERE s_year  = $_GET[s_year] and
                                 s_month = $_GET[s_month] and
-                                s_day   = $d", $db);
+                                s_day   = $d", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows > 0)
     {
-        $dbhits = mysql_result($index, 0, "s_hits");
+        $FD->sql()->conn() );
         // X-Koordinate
         $hitsarray[$arraycount] = $startwert;
         $startwert = $startwert + $feldbreite;
         $arraycount = $arraycount+1;
         // Y-Koordinate
-        $hitsarray[$arraycount] = 285 - ($dbhits / $dbmaxhits * 220);
+        $hitsarray[$arraycount] = 285 - ($FD->sql()->conn() );
         $arraycount = $arraycount+1;
     }
     else
@@ -123,8 +123,8 @@ $index = mysql_query("SELECT s_visits
                       WHERE s_year  = $_GET[s_year] and
                             s_month = $_GET[s_month]
                       ORDER BY s_visits DESC
-                      LIMIT 1", $db);
-$dbmaxvisits = mysql_result($index, 0, "s_visits");
+                      LIMIT 1", $FD->sql()->conn() );
+$FD->sql()->conn() );
 $visitsarray = array(0);
 $arraycount = 2;
 $startwert = 21 + $feldbreite/2;
@@ -134,17 +134,17 @@ for ($d=1; $d<$anz_tage+1; $d++)
                           FROM ".$global_config_arr[pref]."counter_stat
                           WHERE s_year  = $_GET[s_year] AND
                                 s_month = $_GET[s_month] AND
-                                s_day   = $d", $db);
+                                s_day   = $d", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows > 0)
     {
-        $dbvisits = mysql_result($index, 0, "s_visits");
+        $FD->sql()->conn() );
         // X-Koordinate
         $visitsarray[$arraycount] = $startwert;
         $startwert = $startwert + $feldbreite;
         $arraycount = $arraycount+1;
         // Y-Koordinate
-        $visitsarray[$arraycount] = 285 - ($dbvisits / $dbmaxvisits * 160);
+        $visitsarray[$arraycount] = 285 - ($FD->sql()->conn() );
         $arraycount = $arraycount+1;
     }
     else
@@ -206,32 +206,32 @@ imagerectangle($image,20,45,480,285,$farbe_rand);
 
 switch (TRUE)
 {
-    case ($dbmaxvisits < 10):
+    case ($FD->sql()->conn() ):
         $nvis = $dbmaxvisits;
         $ovis = $dbmaxvisits;
         $add = 1;
         $tvis = "";
         break;
-    case ($dbmaxvisits < 100):
-        $nvis = ceil($dbmaxvisits/10);
+    case ($FD->sql()->conn() ):
+        $nvis = ceil($FD->sql()->conn() );
         $add = 10;
         $ovis = $nvis * 10;
         $tvis = "0";
         break;
-    case ($dbmaxvisits < 1000):
-        $nvis = ceil($dbmaxvisits/100);
+    case ($FD->sql()->conn() ):
+        $nvis = ceil($FD->sql()->conn() );
         $add = 100;
         $ovis = $nvis * 100;
         $tvis = "00";
         break;
-    case ($dbmaxvisits < 10000):
-        $nvis = ceil($dbmaxvisits/1000);
+    case ($FD->sql()->conn() ):
+        $nvis = ceil($FD->sql()->conn() );
         $add = 1000;
         $ovis = $nvis * 1000;
         $tvis = "k";
         break;
-    case ($dbmaxvisits > 10000):
-        $nvis = ceil($dbmaxvisits/10000);
+    case ($FD->sql()->conn() ):
+        $nvis = ceil($FD->sql()->conn() );
         $add = 10000;
         $ovis = $nvis * 10000;
         $tvis = "0k";
@@ -240,39 +240,39 @@ switch (TRUE)
 
 for ($i=0; $i<=$ovis; $i=$i+$add)
 {
-    $maxx = 285 - ($i / $dbmaxvisits * 160);
+    $maxx = 285 - ($i / $FD->sql()->conn() );
     imageline($image,15,$maxx,20,$maxx,$farbe_rand);
     imagestring($image,1,2,$maxx-5,$i/$add.$tvis,$farbe_text3);
 }
 
 switch (TRUE)
 {
-    case ($dbmaxhits < 10):
+    case ($FD->sql()->conn() ):
         $nvis = $dbmaxhits;
         $ovis = $dbmaxhits;
         $add = 1;
         $tvis = "";
         break;
-    case ($dbmaxhits < 100):
-        $nvis = round($dbmaxhits/10);
+    case ($FD->sql()->conn() ):
+        $nvis = round($FD->sql()->conn() );
         $add = 10;
         $ovis = $nvis * 10;
         $tvis = "0";
         break;
-    case ($dbmaxhits < 1000):
-        $nvis = round($dbmaxhits/100);
+    case ($FD->sql()->conn() ):
+        $nvis = round($FD->sql()->conn() );
         $add = 100;
         $ovis = $nvis * 100;
         $tvis = "00";
         break;
-    case ($dbmaxhits < 10000):
-        $nvis = round($dbmaxhits/1000);
+    case ($FD->sql()->conn() ):
+        $nvis = round($FD->sql()->conn() );
         $add = 1000;
         $ovis = $nvis * 1000;
         $tvis = "k";
         break;
-    case  ($dbmaxhits > 10000):
-        $nvis = round($dbmaxhits/10000);
+    case  ($FD->sql()->conn() ):
+        $nvis = round($FD->sql()->conn() );
         $add = 10000;
         $ovis = $nvis * 10000;
         $tvis = "0k";
@@ -281,7 +281,7 @@ switch (TRUE)
 
 for ($i=0; $i<=$ovis; $i=$i+$add)
 {
-    $maxx = 285 - ($i / $dbmaxhits * 220);
+    $maxx = 285 - ($i / $FD->sql()->conn() );
     imageline($image,480,$maxx,485,$maxx,$farbe_rand);
     imagestring($image,1,483,$maxx-5,$i/$add.$tvis,$farbe_text3);
 }
@@ -290,6 +290,6 @@ if ( $_SESSION['stat_view'] == 1 ) {
 	header("Content-Type: image/png");
 	imagepng($image);
 }
-mysql_close($db);
+mysql_close($FD->sql()->conn() );
 }
 ?>

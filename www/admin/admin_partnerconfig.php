@@ -21,7 +21,7 @@ if ($_POST[small_x] && $_POST[small_y] && $_POST[big_x] && $_POST[big_y] && $_PO
                    big_y = '$_POST[big_y]',
                    big_allow = '$_POST[big_allow]',
                    file_size = '$_POST[file_size]'";
-    mysql_query($update, $db);
+    mysql_query($update, $FD->sql()->conn() );
     systext("Die Konfiguration wurde aktualisiert");
 }
 
@@ -32,7 +32,7 @@ if ($_POST[small_x] && $_POST[small_y] && $_POST[big_x] && $_POST[big_y] && $_PO
 else
 {
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."partner_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     echo'

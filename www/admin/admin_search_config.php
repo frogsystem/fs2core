@@ -25,13 +25,12 @@ if (
     // prepare data
     $search = frompost($search_cols);
     $search['id'] = 1;
-    $global = frompost($global_cols);
-    $global['id'] = 1;    
+    $global = frompost($global_cols);  
  
      // save to db
     try {
         $sql->save("search_config", $search);
-        $sql->save("global_config", $global);
+        $FD->saveConfig("main", $global);
         systext($TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
     } catch (Exception $e) {}
     
@@ -53,6 +52,11 @@ if ( TRUE )
     } else {
         $search = $sql->getRow("search_config", $search_cols, array('W' => "`id` = 1"));
         $global = $sql->getRow("global_config", $global_cols, array('W' => "`id` = 1"));
+        
+        $global = $sql->getRow("config", array("config_data"), array('W' => "`config_name` = 'main'"));
+        $global = json_array_decode($global['config_data']);
+        $global = array_filter_keys($global, $global_cols);
+        
         $data = array_merge($global, $search);
         putintopost($data);
     }   

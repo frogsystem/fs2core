@@ -27,7 +27,7 @@ if (
     settype ( $_POST['applet_include'], "integer" );
 
     // Check if Applet exists
-    $index = mysql_query ( "SELECT `applet_id` FROM `".$global_config_arr['pref']."applets` WHERE `applet_file` = '".$_POST['applet_file']."'", $db );
+    $index = mysql_query ( "SELECT `applet_id` FROM `".$global_config_arr['pref']."applets` WHERE `applet_file` = '".$_POST['applet_file']."'", $sql->conn() );
 
     // New Applet
     if ( mysql_num_rows ( $index ) == 0 ) {
@@ -45,7 +45,7 @@ if (
                                                 '".$_POST['applet_include']."',
                                                 '".$_POST['applet_output']."'
                                         )
-        ", $db );
+        ", $sql->conn() );
         
         systext ( $TEXT["admin"]->get("applet_added"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );

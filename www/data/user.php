@@ -14,7 +14,7 @@ $index = mysql_query ( "
     SELECT *
     FROM `".$global_config_arr['pref']."user_config`
     WHERE `id` = '1'
-", $db );
+", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 //////////////////////
@@ -24,7 +24,7 @@ $index = mysql_query ( "
     SELECT *
     FROM `".$global_config_arr['pref']."user`
     WHERE `user_id` = '".$_GET['id']."'
-", $db );
+", $FD->sql()->conn() );
 
 if ( mysql_num_rows ( $index ) > 0 ) {
     $user_arr = mysql_fetch_assoc ( $index );
@@ -32,8 +32,8 @@ if ( mysql_num_rows ( $index ) > 0 ) {
     $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
     $user_arr['user_image'] = ( image_exists ( "media/user-images/", $user_arr['user_id'] ) ? '<img src="'.image_url ( "media/user-images/", $user_arr['user_id'] ).'" alt="'.$TEXT['frontend']->get("user_image_of")." ".$user_arr['user_name'].'">' : $TEXT['frontend']->get("user_image_not_found") );
     $user_arr['user_mail'] = ( $user_arr['user_show_mail'] == 1 ? kill_replacements ( $user_arr['user_mail'], TRUE ) : "-" );
-    $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $phrases['yes'] : $phrases['no'] );
-    $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $phrases['yes'] : $phrases['no'] );
+    $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
+    $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
     
     $user_arr['rank_data'] = get_user_rank ( $user_arr['user_group'], $user_arr['user_is_admin'] );
     $user_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
@@ -62,28 +62,28 @@ if ( mysql_num_rows ( $index ) > 0 ) {
         SELECT COUNT(`news_id`) AS `number`
         FROM `".$global_config_arr['pref']."news`
         WHERE `user_id` = '".$user_arr['user_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
     $user_arr['user_num_news'] = mysql_result ( $index, 0, "number" );
     
     $index = mysql_query ( "
         SELECT COUNT(`comment_id`) AS `number`
         FROM `".$global_config_arr['pref']."news_comments`
         WHERE `comment_poster_id` = '".$user_arr['user_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
     $user_arr['user_num_comments'] = mysql_result ( $index, 0, "number" );
 
     $index = mysql_query ( "
         SELECT COUNT(`article_id`) AS `number`
         FROM `".$global_config_arr['pref']."articles`
         WHERE `article_user` = '".$user_arr['user_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
     $user_arr['user_num_articles'] = mysql_result ( $index, 0, "number" );
 
     $index = mysql_query ( "
         SELECT COUNT(`dl_id`) AS `number`
         FROM `".$global_config_arr['pref']."dl`
         WHERE `user_id` = '".$user_arr['user_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
     $user_arr['user_num_downloads'] = mysql_result ( $index, 0, "number" );
 
 

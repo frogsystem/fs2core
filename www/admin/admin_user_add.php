@@ -5,14 +5,14 @@
 
 function user_name_free ( $USERNAME ) {
     global $global_config_arr;
-    global $db;
+    global $FD;
     
     $USERNAME = savesql ( $USERNAME );
     $index = mysql_query ( "
                             SELECT `user_id`
                             FROM `".$global_config_arr['pref']."user`
                             WHERE `user_name` = '".$USERNAME."'
-    ", $db );
+    ", $FD->sql()->conn() );
     if ( mysql_num_rows ( $index ) > 0 ) {
         return FALSE;
     } else {
@@ -23,7 +23,7 @@ function user_name_free ( $USERNAME ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $db );
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 //////////////////
@@ -107,14 +107,14 @@ if (
                         '".$_POST['user_yim']."',
                         '".$_POST['user_skype']."'
                     )
-    ", $db );
-    $user_id = mysql_insert_id ( $db );
+    ", $FD->sql()->conn() );
+    $user_id = mysql_insert_id ( $FD->sql()->conn() );
     $message = "Benutzer wurde erfolgreich hinzugefügt";
 
     mysql_query ( "
                     UPDATE ".$global_config_arr['pref']."counter
                     SET `user` = `user`+1
-    ", $db );
+    ", $FD->sql()->conn() );
     
     // upload image
     if ( $_FILES['user_pic']['name'] != "" ) {
@@ -309,7 +309,7 @@ if ( TRUE )
                             FROM ".$global_config_arr['pref']."user_groups
                             WHERE `user_group_id` > 0
                             ORDER BY `user_group_name`
-    ", $db );
+    ", $FD->sql()->conn() );
 
     while ( $group_arr = mysql_fetch_assoc( $index ) ) {
         echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $_POST['user_group'], $group_arr['user_group_id'] ).'>
@@ -322,7 +322,7 @@ if ( TRUE )
                             WHERE `user_group_id` = 0
                             ORDER BY `user_group_name`
                             LIMIT 0,1
-    ", $db );
+    ", $FD->sql()->conn() );
     $group_arr = mysql_fetch_assoc( $index );
     echo '<option value="admin" '.getselected ( $_POST['user_group'], "admin" ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
 

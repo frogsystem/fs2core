@@ -18,7 +18,7 @@ if (
     )
 {
     // Load Config Array
-    $index = mysql_query ( " SELECT * FROM `".$global_config_arr['pref']."dl_config` ", $db);
+    $index = mysql_query ( " SELECT * FROM `".$global_config_arr['pref']."dl_config` ", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc ( $index );
     
     // Get File Data
@@ -26,7 +26,7 @@ if (
                             SELECT `file_is_mirror`, `file_url`
                             FROM `".$global_config_arr['pref']."dl_files`
                             WHERE `file_id` = ".$_GET['id']."
-    ", $db );
+    ", $FD->sql()->conn() );
     $check_file_is_mirror = mysql_result ( $index, 0, "file_is_mirror" );
     settype( $check_file_is_mirror, "integer" );
     $file_url = stripslashes ( mysql_result ( $index, 0, "file_url" ) );
@@ -43,7 +43,7 @@ if (
                         UPDATE `".$global_config_arr['pref']."dl_files`
                         SET `file_count` = `file_count` + 1
                         WHERE `file_id` = '".$_GET['id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         // Forward to the URL
         header ( "Location: " . $file_url );
     } else {

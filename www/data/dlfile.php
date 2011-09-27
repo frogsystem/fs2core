@@ -4,21 +4,21 @@ $index = mysql_query ( "
                         SELECT *
                         FROM `".$global_config_arr['pref']."dl_config`
                         WHERE `id` = 1
-", $db);
+", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 $index = mysql_query ( "
                         SELECT `show_type`, `show_size_x`, `show_size_y`
                         FROM `".$global_config_arr['pref']."screen_config`
                         WHERE `id` = 1
-", $db);
+", $FD->sql()->conn() );
 $screen_config_arr = mysql_fetch_assoc ( $index );
 
 // Security Functions
 $_GET['id'] = ( isset ( $_GET['fileid'] ) && !isset ( $_GET['id'] ) ) ? $_GET['fileid'] : $_GET['id'];
 settype( $_GET['id'], "integer" );
 
-$index = mysql_query("select * from ".$global_config_arr[pref]."dl where dl_id = $_GET[id] and dl_open = 1", $db);
+$index = mysql_query("select * from ".$global_config_arr[pref]."dl where dl_id = $_GET[id] and dl_open = 1", $FD->sql()->conn() );
 if (mysql_num_rows($index) > 0)
 {
     $dl_arr = mysql_fetch_assoc($index);
@@ -30,7 +30,7 @@ if (mysql_num_rows($index) > 0)
     $dl_config_arr = $config_arr;
 
     // Username auslesen
-    $index = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $dl_arr[user_id]", $db);
+    $index = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $dl_arr[user_id]", $FD->sql()->conn() );
     $dl_arr[user_name] = kill_replacements ( mysql_result($index, 0, "user_name"), TRUE );
     $dl_arr[user_url] = "?go=user&id=" . $dl_arr[user_id];
 
@@ -56,7 +56,7 @@ if (mysql_num_rows($index) > 0)
     // Sonstige Daten ermitteln
     $dl_arr[dl_date] = date_loc ( $global_config_arr['date'], $dl_arr[dl_date] );
     $dl_arr[dl_text] = fscode($dl_arr[dl_text]);
-    $index3 = mysql_query("select cat_name from ".$global_config_arr[pref]."dl_cat where cat_id = '$dl_arr[cat_id]'", $db);
+    $index3 = mysql_query("select cat_name from ".$global_config_arr[pref]."dl_cat where cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
     $dl_arr[cat_name] = stripslashes(mysql_result($index3, 0, "cat_name"));
 
 
@@ -73,22 +73,22 @@ if (mysql_num_rows($index) > 0)
     if ($dl_config_arr[dl_rights]==0) {
       if ($messages_template != "")
         $messages_template .= "<br>";
-      $messages_template .= $phrases[dl_not_allowed];
+      $messages_template .= $FD->text('frontend', "dl_not_allowed");
     }
 
     if ($dl_config_arr[dl_rights]==1 AND $_SESSION[user_level] != "loggedin") {
       if ($messages_template != "")
         $messages_template .= "<br>";
-      $messages_template .= $phrases[dl_not_logged_in];
+      $messages_template .= $FD->text('frontend', "dl_not_logged_in");
     }
 
     if ($messages_template != "")
       $messages_template .= "<br>";
-    $messages_template .= $phrases[dl_not_save_as];
+    $messages_template .= $FD->text('frontend', "dl_not_save_as");
 
       
     // Files auslesen
-    if ( $index = mysql_query("select * from ".$global_config_arr[pref]."dl_files where dl_id = $dl_arr[dl_id] $dl_use", $db ) ) {
+    if ( $index = mysql_query("select * from ".$global_config_arr[pref]."dl_files where dl_id = $dl_arr[dl_id] $dl_use", $FD->sql()->conn() )) {
         $stats_arr[number] = mysql_num_rows($index);
 
         while ($file_arr = mysql_fetch_assoc($index)) {
@@ -167,7 +167,7 @@ if (mysql_num_rows($index) > 0)
 
     // Navigation erzeugen
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, $dl_arr['cat_id'], $config_arr['dl_show_sub_cats'] );
+    get_dl_categories ($valid_ids, $dl_arr['cat_id'], $config_arr['dl_show_sub_cats'] );
 
     foreach ( $valid_ids as $cat ) {
         if ($cat['cat_id'] == $dl_arr['cat_id']) {
@@ -222,6 +222,6 @@ if (mysql_num_rows($index) > 0)
 
     $template = $template->display ();
 } else {
-    $template = sys_message($phrases[sysmessage], $phrases[dl_not_exist]);
+    $template = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "dl_not_exist"));
 }
 ?>

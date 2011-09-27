@@ -32,7 +32,7 @@ if ( $_SESSION['user_level'] == "loggedin" ) {
                             SELECT `user_id`, `user_is_staff`, `user_is_admin`
                             FROM ".$global_config_arr['pref']."user
                             WHERE `user_id` = '".$user_id."'
-    ", $db);
+    ", $FD->sql()->conn() );
     $data_arr = mysql_fetch_assoc ( $index );
     if ( $data_arr['user_is_staff'] == 1 || $data_arr['user_is_admin'] == 1 || $data_arr['user_id'] == 1 ) {
         $template_admincp = new template();

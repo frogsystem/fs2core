@@ -27,7 +27,7 @@ $index = mysql_query ( "
     SELECT *
     FROM `".$global_config_arr['pref']."user_config`
     WHERE `id` = '1'
-", $db );
+", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 
@@ -36,7 +36,7 @@ $config_arr = mysql_fetch_assoc ( $index );
 ////////////////////////
 $user_arr = array ();
 
-$index = mysql_query ( " SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user_group`, `user_mail`, `user_show_mail`, `user_reg_date` FROM `".$global_config_arr['pref']."user` ORDER BY `user_name` ASC ", $db );
+$index = mysql_query ( " SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user_group`, `user_mail`, `user_show_mail`, `user_reg_date` FROM `".$global_config_arr['pref']."user` ORDER BY `user_name` ASC ", $FD->sql()->conn() );
 
 while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
 
@@ -44,28 +44,28 @@ while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
                                 SELECT COUNT(`news_id`) AS 'number'
                                 FROM `".$global_config_arr['pref']."news`
                                 WHERE `user_id` = '".$temp_arr['user_id']."'
-    ", $db);
+    ", $FD->sql()->conn() );
     $temp_arr['user_num_news'] = mysql_result ( $data, 0, "number" );
 
     $data = mysql_query ( "
                                 SELECT COUNT(`comment_id`) AS 'number'
                                 FROM `".$global_config_arr['pref']."news_comments`
                                 WHERE `comment_poster_id` = '".$temp_arr['user_id']."'
-    ", $db);
+    ", $FD->sql()->conn() );
     $temp_arr['user_num_comments'] = mysql_result ( $data, 0, "number" );
 
     $data = mysql_query ( "
                                 SELECT COUNT(`article_id`) AS 'number'
                                 FROM `".$global_config_arr['pref']."articles`
                                 WHERE `article_user` = '".$temp_arr['user_id']."'
-    ", $db);
+    ", $FD->sql()->conn() );
     $temp_arr['user_num_articles'] = mysql_result ( $data, 0, "number" );
 
     $data = mysql_query ( "
                                 SELECT COUNT(`dl_id`) AS 'number'
                                 FROM `".$global_config_arr['pref']."dl`
                                 WHERE `user_id` = '".$temp_arr['user_id']."'
-    ", $db);
+    ", $FD->sql()->conn() );
     $temp_arr['user_num_downloads'] = mysql_result ( $data, 0, "number" );
 
     $user_arr[] = $temp_arr;

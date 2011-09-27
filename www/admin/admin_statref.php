@@ -42,7 +42,7 @@ if ( $_POST['delete_referrer'] == 1 && isset ( $_POST['del_days'] ) && isset ( $
     	
 		mysql_query("DELETE FROM ".$global_config_arr['pref']."counter_ref
                      WHERE ref_".$contact." ".$age." '".$del_date."' AND
-                           ref_count ".$amount." '".$_POST['del_hits']."'", $db);
+                           ref_count ".$amount." '".$_POST['del_hits']."'", $FD->sql()->conn() );
                            
 		$message =  $admin_phrases[stats][referrer_deleted_entries] . ":<br>" .
 					'"'.$admin_phrases[stats]['referrer_'.$_POST['del_contact']] . " " .
@@ -192,7 +192,7 @@ else
             break;
     }
 
-    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref ".$query."", $db );
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter_ref ".$query."", $FD->sql()->conn() );
     $referrer_number = mysql_num_rows ( $index );
     if ( $referrer_number <= 0 ) {
     	echo'

@@ -13,12 +13,12 @@ function bbcode_stripcontents ($text) {
 function do_bbcode_smilies ($text) {
 
     global $global_config_arr;
-    global $db;
+    global $FD;
     $global_config_arr['virtualhost'];
-    $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr['pref']."global_config WHERE id = 1", $db);
+    $index = mysql_query("SELECT virtualhost FROM ".$global_config_arr['pref']."global_config WHERE id = 1", $FD->sql()->conn() );
     $page_url = stripslashes(mysql_result($index, 0, "virtualhost"));
     
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies", $FD->sql()->conn() );
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $url = image_url("images/smilies/", $smilie_arr['id']);
@@ -40,7 +40,7 @@ function do_bbcode_url ($action, $attributes, $content, $params, $node_object) {
 function do_bbcode_homelink ($action, $attributes, $content, $params, $node_object) {
 
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     if ($action == 'validate') {
         return true;
@@ -91,7 +91,7 @@ function do_bbcode_img ($action, $attributes, $content, $params, $node_object) {
 function do_bbcode_cimg ($action, $attributes, $content, $params, $node_object) {
 
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     if ($action == 'validate') {
         return true;
@@ -119,7 +119,7 @@ function do_bbcode_cimg ($action, $attributes, $content, $params, $node_object) 
 function do_bbcode_player ($action, $attributes, $content, $params, $node_object) {
 
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     if ($action == 'validate') {
         return true;
@@ -180,7 +180,7 @@ function do_bbcode_size ($action, $attributes, $content, $params, $node_object) 
 function do_bbcode_code ($action, $attributes, $content, $params, $node_object) {
 
         global $global_config_arr;
-        global $db;
+        global $FD;
 
         if ($action == 'validate') {
                 return true;
@@ -198,7 +198,7 @@ function do_bbcode_code ($action, $attributes, $content, $params, $node_object) 
 
 function do_bbcode_quote ($action, $attributes, $content, $params, $node_object) {
         global $global_config_arr;
-        global $db;
+        global $FD;
         
         if ($action == 'validate') {
                 return true;

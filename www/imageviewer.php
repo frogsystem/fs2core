@@ -11,7 +11,7 @@ define ( FS2_ROOT_PATH, "./", TRUE );
 // Inlcude DB Connection File
 require ( FS2_ROOT_PATH . "login.inc.php");
 
-if ($db)
+if ($FD->sql()->conn() )
 {
     //Include Functions-Files
     require ( FS2_ROOT_PATH . "includes/functions.php" );
@@ -36,7 +36,7 @@ if ($db)
     $_GET['single'] = ( isset ( $_GET['single'] ) ) ? TRUE : FALSE;
 
     // Config Array
-    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."screen_config", $db );
+    $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."screen_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc ( $index ) ;
 
     // No Image found yet
@@ -64,7 +64,7 @@ if ($db)
                                 SELECT `screen_name`, `cat_id` FROM `".$global_config_arr['pref']."screen`
                                 WHERE `screen_id` = ".$_GET['id']."
                                 LIMIT 0,1
-        ", $db );
+        ", $FD->sql()->conn() );
 
         $data_array['image'] = image_url ( "images/screenshots/", $_GET['id'], FALSE );
         $data_array['image_url'] = image_url ( "images/screenshots/", $_GET['id'] );
@@ -96,7 +96,7 @@ if ($db)
                                     AND `screen_id` > ".$_GET['id']."
                                     ORDER BY `screen_id`
                                     LIMIT 0,1
-            ", $db );
+            ", $FD->sql()->conn() );
 
             if ( mysql_num_rows ( $index ) == 1 ) {
                 $next_id = mysql_result ( $index, 0, "screen_id" );
@@ -114,7 +114,7 @@ if ($db)
                                     AND `screen_id` < ".$_GET['id']."
                                     ORDER BY `screen_id` DESC
                                     LIMIT 0,1
-            ", $db );
+            ", $FD->sql()->conn() );
 
             if ( mysql_num_rows ( $index ) == 1 ) {
                 $prev_id = mysql_result ( $index, 0, "screen_id" );
@@ -182,6 +182,6 @@ if ($db)
     echo $template;
 
     // Close Connection
-    mysql_close ( $db );
+    mysql_close ( $FD->sql()->conn() );
 }
 ?>

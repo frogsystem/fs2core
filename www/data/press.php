@@ -1,6 +1,6 @@
 <?php
 // Get Config
-$index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."press_config`", $db );
+$index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."press_config`", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 
@@ -23,30 +23,30 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
     
     if ($config_arr[game_navi] != 0)
     { //Spiele anzeigen
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 1 ORDER BY title ASC", $db);
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 1 ORDER BY title ASC", $FD->sql()->conn() );
         while ($game_arr = mysql_fetch_assoc($index))
         {
-            $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_game = $game_arr[id]", $db);
+            $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_game = $game_arr[id]", $FD->sql()->conn() );
             if (mysql_result($select, 0, "number") > 0)
             { //Es existieren Presseberichte
                 $navi_arr[] = $game_arr[id];
             
                 if ($config_arr[cat_navi] != 0)
                 { //Kategorien & Spiele anzeigen
-                    $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 2 ORDER BY title ASC", $db);
+                    $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 2 ORDER BY title ASC", $FD->sql()->conn() );
                     while ($cat_arr = mysql_fetch_assoc($index2))
                     {
-                        $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_game = $game_arr[id] AND press_cat = $cat_arr[id]", $db);
+                        $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_game = $game_arr[id] AND press_cat = $cat_arr[id]", $FD->sql()->conn() );
                         if (mysql_result($select, 0, "number") > 0)
                         { //Es existieren Presseberichte
                             $navi_arr[][] = $cat_arr[id];
 
                             if ($config_arr[lang_navi] != 0)
                             { //Sprachen & Kategorien & Spiele anzeigen
-                                $index3 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title ASC", $db);
+                                $index3 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title ASC", $FD->sql()->conn() );
                                 while ($lang_arr = mysql_fetch_assoc($index3))
                                 {
-                                    $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_game = $game_arr[id] AND press_cat = $cat_arr[id] AND press_lang = $lang_arr[id]", $db);
+                                    $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_game = $game_arr[id] AND press_cat = $cat_arr[id] AND press_lang = $lang_arr[id]", $FD->sql()->conn() );
                                     if (mysql_result($select, 0, "number") > 0)
                                     { //Es existieren Presseberichte
                                         $navi_arr[][][] = $lang_arr[id];
@@ -64,10 +64,10 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                 }
                 elseif ($config_arr[lang_navi] != 0)
                 { //Sprachen & Spiele anzeigen
-                    $index1 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title ASC", $db);
+                    $index1 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title ASC", $FD->sql()->conn() );
                     while ($lang_arr = mysql_fetch_assoc($index1))
                     {
-                        $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_game = $game_arr[id] AND press_lang = $lang_arr[id]", $db);
+                        $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_game = $game_arr[id] AND press_lang = $lang_arr[id]", $FD->sql()->conn() );
                         if (mysql_result($select, 0, "number") > 0)
                         {
                             $navi_arr[][] = $lang_arr[id];
@@ -86,20 +86,20 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
 
     elseif ($config_arr[cat_navi] != 0)
     { //Kategorien anzeigen
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 2 ORDER BY title ASC", $db);
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 2 ORDER BY title ASC", $FD->sql()->conn() );
         while ($cat_arr = mysql_fetch_assoc($index))
         {
-            $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_cat = $cat_arr[id]", $db);
+            $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_cat = $cat_arr[id]", $FD->sql()->conn() );
             if (mysql_result($select, 0, "number") > 0)
             { //Es existieren Presseberichte
                 $navi_arr[] = $cat_arr[id];
 
                 if ($config_arr[lang_navi] != 0)
                 { //Sprachen & Kategorien anzeigen
-                    $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title ASC", $db);
+                    $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title ASC", $FD->sql()->conn() );
                     while ($lang_arr = mysql_fetch_assoc($index2))
                     {
-                        $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_cat = $cat_arr[id] AND press_lang = $lang_arr[id]", $db);
+                        $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_cat = $cat_arr[id] AND press_lang = $lang_arr[id]", $FD->sql()->conn() );
                         if (mysql_result($select, 0, "number") > 0)
                         { //Es existieren Presseberichte
                             $navi_arr[][] = $lang_arr[id];
@@ -117,10 +117,10 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
 
     elseif ($config_arr[lang_navi] != 0)
     { //Sprachen anzeigen
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title ASC", $db);
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title ASC", $FD->sql()->conn() );
         while ($lang_arr = mysql_fetch_assoc($index))
         {
-            $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_lang = $lang_arr[id]", $db);
+            $select = mysql_query("SELECT COUNT(press_id) AS number FROM ".$global_config_arr[pref]."press WHERE press_lang = $lang_arr[id]", $FD->sql()->conn() );
             if (mysql_result($select, 0, "number") > 0)
             { //Es existieren Presseberichte
                 $navi_arr[] = $lang_arr[id];
@@ -146,7 +146,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                     {
                         foreach ($value2 as $value3)
                         {
-                            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value3", $db);
+                            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value3", $FD->sql()->conn() );
                             $entry_arr = mysql_fetch_assoc($index);
 
                             //Navi URL erstellen
@@ -199,7 +199,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                     }
                     elseif (!is_array($value2))
                     {
-                        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value2", $db);
+                        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value2", $FD->sql()->conn() );
                         $entry_arr = mysql_fetch_assoc($index);
 
                         //Navi URL erstellen
@@ -254,7 +254,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
             }
             elseif (!is_array($value))
             {
-                $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value", $db);
+                $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $value", $FD->sql()->conn() );
                 $entry_arr = mysql_fetch_assoc($index);
 
                 //Navi URL erstellen
@@ -399,7 +399,7 @@ if ($config_arr[show_press] == 1)
 if ($config_arr[show_press_sql] == true)
 {
     $sql_query = "SELECT * FROM ".$global_config_arr[pref]."press $where_clause ORDER BY $config_arr[order_by] $config_arr[order_type]";
-    $index = mysql_query($sql_query, $db);
+    $index = mysql_query($sql_query, $FD->sql()->conn() );
 
     unset($press_releases);
     
@@ -419,11 +419,11 @@ if ($config_arr[show_press_sql] == true)
         $template->tag("note_text", fscode ( $press_arr['press_note'] ) );
         $press_arr['press_note_formated'] = $template->display ();
 
-        $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = '$press_arr[press_game]'", $db);
+        $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = '$press_arr[press_game]'", $FD->sql()->conn() );
         $press_arr[press_game_title] = stripslashes(mysql_result($index2, 0, "title"));
-        $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = '$press_arr[press_cat]'", $db);
+        $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = '$press_arr[press_cat]'", $FD->sql()->conn() );
         $press_arr[press_cat_title] = stripslashes(mysql_result($index2, 0, "title"));
-        $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = '$press_arr[press_lang]'", $db);
+        $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = '$press_arr[press_lang]'", $FD->sql()->conn() );
         $press_arr[press_lang_title] = stripslashes(mysql_result($index2, 0, "title"));
 
 

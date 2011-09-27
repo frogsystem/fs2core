@@ -79,7 +79,7 @@ if (
                         `captcha_font_file` = '".$_POST['captcha_font_file']."'
                     WHERE
                         `id` = '1'
-    ", $db );
+    ", $FD->sql()->conn() );
     
     // Display Message
     systext ( $TEXT["admin"]->get("changes_saved"),
@@ -140,7 +140,7 @@ if ( TRUE )
                                     SELECT *
                                     FROM `".$global_config_arr['pref']."captcha_config`
                                     WHERE `id` = '1'
-        ", $db);
+        ", $FD->sql()->conn() );
         $config_arr = mysql_fetch_assoc($index);
         // create missing Data
         if ( in_array ( $config_arr['captcha_font_size'], array ( 1, 2, 3, 4, 5 ) ) ) {

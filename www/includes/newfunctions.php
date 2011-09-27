@@ -1,4 +1,19 @@
 <?php
+///////////////////////////////////////
+//// Decode Array with JSON & UTF8 ////
+//////////////////////////////////////
+function json_array_decode ($array) {
+    return array_map("utf8_decode", json_decode($array, true));
+}
+///////////////////////////////////////
+//// Encode Array with JSON & UTF8 ////
+//////////////////////////////////////
+function json_array_encode ($array) {
+    return json_encode(array_map("utf8_encode", $array), JSON_FORCE_OBJECT);
+}
+
+
+
 /////////////////////////////////
 //// Initialize empty string ////
 /////////////////////////////////
@@ -184,6 +199,22 @@ function hex2dec_color ($COLOR) {
     }
 }
 
+////////////////////////////////////////////////////////////
+//// filter array by given list of keys                 ////
+//// all entries with keys not in $keys will be removed ////
+////////////////////////////////////////////////////////////
+function array_filter_keys ($input, $keys) {
+    return array_filter($input, function($item) use (&$input, $keys) {
+        if (in_array(key($input), $keys)) {
+            next($input);
+            return true;
+        } else {        
+            next($input);
+            return false; 
+        }
+    });
+}
+
 ///////////////////////////
 //// recursic in_array ////
 ///////////////////////////
@@ -213,7 +244,7 @@ function oneof () {
 				return true;
 		}
 	}
-	return false;
+	return true;
 }
 
 //////////////////////////////////////////////

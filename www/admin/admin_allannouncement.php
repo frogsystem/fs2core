@@ -24,7 +24,7 @@ if ( isset ( $_POST['sended'] ) )
                         `ann_fscode` = '".$_POST['ann_fscode']."',
                         `ann_para` = '".$_POST['ann_para']."'
                     WHERE `id` = '1'
-    ", $db);
+    ", $sql->conn());
 
     // system messages
     systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
@@ -49,7 +49,7 @@ if ( TRUE )
                                 SELECT *
                                 FROM `".$global_config_arr['pref']."announcement`
                                 WHERE `id` = '1'
-        ", $db);
+        ", $sql->conn());
         $config_arr = mysql_fetch_assoc($index);
         putintopost ( $config_arr );
     }

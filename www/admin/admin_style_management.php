@@ -37,13 +37,13 @@ if (
                         `style_allow_use` = '".$_POST['style_allow_use']."',
                         `style_allow_edit` = '".$_POST['style_allow_edit']."'
                     WHERE `style_id` = '".$_POST['style_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
 
     $index = mysql_query ( "
                             SELECT `style_tag`
                             FROM `".$global_config_arr['pref']."styles`
                             WHERE `style_id` = ".$_POST['style_id']."
-    ", $db );
+    ", $FD->sql()->conn() );
     
     $new_ini_data = $_POST['style_name']."
 ".$_POST['style_version']."
@@ -84,7 +84,7 @@ elseif (
                                 FROM `".$global_config_arr['pref']."styles`
                                 WHERE `style_allow_use` = 1
                                 AND `style_id` != ".$_POST['style_id']."
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // Not last usable Style
         if ( mysql_num_rows ( $index ) >= 1 ) {
@@ -94,7 +94,7 @@ elseif (
                             DELETE
                             FROM `".$global_config_arr['pref']."styles`
                             WHERE `style_id` = ".$_POST['style_id']."
-            ", $db );
+            ", $FD->sql()->conn() );
             
             if (
                 $global_config_arr['style_id'] == $_POST['style_id']
@@ -111,7 +111,7 @@ elseif (
                                         AND `style_id` != 0
                                         AND `style_allow_use` = 1
                                         LIMIT 0,1
-                ", $db );
+                ", $FD->sql()->conn() );
                 if ( mysql_num_rows ( $index ) == 1 ) {
                     // MySQL-Queries
                     mysql_query ( "
@@ -121,7 +121,7 @@ elseif (
                                         `style_id` = '".$_POST['new_style_id']."',
                                         `style_tag` = '".stripslashes ( mysql_result ( $index, 0, "style_tag" ) )."'
                                     WHERE `id` = '1'
-                    ", $db );
+                    ", $FD->sql()->conn() );
                 }
             }
 
@@ -164,7 +164,7 @@ elseif (
                             (`style_tag`, `style_allow_use`, `style_allow_edit`)
                         VALUES
                             ( '".$_POST['style_tag']."', 1, 1 )
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // Display info
         systext ( $TEXT["admin"]->get("style_installed"),
@@ -213,7 +213,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                                     FROM `".$global_config_arr['pref']."styles`
                                     WHERE `style_id` = '".$_POST['style_id']."'
                                     LIMIT 0,1
-            ", $db );
+            ", $FD->sql()->conn() );
             $data_arr = mysql_fetch_assoc ( $index );
             $style_ini = FS2_ROOT_PATH . "styles/" . stripslashes ( $data_arr['style_tag'] ) . "/style.ini";
             $ACCESS = new fileaccess();
@@ -328,7 +328,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                                 AND `style_allow_use` = 1
                                 AND `style_id` != ".$_POST['style_id']."
                                 ORDER BY `style_tag`
-        ", $db );
+        ", $FD->sql()->conn() );
         
         // Not last usable Style
         if ( mysql_num_rows ( $index ) >= 1 ) {
@@ -354,7 +354,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                                     FROM `".$global_config_arr['pref']."styles`
                                     WHERE `style_id` = ".$_POST['style_id']."
                                     LIMIT 0,1
-            ", $db );
+            ", $FD->sql()->conn() );
             $data_arr = mysql_fetch_assoc ( $data );
             $data_arr['ini_lines'] = get_style_ini_data ( FS2_ROOT_PATH . "styles/" . stripslashes ( $data_arr['style_tag'] ) . "/style.ini" );
 
@@ -441,7 +441,7 @@ if ( !isset ( $_POST['style_id'] ) )
                             WHERE `style_id` != 0
                             AND `style_tag` != 'default'
                             ORDER BY `style_tag`
-    ", $db );
+    ", $FD->sql()->conn() );
     
     $num_of_styles = mysql_num_rows ( $index );
     

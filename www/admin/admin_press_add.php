@@ -45,7 +45,7 @@ if (($_POST['title'] AND $_POST['title'] != "")
                          '$_POST[note]',
                          '$_POST[lang]',
                          '$_POST[game]',
-                         '$_POST[cat]')", $db);
+                         '$_POST[cat]')", $FD->sql()->conn() );
 
     systext("Pressebericht wurde gespeichert.");
     unset($_POST);
@@ -176,7 +176,7 @@ if(true)
                                     <select name="game" size="1" class="text">';
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
-                          WHERE type = '1' ORDER BY title", $db);
+                          WHERE type = '1' ORDER BY title", $FD->sql()->conn() );
     while ($game_arr = mysql_fetch_assoc($index))
     {
         echo'<option value="'.$game_arr[id].'"';
@@ -196,7 +196,7 @@ if(true)
                                     <select name="cat" size="1" class="text">';
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
-                          WHERE type = '2' ORDER BY title", $db);
+                          WHERE type = '2' ORDER BY title", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         echo'<option value="'.$cat_arr[id].'"';
@@ -216,7 +216,7 @@ if(true)
                                     <select name="lang" size="1" class="text">';
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
-                          WHERE type = '3' ORDER BY title", $db);
+                          WHERE type = '3' ORDER BY title", $FD->sql()->conn() );
     while ($lang_arr = mysql_fetch_assoc($index))
     {
         echo'<option value="'.$lang_arr[id].'"';

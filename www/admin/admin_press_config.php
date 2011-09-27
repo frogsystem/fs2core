@@ -23,7 +23,7 @@ if (isset($_POST['sended'])
                      show_root = '$_POST[show_root]',
                      order_type = '$_POST[order_type]',
                      order_by = '$_POST[order_by]'
-                 WHERE id = '1'", $db);
+                 WHERE id = '1'", $FD->sql()->conn() );
     systext("Die Konfiguration wurde aktualisiert");
     unset($_POST);
 }
@@ -34,7 +34,7 @@ if (isset($_POST['sended'])
 
 if(true)
 {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     if (isset($_POST['sended']))

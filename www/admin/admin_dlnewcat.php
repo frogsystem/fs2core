@@ -11,7 +11,7 @@ if (!empty($_POST[catname]))
     settype($_POST[subcatof], 'integer');
     mysql_query("INSERT INTO ".$global_config_arr[pref]."dl_cat (subcat_id, cat_name)
                  VALUES ('".$_POST[subcatof]."',
-                         '".$_POST[catname]."');", $db);
+                         '".$_POST[catname]."');", $FD->sql()->conn() );
     systext("Kategorie wurde hinzugefügt");
     
     unset($_POST);

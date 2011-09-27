@@ -22,7 +22,7 @@ if (!empty($_POST['screen_id'])
                       start = '$startdate',
                       end = '$enddate'
                   WHERE random_id = '$_POST[random_id]'";
-        mysql_query($update, $db);
+        mysql_query($update, $FD->sql()->conn() );
         
         systext("Das zeitgesteuerte Zufallsbild wurde geändert!");
     }
@@ -51,7 +51,7 @@ elseif ($_POST['random_action'] == "delete"
 
     if ($_POST['delete_random'])   // Randompic löschen
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."screen_random WHERE random_id = '$_POST[random_id]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."screen_random WHERE random_id = '$_POST[random_id]'", $FD->sql()->conn() );
         systext($admin_phrases[random][note_deleted]);
     }
     else
@@ -76,7 +76,7 @@ elseif ($_POST[random_action] == "edit"
 {
     settype($_POST[partner_id], 'integer');
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random WHERE random_id = $_POST[random_id]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
     $random_arr = mysql_fetch_assoc($index);
 
     //Zeitdaten
@@ -205,13 +205,13 @@ elseif ($_POST[random_action] == "delete"
 {
     settype($_POST[random_id], 'integer');
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random WHERE random_id = $_POST[random_id]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
     $random_arr = mysql_fetch_assoc($index);
 
     $random_arr['start'] = date("d.m.Y H:i ", $random_arr['start']) . "Uhr";
     $random_arr['end'] = date("d.m.Y H:i ", $random_arr['end']) . "Uhr";
 
-    $index = mysql_query("SELECT screen_name FROM ".$global_config_arr[pref]."screen WHERE screen_id = $random_arr[screen_id]", $db);
+    $index = mysql_query("SELECT screen_name FROM ".$global_config_arr[pref]."screen WHERE screen_id = $random_arr[screen_id]", $FD->sql()->conn() );
     $random_arr['title'] = mysql_result($index,0,"screen_name");
 
     if ($random_arr['title'] != "") {
@@ -287,7 +287,7 @@ if (!isset($_POST[random_id]))
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random a, ".$global_config_arr[pref]."screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_random a, ".$global_config_arr[pref]."screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC", $FD->sql()->conn() );
     while ($random_arr = mysql_fetch_assoc($index))
     {
         $random_arr['start'] = date("d.m.Y H:i", $random_arr['start']);

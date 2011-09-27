@@ -2,38 +2,38 @@
 $index = mysql_query ( "
                         SELECT COUNT(`alias_id`) AS 'num_aliases'
                         FROM `".$global_config_arr['pref']."aliases`
-", $db);
+", $FD->sql()->conn() );
 $num_aliases = mysql_result ( $index, 0, "num_aliases" );
 $index = mysql_query ( "
                         SELECT COUNT(`alias_id`) AS 'num_aliases_active'
                         FROM `".$global_config_arr['pref']."aliases`
                         WHERE `alias_active` = 1
-", $db);
+", $FD->sql()->conn() );
 $num_aliases_active = mysql_result ( $index, 0, "num_aliases_active" );
 
 $index = mysql_query ( "
                         SELECT COUNT(`applet_id`) AS 'num_applets'
                         FROM `".$global_config_arr['pref']."applets`
-", $db);
+", $FD->sql()->conn() );
 $num_applets = mysql_result ( $index, 0, "num_applets" );
 $index = mysql_query ( "
                         SELECT COUNT(`applet_id`) AS 'num_applets_active'
                         FROM `".$global_config_arr['pref']."applets`
                         WHERE `applet_active` = 1
-", $db);
+", $FD->sql()->conn() );
 $num_applets_active = mysql_result ( $index, 0, "num_applets_active" );
 
 
 $index = mysql_query ( "
                         SELECT COUNT(`snippet_id`) AS 'num_snippets'
                         FROM `".$global_config_arr['pref']."snippets`
-", $db);
+", $FD->sql()->conn() );
 $num_snippets = mysql_result ( $index, 0, "num_snippets" );
 $index = mysql_query ( "
                         SELECT COUNT(`snippet_id`) AS 'num_snippets_active'
                         FROM `".$global_config_arr['pref']."snippets`
                         WHERE `snippet_active` = 1
-", $db);
+", $FD->sql()->conn() );
 $num_snippets_active = mysql_result ( $index, 0, "num_snippets_active" );
 
 

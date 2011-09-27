@@ -6,7 +6,7 @@ $index = mysql_query ( "
                         SELECT *
                         FROM `".$global_config_arr['pref']."announcement`
                         WHERE `id` = '1'
-", $db );
+", $FD->sql()->conn() );
 $ann_arr = mysql_fetch_assoc ( $index );
 
 if ( $ann_arr['show_announcement'] != 0 && $ann_arr['activate_announcement'] == 1 ) {

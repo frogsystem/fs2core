@@ -40,7 +40,7 @@ function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE
 
 function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
 {
-    global $global_config_arr, $db, $TEXT;
+    global $global_config_arr, $FD, $TEXT;
 
     $_POST['style'] = savesql ( $_POST['style'] );
     
@@ -54,7 +54,7 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
                             WHERE `style_tag` = '".$_POST['style']."'
                             AND `style_allow_edit` = 1
                             LIMIT 0,1
-    ", $db );
+    ", $FD->sql()->conn() );
 
     if ( mysql_num_rows ( $index ) == 1 ) {
         if ( $MANYFILES ) {
@@ -130,7 +130,7 @@ function templatepage_postcheck ( $TEMPLATE_ARR )
 
 function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $HIGHLIGHTER )
 {
-    global $global_config_arr, $db, $TEXT;
+    global $global_config_arr, $FD, $TEXT;
     global $admin_phrases;
 
     initstr ($return_template);
@@ -155,7 +155,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                             WHERE `style_tag` = '".savesql ( $_POST['style'] )."'
                             AND `style_allow_edit` = 1
                             LIMIT 0,1
-    ", $db );
+    ", $FD->sql()->conn() );
     if ( mysql_result ( $index, 0, "number" ) != 1 ) {
         // Check Edit Allowed
         $index = mysql_query ( "
@@ -163,7 +163,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                                 FROM `".$global_config_arr['pref']."styles`
                                 WHERE `style_allow_edit` = 1
                                 LIMIT 0,1
-        ", $db );
+        ", $FD->sql()->conn() );
         if ( mysql_result ( $index, 0, "number" ) != 1 ) {
             systext ( $TEXT["admin"]->get("template_no_editable_template"),
                 $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_error") );
@@ -401,7 +401,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 /////////////////////////////////
 function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "", $SHOW_REST = TRUE )
 {
-    global $global_config_arr, $db, $TEXT;
+    global $global_config_arr, $FD, $TEXT;
     global $admin_phrases;
 
     switch ( $TYPE ) {
@@ -421,7 +421,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = "", $FILE_EXT = "", $SHO
                                     WHERE `style_id` != 0
                                     AND `style_allow_edit` = 1
                                     ORDER BY `style_tag`
-            ", $db );
+            ", $FD->sql()->conn() );
             while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
                 $style_arr['style_tag'] = stripslashes ( $style_arr['style_tag'] );
                 if ( is_dir ( FS2_ROOT_PATH . "styles/" . $style_arr['style_tag'] ) == TRUE ) {
@@ -515,7 +515,7 @@ function create_dropdown ( $TITLE, $CONTENT )
 //////////////////////////
 function get_dropdowns ( $EDITOR_NAME )
 {
-    global $db, $global_config_arr, $TEXT;
+    global $FD, $global_config_arr, $TEXT;
     
     // Security Functions
     $global_vars_array = array ();
@@ -534,7 +534,7 @@ function get_dropdowns ( $EDITOR_NAME )
     // Applets
     $index = mysql_query ( "
                             SELECT `applet_file` FROM `".$global_config_arr['pref']."applets` WHERE `applet_active` = 1 AND `applet_output` = 1
-    ", $db );
+    ", $FD->sql()->conn() );
     while ( $app_arr = mysql_fetch_assoc ( $index ) ) {
         $app = stripslashes ( $app_arr['applet_file'] );
         $the_app = '$APP('.$app.'.php)';
@@ -545,7 +545,7 @@ function get_dropdowns ( $EDITOR_NAME )
     // Snippets
     $index = mysql_query ( "
                             SELECT `snippet_tag` FROM `".$global_config_arr['pref']."snippets` WHERE `snippet_active` = 1
-    ", $db );
+    ", $FD->sql()->conn() );
     while ( $snippets_arr = mysql_fetch_assoc ( $index ) ) {
         $the_snippet = stripslashes ( $snippets_arr['snippet_tag'] );
         $snippets_array[] = '<tr class="pointer tag_click_class" title="'.$the_snippet.' einfügen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
@@ -650,7 +650,7 @@ function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 ////////////////////////////////
 function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
 {
-    global $db, $global_config_arr, $TEXT;
+    global $FD, $global_config_arr, $TEXT;
     global $admin_phrases;
     
     // Get Tag-Menu

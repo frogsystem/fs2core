@@ -56,7 +56,7 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_
                    do_noparse = '$_POST[do_noparse]',
                    do_smilies = '$_POST[do_smilies]'
                WHERE id = 1";
-    mysql_query($update, $db);
+    mysql_query($update, $FD->sql()->conn() );
     
     systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
 }
@@ -67,7 +67,7 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_
 
 else
 {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."editor_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."editor_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     if (isset($_POST['sended']))

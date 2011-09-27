@@ -5,7 +5,7 @@
 
 // Check if Snippet exists
 if ( isset ( $_POST['sended'] ) ) {
-    $index = mysql_query ( "SELECT `snippet_id` FROM `".$global_config_arr['pref']."snippets` WHERE `snippet_tag` = '[%".savesql ( $_POST['snippet_tag'] )."%]'", $db );
+    $index = mysql_query ( "SELECT `snippet_id` FROM `".$global_config_arr['pref']."snippets` WHERE `snippet_tag` = '[%".savesql ( $_POST['snippet_tag'] )."%]'", $FD->sql()->conn() );
     $snippet_exists = ( mysql_num_rows ( $index ) == 0 ) ? FALSE : TRUE;
 } else {
     $snippet_exists = TRUE;
@@ -41,7 +41,7 @@ if (
                                                 '".$_POST['snippet_text']."',
                                                 '".$_POST['snippet_active']."'
                                         )
-        ", $db );
+        ", $FD->sql()->conn() );
         
         systext ( $TEXT["admin"]->get("snippet_added"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );

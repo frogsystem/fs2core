@@ -5,7 +5,7 @@
 ///////////////////
 function default_get_pagenav_data ()
 {
-        global $db;
+        global $FD;
         global $global_config_arr;
         global $admin_phrases;
         global $config_arr;
@@ -27,7 +27,7 @@ function default_get_pagenav_data ()
                                                         SELECT COUNT(news_id) AS 'number'
                                                         FROM ".$global_config_arr['pref']."news
                                                         ".$where_clause."
-        ", $db);
+        ", $FD->sql()->conn() );
         
         $pagenav_arr = get_pagenav_start ( mysql_result ( $index, 0, "number" ), $limit, $_GET['start'] );
 
@@ -36,7 +36,7 @@ function default_get_pagenav_data ()
 
 function default_display_pagenav ( $pagenav_arr )
 {
-        global $db;
+        global $FD;
         global $global_config_arr;
         global $admin_phrases;
 
@@ -88,7 +88,7 @@ function default_display_pagenav ( $pagenav_arr )
 
 function action_delete_get_data ( $IDS )
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
     global $admin_phrases;
 
@@ -98,18 +98,18 @@ function action_delete_get_data ( $IDS )
         unset ($news_arr);
         settype ( $NEWS_ID, "integer" );
 
-        $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$NEWS_ID."'", $db );
+        $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$NEWS_ID."'", $FD->sql()->conn() );
         $news_arr = mysql_fetch_assoc ( $index );
 
         $news_arr['news_date_formated'] = "".$admin_phrases[common][on]." <b>" . date ( $admin_phrases[common][date_format] , $news_arr['news_date'] ) . "</b> ".$admin_phrases[common][at]." <b>" . date ( $admin_phrases[common][time_format] , $news_arr['news_date'] ) . "</b>";
 
-        $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $db );
+        $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $FD->sql()->conn() );
         $news_arr['num_comments'] = mysql_result ( $index2, 0, "number" );
 
-        $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$news_arr['user_id']."", $db );
+        $index2 = mysql_query("SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$news_arr['user_id']."", $FD->sql()->conn() );
         $news_arr['user_name'] = mysql_result ( $index2, 0, "user_name" );
 
-        $index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = ".$news_arr['cat_id']."", $db );
+        $index2 = mysql_query("SELECT cat_name FROM ".$global_config_arr['pref']."news_cat WHERE cat_id = ".$news_arr['cat_id']."", $FD->sql()->conn() );
         $news_arr['cat_name'] = mysql_result ( $index2, 0, "cat_name" );
         
         $return_arr[] = $news_arr;
@@ -120,7 +120,7 @@ function action_delete_get_data ( $IDS )
 
 function action_delete_display_page ( $return_arr )
 {
-        global $db;
+        global $FD;
         global $global_config_arr;
         global $admin_phrases;
         
@@ -188,7 +188,7 @@ function action_delete_display_page ( $return_arr )
 
 function action_comments_select ( $DATA )
 {
-        global $global_config_arr, $db, $TEXT;
+        global $global_config_arr, $FD, $TEXT;
         global $admin_phrases;
         
                 // Comments Header
@@ -210,7 +210,7 @@ function action_comments_select ( $DATA )
                 ';
 
                 // Get Number of Comments
-                  $index = mysql_query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$DATA['news_id']."", $db );
+                  $index = mysql_query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$DATA['news_id']."", $FD->sql()->conn() );
                   $number = mysql_result ( $index, 0, "number" );
 
                   if ( $number >= 1 ) {
@@ -219,14 +219,14 @@ function action_comments_select ( $DATA )
                                                                         FROM ".$global_config_arr['pref']."news_comments
                                                                         WHERE news_id = ".$DATA['news_id']."
                                                                         ORDER BY comment_date DESC
-                        ", $db);
+                        ", $FD->sql()->conn() );
 
                         // Display Comment-List
                         while ( $comment_arr = mysql_fetch_assoc ( $index ) ) {
 
                                 // Get other Data
                                 if ( $comment_arr['comment_poster_id'] != 0 ) {
-                                        $index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $db );
+                                        $index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $FD->sql()->conn() );
                                         $comment_arr['comment_poster'] = mysql_result ( $index2, 0, "user_name" );
                                 }
                                 $comment_arr['comment_date_formated'] = date ( "d.m.Y" , $comment_arr['comment_date'] ) . " um " . date ( "H:i" , $comment_arr['comment_date'] );
@@ -271,7 +271,7 @@ function action_comments_select ( $DATA )
 
 function action_comments_edit ( $DATA )
 {
-        global $db;
+        global $FD;
         global $global_config_arr;
         global $admin_phrases;
 
@@ -280,12 +280,12 @@ function action_comments_edit ( $DATA )
                                                         SELECT *
                                                         FROM ".$global_config_arr['pref']."news_comments
                                                         WHERE comment_id = ".$_POST['comment_id']."
-        ", $db);
+        ", $FD->sql()->conn() );
     $comment_arr = mysql_fetch_assoc ( $index );
 
         // Get other Data
         if ( $comment_arr['comment_poster_id'] != 0 ) {
-                        $index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $db );
+                        $index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $FD->sql()->conn() );
                         $comment_arr['comment_poster'] = mysql_result ( $index2, 0, "user_name" );
         }
         $comment_arr['comment_date_formated'] = date ( "d.m.Y" , $comment_arr['comment_date'] ) . " um " . date ( "H:i" , $comment_arr['comment_date'] );
@@ -348,7 +348,7 @@ function action_comments_edit ( $DATA )
 
 function action_comments_delete ( $DATA )
 {
-        global $global_config_arr, $db, $TEXT;
+        global $global_config_arr, $FD, $TEXT;
         global $admin_phrases;
         
         // Security Function
@@ -377,13 +377,13 @@ function action_comments_delete ( $DATA )
                                 SELECT *
                                 FROM `".$global_config_arr['pref']."news_comments`
                                 WHERE `comment_id` IN (".implode ( ",", $_POST['comment_id'] ).")
-        ", $db);
+        ", $FD->sql()->conn() );
 
         while ( $comment_arr = mysql_fetch_assoc ( $index ) ) {
 
             // Get other Data
             if ( $comment_arr['comment_poster_id'] != 0 ) {
-                            $index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $db );
+                            $index2 = mysql_query ( "SELECT user_name FROM ".$global_config_arr['pref']."user WHERE user_id = ".$comment_arr['comment_poster_id']."", $FD->sql()->conn() );
                             $comment_arr['comment_poster'] = mysql_result ( $index2, 0, "user_name" );
             }
             $comment_arr['comment_date_formated'] = date ( "d.m.Y" , $comment_arr['comment_date'] ) . " um " . date ( "H:i" , $comment_arr['comment_date'] );
@@ -419,7 +419,7 @@ function action_comments_delete ( $DATA )
 
 function db_edit_comment ( $DATA )
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
     global $admin_phrases;
 
@@ -436,14 +436,14 @@ function db_edit_comment ( $DATA )
                             comment_text = '".$DATA['text']."'
                     WHERE
                             comment_id = '".$DATA['comment_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
 
     systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
 }
 
 function db_delete_comment ( $DATA )
 {
-    global $db;
+    global $FD;
     global $global_config_arr;
     global $admin_phrases;
 
@@ -455,11 +455,11 @@ function db_delete_comment ( $DATA )
                             ".$global_config_arr['pref']."news_comments
                     WHERE
                             `comment_id` IN (".implode ( ",", $DATA['comment_id'] ).")
-    ", $db );
+    ", $FD->sql()->conn() );
     mysql_query ( "
                     UPDATE `".$global_config_arr['pref']."counter`
                     SET `comments` = `comments` - ".mysql_affected_rows ()."
-    ", $db );
+    ", $FD->sql()->conn() );
 
     systext( $admin_phrases[news][news_comment_deleted], $admin_phrases[common][info], FALSE, $admin_phrases[icons][trash_ok] );
 }

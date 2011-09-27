@@ -4,7 +4,7 @@
 /////////////////////////////
 if (isset($_GET[catid]))
 {
-    $index = mysql_query("SELECT cat_name, cat_visibility FROM ".$global_config_arr[pref]."screen_cat WHERE cat_id = $_GET[catid]", $db);
+    $index = mysql_query("SELECT cat_name, cat_visibility FROM ".$global_config_arr[pref]."screen_cat WHERE cat_id = $_GET[catid]", $FD->sql()->conn() );
     if (mysql_num_rows($index) <= 0) {
         unset($_GET[catid]);
     } elseif (mysql_result($index,0,cat_visibility)==0) {
@@ -21,20 +21,20 @@ if (isset($_GET[catid]))
     settype($_GET[catid], 'integer');
 
     //config_arr
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
     
     //cat_arr
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_id = $_GET[catid]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_id = $_GET[catid]", $FD->sql()->conn() );
     $cat_arr = mysql_fetch_assoc($index);
 
     //WP/Screen unterscheidene Abfragen
     if ($cat_arr[cat_type]==2) {
-        $index = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $_GET[catid]", $db);
+        $index = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $_GET[catid]", $FD->sql()->conn() );
         $config_arr[rows] = $config_arr[wp_rows];
         $config_arr[cols] = $config_arr[wp_cols];
     } else {
-        $index = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $_GET[catid]", $db);;
+        $index = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $_GET[catid]", $FD->sql()->conn() );;
         $config_arr[rows] = $config_arr[screen_rows];
         $config_arr[cols] = $config_arr[screen_cols];
     }
@@ -65,12 +65,12 @@ if (isset($_GET[catid]))
         if ($cat_arr[cat_type]==2)
         {
             $zaehler = 0;
-            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id] ORDER BY wallpaper_id $config_arr[wp_sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $db);
+            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id] ORDER BY wallpaper_id $config_arr[wp_sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $FD->sql()->conn() );
             while ($wp_arr = mysql_fetch_assoc($index))
             {
                 $wp_arr[thumb_url] = image_url("images/wallpaper/", $wp_arr[wallpaper_name]."_s");
 
-                $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = $wp_arr[wallpaper_id] ORDER BY size_id ASC", $db);
+                $index2 = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper_sizes WHERE wallpaper_id = $wp_arr[wallpaper_id] ORDER BY size_id ASC", $FD->sql()->conn() );
                 $sizes = "";
                 while ($sizes_arr = mysql_fetch_assoc($index2))
                 {
@@ -127,7 +127,7 @@ if (isset($_GET[catid]))
         else
         {
             $zaehler = 0;
-            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id] ORDER by screen_id $config_arr[screen_sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $db);
+            $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id] ORDER by screen_id $config_arr[screen_sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $FD->sql()->conn() );
 
             while ($screen_arr = mysql_fetch_assoc($index))
             {
@@ -185,7 +185,7 @@ if (isset($_GET[catid]))
     
     //Keine Screenshots
     if ($config_arr[number_of_screens] <= 0) {
-        $pics = sys_message($phrases[sysmessage], $phrases[no_pics]);
+        $pics = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "no_pics"));
         $pagenav = "";
     }
     
@@ -206,13 +206,13 @@ if (isset($_GET[catid]))
 ////////////////////////////
 
 else {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_visibility = 1 ORDER BY cat_date DESC", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_visibility = 1 ORDER BY cat_date DESC", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         if ($cat_arr[cat_type]==2) {
-            $index2 = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id]", $db);
+            $index2 = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id]", $FD->sql()->conn() );
         } else {
-            $index2 = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id]", $db);
+            $index2 = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id]", $FD->sql()->conn() );
         }
         $cat_arr[cat_menge] = mysql_result($index2,0,"number");
         $cat_arr[cat_date] = date_loc( $global_config_arr['date'], $cat_arr[cat_date] );

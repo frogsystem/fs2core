@@ -22,7 +22,7 @@ if (
                         `snippet_text` = '".$_POST['snippet_text']."',
                         `snippet_active` = '".$_POST['snippet_active']."'
                     WHERE `snippet_id` = '".$_POST['snippet_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
 
     // Display Message
     systext ( $TEXT["admin"]->get("changes_saved"),
@@ -53,7 +53,7 @@ elseif (
                         DELETE
                         FROM `".$global_config_arr['pref']."snippets`
                         WHERE `snippet_id` IN (".implode ( ",", $_POST['snippet_id'] ).")
-        ", $db );
+        ", $FD->sql()->conn() );
         
         systext ( $TEXT["admin"]->get("snippets_deleted"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
@@ -94,7 +94,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                                     FROM `".$global_config_arr['pref']."snippets`
                                     WHERE `snippet_id` = '".$_POST['snippet_id']."'
                                     LIMIT 0,1
-            ", $db );
+            ", $FD->sql()->conn() );
             $data_arr = mysql_fetch_assoc ( $index );
             putintopost ( $data_arr );
         }
@@ -193,7 +193,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                                 FROM `".$global_config_arr['pref']."snippets`
                                 WHERE `snippet_id` IN (".implode ( ",", $_POST['snippet_id'] ).")
                                 ORDER BY `snippet_tag`
-        ", $db );
+        ", $FD->sql()->conn() );
         // applets found
         if ( mysql_num_rows ( $index ) > 0 ) {
         
@@ -248,7 +248,7 @@ if ( !isset ( $_POST['snippet_id'] ) )
                             SELECT *
                             FROM `".$global_config_arr['pref']."snippets`
                             ORDER BY `snippet_tag`
-    ", $db );
+    ", $FD->sql()->conn() );
 
     // snippets found
     if ( mysql_num_rows ( $index ) > 0 ) {

@@ -5,7 +5,7 @@
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array("id", "title", "dyn_title", "dyn_title_ext", "virtualhost", "admin_mail", "description", "keywords", "publisher", "copyright", "style_id", "allow_other_designs", "show_favicon", "home", "home_text", "language_text", "feed", "date", "time", "datetime", "timezone", "auto_forward", "page", "page_prev", "page_next");
+$used_cols = array("title", "dyn_title", "dyn_title_ext", "virtualhost", "admin_mail", "description", "keywords", "publisher", "copyright", "style_id", "allow_other_designs", "show_favicon", "home", "home_text", "language_text", "feed", "date", "time", "datetime", "timezone", "auto_forward", "page", "page_prev", "page_next");
     
 
 /////////////////////////////////////
@@ -30,7 +30,6 @@ if (
      
     // prepare data
     $data = frompost($used_cols);
-    $data['id'] = 1;
     
     // style tag
     try {
@@ -41,9 +40,9 @@ if (
         unset($data['style_tag'], $data['style_id']);
     }
     
-    // save to db
+    // save config
     try {
-        $sql->save("global_config", $data);
+        $FD->saveConfig("main", $data);
         systext($TEXT['admin']->get("changes_saved").'<br>'.$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
     } catch (Exception $e) {}
     
@@ -63,7 +62,9 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow("global_config", $used_cols, array('W' => "`id` = 1"));
+        //$data = $sql->getRow("global_config", $used_cols, array('W' => "`id` = '1'"));
+        $data = $sql->getRow("config", array("config_data"), array('W' => "`config_name` = 'main'"));
+        $data = json_array_decode($data['config_data']);
         putintopost($data);
     }
 

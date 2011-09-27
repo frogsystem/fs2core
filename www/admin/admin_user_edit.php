@@ -5,7 +5,7 @@
 
 function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     $USER_ID = savesql ( $USER_ID );
     $USERNAME = savesql ( $USERNAME );
@@ -14,7 +14,7 @@ function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
                             FROM `".$global_config_arr['pref']."user`
                             WHERE `user_name` = '".$USERNAME."'
                             LIMIT 0,1
-    ", $db );
+    ", $FD->sql()->conn() );
     if ( mysql_num_rows ( $index ) > 0 && $USER_ID != mysql_result ( $index, 0, "user_id" ) ) {
         return FALSE;
     } else {
@@ -25,7 +25,7 @@ function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $db );
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 
@@ -103,7 +103,7 @@ if (
                             FROM ".$global_config_arr['pref']."user
                             WHERE `user_id` = '".$_POST['user_id']."'
                             LIMIT 0,1
-    ", $db);
+    ", $FD->sql()->conn() );
     $was_staff = mysql_result ( $index, 0, "user_is_staff" );
     $was_admin = mysql_result ( $index, 0, "user_is_admin" );
 
@@ -114,7 +114,7 @@ if (
                         FROM ".$global_config_arr['pref']."user_permissions
                         WHERE `perm_for_group` = '0'
                         AND `x_id` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
     }
 
     // MySQL-Queries
@@ -136,7 +136,7 @@ if (
                         `user_yim` = '".$_POST['user_yim']."',
                         `user_skype` = '".$_POST['user_skype']."'
                     WHERE `user_id` = '".$_POST['user_id']."'
-    ", $db );
+    ", $FD->sql()->conn() );
     $message = $admin_phrases[common][changes_saved];
 
     // image operations
@@ -197,7 +197,7 @@ elseif (
                                 FROM ".$global_config_arr['pref']."user
                                 WHERE `user_id` = '".$_POST['user_id']."'
                                 LIMIT 0,1
-        ", $db );
+        ", $FD->sql()->conn() );
         $user_arr = mysql_fetch_assoc ( $index );
 
         // Delete Permissions
@@ -206,55 +206,55 @@ elseif (
                         FROM ".$global_config_arr['pref']."user_permissions
                         WHERE `perm_for_group` = '0'
                         AND `x_id` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         
         // update stats
         mysql_query ( "
                         UPDATE ".$global_config_arr['pref']."counter
                         SET `user` = `user`-1
-        ", $db );
+        ", $FD->sql()->conn() );
         
         // update groups
         mysql_query ( "
                         UPDATE ".$global_config_arr['pref']."user_groups
                         SET `user_group_user` = '1'
                         WHERE `user_group_user` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         
         // update articles
         mysql_query ( "
                         UPDATE ".$global_config_arr['pref']."articles
                         SET `article_user` = '0'
                         WHERE `article_user` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         
         // update articles_cat
         mysql_query ( "
                         UPDATE ".$global_config_arr['pref']."articles_cat
                         SET `cat_user` = '1'
                         WHERE `cat_user` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // update dl
         mysql_query ( "
                         UPDATE ".$global_config_arr['pref']."dl
                         SET `user_id` = '1'
                         WHERE `user_id` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // update news
         mysql_query ( "
                         UPDATE ".$global_config_arr['pref']."news
                         SET `user_id` = '1'
                         WHERE `user_id` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // update news_cat
         mysql_query ( "
                         UPDATE ".$global_config_arr['pref']."news_cat
                         SET `cat_user` = '1'
                         WHERE `cat_user` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // update news_comments
         mysql_query ( "
@@ -262,13 +262,13 @@ elseif (
                         SET `comment_poster_id` = '0',
                             `comment_poster` = '".$user_arr['user_name']."'
                         WHERE `comment_poster_id` = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // MySQL-Delete-Query
         mysql_query ("
                         DELETE FROM ".$global_config_arr['pref']."user
                          WHERE user_id = '".$_POST['user_id']."'
-        ", $db );
+        ", $FD->sql()->conn() );
         $message = "Benutzer wurde erfolgreich gelöscht";
 
         // Delete Image
@@ -334,7 +334,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                     FROM ".$global_config_arr['pref']."user
                                     WHERE `user_id` = '".$_POST['user_id']."'
                                     LIMIT 0,1
-            ", $db );
+            ", $FD->sql()->conn() );
             $user_arr = mysql_fetch_assoc ( $index );
             putintopost ( $user_arr );
             $_POST['d'] = date ( "d", $_POST['user_reg_date'] );
@@ -536,7 +536,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 FROM ".$global_config_arr['pref']."user_groups
                                 WHERE `user_group_id` > 0
                                 ORDER BY `user_group_name`
-        ", $db );
+        ", $FD->sql()->conn() );
 
         while ( $group_arr = mysql_fetch_assoc( $index ) ) {
             echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $_POST['user_group'], $group_arr['user_group_id'] ).'>
@@ -549,7 +549,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 WHERE `user_group_id` = 0
                                 ORDER BY `user_group_name`
                                 LIMIT 0,1
-        ", $db );
+        ", $FD->sql()->conn() );
         $group_arr = mysql_fetch_assoc( $index );
         echo '<option value="admin" '.getselected ( $_POST['user_group'], "admin" ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
 
@@ -642,7 +642,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 FROM ".$global_config_arr['pref']."user
                                 WHERE `user_id` = '".$_POST['user_id']."'
                                 LIMIT 0,1
-        ", $db );
+        ", $FD->sql()->conn() );
         $user_arr = mysql_fetch_assoc ( $index );
 
         // security functions
@@ -739,7 +739,7 @@ if ( !isset ( $_POST['user_id'] ) )
                                 AND `user_id` != '".$_SESSION['user_id']."'
                                 AND `user_id` != '1'
                                   ORDER BY user_name
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // users found
         if ( mysql_num_rows ( $index ) > 0 ) {

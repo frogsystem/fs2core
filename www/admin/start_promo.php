@@ -2,7 +2,7 @@
 $index = mysql_query ( "
 						SELECT COUNT(`partner_id`) AS 'num_partner'
 						FROM ".$global_config_arr['pref']."partner
-", $db);
+", $FD->sql()->conn() );
 $num_partner = mysql_result ( $index, 0, "num_partner" );
 
 if ( $num_partner  > 0 ) {
@@ -11,14 +11,14 @@ if ( $num_partner  > 0 ) {
 							FROM ".$global_config_arr['pref']."partner
 							ORDER BY `partner_id` DESC
 							LIMIT 0,1
-	", $db);
+	", $FD->sql()->conn() );
 	$last_partner = stripslashes ( mysql_result ( $index, 0, "partner_name" ) );
 }
 
 $index = mysql_query ( "
 						SELECT COUNT(`artikel_id`) AS 'num_shop'
 						FROM ".$global_config_arr['pref']."shop
-", $db);
+", $FD->sql()->conn() );
 $num_shop = mysql_result ( $index, 0, "num_shop" );
 
 if ( $num_shop  > 0 ) {
@@ -27,7 +27,7 @@ if ( $num_shop  > 0 ) {
 							FROM ".$global_config_arr['pref']."shop
 							ORDER BY `artikel_id` DESC
 							LIMIT 0,1
-	", $db);
+	", $FD->sql()->conn() );
 	$last_shop = stripslashes ( mysql_result ( $index, 0, "artikel_name" ) );
 }
 

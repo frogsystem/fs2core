@@ -43,7 +43,7 @@ if (($_POST['title'] AND $_POST['title'] != "")
                    press_game = '$_POST[game]',
                    press_cat = '$_POST[cat]'
                WHERE press_id = '$_POST[press_id]'";
-    mysql_query($update, $db);
+    mysql_query($update, $FD->sql()->conn() );
     systext("Änderungen wurden erfolgreich gespeichert!");
 
     unset($_POST['press_action']);
@@ -65,7 +65,7 @@ elseif ($_POST['press_action'] == "delete"
 
     if ($_POST['delete_press'])   // Partnerseite löschen
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."press WHERE press_id = '$_POST[press_id]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."press WHERE press_id = '$_POST[press_id]'", $FD->sql()->conn() );
         systext("Der Pressebericht wurde gel&ouml;scht.");
     }
     else
@@ -91,7 +91,7 @@ elseif ($_POST[press_action] == "edit"
     settype($_POST[press_id], 'integer');
 
     // Pressebericht laden
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press WHERE press_id = '$_POST[press_id]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press WHERE press_id = '$_POST[press_id]'", $FD->sql()->conn() );
     $press_arr = mysql_fetch_assoc($index);
 
     $press_arr['press_title'] = killhtml($press_arr['press_title']);
@@ -235,7 +235,7 @@ elseif ($_POST[press_action] == "edit"
                                     <select name="game" size="1" class="text">';
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
-                          WHERE type = '1' ORDER BY title", $db);
+                          WHERE type = '1' ORDER BY title", $FD->sql()->conn() );
     while ($game_arr = mysql_fetch_assoc($index))
     {
         echo'
@@ -257,7 +257,7 @@ elseif ($_POST[press_action] == "edit"
                                     <select name="cat" size="1" class="text">';
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
-                          WHERE type = '2' ORDER BY title", $db);
+                          WHERE type = '2' ORDER BY title", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         echo'
@@ -279,7 +279,7 @@ elseif ($_POST[press_action] == "edit"
                                     <select name="lang" size="1" class="text">';
 
     $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
-                          WHERE type = '3' ORDER BY title", $db);
+                          WHERE type = '3' ORDER BY title", $FD->sql()->conn() );
     while ($lang_arr = mysql_fetch_assoc($index))
     {
         echo'
@@ -314,7 +314,7 @@ elseif ($_POST[press_action] == "delete"
     $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST[press_id], 'integer');
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press WHERE press_id = $_POST[press_id]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press WHERE press_id = $_POST[press_id]", $FD->sql()->conn() );
     $press_arr = mysql_fetch_assoc($index);
 
     $press_arr['press_title'] = killhtml($press_arr['press_title']);
@@ -325,11 +325,11 @@ elseif ($_POST[press_action] == "delete"
     settype($press_arr[press_cat], 'integer');
     settype($press_arr[press_lang], 'integer');
 
-    $index = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_game] AND type = 1", $db);
+    $index = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_game] AND type = 1", $FD->sql()->conn() );
     $press_arr['press_game'] = mysql_result($index,0,"title");
-    $index = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_cat] AND type = 2", $db);
+    $index = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_cat] AND type = 2", $FD->sql()->conn() );
     $press_arr['press_cat'] = mysql_result($index,0,"title");
-    $index = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $db);
+    $index = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $FD->sql()->conn() );
     $press_arr['press_lang'] = mysql_result($index,0,"title");
 
     echo'
@@ -378,7 +378,7 @@ elseif ($_POST[press_action] == "delete"
 /////////////////////////////////
 /// Presseberichte ausflisten ///
 /////////////////////////////////
-$index = mysql_query("SELECT press_id FROM ".$global_config_arr[pref]."press", $db);
+$index = mysql_query("SELECT press_id FROM ".$global_config_arr[pref]."press", $FD->sql()->conn() );
 
 if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
 {
@@ -438,7 +438,7 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
                                         ($_POST['gameid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
                                     
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 1 ORDER BY title",$db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 1 ORDER BY title",$FD->sql()->conn() );
     while ($game_arr = mysql_fetch_assoc($index))
     {
         echo '
@@ -481,7 +481,7 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
                                         ($_POST['catid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 2 ORDER BY title",$db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 2 ORDER BY title",$FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         echo '
@@ -503,7 +503,7 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
                                         ($_POST['langid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title",$db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE type = 3 ORDER BY title",$FD->sql()->conn() );
     while ($lang_arr = mysql_fetch_assoc($index))
     {
         echo '
@@ -527,7 +527,7 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
     $index = mysql_query("SELECT press_id, press_title, press_date, press_game, press_cat, press_lang
                           FROM ".$global_config_arr[pref]."press
                           $filterwhere
-                          ORDER BY $_POST[order_by] $_POST[order_type]", $db);
+                          ORDER BY $_POST[order_by] $_POST[order_type]", $FD->sql()->conn() );
     if (mysql_num_rows($index) > 0)
     {
         echo'
@@ -552,11 +552,11 @@ if (!isset($_POST[press_id]) && mysql_num_rows($index) > 0)
 
         while ($press_arr = mysql_fetch_assoc($index))
         {
-            $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_game] AND type = 1", $db);
+            $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_game] AND type = 1", $FD->sql()->conn() );
             $press_arr['press_game'] = mysql_result($index2,0,"title");
-            $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_cat] AND type = 2", $db);
+            $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_cat] AND type = 2", $FD->sql()->conn() );
             $press_arr['press_cat'] = mysql_result($index2,0,"title");
-            $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $db);
+            $index2 = mysql_query("SELECT title FROM ".$global_config_arr[pref]."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $FD->sql()->conn() );
             $press_arr['press_lang'] = mysql_result($index2,0,"title");
         
             $press_arr['press_date'] = date("d.m.Y", $press_arr['press_date']);

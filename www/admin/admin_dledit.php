@@ -11,8 +11,8 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text])
     // Download löschen
     if (isset($_POST[deldl]))
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."dl WHERE dl_id = '$_POST[editdlid]'", $db);
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_files WHERE dl_id = '$_POST[editdlid]'", $db);
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."dl WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
+        mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_files WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
         image_delete("images/dl/", "$_POST[editdlid]_s");
         image_delete("images/dl/", $_POST[editdlid]);
         systext('Download wurde gelöscht');
@@ -38,7 +38,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text])
         }
 
         // Neues Bild hochladen
-        $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
+        $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $FD->sql()->conn() );
         $admin_dl_config_arr = mysql_fetch_assoc($index);
         if ($_FILES[dlimg][name] != "")
         {
@@ -59,7 +59,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text])
                        dl_open      = '$_POST[dlopen]',
                        dl_search_update = '".time()."'
                    WHERE dl_id = $_POST[editdlid]";
-        mysql_query($update, $db);
+        mysql_query($update, $FD->sql()->conn() );
         
         // Update Search Index (or not)
         if ( $global_config_arr['search_index_update'] === 1 ) {
@@ -75,7 +75,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text])
             if ($_POST[delf][$i])
             {
                 settype($_POST[delf][$i], 'integer');
-                mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_files WHERE file_id = " . $_POST[delf][$i], $db);
+                mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_files WHERE file_id = " . $_POST[delf][$i], $FD->sql()->conn() );
             }
             else
             {
@@ -93,7 +93,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text])
                                        '".$_POST[furl][$i]."',
                                        '".$_POST[fsize][$i]."',
                                        '".$_POST[fmirror][$i]."')";
-                    mysql_query($insert, $db);
+                    mysql_query($insert, $FD->sql()->conn() );
                                          
                 }
                 elseif ($_POST[fnew][$i]==0)
@@ -105,7 +105,7 @@ if ($_POST[dledit] && $_POST[title] && $_POST[text])
                                    file_size        = '".$_POST[fsize][$i]."',
                                    file_is_mirror   = '".$_POST[fmirror][$i]."'
                                WHERE file_id = ".$_POST[fid][$i];
-                    mysql_query($update, $db);
+                    mysql_query($update, $FD->sql()->conn() );
                 }
             }
         }
@@ -132,7 +132,7 @@ if ($_POST[dlid] || $_POST[optionsadd])
     }
     settype($_POST[dlid], 'integer');
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl WHERE dl_id =  '$_POST[dlid]'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl WHERE dl_id =  '$_POST[dlid]'", $FD->sql()->conn() );
     if (!isset($_POST[title]))
     {
         $_POST[title] = mysql_result($index, 0, "dl_name");
@@ -160,7 +160,7 @@ if ($_POST[dlid] || $_POST[optionsadd])
 
     $_POST[dlopen] = ($_POST[dlopen] == 1) ? "checked" : "";
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     for($i=0; $i<$rows; $i++)
     {
@@ -197,7 +197,7 @@ if ($_POST[dlid] || $_POST[optionsadd])
     }
     $_POST[options] += $_POST[optionsadd];
     
-    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -275,7 +275,7 @@ if ($_POST[dlid] || $_POST[optionsadd])
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT `ftp_id` FROM ".$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $db);
+    $index = mysql_query("SELECT `ftp_id` FROM ".$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
     $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);      
 
     // Mirros auflisten
@@ -404,7 +404,7 @@ else
     ';
 
     /*/ Kategorie Auswahl erzeugen
-    $index = mysql_query("SELECT cat_id, cat_name FROM ".$global_config_arr[pref]."dl_cat", $db);
+    $index = mysql_query("SELECT cat_id, cat_name FROM ".$global_config_arr[pref]."dl_cat", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($_POST[dlcatid] == $cat_arr[cat_id]) ? "selected" : "";
@@ -457,10 +457,10 @@ else
         settype($_POST[dlcatid], 'integer');
         $wherecat = "WHERE cat_id = " . $_POST[dlcatid];
     }
-    $index = mysql_query("SELECT dl_id, dl_name, cat_id FROM ".$global_config_arr[pref]."dl $wherecat ORDER BY dl_name", $db);
+    $index = mysql_query("SELECT dl_id, dl_name, cat_id FROM ".$global_config_arr[pref]."dl $wherecat ORDER BY dl_name", $FD->sql()->conn() );
     while ($dl_arr = mysql_fetch_assoc($index))
     {
-        $catindex = mysql_query("SELECT cat_name from ".$global_config_arr[pref]."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $db);
+        $catindex = mysql_query("SELECT cat_name from ".$global_config_arr[pref]."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
         $dbcatname = mysql_result($catindex, 0, "cat_name");
         echo'
                             <tr class="thin select_entry">

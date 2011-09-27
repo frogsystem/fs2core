@@ -14,7 +14,7 @@ if ($startdate < $enddate) {
                  VALUES ('". $_POST['screen_id'] ."',
                          '". $startdate ."',
                          '". $enddate ."'
-                        )", $db);
+                        )", $FD->sql()->conn() );
     systext("Zeitgesteuertes Zufallsbild wurde hinzugefügt");
 }
 /////////////////////////////

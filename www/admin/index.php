@@ -9,20 +9,26 @@ ini_set('magic_quotes_runtime', 0);
 set_include_path('.');
 define('FS2_ROOT_PATH', "./../", TRUE);
 
+//autoloader
+function libloader ($classname) {
+    @include_once(FS2_ROOT_PATH . "libs/class_".$classname.".php");
+}
+spl_autoload_register("libloader");
+
 // inlcude files
-require(FS2_ROOT_PATH . "includes/functions.php");
-require(FS2_ROOT_PATH . "includes/newfunctions.php");
-require(FS2_ROOT_PATH . "includes/adminfunctions.php");
-require(FS2_ROOT_PATH . "includes/imagefunctions.php");
-require(FS2_ROOT_PATH . "includes/templatefunctions.php");
-require(FS2_ROOT_PATH . "includes/indexfunctions.php");
-require(FS2_ROOT_PATH . "login.inc.php");
+require_once(FS2_ROOT_PATH . "includes/functions.php");
+require_once(FS2_ROOT_PATH . "includes/adminfunctions.php");
+require_once(FS2_ROOT_PATH . "includes/imagefunctions.php");
+require_once(FS2_ROOT_PATH . "includes/templatefunctions.php");
+require_once(FS2_ROOT_PATH . "includes/indexfunctions.php");
+require_once(FS2_ROOT_PATH . "libs/class_GlobalData.php");
+require_once(FS2_ROOT_PATH . "login.inc.php");
 
 //Include Library-Classes
-require(FS2_ROOT_PATH . "libs/class_template.php");
-require(FS2_ROOT_PATH . "libs/class_fileaccess.php");
-require(FS2_ROOT_PATH . "libs/class_lang.php");
-require(FS2_ROOT_PATH . "libs/class_adminpage.php");
+require_once(FS2_ROOT_PATH . "libs/class_template.php");
+require_once(FS2_ROOT_PATH . "libs/class_fileaccess.php");
+require_once(FS2_ROOT_PATH . "libs/class_lang.php");
+require_once(FS2_ROOT_PATH . "libs/class_adminpage.php");
 
 //Include Phrases-Files
 require(FS2_ROOT_PATH . "lang/de_DE/admin/admin_phrases_de.php");

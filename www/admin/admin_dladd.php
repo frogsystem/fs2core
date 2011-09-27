@@ -36,7 +36,7 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text])
                          '".$_POST[autorurl]."',
                          '".$_POST[dlopen]."',
                          '".time()."')
-    ", $db);
+    ", $FD->sql()->conn() );
     
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
@@ -48,7 +48,7 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text])
     $id = mysql_insert_id();
     
     // Bild auswerten und hochladen
-    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
     
     if ($_FILES[dlimg][name] != "")
@@ -69,7 +69,7 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text])
                                  '".$_POST[fname][$i]."',
                                  '".$_POST[furl][$i]."',
                                  '".$_POST[fsize][$i]."',
-                                 '".$_POST[fmirror][$i]."');", $db);
+                                 '".$_POST[fmirror][$i]."');", $FD->sql()->conn() );
         }
     }
     systext("Download wurde hinzugefügt");
@@ -93,7 +93,7 @@ if(true)
     }
     $_POST[options] = $_POST[options] + $_POST[optionsadd];
 
-    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -168,7 +168,7 @@ if(true)
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT `ftp_id` FROM ".$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $db);
+    $index = mysql_query("SELECT `ftp_id` FROM ".$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
     $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);  
     
     for ($i=1; $i<=$_POST[options]; $i++)

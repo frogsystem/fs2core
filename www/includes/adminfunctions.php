@@ -177,14 +177,14 @@ function add_zero ( $FIGURE )
 function get_article_urls ()
 {
     global $global_config_arr;
-    global $db;
+    global $FD;
     
         $index = mysql_query ( "
                                                         SELECT
                                                                 article_url
                                                         FROM
                                                                 ".$global_config_arr['pref']."articles
-        ", $db );
+        ", $FD->sql()->conn() );
         
         while ( $result = mysql_fetch_assoc ( $index ) ) {
                 if ( $result['article_url'] != "" ) {
@@ -493,7 +493,7 @@ function putintopost ($ARRAY)
 function create_editor($name, $text="", $width="", $height="", $class="", $do_smilies=true)
 {
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     if ($name != "") {
         $name2 = 'name="'.$name.'" id="'.$name.'"';
@@ -531,7 +531,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
     $zaehler = 0;
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies ORDER by `order` ASC LIMIT 0, 10", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies ORDER by `order` ASC LIMIT 0, 10", $FD->sql()->conn() );
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id]);
@@ -865,11 +865,11 @@ function get_link ($PAGE_ID, $GO)
 function admin_set_cookie($username, $password)
 {
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("select * from ".$global_config_arr['pref']."user where user_name = '$username'", $db);
+    $index = mysql_query("select * from ".$global_config_arr['pref']."user where user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -916,11 +916,11 @@ function admin_set_cookie($username, $password)
 function admin_login($username, $password, $iscookie)
 {
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_name = '$username'", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -969,7 +969,7 @@ function admin_login($username, $password, $iscookie)
 ////////////////////////////////
 
 function fillsession ($uid) {
-    global $global_config_arr, $db;
+    global $global_config_arr, $FD;
     global $sql;
        
     $USER_ARR = $sql->getRow("user", array("user_id", "user_name", "user_is_staff", "user_group", "user_group"),

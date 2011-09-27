@@ -3,28 +3,28 @@ $index = mysql_query ( "
                         SELECT COUNT(`news_id`) AS 'num_news'
                         FROM ".$global_config_arr['pref']."news
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_news = mysql_result ( $index, 0, "num_news" );
 
 $index = mysql_query ( "
                         SELECT COUNT(`cat_id`) AS 'num_news_cat'
                         FROM ".$global_config_arr['pref']."news_cat
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_news_cat = mysql_result ( $index, 0, "num_news_cat" );
 
 $index = mysql_query ( "
                         SELECT COUNT(`comment_id`) AS 'num_comments'
                         FROM ".$global_config_arr['pref']."news_comments
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_comments = mysql_result ( $index, 0, "num_comments" );
 
 $index = mysql_query ( "
                         SELECT COUNT(`link_id`) AS 'num_links'
                         FROM ".$global_config_arr['pref']."news_links
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_links = mysql_result ( $index, 0, "num_links" );
 
 if ( $num_news  > 0 ) {
@@ -35,7 +35,7 @@ if ( $num_news  > 0 ) {
                             GROUP BY C.`cat_name`
                             ORDER BY `best_news_cat_num` DESC
                             LIMIT 0,1
-    ", $db);
+    ", $FD->sql()->conn() );
     $best_news_cat = stripslashes ( mysql_result ( $index, 0, "cat_name" ) );
     $best_news_cat_num = mysql_result ( $index, 0, "best_news_cat_num" );
 
@@ -47,7 +47,7 @@ if ( $num_news  > 0 ) {
                                 GROUP BY N.`news_title`
                                 ORDER BY `best_news_com_num` DESC
                                 LIMIT 0,1
-        ", $db);
+        ", $FD->sql()->conn() );
         $best_news_com = stripslashes ( mysql_result ( $index, 0, "news_title" ) );
         $best_news_com_num = mysql_result ( $index, 0, "best_news_com_num" );
         
@@ -59,7 +59,7 @@ if ( $num_news  > 0 ) {
                                 GROUP BY U.`user_name`
                                 ORDER BY `best_com_poster_num` DESC
                                 LIMIT 0,1
-        ", $db);
+        ", $FD->sql()->conn() );
         $best_com_poster_rows = mysql_num_rows ( $index );
         if ( $best_com_poster_rows >= 1 ) {
             $best_com_poster = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
@@ -74,7 +74,7 @@ if ( $num_news  > 0 ) {
                             GROUP BY N.`news_title`
                             ORDER BY `best_news_link_num` DESC
                             LIMIT 0,1
-    ", $db);
+    ", $FD->sql()->conn() );
     if (mysql_num_rows($index) == 1) {
         $best_news_link = stripslashes ( mysql_result ( $index, 0, "news_title" ) );
         $best_news_link_num = mysql_result ( $index, 0, "best_news_link_num" );
@@ -88,7 +88,7 @@ if ( $num_news  > 0 ) {
                             GROUP BY U.`user_name`
                             ORDER BY `best_news_poster_num` DESC
                             LIMIT 0,1
-    ", $db);
+    ", $FD->sql()->conn() );
     $best_news_poster = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
     $best_news_poster_num = mysql_result ( $index, 0, "best_news_poster_num" );
 }
@@ -98,14 +98,14 @@ $index = mysql_query ( "
                         SELECT COUNT(`article_id`) AS 'num_articles'
                         FROM ".$global_config_arr['pref']."articles
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_articles = mysql_result ( $index, 0, "num_articles" );
 
 $index = mysql_query ( "
                         SELECT COUNT(`cat_id`) AS 'num_articles_cat'
                         FROM ".$global_config_arr['pref']."articles_cat
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_articles_cat = mysql_result ( $index, 0, "num_articles_cat" );
 
 $index = mysql_query ( "
@@ -116,7 +116,7 @@ $index = mysql_query ( "
                         GROUP BY U.`user_name`
                         ORDER BY `best_article_poster_num` DESC
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 if ( mysql_num_rows ( $index) > 0 ) {
     $best_article_poster = stripslashes ( mysql_result ( $index, 0, "user_name" ) );
     $best_article_poster_num = mysql_result ( $index, 0, "best_article_poster_num" );
@@ -127,7 +127,7 @@ $index = mysql_query ( "
                         SELECT COUNT(`press_id`) AS 'num_press'
                         FROM ".$global_config_arr['pref']."press
                         LIMIT 0,1
-", $db);
+", $FD->sql()->conn() );
 $num_press = mysql_result ( $index, 0, "num_press" );
 
 if ( $num_press  > 0 ) {
@@ -139,7 +139,7 @@ if ( $num_press  > 0 ) {
                             GROUP BY V.`title`
                             ORDER BY `best_press_lang_num` DESC
                             LIMIT 0,1
-    ", $db);
+    ", $FD->sql()->conn() );
     $best_press_lang = stripslashes ( mysql_result ( $index, 0, "title" ) );
     $best_press_lang_num = mysql_result ( $index, 0, "best_press_lang_num" );
 }

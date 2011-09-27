@@ -52,6 +52,16 @@ $TEMPLATE_EDIT[] = array (
 );
 
 $TEMPLATE_EDIT[] = array (
+    name => "NEW_PASSWORD",
+    title => $TEXT['template']->get("new_password_title"),
+    description => $TEXT['template']->get("new_password_desc"),
+    rows => 30,
+    cols => 66,
+    help => array ()
+);
+
+
+$TEMPLATE_EDIT[] = array (
     name => "REGISTER",
     title => $TEXT['template']->get("user_register_title"),
     description => $TEXT['template']->get("user_register_desc"),

@@ -33,7 +33,7 @@ if (
                         `reg_date_format` = '".$_POST['reg_date_format']."',
                         `user_list_reg_date_format` = '".$_POST['user_list_reg_date_format']."'
                     WHERE `id` = '1'
-    ", $db );
+    ", $FD->sql()->conn() );
     
     // system messages
     systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
@@ -58,7 +58,7 @@ if ( TRUE )
                                 SELECT *
                                 FROM ".$global_config_arr['pref']."user_config
                                 WHERE `id` = '1'
-        ", $db);
+        ", $FD->sql()->conn() );
         $config_arr = mysql_fetch_assoc($index);
         putintopost ( $config_arr );
     }

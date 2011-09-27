@@ -6,7 +6,7 @@
 function get_user_rights_array ( $USER_ID )
 {
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     unset ( $user_rights );
 
@@ -15,7 +15,7 @@ function get_user_rights_array ( $USER_ID )
                             FROM ".$global_config_arr['pref']."user_permissions
                             WHERE `x_id` = '".$USER_ID."'
                             AND`perm_for_group` = '0'
-    ", $db);
+    ", $FD->sql()->conn() );
     while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
             $user_rights[] = $temp_arr['perm_id'];
     }
@@ -29,7 +29,7 @@ function get_user_rights_array ( $USER_ID )
 function get_group_rights_array ( $GROUP_ID, $IS_USER = FALSE )
 {
     global $global_config_arr;
-    global $db;
+    global $FD;
 
     unset ( $group_rights );
 
@@ -38,7 +38,7 @@ function get_group_rights_array ( $GROUP_ID, $IS_USER = FALSE )
                                 SELECT `user_group`
                                 FROM ".$global_config_arr['pref']."user
                                 WHERE `user_id` = '".$GROUP_ID."'
-        ", $db);
+        ", $FD->sql()->conn() );
         $GROUP_ID = mysql_result ( $index, 0, "user_group" );
     }
 
@@ -47,7 +47,7 @@ function get_group_rights_array ( $GROUP_ID, $IS_USER = FALSE )
                             FROM ".$global_config_arr['pref']."user_permissions
                             WHERE `x_id` = '".$GROUP_ID."'
                             AND`perm_for_group` = '1'
-    ", $db);
+    ", $FD->sql()->conn() );
     while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
             $group_rights[] = $temp_arr['perm_id'];
     }
@@ -81,7 +81,7 @@ if ( isset( $_POST['user_id'] ) ) {
                                         SELECT `page_id`
                                         FROM `".$global_config_arr['pref']."admin_cp`
                                         WHERE `group_id` > '0'
-        ", $db );
+        ", $FD->sql()->conn() );
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
             // permission is not longer granted
             if ( $_POST[$page_arr['page_id']] == 0 && in_array ( $page_arr['page_id'], $user_rights ) ) {
@@ -91,7 +91,7 @@ if ( isset( $_POST['user_id'] ) ) {
                                 WHERE `perm_id` = '".$page_arr['page_id']."'
                                 AND `x_id` = '".$_POST['user_id']."'
                                 AND `perm_for_group` = '0'
-                ", $db );
+                ", $FD->sql()->conn() );
                 
             // permission is now granted
             } elseif ( $_POST[$page_arr['page_id']] == 1
@@ -102,7 +102,7 @@ if ( isset( $_POST['user_id'] ) ) {
                                 INSERT
                                 INTO `".$global_config_arr['pref']."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
                                 VALUES ('".$page_arr['page_id']."', '".$_POST['user_id']."', 0)
-                ", $db );
+                ", $FD->sql()->conn() );
             }
         }
 
@@ -135,7 +135,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
                             FROM ".$global_config_arr['pref']."user
                             WHERE `user_id` = '".$_POST['edit_user_id']."'
                             LIMIT 0,1
-    ", $db);
+    ", $FD->sql()->conn() );
     $user_arr = mysql_fetch_assoc ( $index );
 
     // get granted rights
@@ -152,7 +152,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
                                     FROM `".$global_config_arr['pref']."admin_groups`
                                     WHERE `menu_id` != 'none'
                                     ORDER BY `menu_id`, `group_pos`
-    ", $db );
+    ", $FD->sql()->conn() );
     while ( $group_arr = mysql_fetch_assoc ( $groupaction ) ) {
         $DATA_ARR[$group_arr['group_id']]['title'] = $TEXT['menu']->get("group_".$group_arr['group_id']);
 
@@ -162,13 +162,13 @@ if ( isset ( $_POST['edit_user_id'] ) )
                                         FROM `".$global_config_arr['pref']."admin_cp`
                                         WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0
                                         ORDER BY `page_pos` ASC, `page_id` ASC
-        ", $db );
+        ", $FD->sql()->conn() );
         $pageaction_sub = mysql_query ( "
                                         SELECT `page_id`, `page_file`
                                         FROM `".$global_config_arr['pref']."admin_cp`
                                         WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1
                                         ORDER BY `page_file` ASC, `page_pos` ASC, `page_id` ASC
-        ", $db );
+        ", $FD->sql()->conn() );
         // count number of entries
         $entries = $entries + mysql_num_rows ( $pageaction ) + mysql_num_rows ( $pageaction_sub );
 
@@ -296,7 +296,7 @@ else
                             FROM ".$global_config_arr['pref']."user
                             WHERE `user_is_staff` = '1' AND `user_id` != '1' AND `user_id` != '".$_SESSION['user_id']."'
                               ORDER BY user_name
-    ", $db );
+    ", $FD->sql()->conn() );
     
     // users found
     if ( mysql_num_rows ( $index ) > 0 ) {
@@ -320,7 +320,7 @@ else
                                                 FROM ".$global_config_arr['pref']."user_groups
                                                 WHERE `user_group_id` = '".$user_arr['user_group']."'
                                                    LIMIT 0,1
-                ", $db );
+                ", $FD->sql()->conn() );
                 $user_arr['user_group_name'] = killhtml ( mysql_result ( $groupindex, 0, "user_group_name" ) );
             } elseif ( $user_arr['user_is_admin'] == 1 ) {
                 $user_arr['user_group_name'] = "Administrator";

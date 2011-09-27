@@ -81,7 +81,7 @@ if (TRUE
                    wp_order = '$_POST[wp_order]',
                    wp_sort = '$_POST[wp_sort]'";
                    
-    mysql_query($update, $db);
+    mysql_query($update, $FD->sql()->conn() );
     systext("Die Konfiguration wurde aktualisiert");
 }
 
@@ -91,7 +91,7 @@ if (TRUE
 
 else
 {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
     
     settype($config_arr[show_type], 'integer');

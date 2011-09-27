@@ -13,7 +13,7 @@ header("Content-type: text/plain");
 require ( FS2_ROOT_PATH . "login.inc.php" );
 require ( FS2_ROOT_PATH . "includes/newfunctions.php" );
 
-if ( $db )
+if ( $FD->sql()->conn() )
 {
     $config_arr = $sql->getById("player_config", "*", 1);
     

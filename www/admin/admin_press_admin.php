@@ -12,7 +12,7 @@ if ($_POST['entry_action'] == "add"
 
     mysql_query("INSERT INTO ".$global_config_arr[pref]."press_admin
                  (type, title)
-                 VALUES ('$_POST[entry_is]', '$_POST[title]')", $db);
+                 VALUES ('$_POST[entry_is]', '$_POST[title]')", $FD->sql()->conn() );
     $msg = array();
     $msg[] = 'Eintrag wurde hinzugefügt!';
 
@@ -44,7 +44,7 @@ elseif (($_POST['title'] AND $_POST['title'] != "")
     mysql_query("UPDATE ".$global_config_arr[pref]."press_admin
                  SET title = '$_POST[title]',
                      type = '$_POST[entry_is]'
-                 WHERE id = '$_POST[entry_id]'", $db);
+                 WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
     systext("Der Eintrag wurde aktualisiert!");
     
     if ($_POST['entry_pic_delete'] == 1)
@@ -79,7 +79,7 @@ elseif ($_POST['entry_action'] == "delete"
     
     if ($_POST['delete_press_admin'])   // Partnerseite löschen
     {
-        $index = mysql_query("SELECT type FROM ".$global_config_arr[pref]."press_admin WHERE id = '$_POST[entry_id]'", $db);
+        $index = mysql_query("SELECT type FROM ".$global_config_arr[pref]."press_admin WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
         $entry_arr['type'] = mysql_result($index, 0, "type");
 
         switch ($entry_arr[type])
@@ -98,10 +98,10 @@ elseif ($_POST['entry_action'] == "delete"
                 break;
         }
         
-        mysql_query("UPDATE ".$global_config_arr[pref]."press"." ".$entry_arr[type_set]." ".$entry_arr[type_where], $db);
+        mysql_query("UPDATE ".$global_config_arr[pref]."press"." ".$entry_arr[type_set]." ".$entry_arr[type_where], $FD->sql()->conn() );
 
         mysql_query("DELETE FROM ".$global_config_arr[pref]."press_admin
-                     WHERE id = '$_POST[entry_id]'", $db);
+                     WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
 
         $msg[] = "Der Eintrag wurde gelöscht!";
 
@@ -135,7 +135,7 @@ elseif ($_POST['entry_action'] == "edit"
 {
     $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST[entry_id], 'integer');
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id]", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id]", $FD->sql()->conn() );
     $entry_arr = mysql_fetch_assoc($index);
 
     $entry_arr['title'] = killhtml($entry_arr['title']);
@@ -234,11 +234,11 @@ elseif ($_POST['entry_action'] == "delete"
     $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST[entry_id], 'integer');
     $index = mysql_query("SELECT COUNT(id) AS number FROM ".$global_config_arr[pref]."press_admin
-                          WHERE type = (SELECT type FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id])", $db);
+                          WHERE type = (SELECT type FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id])", $FD->sql()->conn() );
 
     if (mysql_result($index,0,"number") > 1)
     {
-        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id]", $db);
+        $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id]", $FD->sql()->conn() );
         $entry_arr = mysql_fetch_assoc($index);
 
         $entry_arr['title'] = killhtml($entry_arr['title']);
@@ -310,7 +310,7 @@ elseif ($_POST['entry_action'] == "delete"
 
         $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_admin
                               WHERE type = '$entry_arr[type]' AND id != '$entry_arr[id]'
-                              ORDER BY title", $db);
+                              ORDER BY title", $FD->sql()->conn() );
         while ($entry_move_arr = mysql_fetch_assoc($index))
         {
             echo'<option value="'.$entry_move_arr[id].'">'.$entry_move_arr[title].'</option>';
@@ -325,7 +325,7 @@ elseif ($_POST['entry_action'] == "delete"
     }
     else
     {
-        $index = mysql_query("SELECT type FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id]", $db);
+        $index = mysql_query("SELECT type FROM ".$global_config_arr[pref]."press_admin WHERE id = $_POST[entry_id]", $FD->sql()->conn() );
         $entry_arr[type] = mysql_result($index, 0, "type");
 
         switch ($entry_arr[type])

@@ -193,7 +193,7 @@ class sql {
                 if (is_array($col)) {
                     $cols_list[] = $this->select_expr($col);
                 } else {
-                    $cols_list[] = $col;
+                    $cols_list[] = "`".$col."`";
                 }            
             }
             
@@ -274,7 +274,7 @@ class sql {
     }
     // single row by Id  
     public function getById ($table, $cols, $id, $id_col = "id") {
-        $options = array ('W' => "`".$id_col."`=".$this->escape($id));
+        $options = array ('W' => "`".$id_col."`='".$this->escape($id)."'");
         return $this->getRow($table, $cols, $options);
     }
     
@@ -289,7 +289,7 @@ class sql {
     }
     // single field by Id  
     public function getFieldById ($table, $field, $id, $id_col = "id") {
-        $options = array ('W' => "`".$id_col."`=".$this->escape($id));
+        $options = array ('W' => "`".$id_col."`='".$this->escape($id)."'");
         
         try {
             return $this->getField($table, $field, $options);
@@ -382,7 +382,7 @@ class sql {
         if (!isset($data[$id]))
             Throw new ErrorException("MySQL Error: Can't update because of bad data.");             
         
-        $options = array ('W' => "`".$id."`=".$this->escape($data[$id]));
+        $options = array ('W' => "`".$id."`='".$this->escape($data[$id])."'");
         
         try {
             $this->update($table, $data, $options);
@@ -404,6 +404,15 @@ class sql {
             return false;
         }        
     }
+    
+    // delete statement
+    public function deleteById ($table, $id, $id_col = "id") {
+        $options = array (
+            'W' => "`".$id_col."`='".$this->escape($id)."'",
+            'L' => "1",
+        );
+        return $this->delete($table, $options);        
+    }    
     
     // print or return last error
     public function error ($return = false) {
@@ -436,5 +445,15 @@ class sql {
         else
             Throw new ErrorException("Lost Connection to Database");
     }
+    
+    // return prefix
+    public function getPrefix() {
+        return $this->pref;
+    }
+    
+    // return database name
+    public function getDatabaseName() {
+        return $this->db;
+    }    
 }
 ?>

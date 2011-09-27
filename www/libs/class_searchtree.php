@@ -145,7 +145,7 @@ class SearchLeaf extends SearchTree
     private $type;
     private $not;
     private $read = false;
-    private $dbdata = array();
+    private $FD->sql()->conn() );
 
     // constructor
     public function  __construct ($label, $type, $not) {        
@@ -178,7 +178,7 @@ class SearchLeaf extends SearchTree
     }
     
     //set DB Data
-    public function setDBData($dbdata) {
+    public function setDBData($FD->sql()->conn() ) {
         $this->dbdata = $dbdata;
     }
 

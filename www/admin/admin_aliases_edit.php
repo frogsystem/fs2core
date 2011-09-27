@@ -26,7 +26,7 @@ if (
                         `alias_forward_to` = '".$_POST['alias_forward_to']."',
                         `alias_active` = '".$_POST['alias_active']."'
                     WHERE `alias_id` = '".$_POST['alias_id']."'
-    ", $db );
+    ", $sql->conn() );
 
     // Display Message
     systext ( $TEXT["admin"]->get("changes_saved"),
@@ -57,7 +57,7 @@ elseif (
                         DELETE
                         FROM `".$global_config_arr['pref']."aliases`
                         WHERE `alias_id` IN (".implode ( ",", $_POST['alias_id'] ).")
-        ", $db );
+        ", $sql->conn() );
         
         systext ( $TEXT["admin"]->get("aliases_deleted"),
             $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_trash_ok") );
@@ -101,7 +101,7 @@ if ( isset ( $_POST['alias_id'] ) && $_POST['alias_action'] )
                                     FROM `".$global_config_arr['pref']."aliases`
                                     WHERE `alias_id` = '".$_POST['alias_id']."'
                                     LIMIT 0,1
-            ", $db );
+            ", $sql->conn() );
             $data_arr = mysql_fetch_assoc ( $index );
             putintopost ( $data_arr );
         }
@@ -197,7 +197,7 @@ if ( isset ( $_POST['alias_id'] ) && $_POST['alias_action'] )
                                 FROM `".$global_config_arr['pref']."aliases`
                                 WHERE `alias_id` IN (".implode ( ",", $_POST['alias_id'] ).")
                                 ORDER BY `alias_go` ASC, `alias_forward_to` ASC
-        ", $db );
+        ", $sql->conn() );
         // aliases found
         if ( mysql_num_rows ( $index ) > 0 ) {
         
@@ -252,7 +252,7 @@ if ( !isset ( $_POST['alias_id'] ) )
                             SELECT *
                             FROM `".$global_config_arr['pref']."aliases`
                             ORDER BY `alias_go` ASC, `alias_forward_to` ASC
-    ", $db );
+    ", $sql->conn() );
 
     // Aliases found
     if ( mysql_num_rows ( $index ) > 0 ) {

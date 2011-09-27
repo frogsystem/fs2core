@@ -53,8 +53,8 @@ if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( "update", "new
 if ( TRUE )
 {
     // Get some Data
-    $words = mysql_query ( "SELECT COUNT(`search_word_id`) AS 'words' FROM `".$global_config_arr['pref']."search_words`", $db );
-    $docs = mysql_query ( "SELECT COUNT(`search_time_id`) AS 'docs' FROM `".$global_config_arr['pref']."search_time`", $db );
+    $words = mysql_query ( "SELECT COUNT(`search_word_id`) AS 'words' FROM `".$global_config_arr['pref']."search_words`", $FD->sql()->conn() );
+    $docs = mysql_query ( "SELECT COUNT(`search_time_id`) AS 'docs' FROM `".$global_config_arr['pref']."search_time`", $FD->sql()->conn() );
 
     // Display Form
     echo '

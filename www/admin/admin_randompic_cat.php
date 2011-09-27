@@ -10,7 +10,7 @@ if ($_POST['sended'])
     {
         mysql_query("UPDATE ".$global_config_arr[pref]."screen_cat
                      SET randompic = '$val'
-                     WHERE cat_id = '$key'", $db);
+                     WHERE cat_id = '$key'", $FD->sql()->conn() );
     }
     systext("Einstellungen wurden gespeichert!");
 }
@@ -41,11 +41,11 @@ if ($_POST['sended'])
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_type != 2 order by cat_name asc", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_type != 2 order by cat_name asc", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
-        $screen_index = mysql_query("select cat_id from ".$global_config_arr[pref]."screen where cat_id = $cat_arr[cat_id]", $db);
+        $screen_index = mysql_query("select cat_id from ".$global_config_arr[pref]."screen where cat_id = $cat_arr[cat_id]", $FD->sql()->conn() );
         $screen_rows = mysql_num_rows($screen_index);
         echo'
                             <input type="hidden" name="randompic_cat['.$cat_arr[cat_id].']" value="0">

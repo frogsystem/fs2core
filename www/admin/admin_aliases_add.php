@@ -26,7 +26,7 @@ if (
                             '".$_POST['alias_forward_to']."',
                             '".$_POST['alias_active']."'
                     )
-    ", $db );
+    ", $sql->conn() );
     
     systext ( $TEXT["admin"]->get("alias_added"),
         $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );

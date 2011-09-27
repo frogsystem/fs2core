@@ -9,7 +9,7 @@ define ( FS2_ROOT_PATH, "./../", TRUE );
 // Inlcude DB Connection File
 require( FS2_ROOT_PATH . "login.inc.php");
 
-if ($db)
+if ($FD->sql()->conn() )
 {
     //Include Functions-Files
     include( FS2_ROOT_PATH . "includes/functions.php");
@@ -25,7 +25,7 @@ if ($db)
     }
 
     // News Config + Infos
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_config", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_config", $FD->sql()->conn() );
     $news_config_arr = mysql_fetch_assoc($index);
 
     $index = mysql_query("SELECT news_date
@@ -80,7 +80,7 @@ if ($db)
 </feed>
     ';
 
-    mysql_close($db);
+    mysql_close($FD->sql()->conn() );
     
 } else {
     //"Keine Verbindung"-Feed

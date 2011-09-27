@@ -11,7 +11,7 @@ if ($_POST[answerbar_width])
     
     mysql_query("UPDATE ".$global_config_arr[pref]."poll_config
                  SET answerbar_width = '$_POST[answerbar_width]',
-                     answerbar_type  = '$_POST[answerbar_type]'", $db);
+                     answerbar_type  = '$_POST[answerbar_type]'", $FD->sql()->conn() );
     systext("Die Konfiguration wurde aktualisiert");
 }
 
@@ -21,7 +21,7 @@ if ($_POST[answerbar_width])
 
 if(true)
 {
-    $index = mysql_query("select * from ".$global_config_arr[pref]."poll_config", $db);
+    $index = mysql_query("select * from ".$global_config_arr[pref]."poll_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
  
     echo'

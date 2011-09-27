@@ -6,7 +6,7 @@ $stats_day = date ( "d" );
 
 
 // Overall Data
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter", $db );
+$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter", $FD->sql()->conn() );
 $counter_arr = mysql_fetch_assoc ( $index ) ;
 
 
@@ -22,7 +22,7 @@ $index = mysql_query ( "
                             `s_month` = '".$stats_month."'
                         AND
                             `s_day` = '".$stats_day."'
-", $db);
+", $FD->sql()->conn() );
 $today_arr = mysql_fetch_assoc ( $index );
 
 
@@ -32,7 +32,7 @@ $index = mysql_query ( "
                             count(`ip`) AS 'total'
                         FROM
                             `".$global_config_arr['pref']."useronline`
-", $db);
+", $FD->sql()->conn() );
 $useronline_arr['total'] = mysql_result ( $index, 0, "total" );
 
 // Registered online
@@ -43,7 +43,7 @@ $index = mysql_query ( "
                             `".$global_config_arr['pref']."useronline`
                         WHERE
                             `user_id` != 0
-", $db);
+", $FD->sql()->conn() );
 $useronline_arr['registered'] = mysql_result ( $index, 0, "registered" );
 
 // Guests online
@@ -54,7 +54,7 @@ $index = mysql_query ( "
                             `".$global_config_arr['pref']."useronline`
                         WHERE
                             `user_id` = 0
-", $db);
+", $FD->sql()->conn() );
 $useronline_arr['guests'] = mysql_result ( $index, 0, "guests" );
 
 

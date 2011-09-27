@@ -16,7 +16,7 @@ if (($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h]) AND $_POST['
                      s_hits   = $_POST[h]
                  WHERE s_day   = $_POST[d] AND
                        s_month = $_POST[m] AND
-                       s_year  = $_POST[y]", $db);
+                       s_year  = $_POST[y]", $FD->sql()->conn() );
     systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info] );
 }
 
@@ -34,7 +34,7 @@ elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
                           FROM ".$global_config_arr[pref]."counter_stat
                           WHERE s_day = $_POST[ed] and
                                 s_month = $_POST[em] and
-                                s_year = $_POST[ey]", $db);
+                                s_year = $_POST[ey]", $FD->sql()->conn() );
                                 
 	$_POST['ed'] = date ( "d", mktime ( 0, 0, 0, $_POST['em'], $_POST['ed'], $_POST['ey'] ) );
 	$_POST['em'] = date ( "m", mktime ( 0, 0, 0, $_POST['em'], $_POST['ed'], $_POST['ey'] ) );
@@ -113,7 +113,7 @@ elseif (($_POST[editvisits] != "" &&
                      user = '$_POST[edituser]',
                      news = '$_POST[editnews]',
                      artikel = '$_POST[editartikel]',
-                     comments = '$_POST[editcomments]'", $db);
+                     comments = '$_POST[editcomments]'", $FD->sql()->conn() );
     systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info] );
 }
 
@@ -123,20 +123,20 @@ elseif (($_POST[editvisits] != "" &&
 
 elseif ($_POST['do'] == "sync")
 {
-    $index = mysql_query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$global_config_arr[pref]."counter_stat", $db);
+    $index = mysql_query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$global_config_arr[pref]."counter_stat", $FD->sql()->conn() );
     $sync_arr['hits'] = mysql_result($index,0,"hits");
     $sync_arr['visits'] = mysql_result($index,0,"visits");
 
-    $index = mysql_query("SELECT COUNT(user_id) AS 'user' FROM ".$global_config_arr[pref]."user", $db);
+    $index = mysql_query("SELECT COUNT(user_id) AS 'user' FROM ".$global_config_arr[pref]."user", $FD->sql()->conn() );
     $sync_arr['user'] = mysql_result($index,0,"user");
     
-    $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$global_config_arr[pref]."news", $db);
+    $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$global_config_arr[pref]."news", $FD->sql()->conn() );
     $sync_arr['news'] = mysql_result($index,0,"news");
     
-    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$global_config_arr[pref]."news_comments", $db);
+    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$global_config_arr[pref]."news_comments", $FD->sql()->conn() );
     $sync_arr['comments'] = mysql_result($index,0,"comments");
 
-    $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$global_config_arr[pref]."articles", $db);
+    $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$global_config_arr[pref]."articles", $FD->sql()->conn() );
     $sync_arr['articles'] = mysql_result($index,0,"articles");
 
     mysql_query("UPDATE ".$global_config_arr[pref]."counter
@@ -145,7 +145,7 @@ elseif ($_POST['do'] == "sync")
                      user = '$sync_arr[user]',
                      news = '$sync_arr[news]',
                      artikel = '$sync_arr[articles]',
-                     comments = '$sync_arr[comments]'", $db);
+                     comments = '$sync_arr[comments]'", $FD->sql()->conn() );
     systext( $admin_phrases[stats][synchronised], $admin_phrases[common][info] );
 }
 //////////////////////////////////////
@@ -159,7 +159,7 @@ else
     $heute[m] = date("m");
     $heute[y] = date("Y");
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."counter", $db);
+    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."counter", $FD->sql()->conn() );
     $counter_arr = mysql_fetch_assoc($index);
     
     echo'

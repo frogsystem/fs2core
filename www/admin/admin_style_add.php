@@ -40,7 +40,7 @@ if (
                             ( `style_tag`, `style_allow_use`, `style_allow_edit` )
                         VALUES
                             ( '".$_POST['style_tag']."', '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )
-        ", $db );
+        ", $FD->sql()->conn() );
 
         // Copy Style recursive
         if ( $_POST['style_create_as'] == "copy" && $_POST['copy_style_id'] ) {
@@ -53,7 +53,7 @@ if (
                                     WHERE
                                         `style_id` = ".$_POST['copy_style_id']."
                                     LIMIT 0,1
-            ", $db );
+            ", $FD->sql()->conn() );
             $copy_style_path = FS2_ROOT_PATH . "styles/" . stripslashes ( mysql_result ( $index, 0, "style_tag" ) );
             if (
                     $ACCESS->copyAny( $copy_style_path, $new_style_path, 0777, 0644 )
@@ -156,7 +156,7 @@ if ( !is_writable ( FS2_ROOT_PATH . "styles/" ) ) {
                             SELECT `style_id`, `style_tag`
                             FROM `".$global_config_arr['pref']."styles`
                             ORDER BY `style_id`
-    ", $db );
+    ", $FD->sql()->conn() );
     while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
         settype ( $style_arr['style_id'], "integer" );
         echo '<option value="'.$style_arr['style_id'].'" '.getselected( $style_arr['style_id'], $_POST['copy_style_id'] ).'>'.killhtml ( $style_arr['style_tag'] );
