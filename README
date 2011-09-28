@@ -1,0 +1,13 @@
+Active branches:
+
+  - alix6_neu: This is the most recent branch for the next release. Use this for your development.
+  - master:    This will always be the branch from the last release. After a new release the
+               specific branch will be merged into this one.
+
+Unused branches:
+
+  - alix6:    This was the original branch for alix6. But I git stuck there, so alix6_neu is used now.
+              Maybe contains some useful changes.
+  - dead_end: As it says: this is an dead end.
+  - future:   This branch is for testing purposes only. You may use it to test some long-distance changes.
+  - HEAD:     Old master-branch from the original SVN repo. Don't use it.
