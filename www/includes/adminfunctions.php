@@ -534,7 +534,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
     $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies ORDER by `order` ASC LIMIT 0, 10", $FD->sql()->conn() );
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
-        $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id]);
+        $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id], false);
 
         $smilie_template = '<td><img src="'.$smilie_arr[url].'" alt="'.$smilie_arr[replace_string].'" onClick="insert(\''.$name.'\', \''.$smilie_arr[replace_string].'\', \'\')" class="editor_smilies" /></td>';
 

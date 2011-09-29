@@ -15,7 +15,7 @@ class ConfigMain extends ConfigData {
     // loading all data
     public function __construct($data) {
         global $sql, $spam, $path;
-        
+
         // set start data
         $this->config = $data;
         

@@ -13,6 +13,7 @@ $dbc['pref'] = "fs2_"; //Table Prefix
 //// Hardcoded Vars ////
 ////////////////////////
 $spam = "wKAztWWB2Z"; //Anti-Spam Encryption-Code
+$path = dirname(__FILE__) . "/"; //Dateipfad
 define('SLASH', TRUE);
 
 
@@ -28,7 +29,7 @@ try {
     $sql = new sql($dbc['host'], $dbc['data'], $dbc['user'], $dbc['pass'], $dbc['pref']);
     
     // Frogsystem Global Data Array
-    $global_data = new GlobalData($sql, $spam, dirname(__FILE__) . "/");
+    $global_data = new GlobalData($sql);
     $FD =& $global_data; // Use shorthand $FD 
 
 //////////////////////////////

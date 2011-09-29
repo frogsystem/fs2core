@@ -36,7 +36,7 @@ if ($global_config_arr['goto'] == "articles") {
 
 // Article doesn't exist
 if ( mysql_num_rows ( $index ) != 1 ) {
-    $article_arr['template'] = sys_message ( $TEXT['frontend']->get("systemmessage"), $TEXT['frontend']->get("article_not_found") );
+    $article_arr['template'] = sys_message ( $TEXT['frontend']->get("systemmessage"), $TEXT['frontend']->get("article_not_found"), 404 );
 }
 
 // Article exists

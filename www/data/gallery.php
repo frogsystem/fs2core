@@ -185,7 +185,7 @@ if (isset($_GET[catid]))
     
     //Keine Screenshots
     if ($config_arr[number_of_screens] <= 0) {
-        $pics = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "no_pics"));
+        $pics = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "no_pics"), 404);
         $pagenav = "";
     }
     

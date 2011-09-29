@@ -18,13 +18,13 @@ class GlobalData {
 
     // Constructor
     // 
-    public function __construct($sql, $spam, $path) {
+    public function __construct($sql) {
 
         // Set sql connection
         $this->sql = $sql;
         
         // set config data
-        $this->loadConfig($spam, $path);
+        $this->loadConfig();
         
         //get Text object
         $this->text = array(
@@ -39,7 +39,8 @@ class GlobalData {
   
     
     // load configs
-    private function loadConfig($spam, $path) {
+    private function loadConfig() {
+        
         //register autoload
         spl_autoload_register(array($this, 'configLoader'));
         require_once(FS2_ROOT_PATH . "libs/class_ConfigData.php");
@@ -55,7 +56,7 @@ class GlobalData {
             $config['config_data'] = array_map("utf8_decode", $config['config_data']); 
              
             // Load corresponding class and get config array
-            $class_name = "Config".ucfirst($config['config_name']);
+            $class_name = "Config".ucfirst($config['config_name']);echo $path.$test;
             $config_object = new $class_name($config['config_data']);
             $this->config[$config['config_name']] = $config_object->getConfigArray();
             unset($class_name, $config_object);

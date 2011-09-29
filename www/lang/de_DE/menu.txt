@@ -109,6 +109,8 @@ page_title_news_edit:           bearbeiten
 page_link_news_edit:            bearbeiten
 page_title_news_cat:            Kategorien verwalten
 page_link_news_cat:             Kategorien
+page_title_news_comments_list:  Kommentare verwalten
+page_link_news_comments_list:   Kommentare
 
 # Artikel
 page_title_articles_config:     Konfiguration ändern

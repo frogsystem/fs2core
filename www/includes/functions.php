@@ -794,9 +794,14 @@ function create_textarea_seperator()
 //// System Message ////
 /////////////////////////
 
-function sys_message ( $TITLE, $MESSAGE )
+function sys_message ($TITLE, $MESSAGE, $STATUS = "")
 {
     global $FD, $global_config_arr;
+       
+    //check for addition HTTP Status
+	if (!empty($STATUS) && false !== ($text = http_response_text($STATUS)))
+		header($text, true, $STATUS);
+    
     
     $template = new template();
 
@@ -813,9 +818,13 @@ function sys_message ( $TITLE, $MESSAGE )
 //// Forward Message ////
 /////////////////////////
 
-function forward_message ( $TITLE, $MESSAGE, $URL)
+function forward_message ( $TITLE, $MESSAGE, $URL, $STATUS = "")
 {
     global $FD;
+
+    //check for addition HTTP Status
+	if (!empty($STATUS) && false !== ($text = http_response_text($STATUS)))
+		header($text, true, $STATUS);
 
     $forward_script = '
 <noscript>

@@ -222,6 +222,6 @@ if (mysql_num_rows($index) > 0)
 
     $template = $template->display ();
 } else {
-    $template = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "dl_not_exist"));
+    $template = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "dl_not_exist"), 404);
 }
 ?>

@@ -172,7 +172,7 @@ if ( $SHOW == TRUE ) {
         $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
         $global_config_arr['dyn_title_page'] = stripslashes ( $news_arr['news_title'] );
     } else {
-        $news_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("news_not_exist"));
+        $news_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("news_not_exist"), 404);
     }
 
     // Text formatieren

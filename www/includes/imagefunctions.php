@@ -53,11 +53,11 @@ function image_exists ( $PATH, $NAME )
 //// Create Image URL ////
 //////////////////////////
 
-function image_url ( $PATH, $NAME, $ERROR = TRUE, $NO_URL = FALSE )
+function image_url ( $PATH, $NAME, $ERROR = TRUE, $GETPATH = FALSE )
 {
-    global $global_config_arr;
+    global $FD;
 
-    $CHECK_PATH = $global_config_arr['path'] . $PATH;
+    $CHECK_PATH = $FD->cfg('env', 'path') . $PATH;
     
     if ( file_exists ( $CHECK_PATH . $NAME . ".jpg" ) ) {
         $url = $PATH . $NAME . ".jpg";
@@ -72,16 +72,16 @@ function image_url ( $PATH, $NAME, $ERROR = TRUE, $NO_URL = FALSE )
         $url = $PATH . $NAME . ".png";
     }
     elseif ( $ERROR == TRUE ) {
-        $url = "styles/".$global_config_arr['style']."/icons/image_error.gif";
+        $url = "styles/".$FD->cfg('style')."/icons/image_error.gif";
     }
     else {
-        return "";
+        return $CHECK_PATH . $NAME;
     }
     
-    if ( $NO_URL == TRUE ) {
-        $url = $global_config_arr['path'] . $url;
+    if ( $GETPATH == TRUE ) {
+        $url = $FD->cfg('env', 'path') . $url;
     } else {
-        $url = $global_config_arr['virtualhost'] . $url;
+        $url = $FD->cfg('virtualhost') . $url;
     }
 
     return $url;
