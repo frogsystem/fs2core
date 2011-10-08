@@ -1,7 +1,8 @@
-<?php
+<?php if (ACP_GO == "news_comments_list") {
 /*
     This file is part of the Frogsystem Spam Detector.
     Copyright (C) 2011  Thoronador
+    Copyright (C) 2011  Sweil (minor modifications)
 
     The Frogsystem Spam Detector is free software: you can redistribute it
     and/or modify it under the terms of the GNU General Public License as
@@ -15,7 +16,18 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Additional permission under GNU GPL version 3 section 7
+
+    If you modify this Program, or any covered work, by linking or combining it
+    with Frogsystem 2 (or a modified version of Frogsystem 2), containing parts
+    covered by the terms of Creative Commons Attribution-ShareAlike 3.0, the
+    licensors of this Program grant you additional permission to convey the
+    resulting work. Corresponding Source for a non-source form of such a
+    combination shall include the source code for the parts of Frogsystem used
+    as well as that of the covered work.
 */
+    
 
   if (!isset($_GET['start']) || $_GET['start']<0)
   {
@@ -24,7 +36,7 @@
   $_GET['start'] = (int) $_GET['start'];
   settype($_GET['start'], "integer");
   //Anzahl der Kommentare auslesen
-  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$global_config_arr['pref'].'news_comments`', $db);
+  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$global_config_arr['pref'].'news_comments`', $FD->sql()->conn());
   $cc = mysql_fetch_assoc($query);
   $cc = (int) $cc['cc'];
   if ($_GET['start']>=$cc)
@@ -37,7 +49,7 @@
                       .'`'.$global_config_arr['pref'].'news_comments`.news_id AS news_id, `'.$global_config_arr['pref'].'news`.news_id, news_title '
                       .'FROM `'.$global_config_arr['pref'].'news_comments`, `'.$global_config_arr['pref'].'news` '
                       .'WHERE `'.$global_config_arr['pref'].'news_comments`.news_id=`'.$global_config_arr['pref'].'news`.news_id '
-                      .'ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30', $db);
+                      .'ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30', $FD->sql()->conn());
   $rows = mysql_num_rows($query);
 
   //Bereich (zahlenm‰ﬂig)
@@ -58,7 +70,7 @@
     $next_page = '<a href="'.$PHP_SELF.'?go=news_comments_list&start='.($_GET['start']+30).'">weiter -></a>';
   }//if nicht die letzte Seite
 
-?>
+echo <<<EOT
   <table class="configtable" cellpadding="4" cellspacing="0">
     <tr>
       <td class="line" colspan="5">Kommentarliste</td>
@@ -80,52 +92,50 @@
           bearbeiten
       </td>
     </tr>
-<?php
-  require_once 'eval_spam.inc.php';
+EOT;
+  require_once(FS2_ROOT_PATH . 'resources/spamdetector/eval_spam.inc.php');
 
   while ($comment_arr = mysql_fetch_assoc($query))
   {
     if ($comment_arr['comment_poster_id'] != 0)
     {
-      $userindex = mysql_query('SELECT user_name FROM `'.$global_config_arr['pref'].'user` WHERE user_id = \''.$comment_arr['comment_poster_id'].'\'', $db);
+      $userindex = mysql_query('SELECT user_name FROM `'.$global_config_arr['pref'].'user` WHERE user_id = \''.$comment_arr['comment_poster_id'].'\'', $FD->sql()->conn());
       $comment_arr['comment_poster'] = mysql_result($userindex, 0, 'user_name');
     }
     $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date'])
                                       ." um ".date('H:i' , $comment_arr['comment_date']);
     echo'<tr>
-           <td class="config">
+           <td class="configthin">
                '.$comment_arr['comment_title'].'
            </td>
-           <td class="config">
+           <td class="configthin">
                '.$comment_arr['comment_poster'];
     if ($comment_arr['comment_poster_id'] == 0)
     {
       echo '<br><small>(unregistriert)</small>';
     }
     echo '           </td>
-           <td class="config">
-               '.$comment_arr['comment_date'].'
+           <td class="configthin">
+               <span class="small">'.$comment_arr['comment_date'].'</span>
            </td>
-           <td class="config">
+           <td class="configthin">
                '.spamLevelToText(spamEvaluation($comment_arr['comment_title'],
                  $comment_arr['comment_poster_id'], $comment_arr['comment_poster'], $comment_arr['comment_text'])).'
            </td>
-           <td class="config" rowspan="2">
-             <form action="'.$PHP_SELF.'" method="post">
+           <td class="configthin" rowspan="2">
+             <form action="?go=news_edit" method="post">
                <input type="hidden" name="sended" value="comment">
                <input type="hidden" name="news_action" value="comments">
                <input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
-               <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="edit">
                <input class="button" type="submit" value="Editieren">
              </form>
 
-             <form action="'.$PHP_SELF.'" method="post">
+             <form action="?go=news_edit" method="post">
                <input type="hidden" name="sended" value="comment">
                <input type="hidden" name="news_action" value="comments">
                <input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
-               <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="delete">
                <input class="button" type="submit" value="L&ouml;schen">
@@ -142,7 +152,7 @@
            <td colspan="5"><hr width="95%" style="color: #cccccc; background-color: #cccccc;"></td>
          </tr>';
   }//while
-?>
+echo <<<EOT
     <tr>
       <td colspan="5">
           &nbsp;
@@ -153,28 +163,32 @@
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr valign="middle">
                                 <td width="33%" class="configthin middle">
-<?php
+EOT;
   if (isset($prev_page))
   {
     echo $prev_page;
   }
-?>
+echo <<<EOT
                                 </td>
                                 <td width="33%" align="center" class="middle">
-<?php
+EOT;
   if (isset($bereich))
   {
     echo $bereich;
   }
-?>
+echo <<<EOT
                                 </td>
                                 <td width="33%" style="text-align:right;" class="configthin middle">
-<?php
+EOT;
   if (isset($next_page))
   {
     echo $next_page;
   }
-?>
+echo <<<EOT
                                 </td>
                             </tr>
                         </table>
+EOT;
+ 
+                        
+}?>
