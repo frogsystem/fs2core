@@ -138,10 +138,19 @@ class GlobalData {
         }
         
     }
-    // Alias
+    // Aliases
     public function cfg() {
         return call_user_func_array(array($this, "config"), func_get_args());
-    }     
+    }
+    public function env($arg) {
+        return $this->cfg('env', $arg);
+    } 
+    public function system($arg) {
+        return $this->cfg('system', $arg);
+    } 
+    public function info($arg) {
+        return $this->cfg('info', $arg);
+    } 
     
     
             

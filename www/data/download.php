@@ -66,7 +66,7 @@ foreach ($valid_ids as $cat) {
     $template->load("NAVIGATION_LINE");
 
     $template->tag("icon_url", $icon_url );
-    $template->tag("cat_url", "?go=download&cat_id=".$cat['cat_id'] );
+    $template->tag("cat_url", url("download", array('cat_id' => $cat['cat_id'])));
     $template->tag("cat_name", $cat['cat_name'] );
 
     $template = $template->display ();
@@ -119,7 +119,7 @@ if ($show == TRUE) {
         $template->load("PREVIEW_LINE");
 
         $template->tag("title", stripslashes ( $dl_arr[dl_name] ) );
-        $template->tag("url", "?go=dlfile&id=".$dl_arr[dl_id] );
+        $template->tag("url", url("dlfile", array('id' => $dl_arr['dl_id'])));
         $template->tag("cat_name", $dl_arr[cat_name] );
         $template->tag("date", $dl_arr[dl_date] );
         $template->tag("text", $dl_arr[dl_text] );
@@ -159,7 +159,7 @@ $suchfeld->load("SEARCH");
 
 $suchfeld->tag("input_cat", '<input name="cat_id" value="'.$_GET['cat_id'].'" type="hidden">' );
 $suchfeld->tag("keyword", $_GET['keyword'] );
-$suchfeld->tag("all_url", "?go=download&cat_id=".$_GET['cat_id'] );
+$suchfeld->tag("all_url", url("download", array('cat_id' => $_GET['cat_id'])));
 
 $suchfeld = $suchfeld->display ();
     

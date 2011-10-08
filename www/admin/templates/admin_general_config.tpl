@@ -201,7 +201,7 @@
                     </option>
                     <option value="rss10" <!--IF::feed_rss10-->selected<!--ENDIF-->>
                         <!--LANG::feed_rss10-->
-                        </option>
+                    </option>
                     <option value="rss20" <!--IF::feed_rss20-->selected<!--ENDIF-->>
                         <!--LANG::feed_rss20-->
                     </option>
@@ -211,6 +211,25 @@
                 </select>
             </td>
         </tr>
+        
+        <tr>
+            <td>
+                <!--LANG::url_style-->:<br>
+                <span class="small"><!--LANG::url_style_desc--></span>
+            </td>
+            <td>
+                <select class="half" name="url_style" size="1">
+                    <option value="default" <!--IF::url_style_default-->selected<!--ENDIF-->>     
+                        <!--LANG::url_style_default-->
+                    </option>
+                    <option value="seo" <!--IF::url_style_seo-->selected<!--ENDIF-->>
+                        <!--LANG::url_style_seo-->
+                    </option>
+                </select>
+                <br>
+                <span class="small"><!--LANG::url_style_info--></span>
+            </td>
+        </tr>        
         
         <tr>
             <td>

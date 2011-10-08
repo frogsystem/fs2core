@@ -6,6 +6,9 @@
     </div>
 
     <div id="menu_left">
+      <p>
+        <a href="$URL(download[cat_id=4 keyword=test])">$URL(download[cat_id=4 keyword=test 1])</a>
+      </p>
     $APP(mini-search.php)
     $NAV(left.nav)
     [%feeds%]

@@ -30,7 +30,7 @@ while ($newshead_arr = mysql_fetch_assoc($index))
 
     $template->tag("title", stripslashes ( $newshead_arr['news_title'] ) );
     $template->tag("date", $newshead_arr['news_date'] );
-    $template->tag("url", "?go=comments&amp;id=".$newshead_arr['news_id'] );
+    $template->tag("url", url("comments", array('id' => $newshead_arr['news_id'])));
     $template->tag("news_id", $newshead_arr['news_id'] );
 
     $template = $template->display ();
@@ -59,7 +59,7 @@ while ($dlhead_arr = mysql_fetch_assoc($index))
 
     $template->tag("title", stripslashes ( $dlhead_arr['dl_name'] ) );
     $template->tag("date", $dlhead_arr['dl_date'] );
-    $template->tag("url", "?go=dlfile&amp;id=".$dlhead_arr['dl_id'] );
+    $template->tag("url", url("dlfile", array('id' => $dlhead_arr['dl_id'])));
     $template->tag("download_id", $dlhead_arr['dl_id'] );
 
     $template = $template->display ();

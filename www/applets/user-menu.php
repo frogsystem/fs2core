@@ -24,8 +24,8 @@ if ( $_SESSION['user_level'] == "loggedin" ) {
     $template->tag("user_id", $user_id);
     $template->tag("user_image", $image_link);
     $template->tag("user_image_url", $image_url);
-    $template->tag("user_edit_url", "?go=user_edit");
-    $template->tag("logout_url", "?go=logout");
+    $template->tag("user_edit_url", url("user_edit"));
+    $template->tag("logout_url", url("logout"));
 
     // Admin-Link
     $index = mysql_query ("

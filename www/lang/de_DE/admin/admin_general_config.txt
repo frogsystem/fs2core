@@ -58,6 +58,12 @@ feed_rss10:                 RSS 1.0
 feed_rss20:                 RSS 2.0
 feed_atom10:                Atom 1.0
 
+url_style:                  URL-Stil
+url_style_desc:             Legt fest wie URLs angezeigt und erzeugt werden.
+url_style_info:             <b>Achtung:</b> Bitte die Hinweise zur Verwendung von <a href="http://wiki.frogsystem.de/seo-urls" target="_blank">Suchmaschinen optimierten URLs</a> lesen!
+url_style_default:          Standard (?go=seite&amp;p1=v1)
+url_style_seo:              Suchmaschinen optimiert (seite--p1-v1.html)
+
 date:                       Datum
 date_desc:                  Datumsformat, das auf der Seite verwendet werden soll.
 time:                       Zeit

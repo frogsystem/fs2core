@@ -39,17 +39,56 @@ function do_bbcode_url ($action, $attributes, $content, $params, $node_object) {
 
 function do_bbcode_homelink ($action, $attributes, $content, $params, $node_object) {
 
-    global $global_config_arr;
     global $FD;
 
     if ($action == 'validate') {
         return true;
     }
-    if (!isset ($attributes['default'])) {
-        return '<a href="'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($content).'" target="_self">'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($content).'</a>';
-    }
+    
+    // Using Attributs as URL, with default for go
+    if (!empty($attributes)) {
+        $go = htmlspecialchars_decode($attributes['default'], ENT_NOQUOTES);
+        if (isset($attributes['go'])) {
+            $go = $attributes['go'];
+        }
+        unset($attributes['default'], $attributes['go']);
         
-    return '<a href="'.$global_config_arr['virtualhost']."?go=".htmlspecialchars ($attributes['default']).'" target="_self">'.$content.'</a>';
+        //check $go for oldstyled urls: page&key1=val1$key2=val2 or page&amp;key1=val1
+        if (strpos($go, "&") !== false) {
+            $url = $FD->cfg('virtualhost')."?go=".$go;
+            $query = parse_url_query(parse_url($url, PHP_URL_QUERY));
+            $go = $query['go'];
+            unset($query['go']);
+            $attributes = $attributes+$query;
+        }
+        
+        //build url
+        $url = url($go, $attributes);
+        
+        
+    // Conent=URL => Use "go[key1=val1 key2=val2]" or oldschool style
+    } else {
+        $url = $content;
+        
+        //check for [ or ] => yes: new style; no: oldstyle
+        if (strpos($url, "[") !== false || strpos($url, "]") !== false) {
+            //create pseudeo template-var
+            $url = '$URL('.$url.')';
+            $url = tpl_functions($url, 0, array("URL"));
+            $content = $FD->cfg('virtualhost').$url;
+            
+        // oldschool url style
+        } else {
+            $url = $FD->cfg('virtualhost')."?go=".htmlspecialchars_decode($url,ENT_NOQUOTES);
+            $query = parse_url_query(parse_url($url, PHP_URL_QUERY));
+            $go = $query['go'];
+            unset($query['go']);
+            $url = url($go, $query);
+            $content = url($go, $query, true);
+        }
+    }
+    
+    return '<a href="'.$url.'" target="_self">'.$content.'</a>';
 }
 
 function do_bbcode_email ($action, $attributes, $content, $params, $node_object) {

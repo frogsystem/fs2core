@@ -3,6 +3,9 @@
 //// Configs laden ////
 ///////////////////////
 
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('id'));
+
 //Kommentar-Config
 $index = mysql_query("SELECT * from ".$global_config_arr['pref']."news_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
@@ -235,7 +238,7 @@ if ( $SHOW == TRUE ) {
             $template->setFile("0_news.tpl");
             $template->load("COMMENT_USER");
 
-            $template->tag("url", "?go=user&amp;id=".$comment_arr['comment_poster_id'] );
+            $template->tag("url", url("user", array('id' => $comment_arr['comment_poster_id'])));
             $template->tag("name", $comment_arr['comment_poster'] );
             $template->tag("image", $comment_arr['comment_avatar'] );
             $template->tag("rank", $comment_arr['user_rank'] );

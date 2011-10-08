@@ -145,7 +145,7 @@ function killhtml ($VAL, $ARR = true) {
 //// Make User String safe ////
 ///////////////////////////////
 function usersave ($string, $HTMLOK = false) {
-	$string = kill_replacements($string);
+	$string = tpl_functions($string, 0);
 	return $HTMLOK ? $string : htmlspecialchars($string, ENT_QUOTES);
 }
 
@@ -174,6 +174,54 @@ function cut_string ($string, $maxlength, $replacement)
 	}
 	return $string;
 }
+
+////////////////////////
+//// create SEO URL ////
+////////////////////////
+function url_seo ($go, $args) {
+    
+	$urlencodeext = function ($url) {
+		// Folge von Bindestriche um zwei Striche erweitern
+		return urlencode(preg_replace('/-+/', '$0--', $url));
+	};
+	
+	$seourl = $urlencodeext($go);
+	
+	if (count($args) > 0)
+	{	
+		$seourl .= '--';
+	
+		ksort($args);
+	
+		foreach ($args as $key => $val)
+			$seourl .= $urlencodeext($key) . '-' . $urlencodeext($val) . '-';
+			
+		$seourl = substr($seourl, 0, strlen($seourl) - 1);
+	}
+		
+	if ($seourl != '')		
+		$seourl .= '.html';
+        
+    return $seourl;
+}
+
+////////////////////////////////////
+//// parse query part of an url ////
+////////////////////////////////////
+function parse_url_query($query) {
+    $query = explode("&", $query);
+   
+    $params = array();
+    foreach ($query as $param) {
+        $pair = explode("=", $param);
+        $params[$pair[0]] = $pair[1];
+    }
+    
+    return $params;
+} 
+
+
+
 
 ///////////////////////
 //// Localize Date ////

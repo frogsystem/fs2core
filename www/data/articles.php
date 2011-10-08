@@ -62,7 +62,7 @@ else
 
         settype ( $user_arr['user_id'], "integer" );
         $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
-        $user_arr['user_url'] = '?go=user&id='.$user_arr['user_id'];
+        $user_arr['user_url'] = url("user", array('id' => $user_arr['user_id']));
         
         // Create Template
         $author_template = new template();

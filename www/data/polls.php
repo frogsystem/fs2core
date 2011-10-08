@@ -127,7 +127,7 @@ else {
 
     $list_lines = "";
     while ( $poll_arr = mysql_fetch_assoc ( $index ) ) {
-        $poll_arr[poll_url] = "?go=polls&id=" . $poll_arr['poll_id'];
+        $poll_arr[poll_url] = url("polls", array('id' => $poll_arr['poll_id']));
         $poll_arr[poll_start] = date_loc ( $global_config_arr['date'] , $poll_arr[poll_start] );
         $poll_arr[poll_end] = date_loc ( $global_config_arr['date'] , $poll_arr[poll_end] );
         $poll_arr[poll_type] = ( $poll_arr[poll_type] == 1 ) ? $TEXT['frontend']->get('multiple_choise') : $TEXT['frontend']->get('single_choice');

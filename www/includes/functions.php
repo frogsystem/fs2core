@@ -1,6 +1,37 @@
 <?php
 require(FS2_ROOT_PATH . "includes/newfunctions.php");
 
+////////////////////
+//// create URL ////
+////////////////////
+function url ($go, $args = array(), $full = false) {
+    global $FD;
+    
+    switch ($FD->cfg('url_style')) {
+        case "seo":
+            $url = url_seo($go, $args);
+            break;
+            
+        default:
+            // check for empty go
+            if (!empty($go))
+                $args = array('go' => $go)+$args;
+                
+            $url = http_build_query($args, "p", "&amp;");
+            if (!empty($url))
+                $url = "?".$url;
+            break;
+    }
+    
+    // create full url?
+    if ($full)
+        $url = $FD->cfg('virtualhost').$url;
+    
+    // return url
+    return $url;
+}
+
+
 //////////////////////////
 //// get old page nav ////
 //////////////////////////
@@ -190,8 +221,8 @@ function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
         $ids = get_sub_cats ( $array['cat_id'], array() );
 
         $template = $NAVI_TEMPLATE;
-        $cat_url = '?go=download&catid='.$array['cat_id'];
-        $top_url = '?go=download&catid='.$array['subcat_id'];
+        $cat_url = url("download", array('catid' => $array['cat_id']));
+        $top_url = url("download", array('catid' => $array['subcat_id']));
         $folder = ( $array['cat_id'] == $GET_ID ? "folder_open.gif" : "folder.gif" );
         $open = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? "minus.gif" : "plus.gif" );
         $open_url = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? $top_url : $cat_url );
@@ -913,7 +944,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     global $FD, $global_config_arr;
 
     $news_arr['news_date'] = date_loc( $global_config_arr['datetime'] , $news_arr['news_date']);
-    $news_arr['comment_url'] = "?go=comments&amp;id=".$news_arr['news_id'];
+    $news_arr['comment_url'] = url("comments", array('id' => $news_arr['news_id']));
 
     // Kategorie lesen
     $index2 = mysql_query("select cat_name from ".$global_config_arr['pref']."news_cat where cat_id = '".$news_arr['cat_id']."'", $FD->sql()->conn() );
@@ -973,7 +1004,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     // User auslesen
     $index2 = mysql_query("select user_name from ".$global_config_arr['pref']."user where user_id = ".$news_arr['user_id']."", $FD->sql()->conn() );
     $news_arr['user_name'] = kill_replacements ( mysql_result($index2, 0, "user_name"), TRUE );
-    $news_arr['user_url'] = "?go=user&amp;id=".$news_arr['user_id'];
+    $news_arr['user_url'] = url("user", array('id' => $news_arr['user_id']));
 
     // Kommentare lesen
     $index2 = mysql_query("select comment_id from ".$global_config_arr['pref']."news_comments where news_id = ".$news_arr['news_id']."", $FD->sql()->conn() );
@@ -1137,7 +1168,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
 {
         include_once ( FS2_ROOT_PATH . 'includes/bbcodefunctions.php');
         $bbcode = new StringParser_BBCode ();
-
+        
         $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
 
         if ($html==false) {
@@ -1253,6 +1284,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         }
 
         $bbcode->setGlobalCaseSensitive (false);
+        $bbcode->setMixedAttributeTypes (true);
         $parsedtext = $bbcode->parse ($text);
         unset($bbcode);
 

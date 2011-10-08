@@ -219,6 +219,7 @@ function get_meta ()
     <meta name="DC.Language" content="'.$global_config_arr['language'].'">
     <meta name="DC.Format" content="text/html">
     <meta name="keywords" lang="'.$global_config_arr['language'].'" content="'.$keywords.'">
+    '.get_canonical().'
     ';
 
     return $template;
@@ -274,6 +275,57 @@ function get_meta_abstract ()
     } else {
         return '<meta name="abstract" content="'.$global_config_arr['description'].'">';
     }
+}
+
+
+/////////////////////////////////////
+//// Get canonical link meta tag ////
+/////////////////////////////////////
+function get_canonical()
+{
+    global $FD;
+
+	// Liste aller moeglichen go-Parameterwerte und ihren jeweiligen kanonischen Parameter,
+	// d.h. Parameter, deren Wert Auswirkung auf den Hauptinhalt der Seite hat.
+	// Nicht aufgefuehrte go-Parameterwerte haben keine kanonischen Parameter.
+	$canonparamslist = array(
+		'comments' => array('id'),
+		'dlfile' => array('id'),
+		'download' => array('cat_id', 'keyword'),
+		'gallery' => array('catid', 'page'),
+		'news_search' => array('keyword', 'year', 'month'),
+		'polls' => array('pollid', 'id', 'order', 'sort'),
+		'press' => array('lang', 'cat', 'game'),
+		'search' => array('in_news', 'in_articles', 'in_downloads', 'keyword'),
+		'shop' => array('shop_cat'),
+		'user' => array('id'),
+		'user_list' => array('order', 'sort', 'page')
+	);
+
+	
+	// Check for homepage and in case don't use any paramter (including go) at all
+    $goto = $FD->cfg('goto');
+	if ($goto == $FD->cfg('home_real'))
+		$goto = "";
+	
+    // get canoncial parameters
+	$canonparams = $FD->info('canonical');
+    $activeparams = array();
+
+	if (count($canonparams) > 0) {	
+		ksort($canonparams);
+	
+		foreach ($canonparams as $key)
+		{
+			// List only canoncial parameters with any value
+			// Also we don't use original user values, but values checked by FS2
+			if ((isset($_GET[$key])) && (strlen($_GET[$key]) > 0)) {
+				$activeparams[$key] = $_GET[$key];
+			}
+		}
+	}
+		
+	return '<link rel="canonical" href="'.url($goto, $activeparams, true).'">';			
 }
 
 
@@ -353,6 +405,7 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
         'NAV'   => array("tpl_func_navigations",    true),
         'DATE'  => array("tpl_func_date",           false),
         'VAR'   => array("tpl_func_globalvars",     false),
+        'URL'   => array("tpl_func_url",            false),
     );
     //Snippet
     $snippet_functions = array(
@@ -610,7 +663,36 @@ function tpl_func_date($original, $main_argument, $other_arguments)
 }
 
 
-
+/////////////////////
+//// Replace URL ////
+/////////////////////
+function tpl_func_url($original, $main_argument, $other_arguments)
+{
+    global $FD;
+       
+    // compute Arguments
+    $other_arguments = !empty($other_arguments) ? explode(" ", $other_arguments) : array();
+    
+    // check each param
+    $params = array(); $full = false; //some default values
+    foreach ($other_arguments as $argument) {
+        $full = false; // reset $full indicator (because the last one wasn't last of all)
+        $param = explode("=", $argument, 2); // explode by =
+        if (count($param) < 2) { // only value of param available
+            if ($param[0] == "true" || $param[0] == 1) { // param maybe indicating a full url request
+                $full = true; // but only if it's the last one
+                break;
+            } else {
+                $params[] = $param;
+            }
+        } else {
+            $params[$param[0]] = $param[1];
+        }
+    }
+        
+    // finally create URL
+    return url($main_argument, $params, $full);
+}
 
 
 

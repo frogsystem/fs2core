@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 27. September 2011 um 12:59
+-- Erstellungszeit: 08. Oktober 2011 um 13:46
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -149,7 +149,8 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('user_config', 'users', 'admin_user_config.php', 1, 0),
 ('user_add', 'users', 'admin_user_add.php', 2, 0),
 ('user_edit', 'users', 'admin_user_edit.php', 3, 0),
-('user_rights', 'users', 'admin_user_rights.php', 4, 0);
+('user_rights', 'users', 'admin_user_rights.php', 4, 0),
+('news_comments_list', 'news', 'admin_news_comments_list.php', 4, 0);
 
 -- --------------------------------------------------------
 
@@ -234,12 +235,14 @@ CREATE TABLE `fs2_aliases` (
   `alias_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`alias_id`),
   KEY `alias_go` (`alias_go`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs2_aliases`
 --
 
+INSERT INTO `fs2_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_active`) VALUES
+(1, 'news_detail', 'comments', 1);
 
 -- --------------------------------------------------------
 
@@ -442,8 +445,10 @@ CREATE TABLE `fs2_config` (
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`) VALUES
-('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"virtualhost\\":\\"http:\\\\/\\\\/localhost\\\\/fs2\\\\/www\\\\/\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}&nbsp;<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">&nbsp;{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab&nbsp;zur\\\\u00fcck<\\\\/a>&nbsp;|\\",\\"page_next\\":\\"|&nbsp;<a href=\\\\\\"{..url..}\\\\\\">weiter&nbsp;\\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"random_timed_deltime\\":\\"604800\\",\\"search_index_update\\":\\"2\\",\\"search_index_time\\":\\"1310056241\\"}'),
-('system', '{\\"var_loop\\":20}');
+('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"virtualhost\\":\\"http:\\\\/\\\\/localhost\\\\/fs2\\\\/www\\\\/\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}&nbsp;<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">&nbsp;{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab&nbsp;zur\\\\u00fcck<\\\\/a>&nbsp;|\\",\\"page_next\\":\\"|&nbsp;<a href=\\\\\\"{..url..}\\\\\\">weiter&nbsp;\\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"random_timed_deltime\\":\\"604800\\",\\"search_index_update\\":\\"2\\",\\"search_index_time\\":\\"1310056241\\",\\"url_style\\":\\"default\\"}'),
+('system', '{\\"var_loop\\":20}'),
+('env', '{}'),
+('info', '{}');
 
 -- --------------------------------------------------------
 
@@ -487,7 +492,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 48, 1966, 2, 4, 65522, 1);
+(1, 51, 2060, 2, 4, 65523, 1);
 
 -- --------------------------------------------------------
 
@@ -570,7 +575,10 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 7, 20, 1, 1),
 (2011, 9, 25, 1, 237),
 (2011, 9, 26, 2, 235),
-(2011, 9, 27, 2, 225);
+(2011, 9, 27, 2, 225),
+(2011, 9, 28, 1, 23),
+(2011, 9, 29, 1, 2),
+(2011, 10, 8, 1, 69);
 
 -- --------------------------------------------------------
 
@@ -870,7 +878,7 @@ CREATE TABLE `fs2_hashes` (
   `deleteTime` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=62 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
 
 --
 -- Daten für Tabelle `fs2_hashes`
@@ -917,7 +925,7 @@ CREATE TABLE `fs2_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
 
 --
 -- Daten für Tabelle `fs2_news`
@@ -933,7 +941,8 @@ INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title
 (35, 1, 1, 1310069220, 'frisch2', 'frisch2', 1, 1, 0),
 (36, 1, 1, 1310069220, 'frisch2', 'frisch2\r\ntim\r\ntimmy', 1, 1, 1310509434),
 (37, 1, 1, 1316987520, 'Poll Test', 'hallo\r\n\r\n$APP(poll-system.php)\r\n\r\n--------\r\n\r\n$APP(poll-system.php[4])\r\n\r\n---------\r\n\r\n$APP(poll-system.php[1])', 1, 1, 1316990207),
-(38, 2, 1, 1317067500, 'Test', '$APP(dieseappgibtesnicht)\r\n[%snippetnot%]\r\n$NAV(navnot)\r\n$VAR(Varnot)', 1, 1, 1317068575);
+(38, 2, 1, 1317067500, 'Test', '$APP(dieseappgibtesnicht)\r\n[%snippetnot%]\r\n$NAV(navnot)\r\n$VAR(Varnot)', 1, 1, 1317068575),
+(39, 2, 1, 1318076760, 'home test', '[home=news]Test 1[/home]\r\n[home]news[/home]\r\n-------------------\r\n[home=comments&amp;id=39]Test 1[/home]\r\n[home]comments&amp;id=39[/home]\r\n-------------------\r\n[home=comments&id=39]Test 1[/home]\r\n[home]comments&id=39[/home]\r\n-------------------\r\n[home]news[foo=bar][/home]\r\n[home]news[foo=bar hans=wurst][/home]\r\n-------------------\r\n[home=news foo=bar]Test 4[/home]\r\n[home=news foo=bar hans=wurst]Test 5[/home]\r\n-------------------\r\n[home=news&hans=wurst foo=bar]Test 6[/home]\r\n[home=news&amp;hans=wurst foo=bar]Test 7[/home]\r\n\r\n-------------------\r\n-------------------\r\n\r\n[noparse][home=news]Test 1[/home]\r\n[home]news[/home]\r\n-------------------\r\n[home=comments&amp;id=39]Test 1[/home]\r\n[home]comments&amp;id=39[/home]\r\n-------------------\r\n[home=comments&id=39]Test 1[/home]\r\n[home]comments&id=39[/home]\r\n-------------------\r\n[home]news[foo=bar][/home]\r\n[home]news[foo=bar hans=wurst][/home]\r\n-------------------\r\n[home=news foo=bar]Test 4[/home]\r\n[home=news foo=bar hans=wurst ]Test 5[/home]\r\n-------------------\r\n[home=news&hans=wurst foo=bar]Test 6[/home]\r\n[home=news&amp;hans=wurst foo=bar]Test 7[/home][/noparse]', 1, 1, 1318079355);
 
 -- --------------------------------------------------------
 
@@ -2189,7 +2198,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 2, 1317128246);
+('127.0.0.1', 1, 1318081516);
 
 -- --------------------------------------------------------
 
