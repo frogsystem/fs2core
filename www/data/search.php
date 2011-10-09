@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('in_news', 'in_articles', 'in_downloads', 'keyword'));
+
 ###################
 ## Page Settings ##
 ###################

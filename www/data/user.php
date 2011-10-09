@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('id'));
+
 ///////////////////////////////////////////
 //// Security Functions & Config Array ////
 ///////////////////////////////////////////

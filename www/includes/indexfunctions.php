@@ -309,23 +309,23 @@ function get_canonical()
 		$goto = "";
 	
     // get canoncial parameters
-	$canonparams = $FD->info('canonical');
-    $activeparams = array();
+	if (false !== $canonparams = $FD->info('canonical')) {
+        $activeparams = array();
 
-	if (count($canonparams) > 0) {	
-		ksort($canonparams);
-	
-		foreach ($canonparams as $key)
-		{
-			// List only canoncial parameters with any value
-			// Also we don't use original user values, but values checked by FS2
-			if ((isset($_GET[$key])) && (strlen($_GET[$key]) > 0)) {
-				$activeparams[$key] = $_GET[$key];
-			}
-		}
-	}
-		
-	return '<link rel="canonical" href="'.url($goto, $activeparams, true).'">';			
+        if (count($canonparams) > 0) {
+            ksort($canonparams);	
+            foreach ($canonparams as $key)
+            {
+                // List only canoncial parameters with any value
+                // Also we don't use original user values, but values checked by FS2
+                if ((isset($_GET[$key])) && (strlen($_GET[$key]) > 0)) {
+                    $activeparams[$key] = $_GET[$key];
+                }
+            }
+        }
+        
+        return '<link rel="canonical" href="'.url($goto, $activeparams, true).'">';
+    }
 }
 
 

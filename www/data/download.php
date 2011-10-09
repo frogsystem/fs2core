@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('cat_id', 'keyword'));
+
 // Load Config Array
 $index = mysql_query ( "
                         SELECT *

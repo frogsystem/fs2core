@@ -1137,9 +1137,9 @@ function savesql ( $TEXT )
 
 function unslash($TEXT)
 {
-    global $global_config_arr;
+    global $FD;
     
-    if ($global_config_arr['env']['slash'])
+    if ($FD->env('slash'))
          $TEXT = stripslashes($TEXT);
          
     return $TEXT;

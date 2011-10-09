@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('catid', 'page'));
+
 /////////////////////////////
 //// Kategorie existiert  ///
 /////////////////////////////

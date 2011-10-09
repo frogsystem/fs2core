@@ -1,4 +1,5 @@
 <?php
+
 /////////////////////////
 //// Create Articles ////
 /////////////////////////
@@ -18,7 +19,10 @@ if ($global_config_arr['goto'] == "articles") {
                             WHERE `article_id` = '".$_GET['id']."'
                             ORDER BY `article_id`
                             LIMIT 0,1
-    ", $FD->sql()->conn() );      
+    ", $FD->sql()->conn() ); 
+    
+    // Set canonical parameters
+    $FD->setConfig('info', 'canonical', array('id'));
     
 } else {
  
@@ -29,8 +33,10 @@ if ($global_config_arr['goto'] == "articles") {
                             WHERE `article_url` = '".$_GET['go']."'
                             ORDER BY `article_id`
                             LIMIT 0,1
-    ", $FD->sql()->conn() );   
+    ", $FD->sql()->conn() );
     
+    // Set canonical parameters
+    $FD->setConfig('info', 'canonical', array());
 }
 
 
@@ -44,6 +50,14 @@ else
 {
     // Get Aricle Data
     $article_arr = mysql_fetch_assoc ( $index );
+    
+    // check for article_url parameter
+    if (!empty($article_arr['article_url'])) {
+        // Set canonical parameters
+        $FD->setConfig('info', 'canonical', array());
+        // Set goto
+        $FD->setConfig('main', 'goto', unslash($article_arr['article_url']));
+    }
 
     // Security Functions
     settype ( $article_arr['article_user'], "integer" );

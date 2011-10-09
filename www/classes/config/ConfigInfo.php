@@ -19,7 +19,7 @@ class ConfigInfo extends ConfigData {
         $this->config = $data;
 
         // set env data
-        $this->setConfig("canonical", array());
+        $this->setConfig("canonical", false);
     }  
 }
 ?>

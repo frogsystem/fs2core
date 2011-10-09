@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('lang', 'cat', 'game'));
+
 // Get Config
 $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."press_config`", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
