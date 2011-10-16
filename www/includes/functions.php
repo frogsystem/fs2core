@@ -1,5 +1,5 @@
 <?php
-require(FS2_ROOT_PATH . "includes/newfunctions.php");
+require_once(FS2_ROOT_PATH . "includes/newfunctions.php");
 
 ////////////////////
 //// create URL ////

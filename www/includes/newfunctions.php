@@ -178,12 +178,16 @@ function cut_string ($string, $maxlength, $replacement)
 ////////////////////////
 //// create SEO URL ////
 ////////////////////////
-function url_seo ($go, $args) {
+function url_seo ($go, $args, $go_in_args = false) {
     
 	$urlencodeext = function ($url) {
 		// Folge von Bindestriche um zwei Striche erweitern
 		return urlencode(preg_replace('/-+/', '$0--', $url));
 	};
+    
+    if ($go_in_args) {
+        unset($args['go']);
+    }
 	
 	$seourl = $urlencodeext($go);
 	
@@ -199,7 +203,7 @@ function url_seo ($go, $args) {
 		$seourl = substr($seourl, 0, strlen($seourl) - 1);
 	}
 		
-	if ($seourl != '')		
+	if (!empty($seourl))		
 		$seourl .= '.html';
         
     return $seourl;
@@ -315,9 +319,9 @@ function generate_pwd ($LENGHT = 10)
 //////////////////////////////////
 function hex2dec_color ($COLOR) {
     if (is_hexcolor($COLOR)) {
-        $return['r'] = hexdec(substr($COLOR, 0, 2));
-        $return['g'] = hexdec(substr($COLOR, 2, 2));
-        $return['b'] = hexdec(substr($COLOR, 4, 2));
+        $return['r'] = hexdec(substr($COLOR, 1, 2));
+        $return['g'] = hexdec(substr($COLOR, 3, 2));
+        $return['b'] = hexdec(substr($COLOR, 5, 2));
         return $return;
     } else {
         return false;

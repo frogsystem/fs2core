@@ -12,38 +12,34 @@ a.tooltip {
 a.tooltip:hover, a.tooltip:focus {
  z-index: 1000;
  background: transparent;
- cursor:help;
- text-decoration: none;
- font-style: normal;
- font-weight: normal;
- border: none;
 }
 a.tooltip span {
- display: none;
- position: absolute;
- text-decoration: none;
- font-style: normal;
- font-weight: normal;
- border: none;
- font-size:7pt;
+    display: none;
+    position: absolute;
+    border: none;
+    font-size:11px;
+    font-weight:normal;
+    font-style: normal;
+    text-decoration:none;
+    line-height:120%;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 a.tooltip:hover span, a.tooltip:focus span {
- display: block;
- position: absolute;
- top: 25px;
- left: 0px;
- width: 150px;
- z-index: 100;
- color: #000000;
- border: 1px solid;
- border-color: #000000 #000000 #000000 #000000;
- padding: 3px;
- background: #EEEEEE;
- font-family: Verdana, Arial, Helvetica, Sans-serif;
- text-align: left;
- text-decoration: none;
- font-style: normal;
- font-weight: normal;
+    display: block;
+    position: absolute;
+    top: 18px;
+    left: 0px;
+    width: 200px;
+    z-index: 100;
+    color: #000000;
+    border: 1px solid;
+    border-color: #000000 #000000 #000000 #000000;
+    padding: 3px;
+    background: #EEEEEE;
+    text-align: left;
+}
+a.tooltip:hover span:hover, a.tooltip:hover span:focus, a.tooltip:focus span:hover, a.tooltip:focus span:focus {
+    background: #CCCCCC;
 }
 
 

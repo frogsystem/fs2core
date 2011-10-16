@@ -21,8 +21,11 @@ define('SLASH', TRUE);
 //// DB Connection ////
 ///////////////////////
 
-// Initialize sql-class
-require(FS2_ROOT_PATH . "libs/class_sql.php");
+// Initialize sql-class 
+require_once(FS2_ROOT_PATH . "libs/class_GlobalData.php");
+require_once(FS2_ROOT_PATH . "libs/class_lang.php");
+require_once(FS2_ROOT_PATH . "libs/class_sql.php");
+require_once(FS2_ROOT_PATH . "includes/functions.php");  
 
 try {
     // Connect to DB-Server
@@ -75,8 +78,5 @@ unset($spam);
 ////////////////////////
 //// Init Some Vars ////
 ////////////////////////
-$_GET['go'] = !isset($_GET['go']) ? "" : $_GET['go'];
-$_POST['go'] = !isset($_POST['go']) ? "" : $_POST['go'];
-$_REQUEST['go'] = !isset($_REQUEST['go']) ? "" : $_REQUEST['go'];
 $_SESSION['user_level'] = !isset($_SESSION['user_level']) ? "unknown" : $_SESSION['user_level'];
 ?>

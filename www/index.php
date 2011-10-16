@@ -17,8 +17,6 @@ spl_autoload_register("libloader");
 
 
 // Inlcude DB Connection File
-require_once(FS2_ROOT_PATH . "includes/functions.php");       
-require_once(FS2_ROOT_PATH . "libs/class_GlobalData.php");
 require_once(FS2_ROOT_PATH . "login.inc.php");
 
 //////////////////////////////////
@@ -47,12 +45,12 @@ if (isset($sql) && $sql->conn() !== false) {
 
 
     // Constructor Calls
+    get_goto();
     setTimezone($FD->cfg("timezone"));
     delete_old_randoms();
     search_index();
     set_style();
     copyright();
-    get_goto($_GET['go']);
     count_all($FD->cfg('goto'));
     save_referer();
     save_visitors();

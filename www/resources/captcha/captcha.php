@@ -8,7 +8,6 @@ define ( FS2_ROOT_PATH, "./../../", TRUE );
 
 // include db-data
 require ( FS2_ROOT_PATH . "login.inc.php" );
-require ( FS2_ROOT_PATH . "includes/functions.php" );
 
 /////////////////////
 //// Load Config ////
@@ -132,8 +131,8 @@ if ( $config_arr['captcha_use_spaces'] == 0 ) {
 $img = imagecreatetruecolor ( $config_arr['captcha_x'], $config_arr['captcha_y'] ) ;
 
 //Colorize Image
-$bg_color_value = hex2dec_color ( $config_arr['captcha_bg_color'] );
-$text_color_value = hex2dec_color ( $config_arr['captcha_text_color'] );
+$bg_color_value = hex2dec_color ( "#".$config_arr['captcha_bg_color'] );
+$text_color_value = hex2dec_color ( "#".$config_arr['captcha_text_color'] );
 
 $color_bg = imagecolorallocate ( $img, $bg_color_value['r'], $bg_color_value['g'], $bg_color_value['b'] );
 $color_text = imagecolorallocate ( $img, $text_color_value['r'], $text_color_value['g'], $text_color_value['b'] );

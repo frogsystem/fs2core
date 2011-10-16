@@ -284,24 +284,6 @@ function get_meta_abstract ()
 function get_canonical()
 {
     global $FD;
-
-	// Liste aller moeglichen go-Parameterwerte und ihren jeweiligen kanonischen Parameter,
-	// d.h. Parameter, deren Wert Auswirkung auf den Hauptinhalt der Seite hat.
-	// Nicht aufgefuehrte go-Parameterwerte haben keine kanonischen Parameter.
-	$canonparamslist = array(
-		'comments' => array('id'),
-		'dlfile' => array('id'),
-		'download' => array('cat_id', 'keyword'),
-		'gallery' => array('catid', 'page'),
-		'news_search' => array('keyword', 'year', 'month'),
-		'polls' => array('pollid', 'id', 'order', 'sort'),
-		'press' => array('lang', 'cat', 'game'),
-		'search' => array('in_news', 'in_articles', 'in_downloads', 'keyword'),
-		'shop' => array('shop_cat'),
-		'user' => array('id'),
-		'user_list' => array('order', 'sort', 'page')
-	);
-
 	
 	// Check for homepage and in case don't use any paramter (including go) at all
     $goto = $FD->cfg('goto');
@@ -318,7 +300,7 @@ function get_canonical()
             {
                 // List only canoncial parameters with any value
                 // Also we don't use original user values, but values checked by FS2
-                if ((isset($_GET[$key])) && (strlen($_GET[$key]) > 0)) {
+                if ((isset($_GET[$key]))) {
                     $activeparams[$key] = $_GET[$key];
                 }
             }
@@ -683,7 +665,7 @@ function tpl_func_url($original, $main_argument, $other_arguments)
                 $full = true; // but only if it's the last one
                 break;
             } else {
-                $params[] = $param;
+                $params[] = $param[0];
             }
         } else {
             $params[$param[0]] = $param[1];
@@ -694,9 +676,117 @@ function tpl_func_url($original, $main_argument, $other_arguments)
     return url($main_argument, $params, $full);
 }
 
+// fs2seourl Version 1.01 (27.08.2001)
+function get_seo () {
 
+    global $FD;
 
+    // Anzahl der mittel ? übergegebenen Parameter speichern
+    if (isset($_GET))
+        $numparams = count($_GET);
+    else
+        $numparams = 0;
 
+    $redirect = false;
+
+    // Wurde dieser Skript direkt aufgrufen werden oder indirekt ueber mod_rewrite?
+    $calledbyrewrite = isset($_SERVER['REDIRECT_QUERY_STRING']);
+
+    // mod_rewrite schreibt in seoq den Dateinamen der fiktiven HTML-Datei (ohne die .html-Dateiendung).
+    // Dieser Name muss nun zerlegt und in die Parameter uebersetzt werden, welche das FrogSystem erwaretet.
+    if ((isset($_GET['seoq'])) && ($calledbyrewrite)) {
+        // seoq wurde von mod_rewrite eingefuegt und ist daher kein echter Parameter
+        $numparams--;
+        
+        // Drei oder mehr Bindestriche temporaer durch zwei weniger \x1 ersetzen, um sie von Seperatoren unterscheiden zu koennen
+        $_GET['seoq'] = preg_replace_callback('/---+/', create_function('$matches', 'return str_repeat("\x1", strlen($matches[0]) - 2);'), $_GET['seoq']);
+        
+        $paramdelim = strpos($_GET['seoq'], '--');
+
+        if ($numparams > 0) {
+            //Wurden hinter das .html noch Parameter gepackt, sind diese massgeblich => Den Rest verwerfen und weiterleiten
+            $redirect =	true;
+        }
+        else if ($paramdelim === false) {
+            // Kein -- => Keine Parameter => Der komplette Dateiname ist der go-Parameter
+            if (!isset($_GET['go']))
+                $_GET['go'] = str_replace("\x1", "-", $_GET['seoq']);
+        }
+        else {
+            // -- vorhanden => Alles davor ist der go-Parameter, alles dahinter sind weitere Parameter. 
+            // Diese muessen allerdings ein bestimmtes Format einhalten, ansonsten wird auf das richtige Format weitergeleitet
+        
+            if (!isset($_GET['go']))
+                $_GET['go'] = substr($_GET['seoq'], 0, $paramdelim);
+                
+            $seoparamstr = substr($_GET['seoq'], $paramdelim + 2);
+
+            // Hinter dem -- muss noch etwas kommen, sonst Weiterleitung
+            if (strlen($seoparamstr) > 0)
+            {
+                $seoparams = explode('-', $seoparamstr);
+                for ($i = 0; $i < count($seoparams); $i++)
+                    $seoparams[$i] = str_replace("\x1", "-", $seoparams[$i]);
+                            
+                // Die Anzahl der mit "-" getrennten Werte muss gerade sein, sonst Weiterleitung
+                if ((count($seoparams) % 2 != 0) && (count($seoparams) > 0))
+                    $redirect = true;
+                    
+                for ($i = 0; $i < count($seoparams); $i += 2)
+                {
+                    // i ist der Name des Parameters, i+1 ist der Wert des Parameters
+                    if (!isset($_GET[$seoparams[$i]]))
+                        $_GET[$seoparams[$i]] = $seoparams[$i+1];
+                        
+                    // Die Parameter muessen alphabetisch sortiert sein, sonst Weiterleitung
+                    if (($i >= 2) && (strcmp($seoparams[$i - 2], $seoparams[$i]) >= 0))
+                        $redirect = true;
+                }
+            }
+            else {
+                $redirect = true;
+            }
+        }
+        
+        unset($seoparams);
+        unset($seoparamstr);
+        unset($paramdelim);
+    } 
+    elseif ($numparams > 0) {
+        $redirect = true;
+    }
+    
+    unset($_GET['seoq']);
+    unset($_REQUEST['seoq']);    
+
+    // Expliziter Aufruf von index.php bzw. indexseo.php => Weiterleitung erzwingen
+    if ((!$calledbyrewrite) && (substr($_SERVER["REQUEST_URI"], -1) != '/')) {
+        $redirect = true;
+    }
+    // Bei Bedarf Weiterleitung auf die neue URL im richtigen Format
+    if ($redirect) {
+        header('Location: ' . $FD->cfg('virtualhost') . url_seo($_GET['go'], $_GET, true), true, 301);
+        die();
+    }
+
+    // Inhalt von $_GET nach $_REQUEST kopieren
+    foreach ($_GET as $k => $v)
+        $_REQUEST[$k] = $v;
+        
+    // Query-String anpassen
+    $_SERVER["QUERY_STRING"] = "";
+    foreach ($_GET as $k => $v)
+        $_SERVER["QUERY_STRING"] .= urlencode($k) . "=" . urlencode($v) . "&";
+    $_SERVER["REQUEST_URI"] = "/index.php?" . $_SERVER["QUERY_STRING"];
+        
+    // Falls noetig, Verhalten von register_globals nachahmen
+    if (in_array(ini_get('register_globals') == 'on', array("0", "on", "true")))
+        extract($_REQUEST);
+
+    // Hotlinkingschutz vom FS2 zufrieden stellen
+    if (preg_match('/\/dlfile--.*\.html$/', $_SERVER['HTTP_REFERER']))
+        $_SERVER['HTTP_REFERER'] .= "?go=dlfile";
+}
 
 
 
@@ -705,22 +795,24 @@ function tpl_func_url($original, $main_argument, $other_arguments)
 ///////////////////
 //// get $goto ////
 ///////////////////
-function get_goto ($GETGO)
+function get_goto ()
 {
     global $FD;
 
-    // Check $_GET['go']
-    if (empty($GETGO)) {
-        $goto = $FD->cfg("home_real");
-    } else {
-        $goto = savesql($GETGO) ;
+    //check seo
+    if ($FD->cfg('url_style') == "seo") {
+        get_seo();
     }
+    
+    // Check $_GET['go']
+    $goto = empty($_GET['go']) ? $FD->cfg("home_real") : savesql($_GET['go']);
 
     // Forward Aliases
     $goto = forward_aliases($goto);
 
     // write $goto into $global_config_arr['goto']
     $FD->setConfig("goto", $goto);
+    $FD->setConfig("env", "goto", $goto);
 }
 
 

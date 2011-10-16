@@ -4,9 +4,9 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if (
-        is_hexcolor ( $_POST['captcha_bg_color'] )
-        && is_hexcolor ( $_POST['captcha_text_color'] )
+if (true
+        && is_hexcolor ( "#".$_POST['captcha_bg_color'] )
+        && is_hexcolor ( "#".$_POST['captcha_text_color'] )
         && $_POST['captcha_first_lower'] != ""
         && $_POST['captcha_first_upper'] != ""
         && $_POST['captcha_first_lower'] <= $_POST['captcha_first_upper']
@@ -154,32 +154,16 @@ if ( TRUE )
     }
 
     // security functions
-    $_POST['captcha_bg_color'] = killhtml ( $_POST['captcha_bg_color'] );
-    $_POST['captcha_text_color'] = killhtml ( $_POST['captcha_text_color'] );
+    $_POST['captcha_bg_color'] = "#".$_POST['captcha_bg_color'];
+    $_POST['captcha_text_color'] = "#".$_POST['captcha_text_color'];
+    
+    $_POST = array_map("killhtml", $_POST);
+    $_POST = array_map(function($ele) {
+        if (is_hexcolor($ele))
+            $ele = substr($ele, 1);
+        return $ele;
+    },  $_POST);
 
-    settype ( $_POST['captcha_bg_transparent'], "integer" );
-    settype ( $_POST['captcha_first_lower'], "integer" );
-    settype ( $_POST['captcha_first_upper'], "integer" );
-    settype ( $_POST['captcha_second_lower'], "integer" );
-    settype ( $_POST['captcha_second_upper'], "integer" );
-    settype ( $_POST['captcha_use_addition'], "integer" );
-    settype ( $_POST['captcha_use_subtraction'], "integer" );
-    settype ( $_POST['captcha_use_multiplication'], "integer" );
-    settype ( $_POST['captcha_create_easy_arithmetics'], "integer" );
-    settype ( $_POST['captcha_x'], "integer" );
-    settype ( $_POST['captcha_y'], "integer" );
-    settype ( $_POST['captcha_show_questionmark'], "integer" );
-    settype ( $_POST['captcha_use_spaces'], "integer" );
-    settype ( $_POST['captcha_show_multiplication_as_x'], "integer" );
-    settype ( $_POST['captcha_start_text_x'], "integer" );
-    settype ( $_POST['captcha_start_text_y'], "integer" );
-    settype ( $_POST['captcha_font_size'], "integer" );
-
-    if ( in_array ( $_POST['captcha_font'], array ( 1, 2, 3, 4, 5 ) ) ) {
-        settype ( $_POST['captcha_font'], "integer" );
-    } else {
-        $_POST['captcha_font'] = killhtml ( $_POST['captcha_font'] );
-    }
 
     // Display Form
     echo '
@@ -253,13 +237,18 @@ if ( TRUE )
                                                 <label class="pointer middle" for="captcha_bg_transparent">'.$TEXT['admin']->get("captcha_config_bg_transparent").'</label>
                                             </td>
                                         </tr>
-                                        <tr valign="bottom">
-                                            <td class="config">
-                                                <input class="pointer middle" type="radio" name="captcha_bg_transparent" value="0" '.getchecked ( 0, $_POST['captcha_bg_transparent'] ).'>
+                                        <tr onClick="$(this).find(\'td input#captcha_bg_color\').prop(\'checked\', true);">
+                                            <td class="config middle">
+                                                <input class="pointer middle" type="radio" name="captcha_bg_transparent" id="captcha_bg_color" value="0" '.getchecked ( 0, $_POST['captcha_bg_transparent'] ).'>
                                             </td>
-                                            <td class="config">
-                                                <span class="middle">#<input class="text" name="captcha_bg_color" maxlength="6" size="6" value="'.$_POST['captcha_bg_color'].'">
-                                                <span class="small">('.$TEXT['admin']->get("hex_color").')</span></span>
+                                            <td class="config middle">
+                                                <div class="colorpickerParent">
+                                                    <span class="atleft">#<input class="colorpickerInput" name="captcha_bg_color" maxlength="6" size="6" value="'.$_POST['captcha_bg_color'].'" onFocus ="$(this).parents(\'tr\').find(\'input#captcha_bg_color\').prop(\'checked\', true);"></span>
+                                        
+                                                    <div class="colorpickerSelector atleft"><div style="background-color: #'.$_POST['captcha_bg_color'].';"></div></div>
+                                                
+                                                    <span class="small">('.$TEXT['admin']->get("hex_color").')</span>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
@@ -272,8 +261,13 @@ if ( TRUE )
                                     <span class="small">'.$TEXT['admin']->get("captcha_config_text_color_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <span class="middle">#<input class="text" name="captcha_text_color" maxlength="6" size="6" value="'.$_POST['captcha_text_color'].'">
-                                    <span class="small">('.$TEXT['admin']->get("hex_color").')</span></span>
+                                    <div class="colorpickerParent">
+                                        <span class="atleft">#<input class="colorpickerInput" name="captcha_text_color" maxlength="6" size="6" value="'.$_POST['captcha_text_color'].'"></span>
+                            
+                                        <div class="colorpickerSelector atleft"><div style="background-color: #'.$_POST['captcha_text_color'].';"></div></div>
+                                    
+                                        <span class="small">('.$TEXT['admin']->get("hex_color").')</span>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>

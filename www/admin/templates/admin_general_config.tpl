@@ -49,9 +49,24 @@
                 <span class="small"><!--LANG::virtualhost_desc--></span>
             </td>
             <td>
-                <input class="half" name="virtualhost" maxlength="255" value="<!--TEXT::virtualhost-->">
+                <select name="protocol">
+                    <option value="http://" <!--IF::protocol_http-->selected<!--ENDIF-->>http://</option>
+                    <option value="https://" <!--IF::protocol_https-->selected<!--ENDIF-->>https://</option>
+                </select>
+                <input class="third" name="url" maxlength="255" value="<!--TEXT::url-->">
             </td>
         </tr>
+        <tr>
+            <td>
+                <!--LANG::other_protocol-->:<br>
+                <span class="small"><!--LANG::other_protocol_desc--></span>
+            </td>
+            <td>
+                <!--COMMON::checkbox-->
+                <input class="hidden" type="checkbox" name="other_protocol" value="1" <!--IF::other_protocol-->checked<!--ENDIF-->>
+            </td>
+        </tr>        
+        
                             
         <tr>
             <td>

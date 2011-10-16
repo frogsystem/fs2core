@@ -675,8 +675,11 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
         $span_end = '</span>';
     }
     if ( $INSERT == TRUE ) {
-        $insert_button = '
-        <a href="javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfügen" align="absmiddle"></a>';
+        $insert_link = 'javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');';
+        $insert_text = "*klicken*";
+    } else {
+        $insert_link = '#?';
+        $insert_text = "";   
     }
     if ( $SHOW_TITLE == TRUE ) {
         $first_title = $TITLE."";
@@ -687,14 +690,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
         $second_title = "&nbsp;".$TITLE;
     }
 
-    $template = $span_start.'
-            '.$first_title.'
-            <a class="tooltip" href="#?">
-                <img border="0" src="icons/help.gif" align="absmiddle" alt="?">
-                <span>
-                    <img border="0" src="img/pointer.png" align="absmiddle" alt="->">'.$second_title.'<br>'.$TEXT.'
-                </span>
-            </a>'.$insert_button.$span_end.'
+    $template = $span_start.'<a class="tooltip" href="'.$insert_link.'">'.$first_title.'<span><img class="atright" border="0" alt="-&gt;" src="icons/pointer.gif">'.$second_title.'<br>'.$TEXT.'</span></a>'.$span_end.'
     ';
 
    return $template;

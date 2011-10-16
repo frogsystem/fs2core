@@ -5,7 +5,7 @@
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array("title", "dyn_title", "dyn_title_ext", "virtualhost", "admin_mail", "description", "keywords", "publisher", "copyright", "style_id", "allow_other_designs", "show_favicon", "home", "home_text", "language_text", "feed", "date", "time", "datetime", "timezone", "auto_forward", "page", "page_prev", "page_next", "url_style");
+$used_cols = array("title", "dyn_title", "dyn_title_ext", "protocol", "url", "other_protocol", "admin_mail", "description", "keywords", "publisher", "copyright", "style_id", "allow_other_designs", "show_favicon", "home", "home_text", "language_text", "feed", "date", "time", "datetime", "timezone", "auto_forward", "page", "page_prev", "page_next", "url_style");
     
 
 /////////////////////////////////////
@@ -13,7 +13,7 @@ $used_cols = array("title", "dyn_title", "dyn_title_ext", "virtualhost", "admin_
 /////////////////////////////////////
 if (
                 !empty($_POST['title'])
-                && !empty($_POST['virtualhost'])
+                && !empty($_POST['url'])
                 && !empty($_POST['admin_mail'])
                 && !empty($_POST['date'])
                 && !empty($_POST['page'])
@@ -23,10 +23,16 @@ if (
                 && ($_POST['home'] == 0 || ($_POST['home'] == 1 && !empty($_POST['home_text'])))
         )
 {
-    // virtualhost slash
-    if (substr($_POST['virtualhost'], -1) != "/") {
-      $_POST['virtualhost'] = $_POST['virtualhost']."/";
+    // url slash & leading http://
+    if (substr($_POST['url'], -1) != "/") {
+        $_POST['url'] = $_POST['url']."/";
     }
+    if (substr($_POST['url'], 0, 7) == "http://") {
+        $_POST['url'] = substr($_POST['url'], 7);
+    } 
+    if (substr($_POST['url'], 0, 8) == "https://") {
+        $_POST['url'] = substr($_POST['url'], 8);
+    }    
      
     // prepare data
     $data = frompost($used_cols);
@@ -43,7 +49,7 @@ if (
     // save config
     try {
         $FD->saveConfig("main", $data);
-        systext($TEXT['admin']->get("changes_saved").'<br>'.$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+        systext($TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
     } catch (Exception $e) {}
     
     // Unset Vars
@@ -75,6 +81,9 @@ if ( TRUE )
     // Conditions
     $adminpage->addCond("dyn_title_ext", !($_POST['dyn_title'] == 1));
     $adminpage->addCond("dyn_title", $_POST['dyn_title'] === 1);
+    $adminpage->addCond("protocol_http", $_POST['protocol'] === "http://");
+    $adminpage->addCond("protocol_https", $_POST['protocol'] === "https://");
+    $adminpage->addCond("other_protocol", $_POST['other_protocol'] === 1);
     $adminpage->addCond("allow_other_designs", $_POST['allow_other_designs'] === 1);
     $adminpage->addCond("show_favicon", $_POST['show_favicon'] === 1);
     $adminpage->addCond("feed_rss091", $_POST['feed'] == "rss091");
