@@ -72,7 +72,7 @@ class SearchOperator extends SearchTree
 
         //compare on average
         $cmp_avg = function (&$v1, $v2) {
-            return compare_update_rank ($v1, $v2, function ($v1, $v2) {return ($v1+$v2)/2;});
+            return compare_update_rank ($v1, $v2, function ($r1, $r2) {return ($r1+$r2)/2;});
         };
         
         
@@ -145,7 +145,7 @@ class SearchLeaf extends SearchTree
     private $type;
     private $not;
     private $read = false;
-    private $FD->sql()->conn() );
+    private $dbdata = array();
 
     // constructor
     public function  __construct ($label, $type, $not) {        
@@ -178,7 +178,7 @@ class SearchLeaf extends SearchTree
     }
     
     //set DB Data
-    public function setDBData($FD->sql()->conn() ) {
+    public function setDBData($dbdata) {
         $this->dbdata = $dbdata;
     }
 

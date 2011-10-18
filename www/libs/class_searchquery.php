@@ -83,7 +83,7 @@ class SearchQuery
     
         // Go through string stream
         foreach($tokenarr as $string) {
-            // get bool for type of actual and last token
+            // get bool for type of current and last token
             $isop = in_arrayr($string, $this->operators);
             $wasop = isset($lasttoken['type']) && in_array($lasttoken['type'], array_keys($this->operators));
         
@@ -166,7 +166,15 @@ class SearchQuery
                     'string' => $string,
                     'not'    => $not
                 );
-                $this->tokens[] =  $lasttoken;
+                $this->tokens[] = $lasttoken;
+                
+            // remove operator when keyword is empty
+            } else {
+                if ($wasop) {
+                    array_pop($this->tokens);
+                    $lasttoken = end($this->tokens);
+                    reset($this->tokens);
+                }
             }
         }
         

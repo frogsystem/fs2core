@@ -1,11 +1,11 @@
 <?php
 /**
-* @file     class_searchquery.php
+* @file     class_search.php
 * @folder   /libs
 * @version  0.1
 * @author   Sweil
 *
-* this class actually makes the search
+* this class actually runs the search
 * search query objects are intened to used by the search-class
 * 
 */
@@ -161,7 +161,16 @@ class Search
             
             // add DB data to searchtree
             while($leaf = $this->tree->nextLeaf()) {
-                $leaf->setDBData($this->getResultsForLeaf($leaf, $words));
+                $wordlist = $this->getResultsForLeaf($leaf, $words);
+                //sort wordlist by id
+                usort($wordlist, function ($word1, $word2) {
+                    $a = $word1['id'];
+                    $b = $word2['id'];
+                    
+                    return ($a == $b) ? 0 : (($a < $b) ? -1 : 1);
+                });
+
+                $leaf->setDBData($wordlist);
             }
             $this->tree->reset();
 

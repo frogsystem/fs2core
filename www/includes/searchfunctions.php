@@ -286,7 +286,7 @@ function get_stopwords () {
 
 // fucntion to compare found-data-arrays
 function compare_found_data ($v1, $v2) {
-    return compare_update_rank($v1, $v2, create_function('$v1,$v2', 'return $v1;'));
+    return compare_update_rank($v1, $v2, function ($r1, $r2) {return $r1;});
 }; 
 
 // fucntion to compare found-data-arrays and update rank
