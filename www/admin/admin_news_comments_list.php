@@ -27,6 +27,133 @@
     as well as that of the covered work.
 */
 
+  //statistics requested?
+  if (isset($_REQUEST['b8_stats']))
+  {
+    $query = mysql_query('SELECT * FROM b8_wordlist WHERE token LIKE \'bayes*%\'' , $db);
+    $b8_info = array();
+    while ($result = mysql_fetch_assoc($query))
+    {
+      $b8_info[$result['token']] = $result['count'];
+    }//while
+    echo '
+    <table class="configtable" cellpadding="4" cellspacing="0">
+      <tr>
+        <td style="text-align:center;" class="line" colspan="3">
+           <strong>Statistik zur Wortliste</strong>
+        </td>
+      </tr>
+      <tr>
+        <td class="config" width="33%">
+          Gelernte spamfreie Kommentare
+        </td>
+        <td class="config" width="33%">
+          Gelernte Spamkommentare
+        </td>
+        <td class="config">
+           BayesDB-Version
+        </td>
+      </tr>
+      <tr>
+        <td class="configthin" style="text-align:center;">'.$b8_info['bayes*texts.ham'].'</td>
+        <td class="configthin" style="text-align:center;">'.$b8_info['bayes*texts.spam'].'</td>
+        <td class="configthin" style="text-align:center;">'.$b8_info['bayes*dbversion'].'</td>
+      </tr>
+    </table>';
+    //get most used ham words
+    $query = mysql_query('SELECT token, count, LPAD(SUBSTRING(count, 1, LOCATE(\' \', count)-1), 10,\'0\') AS ham '
+                        .'FROM b8_wordlist WHERE token NOT LIKE \'bayes*%\' '
+                        .'ORDER BY ham DESC LIMIT 30', $db);
+    $ham_words = array();
+    while ($result = mysql_fetch_assoc($query))
+    {
+      $ham_words[] = array('token' => $result['token'], 'ham' => (int) $result['ham']);
+    }//while
+    //get most used spam words
+    $query = mysql_query('SELECT token, count, LOCATE(\' \', count) AS first_space, LOCATE(\' \', count, LOCATE(\' \', count)+1) AS second_space '
+                        .'FROM b8_wordlist WHERE token NOT LIKE \'bayes*%\' '
+                        .'ORDER BY LPAD(SUBSTRING(count, first_space+1, second_space-first_space-1),10,\'0\') DESC LIMIT 30', $db);
+    $spam_words = array();
+    while ($result = mysql_fetch_assoc($query))
+    {
+      $sub = (int) substr($result['count'], $result['first_space'], $result['first_space']-$result['second_space']-1);
+      $spam_words[] = array('token' => $result['token'], 'spam' => $sub);
+    }//while
+    $ham_count = count($ham_words);
+    $spam_count = count($spam_words);
+    $max_count = max($ham_count, $spam_count);
+    //print table
+    echo '<br><br>
+    <table border="0" cellpadding="2" cellspacing="0" class="configtable">
+      <tr>
+        <td style="text-align:center;" class="config" colspan="2" width="50%">
+           H&auml;ufigste Spamtokens
+        </td>
+        <td style="text-align:center;" class="config" colspan="2" width="50%">
+           H&auml;ufigste spamfreie Tokens
+        </td>
+      </tr>
+      <tr>
+        <td class="config">
+           Token
+        </td>
+        <td style="text-align:center;" class="config">
+           Anzahl
+        </td>
+        <td class="config">
+           Token
+        </td>
+        <td style="text-align:center;" class="config">
+           Anzahl
+        </td>
+      </tr>';
+    if ($max_count==0)
+    {
+      echo '<tr>
+        <td style="text-align:center;" class="configthin" colspan="4">
+           <strong>Es sind noch keine Tokens in der Wortliste vorhanden.</strong>
+        </td>
+      </tr>';
+    }
+    else
+    {
+      for ($i=0; $i<$max_count; $i = $i +1)
+      {
+        //Spam
+        if ($i<$spam_count)
+        {
+          echo '<tr>
+        <td class="configthin">'.htmlspecialchars($spam_words[$i]['token']).'</td>
+        <td class="configthin" style="text-align:center;">'.$spam_words[$i]['spam'].'</td>';
+        }
+        else
+        {
+          echo '<tr>
+        <td class="configthin" colspan="2"> </td>';
+        }
+        //Ham
+        if ($i<$ham_count)
+        {
+          echo '<td class="configthin">'.htmlspecialchars($ham_words[$i]['token']).'</td>
+        <td class="configthin" style="text-align:center;">'.$ham_words[$i]['ham'].'</td>
+      </tr>';
+        }
+        else
+        {
+          echo '<td class="configthin" colspan="2"> </td></tr>';
+        }
+      }//for
+    }//else (Tokens vorhanden)
+
+    echo '</table>
+    <br>
+    <center><a href="'.$PHP_SELF.'?go=news_comments_list">Zur&uuml;ck zur Kommentarliste</a></center><br>';
+  }//if stats requested
+  else
+  {
+    //no stats, normal list
+
+
   //no b8 at first
   $b8 = NULL;
   //Ist für b8 etwas zu tun?
@@ -319,4 +446,12 @@ echo '         </td>
 ?>
                                 </td>
                             </tr>
+                            <tr>
+                            <td colspan="3" style="text-align:center;" class="configthin">
+                              <a href="<?php echo $PHP_SELF; ?>?go=news_comments_list&b8_stats=1">Statistik anzeigen</a>
+                            </td>
+                          </tr>
                         </table>
+<?php
+  } //else
+?>
