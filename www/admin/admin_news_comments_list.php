@@ -111,7 +111,11 @@
     {
       echo '<tr>
         <td style="text-align:center;" class="configthin" colspan="4">
-           <strong>Es sind noch keine Tokens in der Wortliste vorhanden.</strong>
+           <strong>Es sind noch keine Tokens in der Wortliste vorhanden. Sie
+           m&uuml;ssen erst einige Kommentare als Spam oder spamfrei markieren,
+           damit sich die Wortliste f&uuml;llt und der Spamfilter Spamtexte
+           auch als solche erkennen kann. Andernfalls werden alle Kommentare
+           nur mit 50% bewertet, was wenig hilfreich ist.</strong>
         </td>
       </tr>';
     }
@@ -156,6 +160,18 @@
 
   //no b8 at first
   $b8 = NULL;
+  //put b8-related GET parameters into POST, so we need to check $_POST only
+  if (isset($_GET['commentid']) && !isset($_POST['commentid']))
+  {
+    $_POST['commentid'] = $_GET['commentid'];
+    unset($_GET['commentid']);
+  }
+  if (isset($_GET['b8_action']) && !isset($_POST['b8_action']))
+  {
+    $_POST['b8_action'] = $_GET['b8_action'];
+    unset($_GET['b8_action']);
+  }
+
   //Ist für b8 etwas zu tun?
   if (isset($_POST['commentid']) && isset($_POST['b8_action']))
   {
@@ -169,7 +185,7 @@
     if ($result = mysql_fetch_assoc($query))
     {
       //found it, go on
-      if ($result['comment_classification']!=0)
+      if (($result['comment_classification']!=0) && ($_POST['b8_action']!='unclassify'))
       {
         //already has classification
         echo '<center><b>Fehler:</b> Der Kommentar mit der angegebenen ID ist '
@@ -225,6 +241,27 @@
                    echo mysql_error();
                  }
                  $b8->learn(strtolower($result['comment_title'].' '.$result['comment_poster'].' '.$result['comment_text']), b8::SPAM);
+	             break;
+	        case 'unclassify':
+	             if ($result['comment_classification']!=0)
+	             {
+	               $query = mysql_query('UPDATE `'.$global_config_arr['pref'].'news_comments` SET comment_classification=\'0\' WHERE comment_id=\''.$_POST['commentid'].'\'', $db);
+	               if ($result['comment_classification']>0)
+	               {
+	                 //it's marked as ham, revoke it
+	                 $b8->unlearn(strtolower($result['comment_title'].' '.$result['comment_poster'].' '.$result['comment_text']), b8::HAM);
+	               }
+	               else
+	               {
+	                 //it's marked as spam, revoke it
+	                 $b8->unlearn(strtolower($result['comment_title'].' '.$result['comment_poster'].' '.$result['comment_text']), b8::SPAM);
+	               }
+	             }
+	             else
+	             {
+	               echo '<center><b>b8-Fehler:</b> Der angegebene Kommentar ist nicht'
+                       .' klassifiziert, daher kann dies auch nicht r&uuml;ckg&auml;ngig gemacht werden.</center>';
+	             }
 	             break;
 	        default:
 	             //Form manipulation or programmer's stupidity? I don't like it either way!
@@ -398,12 +435,18 @@ echo '             <form action="'.$PHP_SELF.'" method="post" style="display:inl
     else if ($comment_arr['comment_classification']>0)
     {
       //comment classified as ham
-      echo '<font color="#008000" size="1">Als spamfrei markiert</font>';
+      echo '<font color="#008000" size="1">Als spamfrei markiert</font> <a href="'
+          .$PHP_SELF.'?go=news_comments_list&b8_action=unclassify&commentid='
+          .$comment_arr['comment_id'].'&start='.$_GET['start']
+          .'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
     }
     else if ($comment_arr['comment_classification']<0)
     {
       //comment classified as spam
-      echo '<font color="#C00000" size="1">Als Spam markiert</font>';
+      echo '<font color="#C00000" size="1">Als Spam markiert</font>  <a href="'
+          .$PHP_SELF.'?go=news_comments_list&b8_action=unclassify&commentid='
+          .$comment_arr['comment_id'].'&start='.$_GET['start']
+          .'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
     }
 echo '         </td>
          </tr>
