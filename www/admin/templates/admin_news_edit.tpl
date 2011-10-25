@@ -51,6 +51,7 @@
 
 <!--TEXT::entries-->
 
+        <!--IF::entries-->
         <tr>
             <td colspan="4">default_display_pagenav(default_get_pagenav_data())</td>
         </tr>
@@ -74,9 +75,18 @@
                 </button>
             </td>
         </tr>
+        <!--ENDIF-->
     </table>
 </form>
 <!--section-end::list--> 
+
+<!--section-start::list_no_entry-->
+        <tr >
+            <td colspan="3" class="center">
+                <!--TEXT::error-->
+            </td>
+        </tr>
+<!--section-end::list_no_entry--> 
 
 <!--section-start::list_entry_simple-->
         <tr class="select_entry">
@@ -139,19 +149,35 @@
     <input type="hidden" name="go" value="news_edit">
 
     <table class="content" cellpadding="3" cellspacing="0">
-        <tr><td colspan="3"><h3><!--LANG::filter_title--></h3><hr></td></tr>
+        <tr><td colspan="2"><h3><!--LANG::filter_title--></h3><hr></td></tr>
 
         <tr>
-            <td width="full" colspan="2">
-
+            <td class="middle">               
                 <p>
-                    <!--LANG::cat_filter-->
-                    <select name="cat_filter">
-                        <option value="0" <!--IF::cat_filter-->selected<!--ENDIF-->><!--LANG::all_cats--></option>
-                        <!--TEXT::cat_filter_options-->
+                    <!--COMMON::search_for-->:
+                    <input name="filter_string" class="half" value="<!--TEXT::filter_string-->">
+                    <!--COMMON::in-->
+                    <select name="search_type">
+                        <option value="0" <!--IF::search_type_0-->selected<!--ENDIF-->><!--LANG::search_fulltext--></option>
+                        <option value="1" <!--IF::search_type_1-->selected<!--ENDIF-->><!--LANG::search_id--></option>
                     </select>
+                    <input class="atright" type="submit" value="<!--COMMON::do_action_button-->">               
+                </p>
+                
+            </td>
+        </tr>
 
-                    <!--LANG::filter_order-->
+        <tr>
+            <td class="middle" colspan="2">
+                <p>
+                    <!--COMMON::cat-->:
+                    <select name="filter_cat">
+                        <option value="0" <!--IF::filter_cat-->selected<!--ENDIF-->><!--LANG::all_cats--></option>
+                        <option value="0"><!--COMMON::select_hr--></option>
+                        <!--TEXT::filter_cat_options-->
+                        
+                    </select><span class="atright">
+                    <!--LANG::filter_order-->:
                     <select name="order">
                         <option value="news_id" <!--IF::order_id-->selected<!--ENDIF-->><!--LANG::filter_id--></option>
                         <option value="news_date" <!--IF::order_date-->selected<!--ENDIF-->><!--LANG::filter_date--></option>
@@ -160,12 +186,8 @@
                     <select name="sort">
                         <option value="ASC" <!--IF::sort_asc-->selected<!--ENDIF-->><!--COMMON::asc--></option>
                         <option value="DESC" <!--IF::sort_desc-->selected<!--ENDIF-->><!--COMMON::desc--></option>
-                    </select>
+                    </select></span>
                 </p>
-
-            </td>
-            <td class="right">
-                <input type="submit" value="<!--COMMON::do_action_button-->">
             </td>
         </tr>
     </table>

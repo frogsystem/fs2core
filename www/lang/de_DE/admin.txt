@@ -71,6 +71,9 @@ default:                                 Standard
 replace_img:                             Ersetzt das bisherige Bild
 delete_image:                            Bild löschen
 js_delete_image:                         Bild löschen?
+search:                                  Suche
+search_for:                              Suche nach
+filter:                                  Filter
 
 
 # Date and Time for Admin CP

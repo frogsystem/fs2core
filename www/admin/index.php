@@ -104,9 +104,12 @@ if (!empty($acp_arr)) {
     $adminpage = new adminpage($acp_arr['page_file']);
     
     // Get Special Page Lang-Text-Files
+    $page_lang = new lang($global_config_arr['language_text'], "admin/".substr($acp_arr['page_file'], 0, -4));
+    $FD->setPageText($page_lang);
     if (!isset($TEXT['page'])) {
-        $TEXT['page'] = new lang($global_config_arr['language_text'], "admin/".substr($acp_arr['page_file'], 0, -4));
+        $TEXT['page'] = $page_lang;
     }
+    unset ($page_lang);
     
 } else {
     $PAGE_DATA_ARR['created'] = false;

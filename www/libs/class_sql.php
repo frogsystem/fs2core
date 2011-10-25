@@ -158,15 +158,16 @@ class sql {
                 $cols_list = isset($col['FROM']) ? $col['FROM'].".".$cols_list : $cols_list;
                 //=> S = FUNC(S) // if FUNC
                 $cols_list = isset($col['FUNC']) ? $col['FUNC']."(".$cols_list.")" : $cols_list;
-                //=> S = S AS "AS" // if AS
-                $cols_list = isset($col['AS']) ? $cols_list." AS '".$col['AS']."'" : $cols_list;
             }
+            
+            //=> S = S AS "AS" // if AS
+            $cols_list = isset($col['AS']) ? $cols_list." AS '".$col['AS']."'" : $cols_list;            
         }
         return $cols_list;
     }
     
     // execute SELECT   
-    private function select ($table, $cols, $options = array(), $distinct = false) {
+    private function select ($table, $cols, $options = array(), $distinct = false, $total_rows = false) {
         // empty cols
         if (empty($cols))
             Throw new ErrorException("MySQL Error: Can't select nothing.");
@@ -208,6 +209,8 @@ class sql {
 
         // DISTINCT or not
         $select = ($distinct) ? "SELECT DISTINCT " : "SELECT ";
+        // Total Rows?
+        $select .= ($total_rows) ? " SQL_CALC_FOUND_ROWS" : "";
         
         // build query string...
         $qrystr = $select.$cols_list." FROM ".$table_list.$this->opt($options);
@@ -223,14 +226,22 @@ class sql {
     
     
     // get data from database
-    public function get ($table, $cols, $options = array(), $distinct = false) {
+    public function get ($table, $cols, $options = array(), $distinct = false, $total_rows = false) {
         // Get Data
         $rows = array();
-        $result = $this->select($table, $cols, $options, $distinct);
+        $result = $this->select($table, $cols, $options, $distinct, $total_rows);
         while ($row = mysql_fetch_assoc($result)) {
             $rows[] = $row;
         }
         $num = count($rows);
+        
+        // Total rows?
+        if ($total_rows) {
+            $result = $this->doQuery("SELECT FOUND_ROWS()");
+            list ($total_rows) = mysql_fetch_row ($result);
+        } else {
+            $total_rows = $num;
+        }
         
         // Unslash the result
         if ($num > 0) {
@@ -248,6 +259,7 @@ class sql {
         return array (
             'data' => $rows,
             'num' => $num,
+            'num_all' => $total_rows,
         );
     }
     
@@ -300,7 +312,7 @@ class sql {
     
     // num of rows
     public function num ($table, $cols, $options = array(), $distinct = false) {
-        return $this->unslash(mysql_num_rows($this->select($table, $cols, $options, $distinct)));
+        return mysql_num_rows($this->select($table, $cols, $options, $distinct));
     }
 
     // Saving to DB by Id

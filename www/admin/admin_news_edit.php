@@ -477,7 +477,7 @@ function db_delete_comment ( $DATA )
 $FILE_SHOW_START = true;
 $news_cols = array("news_id", "cat_id", "user_id", "news_date", "news_title", "news_text", "news_active", "news_comments_allowed", "news_search_update");
 
-$config_arr = $sql->getById("news_config", array("html_code", "fs_code", "para_handling", "acp_view"), 1);
+$config_arr = $sql->getById("news_config", array("html_code", "fs_code", "para_handling", "acp_view", "acp_per_page"), 1);
 $config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
 $config_arr['fs'] = in_array($config_arr['fs_code'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
 $config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $TEXT['admin']->get("on") : $TEXT['admin']->get("off");
@@ -919,101 +919,166 @@ if ( $_POST['news_id'] && $_POST['news_action'] )
 if ($FILE_SHOW_START)
 {
     // Filter
-    $_REQUEST['order'] = $sql->escape(isset($_REQUEST['order']) ? $_REQUEST['order'] : "news_date");
-    $_REQUEST['sort'] = $sql->escape(isset($_REQUEST['sort']) ? $_REQUEST['sort'] : "DESC");
-    $_REQUEST['cat_filter'] = isset($_REQUEST['cat_filter']) ? $_REQUEST['cat_filter'] : 0;
-    settype($_REQUEST['cat_filter'], "integer");
+    $_REQUEST['order'] = killhtml(isset($_REQUEST['order']) ? $_REQUEST['order'] : "news_date");
+    $_REQUEST['sort'] = killhtml(isset($_REQUEST['sort']) ? $_REQUEST['sort'] : "DESC");
+    $_REQUEST['filter_cat'] = isset($_REQUEST['filter_cat']) ? $_REQUEST['filter_cat'] : 0;
+    settype($_REQUEST['filter_cat'], "integer");
+    settype($_REQUEST['search_type'], "integer");
+    $_REQUEST['filter_string'] = isset($_REQUEST['filter_string']) ? killhtml($_REQUEST['filter_string']) : "";
 
     //cat filter options
     initstr($cat_filter_options);
     $cats = $sql->get("news_cat", array("cat_id", "cat_name"));
     foreach ($cats['data'] as $cat) {
         $cat = array_map("killhtml", $cat);
-        $cat_filter_options .= '<option value="'.$cat['cat_id'].'" '.getselected($cat['cat_id'], $_REQUEST['cat_filter']).' title="'.$cat['cat_name'].'">'.cut_string($cat['cat_name'], 23, "...").'</option>'."\n";
+        $cat_filter_options .= '<option value="'.$cat['cat_id'].'" '.getselected($cat['cat_id'], $_REQUEST['filter_cat']).' title="'.$cat['cat_name'].'">'.cut_string($cat['cat_name'], 35, "...").'</option>'."\n";
     }
     
-    // display filter   
-    $adminpage->addCond("cat_filter", $_REQUEST['cat_filter'] === 0);
+    // display filter
+    for ($i=0; $i<2; $i++)
+        $adminpage->addCond("search_type_".$i, $_REQUEST['search_type'] === $i);
+    $adminpage->addCond("filter_cat", $_REQUEST['filter_cat'] === 0);
     $adminpage->addCond("order_id", $_REQUEST['order'] === "news_id");
     $adminpage->addCond("order_date", $_REQUEST['order'] === "news_date");
     $adminpage->addCond("order_title", $_REQUEST['order'] === "news_title");
     $adminpage->addCond("sort_asc", $_REQUEST['sort'] === "ASC");
     $adminpage->addCond("sort_desc", $_REQUEST['sort'] === "DESC");
-    $adminpage->addText("cat_filter_options", $cat_filter_options);   
+    $adminpage->addText("filter_string", $_REQUEST['filter_string']);
+    $adminpage->addText("filter_cat_options", $cat_filter_options);   
     echo $adminpage->get("filter");
 
     
     // Page list
-    
-    //get entries
-    /*
-            LIMIT ".$pagenav_arr['cur_start'].", ".$pagenav_arr['entries_per_page']."    
-    
-    */
-    $news_data = $sql->get("news", array("news_id"), array(
-        'W' => ($_REQUEST['cat_filter'] != 0 ? "`cat_id` = ".$_REQUEST['cat_filter'] : ""),
-        'O' => "`".$_REQUEST['order']."` ".$_REQUEST['sort'].", `news_id` ".$_REQUEST['sort']."",
-        'L' => ""
-    ));
-    $entries = array();
-    foreach ($news_data['data'] as $news) {
-        // sqls
-        switch ($config_arr['acp_view']) {
-            // full (with text preview)
-            case 1:
-                $news = $sql->getById("news", array("news_id", "cat_id", "user_id", "news_title", "news_date", "news_text"), $news['news_id'], "news_id");
-                break;
-            // extended (but no text preview)
-            case 2:
-                $news = $sql->getById("news", array("news_id", "cat_id", "user_id", "news_title", "news_date"), $news['news_id'], "news_id");
-                break;
-            //simple
-            default:
-                $news = $sql->getById("news", array("news_id", "news_title", "news_date"), $news['news_id'], "news_id");            
-                break;
-        }
+    try {
+        //TODO: pagenav
+
         
-        // all
-        $adminpage->addText("id", $news['news_id']);
-        $adminpage->addText("title", killhtml($news['news_title']));
-        $adminpage->addText("date", date_loc($TEXT['admin']->get("date"), $news['news_date']));
-        $adminpage->addText("time", date_loc($TEXT['admin']->get("time"), $news['news_date']));
+        // serached?
+        $searched = !empty($_REQUEST['filter_string']) && $_REQUEST['search_type'] === 0;
         
-        // extended or full
-        if (in_array($config_arr['acp_view'], array(1, 2))) {
-            //get additional data
-            $user = $sql->getFieldById("user", "user_name", $news['user_id'], "user_id");
-            $cat = $sql->getFieldById("news_cat", "cat_name", $news['cat_id'], "cat_id");
-            $num_comments = $sql->getField("news_comments",
-                array('COL' => "comment_id", 'AS' => "news_comments", 'FUNC' => "count"),
-                array('W' => "`news_id` = '".$news['news_id']."'")
-            );
-            $num_links = $sql->getField("news_links",
-                array('COL' => "link_id", 'AS' => "num_links", 'FUNC' => "count"),
-                array('W' => "`news_id` = '".$news['news_id']."'")
-            );            
+        // search
+        if ($searched) {
+            // do the search
+            $search = new Search("news", $_REQUEST['filter_string'], false);
+            $search->setOrder("`".$_REQUEST['order']."` ".$_REQUEST['sort'], "`news_id` ".$_REQUEST['sort']);
+            $search->setWhere(($_REQUEST['filter_cat'] != 0 ? "`cat_id` = ".$_REQUEST['filter_cat'] : ""));
+            $search->setLimit($config_arr['acp_per_page']);
+
+        // just filter
+        } else {
+            // Set where for cat, ID and URL Filter
+            $where = array();
+            if ($_REQUEST['filter_cat'] != 0)
+                $where[] = "`cat_id` = ".$_REQUEST['filter_cat'];
+                
+            if (!empty($_REQUEST['filter_string'])) {
+                switch ($_REQUEST['search_type']) {
+                    case 1:
+                        $where[] = "`news_id` = '".$_REQUEST['filter_string']."'";
+                        break;
+                }
+            }
             
-            $adminpage->addText("user_name", $user);
-            $adminpage->addText("cat_name", $cat);
-            $adminpage->addText("num_comments", $num_comments);
-            $adminpage->addText("num_links", $num_links);
-        }
-        // full
-        if ($config_arr['acp_view'] == 1) { // extened
-            $text_preview = cut_string(killfs($news['news_text']), 250, "...");
-            $adminpage->addText("text_preview", $text_preview);
-        }
-        
-        // get entries
-        switch ($config_arr['acp_view']) {
-            case 1:  $entries[] = $adminpage->get("list_entry_full"); break;
-            case 2:  $entries[] = $adminpage->get("list_entry_extended"); break;
-            default: $entries[] = $adminpage->get("list_entry_simple"); break;
+            // build query
+            $news_data = $sql->get("news", array(
+                array('COL' => "news_id", 'AS' => "id"),
+                array('FUNC' => "CONCAT", 'ARG' => 1, 'AS' => "rank")
+            ), array(
+                'W' => implode(" AND ", $where),
+                'O' => "`".$_REQUEST['order']."` ".$_REQUEST['sort'].", `news_id` ".$_REQUEST['sort']."",
+                'L' => $config_arr['acp_per_page']
+            ), false, true);
+            $total_entries = $news_data['num_all'];
+            $news_data = $news_data['data'];
         }
         
+        
+        //run through results
+        $entries = array();
+        while (true) {
+            
+            // get from right source
+            if ($searched) {
+                 $found = $search->next();
+                 $total_entries = $search->getNumberOfFounds();
+            } else {
+                $found = current($news_data);
+                next($news_data);
+            }
+
+            // stop when last result
+            if ($found === false)
+                break;
+            
+        
+            // select sqls
+            switch ($config_arr['acp_view']) {
+                // full (with text preview)
+                case 1:
+                    $news = $sql->getById("news", array("news_id", "cat_id", "user_id", "news_title", "news_date", "news_text"), $found['id'], "news_id");
+                    break;
+                // extended (but no text preview)
+                case 2:
+                    $news = $sql->getById("news", array("news_id", "cat_id", "user_id", "news_title", "news_date"), $found['id'], "news_id");
+                    break;
+                //simple
+                default:
+                    $news = $sql->getById("news", array("news_id", "news_title", "news_date"), $found['id'], "news_id");            
+                    break;
+            }
+            
+            // all
+            $adminpage->addText("id", $news['news_id']);
+            $adminpage->addText("title", killhtml($news['news_title']));
+            $adminpage->addText("date", date_loc($TEXT['admin']->get("date"), $news['news_date']));
+            $adminpage->addText("time", date_loc($TEXT['admin']->get("time"), $news['news_date']));
+            
+            // extended or full
+            if (in_array($config_arr['acp_view'], array(1, 2))) {
+                //get additional data
+                $user = $sql->getFieldById("user", "user_name", $news['user_id'], "user_id");
+                $cat = $sql->getFieldById("news_cat", "cat_name", $news['cat_id'], "cat_id");
+                $num_comments = $sql->getField("news_comments",
+                    array('COL' => "comment_id", 'AS' => "news_comments", 'FUNC' => "count"),
+                    array('W' => "`news_id` = '".$news['news_id']."'")
+                );
+                $num_links = $sql->getField("news_links",
+                    array('COL' => "link_id", 'AS' => "num_links", 'FUNC' => "count"),
+                    array('W' => "`news_id` = '".$news['news_id']."'")
+                );            
+                
+                $adminpage->addText("user_name", $user);
+                $adminpage->addText("cat_name", $cat);
+                $adminpage->addText("num_comments", $num_comments);
+                $adminpage->addText("num_links", $num_links);
+            }
+            // full
+            if ($config_arr['acp_view'] == 1) { // extened
+                $text_preview = cut_string(killfs($news['news_text']), 250, "...");
+                $adminpage->addText("text_preview", $text_preview);
+            }
+            
+            // get entries
+            switch ($config_arr['acp_view']) {
+                case 1:  $entries[] = $adminpage->get("list_entry_full"); break;
+                case 2:  $entries[] = $adminpage->get("list_entry_extended"); break;
+                default: $entries[] = $adminpage->get("list_entry_simple"); break;
+            }
+        }
+        
+        // implode entry array
+        $num_entries = count($entries);
+        $entries = implode("\n", $entries);
+
+    } catch (Exception $e) {   
+        $error = "<br>".$e->getMessage();
     }
-    
-    $adminpage->get("list");
+
+    // No entries
+    if ($total_entries == 0 || !empty($error)) {
+        $adminpage->addText("error", $TEXT['page']->get('news_not_found').$error);
+        $entries = $adminpage->get("list_no_entry");
+    }
     
     // Display List
     $adminpage->addCond("perm_delete", $_SESSION['news_delete'] === 1);
@@ -1021,9 +1086,10 @@ if ($FILE_SHOW_START)
     $adminpage->addCond("action_edit", $_POST['news_action'] == "edit");
     $adminpage->addCond("action_delete", $_POST['news_action'] == "delete");
     $adminpage->addCond("action_comments", $_POST['news_action'] == "comments");
-    $adminpage->addText("entries", implode("\n", $entries));      
-    $adminpage->addText("total_entries", $news_data['num']);      
-    $adminpage->addCond("total_entries", $news_data['num'] != 1);      
+    $adminpage->addText("entries", $entries);      
+    $adminpage->addText("total_entries", $total_entries);      
+    $adminpage->addCond("entries", $total_entries != 0);      
+    $adminpage->addCond("total_entries", $total_entries != 1);      
     echo $adminpage->get("list");
     
     

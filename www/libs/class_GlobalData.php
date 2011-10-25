@@ -29,6 +29,9 @@ class GlobalData {
         //get Text object
         $this->text = array(
             'frontend'  => new lang ($this->config("language_text"), "frontend"),
+            'admin'     => new lang ($this->config("language_text"), "admin"),
+            'template'  => new lang ($this->config("language_text"), "template"),
+            'menu'      => new lang ($this->config("language_text"), "menu"),
         );
     }
     
@@ -164,6 +167,11 @@ class GlobalData {
     public function text($type, $tag) {
         return $this->text[$type]->get($tag);
     }
+    
+    // get lang phrase object
+    public function setPageText($obj) {
+        return $this->text['page'] = $obj;
+    }    
     
     
     

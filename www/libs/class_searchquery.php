@@ -52,14 +52,16 @@ class SearchQuery
     
     // parser 
     public function parse($searchstring) {
+        global $FD;
+        
         $this->searchstring = trim($searchstring);
         $this->tokenize();
         $this->root = $this->interpret();
         
         $tree = (string) $this->root;
         if (empty($tree))
-            Throw new Exception("Invalid searchstring. "
-            ."No valid input data found.");
+            Throw new Exception($FD->text('frontend', 'sq_invalid_searchstring'));
+            //"Invalid searchstring. "."No valid input data found.");
     }
     
     // get searchquery tree 

@@ -133,7 +133,7 @@ function killhtml ($VAL, $ARR = true) {
             settype($VAL, "float");
         }
     } else {
-        $VAL = htmlspecialchars(strval($VAL), ENT_COMPAT);
+        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES);
         settype($VAL, "string");
     }
     

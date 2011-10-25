@@ -110,3 +110,8 @@ image_upload_error_3:            Bild-Upload fehgeschlagen<br>Das Bild ist zu gr
 image_upload_error_4:            Bild-Upload fehgeschlagen<br>Das Bild ist zu groß (Abmessungen)
 image_upload_error_5:            Bild-Upload fehgeschlagen<br>Das Bild entspricht nicht den erforderlichen Abmessungen
 image_upload_error_6:            Bild-Upload fehgeschlagen<br>Das Bild konnte nicht erstellt werden
+
+# Search
+sq_error_not_and:               sd
+sq_error_not_or_xor:            a
+sq_invalid_searchstring:        Ungültige Suchanfrage. Bitte beachten Sie die Suchregeln.

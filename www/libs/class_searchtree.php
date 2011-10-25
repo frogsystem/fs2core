@@ -46,6 +46,7 @@ class SearchOperator extends SearchTree
     
     // get set
     public function getSet() {
+        global $FD;
         
         // check for wrong use of not
         $leftnot = ($this->left->isLeaf() && $this->left->hasNot());
@@ -54,15 +55,15 @@ class SearchOperator extends SearchTree
         switch ($this->operation) {
             case "and":
                 if ($leftnot && $rightnot)
-                    Throw new Exception("Prohibited use of NOT in your Searchquery."
-                    ."Don't use NOT on both sides of AND.");
+                    Throw new Exception($FD->text('frontend', 'sq_error_not_and'));
+                    // "Prohibited use of NOT in your Searchquery." ."Don't use NOT on both sides of AND.");
                 break;
                 
             // No not here
             default:
                 if ($leftnot || $rightnot)
-                    Throw new Exception("Prohibited use of NOT in your Searchquery."
-                    ."Neither use NOT with OR nor XOR.");
+                    Throw new Exception($FD->text('frontend', 'sq_error_not_or_xor'));                    
+                    // "Prohibited use of NOT in your Searchquery." ."Neither use NOT with OR nor XOR.");
                 break;
         }
         
