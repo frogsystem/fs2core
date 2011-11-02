@@ -374,12 +374,12 @@
     {
       $prev_start = 0;
     }
-    $prev_page = '<a href="'.$PHP_SELF.'?go=news_comments_list&sort='.$_GET['sort'].'&order='.$_GET['order'].'&start='.$prev_start.'"><- zurück</a>';
+    $prev_page = '<a href="'.$PHP_SELF.'?go=news_comments_list&amp;sort='.$_GET['sort'].'&amp;order='.$_GET['order'].'&amp;start='.$prev_start.'"><- zurück</a>';
   }//if nicht erste Seite
   //Ist dies nicht die letzte Seite?
   if ($_GET['start']+30<$cc)
   {
-    $next_page = '<a href="'.$PHP_SELF.'?go=news_comments_list&sort='.$_GET['sort'].'&order='.$_GET['order'].'&start='.($_GET['start']+30).'">weiter -></a>';
+    $next_page = '<a href="'.$PHP_SELF.'?go=news_comments_list&amp;sort='.$_GET['sort'].'&amp;order='.$_GET['order'].'&amp;start='.($_GET['start']+30).'">weiter -></a>';
   }//if nicht die letzte Seite
 
   $inverse_order = ($_GET['order']+1) % 2;
@@ -391,17 +391,17 @@
     <tr>
       <td class="config" width="30%">
 <?php
-  echo '<a href="'.$PHP_SELF.'?go=news_comments_list&sort=title&order='.$inverse_order.'&start='.$_GET['start'].'">Titel</a>';
+  echo '<a href="'.$PHP_SELF.'?go=news_comments_list&amp;sort=title&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Titel</a>';
 ?>
       </td>
       <td class="config" width="30%">
 <?php
-  echo '<a href="'.$PHP_SELF.'?go=news_comments_list&sort=name&order='.$inverse_order.'&start='.$_GET['start'].'">Poster</a>';
+  echo '<a href="'.$PHP_SELF.'?go=news_comments_list&amp;sort=name&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Poster</a>';
 ?>
       </td>
       <td class="config" width="20%">
 <?php
-  echo '<a href="'.$PHP_SELF.'?go=news_comments_list&sort=date&order='.$inverse_order.'&start='.$_GET['start'].'">Datum</a>';
+  echo '<a href="'.$PHP_SELF.'?go=news_comments_list&amp;sort=date&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Datum</a>';
 ?>
       </td>
       <td class="config" width="10%">
@@ -464,7 +464,7 @@
 echo '           </td>
          </tr>
          <tr>
-           <td style="text-align:center;" colspan="4"><font size="1">Zugeh&ouml;rige Newsmeldung: <a href="../?go=comments&id='
+           <td style="text-align:center;" colspan="4"><font size="1">Zugeh&ouml;rige Newsmeldung: <a href="../?go=comments&amp;id='
                                               .$comment_arr['news_id'].'" target="_blank">&quot;'
                                               .htmlentities($comment_arr['news_title'], ENT_QUOTES).'&quot;</a></font>
            </td>
@@ -474,7 +474,7 @@ echo '           </td>
 if ($comment_arr['comment_classification']==0)
     {
       //unclassified comment
-echo '             <form action="'.$PHP_SELF.'" method="post" style="display:inline";>
+echo '             <form action="'.$PHP_SELF.'" method="post" style="display:inline;">
                <input type="hidden" value="news_comments_list" name="go">
                <input type="hidden" value="'.$_GET['start'].'" name="start">
                <input type="hidden" value="'.$_GET['sort'].'" name="sort">
@@ -482,7 +482,7 @@ echo '             <form action="'.$PHP_SELF.'" method="post" style="display:inl
                <input type="hidden" name="commentid" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="b8_action" value="mark_as_ham">
                <input class="button" type="submit" value="Kein Spam :)">
-             </form><form action="'.$PHP_SELF.'" method="post" style="display:inline";>
+             </form><form action="'.$PHP_SELF.'" method="post" style="display:inline;">
                <input type="hidden" value="news_comments_list" name="go">
                <input type="hidden" value="'.$_GET['start'].'" name="start">
                <input type="hidden" value="'.$_GET['sort'].'" name="sort">
@@ -496,17 +496,17 @@ echo '             <form action="'.$PHP_SELF.'" method="post" style="display:inl
     {
       //comment classified as ham
       echo '<font color="#008000" size="1">Als spamfrei markiert</font> <a href="'
-          .$PHP_SELF.'?go=news_comments_list&b8_action=unclassify&commentid='
-          .$comment_arr['comment_id'].'&start='.$_GET['start'].'&sort='.$_GET['sort']
-          .'&order='.$_GET['order'].'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
+          .$PHP_SELF.'?go=news_comments_list&amp;b8_action=unclassify&amp;commentid='
+          .$comment_arr['comment_id'].'&amp;start='.$_GET['start'].'&amp;sort='.$_GET['sort']
+          .'&amp;order='.$_GET['order'].'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
     }
     else if ($comment_arr['comment_classification']<0)
     {
       //comment classified as spam
       echo '<font color="#C00000" size="1">Als Spam markiert</font>  <a href="'
-          .$PHP_SELF.'?go=news_comments_list&b8_action=unclassify&commentid='
-          .$comment_arr['comment_id'].'&start='.$_GET['start'].'&sort='.$_GET['sort']
-          .'&order='.$_GET['order'].'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
+          .$PHP_SELF.'?go=news_comments_list&amp;b8_action=unclassify&amp;commentid='
+          .$comment_arr['comment_id'].'&amp;start='.$_GET['start'].'&amp;sort='.$_GET['sort']
+          .'&amp;order='.$_GET['order'].'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
     }
 echo '         </td>
          </tr>
@@ -551,7 +551,7 @@ echo '         </td>
                             </tr>
                             <tr>
                             <td colspan="3" style="text-align:center;" class="configthin">
-                              <a href="<?php echo $PHP_SELF; ?>?go=news_comments_list&b8_stats=1">Statistik anzeigen</a>
+                              <a href="<?php echo $PHP_SELF; ?>?go=news_comments_list&amp;b8_stats=1">Statistik anzeigen</a>
                             </td>
                           </tr>
                         </table>
