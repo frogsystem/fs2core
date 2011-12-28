@@ -475,7 +475,7 @@ function load_applets()
         
         // include applets & load template
         if ($entry['applet_include'] == 1) {
-            $entry['applet_template'] = load_a_applet($entry['applet_file'], $entry['applet_output'], array());
+            $entry['applet_template'] = load_an_applet($entry['applet_file'], $entry['applet_output'], array());
         }
         
         $new_applet_data[$entry['applet_file']] = $entry;
@@ -488,9 +488,11 @@ function load_applets()
 //////////////////////
 //// Load Applets ////
 //////////////////////
-function load_a_applet($file, $output, $args) {
+function load_an_applet($file, $output, $args) {
     
-    global $global_config_arr, $sql, $FD, $TEXT;
+    global $FD;
+    global $global_config_arr, $sql, $TEXT;
+    global $FD;
     
     // Setup $SCRIPT Var
     unset($SCRIPT);
@@ -568,7 +570,7 @@ function tpl_func_applets($original, $main_argument, $other_arguments)
     // Maybe load Applet on demand
     if ($APP[$main_argument]['applet_include'] != 1 || count($other_arguments) > 0) {   
         // Return Content
-        return load_a_applet($main_argument, $APP[$main_argument]['applet_output'], $other_arguments);
+        return load_an_applet($main_argument, $APP[$main_argument]['applet_output'], $other_arguments);
     } else {
         // Return Content
         return $APP[$main_argument]['applet_template'];

@@ -150,9 +150,9 @@ function do_bbcode_cimg ($action, $attributes, $content, $params, $node_object) 
     $content_arr[2] = isset ( $content_arr[2] ) ? ' title="'.$content_arr[2].'"' : '';
 
     if (!isset ($attributes['default'])) {
-        return '<img src="'.$global_config_arr['virtualhost']."images/content/".$content_arr[0].'" alt="'.$content_arr[1].'"'.$content_arr[2].'>';
+        return '<img src="'.$global_config_arr['virtualhost']."media/content/".$content_arr[0].'" alt="'.$content_arr[1].'"'.$content_arr[2].'>';
     }
-    return '<img src="'.$global_config_arr['virtualhost']."images/content/".$content_arr[0].'" align="'.htmlspecialchars($attributes['default']).'" alt="'.$content_arr[1].'"'.$content_arr[2].'>';
+    return '<img src="'.$global_config_arr['virtualhost']."media/content/".$content_arr[0].'" align="'.htmlspecialchars($attributes['default']).'" alt="'.$content_arr[1].'"'.$content_arr[2].'>';
 }
 
 function do_bbcode_player ($action, $attributes, $content, $params, $node_object) {

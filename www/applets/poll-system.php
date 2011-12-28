@@ -39,33 +39,33 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
 
 // last poll
 } else {
-    $date = time();
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC, poll_id DESC LIMIT 0,1 ", $FD->sql()->conn() );
-    $poll_arr = mysql_fetch_assoc($index);
+    $poll_arr = $FD->sql()->getRow("poll", "*", array(
+        'W' => "`poll_end` > ".$FD->env('date')." AND `poll_start` < ".$FD->env('date'),
+        'O' => "`poll_start` DESC, `poll_id` DESC",
+        'L' => "0,1"
+    ));
 }
-
 
 //////////////////////////
 //// View Result      ////
 //////////////////////////
-if ((isset($_POST['poll_id']) && ($_POST['poll_id'] == $poll_arr['poll_id'] || $poll_arr['random'] === true))
+if ((isset($_POST['poll_id']) && ($_POST['poll_id'] === $poll_arr['poll_id'] || $poll_arr['random'] === true))
     || checkVotedPoll($poll_arr['poll_id'])
-    || time() > $poll_arr['poll_end']
+    || (isset($poll_arr['poll_end']) && time() > $poll_arr['poll_end'])
 )
 {
     if ($poll_arr['random'] === true && isset($_POST['poll_id'])) {
         $poll_arr['poll_id'] = $_POST['poll_id'];
         settype($poll_arr['poll_id'], "integer");
     }
-    
+
     $voted = checkVotedPoll($poll_arr['poll_id']);
     $voter_ip = $_SERVER['REMOTE_ADDR'];
 
     $date = time();
     $index = mysql_query("select * from ".$global_config_arr['pref']."poll where poll_id = ".$poll_arr['poll_id']."", $FD->sql()->conn() );
     $poll_arr = mysql_fetch_assoc($index);
-    
-    echo "fuer ".$_POST['answer'];
+
     // Yay! New vote
     if ($poll_arr['poll_end'] > $date && $voted == false)
     {
@@ -158,7 +158,8 @@ if ((isset($_POST['poll_id']) && ($_POST['poll_id'] == $poll_arr['poll_id'] || $
 //////////////////////////
 //// Display Poll     ////
 //////////////////////////
-elseif (!checkVotedPoll($poll_arr['poll_id']) && !empty($poll_arr)) {
+
+elseif (!checkVotedPoll($poll_arr['poll_id']) && isset($poll_arr['poll_id'])) {
 
     $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $TEXT['frontend']->get("multiple_choise") : $TEXT['frontend']->get("single_choice");
 

@@ -4,7 +4,22 @@
 //// Screenshot hochladen ///
 /////////////////////////////
 
-if (!empty($_FILES['cimg']['name']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
+if(!isset($_POST['oldname']))   $_POST['oldname'] = 0;
+if(!isset($_POST['newname']))   $_POST['newname'] = '';
+if(!isset($_POST['cat']))       $_POST['cat'] = '';
+if(!isset($_POST['thumb']))     $_POST['thumb'] = 0;
+if(!isset($_POST['width']))     $_POST['width'] = '';
+if(!isset($_POST['height']))    $_POST['height'] = '';
+
+$catsqry = mysql_query("SELECT * FROM `".$global_config_arr['pref']."cimg_cats`");
+$cats = array();
+while(($cat = mysql_fetch_assoc($catsqry)) !== false){
+    $cats[] = $cat;
+}
+
+unset($catsqry, $cat);
+
+if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
 {
   if ($_POST['thumb'] == 1) {
       $make_thumb = true;
@@ -12,22 +27,25 @@ if (!empty($_FILES['cimg']['name']) AND ($_POST['newname'] OR $_POST['oldname'] 
       $make_thumb = false;
   }
 
+  $oldname_data = pathinfo($_FILES['cimg']['name'], PATHINFO_EXTENSION);
+  
   if ($_POST['oldname'] == 1) {
-      $oldname_data = pathinfo($_FILES['cimg']['name']);
-      $_POST['newname'] = basename ($_FILES['cimg']['name'],".".$oldname_data['extension']);
+      $_POST['newname'] = basename ($_FILES['cimg']['name'],".".$oldname_data);
   }
 
+  settype ($_POST['cat'],integer);
   settype ($_POST['width'],integer);
   settype ($_POST['height'],integer);
   
-  if (!image_exists("images/content/",$_POST[newname])  AND !image_exists("images/content/",$_POST[newname]."_s"))
+  if (!image_exists("media/content/",$_POST[newname])  AND !image_exists("media/content/",$_POST[newname]."_s"))
   {
-    $upload = upload_img($_FILES['cimg'], "images/content/", $_POST['newname'], 1024*1024, 9999, 9999);
+    $upload = upload_img($_FILES['cimg'], "media/content/", $_POST['newname'], 1024*1024, 9999, 9999);
     $message = upload_img_notice ( $upload );
     if ($make_thumb) {
-      $thumb = create_thumb_from ( image_url ( "images/content/", $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
+      $thumb = create_thumb_from ( image_url ( "media/content/", $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
       $message .= "<br>" . create_thumb_notice ( $thumb );
     }
+    mysql_query("INSERT INTO `".$global_config_arr['pref']."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".mysql_real_escape_string($_POST['newname'])."', '".mysql_real_escape_string($oldname_data)."', ".intval($_POST['thumb']).", ".intval($_POST['cat']).")");
     unset($_POST['width']);
     unset($_POST['height']);
     unset($_POST['oldname']);
@@ -62,18 +80,13 @@ if (!empty($_FILES['cimg']['name']) AND ($_POST['newname'] OR $_POST['oldname'] 
       systext($error_message);
     }
 
-    if (!isset($_POST['oldname']))
-        $_POST['oldname'] = 1;
-        
-    if (!isset($_POST['thumb']))
-        $_POST['thumb'] = 0;        
+
     
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="cimg_add" name="go">
-                        <input type="hidden" name="sended" value="upload">
-                        <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>Inhaltsbilder hinzufügen</h3><hr></td></tr>
+                        <input type="hidden" name="sended" value="">
+                        <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
@@ -90,19 +103,10 @@ echo'
                                     <font class="small">Soll das Bild den ursprünglichen Namen behalten?</font>
                                 </td>
                                 <td class="config" valign="middle">
-                                  <img class="checkbox" src="images/checkbox.png" alt="[_]">
-                                  <input class="hidden" type="checkbox" name="oldname" id="newname" value="1"';
-                                  if ($_POST['oldname'] == 1)
-                                    echo ' checked ';
-echo'
-                                   onChange="$(\'#new_name_tr\').toggle(!$(this).prop(\'checked\'))">
+                                  <input class="text" type="checkbox" name="oldname" id="newname" value="1"'.getchecked($_POST['oldname'], 1).'/>
                                 </td>
                             </tr>
-                            <tr id="new_name_tr" class="';
-                                  if ($_POST['oldname'] == 1)
-                                    echo 'hidden';
-echo'
-                            ">
+                            <tr>
                                 <td valign="top" class="config">
                                     Neuer Bildname:<br>
                                     <font class="small">ohne Dateiendung</font>
@@ -111,27 +115,37 @@ echo'
                                     <input class="text" name="newname" id="newname" size="25" maxlength="100" value="'.$_POST['newname'].'"><br>
                                     <font class="small">Erstellt das Bild als <b>bildname.jpg/.gif/.png</b> (s.o.)</font>
                                 </td>
-                            </tr>
+                            </tr>';
+if(count($cats) > 0){
+    $echo = '
+                            <tr>
+                                <td valign="top" class="config">
+                                    Kategorie:<br>
+                                    <font class="small">ohne Dateiendung</font>
+                                </td>
+                                <td valign="top" class="config">
+                                    <select name="cat">
+                                        <option value="0"'.getselected($_POST['cat'], 0).'>Keine Kategorie</option>';
+    foreach($cats as $cat){
+        $echo .= '                                        <option title="'.$cat['description'].'" value="'.$cat['id'].'"'.getselected($_POST['cat'], $cat['id']).'>'.$cat['name'].'</option>';
+    }
+    echo $echo.'
+                                    </select>
+                                </td>
+                            </tr>';
+}
+echo '
                             <tr>
                                 <td class="config" valign="top">
                                     Thumbnail:<br>
                                     <font class="small">Soll ein Thumbnail (Vorschaubild) erstellt werden?</font>
                                 </td>
                                 <td class="config" valign="middle">
-                                  <img class="checkbox middle" src="images/checkbox.png" alt="[_]">
-                                  <input class="hidden" type="checkbox" name="thumb" id="thumb" value="1"';
-                                  if ($_POST['thumb'] == 1)
-                                    echo ' checked ';
-echo'
-                                   onChange="$(\'#thumb_tr\').toggle($(this).prop(\'checked\'))" >
-                                  <label class="small" for="thumb">Erstellt ein Thumbnail als <b>bildname_s.jpg/.gif/.png</b> (s.o.)</label>
+                                  <input class="text" style="vertical-align:middle;" type="checkbox" name="thumb" value="1"'.getchecked($_POST['thumb'], 1).'/>
+                                  <font class="small">Erstellt ein Thumbnail als <b>bildname_s.jpg/.gif/.png</b> (s.o.)</font>
                                 </td>
                             </tr>
-                            <tr id="thumb_tr" class="';
-                                  if ($_POST['thumb'] != 1)
-                                    echo 'hidden';
-echo'
-                            ">
+                            <tr>
                                 <td class="config" valign="top">
                                     Thumbnail-Maße: <font class="small">(Breite x Höhe)</font><br />
                                     <font class="small">Max. Abemsseungen des Thumbnails.</font>
