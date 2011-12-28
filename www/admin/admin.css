@@ -813,3 +813,37 @@ a.tooltip:hover span, a.tooltip:focus span {
     background-color: #C24949;
     font-weight:bold;
 }
+
+/**************************************************/
+/* tooltip styles */
+/**************************************************/
+
+.tooltip > div{
+  width: 255px;
+  background-image: url("./img/tt_2.jpg");
+  padding: 10px 0px 0px 5px;
+}
+
+.tooltip > div > table{
+  margin-top: -20px;
+}
+
+.tooltip > div > table > tbody  tr{
+  height: 36px;
+}
+
+.tooltip > div > table > tbody  tr > td + td{
+  background-image: url("./img/tt_h2.jpg");
+  font-weight: bold;
+  vertical-align: top;
+  font-size: 10pt;
+  padding-left: 5px;
+  width: 205px;
+  padding-top: 2px;
+}
+
+.tooltip > div > table > tbody  tr + tr > td{
+  font-size: 8pt;
+  padding-left: 20px;
+  padding-top: 5px;
+}

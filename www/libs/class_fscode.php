@@ -14,10 +14,7 @@ class fscode{
   private $smilie = true;     // anable smilies?
   private $codes  = array();  // the defined fs-codes
   private $flags  = array();  // flags
-  private $callbacktypes = array("simple_replace",
-                                "simple_replace_single",
-                                "callback_replace",
-                                "callback_replace_single",
+  private $callbacktypes = array("callback_replace",
                                 "usecontent",
                                 "usecontent?",
                                 "callback_replace?");
@@ -26,7 +23,7 @@ class fscode{
 	public function __construct(){
     global $sql;
     //load codes and flags
-    $this->codes = $sql->getData("fscodes", "*", "WHERE `active`=1");
+    $this->codes = $sql->getData("fscodes", "*");
     $this->codes = $this->codes == 0 ? array() : $this->codes;
     $this->flags = $sql->getData("fscodes_flag", "*");
     $this->flags = $this->flags == 0 ? array() : $this->flags;
@@ -57,20 +54,16 @@ class fscode{
       foreach($this->codes as $code){
         if($code[active] == 1 && (($user == true && $code[userusage] == 1) || $user == false)){ // fs-code ist definiert & darf benutzt werden
           // callback funktion erzeugen
-          if($code[callbacktype] == 0 || $code[callbacktype] == 1)
-            $callbackfunc = null;
-          elseif($code[php] != "") // php benutzbar
+          if(trim($code[php]) != "") // php benutzbar
             $callbackfunc = create_function('$action, $attributes, $content, $params, $node_object', $code[php]);
           else
-            $callbackfunc = create_function('$action, $attributes, $content, $params, $node_object', 'if($action==\'validate\'){return true;}if(isset($attributes[\'default\'])){return str_replace(array("{..x..}","{..y..}"),array(htmlspecialchars($content),htmlspecialchars($attributes[\'default\'])),"'.addslashes($code[param_2]).'");}return str_replace("{..x..}",htmlspecialchars($content),"'.addslashes($code[param_1]).'");');
+            $callbackfunc = create_function('$action, $attributes, $content, $params, $node_object', 'if($action==\'validate\'){return true;}if(isset($attributes[\'default\'])){return str_replace(array("{..x..}","{..y..}"),array($content,$attributes[\'default\']),"'.addslashes($code[param_2]).'");}return str_replace("{..x..}",$content,"'.addslashes($code[param_1]).'");');
 
           // usercontent? und callback_replace?-attribute
-          if($code[callbacktype] == 5)
+          if($code[callbacktype] == 2)
             $params = array ('usecontent_param' => 'default');
-          elseif($code[callbacktype] == 6)
+          elseif($code[callbacktype] == 3)
             $params = array ('callback_replace_param' => 'default');
-          elseif($code[callbacktype]==0)
-            $params = array ('start_tag' => $code[param_1], 'end_tag' => $code[param_2]);
           else
             $params = array();
 
@@ -96,16 +89,13 @@ class fscode{
           // unset vars
           unset($callbackfunc, $params, $allowin, $disallowin);
 
-          // absatzbehandlung
-          if($code[allowparagraphes] == 0)
-            $this->parser->setCodeFlag($code[name], 'paragraphs', false);
         }
       }
 
       foreach($this->flags as $flag){
-        $codename = $sql->getData("fscodes", "`name`, `active`, `userusage`", "WHERE `id`=".$flag[code],1);
+        $codename = $sql->getData("fscodes", "name, active, userusage", "WHERE `name`='".$flag[code]."'",1);
         unset($convert);
-        $convert = $this->convert($flag[name], $flag[value], $flag[code]);
+        $convert = $this->convert($flag[name], $flag[value]);
         if($convert != false && $codename[active] == 1 && (($codename[userusage] == 1 && $user == true) || $user == false)){
           $this->parser->setCodeFlag($codename[name], $convert[0], $convert[1]);
         }
@@ -127,7 +117,7 @@ class fscode{
     return $this->parser->parse($text);
   }
 
-  private function convert($name, $value, $code){
+  private function convert($name, $value){
     $name = intval($name);
     if($name > 0 && $name < 9){
       $value = intval($value);

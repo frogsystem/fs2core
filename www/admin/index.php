@@ -24,6 +24,7 @@ require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
 require ( FS2_ROOT_PATH . "libs/class_adminpage.php");
 require ( FS2_ROOT_PATH . "libs/class_search.php");
 require ( FS2_ROOT_PATH . "libs/class_searchIndex.php" );
+require ( FS2_ROOT_PATH . "libs/class_fscode.php");
 require ( FS2_ROOT_PATH . "libs/class_admin_selectlist.php");
 require ( FS2_ROOT_PATH . "libs/class_admin_deletepage.php");
 
@@ -35,6 +36,8 @@ $TEXT['admin']    = new langDataInit ( $global_config_arr['language_text'], "adm
 $TEXT['menu']     = new langDataInit ( $global_config_arr['language_text'], "menu" );
 $TEXT['frontend'] = new langDataInit ( $global_config_arr['language_text'], "frontend" );
 $TEXT['template'] = new langDataInit ( $global_config_arr['language_text'], "template" );
+
+$fscode = new fscode();
 
 
 ######################

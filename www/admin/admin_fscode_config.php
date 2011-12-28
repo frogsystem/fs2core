@@ -20,11 +20,11 @@ unset($tmp, $tmp2);
 //conditions
 $adminpage->addCond("image", $data[image]);
 //phrases
-$adminpage->addPhrase("file_max_size",    $data[file_size]);
-$adminpage->addPhrase("file_max_width",   $data[file_height]);
-$adminpage->addPhrase("file_max_height",  $data[file_width]);
-$adminpage->addPhrase("submitarrow",      $admin_phrases[common][arrow]);
-$adminpage->addPhrase("submittext",       $admin_phrases[common][save_long]);
+$adminpage->addText("file_max_size",    $data[file_size]);
+$adminpage->addText("file_max_width",   $data[file_height]);
+$adminpage->addText("file_max_height",  $data[file_width]);
+$adminpage->addText("submitarrow",      $admin_phrases[common][arrow]);
+$adminpage->addText("submittext",       $admin_phrases[common][save_long]);
 echo $adminpage->get("main");
 
 ?>

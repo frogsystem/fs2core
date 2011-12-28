@@ -28,11 +28,14 @@ if ( $db ) {
     require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
     require ( FS2_ROOT_PATH . "libs/class_search.php" );
     require ( FS2_ROOT_PATH . "libs/class_searchIndex.php" );
+    require ( FS2_ROOT_PATH . "libs/class_fscode.php" );
 
     //Include Phrases-Files
     require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
     $TEXT = new langDataInit ( $global_config_arr['language_text'], "frontend" );
 
+    // Load FS-Codes
+    $fscode = new fscode();
 
     // Constructor Calls
     delete_old_randoms ();
@@ -50,14 +53,14 @@ if ( $db ) {
     $theTemplate->load("MAIN");
     $theTemplate->tag("content", get_content ( $global_config_arr['goto'] ));
     $theTemplate->tag("copyright",  get_copyright ());
-    
+
     $template_general = (string) $theTemplate;
     $template_general = replace_snippets ( $template_general );
     $template_general = replace_navigations ( $template_general );
     $template_general = replace_applets ( $template_general );
     $template_general = replace_navigations ( $template_general );
     $template_general = replace_snippets ( $template_general );
-    
+
     $template_general = replace_globalvars ( $template_general );
 
     // Display Page

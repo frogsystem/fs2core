@@ -1,47 +1,9 @@
-<!--DEF::overview-->            <table border="0" cellpadding="4" cellspacing="0" width="600">
-              <tr>
-                <td class="line" colspan="4">
-                  <!--LANG::overview_topic-->
-                </td>
-              </tr>
-              <tr>
-                <td colspan="4" class="space"></td>
-              </tr>
-              <tr>
-                <td class="config"><!--LANG::overview_table_name--></td>
-                <td class="config"><!--LANG::overview_table_added--></td>
-                <td class="config"><!--LANG::overview_table_edited--></td>
-                <td class="config"><!--LANG::overview_table_action--></td>
-              </tr>
-<!--PHRASE::item-->
-            </table><!--ENDDEF-->
-
-<!--DEF::overview_item-->                  <tr>
-                <td class="config"><!--PHRASE::name--></td>
-                <td class="config">
-                  <!--PHRASE::add_date-->
-                  <!--LANG::overview_table_added_by-->
-                  <a href="../?go=profil&amp;userid=<!--PHRASE::add_user_id-->" target="_blank">
-                    <!--PHRASE::add_user_name-->
-                  </a>
-                </td>
-                <td class="config">
-                  <!--IF::edited?1--><!--PHRASE::edit_date-->
-                  <!--LANG::overview_table_edited_by-->
-                  <a href="../?go=profil&amp;userid=<!--PHRASE::edit_user_id-->" target="_blank">
-                    <!--PHRASE::edit_user_name-->
-                  </a><!--ELSE--><!--LANG::overview_table_edited_never--><!--ENDIF-->
-                </td>
-                <td class="config">
-                  [<a href="?go=fscode_edit&amp;action=edit&amp;code=<!--PHRASE::name-->" target="_self"><!--LANG::overview_table_action_edit--></a>]
-                  <br>
-                  [<a href="?go=fscode_edit&amp;action=delete&amp;code=<!--PHRASE::name-->" target="_self" onclick="return confirm('FS Code wirklich löschen?');"><!--LANG::overview_table_action_remove--></a>]
-                </td>
-              </tr>
-<!--ENDDEF-->
-
-<!--DEF::detail-->
-          <form action="" method="post" enctype="multipart/form-data">
+<!--DEF::detail--><!--IF::simple?1-->        <div style="text-align: center; font-weight: bold;">
+            <a<!--IF::advanced?1--><!--ELSE--> style="font-weight: bold;"<!--ENDIF--> href="?go=fscode_edit&amp;action=edit&amp;code=<!--TEXT::name-->"><!--LANG::simple--></a>
+            -
+            <a<!--IF::advanced?1--> style="font-weight: bold;"<!--ENDIF--> href="?go=fscode_edit&amp;mode=advanced&amp;action=edit&amp;code=<!--TEXT::name-->"><!--LANG::advanced--></a>
+          </div>
+<!--ENDIF-->          <form action="?go=fscode_edit&amp;code=<!--TEXT::name-->" method="post" enctype="multipart/form-data">
             <script type="text/javascript">
               <!--
                 Array.prototype.contains = function(val){
@@ -52,7 +14,7 @@
                   return false;
                 }
 
-                var definedcodes = new Array(<!--PHRASE::codenames-->);
+                var definedcodes = new Array(<!--TEXT::codenames-->);
                 function checkcode(){
                   if(definedcodes.contains($('#codename').val()))
                     $('#namehint_1').css("display", "table-row");
@@ -62,7 +24,7 @@
                     $('#namehint_1').css("display", "none");
                     $('#namehint_2').css("display", "none");
                   }
-                }
+                }<!--IF::advanced?1-->
 
                 function setflag(valuefield, value){
                   var selectflag = "<!--LANG::detail_flag_choose-->";
@@ -106,12 +68,12 @@
                       options[1] = "BBCODE_NEWLINE_IGNORE";
                       options[2] = "BBCODE_NEWLINE_DROP";
                   }
-                  var output = '<select name="flag[1][]" class="input_width">\n';
+                  var output = '<'+'select name="flag[1][]" class="input_width"'+'>\n';
                   for(var i = 0; i < options.length; i++){
                     output += '<option value="'+i+'"';
                     if(i==optionselect)
                       output += " selected";
-                    output += ">"+options[i]+"</option>\n";
+                    output += ">"+options[i]+"<"+"/option"+">\n";
                   }
                   valuefield.innerHTML = output;
                   newflag();
@@ -123,16 +85,16 @@
                   var td2 = document.createElement("td");
                   td1.setAttribute("class", "config");
                   td2.setAttribute("class", "config");
-                  td1.innerHTML = '<select name="flag[0][]" onchange="setflag(this.parentNode.parentNode.childNodes[1], this.value);">\n<option value="0"></option>\n<option value="1">case_sensitive</option>\n<option value="2">closetag</option>\n<option value="3">opentag.before.newline</option>\n<option value="4">opentag.after.newline</option>\n<option value="5">closetag.before.newline</option>\n<option value="6">closetag.after.newline</option>\n<option value="7">paragraph_type</option>\n<option value="8">paragraphs</option>\n</select>\n';
-                  td2.innerHTML = 'Wähle ein Flag!';
+                  td1.innerHTML = '<'+'select name="flag[0][]" onchange="setflag(this.parentNode.parentNode.childNodes[1], this.value);"'+'>\n<'+'option value="0"'+'><'+'/option'+'>\n<'+'option value="1"'+'>case_sensitive<'+'/option'+'>\n<'+'option value="2"'+'>closetag<'+'/option'+'>\n<'+'option value="3"'+'>opentag.before.newline<'+'/option'+'>\n<'+'option value="4"'+'>opentag.after.newline<'+'/option'+'>\n<'+'option value="5"'+'>closetag.before.newline<'+'/option'+'>\n<'+'option value="6"'+'>closetag.after.newline<'+'/option'+'>\n<'+'option value="7"'+'>paragraph_type<'+'/option'+'>\n<'+'option value="8"'+'>paragraphs<'+'/option'+'>\n<'+'/select'+'>\n';
+                  td2.innerHTML = '<!--TEXT::detail_flag_choose-->';
                   flag.appendChild(td1);
                   flag.appendChild(td2);
                   $('tbody#flags').get(0).appendChild(flag);
                   $('input#numflags').val(parseInt($('input#numflags').val()) - 1);
-                }
+                }<!--ENDIF-->
               //-->
             </script>
-            <script src="<!--PHRASE::FSROOT-->resources/codemirror/js/codemirror.js" type="text/javascript"></script>
+            <script src="<!--TEXT::FSROOT-->resources/codemirror/js/codemirror.js" type="text/javascript"></script>
             <!-- CSS-Definitions for IE-Browsers -->
             <!--[if IE]>
                 <style type="text/css">
@@ -161,41 +123,45 @@
             </noscript>
             <input type="hidden" value="fscode_edit" name="go">
             <input type="hidden" value="1" name="numflags" id="numflags">
-            <input type="hidden" value="<!--PHRASE::id-->" name="id" id="id">
+            <input type="hidden" value="<!--TEXT::name-->" name="fscode_id[]">
+            <input type="hidden" value="<!--TEXT::name-->" name="oldname">
             <table border="0" cellpadding="4" cellspacing="0" width="600">
               <tbody>
                 <tr>
-                  <td class="line" colspan="2">
+                  <td class="line" colspan="3">
                     <!--LANG::detail_head-->
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="2" class="space"></td>
+                  <td colspan="3" class="space"></td>
                 </tr>
                 <tr>
                   <td class="config" valign="top">
                     <!--LANG::detail_name-->
                   </td>
-                  <td class="config" valign="top">
-                    <input type="text" name="name" onkeyup="checkcode();" id="codename" class="text input_width" value="<!--PHRASE::name-->">
+                  <td class="config" valign="top" colspan="2">
+                    <input type="text" name="name" onkeyup="checkcode();" id="codename" class="text input_width" value="<!--TEXT::name-->">
                   </td>
                 </tr>
                 <tr id="namehint_1" style="display: none;">
-                  <td colspan="2"  class="config" style="text-align: right;">
+                  <td colspan="3"  class="config" style="text-align: right;">
                     <!--LANG::detail_name_hint_1-->
                   </td>
                 </tr>
                 <tr id="namehint_2" style="display: none;">
-                  <td colspan="2"  class="config" style="text-align: right;">
+                  <td colspan="3"  class="config" style="text-align: right;">
                     <!--LANG::detail_name_hint_2-->
                   </td>
-                </tr>
+                </tr><!--IF::advanced?1-->
                 <tr>
                   <td class="config" valign="top">
                     <!--LANG::detail_contenttype-->
                   </td>
                   <td class="config" valign="top">
-                    <input type="text" name="contenttype" id="contenttype" class="text input_width" value="<!--PHRASE::contenttype-->">
+                    <input type="text" name="contenttype" id="contenttype" class="text input_width" value="<!--TEXT::contenttype-->">
+                  </td>
+                  <td>
+                    <img src="./img/help.jpg" alt="help_ctt" title="<!--LANG::helpnote-->">
                   </td>
                 </tr>
                 <tr>
@@ -203,7 +169,10 @@
                     <!--LANG::detail_allowin-->
                   </td>
                   <td class="config" valign="top">
-                    <input type="text" name="allowin" value="<!--PHRASE::allowin-->" id="allowedin" class="text input_width">
+                    <input type="text" name="allowin" value="<!--TEXT::allowin-->" id="allowedin" class="text input_width">
+                  </td>
+                  <td>
+                    <img src="./img/help.jpg" alt="help_ai" title="<!--LANG::helpnote-->">
                   </td>
                 </tr>
                 <tr>
@@ -211,7 +180,10 @@
                      <!--LANG::detail_disallowin-->
                   </td>
                   <td class="config" valign="top">
-                    <input type="text" name="disallowin" value="<!--PHRASE::disallowin-->" id="disallowedin" class="text input_width">
+                    <input type="text" name="disallowin" value="<!--TEXT::disallowin-->" id="disallowedin" class="text input_width">
+                  </td>
+                  <td>
+                    <img src="./img/help.jpg" alt="help_nai" title="<!--LANG::helpnote-->">
                   </td>
                 </tr>
                 <tr>
@@ -220,16 +192,26 @@
                   </td>
                   <td class="config" valign="top">
                     <select name="callbacktype" class="input_width">
-                      <option value="0"<!--IF::callbacktype?0--> selected<!--ENDIF-->>simple_replace</option>
-                      <option value="1"<!--IF::callbacktype?1--> selected<!--ENDIF-->>simple_replace_single</option>
-                      <option value="2"<!--IF::callbacktype?2--> selected<!--ENDIF-->>callback_replace</option>
-                      <option value="3"<!--IF::callbacktype?3--> selected<!--ENDIF-->>callback_replace_single</option>
-                      <option value="4"<!--IF::callbacktype?4--> selected<!--ENDIF-->>usecontent</option>
-                      <option value="5"<!--IF::callbacktype?5--> selected<!--ENDIF-->>usecontent?</option>
-                      <option value="6"<!--IF::callbacktype?6--> selected<!--ENDIF-->>callback_replace?</option>
+                      <option value="0" <!--IF::callbacktype?0-->selected<!--ENDIF-->>callback_replace</option>
+                      <option value="1" <!--IF::callbacktype?1-->selected<!--ENDIF-->>usecontent</option>
+                      <option value="2" <!--IF::callbacktype?2-->selected<!--ENDIF-->>usecontent?</option>
+                      <option value="3" <!--IF::callbacktype?3-->selected<!--ENDIF-->>callback_replace?</option>
                     </select>
                   </td>
-                </tr>
+                  <td>
+                    <img src="./img/help.jpg" alt="help_cbt" title="<!--LANG::helpnote-->">
+                  </td>
+                </tr><!--ENDIF--><!--IF::groups?0--><!--ELSE-->
+                <tr>
+                  <td class="config" valign="top">
+                     <!--LANG::group-->
+                  </td>
+                  <td class="config" valign="top" colspan="2">
+                    <select name="group" class="input_width">
+                      <option value="0" style="font-style: italic;"<!--IF::group?0--> selected<!--ENDIF-->><!--LANG::nogroup--></option><!--TEXT::othergroups-->
+                    </select>
+                  </td>
+                </tr><!--ENDIF-->
                 <tr id="icon">
                   <td class="config" valign="top">
                      <!--LANG::detail_icon--><br>
@@ -238,34 +220,40 @@
                   <td class="config" valign="top">
                     <input type="file" name="icon" class="text input_width">
                   </td>
+                  <td>
+                    <img src="./img/help.jpg" alt="help_ico" title="<!--LANG::helpnote-->">
+                  </td>
                 </tr>
                 <tr>
                   <td class="config" valign="top">
                      <!--LANG::detail_active-->
                   </td>
-                  <td class="config" valign="top">
+                  <td class="config" valign="top" colspan="2">
                     <input type="radio" name="active" value="1"<!--IF::active?1--> checked<!--ENDIF-->> <!--LANG::detail_active_y--><br>
                     <input type="radio" name="active" value="0"<!--IF::active?0--> checked<!--ENDIF-->> <!--LANG::detail_active_n--><br>
                   </td>
-                </tr>
+                </tr><!--IF::advanced?1-->
                 <tr>
-                  <td colspan="2" class="space"></td>
+                  <td colspan="3" class="space"></td>
                 </tr>
                 <tr>
                   <td class="line" colspan="2">
                     <!--LANG::detail_flag-->
+                  </td>
+                  <td>
+                    <img src="./img/help.jpg" alt="help_flg" title="<!--LANG::helpnote-->">
                   </td>
                 </tr>
                 <tr>
                   <td class="config" valign="top">
                     <!--LANG::detail_flag_name-->
                   </td>
-                  <td class="config" valign="top">
+                  <td class="config" valign="top" colspan="2">
                     <!--LANG::detail_flag_value-->
                   </td>
                 </tr>
               </tbody>
-              <tbody id="flags"><!--PHRASE::flags-->
+              <tbody id="flags"><!--TEXT::flags-->
                 <tr>
                   <td class="config" valign="top">
                      <select name="flag[0][]" onchange="setflag(this.parentNode.parentNode.childNodes[3], this.value);">
@@ -280,27 +268,27 @@
                       <option value="8">paragraphs</option>
                     </select>
                   </td>
-                  <td class="config" valign="top">
+                  <td class="config" valign="top" colspan="2">
                     <!--LANG::detail_flag_choose-->
                   </td>
                 </tr>
               </tbody>
               <tbody>
                 <tr>
-                  <td class="config" colspan="2">
+                  <td class="config" colspan="3">
                     <input type="submit" name="addflag" value="Flag hinzuf&uuml;gen" class="text">
                   </td>
+                </tr><!--ENDIF-->
+                <tr>
+                  <td colspan="3" class="space"></td>
                 </tr>
                 <tr>
-                  <td colspan="2" class="space"></td>
-                </tr>
-                <tr>
-                  <td class="line" colspan="2">
+                  <td class="line" colspan="3">
                     <!--LANG::detail_replace-->
                   </td>
                 </tr>
                 <tr>
-                  <td class="config" valign="top" colspan="2">
+                  <td class="config" valign="top" colspan="3">
                     <!-- Editor-Bars with Buttons and Dropdowns -->
 
                     <div class="html-editor-bar" id="param_1_editor-bar">
@@ -312,17 +300,17 @@
                         <div class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,'editor_param_1')" title="Zeilen-Nummerierung">
                             <img src="img/null.gif" alt="Zeilen-Nummerierung" border="0">
                         </div>
-                        <!--PHRASE::taglist_1-->
-                        <!--PHRASE::global_vars_1-->
-                        <!--PHRASE::applets_1-->
-                        <!--PHRASE::snippets_1-->
+                        <!--TEXT::taglist_1-->
+                        <!--TEXT::global_vars_1-->
+                        <!--TEXT::applets_1-->
+                        <!--TEXT::snippets_1-->
                       </div>
                     </div>
 
                     <!-- Editor and original Editor -->
 
                     <div id="param_1_content" style="background-color:#ffffff; border: 1px solid #999999; width:100%;">
-                      <textarea class="no-js-html-editor"  rows="20" cols="66" name="param_1" id="param_1"><!--PHRASE::value_1--></textarea>
+                      <textarea class="no-js-html-editor"  rows="20" cols="66" name="param_1" id="param_1"><!--TEXT::value_1--></textarea>
                     </div>
                     <script type="text/javascript">
                       editor_param_1 = new_editor ( "param_1", "325", false, 1 );
@@ -337,9 +325,9 @@
                     </div>
                   </td>
                 </tr>
-                <tr><td class="space"></td></tr>
+                <tr><td class="space" colspan="3"></td></tr>
                 <tr>
-                  <td class="config" valign="top" colspan="2">
+                  <td class="config" valign="top" colspan="3">
                     <!-- Editor-Bars with Buttons and Dropdowns -->
 
                     <div class="html-editor-bar" id="param_2_editor-bar">
@@ -351,17 +339,17 @@
                         <div class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,'editor_param_2')" title="Zeilen-Nummerierung">
                             <img src="img/null.gif" alt="Zeilen-Nummerierung" border="0">
                         </div>
-                        <!--PHRASE::taglist_2-->
-                        <!--PHRASE::global_vars_2-->
-                        <!--PHRASE::applets_2-->
-                        <!--PHRASE::snippets_2-->
+                        <!--TEXT::taglist_2-->
+                        <!--TEXT::global_vars_2-->
+                        <!--TEXT::applets_2-->
+                        <!--TEXT::snippets_2-->
                       </div>
                     </div>
 
                     <!-- Editor and original Editor -->
 
                     <div id="param_2_content" style="background-color:#ffffff; border: 1px solid #999999; width:100%;">
-                      <textarea class="no-js-html-editor" rows="20" cols="66" name="param_2" id="param_2"><!--PHRASE::value_2--></textarea>
+                      <textarea class="no-js-html-editor" rows="20" cols="66" name="param_2" id="param_2"><!--TEXT::value_2--></textarea>
                     </div>
                     <script type="text/javascript">
                       editor_param_2 = new_editor ( "param_2", "325", false, 1 );
@@ -376,10 +364,10 @@
                     </div>
                   </td>
                 </tr>
-                <!--IF::php?1-->
-                <tr><td class="space"></td></tr>
+                <!--IF::advanced?1--><!--IF::php?1-->
+                <tr><td class="space" colspan="3"></td></tr>
                 <tr>
-                  <td class="config" valign="top" colspan="2">
+                  <td class="config" valign="top" colspan="3">
                     <!-- Editor-Bars with Buttons and Dropdowns -->
 
                     <div class="html-editor-bar" id="php_editor-bar">
@@ -396,7 +384,7 @@
                     <!-- Editor and original Editor -->
 
                     <div id="php_content" style="background-color:#ffffff; border: 1px solid #999999; width:100%;">
-                      <textarea class="no-js-html-editor" rows="20" cols="66" name="php" id="php"><!--PHRASE::value_php--></textarea>
+                      <textarea class="no-js-html-editor" rows="20" cols="66" name="php" id="php"><!--TEXT::value_php--></textarea>
                     </div>
                     <script type="text/javascript">
                       editor_php = new_editor ( "php", "325", false, 4 );
@@ -411,19 +399,29 @@
                     </div>
                   </td>
                 </tr>
-                <!--ENDIF-->
-                <tr><td class="space"></td></tr>
+                <!--ENDIF--><!--ENDIF-->
+                <tr><td class="space" colspan="3"></td></tr>
                 <tr>
-                  <td colspan="2" class="buttontd">
+                  <td colspan="3" class="buttontd">
                     <button class="button_new" type="submit" name="editcode">
-                      <!--PHRASE::submitarrow-->
-                      <!--PHRASE::submittext-->
+                      <!--TEXT::submitarrow-->
+                      <!--TEXT::submittext-->
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-          </form><!--ENDDEF-->
+          </form>
+          <script type="text/javascript">
+            <!--
+              <!--IF::advanced?1-->setupToolTip("img[alt='help_ctt']", "<!--LANG::help-->", "<!--LANG::help_1-->");
+              setupToolTip("img[alt='help_ai']",  "<!--LANG::help-->", "<!--LANG::help_2-->");
+              setupToolTip("img[alt='help_nai']", "<!--LANG::help-->", "<!--LANG::help_3-->");
+              setupToolTip("img[alt='help_cbt']", "<!--LANG::help-->", "<!--LANG::help_4-->");
+              setupToolTip("img[alt='help_flg']", "<!--LANG::help-->", "<!--LANG::help_6-->");
+              <!--ENDIF-->setupToolTip("img[alt='help_ico']", "<!--LANG::help-->", "<!--LANG::help_5-->");
+            //-->
+          </script><!--ENDDEF-->
 
 <!--DEF::flagselect-->                <tr>
                   <td class="config" valign="top">
@@ -468,3 +466,5 @@
                     </select>
                   </td>
                 </tr><!--ENDDEF-->
+<!--DEF::groups-->
+                      <option value="<!--TEXT::id-->"<!--IF::selected?1--> selected<!--ENDIF-->><!--TEXT::name--></option><!--ENDDEF-->

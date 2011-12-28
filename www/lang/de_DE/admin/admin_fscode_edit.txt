@@ -9,7 +9,9 @@ overview_table_edited_never:  Nie
 overview_table_action:        Aktion
 overview_table_action_edit:   bearbeiten
 overview_table_action_remove: löschen
+not_found:                    Keine Codes gefunden
 
+detail_not_found:     Einer oder mehrere der gewählten Codes existieren nicht.
 detail_head:          FS-Code bearbeiten
 detail_name:          Name des Codes
 detail_name_hint_1:   Hinweis: Ein FS-Code mit diesem Namen existiert bereits.
@@ -33,3 +35,25 @@ detail_replace_1_2:   Syntax: [code]Parameter[/code]
 detail_replace_2_1:   Ersetzung wenn beide Parameter angegeben sind
 detail_replace_2_2:   Syntax: [code='Parameter']Inhalt[/code]
 detail_replace_3:     PHP-Code
+nogroup:              Keine
+group:                Gruppe
+simple:               Einfache Ansicht
+advanced:             Erweiterte Ansicht
+
+delete_norights:    Es ist dir nicht erlaubt, diese Aktion auszuführen!
+delete_notdeleted:  Die Codes {..names..} konnten nicht gelöscht werden.
+delete_deleted:     Die Codes {..names..} wurden erfolgreich gelöscht.
+
+helpnote:         Um die Hilfe anzuzeigen muss Javascript aktiviert sein.
+help:             Hilfe
+help_1:           Der Inhaltstyp ist maßgebend für die Optionen \"Erlaubt in\" und \"Nicht erlaubt in\" der in diesem Code eingeschlossenen Codes.
+help_2:           Inhaltstypen der Codes, die diesen Code enthalten dürfen. In anderen Inhaltstypen wird dieser Code ignoriert.<br>Mehrere Inahltstypen werden durch Kommata getrennt.
+help_3:           Inhaltstypen der Codes, die diesen Code nicht enthalten dürfen. Der Code wird auch ignoriert, wenn ein im <i>Codebaum</i> übergeordneter Code einen der hier angegebenen Inhaltstypen aufweist.<br>Mehrere Inahltstypen werden durch Kommata getrennt.
+help_4:           Die Ersetzungsart.<br>Nähere Informationen können im entsprechenden Kapitel auf <a href=\"http://www.christian-seiler.de/projekte/php/bbcode/doc/de/kapitel2.php#behandlungsarten\">Christian-Seiler.de</a> eingeholt werden.
+help_5:           Das Icon, das im Editor angezeigt wird.<br>Wird für den zur Zeit aktiven Style gespeichert.
+help_6:           Ein Code-Flag.<br>Nähere Informationen können im entsprechenden Kapitel auf <a href=\"http://www.christian-seiler.de/projekte/php/bbcode/doc/de/kapitel6.php#flags\">Christian-Seiler.de</a> eingeholt werden.
+
+error_1:  Code erfolgreich bearbeitet.
+error_2:  Der Name des Code enthält ungültige Zeichen!"
+error_3:  Ein Code mit diesem Namen existiert bereits!
+error_4:  Fülle alle Pflichtfelder aus!
