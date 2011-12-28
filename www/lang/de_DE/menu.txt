@@ -318,3 +318,5 @@ page_title_fscode_edit_remove:  löschen
 page_link_fscode_edit_remove:   löschen
 page_title_fscode_settings:     Einstellungen
 page_link_fscode_settings:      Einstellungen
+page_title_fscode_groups:       Gruppen
+page_link_fscode_groups:        Gruppen

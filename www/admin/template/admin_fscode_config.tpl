@@ -11,7 +11,7 @@
                                 <span class="small"><!--LANG::file_max_size_info--></span>
                             </td>
                             <td class="config" style="width: 50%;">
-                                <input class="text" name="file_max_size" maxlength="3" value="<!--PHRASE::file_max_size-->" style="width: 30px;"> Byte
+                                <input class="text" name="file_max_size" maxlength="3" value="<!--TEXT::file_max_size-->" style="width: 30px;"> Byte
                             </td>
                           </tr>
                           <tr>
@@ -20,7 +20,7 @@
                                 <span class="small"><!--LANG::file_max_width_info--></span>
                             </td>
                             <td class="config" style="width: 50%;">
-                                <input class="text" name="file_max_width" maxlength="3" value="<!--PHRASE::file_max_width-->" style="width: 30px;"> px
+                                <input class="text" name="file_max_width" maxlength="3" value="<!--TEXT::file_max_width-->" style="width: 30px;"> px
                             </td>
                           </tr>
                           <tr>
@@ -29,7 +29,7 @@
                                 <span class="small"><!--LANG::file_max_height_info--></span>
                             </td>
                             <td class="config" style="width: 50%;">
-                                <input class="text" name="file_max_height" maxlength="3" value="<!--PHRASE::file_max_height-->" style="width: 30px;"> px
+                                <input class="text" name="file_max_height" maxlength="3" value="<!--TEXT::file_max_height-->" style="width: 30px;"> px
                             </td>
                           </tr>
                           <tr>
@@ -51,8 +51,8 @@
                           <tr>
                             <td colspan="2" class="buttontd">
                               <button class="button_new" type="submit" name="save">
-                                <!--PHRASE::submitarrow-->
-                                <!--PHRASE::submittext-->
+                                <!--TEXT::submitarrow-->
+                                <!--TEXT::submittext-->
                               </button>
                             </td>
                           </tr>

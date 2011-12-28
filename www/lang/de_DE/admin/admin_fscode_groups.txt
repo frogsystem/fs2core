@@ -1,0 +1,28 @@
+# Language-Definition for [FS2]/admin/template/admin_fscode_groups.tpl
+yes: Ja
+no: Nein
+add_head: Gruppe hinzufügen
+add_name: Name der Gruppe
+add_submittext: Gruppe hinzufügen
+edit_head: Gruppe bearbeiten
+edit_name: Name
+edit_action: Aktion
+edit_nogroups: Keine Gruppen definiert!
+row_edit: bearbeiten
+row_delete: löschen
+delete_head: Gruppe löschen
+delete_text: Soll die Gruppe &bdquo;<!--PHRASE::name-->&rdquo; wirklich gelöscht werden?
+delete_submit: Aktion ausführen
+notdefined: Die Gruppe ist nicht definiert.
+submitarrow:<img class="middle" src="img/pointer.png" alt="-&gt;">
+notdeleted: Gruppe wurde nicht gelöscht.
+delete_norights: Du hast nicht die Rechte, diese Aktion auszuführen.
+wrongchars: Der Name der Gruppe enthällt ungültige Zeichen.
+added: Gruppe erfolgreich hinzugefügt.
+added_error: Die Gruppe konnte nicht hinzugefügt werden.<br>Es trat ein SQL Fehler auf.<br>SQL meldet: <!--PHRASE::sql-->
+deleted: Gruppe erfolgreich gelöscht.
+deleted_error: Gruppe konnte nicht gelöscht werden<br>Es trat ein SQL Fehler auf.<br>SQL meldet: <!--PHRASE::sql-->
+edited_error: Gruppe konnte nicht bearbeitet werden<br>Es trat ein SQL Fehler auf.<br>SQL meldet: <!--PHRASE::sql-->
+edited: Gruppe erfolgreich bearbeitet.
+edit_head: Gruppe bearbeiten
+edit_submit: Gruppe bearbeiten

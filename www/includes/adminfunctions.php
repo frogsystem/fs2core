@@ -497,20 +497,20 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
     $buttons .= create_editor_seperator();
     $buttons .= create_editor_button_new('admin/editor/center.jpg', "CENTER", "zentriert", "insert('$name', '[center]', '[/center]')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/font.jpg', "FONT", "Schriftart", "insert_com('$name', 'font', 'Bitte gib die gewünschte Schriftart ein:', '')");
-    $buttons .= create_editor_button_new('admin/editor/color.jpg', "COLOR", "Schriftfarbe", "insert_com('$name', 'color', 'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein:', '')");
-    $buttons .= create_editor_button_new('admin/editor/size.jpg', "SIZE", "Schriftgröße", "insert_com('$name', 'size', 'Bitte gib die gewünschte Schriftgröße (Zahl von 0-7) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/font.jpg', "FONT", "Schriftart", "insert_com('$name', 'font', 'Bitte gib die gewï¿½nschte Schriftart ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/color.jpg', "COLOR", "Schriftfarbe", "insert_com('$name', 'color', 'Bitte gib die gewï¿½nschte Schriftfarbe (englisches Wort) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/size.jpg', "SIZE", "Schriftgrï¿½ï¿½e", "insert_com('$name', 'size', 'Bitte gib die gewï¿½nschte Schriftgrï¿½ï¿½e (Zahl von 0-7) ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/img.jpg', "IMG", "Bild einfügen", "insert_mcom('$name', '[img]', '[/img]', 'Bitte gib die URL zu der Grafik ein:', 'http://')");
-    $buttons .= create_editor_button_new('admin/editor/cimg.jpg', "CIMG", "Content-Image einfügen", "insert_mcom('$name', '[cimg]', '[/cimg]', 'Bitte gib den Namen des Content-Images (mit Endung) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/img.jpg', "IMG", "Bild einfï¿½gen", "insert_mcom('$name', '[img]', '[/img]', 'Bitte gib die URL zu der Grafik ein:', 'http://')");
+    $buttons .= create_editor_button_new('admin/editor/cimg.jpg', "CIMG", "Content-Image einfï¿½gen", "insert_mcom('$name', '[cimg]', '[/cimg]', 'Bitte gib den Namen des Content-Images (mit Endung) ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/url.jpg', "URL", "Link einfügen", "insert_com('$name', 'url', 'Bitte gib die URL ein:', 'http://')");
-    $buttons .= create_editor_button_new('admin/editor/home.jpg', "HOME", "Projektinternen Link einfügen", "insert_com('$name', 'home', 'Bitte gib den projektinternen Verweisnamen ein:', '')");
-    $buttons .= create_editor_button_new('admin/editor/email.jpg', "@", "Email-Link einfügen", "insert_com('$name', 'email', 'Bitte gib die Email-Adresse ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/url.jpg', "URL", "Link einfï¿½gen", "insert_com('$name', 'url', 'Bitte gib die URL ein:', 'http://')");
+    $buttons .= create_editor_button_new('admin/editor/home.jpg', "HOME", "Projektinternen Link einfï¿½gen", "insert_com('$name', 'home', 'Bitte gib den projektinternen Verweisnamen ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/email.jpg', "@", "Email-Link einfï¿½gen", "insert_com('$name', 'email', 'Bitte gib die Email-Adresse ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/code.jpg', "C", "Code-Bereich einfügen", "insert('$name', '[code]', '[/code]')");
-    $buttons .= create_editor_button_new('admin/editor/quote.jpg', "Q", "Zitat einfügen", "insert('$name', '[quote]', '[/quote]')");
-    $buttons .= create_editor_button_new('admin/editor/noparse.jpg', "N", "Nicht umzuwandelnden Bereich einfügen", "insert('$name', '[noparse]', '[/noparse]')");
+    $buttons .= create_editor_button_new('admin/editor/code.jpg', "C", "Code-Bereich einfï¿½gen", "insert('$name', '[code]', '[/code]')");
+    $buttons .= create_editor_button_new('admin/editor/quote.jpg', "Q", "Zitat einfï¿½gen", "insert('$name', '[quote]', '[/quote]')");
+    $buttons .= create_editor_button_new('admin/editor/noparse.jpg', "N", "Nicht umzuwandelnden Bereich einfï¿½gen", "insert('$name', '[noparse]', '[/noparse]')");
 
 
     $textarea = '<table cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px">
@@ -606,7 +606,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
     }
     if ( $INSERT == TRUE ) {
         $insert_button = '
-        <a href="javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfügen" align="absmiddle"></a>';
+        <a href="javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfï¿½gen" align="absmiddle"></a>';
     }
     if ( $SHOW_TITLE == TRUE ) {
         $first_title = $TITLE."";
@@ -632,7 +632,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
 
 ////////////////////////////////
 //// Seitentitel generieren  ///
-//// und Berechtigung prüfen ///
+//// und Berechtigung prï¿½fen ///
 ////////////////////////////////
 
 function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
@@ -653,7 +653,7 @@ function createpage ( $TITLE, $PERMISSION, $FILE, $ACTIVE_MENU )
 }
 
 ////////////////////////////////
-//// Menü erzeugen           ///
+//// Menï¿½ erzeugen           ///
 ////////////////////////////////
 
 function create_menu ( $ACTIVE_MENU )
@@ -692,31 +692,30 @@ function create_menu ( $ACTIVE_MENU )
 
 
 ////////////////////////////////
-//// Menü anzeigen           ///
+//// Menï¿½ anzeigen           ///
 ////////////////////////////////
 
-function create_menu_show ( $MENU_ID )
-{
-    global $global_config_arr, $db;
+function create_menu_show ( $MENU_ID ){
+  global $sql;
 
-    $index = mysql_query ( "
-                                SELECT P.`page_id`
-                                        FROM `".$global_config_arr['pref']."admin_groups` G, `".$global_config_arr['pref']."admin_cp` P
-                                        WHERE G.`menu_id` = '".$MENU_ID."'
-                                        AND P.`group_id` = G.`group_id`
-                                        AND P.`page_int_sub_perm` = 0
-                                        ORDER BY `page_id`
-    ", $db );
+  $index = $sql->query("
+    SELECT A.`page_id`
+    FROM `{..pref..}admin_cp` A, `{..pref..}admin_groups` B
+    WHERE B.`menu_id`='$MENU_ID'
+    AND B.`group_id`=A.`group_id`
+    AND A.`page_int_sub_perm` = 0
+    ORDER BY A.`page_id` ASC
+  ");
 
-    while ( $page = mysql_fetch_assoc ( $index ) ) {
-        $page = $page['page_id'];
-        if ( isset($_SESSION[$page]) && $_SESSION[$page] == 1 ) {
-            return TRUE;
-            break;
-        }
+  while(($page = mysql_fetch_assoc($index)) !== false) {
+    $page = $page['page_id'];
+    if ( isset($_SESSION[$page]) && $_SESSION[$page] == 1 ) {
+      return TRUE;
+      break;
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /////////////////////////////////////////////////
@@ -804,7 +803,7 @@ function create_group_first ( $TEMPLATE )
 
 ////////////////////////////////
 //// Seitenlink generieren   ///
-//// und Berechtigung prüfen ///
+//// und Berechtigung prï¿½fen ///
 ////////////////////////////////
 
 function create_link ( $PAGE_ID, $GO )
@@ -880,7 +879,7 @@ function admin_set_cookie($username, $password)
 }
 
 ////////////////////////////////
-/////// Logindaten prüfen //////
+/////// Logindaten prï¿½fen //////
 ////////////////////////////////
 
 function admin_login($username, $password, $iscookie)
@@ -935,93 +934,53 @@ function admin_login($username, $password, $iscookie)
 }
 
 ////////////////////////////////
-//////// Session füllen ////////
+//////// Session fï¿½llen ////////
 ////////////////////////////////
 
-function fillsession($uid)
-{
-        global $global_config_arr;
-        global $db;
+function fillsession($uid){
+  global $sql;
 
-        $dbaction = mysql_query( "
-                                                                SELECT `user_id`, `user_name`, `user_is_staff`, `user_group`, `user_is_admin`
-                                                                FROM `".$global_config_arr['pref']."user`
-                                                                WHERE `user_id` = '".$uid."'
-                                                                LIMIT 0,1
-        ", $db);
+  $USER_ARR = $sql->getData("user", "user_id, user_name, user_is_staff, user_group, user_is_admin", "WHERE `user_id` = '".$uid."' LIMIT 0,1", 1);
 
-        $USER_ARR = mysql_fetch_assoc ( $dbaction );
+  $_SESSION['user_id']        =  $USER_ARR['user_id'];
+  $_SESSION['user_name']      =  $USER_ARR['user_name'];
+  $_SESSION['user_is_staff']  =  $USER_ARR['user_is_staff'];
+  if($USER_ARR['user_id'] == 1)
+    $USER_ARR['user_is_admin'] = 1;
 
-        $_SESSION['user_id'] =  $USER_ARR['user_id'];
-        $_SESSION['user_name'] =  $USER_ARR['user_name'];
-        $_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
+  $permissions = $sql->getData("admin_cp", "page_id", "WHERE `group_id` != '-1' ORDER BY `page_id` ASC");
 
-        // pages permissions
-        $dbaction = mysql_query( "
-                                                                SELECT `page_id`
-                                                                FROM `".$global_config_arr['pref']."admin_cp`
-                                                                WHERE `group_id` > 0
-                                                                ORDER BY `page_id`
-        ", $db);
+  foreach($permissions as $permission){
+    $permission = $permission['page_id'];
+    if ($USER_ARR['user_is_admin'] == 1) { // user ist admin or superadmin
+      $_SESSION[$permission] = 1;
+    } else {
+      $group_granted = $sql->getData("user_permissions", "*", "WHERE `perm_id` = '".$permission."' AND `perm_for_group` = '1' AND `x_id` = '".$USER_ARR['user_group']."' AND `x_id` != '0' LIMIT 0,1", 2);
 
-        while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
-                $permission = $permission['page_id'];
-        if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
-            $_SESSION[$permission] = 1;
-        } else {
+      $user_granted = $sql->getData("user_permissions", "*", "WHERE `perm_id` = '".$permission."' AND `perm_for_group` = '0' AND `x_id` = '".$USER_ARR['user_id']."' AND `x_id` != '0' LIMIT 0,1", 2);
 
+      if ( $group_granted == 1 || $user_granted == 1 ) {
+        $_SESSION[$permission] = 1;
+      } else {
+        $_SESSION[$permission] = 0;
+      }
+    }
+  }
 
-                        $groupaction = mysql_query( "
-                                                                            SELECT *
-                                                                            FROM `".$global_config_arr['pref']."user_permissions`
-                                            WHERE `perm_id` = '".$permission."'
-                                            AND `perm_for_group` = '1'
-                                            AND `x_id` = '".$USER_ARR['user_group']."'
-                                            AND `x_id` != '0'
-                                            LIMIT 0,1
-                ", $db);
-                $group_granted = mysql_num_rows ( $groupaction );
+  // startpage permissions
+  $permissions = $sql->getData("admin_cp", "page_id, page_file", "WHERE `group_id` = '-1' ORDER BY `page_id` ASC");
 
-                $userpaction = mysql_query( "
-                                                                            SELECT *
-                                                                            FROM `".$global_config_arr['pref']."user_permissions`
-                                            WHERE `perm_id` = '".$permission."'
-                                            AND `perm_for_group` = '0'
-                                            AND `x_id` = '".$USER_ARR['user_id']."'
-                                            AND `x_id` != '0'
-                                            LIMIT 0,1
-                ", $db);
-            $user_granted = mysql_num_rows ( $userpaction );
-
-                if ( $group_granted == 1 || $user_granted == 1 ) {
-                $_SESSION[$permission] = 1;
-            } else {
-                $_SESSION[$permission] = 0;
-            }
-        }
-        }
-
-        // startpage permissions
-        $dbaction = mysql_query( "
-                                                                SELECT `page_id`, `group_id`, `page_file`
-                                                                FROM `".$global_config_arr['pref']."admin_cp`
-                                                                WHERE `group_id` <= 0
-                                                                ORDER BY `page_id`
-        ", $db);
-
-        while ( $permission = mysql_fetch_assoc ( $dbaction ) ) {
-          if ( $USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1 ) {
-            $_SESSION[$permission['page_id']] = 1;
-          } else {
-            if ( $permission['group_id'] == -1 ) {
-              if ( create_menu_show ( $permission['page_file'] ) == TRUE ) {
-                $_SESSION[$permission['page_id']] = 1;
-              }
-            } else {
-              $_SESSION[$permission['page_id']] = 0;
-            }
-          }
-        }
+  foreach($permissions as $permission) {
+    if($USER_ARR['user_is_admin'] == 1 ) {
+      $_SESSION[$permission['page_id']] = 1;
+    } else {
+      if ( create_menu_show ( $permission['page_file'] ) == TRUE ) {
+        $_SESSION[$permission['page_id']] = 1;
+      } else {
+        $_SESSION[$permission['page_id']] = 0;
+      }
+    }
+  }
 }
 
 ?>
