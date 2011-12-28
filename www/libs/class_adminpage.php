@@ -4,7 +4,7 @@
 /**
  * @file     class_adminpage.php
  * @folder   /libs
- * @version  0.5
+ * @version  0.6
  * @author   Satans Krümelmonster, Sweil
  *
  * provides functions to manage admin-cp display-issues
@@ -20,7 +20,7 @@ class adminpage {
     private $common = array();
 
     function __construct ($pagefile) {
-        global $global_config_arr, $TEXT;
+        global $FD;
         $this->name = substr($pagefile, 0, -4);
         
         // load tpl file
@@ -29,9 +29,6 @@ class adminpage {
         if (is_readable($path)) {
             $this->loadTpl(file_get_contents($path));
         }
-        // Set Lang-Classes for Template
-        $this->setLang(); // page-file
-        $this->setCommon(); // common admin-text
     }
 
     public function addCond ($name, $value) {
@@ -163,11 +160,13 @@ class adminpage {
     }
 
     private function langValue ($name) {
-        return $this->lang->get($name);
+        global $FD;
+        return $FD->text('page', $name);
     }
   
     private function commonValue ($name) {
-        return $this->common->get($name);
+        global $FD;
+        return $FD->text('admin', $name);
     }
 
     private function loadTpl ($tplcontents) {
@@ -176,33 +175,7 @@ class adminpage {
             $this->tpl[$dev[1][$i]] = $dev[2][$i];
         }
         unset($dev);
-    }
+    } 
 
-
-    private function getLang() {
-        return $this->lang;
-    }
-    
-    private function setLang() {
-        global $global_config_arr, $TEXT;
-        require_once(FS2_ROOT_PATH."libs/class_lang.php");
-
-        $this->lang = new lang($global_config_arr['language_text'], "admin/".$this->name);
-        $TEXT['page'] = $this->lang;
-    }    
-
-    private function getCommon() {
-        return $this->common;
-    }
-    
-    private function setCommon() {
-        global $global_config_arr, $TEXT;
-        if (!isset($TEXT['admin'])) {
-            require_once(FS2_ROOT_PATH."libs/class_lang.php");
-            $TEXT['admin'] = new lang($global_config_arr['language_text'], "admin");
-        }        
-
-        $this->common = $TEXT['admin'];
-    }
 }
 ?>

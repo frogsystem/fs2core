@@ -1,0 +1,7 @@
+# Pagination Texts
+first:          Erste Seite
+last:           Letzte Seite
+next:           weiter
+prev:           zurück
+pages:          Seite %1$d von %0$d.
+entries:        Einträge %1$d bis %2d von %0$d.

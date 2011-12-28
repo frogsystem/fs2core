@@ -3,89 +3,6 @@
 ///////////////////
 //// Functions ////
 ///////////////////
-function default_get_pagenav_data ()
-{
-        global $FD;
-        global $global_config_arr;
-        global $admin_phrases;
-        global $config_arr;
-        
-        // Set Default Start Value
-    if ( !isset ( $_GET['start'] ) ) { $_GET['start'] = 0; }
-        settype ( $_GET['start'], 'integer' );
-        $limit = $config_arr['acp_per_page'];
-
-        // Create Where Clause for Category Filter
-        unset ( $where_clause );
-    if ( $_REQUEST['cat_id'] != 0 )
-        {
-        $where_clause = "WHERE cat_id = '".$_REQUEST['cat_id']."'";
-    }
-
-        // Create Pagenavigation
-    $index = mysql_query ( "
-                                                        SELECT COUNT(news_id) AS 'number'
-                                                        FROM ".$global_config_arr['pref']."news
-                                                        ".$where_clause."
-        ", $FD->sql()->conn() );
-        
-        $pagenav_arr = get_pagenav_start ( mysql_result ( $index, 0, "number" ), $limit, $_GET['start'] );
-
-        return $pagenav_arr;
-}
-
-function default_display_pagenav ( $pagenav_arr )
-{
-        global $FD;
-        global $global_config_arr;
-        global $admin_phrases;
-
-        // Prev & Next Page Links
-    if ( $pagenav_arr['newpage_exists'] )
-    {
-        $next_page = '<a href="'.$PHP_SELF.'?go=news_edit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['new_start'].'">'.$admin_phrases[news][news_edit_next_news].' »</a>';
-    }
-    if ( $pagenav_arr['old_start_exists'] )
-    {
-        $prev_page = '<a href="'.$PHP_SELF.'?go=news_edit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['old_start'].'">« '.$admin_phrases[news][news_edit_prev_news].'</a>';
-    }
-
-    // Current Range
-    $range_begin = $pagenav_arr['cur_start'] + 1;
-    $range_end = $pagenav_arr['cur_start'] + $pagenav_arr['entries_per_page'];
-        if ( $range_end > $pagenav_arr['total_entries'] )
-        {
-        $range_end = $pagenav_arr['total_entries'];
-        }
-    $range = '<span class="small">'.$admin_phrases[news][news_edit_show_news].'<br><b>'.$range_begin.'</b> '.$admin_phrases[common][to].' <b>'.$range_end.'</b></span>';
-
-    // Pagenavigation Template
-    $pagenav = '
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr valign="middle">
-                                <td width="33%" class="configthin middle">
-                                    '.$prev_page.'
-                                </td>
-                                <td width="33%" align="center" class="middle">
-                                    '.$range.'
-                                </td>
-                                <td width="33%" style="text-align:right;" class="configthin middle">
-                                    '.$next_page.'
-                                </td>
-                            </tr>
-                                   </table>
-    ';
-    
-        if ( $pagenav_arr['total_entries'] <= 0 )
-        {
-        $pagenav = $admin_phrases[news][news_edit_no_news];
-        }
-    
-    return $pagenav;
-}
-
-
-
 function action_delete_get_data ( $IDS )
 {
     global $FD;
@@ -484,7 +401,6 @@ $config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $TEX
 
 $config_arr['short_url_len'] = 50;
 $config_arr['short_url_rep'] = "...";
-
 
 
 //////////////////////////
@@ -947,25 +863,27 @@ if ($FILE_SHOW_START)
     $adminpage->addText("filter_cat_options", $cat_filter_options);   
     echo $adminpage->get("filter");
 
-    
+
+    // Pagination
+    $_REQUEST['page'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+    settype($_REQUEST['page'], "integer");
+       
     // Page list
     try {
-        //TODO: pagenav
-
         
         // serached?
-        $searched = !empty($_REQUEST['filter_string']) && $_REQUEST['search_type'] === 0;
-        
+        $searched = (!empty($_REQUEST['filter_string']) && $_REQUEST['search_type'] === 0);
+
         // search
-        if ($searched) {
+        if ($searched) {       
             // do the search
             $search = new Search("news", $_REQUEST['filter_string'], false);
             $search->setOrder("`".$_REQUEST['order']."` ".$_REQUEST['sort'], "`news_id` ".$_REQUEST['sort']);
             $search->setWhere(($_REQUEST['filter_cat'] != 0 ? "`cat_id` = ".$_REQUEST['filter_cat'] : ""));
-            $search->setLimit($config_arr['acp_per_page']);
-
+            $search->setLimit(($_REQUEST['page']-1)*$config_arr['acp_per_page'], $config_arr['acp_per_page']);
+            
         // just filter
-        } else {
+        } else {  
             // Set where for cat, ID and URL Filter
             $where = array();
             if ($_REQUEST['filter_cat'] != 0)
@@ -986,7 +904,7 @@ if ($FILE_SHOW_START)
             ), array(
                 'W' => implode(" AND ", $where),
                 'O' => "`".$_REQUEST['order']."` ".$_REQUEST['sort'].", `news_id` ".$_REQUEST['sort']."",
-                'L' => $config_arr['acp_per_page']
+                'L' => ($_REQUEST['page']-1)*$config_arr['acp_per_page'].",".$config_arr['acp_per_page']
             ), false, true);
             $total_entries = $news_data['num_all'];
             $news_data = $news_data['data'];
@@ -1023,7 +941,7 @@ if ($FILE_SHOW_START)
                     break;
                 //simple
                 default:
-                    $news = $sql->getById("news", array("news_id", "news_title", "news_date"), $found['id'], "news_id");            
+                    $news = $sql->getById("news", array("news_id", "news_title", "news_date"), $found['id'], "news_id");
                     break;
             }
             
@@ -1080,6 +998,11 @@ if ($FILE_SHOW_START)
         $entries = $adminpage->get("list_no_entry");
     }
     
+    // Create Pagination
+    $urlFormat = $PHP_SELF.'?go=news_edit&page=%d&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&filter_cat='.$_REQUEST['filter_cat'].'&filter_string='.$_REQUEST['filter_string'].'&search_type='.$_REQUEST['search_type'];
+    $settings = array('perPage' => $config_arr['acp_per_page'], 'urlFormat' => $urlFormat);
+    $pagination = new Pagination($total_entries, $_REQUEST['page'], $settings);
+
     // Display List
     $adminpage->addCond("perm_delete", $_SESSION['news_delete'] === 1);
     $adminpage->addCond("perm_comments", $_SESSION['news_comments'] === 1);
@@ -1089,12 +1012,9 @@ if ($FILE_SHOW_START)
     $adminpage->addText("entries", $entries);      
     $adminpage->addText("total_entries", $total_entries);      
     $adminpage->addCond("entries", $total_entries != 0);      
-    $adminpage->addCond("total_entries", $total_entries != 1);      
+    $adminpage->addCond("total_entries", $total_entries != 1);
+    $adminpage->addText("pagination", $pagination->getAdminTemplate());
     echo $adminpage->get("list");
-    
-    
-    
-    //default_display_page ( default_display_all_entries ( default_get_pagenav_data () ), //default_get_pagenav_data (), $_REQUEST  );
 }
 
 

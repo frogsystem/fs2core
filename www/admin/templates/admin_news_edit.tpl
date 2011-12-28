@@ -53,7 +53,7 @@
 
         <!--IF::entries-->
         <tr>
-            <td colspan="4">default_display_pagenav(default_get_pagenav_data())</td>
+            <td colspan="4"><!--TEXT::pagination--></td>
         </tr>
         <tr>
             <td class="right" colspan="4">
