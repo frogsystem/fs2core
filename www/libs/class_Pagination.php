@@ -20,8 +20,8 @@ class Pagination
     
     // Settings
     private $perPage = 15;
-    private $numAtStart = 3;
-    private $numAtEnd = 3;
+    private $numAtStart = 1;
+    private $numAtEnd = 1;
     private $numBeforeSelected = 3;
     private $numAfterSelected = 3;
     private $urlFormat = "?page=%d";
@@ -66,8 +66,27 @@ class Pagination
         // calculate Data
         $this->calculateData();
         
+        // Create Laang Object
+        $lang = new lang(false, "admin/pagination");
+        
         // Load Template Object
         $template = new adminpage("pagination.tpl");
+        $template->setLang($lang);
+
+        // get pages at start
+        initstr($atStart);
+        for ($i=1; $i<=$this->numAtStart; $i++) {
+            
+            $template->addText("page-number", $i);
+            $template->addText("url", $this->getUrl($i));
+            $template->addText("page", sprintf($lang->get("page"), $this->selectedPage-1, 1)); 
+            $template->addText("entries", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->selectedPage-1), $this->getLastPageEntryNumber($this->selectedPage-1))); 
+            $prev = $template->get("prev");            
+            
+            
+            $atStart = 
+        }
+        
         
         // get pages
         $pages = "[".$this->selectedPage."]";
@@ -77,8 +96,8 @@ class Pagination
         if ($this->selectedPage-1 >= 1) {
             $template->addText("page-number", 1);
             $template->addText("url", $this->getUrl($this->selectedPage-1));
-            $template->addText("pages", sprintf($FD->text("page", "pages"), $this->selectedPage-1, 1)); 
-            $template->addText("entries", sprintf($FD->text("page", "entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->selectedPage-1), $this->getLastPageEntryNumber($this->selectedPage-1))); 
+            $template->addText("page", sprintf($lang->get("page"), $this->selectedPage-1, 1)); 
+            $template->addText("entries", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->selectedPage-1), $this->getLastPageEntryNumber($this->selectedPage-1))); 
             $prev = $template->get("prev");
         } else {
             $prev = "";
@@ -88,8 +107,8 @@ class Pagination
         if ($this->selectedPage+1 <= $this->numOfPages) {
             $template->addText("page-number", $this->selectedPage+1);
             $template->addText("url", $this->getUrl($this->selectedPage+1));
-            $template->addText("pages", sprintf($FD->text("page", "pages"), $this->numOfPages, $this->selectedPage+1)); 
-            $template->addText("entries", sprintf($FD->text("page", "entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->selectedPage+1), $this->getLastPageEntryNumber($this->selectedPage+1))); 
+            $template->addText("page", sprintf($lang->get("page"), $this->numOfPages, $this->selectedPage+1)); 
+            $template->addText("entries", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->selectedPage+1), $this->getLastPageEntryNumber($this->selectedPage+1))); 
             $next = $template->get("next");
         } else {
             $next = "";
@@ -99,15 +118,15 @@ class Pagination
         //get first page link
         $template->addText("page-number", 1);
         $template->addText("url", $this->getUrl(1));
-        $template->addText("pages", sprintf($FD->text("page", "pages"), $this->numOfPages, 1)); 
-        $template->addText("entries", sprintf($FD->text("page", "entries"), $this->totalEntries, $this->getFirstPageEntryNumber(1), $this->getLastPageEntryNumber(1))); 
+        $template->addText("page", sprintf($lang->get("page"), $this->numOfPages, 1)); 
+        $template->addText("entries", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber(1), $this->getLastPageEntryNumber(1))); 
         $first = $template->get("first");
         
         //get last page link
         $template->addText("page-number", $this->numOfPages);
         $template->addText("url", $this->getUrl($this->numOfPages));
-        $template->addText("entries", sprintf($FD->text("page", "pages"), $this->numOfPages, $this->numOfPages)); 
-        $template->addText("entries", sprintf($FD->text("page", "entries"), $this->totalEntries, $this->totalEntries, $this->getFirstPageEntryNumber($this->numOfPages), $this->getLastPageEntryNumber($this->numOfPages))); 
+        $template->addText("page", sprintf($lang->get("page"), $this->numOfPages, $this->numOfPages)); 
+        $template->addText("entries", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->numOfPages), $this->getLastPageEntryNumber($this->numOfPages))); 
         $last = $template->get("last");
         
 

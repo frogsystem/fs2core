@@ -3,5 +3,5 @@ first:          Erste Seite
 last:           Letzte Seite
 next:           weiter
 prev:           zurück
-pages:          Seite %1$d von %0$d.
-entries:        Einträge %1$d bis %2d von %0$d.
+page:           Seite %2$d von %1$d
+entries:        Einträge %2$d bis %3$d von %1$d

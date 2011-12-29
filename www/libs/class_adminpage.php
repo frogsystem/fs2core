@@ -16,9 +16,10 @@ class adminpage {
     private $tpl    = array();
     private $cond   = array();
     private $text   = array();
-    private $lang   = array();
-    private $common = array();
-
+    private $lang   = null;
+    private $common = null;
+    
+  
     function __construct ($pagefile) {
         global $FD;
         $this->name = substr($pagefile, 0, -4);
@@ -160,13 +161,27 @@ class adminpage {
     }
 
     private function langValue ($name) {
-        global $FD;
-        return $FD->text('page', $name);
+        // get from local lang
+        if (!is_null($this->lang)) {
+            return $this->lang->get($name);
+            
+        // get from default lang
+        } else {
+            global $FD;
+            return $FD->text('page', $name);
+        }
     }
   
     private function commonValue ($name) {
-        global $FD;
-        return $FD->text('admin', $name);
+        // get from local lang
+        if (!is_null($this->common)) {
+            return $this->common->get($name);
+            
+        // get from default lang
+        } else {
+            global $FD;
+            return $FD->text('admin', $name);
+        }
     }
 
     private function loadTpl ($tplcontents) {
@@ -176,6 +191,16 @@ class adminpage {
         }
         unset($dev);
     } 
-
+    
+    public function setLang ($lang = null) {
+        $this->lang = $lang;
+    }
+  
+    public function setCommon ($common = null) {
+        $this->common = $common;
+    }    
+    public function getLang () {
+        return $this->lang;
+    }
 }
 ?>
