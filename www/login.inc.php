@@ -41,7 +41,7 @@ try {
 } catch (Exception $e) {
     
     // Include lang-class
-    require(FS2_ROOT_PATH . "libs/class_lang.php");
+    require_once(FS2_ROOT_PATH . "libs/class_lang.php");
 
     // get language
     $de = strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], "de");

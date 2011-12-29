@@ -22,8 +22,8 @@ class Pagination
     private $perPage = 15;
     private $numAtStart = 1;
     private $numAtEnd = 1;
-    private $numBeforeSelected = 3;
-    private $numAfterSelected = 3;
+    private $numBeforeSelected = 2;
+    private $numAfterSelected = 2;
     private $urlFormat = "?page=%d";
     
     // Der Konstruktur
@@ -66,37 +66,71 @@ class Pagination
         // calculate Data
         $this->calculateData();
         
-        // Create Laang Object
+        // Create Lang Object
         $lang = new lang(false, "admin/pagination");
         
         // Load Template Object
         $template = new adminpage("pagination.tpl");
         $template->setLang($lang);
 
-        // get pages at start
-        initstr($atStart);
-        for ($i=1; $i<=$this->numAtStart; $i++) {
-            
-            $template->addText("page-number", $i);
-            $template->addText("url", $this->getUrl($i));
-            $template->addText("page", sprintf($lang->get("page"), $this->selectedPage-1, 1)); 
-            $template->addText("entries", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->selectedPage-1), $this->getLastPageEntryNumber($this->selectedPage-1))); 
-            $prev = $template->get("prev");            
-            
-            
-            $atStart = 
+        // get list of all pages
+        $page_list = array();
+        for ($i=1; $i<=$this->numOfPages; $i++) {
+            $page_list[$i] = $this->getPageTemplate($i);
         }
         
+        // get seperator
+        $seperator = $template->get("seperator");
+        
+        // get selected page
+        $selected_page = $this->getPageTemplate($this->selectedPage, true);
         
         // get pages
-        $pages = "[".$this->selectedPage."]";
+        initstr($pages);
+        $front_seperator = $back_seperator = false;
+        foreach ($page_list as $page => $string) {
+			
+			// Pages before selected
+			if ($page < $this->selectedPage) {
+				
+				// Pages
+				if ($page <= $this->numAtStart || $page >= $this->selectedPage-$this->numBeforeSelected){
+					$pages .= $string;
+					
+				// front seperator
+				} elseif (!$front_seperator) {
+					$pages .= $seperator;
+					$front_seperator = true;
+				}				
+			}
+			
+			// Selected Pages
+			elseif ($page == $this->selectedPage) {
+				$pages .= $selected_page;
+			}
+			
+			// Pages after selected
+			elseif ($page > $this->selectedPage) {
+				
+				// Pages
+				if ($page > $this->numOfPages-$this->numAtEnd || $page <= $this->selectedPage+$this->numAfterSelected) {
+					$pages .= $string;
+					
+				// Back seperator
+				} elseif (!$back_seperator) {
+					$pages .= $seperator;
+					$back_seperator = true;
+				}
+				
+			}
+		}		
         
         
         //get prev page link
         if ($this->selectedPage-1 >= 1) {
             $template->addText("page-number", 1);
             $template->addText("url", $this->getUrl($this->selectedPage-1));
-            $template->addText("page", sprintf($lang->get("page"), $this->selectedPage-1, 1)); 
+            $template->addText("page", sprintf($lang->get("page"), $this->numOfPages, $this->selectedPage-1)); 
             $template->addText("entries", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->selectedPage-1), $this->getLastPageEntryNumber($this->selectedPage-1))); 
             $prev = $template->get("prev");
         } else {
@@ -139,6 +173,26 @@ class Pagination
 
         return $template->get("main");
     }
+    
+    // get a page template
+    public function getPageTemplate($page, $selected = false) {
+        // Create Lang Object
+        $lang = new lang(false, "admin/pagination");
+        
+        // Load Template Object
+        $template = new adminpage("pagination.tpl");
+        $template->setLang($lang);
+		
+		$template->addText("page-number", $page);
+		$template->addText("url", $this->getUrl($page));
+		$template->addText("page", sprintf($lang->get("page"), $this->numOfPages, $page)); 
+		$template->addText("entries", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber($page), $this->getLastPageEntryNumber($page))); 
+		
+		if ($selected)
+			return $template->get("selected-page");
+		else
+			return $template->get("page");
+	}
     
     
     // setter

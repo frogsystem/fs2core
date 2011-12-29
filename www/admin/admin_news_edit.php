@@ -585,7 +585,7 @@ elseif (
 //////////////////////////////
 //// Display Action-Pages ////
 //////////////////////////////
-if ( $_POST['news_id'] && $_POST['news_action'] )
+if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
 {
     $FILE_SHOW_START = FALSE;
     // Edit News
@@ -999,10 +999,13 @@ if ($FILE_SHOW_START)
     }
     
     // Create Pagination
-    $urlFormat = $PHP_SELF.'?go=news_edit&page=%d&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&filter_cat='.$_REQUEST['filter_cat'].'&filter_string='.$_REQUEST['filter_string'].'&search_type='.$_REQUEST['search_type'];
+    $urlFormat = '?go=news_edit&page=%d&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&filter_cat='.$_REQUEST['filter_cat'].'&filter_string='.$_REQUEST['filter_string'].'&search_type='.$_REQUEST['search_type'];
     $settings = array('perPage' => $config_arr['acp_per_page'], 'urlFormat' => $urlFormat);
     $pagination = new Pagination($total_entries, $_REQUEST['page'], $settings);
 
+	if (!isset($_POST['news_action']))
+		initstr($_POST['news_action']);
+	
     // Display List
     $adminpage->addCond("perm_delete", $_SESSION['news_delete'] === 1);
     $adminpage->addCond("perm_comments", $_SESSION['news_comments'] === 1);

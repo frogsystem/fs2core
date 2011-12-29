@@ -495,13 +495,10 @@ function load_an_applet($file, $output, $args) {
     global $FD;
     
     // Setup $SCRIPT Var
-    unset($SCRIPT);
+    unset($SCRIPT, $template);
     $SCRIPT['argc'] = array_unshift($args, $file);
     $SCRIPT['argv'] = $args;
     
-    // set empty str
-    initstr($template);
-
     //start output buffering
     ob_start();
     
@@ -512,6 +509,10 @@ function load_an_applet($file, $output, $args) {
     
     //end & clean output buffering
     $return_data = ob_get_clean();
+    
+    // set empty str
+    if (!isset($template));
+		initstr($template);
     
     //create return value
     if ($output) {

@@ -59,7 +59,7 @@ class GlobalData {
             $config['config_data'] = array_map("utf8_decode", $config['config_data']); 
              
             // Load corresponding class and get config array
-            $class_name = "Config".ucfirst($config['config_name']);echo $path.$test;
+            $class_name = "Config".ucfirst($config['config_name']);
             $config_object = new $class_name($config['config_data']);
             $this->config[$config['config_name']] = $config_object->getConfigArray();
             unset($class_name, $config_object);

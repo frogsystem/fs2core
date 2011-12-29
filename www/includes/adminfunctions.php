@@ -670,6 +670,9 @@ function create_editor_seperator()
 
 function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, $BOLD_TITLE = TRUE, $SHOW_TITLE = TRUE   )
 {
+    initstr($span_end);
+    initstr($span_start);
+    
     if ( $NEW_LINE == TRUE ) {
         $span_start = '<span style="padding-bottom:3px; display:block;">';
         $span_end = '</span>';
