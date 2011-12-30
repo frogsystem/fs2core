@@ -77,85 +77,28 @@ function default_display_filter ( $FORM )
 
 function default_get_pagenav_data ()
 {
-        global $FD;
-        global $global_config_arr;
-        global $admin_phrases;
-        global $config_arr;
+        global $FD, $config_arr;
 
-        // Set Default Start Value
-    if ( !isset ( $_GET['start'] ) ) { $_GET['start'] = 0; }
-        settype ( $_GET['start'], 'integer' );
+
         $limit = $config_arr['acp_per_page'];
 
         // Create Where Clause for Category Filter
         unset ( $where_clause );
-    if ( $_REQUEST['cat_id'] != 0 )
-        {
-        $where_clause = "WHERE article_cat_id = '".$_REQUEST['cat_id']."'";
-    }
+		if ( $_REQUEST['cat_id'] != 0 ) {
+			$where_clause = "WHERE article_cat_id = '".$_REQUEST['cat_id']."'";
+		}
 
         // Create Pagenavigation
     $index = mysql_query ( "
                                                         SELECT COUNT(article_id) AS 'number'
                                                         FROM ".$global_config_arr['pref']."articles
                                                         ".$where_clause."
-        ", $FD->sql()->conn() );
+        ", $db);
 
-        $pagenav_arr = get_pagenav_start ( mysql_result ( $index, 0, "number" ), $limit, $_GET['start'] );
+        $pagenav_arr = get_pagenav_start ( mysql_result ( $index, 0, "number" ), $limit, ($_REQUEST['page']-1)*$limit );
 
         return $pagenav_arr;
 }
-
-function default_display_pagenav ( $pagenav_arr )
-{
-        global $FD;
-        global $global_config_arr;
-        global $admin_phrases;
-
-        // Prev & Next Page Links
-    if ( $pagenav_arr['newpage_exists'] )
-    {
-        $next_page = '<a href="'.$PHP_SELF.'?go=articles_edit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['new_start'].'">'.$admin_phrases[articles][edit_next_article].' »</a>';
-    }
-    if ( $pagenav_arr['old_start_exists'] )
-    {
-        $prev_page = '<a href="'.$PHP_SELF.'?go=articles_edit&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'].'&start='.$pagenav_arr['old_start'].'">« '.$admin_phrases[articles][edit_prev_article].'</a>';
-    }
-
-    // Current Range
-    $range_begin = $pagenav_arr['cur_start'] + 1;
-    $range_end = $pagenav_arr['cur_start'] + $pagenav_arr['entries_per_page'];
-        if ( $range_end > $pagenav_arr['total_entries'] )
-        {
-        $range_end = $pagenav_arr['total_entries'];
-        }
-    $range = '<span class="small">'.$admin_phrases[articles][edit_show_articles].'<br><b>'.$range_begin.'</b> '.$admin_phrases[common][to].' <b>'.$range_end.'</b></span>';
-
-    // Pagenavigation Template
-    $pagenav = '
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr valign="middle">
-                                <td width="33%" class="configthin middle">
-                                    '.$prev_page.'
-                                </td>
-                                <td width="33%" align="center" class="middle">
-                                    '.$range.'
-                                </td>
-                                <td width="33%" style="text-align:right;" class="configthin middle">
-                                    '.$next_page.'
-                                </td>
-                            </tr>
-                                   </table>
-    ';
-
-        if ( $pagenav_arr['total_entries'] <= 0 )
-        {
-        $pagenav = $admin_phrases[articles][edit_no_articles];
-        }
-
-    return $pagenav;
-}
-
 function default_get_entry_data ( $articles_arr )
 {
         global $FD;
@@ -328,17 +271,28 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
     ';
 
     echo $entries;
-
+    
     // Display News List Footer
     echo'
                                                         <tr><td class="space"></td></tr>
                         </table>
-                                                '.default_display_pagenav ( default_get_pagenav_data () ).'
-           ';
+         ';
+           print_d($pagenav_arr['cur_start']);
+    // Create Pagination
+    $urlFormat = '?go=articles_edit&page=%d&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'];
+    $settings = array('perPage' => $config_arr['acp_per_page'], 'urlFormat' => $urlFormat);
+    $pagination = new Pagination($total_entries, $_REQUEST['page'], $settings);          
 
         // End of Form & Table incl. Submit-Button
          echo '
                       <table class="configtable" cellpadding="4" cellspacing="0">
+							<tr><td class="space"></td></tr>
+							<tr><td colspan="4">
+		'.
+		$pagination->getAdminTemplate()
+		.'
+							
+							</td></tr>
                             <tr><td class="space"></td></tr>
                                                         <tr>
                                                                 <td class="right">
@@ -896,6 +850,10 @@ else
     // Filter
     $_REQUEST = default_set_filter_data ( $_REQUEST );
     default_display_filter ( $_REQUEST );
+    
+    // Pagination
+    $_REQUEST['page'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+    settype($_REQUEST['page'], "integer");
 
     // Display Page
     default_display_page ( default_display_all_entries ( default_get_pagenav_data () ), default_get_pagenav_data (), $_REQUEST  );

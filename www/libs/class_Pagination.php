@@ -22,8 +22,8 @@ class Pagination
     private $perPage = 15;
     private $numAtStart = 1;
     private $numAtEnd = 1;
-    private $numBeforeSelected = 2;
-    private $numAfterSelected = 2;
+    private $numBeforeSelected = 3;
+    private $numAfterSelected = 3;
     private $urlFormat = "?page=%d";
     
     // Der Konstruktur
@@ -169,7 +169,15 @@ class Pagination
         $template->addText("prev", $prev);
         $template->addText("next", $next);
         $template->addText("first", $first);        
-        $template->addText("last", $last);        
+        $template->addText("last", $last);       
+        $template->addText("entries_from", $this->getFirstPageEntryNumber($this->selectedPage));     
+        $template->addText("entries_to", $this->getLastPageEntryNumber($this->selectedPage)); 
+        $template->addText("total_entries", $this->totalEntries);
+        $template->addText("page-number", $this->selectedPage);     
+        $template->addText("total_pages", $this->numOfPages); 
+        $template->addText("page_text", sprintf($lang->get("page"), $this->numOfPages, $this->selectedPage)); 
+        $template->addText("entries_text", sprintf($lang->get("entries"), $this->totalEntries, $this->getFirstPageEntryNumber($this->selectedPage), $this->getLastPageEntryNumber($this->selectedPage))); 
+            
 
         return $template->get("main");
     }

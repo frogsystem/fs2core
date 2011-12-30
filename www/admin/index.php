@@ -65,6 +65,7 @@ if (isset($_POST['login']) && $_POST['login'] == 1 && !is_authorized()) {
 ##################################
 
 // security functions
+!isset($_REQUEST['go']) ? $_REQUEST['go'] = null : 1;
 $go = $sql->escape($_REQUEST['go']);
 
 // get page-data from database
