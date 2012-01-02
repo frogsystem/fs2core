@@ -1,6 +1,17 @@
 <?php
 // Set canonical parameters
-$FD->setConfig('info', 'canonical', array());
+$FD->setConfig('info', 'canonical', array('cat'));
+
+////////////////////////////
+//// Category-Filter?   ////
+////////////////////////////
+if (isset($_GET['cat'])) {
+	settype($_GET['cat'], "integer");
+	$cat_filter = "AND cat_id = '".$_GET['cat']."'";
+} else {
+	$cat_filter = "";
+}
+
 
 ////////////////////////////
 //// News Kopf erzeugen ////
@@ -87,6 +98,7 @@ $headline_template = $template;
 $index = mysql_query("select * from ".$global_config_arr['pref']."news
                       where news_date <= $time
                       AND news_active = 1
+                      ".$cat_filter."
                       order by news_date desc
                       limit $config_arr[num_news]", $FD->sql()->conn() );
 initstr($news_template);
@@ -95,7 +107,7 @@ while ($news_arr = mysql_fetch_assoc($index))
     $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
 }
 unset($news_arr);
-
+print_d(mysql_error());
 // Get Template
 $template = new template();
 $template->setFile("0_news.tpl");

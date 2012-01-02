@@ -485,7 +485,7 @@ elseif ( $showdefault == TRUE )
 		echo '
 								</td>
 								<td class="config" style="width: 100%;">
-									'.$cat_arr['cat_name'].' <span class="small">('.$admin_phrases[news][list_cat_created_by].' <b>'.$cat_arr['cat_user'].'</b> '.$admin_phrases[news][list_cat_created_on].' <b>'.date ( $global_config_arr['date'], $cat_arr['cat_date'] ).'</b>)</span><br>
+									#'.$cat_arr['cat_id'].' '.$cat_arr['cat_name'].' <span class="small">('.$admin_phrases[news][list_cat_created_by].' <b>'.$cat_arr['cat_user'].'</b> '.$admin_phrases[news][list_cat_created_on].' <b>'.date ( $global_config_arr['date'], $cat_arr['cat_date'] ).'</b>)</span><br>
 									<span class="small">'.$cat_arr['cat_description'].'</span>
 								</td>
 								<td class="config center middle">
