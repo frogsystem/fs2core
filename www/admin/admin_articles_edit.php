@@ -89,11 +89,11 @@ function default_get_pagenav_data ()
 		}
 
         // Create Pagenavigation
-    $index = mysql_query ( "
-                                                        SELECT COUNT(article_id) AS 'number'
-                                                        FROM ".$global_config_arr['pref']."articles
-                                                        ".$where_clause."
-        ", $db);
+		$index = mysql_query ( "
+								SELECT COUNT(article_id) AS 'number'
+								FROM ".$FD->sql()->getPrefix()."articles
+								".$where_clause."
+        ", $FD->sql()->conn());
 
         $pagenav_arr = get_pagenav_start ( mysql_result ( $index, 0, "number" ), $limit, ($_REQUEST['page']-1)*$limit );
 
@@ -254,10 +254,10 @@ function default_display_all_entries ( $pagenav_arr )
 
 function default_display_page ( $entries, $pagenav_arr, $FORM )
 {
-        global $FD;
+        global $FD, $config_arr;
         global $global_config_arr;
         global $admin_phrases;
-
+        
         // Display News List Header
     echo'
                     <form action="" method="post">
@@ -277,15 +277,16 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                                                         <tr><td class="space"></td></tr>
                         </table>
          ';
-           print_d($pagenav_arr['cur_start']);
+         
     // Create Pagination
     $urlFormat = '?go=articles_edit&page=%d&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'];
     $settings = array('perPage' => $config_arr['acp_per_page'], 'urlFormat' => $urlFormat);
-    $pagination = new Pagination($total_entries, $_REQUEST['page'], $settings);          
+    $pagination = new Pagination($pagenav_arr['total_entries'], $_REQUEST['page'], $settings); 
+  
 
         // End of Form & Table incl. Submit-Button
          echo '
-                      <table class="configtable" cellpadding="4" cellspacing="0">
+                      <table class="content" width="100%">
 							<tr><td class="space"></td></tr>
 							<tr><td colspan="4">
 		'.
@@ -293,6 +294,8 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 		.'
 							
 							</td></tr>
+						</table>
+                      <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="space"></td></tr>
                                                         <tr>
                                                                 <td class="right">
