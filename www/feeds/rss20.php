@@ -1,5 +1,30 @@
 <?php
-// Set header
+###################
+## Feed Settings ##
+###################
+
+/* List of possible FSCodes:
+ * 
+ * b, i, u, s, center, url, home, email, img, cimg, list, numlist,
+ * font, color, size, code, quote, video, noparse, smilies
+ * 
+ * Put FSCodes which should be converted to html into $to_html
+ * and those which shouldn't be touched into $no_parse.
+ * 
+ * The FSCodes home and cimg will ne 
+ * 
+ * */
+
+$to_html = array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist');
+$to_text = array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'noparse');
+
+/* Other FSCodes will be replaced by generic Content:
+ * e.g. [b]Test[/b] => Text
+ *   or [url="http://example.com"]Text[/url] => Text (http://example.com)
+ * */
+ 
+ 
+ // Set header
 header("Content-type: application/xml");
 
 // fs2 include path
@@ -8,17 +33,22 @@ define ( FS2_ROOT_PATH, "./../", TRUE );
 
 // Inlcude DB Connection File
 require( FS2_ROOT_PATH . "login.inc.php");
+ 
+
+
+
+
+
+
 
 if (isset($sql) && $sql->conn() !== false)
 {
     //Include Functions-Files
-    include( FS2_ROOT_PATH . "includes/functions.php");
     include( FS2_ROOT_PATH . "includes/imagefunctions.php");
 
     //Include Library-Classes
     require ( FS2_ROOT_PATH . "libs/class_template.php" );
     require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
-    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
 
     if ($global_config_arr[virtualhost] == "") {
         $global_config_arr[virtualhost] = "http://example.com/";

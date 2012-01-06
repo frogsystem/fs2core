@@ -175,6 +175,20 @@ function cut_string ($string, $maxlength, $replacement)
 	return $string;
 }
 
+///////////////////////////////////////////////
+//// Short string by cutting in the middle ////
+///////////////////////////////////////////////
+function highlight ($word, $text, $class = "red", $style = "")
+{
+    $style = empty($style) ? "" : "style=\"$style\"";
+    $class = empty($class) ? "" : "class=\"$class\"";
+    
+    $text = preg_replace("=(.*?)($word)(.*?)=i", 
+                         "\\1<span $class $style>\\2</span>\\3", $text);
+    return $text;
+}
+
+
 ////////////////////////
 //// create SEO URL ////
 ////////////////////////
@@ -284,6 +298,16 @@ function is_hexcolor ($COLOR) {
     return (preg_match ('/\#([a-fA-F0-9]{6})$/', $COLOR) > 0);
 }
 
+////////////////////////////////////////////////////////////
+//// wrapper for  empty(func($value))                   ////
+//// e.g. empty(trim($var))    => error                 ////
+////      is_empty(trim($var)) => ok                    ////
+//// see http://de.php.net/manual/de/function.empty.php ////
+////////////////////////////////////////////////////////////
+function is_empty ($var) {
+    return empty($var);
+}
+
 
 
 /////////////////////////////////////
@@ -372,8 +396,10 @@ function oneof () {
 			if ($comp == func_get_arg($i))
 				return true;
 		}
-	}
-	return true;
+	} else {
+        return true;
+    }
+	return false;
 }
 
 //////////////////////////////////////////////

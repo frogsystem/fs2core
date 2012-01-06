@@ -2,9 +2,6 @@
 require_once ( FS2_ROOT_PATH . 'libs/class_stringparser_bbcode.php' );
 require_once ( FS2_ROOT_PATH . 'resources/player/player_flv_include.php' );
 
-function convertlinebreaks ($text) {
-    return preg_replace ("/\015\012|\015|\012/", "\n", $text);
-}
 
 function bbcode_stripcontents ($text) {
     return preg_replace ("/[^\n]/", '', $text);

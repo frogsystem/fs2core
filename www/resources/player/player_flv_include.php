@@ -1,6 +1,6 @@
 <?php
 
-function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true ) {
+function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
 
     global $global_config_arr, $FD, $sql;
 
@@ -66,6 +66,10 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true ) {
                     $template_player = "";
                     break;
             }
+            
+            // DL?
+            
+            
         } else {
             $video_arr['video_type'] = 0;
         }
@@ -75,10 +79,16 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true ) {
         $video_arr['video_title'] = $input[1];
         $template_player = $template_own;
         $video_arr['video_type'] = 1;
+        $video_arr['dl_id'] = 0;
     }
 
     $video_arr['video_x'] = htmlspecialchars ( $video_arr['video_x'] );
     $video_arr['video_title'] = htmlspecialchars ( $video_arr['video_title'] );
+
+    // return text output?
+    if ($TEXT) {
+        return get_video_text($video_arr['video_x'], $video_arr['video_title'], $video_arr['video_type'], $video_arr['dl_id']);
+    }
 
     // get dimensions
     if ( substr ( $WIDTH, -1 ) == "%" ) {
@@ -127,5 +137,36 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true ) {
     }
     
     return $template_player;
+}
+
+function get_video_text($url, $title, $type, $dl_id = 0) {
+    global $FD;
+    
+    // Existing Download?
+    if ($type == 1 && $dl_id != 0) {
+       $url = url("dlfile", array('id' => $dl_id), true);
+    }
+    
+    // $URL ermitteln
+    switch ($type) {
+        case 3: // MyVideo
+            $url = "http://www.myvideo.de/watch/".$url."/";
+            break;
+        case 2: // YouTube
+            $url = "http://www.youtube.com/watch?v=".$url;
+            break;
+        case 1:
+            $url = $url;
+            break;
+        default:
+            break;
+    }    
+    
+    // Return Text
+    if (!empty($title)) {
+        return $FD->text('frontend', 'video').": ".$title." (".$url.")";
+    } else {
+        return $FD->text('frontend', 'video').": ".$url;
+    }
 }
 ?>

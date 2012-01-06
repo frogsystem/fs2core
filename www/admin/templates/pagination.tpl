@@ -18,7 +18,7 @@
 
 <!--section-start::selected-page-->
 <span class="pagination-page-selected" title="<!--TEXT::entries--> | <!--TEXT::page-->">
-	<!--TEXT::page-number--></span>
+	<!--TEXT::page--></span>
 <!--section-end::selected-page-->
 
 

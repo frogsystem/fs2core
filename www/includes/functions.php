@@ -1093,25 +1093,37 @@ function getsize ( $SIZE )
 }
 
 /////////////////////////
-// mark word in a text //  <=== BAD FUNCTION *HAS TO BE IMPROVED* TODO
+// mark word in a text //  <=== DEPRECATED use highlight
 /////////////////////////
 
 function markword($text, $word)
 {
-    $text = preg_replace("=(.*?)$word(.*?)=i", 
-                         "\\1<font color=\"red\"><b>$word</b></font>\\2",$text);
-    return $text;
+    return highlight($word, $text, "", "color:#FF0000; font-weight:bold;");
 }
 
 //////////////////////////////////////////////////////////////
 // Inserts HTML line breaks before all newlines in a string //
 //////////////////////////////////////////////////////////////
 
-function html_nl2br ( $TEXT )
+function html_nl2br($TEXT, $is_xhtml = false)
 {
-    $TEXT = str_replace ( array ( "\r\n", "\r", "\n" ), "<br>", $TEXT );
+    $TEXT = nl2br(convertlinebreaks($TEXT), $is_xhtml);
     return $TEXT;
 }
+function convertlinebreaks ($text) {
+    return preg_replace ("/\015\012|\015|\012/", "\n", $text);
+}
+
+//////////////////////////////
+// Convert tab \t to &nbsp; //
+//////////////////////////////
+
+function tab2space($TEXT, $tabsize = 4, $space = "&nbsp;")
+{
+    $TEXT = preg_replace("/\t/", str_repeat($space, $tabsize), $TEXT);
+    return $TEXT;
+}
+
 
 /////////////////////////////////
 // create save strings for sql //
@@ -1166,6 +1178,43 @@ function unquote ($TEXT)
 
 function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0)
 {
+    include_once ( FS2_ROOT_PATH . 'includes/fscode.php');   
+    $flags = array('html' => $html, 'paragraph' => $para, 
+    );
+    
+    if ($all)
+        $fscodes = get_all_fscodes();
+    else {
+        $fscodes = array();
+        
+        if ($do_b==1)           array_push($fscodes, 'b');
+        if ($do_i==1)           array_push($fscodes, 'i');
+        if ($do_u==1)           array_push($fscodes, 'u');
+        if ($do_s==1)           array_push($fscodes, 's');
+        if ($do_center==1)      array_push($fscodes, 'center');
+        if ($do_url==1)         array_push($fscodes, 'url');
+        if ($do_homelink==1)    array_push($fscodes, 'home');
+        if ($do_email==1)       array_push($fscodes, 'email');
+        if ($do_img==1)         array_push($fscodes, 'img');
+        if ($do_cimg==1)        array_push($fscodes, 'cimg');
+        if ($do_list==1)        array_push($fscodes, 'list');
+        if ($do_numlist==1)     array_push($fscodes, 'numlist');
+        if ($do_font==1)        array_push($fscodes, 'font');
+        if ($do_color==1)       array_push($fscodes, 'color');
+        if ($do_size==1)        array_push($fscodes, 'size');
+        if ($do_code==1)        array_push($fscodes, 'code');
+        if ($do_quote==1)       array_push($fscodes, 'quote');
+        if ($do_noparse==1)     array_push($fscodes, 'noparse');
+        if ($do_player==1)      array_push($fscodes, 'player');
+        if ($do_smilies==1)     array_push($fscodes, 'smilies');
+    }
+    
+    return parse_fscode(stripslashes($text), $flags, $fscodes);
+    
+    
+    
+    // OLD
+    
         include_once ( FS2_ROOT_PATH . 'includes/bbcodefunctions.php');
         $bbcode = new StringParser_BBCode ();
         
@@ -1175,9 +1224,11 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
             #$bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'strip_tags');
             $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
         }
-        $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'stripslashes');
+        $bbcode->addParser (array ('code'), 'killhtml');
+        
+        $bbcode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'stripslashes');
         if ($all==true) {
-              $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
+              $bbcode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'html_nl2br');
         }
         $bbcode->addParser ('list', 'bbcode_stripcontents');
 
@@ -1262,8 +1313,8 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
                           'inline', array ('listitem', 'block', 'inline', 'link'), array ());
 
         if ($all==true OR $do_code==1) {
-            $bbcode->addCode ('code', 'callback_replace', 'do_bbcode_code', array (),
-                              'block', array ('listitem', 'block', 'inline'), array ('link'));
+            $bbcode->addCode ('code', 'usecontent', 'do_bbcode_code', array (),
+                              'code', array ('listitem', 'block', 'inline'), array ('link'));
             $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
             $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
         }
