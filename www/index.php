@@ -56,7 +56,6 @@ if (isset($sql) && $sql->conn() !== false) {
     save_visitors();
     
 
-
     // Get Body-Template
     $theTemplate = new template();
     $theTemplate->setFile("0_main.tpl");
@@ -72,5 +71,5 @@ if (isset($sql) && $sql->conn() !== false) {
 }
 
 // Close Connection
-unset($sql); // TODO
+unset($sql);
 ?>

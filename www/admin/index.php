@@ -30,12 +30,16 @@ require_once(FS2_ROOT_PATH . "libs/class_fileaccess.php");
 require_once(FS2_ROOT_PATH . "libs/class_lang.php");
 require_once(FS2_ROOT_PATH . "libs/class_adminpage.php");
 
+// Constructor Calls
+setTimezone($FD->cfg("timezone"));
+
 //Include Phrases-Files
 require(FS2_ROOT_PATH . "lang/de_DE/admin/admin_phrases_de.php");
 $TEXT['admin']    = new lang($global_config_arr['language_text'], "admin");
 $TEXT['frontend'] = new lang($global_config_arr['language_text'], "frontend");
 $TEXT['template'] = new lang($global_config_arr['language_text'], "template");
 $TEXT['menu']     = new lang($global_config_arr['language_text'], "menu");
+
 
 ######################
 ### START OF LOGIN ###

@@ -133,7 +133,7 @@ function killhtml ($VAL, $ARR = true) {
             settype($VAL, "float");
         }
     } else {
-        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES);
+        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES, "ISO-8859-1", false);
         settype($VAL, "string");
     }
     
@@ -246,13 +246,13 @@ function parse_url_query($query) {
 ///////////////////////
 function date_loc ($DATE_STRING, $TIMESTAMP)
 {
-    global $TEXT;
-
+    global $FD;
+    
     $week_en = array ( "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" );
     $month_en = array ( "January","February","March","April","May","June","July","August","September","October","November","December" );
     
-    $week_loc = explode(",", $TEXT['frontend']->get("week_days_array"));
-    $month_loc = explode(",", $TEXT['frontend']->get("month_names_array"));
+    $week_loc = explode(",", $FD->text('frontend', "week_days_array"));
+    $month_loc = explode(",", $FD->text('frontend', "month_names_array"));
     
     $localized_date = str_replace($week_en, $week_loc, date($DATE_STRING, $TIMESTAMP));
     $localized_date = str_replace($month_en,$month_loc, $localized_date);

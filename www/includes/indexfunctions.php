@@ -370,13 +370,13 @@ function tpl_functions_init ($TEMPLATE)
     // Snippets
     $SNP = array();
 
-    return tpl_functions($TEMPLATE, $FD->cfg('system', 'var_loop'));
+    return tpl_functions($TEMPLATE, $FD->cfg('system', 'var_loop'), true);
 }
 
 ///////////////////////////////
 //// Template Replacements ////
 ///////////////////////////////
-function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
+function tpl_functions ($TEMPLATE, $COUNT, $filter=array(), $loopend_escape = true)
 {
     global $global_config_arr, $sql;
     
@@ -402,15 +402,15 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
     
     
     // Set Pattern and Replacment Code
-    $PATTERN = array(
-        '/\$('.implode("|", array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/e',
-        '/\[%(.*?)%\]/e',
-    );
-    
-    $REPLACEMENT = array(
-        'call_tpl_function($functions, $COUNT, array(\'$1\', \'$0\', \'$2\', \'$3\'));',
-        'call_tpl_function($snippet_functions, $COUNT, array("SNP", "$0", "$1", ""));',
-    );
+    $PATTERN = $REPLACEMENT = array();
+    if (!empty($functions)) {
+        array_push($PATTERN, '/\$('.implode("|", array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/e');
+        array_push($REPLACEMENT, 'call_tpl_function($functions, $COUNT, array(\'$1\', \'$0\', \'$2\', \'$3\'), $loopend_escape);');
+    }
+    if (!empty($snippet_functions)) {
+        array_push($PATTERN, '/\[%(.*?)%\]/e');
+        array_push($REPLACEMENT, 'call_tpl_function($snippet_functions, $COUNT, array("SNP", "$0", "$1", ""), $loopend_escape);');
+    }
     
     // Replace Functions with computed values
     $TEMPLATE = preg_replace($PATTERN, $REPLACEMENT, $TEMPLATE);
@@ -419,7 +419,7 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
 }
 
 
-function call_tpl_function ($functions, $COUNT, $called_function)
+function call_tpl_function ($functions, $COUNT, $called_function, $loopend_escape = true)
 {
     // call function with arguments
     $replacement = call_user_func($functions[$called_function[0]][0], $called_function[1], $called_function[2], $called_function[3]);
@@ -428,7 +428,10 @@ function call_tpl_function ($functions, $COUNT, $called_function)
     if($functions[$called_function[0]][1] && $COUNT > 0) {
         $replacement = tpl_functions($replacement, $COUNT-1);
     } else {
-        $replacement = escape_tpl_functions($replacement, $functions);
+        if ($loopend_escape) 
+            $replacement = escape_tpl_functions($replacement, array_keys($functions));
+        else
+            $replacement = remove_tpl_functions($replacement, array_keys($functions));    
     }
     return $replacement;
 }
@@ -443,7 +446,7 @@ function escape_tpl_functions ($TEMPLATE, $FUNCTIONS)
     $PATTERNS = array(
         '/\[%/',
         '/%\]/',
-        '/\$('.implode("|", array_keys($FUNCTIONS)).')\(/',
+        '/\$('.implode("|", $FUNCTIONS).')\(/',
     );
     
     $REPLACEMENTS = array(
@@ -453,6 +456,36 @@ function escape_tpl_functions ($TEMPLATE, $FUNCTIONS)
     );
 
     return preg_replace($PATTERNS, $REPLACEMENTS, $TEMPLATE);
+}
+
+///////////////////////////////////
+//// Remove Template Functions ////
+///////////////////////////////////
+function remove_tpl_functions ($TEMPLATE, $FUNCTIONS)
+{
+    $PATTERN = $REPLACEMENT = array();
+    
+    // Snippet?
+    if (in_array("SNP", $FUNCTIONS)) {
+        $FUNCTIONS = array_diff($FUNCTIONS, array("SNP"));
+        array_push($PATTERN, '/\[%(.*?)%\]/');
+        array_push($REPLACEMENT, "");
+    }
+    
+    // Normal TPL Functions
+    array_push($PATTERN, '/\$('.implode("|", $FUNCTIONS).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/');
+    array_push($REPLACEMENT, "");   
+
+    // Remove them
+    return preg_replace($PATTERN, $REPLACEMENT, $TEMPLATE);
+}
+
+////////////////////////////////////////////////
+//// Return an array with all tpl functions ////
+////////////////////////////////////////////////
+function get_all_tpl_functions()
+{
+    return array('APP', 'NAV', 'DATE', 'VAR', 'URL', 'SNP');
 }
 
 //////////////////////

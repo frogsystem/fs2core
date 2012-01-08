@@ -1,5 +1,5 @@
 <?php
-require_once ( FS2_ROOT_PATH . 'libs/class_stringparser_bbcode.php' );
+require_once(FS2_ROOT_PATH . 'libs/class_stringparser_bbcode.php');
 
 // Parse all possible FSCodes to HTML
 function parse_all_fscodes($TEXT, $flags = array()) {
@@ -387,7 +387,6 @@ function do_fscode_url ($action, $attributes, $content, $params, $node_object) {
 
 // Create URL from Homelink and then create Link
 function do_fscode_homelink ($action, $attributes, $content, $params, $node_object) {
-
     global $FD;
 
     if ($action == 'validate') {
@@ -418,6 +417,8 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
         
     // URL in Content => Use "go[key1=val1 key2=val2]" or oldschool style
     } else {
+        require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
+        
         $url = $content;
         
         //check for [ or ] => yes: new style; no: oldstyle
@@ -428,8 +429,8 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
             $content = $FD->cfg('virtualhost').$url;
             
         // oldschool url style
-        } else {
-            $url = $FD->cfg('virtualhost')."?go=".htmlspecialchars_decode($url,ENT_NOQUOTES);
+        } else {#print_d($url);
+            $url = $FD->cfg('virtualhost')."?go=".htmlspecialchars_decode($url, ENT_NOQUOTES);#print_d($url);
             $query = parse_url_query(parse_url($url, PHP_URL_QUERY));
             $go = $query['go'];
             unset($query['go']);

@@ -18,7 +18,7 @@ class GlobalData {
 
     // Constructor
     // 
-    public function __construct($sql) {
+    public function __construct(&$sql) {
 
         // Set sql connection
         $this->sql = $sql;
@@ -162,6 +162,12 @@ class GlobalData {
     public function sql() {
         return $this->sql;
     }
+    // Destruct SQL => Close Connection
+    public function closeSql() {
+        $this->sql->__destruct();
+        $this->sql = null;
+    }    
+    
     
     // get lang phrase object
     public function text($type, $tag) {

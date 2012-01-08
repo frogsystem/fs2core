@@ -1214,8 +1214,8 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
     
     
     // OLD
+    /*
     
-        include_once ( FS2_ROOT_PATH . 'includes/bbcodefunctions.php');
         $bbcode = new StringParser_BBCode ();
         
         $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
@@ -1340,6 +1340,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         unset($bbcode);
 
         return $parsedtext;
+    */
 }
 
 //////////////////////////

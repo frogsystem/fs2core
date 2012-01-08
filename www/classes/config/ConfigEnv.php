@@ -21,6 +21,7 @@ class ConfigEnv extends ConfigData {
 
         // set env data
         $this->setConfig("date", time());
+        $this->setConfig("time", $this->cfg("date"));
         $this->setConfig("year", date("Y", $this->cfg("date")));
         $this->setConfig("month", date("m", $this->cfg("date")));
         $this->setConfig("day", date("d", $this->cfg("date")));
