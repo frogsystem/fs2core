@@ -52,6 +52,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         'paragraph_to_text' => false,
         'tab' => false,
         'tabsize' => 8,
+        'full_urls' => false,
     );
     $flags = array_merge($default_flags, $flags);
     
@@ -150,10 +151,10 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     // home
     if (in_array('home', $to_html))
-        $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default'),
+        $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'fullurl' => $flags['full_urls']),
             'link', array ('listitem', 'block', 'inline'), array ('link'));
     elseif  (in_array('home', $to_text))
-        $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'text' => true),
+        $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'text' => true, 'fullurl' => $flags['full_urls']),
             'link', array ('listitem', 'block', 'inline'), array ('link'));
 
     // email
@@ -411,8 +412,7 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
         }
         
         //build url
-        #$url = url($go, $attributes);
-        $url = url($go, $attributes, true);
+        $url = url($go, $attributes, $params['fullurl']);
         
         
     // URL in Content => Use "go[key1=val1 key2=val2]" or oldschool style
@@ -423,19 +423,36 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
         
         //check for [ or ] => yes: new style; no: oldstyle
         if (strpos($url, "[") !== false || strpos($url, "]") !== false) {
+            // full url?
+            if ($params['fullurl']) {
+                $len = strlen($url);
+                
+                // check for 1
+                $one = substr($url, $len-3, 2);
+                $one = ($one === " 1");
+                
+                // check for true
+                $true = substr($url, $len-6, 5);
+                $true = ($true === " true");
+                
+                if (!$one && !$true) {
+                    $url = substr($url, 0, $len-1)." 1]";
+                }
+            }
+            
             //create pseudeo template-var
             $url = '$URL('.$url.')';
             $url = tpl_functions($url, 0, array("URL"));
-            $content = $FD->cfg('virtualhost').$url;
+            $content = $url;
             
         // oldschool url style
-        } else {#print_d($url);
-            $url = $FD->cfg('virtualhost')."?go=".htmlspecialchars_decode($url, ENT_NOQUOTES);#print_d($url);
+        } else {
+            $url = $FD->cfg('virtualhost')."?go=".htmlspecialchars_decode($url, ENT_NOQUOTES);
             $query = parse_url_query(parse_url($url, PHP_URL_QUERY));
             $go = $query['go'];
             unset($query['go']);
             #$url = url($go, $query);
-            $content = $url = url($go, $query, true);
+            $content = $url = url($go, $query, $params['fullurl']);
         }
     }
     

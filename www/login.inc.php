@@ -40,6 +40,10 @@ try {
 //////////////////////////////
 } catch (Exception $e) {
     
+    // Set header
+    header(http_response_text(503), true, 503);    
+    header("Retry-After: ".(string)(60*15)); // 15 Minutes
+    
     // Include lang-class
     require_once(FS2_ROOT_PATH . "libs/class_lang.php");
 
@@ -67,6 +71,7 @@ try {
 
     // Display No-Connection-Page
     echo $template;
+    exit();
 }
 
 

@@ -686,6 +686,9 @@ function tpl_func_date($original, $main_argument, $other_arguments)
 /////////////////////
 function tpl_func_url($original, $main_argument, $other_arguments)
 {
+    // Example:
+    // $URL(download[cat_id=4 keyword=test 1])
+    
     global $FD;
        
     // compute Arguments

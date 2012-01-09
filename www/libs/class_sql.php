@@ -35,7 +35,7 @@ class sql {
     
     // Destructor closes SQL-Connection
     public function __destruct (){
-        mysql_close($this->sql);
+        //mysql_close($this->sql);
     } 
 
 
@@ -218,7 +218,7 @@ class sql {
         try {
             return $this->doQuery($qrystr); // ... and execute
         } catch (Exception $e) {
-            print_r($e->getMessage());
+            print_d($e->getMessage());
         }
     }    
     

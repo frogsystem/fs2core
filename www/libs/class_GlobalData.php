@@ -37,7 +37,7 @@ class GlobalData {
     
     // Destructor closes SQL-Connection
     public function __destruct (){
-        
+        $this->closeSql();
     } 
   
     
@@ -163,7 +163,7 @@ class GlobalData {
         return $this->sql;
     }
     // Destruct SQL => Close Connection
-    public function closeSql() {
+    private function closeSql() {
         $this->sql->__destruct();
         $this->sql = null;
     }    
@@ -178,8 +178,6 @@ class GlobalData {
     public function setPageText($obj) {
         return $this->text['page'] = $obj;
     }    
-    
-    
     
     
     
