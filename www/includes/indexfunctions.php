@@ -370,7 +370,7 @@ function tpl_functions_init ($TEMPLATE)
     // Snippets
     $SNP = array();
 
-    return tpl_functions($TEMPLATE, $FD->cfg('system', 'var_loop'), true);
+    return tpl_functions($TEMPLATE, $FD->cfg('system', 'var_loop'), array(), true);
 }
 
 ///////////////////////////////
