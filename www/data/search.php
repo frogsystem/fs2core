@@ -147,12 +147,13 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                         initstr($date_template);
                         initstr($date_formated);
                     }
-                    
-                    if ($article['article_param'] = array() && empty($article['article_url'])) {
+
+                    $article['article_param'] = array();
+                    if (empty($article['article_url'])) {
                         $article['article_url'] = "articles";
                         $article['article_param'] = array('id' => $article['article_id']);
                     }
-                    
+
                     // entry
                     $template->load("RESULT_LINE");
                     $template->tag("id", $article['article_id']);

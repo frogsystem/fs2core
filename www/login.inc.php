@@ -17,15 +17,21 @@ $path = dirname(__FILE__) . "/"; //Dateipfad
 define('SLASH', TRUE);
 
 
-///////////////////////
-//// DB Connection ////
-///////////////////////
+// TODO: Pre-Import Hook
 
-// Initialize sql-class 
+////////////////////////////////////////
+//// Include important files & libs ////
+////////////////////////////////////////
 require_once(FS2_ROOT_PATH . "libs/class_GlobalData.php");
 require_once(FS2_ROOT_PATH . "libs/class_lang.php");
 require_once(FS2_ROOT_PATH . "libs/class_sql.php");
 require_once(FS2_ROOT_PATH . "includes/functions.php");  
+
+///////////////////////
+//// DB Connection ////
+///////////////////////
+
+// TODO: Pre-Connection Hook
 
 try {
     // Connect to DB-Server
@@ -33,7 +39,10 @@ try {
     
     // Frogsystem Global Data Array
     $global_data = new GlobalData($sql);
-    $FD =& $global_data; // Use shorthand $FD 
+    $FD =& $global_data; // Use shorthand $FD
+    
+    // Unset unused vars
+    unset($spam, $dbc, $path); 
 
 //////////////////////////////
 //// DB Connection failed ////
@@ -74,14 +83,11 @@ try {
     exit();
 }
 
-
-///////////////////////////////////////////////////
-//// Unset Hardcoded Vars for Security Reasons ////
-///////////////////////////////////////////////////
-unset($spam);
-
 ////////////////////////
 //// Init Some Vars ////
 ////////////////////////
+
+//TODO: First Init Hook
+
 $_SESSION['user_level'] = !isset($_SESSION['user_level']) ? "unknown" : $_SESSION['user_level'];
 ?>

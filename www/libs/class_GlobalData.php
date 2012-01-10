@@ -165,7 +165,6 @@ class GlobalData {
     // Destruct SQL => Close Connection
     private function closeSql() {
         $this->sql->__destruct();
-        $this->sql = null;
     }    
     
     
