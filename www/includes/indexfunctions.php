@@ -291,7 +291,7 @@ function get_canonical()
 		$goto = "";
 	
     // get canoncial parameters
-	if (false !== $canonparams = $FD->info('canonical')) {
+	if (!is_null($canonparams = $FD->info('canonical'))) {
         $activeparams = array();
 
         if (count($canonparams) > 0) {

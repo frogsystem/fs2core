@@ -18,8 +18,8 @@ class ConfigInfo extends ConfigData {
         // set start data
         $this->config = $data;
 
-        // set env data
-        $this->setConfig("canonical", false);
+        // set canonical paramters default to null (= no paramters)
+        $this->setConfig("canonical", null);
     }  
 }
 ?>

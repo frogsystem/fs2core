@@ -1,6 +1,6 @@
 <?php
 // Set canonical parameters
-$FD->setConfig('info', 'canonical', array('pollid', 'id', 'order', 'sort'));
+$FD->setConfig('info', 'canonical', array('pollid', 'id'));
 
 //////////////////////////
 //// Locale Functions ////
