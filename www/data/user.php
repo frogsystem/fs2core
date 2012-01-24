@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('id'));
+
 ///////////////////////////////////////////
 //// Security Functions & Config Array ////
 ///////////////////////////////////////////
@@ -125,6 +128,6 @@ if ( mysql_num_rows ( $index ) > 0 ) {
 //// User ID not found ////
 ///////////////////////////
 else {
-    $template = sys_message ( $TEXT['frontend']->get("systemmessage"), $TEXT['frontend']->get("user_not_found") );
+    $template = sys_message ( $TEXT['frontend']->get("systemmessage"), $TEXT['frontend']->get("user_not_found"), 404);
 }
 ?>

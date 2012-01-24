@@ -14,11 +14,14 @@ class ConfigEnv extends ConfigData {
     // Constructor
     // loading all data
     public function __construct($data) {
+        global $sql, $spam, $path;
+        
         // set start data
         $this->config = $data;
-        
+
         // set env data
         $this->setConfig("date", time());
+        $this->setConfig("time", $this->cfg("date"));
         $this->setConfig("year", date("Y", $this->cfg("date")));
         $this->setConfig("month", date("m", $this->cfg("date")));
         $this->setConfig("day", date("d", $this->cfg("date")));

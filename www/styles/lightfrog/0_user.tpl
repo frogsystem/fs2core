@@ -22,7 +22,7 @@
     <tr>    
       <td>
         <input class="small input input_highlight" size="20" id="password_mini" type="password" name="userpassword" maxlength="50"><br>
-        <a href="?go=login&amp;newpassword" class="small">Passwort vergessen?</a>
+        <a href="$URL(login[newpassword=])" class="small">Passwort vergessen?</a>
       </td>
     </tr>
     <tr><td></td></tr>
@@ -107,7 +107,7 @@
     <tr>
       <td align="left">
         <input class="small input input_highlight" size="33" type="password" id="password_big" name="userpassword" maxlength="50"><br>
-        <a href="?go=login&amp;newpassword" class="small">Passwort vergessen?</a>
+        <a href="$URL(login[newpassword=])" class="small">Passwort vergessen?</a>
       </td>
       <td align="left" valign="top">
         <img src="$VAR(style_icons)user/key.gif" alt="" align="bottom">
@@ -158,7 +158,7 @@
     </tr>
   </table>
 
-<p>Falls du keinen Zugriff mehr auf diese E-Mail-Adresse haben solltest, musst du dir leider einen <a href="?go=register">neuen Account</a> anlegen.</p>
+<p>Falls du keinen Zugriff mehr auf diese E-Mail-Adresse haben solltest, musst du dir leider einen <a href="$URL(register)">neuen Account</a> anlegen.</p>
 <!--section-end::NEW_PASSWORD-->
 
 <!--section-start::REGISTER--><b>Registrierung</b><br><br>

@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('lang', 'cat', 'game'));
+
 // Get Config
 $index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."press_config`", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
@@ -150,11 +153,10 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                             $entry_arr = mysql_fetch_assoc($index);
 
                             //Navi URL erstellen
-                            $navi_url = $navi_url2;
                             switch ($entry_arr[type]) {
-                                case 3: $navi_url3 = $navi_url . "&lang=".$entry_arr[id]; break;
-                                case 2: $navi_url3 = $navi_url . "&cat=".$entry_arr[id]; break;
-                                default: $navi_url3 = $navi_url . "&game=".$entry_arr[id]; break;
+                                case 3: $navi_url3 = $navi_url2 + array('lang' => $entry_arr[id]); break;
+                                case 2: $navi_url3 = $navi_url2 + array('cat' => $entry_arr[id]); break;
+                                default: $navi_url3 = $navi_url2 + array('game' => $entry_arr[id]); break;
                             }
 
                             /*
@@ -188,7 +190,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                             $template->setFile("0_press.tpl");
                             $template->load("NAVIGATION_LINE");
                             
-                            $template->tag("navi_url", $navi_url3 );
+                            $template->tag("navi_url", url($navi_url ,$navi_url3));
                             $template->tag("title", $entry_arr['title'] );
                             $template->tag("img_url", image_url ( "images/press/", $entry_arr['type']."_".$entry_arr['id'] ) );
                             $template->tag("icon_url", $entry_arr['icon_url'] );
@@ -203,11 +205,10 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                         $entry_arr = mysql_fetch_assoc($index);
 
                         //Navi URL erstellen
-                        $navi_url = $navi_url1;
                         switch ($entry_arr[type]) {
-                            case 3: $navi_url2 = $navi_url . "&lang=".$entry_arr[id]; break;
-                            case 2: $navi_url2 = $navi_url . "&cat=".$entry_arr[id]; break;
-                            default: $navi_url2 = $navi_url . "&game=".$entry_arr[id]; break;
+                            case 3: $navi_url2 = $navi_url1 + array('lang' => $entry_arr[id]); break;
+                            case 2: $navi_url2 = $navi_url1 + array('cat' => $entry_arr[id]); break;
+                            default: $navi_url2 = $navi_url1 + array('game' => $entry_arr[id]); break;
                         }
 
                         /*
@@ -242,7 +243,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                         $template->setFile("0_press.tpl");
                         $template->load("NAVIGATION_LINE");
 
-                        $template->tag("navi_url", $navi_url2 );
+                        $template->tag("navi_url", url($navi_url ,$navi_url2));
                         $template->tag("title", $entry_arr['title'] );
                         $template->tag("img_url", image_url ( "images/press/", $entry_arr['type']."_".$entry_arr['id'] ) );
                         $template->tag("icon_url", $entry_arr['icon_url'] );
@@ -258,11 +259,11 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                 $entry_arr = mysql_fetch_assoc($index);
 
                 //Navi URL erstellen
-                $navi_url = "?go=press";
+                $navi_url = "press";
                 switch ($entry_arr[type]) {
-                    case 3: $navi_url1 = $navi_url . "&lang=".$entry_arr[id]; break;
-                    case 2: $navi_url1 = $navi_url . "&cat=".$entry_arr[id]; break;
-                    default: $navi_url1 = $navi_url . "&game=".$entry_arr[id]; break;
+                    case 3: $navi_url1 = array('lang' => $entry_arr[id]); break;
+                    case 2: $navi_url1 = array('cat' => $entry_arr[id]); break;
+                    default: $navi_url1 = array('game' => $entry_arr[id]); break;
                 }
                 
                 /*
@@ -297,7 +298,7 @@ if (!($config_arr[game_navi] == 0 && $config_arr[cat_navi] == 0 && $config_arr[l
                 $template->setFile("0_press.tpl");
                 $template->load("NAVIGATION_LINE");
 
-                $template->tag("navi_url", $navi_url1 );
+                $template->tag("navi_url", url($navi_url, $navi_url1));
                 $template->tag("title", $entry_arr['title'] );
                 $template->tag("img_url", image_url ( "images/press/", $entry_arr['type']."_".$entry_arr['id'] ) );
                 $template->tag("icon_url", $entry_arr['icon_url'] );

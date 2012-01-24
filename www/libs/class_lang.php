@@ -2,7 +2,7 @@
 /**
 * @file     class_lang.php
 * @folder   /libs
-* @version  0.3
+* @version  0.4
 * @author   Sweil
 *
 * this class is responsible for the language operations
@@ -20,9 +20,13 @@ class lang
     
 
     // constructor
-    public function  __construct ($local, $type = false) {
-        global $global_config_arr;
-        $this->local = $local;
+    public function  __construct ($local = false, $type = false) {
+        global $FD;
+        
+        if ($local == false)    
+            $this->local = $FD->cfg('language_text');
+        else
+            $this->local = $local;
         
         if ($type !== false)
             $this->setType($type);

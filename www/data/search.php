@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('in_news', 'in_articles', 'in_downloads', 'keyword'));
+
 ###################
 ## Page Settings ##
 ###################
@@ -87,7 +90,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->load("RESULT_LINE");
                     $template->tag("id", $news['news_id']);
                     $template->tag("title", $news['news_title']);
-                    $template->tag("url", "?go=comments&amp;id=".$news['news_id']);
+                    $template->tag("url", url("comments", array('id' => $news['news_id'])));
                     $template->tag("date", $date_formated);
                     $template->tag("date_template", $date_template);
                     $template->tag("rank", sprintf("%.1F", $found['rank']));
@@ -100,7 +103,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($news_more);
             if ($search->next()) {
                 $news_more = $more_results_template;
-                $news_more->tag("main_search_url", "?go=news_search&amp;keyword=".implode("+",$keyword_arr));
+                $news_more->tag("main_search_url", url("news_search", array('keyword' => implode("+",$keyword_arr))));
                 $news_more = (string) $news_more;
                 
             //no results
@@ -144,13 +147,18 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                         initstr($date_template);
                         initstr($date_formated);
                     }
-                    $article['article_url'] = !empty($article['article_url']) ? $article['article_url'] : "articles&amp;id=".$article['article_id'];
-                    
+
+                    $article['article_param'] = array();
+                    if (empty($article['article_url'])) {
+                        $article['article_url'] = "articles";
+                        $article['article_param'] = array('id' => $article['article_id']);
+                    }
+
                     // entry
                     $template->load("RESULT_LINE");
                     $template->tag("id", $article['article_id']);
                     $template->tag("title", $article['article_title']);
-                    $template->tag("url", "?go=".$article['article_url']);
+                    $template->tag("url", url($article['article_url'], $article['article_param']));
                     $template->tag("date", $date_formated);
                     $template->tag("date_template", $date_template);
                     $template->tag("rank", sprintf("%.1F", $found['rank']));
@@ -163,7 +171,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($articles_more);
             if ($search->next()) {
                 $articles_more = $more_results_template;
-                $articles_more->tag("main_search_url", "?go=foo&amp;keyword=".implode("+",$keyword_arr));
+                $articles_more->tag("main_search_url", url("foo", array('keyword' => implode("+",$keyword_arr))));
                 $articles_more = (string) $articles_more;
                 
             //no results
@@ -213,7 +221,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->load("RESULT_LINE");
                     $template->tag("id", $dl['dl_id']);
                     $template->tag("title", $dl['dl_name']);
-                    $template->tag("url", "?go=dlfile&amp;id=".$dl['dl_id']);
+                    $template->tag("url", url("dlfile", array('id' => $dl['dl_id'])));
                     $template->tag("date", $date_formated);
                     $template->tag("date_template", $date_template);
                     $template->tag("rank", sprintf("%.1F", $found['rank']));
@@ -226,7 +234,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($downloads_more);
             if ($search->next()) {
                 $downloads_more = $more_results_template;
-                $downloads_more->tag("main_search_url", "?go=download&amp;cat_id=all&amp;keyword=".implode("+", $keyword_arr));
+                $downloads_more->tag("main_search_url", url("download", array('cat_id' => "all", 'keyword' => implode("+", $keyword_arr))));
                 $downloads_more = (string) $downloads_more;
                 
             //no results

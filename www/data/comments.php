@@ -3,6 +3,9 @@
 //// Configs laden ////
 ///////////////////////
 
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('id'));
+
 //Kommentar-Config
 $index = mysql_query("SELECT * from ".$global_config_arr['pref']."news_config", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
@@ -119,10 +122,10 @@ if (isset($_POST['add_comment']))
                         ", $FD->sql()->conn() );
                         mysql_query("update ".$global_config_arr['pref']."counter set comments=comments+1", $FD->sql()->conn() );
                         $SHOW = FALSE;
-                        $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_added"), $_SERVER['REQUEST_URI'] );
+                        $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_added"), $FD->cfg('virtualhost') );
                     } else {
                         $SHOW = FALSE;
-                        $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_not_added")."<br>".$TEXT['frontend']->get("comment_duplicate"), $_SERVER['REQUEST_URI'] );
+                        $template = forward_message ( $TEXT['frontend']->get("news_title"), $TEXT['frontend']->get("comment_not_added")."<br>".$TEXT['frontend']->get("comment_duplicate"), $FD->cfg('virtualhost') );
                     }
                 } else {
                     $message_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("comm_not_allowd"));
@@ -172,7 +175,7 @@ if ( $SHOW == TRUE ) {
         $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
         $global_config_arr['dyn_title_page'] = stripslashes ( $news_arr['news_title'] );
     } else {
-        $news_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("news_not_exist"));
+        $news_template = sys_message($TEXT['frontend']->get("sysmessage"), $TEXT['frontend']->get("news_not_exist"), 404);
     }
 
     // Text formatieren
@@ -235,7 +238,7 @@ if ( $SHOW == TRUE ) {
             $template->setFile("0_news.tpl");
             $template->load("COMMENT_USER");
 
-            $template->tag("url", "?go=user&amp;id=".$comment_arr['comment_poster_id'] );
+            $template->tag("url", url("user", array('id' => $comment_arr['comment_poster_id'])));
             $template->tag("name", $comment_arr['comment_poster'] );
             $template->tag("image", $comment_arr['comment_avatar'] );
             $template->tag("rank", $comment_arr['user_rank'] );

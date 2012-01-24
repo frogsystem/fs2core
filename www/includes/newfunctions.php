@@ -1,4 +1,81 @@
 <?php
+
+////////////////////////////////////////////////////
+//// returns string representation of           ////
+//// any http statuscode for use in http header ////
+////////////////////////////////////////////////////
+function http_response_text($code) {
+
+    $status = array(
+        '100' => "Continue",
+        '101' => "Switching Protocols",
+        '102' => "Processing",
+        '118' => "Connection timed out",
+        
+        '200' => "OK",
+        '201' => "Created",
+        '202' => "Accepted",
+        '203' => "Non-Authoritative Information",
+        '204' => "No Content",
+        '205' => "Reset Content",
+        '206' => "Partial Content",
+        '207' => "Multi-Status",
+        
+        '300' => "Multiple Choices",
+        '301' => "Moved Permanently",
+        '302' => "Found",
+        '303' => "See Other",
+        '304' => "Not Modified",
+        '305' => "Use Proxy",
+        '307' => "Temporary Redirect",
+        
+        '400' => "Bad Request",
+        '401' => "Unauthorized",
+        '402' => "Payment Required",
+        '403' => "Forbidden",
+        '404' => "Not Found",
+        '405' => "Method Not Allowed",
+        '406' => "Not Acceptable",
+        '407' => "Proxy Authentication Required",
+        '408' => "Request Time-out",
+        '409' => "Conflict",
+        '410' => "Gone",
+        '411' => "Length Required",
+        '412' => "Precondition Failed",
+        '413' => "Request Entity Too Large",
+        '414' => "Request-URI Too Long",
+        '415' => "Unsupported Media Type",
+        '416' => "Requested range not satisfiable",
+        '417' => "Expectation Failed",
+        '418' => "I'm a Teapot",
+        '421' => "There are too many connections from your internet address",
+        '422' => "Unprocessable Entity",
+        '423' => "Locked",
+        '424' => "Failed Dependency",
+        '425' => "Unordered Collection",
+        '426' => "Upgrade Required",
+        
+        '500' => "Internal Server Error",
+        '501' => "Not Implemented",
+        '502' => "Bad Gateway",
+        '503' => "Service Unavailable",
+        '504' => "Gateway Time-out",
+        '505' => "HTTP Version not supported",
+        '506' => "Variant Also Negotiates",
+        '507' => "Insufficient Storage",
+        '509' => "Bandwidth Limit Exceeded",
+        '510' => "Not Extended",
+    );
+    
+    if (isset($status[$code]))
+        return sprintf("Status: %d %s", $code, $status[$code]);
+
+    return false;
+}
+
+
+
+
 ///////////////////////////////////////
 //// Decode Array with JSON & UTF8 ////
 //////////////////////////////////////
@@ -56,7 +133,7 @@ function killhtml ($VAL, $ARR = true) {
             settype($VAL, "float");
         }
     } else {
-        $VAL = htmlspecialchars(strval($VAL), ENT_COMPAT);
+        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES, "ISO-8859-1", false);
         settype($VAL, "string");
     }
     
@@ -68,7 +145,7 @@ function killhtml ($VAL, $ARR = true) {
 //// Make User String safe ////
 ///////////////////////////////
 function usersave ($string, $HTMLOK = false) {
-	$string = kill_replacements($string);
+	$string = tpl_functions($string, 0);
 	return $HTMLOK ? $string : htmlspecialchars($string, ENT_QUOTES);
 }
 
@@ -98,18 +175,84 @@ function cut_string ($string, $maxlength, $replacement)
 	return $string;
 }
 
+///////////////////////////////////////////////
+//// Short string by cutting in the middle ////
+///////////////////////////////////////////////
+function highlight ($word, $text, $class = "red", $style = "")
+{
+    $style = empty($style) ? "" : "style=\"$style\"";
+    $class = empty($class) ? "" : "class=\"$class\"";
+    
+    $text = preg_replace("=(.*?)($word)(.*?)=i", 
+                         "\\1<span $class $style>\\2</span>\\3", $text);
+    return $text;
+}
+
+
+////////////////////////
+//// create SEO URL ////
+////////////////////////
+function url_seo ($go, $args, $go_in_args = false) {
+    
+	$urlencodeext = function ($url) {
+		// Folge von Bindestriche um zwei Striche erweitern
+		return urlencode(preg_replace('/-+/', '$0--', $url));
+	};
+    
+    if ($go_in_args) {
+        unset($args['go']);
+    }
+	
+	$seourl = $urlencodeext($go);
+	
+	if (count($args) > 0)
+	{	
+		$seourl .= '--';
+	
+		ksort($args);
+	
+		foreach ($args as $key => $val)
+			$seourl .= $urlencodeext($key) . '-' . $urlencodeext($val) . '-';
+			
+		$seourl = substr($seourl, 0, strlen($seourl) - 1);
+	}
+		
+	if (!empty($seourl))		
+		$seourl .= '.html';
+        
+    return $seourl;
+}
+
+////////////////////////////////////
+//// parse query part of an url ////
+////////////////////////////////////
+function parse_url_query($query) {
+    $query = explode("&", $query);
+   
+    $params = array();
+    foreach ($query as $param) {
+        $pair = explode("=", $param);
+        $params[$pair[0]] = $pair[1];
+    }
+    
+    return $params;
+} 
+
+
+
+
 ///////////////////////
 //// Localize Date ////
 ///////////////////////
 function date_loc ($DATE_STRING, $TIMESTAMP)
 {
-    global $TEXT;
-
+    global $FD;
+    
     $week_en = array ( "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" );
     $month_en = array ( "January","February","March","April","May","June","July","August","September","October","November","December" );
     
-    $week_loc = explode(",", $TEXT['frontend']->get("week_days_array"));
-    $month_loc = explode(",", $TEXT['frontend']->get("month_names_array"));
+    $week_loc = explode(",", $FD->text('frontend', "week_days_array"));
+    $month_loc = explode(",", $FD->text('frontend', "month_names_array"));
     
     $localized_date = str_replace($week_en, $week_loc, date($DATE_STRING, $TIMESTAMP));
     $localized_date = str_replace($month_en,$month_loc, $localized_date);
@@ -155,6 +298,16 @@ function is_hexcolor ($COLOR) {
     return (preg_match ('/\#([a-fA-F0-9]{6})$/', $COLOR) > 0);
 }
 
+////////////////////////////////////////////////////////////
+//// wrapper for  empty(func($value))                   ////
+//// e.g. empty(trim($var))    => error                 ////
+////      is_empty(trim($var)) => ok                    ////
+//// see http://de.php.net/manual/de/function.empty.php ////
+////////////////////////////////////////////////////////////
+function is_empty ($var) {
+    return empty($var);
+}
+
 
 
 /////////////////////////////////////
@@ -190,9 +343,9 @@ function generate_pwd ($LENGHT = 10)
 //////////////////////////////////
 function hex2dec_color ($COLOR) {
     if (is_hexcolor($COLOR)) {
-        $return['r'] = hexdec(substr($COLOR, 0, 2));
-        $return['g'] = hexdec(substr($COLOR, 2, 2));
-        $return['b'] = hexdec(substr($COLOR, 4, 2));
+        $return['r'] = hexdec(substr($COLOR, 1, 2));
+        $return['g'] = hexdec(substr($COLOR, 3, 2));
+        $return['b'] = hexdec(substr($COLOR, 5, 2));
         return $return;
     } else {
         return false;
@@ -243,8 +396,10 @@ function oneof () {
 			if ($comp == func_get_arg($i))
 				return true;
 		}
-	}
-	return true;
+	} else {
+        return true;
+    }
+	return false;
 }
 
 //////////////////////////////////////////////

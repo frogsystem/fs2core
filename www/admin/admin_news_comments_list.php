@@ -1,7 +1,8 @@
-<?php
+<?php if (ACP_GO == "news_comments_list") {
 /*
     This file is part of the Frogsystem Spam Detector.
     Copyright (C) 2011  Thoronador
+    Copyright (C) 2011  Sweil (minor modifications)
 
     The Frogsystem Spam Detector is free software: you can redistribute it
     and/or modify it under the terms of the GNU General Public License as
@@ -26,6 +27,7 @@
     combination shall include the source code for the parts of Frogsystem used
     as well as that of the covered work.
 */
+
 
   //statistics requested?
   if (isset($_REQUEST['b8_stats']))
@@ -316,7 +318,7 @@
   settype($_GET['sort'], 'string');
 
   //Anzahl der Kommentare auslesen
-  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$global_config_arr['pref'].'news_comments`', $db);
+  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$global_config_arr['pref'].'news_comments`', $FD->sql()->conn());
   $cc = mysql_fetch_assoc($query);
   $cc = (int) $cc['cc'];
   if ($_GET['start']>=$cc)
@@ -356,12 +358,7 @@
                       .'FROM `'.$global_config_arr['pref'].'news_comments` LEFT JOIN `'.$global_config_arr['pref'].'user` '
                       .'ON `'.$global_config_arr['pref'].'news_comments`.comment_poster_id=`'.$global_config_arr['pref'].'user`.user_id, `'.$global_config_arr['pref'].'news` '
                       .'WHERE `'.$global_config_arr['pref'].'news_comments`.news_id=`'.$global_config_arr['pref'].'news`.news_id '
-                      .'ORDER BY '.$order.' LIMIT '.$_GET['start'].', 30', $db);
-  if (!$query)
-  {
-    //MySQL error
-    echo mysql_error();
-  }
+                      .'ORDER BY '.$order.' LIMIT '.$_GET['start'].', 30', $$FD->sql()->conn());
   $rows = mysql_num_rows($query);
 
   //Bereich (zahlenm‰ﬂig)
@@ -412,7 +409,7 @@
       </td>
     </tr>
 <?php
-  require_once 'eval_spam.inc.php';
+  require_once(FS2_ROOT_PATH . 'resources/spamdetector/eval_spam.inc.php');
 
   while ($comment_arr = mysql_fetch_assoc($query))
   {
@@ -423,39 +420,37 @@
     $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date'])
                                       ." um ".date('H:i' , $comment_arr['comment_date']);
     echo'<tr>
-           <td class="config">
+           <td class="configthin">
                '.$comment_arr['comment_title'].'
            </td>
-           <td class="config">
+           <td class="configthin">
                '.$comment_arr['comment_poster'];
     if ($comment_arr['comment_poster_id'] == 0)
     {
       echo '<br><small>(unregistriert)</small>';
     }
     echo '           </td>
-           <td class="config">
-               '.$comment_arr['comment_date'].'
+           <td class="configthin">
+               <span class="small">'.$comment_arr['comment_date'].'</span>
            </td>
-           <td class="config">
+           <td class="configthin">
                '.spamLevelToText(spamEvaluation($comment_arr['comment_title'],
                  $comment_arr['comment_poster_id'], $comment_arr['comment_poster'],
                  $comment_arr['comment_text'], true, $db)).'
            </td>
-           <td class="config" rowspan="2">
-             <form action="'.$PHP_SELF.'" method="post">
+           <td class="configthin" rowspan="2">
+             <form action="?go=news_edit" method="post">
                <input type="hidden" name="sended" value="comment">
                <input type="hidden" name="news_action" value="comments">
                <input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
-               <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="edit">
                <input class="button" type="submit" value="Editieren">
              </form>
-             <form action="'.$PHP_SELF.'" method="post">
+             <form action="?go=news_edit" method="post">
                <input type="hidden" name="sended" value="comment">
                <input type="hidden" name="news_action" value="comments">
                <input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
-               <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="delete">
                <input class="button" type="submit" value="L&ouml;schen">
@@ -514,7 +509,7 @@ echo '         </td>
            <td colspan="5"><hr width="95%" style="color: #cccccc; background-color: #cccccc;"></td>
          </tr>';
   }//while
-?>
+echo <<<EOT
     <tr>
       <td colspan="5">
           &nbsp;
@@ -525,28 +520,28 @@ echo '         </td>
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr valign="middle">
                                 <td width="33%" class="configthin middle">
-<?php
+EOT;
   if (isset($prev_page))
   {
     echo $prev_page;
   }
-?>
+echo <<<EOT
                                 </td>
                                 <td width="33%" align="center" class="middle">
-<?php
+EOT;
   if (isset($bereich))
   {
     echo $bereich;
   }
-?>
+echo <<<EOT
                                 </td>
                                 <td width="33%" style="text-align:right;" class="configthin middle">
-<?php
+EOT;
   if (isset($next_page))
   {
     echo $next_page;
   }
-?>
+echo <<<EOT
                                 </td>
                             </tr>
                             <tr>
@@ -557,4 +552,7 @@ echo '         </td>
                         </table>
 <?php
   } //else
+
+}//ACP?
 ?>
+

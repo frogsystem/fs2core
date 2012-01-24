@@ -15,7 +15,7 @@ class ConfigMain extends ConfigData {
     // loading all data
     public function __construct($data) {
         global $sql, $spam, $path;
-        
+
         // set start data
         $this->config = $data;
         
@@ -26,10 +26,29 @@ class ConfigMain extends ConfigData {
         $this->setConfig("data",        $sql->getDatabaseName());
         $this->setConfig("path",        $path);
 
+        // rewrite to other protocol if allowd
+        if ($this->cfg("other_protocol")) {
+            
+            // script called by https
+            if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "1" || strtolower($_SERVER['HTTPS'])=="on")) {
+                if ($this->cfg("protocol") == "http://") {
+                    $this->setConfig("protocol", "https://");
+                }
+            
+            // script called with http
+            } else {
+                if ($this->cfg("protocol") == "https://") {
+                    $this->setConfig("protocol", "http://");
+                }   
+            }
+        }  
+
         // write some other config data
+        $this->setConfig("virtualhost", $this->cfg("protocol").$this->cfg("url"));
         $this->setConfig("home_real",   $this->getRealHome($this->cfg("home"), $this->cfg("home_text")));
         $this->setConfig("language",    $this->getLanguage($this->cfg("language_text")));
         $this->setConfig("style",       $this->cfg("style_tag"));
+        
     }
 
 

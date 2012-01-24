@@ -1,5 +1,36 @@
 <?php
-require(FS2_ROOT_PATH . "includes/newfunctions.php");
+require_once(FS2_ROOT_PATH . "includes/newfunctions.php");
+
+////////////////////
+//// create URL ////
+////////////////////
+function url ($go, $args = array(), $full = false) {
+    global $FD;
+    
+    switch ($FD->cfg('url_style')) {
+        case "seo":
+            $url = url_seo($go, $args);
+            break;
+            
+        default:
+            // check for empty go
+            if (!empty($go))
+                $args = array('go' => $go)+$args;
+                
+            $url = http_build_query($args, "p", "&amp;");
+            if (!empty($url))
+                $url = "?".$url;
+            break;
+    }
+    
+    // create full url?
+    if ($full)
+        $url = $FD->cfg('virtualhost').$url;
+    
+    // return url
+    return $url;
+}
+
 
 //////////////////////////
 //// get old page nav ////
@@ -190,8 +221,8 @@ function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
         $ids = get_sub_cats ( $array['cat_id'], array() );
 
         $template = $NAVI_TEMPLATE;
-        $cat_url = '?go=download&catid='.$array['cat_id'];
-        $top_url = '?go=download&catid='.$array['subcat_id'];
+        $cat_url = url("download", array('catid' => $array['cat_id']));
+        $top_url = url("download", array('catid' => $array['subcat_id']));
         $folder = ( $array['cat_id'] == $GET_ID ? "folder_open.gif" : "folder.gif" );
         $open = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? "minus.gif" : "plus.gif" );
         $open_url = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? $top_url : $cat_url );
@@ -794,9 +825,14 @@ function create_textarea_seperator()
 //// System Message ////
 /////////////////////////
 
-function sys_message ( $TITLE, $MESSAGE )
+function sys_message ($TITLE, $MESSAGE, $STATUS = "")
 {
     global $FD, $global_config_arr;
+       
+    //check for addition HTTP Status
+	if (!empty($STATUS) && false !== ($text = http_response_text($STATUS)))
+		header($text, true, $STATUS);
+    
     
     $template = new template();
 
@@ -813,9 +849,13 @@ function sys_message ( $TITLE, $MESSAGE )
 //// Forward Message ////
 /////////////////////////
 
-function forward_message ( $TITLE, $MESSAGE, $URL)
+function forward_message ( $TITLE, $MESSAGE, $URL, $STATUS = "")
 {
     global $FD;
+
+    //check for addition HTTP Status
+	if (!empty($STATUS) && false !== ($text = http_response_text($STATUS)))
+		header($text, true, $STATUS);
 
     $forward_script = '
 <noscript>
@@ -904,7 +944,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     global $FD, $global_config_arr;
 
     $news_arr['news_date'] = date_loc( $global_config_arr['datetime'] , $news_arr['news_date']);
-    $news_arr['comment_url'] = "?go=comments&amp;id=".$news_arr['news_id'];
+    $news_arr['comment_url'] = url("comments", array('id' => $news_arr['news_id']));
 
     // Kategorie lesen
     $index2 = mysql_query("select cat_name from ".$global_config_arr['pref']."news_cat where cat_id = '".$news_arr['cat_id']."'", $FD->sql()->conn() );
@@ -964,7 +1004,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     // User auslesen
     $index2 = mysql_query("select user_name from ".$global_config_arr['pref']."user where user_id = ".$news_arr['user_id']."", $FD->sql()->conn() );
     $news_arr['user_name'] = kill_replacements ( mysql_result($index2, 0, "user_name"), TRUE );
-    $news_arr['user_url'] = "?go=user&amp;id=".$news_arr['user_id'];
+    $news_arr['user_url'] = url("user", array('id' => $news_arr['user_id']));
 
     // Kommentare lesen
     $index2 = mysql_query("select comment_id from ".$global_config_arr['pref']."news_comments where news_id = ".$news_arr['news_id']."", $FD->sql()->conn() );
@@ -1053,25 +1093,37 @@ function getsize ( $SIZE )
 }
 
 /////////////////////////
-// mark word in a text //  <=== BAD FUNCTION *HAS TO BE IMPROVED* TODO
+// mark word in a text //  <=== DEPRECATED use highlight
 /////////////////////////
 
 function markword($text, $word)
 {
-    $text = preg_replace("=(.*?)$word(.*?)=i", 
-                         "\\1<font color=\"red\"><b>$word</b></font>\\2",$text);
-    return $text;
+    return highlight($word, $text, "", "color:#FF0000; font-weight:bold;");
 }
 
 //////////////////////////////////////////////////////////////
 // Inserts HTML line breaks before all newlines in a string //
 //////////////////////////////////////////////////////////////
 
-function html_nl2br ( $TEXT )
+function html_nl2br($TEXT, $is_xhtml = false)
 {
-    $TEXT = str_replace ( array ( "\r\n", "\r", "\n" ), "<br>", $TEXT );
+    $TEXT = nl2br(convertlinebreaks($TEXT), $is_xhtml);
     return $TEXT;
 }
+function convertlinebreaks ($text) {
+    return preg_replace ("/\015\012|\015|\012/", "\n", $text);
+}
+
+//////////////////////////////
+// Convert tab \t to &nbsp; //
+//////////////////////////////
+
+function tab2space($TEXT, $tabsize = 4, $space = "&nbsp;")
+{
+    $TEXT = preg_replace("/\t/", str_repeat($space, $tabsize), $TEXT);
+    return $TEXT;
+}
+
 
 /////////////////////////////////
 // create save strings for sql //
@@ -1097,9 +1149,9 @@ function savesql ( $TEXT )
 
 function unslash($TEXT)
 {
-    global $global_config_arr;
+    global $FD;
     
-    if ($global_config_arr['env']['slash'])
+    if ($FD->env('slash'))
          $TEXT = stripslashes($TEXT);
          
     return $TEXT;
@@ -1126,18 +1178,57 @@ function unquote ($TEXT)
 
 function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0)
 {
-        include_once ( FS2_ROOT_PATH . 'includes/bbcodefunctions.php');
+    include_once ( FS2_ROOT_PATH . 'includes/fscode.php');   
+    $flags = array('html' => $html, 'paragraph' => $para, 
+    );
+    
+    if ($all)
+        $fscodes = get_all_fscodes();
+    else {
+        $fscodes = array();
+        
+        if ($do_b==1)           array_push($fscodes, 'b');
+        if ($do_i==1)           array_push($fscodes, 'i');
+        if ($do_u==1)           array_push($fscodes, 'u');
+        if ($do_s==1)           array_push($fscodes, 's');
+        if ($do_center==1)      array_push($fscodes, 'center');
+        if ($do_url==1)         array_push($fscodes, 'url');
+        if ($do_homelink==1)    array_push($fscodes, 'home');
+        if ($do_email==1)       array_push($fscodes, 'email');
+        if ($do_img==1)         array_push($fscodes, 'img');
+        if ($do_cimg==1)        array_push($fscodes, 'cimg');
+        if ($do_list==1)        array_push($fscodes, 'list');
+        if ($do_numlist==1)     array_push($fscodes, 'numlist');
+        if ($do_font==1)        array_push($fscodes, 'font');
+        if ($do_color==1)       array_push($fscodes, 'color');
+        if ($do_size==1)        array_push($fscodes, 'size');
+        if ($do_code==1)        array_push($fscodes, 'code');
+        if ($do_quote==1)       array_push($fscodes, 'quote');
+        if ($do_noparse==1)     array_push($fscodes, 'noparse');
+        if ($do_player==1)      array_push($fscodes, 'player');
+        if ($do_smilies==1)     array_push($fscodes, 'smilies');
+    }
+    
+    return parse_fscode(stripslashes($text), $flags, $fscodes);
+    
+    
+    
+    // OLD
+    /*
+    
         $bbcode = new StringParser_BBCode ();
-
+        
         $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
 
         if ($html==false) {
             #$bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'strip_tags');
             $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
         }
-        $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'stripslashes');
+        $bbcode->addParser (array ('code'), 'killhtml');
+        
+        $bbcode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'stripslashes');
         if ($all==true) {
-              $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
+              $bbcode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'html_nl2br');
         }
         $bbcode->addParser ('list', 'bbcode_stripcontents');
 
@@ -1222,8 +1313,8 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
                           'inline', array ('listitem', 'block', 'inline', 'link'), array ());
 
         if ($all==true OR $do_code==1) {
-            $bbcode->addCode ('code', 'callback_replace', 'do_bbcode_code', array (),
-                              'block', array ('listitem', 'block', 'inline'), array ('link'));
+            $bbcode->addCode ('code', 'usecontent', 'do_bbcode_code', array (),
+                              'code', array ('listitem', 'block', 'inline'), array ('link'));
             $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
             $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
         }
@@ -1244,10 +1335,12 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         }
 
         $bbcode->setGlobalCaseSensitive (false);
+        $bbcode->setMixedAttributeTypes (true);
         $parsedtext = $bbcode->parse ($text);
         unset($bbcode);
 
         return $parsedtext;
+    */
 }
 
 //////////////////////////

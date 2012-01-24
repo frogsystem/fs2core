@@ -18,28 +18,32 @@ class GlobalData {
 
     // Constructor
     // 
-    public function __construct($sql, $spam, $path) {
+    public function __construct(&$sql) {
 
         // Set sql connection
         $this->sql = $sql;
         
         // set config data
-        $this->loadConfig($spam, $path);
+        $this->loadConfig();
         
         //get Text object
         $this->text = array(
             'frontend'  => new lang ($this->config("language_text"), "frontend"),
+            'admin'     => new lang ($this->config("language_text"), "admin"),
+            'template'  => new lang ($this->config("language_text"), "template"),
+            'menu'      => new lang ($this->config("language_text"), "menu"),
         );
     }
     
     // Destructor closes SQL-Connection
     public function __destruct (){
-        
+        $this->closeSql();
     } 
   
     
     // load configs
-    private function loadConfig($spam, $path) {
+    private function loadConfig() {
+        
         //register autoload
         spl_autoload_register(array($this, 'configLoader'));
         require_once(FS2_ROOT_PATH . "libs/class_ConfigData.php");
@@ -137,10 +141,19 @@ class GlobalData {
         }
         
     }
-    // Alias
+    // Aliases
     public function cfg() {
         return call_user_func_array(array($this, "config"), func_get_args());
-    }     
+    }
+    public function env($arg) {
+        return $this->cfg('env', $arg);
+    } 
+    public function system($arg) {
+        return $this->cfg('system', $arg);
+    } 
+    public function info($arg) {
+        return $this->cfg('info', $arg);
+    } 
     
     
             
@@ -149,13 +162,21 @@ class GlobalData {
     public function sql() {
         return $this->sql;
     }
+    // Destruct SQL => Close Connection
+    private function closeSql() {
+        $this->sql->__destruct();
+    }    
+    
     
     // get lang phrase object
     public function text($type, $tag) {
         return $this->text[$type]->get($tag);
     }
     
-    
+    // get lang phrase object
+    public function setPageText($obj) {
+        return $this->text['page'] = $obj;
+    }    
     
     
     

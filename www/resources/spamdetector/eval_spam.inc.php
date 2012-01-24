@@ -19,7 +19,7 @@
     Additional permission under GNU GPL version 3 section 7
 
     If you modify this Program, or any covered work, by linking or combining it
-    with Frogsystem (or a modified version of Frogsystem), containing parts
+    with Frogsystem 2 (or a modified version of Frogsystem 2), containing parts
     covered by the terms of Creative Commons Attribution-ShareAlike 3.0, the
     licensors of this Program grant you additional permission to convey the
     resulting work. Corresponding Source for a non-source form of such a

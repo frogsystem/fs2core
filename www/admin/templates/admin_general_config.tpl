@@ -49,9 +49,24 @@
                 <span class="small"><!--LANG::virtualhost_desc--></span>
             </td>
             <td>
-                <input class="half" name="virtualhost" maxlength="255" value="<!--TEXT::virtualhost-->">
+                <select name="protocol">
+                    <option value="http://" <!--IF::protocol_http-->selected<!--ENDIF-->>http://</option>
+                    <option value="https://" <!--IF::protocol_https-->selected<!--ENDIF-->>https://</option>
+                </select>
+                <input class="third" name="url" maxlength="255" value="<!--TEXT::url-->">
             </td>
         </tr>
+        <tr>
+            <td>
+                <!--LANG::other_protocol-->:<br>
+                <span class="small"><!--LANG::other_protocol_desc--></span>
+            </td>
+            <td>
+                <!--COMMON::checkbox-->
+                <input class="hidden" type="checkbox" name="other_protocol" value="1" <!--IF::other_protocol-->checked<!--ENDIF-->>
+            </td>
+        </tr>        
+        
                             
         <tr>
             <td>
@@ -201,7 +216,7 @@
                     </option>
                     <option value="rss10" <!--IF::feed_rss10-->selected<!--ENDIF-->>
                         <!--LANG::feed_rss10-->
-                        </option>
+                    </option>
                     <option value="rss20" <!--IF::feed_rss20-->selected<!--ENDIF-->>
                         <!--LANG::feed_rss20-->
                     </option>
@@ -211,6 +226,25 @@
                 </select>
             </td>
         </tr>
+        
+        <tr>
+            <td>
+                <!--LANG::url_style-->:<br>
+                <span class="small"><!--LANG::url_style_desc--></span>
+            </td>
+            <td>
+                <select class="half" name="url_style" size="1">
+                    <option value="default" <!--IF::url_style_default-->selected<!--ENDIF-->>     
+                        <!--LANG::url_style_default-->
+                    </option>
+                    <option value="seo" <!--IF::url_style_seo-->selected<!--ENDIF-->>
+                        <!--LANG::url_style_seo-->
+                    </option>
+                </select>
+                <br>
+                <span class="small"><!--LANG::url_style_info--></span>
+            </td>
+        </tr>        
         
         <tr>
             <td>

@@ -1,17 +1,28 @@
+# Import default texts
+#@admin/admin_news
+
 # Kommentare
 comments_select_title:              Kommentare bearbeiten
 comments_content:                   Inhalt
 comments_info:                      Informationen
 comments_not_found:                 Keine Kommentare gefunden!
 
+# News
+news_not_found:                       Keine News gefunden!
+
 #filter
 filter_title:               Filter &amp; Sortierung
-cat_filter:                 Filter:
+cat_filter:                 Filter
 all_cats:                   Alle Kategorien
-filter_order:               Sortierung:
+filter_order:               Sortierung
 filter_date:                Datum
 filter_id:                  ID
 filter_newstitle:           Titel
+
+#search
+search_fulltext: Volltext
+search_id: IDs
+search_url: URLs
 
 # Auswahlliste
 select_news:                News auswählen

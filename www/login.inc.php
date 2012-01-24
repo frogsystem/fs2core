@@ -13,31 +13,48 @@ $dbc['pref'] = "fs2_"; //Table Prefix
 //// Hardcoded Vars ////
 ////////////////////////
 $spam = "wKAztWWB2Z"; //Anti-Spam Encryption-Code
+$path = dirname(__FILE__) . "/"; //Dateipfad
 define('SLASH', TRUE);
 
+
+// TODO: Pre-Import Hook
+
+////////////////////////////////////////
+//// Include important files & libs ////
+////////////////////////////////////////
+require_once(FS2_ROOT_PATH . "libs/class_GlobalData.php");
+require_once(FS2_ROOT_PATH . "libs/class_lang.php");
+require_once(FS2_ROOT_PATH . "libs/class_sql.php");
+require_once(FS2_ROOT_PATH . "includes/functions.php");  
 
 ///////////////////////
 //// DB Connection ////
 ///////////////////////
 
-// Initialize sql-class
-require(FS2_ROOT_PATH . "libs/class_sql.php");
+// TODO: Pre-Connection Hook
 
 try {
     // Connect to DB-Server
     $sql = new sql($dbc['host'], $dbc['data'], $dbc['user'], $dbc['pass'], $dbc['pref']);
     
     // Frogsystem Global Data Array
-    $global_data = new GlobalData($sql, $spam, dirname(__FILE__) . "/");
-    $FD =& $global_data; // Use shorthand $FD 
+    $global_data = new GlobalData($sql);
+    $FD =& $global_data; // Use shorthand $FD
+    
+    // Unset unused vars
+    unset($spam, $dbc, $path); 
 
 //////////////////////////////
 //// DB Connection failed ////
 //////////////////////////////
 } catch (Exception $e) {
     
+    // Set header
+    header(http_response_text(503), true, 503);    
+    header("Retry-After: ".(string)(60*15)); // 15 Minutes
+    
     // Include lang-class
-    require(FS2_ROOT_PATH . "libs/class_lang.php");
+    require_once(FS2_ROOT_PATH . "libs/class_lang.php");
 
     // get language
     $de = strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], "de");
@@ -63,19 +80,14 @@ try {
 
     // Display No-Connection-Page
     echo $template;
+    exit();
 }
-
-
-///////////////////////////////////////////////////
-//// Unset Hardcoded Vars for Security Reasons ////
-///////////////////////////////////////////////////
-unset($spam);
 
 ////////////////////////
 //// Init Some Vars ////
 ////////////////////////
-$_GET['go'] = !isset($_GET['go']) ? "" : $_GET['go'];
-$_POST['go'] = !isset($_POST['go']) ? "" : $_POST['go'];
-$_REQUEST['go'] = !isset($_REQUEST['go']) ? "" : $_REQUEST['go'];
+
+//TODO: First Init Hook
+
 $_SESSION['user_level'] = !isset($_SESSION['user_level']) ? "unknown" : $_SESSION['user_level'];
 ?>

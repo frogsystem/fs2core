@@ -771,8 +771,8 @@ if ( !isset ( $_POST['user_id'] ) )
                 }
                 
                 if ( $_POST['filter'] != "" ) {
-                    $user_arr['user_name'] = str_replace ( $_POST['filter'], '<b class="red">'.$_POST['filter'].'</b>', killhtml ( $user_arr['user_name'] ) );
-                    $user_arr['user_mail'] = str_replace ( $_POST['filter'], '<b class="red">'.$_POST['filter'].'</b>', killhtml ( $user_arr['user_mail'] ) );
+                    $user_arr['user_name'] = highlight ($_POST['filter'], killhtml($user_arr['user_name']));
+                    $user_arr['user_mail'] = highlight ($_POST['filter'], killhtml($user_arr['user_mail']));
                 } else {
                     $user_arr['user_name'] = killhtml ( $user_arr['user_name'] );
                     $user_arr['user_mail'] = killhtml ( $user_arr['user_mail'] );

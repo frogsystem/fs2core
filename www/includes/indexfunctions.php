@@ -219,6 +219,7 @@ function get_meta ()
     <meta name="DC.Language" content="'.$global_config_arr['language'].'">
     <meta name="DC.Format" content="text/html">
     <meta name="keywords" lang="'.$global_config_arr['language'].'" content="'.$keywords.'">
+    '.get_canonical().'
     ';
 
     return $template;
@@ -273,6 +274,39 @@ function get_meta_abstract ()
         return '<meta name="abstract" content="'.$global_config_arr['content_abstract'].'">';
     } else {
         return '<meta name="abstract" content="'.$global_config_arr['description'].'">';
+    }
+}
+
+
+/////////////////////////////////////
+//// Get canonical link meta tag ////
+/////////////////////////////////////
+function get_canonical()
+{
+    global $FD;
+	
+	// Check for homepage and in case don't use any paramter (including go) at all
+    $goto = $FD->cfg('goto');
+	if ($goto == $FD->cfg('home_real'))
+		$goto = "";
+	
+    // get canoncial parameters
+	if (!is_null($canonparams = $FD->info('canonical'))) {
+        $activeparams = array();
+
+        if (count($canonparams) > 0) {
+            ksort($canonparams);	
+            foreach ($canonparams as $key)
+            {
+                // List only canoncial parameters with any value
+                // Also we don't use original user values, but values checked by FS2
+                if ((isset($_GET[$key]))) {
+                    $activeparams[$key] = $_GET[$key];
+                }
+            }
+        }
+        
+        return '<link rel="canonical" href="'.url($goto, $activeparams, true).'">';
     }
 }
 
@@ -336,13 +370,13 @@ function tpl_functions_init ($TEMPLATE)
     // Snippets
     $SNP = array();
 
-    return tpl_functions($TEMPLATE, $FD->cfg('system', 'var_loop'));
+    return tpl_functions($TEMPLATE, $FD->cfg('system', 'var_loop'), array(), true);
 }
 
 ///////////////////////////////
 //// Template Replacements ////
 ///////////////////////////////
-function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
+function tpl_functions ($TEMPLATE, $COUNT, $filter=array(), $loopend_escape = true)
 {
     global $global_config_arr, $sql;
     
@@ -353,6 +387,7 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
         'NAV'   => array("tpl_func_navigations",    true),
         'DATE'  => array("tpl_func_date",           false),
         'VAR'   => array("tpl_func_globalvars",     false),
+        'URL'   => array("tpl_func_url",            false),
     );
     //Snippet
     $snippet_functions = array(
@@ -367,15 +402,15 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
     
     
     // Set Pattern and Replacment Code
-    $PATTERN = array(
-        '/\$('.implode("|", array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/e',
-        '/\[%(.*?)%\]/e',
-    );
-    
-    $REPLACEMENT = array(
-        'call_tpl_function($functions, $COUNT, array(\'$1\', \'$0\', \'$2\', \'$3\'));',
-        'call_tpl_function($snippet_functions, $COUNT, array("SNP", "$0", "$1", ""));',
-    );
+    $PATTERN = $REPLACEMENT = array();
+    if (!empty($functions)) {
+        array_push($PATTERN, '/\$('.implode("|", array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/e');
+        array_push($REPLACEMENT, 'call_tpl_function($functions, $COUNT, array(\'$1\', \'$0\', \'$2\', \'$3\'), $loopend_escape);');
+    }
+    if (!empty($snippet_functions)) {
+        array_push($PATTERN, '/\[%(.*?)%\]/e');
+        array_push($REPLACEMENT, 'call_tpl_function($snippet_functions, $COUNT, array("SNP", "$0", "$1", ""), $loopend_escape);');
+    }
     
     // Replace Functions with computed values
     $TEMPLATE = preg_replace($PATTERN, $REPLACEMENT, $TEMPLATE);
@@ -384,7 +419,7 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array())
 }
 
 
-function call_tpl_function ($functions, $COUNT, $called_function)
+function call_tpl_function ($functions, $COUNT, $called_function, $loopend_escape = true)
 {
     // call function with arguments
     $replacement = call_user_func($functions[$called_function[0]][0], $called_function[1], $called_function[2], $called_function[3]);
@@ -393,7 +428,10 @@ function call_tpl_function ($functions, $COUNT, $called_function)
     if($functions[$called_function[0]][1] && $COUNT > 0) {
         $replacement = tpl_functions($replacement, $COUNT-1);
     } else {
-        $replacement = escape_tpl_functions($replacement, $functions);
+        if ($loopend_escape) 
+            $replacement = escape_tpl_functions($replacement, array_keys($functions));
+        else
+            $replacement = remove_tpl_functions($replacement, array_keys($functions));    
     }
     return $replacement;
 }
@@ -408,7 +446,7 @@ function escape_tpl_functions ($TEMPLATE, $FUNCTIONS)
     $PATTERNS = array(
         '/\[%/',
         '/%\]/',
-        '/\$('.implode("|", array_keys($FUNCTIONS)).')\(/',
+        '/\$('.implode("|", $FUNCTIONS).')\(/',
     );
     
     $REPLACEMENTS = array(
@@ -418,6 +456,36 @@ function escape_tpl_functions ($TEMPLATE, $FUNCTIONS)
     );
 
     return preg_replace($PATTERNS, $REPLACEMENTS, $TEMPLATE);
+}
+
+///////////////////////////////////
+//// Remove Template Functions ////
+///////////////////////////////////
+function remove_tpl_functions ($TEMPLATE, $FUNCTIONS)
+{
+    $PATTERN = $REPLACEMENT = array();
+    
+    // Snippet?
+    if (in_array("SNP", $FUNCTIONS)) {
+        $FUNCTIONS = array_diff($FUNCTIONS, array("SNP"));
+        array_push($PATTERN, '/\[%(.*?)%\]/');
+        array_push($REPLACEMENT, "");
+    }
+    
+    // Normal TPL Functions
+    array_push($PATTERN, '/\$('.implode("|", $FUNCTIONS).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/');
+    array_push($REPLACEMENT, "");   
+
+    // Remove them
+    return preg_replace($PATTERN, $REPLACEMENT, $TEMPLATE);
+}
+
+////////////////////////////////////////////////
+//// Return an array with all tpl functions ////
+////////////////////////////////////////////////
+function get_all_tpl_functions()
+{
+    return array('APP', 'NAV', 'DATE', 'VAR', 'URL', 'SNP');
 }
 
 //////////////////////
@@ -440,7 +508,7 @@ function load_applets()
         
         // include applets & load template
         if ($entry['applet_include'] == 1) {
-            $entry['applet_template'] = load_a_applet($entry['applet_file'], $entry['applet_output'], array());
+            $entry['applet_template'] = load_an_applet($entry['applet_file'], $entry['applet_output'], array());
         }
         
         $new_applet_data[$entry['applet_file']] = $entry;
@@ -453,18 +521,17 @@ function load_applets()
 //////////////////////
 //// Load Applets ////
 //////////////////////
-function load_a_applet($file, $output, $args) {
+function load_an_applet($file, $output, $args) {
     
-    global $global_config_arr, $sql, $FD, $TEXT;
+    global $FD;
+    global $global_config_arr, $sql, $TEXT;
+    global $FD;
     
     // Setup $SCRIPT Var
-    unset($SCRIPT);
+    unset($SCRIPT, $template);
     $SCRIPT['argc'] = array_unshift($args, $file);
     $SCRIPT['argv'] = $args;
     
-    // set empty str
-    initstr($template);
-
     //start output buffering
     ob_start();
     
@@ -475,6 +542,10 @@ function load_a_applet($file, $output, $args) {
     
     //end & clean output buffering
     $return_data = ob_get_clean();
+    
+    // set empty str
+    if (!isset($template));
+		initstr($template);
     
     //create return value
     if ($output) {
@@ -533,7 +604,7 @@ function tpl_func_applets($original, $main_argument, $other_arguments)
     // Maybe load Applet on demand
     if ($APP[$main_argument]['applet_include'] != 1 || count($other_arguments) > 0) {   
         // Return Content
-        return load_a_applet($main_argument, $APP[$main_argument]['applet_output'], $other_arguments);
+        return load_an_applet($main_argument, $APP[$main_argument]['applet_output'], $other_arguments);
     } else {
         // Return Content
         return $APP[$main_argument]['applet_template'];
@@ -610,11 +681,151 @@ function tpl_func_date($original, $main_argument, $other_arguments)
 }
 
 
+/////////////////////
+//// Replace URL ////
+/////////////////////
+function tpl_func_url($original, $main_argument, $other_arguments)
+{
+    // Example:
+    // $URL(download[cat_id=4 keyword=test 1])
+    
+    global $FD;
+       
+    // compute Arguments
+    $other_arguments = !empty($other_arguments) ? explode(" ", $other_arguments) : array();
+    
+    // check each param
+    $params = array(); $full = false; //some default values
+    foreach ($other_arguments as $argument) {
+        $full = false; // reset $full indicator (because the last one wasn't last of all)
+        $param = explode("=", $argument, 2); // explode by =
+        if (count($param) < 2) { // only value of param available
+            if ($param[0] == "true" || $param[0] == 1) { // param maybe indicating a full url request
+                $full = true; // but only if it's the last one
+                break;
+            } else {
+                $params[] = $param[0];
+            }
+        } else {
+            $params[$param[0]] = $param[1];
+        }
+    }
+        
+    // finally create URL
+    return url($main_argument, $params, $full);
+}
 
+// fs2seourl Version 1.01 (27.08.2001)
+function get_seo () {
 
+    global $FD;
 
+    // Anzahl der mittel ? übergegebenen Parameter speichern
+    if (isset($_GET))
+        $numparams = count($_GET);
+    else
+        $numparams = 0;
 
+    $redirect = false;
 
+    // Wurde dieser Skript direkt aufgrufen werden oder indirekt ueber mod_rewrite?
+    $calledbyrewrite = isset($_SERVER['REDIRECT_QUERY_STRING']);
+
+    // mod_rewrite schreibt in seoq den Dateinamen der fiktiven HTML-Datei (ohne die .html-Dateiendung).
+    // Dieser Name muss nun zerlegt und in die Parameter uebersetzt werden, welche das FrogSystem erwaretet.
+    if ((isset($_GET['seoq'])) && ($calledbyrewrite)) {
+        // seoq wurde von mod_rewrite eingefuegt und ist daher kein echter Parameter
+        $numparams--;
+        
+        // Drei oder mehr Bindestriche temporaer durch zwei weniger \x1 ersetzen, um sie von Seperatoren unterscheiden zu koennen
+        $_GET['seoq'] = preg_replace_callback('/---+/', create_function('$matches', 'return str_repeat("\x1", strlen($matches[0]) - 2);'), $_GET['seoq']);
+        
+        $paramdelim = strpos($_GET['seoq'], '--');
+
+        if ($numparams > 0) {
+            //Wurden hinter das .html noch Parameter gepackt, sind diese massgeblich => Den Rest verwerfen und weiterleiten
+            $redirect =	true;
+        }
+        else if ($paramdelim === false) {
+            // Kein -- => Keine Parameter => Der komplette Dateiname ist der go-Parameter
+            if (!isset($_GET['go']))
+                $_GET['go'] = str_replace("\x1", "-", $_GET['seoq']);
+        }
+        else {
+            // -- vorhanden => Alles davor ist der go-Parameter, alles dahinter sind weitere Parameter. 
+            // Diese muessen allerdings ein bestimmtes Format einhalten, ansonsten wird auf das richtige Format weitergeleitet
+        
+            if (!isset($_GET['go']))
+                $_GET['go'] = substr($_GET['seoq'], 0, $paramdelim);
+                
+            $seoparamstr = substr($_GET['seoq'], $paramdelim + 2);
+
+            // Hinter dem -- muss noch etwas kommen, sonst Weiterleitung
+            if (strlen($seoparamstr) > 0)
+            {
+                $seoparams = explode('-', $seoparamstr);
+                for ($i = 0; $i < count($seoparams); $i++)
+                    $seoparams[$i] = str_replace("\x1", "-", $seoparams[$i]);
+                            
+                // Die Anzahl der mit "-" getrennten Werte muss gerade sein, sonst Weiterleitung
+                if ((count($seoparams) % 2 != 0) && (count($seoparams) > 0))
+                    $redirect = true;
+                    
+                for ($i = 0; $i < count($seoparams); $i += 2)
+                {
+                    // i ist der Name des Parameters, i+1 ist der Wert des Parameters
+                    if (!isset($_GET[$seoparams[$i]]))
+                        $_GET[$seoparams[$i]] = $seoparams[$i+1];
+                        
+                    // Die Parameter muessen alphabetisch sortiert sein, sonst Weiterleitung
+                    if (($i >= 2) && (strcmp($seoparams[$i - 2], $seoparams[$i]) >= 0))
+                        $redirect = true;
+                }
+            }
+            else {
+                $redirect = true;
+            }
+        }
+        
+        unset($seoparams);
+        unset($seoparamstr);
+        unset($paramdelim);
+    } 
+    elseif ($numparams > 0) {
+        $redirect = true;
+    }
+    
+    unset($_GET['seoq']);
+    unset($_REQUEST['seoq']);    
+
+    // Expliziter Aufruf von index.php bzw. indexseo.php => Weiterleitung erzwingen
+    if ((!$calledbyrewrite) && (substr($_SERVER["REQUEST_URI"], -1) != '/')) {
+        $redirect = true;
+    }
+    // Bei Bedarf Weiterleitung auf die neue URL im richtigen Format
+    if ($redirect) {
+        header('Location: ' . $FD->cfg('virtualhost') . url_seo($_GET['go'], $_GET, true), true, 301);
+        die();
+    }
+
+    // Inhalt von $_GET nach $_REQUEST kopieren
+    foreach ($_GET as $k => $v)
+        $_REQUEST[$k] = $v;
+        
+    // Query-String anpassen
+    $_SERVER["QUERY_STRING"] = "";
+    foreach ($_GET as $k => $v)
+        $_SERVER["QUERY_STRING"] .= urlencode($k) . "=" . urlencode($v) . "&";
+    $_SERVER["REQUEST_URI"] = "/index.php?" . $_SERVER["QUERY_STRING"];
+        
+    // Falls noetig, Verhalten von register_globals nachahmen
+    if (in_array(ini_get('register_globals') == 'on', array("0", "on", "true")))
+        extract($_REQUEST);
+
+    // Hotlinkingschutz vom FS2 zufrieden stellen
+    if (preg_match('/\/dlfile--.*\.html$/', $_SERVER['HTTP_REFERER']))
+        $_SERVER['HTTP_REFERER'] .= "?go=dlfile";
+}
 
 
 
@@ -623,22 +834,24 @@ function tpl_func_date($original, $main_argument, $other_arguments)
 ///////////////////
 //// get $goto ////
 ///////////////////
-function get_goto ($GETGO)
+function get_goto ()
 {
     global $FD;
 
-    // Check $_GET['go']
-    if (empty($GETGO)) {
-        $goto = $FD->cfg("home_real");
-    } else {
-        $goto = savesql($GETGO) ;
+    //check seo
+    if ($FD->cfg('url_style') == "seo") {
+        get_seo();
     }
+    
+    // Check $_GET['go']
+    $goto = empty($_GET['go']) ? $FD->cfg("home_real") : savesql($_GET['go']);
 
     // Forward Aliases
     $goto = forward_aliases($goto);
 
     // write $goto into $global_config_arr['goto']
     $FD->setConfig("goto", $goto);
+    $FD->setConfig("env", "goto", $goto);
 }
 
 

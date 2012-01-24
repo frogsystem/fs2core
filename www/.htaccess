@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# SEO-URLs an index.php weiterleiten
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)\.html$ index.php?seoq=$1 [L,QSA]

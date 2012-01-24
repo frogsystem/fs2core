@@ -73,7 +73,7 @@ if (
         }
 
         // Insert Links to database
-        foreach ($_POST['link_name'] as $id => $val)
+        foreach ((array) $_POST['link_name'] as $id => $val)
         {
             if (!empty($_POST['link_name'][$id]) && !empty($_POST['link_url'][$id]) && !in_array($_POST['link_url'][$id], array("http://", "https://"))) {
 
@@ -103,13 +103,13 @@ if (
         } catch (Exception $e) {}
         
         
-        echo get_systext($TEXT['page']->get("news_added"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_add"));
+        echo get_systext($FD->text('page', "news_not_added"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_add"));
 
         // Unset Vars
         unset ($_POST);
 
     } catch (Exception $e) {
-        echo get_systext($TEXT['page']->get("news_not_added")."<br>Caught exception: ".$e->getMessage(), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+        echo get_systext($FD->text('page', "news_not_added")."<br>Caught exception: ".$e->getMessage(), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
     }
 
 }
@@ -133,7 +133,7 @@ if ( TRUE ) {
                 unset($_POST['new_link_name'], $_POST['new_link_url'], $_POST['new_link_target']);
                 $_POST['new_link_url'] = "http://";
             } else {
-                echo get_systext($TEXT['page']->get("link_not_added")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_link_error"));
+                echo get_systext($FD->text('page', "news_not_added")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_link_error"));
             }
         
         //edit links
@@ -180,7 +180,7 @@ if ( TRUE ) {
         
         // display error
         } else {
-            echo get_systext($TEXT['page']->get("news_not_added")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+            echo get_systext($FD->text('page', "news_not_added")."<br>".$FD->text('admin', "form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
         }
         
     // Set default value

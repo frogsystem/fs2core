@@ -5,28 +5,34 @@
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array("title", "dyn_title", "dyn_title_ext", "virtualhost", "admin_mail", "description", "keywords", "publisher", "copyright", "style_id", "allow_other_designs", "show_favicon", "home", "home_text", "language_text", "feed", "date", "time", "datetime", "timezone", "auto_forward", "page", "page_prev", "page_next");
+$used_cols = array("title", "dyn_title", "dyn_title_ext", "protocol", "url", "other_protocol", "admin_mail", "description", "keywords", "publisher", "copyright", "style_id", "allow_other_designs", "show_favicon", "home", "home_text", "language_text", "feed", "date", "time", "datetime", "timezone", "auto_forward", "page", "page_prev", "page_next", "url_style");
     
 
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 if (
-                $_POST['title'] && $_POST['title'] != ""
-                && $_POST['virtualhost'] && $_POST['virtualhost'] != ""
-                && $_POST['admin_mail'] && $_POST['admin_mail'] != ""
-                && $_POST['date'] && $_POST['date'] != ""
-                && $_POST['page'] && $_POST['page'] != ""
-                && $_POST['page_next'] && $_POST['page_next'] != ""
-                && $_POST['page_prev'] && $_POST['page_prev'] != ""
-                && is_language_text ( $_POST['language_text'] )
-                && ( $_POST['home'] == 0 || ( $_POST['home'] == 1 && $_POST['home_text'] != "" ) )
+                !empty($_POST['title'])
+                && !empty($_POST['url'])
+                && !empty($_POST['admin_mail'])
+                && !empty($_POST['date'])
+                && !empty($_POST['page'])
+                && !empty($_POST['page_next'])
+                && !empty($_POST['page_prev'])
+                && is_language_text($_POST['language_text'])
+                && ($_POST['home'] == 0 || ($_POST['home'] == 1 && !empty($_POST['home_text'])))
         )
 {
-    // virtualhost slash
-    if (substr($_POST['virtualhost'], -1) != "/") {
-      $_POST['virtualhost'] = $_POST['virtualhost']."/";
+    // url slash & leading http://
+    if (substr($_POST['url'], -1) != "/") {
+        $_POST['url'] = $_POST['url']."/";
     }
+    if (substr($_POST['url'], 0, 7) == "http://") {
+        $_POST['url'] = substr($_POST['url'], 7);
+    } 
+    if (substr($_POST['url'], 0, 8) == "https://") {
+        $_POST['url'] = substr($_POST['url'], 8);
+    }    
      
     // prepare data
     $data = frompost($used_cols);
@@ -43,7 +49,7 @@ if (
     // save config
     try {
         $FD->saveConfig("main", $data);
-        systext($TEXT['admin']->get("changes_saved").'<br>'.$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+        systext($TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
     } catch (Exception $e) {}
     
     // Unset Vars
@@ -75,12 +81,17 @@ if ( TRUE )
     // Conditions
     $adminpage->addCond("dyn_title_ext", !($_POST['dyn_title'] == 1));
     $adminpage->addCond("dyn_title", $_POST['dyn_title'] === 1);
+    $adminpage->addCond("protocol_http", $_POST['protocol'] === "http://");
+    $adminpage->addCond("protocol_https", $_POST['protocol'] === "https://");
+    $adminpage->addCond("other_protocol", $_POST['other_protocol'] === 1);
     $adminpage->addCond("allow_other_designs", $_POST['allow_other_designs'] === 1);
     $adminpage->addCond("show_favicon", $_POST['show_favicon'] === 1);
     $adminpage->addCond("feed_rss091", $_POST['feed'] == "rss091");
     $adminpage->addCond("feed_rss10", $_POST['feed'] == "rss10");
     $adminpage->addCond("feed_rss20", $_POST['feed'] == "rss20");
     $adminpage->addCond("feed_atom10", $_POST['feed'] == "atom10");
+    $adminpage->addCond("url_style_default", $_POST['url_style'] == "default");
+    $adminpage->addCond("url_style_seo", $_POST['url_style'] == "seo");
     $adminpage->addCond("home_0", $_POST['home'] === 0);
     $adminpage->addCond("home_1", $_POST['home'] === 1);
     $adminpage->addCond("timezone", $_POST['timezone'] === "default");

@@ -189,7 +189,7 @@
         $theTemplate->tag("copyright", get_copyright());        
 
         $template_general = (string) $theTemplate;
-        $template_general = tpl_replacements($template_general);
+        $template_general = tpl_functions_init($template_general);
 
         // Get Main Template
         echo get_maintemplate ($template_general, "../");

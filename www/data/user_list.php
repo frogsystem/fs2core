@@ -1,11 +1,14 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('order', 'sort', 'page'));
+
 //////////////////////////
 //// Locale Functions ////
 //////////////////////////
 function get_user_list_order ( $SORT, $GET_SORT, $GET_ORDER, $DEFAULT = 1 ) {
     $not_get_order = ( $GET_ORDER == 1 ) ? 0 : 1;
     $new_order = ( $SORT == $GET_SORT ) ? $not_get_order : $DEFAULT;
-    return "?go=user_list&sort=".$SORT."&order=" . $new_order;
+    return url("user_list", array('sort' => $SORT, 'order' => $new_order));
 }
 
 function get_user_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
@@ -149,7 +152,7 @@ $maximum = $config_arr['page_start'] + $config_arr['user_per_page'];
 $maximum = ( $maximum >= $config_arr['number_of_users'] ) ? $config_arr['number_of_users'] : $maximum;
 
 // Get Page Nav
-$template_page_nav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['user_per_page'], $config_arr['number_of_users'], "?go=user_list&sort=".$_GET['sort']."&order=".$_GET['order']."&page={..page_num..}" );
+$template_page_nav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['user_per_page'], $config_arr['number_of_users'], url("user_list", array('sort' => $_GET['sort'], 'order' => $_GET['order'], 'page' => "{..page_num..}" )));
 
 
 // Create Sub-Template
@@ -183,7 +186,7 @@ for ( $i = $config_arr['page_start']; $i < $maximum; $i++ )
 
     $line_template->tag ( "user_id", $col_id[$i] );
     $line_template->tag ( "user_name", kill_replacements ( $col_name[$i], TRUE ) );
-    $line_template->tag ( "user_url", "?go=user&id=".$col_id[$i] );
+    $line_template->tag ( "user_url", url("user", array('id' => $col_id[$i])));
     $line_template->tag ( "user_image", ( image_exists ( "media/user-images/", $col_id[$i] ) ) ? '<img src="'.image_url ( "media/user-images/", $col_id[$i] ).'" alt="'.$TEXT['frontend']->get("user_image_of")." ".kill_replacements ( $col_name[$i], TRUE ).'">' : $TEXT['frontend']->get("user_image_not_found") );
     $line_template->tag ( "user_image_url", image_url ( "media/user-images/", $col_id[$i] ) );
     $line_template->tag ( "user_mail", ( $col_show_mail[$i] == 1 ) ? kill_replacements ( $col_mail[$i], TRUE ) : "-" );

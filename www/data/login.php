@@ -1,9 +1,12 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array("newpassword"));
+
 ///////////////////////////////////
 //// User is already logged in ////
 ///////////////////////////////////
 if ( $_SESSION['user_level'] == "loggedin" && $_POST['login'] == 1 ) {
-    $template = forward_message ( $TEXT['frontend']->get("user_login"), $TEXT['frontend']->get("user_login_ok"), '?go='.$global_config_arr['home_real']);
+    $template = forward_message ( $TEXT['frontend']->get("user_login"), $TEXT['frontend']->get("user_login_ok"), url($FD->cfg('home_real')));
 } elseif ( $_SESSION['user_level'] == "loggedin" ) {
     $template = sys_message ( $TEXT['frontend']->get("user_login"), $TEXT['frontend']->get("user_login_ok") );
 }
@@ -54,7 +57,7 @@ elseif (isset($_GET['newpassword']) && $_POST['login'] != 1) {
         
         // no user found
         else {$FD->text('frontend', "new_password_user_not_found");
-            $template = forward_message ( $FD->text('frontend', "new_password_user_not_found"), $FD->text('frontend', "new_password_user_not_found_text"), "?go=login&amp;newpassword" );
+            $template = forward_message ( $FD->text('frontend', "new_password_user_not_found"), $FD->text('frontend', "new_password_user_not_found_text"), url("login", array('newpassword' => "")) );
         }
         
         
@@ -83,7 +86,7 @@ else {
     }
 
     if ( $FD->cfg('login_state') == 1 || $FD->cfg('login_state') == 2 ) {
-        $template = forward_message ( $TEXT['frontend']->get("user_login_error_title"), $error_message, "?go=login" );
+        $template = forward_message ( $TEXT['frontend']->get("user_login_error_title"), $error_message, url("login") );
     } else {
         $template = new template();
         $template->setFile ( "0_user.tpl" );

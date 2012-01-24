@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array());
+
 // Load Config Array
 $index = mysql_query ( "
                         SELECT `show_type`, `show_size_x`, `show_size_y`

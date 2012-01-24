@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('id'));
+
 // Load Config Array
 $index = mysql_query ( "
                         SELECT *
@@ -32,7 +35,7 @@ if (mysql_num_rows($index) > 0)
     // Username auslesen
     $index = mysql_query("select user_name from ".$global_config_arr[pref]."user where user_id = $dl_arr[user_id]", $FD->sql()->conn() );
     $dl_arr[user_name] = kill_replacements ( mysql_result($index, 0, "user_name"), TRUE );
-    $dl_arr[user_url] = "?go=user&id=" . $dl_arr[user_id];
+    $dl_arr[user_url] = url("user", array('id' => $dl_arr['user_id']));
 
     // Link zum Autor generieren
     if (!isset($dl_arr[dl_autor])) {
@@ -116,7 +119,7 @@ if (mysql_num_rows($index) > 0)
             $template->load("ENTRY_FILE_LINE");
 
             $template->tag("name", stripslashes ( $file_arr[file_name] ) );
-            $template->tag("url", "?go=".$_GET['go']."&id=".$file_arr['file_id']."&dl=TRUE" );
+            $template->tag("url", url($_GET['go'], array('id' => $file_arr['file_id'], 'dl' => "TRUE")));
             $template->tag("size", $file_arr[file_size] );
             $template->tag("traffic", $file_arr[file_traffic] );
             $template->tag("hits", $file_arr[file_count] );
@@ -161,7 +164,7 @@ if (mysql_num_rows($index) > 0)
 
     $suchfeld->tag("input_cat", '<input name="cat_id" value="'.$dl_arr['cat_id'].'" type="hidden">' );
     $suchfeld->tag("keyword", "" );
-    $suchfeld->tag("all_url", "?go=download&cat_id=".$dl_arr['cat_id'] );
+    $suchfeld->tag("all_url", url("download", array('cat_id' => $dl_arr['cat_id'])));
 
     $suchfeld = $suchfeld->display ();
 
@@ -181,7 +184,7 @@ if (mysql_num_rows($index) > 0)
         $template->load("NAVIGATION_LINE");
 
         $template->tag("icon_url", $icon_url );
-        $template->tag("cat_url", "?go=download&cat_id=".$cat['cat_id'] );
+        $template->tag("cat_url", url("download", array('cat_id' => $cat['cat_id'])));
         $template->tag("cat_name", stripslashes ( $cat['cat_name'] ) );
 
         $template = $template->display ();
@@ -222,6 +225,6 @@ if (mysql_num_rows($index) > 0)
 
     $template = $template->display ();
 } else {
-    $template = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "dl_not_exist"));
+    $template = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "dl_not_exist"), 404);
 }
 ?>

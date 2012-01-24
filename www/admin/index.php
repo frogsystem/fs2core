@@ -30,12 +30,16 @@ require_once(FS2_ROOT_PATH . "libs/class_fileaccess.php");
 require_once(FS2_ROOT_PATH . "libs/class_lang.php");
 require_once(FS2_ROOT_PATH . "libs/class_adminpage.php");
 
+// Constructor Calls
+setTimezone($FD->cfg("timezone"));
+
 //Include Phrases-Files
 require(FS2_ROOT_PATH . "lang/de_DE/admin/admin_phrases_de.php");
 $TEXT['admin']    = new lang($global_config_arr['language_text'], "admin");
 $TEXT['frontend'] = new lang($global_config_arr['language_text'], "frontend");
 $TEXT['template'] = new lang($global_config_arr['language_text'], "template");
 $TEXT['menu']     = new lang($global_config_arr['language_text'], "menu");
+
 
 ######################
 ### START OF LOGIN ###
@@ -65,6 +69,7 @@ if (isset($_POST['login']) && $_POST['login'] == 1 && !is_authorized()) {
 ##################################
 
 // security functions
+!isset($_REQUEST['go']) ? $_REQUEST['go'] = null : 1;
 $go = $sql->escape($_REQUEST['go']);
 
 // get page-data from database
@@ -104,9 +109,12 @@ if (!empty($acp_arr)) {
     $adminpage = new adminpage($acp_arr['page_file']);
     
     // Get Special Page Lang-Text-Files
+    $page_lang = new lang($global_config_arr['language_text'], "admin/".substr($acp_arr['page_file'], 0, -4));
+    $FD->setPageText($page_lang);
     if (!isset($TEXT['page'])) {
-        $TEXT['page'] = new lang($global_config_arr['language_text'], "admin/".substr($acp_arr['page_file'], 0, -4));
+        $TEXT['page'] = $page_lang;
     }
+    unset ($page_lang);
     
 } else {
     $PAGE_DATA_ARR['created'] = false;
@@ -160,13 +168,17 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
     <link rel="stylesheet" type="text/css" href="css/main.css"> 
     <link rel="stylesheet" type="text/css" href="css/noscript.css" id="noscriptcss">
     
-    <link rel="shortcut icon" href="icons/favicon.ico">
+    <link rel="shortcut icon" href="icons/favicon.ico">  
     
     <script src="../resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="../resources/jquery/jquery-ui.min.js" type="text/javascript"></script>
     <script src="functions.js" type="text/javascript"></script>
     <script src="../includes/js_functions.js" type="text/javascript"></script>
     <script src="js/admin.js" type="text/javascript"></script>
+    
+    <link rel="stylesheet" type="text/css" href="../resources/colorpicker/css/colorpicker.css">
+    <script type="text/javascript" src="../resources/colorpicker/js/colorpicker.js"></script>  
+    <script type="text/javascript" src="js/colorpicker.js"></script>    
 </head>
 <!-- /HTML Head -->
 ';

@@ -1,11 +1,11 @@
 <?php
 /**
-* @file     class_searchquery.php
+* @file     class_search.php
 * @folder   /libs
 * @version  0.1
 * @author   Sweil
 *
-* this class actually makes the search
+* this class actually runs the search
 * search query objects are intened to used by the search-class
 * 
 */
@@ -24,6 +24,10 @@ class Search
       
     private $result;    
     private $order = array();
+    private $limit = "";
+    private $where = array();
+    private $numberOfFounds;
+    
     private $inprogress = false; 
     private $error = false; 
     
@@ -72,7 +76,7 @@ class Search
         
         // Create SearchQuery
         $sq = new SearchQuery($operators, $modifiers);
-        $sq->parse($_REQUEST['keyword']);        
+        $sq->parse($query);        
         $this->tree = $sq->getTree();
         
         // execute the search
@@ -92,6 +96,11 @@ class Search
         return mysql_fetch_assoc($this->result);
     }
     
+    // return number of all found rows
+    public function getNumberOfFounds() {
+        return $this->numberOfFounds;
+    }    
+    
     // define order for result output
     public function setOrder() {
         if (func_num_args() == 0) {
@@ -106,7 +115,31 @@ class Search
             $this->order[] = $arg;
         }
         return 1;
-    }    
+    }
+
+    // define sql limit for output [ [$offset,] $rowcount ]
+    public function setLimit() {
+        if (func_num_args() == 1) {
+            $this->limit = "LIMIT ".func_get_arg(0);
+        } elseif (func_num_args() == 2) {
+            $this->limit = "LIMIT ".func_get_arg(0).", ".func_get_arg(1);
+        } else {
+            $this->limit = "";
+        }
+        return 1;
+    }  
+    
+        // define order for result output
+    public function setWhere() {
+        // set where array
+        $this->where = array();
+        $args = func_get_args();
+        foreach ($args as $arg) {
+            $this->where[] = $arg;
+        }
+        return 1;
+    }  
+    
   
     // execute the search
     private function execute() {
@@ -161,7 +194,16 @@ class Search
             
             // add DB data to searchtree
             while($leaf = $this->tree->nextLeaf()) {
-                $leaf->setDBData($this->getResultsForLeaf($leaf, $words));
+                $wordlist = $this->getResultsForLeaf($leaf, $words);
+                //sort wordlist by id
+                usort($wordlist, function ($word1, $word2) {
+                    $a = $word1['id'];
+                    $b = $word2['id'];
+                    
+                    return ($a == $b) ? 0 : (($a < $b) ? -1 : 1);
+                });
+
+                $leaf->setDBData($wordlist);
             }
             $this->tree->reset();
 
@@ -188,9 +230,13 @@ class Search
             case "dl":       $table = "dl"; $id = "dl"; break;
         }
         
+        // set where & limit
+        $where = implode(" ", $this->where);
+        $where = !empty($where) ? "WHERE ".$where : "";
+        $limit = $this->limit;
         
         $query = "
-            SELECT
+            SELECT SQL_CALC_FOUND_ROWS
                 T.`id`, T.`rank`
             FROM (
                 ".implode(" UNION ALL ", $selects)."
@@ -200,14 +246,24 @@ class Search
                 `{..pref..}".$table."` O
             ON
                 T.`id` = O.`".$id."_id`
+            
+            ".$where."             
+            
             ORDER BY
                 ".implode(", ", $this->order)."
+            
+            ".$limit."   
         ";
         
         // try to execute the query
         try {
             $this->result = $this->sql->doQuery($query);
             $this->inprogress = true;
+            
+            // Get total num of affacted rows
+            $num_result = $this->sql->doQuery("SELECT FOUND_ROWS()");
+            list ($this->numberOfFounds) = mysql_fetch_row ($num_result);
+
         } catch (Exception $e) {
             $this->error = true;
             Throw $e;

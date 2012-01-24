@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 27. September 2011 um 12:59
+-- Erstellungszeit: 03. Januar 2012 um 13:03
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -149,7 +149,10 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('user_config', 'users', 'admin_user_config.php', 1, 0),
 ('user_add', 'users', 'admin_user_add.php', 2, 0),
 ('user_edit', 'users', 'admin_user_edit.php', 3, 0),
-('user_rights', 'users', 'admin_user_rights.php', 4, 0);
+('user_rights', 'users', 'admin_user_rights.php', 4, 0),
+('news_comments_list', 'news', 'admin_news_comments_list.php', 4, 0),
+('cimg_cat', 'cimg', 'admin_cimgcats.php', 3, 0),
+('cimg_import', 'cimg', 'admin_cimgimport.php', 4, 0);
 
 -- --------------------------------------------------------
 
@@ -234,12 +237,14 @@ CREATE TABLE `fs2_aliases` (
   `alias_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`alias_id`),
   KEY `alias_go` (`alias_go`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs2_aliases`
 --
 
+INSERT INTO `fs2_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_active`) VALUES
+(1, 'news_detail', 'comments', 1);
 
 -- --------------------------------------------------------
 
@@ -384,7 +389,7 @@ CREATE TABLE `fs2_articles_config` (
 --
 
 INSERT INTO `fs2_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `acp_per_page`, `acp_view`) VALUES
-(1, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 15, 2);
+(1, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -423,7 +428,49 @@ CREATE TABLE `fs2_captcha_config` (
 --
 
 INSERT INTO `fs2_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transparent`, `captcha_text_color`, `captcha_first_lower`, `captcha_first_upper`, `captcha_second_lower`, `captcha_second_upper`, `captcha_use_addition`, `captcha_use_subtraction`, `captcha_use_multiplication`, `captcha_create_easy_arithmetics`, `captcha_x`, `captcha_y`, `captcha_show_questionmark`, `captcha_use_spaces`, `captcha_show_multiplication_as_x`, `captcha_start_text_x`, `captcha_start_text_y`, `captcha_font_size`, `captcha_font_file`) VALUES
-(1, 'FFFFFF', 1, '000000', 1, 5, 1, 5, 1, 1, 0, 1, 58, 18, 0, 1, 1, 0, 0, 3, '');
+(1, 'F505F5', 0, 'FFFFFF', 1, 5, 1, 5, 1, 1, 0, 1, 58, 18, 0, 1, 1, 0, 0, 5, '');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `fs2_cimg`
+--
+
+DROP TABLE IF EXISTS `fs2_cimg`;
+CREATE TABLE `fs2_cimg` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(4) NOT NULL,
+  `hasthumb` tinyint(1) NOT NULL,
+  `cat` mediumint(8) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Daten für Tabelle `fs2_cimg`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `fs2_cimg_cats`
+--
+
+DROP TABLE IF EXISTS `fs2_cimg_cats`;
+CREATE TABLE `fs2_cimg_cats` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Daten für Tabelle `fs2_cimg_cats`
+--
+
+INSERT INTO `fs2_cimg_cats` (`id`, `name`, `description`) VALUES
+(1, 'Test', '');
 
 -- --------------------------------------------------------
 
@@ -442,8 +489,10 @@ CREATE TABLE `fs2_config` (
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`) VALUES
-('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"virtualhost\\":\\"http:\\\\/\\\\/localhost\\\\/fs2\\\\/www\\\\/\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}&nbsp;<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">&nbsp;{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab&nbsp;zur\\\\u00fcck<\\\\/a>&nbsp;|\\",\\"page_next\\":\\"|&nbsp;<a href=\\\\\\"{..url..}\\\\\\">weiter&nbsp;\\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"random_timed_deltime\\":\\"604800\\",\\"search_index_update\\":\\"2\\",\\"search_index_time\\":\\"1310056241\\"}'),
-('system', '{\\"var_loop\\":20}');
+('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}&nbsp;<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">&nbsp;{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab&nbsp;zur\\\\u00fcck<\\\\/a>&nbsp;|\\",\\"page_next\\":\\"|&nbsp;<a href=\\\\\\"{..url..}\\\\\\">weiter&nbsp;\\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"random_timed_deltime\\":\\"604800\\",\\"search_index_update\\":\\"1\\",\\"search_index_time\\":\\"1310056241\\",\\"url_style\\":\\"default\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\"}'),
+('system', '{\\"var_loop\\":20}'),
+('env', '{}'),
+('info', '{}');
 
 -- --------------------------------------------------------
 
@@ -487,7 +536,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 48, 1966, 2, 4, 65522, 1);
+(1, 61, 2336, 2, 4, 65527, 2);
 
 -- --------------------------------------------------------
 
@@ -570,7 +619,18 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 7, 20, 1, 1),
 (2011, 9, 25, 1, 237),
 (2011, 9, 26, 2, 235),
-(2011, 9, 27, 2, 225);
+(2011, 9, 27, 2, 225),
+(2011, 9, 28, 1, 23),
+(2011, 9, 29, 1, 2),
+(2011, 10, 8, 1, 69),
+(2011, 10, 9, 1, 21),
+(2011, 10, 16, 2, 137),
+(2011, 10, 17, 1, 10),
+(2011, 10, 18, 1, 47),
+(2011, 10, 20, 1, 2),
+(2011, 11, 3, 1, 49),
+(2011, 12, 28, 1, 8),
+(2011, 12, 29, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -870,7 +930,7 @@ CREATE TABLE `fs2_hashes` (
   `deleteTime` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=62 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
 
 --
 -- Daten für Tabelle `fs2_hashes`
@@ -895,8 +955,6 @@ CREATE TABLE `fs2_iplist` (
 -- Daten für Tabelle `fs2_iplist`
 --
 
-INSERT INTO `fs2_iplist` (`ip`) VALUES
-('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -917,7 +975,7 @@ CREATE TABLE `fs2_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
 
 --
 -- Daten für Tabelle `fs2_news`
@@ -933,7 +991,12 @@ INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title
 (35, 1, 1, 1310069220, 'frisch2', 'frisch2', 1, 1, 0),
 (36, 1, 1, 1310069220, 'frisch2', 'frisch2\r\ntim\r\ntimmy', 1, 1, 1310509434),
 (37, 1, 1, 1316987520, 'Poll Test', 'hallo\r\n\r\n$APP(poll-system.php)\r\n\r\n--------\r\n\r\n$APP(poll-system.php[4])\r\n\r\n---------\r\n\r\n$APP(poll-system.php[1])', 1, 1, 1316990207),
-(38, 2, 1, 1317067500, 'Test', '$APP(dieseappgibtesnicht)\r\n[%snippetnot%]\r\n$NAV(navnot)\r\n$VAR(Varnot)', 1, 1, 1317068575);
+(38, 2, 1, 1317067500, 'Test', '$APP(dieseappgibtesnicht)\r\n[%snippetnot%]\r\n$NAV(navnot)\r\n$VAR(Varnot)', 1, 1, 1317068575),
+(39, 2, 1, 1318076760, 'home test', '[home=news]Test 1[/home]\r\n[home]news[/home]\r\n-------------------\r\n[home=comments&amp;id=39]Test 1[/home]\r\n[home]comments&amp;id=39[/home]\r\n-------------------\r\n[home=comments&id=39]Test 1[/home]\r\n[home]comments&id=39[/home]\r\n-------------------\r\n[home]news[foo=bar][/home]\r\n[home]news[foo=bar hans=wurst][/home]\r\n-------------------\r\n[home=news foo=bar]Test 4[/home]\r\n[home=news foo=bar hans=wurst]Test 5[/home]\r\n-------------------\r\n[home=news&hans=wurst foo=bar]Test 6[/home]\r\n[home=news&amp;hans=wurst foo=bar]Test 7[/home]\r\n\r\n-------------------\r\n-------------------\r\n\r\n[noparse][home=news]Test 1[/home]\r\n[home]news[/home]\r\n-------------------\r\n[home=comments&amp;id=39]Test 1[/home]\r\n[home]comments&amp;id=39[/home]\r\n-------------------\r\n[home=comments&id=39]Test 1[/home]\r\n[home]comments&id=39[/home]\r\n-------------------\r\n[home]news[foo=bar][/home]\r\n[home]news[foo=bar hans=wurst][/home]\r\n-------------------\r\n[home=news foo=bar]Test 4[/home]\r\n[home=news foo=bar hans=wurst ]Test 5[/home]\r\n-------------------\r\n[home=news&hans=wurst foo=bar]Test 6[/home]\r\n[home=news&amp;hans=wurst foo=bar]Test 7[/home][/noparse]', 1, 1, 1318079355),
+(40, 2, 1, 1318963680, 'Überarbeitete Umfrage zum besten Entwicklerstudio aller Zeiten (News) ', 'bkah', 1, 1, 0),
+(41, 1, 1, 1325103780, 'Hallo', 'Hallo', 1, 1, 0),
+(42, 1, 1, 1325103780, 'Hallo', 'Hallo', 1, 1, 1325104446),
+(43, 1, 1, 1325104440, 'Tsdsdfsd', 'fsdfsdfsdfsdfsdf', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -977,14 +1040,15 @@ CREATE TABLE `fs2_news_comments` (
   `comment_text` text,
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `fs2_news_comments`
 --
 
 INSERT INTO `fs2_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(3, 5, '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans');
+(3, 5, '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans'),
+(4, 39, '1', 1, '127.0.0.1', 1318778907, 'gh', 'h');
 
 -- --------------------------------------------------------
 
@@ -1019,7 +1083,7 @@ CREATE TABLE `fs2_news_config` (
 --
 
 INSERT INTO `fs2_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`, `acp_force_cat_selection`) VALUES
-(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 20, ' ...', 25, 2, 1);
+(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 2, 'DESC', 20, ' ...', 3, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1035,7 +1099,7 @@ CREATE TABLE `fs2_news_links` (
   `link_url` varchar(255) DEFAULT NULL,
   `link_target` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`link_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=100 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=104 ;
 
 --
 -- Daten für Tabelle `fs2_news_links`
@@ -1066,7 +1130,11 @@ INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `li
 (34, 65, 'Frogsystem 2 Dokumentations-Wiki', 'http://wiki.frogsystem.de/', 1),
 (36, 99, 'Diskussion im Forum', 'http://www.sweil.de', 0),
 (5, 68, 'dd', 'http://ff', 0),
-(5, 69, 'gdfg', 'http://ff', 1);
+(5, 69, 'gdfg', 'http://ff', 1),
+(42, 100, 'Test', 'http://asdasdasd', 0),
+(42, 101, 'asdasd', 'http://asdasd', 0),
+(43, 102, 'sdfsdf', 'http://sdfsdfsd', 1),
+(43, 103, 'sdfsd', 'http://sdfsdf', 0);
 
 -- --------------------------------------------------------
 
@@ -1589,7 +1657,7 @@ CREATE TABLE `fs2_search_index` (
   `search_index_count` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1602 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1622 ;
 
 --
 -- Daten für Tabelle `fs2_search_index`
@@ -1810,7 +1878,27 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 (1598, 152, 'news', 38, 1),
 (1599, 153, 'news', 38, 1),
 (1600, 154, 'news', 38, 1),
-(1601, 155, 'news', 38, 1);
+(1601, 155, 'news', 38, 1),
+(1602, 108, 'news', 40, 1),
+(1603, 156, 'news', 40, 1),
+(1604, 157, 'news', 40, 1),
+(1605, 158, 'news', 40, 1),
+(1606, 159, 'news', 40, 1),
+(1607, 160, 'news', 40, 1),
+(1608, 161, 'news', 40, 1),
+(1609, 162, 'news', 40, 1),
+(1610, 33, 'news', 39, 15),
+(1611, 100, 'news', 39, 5),
+(1612, 101, 'news', 39, 5),
+(1613, 105, 'news', 39, 25),
+(1614, 107, 'news', 39, 5),
+(1615, 108, 'news', 39, 11),
+(1616, 163, 'news', 39, 6),
+(1617, 164, 'news', 39, 8),
+(1618, 165, 'news', 39, 8),
+(1619, 166, 'news', 39, 8),
+(1620, 167, 'news', 39, 5),
+(1621, 168, 'news', 39, 5);
 
 -- --------------------------------------------------------
 
@@ -1826,7 +1914,7 @@ CREATE TABLE `fs2_search_time` (
   `search_time_date` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_time_id`),
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=164 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=166 ;
 
 --
 -- Daten für Tabelle `fs2_search_time`
@@ -1856,7 +1944,9 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 (141, 'news', 5, 1310508807),
 (140, 'news', 1, 1310508807),
 (162, 'news', 37, 1316990207),
-(163, 'news', 38, 1317068575);
+(163, 'news', 38, 1317068575),
+(164, 'news', 40, 1318963745),
+(165, 'news', 39, 1318963745);
 
 -- --------------------------------------------------------
 
@@ -1870,7 +1960,7 @@ CREATE TABLE `fs2_search_words` (
   `search_word` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
   UNIQUE KEY `search_word` (`search_word`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=156 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=169 ;
 
 --
 -- Daten für Tabelle `fs2_search_words`
@@ -2031,7 +2121,20 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 (152, 'nav'),
 (153, 'navnot'),
 (154, 'var'),
-(155, 'varnot');
+(155, 'varnot'),
+(156, 'ueberarbeitete'),
+(157, 'umfrage'),
+(158, 'besten'),
+(159, 'entwicklerstudio'),
+(160, 'aller'),
+(161, 'zeiten'),
+(162, 'bkah'),
+(163, 'comments'),
+(164, 'amp'),
+(165, 'foo'),
+(166, 'bar'),
+(167, 'hans'),
+(168, 'wurst');
 
 -- --------------------------------------------------------
 
@@ -2188,8 +2291,6 @@ CREATE TABLE `fs2_useronline` (
 -- Daten für Tabelle `fs2_useronline`
 --
 
-INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 2, 1317128246);
 
 -- --------------------------------------------------------
 

@@ -1,4 +1,7 @@
 <?php
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('catid', 'page'));
+
 /////////////////////////////
 //// Kategorie existiert  ///
 /////////////////////////////
@@ -181,11 +184,11 @@ if (isset($_GET[catid]))
 
 
     //Seitennavigation
-    $pagenav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['pics_per_page'], $config_arr['number_of_screens'], "?go=".$_GET['go']."&catid=".$_GET['catid']."&page={..page_num..}" );
+    $pagenav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['pics_per_page'], $config_arr['number_of_screens'], url($_GET['go'], array('catid' => $_GET['catid'], 'page' => "{..page_num..}")));
     
     //Keine Screenshots
     if ($config_arr[number_of_screens] <= 0) {
-        $pics = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "no_pics"));
+        $pics = sys_message($FD->text('frontend', "sysmessage"), $FD->text('frontend', "no_pics"), 404);
         $pagenav = "";
     }
     
@@ -222,7 +225,7 @@ else {
         $template->setFile("0_screenshots.tpl");
         $template->load("CATEGORY");
 
-        $template->tag("url", "?go=".$_GET['go']."&catid=".$cat_arr[cat_id] );
+        $template->tag("url", url($_GET['go'], array('catid' => $cat_arr['cat_id'])));
         $template->tag("name", stripslashes ( $cat_arr[cat_name] ) );
         $template->tag("date", $cat_arr[cat_date] );
         $template->tag("number", $cat_arr[cat_menge] );

@@ -534,7 +534,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
     $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies ORDER by `order` ASC LIMIT 0, 10", $FD->sql()->conn() );
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
-        $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id]);
+        $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id], false);
 
         $smilie_template = '<td><img src="'.$smilie_arr[url].'" alt="'.$smilie_arr[replace_string].'" onClick="insert(\''.$name.'\', \''.$smilie_arr[replace_string].'\', \'\')" class="editor_smilies" /></td>';
 
@@ -670,13 +670,19 @@ function create_editor_seperator()
 
 function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, $BOLD_TITLE = TRUE, $SHOW_TITLE = TRUE   )
 {
+    initstr($span_end);
+    initstr($span_start);
+    
     if ( $NEW_LINE == TRUE ) {
         $span_start = '<span style="padding-bottom:3px; display:block;">';
         $span_end = '</span>';
     }
     if ( $INSERT == TRUE ) {
-        $insert_button = '
-        <a href="javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');"><img border="0" src="icons/pointer.gif" alt="->" title="einfügen" align="absmiddle"></a>';
+        $insert_link = 'javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');';
+        $insert_text = "*klicken*";
+    } else {
+        $insert_link = '#?';
+        $insert_text = "";   
     }
     if ( $SHOW_TITLE == TRUE ) {
         $first_title = $TITLE."";
@@ -687,14 +693,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
         $second_title = "&nbsp;".$TITLE;
     }
 
-    $template = $span_start.'
-            '.$first_title.'
-            <a class="tooltip" href="#?">
-                <img border="0" src="icons/help.gif" align="absmiddle" alt="?">
-                <span>
-                    <img border="0" src="img/pointer.png" align="absmiddle" alt="->">'.$second_title.'<br>'.$TEXT.'
-                </span>
-            </a>'.$insert_button.$span_end.'
+    $template = $span_start.'<a class="tooltip" href="'.$insert_link.'">'.$first_title.'<span><img class="atright" border="0" alt="-&gt;" src="icons/pointer.gif">'.$second_title.'<br>'.$TEXT.'</span></a>'.$span_end.'
     ';
 
    return $template;

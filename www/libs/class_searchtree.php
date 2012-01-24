@@ -46,6 +46,7 @@ class SearchOperator extends SearchTree
     
     // get set
     public function getSet() {
+        global $FD;
         
         // check for wrong use of not
         $leftnot = ($this->left->isLeaf() && $this->left->hasNot());
@@ -54,15 +55,15 @@ class SearchOperator extends SearchTree
         switch ($this->operation) {
             case "and":
                 if ($leftnot && $rightnot)
-                    Throw new Exception("Prohibited use of NOT in your Searchquery."
-                    ."Don't use NOT on both sides of AND.");
+                    Throw new Exception($FD->text('frontend', 'sq_error_not_and'));
+                    // "Prohibited use of NOT in your Searchquery." ."Don't use NOT on both sides of AND.");
                 break;
                 
             // No not here
             default:
                 if ($leftnot || $rightnot)
-                    Throw new Exception("Prohibited use of NOT in your Searchquery."
-                    ."Neither use NOT with OR nor XOR.");
+                    Throw new Exception($FD->text('frontend', 'sq_error_not_or_xor'));                    
+                    // "Prohibited use of NOT in your Searchquery." ."Neither use NOT with OR nor XOR.");
                 break;
         }
         
@@ -72,7 +73,7 @@ class SearchOperator extends SearchTree
 
         //compare on average
         $cmp_avg = function (&$v1, $v2) {
-            return compare_update_rank ($v1, $v2, function ($v1, $v2) {return ($v1+$v2)/2;});
+            return compare_update_rank ($v1, $v2, function ($r1, $r2) {return ($r1+$r2)/2;});
         };
         
         
@@ -145,7 +146,7 @@ class SearchLeaf extends SearchTree
     private $type;
     private $not;
     private $read = false;
-    private $FD->sql()->conn() );
+    private $dbdata = array();
 
     // constructor
     public function  __construct ($label, $type, $not) {        
@@ -178,7 +179,7 @@ class SearchLeaf extends SearchTree
     }
     
     //set DB Data
-    public function setDBData($FD->sql()->conn() ) {
+    public function setDBData($dbdata) {
         $this->dbdata = $dbdata;
     }
 

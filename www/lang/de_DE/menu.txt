@@ -109,6 +109,8 @@ page_title_news_edit:           bearbeiten
 page_link_news_edit:            bearbeiten
 page_title_news_cat:            Kategorien verwalten
 page_link_news_cat:             Kategorien
+page_title_news_comments_list:  Kommentare verwalten
+page_link_news_comments_list:   Kommentare
 
 # Artikel
 page_title_articles_config:     Konfiguration ändern
@@ -135,6 +137,10 @@ page_title_cimg_add:            hinzufügen
 page_link_cimg_add:             hinzufügen
 page_title_cimg_admin:          verwalten
 page_link_cimg_admin:           verwalten
+page_title_cimg_cat:            Kategorien
+page_link_cimg_cat:             Kategorien
+page_title_cimg_import:          Alte Bilder importieren
+page_link_cimg_import:           importieren
 
 # Galerie > Allgemein
 page_title_gallery_config:      Konfiguration ändern
