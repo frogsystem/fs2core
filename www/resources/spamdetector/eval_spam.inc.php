@@ -1,7 +1,7 @@
 <?php
 /*
     This file is part of the Frogsystem Spam Detector.
-    Copyright (C) 2011  Thoronador
+    Copyright (C) 2011, 2012  Thoronador
 
     The Frogsystem Spam Detector is free software: you can redistribute it
     and/or modify it under the terms of the GNU General Public License as
@@ -19,7 +19,7 @@
     Additional permission under GNU GPL version 3 section 7
 
     If you modify this Program, or any covered work, by linking or combining it
-    with Frogsystem 2 (or a modified version of Frogsystem 2), containing parts
+    with Frogsystem (or a modified version of Frogsystem), containing parts
     covered by the terms of Creative Commons Attribution-ShareAlike 3.0, the
     licensors of this Program grant you additional permission to convey the
     resulting work. Corresponding Source for a non-source form of such a
@@ -63,7 +63,7 @@
   */
   function strangeCase($input)
   {
-    $sub = substr($title, 0, 3);
+    $sub = substr($input, 0, 3);
     $case_profile = 0;
     for($i=0; $i<3; $i=$i+1)
     {
@@ -89,22 +89,28 @@
          poster_name  - the name of the user who posted the comment
          comment_text - the comment's complete text
          use_b8       - set this to true to use b8 ("Bayesian") evaluation
-         connex       - the DB connection's link resource
+         b8           - preinitialised instance of the b8 class
   */
-  function spamEvaluation($title, $poster_id, $poster_name, $comment_text, $use_b8=false, $connex=NULL)
+  function spamEvaluation($title, $poster_id, $poster_name, $comment_text, $use_b8=false, &$b8=NULL)
   {
     $comment_text = strtolower($comment_text);
     if ($use_b8)
     {
-      require_once $_SERVER['DOCUMENT_ROOT'].'/b8/b8.php';
-      $b8 = new b8(array('storage' => 'mysql'), array('connection' => $connex));
-      //check if construction was successful
-      $success = $b8->validate();
+      require_once(FS2_ROOT_PATH.'/b8/b8.php');
+      if ($b8==NULL)
+      {
+        $success = 'No b8 instance passed to spamEvaluation() function!';
+      }
+      else
+      {
+        //check if b8 construction was successful
+        $success = $b8->validate();
+      }
       if ($success!==true)
       {
 		echo '<b>Error:</b> Could not initialize b8. error code: '.$success;
 		//will use "normal" evaluation instead
-		return spamEvaluation($title, $poster_id, $poster_name, $comment_text, false, NULL);
+		return spamEvaluation($title, $poster_id, $poster_name, $comment_text, false, $b8);
 	  }
 	  //pass comment title, poster's name and comment text as text
 	  // -- comment text is already in lower case, so no strtolower() on that part
@@ -146,12 +152,13 @@
     return $spam_level;
   }//function
 
-  /* turns the given spam level into a human-readable text with approoriate
+  /* turns the given spam level into a human-readable text with appropriate
      colour and returns that as HTML code snippet
 
      parameters:
-         level - the spam level, an integer value (ideally the one returned by
-                 the spamEvaluation() function)
+         level - the spam level, an integer or float value (ideally the one
+                 returned by the spamEvaluation() function)
+                 If it is a float value, it will be interpreted as probability.
   */
   function spamLevelToText($level)
   {
