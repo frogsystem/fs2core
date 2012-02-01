@@ -1,6 +1,22 @@
 <?php
 require_once(FS2_ROOT_PATH . 'libs/class_stringparser_bbcode.php');
 
+// strip any fscode
+function strip_fs($str, $allowable_tags = "") {
+    $allowable_tags = array_map("strtolower", explode(",", $allowable_tags));
+    
+    $matches = array();
+    preg_match_all('#\[\/?([\w]+)[^\]]*?\]#', $str, $tags, PREG_PATTERN_ORDER);
+    
+    foreach ($tags[1] as $tag) {
+        // is tag allowable?
+        if (!in_array(strtolower($tag), $allowable_tags))
+            $str = preg_replace('#(\[\/?'.$tag.'[^\]]*?\])#i', '', $str);
+    }
+    return $str;
+}
+
+
 // Parse all possible FSCodes to HTML
 function parse_all_fscodes($TEXT, $flags = array()) {
     return parse_fscode($TEXT, $flags, get_all_fscodes());
