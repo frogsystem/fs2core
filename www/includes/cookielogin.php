@@ -48,7 +48,7 @@ function set_cookie ( $username, $password )
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."user WHERE user_name = '$username'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
