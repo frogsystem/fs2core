@@ -1349,10 +1349,8 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
 
 function killfs($text)
 {
-    $text = fscode ( $text, TRUE, TRUE, TRUE );
-    $text = preg_replace('/\<br(\s*)?\/?\>/i', "\n", $text);
-    $text = strip_tags($text);
-    return $text;
+    include_once ( FS2_ROOT_PATH . 'includes/fscode.php');
+    return strip_fs($text);
 }
 
 ///////////////////////////////////////////////////////////////
