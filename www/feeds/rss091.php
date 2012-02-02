@@ -7,8 +7,10 @@ $settings = array (
     'to_html' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist'),
     'to_text' => array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'noparse'),
     'to_bbcode' => array(),
-    'shortening' => false,
-    'extension' => "...",
+	'truncate' => false, // Set to length if you want to cut!
+	'truncate_extension' => ' &hellip;',
+	'truncate_awareness' => array('word' => true, 'html' => true, 'bbcode' => false),
+	'truncate_options' => array('count_html' => false, 'count_bbcode' => false, 'below' => true),
     'use_html' => true,
     'tpl_functions' => "softremove",
 );
