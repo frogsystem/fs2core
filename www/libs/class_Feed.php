@@ -80,8 +80,10 @@ abstract class Feed {
         'to_html' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist'),
         'to_text' => array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'noparse'),
         'to_bbcode' => array(),
-        'shortening' => false,
-        'extension' => "...",
+        'truncate' => false,
+        'truncate_extension' => '',
+        'truncate_awareness' => array('word' => true, 'html' => true, 'bbcode' => false),
+        'truncate_options' => array('count_html' => false, 'count_bbcode' => false, 'below' => true),
         'use_html' => true,
         'tpl_functions' => "softremove",
         'paragraph_to_text' => false,
@@ -192,7 +194,9 @@ abstract class Feed {
                 $parsed_text = strip_tags($parsed_text);
                 
             // Cut Text
-            //TODO
+            if ($this->settings['truncate'] !== false) {
+				$parsed_text = StringCutter::truncate($parsed_text, $this->settings['truncate'], $this->settings['truncate_extension'], $this->settings['truncate_awareness'], $this->settings['truncate_options']);
+			}
             
             // Save item
             $news['parsed_text'] = $parsed_text;

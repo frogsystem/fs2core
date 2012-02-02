@@ -34,24 +34,34 @@ class StringCutter {
      * 
      * @return Text truncated with awareness
      * */
-    static public function truncate ($text, $length, $extension,
-        $awareness = array(
-            'word' => false,
-            'html' => false,
-            'bbcode' => false,
-        ),
-        $options = array(
-            'count_html' => false,
-            'count_bbcode' => false,
-            'below' => true,
-        )
-    ) {
+    static public function truncate ($text, $length, $extension, $awareness = array(), $options = array()) {
+		// check awarness & options
+		if (!isset($awareness))
+			$awareness = array();
+		if (!isset($options))
+			$options = array();
+		
+		if (!isset($awareness['word']))
+			$awareness['word'] = false;
+		if (!isset($awareness['html']))
+			$awareness['word'] = false;
+		if (!isset($awareness['bbcode']))
+			$awareness['word'] = false;
+			
+		if (!isset($options['count_html']))
+			$options['count_html'] = false;
+		if (!isset($options['count_bbcode']))
+			$options['count_bbcode'] = false;
+		if (!isset($options['below']))
+			$options['below'] = true;
+			
+		
         // set count to false, if not html/bbcode aware
         $options['count_html'] = !$awareness['html'] || $options['count_html'];
         $options['count_bbcode'] = !$awareness['bbcode'] || $options['count_bbcode'];
-        
+
         // Do we have to cut?
-        if (strlen(StringCutter::strip($text, !$options['count_html'], !$options['count_bbcode'])) <= $len)
+        if (strlen(StringCutter::strip($text, !$options['count_html'], !$options['count_bbcode'])) <= $length)
             return $text;
             
         // truncated html/bbcode aware?
@@ -205,11 +215,11 @@ class StringCutter {
                 } elseif ($tag_type == "opening") {
                     array_shift($tags_to_close);
                 }
-                
+
                 // now text is full
                 break;
             }
-            
+
         }
 
         // add all unclosed tags
