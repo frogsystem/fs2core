@@ -4,7 +4,7 @@
 //// Display User Menü ////
 ///////////////////////////
 
-if ( $_SESSION['user_level'] == "loggedin" ) {
+if ( is_loggedin() ) {
     // Get some data
     $user_id = $_SESSION["user_id"];
     settype ( $user_id, "integer" );

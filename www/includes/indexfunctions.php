@@ -544,8 +544,9 @@ function load_an_applet($file, $output, $args) {
     $return_data = ob_get_clean();
     
     // set empty str
-    if (!isset($template));
+    if (!isset($template)) {
 		initstr($template);
+    }
     
     //create return value
     if ($output) {
