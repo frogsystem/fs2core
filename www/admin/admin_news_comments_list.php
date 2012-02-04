@@ -1,4 +1,4 @@
-<?php if (ACP_GO == "news_comments_list") {
+<?php  if (!defined("ACP_GO")) die("Unauthorized access!");
 /*
     This file is part of the Frogsystem Spam Detector.
     Copyright (C) 2011  Thoronador
@@ -27,6 +27,66 @@
     combination shall include the source code for the parts of Frogsystem used
     as well as that of the covered work.
 */
+    
+// perform comment actions
+
+
+
+    // Edit Comments
+    if (
+                    isset ( $_POST['news_id'] ) &&
+                    count ( $_POST['news_id'] ) == 1 &&
+                    isset ( $_POST['comment_id'] ) &&
+                    isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
+                    isset ( $_POST['news_action'] ) && $_POST['news_action'] == "comments" &&
+                    isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == "edit" &&
+
+                    $_POST['title'] && $_POST['title'] != "" &&
+                    $_POST['text'] && $_POST['text'] != ""
+            )
+    {
+        // unset data, so admin_news_edit.php doesnt perform anything
+        $POSTDATA = $_POST;
+        unset ($_POST);
+                
+        ob_start();
+        require_once(FS2_ROOT_PATH."admin/admin_news_edit.php");
+        ob_end_clean();
+        
+        db_edit_comment ($POSTDATA);
+
+        // Unset Vars
+        unset ($POSTDATA);
+    }
+
+    // Delete Comments
+    elseif (
+                    isset ( $_POST['news_id'] ) &&
+                    isset ( $_POST['comment_id'] ) &&
+                    isset ( $_POST['sended'] ) && $_POST['sended'] == "delete" &&
+                    isset ( $_POST['news_action'] ) && $_POST['news_action'] == "comments" &&
+                    isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == "delete" &&
+                    isset ( $_POST['comment_delete'] )
+            )
+    {
+        // unset data, so admin_news_edit.php doesnt perform anything
+        $POSTDATA = $_POST;
+        unset ($_POST);
+        
+        ob_start();
+        require_once(FS2_ROOT_PATH."admin/admin_news_edit.php");
+        ob_end_clean();
+        
+        if ( $POSTDATA['comment_delete'] == 1 ) {
+            db_delete_comment ( $POSTDATA );
+        } else {
+             systext( "Kommentare wurden nicht gelöscht", $admin_phrases[common][error], FALSE, $admin_phrases[icons][trash_error] );
+        }
+
+        // Unset Vars
+        unset ($POSTDATA);
+    }
+//     
     
 
   if (!isset($_GET['start']) || $_GET['start']<0)
@@ -123,19 +183,21 @@ EOT;
                  $comment_arr['comment_poster_id'], $comment_arr['comment_poster'], $comment_arr['comment_text'])).'
            </td>
            <td class="configthin" rowspan="2">
-             <form action="?go=news_edit" method="post">
+             <form action="" method="post">
                <input type="hidden" name="sended" value="comment">
                <input type="hidden" name="news_action" value="comments">
-               <input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
+               <input type="hidden" name="news_id[]" value="'.$comment_arr['news_id'].'">
+               <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="edit">
                <input class="button" type="submit" value="Editieren">
              </form>
 
-             <form action="?go=news_edit" method="post">
+             <form action="" method="post">
                <input type="hidden" name="sended" value="comment">
                <input type="hidden" name="news_action" value="comments">
-               <input type="hidden" name="news_id" value="'.$comment_arr['news_id'].'">
+               <input type="hidden" name="news_id[]" value="'.$comment_arr['news_id'].'">
+               <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="delete">
                <input class="button" type="submit" value="L&ouml;schen">
@@ -191,4 +253,4 @@ echo <<<EOT
 EOT;
  
                         
-}?>
+?>

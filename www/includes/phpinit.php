@@ -1,5 +1,5 @@
 <?php
-function phpinit($session = true, $header = false, $libloader = null) {
+function phpinit ($session = true, $header = false, $libloader = null) {
     
     // Header?
     if ($header !== false) {
@@ -27,4 +27,5 @@ function phpinit($session = true, $header = false, $libloader = null) {
     else
         spl_autoload_register($libloader);
 }
+
 ?>

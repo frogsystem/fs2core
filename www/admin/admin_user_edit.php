@@ -153,12 +153,17 @@ if (
 
     if ( $_POST['new_password'] == 1 ) {
         // send email
-        $template_mail = get_email_template ( "change_password" );
-        $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_POST['user_name'] ), $template_mail );
-        $template_mail = str_replace ( "{..new_password..}", $_POST['newpwd'], $template_mail );
-        $template_mail = replace_globalvars ( $template_mail );
-        $email_subject = $TEXT['frontend']->get("mail_password_changed_on") . $global_config_arr['virtualhost'];
-        if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
+        $mm = new MailManager();
+        
+        $content = get_email_template ("change_password");
+        $content = str_replace ( "{..user_name..}", unslash ( $_POST['user_name'] ), $content );
+        $content = str_replace ( "{..new_password..}", $_POST['newpwd'], $content );
+        
+        $subject = $FD->text("frontend", "mail_password_changed_on") . $FD->cfg('virtualhost');
+        
+        $mail = new Mail($mm->getDefaultSender(), unslash($_POST['user_mail']), $subject, $content, $mm->getHtmlConfig(), true);
+        
+        if ($mail->send()) {
             $message .= "<br>".$TEXT['frontend']->get("mail_new_password_sended");
         } else {
             $message .= "<br>".$TEXT['frontend']->get("mail_new_password_not_sended");
