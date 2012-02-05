@@ -1,4 +1,6 @@
-<?php
+<?php if (!defined("ACP_GO")) die("Unauthorized access!");
+
+
     if ( $go == "tpl_fscodes" ) {
         $TEMPLATE_GO = "tpl_fscodes";
     } else {
@@ -9,36 +11,36 @@
 
 
     $tmp[name] = "QUOTE";
-    $tmp[title] = $admin_phrases[template][quote_tag][title];
-    $tmp[description] = $admin_phrases[template][quote_tag][description];
+    $tmp[title] = $FD->text("template", "quote_tag_title");
+    $tmp[description] = $FD->text("template", "quote_tag_description");
     $tmp[rows] = "20";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "text";
-        $tmp[help][0][text] = $admin_phrases[template][quote_tag][help_1];
+        $tmp[help][0][text] = $FD->text("template", "quote_tag_help_1");
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
     $tmp[name] = "QUOTE_SOURCE";
-    $tmp[title] = $admin_phrases[template][quote_tag_name][title];;
-    $tmp[description] = $admin_phrases[template][quote_tag_name][description];
+    $tmp[title] = $FD->text("template", "quote_tag_name_title");;
+    $tmp[description] = $FD->text("template", "quote_tag_name_description");
     $tmp[rows] = "20";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "text";
-        $tmp[help][0][text] = $admin_phrases[template][quote_tag_name][help_1];
+        $tmp[help][0][text] = $FD->text("template", "quote_tag_name_help_1");
         $tmp[help][1][tag] = "author";
-        $tmp[help][1][text] = $admin_phrases[template][quote_tag_name][help_2];
+        $tmp[help][1][text] = $FD->text("template", "quote_tag_name_help_2");
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
 
     
     $tmp[name] = "CODE";
-    $tmp[title] = $admin_phrases[template][code_tag][title];
-    $tmp[description] = $admin_phrases[template][code_tag][description];
+    $tmp[title] = $FD->text("template", "code_tag_title");
+    $tmp[description] = $FD->text("template", "code_tag_description");
     $tmp[rows] = "20";
     $tmp[cols] = "66";
         $tmp[help][0][tag] = "text";
-        $tmp[help][0][text] = $admin_phrases[template][code_tag][help_1];
+        $tmp[help][0][text] = $FD->text("template", "code_tag_help_1");
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 

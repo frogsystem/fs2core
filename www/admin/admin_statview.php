@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined("ACP_GO")) die("Unauthorized access!");
 
 if (!isset($_GET[s_year]))
 {
@@ -11,8 +11,8 @@ if (!isset($_GET[s_month]))
 settype ($_GET[s_year], 'integer');
 settype ($_GET[s_month], 'integer');
 
-$day_arr = array("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag");
-$month_arr = array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember");
+$day_arr = explode(",", $FD->text("frontend", "week_days_array"));
+$month_arr = explode(",", $FD->text("frontend", "month_names_array"));
 
 //////////////////////////////////
 //// Jahresauswahl generieren ////
@@ -65,21 +65,21 @@ echo'
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" colspan="4" align="center">
-                                            <b>Tagesstatistik ('.$month_arr[$monthname-1].')</b>
+                                            <b>'.$FD->text("page", "daily_statistics").' ('.$month_arr[$monthname-1].')</b>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="h" align="center">
-                                            <b>Tag</b>
+                                            <b>'.$FD->text("page", "day").'</b>
                                         </td>
                                         <td class="h" align="center">
-                                            <b>Visits</b>
+                                            <b>'.$FD->text("page", "visits").'</b>
                                         </td>
                                         <td class="h" align="center">
-                                            <b>Hits</b>
+                                            <b>'.$FD->text("page", "hits").'</b>
                                         </td>
                                         <td class="h" align="center" width="120">
-                                            <b>Grafik</b>
+                                            <b>'.$FD->text("page", "chart").'</b>
                                         </td>
                                     </tr>
 ';
@@ -160,7 +160,7 @@ $hitsdurchschnitt = $hitsall / $dcount;
 echo'
                                     <tr>
                                         <td class="h" align="center">
-                                            Durchschnitt
+                                            '.$FD->text("page", "average").'
                                         </td>
                                         <td class="h" align="center">
                                             '.point_number(round($visitsdurchschnitt)).'
@@ -180,21 +180,21 @@ echo'
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" colspan="4" align="center">
-                                               <b>Monatsstatistik ('.$_GET[s_year].')</b>
+                                               <b>'.$FD->text("page", "monthly_statistics").' ('.$_GET[s_year].')</b>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="h" align="center">
-                                            <b>Monat</b>
+                                            <b>'.$FD->text("page", "month").'</b>
                                         </td>
                                         <td class="h" align="center">
-                                            <b>Visits</b>
+                                            <b>'.$FD->text("page", "visits").'</b>
                                         </td>
                                         <td class="h" align="center">
-                                            <b>Hits</b>
+                                            <b>'.$FD->text("page", "hits").'</b>
                                         </td>
                                         <td class="h" align="center" width="120">
-                                            <b>Grafik</b>
+                                            <b>'.$FD->text("page", "chart").'</b>
                                         </td>
                                     </tr>
 ';
@@ -234,7 +234,7 @@ for ($m=1; $m<13; $m++)
                                             '.point_number($sum_arr[sumhits]).'
                                         </td>
                                         <td class="n" align="left" style="font-size:1pt;" class="bottom">
-                                            <img align="left" title="Diagramm anzeigen" class="bottom" onClick=\'open("admin_statgfx.php?s_year='.$_GET[s_year].'&s_month='.$m.'","Picture","width=520,height=330,screenX=200,screenY=150")\' style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
+                                            <img align="left" title="'.$FD->text("page", "show_chart").'" class="bottom" onClick=\'open("admin_statgfx.php?s_year='.$_GET[s_year].'&s_month='.$m.'","Picture","width=520,height=330,screenX=200,screenY=150")\' style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
                                             <img border="0" src="img/null.gif" height="4" width="1"><br>
                                             <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
                                             <img border="0" src="img/chits.gif" height="4" width="'.round($hitswidth).'">
@@ -271,7 +271,7 @@ $hitsdurchschnitt = $superhits / $mcount;
 echo'
                                     <tr>
                                         <td class="h" align="center">
-                                            Durchschnitt
+                                            '.$FD->text("page", "average").'
                                         </td>
                                         <td class="h" align="center">
                                             '.point_number(round($visitsdurchschnitt)).'
@@ -311,12 +311,12 @@ echo'
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" align="center" colspan="2">
-                                            Weitere Statistiken
+                                            '.$FD->text("page", "other_statistics").'
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            Visits gesamt
+                                            '.$FD->text("page", "visits_total").'
                                         </td>
                                         <td class="n" align="center">
                                             '.point_number($counterdaten[visits]).'
@@ -324,7 +324,7 @@ echo'
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            Hits gesamt
+                                            '.$FD->text("page", "hits_total").'
                                         </td>
                                         <td class="n" align="center">
                                             '.point_number($counterdaten[hits]).'
@@ -332,7 +332,7 @@ echo'
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            User online
+                                            '.$FD->text("page", "user_online").'
                                         </td>
                                         <td class="n" align="center">
                                             '.point_number($anzuseronline[total]).'
@@ -348,18 +348,18 @@ echo'
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            Bester Tag (Visits)
+                                            '.$FD->text("page", "best_day_visits").'
                                         </td>
                                         <td class="n" align="center">
-                                            '.$mostvisits[s_day].'.'.$mostvisits[s_month].'.'.$mostvisits[s_year].' mit '.point_number($mostvisits[s_visits]).'
+                                            '.$mostvisits[s_day].'.'.$mostvisits[s_month].'.'.$mostvisits[s_year].' '.$FD->text("admin", "with").' '.point_number($mostvisits[s_visits]).'
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            Bester Tag (Hits)
+                                            '.$FD->text("page", "best_day_hits").'
                                         </td>
                                         <td class="n" align="center">
-                                            '.$mosthits[s_day].'.'.$mosthits[s_month].'.'.$mosthits[s_year].' mit '.point_number($mosthits[s_hits]).'
+                                            '.$mosthits[s_day].'.'.$mosthits[s_month].'.'.$mosthits[s_year].' '.$FD->text("admin", "with").' '.point_number($mosthits[s_hits]).'
                                         </td>
                                     </tr>
                                 </table>
