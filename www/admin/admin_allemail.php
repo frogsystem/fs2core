@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined("ACP_GO")) die("Unauthorized access!");
 
 /////////////////////////////////
 //// Datenbank aktualisieren ////
@@ -35,7 +35,7 @@ if ( TRUE
     ", $sql->conn() );
 
     // system messages
-    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
+    systext( $FD->text("page", "changes_saved"), $FD->text("page", "info"), FALSE, $FD->text("page", "save_ok") );
 
     // Unset Vars
     unset ( $_POST );
@@ -49,7 +49,7 @@ if ( TRUE )
 {
     // Display Error Messages
     if ( isset ( $_POST['sended'] ) ) {
-        systext ( $admin_phrases[common][changes_not_saved].'<br>'.$admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE, $admin_phrases[icons][save_error] );
+        systext ( $FD->text("page", "changes_not_saved").'<br>'.$FD->text("page", "note_notfilled"), $FD->text("page", "error"), TRUE, $FD->text("page", "save_error") );
 
     // Load Data from DB into Post
     } else {
@@ -80,8 +80,8 @@ if ( TRUE )
                             <tr><td class="line" colspan="2">Einstellungen</td></tr>
                             <tr>
                                 <td class="config">
-                                    Abesender-Adresse:<br>
-                                    <span class="small">Absender-Adresse die bei gesendeten E-Mails angegeben wird.</span>
+                                    '.$FD->text("page", "sender_email").':<br>
+                                    <span class="small">'.$FD->text("page", "sender_email_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <table>
@@ -90,7 +90,7 @@ if ( TRUE )
                                                 <input class="pointer" type="radio" name="use_admin_mail" value="1" '.getchecked ( 1, $_POST['use_admin_mail'] ).'>
                                             </td>
                                             <td class="config">
-                                                Standard ('.$global_config_arr['admin_mail'].')
+                                                '.$FD->text("admin", "default").' ('.$global_config_arr['admin_mail'].')
                                             </td>
                                         </tr>
                                         <tr valign="bottom">
@@ -106,28 +106,28 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    als HTML senden:<br>
-                                    <span class="small">Sendet die E-Mails im HTML-Format.</span>
+                                    '.$FD->text("page", "send_as_html").':<br>
+                                    <span class="small">'.$FD->text("page", "send_as_html_desc").'</span>
                                 </td>
                                 <td class="config">
                                     &nbsp;<input class="pointer middle" type="checkbox" name="html" value="1" '.getchecked ( 1, $_POST['html'] ).'>
-                                    <span class="small">[Ermöglicht die Verwendung von HTML und FSCode.]</span>
+                                    <span class="small">['.$FD->text("page", "send_as_html_info").']</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][email_templates_title].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("page", "email_templates_title").'</td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[general][email_reg_title].'<br />
-                                    <font class="small">'.$admin_phrases[general][email_reg_desc].'</font>
+                                    '.$FD->text("page", "email_reg_title").'<br />
+                                    <span class="small">'.$FD->text("page", "email_reg_desc").'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$admin_phrases[common][valid_tags].':</b></span>
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text("page", "valid_tags").':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{..user_name..}",$admin_phrases[general][email_username],"signup").'
-                                        '.insert_tt("{..new_password..}",$admin_phrases[general][email_password],"signup").'
+                                        '.insert_tt("{..user_name..}",$FD->text("page", "email_username"),"signup").'
+                                        '.insert_tt("{..new_password..}",$FD->text("page", "email_password"),"signup").'
                                     </span>
                                 </td>
                                 <td class="config">
@@ -137,16 +137,16 @@ if ( TRUE )
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[general][email_newpwd_title].'<br />
-                                    <font class="small">'.$admin_phrases[general][email_newpwd_desc].'</font>
+                                    '.$FD->text("page", "email_newpwd_title").'<br />
+                                    <span class="small">'.$FD->text("page", "email_newpwd_desc").'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$admin_phrases[common][valid_tags].':</b></span>
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text("page", "valid_tags").':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{..user_name..}",$admin_phrases[general][email_username],"change_password").'
-                                        '.insert_tt("{..new_password..}",$admin_phrases[general][email_password],"change_password").'
+                                        '.insert_tt("{..user_name..}",$FD->text("page", "email_username"),"change_password").'
+                                        '.insert_tt("{..new_password..}",$FD->text("page", "email_password"),"change_password").'
                                     </span>
                                 </td>
                                 <td class="config">
@@ -156,16 +156,16 @@ if ( TRUE )
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$TEXT['page']->get("change_password_ack_title").'<br />
-                                    <font class="small">'.$TEXT['page']->get("change_password_ack_desc").'</font>
+                                    '.$FD->text("page", "change_password_ack_title").'<br />
+                                    <span class="small">'.$FD->text("page", "change_password_ack_desc").'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$admin_phrases[common][valid_tags].':</b></span>
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text("page", "valid_tags").':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{..user_name..}",$admin_phrases[general][email_username],"change_password_ack").'
-                                        '.insert_tt("{..new_password_url...}",$TEXT['page']->get("new_password_url"),"change_password_ack").'
+                                        '.insert_tt("{..user_name..}",$FD->text("page", "email_username"),"change_password_ack").'
+                                        '.insert_tt("{..new_password_url...}",$FD->text("page", "new_password_url"),"change_password_ack").'
                                     </span>
                                 </td>
                                 <td class="config">
@@ -177,7 +177,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("page", "save_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -189,17 +189,17 @@ if ( TRUE )
 /*
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases[general][email_delete_title].'<br />
-                                    <font class="small">'.$admin_phrases[general][email_delete_desc].'</font>
+                                    '.$FD->text("page", "email_delete_title").'<br />
+                                    <span class="small">'.$FD->text("page", "email_delete_desc").'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$admin_phrases[common][valid_tags].':</b></span>
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text("page", "valid_tags").':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{..X..}",$admin_phrases[general][email_username],"delete_account").'
-                                        '.insert_tt("{..X..}",$admin_phrases[general][email_password],"delete_account").'
-                                        '.insert_tt("{..X..}",$admin_phrases[general][email_virtualhost],"delete_account").'
+                                        '.insert_tt("{..X..}",$FD->text("page", "email_username"),"delete_account").'
+                                        '.insert_tt("{..X..}",$FD->text("page", "email_password"),"delete_account").'
+                                        '.insert_tt("{..X..}",$FD->text("page", "email_virtualhost"),"delete_account").'
                                     </span>
                                 </td>
                                 <td class="config">

@@ -14,11 +14,13 @@ dyn_title_ext_desc:         Schema des dynamischen Seitentitels.
 dyn_title_page_title:       Standard Seitentitel
 dyn_title_page_title_ext:   Seitenspezifische Titel-Erweiterung
 
-virtualhost:                URL
-virtualhost_desc:           Die Haupt-URL der Seite.
+virtualhost:                URL & Protokoll
+virtualhost_desc:           URL und Standard-Protokoll der Seite.
+other_protocol:             Beide Protokolle erlauben
+other_protocol_desc:        Erlaubt den Aufruf der Seite über beide Protokolle.
 
-admin_mail:                 Email-Adresse
-admin_mail_desc:            Die Email-Adresse an die Probleme und Meldungen gesendet werden.
+admin_mail:                 E-Mail-Adresse
+admin_mail_desc:            Absender-Adresse für vom System versendete E-Mails.
 
 description:                Beschreibung
 description_desc:           Ein kurzer Text über die Seite.
@@ -39,10 +41,10 @@ style_title:                Aktiver Style
 style_desc:                 Style, der als Design der Hauptseite verwendet wird.
 
 allow_other_styles:         Andere Styles erlauben
-allow_other_styles_desc:    Ermöglicht das Anzeigen der Seite in anderen Styles.<br> (http://www.example.com/?style=xyz)
+allow_other_styles_desc:    Ermöglicht das Anzeigen der Seite in anderen Styles.<br> ($URL([style=xyz 1]))
 
 show_favicon:               Favicon verwenden
-show_favicon_desc:          Bindet das Favicon ein.<br>($VAR(style_icons)/favicon.ico)
+show_favicon_desc:          Bindet das Favicon ein.<br>($VAR(style_icons)favicon.ico)
 
 home_page:                  Startseite
 home_page_desc:             Legt die Seite fest, die standardmäßig angezeigt wird.

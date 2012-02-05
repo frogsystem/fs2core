@@ -103,7 +103,7 @@ if (!empty($acp_arr)) {
     // Get Special Page Lang-Text-Files
     $page_lang = new lang($global_config_arr['language_text'], "admin/".substr($acp_arr['page_file'], 0, -4));
     $FD->setPageText($page_lang);
-    if (!isset($TEXT['page'])) {
+    if (!isset($TEXT['page'])) { //TODO old
         $TEXT['page'] = $page_lang;
     }
     unset ($page_lang);

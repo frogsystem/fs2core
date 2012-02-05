@@ -612,6 +612,21 @@ help_7:                                            Zahl der vom User verfassten 
 help_8:                                            Zahl der vom User verfassten Kommentare.
 
 
+
+
+
+
+
+
+##############################################################
+##############################################################
+##############################################################
+########################### DONE #############################
+##############################################################
+##############################################################
+##############################################################
+
+
 #editor_design
 title:                                             Editor Darstellung
 description:                                       Anordnung des IWAC-Editors auf der Seite.
@@ -655,4 +670,3 @@ help_2:                                            Name des Autors, des zitierte
 title:                                             Code
 description:                                       Darstellung des "Code" - FSCodes ['code']text['/code'] 
 help_1:                                            Text der vom Code-Block umschlossen wird.
-

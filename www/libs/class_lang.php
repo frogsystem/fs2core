@@ -22,6 +22,7 @@ class lang
     // constructor
     public function  __construct ($local = false, $type = false) {
         global $FD;
+        require_once(FS2_ROOT_PATH."includes/indexfunctions.php");
         
         if ($local == false)    
             $this->local = $FD->cfg('language_text');
@@ -40,7 +41,7 @@ class lang
     
     // function to assign phrases to tags
     private function add($tag, $text) {
-        $this->phrases[$tag] = $text;
+        $this->phrases[$tag] = tpl_functions($text, 1, array("DATE", "VAR", "URL"));
     }
     
     // load text data

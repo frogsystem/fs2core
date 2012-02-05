@@ -1,4 +1,5 @@
-<?php if (ACP_GO == "search_config") {
+<?php if (!defined("ACP_GO")) die("Unauthorized access!");
+
 #TODO: 
     
 ###################
@@ -31,7 +32,7 @@ if (
     try {
         $sql->save("search_config", $search);
         $FD->saveConfig("main", $global);
-        systext($TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+        systext($FD->text("admin", "changes_saved"), $FD->text("admin", "info"), "green", $FD->text("admin", "icon_save_ok"));
     } catch (Exception $e) {}
     
     // Unset Vars
@@ -46,7 +47,7 @@ if ( TRUE )
 {
     // Display Error Messages
     if (isset($_POST['sended'])) {
-        systext($TEXT['admin']->get("changes_not_saved").'<br>'.$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+        systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), "red", $FD->text("admin", "icon_save_error"));
 
     // Load Data from DB into Post
     } else {
@@ -74,9 +75,9 @@ if ( TRUE )
     foreach ($_POST as $key => $value) {
         $adminpage->addText($key, $value);
     }
-    
+
     // Display page
     echo $adminpage->get("main");
 }
 
-} ?>
+?>
