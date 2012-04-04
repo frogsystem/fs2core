@@ -9,8 +9,8 @@ search_index_renewed:                    Suchindex wurde neu erstellt
 search_index_deleted:                    Suchindex wurde gelöscht
 search_index_deleted_with_word_list:     Suchindex und Wortliste wurden gelöscht
 search_index_title:                      Suchindex-Funktionen
-search_index_update_title:               Suchindex Aktualisieren
-search_index_update_desc:                Akutalisiert den Suchindex.
+search_index_update_title:               Suchindex aktualisieren
+search_index_update_desc:                Aktualisiert den Suchindex.
 search_index_new_title:                  Suchindex neu erstellen
 search_index_new_desc:                   Löscht den Suchindex und erstellt ihn neu.
 search_index_delete_title:               Suchindex löschen
