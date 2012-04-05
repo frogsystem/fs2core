@@ -15,20 +15,20 @@ $lang = new lang(false, "admin/admin_statview");
 
 if (!has_perm("stat_view")) die("Unauthorized access!");
 
-if (!isset($_GET[s_year]))
+if (!isset($_GET['s_year']))
 {
-    $_GET[s_year] = date("Y");
+    $_GET['s_year'] = date("Y");
 }
-if (!isset($_GET[s_month]))
+if (!isset($_GET['s_month']))
 {
-    $_GET[s_month] = date("m");
+    $_GET['s_month'] = date("m");
 }
-settype ($_GET[s_year], 'integer');
-settype ($_GET[s_month], 'integer');
+settype ($_GET['s_year'], 'integer');
+settype ($_GET['s_month'], 'integer');
 
 $monthnames = explode(",", $FD->text("frontend", "month_names_array"));
-$monthname = $monthnames[$_GET[s_month]-1];
-$feldbreite = 458 / date_loc("t",mktime(0, 0, 0, $_GET[s_month], 1, $_GET[s_year]));  // Anzahle der Tage im Monat
+$monthname = $monthnames[$_GET['s_month']-1];
+$feldbreite = 458 / date_loc("t",mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']));  // Anzahle der Tage im Monat
 $imagewidth = 500;
 $imageheight = 300;
 
@@ -63,11 +63,11 @@ $dbmaxhits = mysql_result($index, 0, "s_hits");
 $hitsarray = array(0);
 $arraycount = 2;
 $startwert = 21 + $feldbreite/2;
-$anz_tage = date("t",mktime(0, 0, 0, $_GET[s_month], 1, $_GET[s_year]));
+$anz_tage = date("t",mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']));
 for ($d=1; $d<$anz_tage+1; $d++)
 {
     $index = mysql_query("SELECT s_hits
-                          FROM ".$global_config_arr[pref]."counter_stat
+                          FROM ".$global_config_arr['pref']."counter_stat
                           WHERE s_year  = $_GET[s_year] and
                                 s_month = $_GET[s_month] and
                                 s_day   = $d", $FD->sql()->conn() );
@@ -121,7 +121,7 @@ imagefilledpolygon($image, $hitsarray, round($arraycount/2) , $farbe_hits);
 
 // Visitskurve
 $index = mysql_query("SELECT s_visits
-                      FROM ".$global_config_arr[pref]."counter_stat
+                      FROM ".$global_config_arr['pref']."counter_stat
                       WHERE s_year  = $_GET[s_year] and
                             s_month = $_GET[s_month]
                       ORDER BY s_visits DESC
@@ -133,7 +133,7 @@ $startwert = 21 + $feldbreite/2;
 for ($d=1; $d<$anz_tage+1; $d++)
 {
     $index = mysql_query("SELECT s_visits
-                          FROM ".$global_config_arr[pref]."counter_stat
+                          FROM ".$global_config_arr['pref']."counter_stat
                           WHERE s_year  = $_GET[s_year] AND
                                 s_month = $_GET[s_month] AND
                                 s_day   = $d", $FD->sql()->conn() );
@@ -189,8 +189,8 @@ imagefilledpolygon($image, $visitsarray, round($arraycount/2) , $farbe_visits);
 $startwert = 24;
 for ($d=1; $d<$anz_tage+1; $d++)
 {
-    $dayname = date("w", mktime(0, 0, 0, $_GET[s_month], $d, $_GET[s_year]));
-    $daynumber = date("d", mktime(0, 0, 0, $_GET[s_month], $d, $_GET[s_year]));
+    $dayname = date("w", mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
+    $daynumber = date("d", mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
     imagestringup($image,1,$startwert,280,$daynumber." ".$day_arr[$dayname],$farbe_text2);
     $startwert = $startwert + $feldbreite;
 }
