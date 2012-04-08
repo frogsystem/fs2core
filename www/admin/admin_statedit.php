@@ -4,14 +4,14 @@
 //// Tagesstatistik aktualisieren ////
 //////////////////////////////////////
 
-if (($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h]) AND $_POST['do'] == "day")
+if (($_POST['d'] && $_POST['m'] && $_POST['y'] && $_POST['v'] && $_POST['h']) AND $_POST['do'] == "day")
 {
-    settype($_POST[d], 'integer');
-    settype($_POST[m], 'integer');
-    settype($_POST[y], 'integer');
-    settype($_POST[v], 'integer');
-    settype($_POST[h], 'integer');
-    mysql_query("UPDATE ".$global_config_arr[pref]."counter_stat
+    settype($_POST['d'], 'integer');
+    settype($_POST['m'], 'integer');
+    settype($_POST['y'], 'integer');
+    settype($_POST['v'], 'integer');
+    settype($_POST['h'], 'integer');
+    mysql_query('UPDATE '.$global_config_arr['pref']."counter_stat
                  SET s_visits = $_POST[v],
                      s_hits   = $_POST[h]
                  WHERE s_day   = $_POST[d] AND
@@ -24,11 +24,11 @@ if (($_POST[d] && $_POST[m] && $_POST[y] && $_POST[v] && $_POST[h]) AND $_POST['
 ////// Tagesstatistik editieren //////
 //////////////////////////////////////
 
-elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
+elseif (($_POST['ed'] && $_POST['em'] && $_POST['ey']) AND $_POST['do'] == "day")
 {
-	settype($_POST[ed], 'integer');
-    settype($_POST[em], 'integer');
-    settype($_POST[ey], 'integer');
+    settype($_POST['ed'], 'integer');
+    settype($_POST['em'], 'integer');
+    settype($_POST['ey'], 'integer');
     $index = mysql_query("SELECT s_visits,
                                  s_hits
                           FROM ".$global_config_arr[pref]."counter_stat
@@ -42,7 +42,7 @@ elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
 
     if (mysql_num_rows($index) == 0)
     {
-        systext( $FD->text("page", "edit_day_no_data"), $FD->text("page", "edit_day_title").' ('.$_POST[ed].'. '.$_POST[em].'. '.$_POST[ey].')' );
+        systext( $FD->text("page", "edit_day_no_data"), $FD->text("page", "edit_day_title").' ('.$_POST['ed'].'. '.$_POST['em'].'. '.$_POST['ey'].')' );
     }
     else
 	{
@@ -52,15 +52,15 @@ elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
 					<form action="" method="post">
 						<input type="hidden" value="stat_edit" name="go">
 						<input type="hidden" value="day" name="do">
-						<input type="hidden" value="'.$_POST[ed].'" name="d">
-						<input type="hidden" value="'.$_POST[em].'" name="m">
-						<input type="hidden" value="'.$_POST[ey].'" name="y">
+						<input type="hidden" value="'.$_POST['ed'].'" name="d">
+						<input type="hidden" value="'.$_POST['em'].'" name="m">
+						<input type="hidden" value="'.$_POST['ey'].'" name="y">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">'.$FD->text("page", "edit_day_title").' ('.$_POST[ed].'. '.$_POST[em].'. '.$_POST[ey].')</td></tr>
+							<tr><td class="line" colspan="2">'.$FD->text('page', 'edit_day_title').' ('.$_POST['ed'].'. '.$_POST['em'].'. '.$_POST['ey'].')</td></tr>
 						    <tr>
                                 <td class="config">
                                     '.$FD->text("page", "edit_day_visits").':<br>
-                                    <span class="small">'.$FD->text("page", "edit_day_visits_desc").' '.$_POST[ed].'. '.$_POST[em].'. '.$_POST[ey].'</span>
+                                    <span class="small">'.$FD->text('page', 'edit_day_visits_desc').' '.$_POST['ed'].'. '.$_POST['em'].'. '.$_POST['ey'].'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text" size="16" name="v" maxlength="16" value="'.$counter_arr[s_visits].'">
@@ -69,7 +69,7 @@ elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
                             <tr>
                                 <td class="config">
                                     '.$FD->text("page", "edit_day_hits").':<br>
-                                    <span class="small">'.$FD->text("page", "edit_day_hits_desc").' '.$_POST[ed].'.'.$_POST[em].'.'.$_POST[ey].'</span>
+                                    <span class="small">'.$FD->text('page', 'edit_day_hits_desc').' '.$_POST['ed'].'.'.$_POST['em'].'.'.$_POST['ey'].'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text" size="16" name="h" maxlength="16" value="'.$counter_arr[s_hits].'">
@@ -93,21 +93,21 @@ elseif (($_POST[ed] && $_POST[em] && $_POST[ey]) AND $_POST['do'] == "day")
 /// Gesamtstatistik aktualisieren ////
 //////////////////////////////////////
 
-elseif (($_POST[editvisits] != "" &&
-        $_POST[edithits] != "" &&
-        $_POST[edituser] != "" &&
-        $_POST[editnews] != "" &&
-        $_POST[editartikel] != "" &&
-        $_POST[editcomments] != "")
+elseif (($_POST['editvisits'] != "" &&
+        $_POST['edithits'] != "" &&
+        $_POST['edituser'] != "" &&
+        $_POST['editnews'] != "" &&
+        $_POST['editartikel'] != "" &&
+        $_POST['editcomments'] != "")
         AND $_POST['do'] == "edit")
 {
-    settype($_POST[editvisits], 'integer');
-    settype($_POST[edithits], 'integer');
-    settype($_POST[edituser], 'integer');
-    settype($_POST[editnews], 'integer');
-    settype($_POST[editartikel], 'integer');
-    settype($_POST[editcomments], 'integer');
-    mysql_query("UPDATE ".$global_config_arr[pref]."counter
+    settype($_POST['editvisits'], 'integer');
+    settype($_POST['edithits'], 'integer');
+    settype($_POST['edituser'], 'integer');
+    settype($_POST['editnews'], 'integer');
+    settype($_POST['editartikel'], 'integer');
+    settype($_POST['editcomments'], 'integer');
+    mysql_query('UPDATE '.$global_config_arr['pref']."counter
                  SET visits = '$_POST[editvisits]',
                      hits = '$_POST[edithits]',
                      user = '$_POST[edituser]',
@@ -123,23 +123,23 @@ elseif (($_POST[editvisits] != "" &&
 
 elseif ($_POST['do'] == "sync")
 {
-    $index = mysql_query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$global_config_arr[pref]."counter_stat", $FD->sql()->conn() );
+    $index = mysql_query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$global_config_arr['pref']."counter_stat", $FD->sql()->conn() );
     $sync_arr['hits'] = mysql_result($index,0,"hits");
     $sync_arr['visits'] = mysql_result($index,0,"visits");
 
-    $index = mysql_query("SELECT COUNT(user_id) AS 'user' FROM ".$global_config_arr[pref]."user", $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(user_id) AS 'user' FROM ".$global_config_arr['pref'].'user', $FD->sql()->conn() );
     $sync_arr['user'] = mysql_result($index,0,"user");
     
-    $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$global_config_arr[pref]."news", $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$global_config_arr['pref'].'news', $FD->sql()->conn() );
     $sync_arr['news'] = mysql_result($index,0,"news");
     
-    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$global_config_arr[pref]."news_comments", $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$global_config_arr['pref'].'news_comments', $FD->sql()->conn() );
     $sync_arr['comments'] = mysql_result($index,0,"comments");
 
-    $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$global_config_arr[pref]."articles", $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$global_config_arr['pref'].'articles', $FD->sql()->conn() );
     $sync_arr['articles'] = mysql_result($index,0,"articles");
 
-    mysql_query("UPDATE ".$global_config_arr[pref]."counter
+    mysql_query('UPDATE '.$global_config_arr['pref']."counter
                  SET visits = '$sync_arr[visits]',
                      hits = '$sync_arr[hits]',
                      user = '$sync_arr[user]',
@@ -155,11 +155,11 @@ elseif ($_POST['do'] == "sync")
 else
 {
     //Zeit-Array für Heute Button
-    $heute[d] = date("d");
-    $heute[m] = date("m");
-    $heute[y] = date("Y");
+    $heute['d'] = date("d");
+    $heute['m'] = date("m");
+    $heute['y'] = date("Y");
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."counter", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'counter', $FD->sql()->conn() );
     $counter_arr = mysql_fetch_assoc($index);
     
     echo'
@@ -191,7 +191,7 @@ else
                                     <span class="small">'.$FD->text("page", "overall_visits_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="16" name="editvisits" maxlength="16" value="'.$counter_arr[visits].'">
+                                    <input class="text" size="16" name="editvisits" maxlength="16" value="'.$counter_arr['visits'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -200,7 +200,7 @@ else
                                     <span class="small">'.$FD->text("page", "overall_hits_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="16" name="edithits" maxlength="16" value="'.$counter_arr[hits].'">
+                                    <input class="text" size="16" name="edithits" maxlength="16" value="'.$counter_arr['hits'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -209,7 +209,7 @@ else
                                     <span class="small">'.$FD->text("page", "overall_user_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="16" name="edituser" maxlength="16" value="'.$counter_arr[user].'">
+                                    <input class="text" size="16" name="edituser" maxlength="16" value="'.$counter_arr['user'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -218,7 +218,7 @@ else
                                     <span class="small">'.$FD->text("page", "overall_news_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="16" name="editnews" maxlength="16" value="'.$counter_arr[news].'">
+                                    <input class="text" size="16" name="editnews" maxlength="16" value="'.$counter_arr['news'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -227,7 +227,7 @@ else
                                     <span class="small">'.$FD->text("page", "overall_articles_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="16" name="editartikel" maxlength="16" value="'.$counter_arr[artikel].'">
+                                    <input class="text" size="16" name="editartikel" maxlength="16" value="'.$counter_arr['artikel'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -236,7 +236,7 @@ else
                                     <span class="small">'.$FD->text("page", "overall_comments_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="16" name="editcomments" maxlength="16" value="'.$counter_arr[comments].'">
+                                    <input class="text" size="16" name="editcomments" maxlength="16" value="'.$counter_arr['comments'].'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -266,9 +266,9 @@ else
                                     <input class="text" size="1" name="em" id="em"  maxlength="2"> .
                                     <input class="text" size="3" name="ey" id="ey"  maxlength="4">&nbsp;&nbsp;
                                     <input class="button" type="button" value="'.$FD->text("page", "today").'"
-                                           onClick=\'document.getElementById("ed").value="'.$heute[d].'";
-                                                     document.getElementById("em").value="'.$heute[m].'";
-                                                     document.getElementById("ey").value="'.$heute[y].'";\'><br>
+                                           onClick=\'document.getElementById("ed").value="'.$heute['d'].'";
+                                                     document.getElementById("em").value="'.$heute['m'].'";
+                                                     document.getElementById("ey").value="'.$heute['y'].'";\'><br>
                                     <span class="small">'.$FD->text("page", "edit_day_info").'</span>
                                 </td>
                             </tr>
