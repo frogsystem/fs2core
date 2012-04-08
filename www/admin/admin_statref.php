@@ -104,7 +104,7 @@ else
                                     '.$FD->text("page", "referrer_show").':
                                 </td>
                                 <td class="config" width="100%">
-                                    <input name="limit" size="4" maxlength="3" class="text" value="'.$_POST[limit].'">
+                                    <input name="limit" size="4" maxlength="3" class="text" value="'.$_POST['limit'].'">
                                     '.$FD->text("page", "referrer_orderby").'
                                     <select name="order">
                                         <option value="c" '.$csel.'>'.$FD->text("page", "referrer_hits").'</option>
@@ -123,7 +123,7 @@ else
                                     '.$FD->text("page", "referrer_filter").':
                                 </td>
                                 <td class="config" width="100%">
-                                    <input class="text" style="width: 100%;" name="filter" maxlength="255" value="'.$_POST[filter].'">
+                                    <input class="text" style="width: 100%;" name="filter" maxlength="255" value="'.$_POST['filter'].'">
                                 </td>
                             </tr>
 						</table>
@@ -179,16 +179,16 @@ else
     switch ( $_POST['order'] )
     {
         case "u":
-            $query .= " ORDER BY ref_url ".$_POST['sort']." LIMIT ".$_POST[limit];
+            $query .= " ORDER BY ref_url ".$_POST['sort']." LIMIT ".$_POST['limit'];
             break;
         case "c":
-            $query .= " ORDER BY ref_count ".$_POST['sort']." LIMIT ".$_POST[limit];
+            $query .= " ORDER BY ref_count ".$_POST['sort']." LIMIT ".$_POST['limit'];
             break;
         case "l":
-            $query .= " ORDER BY ref_last ".$_POST['sort']." LIMIT ".$_POST[limit];
+            $query .= " ORDER BY ref_last ".$_POST['sort']." LIMIT ".$_POST['limit'];
             break;
         default:
-            $query .= " ORDER BY ref_first ".$_POST['sort']." LIMIT ".$_POST[limit];
+            $query .= " ORDER BY ref_first ".$_POST['sort']." LIMIT ".$_POST['limit'];
             break;
     }
 
@@ -206,17 +206,17 @@ else
 
 	while ( $referrer_arr = mysql_fetch_assoc ( $index ) )
     {
-        $dburlfull = $referrer_arr[ref_url];
+        $dburlfull = $referrer_arr['ref_url'];
 
-		$referrer_arr[ref_url] = substr ( $referrer_arr[ref_url], 7 );
+		$referrer_arr['ref_url'] = substr ( $referrer_arr['ref_url'], 7 );
 		$referrer_maxlenght = 40;
-		if (strlen($referrer_arr[ref_url]) > $referrer_maxlenght)
+		if (strlen($referrer_arr['ref_url']) > $referrer_maxlenght)
         {
-            $referrer_arr[ref_url] = substr($referrer_arr[ref_url],0, $referrer_maxlenght) . "...";
+            $referrer_arr['ref_url'] = substr($referrer_arr['ref_url'],0, $referrer_maxlenght) . "...";
         }
 
-		$referrer_arr[ref_first] = date("d.m.Y H:i", $referrer_arr[ref_first]);
-        $referrer_arr[ref_last] = date("d.m.Y H:i", $referrer_arr[ref_last]);
+		$referrer_arr['ref_first'] = date('d.m.Y H:i', $referrer_arr['ref_first']);
+        $referrer_arr['ref_last'] = date('d.m.Y H:i', $referrer_arr['ref_last']);
 
 		if ( $referrer_arr['ref_url'] == "" ) {
             echo'
@@ -225,13 +225,13 @@ else
                                 '.$FD->text("page", "referrer_unknown").'
                             </td>
                             <td class="n" align="center">
-                                '.$referrer_arr[ref_count].'
+                                '.$referrer_arr['ref_count'].'
                             </td>
                             <td class="n" align="center">
-                                '.$referrer_arr[ref_first].'
+                                '.$referrer_arr['ref_first'].'
                             </td>
                             <td class="n" align="center">
-                                '.$referrer_arr[ref_last].'
+                                '.$referrer_arr['ref_last'].'
                             </td>
                         </tr>
             ';
@@ -240,17 +240,17 @@ else
                         <tr>
                             <td class="n" align="left">
                                 <a href="'.$dburlfull.'" style="text-decoration:none;" target="_blank" title="'.$dburlfull.'">
-                                   '.$referrer_arr[ref_url].'
+                                   '.$referrer_arr['ref_url'].'
                                 </a>
                             </td>
                             <td class="n" align="center">
-                                '.$referrer_arr[ref_count].'
+                                '.$referrer_arr['ref_count'].'
                             </td>
                             <td class="n" align="center">
-                                '.$referrer_arr[ref_first].'
+                                '.$referrer_arr['ref_first'].'
                             </td>
                             <td class="n" align="center">
-                                '.$referrer_arr[ref_last].'
+                                '.$referrer_arr['ref_last'].'
                             </td>
                         </tr>
 			';
