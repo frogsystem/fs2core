@@ -94,7 +94,7 @@ $index = mysql_query("SELECT s_hits
 $dbmaxhits = mysql_result($index, 0, "s_hits");
 
 // Tage ausgeben
-for ($d=1; $d<date("t",mktime(0, 0, 0, $s_month, 1, $s_year))+1; $d++)
+for ($d=1; $d<date("t",mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1; $d++)
 {
     $index = mysql_query("SELECT *
                           FROM ".$global_config_arr['pref']."counter_stat
