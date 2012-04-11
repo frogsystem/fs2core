@@ -80,7 +80,7 @@
         if ( $POSTDATA['comment_delete'] == 1 ) {
             db_delete_comment ( $POSTDATA );
         } else {
-             systext( "Kommentare wurden nicht gelöscht", $admin_phrases[common][error], FALSE, $admin_phrases[icons][trash_error] );
+             systext( 'Kommentare wurden nicht gelöscht', $admin_phrases['common']['error'], FALSE, $admin_phrases['icons']['trash_error'] );
         }
 
         // Unset Vars
@@ -113,7 +113,7 @@
   $rows = mysql_num_rows($query);
 
   //Bereich (zahlenmäßig)
-  $bereich = '<font class="small">'.($_GET['start']+1).' ... '.($_GET[start] + $rows).'</font>';
+  $bereich = '<font class="small">'.($_GET['start']+1).' ... '.($_GET['start'] + $rows).'</font>';
   //Ist dies nicht die erste Seite?
   if ($_GET['start']>0)
   {

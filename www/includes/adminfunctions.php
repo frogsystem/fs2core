@@ -127,7 +127,7 @@ function get_yesno_table ( $NAME )
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1">
                     </td>
                     <td class="config middle">
-                            <label for="del_yes">'.$admin_phrases[common][yes].'</label>
+                            <label for="del_yes">'.$admin_phrases['common']['yes'].'</label>
                     </td>
                 </tr>
                 <tr class="bottom pointer" id="no">
@@ -135,7 +135,7 @@ function get_yesno_table ( $NAME )
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked>
                     </td>
                     <td class="config middle">
-                            <label for="del_no">'.$admin_phrases[common][no].'</label>
+                            <label for="del_no">'.$admin_phrases['common']['no'].'</label>
                     </td>
                 </tr>
                 </table>

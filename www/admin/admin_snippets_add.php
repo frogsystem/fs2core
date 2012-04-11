@@ -118,7 +118,7 @@ echo '
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$TEXT["admin"]->get("snippet_add_title").'
+                                        '.$admin_phrases['common']['arrow'].' '.$TEXT['admin']->get('snippet_add_title').'
                                     </button>
                                 </td>
                             </tr>

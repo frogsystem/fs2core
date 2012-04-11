@@ -21,7 +21,7 @@ function db_edit_comment ( $DATA )
                             comment_id = '".$DATA['comment_id']."'
     ", $FD->sql()->conn() );
 
-    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
+    systext( $admin_phrases['common']['changes_saved'], $admin_phrases['common']['info'], FALSE, $admin_phrases['icons']['save_ok'] );
 }
 
 function db_delete_comment ( $DATA )
@@ -44,7 +44,7 @@ function db_delete_comment ( $DATA )
                     SET `comments` = `comments` - ".mysql_affected_rows ()."
     ", $FD->sql()->conn() );
 
-    systext( $admin_phrases[news][news_comment_deleted], $admin_phrases[common][info], FALSE, $admin_phrases[icons][trash_ok] );
+    systext( $admin_phrases['news']['news_comment_deleted'], $admin_phrases['common']['info'], FALSE, $admin_phrases['icons']['trash_ok'] );
 }
 
 // Prevent further execution when included
@@ -68,7 +68,7 @@ function action_delete_get_data ( $IDS )
         $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."news WHERE news_id = '".$NEWS_ID."'", $FD->sql()->conn() );
         $news_arr = mysql_fetch_assoc ( $index );
 
-        $news_arr['news_date_formated'] = "".$admin_phrases[common][on]." <b>" . date ( $admin_phrases[common][date_format] , $news_arr['news_date'] ) . "</b> ".$admin_phrases[common][at]." <b>" . date ( $admin_phrases[common][time_format] , $news_arr['news_date'] ) . "</b>";
+        $news_arr['news_date_formated'] = "".$admin_phrases['common']['on']." <b>" . date ( $admin_phrases['common']['date_format'] , $news_arr['news_date'] ) . "</b> ".$admin_phrases['common']['at']." <b>" . date ( $admin_phrases['common']['time_format'] , $news_arr['news_date'] ) . "</b>";
 
         $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$global_config_arr['pref']."news_comments WHERE news_id = ".$news_arr['news_id']."", $FD->sql()->conn() );
         $news_arr['num_comments'] = mysql_result ( $index2, 0, "number" );
@@ -99,10 +99,10 @@ function action_delete_display_page ( $return_arr )
                 <input type="hidden" name="news_action" value="'.$_POST['news_action'].'">
                 <input type="hidden" name="go" value="news_edit">
                 <table class="configtable" cellpadding="4" cellspacing="0">
-                    <tr><td class="line" colspan="2">'.$admin_phrases[news][news_delete_title].'</td></tr>
+                    <tr><td class="line" colspan="2">'.$admin_phrases['news']['news_delete_title'].'</td></tr>
                     <tr>
                         <td class="config" style="width: 100%;">
-                            '.$admin_phrases[news][news_delete_question].'
+                            '.$admin_phrases['news']['news_delete_question'].'
                         </td>
                         <td class="config right top" style="padding: 0px;">
                             '.get_yesno_table ( "news_delete" ).'
@@ -121,15 +121,15 @@ function action_delete_display_page ( $return_arr )
                             '.$news_arr['news_title'].' <span class="small">(#'.$news_arr['news_id'].')</span>
                             <span class="right">
                                 <a class="small" href="'.$global_config_arr['virtualhost'].'?go=comments&id='.$news_arr['news_id'].'" target="_blank">
-                                    » '.$admin_phrases[news][news_delete_view_news].'
+                                    » '.$admin_phrases['news']['news_delete_view_news'].'
                                 </a>
                             </span>
                             <br>
                             <span class="small">
-                                '.$admin_phrases[common][by_posted].' <b>'.$news_arr['user_name'].'</b>
+                                '.$admin_phrases['common']['by_posted'].' <b>'.$news_arr['user_name'].'</b>
                                 '.$news_arr['news_date_formated'].'</b>
-                                '.$admin_phrases[common][in].' <b>'.$news_arr['cat_name'].'</b>,
-                                <b>'.$news_arr['num_comments'].'</b> '.$admin_phrases[common][comments].'
+                                '.$admin_phrases['common']['in'].' <b>'.$news_arr['cat_name'].'</b>,
+                                <b>'.$news_arr['num_comments'].'</b> '.$admin_phrases['common']['comments'].'
                             </span>
                         </td>
                         <td style="width:15px;"></td>
@@ -144,7 +144,7 @@ function action_delete_display_page ( $return_arr )
                     <tr>
                         <td class="buttontd">
                             <button class="button_new" type="submit">
-                                '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+                                '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
                             </button>
                         </td>
                     </tr>
@@ -227,7 +227,7 @@ function action_comments_select ( $DATA )
                                                         <tr>
                                                                 <td class="buttontd" colspan="4">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+                                                                                '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -280,7 +280,7 @@ function action_comments_edit ( $DATA )
                                     <font class="small">Diese Person hat das Komemntar geschreiben</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.$comment_arr[comment_poster].'
+                                    '.$comment_arr['comment_poster'].'
                                 </td>
                             </tr>
                             <tr>
@@ -289,7 +289,7 @@ function action_comments_edit ( $DATA )
                                     <font class="small">Titel des Kommentars</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="33" name="title" value="'.$comment_arr[comment_title].'" maxlength="100">
+                                    <input class="text" size="33" name="title" value="'.$comment_arr['comment_title'].'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -297,7 +297,7 @@ function action_comments_edit ( $DATA )
                                     Text:<br>
                                 </td>
                                 <td valign="top">
-                                    '.create_editor("text", killhtml($comment_arr[comment_text]), 330, 130).'
+                                    '.create_editor("text", killhtml($comment_arr['comment_text']), 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -570,7 +570,7 @@ elseif (
     if ( $_POST['comment_delete'] == 1 ) {
         db_delete_comment ( $_POST );
     } else {
-         systext( "Kommentare wurden nicht gelöscht", $admin_phrases[common][info], FALSE, $admin_phrases[icons][trash_error] );
+         systext( 'Kommentare wurden nicht gelöscht', $admin_phrases['common']['info'], FALSE, $admin_phrases['icons']['trash_error'] );
     }
 
     // Unset Vars
@@ -817,7 +817,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
                     $_POST['comment_id'] = $_POST['comment_id'][0];
                     action_comments_edit ( $_POST );
                 } elseif ( $_POST['comment_action'] == "edit" && count ( $_POST['comment_id'] ) > 1 ) {
-                    systext( "Sie können nur einen Kommentar gleichzeitig bearbeiten", $admin_phrases[common][error], TRUE, $admin_phrases[icons][error] );
+                    systext( 'Sie können nur einen Kommentar gleichzeitig bearbeiten', $admin_phrases['common']['error'], TRUE, $admin_phrases['icons']['error'] );
                     action_comments_select ( $_POST );
                 } elseif ( $_POST['comment_action'] == "delete" ) {
                     action_comments_delete ( $_POST );
@@ -831,7 +831,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
             
         }
     } elseif ( $_POST['news_action'] != "delete" && count ( $_POST['news_id'] ) > 1 ) {
-        systext( "Sie können nur eine News gleichzeitig bearbeiten", $admin_phrases[common][error], TRUE, $admin_phrases[icons][error] );
+        systext( 'Sie können nur eine News gleichzeitig bearbeiten', $admin_phrases['common']['error'], TRUE, $admin_phrases['icons']['error'] );
         $FILE_SHOW_START = TRUE;
     }
 }
