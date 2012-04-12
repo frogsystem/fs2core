@@ -4,15 +4,16 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_POST[quickinsert])
+if ($_POST['screenx'] && $_POST['screeny'] && $_POST['thumbx'] && $_POST['thumby'] && $_POST['quickinsert'])
 {
-    settype($_POST[screenx], 'integer');
-    settype($_POST[screeny], 'integer');
-    settype($_POST[thumbx], 'integer');
-    settype($_POST[thumby], 'integer');
-    settype($_POST[dl_rights], 'integer');
+    settype($_POST['screenx'], 'integer');
+    settype($_POST['screeny'], 'integer');
+    settype($_POST['thumbx'], 'integer');
+    settype($_POST['thumby'], 'integer');
+    settype($_POST['dl_rights'], 'integer');
+    settype($_POST['dl_show_sub_cats'], 'integer');
     
-    $update = "UPDATE ".$global_config_arr[pref]."dl_config
+    $update = 'UPDATE '.$global_config_arr['pref']."dl_config
                SET screen_x = '$_POST[screenx]',
                    screen_y = '$_POST[screeny]',
                    thumb_x = '$_POST[thumbx]',
@@ -22,7 +23,7 @@ if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_
                    dl_show_sub_cats = '$_POST[dl_show_sub_cats]'
                ";
     mysql_query($update, $FD->sql()->conn() );
-    systext("Die Konfiguration wurde aktualisiert");
+    systext('Die Konfiguration wurde aktualisiert.');
     unset($_POST);
 }
 
@@ -36,10 +37,10 @@ if(true)
         echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
     }        
     
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_config", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl_config", $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
     
-    settype ( $config_arr['dl_show_sub_cats'], "integer" );
+    settype ( $config_arr['dl_show_sub_cats'], 'integer' );
     
     echo'
                     <form action="" method="post">
@@ -53,9 +54,9 @@ if(true)
                                     <font class="small">Stellt die max. Upload Größe der Vorschau-Bilder ein</font>
                                 </td>
                                 <td class="config" valign="top" width="30%">
-                                    <input class="text" size="5" name="screenx" value="'.$config_arr[screen_x].'" maxlength="4">
+                                    <input class="text" size="5" name="screenx" value="'.$config_arr['screen_x'].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="screeny" value="'.$config_arr[screen_y].'" maxlength="4">
+                                    <input class="text" size="5" name="screeny" value="'.$config_arr['screen_y'].'" maxlength="4">
                                 </td>
                             </tr>
                             <tr>
@@ -64,9 +65,9 @@ if(true)
                                     <font class="small">Gibt die Größe der Thumbnails an</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="5" name="thumbx" value="'.$config_arr[thumb_x].'" maxlength="3">
+                                    <input class="text" size="5" name="thumbx" value="'.$config_arr['thumb_x'].'" maxlength="3">
                                     x
-                                    <input class="text" size="5" name="thumby" value="'.$config_arr[thumb_y].'" maxlength="3">
+                                    <input class="text" size="5" name="thumby" value="'.$config_arr['thumb_y'].'" maxlength="3">
                                 </td>
                             </tr>
                             <tr>
@@ -75,7 +76,7 @@ if(true)
                                     <font class="small">Der Datei-Pfad der mit dem Quick-Insert Button eingefügt wird.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="40" name="quickinsert" value="'.stripslashes(killhtml($config_arr[quickinsert])).'" maxlength="255">
+                                    <input class="text" size="40" name="quickinsert" value="'.stripslashes(killhtml($config_arr['quickinsert'])).'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
@@ -86,15 +87,15 @@ if(true)
                                 <td class="config" valign="top" width="50%">
                                     <select name="dl_rights">
                                         <option value="2"';
-                                        if ($config_arr[dl_rights] == 2)
+                                        if ($config_arr['dl_rights'] == 2)
                                             echo ' selected="selected"';
                                         echo'>alle User</option>
                                         <option value="1"';
-                                        if ($config_arr[dl_rights] == 1)
+                                        if ($config_arr['dl_rights'] == 1)
                                             echo ' selected="selected"';
                                         echo'>registrierte User</option>
                                         <option value="0"';
-                                        if ($config_arr[dl_rights] == 0)
+                                        if ($config_arr['dl_rights'] == 0)
                                             echo ' selected="selected"';
                                         echo'>niemanden</option>
                                     </select>

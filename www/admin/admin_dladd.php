@@ -4,37 +4,37 @@
 //// Download hinzufügen ////
 /////////////////////////////
 
-if ($_POST[dladd] && $_POST[title] && $_POST[text])
+if ($_POST['dladd'] && $_POST['title'] && $_POST['text'])
 {
-    $_POST[title] = savesql($_POST[title]);
-    $_POST[text] = savesql($_POST[text]);
-    $_POST[autor] = savesql($_POST[autor]);
-    $_POST[autorurl] = savesql($_POST[autorurl]);
-    settype ($_POST[catid], 'integer');
-    settype ($_POST[userid], 'integer');
+    $_POST['title'] = savesql($_POST['title']);
+    $_POST['text'] = savesql($_POST['text']);
+    $_POST['autor'] = savesql($_POST['autor']);
+    $_POST['autorurl'] = savesql($_POST['autorurl']);
+    settype ($_POST['catid'], 'integer');
+    settype ($_POST['userid'], 'integer');
 
-    for ($i=0; $i<count($_POST[fname]); $i++)
+    for ($i=0; $i<count($_POST['fname']); $i++)
     {
-        $_POST[fname][$i] = savesql($_POST[fname][$i]);
-        $_POST[furl][$i] = savesql($_POST[furl][$i]);
-        settype ($_POST[fsize][$i], 'integer');
-        $_POST[fmirror][$i] = isset($_POST[fmirror][$i]) ? 1 : 0;
+        $_POST['fname'][$i] = savesql($_POST['fname'][$i]);
+        $_POST['furl'][$i] = savesql($_POST['furl'][$i]);
+        settype ($_POST['fsize'][$i], 'integer');
+        $_POST['fmirror'][$i] = isset($_POST['fmirror'][$i]) ? 1 : 0;
     }
 
-    $_POST[dlopen] = isset($_POST[dlopen]) ? 1 : 0;
+    $_POST['dlopen'] = isset($_POST['dlopen']) ? 1 : 0;
     $dldate = time();
 
     // Download eintragen
-    mysql_query("INSERT INTO ".$global_config_arr[pref]."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
+    mysql_query('INSERT INTO '.$global_config_arr['pref']."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
                                     dl_autor_url, dl_open, dl_search_update)
-                 VALUES ('".$_POST[catid]."',
-                         '".$_POST[userid]."',
+                 VALUES ('".$_POST['catid']."',
+                         '".$_POST['userid']."',
                          '$dldate',
-                         '".$_POST[title]."',
-                         '".$_POST[text]."',
-                         '".$_POST[autor]."',
-                         '".$_POST[autorurl]."',
-                         '".$_POST[dlopen]."',
+                         '".$_POST['title']."',
+                         '".$_POST['text']."',
+                         '".$_POST['autor']."',
+                         '".$_POST['autorurl']."',
+                         '".$_POST['dlopen']."',
                          '".time()."')
     ", $FD->sql()->conn() );
     
@@ -48,31 +48,31 @@ if ($_POST[dladd] && $_POST[title] && $_POST[text])
     $id = mysql_insert_id();
     
     // Bild auswerten und hochladen
-    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $FD->sql()->conn() );
+    $index = mysql_query('select * from '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
     
-    if ($_FILES[dlimg][name] != "")
+    if ($_FILES['dlimg']['name'] != "")
     {
-        $upload = upload_img($_FILES['dlimg'], "images/downloads/", $id, 2*1024*1024, $admin_dl_config_arr[screen_x], $admin_dl_config_arr[screen_y]);
+        $upload = upload_img($_FILES['dlimg'], 'images/downloads/', $id, 2*1024*1024, $admin_dl_config_arr['screen_x'], $admin_dl_config_arr['screen_y']);
         systext(upload_img_notice($upload));
-        $thumb = create_thumb_from(image_url("images/downloads/",$id,FALSE, TRUE), $admin_dl_config_arr[thumb_x],  $admin_dl_config_arr[thumb_y]);
+        $thumb = create_thumb_from(image_url('images/downloads/',$id,FALSE, TRUE), $admin_dl_config_arr['thumb_x'],  $admin_dl_config_arr['thumb_y']);
         systext(create_thumb_notice($thumb));
     }
 
     // Files eintragen
-    for ($i=0; $i<count($_POST[fname]); $i++)
+    for ($i=0; $i<count($_POST['fname']); $i++)
     {
-        if ($_POST[fname][$i] != "" AND $_POST[furl][$i] != "" AND $_POST[fsize][$i] != "")
+        if ($_POST[fname][$i] != "" AND $_POST['furl'][$i] != "" AND $_POST['fsize'][$i] != "")
         {
-            mysql_query("INSERT INTO ".$global_config_arr[pref]."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
+            mysql_query('INSERT INTO '.$global_config_arr['pref']."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
                          VALUES ('$id',
-                                 '".$_POST[fname][$i]."',
-                                 '".$_POST[furl][$i]."',
-                                 '".$_POST[fsize][$i]."',
-                                 '".$_POST[fmirror][$i]."');", $FD->sql()->conn() );
+                                 '".$_POST['fname'][$i]."',
+                                 '".$_POST['furl'][$i]."',
+                                 '".$_POST['fsize'][$i]."',
+                                 '".$_POST['fmirror'][$i]."');", $FD->sql()->conn() );
         }
     }
-    systext("Download wurde hinzugefügt");
+    systext('Download wurde hinzugefügt');
     
     unset($_POST);
 }
@@ -87,13 +87,13 @@ if(true)
         echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
     }        
     
-    if (!isset($_POST[options]))
+    if (!isset($_POST['options']))
     {
-        $_POST[options] = 1;
+        $_POST['options'] = 1;
     }
-    $_POST[options] = $_POST[options] + $_POST[optionsadd];
+    $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
 
-    $index = mysql_query("select * from ".$global_config_arr[pref]."dl_config", $FD->sql()->conn() );
+    $index = mysql_query('select * from '.$global_config_arr['pref']."dl_config", $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -101,8 +101,8 @@ if(true)
                         <input type="hidden" value="dl_add" name="go">
                         <input type="hidden" value="add" name="sended">
                         <input id="send" type="hidden" value="0" name="dladd">
-                        <input type="hidden" value="'.$_POST[options].'" name="options">
-                        <input type="hidden" value="'.$_SESSION[user_id].'" name="userid">
+                        <input type="hidden" value="'.$_POST['options'].'" name="options">
+                        <input type="hidden" value="'.$_SESSION['user_id'].'" name="userid">
                         <table class="content" cellpadding="3" cellspacing="0">
                             <tr><td colspan="2"><h3>Download hinzufügen</h3><hr></td></tr>
 
@@ -120,7 +120,7 @@ if(true)
     foreach ($valid_ids as $cat)
     {
         echo'
-                                        <option value="'.$cat[cat_id].'">'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
+                                        <option value="'.$cat['cat_id'].'">'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat['cat_name'].'</option>
         ';
     }
     echo'
@@ -133,7 +133,7 @@ if(true)
                                     <font class="small">unter welchem Namen soll der Download erscheinen</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="53" value="'.killhtml($_POST[title]).'" name="title" maxlength="100">
+                                    <input class="text" size="53" value="'.killhtml($_POST['title']).'" name="title" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -142,7 +142,7 @@ if(true)
                                     <font class="small">Diese Beschreibung erscheint unter dem Download</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", killhtml($_POST[text]), 330, 130).'
+                                    '.create_editor("text", killhtml($_POST['text']), 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -152,9 +152,9 @@ if(true)
                                     [Homepage des Autors]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="autor" value="'.killhtml($_POST[autor]).'" maxlength="100">
+                                    <input class="text" size="20" name="autor" value="'.killhtml($_POST['autor']).'" maxlength="100">
                                     <br />
-                                    <input class="text" size="30" value="'.killhtml($_POST[autorurl]).'" name="autorurl" maxlength="255" id="test">
+                                    <input class="text" size="30" value="'.killhtml($_POST['autorurl']).'" name="autorurl" maxlength="255" id="test">
                                 </td>
                             </tr>
                             <tr>
@@ -164,17 +164,17 @@ if(true)
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="dlimg" size="35"><br />
-                                    <font class="small">[max. '.$admin_dl_config_arr[screen_x].'x'.$admin_dl_config_arr[screen_y].'] [2MB] [jpg/gif/png] (optional)</font>
+                                    <font class="small">[max. '.$admin_dl_config_arr['screen_x'].'x'.$admin_dl_config_arr['screen_y'].'] [2MB] [jpg/gif/png] (optional)</font>
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT `ftp_id` FROM ".$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
+    $index = mysql_query('SELECT `ftp_id` FROM '.$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
     $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);  
     
-    for ($i=1; $i<=$_POST[options]; $i++)
+    for ($i=1; $i<=$_POST['options']; $i++)
     {
         $j = $i - 1;
-        if ($_POST[fname][$j] OR $_POST[furl][$j] OR $_POST[fsize][$j] OR isset($fmirror[$j]))
+        if ($_POST['fname'][$j] OR $_POST['furl'][$j] OR $_POST['fsize'][$j] OR isset($fmirror[$j]))
         {
             if (isset($fmirror[$j]))
                $f_checked='checked="checked"';
@@ -188,8 +188,8 @@ if(true)
                                     <font class="small">[Titel]<br />[URL]<br />[Große in KB]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST[fname][$j]).'" maxlength="100"><br />                                    
-                                    <input class="text" size="70" value="'.killhtml($_POST[furl][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><br>
+                                    <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST['fname'][$j]).'" maxlength="100"><br />                                    
+                                    <input class="text" size="70" value="'.killhtml($_POST['furl'][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><br>
             ';
             if ($ftp) {
                 echo '                                    
@@ -197,8 +197,8 @@ if(true)
                 ';
             }
             echo '
-                                    <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
-                                    <input class="text" size="30" value="'.killhtml($_POST[fsize][$j]).'" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
+                                    <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr['quickinsert'].'";\' value="Quick-Insert Pfad"><br>
+                                    <input class="text" size="30" value="'.killhtml($_POST['fsize'][$j]).'" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'">
                                 </td>
                             </tr>
@@ -222,7 +222,7 @@ if(true)
                 ';
             }
             echo '
-                                    <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr[quickinsert].'";\' value="Quick-Insert Pfad"><br>
+                                    <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr['quickinsert'].'";\' value="Quick-Insert Pfad"><br>
                                     <input class="text" size="30" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                 </td>
