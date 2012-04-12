@@ -11,6 +11,7 @@ if ($_POST['screenx'] && $_POST['screeny'] && $_POST['thumbx'] && $_POST['thumby
     settype($_POST['thumbx'], 'integer');
     settype($_POST['thumby'], 'integer');
     settype($_POST['dl_rights'], 'integer');
+    $_POST['quickinsert'] = savesql($_POST['quickinsert']);
     settype($_POST['dl_show_sub_cats'], 'integer');
     
     $update = 'UPDATE '.$global_config_arr['pref']."dl_config
@@ -34,10 +35,10 @@ if ($_POST['screenx'] && $_POST['screeny'] && $_POST['thumbx'] && $_POST['thumby
 if(true)
 {
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
     }        
     
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl_config", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
     
     settype ( $config_arr['dl_show_sub_cats'], 'integer' );
@@ -50,8 +51,8 @@ if(true)
                             <tr><td colspan="2"><h3>Einstellungen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="70%">
-                                    Max. Bildgröße:<br>
-                                    <font class="small">Stellt die max. Upload Größe der Vorschau-Bilder ein</font>
+                                    Max. Bildgr&ouml;&szlig;e:<br>
+                                    <font class="small">Stellt die max. Upload Gr&ouml;&szlig;e der Vorschau-Bilder ein</font>
                                 </td>
                                 <td class="config" valign="top" width="30%">
                                     <input class="text" size="5" name="screenx" value="'.$config_arr['screen_x'].'" maxlength="4">
@@ -61,8 +62,8 @@ if(true)
                             </tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    Thumbnail Größe:<br>
-                                    <font class="small">Gibt die Größe der Thumbnails an</font>
+                                    Thumbnail Gr&ouml;&szlig;e:<br>
+                                    <font class="small">Gibt die Gr&ouml;&szlig;e der Thumbnails an</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <input class="text" size="5" name="thumbx" value="'.$config_arr['thumb_x'].'" maxlength="3">
@@ -73,7 +74,7 @@ if(true)
                             <tr>
                                 <td class="config" valign="top" width="50%">
                                     Quick-Insert Pfad:<br>
-                                    <font class="small">Der Datei-Pfad der mit dem Quick-Insert Button eingefügt wird.</font>
+                                    <font class="small">Der Datei-Pfad der mit dem Quick-Insert Button eingef&uuml;gt wird.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <input class="text" size="40" name="quickinsert" value="'.stripslashes(killhtml($config_arr['quickinsert'])).'" maxlength="255">
@@ -81,7 +82,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    Downloads erlauben für:<br>
+                                    Downloads erlauben f&uuml;r:<br>
                                     <font class="small">Wer darf die Downloads verwenden?</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
@@ -104,7 +105,7 @@ if(true)
                             <tr>
                                 <td class="config" valign="top" width="50%">
                                     Unterkategorien immer zeigen:<br>
-                                    <font class="small">Zeigt immer alle Unterkategorien an, auch wenn Ordner nicht geöffnet.</font>
+                                    <font class="small">Zeigt immer alle Unterkategorien an, auch wenn Ordner nicht ge&ouml;ffnet.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <input type="checkbox" name="dl_show_sub_cats" value="1" '.getchecked ( 1, $config_arr['dl_show_sub_cats'] ).'>
