@@ -141,7 +141,7 @@ if (
 	", $FD->sql()->conn() );
 	
 	// system messages
-    systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+    systext($admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
 
     // Unset Vars
     unset ( $_POST );
@@ -155,7 +155,7 @@ if ( TRUE )
 {
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE );
+		systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
 
 	// Load Data from DB into Post
 	} else {
@@ -508,7 +508,7 @@ if ( TRUE )
        						</tr>
        						<tr>
            						<td class="config">
-               						Vorausspeicher-Nachricht: <span class="small">'.$admin_phrases[common][optional].'</span><br>
+               						Vorausspeicher-Nachricht: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
                						<span class="small">Nachricht, die während des Vorausspeicherns angezeigt wird.</span>
            						</td>
            						<td class="config">
@@ -639,7 +639,7 @@ if ( TRUE )
 							<tr><td class="line" colspan="4">Bild-Überlagerung</td></tr>
        						<tr>
            						<td class="config">
-               						Bild-URL: <span class="small">'.$admin_phrases[common][optional].'</span><br>
+               						Bild-URL: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
                						<span class="small">URL eines Bildes, das über das Video gelegt werden soll.</span>
            						</td>
            						<td class="config">
@@ -670,7 +670,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
                                     </button>
                                 </td>
                             </tr>
