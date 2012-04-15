@@ -1,19 +1,18 @@
-<?php if (!defined("ACP_GO")) die("Unauthorized access!");
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 /////////////////////////////////
 //// Datenbank aktualisieren ////
 /////////////////////////////////
 
-if ( TRUE
-    && ( $_POST['signup'] && $_POST['signup'] != "" )
-    && ( $_POST['change_password'] && $_POST['change_password'] != "" )
+if (   ( $_POST['signup'] && $_POST['signup'] != '' )
+    && ( $_POST['change_password'] && $_POST['change_password'] != '' )
     && !empty($_POST['change_password_ack'])
-    && ( $_POST['use_admin_mail'] == 1 || ( $_POST['use_admin_mail'] == 0 && $_POST['email'] != "" ) )
+    && ( $_POST['use_admin_mail'] == 1 || ( $_POST['use_admin_mail'] == 0 && $_POST['email'] != '' ) )
    )
 {
     // security functions
-    settype ( $_POST['use_admin_mail'], "integer" );
-    settype ( $_POST['html'], "integer" );
+    settype ( $_POST['use_admin_mail'], 'integer' );
+    settype ( $_POST['html'], 'integer' );
 
     $_POST['signup'] = savesql ( $_POST['signup'] );
     $_POST['change_password'] = savesql ( $_POST['change_password'] );
@@ -22,8 +21,8 @@ if ( TRUE
     $_POST['email'] = savesql ( $_POST['email'] );
     
     // MySQL-Queries
-    mysql_query ( "
-                    UPDATE `".$global_config_arr['pref']."email`
+    mysql_query ( '
+                    UPDATE `'.$global_config_arr['pref']."email`
                     SET
                         `signup` = '".$_POST['signup']."',
                         `change_password` = '".$_POST['change_password']."',
@@ -35,7 +34,7 @@ if ( TRUE
     ", $sql->conn() );
 
     // system messages
-    systext( $FD->text("page", "changes_saved"), $FD->text("page", "info"), FALSE, $FD->text("page", "save_ok") );
+    systext( $FD->text('page', 'changes_saved'), $FD->text('page', 'info'), FALSE, $FD->text('page', 'save_ok') );
 
     // Unset Vars
     unset ( $_POST );
@@ -49,13 +48,13 @@ if ( TRUE )
 {
     // Display Error Messages
     if ( isset ( $_POST['sended'] ) ) {
-        systext ( $FD->text("page", "changes_not_saved").'<br>'.$FD->text("page", "note_notfilled"), $FD->text("page", "error"), TRUE, $FD->text("page", "save_error") );
+        systext ( $FD->text('page', 'changes_not_saved').'<br>'.$FD->text('page', 'note_notfilled'), $FD->text('page', 'error'), TRUE, $FD->text('page', 'save_error') );
 
     // Load Data from DB into Post
     } else {
-        $index = mysql_query ( "
+        $index = mysql_query ( '
                                 SELECT *
-                                FROM ".$global_config_arr['pref']."email
+                                FROM '.$global_config_arr['pref']."email
                                 WHERE `id` = '1'
         ", $sql->conn());
         $email_arr = mysql_fetch_assoc($index);
@@ -63,8 +62,8 @@ if ( TRUE )
     }
 
     // security functions
-    settype ( $_POST['use_admin_mail'], "integer" );
-    settype ( $_POST['html'], "integer" );
+    settype ( $_POST['use_admin_mail'], 'integer' );
+    settype ( $_POST['html'], 'integer' );
 
     $_POST['signup'] = killhtml ( $_POST['signup'] );
     $_POST['change_password'] = killhtml ( $_POST['change_password'] );
@@ -80,8 +79,8 @@ if ( TRUE )
                             <tr><td class="line" colspan="2">Einstellungen</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$FD->text("page", "sender_email").':<br>
-                                    <span class="small">'.$FD->text("page", "sender_email_desc").'</span>
+                                    '.$FD->text('page', 'sender_email').':<br>
+                                    <span class="small">'.$FD->text('page', 'sender_email_desc').'</span>
                                 </td>
                                 <td class="config">
                                     <table>
@@ -90,7 +89,7 @@ if ( TRUE )
                                                 <input class="pointer" type="radio" name="use_admin_mail" value="1" '.getchecked ( 1, $_POST['use_admin_mail'] ).'>
                                             </td>
                                             <td class="config">
-                                                '.$FD->text("admin", "default").' ('.$global_config_arr['admin_mail'].')
+                                                '.$FD->text('admin', 'default').' ('.$global_config_arr['admin_mail'].')
                                             </td>
                                         </tr>
                                         <tr valign="bottom">
@@ -106,70 +105,70 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$FD->text("page", "send_as_html").':<br>
-                                    <span class="small">'.$FD->text("page", "send_as_html_desc").'</span>
+                                    '.$FD->text('page', 'send_as_html').':<br>
+                                    <span class="small">'.$FD->text('page', 'send_as_html_desc').'</span>
                                 </td>
                                 <td class="config">
                                     &nbsp;<input class="pointer middle" type="checkbox" name="html" value="1" '.getchecked ( 1, $_POST['html'] ).'>
-                                    <span class="small">['.$FD->text("page", "send_as_html_info").']</span>
+                                    <span class="small">['.$FD->text('page', 'send_as_html_info').']</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$FD->text("page", "email_templates_title").'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text('page', 'email_templates_title').'</td></tr>
                             <tr>
                                 <td class="config" colspan="2">
                                     '.$FD->text("page", "email_reg_title").'<br />
-                                    <span class="small">'.$FD->text("page", "email_reg_desc").'</span>
+                                    <span class="small">'.$FD->text('page', 'email_reg_desc').'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text("page", "valid_tags").':</b></span>
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text('page', 'valid_tags').':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{..user_name..}",$FD->text("page", "email_username"),"signup").'
-                                        '.insert_tt("{..new_password..}",$FD->text("page", "email_password"),"signup").'
+                                        '.insert_tt('{..user_name..}',$FD->text('page', 'email_username'),'signup').'
+                                        '.insert_tt('{..new_password..}',$FD->text('page', 'email_password'),'signup').'
                                     </span>
                                 </td>
                                 <td class="config">
-                                    '.create_editor("signup", $_POST['signup'], "100%", "200px", "", FALSE).'
+                                    '.create_editor('signup', $_POST['signup'], '100%', '200px', '', FALSE).'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$FD->text("page", "email_newpwd_title").'<br />
-                                    <span class="small">'.$FD->text("page", "email_newpwd_desc").'</span>
+                                    '.$FD->text('page', 'email_newpwd_title').'<br />
+                                    <span class="small">'.$FD->text('page', 'email_newpwd_desc').'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text("page", "valid_tags").':</b></span>
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text('page', 'valid_tags').':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{..user_name..}",$FD->text("page", "email_username"),"change_password").'
-                                        '.insert_tt("{..new_password..}",$FD->text("page", "email_password"),"change_password").'
+                                        '.insert_tt('{..user_name..}',$FD->text('page', 'email_username'),'change_password').'
+                                        '.insert_tt('{..new_password..}',$FD->text('page', 'email_password'),'change_password').'
                                     </span>
                                 </td>
                                 <td class="config">
-                                    '.create_editor("change_password", $_POST['change_password'], "100%", "200px", "", FALSE).'
+                                    '.create_editor('change_password', $_POST['change_password'], '100%', '200px', '', FALSE).'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$FD->text("page", "change_password_ack_title").'<br />
-                                    <span class="small">'.$FD->text("page", "change_password_ack_desc").'</span>
+                                    '.$FD->text('page', 'change_password_ack_title').'<br />
+                                    <span class="small">'.$FD->text('page', 'change_password_ack_desc').'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text("page", "valid_tags").':</b></span>
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text('page', 'valid_tags').':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{..user_name..}",$FD->text("page", "email_username"),"change_password_ack").'
-                                        '.insert_tt("{..new_password_url...}",$FD->text("page", "new_password_url"),"change_password_ack").'
+                                        '.insert_tt('{..user_name..}',$FD->text('page', 'email_username'),'change_password_ack').'
+                                        '.insert_tt('{..new_password_url...}',$FD->text('page', 'new_password_url'),'change_password_ack').'
                                     </span>
                                 </td>
                                 <td class="config">
-                                    '.create_editor("change_password_ack", $_POST['change_password_ack'], "100%", "200px", "", FALSE).'
+                                    '.create_editor('change_password_ack', $_POST['change_password_ack'], '100%', '200px', '', FALSE).'
                                 </td>
                             </tr>     
                             <tr><td class="space"></td></tr>                       
@@ -177,7 +176,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("page", "save_long").'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'save_long').'
                                     </button>
                                 </td>
                             </tr>
@@ -189,21 +188,21 @@ if ( TRUE )
 /*
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$FD->text("page", "email_delete_title").'<br />
-                                    <span class="small">'.$FD->text("page", "email_delete_desc").'</span>
+                                    '.$FD->text('page', 'email_delete_title').'<br />
+                                    <span class="small">'.$FD->text('page', 'email_delete_desc').'</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text("page", "valid_tags").':</b></span>
+                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text('page', 'valid_tags').':</b></span>
                                     <span class="small">
-                                        '.insert_tt("{..X..}",$FD->text("page", "email_username"),"delete_account").'
-                                        '.insert_tt("{..X..}",$FD->text("page", "email_password"),"delete_account").'
-                                        '.insert_tt("{..X..}",$FD->text("page", "email_virtualhost"),"delete_account").'
+                                        '.insert_tt('{..X..}',$FD->text('page', 'email_username'),'delete_account').'
+                                        '.insert_tt('{..X..}',$FD->text('page', 'email_password'),'delete_account').'
+                                        '.insert_tt('{..X..}',$FD->text('page', 'email_virtualhost'),'delete_account').'
                                     </span>
                                 </td>
                                 <td class="config">
-                                    '.create_editor("delete_account", $_POST['delete_account'], "100%", "200px", "", FALSE).'
+                                    '.create_editor('delete_account', $_POST['delete_account'], '100%', '200px', '', FALSE).'
                                 </td>
                             </tr>     
                             <tr><td class="space"></td></tr>     
