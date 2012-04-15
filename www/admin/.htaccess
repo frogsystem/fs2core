@@ -1,6 +1,155 @@
-<Files admin_*.php>
+<Files admin_aliases_*.php>
     Order Allow,Deny
     Allow from 127.0.0.1
     Deny from all
 </Files>
 
+<Files admin_all*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_applet*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_articles_add.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_articles_cat.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_articles_config.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_articles_edit.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_c*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_dl*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_editor*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_g*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_news_add.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_news_c*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_news_edit.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_p*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_r*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_screen*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_search*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_shop*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_snippet*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_stat_edit.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_stat_ref.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_stat_space.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_style*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_u*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_w*.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
