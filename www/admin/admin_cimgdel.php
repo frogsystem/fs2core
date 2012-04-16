@@ -1,17 +1,17 @@
 <?php
-define(CIMG_PATH, FS2_ROOT_PATH."media/content/", true);
+define('CIMG_PATH', FS2_ROOT_PATH.'media/content/', true);
 $cimg_path = CIMG_PATH;
 
 if(isset($_GET['file'])){
     $file = intval($_GET['file']);
-    $qry = mysql_query("SELECT * FROM `".$global_config_arr['pref']."cimg` WHERE `id`=".$file);
+    $qry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg` WHERE `id`='.$file);
     if(mysql_num_rows($qry) > 0){
         $row = mysql_fetch_assoc($qry);
         if(file_exists(CIMG_PATH."{$row['name']}.{$row['type']}")){
             if(!isset($_POST['edit'])){ // edit file        
                         $imageinfo = getimagesize(CIMG_PATH."{$row['name']}.{$row['type']}");
-                        $qry = mysql_query("SELECT * FROM `".$global_config_arr['pref']."cimg_cats`");
-                        $cats = array(array("id" => 0, "name" => "Keine Kategorie", "description" => ""));
+                        $qry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg_cats`');
+                        $cats = array(array('id' => 0, 'name' => 'Keine Kategorie', 'description' => ''));
                         while(($cat = mysql_fetch_assoc($qry)) !== false){
                             $cats[] = $cat;
                         }
@@ -26,7 +26,7 @@ if(isset($_GET['file'])){
         </thead>
         <tfoot>
             <tr>
-                <td colspan="3" style="text-align: center"><input class="button" name="edit" type="submit" value="Änderungen speichern"></td>
+                <td colspan="3" style="text-align: center"><input class="button" name="edit" type="submit" value="&Auml;nderungen speichern"></td>
             </tr>
         </tfoot>
         <tbody>
@@ -55,10 +55,10 @@ if($row['hasthumb'] == 0){
             </tr>
             <tr>
                 <td class="config" rowspan="2">
-                    Thumbnail-Maße:
+                    Thumbnail-Ma&szlig;e:
                     <font class="small">(Breite x Höhe)</font>
                     <br>
-                    <font class="small">Max. Abemsseungen des Thumbnails.</font>
+                    <font class="small">Max. Abmessungen des Thumbnails.</font>
                 </td>
                 <td class="config">
                     <input class="text" maxlength="4" size="5" name="width" value="">
@@ -68,7 +68,7 @@ if($row['hasthumb'] == 0){
                     <br>
                     <font class="small">
                         <b>Hinweis:</b>
-                        Das Seitenverhältnis wird beibehalten!
+                        Das Seitenverh&auml;ltnis wird beibehalten!
                     </font>
                 </td>
             </tr>
@@ -119,8 +119,8 @@ echo <<< FS2_STRING
             </tr>
             <tr>
                 <td class="config">
-                    Löschen:<br>
-                    <font class="small">Soll die Datei endgültig gelöscht werden?</font>
+                    L&ouml;schen:<br>
+                    <font class="small">Soll die Datei endg&uuml;ltig gel&ouml;scht werden?</font>
                 </td>
                 <td>
                     <input class="text" name="delete" size="10" type="checkbox" onchange="checkdel(this);" value="1">
@@ -144,69 +144,69 @@ FS2_STRING;
             } else { // save changes
                 if(!isset($_POST['name']) || empty($_POST['name'])) $_POST['delete'] = 1;
                 if(isset($_POST['delete'])){
-                    unlink(CIMG_PATH.$row['name'].".".$row['type']);
-                    mysql_query("DELETE FROM `".$global_config_arr['pref']."cimg` WHERE `id`=".$file);
-                    $text = "Die Datei \"".$row['name']."\" wurde gelöscht!";
+                    unlink(CIMG_PATH.$row['name'].'.'.$row['type']);
+                    mysql_query('DELETE FROM `'.$global_config_arr['pref'].'cimg` WHERE `id`='.$file);
+                    $text = 'Die Datei "'.$row['name'].'" wurde gel&ouml;scht!';
                     if($row['hasthumb'] == 1 && file_exists(CIMG_PATH."{$row['name']}_s.{$row['type']}")){
-                        unlink(CIMG_PATH.$row['name']."_s.".$row['type']);
-                        $text .= "<br>Das Vorschaubild wurde gelöscht!";
+                        unlink(CIMG_PATH.$row['name'].'_s.'.$row['type']);
+                        $text .= '<br>Das Vorschaubild wurde gel&ouml;scht!';
                     }
                     systext($text);
                 } else {
                     $text = array();
                     if($_POST['name'] != $row['name']){
-                        rename(CIMG_PATH.$row['name'].".".$row['type'], CIMG_PATH.$_POST['name'].".".$row['type']);
-                        $text[] = "Die Datei wurde umbenannt!";
+                        rename(CIMG_PATH.$row['name'].'.'.$row['type'], CIMG_PATH.$_POST['name'].'.'.$row['type']);
+                        $text[] = 'Die Datei wurde umbenannt!';
                         $row['name'] = $_POST['name'];
                         if($row['hasthumb'] == 1 && file_exists(CIMG_PATH."{$row['name']}_s.{$row['type']}")){
-                            rename(CIMG_PATH.$row['name']."_s.".$row['type'], CIMG_PATH.$_POST['name']."_s.".$row['type']);
-                            $text[] = "Das Vorschaubild wurde umbenannt!";
+                            rename(CIMG_PATH.$row['name'].'_s.'.$row['type'], CIMG_PATH.$_POST['name'].'_s.'.$row['type']);
+                            $text[] = 'Das Vorschaubild wurde umbenannt!';
                         }
-                        mysql_query("UPDATE `".$global_config_arr['pref']."cimg` SET `name`='".mysql_real_escape_string($_POST['name'])."' WHERE `id`=".$file);
+                        mysql_query('UPDATE `'.$global_config_arr['pref']."cimg` SET `name`='".mysql_real_escape_string($_POST['name'])."' WHERE `id`=".$file);
                     }
                     
                     if($_POST['cat'] != $row['cat']){
-                        mysql_query("UPDATE `".$global_config_arr['pref']."cimg` SET `cat`='".intval($_POST['cat'])."' WHERE `id`=".$file);
-                        $text[] = "Die Kategorie wurde erfolgreich geändert.";
+                        mysql_query('UPDATE `'.$global_config_arr['pref']."cimg` SET `cat`='".intval($_POST['cat'])."' WHERE `id`=".$file);
+                        $text[] = 'Die Kategorie wurde erfolgreich ge&auml;ndert.';
                     }
                     
                     if(isset($_POST['thumb'])){
-                        $thumb = create_thumb_from(image_url("media/content/", $row['name'], FALSE, TRUE), $_POST['width'], $_POST['height']);
+                        $thumb = create_thumb_from(image_url('media/content/', $row['name'], FALSE, TRUE), $_POST['width'], $_POST['height']);
                         $text[] = create_thumb_notice($thumb);
-                        mysql_query("UPDATE `".$global_config_arr['pref']."cimg` SET `hasthumb`=1 WHERE `id`=".$file);
+                        mysql_query('UPDATE `'.$global_config_arr['pref'].'cimg` SET `hasthumb`=1 WHERE `id`='.$file);
                     }
                     
-                    systext(implode("<br>", $text));
+                    systext(implode('<br>', $text));
                 }
                 unset($_GET['file']);
             }
         } else {
-            mysql_query("DELETE FROM `".$global_config_arr['pref']."cimg` WHERE `id`=".$file);
-            systext("Die angegebene Datei wurde nicht im Dateisystem gefunden.<br>Der Eintrag in der Datenbank wurde gelöscht.", false, true);
+            mysql_query('DELETE FROM `'.$global_config_arr['pref'].'cimg` WHERE `id`='.$file);
+            systext('Die angegebene Datei wurde nicht im Dateisystem gefunden.<br>Der Eintrag in der Datenbank wurde gel&ouml;scht.', false, true);
             unset($_GET['file']);
         }
     } else {
-        systext("Die angegebene Datei existiert nicht.", false, true);
+        systext('Die angegebene Datei existiert nicht.', false, true);
         unset($_GET['file']);
     }
 }
 
 if(!isset($_GET['file'])){ // select file
-    $qry = mysql_query("UPDATE `".$global_config_arr['pref']."cimg` SET `cat` = 0 WHERE `cat` != 0 AND `cat` NOT IN (SELECT DISTNICT `id` FROM `".$global_config_arr['pref']."cimg_cats`)");
+    $qry = mysql_query('UPDATE `'.$global_config_arr['pref'].'cimg` SET `cat` = 0 WHERE `cat` != 0 AND `cat` NOT IN (SELECT DISTNICT `id` FROM `'.$global_config_arr['pref'].'cimg_cats`)');
     $num = mysql_affected_rows();
     if($num == 1){
-        systext("Ein Datensatz wurde automatisch korrigiert.");
+        systext('Ein Datensatz wurde automatisch korrigiert.');
     } elseif($num > 1){
-        systext($num." Datensätze wurden automatisch korrigiert.");
+        systext($num.' Datens&auml;tze wurden automatisch korrigiert.');
     }
-    $qry = mysql_query("SELECT * FROM `".$global_config_arr['pref']."cimg` ORDER BY `cat`");
+    $qry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg` ORDER BY `cat`');
     if(mysql_num_rows($qry) > 0){
         echo '<table border="0" cellpadding="4" cellspacing="0" width="600">';
-        $actcat = array("id" => 0, "name" => "Dateien ohne Kategorie", "description" => "");
+        $actcat = array('id' => 0, 'name' => 'Dateien ohne Kategorie', 'description' => '');
         $first = true;
         while(($row = mysql_fetch_assoc($qry)) !== false) {
             if($row['cat'] != $actcat['id']){
-                $qry2 = mysql_query("SELECT * FROM `".$global_config_arr['pref']."cimg_cats` WHERE `id`=".intval($row['cat']));
+                $qry2 = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg_cats` WHERE `id`='.intval($row['cat']));
                 $actcat = mysql_fetch_assoc($qry2);
                 $first = true;
             }
@@ -234,7 +234,7 @@ if(!isset($_GET['file'])){ // select file
         }
         echo '</table>';
     } else {
-        systext("Es wurden keine Bilder gefunden.");
+        systext('Es wurden keine Bilder gefunden.');
     }
 }
 ?>

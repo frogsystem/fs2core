@@ -1,16 +1,16 @@
 <?php
-if(!isset($_POST['name'])) $_POST['name'] = "";
-if(!isset($_POST['description'])) $_POST['description'] = "";
+if(!isset($_POST['name'])) $_POST['name'] = '';
+if(!isset($_POST['description'])) $_POST['description'] = '';
 if(isset($_POST['add'])){
     $name = mysql_real_escape_string(trim($_POST['name']));
     $desc = mysql_real_escape_string(trim($_POST['description']));
     if(!empty($name)){
-        mysql_query("INSERT INTO `".$global_config_arr['pref']."cimg_cats` (`name`, `description`) VALUES ('".$name."', '".$desc."')");
-        $_POST['name'] = "";
+        mysql_query('INSERT INTO `'.$global_config_arr['pref']."cimg_cats` (`name`, `description`) VALUES ('".$name."', '".$desc."')");
+        $_POST['name'] = '';
         $_POST['description'] = "";
-        systext("Kategorie erfolgreich angelegt!");
+        systext('Kategorie erfolgreich angelegt!');
     } else {
-        systext("Es muss ein Name für die Kategorie angegeben werden!", false, true);
+        systext('Es muss ein Name für die Kategorie angegeben werden!', false, true);
     }
 } elseif(isset($_POST['edit'])){
     if(isset($_POST['cat'])){
@@ -19,40 +19,40 @@ if(isset($_POST['add'])){
             $name = mysql_real_escape_string(trim($_POST['cat'.$cat]['name']));
             $desc = mysql_real_escape_string(trim($_POST['cat'.$cat]['description']));
             if(!empty($name)){
-                mysql_query("UPDATE `".$global_config_arr['pref']."cimg_cats` SET `name`='".$name."', `description`='".$desc."' WHERE `id`=".intval($cat));
+                mysql_query('UPDATE `'.$global_config_arr['pref']."cimg_cats` SET `name`='".$name."', `description`='".$desc."' WHERE `id`=".intval($cat));
                 $count++;
             }
         }
         if($count == 1){
-            systext("Eine Änderung übernommen");
+            systext('Eine &Auml;nderung &uuml;bernommen');
         } else {
-            systext($count." Änderungen übernommen");
+            systext($count.' &Auml;nderungen &uuml;bernommen');
         }
     } else {
-        systext("Es müss eine Auswahl getroffen werden.");
+        systext('Es muss eine Auswahl getroffen werden.');
     }
 } elseif(isset($_POST['delete'])){
     if(isset($_POST['cat'])){
         $count = 0;
         foreach($_POST['cat'] as $cat){
-            mysql_query("DELETE FROM `".$global_config_arr['pref']."cimg_cats` WHERE `id`=".intval($cat));
-            mysql_query("UPDATE `".$global_config_arr['pref']."cimg` SET `cat`='".mysql_real_escape_string(trim($_POST['newcat']))."' WHERE `cat`=".intval($cat));
+            mysql_query('DELETE FROM `'.$global_config_arr['pref'].'cimg_cats` WHERE `id`='.intval($cat));
+            mysql_query('UPDATE `'.$global_config_arr['pref']."cimg` SET `cat`='".mysql_real_escape_string(trim($_POST['newcat']))."' WHERE `cat`=".intval($cat));
             $count++;
         }
         if($count == 1){
-            systext("Eine Kategorie gelöscht");
+            systext('Eine Kategorie gel&ouml;scht');
         } else {
-            systext($count." Kategorien gelöscht.");
+            systext($count.' Kategorien gel&ouml;scht.');
         }
     } else {
-        systext("Es müss eine Auswahl getroffen werden.");
+        systext('Es muss eine Auswahl getroffen werden.');
     }
 }
 echo <<< FS2_STRING
 <form action="" method="post">
     <table cellspacing="0" cellpadding="4" border="0" width="600">
         <tr>
-            <td class="config" colspan="2">Neue Kategorie hinzufügen</td>
+            <td class="config" colspan="2">Neue Kategorie hinzuf&uuml;gen</td>
         </tr>
         <tr>
             <td class="config">
@@ -81,7 +81,7 @@ echo <<< FS2_STRING
             <td class="config" colspan="3">Kategorie bearbeiten</td>
         </tr>
 FS2_STRING;
-$qry = mysql_query("SELECT * FROM `".$global_config_arr['pref']."cimg_cats`");
+$qry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg_cats`');
 if(mysql_num_rows($qry) > 0){
     $options = '<option value="0">Keine Kategorie</option>';
     while(($row = mysql_fetch_assoc($qry)) !== false){
@@ -111,7 +111,7 @@ FS2_STRING;
 FS2_STRING;
 } else {
     echo '<tr><td colspn="3">';
-    systext("Es wurde keine Kategorie angelegt.");
+    systext('Es wurde keine Kategorie angelegt.');
     echo '</td></tr>';
 }
 ?>
