@@ -4,7 +4,13 @@
     Deny from all
 </Files>
 
-<Files admin_all*.php>
+<Files admin_allannouncement.php>
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Deny from all
+</Files>
+
+<Files admin_allemail.php>
     Order Allow,Deny
     Allow from 127.0.0.1
     Deny from all
