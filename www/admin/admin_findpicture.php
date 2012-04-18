@@ -4,24 +4,24 @@ session_start();
 
 // fs2 include path
 set_include_path ( '.' );
-define ( FS2_ROOT_PATH, "./../", TRUE );
+define ( FS2_ROOT_PATH, './../', TRUE );
 
-require( FS2_ROOT_PATH . "login.inc.php");
-require( FS2_ROOT_PATH . "includes/functions.php");
-require( FS2_ROOT_PATH . "includes/adminfunctions.php");
+require( FS2_ROOT_PATH . 'login.inc.php');
+require( FS2_ROOT_PATH . 'includes/functions.php');
+require( FS2_ROOT_PATH . 'includes/adminfunctions.php');
 
 echo'
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Frogsystem 2 - Bild auswählen</title>
+    <title>Frogsystem 2 - Bild ausw&auml;hlen</title>
     <link rel="stylesheet" type="text/css" href="admin.css">
 </head>
 <body id="find_body">
 
             <div id="find_head">
                 &nbsp;<img border="0" src="img/pointer.png" alt="" align="top" />
-                <b>BILD AUSWÄHLEN</b>
+                <b>BILD AUSW&Auml;HLEN</b>
             </div>
             <div align="center">
             
@@ -31,7 +31,7 @@ echo'
                                     <td align="left" class="configthin">
                                         <select class="select" name="cat">
                                         ';
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
 
 while($cat_arr = mysql_fetch_array($index)) {
         echo '                                  <option value="'.$cat_arr['cat_id'].'"'. ($_POST['cat']==$cat_arr['cat_id']?'selected':'') .'>'. $cat_arr['cat_name'] .'</option>';
@@ -54,7 +54,7 @@ if (isset($_POST['cat']))
              <table border="0" cellpadding="2" cellspacing="0" width="287" style="padding-left:13px;"
     ';
     $_POST['cat'] = savesql($_POST['cat']);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen WHERE cat_id = ". $_POST['cat'] ." ORDER BY screen_id DESC", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen WHERE cat_id = '. $_POST['cat'] .' ORDER BY screen_id DESC', $FD->sql()->conn() );
     $newLineStart = true;
     while ($screen_arr = mysql_fetch_array($index))
     {
@@ -70,7 +70,7 @@ if (isset($_POST['cat']))
                                 onmouseover="this.style.backgroundColor=\'#EEEEEE\';"
                                 onmouseout="this.style.backgroundColor=\'transparent\';"
                             >';
-        $new_img_path = image_url("images/screenshots/", $screen_arr['screen_id']."_s", true);
+        $new_img_path = image_url('images/screenshots/', $screen_arr['screen_id'].'_s', true);
         echo'
                                 <img src="'.$new_img_path.'" name="'.$screen_arr['screen_id'].'" style="cursor:pointer;"
                                     onclick="javascript:opener.document.getElementById(\'screen_id\').value=\''. $screen_arr['screen_id'] .'\';

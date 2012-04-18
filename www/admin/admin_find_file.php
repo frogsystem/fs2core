@@ -1,4 +1,4 @@
-<?php if (ACP_GO == "find_file") {
+<?php if (ACP_GO == 'find_file') {
 
 //identify directories
 function ftp_is_dir($conn, $dir) {
@@ -13,11 +13,11 @@ function ftp_is_dir($conn, $dir) {
 // get script
 $adminpage->clearConds();
 $adminpage->clearTexts();
-$adminpage->addText("file_id", $_GET['id']);
-echo $adminpage->get("script"); 
+$adminpage->addText('file_id', $_GET['id']);
+echo $adminpage->get('script');
 
 try {
-    $ftp = $sql->getRow("ftp", "*", array('W' =>  "`ftp_id` = 1"));
+    $ftp = $sql->getRow('ftp', '*', array('W' =>  '`ftp_id` = 1'));
 
     // Verbindung aufbauen
     if($ftp['ftp_ssl']) {
@@ -34,26 +34,26 @@ try {
         // display error
         $adminpage->clearConds();
         $adminpage->clearTexts();
-        $adminpage->addText("connection_error_text", sprintf($TEXT['page']->get("connection_error_text"), htmlenclose($ftp['ftp_url'], "strong"), htmlenclose($ftp['ftp_user'], "strong")));
-        $content = $adminpage->get("conn_error");        
+        $adminpage->addText('connection_error_text', sprintf($TEXT['page']->get('connection_error_text'), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
+        $content = $adminpage->get('conn_error');
 
     } else {
         
         // get list
-        $_GET['f'] = isset($_GET['f']) ? $_GET['f'] : "/";
+        $_GET['f'] = isset($_GET['f']) ? $_GET['f'] : '/';
         ftp_chdir($_SESSION['ftp_conn'], $_GET['f']);
         $_GET['f'] = ftp_pwd($_SESSION['ftp_conn']);
-        $_GET['f'] = $_GET['f'] == "/" ? $_GET['f'] : $_GET['f']."/";
-        $files = ftp_nlist($_SESSION['ftp_conn'], ".");
+        $_GET['f'] = $_GET['f'] == '/' ? $_GET['f'] : $_GET['f'].'/';
+        $files = ftp_nlist($_SESSION['ftp_conn'], '.');
         
         // create breadcombs
-        $furllist = explode("/", $_GET['f']);
+        $furllist = explode('/', $_GET['f']);
         unset($furllinks, $fpath);
-        $furllinks = '<a href="?go=find_file&amp;id='.$_GET['id'].'&amp;f=/" title="'.$TEXT['page']->get("change_dir").'">&nbsp;.&nbsp;</a>';
+        $furllinks = '<a href="?go=find_file&amp;id='.$_GET['id'].'&amp;f=/" title="'.$TEXT['page']->get('change_dir').'">&nbsp;.&nbsp;</a>';
         foreach($furllist as $furl) {
             if (!empty($furl)) {
-                $fpath .= "/".$furl;
-                $furllinks .= '/<a href="?go=find_file&amp;id='.$_GET['id'].'&amp;f='.$fpath.'" title="'.$TEXT['page']->get("change_dir").'">'.$furl.'</a>';
+                $fpath .= '/'.$furl;
+                $furllinks .= '/<a href="?go=find_file&amp;id='.$_GET['id'].'&amp;f='.$fpath.'" title="'.$TEXT['page']->get('change_dir').'">'.$furl.'</a>';
             }
         }
     
@@ -70,10 +70,10 @@ try {
                 
                 $adminpage->clearConds();
                 $adminpage->clearTexts();
-                $adminpage->addText("folder_url", "?go=find_file&amp;id=".$_GET['id']."&amp;f=".$file_path);                
-                $adminpage->addText("folder_name", $file);                
-                $adminpage->addText("http_url", $http_url);                              
-                $folder_list[strtolower($file)] = $adminpage->get("folder");                
+                $adminpage->addText('folder_url', '?go=find_file&amp;id='.$_GET['id'].'&amp;f='.$file_path);
+                $adminpage->addText('folder_name', $file);
+                $adminpage->addText('http_url', $http_url);
+                $folder_list[strtolower($file)] = $adminpage->get('folder');
 
             } else {
                 $size = ftp_size($_SESSION['ftp_conn'],$file);
@@ -81,10 +81,10 @@ try {
                 
                 $adminpage->clearConds();
                 $adminpage->clearTexts();
-                $adminpage->addText("file_name", $file);                
-                $adminpage->addText("http_url", $http_url);                
-                $adminpage->addText("size", $size );                
-                $file_list[strtolower($file)] = $adminpage->get("file");
+                $adminpage->addText('file_name', $file);
+                $adminpage->addText('http_url', $http_url);
+                $adminpage->addText('size', $size );
+                $file_list[strtolower($file)] = $adminpage->get('file');
             }
         }
 
@@ -94,12 +94,12 @@ try {
         // display page
         $adminpage->clearConds();
         $adminpage->clearTexts();
-        $adminpage->addText("connection_ok", sprintf($TEXT['page']->get("connection_ok"), htmlenclose($ftp['ftp_url'], "strong"), htmlenclose($ftp['ftp_user'], "strong")));
-        $adminpage->addText("url_links", $furllinks);
-        $adminpage->addText("up_url", "?go=find_file&amp;id=".$_GET['id']."&amp;f=".$_GET['f']."..");
-        $adminpage->addText("lines", implode($folder_list).implode($file_list));
+        $adminpage->addText('connection_ok', sprintf($TEXT['page']->get('connection_ok'), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
+        $adminpage->addText('url_links', $furllinks);
+        $adminpage->addText('up_url', '?go=find_file&amp;id='.$_GET['id'].'&amp;f='.$_GET['f'].'..');
+        $adminpage->addText('lines', implode($folder_list).implode($file_list));
 
-        $content = $adminpage->get("main");           
+        $content = $adminpage->get('main');
     }
 
     // Verbindung schließen
@@ -109,9 +109,9 @@ try {
     // display error
     $adminpage->clearConds();
     $adminpage->clearTexts();
-    $content = $adminpage->get("no_conn");
+    $content = $adminpage->get('no_conn');
 }
 
-echo get_content_container("&nbsp;", $content);
+echo get_content_container('&nbsp;', $content);
 
 } ?>
