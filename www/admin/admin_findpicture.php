@@ -24,8 +24,8 @@ echo'
                 <b>BILD AUSW&Auml;HLEN</b>
             </div>
             <div align="center">
-            
-                    <form action="'.$PHP_SELF.'" method="post">
+
+                    <form action="'.$_SERVER['PHP_SELF'].'" method="post">
                     <table border="0" cellpadding="2" cellspacing="0" width="287">
                                 <tr>
                                     <td align="left" class="configthin">

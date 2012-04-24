@@ -574,7 +574,7 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
     }
 
     $header .= 'X-Mailer: PHP/' . phpversion() . "\n";
-    $header .= 'X-Sender-IP: ' . $REMOTE_ADDR . "\n";
+    $header .= 'X-Sender-IP: ' . $_SERVER['REMOTE_ADDR'] . "\n";
     
     if ( $HTML == FALSE || $HTML == 'html' ) {
         if ( mysql_result ( $index, 0, 'html' ) == 1 ) {
