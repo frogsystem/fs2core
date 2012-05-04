@@ -7,11 +7,11 @@
   <b>{..message_title..}</b><br>
   {..message..}<br>
   <br>Du wirst jetzt automatisch weitergeleitet.<br>
-  Falls dein Browser keine automatische Weiterleitung unterstützt, <a href="{..forward_url..}">klicke bitte hier</a>.
+  Falls dein Browser keine automatische Weiterleitung unterst&uuml;tzt, <a href="{..forward_url..}">klicke bitte hier</a>.
 </p>
 <!--section-end::FORWARDMESSAGE-->
 
-<!--section-start::ANNOUNCEMENT--><b>Ankündigung:</b>
+<!--section-start::ANNOUNCEMENT--><b>Ank&uuml;ndigung:</b>
 <p>
   {..announcement_text..}
   <br><br>
@@ -27,7 +27,7 @@
 <p>  
   - <b>{..visitors_online..}</b> Besucher online<br>
   - <b>{..registered_online..}</b> registrierte <br>
-  - <b>{..guests_online..}</b> Gäste
+  - <b>{..guests_online..}</b> G&auml;ste
 </p>
 <p>  
   - <b>{..num_users..}</b> registrierte User<br>

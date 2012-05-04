@@ -152,7 +152,7 @@
 <table style="margin-left:-2px; width:100%;" cellpadding="0" cellspacing="2">
   <tr>
     <td colspan="2" class="dl_cell"><b>Datei (Download)</b></td>
-    <td class="dl_cell"><b>Größe</b></td>
+    <td class="dl_cell"><b>Gr&ouml;&szlig;e</b></td>
     <td class="dl_cell"><b>Traffic</b></td>
     <td class="dl_cell"><b>Hits</b></td>
   </tr>

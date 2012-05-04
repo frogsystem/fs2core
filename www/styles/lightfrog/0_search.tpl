@@ -14,7 +14,7 @@
 <br><br>
 
 <fieldset>
-  <legend style="color:#000000;"><b>Nach Inhalten mit dem Schlüsselwort...</b></legend>
+  <legend style="color:#000000;"><b>Nach Inhalten mit dem Schl&uuml;sselwort...</b></legend>
   <form method="get" action="">
 
     <input type="hidden" name="go" value="search">
@@ -53,7 +53,7 @@
 <!--section-end::RESULT_LINE-->
 
 <!--section-start::NO_RESULTS--><p>
-  Keine Übereinstimmungen gefunden!
+  Keine &Uuml;bereinstimmungen gefunden!
 </p>
 <!--section-end::NO_RESULTS-->
 

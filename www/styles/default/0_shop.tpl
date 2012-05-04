@@ -30,7 +30,7 @@
       </p>
       <p>
         <a href="{..item_image_viewer_url..}">
-          Bild in groﬂ betrachten...
+          Bild in gro&szlig; betrachten...
         </a>
       </p>      
       <p>

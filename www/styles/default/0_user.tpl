@@ -50,7 +50,7 @@
 {..user_image..}
 
 <p>
-  <b>Benutzermenü:</b><br>
+  <b>Benutzermen&uuml;:</b><br>
   <a class="small" href="{..user_edit_url..}">- Mein Profil</a><br>
   {..admincp_line..}
   <a class="small" href="{..logout_url..}">- Abmelden</a>
@@ -68,7 +68,7 @@
       <td align="center" valign="middle" rowspan="11" width="90"><img src="$VAR(style_images)line.gif" alt=""></td>
       <td align="left" valign="top" rowspan="11">
         <div style="margin-bottom:4px;"><b class="textmiddle">Noch kein Benutzerkonto?</b></div>
-        Jetzt <a href="?go=register">registrieren</a> und folgende Vorteile genießen:
+        Jetzt <a href="?go=register">registrieren</a> und folgende Vorteile genie&szlig;en:
         <ul>
           <li>Zugriff auf Downloads</li>
           <li>Kein CAPTCHA bei Kommentaren</li>
@@ -136,7 +136,7 @@
 
 <div>
   Du hast noch kein Benutzerkonto?<br>
-  Dann registriere dich jetzt bei <b>$VAR(page_title)</b> und genieße folgende Vorteile:
+  Dann registriere dich jetzt bei <b>$VAR(page_title)</b> und genie&szlig;e folgende Vorteile:
 
   <ul>
     <li>Zugriff auf Downloads</li>
@@ -229,7 +229,7 @@
         <td align="right">
           <img class="textmiddle" src="{..captcha_url..}"> <input class="small input input_highlight" size="20" name="captcha" maxlength="5" autocomplete="off">
           <img class="textmiddle" src="$VAR(style_icons)user/lock.gif" alt="" align="bottom">
-          <div class="small" align="left">Bitte lösen Sie diese Rechenaufgabe.</div>
+          <div class="small" align="left">Bitte l&ouml;sen Sie diese Rechenaufgabe.</div>
         </td>
       </tr>
 <!--section-end::CAPTCHA_LINE-->
@@ -239,7 +239,7 @@
   <tr>
     <td valign="top" align="left">
       <div class="small" id="antispam">
-        * Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.
+        * Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern m&uuml;ssen nicht registrierte User eine einfache Rechenaufgabe l&ouml;sen, die f&uuml;r die meisten Spam-Bots aber nicht l&ouml;sbar ist. Wenn du nicht jedesmal eine solche Aufgabe l&ouml;sen m&ouml;chtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.
       </div>
     </td>
   </tr>
@@ -251,11 +251,11 @@
   
   <tr>
     <td colspan="2" width="205"><b>Benutzername:</b></td>
-    
+
     <td align="center" valign="middle" rowspan="28" width="90">
       <img src="$VAR(style_images)line.gif" alt="">
     </td>
-    
+
     <td colspan="2" width="205"><b>Benutzerbild:</b></td>
   </tr>
   <tr>
@@ -265,9 +265,9 @@
     <td rowspan="8" valign="top" style="padding-top:5px;">{..user_image..}</td>
     <td></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>E-Mail:</b></td>
     <td></td>
@@ -277,12 +277,12 @@
     <td>{..user_mail..}</td>
     <td align="right"><img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom"></td>
     <td></td>
-    
+
     <td></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Registriert seit:</b></td>
     <td></td>
@@ -292,10 +292,10 @@
     <td>{..user_reg_date..}</td>
     <td align="right"><img src="$VAR(style_icons)user/date.gif" alt="" align="bottom"></td>
     <td></td>
-    
+
     <td></td>
   </tr>
-  
+
   <tr><td>&nbsp;</td></tr>
 
   <tr>
@@ -310,7 +310,7 @@
     <td>{..user_rank..}</td>
     <td></td>
   </tr>
-  
+
   <tr><td>&nbsp;</td></tr>
   
   <tr>
@@ -325,9 +325,9 @@
     <td>{..user_num_news..}</td>
     <td align="right"><img src="$VAR(style_icons)user/news.gif" alt="" align="bottom"></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>ICQ-Nummer:</b></td>
     <td></td>
@@ -340,9 +340,9 @@
     <td>{..user_num_comments..}</td>
     <td align="right"><img src="$VAR(style_icons)user/comment.gif" alt="" align="bottom"></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>AIM E-Mail:</b></td>
     <td></td>
@@ -355,7 +355,7 @@
     <td>{..user_num_articles..}</td>
     <td align="right"><img src="$VAR(style_icons)user/article.gif" alt="" align="bottom"></td>
   </tr>
-  
+
   <tr><td></td></tr>
   
   <tr>
@@ -370,9 +370,9 @@
     <td>{..user_num_downloads..}</td>
     <td align="right"><img src="$VAR(style_icons)user/download.gif" alt="" align="bottom"></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Yahoo!-ID:</b></td>
     <td></td>
@@ -385,9 +385,9 @@
     <td></td>
     <td></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Skype-Name:</b></td>
     <td></td>
@@ -435,7 +435,7 @@
         <tr>
             <td align="left">{..user_name..}</td>
             <td align="center"><img src="$VAR(style_icons)user/user.gif" alt="" align="bottom"></td>
-            <td align="left"><label for="user_delete_image" class="small pointer textmiddle" style="vertical-align:middle;">Aktuelles Benutzerbild löschen?</label></td>
+            <td align="left"><label for="user_delete_image" class="small pointer textmiddle" style="vertical-align:middle;">Aktuelles Benutzerbild l&ouml;schen?</label></td>
             <td align="center"><input type="checkbox" class="pointer" name="user_delete_image" id="user_delete_image" value="1"></td>
         </tr>
         <tr><td></td></tr>
@@ -447,7 +447,7 @@
             <td align="center" valign="middle" rowspan="9" colspan="2">{..user_image..}</td>
         </tr>
         <tr valign="middle">
-            <td align="left"><label for="user_show_mail" class="small pointer textmiddle" style="vertical-align:middle;">E-Mail im öffentlichen Profl anzeigen?</label></td>
+            <td align="left"><label for="user_show_mail" class="small pointer textmiddle" style="vertical-align:middle;">E-Mail im &ouml;ffentlichen Profl anzeigen?</label></td>
             <td align="center"><input type="checkbox" class="pointer" name="user_show_mail" id="user_show_mail" value="1" {..show_mail_checked..}></td>
         </tr>
         <tr><td></td></tr>
@@ -458,8 +458,8 @@
 
         </tr>
         <tr><td>&nbsp;</td></tr>
-      
-      
+
+
         <tr><td align="left" colspan="2"><b>ICQ-Nummer:</b></td></tr>
         <tr>
            <td align="left"><input class="small input input_highlight" size="33" value="{..user_icq..}" name="user_icq" maxlength="100"></td>
@@ -491,22 +491,22 @@
         <tr>
            <td align="left"><input class="small input input_highlight" size="33" value="{..user_yim..}" name="user_yim" maxlength="100"></td>
            <td align="center"><img src="$VAR(style_icons)user/yim.gif" alt="YIM" align="bottom"></td>
-        
+
         </tr>
         <tr><td></td></tr>
         <tr><td align="left" colspan="2"><b>Skype-Name:</b></td></tr>
         <tr>
            <td align="left"><input class="small input input_highlight" size="33" value="{..user_skype..}" name="user_skype" maxlength="100"></td>
            <td align="center"><img src="$VAR(style_icons)user/skype.gif" alt="Skype" align="bottom"></td>
-        
+
         </tr>
         <tr>
           <td colspan="2">&nbsp;</td>
           <td rowspan="9"></td>
         </tr>
-      
-      
-        <tr><td align="left" colspan="2"><b>Nur bei einer Passwortänderung:</b></td></tr>
+
+
+        <tr><td align="left" colspan="2"><b>Nur bei einer Passwort&auml;nderung:</b></td></tr>
         <tr><td></td></tr>
         <tr>
           <td align="left" colspan="2"><b>Aktuelles Passwort:</b></td>
