@@ -4,17 +4,19 @@
 //// Kategorie hinzufügen ////
 //////////////////////////////
 
-if (isset($_POST[cat_name]))
+if (isset($_POST['cat_name']))
 {
-    $_POST[cat_name] = savesql($_POST[cat_name]);
+    $_POST['cat_name'] = savesql($_POST['cat_name']);
+    $_POST['cat_type'] = intval($_POST['cat_type']);
+    $_POST['cat_visibility'] = intval($_POST['cat_visibility']);
 
     $time = time();
-    mysql_query("INSERT INTO ".$global_config_arr[pref]."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
-                 VALUES ('".$_POST[cat_name]."',
-                         '".$_POST[cat_type]."',
-                         '".$_POST[cat_visibility]."',
+    mysql_query('INSERT INTO '.$global_config_arr['pref']."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
+                 VALUES ('".$_POST['cat_name']."',
+                         '".$_POST['cat_type']."',
+                         '".$_POST['cat_visibility']."',
                          '$time')", $FD->sql()->conn() );
-    systext("Kategorie wurde hinzugefügt");
+    systext('Kategorie wurde hinzugefügt');
 }
 
 //////////////////////////////
@@ -55,15 +57,15 @@ else
                                 </td>
                                 <td class="config" valign="top">
                                     <select name="cat_visibility" size="1">
-                                        <option value="1">vollständig sichtbar</option>
-                                        <option value="2">nicht in Auswahl verfügbar</option>
+                                        <option value="1">vollst&auml;ndig sichtbar</option>
+                                        <option value="2">nicht in Auswahl verf&uuml;gbar</option>
                                         <option value="0">nicht aufrufbar</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input class="button" type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                         </table>

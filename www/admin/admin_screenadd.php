@@ -2,7 +2,7 @@
 /////////////////////
 //// Config laden ///
 /////////////////////
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // Screenshot Konfiguration auslesen
+$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_config');  // Screenshot Konfiguration auslesen
 $config_arr = mysql_fetch_assoc($index);
 
 /////////////////////////////
@@ -13,44 +13,44 @@ if (isset($_POST['sended']))
 {
     settype($_POST['catid'], 'integer');
     $log = array();
-    
+
     for ($i=1; $i<=5; $i++) {
-        if ($_FILES['img'.$i]['name'] != "") {
+        if ($_FILES['img'.$i]['name'] != '') {
             // Insert into DB
             $title = savesql($_POST['title'.$i]);
-            mysql_query("INSERT INTO ".$global_config_arr['pref']."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $FD->sql()->conn() );
+            mysql_query('INSERT INTO '.$global_config_arr['pref']."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $FD->sql()->conn() );
             $id = mysql_insert_id();
-            
+
             // File Operations
-            $upload = upload_img($_FILES['img'.$i], "images/screenshots/", $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
+            $upload = upload_img($_FILES['img'.$i], 'images/screenshots/', $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
             $log[$i][] = upload_img_notice($upload);
-            
+
             // Upload Failed => Delete from DB
             if ($upload != 0) {
-                mysql_query("DELETE FROM ".$global_config_arr['pref']."screen WHERE screen_id = '".$id."'");
-            
+                mysql_query('DELETE FROM '.$global_config_arr['pref']."screen WHERE screen_id = '".$id."'");
+
             // Else create Thumb
             } else {
-                $thumb = create_thumb_from(image_url("images/screenshots/", $id, FALSE, TRUE), $config_arr['screen_thumb_x'], $config_arr['screen_thumb_y']);
+                $thumb = create_thumb_from(image_url('images/screenshots/', $id, FALSE, TRUE), $config_arr['screen_thumb_x'], $config_arr['screen_thumb_y']);
                 $log[$i][] = create_thumb_notice($thumb);
-            }           
-                        
+            }
+           
         }        
     }
-    
-    $systext = "";
+
+    $systext = '';
     foreach ($log as $num => $msg) {
-        $systext .= "<p>Bild ".$num.":<br>";
+        $systext .= '<p>Bild '.$num.':<br>';
         foreach ($msg as $text) {
-            $systext .= "&nbsp;&nbsp;&nbsp;".$text."<br>";
+            $systext .= '&nbsp;&nbsp;&nbsp;'.$text.'<br>';
         }
-        $systext .= "</p>";
+        $systext .= '</p>';
     }
-    
-    if ($systext != "") {
+
+    if ($systext != '') {
         systext($systext);
     } else {
-        systext("Sie müssen schon auch ein Bild auswählen...");        
+        systext('Sie m&uuml;ssen schon auch ein Bild ausw&auml;hlen...');        
     }
 }
 
@@ -70,12 +70,12 @@ echo'
                                 <td class="config">
                                     <select class="input_width" name="catid">
 ';
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 1", $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
 while ($cat_arr = mysql_fetch_assoc($index))
 {
     echo'
-                                        <option value="'.$cat_arr[cat_id].'">
-                                            '.$cat_arr[cat_name].'
+                                        <option value="'.$cat_arr['cat_id'].'">
+                                            '.$cat_arr['cat_name'].'
                                         </option>
     ';
 }
@@ -83,13 +83,13 @@ echo'
                                     </select>
                                 </td>
                             </tr>
-                        </table>                        
+                        </table>
                         <br>
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config">#</td>
                                 <td class="config">
-                                    Bilddateien <span class="small">[max. '.$config_arr[screen_x].' x '.$config_arr[screen_y].' Pixel] [max. '.$config_arr[screen_size].' KB]</span>
+                                    Bilddateien <span class="small">[max. '.$config_arr['screen_x'].' x '.$config_arr['screen_y'].' Pixel] [max. '.$config_arr['screen_size'].' KB]</span>
                                 </td>
                                 <td class="config">Titel</td>
                             </tr>
@@ -112,11 +112,11 @@ echo '
                         </table>
                         <br>
                         <input name="sended" class="button input_width" type="submit" value="Bilder hochladen">
-                        
+
                         <p>
-                            <b>Hinweis:</b> Alle Billder zusammen dürfen nicht größer als '.ini_get("post_max_size").'B sein (Server-Vorgabe).
+                            <b>Hinweis:</b> Alle Billder zusammen d&uuml;rfen nicht gr&ouml;&szlig;er als '.ini_get('post_max_size').'B sein (Server-Vorgabe).
                         </p>
-                        
+
                     </form>
 ';
 ?>
