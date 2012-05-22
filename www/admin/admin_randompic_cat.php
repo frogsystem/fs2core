@@ -8,11 +8,13 @@ if ($_POST['sended'])
 {
     while (list($key, $val) = each($_POST['randompic_cat']))
     {
-        mysql_query("UPDATE ".$global_config_arr[pref]."screen_cat
+        $key = intval($key); //better be safe than sorry
+        $val = intval($val);
+        mysql_query('UPDATE '.$global_config_arr['pref']."screen_cat
                      SET randompic = '$val'
                      WHERE cat_id = '$key'", $FD->sql()->conn() );
     }
-    systext("Einstellungen wurden gespeichert!");
+    systext('Einstellungen wurden gespeichert!');
 }
 
 ////////////////////////
@@ -41,41 +43,41 @@ if ($_POST['sended'])
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_type != 2 order by cat_name asc", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_cat WHERE cat_type != 2 ORDER BY cat_name ASC', $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
-        $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
-        $screen_index = mysql_query("select cat_id from ".$global_config_arr[pref]."screen where cat_id = $cat_arr[cat_id]", $FD->sql()->conn() );
+        $cat_arr['cat_date'] = date('d.m.Y', $cat_arr['cat_date']);
+        $screen_index = mysql_query('SELECT cat_id FROM '.$global_config_arr['pref']."screen where cat_id = $cat_arr[cat_id]", $FD->sql()->conn() );
         $screen_rows = mysql_num_rows($screen_index);
         echo'
-                            <input type="hidden" name="randompic_cat['.$cat_arr[cat_id].']" value="0">
+                            <input type="hidden" name="randompic_cat['.$cat_arr['cat_id'].']" value="0">
                             <tr>
                                 <td class="configthin">
-                                    '.$cat_arr[cat_name].'
+                                    '.$cat_arr['cat_name'].'
                                 </td>
                                 <td class="configthin">
                                     '.$screen_rows.'
                                 </td>
                                 <td class="configthin">';
-                                    switch ($cat_arr[cat_visibility]) {
+                                    switch ($cat_arr['cat_visibility']) {
                                     case 0:
-                                        echo "Nicht aufrufbar";
+                                        echo 'Nicht aufrufbar';
                                         break;
                                     case 1:
-                                        echo "Sichtbar";
+                                        echo 'Sichtbar';
                                         break;
                                     case 2:
-                                       echo "Nicht in Auswahl";
+                                       echo 'Nicht in Auswahl';
                                        break;
                                     }
                                     echo'
                                 </td>
                                 <td class="configthin">
-                                    '.$cat_arr[cat_date].'
+                                    '.$cat_arr['cat_date'].'
                                 </td>
                                 <td class="configthin">
-                                    <input type="checkbox" name="randompic_cat['.$cat_arr[cat_id].']" value="1"';
-                                        if ($cat_arr[randompic] == 1)
+                                    <input type="checkbox" name="randompic_cat['.$cat_arr['cat_id'].']" value="1"';
+                                        if ($cat_arr['randompic'] == 1)
                                           echo ' checked=checked';
                                         echo'
                                     >
