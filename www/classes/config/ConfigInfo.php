@@ -10,16 +10,16 @@
  */
 
 class ConfigInfo extends ConfigData {
-    
+
     // Constructor
     // loading all data
     public function __construct($data) {
-        
+
         // set start data
         $this->config = $data;
 
         // set canonical paramters default to null (= no paramters)
-        $this->setConfig("canonical", null);
-    }  
+        $this->setConfig('canonical', null);
+    }
 }
 ?>
