@@ -63,7 +63,7 @@
   */
   function strangeCase($input)
   {
-    $sub = substr($title, 0, 3);
+    $sub = substr($input, 0, 3);
     $case_profile = 0;
     for($i=0; $i<3; $i=$i+1)
     {
