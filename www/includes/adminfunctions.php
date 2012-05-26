@@ -33,7 +33,7 @@ function get_timezones () {
 //////////////////////////////////
 //// create content container ////
 //////////////////////////////////
-function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = "width:100%;", $TOP_STYLE = FALSE, $CONTENT_STYLE = FALSE)
+function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = 'width:100%;', $TOP_STYLE = FALSE, $CONTENT_STYLE = FALSE)
 {
     $top_style = ( $TOP_STYLE === FALSE ? '' : ' style="'.$TOP_STYLE.'"' );
     $content_style = ( $CONTENT_STYLE === FALSE ? '' : ' style="'.$CONTENT_STYLE.'"' );
@@ -163,9 +163,9 @@ function noscript_nohidden ()
 
 function add_zero ( $FIGURE )
 {
-    settype ( $FIGURE, "integer" );
+    settype ( $FIGURE, 'integer' );
     if ( $FIGURE >= 0 && $FIGURE < 10 ) {
-        $FIGURE = "0".$FIGURE;
+        $FIGURE = '0'.$FIGURE;
     }
         return $FIGURE;
 }
@@ -179,19 +179,19 @@ function get_article_urls ()
     global $global_config_arr;
     global $FD;
     
-        $index = mysql_query ( "
+        $index = mysql_query ( '
                                                         SELECT
                                                                 article_url
                                                         FROM
-                                                                ".$global_config_arr['pref']."articles
-        ", $FD->sql()->conn() );
-        
+                                                                '.$global_config_arr['pref'].'articles
+        ', $FD->sql()->conn() );
+
         while ( $result = mysql_fetch_assoc ( $index ) ) {
-                if ( $result['article_url'] != "" ) {
+                if ( $result['article_url'] != '' ) {
                         $url_arr[] = $result['article_url'];
                 }
         }
-        
+
         return $url_arr;
 }
 
@@ -201,25 +201,25 @@ function get_article_urls ()
 
 function color_list_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_ID )
 {
-        if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
-        if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
-        
-        return "colorEntry ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
+        if ( $CHECK_ID != 'this' ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
+        if ( $ELEMENT_ID != 'this' ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
+
+        return 'colorEntry ( '.$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID.' );';
 }
 
-function color_click_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_ID, $RESET = FALSE, $RESETCOLOR = "transparent" )
+function color_click_entry ( $CHECK_ID, $DEFAULTCOLOR, $CHECKEDCOLOR, $ELEMENT_ID, $RESET = FALSE, $RESETCOLOR = 'transparent' )
 {
-        if ( $CHECK_ID != "this" ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
-        if ( $ELEMENT_ID != "this" ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
+        if ( $CHECK_ID != 'this' ) { $CHECK_ID = "document.getElementById('".$CHECK_ID."')"; }
+        if ( $ELEMENT_ID != 'this' ) { $ELEMENT_ID = "document.getElementById('".$ELEMENT_ID."')"; }
 
-        $js = "createClick ( ".$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID." );";
-        
+        $js = 'createClick ( '.$CHECK_ID.", '".$DEFAULTCOLOR."', '".$CHECKEDCOLOR."', ".$ELEMENT_ID.' );';
+
         if ( $RESET == TRUE ) {
-            $js .= " resetOld ( '".$RESETCOLOR."', last, lastBox, ".$ELEMENT_ID." );";
+            $js .= " resetOld ( '".$RESETCOLOR."', last, lastBox, ".$ELEMENT_ID.' );';
         }
 
-        $js .= " saveLast ( ".$CHECK_ID.", ".$ELEMENT_ID." );";
-        
+        $js .= ' saveLast ( '.$CHECK_ID.', '.$ELEMENT_ID.' );';
+
         return $js;
 }
 
@@ -243,38 +243,38 @@ function color_pre_selected ( $CHECK_ID, $ELEMENT_ID )
 
 function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FALSE )
 {
-    settype ( $D, "integer" );
-    settype ( $M, "integer" );
-    settype ( $Y, "integer" );
-    settype ( $H, "integer" );
-    settype ( $I, "integer" );
-    settype ( $S, "integer" );
-    
+    settype ( $D, 'integer' );
+    settype ( $M, 'integer' );
+    settype ( $Y, 'integer' );
+    settype ( $H, 'integer' );
+    settype ( $I, 'integer' );
+    settype ( $S, 'integer' );
+
     if ($WITHOUT_MKTIME !== TRUE) {
-           
+
         $new_date = mktime ( $H, $I, $S, $M, $D, $Y );
-            
-        $savedate_arr['d'] = date ( "d", $new_date );
-        $savedate_arr['m'] = date ( "m", $new_date );
-        $savedate_arr['y'] = date ( "Y", $new_date );
-        $savedate_arr['h'] = date ( "H", $new_date );
-        $savedate_arr['i'] = date ( "i", $new_date );
-        $savedate_arr['s'] = date ( "s", $new_date );
-    
+
+        $savedate_arr['d'] = date ( 'd', $new_date );
+        $savedate_arr['m'] = date ( 'm', $new_date );
+        $savedate_arr['y'] = date ( 'Y', $new_date );
+        $savedate_arr['h'] = date ( 'H', $new_date );
+        $savedate_arr['i'] = date ( 'i', $new_date );
+        $savedate_arr['s'] = date ( 's', $new_date );
+
     } else {
-        
+
         $savedate_arr['d'] = $D;
         $savedate_arr['m'] = $M;
         $savedate_arr['y'] = $Y;
         $savedate_arr['h'] = $H;
         $savedate_arr['i'] = $I;
         $savedate_arr['s'] = $S;
-        
+
         $savedate_arr = array_map(function ($ele) {
             if ($ele == 0)
-                return "";
+                return '';
         return sprintf('%02d', $ele);
-            
+
         }, $savedate_arr);
     }
 
@@ -361,17 +361,17 @@ function getreadonly ( $VALUE, $COMPAREWITH )
 //// Systemmeldung ausgeben ////
 ////////////////////////////////
 
-function get_systext ($MESSAGE, $TITLE = false, $COLOR = "green", $IMAGE = false)
+function get_systext ($MESSAGE, $TITLE = false, $COLOR = 'green', $IMAGE = false)
 {
     global $TEXT;
 
     if (!$TITLE)
-        $TITLE = $TEXT['admin']->get("info");
+        $TITLE = $TEXT['admin']->get('info');
 
     // TRUE was old for "red"
-    $COLOR = $COLOR === TRUE ? "red" : $COLOR;
+    $COLOR = $COLOR === TRUE ? 'red' : $COLOR;
     // FALSE was old for "green"
-    $COLOR = $COLOR === FALSE ? "green" : $COLOR;
+    $COLOR = $COLOR === FALSE ? 'green' : $COLOR;
 
 
     if ($IMAGE == false) {
@@ -395,7 +395,7 @@ function get_systext ($MESSAGE, $TITLE = false, $COLOR = "green", $IMAGE = false
     }
 }
 
-function systext ( $MESSAGE, $TITLE = FALSE, $COLOR = "green", $IMAGE = FALSE )
+function systext ( $MESSAGE, $TITLE = FALSE, $COLOR = 'green', $IMAGE = FALSE )
 {
     echo get_systext ( $MESSAGE, $TITLE, $COLOR, $IMAGE );
 }
@@ -421,7 +421,7 @@ function js_timebutton ( $DATA, $CAPTION, $CLASS = "button" )
 //// JS Now-Button erzeugen ////
 ////////////////////////////////
 
-function js_nowbutton ( $DATA, $CAPTION, $CLASS = "button" )
+function js_nowbutton ( $DATA, $CAPTION, $CLASS = 'button' )
 {
         $template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
 
@@ -430,15 +430,15 @@ function js_nowbutton ( $DATA, $CAPTION, $CLASS = "button" )
         }
         unset ( $value );
 
-        $value[] = "getCurDate()";
-        $value[] = "getCurMonth()";
-        $value[] = "getCurYear()";
-        $value[] = "getCurHours()";
-        $value[] = "getCurMinutes()";
-        $value[] = "getCurSeconds()";
+        $value[] = 'getCurDate()';
+        $value[] = 'getCurMonth()';
+        $value[] = 'getCurYear()';
+        $value[] = 'getCurHours()';
+        $value[] = 'getCurMinutes()';
+        $value[] = 'getCurSeconds()';
 
         for ( $i = 0; $i < count ( $id ) && $i < 6; $i++ ) {
-                $template .= "document.getElementById('".$id[$i]."').value=".$value[$i].";";
+                $template .= "document.getElementById('".$id[$i]."').value=".$value[$i].';';
         }
 
     $template .= '">';
@@ -450,7 +450,7 @@ function js_nowbutton ( $DATA, $CAPTION, $CLASS = "button" )
 //// JS Now-Button erzeugen ////
 ////////////////////////////////
 
-function get_datebutton($DATA, $CAPTION, $CLASS = "button")
+function get_datebutton($DATA, $CAPTION, $CLASS = 'button')
 {
     $template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="$(\'#'.$DATA[0].'\').data(\'dateinput\').setValue(new Date('.$DATA[1].'));">';
     return $template;
@@ -490,30 +490,30 @@ function putintopost ($ARRAY)
 //// Create textarea        ////
 ////////////////////////////////
 
-function create_editor($name, $text="", $width="", $height="", $class="", $do_smilies=true)
+function create_editor($name, $text='', $width='', $height='', $class='', $do_smilies=true)
 {
     global $global_config_arr;
     global $FD;
 
-    if ($name != "") {
+    if ($name != '') {
         $name2 = 'name="'.$name.'" id="'.$name.'"';
     } else {
         return false;
     }
 
-    if ( $width != "" && is_int ( $width ) ) {
+    if ( $width != '' && is_int ( $width ) ) {
         $width2 = 'width:'.$width.'px;';
-    } elseif ( $width != "" ) {
+    } elseif ( $width != '' ) {
         $width2 = 'width:'.$width.';';
     }
 
-    if ($height != "" && is_int($height)) {
+    if ($height != '' && is_int($height)) {
         $height2 = 'height:'.$height.'px;';
-    } elseif ( $height != "" ) {
+    } elseif ( $height != '' ) {
         $height2 = 'height:'.$height.';';
     }
 
-    if ($class != "") {
+    if ($class != '') {
         $class2 = 'class="nomonospace '.$class.'"';
     } else {
         $class2 = 'class="nomonospace"';
@@ -521,7 +521,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
 
     $style = $name2.' '.$class2.' style="'.$width2.' '.$height2.'"';
 
-  $smilies = "";
+  $smilies = '';
   if ($do_smilies == true)
   {
     $smilies = '
@@ -534,7 +534,7 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'smilies ORDER by `order` ASC LIMIT 0, 10', $FD->sql()->conn() );
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
-        $smilie_arr['url'] = image_url("images/smilies/", $smilie_arr['id'], false);
+        $smilie_arr['url'] = image_url('images/smilies/', $smilie_arr['id'], false);
 
         $smilie_template = '<td><img src="'.$smilie_arr['url'].'" alt="'.$smilie_arr['replace_string'].'" onClick="insert(\''.$name.'\', \''.$smilie_arr['replace_string'].'\', \'\')" class="editor_smilies" /></td>';
 
@@ -559,28 +559,28 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
     $smilies .= '</table></fieldset></td>';
   }
   
-    $buttons = "";
-    $buttons .= create_editor_button_new('admin/editor/b.jpg', "B", "fett", "insert('$name', '[b]', '[/b]')");
-    $buttons .= create_editor_button_new('admin/editor/i.jpg', "I", "kursiv", "insert('$name', '[i]', '[/i]')");
-    $buttons .= create_editor_button_new('admin/editor/u.jpg', "U", "unterstrichen", "insert('$name','[u]','[/u]')");
-    $buttons .= create_editor_button_new('admin/editor/s.jpg', "S", "durgestrichen", "insert('$name', '[s]', '[/s]')");
+    $buttons = '';
+    $buttons .= create_editor_button_new('admin/editor/b.jpg', 'B', 'fett', "insert('$name', '[b]', '[/b]')");
+    $buttons .= create_editor_button_new('admin/editor/i.jpg', 'I', 'kursiv', "insert('$name', '[i]', '[/i]')");
+    $buttons .= create_editor_button_new('admin/editor/u.jpg', 'U', 'unterstrichen', "insert('$name','[u]','[/u]')");
+    $buttons .= create_editor_button_new('admin/editor/s.jpg', 'S', 'durgestrichen', "insert('$name', '[s]', '[/s]')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/center.jpg', "CENTER", "zentriert", "insert('$name', '[center]', '[/center]')");
+    $buttons .= create_editor_button_new('admin/editor/center.jpg', 'CENTER', 'zentriert', "insert('$name', '[center]', '[/center]')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/font.jpg', "FONT", "Schriftart", "insert_com('$name', 'font', 'Bitte gib die gewünschte Schriftart ein:', '')");
-    $buttons .= create_editor_button_new('admin/editor/color.jpg', "COLOR", "Schriftfarbe", "insert_com('$name', 'color', 'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein:', '')");
-    $buttons .= create_editor_button_new('admin/editor/size.jpg', "SIZE", "Schriftgröße", "insert_com('$name', 'size', 'Bitte gib die gewünschte Schriftgröße (Zahl von 0-7) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/font.jpg', 'FONT', 'Schriftart', "insert_com('$name', 'font', 'Bitte gib die gewünschte Schriftart ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/color.jpg', 'COLOR', 'Schriftfarbe', "insert_com('$name', 'color', 'Bitte gib die gewünschte Schriftfarbe (englisches Wort) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/size.jpg', 'SIZE', 'Schriftgröße', "insert_com('$name', 'size', 'Bitte gib die gewünschte Schriftgröße (Zahl von 0-7) ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/img.jpg', "IMG", "Bild einfügen", "insert_mcom('$name', '[img]', '[/img]', 'Bitte gib die URL zu der Grafik ein:', 'http://')");
-    $buttons .= create_editor_button_new('admin/editor/cimg.jpg', "CIMG", "Content-Image einfügen", "insert_mcom('$name', '[cimg]', '[/cimg]', 'Bitte gib den Namen des Content-Images (mit Endung) ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/img.jpg', 'IMG', 'Bild einfügen', "insert_mcom('$name', '[img]', '[/img]', 'Bitte gib die URL zu der Grafik ein:', 'http://')");
+    $buttons .= create_editor_button_new('admin/editor/cimg.jpg', 'CIMG', 'Content-Image einfügen', "insert_mcom('$name', '[cimg]', '[/cimg]', 'Bitte gib den Namen des Content-Images (mit Endung) ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/url.jpg', "URL", "Link einfügen", "insert_com('$name', 'url', 'Bitte gib die URL ein:', 'http://')");
-    $buttons .= create_editor_button_new('admin/editor/home.jpg', "HOME", "Projektinternen Link einfügen", "insert_com('$name', 'home', 'Bitte gib den projektinternen Verweisnamen ein:', '')");
-    $buttons .= create_editor_button_new('admin/editor/email.jpg', "@", "Email-Link einfügen", "insert_com('$name', 'email', 'Bitte gib die Email-Adresse ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/url.jpg', 'URL', 'Link einfügen', "insert_com('$name', 'url', 'Bitte gib die URL ein:', 'http://')");
+    $buttons .= create_editor_button_new('admin/editor/home.jpg', 'HOME', 'Projektinternen Link einfügen', "insert_com('$name', 'home', 'Bitte gib den projektinternen Verweisnamen ein:', '')");
+    $buttons .= create_editor_button_new('admin/editor/email.jpg', '@', 'Email-Link einfügen', "insert_com('$name', 'email', 'Bitte gib die Email-Adresse ein:', '')");
     $buttons .= create_editor_seperator();
-    $buttons .= create_editor_button_new('admin/editor/code.jpg', "C", "Code-Bereich einfügen", "insert('$name', '[code]', '[/code]')");
-    $buttons .= create_editor_button_new('admin/editor/quote.jpg', "Q", "Zitat einfügen", "insert('$name', '[quote]', '[/quote]')");
-    $buttons .= create_editor_button_new('admin/editor/noparse.jpg', "N", "Nicht umzuwandelnden Bereich einfügen", "insert('$name', '[noparse]', '[/noparse]')");
+    $buttons .= create_editor_button_new('admin/editor/code.jpg', 'C', 'Code-Bereich einfügen', "insert('$name', '[code]', '[/code]')");
+    $buttons .= create_editor_button_new('admin/editor/quote.jpg', 'Q', 'Zitat einfügen', "insert('$name', '[quote]', '[/quote]')");
+    $buttons .= create_editor_button_new('admin/editor/noparse.jpg', 'N', 'Nicht umzuwandelnden Bereich einfügen', "insert('$name', '[noparse]', '[/noparse]')");
 
 
     $textarea = '<table cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px">
@@ -597,10 +597,10 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
                      </tr>
                  </table><br />';
     
-    $textarea = str_replace("{style}", $style, $textarea);
-    $textarea = str_replace("{text}", $text, $textarea);
-    $textarea = str_replace("{buttons}", $buttons, $textarea);
-    $textarea = str_replace("{smilies}", $smilies, $textarea);
+    $textarea = str_replace('{style}', $style, $textarea);
+    $textarea = str_replace('{text}', $text, $textarea);
+    $textarea = str_replace('{buttons}', $buttons, $textarea);
+    $textarea = str_replace('{smilies}', $smilies, $textarea);
 
     return $textarea;
 }
@@ -621,10 +621,10 @@ function create_editor_button($img_url, $alt, $title, $insert)
             <img src="{img_url}" alt="{alt}" title="{title}" />
         </div>
     </td>';
-    $button = str_replace("{img_url}", $global_config_arr[virtualhost].$img_url, $button);
-    $button = str_replace("{alt}", $alt, $button);
-    $button = str_replace("{title}", $title, $button);
-    $button = str_replace("{javascript}", $javascript, $button);
+    $button = str_replace('{img_url}', $global_config_arr['virtualhost'].$img_url, $button);
+    $button = str_replace('{alt}', $alt, $button);
+    $button = str_replace('{title}', $title, $button);
+    $button = str_replace('{javascript}', $javascript, $button);
 
     return $button;
 }
@@ -644,10 +644,10 @@ function create_editor_button_new($img_url, $alt, $title, $insert)
             <img border="0" src="img/null.gif" alt="{alt}">
         </a>
     </td>';
-    $button = str_replace("{img_url}", $global_config_arr['virtualhost'].$img_url, $button);
-    $button = str_replace("{alt}", $alt, $button);
-    $button = str_replace("{title}", $title, $button);
-    $button = str_replace("{javascript}", $javascript, $button);
+    $button = str_replace('{img_url}', $global_config_arr['virtualhost'].$img_url, $button);
+    $button = str_replace('{alt}', $alt, $button);
+    $button = str_replace('{title}', $title, $button);
+    $button = str_replace('{javascript}', $javascript, $button);
 
     return $button;
 }
@@ -679,18 +679,18 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
     }
     if ( $INSERT == TRUE ) {
         $insert_link = 'javascript:insert(\''.$FORM_ID.'\',\''.$TITLE.'\',\'\');';
-        $insert_text = "*klicken*";
+        $insert_text = '*klicken*';
     } else {
         $insert_link = '#?';
-        $insert_text = "";   
+        $insert_text = '';
     }
     if ( $SHOW_TITLE == TRUE ) {
-        $first_title = $TITLE."";
+        $first_title = $TITLE.'';
     }
     if ( $BOLD_TITLE == TRUE ) {
-        $second_title = " <b>".$TITLE."</b>";
+        $second_title = ' <b>'.$TITLE.'</b>';
     } else {
-        $second_title = "&nbsp;".$TITLE;
+        $second_title = '&nbsp;'.$TITLE;
     }
 
     $template = $span_start.'<a class="tooltip" href="'.$insert_link.'">'.$first_title.'<span><img class="atright" border="0" alt="-&gt;" src="icons/pointer.gif">'.$second_title.'<br>'.$TEXT.'</span></a>'.$span_end.'
@@ -716,9 +716,9 @@ function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
         );
     } else {
         $page_data = array(
-            'title' => $TEXT['menu']->get("admin_error_page_title"),
-            'file'  => "admin_403.php",
-            'menu'  => "error"
+            'title' => $TEXT['menu']->get('admin_error_page_title'),
+            'file'  => 'admin_403.php',
+            'menu'  => 'error'
         );
     }
     $page_data['created'] = true;
@@ -732,8 +732,8 @@ function get_topmenu ($ACTIVE_MENU)
 {
     global $sql, $TEXT;
 
-    $menu_arr = $sql->get("admin_cp", array("page_id", "page_file"), array('W' => "`group_id` = '-1' AND `page_int_sub_perm` = 0", 'O' => "`page_pos`, `page_file`"));
-    
+    $menu_arr = $sql->get('admin_cp', array('page_id', 'page_file'), array('W' => "`group_id` = '-1' AND `page_int_sub_perm` = 0", 'O' => '`page_pos`, `page_file`'));
+
     $template = '<ul class="topmenu">';
     foreach($menu_arr['data'] as $menu) {
         // check permissions
@@ -742,8 +742,8 @@ function get_topmenu ($ACTIVE_MENU)
             initstr($class);
             if ($ACTIVE_MENU == $menu['page_file'])
                 $class = ' class="selected"';
-            
-            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$TEXT['menu']->get("menu_".$menu['page_file']).'</a></li>';
+
+            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$TEXT['menu']->get('menu_'.$menu['page_file']).'</a></li>';
         }
     }
 
@@ -762,21 +762,21 @@ function check_topmenu_permissions ($MENU_ID)
     global $sql;
 
     $page_arr = $sql->get(
-        array('P' => "admin_cp", 'G' => "admin_groups"),
+        array('P' => 'admin_cp', 'G' => 'admin_groups'),
         array(
-            array('COL' => "page_id", 'FROM' => "P")
+            array('COL' => 'page_id', 'FROM' => 'P')
         ),
         array('W' => "G.`menu_id` = '".$MENU_ID."' AND P.`group_id` = G.`group_id` AND P.`page_int_sub_perm` = 0",
-        'O' => "P.`page_id`")
+        'O' => 'P.`page_id`')
     );
 
-    
+
     foreach($page_arr['data'] as $page) {
         if (has_perm($page['page_id'])) {
             return true;
         }
     }
-    
+
     return false;
 }
 
@@ -788,8 +788,8 @@ function get_leftmenu ($ACTIVE_MENU, $GO)
     global $sql;
 
     // get data from db
-    $group_arr = $sql->get("admin_groups", array("group_id"), array('W' => "`menu_id` = '".$ACTIVE_MENU."' AND `group_id` NOT IN ('0', '-1')", 'O' => "`group_pos`"));
-    
+    $group_arr = $sql->get('admin_groups', array('group_id'), array('W' => "`menu_id` = '".$ACTIVE_MENU."' AND `group_id` NOT IN ('0', '-1')", 'O' => '`group_pos`'));
+
     // get template
     initstr($template);
     foreach($group_arr['data'] as $group) {
@@ -807,8 +807,8 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
     global $sql, $TEXT;
 
     // get links from database
-    $page_arr = $sql->get("admin_cp", array("page_id"), array('W' => "`group_id` = '".$GROUP_ID."' AND `page_int_sub_perm` = 0", 'O' => "`page_pos`, `page_id`"));
-    
+    $page_arr = $sql->get('admin_cp', array('page_id'), array('W' => "`group_id` = '".$GROUP_ID."' AND `page_int_sub_perm` = 0", 'O' => '`page_pos`, `page_id`'));
+
     // get template
     initstr($template);
     foreach($page_arr['data'] as $page) {
@@ -818,14 +818,14 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
     // is group first in navi?
     initstr($class);
     if ($IS_FIRST) {
-        $class = " top";
+        $class = ' top';
     }
 
     // put links into group
     if (!empty($template)) {
         $template = '
         <div class="leftmenu'.$class.'">
-            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$TEXT['menu']->get("group_".$GROUP_ID).'</strong>
+            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$TEXT['menu']->get('group_'.$GROUP_ID).'</strong>
             <ul>'.$template.'
             </ul>
         </div>';
@@ -847,11 +847,11 @@ function get_link ($PAGE_ID, $GO)
     // permission ok?
     if (has_perm($PAGE_ID)) {
         // active page?
-        $class = ($PAGE_ID == $GO) ? ' class="selected"' : "";
-                    
-        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$TEXT['menu']->get("page_link_".$PAGE_ID).'</a></li>';
+        $class = ($PAGE_ID == $GO) ? ' class="selected"' : '';
+
+        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$TEXT['menu']->get('page_link_'.$PAGE_ID).'</a></li>';
     } else {
-        return "";
+        return '';
     }
 }
 
@@ -868,7 +868,7 @@ function admin_set_cookie($username, $password)
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("select * from ".$global_config_arr['pref']."user where user_name = '$username'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -885,15 +885,15 @@ function admin_set_cookie($username, $password)
 
         if ($dbisadmin == 1)
         {
-            $dbuserpass = mysql_result($index, 0, "user_password");
-            $dbuserid = mysql_result($index, 0, "user_id");
-            $dbusersalt= mysql_result($index, 0, "user_salt");
+            $dbuserpass = mysql_result($index, 0, 'user_password');
+            $dbuserid = mysql_result($index, 0, 'user_id');
+            $dbusersalt= mysql_result($index, 0, 'user_salt');
             $password = md5 ( $password.$dbusersalt );
-            
+
             if ($password == $dbuserpass)
             {
                 $inhalt = $password . $username;
-                setcookie ("login", $inhalt, time()+2592000, "/");
+                setcookie ('login', $inhalt, time()+2592000, '/');
                 return true;  // Login akzeptiert
             }
             else
@@ -919,7 +919,7 @@ function admin_login($username, $password, $iscookie)
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -936,10 +936,10 @@ function admin_login($username, $password, $iscookie)
 
         if ($dbisadmin == 1)
         {
-            $dbuserpass = mysql_result($index, 0, "user_password");
-            $dbuserid = mysql_result($index, 0, "user_id");
-            $dbusersalt = mysql_result($index, 0, "user_salt");
-            
+            $dbuserpass = mysql_result($index, 0, 'user_password');
+            $dbuserid = mysql_result($index, 0, 'user_id');
+            $dbusersalt = mysql_result($index, 0, 'user_salt');
+
             if ($iscookie===false)
             {
                 $password = md5 ( $password.$dbusersalt );
@@ -947,7 +947,7 @@ function admin_login($username, $password, $iscookie)
 
             if ($password == $dbuserpass)
             {
-                $_SESSION["user_level"] = "authorized";
+                $_SESSION['user_level'] = 'authorized';
                 fillsession($dbuserid);
                 return 0;  // Login akzeptiert
             }
@@ -970,54 +970,54 @@ function admin_login($username, $password, $iscookie)
 function fillsession ($uid) {
     global $global_config_arr, $FD;
     global $sql;
-       
-    $USER_ARR = $sql->getRow("user", array("user_id", "user_name", "user_is_staff", "user_group", "user_group"),
+
+    $USER_ARR = $sql->getRow('user', array('user_id', 'user_name', 'user_is_staff', 'user_group', 'user_group'),
         array('W' => "`user_id` = '".$uid."'")
     );
-    
+
     $_SESSION['user_id'] =  $USER_ARR['user_id'];
     $_SESSION['user_name'] =  $USER_ARR['user_name'];
     $_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
 
     // get user permissions
-    $group_granted = $sql->get("user_permissions", array("perm_id"),
+    $group_granted = $sql->get('user_permissions', array('perm_id'),
         array('W' => "`perm_for_group` = '1' AND `x_id` = '".$USER_ARR['user_group']."' AND `x_id` != '0'")
     );
-    $user_granted = $sql->get("user_permissions", array("perm_id"),
+    $user_granted = $sql->get('user_permissions', array('perm_id'),
         array('W' => "`perm_for_group` = '0' AND `x_id` = '".$USER_ARR['user_id']."' AND `x_id` != '0'")
     );
-    
+
     $fold_perms = function ($arr, $ele) {
         array_push($arr, $ele['perm_id']);
         return $arr;
     };
-    
+
     $group_granted = array_reduce ($group_granted['data'], $fold_perms, array());
     $user_granted = array_reduce ($user_granted['data'], $fold_perms, array());
-    
+
     $granted = array_unique(array_merge($group_granted, $user_granted));
-    
-    
+
+
     $inherited = $sql->get(
-        array('I' => "admin_inherited", 'A' => "admin_cp"),
-        array(array('COL' => "pass_to", 'AS' => "perm_id", 'FROM' => "I")),
+        array('I' => 'admin_inherited', 'A' => 'admin_cp'),
+        array(array('COL' => 'pass_to', 'AS' => 'perm_id', 'FROM' => 'I')),
         array('W' => "A.`group_id`= I.`group_id` AND A.`page_id` IN ('".implode("','", $granted)."')"), true
     );
     $inherited = array_reduce ($inherited['data'], $fold_perms, array());
     $granted = array_unique(array_merge($granted, $inherited));
 
     // pages permissions
-    $permissions = $sql->get("admin_cp", array("page_id"),
-        array('W' => "`group_id` != -1", 'O' => "`page_id`")
+    $permissions = $sql->get('admin_cp', array('page_id'),
+        array('W' => '`group_id` != -1', 'O' => '`page_id`')
     );
 
     foreach ($permissions['data'] as $permission) {
         $permission = $permission['page_id'];
-        
+
         // admin
         if($USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1) {
             $_SESSION[$permission] = 1;
-        
+
         // user
         } else { 
             if (in_array($permission, $granted)) {
@@ -1027,17 +1027,17 @@ function fillsession ($uid) {
             }
         }
     }
-    
+
     // startpage permissions
-    $permissions = $sql->get("admin_cp", array("page_id", "page_file"),
-        array('W' => "`group_id` = -1", 'O' => "`page_id`")
+    $permissions = $sql->get('admin_cp', array('page_id', 'page_file'),
+        array('W' => '`group_id` = -1', 'O' => '`page_id`')
     );
 
     foreach ($permissions['data'] as $permission) {       
         // admin
         if($USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1) {
             $_SESSION[$permission['page_id']] = 1;
-        
+
         // user
         } else {
             if (check_topmenu_permissions($permission['page_file'])) {

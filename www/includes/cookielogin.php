@@ -6,32 +6,32 @@ function user_login ( $username, $password, $iscookie )
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."user WHERE user_name = '".$username."'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '".$username."'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0) {
-        $_GET['go'] = "login";
+        $_GET['go'] = 'login';
         if ( $iscookie ) {
             delete_cookie ();
         }
         return 1;  // Fehlercode 1: User nicht vorhanden
     } else {
-        $dbuserpass = mysql_result($index, 0, "user_password");
-        $dbuserid = mysql_result($index, 0, "user_id");
-        $username = mysql_result($index, 0, "user_name");
-        $usersalt = mysql_result($index, 0, "user_salt");
+        $dbuserpass = mysql_result($index, 0, 'user_password');
+        $dbuserid = mysql_result($index, 0, 'user_id');
+        $username = mysql_result($index, 0, 'user_name');
+        $usersalt = mysql_result($index, 0, 'user_salt');
 
         if ($iscookie===false) {
             $password = md5 ( $password.$usersalt );
         }
 
         if ($password == $dbuserpass) {
-            $_SESSION["user_level"] = "loggedin";
-            $_SESSION["user_id"] = $dbuserid;
-            $_SESSION["user_name"] = $username;
+            $_SESSION['user_level'] = 'loggedin';
+            $_SESSION['user_id'] = $dbuserid;
+            $_SESSION['user_name'] = $username;
             return 0;  // Login akzeptiert
         }
         else {
-            $_GET['go'] = "login";
+            $_GET['go'] = 'login';
             if ( $iscookie ) {
                 delete_cookie ();
             }
@@ -57,15 +57,15 @@ function set_cookie ( $username, $password )
     else
     {
 
-        $dbuserpass = mysql_result($index, 0, "user_password");
-        $dbuserid = mysql_result($index, 0, "user_id");
-        $dbusersalt= mysql_result($index, 0, "user_salt");
+        $dbuserpass = mysql_result($index, 0, 'user_password');
+        $dbuserid = mysql_result($index, 0, 'user_id');
+        $dbusersalt= mysql_result($index, 0, 'user_salt');
         $password = md5 ( $password.$dbusersalt );
 
         if ($password == $dbuserpass)
         {
             $inhalt = $password . $username;
-            setcookie ("login", $inhalt, time()+2592000, "/" );
+            setcookie ('login', $inhalt, time()+2592000, '/' );
             return true;  // Login akzeptiert
         }
         else
@@ -78,7 +78,7 @@ function set_cookie ( $username, $password )
 
 function delete_cookie ()
 {
-    setcookie ( "login", "", time()-1000, "/" );
+    setcookie ( 'login', '', time()-1000, '/' );
 }
 
 
@@ -96,7 +96,7 @@ function logout_user()
 /////////////////////////
 if ( isset($_POST['login']) && $_POST['login'] == 1 ) {
     $FD->setConfig('login_state', user_login ( $_POST['username'], $_POST['userpassword'], FALSE));
-} elseif ( isset($_COOKIE['login']) && isset($_GET['go']) && $_GET['go'] != "logout" && $_SESSION['user_level'] != "loggedin") {
+} elseif ( isset($_COOKIE['login']) && isset($_GET['go']) && $_GET['go'] != 'logout' && $_SESSION['user_level'] != 'loggedin') {
     $userpassword = substr ( $_COOKIE['login'], 0, 32 );
     $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
     $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));
@@ -110,7 +110,7 @@ if ( isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $global_config_
 ////////////////
 //// Logout ////
 ////////////////
-if ( isset($_GET['go']) && $_GET['go'] == "logout" && $_POST['go'] != "login" ) {
+if ( isset($_GET['go']) && $_GET['go'] == 'logout' && $_POST['go'] != 'login' ) {
     logout_user();
 }
 ?>

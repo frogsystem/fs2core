@@ -11,22 +11,22 @@ function url ($go, $args = array(), $full = false) {
         case 'seo':
             $url = url_seo($go, $args);
             break;
-            
+
         default:
             // check for empty go
             if (!empty($go))
                 $args = array('go' => $go)+$args;
-                
+
             $url = http_build_query($args, 'p', '&amp;');
             if (!empty($url))
                 $url = '?'.$url;
             break;
     }
-    
+
     // create full url?
     if ($full)
         $url = $FD->cfg('virtualhost').$url;
-    
+
     // return url
     return $url;
 }
@@ -64,7 +64,7 @@ function get_page_nav ( $PAGE, $NUM_OF_PAGES, $PER_PAGE, $NUM_OF_ENTRIES, $URL_T
     $template = str_replace ( '{..total_pages..}', $NUM_OF_PAGES, $template );
     $template = str_replace ( '{..prev..}', $template_prev, $template );
     $template = str_replace ( '{..next..}', $template_next, $template );
-    
+
     return $template;
 }
 
@@ -137,7 +137,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$TEXT['frontend']->get('group_image_of').' '.$group_arr['user_group_name'].'">' : '' );
 
         unset ( $title_style );
-        $title_style .= ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : "" );
+        $title_style .= ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : '' );
         switch ( $group_arr['user_group_highlight'] ) {
             case 1:
                 $highlight_css = 'font-weight:bold;';
@@ -201,7 +201,7 @@ function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
     global $FD, $global_config_arr;
     static $navi;
     static $i = 0;
-    
+
     $i++;
     $data[$CAT_ID] = mysql_query ( '
         SELECT *
@@ -317,15 +317,15 @@ function get_random_pic ()
                                 AND C.`cat_id` = S.`cat_id`
                                 LIMIT '.$rand.',1
         ', $FD->sql()->conn() );
-        
+
         $dbscreen['id'] = mysql_result ( $index, 0, 'screen_id' );
         settype ( $dbscreen['id'], 'integer' );
         $dbscreen['caption'] = stripslashes ( mysql_result ( $index, 0, 'screen_name' ) );
-        $dbscreen['cat_id'] = mysql_result ( $index, 0, "cat_id" );
+        $dbscreen['cat_id'] = mysql_result ( $index, 0, 'cat_id' );
         settype ( $dbscreen['cat_id'], 'integer' );
         $dbscreen['cat_title'] = stripslashes ( mysql_result ( $index, 0, 'cat_name' ) );
         $dbscreen['type'] = 2;
-        
+
         return $dbscreen;
     } else {
         return FALSE;
@@ -352,12 +352,12 @@ function get_pagenav_start ( $NUM_OF_ENTRIES, $ENTRIES_PER_PAGE, $START )
     $PAGENAV_DATA['old_start'] = $OLDSTART;
     $PAGENAV_DATA['cur_start'] = $START;
     $PAGENAV_DATA['new_start'] = $NEWSTART;
-    
+
     if ( $START > 1 ) { $PAGENAV_DATA['old_start_exists'] = TRUE; }
     else { $PAGENAV_DATA['old_start_exists'] = FALSE; }
     if ( ( $START + $ENTRIES_PER_PAGE ) < $NUM_OF_ENTRIES ) { $PAGENAV_DATA['newpage_exists'] = TRUE; }
     else { $PAGENAV_DATA['newpage_exists'] = FALSE; }
-    
+
     return $PAGENAV_DATA;
 }
 
@@ -415,7 +415,7 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
         $query = 'WHERE ';
     }
     $query .= $or_query . $and_query;
-    
+
     return $query;
 }
 
@@ -442,7 +442,7 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
     }
 
     $sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $global_config_arr['spam'] );
-    $sicherheits_eingabe = str_replace ("=", "", $sicherheits_eingabe );
+    $sicherheits_eingabe = str_replace ('=', '', $sicherheits_eingabe );
 
     if ( $ACTIVATION == 0 ) {
         return TRUE;
@@ -467,9 +467,9 @@ function is_in_staff ( $USER_ID )
 {
     global $global_config_arr;
     global $FD;
-    
+
     settype ( $USER_ID, 'integer' );
-    
+
     if ( $USER_ID ) {
         $index = mysql_query ( '
                                 SELECT user_id, user_is_staff, user_is_admin
@@ -521,7 +521,7 @@ function get_template ( $TEMPLATE_NAME )
 {
     global $global_config_arr;
     global $FD;
-    
+
     $index = mysql_query ( '
                             SELECT `'.$TEMPLATE_NAME.'`
                             FROM '.$global_config_arr['pref']."template
@@ -596,7 +596,7 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
 //// Create textarea        ////
 ////////////////////////////////
 
-function create_textarea($name, $text="", $width="", $height="", $class="", $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
+function create_textarea($name, $text='', $width='', $height='', $class='', $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
 {
     global $global_config_arr;
     global $FD;
@@ -606,15 +606,15 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
     } else {
         return false;
     }
-    
+
     if ($width != '') {
         $width2 = 'width:'.$width.'px;';
     }
-    
+
     if ($height != '') {
         $height2 = 'height:'.$height.'px';
     }
-    
+
     if ($class != '') {
         $class2 = 'class="'.$class.'"';
     }
@@ -625,10 +625,10 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
     $smilies_table = '
           <table cellpadding="2" cellspacing="0" border="0">';
 
-    $index = mysql_query ( ' SELECT * FROM `'.$global_config_arr['pref'].'editor_config` ', $FD->sql()->conn() );
+    $index = mysql_query ( 'SELECT * FROM `'.$global_config_arr['pref'].'editor_config`', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc ( $index );
     $config_arr['num_smilies'] = $config_arr['smilies_rows']*$config_arr['smilies_cols'];
-            
+
     $zaehler = 0;
     $index = mysql_query ( '
                             SELECT *
@@ -641,7 +641,7 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
         $smilie_arr['url'] = image_url ( 'images/smilies/', $smilie_arr['id'] );
         $smilie_template = '<td><img src="'.$smilie_arr['url'].'" alt="'.$smilie_arr['replace_string'].'" onClick="insert(\''.$name.'\', \''.$smilie_arr['replace_string'].'\', \'\')" class="editor_smilies"></td>';
         $zaehler += 1;
-        
+
         switch ( $zaehler )
         {
             case $config_arr['smilies_cols'] == 1:
@@ -665,7 +665,7 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
         }
     }
     $smilies_table .= '</table>';
-    
+
     // Get Smilie Template
     $smilies = new template();
     $smilies->setFile('0_editor.tpl');
@@ -679,7 +679,7 @@ function create_textarea($name, $text="", $width="", $height="", $class="", $all
   }
 
 $buttons = '';
-  
+
 if ($all==true OR $fs_b==1) {
   $buttons .= create_textarea_button('bold.gif', 'B', 'fett', "insert('$name', '[b]', '[/b]')");
 }
@@ -768,12 +768,12 @@ if ($all==true OR $fs_noparse==1) {
     $textarea = new template();
     $textarea->setFile('0_editor.tpl');
     $textarea->load('BODY');
-    
+
     $textarea->tag('style', $style );
     $textarea->tag('text', $text );
     $textarea->tag('buttons', $buttons );
     $textarea->tag('smilies', $smilies );
-    
+
     $textarea = $textarea->display ();
 
     return $textarea;
@@ -793,14 +793,14 @@ function create_textarea_button($img_file_name, $alt, $title, $insert)
     $button = new template();
     $button->setFile('0_editor.tpl');
     $button->load('BUTTON');
-    
+
     $button->tag('img_file_name', $img_file_name );
     $button->tag('alt', $alt );
     $button->tag('title', $title );
     $button->tag('javascript', $javascript );
-    
+
     $button = $button->display ();
-    
+
     return $button;
 }
 
@@ -828,12 +828,12 @@ function create_textarea_seperator()
 function sys_message ($TITLE, $MESSAGE, $STATUS = "")
 {
     global $FD, $global_config_arr;
-       
+
     //check for addition HTTP Status
 	if (!empty($STATUS) && false !== ($text = http_response_text($STATUS)))
 		header($text, true, $STATUS);
-    
-    
+
+
     $template = new template();
 
     $template->setFile ( '0_general.tpl' );
@@ -878,7 +878,7 @@ function forward_message ( $TITLE, $MESSAGE, $URL, $STATUS = "")
     $template->tag ( 'message', $MESSAGE );
     $template->tag ( 'forward_url', $URL );
     $template->tag ( 'forward_time', $FD->cfg('auto_forward') );
-    
+
     $template = $template->display ();
     return $forward_script.$template;
 }
@@ -1132,11 +1132,11 @@ function tab2space($TEXT, $tabsize = 4, $space = '&nbsp;')
 function savesql ( $TEXT )
 {
     global $FD, $global_config_arr;
-    
+
     $TEXT = unquote($TEXT);
     if (SLASH)
          $TEXT = addslashes($TEXT);
-    
+
     if ( !is_numeric ( $TEXT ) ) {
         $TEXT = mysql_real_escape_string($TEXT, $FD->sql()->conn() );
     }
@@ -1150,10 +1150,10 @@ function savesql ( $TEXT )
 function unslash($TEXT)
 {
     global $FD;
-    
+
     if ($FD->env('slash'))
          $TEXT = stripslashes($TEXT);
-         
+
     return $TEXT;
 }
 
@@ -1165,7 +1165,7 @@ function unslash($TEXT)
 function unquote ($TEXT)
 {
     global $global_config_arr;
-    
+
     if (get_magic_quotes_gpc()) {
         $TEXT = stripslashes($TEXT);
     }
@@ -1181,12 +1181,12 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
     include_once ( FS2_ROOT_PATH . 'includes/fscode.php');   
     $flags = array('html' => $html, 'paragraph' => $para, 
     );
-    
+
     if ($all)
         $fscodes = get_all_fscodes();
     else {
         $fscodes = array();
-        
+
         if ($do_b==1)           array_push($fscodes, 'b');
         if ($do_i==1)           array_push($fscodes, 'i');
         if ($do_u==1)           array_push($fscodes, 'u');
@@ -1208,16 +1208,16 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         if ($do_player==1)      array_push($fscodes, 'player');
         if ($do_smilies==1)     array_push($fscodes, 'smilies');
     }
-    
+
     return parse_fscode(stripslashes($text), $flags, $fscodes);
-    
-    
-    
+
+
+
     // OLD
     /*
-    
+
         $bbcode = new StringParser_BBCode ();
-        
+
         $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
 
         if ($html==false) {
@@ -1225,7 +1225,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
             $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
         }
         $bbcode->addParser (array ('code'), 'killhtml');
-        
+
         $bbcode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'stripslashes');
         if ($all==true) {
               $bbcode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'html_nl2br');
@@ -1318,7 +1318,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
             $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
             $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
         }
-        
+
         if ($all==true OR $do_quote==1) {
             $bbcode->addCode ('quote', 'callback_replace', 'do_bbcode_quote', array (),
                               'block', array ('listitem', 'block', 'inline'), array ('link'));
