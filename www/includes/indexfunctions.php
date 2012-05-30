@@ -61,7 +61,7 @@ function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
 
 	// Create jQuery-Lines
     $template_jquery = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery.min.js"></script>';
-    $template_jquery_ui = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-ui.min.js"></script>';    
+    $template_jquery_ui = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-ui.min.js"></script>';
 
     // Get HTML-Matrix
     $theTemplate->load('MATRIX');
@@ -166,7 +166,7 @@ function get_js ($PATH_PREFIX)
     '));
 
     // Filter special Files
-    $files_without_special = array_diff ($files, $files_go_js);    
+    $files_without_special = array_diff ($files, $files_go_js);
 
     // Create Template
     initstr($template_js);
@@ -179,7 +179,7 @@ function get_js ($PATH_PREFIX)
     $go_js = "go_".$global_config_arr['goto'].'.js';
     if (in_array($go_js, $files_go_js)) {
         $template_js .= '
-                <script type="text/javascript" src="'. $link_path . "/" . $go_js .'"></script>';        
+                <script type="text/javascript" src="'. $link_path . "/" . $go_js .'"></script>';
     }
 
     // Return Template
@@ -295,7 +295,7 @@ function get_canonical()
         $activeparams = array();
 
         if (count($canonparams) > 0) {
-            ksort($canonparams);	
+            ksort($canonparams);
             foreach ($canonparams as $key)
             {
                 // List only canoncial parameters with any value
@@ -321,7 +321,7 @@ function get_content ($GOTO)
 
     // Display Content
     initstr($template);
-    
+
     // Script-File in /data/
     if (file_exists('data/'.$GOTO.'.php')) {
         include(FS2_ROOT_PATH . 'data/'.$GOTO.'.php');
@@ -379,7 +379,7 @@ function tpl_functions_init ($TEMPLATE)
 function tpl_functions ($TEMPLATE, $COUNT, $filter=array(), $loopend_escape = true)
 {
     global $global_config_arr, $sql;
-    
+
     // hardcoded functions
     // this is the only way atm
     $functions = array(
@@ -424,14 +424,14 @@ function call_tpl_function ($functions, $COUNT, $called_function, $loopend_escap
     // call function with arguments
     $replacement = call_user_func($functions[$called_function[0]][0], $called_function[1], $called_function[2], $called_function[3]);
 
-    // only for recursive functions & recursion-counter > 0  
+    // only for recursive functions & recursion-counter > 0
     if($functions[$called_function[0]][1] && $COUNT > 0) {
         $replacement = tpl_functions($replacement, $COUNT-1);
     } else {
-        if ($loopend_escape) 
+        if ($loopend_escape)
             $replacement = escape_tpl_functions($replacement, array_keys($functions));
         else
-            $replacement = remove_tpl_functions($replacement, array_keys($functions));    
+            $replacement = remove_tpl_functions($replacement, array_keys($functions));
     }
     return $replacement;
 }
@@ -603,7 +603,7 @@ function tpl_func_applets($original, $main_argument, $other_arguments)
     }
 
     // Maybe load Applet on demand
-    if ($APP[$main_argument]['applet_include'] != 1 || count($other_arguments) > 0) {   
+    if ($APP[$main_argument]['applet_include'] != 1 || count($other_arguments) > 0) {
         // Return Content
         return load_an_applet($main_argument, $APP[$main_argument]['applet_output'], $other_arguments);
     } else {
@@ -694,7 +694,7 @@ function tpl_func_url($original, $main_argument, $other_arguments)
 
     // compute Arguments
     $other_arguments = !empty($other_arguments) ? explode(' ', $other_arguments) : array();
-    
+
     // check each param
     $params = array(); $full = false; //some default values
     foreach ($other_arguments as $argument) {
@@ -753,7 +753,7 @@ function get_seo () {
                 $_GET['go'] = str_replace("\x1", '-', $_GET['seoq']);
         }
         else {
-            // -- vorhanden => Alles davor ist der go-Parameter, alles dahinter sind weitere Parameter. 
+            // -- vorhanden => Alles davor ist der go-Parameter, alles dahinter sind weitere Parameter.
             // Diese muessen allerdings ein bestimmtes Format einhalten, ansonsten wird auf das richtige Format weitergeleitet
 
             if (!isset($_GET['go']))
@@ -791,13 +791,13 @@ function get_seo () {
         unset($seoparams);
         unset($seoparamstr);
         unset($paramdelim);
-    } 
+    }
     elseif ($numparams > 0) {
         $redirect = true;
     }
 
     unset($_GET['seoq']);
-    unset($_REQUEST['seoq']);    
+    unset($_REQUEST['seoq']);
 
     // Expliziter Aufruf von index.php bzw. indexseo.php => Weiterleitung erzwingen
     if ((!$calledbyrewrite) && (substr($_SERVER["REQUEST_URI"], -1) != '/')) {
@@ -956,7 +956,7 @@ function count_visit ( $GOTO )
         // check if errorpage
         if ( $GOTO != '404' && $GOTO != '403' ) {
                 // save IP & visit
-            $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."iplist WHERE ip = '".$_SERVER['REMOTE_ADDR']."'", $FD->sql()->conn() );
+            $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."iplist WHERE ip = '".savesql($_SERVER['REMOTE_ADDR'])."'", $FD->sql()->conn() );
 
             if ( mysql_num_rows ( $index ) <= 0 ) {
                 mysql_query ( 'UPDATE '.$global_config_arr['pref'].'counter SET visits = visits + 1', $FD->sql()->conn() );
@@ -978,7 +978,7 @@ function save_visitors ()
     global $global_config_arr;
 
     $time = time(); // timestamp
-    $ip = $_SERVER['REMOTE_ADDR']; // IP-Adress
+    $ip = savesql($_SERVER['REMOTE_ADDR']); // IP-Adress
 
         // get user_id or set user_id=0
         if ( isset ( $_SESSION['user_id'] ) && $_SESSION['user_level'] == 'loggedin' ) {
@@ -992,7 +992,7 @@ function save_visitors ()
     mysql_query ( 'DELETE FROM '.$global_config_arr['pref'].'useronline WHERE date < ('.$time.' - 300)', $FD->sql()->conn() );
 
     // save online users
-    $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."useronline WHERE ip='".$_SERVER['REMOTE_ADDR']."'", $FD->sql()->conn() );
+    $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."useronline WHERE ip='".$ip."'", $FD->sql()->conn() );
 
         // update existing users
         if ( mysql_num_rows ( $index ) >= 1 && mysql_result ( $index, 0, 'user_id' ) != $user_id ) {
@@ -1001,7 +1001,7 @@ function save_visitors ()
         if ( mysql_num_rows ( $index ) >= 1 ) {
         mysql_query ( 'UPDATE '.$global_config_arr['pref']."useronline SET date = '".$time."' WHERE ip='".$ip."'", $FD->sql()->conn() );
     } else {
-        mysql_query ( 'INSERT INTO '.$global_config_arr['pref']."useronline (ip, user_id, date) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".$user_id."', '".$time."')", $FD->sql()->conn() );
+        mysql_query ( 'INSERT INTO '.$global_config_arr['pref']."useronline (ip, user_id, date) VALUES ('".$ip."', '".$user_id."', '".$time."')", $FD->sql()->conn() );
     }
 }
 
@@ -1019,6 +1019,7 @@ function save_referer ()
 		$time = time();             // timestamp
 		// save referer
 		$referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
+		$referer = savesql($referer);
 		$index =  mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."counter_ref WHERE ref_url = '".$referer."'", $FD->sql()->conn() );
 
 		if ( mysql_num_rows ( $index ) <= 0 ) {
