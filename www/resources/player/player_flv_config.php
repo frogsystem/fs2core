@@ -4,41 +4,41 @@ session_start();
 
 // fs2 include path
 set_include_path ( '.' );
-define ( FS2_ROOT_PATH, "./../../", TRUE );
+define ( 'FS2_ROOT_PATH', './../../', TRUE );
 
 // set header
-header("Content-type: text/plain");
+header('Content-type: text/plain');
 
 // include db-data
-require ( FS2_ROOT_PATH . "login.inc.php" );
-require ( FS2_ROOT_PATH . "includes/newfunctions.php" );
+require ( FS2_ROOT_PATH . 'login.inc.php' );
+require ( FS2_ROOT_PATH . 'includes/newfunctions.php' );
 
 if ( $FD->sql()->conn() )
 {
-    $config_arr = $sql->getById("player_config", "*", 1);
-    
+    $config_arr = $sql->getById('player_config', '*', 1);
+
     // security functions
-    settype ( $config_arr['cfg_loop'], "integer" );
-    settype ( $config_arr['cfg_autoplay'], "integer" );
-    settype ( $config_arr['cfg_autoload'], "integer" );
-    settype ( $config_arr['cfg_volume'], "integer" );
-    settype ( $config_arr['cfg_margin'], "integer" );
-    settype ( $config_arr['cfg_showstop'], "integer" );
-    settype ( $config_arr['cfg_showvolume'], "integer" );
-    settype ( $config_arr['cfg_showtime'], "integer" );
-    settype ( $config_arr['cfg_playertimeout'], "integer" );
-    settype ( $config_arr['cfg_showfullscreen'], "integer" );
-    settype ( $config_arr['cfg_playeralpha'], "integer" );
-    settype ( $config_arr['cfg_buffer'], "integer" );
-    settype ( $config_arr['cfg_buffershowbg'], "integer" );
-    settype ( $config_arr['cfg_titlesize'], "integer" );
-    settype ( $config_arr['cfg_shortcut'], "integer" );
-    settype ( $config_arr['cfg_showiconplay'], "integer" );
-    settype ( $config_arr['cfg_showtitleandstartimage'], "integer" );
-    settype ( $config_arr['cfg_iconplaybgalpha'], "integer" );
-    settype ( $config_arr['cfg_top1_x'], "integer" );
-    settype ( $config_arr['cfg_top1_y'], "integer" );
-    settype ( $config_arr['cfg_loadonstop'], "integer" );
+    settype ( $config_arr['cfg_loop'], 'integer' );
+    settype ( $config_arr['cfg_autoplay'], 'integer' );
+    settype ( $config_arr['cfg_autoload'], 'integer' );
+    settype ( $config_arr['cfg_volume'], 'integer' );
+    settype ( $config_arr['cfg_margin'], 'integer' );
+    settype ( $config_arr['cfg_showstop'], 'integer' );
+    settype ( $config_arr['cfg_showvolume'], 'integer' );
+    settype ( $config_arr['cfg_showtime'], 'integer' );
+    settype ( $config_arr['cfg_playertimeout'], 'integer' );
+    settype ( $config_arr['cfg_showfullscreen'], 'integer' );
+    settype ( $config_arr['cfg_playeralpha'], 'integer' );
+    settype ( $config_arr['cfg_buffer'], 'integer' );
+    settype ( $config_arr['cfg_buffershowbg'], 'integer' );
+    settype ( $config_arr['cfg_titlesize'], 'integer' );
+    settype ( $config_arr['cfg_shortcut'], 'integer' );
+    settype ( $config_arr['cfg_showiconplay'], 'integer' );
+    settype ( $config_arr['cfg_showtitleandstartimage'], 'integer' );
+    settype ( $config_arr['cfg_iconplaybgalpha'], 'integer' );
+    settype ( $config_arr['cfg_top1_x'], 'integer' );
+    settype ( $config_arr['cfg_top1_y'], 'integer' );
+    settype ( $config_arr['cfg_loadonstop'], 'integer' );
 
     $config_arr['cfg_videobgcolor'] = stripslashes ( $config_arr['cfg_videobgcolor'] );
     $config_arr['cfg_bgcolor1'] = stripslashes ( $config_arr['cfg_bgcolor1'] );
@@ -65,9 +65,9 @@ if ( $FD->sql()->conn() )
     $config_arr['cfg_top1_url'] = stripslashes ( $config_arr['cfg_top1_url'] );
 
 if ( strlen ( $config_arr['cfg_top1_url'] ) > 0 ) {
-    $config_arr['cfg_top1'] = $config_arr['cfg_top1_url']."|".$config_arr['cfg_top1_x']."|".$config_arr['cfg_top1_y'];
+    $config_arr['cfg_top1'] = $config_arr['cfg_top1_url'].'|'.$config_arr['cfg_top1_x'].'|'.$config_arr['cfg_top1_y'];
 } else {
-    $config_arr['cfg_top1'] = "";
+    $config_arr['cfg_top1'] = '';
 }
 
 // kill color hashes
