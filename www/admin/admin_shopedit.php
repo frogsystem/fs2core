@@ -4,34 +4,34 @@
 //// Artikel aktualiesieren ////
 ////////////////////////////////
 
-if ($_POST[title] && $_POST[url] && $_POST[preis] && $_POST[sended] == "edit")
+if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "edit")
 {
-    settype($_POST[artikelid], 'integer');
-    if (isset($_POST[delartikel]))
+    settype($_POST['artikelid'], 'integer');
+    if (isset($_POST['delartikel']))
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
-        image_delete ("images/shop/", $_POST[artikelid] );
-        image_delete( "images/shop/", $_POST[artikelid] );
+        mysql_query('DELETE FROM '.$global_config_arr['pref']."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
+        image_delete ("images/shop/", $_POST['artikelid'] );
+        image_delete( "images/shop/", $_POST['artikelid'] );
         systext('Artikel wurde gelöscht');
     }
     else
     {
-        $_POST[title] = savesql($_POST[title]);
-        $_POST[url] = savesql($_POST[url]);
-        $_POST[preis] = savesql($_POST[preis]);
-        $_POST[text] = savesql($_POST[text]);
-        $_POST[hot] = isset($_POST[hot]) ? 1 : 0;
+        $_POST['title'] = savesql($_POST['title']);
+        $_POST['url'] = savesql($_POST['url']);
+        $_POST['preis'] = savesql($_POST['preis']);
+        $_POST['text'] = savesql($_POST['text']);
+        $_POST['hot'] = isset($_POST['hot']) ? 1 : 0;
 
         $messages = array();
 
-        if (!empty($_FILES[artikelimg][name]))
+        if (!empty($_FILES['artikelimg']['name']))
         {
-            $upload = upload_img($_FILES[artikelimg], "images/shop/", $_POST[artikelid], 2*1024*1024, 400, 600);
+            $upload = upload_img($_FILES['artikelimg'], "images/shop/", $_POST['artikelid'], 2*1024*1024, 400, 600);
             $messages[] = upload_img_notice($upload);
-            $thumb = create_thumb_from(image_url("images/shop/",$_POST[artikelid],FALSE, TRUE), 100, 100);
+            $thumb = create_thumb_from(image_url("images/shop/",$_POST['artikelid'],FALSE, TRUE), 100, 100);
             $messages[] = create_thumb_notice($thumb);
         }
-        $update = "UPDATE ".$global_config_arr[pref]."shop
+        $update = 'UPDATE '.$global_config_arr['pref']."shop
                    SET artikel_name  = '$_POST[title]',
                        artikel_url   = '$_POST[url]',
                        artikel_text  = '$_POST[text]',
@@ -51,23 +51,23 @@ if ($_POST[title] && $_POST[url] && $_POST[preis] && $_POST[sended] == "edit")
 ////// Artikel editieren ///////
 ////////////////////////////////
 
-if ($_POST[artikelid])
+if ($_POST['artikelid'])
 {
-    $_POST[artikelid] = $_POST[artikelid][0];
+    $_POST['artikelid'] = $_POST['artikelid'][0];
     if(isset($_POST['sended'])) {
         echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
     }    
     
-    settype($_POST[artikelid], 'integer');
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
+    settype($_POST['artikelid'], 'integer');
+    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
     $artikel_arr = mysql_fetch_assoc($index);
-    $dbartikelhot = ($artikel_arr[artikel_hot] == 1) ? "checked" : "";
+    $dbartikelhot = ($artikel_arr['artikel_hot'] == 1) ? "checked" : "";
 
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shop_edit" name="go">
                         <input type="hidden" value="edit" name="sended">
-                        <input type="hidden" value="'.$artikel_arr[artikel_id].'" name="artikelid">
+                        <input type="hidden" value="'.$artikel_arr['artikel_id'].'" name="artikelid">
                         <table class="content" cellpadding="3" cellspacing="0">
                             <tr><td colspan="2"><h3>Produkt bearbeiten</h3><hr></td></tr>
                             <tr>
@@ -95,7 +95,7 @@ if ($_POST[artikelid])
                                     <font class="small">Name des Artikel. Kommt auch in den Hotlink</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="title" size="51" value="'.killhtml ( $artikel_arr[artikel_name] ).'" maxlength="100">
+                                    <input class="text" name="title" size="51" value="'.killhtml ( $artikel_arr['artikel_name'] ).'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -104,7 +104,7 @@ if ($_POST[artikelid])
                                     <font class="small">Link zum Produkt</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="url" size="51" value="'.killhtml ( $artikel_arr[artikel_url] ).'" maxlength="255">
+                                    <input class="text" name="url" size="51" value="'.killhtml ( $artikel_arr['artikel_url'] ).'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
@@ -113,7 +113,7 @@ if ($_POST[artikelid])
                                     <font class="small">Kurze Artikelbeschreibung (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", killhtml ( $artikel_arr[artikel_text] ), 330, 130).'
+                                    '.create_editor("text", killhtml ( $artikel_arr['artikel_text'] ), 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -122,7 +122,7 @@ if ($_POST[artikelid])
                                     <font class="small">Preis</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="preis" size="10" value="'.killhtml ( $artikel_arr[artikel_preis] ).'" maxlength="10">
+                                    <input class="text" name="preis" size="10" value="'.killhtml ( $artikel_arr['artikel_preis'] ).'" maxlength="10">
                                 </td>
                             </tr>
                             <tr>
@@ -179,23 +179,23 @@ else
                             </tr>
     ';
     $index = mysql_query("SELECT artikel_id, artikel_name, artikel_preis
-                          FROM ".$global_config_arr[pref]."shop
+                          FROM ".$global_config_arr['pref']."shop
                           ORDER BY artikel_name DESC", $FD->sql()->conn() );
     while ($artikel_arr = mysql_fetch_assoc($index))
     {
         echo'
                             <tr class="select_entry thin">
                                 <td class="config">
-                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'" alt="'.stripslashes ( $artikel_arr[artikel_name] ).'">
+                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'" alt="'.stripslashes ( $artikel_arr['artikel_name'] ).'">
                                 </td>
                                 <td class="configthin">
-                                    '.stripslashes ( $artikel_arr[artikel_name] ).'
+                                    '.stripslashes ( $artikel_arr['artikel_name'] ).'
                                 </td>
                                 <td class="configthin">
-                                    '.stripslashes ( $artikel_arr[artikel_preis] ).'
+                                    '.stripslashes ( $artikel_arr['artikel_preis'] ).'
                                 </td>
                                 <td class="config">
-                                    <input class="select_box" type="checkbox" name="artikelid[]" value="'.$artikel_arr[artikel_id].'">
+                                    <input class="select_box" type="checkbox" name="artikelid[]" value="'.$artikel_arr['artikel_id'].'">
                                 </td>
                             </tr>
         ';
@@ -204,7 +204,7 @@ else
                             <tr style="display:none">
                                 <td colspan="4">
                                     <select class="select_type" name="shop_action" size="1">
-                                        <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                        <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
                                     </select>
                                 </td>
                             </tr>

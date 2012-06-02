@@ -4,25 +4,25 @@
 //// Kategorie ändern ////
 //////////////////////////
 
-if (isset($_POST[catname]))
+if (isset($_POST['catname']))
 {
-    if (isset($_POST[delcat]))
+    settype($_POST['catid'], 'integer');
+    if (isset($_POST['delcat']))
     {
-        settype($_POST[catid], "integer");
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."dl_cat WHERE cat_id = ".$_POST[catid], $FD->sql()->conn() );
-        systext("Die Kategorie wurde gelöscht");
+        mysql_query('DELETE FROM '.$global_config_arr['pref'].'dl_cat WHERE cat_id = '.$_POST['catid'], $FD->sql()->conn() );
+        systext('Die Kategorie wurde gelöscht');
     }
     else
     {
-        $_POST[catname] = savesql($_POST[catname]);
-        settype($_POST[subcatof], "integer");
+        $_POST['catname'] = savesql($_POST['catname']);
+        settype($_POST['subcatof'], 'integer');
 
-        $update = "UPDATE ".$global_config_arr[pref]."dl_cat
+        $update = 'UPDATE '.$global_config_arr['pref']."dl_cat
                    SET subcat_id = '$_POST[subcatof]',
                        cat_name = '$_POST[catname]'
                    WHERE cat_id = $_POST[catid]";
         mysql_query($update, $FD->sql()->conn() );
-        systext("Die Kategorie wurde editiert");
+        systext('Die Kategorie wurde editiert');
     }
     unset($_POST);
 }
@@ -31,28 +31,28 @@ if (isset($_POST[catname]))
 /// Kategorie Formular ///
 //////////////////////////
 
-if (isset($_POST[editcatid]))
+if (isset($_POST['editcatid']))
 {
-    $_POST[editcatid] = $_POST[editcatid][0];
+    $_POST['editcatid'] = $_POST['editcatid'][0];
     if(isset($_POST['sended'])) {
         echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
     }    
         
     
     
-    settype ($_POST[editcatid], 'integer');
+    settype ($_POST['editcatid'], 'integer');
 
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, $_POST[editcatid]);
+    get_dl_categories (&$valid_ids, $_POST['editcatid']);
 
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_cat WHERE cat_id = '$_POST[editcatid]'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl_cat WHERE cat_id = '$_POST[editcatid]'", $FD->sql()->conn() );
     $cat_arr = mysql_fetch_assoc($index);
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_cat" name="go">
                         <input type="hidden" value="edit" name="sended">
-                        <input type="hidden" value="'.$cat_arr[cat_id].'" name="catid">
-                        <input type="hidden" value="'.$cat_arr[cat_id].'" name="editcatid[0]">
+                        <input type="hidden" value="'.$cat_arr['cat_id'].'" name="catid">
+                        <input type="hidden" value="'.$cat_arr['cat_id'].'" name="editcatid[0]">
                         <table class="content" cellpadding="3" cellspacing="0">
                             <tr><td colspan="2"><h3>Kategorie bearbeiten</h3><hr></td></tr>
 
@@ -62,7 +62,7 @@ if (isset($_POST[editcatid]))
                                     <font class="small">Name der neuen Kategorie</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="catname" size="33" value="'.$cat_arr[cat_name].'" maxlength="100">
+                                    <input class="text" name="catname" size="33" value="'.$cat_arr['cat_name'].'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -77,9 +77,9 @@ if (isset($_POST[editcatid]))
     ';
     foreach ($valid_ids as $cat)
     {
-        $sele = ($cat_arr[subcat_id] == $cat[cat_id]) ? "selected" : "";
+        $sele = ($cat_arr['subcat_id'] == $cat['cat_id']) ? "selected" : "";
         echo'
-                                        <option value="'.$cat[cat_id].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
+                                        <option value="'.$cat['cat_id'].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat['cat_name'].'</option>
         ';
     }
     echo'
@@ -127,20 +127,20 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_cat ORDER BY cat_name");
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_cat ORDER BY cat_name');
     while ($cat_arr = mysql_fetch_assoc($index))
     {
-        $sub = ($cat_arr[subcat_id] == 0) ? "Nein" : "Ja";
+        $sub = ($cat_arr['subcat_id'] == 0) ? 'Nein' : 'Ja';
         echo'
                             <tr class="thin select_entry">
                                 <td class="configthin">
-                                    '.$cat_arr[cat_name].'
+                                    '.$cat_arr['cat_name'].'
                                 </td>
                                 <td class="configthin">
                                     '.$sub.'
                                 </td>
                                 <td class="config">
-                                    <input class="select_box" type="checkbox" name="editcatid[]" value="'.$cat_arr[cat_id].'">
+                                    <input class="select_box" type="checkbox" name="editcatid[]" value="'.$cat_arr['cat_id'].'">
                                 </td>
                             </tr>
         ';
@@ -149,7 +149,7 @@ else
                             <tr style="display:none">
                                 <td colspan="3">
                                     <select class="select_type" name="cat_action" size="1">
-                                        <option class="select_one" value="edit">'.$admin_phrases[common][selection_edit].'</option>
+                                        <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
                                     </select>
                                 </td>
                             </tr>

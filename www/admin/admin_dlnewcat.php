@@ -4,15 +4,15 @@
 //// Kategorie in die DB eintragen ////
 ///////////////////////////////////////
 
-if (!empty($_POST[catname]))
+if (!empty($_POST['catname']))
 {
-    $_POST[catname] = savesql($_POST[catname]);
+    $_POST['catname'] = savesql($_POST['catname']);
 
-    settype($_POST[subcatof], 'integer');
-    mysql_query("INSERT INTO ".$global_config_arr[pref]."dl_cat (subcat_id, cat_name)
-                 VALUES ('".$_POST[subcatof]."',
-                         '".$_POST[catname]."');", $FD->sql()->conn() );
-    systext("Kategorie wurde hinzugefügt");
+    settype($_POST['subcatof'], 'integer');
+    mysql_query('INSERT INTO '.$global_config_arr['pref']."dl_cat (subcat_id, cat_name)
+                 VALUES ('".$_POST['subcatof']."',
+                         '".$_POST['catname']."');", $FD->sql()->conn() );
+    systext('Kategorie wurde hinzugefügt');
     
     unset($_POST);
 }
@@ -59,7 +59,7 @@ if(true)
     foreach ($valid_ids as $cat)
     {
         echo'
-                                        <option value="'.$cat[cat_id].'">'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat[cat_name].'</option>
+                                        <option value="'.$cat['cat_id'].'">'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat['cat_name'].'</option>
         ';
     }
     echo'

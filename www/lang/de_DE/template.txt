@@ -284,3 +284,34 @@ shop_main_body_items:                  Bindet die Produkte ein
 player_player_title:                   Flash-Player
 player_player_desc:                    Darstellung eines einzelnen Flash-Players
 player_player_player:                  Bindet die Flash-Player-Datei ein.
+
+editor_design_title:                   Editor Darstellung
+editor_design_description:             Anordnung des IWAC-Editors auf der Seite.
+editor_design_help_1:                  CSS-Style des Textareas (siehe Konfiguration).
+editor_design_help_2:                  Eventuell vorhandener Text.
+editor_design_help_3:                  Bindet die FSCode-Buttons ein.
+editor_design_help_smilies:            Bindet das Smilies-Template ein.
+editor_css_title:                      Editor CSS
+editor_css_description:                CSS Datei des IWAC-Editors.
+editor_button_title:                   Button Darstellung
+editor_button_description:             Anordnung des IWAC-Editors auf der Seite.
+editor_button_help_1:                  URL zum Button Bild.
+editor_button_help_2:                  Alternativer Anzeige Text.
+editor_button_help_3:                  Beschreibungstext beim Überfahren mit der Maus
+editor_button_help_4:                  Fügt den Javascript-Code ein, der das einfügen ins Textfeld steuert
+editor_separator_title:                Teiler Darstellung
+editor_separator_description:          Darstellung des Teilers zwischen Button-Gruppen.
+editor_smilies_title:                  Smilies
+editor_smilies_description:            Darstellung der Smilies-Liste.
+editor_smilies_help_table:             Die Tabelle mit den Smilies.
+
+quote_tag_title:                       Zitat
+quote_tag_description:                 Darstellung des "Zitat" - FSCodes ['quote']text['/quote'] 
+quote_tag_help_1:                      Text der vom Zitat-Block umschlossen wird.
+quote_tag_name_title:                  Zitat von
+quote_tag_name_description:            Darstellung des "Zitat von" - FSCodes ['quote=author']text['/quote'] 
+quote_tag_name_help_1:                 Text der vom Zitat-Block umschlossen wird.
+quote_tag_name_help_2:                 Name des Autors, des zitierten Textes.
+code_tag_title:                        Code
+code_tag_description:                  Darstellung des "Code" - FSCodes ['code']text['/code'] 
+code_tag_help_1:                       Text der vom Code-Block umschlossen wird.

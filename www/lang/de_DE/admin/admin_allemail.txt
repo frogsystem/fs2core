@@ -1,0 +1,24 @@
+#@from_phrases
+change_password_ack_title:      Neues Passwort
+change_password_ack_desc:       E-Mail, die der Benutzer erhält nach dem er ein neues Passwort angefordert hat.
+
+sender_email:                   Absender-Adresse
+sender_email_desc:              Absender-Adresse die bei gesendeten E-Mails angegeben wird.
+	
+send_as_html:                   als HTML senden
+send_as_html_desc:              Sendet die E-Mails im HTML-Format.
+send_as_html_info:              Ermöglicht die Verwendung von HTML und FSCode.
+
+
+email_templates_title:          E-Mail-Vorlagen
+email_reg_title:                Registrierung
+email_reg_desc:                 E-Mail, die der Benutzer nach der Registrierung auf der Seite erhält.
+email_newpwd_title:             Passwortänderung
+email_newpwd_desc:              E-Mail, die der Benutzer nach einer Passwortänderung erhält.
+email_delete_title:             Accountlöschung
+email_delete_desc:              Email, die der Benutzer im Falle einer Löschung seines Accounts erhält.
+
+email_username:                 Der Benutzername des Users.
+email_password:                 Das Passwort des Users.
+email_virtualhost:              URL zur Seite.
+new_password_url:               URL zu der Seite, auf der die Anforderung eines neuen Passworts bestätigt werden muss.

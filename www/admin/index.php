@@ -1,19 +1,11 @@
 <?php
-// Start Session
-session_start ();
-
-// Disable magic_quotes_runtime
-ini_set('magic_quotes_runtime', 0);
-
-// fs2 include path
+/* FS2 PHP Init */
 set_include_path('.');
-define('FS2_ROOT_PATH', "./../", TRUE);
+define('FS2_ROOT_PATH', "./../", true);
+require_once(FS2_ROOT_PATH . "includes/phpinit.php");
+phpinit();
+/* End of FS2 PHP Init */
 
-//autoloader
-function libloader ($classname) {
-    @include_once(FS2_ROOT_PATH . "libs/class_".$classname.".php");
-}
-spl_autoload_register("libloader");
 
 // inlcude files
 require_once(FS2_ROOT_PATH . "includes/functions.php");
@@ -111,7 +103,7 @@ if (!empty($acp_arr)) {
     // Get Special Page Lang-Text-Files
     $page_lang = new lang($global_config_arr['language_text'], "admin/".substr($acp_arr['page_file'], 0, -4));
     $FD->setPageText($page_lang);
-    if (!isset($TEXT['page'])) {
+    if (!isset($TEXT['page'])) { //TODO old
         $TEXT['page'] = $page_lang;
     }
     unset ($page_lang);
@@ -301,7 +293,7 @@ echo '
 echo '
     <!-- Content Container -->
     <div id="content_container">';
-    
+
 ob_start();
 require(FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file']);
 $content = ob_get_clean();

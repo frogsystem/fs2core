@@ -217,8 +217,8 @@ page_title_shop_edit:           Produkt Übersicht
 page_link_shop_edit:            Übersicht
 
 # User
-page_title_user_config:         Kofiguration ändern
-page_link_user_config:          Kofiguration
+page_title_user_config:         Konfiguration ändern
+page_link_user_config:          Konfiguration
 page_title_user_add:            hinzufügen
 page_link_user_add:             hinzufügen
 page_title_user_edit:           bearbeiten

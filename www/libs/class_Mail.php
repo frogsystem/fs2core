@@ -7,7 +7,7 @@
  *
  * this class represents an email
  */
- 
+
 class Mail {
     
     // Klassen-Variablen
@@ -18,12 +18,19 @@ class Mail {
     private $html = true;
         
     // Der Konstruktur
-    public function  __construct($FROM, $TO, $SUBJECT, $CONTENT, $HTML = true) {
+    public function  __construct($FROM, $TO, $SUBJECT, $CONTENT, $HTML = true, $TPL_FUNC = true) {
         $this->from = $FROM;
         $this->to = $TO;
         $this->subject = $SUBJECT;
-        $this->content = utf8_encode($CONTENT);
         $this->html = $HTML;      
+        
+        if ($TPL_FUNC) {
+            global $FD;
+            require_once(FS2_ROOT_PATH."includes/indexfunctions.php");
+            $this->content = tpl_functions($CONTENT, $FD->cfg('system', 'var_loop'), array("DATE", "VAR", "URL", "SNP"), true);
+        }
+        
+        $this->content = utf8_encode($CONTENT);
     } 
     
     

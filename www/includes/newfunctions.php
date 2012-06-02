@@ -319,6 +319,9 @@ function has_perm ($perm) {
 function is_authorized () {
     return ($_SESSION['user_level'] === "authorized");
 }
+function is_loggedin () {
+    return ($_SESSION['user_level'] === "loggedin" || is_authorized ());
+}
 
 /////////////////////////////////////////
 //// Generate random password string ////

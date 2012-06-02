@@ -127,7 +127,7 @@ function get_yesno_table ( $NAME )
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1">
                     </td>
                     <td class="config middle">
-                            <label for="del_yes">'.$admin_phrases[common][yes].'</label>
+                            <label for="del_yes">'.$admin_phrases['common']['yes'].'</label>
                     </td>
                 </tr>
                 <tr class="bottom pointer" id="no">
@@ -135,7 +135,7 @@ function get_yesno_table ( $NAME )
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked>
                     </td>
                     <td class="config middle">
-                            <label for="del_no">'.$admin_phrases[common][no].'</label>
+                            <label for="del_no">'.$admin_phrases['common']['no'].'</label>
                     </td>
                 </tr>
                 </table>
@@ -531,12 +531,12 @@ function create_editor($name, $text="", $width="", $height="", $class="", $do_sm
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
     $zaehler = 0;
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."smilies ORDER by `order` ASC LIMIT 0, 10", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'smilies ORDER by `order` ASC LIMIT 0, 10', $FD->sql()->conn() );
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
-        $smilie_arr[url] = image_url("images/smilies/", $smilie_arr[id], false);
+        $smilie_arr['url'] = image_url("images/smilies/", $smilie_arr['id'], false);
 
-        $smilie_template = '<td><img src="'.$smilie_arr[url].'" alt="'.$smilie_arr[replace_string].'" onClick="insert(\''.$name.'\', \''.$smilie_arr[replace_string].'\', \'\')" class="editor_smilies" /></td>';
+        $smilie_template = '<td><img src="'.$smilie_arr['url'].'" alt="'.$smilie_arr['replace_string'].'" onClick="insert(\''.$name.'\', \''.$smilie_arr['replace_string'].'\', \'\')" class="editor_smilies" /></td>';
 
         $zaehler += 1;
         switch ($zaehler)

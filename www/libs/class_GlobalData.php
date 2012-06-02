@@ -32,6 +32,7 @@ class GlobalData {
             'admin'     => new lang ($this->config("language_text"), "admin"),
             'template'  => new lang ($this->config("language_text"), "template"),
             'menu'      => new lang ($this->config("language_text"), "menu"),
+            'fscode'    => new lang ($this->config("language_text"), "fscode"),
         );
     }
     
@@ -170,7 +171,10 @@ class GlobalData {
     
     // get lang phrase object
     public function text($type, $tag) {
-        return $this->text[$type]->get($tag);
+        if (isset($this->text[$type]))
+            return $this->text[$type]->get($tag);
+            
+        return null;
     }
     
     // get lang phrase object

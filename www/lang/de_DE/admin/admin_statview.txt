@@ -1,0 +1,17 @@
+# Statistikansicht
+
+daily_statistics:             Tagesstatistik
+monthly_statistics:           Monatsstatistik
+other_statistics:             Weitere Statistiken
+day:                          Tag
+month:                        Monat
+average:                      Durchschnitt
+visits:                       Besucher
+visits_total:                 Besucher gesamt
+best_day_visits:              Bester Tag (Besucher)
+hits:                         Seitenaufrufe
+hits_total:                   Seitenaufrufe gesamt
+best_day_hits:                Bester Tag (Seitenaufrufe)
+chart:                        Grafik
+show_chart:                   Diagramm anzeigen
+user_online:                  Besucher online

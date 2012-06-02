@@ -1,4 +1,4 @@
-<?php if (ACP_GO == "gen_config") {
+<?php if (!defined("ACP_GO")) die("Unauthorized access!");
     
 #TODO: fileaccess
     
@@ -49,7 +49,7 @@ if (
     // save config
     try {
         $FD->saveConfig("main", $data);
-        systext($TEXT['admin']->get("changes_saved"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+        systext($FD->text("admin", "changes_saved"), $FD->text("admin", "info"), "green", $FD->text("admin", "icon_save_ok"));
     } catch (Exception $e) {}
     
     // Unset Vars
@@ -64,7 +64,7 @@ if ( TRUE )
 {
     // Display Error Messages
     if (isset($_POST['sended'])) {
-        systext($TEXT['admin']->get("changes_not_saved").'<br>'.$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+        systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), "red", $FD->text("admin", "icon_save_error"));
 
     // Load Data from DB into Post
     } else {
@@ -103,8 +103,8 @@ if ( TRUE )
     
     // Dyntitle
     $adminpage->addText("dyn_title_ext_tt",
-        insert_tt( "{..title..}", $TEXT['page']->get("dyn_title_page_title"), "dyn_title_ext", FALSE )."&nbsp;".
-        insert_tt( "{..ext..}", $TEXT['page']->get("dyn_title_page_title_ext"), "dyn_title_ext", FALSE )
+        insert_tt( "{..title..}", $FD->text("page", "dyn_title_page_title"), "dyn_title_ext", FALSE )."&nbsp;".
+        insert_tt( "{..ext..}", $FD->text("page", "dyn_title_page_title_ext"), "dyn_title_ext", FALSE )
     );
 
     // styles
@@ -122,7 +122,7 @@ if ( TRUE )
         '<option value="'.$style['style_id'].'" '
         .getselected($style['style_id'], $_POST['style_id']).'>'
             .killhtml($style['style_tag'])
-            .($style['style_id'] == $active_style ? ' ('.$TEXT['admin']->get("active").')' : '')
+            .($style['style_id'] == $active_style ? ' ('.$FD->text("admin", "active").')' : '')
         .'</option>'."\n";
     }
     $adminpage->addText("style_options", $style_options);
@@ -151,16 +151,16 @@ if ( TRUE )
 
     //pagenav
     $adminpage->addText("page_tt",
-        insert_tt("{..page_number..}", $TEXT['page']->get("page_text_page_num"), "page").
-        insert_tt("{..total_pages..}", $TEXT['page']->get("page_text_total_pages"), "page").
-        insert_tt("{..prev..}", $TEXT['page']->get("page_text_next"), "page").
-        insert_tt("{..next..}", $TEXT['page']->get("page_text_prev"), "page")
+        insert_tt("{..page_number..}", $FD->text("page", "page_text_page_num"), "page").
+        insert_tt("{..total_pages..}", $FD->text("page", "page_text_total_pages"), "page").
+        insert_tt("{..prev..}", $FD->text("page", "page_text_next"), "page").
+        insert_tt("{..next..}", $FD->text("page", "page_text_prev"), "page")
     ); 
-    $adminpage->addText("page_prev_tt", insert_tt("{..url..}", $TEXT['page']->get("page_prev_url"), "page_prev")); 
-    $adminpage->addText("page_next_tt", insert_tt("{..url..}", $TEXT['page']->get("page_next_url"), "page_next")); 
+    $adminpage->addText("page_prev_tt", insert_tt("{..url..}", $FD->text("page", "page_prev_url"), "page_prev")); 
+    $adminpage->addText("page_next_tt", insert_tt("{..url..}", $FD->text("page", "page_next_url"), "page_next")); 
 
     // Display page
     echo $adminpage->get("main");
 }
 
-} ?>
+?>

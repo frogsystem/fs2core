@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined("ACP_GO")) die("Unauthorized access!");
 /////////////////////////////////
 //// Datenbank aktualisieren ////
 /////////////////////////////////
@@ -27,7 +27,7 @@ if ( isset ( $_POST['sended'] ) )
     ", $sql->conn());
 
     // system messages
-    systext( $admin_phrases[common][changes_saved], $admin_phrases[common][info], FALSE, $admin_phrases[icons][save_ok] );
+    systext( $FD->text("page", "changes_saved"), $FD->text("page", "info"), FALSE, $FD->text("page", "save_ok") );
 
     // Unset Vars
     unset ( $_POST );
@@ -41,7 +41,7 @@ if ( TRUE )
 {
     // Display Error Messages
     if ( isset ( $_POST['sended'] ) ) {
-        systext ( $admin_phrases[common][changes_not_saved].'<br>'.$admin_phrases[common][note_notfilled], $admin_phrases[common][error], TRUE, $admin_phrases[icons][save_error] );
+        systext ( $FD->text("page", "changes_not_saved").'<br>'.$FD->text("page", "note_notfilled"), $FD->text("page", "error"), TRUE, $FD->text("page", "save_error") );
 
     // Load Data from DB into Post
     } else {
@@ -68,39 +68,39 @@ if ( TRUE )
                         <input type="hidden" name="go" value="gen_announcement">
                            <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][ann_settings_title].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("page", "ann_settings_title").'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[general][show_announcement].':<br>
-                                    <span class="small">'.$admin_phrases[general][show_announcement_desc].'</span>
+                                    '.$FD->text("page", "show_announcement").':<br>
+                                    <span class="small">'.$FD->text("page", "show_announcement_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="show_announcement">
-                                        <option value="1" '.getselected( $_POST['show_announcement'], 1 ).'>'.$admin_phrases[general][show_ann_always].'</option>
-                                        <option value="2" '.getselected( $_POST['show_announcement'], 2 ).'>'.$admin_phrases[general][show_ann_home].'</option>
-                                        <option value="0" '.getselected( $_POST['show_announcement'], 0 ).'>'.$admin_phrases[general][show_ann_never].'</option>
+                                        <option value="1" '.getselected( $_POST['show_announcement'], 1 ).'>'.$FD->text("page", "show_ann_always").'</option>
+                                        <option value="2" '.getselected( $_POST['show_announcement'], 2 ).'>'.$FD->text("page", "show_ann_home").'</option>
+                                        <option value="0" '.getselected( $_POST['show_announcement'], 0 ).'>'.$FD->text("page", "show_ann_never").'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[general][activate_ann].':<br>
-                                    <span class="small">'.$admin_phrases[general][activate_ann_desc].'</span>
+                                    '.$FD->text("page", "activate_ann").':<br>
+                                    <span class="small">'.$FD->text("page", "activate_ann_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input type="checkbox" name="activate_announcement" value="1" '.getchecked( $_POST['activate_announcement'], 1 ).'>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$admin_phrases[general][ann_title].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("page", "ann_title").'</td></tr>
                             <tr>
                                 <td class="config right" colspan="2">
                                     <input class="pointer middle" type="checkbox" name="ann_html" value="1" '.getchecked ( $_POST['ann_html'], 1 ).'>
-                                    <span class="small middle">'.$admin_phrases[articles][articles_use_html].'</span>&nbsp;&nbsp;
+                                    <span class="small middle">'.$FD->text("page", "articles_use_html").'</span>&nbsp;&nbsp;
                                     <input class="pointer middle" type="checkbox" name="ann_fscode" value="1" '.getchecked ( $_POST['ann_fscode'], 1 ).'>
-                                    <span class="small middle">'.$admin_phrases[articles][articles_use_fscode].'</span>&nbsp;&nbsp;
+                                    <span class="small middle">'.$FD->text("page", "articles_use_fscode").'</span>&nbsp;&nbsp;
                                     <input class="pointer middle" type="checkbox" name="ann_para" value="1" '.getchecked ( $_POST['ann_para'], 1 ).'>
-                                    <span class="small middle">'.$admin_phrases[articles][articles_use_para].'</span>
+                                    <span class="small middle">'.$FD->text("page", "articles_use_para").'</span>
                                 </td>
                             </tr>
                             <tr>
@@ -112,7 +112,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("page", "save_long").'
                                     </button>
                                 </td>
                             </tr>

@@ -877,7 +877,7 @@ function forward_message ( $TITLE, $MESSAGE, $URL, $STATUS = "")
     $template->tag ( "message_title", $TITLE );
     $template->tag ( "message", $MESSAGE );
     $template->tag ( "forward_url", $URL );
-    $template->tag ( "forward_time", $global_config_arr['auto_forward'] );
+    $template->tag ( "forward_time", $FD->cfg('auto_forward') );
     
     $template = $template->display ();
     return $forward_script.$template;

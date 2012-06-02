@@ -4,23 +4,23 @@
 //// Artikel einstellen ////
 ////////////////////////////
 
-if ($_FILES[artikelimg] && $_POST[title] && $_POST[url] && $_POST[preis])
+if ($_FILES['artikelimg'] && $_POST['title'] && $_POST['url'] && $_POST['preis'])
 {
-    $_POST[title] = savesql($_POST[title]);
-    $_POST[url] = savesql($_POST[url]);
-    $_POST[preis] = savesql($_POST[preis]);
-    $_POST[text] = savesql($_POST[text]);
-    settype($_POST[hot], "integer");
-    mysql_query("INSERT INTO ".$global_config_arr[pref]."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
-                 VALUES ('".$_POST[title]."',
-                         '".$_POST[url]."',
-                         '".$_POST[text]."',
-                         '".$_POST[preis]."',
-                         '".$_POST[hot]."');", $FD->sql()->conn() );
+    $_POST['title'] = savesql($_POST['title']);
+    $_POST['url'] = savesql($_POST['url']);
+    $_POST['preis'] = savesql($_POST['preis']);
+    $_POST['text'] = savesql($_POST['text']);
+    settype($_POST['hot'], "integer");
+    mysql_query('INSERT INTO '.$global_config_arr['pref']."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
+                 VALUES ('".$_POST['title']."',
+                         '".$_POST['url']."',
+                         '".$_POST['text']."',
+                         '".$_POST['preis']."',
+                         '".$_POST['hot']."');", $FD->sql()->conn() );
     $id = mysql_insert_id();
     
     $messages = array();
-    if (!empty($_FILES[artikelimg][name]))
+    if (!empty($_FILES['artikelimg']['name']))
     {
         $upload = upload_img($_FILES['artikelimg'], "images/shop/", $id, 2*1024*1024, 400, 600);
         $messages[] = upload_img_notice($upload);
