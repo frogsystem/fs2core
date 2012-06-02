@@ -37,9 +37,9 @@ if (
                     )
     ", $FD->sql()->conn() );
 
-    $message = 'Gruppe wurde erfolgreich hinzugefügt';
+    $message = 'Gruppe wurde erfolgreich hinzugef&uuml;gt';
     $id = mysql_insert_id ( $FD->sql()->conn() );
-    
+
     // Image-Operations
     if ( $_FILES['user_group_pic']['name'] != '' ) {
       $upload = upload_img ( $_FILES['user_group_pic'], 'media/group-images/', 'staff_'.$id, $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
@@ -315,7 +315,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                </tr>
                                <tr>
                                    <td class="config">
-                                       '."Einfärbung".': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                       '.'Einf&auml;rbung'.': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
                                        <span class="small">'."Farbliche Hervorhebung des Gruppentitels.".'</span>
                                    </td>
                                    <td class="configbig">
@@ -327,7 +327,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                <tr>
                                    <td class="config">
                                        '."Hervorhebung".': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
-                                       <span class="small">'."Besondere Hervorhebung des Gruppentitels.".'</span>
+                                       <span class="small">'.'Besondere Hervorhebung des Gruppentitels.'.'</span>
                                    </td>
                                    <td>
                                        <select name="user_group_highlight" size="1">
@@ -364,7 +364,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
     {
         // security functions
         settype ( $_POST['user_group_id'], 'integer' );
-        
+
         $index = mysql_query ( '
                                 SELECT `user_group_id`, `user_group_name`
                                 FROM '.$global_config_arr['pref']."user_groups
@@ -497,7 +497,7 @@ else
                             </tr>
                             <tr><td class="space"></td></tr>
         ';
-        
+
         while ( $group_arr = mysql_fetch_assoc ( $index ) )
         {
             $index_username = mysql_query ( '
@@ -566,7 +566,7 @@ else
                                 </td>
                             </tr>
         ';
-    
+
     } else {
         echo'
                             <tr><td class="space"></td></tr>
@@ -576,11 +576,11 @@ else
                             <tr><td class="space"></td></tr>
         ';
     }
-    
+
     echo '
                     </form>
     ';
-    
+
     // admin-group
     echo '
                     <form action="" method="post">
@@ -601,7 +601,7 @@ else
 
     // get group data
     $group_arr = mysql_fetch_assoc ( $index );
-    
+
     $index_username = mysql_query ( '
                                         SELECT `user_name`
                                         FROM `'.$global_config_arr['pref']."user`

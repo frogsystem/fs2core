@@ -192,7 +192,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
                                 <td class="configthin"><b>'.$best_dl_traffic.'</b> mit <b>'.$best_dl_traffic_num.'</b></td>
                             </tr>
                             <tr>
-                                <td class="configthin" width="200">Fleißigster Uploader:</td>
+                                <td class="configthin" width="200">Flei&szlig;igster Uploader:</td>
                                 <td class="configthin"><b>'.$best_dl_uploader.'</b> mit <b>'.$best_dl_uploader_num.'</b> Download(s)</td>
                             </tr>
 	';

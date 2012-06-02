@@ -23,7 +23,7 @@ if ($_POST['entry_action'] == "add"
     } else {
         $msg[] = 'Es wurde kein Bild zum Upload ausgew&auml;hlt.';
     }
-    
+
     echo get_systext(implode('<br>', $msg), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_save_add'));
 }
 
@@ -46,12 +46,12 @@ elseif (($_POST['title'] AND $_POST['title'] != '')
                      type = '$_POST[entry_is]'
                  WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
     systext('Der Eintrag wurde aktualisiert!');
-    
+
     if ($_POST['entry_pic_delete'] == 1)
     {
-      if (image_delete('images/press/', $_POST['entry_is']."_".$_POST['entry_id']))
+      if (image_delete('images/press/', $_POST['entry_is'].'_'.$_POST['entry_id']))
       {
-        systext('Das Bild wurde erfolgreich gelöscht!');
+        systext('Das Bild wurde erfolgreich gel&ouml;scht!');
       }
     }
     elseif ($_FILES['entry_pic']['name'] != '')
@@ -76,7 +76,7 @@ elseif ($_POST['entry_action'] == 'delete'
 {
     settype($_POST['entry_id'], 'integer');
     settype($_POST['entry_is'], 'integer');
-    
+
     if ($_POST['delete_press_admin'])   // Partnerseite löschen
     {
         $index = mysql_query('SELECT type FROM '.$global_config_arr['pref']."press_admin WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
@@ -109,7 +109,7 @@ elseif ($_POST['entry_action'] == 'delete'
         {
             $msg[] = 'Das Bild wurde erfolgreich gel&ouml;scht!';
         }
-        
+
         echo get_systext(implode('<br>', $msg), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_trash_ok'));
 
     }
@@ -118,7 +118,7 @@ elseif ($_POST['entry_action'] == 'delete'
         $msg[] = 'Der Eintrag wurde nicht gel&ouml;scht!';
         echo get_systext(implode('<br>', $msg), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_info'));
     }
-     
+
     unset($_POST['delete_press_admin']);
     unset($_POST['entry_action']);
     unset($_POST['sended']);
@@ -139,9 +139,9 @@ elseif ($_POST['entry_action'] == 'edit'
     $entry_arr = mysql_fetch_assoc($index);
 
     $entry_arr['title'] = killhtml($entry_arr['title']);
-    
+
     //Error Message
-    if ($_POST['sended'] == "edit") {
+    if ($_POST['sended'] == 'edit') {
         systext ($admin_phrases['common']['note_notfilled']);
 
         $entry_arr['title'] = killhtml($_POST['title']);
@@ -199,7 +199,7 @@ elseif ($_POST['entry_action'] == 'edit'
     }
 
     echo'<input name="entry_pic" type="file" size="40" class="text" /><br />';
-                                
+
     if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id']))
     {
         echo'

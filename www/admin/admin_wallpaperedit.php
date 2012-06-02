@@ -297,7 +297,7 @@ echo'
                                     <input type="hidden" name="size_id['.$j.']" value="'.$_POST['size_id'][$j].'" />
                                     <input class="text center" id="size'.$j.'" name="size['.$j.']" size="13" maxlength="30" value="'.$_POST['size'][$j].'">&nbsp;&nbsp;
                                     <input type="file" class="text" name="sizeimg_'.$j.'" size="25">&nbsp;
-                                    <label for="'.$j.'" class="small middle pointer"><b>Löschen:</b></label><input class="pointer middle" name="delwp['.$j.']" id="'.$j.'" value="'.$_POST['size_id'][$j].'" type="checkbox" onClick=\'delalert ("'.$j.'", "Soll die Größe '.$i.' des Wallpapers wirklich gelöscht werden?")\'><br>
+                                    <label for="'.$j.'" class="small middle pointer"><b>L&ouml;schen:</b></label><input class="pointer middle" name="delwp['.$j.']" id="'.$j.'" value="'.$_POST['size_id'][$j].'" type="checkbox" onClick=\'delalert ("'.$j.'", "Soll die Größe '.$i.' des Wallpapers wirklich gelöscht werden?")\'><br>
                                     '.$admin_sizes_arr['wp_exists'][$j].'<br>
                                     <fieldset>
                                         <legend class="small"><b>Schnellauswahl</b></legend>

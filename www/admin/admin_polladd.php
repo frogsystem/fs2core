@@ -48,7 +48,7 @@ if(true)
     if(isset($_POST['sended'])) {
         echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
     }
-    
+
     //Zeit-Array für Jetzt Button
     $jetzt['tag'] = date('d');
     $jetzt['monat'] = date('m');
@@ -79,7 +79,7 @@ if(true)
         $_POST['nowmin'] = date('i');
         $_POST['endmin'] = date('i');
     }
- 
+
     if (!isset($_POST['options']))
     {
         $_POST['options'] = 2;
@@ -97,13 +97,13 @@ if(true)
         $enddate = mktime(0, 0, 0, $_POST['endmonat'], $_POST['nowtag'], $_POST['nowjahr']);
         $_POST['endmonat'] = date('m', $enddate);
     }
-    
+
     if (!isset($_POST['endjahr']))
     {
         $_POST['endjahr'] = ($_POST['nowmonat'] > $_POST['endmonat']) ? ($_POST['nowjahr'] + 1) : $_POST['nowjahr'];
     }
 
-    
+
     echo'
                     <form id="form" action="" method="post">
                         <input type="hidden" name="go" value="poll_add">
@@ -253,7 +253,7 @@ if(true)
                                 <td class="configthin">
                                     <input size="2" maxlength="2" class="text" name="optionsadd">
                                     Antwortfelder
-                                    <input  type="submit" value="Hinzufügen">
+                                    <input  type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                             <tr>
@@ -267,7 +267,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">
-                                    <br><input   class="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" type="button" value="Hinzufügen">
+                                    <br><input   class="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" type="button" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                         </table>

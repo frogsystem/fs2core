@@ -204,7 +204,7 @@ else
                                     <font class="small">Die Anzahl der Bildern die auf einer Seite angezeigt werden.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="1" name="screen_rows" value="'.$config_arr['screen_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="screen_cols" value="'.$config_arr['screen_cols'].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zulässig)</font>
+                                    <input class="text" size="1" name="screen_rows" value="'.$config_arr['screen_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="screen_cols" value="'.$config_arr['screen_cols'].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
                                 </td>
                             </tr>
                             <tr>

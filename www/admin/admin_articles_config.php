@@ -195,8 +195,8 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <select name="com_sort">
-                                        <option value="ASC" '.getselected ( "ASC", $_POST['com_sort'] ).'>'.$admin_phrases['articles']['sort_comments_old_first'].'</option>
-                                        <option value="DESC" '.getselected ( "DESC", $_POST['com_sort'] ).'>'.$admin_phrases['articles']['sort_comments_new_first'].'</option>
+                                        <option value="ASC" '.getselected ( 'ASC', $_POST['com_sort'] ).'>'.$admin_phrases['articles']['sort_comments_old_first'].'</option>
+                                        <option value="DESC" '.getselected ( 'DESC', $_POST['com_sort'] ).'>'.$admin_phrases['articles']['sort_comments_new_first'].'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -225,17 +225,17 @@ if ( TRUE )
                                     <select name="acp_view">
                                         <option value="0" '.getselected ( 0, $_POST['acp_view'] ).'>einfache Ansicht</option>
                                         <option value="2" '.getselected ( 2, $_POST['acp_view'] ).'>erweiterte Ansicht</option>
-                                        <option value="1" '.getselected ( 1, $_POST['acp_view'] ).'>vollständige Ansicht</option>
+                                        <option value="1" '.getselected ( 1, $_POST['acp_view'] ).'>vollst&auml;ndige Ansicht</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Einträge pro Seite:<br>
-                                    <span class="small">Einträge, die pro Seite der Artikelliste angezeigt werden.</span>
+                                    Eintr&auml;ge pro Seite:<br>
+                                    <span class="small">Eintr&auml;ge, die pro Seite der Artikelliste angezeigt werden.</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text center" size="3" name="acp_per_page" maxlength="3" value="'.$_POST['acp_per_page'].'"> Einträge<br>
+                                    <input class="text center" size="3" name="acp_per_page" maxlength="3" value="'.$_POST['acp_per_page'].'"> Eintr&auml;ge<br>
                                     <span class="small">('.$admin_phrases['common']['zero_not_allowed'].')</span>
                                 </td>
                             </tr>

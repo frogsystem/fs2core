@@ -262,9 +262,9 @@ else
                     <form action="" method="post">
                         <input type="hidden" name="go" value="group_rights">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="4">Gruppe auswählen</td></tr>
+                            <tr><td class="line" colspan="4">Gruppe ausw&auml;hlen</td></tr>
     ';
-    
+
     // get groups from db
     $index = mysql_query ( '
                             SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
@@ -273,7 +273,7 @@ else
                             AND G.`user_group_id` != U.`user_group`
                             ORDER BY `user_group_name`
     ", $FD->sql()->conn() );
-    
+
     // groups found
     if ( mysql_num_rows ( $index ) > 0 ) {
         // display table head
@@ -286,7 +286,7 @@ else
                             </tr>
                             <tr><td class="space"></td></tr>
         ';
-        
+
         // display groups
         while ( $group_arr = mysql_fetch_assoc ( $index ) )
         {
@@ -347,7 +347,7 @@ else
                                 </td>
                             </tr>
         ';
-        
+
     // no users found
     } else {
         echo'
@@ -358,7 +358,7 @@ else
                             <tr><td class="space"></td></tr>
         ';
     }
-    
+
     echo '
                         </table>
                     </form>

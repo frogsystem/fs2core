@@ -147,8 +147,8 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Thumbnail-Maße: <font class="small">(Breite x H&ouml;he)</font><br />
-                                    <font class="small">Max. Abemsseungen des Thumbnails.</font>
+                                    Thumbnail-Ma&szlig;e: <font class="small">(Breite x H&ouml;he)</font><br />
+                                    <font class="small">Max. Abmessungen des Thumbnails.</font>
                                 </td>
                                 <td class="config" valign="top">
                                   <input class="text" name="width" size="5" maxlength="4" value="'.$_POST['width'].'" /> x <input class="text" name="height" size="5" maxlength="4" value="'.$_POST['height'].'" /> Pixel<br />

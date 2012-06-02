@@ -99,7 +99,7 @@ if ( TRUE )
                                     <input class="text center" size="3" maxlength="3" name="avatar_x" value="'.$_POST['avatar_x'].'">
                                     x
                                     <input class="text center" size="3" maxlength="3" name="avatar_y" value="'.$_POST['avatar_y'].'"> '.$admin_phrases['common']['pixel'].'<br>
-                                    <span class="small">(Breite x Höhe; '.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <span class="small">(Breite x H&ouml;he; '.$admin_phrases['common']['zero_not_allowed'].')</span>
                                 </td>
                             </tr>
                             <tr>

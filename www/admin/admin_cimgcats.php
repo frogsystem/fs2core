@@ -7,10 +7,10 @@ if(isset($_POST['add'])){
     if(!empty($name)){
         mysql_query('INSERT INTO `'.$global_config_arr['pref']."cimg_cats` (`name`, `description`) VALUES ('".$name."', '".$desc."')");
         $_POST['name'] = '';
-        $_POST['description'] = "";
+        $_POST['description'] = '';
         systext('Kategorie erfolgreich angelegt!');
     } else {
-        systext('Es muss ein Name für die Kategorie angegeben werden!', false, true);
+        systext('Es muss ein Name f&uuml;r die Kategorie angegeben werden!', false, true);
     }
 } elseif(isset($_POST['edit'])){
     if(isset($_POST['cat'])){
@@ -103,7 +103,7 @@ FS2_STRING;
     echo <<< FS2_STRING
         <tr>
             <td class="config" rowspan="2">Auswahl:</td>
-            <td class="config" colspan="2"><input class="button" type="submit" name="delete" value="löschen"><br>und eventuelle Bilder in die Kategorie <select name="newcat">{$options}</select> verschieben!</td>
+            <td class="config" colspan="2"><input class="button" type="submit" name="delete" value="l&ouml;schen"><br>und eventuelle Bilder in die Kategorie <select name="newcat">{$options}</select> verschieben!</td>
         </tr>
         <tr>
             <td colspan="2"><input class="button" type="submit" name="edit" value="speichern!"></td>

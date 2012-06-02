@@ -56,7 +56,7 @@ if($row['hasthumb'] == 0){
             <tr>
                 <td class="config" rowspan="2">
                     Thumbnail-Ma&szlig;e:
-                    <font class="small">(Breite x Höhe)</font>
+                    <font class="small">(Breite x H&ouml;he)</font>
                     <br>
                     <font class="small">Max. Abmessungen des Thumbnails.</font>
                 </td>
@@ -94,7 +94,7 @@ if($row['hasthumb'] == 0){
                                 }
                                 return false;
                             }
-                            
+
                             $("#calcbutton").css("display", "block");
                         // -->
                     </script>

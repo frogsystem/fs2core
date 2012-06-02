@@ -10,7 +10,7 @@ if ($_FILES['artikelimg'] && $_POST['title'] && $_POST['url'] && $_POST['preis']
     $_POST['url'] = savesql($_POST['url']);
     $_POST['preis'] = savesql($_POST['preis']);
     $_POST['text'] = savesql($_POST['text']);
-    settype($_POST['hot'], "integer");
+    settype($_POST['hot'], 'integer');
     mysql_query('INSERT INTO '.$global_config_arr['pref']."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
                  VALUES ('".$_POST['title']."',
                          '".$_POST['url']."',
@@ -18,19 +18,19 @@ if ($_FILES['artikelimg'] && $_POST['title'] && $_POST['url'] && $_POST['preis']
                          '".$_POST['preis']."',
                          '".$_POST['hot']."');", $FD->sql()->conn() );
     $id = mysql_insert_id();
-    
+
     $messages = array();
     if (!empty($_FILES['artikelimg']['name']))
     {
-        $upload = upload_img($_FILES['artikelimg'], "images/shop/", $id, 2*1024*1024, 400, 600);
+        $upload = upload_img($_FILES['artikelimg'], 'images/shop/', $id, 2*1024*1024, 400, 600);
         $messages[] = upload_img_notice($upload);
-        $thumb = create_thumb_from(image_url("images/shop/",$id,FALSE, TRUE), 100, 100);
+        $thumb = create_thumb_from(image_url('images/shop/',$id,FALSE, TRUE), 100, 100);
         $messages[] = create_thumb_notice($thumb);
     }
-    
-    $messages[] = $TEXT['admin']->get("changes_saved");
-    
-    echo get_systext(implode("<br>", $messages), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+
+    $messages[] = $TEXT['admin']->get('changes_saved');
+
+    echo get_systext(implode('<br>', $messages), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_save_ok'));
     unset($_POST);
 }
 
@@ -41,20 +41,20 @@ if ($_FILES['artikelimg'] && $_POST['title'] && $_POST['url'] && $_POST['preis']
 if(true)
 {
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
     }
-    
+
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shop_add" name="go">
                         <input type="hidden" value="1" name="sended">
                         <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>Produkt hinzufügen</h3><hr></td></tr>
+                            <tr><td colspan="2"><h3>Produkt hinzuf&uuml;gen</h3><hr></td></tr>
                             
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
-                                    <font class="small">Bild auswählen, dass hochgeladen werden soll.</font>
+                                    <font class="small">Bild ausw&auml;hlen, dass hochgeladen werden soll.</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="artikelimg" size="33"><br />
@@ -86,7 +86,7 @@ if(true)
                                     <font class="small">Kurze Artikelbeschreibung (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", "", 330, 130).'
+                                    '.create_editor('text', '', 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -101,7 +101,7 @@ if(true)
                             <tr>
                                 <td class="config" valign="top">
                                     Hotlink:<br>
-                                    <font class="small">Hotlinks erscheinen rechts im Menü</font>
+                                    <font class="small">Hotlinks erscheinen rechts im Men&uuml;</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="checkbox" name="hot" value="1">
@@ -109,7 +109,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input class="button" type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                         </table>

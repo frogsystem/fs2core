@@ -31,7 +31,7 @@ if(isset($_POST['import'])){
             systext($count.' Bilder importiert!');
         }
     } else {
-        systext('Es müssen Bilder ausgewählt werden!');
+        systext('Es m&uuml;ssen Bilder ausgew&auml;hlt werden!');
     }
     unset($_POST['import']);
 } elseif(isset($_POST['delete'])){
@@ -61,9 +61,9 @@ if(isset($_POST['import'])){
         } else {
             $str .= 'und '.$count2.' Thumbnails';
         }
-        systext($str.' gelöscht!');
+        systext($str.' gel&ouml;scht!');
     } else {
-        systext('Es müssen Bilder ausgewählt werden!');
+        systext('Es m&uuml;ssen Bilder ausgew&auml;hlt werden!');
     }
     unset($_POST['delete']);
 }
@@ -77,7 +77,7 @@ if(!isset($_POST['import']) && !isset($_POST['delete'])){
            $img[] = $row['name'].'_s';
         }
     }
-    $ordner=opendir(UPLOAD_PATH); // gib hier den gewünschten pfad an
+    $ordner=opendir(UPLOAD_PATH); // gib hier den gewünschten Pfad an
 
     $ext_arr = array('.jpg', '.jpeg', '.gif', '.png', '.JPG', '.JPEG', '.GIF', '.PNG');
     $bildnamen = array();
@@ -87,12 +87,12 @@ if(!isset($_POST['import']) && !isset($_POST['delete'])){
         $name = substr($datei, 0, strrpos($datei, '.'));
         $suffix = substr($name, strlen($name) - 2);
         $extension = substr($datei, strrpos($datei, '.'));
-        if($datei!='.' AND $datei!='..' AND in_array($extension,$ext_arr) AND !in_array($name, $img) AND $suffix != "_s"){
+        if($datei!='.' AND $datei!='..' AND in_array($extension,$ext_arr) AND !in_array($name, $img) AND $suffix != '_s'){
             $found++;
             $bildnamen[] = array($name, file_exists(UPLOAD_PATH.$name.'_s'.$extension), $extension);
         }
     }
-    
+
     if($found > 0){
         if($found == 1){
             systext($found.' neues Bild gefunden');

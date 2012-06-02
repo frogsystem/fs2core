@@ -10,9 +10,9 @@ if (
 	)
 {
 	// security functions
-    settype ( $_POST['group_pic_x'], "integer" );
-    settype ( $_POST['group_pic_y'], "integer" );
-    settype ( $_POST['group_pic_size'], "integer" );
+    settype ( $_POST['group_pic_x'], 'integer' );
+    settype ( $_POST['group_pic_y'], 'integer' );
+    settype ( $_POST['group_pic_size'], 'integer' );
 
 	// MySQL-Queries
     mysql_query ( '
@@ -51,7 +51,7 @@ if ( TRUE )
 	    $config_arr = mysql_fetch_assoc($index);
 	    putintopost ( $config_arr );
 	}
-	
+
 	// security functions
     settype ( $_POST['group_pic_x'], 'integer' );
     settype ( $_POST['group_pic_y'], 'integer' );
@@ -73,13 +73,13 @@ if ( TRUE )
                                     <input class="text center" size="3" maxlength="3" name="group_pic_x" value="'.$_POST['group_pic_x'].'">
                                     x
                                     <input class="text center" size="3" maxlength="3" name="group_pic_y" value="'.$_POST['group_pic_y'].'"> '.$admin_phrases['common']['pixel'].'<br>
-                                    <span class="small">(Breite x Höhe; '.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <span class="small">(Breite x H&ouml;he; '.$admin_phrases['common']['zero_not_allowed'].')</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '."Gruppen-Symbol - max. Dateigröße".':<br>
-                                    <span class="small">'."Die max. Dateigröße eines Gruppen-Symbols.".'</span>
+                                    '."Gruppen-Symbol - max. Dateigr&ouml;&szlig;e".':<br>
+                                    <span class="small">'."Die max. Dateigr&ouml;&szlig;e eines Gruppen-Symbols.".'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text center" size="4" maxlength="4" name="group_pic_size" value="'.$_POST['group_pic_size'].'"> KiB<br>
