@@ -121,12 +121,12 @@ description_desc:                                  Ein kurzer Text über die Seit
 author:                                            Autor
 author_desc:                                       Der oder die Webmaster der Seite.
 keywords:                                          Keywords
-keywords_desc:                                     Stichwörter zur Seite, bitte mit Kommas trennen.<br>Wichtig für Suchmaschinen!
+keywords_desc:                                     Stichw&ouml;rter zur Seite, bitte mit Kommas trennen.<br>Wichtig f&uuml;r Suchmaschinen!
 design_title:                                      Design
 design:                                            Design
 design_desc:                                       Design, in dem die Seite angezeigt wird.
 allow_other_designs:                               Andere Styles erlauben
-allow_other_designs_desc:                          Ermöglicht das Anzeigen der Seite in anderen Styles.<br> (http://www.example.com/?style=xyz)
+allow_other_designs_desc:                          Erm&ouml;glicht das Anzeigen der Seite in anderen Styles.<br> (http://www.example.com/?style=xyz)
 show_favicon:                                      Favicon verwenden
 show_favicon_desc:                                 Bindet das Favicon ein.<br>($VAR(style_icons)/favicon.ico)
 settings_title:                                    Seiteneinstellungen
@@ -156,7 +156,7 @@ date_info:                                         verwendet den Syntax der PHP-
 pagenav_title:                                     Seitennavigation
 page:                                              Seitenanzeige
 page_desc:                                         Design der Seitenanzeige bei mehrseitigen Anzeigen.
-page_info:                                         {page_number} = aktuelle Seite; {prev} = Seite zurück<br>{total_pages} = Seitenzahl; {next} = Seite weiter
+page_info:                                         {page_number} = aktuelle Seite; {prev} = Seite zur&uuml;ck<br>{total_pages} = Seitenzahl; {next} = Seite weiter
 page_prev:                                         Seite zurück
 page_prev_desc:                                    Design der "Seite zurück" Schaltfläche.
 page_prev_info:                                    {url} = URL zur vorherigen Seite
@@ -205,7 +205,7 @@ buttons_desc:                                      Buttons, die im öffentlichen 
 fscode_settings_title:                             FSCode-Einstellungen
 fscode:                                            Von Usern verwendbare FSCodes
 fscode_desc:                                       FS-Codes, die von Usern verwendet werden können.
-fscode_info:                                       <b>Nicht gewählte FSCodes werden in von Usern erstellten Beiträgen (z.B. Kommentaren) nicht umgewandelt!</b>
+fscode_info:                                       <b>Nicht gew&auml;hlte FSCodes werden in von Usern erstellten Beitr&auml;gen (z.B. Kommentaren) nicht umgewandelt!</b>
 smilie_add_title:                                  Neuen Smilie hinzufügen
 smilie_add_select:                                 Smilie auswählen
 smilie_add_text:                                   Ersetungstext
@@ -369,7 +369,7 @@ list_cat_created_on:                               am
 delete_cat_title:                                  Kategorie löschen
 delete_cat_question:                               Soll diese Kategorie wirklich gelöscht werden
 delete_cat_move_to:                                News der gelöschten Kategorie verschieben nach
-delete_cat_last:                                   Die letzte Kategorie kann nicht gelöscht werden.<br>Bitte legen Sie zuerst eine neue Kategorie an.
+delete_cat_last:                                   Die letzte Kategorie kann nicht gel&ouml;scht werden.<br>Bitte legen Sie zuerst eine neue Kategorie an.
 delete_back_link:                                  zurück zur Übersicht
 edit_cat_title:                                    Haupteinstellungen
 edit_cat_name:                                     Name
@@ -405,7 +405,7 @@ news_comment_deleted:                              Kommentar wurde erfolgreich g
 
 #articles
 post_settings_title:                               Beiträge
-post_settings_info:                                <b>Hinweis:</b> Hier wird nur die grundsätzliche Möglichkeit zur Verwendung eingstellt. Bei jedem Artikel kann die Verwendung von HTML, FSCode und der Absatzbehandlung auch noch seperat (de-)aktiviert werden.
+post_settings_info:                                <b>Hinweis:</b> Hier wird nur die grunds&auml;tzliche M&ouml;glichkeit zur Verwendung eingstellt. Bei jedem Artikel kann die Verwendung von HTML, FSCode und der Absatzbehandlung auch noch seperat (de-)aktiviert werden.
 allow_html:                                        HTML-Code
 allow_html_desc:                                   Erlaubt HTML-Code in ...
 allow_fs:                                          FSCode
@@ -453,7 +453,7 @@ list_cat_created_on:                               am
 delete_cat_title:                                  Kategorie löschen
 delete_cat_question:                               Soll diese Kategorie wirklich gelöscht werden
 delete_cat_move_to:                                News der gelöschten Kategorie verschieben nach
-delete_cat_last:                                   Die letzte Kategorie kann nicht gelöscht werden.<br>Bitte legen Sie zuerst eine neue Kategorie an.
+delete_cat_last:                                   Die letzte Kategorie kann nicht gel&ouml;scht werden.<br>Bitte legen Sie zuerst eine neue Kategorie an.
 delete_back_link:                                  zurück zur Übersicht
 edit_cat_title:                                    Haupteinstellungen
 edit_cat_name:                                     Name

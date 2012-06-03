@@ -1,0 +1,93 @@
+pageinfo_title:             Site Information
+settings_title:             Site Settings
+design_title:               Design
+pagenav_title:              Page Navigation
+
+
+title:                      Title
+title_desc:                 The title of the site.
+
+dyn_title:                  Dynamic Title
+dyn_title_desc:             Enables dynamic page titles.
+dyn_title_ext:              Dynamic Title Scheme
+dyn_title_ext_desc:         Scheme of the dynamic title.
+dyn_title_page_title:       Default page title
+dyn_title_page_title_ext:   Page-specific title extension
+
+virtualhost:                URL & Protocol
+virtualhost_desc:           URL and default protocol of the site.
+other_protocol:             Allow both protocols
+other_protocol_desc:        Allows access to the site via both protocols.
+
+admin_mail:                 E-mail address
+admin_mail_desc:            Sender addresse of system-generated e-mails.
+
+description:                Description
+description_desc:           A short text about the site.
+
+author:                     Author
+author_desc:                The webmaster(s) of the site.
+
+keywords:                   Keywords
+keywords_desc:              Keywords for the site, please separate by commas.<br>Important to search engines!
+
+config_publisher_title:     Publisher
+config_publisher_desc:      Publisher (Webmaster) of the site.
+
+config_copyright_title:     Copyright
+config_copyright_desc:      Copyright notes of the copyright holders.
+
+style_title:                Active Style
+style_desc:                 Style that is used for design of the main page.
+
+allow_other_styles:         Allow other styles
+allow_other_styles_desc:    Allows to display the site with other styles.<br> ($URL([style=xyz 1]))
+
+show_favicon:               Use favicon
+show_favicon_desc:          Includes the favicon.<br>($VAR(style_icons)favicon.ico)
+
+home_page:                  Homepage
+home_page_desc:             Defines the page that is displayed by default.
+home_page_default:          Default (?go=news)
+
+language:                   Language
+language_desc:              The admin CP's default language.
+
+feed:                       Feed
+feed_desc:                  Default feed of the site, will be included in HTML head.
+feed_rss091:                RSS 0.91
+feed_rss10:                 RSS 1.0
+feed_rss20:                 RSS 2.0
+feed_atom10:                Atom 1.0
+
+url_style:                  URL style
+url_style_desc:             Defines how URLs are shown and created.
+url_style_info:             <b>Attention:</b> Please read the hints about the use of <a href="http://wiki.frogsystem.de/seo-urls" target="_blank">search engine optimised URLs</a>!
+url_style_default:          Default (?go=page&amp;p1=v1)
+url_style_seo:              Search engine optimised (page--p1-v1.html)
+
+date:                       Date
+date_desc:                  Date format that is used on the site.
+time:                       Time
+time_desc:                  Time format that is used on the site.
+date_time:                  Date &amp; Time
+date_time_desc:             Format that is used for date and time designations.
+timezone:                   Timezone
+timezone_desc:              Timezone in which the webserver is running.
+server_default:             Server-Default
+
+auto_forward:               Automatic Forwarding
+auto_forward_desc:          Timespan, after which the automatic forwarding gets activated.
+
+page:                       Page navigation
+page_desc:                  Design of page navigation in multi-page contents.
+page_prev:                  Previous Page
+page_prev_desc:             Design of "Previous Page" button.
+page_next:                  Next Page
+page_next_desc:             Design of "Next Page" button.
+page_text_page_num:         Number of current page
+page_text_total_pages:      Total number of pages
+page_text_next:             "Previous page" button
+page_text_prev:             "Next page" button
+page_prev_url:              URL of the previous page
+page_next_url:              URL of the next page

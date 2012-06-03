@@ -1,0 +1,24 @@
+#@from_phrases
+change_password_ack_title:      New Password
+change_password_ack_desc:       E-mail that the user receives after requesting a new password.
+
+sender_email:                   Sender's address
+sender_email_desc:              Sender address that will be used for sent e-mails.
+
+send_as_html:                   send as HTML
+send_as_html_desc:              Sends the e-mails in HTML format.
+send_as_html_info:              Allows use of HTML and FSCode.
+
+
+email_templates_title:          E-mail Templates
+email_reg_title:                Registration
+email_reg_desc:                 E-mail that the user receives after registration at the site.
+email_newpwd_title:             Password Change
+email_newpwd_desc:              E-mail that the user receives after a password change.
+email_delete_title:             Account Deletion
+email_delete_desc:              Email that the user receives in case of deletion of his account.
+
+email_username:                 The name of the user.
+email_password:                 The password of the user.
+email_virtualhost:              Site's URL.
+new_password_url:               URL of the page, where the request for a new password has to be confirmed.
