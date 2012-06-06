@@ -19,7 +19,7 @@ if (   ( $_POST['signup'] && $_POST['signup'] != '' )
     $_POST['change_password_ack'] = savesql ( $_POST['change_password_ack'] );
     #$_POST['delete_account'] = savesql ( $_POST['delete_account'] );
     $_POST['email'] = savesql ( $_POST['email'] );
-    
+
     // MySQL-Queries
     mysql_query ( '
                     UPDATE `'.$global_config_arr['pref']."email`
@@ -70,7 +70,7 @@ if ( TRUE )
     $_POST['change_password_ack'] = killhtml ( $_POST['change_password_ack'] );
     #$_POST['delete_account'] = killhtml ( $_POST['delete_account'] );
     $_POST['email'] = killhtml ( $_POST['email'] );
-    
+
     echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="gen_emails">
@@ -170,8 +170,8 @@ if ( TRUE )
                                 <td class="config">
                                     '.create_editor('change_password_ack', $_POST['change_password_ack'], '100%', '200px', '', FALSE).'
                                 </td>
-                            </tr>     
-                            <tr><td class="space"></td></tr>                       
+                            </tr>
+                            <tr><td class="space"></td></tr>
 
                             <tr>
                                 <td class="buttontd" colspan="2">
@@ -204,7 +204,7 @@ if ( TRUE )
                                 <td class="config">
                                     '.create_editor('delete_account', $_POST['delete_account'], '100%', '200px', '', FALSE).'
                                 </td>
-                            </tr>     
-                            <tr><td class="space"></td></tr>     
+                            </tr>
+                            <tr><td class="space"></td></tr>
 */
 ?>

@@ -43,7 +43,7 @@ if (
                  	WHERE
 					 	`id` = '1'
 	", $FD->sql()->conn() );
-	
+
 	// system messages
     systext($admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
 
@@ -83,7 +83,7 @@ if ( TRUE )
     settype ( $_POST['com_antispam'], 'integer' );
     settype ( $_POST['acp_per_page'], 'integer' );
     settype ( $_POST['acp_view'], 'integer' );
-    
+
     $_POST['com_sort'] = killhtml ( $_POST['com_sort'] );
 
 	// Display Form

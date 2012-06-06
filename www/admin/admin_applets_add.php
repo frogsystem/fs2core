@@ -1,14 +1,14 @@
 <?php if (ACP_GO == 'applets_add') {
-    
+
 #TODO: fileaccess
-    
+
 ###################
 ## Page Settings ##
 ###################
 define('INCLUDE_ALWAYS', 1);
 define('INCLUDE_ONDEMAND', 2);
-  
-    
+
+
 /////////////////////////
 //// Save Data to DB ////
 /////////////////////////
@@ -21,7 +21,7 @@ if (
 {
 
     $_POST['applet_file'] = savesql ( $_POST['applet_file'] );
-    
+
     settype ( $_POST['applet_active'], 'integer' );
     settype ( $_POST['applet_output'], 'integer' );
     settype ( $_POST['applet_include'], 'integer' );
@@ -45,7 +45,7 @@ if (
                                                 '".$_POST['applet_output']."'
                                         )
         ", $sql->conn() );
-        
+
         systext ( $TEXT['admin']->get('applet_added'),
             $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_save_add') );
         unset ( $_POST );
@@ -104,7 +104,7 @@ echo '
                                     '.$TEXT['admin']->get('checkbox').'
                                     <input class="hidden" type="checkbox" name="applet_active" value="1" '.getchecked ( 1, $_POST['applet_active'] ).'>
                                 </td>
-                            </tr>                            
+                            </tr>
                             <tr>
                                 <td class="config">
                                     '.$TEXT['admin']->get('applets_file_title').':<br>
@@ -126,10 +126,10 @@ echo '
                                         <option value="'.INCLUDE_ONDEMAND.'" '.getselected(INCLUDE_ONDEMAND, $_POST['applet_include']).'>'.$TEXT['page']->get('applets_include_ondemand').'</option>
                                     </select>
                                 </td>
-                            </tr>                            
+                            </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT["admin"]->get('applets_output_title').':<br>
+                                    '.$TEXT['admin']->get('applets_output_title').':<br>
                                     <span class="small">'.$TEXT['admin']->get('applets_output_desc').'</span>
                                 </td>
                                 <td class="config">

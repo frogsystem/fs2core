@@ -68,11 +68,11 @@ if ( TRUE )
                         <input type="hidden" name="go" value="gen_announcement">
                            <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$FD->text("page", "ann_settings_title").'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text('page', 'ann_settings_title').'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$FD->text("page", "show_announcement").':<br>
-                                    <span class="small">'.$FD->text("page", "show_announcement_desc").'</span>
+                                    '.$FD->text('page', 'show_announcement').':<br>
+                                    <span class="small">'.$FD->text('page', 'show_announcement_desc').'</span>
                                 </td>
                                 <td class="config">
                                     <select name="show_announcement">

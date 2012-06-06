@@ -37,7 +37,7 @@ if (
 	", $FD->sql()->conn() );
     $message = $admin_phrases['articles']['new_cat_added'];
     $id = mysql_insert_id ( $FD->sql()->conn() );
-	
+
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != '' ) {
       $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'articles_'.$id, $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );

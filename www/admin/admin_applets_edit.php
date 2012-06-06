@@ -1,14 +1,14 @@
 <?php if (ACP_GO == 'applets_edit') {
-      
+
 #TODO: fileaccess
-    
+
 ###################
 ## Page Settings ##
 ###################
 define('INCLUDE_ALWAYS', 1);
 define('INCLUDE_ONDEMAND', 2);
 
-  
+
 ////////////////////////////
 //// DB: Update Applets ////
 ////////////////////////////
@@ -55,7 +55,7 @@ elseif (
     )
 {
     if ( $_POST['applet_delete'] == 1 ) {
-    
+
         // Security-Functions
         $_POST['applet_id'] = array_map ( 'intval', explode ( ',', $_POST['applet_id'] ) );
 
@@ -65,7 +65,7 @@ elseif (
                         FROM '.$global_config_arr['pref'].'applets
                         WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')
         ', $FD->sql()->conn() );
-        
+
         systext ( $TEXT['admin']->get('applets_deleted'),
             $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_trash_ok') );
 
@@ -85,7 +85,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
 {
     // Security Function
     $_POST['applet_id'] = array_map ( 'intval', $_POST['applet_id'] );
-    
+
     //////////////////////////
     //// Edit Applet Form ////
     //////////////////////////
@@ -95,7 +95,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
 
         // Display Error Messages
         if ( $_POST['sended'] == 'edit' ) {
-        
+
             // Shouldn't happen
 
         // Get Data from DB
@@ -117,7 +117,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         settype ( $_POST['applet_active'], 'integer' );
         settype ( $_POST['applet_include'], 'integer' );
         settype ( $_POST['applet_output'], 'integer' );
-        
+
 
         // Display Form
         echo '
@@ -158,7 +158,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
                                         <option value="'.INCLUDE_ONDEMAND.'" '.getselected(INCLUDE_ONDEMAND, $_POST['applet_include']).'>'.$TEXT['page']->get('applets_include_ondemand').'</option>
                                     </select>
                                 </td>
-                            </tr> 
+                            </tr>
                             <tr>
                                 <td class="config">
                                     '.$TEXT['admin']->get('applets_output_title').':<br>
@@ -181,7 +181,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
                     </form>
         ';
     }
-    
+
     //////////////////////////////////////////////////////////////
     //// Show to much selected Error & Go back to Select Form ////
     //////////////////////////////////////////////////////////////
@@ -191,7 +191,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
             $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
         unset ( $_POST['applet_id'] );
     }
-    
+
     ////////////////////////////
     //// Delete Applet Form ////
     ////////////////////////////
@@ -211,7 +211,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
                                     '.$TEXT['admin']->get('applets_delete_question').'
                                     <br><br>
         ';
-        
+
         // get applets from db
         $index = mysql_query ( '
                                 SELECT *
@@ -221,15 +221,15 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         ', $FD->sql()->conn() );
         // applets found
         if ( mysql_num_rows ( $index ) > 0 ) {
-        
+
             // display applets
             while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
 
                 // get other data
                 $data_arr['text'] = array (
-                    (($data_arr['applet_active'] == 1 )  ? $TEXT["admin"]->get('applet_active') : $TEXT['admin']->get('applet_not_active')),
-                    (($data_arr['applet_include'] == 1 ) ? $TEXT["page"]->get('delete_include_always') : $TEXT['page']->get('delete_include_ondemand')),
-                    (($data_arr['applet_output'] == 1 )  ? $TEXT["admin"]->get('applet_output_enabled') : $TEXT['admin']->get('applet_output_disabled'))
+                    (($data_arr['applet_active'] == 1 )  ? $TEXT['admin']->get('applet_active') : $TEXT['admin']->get('applet_not_active')),
+                    (($data_arr['applet_include'] == 1 ) ? $TEXT['page']->get('delete_include_always') : $TEXT['page']->get('delete_include_ondemand')),
+                    (($data_arr['applet_output'] == 1 )  ? $TEXT['admin']->get('applet_output_enabled') : $TEXT['admin']->get('applet_output_disabled'))
                 );
 
                 echo '

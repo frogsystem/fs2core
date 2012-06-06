@@ -8,7 +8,7 @@ if ( isset ( $_GET['info'] ) ) {
 
 } else {
     if (!defined('ACP_GO')) die('Unauthorized access!');
-    
+
     echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="4">'.$FD->text('page', 'phpinfo_title').'</td></tr>

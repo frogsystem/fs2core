@@ -1,6 +1,6 @@
 <?php if (ACP_GO == 'news_add') {
 
-    
+
 ###################
 ## Page Settings ##
 ###################
@@ -64,7 +64,7 @@ if (
     // MySQL-Insert-Query
     try {
         $newsid = $sql->save('news', $data, 'news_id');
-        
+
         // Update Search Index (or not)
         if ( $global_config_arr['search_index_update'] === 1 ) {
             // Include searchfunctions.php
@@ -86,14 +86,14 @@ if (
                     'link_url' => $_POST['link_url'][$id],
                     'link_target' => $_POST['link_target'][$id]
                 );
-                
-                // insert into db                
+
+                // insert into db
                 try {
                     $sql->save('news_links', $linkdata, 'link_id');
                 } catch (Exception $e) {
                     Throw $e;
                 }
-                
+
             }
         }
 
@@ -101,8 +101,8 @@ if (
         try {
             $sql->doQuery('UPDATE `{..pref..}counter` SET `news` = `news` + 1 WHERE `id` = 1');
         } catch (Exception $e) {}
-        
-        
+
+
         echo get_systext($FD->text('page', 'news_not_added'), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_save_add'));
 
         // Unset Vars
@@ -119,33 +119,33 @@ if (
 /////////////////////
 
 if ( TRUE ) {
-    
+
     // link functions or error
     if (isset($_POST['sended'])) {
-        
+
         //add link
         if (isset($_POST['add_link'])) {
             if (!empty($_POST['new_link_name']) && !empty($_POST['new_link_url']) && !in_array($_POST['new_link_url'], array('http://', 'https://'))) {
                 $_POST['link_name'][] = $_POST['new_link_name'];
                 $_POST['link_url'][] = $_POST['new_link_url'];
                 $_POST['link_target'][] = $_POST['new_link_target'];
-                
+
                 unset($_POST['new_link_name'], $_POST['new_link_url'], $_POST['new_link_target']);
                 $_POST['new_link_url'] = 'http://';
             } else {
                 echo get_systext($FD->text('page', 'news_not_added').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_link_error'));
             }
-        
+
         //edit links
         } elseif (isset($_POST['edit_link'])) {
-        
+
             if(isset($_POST['link']) && !empty($_POST['link_action'])) {
-            
+
                 // löschen
                 if ($_POST['link_action'] == 'del') {
                     unset($_POST['link_name'][$_POST['link']], $_POST['link_url'][$_POST['link']], $_POST['link_target'][$_POST['link']]);
                 }
-                
+
                 //up
                 elseif ($_POST['link_action'] == 'up' && $_POST['link'] != 0) {
                     // werte tauschen
@@ -156,7 +156,7 @@ if ( TRUE ) {
                     list($_POST['link_target'][$_POST['link']-1], $_POST['link_target'][$_POST['link']])
                         = array($_POST['link_target'][$_POST['link']], $_POST['link_target'][$_POST['link']-1]);
                 }
-                
+
                 //down
                 elseif ($_POST['link_action'] == 'down' && $_POST['link'] < count($_POST['link_name'])-1) {
                     // werte tauschen
@@ -167,45 +167,45 @@ if ( TRUE ) {
                     list($_POST['link_target'][$_POST['link']+1], $_POST['link_target'][$_POST['link']])
                         = array($_POST['link_target'][$_POST['link']], $_POST['link_target'][$_POST['link']+1]);
                 }
-                
+
                 //bearbeiten
                 elseif ($_POST['link_action'] == 'edit') {
                     $_POST['new_link_name'] = $_POST['link_name'][$_POST['link']];
                     $_POST['new_link_url'] = $_POST['link_url'][$_POST['link']];
                     $_POST['new_link_target'] = $_POST['link_target'][$_POST['link']];
-                    
+
                     unset($_POST['link_name'][$_POST['link']], $_POST['link_url'][$_POST['link']], $_POST['link_target'][$_POST['link']]);
                 }
             }
-        
+
         // display error
         } else {
             echo get_systext($FD->text('page', 'news_not_added').'<br>'.$FD->text('admin', 'form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
         }
-        
+
     // Set default value
     } else {
         $_POST['news_active'] = 1;
         $_POST['news_comments_allowed'] = 1;
         $_POST['user_id'] = $_SESSION['user_id'];
-        
+
         $_POST['d'] = date('d');
         $_POST['m'] = date('m');
         $_POST['y'] = date('Y');
         $_POST['h'] = date('H');
         $_POST['i'] = date('i');
-        
+
         $_POST['new_link_url'] = 'http://';
     }
-    
+
     // Get User
     $_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
-    
+
     // security functions
     $_POST = array_map('killhtml', $_POST);
 
     // Create Date-Arrays
-    list($_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i']) 
+    list($_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'])
         = array_values(getsavedate($_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'], 0, true));
 
     // cat options
@@ -220,15 +220,15 @@ if ( TRUE ) {
         settype ($cat['cat_id'], 'integer');
         $cat_options .= '<option value="'.$cat['cat_id'].'" '.getselected($cat['cat_id'], $_POST['cat_id']).'>'.$cat['cat_name'].'</option>'."\n";
     }
-    
-    
+
+
     //link entries
     initstr($link_entries);
     $c = 0;
     if (!is_array($_POST['link_name']))
         $_POST['link_name'] = array();
-        
-    foreach($_POST['link_name'] as $id => $val) {         
+
+    foreach($_POST['link_name'] as $id => $val) {
         $adminpage->addCond('notscript', true);
         $adminpage->addText('name', killhtml($_POST['link_name'][$id]));
         $adminpage->addText('url', killhtml($_POST['link_url'][$id]));

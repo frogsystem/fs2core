@@ -1,5 +1,5 @@
 <?php if (ACP_GO == 'article_preview') {
-    
+
 
 // Reload Page
 if ( !$_POST['article_text'] && !$_POST['sended'] ) {
@@ -10,7 +10,7 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
                 loaddata();
                 document.getElementById(\'form\').submit();
             });
-            
+
             function loaddata() {
                 document.getElementById(\'article_title\').value = opener.document.getElementById(\'article_title\').value;
                 document.getElementById(\'article_user\').value = opener.document.getElementById(\'userid\').value;
@@ -35,7 +35,7 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
                 } else {
                     document.getElementById(\'article_para\').value = 0;
                 }
-                
+
                 document.getElementById(\'article_text\').value = opener.document.getElementById(\'article_text\').value;
             }
         </script>
@@ -53,7 +53,7 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
             <input type="hidden" name="article_para" id="article_para" value="">
             <input type="hidden" name="article_text" id="article_text" value="">
         </form>
-        
+
         <p>
             '.$TEXT['page']->get('preview_note').'
         </p>
@@ -114,7 +114,7 @@ else {
         $user_arr['user_id'] = $article_arr['article_user'];
         $user_arr['user_name'] = $article_arr['article_user_name'];
         $user_arr['user_url'] = '?go=user&id='.$user_arr['user_id'];
-        
+
         // Create Template
         $author_template = new template();
         $author_template->setFile ( '0_articles.tpl' );
@@ -154,7 +154,7 @@ else {
 
 
     // Display Preview Page
-    $theTemplate = new template();       
+    $theTemplate = new template();
     $theTemplate->setFile('0_main.tpl');
     $theTemplate->load('MAIN');
     $theTemplate->tag('content', $template_preview);
@@ -165,8 +165,8 @@ else {
 
     // Get Main Template
     echo get_maintemplate ($template_general, '../');
-    $JUST_CONTENT = true; //preview has own html head    
-    
+    $JUST_CONTENT = true; //preview has own html head
+
 }
 
 } ?>

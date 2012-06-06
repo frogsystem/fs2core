@@ -9,7 +9,7 @@ $url_arr = get_article_urls ();
 if (
                 isset ( $_POST['sended'] ) &&
                 isset ( $_POST['article_cat_id'] ) &&
-                $_POST['article_title'] && $_POST['article_title'] != "" &&
+                $_POST['article_title'] && $_POST['article_title'] != '' &&
                 (empty($url_arr) || !in_array ( savesql ( $_POST['article_url'] ), $url_arr )) &&
 
                 ( ( $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31 ) || ( $_POST['d'] == '' && $_POST['m'] == '' && $_POST['y'] == '' ) ) &&
@@ -59,14 +59,14 @@ if (
                                                 '".time()."'
                                         )
     ", $FD->sql()->conn() );
-    
+
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
         // Include searchfunctions.php
         require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
         update_search_index ( 'articles' );
     }
-    
+
     mysql_query ( 'UPDATE '.$global_config_arr['pref'].'counter SET artikel = artikel + 1', $FD->sql()->conn() );
     systext( $admin_phrases['articles']['articles_added'], $admin_phrases['common']['info']);
 }
@@ -98,7 +98,7 @@ else
     $config_arr['html_code_bool'] = ($config_arr['html_code'] == 2 || $config_arr['html_code'] == 4);
     $config_arr['fs_code_bool'] = ($config_arr['fs_code'] == 2 || $config_arr['fs_code'] == 4);
     $config_arr['para_handling_bool'] = ($config_arr['para_handling'] == 2 || $config_arr['para_handling'] == 4);
-    
+
     $config_arr['html_code_text'] = ( $config_arr['html_code_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
     $config_arr['fs_code_text'] = ( $config_arr['fs_code_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
     $config_arr['para_handling_text'] = ( $config_arr['para_handling_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
@@ -123,7 +123,7 @@ else
                 $index = mysql_query ( 'SELECT user_name, user_id FROM '.$global_config_arr['pref']."user WHERE user_id = '".$_POST['article_user']."'", $FD->sql()->conn() );
             $_POST['article_user_name'] = killhtml ( mysql_result ( $index, 0, 'user_name' ) );
         } else {
-            $_POST['article_user_name'] = "";
+            $_POST['article_user_name'] = '';
         }
 
 
@@ -216,7 +216,7 @@ else
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                
+
                                     <table cellpadding="0" cellspacing="0" width="100%">
                                         <tr>
                                                                                         <td class="config">
