@@ -164,7 +164,7 @@ page_next:                                         Seite weiter
 page_next_desc:                                    Design der "Seite weiter" Schaltfläche. 
 page_next_info:                                    {url} = URL zur nächsten Seite
 ann_settings_title:                                Einstellungen
-activate_ann:                                      Annkündigung freischalten
+activate_ann:                                      Ankündigung freischalten
 activate_ann_desc:                                 Schaltet die Ankündigung zur Anzeige auf der Seite frei.
 ann_title:                                         Ankündigung schreiben
 ann_write_desc:                                    Eine leere Ankündigung wird nicht angezeigt.

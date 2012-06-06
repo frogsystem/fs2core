@@ -197,7 +197,7 @@ $admin_phrases['general']['page_next_info']           = "{url} = URL zur nächste
 
 
 $admin_phrases['general']['ann_settings_title']       = "Einstellungen";
-$admin_phrases['general']['activate_ann']             = "Annkündigung freischalten";
+$admin_phrases['general']['activate_ann']             = 'Ankündigung freischalten';
 $admin_phrases['general']['activate_ann_desc']        = "Schaltet die Ankündigung zur Anzeige auf der Seite frei.";
 $admin_phrases['general']['ann_title']                = "Ankündigung schreiben";
 $admin_phrases['general']['ann_write_desc']           = "Eine leere Ankündigung wird nicht angezeigt.";
