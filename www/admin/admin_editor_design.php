@@ -8,7 +8,7 @@
     }
     $TEMPLATE_FILE = '0_editor.tpl';
     $TEMPLATE_EDIT = null;
-    
+
 
     $tmp['name'] = 'BUTTON';
     $tmp['title'] = $FD->text('template', 'editor_button_title');
@@ -43,7 +43,7 @@
         $tmp['help'][0]['text'] = $FD->text('template', 'editor_smilies_help_table');
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
-    
+
     $tmp['name'] = 'BODY';
     $tmp['title'] = $FD->text('template', 'editor_design_title');
     $tmp['description'] = $FD->text('template', 'editor_design_description');
@@ -59,7 +59,7 @@
         $tmp['help'][3]['text'] = $FD->text('template', 'editor_design_help_smilies');
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
-        
+
 //////////////////////////
 //// Intialise Editor ////
 //////////////////////////

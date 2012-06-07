@@ -18,7 +18,7 @@ if (count($files) < 1) {
     initstr($lines);
     foreach ($files as $file) {
         $filename = basename($file, '.php');
-        
+
         // get line tpl
         $adminpage->clearConds();
         $adminpage->clearTexts();
@@ -26,12 +26,12 @@ if (count($files) < 1) {
         $adminpage->addText('filename', $filename);
         $lines .= $adminpage->get('line');
     }
-    
+
     //get main tpl
     $adminpage->clearConds();
     $adminpage->clearTexts();
     $adminpage->addText('lines', $lines);
-    $content = $adminpage->get('main');    
+    $content = $adminpage->get('main');
 }
 
 echo get_content_container('&nbsp;', $content);

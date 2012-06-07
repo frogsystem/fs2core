@@ -1,12 +1,12 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
-    
+
 #TODO: fileaccess
-    
+
 ###################
 ## Page Settings ##
 ###################
 $used_cols = array('title', 'dyn_title', 'dyn_title_ext', 'protocol', 'url', 'other_protocol', 'admin_mail', 'description', 'keywords', 'publisher', 'copyright', 'style_id', 'allow_other_designs', 'show_favicon', 'home', 'home_text', 'language_text', 'feed', 'date', 'time', 'datetime', 'timezone', 'auto_forward', 'page', 'page_prev', 'page_next', 'url_style');
-    
+
 
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
@@ -29,14 +29,14 @@ if (
     }
     if (substr($_POST['url'], 0, 7) == 'http://') {
         $_POST['url'] = substr($_POST['url'], 7);
-    } 
+    }
     if (substr($_POST['url'], 0, 8) == 'https://') {
         $_POST['url'] = substr($_POST['url'], 8);
-    }    
-     
+    }
+
     // prepare data
     $data = frompost($used_cols);
-    
+
     // style tag
     try {
         $data['style_tag'] = $sql->getField('styles', 'style_tag',
@@ -45,13 +45,13 @@ if (
     } catch (Exception $e) {
         unset($data['style_tag'], $data['style_id']);
     }
-    
+
     // save config
     try {
         $FD->saveConfig('main', $data);
         systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
     } catch (Exception $e) {}
-    
+
     // Unset Vars
     unset($_POST);
 }
@@ -95,12 +95,12 @@ if ( TRUE )
     $adminpage->addCond('home_0', $_POST['home'] === 0);
     $adminpage->addCond('home_1', $_POST['home'] === 1);
     $adminpage->addCond('timezone', $_POST['timezone'] === 'default');
- 
+
     // Values
     foreach ($_POST as $key => $value) {
         $adminpage->addText($key, $value);
     }
-    
+
     // Dyntitle
     $adminpage->addText('dyn_title_ext_tt',
         insert_tt( '{..title..}', $FD->text('page', 'dyn_title_page_title'), 'dyn_title_ext', FALSE ).'&nbsp;'.
@@ -114,11 +114,11 @@ if ( TRUE )
     $styles = $sql->get('styles', array('style_id', 'style_tag'),
         array('W' => '`style_id` != 0 AND `style_allow_use` = 1', 'O' => '`style_tag`')
     );
-   
+
     initstr($style_options);
     foreach ($styles['data'] as $style) {
         settype($style['style_id'], 'integer');
-        $style_options .= 
+        $style_options .=
         '<option value="'.$style['style_id'].'" '
         .getselected($style['style_id'], $_POST['style_id']).'>'
             .killhtml($style['style_tag'])
@@ -126,7 +126,7 @@ if ( TRUE )
         .'</option>'."\n";
     }
     $adminpage->addText('style_options', $style_options);
-   
+
     // languages
     initstr($lang_options);
     $lang_dirs = scandir_filter(FS2_ROOT_PATH.'lang');
@@ -139,7 +139,7 @@ if ( TRUE )
         }
     }
     $adminpage->addText('language_options', $lang_options);
-    
+
     //timezones
     initstr($timezone_options);
     foreach(get_timezones() as $timezone => $val) {
@@ -155,7 +155,7 @@ if ( TRUE )
         insert_tt('{..total_pages..}', $FD->text('page', 'page_text_total_pages'), 'page').
         insert_tt('{..prev..}', $FD->text('page', 'page_text_next'), 'page').
         insert_tt('{..next..}', $FD->text('page', 'page_text_prev'), 'page')
-    ); 
+    );
     $adminpage->addText('page_prev_tt', insert_tt('{..url..}', $FD->text('page', 'page_prev_url'), 'page_prev'));
     $adminpage->addText('page_next_tt', insert_tt('{..url..}', $FD->text('page', 'page_next_url'), 'page_next'));
 

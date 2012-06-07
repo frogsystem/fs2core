@@ -145,7 +145,7 @@ if (mysql_num_rows($index)>0)
                       <tr><td class="line" colspan="3">'.$FD->text('page', 'smilie_management_title').'</td></tr>
                       <tr><td class="space"></td></tr>
                     </table>
-                    
+
                     <form action="" method="post">
                         <input type="hidden" value="editor_smilies" name="go">
                         <table class="configtable" cellpadding="2" cellspacing="0">
@@ -187,7 +187,7 @@ if (mysql_num_rows($index)>0)
         if ($smilie_arr['order']>=$smilie_last) {
             $pointer_down = '<img style="margin-right:36px; float:right; width:24px; height:24px; display:block;" src="img/null.gif" border="0" alt="" width="24" height="24">';
         }
-        
+
         echo'
                             <tr
                                 onmouseover="
@@ -234,7 +234,7 @@ if (mysql_num_rows($index)>0)
               </td>
             </tr>';
         }
-        
+
     }
     echo'
                        </table>

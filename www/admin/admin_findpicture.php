@@ -77,7 +77,7 @@ if (isset($_POST['cat']))
                                              javascript:opener.document.getElementById(\'screen_selectortext\').value=\'Bild ausgew&auml;hlt!\';
                                              javascript:opener.document.getElementById(\'selected_pic\').src=\''.$new_img_path.'\';
                                              self.close();">
-        ';        
+        ';
         echo '
                             </td>';
         $newLineEnd = !(++$i < 2);

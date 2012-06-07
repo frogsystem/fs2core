@@ -28,7 +28,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
   }
 
   $oldname_data = pathinfo($_FILES['cimg']['name'], PATHINFO_EXTENSION);
-  
+
   if ($_POST['oldname'] == 1) {
       $_POST['newname'] = basename ($_FILES['cimg']['name'],'.'.$oldname_data);
   }
@@ -36,7 +36,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
   settype ($_POST['cat'],integer);
   settype ($_POST['width'],integer);
   settype ($_POST['height'],integer);
-  
+
   if (!image_exists('media/content/',$_POST['newname'])  AND !image_exists('media/content/',$_POST['newname']."_s"))
   {
     $upload = upload_img($_FILES['cimg'], 'media/content/', $_POST['newname'], 1024*1024, 9999, 9999);
@@ -65,7 +65,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
         unset($_POST['height']);
     }
   }
-  
+
 	systext ( $message );
 }
 
@@ -81,7 +81,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
     }
 
 
-    
+
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="cimg_add" name="go">

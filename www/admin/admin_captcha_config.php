@@ -80,7 +80,7 @@ if (true
                     WHERE
                         `id` = '1'
     ", $FD->sql()->conn() );
-    
+
     // Display Message
     systext ( $FD->text('admin', 'changes_saved'),
         $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_ok') );
@@ -111,7 +111,7 @@ if ( TRUE )
         {
             $error_messages[] = $FD->text('admin', 'form_not_filled');
         }
-        
+
         if (
                 !is_hexcolor ( $_POST['captcha_bg_color'] )
                 || !is_hexcolor ( $_POST['captcha_text_color'] )
@@ -123,7 +123,7 @@ if ( TRUE )
         {
             $error_messages[] = $FD->text('admin', 'form_only_allowed_values');
         }
-        
+
         if (
                 !( $_POST['captcha_use_addition'] || $_POST['captcha_use_subtraction'] || $_POST['captcha_use_multiplication'] )
             )
@@ -156,7 +156,7 @@ if ( TRUE )
     // security functions
     $_POST['captcha_bg_color'] = '#'.$_POST['captcha_bg_color'];
     $_POST['captcha_text_color'] = '#'.$_POST['captcha_text_color'];
-    
+
     $_POST = array_map('killhtml', $_POST);
     $_POST = array_map(function($ele) {
         if (is_hexcolor($ele))
@@ -202,10 +202,10 @@ if ( TRUE )
                                 <td class="config">
                                     <input class="pointer middle" type="checkbox" name="captcha_use_addition" id="captcha_use_addition" value="1" '.getchecked ( 1, $_POST['captcha_use_addition'] ).'>
                                     <label class="pointer middle" for="captcha_use_addition">'.$FD->text('admin', 'captcha_config_addition').'</label><br>
-                                    
+
                                     <input class="pointer middle" type="checkbox" name="captcha_use_subtraction" id="captcha_use_subtraction" value="1" '.getchecked ( 1, $_POST['captcha_use_subtraction'] ).'>
                                     <label class="pointe middle" for="captcha_use_subtraction">'.$FD->text('admin', 'captcha_config_subtraction').'</label><br>
-                                    
+
                                     <input class="pointer middle" type="checkbox" name="captcha_use_multiplication" id="captcha_use_multiplication" value="1" '.getchecked ( 1, $_POST['captcha_use_multiplication'] ).'>
                                     <label class="pointer middle" for="captcha_use_multiplication">'.$FD->text('admin', 'captcha_config_multiplication').'</label>
                                 </td>
@@ -219,7 +219,7 @@ if ( TRUE )
                                     <input class="pointer" type="checkbox" name="captcha_create_easy_arithmetics" value="1" '.getchecked ( 1, $_POST['captcha_create_easy_arithmetics'] ).'>
                                 </td>
                             </tr>
-                            
+
                             <tr><td class="space"></td></tr>
                             <tr><td class="line" colspan="2">'.$FD->text('admin', 'captcha_config_design_title').'</td></tr>
                             <tr>
@@ -244,9 +244,9 @@ if ( TRUE )
                                             <td class="config middle">
                                                 <div class="colorpickerParent">
                                                     <span class="atleft">#<input class="colorpickerInput" name="captcha_bg_color" maxlength="6" size="6" value="'.$_POST['captcha_bg_color'].'" onFocus ="$(this).parents(\'tr\').find(\'input#captcha_bg_color\').prop(\'checked\', true);"></span>
-                                        
+
                                                     <div class="colorpickerSelector atleft"><div style="background-color: #'.$_POST['captcha_bg_color'].';"></div></div>
-                                                
+
                                                     <span class="small">('.$FD->text('admin', 'hex_color').')</span>
                                                 </div>
                                             </td>
@@ -263,9 +263,9 @@ if ( TRUE )
                                 <td class="config">
                                     <div class="colorpickerParent">
                                         <span class="atleft">#<input class="colorpickerInput" name="captcha_text_color" maxlength="6" size="6" value="'.$_POST['captcha_text_color'].'"></span>
-                            
+
                                         <div class="colorpickerSelector atleft"><div style="background-color: #'.$_POST['captcha_text_color'].';"></div></div>
-                                    
+
                                         <span class="small">('.$FD->text('admin', 'hex_color').')</span>
                                     </div>
                                 </td>

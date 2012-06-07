@@ -69,7 +69,7 @@ if ( isset( $_POST['user_group_id'] ) ) {
                                 AND `x_id` = '".$_POST['user_group_id']."'
                                 AND `perm_for_group` = '1'
                 ", $FD->sql()->conn() );
-                
+
             // permission is now granted
             } elseif ( $_POST[$page_arr['page_id']] == 1 && !in_array ( $page_arr['page_id'], $group_rights ) ) {
                 mysql_query ( '
@@ -85,13 +85,13 @@ if ( isset( $_POST['user_group_id'] ) ) {
     else {
         systext ( 'Diese Gruppe kann nicht bearbeitet werden', $admin_phrases['common']['error'], TRUE );
     }
-    
+
     // Unset Vars
     unset ( $_POST );
 }
 
 
-  
+
 //////////////////////////
 //// edit permissions ////
 //////////////////////////
@@ -100,8 +100,8 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
 {
     // security functions
     unset ( $group_rights );
-    settype ( $_POST['edit_user_group_id'], "integer" );
-    
+    settype ( $_POST['edit_user_group_id'], 'integer' );
+
     // get group data
     $index = mysql_query ( '
                             SELECT `user_group_name`, `user_group_id`
@@ -115,7 +115,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
 
     // get granted rights
     $group_rights = get_group_rights_array ( $user_group_arr['user_group_id'] );
-    
+
     // get group of current user
     $index = mysql_query ( '
                             SELECT `user_group`
@@ -123,12 +123,12 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                             WHERE `user_id` = '".$_SESSION['user_id']."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
-    $current_user_group = mysql_result ( $index, 0, "user_group" );
+    $current_user_group = mysql_result ( $index, 0, 'user_group' );
 
     // security functions
     unset ( $DATA_ARR );
     $entries = 0;
-    
+
     // get groups
     $groupaction = mysql_query ( '
                                     SELECT `group_id`
@@ -138,7 +138,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
     ", $FD->sql()->conn() );
     while ( $group_arr = mysql_fetch_assoc ( $groupaction ) ) {
         $DATA_ARR[$group_arr['group_id']]['title'] = $TEXT['menu']->get('group_'.$group_arr['group_id']);
-        
+
         // get pages
         $pageaction = mysql_query ( '
                                         SELECT `page_id`
@@ -154,13 +154,13 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
         ", $FD->sql()->conn() );
         // count number of entries
         $entries = $entries + mysql_num_rows ( $pageaction ) + mysql_num_rows ( $pageaction_sub );
-        
-        
+
+
         while ( $page_arr_sub = mysql_fetch_assoc ( $pageaction_sub ) ) {
             $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $TEXT['menu']->get('page_link_'.$page_arr_sub['page_id']);
         }
-        
-        
+
+
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
             $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $TEXT['menu']->get('page_link_'.$page_arr['page_id']);
 
@@ -172,7 +172,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
             } else {
                 $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['granted'] = false;
             }
-            
+
             if ( isset ( $SUB_ARR[$page_arr['page_id']] ) ) {
                 foreach ( $SUB_ARR[$page_arr['page_id']] as $sub_id => $sub_link ) {
                     $DATA_ARR[$group_arr['group_id']]['links'][$sub_id]['page_link'] = $sub_link;
@@ -188,7 +188,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                     }
                 }
             }
-            
+
         }
     }
 
@@ -210,7 +210,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
     $per_col = ceil ( $entries/3 ) + 2; // +2 makes it more flexible
     $i = 0;
     $j = 1;
-    
+
     // display data from data array
     foreach ( $DATA_ARR as $GROUP_ARR ) {
         if ( is_array ( $GROUP_ARR['links'] ) ) {
@@ -231,7 +231,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
             echo '</p>';
         }
     }
-              
+
     echo'
                                     </td></tr>
                                 </table>
@@ -279,7 +279,7 @@ else
         // display table head
         echo '
                             <tr>
-                                <td class="config">Gruppenname & Grafik</td>
+                                <td class="config">Gruppenname &amp; Grafik</td>
                                 <td class="config">Informationen</td>
                                 <td class="config" width="20">Mitglieder</td>
                                 <td class="config" width="20"></td>

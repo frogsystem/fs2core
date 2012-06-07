@@ -33,7 +33,7 @@
     unset($tmp);
 
 
-    
+
     $tmp['name'] = 'CODE';
     $tmp['title'] = $FD->text('template', 'code_tag_title');
     $tmp['description'] = $FD->text('template', 'code_tag_description');
@@ -44,7 +44,7 @@
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 
-        
+
 //////////////////////////
 //// Intialise Editor ////
 //////////////////////////

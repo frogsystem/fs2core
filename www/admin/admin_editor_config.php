@@ -95,7 +95,7 @@ if ($_POST['smilies_rows'] && $_POST['smilies_rows']>0 && $_POST['smilies_cols']
                    do_smilies = '$_POST[do_smilies]'
                WHERE id = 1";
     mysql_query($update, $FD->sql()->conn() );
-    
+
     systext($FD->text('page', 'changes_saved'), $FD->text('page', 'info'));
 }
 
@@ -228,41 +228,41 @@ else
                                       <tr>
     <td><input type="checkbox" name="bold" value="1"';
     if ($config_arr['bold'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="italic" value="1"';
     if ($config_arr['italic'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="underline" value="1"';
     if ($config_arr['underline'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="strike" value="1"';
     if ($config_arr['strike'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
-    
+
     <td><input type="checkbox" name="center" value="1"';
     if ($config_arr['center'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
-    
+
     <td><input type="checkbox" name="font" value="1"';
     if ($config_arr['font'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="color" value="1"';
     if ($config_arr['color'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
         <td><input type="checkbox" name="size" value="1"';
     if ($config_arr['size'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
                                       </tr>
                                     </table>
@@ -303,48 +303,48 @@ else
                                       <tr>
     <td><input type="checkbox" name="img" value="1"';
     if ($config_arr['img'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="cimg" value="1"';
     if ($config_arr['cimg'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="url" value="1"';
     if ($config_arr['url'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="home" value="1"';
     if ($config_arr['home'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="email" value="1"';
     if ($config_arr['email'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
 
     <td><input type="checkbox" name="code" value="1"';
     if ($config_arr['code'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="quote" value="1"';
     if ($config_arr['quote'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
         <td><input type="checkbox" name="noparse" value="1"';
     if ($config_arr['noparse'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
 
     <td><input type="checkbox" name="smilies" value="1"';
     if ($config_arr['smilies'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
                                       </tr>
                                     </table>
@@ -401,54 +401,54 @@ else
                                       <tr>
     <td><input type="checkbox" name="do_bold" value="1"';
     if ($config_arr['do_bold'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_italic" value="1"';
     if ($config_arr['do_italic'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_underline" value="1"';
     if ($config_arr['do_underline'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_strike" value="1"';
     if ($config_arr['do_strike'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_center" value="1"';
     if ($config_arr['do_center'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_font" value="1"';
     if ($config_arr['do_font'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_color" value="1"';
     if ($config_arr['do_color'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
         <td><input type="checkbox" name="do_size" value="1"';
     if ($config_arr['do_size'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
-    
+
     <td><input type="checkbox" name="do_list" value="1"';
     if ($config_arr['do_list'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_numlist" value="1"';
     if ($config_arr['do_numlist'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
-    
+
                                       </tr>
                                     </table>
 
@@ -488,48 +488,48 @@ else
                                       <tr>
     <td><input type="checkbox" name="do_img" value="1"';
     if ($config_arr['do_img'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_cimg" value="1"';
     if ($config_arr['do_cimg'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_url" value="1"';
     if ($config_arr['do_url'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_home" value="1"';
     if ($config_arr['do_home'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_email" value="1"';
     if ($config_arr['do_email'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_code" value="1"';
     if ($config_arr['do_code'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_quote" value="1"';
     if ($config_arr['do_quote'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
         <td><input type="checkbox" name="do_noparse" value="1"';
     if ($config_arr['do_noparse'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_smilies" value="1"';
     if ($config_arr['do_smilies'] == 1)
-      echo " checked=checked";
+      echo ' checked=checked';
     echo'/></td>
                                       </tr>
                                     </table>

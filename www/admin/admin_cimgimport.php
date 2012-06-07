@@ -8,7 +8,7 @@ define('CIMG_PATH', FS2_ROOT_PATH.'media/content/', true);
 if(isset($_POST['import'])){
     if (!isset($_POST['thumb']))
         $_POST['thumb'] = array();
-    
+
     if(count($_POST['image']) > 0){
         $count = 0;
         foreach($_POST['image'] as $image){
@@ -17,12 +17,12 @@ if(isset($_POST['import'])){
             $type = mysql_real_escape_string(substr($image, strrpos($image, '.') + 1));
             mysql_query('INSERT INTO `'.$global_config_arr['pref']."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".$name."', '".$type."', ".$thumb.', '.intval($_POST['cat']).')');
             $count++;
-            
+
             copy (UPLOAD_PATH.$name.'.'.$type, CIMG_PATH.$name.'.'.$type);
             unlink (UPLOAD_PATH.$name.'.'.$type);
             if ($thumb) {
-                copy (UPLOAD_PATH.$name.'_s.'.$type, CIMG_PATH.$name.'_s.'.$type); 
-                unlink(UPLOAD_PATH.$name.'_s.'.$type);     
+                copy (UPLOAD_PATH.$name.'_s.'.$type, CIMG_PATH.$name.'_s.'.$type);
+                unlink(UPLOAD_PATH.$name.'_s.'.$type);
             }
         }
         if($count == 1){
@@ -55,7 +55,7 @@ if(isset($_POST['import'])){
         } else {
             $str = $count1.' Bild ';
         }
-        
+
         if($count2 == 1){
             $str .= 'und ein Thumbnail';
         } else {

@@ -37,7 +37,7 @@ if ($_POST['dladd'] && $_POST['title'] && $_POST['text'])
                          '".$_POST['dlopen']."',
                          '".time()."')
     ", $FD->sql()->conn() );
-    
+
     // Update Search Index (or not)
     if ( $global_config_arr['search_index_update'] === 1 ) {
         // Include searchfunctions.php
@@ -50,7 +50,7 @@ if ($_POST['dladd'] && $_POST['title'] && $_POST['text'])
     // Bild auswerten und hochladen
     $index = mysql_query('select * from '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
-    
+
     if ($_FILES['dlimg']['name'] != '')
     {
         $upload = upload_img($_FILES['dlimg'], 'images/downloads/', $id, 2*1024*1024, $admin_dl_config_arr['screen_x'], $admin_dl_config_arr['screen_y']);
@@ -169,7 +169,7 @@ if(true)
                             </tr>
     ';
     $index = mysql_query('SELECT `ftp_id` FROM '.$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
-    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);  
+    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);
 
     for ($i=1; $i<=$_POST['options']; $i++)
     {
@@ -188,7 +188,7 @@ if(true)
                                     <font class="small">[Titel]<br />[URL]<br />[Gr&ouml;&szlig;e in KB]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST['fname'][$j]).'" maxlength="100"><br />                                    
+                                    <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST['fname'][$j]).'" maxlength="100"><br />
                                     <input class="text" size="70" value="'.killhtml($_POST['furl'][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><br>
             ';
             if ($ftp) {
@@ -213,7 +213,7 @@ if(true)
                                     <font class="small">[Titel]<br />[URL]<br />[Gr&ouml;&szlig;e in KB]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />                                    
+                                    <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />
                                     <input class="text" size="70" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><br>
             ';
             if ($ftp) {

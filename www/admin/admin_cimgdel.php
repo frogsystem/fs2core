@@ -8,7 +8,7 @@ if(isset($_GET['file'])){
     if(mysql_num_rows($qry) > 0){
         $row = mysql_fetch_assoc($qry);
         if(file_exists(CIMG_PATH."{$row['name']}.{$row['type']}")){
-            if(!isset($_POST['edit'])){ // edit file        
+            if(!isset($_POST['edit'])){ // edit file
                         $imageinfo = getimagesize(CIMG_PATH."{$row['name']}.{$row['type']}");
                         $qry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg_cats`');
                         $cats = array(array('id' => 0, 'name' => 'Keine Kategorie', 'description' => ''));
@@ -164,18 +164,18 @@ FS2_STRING;
                         }
                         mysql_query('UPDATE `'.$global_config_arr['pref']."cimg` SET `name`='".mysql_real_escape_string($_POST['name'])."' WHERE `id`=".$file);
                     }
-                    
+
                     if($_POST['cat'] != $row['cat']){
                         mysql_query('UPDATE `'.$global_config_arr['pref']."cimg` SET `cat`='".intval($_POST['cat'])."' WHERE `id`=".$file);
                         $text[] = 'Die Kategorie wurde erfolgreich ge&auml;ndert.';
                     }
-                    
+
                     if(isset($_POST['thumb'])){
                         $thumb = create_thumb_from(image_url('media/content/', $row['name'], FALSE, TRUE), $_POST['width'], $_POST['height']);
                         $text[] = create_thumb_notice($thumb);
                         mysql_query('UPDATE `'.$global_config_arr['pref'].'cimg` SET `hasthumb`=1 WHERE `id`='.$file);
                     }
-                    
+
                     systext(implode('<br>', $text));
                 }
                 unset($_GET['file']);

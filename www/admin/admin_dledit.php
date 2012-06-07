@@ -61,7 +61,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
                        dl_search_update = '".time()."'
                    WHERE dl_id = $_POST[editdlid]";
         mysql_query($update, $FD->sql()->conn() );
-        
+
         // Update Search Index (or not)
         if ( $global_config_arr['search_index_update'] === 1 ) {
             // Include searchfunctions.php
@@ -95,7 +95,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
                                        '".$_POST['fsize'][$i]."',
                                        '".$_POST['fmirror'][$i]."')";
                     mysql_query($insert, $FD->sql()->conn() );
-                                         
+
                 }
                 elseif ($_POST['fnew'][$i]==0)
                 {
@@ -114,7 +114,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
     }
     unset($_POST);
 }
-  
+
 ////////////////////////////////
 ////// Download editieren //////
 ////////////////////////////////
@@ -124,7 +124,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
     $_POST['dlid'] = $_POST['dlid'][0];
     if(isset($_POST['sended']) && !isset($_POST['files_add'])) {
         echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
-    }     
+    }
 
 
     if (isset($_POST['tempid']))
@@ -277,7 +277,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                             </tr>
     ';
     $index = mysql_query('SELECT `ftp_id` FROM '.$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
-    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);      
+    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);
 
     // Mirros auflisten
     for ($i=1; $i<=$_POST['options']; $i++)
@@ -302,7 +302,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                                     <input class="text" size="70" value="'.killhtml($_POST['furl'][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><br>
             ';
             if ($ftp) {
-                echo '  
+                echo '
                                     <input  type="button" onClick=\''.openpopup ( '?go=find_file&amp;id='.$j, 600, 800 ).'\' value="'.$TEXT['admin']->get('file_select_button').'">&nbsp;
                 ';
             }
@@ -338,7 +338,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
             }
             echo '
                                     <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr['quickinsert'].'";\' value="Quick-Insert Pfad"><br>
-                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />                                    
+                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     <input class="text" size="30" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                     <input type="hidden" name="fnew['.$j.']" value="1">

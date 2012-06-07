@@ -13,7 +13,7 @@ if ($_POST['screenx'] && $_POST['screeny'] && $_POST['thumbx'] && $_POST['thumby
     settype($_POST['dl_rights'], 'integer');
     $_POST['quickinsert'] = savesql($_POST['quickinsert']);
     settype($_POST['dl_show_sub_cats'], 'integer');
-    
+
     $update = 'UPDATE '.$global_config_arr['pref']."dl_config
                SET screen_x = '$_POST[screenx]',
                    screen_y = '$_POST[screeny]',
@@ -36,13 +36,13 @@ if(true)
 {
     if(isset($_POST['sended'])) {
         echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
-    }        
-    
+    }
+
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
-    
+
     settype ( $config_arr['dl_show_sub_cats'], 'integer' );
-    
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_config" name="go">
