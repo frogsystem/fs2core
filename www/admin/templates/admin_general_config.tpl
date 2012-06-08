@@ -2,10 +2,10 @@
 <form action="" method="post">
 <input type="hidden" name="go" value="gen_config">
 <input type="hidden" name="sended" value="1">
-    
+
     <table class="content config" cellpadding="0" cellspacing="0">
         <tr><td colspan="2"><h3><!--LANG::pageinfo_title--></h3><hr></td></tr>
-        
+
         <tr>
             <td>
                 <!--LANG::title-->:<br>
@@ -15,7 +15,7 @@
                 <input class="half" name="title" maxlength="100" value="<!--TEXT::title-->">
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::dyn_title--><br>
@@ -27,8 +27,8 @@
                 onChange="$('#dyn_title_ext_tr').toggle($(this).prop('checked'))" >
             </td>
         </tr>
-                            
-                            
+
+
         <tr <!--IF::dyn_title_ext-->class="hidden"<!--ENDIF--> id="dyn_title_ext_tr">
             <td>
                 <!--LANG::dyn_title_ext--><br>
@@ -42,7 +42,7 @@
                 </span>
             </td>
         </tr>
-                            
+
         <tr>
             <td>
                 <!--LANG::virtualhost-->:<br>
@@ -65,9 +65,9 @@
                 <!--COMMON::checkbox-->
                 <input class="hidden" type="checkbox" name="other_protocol" value="1" <!--IF::other_protocol-->checked<!--ENDIF-->>
             </td>
-        </tr>        
-        
-                            
+        </tr>
+
+
         <tr>
             <td>
                 <!--LANG::admin_mail-->:<br>
@@ -77,7 +77,7 @@
                 <input class="half" name="admin_mail" maxlength="100" value="<!--TEXT::admin_mail-->">
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::description-->: <span class="small">(<!--COMMON::optional-->)</span><br>
@@ -98,7 +98,7 @@
                 <textarea class="half nomono" name="keywords" rows="6"><!--TEXT::keywords--></textarea>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::config_publisher_title-->: <span class="small">(<!--COMMON::optional-->)</span><br>
@@ -108,7 +108,7 @@
                 <input class="half" name="publisher" maxlength="100" value="<!--TEXT::publisher-->">
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::config_copyright_title-->: <span class="small">(<!--COMMON::optional-->)</span><br>
@@ -120,7 +120,7 @@
         </tr>
 
         <tr><td colspan="2"><h3><!--LANG::design_title--></h3><hr></td></tr>
-        
+
         <tr>
             <td>
                 <!--LANG::style_title-->:<br>
@@ -132,7 +132,7 @@
                 </select>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::allow_other_styles-->:<br>
@@ -143,7 +143,7 @@
                 <input class="hidden" type="checkbox" name="allow_other_designs" value="1" <!--IF::allow_other_designs-->checked<!--ENDIF-->>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::show_favicon-->:<br>
@@ -154,9 +154,9 @@
                 <input class="hidden pointer" type="checkbox" name="show_favicon" value="1"<!--IF::show_favicon-->checked<!--ENDIF-->>
             </td>
         </tr>
-        
+
         <tr><td colspan="2"><h3><!--LANG::settings_title--></h3><hr></td></tr>
-    
+
         <tr>
             <td>
                 <!--LANG::home_page-->:<br>
@@ -166,32 +166,32 @@
                 <p>
                     <span style="display:table-cell" class="middle">
                         <!--COMMON::radio-->
-                        <input class="hidden" type="radio" id="home_0" name="home" value="0" 
+                        <input class="hidden" type="radio" id="home_0" name="home" value="0"
                         <!--IF::home_0-->checked<!--ENDIF-->>
                     </span>
-                    <span style="display:table-cell" class="middle"> 
+                    <span style="display:table-cell" class="middle">
                         &nbsp;
                         <label for="home_0"><!--LANG::home_page_default--></label>
                     </span>
                 </p>
-                
+
                 <p>
                     <span style="display:table-cell" class="middle">
                         <!--COMMON::radio-->
-                        <input class="hidden" type="radio" id="home_1" name="home" value="1" 
+                        <input class="hidden" type="radio" id="home_1" name="home" value="1"
                         <!--IF::home_1-->checked<!--ENDIF-->>
                     </span>
-                    <span style="display:table-cell" class="middle"> 
+                    <span style="display:table-cell" class="middle">
                         &nbsp;
                         <label for="home_1">
                             ?go = <input class="third" name="home_text" maxlength="100" value="<!--TEXT::home_text-->">
-                        </label>  
+                        </label>
                     </span>
                 </p>
                 <p></p>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::language-->:<br>
@@ -203,7 +203,7 @@
                 </select>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::feed-->:<br>
@@ -211,7 +211,7 @@
             </td>
             <td>
                 <select class="half" name="feed" size="1">
-                    <option value="rss091" <!--IF::feed_rss091-->selected<!--ENDIF-->>     
+                    <option value="rss091" <!--IF::feed_rss091-->selected<!--ENDIF-->>
                         <!--LANG::feed_rss091-->
                     </option>
                     <option value="rss10" <!--IF::feed_rss10-->selected<!--ENDIF-->>
@@ -226,7 +226,7 @@
                 </select>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::url_style-->:<br>
@@ -234,7 +234,7 @@
             </td>
             <td>
                 <select class="half" name="url_style" size="1">
-                    <option value="default" <!--IF::url_style_default-->selected<!--ENDIF-->>     
+                    <option value="default" <!--IF::url_style_default-->selected<!--ENDIF-->>
                         <!--LANG::url_style_default-->
                     </option>
                     <option value="seo" <!--IF::url_style_seo-->selected<!--ENDIF-->>
@@ -244,8 +244,8 @@
                 <br>
                 <span class="small"><!--LANG::url_style_info--></span>
             </td>
-        </tr>        
-        
+        </tr>
+
         <tr>
             <td>
                 <!--LANG::date-->: <br>
@@ -256,7 +256,7 @@
                 <span class="small"><!--COMMON::date_info--></span>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::time-->: <br>
@@ -267,7 +267,7 @@
                 <span class="small"><!--COMMON::date_info--></span>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::date_time-->: <br>
@@ -278,7 +278,7 @@
                 <span class="small"><!--COMMON::date_info--></span>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::timezone-->: <br>
@@ -290,8 +290,8 @@
                     <!--TEXT::timezones-->
                 </select>
             </td>
-        </tr>        
-        
+        </tr>
+
         <tr>
             <td>
                 <!--LANG::auto_forward-->: <br>
@@ -301,9 +301,9 @@
                 <input class="center" size="2" name="auto_forward" maxlength="2" value="<!--TEXT::auto_forward-->"> <!--COMMON::seconds-->
             </td>
         </tr>
-        
+
         <tr><td colspan="2"><h3><!--LANG::pagenav_title--></h3><hr></td></tr>
-      
+
         <tr>
             <td>
                 <p>
@@ -313,13 +313,13 @@
                 <p class="small">
                     <strong><!--COMMON::valid_tags-->:</strong><br>
                     <!--TEXT::page_tt-->
-                </p>                
+                </p>
             </td>
             <td>
                 <textarea class="half" name="page" id="page" rows="7"><!--TEXT::page--></textarea>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <p>
@@ -335,7 +335,7 @@
                 <textarea class="half" name="page_prev" id="page_prev" rows="4"><!--TEXT::page_prev--></textarea>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <p>
@@ -351,7 +351,7 @@
                 <textarea class="half" name="page_next" id="page_next" rows="4"><!--TEXT::page_next--></textarea>
             </td>
         </tr>
-                
+
         <tr>
             <td colspan="2">
                 <button class="button" type="submit">

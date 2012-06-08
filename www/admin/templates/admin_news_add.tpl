@@ -1,4 +1,4 @@
-<!--section-start::main--> 
+<!--section-start::main-->
 <form action="" method="post">
     <input type="hidden" name="go" value="news_add">
     <input type="hidden" name="sended" value="1">
@@ -25,9 +25,9 @@
 <!--section-end::link_edit-->
 
 <!--section-start::edit_table-->
-<!--section-import-nolang::admin_news::edit_table--> 
+<!--section-import-nolang::admin_news::edit_table-->
 <!--section-end::edit_table-->
 
 <!--section-start::script-->
-<!--section-import-nolang::admin_news::script--> 
+<!--section-import-nolang::admin_news::script-->
 <!--section-end::script-->

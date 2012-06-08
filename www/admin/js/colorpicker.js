@@ -19,7 +19,7 @@ $(document).ready(function(){
                 $(colpkr).fadeOut(500);
                 return false;
             },
-            onChange: function (hsb, hex, rgb, ele) {                
+            onChange: function (hsb, hex, rgb, ele) {
                 $(ele).val(hex.toUpperCase());
                 $(ele).parents('.colorpickerParent').find('.colorpickerSelector div').css('background-color', '#' + hex);
             }
@@ -27,7 +27,7 @@ $(document).ready(function(){
 		.bind('keyup', function(){
 			$(this).ColorPickerSetColor(this.value);
 		});
-        
+
         $('.colorpickerSelector, .colorpickerSelector div').click(function() {
             $(this).parents('.colorpickerParent').find('.colorpickerInput').ColorPickerShow();
         });

@@ -28,17 +28,17 @@ body {
 #head {
     position:absolute;
     z-index:5;
-    margin-left:32px;   
+    margin-left:32px;
     width:917px;
     height:71px;
     padding-top:5px;
-    padding-left:10px;     
+    padding-left:10px;
     background:#DDDDDD url('../images/head.jpg') no-repeat;
     color:#363636;
     font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
     font-size:20pt;
-    font-weight:normal;  
-    line-height:120%;  
+    font-weight:normal;
+    line-height:120%;
 }
 #head h1 {
     font-size:20pt;
@@ -60,7 +60,7 @@ body {
     left:12px;
     top:36px;
 }
-#head_link a { 
+#head_link a {
     font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
     font-size:9pt;
     color:#363636;
@@ -180,7 +180,7 @@ table.content td .small, table.content tr .small {
 }
 
 table.content tr h3, tr.line h3 {
-    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;    
+    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
     font-size:160%;
     font-weight:normal;
 }
@@ -200,7 +200,7 @@ table.content tr h3+hr, tr.line h3+hr {
 
 table.content .space {
     margin-top:15px;
-    margin-bottom:15px;    
+    margin-bottom:15px;
 }
 table.content .spacetop {
     margin-top:15px;
@@ -295,7 +295,7 @@ option {
     border:none;
     padding:1px 10px 1px 6px;
 
-} 
+}
 
 input[type='file'] {
     color:#000000;
@@ -308,7 +308,7 @@ input[type='file'] {
 }
 input[type='button'], input[type='reset'], input[type='submit'] {
     padding-top:2px;
-    padding-bottom:2px; 
+    padding-bottom:2px;
     cursor:pointer;
 }
 

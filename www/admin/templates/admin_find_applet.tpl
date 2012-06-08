@@ -1,22 +1,22 @@
-<!--section-start::main--> 
+<!--section-start::main-->
 <table class="content config" cellpadding="0" cellspacing="0">
     <tr><td><h3><!--LANG::select_applet--></h3><hr></td></tr>
-    
+
     <!--TEXT::lines-->
 </table>
 <!--section-end::main-->
 
-<!--section-start::line--> 
+<!--section-start::line-->
     <tr class="pointer thin">
         <td>
             &nbsp;&raquo; <!--TEXT::file-->
             <input type="hidden" value="<!--TEXT::filename-->">
         </td>
     </tr>
-    
+
 <!--section-end::line-->
 
-<!--section-start::no--> 
+<!--section-start::no-->
 <table class="content" cellpadding="0" cellspacing="0">
     <tr><td><h3><!--LANG::select_applet--></h3><hr></td></tr>
     <tr>
@@ -27,7 +27,7 @@
 </table>
 <!--section-end::no-->
 
-<!--section-start::script-->    
+<!--section-start::script-->
 <script type="text/javascript">
     jQuery(document).ready(function(){
         $("tr.pointer").hover(

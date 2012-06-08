@@ -12,7 +12,7 @@
 <!--section-end::main-->
 
 <!--section-start::page-->
-<a href="<!--TEXT::url-->" class="pagination-page" title="<!--TEXT::page--> | <!--TEXT::entries-->">		
+<a href="<!--TEXT::url-->" class="pagination-page" title="<!--TEXT::page--> | <!--TEXT::entries-->">
 	<!--TEXT::page-number--></a>
 <!--section-end::page-->
 
@@ -29,7 +29,7 @@
 <!--section-end::first-->
 
 <!--section-start::prev-->
-<a href="<!--TEXT::url-->" class="pagination-prev" title="<!--TEXT::page--> | <!--TEXT::entries-->">			
+<a href="<!--TEXT::url-->" class="pagination-prev" title="<!--TEXT::page--> | <!--TEXT::entries-->">
 	&laquo; <!--LANG::prev-->
 </a>
 <!--section-end::prev-->
