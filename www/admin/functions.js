@@ -64,7 +64,7 @@ var lastJQBox;
             $(this).find(".html-editor-list-popup").hide();
         }
     );
-    
+
 
 /////////////////////
 //// Select-List ////
@@ -318,7 +318,7 @@ function open_editor(what) {
     } else {
         var editorWidth = screen.availWidth;
     }
-    
+
     if (screen.availHeight >= 800) {
         var editorHeight = 800;
     } else {
@@ -327,7 +327,7 @@ function open_editor(what) {
 
     x = screen.width/2 - editorWidth/2;
     y = screen.height/2 - editorHeight/2;
-    
+
     EditorWindow = window.open("admin_frogpad.php?height="+editorHeight,"editor","width="+editorWidth+",height="+editorHeight+",left="+x+",top="+y+",screenX="+x+",screenY="+y+"");
 }
 //Close Editor-PopUp
@@ -352,7 +352,7 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
         var css = ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"];
         break;
   }
-  
+
   var textarea = document.getElementById(textareaId);
   var editor = CodeMirror.fromTextArea(textareaId, {
     parserfile: parser,
@@ -470,19 +470,19 @@ function changeDate (dayID, monthID, yearID, hourID, minID, dayShift, monthShift
 function setNow(y, m, d, h, i, s) {
     if (document.getElementById(y) != null)
         document.getElementById(y).value=getCurYear();
-        
-    if (document.getElementById(m) != null)        
+
+    if (document.getElementById(m) != null)
         document.getElementById(m).value=getCurMonth();
-        
+
     if (document.getElementById(d) != null)
         document.getElementById(d).value=getCurDate();
-        
+
     if (document.getElementById(h) != null)
         document.getElementById(h).value=getCurHours();
-        
+
     if (document.getElementById(i) != null)
         document.getElementById(i).value=getCurMinutes();
-        
+
     if (document.getElementById(s) != null)
         document.getElementById(s).value=getCurSeconds();
 }

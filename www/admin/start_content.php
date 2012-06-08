@@ -177,7 +177,7 @@ if ( $num_news  > 0 ) {
                             </tr>
         ';
     }
-    
+
     if ( $best_news_link_num  > 0 ) {
         echo '
                                 <tr>
@@ -185,9 +185,9 @@ if ( $num_news  > 0 ) {
                                     <td class="configthin"><b>'.$best_news_link.'</b> mit <b>'.$best_news_link_num.'</b> Link(s)</td>
                                 </tr>
         ';
-    }                       
+    }
 
-    echo '                                
+    echo '
                             <tr>
                                 <td class="configthin">Flei&szlig;igster News-Poster:</td>
                                 <td class="configthin"><b>'.$best_news_poster.'</b> mit <b>'.$best_news_poster_num.'</b> News</td>

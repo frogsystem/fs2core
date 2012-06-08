@@ -34,7 +34,7 @@ if (
                         `user_list_reg_date_format` = '".$_POST['user_list_reg_date_format']."'
                     WHERE `id` = '1'
     ", $FD->sql()->conn() );
-    
+
     // system messages
     systext($admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
 

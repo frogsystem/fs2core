@@ -1,5 +1,5 @@
 <?php if ( ACP_GO === 'start_general' ) {
-    
+
 // Online since
 $online_since = $sql->getRow('counter_stat', array('s_year', 's_month', 's_day'), array('O' => '`s_year`, `s_month`, `s_day`'));
 $online_since = date_loc($global_config_arr['date'], strtotime($online_since['s_year'].'-'.$online_since['s_month'].'-'.$online_since['s_day']));

@@ -6,7 +6,7 @@
 function user_name_free ( $USERNAME ) {
     global $global_config_arr;
     global $FD;
-    
+
     $USERNAME = savesql ( $USERNAME );
     $index = mysql_query ( '
                             SELECT `user_id`

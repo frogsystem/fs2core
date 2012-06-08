@@ -69,7 +69,7 @@ if ( isset( $_POST['user_id'] ) ) {
     // security functions
     settype ( $_POST['user_id'], 'integer' );
     unset ( $user_rights );
-     
+
     // if user is not s-admin and not himself
     if ( $_POST['user_id'] != 1 && $_POST['user_id'] != $_SESSION['user_id'] ) {
 
@@ -117,7 +117,7 @@ if ( isset( $_POST['user_id'] ) ) {
 }
 
 
-  
+
 //////////////////////////
 //// edit permissions ////
 //////////////////////////

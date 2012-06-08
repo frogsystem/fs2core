@@ -7,7 +7,7 @@ if ( $poll_arr = mysql_fetch_assoc($index) ) {
 
     $poll_arr['poll_start'] = date('d.m.Y' , $poll_arr['poll_start']);
     $poll_arr['poll_end'] = date('d.m.Y' , $poll_arr['poll_end']);
-    
+
     if ($poll_arr['poll_type'] == 1) {
         $poll_arr['poll_type'] = 'Mehrfachauswahl';
     } else {
