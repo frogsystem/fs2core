@@ -26,7 +26,7 @@ if (
     settype ( $_POST['video_s'], 'integer' );
 
     $_POST['video_lenght'] = $_POST['video_h']*60*60 + $_POST['video_m']*60 +$_POST['video_s'];
-    
+
         switch ( $_POST['video_type'] ) {
             case 3:
             $_POST['video_x'] = savesql ( $_POST['video_myvideo'] );

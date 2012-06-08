@@ -43,7 +43,7 @@ if (TRUE
     settype($_POST['screen_cols'], 'integer');
     $_POST['screen_order'] = savesql($_POST['screen_order']);
     $_POST['screen_sort'] = savesql($_POST['screen_sort']);
-    
+
     settype($_POST['wp_x'], 'integer');
     settype($_POST['wp_y'], 'integer');
     settype($_POST['wp_thumb_x'], 'integer');
@@ -80,7 +80,7 @@ if (TRUE
                    wp_cols = '$_POST[wp_cols]',
                    wp_order = '$_POST[wp_order]',
                    wp_sort = '$_POST[wp_sort]'";
-                   
+
     mysql_query($update, $FD->sql()->conn() );
     systext('Die Konfiguration wurde aktualisiert');
 }

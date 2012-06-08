@@ -62,28 +62,28 @@ if (
 	settype ( $_POST['cfg_top1_y'], 'integer' );
 	settype ( $_POST['cfg_loadonstop'], 'integer' );
 
-	$_POST['cfg_videobgcolor'] = savesql ( "#".$_POST['cfg_videobgcolor'] );
-	$_POST['cfg_bgcolor1'] = savesql ( "#".$_POST['cfg_bgcolor1'] );
-	$_POST['cfg_bgcolor2'] = savesql ( "#".$_POST['cfg_bgcolor2'] );
-	$_POST['cfg_bgcolor'] = savesql ( "#".$_POST['cfg_bgcolor'] );
+	$_POST['cfg_videobgcolor'] = savesql ( '#'.$_POST['cfg_videobgcolor'] );
+	$_POST['cfg_bgcolor1'] = savesql ( '#'.$_POST['cfg_bgcolor1'] );
+	$_POST['cfg_bgcolor2'] = savesql ( '#'.$_POST['cfg_bgcolor2'] );
+	$_POST['cfg_bgcolor'] = savesql ( '#'.$_POST['cfg_bgcolor'] );
 	$_POST['cfg_showplayer'] = savesql ( $_POST['cfg_showplayer'] );
 	$_POST['cfg_showloading'] = savesql ( $_POST['cfg_showloading'] );
-	$_POST['cfg_playercolor'] = savesql ( "#".$_POST['cfg_playercolor'] );
-	$_POST['cfg_loadingcolor'] = savesql ( "#".$_POST['cfg_loadingcolor'] );
-	$_POST['cfg_buttoncolor'] = savesql ( "#".$_POST['cfg_buttoncolor'] );
-	$_POST['cfg_buttonovercolor'] = savesql ( "#".$_POST['cfg_buttonovercolor'] );
-	$_POST['cfg_slidercolor1'] = savesql ( "#".$_POST['cfg_slidercolor1'] );
-	$_POST['cfg_slidercolor2'] = savesql ( "#".$_POST['cfg_slidercolor2'] );
-	$_POST['cfg_sliderovercolor'] = savesql ( "#".$_POST['cfg_sliderovercolor'] );
+	$_POST['cfg_playercolor'] = savesql ( '#'.$_POST['cfg_playercolor'] );
+	$_POST['cfg_loadingcolor'] = savesql ( '#'.$_POST['cfg_loadingcolor'] );
+	$_POST['cfg_buttoncolor'] = savesql ( '#'.$_POST['cfg_buttoncolor'] );
+	$_POST['cfg_buttonovercolor'] = savesql ( '#'.$_POST['cfg_buttonovercolor'] );
+	$_POST['cfg_slidercolor1'] = savesql ( '#'.$_POST['cfg_slidercolor1'] );
+	$_POST['cfg_slidercolor2'] = savesql ( '#'.$_POST['cfg_slidercolor2'] );
+	$_POST['cfg_sliderovercolor'] = savesql ( '#'.$_POST['cfg_sliderovercolor'] );
 	$_POST['cfg_buffermessage'] = savesql ( $_POST['cfg_buffermessage'] );
-	$_POST['cfg_buffercolor'] = savesql ( "#".$_POST['cfg_buffercolor'] );
-	$_POST['cfg_bufferbgcolor'] = savesql ( "#".$_POST['cfg_bufferbgcolor'] );
-	$_POST['cfg_titlecolor'] = savesql ( "#".$_POST['cfg_titlecolor'] );
+	$_POST['cfg_buffercolor'] = savesql ( '#'.$_POST['cfg_buffercolor'] );
+	$_POST['cfg_bufferbgcolor'] = savesql ( '#'.$_POST['cfg_bufferbgcolor'] );
+	$_POST['cfg_titlecolor'] = savesql ( '#'.$_POST['cfg_titlecolor'] );
 	$_POST['cfg_onclick'] = savesql ( $_POST['cfg_onclick'] );
 	$_POST['cfg_ondoubleclick'] = savesql ( $_POST['cfg_ondoubleclick'] );
 	$_POST['cfg_showmouse'] = savesql ( $_POST['cfg_showmouse'] );
-	$_POST['cfg_iconplaycolor'] = savesql ( "#".$_POST['cfg_iconplaycolor'] );
-	$_POST['cfg_iconplaybgcolor'] = savesql ( "#".$_POST['cfg_iconplaybgcolor'] );
+	$_POST['cfg_iconplaycolor'] = savesql ( '#'.$_POST['cfg_iconplaycolor'] );
+	$_POST['cfg_iconplaybgcolor'] = savesql ( '#'.$_POST['cfg_iconplaybgcolor'] );
 	$_POST['cfg_top1_url'] = savesql ( $_POST['cfg_top1_url'] );
 
 	// MySQL-Queries
@@ -113,7 +113,7 @@ if (
 						`cfg_top1_x` = '".$_POST['cfg_top1_x']."',
 						`cfg_top1_y` = '".$_POST['cfg_top1_y']."',
 						`cfg_loadonstop` = '".$_POST['cfg_loadonstop']."',
-						
+
 						`cfg_videobgcolor` = '".$_POST['cfg_videobgcolor']."',
 						`cfg_bgcolor1` = '".$_POST['cfg_bgcolor1']."',
 						`cfg_bgcolor2` = '".$_POST['cfg_bgcolor2']."',
@@ -139,7 +139,7 @@ if (
 						`cfg_top1_url` = '".$_POST['cfg_top1_url']."'
 					WHERE `id` = '1'
 	", $FD->sql()->conn() );
-	
+
 	// system messages
     systext($admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
 
@@ -182,7 +182,7 @@ if ( TRUE )
                         <input type="hidden" name="go" value="player_config">
 						<input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            
+
 							<tr><td class="line" colspan="4">Darstellungsoptionen</td></tr>
                             <tr>
                                 <td class="config">
@@ -233,9 +233,9 @@ if ( TRUE )
                                 <td class="config">
                                     <input type="checkbox" name="cfg_showtitleandstartimage" value="1" '.getchecked ( 1, $_POST['cfg_showtitleandstartimage'] ).'>
                                 </td>
-                            </tr>       						
+                            </tr>
                             <tr><td class="space"></td></tr>
-                            
+
 							<tr><td class="line" colspan="4">Abspiel-Optionen</td></tr>
                             <tr>
                                 <td class="config">
@@ -546,7 +546,7 @@ if ( TRUE )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            
+
 							<tr><td class="line" colspan="4">Steuerung</td></tr>
 							<tr>
                                 <td class="config">
@@ -555,8 +555,8 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <select name="cfg_onclick" size="1">
-                                        <option value="none" '.getselected( "none", $_POST['cfg_onclick'] ).'>keine Aktion</option>
-                                        <option value="playpause" '.getselected( "playpause", $_POST['cfg_onclick'] ).'>Video anhalten/fortsetzen</option>
+                                        <option value="none" '.getselected( 'none', $_POST['cfg_onclick'] ).'>keine Aktion</option>
+                                        <option value="playpause" '.getselected( 'playpause', $_POST['cfg_onclick'] ).'>Video anhalten/fortsetzen</option>
 									</select>
                                 </td>
                             </tr>

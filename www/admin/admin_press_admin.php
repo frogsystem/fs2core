@@ -2,7 +2,7 @@
 ////////////////////////////
 //// Pressadmin add ////////
 ////////////////////////////
-if ($_POST['entry_action'] == "add"
+if ($_POST['entry_action'] == 'add'
     && $_POST['entry_is']
     && ($_POST['title'] AND $_POST['title'] != '')
    )
@@ -97,7 +97,7 @@ elseif ($_POST['entry_action'] == 'delete'
                 $entry_arr['type_where'] = "WHERE press_game = '$_POST[entry_id]'";
                 break;
         }
-        
+
         mysql_query('UPDATE '.$global_config_arr['pref'].'press '.$entry_arr['type_set'].' '.$entry_arr['type_where'], $FD->sql()->conn() );
 
         mysql_query('DELETE FROM '.$global_config_arr['pref']."press_admin
@@ -210,7 +210,7 @@ elseif ($_POST['entry_action'] == 'edit'
                                     <font class="small"><b>Bild l&ouml;schen?</b></font><br /><br />
         ';
     }
-    
+
     echo'
                                 </td>
                             </tr>
@@ -263,7 +263,7 @@ elseif ($_POST['entry_action'] == 'delete'
                         <input type="hidden" value="'.$entry_arr['id'].'" name="entry_id">
                         <table class="content" cellpadding="3" cellspacing="0">
                             <tr><td colspan="2"><h3>'.$admin_phrases['press']['delpage'].': '.$entry_arr['type_text'].'</h3><hr></td></tr>
-                            
+
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2" style="padding:0px; margin:0px;">
                                     <table border="0" cellpadding="4" cellspacing="0" width="600">
@@ -431,8 +431,8 @@ if (!isset($_POST['entry_id']))
             echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_admin" name="go">
-                        
-                        
+
+
                         <tbody class="select_list">
                             <tr><td>&nbsp;</td></tr>
                             <tr>
@@ -444,7 +444,7 @@ if (!isset($_POST['entry_id']))
             ';
             unset($head);
         }
-        
+
         while ($entry_arr = mysql_fetch_assoc($index))
         {
             switch ($entry_arr['type'])
@@ -477,7 +477,7 @@ if (!isset($_POST['entry_id']))
                             </tr>
             ';
         }
-        
+
         if (mysql_num_rows($index) > 0)
         {
             echo'
@@ -493,7 +493,7 @@ if (!isset($_POST['entry_id']))
                         </tbody>
                     </form>
             ';
-        
+
         }
     }
     echo '</table>';

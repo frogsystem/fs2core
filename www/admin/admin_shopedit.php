@@ -56,7 +56,7 @@ if ($_POST['artikelid'])
     $_POST['artikelid'] = $_POST['artikelid'][0];
     if(isset($_POST['sended'])) {
         echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
-    }    
+    }
 
     settype($_POST['artikelid'], 'integer');
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );

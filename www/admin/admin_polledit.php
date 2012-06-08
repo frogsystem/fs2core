@@ -27,7 +27,7 @@ if ($_POST['polledit'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1
 
         $adate = mktime($_POST['astunde'], $_POST['amin'], 0, $_POST['amonat'], $_POST['atag'], $_POST['ajahr']);
         $edate = mktime($_POST['estunde'], $_POST['emin'], 0, $_POST['emonat'], $_POST['etag'], $_POST['ejahr']);
-  
+
         $_POST['type'] = isset($_POST['type']) ? 1 : 0;
         settype($_POST['participants'], 'integer');
 
@@ -85,13 +85,13 @@ if ($_POST['polledit'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1
 if ($_POST['pollid'] || $_POST['optionsadd'])
 {
     $_POST['pollid'] = $_POST['pollid'][0];
- 
+
      if(isset($_POST['sended']) && !isset($_POST['ant_add'])) {
         echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
     }
-    
- 
-    
+
+
+
     //Zeit-Array für Jetzt Button
     $jetzt['tag'] = date('d');
     $jetzt['monat'] = date('m');
@@ -337,7 +337,7 @@ if ($_POST['pollid'] || $_POST['optionsadd'])
                                     <font class="small">[Antwort] [Votes]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="48" name="ant['.$i.']" maxlength="100"> 
+                                    <input class="text" size="48" name="ant['.$i.']" maxlength="100">
                                     <input class="text" size="5" name="count['.$i.']" maxlength="5">
                                 </td>
                             </tr>

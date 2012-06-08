@@ -4,12 +4,12 @@
 //// Neues Pre-, Re oder Interview einstellen ////
 //////////////////////////////////////////////////
 
-if (($_POST['title'] AND $_POST['title'] != "")
-    && ($_POST['url'] AND $_POST['url'] != "")
-    && ($_POST['day'] AND $_POST['day'] != "")
-    && ($_POST['month'] AND $_POST['month'] != "")
-    && ($_POST['year'] AND $_POST['year'] != "")
-    && ($_POST['text'] AND $_POST['text'] != "")
+if (($_POST['title'] AND $_POST['title'] != '')
+    && ($_POST['url'] AND $_POST['url'] != '')
+    && ($_POST['day'] AND $_POST['day'] != '')
+    && ($_POST['month'] AND $_POST['month'] != '')
+    && ($_POST['year'] AND $_POST['year'] != '')
+    && ($_POST['text'] AND $_POST['text'] != '')
     && $_POST['sended'] == 'add')
 {
     settype($_POST['day'], 'integer');
@@ -22,7 +22,7 @@ if (($_POST['title'] AND $_POST['title'] != "")
     $_POST['intro'] = savesql($_POST['intro']);
     $_POST['text'] = savesql($_POST['text']);
     $_POST['note'] = savesql($_POST['note']);
-    
+
     settype($_POST['game'], 'integer');
     settype($_POST['cat'], 'integer');
     settype($_POST['lang'], 'integer');
@@ -65,7 +65,7 @@ if(true)
     unset($press_arr['press_game']);
     unset($press_arr['press_cat']);
     unset($press_arr['press_lang']);
-    
+
     unset($date['tag']);
     unset($date['monat']);
     unset($date['jahr']);

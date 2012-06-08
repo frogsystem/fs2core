@@ -23,7 +23,7 @@ if (
     $new_ini_data = $_POST['style_name']."
 ".$_POST['style_version']."
 ".$_POST['style_copyright'];
-    
+
     // New Style Path
     $new_style_path = FS2_ROOT_PATH . 'styles/' . $_POST['style_folder'];
 
@@ -168,7 +168,7 @@ if ( !is_writable ( FS2_ROOT_PATH . 'styles/' ) ) {
                                     </div>
                                 </td>
                             <tr><td class="space"></td></tr>
-                        
+
                             <tr><td class="line" colspan="2">'.$TEXT['admin']->get('style_info_title').'</td></tr>
                             <tr>
                                 <td class="config">

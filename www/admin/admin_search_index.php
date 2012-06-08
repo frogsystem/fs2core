@@ -34,7 +34,7 @@ if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( 'update', 'new
         // Display Message
         systext ( $FD->text('page', 'search_index_deleted'),
             $FD->text('page', 'info'), FALSE, $FD->text('page', 'icon_trash_ok') );
-    
+
     // Delete with word List
     } elseif ( $_POST['do'] == 'delete_with_word' ) {
         delete_search_index ( 'news' );

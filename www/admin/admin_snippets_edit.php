@@ -44,7 +44,7 @@ elseif (
     )
 {
     if ( $_POST['snippet_delete'] == 1 ) {
-    
+
         // Security-Functions
         $_POST['snippet_id'] = array_map ( 'intval', explode ( ',', $_POST['snippet_id'] ) );
 
@@ -74,7 +74,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
 {
     // Security Function
     $_POST['snippet_id'] = array_map ( 'intval', $_POST['snippet_id'] );
-    
+
     //////////////////////////
     //// Edit Applet Form ////
     //////////////////////////
@@ -196,7 +196,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         ', $FD->sql()->conn() );
         // applets found
         if ( mysql_num_rows ( $index ) > 0 ) {
-        
+
             // display applets
             while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
 

@@ -70,7 +70,7 @@ elseif ($_POST['press_action'] == 'delete'
     }
     else
     {
-        systext("Der Pressebericht wurde nicht gel&ouml;scht.");
+        systext('Der Pressebericht wurde nicht gel&ouml;scht.');
     }
 
     unset($_POST['delete_press']);
@@ -143,7 +143,7 @@ elseif ($_POST['press_action'] == 'edit'
         settype($date['tag'], 'integer');
         settype($date['monat'], 'integer');
         settype($date['jahr'], 'integer');
-        
+
         $press_arr['press_game'] = $_POST['game'];
         $press_arr['press_cat'] = $_POST['cat'];
         $press_arr['press_lang'] = $_POST['lang'];
@@ -367,7 +367,7 @@ elseif ($_POST['press_action'] == 'delete'
                                     <span class="small">am '.$press_arr['press_date'].' auf <a href="'.$press_arr['press_url'].'" target="_blank" class="small">'.cut_in_string($press_arr['press_url'], 50, "...").'</a></span>
                                     <br /><br />
                                     <i>&bdquo;'.$press_arr['press_text'].'&ldquo;</i>
-                                    
+
                                 </td>
                             </tr>
                         </table>
@@ -422,7 +422,7 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
     {
         $_POST['order_type'] = 'desc';
     }
-    
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_edit" name="go">
@@ -437,7 +437,7 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                                         <option value="0"'.
                                         ($_POST['gameid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
-                                    
+
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'press_admin WHERE type = 1 ORDER BY title',$FD->sql()->conn() );
     while ($game_arr = mysql_fetch_assoc($index))
     {
@@ -558,7 +558,7 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
             $press_arr['press_cat'] = mysql_result($index2,0,'title');
             $index2 = mysql_query('SELECT title FROM '.$global_config_arr['pref']."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $FD->sql()->conn() );
             $press_arr['press_lang'] = mysql_result($index2,0,'title');
-        
+
             $press_arr['press_date'] = date('d.m.Y', $press_arr['press_date']);
             echo'
                             <tr class="thin select_entry">

@@ -50,7 +50,7 @@ if(true)
                         <input type="hidden" value="1" name="sended">
                         <table class="content" cellpadding="3" cellspacing="0">
                             <tr><td colspan="2"><h3>Produkt hinzuf&uuml;gen</h3><hr></td></tr>
-                            
+
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>

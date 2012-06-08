@@ -34,8 +34,8 @@ if (isset($_POST['sended']))
                 $thumb = create_thumb_from(image_url('images/screenshots/', $id, FALSE, TRUE), $config_arr['screen_thumb_x'], $config_arr['screen_thumb_y']);
                 $log[$i][] = create_thumb_notice($thumb);
             }
-           
-        }        
+
+        }
     }
 
     $systext = '';
@@ -50,7 +50,7 @@ if (isset($_POST['sended']))
     if ($systext != '') {
         systext($systext);
     } else {
-        systext('Sie m&uuml;ssen schon auch ein Bild ausw&auml;hlen...');        
+        systext('Sie m&uuml;ssen schon auch ein Bild ausw&auml;hlen...');
     }
 }
 

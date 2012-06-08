@@ -59,7 +59,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
     $admin_cat_arr = mysql_fetch_assoc($index);
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
-    
+
     $error_message = '';
 
     if (isset($_POST['sended']))
@@ -67,7 +67,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
       $error_message = 'Bitte f&uuml;llen Sie <b>alle Pflichfelder</b> aus!';
     }
     systext($error_message);
-    
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="gallery_cat" name="go">
@@ -136,12 +136,12 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
                     </form>
     ';
   }
-  
+
 /////////////////////////
 /// Kategorie löschen ///
 /////////////////////////
 
-  
+
   elseif ($_POST['cat_action'] == 'delete')
   {
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_cat', $FD->sql()->conn() );

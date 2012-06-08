@@ -320,7 +320,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                     </form>
             ';
         }
-        
+
         // Delete Video
         elseif ( $_POST['video_action'] == 'delete' )
         {
@@ -417,7 +417,7 @@ else
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
                 ';
-                
+
                 // Display each Video
                 while ( $video_arr = mysql_fetch_assoc ( $index ) ) {
                         // Create Link and Source

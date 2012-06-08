@@ -57,7 +57,7 @@ if(true)
     settype($config_arr['show_root'], 'integer');
     $config_arr['order_type'] = savesql($config_arr['order_type']);
     $config_arr['order_by'] = savesql($config_arr['order_by']);
-    
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_config" name="go">

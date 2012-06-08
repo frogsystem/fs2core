@@ -8,7 +8,7 @@ if ($_POST['answerbar_width'])
 {
     settype($_POST['answerbar_width'], 'integer');
     settype($_POST['answerbar_type'], 'integer');
-    
+
     mysql_query('UPDATE '.$global_config_arr['pref']."poll_config
                  SET answerbar_width = '$_POST[answerbar_width]',
                      answerbar_type  = '$_POST[answerbar_type]'", $FD->sql()->conn() );
@@ -23,7 +23,7 @@ if(true)
 {
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
- 
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="poll_config" name="go">

@@ -44,11 +44,11 @@ if (
                             FROM `'.$global_config_arr['pref']."styles`
                             WHERE `style_id` = ".$_POST['style_id']."
     ", $FD->sql()->conn() );
-    
+
     $new_ini_data = $_POST['style_name']."
 ".$_POST['style_version']."
 ".$_POST['style_copyright'];
-    
+
     $style_ini = FS2_ROOT_PATH . 'styles/' . stripslashes ( mysql_result ( $index, 0, 'style_tag' ) ) . '/style.ini';
     $ACCESS = new fileaccess();
     if ( $ACCESS->putFileData( $style_ini, $new_ini_data ) === FALSE ) {
@@ -169,7 +169,7 @@ elseif (
         // Display info
         systext ( $TEXT['admin']->get('style_installed'),
             $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_install_ok') );
-            
+
         // Go to Edit-Page of the installed Style
         unset ( $_POST );
         $_POST['style_id'] = mysql_insert_id ();
@@ -191,7 +191,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
     // Security Functions
     $_POST['style_id'] = ( is_array ( $_POST['style_id'] ) ) ? $_POST['style_id'] : array ( $_POST['style_id'] );
     $_POST['style_id'] = array_map ( 'intval', $_POST['style_id'] );
-    
+
     /////////////////////////
     //// Edit Style Form ////
     /////////////////////////
@@ -311,7 +311,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                     </form>
         ';
     }
-    
+
 
     //////////////////////////
     //// Unsinstall Style ////
@@ -329,7 +329,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                                 AND `style_id` != '.$_POST['style_id'].'
                                 ORDER BY `style_tag`
         ', $FD->sql()->conn() );
-        
+
         // Not last usable Style
         if ( mysql_num_rows ( $index ) >= 1 ) {
 
@@ -442,9 +442,9 @@ if ( !isset ( $_POST['style_id'] ) )
                             AND `style_tag` != 'default'
                             ORDER BY `style_tag`
     ", $FD->sql()->conn() );
-    
+
     $num_of_styles = mysql_num_rows ( $index );
-    
+
     $style_arr = array();
     $style_tag_arr = array();
     while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
@@ -579,7 +579,7 @@ if ( !isset ( $_POST['style_id'] ) )
 
             $style_ini = FS2_ROOT_PATH . 'styles/' . $data_arr['style_folder'] . '/style.ini';
             $data_arr['ini_lines'] = get_style_ini_data ( $style_ini );
-            
+
             echo '
                             <tr class="select_entry">
                                 <td class="middle config">
