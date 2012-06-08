@@ -3,7 +3,7 @@
     $TEMPLATE_GO = 'tpl_poll';
     $TEMPLATE_FILE = '0_polls.tpl';
     $TEMPLATE_EDIT = null;
-    
+
     $tmp['name'] = 'APPLET_POLL_ANSWER_LINE';
     $tmp['title'] = $admin_phrases['template']['poll_line']['title'];
     $tmp['description'] = $admin_phrases['template']['poll_line']['description'];
@@ -35,7 +35,7 @@
         $tmp['help'][3]['text'] = $admin_phrases['template']['poll_body']['help_4'];
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
-    
+
     $tmp['name'] = 'APPLET_NO_POLL';
     $tmp['title'] = $admin_phrases['template']['poll_no_poll']['title'];
     $tmp['description'] = $admin_phrases['template']['poll_no_poll']['description'];

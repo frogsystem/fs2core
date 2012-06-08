@@ -26,7 +26,7 @@ $TEMPLATE_EDIT[] = array (
         array ( 'tag' => 'message_title', 'text' => $TEXT['template']->get('general_message_message_title') ),
         array ( 'tag' => 'message', 'text' => $TEXT['template']->get('general_message_message') ),
     )
-);    
+);
 
 $TEMPLATE_EDIT[] = array (
     'name' => 'ANNOUNCEMENT',

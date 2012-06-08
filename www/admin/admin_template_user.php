@@ -197,7 +197,7 @@ $TEMPLATE_EDIT[] = array (
         array ( 'tag' => 'arrow_num_downloads', 'text' => $TEXT['template']->get('user_list_arrow_downloads') ),
     )
 );
-                   
+
 $TEMPLATE_EDIT[] = array (
     'name' => 'USERLIST_USERLINE',
     'title' => $TEXT['template']->get('user_list_userline_title'),

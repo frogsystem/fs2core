@@ -103,7 +103,7 @@
         $tmp['help'][0]['text'] = $admin_phrases['template']['press_main_body']['help_1'];
         $tmp['help'][1]['tag'] = 'press_container';
         $tmp['help'][1]['text'] = $admin_phrases['template']['press_main_body']['help_2'];
-        
+
     $TEMPLATE_EDIT[] = $tmp;
     unset($tmp);
 

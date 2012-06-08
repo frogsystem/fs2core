@@ -3,7 +3,7 @@
     $TEMPLATE_GO = 'tpl_screens';
     $TEMPLATE_FILE = '0_screenshots.tpl';
     $TEMPLATE_EDIT = null;
-    
+
     $tmp['name'] = 'CATEGORY';
     $tmp['title'] = $admin_phrases['template']['screenshot_cat']['title'];
     $tmp['description'] = $admin_phrases['template']['screenshot_cat']['description'];

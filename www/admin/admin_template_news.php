@@ -2,7 +2,7 @@
     $TEMPLATE_GO = 'tpl_news';
     $TEMPLATE_FILE = '0_news.tpl';
     $TEMPLATE_EDIT = null;
-    
+
 
 $TEMPLATE_EDIT[] = array (
     'name' => 'APPLET_LINE',

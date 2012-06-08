@@ -3,7 +3,7 @@
     $TEMPLATE_GO = 'tpl_dl';
     $TEMPLATE_FILE = '0_downloads.tpl';
     $TEMPLATE_EDIT = null;
-    
+
 $TEMPLATE_EDIT[] = array (
     'name' => 'APPLET_LINE',
     'title' => $TEXT['template']->get('dl_applet_line_title'),
