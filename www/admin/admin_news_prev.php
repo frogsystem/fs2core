@@ -9,15 +9,15 @@
             $().ready(function(){
                 loaddata();
                 document.getElementById(\'form\').submit();
-            });        
-        
+            });
+
             function loaddata() {
                 $("#news_title").val($(opener.document).find("#news_title").val());
                 $("#news_text").val($(opener.document).find("#news_text").val());
                 $("#news_user").val($(opener.document).find("#user_id").val());
                 $("#news_user_name").val($(opener.document).find("#user_name").val());
                 $("#news_cat_id").val($(opener.document).find("#cat_id").val());
-                
+
                 $("#d").val($(opener.document).find("#d").val());
                 $("#m").val($(opener.document).find("#m").val());
                 $("#y").val($(opener.document).find("#y").val());
@@ -39,15 +39,15 @@
         <form action="" method="post" id="form">
             <input type="hidden" name="go" value="news_preview">
             <input type="hidden" name="sended" value="1">
-            
+
             <input type="hidden" name="news_title" id="news_title" value="">
             <input type="hidden" name="news_text" id="news_text" value="">
-            
+
             <input type="hidden" name="news_user" id="news_user" value="">
             <input type="hidden" name="news_user_name" id="news_user_name" value="">
-            
+
             <input type="hidden" name="news_cat_id" id="news_cat_id" value="">
-            
+
             <input type="hidden" name="d" id="d" value="">
             <input type="hidden" name="m" id="m" value="">
             <input type="hidden" name="y" id="y" value="">
@@ -55,7 +55,7 @@
             <input type="hidden" name="i" id="i" value="">
 
         </form>
-        
+
         <p>
             '.$TEXT['page']->get('preview_note').'
         </p>
@@ -75,7 +75,7 @@
         // Load Data from $_POST
         $news_arr['comment_url'] = '?go=news_preview';
         $news_arr['kommentare'] = '?';
-        
+
         // Create New-Date
         if (
                 ( $_POST['d'] && $_POST['d'] != '' && $_POST['d'] > 0 ) &&
@@ -106,7 +106,7 @@
         $html = ($config_arr['html_code'] == 2 || $config_arr['html_code'] == 4) ? TRUE : FALSE;
         $fs = ($config_arr['fs_code'] == 2 || $config_arr['fs_code'] == 4) ? TRUE : FALSE;
         $para = ($config_arr['para_handling'] == 2 || $config_arr['para_handling'] == 4) ? TRUE : FALSE;
-        
+
         $news_arr['news_text'] = fscode ( $_POST['news_text'], $fs, $html, $para );
         $news_arr['news_title'] = killhtml ( $_POST['news_title'] );
 

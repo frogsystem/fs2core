@@ -81,7 +81,7 @@ function action_delete_get_data ( $IDS )
 
         $return_arr[] = $news_arr;
     }
-    
+
     return $return_arr;
 }
 
@@ -377,15 +377,15 @@ function action_comments_delete ( $DATA )
                         </table>
                     </form>
         ';
-        
+
 }
 
 
 
 
-    
 
-    
+
+
 
 ###################
 ## Page Settings ##
@@ -431,7 +431,7 @@ if (
     $_POST['news_date'] = mktime($_POST['h'], $_POST['i'], 0, $_POST['m'], $_POST['d'], $_POST['y']);
     $_POST['news_id'] = $_POST['news_id'][0];
     $data = frompost($news_cols);
-    
+
     // set edit time
     $data['news_search_update'] = time();
 
@@ -449,7 +449,7 @@ if (
             if (!empty($_POST['link_name'][$id]) && !empty($_POST['link_url'][$id]) && !in_array($_POST['link_url'][$id], array('http://', 'https://'))) {
 
                 // secure link target
-                $_POST['link_target'][$id] = ($_POST['link_target'][$id] == 1 ? 1 : 0);           
+                $_POST['link_target'][$id] = ($_POST['link_target'][$id] == 1 ? 1 : 0);
 
                 $linkdata = array(
                     'news_id' => $newsid,
@@ -458,7 +458,7 @@ if (
                     'link_target' => $_POST['link_target'][$id]
                 );
 
-                // insert into db                
+                // insert into db
                 try {
                     $sql->save('news_links', $linkdata, 'link_id');
                 } catch (Exception $e) {
@@ -509,7 +509,7 @@ elseif (
             $sql->delete('news_links', array('W' => "`news_id` = '".$_POST['news_id']."'"));
             // delete all comments
             $comment_rows = $sql->delete('news_comments', array('W' => "`news_id` = '".$_POST['news_id']."'"));
-                       
+
             // update counter
             try {
                 $sql->doQuery('UPDATE `{..pref..}counter` SET `news` = `news` - 1 WHERE `id` = 1');
@@ -525,8 +525,8 @@ elseif (
 
     } else {
         echo get_systext($TEXT['page']->get('news_not_deleted'), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_trash_error'));
-    }    
-    
+    }
+
         // Unset Vars
         unset ($_POST);
 }
@@ -591,34 +591,34 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
 {
     $FILE_SHOW_START = FALSE;
     // Edit News
-    if ( $_POST['news_action'] == "edit" && count ( $_POST['news_id'] ) == 1 )
+    if ( $_POST['news_action'] == 'edit' && count ( $_POST['news_id'] ) == 1 )
     {
         // read first id from array
         $_POST['news_id'] = $_POST['news_id'][0];
-        
+
         // script
-        $adminpage->addCond("target_0", false);
-        $adminpage->addCond("target_1", false);
-        $adminpage->addCond("button", false);
-        $adminpage->addText("name_name", "edit_name");
-        $adminpage->addText("url_name", "edit_url");
-        $adminpage->addText("target_name", "edit_target");
-        $adminpage->addText("class", "space");
-        $edit_table = $adminpage->get("edit_table", false);
+        $adminpage->addCond('target_0', false);
+        $adminpage->addCond('target_1', false);
+        $adminpage->addCond('button', false);
+        $adminpage->addText('name_name', 'edit_name');
+        $adminpage->addText('url_name', 'edit_url');
+        $adminpage->addText('target_name', 'edit_target');
+        $adminpage->addText('class', 'space');
+        $edit_table = $adminpage->get('edit_table', false);
 
-        $adminpage->addText("table", $edit_table);
-        $script_edit = $adminpage->get("link_edit", false);
+        $adminpage->addText('table', $edit_table);
+        $script_edit = $adminpage->get('link_edit', false);
 
-        $script_entry = $adminpage->get("link_entry", false);
-        $adminpage->addText("sul", $config_arr['short_url_len']);
-        $adminpage->addText("sur", $config_arr['short_url_rep']);
-        $adminpage->addText("link_entry", str_replace(array("\n","\r"), array("",""), $script_entry));
-        $adminpage->addText("link_edit", str_replace(array("\n","\r"), array("",""), $script_edit));
-        echo $adminpage->get("script", false);
-        
-        
+        $script_entry = $adminpage->get('link_entry', false);
+        $adminpage->addText('sul', $config_arr['short_url_len']);
+        $adminpage->addText('sur', $config_arr['short_url_rep']);
+        $adminpage->addText('link_entry', str_replace(array("\n","\r"), array('',''), $script_entry));
+        $adminpage->addText('link_edit', str_replace(array("\n","\r"), array('',''), $script_edit));
+        echo $adminpage->get('script', false);
+
+
         // link functions or error
-        if (isset($_POST['sended'])) {            
+        if (isset($_POST['sended'])) {
 
             //add link
             if (isset($_POST['add_link'])) {
@@ -714,7 +714,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
         $_POST = array_map('killhtml', $_POST);
 
         // Create Date-Arrays
-        list($_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i']) 
+        list($_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'])
             = array_values(getsavedate($_POST['d'], $_POST['m'], $_POST['y'], $_POST['h'], $_POST['i'], 0, true));
 
         // cat options
@@ -732,7 +732,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
         if (!is_array($_POST['link_name']))
             $_POST['link_name'] = array();
 
-        foreach($_POST['link_name'] as $id => $val) {       
+        foreach($_POST['link_name'] as $id => $val) {
             $adminpage->addCond('notscript', true);
             $adminpage->addText('name', killhtml($_POST['link_name'][$id]));
             $adminpage->addText('url', killhtml($_POST['link_url'][$id]));
@@ -845,57 +845,57 @@ if ($FILE_SHOW_START)
     $_REQUEST['order'] = killhtml(isset($_REQUEST['order']) ? $_REQUEST['order'] : "news_date");
     $_REQUEST['sort'] = killhtml(isset($_REQUEST['sort']) ? $_REQUEST['sort'] : "DESC");
     $_REQUEST['filter_cat'] = isset($_REQUEST['filter_cat']) ? $_REQUEST['filter_cat'] : 0;
-    settype($_REQUEST['filter_cat'], "integer");
-    settype($_REQUEST['search_type'], "integer");
-    $_REQUEST['filter_string'] = isset($_REQUEST['filter_string']) ? killhtml($_REQUEST['filter_string']) : "";
+    settype($_REQUEST['filter_cat'], 'integer');
+    settype($_REQUEST['search_type'], 'integer');
+    $_REQUEST['filter_string'] = isset($_REQUEST['filter_string']) ? killhtml($_REQUEST['filter_string']) : '';
 
     //cat filter options
     initstr($cat_filter_options);
-    $cats = $sql->get("news_cat", array("cat_id", "cat_name"));
+    $cats = $sql->get('news_cat', array('cat_id', 'cat_name'));
     foreach ($cats['data'] as $cat) {
-        $cat = array_map("killhtml", $cat);
+        $cat = array_map('killhtml', $cat);
         $cat_filter_options .= '<option value="'.$cat['cat_id'].'" '.getselected($cat['cat_id'], $_REQUEST['filter_cat']).' title="'.$cat['cat_name'].'">'.cut_string($cat['cat_name'], 35, "...").'</option>'."\n";
     }
-    
+
     // display filter
     for ($i=0; $i<2; $i++)
-        $adminpage->addCond("search_type_".$i, $_REQUEST['search_type'] === $i);
-    $adminpage->addCond("filter_cat", $_REQUEST['filter_cat'] === 0);
-    $adminpage->addCond("order_id", $_REQUEST['order'] === "news_id");
-    $adminpage->addCond("order_date", $_REQUEST['order'] === "news_date");
-    $adminpage->addCond("order_title", $_REQUEST['order'] === "news_title");
-    $adminpage->addCond("sort_asc", $_REQUEST['sort'] === "ASC");
-    $adminpage->addCond("sort_desc", $_REQUEST['sort'] === "DESC");
-    $adminpage->addText("filter_string", $_REQUEST['filter_string']);
-    $adminpage->addText("filter_cat_options", $cat_filter_options);   
-    echo $adminpage->get("filter");
+        $adminpage->addCond('search_type_'.$i, $_REQUEST['search_type'] === $i);
+    $adminpage->addCond('filter_cat', $_REQUEST['filter_cat'] === 0);
+    $adminpage->addCond('order_id', $_REQUEST['order'] === 'news_id');
+    $adminpage->addCond('order_date', $_REQUEST['order'] === 'news_date');
+    $adminpage->addCond('order_title', $_REQUEST['order'] === 'news_title');
+    $adminpage->addCond('sort_asc', $_REQUEST['sort'] === 'ASC');
+    $adminpage->addCond('sort_desc', $_REQUEST['sort'] === 'DESC');
+    $adminpage->addText('filter_string', $_REQUEST['filter_string']);
+    $adminpage->addText('filter_cat_options', $cat_filter_options);
+    echo $adminpage->get('filter');
 
 
     // Pagination
     $_REQUEST['page'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-    settype($_REQUEST['page'], "integer");
-       
+    settype($_REQUEST['page'], 'integer');
+
     // Page list
     try {
-        
+
         // serached?
         $searched = (!empty($_REQUEST['filter_string']) && $_REQUEST['search_type'] === 0);
 
         // search
-        if ($searched) {       
+        if ($searched) {
             // do the search
-            $search = new Search("news", $_REQUEST['filter_string'], false);
-            $search->setOrder("`".$_REQUEST['order']."` ".$_REQUEST['sort'], "`news_id` ".$_REQUEST['sort']);
-            $search->setWhere(($_REQUEST['filter_cat'] != 0 ? "`cat_id` = ".$_REQUEST['filter_cat'] : ""));
+            $search = new Search('news', $_REQUEST['filter_string'], false);
+            $search->setOrder('`'.$_REQUEST['order'].'` '.$_REQUEST['sort'], '`news_id` '.$_REQUEST['sort']);
+            $search->setWhere(($_REQUEST['filter_cat'] != 0 ? '`cat_id` = '.$_REQUEST['filter_cat'] : ''));
             $search->setLimit(($_REQUEST['page']-1)*$config_arr['acp_per_page'], $config_arr['acp_per_page']);
-            
+
         // just filter
-        } else {  
+        } else {
             // Set where for cat, ID and URL Filter
             $where = array();
             if ($_REQUEST['filter_cat'] != 0)
-                $where[] = "`cat_id` = ".$_REQUEST['filter_cat'];
-                
+                $where[] = '`cat_id` = '.$_REQUEST['filter_cat'];
+
             if (!empty($_REQUEST['filter_string'])) {
                 switch ($_REQUEST['search_type']) {
                     case 1:
@@ -903,25 +903,25 @@ if ($FILE_SHOW_START)
                         break;
                 }
             }
-            
+
             // build query
-            $news_data = $sql->get("news", array(
-                array('COL' => "news_id", 'AS' => "id"),
-                array('FUNC' => "CONCAT", 'ARG' => 1, 'AS' => "rank")
+            $news_data = $sql->get('news', array(
+                array('COL' => 'news_id', 'AS' => 'id'),
+                array('FUNC' => 'CONCAT', 'ARG' => 1, 'AS' => 'rank')
             ), array(
-                'W' => implode(" AND ", $where),
-                'O' => "`".$_REQUEST['order']."` ".$_REQUEST['sort'].", `news_id` ".$_REQUEST['sort']."",
+                'W' => implode(' AND ', $where),
+                'O' => '`'.$_REQUEST['order'].'` '.$_REQUEST['sort'].', `news_id` '.$_REQUEST['sort'].'',
                 'L' => ($_REQUEST['page']-1)*$config_arr['acp_per_page'].",".$config_arr['acp_per_page']
             ), false, true);
             $total_entries = $news_data['num_all'];
             $news_data = $news_data['data'];
         }
-        
-        
+
+
         //run through results
         $entries = array();
         while (true) {
-            
+
             // get from right source
             if ($searched) {
                  $found = $search->next();
@@ -934,77 +934,77 @@ if ($FILE_SHOW_START)
             // stop when last result
             if ($found === false)
                 break;
-            
-        
+
+
             // select sqls
             switch ($config_arr['acp_view']) {
                 // full (with text preview)
                 case 1:
-                    $news = $sql->getById("news", array("news_id", "cat_id", "user_id", "news_title", "news_date", "news_text"), $found['id'], "news_id");
+                    $news = $sql->getById('news', array('news_id', 'cat_id', 'user_id', 'news_title', 'news_date', 'news_text'), $found['id'], 'news_id');
                     break;
                 // extended (but no text preview)
                 case 2:
-                    $news = $sql->getById("news", array("news_id", "cat_id", "user_id", "news_title", "news_date"), $found['id'], "news_id");
+                    $news = $sql->getById('news', array('news_id', 'cat_id', 'user_id', 'news_title', 'news_date'), $found['id'], 'news_id');
                     break;
                 //simple
                 default:
-                    $news = $sql->getById("news", array("news_id", "news_title", "news_date"), $found['id'], "news_id");
+                    $news = $sql->getById('news', array('news_id', 'news_title', 'news_date'), $found['id'], 'news_id');
                     break;
             }
-            
+
             // all
-            $adminpage->addText("id", $news['news_id']);
-            $adminpage->addText("title", killhtml($news['news_title']));
-            $adminpage->addText("date", date_loc($TEXT['admin']->get("date"), $news['news_date']));
-            $adminpage->addText("time", date_loc($TEXT['admin']->get("time"), $news['news_date']));
-            
+            $adminpage->addText('id', $news['news_id']);
+            $adminpage->addText('title', killhtml($news['news_title']));
+            $adminpage->addText('date', date_loc($TEXT['admin']->get('date'), $news['news_date']));
+            $adminpage->addText('time', date_loc($TEXT['admin']->get('time'), $news['news_date']));
+
             // extended or full
             if (in_array($config_arr['acp_view'], array(1, 2))) {
                 //get additional data
-                $user = $sql->getFieldById("user", "user_name", $news['user_id'], "user_id");
-                $cat = $sql->getFieldById("news_cat", "cat_name", $news['cat_id'], "cat_id");
-                $num_comments = $sql->getField("news_comments",
-                    array('COL' => "comment_id", 'AS' => "news_comments", 'FUNC' => "count"),
+                $user = $sql->getFieldById('user', 'user_name', $news['user_id'], 'user_id');
+                $cat = $sql->getFieldById('news_cat', 'cat_name', $news['cat_id'], 'cat_id');
+                $num_comments = $sql->getField('news_comments',
+                    array('COL' => 'comment_id', 'AS' => 'news_comments', 'FUNC' => 'count'),
                     array('W' => "`news_id` = '".$news['news_id']."'")
                 );
-                $num_links = $sql->getField("news_links",
-                    array('COL' => "link_id", 'AS' => "num_links", 'FUNC' => "count"),
+                $num_links = $sql->getField('news_links',
+                    array('COL' => 'link_id', 'AS' => 'num_links', 'FUNC' => 'count'),
                     array('W' => "`news_id` = '".$news['news_id']."'")
-                );            
-                
-                $adminpage->addText("user_name", $user);
-                $adminpage->addText("cat_name", $cat);
-                $adminpage->addText("num_comments", $num_comments);
-                $adminpage->addText("num_links", $num_links);
+                );
+
+                $adminpage->addText('user_name', $user);
+                $adminpage->addText('cat_name', $cat);
+                $adminpage->addText('num_comments', $num_comments);
+                $adminpage->addText('num_links', $num_links);
             }
             // full
             if ($config_arr['acp_view'] == 1) { // extened
-                $text_preview = cut_string(killfs($news['news_text']), 250, "...");
-                $adminpage->addText("text_preview", $text_preview);
+                $text_preview = cut_string(killfs($news['news_text']), 250, '...');
+                $adminpage->addText('text_preview', $text_preview);
             }
-            
+
             // get entries
             switch ($config_arr['acp_view']) {
-                case 1:  $entries[] = $adminpage->get("list_entry_full"); break;
-                case 2:  $entries[] = $adminpage->get("list_entry_extended"); break;
-                default: $entries[] = $adminpage->get("list_entry_simple"); break;
+                case 1:  $entries[] = $adminpage->get('list_entry_full'); break;
+                case 2:  $entries[] = $adminpage->get('list_entry_extended'); break;
+                default: $entries[] = $adminpage->get('list_entry_simple'); break;
             }
         }
-        
+
         // implode entry array
         $num_entries = count($entries);
         $entries = implode("\n", $entries);
 
-    } catch (Exception $e) {   
-        $error = "<br>".$e->getMessage();
+    } catch (Exception $e) {
+        $error = '<br>'.$e->getMessage();
     }
 
     // No entries
     if ($total_entries == 0 || !empty($error)) {
-        $adminpage->addText("error", $TEXT['page']->get('news_not_found').$error);
-        $entries = $adminpage->get("list_no_entry");
+        $adminpage->addText('error', $TEXT['page']->get('news_not_found').$error);
+        $entries = $adminpage->get('list_no_entry');
     }
-    
+
     // Create Pagination
     $urlFormat = '?go=news_edit&page=%d&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&filter_cat='.$_REQUEST['filter_cat'].'&filter_string='.$_REQUEST['filter_string'].'&search_type='.$_REQUEST['search_type'];
     $settings = array('perPage' => $config_arr['acp_per_page'], 'urlFormat' => $urlFormat);
@@ -1012,18 +1012,18 @@ if ($FILE_SHOW_START)
 
 	if (!isset($_POST['news_action']))
 		initstr($_POST['news_action']);
-	
+
     // Display List
-    $adminpage->addCond("perm_delete", has_perm("news_delete"));
-    $adminpage->addCond("perm_comments", has_perm("news_comments"));
-    $adminpage->addCond("action_edit", $_POST['news_action'] == "edit");
-    $adminpage->addCond("action_delete", $_POST['news_action'] == "delete");
-    $adminpage->addCond("action_comments", $_POST['news_action'] == "comments");
-    $adminpage->addText("entries", $entries);      
-    $adminpage->addText("total_entries", $total_entries);      
-    $adminpage->addCond("entries", $total_entries != 0);      
-    $adminpage->addCond("total_entries", $total_entries != 1);
-    $adminpage->addText("pagination", $pagination->getAdminTemplate());
-    echo $adminpage->get("list");
+    $adminpage->addCond('perm_delete', has_perm('news_delete'));
+    $adminpage->addCond('perm_comments', has_perm('news_comments'));
+    $adminpage->addCond('action_edit', $_POST['news_action'] == 'edit');
+    $adminpage->addCond('action_delete', $_POST['news_action'] == 'delete');
+    $adminpage->addCond('action_comments', $_POST['news_action'] == 'comments');
+    $adminpage->addText('entries', $entries);
+    $adminpage->addText('total_entries', $total_entries);
+    $adminpage->addCond('entries', $total_entries != 0);
+    $adminpage->addCond('total_entries', $total_entries != 1);
+    $adminpage->addText('pagination', $pagination->getAdminTemplate());
+    echo $adminpage->get('list');
 }
 ?>
