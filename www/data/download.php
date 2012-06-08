@@ -165,7 +165,7 @@ $suchfeld->tag('keyword', $_GET['keyword'] );
 $suchfeld->tag('all_url', url('download', array('cat_id' => $_GET['cat_id'])));
 
 $suchfeld = $suchfeld->display ();
-    
+
 
 // Get Body Template
 $template = new template();

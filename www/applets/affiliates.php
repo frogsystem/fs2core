@@ -34,7 +34,7 @@ while ( $affiliates_arr = mysql_fetch_assoc( $index ) ) {
     $template->tag('text', $affiliates_arr['partner_beschreibung'] );
 
     $partner = $template->display ();
-    
+
     $all_arr[] = $partner;
     ( $affiliates_arr['partner_permanent'] == 1 ) ? ( $perm_arr[] = $partner ) : null;
     ( $affiliates_arr['partner_permanent'] == 0 ) ? ( $non_arr[] = $partner ) : null;

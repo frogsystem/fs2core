@@ -9,7 +9,7 @@
         <span class="small">Benutzername:</span>
       </td>
     </tr>
-    <tr>    
+    <tr>
       <td>
         <input class="small input input_highlight" size="20" name="username" maxlength="25">
       </td>
@@ -19,17 +19,17 @@
         <span class="small">Passwort:</span>
       </td>
     </tr>
-    <tr>    
+    <tr>
       <td>
         <input class="small input input_highlight" size="20" type="password" name="userpassword" maxlength="50">
       </td>
     </tr>
     <tr><td></td></tr>
-    
+
     <tr>
       <td align="left">
         <label for="stayonline_mini" class="small pointer textmiddle">Angemeldet bleiben?</label>
-        <input class="pointer textmiddle" type="checkbox" id="stayonline_mini" name="stayonline" value="1" checked>          
+        <input class="pointer textmiddle" type="checkbox" id="stayonline_mini" name="stayonline" value="1" checked>
       </td>
     </tr>
     <tr>
@@ -41,7 +41,7 @@
       <td align="left">
         <a class="small" href="?go=register">Noch nicht registriert?</a>
       </td>
-    </tr>    
+    </tr>
   </table>
 </form>
 <!--section-end::APPLET_LOGIN-->
@@ -86,14 +86,14 @@
 <form action="" method="post">
   <input type="hidden" name="go" value="login">
   <input type="hidden" name="login" value="1">
-  
+
     <tr>
       <td align="left">
         <input class="small input input_highlight" size="33" name="username" maxlength="25">
       </td>
       <td align="left">
         <img src="$VAR(style_icons)user/user.gif" alt="" align="bottom">
-      </td>      
+      </td>
     </tr>
     <tr>
       <td></td>
@@ -144,10 +144,10 @@
     <li>Eigenes Benutzerbild</li>
   </ul>
   <br>
-  
+
   <form action="" method="post" onSubmit="return checkRegistrationForm()">
     <input type="hidden" name="go" value="register">
-  
+
     <table border="0" cellpadding="2" cellspacing="0" align="center">
       <tr>
         <td align="left">
@@ -160,9 +160,9 @@
           <img src="$VAR(style_icons)user/user.gif" alt="" align="bottom">
         </td>
       </tr>
-      
+
       <tr><td></td></tr>
-        
+
       <tr>
         <td align="left">
           <b>E-Mail:</b>
@@ -174,9 +174,9 @@
           <img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom">
         </td>
       </tr>
-      
+
       <tr><td></td></tr>
-        
+
       <tr>
         <td align="left">
           <b>Passwort:</b>
@@ -188,9 +188,9 @@
           <img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom">
         </td>
       </tr>
-      
+
       <tr><td></td></tr>
-        
+
       <tr>
         <td align="left">
           <b>Passwort wiederholen:</b>
@@ -202,11 +202,11 @@
           <img src="$VAR(style_icons)user/key-action.gif" alt="" align="bottom">
         </td>
       </tr>
-      
+
 {..captcha_line..}
-      
+
       <tr><td>&nbsp;</td></tr>
-      
+
       <tr>
         <td align="center">
           <button class="pointer" type="submit" name="register"><img src="$VAR(style_icons)user/user-new.gif" alt="" align="bottom"> Jetzt registrieren</button>
@@ -248,7 +248,7 @@
 <!--section-start::PROFILE--><b>Profil von {..user_name..}</b><br><br>
 
 <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
-  
+
   <tr>
     <td colspan="2" width="205"><b>Benutzername:</b></td>
 
@@ -312,7 +312,7 @@
   </tr>
 
   <tr><td>&nbsp;</td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Hompage:</b></td>
     <td></td>
@@ -357,7 +357,7 @@
   </tr>
 
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Windows Live ID:</b></td>
     <td></td>
@@ -464,18 +464,18 @@
         <tr>
            <td align="left"><input class="small input input_highlight" size="33" value="{..user_icq..}" name="user_icq" maxlength="100"></td>
            <td align="center"><img src="$VAR(style_icons)user/icq.gif" alt="ICQ" align="bottom"></td>
-        
+
         </tr>
         <tr><td></td></tr>
         <tr><td align="left" colspan="2"><b>AIM E-Mail:</b></td></tr>
         <tr>
           <td align="left"><input class="small input input_highlight" size="33" value="{..user_aim..}" name="user_aim" maxlength="100"></td>
           <td align="center"><img src="$VAR(style_icons)user/aim.gif" alt="AIM" align="bottom"></td>
-        
+
         </tr>
         <tr><td></td></tr>
         <tr>
-          <td align="left" colspan="2"><b>Windows Live ID:</b></td>          
+          <td align="left" colspan="2"><b>Windows Live ID:</b></td>
           <td align="left" colspan="2"><b>Benutzerbild hochladen:</b></td>
         </tr>
         <tr>
@@ -484,7 +484,7 @@
           <td align="left" valign="top" rowspan="5" colspan="2">
             <input class="small input input_highlight" type="file" name="user_image" style="width:100%;"><br>
             <span class="small">{..image_limits_text..}<br></span>
-          </td>        
+          </td>
         </tr>
         <tr><td></td></tr>
         <tr><td align="left" colspan="2"><b>Yahoo!-ID:</b></td></tr>
@@ -516,7 +516,7 @@
             <td align="left"><input class="small input input_highlight" size="33" id="old_pwd" name="old_pwd" type="password" maxlength="50" autocomplete="off"></td>
             <td align="center"><img src="$VAR(style_icons)user/key.gif" alt="" align="bottom"></td>
             <td align="left"><input class="small input input_highlight" size="33" id="new_pwd" name="new_pwd" type="password" maxlength="50" autocomplete="off"></td>
-            <td align="center"><img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom"></td>          
+            <td align="center"><img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom"></td>
         </tr>
         <tr><td></td></tr>
 

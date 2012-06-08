@@ -605,7 +605,7 @@ $admin_phrases['press']['delnotconfirm']              = "Eintrag nicht löschen";
 $admin_phrases['press']['note_noreleases']            = "Es wurden keine Presseberichte gefunden!";
 
 
- 
+
 ///////////////////
 // Zufallsbilder //
 ///////////////////

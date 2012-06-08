@@ -6,7 +6,7 @@ require_once(FS2_ROOT_PATH . 'includes/newfunctions.php');
 ////////////////////
 function url ($go, $args = array(), $full = false) {
     global $FD;
-    
+
     switch ($FD->cfg('url_style')) {
         case 'seo':
             $url = url_seo($go, $args);
@@ -575,7 +575,7 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
 
     $header .= 'X-Mailer: PHP/' . phpversion() . "\n";
     $header .= 'X-Sender-IP: ' . $_SERVER['REMOTE_ADDR'] . "\n";
-    
+
     if ( $HTML == FALSE || $HTML == 'html' ) {
         if ( mysql_result ( $index, 0, 'html' ) == 1 ) {
             $header .= 'Content-Type: text/html';
@@ -1178,8 +1178,8 @@ function unquote ($TEXT)
 
 function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0)
 {
-    include_once ( FS2_ROOT_PATH . 'includes/fscode.php');   
-    $flags = array('html' => $html, 'paragraph' => $para, 
+    include_once ( FS2_ROOT_PATH . 'includes/fscode.php');
+    $flags = array('html' => $html, 'paragraph' => $para,
     );
 
     if ($all)

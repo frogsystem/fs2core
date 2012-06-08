@@ -6,7 +6,7 @@
  * @author   Sweil
  *
  * this class provides the init of main config data
- * 
+ *
  */
 
 class ConfigMain extends ConfigData {

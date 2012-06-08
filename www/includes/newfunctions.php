@@ -183,7 +183,7 @@ function highlight ($word, $text, $class = 'red', $style = '')
     $style = empty($style) ? '' : "style=\"$style\"";
     $class = empty($class) ? '' : "class=\"$class\"";
 
-    $text = preg_replace("=(.*?)($word)(.*?)=i", 
+    $text = preg_replace("=(.*?)($word)(.*?)=i",
                          "\\1<span $class $style>\\2</span>\\3", $text);
     return $text;
 }
@@ -193,12 +193,12 @@ function highlight ($word, $text, $class = 'red', $style = '')
 //// create SEO URL ////
 ////////////////////////
 function url_seo ($go, $args, $go_in_args = false) {
-    
+
 	$urlencodeext = function ($url) {
 		// Folge von Bindestriche um zwei Striche erweitern
 		return urlencode(preg_replace('/-+/', '$0--', $url));
 	};
-    
+
     if ($go_in_args) {
         unset($args['go']);
     }
@@ -206,7 +206,7 @@ function url_seo ($go, $args, $go_in_args = false) {
 	$seourl = $urlencodeext($go);
 
 	if (count($args) > 0)
-	{	
+	{
 		$seourl .= '--';
 
 		ksort($args);
@@ -217,7 +217,7 @@ function url_seo ($go, $args, $go_in_args = false) {
 		$seourl = substr($seourl, 0, strlen($seourl) - 1);
 	}
 
-	if (!empty($seourl))		
+	if (!empty($seourl))
 		$seourl .= '.html';
 
     return $seourl;
@@ -236,7 +236,7 @@ function parse_url_query($query) {
     }
 
     return $params;
-} 
+}
 
 
 
@@ -364,9 +364,9 @@ function array_filter_keys ($input, $keys) {
         if (in_array(key($input), $keys)) {
             next($input);
             return true;
-        } else {        
+        } else {
             next($input);
-            return false; 
+            return false;
         }
     });
 }
@@ -385,7 +385,7 @@ function in_arrayr ($value, $array) {
         else if(in_arrayr($value, $item)) return true;
     }
     return false;
-}  
+}
 
 
 ///////////////
@@ -413,7 +413,7 @@ function array_values_by_keys ($arr, $keys) {
 	foreach ($arr as $key => $ele) {
         if (in_array($key, $keys))
             $new[] = $ele;
-    }    
+    }
     return $new;
 }
 
@@ -430,7 +430,7 @@ function array_cross ($arr1, $arr2, $func) {
             if ($result < 0)
                 continue;
 
-            $new[] = $ele1;    
+            $new[] = $ele1;
         }
     }
     return $new;
@@ -466,7 +466,7 @@ function array_real_merge ($arr1, $arr2, $intersect, $symdiff) {
 ///////////////////////
 //// debug print_r ////
 ///////////////////////
-function print_d ($text, $return = false) {    
+function print_d ($text, $return = false) {
     if ($return) {
         $string = '<pre>';
         $string .= print_r($text, true);

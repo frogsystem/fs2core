@@ -33,7 +33,7 @@ function get_all_fscodes() {
     return array(
         'b', 'i', 'u', 's', 'font', 'color', 'size',
         'center',
-        'url', 'home', 'email', 
+        'url', 'home', 'email',
         'img', 'cimg',
         'list', 'numlist',
         'code', 'quote', 'video',
@@ -49,9 +49,9 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     /* TODO: to_bbcode
      * Convert "special" frogsystem tags to default bbcode
-     * e.g. home, cimg, numlist, size, 
+     * e.g. home, cimg, numlist, size,
      * may not exists for all types
-     * */    
+     * */
 
     /* Flags:
      * html => false // Decides wheter html is allowed
@@ -163,7 +163,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             'link', array ('listitem', 'block', 'inline'), array ('link'));
     elseif  (in_array('url', $to_text))
         $fscode->addCode ('url', 'usecontent?', 'do_fscode_url', array ('usecontent_param' => 'default', 'text' => true),
-            'link', array ('listitem', 'block', 'inline'), array ('link'));   
+            'link', array ('listitem', 'block', 'inline'), array ('link'));
 
     // home
     if (in_array('home', $to_html))
@@ -221,7 +221,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             'image', array ('listitem', 'block', 'inline', 'link'), array ());
     elseif  (in_array('cimg', $to_text))
         $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'text' => true),
-            'image', array ('listitem', 'block', 'inline', 'link'), array ());        
+            'image', array ('listitem', 'block', 'inline', 'link'), array ());
 
 
     // noparse
@@ -256,7 +256,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     elseif  (in_array('numlist', $to_text))
         $fscode->addCode ('numlist', 'callback_replace', 'do_fscode_textlists', array (),
             'list', array ('block', 'listitem'), array ('link'));
-            
+
     if (in_array('numlist', $to_html) || in_array('numlist', $to_text)) {
         $fscode->setCodeFlag ('numlist', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
     }
@@ -276,7 +276,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     if (in_array('numlist', $to_html) || in_array('numlist', $to_text)
         || in_array('list', $to_html) || in_array('numlist', $list)) {
-        $fscode->addParser ('list', 'fscode_stripcontents');            
+        $fscode->addParser ('list', 'fscode_stripcontents');
         $fscode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
         $fscode->setCodeFlag ('*', 'paragraphs', false);
     }
@@ -296,7 +296,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     // code
     if (in_array('code', $to_html))
         $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array (),
-            'code', array ('listitem', 'block', 'inline'), array ('link'));        
+            'code', array ('listitem', 'block', 'inline'), array ('link'));
     elseif  (in_array('code', $to_text))
         $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array ('text' => true),
             'code', array ('listitem', 'block', 'inline'), array ('link'));
@@ -371,7 +371,7 @@ function simple_replace_ignore_attributs ($action, $attributes, $content, $param
 // Parser to convert smilies into images
 function do_fscode_smilies ($text) {
     global $FD;
-    
+
     $smilies = $FD->sql()->getData('smilies', '*');
     foreach ($smilies as $smiley) {
         $url = image_url('images/smilies/', $smiley['id']);
@@ -476,7 +476,7 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
     if ($params['text'] === true)
         return ($url == $content) ? $url : $content . ' ('.$url.')';
     else
-        return '<a href="'.$url.'" target="_self">'.$content.'</a>';   
+        return '<a href="'.$url.'" target="_self">'.$content.'</a>';
 }
 
 // Create an email link
@@ -497,7 +497,7 @@ function do_fscode_email ($action, $attributes, $content, $params, $node_object)
     if ($params['text'] === true)
         return ($url == $text) ? $text : $text . ' ('.$url.')';
     else
-        return '<a href="mailto:'.$url.'" target="_blank">'.$text.'</a>';    
+        return '<a href="mailto:'.$url.'" target="_blank">'.$text.'</a>';
 }
 
 // create simple inline styles for html elements
@@ -527,7 +527,7 @@ function do_fscode_fcs ($action, $attributes, $content, $params, $node_object) {
                 break;
 
             case 'size':
-                $font_sizes_values = array('70%','85%','100%','125%','155%','195%','225%','300%');  
+                $font_sizes_values = array('70%','85%','100%','125%','155%','195%','225%','300%');
                 $style = 'font-size:'.$font_sizes_values[$attributes['default']].';';
                 break;
 
@@ -591,9 +591,9 @@ function do_fscode_textlists ($action, $attributes, $content, $params, $node_obj
     if ($action == 'validate') {
         return (count($attributes) == 0);
     }
-    $content = preg_replace ("/<br><br>/", '<br>', $content);    
-    $content = preg_replace ("/\n\n/", "\n", $content);    
-    $content = preg_replace ("/\n\n/", "\n", $content);    
+    $content = preg_replace ("/<br><br>/", '<br>', $content);
+    $content = preg_replace ("/\n\n/", "\n", $content);
+    $content = preg_replace ("/\n\n/", "\n", $content);
     return preg_replace ("/\n/", "\n\t", $content);
 }
 
@@ -707,7 +707,7 @@ function do_fscode_quote ($action, $attributes, $content, $params, $node_object)
 // Create a videoplayer
 function do_fscode_video ($action, $attributes, $content, $params, $node_object) {
     require_once ( FS2_ROOT_PATH . 'resources/player/player_flv_include.php' );
-    
+
     global $FD;
 
     if ($action == 'validate') {
@@ -724,7 +724,7 @@ function do_fscode_video ($action, $attributes, $content, $params, $node_object)
         $res = explode ( ',', $attributes['default'], 2 );
         settype ( $res[0], 'integer' );
         settype ( $res[1], 'integer' );
-        return get_player ( $content, $res[0], $res[1] ); 
+        return get_player ( $content, $res[0], $res[1] );
     }
 }
 

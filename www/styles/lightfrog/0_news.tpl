@@ -30,7 +30,7 @@
         ({..cat_name..})
       </span><br>
       <span class="small">von <a href="{..user_url..}">{..user_name..}</a>, am {..date..}</span>
-      
+
       {..text..}
       <div>
         {..related_links..}
@@ -38,9 +38,9 @@
           <a href="{..comments_url..}">
              Kommentare ({..comments_number..})
            </a>
-        </span>          
+        </span>
       </div>
-      
+
     </td>
   </tr>
 </table>
@@ -73,11 +73,11 @@
         </span>
         <span class="small atright">
           {..date..}
-        </span>      
+        </span>
       </div>
       {..text..}
-    </td>    
-  </tr>  
+    </td>
+  </tr>
 </table><!--section-end::COMMMENT_ENTRY-->
 
 <!--section-start::COMMENT_CAPTCHA-->    <tr>
@@ -113,7 +113,7 @@
   <input type="hidden" name="go" value="comments">
   <input type="hidden" name="add_comment" value="1">
   <input type="hidden" name="id" value="{..news_id..}">
-  
+
   <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
     <tr>
       <td>
@@ -149,7 +149,7 @@
       <td>
         <input class="pointer" type="submit" value="Abschicken">
       </td>
-    </tr>    
+    </tr>
     {..captcha_text..}
   </table>
 </form>

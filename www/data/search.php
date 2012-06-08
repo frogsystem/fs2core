@@ -23,7 +23,7 @@ initstr($news_template);
 initstr($articles_template);
 initstr($downloads_template);
 
-    
+
 // Check if search will be done
 if (empty($_REQUEST['keyword'])) { // keyword empty => no search
     $_REQUEST['in_news'] = true; // set true for default checked checkboxes
@@ -95,7 +95,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->tag('date_template', $date_template);
                     $template->tag('rank', sprintf("%.1F", $found['rank']));
 
-                    $news_entries .= (string) $template;		
+                    $news_entries .= (string) $template;
                 }
             }
 
@@ -163,7 +163,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->tag('date_template', $date_template);
                     $template->tag('rank', sprintf("%.1F", $found['rank']));
 
-                    $articles_entries .= (string) $template;		
+                    $articles_entries .= (string) $template;
                 }
             }
 
@@ -226,7 +226,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->tag('date_template', $date_template);
                     $template->tag('rank', sprintf("%.1F", $found['rank']));
 
-                    $downloads_entries .= (string) $template;		
+                    $downloads_entries .= (string) $template;
                 }
             }
 
@@ -303,7 +303,7 @@ $_REQUEST['keyword'] = usersave($_REQUEST['keyword']);
 
 // Get Default-Operators
 // get searchfunctions if not loaded
-require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php'); 
+require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
 $ops = get_default_operators();
 
 

@@ -185,7 +185,7 @@ if (isset($_GET['catid']))
 
     //Seitennavigation
     $pagenav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['pics_per_page'], $config_arr['number_of_screens'], url($_GET['go'], array('catid' => $_GET['catid'], 'page' => '{..page_num..}')));
-    
+
     //Keine Screenshots
     if ($config_arr['number_of_screens'] <= 0) {
         $pics = sys_message($FD->text('frontend', 'sysmessage'), $FD->text('frontend', 'no_pics'), 404);

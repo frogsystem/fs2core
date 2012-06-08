@@ -26,7 +26,7 @@ function get_timezones () {
 
     // Sort by area/city name.
     ksort($cities);
-    
+
     return $cities;
 }
 
@@ -60,7 +60,7 @@ function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = 'widt
 function get_yesno_table ( $NAME )
 {
         global $admin_phrases;
-        
+
         return '
             <table width="100%" cellpadding="4" cellspacing="0">
                 <tr class="bottom pointer" id="yes">
@@ -78,7 +78,7 @@ function get_yesno_table ( $NAME )
                                         $("tr#yes").css("background-color", "#49C24f");
                                     } else {
                                         $("tr#yes").css("background-color", "transparent");
-                                    } 
+                                    }
                                 });
                                 $("tr#no").hover(function(event) {
                                     if ($("input#del_no").prop("checked")) {
@@ -91,39 +91,39 @@ function get_yesno_table ( $NAME )
                                         $("tr#no").css("background-color", "#C24949");
                                     } else {
                                         $("tr#no").css("background-color", "transparent");
-                                    } 
-                                });                                
-                                
+                                    }
+                                });
+
                                 $("input#del_yes").change(function(event) {
                                     if ($(this).prop("checked")) {
                                         $("tr#yes").css("background-color", "#49C24f");
-                                        $("input#del_no").trigger("change"); 
-                                        $("tr#yes").trigger("mouseenter"); 
+                                        $("input#del_no").trigger("change");
+                                        $("tr#yes").trigger("mouseenter");
                                     } else {
-                                        $("tr#yes").css("background-color", "transparent"); 
-                                        $("tr#yes").trigger("mouseout"); 
-                                    }               
+                                        $("tr#yes").css("background-color", "transparent");
+                                        $("tr#yes").trigger("mouseout");
+                                    }
                                 });
                                 $("input#del_no").change(function(event) {
                                     if ($(this).prop("checked")) {
                                         $("tr#no").css("background-color", "#C24949");
-                                        $("input#del_yes").trigger("change"); 
-                                        $("tr#no").trigger("mouseenter");  
+                                        $("input#del_yes").trigger("change");
+                                        $("tr#no").trigger("mouseenter");
                                     } else {
-                                        $("tr#no").css("background-color", "transparent"); 
-                                        $("tr#no").trigger("mouseout");  
-                                    }                                
+                                        $("tr#no").css("background-color", "transparent");
+                                        $("tr#no").trigger("mouseout");
+                                    }
                                 });
-                                
-                                $("input#del_yes").trigger("change");                              
-                                $("input#del_no").trigger("change"); 
-                                $("tr#no").trigger("mouseout");                             
-                                
+
+                                $("input#del_yes").trigger("change");
+                                $("input#del_no").trigger("change");
+                                $("tr#no").trigger("mouseout");
+
                             });
-                            
+
 
                         </script>
-                        
+
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1">
                     </td>
                     <td class="config middle">
@@ -178,7 +178,7 @@ function get_article_urls ()
 {
     global $global_config_arr;
     global $FD;
-    
+
         $index = mysql_query ( '
                                                         SELECT
                                                                 article_url
@@ -558,7 +558,7 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
 
     $smilies .= '</table></fieldset></td>';
   }
-  
+
     $buttons = '';
     $buttons .= create_editor_button_new('admin/editor/b.jpg', 'B', 'fett', "insert('$name', '[b]', '[/b]')");
     $buttons .= create_editor_button_new('admin/editor/i.jpg', 'I', 'kursiv', "insert('$name', '[i]', '[/i]')");
@@ -596,7 +596,7 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
                          {smilies}
                      </tr>
                  </table><br />';
-    
+
     $textarea = str_replace('{style}', $style, $textarea);
     $textarea = str_replace('{text}', $text, $textarea);
     $textarea = str_replace('{buttons}', $buttons, $textarea);
@@ -672,7 +672,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
 {
     initstr($span_end);
     initstr($span_start);
-    
+
     if ( $NEW_LINE == TRUE ) {
         $span_start = '<span style="padding-bottom:3px; display:block;">';
         $span_end = '</span>';
@@ -1019,7 +1019,7 @@ function fillsession ($uid) {
             $_SESSION[$permission] = 1;
 
         // user
-        } else { 
+        } else {
             if (in_array($permission, $granted)) {
                 $_SESSION[$permission] = 1;
             } else {
@@ -1033,7 +1033,7 @@ function fillsession ($uid) {
         array('W' => '`group_id` = -1', 'O' => '`page_id`')
     );
 
-    foreach ($permissions['data'] as $permission) {       
+    foreach ($permissions['data'] as $permission) {
         // admin
         if($USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1) {
             $_SESSION[$permission['page_id']] = 1;

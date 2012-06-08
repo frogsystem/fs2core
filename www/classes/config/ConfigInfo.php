@@ -6,7 +6,7 @@
  * @author   Sweil
  *
  * this class provides the init for the page informations array
- * 
+ *
  */
 
 class ConfigInfo extends ConfigData {

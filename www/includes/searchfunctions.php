@@ -17,7 +17,7 @@ function get_default_operators () {
         'wildcard' => trim(array_shift($wc))
     );
 
-    return $ops;   
+    return $ops;
 }
 
 
@@ -298,5 +298,5 @@ function compare_update_rank (&$v1, $v2, $func) {
         return 0;
     }
     return 1;
-}; 
+};
 ?>

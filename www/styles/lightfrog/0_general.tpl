@@ -24,12 +24,12 @@
   - <b>{..hits..}</b> Hits<br>
   - <b>{..hits_today..}</b> Hits heute
 </p>
-<p>  
+<p>
   - <b>{..visitors_online..}</b> Besucher online<br>
   - <b>{..registered_online..}</b> registrierte <br>
   - <b>{..guests_online..}</b> G&auml;ste
 </p>
-<p>  
+<p>
   - <b>{..num_users..}</b> registrierte User<br>
   - <b>{..num_news..}</b> News<br>
   - <b>{..num_comments..}</b> Kommentare<br>

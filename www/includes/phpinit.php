@@ -4,7 +4,7 @@ function phpinit ($session = true, $header = false, $libloader = null) {
     // Header?
     if ($header !== false) {
         // Set header
-        header($header);        
+        header($header);
     }
 
     // Start Session

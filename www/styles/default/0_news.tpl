@@ -26,13 +26,13 @@
 <!--section-start::NEWS_BODY--><table style="width:100%;" cellpadding="0" cellspacing="0">
   <tr>
     <td>
-      
+
       <b id="news_{..news_id..}">{..titel..}</b>
       <span class="small" style="float:right;">
         ({..cat_name..})
       </span><br>
       <span class="small">von <a href="{..user_url..}">{..user_name..}</a>, am {..date..}</span>
-      
+
       <p>{..text..}</p>
       <p class="small">
         {..related_links..}
@@ -40,9 +40,9 @@
           <a href="{..comments_url..}">
              Kommentare ({..comments_number..})
            </a>
-        </span>          
+        </span>
       </p>
-      
+
     </td>
   </tr>
 </table>
@@ -75,11 +75,11 @@
         </span>
         <span style="float:right;" class="small">
           {..date..}
-        </span>      
+        </span>
       </div>
       {..text..}
-    </td>    
-  </tr>  
+    </td>
+  </tr>
 </table><!--section-end::COMMMENT_ENTRY-->
 
 <!--section-start::COMMENT_CAPTCHA-->    <tr>
@@ -115,7 +115,7 @@
   <input type="hidden" name="go" value="comments">
   <input type="hidden" name="add_comment" value="1">
   <input type="hidden" name="id" value="{..news_id..}">
-  
+
   <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
     <tr>
       <td>
@@ -151,7 +151,7 @@
       <td>
         <input class="pointer" type="submit" value="Abschicken">
       </td>
-    </tr>    
+    </tr>
     {..captcha_text..}
   </table>
 </form>

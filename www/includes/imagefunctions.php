@@ -240,7 +240,7 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
 function create_thumb_notice($upload)
 {
   global $admin_phrases;
-  
+
   switch ($upload)
   {
     case 0:

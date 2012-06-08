@@ -6,7 +6,7 @@
  * @author   Sweil
  *
  * this class provides the init of environment vars
- * 
+ *
  */
 
 class ConfigEnv extends ConfigData {

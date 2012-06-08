@@ -130,7 +130,7 @@
       {..author_link..}
     </td>
   </tr>
-  <tr><td style="height:5px;"></td></tr>  
+  <tr><td style="height:5px;"></td></tr>
   <tr valign="top">
     <td>
       <b>Beschreibung:</b>

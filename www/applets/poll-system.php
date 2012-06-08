@@ -21,7 +21,7 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
     } catch (Exception $e) {
     }
 
-// random option    
+// random option
 } elseif ($SCRIPT['argc'] >= 2 && $SCRIPT['argv'][1] == 'random') {
     $date = time();
     try {

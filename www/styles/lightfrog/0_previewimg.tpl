@@ -8,7 +8,7 @@
   <span class="small">
     <b>{..caption..}</b><br>
     (aus <b>{..cat_title..}</b>)
-  </span>  
+  </span>
 </p><!--section-end::BODY-->
 
 <!--section-start::NOIMAGE_BODY--><p>

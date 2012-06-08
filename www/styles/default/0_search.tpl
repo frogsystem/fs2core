@@ -1,7 +1,7 @@
 <!--section-start::SEARCH--><b>Suche</b>
  <a href="?go=search" class="small" style="float:right;">(Neue Suche)</a>
  <br><br>
- 
+
  <fieldset>
    <legend style="color:#000000;"><b>Nach Inhalten mit dem Schl&uuml;sselwort...</b></legend>
    <form method="get">

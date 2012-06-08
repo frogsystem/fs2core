@@ -439,7 +439,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
             ';
 
             return $select_template;
-        
+
         case 'file':
             if ( $SHOW_REST === FALSE ) {
                 return '';
