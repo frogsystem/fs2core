@@ -7,68 +7,68 @@
 function http_response_text($code) {
 
     $status = array(
-        '100' => "Continue",
-        '101' => "Switching Protocols",
-        '102' => "Processing",
-        '118' => "Connection timed out",
-        
-        '200' => "OK",
-        '201' => "Created",
-        '202' => "Accepted",
-        '203' => "Non-Authoritative Information",
-        '204' => "No Content",
-        '205' => "Reset Content",
-        '206' => "Partial Content",
-        '207' => "Multi-Status",
-        
-        '300' => "Multiple Choices",
-        '301' => "Moved Permanently",
-        '302' => "Found",
-        '303' => "See Other",
-        '304' => "Not Modified",
-        '305' => "Use Proxy",
-        '307' => "Temporary Redirect",
-        
-        '400' => "Bad Request",
-        '401' => "Unauthorized",
-        '402' => "Payment Required",
-        '403' => "Forbidden",
-        '404' => "Not Found",
-        '405' => "Method Not Allowed",
-        '406' => "Not Acceptable",
-        '407' => "Proxy Authentication Required",
-        '408' => "Request Time-out",
-        '409' => "Conflict",
-        '410' => "Gone",
-        '411' => "Length Required",
-        '412' => "Precondition Failed",
-        '413' => "Request Entity Too Large",
-        '414' => "Request-URI Too Long",
-        '415' => "Unsupported Media Type",
-        '416' => "Requested range not satisfiable",
-        '417' => "Expectation Failed",
+        '100' => 'Continue',
+        '101' => 'Switching Protocols',
+        '102' => 'Processing',
+        '118' => 'Connection timed out',
+
+        '200' => 'OK',
+        '201' => 'Created',
+        '202' => 'Accepted',
+        '203' => 'Non-Authoritative Information',
+        '204' => 'No Content',
+        '205' => 'Reset Content',
+        '206' => 'Partial Content',
+        '207' => 'Multi-Status',
+
+        '300' => 'Multiple Choices',
+        '301' => 'Moved Permanently',
+        '302' => 'Found',
+        '303' => 'See Other',
+        '304' => 'Not Modified',
+        '305' => 'Use Proxy',
+        '307' => 'Temporary Redirect',
+
+        '400' => 'Bad Request',
+        '401' => 'Unauthorized',
+        '402' => 'Payment Required',
+        '403' => 'Forbidden',
+        '404' => 'Not Found',
+        '405' => 'Method Not Allowed',
+        '406' => 'Not Acceptable',
+        '407' => 'Proxy Authentication Required',
+        '408' => 'Request Time-out',
+        '409' => 'Conflict',
+        '410' => 'Gone',
+        '411' => 'Length Required',
+        '412' => 'Precondition Failed',
+        '413' => 'Request Entity Too Large',
+        '414' => 'Request-URI Too Long',
+        '415' => 'Unsupported Media Type',
+        '416' => 'Requested range not satisfiable',
+        '417' => 'Expectation Failed',
         '418' => "I'm a Teapot",
-        '421' => "There are too many connections from your internet address",
-        '422' => "Unprocessable Entity",
-        '423' => "Locked",
-        '424' => "Failed Dependency",
-        '425' => "Unordered Collection",
-        '426' => "Upgrade Required",
-        
-        '500' => "Internal Server Error",
-        '501' => "Not Implemented",
-        '502' => "Bad Gateway",
-        '503' => "Service Unavailable",
-        '504' => "Gateway Time-out",
-        '505' => "HTTP Version not supported",
-        '506' => "Variant Also Negotiates",
-        '507' => "Insufficient Storage",
-        '509' => "Bandwidth Limit Exceeded",
-        '510' => "Not Extended",
+        '421' => 'There are too many connections from your internet address',
+        '422' => 'Unprocessable Entity',
+        '423' => 'Locked',
+        '424' => 'Failed Dependency',
+        '425' => 'Unordered Collection',
+        '426' => 'Upgrade Required',
+
+        '500' => 'Internal Server Error',
+        '501' => 'Not Implemented',
+        '502' => 'Bad Gateway',
+        '503' => 'Service Unavailable',
+        '504' => 'Gateway Time-out',
+        '505' => 'HTTP Version not supported',
+        '506' => 'Variant Also Negotiates',
+        '507' => 'Insufficient Storage',
+        '509' => 'Bandwidth Limit Exceeded',
+        '510' => 'Not Extended',
     );
-    
+
     if (isset($status[$code]))
-        return sprintf("Status: %d %s", $code, $status[$code]);
+        return sprintf('Status: %d %s', $code, $status[$code]);
 
     return false;
 }
@@ -80,13 +80,13 @@ function http_response_text($code) {
 //// Decode Array with JSON & UTF8 ////
 //////////////////////////////////////
 function json_array_decode ($array) {
-    return array_map("utf8_decode", json_decode($array, true));
+    return array_map('utf8_decode', json_decode($array, true));
 }
 ///////////////////////////////////////
 //// Encode Array with JSON & UTF8 ////
 //////////////////////////////////////
 function json_array_encode ($array) {
-    return json_encode(array_map("utf8_encode", $array), JSON_FORCE_OBJECT);
+    return json_encode(array_map('utf8_encode', $array), JSON_FORCE_OBJECT);
 }
 
 
@@ -95,15 +95,15 @@ function json_array_encode ($array) {
 //// Initialize empty string ////
 /////////////////////////////////
 function initstr (&$string) {
-    settype($string, "string");
-    $string = "";
+    settype($string, 'string');
+    $string = '';
 }
 
 //////////////////////////////////////////////
 //// Enclose any string into any html tag ////
 //////////////////////////////////////////////
 function htmlenclose ($TEXT, $TAG) {
-    return "<".$TAG.">".$TEXT."</".$TAG.">";
+    return '<'.$TAG.'>'.$TEXT.'</'.$TAG.'>';
 }
 
 /////////////////////////////////////
@@ -121,22 +121,22 @@ function killhtml ($VAL, $ARR = true) {
     // save data
     if (is_array($VAL)) {
         if ($ARR)
-            $VAL = array_map("killhtml", $VAL);
+            $VAL = array_map('killhtml', $VAL);
     } elseif (is_hexcolor($VAL)) {
     }
     elseif (is_numeric($VAL)) {
         if (floatval($VAL) == intval($VAL)) {
             $VAL = intval($VAL);
-            settype($VAL, "integer");
+            settype($VAL, 'integer');
         } else {
             $VAL = floatval($VAL);
-            settype($VAL, "float");
+            settype($VAL, 'float');
         }
     } else {
-        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES, "ISO-8859-1", false);
-        settype($VAL, "string");
+        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES, 'ISO-8859-1', false);
+        settype($VAL, 'string');
     }
-    
+
     return $VAL;
 }
 
@@ -178,12 +178,12 @@ function cut_string ($string, $maxlength, $replacement)
 ///////////////////////////////////////////////
 //// Short string by cutting in the middle ////
 ///////////////////////////////////////////////
-function highlight ($word, $text, $class = "red", $style = "")
+function highlight ($word, $text, $class = 'red', $style = '')
 {
-    $style = empty($style) ? "" : "style=\"$style\"";
-    $class = empty($class) ? "" : "class=\"$class\"";
-    
-    $text = preg_replace("=(.*?)($word)(.*?)=i", 
+    $style = empty($style) ? '' : "style=\"$style\"";
+    $class = empty($class) ? '' : "class=\"$class\"";
+
+    $text = preg_replace("=(.*?)($word)(.*?)=i",
                          "\\1<span $class $style>\\2</span>\\3", $text);
     return $text;
 }
@@ -193,33 +193,33 @@ function highlight ($word, $text, $class = "red", $style = "")
 //// create SEO URL ////
 ////////////////////////
 function url_seo ($go, $args, $go_in_args = false) {
-    
+
 	$urlencodeext = function ($url) {
 		// Folge von Bindestriche um zwei Striche erweitern
 		return urlencode(preg_replace('/-+/', '$0--', $url));
 	};
-    
+
     if ($go_in_args) {
         unset($args['go']);
     }
-	
+
 	$seourl = $urlencodeext($go);
-	
+
 	if (count($args) > 0)
-	{	
+	{
 		$seourl .= '--';
-	
+
 		ksort($args);
-	
+
 		foreach ($args as $key => $val)
 			$seourl .= $urlencodeext($key) . '-' . $urlencodeext($val) . '-';
-			
+
 		$seourl = substr($seourl, 0, strlen($seourl) - 1);
 	}
-		
-	if (!empty($seourl))		
+
+	if (!empty($seourl))
 		$seourl .= '.html';
-        
+
     return $seourl;
 }
 
@@ -227,16 +227,16 @@ function url_seo ($go, $args, $go_in_args = false) {
 //// parse query part of an url ////
 ////////////////////////////////////
 function parse_url_query($query) {
-    $query = explode("&", $query);
-   
+    $query = explode('&', $query);
+
     $params = array();
     foreach ($query as $param) {
-        $pair = explode("=", $param);
+        $pair = explode('=', $param);
         $params[$pair[0]] = $pair[1];
     }
-    
+
     return $params;
-} 
+}
 
 
 
@@ -247,13 +247,13 @@ function parse_url_query($query) {
 function date_loc ($DATE_STRING, $TIMESTAMP)
 {
     global $FD;
-    
-    $week_en = array ( "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" );
-    $month_en = array ( "January","February","March","April","May","June","July","August","September","October","November","December" );
-    
-    $week_loc = explode(",", $FD->text('frontend', "week_days_array"));
-    $month_loc = explode(",", $FD->text('frontend', "month_names_array"));
-    
+
+    $week_en = array ( 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday' );
+    $month_en = array ( 'January','February','March','April','May','June','July','August','September','October','November','December' );
+
+    $week_loc = explode(',', $FD->text('frontend', 'week_days_array'));
+    $month_loc = explode(',', $FD->text('frontend', 'month_names_array'));
+
     $localized_date = str_replace($week_en, $week_loc, date($DATE_STRING, $TIMESTAMP));
     $localized_date = str_replace($month_en,$month_loc, $localized_date);
 
@@ -267,7 +267,7 @@ function kill_replacements ($TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE)
 {
     $a = array('{..', '..}', '[%', '%]', '$NAV(', '$APP(', '$VAR(');
     $b = array('&#x7B;&#x2E;&#x2E;', '&#x2E;&#x2E;&#x7D;',  '&#x5B;&#x25;', '&#x25;&#x5D;', '&#x24;NAV&#x28;', '&#x24;APP&#x28;', '&#x24;APP&#x28;', '&#x24;VAR&#x28;');
-    
+
     $TEXT = str_replace($a, $b, $TEXT);
 
     if ($KILLHTML === true) {
@@ -317,10 +317,10 @@ function has_perm ($perm) {
     return (isset($_SESSION[$perm]) && $_SESSION[$perm] === 1);
 }
 function is_authorized () {
-    return ($_SESSION['user_level'] === "authorized");
+    return ($_SESSION['user_level'] === 'authorized');
 }
 function is_loggedin () {
-    return ($_SESSION['user_level'] === "loggedin" || is_authorized ());
+    return ($_SESSION['user_level'] === 'loggedin' || is_authorized ());
 }
 
 /////////////////////////////////////////
@@ -328,8 +328,8 @@ function is_loggedin () {
 /////////////////////////////////////////
 function generate_pwd ($LENGHT = 10)
 {
-    $charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
-    $code = "";
+    $charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789';
+    $code = '';
     $real_strlen = strlen($charset) - 1;
     mt_srand((double)microtime() * 1001000);
 
@@ -364,9 +364,9 @@ function array_filter_keys ($input, $keys) {
         if (in_array(key($input), $keys)) {
             next($input);
             return true;
-        } else {        
+        } else {
             next($input);
-            return false; 
+            return false;
         }
     });
 }
@@ -380,12 +380,12 @@ function in_arrayr ($value, $array) {
             if ($item == $value) return true;
             else continue;
         }
-       
+
         if(in_array($value, $item)) return true;
         else if(in_arrayr($value, $item)) return true;
     }
     return false;
-}  
+}
 
 
 ///////////////
@@ -413,7 +413,7 @@ function array_values_by_keys ($arr, $keys) {
 	foreach ($arr as $key => $ele) {
         if (in_array($key, $keys))
             $new[] = $ele;
-    }    
+    }
     return $new;
 }
 
@@ -430,7 +430,7 @@ function array_cross ($arr1, $arr2, $func) {
             if ($result < 0)
                 continue;
 
-            $new[] = $ele1;    
+            $new[] = $ele1;
         }
     }
     return $new;
@@ -466,16 +466,16 @@ function array_real_merge ($arr1, $arr2, $intersect, $symdiff) {
 ///////////////////////
 //// debug print_r ////
 ///////////////////////
-function print_d ($text, $return = false) {    
+function print_d ($text, $return = false) {
     if ($return) {
-        $string = "<pre>";
+        $string = '<pre>';
         $string .= print_r($text, true);
-        $string .= "</pre>";
+        $string .= '</pre>';
         return $string;
     } else {
-        echo "<pre>";
+        echo '<pre>';
         print_r($text);
-        echo "</pre>";   
+        echo '</pre>';
     }
 }
 

@@ -2,7 +2,7 @@
   <b>{..caption..}</b><br>
   <img src="{..thumb_url..}" alt="">
   <br><br>
-  <b>Verfügbare Größen:</b>
+  <b>Verf&uuml;gbare Gr&ouml;&szlig;en:</b>
   {..sizes..}
   <br>
 </td><!--section-end::WALLPAPER-->

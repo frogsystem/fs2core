@@ -23,7 +23,7 @@
     <tr>
       <td colspan="2" align="center">
         <input class="pointer" type="submit" value="Abstimmen"><br>
-        <a class="small" href="?go=polls&id={..poll_id..}">
+        <a class="small" href="?go=polls&amp;id={..poll_id..}">
           (Ergebnis anzeigen)
         </a>
       </td>
@@ -93,35 +93,35 @@
 <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
   <tr align="center">
     <td class="left bottom">
-      <a href="?go=polls&sort=question&order={..order_question..}">        
+      <a href="?go=polls&amp;sort=question&amp;order={..order_question..}">
         <img src="$VAR(style_icons)poll/question.gif" alt="Frage" title="Frage" align="bottom">
         <br>{..arrow_question..}
       </a>
-    </td> 
-    
+    </td>
+
     <td class="left bottom" width="100">
-      <a href="?go=polls&sort=participants&order={..order_participants..}">        
+      <a href="?go=polls&amp;sort=participants&amp;order={..order_participants..}">
         <img src="$VAR(style_icons)poll/users.gif" alt="Teilnehmer" title="Teilnehmer" align="bottom">
         <br>{..arrow_participants..}
       </a>
-    </td>    
-    
+    </td>
+
     <td class="left bottom" width="58">
-      <a href="?go=polls&sort=start_date&order={..order_start_date..}">        
+      <a href="?go=polls&amp;sort=start_date&amp;order={..order_start_date..}">
         <img src="$VAR(style_icons)poll/date-from.gif" alt="von" title="von" align="bottom">
         <br>{..arrow_start_date..}
       </a>
     </td>
-    
+
     <td class="left bottom" width="10"></td>
-    
+
     <td class="left bottom" width="70">
-      <a href="?go=polls&sort=end_date&order={..order_end_date..}">        
+      <a href="?go=polls&amp;sort=end_date&amp;order={..order_end_date..}">
         <img src="$VAR(style_icons)poll/date-to.gif" alt="bis" title="bis" align="bottom">
         <br>{..arrow_end_date..}
       </a>
     </td>
-    
+
   </tr>
 {..polls..}
 </table>

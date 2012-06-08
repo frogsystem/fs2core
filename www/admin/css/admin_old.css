@@ -58,7 +58,7 @@ td.n {
 }
 td.nw {
     background:#BBBBBB;
-} 
+}
 
 
 
@@ -128,7 +128,7 @@ table.configtable {
 table.configtable .config, table.configtable  .configthin, table.configtable .configbig {
     text-align:left;
     vertical-align:top;
-    color:#000000;    
+    color:#000000;
     font-size:11pt;
     font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
     padding-left:0px;
@@ -148,7 +148,7 @@ table.configtable .config .small, table.configtable .configthin .small, table.co
 
 }
 
-td.line, td.line_red 
+td.line, td.line_red
 {
     background-image:url('../images/line_green.jpg');
     background-repeat:repeat-x;
@@ -157,8 +157,8 @@ td.line, td.line_red
     padding:0px 0px;
     text-align:left;
     vertical-align:top;
-    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;    
-    font-size:160%; 
+    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
+    font-size:160%;
 }
 td.line_red
 {

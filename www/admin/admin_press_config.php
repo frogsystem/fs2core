@@ -7,15 +7,15 @@
 if (isset($_POST['sended'])
    )
 {
-    settype($_POST[game_navi], 'integer');
-    settype($_POST[cat_navi], 'integer');
-    settype($_POST[lang_navi], 'integer');
-    settype($_POST[show_press], 'integer');
-    settype($_POST[show_root], 'integer');
-    $_POST[order_type] = savesql($_POST[order_type]);
-    $_POST[order_by] = savesql($_POST[order_by]);
-        
-    mysql_query("UPDATE ".$global_config_arr[pref]."press_config
+    settype($_POST['game_navi'], 'integer');
+    settype($_POST['cat_navi'], 'integer');
+    settype($_POST['lang_navi'], 'integer');
+    settype($_POST['show_press'], 'integer');
+    settype($_POST['show_root'], 'integer');
+    $_POST['order_type'] = savesql($_POST['order_type']);
+    $_POST['order_by'] = savesql($_POST['order_by']);
+
+    mysql_query('UPDATE '.$global_config_arr['pref']."press_config
                  SET game_navi = '$_POST[game_navi]',
                      cat_navi = '$_POST[cat_navi]',
                      lang_navi = '$_POST[lang_navi]',
@@ -24,7 +24,7 @@ if (isset($_POST['sended'])
                      order_type = '$_POST[order_type]',
                      order_by = '$_POST[order_by]'
                  WHERE id = '1'", $FD->sql()->conn() );
-    systext("Die Konfiguration wurde aktualisiert");
+    systext('Die Konfiguration wurde aktualisiert');
     unset($_POST);
 }
 
@@ -34,30 +34,30 @@ if (isset($_POST['sended'])
 
 if(true)
 {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."press_config", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'press_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     if (isset($_POST['sended']))
     {
-        $config_arr[game_navi] = $_POST['game_navi'];
-        $config_arr[cat_navi] = $_POST['cat_navi'];
-        $config_arr[lang_navi] = $_POST['lang_navi'];
-        $config_arr[show_press] = $_POST['show_press'];
-        $config_arr[show_root] = $_POST['show_root'];
-        $config_arr[order_type] = $_POST['order_type'];
-        $config_arr[order_by] = $_POST['order_by'];
-    
-        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+        $config_arr['game_navi'] = $_POST['game_navi'];
+        $config_arr['cat_navi'] = $_POST['cat_navi'];
+        $config_arr['lang_navi'] = $_POST['lang_navi'];
+        $config_arr['show_press'] = $_POST['show_press'];
+        $config_arr['show_root'] = $_POST['show_root'];
+        $config_arr['order_type'] = $_POST['order_type'];
+        $config_arr['order_by'] = $_POST['order_by'];
+
+        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
     }
-    
-    settype($config_arr[game_navi], 'integer');
-    settype($config_arr[cat_navi], 'integer');
-    settype($config_arr[lang_navi], 'integer');
-    settype($config_arr[show_press], 'integer');
-    settype($config_arr[show_root], 'integer');
-    $config_arr[order_type] = savesql($config_arr[order_type]);
-    $config_arr[order_by] = savesql($config_arr[order_by]);
-    
+
+    settype($config_arr['game_navi'], 'integer');
+    settype($config_arr['cat_navi'], 'integer');
+    settype($config_arr['lang_navi'], 'integer');
+    settype($config_arr['show_press'], 'integer');
+    settype($config_arr['show_root'], 'integer');
+    $config_arr['order_type'] = savesql($config_arr['order_type']);
+    $config_arr['order_by'] = savesql($config_arr['order_by']);
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="press_config" name="go">
@@ -72,11 +72,11 @@ if(true)
                                     <td class="config" valign="top" width="50%">
                                     <select name="show_press">
                                     <option value="1"';
-                 if ($config_arr[show_press] == 1)
+                 if ($config_arr['show_press'] == 1)
                    echo ' selected="selected"';
                  echo'>in allen Ordnern</option>
                                   <option value="0"';
-                 if ($config_arr[show_press] == 0)
+                 if ($config_arr['show_press'] == 0)
                    echo ' selected="selected"';
                  echo'>nur in Ordnern der letzten Ebene</option>
                                     </select>
@@ -90,11 +90,11 @@ if(true)
                                     <td class="config" valign="top" width="50%">
                                     <select name="show_root">
                                     <option value="0"';
-                 if ($config_arr[show_root] == 0)
+                 if ($config_arr['show_root'] == 0)
                    echo ' selected="selected"';
                  echo'>nicht anzeigen</option>
                            <option value="1"';
-                   if ($config_arr[show_root] == 1)
+                   if ($config_arr['show_root'] == 1)
                    echo ' selected="selected"';
                  echo'>anzeigen</option>
                                     </select>
@@ -103,17 +103,17 @@ if(true)
                             <tr>
                                 <td class="config" valign="top" width="50%">
                                     In Navigation anzeigen:<br>
-                                    <font class="small">Ausgewählte werden in der Navigation als Ordner angezeigt.</font>
+                                    <font class="small">Ausgew&auml;hlte werden in der Navigation als Ordner angezeigt.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <input type="checkbox" style="vertical-align:middle;" name="game_navi" value="1"';
-    if ($config_arr[game_navi] == 1) {echo " checked=checked";}
+    if ($config_arr['game_navi'] == 1) {echo " checked=checked";}
     echo'>Spiele<br />
                                     <input type="checkbox" style="vertical-align:middle;" name="cat_navi" value="1"';
-    if ($config_arr[cat_navi] == 1) {echo " checked=checked";}
+    if ($config_arr['cat_navi'] == 1) {echo " checked=checked";}
     echo'>Kategorien<br />
                                     <input type="checkbox" style="vertical-align:middle;" name="lang_navi" value="1"';
-    if ($config_arr[lang_navi] == 1) {echo " checked=checked";}
+    if ($config_arr['lang_navi'] == 1) {echo " checked=checked";}
     echo'>Sprachen
                                 </td>
                             </tr>
@@ -126,21 +126,21 @@ if(true)
                                     sortieren
                                     <select name="order_by">
                                     <option value="press_title"';
-                 if ($config_arr[order_by] == "press_title")
+                 if ($config_arr['order_by'] == "press_title")
                    echo ' selected="selected"';
                  echo'>nach Titel</option>
                                   <option value="press_date"';
-                 if ($config_arr[order_by] == "press_date")
+                 if ($config_arr['order_by'] == "press_date")
                    echo ' selected="selected"';
                  echo'>nach Datum</option>
                                     </select>,
                                     <select name="order_type">
                                     <option value="asc"';
-                 if ($config_arr[order_type] == "asc")
+                 if ($config_arr['order_type'] == "asc")
                    echo ' selected="selected"';
                  echo'>aufsteigend</option>
                                   <option value="desc"';
-                 if ($config_arr[order_type] == "desc")
+                 if ($config_arr['order_type'] == "desc")
                    echo ' selected="selected"';
                  echo'>absteigend</option>
                                     </select>

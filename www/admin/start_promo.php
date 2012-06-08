@@ -1,40 +1,40 @@
 <?php
-$index = mysql_query ( "
-						SELECT COUNT(`partner_id`) AS 'num_partner'
-						FROM ".$global_config_arr['pref']."partner
-", $FD->sql()->conn() );
-$num_partner = mysql_result ( $index, 0, "num_partner" );
+$index = mysql_query ( '
+						SELECT COUNT(`partner_id`) AS \'num_partner\'
+						FROM '.$global_config_arr['pref'].'partner
+', $FD->sql()->conn() );
+$num_partner = mysql_result ( $index, 0, 'num_partner' );
 
 if ( $num_partner  > 0 ) {
-	$index = mysql_query ( "
+	$index = mysql_query ( '
 							SELECT `partner_name`
-							FROM ".$global_config_arr['pref']."partner
+							FROM '.$global_config_arr['pref'].'partner
 							ORDER BY `partner_id` DESC
 							LIMIT 0,1
-	", $FD->sql()->conn() );
-	$last_partner = stripslashes ( mysql_result ( $index, 0, "partner_name" ) );
+	', $FD->sql()->conn() );
+	$last_partner = stripslashes ( mysql_result ( $index, 0, 'partner_name' ) );
 }
 
-$index = mysql_query ( "
-						SELECT COUNT(`artikel_id`) AS 'num_shop'
-						FROM ".$global_config_arr['pref']."shop
-", $FD->sql()->conn() );
-$num_shop = mysql_result ( $index, 0, "num_shop" );
+$index = mysql_query ( '
+						SELECT COUNT(`artikel_id`) AS \'num_shop\'
+						FROM '.$global_config_arr['pref'].'shop
+', $FD->sql()->conn() );
+$num_shop = mysql_result ( $index, 0, 'num_shop' );
 
 if ( $num_shop  > 0 ) {
-	$index = mysql_query ( "
+	$index = mysql_query ( '
 							SELECT `artikel_name`
-							FROM ".$global_config_arr['pref']."shop
+							FROM '.$global_config_arr['pref'].'shop
 							ORDER BY `artikel_id` DESC
 							LIMIT 0,1
-	", $FD->sql()->conn() );
-	$last_shop = stripslashes ( mysql_result ( $index, 0, "artikel_name" ) );
+	', $FD->sql()->conn() );
+	$last_shop = stripslashes ( mysql_result ( $index, 0, 'artikel_name' ) );
 }
 
 
 echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">Informationen & Statistik</td></tr>
+							<tr><td class="line" colspan="2">Informationen &amp; Statistik</td></tr>
                             <tr>
                                 <td class="configthin" width="200">Anzahl Partnerseiten:</td>
                                 <td class="configthin"><b>'.$num_partner.'</b></td>

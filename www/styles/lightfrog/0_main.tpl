@@ -1,6 +1,6 @@
 <!--section-start::MAIN--><body>
   <div id="main">
-    
+
     <div id="header">
       <h1 id="title">&nbsp;$VAR(page_title)</h1>
     </div>
@@ -15,11 +15,11 @@
     $DATE(d.m.Y H:i \U\h\r)<br>
     $DATE(Y-m-d[1216908484])
     </div>
-    
+
     <div id="menu_right">
       $APP(user-menu.php)
       $APP(preview-image.php)
-      $APP(shop-system.php)      
+      $APP(shop-system.php)
       $APP(poll-system.php[random])
       $APP(affiliates.php)
       $APP(mini-statistics.php)
@@ -50,7 +50,7 @@
     {..favicon_link..}
     {..feed_link..}
     {..jquery..}
-    {..jquery-ui..}    
+    {..jquery-ui..}
     {..javascript..}
   </head>
   {..body..}

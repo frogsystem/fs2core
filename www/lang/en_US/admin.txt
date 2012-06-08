@@ -34,19 +34,19 @@ active_big:                              activ
 valid_tags:                              valid tags
 output:                                  output
 version:                                 version
-informations_and_statistics:             Informations & Statistics
+informations_and_statistics:             Information & Statistics
 asc:                                     ascending
 desc:                                    descending
 today:                                   today
 reset:                                   reset
 now:                                     now
 change:                                  change
-please_select:				 	         Bitte auswählen
+please_select:				 	         Please select
 select_hr:                               ----------------------------------
 id:                                      ID
 default:                                 default
-replace_img:                             Ersetzt das bisherige Bild!
-delete_image:                            Bild löschen
+replace_img:                             Replaces the current image!
+delete_image:                            Delete image
 js_delete_image:
 
 # Date and Time for Admin CP
@@ -61,8 +61,8 @@ sub_arrow:                               <img class="middle" src="img/sub-arrow.
 # Action Selection
 selected:                                Ausgewählte
 selection_noaction:                      Bitte wählen
-selection_edit:                          bearbeiten
-selection_delete:                        löschen
+selection_edit:                          edit
+selection_delete:                        delete
 selection_up:                            nach oben
 selection_down:                          nach unten
 
@@ -71,35 +71,35 @@ selection_down:                          nach unten
 button_arrow:                            <img class="middle" src="img/pointer.png" alt="->">
 do_action_button:                        Ausführen
 do_action_button_long:                   Aktion ausführen
-save_changes_button:                     Änderungen speichern
+save_changes_button:                     Save changes
 select_button:                           Auswählen
-file_select_button:                      Datei auswählen
+file_select_button:                      Select file
 
 
 # Messages
-error:                                   Es trat ein Fehler auf
+error:                                   An error occured
 info:                                    Information
-changes_saved:                           Änderungen wurden gespeichert
-changes_not_saved:                       Änderungen wurden nicht gespeichert
-form_not_filled:                         Bitte füllen Sie alle Pflichtfelder aus
-form_only_allowed_values:                Bitte geben Sie nur erlaubte Werte ein
-error_file_access:                       Bitte überprüfen Sie die Datei- und Ordnerrechte
-file_deleted:                            Datei wurde gelöscht
-file_not_deleted:                        Datei wurde nicht gelöscht
-image_deleted:                           Bild wurde gelöscht
-image_not_deleted:                       Bild konnte nicht gelöscht werden
-images_deleted:                          Bilder wurden gelöscht
-images_not_all_deleted:                  Nicht alle Bilder konnten gelöscht werden
-sql_error:                               SQL-Fehler:
-access_denied:                           Zugriff verweigert
-403_error:                               Sie haben keine Rechte, um auf diese Seite zuzugreifen.
+changes_saved:                           Changes have been saved
+changes_not_saved:                       Changes have not been saved
+form_not_filled:                         Please fill in all required fields
+form_only_allowed_values:                Please enter allowed values only
+error_file_access:                       Please check the file and directory permissions
+file_deleted:                            File has been deleted
+file_not_deleted:                        File has not been deleted
+image_deleted:                           Image has been deleted
+image_not_deleted:                       Immage could not be deleted
+images_deleted:                          Images have been deleted
+images_not_all_deleted:                  Not all images could be deleted
+sql_error:                               SQL error:
+access_denied:                           Access denied
+403_error:                               You do not have permission to access that page.
 
 
 # Message-Images
-icon_small_help:                         <img src="icons/help.gif" alt="Hilfe" align="absmiddle">
+icon_small_help:                         <img src="icons/help.gif" alt="Help" align="absmiddle">
 icon_info:                               <img src="icons/info.jpg" alt="Information" align="absmiddle">
-icon_error:                              <img src="icons/error.jpg" alt="Fehler" align="absmiddle">
-icon_save_ok:                            <img src="icons/save_ok.jpg" alt="Ok" align="absmiddle">
+icon_error:                              <img src="icons/error.jpg" alt="Error" align="absmiddle">
+icon_save_ok:                            <img src="icons/save_ok.jpg" alt="OK" align="absmiddle">
 icon_save_add:                           <img src="icons/save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
 icon_save_error:                         <img src="icons/save_error.jpg" alt="Fehler beim Speichern" align="absmiddle">
 icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="Löschen erfolgreich" align="absmiddle">
@@ -110,8 +110,8 @@ icon_logout:                             <img src="icons/logout.jpg" alt="Logout
 icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
 icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
 icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
-icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Zugriff gewährt" align="absmiddle">
-icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Zugriff verweigert">
+icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Access granted" align="absmiddle">
+icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Access denied">
 icon_up:                                 <img src="icons/up.jpg" alt="Nach oben verschieben" align="absmiddle">
 icon_down:                               <img src="icons/down.jpg" alt="Nach unten verschieben" align="absmiddle">
 
@@ -127,22 +127,22 @@ image_upload_error_6:                    Fehler beim Bilder-Upload: Bild konnte 
 
 
 # Frequently used Category-Related Phrases
-cat:                                     Kategorie
-cats:                                    Kategorien
-cats_select:                             Kategorien auswählen
-cats_not_found:                          Keine Kategorien gefunden!
-cat_added:                               Kategorie wurde hinzugefügt
-cat_not_added:                           Kategorie wurde nicht hinzugefügt
-cats_deleted:                            Kategorien wurden gelöscht
-cats_not_deleted:                        Kategorien wurden nicht gelöscht
-cats_not_all_deleted:                    Nicht alle Kategorien konnten gelöscht werden
-no_subcat:                               Keine Unterkategorie
+cat:                                     Category
+cats:                                    Categories
+cats_select:                             Select categories
+cats_not_found:                          No categories found!
+cat_added:                               Category has been added
+cat_not_added:                           Category has not been added
+cats_deleted:                            Categories have been deleted
+cats_not_deleted:                        Categories have not been deleted
+cats_not_all_deleted:                    Not all categories could be deleted
+no_subcat:                               No sub category
 cat_image_deleted:                       Kategorie-Bild wurde gelöscht
 cat_image_not_deleted:                   Kategorie-Bild konnte nicht gelöscht werden
 cat_images_deleted:                      Kategorie-Bilder wurden gelöscht
 cat_images_not_all_deleted:              Nicht alle Kategorie-Bilder konnten gelöscht werden
-cats_up:                                 Kategorien wurden nach oben verschoben
-cats_down:                               Kategorien wurden nach unten verschoben
+cats_up:                                 Move categories up
+cats_down:                               Move categories down
 
 
 
@@ -155,11 +155,11 @@ system_start_num_applets:                Anzahl Applets
 system_start_num_applets_active:         Anzahl aktiver Applets
 system_start_num_snippets:               Anzahl Schnipsel
 system_start_num_snippets_active:        Anzahl aktiver Schnipsel
-config_publisher_title:                  Herausgeber
+config_publisher_title:                  Publisher
 config_publisher_desc:                   Herausgeber (Webmaster) der Seite.
 config_copyright_title:                  Copyright
 config_copyright_desc:                   Copyright-Hinweise der Urheber.
-config_style_title:                      Aktiver Style
+config_style_title:                      Active Style
 config_style_desc:                       Style, der als Design der Hauptseite verwendet wird.
 news_edit_selection_comments:            Kommentare verwalten
 news_comments_delete_title:              Kommentare löschen
@@ -200,18 +200,18 @@ captcha_config_second_title:             Zahlenbereich 2
 captcha_config_second_desc:              Bereich aus dem der zweite Wert generiert wird.
 captcha_config_use_operations_title:     Erlaubte Rechenoperationen
 captcha_config_addition:                 Addition (+)
-captcha_config_subtraction:              Subtraktion (-)
-captcha_config_multiplication:           Multiplikation (*)
+captcha_config_subtraction:              Subtraction (-)
+captcha_config_multiplication:           Multiplication (*)
 captcha_config_use_operations_desc:      Legt fest, welche Rechenoperationen verwendet werden.
-captcha_config_easy_arithmetics_title:   Nur leichte Aufgaben
-captcha_config_easy_arithmetics_desc:    Aktiviert eine KI, um generierte Aufgaben zu vereinfachen.
+captcha_config_easy_arithmetics_title:   Easy arithmetics only
+captcha_config_easy_arithmetics_desc:    Activates an AI to generate easier arithmetics.
 captcha_config_design_title:             Design
-captcha_config_bg_color_title:           Hintergrundfarbe
-captcha_config_bg_color_desc:            Die Hintergrundfarbe des Captcha-Bildes.
-captcha_config_bg_transparent:           Transparenter Hintergrund
-captcha_config_text_color_title:         Textfarbe
+captcha_config_bg_color_title:           Background color
+captcha_config_bg_color_desc:            The background color of the captcha image.
+captcha_config_bg_transparent:           Transparent Background
+captcha_config_text_color_title:         Text color
 captcha_config_text_color_desc:          Die Farbe in der die Aufgabe dargestellt wird.
-captcha_config_dimensions_title:         Abemessungen
+captcha_config_dimensions_title:         Abmessungen
 captcha_config_dimensions_desc:          Größe des Captcha-Bildes.
 captcha_config_text_position_title:      Text-Position
 captcha_config_text_position_desc:       Position des Textes relativ zur linken, oberen Ecke.
@@ -219,10 +219,10 @@ captcha_config_text_position_help:       Abstand nach links und oben
 captcha_config_text_style_title:         Schriftart und -größe
 captcha_config_text_style_desc:          Standard-Schriftart in 5 Größen oder eingefügter PHP-Font.
 captcha_config_text_style_default:       Standard, Größe
-captcha_config_text_options_title:       Text-Optionen
+captcha_config_text_options_title:       Text Options
 captcha_config_text_options_desc:        Optionen um das Captcha zu formatieren.
-captcha_config_questionmark:             zeige Fragezeichen [1+1=?]
-captcha_config_spaces:                   Leerzeichen einfügen [1 + 1 =]
+captcha_config_questionmark:             show question mark [1+1=?]
+captcha_config_spaces:                   insert spaces [1 + 1 =]
 captcha_config_multiplication_as_x:      verwende x statt * [1x1=]
 captcha_config_one_operation:            Es muss mindestens eine Rechenoperation ausgewählt werden
 snippet_add_title:                       Schnipsel hinzufügen
@@ -241,9 +241,9 @@ snippet_not_added:                       Schnipsel wurde nicht hinzugefügt
 snippets_deleted:                        Schnipsel wurden gelöscht
 snippets_not_deleted:                    Schnipsel wurden nicht gelöscht
 snippet_exists:                          Dieses Suchmuster existiert bereits
-snippets_not_found:                      Keine Schnipsel gefunden!
-snippet_active:                          aktiv
-snippet_not_active:                      nicht aktiv
+snippets_not_found:                      No snippets found!
+snippet_active:                          active
+snippet_not_active:                      not active
 alias_add_title:                         Alias hinzufügen
 alias_select_title:                      Aliasse auswählen
 alias_edit_title:                        Alias bearbeiten
@@ -269,9 +269,9 @@ search_config_num_previews_results:      Ergebnisse
 search_index_config_title:               Suchindex-Einstellungen
 search_index_config_update_title:        Suchindex aktualisieren
 search_index_config_update_desc:         Zeit zu der der Suchindex aktualisert wird.
-search_index_config_update_instantly:    sofort
-search_index_config_update_daily:        täglich (um ca. 3 Uhr)
-search_index_config_update_never:        niemals
+search_index_config_update_instantly:    instantly
+search_index_config_update_daily:        daily (at approx. 3am)
+search_index_config_update_never:        never
 search_index_updated:                    Suchindex wurde aktualisiert
 search_index_renewed:                    Suchindex wurde neu erstellt
 search_index_deleted:                    Suchindex wurde gelöscht
@@ -295,7 +295,7 @@ search_index_delete_with_word_note:      <b>Achtung:</b> Kann nicht rückgängig g
 search_index_info_title:                 Informationen
 search_index_info_words:                 Indizierte Wörter
 search_index_info_docs:                  Indizierte Dokumente
-style_info_title:                        Informationen
+style_info_title:                        Information
 style_config_title:                      Einstellungen
 style_content_title:                     Anfangsinhalt
 styles_not_installed_title:              Nicht installierte Styles

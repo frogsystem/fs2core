@@ -1,4 +1,4 @@
-<?php  if (!defined("ACP_GO")) die("Unauthorized access!");
+<?php  if (!defined('ACP_GO')) die('Unauthorized access!');
 /*
     This file is part of the Frogsystem Spam Detector.
     Copyright (C) 2011  Thoronador
@@ -37,22 +37,22 @@
                     isset ( $_POST['news_id'] ) &&
                     count ( $_POST['news_id'] ) == 1 &&
                     isset ( $_POST['comment_id'] ) &&
-                    isset ( $_POST['sended'] ) && $_POST['sended'] == "edit" &&
-                    isset ( $_POST['news_action'] ) && $_POST['news_action'] == "comments" &&
-                    isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == "edit" &&
+                    isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit' &&
+                    isset ( $_POST['news_action'] ) && $_POST['news_action'] == 'comments' &&
+                    isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == 'edit' &&
 
-                    $_POST['title'] && $_POST['title'] != "" &&
-                    $_POST['text'] && $_POST['text'] != ""
+                    $_POST['title'] && $_POST['title'] != '' &&
+                    $_POST['text'] && $_POST['text'] != ''
             )
     {
         // unset data, so admin_news_edit.php doesnt perform anything
         $POSTDATA = $_POST;
         unset ($_POST);
-                
+
         ob_start();
-        require_once(FS2_ROOT_PATH."admin/admin_news_edit.php");
+        require_once(FS2_ROOT_PATH.'admin/admin_news_edit.php');
         ob_end_clean();
-        
+
         db_edit_comment ($POSTDATA);
 
         // Unset Vars
@@ -63,30 +63,30 @@
     elseif (
                     isset ( $_POST['news_id'] ) &&
                     isset ( $_POST['comment_id'] ) &&
-                    isset ( $_POST['sended'] ) && $_POST['sended'] == "delete" &&
-                    isset ( $_POST['news_action'] ) && $_POST['news_action'] == "comments" &&
-                    isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == "delete" &&
+                    isset ( $_POST['sended'] ) && $_POST['sended'] == 'delete' &&
+                    isset ( $_POST['news_action'] ) && $_POST['news_action'] == 'comments' &&
+                    isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == 'delete' &&
                     isset ( $_POST['comment_delete'] )
             )
     {
         // unset data, so admin_news_edit.php doesnt perform anything
         $POSTDATA = $_POST;
         unset ($_POST);
-        
+
         ob_start();
-        require_once(FS2_ROOT_PATH."admin/admin_news_edit.php");
+        require_once(FS2_ROOT_PATH.'admin/admin_news_edit.php');
         ob_end_clean();
-        
+
         if ( $POSTDATA['comment_delete'] == 1 ) {
             db_delete_comment ( $POSTDATA );
         } else {
-             systext( 'Kommentare wurden nicht gelöscht', $admin_phrases['common']['error'], FALSE, $admin_phrases['icons']['trash_error'] );
+             systext( 'Kommentare wurden nicht gel&ouml;scht', $admin_phrases['common']['error'], FALSE, $admin_phrases['icons']['trash_error'] );
         }
 
         // Unset Vars
         unset ($POSTDATA);
     }
-//     
+//
     
 
   if (!isset($_GET['start']) || $_GET['start']<0)
@@ -94,7 +94,7 @@
     $_GET['start'] = 0;
   }
   $_GET['start'] = (int) $_GET['start'];
-  settype($_GET['start'], "integer");
+  settype($_GET['start'], 'integer');
   //Anzahl der Kommentare auslesen
   $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$global_config_arr['pref'].'news_comments`', $FD->sql()->conn());
   $cc = mysql_fetch_assoc($query);
@@ -122,12 +122,12 @@
     {
       $prev_start = 0;
     }
-    $prev_page = '<a href="'.$PHP_SELF.'?go=news_comments_list&start='.$prev_start.'"><- zurück</a>';
+    $prev_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&start='.$prev_start.'"><- zur&uuml;ck</a>';
   }//if nicht erste Seite
   //Ist dies nicht die letzte Seite?
   if ($_GET['start']+30<$cc)
   {
-    $next_page = '<a href="'.$PHP_SELF.'?go=news_comments_list&start='.($_GET['start']+30).'">weiter -></a>';
+    $next_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&start='.($_GET['start']+30).'">weiter -></a>';
   }//if nicht die letzte Seite
 
 echo <<<EOT
@@ -163,7 +163,7 @@ EOT;
       $comment_arr['comment_poster'] = mysql_result($userindex, 0, 'user_name');
     }
     $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date'])
-                                      ." um ".date('H:i' , $comment_arr['comment_date']);
+                                      .' um '.date('H:i' , $comment_arr['comment_date']);
     echo'<tr>
            <td class="configthin">
                '.$comment_arr['comment_title'].'

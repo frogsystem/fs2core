@@ -13,13 +13,13 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
     {
         mysql_query('DELETE FROM '.$global_config_arr['pref']."dl WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
         mysql_query('DELETE FROM '.$global_config_arr['pref']."dl_files WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
-        image_delete("images/dl/", "$_POST[editdlid]_s");
+        image_delete('images/dl/', "$_POST[editdlid]_s");
         image_delete('images/dl/', $_POST['editdlid']);
-        systext('Download wurde gelöscht');
-        
+        systext('Download wurde gel&ouml;scht');
+
         // Delete from Search Index
-        require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-        delete_search_index_for_one ( $_POST['editdlid'], "dl" );
+        require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+        delete_search_index_for_one ( $_POST['editdlid'], 'dl' );
     }
     else
     {
@@ -41,7 +41,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
         // Neues Bild hochladen
         $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
         $admin_dl_config_arr = mysql_fetch_assoc($index);
-        if ($_FILES['dlimg']['name'] != "")
+        if ($_FILES['dlimg']['name'] != '')
         {
             $upload = upload_img($_FILES['dlimg'], 'images/downloads/', $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr['screen_x'], $admin_dl_config_arr['screen_y']);
             systext(upload_img_notice($upload));
@@ -61,14 +61,14 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
                        dl_search_update = '".time()."'
                    WHERE dl_id = $_POST[editdlid]";
         mysql_query($update, $FD->sql()->conn() );
-        
+
         // Update Search Index (or not)
         if ( $global_config_arr['search_index_update'] === 1 ) {
             // Include searchfunctions.php
-            require_once ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-            update_search_index ( "dl" );
+            require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+            update_search_index ( 'dl' );
         }
-        
+
 
         // Files  aktualisieren
         for ($i=0; $i<count($_POST['fname']); $i++)
@@ -95,7 +95,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
                                        '".$_POST['fsize'][$i]."',
                                        '".$_POST['fmirror'][$i]."')";
                     mysql_query($insert, $FD->sql()->conn() );
-                                         
+
                 }
                 elseif ($_POST['fnew'][$i]==0)
                 {
@@ -114,7 +114,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
     }
     unset($_POST);
 }
-  
+
 ////////////////////////////////
 ////// Download editieren //////
 ////////////////////////////////
@@ -123,10 +123,10 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
 {
     $_POST['dlid'] = $_POST['dlid'][0];
     if(isset($_POST['sended']) && !isset($_POST['files_add'])) {
-        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
-    }     
-    
-    
+        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+    }
+
+
     if (isset($_POST['tempid']))
     {
         $_POST['dlid'] = $_POST['tempid'];
@@ -136,7 +136,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl WHERE dl_id =  '$_POST[dlid]'", $FD->sql()->conn() );
     if (!isset($_POST['title']))
     {
-        $_POST['title'] = mysql_result($index, 0, "dl_name");
+        $_POST['title'] = mysql_result($index, 0, 'dl_name');
     }
     if (!isset($_POST['catid']))
     {
@@ -159,7 +159,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
         $_POST['dlopen'] = mysql_result($index, 0, 'dl_open');
     }
 
-    $_POST['dlopen'] = ($_POST['dlopen'] == 1) ? "checked" : "";
+    $_POST['dlopen'] = ($_POST['dlopen'] == 1) ? 'checked' : '';
 
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
@@ -197,7 +197,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
         $_POST['options'] = count($_POST['fname']);
     }
     $_POST['options'] += $_POST['optionsadd'];
-    
+
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
@@ -215,7 +215,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                             <tr>
                                 <td class="config" valign="top" width="40%">
                                     Kategorie:<br>
-                                    <font class="small">Die News gehört zur Kategorie</font>
+                                    <font class="small">Die News geh&ouml;rt zur Kategorie</font>
                                 </td>
                                 <td class="config" width="60%" valign="top">
                                     <select name="catid">
@@ -226,9 +226,9 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
 
     foreach ($valid_ids as $cat)
     {
-        $sele = ($_POST['catid'] == $cat['cat_id']) ? "selected" : "";
+        $sele = ($_POST['catid'] == $cat['cat_id']) ? 'selected' : '';
         echo'
-                                        <option value="'.$cat['cat_id'].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat['cat_name'].'</option>
+                                        <option value="'.$cat['cat_id'].'" '.$sele.'>'.str_repeat('&nbsp;&nbsp;&nbsp;', $cat['level']).$cat['cat_name'].'</option>
         ';
     }
     echo'
@@ -250,7 +250,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                                     <font class="small">Diese Beschreibung erscheint unter dem Download</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", killhtml($_POST['text']), 330, 130).'
+                                    '.create_editor('text', killhtml($_POST['text']), 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -276,8 +276,8 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT `ftp_id` FROM ".$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
-    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);      
+    $index = mysql_query('SELECT `ftp_id` FROM '.$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
+    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);
 
     // Mirros auflisten
     for ($i=1; $i<=$_POST['options']; $i++)
@@ -295,23 +295,23 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                             <tr>
                                 <td class="config" valign="top">
                                     File '.$i.':<br>
-                                    <font class="small">[Titel]<br>[URL]<br>[Große in KB]<br>[Anzahl der DLs]<br>[Mirror?]<br>[löschen]</font>
+                                    <font class="small">[Titel]<br>[URL]<br>[Gr&ouml;&szlig;e in KB]<br>[Anzahl der DLs]<br>[Mirror?]<br>[l&ouml;schen]</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="20" name="fname['.$j.']" value="'.killhtml($_POST['fname'][$j]).'" maxlength="100"><br />
                                     <input class="text" size="70" value="'.killhtml($_POST['furl'][$j]).'" name="furl['.$j.']" maxlength="255" id="furl'.$j.'"><br>
             ';
             if ($ftp) {
-                echo '  
-                                    <input  type="button" onClick=\''.openpopup ( "?go=find_file&amp;id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                echo '
+                                    <input  type="button" onClick=\''.openpopup ( '?go=find_file&amp;id='.$j, 600, 800 ).'\' value="'.$TEXT['admin']->get('file_select_button').'">&nbsp;
                 ';
             }
             echo '
                                     <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr['quickinsert'].'";\' value="Quick-Insert Pfad"><br>
-                                    <input class="text" size="30" value="'.killhtml($_POST['fsize'][$j]).'" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />                                    
+                                    <input class="text" size="30" value="'.killhtml($_POST['fsize'][$j]).'" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     <input class="text" size="30" value="'.$_POST['fcount'][$j].'" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'"><br />
-                                    Löschen: <input name="delf['.$j.']" id="delf['.$j.']" value="'.$_POST['fid'][$j].'" type="checkbox"
+                                    L&ouml;schen: <input name="delf['.$j.']" id="delf['.$j.']" value="'.$_POST['fid'][$j].'" type="checkbox"
                                     onClick=\'delalert ("delf['.$j.']", "Soll das File (Nr. '.$i.') wirklich gelöscht werden?")\'>
                                     <input type="hidden" name="fid['.$j.']" value="'.$_POST['fid'][$j].'">
                                     <input type="hidden" name="fnew['.$j.']" value="'.$_POST['fnew'][$j].'">
@@ -325,7 +325,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                             <tr>
                                 <td class="config" valign="top">
                                     File '.$i.':<br>
-                                    <font class="small">[Titel]<br />[URL]<br />[Große in KB]<br />[Anzahl der DLs]<br />[Mirror?]</font>
+                                    <font class="small">[Titel]<br />[URL]<br />[Gr&ouml;&szlig;e in KB]<br />[Anzahl der DLs]<br />[Mirror?]</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="20" name="fname['.$j.']" maxlength="100"><br />
@@ -333,12 +333,12 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
             ';
             if ($ftp) {
                 echo '
-                                    <input  type="button" onClick=\''.openpopup ( "?go=find_file&amp;id=".$j, 600, 800 ).'\' value="'.$TEXT["admin"]->get("file_select_button").'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( '?go=find_file&amp;id='.$j, 600, 800 ).'\' value="'.$TEXT['admin']->get('file_select_button').'">&nbsp;
                 ';
             }
             echo '
                                     <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr['quickinsert'].'";\' value="Quick-Insert Pfad"><br>
-                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />                                    
+                                    <input class="text" size="30" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     <input class="text" size="30" name="fcount['.$j.']" maxlength="100"> Downloads<br />
                                     Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']">
                                     <input type="hidden" name="fnew['.$j.']" value="1">
@@ -347,7 +347,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
             ';
         }
     }
-    
+
     echo'
                             <tr>
                                 <td class="configthin">
@@ -356,12 +356,12 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                                 <td class="configthin">
                                     <input size="2" class="text" name="optionsadd">
                                     Files
-                                    <input name="files_add"  type="submit" value="Hinzufügen">
+                                    <input name="files_add"  type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Download veröffentlichen:<br>
+                                    Download ver&ouml;ffentlichen:<br>
                                     <font class="small">Aktiviert den Download</font>
                                 </td>
                                 <td class="config" valign="top">
@@ -370,7 +370,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Download löschen:
+                                    Download l&ouml;schen:
                                 </td>
                                 <td class="config">
                                     <input onClick=\'delalert ("deldl", "Soll der Download wirklich gelöscht werden?")\' type="checkbox" name="deldl" id="deldl" value="1">
@@ -408,20 +408,20 @@ else
     $index = mysql_query('SELECT cat_id, cat_name FROM '.$global_config_arr['pref'].'dl_cat', $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
-        $sele = ($_POST['dlcatid'] == $cat_arr['cat_id']) ? "selected" : "";
+        $sele = ($_POST['dlcatid'] == $cat_arr['cat_id']) ? 'selected' : '';
         echo'
                                         <option value="'.$cat_arr['cat_id'].'" '.$sele.'>'.$cat_arr['cat_name'].'</option>
         ';
     }  */
-    
+
     $valid_ids = array();
     get_dl_categories ($valid_ids, -1);
 
     foreach ($valid_ids as $cat)
     {
-        $sele = ($_POST['dlcatid'] == $cat['cat_id']) ? "selected" : "";
+        $sele = ($_POST['dlcatid'] == $cat['cat_id']) ? 'selected' : '';
         echo'
-                                        <option value="'.$cat['cat_id'].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat['cat_name'].'</option>
+                                        <option value="'.$cat['cat_id'].'" '.$sele.'>'.str_repeat('&nbsp;&nbsp;&nbsp;', $cat['level']).$cat['cat_name'].'</option>
         ';
     }
 
@@ -438,7 +438,7 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="dl_edit" name="go">
                         <table class="content select_list" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="3"><h3>Download auswählen</h3><hr></td></tr>
+                            <tr><td colspan="3"><h3>Download ausw&auml;hlen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="40%">
                                     Titel
@@ -456,7 +456,7 @@ else
     if (isset($_POST['dlcatid']))
     {
         settype($_POST['dlcatid'], 'integer');
-        $wherecat = "WHERE cat_id = " . $_POST['dlcatid'];
+        $wherecat = 'WHERE cat_id = ' . $_POST['dlcatid'];
     }
     $index = mysql_query('SELECT dl_id, dl_name, cat_id FROM '.$global_config_arr['pref']."dl $wherecat ORDER BY dl_name", $FD->sql()->conn() );
     while ($dl_arr = mysql_fetch_assoc($index))

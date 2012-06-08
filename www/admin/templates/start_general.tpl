@@ -49,7 +49,7 @@
         <td class="configthin" width="200"><!--LANG::num_of_refs-->:</td>
         <td class="configthin"><strong><!--TEXT::num_of_refs--></strong></td>
     </tr>
-                            
+
 <!--IF::ref_link-->
     <tr>
         <td class="configthin" width="200"><!--LANG::last_ref-->:</td>
