@@ -12,8 +12,8 @@ if (!empty($_POST['catname']))
     mysql_query('INSERT INTO '.$global_config_arr['pref']."dl_cat (subcat_id, cat_name)
                  VALUES ('".$_POST['subcatof']."',
                          '".$_POST['catname']."');", $FD->sql()->conn() );
-    systext('Kategorie wurde hinzugefügt');
-    
+    systext('Kategorie wurde hinzugef&uuml;gt');
+
     unset($_POST);
 }
 
@@ -24,15 +24,15 @@ if (!empty($_POST['catname']))
 if(true)
 {
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
-    }       
-    
+        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+    }
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_newcat" name="go">
                         <input type="hidden" value="add" name="sended">
                         <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>Kategorie hinzufügen</h3><hr></td></tr>
+                            <tr><td colspan="2"><h3>Kategorie hinzuf&uuml;gen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Name:<br>
@@ -59,7 +59,7 @@ if(true)
     foreach ($valid_ids as $cat)
     {
         echo'
-                                        <option value="'.$cat['cat_id'].'">'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat['cat_name'].'</option>
+                                        <option value="'.$cat['cat_id'].'">'.str_repeat('&nbsp;&nbsp;&nbsp;', $cat['level']).$cat['cat_name'].'</option>
         ';
     }
     echo'
@@ -68,7 +68,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">
-                                    <br><input class="button" type="submit" value="Hinzufügen">
+                                    <br><input class="button" type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                         </table>

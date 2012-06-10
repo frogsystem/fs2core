@@ -15,13 +15,13 @@
 <!--section-start::BODY--><table cellpadding="0" cellspacing="0">
   <tr>
     <td>
-      
+
       <table cellpadding="0" cellspacing="0" style="padding-bottom:4px;">
         <tr valign="bottom">
           {..buttons..}
         </tr>
       </table>
-      
+
     </td>
     <td></td>
   </tr>
@@ -29,7 +29,7 @@
     <td>
       <textarea rows="7" cols="50" {..style..}>{..text..}</textarea>
     </td>
-    <td style="padding-left:3px;" valign="top"> 
+    <td style="padding-left:3px;" valign="top">
       {..smilies..}
     </td>
   </tr>

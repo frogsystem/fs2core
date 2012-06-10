@@ -23,17 +23,17 @@ if ($config_arr['big_allow'] == 0) {
 ///////////////////////////////
 //// Partnerbild hochladen ////
 ///////////////////////////////
-if ($_FILES['bild_small']['name'] != ""
-    && $_FILES['bild_big']['name'] != ""
-    && ($_POST['name'] AND $_POST['name'] != "")
-    && ($_POST['link'] AND $_POST['link'] != "")
+if ($_FILES['bild_small']['name'] != ''
+    && $_FILES['bild_big']['name'] != ''
+    && ($_POST['name'] AND $_POST['name'] != '')
+    && ($_POST['link'] AND $_POST['link'] != '')
    )
 {
     $_POST['name'] = savesql($_POST['name']);
     $_POST['link'] = savesql($_POST['link']);
     $_POST['description'] = savesql($_POST['description']);
     $_POST['permanent'] = isset($_POST['permanent']) ? 1 : 0;
-    
+
     mysql_query('INSERT INTO '.$global_config_arr['pref']."partner
                         (partner_name,
                          partner_link,
@@ -46,7 +46,7 @@ if ($_FILES['bild_small']['name'] != ""
     $id = mysql_insert_id();
 
     $upload1 = upload_img($_FILES['bild_small'], "images/partner/", $id."_small", $config_arr['file_size']*1024, $config_arr['small_x'], $config_arr['small_y'], 100, $config_arr['small_allow_bool']);
-    
+
     switch ($upload1)
     {
       case 0:
@@ -55,8 +55,8 @@ if ($_FILES['bild_small']['name'] != ""
         switch ($upload2)
         {
         case 0:
-          systext ($admin_phrases['partner']['note_added'] ."<br />".
-                   $admin_phrases['partner']['note_uploaded']."<br />".
+          systext ($admin_phrases['partner']['note_added'] .'<br />'.
+                   $admin_phrases['partner']['note_uploaded'].'<br />'.
                    $admin_phrases['partner']['note_addmore']);
 
           unset($_POST['bild_small']);
@@ -68,22 +68,22 @@ if ($_FILES['bild_small']['name'] != ""
 
           break;
         default:
-          systext ($admin_phrases['partner']['big_pic']. ": " . upload_img_notice($upload2));
+          systext ($admin_phrases['partner']['big_pic']. ': ' . upload_img_notice($upload2));
           systext ($admin_phrases['partner']['note_notadded']);
           mysql_query('DELETE FROM '.$global_config_arr['pref']."partner WHERE partner_id = '$id'");
-          image_delete("images/partner/", $id."_small");
-          image_delete("images/partner/", $id."_big");
+          image_delete('images/partner/', $id.'_small');
+          image_delete('images/partner/', $id.'_big');
         }
-    
+
         break;
       default:
-        systext ($admin_phrases[partner][small_pic] . ": " . upload_img_notice($upload1));
+        systext ($admin_phrases[partner][small_pic] . ': ' . upload_img_notice($upload1));
         systext ($admin_phrases[partner][note_notadded]);
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."partner WHERE partner_id = '$id'");
-        image_delete("images/partner/", $id."_small");
-        image_delete("images/partner/", $id."_big");
+        mysql_query('DELETE FROM '.$global_config_arr[pref]."partner WHERE partner_id = '$id'");
+        image_delete('images/partner/', $id.'_small');
+        image_delete('images/partner/', $id.'_big');
     }
-    
+
 }
 
 
@@ -91,8 +91,8 @@ if ($_FILES['bild_small']['name'] != ""
 //// Error Message    ////
 //////////////////////////
 elseif ($_POST['sended']) {
-    echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
-    
+    echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+
     $_POST['name'] = killhtml($_POST['name']);
     $_POST['link'] = killhtml($_POST['link']);
     $_POST['description'] = killhtml($_POST['description']);
@@ -157,7 +157,7 @@ echo'
                                     <font class="small">'.$admin_phrases['partner']['desc_desc'].'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("description", $_POST['description'], 330, 130).'
+                                    '.create_editor('description', $_POST['description'], 330, 130).'
                                 </td>
                             </tr>
                             <tr>

@@ -18,7 +18,7 @@ function checkRegistrationForm() {
   }
 
   if ( error == true ) {
-    alert ( "Fehler bei der Registrierung:" + error_text ); 
+    alert ( "Fehler bei der Registrierung:" + error_text );
     return false;
   }
 }
@@ -37,7 +37,7 @@ function checkUserEditForm() {
     error = true;
   }
 
-  if ( 
+  if (
     $("#old_pwd").val() != ""
     && $("#new_pwd").val() != $("#wdh_pwd").val() ) {
     error_text = error_text + "\nDas Passwort stimmt nicht mit der Wiederholung überein";
@@ -45,7 +45,7 @@ function checkUserEditForm() {
   }
 
   if ( error == true ) {
-    alert ( "Fehler bei der Registrierung:" + error_text ); 
+    alert ( "Fehler bei der Registrierung:" + error_text );
     return false;
   }
 }
@@ -60,8 +60,8 @@ function checkCommentForm() {
 }
 
 function checkNewsSearchForm() {
-  if ( $("#news_search_keyword").val().length <= 2 ) { 
-    alert ( "Das Schlüsselwort muss min. 3 Zeichen lang sein" ); 
+  if ( $("#news_search_keyword").val().length <= 2 ) {
+    alert ( "Das Schlüsselwort muss min. 3 Zeichen lang sein" );
     return false;
   }
 }

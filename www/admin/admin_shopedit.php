@@ -10,9 +10,9 @@ if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "
     if (isset($_POST['delartikel']))
     {
         mysql_query('DELETE FROM '.$global_config_arr['pref']."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
-        image_delete ("images/shop/", $_POST['artikelid'] );
-        image_delete( "images/shop/", $_POST['artikelid'] );
-        systext('Artikel wurde gelöscht');
+        image_delete ('images/shop/', $_POST['artikelid'] );
+        image_delete( 'images/shop/', $_POST['artikelid'] );
+        systext('Artikel wurde gel&ouml;scht');
     }
     else
     {
@@ -26,9 +26,9 @@ if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "
 
         if (!empty($_FILES['artikelimg']['name']))
         {
-            $upload = upload_img($_FILES['artikelimg'], "images/shop/", $_POST['artikelid'], 2*1024*1024, 400, 600);
+            $upload = upload_img($_FILES['artikelimg'], 'images/shop/', $_POST['artikelid'], 2*1024*1024, 400, 600);
             $messages[] = upload_img_notice($upload);
-            $thumb = create_thumb_from(image_url("images/shop/",$_POST['artikelid'],FALSE, TRUE), 100, 100);
+            $thumb = create_thumb_from(image_url('images/shop/',$_POST['artikelid'],FALSE, TRUE), 100, 100);
             $messages[] = create_thumb_notice($thumb);
         }
         $update = 'UPDATE '.$global_config_arr['pref']."shop
@@ -39,11 +39,11 @@ if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "
                        artikel_hot   = '$_POST[hot]'
                    WHERE artikel_id = '$_POST[artikelid]'";
         mysql_query($update, $FD->sql()->conn() );
-        $messages[] = $TEXT['admin']->get("changes_saved");
-        
-        echo get_systext(implode("<br>", $messages), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+        $messages[] = $TEXT['admin']->get('changes_saved');
+
+        echo get_systext(implode('<br>', $messages), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_save_ok'));
     }
-    
+
     unset($_POST);
 }
 
@@ -55,13 +55,13 @@ if ($_POST['artikelid'])
 {
     $_POST['artikelid'] = $_POST['artikelid'][0];
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
-    }    
-    
+        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+    }
+
     settype($_POST['artikelid'], 'integer');
-    $index = mysql_query("SELECT * FROM ".$global_config_arr['pref']."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
     $artikel_arr = mysql_fetch_assoc($index);
-    $dbartikelhot = ($artikel_arr['artikel_hot'] == 1) ? "checked" : "";
+    $dbartikelhot = ($artikel_arr['artikel_hot'] == 1) ? 'checked' : '';
 
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
@@ -76,13 +76,13 @@ if ($_POST['artikelid'])
                                     <font class="small">Aktuelles Artikelbild</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'">
+                                    <img src="'.image_url ( 'images/shop/', $artikel_arr['artikel_id'].'_s' ).'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Neues Bild:<br>
-                                    <font class="small">Nur ausfüllen, wenn das alte ersetzt werden soll.</font>
+                                    <font class="small">Nur ausf&uuml;llen, wenn das alte ersetzt werden soll.</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="artikelimg" size="33"><br />
@@ -113,7 +113,7 @@ if ($_POST['artikelid'])
                                     <font class="small">Kurze Artikelbeschreibung (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", killhtml ( $artikel_arr['artikel_text'] ), 330, 130).'
+                                    '.create_editor('text', killhtml ( $artikel_arr['artikel_text'] ), 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -128,7 +128,7 @@ if ($_POST['artikelid'])
                             <tr>
                                 <td class="config" valign="top">
                                     Hotlink:<br>
-                                    <font class="small">Hotlinks erscheinen rechts im Menü</font>
+                                    <font class="small">Hotlinks erscheinen rechts im Men&uuml;</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="checkbox" name="hot" value="1" '.$dbartikelhot.'>
@@ -136,7 +136,7 @@ if ($_POST['artikelid'])
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Artikel löschen:
+                                    Artikel l&ouml;schen:
                                 </td>
                                 <td class="config">
                                     <input onClick=\'delalert ("delartikel", "Soll der Shop-Artikel wirklich gelöscht werden?")\' type="checkbox" name="delartikel" id="delartikel" value="1">
@@ -162,7 +162,7 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="shop_edit" name="go">
                         <table class="content select_list" cellpadding="3" cellspacing="0" >
-                            <tr><td colspan="4"><h3>Produkt auswählen</h3><hr></td></tr>
+                            <tr><td colspan="4"><h3>Produkt ausw&auml;hlen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="20%">
                                     Bild
@@ -178,15 +178,15 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT artikel_id, artikel_name, artikel_preis
-                          FROM ".$global_config_arr['pref']."shop
-                          ORDER BY artikel_name DESC", $FD->sql()->conn() );
+    $index = mysql_query('SELECT artikel_id, artikel_name, artikel_preis
+                          FROM '.$global_config_arr['pref'].'shop
+                          ORDER BY artikel_name DESC', $FD->sql()->conn() );
     while ($artikel_arr = mysql_fetch_assoc($index))
     {
         echo'
                             <tr class="select_entry thin">
                                 <td class="config">
-                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'" alt="'.stripslashes ( $artikel_arr['artikel_name'] ).'">
+                                    <img src="'.image_url ( 'images/shop/', $artikel_arr['artikel_id']."_s" ).'" alt="'.stripslashes ( $artikel_arr['artikel_name'] ).'">
                                 </td>
                                 <td class="configthin">
                                     '.stripslashes ( $artikel_arr['artikel_name'] ).'

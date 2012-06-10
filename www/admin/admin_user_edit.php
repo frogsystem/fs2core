@@ -9,13 +9,13 @@ function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
 
     $USER_ID = savesql ( $USER_ID );
     $USERNAME = savesql ( $USERNAME );
-    $index = mysql_query ( "
+    $index = mysql_query ( '
                             SELECT `user_id`
-                            FROM `".$global_config_arr['pref']."user`
+                            FROM `'.$global_config_arr['pref']."user`
                             WHERE `user_name` = '".$USERNAME."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
-    if ( mysql_num_rows ( $index ) > 0 && $USER_ID != mysql_result ( $index, 0, "user_id" ) ) {
+    if ( mysql_num_rows ( $index ) > 0 && $USER_ID != mysql_result ( $index, 0, 'user_id' ) ) {
         return FALSE;
     } else {
         return TRUE;
@@ -25,7 +25,7 @@ function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 
@@ -35,14 +35,14 @@ $config_arr = mysql_fetch_assoc ( $index );
 
 if (
 
-        isset ( $_POST['sended'] ) && $_POST['sended'] == "edit"
-        && isset ( $_POST['user_action'] ) && $_POST['user_action'] == "edit"
+        isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit'
+        && isset ( $_POST['user_action'] ) && $_POST['user_action'] == 'edit'
         && isset ( $_POST['user_id'] ) && $_POST['user_id'] != 1 && $_POST['user_id'] != $_SESSION['user_id']
 
-        && $_POST['user_name'] && $_POST['user_name'] != "" && user_name_free_or_itself ( $_POST['user_name'], $_POST['user_id'] ) == TRUE
-        && $_POST['user_mail'] && $_POST['user_mail'] != ""
+        && $_POST['user_name'] && $_POST['user_name'] != '' && user_name_free_or_itself ( $_POST['user_name'], $_POST['user_id'] ) == TRUE
+        && $_POST['user_mail'] && $_POST['user_mail'] != ''
         && ( ( (
-            ( $_POST['newpwd'] && $_POST['newpwd'] != "" && $_POST['wdhpwd'] && $_POST['wdhpwd'] != "" && $_POST['newpwd'] == $_POST['wdhpwd'] )
+            ( $_POST['newpwd'] && $_POST['newpwd'] != '' && $_POST['wdhpwd'] && $_POST['wdhpwd'] != '' && $_POST['newpwd'] == $_POST['wdhpwd'] )
             || $_POST['gen_password'] == 1
         ) && $_POST['new_password'] == 1 ) || $_POST['new_password'] == 0 )
         && $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31
@@ -61,15 +61,15 @@ if (
     $_POST['user_yim'] = savesql ( $_POST['user_yim'] );
     $_POST['user_skype'] = savesql ( $_POST['user_skype'] );
 
-    settype ( $_POST['gen_password'], "integer" );
-    settype ( $_POST['user_is_staff'], "integer" );
-    settype ( $_POST['user_show_mail'], "integer" );
+    settype ( $_POST['gen_password'], 'integer' );
+    settype ( $_POST['user_is_staff'], 'integer' );
+    settype ( $_POST['user_show_mail'], 'integer' );
 
     // get other data
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0 );
     $user_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
-    if ( $_POST['user_group'] == "admin" && $_POST['user_is_staff'] == 1 ) {
+    if ( $_POST['user_group'] == 'admin' && $_POST['user_is_staff'] == 1 ) {
         $_POST['user_group'] = 0;
         $_POST['user_is_admin'] = 1;
     } else {
@@ -82,8 +82,8 @@ if (
         $_POST['user_is_admin'] = 0;
     }
 
-    if ( $_POST['user_homepage'] == "http://" ) {
-        $_POST['user_homepage'] = "";
+    if ( $_POST['user_homepage'] == 'http://' ) {
+        $_POST['user_homepage'] = '';
     }
 
     if ( $_POST['new_password'] == 1 && $_POST['gen_password'] == 1 ) {
@@ -95,31 +95,31 @@ if (
                         `user_salt` = '".$user_salt."',
     ";
     if ( $_POST['new_password'] != 1 ) {
-        $pw_update = "";
+        $pw_update = '';
     }
 
-    $index = mysql_query ( "
+    $index = mysql_query ( '
                             SELECT `user_is_staff`, `user_is_admin`
-                            FROM ".$global_config_arr['pref']."user
+                            FROM '.$global_config_arr['pref']."user
                             WHERE `user_id` = '".$_POST['user_id']."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
-    $was_staff = mysql_result ( $index, 0, "user_is_staff" );
-    $was_admin = mysql_result ( $index, 0, "user_is_admin" );
+    $was_staff = mysql_result ( $index, 0, 'user_is_staff' );
+    $was_admin = mysql_result ( $index, 0, 'user_is_admin' );
 
     // user is not longer in staff
     if ( $was_staff == 1 && $_POST['user_is_staff'] == 0 ) {
-        mysql_query ("
+        mysql_query ('
                         DELETE
-                        FROM ".$global_config_arr['pref']."user_permissions
+                        FROM '.$global_config_arr['pref']."user_permissions
                         WHERE `perm_for_group` = '0'
                         AND `x_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
     }
 
     // MySQL-Queries
-    mysql_query ( "
-                    UPDATE `".$global_config_arr['pref']."user`
+    mysql_query ( '
+                    UPDATE `'.$global_config_arr['pref']."user`
                     SET
                         `user_name` = '".$_POST['user_name']."',
                         ".$pw_update."
@@ -137,41 +137,41 @@ if (
                         `user_skype` = '".$_POST['user_skype']."'
                     WHERE `user_id` = '".$_POST['user_id']."'
     ", $FD->sql()->conn() );
-    $message = $admin_phrases[common][changes_saved];
+    $message = $admin_phrases['common']['changes_saved'];
 
     // image operations
     if ( $_POST['user_pic_delete'] == 1 ) {
-        if ( image_delete ( "images/avatare/", $_POST['user_id'] ) ) {
-        $message .= "<br>" . $admin_phrases[common][image_deleted];
+        if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
+        $message .= '<br>' . $admin_phrases['common']['image_deleted'];
       } else {
-        $message .= "<br>" . $admin_phrases[common][image_not_deleted];
+        $message .= '<br>' . $admin_phrases['common']['image_not_deleted'];
       }
-    } elseif ( $_FILES['user_pic']['name'] != "" ) {
-        $upload = upload_img ( $_FILES['user_pic'], "images/avatare/", $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
-        $message .= "<br>" . upload_img_notice ( $upload );
+    } elseif ( $_FILES['user_pic']['name'] != '' ) {
+        $upload = upload_img ( $_FILES['user_pic'], 'images/avatare/', $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        $message .= '<br>' . upload_img_notice ( $upload );
     }
 
     if ( $_POST['new_password'] == 1 ) {
         // send email
         $mm = new MailManager();
-        
-        $content = get_email_template ("change_password");
-        $content = str_replace ( "{..user_name..}", unslash ( $_POST['user_name'] ), $content );
-        $content = str_replace ( "{..new_password..}", $_POST['newpwd'], $content );
-        
-        $subject = $FD->text("frontend", "mail_password_changed_on") . $FD->cfg('virtualhost');
-        
+
+        $content = get_email_template ('change_password');
+        $content = str_replace ( '{..user_name..}', unslash ( $_POST['user_name'] ), $content );
+        $content = str_replace ( '{..new_password..}', $_POST['newpwd'], $content );
+
+        $subject = $FD->text('frontend', 'mail_password_changed_on') . $FD->cfg('virtualhost');
+
         $mail = new Mail($mm->getDefaultSender(), unslash($_POST['user_mail']), $subject, $content, $mm->getHtmlConfig(), true);
-        
+
         if ($mail->send()) {
-            $message .= "<br>".$TEXT['frontend']->get("mail_new_password_sended");
+            $message .= '<br>'.$TEXT['frontend']->get('mail_new_password_sended');
         } else {
-            $message .= "<br>".$TEXT['frontend']->get("mail_new_password_not_sended");
+            $message .= '<br>'.$TEXT['frontend']->get('mail_new_password_not_sended');
         }
     }
 
     // Display Message
-    systext ( $message, $admin_phrases[common][info] );
+    systext ( $message, $admin_phrases['common']['info'] );
 
     // save Vars
     $filter = $_POST['filter'];
@@ -186,113 +186,113 @@ if (
 
 // delete user
 elseif (
-        isset ( $_POST['sended'] ) && $_POST['sended'] == "delete"
-        && isset ( $_POST['user_action'] ) && $_POST['user_action'] == "delete"
+        isset ( $_POST['sended'] ) && $_POST['sended'] == 'delete'
+        && isset ( $_POST['user_action'] ) && $_POST['user_action'] == 'delete'
         && isset ( $_POST['user_id'] ) && $_POST['user_id'] != 1 && $_POST['user_id'] != $_SESSION['user_id']
         && isset ( $_POST['user_delete'] )
     )
 {
     if ( $_POST['user_delete'] == 1 ) {
         // Security-Functions
-        settype ( $_POST['user_id'], "integer" );
+        settype ( $_POST['user_id'], 'integer' );
 
         // get data from db
-        $index = mysql_query ( "
+        $index = mysql_query ( '
                                 SELECT `user_name`
-                                FROM ".$global_config_arr['pref']."user
+                                FROM '.$global_config_arr['pref']."user
                                 WHERE `user_id` = '".$_POST['user_id']."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
         $user_arr = mysql_fetch_assoc ( $index );
 
         // Delete Permissions
-        mysql_query ( "
+        mysql_query ( '
                         DELETE
-                        FROM ".$global_config_arr['pref']."user_permissions
+                        FROM '.$global_config_arr['pref']."user_permissions
                         WHERE `perm_for_group` = '0'
                         AND `x_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
-        
+
         // update stats
-        mysql_query ( "
-                        UPDATE ".$global_config_arr['pref']."counter
+        mysql_query ( '
+                        UPDATE '.$global_config_arr['pref'].'counter
                         SET `user` = `user`-1
-        ", $FD->sql()->conn() );
-        
+        ', $FD->sql()->conn() );
+
         // update groups
-        mysql_query ( "
-                        UPDATE ".$global_config_arr['pref']."user_groups
+        mysql_query ( '
+                        UPDATE '.$global_config_arr['pref']."user_groups
                         SET `user_group_user` = '1'
                         WHERE `user_group_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
-        
+
         // update articles
-        mysql_query ( "
-                        UPDATE ".$global_config_arr['pref']."articles
+        mysql_query ( '
+                        UPDATE '.$global_config_arr['pref']."articles
                         SET `article_user` = '0'
                         WHERE `article_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
-        
+
         // update articles_cat
-        mysql_query ( "
-                        UPDATE ".$global_config_arr['pref']."articles_cat
+        mysql_query ( '
+                        UPDATE '.$global_config_arr['pref']."articles_cat
                         SET `cat_user` = '1'
                         WHERE `cat_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update dl
-        mysql_query ( "
-                        UPDATE ".$global_config_arr['pref']."dl
+        mysql_query ( '
+                        UPDATE '.$global_config_arr['pref']."dl
                         SET `user_id` = '1'
                         WHERE `user_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news
-        mysql_query ( "
-                        UPDATE ".$global_config_arr['pref']."news
+        mysql_query ( '
+                        UPDATE '.$global_config_arr['pref']."news
                         SET `user_id` = '1'
                         WHERE `user_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news_cat
-        mysql_query ( "
-                        UPDATE ".$global_config_arr['pref']."news_cat
+        mysql_query ( '
+                        UPDATE '.$global_config_arr['pref']."news_cat
                         SET `cat_user` = '1'
                         WHERE `cat_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news_comments
-        mysql_query ( "
-                        UPDATE ".$global_config_arr['pref']."news_comments
+        mysql_query ( '
+                        UPDATE '.$global_config_arr['pref']."news_comments
                         SET `comment_poster_id` = '0',
                             `comment_poster` = '".$user_arr['user_name']."'
                         WHERE `comment_poster_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // MySQL-Delete-Query
-        mysql_query ("
-                        DELETE FROM ".$global_config_arr['pref']."user
+        mysql_query ('
+                        DELETE FROM '.$global_config_arr['pref']."user
                          WHERE user_id = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
-        $message = "Benutzer wurde erfolgreich gelöscht";
+        $message = 'Benutzer wurde erfolgreich gel&ouml;scht';
 
         // Delete Image
-        if ( image_delete ( "images/avatare/", $_POST['user_id'] ) ) {
-            $message .= "<br>" . $admin_phrases[common][image_deleted];
+        if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
+            $message .= '<br>' . $admin_phrases['common']['image_deleted'];
         }
     } else {
-        $message = "Benutzer wurde nicht gelöscht";
+        $message = 'Benutzer wurde nicht gel&ouml;scht';
     }
 
     // Display Message
-    systext ( $message, $admin_phrases[common][info] );
+    systext ( $message, $admin_phrases['common']['info'] );
 
     // save Vars
     $filter = $_POST['filter'];
 
     // Unset Vars
     unset ( $_POST );
-    
+
     // rewrite Vars
     $_POST['filter'] = $filter;
     $_POST['search'] = 1;
@@ -307,73 +307,73 @@ elseif (
 if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 {
     // security functions
-    settype ( $_POST['user_id'], "integer" );
+    settype ( $_POST['user_id'], 'integer' );
 
     // Edit user
-    if ( $_POST['user_action'] == "edit" )
+    if ( $_POST['user_action'] == 'edit' )
     {
 
 
         // Display Error Messages
-        if ( $_POST['sended'] == "edit" ) {
+        if ( $_POST['sended'] == 'edit' ) {
             if ( $_POST['user_id'] == 1 ) {
-                $message[] = "Der Super-Administrator kann nicht bearbeitet werden";
+                $message[] = 'Der Super-Administrator kann nicht bearbeitet werden';
             }
             if ( $_POST['user_id'] == $_SESSION['user_id'] ) {
-                $message[] = "Sie können sich nicht selbst bearbeiten";
+                $message[] = 'Sie k&ouml;nnen sich nicht selbst bearbeiten';
             }
             if ( user_name_free_or_itself ( $_POST['user_name'], $_POST['user_id'] ) == FALSE ) {
-                $message[] = "Der angegebene Benutzername existiert bereits";
+                $message[] = 'Der angegebene Benutzername existiert bereits';
             }
             if ( $_POST['newpwd'] != $_POST['wdhpwd'] && $_POST['gen_password'] != 1 && $_POST['new_password'] == 1 ) {
-                $message[] = "Das Passwort muss zweimal identisch eingegeben werden";
+                $message[] = 'Das Passwort muss zweimal identisch eingegeben werden';
             }
-            $message = implode ( "<br>", $message );
+            $message = implode ( '<br>', $message );
             if ( strlen ( $message ) == 0 ) {
-                $message = $admin_phrases[common][note_notfilled];
+                $message = $admin_phrases['common']['note_notfilled'];
             }
-            systext ( $message, $admin_phrases[common][error], TRUE );
+            systext ( $message, $admin_phrases['common']['error'], TRUE );
         } else {
-            $index = mysql_query ( "
+            $index = mysql_query ( '
                                     SELECT *
-                                    FROM ".$global_config_arr['pref']."user
+                                    FROM '.$global_config_arr['pref']."user
                                     WHERE `user_id` = '".$_POST['user_id']."'
                                     LIMIT 0,1
             ", $FD->sql()->conn() );
             $user_arr = mysql_fetch_assoc ( $index );
             putintopost ( $user_arr );
-            $_POST['d'] = date ( "d", $_POST['user_reg_date'] );
-            $_POST['m'] = date ( "m", $_POST['user_reg_date'] );
-            $_POST['y'] = date ( "Y", $_POST['user_reg_date'] );
+            $_POST['d'] = date ( 'd', $_POST['user_reg_date'] );
+            $_POST['m'] = date ( 'm', $_POST['user_reg_date'] );
+            $_POST['y'] = date ( 'Y', $_POST['user_reg_date'] );
             $_POST['new_password'] = 0;
             $_POST['gen_password'] = 1;
-            if ( $_POST['user_homepage'] == "" ) {
-                $_POST['user_homepage'] = "http://";
+            if ( $_POST['user_homepage'] == '' ) {
+                $_POST['user_homepage'] = 'http://';
             }
             if ( $user_arr['user_is_admin'] == 1 ) {
-                $_POST['user_group'] = "admin";
+                $_POST['user_group'] = 'admin';
             }
         }
-        
+
         // get other data
         if ( $_POST['user_is_staff'] == 1 ) {
-            $display_arr['group_tr'] = "default";
+            $display_arr['group_tr'] = 'default';
         } else {
-            $display_arr['group_tr'] = "hidden";
+            $display_arr['group_tr'] = 'hidden';
         }
 
         if ( $_POST['new_password'] == 1 ) {
-            $display_arr['pwd_tr'] = "default";
-            $display_arr['pwd_gen_tr'] = "default";
+            $display_arr['pwd_tr'] = 'default';
+            $display_arr['pwd_gen_tr'] = 'default';
         } else {
-            $display_arr['pwd_tr'] = "hidden";
-            $display_arr['pwd_gen_tr'] = "hidden";
+            $display_arr['pwd_tr'] = 'hidden';
+            $display_arr['pwd_gen_tr'] = 'hidden';
         }
 
         if ( $_POST['gen_password'] == 1 ) {
-            $display_arr['pwd_tr'] = "hidden";
+            $display_arr['pwd_tr'] = 'hidden';
         } else {
-            $display_arr['pwd_tr'] = "default";
+            $display_arr['pwd_tr'] = 'default';
         }
 
         // security functions
@@ -388,19 +388,19 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         $_POST['user_yim'] = killhtml ( $_POST['user_yim'] );
         $_POST['user_skype'] = killhtml ( $_POST['user_skype'] );
 
-        settype ( $_POST['gen_password'], "integer" );
-        settype ( $_POST['user_is_staff'], "integer" );
-        if ( $_POST['user_group'] != "admin" ) {
-            settype ( $_POST['user_group'], "integer" );
+        settype ( $_POST['gen_password'], 'integer' );
+        settype ( $_POST['user_is_staff'], 'integer' );
+        if ( $_POST['user_group'] != 'admin' ) {
+            settype ( $_POST['user_group'], 'integer' );
         }
-        settype ( $_POST['user_show_mail'], "integer" );
+        settype ( $_POST['user_show_mail'], 'integer' );
 
         // filter
         $_POST['filter'] = savesql ( $_POST['filter'] );
 
         // get oterh data
         $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0, TRUE );
-        $nowbutton_array = array( "d", "m", "y" );
+        $nowbutton_array = array( 'd', 'm', 'y' );
 
         // Display Form
         echo '
@@ -441,13 +441,13 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases[common][today] ).'
+                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases['common']['today'] ).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
                                     Neues Passwort:<br>
-                                    <span class="small">Erstellt ein neues Passwort für den Benutzer.</span>
+                                    <span class="small">Erstellt ein neues Passwort f&uuml;r den Benutzer.</span>
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="new_password" value="1" '.getchecked( $_POST['new_password'], 1 ).'
@@ -460,7 +460,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr class="'.$display_arr['pwd_gen_tr'].'" id="genpwd_tr">
                                 <td class="config">
                                     Passwort generieren:<br>
-                                    <span class="small">Erstellt für den Benutzer ein zufälliges Passwort.</span>
+                                    <span class="small">Erstellt f&uuml;r den Benutzer ein zuf&auml;lliges Passwort.</span>
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="gen_password" id="genpwd" value="1" '.getchecked( $_POST['gen_password'], 1 ).'
@@ -488,28 +488,28 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">Zusätzliche Einstellungen</td></tr>
+                            <tr><td class="line" colspan="2">Zus&auml;tzliche Einstellungen</td></tr>
                             <tr align="left" valign="top">
                                 <td class="config">
                                     Benutzer-Bild: <span class="small">(optional)</span>
         ';
-        if ( image_exists ( "images/avatare/", $_POST['user_id'] ) ) {
-            echo '<br><br><img src="'.image_url( "images/avatare/", $_POST['user_id'] ).'" alt="" border="0"><br><br>';
+        if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
+            echo '<br><br><img src="'.image_url( 'images/avatare/', $_POST['user_id'] ).'" alt="" border="0"><br><br>';
         }
         echo '
                                 </td>
                                 <td class="config">
                                     <input class="text" name="user_pic" type="file" size="35"><br>
-                                    <span class="small">['.$admin_phrases[common][max].' '.$config_arr['avatar_x'].' '.$admin_phrases[common][resolution_x].' '.$config_arr['avatar_y'].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$config_arr['avatar_size'].' '.$admin_phrases[common][kib].']</span>
+                                    <span class="small">['.$admin_phrases['common']['max'].' '.$config_arr['avatar_x'].' '.$admin_phrases['common']['resolution_x'].' '.$config_arr['avatar_y'].' '.$admin_phrases['common']['pixel'].'] ['.$admin_phrases['common']['max'].' '.$config_arr['avatar_size'].' '.$admin_phrases['common']['kib'].']</span>
         ';
-        if ( image_exists ( "images/avatare/", $_POST['user_id'] ) ) {
+        if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
             echo '
                                     <br>
-                                    <span class="small"><b>Nur auswählen, wenn das bisherige Bild überschrieben werden soll!</b></span><br><br>
+                                    <span class="small"><b>Nur ausw&auml;hlen, wenn das bisherige Bild &uuml;berschrieben werden soll!</b></span><br><br>
                                     <input class="pointer middle" type="checkbox" name="user_pic_delete" id="upd" value="1"
                                         onClick=\'delalert ("upd", "Soll das aktuelle Benutzer-Bild wirklich gelöscht werden?")\'
                                     >
-                                    <span class="small middle"><b>Bild löschen?</b></span><br><br>
+                                    <span class="small middle"><b>Bild l&ouml;schen?</b></span><br><br>
             ';
         }
         echo '
@@ -529,16 +529,16 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr class="'.$display_arr['group_tr'].'" id="group_tr">
                                 <td class="config">
                                     Gruppe:<br>
-                                    <span class="small">Gruppe, der der Benutzer angehört.</span>
+                                    <span class="small">Gruppe, der der Benutzer angeh&ouml;rt.</span>
                                 </td>
                                 <td class="config">
                                     <select name="user_group" size="1">
                                         <option value="0"'.getselected ( $_POST['user_group'], 0 ).'>keine Gruppe</option>
         ';
 
-        $index = mysql_query ("
+        $index = mysql_query ('
                                 SELECT `user_group_id`, `user_group_name`
-                                FROM ".$global_config_arr['pref']."user_groups
+                                FROM '.$global_config_arr['pref']."user_groups
                                 WHERE `user_group_id` > 0
                                 ORDER BY `user_group_name`
         ", $FD->sql()->conn() );
@@ -548,15 +548,15 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                 '.$group_arr['user_group_name'].'</option>';
         }
 
-        $index = mysql_query ("
+        $index = mysql_query ('
                                 SELECT `user_group_id`, `user_group_name`
-                                FROM ".$global_config_arr['pref']."user_groups
+                                FROM '.$global_config_arr['pref'].'user_groups
                                 WHERE `user_group_id` = 0
                                 ORDER BY `user_group_name`
                                 LIMIT 0,1
-        ", $FD->sql()->conn() );
+        ', $FD->sql()->conn() );
         $group_arr = mysql_fetch_assoc( $index );
-        echo '<option value="admin" '.getselected ( $_POST['user_group'], "admin" ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
+        echo '<option value="admin" '.getselected ( $_POST['user_group'], 'admin' ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
 
         echo '
                                     </select>
@@ -631,7 +631,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
                                     </button>
                                 </td>
                             </tr>
@@ -640,11 +640,11 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         ';
 
     // Delete User
-    } elseif ( $_POST['user_action'] == "delete" && $_POST['user_id'] != 1  && $_POST['user_id'] != $_SESSION['user_id'] ) {
+    } elseif ( $_POST['user_action'] == 'delete' && $_POST['user_id'] != 1  && $_POST['user_id'] != $_SESSION['user_id'] ) {
         // get data from db
-        $index = mysql_query ( "
+        $index = mysql_query ( '
                                 SELECT `user_name`
-                                FROM ".$global_config_arr['pref']."user
+                                FROM '.$global_config_arr['pref']."user
                                 WHERE `user_id` = '".$_POST['user_id']."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -653,7 +653,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         // security functions
         $user_arr['user_name'] = killhtml ( $user_arr['user_name'] );
         $_POST['filter'] = savesql ( $_POST['filter'] );
-        
+
         echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="user_edit">
@@ -662,20 +662,20 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                         <input type="hidden" name="user_id" value="'.$_POST['user_id'].'">
                         <input type="hidden" name="filter" value="'.$_POST['filter'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">Benutzer löschen</td></tr>
+                            <tr><td class="line" colspan="2">Benutzer l&ouml;schen</td></tr>
                             <tr>
                                 <td class="configthin">
-                                    Soll der Benutzer wirklich gelöscht werden: <b>'.$user_arr['user_name'].'</b>
+                                    Soll der Benutzer wirklich gel&ouml;scht werden: <b>'.$user_arr['user_name'].'</b>
                                 </td>
                                 <td class="config right top" style="padding: 0px;">
-                                '.get_yesno_table ( "user_delete" ).'
+                                '.get_yesno_table ( 'user_delete' ).'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
                                     </button>
                                 </td>
                             </tr>
@@ -702,7 +702,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr><td class="line" colspan="2">Benutzer suchen</td></tr>
                             <tr>
                                 <td class="config">
-                                    Name oder E-Mail-Adresse enthält:
+                                    Name oder E-Mail-Adresse enth&auml;lt:
                                 </td>
                                 <td class="config right">
                                     <input class="text" size="50" name="filter" value="'.killhtml ( $_POST['filter'] ).'">
@@ -712,7 +712,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '."Nach Benutzern suchen".'
+                                        '.$admin_phrases['common']['arrow'].' '."Nach Benutzern suchen".'
                                     </button>
                                 </td>
                             </tr>
@@ -733,13 +733,13 @@ if ( !isset ( $_POST['user_id'] ) )
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="space"></td></tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="5">Benutzer auswählen</td></tr>
+                            <tr><td class="line" colspan="5">Benutzer ausw&auml;hlen</td></tr>
         ';
 
         // get users from db
-        $index = mysql_query ( "
+        $index = mysql_query ( '
                                 SELECT `user_id`, `user_name`, `user_mail`, `user_is_staff`, `user_is_admin`
-                                FROM ".$global_config_arr['pref']."user
+                                FROM '.$global_config_arr['pref']."user
                                 WHERE ( `user_name` LIKE '%".$_POST['filter']."%' OR `user_mail` LIKE '%".$_POST['filter']."%' )
                                 AND `user_id` != '".$_SESSION['user_id']."'
                                 AND `user_id` != '1'
@@ -764,18 +764,18 @@ if ( !isset ( $_POST['user_id'] ) )
 
                 // get other data
                 if ( $user_arr['user_is_staff'] == 1 ) {
-                    $user_arr['staff_text'] = "Ja";
+                    $user_arr['staff_text'] = 'Ja';
                 } else {
-                    $user_arr['staff_text'] = "Nein";
+                    $user_arr['staff_text'] = 'Nein';
                 }
-                
+
                 if ( $user_arr['user_is_admin'] == 1 ) {
-                    $user_arr['admin_text'] = "Ja";
+                    $user_arr['admin_text'] = 'Ja';
                 } else {
-                    $user_arr['admin_text'] = "Nein";
+                    $user_arr['admin_text'] = 'Nein';
                 }
-                
-                if ( $_POST['filter'] != "" ) {
+
+                if ( $_POST['filter'] != '' ) {
                     $user_arr['user_name'] = highlight ($_POST['filter'], killhtml($user_arr['user_name']));
                     $user_arr['user_mail'] = highlight ($_POST['filter'], killhtml($user_arr['user_mail']));
                 } else {
@@ -785,9 +785,9 @@ if ( !isset ( $_POST['user_id'] ) )
 
                 echo '
                             <tr class="pointer" id="tr_'.$user_arr['user_id'].'"
-                                onmouseover="'.color_list_entry ( "input_".$user_arr['user_id'], "#EEEEEE", "#64DC6A", "this" ).'"
-                                onmouseout="'.color_list_entry ( "input_".$user_arr['user_id'], "transparent", "#49c24f", "this" ).'"
-                                onclick="'.color_click_entry ( "input_".$user_arr['user_id'], "#EEEEEE", "#64DC6A", "this", TRUE ).'"
+                                onmouseover="'.color_list_entry ( 'input_'.$user_arr['user_id'], '#EEEEEE', '#64DC6A', 'this' ).'"
+                                onmouseout="'.color_list_entry ( 'input_'.$user_arr['user_id'], 'transparent', '#49c24f', 'this' ).'"
+                                onclick="'.color_click_entry ( 'input_'.$user_arr['user_id'], '#EEEEEE', '#64DC6A', 'this', TRUE ).'"
                             >
                                 <td class="configthin middle">'.$user_arr['user_name'].'</td>
                                 <td class="configthin middle">'.$user_arr['user_mail'].'</td>
@@ -795,20 +795,20 @@ if ( !isset ( $_POST['user_id'] ) )
                                 <td class="configthin middle center">'.killhtml($user_arr['admin_text']).'</td>
                                 <td class="config top center">
                                     <input class="pointer" type="radio" name="user_id" id="input_'.$user_arr['user_id'].'" value="'.$user_arr['user_id'].'"
-                                                    onclick="'.color_click_entry ( "this", "#EEEEEE", "#64DC6A", "tr_".$user_arr['user_id'], TRUE ).'"
+                                                    onclick="'.color_click_entry ( 'this', '#EEEEEE', '#64DC6A', 'tr_'.$user_arr['user_id'], TRUE ).'"
                                 </td>
                             </tr>
                 ';
             }
-            
+
             // display footer with button
             echo'
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="right" colspan="5">
                                     <select name="user_action" size="1">
-                                        <option value="edit">'.$admin_phrases[common][selection_edit].'</option>
-                                        <option value="delete">'.$admin_phrases[common][selection_del].'</option>
+                                        <option value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
+                                        <option value="delete">'.$admin_phrases['common']['selection_del'].'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -816,7 +816,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="5">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][do_button_long].'
+                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
                                     </button>
                                 </td>
                             </tr>

@@ -1,9 +1,9 @@
 <!--section-start::SEARCH--><b>Suche</b>
  <a href="?go=search" class="small" style="float:right;">(Neue Suche)</a>
  <br><br>
- 
+
  <fieldset>
-   <legend style="color:#000000;"><b>Nach Inhalten mit dem Schlüsselwort...</b></legend>
+   <legend style="color:#000000;"><b>Nach Inhalten mit dem Schl&uuml;sselwort...</b></legend>
    <form method="get">
      <input type="hidden" name="go" value="search">
      <input class="input input_highlight middle" name="keyword" size="30" maxlength="100" value="{..keyword..}">
@@ -27,7 +27,7 @@
 <!--section-end::RESULT_LINE-->
 
 <!--section-start::NO_RESULTS--><p>
-  Keine Übereinstimmungen gefunden!
+  Keine &Uuml;bereinstimmungen gefunden!
 </p>
 <!--section-end::NO_RESULTS-->
 

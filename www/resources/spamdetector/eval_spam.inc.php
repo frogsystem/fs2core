@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Additional permission under GNU GPL version 3 section 7
 
     If you modify this Program, or any covered work, by linking or combining it
@@ -63,7 +63,7 @@
   */
   function strangeCase($input)
   {
-    $sub = substr($title, 0, 3);
+    $sub = substr($input, 0, 3);
     $case_profile = 0;
     for($i=0; $i<3; $i=$i+1)
     {

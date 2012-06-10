@@ -18,11 +18,11 @@ class template
     * We strictly recommend to not change these values, in all templates the default values {.. and ..} are used
     * opener and closer were changed from { and } to {.. and ..} because of some javascript incompatibilities
     **/
-    const OPENER                = "{..";
-    const CLOSER                = "..}";
+    const OPENER                = '{..';
+    const CLOSER                = '..}';
 
     // vars for class options
-    private $style              = "default";
+    private $style              = 'default';
     private $file               = null;
     private $clear_unassigned   = FALSE;
 
@@ -40,26 +40,26 @@ class template
 
     // functions to set & get default values
     public function setStyle($style) {
-        if (file_exists(FS2_ROOT_PATH."styles/".$style)) {
+        if (file_exists(FS2_ROOT_PATH.'styles/'.$style)) {
             $this->style = $style;
         } else  {
-            $this->style = "default";
+            $this->style = 'default';
         }
         $this->clearSectionCache();
     }
     private function getStyle() {
         return $this->style;
     }
-    
+
     public function getOpener() {
         return self::OPENER;
     }
     public function getCloser() {
         return self::CLOSER;
     }
-    
+
     public function setFile($file) {
-        if ( is_readable ( FS2_ROOT_PATH."styles/".$this->getStyle()."/".$file ) ) {
+        if ( is_readable ( FS2_ROOT_PATH.'styles/'.$this->getStyle().'/'.$file ) ) {
             $this->file = $file;
             $this->clearSectionCache ();
         } else {
@@ -69,7 +69,7 @@ class template
     private function getFile() {
         return $this->file;
     }
-    
+
     private function setSections($sections) {
         $this->sections = $sections;
     }
@@ -82,14 +82,14 @@ class template
     private function getSectionContent($section_number) {
         return $this->sections_content[$section_number];
     }
-    
+
     private function sectionExists ( $section ) {
         if ( isset ( $this->sections[$section] ) ) {
             return TRUE;
         }
         return FALSE;
     }
-    
+
     public function clearSectionCache() {
         unset ($this->sections);
         unset ($this->sections_content);
@@ -101,7 +101,7 @@ class template
         unset ($this->tags);
         $this->tags = array();
     }
-    
+
     public function deleteTag($tag) {
         $this->tags[$tag] = null;
     }
@@ -116,12 +116,12 @@ class template
     private function getTemplate() {
         return $this->template;
     }
-    
+
     // functions to access templates
     public function load($section) {
         // Wenn der Section-Cache wurde noch nicht befüllt wurde => alle Sections in den Cache laden
         if ( count ( $this->sections ) <= 0 ) {
-            $file_path = FS2_ROOT_PATH . "styles/" . $this->getStyle() . "/" . $this->getFile (); // Pfad zur Template-Datei
+            $file_path = FS2_ROOT_PATH . 'styles/' . $this->getStyle() . '/' . $this->getFile (); // Pfad zur Template-Datei
             $ACCESS = new fileaccess (); // Object für Dateizugriff erzeugen
             $search_expression = '/<!--section-start::(.*)-->(.*)<!--section-end::(\1)-->/Uis'; // Regulärer Ausruck um Sections auszuwählen
             $number_of_sections = preg_match_all ( $search_expression, $ACCESS->getFileData($file_path), $sections ); // Regulären Ausruck ausführen, Anzahl in $number_of_sections, Inhalte in $sections
@@ -146,10 +146,10 @@ class template
                 $data = str_replace ( self::OPENER . $theTag . self::CLOSER, $value, $data ); // Tags durch Werte ersetzen
             }
         }
-        
+
         if ( $this->clear_unassigned ) {
             /*$replacement_arr = array (
-                array ( "[","]","(",")","{","}","|","?","+","-","*","^","$","." ),
+                array ( '[',']','(',')','{','}','|','?','+','-','*','^','$','.' ),
                 array ( "\[","\]","\(","\)","\{","\}","\|","\?","\+","\-","\*","\^","\$","\." )
             );*/
 
@@ -157,10 +157,10 @@ class template
             //$safe_closer = str_replace ( $replacement_arr[0], $replacement_arr[1], self::CLOSER );
             $safe_opener = preg_quote(self::OPENER);
             $safe_closer = preg_quote(self::CLOSER);
-            $regexp = "/".$safe_opener."(.+)".$safe_closer."/U";
-            preg_replace ( $regexp, "", $data );
+            $regexp = '/'.$safe_opener.'(.+)'.$safe_closer.'/U';
+            preg_replace ( $regexp, '', $data );
         }
-        
+
         return (string) $data;
     }
     public function display() {

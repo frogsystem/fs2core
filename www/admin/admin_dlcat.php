@@ -10,7 +10,7 @@ if (isset($_POST['catname']))
     if (isset($_POST['delcat']))
     {
         mysql_query('DELETE FROM '.$global_config_arr['pref'].'dl_cat WHERE cat_id = '.$_POST['catid'], $FD->sql()->conn() );
-        systext('Die Kategorie wurde gelöscht');
+        systext('Die Kategorie wurde gel&ouml;scht');
     }
     else
     {
@@ -35,11 +35,11 @@ if (isset($_POST['editcatid']))
 {
     $_POST['editcatid'] = $_POST['editcatid'][0];
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get("changes_not_saved")."<br>".$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
-    }    
-        
-    
-    
+        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+    }
+
+
+
     settype ($_POST['editcatid'], 'integer');
 
     $valid_ids = array();
@@ -77,9 +77,9 @@ if (isset($_POST['editcatid']))
     ';
     foreach ($valid_ids as $cat)
     {
-        $sele = ($cat_arr['subcat_id'] == $cat['cat_id']) ? "selected" : "";
+        $sele = ($cat_arr['subcat_id'] == $cat['cat_id']) ? 'selected' : '';
         echo'
-                                        <option value="'.$cat['cat_id'].'" '.$sele.'>'.str_repeat("&nbsp;&nbsp;&nbsp;", $cat['level']).$cat['cat_name'].'</option>
+                                        <option value="'.$cat['cat_id'].'" '.$sele.'>'.str_repeat('&nbsp;&nbsp;&nbsp;', $cat['level']).$cat['cat_name'].'</option>
         ';
     }
     echo'
@@ -88,7 +88,7 @@ if (isset($_POST['editcatid']))
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Kategorie löschen:
+                                    Kategorie l&ouml;schen:
                                 </td>
                                 <td class="config">
                                     <input onClick=\'delalert ("delcat", "Soll die Downloadkategorie wirklich gelöscht werden?")\' type="checkbox" name="delcat" id="delcat" value="1">

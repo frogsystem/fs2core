@@ -89,112 +89,112 @@ page_title_stat_space:          Disk Space
 page_link_stat_space:           Disk Space
 
 # News
-page_title_news_config:         Konfiguration ändern
-page_link_news_config:          Konfiguration
-page_title_news_delete:         löschen
-page_link_news_delete:          löschen
+page_title_news_config:         change configuration
+page_link_news_config:          configuration
+page_title_news_delete:         delete
+page_link_news_delete:          delete
 page_title_news_add:            schreiben
 page_link_news_add:             schreiben
-page_title_news_comments:       Kommentare
-page_link_news_comments:        Kommentare
-page_title_news_edit:           bearbeiten
-page_link_news_edit:            bearbeiten
-page_title_news_cat:            Kategorien verwalten
-page_link_news_cat:             Kategorien
+page_title_news_comments:       comments
+page_link_news_comments:        comments
+page_title_news_edit:           edit
+page_link_news_edit:            edit
+page_title_news_cat:            Manage categories
+page_link_news_cat:             categories
 
 # Artikel
-page_title_articles_config:     Konfiguration ändern
-page_link_articles_config:      Konfiguration
+page_title_articles_config:     change configuration
+page_link_articles_config:      configuration
 page_title_articles_add:        schreiben
 page_link_articles_add:         schreiben
-page_title_articles_edit:       bearbeiten
-page_link_articles_edit:        bearbeiten
+page_title_articles_edit:       edit
+page_link_articles_edit:        edit
 page_title_articles_cat:        Kategorien verwalten
-page_link_articles_cat:         Kategorien
+page_link_articles_cat:         categories
 
 # Presseberichte
 page_title_press_config:        Konfiguration ändern
-page_link_press_config:         Konfiguration
-page_title_press_add:           hinzufügen
-page_link_press_add:            hinzufügen
-page_title_press_edit:          bearbeiten
-page_link_press_edit:           bearbeiten
+page_link_press_config:         configuration
+page_title_press_add:           add
+page_link_press_add:            add
+page_title_press_edit:          edit
+page_link_press_edit:           edit
 page_title_press_admin:         Verwaltung
 page_link_press_admin:          Verwaltung
 
 # Inhalts-Bilder
-page_title_cimg_add:            hinzufügen
-page_link_cimg_add:             hinzufügen
+page_title_cimg_add:            add
+page_link_cimg_add:             add
 page_title_cimg_admin:          verwalten
 page_link_cimg_admin:           verwalten
 
 # Galerie > Allgemein
-page_title_gallery_config:      Konfiguration ändern
-page_link_gallery_config:       Konfiguration
+page_title_gallery_config:      change configuration
+page_link_gallery_config:       configuration
 page_title_gallery_cat:         Kategorien verwalten
 page_link_gallery_cat:          Kategorien
 page_title_gallery_folder:      Ordner verwalten
 page_link_gallery_folder:       Ordner
 
 page_title_gallery_img:         Bilder verwalten
-page_link_gallery_img:          Bilder
-page_title_gallery_img_add:     Bilder hinzufügen
-page_link_gallery_img_add:      hinzufügen
-page_title_gallery_img_edit:    Bilder bearbeiten
-page_link_gallery_img_edit:     bearbeiten
+page_link_gallery_img:          Images
+page_title_gallery_img_add:     Add images
+page_link_gallery_img_add:      add
+page_title_gallery_img_edit:    Edit images
+page_link_gallery_img_edit:     edit
 
 page_title_gallery_wp:          Wallpaper verwalten
 page_link_gallery_wp:           Wallpaper
 page_title_gallery_wp_add:      Wallpaper hinzufügen
-page_link_gallery_wp_add:       hinzufügen
+page_link_gallery_wp_add:       add
 page_title_gallery_wp_edit:     Wallpaper bearbeiten
-page_link_gallery_wp_edit:      bearbeiten
+page_link_gallery_wp_edit:      edit
 
 # Galerie > Vorschaubilder
 page_title_randompic_config:    Konfiguration ändern
-page_link_randompic_config:     Konfiguration
+page_link_randompic_config:     configuration
 page_title_randompic_cat:       Kategorien auswählen
 page_link_randompic_cat:        Kategorie Auswahl
-page_title_timedpic_add:        hinzufügen
-page_link_timedpic_add:         hinzufügen
+page_title_timedpic_add:        add
+page_link_timedpic_add:         add
 page_title_timedpic_edit:       verwalten
 page_link_timedpic_edit:        verwalten
 
 # Downloads
-page_title_dl_config:           Konfiguration ändern
-page_link_dl_config:            Konfiguration
-page_title_dl_add:              hinzufügen
-page_link_dl_add:               hinzufügen
-page_title_dl_edit:             bearbeiten
-page_link_dl_edit:              bearbeiten
-page_title_dl_cat:              Kategorien verwalten
-page_link_dl_cat:               Kategorien
-page_title_dl_newcat:           Neue Kategorie
-page_link_dl_newcat:            Neue Kategorie
+page_title_dl_config:           change configuration
+page_link_dl_config:            configuration
+page_title_dl_add:              add
+page_link_dl_add:               add
+page_title_dl_edit:             edit
+page_link_dl_edit:              edit
+page_title_dl_cat:              manage categories
+page_link_dl_cat:               categories
+page_title_dl_newcat:           New category
+page_link_dl_newcat:            New category
 
 # Videos
-page_title_player_config:       Konfiguration ändern
-page_link_player_config:        Konfiguration
-page_title_player_add:          hinzufügen
-page_link_player_add:           hinzufügen
-page_title_player_edit:         bearbeiten
-page_link_player_edit:          bearbeiten
+page_title_player_config:       change configuration
+page_link_player_config:        configuration
+page_title_player_add:          add
+page_link_player_add:           add
+page_title_player_edit:         edit
+page_link_player_edit:          edit
 
 # Umfragen
-page_title_poll_config:         Konfiguration ändern
-page_link_poll_config:          Konfiguration
-page_title_poll_add:            hinzufügen
-page_link_poll_add:             hinzufügen
-page_title_poll_edit:           bearbeiten
-page_link_poll_edit:            bearbeiten
+page_title_poll_config:         change configuration
+page_link_poll_config:          configuration
+page_title_poll_add:            add
+page_link_poll_add:             add
+page_title_poll_edit:           edit
+page_link_poll_edit:            edit
 
 # Partner
-page_title_partner_config:      Konfiguration ändern
-page_link_partner_config:       Konfiguration
-page_title_partner_add:         hinzufügen
-page_link_partner_add:          hinzufügen
-page_title_partner_edit:        bearbeiten
-page_link_partner_edit:         bearbeiten
+page_title_partner_config:      change configuration
+page_link_partner_config:       configuration
+page_title_partner_add:         add
+page_link_partner_add:          add
+page_title_partner_edit:        edit
+page_link_partner_edit:         edit
 
 # Shop
 page_title_shop_add:            Produkt hinzufügen
@@ -203,96 +203,96 @@ page_title_shop_edit:           Produkt Übersicht
 page_link_shop_edit:            Übersicht
 
 # User
-page_title_user_config:         Kofiguration ändern
-page_link_user_config:          Kofiguration
-page_title_user_add:            hinzufügen
-page_link_user_add:             hinzufügen
-page_title_user_edit:           bearbeiten
-page_link_user_edit:            bearbeiten
-page_title_user_rights:         Rechte ändern
-page_link_user_rights:          Rechte
+page_title_user_config:         change configuration
+page_link_user_config:          configuration
+page_title_user_add:            add
+page_link_user_add:             add
+page_title_user_edit:           edit
+page_link_user_edit:            edit
+page_title_user_rights:         change permissions
+page_link_user_rights:          permissions
 
 # Gruppen
-page_title_group_config:        Konfiguration ändern
-page_link_group_config:         Konfiguration
-page_title_group_admin:         Gruppenverwaltung
-page_link_group_admin:          verwalten
-page_title_group_rights:        Rechte ändern
-page_link_group_rights:         Rechte
+page_title_group_config:        change configuration
+page_link_group_config:         configuration
+page_title_group_admin:         Group administration
+page_link_group_admin:          manage
+page_title_group_rights:        change permissions
+page_link_group_rights:         permissions
 
 # Styles
-page_title_style_add:           erstellen
-page_link_style_add:            erstellen
+page_title_style_add:           create
+page_link_style_add:            create
 page_title_style_management:    verwalten
 page_link_style_management:     verwalten
-page_title_style_css:           CSS-Dateien bearbeiten
-page_link_style_css:            CSS-Dateien
-page_title_style_js:            Java Script-Dateien bearbeiten
-page_link_style_js:             JS-Dateien
-page_title_style_nav:           Navigations-Dateien bearbeiten
-page_link_style_nav:            Navigationen
+page_title_style_css:           Edit CSS files
+page_link_style_css:            CSS files
+page_title_style_js:            Edit Java Script files
+page_link_style_js:             JS files
+page_title_style_nav:           Edit navigation files
+page_link_style_nav:            Navigations
 
 # Templates
-page_title_tpl_main:            „Haupt-Template“ bearbeiten
-page_link_tpl_main:             Haupt-Template
-page_title_tpl_general:         „Allgemein“ bearbeiten
-page_link_tpl_general:          Allgemein
-page_title_tpl_viewer:          „Bildbetrachter“ bearbeiten
-page_link_tpl_viewer:           Bildbetrachter
-page_title_tpl_user:            „Benutzer“ bearbeiten
-page_link_tpl_user:             Benutzer
-page_title_tpl_articles:        „Artikel“ bearbeiten
-page_link_tpl_articles:         Artikel
-page_title_tpl_news:            „News“ bearbeiten
+page_title_tpl_main:            Edit „Main Template“
+page_link_tpl_main:             Main Template
+page_title_tpl_general:         Edit „General“
+page_link_tpl_general:          General
+page_title_tpl_viewer:          Edit „Image viewer“
+page_link_tpl_viewer:           Image viewer
+page_title_tpl_user:            Edit „Users“
+page_link_tpl_user:             Users
+page_title_tpl_articles:        Edit „Articles“
+page_link_tpl_articles:         Articles
+page_title_tpl_news:            Edit „News“
 page_link_tpl_news:             News
-page_title_tpl_search:          „Suche“ bearbeiten
-page_link_tpl_search:           Suche
-page_title_tpl_poll:            „Umfragen“ bearbeiten
-page_link_tpl_poll:             Umfragen
-page_title_tpl_press:           „Presseberichte“ bearbeiten
-page_link_tpl_press:            Presseberichte
-page_title_tpl_screens:         „Screenshots“ bearbeiten
+page_title_tpl_search:          Edit „Search“
+page_link_tpl_search:           Search
+page_title_tpl_poll:            Edit „Polls“
+page_link_tpl_poll:             Polls
+page_title_tpl_press:           Edit „Press reports“
+page_link_tpl_press:            Press reports
+page_title_tpl_screens:         Edit „Screenshots“
 page_link_tpl_screens:          Screenshots
-page_title_tpl_wp:              „Wallpaper“ bearbeiten
-page_link_tpl_wp:               Wallpaper
-page_title_tpl_previewimg:      „Vorschaubild“ bearbeiten
-page_link_tpl_previewimg:       Vorschaubild
-page_title_tpl_dl:              „Downloads“ bearbeiten
+page_title_tpl_wp:              Edit „Wallpapers“
+page_link_tpl_wp:               Wallpapers
+page_title_tpl_previewimg:      Edit „Preview Image“
+page_link_tpl_previewimg:       Preview Image
+page_title_tpl_dl:              Edit „Downloads“
 page_link_tpl_dl:               Downloads
-page_title_tpl_shop:            „Shop“ bearbeiten
+page_title_tpl_shop:            Edit „Shop“
 page_link_tpl_shop:             Shop
-page_title_tpl_affiliates:      „Partnerseiten“ bearbeiten
-page_link_tpl_affiliates:       Partnerseiten
-page_title_tpl_editor:          „Editor“ bearbeiten
+page_title_tpl_affiliates:      Edit „Affiliates“
+page_link_tpl_affiliates:       Affiliates
+page_title_tpl_editor:          Edit „Editor“
 page_link_tpl_editor:           Editor
-page_title_tpl_fscodes:         „FSCodes“ bearbeiten
+page_title_tpl_fscodes:         Edit „FSCodes“
 page_link_tpl_fscodes:          FSCodes
-page_title_tpl_player:          „Flash-Player“ bearbeiten
+page_title_tpl_player:          Edit „Flash-Player“
 page_link_tpl_player:           Flash-Player
 
 # Applets
-page_title_applets_add:         hinzufügen
-page_link_applets_add:          hinzufügen
-page_title_applets_delete:      löschen
-page_link_applets_delete:       löschen
-page_title_applets_edit:        bearbeiten
-page_link_applets_edit:         bearbeiten
+page_title_applets_add:         add
+page_link_applets_add:          add
+page_title_applets_delete:      delete
+page_link_applets_delete:       delete
+page_title_applets_edit:        edit
+page_link_applets_edit:         edit
 
 # Schnipsel
-page_title_snippets_add:        hinzufügen
-page_link_snippets_add:         hinzufügen
-page_title_snippets_delete:     löschen
-page_link_snippets_delete:      löschen
-page_title_snippets_edit:       bearbeiten
-page_link_snippets_edit:        bearbeiten
+page_title_snippets_add:        add
+page_link_snippets_add:         add
+page_title_snippets_delete:     delete
+page_link_snippets_delete:      delete
+page_title_snippets_edit:       edit
+page_link_snippets_edit:        edit
 
 # Aliasse
-page_title_aliases_add:         hinzufügen
-page_link_aliases_add:          hinzufügen
-page_title_aliases_delete:      löschen
-page_link_aliases_delete:       löschen
-page_title_aliases_edit:        bearbeiten
-page_link_aliases_edit:         bearbeiten
+page_title_aliases_add:         add
+page_link_aliases_add:          add
+page_title_aliases_delete:      delete
+page_link_aliases_delete:       delete
+page_title_aliases_edit:        edit
+page_link_aliases_edit:         edit
 
 # Suche
 page_title_search_config:       Settings
@@ -301,15 +301,15 @@ page_title_search_index:        Searchindex
 page_link_search_index:         Searchindex
 
 # FSCodes
-page_title_fscode_add:          FS-Code hinzufügen
-page_link_fscode_add:           hinzufügen
+page_title_fscode_add:          Add FS-Code
+page_link_fscode_add:           add
 page_title_fscode_add_php:      PHP-Code
 page_link_fscode_add_php:       PHP-Code
-page_title_fscode_edit:         FS-Code bearbeiten
-page_link_fscode_edit:          bearbeiten
+page_title_fscode_edit:         Edit FS-Code
+page_link_fscode_edit:          edit
 page_title_fscode_edit_php:     PHP-Code
 page_link_fscode_edit_php:      PHP-Code
-page_title_fscode_edit_remove:  löschen
-page_link_fscode_edit_remove:   löschen
-page_title_fscode_settings:     Einstellungen
-page_link_fscode_settings:      Einstellungen
+page_title_fscode_edit_remove:  delete
+page_link_fscode_edit_remove:   delete
+page_title_fscode_settings:     Settings
+page_link_fscode_settings:      Settings

@@ -2,7 +2,7 @@
 <form action="" method="post">
     <input type="hidden" name="go" value="news_config">
     <input type="hidden" name="sended" value="1">
-    
+
     <table class="content config" cellpadding="0" cellspacing="0">
         <tr><td colspan="2"><h3><!--LANG::settings_title--></h3><hr></td></tr>
 
@@ -16,7 +16,7 @@
                 <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::num_headlines-->:<br>
@@ -27,7 +27,7 @@
                 <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::headline_lenght-->:<br>
@@ -48,10 +48,10 @@
                 <input class="half" size="20" name="news_headline_ext" maxlength="30" value="<!--TEXT::news_headline_ext-->">
             </td>
         </tr>
-        
-        
+
+
         <tr><td colspan="2"><h3><!--LANG::post_settings_title--></h3><hr></td></tr>
-                            
+
         <tr>
             <td>
                 <!--LANG::allow_html-->:<br>
@@ -66,7 +66,7 @@
                 </select>
             </td>
         </tr>
-                            
+
         <tr>
             <td>
                 <!--LANG::allow_fs-->:<br>
@@ -81,7 +81,7 @@
                 </select>
             </td>
         </tr>
-                            
+
         <tr>
             <td>
                 <!--LANG::allow_para-->:<br>
@@ -97,9 +97,9 @@
             </td>
         </tr>
 
-        
+
         <tr><td colspan="2"><h3><!--LANG::cat_settings_title--></h3><hr></td></tr>
-                            
+
         <tr>
             <td>
                 <!--LANG::cat_img_max_width-->:<br>
@@ -110,7 +110,7 @@
                 <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::cat_img_max_height-->:<br>
@@ -121,7 +121,7 @@
                 <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::cat_img_max_size-->:<br>
@@ -132,10 +132,10 @@
                 <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
             </td>
         </tr>
-                            
-                            
+
+
         <tr><td colspan="2"><h3><!--LANG::comment_settings_title--></h3><hr></td></tr>
-                        
+
         <tr>
             <td>
                 <!--LANG::allow_comments-->:<br>
@@ -151,7 +151,7 @@
                 </select>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::sort_comments-->:<br>
@@ -164,7 +164,7 @@
                 </select>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::anti_spam_comments-->:<br>
@@ -180,10 +180,10 @@
                 </select>
             </td>
         </tr>
-        
-        
+
+
         <tr><td colspan="2"><h3><!--LANG::admincp_settings_title--></h3><hr></td></tr>
-        
+
         <tr>
             <td>
                 <!--LANG::entry_view-->:<br>
@@ -197,7 +197,7 @@
                 </select>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::entries_per_page-->:<br>
@@ -208,7 +208,7 @@
                 <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
             </td>
         </tr>
-        
+
         <tr>
             <td>
                 <!--LANG::force_cat_selection-->:<br>
@@ -218,15 +218,15 @@
                 <!--COMMON::checkbox-->
                 <input class="hidden" type="checkbox" name="acp_force_cat_selection" value="1" <!--IF::force_cat_selection-->checked<!--ENDIF-->>
             </td>
-        </tr>        
-                            
+        </tr>
+
         <tr>
             <td colspan="2">
                 <button class="button" type="submit">
-                    <!--COMMON::button_arrow--> <!--COMMON::save_changes_button-->                    
+                    <!--COMMON::button_arrow--> <!--COMMON::save_changes_button-->
                 </button>
             </td>
         </tr>
     </table>
-</form>                           
+</form>
 <!--section-end::main-->

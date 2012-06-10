@@ -53,7 +53,7 @@
 {..user_image..}
 
 <p>
-  <b>Benutzermenü:</b><br>
+  <b>Benutzermen&uuml;:</b><br>
   <a class="small" href="{..user_edit_url..}">- Mein Profil</a><br>
   {..admincp_line..}
   <a class="small" href="{..logout_url..}">- Abmelden</a>
@@ -69,7 +69,7 @@
       <td align="center" valign="middle" rowspan="11" width="90"><img src="$VAR(style_images)line.gif" alt=""></td>
       <td align="left" valign="top" rowspan="11">
         <div style="margin-bottom:4px;"><b class="textmiddle">Noch kein Benutzerkonto?</b></div>
-        Jetzt <a href="?go=register">registrieren</a> und folgende Vorteile genießen:
+        Jetzt <a href="?go=register">registrieren</a> und folgende Vorteile genie&szlig;en:
         <ul>
           <li>Zugriff auf Downloads</li>
           <li>Kein CAPTCHA bei Kommentaren</li>
@@ -136,7 +136,7 @@
 
 <!--section-start::NEW_PASSWORD--><h2>Neue Zugangsdaten anfordern</h2>
 
-<p>Wenn du dein Passwort oder Benutzernamen vergessen hast, kannst du hier neue Zugangdaten anfordern. Wir benötigen dazu nur die E-Mail-Adresse, mit der du dich bei uns registriert hast.</p>
+<p>Wenn du dein Passwort oder Benutzernamen vergessen hast, kannst du hier neue Zugangdaten anfordern. Wir ben&ouml;tigen dazu nur die E-Mail-Adresse, mit der du dich bei uns registriert hast.</p>
 
 <form action="" method="post">
   <input type="hidden" name="go" value="login">
@@ -165,7 +165,7 @@
 
 <div>
   Du hast noch kein Benutzerkonto?<br>
-  Dann registriere dich jetzt bei <b>$VAR(page_title)</b> und genieße folgende Vorteile:
+  Dann registriere dich jetzt bei <b>$VAR(page_title)</b> und genie&szlig;e folgende Vorteile:
 
   <ul>
     <li>Zugriff auf Downloads</li>
@@ -258,7 +258,7 @@
         <td align="right">
           <img class="textmiddle" src="{..captcha_url..}"> <input class="small input input_highlight" size="20" name="captcha" maxlength="5" autocomplete="off">
           <img class="textmiddle" src="$VAR(style_icons)user/lock.gif" alt="" align="bottom">
-          <div class="small" align="left">Bitte die Rechenaufgabe lösen.</div>
+          <div class="small" align="left">Bitte die Rechenaufgabe l&ouml;sen.</div>
         </td>
       </tr>
 <!--section-end::CAPTCHA_LINE-->
@@ -267,7 +267,7 @@
       <td></td>
       <td>
         <p class="small" id="captcha_note">
-          <b>Hinweis:</b> Die Rechenaufgabe verhindert, dass Spam-Bots auf dieser Seite Werbung als Kommentar einstellen können. Um die Abfrage zu umgehen, kannst du dich <a href="?go=register">registrieren</a>.
+          <b>Hinweis:</b> Die Rechenaufgabe verhindert, dass Spam-Bots auf dieser Seite Werbung als Kommentar einstellen k&ouml;nnen. Um die Abfrage zu umgehen, kannst du dich <a href="?go=register">registrieren</a>.
         </p>
       </td>
     </tr>
@@ -463,7 +463,7 @@
         <tr>
             <td align="left">{..user_name..}</td>
             <td align="center"><img src="$VAR(style_icons)user/user.gif" alt="" align="bottom"></td>
-            <td align="left"><label for="user_delete_image" class="small pointer textmiddle" style="vertical-align:middle;">Aktuelles Benutzerbild löschen?</label></td>
+            <td align="left"><label for="user_delete_image" class="small pointer textmiddle" style="vertical-align:middle;">Aktuelles Benutzerbild l&ouml;schen?</label></td>
             <td align="center"><input type="checkbox" class="pointer" name="user_delete_image" id="user_delete_image" value="1"></td>
         </tr>
         <tr><td></td></tr>
@@ -475,7 +475,7 @@
             <td align="center" valign="middle" rowspan="9" colspan="2">{..user_image..}</td>
         </tr>
         <tr valign="middle">
-            <td align="left"><label for="user_show_mail" class="small pointer textmiddle" style="vertical-align:middle;">E-Mail im öffentlichen Profil anzeigen?</label></td>
+            <td align="left"><label for="user_show_mail" class="small pointer textmiddle" style="vertical-align:middle;">E-Mail im &ouml;ffentlichen Profil anzeigen?</label></td>
             <td align="center"><input type="checkbox" class="pointer" name="user_show_mail" id="user_show_mail" value="1" {..show_mail_checked..}></td>
         </tr>
         <tr><td></td></tr>
@@ -534,7 +534,7 @@
         </tr>
 
 
-        <tr><td align="left" colspan="2"><b>Nur bei einer Passwortänderung:</b></td></tr>
+        <tr><td align="left" colspan="2"><b>Nur bei einer Passwort&auml;nderung:</b></td></tr>
         <tr><td></td></tr>
         <tr>
           <td align="left" colspan="2"><b>Aktuelles Passwort:</b></td>

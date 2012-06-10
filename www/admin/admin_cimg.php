@@ -11,7 +11,7 @@ if(!isset($_POST['thumb']))     $_POST['thumb'] = 0;
 if(!isset($_POST['width']))     $_POST['width'] = '';
 if(!isset($_POST['height']))    $_POST['height'] = '';
 
-$catsqry = mysql_query("SELECT * FROM `".$global_config_arr['pref']."cimg_cats`");
+$catsqry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg_cats`');
 $cats = array();
 while(($cat = mysql_fetch_assoc($catsqry)) !== false){
     $cats[] = $cat;
@@ -28,24 +28,24 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
   }
 
   $oldname_data = pathinfo($_FILES['cimg']['name'], PATHINFO_EXTENSION);
-  
+
   if ($_POST['oldname'] == 1) {
-      $_POST['newname'] = basename ($_FILES['cimg']['name'],".".$oldname_data);
+      $_POST['newname'] = basename ($_FILES['cimg']['name'],'.'.$oldname_data);
   }
 
   settype ($_POST['cat'],integer);
   settype ($_POST['width'],integer);
   settype ($_POST['height'],integer);
-  
-  if (!image_exists("media/content/",$_POST[newname])  AND !image_exists("media/content/",$_POST[newname]."_s"))
+
+  if (!image_exists('media/content/',$_POST['newname'])  AND !image_exists('media/content/',$_POST['newname']."_s"))
   {
-    $upload = upload_img($_FILES['cimg'], "media/content/", $_POST['newname'], 1024*1024, 9999, 9999);
+    $upload = upload_img($_FILES['cimg'], 'media/content/', $_POST['newname'], 1024*1024, 9999, 9999);
     $message = upload_img_notice ( $upload );
     if ($make_thumb) {
-      $thumb = create_thumb_from ( image_url ( "media/content/", $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
-      $message .= "<br>" . create_thumb_notice ( $thumb );
+      $thumb = create_thumb_from ( image_url ( 'media/content/', $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
+      $message .= '<br>' . create_thumb_notice ( $thumb );
     }
-    mysql_query("INSERT INTO `".$global_config_arr['pref']."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".mysql_real_escape_string($_POST['newname'])."', '".mysql_real_escape_string($oldname_data)."', ".intval($_POST['thumb']).", ".intval($_POST['cat']).")");
+    mysql_query('INSERT INTO `'.$global_config_arr['pref']."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".mysql_real_escape_string($_POST['newname'])."', '".mysql_real_escape_string($oldname_data)."', ".intval($_POST['thumb']).', '.intval($_POST['cat']).')');
     unset($_POST['width']);
     unset($_POST['height']);
     unset($_POST['oldname']);
@@ -55,7 +55,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
   }
   else
   {
-    $message = "Ein Bild mit gleichem Namen existiert bereits!";
+    $message = 'Ein Bild mit gleichem Namen existiert bereits!';
     unset($_POST['sended']);
     if ($_POST['oldname'] == 1) {
         unset($_POST['newname']);
@@ -65,23 +65,23 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
         unset($_POST['height']);
     }
   }
-  
+
 	systext ( $message );
 }
 
 /////////////////////////////
 //// Screenshot Formular ////
 /////////////////////////////
-    $error_message = "";
+    $error_message = '';
 
     if (isset($_POST['sended']))
     {
-      $error_message = "Bitte füllen Sie <b>alle Pflichfelder</b> aus!";
+      $error_message = 'Bitte f&uuml;llen Sie <b>alle Pflichfelder</b> aus!';
       systext($error_message);
     }
 
 
-    
+
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="cimg_add" name="go">
@@ -90,7 +90,7 @@ echo'
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
-                                    <font class="small">Bild auswählen, dass hochgeladen werden soll.</font>
+                                    <font class="small">Bild ausw&auml;hlen, dass hochgeladen werden soll.</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="cimg" size="33"><br>
@@ -100,7 +100,7 @@ echo'
                             <tr>
                                 <td class="config" valign="top">
                                     Alten Bildname verwenden:<br>
-                                    <font class="small">Soll das Bild den ursprünglichen Namen behalten?</font>
+                                    <font class="small">Soll das Bild den urspr&uuml;nglichen Namen behalten?</font>
                                 </td>
                                 <td class="config" valign="middle">
                                   <input class="text" type="checkbox" name="oldname" id="newname" value="1"'.getchecked($_POST['oldname'], 1).'/>
@@ -147,12 +147,12 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Thumbnail-Maße: <font class="small">(Breite x Höhe)</font><br />
-                                    <font class="small">Max. Abemsseungen des Thumbnails.</font>
+                                    Thumbnail-Ma&szlig;e: <font class="small">(Breite x H&ouml;he)</font><br />
+                                    <font class="small">Max. Abmessungen des Thumbnails.</font>
                                 </td>
                                 <td class="config" valign="top">
                                   <input class="text" name="width" size="5" maxlength="4" value="'.$_POST['width'].'" /> x <input class="text" name="height" size="5" maxlength="4" value="'.$_POST['height'].'" /> Pixel<br />
-                                    <font class="small"><b>Hinweis:</b> Das Seitenverhältnis wird beibehalten!</font>
+                                    <font class="small"><b>Hinweis:</b> Das Seitenverh&auml;ltnis wird beibehalten!</font>
                                 </td>
                             </tr>
                             <tr>

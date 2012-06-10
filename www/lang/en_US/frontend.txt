@@ -1,3 +1,65 @@
 # Language-Definition for frontend.php
 no_connection_to_the_server:     Could not connect to server. Please try again later.
 no_connection:                   Connection Error
+
+
+
+# new Language-Definition for frontend
+no_connection_to_the_server:     Could not connect to server. Please try again later.
+no_connection:                   Connection failed
+systemmessage:                   System message
+access_denied:                   Access denied
+file_not_found:                  File not found
+time_at:                         at
+yes:                             Yes
+no:                              No
+month_names_array:               January,February,March,April,Mai,June,Juli,August,September,October,November,December
+week_days_array:                 Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday
+news_feed:                       News Feed
+
+user_antispam:                   The arithmetic problem was not solved correctly
+user_register_password_error:    The password and its repetition do not match
+user_register_not_twice:         Users cannot register multiple times
+user_register_fulfill_form:      Not all required field have been filled in
+user_login:                      Login
+user_logout:                     Logout
+user_login_ok:                   Login was successful
+user_login_error_title:          Login failed
+user_login_error:                Wrong username or password<br>Please check them carefully and try again
+user_logout_ok:                  Logout was successful
+article_not_found:               Article not found
+news_title:                      News
+comment_added:                   Comment has been added
+comment_not_added:               Comment has not been added
+comment_duplicate:               This comment is a duplicate of a comment that has been added recently
+popupviewer_next_text:           Next Image
+popupviewer_next_image:          <img src="styles//icons/next.gif" alt="Next Image" title="Next Image">
+popupviewer_prev_text:           Previous Image
+popupviewer_prev_image:          <img src="styles//icons/previous.gif" alt="Previous Image" title="Previous Image">
+download_file:                   File
+download_files:                  Files
+download_search_for:             Search for
+download_all_downloads:          All Downloads
+search_news_title:               News
+search_articles_title:           Articles
+search_downloads_title:          Downloads
+group_image:                     Group image
+group_image_of:                  Group image of
+group_image_not_found:           No group image found
+image_upload_error_0:            Image was uploaded successfully
+image_upload_error_1:            Image upload failed<br>The file type of the image is invalid
+image_upload_error_2:            Image upload failed<br>The image could not be uploaded
+image_upload_error_3:            Image upload failed<br>The image is too big (file size)
+image_upload_error_4:            Image upload failed<br>The image is too big (width and/or height)
+image_upload_error_5:            Image upload failed<br>The image does not have the required width and height
+image_upload_error_6:            Image upload failed<br>The image could not be created
+
+# Search
+sq_invalid_searchstring:        Invalid search query. Please stick to the search rules.
+
+# Common Phrases
+image:                          Image
+quote:                          Quote
+quote_by:                       Quote by
+code:                           Source code
+video:                          Video

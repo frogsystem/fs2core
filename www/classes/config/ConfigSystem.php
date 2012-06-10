@@ -6,16 +6,16 @@
  * @author   Sweil
  *
  * this class provides the init of system config data
- * 
+ *
  */
 
 class ConfigSystem extends ConfigData {
-    
+
     // Constructor
     // loading all data
     public function __construct($data) {
         // set start data
         $this->config = $data;
-    }  
+    }
 }
 ?>

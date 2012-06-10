@@ -1,12 +1,12 @@
-<?php if (ACP_GO == "news_config") {
+<?php if (ACP_GO == 'news_config') {
 
-    
+
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array("id", "num_news", "num_head", "html_code", "fs_code", "para_handling", "cat_pic_x", "cat_pic_y", "cat_pic_size", "com_rights", "com_antispam", "news_headline_lenght", "acp_per_page", "acp_view", "com_sort", "news_headline_ext", "acp_force_cat_selection");
-    
-    
+$used_cols = array('id', 'num_news', 'num_head', 'html_code', 'fs_code', 'para_handling', 'cat_pic_x', 'cat_pic_y', 'cat_pic_size', 'com_rights', 'com_antispam', 'news_headline_lenght', 'acp_per_page', 'acp_view', 'com_sort', 'news_headline_ext', 'acp_force_cat_selection');
+
+
 ///////////////////////
 //// Update Config ////
 ///////////////////////
@@ -25,13 +25,13 @@ if (
     // prepare data
     $data = frompost($used_cols);
     $data['id'] = 1;
-    
+
     // save to db
     try {
-        $sql->save("news_config", $data);
-        systext($TEXT['admin']->get("changes_saved").'<br>'.$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("info"), "green", $TEXT['admin']->get("icon_save_ok"));
+        $sql->save('news_config', $data);
+        systext($TEXT['admin']->get('changes_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_save_ok'));
     } catch (Exception $e) {}
-    
+
     // Unset Vars
     unset($_POST);
 }
@@ -44,18 +44,18 @@ if ( TRUE )
 {
     // Display Error Messages
     if (isset($_POST['sended'])) {
-        systext($TEXT['admin']->get("changes_not_saved").'<br>'.$TEXT['admin']->get("form_not_filled"), $TEXT['admin']->get("error"), "red", $TEXT['admin']->get("icon_save_error"));
+        systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow("news_config", $used_cols, array('W' => "`id` = 1"));
+        $data = $sql->getRow('news_config', $used_cols, array('W' => '`id` = 1'));
         putintopost($data);
     }
 
     // security functions
-    $_POST = array_map("killhtml", $_POST);   
-     
-    
+    $_POST = array_map('killhtml', $_POST);
+
+
     // Conditions
     for ($i=1; $i<=4; $i++)
         $adminpage->addCond("html_code_$i", $_POST['html_code'] === $i);
@@ -68,17 +68,17 @@ if ( TRUE )
 
     for ($i=0; $i<=4; $i++)
         $adminpage->addCond("com_rights_$i", $_POST['com_rights'] === $i);
-    
-    $adminpage->addCond("com_sort_asc", $_POST['com_sort'] === "ASC");
-    $adminpage->addCond("com_sort_desc", $_POST['com_sort'] === "DESC");
+
+    $adminpage->addCond('com_sort_asc', $_POST['com_sort'] === 'ASC');
+    $adminpage->addCond('com_sort_desc', $_POST['com_sort'] === 'DESC');
 
     for ($i=0; $i<=4; $i++)
         $adminpage->addCond("com_antispam_$i", $_POST['com_antispam'] === $i);
-        
+
     for ($i=0; $i<=2; $i++)
         $adminpage->addCond("acp_view_$i", $_POST['acp_view'] === $i);
 
-    $adminpage->addCond("force_cat_selection", $_POST['acp_force_cat_selection'] === 1);
+    $adminpage->addCond('force_cat_selection', $_POST['acp_force_cat_selection'] === 1);
 
     // Values
     foreach ($_POST as $key => $value) {
@@ -86,7 +86,7 @@ if ( TRUE )
     }
 
     // display page
-    echo $adminpage->get("main");
+    echo $adminpage->get('main');
 }
 
 } ?>

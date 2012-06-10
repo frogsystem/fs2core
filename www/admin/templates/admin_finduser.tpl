@@ -1,22 +1,22 @@
-<!--section-start::main--> 
+<!--section-start::main-->
 <table class="content config" cellpadding="0" cellspacing="0">
     <tr><td><h3><!--LANG::select_user--></h3><hr></td></tr>
-    
+
     <!--TEXT::lines-->
 </table>
 <!--section-end::main-->
 
-<!--section-start::line--> 
+<!--section-start::line-->
     <tr class="pointer thin">
         <td>
             &nbsp;&raquo; <span><!--TEXT::user--></span>
             <input type="hidden" value="<!--TEXT::user_id-->">
         </td>
     </tr>
-    
+
 <!--section-end::line-->
 
-<!--section-start::no--> 
+<!--section-start::no-->
 <table class="content" cellpadding="0" cellspacing="0">
     <tr><td><h3><!--LANG::select_user--></h3><hr></td></tr>
     <tr>
@@ -27,7 +27,7 @@
 </table>
 <!--section-end::no-->
 
-<!--section-start::search--> 
+<!--section-start::search-->
 <form action="" method="post">
     <table class="content" cellpadding="0" cellspacing="0">
         <tr>

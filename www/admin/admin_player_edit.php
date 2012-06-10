@@ -9,25 +9,25 @@ echo noscript_nohidden ();
 // Update Video
 if (
                 isset ( $_POST['video_id'] )
-                && $_POST['sended'] && $_POST['sended'] == "edit"
-                && $_POST['video_action'] && $_POST['video_action'] == "edit"
-                && $_POST['video_title'] && $_POST['video_title'] != "" &&
+                && $_POST['sended'] && $_POST['sended'] == 'edit'
+                && $_POST['video_action'] && $_POST['video_action'] == 'edit'
+                && $_POST['video_title'] && $_POST['video_title'] != '' &&
                 (
-                        ( $_POST['video_type'] == 1 && $_POST['video_url'] && $_POST['video_url'] != "" ) ||
-                        ( $_POST['video_type'] == 2 && $_POST['video_youtube'] && $_POST['video_youtube'] != "" ) ||
-                        ( $_POST['video_type'] == 3 && $_POST['video_myvideo'] && $_POST['video_myvideo'] != "" ) ||
+                        ( $_POST['video_type'] == 1 && $_POST['video_url'] && $_POST['video_url'] != '' ) ||
+                        ( $_POST['video_type'] == 2 && $_POST['video_youtube'] && $_POST['video_youtube'] != '' ) ||
+                        ( $_POST['video_type'] == 3 && $_POST['video_myvideo'] && $_POST['video_myvideo'] != '' ) ||
                         ( $_POST['video_type'] == -1 && $_POST['video_other'] && $_POST['video_other'] != "" )
                 )
         )
 {
     $_POST['video_title'] = savesql ( $_POST['video_title'] );
     $_POST['video_desc'] = savesql ( $_POST['video_desc'] );
-    settype ( $_POST['video_type'], "integer" );
-    settype ( $_POST['dl_id'], "integer" );
+    settype ( $_POST['video_type'], 'integer' );
+    settype ( $_POST['dl_id'], 'integer' );
 
-    settype ( $_POST['video_h'], "integer" );
-    settype ( $_POST['video_m'], "integer" );
-    settype ( $_POST['video_s'], "integer" );
+    settype ( $_POST['video_h'], 'integer' );
+    settype ( $_POST['video_m'], 'integer' );
+    settype ( $_POST['video_s'], 'integer' );
 
     $_POST['video_lenght'] = $_POST['video_h']*60*60 + $_POST['video_m']*60 +$_POST['video_s'];
 
@@ -46,9 +46,9 @@ if (
                 break;
         }
 
-    mysql_query ( "
+    mysql_query ( '
                                         UPDATE
-                                                ".$global_config_arr['pref']."player
+                                                '.$global_config_arr['pref']."player
                                         SET
                                             video_type = '".$_POST['video_type']."',
                                             video_x = '".$_POST['video_x']."',
@@ -60,7 +60,7 @@ if (
                                                  video_id = '".$_POST['video_id']."'
         ", $FD->sql()->conn() );
 
-    $message = "Video bearbeitet";
+    $message = 'Video bearbeitet';
 
     // Display Message
     systext ( $message, $admin_phrases['common']['info'] );
@@ -72,29 +72,29 @@ if (
 // Delete Video
 elseif (
                 $_POST['video_id']
-                && $_POST['sended'] && $_POST['sended'] == "delete"
-                && $_POST['video_action'] && $_POST['video_action'] == "delete"
+                && $_POST['sended'] && $_POST['sended'] == 'delete'
+                && $_POST['video_action'] && $_POST['video_action'] == 'delete'
         )
 {
         if ( $_POST['video_delete'] == 1 ) {
 
                 // Security-Functions
-                settype ( $_POST['video_id'], "integer" );
+                settype ( $_POST['video_id'], 'integer' );
 
                 // MySQL-Delete-Query
-            mysql_query ("
+            mysql_query ('
                                                 DELETE FROM
-                                                        ".$global_config_arr['pref']."player
+                                                        '.$global_config_arr['pref']."player
                                  WHERE
                                                          video_id = '".$_POST['video_id']."'
                                                 LIMIT
                                                     1
                 ", $FD->sql()->conn() );
-                
-                $message = "Video wurde gelöscht";
+
+                $message = 'Video wurde gel&ouml;scht';
 
         } else {
-                $message = "Video wurde nicht gelöscht";
+                $message = 'Video wurde nicht gel&ouml;scht';
         }
 
     // Display Message
@@ -111,7 +111,7 @@ elseif (
 if ( $_POST['video_id'] && $_POST['video_action'] )
 {
         // Edit Video
-        if ( $_POST['video_action'] == "edit" )
+        if ( $_POST['video_action'] == 'edit' )
         {
             settype ( $_POST['video_id'], 'integer');
 
@@ -121,9 +121,9 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
 
                 // Load Data drom DB into Post
                 } else {
-                    $index = mysql_query ( "
+                    $index = mysql_query ( '
                                                                         SELECT *
-                                                                        FROM ".$global_config_arr['pref']."player
+                                                                        FROM '.$global_config_arr['pref']."player
                                                                         WHERE video_id = '".$_POST['video_id']."'
                         ", $FD->sql()->conn() );
                     $video_arr = mysql_fetch_assoc ( $index );
@@ -158,8 +158,8 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
 
                 $_POST['video_title'] = killhtml ( $_POST['video_title'] );
                 $_POST['video_desc'] = killhtml ( $_POST['video_desc'] );
-                settype ( $_POST['video_type'], "integer" );
-                settype ( $_POST['dl_id'], "integer" );
+                settype ( $_POST['video_type'], 'integer' );
+                settype ( $_POST['dl_id'], 'integer' );
 
                 $_POST['video_url'] = killhtml ( $_POST['video_url'] );
                 $_POST['video_youtube'] = killhtml ( $_POST['video_youtube'] );
@@ -170,23 +170,23 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
             $_POST['video_m'] = add_zero ( $_POST['video_m'] );
             $_POST['video_s'] = add_zero ( $_POST['video_s'] );
 
-                $display_arr['tr_1'] = "hidden";
-                $display_arr['tr_2'] = "hidden";
-                $display_arr['tr_3'] = "hidden";
-                $display_arr['tr_-1'] = "hidden";
+                $display_arr['tr_1'] = 'hidden';
+                $display_arr['tr_2'] = 'hidden';
+                $display_arr['tr_3'] = 'hidden';
+                $display_arr['tr_-1'] = 'hidden';
 
                 switch ( $_POST['video_type'] ) {
                     case 3:
-                    $display_arr['tr_3'] = "default";
+                    $display_arr['tr_3'] = 'default';
                         break;
                     case 2:
-                    $display_arr['tr_2'] = "default";
+                    $display_arr['tr_2'] = 'default';
                         break;
                     case -1:
-                    $display_arr['tr_-1'] = "default";
+                    $display_arr['tr_-1'] = 'default';
                         break;
                         default:
-                    $display_arr['tr_1'] = "default";
+                    $display_arr['tr_1'] = 'default';
                         break;
                 }
 
@@ -197,7 +197,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                 <input type="hidden" name="sended" value="edit">
                                                 <input type="hidden" name="video_id" value="'.$_POST['video_id'].'">
                                                 <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="2">Video hinzufügen</td></tr>
+                                                        <tr><td class="line" colspan="2">Video hinzuf&uuml;gen</td></tr>
                             <tr>
                                 <td class="config">
                                     Titel:<br>
@@ -254,8 +254,8 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                 <td class="config">
                                     HTML-Code:<br>
                                     <span class="small">HTML-Code um das Video einzubinden.<br><br>
-                                    <span class="small">Damit das Video in unterschiedlichen Größen dargstellt werden kann, bitte alle Breitenangaben durch <b>{width}</b> und alle Höheangaben durch <b>{height}</b> ersetzen.<br><br>
-                                    Angaben innerhalb von »style« müssen durch <b>{width_css}</b> bzw. <b>{height_css}</b> ersetzt werden.</span>
+                                    <span class="small">Damit das Video in unterschiedlichen Gr&ouml;&szlig;en dargstellt werden kann, bitte alle Breitenangaben durch <b>{width}</b> und alle H&ouml;henangaben durch <b>{height}</b> ersetzen.<br><br>
+                                    Angaben innerhalb von »style« m&uuml;ssen durch <b>{width_css}</b> bzw. <b>{height_css}</b> ersetzt werden.</span>
 
                                 </td>
                                 <td class="config" valign="top">
@@ -264,7 +264,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Länge: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                    L&auml;nge: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
                                     <span class="small">Die Laufzeit des Videos.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -285,22 +285,22 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             <tr>
                                 <td class="config">
                                     Download:<br>
-                                    <span class="small">Verknüpft das Video mit einem Download.</span>
+                                    <span class="small">Verkn&uuml;pft das Video mit einem Download.</span>
                                 </td>
                                 <td class="config">
                                     <select name="dl_id">
-                                        <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verknüpfung</option>
+                                        <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verkn&uuml;pfung</option>
                 ';
                 // DL auflisten
-                $index = mysql_query ( "
+                $index = mysql_query ( '
                                                                 SELECT D.dl_id, D.dl_name, C.cat_name
-                                                                FROM ".$global_config_arr['pref']."dl D, ".$global_config_arr['pref']."dl_cat AS C
+                                                                FROM '.$global_config_arr['pref'].'dl D, '.$global_config_arr['pref'].'dl_cat AS C
                                                                 WHERE D.cat_id = C.cat_id
                                                                 ORDER BY D.dl_name ASC
-                ", $FD->sql()->conn() );
+                ', $FD->sql()->conn() );
                 while ( $dl_arr = mysql_fetch_assoc ( $index ) )
                 {
-                        settype ( $dl_arr['dl_id'], "integer" );
+                        settype ( $dl_arr['dl_id'], 'integer' );
                         echo '<option value="'.$dl_arr['dl_id'].'" '.getselected($dl_arr['dl_id'], $_POST['dl_id']).'>'.$dl_arr['dl_name'].' ('.$dl_arr['cat_name'].')</option>';
                 }
                 echo'
@@ -320,13 +320,13 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                     </form>
             ';
         }
-        
+
         // Delete Video
-        elseif ( $_POST['video_action'] == "delete" )
+        elseif ( $_POST['video_action'] == 'delete' )
         {
-                $index = mysql_query ( "
+                $index = mysql_query ( '
                                                                 SELECT *
-                                                                FROM ".$global_config_arr['pref']."player
+                                                                FROM '.$global_config_arr['pref']."player
                                                                 WHERE video_id = '".$_POST['video_id']."'
                                                                 LIMIT 0,1
                 ", $FD->sql()->conn() );
@@ -335,19 +335,19 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                         // Create Link and Source
                         switch ( $video_arr['video_type'] ) {
                             case 3:
-                            $video_arr['video_source'] = "MyVideo";
+                            $video_arr['video_source'] = 'MyVideo';
                             $video_arr['video_link'] = '<br><span class="small"><a href="http://myvideo.de/watch/'.$video_arr['video_x'].'/" target="_blank">http://myvideo.de/watch/'.$video_arr['video_x'].'/</a></span>';
                                 break;
                             case 2:
-                            $video_arr['video_source'] = "YouTube";
+                            $video_arr['video_source'] = 'YouTube';
                             $video_arr['video_link'] = '<br><span class="small"><a href="http://youtube.com/watch?v='.$video_arr['video_x'].'" target="_blank">http://youtube.com/watch?v='.$video_arr['video_x'].'</a></span>';
                                 break;
                             case -1:
-                            $video_arr['video_source'] = "externe Quelle";
-                            $video_arr['video_link'] = "";
+                            $video_arr['video_source'] = 'externe Quelle';
+                            $video_arr['video_link'] = '';
                                 break;
                                 default:
-                            $video_arr['video_source'] = "eigenes Video";
+                            $video_arr['video_source'] = 'eigenes Video';
                             $video_arr['video_link'] = '<br><span class="small"><a href="'.$video_arr['video_x'].'" target="_blank">'.$video_arr['video_x'].'</a></span>';
                                 break;
                         }
@@ -359,7 +359,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                 <input type="hidden" name="sended" value="delete">
                                                 <input type="hidden" name="video_id" value="'.$_POST['video_id'].'">
                                                 <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="2">Video löschen</td></tr>
+                                                        <tr><td class="line" colspan="2">Video l&ouml;schen</td></tr>
                                                         <tr>
                                 <td class="configthin" colspan="2">
                                     <b>'.$video_arr['video_title'].'</b> ('.$video_arr['video_source'].')
@@ -369,7 +369,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                         <tr><td class="space"></td></tr>
                                                         <tr>
                                                                 <td class="configthin">
-                                                                    Soll das Video wirklich gelöscht werden?
+                                                                    Soll das Video wirklich gel&ouml;scht werden?
                                                                 </td>
                                                                 <td class="config right top" style="padding: 0px;">
                                                                 '.get_yesno_table ( "video_delete" ).'
@@ -400,11 +400,11 @@ else
                                         <form action="" method="post">
                                                 <input type="hidden" name="go" value="player_edit">
                                                 <table class="configtable" cellpadding="4" cellspacing="0">
-                                                    <tr><td class="line" colspan="4">Video auswählen</td></tr>
+                                                    <tr><td class="line" colspan="4">Video ausw&auml;hlen</td></tr>
         ';
 
         // Get Videos from DB
-        $index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."player ORDER BY video_title", $FD->sql()->conn() );
+        $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'player ORDER BY video_title', $FD->sql()->conn() );
 
         if ( mysql_num_rows ( $index ) > 0 ) {
                 // display table head
@@ -417,25 +417,25 @@ else
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
                 ';
-                
+
                 // Display each Video
                 while ( $video_arr = mysql_fetch_assoc ( $index ) ) {
                         // Create Link and Source
                         switch ( $video_arr['video_type'] ) {
                             case 3:
-                            $video_arr['video_source'] = "MyVideo";
+                            $video_arr['video_source'] = 'MyVideo';
                             $video_arr['video_link'] = '<br><span class="small"><a href="http://myvideo.de/watch/'.$video_arr['video_x'].'/" target="_blank">http://myvideo.de/watch/'.$video_arr['video_x'].'/</a></span>';
                                 break;
                             case 2:
-                            $video_arr['video_source'] = "YouTube";
+                            $video_arr['video_source'] = 'YouTube';
                             $video_arr['video_link'] = '<br><span class="small"><a href="http://youtube.com/watch?v='.$video_arr['video_x'].'" target="_blank">http://youtube.com/watch?v='.$video_arr['video_x'].'</a></span>';
                                 break;
                             case -1:
-                            $video_arr['video_source'] = "externe Quelle";
-                            $video_arr['video_link'] = "";
+                            $video_arr['video_source'] = 'externe Quelle';
+                            $video_arr['video_link'] = '';
                                 break;
                                 default:
-                            $video_arr['video_source'] = "eigenes Video";
+                            $video_arr['video_source'] = 'eigenes Video';
                             $video_arr['video_link'] = '<br><span class="small"><a href="'.$video_arr['video_x'].'" target="_blank">'.$video_arr['video_x'].'</a></span>';
                                 break;
                         }
@@ -463,7 +463,7 @@ else
                                                         </tr>
                         ';
                 }
-                
+
                 // End of Form & Table incl. Submit-Button
                  echo '
                                                         <tr><td class="space"></td></tr>
@@ -484,7 +484,7 @@ else
                                                                 </td>
                                                         </tr>
                 ';
-                
+
         // No Videos
         } else {
                 echo '
