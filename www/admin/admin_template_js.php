@@ -1,15 +1,15 @@
 <?php
-    $TEMPLATE_GO = "style_js";
-    $TEMPLATE_FILE = "js";
+    $TEMPLATE_GO = 'style_js';
+    $TEMPLATE_FILE = 'js';
     $TEMPLATE_EDIT = null;
 
     $tmp = array (
-        name => "JS",
-        title => $admin_phrases[template][js_userfunctions][title],
-        description => $admin_phrases[template][js_userfunctions][description],
-        rows => 35,
-        cols => 66,
-        help => array (
+        'name' => 'JS',
+        'title' => $admin_phrases['template']['js_userfunctions']['title'],
+        'description' => $admin_phrases['template']['js_userfunctions']['description'],
+        'rows' => 35,
+        'cols' => 66,
+        'help' => array (
         )
     );
     $TEMPLATE_EDIT[] = $tmp;

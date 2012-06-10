@@ -6,11 +6,11 @@
 function user_name_free ( $USERNAME ) {
     global $global_config_arr;
     global $FD;
-    
+
     $USERNAME = savesql ( $USERNAME );
-    $index = mysql_query ( "
+    $index = mysql_query ( '
                             SELECT `user_id`
-                            FROM `".$global_config_arr['pref']."user`
+                            FROM `'.$global_config_arr['pref']."user`
                             WHERE `user_name` = '".$USERNAME."'
     ", $FD->sql()->conn() );
     if ( mysql_num_rows ( $index ) > 0 ) {
@@ -23,7 +23,7 @@ function user_name_free ( $USERNAME ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 //////////////////
@@ -31,10 +31,10 @@ $config_arr = mysql_fetch_assoc ( $index );
 //////////////////
 
 if (
-        $_POST['user_name'] && $_POST['user_name'] != "" && user_name_free ( $_POST['user_name'] ) == TRUE
-        && $_POST['user_mail'] && $_POST['user_mail'] != ""
+        isset($_POST['user_name']) && $_POST['user_name'] != '' && user_name_free ( $_POST['user_name'] ) == TRUE
+        && $_POST['user_mail'] && $_POST['user_mail'] != ''
         && (
-            ( $_POST['newpwd'] && $_POST['newpwd'] != "" && $_POST['wdhpwd'] && $_POST['wdhpwd'] != "" && $_POST['newpwd'] == $_POST['wdhpwd'] )
+            ( $_POST['newpwd'] && $_POST['newpwd'] != '' && $_POST['wdhpwd'] && $_POST['wdhpwd'] != '' && $_POST['newpwd'] == $_POST['wdhpwd'] )
             || $_POST['gen_password'] == 1
         )
         && $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31
@@ -52,15 +52,15 @@ if (
     $_POST['user_yim'] = savesql ( $_POST['user_yim'] );
     $_POST['user_skype'] = savesql ( $_POST['user_skype'] );
 
-    settype ( $_POST['gen_password'], "integer" );
-    settype ( $_POST['user_is_staff'], "integer" );
-    settype ( $_POST['user_show_mail'], "integer" );
+    settype ( $_POST['gen_password'], 'integer' );
+    settype ( $_POST['user_is_staff'], 'integer' );
+    settype ( $_POST['user_show_mail'], 'integer' );
 
     // get other data
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0 );
     $user_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
-    if ( $_POST['user_group'] == "admin" && $_POST['user_is_staff'] == 1 ) {
+    if ( $_POST['user_group'] == 'admin' && $_POST['user_is_staff'] == 1 ) {
         $_POST['user_group'] = 0;
         $_POST['user_is_admin'] = 1;
     } else {
@@ -72,11 +72,11 @@ if (
         $_POST['user_group'] = 0;
         $_POST['user_is_admin'] = 0;
     }
-    
-    if ( $_POST['user_homepage'] == "http://" ) {
-        $_POST['user_homepage'] = "";
+
+    if ( $_POST['user_homepage'] == 'http://' ) {
+        $_POST['user_homepage'] = '';
     }
-    
+
     if ( $_POST['gen_password'] == 1 ) {
         $_POST['newpwd'] = generate_pwd ( 15 );
     }
@@ -84,8 +84,8 @@ if (
     $codedpwd = md5 ( $_POST['newpwd'].$user_salt );
 
     // MySQL-Queries
-    mysql_query ( "
-                    INSERT INTO `".$global_config_arr['pref']."user`
+    mysql_query ( '
+                    INSERT INTO `'.$global_config_arr['pref']."user`
                         ( `user_name`, `user_password`, `user_salt`,
                         `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
                         `user_reg_date`, `user_show_mail`, `user_homepage`,
@@ -109,33 +109,33 @@ if (
                     )
     ", $FD->sql()->conn() );
     $user_id = mysql_insert_id ( $FD->sql()->conn() );
-    $message = "Benutzer wurde erfolgreich hinzugefügt";
+    $message = 'Benutzer wurde erfolgreich hinzugef&uuml;gt';
 
-    mysql_query ( "
-                    UPDATE ".$global_config_arr['pref']."counter
+    mysql_query ( '
+                    UPDATE '.$global_config_arr['pref'].'counter
                     SET `user` = `user`+1
-    ", $FD->sql()->conn() );
-    
+    ', $FD->sql()->conn() );
+
     // upload image
-    if ( $_FILES['user_pic']['name'] != "" ) {
-        $upload = upload_img ( $_FILES['user_pic'], "images/avatare/", $user_id, $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
-        $message .= "<br>" . upload_img_notice ( $upload );
+    if ( $_FILES['user_pic']['name'] != '' ) {
+        $upload = upload_img ( $_FILES['user_pic'], 'images/avatare/', $user_id, $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        $message .= '<br>' . upload_img_notice ( $upload );
     }
-    
+
     // send email
-    $template_mail = get_email_template ( "signup" );
-    $template_mail = str_replace ( "{..user_name..}", stripslashes ( $_POST['user_name'] ), $template_mail );
-    $template_mail = str_replace ( "{..new_password..}", $_POST['newpwd'], $template_mail );
+    $template_mail = get_email_template ( 'signup' );
+    $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_POST['user_name'] ), $template_mail );
+    $template_mail = str_replace ( '{..new_password..}', $_POST['newpwd'], $template_mail );
     $template_mail = replace_globalvars ( $template_mail );
-    $email_subject = $TEXT['frontend']->get("mail_registerd_on") . $global_config_arr['virtualhost'];
+    $email_subject = $TEXT['frontend']->get('mail_registerd_on') . $global_config_arr['virtualhost'];
     if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
-        $email_message = "<br>".$TEXT['frontend']->get("mail_registerd_sended");
+        $email_message = '<br>'.$TEXT['frontend']->get('mail_registerd_sended');
     } else {
-        $email_message = "<br>".$TEXT['frontend']->get("mail_registerd_not_sended");
+        $email_message = '<br>'.$TEXT['frontend']->get('mail_registerd_not_sended');
     }
 
     // system messages
-    systext( $message, $admin_phrases[common][info] );
+    systext( $message, $admin_phrases['common']['info'] );
 
     // Unset Vars
     unset ( $_POST );
@@ -151,57 +151,57 @@ if ( TRUE )
     if ( isset ( $_POST['sended'] ) ) {
         $message = array();
         if ( user_name_free ( $_POST['user_name'] ) == FALSE ) {
-            $message[] = "Der angegebene Benutzername existiert bereits";
+            $message[] = 'Der angegebene Benutzername existiert bereits';
         }
         if ( $_POST['newpwd'] != $_POST['wdhpwd'] && $_POST['gen_password'] != 1 ) {
-            $message[] = "Das Passwort muss zweimal identisch eingegeben werden";
+            $message[] = 'Das Passwort muss zweimal identisch eingegeben werden';
         }
-        $message = implode ( "<br>", $message );
+        $message = implode ( '<br>', $message );
         if ( strlen ( $message ) == 0 ) {
-            $message = $admin_phrases[common][note_notfilled];
+            $message = $admin_phrases['common']['note_notfilled'];
         }
-        systext ( $message, $admin_phrases[common][error], TRUE );
+        systext ( $message, $admin_phrases['common']['error'], TRUE );
     } else {
         $_POST['gen_password'] = 1;
-        $_POST['user_homepage'] = "http://";
-        $_POST['d'] = date ( "d" );
-        $_POST['m'] = date ( "m" );
-        $_POST['y'] = date ( "Y" );
+        $_POST['user_homepage'] = 'http://';
+        $_POST['d'] = date ( 'd' );
+        $_POST['m'] = date ( 'm' );
+        $_POST['y'] = date ( 'Y' );
     }
 
     // get other data
-    if ( $_POST['user_is_staff'] == 1 ) {
-        $display_arr['group_tr'] = "default";
+    if ( isset($_POST['user_is_staff']) && $_POST['user_is_staff'] == 1 ) {
+        $display_arr['group_tr'] = 'default';
     } else {
-        $display_arr['group_tr'] = "hidden";
+        $display_arr['group_tr'] = 'hidden';
     }
-    
-    if ( $_POST['gen_password'] == 1 ) {
-        $display_arr['pwd_tr'] = "hidden";
+
+    if ( isset($_POST['gen_password']) && $_POST['gen_password'] == 1 ) {
+        $display_arr['pwd_tr'] = 'hidden';
     } else {
-        $display_arr['pwd_tr'] = "default";
+        $display_arr['pwd_tr'] = 'default';
     }
 
     // security functions
-    $_POST['user_name'] = killhtml ( $_POST['user_name'] );
-    $_POST['user_mail'] = killhtml ( $_POST['user_mail'] );
-    $_POST['newpwd'] = killhtml ( $_POST['newpwd'] );
-    $_POST['wdhpwd'] = killhtml ( $_POST['wdhpwd'] );
-    $_POST['user_homepage'] = killhtml ( $_POST['user_homepage'] );
-    $_POST['user_icq'] = killhtml ( $_POST['user_icq'] );
-    $_POST['user_aim'] = killhtml ( $_POST['user_aim'] );
-    $_POST['user_wlm'] = killhtml ( $_POST['user_wlm'] );
-    $_POST['user_yim'] = killhtml ( $_POST['user_yim'] );
-    $_POST['user_skype'] = killhtml ( $_POST['user_skype'] );
+    $_POST['user_name'] = isset($_POST['user_name']) ? killhtml ( $_POST['user_name'] ) : '';
+    $_POST['user_mail'] = isset($_POST['user_mail']) ? killhtml ( $_POST['user_mail'] ) : '';
+    $_POST['newpwd'] = isset($_POST['newpwd']) ? killhtml ( $_POST['newpwd'] ) : '';
+    $_POST['wdhpwd'] = isset($_POST['wdhpwd']) ? killhtml ( $_POST['wdhpwd'] ) : '';
+    $_POST['user_homepage'] = isset($_POST['user_homepage']) ? killhtml ( $_POST['user_homepage'] ) : '';
+    $_POST['user_icq'] = isset($_POST['user_icq']) ? killhtml ( $_POST['user_icq'] ) : '';
+    $_POST['user_aim'] = isset($_POST['user_aim']) ? killhtml ( $_POST['user_aim'] ) : '';
+    $_POST['user_wlm'] = isset($_POST['user_wlm']) ? killhtml ( $_POST['user_wlm'] ) : '';
+    $_POST['user_yim'] = isset($_POST['user_yim']) ? killhtml ( $_POST['user_yim'] ) : '';
+    $_POST['user_skype'] = isset($_POST['user_skype']) ? killhtml ( $_POST['user_skype'] ) : '';
 
-    settype ( $_POST['gen_password'], "integer" );
-    settype ( $_POST['user_is_staff'], "integer" );
-    settype ( $_POST['user_group'], "integer" );
-    settype ( $_POST['user_show_mail'], "integer" );
+    settype ( $_POST['gen_password'], 'integer' );
+    settype ( $_POST['user_is_staff'], 'integer' );
+    settype ( $_POST['user_group'], 'integer' );
+    settype ( $_POST['user_show_mail'], 'integer' );
 
     // get oterh data
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0, TRUE );
-    $nowbutton_array = array( "d", "m", "y" );
+    $nowbutton_array = array( 'd', 'm', 'y' );
 
     // Display Form
     echo'
@@ -239,13 +239,13 @@ if ( TRUE )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases[common][today] ).'
+                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases['common']['today'] ).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
                                     Passwort generieren:<br>
-                                    <span class="small">Erstellt für den Benutzer ein zufälliges Passwort.</span>
+                                    <span class="small">Erstellt f&uuml;r den Benutzer ein zuf&auml;lliges Passwort.</span>
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="gen_password" value="1" '.getchecked( $_POST['gen_password'], 1 ).'
@@ -273,14 +273,14 @@ if ( TRUE )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">Zusätzliche Einstellungen</td></tr>
+                            <tr><td class="line" colspan="2">Zus&auml;tzliche Einstellungen</td></tr>
                             <tr>
                                 <td class="config">
                                     Benutzer-Bild: <span class="small">(optional)</span>
                                 </td>
                                 <td class="config">
                                     <input class="text" name="user_pic" type="file" size="35"><br>
-                                    <span class="small">['.$admin_phrases[common][max].' '.$config_arr['avatar_x'].' '.$admin_phrases[common][resolution_x].' '.$config_arr['avatar_y'].' '.$admin_phrases[common][pixel].'] ['.$admin_phrases[common][max].' '.$config_arr['avatar_size'].' '.$admin_phrases[common][kib].']</span>
+                                    <span class="small">['.$admin_phrases['common']['max'].' '.$config_arr['avatar_x'].' '.$admin_phrases['common']['resolution_x'].' '.$config_arr['avatar_y'].' '.$admin_phrases['common']['pixel'].'] ['.$admin_phrases['common']['max'].' '.$config_arr['avatar_size'].' '.$admin_phrases['common']['kib'].']</span>
                                 </td>
                             </tr>
                             <tr>
@@ -297,32 +297,32 @@ if ( TRUE )
                             <tr class="'.$display_arr['group_tr'].'" id="group_tr">
                                 <td class="config">
                                     Gruppe:<br>
-                                    <span class="small">Gruppe, der der Benutzer angehört.</span>
+                                    <span class="small">Gruppe, der der Benutzer angeh&ouml;rt.</span>
                                 </td>
                                 <td class="config">
                                     <select name="user_group" size="1">
                                         <option value="0"'.getselected ( $_POST['user_group'], 0 ).'>keine Gruppe</option>
     ';
 
-    $index = mysql_query ("
+    $index = mysql_query ('
                             SELECT `user_group_id`, `user_group_name`
-                            FROM ".$global_config_arr['pref']."user_groups
+                            FROM '.$global_config_arr['pref'].'user_groups
                             WHERE `user_group_id` > 0
                             ORDER BY `user_group_name`
-    ", $FD->sql()->conn() );
+    ', $FD->sql()->conn() );
 
     while ( $group_arr = mysql_fetch_assoc( $index ) ) {
         echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $_POST['user_group'], $group_arr['user_group_id'] ).'>
             '.$group_arr['user_group_name'].'</option>';
     }
 
-    $index = mysql_query ("
+    $index = mysql_query ('
                             SELECT `user_group_id`, `user_group_name`
-                            FROM ".$global_config_arr['pref']."user_groups
+                            FROM '.$global_config_arr['pref'].'user_groups
                             WHERE `user_group_id` = 0
                             ORDER BY `user_group_name`
                             LIMIT 0,1
-    ", $FD->sql()->conn() );
+    ', $FD->sql()->conn() );
     $group_arr = mysql_fetch_assoc( $index );
     echo '<option value="admin" '.getselected ( $_POST['user_group'], "admin" ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
 
@@ -399,7 +399,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '."Neuen Benutzer hinzufügen".'
+                                        '.$admin_phrases['common']['arrow'].' '."Neuen Benutzer hinzuf&uuml;gen".'
                                     </button>
                                 </td>
                             </tr>

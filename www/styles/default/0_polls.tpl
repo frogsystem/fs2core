@@ -96,25 +96,25 @@
     <td align="left">
       <a href="?go=polls&sort=question&order={..order_question..}"><b>Frage</b> </a>
       <a class="top" href="?go=polls&sort=question&order={..order_question..}">{..arrow_question..}</a>
-    </td> 
-    
+    </td>
+
     <td align="left" width="100">
       <a href="?go=polls&sort=participants&order={..order_participants..}"><b>Teilnehmer</b> </a>
       <a class="top" href="?go=polls&sort=participants&order={..order_participants..}">{..arrow_participants..}</a>
-    </td>    
-    
+    </td>
+
     <td align="left" width="58">
       <a href="?go=polls&sort=start_date&order={..order_start_date..}"><b>von</b> </a>
       <a class="top" href="?go=polls&sort=start_date&order={..order_start_date..}">{..arrow_start_date..}</a>
     </td>
-    
+
     <td align="left" width="10"></td>
-    
+
     <td align="left" width="70">
       <a href="?go=polls&sort=end_date&order={..order_end_date..}"><b>bis</b> </a>
       <a class="top" href="?go=polls&sort=end_date&order={..order_end_date..}">{..arrow_end_date..}</a>
     </td>
-    
+
   </tr>
 {..polls..}
 </table>

@@ -1,7 +1,7 @@
-<!--section-start::form_table-->    
+<!--section-start::form_table-->
     <table class="content" cellpadding="0" cellspacing="0">
         <tr><td colspan="2"><h3><!--LANG::news_information_title--></h3><hr></td></tr>
-        
+
         <tr>
             <td>
                 <!--LANG::news_cat-->:<br>
@@ -13,8 +13,8 @@
                 </select>
             </td>
         </tr>
-        
-        
+
+
         <tr>
             <td>
                 <!--LANG::news_date-->:<br>
@@ -34,7 +34,7 @@
                 <input class="nshide" type="button" onClick='setNow("y", "m", "d", "h", "i")' value="<!--COMMON::now-->">
             </td>
         </tr>
-                            
+
         <tr>
             <td>
                 <!--LANG::news_poster-->:<br>
@@ -46,10 +46,10 @@
                 <input class="nshide" type="button" onClick='popUp("?go=find_user&amp;id=user_id&amp;name=user_name", "_blank", 400, 500)' value="<!--COMMON::change-->">
             </td>
         </tr>
-        
-        
+
+
         <tr><td colspan="2"><h3><!--LANG::news_new_title--></h3><hr></td></tr>
-        
+
 
         <tr>
             <td class="config" colspan="2">
@@ -61,10 +61,10 @@
                 <input class="full" maxlength="255" id="news_title" name="news_title" value="<!--TEXT::news_title-->"><br><br>
             </td>
         </tr>
-        
+
         <tr>
             <td colspan="2">
-                                
+
                 <table cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td>
@@ -78,7 +78,7 @@
                         <td class="right bottom">
                             <input class="middle" type="checkbox" id="news_active" name="news_active" value="1" <!--IF::news_active-->checked<!--ENDIF-->>
                             <label for="news_active" class="small middle"><!--LANG::news_active--></label>&nbsp;&nbsp;
-                                    
+
                             <input class="middle" type="checkbox" id="news_comments_allowed" name="news_comments_allowed" value="1" <!--IF::news_comments_allowed-->checked<!--ENDIF-->>
                             <label for="news_comments_allowed" class="small middle"><!--LANG::news_comments_allowed--></label>
                         </td>
@@ -87,17 +87,17 @@
 
             </td>
         </tr>
-                            
+
         <tr>
             <td colspan="2">
                 <!--TEXT::the_editor-->
             </td>
         </tr>
-        
-        
+
+
         <!--TEXT::link_list-->
         <!--TEXT::link_add-->
-        
+
         <tr>
             <td colspan="2">
                 <input type="button" onClick='popTab("?go=news_preview", "_blank")' value="<!--COMMON::preview-->">
@@ -111,7 +111,7 @@
             </td>
         </tr>
     </table>
-<!--section-end::form_table--> 
+<!--section-end::form_table-->
 
 <!--section-start::link_list-->
         <tr>
@@ -172,7 +172,7 @@
             <img class="pointer" src="icons/edit.gif" onClick="edit($(this).parents(\'tr:first\'))" alt="<!--COMMON::edit-->" title="<!--COMMON::edit-->">&nbsp;
             <img class="pointer" src="icons/delete.gif" onClick="remove($(this).parents(\'tr:first\'))" alt="<!--COMMON::delete-->" title="<!--COMMON::delete-->">
         </div>
-    </td>    
+    </td>
 </tr>
 <!--section-end::link_entry-->
 
@@ -182,7 +182,7 @@
                 <!--LANG::news_link_add-->:
             </td>
         </tr>
-        
+
         <tr>
             <td colspan="2">
                 <!--TEXT::table-->
@@ -239,7 +239,7 @@
                 <!--ENDIF-->
                 </td>
             </tr>
-        </table>   
+        </table>
 <!--section-end::edit_table-->
 
 <!--section-start::script-->
@@ -252,63 +252,63 @@
                 $(this).css("background-color", "transparent");
             }
         });
-    
-    
+
+
         renderLinks(link_arr);
     });
-    
+
     link_arr = new Array();
-    
+
     function edit(l) {
         var id = parseInt(l.find("input[name=link]").val());
-        
+
         // insert data
         var line = '<!--TEXT::link_edit-->';
         line = line.replace(/<!--TEXT::id-->/g, id);
         line = line.replace(/<!--TEXT::name-->/g, htmlspecialchars(link_arr[id]['name']));
         line = line.replace(/<!--TEXT::url-->/g, htmlspecialchars(link_arr[id]['url']));
         l.replaceWith(line);
-        
+
         var edit_tr = $("tr#edit_link_"+id);
         edit_tr.find("select[name=edit_target]").val(link_arr[id]['target']);
     }
 
-    function saveLink(id) {        
+    function saveLink(id) {
         // assign vars
         var edit_tr = $("tr#edit_link_"+id);
         var name = edit_tr.find("input[name=edit_name]:first");
         var url = edit_tr.find("input[name=edit_url]:first");
-        var target = edit_tr.find("select[name=edit_target]");          
-    
+        var target = edit_tr.find("select[name=edit_target]");
+
         // add link
         if (name.val() != "" && url.val() != "" && url.val() != "http://" && url.val() != "https://") {
-              
+
             // add new link
             var newlink = new Object();
             link_arr[id]['name'] = name.val();
             link_arr[id]['url'] = url.val();
             link_arr[id]['target'] = target.val();
-            
+
             //render link
             var line = getLinkHtml(id, link_arr[id]['name'], link_arr[id]['url'], link_arr[id]['target']);
             edit_tr.replaceWith(line);
-            
+
         // error
         } else {
-            alert("<!--LANG::link_not_saved-->\n<!--COMMON::form_not_filled-->");            
+            alert("<!--LANG::link_not_saved-->\n<!--COMMON::form_not_filled-->");
         }
-    }        
-    
+    }
+
     function remove(l) {
         var id = parseInt(l.find("input[name=link]").val());
-        
+
         if (id < link_arr.length) {
             link_arr.splice(id, 1);
-        
+
             renderLinks(link_arr);
         }
     }
-    
+
     function down(l) {
         var id = parseInt(l.find("input[name=link]").val());
 
@@ -319,73 +319,73 @@
 
             renderLinks(link_arr);
         }
-    }   
-    
+    }
+
     function up(l) {
         var id = parseInt(l.find("input[name=link]").val());
-        
+
         if (id >= 1) {
             var bu = link_arr[id-1];
             link_arr[id-1] = link_arr[id];
             link_arr[id] = bu;
-        
+
             renderLinks(link_arr);
         }
     }
-    
- 
- 
-    
+
+
+
+
     function addLink() {
         // assign vars
         var name = $("input[name=new_link_name]:first");
         var url = $("input[name=new_link_url]:first");
-        var target = $("select[name=new_link_target]");        
-        
+        var target = $("select[name=new_link_target]");
+
         // add link
         if (name.val() != "" && url.val() != "" && url.val() != "http://" && url.val() != "https://") {
-              
+
             // add new link
             var newlink = new Object();
             newlink['name'] = name.val();
             newlink['url'] = url.val();
             newlink['target'] = target.val();
-        
+
             link_arr.push(newlink);
 
-            // reset form                
+            // reset form
             name.val("");
             url.val("http://");
             target.val(0);
-            
+
             //render links
-            renderLinks(link_arr);  
-        
+            renderLinks(link_arr);
+
         // error
         } else {
-            alert("<!--LANG::link_not_added-->\n<!--COMMON::form_not_filled-->");            
-        }        
+            alert("<!--LANG::link_not_added-->\n<!--COMMON::form_not_filled-->");
+        }
     }
-    
+
     function renderLinks(data) {
         var line = "";
-        
+
         // get HTML for all Links
         for (var i=0; i<data.length; i++) {
             line += getLinkHtml(i, data[i]['name'], data[i]['url'], data[i]['target']);
         }
-        
+
         // remove old html
         $("#link_list tr.link_entry").remove();
-        
+
         //insert new one
         $("#link_list").prepend(line);
-    }    
-    
-    function getLinkHtml (id, name, url, target) { 
+    }
+
+    function getLinkHtml (id, name, url, target) {
         // insert data
         var line = '<!--TEXT::link_entry-->';
-        line = line.replace(/<!--TEXT::id-->/g, id); 
+        line = line.replace(/<!--TEXT::id-->/g, id);
         line = line.replace(/<!--TEXT::name-->/g, htmlspecialchars(name));
         line = line.replace(/<!--TEXT::url-->/g, htmlspecialchars(url));
         line = line.replace(/<!--TEXT::target-->/g, target);
@@ -396,9 +396,9 @@
         } else {
             line = line.replace(/<!--TEXT::target_text-->/g, '<!--LANG::news_link_self-->');
         }
-        
+
         return line;
     }
-    
+
 </script>
 <!--section-end::script-->

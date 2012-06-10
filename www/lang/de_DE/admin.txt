@@ -247,7 +247,7 @@ captcha_config_bg_color_desc:            Die Hintergrundfarbe des Captcha-Bildes
 captcha_config_bg_transparent:           Transparenter Hintergrund
 captcha_config_text_color_title:         Textfarbe
 captcha_config_text_color_desc:          Die Farbe in der die Aufgabe dargestellt wird.
-captcha_config_dimensions_title:         Abemessungen
+captcha_config_dimensions_title:         Abmessungen
 captcha_config_dimensions_desc:          Größe des Captcha-Bildes.
 captcha_config_text_position_title:      Text-Position
 captcha_config_text_position_desc:       Position des Textes relativ zur linken, oberen Ecke.

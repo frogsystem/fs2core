@@ -7,7 +7,7 @@
       <b>{..item_titel..}</b>
     </a><br>
     Preis: <b>{..item_price..}</b>
-  </span>  
+  </span>
 </p><!--section-end::APPLET_ITEM-->
 
 <!--section-start::APPLET_BODY--><p>
@@ -30,9 +30,9 @@
       </p>
       <p>
         <a href="{..item_image_viewer_url..}">
-          Bild in groﬂ betrachten...
+          Bild in gro&szlig; betrachten...
         </a>
-      </p>      
+      </p>
       <p>
         Preis: <b>{..item_price..}</b>
       </p>

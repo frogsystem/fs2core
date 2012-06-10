@@ -7,20 +7,20 @@
 if ( isset ( $_POST['username'] ) && isset ( $_POST['userpassword'] ) )
 {
     $loggedin = admin_login($_POST['username'], $_POST['userpassword'], false);
-    
+
     switch ($loggedin)
     {
         case 0:
-            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Sie sind jetzt eingeloggt', 'Herzlich Willkommen!', FALSE, $TEXT['admin']->get("icon_login") );
+            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Sie sind jetzt eingeloggt', 'Herzlich Willkommen!', FALSE, $TEXT['admin']->get('icon_login') );
             break;
         case 1:
-            systext('Der Benutzer existiert nicht', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
+            systext('Der Benutzer existiert nicht', $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
             break;
         case 2:
-            systext('Das Passwort ist nicht korrekt', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
+            systext('Das Passwort ist nicht korrekt', $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
             break;
         case 3:
-            systext('Sie haben keine Rechte für diese Seite', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
+            systext('Sie haben keine Rechte f&uuml;r diese Seite', $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
             break;
     }
 }
@@ -29,9 +29,9 @@ if ( isset ( $_POST['username'] ) && isset ( $_POST['userpassword'] ) )
 ///// Schon eingeloggt /////
 ////////////////////////////
 
-elseif (is_authorized()) 
+elseif (is_authorized())
 {
-            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!', FALSE, $TEXT['admin']->get("icon_login") );
+            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!', FALSE, $TEXT['admin']->get('icon_login') );
 }
 
 ////////////////////////////

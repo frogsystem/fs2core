@@ -1,0 +1,17 @@
+# Statistikansicht
+
+daily_statistics:             Daily statistics
+monthly_statistics:           Monthly statistics
+other_statistics:             Other statistics
+day:                          Day
+month:                        Month
+average:                      Average
+visits:                       Visitors
+visits_total:                 Total visitors
+best_day_visits:              Best day (visitors)
+hits:                         Hits
+hits_total:                   Total hits
+best_day_hits:                Best day (hits)
+chart:                        Graphics
+show_chart:                   Show chart
+user_online:                  Users online
