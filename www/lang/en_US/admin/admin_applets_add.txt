@@ -1,0 +1,5 @@
+applets_include_title: Load &amp; execute
+applets_include_desc: Controls when the applet will be loaded and executed.
+
+applets_include_always: always
+applets_include_ondemand: only on demand
