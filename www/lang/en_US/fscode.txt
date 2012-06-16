@@ -1,0 +1,42 @@
+# Beschreibung für FSCodes
+b: bold
+i: italic
+u: underlined
+s: strikethrough
+center: centered
+url: link
+home: internal link (Home-Link)
+email: e-mail address
+img: image (external via URL)
+cimg: internal image (content image)
+list: list
+numlist: numbered list
+font: font face
+color: font color
+size: font size
+code: code block
+quote: quote
+video: video
+noparse: part that will not be parsed
+smilies: smilies
+
+example_b: [b]bold text[/b]
+example_i: [i]kursiver Text[/i]
+example_u: [u]underlined text[/u]
+example_s: [s]durchgestrichener Text[/s]
+example_center: [center]centered text[/center]
+example_url: [url=link URL]description[/url], [url]link URL[/url]
+example_home: [home=page]description[/home], [home]page[/home]
+example_email: [email=user@example.com]description[/email], [email]user@example.com[/email]
+example_img: [img]image URL[/img]
+example_cimg: [cimg]content image name[/cimg]
+example_list: [list][*]a list item [*]another list item[/list]
+example_numlist: [numlist][*]List item 1 [*]List item 2[/numlist]
+example_font: [font=Arial]text in Arial[/font]
+example_color: [color=#FF0000]text in #FF0000 (red)[/color], Colors: hexadecimal code, english word
+example_size: [size=5]text in size 5[/size], sizes: 0-7
+example_code: [code]text in monospaced font[/code], [code=html]content with <b>HTML code</b>[/code]
+example_quote: [quote]Quote[/quote], [quote=source]Quote from source[/quote]
+example_video: [video]7[/video], [video]video URL[/video]
+example_noparse: [noparse]content with [b]FS-Code[/b] that is not parsed.[/noparse]
+example_smilies: :-), ;-), :-p, etc.
