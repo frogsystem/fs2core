@@ -197,10 +197,10 @@ page_title_partner_edit:        edit
 page_link_partner_edit:         edit
 
 # Shop
-page_title_shop_add:            Produkt hinzufügen
-page_link_shop_add:             Neues Produkt
-page_title_shop_edit:           Produkt Übersicht
-page_link_shop_edit:            Übersicht
+page_title_shop_add:            Add product
+page_link_shop_add:             New product
+page_title_shop_edit:           Product summary
+page_link_shop_edit:            Summary
 
 # User
 page_title_user_config:         change configuration

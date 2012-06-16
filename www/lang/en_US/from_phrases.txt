@@ -1,0 +1,560 @@
+#common
+system_message:                                    System message
+note_notfilled:                                    Please fill in all required fields!
+only_allowed_values:                               Please enter allowed values only!
+info:                                              Information
+error:                                             An error occured
+changes_saved:                                     Changes have been saved
+changes_not_saved:                                 Changes have not been saved
+affected_rows:                                     Affected rows
+image_0:                                           Image was uploaded successfully
+image_1:                                           Image upload failed: Invalid file type ['Code: IMGxU1']
+image_2:                                           Image upload failed: The image could not be uploaded ['Code: IMGxU2']
+image_3:                                           Image upload failed: The image is too big (file size) ['Code: IMGxU3']
+image_4:                                           Image upload failed: The image is too big (width and/or height) ['Code: IMGxU4']
+image_5:                                           Image upload failed: The image does not have the required width and height ['Code: IMGxU5']
+image_6:                                           Image upload failed: The image could not be created ['Code: IMGxU6']
+image_deleted:                                     Image deleted
+image_not_deleted:                                 Image could not be deleted
+thumb_0:                                           Thumbnail creation successful
+thumb_1:                                           Thumbnail could not be created: Invalid file tyle
+thumb_2:                                           Thumbnail could not be created: An error occured
+optional:                                          (optional)
+selection:                                         Selection
+active:                                            active
+valid_tags:                                        Valid tags
+selection_edit:                                    Edit selection
+selection_del:                                     Delete selection
+edit_comments:                                     Edit comments
+ascending:                                         ascending
+descending:                                        descending
+width_x_height:                                    width x height
+resolution_x:                                      x
+pixel:                                             pixel
+zero_not_allowed:                                  0 is not allowed
+max:                                               max.
+min:                                               min.
+exact:                                             exact
+html:                                              HTML is
+fscode:                                            FS-Code is
+para:                                              Paragraph handling is
+kib:                                               KiB
+mib:                                               MiB
+arrow:                                             <img class="middle" src="img/pointer.png" alt="->">
+save_long:                                         Save changes
+do_button:                                         Ausführen
+do_button_long:                                    Aktion ausführen
+search_button:                                     Search
+now_button:                                        Now
+today:                                             Today
+change_button:                                     Change
+add_button:                                        Add
+delete_button:                                     Delete
+show_button:                                       Show
+preview_button:                                    Show preview
+apply_button:                                      Apply
+yes:                                               Yes
+no:                                                No
+on:                                                on
+off:                                               off
+to:                                                to
+by:                                                by
+by_posted:                                         posted by
+in:                                                in
+on_date:                                           on
+at_time:                                           at
+time_appendix:                                     Uhr
+time_format:                                       h:i a
+date_format:                                       Y/m/d
+date_time_format:                                  h:i a, Y/m/d
+comment:                                           comment
+comments:                                          comments
+link:                                              link
+links:                                             links
+no_image:                                          No image found.
+delete_image:                                      Delete image
+js_delete_image:                                   Do you really want to delete the image?
+replace_img:                                       Select only if the current image shall be replaced!
+
+
+#icons
+error:                                             <img src="icons/error.jpg" alt="" align="absmiddle">
+ok:                                                <img src="icons/ok.jpg" alt="" align="absmiddle">
+arrow:                                             <img src="icons/pointer.gif" alt="->" align="absmiddle">
+save_small:                                        <img src="icons/save_small.gif" alt="" align="top">
+save_ok:                                           <img src="icons/save_ok.jpg" alt="" align="absmiddle">
+save_add:                                          <img src="icons/save_add.jpg" alt="" align="absmiddle">
+save_error:                                        <img src="icons/save_error.jpg" alt="" align="absmiddle">
+trash_ok:                                          <img src="icons/trash_ok.jpg" alt="" align="absmiddle">
+trash_error:                                       <img src="icons/trash_error.jpg" alt="" align="absmiddle">
+
+
+#menu
+general:                                           General
+content:                                           Content
+interactive:                                       Interactive
+media:                                             Media
+promo:                                             Promotion
+styles:                                            Styles
+system:                                            System
+user:                                              Users
+mods:                                              Add Ons
+
+
+#finduser
+pagetitle:                                         User search
+searchforuser:                                     search for user ...
+selectuser:                                        select user
+nousersfound:                                      No users found!
+
+
+#general
+pageinfo_title:                                    Site Information
+title:                                             Title
+title_desc:                                        The title of the site.
+virtualhost:                                       URL
+virtualhost_desc:                                  The main URL of the site.
+admin_mail:                                        Email address
+admin_mail_desc:                                   The Email address to which problems and notifications will be sent.
+description:                                       Description
+description_desc:                                  A short text about the site.
+author:                                            Author
+author_desc:                                       The webmaster(s) of the site.
+keywords:                                          Keywords
+keywords_desc:                                     Keywords for the site, please separate by commas.<br>Important to search engines!
+design_title:                                      Design
+design:                                            Design
+design_desc:                                       Design, in which the site will be displayed.
+allow_other_designs:                               Allow other styles
+allow_other_designs_desc:                          Allows to display the site with other styles.<br>  (http://www.example.com/?style=xyz)
+show_favicon:                                      Use favicon
+show_favicon_desc:                                 Includes the favicon.<br>($VAR(style_icons)/favicon.ico)
+settings_title:                                    Site settings
+home_page:                                         Homepage
+home_page_desc:                                    Defines the page that is displayed by default.
+home_page_default:                                 Default (?go=news)
+show_announcement:                                 Show announcement
+show_announcement_desc:                            Pages on which the announcement is shown.
+show_ann_always:                                   everywhere
+show_ann_home:                                     Homepage
+show_ann_never:                                    never
+language:                                          Language
+language_desc:                                     The admin CP's default language.
+language_de:                                       Deutsch
+language_en:                                       English
+feed:                                              Feed
+feed_desc:                                         Default feed of the site, will be included in HTML head.
+feed_rss091:                                       RSS 0.91
+feed_rss10:                                        RSS 1.0
+feed_rss20:                                        RSS 2.0
+feed_atom10:                                       Atom 1.0
+reg_antispam:                                      Anti-spam at registration
+reg_antispam_desc:                                 Activates the anti-spam question at registration.
+date:                                              Date
+date_desc:                                         Date format that is used on the site.
+date_info:                                         uses the syntax of PHP function <a class="s" href="http://www.php.net/manual/en/function.date.php" target="_blank" class="small">date()</a>
+pagenav_title:                                     Page navigation
+page:                                              Page navigation
+page_desc:                                         Design of page navigation in multi-page contents.
+page_info:                                         {page_number} = current page; {prev} = previous page<br>{total_pages} = total number of pages; {next} = next page
+page_prev:                                         Previous Page
+page_prev_desc:                                    Design of "Previous Page" button.
+page_prev_info:                                    {url} = URL of the previous page
+page_next:                                         Next Page
+page_next_desc:                                    Design of "Next Page" button.
+page_next_info:                                    {url} = URL of the next page
+ann_settings_title:                                Settings
+activate_ann:                                      Activate announcement
+activate_ann_desc:                                 Activates the announcement so it will be displayed on the site.
+ann_title:                                         Write announcement
+ann_write_desc:                                    An empty announcement will not be displayed.
+phpinfo_title:                                     PHP & server information
+phpinfo_version:                                   PHP Version
+phpinfo_zendversion:                               Zend engine version
+phpinfo_phpuser:                                   PHP user
+phpinfo_servername:                                Server name
+phpinfo_serverip:                                  IP address & port
+phpinfo_serverprotocol:                            Protocol
+phpinfo_serversoftware:                            Server Software
+phpinfo_show_link:                                 show complete PHP info
+email_info:                                        Hints
+email_info_text:                                   The e-mail address given at the settings page will be used as sender.<br><s>HTML and FSCode are allowed, but should be avoided.</s>
+email_templates_title:                             E-mail Templates
+email_reg_title:                                   Registration
+email_reg_desc:                                    E-mail that the user receives after registration at the site.
+email_newpwd_title:                                Password Change
+email_newpwd_desc:                                 E-mail that the user receives after a password change.
+email_delete_title:                                Account Deletion
+email_delete_desc:                                 Email that the user receives in case of deletion of his/her account.
+email_username:                                    The name of the user.
+email_password:                                    The password of the user.
+email_virtualhost:                                 URL of the site.
+
+
+#editor
+view_settings_title:                               Settings
+textarea_size:                                     Textarea size
+textarea_size_desc:                                The size of the textarea of the editor.
+smilies:                                           Smilies
+smilies_desc:                                      Number of smilies that are shown in the editor.
+smilies_rows:                                      Rows of
+smilies_smilies:                                   Smilies
+buttons_settings_title:                            Buttons settings
+buttons:                                           Buttons
+buttons_desc:                                      Buttons that are shown in the editor.
+fscode_settings_title:                             FSCode Settings
+fscode:                                            FSCodes for use by users
+fscode_desc:                                       FS-Codes that can be used by users.
+fscode_info:                                       <b>Unselected FSCodes will not be processed in posts made by users (i.e. comments)!</b>
+smilie_add_title:                                  Add new smilie
+smilie_add_select:                                 Select smilie
+smilie_add_text:                                   Replacement text
+smilie_add_insert:                                 Insert after
+smilie_add_at_beginn:                              at beginning
+smilie_add_at_end:                                 at end
+smilie_add_button:                                 upload & add
+smilie_management_title:                           Smilie management
+smilies_replacement:                               Text
+smilies_order:                                     Sort order
+smilies_delete:                                    Delete
+smilies_up:                                        up
+smilies_down:                                      down
+smilies_shown:                                     are shown
+smilies_not_shown:                                 are not shown
+smilies_delnotconfirm:                             gewählte Smilies nicht löschen
+smilies_delconfirm:                                delete selectes smilies
+smilies_no_smilies:                                No smilies found
+
+
+#stats
+edit_day_title:                                    Edit daily statistics
+edit_day:                                          Select day
+edit_day_desc:                                     Date that shall be edited.
+edit_day_info:                                     ['DD'] . ['MM'] . ['YYYY']
+edit_day_button:                                   Edit selection
+edit_day_no_data:                                  No data found for the given date
+edit_day_visits:                                   Visitors
+edit_day_visits_desc:                              Number of visitors on
+edit_day_hits:                                     Hits
+edit_day_hits_desc:                                Number of hits on
+sync_title:                                        
+sync_now:                                          Synchronize statistics
+sync_now_desc:                                     Synchronizes the statistics with the values from the database.
+sync_now_button:                                   Synchronize now
+synchronised:                                      Statistics have been synchronized
+overall_title:                                     Overall statistics
+overall_visits:                                    Overall visitors
+overall_visits_desc:                               Number of visitors that have been to the site.
+overall_hits:                                      Overall hits
+overall_hits_desc:                                 Number of page requests.
+overall_user:                                      Overall users
+overall_user_desc:                                 Number of registered users.
+overall_news:                                      Overall news
+overall_news_desc:                                 Number of news written.
+overall_articles:                                  Overall articles
+overall_articles_desc:                             Number of articles written.
+overall_comments:                                  Overall comments
+overall_comments_desc:                             Number of comments written.
+referrer_filter_title:                             Define filter
+referrer_list_title:                               Referrer list
+referrer_delete_title:                             Delete entries
+referrer_hits:                                     Hits
+referrer_first:                                    First contact
+referrer_last:                                     Last contact
+referrer_url:                                      URL
+referrer_show:                                     Show
+referrer_orderby:                                  Sort entries by
+referrer_filter:                                   Filter
+referrer_filter_info1:                             Use an exclamation mark (!) as first character to exclude a search term.
+referrer_filter_info2:                             Multiple search terms can be separated by a comma (,).
+referrer_table_title:                              Referrer from external sites
+referrer_table_url:                                Referrer URL
+referrer_table_hits:                               Hits
+referrer_table_first:                              First contact
+referrer_table_last:                               Last contact
+referrer_unknown:                                  unknown
+referrer_no_entries:                               No matching entries found!
+referrer_delete_entries:                           Delete all entries
+referrer_delete_with:                              with
+referrer_delete_older:                             older than
+referrer_delete_younger:                           within the last
+referrer_delete_days:                              days
+referrer_delete_and:                               and
+referrer_delete_less:                              less than
+referrer_delete_more:                              more than
+referrer_delete_hits:                              Hits
+referrer_delete_button:                            delete defined entries
+referrer_not_enough_days:                          You have to specify at least one day
+referrer_not_enough_hits:                          You have to specifiy at least 1 hit
+referrer_deleted_entries:                          Entries with the given criterias have been deleted
+
+
+#news
+settings_title:                                    Settings
+news_per_page:                                     News per page
+news_per_page_desc:                                Number of news that are shown per page.
+num_headlines:                                     Headlines
+num_headlines_desc:                                Number of headlines that are shown.
+post_settings_title:                               Posts
+allow_html:                                        HTML code
+allow_html_desc:                                   Allows HTML code in ...
+allow_fs:                                          FSCode
+allow_fs_desc:                                     Allows FSCode in ...
+allow_para:                                        Paragraph handling
+allow_para_desc:                                   Activates the paragraph handling in ...
+allow_code_no:                                     Off
+allow_code_news:                                   News
+allow_code_comments:                               Comments
+allow_code_both:                                   News & comments
+cat_settings_title:                                Categories
+cat_img_max_width:                                 Category image - max. width
+cat_img_max_width_desc:                            Max. width of a category image in pixels.
+cat_img_max_height:                                Category image - max. height
+cat_img_max_height_desc:                           Max. height of a category image in pixels.
+cat_img_max_size:                                  Category image - max. file size
+cat_img_max_size_desc:                             Max. file size of a category image in KiB.
+comment_settings_title:                            Comments
+allow_comments:                                    Allow comments for
+allow_comments_desc:                               Allows comments written by ...
+allow_comments_all:                                all users
+allow_comments_staff:                              staff
+allow_comments_reg:                                registered users
+allow_comments_nobody:                             nobody
+sort_comments:                                     Sort comments
+sort_comments_desc:                                The order by which comments are shown.
+sort_comments_old_first:                           Old ones first
+sort_comments_new_first:                           New ones first
+anti_spam_comments:                                Anti spam at comments for
+anti_spam_comments_desc:                           Anti spam captcha at comments are activated for ...
+anti_spam_comments_all:                            all users
+anti_spam_comments_staff:                          all except staff
+anti_spam_comments_reg:                            unregistered users
+anti_spam_comments_nobody:                         nobody
+news_information_title:                            Information
+news_cat:                                          Category
+news_cat_desc:                                     The category the news belongs to.
+news_date:                                         Date & Time
+news_date_desc:                                    Date of publication of the news.
+news_poster:                                       Poster
+news_poster_desc:                                  The author of the news.
+news_new_title:                                    Write news
+news_title:                                        Title
+news_active:                                       Publish news
+news_comments_allowed:                             Allow comments
+news_text:                                         Text
+news_add_button:                                   Add news
+news_added:                                        News has been added successfully
+news_not_added:                                    News has not been added
+news_link_add:                                     Add link
+news_link_title:                                   Title
+news_link_url:                                     URL
+news_link_open:                                    Open link in
+news_link_blank:                                   new window
+news_link_self:                                    same window
+news_link_no:                                      no action
+news_link_delete:                                  Delete selection
+news_link_up:                                      move upwards
+news_link_down:                                    move downwards
+news_link_edit:                                    edit
+new_cat_added:                                     Category has been added
+cat_deleted:                                       Category has been deleted
+cat_not_deleted:                                   Category has not been deleted
+new_cat_title:                                     Add category
+new_cat_name:                                      Name
+new_cat_image:                                     Image
+new_cat_add_button:                                Add & configure further settings
+list_cat_title:                                    Category management
+list_cat_created_by:                               created by
+list_cat_created_on:                               on
+delete_cat_title:                                  Delete category
+delete_cat_question:                               Do you really want to delete this category?
+delete_cat_move_to:                                Move news of deleted category to
+delete_cat_last:                                   The last category cannot be deleted.<br>Please create a new category first.
+delete_back_link:                                  zurück zur Übersicht
+edit_cat_title:                                    Main settings
+edit_cat_name:                                     Name
+edit_cat_name_desc:                                The name of the category.
+edit_cat_date:                                     Date of creation
+edit_cat_date_desc:                                The category has been created on ...
+edit_cat_created_by:                               Creator
+edit_cat_created_by_desc:                          The category has been created by ...
+edit_cat_title_optional:                           Additional settings
+edit_cat_image:                                    Image
+edit_cat_description:                              Description
+edit_cat_description_desc:                         A short text about the category.
+news_edit_filter_title:                            Filter & Sort order
+news_edit_filter_from:                             News from
+news_edit_filter_all_cat:                          all categories
+news_edit_filter_sort:                             and sort by
+news_edit_filter_id:                               News-ID
+news_edit_filter_date:                             Date
+news_edit_filter_newstitle:                        Title
+news_edit_next_news:                               next news
+news_edit_prev_news:                               previous news
+news_edit_show_news:                               show news
+news_edit_no_news:                                 No news found!
+news_edit_select_news:                             Select news
+news_edit_entries_found:                           entries found
+news_delete_title:                                 Delete news
+news_delete_view_news:                             view
+news_delete_question:                              Do you really want to irretrievably delete the following news (including links and comments)?
+news_deleted:                                      News has been deleted
+news_not_deleted:                                  News has not been deleted
+news_comment_deleted:                              Comment has been deleted
+
+
+#articles
+post_settings_title:                               Posts
+post_settings_info:                                <b>Hint:</b> Hier wird nur die grunds&auml;tzliche M&ouml;glichkeit zur Verwendung eingstellt. Bei jedem Artikel kann die Verwendung von HTML, FSCode und der Absatzbehandlung auch noch seperat (de-)aktiviert werden.
+allow_html:                                        HTML code
+allow_html_desc:                                   Allow HTML code in ...
+allow_fs:                                          FSCode
+allow_fs_desc:                                     Allow FSCode in ...
+allow_para:                                        Paragraph handling
+allow_para_desc:                                   Activates paragraph handling in ...
+allow_code_no:                                     off
+allow_code_articles:                               articles
+allow_code_comments:                               comments
+allow_code_both:                                   articles & comments
+cat_settings_title:                                Categories
+cat_img_max_width:                                 Category image - max. width
+cat_img_max_width_desc:                            Max. width of a category image in pixels.
+cat_img_max_height:                                Category image - max. height
+cat_img_max_height_desc:                           Max. height of a category image in pixels.
+cat_img_max_size:                                  Category image - max. file size
+cat_img_max_size_desc:                             Max. file size of a category image in KiB.
+comment_settings_title:                            Comments
+allow_comments:                                    Allow comments for
+allow_comments_desc:                               Allows comments written by ...
+allow_comments_all:                                all users
+allow_comments_staff:                              staff
+allow_comments_reg:                                registered users
+allow_comments_nobody:                             nobody
+sort_comments:                                     Sort comments
+sort_comments_desc:                                The order by which comments are shown.
+sort_comments_old_first:                           Old ones first
+sort_comments_new_first:                           New ones first
+anti_spam_comments:                                Anti spam at comments for
+anti_spam_comments_desc:                           Anti spam captcha at comments are activated for ...
+anti_spam_comments_all:                            all users
+anti_spam_comments_staff:                          all except staff
+anti_spam_comments_reg:                            unregistered users
+anti_spam_comments_nobody:                         nobody
+new_cat_added:                                     Category has been added
+cat_deleted:                                       Category has been deleted
+cat_not_deleted:                                   Category has not been deleted
+new_cat_title:                                     Add category
+new_cat_name:                                      Name
+new_cat_image:                                     Image
+new_cat_add_button:                                Add & configure further settings
+list_cat_title:                                    Category management
+list_cat_created_by:                               created by
+list_cat_created_on:                               on
+delete_cat_title:                                  Delete category
+delete_cat_question:                               Do you really want to delete this category?
+delete_cat_move_to:                                Move news of deleted category to
+delete_cat_last:                                   The last category cannot be deleted.<br>Please create a new category first.
+delete_back_link:                                  zurück zur Übersicht
+edit_cat_title:                                    Main settings
+edit_cat_name:                                     Name
+edit_cat_name_desc:                                The name of the category.
+edit_cat_date:                                     Date of creation
+edit_cat_date_desc:                                The category has been created on ...
+edit_cat_by:                                       Creator
+edit_cat_by_desc:                                  The category has been created by ...
+edit_cat_title_optional:                           Additional settings
+edit_cat_image:                                    Image
+edit_cat_desc:                                     Description
+edit_cat_desc_desc:                                A short text about the category.
+articles_info_title:                               Informationen
+articles_url:                                      URL
+articles_url_desc:                                 Part of the URL that will be appended after ?go=
+articles_cat:                                      Category
+articles_cat_desc:                                 The category the article belongs to.
+articles_date:                                     Date of creation
+articles_date_desc:                                Date of creation of the article.
+articles_poster:                                   Author
+articles_poster_desc:                              The author of the article.
+articles_new_title:                                Write article
+articles_title:                                    Title
+articles_text:                                     Text
+articles_add_button:                               Add article
+articles_use_html:                                 Use HTML
+articles_use_fscode:                               Use FSCode
+articles_use_para:                                 Use paragraph handling
+articles_added:                                    Article has been added
+existing_url:                                      The given URL already exists. Please choose another one!
+edit_filter_title:                                 Filter & Sort order
+edit_filter_from:                                  Articles from
+edit_filter_all_cat:                               all categories
+edit_filter_sort:                                  and sort by
+edit_filter_arttitle:                              Title
+edit_filter_date:                                  Date
+edit_filter_url:                                   URL
+edit_next_article:                                 next articles
+edit_prev_article:                                 previous articles
+edit_show_articles:                                show articles
+edit_no_articles:                                  No articles found!
+edit_select_article:                               Select article
+edit_entries_found:                                entries found
+delete_title:                                      Delete article
+delete_view_article:                               View full article
+delete_question:                                   Do you really want to delete this article?
+article_deleted:                                   Article has been deleted
+article_not_deleted:                               Article has not been deleted
+
+
+#press
+delpage:                                           Delete entry
+delpage_question:                                  Do you really want to delete that entry?
+delconfirm:                                        Delete entry
+delnotconfirm:                                     Do not delete entry
+note_noreleases:                                   No press reports found!
+
+
+#random
+start_time:                                        Start time
+end_time:                                          End time
+title:                                             Title
+delpic:                                            Delete time-controlled random image
+delpic_question:                                   Do you really want to delete the time-controlled random image?
+delconfirm:                                        Delete random image
+delnotconfirm:                                     Do not delete random image
+delnote:                                           (Hint: Only the entry for the time-controlled random image will be deleted. The image itself remains.)
+note_deleted:                                      The time-controlled random image has been deleted!
+note_notdeleted:                                   The time-controlled random image has not been deleted!
+
+
+#partner
+small_pic:                                         Partner image, small
+small_pic_desc:                                    Small partner image for the navigation.
+big_pic:                                           Partner image, big
+big_pic_desc:                                      Big partner image for the Übersichtsseite.
+name:                                              Partner name
+name_desc:                                         Name of the partner site.
+link:                                              Link
+link_desc:                                         URL of the partner site.
+desc:                                              Description
+desc_desc:                                         Short description of the partner site.
+perm:                                              Show permanently
+perm_desc:                                         Small partner image is shown permanently in the navigation.
+partnerpage:                                       Partner site
+delpage:                                           Delete partner site
+delpage_question:                                  Do you really want to delete the partner site?
+delconfirm:                                        Delete partner site
+delnotconfirm:                                     Do not delete partner site
+add:                                               Add partner site
+save:                                              Save changes
+exact:                                             exact
+max:                                               max.
+px:                                                pixel
+kb:                                                KB
+note_notadded:                                     Partner site could not be added!
+note_addmore:                                      Add another partner site:
+note_uploaded:                                     Images have been uploaded!
+note_added:                                        Partner site has been added!
+note_edited:                                       Changes have been saved!
+note_deleted:                                      The partner site has been deleted!
+note_notdeleted:                                   The partner site has not been deleted!
+note_nopages:                                      No partner sites found!
+
