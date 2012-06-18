@@ -2,7 +2,7 @@ headline_lenght:                           Shorten headlines to
 headline_lenght_desc:                      Max. number of characters in a headline.
 headline_lenght_info:                      -1 means no shortening
 headline_extension:                        Headline extension
-headline_extension_desc:                   Will be appended to a shortened headling.
+headline_extension_desc:                   Will be appended to a shortened headline.
 
 admincp_settings_title:                     Admin-CP Settings
 entry_view:                                 Entry view

@@ -205,7 +205,7 @@ buttons_desc:                                      Buttons that are shown in the
 fscode_settings_title:                             FSCode Settings
 fscode:                                            FSCodes for use by users
 fscode_desc:                                       FS-Codes that can be used by users.
-fscode_info:                                       <b>Unselected FSCodes will not be processed in posts made by users (i.e. comments)!</b>
+fscode_info:                                       <b>Unselected FSCodes will not be processed in posts made by users (e.g. comments)!</b>
 smilie_add_title:                                  Add new smilie
 smilie_add_select:                                 Select smilie
 smilie_add_text:                                   Replacement text
@@ -221,7 +221,7 @@ smilies_up:                                        up
 smilies_down:                                      down
 smilies_shown:                                     are shown
 smilies_not_shown:                                 are not shown
-smilies_delnotconfirm:                             gewählte Smilies nicht löschen
+smilies_delnotconfirm:                             do not delete selected smilies
 smilies_delconfirm:                                delete selectes smilies
 smilies_no_smilies:                                No smilies found
 
@@ -529,7 +529,7 @@ note_notdeleted:                                   The time-controlled random im
 small_pic:                                         Partner image, small
 small_pic_desc:                                    Small partner image for the navigation.
 big_pic:                                           Partner image, big
-big_pic_desc:                                      Big partner image for the Übersichtsseite.
+big_pic_desc:                                      Big partner image for the summary page.
 name:                                              Partner name
 name_desc:                                         Name of the partner site.
 link:                                              Link
