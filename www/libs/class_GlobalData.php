@@ -1,8 +1,8 @@
 <?php
 /**
  * @file     class_global_data.php
- * @folder   /libs
- * @version  0.1
+ * @folder   /libs/
+ * @version  0.3
  * @author   Sweil
  *
  * this class provides access to the frogsystem 2 global data
@@ -24,7 +24,7 @@ class GlobalData {
         $this->sql = $sql;
 
         // set config data
-        $this->loadConfig();
+        $this->loadConfigsByHook('startup');
 
         //get Text object
         $this->text = array(
@@ -43,49 +43,49 @@ class GlobalData {
 
 
     // load configs
-    private function loadConfig() {
+    public function loadConfig($name) {
+        // Load config from DB
+        $data = $this->sql->getRow('config', '*', array('W' => "`config_name` = '".$name."'"));
+        
+        // Load corresponding class and get config array
+        $class_name = "Config".ucfirst(strtolower($config['config_name']));
+        require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
+        @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
+        if (!class_exists($class_name))
+            $class_name = "ConfigData";
+        $this->config[$config['config_name']] = new $class_name($config['config_data'], true);
+    }
+    
+    // load configs by hook
+    private function loadConfigsByHook($hook) {
 
-        //register autoload
-        spl_autoload_register(array($this, 'configLoader'));
+        // include ConfigData
         require_once(FS2_ROOT_PATH . 'libs/class_ConfigData.php');
 
         // Load configs from DB
-        $data = $this->sql->getData('config', '*');
+        $data = $this->sql->getData('config', '*', array('W' => "`config_loadhook` = '".$hook."'") );
         foreach ($data as $config) {
-            // convert from json
-            $config['config_data'] = json_decode($config['config_data'], true);
-            // empty json creats null instead of emtpy array => error
-            if (empty($config['config_data'])) // prevent this
-                $config['config_data'] = array();
-            $config['config_data'] = array_map("utf8_decode", $config['config_data']);
-
             // Load corresponding class and get config array
-            $class_name = "Config".ucfirst($config['config_name']);
-            $config_object = new $class_name($config['config_data']);
-            $this->config[$config['config_name']] = $config_object->getConfigArray();
-            unset($class_name, $config_object);
+            $class_name = "Config".ucfirst(strtolower($config['config_name']));
+            require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
+            @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
+            if (!class_exists($class_name))
+                $class_name = "ConfigData";
+            $this->config[$config['config_name']] = new $class_name($config['config_data'], true);
         }
 
-        //register autoload
-        spl_autoload_unregister(array($this, 'configLoader'));
-
-        $this->setOldArray();   // TODO backwards muss raus
-    }
-
-    // autoloads config classes
-    private function configLoader($className) {
-        require_once FS2_ROOT_PATH.'classes/config/'.$className.'.php';
+        $this->setOldArray();   // TODO remove backwards compatibility
     }
 
     // set config
     public function setConfig() {
         // default global config
         if (func_num_args() == 2) {
-            $this->config['main'][func_get_arg(0)] = func_get_arg(1);
+            $this->config['main']->setConfig(func_get_arg(0), func_get_arg(1));
 
         // return other configs
         } elseif (func_num_args() == 3) {
-            $this->config[func_get_arg(0)][func_get_arg(1)] = func_get_arg(2);
+            $this->config[func_get_arg(0)]->setConfig(func_get_arg(1), func_get_arg(2));
 
         // error
         } else {
@@ -130,11 +130,11 @@ class GlobalData {
 
         // default global config
         if (func_num_args() == 1) {
-            return $this->config['main'][func_get_arg(0)];
+            return $this->config['main']->get(func_get_arg(0));
 
         // return other configs
         } elseif (func_num_args() == 2) {
-            return $this->config[func_get_arg(0)][func_get_arg(1)];
+            return $this->config[func_get_arg(0)]->get(func_get_arg(1));
 
         // error
         } else {
@@ -190,9 +190,9 @@ class GlobalData {
     public function setOldArray() {
         global $global_config_arr;
 
-        $global_config_arr = $this->config['main'];
-        $global_config_arr['system'] = $this->config['system'];
-        $global_config_arr['env'] = $this->config['env'];
+        $global_config_arr = $this->config['main']->getConfigArray();
+        $global_config_arr['system'] = $this->config['system']->getConfigArray();
+        $global_config_arr['env'] = $this->config['env']->getConfigArray();
     }
     public function getOldTetxt() {
         return $this->text['frontend'];

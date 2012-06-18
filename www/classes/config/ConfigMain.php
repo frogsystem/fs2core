@@ -1,8 +1,8 @@
 <?php
 /**
  * @file     ConfigMain.php
- * @folder   /classes/config
- * @version  0.1
+ * @folder   /classes/config/
+ * @version  0.2
  * @author   Sweil
  *
  * this class provides the init of main config data
@@ -11,44 +11,38 @@
 
 class ConfigMain extends ConfigData {
 
-    // Constructor
-    // loading all data
-    public function __construct($data) {
+    // startup
+    public function startup() {
         global $sql, $spam, $path;
 
-        // set start data
-        $this->config = $data;
-
-        //write some env vars into config for backwards
-        // TODO: backwards, muss raus (soll in Zukunft in env)
+        // TODO: remove backwards compatibility, (soll in Zukunft nur in env)
         $this->setConfig('pref',        $sql->getPrefix());
         $this->setConfig('spam',        $spam);
         $this->setConfig('data',        $sql->getDatabaseName());
         $this->setConfig('path',        $path);
 
         // rewrite to other protocol if allowd
-        if ($this->cfg('other_protocol')) {
+        if ($this->get('other_protocol')) {
 
             // script called by https
             if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == '1' || strtolower($_SERVER['HTTPS'])=='on')) {
-                if ($this->cfg('protocol') == 'http://') {
+                if ($this->get('protocol') == 'http://') {
                     $this->setConfig('protocol', 'https://');
                 }
 
             // script called with http
             } else {
-                if ($this->cfg('protocol') == 'https://') {
+                if ($this->get('protocol') == 'https://') {
                     $this->setConfig('protocol', 'http://');
                 }
             }
         }
 
         // write some other config data
-        $this->setConfig('virtualhost', $this->cfg('protocol').$this->cfg('url'));
-        $this->setConfig('home_real',   $this->getRealHome($this->cfg('home'), $this->cfg('home_text')));
-        $this->setConfig('language',    $this->getLanguage($this->cfg('language_text')));
-        $this->setConfig('style',       $this->cfg('style_tag'));
-
+        $this->setConfig('virtualhost', $this->get('protocol').$this->get('url'));
+        $this->setConfig('home_real',   $this->getRealHome($this->get('home'), $this->get('home_text')));
+        $this->setConfig('language',    $this->getLanguage($this->get('language_text')));
+        $this->setConfig('style',       $this->get('style_tag'));
     }
 
 
