@@ -18,6 +18,7 @@ menu_mods:                      AddOns
 # Groups
 group_0:                        hidden
 group_-1:                       Home
+group_popup:                    Popups
 group_general:                  Common
 group_fseditor:                 Editor
 group_stats:                    Statistics
@@ -55,6 +56,13 @@ page_title_start_styles:        Styles
 page_title_start_system:        System
 page_title_start_mods:          AddOns
 
+# Zonen
+page_title_zone_config:         change configuration
+page_link_zone_config:          configuration
+page_title_zone_create:         create
+page_link_zone_create:          create
+page_title_zone_admin:          manage
+page_link_zone_admin:           manage
 
 # Allgemein
 page_title_gen_config:          Page Settings
@@ -65,7 +73,7 @@ page_title_gen_captcha:         Captcha Settings
 page_link_gen_captcha:          Captcha
 page_title_gen_emails:          Edit Email Templates
 page_link_gen_emails:           Emails
-page_title_gen_phpinfo:         PHP & Server Informations
+page_title_gen_phpinfo:         PHP & Server Information
 page_link_gen_phpinfo:          PHP Info
 
 # Editor
@@ -78,7 +86,7 @@ page_link_editor_smilies:       Smilies
 page_title_editor_fscodes:      Edit FSCodes
 page_link_editor_fscodes:       FSCodes
 
-# Statsitk
+# Statistik
 page_title_stat_view:           view
 page_link_stat_view:            view
 page_title_stat_edit:           edit
@@ -93,68 +101,74 @@ page_title_news_config:         change configuration
 page_link_news_config:          configuration
 page_title_news_delete:         delete
 page_link_news_delete:          delete
-page_title_news_add:            schreiben
-page_link_news_add:             schreiben
+page_title_news_add:            write
+page_link_news_add:             write
 page_title_news_comments:       comments
 page_link_news_comments:        comments
 page_title_news_edit:           edit
 page_link_news_edit:            edit
 page_title_news_cat:            Manage categories
 page_link_news_cat:             categories
+page_title_news_comments_list:  Manage comments
+page_link_news_comments_list:   comments
 
 # Artikel
 page_title_articles_config:     change configuration
 page_link_articles_config:      configuration
-page_title_articles_add:        schreiben
-page_link_articles_add:         schreiben
+page_title_articles_add:        write
+page_link_articles_add:         write
 page_title_articles_edit:       edit
 page_link_articles_edit:        edit
-page_title_articles_cat:        Kategorien verwalten
+page_title_articles_cat:        manage categories
 page_link_articles_cat:         categories
 
 # Presseberichte
-page_title_press_config:        Konfiguration ändern
+page_title_press_config:        change configuration
 page_link_press_config:         configuration
 page_title_press_add:           add
 page_link_press_add:            add
 page_title_press_edit:          edit
 page_link_press_edit:           edit
-page_title_press_admin:         Verwaltung
-page_link_press_admin:          Verwaltung
+page_title_press_admin:         manage
+page_link_press_admin:          manage
 
 # Inhalts-Bilder
 page_title_cimg_add:            add
 page_link_cimg_add:             add
-page_title_cimg_admin:          verwalten
-page_link_cimg_admin:           verwalten
+page_title_cimg_admin:          manage
+page_link_cimg_admin:           manage
+page_title_cimg_cat:            categories
+page_link_cimg_cat:             categories
+page_title_cimg_import:         import old images
+page_link_cimg_import:          import
 
 # Galerie > Allgemein
 page_title_gallery_config:      change configuration
 page_link_gallery_config:       configuration
-page_title_gallery_cat:         Kategorien verwalten
-page_link_gallery_cat:          Kategorien
-page_title_gallery_folder:      Ordner verwalten
-page_link_gallery_folder:       Ordner
+page_title_gallery_cat:         manage categories
+page_link_gallery_cat:          categories
+page_title_gallery_folder:      Manage folders
+page_link_gallery_folder:       Folders
 
-page_title_gallery_img:         Bilder verwalten
+page_title_gallery_img:         Manage images
 page_link_gallery_img:          Images
 page_title_gallery_img_add:     Add images
 page_link_gallery_img_add:      add
 page_title_gallery_img_edit:    Edit images
 page_link_gallery_img_edit:     edit
 
-page_title_gallery_wp:          Wallpaper verwalten
+page_title_gallery_wp:          Manage wallpapers
 page_link_gallery_wp:           Wallpaper
-page_title_gallery_wp_add:      Wallpaper hinzufügen
+page_title_gallery_wp_add:      Add wallpaper
 page_link_gallery_wp_add:       add
-page_title_gallery_wp_edit:     Wallpaper bearbeiten
+page_title_gallery_wp_edit:     Edit wallpaper
 page_link_gallery_wp_edit:      edit
 
 # Galerie > Vorschaubilder
-page_title_randompic_config:    Konfiguration ändern
+page_title_randompic_config:    change configuration
 page_link_randompic_config:     configuration
-page_title_randompic_cat:       Kategorien auswählen
-page_link_randompic_cat:        Kategorie Auswahl
+page_title_randompic_cat:       select category
+page_link_randompic_cat:        category selection
 page_title_timedpic_add:        add
 page_link_timedpic_add:         add
 page_title_timedpic_edit:       verwalten
@@ -223,8 +237,8 @@ page_link_group_rights:         permissions
 # Styles
 page_title_style_add:           create
 page_link_style_add:            create
-page_title_style_management:    verwalten
-page_link_style_management:     verwalten
+page_title_style_management:    manage
+page_link_style_management:     manage
 page_title_style_css:           Edit CSS files
 page_link_style_css:            CSS files
 page_title_style_js:            Edit Java Script files
@@ -313,3 +327,10 @@ page_title_fscode_edit_remove:  delete
 page_link_fscode_edit_remove:   delete
 page_title_fscode_settings:     Settings
 page_link_fscode_settings:      Settings
+
+# PopUps
+page_title_find_applet:         Search for applets ...
+page_title_find_user:           Search for users ...
+page_title_find_file:           Select file ...
+page_title_news_preview:        News preview
+page_title_article_preview:     Article preview
