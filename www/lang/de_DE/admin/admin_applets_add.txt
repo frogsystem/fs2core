@@ -1,5 +1,5 @@
-applets_include_title: Laden &amp; ausführen
-applets_include_desc: Regelt wann das Applet geladen und ausgeführt wird.
+applets_include_title: Laden &amp; ausf&uuml;hren
+applets_include_desc: Regelt wann das Applet geladen und ausgef&uuml;hrt wird.
 
 applets_include_always: immer
 applets_include_ondemand: nur bei Bedarf

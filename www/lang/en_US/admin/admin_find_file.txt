@@ -1,0 +1,13 @@
+select_file: select file
+no_connection: No connection found!
+connection_error: FTP connection failed!
+connection_error_text: Tried to connect to %s using name %s.
+connection_ok: Connection to %s using name %s established.
+
+send_file_size: send file size, too
+file_size: file size
+path: path
+change_dir: change to directory
+get_filepath: select file path
+get_folderpath: select directory path
+up: up

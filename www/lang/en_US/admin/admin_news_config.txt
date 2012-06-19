@@ -1,0 +1,61 @@
+headline_lenght:                           Shorten headlines to
+headline_lenght_desc:                      Max. number of characters in a headline.
+headline_lenght_info:                      -1 means no shortening
+headline_extension:                        Headline extension
+headline_extension_desc:                   Will be appended to a shortened headline.
+
+admincp_settings_title:                     Admin-CP Settings
+entry_view:                                 Entry view
+entry_view_desc:                            Type of view of an entry in the news list.
+entry_view_simple:                          simple view
+entry_view_extended:                        extended view
+entry_view_full:                            full view
+entries_per_page:                           Entries per page
+entries_per_page_desc:                      Entries shown per page in the news list.
+force_cat_selection:                        Force category selection
+force_cat_selection_desc:                   Enforces the selection of a category during news creation
+
+
+
+settings_title:                                    Settings
+news_per_page:                                     News per page
+news_per_page_desc:                                Number of news that are shown per page.
+num_headlines:                                     Headlines
+num_headlines_desc:                                Number of headlines that are shown.
+post_settings_title:                               Posts
+allow_html:                                        HTML code
+allow_html_desc:                                   Allows HTML code in ...
+allow_fs:                                          FSCode
+allow_fs_desc:                                     Allows FSCode in ...
+allow_para:                                        Paragraph handling
+allow_para_desc:                                   Activates the paragraph handling in ...
+allow_code_no:                                     Off
+allow_code_news:                                   News
+allow_code_comments:                               Comments
+allow_code_both:                                   News & comments
+cat_settings_title:                                Categories
+cat_img_max_width:                                 Category image - max. width
+cat_img_max_width_desc:                            Max. width of a category image in pixels.
+cat_img_max_height:                                Category image - max. height
+cat_img_max_height_desc:                           Max. height of a category image in pixels.
+cat_img_max_size:                                  Category image - max. file size
+cat_img_max_size_desc:                             Max. file size of a category image in KiB.
+comment_settings_title:                            Comments
+allow_comments:                                    Allow comments for
+allow_comments_desc:                               Allows comments written by ...
+allow_comments_all:                                all users
+allow_comments_staff:                              staff
+allow_comments_reg:                                registered users
+allow_comments_nobody:                             nobody
+allow_comments_admins:                             Administrators
+sort_comments:                                     Sort comments
+sort_comments_desc:                                The order by which comments are shown.
+sort_comments_old_first:                           Old ones first
+sort_comments_new_first:                           New ones first
+anti_spam_comments:                                Anti spam at comments for
+anti_spam_comments_desc:                           Anti spam captcha at comments are activated for ...
+anti_spam_comments_all:                            all users
+anti_spam_comments_staff:                          all except staff
+anti_spam_comments_reg:                            unregistered users
+anti_spam_comments_nobody:                         nobody
+anti_spam_comments_admins:                         all except administrators
