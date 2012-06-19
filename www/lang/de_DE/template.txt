@@ -75,7 +75,7 @@ user_profile_user_reg_date:            Registrierungsdatum des Benutzers
 user_profile_user_homepage_link:       Text-Link zur Homepage des Benutzers
 user_profile_user_homepage_url:        URL der Homepage des Benutzers
 user_profile_user_icq:                 ICQ-Nummer des Benutzers
-user_profile_user_aim:                 AIM E-Mai des Benutzers
+user_profile_user_aim:                 AIM E-Mail des Benutzers
 user_profile_user_wlm:                 Windows Live ID des Benutzers
 user_profile_user_yim:                 Yahoo!-ID des Benutzers
 user_profile_user_skype:               Skype-Name des Benutzers
@@ -100,22 +100,22 @@ user_profile_edit_show_mail_checked:   Setzt die „E-Mail anzeigen?“-Einstellung 
 user_list_title:                       Benutzerliste
 user_list_desc:                        Seite auf der alle registierten Benutzer angezeigt werden
 user_list_lines:                       Bindet die Benutzer-Zeilen ein
-user_list_order_id:                    URL für Sortiertung nach ID
-user_list_order_name:                  URL für Sortiertung nach Name
-user_list_order_mail:                  URL für Sortiertung nach E-Mail
-user_list_order_date:                  URL für Sortiertung nach Datum
-user_list_order_news:                  URL für Sortiertung nach News
-user_list_order_comments:              URL für Sortiertung nach Kommentaren
-user_list_order_articles:              URL für Sortiertung nach Artikel
-user_list_order_downloads:             URL für Sortiertung nach Downloads
-user_list_arrow_id:                    Pfeil für Sortiertung nach ID
-user_list_arrow_name:                  Pfeil für Sortiertung nach Name
-user_list_arrow_mail:                  Pfeil für Sortiertung nach E-Mail
-user_list_arrow_date:                  Pfeil für Sortiertung nach Datum
-user_list_arrow_news:                  Pfeil für Sortiertung nach News
-user_list_arrow_comments:              Pfeil für Sortiertung nach Kommentaren
-user_list_arrow_articles:              Pfeil für Sortiertung nach Artikel
-user_list_arrow_downloads:             Pfeil für Sortiertung nach Downloads
+user_list_order_id:                    URL für Sortierung nach ID
+user_list_order_name:                  URL für Sortierung nach Name
+user_list_order_mail:                  URL für Sortierung nach E-Mail
+user_list_order_date:                  URL für Sortierung nach Datum
+user_list_order_news:                  URL für Sortierung nach News
+user_list_order_comments:              URL für Sortierung nach Kommentaren
+user_list_order_articles:              URL für Sortierung nach Artikel
+user_list_order_downloads:             URL für Sortierung nach Downloads
+user_list_arrow_id:                    Pfeil für Sortierung nach ID
+user_list_arrow_name:                  Pfeil für Sortierung nach Name
+user_list_arrow_mail:                  Pfeil für Sortierung nach E-Mail
+user_list_arrow_date:                  Pfeil für Sortierung nach Datum
+user_list_arrow_news:                  Pfeil für Sortierung nach News
+user_list_arrow_comments:              Pfeil für Sortierung nach Kommentaren
+user_list_arrow_articles:              Pfeil für Sortierung nach Artikel
+user_list_arrow_downloads:             Pfeil für Sortierung nach Downloads
 user_list_userline_title:              Benutzer-Zeile
 user_list_userline_desc:               Darstellung der Zeile für normale Benutzer
 user_list_line_user_url:               URL der Benutzerseite
@@ -195,13 +195,13 @@ search_results_body_desc:              Block der Suchergebnisse einer Art des In
 search_results_body_type_title:        Titel der Art des Inhalts.
 search_results_body_results:           Bindet die Ergebnis-Zeilen ein.
 search_results_body_num_results:       Anzahl der gefundenen Inhalte einer Art.
-search_results_body_more_results:      Bindet „Mehr Ergebnisse-Link“ ein, wenn nötig.
+search_results_body_more_results:      Bindet „Mehr Ergebnisse“-Link ein, wenn nötig.
 search_body_title:                     Suchseite
 search_body_desc:                      Darstellung der gesamten Suchseite
 search_body_search:                    Bindet das Suchfeld ein.
 search_body_news:                      Bindet die News-Suchergebnisse ein.
 search_body_articles:                  Bindet die Artikel-Suchergebnisse ein.
-search_body_downloads:                 Bindet die Donwloads-Suchergebnisse ein.
+search_body_downloads:                 Bindet die Downloads-Suchergebnisse ein.
 previewimg_body_title:                 Vorschaubild
 previewimg_body_desc:                  Darstellung des Vorschaubild-Applets
 previewimg_body_previewimg:            HTML-Einbindung des kleinen Vorschaubildes.
@@ -298,7 +298,7 @@ editor_button_description:             Anordnung des IWAC-Editors auf der Seite.
 editor_button_help_1:                  URL zum Button Bild.
 editor_button_help_2:                  Alternativer Anzeige Text.
 editor_button_help_3:                  Beschreibungstext beim Überfahren mit der Maus
-editor_button_help_4:                  Fügt den Javascript-Code ein, der das einfügen ins Textfeld steuert
+editor_button_help_4:                  Fügt den JavaScript-Code ein, der das Einfügen ins Textfeld steuert
 editor_separator_title:                Teiler Darstellung
 editor_separator_description:          Darstellung des Teilers zwischen Button-Gruppen.
 editor_smilies_title:                  Smilies
