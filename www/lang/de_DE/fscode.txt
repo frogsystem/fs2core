@@ -35,8 +35,8 @@ example_numlist: [numlist][*]Listenpunkt 1 [*]Listenpunkt 2[/numlist]
 example_font: [font=Arial]Text in Arial[/font]
 example_color: [color=#FF0000]Text in #FF0000 (rot)[/color], Farben: Hexadezimal-Code, englisches Wort
 example_size: [size=5]Text in Größe 5[/size], Größen: 0-7
-example_code: [code]Text in Schrift mit fester Breiter[/code], [code=html]Inhalt mit <b>HTML-Code</b>[/code]
+example_code: [code]Text in Schrift mit fester Breite[/code], [code=html]Inhalt mit <b>HTML-Code</b>[/code]
 example_quote: [quote]Zitat[/quote], [quote=Quelle]Zitat aus Quelle[/quote]
 example_video: [video]7[/video], [video]Video-URL[/video]
-example_noparse: [noparse]Inhalt mit [b]FS-Code[/b] der nicth umgewandelt wird.[/noparse]
+example_noparse: [noparse]Inhalt mit [b]FS-Code[/b], der nicht umgewandelt wird.[/noparse]
 example_smilies: :-), ;-), :-p, etc.

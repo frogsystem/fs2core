@@ -1,0 +1,3 @@
+#@admin/admin_applets_add
+delete_include_always: always load &amp; execute
+delete_include_ondemand: load &amp; execute on demand only

@@ -1,0 +1,18 @@
+# Language-Definition for [FS2]/admin/admin_gallery_img.php
+
+# Language-Definition for [FS2]/admin/template/admin_gallery_img.tpl
+
+add_title:                      Add images
+
+add_select_images:              Select images
+add_img_title:                  Title
+
+more_uploads:                   More upload fields
+more_uploads_button:            +
+more_uploads_title:             Add upload fields
+
+unsorted:                       (unsorted)
+img_folder:                     Folder
+cat_default:                    Category default
+global_default:                 Gallery default
+upload_images:                  Add images

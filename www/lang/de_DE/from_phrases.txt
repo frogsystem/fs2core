@@ -208,7 +208,7 @@ fscode_desc:                                       FS-Codes, die von Usern verwe
 fscode_info:                                       <b>Nicht gew&auml;hlte FSCodes werden in von Usern erstellten Beitr&auml;gen (z.B. Kommentaren) nicht umgewandelt!</b>
 smilie_add_title:                                  Neuen Smilie hinzufügen
 smilie_add_select:                                 Smilie auswählen
-smilie_add_text:                                   Ersetungstext
+smilie_add_text:                                   Ersetzungstext
 smilie_add_insert:                                 Einfügen nach
 smilie_add_at_beginn:                              am Anfang
 smilie_add_at_end:                                 am Ende
