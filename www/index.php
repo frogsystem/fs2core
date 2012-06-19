@@ -16,18 +16,8 @@ require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
 require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 
-//Include Library-Classes
-#require_once(FS2_ROOT_PATH . 'libs/class_HashMapper.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_template.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_fileaccess.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_lang.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_search.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_searchquery.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_Mail.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_MailManager.php');
 
-
-// Load Text TODO: backwards compatibiliy
+// Load Text TODO: remove backwards compatibiliy
 $TEXT['frontend'] = $FD->getOldTetxt();
 
 

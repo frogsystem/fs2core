@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 18. Juni 2012 um 13:47
+-- Erstellungszeit: 19. Juni 2012 um 11:35
 -- Server Version: 5.5.8
 -- PHP-Version: 5.3.5
 
@@ -364,36 +364,6 @@ INSERT INTO `fs2_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_da
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_articles_config`
---
-
-DROP TABLE IF EXISTS `fs2_articles_config`;
-CREATE TABLE `fs2_articles_config` (
-  `id` tinyint(1) NOT NULL,
-  `html_code` tinyint(4) NOT NULL DEFAULT '1',
-  `fs_code` tinyint(4) NOT NULL DEFAULT '1',
-  `para_handling` tinyint(4) NOT NULL DEFAULT '1',
-  `cat_pic_x` smallint(4) NOT NULL DEFAULT '0',
-  `cat_pic_y` smallint(4) NOT NULL DEFAULT '0',
-  `cat_pic_size` smallint(4) NOT NULL DEFAULT '0',
-  `com_rights` tinyint(1) NOT NULL DEFAULT '1',
-  `com_antispam` tinyint(1) NOT NULL DEFAULT '1',
-  `com_sort` varchar(4) NOT NULL DEFAULT 'DESC',
-  `acp_per_page` smallint(3) NOT NULL DEFAULT '15',
-  `acp_view` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_articles_config`
---
-
-INSERT INTO `fs2_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `acp_per_page`, `acp_view`) VALUES
-(1, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 3, 2);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs2_captcha_config`
 --
 
@@ -490,29 +460,11 @@ CREATE TABLE `fs2_config` (
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUES
-('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}&nbsp;<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">&nbsp;{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab&nbsp;zur\\\\u00fcck<\\\\/a>&nbsp;|\\",\\"page_next\\":\\"|&nbsp;<a href=\\\\\\"{..url..}\\\\\\">weiter&nbsp;\\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"random_timed_deltime\\":\\"604800\\",\\"search_index_update\\":\\"1\\",\\"search_index_time\\":\\"1310056241\\",\\"url_style\\":\\"default\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\"}', 'startup'),
+('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}\\\\u00a0<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">\\\\u00a0{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab\\\\u00a0zur\\\\u00fcck<\\\\/a>\\\\u00a0|\\",\\"page_next\\":\\"|\\\\u00a0<a href=\\\\\\"{..url..}\\\\\\">weiter \\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"random_timed_deltime\\":\\"604800\\",\\"search_index_update\\":\\"1\\",\\"search_index_time\\":\\"1310056241\\",\\"url_style\\":\\"default\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\"}', 'startup'),
 ('system', '{\\"var_loop\\":20}', 'startup'),
 ('env', '{}', 'startup'),
-('info', '{}', 'startup');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_config_system`
---
-
-DROP TABLE IF EXISTS `fs2_config_system`;
-CREATE TABLE `fs2_config_system` (
-  `id` smallint(2) NOT NULL,
-  `var_loop` mediumint(8) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_config_system`
---
-
-INSERT INTO `fs2_config_system` (`id`, `var_loop`) VALUES
-(1, 20);
+('info', '{}', 'startup'),
+('articles', '{\\"acp_per_page\\":\\"3\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"1\\",\\"com_sort\\":\\"ASC\\",\\"acp_view\\":\\"2\\"}', 'none');
 
 -- --------------------------------------------------------
 
@@ -537,7 +489,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 64, 2347, 2, 4, 65527, 1);
+(1, 65, 2362, 2, 4, 65527, 1);
 
 -- --------------------------------------------------------
 
@@ -560,7 +512,7 @@ CREATE TABLE `fs2_counter_ref` (
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://localhost/', 55, 1302557491, 1307980522),
-('http://localhost/fs2/', 3, 1316955935, 1317122279);
+('http://localhost/fs2/', 4, 1316955935, 1340096988);
 
 -- --------------------------------------------------------
 
@@ -634,7 +586,8 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 12, 29, 2, 2),
 (2012, 2, 3, 1, 4),
 (2012, 6, 12, 1, 2),
-(2012, 6, 18, 1, 5);
+(2012, 6, 18, 1, 6),
+(2012, 6, 19, 1, 14);
 
 -- --------------------------------------------------------
 
@@ -870,54 +823,6 @@ CREATE TABLE `fs2_ftp` (
 
 INSERT INTO `fs2_ftp` (`ftp_id`, `ftp_title`, `ftp_type`, `ftp_url`, `ftp_user`, `ftp_pw`, `ftp_ssl`, `ftp_http_url`) VALUES
 (1, 'DL-Server', 'dl', 'ftp.suse.de', 'anonymous', 'anonymous', 0, 'ftp://ftp.suse.de');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_global_config`
---
-
-DROP TABLE IF EXISTS `fs2_global_config`;
-CREATE TABLE `fs2_global_config` (
-  `id` tinyint(1) NOT NULL DEFAULT '1',
-  `version` varchar(10) NOT NULL DEFAULT '0.9',
-  `virtualhost` varchar(255) NOT NULL,
-  `admin_mail` varchar(100) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `dyn_title` tinyint(1) NOT NULL,
-  `dyn_title_ext` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `keywords` text NOT NULL,
-  `publisher` varchar(255) NOT NULL,
-  `copyright` text NOT NULL,
-  `show_favicon` tinyint(1) NOT NULL DEFAULT '1',
-  `style_id` mediumint(8) NOT NULL DEFAULT '0',
-  `style_tag` varchar(30) NOT NULL DEFAULT 'default',
-  `allow_other_designs` tinyint(1) NOT NULL DEFAULT '1',
-  `date` varchar(255) NOT NULL,
-  `time` varchar(255) NOT NULL,
-  `datetime` varchar(255) NOT NULL,
-  `timezone` varchar(255) NOT NULL DEFAULT 'default',
-  `page` text NOT NULL,
-  `page_next` text NOT NULL,
-  `page_prev` text NOT NULL,
-  `random_timed_deltime` int(12) NOT NULL DEFAULT '0',
-  `feed` varchar(15) NOT NULL,
-  `language_text` varchar(5) NOT NULL DEFAULT 'de_DE',
-  `home` tinyint(1) NOT NULL DEFAULT '0',
-  `home_text` varchar(100) NOT NULL,
-  `auto_forward` int(2) NOT NULL DEFAULT '3',
-  `search_index_update` tinyint(1) NOT NULL DEFAULT '1',
-  `search_index_time` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_global_config`
---
-
-INSERT INTO `fs2_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `timezone`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix6', 'http://localhost/fs2/www/', 'mail@sweil.de', 'Hansens wunderbare Welt', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', 'Europe/Berlin', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 1, 1310056241);
 
 -- --------------------------------------------------------
 
@@ -2297,7 +2202,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 0, 1340027165);
+('127.0.0.1', 1, 1340105677);
 
 -- --------------------------------------------------------
 

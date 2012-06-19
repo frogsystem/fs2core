@@ -21,7 +21,7 @@ if (
                 && !empty($_POST['page_prev'])
                 && is_language_text($_POST['language_text'])
                 && ($_POST['home'] == 0 || ($_POST['home'] == 1 && !empty($_POST['home_text'])))
-        )
+    )
 {
     // url slash & leading http://
     if (substr($_POST['url'], -1) != '/') {
@@ -68,7 +68,6 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        //$data = $sql->getRow('global_config', $used_cols, array('W' => "`id` = '1'"));
         $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'main'"));
         $data = json_array_decode($data['config_data']);
         putintopost($data);
@@ -76,7 +75,6 @@ if ( TRUE )
 
     // security functions
     $_POST = array_map('killhtml', $_POST);
-
 
     // Conditions
     $adminpage->addCond('dyn_title_ext', !($_POST['dyn_title'] == 1));
@@ -108,9 +106,6 @@ if ( TRUE )
     );
 
     // styles
-    $active_style = $sql->getFieldById('global_config', 'style_id', 1);
-    settype($active_style, 'integer');
-
     $styles = $sql->get('styles', array('style_id', 'style_tag'),
         array('W' => '`style_id` != 0 AND `style_allow_use` = 1', 'O' => '`style_tag`')
     );
@@ -122,7 +117,7 @@ if ( TRUE )
         '<option value="'.$style['style_id'].'" '
         .getselected($style['style_id'], $_POST['style_id']).'>'
             .killhtml($style['style_tag'])
-            .($style['style_id'] == $active_style ? ' ('.$FD->text('admin', 'active').')' : '')
+            .($style['style_id'] == $FD->cfg('db_style_id') ? ' ('.$FD->text('admin', 'active').')' : '')
         .'</option>'."\n";
     }
     $adminpage->addText('style_options', $style_options);

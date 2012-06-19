@@ -5,21 +5,12 @@
 /////////////////////////
 
 // Load Article Config
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_config', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('articles');
 
-if ($global_config_arr['goto'] == 'articles') {
+if ($FD->cfg('goto') == 'articles') {
 
-    settype($_GET['id'], 'integer');
-
-     // Load Article Data from DB
-    $index = mysql_query ( '
-                            SELECT *
-                            FROM `'.$global_config_arr['pref']."articles`
-                            WHERE `article_id` = '".$_GET['id']."'
-                            ORDER BY `article_id`
-                            LIMIT 0,1
-    ", $FD->sql()->conn() );
+    // Load Article Data from DB
+    $article_arr = $FD->sql()->getById('articles', '*', $_GET['id'], 'article_id');
 
     // Set canonical parameters
     $FD->setConfig('info', 'canonical', array('id'));
@@ -27,13 +18,9 @@ if ($global_config_arr['goto'] == 'articles') {
 } else {
 
     // Load Article Data from DB
-    $index = mysql_query ( '
-                            SELECT *
-                            FROM `'.$global_config_arr['pref']."articles`
-                            WHERE `article_url` = '".$_GET['go']."'
-                            ORDER BY `article_id`
-                            LIMIT 0,1
-    ", $FD->sql()->conn() );
+    $article_arr = $FD->sql()->getRow('articles', '*', array(
+        'W' => "`article_url` = '".$FD->sql()->escape($_GET['go'])."'", 
+        'O' => "`article_id`"));
 
     // Set canonical parameters
     $FD->setConfig('info', 'canonical', array());
@@ -41,15 +28,12 @@ if ($global_config_arr['goto'] == 'articles') {
 
 
 // Article doesn't exist
-if ( mysql_num_rows ( $index ) != 1 ) {
-    $article_arr['template'] = sys_message ( $TEXT['frontend']->get('systemmessage'), $TEXT['frontend']->get('article_not_found'), 404 );
+if (empty($article_arr)) {
+    $article_arr['template'] = sys_message($FD->text('frontend', 'systemmessage'), $FD->text('frontend', 'article_not_found'), 404 );
 }
 
 // Article exists
-else
-{
-    // Get Aricle Data
-    $article_arr = mysql_fetch_assoc ( $index );
+else {
 
     // check for article_url parameter
     if (!empty($article_arr['article_url'])) {
@@ -63,31 +47,26 @@ else
     settype ( $article_arr['article_user'], 'integer' );
 
     // Get User & Create User Template
-    $index = mysql_query ( '
-                            SELECT `user_id`, `user_name`
-                            FROM `'.$global_config_arr['pref']."user`
-                            WHERE `user_id` = '".$article_arr['article_user']."'
-                            LIMIT 0,1
-    ", $FD->sql()->conn() );
+    $user_arr = $FD->sql()->getById('user', array('user_id', 'user_name'), $article_arr['article_user'], 'user_id');
+    
     // User exists
-    if ( mysql_num_rows ( $index ) == 1 ) {
-        // Get User Data
-        $user_arr = mysql_fetch_assoc ( $index );
+    if (!empty($user_arr)) {
 
-        settype ( $user_arr['user_id'], 'integer' );
-        $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
+        settype($user_arr['user_id'], 'integer');
+        $user_arr['user_name'] = kill_replacements($user_arr['user_name'], TRUE);
         $user_arr['user_url'] = url('user', array('id' => $user_arr['user_id']));
 
         // Create Template
         $author_template = new template();
-        $author_template->setFile ( '0_articles.tpl' );
-        $author_template->load ( 'AUTHOR' );
+        $author_template->setFile ('0_articles.tpl');
+        $author_template->load('AUTHOR');
 
-        $author_template->tag ( 'user_id', $user_arr['user_id'] );
-        $author_template->tag ( 'user_name', $user_arr['user_name'] );
-        $author_template->tag ( 'user_url', $user_arr['user_url'] );
+        $author_template->tag('user_id', $user_arr['user_id']);
+        $author_template->tag('user_name', $user_arr['user_name']);
+        $author_template->tag('user_url', $user_arr['user_url']);
 
-        $article_arr['author_template'] = $author_template->display ();
+        $article_arr['author_template'] = $author_template->display();
+        
     } else {
         $article_arr['author_template'] = '';
         $user_arr['user_id'] = '';
@@ -96,27 +75,28 @@ else
     }
 
     // Get Date & Create Date Template
-    if ( $article_arr['article_date'] != 0 ) {
-        $article_arr['date_formated'] = date_loc ( $global_config_arr['date'], $article_arr['article_date'] );
+    if ($article_arr['article_date'] != 0) {
+        $article_arr['date_formated'] = date_loc($FD->cfg('date'), $article_arr['article_date']);
+        
         // Create Template
         $date_template = new template();
-        $date_template->setFile ( '0_articles.tpl' );
-        $date_template->load ( 'DATE' );
-        $date_template->tag ( 'date', $article_arr['date_formated'] );
-        $article_arr['date_template'] = $date_template->display ();
+        $date_template->setFile ('0_articles.tpl');
+        $date_template->load ('DATE');
+        $date_template->tag ('date', $article_arr['date_formated']);
+        $article_arr['date_template'] = $date_template->display();
     } else {
         $article_arr['date_formated'] = '';
         $article_arr['date_template'] = '';
     }
 
     // Create FSCode, HTML & Para Boolean-Values
-    $article_arr['fscode_bool'] = $article_arr['article_fscode'] && ( $config_arr['fs_code'] == 2 || $config_arr['fs_code'] == 4 );
-    $article_arr['html_bool'] = $article_arr['article_html'] && ( $config_arr['html_code'] == 2 || $config_arr['html_code'] == 4 );
-    $article_arr['para_bool'] = $article_arr['article_para'] && ( $config_arr['para_handling'] == 2 || $config_arr['para_handling'] == 4 );
+    $article_arr['fscode_bool'] = $article_arr['article_fscode'] && oneof($FD->cfg('articles', 'fs_code'), 2, 4);
+    $article_arr['html_bool'] = $article_arr['article_html'] && oneof($FD->cfg('articles', 'html_code'), 2, 4);
+    $article_arr['para_bool'] = $article_arr['article_para'] && oneof($FD->cfg('articles', 'para_handling'), 2, 4);
 
     // Format Article-Text
     $article_arr['article_text'] = fscode ( $article_arr['article_text'], $article_arr['fscode_bool'], $article_arr['html_bool'], $article_arr['para_bool'] );
-    $article_arr['article_title'] = stripslashes ( $article_arr['article_title'] );
+    $article_arr['article_title'] = unslash($article_arr['article_title']);
 
     // Create Template
     $article_arr['template'] = new template();
@@ -135,10 +115,10 @@ else
     $article_arr['template'] = $article_arr['template']->display ();
 
     // Dynamic Title Settings
-    $global_config_arr['dyn_title_page'] = $article_arr['article_title'];
-    $global_config_arr['content_author'] = stripslashes ( $user_arr['user_name'] );
+    $FD->setConfig('info', 'page_title', $article_arr['article_title']);
+    $FD->setConfig('info', 'content_author', unslash($user_arr['user_name']));
 }
 
 // Display Template
-$template =  $article_arr['template'];
+$template = $article_arr['template'];
 ?>

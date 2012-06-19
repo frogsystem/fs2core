@@ -230,16 +230,14 @@ function get_meta ()
 ///////////////////
 function get_title ()
 {
-    global $global_config_arr;
-
-    settype($global_config_arr['dyn_title'], 'integer');
-
-    if ($global_config_arr['dyn_title'] === 1 && isset($global_config_arr['dyn_title_page'])) {
-        $dyn_title = str_replace('{..title..}', $global_config_arr['title'], $global_config_arr['dyn_title_ext']);
-        $dyn_title = str_replace('{..ext..}', $global_config_arr['dyn_title_page'], $dyn_title);
+    global $FD;
+    
+    if ($FD->cfg('dyn_title') == 1 && $FD->configExists('info', 'page_title')) {
+        $dyn_title = str_replace('{..title..}', $FD->cfg('title'), $FD->cfg('dyn_title_ext'));
+        $dyn_title = str_replace('{..ext..}', $FD->info('page_title'), $dyn_title);
         return $dyn_title;
     } else {
-        return $global_config_arr['title'];
+        return $FD->cfg('title');
     }
 }
 
@@ -1068,7 +1066,7 @@ function set_style ()
     global $FD;
     global $global_config_arr;
 
-    if ( isset ( $_GET['style'] ) && $global_config_arr['allow_other_designs'] == 1 ) {
+    if ( isset ( $_GET['style'] ) && $FD->cfg('allow_other_designs') == 1 ) {
         $index = mysql_query ( '
                                 SELECT `style_id`, `style_tag`
                                 FROM `'.$global_config_arr['pref']."styles`
@@ -1098,8 +1096,6 @@ function set_style ()
     }
     copyright ();
 }
-function set_design ()
-{ set_style(); }
 
 //////////////////////////////////
 //// copyright security check ////

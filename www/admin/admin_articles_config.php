@@ -1,54 +1,33 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
+###################
+## Page Settings ##
+###################
+$used_cols = array('acp_per_page', 'html_code', 'fs_code', 'para_handling', 'cat_pic_x', 'cat_pic_y', 'cat_pic_size', 'com_rights', 'com_antispam', 'com_sort', 'acp_per_page', 'acp_view');
+
 ///////////////////////
 //// Update Config ////
 ///////////////////////
-
-// Write Data into DB
 if (
-		$_POST['cat_pic_x'] && $_POST['cat_pic_x'] > 0
-		&& $_POST['cat_pic_y'] && $_POST['cat_pic_y'] > 0
-		&& $_POST['cat_pic_size'] && $_POST['cat_pic_size'] > 0
-		&& $_POST['acp_per_page'] && $_POST['acp_per_page'] > 0
-	)
+	isset($_POST['cat_pic_x']) && $_POST['cat_pic_x'] > 0
+	&& isset($_POST['cat_pic_y']) && $_POST['cat_pic_y'] > 0
+	&& isset($_POST['cat_pic_size']) && $_POST['cat_pic_size'] > 0
+	&& isset($_POST['acp_per_page']) && $_POST['acp_per_page'] > 0
+    )
 {
-	// security functions
-    settype ( $_POST['html_code'], 'integer' );
-    settype ( $_POST['fs_code'], 'integer' );
-    settype ( $_POST['para_handling'], 'integer' );
-    settype ( $_POST['cat_pic_x'], 'integer' );
-    settype ( $_POST['cat_pic_y'], 'integer' );
-    settype ( $_POST['cat_pic_size'], 'integer' );
-    settype ( $_POST['com_rights'], 'integer' );
-    settype ( $_POST['com_antispam'], 'integer' );
-    settype ( $_POST['acp_per_page'], 'integer' );
-    settype ( $_POST['acp_view'], 'integer' );
+    // prepare data
+    $data = frompost($used_cols);
 
-    $_POST['com_sort'] = savesql ( $_POST['com_sort'] );
-
-	// MySQL-Update-Query
-    mysql_query ('
-					UPDATE `'.$global_config_arr['pref']."articles_config`
-                 	SET
-					 	`html_code` = '".$_POST['html_code']."',
-                     	`fs_code` = '".$_POST['fs_code']."',
-                     	`para_handling` = '".$_POST['para_handling']."',
-                     	`cat_pic_x` = '".$_POST['cat_pic_x']."',
-                     	`cat_pic_y` = '".$_POST['cat_pic_y']."',
-                     	`cat_pic_size` = '".$_POST['cat_pic_size']."',
-                     	`com_rights` = '".$_POST['com_rights']."',
-                     	`com_antispam` = '".$_POST['com_antispam']."',
-                     	`com_sort` = '".$_POST['com_sort']."',
-                     	`acp_per_page` = '".$_POST['acp_per_page']."',
-                     	`acp_view` = '".$_POST['acp_view']."'
-                 	WHERE
-					 	`id` = '1'
-	", $FD->sql()->conn() );
-
-	// system messages
-    systext($admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
+    // save config
+    try {
+        $FD->saveConfig('articles', $data);
+        systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext($FD->text('admin', 'changes_not_saved'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
+    }
 
     // Unset Vars
-    unset ( $_POST );
+    unset($_POST);
 }
 
 /////////////////////
@@ -57,36 +36,21 @@ if (
 
 if ( TRUE )
 {
-	// Display Error Messages
-	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $admin_phrases['common']['note_notfilled'] . '<br>' . $admin_phrases['common']['only_allowed_values'], $admin_phrases['common']['error'], TRUE );
+    // Display Error Messages
+    if (isset($_POST['sended'])) {
+        systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
-	// Load Data from DB into Post
-	} else {
-	    $index = mysql_query ( '
-								SELECT *
-								FROM '.$global_config_arr['pref']."articles_config
-								WHERE `id` = '1'
-		", $FD->sql()->conn() );
-	    $config_arr = mysql_fetch_assoc($index);
-	    putintopost ( $config_arr );
-	}
+    // Load Data from DB into Post
+    } else {
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'articles'"));
+        $data = json_array_decode($data['config_data']);
+        putintopost($data);
+    }    
 
-	// security functions
-    settype ( $_POST['html_code'], 'integer' );
-    settype ( $_POST['fs_code'], 'integer' );
-    settype ( $_POST['para_handling'], 'integer' );
-    settype ( $_POST['cat_pic_x'], 'integer' );
-    settype ( $_POST['cat_pic_y'], 'integer' );
-    settype ( $_POST['cat_pic_size'], 'integer' );
-    settype ( $_POST['com_rights'], 'integer' );
-    settype ( $_POST['com_antispam'], 'integer' );
-    settype ( $_POST['acp_per_page'], 'integer' );
-    settype ( $_POST['acp_view'], 'integer' );
+    // security functions
+    $_POST = array_map('killhtml', $_POST);
 
-    $_POST['com_sort'] = killhtml ( $_POST['com_sort'] );
-
-	// Display Form
+    // Display Form
     echo '
 					<form action="" method="post">
                         <input type="hidden" name="go" value="articles_config">
