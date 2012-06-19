@@ -6,15 +6,15 @@ allowin:          Erlaubt in
 disallowin:       Nicht erlaubt in
 callbacktype:     Ersetzungsart
 icon:             FS Code-Icon
-icon_desc:        Das Icon, das im Editor angezeigt wird.<br>Wird für den zur Zeit aktiven Style gespeichert.
+icon_desc:        Das Icon, das im Editor angezeigt wird.<br>Wird f&uuml;r den zur Zeit aktiven Style gespeichert.
 active:           Code aktivieren
 active_y:         Ja
 active_n:         Nein
 flags:            Flags
 flags_name:       Name
 flags_value:      Wert
-flags_choose:     Wähle ein Flag!
-flags_add:        Flag hinzufügen
+flags_choose:     W&auml;hle ein Flag!
+flags_add:        Flag hinzuf&uuml;gen
 replacement:      Ersetzungstext
 replacement_1_1:  Ersetzung wenn ein Parameter angegeben ist.
 replacement_1_2:  Syntax: [code]Parameter[/code]
@@ -27,6 +27,6 @@ tag_1:            Der angegebene Parameter
 tag_2_1:          Der "Inhalt" des Codes.<br>[code='Parameter']<b>Inhalt</b>[/code]
 tag_2_2:          Der Parameter des Codes.<br>[code='<b>Parameter</b>']Inhalt[/code]
 save_ok:          Code erfolgreich gespeichert.
-save_error_1:     Der Code konnte nicht hinzugefügt werden.<br>SQL meldet: {..err_msg..} : {..err_no..}
-save_error_2:     Der Name des Code enthält ungültige Zeichen!
+save_error_1:     Der Code konnte nicht hinzugef&uuml;gt werden.<br>SQL meldet: {..err_msg..} : {..err_no..}
+save_error_2:     Der Name des Code enth&auml;lt ung&uuml;ltige Zeichen!
 save_error_3:     Ein Code mit diesem Namen existiert bereits!

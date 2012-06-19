@@ -1,0 +1,51 @@
+# Language-Definition for [FS2]/admin/admin_gallery_cat.php
+
+# Language-Definition for [FS2]/admin/template/admin_gallery_cat.tpl
+no_subcat:                  No subcategory
+subcat_separator:           ----------------------------------------
+
+type_img:                   Images
+type_wp:                    Wallpapers
+
+visibility_full:            full
+visibility_notinlist:       not in selection
+visibility_none:            none
+
+visibility_full_long:       fully visible
+visibility_notinlist_long:  not available in selection
+visibility_none_long:       no visibility
+
+id:                         ID
+
+
+
+add_title:                  Add category
+
+
+main_settings:              Main settings
+additional_infos:           Additional information
+sort_options:               Display and sort options
+
+
+name:                       Name
+name_desc:                  The name of the category.
+subcat:                     subcategory of
+subcat_desc:                Sets the category as subcategory of another category.
+type:                       Type
+type_desc:                  Defines the category type.
+visibility:                 Visibility
+visibility_desc:            Defines the category's visibility.
+date:                       Date
+date_desc:                  Defines on which date the category has been created.
+user:                       User
+user_desc:                  Defines who created the category.
+cat_img:                    Image
+cat_img_desc:               An image that acts as symbol for the category.
+text:                       Description
+text_desc:                  A description of the category's contents.
+
+
+
+delete_title:               Delete categories
+delete_question:            Do you really want to delete the following categories?
+delete_info:                After deletion, the images and wallpapers from the concering categories can be found in "unsorted".

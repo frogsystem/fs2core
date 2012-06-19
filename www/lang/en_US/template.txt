@@ -1,0 +1,317 @@
+# Language-Definition for template.php
+page_nav_help:                         Includes the page navigation
+nav_files_title:                       Navigation files
+nav_files_desc:                        Contents of navigation templates, see also <a class="small" href="http://wiki.frogsystem.de/nav-templates" target="_blank">» Frogsystem 2-Wiki</a>
+general_systemmessage_title:           System message
+general_systemmessage_desc:            Design of system-generated messaged
+general_forwardmessage_title:          Forwarding system message
+general_forwardmessage_desc:           Design of messages with forwarding
+general_message_message_title:         Title of the message
+general_message_message:               Text of the message
+general_doctype_title:                 HTML document type [Doctype]
+general_doctype_desc:                  Definition of the HTML document type
+general_mainpage_title:                Main page
+general_mainpage_desc:                 Darstellung der Hauptseite
+general_mainpage_content:              Content of the requested page
+general_mainpage_copyright:            Copyright note of Frogsystem 2
+general_popupviewer_title:             Image viewer
+general_popupviewer_desc:              Design of image viewer
+general_popupviewer_image:             HTML inclusion of image
+general_popupviewer_image_url:         URL of the image
+general_popupviewer_caption:           Image caption
+general_popupviewer_prev_url:          URL of the previous page
+general_popupviewer_prev_link:         Text link to previous page
+general_popupviewer_prev_image_link:   Graphic link to previous page
+general_popupviewer_next_url:          URL of the next page
+general_popupviewer_next_link:         Text link to next page
+general_popupviewer_next_image_link:   Graphic link to next page
+general_statistics_title:              Statistics
+general_statistics_desc:               Visitor and site statistics
+general_statistics_visits:             Number of all visitors to the site
+general_statistics_visits_today:       Number of visitors on current day
+general_statistics_hits:               Number of all hits
+general_statistics_hits_today:         Number of hits on current day
+general_statistics_visitors_online:    Number of visitors that are currently online
+general_statistics_registered_online:  Number of registered users that are currently online
+general_statistics_guests_online:      Number of guests that are currently online
+general_statistics_num_users:          Number of registered users
+general_statistics_num_news:           Number of news
+general_statistics_num_comments:       Number of comments
+general_statistics_num_articles:       Number of articles
+user_applet_login_title:               User menu - login
+user_applet_login_desc:                Small version of the login page
+user_applet_menu_title:                User menu
+user_applet_menu_desc:                 Small user menu with important links
+user_profile_user_id:                  Database ID of the user
+user_profile_user_name:                User's name
+user_profile_user_image:               HTML inclusion of user image
+user_profile_user_image_url:           URL of user image
+user_applet_menu_admincp_line:         Admin CP line, staff only
+user_applet_menu_user_edit_url:        URL of „Edit user profile“ page
+user_applet_menu_logout_url:           URL of logout page
+user_applet_adminline_title:           User menu - Admin CP line
+user_applet_adminline_desc:            Line with link to admin CP, is only visible for staff members
+user_applet_adminline_admincp_link:    Text link to admin CP
+user_applet_adminline_admincp_url:     URL of admin CP
+user_login_title:                      Login page
+user_login_desc:                       Login page for registered users
+user_register_title:                   Registration
+user_register_desc:                    Seite zur Registrierung auf der Homepage
+user_register_captcha_line:            Includes the captcha
+user_register_captcha_text:            Includes the captcha note
+user_captcha_line_title:               Captcha
+user_captcha_line_desc:                Captcha template and corresponding input field
+user_register_captcha_url:             URL of captcha image
+user_captcha_text_title:               Captcha note
+user_captcha_text_desc:                Short text about purpose and handling of the captcha
+user_profile_title:                    User profile
+user_profile_desc:                     Page with data from the corresponding user profile
+user_profile_user_rank:                User rank
+user_profile_user_mail:                E-mail address of the user
+user_profile_user_is_staff:            User is member of staff (Yes/No)
+user_profile_user_is_admin:            User is administrator (Yes/No)
+user_profile_user_group:               User group of the user
+user_profile_user_reg_date:            Registration date of the user
+user_profile_user_homepage_link:       Text link to user's homepage
+user_profile_user_homepage_url:        URL of user's homepage
+user_profile_user_icq:                 ICQ number of user
+user_profile_user_aim:                 AIM e-mail of user
+user_profile_user_wlm:                 Windows Live ID of user
+user_profile_user_yim:                 Yahoo!-ID of user
+user_profile_user_skype:               Skype-Name of user
+user_profile_user_num_news:            Number of news by that user
+user_profile_user_num_comments:        Number of comments by that user
+user_profile_user_num_articles:        Number of articles by that user
+user_profile_user_num_downloads:       Number of downloads by that user
+user_rank_title:                       User rank
+user_rank_desc:                        Rank that members of a user group have
+user_rank_group_name:                  User group's name
+user_rank_group_image:                 HTML inclusion of user group image
+user_rank_group_image_url:             URL of user group image
+user_rank_group_title:                 Title of user group (including emphasis)
+user_rank_title_text_only:             Title of user group (text only)
+user_profile_edit_title:               Edit user profile
+user_profile_edit_desc:                Page for editing of password, e-mail and other data
+user_profile_edit_image_max_width:     Max. width of user image
+user_profile_edit_image_max_height:    Max. height of user image
+user_profile_edit_image_max_size:      Max. file size of user image
+user_profile_edit_image_limits_text:   Limits of user image as text
+user_profile_edit_show_mail_checked:   Setzt die „E-Mail anzeigen?“-Einstellung in der HTML-Checkbox
+user_list_title:                       User list
+user_list_desc:                        Page that shows all registered users
+user_list_lines:                       Bindet die Benutzer-Zeilen ein
+user_list_order_id:                    URL for sorting by ID
+user_list_order_name:                  URL for sorting by name
+user_list_order_mail:                  URL for sorting by e-mail
+user_list_order_date:                  URL for sorting by date
+user_list_order_news:                  URL for sorting by news
+user_list_order_comments:              URL for sorting by comments
+user_list_order_articles:              URL for sorting by articles
+user_list_order_downloads:             URL for sorting by downloads
+user_list_arrow_id:                    Arrow for sorting by ID
+user_list_arrow_name:                  Arrow for sorting by name
+user_list_arrow_mail:                  Arrow for sorting by e-mail
+user_list_arrow_date:                  Arrow for sorting by date
+user_list_arrow_news:                  Arrow for sorting by news
+user_list_arrow_comments:              Arrow for sorting by comments
+user_list_arrow_articles:              Arrow for sorting by articles
+user_list_arrow_downloads:             Arrow for sorting by downloads
+user_list_userline_title:              User line
+user_list_userline_desc:               Design of the line for normal users
+user_list_line_user_url:               URL of the user page
+user_list_staffline_title:             Staff line
+user_list_staffline_desc:              Design of the line for staff members
+user_list_adminline_title:             Administrator line
+user_list_adminline_desc:              Design of the line for administrators
+articles_author_title:                 Author template
+articles_author_desc:                  Template for the author of an article
+articles_date_title:                   Date template
+articles_date_desc:                    Template for the creation date of an article
+articles_body_title:                   Article
+articles_body_desc:                    Design of an article
+articles_body_article_title:           Title of the article
+articles_body_text:                    Text of the article
+articles_date_template:                Date template, if date is given
+articles_date:                         Date, formatted
+articles_body_author:                  Author template, if author is given
+articles_user_id:                      Database ID of the user
+articles_user_name:                    User name
+articles_user_url:                     URL of the user page
+news_applet_line_title:                Headlines - Newsline
+news_applet_line_desc:                 Design of a news line in the headlines
+news_applet_line_news_title:           Title of the news
+news_applet_line_date:                 Date of the news
+news_applet_line_url:                  URL of comment page for that news
+news_applet_line_news_id:              Database ID of the news
+news_applet_body_title:                Headlines
+news_applet_body_desc:                 Design of the headlines
+news_applet_body_news_lines:           Includes the news lines
+news_applet_body_download_lines:       Includes the download lines
+news_comment_user_title:               Author of comment
+news_comment_user_desc:                Design of author of comment, if he is a registered user
+news_comment_user_name:                User name
+news_comment_user_url:                 URL of the user's profile
+news_comment_user_image:               HTML inclusion of the user image
+news_comment_user_rank:                User rank
+news_comment_form_title:               Comment form
+news_comment_form_desc:                Form to submit a comment
+news_comment_form_news_id:             Database ID of the corresponding news
+news_comment_form_name_input:          Input field for name or name of the registered user
+news_comment_form_textarea:            Text editor for comment input
+news_comment_form_html:                HTML is... (on/off)
+news_comment_form_fs_code:             FSCode is... (on/off)
+news_comment_form_captcha:             Includes the captcha
+news_comment_form_captcha_text:        Includes the captcha note
+news_search_title:                     News search
+news_search_desc:                      Page on which can be searched for news
+news_search_years:                     Includes all available years as HTML option
+news_search_keyword:                   Keyword that was searched for
+search_applet_title:                   Mini search
+search_applet_desc:                    Small search field that can be used everywhere
+search_applet_keyword:                 The keyword that was searched for
+search_search_title:                   Search field
+search_search_desc:                    Search field on the main search page
+search_search_keyword:                 The keyword that was searched for.
+search_search_in_news:                 Sets the „Search in news“ setting of the HTML checkbox
+search_search_in_articles:             Sets the „Search in articles“ setting of the HTML checkbox
+search_search_in_downloads:            Sets the „Search in downloads“ setting of the HTML checkbox
+search_result_date_template_title:     Date template
+search_result_date_template_desc:      Template for the date of a search result
+search_result_line_title:              Search result line
+search_result_line_desc:               Design of a line of found content
+search_result_line_id:                 Database ID of the found content.
+search_result_line_found_title:        The title of the found content.
+search_result_line_url:                The URL of the found content.
+search_result_line_date:               The date of the found content
+search_result_line_date_template:      Date template, if date is given.
+search_result_line_num_matches:        Number of matches in content.
+search_no_results_title:               "No results" line
+search_no_results_desc:                Design of the hint line, if no results have been found
+search_more_results_title:             "More results" link
+search_more_results_desc:              Link to the special search page without limitation to the number of results
+search_more_results_main_search_url:   URL to the special search page of the content type.
+search_results_body_title:             Search result block
+search_results_body_desc:              Block of search results of a content type
+search_results_body_type_title:        Title of content type.
+search_results_body_results:           Includes the result lines.
+search_results_body_num_results:       Number of found results of a content type.
+search_results_body_more_results:      Includes the „More results“ link, if required.
+search_body_title:                     Search page
+search_body_desc:                      Design of the complete search site
+search_body_search:                    Includes the search field.
+search_body_news:                      Includes the news search results.
+search_body_articles:                  Includes the article search results.
+search_body_downloads:                 Includes the download search results.
+previewimg_body_title:                 Preview image
+previewimg_body_desc:                  Design of the preview image applet
+previewimg_body_previewimg:            HTML inclusion of the small preview image.
+previewimg_body_previewimg_url:        URL of the small preview image.
+previewimg_body_image_url:             URL of the image.
+previewimg_body_viewer_url:            URL or JS of the image viewer for that image.
+previewimg_body_caption:               Caption of the image.
+previewimg_body_cat_title:             Name of the image's category.
+previewimg_noimg_body_title:           No preview image
+previewimg_noimg_body_desc:            Design, if no preview image has been found
+dl_applet_line_title:                  Headlines - download line
+dl_applet_line_desc:                   Design of a download line in the headlines
+dl_applet_line_dl_title:               Title of the download
+dl_applet_line_date:                   Date of the download
+dl_applet_line_url:                    URL of the download page
+dl_applet_line_dl_id:                  Database ID of the download
+dl_navigation_line_title:              Navigation line
+dl_navigation_line_desc:               A line of the download navigation
+dl_navigation_line_icon_url:           URL of the folder icon (closed/open)
+dl_navigation_line_cat_url:            URL to open the category
+dl_navigation_line_cat_name:           Name of the category
+dl_navigation_body_title:              Navigation
+dl_navigation_body_desc:               Navigation for the download categories
+dl_navigation_body_lines:              Includes the single lines one after another
+dl_preview_line_title:                 Preview line
+dl_preview_line_desc:                  Design of a preview line in the category summary
+dl_preview_line_entry_title:           Title of the download
+dl_preview_line_url:                   URL of the download page
+dl_preview_line_cat_name:              Category name of the download
+dl_preview_line_date:                  Date of the download
+dl_preview_line_text:                  Description text of the download
+dl_no_preview_line_title:              "No downloads" line
+dl_no_preview_line_desc:               Preview line, if no downloads have been found
+dl_preview_list_title:                 Preview list
+dl_preview_list_desc:                  Summary of all found downloads in the category summary
+dl_preview_list_entries:               Includes the preview lines
+dl_page_title:                         Page title (category name/„Search results“)
+dl_body_title:                         Download selection
+dl_body_desc:                          Seite von der aus Downloads über Kategorien und Suche ausgewählt werden können
+dl_body_navigation:                    Includes the navigation
+dl_body_search:                        Includes the search
+dl_body_entries:                       Includes the preview list
+dl_entry_body_title:                   Download
+dl_entry_body_desc:                    Page of a single download
+dl_entry_body_entry_title:             Title of the download
+dl_entry_body_img_url:                 URL of the download image
+dl_entry_body_thumb_url:               URL of the small preview image
+dl_entry_body_viewer_link:             URL or JS of the image viewer for the DL image
+dl_entry_body_navigation:              Includes the navigation
+dl_entry_body_search:                  Includes the search
+dl_entry_body_uploader:                User name of the uploader
+dl_entry_body_uploader_url:            URL of the uploader's profile page
+dl_entry_body_author:                  Name of the download author
+dl_entry_body_author_url:              URL of the author's homepage
+dl_entry_body_author_link:             Name of the author as text link to his homepage
+dl_entry_body_date:                    Date of the download
+dl_entry_body_cat_name:                Category name of the download
+dl_entry_body_text:                    Description text of the download
+dl_entry_body_files:                   Includes the individual files
+dl_entry_body_statistics:              Download and file statistics
+dl_entry_body_messages:                Includes various system messages
+shop_applet_item_title:                Shop applet product
+shop_applet_item_desc:                 A single product in the shop applet
+shop_applet_body_title:                Shop applet
+shop_applet_body_desc:                 Small shop with selected products
+shop_applet_body_items:                Includes the products
+shop_main_item_title:                  Product
+shop_main_item_desc:                   A single product on the shop page
+shop_item_title:                       Product name
+shop_item_text:                        Product description
+shop_item_url:                         Purchase-URL for the product
+shop_item_price:                       Price of the product
+shop_item_image:                       HTML inclusion of the product image
+shop_item_image_url:                   URL of the product image
+shop_item_small_image:                 HTML inclusion of the small preview image
+shop_item_small_image_url:             URL of the small preview image
+shop_main_body_title:                  Shop
+shop_main_body_desc:                   Shop page with all products
+shop_main_body_items:                  includes the products
+player_player_title:                   Flash player
+player_player_desc:                    Design of a single Flash player
+player_player_player:                  Includes the Flash player file.
+
+editor_design_title:                   Editor design
+editor_design_description:             Arrangement of IWAC editor on the page.
+editor_design_help_1:                  CSS style of the textareas (see configuration).
+editor_design_help_2:                  Eventuell vorhandener Text.
+editor_design_help_3:                  Includes the FSCode buttons.
+editor_design_help_smilies:            Includes the smilies template.
+editor_css_title:                      Editor CSS
+editor_css_description:                CSS file of the IWAC editor.
+editor_button_title:                   Button design
+editor_button_description:             Arrangement of IWAC editor on the page.
+editor_button_help_1:                  URL of button image.
+editor_button_help_2:                  Alternative display text.
+editor_button_help_3:                  Description text while hovering with the mouse
+editor_button_help_4:                  Includes the JavaScript code, that controls the insertion into the textarea
+editor_separator_title:                Separator design
+editor_separator_description:          Design of separator between button groups.
+editor_smilies_title:                  Smilies
+editor_smilies_description:            Design of smilie list.
+editor_smilies_help_table:             The table containing the smilies.
+
+quote_tag_title:                       Quote
+quote_tag_description:                 Design of the "Quote" - FSCode ['quote']text['/quote'] 
+quote_tag_help_1:                      Text that is surrounded by the quote block.
+quote_tag_name_title:                  Quote by
+quote_tag_name_description:            Design of "Quote by" - FSCode ['quote=author']text['/quote'] 
+quote_tag_name_help_1:                 Text that is surrounded by the quote block.
+quote_tag_name_help_2:                 Name of the quote's author.
+code_tag_title:                        Code
+code_tag_description:                  Design of the "Code" - FSCode ['code']text['/code'] 
+code_tag_help_1:                       Text der vom Code-Block umschlossen wird.

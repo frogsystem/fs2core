@@ -1,0 +1,3 @@
+# Language-Definition for [FS2]/admin/admin_gallery_config.php
+
+# Language-Definition for [FS2]/admin/template/admin_gallery_config.tpl

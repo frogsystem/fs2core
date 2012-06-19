@@ -1,0 +1,28 @@
+news_information_title:                            Informationen
+news_cat:                                          Category
+news_cat_desc:                                     The category the news belongs to.
+news_date:                                         Date & Time
+news_date_desc:                                    Date of publication of the news.
+news_poster:                                       Poster
+news_poster_desc:                                  The author of the news.
+news_new_title:                                    Write news
+news_title:                                        Title
+news_active:                                       Publish news
+news_comments_allowed:                             Allow comments
+news_text:                                         Text
+
+news_link_add:                                     Add link
+news_link_title:                                   Title
+news_link_url:                                     URL
+news_link_open:                                    Open link in
+news_link_blank:                                   new window
+news_link_self:                                    same window
+news_link_no:                                      no action
+news_link_delete:                                  delete selection
+news_link_up:                                      move upwards
+news_link_down:                                    move downwards
+news_link_edit:                                    edit
+
+link_not_added:                                    Link has not been added
+link_not_saved:                                    Link has not been saved
+news_button:                                       <!--COMMON::save_changes_button-->

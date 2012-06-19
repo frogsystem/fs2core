@@ -1,0 +1,4 @@
+#@admin/admin_news
+news_button:                                       Add news
+news_not_added:                                    News has not been added
+news_added:                                        News has been added

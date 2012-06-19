@@ -9,7 +9,7 @@ entry_view:                                 Eintrag Ansicht
 entry_view_desc:                            Darstellungsart eines Eintrags in der Newsliste.
 entry_view_simple:                          einfache Ansicht
 entry_view_extended:                        erweiterte Ansicht
-entry_view_full:                            vollständige Ansich
+entry_view_full:                            vollständige Ansicht
 entries_per_page:                           Einträge pro Seite
 entries_per_page_desc:                      Einträge, die pro Seite der Newsliste angezeigt werden.
 force_cat_selection:                        Kategorieauswahl erzwingen
