@@ -1,0 +1,12 @@
+# Language-Definition for [FS2]/admin/template/admin_fscode_config.tpl
+pagetitle:            configuration
+file_max_size: max.   File size
+file_max_size_info:   The maximum file size of an FS code icon
+file_max_width: max.  Width
+file_max_width_info:  The maximum width of an FS code icon
+file_max_height: max. Height
+file_max_height_info: The maximum height of an FS code icon
+image:                Load icons from
+image_info:           Defines whether the icons are loaded from the global directory or from the style directory of the current style.
+image_1:              Global directory
+image_2:              Style directory

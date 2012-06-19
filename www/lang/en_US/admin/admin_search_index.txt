@@ -1,0 +1,29 @@
+search_index_config_title:               Search index settings
+search_index_config_update_title:        Update search index
+search_index_config_update_desc:         Time at which the search index will be updated.
+search_index_config_update_instantly:    instantly
+search_index_config_update_daily:        daily (at approx. 3am)
+search_index_config_update_never:        never
+search_index_updated:                    Search index has been updated
+search_index_renewed:                    Search index was renewed
+search_index_deleted:                    Search index has been deleted
+search_index_deleted_with_word_list:     Search index and word list have been deleted
+search_index_title:                      Searchindex functions
+search_index_update_title:               Update search index
+search_index_update_desc:                Updates the search index.
+search_index_new_title:                  Create search index anew
+search_index_new_desc:                   Deletes the search index and creates it anew from scratch.
+search_index_delete_title:               Delete search index
+search_index_delete_desc:                Deletes the search index.
+search_index_delete_with_word_title:     Delete search index and word list
+search_index_delete_with_word_desc:      Deletes the search index and the word list.
+search_index_update_button:              Update search index
+search_index_new_button:                 Renew search index
+search_index_new_note:                   <b>Warning:</b> Can fully utilize the server for a while
+search_index_delete_button:              Delete search index
+search_index_delete_note:                <b>Warning:</b> This cannot be undone
+search_index_delete_with_word_button:    Delete search index and word list
+search_index_delete_with_word_note:      <b>Warning:</b> This cannot be undone
+search_index_info_title:                 Information
+search_index_info_words:                 Indexed words
+search_index_info_docs:                  Indexed documents

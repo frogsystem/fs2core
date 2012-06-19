@@ -1,0 +1,27 @@
+search_config_title:                     Settings
+num_previews_title:                      Number of results
+num_previews_desc:                       The maximum number of results shown.
+allow_phonetic_title:                    Phonetic search
+allow_phonetic_desc:                     Allows phonetic search.
+and_title:                               AND-Operators
+and_desc:                                Allowed operators of AND-connective.
+or_title:                                OR-Operators
+or_desc:                                 Allowed operators of OR-connective.
+xor_title:                               XOR-Operators
+xor_desc:                                Allowed operators of XOR-connective.
+not_title:                               NOT-Operators
+not_desc:                                Allowed negation operators.
+wildcard_title:                          Wildcards
+wildcard_desc:                           Defines the allowed wildcard characters.
+
+
+search_index_title:                      Search index settings
+index_update_title:                      Update search index
+index_update_desc:                       Time at which the search index will be updated.
+index_update_instantly:                  instantly
+index_update_daily:                      daily (at ca. 3am)
+index_update_never:                      never
+min_word_length_title:                   Minimum word length
+min_word_length_desc:                    Length from which on words will be added to the search index.
+use_stopwords_title:                     Use stopwords
+use_stopwords_desc:                      Excludes stopwords from indexing and search.

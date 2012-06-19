@@ -3,7 +3,7 @@
 
 /**
 * @file     class_template.php
-* @folder   /libs
+* @folder   /libs/
 * @version  0.3
 * @author   Sweil
 *
@@ -34,8 +34,8 @@ class template
 
     // constructor
     public function  __construct() {
-         global $global_config_arr;
-         $this->setStyle($global_config_arr['style']);
+         global $FD;
+         $this->setStyle($FD->cfg('style'));
     }
 
     // functions to set & get default values

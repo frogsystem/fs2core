@@ -1,7 +1,7 @@
 <?php
 /**
 * @file     class_lang.php
-* @folder   /libs
+* @folder   /libs/
 * @version  0.4
 * @author   Sweil
 *

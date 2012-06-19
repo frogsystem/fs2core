@@ -19,18 +19,40 @@ exact:                                   exact
 hex_color:                               hex color
 folder_name_info:                        only a-z, 0-9, "-" and "_" allowed
 chars:                                   chars
+result:                                  result
+results:                                 results
+entry:                                   entry
+entries:                                 entries
+record_found:                            record found
+records_found:                           records found
+deleted_records:                         deleted records
+date_info:                               uses the syntax of PHP function <a class="s" href="http://www.php.net/manual/en/function.date.php" target="_blank" class="small">date()</a>
+html:                                    HTML
+fscode:                                  FS-Code
+para:                                    paragraph handling
+csv:                                     comma separated values
 
 
 # Frequently used Phrases
 yes:                                     yes
 no:                                      no
 and:                                     and
+on:                                      on
+off:                                     off
+is:                                      is
+by:                                      by
+in:                                      in
+up:                                      move up
+down:                                    move down
+edit:                                    edit
+delete:                                  delete
 optional:                                optional
 filename:                                filename
 show:                                    show
+select:                                  select
 selection:                               selection
-active:                                  activ
-active_big:                              activ
+active:                                  active
+active_big:                              active
 valid_tags:                              valid tags
 output:                                  output
 version:                                 version
@@ -41,26 +63,36 @@ today:                                   today
 reset:                                   reset
 now:                                     now
 change:                                  change
+preview:                                 Show preview
 please_select:				 	         Please select
 select_hr:                               ----------------------------------
 id:                                      ID
 default:                                 default
 replace_img:                             Replaces the current image!
 delete_image:                            Delete image
-js_delete_image:
+js_delete_image:                         Delete image?
+search:                                  Search
+search_for:                              Search for
+filter:                                  filter
+
 
 # Date and Time for Admin CP
 date:                                    Y/m/d
 time:                                    h:i a
 date_time:                               h:i a, Y/m/d
+seconds:                                 seconds
+at_time:                                 at
+at_date:                                 on
 
 # Frequently used Images
 sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">
+checkbox:                                <img class="checkbox" src="images/checkbox.png" alt="[_]">
+radio:                                   <img class="checkbox" src="images/radio.png" alt="(_)">
 
 
 # Action Selection
-selected:                                Ausgewählte
-selection_noaction:                      Bitte wählen
+selected:                                Selected
+selection_noaction:                      Please select
 selection_edit:                          edit
 selection_delete:                        delete
 selection_up:                            nach oben
@@ -72,8 +104,11 @@ button_arrow:                            <img class="middle" src="img/pointer.pn
 do_action_button:                        Ausführen
 do_action_button_long:                   Aktion ausführen
 save_changes_button:                     Save changes
-select_button:                           Auswählen
+select_button:                           Select
 file_select_button:                      Select file
+search_button:                           Search
+add_button:                              Add
+save_button:                             Save
 
 
 # Messages
@@ -107,28 +142,30 @@ icon_trash_error:                        <img src="icons/trash_error.jpg" alt="F
 icon_trash_caution:                      <img src="icons/trash_caution.jpg" alt="Löschen erfolgreich, aber beachten Sie die Hinweise" align="absmiddle">
 icon_login:                              <img src="icons/login.jpg" alt="Login" align="absmiddle">
 icon_logout:                             <img src="icons/logout.jpg" alt="Logout" align="absmiddle">
-icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
-icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
+icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation successful" align="absmiddle">
+icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Uninstalling successful" align="absmiddle">
 icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
 icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Access granted" align="absmiddle">
 icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Access denied">
-icon_up:                                 <img src="icons/up.jpg" alt="Nach oben verschieben" align="absmiddle">
-icon_down:                               <img src="icons/down.jpg" alt="Nach unten verschieben" align="absmiddle">
+icon_up:                                 <img src="icons/up.jpg" alt="Move upwards" align="absmiddle">
+icon_down:                               <img src="icons/down.jpg" alt="Move downwards" align="absmiddle">
+icon_link_error:                         <img src="icons/link_error.jpg" alt="Link error" align="absmiddle">
 
 
 # Upload-Messages
-image_upload_error_0:                    Bild wurde erfolgreich hochgeladen
-image_upload_error_1:                    Fehler beim Bilder-Upload: Ungültiger Dateityp [Code: IMGxU1]
-image_upload_error_2:                    Fehler beim Bilder-Upload: Bild konnte nicht hochgladen werden [Code: IMGxU2]
-image_upload_error_3:                    Fehler beim Bilder-Upload: Bild ist zu groß (Dateigröße) [Code: IMGxU3]
-image_upload_error_4:                    Fehler beim Bilder-Upload: Bild ist zu groß (Abmessungen) [Code: IMGxU4]
-image_upload_error_5:                    Fehler beim Bilder-Upload: Bild entspricht nicht den erforderlichen Abmessungen [Code: IMGxU5]
-image_upload_error_6:                    Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden [Code: IMGxU6]
+image_upload_error_0:                    Image was uploaded successfully
+image_upload_error_1:                    Image upload failed: Invalid file type [Code: IMGxU1]
+image_upload_error_2:                    Image upload failed: The image could not be uploaded [Code: IMGxU2]
+image_upload_error_3:                    Image upload failed: The image is too big (file size) [Code: IMGxU3]
+image_upload_error_4:                    Image upload failed: The image is too big (width and/or height) [Code: IMGxU4]
+image_upload_error_5:                    Image upload failed: The image does not have the required width and height [Code: IMGxU5]
+image_upload_error_6:                    Image upload failed: The image could not be created [Code: IMGxU6]
 
 
 # Frequently used Category-Related Phrases
 cat:                                     Category
 cats:                                    Categories
+all_cats:                                All categories
 cats_select:                             Select categories
 cats_not_found:                          No categories found!
 cat_added:                               Category has been added
@@ -137,72 +174,68 @@ cats_deleted:                            Categories have been deleted
 cats_not_deleted:                        Categories have not been deleted
 cats_not_all_deleted:                    Not all categories could be deleted
 no_subcat:                               No sub category
-cat_image_deleted:                       Kategorie-Bild wurde gelöscht
-cat_image_not_deleted:                   Kategorie-Bild konnte nicht gelöscht werden
-cat_images_deleted:                      Kategorie-Bilder wurden gelöscht
-cat_images_not_all_deleted:              Nicht alle Kategorie-Bilder konnten gelöscht werden
+cat_image_deleted:                       Category image deleted
+cat_image_not_deleted:                   Category image could not be deleted
+cat_images_deleted:                      Category images deleted
+cat_images_not_all_deleted:              Not all category images could be deleted
 cats_up:                                 Move categories up
 cats_down:                               Move categories down
 
 
-
+# Some other Texts
+monthly_statistics:                      Monthly statistics
 
 
 # Old
-system_start_num_aliases:                Anzahl Aliasse
-system_start_num_aliases_active:         Anzahl aktiver Aliasse
-system_start_num_applets:                Anzahl Applets
-system_start_num_applets_active:         Anzahl aktiver Applets
-system_start_num_snippets:               Anzahl Schnipsel
-system_start_num_snippets_active:        Anzahl aktiver Schnipsel
-config_publisher_title:                  Publisher
-config_publisher_desc:                   Herausgeber (Webmaster) der Seite.
-config_copyright_title:                  Copyright
-config_copyright_desc:                   Copyright-Hinweise der Urheber.
-config_style_title:                      Active Style
-config_style_desc:                       Style, der als Design der Hauptseite verwendet wird.
-news_edit_selection_comments:            Kommentare verwalten
-news_comments_delete_title:              Kommentare löschen
-news_comments_delete_question:           Sollen diese Kommentare wirklich gelöscht werden?
-applet_add_title:                        Applet hinzufügen
-applet_select_title:                     Applet auswählen
-applet_edit_title:                       Applet bearbeiten
-applets_delete_title:                    Applets löschen
-applets_delete_question:                 Sollen diese Applets wirklich gelöscht werden?
-applets_find_pagetitle:                  Applet-Suche
-applets_find_title:                      Suche nach Applets ...
-applets_file_title:                      Dateiname
-applets_file_desc:                       Der Dateiname des Applets ohne die Dateiendung.
-applets_active_title:                    Applet aktivieren
-applets_active_desc:                     De-/Aktiviert die Einbindung der Applet-Datei.
-applets_output_title:                    Ausgabe aktivieren
-applets_output_desc:                     De-/Aktiviert die Ausgabe von Daten/Inhalt.
-applet_added:                            Applet wurde hinzugefügt
-applet_not_added:                        Applet wurde nicht hinzugefügt
-applets_deleted:                         Applets wurden gelöscht
-applets_not_deleted:                     Applets wurden nicht gelöscht
-applet_file_not_exists:                  Datei konnte nicht gefunden werden
-applet_exists:                           Das Applet existiert bereits
-applets_not_found:                       Keine Applets gefunden!
-applet_output_enabled:                   Ausgabe aktiviert
-applet_output_disabled:                  Ausgabe deaktiviert
-applet_active:                           Applet aktiviert
-applet_not_active:                       Applet deaktiviert
-template_manyfile_delete_note:           <b>Hinweis:</b> Zum Löschen, die Datei ohne Inhalt speichern
-template_no_filename:                    Es wurde kein Dateiname eingegeben
-template_dont_remove_copyright:          Der Copyright-Hinweis darf nicht entfernt werden
-template_selection_title_template:       Style-Auswahl
-template_selection_title_template_file:  Style- & Datei-Auswahl
-captcha_config_title:                    Einstellungen
-captcha_config_first_title:              Zahlenbereich 1
-captcha_config_first_desc:               Bereich aus dem der erste Wert generiert wird.
-captcha_config_second_title:             Zahlenbereich 2
-captcha_config_second_desc:              Bereich aus dem der zweite Wert generiert wird.
-captcha_config_use_operations_title:     Erlaubte Rechenoperationen
+system_start_num_aliases:                Number of aliases
+system_start_num_aliases_active:         Number of active aliases
+system_start_num_applets:                Number of applets
+system_start_num_applets_active:         Number of active applets
+system_start_num_snippets:               Number of snippets
+system_start_num_snippets_active:        Number of active snippets
+
+news_edit_selection_comments:            Manage comments
+news_comments_delete_title:              Delete comments
+news_comments_delete_question:           Do you really want to delete these comments?
+applet_add_title:                        Add applet
+applet_select_title:                     Select applet
+applet_edit_title:                       Edit applet
+applets_delete_title:                    Delete applets
+applets_delete_question:                 Do you really want to delete these applets?
+applets_find_pagetitle:                  Applet search
+applets_find_title:                      Search for applets ...
+applets_file_title:                      Filename
+applets_file_desc:                       The applet's filename without the file extension.
+applets_active_title:                    Activate applet
+applets_active_desc:                     De-/Activates the inclusion of the applet file.
+applets_output_title:                    Activate output
+applets_output_desc:                     De-/Activates the output of data/content.
+applet_added:                            Applet was added
+applet_not_added:                        Applet was not added
+applets_deleted:                         Applets deleted
+applets_not_deleted:                     Applets have not been deleted
+applet_file_not_exists:                  File not found
+applet_exists:                           That applet already exists
+applets_not_found:                       No applets found!
+applet_output_enabled:                   Output enabled
+applet_output_disabled:                  Output disabled
+applet_active:                           Applet active
+applet_not_active:                       Applet inactive
+template_manyfile_delete_note:           <b>Hint:</b> Save file without any content to delete it
+template_no_filename:                    You have not entered a filename
+template_dont_remove_copyright:          The copyright not must not be removed
+template_selection_title_template:       Style selection
+template_selection_title_template_file:  Style & file selection
+captcha_config_title:                    Settings
+captcha_config_first_title:              Range 1
+captcha_config_first_desc:               Range of numbers that are used to generate the first value.
+captcha_config_second_title:             Range 2
+captcha_config_second_desc:              Range of numbers that are used to generate the second value.
+captcha_config_use_operations_title:     Allowed arithmetic operations
 captcha_config_addition:                 Addition (+)
 captcha_config_subtraction:              Subtraction (-)
 captcha_config_multiplication:           Multiplication (*)
-captcha_config_use_operations_desc:      Legt fest, welche Rechenoperationen verwendet werden.
+captcha_config_use_operations_desc:      Defines which arithmetic operations will be used.
 captcha_config_easy_arithmetics_title:   Easy arithmetics only
 captcha_config_easy_arithmetics_desc:    Activates an AI to generate easier arithmetics.
 captcha_config_design_title:             Design
@@ -210,131 +243,113 @@ captcha_config_bg_color_title:           Background color
 captcha_config_bg_color_desc:            The background color of the captcha image.
 captcha_config_bg_transparent:           Transparent Background
 captcha_config_text_color_title:         Text color
-captcha_config_text_color_desc:          Die Farbe in der die Aufgabe dargestellt wird.
-captcha_config_dimensions_title:         Abmessungen
-captcha_config_dimensions_desc:          Größe des Captcha-Bildes.
-captcha_config_text_position_title:      Text-Position
-captcha_config_text_position_desc:       Position des Textes relativ zur linken, oberen Ecke.
-captcha_config_text_position_help:       Abstand nach links und oben
-captcha_config_text_style_title:         Schriftart und -größe
+captcha_config_text_color_desc:          The color in which the arithmetic problem is shown.
+captcha_config_dimensions_title:         Dimensions
+captcha_config_dimensions_desc:          Size of the captcha image.
+captcha_config_text_position_title:      Text position
+captcha_config_text_position_desc:       Position of text relative to the left, upper corner.
+captcha_config_text_position_help:       Distance to left edge and top edge
+captcha_config_text_style_title:         Font face and size
 captcha_config_text_style_desc:          Standard-Schriftart in 5 Größen oder eingefügter PHP-Font.
-captcha_config_text_style_default:       Standard, Größe
+captcha_config_text_style_default:       Standard, size
 captcha_config_text_options_title:       Text Options
-captcha_config_text_options_desc:        Optionen um das Captcha zu formatieren.
+captcha_config_text_options_desc:        Options to format the captcha.
 captcha_config_questionmark:             show question mark [1+1=?]
 captcha_config_spaces:                   insert spaces [1 + 1 =]
-captcha_config_multiplication_as_x:      verwende x statt * [1x1=]
-captcha_config_one_operation:            Es muss mindestens eine Rechenoperation ausgewählt werden
-snippet_add_title:                       Schnipsel hinzufügen
-snippet_select_title:                    Schnipsel auswählen
-snippet_edit_title:                      Schnipsel bearbeiten
-snippets_delete_title:                   Schnipsel löschen
-snippets_delete_question:                Sollen diese Schnipsel wirklich gelöscht werden?
-snippet_tag_title:                       Suchmuster
-snippet_tag_desc:                        Suchmuster, das durch den Inhalt ersetzt wird.
-snippet_active_title:                    Schnipsel aktivieren
-snippet_active_desc:                     De-/Aktiviert die Verwendung dieses Schnipsels.
-snippet_text_title:                      Ersetzungsinhalt
-snippet_text_desc:                       Inhalt, durch den das Suchmuster ersetzt wird.
-snippet_added:                           Schnipsel wurde hinzugefügt
-snippet_not_added:                       Schnipsel wurde nicht hinzugefügt
-snippets_deleted:                        Schnipsel wurden gelöscht
-snippets_not_deleted:                    Schnipsel wurden nicht gelöscht
+captcha_config_multiplication_as_x:      use x instead of * [1x1=]
+captcha_config_one_operation:            You have to select at least one arithmetic operation.
+snippet_add_title:                       Add snippet
+snippet_select_title:                    Select snippet
+snippet_edit_title:                      Edit snippet
+snippets_delete_title:                   Delete snippet
+snippets_delete_question:                Do you really want to delete those snippets?
+snippet_tag_title:                       Search pattern
+snippet_tag_desc:                        Search pattern that will be replaced by the snippet's content.
+snippet_active_title:                    Activate snippet
+snippet_active_desc:                     De-/Activates the use of this snippet.
+snippet_text_title:                      Substitution content
+snippet_text_desc:                       Content that will be used to replace the search pattern.
+snippet_added:                           Snippet added
+snippet_not_added:                       Snippet has not been added
+snippets_deleted:                        Snippets deleted
+snippets_not_deleted:                    Snippets have not been deleted
 snippet_exists:                          Dieses Suchmuster existiert bereits
 snippets_not_found:                      No snippets found!
 snippet_active:                          active
 snippet_not_active:                      not active
-alias_add_title:                         Alias hinzufügen
-alias_select_title:                      Aliasse auswählen
-alias_edit_title:                        Alias bearbeiten
-aliases_delete_title:                    Aliasse löschen
-aliases_delete_question:                 Sollen diese Aliasse wirklich gelöscht werden?
+alias_add_title:                         Add Alias
+alias_select_title:                      Select Aliases
+alias_edit_title:                        Edit alias
+aliases_delete_title:                    Delete aliases
+aliases_delete_question:                 Do you really want to delete those aliases?
 alias_go_title:                          Alias
-alias_go_desc:                           Alias-Adresse, die angelegt werden soll.
-alias_forward_to_title:                  Weiterleitung auf
-alias_forward_to_desc:                   Adresse, auf die der Alias weitergeleitet wird.
-alias_active_title:                      Alias aktivieren
-alias_active_desc:                       De-/Aktiviert die Weiterleitung des Aliasses.
-alias_added:                             Alias wurde hinzugefügt
-alias_not_added:                         Alias wurde nicht hinzugefügt
-aliases_deleted:                         Aliasse wurden gelöscht
-aliases_not_deleted:                     Aliasse wurden nicht gelöscht
-aliases_not_found:                       Keine Aliasse gefunden!
-alias_active:                            aktiv
-alias_not_active:                        nicht aktiv
-search_config_title:                     Einstellungen
-search_config_num_previews_title:        Anzahl Ergebnisse
-search_config_num_previews_desc:         Die Zahl der max. angezeigten Ergebnisse.
-search_config_num_previews_results:      Ergebnisse
-search_index_config_title:               Suchindex-Einstellungen
-search_index_config_update_title:        Suchindex aktualisieren
-search_index_config_update_desc:         Zeit zu der der Suchindex aktualisert wird.
-search_index_config_update_instantly:    instantly
-search_index_config_update_daily:        daily (at approx. 3am)
-search_index_config_update_never:        never
-search_index_updated:                    Suchindex wurde aktualisiert
-search_index_renewed:                    Suchindex wurde neu erstellt
-search_index_deleted:                    Suchindex wurde gelöscht
-search_index_deleted_with_word_list:     Suchindex und Wortliste wurden gelöscht
-search_index_title:                      Suchindex-Funktionen
-search_index_update_title:               Suchindex Aktualisieren
-search_index_update_desc:                Akutalisiert den Suchindex.
-search_index_new_title:                  Suchindex neu erstellen
-search_index_new_desc:                   Löscht den Suchindex und erstellt ihn neu.
-search_index_delete_title:               Suchindex löschen
-search_index_delete_desc:                Löscht den Suchindex.
-search_index_delete_with_word_title:     Suchindex und Wortliste löschen
-search_index_delete_with_word_desc:      Löscht den Suchindex und die Wortliste.
-search_index_update_button:              Suchindex aktualisieren
-search_index_new_button:                 Suchindex neu erstellen
-search_index_new_note:                   <b>Achtung:</b> Kann den Server zeitweise voll auslasten
-search_index_delete_button:              Suchindex löschen
-search_index_delete_note:                <b>Achtung:</b> Kann nicht rückgängig gemacht werden
-search_index_delete_with_word_button:    Suchindex und Wortliste löschen
-search_index_delete_with_word_note:      <b>Achtung:</b> Kann nicht rückgängig gemacht werden
-search_index_info_title:                 Informationen
-search_index_info_words:                 Indizierte Wörter
-search_index_info_docs:                  Indizierte Dokumente
+alias_go_desc:                           Alias address that shall be created.
+alias_forward_to_title:                  Forwarding to
+alias_forward_to_desc:                   Address to which the aliase will be forwarded.
+alias_active_title:                      Activate alias
+alias_active_desc:                       De-/Activates the forwarding of the alias.
+alias_added:                             Alias added
+alias_not_added:                         Alias has not been added
+aliases_deleted:                         Aliases deleted
+aliases_not_deleted:                     Aliases have not been deleted
+aliases_not_found:                       No aliases found!
+alias_active:                            active
+alias_not_active:                        not active
+
 style_info_title:                        Information
-style_config_title:                      Einstellungen
+style_config_title:                      Settings
 style_content_title:                     Anfangsinhalt
-styles_not_installed_title:              Nicht installierte Styles
-styles_installed_title:                  Installierte Styles
-style_uninstall_title:                   Style deinstallieren
-style_add_title:                         Neuen Style erstellen
-style_installed:                         Style wurde erfolgreich installiert
-style_uninstalled:                       Style wurde erfolgreich deinstalliert
-style_not_installed:                     Neuen Style erstellen
-style_not_uninstalled:                   Style wurde nicht deinstalliert
-style_added:                             Style wurde erstellt
-style_not_added:                         Style konnte nicht erstellt werden
-style_error_copy:                        Kopieren des gewählten Styles ist fehlgeschlagen
-style_error_folder_creation:             Es konnten nicht alle Ordner erstellt werden
-styles_no_not_installed:                 Keine nicht installierten Styles gefunden!
-styles_no_installed:                     Keine installierten Styles gefunden!
-styles_selection_install:                Auswahl installieren
-styles_selection_uninstall:              Auswahl deinstallieren
-style_uninstall_question:                Soll dieser Style wirklich deinstalliert werden?
-style_is_active:                         Dieser Style ist zurzeit als Design der Hauptseite eingerichtet.
-style_select_new_active:                 Bitte einen anderen Style als Design auswählen:
+styles_not_installed_title:              Not installed Styles
+styles_installed_title:                  Installed styles
+style_uninstall_title:                   Uninstall style
+style_add_title:                         Add new style
+style_installed:                         Style has been successfully installed
+style_uninstalled:                       Style has been successfully uninstalled
+style_not_installed:                     Add new style
+style_not_uninstalled:                   Style has not been uninstalled
+style_added:                             Style has been added
+style_not_added:                         Style could not be added
+style_error_copy:                        Copying the selected style failed
+style_error_folder_creation:             Not all folders could be created
+styles_no_not_installed:                 No uninstalled styles found!
+styles_no_installed:                     No installed styles found!
+styles_selection_install:                Install selection
+styles_selection_uninstall:              Uninstall selection
+style_uninstall_question:                Do you really want to uninstall that style?
+style_is_active:                         Style is currently active.
+style_select_new_active:                 Please select a different style as design:
 style_version_title:                     Version
-style_version_desc:                      Die Versionsnummer des Styles.
-style_folder_title:                      Ordner
-style_tag_title:                         Style-Tag
-style_tag_desc:                          Tag wird auch als Ordner-Name verwendet.
-style_name_title:                        Style-Name
-style_name_desc:                         Der vollständige Name des Styles.
+style_version_desc:                      The version number of the style.
+style_folder_title:                      Folder
+style_tag_title:                         Style tag
+style_tag_desc:                          Tag will be used as folder name, too.
+style_name_title:                        Style name
+style_name_desc:                         The complete name of the style.
 style_copyright_title:                   Copyright
-style_copyright_desc:                    Copyright-Hinweise der Urheber.
-style_allow_use_title:                   Verwendung erlauben
-style_allow_use_desc:                    Erlaubt die Verwendung als Design der Hauptseite.
-style_allow_edit_title:                  Bearbeiten erlauben
-style_allow_edit_desc:                   Erlaubt das Bearbeiten der Templates des Styles.
-style_create_as_title:                   Erstellen als
-style_create_as_desc:                    Erstellt den neuen Style als...
-style_create_as_empty:                   leeren Style
-style_create_as_copy:                    Kopie eines bestehenden Styles
-template_file_not_found:                 Template-Datei konnte nicht gefunden werden
-template_file_created:                   Template-Datei wurde neu erstellt
-template_no_editable_template:           Kein Template zum Bearbeiten gefunden
-template_select_template:                Template zum Bearbeiten auswählen
+style_copyright_desc:                    Copyright notes of the copyright holders.
+style_allow_use_title:                   Allow use
+style_allow_use_desc:                    Allows the use as design for the mainpage.
+style_allow_edit_title:                  Allow editing
+style_allow_edit_desc:                   Allows the editing of the templates of the style.
+style_create_as_title:                   Create as
+style_create_as_desc:                    Creates the new style as...
+style_create_as_empty:                   empty style
+style_create_as_copy:                    copy of an existing stlye
+template_file_not_found:                 Template file was not found!
+template_file_created:                   Template file has been created anew
+template_no_editable_template:           No editable template found
+template_select_template:                Select template for editing
+
+
+# What are these lines doing here? They aren't present in the German admin.txt.
+config_publisher_title:                  Publisher
+config_publisher_desc:                   Herausgeber (Webmaster) der Seite.
+config_copyright_title:                  Copyright
+config_copyright_desc:                   Copyright-Hinweise der Urheber.
+config_style_title:                      Active Style
+config_style_desc:                       Style, der als Design der Hauptseite verwendet wird.
+
+search_config_title:                     Settings
+search_config_num_previews_title:        Number of results
+search_config_num_previews_desc:         The maximum number of results shown.
+search_config_num_previews_results:      Results

@@ -16,7 +16,7 @@ email_reg_desc:                 E-mail that the user receives after registration
 email_newpwd_title:             Password Change
 email_newpwd_desc:              E-mail that the user receives after a password change.
 email_delete_title:             Account Deletion
-email_delete_desc:              Email that the user receives in case of deletion of his account.
+email_delete_desc:              Email that the user receives in case of deletion of his/her account.
 
 email_username:                 The name of the user.
 email_password:                 The password of the user.

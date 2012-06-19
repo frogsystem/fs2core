@@ -19,7 +19,7 @@ exact:                                   exakt
 hex_color:                               Hexadezimal Farbcode
 folder_name_info:                        nur a-z, 0-9, "-" und "_" erlaubt
 chars:                                   Zeichen
-result:                                  Ergebniss
+result:                                  Ergebnis
 results:                                 Ergebnisse
 entry:                                   Eintrag
 entries:                                 Einträge
@@ -185,8 +185,6 @@ cats_down:                               Kategorien wurden nach unten verschoben
 
 # Some other Texts
 monthly_statistics:                      Monatsstatistik
-
-
 
 
 # Old

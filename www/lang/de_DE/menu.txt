@@ -86,7 +86,7 @@ page_link_editor_smilies:       Smilies
 page_title_editor_fscodes:      FSCodes bearbeiten
 page_link_editor_fscodes:       FSCodes
 
-# Statsitk
+# Statistik
 page_title_stat_view:           anzeigen
 page_link_stat_view:            anzeigen
 page_title_stat_edit:           bearbeiten

@@ -863,19 +863,18 @@ function forward_aliases ( $GOTO )
 {
     global $global_config_arr, $FD;
 
-    $index = mysql_query ( '
-                            SELECT `alias_go`, `alias_forward_to`
-                            FROM `'.$global_config_arr['pref']."aliases`
-                            WHERE `alias_active` = 1
-                            AND `alias_go` = '".$GOTO."'
-    ", $FD->sql()->conn() );
-
-    while ( $aliases_arr = mysql_fetch_assoc ( $index ) ) {
-        if ( $GOTO == $aliases_arr['alias_go'] ) {
-            $GOTO = $aliases_arr['alias_forward_to'];
+    $aliases = $FD->sql()->getData(
+        'aliases',
+        array('alias_go', 'alias_forward_to'), 
+        array('W' => "`alias_active` = 1 AND `alias_go` = '".$GOTO."'")
+    );
+    
+    foreach ($aliases as $alias) {
+        if ($GOTO == $alias['alias_go']) {
+            $GOTO = $alias['alias_forward_to'];
         }
     }
-
+    
     return $GOTO;
 }
 
