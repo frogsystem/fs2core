@@ -30,7 +30,10 @@ search_index();
 set_style();
 copyright();
 count_all($FD->cfg('goto'));
-save_referer();
+if (!$FD->configExists('main', 'count_referers') || $FD->cfg('main', 'count_referers')==1)
+{
+  save_referer();
+}
 save_visitors();
 
 

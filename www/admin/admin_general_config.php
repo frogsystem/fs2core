@@ -5,7 +5,7 @@
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array('title', 'dyn_title', 'dyn_title_ext', 'protocol', 'url', 'other_protocol', 'admin_mail', 'description', 'keywords', 'publisher', 'copyright', 'style_id', 'allow_other_designs', 'show_favicon', 'home', 'home_text', 'language_text', 'feed', 'date', 'time', 'datetime', 'timezone', 'auto_forward', 'page', 'page_prev', 'page_next', 'url_style');
+$used_cols = array('title', 'dyn_title', 'dyn_title_ext', 'protocol', 'url', 'other_protocol', 'admin_mail', 'description', 'keywords', 'publisher', 'copyright', 'style_id', 'allow_other_designs', 'show_favicon', 'home', 'home_text', 'language_text', 'feed', 'date', 'time', 'datetime', 'timezone', 'auto_forward', 'count_referers', 'page', 'page_prev', 'page_next', 'url_style');
 
 
 /////////////////////////////////////
@@ -16,6 +16,7 @@ if (
                 && !empty($_POST['url'])
                 && !empty($_POST['admin_mail'])
                 && !empty($_POST['date'])
+                && isset($_POST['count_referers'])
                 && !empty($_POST['page'])
                 && !empty($_POST['page_next'])
                 && !empty($_POST['page_prev'])
@@ -33,6 +34,8 @@ if (
     if (substr($_POST['url'], 0, 8) == 'https://') {
         $_POST['url'] = substr($_POST['url'], 8);
     }
+
+    $_POST['count_referers'] = (int) $_POST['count_referers'];
 
     // prepare data
     $data = frompost($used_cols);
@@ -71,6 +74,8 @@ if ( TRUE )
         $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'main'"));
         $data = json_array_decode($data['config_data']);
         putintopost($data);
+        //temp. line
+        if (!isset($_POST['count_referers'])) $_POST['count_referers'] = 1;
     }
 
     // security functions
@@ -93,6 +98,8 @@ if ( TRUE )
     $adminpage->addCond('home_0', $_POST['home'] === 0);
     $adminpage->addCond('home_1', $_POST['home'] === 1);
     $adminpage->addCond('timezone', $_POST['timezone'] === 'default');
+    $adminpage->addCond('ref_active', $_POST['count_referers'] == 1);
+    $adminpage->addCond('ref_inactive', $_POST['count_referers'] != 1);
 
     // Values
     foreach ($_POST as $key => $value) {

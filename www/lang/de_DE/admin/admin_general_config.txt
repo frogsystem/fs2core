@@ -79,6 +79,11 @@ server_default:             Server-Standard
 auto_forward:               Automatische Weiterleitung
 auto_forward_desc:          Zeit, nach der die automatische Weiterleitung aktiviert wird.
 
+referer:                    Refererz&auml;hlung
+referer_desc:               Aktiviert/deaktiviert die Refererz&auml;hlung bei jedem Seitenaufruf.
+referer_active:             aktiv
+referer_inactive:           deaktiviert
+
 page:                       Seitenanzeige
 page_desc:                  Design der Seitenanzeige bei mehrseitigen Anzeigen.
 page_prev:                  Seite zurück
