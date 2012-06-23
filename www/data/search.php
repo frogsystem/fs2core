@@ -9,7 +9,7 @@ $news_cols = array('news_id', 'news_title', 'news_date');
 $article_cols = array('article_id', 'article_url', 'article_title', 'article_date');
 $dl_cols = array('dl_id', 'dl_date', 'dl_name');
 $config_cols = array('search_num_previews', 'search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard', 'search_min_word_length', 'search_allow_phonetic', 'search_use_stopwords');
-$config_arr = $sql->getById('search_config', $config_cols, 1);
+$FD->loadConfigOnce('search');
 
 
 // Security Functions
@@ -59,7 +59,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'news_date DESC', 'news_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $config_arr['search_num_previews'] > $news_num_results) {
+            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $news_num_results) {
 
                 // get data for entry
                 $news = $sql->getRow('news', $news_cols, array(
@@ -121,7 +121,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'article_date DESC', 'article_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $config_arr['search_num_previews'] > $articles_num_results) {
+            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $articles_num_results) {
 
                 // get data for entrie
                 $article = $sql->getRow('articles', $article_cols, array(
@@ -190,7 +190,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'dl_date DESC', 'dl_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $config_arr['search_num_previews'] > $downloads_num_results) {
+            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $downloads_num_results) {
 
                 // get data for entrie
                 $dl = $sql->getRow('dl', $dl_cols, array(
@@ -311,8 +311,6 @@ $ops = get_default_operators();
 $template = new template();
 $template->setFile('0_search.tpl');
 $template->load('SEARCH');
-    $config_cols = array('search_min_word_length', 'search_use_stopwords');
-    $config_arr = $sql->getById('search_config', $config_cols, 1);
 $template->tag('keyword', $_REQUEST['keyword'] );
 $template->tag('operators', implode(' ', $ops)) ;
 $template->tag('search_in_news', $_REQUEST['in_news'] );

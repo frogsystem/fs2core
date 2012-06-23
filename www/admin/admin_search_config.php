@@ -6,7 +6,7 @@
 ## Page Settings ##
 ###################
 $search_cols = array('id', 'search_num_previews', 'search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard', 'search_min_word_length', 'search_allow_phonetic', 'search_use_stopwords');
-$global_cols = array('search_index_update');
+$cronjobs_cols = array('search_index_update');
 
 
 ///////////////////////
@@ -25,13 +25,12 @@ if (
 {
     // prepare data
     $search = frompost($search_cols);
-    $search['id'] = 1;
-    $global = frompost($global_cols);
+    $cronjobs = frompost($cronjobs_cols);
 
      // save to db
     try {
-        $sql->save('search_config', $search);
-        $FD->saveConfig('main', $global);
+        $FD->saveConfig('search', $search);
+        $FD->saveConfig('cronjobs', $cronjobs);
         systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
     } catch (Exception $e) {}
 
@@ -51,14 +50,14 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $search = $sql->getRow('search_config', $search_cols, array('W' => '`id` = 1'));
-        $global = $sql->getRow('global_config', $global_cols, array('W' => '`id` = 1'));
+        $search = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'search'"));
+        $search = json_array_decode($search['config_data']);        
 
-        $global = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'main'"));
-        $global = json_array_decode($global['config_data']);
-        $global = array_filter_keys($global, $global_cols);
+        $cronjobs = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'cronjobs'"));
+        $cronjobs = json_array_decode($cronjobs['config_data']);
+        $cronjobs = array_filter_keys($cronjobs, $cronjobs_cols);
 
-        $data = array_merge($global, $search);
+        $data = array_merge($cronjobs, $search);
         putintopost($data);
     }
 

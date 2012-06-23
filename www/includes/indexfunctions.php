@@ -1,4 +1,51 @@
 <?php
+///////////////////////////////
+//// start pseudo cronjobs ////
+///////////////////////////////
+function daily_cronjobs ($time = null, $save_time = true) {
+    global $FD;
+    
+    // set now
+    if (empty($time))
+        $time = $FD->env('time');
+        
+    // make 3am
+    $today_3am = mktime(3, 0, 0, date('m', $time), date ('d', $time), date ('Y', $time));
+    $today_3am = ($today_3am > $FD->cfg('time')) ? $today_3am - 24*60*60 : $today_3am;
+    
+    // Run Cronjobs or nt
+    if ($FD->cfg('cronjobs', 'last_cronjob_time') < $today_3am) {
+        delete_old_randoms();
+        search_index();  
+        clean_referers();
+        
+        if ($save_time)
+            $FD->saveConfig('cronjobs', array('last_cronjob_time' => $time));
+    }
+}
+
+//////////////////////////////////////
+//// clean up referrers by config ////
+//////////////////////////////////////
+function clean_referers ($time = null) {
+    global $FD;
+    
+    // set time
+    if (empty($time))
+        $time = $FD->env('time');    
+    
+    if ($FD->cfg('cronjobs', 'ref_cron') == 1) {
+        delete_referrers(
+            $FD->cfg('cronjobs', 'ref_days'),
+            $FD->cfg('cronjobs', 'ref_hits'),
+            $FD->cfg('cronjobs', 'ref_contact'),
+            $FD->cfg('cronjobs', 'ref_age'),
+            $FD->cfg('cronjobs', 'ref_amount'),
+            $time);
+    }
+}
+
+
 //////////////////////////////
 //// Set correct Timezone ////
 //////////////////////////////
@@ -14,19 +61,14 @@ function setTimezone ($timezone) {
 ///////////////////////////////////
 function search_index ()
 {
-    global $global_config_arr, $FD;
+    global $FD;
 
-    $today_3am = mktime ( 3, 0, 0, date ( 'm' ), date ( 'd' ), date ( 'Y' ) );
-    $today_3am = ( $today_3am > time() ) ? $today_3am - 24*60*60 : $today_3am;
-    if ( $global_config_arr['search_index_update'] === 2 &&  $global_config_arr['search_index_time'] < $today_3am) {
+    if ($FD->cfg('cronjobs', 'search_index_update') == 2) {
         // Include searchfunctions.php
         require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
-        update_search_index ( 'news' );
-        update_search_index ( 'articles' );
-        update_search_index ( 'dl' );
-
-        // Update config Value
-        $FD->saveConfig('main', array('search_index_time' => time()));
+        update_search_index('news');
+        update_search_index('articles');
+        update_search_index('dl');
     }
 }
 
@@ -1038,14 +1080,14 @@ function save_referer ()
 function delete_old_randoms ()
 {
   global $FD;
-  global $global_config_arr;
 
-  if ($global_config_arr['random_timed_deltime'] != -1) {
-    // Alte Zufallsbild-Einträge aus der Datenbank entfernen
-    mysql_query('DELETE a
-                FROM '.$global_config_arr['pref'].'screen_random a, '.$global_config_arr['pref'].'global_config b
-                WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime', $FD->sql()->conn() );
-  }
+  //~ if ($global_config_arr['random_timed_deltime'] != -1) {
+    //~ // Alte Zufallsbild-Einträge aus der Datenbank entfernen
+    //~ mysql_query('DELETE a
+                //~ FROM '.$global_config_arr['pref'].'screen_random a, '.$global_config_arr['pref'].'global_config b
+                //~ WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime', $FD->sql()->conn() );
+  //~ }
+  //TODO rewrite preview image module
 }
 
 

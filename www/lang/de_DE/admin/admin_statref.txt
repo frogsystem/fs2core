@@ -1,1 +1,5 @@
 #@from_phrases
+
+referrer_delete_oncenow: nur einmalig, jetzt
+referrer_delete_daily: jeden Tag um 3 Uhr
+referrer_delete_only_manually: nicht regelmäßig, nur manuell

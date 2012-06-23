@@ -76,15 +76,15 @@ function http_response_text($code) {
 
 
 
-///////////////////////////////////////
-//// Decode Array with JSON & UTF8 ////
-//////////////////////////////////////
-function json_array_decode ($array) {
-    return array_map('utf8_decode', json_decode($array, true));
+////////////////////////////////////////
+//// Decode JSON to Array with UTF8 ////
+////////////////////////////////////////
+function json_array_decode ($string) {
+    return array_map('utf8_decode', json_decode($string, true));
 }
 ///////////////////////////////////////
-//// Encode Array with JSON & UTF8 ////
-//////////////////////////////////////
+//// Encode Array from JSON & UTF8 ////
+///////////////////////////////////////
 function json_array_encode ($array) {
     return json_encode(array_map('utf8_encode', $array), JSON_FORCE_OBJECT);
 }

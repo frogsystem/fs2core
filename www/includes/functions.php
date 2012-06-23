@@ -1,6 +1,39 @@
 <?php
 require_once(FS2_ROOT_PATH . 'includes/newfunctions.php');
 
+/////////////////////////
+//// Delete Referrers ///
+/////////////////////////
+function delete_referrers ($days, $hits, $contact, $age, $amount, $time = null) {
+    
+    global $FD;
+
+    // set now
+    if (empty($time))
+        $time = $FD->cfg('time');
+
+    // get last date
+    $del_date = $time - $days * 86400;
+    
+    // security and sql prepartion
+    settype($hits, 'integer');
+    switch ($contact) {
+        case 'first': $contact = 'first'; break;
+        default: $contact = 'last'; break;
+    }
+    switch ($age) {
+        case 'older': $age = '<'; break;
+        default: $age = '>'; break;
+    }
+    switch ($amount) {
+        case 'less': $amount = '<'; break;
+        default: $amount = '>'; break;
+    }
+
+    return $FD->sql()->delete('counter_ref', array(
+        'W' => '`ref_'.$contact.'` '.$age." '".$del_date."' AND `ref_count` ".$amount." '".$hits."'"));
+}
+
 ////////////////////
 //// create URL ////
 ////////////////////

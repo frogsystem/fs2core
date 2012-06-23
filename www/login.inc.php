@@ -8,7 +8,6 @@ $dbc['pass'] = 'frogsystem'; //Database User-Password
 $dbc['data'] = 'fs2'; //Database Name
 $dbc['pref'] = 'fs2_'; //Table Prefix
 
-
 ////////////////////////
 //// Hardcoded Vars ////
 ////////////////////////
@@ -48,6 +47,8 @@ try {
 //// DB Connection failed ////
 //////////////////////////////
 } catch (Exception $e) {
+	// log connection error
+	error_log($e->getMessage(), 0);
 
     // Set header
     header(http_response_text(503), true, 503);
@@ -73,7 +74,9 @@ try {
         <title>'.$TEXT['frontend']->get('no_connection').'</title>
     </head>
     <body>
-        <b>'.$TEXT['frontend']->get('no_connection_to_the_server').'</b>
+		<p>
+			<b>'.$TEXT['frontend']->get('no_connection_to_the_server').'</b>
+        </p>
     </body>
 </html>
     ';

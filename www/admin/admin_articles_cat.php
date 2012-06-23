@@ -4,8 +4,8 @@
 //////////////////////////
 
 // Create Articles-Config-Array
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_config', $FD->sql()->conn() );
-$articles_config_arr = mysql_fetch_assoc ( $index );
+$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'articles'"));
+$articles_config_arr = json_array_decode($config_arr['config_data']);
 $showdefault = TRUE;
 
 

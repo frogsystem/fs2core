@@ -1,16 +1,24 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+###################
+## Page Settings ##
+###################
+$cronjobs_cols = array('ref_cron', 'ref_days', 'ref_hits', 'ref_contact', 'ref_age', 'ref_amount');
+
 //////////////////////////
 //// Referrer Löschen ////
 //////////////////////////
 
-if ( $_POST['delete_referrer'] == 1 && isset ( $_POST['del_days'] ) && isset ( $_POST['del_hits'] ) )
-{
-    settype ( $_POST['del_days'], 'integer' );
-    settype ( $_POST['del_hits'], 'integer' );
-    savesql ( $_POST['del_contact'] );
-    savesql ( $_POST['del_age'] );
-    savesql ( $_POST['del_amount'] );
+if (
+    has_perm('stat_ref_delete')
+    && $_POST['delete_referrer'] == 1 && isset ( $_POST['del_days'] ) && isset ( $_POST['del_hits'] )
+) {
+    settype ($_POST['del_cron'], 'integer');
+    settype ($_POST['del_days'], 'integer');
+    settype ($_POST['del_hits'], 'integer');
+    savesql ($_POST['del_contact']);
+    savesql ($_POST['del_age']);
+    savesql ($_POST['del_amount']);
 
 	if ( $_POST['del_days'] < 1 )
     {
@@ -22,41 +30,41 @@ if ( $_POST['delete_referrer'] == 1 && isset ( $_POST['del_days'] ) && isset ( $
     }
     else
     {
-        $del_date = time() - $_POST['del_days'] * 86400;
+    
+        // Delete Refs now
+        if ($_POST['del_cron'] == 42) {
+            $rows = delete_referrers ($_POST['del_days'], $_POST['del_hits'], $_POST['del_contact'], $_POST['del_age'], $_POST['del_amount']);
 
-    	switch ( $_POST['del_contact'] )
-    	{
-        	case 'first': $contact = 'first'; break;
-         	case 'last': $contact = 'last'; break;
-    	}
-    	switch ( $_POST['del_age'] )
-    	{
-        	case 'older': $age = '<'; break;
-         	case 'younger': $age = '>'; break;
-    	}
-    	switch ( $_POST['del_amount'] )
-    	{
-        	case 'less': $amount = '<'; break;
-         	case 'more': $amount = '>'; break;
-    	}
-
-		mysql_query('DELETE FROM '.$global_config_arr['pref'].'counter_ref
-                     WHERE ref_'.$contact.' '.$age." '".$del_date."' AND
-                           ref_count ".$amount." '".$_POST['del_hits']."'", $FD->sql()->conn() );
-
-		$message =  $FD->text('page', 'referrer_deleted_entries') . ':<br>' .
-					'"'.$admin_phrases['stats']['referrer_'.$_POST['del_contact']] . ' ' .
-					$admin_phrases['stats']['referrer_delete_'.$_POST['del_age']] . ' ' .
-        			$_POST['del_days'] . ' ' .
-        			$FD->text('page', 'referrer_delete_days') . ' ' .
-        			$FD->text('page', 'referrer_delete_and') . ' ' .
-        			$admin_phrases['stats']['referrer_delete_'.$_POST['del_amount']] . ' ' .
-        			$_POST['del_hits'] . ' ' .
-        			$FD->text('page', 'referrer_delete_hits').'"' . '<br><br>' .
-					$FD->text('page', 'affected_rows') . ': ' .
-					mysql_affected_rows();
-
-        systext ( $message, $FD->text('page', 'info') );
+            $message =  $FD->text('page', 'referrer_deleted_entries') . ':<br>' .
+                        '"'.$admin_phrases['stats']['referrer_'.$_POST['del_contact']] . ' ' .
+                        $admin_phrases['stats']['referrer_delete_'.$_POST['del_age']] . ' ' .
+                        $_POST['del_days'] . ' ' .
+                        $FD->text('page', 'referrer_delete_days') . ' ' .
+                        $FD->text('page', 'referrer_delete_and') . ' ' .
+                        $admin_phrases['stats']['referrer_delete_'.$_POST['del_amount']] . ' ' .
+                        $_POST['del_hits'] . ' ' .
+                        $FD->text('page', 'referrer_delete_hits').'"' . '<br><br>' .
+                        $FD->text('page', 'affected_rows') . ': ' .
+                        $rows ;
+            systext ( $message, $FD->text("page", "info") );
+            
+        // save config for referer cronjob
+        } else {
+            try {
+                $config = array(
+                    'ref_cron' => $_POST['del_cron'],
+                    'ref_days' => $_POST['del_days'],
+                    'ref_hits' => $_POST['del_hits'],
+                    'ref_contact' => $_POST['del_contact'],
+                    'ref_age' => $_POST['del_age'],
+                    'ref_amount' => $_POST['del_amount']
+                );
+                $FD->saveConfig('cronjobs', $config);
+                systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+            } catch (Exception $e) {
+                systext($FD->text('admin', 'config_not_saved'), $FD->text('admin', 'error'), 'green', $FD->text('admin', 'icon_save_error'));
+            }
+        }
     }
 }
 
@@ -264,8 +272,18 @@ else
 ////////////////////////
 /// Referrer löschen ///
 ////////////////////////
+    if (has_perm('stat_ref_delete')) {
+        
+        // Get Config data
+        $cronjobs = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'cronjobs'"));
+        $cronjobs = json_array_decode($cronjobs['config_data']);
+        $cronjobs = array_filter_keys($cronjobs, $cronjobs_cols);
+        putintopost($cronjobs);
+        
+        // security functions
+        $_POST = array_map('killhtml', $_POST);        
 
-    echo'
+        echo'
                     <form action="" method="post">
                         <input type="hidden" value="stat_ref" name="go">
                         <table class="configtable" cellpadding="4" cellspacing="0">
@@ -281,16 +299,16 @@ else
                                     '.$FD->text('page', 'referrer_delete_with').'
                                     &nbsp;
                                     <select name="del_contact">
-                                        <option value="first">'.$FD->text('page', 'referrer_first').'</option>
-                                        <option value="last">'.$FD->text('page', 'referrer_last').'</option>
+                                        <option value="first" '.getselected($_POST['ref_contact'], 'first').'>'.$FD->text('page', 'referrer_first').'</option>
+                                        <option value="last" '.getselected($_POST['ref_contact'], 'last').'>'.$FD->text('page', 'referrer_last').'</option>
                                     </select>
                                     &nbsp;
                               		<select name="del_age">
-                                        <option value="older">'.$FD->text('page', 'referrer_delete_older').'</option>
-                                        <option value="younger">'.$FD->text('page', 'referrer_delete_younger').'</option>
+                                        <option value="older" '.getselected($_POST['ref_age'], 'older').'>'.$FD->text('page', 'referrer_delete_older').'</option>
+                                        <option value="younger" '.getselected($_POST['ref_age'], 'younger').'>'.$FD->text('page', 'referrer_delete_younger').'</option>
                                     </select>
                                     &nbsp;
-                                    <input class="text" name="del_days" size="3" maxlength="3" value="5">
+                                    <input class="text" name="del_days" size="3" maxlength="3" value="'.$_POST['ref_days'].'">
                                     '.$FD->text('page', 'referrer_delete_days').'
                                 </td>
                             </tr>
@@ -299,24 +317,37 @@ else
                                     '.$FD->text('page', 'referrer_delete_and').'
                                     &nbsp;
                                     <select name="del_amount">
-                                        <option value="less">'.$FD->text('page', 'referrer_delete_less').'</option>
-                                        <option value="more">'.$FD->text('page', 'referrer_delete_more').'</option>
+                                        <option value="less" '.getselected($_POST['ref_amount'], 'less').'>'.$FD->text('page', 'referrer_delete_less').'</option>
+                                        <option value="more" '.getselected($_POST['ref_amount'], 'more').'>'.$FD->text('page', 'referrer_delete_more').'</option>
                                     </select>
                                     &nbsp;
-                                    <input class="text" name="del_hits" size="3" maxlength="3" value="3">
-                                    '.$FD->text('page', 'referrer_delete_hits').'.
+                                    <input class="text" name="del_hits" size="3" maxlength="3" value="'.$_POST['ref_hits'].'">
+                                    '.$FD->text('page', 'referrer_delete_hits').'
+                                    &nbsp;
+                                    <select name="del_cron">
+                                        <option value="42">'.$FD->text('page', 'referrer_delete_oncenow').'</option>
+                                        <option value="1">
+                                            '.$FD->text('page', 'referrer_delete_daily').
+                                            ($_POST['ref_cron'] == 1 ? ' ('.$FD->text('admin', 'active').')' : '').'
+                                        </option>
+                                        <option value="0">
+                                            '.$FD->text('page', 'referrer_delete_only_manually').
+                                            ($_POST['ref_cron'] == 0 ? ' ('.$FD->text('admin', 'active').')' : '').'
+                                        </option>
+                                    </select>&nbsp;.
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd">
                                     <button class="button_new" type="submit" name="delete_referrer" value="1">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'referrer_delete_button').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').' / '.$FD->text('admin', 'do_action_button_long').'
                                     </button>
                                 </td>
                             </tr>
                         </table>
                     </form>
-	';
+        ';
+    }
 }
 ?>

@@ -51,6 +51,13 @@ class GlobalData {
         $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
     }
     
+    // load configs only if not yet loaded
+    public function loadConfigOnce($name) {
+        // only if not yet loaded
+        if (!$this->configExists($name))
+            $this->loadConfig($name);
+    }
+    
     // load configs by hook
     private function loadConfigsByHook($hook) {
 
@@ -211,7 +218,8 @@ class GlobalData {
 
 
 
-    // TODO backwards, create global config array
+    // TODO remove backwards compatibility
+    // create global config array
     public function setOldArray() {
         global $global_config_arr;
 

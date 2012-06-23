@@ -1,13 +1,13 @@
 <?php
 function get_default_operators () {
-    global $sql;
-    $config_arr = $sql->getById('search_config', array('search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard'), 1);
+    global $FD;
+    $FD->loadConfigOnce('search');
 
-    $and = explode(',', $config_arr['search_and']);
-    $or  = explode(',', $config_arr['search_or']);
-    $xor = explode(',', $config_arr['search_xor']);
-    $not = explode(',', $config_arr['search_not']);
-    $wc  = explode(',', $config_arr['search_wildcard']);
+    $and = explode(',', $FD->cfg('search', 'search_and'));
+    $or  = explode(',', $FD->cfg('search', 'search_or'));
+    $xor = explode(',', $FD->cfg('search', 'search_xor'));
+    $not = explode(',', $FD->cfg('search', 'search_not'));
+    $wc  = explode(',', $FD->cfg('search', 'search_wildcard'));
 
     $ops = array(
         'and' => trim(array_shift($and)),
@@ -247,18 +247,17 @@ function compress_search_data ( $TEXT ) {
 }
 
 function delete_stopwords ($TEXT) {
-    global $sql;
-    $config_cols = array('search_min_word_length', 'search_use_stopwords');
-    $config_arr = $sql->getById('search_config', $config_cols, 1);
+    global $FD;
+    $FD->loadConfigOnce('search');
 
     $locSearch = array();
     $locReplace = array();
 
-    $locSearch[] = "=(\s[A-Za-z]{1,".($config_arr['search_min_word_length']-1)."})\s=";
+    $locSearch[] = "=(\s[A-Za-z]{1,".($FD->cfg('search', ('search_min_word_length'))-1)."})\s=";
     $locReplace[] = ' ';
 
     // Use Stopwords?
-    if ( $config_arr['search_use_stopwords'] == 1 ) {
+    if ( $FD->config('search', 'search_use_stopwords') == 1 ) {
         $locSearch[] = '= ' . implode ( ' | ', get_stopwords() ) . " =i";
         $locReplace[] = ' ';
     }

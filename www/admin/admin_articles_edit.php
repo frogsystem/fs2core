@@ -2,8 +2,8 @@
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."articles_config WHERE `id` = '1'", $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'articles'"));
+$config_arr = json_array_decode($config_arr['config_data']);
 
 ///////////////////
 //// Functions ////
@@ -351,8 +351,8 @@ function action_edit_get_data ( $ARTICLE_ID )
     $articles_arr['article_old_url'] = $old_url;
 
     // Load Article Config
-    $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_config', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc ( $index );
+    $config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'articles'"));
+    $config_arr = json_array_decode($config_arr['config_data']);
 
         // Create HTML, FSCode & Para-Handling Vars
     $config_arr['html_code_bool'] = ($config_arr['html_code'] == 2 || $config_arr['html_code'] == 4);

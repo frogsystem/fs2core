@@ -29,7 +29,7 @@ class sql {
             $this->pref = $pref;
         } else {
             $this->sql = false;
-            Throw new ErrorException('No Connection to Database');
+            Throw new ErrorException('No Connection to Database: '.mysql_error());
         }
     }
 

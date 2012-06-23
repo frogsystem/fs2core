@@ -31,6 +31,10 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
         });
         if (count($filterd_ids) == 0)
             $filterd_ids = $poll_ids;
+            
+        // still no poll
+        if (count($filterd_ids) == 0)
+            Throw new ErrorException("No active Poll in Database");
 
         $poll_arr = $sql->getById('poll', '*', $poll_ids[array_rand($filterd_ids)]['poll_id'], 'poll_id');
         $poll_arr['random'] = true;
@@ -49,9 +53,12 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
 //////////////////////////
 //// View Result      ////
 //////////////////////////
-if ((isset($_POST['poll_id']) && ($_POST['poll_id'] === $poll_arr['poll_id'] || $poll_arr['random'] === true))
-    || checkVotedPoll($poll_arr['poll_id'])
-    || (isset($poll_arr['poll_end']) && time() > $poll_arr['poll_end'])
+if (isset($_POST['poll_id']) &&
+    (
+        ($_POST['poll_id'] === $poll_arr['poll_id'] || $poll_arr['random'] === true)
+        || checkVotedPoll($poll_arr['poll_id'])
+        || (isset($poll_arr['poll_end']) && time() > $poll_arr['poll_end'])
+    )
 )
 {
     if ($poll_arr['random'] === true && isset($_POST['poll_id'])) {
@@ -159,7 +166,7 @@ if ((isset($_POST['poll_id']) && ($_POST['poll_id'] === $poll_arr['poll_id'] || 
 //// Display Poll     ////
 //////////////////////////
 
-elseif (!checkVotedPoll($poll_arr['poll_id']) && isset($poll_arr['poll_id'])) {
+elseif (isset($poll_arr['poll_id']) && !checkVotedPoll($poll_arr['poll_id'])) {
 
     $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $TEXT['frontend']->get('multiple_choise') : $TEXT['frontend']->get('single_choice');
 

@@ -25,13 +25,12 @@ $TEXT['frontend'] = $FD->getOldTetxt();
 // TODO: "Constructor Hook"
 get_goto();
 setTimezone($FD->cfg('timezone'));
-delete_old_randoms();
-search_index();
-set_style();
-copyright();
+daily_cronjobs();
 count_all($FD->cfg('goto'));
 save_referer();
 save_visitors();
+set_style();
+copyright();
 
 
 // Get Body-Template
