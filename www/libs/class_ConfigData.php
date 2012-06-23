@@ -61,5 +61,10 @@ class ConfigData {
     public function get($name) {
         return $this->config[$name];
     }
+    
+    // isset config entry
+    public function exists($name) {
+        return isset($this->config[$name]);
+    }
 }
 ?>

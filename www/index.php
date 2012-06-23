@@ -16,18 +16,8 @@ require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
 require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 
-//Include Library-Classes
-#require_once(FS2_ROOT_PATH . 'libs/class_HashMapper.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_template.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_fileaccess.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_lang.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_search.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_searchquery.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_Mail.php');
-#require_once(FS2_ROOT_PATH . 'libs/class_MailManager.php');
 
-
-// Load Text TODO: backwards compatibiliy
+// Load Text TODO: remove backwards compatibiliy
 $TEXT['frontend'] = $FD->getOldTetxt();
 
 
@@ -35,13 +25,14 @@ $TEXT['frontend'] = $FD->getOldTetxt();
 // TODO: "Constructor Hook"
 get_goto();
 setTimezone($FD->cfg('timezone'));
-delete_old_randoms();
-search_index();
+daily_cronjobs();
+count_all($FD->cfg('goto'));
+if (!$FD->configExists('main', 'count_referers') || $FD->cfg('main', 'count_referers')==1) {
+  save_referer();
+}
+save_visitors();
 set_style();
 copyright();
-count_all($FD->cfg('goto'));
-save_referer();
-save_visitors();
 
 
 // Get Body-Template

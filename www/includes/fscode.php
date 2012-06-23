@@ -473,7 +473,7 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
     }
 
     // Return html or text
-    if ($params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true)
         return ($url == $content) ? $url : $content . ' ('.$url.')';
     else
         return '<a href="'.$url.'" target="_self">'.$content.'</a>';

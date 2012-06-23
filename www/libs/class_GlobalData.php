@@ -45,15 +45,17 @@ class GlobalData {
     // load configs
     public function loadConfig($name) {
         // Load config from DB
-        $data = $this->sql->getRow('config', '*', array('W' => "`config_name` = '".$name."'"));
+        $config = $this->sql->getRow('config', '*', array('W' => "`config_name` = '".$name."'"));
         
         // Load corresponding class and get config array
-        $class_name = "Config".ucfirst(strtolower($config['config_name']));
-        require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
-        @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
-        if (!class_exists($class_name))
-            $class_name = "ConfigData";
-        $this->config[$config['config_name']] = new $class_name($config['config_data'], true);
+        $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
+    }
+    
+    // load configs only if not yet loaded
+    public function loadConfigOnce($name) {
+        // only if not yet loaded
+        if (!$this->configExists($name))
+            $this->loadConfig($name);
     }
     
     // load configs by hook
@@ -66,15 +68,34 @@ class GlobalData {
         $data = $this->sql->getData('config', '*', array('W' => "`config_loadhook` = '".$hook."'") );
         foreach ($data as $config) {
             // Load corresponding class and get config array
-            $class_name = "Config".ucfirst(strtolower($config['config_name']));
-            require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
-            @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
-            if (!class_exists($class_name))
-                $class_name = "ConfigData";
-            $this->config[$config['config_name']] = new $class_name($config['config_data'], true);
+            $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
         }
 
         $this->setOldArray();   // TODO remove backwards compatibility
+    }
+    
+    
+    // reload config
+    private function reloadConfig($name, $data = null, $json = false) {
+        // get from DB
+        if (empty($data)) {
+            $this->loadConfig($name);
+        
+        // set data from input
+        } else {
+            $this->config['$name'] = $this->createConfigObject($name, $data, $json);
+        }
+    }
+    
+    // create config object
+    private function createConfigObject($name, $data, $json) {
+        // Load corresponding class and get config array
+        $class_name = "Config".ucfirst(strtolower($name));
+        require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
+        @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
+        if (!class_exists($class_name))
+            $class_name = "ConfigData";
+        return new $class_name($data, $json);
     }
 
     // set config
@@ -97,29 +118,29 @@ class GlobalData {
     }
 
     // set config
-    public function saveConfig($type, $newdata) {
+    public function saveConfig($name, $newdata) {
         try {
-            //get data from db
-            $olddata = $this->sql->getRow('config', array('config_data'), array('W' => "`config_name` = '".$type."'"));
-            $olddata = array_map('utf8_decode', json_decode($olddata['config_data'], true));
+            //get original data from db
+            $original_data = $this->sql->getRow('config', array('config_data'), array('W' => "`config_name` = '".$name."'"));
+            $original_data = array_map('utf8_decode', json_decode($original_data['config_data'], true));
 
             // update data
-            foreach ($newdata as $name => $value) {
-                $olddata[$name] = $value;
+            foreach ($newdata as $key => $value) {
+                $original_data[$key] = $value;
             }
 
             // convert back to json
             $newdata = array(
-                'config_name' => $type,
-                'config_data' => json_array_encode($olddata),
+                'config_name' => $name,
+                'config_data' => json_array_encode($original_data),
             );
 
             // save to db
             $this->sql->save('config', $newdata, 'config_name');
 
             // Reload Data
-            $this->loadConfig($this->cfg('env', 'spam'), $this->cfg('env', 'path'));
-
+            $this->reloadConfig($name, $newdata['config_data'], true);
+            
         } catch (Exception $e) {
             throw $e;
         }
@@ -140,8 +161,8 @@ class GlobalData {
         } else {
             Throw Exception('Invalid Call of method "config"');
         }
-
     }
+    
     // Aliases
     public function cfg() {
         return call_user_func_array(array($this, 'config'), func_get_args());
@@ -156,7 +177,18 @@ class GlobalData {
         return $this->cfg('info', $arg);
     }
 
+    // config and/or key exists
+    public function configExists() {
+        
+        // check for config
+        if (func_num_args() == 1) {
+            return isset($this->config[func_get_arg(0)]);
 
+        // check for config-key
+        } else {
+            return isset($this->config[func_get_arg(0)]) && $this->config[func_get_arg(0)]->exists(func_get_arg(1));
+        }
+    }
 
 
     // get sql
@@ -186,7 +218,8 @@ class GlobalData {
 
 
 
-    // TODO backwards, create global config array
+    // TODO remove backwards compatibility
+    // create global config array
     public function setOldArray() {
         global $global_config_arr;
 

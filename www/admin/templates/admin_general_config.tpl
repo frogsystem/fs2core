@@ -302,6 +302,23 @@
             </td>
         </tr>
 
+        <tr>
+            <td>
+                <!--LANG::referer-->:<br>
+                <span class="small"><!--LANG::referer_desc--></span>
+            </td>
+            <td>
+                <select class="half" name="count_referers" size="1">
+                    <option value="1" <!--IF::ref_active-->selected<!--ENDIF-->>
+                        <!--LANG::referer_active-->
+                    </option>
+                    <option value="0" <!--IF::ref_inactive-->selected<!--ENDIF-->>
+                        <!--LANG::referer_inactive-->
+                    </option>
+                </select>
+            </td>
+        </tr>
+
         <tr><td colspan="2"><h3><!--LANG::pagenav_title--></h3><hr></td></tr>
 
         <tr>

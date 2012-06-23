@@ -5,7 +5,7 @@
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array('title', 'dyn_title', 'dyn_title_ext', 'protocol', 'url', 'other_protocol', 'admin_mail', 'description', 'keywords', 'publisher', 'copyright', 'style_id', 'allow_other_designs', 'show_favicon', 'home', 'home_text', 'language_text', 'feed', 'date', 'time', 'datetime', 'timezone', 'auto_forward', 'page', 'page_prev', 'page_next', 'url_style');
+$used_cols = array('title', 'dyn_title', 'dyn_title_ext', 'protocol', 'url', 'other_protocol', 'admin_mail', 'description', 'keywords', 'publisher', 'copyright', 'style_id', 'allow_other_designs', 'show_favicon', 'home', 'home_text', 'language_text', 'feed', 'date', 'time', 'datetime', 'timezone', 'auto_forward', 'count_referers', 'page', 'page_prev', 'page_next', 'url_style');
 
 
 /////////////////////////////////////
@@ -16,12 +16,13 @@ if (
                 && !empty($_POST['url'])
                 && !empty($_POST['admin_mail'])
                 && !empty($_POST['date'])
+                && isset($_POST['count_referers'])
                 && !empty($_POST['page'])
                 && !empty($_POST['page_next'])
                 && !empty($_POST['page_prev'])
                 && is_language_text($_POST['language_text'])
                 && ($_POST['home'] == 0 || ($_POST['home'] == 1 && !empty($_POST['home_text'])))
-        )
+    )
 {
     // url slash & leading http://
     if (substr($_POST['url'], -1) != '/') {
@@ -33,6 +34,8 @@ if (
     if (substr($_POST['url'], 0, 8) == 'https://') {
         $_POST['url'] = substr($_POST['url'], 8);
     }
+
+    $_POST['count_referers'] = (int) $_POST['count_referers'];
 
     // prepare data
     $data = frompost($used_cols);
@@ -68,15 +71,15 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        //$data = $sql->getRow('global_config', $used_cols, array('W' => "`id` = '1'"));
         $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'main'"));
         $data = json_array_decode($data['config_data']);
         putintopost($data);
+        //temp. line
+        if (!isset($_POST['count_referers'])) $_POST['count_referers'] = 1;
     }
 
     // security functions
     $_POST = array_map('killhtml', $_POST);
-
 
     // Conditions
     $adminpage->addCond('dyn_title_ext', !($_POST['dyn_title'] == 1));
@@ -95,6 +98,8 @@ if ( TRUE )
     $adminpage->addCond('home_0', $_POST['home'] === 0);
     $adminpage->addCond('home_1', $_POST['home'] === 1);
     $adminpage->addCond('timezone', $_POST['timezone'] === 'default');
+    $adminpage->addCond('ref_active', $_POST['count_referers'] == 1);
+    $adminpage->addCond('ref_inactive', $_POST['count_referers'] != 1);
 
     // Values
     foreach ($_POST as $key => $value) {
@@ -108,9 +113,6 @@ if ( TRUE )
     );
 
     // styles
-    $active_style = $sql->getFieldById('global_config', 'style_id', 1);
-    settype($active_style, 'integer');
-
     $styles = $sql->get('styles', array('style_id', 'style_tag'),
         array('W' => '`style_id` != 0 AND `style_allow_use` = 1', 'O' => '`style_tag`')
     );
@@ -122,7 +124,7 @@ if ( TRUE )
         '<option value="'.$style['style_id'].'" '
         .getselected($style['style_id'], $_POST['style_id']).'>'
             .killhtml($style['style_tag'])
-            .($style['style_id'] == $active_style ? ' ('.$FD->text('admin', 'active').')' : '')
+            .($style['style_id'] == $FD->cfg('db_style_id') ? ' ('.$FD->text('admin', 'active').')' : '')
         .'</option>'."\n";
     }
     $adminpage->addText('style_options', $style_options);

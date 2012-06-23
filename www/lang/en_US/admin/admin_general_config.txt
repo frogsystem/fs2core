@@ -79,6 +79,11 @@ server_default:             Server-Default
 auto_forward:               Automatic Forwarding
 auto_forward_desc:          Timespan, after which the automatic forwarding gets activated.
 
+referer:                    Referer count
+referer_desc:               Activates/deactivates referer counting for page requests.
+referer_active:             active
+referer_inactive:           deactivated
+
 page:                       Page navigation
 page_desc:                  Design of page navigation in multi-page contents.
 page_prev:                  Previous Page

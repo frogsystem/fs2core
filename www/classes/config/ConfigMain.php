@@ -39,10 +39,12 @@ class ConfigMain extends ConfigData {
         }
 
         // write some other config data
-        $this->setConfig('virtualhost', $this->get('protocol').$this->get('url'));
-        $this->setConfig('home_real',   $this->getRealHome($this->get('home'), $this->get('home_text')));
-        $this->setConfig('language',    $this->getLanguage($this->get('language_text')));
-        $this->setConfig('style',       $this->get('style_tag'));
+        $this->setConfig('virtualhost',     $this->get('protocol').$this->get('url'));
+        $this->setConfig('home_real',       $this->getRealHome($this->get('home'), $this->get('home_text')));
+        $this->setConfig('language',        $this->getLanguage($this->get('language_text')));
+        $this->setConfig('style',           $this->get('style_tag'));
+        $this->setConfig('db_style_id',     $this->get('style_id')); // always contains db value
+        $this->setConfig('db_style_tag',    $this->get('style_tag')); // always contains db value
     }
 
 

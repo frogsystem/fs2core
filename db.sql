@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Erstellungszeit: 18. Juni 2012 um 13:47
--- Server Version: 5.5.8
--- PHP-Version: 5.3.5
+-- Host: localhost:3306
+-- Erstellungszeit: 23. Jun 2012 um 14:30
+-- Server Version: 5.5.24-log
+-- PHP-Version: 5.4.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -152,7 +153,8 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('user_rights', 'users', 'admin_user_rights.php', 4, 0),
 ('news_comments_list', 'news', 'admin_news_comments_list.php', 4, 0),
 ('cimg_cat', 'cimg', 'admin_cimgcats.php', 3, 0),
-('cimg_import', 'cimg', 'admin_cimgimport.php', 4, 0);
+('cimg_import', 'cimg', 'admin_cimgimport.php', 4, 0),
+('stat_ref_delete', 'stats', 'stat_ref', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -364,36 +366,6 @@ INSERT INTO `fs2_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_da
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_articles_config`
---
-
-DROP TABLE IF EXISTS `fs2_articles_config`;
-CREATE TABLE `fs2_articles_config` (
-  `id` tinyint(1) NOT NULL,
-  `html_code` tinyint(4) NOT NULL DEFAULT '1',
-  `fs_code` tinyint(4) NOT NULL DEFAULT '1',
-  `para_handling` tinyint(4) NOT NULL DEFAULT '1',
-  `cat_pic_x` smallint(4) NOT NULL DEFAULT '0',
-  `cat_pic_y` smallint(4) NOT NULL DEFAULT '0',
-  `cat_pic_size` smallint(4) NOT NULL DEFAULT '0',
-  `com_rights` tinyint(1) NOT NULL DEFAULT '1',
-  `com_antispam` tinyint(1) NOT NULL DEFAULT '1',
-  `com_sort` varchar(4) NOT NULL DEFAULT 'DESC',
-  `acp_per_page` smallint(3) NOT NULL DEFAULT '15',
-  `acp_view` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_articles_config`
---
-
-INSERT INTO `fs2_articles_config` (`id`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `acp_per_page`, `acp_view`) VALUES
-(1, 2, 4, 4, 150, 150, 1024, 2, 1, 'DESC', 3, 2);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs2_captcha_config`
 --
 
@@ -446,11 +418,6 @@ CREATE TABLE `fs2_cimg` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs2_cimg`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -482,7 +449,8 @@ DROP TABLE IF EXISTS `fs2_config`;
 CREATE TABLE `fs2_config` (
   `config_name` varchar(30) NOT NULL,
   `config_data` text NOT NULL,
-  `config_loadhook` varchar(255) NOT NULL
+  `config_loadhook` varchar(255) NOT NULL,
+  KEY `config_name` (`config_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -490,29 +458,13 @@ CREATE TABLE `fs2_config` (
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUES
-('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}&nbsp;<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">&nbsp;{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab&nbsp;zur\\\\u00fcck<\\\\/a>&nbsp;|\\",\\"page_next\\":\\"|&nbsp;<a href=\\\\\\"{..url..}\\\\\\">weiter&nbsp;\\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"random_timed_deltime\\":\\"604800\\",\\"search_index_update\\":\\"1\\",\\"search_index_time\\":\\"1310056241\\",\\"url_style\\":\\"default\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\"}', 'startup'),
+('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}\\\\u00a0<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">\\\\u00a0{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab\\\\u00a0zur\\\\u00fcck<\\\\/a>\\\\u00a0|\\",\\"page_next\\":\\"|\\\\u00a0<a href=\\\\\\"{..url..}\\\\\\">weiter \\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"url_style\\":\\"default\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\",\\"count_referers\\":\\"1\\"}', 'startup'),
 ('system', '{\\"var_loop\\":20}', 'startup'),
 ('env', '{}', 'startup'),
-('info', '{}', 'startup');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_config_system`
---
-
-DROP TABLE IF EXISTS `fs2_config_system`;
-CREATE TABLE `fs2_config_system` (
-  `id` smallint(2) NOT NULL,
-  `var_loop` mediumint(8) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_config_system`
---
-
-INSERT INTO `fs2_config_system` (`id`, `var_loop`) VALUES
-(1, 20);
+('info', '{}', 'startup'),
+('articles', '{\\"acp_per_page\\":\\"3\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"1\\",\\"com_sort\\":\\"ASC\\",\\"acp_view\\":\\"2\\"}', 'none'),
+('search', '{\\"id\\":\\"0\\",\\"search_num_previews\\":\\"10\\",\\"search_and\\":\\"AND, and, &&\\",\\"search_or\\":\\"OR, or, ||\\",\\"search_xor\\":\\"XOR, xor\\",\\"search_not\\":\\"!, -\\",\\"search_wildcard\\":\\"*, %\\",\\"search_min_word_length\\":\\"3\\",\\"search_allow_phonetic\\":\\"1\\",\\"search_use_stopwords\\":\\"1\\"}', 'none'),
+('cronjobs', '{\\"last_cronjob_time\\":\\"1340460026\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup');
 
 -- --------------------------------------------------------
 
@@ -537,7 +489,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 64, 2347, 2, 4, 65527, 1);
+(1, 68, 2392, 2, 4, 65527, 1);
 
 -- --------------------------------------------------------
 
@@ -560,7 +512,7 @@ CREATE TABLE `fs2_counter_ref` (
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://localhost/', 55, 1302557491, 1307980522),
-('http://localhost/fs2/', 3, 1316955935, 1317122279);
+('http://localhost/fs2/', 7, 1316955935, 1340460035);
 
 -- --------------------------------------------------------
 
@@ -634,7 +586,10 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2011, 12, 29, 2, 2),
 (2012, 2, 3, 1, 4),
 (2012, 6, 12, 1, 2),
-(2012, 6, 18, 1, 5);
+(2012, 6, 18, 1, 6),
+(2012, 6, 19, 1, 14),
+(2012, 6, 21, 2, 25),
+(2012, 6, 23, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -870,54 +825,6 @@ CREATE TABLE `fs2_ftp` (
 
 INSERT INTO `fs2_ftp` (`ftp_id`, `ftp_title`, `ftp_type`, `ftp_url`, `ftp_user`, `ftp_pw`, `ftp_ssl`, `ftp_http_url`) VALUES
 (1, 'DL-Server', 'dl', 'ftp.suse.de', 'anonymous', 'anonymous', 0, 'ftp://ftp.suse.de');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_global_config`
---
-
-DROP TABLE IF EXISTS `fs2_global_config`;
-CREATE TABLE `fs2_global_config` (
-  `id` tinyint(1) NOT NULL DEFAULT '1',
-  `version` varchar(10) NOT NULL DEFAULT '0.9',
-  `virtualhost` varchar(255) NOT NULL,
-  `admin_mail` varchar(100) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `dyn_title` tinyint(1) NOT NULL,
-  `dyn_title_ext` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `keywords` text NOT NULL,
-  `publisher` varchar(255) NOT NULL,
-  `copyright` text NOT NULL,
-  `show_favicon` tinyint(1) NOT NULL DEFAULT '1',
-  `style_id` mediumint(8) NOT NULL DEFAULT '0',
-  `style_tag` varchar(30) NOT NULL DEFAULT 'default',
-  `allow_other_designs` tinyint(1) NOT NULL DEFAULT '1',
-  `date` varchar(255) NOT NULL,
-  `time` varchar(255) NOT NULL,
-  `datetime` varchar(255) NOT NULL,
-  `timezone` varchar(255) NOT NULL DEFAULT 'default',
-  `page` text NOT NULL,
-  `page_next` text NOT NULL,
-  `page_prev` text NOT NULL,
-  `random_timed_deltime` int(12) NOT NULL DEFAULT '0',
-  `feed` varchar(15) NOT NULL,
-  `language_text` varchar(5) NOT NULL DEFAULT 'de_DE',
-  `home` tinyint(1) NOT NULL DEFAULT '0',
-  `home_text` varchar(100) NOT NULL,
-  `auto_forward` int(2) NOT NULL DEFAULT '3',
-  `search_index_update` tinyint(1) NOT NULL DEFAULT '1',
-  `search_index_time` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_global_config`
---
-
-INSERT INTO `fs2_global_config` (`id`, `version`, `virtualhost`, `admin_mail`, `title`, `dyn_title`, `dyn_title_ext`, `description`, `keywords`, `publisher`, `copyright`, `show_favicon`, `style_id`, `style_tag`, `allow_other_designs`, `date`, `time`, `datetime`, `timezone`, `page`, `page_next`, `page_prev`, `random_timed_deltime`, `feed`, `language_text`, `home`, `home_text`, `auto_forward`, `search_index_update`, `search_index_time`) VALUES
-(1, '2.alix6', 'http://localhost/fs2/www/', 'mail@sweil.de', 'Hansens wunderbare Welt', 1, '{..title..} » {..ext..}', '', '', '', '', 1, 1, 'lightfrog', 1, 'd.m.Y', 'H:i \\\\U\\\\h\\\\r', 'd.m.Y, H:i \\\\U\\\\h\\\\r', 'Europe/Berlin', '<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;</div>Seite <b>{..page_number..}</b> von <b>{..total_pages..}</b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}</div></div>', '|&nbsp;<a href=\\"{..url..}\\">weiter&nbsp;»</a>', '<a href=\\"{..url..}\\">«&nbsp;zurück</a>&nbsp;|', 604800, 'rss20', 'de_DE', 0, '', 4, 1, 1310056241);
 
 -- --------------------------------------------------------
 
@@ -1390,11 +1297,6 @@ CREATE TABLE `fs2_poll_voters` (
   PRIMARY KEY (`voter_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
---
--- Daten für Tabelle `fs2_poll_voters`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1592,11 +1494,6 @@ CREATE TABLE `fs2_screen_random` (
   PRIMARY KEY (`random_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs2_screen_random`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1622,34 +1519,6 @@ INSERT INTO `fs2_screen_random_config` (`id`, `active`, `type_priority`, `use_pr
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_search_config`
---
-
-DROP TABLE IF EXISTS `fs2_search_config`;
-CREATE TABLE `fs2_search_config` (
-  `id` tinyint(1) NOT NULL,
-  `search_num_previews` smallint(2) NOT NULL,
-  `search_and` varchar(255) NOT NULL,
-  `search_or` varchar(255) NOT NULL,
-  `search_xor` varchar(255) NOT NULL,
-  `search_not` varchar(255) NOT NULL,
-  `search_wildcard` varchar(255) NOT NULL,
-  `search_min_word_length` smallint(3) NOT NULL,
-  `search_allow_phonetic` tinyint(1) NOT NULL,
-  `search_use_stopwords` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_search_config`
---
-
-INSERT INTO `fs2_search_config` (`id`, `search_num_previews`, `search_and`, `search_or`, `search_xor`, `search_not`, `search_wildcard`, `search_min_word_length`, `search_allow_phonetic`, `search_use_stopwords`) VALUES
-(1, 10, 'AND, and, &&', 'OR, or, ||', 'XOR, xor', '!, -', '*, %', 3, 1, 1);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs2_search_index`
 --
 
@@ -1662,248 +1531,241 @@ CREATE TABLE `fs2_search_index` (
   `search_index_count` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1622 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1850 ;
 
 --
 -- Daten für Tabelle `fs2_search_index`
 --
 
 INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `search_index_type`, `search_index_document_id`, `search_index_count`) VALUES
-(1358, 23, 'news', 1, 1),
-(1357, 22, 'news', 1, 1),
-(1356, 21, 'news', 1, 1),
-(1355, 20, 'news', 1, 1),
-(1354, 19, 'news', 1, 1),
-(1353, 18, 'news', 1, 1),
-(1352, 17, 'news', 1, 1),
-(1351, 16, 'news', 1, 1),
-(1350, 15, 'news', 1, 1),
-(1349, 14, 'news', 1, 1),
-(1348, 13, 'news', 1, 1),
-(1347, 12, 'news', 1, 1),
-(1346, 11, 'news', 1, 1),
-(1345, 10, 'news', 1, 2),
-(1344, 9, 'news', 1, 1),
-(1343, 8, 'news', 1, 1),
-(1342, 7, 'news', 1, 1),
-(1341, 6, 'news', 1, 1),
-(1340, 5, 'news', 1, 1),
-(1339, 4, 'news', 1, 1),
-(1338, 3, 'news', 1, 1),
-(1337, 2, 'news', 1, 1),
-(1454, 73, 'articles', 1, 1),
-(1453, 72, 'articles', 1, 1),
-(1452, 71, 'articles', 1, 1),
-(1451, 70, 'articles', 1, 35),
-(1450, 69, 'articles', 1, 1),
-(1449, 68, 'articles', 1, 1),
-(1448, 67, 'articles', 1, 1),
-(1447, 66, 'articles', 1, 1),
-(1446, 65, 'articles', 1, 1),
-(1445, 64, 'articles', 1, 1),
-(1444, 63, 'articles', 1, 1),
-(1443, 62, 'articles', 1, 1),
-(1442, 61, 'articles', 1, 1),
-(1441, 60, 'articles', 1, 1),
-(1440, 59, 'articles', 1, 2),
-(1439, 58, 'articles', 1, 1),
-(1438, 57, 'articles', 1, 2),
-(1437, 56, 'articles', 1, 1),
-(1436, 55, 'articles', 1, 2),
-(1435, 54, 'articles', 1, 2),
-(1434, 53, 'articles', 1, 1),
-(1433, 52, 'articles', 1, 1),
-(1432, 51, 'articles', 1, 1),
-(1431, 50, 'articles', 1, 2),
-(1430, 49, 'articles', 1, 1),
-(1429, 48, 'articles', 1, 2),
-(1428, 47, 'articles', 1, 2),
-(1427, 46, 'articles', 1, 1),
-(1426, 45, 'articles', 1, 1),
-(1425, 44, 'articles', 1, 1),
-(1424, 43, 'articles', 1, 1),
-(1423, 42, 'articles', 1, 1),
-(1422, 26, 'articles', 1, 2),
-(1421, 41, 'articles', 4, 1),
-(1420, 40, 'articles', 3, 1),
-(1419, 39, 'articles', 3, 1),
-(1536, 144, 'dl', 11, 1),
-(1535, 143, 'dl', 11, 1),
-(1534, 142, 'dl', 11, 1),
-(1533, 141, 'dl', 11, 1),
-(1418, 33, 'articles', 2, 2),
-(1575, 146, 'news', 36, 1),
-(1574, 145, 'news', 36, 1),
-(1415, 37, 'news', 7, 1),
-(1414, 36, 'news', 7, 1),
-(1532, 140, 'dl', 10, 1),
-(1531, 139, 'dl', 10, 1),
-(1530, 138, 'dl', 10, 1),
-(1529, 137, 'dl', 10, 1),
-(1528, 136, 'dl', 10, 1),
-(1527, 135, 'dl', 9, 1),
-(1526, 2, 'dl', 9, 1),
-(1525, 1, 'dl', 9, 1),
-(1524, 134, 'dl', 1, 1),
-(1523, 34, 'dl', 1, 1),
-(1522, 33, 'dl', 1, 1),
-(1521, 40, 'dl', 7, 1),
-(1520, 133, 'dl', 6, 1),
-(1519, 40, 'dl', 6, 1),
-(1518, 41, 'dl', 5, 1),
-(1517, 40, 'dl', 5, 1),
-(1516, 34, 'dl', 4, 1),
-(1515, 34, 'dl', 3, 1),
-(1514, 34, 'dl', 2, 1),
-(1513, 132, 'articles', 1, 1),
-(1512, 131, 'articles', 1, 2),
-(1511, 130, 'articles', 1, 2),
-(1510, 129, 'articles', 1, 2),
-(1573, 8, 'news', 36, 2),
-(1509, 128, 'articles', 1, 2),
-(1508, 127, 'articles', 1, 2),
-(1507, 126, 'articles', 1, 1),
-(1506, 125, 'articles', 1, 3),
-(1505, 124, 'articles', 1, 6),
-(1504, 123, 'articles', 1, 2),
-(1503, 122, 'articles', 1, 2),
-(1502, 121, 'articles', 1, 2),
-(1501, 120, 'articles', 1, 2),
-(1500, 119, 'articles', 1, 6),
-(1499, 118, 'articles', 1, 4),
-(1498, 117, 'articles', 1, 2),
-(1497, 116, 'articles', 1, 2),
-(1496, 115, 'articles', 1, 4),
-(1495, 114, 'articles', 1, 2),
-(1494, 113, 'articles', 1, 4),
-(1493, 112, 'articles', 1, 1),
-(1492, 111, 'articles', 1, 1),
-(1491, 110, 'articles', 1, 2),
-(1490, 109, 'articles', 1, 6),
-(1489, 108, 'articles', 1, 1),
-(1488, 107, 'articles', 1, 1),
-(1487, 106, 'articles', 1, 2),
-(1486, 105, 'articles', 1, 4),
-(1485, 104, 'articles', 1, 4),
-(1484, 103, 'articles', 1, 2),
-(1483, 102, 'articles', 1, 2),
-(1413, 35, 'news', 7, 2),
-(1412, 33, 'news', 7, 1),
-(1411, 8, 'news', 35, 2),
-(1410, 33, 'news', 34, 1),
-(1409, 32, 'news', 34, 1),
-(1408, 31, 'news', 34, 1),
-(1482, 101, 'articles', 1, 2),
-(1481, 100, 'articles', 1, 2),
-(1480, 99, 'articles', 1, 2),
-(1479, 98, 'articles', 1, 4),
-(1478, 97, 'articles', 1, 2),
-(1477, 96, 'articles', 1, 3),
-(1476, 95, 'articles', 1, 24),
-(1475, 94, 'articles', 1, 16),
-(1474, 93, 'articles', 1, 1),
-(1473, 92, 'articles', 1, 1),
-(1472, 91, 'articles', 1, 2),
-(1471, 90, 'articles', 1, 2),
-(1470, 89, 'articles', 1, 1),
-(1469, 88, 'articles', 1, 2),
-(1468, 87, 'articles', 1, 2),
-(1467, 86, 'articles', 1, 2),
-(1466, 85, 'articles', 1, 2),
-(1465, 84, 'articles', 1, 2),
-(1464, 83, 'articles', 1, 2),
-(1463, 82, 'articles', 1, 2),
-(1462, 81, 'articles', 1, 3),
-(1461, 80, 'articles', 1, 1),
-(1460, 79, 'articles', 1, 5),
-(1407, 30, 'news', 34, 1),
-(1406, 29, 'news', 34, 1),
-(1405, 28, 'news', 34, 1),
-(1404, 27, 'news', 34, 1),
-(1459, 78, 'articles', 1, 1),
-(1458, 77, 'articles', 1, 1),
-(1457, 76, 'articles', 1, 1),
-(1456, 75, 'articles', 1, 2),
-(1403, 26, 'news', 34, 1),
-(1402, 25, 'news', 34, 1),
-(1401, 24, 'news', 34, 1),
-(1400, 23, 'news', 34, 1),
-(1399, 22, 'news', 34, 1),
-(1398, 21, 'news', 34, 1),
-(1397, 20, 'news', 34, 1),
-(1396, 19, 'news', 34, 1),
-(1395, 18, 'news', 34, 1),
-(1394, 17, 'news', 34, 1),
-(1393, 16, 'news', 34, 1),
-(1392, 15, 'news', 34, 1),
-(1391, 14, 'news', 34, 1),
-(1390, 13, 'news', 34, 1),
-(1389, 12, 'news', 34, 1),
-(1388, 11, 'news', 34, 1),
-(1387, 10, 'news', 34, 2),
-(1386, 9, 'news', 34, 1),
-(1385, 8, 'news', 34, 1),
-(1384, 7, 'news', 34, 1),
-(1383, 6, 'news', 34, 1),
-(1382, 5, 'news', 34, 1),
-(1381, 4, 'news', 34, 1),
-(1380, 3, 'news', 34, 1),
-(1379, 2, 'news', 34, 1),
-(1378, 1, 'news', 34, 5),
-(1377, 36, 'news', 33, 1),
-(1376, 35, 'news', 33, 1),
-(1375, 33, 'news', 33, 1),
-(1374, 12, 'news', 33, 1),
-(1373, 36, 'news', 32, 1),
-(1372, 35, 'news', 32, 1),
-(1371, 33, 'news', 32, 1),
-(1370, 12, 'news', 32, 1),
-(1369, 34, 'news', 5, 2),
-(1368, 33, 'news', 5, 2),
-(1367, 32, 'news', 1, 1),
-(1366, 31, 'news', 1, 1),
-(1365, 30, 'news', 1, 1),
-(1364, 29, 'news', 1, 1),
-(1363, 28, 'news', 1, 1),
-(1362, 27, 'news', 1, 1),
-(1361, 26, 'news', 1, 1),
-(1360, 25, 'news', 1, 1),
-(1359, 24, 'news', 1, 1),
-(1336, 1, 'news', 1, 5),
-(1455, 74, 'articles', 1, 1),
-(1590, 149, 'news', 37, 3),
-(1589, 148, 'news', 37, 3),
-(1588, 147, 'news', 37, 4),
-(1587, 44, 'news', 37, 3),
-(1586, 33, 'news', 37, 1),
-(1596, 150, 'news', 38, 1),
-(1595, 148, 'news', 38, 1),
-(1594, 33, 'news', 38, 1),
-(1597, 151, 'news', 38, 1),
-(1598, 152, 'news', 38, 1),
-(1599, 153, 'news', 38, 1),
-(1600, 154, 'news', 38, 1),
-(1601, 155, 'news', 38, 1),
-(1602, 108, 'news', 40, 1),
-(1603, 156, 'news', 40, 1),
-(1604, 157, 'news', 40, 1),
-(1605, 158, 'news', 40, 1),
-(1606, 159, 'news', 40, 1),
-(1607, 160, 'news', 40, 1),
-(1608, 161, 'news', 40, 1),
-(1609, 162, 'news', 40, 1),
-(1610, 33, 'news', 39, 15),
-(1611, 100, 'news', 39, 5),
-(1612, 101, 'news', 39, 5),
-(1613, 105, 'news', 39, 25),
-(1614, 107, 'news', 39, 5),
-(1615, 108, 'news', 39, 11),
-(1616, 163, 'news', 39, 6),
-(1617, 164, 'news', 39, 8),
-(1618, 165, 'news', 39, 8),
-(1619, 166, 'news', 39, 8),
-(1620, 167, 'news', 39, 5),
-(1621, 168, 'news', 39, 5);
+(1734, 169, 'news', 42, 1),
+(1733, 164, 'news', 39, 2),
+(1732, 163, 'news', 39, 4),
+(1731, 108, 'news', 39, 6),
+(1730, 105, 'news', 39, 1),
+(1729, 33, 'news', 39, 15),
+(1728, 155, 'news', 38, 1),
+(1727, 154, 'news', 38, 1),
+(1726, 153, 'news', 38, 1),
+(1725, 152, 'news', 38, 1),
+(1724, 151, 'news', 38, 1),
+(1723, 150, 'news', 38, 1),
+(1722, 148, 'news', 38, 1),
+(1721, 33, 'news', 38, 1),
+(1720, 149, 'news', 37, 3),
+(1719, 148, 'news', 37, 3),
+(1718, 147, 'news', 37, 4),
+(1717, 44, 'news', 37, 3),
+(1716, 33, 'news', 37, 1),
+(1826, 181, 'articles', 1, 3),
+(1825, 180, 'articles', 1, 3),
+(1824, 179, 'articles', 1, 3),
+(1823, 178, 'articles', 1, 3),
+(1822, 177, 'articles', 1, 3),
+(1821, 176, 'articles', 1, 1),
+(1820, 175, 'articles', 1, 1),
+(1819, 174, 'articles', 1, 1),
+(1818, 173, 'articles', 1, 3),
+(1817, 172, 'articles', 1, 2),
+(1816, 154, 'articles', 1, 3),
+(1815, 131, 'articles', 1, 2),
+(1814, 130, 'articles', 1, 2),
+(1813, 129, 'articles', 1, 2),
+(1812, 128, 'articles', 1, 2),
+(1811, 127, 'articles', 1, 2),
+(1810, 125, 'articles', 1, 3),
+(1809, 123, 'articles', 1, 2),
+(1808, 122, 'articles', 1, 2),
+(1807, 121, 'articles', 1, 2),
+(1806, 119, 'articles', 1, 4),
+(1805, 115, 'articles', 1, 8),
+(1804, 113, 'articles', 1, 4),
+(1803, 112, 'articles', 1, 1),
+(1802, 111, 'articles', 1, 1),
+(1801, 110, 'articles', 1, 1),
+(1800, 109, 'articles', 1, 1),
+(1799, 108, 'articles', 1, 1),
+(1798, 106, 'articles', 1, 1),
+(1797, 104, 'articles', 1, 4),
+(1796, 103, 'articles', 1, 2),
+(1795, 102, 'articles', 1, 2),
+(1849, 144, 'dl', 11, 1),
+(1848, 143, 'dl', 11, 1),
+(1847, 142, 'dl', 11, 1),
+(1846, 141, 'dl', 11, 1),
+(1794, 101, 'articles', 1, 1),
+(1715, 146, 'news', 36, 1),
+(1714, 145, 'news', 36, 1),
+(1713, 8, 'news', 36, 2),
+(1712, 37, 'news', 7, 1),
+(1845, 140, 'dl', 10, 1),
+(1844, 139, 'dl', 10, 1),
+(1843, 138, 'dl', 10, 1),
+(1842, 137, 'dl', 10, 1),
+(1841, 136, 'dl', 10, 1),
+(1840, 135, 'dl', 9, 1),
+(1839, 2, 'dl', 9, 1),
+(1838, 1, 'dl', 9, 1),
+(1837, 134, 'dl', 1, 1),
+(1836, 34, 'dl', 1, 1),
+(1835, 33, 'dl', 1, 1),
+(1834, 40, 'dl', 7, 1),
+(1833, 133, 'dl', 6, 1),
+(1832, 40, 'dl', 6, 1),
+(1831, 41, 'dl', 5, 1),
+(1830, 40, 'dl', 5, 1),
+(1829, 34, 'dl', 4, 1),
+(1828, 34, 'dl', 3, 1),
+(1827, 34, 'dl', 2, 1),
+(1793, 100, 'articles', 1, 1),
+(1792, 99, 'articles', 1, 1),
+(1791, 98, 'articles', 1, 3),
+(1790, 96, 'articles', 1, 3),
+(1711, 36, 'news', 7, 1),
+(1789, 95, 'articles', 1, 16),
+(1788, 93, 'articles', 1, 1),
+(1787, 92, 'articles', 1, 1),
+(1786, 91, 'articles', 1, 1),
+(1785, 89, 'articles', 1, 1),
+(1784, 88, 'articles', 1, 1),
+(1783, 86, 'articles', 1, 2),
+(1782, 84, 'articles', 1, 2),
+(1781, 83, 'articles', 1, 2),
+(1780, 82, 'articles', 1, 2),
+(1779, 81, 'articles', 1, 3),
+(1778, 80, 'articles', 1, 1),
+(1777, 79, 'articles', 1, 1),
+(1776, 78, 'articles', 1, 1),
+(1775, 77, 'articles', 1, 1),
+(1774, 76, 'articles', 1, 1),
+(1773, 75, 'articles', 1, 2),
+(1772, 74, 'articles', 1, 1),
+(1771, 73, 'articles', 1, 1),
+(1770, 72, 'articles', 1, 1),
+(1769, 71, 'articles', 1, 1),
+(1768, 70, 'articles', 1, 35),
+(1767, 69, 'articles', 1, 1),
+(1766, 68, 'articles', 1, 1),
+(1765, 67, 'articles', 1, 1),
+(1764, 66, 'articles', 1, 1),
+(1763, 65, 'articles', 1, 1),
+(1710, 35, 'news', 7, 2),
+(1709, 33, 'news', 7, 1),
+(1708, 171, 'news', 43, 1),
+(1707, 170, 'news', 43, 1),
+(1706, 169, 'news', 41, 1),
+(1705, 162, 'news', 40, 1),
+(1762, 64, 'articles', 1, 1),
+(1761, 63, 'articles', 1, 1),
+(1760, 62, 'articles', 1, 1),
+(1759, 61, 'articles', 1, 1),
+(1758, 60, 'articles', 1, 1),
+(1757, 59, 'articles', 1, 2),
+(1756, 58, 'articles', 1, 1),
+(1755, 57, 'articles', 1, 2),
+(1754, 56, 'articles', 1, 1),
+(1753, 55, 'articles', 1, 2),
+(1752, 54, 'articles', 1, 2),
+(1751, 53, 'articles', 1, 1),
+(1750, 52, 'articles', 1, 1),
+(1749, 51, 'articles', 1, 1),
+(1748, 50, 'articles', 1, 2),
+(1747, 49, 'articles', 1, 1),
+(1746, 48, 'articles', 1, 2),
+(1745, 47, 'articles', 1, 2),
+(1744, 46, 'articles', 1, 1),
+(1743, 45, 'articles', 1, 1),
+(1742, 44, 'articles', 1, 1),
+(1741, 43, 'articles', 1, 1),
+(1740, 42, 'articles', 1, 2),
+(1704, 161, 'news', 40, 1),
+(1703, 160, 'news', 40, 1),
+(1702, 159, 'news', 40, 1),
+(1701, 158, 'news', 40, 1),
+(1739, 26, 'articles', 1, 2),
+(1738, 41, 'articles', 4, 1),
+(1737, 40, 'articles', 3, 1),
+(1736, 39, 'articles', 3, 1),
+(1700, 157, 'news', 40, 1),
+(1699, 156, 'news', 40, 1),
+(1698, 108, 'news', 40, 1),
+(1697, 8, 'news', 35, 2),
+(1696, 33, 'news', 34, 1),
+(1695, 32, 'news', 34, 1),
+(1694, 31, 'news', 34, 1),
+(1693, 30, 'news', 34, 1),
+(1692, 29, 'news', 34, 1),
+(1691, 28, 'news', 34, 1),
+(1690, 27, 'news', 34, 1),
+(1689, 26, 'news', 34, 1),
+(1688, 25, 'news', 34, 1),
+(1687, 24, 'news', 34, 1),
+(1686, 23, 'news', 34, 1),
+(1685, 22, 'news', 34, 1),
+(1684, 21, 'news', 34, 1),
+(1683, 20, 'news', 34, 1),
+(1682, 19, 'news', 34, 1),
+(1681, 18, 'news', 34, 1),
+(1680, 17, 'news', 34, 1),
+(1679, 16, 'news', 34, 1),
+(1678, 15, 'news', 34, 1),
+(1677, 14, 'news', 34, 1),
+(1676, 13, 'news', 34, 1),
+(1675, 12, 'news', 34, 1),
+(1674, 11, 'news', 34, 1),
+(1673, 10, 'news', 34, 2),
+(1672, 9, 'news', 34, 1),
+(1671, 8, 'news', 34, 1),
+(1670, 7, 'news', 34, 1),
+(1669, 6, 'news', 34, 1),
+(1668, 5, 'news', 34, 1),
+(1667, 4, 'news', 34, 1),
+(1666, 3, 'news', 34, 1),
+(1665, 2, 'news', 34, 1),
+(1664, 1, 'news', 34, 5),
+(1663, 36, 'news', 33, 1),
+(1662, 35, 'news', 33, 1),
+(1661, 33, 'news', 33, 1),
+(1660, 12, 'news', 33, 1),
+(1659, 36, 'news', 32, 1),
+(1658, 35, 'news', 32, 1),
+(1657, 33, 'news', 32, 1),
+(1656, 12, 'news', 32, 1),
+(1655, 34, 'news', 5, 2),
+(1735, 33, 'articles', 2, 2),
+(1654, 33, 'news', 5, 2),
+(1653, 32, 'news', 1, 1),
+(1652, 31, 'news', 1, 1),
+(1651, 30, 'news', 1, 1),
+(1650, 29, 'news', 1, 1),
+(1649, 28, 'news', 1, 1),
+(1648, 27, 'news', 1, 1),
+(1647, 26, 'news', 1, 1),
+(1646, 25, 'news', 1, 1),
+(1645, 24, 'news', 1, 1),
+(1644, 23, 'news', 1, 1),
+(1643, 22, 'news', 1, 1),
+(1642, 21, 'news', 1, 1),
+(1641, 20, 'news', 1, 1),
+(1640, 19, 'news', 1, 1),
+(1639, 18, 'news', 1, 1),
+(1638, 17, 'news', 1, 1),
+(1637, 16, 'news', 1, 1),
+(1636, 15, 'news', 1, 1),
+(1635, 14, 'news', 1, 1),
+(1634, 13, 'news', 1, 1),
+(1633, 12, 'news', 1, 1),
+(1632, 11, 'news', 1, 1),
+(1631, 10, 'news', 1, 2),
+(1630, 9, 'news', 1, 1),
+(1629, 8, 'news', 1, 1),
+(1628, 7, 'news', 1, 1),
+(1627, 6, 'news', 1, 1),
+(1626, 5, 'news', 1, 1),
+(1625, 4, 'news', 1, 1),
+(1624, 3, 'news', 1, 1),
+(1623, 2, 'news', 1, 1),
+(1622, 1, 'news', 1, 5);
 
 -- --------------------------------------------------------
 
@@ -1919,39 +1781,42 @@ CREATE TABLE `fs2_search_time` (
   `search_time_date` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_time_id`),
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=166 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=195 ;
 
 --
 -- Daten für Tabelle `fs2_search_time`
 --
 
 INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_time_document_id`, `search_time_date`) VALUES
-(153, 'dl', 3, 1310508807),
-(149, 'articles', 3, 1310508807),
-(148, 'articles', 2, 1310508807),
-(151, 'articles', 1, 1310508807),
-(152, 'dl', 2, 1310508807),
-(161, 'dl', 11, 1310508807),
-(160, 'dl', 10, 1310508807),
-(159, 'dl', 9, 1310508807),
-(158, 'dl', 1, 1310508807),
-(157, 'dl', 7, 1310508807),
-(150, 'articles', 4, 1310508807),
-(156, 'dl', 6, 1310508807),
-(155, 'dl', 5, 1310508807),
-(154, 'dl', 4, 1310508807),
-(147, 'news', 36, 1310509434),
-(146, 'news', 7, 1310508807),
-(145, 'news', 35, 1310508807),
-(144, 'news', 34, 1310508807),
-(143, 'news', 33, 1310508807),
-(142, 'news', 32, 1310508807),
-(141, 'news', 5, 1310508807),
-(140, 'news', 1, 1310508807),
-(162, 'news', 37, 1316990207),
-(163, 'news', 38, 1317068575),
-(164, 'news', 40, 1318963745),
-(165, 'news', 39, 1318963745);
+(194, 'dl', 11, 1340294806),
+(182, 'articles', 3, 1340294806),
+(183, 'articles', 4, 1340294806),
+(184, 'articles', 1, 1340294806),
+(193, 'dl', 10, 1340294806),
+(192, 'dl', 9, 1340294806),
+(191, 'dl', 1, 1340294806),
+(190, 'dl', 7, 1340294806),
+(189, 'dl', 6, 1340294806),
+(188, 'dl', 5, 1340294806),
+(181, 'articles', 2, 1340294806),
+(187, 'dl', 4, 1340294806),
+(186, 'dl', 3, 1340294806),
+(185, 'dl', 2, 1340294806),
+(177, 'news', 37, 1340294806),
+(176, 'news', 36, 1340294806),
+(175, 'news', 7, 1340294806),
+(174, 'news', 43, 1340294806),
+(173, 'news', 41, 1340294806),
+(172, 'news', 40, 1340294806),
+(171, 'news', 35, 1340294806),
+(170, 'news', 34, 1340294806),
+(169, 'news', 33, 1340294806),
+(168, 'news', 32, 1340294806),
+(167, 'news', 5, 1340294806),
+(166, 'news', 1, 1340294806),
+(178, 'news', 38, 1340294806),
+(179, 'news', 39, 1340294806),
+(180, 'news', 42, 1340294806);
 
 -- --------------------------------------------------------
 
@@ -1965,7 +1830,7 @@ CREATE TABLE `fs2_search_words` (
   `search_word` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
   UNIQUE KEY `search_word` (`search_word`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=169 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=182 ;
 
 --
 -- Daten für Tabelle `fs2_search_words`
@@ -2139,7 +2004,20 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 (165, 'foo'),
 (166, 'bar'),
 (167, 'hans'),
-(168, 'wurst');
+(168, 'wurst'),
+(169, ''),
+(170, 'tsdsdfsd'),
+(171, 'fsdfsdfsdfsdfsdf'),
+(172, 'table'),
+(173, 'width'),
+(174, 'cellpadding'),
+(175, 'cellspacing'),
+(176, 'border'),
+(177, 'colspan'),
+(178, 'images'),
+(179, 'icons'),
+(180, 'logo'),
+(181, 'gif');
 
 -- --------------------------------------------------------
 
@@ -2297,7 +2175,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 0, 1340027165);
+('127.0.0.1', 1, 1340461705);
 
 -- --------------------------------------------------------
 
@@ -2403,11 +2281,6 @@ CREATE TABLE `fs2_wallpaper` (
   PRIMARY KEY (`wallpaper_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs2_wallpaper`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -2422,7 +2295,6 @@ CREATE TABLE `fs2_wallpaper_sizes` (
   PRIMARY KEY (`size_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs2_wallpaper_sizes`
---
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

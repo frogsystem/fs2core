@@ -49,7 +49,8 @@ class Search
         global $sql;
         $this->sql = $sql;
         $config_cols = array('search_num_previews', 'search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard', 'search_min_word_length', 'search_allow_phonetic', 'search_use_stopwords');
-        $this->config = $sql->getById('search_config', $config_cols, 1);
+        $config = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'search'"));
+        $this->config = json_array_decode($config['config_data']); 
 
         // assign vars
         $this->type = $type;
