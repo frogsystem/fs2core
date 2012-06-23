@@ -74,9 +74,7 @@ $query = 'SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user
   (SELECT COUNT(`dl_id`) FROM `'.$pref.'dl`
    WHERE `'.$pref.'dl`.`user_id` = `'.$pref.'user`.`user_id`) AS user_num_downloads
 
- FROM `'.$global_config_arr['pref'].'user` ORDER BY ';
-$limit = ' LIMIT '.intval($config_arr['prev_page']*$config_arr['user_per_page']).','.((int)$config_arr['user_per_page']);
-
+ FROM `'.$pref.'user` ORDER BY ';
 
 ////////////////////////
 //// Sort User Data ////
@@ -115,6 +113,8 @@ switch ( $_GET['sort'] ) {
         default: $query .= 'user_num_downloads ASC'; break 2;
     }
 }
+
+$limit = ' LIMIT '.intval($config_arr['prev_page']*$config_arr['user_per_page']).','.((int)$config_arr['user_per_page']);
 
 /*finally get the data... still may take several seconds for large user base
   and unfavourable sort criterion, but it should take less memory and execute
