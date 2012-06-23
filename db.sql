@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Erstellungszeit: 23. Jun 2012 um 14:14
+-- Erstellungszeit: 23. Jun 2012 um 14:30
 -- Server Version: 5.5.24-log
 -- PHP-Version: 5.4.3
 
@@ -458,7 +458,7 @@ CREATE TABLE `fs2_config` (
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUES
-('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}\\\\u00a0<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">\\\\u00a0{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab\\\\u00a0zur\\\\u00fcck<\\\\/a>\\\\u00a0|\\",\\"page_next\\":\\"|\\\\u00a0<a href=\\\\\\"{..url..}\\\\\\">weiter \\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"url_style\\":\\"default\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\"}', 'startup'),
+('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}\\\\u00a0<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">\\\\u00a0{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab\\\\u00a0zur\\\\u00fcck<\\\\/a>\\\\u00a0|\\",\\"page_next\\":\\"|\\\\u00a0<a href=\\\\\\"{..url..}\\\\\\">weiter \\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"url_style\\":\\"default\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\",\\"count_referers\\":\\"1\\"}', 'startup'),
 ('system', '{\\"var_loop\\":20}', 'startup'),
 ('env', '{}', 'startup'),
 ('info', '{}', 'startup'),
@@ -489,7 +489,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 68, 2390, 2, 4, 65527, 1);
+(1, 68, 2392, 2, 4, 65527, 1);
 
 -- --------------------------------------------------------
 
@@ -589,7 +589,7 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2012, 6, 18, 1, 6),
 (2012, 6, 19, 1, 14),
 (2012, 6, 21, 2, 25),
-(2012, 6, 23, 1, 3);
+(2012, 6, 23, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -2175,7 +2175,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 0, 1340460035);
+('127.0.0.1', 1, 1340461705);
 
 -- --------------------------------------------------------
 
