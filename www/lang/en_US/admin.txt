@@ -113,9 +113,12 @@ save_button:                             Save
 
 # Messages
 error:                                   An error occured
+unknown_error:                           An unknown error occured
 info:                                    Information
 changes_saved:                           Changes have been saved
 changes_not_saved:                       Changes have not been saved
+config_saved:                            Settings have been saved
+config_not_saved:                        Settings have not been saved
 form_not_filled:                         Please fill in all required fields
 form_only_allowed_values:                Please enter allowed values only
 error_file_access:                       Please check the file and directory permissions
