@@ -218,7 +218,7 @@ if (ACP_GO == "news_comments_list") {
   //statistics requested?
   if (isset($_REQUEST['b8_stats']))
   {
-    $query = $FD->sql()->doQuery('SELECT * FROM b8_wordlist WHERE token LIKE \'bayes*%\'');
+    $query = $FD->sql()->doQuery('SELECT * FROM b8_wordlist WHERE token LIKE \'bayes*%\' LIMIT 0, 3');
     $b8_info = array();
     while ($result = mysql_fetch_assoc($query))
     {
@@ -249,12 +249,12 @@ if (ACP_GO == "news_comments_list") {
       </tr>
     </table>';
     //get number of comments that need a probability update
-    $query = $FD->sql()->doQuery('SELECT COUNT(*) AS update_count '
+    $query = $FD->sql()->doQuery('SELECT COUNT(comment_id) AS update_count '
                         .'FROM `{..pref..}news_comments` WHERE needs_update=1');
     $update_count = mysql_fetch_assoc($query);
     $update_count = $update_count['update_count'];
     //get total number of comments in DB
-    $query = $FD->sql()->doQuery('SELECT COUNT(*) AS total_count '
+    $query = $FD->sql()->doQuery('SELECT COUNT(comment_id) AS total_count '
                         .'FROM `{..pref..}news_comments`');
     $total_count = mysql_fetch_assoc($query);
     $total_count = $total_count['total_count'];
