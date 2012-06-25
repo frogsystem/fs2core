@@ -23,6 +23,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `b8_worldlist`
+--
+
+DROP TABLE IF EXISTS `b8_wordlist`;
+CREATE TABLE `b8_wordlist` (
+  `token` varchar(255) character set utf8 collate utf8_bin NOT NULL,
+  `count` varchar(255) default NULL,
+  PRIMARY KEY  (`token`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `fs2_admin_cp`
+--
+
+INSERT INTO `b8_wordlist` VALUES ('bayes*dbversion', '2');
+INSERT INTO `b8_wordlist` VALUES ('bayes*texts.ham', '0');
+INSERT INTO `b8_wordlist` VALUES ('bayes*texts.spam', '0');
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `fs2_admin_cp`
 --
 
@@ -961,6 +982,21 @@ CREATE TABLE `fs2_news_comments` (
 
 INSERT INTO `fs2_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
 (3, 5, '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans');
+
+-- --------------------------------------------------------
+
+--
+-- Zusatz für tabelle fs2_news_comments
+-- - zusätzliche Spalte zur Einordnung schon klassifizierter Kommentare
+-- -     "       Spalte für Spamwahrscheinlichkeit
+-- -     "       Spalte für Updatestatus der Wahrscheinlichkeitswerte
+--
+-- Einmalig nach Installation der Datei admin_news_comments_list.php auszuführen:
+--
+
+ALTER TABLE `fs2_news_comments` ADD `comment_classification` TINYINT NOT NULL DEFAULT '0',
+ADD `spam_probability` FLOAT NOT NULL DEFAULT '0.5',
+ADD `needs_update` TINYINT NOT NULL DEFAULT '1';
 
 -- --------------------------------------------------------
 
