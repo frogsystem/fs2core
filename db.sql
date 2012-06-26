@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 26. Juni 2012 um 20:24
+-- Erstellungszeit: 26. Juni 2012 um 21:51
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -73,15 +73,14 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('editor_design', 'fseditor', 'admin_editor_design.php', 2, 0),
 ('editor_smilies', 'fseditor', 'admin_editor_smilies.php', 3, 0),
 ('editor_fscodes', 'fseditor', 'admin_editor_fscode.php', 4, 0),
-('gallery_config', 'gallery', 'admin_gallery_config.php', 1, 0),
-('gallery_img_add', 'gallery', 'gallery_img', 1, 1),
-('gallery_wp_add', 'gallery', 'gallery_wp', 1, 1),
-('gallery_cat', 'gallery', 'admin_gallery_cat.php', 2, 0),
-('gallery_img_edit', 'gallery', 'gallery_img', 2, 1),
-('gallery_wp_edit', 'gallery', 'gallery_wp', 2, 1),
-('gallery_folder', 'gallery', 'admin_gallery_folder.php', 3, 0),
-('gallery_img', 'gallery', 'admin_gallery_img.php', 3, 0),
-('gallery_wp', 'gallery', 'admin_gallery_wp.php', 4, 0),
+('gallery_config', 'gallery', 'admin_screenconfig.php', 1, 0),
+('screens_add', 'gallery_img', 'admin_screenadd.php', 1, 0),
+('wp_add', 'gallery_wp', 'admin_wallpaperadd.php', 1, 0),
+('gallery_cat', 'gallery', 'admin_screencat.php', 2, 0),
+('randompic_config', 'gallery_preview', 'admin_randompic_config.php', 1, 0),
+('gallery_newcat', 'gallery', 'admin_screennewcat.php', 3, 0),
+('screens_edit', 'gallery_img', 'admin_screenedit.php', 2, 0),
+('wp_edit', 'gallery_wp', 'admin_wallpaperedit.php', 2, 0),
 ('gen_config', 'general', 'admin_general_config.php', 1, 0),
 ('gen_announcement', 'general', 'admin_allannouncement.php', 2, 0),
 ('gen_captcha', 'general', 'admin_captcha_config.php', 2, 0),
@@ -153,7 +152,10 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('news_comments_list', 'news', 'admin_news_comments_list.php', 4, 0),
 ('cimg_cat', 'cimg', 'admin_cimgcats.php', 3, 0),
 ('cimg_import', 'cimg', 'admin_cimgimport.php', 4, 0),
-('stat_ref_delete', 'stats', 'stat_ref', 1, 1);
+('stat_ref_delete', 'stats', 'stat_ref', 1, 1),
+('randompic_cat', 'gallery_preview', 'admin_randompic_cat.php', 2, 0),
+('timedpic_add', 'gallery_preview', 'admin_randompic_time_add.php', 3, 0),
+('timedpic_edit', 'gallery_preview', 'admin_randompic_time.php', 4, 0);
 
 -- --------------------------------------------------------
 
@@ -493,7 +495,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 71, 2460, 2, 4, 65528, 1);
+(1, 71, 2461, 2, 4, 65528, 1);
 
 -- --------------------------------------------------------
 
@@ -595,7 +597,7 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2012, 6, 21, 2, 25),
 (2012, 6, 23, 1, 5),
 (2012, 6, 25, 1, 7),
-(2012, 6, 26, 2, 61);
+(2012, 6, 26, 2, 62);
 
 -- --------------------------------------------------------
 
@@ -2192,7 +2194,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1340742136);
+('127.0.0.1', 1, 1340744156);
 
 -- --------------------------------------------------------
 

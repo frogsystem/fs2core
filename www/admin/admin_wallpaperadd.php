@@ -85,7 +85,7 @@ else
 
     if (!isset($_POST['options']))
     {
-        $_POST['options'] = 3;
+        $_POST['options'] = 5;
     }
     $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
 
@@ -147,21 +147,23 @@ echo'
                                     <font class="small">Format und WP ausw&auml;hlen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="10" maxlength="30" value="'.$_POST['size'][$j].'">&nbsp;&nbsp;
-                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br><br>
-                                    <fieldset>
-                                        <legend class="small"><b>Schnellauswahl</b></legend>
-                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
-                                    </fieldset><br>
+                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="12" maxlength="30" value="'.$_POST['size'][$j].'">&nbsp;
+                                    <select onChange=\'document.getElementById("size'.$j.'").value=this.value; this.selectedIndex = 0\'>
+                                        <option value="">Gr&ouml;&szlig;e ausw&auml;hlen...</option>
+                                        <option value="">-----------</option>
+                                        <option value="800x600">800x600</option>
+                                        <option value="1024x768">1024x768</option>
+                                        <option value="1280x768">1280x768</option>
+                                        <option value="1280x800">1280x800</option>
+                                        <option value="1280x1024">1280x1024</option>
+                                        <option value="1366x768">1366x768</option>
+                                        <option value="1440x900">1440x900</option>
+                                        <option value="1680x1050">1680x1050</option>
+                                        <option value="1920x1080">1920x1080</option>
+                                        <option value="1920x1200">1920x1200</option>
+                                    </select><br>
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="40">
+                                    <br><br>
                                 </td>
                             </tr>
             ';
@@ -175,21 +177,23 @@ echo'
                                     <font class="small">Format und WP ausw&auml;hlen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text center" id="size'.$j.'" name="size['.$j.']" size="13" maxlength="30" value="">&nbsp;&nbsp;
-                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br><br>
-                                    <fieldset>
-                                        <legend class="small"><b>Schnellauswahl</b></legend>
-                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
-                                    </fieldset><br>
+                                    <input class="text left" id="size'.$j.'" name="size['.$j.']" size="12" maxlength="30" value="">&nbsp;
+                                    <select onChange=\'document.getElementById("size'.$j.'").value=this.value; this.selectedIndex = 0\'>
+                                        <option value="">Gr&ouml;&szlig;e ausw&auml;hlen...</option>
+                                        <option value="">-----------</option>
+                                        <option value="800x600">800x600</option>
+                                        <option value="1024x768">1024x768</option>
+                                        <option value="1280x768">1280x768</option>
+                                        <option value="1280x800">1280x800</option>
+                                        <option value="1280x1024">1280x1024</option>
+                                        <option value="1366x768">1366x768</option>
+                                        <option value="1440x900">1440x900</option>
+                                        <option value="1680x1050">1680x1050</option>
+                                        <option value="1920x1080">1920x1080</option>
+                                        <option value="1920x1200">1920x1200</option>
+                                    </select><br>
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="40">
+                                    <br><br>
                                 </td>
                             </tr>
             ';
