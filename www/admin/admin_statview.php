@@ -12,6 +12,7 @@ settype ($_GET['s_year'], 'integer');
 settype ($_GET['s_month'], 'integer');
 
 $day_arr = explode(',', $FD->text('frontend', 'week_days_array'));
+array_unshift($day_arr, array_pop($day_arr));
 $month_arr = explode(',', $FD->text('frontend', 'month_names_array'));
 
 //////////////////////////////////
