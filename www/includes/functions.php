@@ -80,14 +80,15 @@ function get_page_nav ( $PAGE, $NUM_OF_PAGES, $PER_PAGE, $NUM_OF_ENTRIES, $URL_T
 
     // Prev Template
     $template_prev = '';
-    $prev_url = str_replace ( '{..page_num..}', $PAGE-1, $URL_TEMPLATE );
+    $prev_url = str_replace ( array('{..page_num..}', urlencode('{..page_num..}')), $PAGE-1, $URL_TEMPLATE );
+    $prev_url = str_replace ( '{..page_num..}', $PAGE-1, $prev_url );
     if ( $PAGE > 1 ) {
         $template_prev = str_replace ( '{..url..}', $prev_url, $global_config_arr['page_prev'] );
     }
 
     // Next Template
     $template_next = '';
-    $next_url = str_replace ( '{..page_num..}', $PAGE+1, $URL_TEMPLATE );
+    $next_url = str_replace ( array('{..page_num..}', urlencode('{..page_num..}')), $PAGE+1, $URL_TEMPLATE );
     if ( ( $PAGE*$PER_PAGE ) < $NUM_OF_ENTRIES ) {
         $template_next = str_replace ( '{..url..}', $next_url, $global_config_arr['page_next'] );
     }
