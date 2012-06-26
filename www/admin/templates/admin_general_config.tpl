@@ -140,7 +140,7 @@
             </td>
             <td>
                 <!--COMMON::checkbox-->
-                <input class="hidden" type="checkbox" name="allow_other_designs" value="1" <!--IF::allow_other_designs-->checked<!--ENDIF-->>
+                <input class="hidden pointer" type="checkbox" name="allow_other_designs" value="1" <!--IF::allow_other_designs-->checked<!--ENDIF-->>
             </td>
         </tr>
 
@@ -150,7 +150,7 @@
                 <span class="small"><!--LANG::show_favicon_desc--></span>
             </td>
             <td>
-                <img class="checkbox pointer" src="img/test.png">
+                <!--COMMON::checkbox-->
                 <input class="hidden pointer" type="checkbox" name="show_favicon" value="1"<!--IF::show_favicon-->checked<!--ENDIF-->>
             </td>
         </tr>
