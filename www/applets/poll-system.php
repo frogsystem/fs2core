@@ -168,7 +168,7 @@ if (isset($_POST['poll_id']) &&
 
 elseif (isset($poll_arr['poll_id']) && !checkVotedPoll($poll_arr['poll_id'])) {
 
-    $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $TEXT['frontend']->get('multiple_choise') : $TEXT['frontend']->get('single_choice');
+    $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choise") : $FD->text("frontend", "single_choice");
 
     $index2 = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC', $FD->sql()->conn() );
     initstr($antworten);

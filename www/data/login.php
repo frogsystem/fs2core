@@ -6,9 +6,9 @@ $FD->setConfig('info', 'canonical', array('newpassword'));
 //// User is already logged in ////
 ///////////////////////////////////
 if ( $_SESSION['user_level'] == 'loggedin' && $_POST['login'] == 1 ) {
-    $template = forward_message ( $TEXT['frontend']->get('user_login'), $TEXT['frontend']->get('user_login_ok'), url($FD->cfg('home_real')));
+    $template = forward_message ( $FD->text("frontend", "user_login"), $FD->text("frontend", "user_login_ok"), url($FD->cfg('home_real')));
 } elseif ( $_SESSION['user_level'] == 'loggedin' ) {
-    $template = sys_message ( $TEXT['frontend']->get('user_login'), $TEXT['frontend']->get('user_login_ok') );
+    $template = sys_message ( $FD->text("frontend", "user_login"), $FD->text("frontend", "user_login_ok") );
 }
 
 //////////////////////////////
@@ -78,15 +78,15 @@ else {
     // Error Messages
     switch ( $FD->cfg('login_state') ) {
         case 2: // Wrong Password
-            $error_message = $TEXT['frontend']->get('user_login_error');
+            $error_message = $FD->text("frontend", "user_login_error");
             break;
         case 1: // Wrong Username
-            $error_message = $TEXT['frontend']->get('user_login_error');
+            $error_message = $FD->text("frontend", "user_login_error");
             break;
     }
 
     if ( $FD->cfg('login_state') == 1 || $FD->cfg('login_state') == 2 ) {
-        $template = forward_message ( $TEXT['frontend']->get('user_login_error_title'), $error_message, url('login') );
+        $template = forward_message ( $FD->text("frontend", "user_login_error_title"), $error_message, url('login') );
     } else {
         $template = new template();
         $template->setFile ( '0_user.tpl' );

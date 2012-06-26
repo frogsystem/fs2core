@@ -149,7 +149,7 @@ function scandir_ext ( $FOLDER, $FILE_EXT, $EXTRA = array(), $BAD = array ( '.',
 ///////////////////////
 function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
 {
-    global $FD, $global_config_arr, $TEXT;
+    global $FD, $global_config_arr;
 
     if ( $GROUP_ID == 0 && $IS_ADMIN != 1 ) {
         $retrun_arr['user_group_id'] = 0;
@@ -167,7 +167,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         settype ( $group_arr['user_group_id'], integer );
         $group_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
         $group_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
-        $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$TEXT['frontend']->get('group_image_of').' '.$group_arr['user_group_name'].'">' : '' );
+        $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text("frontend", "group_image_of").' '.$group_arr['user_group_name'].'">' : '' );
 
         unset ( $title_style );
         $title_style .= ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : '' );

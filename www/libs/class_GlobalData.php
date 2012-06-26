@@ -227,9 +227,6 @@ class GlobalData {
         $global_config_arr['system'] = $this->config['system']->getConfigArray();
         $global_config_arr['env'] = $this->config['env']->getConfigArray();
     }
-    public function getOldTetxt() {
-        return $this->text['frontend'];
-    }
 
 }
 

@@ -80,10 +80,10 @@ if ( isset( $_POST['user_group_id'] ) ) {
             }
         }
 
-        systext ( $admin_phrases['common']['changes_saved'], $admin_phrases['common']['info'] );
+        systext ( $FD->text("page", "'"), $FD->text("page", "'") );
     }
     else {
-        systext ( 'Diese Gruppe kann nicht bearbeitet werden', $admin_phrases['common']['error'], TRUE );
+        systext ( 'Diese Gruppe kann nicht bearbeitet werden', $FD->text("page", "'"), TRUE );
     }
 
     // Unset Vars
@@ -137,7 +137,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                                     ORDER BY `menu_id`, `group_pos`
     ", $FD->sql()->conn() );
     while ( $group_arr = mysql_fetch_assoc ( $groupaction ) ) {
-        $DATA_ARR[$group_arr['group_id']]['title'] = $TEXT['menu']->get('group_'.$group_arr['group_id']);
+        $DATA_ARR[$group_arr['group_id']]['title'] = $FD->text("menu", 'group_'.$group_arr['group_id']);
 
         // get pages
         $pageaction = mysql_query ( '
@@ -157,12 +157,12 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
 
 
         while ( $page_arr_sub = mysql_fetch_assoc ( $pageaction_sub ) ) {
-            $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $TEXT['menu']->get('page_link_'.$page_arr_sub['page_id']);
+            $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $FD->text("menu", 'page_link_'.$page_arr_sub['page_id']);
         }
 
 
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
-            $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $TEXT['menu']->get('page_link_'.$page_arr['page_id']);
+            $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $FD->text("menu", 'page_link_'.$page_arr['page_id']);
 
             // is permission granted?
             if ( $user_group_arr['user_group_id'] == $current_user_group ) {
@@ -240,7 +240,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                             <tr>
                                 <td colspan="3" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>
@@ -323,7 +323,7 @@ else
                                 </td>
                                 <td class="configthin middle">
                                     <span class="small">
-                                        '.$admin_phrases['articles']['list_cat_created_by'].' <b>'.$group_arr['user_group_user_name'].'</b> '.$admin_phrases['articles']['list_cat_created_on'].' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
+                                        '.$FD->text("page", "'").' <b>'.$group_arr['user_group_user_name'].'</b> '.$FD->text("page", "'").' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
                                     </span>
                                 </td>
                                 <td class="configthin center middle">'.$group_arr['user_group_num_users'].'</td>
@@ -342,7 +342,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '."Gruppenrrechte &auml;ndern".'
+                                        '.$FD->text("page", "'").' '."Gruppenrrechte &auml;ndern".'
                                     </button>
                                 </td>
                             </tr>

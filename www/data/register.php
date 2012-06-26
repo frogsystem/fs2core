@@ -18,7 +18,7 @@ $anti_spam = check_captcha ( $_POST['captcha'], $config_arr['registration_antisp
 
 if ( $_SESSION['user_id'] ) {
     $show_form = FALSE;
-    $messages = forward_message ( $TEXT['frontend']->get('systemmessage'), $TEXT['frontend']->get('user_register_not_twice'), '?go='.$global_config_arr['home_real'] );
+    $messages = forward_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_register_not_twice"), '?go='.$global_config_arr['home_real'] );
 }
 
 //////////////////
@@ -51,18 +51,18 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
     if ( $existing_users > 0 || $existing_mails > 0 || $anti_spam != TRUE || $_POST['new_pwd'] != $_POST['wdh_pwd'] ) {
         $error_array = array();
         if ( $existing_users > 0 ) {
-            $error_array[] = $TEXT['frontend']->get('user_name_exists');
+            $error_array[] = $FD->text("frontend", "user_name_exists");
         }
         if ( $existing_mails > 0 ) {
-            $error_array[] = $TEXT['frontend']->get('user_mail_exists');
+            $error_array[] = $FD->text("frontend", "user_mail_exists");
         }
         if ( $anti_spam != TRUE ) {
-            $error_array[] = $TEXT['frontend']->get('user_antispam');
+            $error_array[] = $FD->text("frontend", "user_antispam");
         }
         if ( $_POST['new_pwd'] != $_POST['wdh_pwd']) {
-            $error_array[] = $TEXT['frontend']->get('user_register_password_error');
+            $error_array[] = $FD->text("frontend", "user_register_password_error");
         }
-        $messages = sys_message ( $TEXT['frontend']->get('systemmessage'), implode ( '<br>', $error_array ) ) . '<br><br>';
+        $messages = sys_message ( $FD->text("frontend", "systemmessage"), implode ( '<br>', $error_array ) ) . '<br><br>';
 
         // Unset Vars
         unset ( $_POST );
@@ -77,11 +77,11 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
         $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_POST['user_name'] ), $template_mail );
         $template_mail = str_replace ( '{..new_password..}', $userpass_mail, $template_mail );
         $template_mail = replace_globalvars ( $template_mail );
-        $email_subject = $TEXT['frontend']->get('mail_registerd_on') . $global_config_arr['virtualhost'];
+        $email_subject = $FD->text("frontend", "mail_registerd_on") . $global_config_arr['virtualhost'];
         if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
-            $email_message = '<br>'.$TEXT['frontend']->get('mail_registerd_sended');
+            $email_message = '<br>'.$FD->text("frontend", "mail_registerd_sended");
         } else {
-            $email_message = '<br>'.$TEXT['frontend']->get('mail_registerd_not_sended');
+            $email_message = '<br>'.$FD->text("frontend", "mail_registerd_not_sended");
         }
 
         mysql_query ( '
@@ -101,7 +101,7 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
         $new_user_num = mysql_result ( $index, 0, 'user_number' );
         mysql_query ( 'UPDATE `'.$global_config_arr['pref']."counter` SET `user` = '".$new_user_num."'", $FD->sql()->conn() );
 
-        $messages = forward_message ( $TEXT['frontend']->get('systemmessage'), $TEXT['frontend']->get('user_registered').$email_message, '?go=login' );
+        $messages = forward_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_registered").$email_message, '?go=login' );
 
         unset($_POST);
         $show_form = FALSE;
@@ -113,7 +113,7 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
 //////////////////////
 
 elseif ( isset( $_POST['register'] ) ) {
-    $messages = sys_message ( $TEXT['frontend']->get('systemmessage'), $TEXT['frontend']->get('user_register_fulfill_form') ) . '<br>';
+    $messages = sys_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_register_fulfill_form") ) . '<br>';
 }
 
 ////////////////////////////

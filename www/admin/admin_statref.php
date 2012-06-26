@@ -36,12 +36,12 @@ if (
             $rows = delete_referrers ($_POST['del_days'], $_POST['del_hits'], $_POST['del_contact'], $_POST['del_age'], $_POST['del_amount']);
 
             $message =  $FD->text('page', 'referrer_deleted_entries') . ':<br>' .
-                        '"'.$admin_phrases['stats']['referrer_'.$_POST['del_contact']] . ' ' .
-                        $admin_phrases['stats']['referrer_delete_'.$_POST['del_age']] . ' ' .
+                        '"'.$FD->text('page', 'referrer_'.$_POST['del_contact']) . ' ' .
+                        $FD->text('page', 'referrer_delete_'.$_POST['del_age']) . ' ' .
                         $_POST['del_days'] . ' ' .
                         $FD->text('page', 'referrer_delete_days') . ' ' .
                         $FD->text('page', 'referrer_delete_and') . ' ' .
-                        $admin_phrases['stats']['referrer_delete_'.$_POST['del_amount']] . ' ' .
+                        $FD->text('page', 'referrer_delete_'.$_POST['del_amount']) . ' ' .
                         $_POST['del_hits'] . ' ' .
                         $FD->text('page', 'referrer_delete_hits').'"' . '<br><br>' .
                         $FD->text('page', 'affected_rows') . ': ' .

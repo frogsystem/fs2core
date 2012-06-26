@@ -35,7 +35,7 @@ if ($ref['num'] > 0) {
 	$ref['url'] = stripslashes(mysql_result($index, 0, 'ref_url'));
 	$ref['shorturl'] = cut_in_string($ref['url'], 50, '...');
 
-	$ref['date_time'] = date_loc($TEXT['admin']->get('date_time'), mysql_result($index, 0, 'ref_last'));
+	$ref['date_time'] = date_loc($FD->text("admin", "date_time"), mysql_result($index, 0, 'ref_last'));
 }
 
 // Conditions

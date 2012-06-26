@@ -123,7 +123,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
 {
     $_POST['dlid'] = $_POST['dlid'][0];
     if(isset($_POST['sended']) && !isset($_POST['files_add'])) {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
     }
 
 
@@ -303,7 +303,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
             ';
             if ($ftp) {
                 echo '
-                                    <input  type="button" onClick=\''.openpopup ( '?go=find_file&amp;id='.$j, 600, 800 ).'\' value="'.$TEXT['admin']->get('file_select_button').'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( '?go=find_file&amp;id='.$j, 600, 800 ).'\' value="'.$FD->text("admin", "file_select_button").'">&nbsp;
                 ';
             }
             echo '
@@ -333,7 +333,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
             ';
             if ($ftp) {
                 echo '
-                                    <input  type="button" onClick=\''.openpopup ( '?go=find_file&amp;id='.$j, 600, 800 ).'\' value="'.$TEXT['admin']->get('file_select_button').'">&nbsp;
+                                    <input  type="button" onClick=\''.openpopup ( '?go=find_file&amp;id='.$j, 600, 800 ).'\' value="'.$FD->text("admin", "file_select_button").'">&nbsp;
                 ';
             }
             echo '
@@ -482,7 +482,7 @@ else
                             <tr style="display:none">
                                 <td colspan="3">
                                     <select class="select_type" name="dl_action" size="1">
-                                        <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
+                                        <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>

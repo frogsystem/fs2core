@@ -39,9 +39,9 @@ if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "
                        artikel_hot   = '$_POST[hot]'
                    WHERE artikel_id = '$_POST[artikelid]'";
         mysql_query($update, $FD->sql()->conn() );
-        $messages[] = $TEXT['admin']->get('changes_saved');
+        $messages[] = $FD->text("admin", "changes_saved");
 
-        echo get_systext(implode('<br>', $messages), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_save_ok'));
+        echo get_systext(implode('<br>', $messages), $FD->text("admin", "info"), 'green', $FD->text("admin", "icon_save_ok"));
     }
 
     unset($_POST);
@@ -55,7 +55,7 @@ if ($_POST['artikelid'])
 {
     $_POST['artikelid'] = $_POST['artikelid'][0];
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
     }
 
     settype($_POST['artikelid'], 'integer');
@@ -204,7 +204,7 @@ else
                             <tr style="display:none">
                                 <td colspan="4">
                                     <select class="select_type" name="shop_action" size="1">
-                                        <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
+                                        <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>

@@ -141,7 +141,7 @@ if (
 	", $FD->sql()->conn() );
 
 	// system messages
-    systext($admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
+    systext($FD->text("page", "'"), $FD->text("page", "'"));
 
     // Unset Vars
     unset ( $_POST );
@@ -155,7 +155,7 @@ if ( TRUE )
 {
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+		systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
 
 	// Load Data from DB into Post
 	} else {
@@ -191,8 +191,8 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text" size="5" name="cfg_player_x" value="'.$_POST['cfg_player_x'].'" maxlength="4">
-                                    '.$TEXT['admin']->get('resolution_x').'
-                                    <input class="text" size="5" name="cfg_player_y" value="'.$_POST['cfg_player_y'].'" maxlength="4"> '.$TEXT['admin']->get('pixel').'
+                                    '.$FD->text("admin", "resolution_x").'
+                                    <input class="text" size="5" name="cfg_player_y" value="'.$_POST['cfg_player_y'].'" maxlength="4"> '.$FD->text("admin", "pixel").'
                                 </td>
                             </tr>
        						<tr>
@@ -508,7 +508,7 @@ if ( TRUE )
        						</tr>
        						<tr>
            						<td class="config">
-               						Vorausspeicher-Nachricht: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+               						Vorausspeicher-Nachricht: <span class="small">'.$FD->text("page", "'").'</span><br>
                						<span class="small">Nachricht, die w&auml;hrend des Vorausspeicherns angezeigt wird.</span>
            						</td>
            						<td class="config">
@@ -639,7 +639,7 @@ if ( TRUE )
 							<tr><td class="line" colspan="4">Bild-&Uuml;berlagerung</td></tr>
        						<tr>
            						<td class="config">
-               						Bild-URL: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+               						Bild-URL: <span class="small">'.$FD->text("page", "'").'</span><br>
                						<span class="small">URL eines Bildes, das &uuml;ber das Video gelegt werden soll.</span>
            						</td>
            						<td class="config">
@@ -670,7 +670,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>

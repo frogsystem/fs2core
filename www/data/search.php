@@ -34,7 +34,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
 } else {
 
     // Set Dynamic Title
-    $global_config_arr['dyn_title_page'] = $TEXT['frontend']->get('download_search_for') . ' "' . usersave($_REQUEST['keyword']) . '"';
+    $global_config_arr['dyn_title_page'] = $FD->text("frontend", "download_search_for") . ' "' . usersave($_REQUEST['keyword']) . '"';
 
 	// More Results Template
 	$more_results_template = new template();
@@ -254,7 +254,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
         if (!empty($_REQUEST['keyword']) && $_REQUEST['in_news']) {
             // Get Template
             $template = $results_template;
-            $template->tag('type_title', $TEXT['frontend']->get('search_news_title') );
+            $template->tag('type_title', $FD->text("frontend", "search_news_title") );
             $template->tag('results', $news_entries );
             $template->tag('num_results', $news_num_results );
             $template->tag('more_results', $news_more );
@@ -265,7 +265,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
         if (!empty($_REQUEST['keyword']) && $_REQUEST['in_articles']) {
             // Get Template
             $template = $results_template;
-            $template->tag('type_title', $TEXT['frontend']->get('search_articles_title') );
+            $template->tag('type_title', $FD->text("frontend", "search_articles_title") );
             $template->tag('results', $articles_entries );
             $template->tag('num_results', $articles_num_results );
             $template->tag('more_results', $articles_more );
@@ -276,7 +276,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
         if (!empty($_REQUEST['keyword']) && $_REQUEST['in_downloads']) {
             // Get Template
             $template = $results_template;
-            $template->tag('type_title', $TEXT['frontend']->get('search_downloads_title') );
+            $template->tag('type_title', $FD->text("frontend", "search_downloads_title") );
             $template->tag('results', $downloads_entries );
             $template->tag('num_results', $downloads_num_results );
             $template->tag('more_results', $downloads_more );

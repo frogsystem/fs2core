@@ -56,125 +56,125 @@ if ( TRUE )
                         <input type="hidden" name="go" value="articles_config">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$admin_phrases['articles']['post_settings_title'].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
                             <tr>
 								<td class="config" colspan="2">
-								    <span class="small">'.$admin_phrases['articles']['post_settings_info'].'<br><br></span>
+								    <span class="small">'.$FD->text("page", "'").'<br><br></span>
 								</td>
 							</tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['allow_html'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['allow_html_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="html_code">
-                                        <option value="1" '.getselected ( 1, $_POST['html_code'] ).'>'.$admin_phrases['articles']['allow_code_no'].'</option>
-                                        <option value="2" '.getselected ( 2, $_POST['html_code'] ).'>'.$admin_phrases['articles']['allow_code_articles'].'</option>
-                                        <option value="3" '.getselected ( 3, $_POST['html_code'] ).'>'.$admin_phrases['articles']['allow_code_comments'].'</option>
-                                        <option value="4" '.getselected ( 4, $_POST['html_code'] ).'>'.$admin_phrases['articles']['allow_code_both'].'</option>
+                                        <option value="1" '.getselected ( 1, $_POST['html_code'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="2" '.getselected ( 2, $_POST['html_code'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="3" '.getselected ( 3, $_POST['html_code'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="4" '.getselected ( 4, $_POST['html_code'] ).'>'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['allow_fs'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['allow_fs_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="fs_code">
-                                        <option value="1" '.getselected ( 1, $_POST['fs_code'] ).'>'.$admin_phrases['articles']['allow_code_no'].'</option>
-                                        <option value="2" '.getselected ( 2, $_POST['fs_code'] ).'>'.$admin_phrases['articles']['allow_code_articles'].'</option>
-                                        <option value="3" '.getselected ( 3, $_POST['fs_code'] ).'>'.$admin_phrases['articles']['allow_code_comments'].'</option>
-                                        <option value="4" '.getselected ( 4, $_POST['fs_code'] ).'>'.$admin_phrases['articles']['allow_code_both'].'</option>
+                                        <option value="1" '.getselected ( 1, $_POST['fs_code'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="2" '.getselected ( 2, $_POST['fs_code'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="3" '.getselected ( 3, $_POST['fs_code'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="4" '.getselected ( 4, $_POST['fs_code'] ).'>'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['allow_para'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['allow_para_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="para_handling">
-                                        <option value="1" '.getselected ( 1, $_POST['para_handling'] ).'>'.$admin_phrases['articles']['allow_code_no'].'</option>
-                                        <option value="2" '.getselected ( 2, $_POST['para_handling'] ).'>'.$admin_phrases['articles']['allow_code_articles'].'</option>
-                                        <option value="3" '.getselected ( 3, $_POST['para_handling'] ).'>'.$admin_phrases['articles']['allow_code_comments'].'</option>
-                                        <option value="4" '.getselected ( 4, $_POST['para_handling'] ).'>'.$admin_phrases['articles']['allow_code_both'].'</option>
+                                        <option value="1" '.getselected ( 1, $_POST['para_handling'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="2" '.getselected ( 2, $_POST['para_handling'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="3" '.getselected ( 3, $_POST['para_handling'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="4" '.getselected ( 4, $_POST['para_handling'] ).'>'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$admin_phrases['articles']['cat_settings_title'].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['cat_img_max_width'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['cat_img_max_width_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text center" size="3" name="cat_pic_x" maxlength="3" value="'.$_POST['cat_pic_x'].'"> '.$admin_phrases['common']['pixel'].'<br>
-                                    <span class="small">('.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <input class="text center" size="3" name="cat_pic_x" maxlength="3" value="'.$_POST['cat_pic_x'].'"> '.$FD->text("page", "'").'<br>
+                                    <span class="small">('.$FD->text("page", "'").')</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['cat_img_max_height'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['cat_img_max_height_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text center" size="3" name="cat_pic_y" maxlength="3" value="'.$_POST['cat_pic_y'].'"> '.$admin_phrases['common']['pixel'].'<br>
-                                    <span class="small">('.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <input class="text center" size="3" name="cat_pic_y" maxlength="3" value="'.$_POST['cat_pic_y'].'"> '.$FD->text("page", "'").'<br>
+                                    <span class="small">('.$FD->text("page", "'").')</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['cat_img_max_size'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['cat_img_max_size_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text center" size="4" name="cat_pic_size" maxlength="4" value="'.$_POST['cat_pic_size'].'"> '.$admin_phrases['common']['kib'].'<br>
-                                    <span class="small">('.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <input class="text center" size="4" name="cat_pic_size" maxlength="4" value="'.$_POST['cat_pic_size'].'"> '.$FD->text("page", "'").'<br>
+                                    <span class="small">('.$FD->text("page", "'").')</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$admin_phrases['articles']['comment_settings_title'].' - Noch ohne Funktion</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("page", "'").' - Noch ohne Funktion</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['allow_comments'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['allow_comments_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="com_rights">
-                                        <option value="2" '.getselected ( 2, $_POST['com_rights'] ).'>'.$admin_phrases['articles']['allow_comments_all'].'</option>
-                                        <option value="3" '.getselected ( 3, $_POST['com_rights'] ).'>'.$admin_phrases['articles']['allow_comments_staff'].'</option>
-                                        <option value="1" '.getselected ( 1, $_POST['com_rights'] ).'>'.$admin_phrases['articles']['allow_comments_reg'].'</option>
-                                        <option value="0" '.getselected ( 0, $_POST['com_rights'] ).'>'.$admin_phrases['articles']['allow_comments_nobody'].'</option>
+                                        <option value="2" '.getselected ( 2, $_POST['com_rights'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="3" '.getselected ( 3, $_POST['com_rights'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="1" '.getselected ( 1, $_POST['com_rights'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="0" '.getselected ( 0, $_POST['com_rights'] ).'>'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['sort_comments'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['sort_comments_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="com_sort">
-                                        <option value="ASC" '.getselected ( 'ASC', $_POST['com_sort'] ).'>'.$admin_phrases['articles']['sort_comments_old_first'].'</option>
-                                        <option value="DESC" '.getselected ( 'DESC', $_POST['com_sort'] ).'>'.$admin_phrases['articles']['sort_comments_new_first'].'</option>
+                                        <option value="ASC" '.getselected ( 'ASC', $_POST['com_sort'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="DESC" '.getselected ( 'DESC', $_POST['com_sort'] ).'>'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['spam_comments'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['spam_comments_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="com_antispam">
-                                        <option value="2" '.getselected ( 2, $_POST['com_antispam'] ).'>'.$admin_phrases['articles']['spam_comments_all'].'</option>
-                                        <option value="3" '.getselected ( 3, $_POST['com_antispam'] ).'>'.$admin_phrases['articles']['spam_comments_staff'].'</option>
-                                        <option value="1" '.getselected ( 1, $_POST['com_antispam'] ).'>'.$admin_phrases['articles']['spam_comments_reg'].'</option>
-                                        <option value="0" '.getselected ( 0, $_POST['com_antispam'] ).'>'.$admin_phrases['articles']['spam_comments_nobody'].'</option>
+                                        <option value="2" '.getselected ( 2, $_POST['com_antispam'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="3" '.getselected ( 3, $_POST['com_antispam'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="1" '.getselected ( 1, $_POST['com_antispam'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="0" '.getselected ( 0, $_POST['com_antispam'] ).'>'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -200,14 +200,14 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text center" size="3" name="acp_per_page" maxlength="3" value="'.$_POST['acp_per_page'].'"> Eintr&auml;ge<br>
-                                    <span class="small">('.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <span class="small">('.$FD->text("page", "'").')</span>
                                 </td>
                             </tr>
 							<tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>

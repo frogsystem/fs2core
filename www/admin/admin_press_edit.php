@@ -128,7 +128,7 @@ elseif ($_POST['press_action'] == 'edit'
 
     //Error Message
     if ($_POST['sended'] == 'edit') {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
 
 
         $press_arr['press_title'] = killhtml($_POST['title']);
@@ -200,7 +200,7 @@ elseif ($_POST['press_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Einleitung: <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
+                                    Einleitung: <font class="small">'.$FD->text("page", "'").'</font><br />
                                     <font class="small">Eine kurze Einleitung zum Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
@@ -218,7 +218,7 @@ elseif ($_POST['press_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Anmerkungen: <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
+                                    Anmerkungen: <font class="small">'.$FD->text("page", "'").'</font><br />
                                     <font class="small">Anmerkungen zum Pressebericht.<br />
                                     (z.B. die Wertung eines Tests)</font>
                                 </td>
@@ -356,7 +356,7 @@ elseif ($_POST['press_action'] == 'delete'
                                         <option value="0">Pressebericht nicht l&ouml;schen</option>
                                         <option value="1">Pressebericht l&ouml;schen</option>
                                     </select>
-                                    <input type="submit" value="'.$admin_phrases['common']['do_button'].'">
+                                    <input type="submit" value="'.$FD->text("page", "'").'">
                                 </td>
                             </tr>
                             <tr><td>&nbsp;</td></tr>
@@ -582,10 +582,10 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                             <tr>
                                 <td class="right" colspan="4">
                                    <select class="select_type" name="press_action" size="1">
-                                     <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                     <option class="select_red select_one" value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                     <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
+                                     <option class="select_red select_one" value="delete">'.$FD->text("page", "'").'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$admin_phrases['common']['do_button'].'">
+                                   <input class="button" type="submit" value="'.$FD->text("page", "'").'">
                                 </td>
                             </tr>
                         </table>
@@ -594,11 +594,11 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
     }
     else
     {
-        echo $admin_phrases['press']['note_noreleases'];
+        echo $FD->text("page", "'");
     }
 }
 elseif (mysql_num_rows($index) <= 0)
 {
-    echo $admin_phrases['press']['note_noreleases'];
+    echo $FD->text("page", "'");
 }
 ?>

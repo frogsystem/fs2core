@@ -6,17 +6,17 @@ $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'partner_config
 $config_arr = mysql_fetch_assoc($index);
 if ($config_arr['small_allow'] == 0) {
     $config_arr['small_allow_bool'] = true;
-    $config_arr['small_allow_text'] = $admin_phrases['partner']['exact'];
+    $config_arr['small_allow_text'] = $FD->text("page", "'");
 } else {
     $config_arr['small_allow_bool'] = false;
-    $config_arr['small_allow_text'] = $admin_phrases['partner']['max'];
+    $config_arr['small_allow_text'] = $FD->text("page", "'");
 }
 if ($config_arr['big_allow'] == 0) {
     $config_arr['big_allow_bool'] = true;
-    $config_arr['big_allow_text'] = $admin_phrases['partner']['exact'];
+    $config_arr['big_allow_text'] = $FD->text("page", "'");
 } else {
     $config_arr['big_allow_bool'] = false;
-    $config_arr['big_allow_text'] = $admin_phrases['partner']['max'];
+    $config_arr['big_allow_text'] = $FD->text("page", "'");
 }
 
 
@@ -55,9 +55,9 @@ if ($_FILES['bild_small']['name'] != ''
         switch ($upload2)
         {
         case 0:
-          systext ($admin_phrases['partner']['note_added'] .'<br />'.
-                   $admin_phrases['partner']['note_uploaded'].'<br />'.
-                   $admin_phrases['partner']['note_addmore']);
+          systext ($FD->text("page", "'") .'<br />'.
+                   $FD->text("page", "'").'<br />'.
+                   $FD->text("page", "'"));
 
           unset($_POST['bild_small']);
           unset($_POST['bild_big']);
@@ -68,8 +68,8 @@ if ($_FILES['bild_small']['name'] != ''
 
           break;
         default:
-          systext ($admin_phrases['partner']['big_pic']. ': ' . upload_img_notice($upload2));
-          systext ($admin_phrases['partner']['note_notadded']);
+          systext ($FD->text("page", "'"). ': ' . upload_img_notice($upload2));
+          systext ($FD->text("page", "'"));
           mysql_query('DELETE FROM '.$global_config_arr['pref']."partner WHERE partner_id = '$id'");
           image_delete('images/partner/', $id.'_small');
           image_delete('images/partner/', $id.'_big');
@@ -77,8 +77,8 @@ if ($_FILES['bild_small']['name'] != ''
 
         break;
       default:
-        systext ($admin_phrases[partner][small_pic] . ': ' . upload_img_notice($upload1));
-        systext ($admin_phrases[partner][note_notadded]);
+        systext ($FD->text("page", "small_pic") . ': ' . upload_img_notice($upload1));
+        systext ($FD->text("page", "note_notadded"));
         mysql_query('DELETE FROM '.$global_config_arr[pref]."partner WHERE partner_id = '$id'");
         image_delete('images/partner/', $id.'_small');
         image_delete('images/partner/', $id.'_big');
@@ -91,7 +91,7 @@ if ($_FILES['bild_small']['name'] != ''
 //// Error Message    ////
 //////////////////////////
 elseif ($_POST['sended']) {
-    echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+    echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
 
     $_POST['name'] = killhtml($_POST['name']);
     $_POST['link'] = killhtml($_POST['link']);
@@ -108,35 +108,35 @@ echo'
                         <input type="hidden" value="partner_add" name="go">
                         <input type="hidden" value="1" name="sended">
                         <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>'.$admin_phrases['partner']['add'].'</h3><hr></td></tr>
+                            <tr><td colspan="2"><h3>'.$FD->text("page", "'").'</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$admin_phrases['partner']['small_pic'].':<br />
-                                    <font class="small">'.$admin_phrases['partner']['small_pic_desc'].'</font>
+                                    '.$FD->text("page", "'").':<br />
+                                    <font class="small">'.$FD->text("page", "'").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="bild_small" size="50"><br />
                                     <font class="small">
-                                      ['.$config_arr['small_allow_text'].' '.$config_arr['small_x'].' x '.$config_arr['small_y'].' '.$admin_phrases['partner']['px'].'] [max. '.$config_arr['file_size'].' '.$admin_phrases['partner']['kb'].']
+                                      ['.$config_arr['small_allow_text'].' '.$config_arr['small_x'].' x '.$config_arr['small_y'].' '.$FD->text("page", "'").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "'").']
                                     </font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$admin_phrases['partner']['big_pic'].':<br />
-                                    <font class="small">'.$admin_phrases['partner']['big_pic_desc'].'</font>
+                                    '.$FD->text("page", "'").':<br />
+                                    <font class="small">'.$FD->text("page", "'").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="bild_big" size="50"><br />
                                     <font class="small">
-                                      ['.$config_arr['big_allow_text'].' '.$config_arr['big_x'].' x '.$config_arr['big_y'].' '.$admin_phrases['partner']['px'].'] [max. '.$config_arr['file_size'].' '.$admin_phrases['partner']['kb'].']
+                                      ['.$config_arr['big_allow_text'].' '.$config_arr['big_x'].' x '.$config_arr['big_y'].' '.$FD->text("page", "'").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "'").']
                                     </font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$admin_phrases['partner']['name'].':<br />
-                                    <font class="small">'.$admin_phrases['partner']['name_desc'].'</font>
+                                    '.$FD->text("page", "'").':<br />
+                                    <font class="small">'.$FD->text("page", "'").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="name" value="'.$_POST['name'].'" size="50" maxlength="100">
@@ -144,8 +144,8 @@ echo'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$admin_phrases['partner']['link'].':<br />
-                                    <font class="small">'.$admin_phrases['partner']['link_desc'].'</font>
+                                    '.$FD->text("page", "'").':<br />
+                                    <font class="small">'.$FD->text("page", "'").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="link" size="50" value="http://" maxlength="100">
@@ -153,8 +153,8 @@ echo'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$admin_phrases['partner']['desc'].': <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
-                                    <font class="small">'.$admin_phrases['partner']['desc_desc'].'</font>
+                                    '.$FD->text("page", "'").': <font class="small">'.$FD->text("page", "'").'</font><br />
+                                    <font class="small">'.$FD->text("page", "'").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     '.create_editor('description', $_POST['description'], 330, 130).'
@@ -162,8 +162,8 @@ echo'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$admin_phrases['partner']['perm'].':<br />
-                                    <font class="small">'.$admin_phrases['partner']['perm_desc'].'</font>
+                                    '.$FD->text("page", "'").':<br />
+                                    <font class="small">'.$FD->text("page", "'").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="checkbox" value="1" name="permanent" '.$_POST['permanent'].'>
@@ -172,7 +172,7 @@ echo'
 
                             <tr>
                                 <td align="left" colspan="2">
-                                    <input class="button" type="submit" value="'.$admin_phrases['partner']['add'].'">
+                                    <input class="button" type="submit" value="'.$FD->text("page", "'").'">
                                 </td>
                             </tr>
                         </table>

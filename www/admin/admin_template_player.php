@@ -5,12 +5,12 @@ $TEMPLATE_EDIT = array();
 
 $TEMPLATE_EDIT[] = array (
     'name' => 'PLAYER',
-    'title' => $TEXT['template']->get('player_player_title'),
-    'description' => $TEXT['template']->get('player_player_desc'),
+    'title' => $FD->text("template", "player_player_title"),
+    'description' => $FD->text("template", "player_player_desc"),
     'rows' => 15,
     'cols' => 66,
     'help' => array (
-        array ( 'tag' => 'player', 'text' => $TEXT['template']->get('player_player_player') ),
+        array ( 'tag' => 'player', 'text' => $FD->text("template", "player_player_player") ),
     )
 );
 

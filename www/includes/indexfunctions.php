@@ -77,7 +77,7 @@ function search_index ()
 ///////////////////////////
 function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
 {
-    global $global_config_arr, $TEXT;
+    global $global_config_arr, $FD;
 
     // Load Template Object
     $theTemplate = new template();
@@ -95,7 +95,7 @@ function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
 
     // Create Link-Lines
     $template_favicon = ($global_config_arr['show_favicon'] == 1) ? '<link rel="shortcut icon" href="'.$PATH_PREFIX .'styles/'.$global_config_arr['style'].'/icons/favicon.ico">' : '';
-	$template_feed = '<link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$TEXT['frontend']->get("news_feed").'">';
+	$template_feed = '<link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$global_config_arr['feed'].'.php" title="'.$global_config_arr['title'].' '.$FD->text("frontend", "news_feed").'">';
 
     // Create Script-Lines
     $template_javascript = get_js($PATH_PREFIX).'
@@ -357,7 +357,7 @@ function get_canonical()
 /////////////////////
 function get_content ($GOTO)
 {
-    global $global_config_arr, $FD, $sql, $TEXT;
+    global $global_config_arr, $FD, $sql;
 
     // Display Content
     initstr($template);
@@ -533,7 +533,7 @@ function get_all_tpl_functions()
 //////////////////////
 function load_applets()
 {
-    global $global_config_arr, $sql, $FD, $TEXT;
+    global $global_config_arr, $sql, $FD;
 
     // Load Applets from DB
     $applet_data = $sql->getData('applets', array('applet_include', 'applet_file', 'applet_output'), array('W' => '`applet_active` = 1'));
@@ -564,8 +564,7 @@ function load_applets()
 function load_an_applet($file, $output, $args) {
 
     global $FD;
-    global $global_config_arr, $sql, $TEXT;
-    global $FD;
+    global $global_config_arr, $sql;
 
     // Setup $SCRIPT Var
     unset($SCRIPT, $template);
@@ -627,7 +626,7 @@ function tpl_func_snippets($original, $main_argument, $other_arguments)
 /////////////////////////
 function tpl_func_applets($original, $main_argument, $other_arguments)
 {
-    global $APP, $global_config_arr, $sql, $FD, $TEXT;
+    global $APP, $global_config_arr, $sql, $FD;
 
     // Applet does not exists
     if (!isset($APP[$main_argument])) {

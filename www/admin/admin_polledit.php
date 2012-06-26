@@ -87,7 +87,7 @@ if ($_POST['pollid'] || $_POST['optionsadd'])
     $_POST['pollid'] = $_POST['pollid'][0];
 
      if(isset($_POST['sended']) && !isset($_POST['ant_add'])) {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
     }
 
 
@@ -429,11 +429,11 @@ else
         $poll_arr['poll_end'] = date('d.m.Y' , $poll_arr['poll_end']);
         if ($poll_arr['poll_type'] == 1)
         {
-            $poll_arr['poll_type'] = $TEXT['page']->get('multiple_choice');
+            $poll_arr['poll_type'] = $FD->text("page", "multiple_choice");
         }
         else
         {
-            $poll_arr['poll_type'] = $TEXT['page']->get('single_choice');
+            $poll_arr['poll_type'] = $FD->text("page", "single_choice");
         }
         echo'
                             <tr class="select_entry thin">
@@ -459,7 +459,7 @@ else
                             <tr style="display:none">
                                 <td colspan="5">
                                     <select class="select_type" name="poll_action" size="1">
-                                        <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
+                                        <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>

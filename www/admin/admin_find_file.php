@@ -34,7 +34,7 @@ try {
         // display error
         $adminpage->clearConds();
         $adminpage->clearTexts();
-        $adminpage->addText('connection_error_text', sprintf($TEXT['page']->get('connection_error_text'), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
+        $adminpage->addText('connection_error_text', sprintf($FD->text("page", "connection_error_text"), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
         $content = $adminpage->get('conn_error');
 
     } else {
@@ -49,11 +49,11 @@ try {
         // create breadcombs
         $furllist = explode('/', $_GET['f']);
         unset($furllinks, $fpath);
-        $furllinks = '<a href="?go=find_file&amp;id='.$_GET['id'].'&amp;f=/" title="'.$TEXT['page']->get('change_dir').'">&nbsp;.&nbsp;</a>';
+        $furllinks = '<a href="?go=find_file&amp;id='.$_GET['id'].'&amp;f=/" title="'.$FD->text("page", "change_dir").'">&nbsp;.&nbsp;</a>';
         foreach($furllist as $furl) {
             if (!empty($furl)) {
                 $fpath .= '/'.$furl;
-                $furllinks .= '/<a href="?go=find_file&amp;id='.$_GET['id'].'&amp;f='.$fpath.'" title="'.$TEXT['page']->get('change_dir').'">'.$furl.'</a>';
+                $furllinks .= '/<a href="?go=find_file&amp;id='.$_GET['id'].'&amp;f='.$fpath.'" title="'.$FD->text("page", "change_dir").'">'.$furl.'</a>';
             }
         }
 
@@ -94,7 +94,7 @@ try {
         // display page
         $adminpage->clearConds();
         $adminpage->clearTexts();
-        $adminpage->addText('connection_ok', sprintf($TEXT['page']->get('connection_ok'), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
+        $adminpage->addText('connection_ok', sprintf($FD->text("page", "connection_ok"), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
         $adminpage->addText('url_links', $furllinks);
         $adminpage->addText('up_url', '?go=find_file&amp;id='.$_GET['id'].'&amp;f='.$_GET['f'].'..');
         $adminpage->addText('lines', implode($folder_list).implode($file_list));

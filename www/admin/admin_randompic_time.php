@@ -52,11 +52,11 @@ elseif ($_POST['random_action'] == 'delete'
     if ($_POST['delete_random'])   // Randompic löschen
     {
         mysql_query('DELETE FROM '.$global_config_arr['pref']."screen_random WHERE random_id = '$_POST[random_id]'", $FD->sql()->conn() );
-        systext($admin_phrases['random']['note_deleted']);
+        systext($FD->text("page", "'"));
     }
     else
     {
-        systext($admin_phrases['random']['note_notdeleted']);
+        systext($FD->text("page", "'"));
     }
 
     unset($_POST['delete_random']);
@@ -102,7 +102,7 @@ elseif ($_POST['random_action'] == 'edit'
 
     //Error Message
     if ($_POST['sended'] == 'edit') {
-        systext ($admin_phrases['common']['note_notfilled']);
+        systext ($FD->text("page", "'"));
 
         $random_arr['start_d'] = $_POST['start_d'];
         $random_arr['start_m'] = $_POST['start_m'];
@@ -229,8 +229,8 @@ elseif ($_POST['random_action'] == 'delete'
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases['random']['delpic'].':<br />
-                                    <span class="small">'.$admin_phrases['random']['delnote'].'</span>
+                                    '.$FD->text("page", "'").':<br />
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                             </tr>
                             <tr><td></td></tr>
@@ -245,14 +245,14 @@ elseif ($_POST['random_action'] == 'delete'
                             <tr><td></td></tr>
                             <tr valign="top">
                                 <td width="50%" class="config">
-                                    '.$admin_phrases['random']['delpic_question'].'
+                                    '.$FD->text("page", "'").'
                                 </td>
                                 <td width="50%" align="right">
                                     <select name="delete_random" size="1">
-                                        <option value="0">'.$admin_phrases['random']['delnotconfirm'].'</option>
-                                        <option value="1">'.$admin_phrases['random']['delconfirm'].'</option>
+                                        <option value="0">'.$FD->text("page", "'").'</option>
+                                        <option value="1">'.$FD->text("page", "'").'</option>
                                     </select>
-                                    <input type="submit" value="'.$admin_phrases['common']['do_button'].'" class="button" />
+                                    <input type="submit" value="'.$FD->text("page", "'").'" class="button" />
                                 </td>
                             </tr>
                         </table>
@@ -274,16 +274,16 @@ if (!isset($_POST['random_id']))
                             <tr>
                                 <td></td>
                                 <td class="config">
-                                    '.$admin_phrases['random']['title'].'
+                                    '.$FD->text("page", "'").'
                                 </td>
                                 <td class="config">
-                                    '.$admin_phrases['random']['start_time'].'
+                                    '.$FD->text("page", "'").'
                                 </td>
                                 <td class="config">
-                                    '.$admin_phrases['random']['end_time'].'
+                                    '.$FD->text("page", "'").'
                                 </td>
                                 <td class="config" style="text-align:right;">
-                                    '.$admin_phrases['common']['selection'].'
+                                    '.$FD->text("page", "'").'
                                 </td>
                             </tr>
     ';
@@ -328,10 +328,10 @@ onClick=\'
                             <tr>
                                 <td class="config" colspan="5" style="text-align:center;">
                                    <select name="random_action" size="1">
-                                     <option value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                     <option value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                     <option value="edit">'.$FD->text("page", "'").'</option>
+                                     <option value="delete">'.$FD->text("page", "'").'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$admin_phrases['common']['do_button'].'">
+                                   <input class="button" type="submit" value="'.$FD->text("page", "'").'">
                                 </td>
                             </tr>
                         </table>

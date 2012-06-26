@@ -12,7 +12,6 @@ function default_set_filter_data ( $FORM )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
 
     if ( !isset ( $FORM['order'] ) ) { $FORM['order'] = 'article_title'; }
     if ( !isset ( $FORM['sort'] ) ) { $FORM['sort'] = 'ASC'; }
@@ -29,19 +28,18 @@ function default_display_filter ( $FORM )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
 
     echo'
                                         <form action="" method="post">
                         <input type="hidden" value="articles_edit" name="go">
 
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="3">'.$admin_phrases['articles']['edit_filter_title'].'</td></tr>
+                                                        <tr><td class="line" colspan="3">'.$FD->text("page", "'").'</td></tr>
                                                         <tr>
                                 <td class="config" width="100%" colspan="2">
-                                                                        '.$admin_phrases['articles']['edit_filter_from'].'
+                                                                        '.$FD->text("page", "'").'
                                     <select name="cat_id">
-                                            <option value="0" '.getselected( 0, $FORM['cat_id'] ).'>'.$admin_phrases['articles']['edit_filter_all_cat'].'</option>
+                                            <option value="0" '.getselected( 0, $FORM['cat_id'] ).'>'.$FD->text("page", "'").'</option>
         ';
                                                                             // List Categories
                                                                             $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_cat', $FD->sql()->conn() );
@@ -52,21 +50,21 @@ function default_display_filter ( $FORM )
                                                                             }
         echo'
                                     </select>
-                                                                        <br><br>'.$admin_phrases['articles']['edit_filter_sort'].'
+                                                                        <br><br>'.$FD->text("page", "'").'
                                     <select name="order">
                                         <option value="article_id" '.getselected ( 'article_id', $FORM['order'] ).'>Artikel-ID</option>
-                                        <option value="article_date" '.getselected ( 'article_date', $FORM['order'] ).'>'.$admin_phrases['articles']['edit_filter_date'].'</option>
-                                        <option value="article_title" '.getselected ( 'article_title', $FORM['order'] ).'>'.$admin_phrases['articles']['edit_filter_arttitle'].'</option>
-                                        <option value="article_url" '.getselected ( 'article_url', $FORM['order'] ).'>'.$admin_phrases['articles']['edit_filter_url'].'</option>
+                                        <option value="article_date" '.getselected ( 'article_date', $FORM['order'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="article_title" '.getselected ( 'article_title', $FORM['order'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="article_url" '.getselected ( 'article_url', $FORM['order'] ).'>'.$FD->text("page", "'").'</option>
                                     </select>,
                                     <select name="sort">
-                                        <option value="ASC" '.getselected ( 'ASC', $FORM['sort'] ).'>'.$admin_phrases['common']['ascending'].'</option>
-                                        <option value="DESC" '.getselected ( 'DESC', $FORM['sort'] ).'>'.$admin_phrases['common']['descending'].'</option>
+                                        <option value="ASC" '.getselected ( 'ASC', $FORM['sort'] ).'>'.$FD->text("page", "'").'</option>
+                                        <option value="DESC" '.getselected ( 'DESC', $FORM['sort'] ).'>'.$FD->text("page", "'").'</option>
                                     </select>
 
                                 </td>
                                 <td class="right">
-                                    <input type="submit" value="'.$admin_phrases['common']['apply_button'].'" class="button">
+                                    <input type="submit" value="'.$FD->text("page", "'").'" class="button">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -103,7 +101,6 @@ function default_get_entry_data ( $articles_arr )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
         global $config_arr;
 
         // Load Data From DB
@@ -140,14 +137,14 @@ function default_get_entry_data ( $articles_arr )
         // Only for full and extended view
         if ($config_arr['acp_view'] == 1 || $config_arr['acp_view'] == 2) {
             if ( $articles_arr['article_date'] != 0 ) {
-                $articles_arr['article_date_formated'] = ''.$admin_phrases['common']['on_date'].' <b>' . date ( $admin_phrases['common']['date_format'] , $articles_arr['article_date'] ) . '</b>,';
+                $articles_arr['article_date_formated'] = ''.$FD->text("page", "'").' <b>' . date ( $FD->text("page", "'") , $articles_arr['article_date'] ) . '</b>,';
             } else {
                 $articles_arr['article_date_formated'] = '';
             }
 
             if ( $articles_arr['article_user'] != 0 ) {
                 $index2 = mysql_query('SELECT user_name FROM '.$global_config_arr['pref'].'user WHERE user_id = '.$articles_arr['article_user'].'', $FD->sql()->conn() );
-                $articles_arr['user_name'] = $admin_phrases['common']['by'] .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
+                $articles_arr['user_name'] = $FD->text("page", "'") .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
             } else {
                 $articles_arr['user_name'] = '';
             }
@@ -168,7 +165,6 @@ function default_display_entry ( $articles_arr )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
         global $config_arr;
 
         // Display Article Entry
@@ -190,7 +186,7 @@ function default_display_entry ( $articles_arr )
                                                                                                 <br>
                                                             <span class="small">'.$articles_arr['user_name'].'
                                                                                                 '.$articles_arr['article_date_formated'].'
-                                                                                                '.$admin_phrases['common']['in'].' <b>'.$articles_arr['cat_name'].'</b></span>
+                                                                                                '.$FD->text("page", "'").' <b>'.$articles_arr['cat_name'].'</b></span>
                 ';
         }
         $entry .= '
@@ -224,7 +220,6 @@ function default_display_all_entries ( $pagenav_arr )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
 
         unset ( $entries );
 
@@ -256,7 +251,6 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 {
         global $FD, $config_arr;
         global $global_config_arr;
-        global $admin_phrases;
 
         // Display News List Header
     echo'
@@ -266,7 +260,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                         <input type="hidden" name="sort" value="'.$FORM['sort'].'">
                         <input type="hidden" name="cat_id" value="'.$FORM['cat_id'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="4">'.$admin_phrases['articles']['edit_select_article'].' ('.$pagenav_arr['total_entries'].' '.$admin_phrases['articles']['edit_entries_found'].')</td></tr>
+                                                        <tr><td class="line" colspan="4">'.$FD->text("page", "'").' ('.$pagenav_arr['total_entries'].' '.$FD->text("page", "'").')</td></tr>
 
     ';
 
@@ -300,8 +294,8 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                                                         <tr>
                                                                 <td class="right">
                                                                         <select name="article_action" size="1">
-                                                                                <option value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                                                                <option value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                                                                <option value="edit">'.$FD->text("page", "'").'</option>
+                                                                                <option value="delete">'.$FD->text("page", "'").'</option>
                                                                         </select>
                                                                 </td>
                                                         </tr>
@@ -309,7 +303,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                                                         <tr>
                                                                 <td class="buttontd">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                                                                '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -322,7 +316,6 @@ function action_edit_get_data ( $ARTICLE_ID )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
 
     //Load Article
     $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1", $FD->sql()->conn() );
@@ -343,9 +336,9 @@ function action_edit_get_data ( $ARTICLE_ID )
                 mysql_num_rows($index2) != 0 &&
                 mysql_result($index2, 0, 'article_id') != $ARTICLE_ID
             ) {
-                systext ( $admin_phrases['articles']['existing_url'], $admin_phrases['common']['error'], TRUE );
+                systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
             } else {
-                systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+                systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
             }
         }
     $articles_arr['article_old_url'] = $old_url;
@@ -359,9 +352,9 @@ function action_edit_get_data ( $ARTICLE_ID )
     $config_arr['fs_code_bool'] = ($config_arr['fs_code'] == 2 || $config_arr['fs_code'] == 4);
     $config_arr['para_handling_bool'] = ($config_arr['para_handling'] == 2 || $config_arr['para_handling'] == 4);
 
-    $config_arr['html_code_text'] = ( $config_arr['html_code_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
-    $config_arr['fs_code_text'] = ( $config_arr['fs_code_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
-    $config_arr['para_handling_text'] = ( $config_arr['para_handling_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
+    $config_arr['html_code_text'] = ( $config_arr['html_code_bool'] ) ? $FD->text("page", "'") : $FD->text("page", "'");
+    $config_arr['fs_code_text'] = ( $config_arr['fs_code_bool'] ) ? $FD->text("page", "'") : $FD->text("page", "'");
+    $config_arr['para_handling_text'] = ( $config_arr['para_handling_bool'] ) ? $FD->text("page", "'") : $FD->text("page", "'");
 
         // Security-Functions
     $articles_arr['article_url'] = killhtml ( $articles_arr['article_url'] );
@@ -404,7 +397,6 @@ function action_edit_display_page ( $data_arr )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
 
         $articles_arr = $data_arr['articles'];
         $date_arr = $data_arr['date'];
@@ -420,11 +412,11 @@ function action_edit_display_page ( $data_arr )
                                                 <input type="hidden" name="article_old_url" value="'.$articles_arr['article_old_url'].'">
                         <input type="hidden" name="sended" value="edit">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="2">'.$admin_phrases['articles']['articles_info_title'].'</td></tr>
+                                                        <tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
                             <tr>
                                 <td class="config" width="250">
-                                    '.$admin_phrases['articles']['articles_url'].': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
-                                    <span class="small">'.$admin_phrases['articles']['articles_url_desc'].'</span>
+                                    '.$FD->text("page", "'").': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config" width="350">
                                     ?go = <input class="text" size="45" maxlength="100" name="article_url" value="'.$articles_arr['article_url'].'">
@@ -432,8 +424,8 @@ function action_edit_display_page ( $data_arr )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['articles_cat'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['articles_cat_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="article_cat_id">
@@ -451,8 +443,8 @@ function action_edit_display_page ( $data_arr )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['articles_date'].': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
-                                    <span class="small">'.$admin_phrases['articles']['articles_date_desc'].'</span>
+                                    '.$FD->text("page", "'").': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                                                         <span class="small">
@@ -460,30 +452,30 @@ function action_edit_display_page ( $data_arr )
                                             <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                             <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                                                         </span>
-                                                                        '.js_nowbutton ( $nowbutton_array, $admin_phrases['common']['today'] ).'
+                                                                        '.js_nowbutton ( $nowbutton_array, $FD->text("page", "'") ).'
                                     <input onClick=\'document.getElementById("d").value="";
                                                      document.getElementById("m").value="";
-                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$admin_phrases['common']['delete_button'].'">
+                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$FD->text("page", "'").'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['articles_poster'].': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
-                                    <span class="small">'.$admin_phrases['articles']['articles_poster_desc'].'</span>
+                                    '.$FD->text("page", "'").': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="article_user_name" value="'.$articles_arr['article_user_name'].'">
                                     <input type="hidden" id="userid" name="article_user" value="'.$articles_arr['article_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$admin_phrases['common']['change_button'].'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("page", "'").'">
                                     <input onClick=\'document.getElementById("username").value="";
-                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$admin_phrases['common']['delete_button'].'">
+                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$FD->text("page", "'").'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                                                        <tr><td class="line" colspan="2">'.$admin_phrases['articles']['articles_new_title'].'</td></tr>
+                                                        <tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases['articles']['articles_title'].':
+                                    '.$FD->text("page", "'").':
                                 </td>
                             </tr>
                             <tr>
@@ -497,31 +489,31 @@ function action_edit_display_page ( $data_arr )
                                     <table cellpadding="0" cellspacing="0" width="100%">
                                         <tr>
                                                                                         <td class="config">
-                                                                                                '.$admin_phrases['articles']['articles_text'].':
+                                                                                                '.$FD->text("page", "'").':
                                                                                         </td>
                                                                                         <td class="config" style="text-align:right;">
         ';
 
         if ( $config_arr['html_code_bool'] ) {
             echo '<input class="pointer middle" type="checkbox" name="article_html" id="article_html" value="1" '.getchecked ( 1, $articles_arr['article_html'] ).'>
-                <span class="small middle">'.$admin_phrases['articles']['articles_use_html'].'</span>&nbsp;&nbsp;';
+                <span class="small middle">'.$FD->text("page", "'").'</span>&nbsp;&nbsp;';
         } else {
             echo '<input class="middle" type="checkbox" name="article_html" id="article_html" value="0" disabled="disabled">
-                <span class="small middle">'.$admin_phrases['common']['html'].' '.$config_arr['html_code_text'].'</span>&nbsp;&nbsp;';
+                <span class="small middle">'.$FD->text("page", "'").' '.$config_arr['html_code_text'].'</span>&nbsp;&nbsp;';
         }
         if ( $config_arr['fs_code_bool'] ) {
             echo '<input class="pointer middle" type="checkbox" name="article_fscode" id="article_fscode" value="1" '.getchecked ( 1, $articles_arr['article_fscode'] ).'>
-                <span class="small middle">'.$admin_phrases['articles']['articles_use_fscode'].'</span>&nbsp;&nbsp;';
+                <span class="small middle">'.$FD->text("page", "'").'</span>&nbsp;&nbsp;';
         } else {
             echo '<input class="middle" type="checkbox" name="article_fscode" id="article_fscode" value="0" disabled="disabled">
-                <span class="small middle">'.$admin_phrases['common']['fscode'].' '.$config_arr['fs_code_text'].'</span>&nbsp;&nbsp;';
+                <span class="small middle">'.$FD->text("page", "'").' '.$config_arr['fs_code_text'].'</span>&nbsp;&nbsp;';
         }
         if ( $config_arr['para_handling_bool'] ) {
             echo '<input class="pointer middle" type="checkbox" name="article_para" id="article_para" value="1" '.getchecked ( 1, $articles_arr['article_para'] ).'>
-                <span class="small middle">'.$admin_phrases['articles']['articles_use_para'].'</span>';
+                <span class="small middle">'.$FD->text("page", "'").'</span>';
         } else {
             echo '<input class="middle" type="checkbox" name="article_para" id="article_para" value="0" disabled="disabled">
-                <span class="small middle">'.$admin_phrases['common']['para'].' '.$config_arr['para_handling_text'].'</span>';
+                <span class="small middle">'.$FD->text("page", "'").' '.$config_arr['para_handling_text'].'</span>';
         }
 
         echo '
@@ -538,14 +530,14 @@ function action_edit_display_page ( $data_arr )
                             </tr>
                             <tr>
                                                                 <td class="config" colspan="2">
-                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$admin_phrases['common']['preview_button'].'">
+                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$FD->text("page", "'").'">
                                                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit" name="news_edit" value="1">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>
@@ -558,7 +550,6 @@ function action_delete_get_data ( $ARTICLE_ID )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
 
         settype ( $ARTICLE_ID, 'integer' );
 
@@ -567,7 +558,7 @@ function action_delete_get_data ( $ARTICLE_ID )
 
         // Get other Data
         if ( $articles_arr['article_date'] != 0 ) {
-        $articles_arr['article_date_formated'] = ''.$admin_phrases['common']['on'].' <b>' . date ( $admin_phrases['common']['date_format'] , $articles_arr['article_date'] ) . '</b>,';
+        $articles_arr['article_date_formated'] = ''.$FD->text("page", "'").' <b>' . date ( $FD->text("page", "'") , $articles_arr['article_date'] ) . '</b>,';
         } else {
             $articles_arr['article_date_formated'] = '';
         }
@@ -576,7 +567,7 @@ function action_delete_get_data ( $ARTICLE_ID )
 
         if ( $articles_arr['article_user'] != 0 ) {
             $index2 = mysql_query('SELECT user_name FROM '.$global_config_arr['pref'].'user WHERE user_id = '.$articles_arr['article_user'].'', $FD->sql()->conn() );
-            $articles_arr['user_name'] = $admin_phrases['common']['by_posted'] .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
+            $articles_arr['user_name'] = $FD->text("page", "'") .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
         } else {
             $articles_arr['user_name'] = '';
         }
@@ -597,7 +588,6 @@ function action_delete_display_page ( $articles_arr )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
 
         echo '
                                         <form action="" method="post">
@@ -606,14 +596,14 @@ function action_delete_display_page ( $articles_arr )
                                                 <input type="hidden" name="article_id" value="'.$articles_arr['article_id'].'">
                                                 <input type="hidden" name="go" value="articles_edit">
                                                 <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line">'.$admin_phrases['articles']['delete_title'].'</td></tr>
+                                                        <tr><td class="line">'.$FD->text("page", "'").'</td></tr>
                                                         <tr>
                                 <td class="config" width="100%" style="padding-bottom: 4px;">
                                     <span style="float: left;">'.$articles_arr['article_title'].'</span>
                                     <span style="float: right;">'.$articles_arr['article_url'].' (#'.$articles_arr['article_id'].')</span><br>
                                     <span class="small">'.$articles_arr['user_name'].'
                                                                         '.$articles_arr['article_date_formated'].'
-                                                                        '.$admin_phrases['common']['in'].' <b>'.$articles_arr['cat_name'].'</b></span>
+                                                                        '.$FD->text("page", "'").' <b>'.$articles_arr['cat_name'].'</b></span>
                                 </td>
                                                         </tr>
                                                         <tr>
@@ -623,7 +613,7 @@ function action_delete_display_page ( $articles_arr )
                                                         </tr>
                                                         <tr>
                                 <td class="config right">
-                                    <a href="'.$global_config_arr['virtualhost'].'?go=articles&id='.$articles_arr['article_id'].'" target="_blank">» '.$admin_phrases['articles']['delete_view_article'].'</a></div>
+                                    <a href="'.$global_config_arr['virtualhost'].'?go=articles&id='.$articles_arr['article_id'].'" target="_blank">» '.$FD->text("page", "'").'</a></div>
                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
@@ -631,7 +621,7 @@ function action_delete_display_page ( $articles_arr )
                                                 <table class="configtable" cellpadding="4" cellspacing="0">
                                                         <tr>
                                                                 <td class="config" style="width: 100%;">
-                                                                        '.$admin_phrases['articles']['delete_question'].'
+                                                                        '.$FD->text("page", "'").'
                                                                 </td>
                                                                 <td class="config right top" style="padding: 0px;">
                                                                     <table width="100%" cellpadding="4" cellspacing="0">
@@ -646,7 +636,7 @@ function action_delete_display_page ( $articles_arr )
                                                                                                 >
                                                                                         </td>
                                                                                         <td class="config middle">
-                                                                                                '.$admin_phrases['common']['yes'].'
+                                                                                                '.$FD->text("page", "'").'
                                                                                         </td>
                                                                                 </tr>
                                                                                 <tr class="bottom red pointer" id="tr_no"
@@ -660,7 +650,7 @@ function action_delete_display_page ( $articles_arr )
                                                                                                 >
                                                                                         </td>
                                                                                         <td class="config middle">
-                                                                                                '.$admin_phrases['common']['no'].'
+                                                                                                '.$FD->text("page", "'").'
                                                                                         </td>
                                                                                 </tr>
                                                                                 '.color_pre_selected ( 'del_no', 'tr_no' ).'
@@ -671,7 +661,7 @@ function action_delete_display_page ( $articles_arr )
                                                         <tr>
                                                                 <td class="buttontd" colspan="2">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                                                                '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -682,7 +672,8 @@ function action_delete_display_page ( $articles_arr )
 
 function db_edit_article ( $DATA )
 {
-    global $FD, $global_config_arr, $admin_phrases;
+    global $FD;
+    global $global_config_arr;
 
     // No User
     if ( !isset ( $DATA['article_user'] ) ) {
@@ -734,14 +725,13 @@ function db_edit_article ( $DATA )
         update_search_index ( 'articles' );
     }
 
-    systext( $admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
+    systext( $FD->text("page", "'"), $FD->text("page", "'"));
 }
 
 function db_delete_article ( $DATA )
 {
         global $FD;
         global $global_config_arr;
-        global $admin_phrases;
 
         if  ( $DATA['article_delete'] == 1 ) {
 
@@ -765,9 +755,9 @@ function db_delete_article ( $DATA )
             // Update Counter
             mysql_query ( 'UPDATE '.$global_config_arr['pref'].'counter SET artikel = artikel - 1', $FD->sql()->conn() );
 
-            systext( $admin_phrases['articles']['article_deleted'], $admin_phrases['common']['info']);
+            systext( $FD->text("page", "'"), $FD->text("page", "'"));
         } else {
-            systext( $admin_phrases['articles']['article_not_deleted'], $admin_phrases['common']['info']);
+            systext( $FD->text("page", "'"), $FD->text("page", "'"));
         }
 }
 

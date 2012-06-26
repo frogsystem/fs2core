@@ -57,7 +57,7 @@
         </form>
 
         <p>
-            '.$TEXT['page']->get('preview_note').'
+            '.$FD->text("page", "preview_note").'
         </p>
         ';
 
@@ -180,7 +180,7 @@
         // Preview Page Template
         $global_config_arr['dyn_title'] = 1;
         $global_config_arr['dyn_title_ext'] = '{..ext..}';
-        $global_config_arr['dyn_title_page'] = $TEXT['page']->get('preview_title').': '.$news_arr['news_title'];
+        $global_config_arr['dyn_title_page'] = $FD->text("page", "preview_title").': '.$news_arr['news_title'];
 
         $theTemplate = new template();
         $theTemplate->setFile('0_main.tpl');

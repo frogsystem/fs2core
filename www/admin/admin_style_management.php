@@ -3,7 +3,6 @@
 //// Locale Functions ////
 //////////////////////////
 function get_style_ini_data ( $STYLE_INI_FILE ) {
-    global $TEXT;
 
     $ACCESS = new fileaccess();
     $ini_lines = $ACCESS->getFileArray( $STYLE_INI_FILE );
@@ -52,12 +51,12 @@ if (
     $style_ini = FS2_ROOT_PATH . 'styles/' . stripslashes ( mysql_result ( $index, 0, 'style_tag' ) ) . '/style.ini';
     $ACCESS = new fileaccess();
     if ( $ACCESS->putFileData( $style_ini, $new_ini_data ) === FALSE ) {
-        $error_extenion = '<br>'.$TEXT['admin']->get('style_info_not_saved');
+        $error_extenion = '<br>'.$FD->text("admin", "style_info_not_saved");
     }
 
     // Display Message
-    systext ( $TEXT['admin']->get('changes_saved').$error_extenion,
-        $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_save_ok') );
+    systext ( $FD->text("admin", "changes_saved").$error_extenion,
+        $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_ok") );
 
     // Unset Vars
     unset ( $_POST );
@@ -125,18 +124,18 @@ elseif (
                 }
             }
 
-            systext ( $TEXT['admin']->get('style_uninstalled'),
-                $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_uninstall_ok') );
+            systext ( $FD->text("admin", "style_uninstalled"),
+                $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_uninstall_ok") );
         } else {
             // uninstall style is not possible
-            systext ( $TEXT['admin']->get('style_not_uninstalled').'<br>'.$TEXT['admin']->get('style_is_last_useable'),
-                $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_no_install_action') );
+            systext ( $FD->text("admin", "style_not_uninstalled").'<br>'.$FD->text("admin", "style_is_last_useable"),
+                $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_no_install_action") );
             unset ( $_POST );
         }
 
     } else {
-        systext ( $TEXT['admin']->get('style_not_uninstalled'),
-            $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_no_install_action') );
+        systext ( $FD->text("admin", "style_not_uninstalled"),
+            $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_no_install_action") );
     }
 
     // Unset Vars
@@ -167,8 +166,8 @@ elseif (
         ", $FD->sql()->conn() );
 
         // Display info
-        systext ( $TEXT['admin']->get('style_installed'),
-            $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_install_ok') );
+        systext ( $FD->text("admin", "style_installed"),
+            $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_install_ok") );
 
         // Go to Edit-Page of the installed Style
         unset ( $_POST );
@@ -177,8 +176,8 @@ elseif (
 
     } else {
         // Display not found Info
-        systext ( $TEXT['admin']->get('style_not_installed').'<br>'.$TEXT['admin']->get('style_not_found'),
-            $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_no_install_action') );
+        systext ( $FD->text("admin", "style_not_installed").'<br>'.$FD->text("admin", "style_not_found"),
+            $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_no_install_action") );
         unset ( $_POST );
     }
 }
@@ -202,9 +201,9 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
         // Display Error Messages
         if ( $_POST['sended'] == 'edit' ) {
 
-            $error_message = $TEXT['admin']->get('form_not_filled');
-            systext ( $TEXT['admin']->get('style_not_edited').'<br>'.$error_message,
-                $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_save_error') );
+            $error_message = $FD->text("admin", "form_not_filled");
+            systext ( $FD->text("admin", "style_not_edited").'<br>'.$error_message,
+                $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_save_error") );
 
         // Get Data from DB
         } else {
@@ -241,11 +240,11 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                         <input type="hidden" name="sended" value="edit">
                         <input type="hidden" name="style_id" value="'.$_POST['style_id'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get('style_info_title').'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("admin", "style_info_title").'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_tag_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('style_tag_desc').'</span>
+                                    '.$FD->text("admin", "style_tag_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "style_tag_desc").'</span>
                                 </td>
                                 <td class="config">
                                     '.killhtml ( $data_arr['style_tag'] ).'
@@ -253,8 +252,8 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_name_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('style_name_desc').'</span>
+                                    '.$FD->text("admin", "style_name_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "style_name_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text input_width" name="style_name" maxlength="100" value="'.$_POST['style_name'].'">
@@ -262,8 +261,8 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_version_title').': <span class="small">('.$TEXT['admin']->get('optional').')</span><br>
-                                    <span class="small">'.$TEXT['admin']->get('style_version_desc').'</span>
+                                    '.$FD->text("admin", "style_version_title").': <span class="small">('.$FD->text("admin", "optional").')</span><br>
+                                    <span class="small">'.$FD->text("admin", "style_version_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text input_width_mini" name="style_version" maxlength="15" value="'.$_POST['style_version'].'">
@@ -271,8 +270,8 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_copyright_title').': <span class="small">('.$TEXT['admin']->get('optional').')</span><br>
-                                    <span class="small">'.$TEXT['admin']->get('style_copyright_desc').'</span>
+                                    '.$FD->text("admin", "style_copyright_title").': <span class="small">('.$FD->text("admin", "optional").')</span><br>
+                                    <span class="small">'.$FD->text("admin", "style_copyright_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text input_width" name="style_copyright" maxlength="255" value="'.$_POST['style_copyright'].'">
@@ -280,11 +279,11 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                             </tr>
                             <tr><td class="space"></td></tr>
 
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get('style_config_title').'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("admin", "style_config_title").'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_allow_use_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('style_allow_use_desc').'</span>
+                                    '.$FD->text("admin", "style_allow_use_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "style_allow_use_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="style_allow_use" value="1" '.getchecked ( 1, $_POST['style_allow_use'] ).'>
@@ -292,8 +291,8 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_allow_edit_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('style_allow_edit_desc').'</span>
+                                    '.$FD->text("admin", "style_allow_edit_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "style_allow_edit_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="style_allow_edit" value="1" '.getchecked ( 1, $_POST['style_allow_edit'] ).'>
@@ -303,7 +302,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT['admin']->get('button_arrow').' '.$TEXT['admin']->get('save_changes_button').'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
                                     </button>
                                 </td>
                             </tr>
@@ -341,10 +340,10 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                         <input type="hidden" name="sended" value="uninstall">
                         <input type="hidden" name="style_id" value="'.$_POST['style_id'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get('style_uninstall_title').'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("admin", "style_uninstall_title").'</td></tr>
                             <tr>
                                 <td class="configthin">
-                                    '.$TEXT['admin']->get('style_uninstall_question').'
+                                    '.$FD->text("admin", "style_uninstall_question").'
                                     <br><br>
             ';
 
@@ -367,13 +366,13 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
             if ( $global_config_arr['style_id'] == $_POST['style_id'] ) {
                 echo '
                                     <br><br>
-                                    '.$TEXT['admin']->get('style_is_active').'<br>
-                                    <b>'.$TEXT['admin']->get('style_select_new_active').'</b><br><br>
+                                    '.$FD->text("admin", "style_is_active").'<br>
+                                    <b>'.$FD->text("admin", "style_select_new_active").'</b><br><br>
                                     <table width="100%" cellpadding="0" cellspacing="0">
                                         <tr class="middle">
                                             <td class="middle config">
-                                                '.$TEXT['admin']->get('config_style_title').':<br>
-                                                <span class="small">'.$TEXT['admin']->get('config_style_desc').'</span>
+                                                '.$FD->text("admin", "config_style_title").':<br>
+                                                <span class="small">'.$FD->text("admin", "config_style_desc").'</span>
                                             </td>
                                             <td class="middle config">
                                                 <select class="input_width_mini" name="new_style_id" size="1">
@@ -401,7 +400,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT['admin']->get('button_arrow').' '.$TEXT['admin']->get('do_action_button_long').'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -411,8 +410,8 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
 
         } else {
             // Display not possible Info
-            systext ( $TEXT['admin']->get('style_not_uninstalled').'<br>'.$TEXT['admin']->get('style_is_last_useable'),
-                $TEXT['admin']->get('error'), FALSE, $TEXT['admin']->get('icon_no_install_action') );
+            systext ( $FD->text("admin", "style_not_uninstalled").'<br>'.$FD->text("admin", "style_is_last_useable"),
+                $FD->text("admin", "error"), FALSE, $FD->text("admin", "icon_no_install_action") );
             unset ( $_POST );
         }
     }
@@ -422,8 +421,8 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
     //////////////////////////////////////////////////////////////
     elseif ( count ( $_POST['style_id'] ) > 1 ) {
         // Display Error
-        systext ( $TEXT['admin']->get('select_only_one_to_edit'),
-            $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+        systext ( $FD->text("admin", "select_only_one_to_edit"),
+            $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
         unset ( $_POST['style_id'] );
     }
 }
@@ -457,7 +456,7 @@ if ( !isset ( $_POST['style_id'] ) )
                     <form action="" method="post">
                         <input type="hidden" name="go" value="style_management">
                         <table class="configtable select_list" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="4">'.$TEXT['admin']->get('styles_not_installed_title').'</td></tr>
+                            <tr><td class="line" colspan="4">'.$FD->text("admin", "styles_not_installed_title").'</td></tr>
     ';
 
     // Search for not yet installed Styles
@@ -471,13 +470,13 @@ if ( !isset ( $_POST['style_id'] ) )
                     echo '
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_name_title').'
+                                    '.$FD->text("admin", "style_name_title").'
                                 </td>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_folder_title').' / '.$TEXT['admin']->get('style_tag_title').'
+                                    '.$FD->text("admin", "style_folder_title").' / '.$FD->text("admin", "style_tag_title").'
                                 </td>
                                 <td class="config" width="50%">
-                                    '.$TEXT['admin']->get('style_copyright_title').'
+                                    '.$FD->text("admin", "style_copyright_title").'
                                 </td>
                                 <td class="config" width="20"></td>
                             </tr>
@@ -490,7 +489,7 @@ if ( !isset ( $_POST['style_id'] ) )
                             <tr class="select_entry">
                                 <td class="middle config">
                                     '.$ini_lines[0].'<br>
-                                    <span class="small">'.$TEXT['admin']->get('version').'&nbsp;'.$ini_lines[1].'</span>
+                                    <span class="small">'.$FD->text("admin", "version").'&nbsp;'.$ini_lines[1].'</span>
                                 </td>
                                 <td class="middle configthin">[..]/styles/<b>'.$style.'</b>/</td>
                                 <td class="middle configthin">
@@ -511,7 +510,7 @@ if ( !isset ( $_POST['style_id'] ) )
                             <tr>
                                 <td class="right" colspan="4">
                                     <select class="select_type" name="style_action" size="1">
-                                        <option class="select_one" value="install" '.getselected( 'install', $_POST['style_action'] ).'>'.$TEXT['admin']->get('styles_selection_install').'</option>
+                                        <option class="select_one" value="install" '.getselected( 'install', $_POST['style_action'] ).'>'.$FD->text("admin", "styles_selection_install").'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -519,7 +518,7 @@ if ( !isset ( $_POST['style_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT['admin']->get('button_arrow').' '.$TEXT['admin']->get('do_action_button_long').'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -530,7 +529,7 @@ if ( !isset ( $_POST['style_id'] ) )
         echo '
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="config center" colspan="4">'.$TEXT['admin']->get('styles_no_not_installed').'</td>
+                                <td class="config center" colspan="4">'.$FD->text("admin", "styles_no_not_installed").'</td>
                             </tr>
                             <tr><td class="space"></td></tr>
         ';
@@ -547,7 +546,7 @@ if ( !isset ( $_POST['style_id'] ) )
                     <form action="" method="post">
                         <input type="hidden" name="go" value="style_management">
                         <table class="select_list configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="4">'.$TEXT['admin']->get('styles_installed_title').'</td></tr>
+                            <tr><td class="line" colspan="4">'.$FD->text("admin", "styles_installed_title").'</td></tr>
     ';
 
 
@@ -558,13 +557,13 @@ if ( !isset ( $_POST['style_id'] ) )
         echo '
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_name_title').'
+                                    '.$FD->text("admin", "style_name_title").'
                                 </td>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('style_folder_title').' / '.$TEXT['admin']->get('style_tag_title').'
+                                    '.$FD->text("admin", "style_folder_title").' / '.$FD->text("admin", "style_tag_title").'
                                 </td>
                                 <td class="config" width="50%">
-                                    '.$TEXT['admin']->get('style_copyright_title').'
+                                    '.$FD->text("admin", "style_copyright_title").'
                                 </td>
                                 <td class="config" width="20"></td>
                             </tr>
@@ -584,7 +583,7 @@ if ( !isset ( $_POST['style_id'] ) )
                             <tr class="select_entry">
                                 <td class="middle config">
                                     '.$data_arr['ini_lines'][0].'<br>
-                                    <span class="small">'.$TEXT['admin']->get('version').'&nbsp;'.$data_arr['ini_lines'][1].'</span>
+                                    <span class="small">'.$FD->text("admin", "version").'&nbsp;'.$data_arr['ini_lines'][1].'</span>
                                 </td>
                                 <td class="middle configthin">[..]/styles/<b>'.$data_arr['style_tag'].'</b>/</td>
                                 <td class="middle configthin">
@@ -603,8 +602,8 @@ if ( !isset ( $_POST['style_id'] ) )
                             <tr>
                                 <td class="right" colspan="4">
                                     <select class="select_type" name="style_action" size="1">
-                                        <option class="select_one" value="edit" '.getselected( 'edit', $_POST['style_action'] ).'>'.$TEXT['admin']->get('selection_edit').'</option>
-                                        <option class="select_red select_one" value="uninstall" '.getselected( 'uninstall', $_POST['style_action'] ).'>'.$TEXT['admin']->get('styles_selection_uninstall').'</option>
+                                        <option class="select_one" value="edit" '.getselected( 'edit', $_POST['style_action'] ).'>'.$FD->text("admin", "selection_edit").'</option>
+                                        <option class="select_red select_one" value="uninstall" '.getselected( 'uninstall', $_POST['style_action'] ).'>'.$FD->text("admin", "styles_selection_uninstall").'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -612,7 +611,7 @@ if ( !isset ( $_POST['style_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT['admin']->get('button_arrow').' '.$TEXT['admin']->get('do_action_button_long').'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -624,7 +623,7 @@ if ( !isset ( $_POST['style_id'] ) )
            echo'
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="config center" colspan="4">'.$TEXT['admin']->get('styles_no_installed').'</td>
+                                <td class="config center" colspan="4">'.$FD->text("admin", "styles_no_installed").'</td>
                             </tr>
                             <tr><td class="space"></td></tr>
         ';

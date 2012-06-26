@@ -35,7 +35,7 @@ if (isset($_POST['editcatid']))
 {
     $_POST['editcatid'] = $_POST['editcatid'][0];
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
     }
 
 
@@ -43,7 +43,7 @@ if (isset($_POST['editcatid']))
     settype ($_POST['editcatid'], 'integer');
 
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, $_POST['editcatid']);
+    get_dl_categories ($valid_ids, $_POST['editcatid']);
 
     $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl_cat WHERE cat_id = '$_POST[editcatid]'", $FD->sql()->conn() );
     $cat_arr = mysql_fetch_assoc($index);
@@ -149,7 +149,7 @@ else
                             <tr style="display:none">
                                 <td colspan="3">
                                     <select class="select_type" name="cat_action" size="1">
-                                        <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
+                                        <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>

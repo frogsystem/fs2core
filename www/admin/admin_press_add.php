@@ -79,7 +79,7 @@ if(true)
 
     //Error Message
     if ($_POST['sended'] == 'add') {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
 
 
         $press_arr['press_title'] = killhtml($_POST['title']);
@@ -141,7 +141,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Einleitung: <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
+                                    Einleitung: <font class="small">'.$FD->text("page", "'").'</font><br />
                                     <font class="small">Eine kurze Einleitung zum Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
@@ -159,7 +159,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Anmerkungen: <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
+                                    Anmerkungen: <font class="small">'.$FD->text("page", "'").'</font><br />
                                     <font class="small">Anmerkungen zum Pressebericht.<br />
                                     (z.B. die Wertung eines Tests)</font>
                                 </td>

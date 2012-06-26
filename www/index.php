@@ -17,10 +17,6 @@ require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 
 
-// Load Text TODO: remove backwards compatibiliy
-$TEXT['frontend'] = $FD->getOldTetxt();
-
-
 // Constructor Calls
 // TODO: "Constructor Hook"
 get_goto();

@@ -132,7 +132,7 @@ if (mysql_num_rows($index) > 0)
     }
 
     // Stats erstellen
-    $stats_arr['number'] = ( $stats_arr['number'] == 1 ) ? $stats_arr['number'].' '.$TEXT['frontend']->get('download_file') : $stats_arr['number'].' '.$TEXT['frontend']->get('download_files');
+    $stats_arr['number'] = ( $stats_arr['number'] == 1 ) ? $stats_arr['number'].' '.$FD->text("frontend", "download_file") : $stats_arr['number'].' '.$FD->text("frontend", "download_files");
     $stats_arr['traffic'] = getsize($stats_arr['traffic']);
     $stats_arr['size'] = getsize($stats_arr['size']);
 

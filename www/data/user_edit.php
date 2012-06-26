@@ -55,7 +55,7 @@ if (
             `user_skype` = '".savesql ( $_POST['user_skype'] )."'
         WHERE `user_id` = '".$_SESSION['user_id']."'
     ", $FD->sql()->conn() );
-    $message .= $TEXT['frontend']->get('user_profile_updated');
+    $message .= $FD->text("frontend", "user_profile_updated");
 
     // Save New Password
     if ( $_POST['old_pwd'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] ) {
@@ -87,7 +87,7 @@ if (
                         `user_salt` = '".$new_salt."'
                     WHERE `user_id` = '".$_SESSION['user_id']."'
                 ", $FD->sql()->conn() );
-                $message .= '<br>'.$TEXT['frontend']->get('user_password_changed');
+                $message .= '<br>'.$FD->text("frontend", "user_password_changed");
 
                 // Update Cookie
                 if ( $_COOKIE['login'] ) {
@@ -99,25 +99,25 @@ if (
                 $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_SESSION['user_name'] ), $template_mail );
                 $template_mail = str_replace ( '{..new_password..}', $mailpass, $template_mail );
                 $template_mail = replace_globalvars ( $template_mail );
-                $email_subject = $TEXT['frontend']->get('mail_password_changed_on') . $global_config_arr['virtualhost'];
+                $email_subject = $FD->text("frontend", "mail_password_changed_on") . $global_config_arr['virtualhost'];
                 if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_subject, $template_mail ) ) {
-                    $message .= '<br>'.$TEXT['frontend']->get('mail_new_password_sended');
+                    $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");
                 } else {
-                    $message .= '<br>'.$TEXT['frontend']->get('mail_new_password_not_sended');
+                    $message .= '<br>'.$FD->text("frontend", "mail_new_password_not_sended");
                 }
 
             } else {
-                $message .= '<br>' . $TEXT['frontend']->get('user_password_change_failed') . '<br>' . $TEXT['frontend']->get('user_password_change_error_new');
+                $message .= '<br>' . $FD->text("frontend", "user_password_change_failed") . '<br>' . $FD->text("frontend", "user_password_change_error_new");
             }
 
         } else {
-            $message .= '<br>' . $TEXT['frontend']->get('user_password_change_failed') . '<br>' . $TEXT['frontend']->get('user_password_change_error_old');
+            $message .= '<br>' . $FD->text("frontend", "user_password_change_failed") . '<br>' . $FD->text("frontend", "user_password_change_error_old");
         }
 
     }
 
     // Meldung ausgeben
-    $template .= forward_message ( $TEXT['frontend']->get('user_profile'), $message, $_SERVER['REQUEST_URI'] );
+    $template .= forward_message ( $FD->text("frontend", "user_profile"), $message, $_SERVER['REQUEST_URI'] );
 }
 
 //////////////////////
@@ -128,7 +128,7 @@ else {
 
         //Error Messages
         if ( isset( $_POST['user_edit'] ) ) {
-            $messages = sys_message ( $TEXT['frontend']->get('systemmessage'), $TEXT['frontend']->get('user_register_fulfill_form') );
+            $messages = sys_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_register_fulfill_form") );
         } else {
             $messages = '';
         }
@@ -143,7 +143,7 @@ else {
             $user_arr = mysql_fetch_assoc ( $index );
 
             $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
-            $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$TEXT['frontend']->get('user_image_of').' '.$user_arr['user_name'].'">' : $TEXT['frontend']->get('user_image_not_found') );
+            $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.$user_arr['user_name'].'">' : $FD->text("frontend", "user_image_not_found") );
             $user_arr['user_homepage'] = ( $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != 'http://' ? kill_replacements ( $user_arr['user_homepage'], TRUE ) : 'http://' );
 
             // Create Template

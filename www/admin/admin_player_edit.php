@@ -63,7 +63,7 @@ if (
     $message = 'Video bearbeitet';
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text("page", "'") );
 
     // Unset Vars
     unset ( $_POST );
@@ -98,7 +98,7 @@ elseif (
         }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text("page", "'") );
 
     // Unset Vars
     unset ( $_POST );
@@ -117,7 +117,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
 
                 // Display Error Messages
                 if ( isset ( $_POST['sended'] ) ) {
-                        systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+                        systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
 
                 // Load Data drom DB into Post
                 } else {
@@ -264,7 +264,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    L&auml;nge: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                    L&auml;nge: <span class="small">'.$FD->text("page", "'").'</span><br>
                                     <span class="small">Die Laufzeit des Videos.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -275,7 +275,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Beschreibung: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                    Beschreibung: <span class="small">'.$FD->text("page", "'").'</span><br>
                                     <span class="small">Text, der das Video beschreibt.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -312,7 +312,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>
@@ -379,7 +379,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                         <tr>
                                                                 <td class="buttontd" colspan="2">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                                                                '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -470,8 +470,8 @@ else
                                                         <tr>
                                                                 <td style="text-align:right;" colspan="3">
                                                                         <select name="video_action" size="1">
-                                                                                <option value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                                                                <option value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                                                                <option value="edit">'.$FD->text("page", "'").'</option>
+                                                                                <option value="delete">'.$FD->text("page", "'").'</option>
                                                                         </select>
                                                                 </td>
                                                         </tr>
@@ -479,7 +479,7 @@ else
                                                         <tr>
                                                                 <td class="buttontd" colspan="4">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                                                                '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                                                         </button>
                                                                 </td>
                                                         </tr>

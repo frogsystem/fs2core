@@ -39,30 +39,30 @@ $num_snippets_active = mysql_result ( $index, 0, 'num_snippets_active' );
 
 echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get('informations_and_statistics').'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("admin", "informations_and_statistics").'</td></tr>
                             <tr>
-                                <td class="configthin" width="200">'.$TEXT['admin']->get('system_start_num_aliases').':</td>
+                                <td class="configthin" width="200">'.$FD->text("admin", "system_start_num_aliases").':</td>
                                 <td class="configthin"><b>'.$num_aliases.'</b></td>
                             </tr>
                             <tr>
-                                <td class="configthin" width="200">'.$TEXT['admin']->get('system_start_num_aliases_active').':</td>
+                                <td class="configthin" width="200">'.$FD->text("admin", "system_start_num_aliases_active").':</td>
                                 <td class="configthin"><b>'.$num_aliases_active.'</b></td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="configthin">'.$TEXT['admin']->get('system_start_num_applets').':</td>
+                                <td class="configthin">'.$FD->text("admin", "system_start_num_applets").':</td>
                                 <td class="configthin"><b>'.$num_applets.'</b></td>
                             </tr>
                             <tr>
-                                <td class="configthin">'.$TEXT['admin']->get('system_start_num_applets_active').':</td>
+                                <td class="configthin">'.$FD->text("admin", "system_start_num_applets_active").':</td>
                                 <td class="configthin"><b>'.$num_applets_active.'</b></td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="configthin">'.$TEXT['admin']->get('system_start_num_snippets').':</td>
+                                <td class="configthin">'.$FD->text("admin", "system_start_num_snippets").':</td>
                                 <td class="configthin"><b>'.$num_snippets.'</b></td>
                             </tr>
-                                <td class="configthin">'.$TEXT['admin']->get('system_start_num_snippets_active').':</td>
+                                <td class="configthin">'.$FD->text("admin", "system_start_num_snippets_active").':</td>
                                 <td class="configthin"><b>'.$num_snippets_active.'</b></td>
                             </tr>
                         </table>

@@ -137,14 +137,14 @@ if (
                         `user_skype` = '".$_POST['user_skype']."'
                     WHERE `user_id` = '".$_POST['user_id']."'
     ", $FD->sql()->conn() );
-    $message = $admin_phrases['common']['changes_saved'];
+    $message = $FD->text("page", "'");
 
     // image operations
     if ( $_POST['user_pic_delete'] == 1 ) {
         if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
-        $message .= '<br>' . $admin_phrases['common']['image_deleted'];
+        $message .= '<br>' . $FD->text("page", "'");
       } else {
-        $message .= '<br>' . $admin_phrases['common']['image_not_deleted'];
+        $message .= '<br>' . $FD->text("page", "'");
       }
     } elseif ( $_FILES['user_pic']['name'] != '' ) {
         $upload = upload_img ( $_FILES['user_pic'], 'images/avatare/', $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
@@ -164,14 +164,14 @@ if (
         $mail = new Mail($mm->getDefaultSender(), unslash($_POST['user_mail']), $subject, $content, $mm->getHtmlConfig(), true);
 
         if ($mail->send()) {
-            $message .= '<br>'.$TEXT['frontend']->get('mail_new_password_sended');
+            $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");
         } else {
-            $message .= '<br>'.$TEXT['frontend']->get('mail_new_password_not_sended');
+            $message .= '<br>'.$FD->text("frontend", "mail_new_password_not_sended");
         }
     }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text("page", "'") );
 
     // save Vars
     $filter = $_POST['filter'];
@@ -278,14 +278,14 @@ elseif (
 
         // Delete Image
         if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
-            $message .= '<br>' . $admin_phrases['common']['image_deleted'];
+            $message .= '<br>' . $FD->text("page", "'");
         }
     } else {
         $message = 'Benutzer wurde nicht gel&ouml;scht';
     }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text("page", "'") );
 
     // save Vars
     $filter = $_POST['filter'];
@@ -330,9 +330,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
             }
             $message = implode ( '<br>', $message );
             if ( strlen ( $message ) == 0 ) {
-                $message = $admin_phrases['common']['note_notfilled'];
+                $message = $FD->text("page", "'");
             }
-            systext ( $message, $admin_phrases['common']['error'], TRUE );
+            systext ( $message, $FD->text("page", "'"), TRUE );
         } else {
             $index = mysql_query ( '
                                     SELECT *
@@ -441,7 +441,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases['common']['today'] ).'
+                                    '.js_nowbutton ( $nowbutton_array, $FD->text("page", "'") ).'
                                 </td>
                             </tr>
                             <tr>
@@ -500,7 +500,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 </td>
                                 <td class="config">
                                     <input class="text" name="user_pic" type="file" size="35"><br>
-                                    <span class="small">['.$admin_phrases['common']['max'].' '.$config_arr['avatar_x'].' '.$admin_phrases['common']['resolution_x'].' '.$config_arr['avatar_y'].' '.$admin_phrases['common']['pixel'].'] ['.$admin_phrases['common']['max'].' '.$config_arr['avatar_size'].' '.$admin_phrases['common']['kib'].']</span>
+                                    <span class="small">['.$FD->text("page", "'").' '.$config_arr['avatar_x'].' '.$FD->text("page", "'").' '.$config_arr['avatar_y'].' '.$FD->text("page", "'").'] ['.$FD->text("page", "'").' '.$config_arr['avatar_size'].' '.$FD->text("page", "'").']</span>
         ';
         if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
             echo '
@@ -631,7 +631,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>
@@ -675,7 +675,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>
@@ -712,7 +712,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '."Nach Benutzern suchen".'
+                                        '.$FD->text("page", "'").' '."Nach Benutzern suchen".'
                                     </button>
                                 </td>
                             </tr>
@@ -807,8 +807,8 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="right" colspan="5">
                                     <select name="user_action" size="1">
-                                        <option value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                        <option value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                        <option value="edit">'.$FD->text("page", "'").'</option>
+                                        <option value="delete">'.$FD->text("page", "'").'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -816,7 +816,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="5">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>

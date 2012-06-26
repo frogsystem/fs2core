@@ -25,7 +25,7 @@ if (
 	", $FD->sql()->conn() );
 
 	// system messages
-    systext($admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
+    systext($FD->text("page", "'"), $FD->text("page", "'"));
 
     // Unset Vars
     unset ( $_POST );
@@ -39,7 +39,7 @@ if ( TRUE )
 {
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+		systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
 
 	// Load Data from DB into Post
 	} else {
@@ -72,8 +72,8 @@ if ( TRUE )
                                 <td class="config">
                                     <input class="text center" size="3" maxlength="3" name="group_pic_x" value="'.$_POST['group_pic_x'].'">
                                     x
-                                    <input class="text center" size="3" maxlength="3" name="group_pic_y" value="'.$_POST['group_pic_y'].'"> '.$admin_phrases['common']['pixel'].'<br>
-                                    <span class="small">(Breite x H&ouml;he; '.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <input class="text center" size="3" maxlength="3" name="group_pic_y" value="'.$_POST['group_pic_y'].'"> '.$FD->text("page", "'").'<br>
+                                    <span class="small">(Breite x H&ouml;he; '.$FD->text("page", "'").')</span>
                                 </td>
                             </tr>
                             <tr>
@@ -83,14 +83,14 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text center" size="4" maxlength="4" name="group_pic_size" value="'.$_POST['group_pic_size'].'"> KiB<br>
-                                    <span class="small">('.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <span class="small">('.$FD->text("page", "'").')</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>

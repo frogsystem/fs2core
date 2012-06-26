@@ -59,8 +59,6 @@ function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = 'widt
 
 function get_yesno_table ( $NAME )
 {
-        global $admin_phrases;
-
         return '
             <table width="100%" cellpadding="4" cellspacing="0">
                 <tr class="bottom pointer" id="yes">
@@ -127,7 +125,7 @@ function get_yesno_table ( $NAME )
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1">
                     </td>
                     <td class="config middle">
-                            <label for="del_yes">'.$admin_phrases['common']['yes'].'</label>
+                            <label for="del_yes">'.$FD->text("admin", "yes").'</label>
                     </td>
                 </tr>
                 <tr class="bottom pointer" id="no">
@@ -135,7 +133,7 @@ function get_yesno_table ( $NAME )
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked>
                     </td>
                     <td class="config middle">
-                            <label for="del_no">'.$admin_phrases['common']['no'].'</label>
+                            <label for="del_no">'.$FD->text("admin", "no").'</label>
                     </td>
                 </tr>
                 </table>
@@ -363,10 +361,10 @@ function getreadonly ( $VALUE, $COMPAREWITH )
 
 function get_systext ($MESSAGE, $TITLE = false, $COLOR = 'green', $IMAGE = false)
 {
-    global $TEXT;
+    global $FD;
 
     if (!$TITLE)
-        $TITLE = $TEXT['admin']->get('info');
+        $TITLE = $FD->text("admin", "info");
 
     // TRUE was old for "red"
     $COLOR = $COLOR === TRUE ? 'red' : $COLOR;
@@ -706,7 +704,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
 
 function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
 {
-    global $TEXT;
+    global $FD;
 
     if ($PERMISSION) {
         $page_data = array(
@@ -716,7 +714,7 @@ function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
         );
     } else {
         $page_data = array(
-            'title' => $TEXT['menu']->get('admin_error_page_title'),
+            'title' => $FD->text("menu", "admin_error_page_title"),
             'file'  => 'admin_403.php',
             'menu'  => 'error'
         );
@@ -730,7 +728,7 @@ function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
 /////////////////////////////////
 function get_topmenu ($ACTIVE_MENU)
 {
-    global $sql, $TEXT;
+    global $sql, $FD;
 
     $menu_arr = $sql->get('admin_cp', array('page_id', 'page_file'), array('W' => "`group_id` = '-1' AND `page_int_sub_perm` = 0", 'O' => '`page_pos`, `page_file`'));
 
@@ -743,7 +741,7 @@ function get_topmenu ($ACTIVE_MENU)
             if ($ACTIVE_MENU == $menu['page_file'])
                 $class = ' class="selected"';
 
-            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$TEXT['menu']->get('menu_'.$menu['page_file']).'</a></li>';
+            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$FD->text("menu", 'menu_'.$menu['page_file']).'</a></li>';
         }
     }
 
@@ -804,7 +802,7 @@ function get_leftmenu ($ACTIVE_MENU, $GO)
 //////////////////////////////////////////////
 function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
 {
-    global $sql, $TEXT;
+    global $sql, $FD;
 
     // get links from database
     $page_arr = $sql->get('admin_cp', array('page_id'), array('W' => "`group_id` = '".$GROUP_ID."' AND `page_int_sub_perm` = 0", 'O' => '`page_pos`, `page_id`'));
@@ -825,7 +823,7 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
     if (!empty($template)) {
         $template = '
         <div class="leftmenu'.$class.'">
-            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$TEXT['menu']->get('group_'.$GROUP_ID).'</strong>
+            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$FD->text("menu", 'group_'.$GROUP_ID).'</strong>
             <ul>'.$template.'
             </ul>
         </div>';
@@ -842,14 +840,14 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
 
 function get_link ($PAGE_ID, $GO)
 {
-    global $TEXT;
+    global $FD;
 
     // permission ok?
     if (has_perm($PAGE_ID)) {
         // active page?
         $class = ($PAGE_ID == $GO) ? ' class="selected"' : '';
 
-        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$TEXT['menu']->get('page_link_'.$PAGE_ID).'</a></li>';
+        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$FD->text("menu", 'page_link_'.$PAGE_ID).'</a></li>';
     } else {
         return '';
     }

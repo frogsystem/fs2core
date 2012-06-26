@@ -141,15 +141,15 @@ function image_rename ( $PATH, $NAME, $NEWNAME )
 
 function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
 {
-  global $admin_phrases, $TEXT;
+  global $FD;
 
-    $image0 = $TEXT['frontend']->get('image_upload_error_0');
-    $image1 = $TEXT['frontend']->get('image_upload_error_1');
-    $image2 = $TEXT['frontend']->get('image_upload_error_2');
-    $image3 = $TEXT['frontend']->get('image_upload_error_3');
-    $image4 = $TEXT['frontend']->get('image_upload_error_4');
-    $image5 = $TEXT['frontend']->get('image_upload_error_5');
-    $image6 = $TEXT['frontend']->get('image_upload_error_6');
+    $image0 = $FD->text("frontend", "image_upload_error_0");
+    $image1 = $FD->text("frontend", "image_upload_error_1");
+    $image2 = $FD->text("frontend", "image_upload_error_2");
+    $image3 = $FD->text("frontend", "image_upload_error_3");
+    $image4 = $FD->text("frontend", "image_upload_error_4");
+    $image5 = $FD->text("frontend", "image_upload_error_5");
+    $image6 = $FD->text("frontend", "image_upload_error_6");
 
   switch ( $UPLOAD ) {
     case 0:
@@ -239,18 +239,18 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
 
 function create_thumb_notice($upload)
 {
-  global $admin_phrases;
+    global $FD;
 
   switch ($upload)
   {
     case 0:
-      return $admin_phrases['common']['thumb_0'];
+      return $FD->text("admin", "thumb_0");
       break;
     case 1:
-      return $admin_phrases['common']['thumb_1'];
+      return $FD->text("admin", "thumb_1");
       break;
     case 2:
-      return $admin_phrases['common']['thumb_2'];
+      return $FD->text("admin", "thumb_2");
       break;
   }
 }

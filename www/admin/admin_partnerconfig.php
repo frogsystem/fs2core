@@ -124,7 +124,7 @@ else
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button type="submit" value="" class="button_new">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>

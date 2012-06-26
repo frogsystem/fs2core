@@ -68,7 +68,7 @@ if (
     }
 
     mysql_query ( 'UPDATE '.$global_config_arr['pref'].'counter SET artikel = artikel + 1', $FD->sql()->conn() );
-    systext( $admin_phrases['articles']['articles_added'], $admin_phrases['common']['info']);
+    systext( $FD->text("page", "'"), $FD->text("page", "'"));
 }
 
 //////////////////////////////
@@ -80,9 +80,9 @@ else
         // Display Error Messages
         if ( isset ( $_POST['sended'] ) ) {
                 if ( in_array ( savesql ( $_POST['article_url'] ), $url_arr ) ) {
-                  systext ( $admin_phrases['articles']['existing_url'], $admin_phrases['common']['error'], TRUE );
+                  systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
                 } else {
-                  systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+                  systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
                 }
         } else {
                 $_POST['article_html'] = 1;
@@ -99,9 +99,9 @@ else
     $config_arr['fs_code_bool'] = ($config_arr['fs_code'] == 2 || $config_arr['fs_code'] == 4);
     $config_arr['para_handling_bool'] = ($config_arr['para_handling'] == 2 || $config_arr['para_handling'] == 4);
 
-    $config_arr['html_code_text'] = ( $config_arr['html_code_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
-    $config_arr['fs_code_text'] = ( $config_arr['fs_code_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
-    $config_arr['para_handling_text'] = ( $config_arr['para_handling_bool'] ) ? $admin_phrases['common']['on'] : $admin_phrases['common']['off'];
+    $config_arr['html_code_text'] = ( $config_arr['html_code_bool'] ) ? $FD->text("page", "'") : $FD->text("page", "'");
+    $config_arr['fs_code_text'] = ( $config_arr['fs_code_bool'] ) ? $FD->text("page", "'") : $FD->text("page", "'");
+    $config_arr['para_handling_text'] = ( $config_arr['para_handling_bool'] ) ? $FD->text("page", "'") : $FD->text("page", "'");
 
         // Get User ID
         if ( !isset ( $_POST['article_user'] ) ) {
@@ -143,11 +143,11 @@ else
                                                 <input type="hidden" name="go" value="articles_add">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="2">'.$admin_phrases['articles']['articles_info_title'].'</td></tr>
+                                                        <tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
                             <tr>
                                 <td class="config" width="250">
-                                    '.$admin_phrases['articles']['articles_url'].': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
-                                    <span class="small">'.$admin_phrases['articles']['articles_url_desc'].'</span>
+                                    '.$FD->text("page", "'").': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config" width="350">
                                     ?go = <input class="text" size="45" maxlength="100" name="article_url" value="'.$_POST['article_url'].'">
@@ -155,8 +155,8 @@ else
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['articles_cat'].':<br>
-                                    <span class="small">'.$admin_phrases['articles']['articles_cat_desc'].'</span>
+                                    '.$FD->text("page", "'").':<br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <select name="article_cat_id">
@@ -174,8 +174,8 @@ else
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['articles_date'].': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
-                                    <span class="small">'.$admin_phrases['articles']['articles_date_desc'].'</span>
+                                    '.$FD->text("page", "'").': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                                                         <span class="small">
@@ -183,30 +183,30 @@ else
                                             <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                             <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                                                         </span>
-                                                                        '.js_nowbutton ( $nowbutton_array, $admin_phrases['common']['today'] ).'
+                                                                        '.js_nowbutton ( $nowbutton_array, $FD->text("page", "'") ).'
                                     <input onClick=\'document.getElementById("d").value="";
                                                      document.getElementById("m").value="";
-                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$admin_phrases['common']['delete_button'].'">
+                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$FD->text("page", "'").'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['articles']['articles_poster'].': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
-                                    <span class="small">'.$admin_phrases['articles']['articles_poster_desc'].'</span>
+                                    '.$FD->text("page", "'").': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    <span class="small">'.$FD->text("page", "'").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="article_user_name" value="'.$_POST['article_user_name'].'">
                                     <input type="hidden" id="userid" name="article_user" value="'.$_POST['article_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$admin_phrases['common']['change_button'].'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("page", "'").'">
                                     <input onClick=\'document.getElementById("username").value="";
-                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$admin_phrases['common']['delete_button'].'">
+                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$FD->text("page", "'").'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                                                        <tr><td class="line" colspan="2">'.$admin_phrases['articles']['articles_new_title'].'</td></tr>
+                                                        <tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$admin_phrases['articles']['articles_title'].':
+                                    '.$FD->text("page", "'").':
                                 </td>
                             </tr>
                             <tr>
@@ -220,31 +220,31 @@ else
                                     <table cellpadding="0" cellspacing="0" width="100%">
                                         <tr>
                                                                                         <td class="config">
-                                                                                                '.$admin_phrases['articles']['articles_text'].':
+                                                                                                '.$FD->text("page", "'").':
                                                                                         </td>
                                                                                         <td class="config" style="text-align:right;">
         ';
 
         if ( $config_arr['html_code_bool'] ) {
             echo '<input class="pointer middle" type="checkbox" name="article_html" id="article_html" value="1" '.getchecked ( 1, $_POST['article_html'] ).'>
-                <span class="small middle">'.$admin_phrases['articles']['articles_use_html'].'</span>&nbsp;&nbsp;';
+                <span class="small middle">'.$FD->text("page", "'").'</span>&nbsp;&nbsp;';
         } else {
             echo '<input class="middle" type="checkbox" name="article_html" id="article_html" value="0" disabled="disabled">
-                <span class="small middle">'.$admin_phrases['common']['html'].' '.$config_arr['html_code_text'].'</span>&nbsp;&nbsp;';
+                <span class="small middle">'.$FD->text("page", "'").' '.$config_arr['html_code_text'].'</span>&nbsp;&nbsp;';
         }
         if ( $config_arr['fs_code_bool'] ) {
             echo '<input class="pointer middle" type="checkbox" name="article_fscode" id="article_fscode" value="1" '.getchecked ( 1, $_POST['article_fscode'] ).'>
-                <span class="small middle">'.$admin_phrases['articles']['articles_use_fscode'].'</span>&nbsp;&nbsp;';
+                <span class="small middle">'.$FD->text("page", "'").'</span>&nbsp;&nbsp;';
         } else {
             echo '<input class="middle" type="checkbox" name="article_fscode" id="article_fscode" value="0" disabled="disabled">
-                <span class="small middle">'.$admin_phrases['common']['fscode'].' '.$config_arr['fs_code_text'].'</span>&nbsp;&nbsp;';
+                <span class="small middle">'.$FD->text("page", "'").' '.$config_arr['fs_code_text'].'</span>&nbsp;&nbsp;';
         }
         if ( $config_arr['para_handling_bool'] ) {
             echo '<input class="pointer middle" type="checkbox" name="article_para" id="article_para" value="1" '.getchecked ( 1, $_POST['article_para'] ).'>
-                <span class="small middle">'.$admin_phrases['articles']['articles_use_para'].'</span>';
+                <span class="small middle">'.$FD->text("page", "'").'</span>';
         } else {
             echo '<input class="middle" type="checkbox" name="article_para" id="article_para" value="0" disabled="disabled">
-                <span class="small middle">'.$admin_phrases['common']['para'].' '.$config_arr['para_handling_text'].'</span>';
+                <span class="small middle">'.$FD->text("page", "'").' '.$config_arr['para_handling_text'].'</span>';
         }
 
         echo '
@@ -261,14 +261,14 @@ else
                             </tr>
                             <tr>
                                                                 <td class="config" colspan="2">
-                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$admin_phrases['common']['preview_button'].'">
+                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$FD->text("page", "'").'">
                                                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['articles']['articles_add_button'].'
+                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
                                     </button>
                                 </td>
                             </tr>

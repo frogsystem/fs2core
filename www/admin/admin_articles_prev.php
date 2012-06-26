@@ -55,7 +55,7 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
         </form>
 
         <p>
-            '.$TEXT['page']->get('preview_note').'
+            '.$FD->text("page", "preview_note").'
         </p>
     ';
 
@@ -150,7 +150,7 @@ else {
     // Preview Page Template
     $global_config_arr['dyn_title'] == 1;
     $global_config_arr['dyn_title_ext'] = '{..ext..}';
-    $global_config_arr['dyn_title_page'] = $TEXT['page']->get('preview_title').': '.$article_arr['article_title'];
+    $global_config_arr['dyn_title_page'] = $FD->text("page", "preview_title").': '.$article_arr['article_title'];
 
 
     // Display Preview Page
