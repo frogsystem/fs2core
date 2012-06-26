@@ -93,6 +93,8 @@ page_title_stat_edit:           bearbeiten
 page_link_stat_edit:            bearbeiten
 page_title_stat_ref:            Referrer anzeigen & verwalten
 page_link_stat_ref:             Referrer
+page_title_stat_ref_delete:     Referrer löschen
+page_link_stat_ref_delete:      löschen
 page_title_stat_space:          Speicherplatz Übersicht
 page_link_stat_space:           Speicherplatz
 

@@ -74,6 +74,8 @@ js_delete_image:                         Bild löschen?
 search:                                  Suche
 search_for:                              Suche nach
 filter:                                  Filter
+note:                                    Hinweis
+notes:                                   Hinweise
 
 
 # Date and Time for Admin CP

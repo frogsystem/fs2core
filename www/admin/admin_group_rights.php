@@ -200,7 +200,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="3">'.$FD->text("page", "change_grouprights_for").': '.$user_group_arr['user_group_name'].'</td></tr>
                             <tr><td align="left">
-                                <span class="small"><b>'.$FD->text("admin", "notes").':</b><br>
+                                <span class="small"><b>'.$FD->text("admin", "note").':</b><br>
                                 '.$FD->text("page", "sub_rights_note").'</span>
                                 <table cellpadding="4" cellspacing="0" align="center">
                                     <tr><td class="config"><p></p>
