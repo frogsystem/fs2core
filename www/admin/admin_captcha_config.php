@@ -156,14 +156,9 @@ if ( TRUE )
     // security functions
     $_POST['captcha_bg_color'] = '#'.$_POST['captcha_bg_color'];
     $_POST['captcha_text_color'] = '#'.$_POST['captcha_text_color'];
-
     $_POST = array_map('killhtml', $_POST);
-    $_POST = array_map(function($ele) {
-        if (is_hexcolor($ele))
-            $ele = substr($ele, 1);
-        return $ele;
-    },  $_POST);
-
+    $_POST['captcha_bg_color'] = substr($_POST['captcha_bg_color'], 1);
+    $_POST['captcha_text_color'] = substr($_POST['captcha_text_color'], 1);
 
     // Display Form
     echo '
