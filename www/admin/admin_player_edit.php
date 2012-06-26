@@ -63,7 +63,7 @@ if (
     $message = 'Video bearbeitet';
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -98,7 +98,7 @@ elseif (
         }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -117,7 +117,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
 
                 // Display Error Messages
                 if ( isset ( $_POST['sended'] ) ) {
-                        systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+                        systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
 
                 // Load Data drom DB into Post
                 } else {
@@ -264,7 +264,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    L&auml;nge: <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    L&auml;nge: <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                     <span class="small">Die Laufzeit des Videos.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -275,7 +275,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Beschreibung: <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    Beschreibung: <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                     <span class="small">Text, der das Video beschreibt.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -312,7 +312,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -379,7 +379,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                         <tr>
                                                                 <td class="buttontd" colspan="2">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -470,8 +470,8 @@ else
                                                         <tr>
                                                                 <td style="text-align:right;" colspan="3">
                                                                         <select name="video_action" size="1">
-                                                                                <option value="edit">'.$FD->text("page", "'").'</option>
-                                                                                <option value="delete">'.$FD->text("page", "'").'</option>
+                                                                                <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                                                                <option value="delete">'.$FD->text("admin", "selection_del").'</option>
                                                                         </select>
                                                                 </td>
                                                         </tr>
@@ -479,7 +479,7 @@ else
                                                         <tr>
                                                                 <td class="buttontd" colspan="4">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                                                         </button>
                                                                 </td>
                                                         </tr>

@@ -137,14 +137,14 @@ if (
                         `user_skype` = '".$_POST['user_skype']."'
                     WHERE `user_id` = '".$_POST['user_id']."'
     ", $FD->sql()->conn() );
-    $message = $FD->text("page", "'");
+    $message = $FD->text("admin", "changes_saved");
 
     // image operations
     if ( $_POST['user_pic_delete'] == 1 ) {
         if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
-        $message .= '<br>' . $FD->text("page", "'");
+        $message .= '<br>' . $FD->text("admin", "image_deleted");
       } else {
-        $message .= '<br>' . $FD->text("page", "'");
+        $message .= '<br>' . $FD->text("admin", "image_not_deleted");
       }
     } elseif ( $_FILES['user_pic']['name'] != '' ) {
         $upload = upload_img ( $_FILES['user_pic'], 'images/avatare/', $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
@@ -171,7 +171,7 @@ if (
     }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // save Vars
     $filter = $_POST['filter'];
@@ -278,14 +278,14 @@ elseif (
 
         // Delete Image
         if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
-            $message .= '<br>' . $FD->text("page", "'");
+            $message .= '<br>' . $FD->text("admin", "image_deleted");
         }
     } else {
         $message = 'Benutzer wurde nicht gel&ouml;scht';
     }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // save Vars
     $filter = $_POST['filter'];
@@ -330,9 +330,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
             }
             $message = implode ( '<br>', $message );
             if ( strlen ( $message ) == 0 ) {
-                $message = $FD->text("page", "'");
+                $message = $FD->text("admin", "note_notfilled");
             }
-            systext ( $message, $FD->text("page", "'"), TRUE );
+            systext ( $message, $FD->text("admin", "error"), TRUE );
         } else {
             $index = mysql_query ( '
                                     SELECT *
@@ -441,7 +441,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $FD->text("page", "'") ).'
+                                    '.js_nowbutton ( $nowbutton_array, $FD->text("admin", "today") ).'
                                 </td>
                             </tr>
                             <tr>
@@ -500,7 +500,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 </td>
                                 <td class="config">
                                     <input class="text" name="user_pic" type="file" size="35"><br>
-                                    <span class="small">['.$FD->text("page", "'").' '.$config_arr['avatar_x'].' '.$FD->text("page", "'").' '.$config_arr['avatar_y'].' '.$FD->text("page", "'").'] ['.$FD->text("page", "'").' '.$config_arr['avatar_size'].' '.$FD->text("page", "'").']</span>
+                                    <span class="small">['.$FD->text("admin", "max").' '.$config_arr['avatar_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['avatar_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['avatar_size'].' '.$FD->text("admin", "kib").']</span>
         ';
         if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
             echo '
@@ -631,7 +631,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -675,7 +675,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -712,7 +712,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '."Nach Benutzern suchen".'
+                                        '.$FD->text("admin", "button_arrow").' '."Nach Benutzern suchen".'
                                     </button>
                                 </td>
                             </tr>
@@ -807,8 +807,8 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="right" colspan="5">
                                     <select name="user_action" size="1">
-                                        <option value="edit">'.$FD->text("page", "'").'</option>
-                                        <option value="delete">'.$FD->text("page", "'").'</option>
+                                        <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                        <option value="delete">'.$FD->text("admin", "selection_del").'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -816,7 +816,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="5">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                     </button>
                                 </td>
                             </tr>

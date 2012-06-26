@@ -141,7 +141,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Einleitung: <font class="small">'.$FD->text("page", "'").'</font><br />
+                                    Einleitung: <font class="small">'.$FD->text("admin", "optional").'</font><br />
                                     <font class="small">Eine kurze Einleitung zum Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
@@ -159,7 +159,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Anmerkungen: <font class="small">'.$FD->text("page", "'").'</font><br />
+                                    Anmerkungen: <font class="small">'.$FD->text("admin", "optional").'</font><br />
                                     <font class="small">Anmerkungen zum Pressebericht.<br />
                                     (z.B. die Wertung eines Tests)</font>
                                 </td>

@@ -141,7 +141,7 @@ if (
 	", $FD->sql()->conn() );
 
 	// system messages
-    systext($FD->text("page", "'"), $FD->text("page", "'"));
+    systext($FD->text("admin", "changes_saved"), $FD->text("admin", "info"));
 
     // Unset Vars
     unset ( $_POST );
@@ -155,7 +155,7 @@ if ( TRUE )
 {
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+		systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
 
 	// Load Data from DB into Post
 	} else {
@@ -508,7 +508,7 @@ if ( TRUE )
        						</tr>
        						<tr>
            						<td class="config">
-               						Vorausspeicher-Nachricht: <span class="small">'.$FD->text("page", "'").'</span><br>
+               						Vorausspeicher-Nachricht: <span class="small">'.$FD->text("admin", "optional").'</span><br>
                						<span class="small">Nachricht, die w&auml;hrend des Vorausspeicherns angezeigt wird.</span>
            						</td>
            						<td class="config">
@@ -639,7 +639,7 @@ if ( TRUE )
 							<tr><td class="line" colspan="4">Bild-&Uuml;berlagerung</td></tr>
        						<tr>
            						<td class="config">
-               						Bild-URL: <span class="small">'.$FD->text("page", "'").'</span><br>
+               						Bild-URL: <span class="small">'.$FD->text("admin", "optional").'</span><br>
                						<span class="small">URL eines Bildes, das &uuml;ber das Video gelegt werden soll.</span>
            						</td>
            						<td class="config">
@@ -670,7 +670,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>

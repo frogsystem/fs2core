@@ -309,7 +309,7 @@ else
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button type="submit" value="" class="button_new">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>

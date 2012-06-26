@@ -55,7 +55,7 @@ if (
                                                 '".$_POST['dl_id']."'
                                          )
         ", $FD->sql()->conn() );
-    systext ( 'Video erfolgreich eingetragen', $FD->text("page", "'") );
+    systext ( 'Video erfolgreich eingetragen', $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -70,7 +70,7 @@ if ( TRUE )
 {
         // Display Error Messages
         if ( isset ( $_POST['sended'] ) ) {
-                  systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+                  systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
         }
 
     $_POST['video_title'] = killhtml ( $_POST['video_title'] );
@@ -185,7 +185,7 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    L&auml;nge: <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    L&auml;nge: <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                     <span class="small">Die Laufzeit des Videos.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -196,7 +196,7 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Beschreibung: <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    Beschreibung: <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                     <span class="small">Text, der das Video beschreibt.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -233,7 +233,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' Video hinzuf&uuml;gen
+                                        '.$FD->text("admin", "button_arrow").' Video hinzuf&uuml;gen
                                     </button>
                                 </td>
                             </tr>

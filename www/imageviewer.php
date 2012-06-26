@@ -23,9 +23,6 @@ if ($FD->sql()->conn() )
     require ( FS2_ROOT_PATH . 'libs/class_fileaccess.php' );
     require ( FS2_ROOT_PATH . 'libs/class_langDataInit.php' );
 
-    //Get TEXT-Data
-    $TEXT = new langDataInit ( $global_config_arr['language_text'], 'frontend' );
-
     // Constructor Calls
     set_style ();
 

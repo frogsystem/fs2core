@@ -6,17 +6,17 @@ $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'partner_config
 $config_arr = mysql_fetch_assoc($index);
 if ($config_arr['small_allow'] == 0) {
     $config_arr['small_allow_bool'] = true;
-    $config_arr['small_allow_text'] = $FD->text("page", "'");
+    $config_arr['small_allow_text'] = $FD->text("page", "exact");
 } else {
     $config_arr['small_allow_bool'] = false;
-    $config_arr['small_allow_text'] = $FD->text("page", "'");
+    $config_arr['small_allow_text'] = $FD->text("page", "max");
 }
 if ($config_arr['big_allow'] == 0) {
     $config_arr['big_allow_bool'] = true;
-    $config_arr['big_allow_text'] = $FD->text("page", "'");
+    $config_arr['big_allow_text'] = $FD->text("page", "exact");
 } else {
     $config_arr['big_allow_bool'] = false;
-    $config_arr['big_allow_text'] = $FD->text("page", "'");
+    $config_arr['big_allow_text'] = $FD->text("page", "max");
 }
 
 
@@ -49,16 +49,16 @@ if (($_POST['name'] AND $_POST['name'] != '')
     if ($_FILES['bild_small']['name'] != '')
     {
       $upload = upload_img($_FILES['bild_small'], 'images/partner/', $_POST['partner_id'].'_small', $config_arr['file_size']*1024, $config_arr['small_x'], $config_arr['small_y'], 100, $config_arr['small_allow_bool']);
-      $message .= $FD->text("page", "'") . ': ' . upload_img_notice($upload) . '<br />';
+      $message .= $FD->text("page", "small_pic") . ': ' . upload_img_notice($upload) . '<br />';
     }
 
     if ($_FILES['bild_big']['name'] != '')
     {
       $upload = upload_img($_FILES['bild_big'], 'images/partner/', $_POST['partner_id'].'_big', $config_arr['file_size']*1024, $config_arr['big_x'], $config_arr['big_y'], 100, $config_arr['big_allow_bool']);
-      $message .= $FD->text("page", "'") . ': ' . upload_img_notice($upload) . '<br />';
+      $message .= $FD->text("page", "big_pic") . ': ' . upload_img_notice($upload) . '<br />';
     }
 
-    $message .= $FD->text("page", "'");
+    $message .= $FD->text("page", "note_edited");
     systext($message);
 
     unset($message);
@@ -83,11 +83,11 @@ elseif ($_POST['partner_action'] == 'delete'
         mysql_query('DELETE FROM '.$global_config_arr['pref']."partner WHERE partner_id = '$_POST[partner_id]'", $FD->sql()->conn() );
         image_delete('images/partner/', $_POST['partner_id'].'_small');
         image_delete('images/partner/', $_POST['partner_id'].'_big');
-        systext($FD->text("page", "'"));
+        systext($FD->text("page", "note_deleted"));
     }
     else
     {
-        systext($FD->text("page", "'"));
+        systext($FD->text("page", "note_notdeleted"));
     }
 
     unset($_POST['delete_partner']);
@@ -118,7 +118,7 @@ elseif ($_POST['partner_action'] == 'edit'
 
     //Error Message
     if ($_POST['sended'] == 'edit') {
-        systext ($FD->text("page", "'"));
+        systext ($FD->text("admin", "note_notfilled"));
 
         $partner_arr['partner_name'] = killhtml($_POST['name']);
         $partner_arr['partner_link'] = killhtml($_POST['link']);
@@ -133,45 +133,45 @@ elseif ($_POST['partner_action'] == 'edit'
                         <input type="hidden" value="edit" name="sended">
                         <input type="hidden" value="'.$partner_arr['partner_id'].'" name="partner_id">
                         <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>'.$FD->text("page", "'").'</h3><hr></td></tr>
+                            <tr><td colspan="2"><h3>'.$FD->text("page", "delpage").'</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "small_pic").':<br />
+                                    <font class="small">'.$FD->text("page", "small_pic_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                    <img src="'.image_url('images/partner/', $_POST['partner_id'].'_small').'">
                                    <br /><br />
                                    <input type="file" class="text" name="bild_small" size="50"><br />
                                    <font class="small">
-                                     ['.$config_arr['small_allow_text'].' '.$config_arr['small_x'].' x '.$config_arr['small_y'].' '.$FD->text("page", "'").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "'").']
+                                     ['.$config_arr['small_allow_text'].' '.$config_arr['small_x'].' x '.$config_arr['small_y'].' '.$FD->text("page", "px").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "kb").']
                                     </font><br />
                                     <font class="small">
-                                      <b>'.$FD->text("page", "'").'</b>
+                                      <b>'.$FD->text("admin", "replace_img").'</b>
                                     </font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "big_pic").':<br />
+                                    <font class="small">'.$FD->text("page", "big_pic_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                    <img src="'.image_url('images/partner/', $_POST['partner_id'].'_big').'">
                                    <br /><br />
                                    <input type="file" class="text" name="bild_big" size="50"><br />
                                    <font class="small">
-                                     ['.$config_arr['big_allow_text'].' '.$config_arr['big_x'].' x '.$config_arr['big_y'].' '.$FD->text("page", "'").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "'").']
+                                     ['.$config_arr['big_allow_text'].' '.$config_arr['big_x'].' x '.$config_arr['big_y'].' '.$FD->text("page", "px").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "kb").']
                                    </font><br />
                                     <font class="small">
-                                      <b>'.$FD->text("page", "'").'</b>
+                                      <b>'.$FD->text("admin", "replace_img").'</b>
                                     </font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "name").':<br />
+                                    <font class="small">'.$FD->text("page", "name_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="name" size="33" value="'.$partner_arr['partner_name'].'" maxlength="100">
@@ -179,8 +179,8 @@ elseif ($_POST['partner_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "link").':<br />
+                                    <font class="small">'.$FD->text("page", "link_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="link" size="50" value="'.$partner_arr['partner_link'].'" maxlength="100">
@@ -188,8 +188,8 @@ elseif ($_POST['partner_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").': <font class="small">'.$FD->text("page", "'").'</font><br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "desc").': <font class="small">'.$FD->text("admin", "optional").'</font><br />
+                                    <font class="small">'.$FD->text("page", "desc_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     '.create_editor('description', $partner_arr['partner_beschreibung'], 330, 130).'
@@ -197,8 +197,8 @@ elseif ($_POST['partner_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "perm").':<br />
+                                    <font class="small">'.$FD->text("page", "perm_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="checkbox" value="1" name="permanent" '.$partner_arr['partner_perm'].'>
@@ -207,7 +207,7 @@ elseif ($_POST['partner_action'] == 'edit'
                             <tr><td></td></tr>
                             <tr>
                                 <td align="left" colspan="2">
-                                    <input class="button" type="submit" value="'.$FD->text("page", "'").'">
+                                    <input class="button" type="submit" value="'.$FD->text("page", "save").'">
                                 </td>
                             </tr>
                         </table>
@@ -238,7 +238,7 @@ elseif ($_POST['partner_action'] == 'delete'
                         <input type="hidden" value="delete" name="sended">
                         <input type="hidden" value="'.$partner_arr['partner_id'].'" name="partner_id">
                         <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>'.$FD->text("page", "'").'</h3><hr></td></tr>
+                            <tr><td colspan="2"><h3>'.$FD->text("page", "delpage").'</h3><hr></td></tr>
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
                                     '.$partner_arr['partner_name'].'
@@ -253,18 +253,18 @@ elseif ($_POST['partner_action'] == 'delete'
                             </tr>
                             <tr valign="top">
                                 <td width="50%" class="config">
-                                    '.$FD->text("page", "'").'
+                                    '.$FD->text("page", "delpage_question").'
                                 </td>
                                 <td width="50%" align="right">
                                     <select name="delete_partner" size="1">
-                                        <option value="0">'.$FD->text("page", "'").'</option>
-                                        <option value="1">'.$FD->text("page", "'").'</option>
+                                        <option value="0">'.$FD->text("page", "delnotconfirm").'</option>
+                                        <option value="1">'.$FD->text("page", "delconfirm").'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <input type="submit" value="'.$FD->text("page", "'").'" class="button">
+                                    <input type="submit" value="'.$FD->text("admin", "do_button").'" class="button">
                                 </td>
                             </tr>
                         </table>
@@ -293,10 +293,10 @@ if (!isset($_POST['partner_id']))
                                     Bild
                                 </td>
                                 <td class="config">
-                                    '.$FD->text("page", "'").'
+                                    '.$FD->text("page", "partnerpage").'
                                 </td>
                                 <td class="config" style="text-align:right;">
-                                    '.$FD->text("page", "'").'
+                                    '.$FD->text("admin", "selection").'
                                 </td>
                             </tr>
         ';
@@ -322,10 +322,10 @@ if (!isset($_POST['partner_id']))
                             <tr>
                                 <td class="right" colspan="4">
                                    <select class="select_type" name="partner_action" size="1">
-                                     <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
-                                     <option class="select_red" value="delete">'.$FD->text("page", "'").'</option>
+                                     <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                     <option class="select_red" value="delete">'.$FD->text("admin", "selection_del").'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$FD->text("page", "'").'">
+                                   <input class="button" type="submit" value="'.$FD->text("admin", "do_button").'">
                                 </td>
                             </tr>
                         </table>
@@ -334,7 +334,7 @@ if (!isset($_POST['partner_id']))
     }
     else
     {
-        echo $FD->text("page", "'");
+        echo $FD->text("page", "note_nopages");
     }
 }
 ?>

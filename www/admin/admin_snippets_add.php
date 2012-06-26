@@ -118,7 +118,7 @@ echo '
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("admin", "snippet_add_title").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "snippet_add_title").'
                                     </button>
                                 </td>
                             </tr>

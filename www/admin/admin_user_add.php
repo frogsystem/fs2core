@@ -135,7 +135,7 @@ if (
     }
 
     // system messages
-    systext( $message, $FD->text("page", "'") );
+    systext( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -158,9 +158,9 @@ if ( TRUE )
         }
         $message = implode ( '<br>', $message );
         if ( strlen ( $message ) == 0 ) {
-            $message = $FD->text("page", "'");
+            $message = $FD->text("admin", "note_notfilled");
         }
-        systext ( $message, $FD->text("page", "'"), TRUE );
+        systext ( $message, $FD->text("admin", "error"), TRUE );
     } else {
         $_POST['gen_password'] = 1;
         $_POST['user_homepage'] = 'http://';
@@ -239,7 +239,7 @@ if ( TRUE )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $FD->text("page", "'") ).'
+                                    '.js_nowbutton ( $nowbutton_array, $FD->text("admin", "today") ).'
                                 </td>
                             </tr>
                             <tr>
@@ -280,7 +280,7 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text" name="user_pic" type="file" size="35"><br>
-                                    <span class="small">['.$FD->text("page", "'").' '.$config_arr['avatar_x'].' '.$FD->text("page", "'").' '.$config_arr['avatar_y'].' '.$FD->text("page", "'").'] ['.$FD->text("page", "'").' '.$config_arr['avatar_size'].' '.$FD->text("page", "'").']</span>
+                                    <span class="small">['.$FD->text("admin", "max").' '.$config_arr['avatar_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['avatar_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['avatar_size'].' '.$FD->text("admin", "kib").']</span>
                                 </td>
                             </tr>
                             <tr>
@@ -399,7 +399,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '."Neuen Benutzer hinzuf&uuml;gen".'
+                                        '.$FD->text("admin", "button_arrow").' '."Neuen Benutzer hinzuf&uuml;gen".'
                                     </button>
                                 </td>
                             </tr>

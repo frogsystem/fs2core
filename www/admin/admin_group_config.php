@@ -25,7 +25,7 @@ if (
 	", $FD->sql()->conn() );
 
 	// system messages
-    systext($FD->text("page", "'"), $FD->text("page", "'"));
+    systext($FD->text("admin", "changes_saved"), $FD->text("admin", "info"));
 
     // Unset Vars
     unset ( $_POST );
@@ -39,7 +39,7 @@ if ( TRUE )
 {
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+		systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
 
 	// Load Data from DB into Post
 	} else {
@@ -72,8 +72,8 @@ if ( TRUE )
                                 <td class="config">
                                     <input class="text center" size="3" maxlength="3" name="group_pic_x" value="'.$_POST['group_pic_x'].'">
                                     x
-                                    <input class="text center" size="3" maxlength="3" name="group_pic_y" value="'.$_POST['group_pic_y'].'"> '.$FD->text("page", "'").'<br>
-                                    <span class="small">(Breite x H&ouml;he; '.$FD->text("page", "'").')</span>
+                                    <input class="text center" size="3" maxlength="3" name="group_pic_y" value="'.$_POST['group_pic_y'].'"> '.$FD->text("admin", "pixel").'<br>
+                                    <span class="small">(Breite x H&ouml;he; '.$FD->text("admin", "zero_not_allowed").')</span>
                                 </td>
                             </tr>
                             <tr>
@@ -83,14 +83,14 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text center" size="4" maxlength="4" name="group_pic_size" value="'.$_POST['group_pic_size'].'"> KiB<br>
-                                    <span class="small">('.$FD->text("page", "'").')</span>
+                                    <span class="small">('.$FD->text("admin", "zero_not_allowed").')</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>

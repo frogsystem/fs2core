@@ -71,11 +71,11 @@ try {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
-        <title>'.$TEXT->get('no_connection').'</title>
+        <title>'.$TEXT->get("no_connection").'</title>
     </head>
     <body>
 		<p>
-			<b>'.$TEXT->get('no_connection_to_the_server').'</b>
+			<b>'.$TEXT->get("no_connection_to_the_server").'</b>
         </p>
     </body>
 </html>

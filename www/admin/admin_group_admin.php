@@ -47,7 +47,7 @@ if (
     }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -99,14 +99,14 @@ elseif (
                      WHERE
                          user_group_id = '".$_POST['user_group_id']."'
     ", $FD->sql()->conn() );
-    $message = $FD->text("page", "'");
+    $message = $FD->text("admin", "changes_saved");
 
     // Image-Operations
     if ( $_POST['group_pic_delete'] == 1 ) {
       if ( image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] ) ) {
-        $message .= '<br>' . $FD->text("page", "'");
+        $message .= '<br>' . $FD->text("admin", "image_deleted");
       } else {
-        $message .= '<br>' . $FD->text("page", "'");
+        $message .= '<br>' . $FD->text("admin", "image_not_deleted");
       }
     } elseif ( $_FILES['user_group_pic']['name'] != '' ) {
       image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] );
@@ -115,7 +115,7 @@ elseif (
     }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -157,7 +157,7 @@ elseif (
 
         // Delete Category Image
         if ( image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] ) ) {
-            $message .= '<br>' . $FD->text("page", "'");
+            $message .= '<br>' . $FD->text("admin", "image_deleted");
         }
 
     } else {
@@ -165,7 +165,7 @@ elseif (
     }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -196,7 +196,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
         // Display Error Messages
         if ( isset ( $_POST['sended'] ) ) {
             $group_arr = getfrompost ( $group_arr );
-            systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+            systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
         }
 
         // Security-Functions
@@ -253,7 +253,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $FD->text("page", "'") ).'
+                                    '.js_nowbutton ( $nowbutton_array, $FD->text("admin", "today") ).'
                                 </td>
                             </tr>
                             <tr>
@@ -264,14 +264,14 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly id="username" name="user_group_user_name" value="'.$group_arr['user_group_user_name'].'">
                                     <input type="hidden" id="userid" name="user_group_user" value="'.$group_arr['user_group_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_finduser.php", 400, 400 ).'\' value="'.$FD->text("page", "'").'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_finduser.php", 400, 400 ).'\' value="'.$FD->text("admin", "change_button").'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                                <tr><td class="line" colspan="2">'."Zus&auml;tzliche Einstellungen".'</td></tr>
                                <tr>
                                    <td class="config">
-                                     '."Symbol".': <span class="small">'.$FD->text("page", "'").'</span><br><br>
+                                     '."Symbol".': <span class="small">'.$FD->text("admin", "optional").'</span><br><br>
          ';
         if ( image_exists ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ) ) {
             echo '
@@ -279,16 +279,16 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                     <table>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="group_pic_delete" id="gpd" value="1" onClick=\'delalert ("gpd", "'.$FD->text("page", "'").'")\'>
+                                                <input type="checkbox" name="group_pic_delete" id="gpd" value="1" onClick=\'delalert ("gpd", "'.$FD->text("admin", "js_delete_image").'")\'>
                                             </td>
                                             <td>
-                                                <span class="small"><b>'.$FD->text("page", "'").'</b></span>
+                                                <span class="small"><b>'.$FD->text("admin", "delete_image").'</b></span>
                                             </td>
                                         </tr>
                                     </table>
             ';
         } else {
-            echo '<span class="small">'.$FD->text("page", "'").'</span><br>';
+            echo '<span class="small">'.$FD->text("admin", "no_image").'</span><br>';
         }
         echo'                       <br>
                                 </td>
@@ -296,17 +296,17 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                     <input name="user_group_pic" type="file" size="40" class="text"><br>
         ';
         if ( image_exists ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ) ) {
-            echo '<span class="small"><b>'.$FD->text("page", "'").'</b></span><br>';
+            echo '<span class="small"><b>'.$FD->text("admin", "replace_img").'</b></span><br>';
         }
         echo'
                                     <span class="small">
-                                        ['.$FD->text("page", "'").' '.$config_arr['group_pic_x'].' '.$FD->text("page", "'").' '.$config_arr['group_pic_y'].' '.$FD->text("page", "'").'] ['.$FD->text("page", "'").' '.$config_arr['group_pic_size'].' '.$FD->text("page", "'").']
+                                        ['.$FD->text("admin", "max").' '.$config_arr['group_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['group_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['group_pic_size'].' '.$FD->text("admin", "kib").']
                                     </span>
                                 </td>
                             </tr>
                                <tr>
                                    <td class="config">
-                                       '."Titel".': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                       '."Titel".': <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                        <span class="small">'."Titel den die Mitglieder der Gruppe tragen.".'</span>
                                    </td>
                                    <td>
@@ -315,7 +315,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                </tr>
                                <tr>
                                    <td class="config">
-                                       '.'Einf&auml;rbung'.': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                       '.'Einf&auml;rbung'.': <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                        <span class="small">'."Farbliche Hervorhebung des Gruppentitels.".'</span>
                                    </td>
                                    <td class="configbig">
@@ -326,7 +326,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                </tr>
                                <tr>
                                    <td class="config">
-                                       '."Hervorhebung".': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                       '."Hervorhebung".': <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                        <span class="small">'.'Besondere Hervorhebung des Gruppentitels.'.'</span>
                                    </td>
                                    <td>
@@ -340,7 +340,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                </tr>
                             <tr>
                                 <td class="config">
-                                    '."Beschreibung".': <span class="small">'.$FD->text("page", "'").'</span><br>
+                                    '."Beschreibung".': <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                     <span class="small">'."Ein kurzer Text &uuml;ber die Gruppe.".'</span>
                                 </td>
                                 <td class="config">
@@ -351,7 +351,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -402,7 +402,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -425,7 +425,7 @@ else
     // Display Error Messages
     if ( isset ( $_POST['sended'] ) ) {
         $_POST['user_group_name'] = killhtml ( $_POST['user_group_name'] );
-        systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+        systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
     }
 
     // Display Add-Form
@@ -441,7 +441,7 @@ else
                                     <span class="small">'."Name".':</span>
                                 </td>
                                 <td class="config">
-                                    <span class="small">'."Symbol".': '.$FD->text("page", "'").'</span>
+                                    <span class="small">'."Symbol".': '.$FD->text("admin", "optional").'</span>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -451,7 +451,7 @@ else
                                 <td class="config">
                                     <input name="user_group_pic" type="file" size="30" class="text"><br>
                                     <span class="small">
-                                        ['.$FD->text("page", "'").' '.$config_arr['group_pic_x'].' '.$FD->text("page", "'").' '.$config_arr['group_pic_y'].' '.$FD->text("page", "'").'] ['.$FD->text("page", "'").' '.$config_arr['group_pic_size'].' '.$FD->text("page", "'").']
+                                        ['.$FD->text("admin", "max").' '.$config_arr['group_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['group_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['group_pic_size'].' '.$FD->text("admin", "kib").']
                                     </span>
                                 </td>
                             </tr>
@@ -459,7 +459,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("page", "new_cat_add_button").'
                                     </button>
                                 </td>
                             </tr>
@@ -533,7 +533,7 @@ else
                                 </td>
                                 <td class="configthin middle">
                                     <span class="small">
-                                        '.$FD->text("page", "'").' <b>'.$group_arr['user_group_user_name'].'</b> '.$FD->text("page", "'").' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
+                                        '.$FD->text("page", "list_cat_created_by").' <b>'.$group_arr['user_group_user_name'].'</b> '.$FD->text("page", "list_cat_created_on").' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
                                     </span>
                                 </td>
                                 <td class="configthin center middle">'.$group_arr['user_group_num_users'].'</td>
@@ -552,8 +552,8 @@ else
                             <tr>
                                 <td style="text-align:right;" colspan="4">
                                     <select name="group_action" size="1">
-                                        <option value="edit">'.$FD->text("page", "'").'</option>
-                                        <option value="delete">'.$FD->text("page", "'").'</option>
+                                        <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                        <option value="delete">'.$FD->text("admin", "selection_del").'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -561,7 +561,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -629,7 +629,7 @@ else
                                 </td>
                                 <td class="configthin middle">
                                     <span class="small">
-                                        '.$FD->text("page", "'").' <b>'.$group_arr['user_group_user_name'].'</b> '.$FD->text("page", "'").' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
+                                        '.$FD->text("page", "list_cat_created_by").' <b>'.$group_arr['user_group_user_name'].'</b> '.$FD->text("page", "list_cat_created_on").' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
                                     </span>
                                 </td>
                                 <td class="configthin right middle" colspan="2"><b>'.$group_arr['user_group_num_users'].'</b> Mitglieder</td>
@@ -638,7 +638,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '."Administratorgruppe bearbeiten".'
+                                        '.$FD->text("admin", "button_arrow").' '."Administratorgruppe bearbeiten".'
                                     </button>
                                 </td>
                             </tr>

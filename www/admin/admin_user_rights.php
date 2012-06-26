@@ -106,10 +106,10 @@ if ( isset( $_POST['user_id'] ) ) {
             }
         }
 
-        systext ( $FD->text("page", "'"), $FD->text("page", "'") );
+        systext ( $FD->text("admin", "changes_saved"), $FD->text("admin", "info") );
     }
     else {
-        systext ( 'Dieser User kann nicht bearbeitet werden', $FD->text("page", "'"), TRUE );
+        systext ( 'Dieser User kann nicht bearbeitet werden', $FD->text("admin", "error"), TRUE );
     }
 
     // Unset Vars
@@ -154,7 +154,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
                                     ORDER BY `menu_id`, `group_pos`
     ", $FD->sql()->conn() );
     while ( $group_arr = mysql_fetch_assoc ( $groupaction ) ) {
-        $DATA_ARR[$group_arr['group_id']]['title'] = $FD->text("menu", 'group_'.$group_arr['group_id']);
+        $DATA_ARR[$group_arr['group_id']]['title'] = $FD->text('menu', 'group_'.$group_arr['group_id']);
 
         // get pages
         $pageaction = mysql_query ( '
@@ -174,12 +174,12 @@ if ( isset ( $_POST['edit_user_id'] ) )
 
 
         while ( $page_arr_sub = mysql_fetch_assoc ( $pageaction_sub ) ) {
-            $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $FD->text("menu", 'page_link_'.$page_arr_sub['page_id']);
+            $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $FD->text('menu', 'page_link_'.$page_arr_sub['page_id']);
         }
 
 
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
-            $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $FD->text("menu", 'page_link_'.$page_arr['page_id']);
+            $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $FD->text('menu', 'page_link_'.$page_arr['page_id']);
 
             // is permission granted?
             if ( $user_arr['user_is_admin'] == 1 || $user_arr['user_id'] == 1 ) {
@@ -265,7 +265,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
                             <tr>
                                 <td colspan="3" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '.$FD->text("page", "'").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -352,7 +352,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' '."Benutzerrechte &auml;ndern".'
+                                        '.$FD->text("admin", "button_arrow").' '."Benutzerrechte &auml;ndern".'
                                     </button>
                                 </td>
                             </tr>

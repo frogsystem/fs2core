@@ -6,17 +6,17 @@ $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'partner_config
 $config_arr = mysql_fetch_assoc($index);
 if ($config_arr['small_allow'] == 0) {
     $config_arr['small_allow_bool'] = true;
-    $config_arr['small_allow_text'] = $FD->text("page", "'");
+    $config_arr['small_allow_text'] = $FD->text("page", "exact");
 } else {
     $config_arr['small_allow_bool'] = false;
-    $config_arr['small_allow_text'] = $FD->text("page", "'");
+    $config_arr['small_allow_text'] = $FD->text("page", "max");
 }
 if ($config_arr['big_allow'] == 0) {
     $config_arr['big_allow_bool'] = true;
-    $config_arr['big_allow_text'] = $FD->text("page", "'");
+    $config_arr['big_allow_text'] = $FD->text("page", "exact");
 } else {
     $config_arr['big_allow_bool'] = false;
-    $config_arr['big_allow_text'] = $FD->text("page", "'");
+    $config_arr['big_allow_text'] = $FD->text("page", "max");
 }
 
 
@@ -55,9 +55,9 @@ if ($_FILES['bild_small']['name'] != ''
         switch ($upload2)
         {
         case 0:
-          systext ($FD->text("page", "'") .'<br />'.
-                   $FD->text("page", "'").'<br />'.
-                   $FD->text("page", "'"));
+          systext ($FD->text("page", "note_added") .'<br />'.
+                   $FD->text("page", "note_uploaded").'<br />'.
+                   $FD->text("page", "note_addmore"));
 
           unset($_POST['bild_small']);
           unset($_POST['bild_big']);
@@ -68,8 +68,8 @@ if ($_FILES['bild_small']['name'] != ''
 
           break;
         default:
-          systext ($FD->text("page", "'"). ': ' . upload_img_notice($upload2));
-          systext ($FD->text("page", "'"));
+          systext ($FD->text("page", "big_pic"). ': ' . upload_img_notice($upload2));
+          systext ($FD->text("page", "note_notadded"));
           mysql_query('DELETE FROM '.$global_config_arr['pref']."partner WHERE partner_id = '$id'");
           image_delete('images/partner/', $id.'_small');
           image_delete('images/partner/', $id.'_big');
@@ -108,35 +108,35 @@ echo'
                         <input type="hidden" value="partner_add" name="go">
                         <input type="hidden" value="1" name="sended">
                         <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>'.$FD->text("page", "'").'</h3><hr></td></tr>
+                            <tr><td colspan="2"><h3>'.$FD->text("page", "add").'</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "small_pic").':<br />
+                                    <font class="small">'.$FD->text("page", "small_pic_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="bild_small" size="50"><br />
                                     <font class="small">
-                                      ['.$config_arr['small_allow_text'].' '.$config_arr['small_x'].' x '.$config_arr['small_y'].' '.$FD->text("page", "'").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "'").']
+                                      ['.$config_arr['small_allow_text'].' '.$config_arr['small_x'].' x '.$config_arr['small_y'].' '.$FD->text("page", "px").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "kb").']
                                     </font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "big_pic").':<br />
+                                    <font class="small">'.$FD->text("page", "big_pic_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="bild_big" size="50"><br />
                                     <font class="small">
-                                      ['.$config_arr['big_allow_text'].' '.$config_arr['big_x'].' x '.$config_arr['big_y'].' '.$FD->text("page", "'").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "'").']
+                                      ['.$config_arr['big_allow_text'].' '.$config_arr['big_x'].' x '.$config_arr['big_y'].' '.$FD->text("page", "px").'] [max. '.$config_arr['file_size'].' '.$FD->text("page", "kb").']
                                     </font>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "name").':<br />
+                                    <font class="small">'.$FD->text("page", "name_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="name" value="'.$_POST['name'].'" size="50" maxlength="100">
@@ -144,8 +144,8 @@ echo'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "link").':<br />
+                                    <font class="small">'.$FD->text("page", "link_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="link" size="50" value="http://" maxlength="100">
@@ -153,8 +153,8 @@ echo'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").': <font class="small">'.$FD->text("page", "'").'</font><br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "desc").': <font class="small">'.$FD->text("admin", "optional").'</font><br />
+                                    <font class="small">'.$FD->text("page", "desc_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     '.create_editor('description', $_POST['description'], 330, 130).'
@@ -162,8 +162,8 @@ echo'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br />
-                                    <font class="small">'.$FD->text("page", "'").'</font>
+                                    '.$FD->text("page", "perm").':<br />
+                                    <font class="small">'.$FD->text("page", "perm_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="checkbox" value="1" name="permanent" '.$_POST['permanent'].'>
@@ -172,7 +172,7 @@ echo'
 
                             <tr>
                                 <td align="left" colspan="2">
-                                    <input class="button" type="submit" value="'.$FD->text("page", "'").'">
+                                    <input class="button" type="submit" value="'.$FD->text("page", "add").'">
                                 </td>
                             </tr>
                         </table>

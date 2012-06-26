@@ -73,7 +73,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("page", "'").' Einloggen
+                                        '.$FD->text("admin", "button_arrow").' Einloggen
                                     </button>
                                 </td>
                             </tr>

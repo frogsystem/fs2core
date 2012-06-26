@@ -35,7 +35,7 @@ if (
 						'".$_POST['cat_user']."'
 					)
 	", $FD->sql()->conn() );
-    $message = $FD->text("page", "'");
+    $message = $FD->text("page", "new_cat_added");
     $id = mysql_insert_id ( $FD->sql()->conn() );
 
 	// Image-Operations
@@ -45,7 +45,7 @@ if (
     }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -88,14 +88,14 @@ elseif (
                  	WHERE
 					 	cat_id 				= '".$_POST['cat_id']."'
 	", $FD->sql()->conn() );
-    $message = $FD->text("page", "'");
+    $message = $FD->text("admin", "changes_saved");
 
 	// Image-Operations
     if ( $_POST['cat_pic_delete'] == 1 ) {
       if ( image_delete ( 'images/cat/', 'articles_'.$_POST['cat_id'] ) ) {
-        $message .= '<br>' . $FD->text("page", "'");
+        $message .= '<br>' . $FD->text("admin", "image_deleted");
       } else {
-		$message .= '<br>' . $FD->text("page", "'");
+		$message .= '<br>' . $FD->text("admin", "image_not_deleted");
       }
     } elseif ( $_FILES['cat_pic']['name'] != '' ) {
       image_delete ( 'images/cat/', 'articles_'.$_POST['cat_id'] );
@@ -104,7 +104,7 @@ elseif (
     }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -141,19 +141,19 @@ elseif (
                  		WHERE
 						 	cat_id 				= '".$_POST['cat_id']."'
 		", $FD->sql()->conn() );
-		$message = $FD->text("page", "'");
+		$message = $FD->text("page", "cat_deleted");
 
 		// Delete Category Image
 		if ( image_delete ( 'images/cat/', 'articles_'.$_POST['cat_id'] ) ) {
-			$message .= '<br>' . $FD->text("page", "'");
+			$message .= '<br>' . $FD->text("admin", "image_deleted");
 		}
 
     } else {
-        $message = $FD->text("page", "'");
+        $message = $FD->text("page", "cat_not_deleted");
     }
 
     // Display Message
-    systext ( $message, $FD->text("page", "'") );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -181,7 +181,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 		// Display Error Messages
 		if ( isset ( $_POST['sended'] ) ) {
             $cat_arr = getfrompost ( $cat_arr );
-            systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+            systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
 		}
 
 		// Security-Functions
@@ -209,11 +209,11 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						<input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'">
 						<input type="hidden" name="go" value="articles_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
+						    <tr><td class="line" colspan="2">'.$FD->text("page", "edit_cat_title").'</td></tr>
        						<tr>
            						<td class="config">
-               						'.$FD->text("page", "'").':<br>
-               						<span class="small">'.$FD->text("page", "'").'</span>
+               						'.$FD->text("page", "edit_cat_name").':<br>
+               						<span class="small">'.$FD->text("page", "edit_cat_name_desc").'</span>
            						</td>
            						<td>
              						<input class="text" name="cat_name" size="40" maxlength="100" value="'.$cat_arr['cat_name'].'">
@@ -221,8 +221,8 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
        						</tr>
                             <tr>
                                 <td class="config">
-                                    '.$FD->text("page", "'").':<br>
-                                    <span class="small">'.$FD->text("page", "'").'</span>
+                                    '.$FD->text("page", "edit_cat_date").':<br>
+                                    <span class="small">'.$FD->text("page", "edit_cat_date_desc").'</span>
                                 </td>
                                 <td class="config" valign="top">
 									<span class="small">
@@ -230,25 +230,25 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
                                     	<input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                     	<input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
 									</span>
-									'.js_nowbutton ( $nowbutton_array, $FD->text("page", "'") ).'
+									'.js_nowbutton ( $nowbutton_array, $FD->text("admin", "today") ).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "'").':<br>
-                                    <span class="small">'.$FD->text("page", "'").'</span>
+                                    '.$FD->text("page", "edit_cat_by").':<br>
+                                    <span class="small">'.$FD->text("page", "edit_cat_by_desc").'</span>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="cat_username" value="'.$cat_arr['cat_username'].'">
                                     <input type="hidden" id="userid" name="cat_user" value="'.$cat_arr['cat_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("page", "'").'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("admin", "change_button").'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-       						<tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
+       						<tr><td class="line" colspan="2">'.$FD->text("page", "edit_cat_title_optional").'</td></tr>
        						<tr>
            						<td class="config">
-             						'.$FD->text("page", "'").': <span class="small">'.$FD->text("page", "'").'</span><br><br>
+             						'.$FD->text("page", "edit_cat_image").': <span class="small">'.$FD->text("admin", "optional").'</span><br><br>
 	 	';
 		if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
 		    echo '
@@ -256,16 +256,16 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 		    						<table>
 										<tr>
 											<td>
-												<input type="checkbox" name="cat_pic_delete" id="cpd" value="1" onClick=\'delalert ("cpd", "'.$FD->text("page", "'").'")\'>
+												<input type="checkbox" name="cat_pic_delete" id="cpd" value="1" onClick=\'delalert ("cpd", "'.$FD->text("admin", "js_delete_image").'")\'>
 											</td>
 											<td>
-												<span class="small"><b>'.$FD->text("page", "'").'</b></span>
+												<span class="small"><b>'.$FD->text("admin", "delete_image").'</b></span>
 											</td>
 										</tr>
 									</table>
 			';
 		} else {
-		    echo '<span class="small">'.$FD->text("page", "'").'</span><br>';
+		    echo '<span class="small">'.$FD->text("admin", "no_image").'</span><br>';
 		}
 		echo'                   	<br>
 								</td>
@@ -273,18 +273,18 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 									<input name="cat_pic" type="file" size="40" class="text"><br>
 		';
 		if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
-			echo '<span class="small"><b>'.$FD->text("page", "'").'</b></span><br>';
+			echo '<span class="small"><b>'.$FD->text("admin", "replace_img").'</b></span><br>';
 		}
 		echo'
 									<span class="small">
-										['.$FD->text("page", "'").' '.$articles_config_arr['cat_pic_x'].' '.$FD->text("page", "'").' '.$articles_config_arr['cat_pic_y'].' '.$FD->text("page", "'").'] ['.$FD->text("page", "'").' '.$articles_config_arr['cat_pic_size'].' '.$FD->text("page", "'").']
+										['.$FD->text("admin", "max").' '.$articles_config_arr['cat_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$articles_config_arr['cat_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$articles_config_arr['cat_pic_size'].' '.$FD->text("admin", "kib").']
 									</span>
 								</td>
 							</tr>
 							<tr align="left" valign="top">
 								<td class="config">
-            						'.$FD->text("page", "'").': <span class="small">'.$FD->text("page", "'").'</span><br>
-									<span class="small">'.$FD->text("page", "'").'</span>
+            						'.$FD->text("page", "edit_cat_desc").': <span class="small">'.$FD->text("admin", "optional").'</span><br>
+									<span class="small">'.$FD->text("page", "edit_cat_desc_desc").'</span>
 								</td>
 								<td class="config">
 									<textarea class="text" name="cat_description" rows="5" cols="50" wrap="virtual">'.$cat_arr['cat_description'].'</textarea>
@@ -294,7 +294,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 							<tr>
 								<td class="buttontd" colspan="2">
 									<button class="button_new" type="submit">
-										'.$FD->text("page", "'").' '.$FD->text("page", "'").'
+										'.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
 									</button>
 								</td>
 							</tr>
@@ -322,10 +322,10 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 						<input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'">
 						<input type="hidden" name="go" value="articles_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
+							<tr><td class="line" colspan="2">'.$FD->text("page", "delete_cat_title").'</td></tr>
 							<tr>
 								<td class="config" style="width: 100%;">
-									'.$FD->text("page", "'").': "'.$cat_arr['cat_name'].'"
+									'.$FD->text("page", "delete_cat_question").': "'.$cat_arr['cat_name'].'"
 								</td>
 								<td class="config right"">
 								    '.get_yesno_table ( 'cat_delete' ).'
@@ -333,7 +333,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 							</tr>
 							<tr>
 								<td class="config">
-									'.$FD->text("page", "'").':
+									'.$FD->text("page", "delete_cat_move_to").':
 								</td>
 								<td style="text-align: right;">
 									<select class="text" name="cat_move_to" size="1">
@@ -351,7 +351,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 							<tr>
 								<td class="buttontd" colspan="2">
 									<button class="button_new" type="submit">
-										'.$FD->text("page", "'").' '.$FD->text("page", "'").'
+										'.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
 									</button>
 								</td>
 							</tr>
@@ -362,12 +362,12 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 
 		// Last Category
 		else {
-		    systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+		    systext ( $FD->text("page", "delete_cat_last"), $FD->text("admin", "error"), TRUE );
 		    echo '
 						<table class="configtable" cellpadding="4" cellspacing="0">
        						<tr>
            						<td class="config">
-									<a class="link_button" href="?go=articles_cat">'.$FD->text("page", "'").' '.$FD->text("page", "'").'</a>
+									<a class="link_button" href="?go=articles_cat">'.$FD->text("admin", "button_arrow").' '.$FD->text("page", "delete_back_link").'</a>
 								</td>
 							</tr>
 						</table>';
@@ -388,7 +388,7 @@ elseif ( $showdefault == TRUE )
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
 		$_POST['cat_name'] = killhtml ( $_POST['cat_name'] );
-		systext ( $FD->text("page", "'"), $FD->text("page", "'"), TRUE );
+		systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
 	}
 
     // Display Add-Form
@@ -398,13 +398,13 @@ elseif ( $showdefault == TRUE )
 					    <input type="hidden" name="cat_action" value="add">
 						<input type="hidden" name="go" value="articles_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="2">'.$FD->text("page", "'").'</td></tr>
+						    <tr><td class="line" colspan="2">'.$FD->text("page", "new_cat_title").'</td></tr>
 						    <tr>
 								<td class="config">
-								    <span class="small">'.$FD->text("page", "'").':</span>
+								    <span class="small">'.$FD->text("page", "new_cat_name").':</span>
 								</td>
 								<td class="config">
-								    <span class="small">'.$FD->text("page", "'").': '.$FD->text("page", "'").'</span>
+								    <span class="small">'.$FD->text("page", "new_cat_image").': '.$FD->text("admin", "optional").'</span>
 								</td>
 							</tr>
 						    <tr valign="top">
@@ -414,7 +414,7 @@ elseif ( $showdefault == TRUE )
 								<td class="config">
 									<input name="cat_pic" type="file" size="30" class="text"><br>
 									<span class="small">
-										['.$FD->text("page", "'").' '.$articles_config_arr['cat_pic_x'].' '.$FD->text("page", "'").' '.$articles_config_arr['cat_pic_y'].' '.$FD->text("page", "'").'] ['.$FD->text("page", "'").' '.$articles_config_arr['cat_pic_size'].' '.$FD->text("page", "'").']
+										['.$FD->text("admin", "max").' '.$articles_config_arr['cat_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$articles_config_arr['cat_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$articles_config_arr['cat_pic_size'].' '.$FD->text("admin", "kib").']
 									</span>
 								</td>
 							</tr>
@@ -422,7 +422,7 @@ elseif ( $showdefault == TRUE )
 							<tr>
 								<td class="buttontd" colspan="2">
 									<button class="button_new" type="submit">
-										'.$FD->text("page", "'").' '.$FD->text("page", "'").'
+										'.$FD->text("admin", "button_arrow").' '.$FD->text("page", "new_cat_add_button").'
 									</button>
 								</td>
 							</tr>
@@ -437,7 +437,7 @@ elseif ( $showdefault == TRUE )
 					<form action="" method="post">
 						<input type="hidden" name="go" value="articles_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="3">'.$FD->text("page", "'").'</td></tr>
+						    <tr><td class="line" colspan="3">'.$FD->text("page", "list_cat_title").'</td></tr>
 	';
 
 	// Get Categories from DB
@@ -462,7 +462,7 @@ elseif ( $showdefault == TRUE )
 		echo '
 								</td>
 								<td class="config" style="width: 100%;">
-									'.$cat_arr['cat_name'].' <span class="small">('.$FD->text("page", "'").' <b>'.$cat_arr['cat_user'].'</b> '.$FD->text("page", "'").' <b>'.date ( $global_config_arr['date'], $cat_arr['cat_date'] ).'</b>)</span><br>
+									'.$cat_arr['cat_name'].' <span class="small">('.$FD->text("page", "list_cat_created_by").' <b>'.$cat_arr['cat_user'].'</b> '.$FD->text("page", "list_cat_created_on").' <b>'.date ( $global_config_arr['date'], $cat_arr['cat_date'] ).'</b>)</span><br>
 									<span class="small">'.$cat_arr['cat_description'].'</span>
 								</td>
 								<td class="config" style="text-align: center; vertical-align: middle;">
@@ -480,8 +480,8 @@ elseif ( $showdefault == TRUE )
 							<tr>
 								<td style="text-align:right;" colspan="3">
 									<select name="cat_action" size="1">
-										<option value="edit">'.$FD->text("page", "'").'</option>
-										<option value="delete">'.$FD->text("page", "'").'</option>
+										<option value="edit">'.$FD->text("admin", "selection_edit").'</option>
+										<option value="delete">'.$FD->text("admin", "selection_del").'</option>
 									</select>
 								</td>
 							</tr>
@@ -489,7 +489,7 @@ elseif ( $showdefault == TRUE )
 							<tr>
 								<td class="buttontd" colspan="3">
 									<button class="button_new" type="submit">
-										'.$FD->text("page", "'").' '.$FD->text("page", "'").'
+										'.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
 									</button>
 								</td>
 							</tr>

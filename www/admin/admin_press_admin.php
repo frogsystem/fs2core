@@ -142,7 +142,7 @@ elseif ($_POST['entry_action'] == 'edit'
 
     //Error Message
     if ($_POST['sended'] == 'edit') {
-        systext ($FD->text("page", "'"));
+        systext ($FD->text("admin", "note_notfilled"));
 
         $entry_arr['title'] = killhtml($_POST['title']);
         $entry_arr['type'] = $_POST['entry_is'];
@@ -262,7 +262,7 @@ elseif ($_POST['entry_action'] == 'delete'
                         <input type="hidden" value="delete" name="sended">
                         <input type="hidden" value="'.$entry_arr['id'].'" name="entry_id">
                         <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>'.$FD->text("page", "'").': '.$entry_arr['type_text'].'</h3><hr></td></tr>
+                            <tr><td colspan="2"><h3>'.$FD->text("page", "delpage").': '.$entry_arr['type_text'].'</h3><hr></td></tr>
 
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2" style="padding:0px; margin:0px;">
@@ -290,14 +290,14 @@ elseif ($_POST['entry_action'] == 'delete'
                             <tr><td>&nbsp;</td></tr>
                             <tr valign="top">
                                 <td width="50%" class="config">
-                                    '.$FD->text("page", "'").'
+                                    '.$FD->text("page", "delpage_question").'
                                 </td>
                                 <td width="50%" align="right">
                                     <select name="delete_press_admin" size="1">
-                                        <option value="0">'.$FD->text("page", "'").'</option>
-                                        <option value="1">'.$FD->text("page", "'").'</option>
+                                        <option value="0">'.$FD->text("page", "delnotconfirm").'</option>
+                                        <option value="1">'.$FD->text("page", "delconfirm").'</option>
                                     </select>
-                                    <input type="submit" value="'.$FD->text("page", "'").'">
+                                    <input type="submit" value="'.$FD->text("admin", "do_button").'">
                                 </td>
                             </tr>
                             <tr><td>&nbsp;</td></tr>
@@ -484,10 +484,10 @@ if (!isset($_POST['entry_id']))
                             <tr>
                                 <td class="config" colspan="4" style="text-align:right;">
                                    <select class="select_type" name="entry_action" size="1">
-                                     <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
-                                     <option class="select_red select_one" value="delete">'.$FD->text("page", "'").'</option>
+                                     <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                     <option class="select_red select_one" value="delete">'.$FD->text("admin", "selection_del").'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$FD->text("page", "'").'">
+                                   <input class="button" type="submit" value="'.$FD->text("admin", "do_button").'">
                                 </td>
                             </tr>
                         </tbody>

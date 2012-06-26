@@ -459,7 +459,7 @@ else
                             <tr style="display:none">
                                 <td colspan="5">
                                     <select class="select_type" name="poll_action" size="1">
-                                        <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
+                                        <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
                                     </select>
                                 </td>
                             </tr>

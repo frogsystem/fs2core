@@ -200,7 +200,7 @@ elseif ($_POST['press_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Einleitung: <font class="small">'.$FD->text("page", "'").'</font><br />
+                                    Einleitung: <font class="small">'.$FD->text("admin", "optional").'</font><br />
                                     <font class="small">Eine kurze Einleitung zum Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
@@ -218,7 +218,7 @@ elseif ($_POST['press_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Anmerkungen: <font class="small">'.$FD->text("page", "'").'</font><br />
+                                    Anmerkungen: <font class="small">'.$FD->text("admin", "optional").'</font><br />
                                     <font class="small">Anmerkungen zum Pressebericht.<br />
                                     (z.B. die Wertung eines Tests)</font>
                                 </td>
@@ -356,7 +356,7 @@ elseif ($_POST['press_action'] == 'delete'
                                         <option value="0">Pressebericht nicht l&ouml;schen</option>
                                         <option value="1">Pressebericht l&ouml;schen</option>
                                     </select>
-                                    <input type="submit" value="'.$FD->text("page", "'").'">
+                                    <input type="submit" value="'.$FD->text("admin", "do_button").'">
                                 </td>
                             </tr>
                             <tr><td>&nbsp;</td></tr>
@@ -582,10 +582,10 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                             <tr>
                                 <td class="right" colspan="4">
                                    <select class="select_type" name="press_action" size="1">
-                                     <option class="select_one" value="edit">'.$FD->text("page", "'").'</option>
-                                     <option class="select_red select_one" value="delete">'.$FD->text("page", "'").'</option>
+                                     <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                     <option class="select_red select_one" value="delete">'.$FD->text("admin", "selection_del").'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$FD->text("page", "'").'">
+                                   <input class="button" type="submit" value="'.$FD->text("admin", "do_button").'">
                                 </td>
                             </tr>
                         </table>
@@ -594,11 +594,11 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
     }
     else
     {
-        echo $FD->text("page", "'");
+        echo $FD->text("page", "note_noreleases");
     }
 }
 elseif (mysql_num_rows($index) <= 0)
 {
-    echo $FD->text("page", "'");
+    echo $FD->text("page", "note_noreleases");
 }
 ?>
