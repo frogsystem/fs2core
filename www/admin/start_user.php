@@ -78,22 +78,22 @@ $super_admin = stripslashes ( mysql_result ( $index, 0, 'user_name' ) );
 
 echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">Informationen &amp; Statistik</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text('admin', 'informations_and_statistics').'</td></tr>
                             <tr>
-                                <td class="configthin" width="200">Registrierte Benutzer:</td>
+                                <td class="configthin" width="200">'.$FD->text('page', 'registered_users').':</td>
                                 <td class="configthin"><b>'.$num_user .'</b></td>
                             </tr>
                             <tr>
-                                <td class="configthin">Neuester Benutzer:</td>
+                                <td class="configthin">'.$FD->text('page', 'newest_user').':</td>
                                 <td class="configthin"><b>'.$last_user .'</b></td>
                             </tr>
                             <tr>
-                                <td class="configthin">Anzahl Mitarbeiter:</td>
+                                <td class="configthin">'.$FD->text('page', 'number_of_staff_members').':</td>
                                 <td class="configthin"><b>'.$num_staff .'</b></td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="configthin">Anzahl Gruppen:</td>
+                                <td class="configthin">'.$FD->text('page', 'number_of_groups').':</td>
                                 <td class="configthin"><b>'.$num_groups .'</b></td>
                             </tr>
 ';
@@ -101,8 +101,8 @@ echo '
 if ( $num_groups  > 0 && $temp_biggest_exists  > 0 ) {
     echo '
                             <tr>
-                                <td class="configthin">Gr&ouml;&szlig;te Gruppe:</td>
-                                <td class="configthin"><b>'.$biggest_group .'</b> mit <b>'.$biggest_num.'</b> Mitarbeiter(n)</td>
+                                <td class="configthin">'.$FD->text('page', 'biggest_group').':</td>
+                                <td class="configthin"><b>'.$biggest_group .'</b> '.$FD->text('admin', 'with').' <b>'.$biggest_num.'</b> '.$FD->text('page', 'staff_member_s').'</td>
                             </tr>
     ';
 }
@@ -110,11 +110,11 @@ if ( $num_groups  > 0 && $temp_biggest_exists  > 0 ) {
 echo '
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="configthin">Anzahl Administratoren:</td>
+                                <td class="configthin">'.$FD->text('page', 'number_of_admins').':</td>
                                 <td class="configthin"><b>'.$num_admin .'</b></td>
                             </tr>
                             <tr>
-                                <td class="configthin">Super-Administrator:</td>
+                                <td class="configthin">'.$FD->text('page', 'name_of_superadmin').':</td>
                                 <td class="configthin"><b>'.$super_admin .'</b></td>
                             </tr>
                         </table>

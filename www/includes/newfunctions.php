@@ -4,6 +4,18 @@
 //// returns string representation of           ////
 //// any http statuscode for use in http header ////
 ////////////////////////////////////////////////////
+function sp_string($number, $singular, $plural) {
+    if ($number == 1)
+        return $singular;
+        
+    return $plural;
+}
+
+
+////////////////////////////////////////////////////
+//// returns string representation of           ////
+//// any http statuscode for use in http header ////
+////////////////////////////////////////////////////
 function http_response_text($code) {
 
     $status = array(
@@ -175,9 +187,9 @@ function cut_string ($string, $maxlength, $replacement)
 	return $string;
 }
 
-///////////////////////////////////////////////
-//// Short string by cutting in the middle ////
-///////////////////////////////////////////////
+//////////////////////////
+//// highlight a word ////
+//////////////////////////
 function highlight ($word, $text, $class = 'red', $style = '')
 {
     $style = empty($style) ? '' : "style=\"$style\"";
