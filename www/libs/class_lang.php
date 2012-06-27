@@ -50,12 +50,16 @@ class lang
         preg_match_all('/#@([-a-z0-9\/_]+)\\n/is', $data, $imports, PREG_SET_ORDER);
         foreach ($imports as $import) {
             $importPath = FS2_ROOT_PATH . 'lang/' . $this->local . '/' . $import[1] . '.txt';
-            $importData = file_get_contents($importPath);
-            $importData = str_replace(array("\r\n", "\r"), "\n", $importData); // unify linebreaks
-            $this->import($importData);
-            $replace = '/#@'.preg_quote($import[1], '/').'/i';
-            $data = preg_replace($replace, $importData, $data);
-           // replace all imports recursive
+            $importData = @file_get_contents($importPath);
+            
+            // getting file content ok
+            if ($importData != false) {
+                $importData = str_replace(array("\r\n", "\r"), "\n", $importData); // unify linebreaks
+                $this->import($importData);
+                $replace = '/#@'.preg_quote($import[1], '/').'/i';
+                $data = preg_replace($replace, $importData, $data);
+               // replace all imports recursive
+            }
         }
         unset($imports);
     }
