@@ -59,6 +59,8 @@ function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = 'widt
 
 function get_yesno_table ( $NAME )
 {
+  global $FD;
+
         return '
             <table width="100%" cellpadding="4" cellspacing="0">
                 <tr class="bottom pointer" id="yes">
