@@ -113,7 +113,7 @@ class GlobalData {
             Throw Exception('Invalid Call of method "setConfig"');
         }
 
-        //TODO backwards update $global_config_att
+        //TODO backwards update $global_config_arr
         $this->setOldArray();
     }
 
