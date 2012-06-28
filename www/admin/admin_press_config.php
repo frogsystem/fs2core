@@ -15,7 +15,7 @@ if (isset($_POST['sended'])
     $_POST['order_type'] = savesql($_POST['order_type']);
     $_POST['order_by'] = savesql($_POST['order_by']);
 
-    mysql_query('UPDATE '.$global_config_arr['pref']."press_config
+    mysql_query('UPDATE '.$FD->config('pref')."press_config
                  SET game_navi = '$_POST[game_navi]',
                      cat_navi = '$_POST[cat_navi]',
                      lang_navi = '$_POST[lang_navi]',
@@ -34,7 +34,7 @@ if (isset($_POST['sended'])
 
 if(true)
 {
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'press_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'press_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     if (isset($_POST['sended']))

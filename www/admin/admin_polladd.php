@@ -4,7 +4,7 @@
 //// Umfrage hinzufügen ////
 ////////////////////////////
 
-if ($_POST['polladd'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1])
+if (isset($_POST['polladd']) && isset($_POST['frage']) && isset($_POST['ant'][0]) && isset($_POST['ant'][1]))
 {
     $_POST['frage'] = savesql($_POST['frage']);
     settype($_POST['type'], 'integer');
@@ -19,19 +19,19 @@ if ($_POST['polladd'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1]
     $_POST['type'] = ($_POST['type'] == 1) ? 1 : 0;
 
     // Umfrage in die DB eintragen
-    mysql_query('INSERT INTO '.$global_config_arr['pref']."poll (poll_quest, poll_start, poll_end, poll_type)
+    mysql_query('INSERT INTO '.$FD->config('pref')."poll (poll_quest, poll_start, poll_end, poll_type)
                  VALUES ('".$_POST['frage']."',
                          '$adate',
                          '$edate',
                          '".$_POST['type']."');", $FD->sql()->conn() );
 
     // Antworten in die DB eintragen
-    $index = mysql_query('SELECT poll_id FROM '.$global_config_arr['pref']."poll WHERE poll_quest = '".$_POST['frage']."'");
+    $index = mysql_query('SELECT poll_id FROM '.$FD->config('pref')."poll WHERE poll_quest = '".$_POST['frage']."'");
     $id = mysql_result($index, 0, 'poll_id');
 
     for ($i=0; $i<count($_POST['ant']); $i++)
     {
-        mysql_query('INSERT INTO '.$global_config_arr['pref']."poll_answers (poll_id, answer)
+        mysql_query('INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer)
                      VALUES ('$id',
                              '".$_POST['ant'][$i]."');", $FD->sql()->conn() );
     }
@@ -83,6 +83,10 @@ if(true)
     if (!isset($_POST['options']))
     {
         $_POST['options'] = 2;
+    }
+    if (!isset($_POST['optionsadd']))
+    {
+      $_POST['optionsadd'] = '';
     }
     $_POST['options'] += $_POST['optionsadd'];
 
@@ -217,7 +221,7 @@ if(true)
     for ($i=1; $i<$_POST['options']+1; $i++)
     {
         $j = $i - 1;
-        if ($_POST['ant'][$j])
+        if (isset($_POST['ant'][$j]))
         {
             echo'
                             <tr>

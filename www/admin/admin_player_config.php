@@ -5,25 +5,25 @@
 
 if (
 		isset($_POST['cfg_videobgcolor']) && $_POST['cfg_videobgcolor'] != ''
-		&& $_POST['cfg_bgcolor2'] && $_POST['cfg_bgcolor2'] != ''
-		&& $_POST['cfg_bgcolor'] && $_POST['cfg_bgcolor'] != ''
-		&& $_POST['cfg_showplayer'] && $_POST['cfg_showplayer'] != ''
-		&& $_POST['cfg_showloading'] && $_POST['cfg_showloading'] != ''
-		&& $_POST['cfg_playercolor'] && $_POST['cfg_playercolor'] != ''
-		&& $_POST['cfg_loadingcolor'] && $_POST['cfg_loadingcolor'] != ''
-		&& $_POST['cfg_buttoncolor'] && $_POST['cfg_buttoncolor'] != ''
-		&& $_POST['cfg_buttonovercolor'] && $_POST['cfg_buttonovercolor'] != ''
-		&& $_POST['cfg_slidercolor1'] && $_POST['cfg_slidercolor1'] != ''
-		&& $_POST['cfg_slidercolor2'] && $_POST['cfg_slidercolor2'] != ''
-		&& $_POST['cfg_sliderovercolor'] && $_POST['cfg_sliderovercolor'] != ''
-		&& $_POST['cfg_buffercolor'] && $_POST['cfg_buffercolor'] != ''
-		&& $_POST['cfg_bufferbgcolor'] && $_POST['cfg_bufferbgcolor'] != ''
-		&& $_POST['cfg_titlecolor'] && $_POST['cfg_titlecolor'] != ''
-		&& $_POST['cfg_onclick'] && $_POST['cfg_onclick'] != ''
-		&& $_POST['cfg_ondoubleclick'] && $_POST['cfg_ondoubleclick'] != ''
-		&& $_POST['cfg_showmouse'] && $_POST['cfg_showmouse'] != ''
-		&& $_POST['cfg_iconplaycolor'] && $_POST['cfg_iconplaycolor'] != ''
-		&& $_POST['cfg_iconplaybgcolor'] && $_POST['cfg_iconplaybgcolor'] != ''
+		&& isset($_POST['cfg_bgcolor2']) && $_POST['cfg_bgcolor2'] != ''
+		&& isset($_POST['cfg_bgcolor']) && $_POST['cfg_bgcolor'] != ''
+		&& isset($_POST['cfg_showplayer']) && $_POST['cfg_showplayer'] != ''
+		&& isset($_POST['cfg_showloading']) && $_POST['cfg_showloading'] != ''
+		&& isset($_POST['cfg_playercolor']) && $_POST['cfg_playercolor'] != ''
+		&& isset($_POST['cfg_loadingcolor']) && $_POST['cfg_loadingcolor'] != ''
+		&& isset($_POST['cfg_buttoncolor']) && $_POST['cfg_buttoncolor'] != ''
+		&& isset($_POST['cfg_buttonovercolor']) && $_POST['cfg_buttonovercolor'] != ''
+		&& isset($_POST['cfg_slidercolor1']) && $_POST['cfg_slidercolor1'] != ''
+		&& isset($_POST['cfg_slidercolor2']) && $_POST['cfg_slidercolor2'] != ''
+		&& isset($_POST['cfg_sliderovercolor']) && $_POST['cfg_sliderovercolor'] != ''
+		&& isset($_POST['cfg_buffercolor']) && $_POST['cfg_buffercolor'] != ''
+		&& isset($_POST['cfg_bufferbgcolor']) && $_POST['cfg_bufferbgcolor'] != ''
+		&& isset($_POST['cfg_titlecolor']) && $_POST['cfg_titlecolor'] != ''
+		&& isset($_POST['cfg_onclick']) && $_POST['cfg_onclick'] != ''
+		&& isset($_POST['cfg_ondoubleclick']) && $_POST['cfg_ondoubleclick'] != ''
+		&& isset($_POST['cfg_showmouse']) && $_POST['cfg_showmouse'] != ''
+		&& isset($_POST['cfg_iconplaycolor']) && $_POST['cfg_iconplaycolor'] != ''
+		&& isset($_POST['cfg_iconplaybgcolor']) && $_POST['cfg_iconplaybgcolor'] != ''
 
 		&& isset ( $_POST['cfg_player_x'] ) && $_POST['cfg_player_x'] >= 0
 		&& isset ( $_POST['cfg_player_y'] ) && $_POST['cfg_player_y'] >= 0
@@ -88,7 +88,7 @@ if (
 
 	// MySQL-Queries
     mysql_query ( "
-					UPDATE `".$global_config_arr['pref']."player_config`
+					UPDATE `".$FD->config('pref')."player_config`
 					SET
 						`cfg_player_x` = '".$_POST['cfg_player_x']."',
 						`cfg_player_y` = '".$_POST['cfg_player_y']."',
@@ -141,7 +141,7 @@ if (
 	", $FD->sql()->conn() );
 
 	// system messages
-    systext($FD->text("admin", "changes_saved"), $FD->text("admin", "info"));
+    systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'));
 
     // Unset Vars
     unset ( $_POST );
@@ -155,13 +155,13 @@ if ( TRUE )
 {
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
+		systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
 
 	// Load Data from DB into Post
 	} else {
 	    $index = mysql_query ( '
 								SELECT *
-								FROM '.$global_config_arr['pref']."player_config
+								FROM '.$FD->config('pref')."player_config
 								WHERE `id` = '1'
 		", $FD->sql()->conn() );
 	    $config_arr = mysql_fetch_assoc($index);
@@ -191,8 +191,8 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text" size="5" name="cfg_player_x" value="'.$_POST['cfg_player_x'].'" maxlength="4">
-                                    '.$FD->text("admin", "resolution_x").'
-                                    <input class="text" size="5" name="cfg_player_y" value="'.$_POST['cfg_player_y'].'" maxlength="4"> '.$FD->text("admin", "pixel").'
+                                    '.$FD->text('admin', 'resolution_x').'
+                                    <input class="text" size="5" name="cfg_player_y" value="'.$_POST['cfg_player_y'].'" maxlength="4"> '.$FD->text('admin', 'pixel').'
                                 </td>
                             </tr>
        						<tr>

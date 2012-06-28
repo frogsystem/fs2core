@@ -2,29 +2,29 @@
 //////////////////////////////
 /// Config laden /////////////
 //////////////////////////////
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'partner_config', $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'partner_config', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 if ($config_arr['small_allow'] == 0) {
     $config_arr['small_allow_bool'] = true;
-    $config_arr['small_allow_text'] = $FD->text("page", "exact");
+    $config_arr['small_allow_text'] = $FD->text('page', 'exact');
 } else {
     $config_arr['small_allow_bool'] = false;
-    $config_arr['small_allow_text'] = $FD->text("page", "max");
+    $config_arr['small_allow_text'] = $FD->text('page', 'max');
 }
 if ($config_arr['big_allow'] == 0) {
     $config_arr['big_allow_bool'] = true;
-    $config_arr['big_allow_text'] = $FD->text("page", "exact");
+    $config_arr['big_allow_text'] = $FD->text('page', 'exact');
 } else {
     $config_arr['big_allow_bool'] = false;
-    $config_arr['big_allow_text'] = $FD->text("page", "max");
+    $config_arr['big_allow_text'] = $FD->text('page', 'max');
 }
 
 
 //////////////////////////////
 /// Partnerseite editieren ///
 //////////////////////////////
-if (($_POST['name'] AND $_POST['name'] != '')
-    && ($_POST['link'] AND $_POST['link'] != '')
+if ((isset($_POST['name']) AND $_POST['name'] != '')
+    && (isset($_POST['link']) AND $_POST['link'] != '')
     && $_POST['partner_action'] == 'edit'
     && $_POST['sended'] == 'edit'
     && isset($_POST['partner_id'])
@@ -38,7 +38,7 @@ if (($_POST['name'] AND $_POST['name'] != '')
     settype($_POST['partner_id'], 'integer');
     $_POST['permanent'] = isset($_POST['permanent']) ? 1 : 0;
 
-    $update = 'UPDATE '.$global_config_arr['pref']."partner
+    $update = 'UPDATE '.$FD->config('pref')."partner
                SET partner_name = '$_POST[name]',
                    partner_link = '$_POST[link]',
                    partner_beschreibung = '$_POST[description]',
@@ -49,16 +49,16 @@ if (($_POST['name'] AND $_POST['name'] != '')
     if ($_FILES['bild_small']['name'] != '')
     {
       $upload = upload_img($_FILES['bild_small'], 'images/partner/', $_POST['partner_id'].'_small', $config_arr['file_size']*1024, $config_arr['small_x'], $config_arr['small_y'], 100, $config_arr['small_allow_bool']);
-      $message .= $FD->text("page", "small_pic") . ': ' . upload_img_notice($upload) . '<br />';
+      $message .= $FD->text('page', 'small_pic') . ': ' . upload_img_notice($upload) . '<br />';
     }
 
     if ($_FILES['bild_big']['name'] != '')
     {
       $upload = upload_img($_FILES['bild_big'], 'images/partner/', $_POST['partner_id'].'_big', $config_arr['file_size']*1024, $config_arr['big_x'], $config_arr['big_y'], 100, $config_arr['big_allow_bool']);
-      $message .= $FD->text("page", "big_pic") . ': ' . upload_img_notice($upload) . '<br />';
+      $message .= $FD->text('page', 'big_pic') . ': ' . upload_img_notice($upload) . '<br />';
     }
 
-    $message .= $FD->text("page", "note_edited");
+    $message .= $FD->text('page', 'note_edited');
     systext($message);
 
     unset($message);
@@ -71,7 +71,8 @@ if (($_POST['name'] AND $_POST['name'] != '')
 //////////////////////////////
 /// Partnerseite löschen /////
 //////////////////////////////
-elseif ($_POST['partner_action'] == 'delete'
+elseif (isset($_POST['partner_action'])
+    && $_POST['partner_action'] == 'delete'
     && $_POST['sended'] == 'delete'
     && isset($_POST['partner_id'])
    )
@@ -80,14 +81,14 @@ elseif ($_POST['partner_action'] == 'delete'
 
     if ($_POST['delete_partner'])   // Partnerseite löschen
     {
-        mysql_query('DELETE FROM '.$global_config_arr['pref']."partner WHERE partner_id = '$_POST[partner_id]'", $FD->sql()->conn() );
+        mysql_query('DELETE FROM '.$FD->config('pref')."partner WHERE partner_id = '$_POST[partner_id]'", $FD->sql()->conn() );
         image_delete('images/partner/', $_POST['partner_id'].'_small');
         image_delete('images/partner/', $_POST['partner_id'].'_big');
-        systext($FD->text("page", "note_deleted"));
+        systext($FD->text('page', 'note_deleted'));
     }
     else
     {
-        systext($FD->text("page", "note_notdeleted"));
+        systext($FD->text('page', 'note_notdeleted'));
     }
 
     unset($_POST['delete_partner']);
@@ -100,14 +101,15 @@ elseif ($_POST['partner_action'] == 'delete'
 //////////////////////////////
 /// Partnerseite anzeigen ////
 //////////////////////////////
-elseif ($_POST['partner_action'] == 'edit'
+elseif (isset($_POST['partner_action'])
+        && $_POST['partner_action'] == 'edit'
         && isset($_POST['partner_id'])
        )
 {
     $_POST['partner_id'] = $_POST['partner_id'][0];
     settype($_POST['partner_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."partner WHERE partner_id = $_POST[partner_id]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."partner WHERE partner_id = $_POST[partner_id]", $FD->sql()->conn() );
     $partner_arr = mysql_fetch_assoc($index);
 
     $partner_arr['partner_name'] = killhtml($partner_arr['partner_name']);
@@ -118,7 +120,7 @@ elseif ($_POST['partner_action'] == 'edit'
 
     //Error Message
     if ($_POST['sended'] == 'edit') {
-        systext ($FD->text("admin", "note_notfilled"));
+        systext ($FD->text('admin', 'note_notfilled'));
 
         $partner_arr['partner_name'] = killhtml($_POST['name']);
         $partner_arr['partner_link'] = killhtml($_POST['link']);
@@ -218,14 +220,15 @@ elseif ($_POST['partner_action'] == 'edit'
 //////////////////////////////
 /// Partnerseite löschen /////
 //////////////////////////////
-elseif ($_POST['partner_action'] == 'delete'
+elseif (isset($_POST['partner_action'])
+        && $_POST['partner_action'] == 'delete'
         && isset($_POST['partner_id'])
        )
 {
     $_POST['partner_id'] = $_POST['partner_id'][0];
     settype($_POST['partner_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."partner WHERE partner_id = $_POST[partner_id]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."partner WHERE partner_id = $_POST[partner_id]", $FD->sql()->conn() );
     $partner_arr = mysql_fetch_assoc($index);
 
     $partner_arr['partner_name'] = killhtml($partner_arr['partner_name']);
@@ -238,7 +241,7 @@ elseif ($_POST['partner_action'] == 'delete'
                         <input type="hidden" value="delete" name="sended">
                         <input type="hidden" value="'.$partner_arr['partner_id'].'" name="partner_id">
                         <table class="content" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="2"><h3>'.$FD->text("page", "delpage").'</h3><hr></td></tr>
+                            <tr><td colspan="2"><h3>'.$FD->text('page', 'delpage').'</h3><hr></td></tr>
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
                                     '.$partner_arr['partner_name'].'
@@ -253,18 +256,18 @@ elseif ($_POST['partner_action'] == 'delete'
                             </tr>
                             <tr valign="top">
                                 <td width="50%" class="config">
-                                    '.$FD->text("page", "delpage_question").'
+                                    '.$FD->text('page', 'delpage_question').'
                                 </td>
                                 <td width="50%" align="right">
                                     <select name="delete_partner" size="1">
-                                        <option value="0">'.$FD->text("page", "delnotconfirm").'</option>
-                                        <option value="1">'.$FD->text("page", "delconfirm").'</option>
+                                        <option value="0">'.$FD->text('page', 'delnotconfirm').'</option>
+                                        <option value="1">'.$FD->text('page', 'delconfirm').'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <input type="submit" value="'.$FD->text("admin", "do_button").'" class="button">
+                                    <input type="submit" value="'.$FD->text('admin', 'do_button').'" class="button">
                                 </td>
                             </tr>
                         </table>
@@ -279,7 +282,7 @@ if (!isset($_POST['partner_id']))
 {
     $config_arr['small_x_width'] = $config_arr['small_x'] + 20;
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'partner ORDER BY partner_name', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'partner ORDER BY partner_name', $FD->sql()->conn() );
 
     if (mysql_num_rows($index) > 0)
     {
@@ -293,10 +296,10 @@ if (!isset($_POST['partner_id']))
                                     Bild
                                 </td>
                                 <td class="config">
-                                    '.$FD->text("page", "partnerpage").'
+                                    '.$FD->text('page', 'partnerpage').'
                                 </td>
                                 <td class="config" style="text-align:right;">
-                                    '.$FD->text("admin", "selection").'
+                                    '.$FD->text('admin', 'selection').'
                                 </td>
                             </tr>
         ';
@@ -322,10 +325,10 @@ if (!isset($_POST['partner_id']))
                             <tr>
                                 <td class="right" colspan="4">
                                    <select class="select_type" name="partner_action" size="1">
-                                     <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
-                                     <option class="select_red" value="delete">'.$FD->text("admin", "selection_del").'</option>
+                                     <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
+                                     <option class="select_red" value="delete">'.$FD->text('admin', 'selection_del').'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$FD->text("admin", "do_button").'">
+                                   <input class="button" type="submit" value="'.$FD->text('admin', 'do_button').'">
                                 </td>
                             </tr>
                         </table>
@@ -334,7 +337,7 @@ if (!isset($_POST['partner_id']))
     }
     else
     {
-        echo $FD->text("page", "note_nopages");
+        echo $FD->text('page', 'note_nopages');
     }
 }
 ?>
