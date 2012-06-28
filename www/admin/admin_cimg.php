@@ -11,7 +11,7 @@ if(!isset($_POST['thumb']))     $_POST['thumb'] = 0;
 if(!isset($_POST['width']))     $_POST['width'] = '';
 if(!isset($_POST['height']))    $_POST['height'] = '';
 
-$catsqry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg_cats`');
+$catsqry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
 $cats = array();
 while(($cat = mysql_fetch_assoc($catsqry)) !== false){
     $cats[] = $cat;
@@ -19,7 +19,7 @@ while(($cat = mysql_fetch_assoc($catsqry)) !== false){
 
 unset($catsqry, $cat);
 
-if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
+if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] == 1))
 {
   if ($_POST['thumb'] == 1) {
       $make_thumb = true;
@@ -45,7 +45,7 @@ if (isset($_FILES['cimg']) AND ($_POST['newname'] OR $_POST['oldname'] == 1))
       $thumb = create_thumb_from ( image_url ( 'media/content/', $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
       $message .= '<br>' . create_thumb_notice ( $thumb );
     }
-    mysql_query('INSERT INTO `'.$global_config_arr['pref']."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".mysql_real_escape_string($_POST['newname'])."', '".mysql_real_escape_string($oldname_data)."', ".intval($_POST['thumb']).', '.intval($_POST['cat']).')');
+    mysql_query('INSERT INTO `'.$FD->config('pref')."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".mysql_real_escape_string($_POST['newname'])."', '".mysql_real_escape_string($oldname_data)."', ".intval($_POST['thumb']).', '.intval($_POST['cat']).')');
     unset($_POST['width']);
     unset($_POST['height']);
     unset($_POST['oldname']);

@@ -4,7 +4,7 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST['screenx'] && $_POST['screeny'] && $_POST['thumbx'] && $_POST['thumby'] && $_POST['quickinsert'])
+if (isset($_POST['screenx']) && isset($_POST['screeny']) && isset($_POST['thumbx']) && isset($_POST['thumby']) && isset($_POST['quickinsert']))
 {
     settype($_POST['screenx'], 'integer');
     settype($_POST['screeny'], 'integer');
@@ -14,7 +14,7 @@ if ($_POST['screenx'] && $_POST['screeny'] && $_POST['thumbx'] && $_POST['thumby
     $_POST['quickinsert'] = savesql($_POST['quickinsert']);
     settype($_POST['dl_show_sub_cats'], 'integer');
 
-    $update = 'UPDATE '.$global_config_arr['pref']."dl_config
+    $update = 'UPDATE '.$FD->config('pref')."dl_config
                SET screen_x = '$_POST[screenx]',
                    screen_y = '$_POST[screeny]',
                    thumb_x = '$_POST[thumbx]',
@@ -35,10 +35,10 @@ if ($_POST['screenx'] && $_POST['screeny'] && $_POST['thumbx'] && $_POST['thumby
 if(true)
 {
     if(isset($_POST['sended'])) {
-        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     settype ( $config_arr['dl_show_sub_cats'], 'integer' );

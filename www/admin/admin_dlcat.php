@@ -9,7 +9,7 @@ if (isset($_POST['catname']))
     settype($_POST['catid'], 'integer');
     if (isset($_POST['delcat']))
     {
-        mysql_query('DELETE FROM '.$global_config_arr['pref'].'dl_cat WHERE cat_id = '.$_POST['catid'], $FD->sql()->conn() );
+        mysql_query('DELETE FROM '.$FD->config('pref').'dl_cat WHERE cat_id = '.$_POST['catid'], $FD->sql()->conn() );
         systext('Die Kategorie wurde gel&ouml;scht');
     }
     else
@@ -17,7 +17,7 @@ if (isset($_POST['catname']))
         $_POST['catname'] = savesql($_POST['catname']);
         settype($_POST['subcatof'], 'integer');
 
-        $update = 'UPDATE '.$global_config_arr['pref']."dl_cat
+        $update = 'UPDATE '.$FD->config('pref')."dl_cat
                    SET subcat_id = '$_POST[subcatof]',
                        cat_name = '$_POST[catname]'
                    WHERE cat_id = $_POST[catid]";
@@ -45,7 +45,7 @@ if (isset($_POST['editcatid']))
     $valid_ids = array();
     get_dl_categories ($valid_ids, $_POST['editcatid']);
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl_cat WHERE cat_id = '$_POST[editcatid]'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$_POST[editcatid]'", $FD->sql()->conn() );
     $cat_arr = mysql_fetch_assoc($index);
     echo'
                     <form action="" method="post">
@@ -127,7 +127,7 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_cat ORDER BY cat_name');
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_cat ORDER BY cat_name');
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sub = ($cat_arr['subcat_id'] == 0) ? 'Nein' : 'Ja';
@@ -149,7 +149,7 @@ else
                             <tr style="display:none">
                                 <td colspan="3">
                                     <select class="select_type" name="cat_action" size="1">
-                                        <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                        <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
                                     </select>
                                 </td>
                             </tr>

@@ -55,7 +55,7 @@ if (true
     // MySQL-Queries
     mysql_query ( '
                     UPDATE
-                        `'.$global_config_arr['pref']."captcha_config`
+                        `'.$FD->config('pref')."captcha_config`
                     SET
                         `captcha_bg_color` = '".$_POST['captcha_bg_color']."',
                         `captcha_bg_transparent` = '".$_POST['captcha_bg_transparent']."',
@@ -138,7 +138,7 @@ if ( TRUE )
     } else {
         $index = mysql_query ( '
                                     SELECT *
-                                    FROM `'.$global_config_arr['pref']."captcha_config`
+                                    FROM `'.$FD->config('pref')."captcha_config`
                                     WHERE `id` = '1'
         ", $FD->sql()->conn() );
         $config_arr = mysql_fetch_assoc($index);
