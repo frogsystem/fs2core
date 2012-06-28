@@ -17,7 +17,7 @@ $showdefault = TRUE;
 if (
 		isset ( $_POST['sended'] ) && $_POST['sended'] == 'add' &&
 		isset ( $_POST['cat_action'] ) && $_POST['cat_action'] == 'add' &&
-		$_POST['cat_name'] && $_POST['cat_name'] != ''
+		isset ( $_POST['cat_name'] ) && $_POST['cat_name'] != ''
 	)
 {
     // Security-Functions
@@ -28,14 +28,14 @@ if (
 
     // MySQL-Update-Query
     $insert_query = mysql_query ('
-					INSERT INTO '.$global_config_arr['pref']."articles_cat (cat_name, cat_date, cat_user)
+					INSERT INTO '.$FD->config('pref')."articles_cat (cat_name, cat_date, cat_user)
 					VALUES (
 						'".$_POST['cat_name']."',
 						'".$cat_date."',
 						'".$_POST['cat_user']."'
 					)
 	", $FD->sql()->conn() );
-    $message = $FD->text("page", "new_cat_added");
+    $message = $FD->text('page', 'new_cat_added');
     $id = mysql_insert_id ( $FD->sql()->conn() );
 
 	// Image-Operations
@@ -45,7 +45,7 @@ if (
     }
 
     // Display Message
-    systext ( $message, $FD->text("admin", "info") );
+    systext ( $message, $FD->text('admin', 'info') );
 
     // Unset Vars
     unset ( $_POST );
@@ -61,11 +61,11 @@ elseif (
 		isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit' &&
 		isset ( $_POST['cat_action'] ) && $_POST['cat_action'] == 'edit' &&
 
-		$_POST['d'] && $_POST['d'] != '' && $_POST['d'] > 0 &&
-		$_POST['m'] && $_POST['m'] != '' && $_POST['m'] > 0 &&
-		$_POST['y'] && $_POST['y'] != '' && $_POST['y'] > 0 &&
+		isset($_POST['d']) && $_POST['d'] != '' && $_POST['d'] > 0 &&
+		isset($_POST['m']) && $_POST['m'] != '' && $_POST['m'] > 0 &&
+		isset($_POST['y']) && $_POST['y'] != '' && $_POST['y'] > 0 &&
 
-		$_POST['cat_name'] && $_POST['cat_name'] != '' &&
+		isset($_POST['cat_name']) && $_POST['cat_name'] != '' &&
 		isset ( $_POST['cat_user'] )
 	)
 {
@@ -79,7 +79,7 @@ elseif (
 
     // MySQL-Update-Query
     mysql_query ('
-					UPDATE '.$global_config_arr['pref']."articles_cat
+					UPDATE '.$FD->config('pref')."articles_cat
                  	SET
 					 	cat_name 			= '".$_POST['cat_name']."',
                      	cat_description 	= '".$_POST['cat_description']."',
@@ -88,7 +88,7 @@ elseif (
                  	WHERE
 					 	cat_id 				= '".$_POST['cat_id']."'
 	", $FD->sql()->conn() );
-    $message = $FD->text("admin", "changes_saved");
+    $message = $FD->text('admin', 'changes_saved');
 
 	// Image-Operations
     if ( $_POST['cat_pic_delete'] == 1 ) {
@@ -128,7 +128,7 @@ elseif (
 
         // MySQL-Query move Articles to other Category
         mysql_query ('
-						UPDATE '.$global_config_arr['pref']."articles
+						UPDATE '.$FD->config('pref')."articles
     	             	SET
 						 	cat_id 				= '".$_POST['cat_move_to']."'
             	     	WHERE
@@ -137,23 +137,23 @@ elseif (
 
 		// MySQL-Delete-Query
     	mysql_query ('
-						DELETE FROM '.$global_config_arr['pref']."articles_cat
+						DELETE FROM '.$FD->config('pref')."articles_cat
                  		WHERE
 						 	cat_id 				= '".$_POST['cat_id']."'
 		", $FD->sql()->conn() );
-		$message = $FD->text("page", "cat_deleted");
+		$message = $FD->text('page', 'cat_deleted');
 
 		// Delete Category Image
 		if ( image_delete ( 'images/cat/', 'articles_'.$_POST['cat_id'] ) ) {
-			$message .= '<br>' . $FD->text("admin", "image_deleted");
+			$message .= '<br>' . $FD->text('admin', 'image_deleted');
 		}
 
     } else {
-        $message = $FD->text("page", "cat_not_deleted");
+        $message = $FD->text('page', 'cat_not_deleted');
     }
 
     // Display Message
-    systext ( $message, $FD->text("admin", "info") );
+    systext ( $message, $FD->text('admin', 'info') );
 
     // Unset Vars
     unset ( $_POST );
@@ -167,7 +167,7 @@ elseif (
 ///////////////////////////
 
 // No Data to write into DB
-if ( $_POST['cat_id'] && $_POST['cat_action'] )
+if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 {
     settype ($_POST['cat_id'], 'integer');
     // Edit Category
@@ -175,7 +175,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
     {
 
 		// Load Data from DB
-		$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."articles_cat WHERE cat_id = '".$_POST['cat_id']."'", $FD->sql()->conn() );
+		$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'", $FD->sql()->conn() );
 		$cat_arr = mysql_fetch_assoc ( $index );
 
 		// Display Error Messages
@@ -189,7 +189,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 		$cat_arr['cat_description'] = killhtml ( $cat_arr['cat_description'] );
 
     	// Get User
-    	$index = mysql_query ( 'SELECT user_name FROM '.$global_config_arr['pref']."user WHERE user_id = '".$cat_arr['cat_user']."'", $FD->sql()->conn() );
+    	$index = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'", $FD->sql()->conn() );
     	$cat_arr['cat_username'] = killhtml ( mysql_result ( $index, 0, 'user_name' ) );
 
 		// Create Date-Arrays
@@ -305,12 +305,12 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 	// Delete Category
 	elseif ( $_POST['cat_action'] == 'delete' )
 	{
-		$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_cat', $FD->sql()->conn() );
+		$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat', $FD->sql()->conn() );
 
 		// Not Last Category
 		if ( mysql_num_rows ( $index ) > 1 ) {
 
-			$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."articles_cat WHERE cat_id = '".$_POST['cat_id']."'", $FD->sql()->conn() );
+			$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'", $FD->sql()->conn() );
 			$cat_arr = mysql_fetch_assoc ( $index );
 
 			$cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
@@ -339,7 +339,7 @@ if ( $_POST['cat_id'] && $_POST['cat_action'] )
 									<select class="text" name="cat_move_to" size="1">
 			';
 
-			$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."articles_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name", $FD->sql()->conn() );
+			$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name", $FD->sql()->conn() );
 			while ( $move_arr = mysql_fetch_assoc ( $index ) ) {
 				echo '<option value="'.$move_arr['cat_id'].'">'.killhtml ( $move_arr['cat_name'] ).'</option>';
 			}
@@ -388,7 +388,7 @@ elseif ( $showdefault == TRUE )
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
 		$_POST['cat_name'] = killhtml ( $_POST['cat_name'] );
-		systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
+		systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
 	}
 
     // Display Add-Form
@@ -398,13 +398,13 @@ elseif ( $showdefault == TRUE )
 					    <input type="hidden" name="cat_action" value="add">
 						<input type="hidden" name="go" value="articles_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="2">'.$FD->text("page", "new_cat_title").'</td></tr>
+						    <tr><td class="line" colspan="2">'.$FD->text('page', 'new_cat_title').'</td></tr>
 						    <tr>
 								<td class="config">
-								    <span class="small">'.$FD->text("page", "new_cat_name").':</span>
+								    <span class="small">'.$FD->text('page', 'new_cat_name').':</span>
 								</td>
 								<td class="config">
-								    <span class="small">'.$FD->text("page", "new_cat_image").': '.$FD->text("admin", "optional").'</span>
+								    <span class="small">'.$FD->text('page', 'new_cat_image').': '.$FD->text('admin', 'optional').'</span>
 								</td>
 							</tr>
 						    <tr valign="top">
@@ -414,7 +414,7 @@ elseif ( $showdefault == TRUE )
 								<td class="config">
 									<input name="cat_pic" type="file" size="30" class="text"><br>
 									<span class="small">
-										['.$FD->text("admin", "max").' '.$articles_config_arr['cat_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$articles_config_arr['cat_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$articles_config_arr['cat_pic_size'].' '.$FD->text("admin", "kib").']
+										['.$FD->text('admin', 'max').' '.$articles_config_arr['cat_pic_x'].' '.$FD->text('admin', 'resolution_x').' '.$articles_config_arr['cat_pic_y'].' '.$FD->text('admin', 'pixel').'] ['.$FD->text('admin', 'max').' '.$articles_config_arr['cat_pic_size'].' '.$FD->text('admin', 'kib').']
 									</span>
 								</td>
 							</tr>
@@ -422,7 +422,7 @@ elseif ( $showdefault == TRUE )
 							<tr>
 								<td class="buttontd" colspan="2">
 									<button class="button_new" type="submit">
-										'.$FD->text("admin", "button_arrow").' '.$FD->text("page", "new_cat_add_button").'
+										'.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'new_cat_add_button').'
 									</button>
 								</td>
 							</tr>
@@ -437,14 +437,14 @@ elseif ( $showdefault == TRUE )
 					<form action="" method="post">
 						<input type="hidden" name="go" value="articles_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
-						    <tr><td class="line" colspan="3">'.$FD->text("page", "list_cat_title").'</td></tr>
+						    <tr><td class="line" colspan="3">'.$FD->text('page', 'list_cat_title').'</td></tr>
 	';
 
 	// Get Categories from DB
-	$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_cat ORDER BY cat_name', $FD->sql()->conn() );
+	$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat ORDER BY cat_name', $FD->sql()->conn() );
 	while ( $cat_arr = mysql_fetch_assoc ( $index ) )
 	{
-		$index_username = mysql_query ( 'SELECT user_name FROM '.$global_config_arr['pref']."user WHERE user_id = '".$cat_arr['cat_user']."'", $FD->sql()->conn() );
+		$index_username = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'", $FD->sql()->conn() );
         $cat_arr['cat_user'] = mysql_result ( $index_username, 0, 'user_name' );
 
 		// Display each Category
@@ -462,7 +462,7 @@ elseif ( $showdefault == TRUE )
 		echo '
 								</td>
 								<td class="config" style="width: 100%;">
-									'.$cat_arr['cat_name'].' <span class="small">('.$FD->text("page", "list_cat_created_by").' <b>'.$cat_arr['cat_user'].'</b> '.$FD->text("page", "list_cat_created_on").' <b>'.date ( $global_config_arr['date'], $cat_arr['cat_date'] ).'</b>)</span><br>
+									'.$cat_arr['cat_name'].' <span class="small">('.$FD->text("page", "list_cat_created_by").' <b>'.$cat_arr['cat_user'].'</b> '.$FD->text("page", "list_cat_created_on").' <b>'.date ( $FD->config('date'), $cat_arr['cat_date'] ).'</b>)</span><br>
 									<span class="small">'.$cat_arr['cat_description'].'</span>
 								</td>
 								<td class="config" style="text-align: center; vertical-align: middle;">

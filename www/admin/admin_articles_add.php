@@ -44,7 +44,7 @@ if (
     // MySQL-Insert-Query
     mysql_query ('
                                         INSERT INTO
-                                                '.$global_config_arr['pref']."articles
+                                                '.$FD->config('pref')."articles
                                                 (article_url, article_title, article_date, article_user, article_text, article_html, article_fscode, article_para, article_cat_id, article_search_update)
                                         VALUES (
                                                 '".$_POST['article_url']."',
@@ -61,14 +61,14 @@ if (
     ", $FD->sql()->conn() );
 
     // Update Search Index (or not)
-    if ( $global_config_arr['search_index_update'] === 1 ) {
+    if ( $FD->config('search_index_update') === 1 ) {
         // Include searchfunctions.php
         require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
         update_search_index ( 'articles' );
     }
 
-    mysql_query ( 'UPDATE '.$global_config_arr['pref'].'counter SET artikel = artikel + 1', $FD->sql()->conn() );
-    systext( $FD->text("page", "articles_added"), $FD->text("admin", "info"));
+    mysql_query ( 'UPDATE '.$FD->config('pref').'counter SET artikel = artikel + 1', $FD->sql()->conn() );
+    systext( $FD->text('page', 'articles_added'), $FD->text('admin', 'info'));
 }
 
 //////////////////////////////
@@ -109,9 +109,9 @@ else
     }
 
         // Security-Functions
-    $_POST['article_url'] = killhtml ( $_POST['article_url'] );
-    $_POST['article_title'] = killhtml ( $_POST['article_title'] );
-    $_POST['article_text'] = killhtml ( $_POST['article_text'] );
+    $_POST['article_url'] = isset($_POST['article_url']) ? killhtml ( $_POST['article_url'] ) : '';
+    $_POST['article_title'] = isset($_POST['article_title']) ? killhtml ( $_POST['article_title'] ) : '';
+    $_POST['article_text'] = isset($_POST['article_text']) ? killhtml ( $_POST['article_text'] ) : '';
     settype ( $_POST['article_user'], 'integer' );
     settype ( $_POST['article_html'], 'integer' );
     settype ( $_POST['article_fscode'], 'integer' );
@@ -120,7 +120,7 @@ else
 
     // Get User
         if ( $_POST['article_user'] != 0 ) {
-                $index = mysql_query ( 'SELECT user_name, user_id FROM '.$global_config_arr['pref']."user WHERE user_id = '".$_POST['article_user']."'", $FD->sql()->conn() );
+                $index = mysql_query ( 'SELECT user_name, user_id FROM '.$FD->config('pref')."user WHERE user_id = '".$_POST['article_user']."'", $FD->sql()->conn() );
             $_POST['article_user_name'] = killhtml ( mysql_result ( $index, 0, 'user_name' ) );
         } else {
             $_POST['article_user_name'] = '';
@@ -162,7 +162,7 @@ else
                                     <select name="article_cat_id">
         ';
                                                                             // Kategorien auflisten
-                                                                            $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_cat', $FD->sql()->conn() );
+                                                                            $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat', $FD->sql()->conn() );
                                                                             while ( $cat_arr = mysql_fetch_assoc ( $index ) )
                                                                             {
                                                                                         settype ( $cat_arr['cat_id'], 'integer' );
@@ -284,7 +284,7 @@ else
 //// Artikel in die DB schreiben ////
 /////////////////////////////////////
 
-if ($_POST['url'] && $_POST['title'] && $_POST['text'] && $_POST['cat_id'])
+if (isset($_POST['url']) && isset($_POST['title']) && isset($_POST['text']) && isset($_POST['cat_id']))
 {
     if ($_POST['tag'] && $_POST['monat'] && $_POST['jahr'])  // Datum überprüfen
     {
@@ -296,7 +296,7 @@ if ($_POST['url'] && $_POST['title'] && $_POST['text'] && $_POST['cat_id'])
     }
 
     $_POST['url'] = savesql($_POST['url']);
-    $index = mysql_query('SELECT artikel_url FROM '.$global_config_arr['pref']."artikel WHERE artikel_url = '$_POST[url]'");
+    $index = mysql_query('SELECT artikel_url FROM '.$FD->config('pref')."artikel WHERE artikel_url = '$_POST[url]'");
     if (mysql_num_rows($index) === 0)
     {
         $_POST['title'] = savesql($_POST['title']);
@@ -306,7 +306,7 @@ if ($_POST['url'] && $_POST['title'] && $_POST['text'] && $_POST['cat_id'])
         $_POST['search'] = isset($_POST['search']) ? 1 : 0;
         $_POST['fscode'] = isset($_POST['fscode']) ? 1 : 0;
 
-        mysql_query('INSERT INTO '.$global_config_arr['pref']."artikel
+        mysql_query('INSERT INTO '.$FD->config('pref')."artikel
                      VALUES (NULL,
                              '$_POST[url]',
                              '$_POST[title]',
@@ -316,7 +316,7 @@ if ($_POST['url'] && $_POST['title'] && $_POST['text'] && $_POST['cat_id'])
                              '$_POST[search]',
                              '$_POST[fscode]',
                              '$_POST[cat_id]');", $FD->sql()->conn() );
-        mysql_query('UPDATE '.$global_config_arr['pref'].'counter SET artikel = artikel + 1', $FD->sql()->conn() );
+        mysql_query('UPDATE '.$FD->config('pref').'counter SET artikel = artikel + 1', $FD->sql()->conn() );
         systext('Artikel wurde gespeichert');
     }
     else

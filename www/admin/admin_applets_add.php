@@ -27,12 +27,12 @@ if (
     settype ( $_POST['applet_include'], 'integer' );
 
     // Check if Applet exists
-    $index = mysql_query ( 'SELECT `applet_id` FROM `'.$global_config_arr['pref']."applets` WHERE `applet_file` = '".$_POST['applet_file']."'", $sql->conn() );
+    $index = mysql_query ( 'SELECT `applet_id` FROM `'.$FD->config('pref')."applets` WHERE `applet_file` = '".$_POST['applet_file']."'", $sql->conn() );
 
     // New Applet
     if ( mysql_num_rows ( $index ) === 0 ) {
         // MySQL-Queries
-        mysql_query ( '                 INSERT INTO `'.$global_config_arr['pref']."applets` (
+        mysql_query ( '                 INSERT INTO `'.$FD->config('pref')."applets` (
                                                 `applet_file`,
                                                 `applet_active`,
                                                 `applet_include`,
