@@ -18,12 +18,12 @@ if (isset($_GET['cat'])) {
 ////////////////////////////
 
 // News Konfiguration lesen
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'news_config', $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'news_config', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 $time = time();
 
 // Headlines erzeugen
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."news
+$index = mysql_query('SELECT * FROM '.$FD->config('pref')."news
                       WHERE news_date <= $time
                       AND news_active = 1
                       ORDER BY news_date DESC
@@ -31,7 +31,7 @@ $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."news
 $news_line_tpl = '';
 while ($newshead_arr = mysql_fetch_assoc($index))
 {
-    $newshead_arr['news_date'] = date_loc ( $global_config_arr['datetime'] , $newshead_arr['news_date'] );
+    $newshead_arr['news_date'] = date_loc ( $FD->config('datetime') , $newshead_arr['news_date'] );
     if ( strlen ( $newshead_arr['news_title'] ) > $config_arr['news_headline_lenght'] && $config_arr['news_headline_lenght'] >=0 ) {
         $newshead_arr['news_title'] = substr ( $newshead_arr['news_title'], 0, $config_arr['news_headline_lenght'] ) . $config_arr['news_headline_ext'];
     }
@@ -53,14 +53,14 @@ unset($newshead_arr);
 
 // Neuste Downloads erzeugen
 $index = mysql_query('SELECT dl_name, dl_id, dl_date
-                      FROM '.$global_config_arr['pref']."dl
+                      FROM '.$FD->config('pref')."dl
                       WHERE dl_open = 1
                       ORDER BY dl_date DESC
                       LIMIT $config_arr[num_head]", $FD->sql()->conn() );
 $downloads_tpl = '';
 while ($dlhead_arr = mysql_fetch_assoc($index))
 {
-    $dlhead_arr['dl_date'] = date_loc ( $global_config_arr['datetime'] , $dlhead_arr['dl_date'] );
+    $dlhead_arr['dl_date'] = date_loc ( $FD->config('datetime') , $dlhead_arr['dl_date'] );
     if ( strlen ( $dlhead_arr['dl_name'] ) > $config_arr['news_headline_lenght'] ) {
         $dlhead_arr['dl_name'] = substr ( $dlhead_arr['dl_name'], 0, $config_arr['news_headline_lenght'] ) . $config_arr['news_headline_ext'];
     }
@@ -95,7 +95,7 @@ $headline_template = $template;
 ////// News ausgeben ///////
 ////////////////////////////
 
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."news
+$index = mysql_query('SELECT * FROM '.$FD->config('pref')."news
                       WHERE news_date <= $time
                       AND news_active = 1
                       ".$cat_filter."

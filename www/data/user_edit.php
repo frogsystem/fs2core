@@ -6,7 +6,7 @@ settype ( $_POST['user_id'], 'integer');
 
 $index = mysql_query ( '
     SELECT *
-    FROM `'.$global_config_arr['pref']."user_config`
+    FROM `'.$FD->config('pref')."user_config`
     WHERE `id` = '1'
 ", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
@@ -44,7 +44,7 @@ if (
     }
 
     mysql_query ( '
-        UPDATE '.$global_config_arr['pref']."user
+        UPDATE '.$FD->config('pref')."user
         SET `user_mail` = '".savesql ( $_POST['user_mail'] )."',
             `user_show_mail` = '".$_POST['user_show_mail']."',
             `user_homepage` = '".savesql ( $_POST['user_homepage'] )."',
@@ -61,7 +61,7 @@ if (
     if ( $_POST['old_pwd'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] ) {
         $index = mysql_query ( '
             SELECT `user_name`, `user_password`, `user_salt`
-            FROM `'.$global_config_arr['pref']."user`
+            FROM `'.$FD->config('pref')."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'
         ", $FD->sql()->conn() );
         $old_password = mysql_result($index, 0, 'user_password');
@@ -82,7 +82,7 @@ if (
 
                 // Update Password
                 mysql_query ( '
-                    UPDATE '.$global_config_arr['pref']."user
+                    UPDATE '.$FD->config('pref')."user
                     SET `user_password` = '".$md5_password."',
                         `user_salt` = '".$new_salt."'
                     WHERE `user_id` = '".$_SESSION['user_id']."'
@@ -99,7 +99,7 @@ if (
                 $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_SESSION['user_name'] ), $template_mail );
                 $template_mail = str_replace ( '{..new_password..}', $mailpass, $template_mail );
                 $template_mail = replace_globalvars ( $template_mail );
-                $email_subject = $FD->text("frontend", "mail_password_changed_on") . $global_config_arr['virtualhost'];
+                $email_subject = $FD->text('frontend', 'mail_password_changed_on') . $FD->config('virtualhost');
                 if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_subject, $template_mail ) ) {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");
                 } else {
@@ -135,7 +135,7 @@ else {
 
         $index = mysql_query ( '
             SELECT *
-            FROM `'.$global_config_arr['pref']."user`
+            FROM `'.$FD->config('pref')."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'
         ", $FD->sql()->conn() );
 

@@ -1,12 +1,12 @@
 <?php
 // Load Article Config
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'partner_config', $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'partner_config', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 // Get Affiliates
 $index = mysql_query ( '
                         SELECT *
-                        FROM `'.$global_config_arr['pref'].'partner`
+                        FROM `'.$FD->config('pref').'partner`
                         ORDER BY `partner_name`
 ', $FD->sql()->conn() );
 

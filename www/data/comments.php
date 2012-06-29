@@ -7,10 +7,10 @@
 $FD->setConfig('info', 'canonical', array('id'));
 
 //Kommentar-Config
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'news_config', $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'news_config', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 //Editor config
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'editor_config', $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'editor_config', $FD->sql()->conn() );
 $editor_config = mysql_fetch_assoc($index);
 
 $SHOW = TRUE;
@@ -32,7 +32,7 @@ if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSIO
 settype ( $_SESSION['user_id'], 'integer' );
 $index = mysql_query ( '
                                                 SELECT *
-                                                FROM '.$global_config_arr['pref']."user
+                                                FROM '.$FD->config('pref')."user
                                                 WHERE user_id = '".$_SESSION["user_id"]."'
 ", $FD->sql()->conn() );
 $user_arr = mysql_fetch_assoc($index);
@@ -62,7 +62,7 @@ if (isset($_POST['add_comment']))
                 settype($_POST['id'], 'integer');
                 $index = mysql_query( '
                                         SELECT `news_comments_allowed`
-                                        FROM '.$global_config_arr['pref'].'news
+                                        FROM '.$FD->config('pref').'news
                                         WHERE news_id = '.$_POST['id'].'
                                         LIMIT 0,1
                 ', $FD->sql()->conn() );
@@ -81,7 +81,7 @@ if (isset($_POST['add_comment']))
 
                     $index = mysql_query( '
                                             SELECT `comment_id`
-                                            FROM `'.$global_config_arr['pref']."news_comments`
+                                            FROM `'.$FD->config('pref')."news_comments`
                                             WHERE
                                                 `comment_text` = '".$_POST['text']."'
                                             AND
@@ -100,7 +100,7 @@ if (isset($_POST['add_comment']))
 
                         mysql_query ( '
                                         INSERT INTO
-                                            `'.$global_config_arr['pref']."news_comments` (
+                                            `'.$FD->config('pref')."news_comments` (
                                                 news_id,
                                                 comment_poster,
                                                 comment_poster_id,
@@ -120,7 +120,7 @@ if (isset($_POST['add_comment']))
                                                 '".$_POST['text']."'
                                             )
                         ", $FD->sql()->conn() );
-                        mysql_query('UPDATE '.$global_config_arr['pref'].'counter SET comments=comments+1', $FD->sql()->conn() );
+                        mysql_query('UPDATE '.$FD->config('pref').'counter SET comments=comments+1', $FD->sql()->conn() );
                         $SHOW = FALSE;
                         $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_added"), $FD->cfg('virtualhost') );
                     } else {
@@ -160,7 +160,7 @@ if ( $SHOW == TRUE ) {
     // News anzeigen
     $index = mysql_query( '
                                                     SELECT *
-                                                    FROM '.$global_config_arr['pref']."news
+                                                    FROM '.$FD->config('pref')."news
                                                     WHERE news_date <= $time
                                                     AND news_active = 1
                                                     AND news_id = ".$_GET['id'].'
@@ -173,9 +173,9 @@ if ( $SHOW == TRUE ) {
     if ($news_rows > 0) {
         $news_arr = mysql_fetch_assoc($index);
         $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
-        $global_config_arr['dyn_title_page'] = stripslashes ( $news_arr['news_title'] );
+        $FD->setConfig('dyn_title_page') = stripslashes ( $news_arr['news_title'] );
     } else {
-        $news_template = sys_message($FD->text("frontend", "sysmessage"), $FD->text("frontend", "news_not_exist"), 404);
+        $news_template = sys_message($FD->text('frontend', 'sysmessage'), $FD->text('frontend', 'news_not_exist'), 404);
     }
 
     // Text formatieren
@@ -206,14 +206,14 @@ if ( $SHOW == TRUE ) {
     $html_active = ($html) ? 'an' : 'aus';
 
     // Kommentare erzeugen
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'news_comments WHERE news_id = '.$_GET['id'].' ORDER BY comment_date '.$config_arr['com_sort'], $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'news_comments WHERE news_id = '.$_GET['id'].' ORDER BY comment_date '.$config_arr['com_sort'], $FD->sql()->conn() );
     while ($comment_arr = mysql_fetch_assoc($index))
     {
 
         // User auslesen
         if ($comment_arr['comment_poster_id'] != 0)
         {
-            $index2 = mysql_query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$global_config_arr['pref'].'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn() );
+            $index2 = mysql_query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn() );
             $comment_arr['comment_poster'] = kill_replacements ( mysql_result($index2, 0, 'user_name' ), TRUE );
             $comment_arr['user_is_admin'] = mysql_result($index2, 0, 'user_is_admin');
             $comment_arr['user_is_staff'] = mysql_result($index2, 0, 'user_is_staff');
@@ -259,7 +259,7 @@ if ( $SHOW == TRUE ) {
             $comment_arr['comment_text'] = fscode( kill_replacements ( $comment_arr['comment_text'] ),$fs,$html,$para);
         }
 
-        $comment_arr['comment_date'] = date_loc ( $global_config_arr['datetime'] , $comment_arr['comment_date'] );
+        $comment_arr['comment_date'] = date_loc ( $FD->config('datetime') , $comment_arr['comment_date'] );
         $comment_arr['comment_title'] = kill_replacements( $comment_arr['comment_title'], TRUE );
 
         // Get Comment Template
