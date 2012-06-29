@@ -34,7 +34,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
 } else {
 
     // Set Dynamic Title
-    $FD->config('dyn_title_page', $FD->text('frontend', 'download_search_for') . ' "' . usersave($_REQUEST['keyword']) . '"');
+    $FD->setConfig('dyn_title_page', $FD->text('frontend', 'download_search_for') . ' "' . usersave($_REQUEST['keyword']) . '"');
 
 	// More Results Template
 	$more_results_template = new template();
