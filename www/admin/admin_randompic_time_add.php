@@ -10,7 +10,7 @@ if (!empty($_POST['screen_id'])) {
 }
 if ($startdate < $enddate) {
     settype($_POST['screen_id'], 'integer');
-    mysql_query('INSERT INTO '.$global_config_arr['pref']."screen_random (screen_id, start, end)
+    mysql_query('INSERT INTO '.$FD->config('pref')."screen_random (screen_id, start, end)
                  VALUES ('". $_POST['screen_id'] ."',
                          '". $startdate ."',
                          '". $enddate ."'
@@ -31,7 +31,7 @@ else
     $jetzt['stunde'] = date('H', $jetzt['time']);
     $jetzt['minute'] = date('i', $jetzt['time']);
 
-    if (!$_POST['sended'])
+    if (!isset($_POST['sended']))
     {
         $_POST['nowtag'] = $jetzt['tag'];
         $_POST['nowmonat'] = $jetzt['monat'];

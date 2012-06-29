@@ -80,14 +80,14 @@
         if ( $POSTDATA['comment_delete'] == 1 ) {
             db_delete_comment ( $POSTDATA );
         } else {
-             systext( 'Kommentare wurden nicht gel&ouml;scht', $FD->text("admin", "error"), FALSE, $FD->text("page", "trash_error") );
+             systext( 'Kommentare wurden nicht gel&ouml;scht', $FD->text('admin', 'error'), FALSE, $FD->text('page', 'trash_error') );
         }
 
         // Unset Vars
         unset ($POSTDATA);
     }
 //
-    
+
 
   if (!isset($_GET['start']) || $_GET['start']<0)
   {
@@ -96,7 +96,7 @@
   $_GET['start'] = (int) $_GET['start'];
   settype($_GET['start'], 'integer');
   //Anzahl der Kommentare auslesen
-  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$global_config_arr['pref'].'news_comments`', $FD->sql()->conn());
+  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref').'news_comments`', $FD->sql()->conn());
   $cc = mysql_fetch_assoc($query);
   $cc = (int) $cc['cc'];
   if ($_GET['start']>=$cc)
@@ -106,9 +106,9 @@
 
   //Kommentare auslesen
   $query = mysql_query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text, '
-                      .'`'.$global_config_arr['pref'].'news_comments`.news_id AS news_id, `'.$global_config_arr['pref'].'news`.news_id, news_title '
-                      .'FROM `'.$global_config_arr['pref'].'news_comments`, `'.$global_config_arr['pref'].'news` '
-                      .'WHERE `'.$global_config_arr['pref'].'news_comments`.news_id=`'.$global_config_arr['pref'].'news`.news_id '
+                      .'`'.$FD->config('pref').'news_comments`.news_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title '
+                      .'FROM `'.$FD->config('pref').'news_comments`, `'.$FD->config('pref').'news` '
+                      .'WHERE `'.$FD->config('pref').'news_comments`.news_id=`'.$FD->config('pref').'news`.news_id '
                       .'ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30', $FD->sql()->conn());
   $rows = mysql_num_rows($query);
 
@@ -159,7 +159,7 @@ EOT;
   {
     if ($comment_arr['comment_poster_id'] != 0)
     {
-      $userindex = mysql_query('SELECT user_name FROM `'.$global_config_arr['pref'].'user` WHERE user_id = \''.$comment_arr['comment_poster_id'].'\'', $FD->sql()->conn());
+      $userindex = mysql_query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = \''.$comment_arr['comment_poster_id'].'\'', $FD->sql()->conn());
       $comment_arr['comment_poster'] = mysql_result($userindex, 0, 'user_name');
     }
     $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date'])

@@ -5,7 +5,7 @@ if(isset($_POST['add'])){
     $name = mysql_real_escape_string(trim($_POST['name']));
     $desc = mysql_real_escape_string(trim($_POST['description']));
     if(!empty($name)){
-        mysql_query('INSERT INTO `'.$global_config_arr['pref']."cimg_cats` (`name`, `description`) VALUES ('".$name."', '".$desc."')");
+        mysql_query('INSERT INTO `'.$FD->config('pref')."cimg_cats` (`name`, `description`) VALUES ('".$name."', '".$desc."')");
         $_POST['name'] = '';
         $_POST['description'] = '';
         systext('Kategorie erfolgreich angelegt!');
@@ -19,7 +19,7 @@ if(isset($_POST['add'])){
             $name = mysql_real_escape_string(trim($_POST['cat'.$cat]['name']));
             $desc = mysql_real_escape_string(trim($_POST['cat'.$cat]['description']));
             if(!empty($name)){
-                mysql_query('UPDATE `'.$global_config_arr['pref']."cimg_cats` SET `name`='".$name."', `description`='".$desc."' WHERE `id`=".intval($cat));
+                mysql_query('UPDATE `'.$FD->config('pref')."cimg_cats` SET `name`='".$name."', `description`='".$desc."' WHERE `id`=".intval($cat));
                 $count++;
             }
         }
@@ -35,8 +35,8 @@ if(isset($_POST['add'])){
     if(isset($_POST['cat'])){
         $count = 0;
         foreach($_POST['cat'] as $cat){
-            mysql_query('DELETE FROM `'.$global_config_arr['pref'].'cimg_cats` WHERE `id`='.intval($cat));
-            mysql_query('UPDATE `'.$global_config_arr['pref']."cimg` SET `cat`='".mysql_real_escape_string(trim($_POST['newcat']))."' WHERE `cat`=".intval($cat));
+            mysql_query('DELETE FROM `'.$FD->config('pref').'cimg_cats` WHERE `id`='.intval($cat));
+            mysql_query('UPDATE `'.$FD->config('pref')."cimg` SET `cat`='".mysql_real_escape_string(trim($_POST['newcat']))."' WHERE `cat`=".intval($cat));
             $count++;
         }
         if($count == 1){
@@ -81,7 +81,7 @@ echo <<< FS2_STRING
             <td class="config" colspan="3">Kategorie bearbeiten</td>
         </tr>
 FS2_STRING;
-$qry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg_cats`');
+$qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
 if(mysql_num_rows($qry) > 0){
     $options = '<option value="0">Keine Kategorie</option>';
     while(($row = mysql_fetch_assoc($qry)) !== false){

@@ -15,7 +15,7 @@ if(isset($_POST['import'])){
             $thumb = (in_array($image, $_POST['thumb'])) ? 1 : 0;
             $name = mysql_real_escape_string(substr($image, 0, strrpos($image, '.')));
             $type = mysql_real_escape_string(substr($image, strrpos($image, '.') + 1));
-            mysql_query('INSERT INTO `'.$global_config_arr['pref']."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".$name."', '".$type."', ".$thumb.', '.intval($_POST['cat']).')');
+            mysql_query('INSERT INTO `'.$FD->config('pref')."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".$name."', '".$type."', ".$thumb.', '.intval($_POST['cat']).')');
             $count++;
 
             copy (UPLOAD_PATH.$name.'.'.$type, CIMG_PATH.$name.'.'.$type);
@@ -69,7 +69,7 @@ if(isset($_POST['import'])){
 }
 
 if(!isset($_POST['import']) && !isset($_POST['delete'])){
-    $qry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg`');
+    $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg`');
     $img = array();
     while(($row = mysql_fetch_assoc($qry)) !== false){
         $img[] = $row['name'];
@@ -112,7 +112,7 @@ echo '    </tr>';
         }
         echo '    <tr><td class="config" rowspan="2">Auswahl:</td><td><input class="button" type="submit" name="delete" value="l&ouml;schen!"></td></tr>';
         echo '    <tr><td class="config">in die Kategorie <select name="cat"><option value="0">Keine Kategorie</option>';
-        $qry = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'cimg_cats`');
+        $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
         while(($cat = mysql_fetch_assoc($qry)) !== false){
             echo '<option value="'.$cat['id'].'" title="'.$cat['description'].'">'.$cat['name'].'</option>';
         }
