@@ -23,7 +23,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."user_config`
+                    UPDATE `'.$FD->config('pref')."user_config`
                     SET
                         `user_per_page` = '".$_POST['user_per_page']."',
                         `registration_antispam` = '".$_POST['registration_antispam']."',
@@ -56,7 +56,7 @@ if ( TRUE )
     } else {
         $index = mysql_query ( '
                                 SELECT *
-                                FROM '.$global_config_arr['pref']."user_config
+                                FROM '.$FD->config('pref')."user_config
                                 WHERE `id` = '1'
         ", $FD->sql()->conn() );
         $config_arr = mysql_fetch_assoc($index);

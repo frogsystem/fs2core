@@ -1,14 +1,14 @@
 <?php
 $index = mysql_query ( '
                         SELECT `user`
-                        FROM '.$global_config_arr['pref'].'counter
+                        FROM '.$FD->config('pref').'counter
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_user = mysql_result ( $index, 0, 'user' );
 
 $index = mysql_query ( '
                         SELECT `user_name`
-                        FROM '.$global_config_arr['pref'].'user
+                        FROM '.$FD->config('pref').'user
                         ORDER BY `user_reg_date` DESC
                         LIMIT 0,1
 ', $FD->sql()->conn() );
@@ -16,7 +16,7 @@ $last_user = stripslashes ( mysql_result ( $index, 0, 'user_name' ) );
 
 $index = mysql_query ( "
                         SELECT COUNT(`user_id`) AS 'num_staff'
-                        FROM ".$global_config_arr['pref'].'user
+                        FROM ".$FD->config('pref').'user
                         WHERE `user_is_staff` = 1
                         AND `user_is_admin` = 0
                         AND `user_id` != 1
@@ -25,7 +25,7 @@ $num_staff = mysql_result ( $index, 0, 'num_staff' );
 
 $index = mysql_query ( "
                         SELECT COUNT(`user_group_id`) AS 'num_groups'
-                        FROM ".$global_config_arr['pref'].'user_groups
+                        FROM ".$FD->config('pref').'user_groups
                         WHERE `user_group_id` > 0
 ', $FD->sql()->conn() );
 $num_groups = mysql_result ( $index, 0, 'num_groups' );
@@ -34,7 +34,7 @@ $num_groups++;
 if ( $num_groups  > 0 ) {
     $index = mysql_query ( "
                             SELECT G.`user_group_name`, COUNT(U.`user_id`) AS 'biggest_num'
-                            FROM ".$global_config_arr['pref'].'user_groups G, '.$global_config_arr['pref']."user U
+                            FROM ".$FD->config('pref').'user_groups G, '.$FD->config('pref')."user U
                             WHERE U.`user_group` = G.`user_group_id`
                             AND U.`user_group` > '0'
                             AND U.`user_is_staff` = '1'
@@ -53,7 +53,7 @@ if ( $temp_biggest_exists  > 0 ) {
 
 $index = mysql_query ( '
                         SELECT `user_group_name`
-                        FROM '.$global_config_arr['pref'].'user_groups
+                        FROM '.$FD->config('pref').'user_groups
                         ORDER BY `user_group_date` DESC
                         LIMIT 0,1
 ', $FD->sql()->conn() );
@@ -61,7 +61,7 @@ $last_group = stripslashes ( mysql_result ( $index, 0, 'user_group_name' ) );
 
 $index = mysql_query ( "
                         SELECT COUNT(`user_id`) AS 'num_admin'
-                        FROM ".$global_config_arr['pref'].'user
+                        FROM ".$FD->config('pref').'user
                         WHERE `user_is_admin` = 1
                         OR `user_id` = 1
 ', $FD->sql()->conn() );
@@ -70,7 +70,7 @@ $num_staff += $num_admin;
 
 $index = mysql_query ( '
                         SELECT `user_name`
-                        FROM '.$global_config_arr['pref'].'user
+                        FROM '.$FD->config('pref').'user
                         WHERE `user_id` = 1
                         LIMIT 0,1
 ', $FD->sql()->conn() );

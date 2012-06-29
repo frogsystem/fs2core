@@ -1,8 +1,8 @@
 <?php
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll_config', $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_config', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 $date = date('U');
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref')."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $FD->sql()->conn() );
 if ( $poll_arr = mysql_fetch_assoc($index) ) {
 
     $poll_arr['poll_start'] = date('d.m.Y' , $poll_arr['poll_start']);
@@ -16,12 +16,12 @@ if ( $poll_arr = mysql_fetch_assoc($index) ) {
 
     $index = mysql_query ( "
                             SELECT SUM(`answer_count`) AS 'num_votes'
-                            FROM ".$global_config_arr['pref']."poll_answers
+                            FROM ".$FD->config('pref')."poll_answers
                             WHERE `poll_id` = '".$poll_arr['poll_id']."'
     ", $FD->sql()->conn() );
     $all_votes = mysql_result ( $index, 0, 'num_votes' );
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."poll_answers WHERE poll_id = '".$poll_arr['poll_id']."' ORDER BY answer_id ASC", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '".$poll_arr['poll_id']."' ORDER BY answer_id ASC", $FD->sql()->conn() );
     while ($answer_arr = mysql_fetch_assoc($index))
     {
         if ($all_votes != 0)
@@ -100,7 +100,7 @@ if ( $poll_arr = mysql_fetch_assoc($index) ) {
 
 $index = mysql_query ( "
                         SELECT COUNT(DISTINCT(P.`poll_id`)) AS 'num_polls', SUM(DISTINCT(P.`poll_participants`)) AS 'num_participants', SUM(A.`answer_count`) AS 'num_votes'
-                        FROM ".$global_config_arr['pref'].'poll P, '.$global_config_arr['pref'].'poll_answers A
+                        FROM ".$FD->config('pref').'poll P, '.$FD->config('pref').'poll_answers A
                         WHERE P.`poll_id` = A.`poll_id`
 ', $FD->sql()->conn() );
 $num_polls = mysql_result ( $index, 0, 'num_polls' );
@@ -112,7 +112,7 @@ settype ( $num_votes, 'integer' );
 if ( $num_polls  > 0 ) {
     $index = mysql_query ( '
                             SELECT `poll_quest`, `poll_participants`
-                            FROM '.$global_config_arr['pref'].'poll
+                            FROM '.$FD->config('pref').'poll
                             ORDER BY `poll_participants` DESC
                             LIMIT 0,1
     ', $FD->sql()->conn() );
@@ -121,7 +121,7 @@ if ( $num_polls  > 0 ) {
 
     $index = mysql_query ( "
                             SELECT P.`poll_quest`, SUM(A.`answer_count`) AS 'num_votes'
-                            FROM ".$global_config_arr['pref'].'poll P, '.$global_config_arr['pref'].'poll_answers A
+                            FROM ".$FD->config('pref').'poll P, '.$FD->config('pref').'poll_answers A
                             WHERE P.`poll_id` = A.`poll_id`
                             GROUP BY P.`poll_quest`
                             ORDER BY `num_votes` DESC

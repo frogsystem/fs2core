@@ -17,7 +17,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."snippets`
+                    UPDATE `'.$FD->config('pref')."snippets`
                     SET
                         `snippet_text` = '".$_POST['snippet_text']."',
                         `snippet_active` = '".$_POST['snippet_active']."'
@@ -51,7 +51,7 @@ elseif (
         // MySQL-Delete-Query
         mysql_query ('
                         DELETE
-                        FROM `'.$global_config_arr['pref'].'snippets`
+                        FROM `'.$FD->config('pref').'snippets`
                         WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
         ', $FD->sql()->conn() );
 
@@ -91,7 +91,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         } else {
             $index = mysql_query ( '
                                     SELECT *
-                                    FROM `'.$global_config_arr['pref']."snippets`
+                                    FROM `'.$FD->config('pref')."snippets`
                                     WHERE `snippet_id` = '".$_POST['snippet_id']."'
                                     LIMIT 0,1
             ", $FD->sql()->conn() );
@@ -190,7 +190,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         // get applets from db
         $index = mysql_query ( '
                                 SELECT *
-                                FROM `'.$global_config_arr['pref'].'snippets`
+                                FROM `'.$FD->config('pref').'snippets`
                                 WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
                                 ORDER BY `snippet_tag`
         ', $FD->sql()->conn() );
@@ -246,7 +246,7 @@ if ( !isset ( $_POST['snippet_id'] ) )
     // get snippets from db
     $index = mysql_query ( '
                             SELECT *
-                            FROM `'.$global_config_arr['pref'].'snippets`
+                            FROM `'.$FD->config('pref').'snippets`
                             ORDER BY `snippet_tag`
     ', $FD->sql()->conn() );
 

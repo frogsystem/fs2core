@@ -179,12 +179,12 @@ echo'
 
 <!-- Page Head -->
 <div id="head">
-     <h1>'.$global_config_arr['title'].'</h1>
+     <h1>'.$FD->config('title').'</h1>
      <div id="head_version">
-         version '.$global_config_arr['version'].'
+         version '.$FD->config('version').'
      </div>
      <div id="head_link">
-         <a href="'.$global_config_arr['virtualhost'].'" target="_self" class="head_link">» '.$FD->text("menu", "admin_link_to_page").'</a>
+         <a href="'.$FD->config('virtualhost').'" target="_self" class="head_link">» '.$FD->text("menu", "admin_link_to_page").'</a>
      </div>
 </div>
 <!-- /Page Head -->';

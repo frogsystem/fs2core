@@ -4,13 +4,12 @@
 ///////////////////
 
 function user_name_free ( $USERNAME ) {
-    global $global_config_arr;
     global $FD;
 
     $USERNAME = savesql ( $USERNAME );
     $index = mysql_query ( '
                             SELECT `user_id`
-                            FROM `'.$global_config_arr['pref']."user`
+                            FROM `'.$FD->config('pref')."user`
                             WHERE `user_name` = '".$USERNAME."'
     ", $FD->sql()->conn() );
     if ( mysql_num_rows ( $index ) > 0 ) {
@@ -23,7 +22,7 @@ function user_name_free ( $USERNAME ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 //////////////////
@@ -85,7 +84,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    INSERT INTO `'.$global_config_arr['pref']."user`
+                    INSERT INTO `'.$FD->config('pref')."user`
                         ( `user_name`, `user_password`, `user_salt`,
                         `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
                         `user_reg_date`, `user_show_mail`, `user_homepage`,
@@ -112,7 +111,7 @@ if (
     $message = 'Benutzer wurde erfolgreich hinzugef&uuml;gt';
 
     mysql_query ( '
-                    UPDATE '.$global_config_arr['pref'].'counter
+                    UPDATE '.$FD->config('pref').'counter
                     SET `user` = `user`+1
     ', $FD->sql()->conn() );
 
@@ -127,7 +126,7 @@ if (
     $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_POST['user_name'] ), $template_mail );
     $template_mail = str_replace ( '{..new_password..}', $_POST['newpwd'], $template_mail );
     $template_mail = replace_globalvars ( $template_mail );
-    $email_subject = $FD->text("frontend", "mail_registerd_on") . $global_config_arr['virtualhost'];
+    $email_subject = $FD->text("frontend", "mail_registerd_on") . $FD->config('virtualhost');
     if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
         $email_message = '<br>'.$FD->text("frontend", "mail_registerd_sended");
     } else {
@@ -306,7 +305,7 @@ if ( TRUE )
 
     $index = mysql_query ('
                             SELECT `user_group_id`, `user_group_name`
-                            FROM '.$global_config_arr['pref'].'user_groups
+                            FROM '.$FD->config('pref').'user_groups
                             WHERE `user_group_id` > 0
                             ORDER BY `user_group_name`
     ', $FD->sql()->conn() );
@@ -318,7 +317,7 @@ if ( TRUE )
 
     $index = mysql_query ('
                             SELECT `user_group_id`, `user_group_name`
-                            FROM '.$global_config_arr['pref'].'user_groups
+                            FROM '.$FD->config('pref').'user_groups
                             WHERE `user_group_id` = 0
                             ORDER BY `user_group_name`
                             LIMIT 0,1
