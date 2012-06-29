@@ -4,7 +4,7 @@ $index = mysql_query ( '
                         SELECT
                             `artikel_id`, `artikel_name`, `artikel_url`, `artikel_preis`
                         FROM
-                            `'.$global_config_arr['pref'].'shop`
+                            `'.$FD->config('pref').'shop`
                         WHERE
                             `artikel_hot` = 1
 ', $FD->sql()->conn() );

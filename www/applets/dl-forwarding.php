@@ -18,13 +18,13 @@ if (
     )
 {
     // Load Config Array
-    $index = mysql_query ( ' SELECT * FROM `'.$global_config_arr['pref'].'dl_config`', $FD->sql()->conn() );
+    $index = mysql_query ( ' SELECT * FROM `'.$FD->config('pref').'dl_config`', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc ( $index );
 
     // Get File Data
     $index = mysql_query ( '
                             SELECT `file_is_mirror`, `file_url`
-                            FROM `'.$global_config_arr['pref'].'dl_files`
+                            FROM `'.$FD->config('pref').'dl_files`
                             WHERE `file_id` = '.$_GET['id'].'
     ', $FD->sql()->conn() );
     $check_file_is_mirror = mysql_result ( $index, 0, 'file_is_mirror' );
@@ -40,7 +40,7 @@ if (
     {
         // Update Counter
         mysql_query ( '
-                        UPDATE `'.$global_config_arr['pref']."dl_files`
+                        UPDATE `'.$FD->config('pref')."dl_files`
                         SET `file_count` = `file_count` + 1
                         WHERE `file_id` = '".$_GET['id']."'
         ", $FD->sql()->conn() );

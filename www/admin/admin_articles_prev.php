@@ -148,9 +148,9 @@ else {
     $template_preview = $article_arr['template']->display ();
 
     // Preview Page Template
-    $global_config_arr['dyn_title'] = 1;
-    $global_config_arr['dyn_title_ext'] = '{..ext..}';
-    $global_config_arr['dyn_title_page'] = $FD->text('page', 'preview_title').': '.$article_arr['article_title'];
+    $FD->setConfig('dyn_title', 1);
+    $FD->setConfig('dyn_title_ext', '{..ext..}');
+    $FD->setConfig('dyn_title_page', $FD->text('page', 'preview_title').': '.$article_arr['article_title']);
 
 
     // Display Preview Page

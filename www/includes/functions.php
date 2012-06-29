@@ -165,7 +165,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         ", $FD->sql()->conn() );
         $group_arr = mysql_fetch_assoc ( $index );
 
-        settype ( $group_arr['user_group_id'], integer );
+        settype ( $group_arr['user_group_id'], 'integer' );
         $group_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
         $group_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
         $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text("frontend", "group_image_of").' '.$group_arr['user_group_name'].'">' : '' );
