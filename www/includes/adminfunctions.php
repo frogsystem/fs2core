@@ -176,14 +176,13 @@ function add_zero ( $FIGURE )
 
 function get_article_urls ()
 {
-    global $global_config_arr;
     global $FD;
 
         $index = mysql_query ( '
                                                         SELECT
                                                                 article_url
                                                         FROM
-                                                                '.$global_config_arr['pref'].'articles
+                                                                '.$FD->config('pref').'articles
         ', $FD->sql()->conn() );
 
         while ( $result = mysql_fetch_assoc ( $index ) ) {
@@ -492,7 +491,6 @@ function putintopost ($ARRAY)
 
 function create_editor($name, $text='', $width='', $height='', $class='', $do_smilies=true)
 {
-    global $global_config_arr;
     global $FD;
 
     if ($name != '') {
@@ -531,7 +529,7 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
     $zaehler = 0;
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'smilies ORDER by `order` ASC LIMIT 0, 10', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'smilies ORDER by `order` ASC LIMIT 0, 10', $FD->sql()->conn() );
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $smilie_arr['url'] = image_url('images/smilies/', $smilie_arr['id'], false);
@@ -612,7 +610,8 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
 
 function create_editor_button($img_url, $alt, $title, $insert)
 {
-    global $global_config_arr;
+    global $FD;
+
     $javascript = 'onClick="'.$insert.'"';
 
     $button = '
@@ -621,7 +620,7 @@ function create_editor_button($img_url, $alt, $title, $insert)
             <img src="{img_url}" alt="{alt}" title="{title}" />
         </div>
     </td>';
-    $button = str_replace('{img_url}', $global_config_arr['virtualhost'].$img_url, $button);
+    $button = str_replace('{img_url}', $FD->config('virtualhost').$img_url, $button);
     $button = str_replace('{alt}', $alt, $button);
     $button = str_replace('{title}', $title, $button);
     $button = str_replace('{javascript}', $javascript, $button);
@@ -635,7 +634,7 @@ function create_editor_button($img_url, $alt, $title, $insert)
 
 function create_editor_button_new($img_url, $alt, $title, $insert)
 {
-    global $global_config_arr;
+    global $FD;
     $javascript = 'javascript:'.$insert;
 
     $button = '
@@ -644,7 +643,7 @@ function create_editor_button_new($img_url, $alt, $title, $insert)
             <img border="0" src="img/null.gif" alt="{alt}">
         </a>
     </td>';
-    $button = str_replace('{img_url}', $global_config_arr['virtualhost'].$img_url, $button);
+    $button = str_replace('{img_url}', $FD->config('virtualhost').$img_url, $button);
     $button = str_replace('{alt}', $alt, $button);
     $button = str_replace('{title}', $title, $button);
     $button = str_replace('{javascript}', $javascript, $button);
@@ -716,7 +715,7 @@ function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
         );
     } else {
         $page_data = array(
-            'title' => $FD->text("menu", "admin_error_page_title"),
+            'title' => $FD->text('menu', 'admin_error_page_title'),
             'file'  => 'admin_403.php',
             'menu'  => 'error'
         );
@@ -863,12 +862,11 @@ function get_link ($PAGE_ID, $GO)
 
 function admin_set_cookie($username, $password)
 {
-    global $global_config_arr;
     global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -914,12 +912,11 @@ function admin_set_cookie($username, $password)
 
 function admin_login($username, $password, $iscookie)
 {
-    global $global_config_arr;
     global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -968,7 +965,7 @@ function admin_login($username, $password, $iscookie)
 ////////////////////////////////
 
 function fillsession ($uid) {
-    global $global_config_arr, $FD;
+    global $FD;
     global $sql;
 
     $USER_ARR = $sql->getRow('user', array('user_id', 'user_name', 'user_is_staff', 'user_group', 'user_group'),

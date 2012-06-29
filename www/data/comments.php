@@ -173,7 +173,7 @@ if ( $SHOW == TRUE ) {
     if ($news_rows > 0) {
         $news_arr = mysql_fetch_assoc($index);
         $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
-        $FD->setConfig('dyn_title_page') = stripslashes ( $news_arr['news_title'] );
+        $FD->setConfig('dyn_title_page', stripslashes ( $news_arr['news_title'] ) );
     } else {
         $news_template = sys_message($FD->text('frontend', 'sysmessage'), $FD->text('frontend', 'news_not_exist'), 404);
     }

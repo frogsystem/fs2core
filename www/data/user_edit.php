@@ -15,7 +15,7 @@ $config_arr = mysql_fetch_assoc ( $index );
 //// Save Changes ////
 //////////////////////
 if (
-        $_POST['user_mail']
+        isset($_POST['user_mail'])
         && $_SESSION['user_id']
         && ( $_POST['old_pwd'] == '' || ( $_POST['old_pwd'] != '' && $_POST['new_pwd'] != '' && $_POST['wdh_pwd'] != '' ) )
     ) {

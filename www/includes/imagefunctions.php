@@ -32,9 +32,9 @@ function get_image_output ( $PATH, $NAME, $TITLE, $NO_TEXT = '', $SHOW_TITLE = T
 
 function image_exists ( $PATH, $NAME )
 {
-    global $global_config_arr;
+    global $FD;
 
-    $CHECK_PATH = $global_config_arr['path'] . $PATH;
+    $CHECK_PATH = $FD->config('path') . $PATH;
 
     if (
             file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ||
@@ -93,9 +93,9 @@ function image_url ( $PATH, $NAME, $ERROR = TRUE, $GETPATH = FALSE )
 
 function image_delete ( $PATH, $NAME )
 {
-    global $global_config_arr;
+    global $FD;
 
-    $CHECK_PATH = $global_config_arr['path'] . $PATH;
+    $CHECK_PATH = $FD->config('path') . $PATH;
 
     if ( file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ) {
         $file = $CHECK_PATH . $NAME . '.jpg';
@@ -122,12 +122,12 @@ function image_delete ( $PATH, $NAME )
 
 function image_rename ( $PATH, $NAME, $NEWNAME )
 {
-    global $global_config_arr;
+    global $FD;
 
     if ( image_exists ( $PATH, $NAME ) && !image_exists ( $PATH, $NEWNAME ) ) {
         $extension = pathinfo ( image_url ( $PATH, $NAME, FALSE, TRUE ) );
         $extension = $extension['extension'];
-        rename ( image_url ( $PATH, $NAME, FALSE, TRUE ), $global_config_arr['path'] . $PATH . $NEWNAME . '.' . $extension );
+        rename ( image_url ( $PATH, $NAME, FALSE, TRUE ), $FD->config('path') . $PATH . $NEWNAME . '.' . $extension );
         return true;
     } else {
         return false;
@@ -182,7 +182,7 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
 
 function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, $QUALITY = 100, $THIS_SIZE = false )
 {
-    global $global_config_arr;
+    global $FD;
 
     // Get Image Data
     $image_data = getimagesize ( $IMAGE['tmp_name'] );
@@ -221,7 +221,7 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
     }
 
     // Create Image
-    $full_path = $global_config_arr['path'] . $PATH . $NAME . '.' . $type;
+    $full_path = $FD->config('path') . $PATH . $NAME . '.' . $type;
     move_uploaded_file ( $IMAGE['tmp_name'], $full_path );
     chmod ( $full_path, 0644 );
     clearstatcache();

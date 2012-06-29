@@ -71,7 +71,7 @@ class GlobalData {
             $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
         }
 
-        $this->setOldArray();   // TODO remove backwards compatibility
+        //$this->setOldArray();   // TODO remove backwards compatibility
     }
     
     
@@ -94,7 +94,7 @@ class GlobalData {
         require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
         @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
         if (!class_exists($class_name))
-            $class_name = "ConfigData";
+            $class_name = 'ConfigData';
         return new $class_name($data, $json);
     }
 
@@ -114,7 +114,7 @@ class GlobalData {
         }
 
         //TODO backwards update $global_config_arr
-        $this->setOldArray();
+        //$this->setOldArray();
     }
 
     // set config
@@ -220,13 +220,13 @@ class GlobalData {
 
     // TODO remove backwards compatibility
     // create global config array
-    public function setOldArray() {
+    /*public function setOldArray() {
         global $global_config_arr;
 
         $global_config_arr = $this->config['main']->getConfigArray();
         $global_config_arr['system'] = $this->config['system']->getConfigArray();
         $global_config_arr['env'] = $this->config['env']->getConfigArray();
-    }
+    }*/
 
 }
 

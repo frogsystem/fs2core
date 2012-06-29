@@ -2,13 +2,13 @@
 
 function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
 
-    global $global_config_arr, $FD, $sql;
+    global $FD, $sql;
 
     $template_own = '
-    <object type="application/x-shockwave-flash" data="'.$global_config_arr['virtualhost'].'resources/player/player_flv_maxi.swf" width="{..width..}" height="{..height..}">
-        <param name="movie" value="'.$global_config_arr['virtualhost'].'resources/player/player_flv_maxi.swf"></param>
+    <object type="application/x-shockwave-flash" data="'.$FD->config('virtualhost').'resources/player/player_flv_maxi.swf" width="{..width..}" height="{..height..}">
+        <param name="movie" value="'.$FD->config('virtualhost').'resources/player/player_flv_maxi.swf"></param>
         <param name="allowFullScreen" value="true"></param>
-        <param name="FlashVars" value="config='.$global_config_arr['virtualhost'].'resources/player/player_flv_config.php&amp;flv={..url..}&amp;title={..title..}&amp;width={..width..}&amp;height={..height..}"></param>
+        <param name="FlashVars" value="config='.$FD->config('virtualhost').'resources/player/player_flv_config.php&amp;flv={..url..}&amp;title={..title..}&amp;width={..width..}&amp;height={..height..}"></param>
     </object>
     ';
 
@@ -41,7 +41,7 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
         settype ( $MULTI, 'integer' );
         $index = mysql_query ( '
                                 SELECT *
-                                FROM '.$global_config_arr['pref']."player
+                                FROM '.$FD->config('pref')."player
                                 WHERE video_id = '".$MULTI."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
