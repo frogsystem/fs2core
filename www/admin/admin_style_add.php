@@ -5,9 +5,9 @@
 /////////////////////////
 
 if (
-        $_POST['style_tag'] && preg_match ( '/^[0-9a-z_\-]+$/', $_POST['style_tag'] ) === 1
+        isset($_POST['style_tag']) && preg_match ( '/^[0-9a-z_\-]+$/', $_POST['style_tag'] ) === 1
         && $_POST['style_tag'] != '' && strlen ( $_POST['style_tag'] ) >= 1
-        && $_POST['style_name'] && $_POST['style_name'] != ''
+        && isset($_POST['style_name']) && $_POST['style_name'] != ''
         && ( $_POST['style_create_as'] == 'new' || ( $_POST['style_create_as'] == 'copy' && $_POST['copy_style_id'] ) )
     )
 {
@@ -36,7 +36,7 @@ if (
         // MySQL-Queries
         mysql_query ( '
                         INSERT INTO
-                            `'.$global_config_arr['pref']."styles`
+                            `'.$FD->config('pref')."styles`
                             ( `style_tag`, `style_allow_use`, `style_allow_edit` )
                         VALUES
                             ( '".$_POST['style_tag']."', '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )
@@ -49,7 +49,7 @@ if (
                                     SELECT
                                         `style_tag`
                                     FROM
-                                        `'.$global_config_arr['pref'].'styles`
+                                        `'.$FD->config('pref').'styles`
                                     WHERE
                                         `style_id` = '.$_POST['copy_style_id'].'
                                     LIMIT 0,1
@@ -115,7 +115,7 @@ if ( !is_writable ( FS2_ROOT_PATH . 'styles/' ) ) {
     } else {
         $_POST['style_allow_use'] = 1;
         $_POST['style_allow_edit'] = 1;
-        $_POST['copy_style_id'] = $global_config_arr['style_id'];
+        $_POST['copy_style_id'] = $FD->config('style_id');
         $_POST['style_create_as'] = 'new';
     }
 
@@ -154,13 +154,13 @@ if ( !is_writable ( FS2_ROOT_PATH . 'styles/' ) ) {
 
     $index = mysql_query ( '
                             SELECT `style_id`, `style_tag`
-                            FROM `'.$global_config_arr['pref'].'styles`
+                            FROM `'.$FD->config('pref').'styles`
                             ORDER BY `style_id`
     ', $FD->sql()->conn() );
     while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
         settype ( $style_arr['style_id'], 'integer' );
         echo '<option value="'.$style_arr['style_id'].'" '.getselected( $style_arr['style_id'], $_POST['copy_style_id'] ).'>'.killhtml ( $style_arr['style_tag'] );
-        echo ( $style_arr['style_id'] == $global_config_arr['style_id'] ) ? ' ('.$FD->text("admin", "active").')' : '';
+        echo ( $style_arr['style_id'] == $FD->config('style_id') ) ? ' ('.$FD->text('admin', 'active').')' : '';
         echo '</option>';
     }
     echo'

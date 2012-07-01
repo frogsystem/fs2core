@@ -70,7 +70,7 @@ function url ($go, $args = array(), $full = false) {
 //////////////////////////
 function get_page_nav ( $PAGE, $NUM_OF_PAGES, $PER_PAGE, $NUM_OF_ENTRIES, $URL_TEMPLATE )
 {
-    global $global_config_arr;
+    global $FD;
 
     // Security Functions
     settype ( $PAGE, 'integer' );
@@ -83,18 +83,18 @@ function get_page_nav ( $PAGE, $NUM_OF_PAGES, $PER_PAGE, $NUM_OF_ENTRIES, $URL_T
     $prev_url = str_replace ( array('{..page_num..}', urlencode('{..page_num..}')), $PAGE-1, $URL_TEMPLATE );
     $prev_url = str_replace ( '{..page_num..}', $PAGE-1, $prev_url );
     if ( $PAGE > 1 ) {
-        $template_prev = str_replace ( '{..url..}', $prev_url, $global_config_arr['page_prev'] );
+        $template_prev = str_replace ( '{..url..}', $prev_url, $FD->config('page_prev') );
     }
 
     // Next Template
     $template_next = '';
     $next_url = str_replace ( array('{..page_num..}', urlencode('{..page_num..}')), $PAGE+1, $URL_TEMPLATE );
     if ( ( $PAGE*$PER_PAGE ) < $NUM_OF_ENTRIES ) {
-        $template_next = str_replace ( '{..url..}', $next_url, $global_config_arr['page_next'] );
+        $template_next = str_replace ( '{..url..}', $next_url, $FD->config('page_next') );
     }
 
     // Main Template
-    $template = str_replace ( '{..page_number..}', $PAGE, $global_config_arr['page'] );
+    $template = str_replace ( '{..page_number..}', $PAGE, $FD->config('page') );
     $template = str_replace ( '{..total_pages..}', $NUM_OF_PAGES, $template );
     $template = str_replace ( '{..prev..}', $template_prev, $template );
     $template = str_replace ( '{..next..}', $template_next, $template );
@@ -150,7 +150,7 @@ function scandir_ext ( $FOLDER, $FILE_EXT, $EXTRA = array(), $BAD = array ( '.',
 ///////////////////////
 function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
 {
-    global $FD, $global_config_arr;
+    global $FD;
 
     if ( $GROUP_ID == 0 && $IS_ADMIN != 1 ) {
         $retrun_arr['user_group_id'] = 0;
@@ -160,12 +160,12 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
     } else {
         $index = mysql_query ( '
             SELECT *
-            FROM `'.$global_config_arr['pref']."user_groups`
+            FROM `'.$FD->config('pref')."user_groups`
             WHERE `user_group_id` = '".$GROUP_ID."'
         ", $FD->sql()->conn() );
         $group_arr = mysql_fetch_assoc ( $index );
 
-        settype ( $group_arr['user_group_id'], integer );
+        settype ( $group_arr['user_group_id'], 'integer' );
         $group_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
         $group_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
         $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text("frontend", "group_image_of").' '.$group_arr['user_group_name'].'">' : '' );
@@ -211,13 +211,13 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
 //////////////////////////////
 function get_sub_cats ( $CAT_ID, $REC_SUB_CAT_ARRAY )
 {
-    global $FD, $global_config_arr;
+    global $FD;
     static $sub_cat_ids = array();
     $sub_cat_ids = $REC_SUB_CAT_ARRAY;
 
     $subcat_index = mysql_query ( '
         SELECT `cat_id`
-        FROM `'.$global_config_arr['pref']."dl_cat`
+        FROM `'.$FD->config('pref')."dl_cat`
         WHERE `subcat_id` = '".$CAT_ID."'
     ", $FD->sql()->conn() );
 
@@ -232,21 +232,21 @@ function get_sub_cats ( $CAT_ID, $REC_SUB_CAT_ARRAY )
 //// Create DL-Folder-System ////
 /////////////////////////////////
 function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
-    global $FD, $global_config_arr;
+    global $FD;
     static $navi;
     static $i = 0;
 
     $i++;
     $data[$CAT_ID] = mysql_query ( '
         SELECT *
-        FROM `'.$global_config_arr['pref']."dl_cat`
+        FROM `'.$FD->config('pref')."dl_cat`
         WHERE `subcat_id` = '".$CAT_ID."'
     ", $FD->sql()->conn() );
 
     while ( $array = mysql_fetch_assoc ( $data[$CAT_ID] ) ) {
         $index = mysql_query ( '
             SELECT `cat_id`
-            FROM `'.$global_config_arr['pref']."dl_cat`
+            FROM `'.$FD->config('pref')."dl_cat`
             WHERE `subcat_id` = '".$array['cat_id']."'
         ", $FD->sql()->conn() );
         $num_subcat = mysql_num_rows ( $index );
@@ -289,13 +289,12 @@ function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
 ////////////////////////////////////////
 function get_timed_pic ()
 {
-    global $global_config_arr;
     global $FD;
 
     $time = time();
     $index = mysql_query ( "
                             SELECT COUNT(R.`screen_id`) AS 'images'
-                            FROM `".$global_config_arr['pref'].'screen_random` R
+                            FROM `".$FD->config('pref').'screen_random` R
                             WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.'
     ', $FD->sql()->conn() );
 
@@ -305,7 +304,7 @@ function get_timed_pic ()
         $rand = rand ( 0, $num_images - 1 );
         $index = mysql_query ( '
                                 SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
-                                FROM `'.$global_config_arr['pref'].'screen_random` R, `'.$global_config_arr['pref'].'screen` S, `'.$global_config_arr['pref'].'screen_cat` C
+                                FROM `'.$FD->config('pref').'screen_random` R, `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                                 WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.'
                                 AND R.`screen_id` = S.`screen_id`
                                 LIMIT '.$rand.',1
@@ -330,12 +329,12 @@ function get_timed_pic ()
 //////////////////////////////////
 function get_random_pic ()
 {
-    global $global_config_arr, $FD;
+    global $FD;
 
     // Get number of possible Screens
     $index = mysql_query ( "
                             SELECT COUNT(S.`screen_id`) AS 'images'
-                            FROM `".$global_config_arr['pref'].'screen` S, `'.$global_config_arr['pref'].'screen_cat` C
+                            FROM `".$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                             WHERE C.`randompic` = 1
                             AND C.`cat_id` = S.`cat_id`
     ', $FD->sql()->conn() );
@@ -346,7 +345,7 @@ function get_random_pic ()
         $rand = rand ( 0, $num_images - 1 );
         $index = mysql_query ( '
                                 SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
-                                FROM `'.$global_config_arr['pref'].'screen` S, `'.$global_config_arr['pref'].'screen_cat` C
+                                FROM `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                                 WHERE C.`randompic` = 1
                                 AND C.`cat_id` = S.`cat_id`
                                 LIMIT '.$rand.',1
@@ -461,7 +460,6 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
 
 function check_captcha ( $SOLUTION, $ACTIVATION )
 {
-    global $global_config_arr;
     global $FD;
 
     function encrypt_captcha ( $STRING, $KEY ) {
@@ -475,7 +473,7 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
         return base64_encode($result);
     }
 
-    $sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $global_config_arr['spam'] );
+    $sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $FD->config('spam') );
     $sicherheits_eingabe = str_replace ('=', '', $sicherheits_eingabe );
 
     if ( $ACTIVATION == 0 ) {
@@ -499,7 +497,6 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
 
 function is_in_staff ( $USER_ID )
 {
-    global $global_config_arr;
     global $FD;
 
     settype ( $USER_ID, 'integer' );
@@ -507,7 +504,7 @@ function is_in_staff ( $USER_ID )
     if ( $USER_ID ) {
         $index = mysql_query ( '
                                 SELECT user_id, user_is_staff, user_is_admin
-                                FROM '.$global_config_arr['pref']."user
+                                FROM '.$FD->config('pref')."user
                                 WHERE user_id = '".$USER_ID."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -526,7 +523,6 @@ function is_in_staff ( $USER_ID )
 
 function is_admin ( $USER_ID )
 {
-    global $global_config_arr;
     global $FD;
 
     settype ( $USER_ID, 'integer' );
@@ -534,7 +530,7 @@ function is_admin ( $USER_ID )
     if ( $USER_ID ) {
         $index = mysql_query ( '
                                 SELECT user_id, user_is_admin
-                                FROM '.$global_config_arr['pref']."user
+                                FROM '.$FD->config('pref')."user
                                 WHERE user_id = '".$USER_ID."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -553,13 +549,12 @@ function is_admin ( $USER_ID )
 
 function get_template ( $TEMPLATE_NAME )
 {
-    global $global_config_arr;
     global $FD;
 
     $index = mysql_query ( '
                             SELECT `'.$TEMPLATE_NAME.'`
-                            FROM '.$global_config_arr['pref']."template
-                            WHERE `id` = '".$global_config_arr['design']."'
+                            FROM '.$FD->config('pref')."template
+                            WHERE `id` = '".$FD->config('design')."'
     ", $FD->sql()->conn() );
     return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
 }
@@ -570,12 +565,11 @@ function get_template ( $TEMPLATE_NAME )
 
 function get_email_template ( $TEMPLATE_NAME )
 {
-    global $global_config_arr;
     global $FD;
 
     $index = mysql_query ( '
                             SELECT `'.$TEMPLATE_NAME.'`
-                            FROM '.$global_config_arr['pref']."email
+                            FROM '.$FD->config('pref')."email
                             WHERE `id` = '1'
     ", $FD->sql()->conn() );
 
@@ -588,18 +582,17 @@ function get_email_template ( $TEMPLATE_NAME )
 
 function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
 {
-    global $global_config_arr;
     global $FD;
 
     $index = mysql_query ( '
                             SELECT `use_admin_mail`, `email`, `html`
-                            FROM '.$global_config_arr['pref']."email
+                            FROM '.$FD->config('pref')."email
                             WHERE `id` = '1'
     ", $FD->sql()->conn() );
 
     if ( $FROM == FALSE ) {
         if ( mysql_result ( $index, 0, 'use_admin_mail' ) == 1 ) {
-            $header  = 'From: ' . $global_config_arr['admin_mail'] . "\n";
+            $header  = 'From: ' . $FD->config('admin_mail') . "\n";
         } else {
             $header  = 'From: ' . stripslashes ( mysql_result ( $index, 0, 'email' ) ) . "\n";
         }
@@ -632,7 +625,6 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
 
 function create_textarea($name, $text='', $width='', $height='', $class='', $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
 {
-    global $global_config_arr;
     global $FD;
 
     if ($name != '') {
@@ -659,14 +651,14 @@ function create_textarea($name, $text='', $width='', $height='', $class='', $all
     $smilies_table = '
           <table cellpadding="2" cellspacing="0" border="0">';
 
-    $index = mysql_query ( 'SELECT * FROM `'.$global_config_arr['pref'].'editor_config`', $FD->sql()->conn() );
+    $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'editor_config`', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc ( $index );
     $config_arr['num_smilies'] = $config_arr['smilies_rows']*$config_arr['smilies_cols'];
 
     $zaehler = 0;
     $index = mysql_query ( '
                             SELECT *
-                            FROM `'.$global_config_arr['pref'].'smilies`
+                            FROM `'.$FD->config('pref').'smilies`
                             ORDER BY `order` ASC
                             LIMIT 0, '.$config_arr['num_smilies'].'
     ', $FD->sql()->conn() );
@@ -820,7 +812,6 @@ if ($all==true OR $fs_noparse==1) {
 
 function create_textarea_button($img_file_name, $alt, $title, $insert)
 {
-    global $global_config_arr;
     $javascript = 'onClick="'.$insert.'"';
 
     // Get Button
@@ -859,10 +850,8 @@ function create_textarea_seperator()
 //// System Message ////
 /////////////////////////
 
-function sys_message ($TITLE, $MESSAGE, $STATUS = "")
+function sys_message ($TITLE, $MESSAGE, $STATUS = '')
 {
-    global $FD, $global_config_arr;
-
     //check for addition HTTP Status
 	if (!empty($STATUS) && false !== ($text = http_response_text($STATUS)))
 		header($text, true, $STATUS);
@@ -883,7 +872,7 @@ function sys_message ($TITLE, $MESSAGE, $STATUS = "")
 //// Forward Message ////
 /////////////////////////
 
-function forward_message ( $TITLE, $MESSAGE, $URL, $STATUS = "")
+function forward_message ( $TITLE, $MESSAGE, $URL, $STATUS = '')
 {
     global $FD;
 
@@ -952,10 +941,10 @@ function truncate_string ($string, $maxlength, $extension)
 
 function get_dl_categories (&$IDs, $CAT_ID, $SHOW_SUB = 1, $ID = 0, $LEVEL = -1 )
 {
-    global $global_config_arr, $FD;
+    global $FD;
 
     $index = mysql_query ( '
-                            SELECT * FROM `'.$global_config_arr['pref']."dl_cat`
+                            SELECT * FROM `'.$FD->config('pref')."dl_cat`
                             WHERE `subcat_id` = '".$ID."'
                             ORDER BY `cat_name`
     ", $FD->sql()->conn() );
@@ -975,13 +964,13 @@ function get_dl_categories (&$IDs, $CAT_ID, $SHOW_SUB = 1, $ID = 0, $LEVEL = -1 
 
 function display_news ($news_arr, $html_code, $fs_code, $para_handling)
 {
-    global $FD, $global_config_arr;
+    global $FD;
 
-    $news_arr['news_date'] = date_loc( $global_config_arr['datetime'] , $news_arr['news_date']);
+    $news_arr['news_date'] = date_loc( $FD->config('datetime') , $news_arr['news_date']);
     $news_arr['comment_url'] = url('comments', array('id' => $news_arr['news_id']));
 
     // Kategorie lesen
-    $index2 = mysql_query('SELECT cat_name FROM '.$global_config_arr['pref']."news_cat WHERE cat_id = '".$news_arr['cat_id']."'", $FD->sql()->conn() );
+    $index2 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$news_arr['cat_id']."'", $FD->sql()->conn() );
     $news_arr['cat_name'] = mysql_result($index2, 0, 'cat_name');
     $news_arr['cat_pic'] = image_url('images/cat/', 'news_'.$news_arr['cat_id']);
 
@@ -1036,17 +1025,17 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr['news_title'] = killhtml ( $news_arr['news_title'] );
 
     // User auslesen
-    $index2 = mysql_query('SELECT user_name FROM '.$global_config_arr['pref'].'user WHERE user_id = '.$news_arr['user_id'].'', $FD->sql()->conn() );
+    $index2 = mysql_query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id'].'', $FD->sql()->conn() );
     $news_arr['user_name'] = kill_replacements ( mysql_result($index2, 0, 'user_name'), TRUE );
     $news_arr['user_url'] = url('user', array('id' => $news_arr['user_id']));
 
     // Kommentare lesen
-    $index2 = mysql_query('SELECT comment_id FROM '.$global_config_arr['pref'].'news_comments WHERE news_id = '.$news_arr['news_id'].'', $FD->sql()->conn() );
+    $index2 = mysql_query('SELECT comment_id FROM '.$FD->config('pref').'news_comments WHERE news_id = '.$news_arr['news_id'].'', $FD->sql()->conn() );
     $news_arr['kommentare'] = mysql_num_rows($index2);
 
     // Get Related Links
     $link_tpl = '';
-    $index2 = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'news_links WHERE news_id = '.$news_arr['news_id'].' ORDER BY link_id', $FD->sql()->conn() );
+    $index2 = mysql_query('SELECT * FROM '.$FD->config('pref').'news_links WHERE news_id = '.$news_arr['news_id'].' ORDER BY link_id', $FD->sql()->conn() );
     while ($link_arr = mysql_fetch_assoc($index2))
     {
         $link_arr['link_name'] = killhtml ( $link_arr['link_name'] );
@@ -1165,7 +1154,7 @@ function tab2space($TEXT, $tabsize = 4, $space = '&nbsp;')
 
 function savesql ( $TEXT )
 {
-    global $FD, $global_config_arr;
+    global $FD;
 
     $TEXT = unquote($TEXT);
     if (SLASH)
@@ -1198,8 +1187,6 @@ function unslash($TEXT)
 
 function unquote ($TEXT)
 {
-    global $global_config_arr;
-
     if (get_magic_quotes_gpc()) {
         $TEXT = stripslashes($TEXT);
     }
@@ -1392,7 +1379,6 @@ function killfs($text)
 ///////////////////////////////////////////////////////////////
 function checkVotedPoll($pollid) {
 
-    global $global_config_arr;
     global $FD;
 
         settype($pollid, 'integer');
@@ -1405,8 +1391,8 @@ function checkVotedPoll($pollid) {
             }
         }
         $one_day_ago = time()-60*60*24;
-        mysql_query('DELETE FROM '.$global_config_arr['pref']."poll_voters WHERE time <= '".$one_day_ago."'", $FD->sql()->conn() ); //Delete old IPs
-        $query_id = mysql_query('SELECT voter_id FROM '.$global_config_arr['pref']."poll_voters WHERE poll_id = $pollid AND ip_address = '".$_SERVER['REMOTE_ADDR']."' AND time > '".$one_day_ago."'", $FD->sql()->conn() ); //Save IP for 1 Day
+        mysql_query('DELETE FROM '.$FD->config('pref')."poll_voters WHERE time <= '".$one_day_ago."'", $FD->sql()->conn() ); //Delete old IPs
+        $query_id = mysql_query('SELECT voter_id FROM '.$FD->config('pref')."poll_voters WHERE poll_id = $pollid AND ip_address = '".$_SERVER['REMOTE_ADDR']."' AND time > '".$one_day_ago."'", $FD->sql()->conn() ); //Save IP for 1 Day
         if (mysql_num_rows($query_id) > 0) {
                 return true;
         }
@@ -1419,11 +1405,11 @@ function checkVotedPoll($pollid) {
 ///////////////////////////////////////////////////////////////
 function registerVoter($pollid, $voter_ip) {
 
-        global $global_config_arr;
+        global $FD;
 
         settype($pollid, 'integer');
 
-        mysql_query('INSERT INTO '.$global_config_arr['pref']."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
+        mysql_query('INSERT INTO '.$FD->config('pref')."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
         if (!isset($_COOKIE['polls_voted'])) {
                 setcookie('polls_voted', $pollid, time()+60*60*24*60); //2 months
         } else {

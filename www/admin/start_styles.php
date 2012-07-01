@@ -1,9 +1,9 @@
 <?php
-$active_style = $global_config_arr['style_tag'];
+$active_style = $FD->config('style_tag');
 
 $index = mysql_query ( "
                         SELECT COUNT(`style_id`) AS 'num_styles'
-                        FROM `".$global_config_arr['pref']."styles`
+                        FROM `".$FD->config('pref')."styles`
                         WHERE `style_id` != 0
                         AND `style_tag` != 'default'
 ", $FD->sql()->conn());
@@ -11,7 +11,7 @@ $num_styles = mysql_result ( $index, 0, 'num_styles' );
 
 $index = mysql_query ( '
                         SELECT `style_tag`
-                        FROM `'.$global_config_arr['pref'].'styles`
+                        FROM `'.$FD->config('pref').'styles`
                         WHERE `style_id` != 0
                         AND `style_tag` != \'default\'
                         ORDER BY `style_id` DESC

@@ -6,7 +6,7 @@
 ////////////////////////////
 /// Konfiguration laden ////
 ////////////////////////////
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll_config', $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_config', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 
 
@@ -34,7 +34,7 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
             
         // still no poll
         if (count($filterd_ids) == 0)
-            Throw new ErrorException("No active Poll in Database");
+            Throw new ErrorException('No active Poll in Database');
 
         $poll_arr = $sql->getById('poll', '*', $poll_ids[array_rand($filterd_ids)]['poll_id'], 'poll_id');
         $poll_arr['random'] = true;
@@ -70,7 +70,7 @@ if (isset($_POST['poll_id']) &&
     $voter_ip = $_SERVER['REMOTE_ADDR'];
 
     $date = time();
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll WHERE poll_id = '.$poll_arr['poll_id'], $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll WHERE poll_id = '.$poll_arr['poll_id'], $FD->sql()->conn() );
     $poll_arr = mysql_fetch_assoc($index);
 
     // Yay! New vote
@@ -79,10 +79,10 @@ if (isset($_POST['poll_id']) &&
         if ($poll_arr['poll_type'] == 0)
         {
             settype($_POST['answer'], 'integer');
-            mysql_query('UPDATE '.$global_config_arr['pref']."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '".$_POST['answer']."'", $FD->sql()->conn() );
+            mysql_query('UPDATE '.$FD->config('pref')."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '".$_POST['answer']."'", $FD->sql()->conn() );
             if ($_POST['answer'] != 0) {
                 registerVoter($poll_arr['poll_id'], $voter_ip); //Register Voter if voted
-                mysql_query('UPDATE '.$global_config_arr['pref']."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'", $FD->sql()->conn() );
+                mysql_query('UPDATE '.$FD->config('pref')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'", $FD->sql()->conn() );
             }
         }
         elseif (count($_POST['answer']) > 1)
@@ -90,10 +90,10 @@ if (isset($_POST['poll_id']) &&
             foreach ($_POST['answer'] as $id)
             {
                 settype($id, 'integer');
-                mysql_query('UPDATE '.$global_config_arr['pref']."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '$id'", $FD->sql()->conn() );
+                mysql_query('UPDATE '.$FD->config('pref')."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '$id'", $FD->sql()->conn() );
             }
             registerVoter($poll_arr['poll_id'], $voter_ip); //Register Voter if voted
-            mysql_query('UPDATE '.$global_config_arr['pref']."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'", $FD->sql()->conn() );
+            mysql_query('UPDATE '.$FD->config('pref')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'", $FD->sql()->conn() );
         }
         elseif (is_array($_POST['answer']))
         {
@@ -101,24 +101,24 @@ if (isset($_POST['poll_id']) &&
             $id = each($_POST['answer']);
             $id = $id['value'];
             settype($id, 'integer');
-            mysql_query('UPDATE '.$global_config_arr['pref']."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '$id'", $FD->sql()->conn() );
+            mysql_query('UPDATE '.$FD->config('pref')."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '$id'", $FD->sql()->conn() );
             if (count($_POST['answer']) != 0) {
                 registerVoter($poll_arr['poll_id'], $voter_ip); //Register Voter if voted
-                mysql_query('UPDATE '.$global_config_arr['pref']."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'", $FD->sql()->conn() );
+                mysql_query('UPDATE '.$FD->config('pref')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'", $FD->sql()->conn() );
             }
         }
     }
 
-    $index = mysql_query('SELECT poll_participants FROM '.$global_config_arr['pref'].'poll WHERE poll_id = '.$poll_arr['poll_id'], $FD->sql()->conn() );
+    $index = mysql_query('SELECT poll_participants FROM '.$FD->config('pref').'poll WHERE poll_id = '.$poll_arr['poll_id'], $FD->sql()->conn() );
     $poll_arr['poll_participants'] = mysql_result($index, 0, 'poll_participants');
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll_answers WHERE poll_id = '.$poll_arr['poll_id'], $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'], $FD->sql()->conn() );
     while ($answer_arr = mysql_fetch_assoc($index))
     {
         $all_votes += $answer_arr['answer_count'];
     }
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC', $FD->sql()->conn() );
     while ($answer_arr = mysql_fetch_assoc($index))
     {
         if ($all_votes != 0) {
@@ -170,7 +170,7 @@ elseif (isset($poll_arr['poll_id']) && !checkVotedPoll($poll_arr['poll_id'])) {
 
     $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choise") : $FD->text("frontend", "single_choice");
 
-    $index2 = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC', $FD->sql()->conn() );
+    $index2 = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC', $FD->sql()->conn() );
     initstr($antworten);
     while ($answer_arr = mysql_fetch_assoc($index2)) {
         if ($poll_arr['poll_type'] == 0) {

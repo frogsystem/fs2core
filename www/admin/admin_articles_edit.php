@@ -11,7 +11,6 @@ $config_arr = json_array_decode($config_arr['config_data']);
 function default_set_filter_data ( $FORM )
 {
         global $FD;
-        global $global_config_arr;
 
     if ( !isset ( $FORM['order'] ) ) { $FORM['order'] = 'article_title'; }
     if ( !isset ( $FORM['sort'] ) ) { $FORM['sort'] = 'ASC'; }
@@ -27,22 +26,21 @@ function default_set_filter_data ( $FORM )
 function default_display_filter ( $FORM )
 {
         global $FD;
-        global $global_config_arr;
 
     echo'
                                         <form action="" method="post">
                         <input type="hidden" value="articles_edit" name="go">
 
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="3">'.$FD->text("page", "edit_filter_title").'</td></tr>
+                                                        <tr><td class="line" colspan="3">'.$FD->text('page', 'edit_filter_title').'</td></tr>
                                                         <tr>
                                 <td class="config" width="100%" colspan="2">
-                                                                        '.$FD->text("page", "edit_filter_from").'
+                                                                        '.$FD->text('page', 'edit_filter_from').'
                                     <select name="cat_id">
-                                            <option value="0" '.getselected( 0, $FORM['cat_id'] ).'>'.$FD->text("page", "edit_filter_all_cat").'</option>
+                                            <option value="0" '.getselected( 0, $FORM['cat_id'] ).'>'.$FD->text('page', 'edit_filter_all_cat').'</option>
         ';
                                                                             // List Categories
-                                                                            $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_cat', $FD->sql()->conn() );
+                                                                            $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat', $FD->sql()->conn() );
                                                                             while ( $cat_arr = mysql_fetch_assoc ( $index ) )
                                                                             {
                                                                                         settype ( $cat_arr['cat_id'], 'integer' );
@@ -50,21 +48,21 @@ function default_display_filter ( $FORM )
                                                                             }
         echo'
                                     </select>
-                                                                        <br><br>'.$FD->text("page", "edit_filter_sort").'
+                                                                        <br><br>'.$FD->text('page', 'edit_filter_sort').'
                                     <select name="order">
                                         <option value="article_id" '.getselected ( 'article_id', $FORM['order'] ).'>Artikel-ID</option>
-                                        <option value="article_date" '.getselected ( 'article_date', $FORM['order'] ).'>'.$FD->text("page", "edit_filter_date").'</option>
-                                        <option value="article_title" '.getselected ( 'article_title', $FORM['order'] ).'>'.$FD->text("page", "edit_filter_arttitle").'</option>
-                                        <option value="article_url" '.getselected ( 'article_url', $FORM['order'] ).'>'.$FD->text("page", "edit_filter_url").'</option>
+                                        <option value="article_date" '.getselected ( 'article_date', $FORM['order'] ).'>'.$FD->text('page', 'edit_filter_date').'</option>
+                                        <option value="article_title" '.getselected ( 'article_title', $FORM['order'] ).'>'.$FD->text('page', 'edit_filter_arttitle').'</option>
+                                        <option value="article_url" '.getselected ( 'article_url', $FORM['order'] ).'>'.$FD->text('page', 'edit_filter_url').'</option>
                                     </select>,
                                     <select name="sort">
-                                        <option value="ASC" '.getselected ( 'ASC', $FORM['sort'] ).'>'.$FD->text("admin", "ascending").'</option>
-                                        <option value="DESC" '.getselected ( 'DESC', $FORM['sort'] ).'>'.$FD->text("admin", "descending").'</option>
+                                        <option value="ASC" '.getselected ( 'ASC', $FORM['sort'] ).'>'.$FD->text('admin', 'ascending').'</option>
+                                        <option value="DESC" '.getselected ( 'DESC', $FORM['sort'] ).'>'.$FD->text('admin', 'descending').'</option>
                                     </select>
 
                                 </td>
                                 <td class="right">
-                                    <input type="submit" value="'.$FD->text("admin", "apply_button").'" class="button">
+                                    <input type="submit" value="'.$FD->text('admin', 'apply_button').'" class="button">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -85,6 +83,9 @@ function default_get_pagenav_data ()
 		if ( $_REQUEST['cat_id'] != 0 ) {
 			$where_clause = "WHERE article_cat_id = '".intval($_REQUEST['cat_id'])."'";
 		}
+		else {
+			$where_clause = ''; //to avoid notice about unset var
+		}
 
         // Create Pagenavigation
 		$index = mysql_query ( "
@@ -100,7 +101,6 @@ function default_get_pagenav_data ()
 function default_get_entry_data ( $articles_arr )
 {
         global $FD;
-        global $global_config_arr;
         global $config_arr;
 
         // Load Data From DB
@@ -119,7 +119,7 @@ function default_get_entry_data ( $articles_arr )
 
         $index = mysql_query ( '
                                 SELECT '.$fields.'
-                                FROM '.$global_config_arr['pref']."articles
+                                FROM '.$FD->config('pref')."articles
                                 WHERE `article_id` = '".$articles_arr['article_id']."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -137,19 +137,19 @@ function default_get_entry_data ( $articles_arr )
         // Only for full and extended view
         if ($config_arr['acp_view'] == 1 || $config_arr['acp_view'] == 2) {
             if ( $articles_arr['article_date'] != 0 ) {
-                $articles_arr['article_date_formated'] = ''.$FD->text("admin", "on_date").' <b>' . date ( $FD->text("admin", "date_format") , $articles_arr['article_date'] ) . '</b>,';
+                $articles_arr['article_date_formated'] = ''.$FD->text('admin', 'on_date').' <b>' . date ( $FD->text('admin', 'date_format') , $articles_arr['article_date'] ) . '</b>,';
             } else {
                 $articles_arr['article_date_formated'] = '';
             }
 
             if ( $articles_arr['article_user'] != 0 ) {
-                $index2 = mysql_query('SELECT user_name FROM '.$global_config_arr['pref'].'user WHERE user_id = '.$articles_arr['article_user'].'', $FD->sql()->conn() );
-                $articles_arr['user_name'] = $FD->text("admin", "by") .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
+                $index2 = mysql_query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$articles_arr['article_user'].'', $FD->sql()->conn() );
+                $articles_arr['user_name'] = $FD->text('admin', 'by') .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
             } else {
                 $articles_arr['user_name'] = '';
             }
 
-             $index2 = mysql_query('SELECT cat_name FROM '.$global_config_arr['pref'].'articles_cat WHERE cat_id = '.$articles_arr['article_cat_id'].'', $FD->sql()->conn() );
+             $index2 = mysql_query('SELECT cat_name FROM '.$FD->config('pref').'articles_cat WHERE cat_id = '.$articles_arr['article_cat_id'].'', $FD->sql()->conn() );
             $articles_arr['cat_name'] = mysql_result ( $index2, 0, 'cat_name' );
         }
 
@@ -164,7 +164,6 @@ function default_get_entry_data ( $articles_arr )
 function default_display_entry ( $articles_arr )
 {
         global $FD;
-        global $global_config_arr;
         global $config_arr;
 
         // Display Article Entry
@@ -219,7 +218,6 @@ function default_display_entry ( $articles_arr )
 function default_display_all_entries ( $pagenav_arr )
 {
         global $FD;
-        global $global_config_arr;
 
         unset ( $entries );
 
@@ -229,16 +227,20 @@ function default_display_all_entries ( $pagenav_arr )
             {
             $where_clause = "WHERE article_cat_id = '".intval($_REQUEST['cat_id'])."'";
         }
+        else {
+            $where_clause = ''; //to avoid notice about undefined var.
+        }
 
         // Load News From DB
         $index = mysql_query ( '
                                                         SELECT `article_id`
-                                                        FROM '.$global_config_arr['pref'].'articles
+                                                        FROM '.$FD->config('pref').'articles
                                                         '.$where_clause.'
                                                         ORDER BY '.$_REQUEST['order'].' '.$_REQUEST['sort'].', article_title ASC
                                                         LIMIT '.$pagenav_arr['cur_start'].', '.$pagenav_arr['entries_per_page'].'
         ', $FD->sql()->conn() );
 
+    $entries = '';
     while ($articles_arr = mysql_fetch_assoc($index))
     {
                 $entries .= default_display_entry ( default_get_entry_data ( $articles_arr ) );
@@ -250,7 +252,6 @@ function default_display_all_entries ( $pagenav_arr )
 function default_display_page ( $entries, $pagenav_arr, $FORM )
 {
         global $FD, $config_arr;
-        global $global_config_arr;
 
         // Display News List Header
     echo'
@@ -260,7 +261,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                         <input type="hidden" name="sort" value="'.$FORM['sort'].'">
                         <input type="hidden" name="cat_id" value="'.$FORM['cat_id'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                                                        <tr><td class="line" colspan="4">'.$FD->text("page", "edit_select_article").' ('.$pagenav_arr['total_entries'].' '.$FD->text("page", "edit_entries_found").')</td></tr>
+                                                        <tr><td class="line" colspan="4">'.$FD->text('page', 'edit_select_article').' ('.$pagenav_arr['total_entries'].' '.$FD->text('page', 'edit_entries_found').')</td></tr>
 
     ';
 
@@ -294,8 +295,8 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                                                         <tr>
                                                                 <td class="right">
                                                                         <select name="article_action" size="1">
-                                                                                <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
-                                                                                <option value="delete">'.$FD->text("admin", "selection_del").'</option>
+                                                                                <option value="edit">'.$FD->text('admin', 'selection_edit').'</option>
+                                                                                <option value="delete">'.$FD->text('admin', 'selection_del').'</option>
                                                                         </select>
                                                                 </td>
                                                         </tr>
@@ -303,7 +304,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                                                         <tr>
                                                                 <td class="buttontd">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
+                                                                                '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -315,10 +316,9 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 function action_edit_get_data ( $ARTICLE_ID )
 {
         global $FD;
-        global $global_config_arr;
 
     //Load Article
-    $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1", $FD->sql()->conn() );
+    $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1", $FD->sql()->conn() );
     $articles_arr = mysql_fetch_assoc ( $index );
     $old_url = $articles_arr['article_url'];
 
@@ -332,13 +332,13 @@ function action_edit_get_data ( $ARTICLE_ID )
             if (
                 isset ($articles_arr['article_url']) &&
                 trim($articles_arr['article_url']) != '' &&
-                ($index2 = mysql_query('SELECT `article_id` FROM `'.$global_config_arr['pref']."articles` WHERE `article_url` = '".savesql($articles_arr['article_url'])."'", $FD->sql()->conn())) !== FALSE &&
+                ($index2 = mysql_query('SELECT `article_id` FROM `'.$FD->config('pref')."articles` WHERE `article_url` = '".savesql($articles_arr['article_url'])."'", $FD->sql()->conn())) !== FALSE &&
                 mysql_num_rows($index2) != 0 &&
                 mysql_result($index2, 0, 'article_id') != $ARTICLE_ID
             ) {
-                systext ( $FD->text("page", "existing_url"), $FD->text("admin", "error"), TRUE );
+                systext ( $FD->text('page', 'existing_url'), $FD->text('admin', 'error'), TRUE );
             } else {
-                systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
+                systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
             }
         }
     $articles_arr['article_old_url'] = $old_url;
@@ -368,7 +368,7 @@ function action_edit_get_data ( $ARTICLE_ID )
 
     // Get User
         if ( $articles_arr['article_user'] != 0 ) {
-                $index = mysql_query ( 'SELECT user_name, user_id FROM '.$global_config_arr['pref']."user WHERE user_id = '".$articles_arr['article_user']."'", $FD->sql()->conn() );
+                $index = mysql_query ( 'SELECT user_name, user_id FROM '.$FD->config('pref')."user WHERE user_id = '".$articles_arr['article_user']."'", $FD->sql()->conn() );
             $articles_arr['article_user_name'] = killhtml ( mysql_result ( $index, 0, "user_name" ) );
         } else {
             $articles_arr['article_user_name'] = '';
@@ -396,7 +396,6 @@ function action_edit_get_data ( $ARTICLE_ID )
 function action_edit_display_page ( $data_arr )
 {
         global $FD;
-        global $global_config_arr;
 
         $articles_arr = $data_arr['articles'];
         $date_arr = $data_arr['date'];
@@ -431,7 +430,7 @@ function action_edit_display_page ( $data_arr )
                                     <select name="article_cat_id">
         ';
         // Kategorien auflisten
-        $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'articles_cat', $FD->sql()->conn() );
+        $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat', $FD->sql()->conn() );
         while ( $cat_arr = mysql_fetch_assoc ( $index ) )
         {
                     settype ( $cat_arr['cat_id'], 'integer' );
@@ -549,16 +548,15 @@ function action_edit_display_page ( $data_arr )
 function action_delete_get_data ( $ARTICLE_ID )
 {
         global $FD;
-        global $global_config_arr;
 
         settype ( $ARTICLE_ID, 'integer' );
 
-        $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."articles WHERE article_id = '".$ARTICLE_ID."'", $FD->sql()->conn() );
+        $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles WHERE article_id = '".$ARTICLE_ID."'", $FD->sql()->conn() );
         $articles_arr = mysql_fetch_assoc ( $index );
 
         // Get other Data
         if ( $articles_arr['article_date'] != 0 ) {
-        $articles_arr['article_date_formated'] = ''.$FD->text("admin", "on").' <b>' . date ( $FD->text("admin", "date_format") , $articles_arr['article_date'] ) . '</b>,';
+        $articles_arr['article_date_formated'] = ''.$FD->text('admin', 'on').' <b>' . date ( $FD->text('admin', 'date_format') , $articles_arr['article_date'] ) . '</b>,';
         } else {
             $articles_arr['article_date_formated'] = '';
         }
@@ -566,8 +564,8 @@ function action_delete_get_data ( $ARTICLE_ID )
     $articles_arr['article_text_short'] = truncate_string ( killfs (  $articles_arr['article_text'] ) , 250, '...' );
 
         if ( $articles_arr['article_user'] != 0 ) {
-            $index2 = mysql_query('SELECT user_name FROM '.$global_config_arr['pref'].'user WHERE user_id = '.$articles_arr['article_user'].'', $FD->sql()->conn() );
-            $articles_arr['user_name'] = $FD->text("admin", "by_posted") .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
+            $index2 = mysql_query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$articles_arr['article_user'].'', $FD->sql()->conn() );
+            $articles_arr['user_name'] = $FD->text('admin', 'by_posted') .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
         } else {
             $articles_arr['user_name'] = '';
         }
@@ -578,7 +576,7 @@ function action_delete_get_data ( $ARTICLE_ID )
             $articles_arr['article_url'] = '';
         }
 
-        $index2 = mysql_query('SELECT cat_name FROM '.$global_config_arr['pref'].'articles_cat WHERE cat_id = '.$articles_arr['article_cat_id'].'', $FD->sql()->conn() );
+        $index2 = mysql_query('SELECT cat_name FROM '.$FD->config('pref').'articles_cat WHERE cat_id = '.$articles_arr['article_cat_id'].'', $FD->sql()->conn() );
     $articles_arr['cat_name'] = mysql_result ( $index2, 0, 'cat_name' );
 
     return $articles_arr;
@@ -587,7 +585,6 @@ function action_delete_get_data ( $ARTICLE_ID )
 function action_delete_display_page ( $articles_arr )
 {
         global $FD;
-        global $global_config_arr;
 
         echo '
                                         <form action="" method="post">
@@ -613,7 +610,7 @@ function action_delete_display_page ( $articles_arr )
                                                         </tr>
                                                         <tr>
                                 <td class="config right">
-                                    <a href="'.$global_config_arr['virtualhost'].'?go=articles&id='.$articles_arr['article_id'].'" target="_blank">» '.$FD->text("page", "delete_view_article").'</a></div>
+                                    <a href="'.$FD->config('virtualhost').'?go=articles&id='.$articles_arr['article_id'].'" target="_blank">» '.$FD->text('page', 'delete_view_article').'</a></div>
                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
@@ -673,7 +670,6 @@ function action_delete_display_page ( $articles_arr )
 function db_edit_article ( $DATA )
 {
     global $FD;
-    global $global_config_arr;
 
     // No User
     if ( !isset ( $DATA['article_user'] ) ) {
@@ -702,7 +698,7 @@ function db_edit_article ( $DATA )
     // MySQL-Update-Query
     mysql_query ('
                     UPDATE
-                            '.$global_config_arr['pref']."articles
+                            '.$FD->config('pref')."articles
                     SET
                             article_url = '".$DATA['article_url']."',
                             article_title = '".$DATA['article_title']."',
@@ -719,19 +715,18 @@ function db_edit_article ( $DATA )
     ", $FD->sql()->conn() );
 
     // Update Search Index (or not)
-    if ( $global_config_arr['search_index_update'] === 1 ) {
+    if ( $FD->config('search_index_update') === 1 ) {
         // Include searchfunctions.php
         require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
         update_search_index ( 'articles' );
     }
 
-    systext( $FD->text("admin", "changes_saved"), $FD->text("admin", "info"));
+    systext( $FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'));
 }
 
 function db_delete_article ( $DATA )
 {
         global $FD;
-        global $global_config_arr;
 
         if  ( $DATA['article_delete'] == 1 ) {
 
@@ -740,7 +735,7 @@ function db_delete_article ( $DATA )
             // MySQL-Delete-Query: News
             mysql_query ( '
                             DELETE FROM
-                                    '.$global_config_arr['pref']."articles
+                                    '.$FD->config('pref')."articles
                             WHERE
                                     article_id = '".$DATA['article_id']."'
                             LIMIT
@@ -753,11 +748,11 @@ function db_delete_article ( $DATA )
 
 
             // Update Counter
-            mysql_query ( 'UPDATE '.$global_config_arr['pref'].'counter SET artikel = artikel - 1', $FD->sql()->conn() );
+            mysql_query ( 'UPDATE '.$FD->config('pref').'counter SET artikel = artikel - 1', $FD->sql()->conn() );
 
-            systext( $FD->text("page", "article_deleted"), $FD->text("admin", "info"));
+            systext( $FD->text('page', 'article_deleted'), $FD->text('admin', 'info'));
         } else {
-            systext( $FD->text("page", "article_not_deleted"), $FD->text("admin", "info"));
+            systext( $FD->text('page', 'article_not_deleted'), $FD->text('admin', 'info'));
         }
 }
 
@@ -778,13 +773,13 @@ if (
         isset ( $_POST['article_action'] ) && $_POST['article_action'] == 'edit' &&
 
         isset ( $_POST['article_cat_id'] ) &&
-        $_POST['article_title'] && $_POST['article_title'] != '' &&
+        isset ( $_POST['article_title'] ) && $_POST['article_title'] != '' &&
 
         isset ($_POST['article_url']) &&
         (trim($_POST['article_url']) == '' ||
             (
                 settype($_POST['article_id'], 'integer') &&
-                ($index = mysql_query('SELECT `article_id` FROM `'.$global_config_arr['pref']."articles` WHERE `article_url` = '".savesql($_POST['article_url'])."'", $FD->sql()->conn())) !== FALSE &&
+                ($index = mysql_query('SELECT `article_id` FROM `'.$FD->config('pref')."articles` WHERE `article_url` = '".savesql($_POST['article_url'])."'", $FD->sql()->conn())) !== FALSE &&
                 (mysql_num_rows($index) == 0 || mysql_result($index, 0, 'article_id') == $_POST['article_id'])
             )
         ) &&
@@ -819,7 +814,7 @@ elseif (
 //////////////////////////////
 //// Display Action-Pages ////
 //////////////////////////////
-if ( $_POST['article_id'] && $_POST['article_action'] )
+if ( isset($_POST['article_id']) && isset($_POST['article_action']) )
 {
     // Edit Article
     if ( $_POST['article_action'] == 'edit' )

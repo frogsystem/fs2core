@@ -2,19 +2,19 @@
 /////////////////////
 //// Config laden ///
 /////////////////////
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_config');  // WP Konfiguration auslesen
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config');  // WP Konfiguration auslesen
 $config_arr = mysql_fetch_assoc($index);
 
 /////////////////////////////
 //// Screenshot hochladen ///
 /////////////////////////////
 
-if (isset($_FILES['sizeimg_0']) AND $_POST['size']['0'] AND $_POST['wallpaper_name'] AND $_POST['wpadd'])
+if (isset($_FILES['sizeimg_0']) AND isset($_POST['size']['0']) AND isset($_POST['wallpaper_name']) AND isset($_POST['wpadd']))
 {
     $_POST['wallpaper_name'] = savesql($_POST['wallpaper_name']);
     $_POST['wallpaper_title'] = savesql($_POST['wallpaper_title']);
 
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."wallpaper WHERE wallpaper_name = '$_POST[wallpaper_name]'", $FD->sql()->conn());
+$index = mysql_query('SELECT * FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_name = '$_POST[wallpaper_name]'", $FD->sql()->conn());
 if (mysql_num_rows($index)==0) {
 
     for ($i=1; $i<=$_POST['options']; $i++)
@@ -27,7 +27,7 @@ if (mysql_num_rows($index)==0) {
     }
 
     $_POST['catid'] = intval($_POST['catid']);
-    mysql_query('INSERT INTO '.$global_config_arr['pref']."wallpaper (wallpaper_name, wallpaper_title, cat_id)
+    mysql_query('INSERT INTO '.$FD->config('pref')."wallpaper (wallpaper_name, wallpaper_title, cat_id)
                  VALUES ('".$_POST['wallpaper_name']."',
                          '".$_POST['wallpaper_title']."',
                          '".$_POST['catid']."')", $FD->sql()->conn());
@@ -47,7 +47,7 @@ if (mysql_num_rows($index)==0) {
         switch ($upload)
         {
         case 0:
-          mysql_query('INSERT INTO '.$global_config_arr['pref']."wallpaper_sizes (wallpaper_id, size)
+          mysql_query('INSERT INTO '.$FD->config('pref')."wallpaper_sizes (wallpaper_id, size)
                        VALUES ('".$wp_id."',
                                '".$_POST['size'][$j]."')", $FD->sql()->conn());
           break;
@@ -87,6 +87,10 @@ else
     {
         $_POST['options'] = 5;
     }
+    if (!isset($_POST['optionsadd']))
+    {
+        $_POST['optionsadd'] = 0;
+    }
     $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
 
 echo'
@@ -121,7 +125,7 @@ echo'
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_cat WHERE cat_type = 2', $FD->sql()->conn());
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 2', $FD->sql()->conn());
 while ($cat_arr = mysql_fetch_assoc($index))
 {
     echo'
@@ -138,7 +142,7 @@ echo'
     for ($i=1; $i<=$_POST['options']; $i++)
     {
         $j = $i - 1;
-        if ($_POST['size'][$j])
+        if (isset($_POST['size'][$j]))
         {
             echo'
                             <tr>

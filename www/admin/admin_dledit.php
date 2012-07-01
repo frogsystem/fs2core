@@ -4,15 +4,15 @@
 //// Download aktualisieren ////
 ////////////////////////////////
 
-if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
+if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
 {
     settype ($_POST['editdlid'], 'integer');
 
     // Download löschen
     if (isset($_POST['deldl']))
     {
-        mysql_query('DELETE FROM '.$global_config_arr['pref']."dl WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
-        mysql_query('DELETE FROM '.$global_config_arr['pref']."dl_files WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
+        mysql_query('DELETE FROM '.$FD->config('pref')."dl WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
+        mysql_query('DELETE FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
         image_delete('images/dl/', "$_POST[editdlid]_s");
         image_delete('images/dl/', $_POST['editdlid']);
         systext('Download wurde gel&ouml;scht');
@@ -39,7 +39,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
         }
 
         // Neues Bild hochladen
-        $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
+        $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_config', $FD->sql()->conn() );
         $admin_dl_config_arr = mysql_fetch_assoc($index);
         if ($_FILES['dlimg']['name'] != '')
         {
@@ -51,7 +51,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
 
         $dlopen = isset($_POST['dlopen']) ? 1 : 0;
 
-        $update = 'UPDATE '.$global_config_arr['pref']."dl
+        $update = 'UPDATE '.$FD->config('pref')."dl
                    SET cat_id       = '$_POST[catid]',
                        dl_name      = '$_POST[title]',
                        dl_text      = '$_POST[text]',
@@ -63,7 +63,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
         mysql_query($update, $FD->sql()->conn() );
 
         // Update Search Index (or not)
-        if ( $global_config_arr['search_index_update'] === 1 ) {
+        if ( $FD->config('search_index_update') === 1 ) {
             // Include searchfunctions.php
             require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
             update_search_index ( 'dl' );
@@ -76,7 +76,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
             if ($_POST['delf'][$i])
             {
                 settype($_POST['delf'][$i], 'integer');
-                mysql_query('DELETE FROM '.$global_config_arr['pref'].'dl_files WHERE file_id = ' . $_POST['delf'][$i], $FD->sql()->conn() );
+                mysql_query('DELETE FROM '.$FD->config('pref').'dl_files WHERE file_id = ' . $_POST['delf'][$i], $FD->sql()->conn() );
             }
             else
             {
@@ -85,9 +85,9 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
                     $_POST['fcount'][$i] = 0;
                 }
 
-                if ($_POST['fnew'][$i]==1 && $_POST['fname'][$i]!="")
+                if ($_POST['fnew'][$i]==1 && $_POST['fname'][$i]!='')
                 {
-                    $insert = 'INSERT INTO '.$global_config_arr['pref']."dl_files (dl_id, file_count, file_name, file_url, file_size, file_is_mirror)
+                    $insert = 'INSERT INTO '.$FD->config('pref')."dl_files (dl_id, file_count, file_name, file_url, file_size, file_is_mirror)
                                VALUES ('".$_POST['editdlid']."',
                                        '".$_POST['fcount'][$i]."',
                                        '".$_POST['fname'][$i]."',
@@ -99,7 +99,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
                 }
                 elseif ($_POST['fnew'][$i]==0)
                 {
-                    $update = 'UPDATE '.$global_config_arr['pref']."dl_files
+                    $update = 'UPDATE '.$FD->config('pref')."dl_files
                                SET file_count       = '".$_POST['fcount'][$i]."',
                                    file_name        = '".$_POST['fname'][$i]."',
                                    file_url         = '".$_POST['furl'][$i]."',
@@ -119,7 +119,7 @@ if ($_POST['dledit'] && $_POST['title'] && $_POST['text'])
 ////// Download editieren //////
 ////////////////////////////////
 
-if ($_POST['dlid'] || $_POST['optionsadd'])
+if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
 {
     $_POST['dlid'] = $_POST['dlid'][0];
     if(isset($_POST['sended']) && !isset($_POST['files_add'])) {
@@ -133,7 +133,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
     }
     settype($_POST['dlid'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl WHERE dl_id =  '$_POST[dlid]'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id =  '$_POST[dlid]'", $FD->sql()->conn() );
     if (!isset($_POST['title']))
     {
         $_POST['title'] = mysql_result($index, 0, 'dl_name');
@@ -161,7 +161,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
 
     $_POST['dlopen'] = ($_POST['dlopen'] == 1) ? 'checked' : '';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     for($i=0; $i<$rows; $i++)
     {
@@ -198,7 +198,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
     }
     $_POST['options'] += $_POST['optionsadd'];
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_config', $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -276,7 +276,7 @@ if ($_POST['dlid'] || $_POST['optionsadd'])
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT `ftp_id` FROM '.$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
+    $index = mysql_query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
     $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);
 
     // Mirros auflisten
@@ -405,7 +405,7 @@ else
     ';
 
     /*/ Kategorie Auswahl erzeugen
-    $index = mysql_query('SELECT cat_id, cat_name FROM '.$global_config_arr['pref'].'dl_cat', $FD->sql()->conn() );
+    $index = mysql_query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'dl_cat', $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         $sele = ($_POST['dlcatid'] == $cat_arr['cat_id']) ? 'selected' : '';
@@ -458,10 +458,10 @@ else
         settype($_POST['dlcatid'], 'integer');
         $wherecat = 'WHERE cat_id = ' . $_POST['dlcatid'];
     }
-    $index = mysql_query('SELECT dl_id, dl_name, cat_id FROM '.$global_config_arr['pref']."dl $wherecat ORDER BY dl_name", $FD->sql()->conn() );
+    $index = mysql_query('SELECT dl_id, dl_name, cat_id FROM '.$FD->config('pref')."dl $wherecat ORDER BY dl_name", $FD->sql()->conn() );
     while ($dl_arr = mysql_fetch_assoc($index))
     {
-        $catindex = mysql_query('SELECT cat_name FROM '.$global_config_arr['pref']."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
+        $catindex = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
         $dbcatname = mysql_result($catindex, 0, "cat_name");
         echo'
                             <tr class="thin select_entry">
@@ -482,7 +482,7 @@ else
                             <tr style="display:none">
                                 <td colspan="3">
                                     <select class="select_type" name="dl_action" size="1">
-                                        <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                        <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
                                     </select>
                                 </td>
                             </tr>

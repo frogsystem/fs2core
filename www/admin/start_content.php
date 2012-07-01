@@ -1,28 +1,28 @@
 <?php
 $index = mysql_query ( "
                         SELECT COUNT(`news_id`) AS 'num_news'
-                        FROM ".$global_config_arr['pref'].'news
+                        FROM ".$FD->config('pref').'news
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_news = mysql_result ( $index, 0, 'num_news' );
 
 $index = mysql_query ( "
                         SELECT COUNT(`cat_id`) AS 'num_news_cat'
-                        FROM ".$global_config_arr['pref'].'news_cat
+                        FROM ".$FD->config('pref').'news_cat
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_news_cat = mysql_result ( $index, 0, 'num_news_cat' );
 
 $index = mysql_query ( "
                         SELECT COUNT(`comment_id`) AS 'num_comments'
-                        FROM ".$global_config_arr['pref'].'news_comments
+                        FROM ".$FD->config('pref').'news_comments
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_comments = mysql_result ( $index, 0, 'num_comments' );
 
 $index = mysql_query ( "
                         SELECT COUNT(`link_id`) AS 'num_links'
-                        FROM ".$global_config_arr['pref'].'news_links
+                        FROM ".$FD->config('pref').'news_links
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_links = mysql_result ( $index, 0, 'num_links' );
@@ -30,7 +30,7 @@ $num_links = mysql_result ( $index, 0, 'num_links' );
 if ( $num_news  > 0 ) {
     $index = mysql_query ( "
                             SELECT COUNT(C.`cat_id`) AS 'best_news_cat_num', C.`cat_name`
-                            FROM ".$global_config_arr['pref'].'news_cat C, '.$global_config_arr['pref'].'news N
+                            FROM ".$FD->config('pref').'news_cat C, '.$FD->config('pref').'news N
                             WHERE N.`cat_id` = C.`cat_id`
                             GROUP BY C.`cat_name`
                             ORDER BY `best_news_cat_num` DESC
@@ -42,7 +42,7 @@ if ( $num_news  > 0 ) {
     if ( $num_comments  > 0 ) {
         $index = mysql_query ( "
                                 SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
-                                FROM ".$global_config_arr['pref'].'news_comments C, '.$global_config_arr['pref'].'news N
+                                FROM ".$FD->config('pref').'news_comments C, '.$FD->config('pref').'news N
                                 WHERE N.`news_id` = C.`news_id`
                                 GROUP BY N.`news_title`
                                 ORDER BY `best_news_com_num` DESC
@@ -53,7 +53,7 @@ if ( $num_news  > 0 ) {
 
         $index = mysql_query ( "
                                 SELECT COUNT(C.`comment_id`) AS 'best_com_poster_num', U.`user_name`
-                                FROM `".$global_config_arr['pref'].'user` U, `'.$global_config_arr['pref'].'news_comments` C
+                                FROM `".$FD->config('pref').'user` U, `'.$FD->config('pref').'news_comments` C
                                 WHERE C.`comment_poster_id` = U.`user_id`
                                 AND C.`comment_poster_id` > 0
                                 GROUP BY U.`user_name`
@@ -69,7 +69,7 @@ if ( $num_news  > 0 ) {
 
     $index = mysql_query ( "
                             SELECT COUNT(L.`link_id`) AS 'best_news_link_num', N.`news_title`
-                            FROM ".$global_config_arr['pref'].'news_links L, '.$global_config_arr['pref'].'news N
+                            FROM ".$FD->config('pref').'news_links L, '.$FD->config('pref').'news N
                             WHERE N.`news_id` = L.`news_id`
                             GROUP BY N.`news_title`
                             ORDER BY `best_news_link_num` DESC
@@ -83,7 +83,7 @@ if ( $num_news  > 0 ) {
 
     $index = mysql_query ( "
                             SELECT COUNT(N.`news_id`) AS 'best_news_poster_num', U.`user_name`
-                            FROM ".$global_config_arr['pref'].'user U, '.$global_config_arr['pref'].'news N
+                            FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'news N
                             WHERE N.`user_id` = U.`user_id`
                             GROUP BY U.`user_name`
                             ORDER BY `best_news_poster_num` DESC
@@ -96,21 +96,21 @@ if ( $num_news  > 0 ) {
 
 $index = mysql_query ( "
                         SELECT COUNT(`article_id`) AS 'num_articles'
-                        FROM ".$global_config_arr['pref'].'articles
+                        FROM ".$FD->config('pref').'articles
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_articles = mysql_result ( $index, 0, 'num_articles' );
 
 $index = mysql_query ( "
                         SELECT COUNT(`cat_id`) AS 'num_articles_cat'
-                        FROM ".$global_config_arr['pref'].'articles_cat
+                        FROM ".$FD->config('pref').'articles_cat
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_articles_cat = mysql_result ( $index, 0, 'num_articles_cat' );
 
 $index = mysql_query ( "
                         SELECT COUNT(A.`article_id`) AS 'best_article_poster_num', U.`user_name`
-                        FROM ".$global_config_arr['pref'].'user U, '.$global_config_arr['pref'].'articles A
+                        FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'articles A
                         WHERE A.`article_user` = U.`user_id`
                         AND A.`article_user` > 0
                         GROUP BY U.`user_name`
@@ -125,7 +125,7 @@ if ( mysql_num_rows ( $index) > 0 ) {
 
 $index = mysql_query ( "
                         SELECT COUNT(`press_id`) AS 'num_press'
-                        FROM ".$global_config_arr['pref'].'press
+                        FROM ".$FD->config('pref').'press
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_press = mysql_result ( $index, 0, 'num_press' );
@@ -133,7 +133,7 @@ $num_press = mysql_result ( $index, 0, 'num_press' );
 if ( $num_press  > 0 ) {
     $index = mysql_query ( "
                             SELECT COUNT(V.`id`) AS 'best_press_lang_num', V.`title`
-                            FROM ".$global_config_arr['pref'].'press P, '.$global_config_arr['pref']."press_admin V
+                            FROM ".$FD->config('pref').'press P, '.$FD->config('pref')."press_admin V
                             WHERE P.`press_lang` = V.`id`
                             AND V.`type` = '3'
                             GROUP BY V.`title`

@@ -31,7 +31,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."styles`
+                    UPDATE `'.$FD->config('pref')."styles`
                     SET
                         `style_allow_use` = '".$_POST['style_allow_use']."',
                         `style_allow_edit` = '".$_POST['style_allow_edit']."'
@@ -40,7 +40,7 @@ if (
 
     $index = mysql_query ( '
                             SELECT `style_tag`
-                            FROM `'.$global_config_arr['pref']."styles`
+                            FROM `'.$FD->config('pref')."styles`
                             WHERE `style_id` = ".$_POST['style_id']."
     ", $FD->sql()->conn() );
 
@@ -80,7 +80,7 @@ elseif (
         // Check if style is last
         $index = mysql_query ( '
                                 SELECT `style_id`
-                                FROM `'.$global_config_arr['pref'].'styles`
+                                FROM `'.$FD->config('pref').'styles`
                                 WHERE `style_allow_use` = 1
                                 AND `style_id` != '.$_POST['style_id'].'
         ', $FD->sql()->conn() );
@@ -91,12 +91,12 @@ elseif (
             // MySQL-Delete-Query
             mysql_query ('
                             DELETE
-                            FROM `'.$global_config_arr['pref'].'styles`
+                            FROM `'.$FD->config('pref').'styles`
                             WHERE `style_id` = '.$_POST['style_id'].'
             ', $FD->sql()->conn() );
 
             if (
-                $global_config_arr['style_id'] == $_POST['style_id']
+                $FD->config('style_id') == $_POST['style_id']
                 && isset ( $_POST['new_style_id'] ) && $_POST['new_style_id'] != 0 && $_POST['new_style_id'] != ''
                 && is_numeric ( $_POST['new_style_id'] )
             ) {
@@ -105,7 +105,7 @@ elseif (
 
                 $index = mysql_query ( '
                                         SELECT `style_tag`
-                                        FROM `'.$global_config_arr['pref'].'styles`
+                                        FROM `'.$FD->config('pref').'styles`
                                         WHERE `style_id` = '.$_POST['new_style_id'].'
                                         AND `style_id` != 0
                                         AND `style_allow_use` = 1
@@ -115,7 +115,7 @@ elseif (
                     // MySQL-Queries
                     mysql_query ( '
                                     UPDATE
-                                        `'.$global_config_arr['pref']."global_config`
+                                        `'.$FD->config('pref')."global_config`
                                     SET
                                         `style_id` = '".$_POST['new_style_id']."',
                                         `style_tag` = '".stripslashes ( mysql_result ( $index, 0, 'style_tag' ) )."'
@@ -159,7 +159,7 @@ elseif (
         // MySQL-Queries
         mysql_query ( '
                         INSERT INTO
-                            `'.$global_config_arr['pref']."styles`
+                            `'.$FD->config('pref')."styles`
                             (`style_tag`, `style_allow_use`, `style_allow_edit`)
                         VALUES
                             ( '".$_POST['style_tag']."', 1, 1 )
@@ -209,7 +209,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
         } else {
             $index = mysql_query ( '
                                     SELECT *
-                                    FROM `'.$global_config_arr['pref']."styles`
+                                    FROM `'.$FD->config('pref')."styles`
                                     WHERE `style_id` = '".$_POST['style_id']."'
                                     LIMIT 0,1
             ", $FD->sql()->conn() );
@@ -322,7 +322,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
         // Check if style is last
         $index = mysql_query ( '
                                 SELECT `style_id`, `style_tag`
-                                FROM `'.$global_config_arr['pref'].'styles`
+                                FROM `'.$FD->config('pref').'styles`
                                 WHERE `style_id` != 0
                                 AND `style_allow_use` = 1
                                 AND `style_id` != '.$_POST['style_id'].'
@@ -350,7 +350,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
             // get style from db
             $data = mysql_query ( '
                                     SELECT *
-                                    FROM `'.$global_config_arr['pref'].'styles`
+                                    FROM `'.$FD->config('pref').'styles`
                                     WHERE `style_id` = '.$_POST['style_id'].'
                                     LIMIT 0,1
             ', $FD->sql()->conn() );
@@ -363,7 +363,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
             ';
 
             // style is active style
-            if ( $global_config_arr['style_id'] == $_POST['style_id'] ) {
+            if ( $FD->config('style_id') == $_POST['style_id'] ) {
                 echo '
                                     <br><br>
                                     '.$FD->text("admin", "style_is_active").'<br>
@@ -436,7 +436,7 @@ if ( !isset ( $_POST['style_id'] ) )
     // get Styles from db
     $index = mysql_query ( '
                             SELECT *
-                            FROM `'.$global_config_arr['pref']."styles`
+                            FROM `'.$FD->config('pref')."styles`
                             WHERE `style_id` != 0
                             AND `style_tag` != 'default'
                             ORDER BY `style_tag`

@@ -17,7 +17,7 @@ if (!empty($_POST['screen_id'])
 
     if ($startdate < $enddate)
     {
-       $update = 'UPDATE '.$global_config_arr['pref']."screen_random
+       $update = 'UPDATE '.$FD->config('pref')."screen_random
                   SET screen_id = '$_POST[screen_id]',
                       start = '$startdate',
                       end = '$enddate'
@@ -42,8 +42,8 @@ if (!empty($_POST['screen_id'])
 //////////////////////////////
 /// Randompic löschen ////////
 //////////////////////////////
-elseif ($_POST['random_action'] == 'delete'
-    && $_POST['sended'] == 'delete'
+elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
+    && isset($_POST['sended']) && $_POST['sended'] == 'delete'
     && isset($_POST['random_id'])
    )
 {
@@ -51,12 +51,12 @@ elseif ($_POST['random_action'] == 'delete'
 
     if ($_POST['delete_random'])   // Randompic löschen
     {
-        mysql_query('DELETE FROM '.$global_config_arr['pref']."screen_random WHERE random_id = '$_POST[random_id]'", $FD->sql()->conn() );
-        systext($FD->text("page", "note_deleted"));
+        mysql_query('DELETE FROM '.$FD->config('pref')."screen_random WHERE random_id = '$_POST[random_id]'", $FD->sql()->conn() );
+        systext($FD->text('page', 'note_deleted'));
     }
     else
     {
-        systext($FD->text("page", "note_notdeleted"));
+        systext($FD->text('page', 'note_notdeleted'));
     }
 
     unset($_POST['delete_random']);
@@ -70,13 +70,13 @@ elseif ($_POST['random_action'] == 'delete'
 //////////////////////////////
 /// Randompic editieren //////
 //////////////////////////////
-elseif ($_POST['random_action'] == 'edit'
+elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
         && isset($_POST['random_id'])
        )
 {
     settype($_POST['random_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
     $random_arr = mysql_fetch_assoc($index);
 
     //Zeitdaten
@@ -199,19 +199,19 @@ elseif ($_POST['random_action'] == 'edit'
 //////////////////////////////
 /// Randompic löschen ////////
 //////////////////////////////
-elseif ($_POST['random_action'] == 'delete'
+elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
         && isset($_POST['random_id'])
        )
 {
     settype($_POST['random_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
     $random_arr = mysql_fetch_assoc($index);
 
     $random_arr['start'] = date('d.m.Y H:i ', $random_arr['start']) . 'Uhr';
     $random_arr['end'] = date('d.m.Y H:i ', $random_arr['end']) . 'Uhr';
 
-    $index = mysql_query('SELECT screen_name FROM '.$global_config_arr['pref']."screen WHERE screen_id = $random_arr[screen_id]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT screen_name FROM '.$FD->config('pref')."screen WHERE screen_id = $random_arr[screen_id]", $FD->sql()->conn() );
     $random_arr['title'] = mysql_result($index,0,'screen_name');
 
     if ($random_arr['title'] != '') {
@@ -229,8 +229,8 @@ elseif ($_POST['random_action'] == 'delete'
                         <table border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
-                                    '.$FD->text("page", "delpic").':<br />
-                                    <span class="small">'.$FD->text("page", "delnote").'</span>
+                                    '.$FD->text('page', 'delpic').':<br />
+                                    <span class="small">'.$FD->text('page', 'delnote').'</span>
                                 </td>
                             </tr>
                             <tr><td></td></tr>
@@ -245,14 +245,14 @@ elseif ($_POST['random_action'] == 'delete'
                             <tr><td></td></tr>
                             <tr valign="top">
                                 <td width="50%" class="config">
-                                    '.$FD->text("page", "delpic_question").'
+                                    '.$FD->text('page', 'delpic_question').'
                                 </td>
                                 <td width="50%" align="right">
                                     <select name="delete_random" size="1">
-                                        <option value="0">'.$FD->text("page", "delnotconfirm").'</option>
-                                        <option value="1">'.$FD->text("page", "delconfirm").'</option>
+                                        <option value="0">'.$FD->text('page', 'delnotconfirm').'</option>
+                                        <option value="1">'.$FD->text('page', 'delconfirm').'</option>
                                     </select>
-                                    <input type="submit" value="'.$FD->text("admin", "do_button").'" class="button" />
+                                    <input type="submit" value="'.$FD->text('admin', 'do_button').'" class="button" />
                                 </td>
                             </tr>
                         </table>
@@ -274,20 +274,20 @@ if (!isset($_POST['random_id']))
                             <tr>
                                 <td></td>
                                 <td class="config">
-                                    '.$FD->text("page", "title").'
+                                    '.$FD->text('page', 'title').'
                                 </td>
                                 <td class="config">
-                                    '.$FD->text("page", "start_time").'
+                                    '.$FD->text('page', 'start_time').'
                                 </td>
                                 <td class="config">
-                                    '.$FD->text("page", "end_time").'
+                                    '.$FD->text('page', 'end_time').'
                                 </td>
                                 <td class="config" style="text-align:right;">
-                                    '.$FD->text("admin", "selection").'
+                                    '.$FD->text('admin', 'selection').'
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_random a, '.$global_config_arr['pref'].'screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_random a, '.$FD->config('pref').'screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC', $FD->sql()->conn() );
     while ($random_arr = mysql_fetch_assoc($index))
     {
         $random_arr['start'] = date('d.m.Y H:i', $random_arr['start']);
@@ -328,10 +328,10 @@ onClick=\'
                             <tr>
                                 <td class="config" colspan="5" style="text-align:center;">
                                    <select name="random_action" size="1">
-                                     <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
-                                     <option value="delete">'.$FD->text("admin", "selection_del").'</option>
+                                     <option value="edit">'.$FD->text('admin', 'selection_edit').'</option>
+                                     <option value="delete">'.$FD->text('admin', 'selection_del').'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$FD->text("admin", "do_button").'">
+                                   <input class="button" type="submit" value="'.$FD->text('admin', 'do_button').'">
                                 </td>
                             </tr>
                         </table>

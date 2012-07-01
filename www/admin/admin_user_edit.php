@@ -4,14 +4,13 @@
 ///////////////////
 
 function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
-    global $global_config_arr;
     global $FD;
 
     $USER_ID = savesql ( $USER_ID );
     $USERNAME = savesql ( $USERNAME );
     $index = mysql_query ( '
                             SELECT `user_id`
-                            FROM `'.$global_config_arr['pref']."user`
+                            FROM `'.$FD->config('pref')."user`
                             WHERE `user_name` = '".$USERNAME."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
@@ -25,7 +24,7 @@ function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 
@@ -100,7 +99,7 @@ if (
 
     $index = mysql_query ( '
                             SELECT `user_is_staff`, `user_is_admin`
-                            FROM '.$global_config_arr['pref']."user
+                            FROM '.$FD->config('pref')."user
                             WHERE `user_id` = '".$_POST['user_id']."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
@@ -111,7 +110,7 @@ if (
     if ( $was_staff == 1 && $_POST['user_is_staff'] == 0 ) {
         mysql_query ('
                         DELETE
-                        FROM '.$global_config_arr['pref']."user_permissions
+                        FROM '.$FD->config('pref')."user_permissions
                         WHERE `perm_for_group` = '0'
                         AND `x_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
@@ -119,7 +118,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."user`
+                    UPDATE `'.$FD->config('pref')."user`
                     SET
                         `user_name` = '".$_POST['user_name']."',
                         ".$pw_update."
@@ -199,7 +198,7 @@ elseif (
         // get data from db
         $index = mysql_query ( '
                                 SELECT `user_name`
-                                FROM '.$global_config_arr['pref']."user
+                                FROM '.$FD->config('pref')."user
                                 WHERE `user_id` = '".$_POST['user_id']."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -208,62 +207,62 @@ elseif (
         // Delete Permissions
         mysql_query ( '
                         DELETE
-                        FROM '.$global_config_arr['pref']."user_permissions
+                        FROM '.$FD->config('pref')."user_permissions
                         WHERE `perm_for_group` = '0'
                         AND `x_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update stats
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref'].'counter
+                        UPDATE '.$FD->config('pref').'counter
                         SET `user` = `user`-1
         ', $FD->sql()->conn() );
 
         // update groups
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."user_groups
+                        UPDATE '.$FD->config('pref')."user_groups
                         SET `user_group_user` = '1'
                         WHERE `user_group_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update articles
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."articles
+                        UPDATE '.$FD->config('pref')."articles
                         SET `article_user` = '0'
                         WHERE `article_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update articles_cat
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."articles_cat
+                        UPDATE '.$FD->config('pref')."articles_cat
                         SET `cat_user` = '1'
                         WHERE `cat_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update dl
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."dl
+                        UPDATE '.$FD->config('pref')."dl
                         SET `user_id` = '1'
                         WHERE `user_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."news
+                        UPDATE '.$FD->config('pref')."news
                         SET `user_id` = '1'
                         WHERE `user_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news_cat
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."news_cat
+                        UPDATE '.$FD->config('pref')."news_cat
                         SET `cat_user` = '1'
                         WHERE `cat_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news_comments
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."news_comments
+                        UPDATE '.$FD->config('pref')."news_comments
                         SET `comment_poster_id` = '0',
                             `comment_poster` = '".$user_arr['user_name']."'
                         WHERE `comment_poster_id` = '".$_POST['user_id']."'
@@ -271,7 +270,7 @@ elseif (
 
         // MySQL-Delete-Query
         mysql_query ('
-                        DELETE FROM '.$global_config_arr['pref']."user
+                        DELETE FROM '.$FD->config('pref')."user
                          WHERE user_id = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
         $message = 'Benutzer wurde erfolgreich gel&ouml;scht';
@@ -336,7 +335,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         } else {
             $index = mysql_query ( '
                                     SELECT *
-                                    FROM '.$global_config_arr['pref']."user
+                                    FROM '.$FD->config('pref')."user
                                     WHERE `user_id` = '".$_POST['user_id']."'
                                     LIMIT 0,1
             ", $FD->sql()->conn() );
@@ -538,7 +537,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
         $index = mysql_query ('
                                 SELECT `user_group_id`, `user_group_name`
-                                FROM '.$global_config_arr['pref']."user_groups
+                                FROM '.$FD->config('pref')."user_groups
                                 WHERE `user_group_id` > 0
                                 ORDER BY `user_group_name`
         ", $FD->sql()->conn() );
@@ -550,7 +549,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
         $index = mysql_query ('
                                 SELECT `user_group_id`, `user_group_name`
-                                FROM '.$global_config_arr['pref'].'user_groups
+                                FROM '.$FD->config('pref').'user_groups
                                 WHERE `user_group_id` = 0
                                 ORDER BY `user_group_name`
                                 LIMIT 0,1
@@ -644,7 +643,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         // get data from db
         $index = mysql_query ( '
                                 SELECT `user_name`
-                                FROM '.$global_config_arr['pref']."user
+                                FROM '.$FD->config('pref')."user
                                 WHERE `user_id` = '".$_POST['user_id']."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -739,7 +738,7 @@ if ( !isset ( $_POST['user_id'] ) )
         // get users from db
         $index = mysql_query ( '
                                 SELECT `user_id`, `user_name`, `user_mail`, `user_is_staff`, `user_is_admin`
-                                FROM '.$global_config_arr['pref']."user
+                                FROM '.$FD->config('pref')."user
                                 WHERE ( `user_name` LIKE '%".$_POST['filter']."%' OR `user_mail` LIKE '%".$_POST['filter']."%' )
                                 AND `user_id` != '".$_SESSION['user_id']."'
                                 AND `user_id` != '1'

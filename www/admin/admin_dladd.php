@@ -4,7 +4,7 @@
 //// Download hinzufügen ////
 /////////////////////////////
 
-if ($_POST['dladd'] && $_POST['title'] && $_POST['text'])
+if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
 {
     $_POST['title'] = savesql($_POST['title']);
     $_POST['text'] = savesql($_POST['text']);
@@ -25,7 +25,7 @@ if ($_POST['dladd'] && $_POST['title'] && $_POST['text'])
     $dldate = time();
 
     // Download eintragen
-    mysql_query('INSERT INTO '.$global_config_arr['pref']."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
+    mysql_query('INSERT INTO '.$FD->config('pref')."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
                                     dl_autor_url, dl_open, dl_search_update)
                  VALUES ('".$_POST['catid']."',
                          '".$_POST['userid']."',
@@ -39,7 +39,7 @@ if ($_POST['dladd'] && $_POST['title'] && $_POST['text'])
     ", $FD->sql()->conn() );
 
     // Update Search Index (or not)
-    if ( $global_config_arr['search_index_update'] === 1 ) {
+    if ( $FD->config('search_index_update') === 1 ) {
         // Include searchfunctions.php
         require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
         update_search_index ( 'dl' );
@@ -48,7 +48,7 @@ if ($_POST['dladd'] && $_POST['title'] && $_POST['text'])
     $id = mysql_insert_id();
 
     // Bild auswerten und hochladen
-    $index = mysql_query('select * from '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_config', $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     if ($_FILES['dlimg']['name'] != '')
@@ -62,9 +62,9 @@ if ($_POST['dladd'] && $_POST['title'] && $_POST['text'])
     // Files eintragen
     for ($i=0; $i<count($_POST['fname']); $i++)
     {
-        if ($_POST[fname][$i] != '' AND $_POST['furl'][$i] != '' AND $_POST['fsize'][$i] != '')
+        if ($_POST['fname'][$i] != '' AND $_POST['furl'][$i] != '' AND $_POST['fsize'][$i] != '')
         {
-            mysql_query('INSERT INTO '.$global_config_arr['pref']."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
+            mysql_query('INSERT INTO '.$FD->config('pref')."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
                          VALUES ('$id',
                                  '".$_POST['fname'][$i]."',
                                  '".$_POST['furl'][$i]."',
@@ -93,7 +93,7 @@ if(true)
     }
     $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'dl_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_config', $FD->sql()->conn() );
     $admin_dl_config_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -168,7 +168,7 @@ if(true)
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT `ftp_id` FROM '.$global_config_arr['pref']."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
+    $index = mysql_query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
     $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);
 
     for ($i=1; $i<=$_POST['options']; $i++)

@@ -200,7 +200,7 @@ else
             break;
     }
 
-    $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'counter_ref '.$query.'', $FD->sql()->conn() );
+    $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'counter_ref '.$query.'', $FD->sql()->conn() );
     $referrer_number = mysql_num_rows ( $index );
     if ( $referrer_number <= 0 ) {
     	echo'

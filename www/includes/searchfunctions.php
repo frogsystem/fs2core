@@ -27,28 +27,28 @@ function new_search_index ( $FOR ) {
 }
 
 function delete_search_index ( $FOR ) {
-    global $global_config_arr, $FD;
+    global $FD;
 
     mysql_query ( '
-                    DELETE FROM `'.$global_config_arr['pref']."search_index`
+                    DELETE FROM `'.$FD->config('pref')."search_index`
                     WHERE `search_index_type` = '".$FOR."'
     ", $FD->sql()->conn() );
     mysql_query ( '
-                    DELETE FROM `'.$global_config_arr['pref']."search_time`
+                    DELETE FROM `'.$FD->config('pref')."search_time`
                     WHERE `search_time_type` = '".$FOR."'
     ", $FD->sql()->conn() );
 }
 
 function delete_search_index_for_one ( $ID, $TYPE ) {
-    global $global_config_arr, $FD;
+    global $FD;
 
     mysql_query ( '
-                    DELETE FROM `'.$global_config_arr['pref']."search_index`
+                    DELETE FROM `'.$FD->config('pref')."search_index`
                     WHERE `search_index_type` = '".$TYPE."'
                     AND `search_index_document_id` = '".$ID."'
     ", $FD->sql()->conn() );
     mysql_query ( '
-                    DELETE FROM `'.$global_config_arr['pref']."search_time`
+                    DELETE FROM `'.$FD->config('pref')."search_time`
                     WHERE `search_time_type` = '".$TYPE."'
                     AND `search_time_document_id` = '".$$ID."'
     ", $FD->sql()->conn() );
@@ -56,15 +56,15 @@ function delete_search_index_for_one ( $ID, $TYPE ) {
 
 
 function delete_word_list () {
-    global $global_config_arr, $FD;
+    global $FD;
 
     mysql_query ( '
-                    TRUNCATE TABLE `'.$global_config_arr['pref'].'search_words`
+                    TRUNCATE TABLE `'.$FD->config('pref').'search_words`
     ', $FD->sql()->conn() );
 }
 
 function update_search_index ( $FOR ) {
-    global $global_config_arr, $FD;
+    global $FD;
 
     $data = get_make_search_index ( $FOR );
     while ( $data_arr = mysql_fetch_assoc ( $data ) ) {
@@ -74,19 +74,19 @@ function update_search_index ( $FOR ) {
         // Remove Old Indexes & Update Timestamp
         if ( $data_arr['search_time_id'] != null ) {
              mysql_query ( '
-                            DELETE FROM `'.$global_config_arr['pref']."search_index`
+                            DELETE FROM `'.$FD->config('pref')."search_index`
                             WHERE `search_index_type` = '".$data_arr['search_time_type']."'
                             AND `search_index_document_id` = ".$data_arr['search_time_document_id']."
              ", $FD->sql()->conn() );
              mysql_query ( '
-                            UPDATE `'.$global_config_arr['pref']."search_time`
+                            UPDATE `'.$FD->config('pref')."search_time`
                             SET `search_time_date` = '".time()."'
                             WHERE `search_time_id` = '".$data_arr['search_time_id']."'
              ", $FD->sql()->conn() );
         } else {
              mysql_query ( '
                             INSERT INTO
-                                `'.$global_config_arr['pref']."search_time`
+                                `'.$FD->config('pref')."search_time`
                                 (`search_time_type`, `search_time_document_id`, `search_time_date`)
                             VALUES (
                                 '".$data_arr['search_time_type']."',
@@ -125,7 +125,7 @@ function update_search_index ( $FOR ) {
         // Insert Indexes
         mysql_query ( '
                         INSERT INTO
-                            `'.$global_config_arr['pref'].'search_index`
+                            `'.$FD->config('pref').'search_index`
                             (`search_index_word_id`, `search_index_type`, `search_index_document_id`, `search_index_count`)
                         VALUES
                             ' . implode ( ',', $insert_values ) . '
@@ -135,7 +135,7 @@ function update_search_index ( $FOR ) {
 
 
 function get_make_search_index ( $FOR ) {
-    global $global_config_arr, $FD;
+    global $FD;
 
     switch ( $FOR ) {
         case 'dl':
@@ -146,8 +146,8 @@ function get_make_search_index ( $FOR ) {
                     `search_time_id`,
                     'dl' AS 'search_time_type',
                     CONCAT(`dl_name`, ' ', `dl_text`) AS 'search_data'
-                FROM `".$global_config_arr['pref'].'dl`
-                LEFT JOIN `'.$global_config_arr['pref']."search_time`
+                FROM `".$FD->config('pref').'dl`
+                LEFT JOIN `'.$FD->config('pref')."search_time`
                     ON `search_time_document_id` = `dl_id`
                     AND FIND_IN_SET('dl', `search_time_type`)
                 WHERE 1
@@ -163,8 +163,8 @@ function get_make_search_index ( $FOR ) {
                     `search_time_id`,
                     'articles' AS 'search_time_type',
                     CONCAT(`article_title`, ' ', `article_text`) AS 'search_data'
-                FROM `".$global_config_arr['pref'].'articles`
-                LEFT JOIN `'.$global_config_arr['pref']."search_time`
+                FROM `".$FD->config('pref').'articles`
+                LEFT JOIN `'.$FD->config('pref')."search_time`
                     ON `search_time_document_id` = `article_id`
                     AND FIND_IN_SET('articles', `search_time_type`)
                 WHERE 1
@@ -180,8 +180,8 @@ function get_make_search_index ( $FOR ) {
                     `search_time_id`,
                     'news' AS 'search_time_type',
                     CONCAT(`news_title`, ' ', `news_text`) AS 'search_data'
-                FROM `".$global_config_arr['pref'].'news`
-                LEFT JOIN `'.$global_config_arr['pref']."search_time`
+                FROM `".$FD->config('pref').'news`
+                LEFT JOIN `'.$FD->config('pref')."search_time`
                     ON `search_time_document_id` = `news_id`
                     AND FIND_IN_SET('news', `search_time_type`)
                 WHERE 1
@@ -193,17 +193,17 @@ function get_make_search_index ( $FOR ) {
 }
 
 function get_search_word_id ( $WORD ) {
-    global $global_config_arr, $FD;
+    global $FD;
 
     $index = mysql_query ( '
-                            SELECT `search_word_id` FROM `'.$global_config_arr['pref']."search_words`
+                            SELECT `search_word_id` FROM `'.$FD->config('pref')."search_words`
                             WHERE `search_word` = '".savesql ( $WORD )."'
     ", $FD->sql()->conn() );
     if ( mysql_num_rows ( $index ) >= 1 ) {
         return mysql_result ( $index, 0, 'search_word_id' );
     } else {
         mysql_query ( '
-                        INSERT INTO `'.$global_config_arr['pref']."search_words` (`search_word`)
+                        INSERT INTO `'.$FD->config('pref')."search_words` (`search_word`)
                         VALUES ('".savesql ( $WORD )."')
         ", $FD->sql()->conn() );
         return mysql_insert_id ( $FD->sql()->conn() );

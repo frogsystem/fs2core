@@ -6,7 +6,7 @@ $FD->setConfig('info', 'canonical', array('keyword', 'year', 'month'));
 ////// Suchfeld erzeugen ///////
 ////////////////////////////////
 
-$index = mysql_query('SELECT news_date FROM '.$global_config_arr['pref'].'news ORDER BY news_date ASC LIMIT 0,1', $FD->sql()->conn() );
+$index = mysql_query('SELECT news_date FROM '.$FD->config('pref').'news ORDER BY news_date ASC LIMIT 0,1', $FD->sql()->conn() );
 if (mysql_num_rows($index) == 0) {
     $years = date('Y');
     $years = '<option value="'.$years.'">'.$years.'</option>';
@@ -42,13 +42,13 @@ if ($_REQUEST['year'] && $_REQUEST['month'])
     $endtime = mktime(0, 0, 0, $_REQUEST['month']+1, 0, $_REQUEST['year']);
 
     // News Konfiguration lesen
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'news_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'news_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     // News lesen und ausgeben
     $index = mysql_query ( '
                             SELECT *
-                            FROM '.$global_config_arr['pref'].'news
+                            FROM '.$FD->config('pref').'news
                             WHERE news_date > '.$starttime.'
                             AND `news_date` < '.$endtime.'
                             AND `news_active` = 1
@@ -79,13 +79,13 @@ elseif ($_REQUEST['keyword'])
     $_REQUEST['keyword'] = savesql($_REQUEST['keyword']);
 
     // News Konfiguration lesen
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'news_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'news_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     // News lesen und ausgeben
     $index = mysql_query ( '
                             SELECT *
-                            FROM '.$global_config_arr['pref']."news
+                            FROM '.$FD->config('pref')."news
                             WHERE ( news_text LIKE '%".$_REQUEST['keyword']."%'
                             OR news_title LIKE '%".$_REQUEST['keyword']."%' )
                             AND `news_active` = 1

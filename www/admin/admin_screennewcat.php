@@ -11,7 +11,7 @@ if (isset($_POST['cat_name']))
     $_POST['cat_visibility'] = intval($_POST['cat_visibility']);
 
     $time = time();
-    mysql_query('INSERT INTO '.$global_config_arr['pref']."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
+    mysql_query('INSERT INTO '.$FD->config('pref')."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
                  VALUES ('".$_POST['cat_name']."',
                          '".$_POST['cat_type']."',
                          '".$_POST['cat_visibility']."',

@@ -34,7 +34,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
 } else {
 
     // Set Dynamic Title
-    $global_config_arr['dyn_title_page'] = $FD->text("frontend", "download_search_for") . ' "' . usersave($_REQUEST['keyword']) . '"';
+    $FD->setConfig('dyn_title_page', $FD->text('frontend', 'download_search_for') . ' "' . usersave($_REQUEST['keyword']) . '"');
 
 	// More Results Template
 	$more_results_template = new template();
@@ -50,6 +50,8 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
 
     // try to compute the search
     try {
+
+        require_once(FS2_ROOT_PATH . 'libs/class_search.php');
 
         // Create News Search
         initstr($news_entries); $news_num_results = 0;
@@ -75,7 +77,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->setFile('0_search.tpl');
 
                     // data
-                    $date_formated = date_loc($global_config_arr['date'], $news['news_date']);
+                    $date_formated = date_loc($FD->config('date'), $news['news_date']);
                     if ($news['news_date'] != 0) {
                         // Get Date Template
                         $template->load('RESULT_DATE_TEMPLATE');
@@ -137,7 +139,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->setFile('0_search.tpl');
 
                     // data
-                    $date_formated = date_loc($global_config_arr['date'], $article['article_date']);
+                    $date_formated = date_loc($FD->config('date'), $article['article_date']);
                     if ($article['article_date'] != 0) {
                         // Get Date Template
                         $template->load('RESULT_DATE_TEMPLATE');
@@ -206,7 +208,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                     $template->setFile('0_search.tpl');
 
                     // data
-                    $date_formated = date_loc($global_config_arr['date'], $dl['dl_date']);
+                    $date_formated = date_loc($FD->config('date'), $dl['dl_date']);
                     if ($dl['dl_date'] != 0) {
                         // Get Date Template
                         $template->load('RESULT_DATE_TEMPLATE');

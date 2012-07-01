@@ -27,7 +27,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."applets`
+                    UPDATE `'.$FD->config('pref')."applets`
                     SET
                         `applet_active` = '".$_POST['applet_active']."',
                         `applet_include` = '".$_POST['applet_include']."',
@@ -36,8 +36,8 @@ if (
     ", $sql->conn() );
 
     // Display Message
-    systext ( $FD->text("admin", "changes_saved"),
-        $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_ok") );
+    systext ( $FD->text('admin', 'changes_saved'),
+        $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_ok') );
 
     // Unset Vars
     unset ( $_POST );
@@ -62,16 +62,16 @@ elseif (
         // MySQL-Delete-Query
         mysql_query ('
                         DELETE
-                        FROM '.$global_config_arr['pref'].'applets
+                        FROM '.$FD->config('pref').'applets
                         WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')
         ', $FD->sql()->conn() );
 
-        systext ( $FD->text("admin", "applets_deleted"),
-            $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_trash_ok") );
+        systext ( $FD->text('admin', 'applets_deleted'),
+            $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_trash_ok') );
 
     } else {
-        systext ( $FD->text("admin", "applets_not_deleted"),
-            $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_trash_error") );
+        systext ( $FD->text('admin', 'applets_not_deleted'),
+            $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_trash_error') );
     }
 
     // Unset Vars
@@ -102,7 +102,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         } else {
             $index = mysql_query ( '
                                     SELECT *
-                                    FROM `'.$global_config_arr['pref']."applets`
+                                    FROM `'.$FD->config('pref')."applets`
                                     WHERE `applet_id` = '".$_POST['applet_id']."'
                                     LIMIT 0,1
             ", $FD->sql()->conn() );
@@ -215,7 +215,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         // get applets from db
         $index = mysql_query ( '
                                 SELECT *
-                                FROM '.$global_config_arr['pref'].'applets
+                                FROM '.$FD->config('pref').'applets
                                 WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')
                                 ORDER BY `applet_file`
         ', $FD->sql()->conn() );
@@ -227,9 +227,9 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
 
                 // get other data
                 $data_arr['text'] = array (
-                    (($data_arr['applet_active'] == 1 )  ? $FD->text("admin", "applet_active") : $FD->text("admin", "applet_not_active")),
-                    (($data_arr['applet_include'] == 1 ) ? $FD->text("page", "delete_include_always") : $FD->text("page", "delete_include_ondemand")),
-                    (($data_arr['applet_output'] == 1 )  ? $FD->text("admin", "applet_output_enabled") : $FD->text("admin", "applet_output_disabled"))
+                    (($data_arr['applet_active'] == 1 )  ? $FD->text('admin', 'applet_active') : $FD->text('admin', 'applet_not_active')),
+                    (($data_arr['applet_include'] == 1 ) ? $FD->text('page', 'delete_include_always') : $FD->text('page', 'delete_include_ondemand')),
+                    (($data_arr['applet_output'] == 1 )  ? $FD->text('admin', 'applet_output_enabled') : $FD->text('admin', 'applet_output_disabled'))
                 );
 
                 echo '
@@ -275,7 +275,7 @@ if ( !isset ( $_POST['applet_id'] ) )
     // get applets from db
     $index = mysql_query ( '
                             SELECT *
-                            FROM '.$global_config_arr['pref'].'applets
+                            FROM '.$FD->config('pref').'applets
                             ORDER BY `applet_file`
     ', $FD->sql()->conn() );
 
@@ -285,10 +285,10 @@ if ( !isset ( $_POST['applet_id'] ) )
         // display table head
         echo '
                             <tr>
-                                <td class="config">'.$FD->text("admin", "filename").'</td>
-                                <td class="config" width="150">'.$FD->text("page", "applets_include_title").'</td>
-                                <td class="config" width="20">&nbsp;&nbsp;'.$FD->text("admin", "output").'&nbsp;&nbsp;</td>
-                                <td class="config" width="20">&nbsp;&nbsp;'.$FD->text("admin", "active").'&nbsp;&nbsp;</td>
+                                <td class="config">'.$FD->text('admin', 'filename').'</td>
+                                <td class="config" width="150">'.$FD->text('page', 'applets_include_title').'</td>
+                                <td class="config" width="20">&nbsp;&nbsp;'.$FD->text('admin', 'output').'&nbsp;&nbsp;</td>
+                                <td class="config" width="20">&nbsp;&nbsp;'.$FD->text('admin', 'active').'&nbsp;&nbsp;</td>
                                 <td class="config" width="20"></td>
                             </tr>
         ';
@@ -297,9 +297,9 @@ if ( !isset ( $_POST['applet_id'] ) )
         while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
 
             // get other data
-            $data_arr['active_text'] = ( $data_arr['applet_active'] == 1 ) ? $FD->text("admin", "yes") : $FD->text("admin", "no");
-            $data_arr['include_text'] = ( $data_arr['applet_include'] == 1 ) ? $FD->text("page", "applets_include_always") : $FD->text("page", "applets_include_ondemand");
-            $data_arr['output_text'] = ( $data_arr['applet_output'] == 1 ) ? $FD->text("admin", "yes") : $FD->text("admin", "no");
+            $data_arr['active_text'] = ( $data_arr['applet_active'] == 1 ) ? $FD->text('admin', 'yes') : $FD->text('admin', 'no');
+            $data_arr['include_text'] = ( $data_arr['applet_include'] == 1 ) ? $FD->text('page', 'applets_include_always') : $FD->text('page', 'applets_include_ondemand');
+            $data_arr['output_text'] = ( $data_arr['applet_output'] == 1 ) ? $FD->text('admin', 'yes') : $FD->text('admin', 'no');
 
             echo '
 
@@ -321,9 +321,9 @@ if ( !isset ( $_POST['applet_id'] ) )
                             <tr>
                                 <td class="right" colspan="5">
                                     <select class="select_type" name="applet_action" size="1">
-                                        <option class="select_one" value="edit" '.getselected( 'edit', $_POST['applet_action'] ).'>'.$FD->text("admin", "selection_edit").'</option>
+                                        <option class="select_one" value="edit" '.getselected( 'edit', $_POST['applet_action'] ).'>'.$FD->text('admin', 'selection_edit').'</option>
         ';
-        echo ( $_SESSION['applets_delete'] ) ? '<option class="select_red" value="delete" '.getselected ( 'delete', $_POST['applet_action'] ).'>'.$FD->text("admin", "selection_delete").'</option>' : "";
+        echo ( $_SESSION['applets_delete'] ) ? '<option class="select_red" value="delete" '.getselected ( 'delete', $_POST['applet_action'] ).'>'.$FD->text('admin', 'selection_delete').'</option>' : '';
         echo'
                                     </select>
                                 </td>
@@ -332,7 +332,7 @@ if ( !isset ( $_POST['applet_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="5">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button_long").'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
                                     </button>
                                 </td>
                             </tr>
@@ -344,7 +344,7 @@ if ( !isset ( $_POST['applet_id'] ) )
            echo'
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="config center" colspan="4">'.$FD->text("admin", "applets_not_found").'</td>
+                                <td class="config center" colspan="4">'.$FD->text('admin', 'applets_not_found').'</td>
                             </tr>
                             <tr><td class="space"></td></tr>
         ';

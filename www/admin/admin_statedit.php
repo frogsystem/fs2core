@@ -4,14 +4,14 @@
 //// Tagesstatistik aktualisieren ////
 //////////////////////////////////////
 
-if (($_POST['d'] && $_POST['m'] && $_POST['y'] && $_POST['v'] && $_POST['h']) AND $_POST['do'] == 'day')
+if ((isset($_POST['d']) && isset($_POST['m']) && isset($_POST['y']) && isset($_POST['v']) && isset($_POST['h'])) AND $_POST['do'] == 'day')
 {
     settype($_POST['d'], 'integer');
     settype($_POST['m'], 'integer');
     settype($_POST['y'], 'integer');
     settype($_POST['v'], 'integer');
     settype($_POST['h'], 'integer');
-    mysql_query('UPDATE '.$global_config_arr['pref']."counter_stat
+    mysql_query('UPDATE '.$FD->config('pref')."counter_stat
                  SET s_visits = $_POST[v],
                      s_hits   = $_POST[h]
                  WHERE s_day   = $_POST[d] AND
@@ -24,14 +24,14 @@ if (($_POST['d'] && $_POST['m'] && $_POST['y'] && $_POST['v'] && $_POST['h']) AN
 ////// Tagesstatistik editieren //////
 //////////////////////////////////////
 
-elseif (($_POST['ed'] && $_POST['em'] && $_POST['ey']) AND $_POST['do'] == 'day')
+elseif ((isset($_POST['ed']) && isset($_POST['em']) && isset($_POST['ey'])) AND $_POST['do'] == 'day')
 {
     settype($_POST['ed'], 'integer');
     settype($_POST['em'], 'integer');
     settype($_POST['ey'], 'integer');
     $index = mysql_query('SELECT s_visits,
                                  s_hits
-                          FROM '.$global_config_arr[pref]."counter_stat
+                          FROM '.$FD->config('pref')."counter_stat
                           WHERE s_day = $_POST[ed] and
                                 s_month = $_POST[em] and
                                 s_year = $_POST[ey]", $FD->sql()->conn() );
@@ -93,12 +93,12 @@ elseif (($_POST['ed'] && $_POST['em'] && $_POST['ey']) AND $_POST['do'] == 'day'
 /// Gesamtstatistik aktualisieren ////
 //////////////////////////////////////
 
-elseif (($_POST['editvisits'] != '' &&
-        $_POST['edithits'] != '' &&
-        $_POST['edituser'] != '' &&
-        $_POST['editnews'] != '' &&
-        $_POST['editartikel'] != '' &&
-        $_POST['editcomments'] != '')
+elseif ((isset($_POST['editvisits']) && $_POST['editvisits'] != '' &&
+        isset($_POST['edithits']) && $_POST['edithits'] != '' &&
+        isset($_POST['edituser']) && $_POST['edituser'] != '' &&
+        isset($_POST['editnews']) && $_POST['editnews'] != '' &&
+        isset($_POST['editartikel']) && $_POST['editartikel'] != '' &&
+        isset($_POST['editcomments']) && $_POST['editcomments'] != '')
         AND $_POST['do'] == 'edit')
 {
     settype($_POST['editvisits'], 'integer');
@@ -107,7 +107,7 @@ elseif (($_POST['editvisits'] != '' &&
     settype($_POST['editnews'], 'integer');
     settype($_POST['editartikel'], 'integer');
     settype($_POST['editcomments'], 'integer');
-    mysql_query('UPDATE '.$global_config_arr['pref']."counter
+    mysql_query('UPDATE '.$FD->config('pref')."counter
                  SET visits = '$_POST[editvisits]',
                      hits = '$_POST[edithits]',
                      user = '$_POST[edituser]',
@@ -121,25 +121,25 @@ elseif (($_POST['editvisits'] != '' &&
 /// Gesamtstatistik synchronisieren ////
 ////////////////////////////////////////
 
-elseif ($_POST['do'] == 'sync')
+elseif (isset($_POST['do']) && $_POST['do'] == 'sync')
 {
-    $index = mysql_query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$global_config_arr['pref'].'counter_stat', $FD->sql()->conn() );
+    $index = mysql_query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$FD->config('pref').'counter_stat', $FD->sql()->conn() );
     $sync_arr['hits'] = mysql_result($index,0,'hits');
     $sync_arr['visits'] = mysql_result($index,0,'visits');
 
-    $index = mysql_query("SELECT COUNT(user_id) AS 'user' FROM ".$global_config_arr['pref'].'user', $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(user_id) AS 'user' FROM ".$FD->config('pref').'user', $FD->sql()->conn() );
     $sync_arr['user'] = mysql_result($index,0,'user');
 
-    $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$global_config_arr['pref'].'news', $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$FD->config('pref').'news', $FD->sql()->conn() );
     $sync_arr['news'] = mysql_result($index,0,'news');
 
-    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$global_config_arr['pref'].'news_comments', $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$FD->config('pref').'news_comments', $FD->sql()->conn() );
     $sync_arr['comments'] = mysql_result($index,0,'comments');
 
-    $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$global_config_arr['pref'].'articles', $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$FD->config('pref').'articles', $FD->sql()->conn() );
     $sync_arr['articles'] = mysql_result($index,0,'articles');
 
-    mysql_query('UPDATE '.$global_config_arr['pref']."counter
+    mysql_query('UPDATE '.$FD->config('pref')."counter
                  SET visits = '$sync_arr[visits]',
                      hits = '$sync_arr[hits]',
                      user = '$sync_arr[user]',
@@ -159,7 +159,7 @@ else
     $heute['m'] = date('m');
     $heute['y'] = date('Y');
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'counter', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'counter', $FD->sql()->conn() );
     $counter_arr = mysql_fetch_assoc($index);
 
     echo'

@@ -6,7 +6,7 @@ $stats_day = date ( 'd' );
 
 
 // Overall Data
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'counter', $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'counter', $FD->sql()->conn() );
 $counter_arr = mysql_fetch_assoc ( $index ) ;
 
 
@@ -15,7 +15,7 @@ $index = mysql_query ( '
                         SELECT
                             `s_hits`, `s_visits`
                         FROM
-                            `'.$global_config_arr['pref']."counter_stat`
+                            `'.$FD->config('pref')."counter_stat`
                         WHERE
                             `s_year` = '".$stats_year."'
                         AND
@@ -31,7 +31,7 @@ $index = mysql_query ( "
                         SELECT
                             count(`ip`) AS 'total'
                         FROM
-                            `".$global_config_arr['pref'].'useronline`
+                            `".$FD->config('pref').'useronline`
 ', $FD->sql()->conn() );
 $useronline_arr['total'] = mysql_result ( $index, 0, 'total' );
 
@@ -40,7 +40,7 @@ $index = mysql_query ( "
                         SELECT
                             count(`ip`) AS 'registered'
                         FROM
-                            `".$global_config_arr['pref'].'useronline`
+                            `".$FD->config('pref').'useronline`
                         WHERE
                             `user_id` != 0
 ', $FD->sql()->conn() );
@@ -51,7 +51,7 @@ $index = mysql_query ( "
                         SELECT
                             count(`ip`) AS 'guests'
                         FROM
-                            `".$global_config_arr['pref'].'useronline`
+                            `".$FD->config('pref').'useronline`
                         WHERE
                             `user_id` = 0
 ', $FD->sql()->conn() );

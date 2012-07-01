@@ -40,7 +40,7 @@ function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE
 
 function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
 {
-    global $global_config_arr, $FD;
+    global $FD;
 
     $_POST['style'] = savesql ( $_POST['style'] );
 
@@ -50,7 +50,7 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
 
     $index = mysql_query ( '
                             SELECT `style_id`
-                            FROM `'.$global_config_arr['pref']."styles`
+                            FROM `'.$FD->config('pref')."styles`
                             WHERE `style_tag` = '".$_POST['style']."'
                             AND `style_allow_edit` = 1
                             LIMIT 0,1
@@ -130,7 +130,7 @@ function templatepage_postcheck ( $TEMPLATE_ARR )
 
 function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $HIGHLIGHTER )
 {
-    global $global_config_arr, $FD;
+    global $FD;
 
     initstr ($return_template);
     unset ($select_template);
@@ -142,7 +142,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
     // Set Default Style
     if ( !isset ( $_POST['style'] ) ) {
-        $_POST['style'] = $global_config_arr['style'];
+        $_POST['style'] = $FD->config('style');
     } else {
         $_POST['style'] = unquote ( $_POST['style'] );
     }
@@ -150,7 +150,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     // Check Edit Allowed
     $index = mysql_query ( "
                             SELECT COUNT(`style_id`) AS 'number'
-                            FROM `".$global_config_arr['pref']."styles`
+                            FROM `".$FD->config('pref')."styles`
                             WHERE `style_tag` = '".savesql ( $_POST['style'] )."'
                             AND `style_allow_edit` = 1
                             LIMIT 0,1
@@ -159,7 +159,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         // Check Edit Allowed
         $index = mysql_query ( "
                                 SELECT COUNT(`style_id`) AS 'number'
-                                FROM `".$global_config_arr['pref']."styles`
+                                FROM `".$FD->config('pref')."styles`
                                 WHERE `style_allow_edit` = 1
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -400,7 +400,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 /////////////////////////////////
 function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHOW_REST = TRUE )
 {
-    global $global_config_arr, $FD;
+    global $FD;
 
     switch ( $TYPE ) {
         case 'style':
@@ -415,7 +415,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
 
             $index = mysql_query ( '
                                     SELECT `style_tag`
-                                    FROM `'.$global_config_arr['pref'].'styles`
+                                    FROM `'.$FD->config('pref').'styles`
                                     WHERE `style_id` != 0
                                     AND `style_allow_edit` = 1
                                     ORDER BY `style_tag`
@@ -424,7 +424,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                 $style_arr['style_tag'] = stripslashes ( $style_arr['style_tag'] );
                 if ( is_dir ( FS2_ROOT_PATH . 'styles/' . $style_arr['style_tag'] ) == TRUE ) {
                     $select_template .= '<option value="'.$style_arr['style_tag'].'" '.getselected ($style_arr['style_tag'], $_POST['style']).'>'.$style_arr['style_tag'];
-                    $style_arr['style_tag'] == $global_config_arr['style'] ? $select_template .= ' (aktiv)' : $select_template .= "";
+                    $style_arr['style_tag'] == $FD->config('style') ? $select_template .= ' (aktiv)' : $select_template .= '';
                     $select_template .= '</option>';
                 }
             }
@@ -513,7 +513,7 @@ function create_dropdown ( $TITLE, $CONTENT )
 //////////////////////////
 function get_dropdowns ( $EDITOR_NAME )
 {
-    global $FD, $global_config_arr;
+    global $FD;
 
     // Security Functions
     $global_vars_array = array ();
@@ -531,7 +531,7 @@ function get_dropdowns ( $EDITOR_NAME )
 
     // Applets
     $index = mysql_query ( '
-                            SELECT `applet_file` FROM `'.$global_config_arr['pref'].'applets` WHERE `applet_active` = 1 AND `applet_output` = 1
+                            SELECT `applet_file` FROM `'.$FD->config('pref').'applets` WHERE `applet_active` = 1 AND `applet_output` = 1
     ', $FD->sql()->conn() );
     while ( $app_arr = mysql_fetch_assoc ( $index ) ) {
         $app = stripslashes ( $app_arr['applet_file'] );
@@ -542,7 +542,7 @@ function get_dropdowns ( $EDITOR_NAME )
 
     // Snippets
     $index = mysql_query ( '
-                            SELECT `snippet_tag` FROM `'.$global_config_arr['pref'].'snippets` WHERE `snippet_active` = 1
+                            SELECT `snippet_tag` FROM `'.$FD->config('pref').'snippets` WHERE `snippet_active` = 1
     ', $FD->sql()->conn() );
     while ( $snippets_arr = mysql_fetch_assoc ( $index ) ) {
         $the_snippet = stripslashes ( $snippets_arr['snippet_tag'] );
@@ -648,7 +648,7 @@ function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 ////////////////////////////////
 function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
 {
-    global $FD, $global_config_arr;
+    global $FD;
 
     // Get Tag-Menu
     $help_template = get_taglist ( $editor_arr['help'], $editor_arr['name'] );

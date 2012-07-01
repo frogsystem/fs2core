@@ -4,12 +4,12 @@
 //// Artikel aktualiesieren ////
 ////////////////////////////////
 
-if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "edit")
+if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && $_POST['sended'] == 'edit')
 {
     settype($_POST['artikelid'], 'integer');
     if (isset($_POST['delartikel']))
     {
-        mysql_query('DELETE FROM '.$global_config_arr['pref']."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
+        mysql_query('DELETE FROM '.$FD->config('pref')."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
         image_delete ('images/shop/', $_POST['artikelid'] );
         image_delete( 'images/shop/', $_POST['artikelid'] );
         systext('Artikel wurde gel&ouml;scht');
@@ -31,7 +31,7 @@ if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "
             $thumb = create_thumb_from(image_url('images/shop/',$_POST['artikelid'],FALSE, TRUE), 100, 100);
             $messages[] = create_thumb_notice($thumb);
         }
-        $update = 'UPDATE '.$global_config_arr['pref']."shop
+        $update = 'UPDATE '.$FD->config('pref')."shop
                    SET artikel_name  = '$_POST[title]',
                        artikel_url   = '$_POST[url]',
                        artikel_text  = '$_POST[text]',
@@ -39,9 +39,9 @@ if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "
                        artikel_hot   = '$_POST[hot]'
                    WHERE artikel_id = '$_POST[artikelid]'";
         mysql_query($update, $FD->sql()->conn() );
-        $messages[] = $FD->text("admin", "changes_saved");
+        $messages[] = $FD->text('admin', 'changes_saved');
 
-        echo get_systext(implode('<br>', $messages), $FD->text("admin", "info"), 'green', $FD->text("admin", "icon_save_ok"));
+        echo get_systext(implode('<br>', $messages), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
     }
 
     unset($_POST);
@@ -51,15 +51,15 @@ if ($_POST['title'] && $_POST['url'] && $_POST['preis'] && $_POST['sended'] == "
 ////// Artikel editieren ///////
 ////////////////////////////////
 
-if ($_POST['artikelid'])
+if (isset($_POST['artikelid']))
 {
     $_POST['artikelid'] = $_POST['artikelid'][0];
     if(isset($_POST['sended'])) {
-        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
     settype($_POST['artikelid'], 'integer');
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
     $artikel_arr = mysql_fetch_assoc($index);
     $dbartikelhot = ($artikel_arr['artikel_hot'] == 1) ? 'checked' : '';
 
@@ -179,7 +179,7 @@ else
                             </tr>
     ';
     $index = mysql_query('SELECT artikel_id, artikel_name, artikel_preis
-                          FROM '.$global_config_arr['pref'].'shop
+                          FROM '.$FD->config('pref').'shop
                           ORDER BY artikel_name DESC', $FD->sql()->conn() );
     while ($artikel_arr = mysql_fetch_assoc($index))
     {
@@ -204,7 +204,7 @@ else
                             <tr style="display:none">
                                 <td colspan="4">
                                     <select class="select_type" name="shop_action" size="1">
-                                        <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                        <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
                                     </select>
                                 </td>
                             </tr>

@@ -1,12 +1,11 @@
 <?php
 function user_login ( $username, $password, $iscookie )
 {
-    global $global_config_arr;
     global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '".$username."'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '".$username."'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0) {
         $_GET['go'] = 'login';
@@ -43,12 +42,11 @@ function user_login ( $username, $password, $iscookie )
 
 function set_cookie ( $username, $password )
 {
-    global $global_config_arr;
     global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -102,7 +100,7 @@ if ( isset($_POST['login']) && $_POST['login'] == 1 ) {
     $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));
 }
 
-if ( isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $global_config_arr['login_state'] == 0 ) {
+if ( isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $FD->config('login_state') == 0 ) {
     set_cookie ( $_POST['username'], $_POST['userpassword'] );
 }
 

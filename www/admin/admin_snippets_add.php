@@ -5,7 +5,7 @@
 
 // Check if Snippet exists
 if ( isset ( $_POST['sended'] ) ) {
-    $index = mysql_query ( 'SELECT `snippet_id` FROM `'.$global_config_arr['pref']."snippets` WHERE `snippet_tag` = '[%".savesql ( $_POST['snippet_tag'] )."%]'", $FD->sql()->conn() );
+    $index = mysql_query ( 'SELECT `snippet_id` FROM `'.$FD->config('pref')."snippets` WHERE `snippet_tag` = '[%".savesql ( $_POST['snippet_tag'] )."%]'", $FD->sql()->conn() );
     $snippet_exists = ( mysql_num_rows ( $index ) == 0 ) ? FALSE : TRUE;
 } else {
     $snippet_exists = TRUE;
@@ -31,7 +31,7 @@ if (
 
         // MySQL-Queries
         mysql_query ( '
-                                        INSERT INTO `'.$global_config_arr['pref']."snippets` (
+                                        INSERT INTO `'.$FD->config('pref')."snippets` (
                                                 `snippet_tag`,
                                                 `snippet_text`,
                                                 `snippet_active`
@@ -43,8 +43,8 @@ if (
                                         )
         ", $FD->sql()->conn() );
 
-        systext ( $FD->text("admin", "snippet_added"),
-            $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_add") );
+        systext ( $FD->text('admin', 'snippet_added'),
+            $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_add') );
         unset ( $_POST );
     }
 }
@@ -54,8 +54,8 @@ if (
 /////////////////////////
 
 // Security Functions
-$_POST['snippet_tag'] = killhtml ( $_POST['snippet_tag'] );
-$_POST['snippet_text'] = killhtml ( $_POST['snippet_text'] );
+$_POST['snippet_tag'] = isset($_POST['snippet_tag']) ? killhtml ( $_POST['snippet_tag'] ) : '';
+$_POST['snippet_text'] = isset($_POST['snippet_text']) ? killhtml ( $_POST['snippet_text'] ) : '';
 
 settype ( $_POST['snippet_active'], 'integer' );
 

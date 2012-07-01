@@ -6,26 +6,26 @@
 
 if (TRUE
     && isset ($_POST['show_type'])
-    && ($_POST['show_size_x'] AND $_POST['show_size_x'] != '')
-    && ($_POST['show_size_y'] AND $_POST['show_size_y'] != '')
-    && ($_POST['show_img_x'] AND $_POST['show_img_x'] != '')
-    && ($_POST['show_img_y'] AND $_POST['show_img_y'] != '')
+    && (isset($_POST['show_size_x']) AND $_POST['show_size_x'] != '')
+    && (isset($_POST['show_size_y']) AND $_POST['show_size_y'] != '')
+    && (isset($_POST['show_img_x']) AND $_POST['show_img_x'] != '')
+    && (isset($_POST['show_img_y']) AND $_POST['show_img_y'] != '')
 
-    && ($_POST['screen_x'] AND $_POST['screen_x'] != '')
-    && ($_POST['screen_y'] AND $_POST['screen_y'] != '')
-    && ($_POST['screen_thumb_x'] AND $_POST['screen_thumb_x'] != '')
-    && ($_POST['screen_thumb_y'] AND $_POST['screen_thumb_y'] != '')
-    && ($_POST['screen_size'] AND $_POST['screen_size'] != '')
-    && ($_POST['screen_rows'] AND $_POST['screen_rows'] != '' AND $_POST['screen_rows'] != '0')
-    && ($_POST['screen_cols'] AND $_POST['screen_cols'] != '' AND $_POST['screen_cols'] != '0')
+    && (isset($_POST['screen_x']) AND $_POST['screen_x'] != '')
+    && (isset($_POST['screen_y']) AND $_POST['screen_y'] != '')
+    && (isset($_POST['screen_thumb_x']) AND $_POST['screen_thumb_x'] != '')
+    && (isset($_POST['screen_thumb_y']) AND $_POST['screen_thumb_y'] != '')
+    && (isset($_POST['screen_size']) AND $_POST['screen_size'] != '')
+    && (isset($_POST['screen_rows']) AND $_POST['screen_rows'] != '' AND $_POST['screen_rows'] != '0')
+    && (isset($_POST['screen_cols']) AND $_POST['screen_cols'] != '' AND $_POST['screen_cols'] != '0')
 
-    && ($_POST['wp_x'] AND $_POST['wp_x'] != '')
-    && ($_POST['wp_y'] AND $_POST['wp_y'] != '')
-    && ($_POST['wp_thumb_x'] AND $_POST['wp_thumb_x'] != '')
-    && ($_POST['wp_thumb_y'] AND $_POST['wp_thumb_y'] != '')
-    && ($_POST['wp_size'] AND $_POST['wp_size'] != '')
-    && ($_POST['wp_rows'] AND $_POST['wp_rows'] != '' AND $_POST['wp_rows'] != '0')
-    && ($_POST['wp_cols'] AND $_POST['wp_cols'] != '' AND $_POST['wp_cols'] != '0')
+    && (isset($_POST['wp_x']) AND $_POST['wp_x'] != '')
+    && (isset($_POST['wp_y']) AND $_POST['wp_y'] != '')
+    && (isset($_POST['wp_thumb_x']) AND $_POST['wp_thumb_x'] != '')
+    && (isset($_POST['wp_thumb_y']) AND $_POST['wp_thumb_y'] != '')
+    && (isset($_POST['wp_size']) AND $_POST['wp_size'] != '')
+    && (isset($_POST['wp_rows']) AND $_POST['wp_rows'] != '' AND $_POST['wp_rows'] != '0')
+    && (isset($_POST['wp_cols']) AND $_POST['wp_cols'] != '' AND $_POST['wp_cols'] != '0')
    )
 {
     settype($_POST['show_type'], 'integer');
@@ -54,7 +54,7 @@ if (TRUE
     $_POST['wp_order'] = savesql($_POST['wp_order']);
     $_POST['wp_sort'] = savesql($_POST['wp_sort']);
 
-    $update = 'UPDATE '.$global_config_arr['pref']."screen_config
+    $update = 'UPDATE '.$FD->config('pref')."screen_config
                SET screen_x = '$_POST[screen_x]',
                    screen_y = '$_POST[screen_y]',
                    screen_thumb_x = '$_POST[screen_thumb_x]',
@@ -91,7 +91,7 @@ if (TRUE
 
 else
 {
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     settype($config_arr['show_type'], 'integer');
@@ -309,7 +309,7 @@ else
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button type="submit" value="" class="button_new">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_long').'
                                     </button>
                                 </td>
                             </tr>

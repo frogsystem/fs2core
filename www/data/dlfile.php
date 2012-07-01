@@ -5,14 +5,14 @@ $FD->setConfig('info', 'canonical', array('id'));
 // Load Config Array
 $index = mysql_query ( '
                         SELECT *
-                        FROM `'.$global_config_arr['pref'].'dl_config`
+                        FROM `'.$FD->config('pref').'dl_config`
                         WHERE `id` = 1
 ', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 $index = mysql_query ( '
                         SELECT `show_type`, `show_size_x`, `show_size_y`
-                        FROM `'.$global_config_arr['pref'].'screen_config`
+                        FROM `'.$FD->config('pref').'screen_config`
                         WHERE `id` = 1
 ', $FD->sql()->conn() );
 $screen_config_arr = mysql_fetch_assoc ( $index );
@@ -21,19 +21,19 @@ $screen_config_arr = mysql_fetch_assoc ( $index );
 $_GET['id'] = ( isset ( $_GET['fileid'] ) && !isset ( $_GET['id'] ) ) ? $_GET['fileid'] : $_GET['id'];
 settype( $_GET['id'], 'integer' );
 
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl WHERE dl_id = $_GET[id] AND dl_open = 1", $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id = $_GET[id] AND dl_open = 1", $FD->sql()->conn() );
 if (mysql_num_rows($index) > 0)
 {
     $dl_arr = mysql_fetch_assoc($index);
 
     //Seitentitel
-    $global_config_arr['dyn_title_page'] = stripslashes ( $dl_arr['dl_name'] );
+    $FD->setConfig('dyn_title_page', stripslashes ( $dl_arr['dl_name'] ));
 
     //Config einlesen
     $dl_config_arr = $config_arr;
 
     // Username auslesen
-    $index = mysql_query('SELECT user_name FROM '.$global_config_arr['pref']."user WHERE user_id = $dl_arr[user_id]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = $dl_arr[user_id]", $FD->sql()->conn() );
     $dl_arr['user_name'] = kill_replacements ( mysql_result($index, 0, 'user_name'), TRUE );
     $dl_arr['user_url'] = url('user', array('id' => $dl_arr['user_id']));
 
@@ -48,7 +48,7 @@ if (mysql_num_rows($index) > 0)
     if ( image_exists ( 'images/downloads/', $dl_arr['dl_id'] ) ) {
         $dl_arr['viewer_link'] = 'imageviewer.php?file=images/downloads/'. basename ( $dl_arr['dl_bild'] ).'&single';
     } else {
-        $dl_arr['viewer_link'] = 'imageviewer.php?file=styles/'.$global_config_arr['style'].'/icons/image_error.gif&single';
+        $dl_arr['viewer_link'] = 'imageviewer.php?file=styles/'.$FD->config('style').'/icons/image_error.gif&single';
     }
 
     if ( $screen_config_arr['show_type'] == 1 ) {
@@ -57,9 +57,9 @@ if (mysql_num_rows($index) > 0)
     $dl_arr['dl_thumb'] = image_url('images/downloads/', $dl_arr['dl_id'].'_s');
 
     // Sonstige Daten ermitteln
-    $dl_arr['dl_date'] = date_loc ( $global_config_arr['date'], $dl_arr['dl_date'] );
+    $dl_arr['dl_date'] = date_loc ( $FD->config('date'), $dl_arr['dl_date'] );
     $dl_arr['dl_text'] = fscode($dl_arr['dl_text']);
-    $index3 = mysql_query('SELECT cat_name FROM '.$global_config_arr['pref']."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
+    $index3 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
     $dl_arr['cat_name'] = stripslashes(mysql_result($index3, 0, 'cat_name'));
 
 
@@ -91,7 +91,7 @@ if (mysql_num_rows($index) > 0)
 
 
     // Files auslesen
-    if ( $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use", $FD->sql()->conn() )) {
+    if ( $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use", $FD->sql()->conn() )) {
         $stats_arr['number'] = mysql_num_rows($index);
 
         while ($file_arr = mysql_fetch_assoc($index)) {
@@ -174,9 +174,9 @@ if (mysql_num_rows($index) > 0)
 
     foreach ( $valid_ids as $cat ) {
         if ($cat['cat_id'] == $dl_arr['cat_id']) {
-            $icon_url = $global_config_arr['virtualhost'].'styles/'.$global_config_arr['style'].'/icons/folder_open.gif';
+            $icon_url = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';
         } else {
-            $icon_url = $global_config_arr['virtualhost'].'styles/'.$global_config_arr['style'].'/icons/folder.gif';
+            $icon_url = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder.gif';
         }
         // Get Navigation Line Template
         $template = new template();

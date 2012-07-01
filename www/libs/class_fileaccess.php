@@ -12,7 +12,7 @@ class fileaccess
 {
     // constructor
     public function  __construct() {
-         global $global_config_arr;
+         global $FD;  //What is that line doing here?
     }
 
     // getFileData

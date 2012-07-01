@@ -4,8 +4,8 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST['smilies_rows'] && $_POST['smilies_rows']>0 && $_POST['smilies_cols'] && $_POST['smilies_cols']>0
- AND $_POST['textarea_width'] && $_POST['textarea_width']>0 && $_POST['textarea_height'] && $_POST['textarea_height']>0)
+if (isset($_POST['smilies_rows']) && $_POST['smilies_rows']>0 && isset($_POST['smilies_cols']) && $_POST['smilies_cols']>0
+ AND isset($_POST['textarea_width']) && $_POST['textarea_width']>0 && isset($_POST['textarea_height']) && $_POST['textarea_height']>0)
 {
     settype($_POST['smilies_rows'], 'integer');
     settype($_POST['smilies_cols'], 'integer');
@@ -50,7 +50,7 @@ if ($_POST['smilies_rows'] && $_POST['smilies_rows']>0 && $_POST['smilies_cols']
     $_POST['do_noparse'] = intval($_POST['do_noparse']);
     $_POST['do_smilies'] = intval($_POST['do_smilies']);
 
-    $update = 'UPDATE '.$global_config_arr['pref']."editor_config
+    $update = 'UPDATE '.$FD->config('pref')."editor_config
                SET smilies_rows = '$_POST[smilies_rows]',
                    smilies_cols = '$_POST[smilies_cols]',
                    textarea_width = '$_POST[textarea_width]',
@@ -105,7 +105,7 @@ if ($_POST['smilies_rows'] && $_POST['smilies_rows']>0 && $_POST['smilies_cols']
 
 else
 {
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'editor_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'editor_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     if (isset($_POST['sended']))

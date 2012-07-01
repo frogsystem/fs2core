@@ -42,14 +42,14 @@ echo $adminpage->get('script', false);
 
 if (
         !isset($_POST['edit_link']) && !isset($_POST['add_link']) &&
-        $_POST['news_title'] && $_POST['news_title'] != '' &&
-        $_POST['news_text'] && $_POST['news_text'] != '' &&
+        isset($_POST['news_title']) && $_POST['news_title'] != '' &&
+        isset($_POST['news_text']) && $_POST['news_text'] != '' &&
 
-        $_POST['d'] && $_POST['d'] != '' && $_POST['d'] > 0 &&
-        $_POST['m'] && $_POST['m'] != '' && $_POST['m'] > 0 &&
-        $_POST['y'] && $_POST['y'] != '' && $_POST['y'] > 0 &&
-        $_POST['h'] && $_POST['h'] != '' && $_POST['h'] >= 0 &&
-        $_POST['i'] && $_POST['i'] != '' && $_POST['i'] >= 0 &&
+        isset($_POST['d']) && $_POST['d'] != '' && $_POST['d'] > 0 &&
+        isset($_POST['m']) && $_POST['m'] != '' && $_POST['m'] > 0 &&
+        isset($_POST['y']) && $_POST['y'] != '' && $_POST['y'] > 0 &&
+        isset($_POST['h']) && $_POST['h'] != '' && $_POST['h'] >= 0 &&
+        isset($_POST['i']) && $_POST['i'] != '' && $_POST['i'] >= 0 &&
 
         isset ( $_POST['cat_id'] ) && $_POST['cat_id'] != -1 &&
         isset ( $_POST['user_id'] ) && $_POST['cat_id'] != 0
@@ -66,7 +66,7 @@ if (
         $newsid = $sql->save('news', $data, 'news_id');
 
         // Update Search Index (or not)
-        if ( $global_config_arr['search_index_update'] === 1 ) {
+        if ( $FD->config('search_index_update') === 1 ) {
             // Include searchfunctions.php
             require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
             update_search_index ('news');
@@ -103,13 +103,13 @@ if (
         } catch (Exception $e) {}
 
 
-        echo get_systext($FD->text('page', 'news_not_added'), $FD->text("admin", "info"), 'green', $FD->text("admin", "icon_save_add"));
+        echo get_systext($FD->text('page', 'news_not_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));
 
         // Unset Vars
         unset ($_POST);
 
     } catch (Exception $e) {
-        echo get_systext($FD->text('page', 'news_not_added').'<br>Caught exception: '.$e->getMessage(), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
+        echo get_systext($FD->text('page', 'news_not_added').'<br>Caught exception: '.$e->getMessage(), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
 }
@@ -133,7 +133,7 @@ if ( TRUE ) {
                 unset($_POST['new_link_name'], $_POST['new_link_url'], $_POST['new_link_target']);
                 $_POST['new_link_url'] = 'http://';
             } else {
-                echo get_systext($FD->text('page', 'news_not_added').'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_link_error"));
+                echo get_systext($FD->text('page', 'news_not_added').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_link_error'));
             }
 
         //edit links

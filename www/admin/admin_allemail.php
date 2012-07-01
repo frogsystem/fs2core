@@ -4,8 +4,8 @@
 //// Datenbank aktualisieren ////
 /////////////////////////////////
 
-if (   ( $_POST['signup'] && $_POST['signup'] != '' )
-    && ( $_POST['change_password'] && $_POST['change_password'] != '' )
+if (   ( isset($_POST['signup']) && $_POST['signup'] != '' )
+    && ( isset($_POST['change_password']) && $_POST['change_password'] != '' )
     && !empty($_POST['change_password_ack'])
     && ( $_POST['use_admin_mail'] == 1 || ( $_POST['use_admin_mail'] == 0 && $_POST['email'] != '' ) )
    )
@@ -22,7 +22,7 @@ if (   ( $_POST['signup'] && $_POST['signup'] != '' )
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."email`
+                    UPDATE `'.$FD->config('pref')."email`
                     SET
                         `signup` = '".$_POST['signup']."',
                         `change_password` = '".$_POST['change_password']."',
@@ -54,7 +54,7 @@ if ( TRUE )
     } else {
         $index = mysql_query ( '
                                 SELECT *
-                                FROM '.$global_config_arr['pref']."email
+                                FROM '.$FD->config('pref')."email
                                 WHERE `id` = '1'
         ", $sql->conn());
         $email_arr = mysql_fetch_assoc($index);
@@ -89,7 +89,7 @@ if ( TRUE )
                                                 <input class="pointer" type="radio" name="use_admin_mail" value="1" '.getchecked ( 1, $_POST['use_admin_mail'] ).'>
                                             </td>
                                             <td class="config">
-                                                '.$FD->text('admin', 'default').' ('.$global_config_arr['admin_mail'].')
+                                                '.$FD->text('admin', 'default').' ('.$FD->config('admin_mail').')
                                             </td>
                                         </tr>
                                         <tr valign="bottom">
