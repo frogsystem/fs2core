@@ -25,13 +25,6 @@ require_once(FS2_ROOT_PATH . 'libs/class_adminpage.php');
 // Constructor Calls
 setTimezone($FD->cfg('timezone'));
 
-//Include Phrases-Files
-require(FS2_ROOT_PATH . 'lang/de_DE/admin/admin_phrases_de.php');
-$TEXT['admin']    = new lang($global_config_arr['language_text'], 'admin');
-$TEXT['frontend'] = new lang($global_config_arr['language_text'], 'frontend');
-$TEXT['template'] = new lang($global_config_arr['language_text'], 'template');
-$TEXT['menu']     = new lang($global_config_arr['language_text'], 'menu');
-
 
 ######################
 ### START OF LOGIN ###
@@ -88,10 +81,10 @@ if (!empty($acp_arr)) {
     //if popup
     if ($acp_arr['group_id'] == 'popup') {
         define('POPUP', true);
-        $title = $TEXT['menu']->get('page_title_'.$acp_arr['page_id']);
+        $title = $FD->text("menu", 'page_title_'.$acp_arr['page_id']);
     } else {
         define('POPUP', false);
-        $title = $TEXT['menu']->get('group_'.$acp_arr['group_id']).' &#187; '.$TEXT['menu']->get('page_title_'.$acp_arr['page_id']);
+        $title = $FD->text("menu", 'group_'.$acp_arr['group_id']).' &#187; '.$FD->text("menu", 'page_title_'.$acp_arr['page_id']);
     }
 
     // get the page-data
@@ -101,11 +94,8 @@ if (!empty($acp_arr)) {
     $adminpage = new adminpage($acp_arr['page_file']);
 
     // Get Special Page Lang-Text-Files
-    $page_lang = new lang($global_config_arr['language_text'], 'admin/'.substr($acp_arr['page_file'], 0, -4));
+    $page_lang = new lang($FD->config('language_text'), 'admin/'.substr($acp_arr['page_file'], 0, -4));
     $FD->setPageText($page_lang);
-    if (!isset($TEXT['page'])) { //TODO old
-        $TEXT['page'] = $page_lang;
-    }
     unset ($page_lang);
 
 } else {
@@ -117,19 +107,19 @@ if (!empty($acp_arr)) {
 if ( $PAGE_DATA_ARR['created'] === false && $go == 'logout' ) {
     setcookie ('login', '', time() - 3600, '/');
     $_SESSION = array();
-    $PAGE_DATA_ARR = createpage($TEXT['menu']->get('admin_logout_text'), true, 'admin_logout.php', 'dash');
+    $PAGE_DATA_ARR = createpage($FD->text("menu", "admin_logout_text"), true, 'admin_logout.php', 'dash');
 }
 
 // login
 elseif ( $PAGE_DATA_ARR['created'] === false && ($go == 'login' || empty($go)) ) {
     $go = 'login';
-    $PAGE_DATA_ARR = createpage($TEXT['menu']->get('admin_login_text'), true, 'admin_login.php', 'dash');
+    $PAGE_DATA_ARR = createpage($FD->text("menu", "admin_login_text"), true, 'admin_login.php', 'dash');
 }
 
 // error
 elseif ( $PAGE_DATA_ARR['created'] === false ) {
     $go = '404';
-    $PAGE_DATA_ARR = createpage($TEXT['menu']->get('admin_error_page_title'), true, 'admin_404.php', 'error');
+    $PAGE_DATA_ARR = createpage($FD->text("menu", "admin_error_page_title"), true, 'admin_404.php', 'error');
 }
 
 
@@ -189,12 +179,12 @@ echo'
 
 <!-- Page Head -->
 <div id="head">
-     <h1>'.$global_config_arr['title'].'</h1>
+     <h1>'.$FD->config('title').'</h1>
      <div id="head_version">
-         version '.$global_config_arr['version'].'
+         version '.$FD->config('version').'
      </div>
      <div id="head_link">
-         <a href="'.$global_config_arr['virtualhost'].'" target="_self" class="head_link">» '.$TEXT['menu']->get('admin_link_to_page').'</a>
+         <a href="'.$FD->config('virtualhost').'" target="_self" class="head_link">» '.$FD->text("menu", "admin_link_to_page").'</a>
      </div>
 </div>
 <!-- /Page Head -->';
@@ -232,11 +222,11 @@ echo '
 if (is_authorized()) {
     $log_link = 'logout';
     $log_image = 'logout.gif';
-    $log_text = $TEXT['menu']->get('admin_logout_text');
+    $log_text = $FD->text("menu", "admin_logout_text");
 } else {
     $log_link = 'login';
     $log_image = 'login.gif';
-    $log_text = $TEXT['menu']->get('admin_login_text');
+    $log_text = $FD->text("menu", "admin_login_text");
 }
 
 echo'

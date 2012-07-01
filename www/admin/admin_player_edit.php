@@ -48,7 +48,7 @@ if (
 
     mysql_query ( '
                                         UPDATE
-                                                '.$global_config_arr['pref']."player
+                                                '.$FD->config('pref')."player
                                         SET
                                             video_type = '".$_POST['video_type']."',
                                             video_x = '".$_POST['video_x']."',
@@ -63,7 +63,7 @@ if (
     $message = 'Video bearbeitet';
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -71,9 +71,9 @@ if (
 
 // Delete Video
 elseif (
-                $_POST['video_id']
-                && $_POST['sended'] && $_POST['sended'] == 'delete'
-                && $_POST['video_action'] && $_POST['video_action'] == 'delete'
+                isset($_POST['video_id'])
+                && isset($_POST['sended']) && $_POST['sended'] == 'delete'
+                && isset($_POST['video_action']) && $_POST['video_action'] == 'delete'
         )
 {
         if ( $_POST['video_delete'] == 1 ) {
@@ -84,7 +84,7 @@ elseif (
                 // MySQL-Delete-Query
             mysql_query ('
                                                 DELETE FROM
-                                                        '.$global_config_arr['pref']."player
+                                                        '.$FD->config('pref')."player
                                  WHERE
                                                          video_id = '".$_POST['video_id']."'
                                                 LIMIT
@@ -98,7 +98,7 @@ elseif (
         }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text('admin', 'info') );
 
     // Unset Vars
     unset ( $_POST );
@@ -108,7 +108,7 @@ elseif (
 // Display Action-Pages  //
 ///////////////////////////
 
-if ( $_POST['video_id'] && $_POST['video_action'] )
+if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
 {
         // Edit Video
         if ( $_POST['video_action'] == 'edit' )
@@ -117,13 +117,13 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
 
                 // Display Error Messages
                 if ( isset ( $_POST['sended'] ) ) {
-                        systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+                        systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
 
                 // Load Data drom DB into Post
                 } else {
                     $index = mysql_query ( '
                                                                         SELECT *
-                                                                        FROM '.$global_config_arr['pref']."player
+                                                                        FROM '.$FD->config('pref')."player
                                                                         WHERE video_id = '".$_POST['video_id']."'
                         ", $FD->sql()->conn() );
                     $video_arr = mysql_fetch_assoc ( $index );
@@ -264,7 +264,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    L&auml;nge: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                    L&auml;nge: <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                     <span class="small">Die Laufzeit des Videos.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -275,7 +275,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Beschreibung: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                    Beschreibung: <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                     <span class="small">Text, der das Video beschreibt.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -294,7 +294,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                 // DL auflisten
                 $index = mysql_query ( '
                                                                 SELECT D.dl_id, D.dl_name, C.cat_name
-                                                                FROM '.$global_config_arr['pref'].'dl D, '.$global_config_arr['pref'].'dl_cat AS C
+                                                                FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C
                                                                 WHERE D.cat_id = C.cat_id
                                                                 ORDER BY D.dl_name ASC
                 ', $FD->sql()->conn() );
@@ -312,7 +312,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -326,7 +326,7 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
         {
                 $index = mysql_query ( '
                                                                 SELECT *
-                                                                FROM '.$global_config_arr['pref']."player
+                                                                FROM '.$FD->config('pref')."player
                                                                 WHERE video_id = '".$_POST['video_id']."'
                                                                 LIMIT 0,1
                 ", $FD->sql()->conn() );
@@ -372,14 +372,14 @@ if ( $_POST['video_id'] && $_POST['video_action'] )
                                                                     Soll das Video wirklich gel&ouml;scht werden?
                                                                 </td>
                                                                 <td class="config right top" style="padding: 0px;">
-                                                                '.get_yesno_table ( "video_delete" ).'
+                                                                '.get_yesno_table ( 'video_delete' ).'
                                                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
                                                         <tr>
                                                                 <td class="buttontd" colspan="2">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -404,7 +404,7 @@ else
         ';
 
         // Get Videos from DB
-        $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'player ORDER BY video_title', $FD->sql()->conn() );
+        $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'player ORDER BY video_title', $FD->sql()->conn() );
 
         if ( mysql_num_rows ( $index ) > 0 ) {
                 // display table head
@@ -470,8 +470,8 @@ else
                                                         <tr>
                                                                 <td style="text-align:right;" colspan="3">
                                                                         <select name="video_action" size="1">
-                                                                                <option value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                                                                <option value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                                                                <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                                                                <option value="delete">'.$FD->text("admin", "selection_del").'</option>
                                                                         </select>
                                                                 </td>
                                                         </tr>
@@ -479,7 +479,7 @@ else
                                                         <tr>
                                                                 <td class="buttontd" colspan="4">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                                                         </button>
                                                                 </td>
                                                         </tr>

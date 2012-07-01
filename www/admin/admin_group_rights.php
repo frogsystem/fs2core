@@ -5,14 +5,13 @@
 
 function get_group_rights_array ( $GROUP_ID )
 {
-    global $global_config_arr;
     global $FD;
 
     unset ( $rights );
 
     $index = mysql_query ( '
                             SELECT `perm_id`
-                            FROM '.$global_config_arr['pref']."user_permissions
+                            FROM '.$FD->config('pref')."user_permissions
                             WHERE `x_id` = '".$GROUP_ID."'
                             AND`perm_for_group` = '1'
     ", $FD->sql()->conn() );
@@ -36,12 +35,12 @@ if ( isset( $_POST['user_group_id'] ) ) {
 
     // security functions
     settype ( $_POST['user_group_id'], 'integer' );
-     unset ( $group_rights );
+    unset ( $group_rights );
 
     // get group of current user
     $index = mysql_query ( '
                             SELECT `user_group`
-                            FROM `'.$global_config_arr['pref']."user`
+                            FROM `'.$FD->config('pref')."user`
                             WHERE `user_id` = '".$_SESSION['user_id']."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
@@ -56,7 +55,7 @@ if ( isset( $_POST['user_group_id'] ) ) {
         // get pages
         $pageaction = mysql_query ( '
                                         SELECT `page_id`
-                                        FROM `'.$global_config_arr['pref']."admin_cp`
+                                        FROM `'.$FD->config('pref')."admin_cp`
                                         WHERE `group_id` > '0'
         ", $FD->sql()->conn() );
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
@@ -64,7 +63,7 @@ if ( isset( $_POST['user_group_id'] ) ) {
             if ( $_POST[$page_arr['page_id']] == 0 && in_array ( $page_arr['page_id'], $group_rights ) ) {
                 mysql_query ( '
                                 DELETE
-                                FROM `'.$global_config_arr['pref']."user_permissions`
+                                FROM `'.$FD->config('pref')."user_permissions`
                                 WHERE `perm_id` = '".$page_arr['page_id']."'
                                 AND `x_id` = '".$_POST['user_group_id']."'
                                 AND `perm_for_group` = '1'
@@ -74,16 +73,16 @@ if ( isset( $_POST['user_group_id'] ) ) {
             } elseif ( $_POST[$page_arr['page_id']] == 1 && !in_array ( $page_arr['page_id'], $group_rights ) ) {
                 mysql_query ( '
                                 INSERT
-                                INTO `'.$global_config_arr['pref']."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
+                                INTO `'.$FD->config('pref')."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
                                 VALUES ('".$page_arr['page_id']."', '".$_POST['user_group_id']."', 1)
                 ", $FD->sql()->conn() );
             }
         }
 
-        systext ( $admin_phrases['common']['changes_saved'], $admin_phrases['common']['info'] );
+        systext ( $FD->text('admin', 'changes_saved'), $FD->text('admin', 'info') );
     }
     else {
-        systext ( 'Diese Gruppe kann nicht bearbeitet werden', $admin_phrases['common']['error'], TRUE );
+        systext ( $FD->text('page', 'group_edit_not_allowed'), $FD->text('admin', 'error'), TRUE );
     }
 
     // Unset Vars
@@ -105,7 +104,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
     // get group data
     $index = mysql_query ( '
                             SELECT `user_group_name`, `user_group_id`
-                            FROM `'.$global_config_arr['pref'].'user_groups` G, `'.$global_config_arr['pref']."user` U
+                            FROM `'.$FD->config('pref').'user_groups` G, `'.$FD->config('pref')."user` U
                             WHERE G.`user_group_id` = '".$_POST['edit_user_group_id']."'
                             AND U.`user_id` = '".$_SESSION['user_id']."'
                             AND G.`user_group_id` != U.`user_group`
@@ -119,7 +118,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
     // get group of current user
     $index = mysql_query ( '
                             SELECT `user_group`
-                            FROM `'.$global_config_arr['pref']."user`
+                            FROM `'.$FD->config('pref')."user`
                             WHERE `user_id` = '".$_SESSION['user_id']."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
@@ -132,23 +131,23 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
     // get groups
     $groupaction = mysql_query ( '
                                     SELECT `group_id`
-                                    FROM `'.$global_config_arr['pref']."admin_groups`
+                                    FROM `'.$FD->config('pref')."admin_groups`
                                     WHERE `menu_id` != 'none'
                                     ORDER BY `menu_id`, `group_pos`
     ", $FD->sql()->conn() );
     while ( $group_arr = mysql_fetch_assoc ( $groupaction ) ) {
-        $DATA_ARR[$group_arr['group_id']]['title'] = $TEXT['menu']->get('group_'.$group_arr['group_id']);
+        $DATA_ARR[$group_arr['group_id']]['title'] = $FD->text('menu', 'group_'.$group_arr['group_id']);
 
         // get pages
         $pageaction = mysql_query ( '
                                         SELECT `page_id`
-                                        FROM `'.$global_config_arr['pref']."admin_cp`
+                                        FROM `'.$FD->config('pref')."admin_cp`
                                         WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0
                                         ORDER BY `page_pos` ASC, `page_id` ASC
         ", $FD->sql()->conn() );
         $pageaction_sub = mysql_query ( '
                                         SELECT `page_id`, `page_file`
-                                        FROM `'.$global_config_arr['pref']."admin_cp`
+                                        FROM `'.$FD->config('pref')."admin_cp`
                                         WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1
                                         ORDER BY `page_file` ASC, `page_pos` ASC, `page_id` ASC
         ", $FD->sql()->conn() );
@@ -157,12 +156,12 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
 
 
         while ( $page_arr_sub = mysql_fetch_assoc ( $pageaction_sub ) ) {
-            $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $TEXT['menu']->get('page_link_'.$page_arr_sub['page_id']);
+            $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $FD->text('menu', 'page_link_'.$page_arr_sub['page_id']);
         }
 
 
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
-            $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $TEXT['menu']->get('page_link_'.$page_arr['page_id']);
+            $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $FD->text('menu', 'page_link_'.$page_arr['page_id']);
 
             // is permission granted?
             if ( $user_group_arr['user_group_id'] == $current_user_group ) {
@@ -198,10 +197,10 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                         <input type="hidden" name="go" value="group_rights">
                         <input type="hidden" name="user_group_id" value="'.$user_group_arr['user_group_id'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="3">Gruppenrechte &auml;ndern f&uuml;r: '.$user_group_arr['user_group_name'].'</td></tr>
+                            <tr><td class="line" colspan="3">'.$FD->text('page', 'change_grouprights_for').': '.$user_group_arr['user_group_name'].'</td></tr>
                             <tr><td align="left">
-                                <span class="small"><b>Hinweise:</b><br>
-                                Unter-Rechte werden nur wirksam, wenn auch das zugeh&ouml;rige Haupt-Recht erteilt wurde.</span>
+                                <span class="small"><b>'.$FD->text('admin', 'note').':</b><br>
+                                '.$FD->text('page', 'sub_rights_note').'</span>
                                 <table cellpadding="4" cellspacing="0" align="center">
                                     <tr><td class="config"><p></p>
     ';
@@ -219,9 +218,9 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                 $i = 1;
                 $j++;
             }
-            echo '<p>'.$GROUP_ARR['title'].' <span class="small">(<span class="link" onclick="permselect($(this), true)">alle</span>/<span class="link" onclick="permselect($(this), false)">keine</span>)</span><br>';
+            echo '<p>'.$GROUP_ARR['title'].' <span class="small">(<span class="link" onclick="permselect($(this), true)">'.$FD->text('page', 'all').'</span>/<span class="link" onclick="permselect($(this), false)">'.$FD->text('page', 'none').'</span>)</span><br>';
             foreach ( $GROUP_ARR['links'] as $PAGE_ID => $PAGE_ARR ) {
-                echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="icons/sub-right-arrow.gif" alt="->">' : "";
+                echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="icons/sub-right-arrow.gif" alt="->">' : '';
                 echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" id="'.$PAGE_ID.'" name="'.$PAGE_ID.'" value="1"
                 '.getchecked ( $PAGE_ARR['granted'], 'group' ).'
                 '.getdisabled ( $PAGE_ARR['granted'], 'bad' ).'
@@ -240,7 +239,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                             <tr>
                                 <td colspan="3" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_long').'
                                     </button>
                                 </td>
                             </tr>
@@ -262,13 +261,13 @@ else
                     <form action="" method="post">
                         <input type="hidden" name="go" value="group_rights">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="4">Gruppe ausw&auml;hlen</td></tr>
+                            <tr><td class="line" colspan="4">'.$FD->text('page', 'select_group').'</td></tr>
     ';
 
     // get groups from db
     $index = mysql_query ( '
                             SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
-                            FROM `'.$global_config_arr['pref'].'user_groups` G, `'.$global_config_arr['pref']."user` U
+                            FROM `'.$FD->config('pref').'user_groups` G, `'.$FD->config('pref')."user` U
                             WHERE U.`user_id` = '".$_SESSION['user_id']."'
                             AND G.`user_group_id` != U.`user_group`
                             ORDER BY `user_group_name`
@@ -279,9 +278,9 @@ else
         // display table head
         echo '
                             <tr>
-                                <td class="config">Gruppenname &amp; Grafik</td>
-                                <td class="config">Informationen</td>
-                                <td class="config" width="20">Mitglieder</td>
+                                <td class="config">'.$FD->text('page', 'group_name_and_symbol').'</td>
+                                <td class="config">'.$FD->text('page', 'group_info').'</td>
+                                <td class="config" width="20">'.$FD->text('page', 'group_members').'</td>
                                 <td class="config" width="20"></td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -292,14 +291,14 @@ else
         {
             $index_username = mysql_query ( '
                                                 SELECT `user_name`
-                                                FROM `'.$global_config_arr['pref']."user`
+                                                FROM `'.$FD->config('pref')."user`
                                                 WHERE `user_id` = '".$group_arr['user_group_user']."'
             ", $FD->sql()->conn() );
             $group_arr['user_group_user_name'] = mysql_result ( $index_username, 0, 'user_name' );
 
             $index_numusers = mysql_query ( "
                                                 SELECT COUNT(`user_id`) AS 'num_users'
-                                                FROM `".$global_config_arr['pref']."user`
+                                                FROM `".$FD->config('pref')."user`
                                                 WHERE `user_group` = '".$group_arr['user_group_id']."'
             ", $FD->sql()->conn() );
             $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, 'num_users' );
@@ -323,7 +322,7 @@ else
                                 </td>
                                 <td class="configthin middle">
                                     <span class="small">
-                                        '.$admin_phrases['articles']['list_cat_created_by'].' <b>'.$group_arr['user_group_user_name'].'</b> '.$admin_phrases['articles']['list_cat_created_on'].' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
+                                        '.$FD->text('page', 'list_cat_created_by').' <b>'.$group_arr['user_group_user_name'].'</b> '.$FD->text('page', 'list_cat_created_on').' <b>'.date ( $FD->config('date'), $group_arr['user_group_date'] ).'</b>
                                     </span>
                                 </td>
                                 <td class="configthin center middle">'.$group_arr['user_group_num_users'].'</td>
@@ -342,7 +341,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '."Gruppenrrechte &auml;ndern".'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'change_grouprights').'
                                     </button>
                                 </td>
                             </tr>
@@ -353,7 +352,7 @@ else
         echo'
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="config center" colspan="4">Keine Gruppen gefunden!</td>
+                                <td class="config center" colspan="4">'.$FD->text('page', 'no_groups_found').'</td>
                             </tr>
                             <tr><td class="space"></td></tr>
         ';

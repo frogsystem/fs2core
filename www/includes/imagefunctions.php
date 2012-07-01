@@ -32,9 +32,9 @@ function get_image_output ( $PATH, $NAME, $TITLE, $NO_TEXT = '', $SHOW_TITLE = T
 
 function image_exists ( $PATH, $NAME )
 {
-    global $global_config_arr;
+    global $FD;
 
-    $CHECK_PATH = $global_config_arr['path'] . $PATH;
+    $CHECK_PATH = $FD->config('path') . $PATH;
 
     if (
             file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ||
@@ -93,9 +93,9 @@ function image_url ( $PATH, $NAME, $ERROR = TRUE, $GETPATH = FALSE )
 
 function image_delete ( $PATH, $NAME )
 {
-    global $global_config_arr;
+    global $FD;
 
-    $CHECK_PATH = $global_config_arr['path'] . $PATH;
+    $CHECK_PATH = $FD->config('path') . $PATH;
 
     if ( file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ) {
         $file = $CHECK_PATH . $NAME . '.jpg';
@@ -122,12 +122,12 @@ function image_delete ( $PATH, $NAME )
 
 function image_rename ( $PATH, $NAME, $NEWNAME )
 {
-    global $global_config_arr;
+    global $FD;
 
     if ( image_exists ( $PATH, $NAME ) && !image_exists ( $PATH, $NEWNAME ) ) {
         $extension = pathinfo ( image_url ( $PATH, $NAME, FALSE, TRUE ) );
         $extension = $extension['extension'];
-        rename ( image_url ( $PATH, $NAME, FALSE, TRUE ), $global_config_arr['path'] . $PATH . $NEWNAME . '.' . $extension );
+        rename ( image_url ( $PATH, $NAME, FALSE, TRUE ), $FD->config('path') . $PATH . $NEWNAME . '.' . $extension );
         return true;
     } else {
         return false;
@@ -141,15 +141,15 @@ function image_rename ( $PATH, $NAME, $NEWNAME )
 
 function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
 {
-  global $admin_phrases, $TEXT;
+  global $FD;
 
-    $image0 = $TEXT['frontend']->get('image_upload_error_0');
-    $image1 = $TEXT['frontend']->get('image_upload_error_1');
-    $image2 = $TEXT['frontend']->get('image_upload_error_2');
-    $image3 = $TEXT['frontend']->get('image_upload_error_3');
-    $image4 = $TEXT['frontend']->get('image_upload_error_4');
-    $image5 = $TEXT['frontend']->get('image_upload_error_5');
-    $image6 = $TEXT['frontend']->get('image_upload_error_6');
+    $image0 = $FD->text("frontend", "image_upload_error_0");
+    $image1 = $FD->text("frontend", "image_upload_error_1");
+    $image2 = $FD->text("frontend", "image_upload_error_2");
+    $image3 = $FD->text("frontend", "image_upload_error_3");
+    $image4 = $FD->text("frontend", "image_upload_error_4");
+    $image5 = $FD->text("frontend", "image_upload_error_5");
+    $image6 = $FD->text("frontend", "image_upload_error_6");
 
   switch ( $UPLOAD ) {
     case 0:
@@ -182,7 +182,7 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
 
 function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, $QUALITY = 100, $THIS_SIZE = false )
 {
-    global $global_config_arr;
+    global $FD;
 
     // Get Image Data
     $image_data = getimagesize ( $IMAGE['tmp_name'] );
@@ -221,7 +221,7 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
     }
 
     // Create Image
-    $full_path = $global_config_arr['path'] . $PATH . $NAME . '.' . $type;
+    $full_path = $FD->config('path') . $PATH . $NAME . '.' . $type;
     move_uploaded_file ( $IMAGE['tmp_name'], $full_path );
     chmod ( $full_path, 0644 );
     clearstatcache();
@@ -239,18 +239,18 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
 
 function create_thumb_notice($upload)
 {
-  global $admin_phrases;
+    global $FD;
 
   switch ($upload)
   {
     case 0:
-      return $admin_phrases['common']['thumb_0'];
+      return $FD->text("admin", "thumb_0");
       break;
     case 1:
-      return $admin_phrases['common']['thumb_1'];
+      return $FD->text("admin", "thumb_1");
       break;
     case 2:
-      return $admin_phrases['common']['thumb_2'];
+      return $FD->text("admin", "thumb_2");
       break;
   }
 }

@@ -4,12 +4,12 @@
 //// Neues Pre-, Re oder Interview einstellen ////
 //////////////////////////////////////////////////
 
-if (($_POST['title'] AND $_POST['title'] != '')
-    && ($_POST['url'] AND $_POST['url'] != '')
-    && ($_POST['day'] AND $_POST['day'] != '')
-    && ($_POST['month'] AND $_POST['month'] != '')
-    && ($_POST['year'] AND $_POST['year'] != '')
-    && ($_POST['text'] AND $_POST['text'] != '')
+if ((isset($_POST['title']) AND $_POST['title'] != '')
+    && (isset($_POST['url']) AND $_POST['url'] != '')
+    && (isset($_POST['day']) AND $_POST['day'] != '')
+    && (isset($_POST['month']) AND $_POST['month'] != '')
+    && (isset($_POST['year']) AND $_POST['year'] != '')
+    && (isset($_POST['text']) AND $_POST['text'] != '')
     && $_POST['sended'] == 'add')
 {
     settype($_POST['day'], 'integer');
@@ -28,7 +28,7 @@ if (($_POST['title'] AND $_POST['title'] != '')
     settype($_POST['lang'], 'integer');
 
     mysql_query('INSERT INTO
-                 '.$global_config_arr['pref']."press (press_title,
+                 '.$FD->config('pref')."press (press_title,
                            press_url,
                            press_date,
                            press_intro,
@@ -58,7 +58,7 @@ if(true)
 {
     //Initialisiere Werte
     unset($press_arr['press_title']);
-    unset($press_arr['press_url']); $press_arr['press_url'] = 'http://';
+    $press_arr['press_url'] = 'http://';
     unset($press_arr['press_intro']);
     unset($press_arr['press_text']);
     unset($press_arr['press_note']);
@@ -78,8 +78,8 @@ if(true)
     $heute['jahr'] = date('Y', $heute['time']);
 
     //Error Message
-    if ($_POST['sended'] == 'add') {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+    if (isset($_POST['sended']) && $_POST['sended'] == 'add') {
+        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
 
 
         $press_arr['press_title'] = killhtml($_POST['title']);
@@ -141,7 +141,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Einleitung: <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
+                                    Einleitung: <font class="small">'.$FD->text("admin", "optional").'</font><br />
                                     <font class="small">Eine kurze Einleitung zum Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
@@ -159,7 +159,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Anmerkungen: <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
+                                    Anmerkungen: <font class="small">'.$FD->text("admin", "optional").'</font><br />
                                     <font class="small">Anmerkungen zum Pressebericht.<br />
                                     (z.B. die Wertung eines Tests)</font>
                                 </td>
@@ -175,7 +175,7 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="game" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."press_admin
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
                           WHERE type = '1' ORDER BY title", $FD->sql()->conn() );
     while ($game_arr = mysql_fetch_assoc($index))
     {
@@ -195,7 +195,7 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="cat" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."press_admin
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
                           WHERE type = '2' ORDER BY title", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
@@ -215,7 +215,7 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="lang" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."press_admin
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
                           WHERE type = '3' ORDER BY title", $FD->sql()->conn() );
     while ($lang_arr = mysql_fetch_assoc($index))
     {

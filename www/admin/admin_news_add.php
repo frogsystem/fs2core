@@ -7,9 +7,9 @@
 $news_cols = array('cat_id', 'user_id', 'news_date', 'news_title', 'news_text', 'news_active', 'news_comments_allowed', 'news_search_update');
 
 $config_arr = $sql->getById('news_config', array('html_code', 'fs_code', 'para_handling', 'acp_force_cat_selection'), 1);
-$config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $TEXT['admin']->get('on') : $TEXT['admin']->get('off');
-$config_arr['fs'] = in_array($config_arr['fs_code'], array(2, 4)) ? $TEXT['admin']->get('on') : $TEXT['admin']->get('off');
-$config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $TEXT['admin']->get('on') : $TEXT['admin']->get('off');
+$config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
+$config_arr['fs'] = in_array($config_arr['fs_code'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
+$config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
 
 $config_arr['short_url_len'] = 50;
 $config_arr['short_url_rep'] = '...';
@@ -42,14 +42,14 @@ echo $adminpage->get('script', false);
 
 if (
         !isset($_POST['edit_link']) && !isset($_POST['add_link']) &&
-        $_POST['news_title'] && $_POST['news_title'] != '' &&
-        $_POST['news_text'] && $_POST['news_text'] != '' &&
+        isset($_POST['news_title']) && $_POST['news_title'] != '' &&
+        isset($_POST['news_text']) && $_POST['news_text'] != '' &&
 
-        $_POST['d'] && $_POST['d'] != '' && $_POST['d'] > 0 &&
-        $_POST['m'] && $_POST['m'] != '' && $_POST['m'] > 0 &&
-        $_POST['y'] && $_POST['y'] != '' && $_POST['y'] > 0 &&
-        $_POST['h'] && $_POST['h'] != '' && $_POST['h'] >= 0 &&
-        $_POST['i'] && $_POST['i'] != '' && $_POST['i'] >= 0 &&
+        isset($_POST['d']) && $_POST['d'] != '' && $_POST['d'] > 0 &&
+        isset($_POST['m']) && $_POST['m'] != '' && $_POST['m'] > 0 &&
+        isset($_POST['y']) && $_POST['y'] != '' && $_POST['y'] > 0 &&
+        isset($_POST['h']) && $_POST['h'] != '' && $_POST['h'] >= 0 &&
+        isset($_POST['i']) && $_POST['i'] != '' && $_POST['i'] >= 0 &&
 
         isset ( $_POST['cat_id'] ) && $_POST['cat_id'] != -1 &&
         isset ( $_POST['user_id'] ) && $_POST['cat_id'] != 0
@@ -66,7 +66,7 @@ if (
         $newsid = $sql->save('news', $data, 'news_id');
 
         // Update Search Index (or not)
-        if ( $global_config_arr['search_index_update'] === 1 ) {
+        if ( $FD->config('search_index_update') === 1 ) {
             // Include searchfunctions.php
             require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
             update_search_index ('news');
@@ -103,13 +103,13 @@ if (
         } catch (Exception $e) {}
 
 
-        echo get_systext($FD->text('page', 'news_not_added'), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_save_add'));
+        echo get_systext($FD->text('page', 'news_not_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));
 
         // Unset Vars
         unset ($_POST);
 
     } catch (Exception $e) {
-        echo get_systext($FD->text('page', 'news_not_added').'<br>Caught exception: '.$e->getMessage(), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text('page', 'news_not_added').'<br>Caught exception: '.$e->getMessage(), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
 }
@@ -133,7 +133,7 @@ if ( TRUE ) {
                 unset($_POST['new_link_name'], $_POST['new_link_url'], $_POST['new_link_target']);
                 $_POST['new_link_url'] = 'http://';
             } else {
-                echo get_systext($FD->text('page', 'news_not_added').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_link_error'));
+                echo get_systext($FD->text('page', 'news_not_added').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_link_error'));
             }
 
         //edit links
@@ -180,7 +180,7 @@ if ( TRUE ) {
 
         // display error
         } else {
-            echo get_systext($FD->text('page', 'news_not_added').'<br>'.$FD->text('admin', 'form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+            echo get_systext($FD->text('page', 'news_not_added').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
         }
 
     // Set default value
@@ -211,8 +211,8 @@ if ( TRUE ) {
     // cat options
     initstr($cat_options);
     if ($config_arr['acp_force_cat_selection'] == 1) {
-        $cat_options .= '<option value="-1" '.getselected(-1, $_POST['cat_id']).'>'.$TEXT['admin']->get('please_select').'</option>'."\n";
-        $cat_options .= '<option value="-1">'.$TEXT['admin']->get('select_hr').'</option>'."\n";
+        $cat_options .= '<option value="-1" '.getselected(-1, $_POST['cat_id']).'>'.$FD->text("admin", "please_select").'</option>'."\n";
+        $cat_options .= '<option value="-1">'.$FD->text("admin", "select_hr").'</option>'."\n";
     }
 
     $cats = $sql->get('news_cat', array('cat_id', 'cat_name'));
@@ -234,7 +234,7 @@ if ( TRUE ) {
         $adminpage->addText('url', killhtml($_POST['link_url'][$id]));
         $adminpage->addText('target', killhtml($_POST['link_target'][$id]));
         $adminpage->addText('short_url', killhtml(cut_in_string($_POST['link_url'][$id], $config_arr['short_url_len'], $config_arr['short_url_rep'])));
-        $adminpage->addText('target_text', $_POST['link_target'][$id] == 1 ? $TEXT['page']->get('news_link_blank') : $TEXT['page']->get('news_link_self'));
+        $adminpage->addText('target_text', $_POST['link_target'][$id] == 1 ? $FD->text("page", "news_link_blank") : $FD->text("page", "news_link_self"));
         $adminpage->addText('id', $c++);
         $adminpage->addText('num', $c);
         $link_entries .= $adminpage->get('link_entry')."\n";

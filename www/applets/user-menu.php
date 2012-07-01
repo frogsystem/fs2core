@@ -10,7 +10,7 @@ if ( is_loggedin() ) {
     settype ( $user_id, 'integer' );
     $image_url = image_url ( 'media/user-images/', $user_id ) ;
     if ( image_exists ( 'media/user-images/', $user_id ) ) {
-        $image_link = '<img src="'.$image_url .'" alt="'.$TEXT['frontend']->get('user_image_of').' '.kill_replacements ( $_SESSION['user_name'], TRUE ).'">';
+        $image_link = '<img src="'.$image_url .'" alt="'.$FD->text('frontend', 'user_image_of').' '.kill_replacements ( $_SESSION['user_name'], TRUE ).'">';
     } else {
         $image_link = '';
     }
@@ -30,7 +30,7 @@ if ( is_loggedin() ) {
     // Admin-Link
     $index = mysql_query ('
                             SELECT `user_id`, `user_is_staff`, `user_is_admin`
-                            FROM '.$global_config_arr['pref']."user
+                            FROM '.$FD->config('pref')."user
                             WHERE `user_id` = '".$user_id."'
     ", $FD->sql()->conn() );
     $data_arr = mysql_fetch_assoc ( $index );
@@ -38,9 +38,9 @@ if ( is_loggedin() ) {
         $template_admincp = new template();
         $template_admincp->setFile('0_user.tpl');
         $template_admincp->load('APPLET_ADMINLINE');
+        $template_admincp->tag('admincp_link', '<a href="'.$FD->config('virtualhost').'admin/">'.$FD->text('frontend', 'user_admincp_title').'</a>');
 
-        $template_admincp->tag('admincp_link', '<a href="'.$global_config_arr['virtualhost'].'admin/">'.$TEXT['frontend']->get('user_admincp_title').'</a>');
-        $template_admincp->tag('admincp_url', $global_config_arr['virtualhost'].'admin/');
+        $template_admincp->tag('admincp_url', $FD->config('virtualhost').'admin/');
         $template_admincp = $template_admincp->display();
     } else {
         $template_admincp = '';

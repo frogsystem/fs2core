@@ -2,7 +2,7 @@
 /////////////////////
 //// Config laden ///
 /////////////////////
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_config');  // Screenshot Konfiguration auslesen
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config');  // Screenshot Konfiguration auslesen
 $config_arr = mysql_fetch_assoc($index);
 
 /////////////////////////////
@@ -18,7 +18,7 @@ if (isset($_POST['sended']))
         if ($_FILES['img'.$i]['name'] != '') {
             // Insert into DB
             $title = savesql($_POST['title'.$i]);
-            mysql_query('INSERT INTO '.$global_config_arr['pref']."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $FD->sql()->conn() );
+            mysql_query('INSERT INTO '.$FD->config('pref')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $FD->sql()->conn() );
             $id = mysql_insert_id();
 
             // File Operations
@@ -27,7 +27,7 @@ if (isset($_POST['sended']))
 
             // Upload Failed => Delete from DB
             if ($upload != 0) {
-                mysql_query('DELETE FROM '.$global_config_arr['pref']."screen WHERE screen_id = '".$id."'");
+                mysql_query('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = '".$id."'");
 
             // Else create Thumb
             } else {
@@ -70,7 +70,7 @@ echo'
                                 <td class="config">
                                     <select class="input_width" name="catid">
 ';
-$index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
+$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
 while ($cat_arr = mysql_fetch_assoc($index))
 {
     echo'

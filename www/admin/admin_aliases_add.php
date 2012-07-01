@@ -4,8 +4,8 @@
 /////////////////////////
 
 if (
-        $_POST['alias_go'] && $_POST['alias_go'] != ""
-        && $_POST['alias_forward_to'] && $_POST['alias_forward_to'] != ""
+        isset($_POST['alias_go']) && $_POST['alias_go'] != ''
+        && isset($_POST['alias_forward_to']) && $_POST['alias_forward_to'] != ''
     )
 {
     // Security Functions
@@ -13,9 +13,9 @@ if (
     $_POST['alias_forward_to'] = savesql ( $_POST['alias_forward_to'] );
 
     settype ( $_POST['alias_active'], 'integer' );
-    
+
     // MySQL-Queries
-    mysql_query ( ' INSERT INTO `'.$global_config_arr['pref']."aliases` (
+    mysql_query ( ' INSERT INTO `'.$FD->config('pref')."aliases` (
                             `alias_go`,
                             `alias_forward_to`,
                             `alias_active`
@@ -26,9 +26,9 @@ if (
                             '".$_POST['alias_active']."'
                     )
     ", $sql->conn() );
-    
-    systext ( $TEXT['admin']->get('alias_added'),
-        $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_save_add') );
+
+    systext ( $FD->text('admin', 'alias_added'),
+        $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_add') );
     unset ( $_POST );
 }
 
@@ -46,9 +46,9 @@ settype ( $_POST['alias_active'], "integer" );
 // Check for Errors
 if ( isset ( $_POST['sended'] ) ) {
 
-    $error_message = $TEXT['admin']->get('form_not_filled');
-    systext ( $TEXT['admin']->get('alias_not_added').'<br>'.$error_message,
-        $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_save_error') );
+    $error_message = $FD->text("admin", "form_not_filled");
+    systext ( $FD->text("admin", "alias_not_added").'<br>'.$error_message,
+        $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_save_error") );
 
 // Set Data
 } else {
@@ -62,11 +62,11 @@ echo '
                         <input type="hidden" name="go" value="aliases_add">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get('alias_add_title').'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("admin", "alias_add_title").'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('alias_go_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('alias_go_desc').'</span>
+                                    '.$FD->text("admin", "alias_go_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "alias_go_desc").'</span>
                                 </td>
                                 <td class="config">
                                     ?go = <input class="text input_width" name="alias_go" maxlength="100" value="'.$_POST['alias_go'].'">
@@ -74,8 +74,8 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('alias_forward_to_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('alias_forward_to_desc').'</span>
+                                    '.$FD->text("admin", "alias_forward_to_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "alias_forward_to_desc").'</span>
                                 </td>
                                 <td class="config">
                                     ?go = <input class="text input_width" name="alias_forward_to" maxlength="100" value="'.$_POST['alias_forward_to'].'">
@@ -83,8 +83,8 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('alias_active_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('alias_active_desc').'</span>
+                                    '.$FD->text("admin", "alias_active_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "alias_active_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="alias_active" value="1" '.getchecked ( 1, $_POST['alias_active'] ).'>
@@ -94,7 +94,7 @@ echo '
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT['admin']->get('button_arrow').' '.$TEXT['admin']->get('alias_add_title').'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "alias_add_title").'
                                     </button>
                                 </td>
                             </tr>

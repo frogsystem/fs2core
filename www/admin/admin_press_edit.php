@@ -3,12 +3,12 @@
 ///////////////////////////////
 /// Pressebericht editieren ///
 ///////////////////////////////
-if (($_POST['title'] AND $_POST['title'] != '')
-    && ($_POST['url'] AND $_POST['url'] != '' AND $_POST['url'] != 'http://')
-    && ($_POST['day'] AND $_POST['day'] != '')
-    && ($_POST['month'] AND $_POST['month'] != '')
-    && ($_POST['year'] AND $_POST['year'] != '')
-    && ($_POST['text'] AND $_POST['text'] != '')
+if ((isset($_POST['title']) AND $_POST['title'] != '')
+    && (isset($_POST['url']) AND $_POST['url'] != '' AND $_POST['url'] != 'http://')
+    && (isset($_POST['day']) AND $_POST['day'] != '')
+    && (isset($_POST['month']) AND $_POST['month'] != '')
+    && (isset($_POST['year']) AND $_POST['year'] != '')
+    && (isset($_POST['text']) AND $_POST['text'] != '')
     && $_POST['press_action'] == 'edit'
     && $_POST['sended'] == 'edit'
     && isset($_POST['press_id'][0])
@@ -32,7 +32,7 @@ if (($_POST['title'] AND $_POST['title'] != '')
     settype($_POST['cat'], 'integer');
     settype($_POST['lang'], 'integer');
 
-    $update = 'UPDATE '.$global_config_arr['pref']."press
+    $update = 'UPDATE '.$FD->config('pref')."press
                SET press_title = '$_POST[title]',
                    press_url = '$_POST[url]',
                    press_date = '$datum',
@@ -55,7 +55,7 @@ if (($_POST['title'] AND $_POST['title'] != '')
 //////////////////////////////
 /// Pressebericht löschen ////
 //////////////////////////////
-elseif ($_POST['press_action'] == 'delete'
+elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'delete'
     && $_POST['sended'] == 'delete'
     && isset($_POST['press_id'])
    )
@@ -65,7 +65,7 @@ elseif ($_POST['press_action'] == 'delete'
 
     if ($_POST['delete_press'])   // Pressebericht löschen
     {
-        mysql_query('DELETE FROM '.$global_config_arr[pref]."press WHERE press_id = '$_POST[press_id]'", $FD->sql()->conn() );
+        mysql_query('DELETE FROM '.$FD->config('pref')."press WHERE press_id = '$_POST[press_id]'", $FD->sql()->conn() );
         systext('Der Pressebericht wurde gel&ouml;scht.');
     }
     else
@@ -83,7 +83,7 @@ elseif ($_POST['press_action'] == 'delete'
 //////////////////////////////
 /// Pressebericht anzeigen ///
 //////////////////////////////
-elseif ($_POST['press_action'] == 'edit'
+elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
         && isset($_POST['press_id'])
        )
 {
@@ -91,7 +91,7 @@ elseif ($_POST['press_action'] == 'edit'
     settype($_POST['press_id'], 'integer');
 
     // Pressebericht laden
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."press WHERE press_id = '$_POST[press_id]'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press WHERE press_id = '$_POST[press_id]'", $FD->sql()->conn() );
     $press_arr = mysql_fetch_assoc($index);
 
     $press_arr['press_title'] = killhtml($press_arr['press_title']);
@@ -128,7 +128,7 @@ elseif ($_POST['press_action'] == 'edit'
 
     //Error Message
     if ($_POST['sended'] == 'edit') {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
 
 
         $press_arr['press_title'] = killhtml($_POST['title']);
@@ -200,7 +200,7 @@ elseif ($_POST['press_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Einleitung: <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
+                                    Einleitung: <font class="small">'.$FD->text("admin", "optional").'</font><br />
                                     <font class="small">Eine kurze Einleitung zum Pressebericht.</font>
                                 </td>
                                 <td class="config" valign="top">
@@ -218,7 +218,7 @@ elseif ($_POST['press_action'] == 'edit'
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    Anmerkungen: <font class="small">'.$admin_phrases['common']['optional'].'</font><br />
+                                    Anmerkungen: <font class="small">'.$FD->text("admin", "optional").'</font><br />
                                     <font class="small">Anmerkungen zum Pressebericht.<br />
                                     (z.B. die Wertung eines Tests)</font>
                                 </td>
@@ -234,7 +234,7 @@ elseif ($_POST['press_action'] == 'edit'
                                 <td class="config" valign="top">
                                     <select name="game" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."press_admin
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
                           WHERE type = '1' ORDER BY title", $FD->sql()->conn() );
     while ($game_arr = mysql_fetch_assoc($index))
     {
@@ -256,7 +256,7 @@ elseif ($_POST['press_action'] == 'edit'
                                 <td class="config" valign="top">
                                     <select name="cat" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."press_admin
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
                           WHERE type = '2' ORDER BY title", $FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
@@ -278,7 +278,7 @@ elseif ($_POST['press_action'] == 'edit'
                                 <td class="config" valign="top">
                                     <select name="lang" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."press_admin
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
                           WHERE type = '3' ORDER BY title", $FD->sql()->conn() );
     while ($lang_arr = mysql_fetch_assoc($index))
     {
@@ -307,14 +307,15 @@ elseif ($_POST['press_action'] == 'edit'
 //////////////////////////////
 /// Pressebericht löschen /////
 //////////////////////////////
-elseif ($_POST['press_action'] == 'delete'
+elseif (isset($_POST['press_action'])
+        && $_POST['press_action'] == 'delete'
         && isset($_POST['press_id'])
        )
 {
     $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST['press_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."press WHERE press_id = $_POST[press_id]", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press WHERE press_id = $_POST[press_id]", $FD->sql()->conn() );
     $press_arr = mysql_fetch_assoc($index);
 
     $press_arr['press_title'] = killhtml($press_arr['press_title']);
@@ -325,11 +326,11 @@ elseif ($_POST['press_action'] == 'delete'
     settype($press_arr['press_cat'], 'integer');
     settype($press_arr['press_lang'], 'integer');
 
-    $index = mysql_query('SELECT title FROM '.$global_config_arr['pref']."press_admin WHERE id = $press_arr[press_game] AND type = 1", $FD->sql()->conn() );
+    $index = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_game] AND type = 1", $FD->sql()->conn() );
     $press_arr['press_game'] = mysql_result($index,0,'title');
-    $index = mysql_query('SELECT title FROM '.$global_config_arr['pref']."press_admin WHERE id = $press_arr[press_cat] AND type = 2", $FD->sql()->conn() );
+    $index = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_cat] AND type = 2", $FD->sql()->conn() );
     $press_arr['press_cat'] = mysql_result($index,0,'title');
-    $index = mysql_query('SELECT title FROM '.$global_config_arr['pref']."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $FD->sql()->conn() );
+    $index = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $FD->sql()->conn() );
     $press_arr['press_lang'] = mysql_result($index,0,'title');
 
     echo'
@@ -356,7 +357,7 @@ elseif ($_POST['press_action'] == 'delete'
                                         <option value="0">Pressebericht nicht l&ouml;schen</option>
                                         <option value="1">Pressebericht l&ouml;schen</option>
                                     </select>
-                                    <input type="submit" value="'.$admin_phrases['common']['do_button'].'">
+                                    <input type="submit" value="'.$FD->text("admin", "do_button").'">
                                 </td>
                             </tr>
                             <tr><td>&nbsp;</td></tr>
@@ -378,11 +379,10 @@ elseif ($_POST['press_action'] == 'delete'
 /////////////////////////////////
 /// Presseberichte ausflisten ///
 /////////////////////////////////
-$index = mysql_query('SELECT press_id FROM '.$global_config_arr['pref'].'press', $FD->sql()->conn() );
+$index = mysql_query('SELECT press_id FROM '.$FD->config('pref').'press', $FD->sql()->conn() );
 
 if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
 {
-
 
     unset($filterwhere);
     if (isset($_POST['gameid']) AND $_POST['gameid'] != 0)
@@ -438,7 +438,7 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                                         ($_POST['gameid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'press_admin WHERE type = 1 ORDER BY title',$FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 1 ORDER BY title',$FD->sql()->conn() );
     while ($game_arr = mysql_fetch_assoc($index))
     {
         echo '
@@ -481,7 +481,7 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                                         ($_POST['catid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'press_admin WHERE type = 2 ORDER BY title',$FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 2 ORDER BY title',$FD->sql()->conn() );
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         echo '
@@ -503,7 +503,7 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                                         ($_POST['langid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'press_admin WHERE type = 3 ORDER BY title',$FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title',$FD->sql()->conn() );
     while ($lang_arr = mysql_fetch_assoc($index))
     {
         echo '
@@ -525,7 +525,7 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
 //// Pressebericht auswählen ////
 /////////////////////////////////
     $index = mysql_query('SELECT press_id, press_title, press_date, press_game, press_cat, press_lang
-                          FROM '.$global_config_arr['pref']."press
+                          FROM '.$FD->config('pref')."press
                           $filterwhere
                           ORDER BY $_POST[order_by] $_POST[order_type]", $FD->sql()->conn() );
     if (mysql_num_rows($index) > 0)
@@ -552,11 +552,11 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
 
         while ($press_arr = mysql_fetch_assoc($index))
         {
-            $index2 = mysql_query('SELECT title FROM '.$global_config_arr['pref']."press_admin WHERE id = $press_arr[press_game] AND type = 1", $FD->sql()->conn() );
+            $index2 = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_game] AND type = 1", $FD->sql()->conn() );
             $press_arr['press_game'] = mysql_result($index2,0,'title');
-            $index2 = mysql_query('SELECT title FROM '.$global_config_arr['pref']."press_admin WHERE id = $press_arr[press_cat] AND type = 2", $FD->sql()->conn() );
+            $index2 = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_cat] AND type = 2", $FD->sql()->conn() );
             $press_arr['press_cat'] = mysql_result($index2,0,'title');
-            $index2 = mysql_query('SELECT title FROM '.$global_config_arr['pref']."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $FD->sql()->conn() );
+            $index2 = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_lang] AND type = 3", $FD->sql()->conn() );
             $press_arr['press_lang'] = mysql_result($index2,0,'title');
 
             $press_arr['press_date'] = date('d.m.Y', $press_arr['press_date']);
@@ -582,10 +582,10 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                             <tr>
                                 <td class="right" colspan="4">
                                    <select class="select_type" name="press_action" size="1">
-                                     <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                     <option class="select_red select_one" value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                     <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
+                                     <option class="select_red select_one" value="delete">'.$FD->text('admin', 'selection_del').'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$admin_phrases['common']['do_button'].'">
+                                   <input class="button" type="submit" value="'.$FD->text('admin', 'do_button').'">
                                 </td>
                             </tr>
                         </table>
@@ -594,11 +594,11 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
     }
     else
     {
-        echo $admin_phrases['press']['note_noreleases'];
+        echo $FD->text('page', 'note_noreleases');
     }
 }
 elseif (mysql_num_rows($index) <= 0)
 {
-    echo $admin_phrases['press']['note_noreleases'];
+    echo $FD->text('page', 'note_noreleases');
 }
 ?>

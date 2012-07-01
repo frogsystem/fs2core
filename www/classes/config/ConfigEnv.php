@@ -27,6 +27,7 @@ class ConfigEnv extends ConfigData {
         $this->setConfig('spam', $spam);
         $this->setConfig('data', $sql->getDatabaseName());
         $this->setConfig('path', $path);
+        $this->setConfig('slash', SLASH);
     }
 }
 ?>

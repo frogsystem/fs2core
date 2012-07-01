@@ -4,14 +4,13 @@
 ///////////////////
 
 function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
-    global $global_config_arr;
     global $FD;
 
     $USER_ID = savesql ( $USER_ID );
     $USERNAME = savesql ( $USERNAME );
     $index = mysql_query ( '
                             SELECT `user_id`
-                            FROM `'.$global_config_arr['pref']."user`
+                            FROM `'.$FD->config('pref')."user`
                             WHERE `user_name` = '".$USERNAME."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
@@ -25,7 +24,7 @@ function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 
@@ -100,7 +99,7 @@ if (
 
     $index = mysql_query ( '
                             SELECT `user_is_staff`, `user_is_admin`
-                            FROM '.$global_config_arr['pref']."user
+                            FROM '.$FD->config('pref')."user
                             WHERE `user_id` = '".$_POST['user_id']."'
                             LIMIT 0,1
     ", $FD->sql()->conn() );
@@ -111,7 +110,7 @@ if (
     if ( $was_staff == 1 && $_POST['user_is_staff'] == 0 ) {
         mysql_query ('
                         DELETE
-                        FROM '.$global_config_arr['pref']."user_permissions
+                        FROM '.$FD->config('pref')."user_permissions
                         WHERE `perm_for_group` = '0'
                         AND `x_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
@@ -119,7 +118,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."user`
+                    UPDATE `'.$FD->config('pref')."user`
                     SET
                         `user_name` = '".$_POST['user_name']."',
                         ".$pw_update."
@@ -137,14 +136,14 @@ if (
                         `user_skype` = '".$_POST['user_skype']."'
                     WHERE `user_id` = '".$_POST['user_id']."'
     ", $FD->sql()->conn() );
-    $message = $admin_phrases['common']['changes_saved'];
+    $message = $FD->text("admin", "changes_saved");
 
     // image operations
     if ( $_POST['user_pic_delete'] == 1 ) {
         if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
-        $message .= '<br>' . $admin_phrases['common']['image_deleted'];
+        $message .= '<br>' . $FD->text("admin", "image_deleted");
       } else {
-        $message .= '<br>' . $admin_phrases['common']['image_not_deleted'];
+        $message .= '<br>' . $FD->text("admin", "image_not_deleted");
       }
     } elseif ( $_FILES['user_pic']['name'] != '' ) {
         $upload = upload_img ( $_FILES['user_pic'], 'images/avatare/', $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
@@ -164,14 +163,14 @@ if (
         $mail = new Mail($mm->getDefaultSender(), unslash($_POST['user_mail']), $subject, $content, $mm->getHtmlConfig(), true);
 
         if ($mail->send()) {
-            $message .= '<br>'.$TEXT['frontend']->get('mail_new_password_sended');
+            $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");
         } else {
-            $message .= '<br>'.$TEXT['frontend']->get('mail_new_password_not_sended');
+            $message .= '<br>'.$FD->text("frontend", "mail_new_password_not_sended");
         }
     }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text("admin", "info") );
 
     // save Vars
     $filter = $_POST['filter'];
@@ -199,7 +198,7 @@ elseif (
         // get data from db
         $index = mysql_query ( '
                                 SELECT `user_name`
-                                FROM '.$global_config_arr['pref']."user
+                                FROM '.$FD->config('pref')."user
                                 WHERE `user_id` = '".$_POST['user_id']."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -208,62 +207,62 @@ elseif (
         // Delete Permissions
         mysql_query ( '
                         DELETE
-                        FROM '.$global_config_arr['pref']."user_permissions
+                        FROM '.$FD->config('pref')."user_permissions
                         WHERE `perm_for_group` = '0'
                         AND `x_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update stats
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref'].'counter
+                        UPDATE '.$FD->config('pref').'counter
                         SET `user` = `user`-1
         ', $FD->sql()->conn() );
 
         // update groups
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."user_groups
+                        UPDATE '.$FD->config('pref')."user_groups
                         SET `user_group_user` = '1'
                         WHERE `user_group_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update articles
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."articles
+                        UPDATE '.$FD->config('pref')."articles
                         SET `article_user` = '0'
                         WHERE `article_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update articles_cat
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."articles_cat
+                        UPDATE '.$FD->config('pref')."articles_cat
                         SET `cat_user` = '1'
                         WHERE `cat_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update dl
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."dl
+                        UPDATE '.$FD->config('pref')."dl
                         SET `user_id` = '1'
                         WHERE `user_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."news
+                        UPDATE '.$FD->config('pref')."news
                         SET `user_id` = '1'
                         WHERE `user_id` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news_cat
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."news_cat
+                        UPDATE '.$FD->config('pref')."news_cat
                         SET `cat_user` = '1'
                         WHERE `cat_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
         // update news_comments
         mysql_query ( '
-                        UPDATE '.$global_config_arr['pref']."news_comments
+                        UPDATE '.$FD->config('pref')."news_comments
                         SET `comment_poster_id` = '0',
                             `comment_poster` = '".$user_arr['user_name']."'
                         WHERE `comment_poster_id` = '".$_POST['user_id']."'
@@ -271,21 +270,21 @@ elseif (
 
         // MySQL-Delete-Query
         mysql_query ('
-                        DELETE FROM '.$global_config_arr['pref']."user
+                        DELETE FROM '.$FD->config('pref')."user
                          WHERE user_id = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
         $message = 'Benutzer wurde erfolgreich gel&ouml;scht';
 
         // Delete Image
         if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
-            $message .= '<br>' . $admin_phrases['common']['image_deleted'];
+            $message .= '<br>' . $FD->text("admin", "image_deleted");
         }
     } else {
         $message = 'Benutzer wurde nicht gel&ouml;scht';
     }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text("admin", "info") );
 
     // save Vars
     $filter = $_POST['filter'];
@@ -330,13 +329,13 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
             }
             $message = implode ( '<br>', $message );
             if ( strlen ( $message ) == 0 ) {
-                $message = $admin_phrases['common']['note_notfilled'];
+                $message = $FD->text("admin", "note_notfilled");
             }
-            systext ( $message, $admin_phrases['common']['error'], TRUE );
+            systext ( $message, $FD->text("admin", "error"), TRUE );
         } else {
             $index = mysql_query ( '
                                     SELECT *
-                                    FROM '.$global_config_arr['pref']."user
+                                    FROM '.$FD->config('pref')."user
                                     WHERE `user_id` = '".$_POST['user_id']."'
                                     LIMIT 0,1
             ", $FD->sql()->conn() );
@@ -441,7 +440,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases['common']['today'] ).'
+                                    '.js_nowbutton ( $nowbutton_array, $FD->text("admin", "today") ).'
                                 </td>
                             </tr>
                             <tr>
@@ -500,7 +499,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 </td>
                                 <td class="config">
                                     <input class="text" name="user_pic" type="file" size="35"><br>
-                                    <span class="small">['.$admin_phrases['common']['max'].' '.$config_arr['avatar_x'].' '.$admin_phrases['common']['resolution_x'].' '.$config_arr['avatar_y'].' '.$admin_phrases['common']['pixel'].'] ['.$admin_phrases['common']['max'].' '.$config_arr['avatar_size'].' '.$admin_phrases['common']['kib'].']</span>
+                                    <span class="small">['.$FD->text("admin", "max").' '.$config_arr['avatar_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['avatar_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['avatar_size'].' '.$FD->text("admin", "kib").']</span>
         ';
         if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
             echo '
@@ -538,7 +537,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
         $index = mysql_query ('
                                 SELECT `user_group_id`, `user_group_name`
-                                FROM '.$global_config_arr['pref']."user_groups
+                                FROM '.$FD->config('pref')."user_groups
                                 WHERE `user_group_id` > 0
                                 ORDER BY `user_group_name`
         ", $FD->sql()->conn() );
@@ -550,7 +549,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
         $index = mysql_query ('
                                 SELECT `user_group_id`, `user_group_name`
-                                FROM '.$global_config_arr['pref'].'user_groups
+                                FROM '.$FD->config('pref').'user_groups
                                 WHERE `user_group_id` = 0
                                 ORDER BY `user_group_name`
                                 LIMIT 0,1
@@ -631,7 +630,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -644,7 +643,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         // get data from db
         $index = mysql_query ( '
                                 SELECT `user_name`
-                                FROM '.$global_config_arr['pref']."user
+                                FROM '.$FD->config('pref')."user
                                 WHERE `user_id` = '".$_POST['user_id']."'
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
@@ -675,7 +674,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -712,7 +711,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '."Nach Benutzern suchen".'
+                                        '.$FD->text("admin", "button_arrow").' '."Nach Benutzern suchen".'
                                     </button>
                                 </td>
                             </tr>
@@ -739,7 +738,7 @@ if ( !isset ( $_POST['user_id'] ) )
         // get users from db
         $index = mysql_query ( '
                                 SELECT `user_id`, `user_name`, `user_mail`, `user_is_staff`, `user_is_admin`
-                                FROM '.$global_config_arr['pref']."user
+                                FROM '.$FD->config('pref')."user
                                 WHERE ( `user_name` LIKE '%".$_POST['filter']."%' OR `user_mail` LIKE '%".$_POST['filter']."%' )
                                 AND `user_id` != '".$_SESSION['user_id']."'
                                 AND `user_id` != '1'
@@ -807,8 +806,8 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="right" colspan="5">
                                     <select name="user_action" size="1">
-                                        <option value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                        <option value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                        <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
+                                        <option value="delete">'.$FD->text("admin", "selection_del").'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -816,7 +815,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="5">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
                                     </button>
                                 </td>
                             </tr>

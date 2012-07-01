@@ -1,0 +1,16 @@
+#@from_phrases
+group_name_and_symbol:          Gruppenname &amp; Symbol
+group_info:                     Informationen
+group_members:                  Mitglieder
+select_group:                   Gruppe ausw&auml;hlen
+
+change_grouprights:             Gruppenrrechte &auml;ndern
+no_groups_found:                Keine Gruppen gefunden!
+
+group_edit_not_allowed:         Diese Gruppe kann nicht bearbeitet werden
+
+all:                            alle
+none:                           keine
+
+change_grouprights_for:         Gruppenrechte &auml;ndern f&uuml;r
+sub_rights_note:                Unter-Rechte werden nur wirksam, wenn auch das zugeh&ouml;rige Haupt-Recht erteilt wurde.

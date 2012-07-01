@@ -15,7 +15,7 @@ if ( isset ( $_POST['sended'] ) )
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."announcement`
+                    UPDATE `'.$FD->config('pref')."announcement`
                     SET
                         `announcement_text` = '".$_POST['announcement_text']."',
                         `show_announcement` = '".$_POST['show_announcement']."',
@@ -47,7 +47,7 @@ if ( TRUE )
     } else {
         $index = mysql_query ( '
                                 SELECT *
-                                FROM `'.$global_config_arr['pref']."announcement`
+                                FROM `'.$FD->config('pref')."announcement`
                                 WHERE `id` = '1'
         ", $sql->conn());
         $config_arr = mysql_fetch_assoc($index);

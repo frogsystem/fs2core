@@ -55,7 +55,7 @@ if (true
     // MySQL-Queries
     mysql_query ( '
                     UPDATE
-                        `'.$global_config_arr['pref']."captcha_config`
+                        `'.$FD->config('pref')."captcha_config`
                     SET
                         `captcha_bg_color` = '".$_POST['captcha_bg_color']."',
                         `captcha_bg_transparent` = '".$_POST['captcha_bg_transparent']."',
@@ -138,7 +138,7 @@ if ( TRUE )
     } else {
         $index = mysql_query ( '
                                     SELECT *
-                                    FROM `'.$global_config_arr['pref']."captcha_config`
+                                    FROM `'.$FD->config('pref')."captcha_config`
                                     WHERE `id` = '1'
         ", $FD->sql()->conn() );
         $config_arr = mysql_fetch_assoc($index);
@@ -156,14 +156,9 @@ if ( TRUE )
     // security functions
     $_POST['captcha_bg_color'] = '#'.$_POST['captcha_bg_color'];
     $_POST['captcha_text_color'] = '#'.$_POST['captcha_text_color'];
-
     $_POST = array_map('killhtml', $_POST);
-    $_POST = array_map(function($ele) {
-        if (is_hexcolor($ele))
-            $ele = substr($ele, 1);
-        return $ele;
-    },  $_POST);
-
+    $_POST['captcha_bg_color'] = substr($_POST['captcha_bg_color'], 1);
+    $_POST['captcha_text_color'] = substr($_POST['captcha_text_color'], 1);
 
     // Display Form
     echo '

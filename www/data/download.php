@@ -5,7 +5,7 @@ $FD->setConfig('info', 'canonical', array('cat_id', 'keyword'));
 // Load Config Array
 $index = mysql_query ( '
                         SELECT *
-                        FROM `'.$global_config_arr['pref'].'dl_config`
+                        FROM `'.$FD->config('pref').'dl_config`
                         WHERE `id` = 1
 ', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
@@ -35,13 +35,13 @@ if (isset($_GET['keyword']) && $_GET['keyword'] != '')
     } else {
         $query = "WHERE dl_text LIKE '%".$sql_keyword."%' OR dl_name LIKE '%".$sql_keyword."%' AND";
     }
-    $page_titel .= $TEXT['frontend']->get('download_search_for') . ' "' . $_GET['keyword'] . '"';
+    $page_titel .= $FD->text("frontend", "download_search_for") . ' "' . $_GET['keyword'] . '"';
 } else {
     $_GET['keyword'] = '';
     $query = "WHERE cat_id = $_GET[cat_id] AND";
     if ($_GET['cat_id'] == 0) {
        $query = 'WHERE';
-       $page_titel = $TEXT['frontend']->get('download_all_downloads');
+       $page_titel = $FD->text("frontend", "download_all_downloads");
     }
 
 }
@@ -58,10 +58,10 @@ foreach ($valid_ids as $cat) {
     $cat['cat_name'] = stripslashes ( $cat['cat_name'] );
 
     if ($cat['cat_id'] == $_GET['cat_id']) {
-        $icon_url = $global_config_arr['virtualhost'].'styles/'.$global_config_arr['style'].'/icons/folder_open.gif';
+        $icon_url = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';
         $page_titel = $cat['cat_name'] . $page_titel;
     } else {
-        $icon_url = $global_config_arr['virtualhost'].'styles/'.$global_config_arr['style'].'/icons/folder.gif';
+        $icon_url = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder.gif';
     }
     // Get Navigation Line Template
     $template = new template();
@@ -101,7 +101,7 @@ if ($show == TRUE) {
                                  dl_text,
                                  dl_date,
                                  cat_id
-                          FROM '.$global_config_arr['pref']."dl
+                          FROM '.$FD->config('pref')."dl
                           $query dl_open = 1
                           ORDER BY dl_name", $FD->sql()->conn() );
 
@@ -112,8 +112,8 @@ if ($show == TRUE) {
     while ($dl_arr = mysql_fetch_assoc($index)) {
         $dl_arr['dl_text'] = killfs($dl_arr['dl_text']);
         $dl_arr['dl_text'] = truncate_string($dl_arr['dl_text'], 250, '...');
-        $dl_arr['dl_date'] = date_loc( $global_config_arr['date'] , $dl_arr['dl_date'] );
-        $index3 = mysql_query('SELECT cat_name FROM '.$global_config_arr['pref']."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
+        $dl_arr['dl_date'] = date_loc( $FD->config('date') , $dl_arr['dl_date'] );
+        $index3 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
         $dl_arr['cat_name'] = stripslashes(mysql_result($index3, 0, 'cat_name'));
 
         // Get Template
@@ -180,6 +180,6 @@ $template->tag('page_title', $page_titel );
 $template = $template->display ();
 
 //Seitentitel
-$global_config_arr['dyn_title_page'] = $page_titel;
+$FD->setConfig('dyn_title_page', $page_titel);
 
 ?>

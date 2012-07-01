@@ -17,7 +17,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."snippets`
+                    UPDATE `'.$FD->config('pref')."snippets`
                     SET
                         `snippet_text` = '".$_POST['snippet_text']."',
                         `snippet_active` = '".$_POST['snippet_active']."'
@@ -25,8 +25,8 @@ if (
     ", $FD->sql()->conn() );
 
     // Display Message
-    systext ( $TEXT['admin']->get('changes_saved'),
-        $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_save_ok') );
+    systext ( $FD->text("admin", "changes_saved"),
+        $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_ok") );
 
     // Unset Vars
     unset ( $_POST );
@@ -51,16 +51,16 @@ elseif (
         // MySQL-Delete-Query
         mysql_query ('
                         DELETE
-                        FROM `'.$global_config_arr['pref'].'snippets`
+                        FROM `'.$FD->config('pref').'snippets`
                         WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
         ', $FD->sql()->conn() );
 
-        systext ( $TEXT['admin']->get('snippets_deleted'),
-            $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_trash_ok') );
+        systext ( $FD->text("admin", "snippets_deleted"),
+            $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_trash_ok") );
 
     } else {
-        systext ( $TEXT['admin']->get('snippets_not_deleted'),
-            $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_trash_error') );
+        systext ( $FD->text("admin", "snippets_not_deleted"),
+            $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_trash_error") );
     }
 
     // Unset Vars
@@ -91,7 +91,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         } else {
             $index = mysql_query ( '
                                     SELECT *
-                                    FROM `'.$global_config_arr['pref']."snippets`
+                                    FROM `'.$FD->config('pref')."snippets`
                                     WHERE `snippet_id` = '".$_POST['snippet_id']."'
                                     LIMIT 0,1
             ", $FD->sql()->conn() );
@@ -114,11 +114,11 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                         <input type="hidden" name="sended" value="edit">
                         <input type="hidden" name="snippet_id" value="'.$_POST['snippet_id'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get('snippet_edit_title').'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("admin", "snippet_edit_title").'</td></tr>
                             <tr>
                                 <td class="config" width="50%">
-                                    '.$TEXT['admin']->get('snippet_tag_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('snippet_tag_desc').'</span>
+                                    '.$FD->text("admin", "snippet_tag_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "snippet_tag_desc").'</span>
                                 </td>
                                 <td class="config" width="50%">
                                     '.$_POST['snippet_tag'].'
@@ -126,8 +126,8 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('snippet_active_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('snippet_active_desc').'</span>
+                                    '.$FD->text("admin", "snippet_active_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "snippet_active_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="snippet_active" value="1" '.getchecked ( 1, $_POST['snippet_active'] ).'>
@@ -135,8 +135,8 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT['admin']->get('snippet_text_title').':<br>
-                                    <span class="small">'.$TEXT['admin']->get('snippet_text_desc').'</span>
+                                    '.$FD->text("admin", "snippet_text_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "snippet_text_desc").'</span>
                                 </td>
                             </tr>
                             <tr>
@@ -148,7 +148,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT['admin']->get('button_arrow').' '.$TEXT['admin']->get('save_changes_button').'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
                                     </button>
                                 </td>
                             </tr>
@@ -162,8 +162,8 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
     //////////////////////////////////////////////////////////////
     elseif ( $_POST['snippet_action'] == 'edit' && count ( $_POST['snippet_id'] ) > 1 ) {
         // Display Error
-        systext ( $TEXT['admin']->get('select_only_one_to_edit'),
-            $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+        systext ( $FD->text("admin", "select_only_one_to_edit"),
+            $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
         unset ( $_POST['snippet_id'] );
     }
 
@@ -180,17 +180,17 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                         <input type="hidden" name="sended" value="delete">
                         <input type="hidden" name="snippet_id" value="'.implode ( ',', $_POST['snippet_id'] ).'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT['admin']->get('snippets_delete_title').'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("admin", "snippets_delete_title").'</td></tr>
                             <tr>
                                 <td class="configthin">
-                                    '.$TEXT['admin']->get('snippets_delete_question').'
+                                    '.$FD->text("admin", "snippets_delete_question").'
                                     <br><br>
         ';
 
         // get applets from db
         $index = mysql_query ( '
                                 SELECT *
-                                FROM `'.$global_config_arr['pref'].'snippets`
+                                FROM `'.$FD->config('pref').'snippets`
                                 WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
                                 ORDER BY `snippet_tag`
         ', $FD->sql()->conn() );
@@ -201,7 +201,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
             while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
 
                 // get other data
-                $data_arr['active_text'] = ( $data_arr['snippet_active'] == 1 ) ? $TEXT['admin']->get('snippet_active') : $TEXT['admin']->get('snippet_not_active');
+                $data_arr['active_text'] = ( $data_arr['snippet_active'] == 1 ) ? $FD->text("admin", "snippet_active") : $FD->text("admin", "snippet_not_active");
 
                 echo '
                                     <b>'.killhtml ( $data_arr['snippet_tag'] ).'</b> ('.$data_arr['active_text'].')<br>
@@ -220,7 +220,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT['admin']->get('button_arrow').' '.$TEXT['admin']->get('do_action_button_long').'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -240,13 +240,13 @@ if ( !isset ( $_POST['snippet_id'] ) )
                     <form action="" method="post">
                         <input type="hidden" name="go" value="snippets_edit">
                         <table class="configtable select_list" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="3">'.$TEXT['admin']->get('snippet_select_title').'</td></tr>
+                            <tr><td class="line" colspan="3">'.$FD->text("admin", "snippet_select_title").'</td></tr>
     ';
 
     // get snippets from db
     $index = mysql_query ( '
                             SELECT *
-                            FROM `'.$global_config_arr['pref'].'snippets`
+                            FROM `'.$FD->config('pref').'snippets`
                             ORDER BY `snippet_tag`
     ', $FD->sql()->conn() );
 
@@ -256,8 +256,8 @@ if ( !isset ( $_POST['snippet_id'] ) )
         // display table head
         echo '
                             <tr>
-                                <td class="config">'.$TEXT['admin']->get('snippet_tag_title').'</td>
-                                <td class="config" width="20">&nbsp;&nbsp;'.$TEXT['admin']->get('active').'&nbsp;&nbsp;</td>
+                                <td class="config">'.$FD->text("admin", "snippet_tag_title").'</td>
+                                <td class="config" width="20">&nbsp;&nbsp;'.$FD->text("admin", "active").'&nbsp;&nbsp;</td>
                                 <td class="config" width="20"></td>
                             </tr>
         ';
@@ -266,7 +266,7 @@ if ( !isset ( $_POST['snippet_id'] ) )
         while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
 
             // get other data
-            $data_arr['active_text'] = ( $data_arr['snippet_active'] == 1 ) ? $TEXT['admin']->get('yes') : $TEXT['admin']->get('no');
+            $data_arr['active_text'] = ( $data_arr['snippet_active'] == 1 ) ? $FD->text("admin", "yes") : $FD->text("admin", "no");
 
             echo '
 
@@ -286,9 +286,9 @@ if ( !isset ( $_POST['snippet_id'] ) )
                             <tr>
                                 <td class="right" colspan="4">
                                     <select class="select_type" name="snippet_action" size="1">
-                                        <option class="select_one" value="edit" '.getselected( 'edit', $_POST['snippet_action'] ).'>'.$TEXT['admin']->get('selection_edit').'</option>
+                                        <option class="select_one" value="edit" '.getselected( 'edit', $_POST['snippet_action'] ).'>'.$FD->text("admin", "selection_edit").'</option>
         ';
-        echo ( $_SESSION['snippets_delete'] ) ? '<option class="select_red" value="delete" '.getselected ( 'delete', $_POST['snippet_action'] ).'>'.$TEXT['admin']->get('selection_delete').'</option>' : '';
+        echo ( $_SESSION['snippets_delete'] ) ? '<option class="select_red" value="delete" '.getselected ( 'delete', $_POST['snippet_action'] ).'>'.$FD->text("admin", "selection_delete").'</option>' : '';
         echo'
                                     </select>
                                 </td>
@@ -297,7 +297,7 @@ if ( !isset ( $_POST['snippet_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$TEXT['admin']->get('button_arrow').' '.$TEXT['admin']->get('do_action_button_long').'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -309,7 +309,7 @@ if ( !isset ( $_POST['snippet_id'] ) )
            echo'
                             <tr><td class="space"></td></tr>
                             <tr>
-                                <td class="config center" colspan="4">'.$TEXT['admin']->get('snippets_not_found').'</td>
+                                <td class="config center" colspan="4">'.$FD->text("admin", "snippets_not_found").'</td>
                             </tr>
                             <tr><td class="space"></td></tr>
         ';

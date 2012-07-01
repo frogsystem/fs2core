@@ -4,13 +4,12 @@
 ///////////////////
 
 function user_name_free ( $USERNAME ) {
-    global $global_config_arr;
     global $FD;
 
     $USERNAME = savesql ( $USERNAME );
     $index = mysql_query ( '
                             SELECT `user_id`
-                            FROM `'.$global_config_arr['pref']."user`
+                            FROM `'.$FD->config('pref')."user`
                             WHERE `user_name` = '".$USERNAME."'
     ", $FD->sql()->conn() );
     if ( mysql_num_rows ( $index ) > 0 ) {
@@ -23,7 +22,7 @@ function user_name_free ( $USERNAME ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 
 //////////////////
@@ -85,7 +84,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    INSERT INTO `'.$global_config_arr['pref']."user`
+                    INSERT INTO `'.$FD->config('pref')."user`
                         ( `user_name`, `user_password`, `user_salt`,
                         `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
                         `user_reg_date`, `user_show_mail`, `user_homepage`,
@@ -112,7 +111,7 @@ if (
     $message = 'Benutzer wurde erfolgreich hinzugef&uuml;gt';
 
     mysql_query ( '
-                    UPDATE '.$global_config_arr['pref'].'counter
+                    UPDATE '.$FD->config('pref').'counter
                     SET `user` = `user`+1
     ', $FD->sql()->conn() );
 
@@ -127,15 +126,15 @@ if (
     $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_POST['user_name'] ), $template_mail );
     $template_mail = str_replace ( '{..new_password..}', $_POST['newpwd'], $template_mail );
     $template_mail = replace_globalvars ( $template_mail );
-    $email_subject = $TEXT['frontend']->get('mail_registerd_on') . $global_config_arr['virtualhost'];
+    $email_subject = $FD->text("frontend", "mail_registerd_on") . $FD->config('virtualhost');
     if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
-        $email_message = '<br>'.$TEXT['frontend']->get('mail_registerd_sended');
+        $email_message = '<br>'.$FD->text("frontend", "mail_registerd_sended");
     } else {
-        $email_message = '<br>'.$TEXT['frontend']->get('mail_registerd_not_sended');
+        $email_message = '<br>'.$FD->text("frontend", "mail_registerd_not_sended");
     }
 
     // system messages
-    systext( $message, $admin_phrases['common']['info'] );
+    systext( $message, $FD->text("admin", "info") );
 
     // Unset Vars
     unset ( $_POST );
@@ -158,9 +157,9 @@ if ( TRUE )
         }
         $message = implode ( '<br>', $message );
         if ( strlen ( $message ) == 0 ) {
-            $message = $admin_phrases['common']['note_notfilled'];
+            $message = $FD->text("admin", "note_notfilled");
         }
-        systext ( $message, $admin_phrases['common']['error'], TRUE );
+        systext ( $message, $FD->text("admin", "error"), TRUE );
     } else {
         $_POST['gen_password'] = 1;
         $_POST['user_homepage'] = 'http://';
@@ -239,7 +238,7 @@ if ( TRUE )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases['common']['today'] ).'
+                                    '.js_nowbutton ( $nowbutton_array, $FD->text("admin", "today") ).'
                                 </td>
                             </tr>
                             <tr>
@@ -280,7 +279,7 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text" name="user_pic" type="file" size="35"><br>
-                                    <span class="small">['.$admin_phrases['common']['max'].' '.$config_arr['avatar_x'].' '.$admin_phrases['common']['resolution_x'].' '.$config_arr['avatar_y'].' '.$admin_phrases['common']['pixel'].'] ['.$admin_phrases['common']['max'].' '.$config_arr['avatar_size'].' '.$admin_phrases['common']['kib'].']</span>
+                                    <span class="small">['.$FD->text("admin", "max").' '.$config_arr['avatar_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['avatar_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['avatar_size'].' '.$FD->text("admin", "kib").']</span>
                                 </td>
                             </tr>
                             <tr>
@@ -306,7 +305,7 @@ if ( TRUE )
 
     $index = mysql_query ('
                             SELECT `user_group_id`, `user_group_name`
-                            FROM '.$global_config_arr['pref'].'user_groups
+                            FROM '.$FD->config('pref').'user_groups
                             WHERE `user_group_id` > 0
                             ORDER BY `user_group_name`
     ', $FD->sql()->conn() );
@@ -318,7 +317,7 @@ if ( TRUE )
 
     $index = mysql_query ('
                             SELECT `user_group_id`, `user_group_name`
-                            FROM '.$global_config_arr['pref'].'user_groups
+                            FROM '.$FD->config('pref').'user_groups
                             WHERE `user_group_id` = 0
                             ORDER BY `user_group_name`
                             LIMIT 0,1
@@ -399,7 +398,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '."Neuen Benutzer hinzuf&uuml;gen".'
+                                        '.$FD->text("admin", "button_arrow").' '."Neuen Benutzer hinzuf&uuml;gen".'
                                     </button>
                                 </td>
                             </tr>

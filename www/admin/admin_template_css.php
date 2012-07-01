@@ -5,8 +5,8 @@
 
     $tmp = array (
         'name' => 'CSS',
-        'title' => $admin_phrases['template']['style_css']['title'],
-        'description' => $admin_phrases['template']['style_css']['description'],
+        'title' => $FD->text("template", "style_css_title"),
+        'description' => $FD->text("template", "style_css_description"),
         'rows' => 35,
         'cols' => 66,
         'help' => array (

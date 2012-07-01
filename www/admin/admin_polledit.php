@@ -4,14 +4,14 @@
 //// Umfrage aktualisieren ////
 ///////////////////////////////
 
-if ($_POST['polledit'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1])
+if (isset($_POST['polledit']) && isset($_POST['frage']) && isset($_POST['ant'][0]) && isset($_POST['ant'][1]))
 {
     // Umfrage löschen
     settype($_POST['editpollid'], 'integer');
     if ($_POST['delpoll'])
     {
-        mysql_query('DELETE FROM '.$global_config_arr['pref']."poll WHERE poll_id = '$_POST[editpollid]'", $FD->sql()->conn() );
-        mysql_query('DELETE FROM '.$global_config_arr['pref']."poll_answers WHERE poll_id = '$_POST[editpollid]'", $FD->sql()->conn() );
+        mysql_query('DELETE FROM '.$FD->config('pref')."poll WHERE poll_id = '$_POST[editpollid]'", $FD->sql()->conn() );
+        mysql_query('DELETE FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '$_POST[editpollid]'", $FD->sql()->conn() );
         systext('Die Umfrage wurde gel&ouml;scht');
     }
 
@@ -32,7 +32,7 @@ if ($_POST['polledit'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1
         settype($_POST['participants'], 'integer');
 
         // Umfrage in der DB aktualisieren
-        $update = 'UPDATE '.$global_config_arr['pref']."poll
+        $update = 'UPDATE '.$FD->config('pref')."poll
                    SET poll_quest = '$_POST[frage]',
                        poll_start = '$adate',
                        poll_end   = '$edate',
@@ -47,7 +47,7 @@ if ($_POST['polledit'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1
             if (isset($_POST['dela'][$i]))
             {
                 settype($_POST['dela'][$i], 'integer');
-                mysql_query('DELETE FROM '.$global_config_arr['pref'].'poll_answers WHERE answer_id = ' . $_POST['dela'][$i], $FD->sql()->conn() );
+                mysql_query('DELETE FROM '.$FD->config('pref').'poll_answers WHERE answer_id = ' . $_POST['dela'][$i], $FD->sql()->conn() );
             }
             else
             {
@@ -58,14 +58,14 @@ if ($_POST['polledit'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1
 
                 if (!$_POST['id'][$i] && $_POST['ant'][$i])
                 {
-                    mysql_query('INSERT INTO '.$global_config_arr['pref']."poll_answers (poll_id, answer, answer_count)
+                    mysql_query('INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer, answer_count)
                                  VALUES ('".$_POST['editpollid']."',
                                          '".$_POST['ant'][$i]."',
                                          '".$_POST['count'][$i]."');", $FD->sql()->conn() );
                 }
                 else
                 {
-                    $update = 'UPDATE '.$global_config_arr['pref']."poll_answers
+                    $update = 'UPDATE '.$FD->config('pref')."poll_answers
                                SET answer       = '".$_POST['ant'][$i]."',
                                    answer_count = '".$_POST['count'][$i]."'
                                WHERE answer_id = ".$_POST['id'][$i];
@@ -82,12 +82,12 @@ if ($_POST['polledit'] && $_POST['frage'] && $_POST['ant'][0] && $_POST['ant'][1
 ////// Umfrage editieren //////
 ///////////////////////////////
 
-if ($_POST['pollid'] || $_POST['optionsadd'])
+if (isset($_POST['pollid']) || isset($_POST['optionsadd']))
 {
     $_POST['pollid'] = $_POST['pollid'][0];
 
      if(isset($_POST['sended']) && !isset($_POST['ant_add'])) {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
 
@@ -105,7 +105,7 @@ if ($_POST['pollid'] || $_POST['optionsadd'])
     }
 
     settype($_POST['pollid'], 'integer');
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."poll WHERE poll_id = '$_POST[pollid]'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."poll WHERE poll_id = '$_POST[pollid]'", $FD->sql()->conn() );
 
     if (!isset($_POST['frage']))
     {
@@ -170,7 +170,7 @@ if ($_POST['pollid'] || $_POST['optionsadd'])
         $_POST['participants'] = mysql_result($index, 0, 'poll_participants');
     }
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."poll_answers WHERE poll_id = '$_POST[pollid]' ORDER BY answer_id", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '$_POST[pollid]' ORDER BY answer_id", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     for($i=0; $i<$rows; $i++)
     {
@@ -422,18 +422,18 @@ else
     ';
 
     // Umfragen auflisten
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll ORDER BY poll_start DESC', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll ORDER BY poll_start DESC', $FD->sql()->conn() );
     while ($poll_arr = mysql_fetch_assoc($index))
     {
         $poll_arr['poll_start'] = date('d.m.Y' , $poll_arr['poll_start']) ;
         $poll_arr['poll_end'] = date('d.m.Y' , $poll_arr['poll_end']);
         if ($poll_arr['poll_type'] == 1)
         {
-            $poll_arr['poll_type'] = $TEXT['page']->get('multiple_choice');
+            $poll_arr['poll_type'] = $FD->text("page", "multiple_choice");
         }
         else
         {
-            $poll_arr['poll_type'] = $TEXT['page']->get('single_choice');
+            $poll_arr['poll_type'] = $FD->text("page", "single_choice");
         }
         echo'
                             <tr class="select_entry thin">
@@ -459,7 +459,7 @@ else
                             <tr style="display:none">
                                 <td colspan="5">
                                     <select class="select_type" name="poll_action" size="1">
-                                        <option class="select_one" value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
+                                        <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
                                     </select>
                                 </td>
                             </tr>

@@ -59,7 +59,7 @@ function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = 'widt
 
 function get_yesno_table ( $NAME )
 {
-        global $admin_phrases;
+  global $FD;
 
         return '
             <table width="100%" cellpadding="4" cellspacing="0">
@@ -127,7 +127,7 @@ function get_yesno_table ( $NAME )
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_yes" value="1">
                     </td>
                     <td class="config middle">
-                            <label for="del_yes">'.$admin_phrases['common']['yes'].'</label>
+                            <label for="del_yes">'.$FD->text("admin", "yes").'</label>
                     </td>
                 </tr>
                 <tr class="bottom pointer" id="no">
@@ -135,7 +135,7 @@ function get_yesno_table ( $NAME )
                         <input class="pointer" type="radio" name="'.$NAME.'" id="del_no" value="0" checked>
                     </td>
                     <td class="config middle">
-                            <label for="del_no">'.$admin_phrases['common']['no'].'</label>
+                            <label for="del_no">'.$FD->text("admin", "no").'</label>
                     </td>
                 </tr>
                 </table>
@@ -176,14 +176,13 @@ function add_zero ( $FIGURE )
 
 function get_article_urls ()
 {
-    global $global_config_arr;
     global $FD;
 
         $index = mysql_query ( '
                                                         SELECT
                                                                 article_url
                                                         FROM
-                                                                '.$global_config_arr['pref'].'articles
+                                                                '.$FD->config('pref').'articles
         ', $FD->sql()->conn() );
 
         while ( $result = mysql_fetch_assoc ( $index ) ) {
@@ -363,10 +362,10 @@ function getreadonly ( $VALUE, $COMPAREWITH )
 
 function get_systext ($MESSAGE, $TITLE = false, $COLOR = 'green', $IMAGE = false)
 {
-    global $TEXT;
+    global $FD;
 
     if (!$TITLE)
-        $TITLE = $TEXT['admin']->get('info');
+        $TITLE = $FD->text("admin", "info");
 
     // TRUE was old for "red"
     $COLOR = $COLOR === TRUE ? 'red' : $COLOR;
@@ -492,7 +491,6 @@ function putintopost ($ARRAY)
 
 function create_editor($name, $text='', $width='', $height='', $class='', $do_smilies=true)
 {
-    global $global_config_arr;
     global $FD;
 
     if ($name != '') {
@@ -531,7 +529,7 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
     $zaehler = 0;
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'smilies ORDER by `order` ASC LIMIT 0, 10', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'smilies ORDER by `order` ASC LIMIT 0, 10', $FD->sql()->conn() );
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $smilie_arr['url'] = image_url('images/smilies/', $smilie_arr['id'], false);
@@ -612,7 +610,8 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
 
 function create_editor_button($img_url, $alt, $title, $insert)
 {
-    global $global_config_arr;
+    global $FD;
+
     $javascript = 'onClick="'.$insert.'"';
 
     $button = '
@@ -621,7 +620,7 @@ function create_editor_button($img_url, $alt, $title, $insert)
             <img src="{img_url}" alt="{alt}" title="{title}" />
         </div>
     </td>';
-    $button = str_replace('{img_url}', $global_config_arr['virtualhost'].$img_url, $button);
+    $button = str_replace('{img_url}', $FD->config('virtualhost').$img_url, $button);
     $button = str_replace('{alt}', $alt, $button);
     $button = str_replace('{title}', $title, $button);
     $button = str_replace('{javascript}', $javascript, $button);
@@ -635,7 +634,7 @@ function create_editor_button($img_url, $alt, $title, $insert)
 
 function create_editor_button_new($img_url, $alt, $title, $insert)
 {
-    global $global_config_arr;
+    global $FD;
     $javascript = 'javascript:'.$insert;
 
     $button = '
@@ -644,7 +643,7 @@ function create_editor_button_new($img_url, $alt, $title, $insert)
             <img border="0" src="img/null.gif" alt="{alt}">
         </a>
     </td>';
-    $button = str_replace('{img_url}', $global_config_arr['virtualhost'].$img_url, $button);
+    $button = str_replace('{img_url}', $FD->config('virtualhost').$img_url, $button);
     $button = str_replace('{alt}', $alt, $button);
     $button = str_replace('{title}', $title, $button);
     $button = str_replace('{javascript}', $javascript, $button);
@@ -706,7 +705,7 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
 
 function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
 {
-    global $TEXT;
+    global $FD;
 
     if ($PERMISSION) {
         $page_data = array(
@@ -716,7 +715,7 @@ function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
         );
     } else {
         $page_data = array(
-            'title' => $TEXT['menu']->get('admin_error_page_title'),
+            'title' => $FD->text('menu', 'admin_error_page_title'),
             'file'  => 'admin_403.php',
             'menu'  => 'error'
         );
@@ -730,7 +729,7 @@ function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
 /////////////////////////////////
 function get_topmenu ($ACTIVE_MENU)
 {
-    global $sql, $TEXT;
+    global $sql, $FD;
 
     $menu_arr = $sql->get('admin_cp', array('page_id', 'page_file'), array('W' => "`group_id` = '-1' AND `page_int_sub_perm` = 0", 'O' => '`page_pos`, `page_file`'));
 
@@ -743,7 +742,7 @@ function get_topmenu ($ACTIVE_MENU)
             if ($ACTIVE_MENU == $menu['page_file'])
                 $class = ' class="selected"';
 
-            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$TEXT['menu']->get('menu_'.$menu['page_file']).'</a></li>';
+            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$FD->text("menu", 'menu_'.$menu['page_file']).'</a></li>';
         }
     }
 
@@ -804,7 +803,7 @@ function get_leftmenu ($ACTIVE_MENU, $GO)
 //////////////////////////////////////////////
 function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
 {
-    global $sql, $TEXT;
+    global $sql, $FD;
 
     // get links from database
     $page_arr = $sql->get('admin_cp', array('page_id'), array('W' => "`group_id` = '".$GROUP_ID."' AND `page_int_sub_perm` = 0", 'O' => '`page_pos`, `page_id`'));
@@ -825,7 +824,7 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
     if (!empty($template)) {
         $template = '
         <div class="leftmenu'.$class.'">
-            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$TEXT['menu']->get('group_'.$GROUP_ID).'</strong>
+            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$FD->text("menu", 'group_'.$GROUP_ID).'</strong>
             <ul>'.$template.'
             </ul>
         </div>';
@@ -842,14 +841,14 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
 
 function get_link ($PAGE_ID, $GO)
 {
-    global $TEXT;
+    global $FD;
 
     // permission ok?
     if (has_perm($PAGE_ID)) {
         // active page?
         $class = ($PAGE_ID == $GO) ? ' class="selected"' : '';
 
-        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$TEXT['menu']->get('page_link_'.$PAGE_ID).'</a></li>';
+        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$FD->text("menu", 'page_link_'.$PAGE_ID).'</a></li>';
     } else {
         return '';
     }
@@ -863,12 +862,11 @@ function get_link ($PAGE_ID, $GO)
 
 function admin_set_cookie($username, $password)
 {
-    global $global_config_arr;
     global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -914,12 +912,11 @@ function admin_set_cookie($username, $password)
 
 function admin_login($username, $password, $iscookie)
 {
-    global $global_config_arr;
     global $FD;
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref']."user WHERE user_name = '$username'", $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     if ($rows == 0)
     {
@@ -968,7 +965,7 @@ function admin_login($username, $password, $iscookie)
 ////////////////////////////////
 
 function fillsession ($uid) {
-    global $global_config_arr, $FD;
+    global $FD;
     global $sql;
 
     $USER_ARR = $sql->getRow('user', array('user_id', 'user_name', 'user_is_staff', 'user_group', 'user_group'),

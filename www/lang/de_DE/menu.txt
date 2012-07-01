@@ -93,6 +93,8 @@ page_title_stat_edit:           bearbeiten
 page_link_stat_edit:            bearbeiten
 page_title_stat_ref:            Referrer anzeigen & verwalten
 page_link_stat_ref:             Referrer
+page_title_stat_ref_delete:     Referrer löschen
+page_link_stat_ref_delete:      löschen
 page_title_stat_space:          Speicherplatz Übersicht
 page_link_stat_space:           Speicherplatz
 
@@ -142,7 +144,7 @@ page_link_cimg_cat:             Kategorien
 page_title_cimg_import:          Alte Bilder importieren
 page_link_cimg_import:           importieren
 
-# Galerie > Allgemein
+# Galerie > Allgemein (neu)
 page_title_gallery_config:      Konfiguration ändern
 page_link_gallery_config:       Konfiguration
 page_title_gallery_cat:         Kategorien verwalten
@@ -164,15 +166,35 @@ page_link_gallery_wp_add:       hinzufügen
 page_title_gallery_wp_edit:     Wallpaper bearbeiten
 page_link_gallery_wp_edit:      bearbeiten
 
-# Galerie > Vorschaubilder
+# Galerie > Allgemein (alt)
+page_title_gallery_config:      Konfiguration ändern
+page_link_gallery_config:       Konfiguration
+page_title_gallery_cat:         Kategorien verwalten
+page_link_gallery_cat:          Kategorien
+page_title_gallery_newcat:      Neue Kategorie erstellen
+page_link_gallery_newcat:       Neue Kategorie
+
+# Galerie > Bilder (alt)
+page_title_screens_add:         Bilder hinzufügen
+page_link_screens_add:          hinzufügen
+page_title_screens_edit:        Bilder bearbeiten
+page_link_screens_edit:         bearbeiten
+
+# Galerie > Wallpaper (alt)
+page_title_wp_add:              Wallpaper hinzufügen
+page_link_wp_add:               hinzufügen
+page_title_wp_edit:             Wallpaper bearbeiten
+page_link_wp_edit:              bearbeiten
+
+# Galerie > Vorschaubilder (alt)
 page_title_randompic_config:    Konfiguration ändern
 page_link_randompic_config:     Konfiguration
 page_title_randompic_cat:       Kategorien auswählen
 page_link_randompic_cat:        Kategorie Auswahl
-page_title_timedpic_add:        hinzufügen
-page_link_timedpic_add:         hinzufügen
-page_title_timedpic_edit:       verwalten
-page_link_timedpic_edit:        verwalten
+page_title_timedpic_add:        zeitliches Vorschaubild hinzufügen
+page_link_timedpic_add:         Neues zeitl. VB
+page_title_timedpic_edit:       zeitliche Vorschaubilder verwalten
+page_link_timedpic_edit:        Zeitl. VBs verwalten
 
 # Downloads
 page_title_dl_config:           Konfiguration ändern

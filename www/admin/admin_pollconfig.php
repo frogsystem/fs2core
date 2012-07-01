@@ -4,12 +4,12 @@
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST['answerbar_width'])
+if (isset($_POST['answerbar_width']))
 {
     settype($_POST['answerbar_width'], 'integer');
     settype($_POST['answerbar_type'], 'integer');
 
-    mysql_query('UPDATE '.$global_config_arr['pref']."poll_config
+    mysql_query('UPDATE '.$FD->config('pref')."poll_config
                  SET answerbar_width = '$_POST[answerbar_width]',
                      answerbar_type  = '$_POST[answerbar_type]'", $FD->sql()->conn() );
     systext('Die Konfiguration wurde aktualisiert');
@@ -21,7 +21,7 @@ if ($_POST['answerbar_width'])
 
 if(true)
 {
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'poll_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     echo'

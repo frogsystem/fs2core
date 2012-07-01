@@ -4,14 +4,14 @@
 //// Artikel einstellen ////
 ////////////////////////////
 
-if ($_FILES['artikelimg'] && $_POST['title'] && $_POST['url'] && $_POST['preis'])
+if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']))
 {
     $_POST['title'] = savesql($_POST['title']);
     $_POST['url'] = savesql($_POST['url']);
     $_POST['preis'] = savesql($_POST['preis']);
     $_POST['text'] = savesql($_POST['text']);
     settype($_POST['hot'], 'integer');
-    mysql_query('INSERT INTO '.$global_config_arr['pref']."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
+    mysql_query('INSERT INTO '.$FD->config('pref')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
                  VALUES ('".$_POST['title']."',
                          '".$_POST['url']."',
                          '".$_POST['text']."',
@@ -28,9 +28,9 @@ if ($_FILES['artikelimg'] && $_POST['title'] && $_POST['url'] && $_POST['preis']
         $messages[] = create_thumb_notice($thumb);
     }
 
-    $messages[] = $TEXT['admin']->get('changes_saved');
+    $messages[] = $FD->text('admin', 'changes_saved');
 
-    echo get_systext(implode('<br>', $messages), $TEXT['admin']->get('info'), 'green', $TEXT['admin']->get('icon_save_ok'));
+    echo get_systext(implode('<br>', $messages), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
     unset($_POST);
 }
 
@@ -41,7 +41,7 @@ if ($_FILES['artikelimg'] && $_POST['title'] && $_POST['url'] && $_POST['preis']
 if(true)
 {
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
     echo'

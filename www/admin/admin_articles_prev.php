@@ -55,7 +55,7 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
         </form>
 
         <p>
-            '.$TEXT['page']->get('preview_note').'
+            '.$FD->text("page", "preview_note").'
         </p>
     ';
 
@@ -86,7 +86,7 @@ else {
     }
     // Get Date & Create Date Template
     if ( $article_arr['article_date'] != 0 ) {
-        $article_arr['date_formated'] = date_loc ( $global_config_arr['date'], $article_arr['article_date'] );
+        $article_arr['date_formated'] = date_loc ( $FD->config('date'), $article_arr['article_date'] );
         // Create Template
         $date_template = new template();
         $date_template->setFile ( '0_articles.tpl' );
@@ -148,9 +148,9 @@ else {
     $template_preview = $article_arr['template']->display ();
 
     // Preview Page Template
-    $global_config_arr['dyn_title'] == 1;
-    $global_config_arr['dyn_title_ext'] = '{..ext..}';
-    $global_config_arr['dyn_title_page'] = $TEXT['page']->get('preview_title').': '.$article_arr['article_title'];
+    $FD->setConfig('dyn_title', 1);
+    $FD->setConfig('dyn_title_ext', '{..ext..}');
+    $FD->setConfig('dyn_title_page', $FD->text('page', 'preview_title').': '.$article_arr['article_title']);
 
 
     // Display Preview Page

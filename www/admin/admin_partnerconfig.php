@@ -4,7 +4,7 @@
 /// Partnerseite editieren ///
 //////////////////////////////
 
-if ($_POST['small_x'] && $_POST['small_y'] && $_POST['big_x'] && $_POST['big_y'] && $_POST['file_size'] && ($_POST['partner_anzahl'] && $_POST['partner_anzahl']>0))
+if (isset($_POST['small_x']) && isset($_POST['small_y']) && isset($_POST['big_x']) && isset($_POST['big_y']) && isset($_POST['file_size']) && (isset($_POST['partner_anzahl']) && $_POST['partner_anzahl']>0))
 {
     settype($_POST['small_x'], 'integer');
     settype($_POST['small_y'], 'integer');
@@ -12,7 +12,7 @@ if ($_POST['small_x'] && $_POST['small_y'] && $_POST['big_x'] && $_POST['big_y']
     settype($_POST['big_y'], 'integer');
     settype($_POST['partner_anzahl'], 'integer');
     settype($_POST['file_size'], 'integer');
-    $update = 'UPDATE '.$global_config_arr['pref']."partner_config
+    $update = 'UPDATE '.$FD->config('pref')."partner_config
                SET partner_anzahl = '$_POST[partner_anzahl]',
                    small_x = '$_POST[small_x]',
                    small_y = '$_POST[small_y]',
@@ -32,7 +32,7 @@ if ($_POST['small_x'] && $_POST['small_y'] && $_POST['big_x'] && $_POST['big_y']
 else
 {
 
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'partner_config', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'partner_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc($index);
 
     echo'
@@ -124,7 +124,7 @@ else
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button type="submit" value="" class="button_new">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_long').'
                                     </button>
                                 </td>
                             </tr>

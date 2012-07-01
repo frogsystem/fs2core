@@ -1,0 +1,7 @@
+#system startpage
+num_aliases:                Anzahl Aliasse
+num_aliases_active:         Anzahl aktiver Aliasse
+num_applets:                Anzahl Applets
+num_applets_active:         Anzahl aktiver Applets
+num_snippets:               Anzahl Schnipsel
+num_snippets_active:        Anzahl aktiver Schnipsel

@@ -15,7 +15,7 @@ settype ( $_GET['id'], 'integer');
 
 $index = mysql_query ( '
     SELECT *
-    FROM `'.$global_config_arr['pref']."user_config`
+    FROM `'.$FD->config('pref')."user_config`
     WHERE `id` = '1'
 ", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
@@ -25,7 +25,7 @@ $config_arr = mysql_fetch_assoc ( $index );
 //////////////////////
 $index = mysql_query ( '
     SELECT *
-    FROM `'.$global_config_arr['pref']."user`
+    FROM `'.$FD->config('pref')."user`
     WHERE `user_id` = '".$_GET['id']."'
 ", $FD->sql()->conn() );
 
@@ -33,7 +33,7 @@ if ( mysql_num_rows ( $index ) > 0 ) {
     $user_arr = mysql_fetch_assoc ( $index );
 
     $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
-    $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$TEXT['frontend']->get('user_image_of').' '.$user_arr['user_name'].'">' : $TEXT['frontend']->get('user_image_not_found') );
+    $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.$user_arr['user_name'].'">' : $FD->text("frontend", "user_image_not_found") );
     $user_arr['user_mail'] = ( $user_arr['user_show_mail'] == 1 ? kill_replacements ( $user_arr['user_mail'], TRUE ) : '-' );
     $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
     $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
@@ -63,28 +63,28 @@ if ( mysql_num_rows ( $index ) > 0 ) {
 
     $index = mysql_query ( '
         SELECT COUNT(`news_id`) AS `number`
-        FROM `'.$global_config_arr['pref']."news`
+        FROM `'.$FD->config('pref')."news`
         WHERE `user_id` = '".$user_arr['user_id']."'
     ", $FD->sql()->conn() );
     $user_arr['user_num_news'] = mysql_result ( $index, 0, 'number' );
 
     $index = mysql_query ( '
         SELECT COUNT(`comment_id`) AS `number`
-        FROM `'.$global_config_arr['pref']."news_comments`
+        FROM `'.$FD->config('pref')."news_comments`
         WHERE `comment_poster_id` = '".$user_arr['user_id']."'
     ", $FD->sql()->conn() );
     $user_arr['user_num_comments'] = mysql_result ( $index, 0, 'number' );
 
     $index = mysql_query ( '
         SELECT COUNT(`article_id`) AS `number`
-        FROM `'.$global_config_arr['pref']."articles`
+        FROM `'.$FD->config('pref')."articles`
         WHERE `article_user` = '".$user_arr['user_id']."'
     ", $FD->sql()->conn() );
     $user_arr['user_num_articles'] = mysql_result ( $index, 0, 'number' );
 
     $index = mysql_query ( '
         SELECT COUNT(`dl_id`) AS `number`
-        FROM `'.$global_config_arr['pref']."dl`
+        FROM `'.$FD->config('pref')."dl`
         WHERE `user_id` = '".$user_arr['user_id']."'
     ", $FD->sql()->conn() );
     $user_arr['user_num_downloads'] = mysql_result ( $index, 0, 'number' );
@@ -128,6 +128,6 @@ if ( mysql_num_rows ( $index ) > 0 ) {
 //// User ID not found ////
 ///////////////////////////
 else {
-    $template = sys_message ( $TEXT['frontend']->get('systemmessage'), $TEXT['frontend']->get('user_not_found'), 404);
+    $template = sys_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_not_found"), 404);
 }
 ?>

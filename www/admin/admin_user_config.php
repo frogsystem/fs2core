@@ -23,7 +23,7 @@ if (
 
     // MySQL-Queries
     mysql_query ( '
-                    UPDATE `'.$global_config_arr['pref']."user_config`
+                    UPDATE `'.$FD->config('pref')."user_config`
                     SET
                         `user_per_page` = '".$_POST['user_per_page']."',
                         `registration_antispam` = '".$_POST['registration_antispam']."',
@@ -36,7 +36,7 @@ if (
     ", $FD->sql()->conn() );
 
     // system messages
-    systext($admin_phrases['common']['changes_saved'], $admin_phrases['common']['info']);
+    systext($FD->text("admin", "changes_saved"), $FD->text("admin", "info"));
 
     // Unset Vars
     unset ( $_POST );
@@ -50,13 +50,13 @@ if ( TRUE )
 {
     // Display Error Messages
     if ( isset ( $_POST['sended'] ) ) {
-        systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+        systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
 
     // Load Data from DB into Post
     } else {
         $index = mysql_query ( '
                                 SELECT *
-                                FROM '.$global_config_arr['pref']."user_config
+                                FROM '.$FD->config('pref')."user_config
                                 WHERE `id` = '1'
         ", $FD->sql()->conn() );
         $config_arr = mysql_fetch_assoc($index);
@@ -81,8 +81,8 @@ if ( TRUE )
                             <tr><td class="line" colspan="4">Allgemeine Einstellungen</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases['general']['reg_antispam'].':<br>
-                                    <span class="small">'.$admin_phrases['general']['reg_antispam_desc'].'</span>
+                                    '.$FD->text("page", "reg_antispam").':<br>
+                                    <span class="small">'.$FD->text("page", "reg_antispam_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input type="checkbox" name="registration_antispam" value="1" '.getchecked ( 1, $_POST['registration_antispam'] ).'>
@@ -98,8 +98,8 @@ if ( TRUE )
                                 <td class="config">
                                     <input class="text center" size="3" maxlength="3" name="avatar_x" value="'.$_POST['avatar_x'].'">
                                     x
-                                    <input class="text center" size="3" maxlength="3" name="avatar_y" value="'.$_POST['avatar_y'].'"> '.$admin_phrases['common']['pixel'].'<br>
-                                    <span class="small">(Breite x H&ouml;he; '.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <input class="text center" size="3" maxlength="3" name="avatar_y" value="'.$_POST['avatar_y'].'"> '.$FD->text("admin", "pixel").'<br>
+                                    <span class="small">(Breite x H&ouml;he; '.$FD->text("admin", "zero_not_allowed").')</span>
                                 </td>
                             </tr>
                             <tr>
@@ -109,7 +109,7 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text center" size="4" maxlength="4" name="avatar_size" value="'.$_POST['avatar_size'].'"> KiB<br>
-                                    <span class="small">('.$admin_phrases['common']['zero_not_allowed'].')</span>
+                                    <span class="small">('.$FD->text("admin", "zero_not_allowed").')</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -121,7 +121,7 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text input_width" size="40" name="reg_date_format" maxlength="50" value="'.$_POST['reg_date_format'].'"><br>
-                                    <span class="small">'.$admin_phrases['general']['date_info'].'</span>
+                                    <span class="small">'.$FD->text("page", "date_info").'</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -144,14 +144,14 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text input_width" size="40" name="user_list_reg_date_format" maxlength="50" value="'.$_POST['user_list_reg_date_format'].'"><br>
-                                    <span class="small">'.$admin_phrases['general']['date_info'].'</span>
+                                    <span class="small">'.$FD->text("page", "date_info").'</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>

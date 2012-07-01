@@ -4,15 +4,15 @@
 //// New Smilie ////
 ////////////////////
 
-if ($_FILES['newsmilie']['name'] != '' AND $_POST['replace_string'])
+if ($_FILES['newsmilie']['name'] != '' AND isset($_POST['replace_string']))
 {
     $_POST['replace_string'] = savesql(killhtml($_POST['replace_string']));
     settype($_POST['insert_after'], 'integer');
 
-    mysql_query('UPDATE '.$global_config_arr['pref']."smilies
+    mysql_query('UPDATE '.$FD->config('pref')."smilies
                  SET `order`=`order`+1
                  WHERE `order`>$_POST[insert_after]", $FD->sql()->conn() );
-    mysql_query('INSERT INTO '.$global_config_arr['pref']."smilies
+    mysql_query('INSERT INTO '.$FD->config('pref')."smilies
                  (replace_string, `order`)
                  VALUES ('$_POST[replace_string]', '$_POST[insert_after]'+1)", $FD->sql()->conn() );
 
@@ -25,16 +25,16 @@ if ($_FILES['newsmilie']['name'] != '' AND $_POST['replace_string'])
 //// Delete Smilie ////
 ///////////////////////
 
-elseif ($_POST['delete_smilies'])
+elseif (isset($_POST['delete_smilies']))
 {
     foreach($_POST['delsmilie'] as $value)
     {
             $value = intval($value);
-            $index = mysql_query('SELECT id FROM '.$global_config_arr['pref']."smilies
+            $index = mysql_query('SELECT id FROM '.$FD->config('pref')."smilies
                                   WHERE `order`=$value", $FD->sql()->conn() );
             $id = mysql_result($index,0,'id');
 
-            mysql_query('DELETE FROM '.$global_config_arr['pref']."smilies
+            mysql_query('DELETE FROM '.$FD->config('pref')."smilies
                          WHERE `order`=$value", $FD->sql()->conn() );
             image_delete('images/smilies/', $id);
     }
@@ -42,7 +42,7 @@ elseif ($_POST['delete_smilies'])
     foreach($_POST['delsmilie'] as $value)
     {
             $value = intval($value);
-            mysql_query('UPDATE '.$global_config_arr['pref']."smilies
+            mysql_query('UPDATE '.$FD->config('pref')."smilies
                          SET `order`=`order`-1
                          WHERE `order`>$value", $FD->sql()->conn() );
     }
@@ -58,21 +58,21 @@ elseif (($_GET['action']=='moveup' OR $_GET['action']=='movedown') AND isset($_G
     $_GET['oid'] = intval($_GET['oid']);
     if ($_GET['action']=='moveup')
     {
-        $index = 'UPDATE '.$global_config_arr['pref']."smilies SET `order`=0 WHERE `order`=$_GET[oid]";
+        $index = 'UPDATE '.$FD->config('pref')."smilies SET `order`=0 WHERE `order`=$_GET[oid]";
         mysql_query($index);
-        $index = 'UPDATE '.$global_config_arr['pref']."smilies SET `order`=`order`+1 WHERE `order`=$_GET[oid]-1";
+        $index = 'UPDATE '.$FD->config('pref')."smilies SET `order`=`order`+1 WHERE `order`=$_GET[oid]-1";
         mysql_query($index);
-        $index = 'UPDATE '.$global_config_arr['pref']."smilies SET `order`=$_GET[oid]-1 WHERE `order`=0";
+        $index = 'UPDATE '.$FD->config('pref')."smilies SET `order`=$_GET[oid]-1 WHERE `order`=0";
         mysql_query($index);
     }
 
     if ($_GET['action']=='movedown')
     {
-        $index = 'UPDATE '.$global_config_arr['pref']."smilies SET `order`=0 WHERE `order`=$_GET[oid]";
+        $index = 'UPDATE '.$FD->config('pref')."smilies SET `order`=0 WHERE `order`=$_GET[oid]";
         mysql_query($index);
-        $index = 'UPDATE '.$global_config_arr['pref']."smilies SET `order`=`order`-1 WHERE `order`=$_GET[oid]+1";
+        $index = 'UPDATE '.$FD->config('pref')."smilies SET `order`=`order`-1 WHERE `order`=$_GET[oid]+1";
         mysql_query($index);
-        $index = 'UPDATE '.$global_config_arr['pref']."smilies SET `order`=$_GET[oid]+1 WHERE `order`=0";
+        $index = 'UPDATE '.$FD->config('pref')."smilies SET `order`=$_GET[oid]+1 WHERE `order`=0";
         mysql_query($index);
     }
 }
@@ -81,12 +81,12 @@ elseif (($_GET['action']=='moveup' OR $_GET['action']=='movedown') AND isset($_G
 ////// smilie list    //////
 ////////////////////////////
 
-  $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'editor_config', $FD->sql()->conn() );
+  $index = mysql_query('SELECT * FROM '.$FD->config('pref').'editor_config', $FD->sql()->conn() );
   $config_arr = mysql_fetch_assoc($index);
 
   $config_arr['num_smilies'] = $config_arr['smilies_rows']*$config_arr['smilies_cols'];
 
-  $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'smilies ORDER BY `order` ASC', $FD->sql()->conn() );
+  $index = mysql_query('SELECT * FROM '.$FD->config('pref').'smilies ORDER BY `order` ASC', $FD->sql()->conn() );
 
   echo'<form action="" method="post" enctype="multipart/form-data">
          <input type="hidden" value="editor_smilies" name="go">
@@ -167,18 +167,18 @@ if (mysql_num_rows($index)>0)
     ';
 
     // Smilies auslesen
-    $index = mysql_query('SELECT * FROM '.$global_config_arr['pref'].'smilies ORDER BY `order` ASC', $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'smilies ORDER BY `order` ASC', $FD->sql()->conn() );
     $smilie_last = mysql_num_rows($index);
     $i=0;
     while ($smilie_arr = mysql_fetch_assoc($index))
     {
         $i++;
         $pointer_up = '
-            <a class="image_hover" style="margin-right:3px; float:right; width:24px; height:24px; background-image:url('.$global_config_arr['virtualhost'].'admin/icons/arrow_up.png)" href="'.$_SERVER['PHP_SELF'].'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=moveup" title="'.$FD->text('page', 'smilies_up').'">
+            <a class="image_hover" style="margin-right:3px; float:right; width:24px; height:24px; background-image:url('.$FD->config('virtualhost').'admin/icons/arrow_up.png)" href="'.$_SERVER['PHP_SELF'].'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=moveup" title="'.$FD->text('page', 'smilies_up').'">
                 <img border="0" src="img/null.gif" alt="'.$FD->text('page', 'smilies_up').'">
             </a>';
         $pointer_down = '
-            <a class="image_hover" style="margin-right:36px; float:right; width:24px; height:24px; background-image:url('.$global_config_arr['virtualhost'].'admin/icons/arrow_down.png)" href="'.$_SERVER['PHP_SELF'].'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=movedown" title="'.$FD->text("page", "smilies_down").'">
+            <a class="image_hover" style="margin-right:36px; float:right; width:24px; height:24px; background-image:url('.$FD->config('virtualhost').'admin/icons/arrow_down.png)" href="'.$_SERVER['PHP_SELF'].'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=movedown" title="'.$FD->text('page', 'smilies_down').'">
                 <img border="0" src="img/null.gif" alt="'.$FD->text('page', 'smilies_down').'">
             </a>';
         if ($smilie_arr['order']==1) {

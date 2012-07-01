@@ -23,9 +23,6 @@ if ($FD->sql()->conn() )
     require ( FS2_ROOT_PATH . 'libs/class_fileaccess.php' );
     require ( FS2_ROOT_PATH . 'libs/class_langDataInit.php' );
 
-    //Get TEXT-Data
-    $TEXT = new langDataInit ( $global_config_arr['language_text'], 'frontend' );
-
     // Constructor Calls
     set_style ();
 
@@ -36,7 +33,7 @@ if ($FD->sql()->conn() )
     $_GET['single'] = ( isset ( $_GET['single'] ) ) ? TRUE : FALSE;
 
     // Config Array
-    $index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'screen_config', $FD->sql()->conn() );
+    $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'screen_config', $FD->sql()->conn() );
     $config_arr = mysql_fetch_assoc ( $index ) ;
 
     // No Image found yet
@@ -61,7 +58,7 @@ if ($FD->sql()->conn() )
     } else {
         // Get Image Data
         $index = mysql_query ( '
-                                SELECT `screen_name`, `cat_id` FROM `'.$global_config_arr['pref'].'screen`
+                                SELECT `screen_name`, `cat_id` FROM `'.$FD->config('pref').'screen`
                                 WHERE `screen_id` = '.$_GET['id'].'
                                 LIMIT 0,1
         ', $FD->sql()->conn() );
@@ -91,7 +88,7 @@ if ($FD->sql()->conn() )
             // exists a NEXT image?
             $index = mysql_query ( '
                                     SELECT `screen_id`
-                                    FROM `'.$global_config_arr['pref'].'screen`
+                                    FROM `'.$FD->config('pref').'screen`
                                     WHERE `cat_id` = '.$cat_id.'
                                     AND `screen_id` > '.$_GET['id'].'
                                     ORDER BY `screen_id`
@@ -102,14 +99,14 @@ if ($FD->sql()->conn() )
                 $next_id = mysql_result ( $index, 0, 'screen_id' );
 
                 $data_array['next_url'] = 'imageviewer.php?id='.$next_id;
-                $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$TEXT['frontend']->get('popupviewer_next_text').'</a>';
-                $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$TEXT['frontend']->get('popupviewer_next_image').'</a>';
+                $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_next_text').'</a>';
+                $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_next_image').'</a>';
             }
 
             // exists a PREVIOUS image?
             $index = mysql_query ( '
                                     SELECT `screen_id`
-                                    FROM `'.$global_config_arr['pref'].'screen`
+                                    FROM `'.$FD->config('pref').'screen`
                                     WHERE `cat_id` = '.$cat_id.'
                                     AND `screen_id` < '.$_GET['id'].'
                                     ORDER BY `screen_id` DESC
@@ -120,8 +117,8 @@ if ($FD->sql()->conn() )
                 $prev_id = mysql_result ( $index, 0, 'screen_id' );
 
                 $data_array['prev_url'] = 'imageviewer.php?id='.$prev_id;
-                $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$TEXT['frontend']->get('popupviewer_prev_text').'</a>';
-                $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$TEXT['frontend']->get('popupviewer_prev_image').'</a>';
+                $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_prev_text').'</a>';
+                $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_prev_image').'</a>';
             }
 
         }

@@ -2,7 +2,7 @@
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref']."user_config WHERE `id` = '1'", $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."user_config WHERE `id` = '1'", $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc ( $index );
 // Create group-Config-Array
 $group_config_arr['cat_pic_x'] = 200;
@@ -18,7 +18,7 @@ $group_config_arr['cat_pic_size'] = 1024;
 if (
         isset ( $_POST['sended'] ) && $_POST['sended'] == 'add' &&
         isset ( $_POST['group_action'] ) && $_POST['group_action'] == 'add' &&
-        $_POST['user_group_name'] && $_POST['user_group_name'] != ''
+        isset ( $_POST['user_group_name'] ) && $_POST['user_group_name'] != ''
     )
 {
     // Security-Functions
@@ -29,7 +29,7 @@ if (
 
     // MySQL-Update-Query
     $insert_query = mysql_query ('
-                    INSERT INTO '.$global_config_arr['pref']."user_groups (user_group_name, user_group_date, user_group_user)
+                    INSERT INTO '.$FD->config('pref')."user_groups (user_group_name, user_group_date, user_group_user)
                     VALUES (
                         '".$_POST['user_group_name']."',
                         '".$group_date."',
@@ -47,7 +47,7 @@ if (
     }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text('admin', 'info') );
 
     // Unset Vars
     unset ( $_POST );
@@ -63,11 +63,11 @@ elseif (
         isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit' &&
         isset ( $_POST['group_action'] ) && $_POST['group_action'] == 'edit' &&
 
-        $_POST['d'] && $_POST['d'] != '' && $_POST['d'] > 0 &&
-        $_POST['m'] && $_POST['m'] != '' && $_POST['m'] > 0 &&
-        $_POST['y'] && $_POST['y'] != '' && $_POST['y'] > 0 &&
+        isset($_POST['d']) && $_POST['d'] != '' && $_POST['d'] > 0 &&
+        isset($_POST['m']) && $_POST['m'] != '' && $_POST['m'] > 0 &&
+        isset($_POST['y']) && $_POST['y'] != '' && $_POST['y'] > 0 &&
 
-        $_POST['user_group_name'] && $_POST['user_group_name'] != '' &&
+        isset($_POST['user_group_name']) && $_POST['user_group_name'] != '' &&
         isset ( $_POST['user_group_user'] )
     )
 {
@@ -87,7 +87,7 @@ elseif (
 
     // MySQL-Update-Query
     mysql_query ('
-                    UPDATE '.$global_config_arr['pref']."user_groups
+                    UPDATE '.$FD->config('pref')."user_groups
                      SET
                          user_group_name = '".$_POST['user_group_name']."',
                          user_group_description = '".$_POST['user_group_description']."',
@@ -99,14 +99,14 @@ elseif (
                      WHERE
                          user_group_id = '".$_POST['user_group_id']."'
     ", $FD->sql()->conn() );
-    $message = $admin_phrases['common']['changes_saved'];
+    $message = $FD->text('admin', 'changes_saved');
 
     // Image-Operations
     if ( $_POST['group_pic_delete'] == 1 ) {
       if ( image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] ) ) {
-        $message .= '<br>' . $admin_phrases['common']['image_deleted'];
+        $message .= '<br>' . $FD->text('admin', 'image_deleted');
       } else {
-        $message .= '<br>' . $admin_phrases['common']['image_not_deleted'];
+        $message .= '<br>' . $FD->text('admin', 'image_not_deleted');
       }
     } elseif ( $_FILES['user_group_pic']['name'] != '' ) {
       image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] );
@@ -115,7 +115,7 @@ elseif (
     }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text('admin', 'info') );
 
     // Unset Vars
     unset ( $_POST );
@@ -136,28 +136,28 @@ elseif (
 
         // Udpate Users
         mysql_query ('
-                        UPDATE '.$global_config_arr['pref']."user
+                        UPDATE '.$FD->config('pref')."user
                         SET user_group = '0'
                          WHERE user_group = '".$_POST['user_group_id']."'
         ", $FD->sql()->conn() );
 
         // Delete Permissions
         mysql_query ("
-                        DELETE FROM ".$global_config_arr['pref']."user_permissions
+                        DELETE FROM ".$FD->config('pref')."user_permissions
                          WHERE x_id = '".$_POST['user_group_id']."'
                          AND perm_for_group = '1'
         ", $FD->sql()->conn() );
 
         // MySQL-Delete-Query
         mysql_query ('
-                        DELETE FROM '.$global_config_arr['pref']."user_groups
+                        DELETE FROM '.$FD->config('pref')."user_groups
                          WHERE user_group_id = '".$_POST['user_group_id']."'
         ", $FD->sql()->conn() );
         $message = 'Gruppe wurde erfolgreich gel&ouml;scht';
 
         // Delete Category Image
         if ( image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] ) ) {
-            $message .= '<br>' . $admin_phrases['common']['image_deleted'];
+            $message .= '<br>' . $FD->text('admin', 'image_deleted');
         }
 
     } else {
@@ -165,7 +165,7 @@ elseif (
     }
 
     // Display Message
-    systext ( $message, $admin_phrases['common']['info'] );
+    systext ( $message, $FD->text('admin', 'info') );
 
     // Unset Vars
     unset ( $_POST );
@@ -178,7 +178,7 @@ elseif (
 ///////////////////////////
 
 // No Data to write into DB
-if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
+if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
 {
     // Edit Category
     if ( $_POST['group_action'] == 'edit' )
@@ -189,14 +189,14 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
         // Load Data from DB
         $index = mysql_query ( '
                                 SELECT *
-                                FROM '.$global_config_arr['pref']."user_groups
+                                FROM '.$FD->config('pref')."user_groups
                                 WHERE user_group_id = '".$_POST['user_group_id']."'", $FD->sql()->conn() );
         $group_arr = mysql_fetch_assoc ( $index );
 
         // Display Error Messages
         if ( isset ( $_POST['sended'] ) ) {
             $group_arr = getfrompost ( $group_arr );
-            systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+            systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
         }
 
         // Security-Functions
@@ -212,7 +212,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
         }
 
         // Get User
-        $index = mysql_query ( 'SELECT user_name FROM '.$global_config_arr['pref']."user WHERE user_id = '".$group_arr['user_group_user']."'", $FD->sql()->conn() );
+        $index = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$group_arr['user_group_user']."'", $FD->sql()->conn() );
         $group_arr['user_group_user_name'] = killhtml ( mysql_result ( $index, 0, 'user_name' ) );
 
         // Create Date-Arrays
@@ -253,7 +253,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                         <input class="text" size="3" maxlength="2" id="m" name="m" value="'.$date_arr['m'].'"> .
                                         <input class="text" size="5" maxlength="4" id="y" name="y" value="'.$date_arr['y'].'">&nbsp;
                                     </span>
-                                    '.js_nowbutton ( $nowbutton_array, $admin_phrases['common']['today'] ).'
+                                    '.js_nowbutton ( $nowbutton_array, $FD->text('admin', 'today') ).'
                                 </td>
                             </tr>
                             <tr>
@@ -264,14 +264,14 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly id="username" name="user_group_user_name" value="'.$group_arr['user_group_user_name'].'">
                                     <input type="hidden" id="userid" name="user_group_user" value="'.$group_arr['user_group_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( "admin_finduser.php", 400, 400 ).'\' value="'.$admin_phrases['common']['change_button'].'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( 'admin_finduser.php', 400, 400 ).'\' value="'.$FD->text('admin', 'change_button').'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                                <tr><td class="line" colspan="2">'."Zus&auml;tzliche Einstellungen".'</td></tr>
                                <tr>
                                    <td class="config">
-                                     '."Symbol".': <span class="small">'.$admin_phrases['common']['optional'].'</span><br><br>
+                                     '."Symbol".': <span class="small">'.$FD->text('admin', 'optional').'</span><br><br>
          ';
         if ( image_exists ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ) ) {
             echo '
@@ -279,16 +279,16 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                     <table>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="group_pic_delete" id="gpd" value="1" onClick=\'delalert ("gpd", "'.$admin_phrases['common']['js_delete_image'].'")\'>
+                                                <input type="checkbox" name="group_pic_delete" id="gpd" value="1" onClick=\'delalert ("gpd", "'.$FD->text('admin', 'js_delete_image').'")\'>
                                             </td>
                                             <td>
-                                                <span class="small"><b>'.$admin_phrases['common']['delete_image'].'</b></span>
+                                                <span class="small"><b>'.$FD->text('admin', 'delete_image').'</b></span>
                                             </td>
                                         </tr>
                                     </table>
             ';
         } else {
-            echo '<span class="small">'.$admin_phrases['common']['no_image'].'</span><br>';
+            echo '<span class="small">'.$FD->text('admin', 'no_image').'</span><br>';
         }
         echo'                       <br>
                                 </td>
@@ -296,17 +296,17 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                     <input name="user_group_pic" type="file" size="40" class="text"><br>
         ';
         if ( image_exists ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ) ) {
-            echo '<span class="small"><b>'.$admin_phrases['common']['replace_img'].'</b></span><br>';
+            echo '<span class="small"><b>'.$FD->text("admin", "replace_img").'</b></span><br>';
         }
         echo'
                                     <span class="small">
-                                        ['.$admin_phrases['common']['max'].' '.$config_arr['group_pic_x'].' '.$admin_phrases['common']['resolution_x'].' '.$config_arr['group_pic_y'].' '.$admin_phrases['common']['pixel'].'] ['.$admin_phrases['common']['max'].' '.$config_arr['group_pic_size'].' '.$admin_phrases['common']['kib'].']
+                                        ['.$FD->text("admin", "max").' '.$config_arr['group_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['group_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['group_pic_size'].' '.$FD->text("admin", "kib").']
                                     </span>
                                 </td>
                             </tr>
                                <tr>
                                    <td class="config">
-                                       '."Titel".': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                       '."Titel".': <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                        <span class="small">'."Titel den die Mitglieder der Gruppe tragen.".'</span>
                                    </td>
                                    <td>
@@ -315,7 +315,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                </tr>
                                <tr>
                                    <td class="config">
-                                       '.'Einf&auml;rbung'.': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                       '.'Einf&auml;rbung'.': <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                        <span class="small">'."Farbliche Hervorhebung des Gruppentitels.".'</span>
                                    </td>
                                    <td class="configbig">
@@ -326,7 +326,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                </tr>
                                <tr>
                                    <td class="config">
-                                       '."Hervorhebung".': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                       '."Hervorhebung".': <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                        <span class="small">'.'Besondere Hervorhebung des Gruppentitels.'.'</span>
                                    </td>
                                    <td>
@@ -340,7 +340,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                                </tr>
                             <tr>
                                 <td class="config">
-                                    '."Beschreibung".': <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                    '."Beschreibung".': <span class="small">'.$FD->text("admin", "optional").'</span><br>
                                     <span class="small">'."Ein kurzer Text &uuml;ber die Gruppe.".'</span>
                                 </td>
                                 <td class="config">
@@ -351,7 +351,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
                                     </button>
                                 </td>
                             </tr>
@@ -367,7 +367,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
 
         $index = mysql_query ( '
                                 SELECT `user_group_id`, `user_group_name`
-                                FROM '.$global_config_arr['pref']."user_groups
+                                FROM '.$FD->config('pref')."user_groups
                                 WHERE user_group_id = '".$_POST['user_group_id']."'
         ", $FD->sql()->conn() );
         $group_arr = mysql_fetch_assoc ( $index );
@@ -376,7 +376,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
 
         $index_numusers = mysql_query ( "
                                             SELECT COUNT(`user_id`) AS 'num_users'
-                                            FROM `".$global_config_arr['pref']."user`
+                                            FROM `".$FD->config('pref')."user`
                                             WHERE `user_group` = '".$group_arr['user_group_id']."'
         ", $FD->sql()->conn() );
         $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, 'num_users' );
@@ -402,7 +402,7 @@ if ( isset ( $_POST['user_group_id'] ) && $_POST['group_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
                                     </button>
                                 </td>
                             </tr>
@@ -425,7 +425,7 @@ else
     // Display Error Messages
     if ( isset ( $_POST['sended'] ) ) {
         $_POST['user_group_name'] = killhtml ( $_POST['user_group_name'] );
-        systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+        systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
     }
 
     // Display Add-Form
@@ -441,7 +441,7 @@ else
                                     <span class="small">'."Name".':</span>
                                 </td>
                                 <td class="config">
-                                    <span class="small">'."Symbol".': '.$admin_phrases['common']['optional'].'</span>
+                                    <span class="small">'."Symbol".': '.$FD->text('admin', 'optional').'</span>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -451,7 +451,7 @@ else
                                 <td class="config">
                                     <input name="user_group_pic" type="file" size="30" class="text"><br>
                                     <span class="small">
-                                        ['.$admin_phrases['common']['max'].' '.$config_arr['group_pic_x'].' '.$admin_phrases['common']['resolution_x'].' '.$config_arr['group_pic_y'].' '.$admin_phrases['common']['pixel'].'] ['.$admin_phrases['common']['max'].' '.$config_arr['group_pic_size'].' '.$admin_phrases['common']['kib'].']
+                                        ['.$FD->text('admin', 'max').' '.$config_arr['group_pic_x'].' '.$FD->text('admin', 'resolution_x').' '.$config_arr['group_pic_y'].' '.$FD->text('admin', 'pixel').'] ['.$FD->text('admin', 'max').' '.$config_arr['group_pic_size'].' '.$FD->text('admin', 'kib').']
                                     </span>
                                 </td>
                             </tr>
@@ -459,7 +459,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['articles']['new_cat_add_button'].'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'new_cat_add_button').'
                                     </button>
                                 </td>
                             </tr>
@@ -480,7 +480,7 @@ else
     // Get groups from DB
     $index = mysql_query ( '
                             SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
-                            FROM `'.$global_config_arr['pref'].'user_groups`
+                            FROM `'.$FD->config('pref').'user_groups`
                             WHERE `user_group_id` > 0
                             ORDER BY `user_group_name`
     ', $FD->sql()->conn() );
@@ -490,7 +490,7 @@ else
         // display table head
         echo '
                             <tr>
-                                <td class="config">Gruppenname & Grafik</td>
+                                <td class="config">Gruppenname &amp; Grafik</td>
                                 <td class="config">Informationen</td>
                                 <td class="config" width="20">Mitglieder</td>
                                 <td class="config" width="20"></td>
@@ -502,14 +502,14 @@ else
         {
             $index_username = mysql_query ( '
                                                 SELECT `user_name`
-                                                FROM `'.$global_config_arr['pref']."user`
+                                                FROM `'.$FD->config('pref')."user`
                                                 WHERE `user_id` = '".$group_arr['user_group_user']."'
             ", $FD->sql()->conn() );
             $group_arr['user_group_user_name'] = mysql_result ( $index_username, 0, 'user_name' );
 
             $index_numusers = mysql_query ( "
                                                 SELECT COUNT(`user_id`) AS 'num_users'
-                                                FROM `".$global_config_arr['pref']."user`
+                                                FROM `".$FD->config('pref')."user`
                                                 WHERE `user_group` = '".$group_arr['user_group_id']."'
             ", $FD->sql()->conn() );
             $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, 'num_users' );
@@ -533,7 +533,7 @@ else
                                 </td>
                                 <td class="configthin middle">
                                     <span class="small">
-                                        '.$admin_phrases['articles']['list_cat_created_by'].' <b>'.$group_arr['user_group_user_name'].'</b> '.$admin_phrases['articles']['list_cat_created_on'].' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
+                                        '.$FD->text('page', 'list_cat_created_by').' <b>'.$group_arr['user_group_user_name'].'</b> '.$FD->text('page', 'list_cat_created_on').' <b>'.date ( $FD->config('date'), $group_arr['user_group_date'] ).'</b>
                                     </span>
                                 </td>
                                 <td class="configthin center middle">'.$group_arr['user_group_num_users'].'</td>
@@ -552,8 +552,8 @@ else
                             <tr>
                                 <td style="text-align:right;" colspan="4">
                                     <select name="group_action" size="1">
-                                        <option value="edit">'.$admin_phrases['common']['selection_edit'].'</option>
-                                        <option value="delete">'.$admin_phrases['common']['selection_del'].'</option>
+                                        <option value="edit">'.$FD->text('admin', 'selection_edit').'</option>
+                                        <option value="delete">'.$FD->text('admin', 'selection_del').'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -561,7 +561,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['do_button_long'].'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
                                     </button>
                                 </td>
                             </tr>
@@ -594,7 +594,7 @@ else
     // Get groups from DB
     $index = mysql_query ( '
                             SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
-                            FROM `'.$global_config_arr['pref'].'user_groups`
+                            FROM `'.$FD->config('pref').'user_groups`
                             WHERE `user_group_id` = 0
                             LIMIT 0,1
     ', $FD->sql()->conn() );
@@ -604,14 +604,14 @@ else
 
     $index_username = mysql_query ( '
                                         SELECT `user_name`
-                                        FROM `'.$global_config_arr['pref']."user`
+                                        FROM `'.$FD->config('pref')."user`
                                         WHERE `user_id` = '".$group_arr['user_group_user']."'
     ", $FD->sql()->conn() );
     $group_arr['user_group_user_name'] = mysql_result ( $index_username, 0, 'user_name' );
 
     $index_numusers = mysql_query ( "
                                         SELECT COUNT(`user_id`) AS 'num_users'
-                                        FROM `".$global_config_arr['pref']."user`
+                                        FROM `".$FD->config('pref')."user`
                                         WHERE `user_is_admin` = '1'
     ", $FD->sql()->conn() );
     $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, 'num_users' );
@@ -629,7 +629,7 @@ else
                                 </td>
                                 <td class="configthin middle">
                                     <span class="small">
-                                        '.$admin_phrases['articles']['list_cat_created_by'].' <b>'.$group_arr['user_group_user_name'].'</b> '.$admin_phrases['articles']['list_cat_created_on'].' <b>'.date ( $global_config_arr['date'], $group_arr['user_group_date'] ).'</b>
+                                        '.$FD->text('page', 'list_cat_created_by').' <b>'.$group_arr['user_group_user_name'].'</b> '.$FD->text('page', 'list_cat_created_on').' <b>'.date ( $FD->config('date'), $group_arr['user_group_date'] ).'</b>
                                     </span>
                                 </td>
                                 <td class="configthin right middle" colspan="2"><b>'.$group_arr['user_group_num_users'].'</b> Mitglieder</td>
@@ -638,7 +638,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' '."Administratorgruppe bearbeiten".'
+                                        '.$FD->text('admin', 'button_arrow').' '."Administratorgruppe bearbeiten".'
                                     </button>
                                 </td>
                             </tr>

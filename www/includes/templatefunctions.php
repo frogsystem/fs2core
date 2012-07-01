@@ -5,18 +5,18 @@
 
 function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE = TRUE, $MANYFILES = FALSE, $HIGHLIGHTER = 1 )
 {
-    global $TEXT;
+    global $FD;
 
     if ( templatepage_postcheck ( $TEMPLATE_EDIT ) && isset( $_POST['reload'] ) ) {
         if ( $SAVE === FALSE ) {
-            systext ( $TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('template_dont_remove_copyright'),
-                $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+            systext ( $FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "template_dont_remove_copyright"),
+                $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
             echo '<br>';
         } else {
             $save_var = templatepage_save ( $TEMPLATE_EDIT, $TEMPLATE_FILE, $MANYFILES );
             if ( $save_var === TRUE ) {
-                systext ( $TEXT['admin']->get('changes_saved'),
-                    $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_save_ok') );
+                systext ( $FD->text("admin", "changes_saved"),
+                    $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_ok") );
                 echo '<br>';
                 $style = $_POST['style'];
                 $file = $_POST['file'];
@@ -24,8 +24,8 @@ function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE
                 $_POST['style'] = $style;
                 $_POST['file'] = $file;
             } elseif ( $save_var === FALSE ) {
-                systext ( $TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('error_file_access'),
-                    $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+                systext ( $FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "error_file_access"),
+                    $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
                 echo '<br>';
             }
         }
@@ -40,7 +40,7 @@ function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE
 
 function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
 {
-    global $global_config_arr, $FD, $TEXT;
+    global $FD;
 
     $_POST['style'] = savesql ( $_POST['style'] );
 
@@ -50,7 +50,7 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
 
     $index = mysql_query ( '
                             SELECT `style_id`
-                            FROM `'.$global_config_arr['pref']."styles`
+                            FROM `'.$FD->config('pref')."styles`
                             WHERE `style_tag` = '".$_POST['style']."'
                             AND `style_allow_edit` = 1
                             LIMIT 0,1
@@ -61,8 +61,8 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
             if ( $_POST['file'] == 'new' ) {
                 $_POST['file_name'] = unquote ( $_POST['file_name'] );
                 if ( trim ( $_POST['file_name'] ) == '' ) {
-                    systext ( $TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('template_no_filename'),
-                        $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+                    systext ( $FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "template_no_filename"),
+                        $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
                     echo '<br>';
                     $_POST[$TEMPLATE_ARR[0]['name']] = unquote ( $_POST[$TEMPLATE_ARR[0]['name']] );
                     return 'file_name';
@@ -73,16 +73,16 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
                 $TEMPLATE_FILE = unquote ( $_POST['file'] );
                 $file_path =  $directory_path . $TEMPLATE_FILE;
                 if ( $access->deleteFile ( $file_path ) ) {
-                    systext ( $TEXT['admin']->get('file_deleted'),
-                        $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_trash_ok') );
+                    systext ( $FD->text("admin", "file_deleted"),
+                        $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_trash_ok") );
                     echo '<br>';
                     $style = $_POST['style'];
                     unset ( $_POST );
                     $_POST['style'] = $style;
                     return 'file_delete';
                 } else {
-                    systext ( $TEXT['admin']->get('file_not_deleted').'<br>'.$TEXT['admin']->get('error_file_access'),
-                        $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_trash_error') );
+                    systext ( $FD->text("admin", "file_not_deleted").'<br>'.$FD->text("admin", "error_file_access"),
+                        $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_trash_error") );
                     echo '<br>';
                     return 'file_delete_error';
                 }
@@ -130,8 +130,7 @@ function templatepage_postcheck ( $TEMPLATE_ARR )
 
 function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $HIGHLIGHTER )
 {
-    global $global_config_arr, $FD, $TEXT;
-    global $admin_phrases;
+    global $FD;
 
     initstr ($return_template);
     unset ($select_template);
@@ -143,7 +142,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
     // Set Default Style
     if ( !isset ( $_POST['style'] ) ) {
-        $_POST['style'] = $global_config_arr['style'];
+        $_POST['style'] = $FD->config('style');
     } else {
         $_POST['style'] = unquote ( $_POST['style'] );
     }
@@ -151,7 +150,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     // Check Edit Allowed
     $index = mysql_query ( "
                             SELECT COUNT(`style_id`) AS 'number'
-                            FROM `".$global_config_arr['pref']."styles`
+                            FROM `".$FD->config('pref')."styles`
                             WHERE `style_tag` = '".savesql ( $_POST['style'] )."'
                             AND `style_allow_edit` = 1
                             LIMIT 0,1
@@ -160,17 +159,17 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         // Check Edit Allowed
         $index = mysql_query ( "
                                 SELECT COUNT(`style_id`) AS 'number'
-                                FROM `".$global_config_arr['pref']."styles`
+                                FROM `".$FD->config('pref')."styles`
                                 WHERE `style_allow_edit` = 1
                                 LIMIT 0,1
         ", $FD->sql()->conn() );
         if ( mysql_result ( $index, 0, 'number' ) != 1 ) {
-            systext ( $TEXT['admin']->get('template_no_editable_template'),
-                $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+            systext ( $FD->text("admin", "template_no_editable_template"),
+                $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
             $show_selection = FALSE;
         } elseif ( $show_editor !== FALSE ) {
-            systext ( $TEXT['admin']->get('template_select_template'),
-                $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_info') );
+            systext ( $FD->text("admin", "template_select_template"),
+                $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_info") );
         }
         $show_editor = FALSE;
     }
@@ -180,13 +179,13 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
     // Check if style exists
     if ( ! ( is_dir ( $style_path ) ) ) {
-        systext ( $TEXT['admin']->get('template_style_not_found'),
-            $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+        systext ( $FD->text("admin", "template_style_not_found"),
+            $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
         $show_editor = FALSE;
     }
 
     // Set Selection-Titel
-    $selection_title = $TEXT['admin']->get('template_selection_title_template');
+    $selection_title = $FD->text("admin", "template_selection_title_template");
 
 
     // Special MANYFILES-Things
@@ -233,7 +232,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         }
 
         // Set Selection-Titel
-        $selection_title = $TEXT['admin']->get('template_selection_title_template_file');
+        $selection_title = $FD->text("admin", "template_selection_title_template_file");
     }
 
 
@@ -245,17 +244,17 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     if ( $show_editor && !file_exists ( $file_path ) ) {
         if ( !$MANYFILES || $TEMPLATE_FILE != FALSE ) {
             if ( $access->putFileData ( $file_path, '' ) === FALSE ) {
-                systext ( $TEXT['admin']->get('template_file_not_found').'<br>'.$TEXT['admin']->get('template_file_not_created').'<br>'.$TEXT['admin']->get('error_file_access'),
-                    $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+                systext ( $FD->text("admin", "template_file_not_found").'<br>'.$FD->text("admin", "template_file_not_created").'<br>'.$FD->text("admin", "error_file_access"),
+                    $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
                 $show_editor = FALSE;
             } else {
-                systext ( $TEXT['admin']->get('template_file_not_found').'<br>'.$TEXT['admin']->get('template_file_created'),
-                    $TEXT['admin']->get('info'), FALSE, $TEXT['admin']->get('icon_save_add')  );
+                systext ( $FD->text("admin", "template_file_not_found").'<br>'.$FD->text("admin", "template_file_created"),
+                    $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_add")  );
             }
         }
     } elseif ( $show_editor && !is_writable  ( $file_path )  ) {
-        systext ( $TEXT['admin']->get('template_file_not_writable').'<br>'.$TEXT['admin']->get('error_file_access'),
-            $TEXT['admin']->get('error'), TRUE, $TEXT['admin']->get('icon_error') );
+        systext ( $FD->text("admin", "template_file_not_writable").'<br>'.$FD->text("admin", "error_file_access"),
+            $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
         $show_editor = FALSE;
     }
 
@@ -346,7 +345,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
             $return_template .= '
                         <tr>
                             <td class="configthin">
-                                '.$TEXT["admin"]->get("template_manyfile_delete_note").'
+                                '.$FD->text("admin", "template_manyfile_delete_note").'
                             </td>
                         </tr>
 
@@ -364,7 +363,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                         <tr>
                             <td class="buttontd" align="right">
                                 <button class="button_new" type="submit" name="reload">
-                                    '.$admin_phrases['common']['arrow'].' '.$admin_phrases['common']['save_long'].'
+                                    '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
                                 </button>
                             </td>
                         </tr>
@@ -401,8 +400,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 /////////////////////////////////
 function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHOW_REST = TRUE )
 {
-    global $global_config_arr, $FD, $TEXT;
-    global $admin_phrases;
+    global $FD;
 
     switch ( $TYPE ) {
         case 'style':
@@ -417,7 +415,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
 
             $index = mysql_query ( '
                                     SELECT `style_tag`
-                                    FROM `'.$global_config_arr['pref'].'styles`
+                                    FROM `'.$FD->config('pref').'styles`
                                     WHERE `style_id` != 0
                                     AND `style_allow_edit` = 1
                                     ORDER BY `style_tag`
@@ -426,7 +424,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                 $style_arr['style_tag'] = stripslashes ( $style_arr['style_tag'] );
                 if ( is_dir ( FS2_ROOT_PATH . 'styles/' . $style_arr['style_tag'] ) == TRUE ) {
                     $select_template .= '<option value="'.$style_arr['style_tag'].'" '.getselected ($style_arr['style_tag'], $_POST['style']).'>'.$style_arr['style_tag'];
-                    $style_arr['style_tag'] == $global_config_arr['style'] ? $select_template .= ' (aktiv)' : $select_template .= "";
+                    $style_arr['style_tag'] == $FD->config('style') ? $select_template .= ' (aktiv)' : $select_template .= '';
                     $select_template .= '</option>';
                 }
             }
@@ -515,7 +513,7 @@ function create_dropdown ( $TITLE, $CONTENT )
 //////////////////////////
 function get_dropdowns ( $EDITOR_NAME )
 {
-    global $FD, $global_config_arr, $TEXT;
+    global $FD;
 
     // Security Functions
     $global_vars_array = array ();
@@ -533,7 +531,7 @@ function get_dropdowns ( $EDITOR_NAME )
 
     // Applets
     $index = mysql_query ( '
-                            SELECT `applet_file` FROM `'.$global_config_arr['pref'].'applets` WHERE `applet_active` = 1 AND `applet_output` = 1
+                            SELECT `applet_file` FROM `'.$FD->config('pref').'applets` WHERE `applet_active` = 1 AND `applet_output` = 1
     ', $FD->sql()->conn() );
     while ( $app_arr = mysql_fetch_assoc ( $index ) ) {
         $app = stripslashes ( $app_arr['applet_file'] );
@@ -544,7 +542,7 @@ function get_dropdowns ( $EDITOR_NAME )
 
     // Snippets
     $index = mysql_query ( '
-                            SELECT `snippet_tag` FROM `'.$global_config_arr['pref'].'snippets` WHERE `snippet_active` = 1
+                            SELECT `snippet_tag` FROM `'.$FD->config('pref').'snippets` WHERE `snippet_active` = 1
     ', $FD->sql()->conn() );
     while ( $snippets_arr = mysql_fetch_assoc ( $index ) ) {
         $the_snippet = stripslashes ( $snippets_arr['snippet_tag'] );
@@ -568,7 +566,7 @@ function get_dropdowns ( $EDITOR_NAME )
 //////////////////////
 function get_taglist ( $TAG_ARR, $EDITOR_NAME )
 {
-    global $TEXT;
+    global $FD;
 
     $OC = new template ();
     $OC->getOpener();
@@ -593,7 +591,7 @@ function get_taglist ( $TAG_ARR, $EDITOR_NAME )
 /////////////////////////
 function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES )
 {
-    global $TEXT;
+    global $FD;
 
     $highlighter_text = ( $HIGHLIGHTER == 3 ) ? 'Javascript' : ( ( $HIGHLIGHTER == 2 ) ? 'CSS' : 'HTML' );
     $section_text = ( $MANYFILES == FALSE ) ? ' &gt; '.$EDITOR_NAME : '';
@@ -614,7 +612,7 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
 /////////////////////////////
 function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 {
-    global $TEXT;
+    global $FD;
 
     if ( file_exists ( FS2_ROOT_PATH . 'styles/default/' . $FILE ) ) {
         $original['button'] = '
@@ -650,8 +648,7 @@ function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 ////////////////////////////////
 function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
 {
-    global $FD, $global_config_arr, $TEXT;
-    global $admin_phrases;
+    global $FD;
 
     // Get Tag-Menu
     $help_template = get_taglist ( $editor_arr['help'], $editor_arr['name'] );

@@ -5,8 +5,8 @@
 
     $tmp = array (
         'name' => 'JS',
-        'title' => $admin_phrases['template']['js_userfunctions']['title'],
-        'description' => $admin_phrases['template']['js_userfunctions']['description'],
+        'title' => $FD->text("template", "js_userfunctions_title"),
+        'description' => $FD->text("template", "js_userfunctions_description"),
         'rows' => 35,
         'cols' => 66,
         'help' => array (

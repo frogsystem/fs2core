@@ -12,7 +12,7 @@ require ( FS2_ROOT_PATH . 'login.inc.php' );
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$global_config_arr['pref'].'captcha_config', $FD->sql()->conn() );
+$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'captcha_config', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 
 
@@ -112,7 +112,7 @@ function encrypt ( $STRING, $KEY ) {
     }
     return base64_encode ( $result );
 }
-$_SESSION['captcha'] = encrypt ( $result, $global_config_arr['spam'] ); //Key
+$_SESSION['captcha'] = encrypt ( $result, $FD->config('spam') ); //Key
 $_SESSION['captcha'] = str_replace ( '=', '', $_SESSION['captcha'] );
 
 //Create String

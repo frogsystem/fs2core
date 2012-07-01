@@ -74,6 +74,8 @@ js_delete_image:                         Bild löschen?
 search:                                  Suche
 search_for:                              Suche nach
 filter:                                  Filter
+note:                                    Hinweis
+notes:                                   Hinweise
 
 
 # Date and Time for Admin CP
@@ -191,12 +193,6 @@ monthly_statistics:                      Monatsstatistik
 
 
 # Old
-system_start_num_aliases:                Anzahl Aliasse
-system_start_num_aliases_active:         Anzahl aktiver Aliasse
-system_start_num_applets:                Anzahl Applets
-system_start_num_applets_active:         Anzahl aktiver Applets
-system_start_num_snippets:               Anzahl Schnipsel
-system_start_num_snippets_active:        Anzahl aktiver Schnipsel
 
 news_edit_selection_comments:            Kommentare verwalten
 news_comments_delete_title:              Kommentare löschen

@@ -57,7 +57,7 @@
         </form>
 
         <p>
-            '.$TEXT['page']->get('preview_note').'
+            '.$FD->text("page", "preview_note").'
         </p>
         ';
 
@@ -69,7 +69,7 @@
     else {
 
         // Get News Config
-        $index = mysql_query('SELECT * FROM `'.$global_config_arr['pref']."news_config` WHERE `id` = '1'", $FD->sql()->conn() );
+        $index = mysql_query('SELECT * FROM `'.$FD->config('pref')."news_config` WHERE `id` = '1'", $FD->sql()->conn() );
         $config_arr = mysql_fetch_assoc($index);
 
         // Load Data from $_POST
@@ -95,7 +95,7 @@
         } else {
             $news_arr['news_date'] = 0;
         }
-        $news_arr['news_date'] = date_loc( $global_config_arr['datetime'] , $news_arr['news_date']);
+        $news_arr['news_date'] = date_loc( $FD->config('datetime') , $news_arr['news_date']);
 
         // Create User Template
         $news_arr['user_name'] = killhtml($_POST['news_user_name']);
@@ -112,7 +112,7 @@
 
         // Kategorie lesen
         settype($_POST['news_cat_id'], 'integer');
-        $index = mysql_query('SELECT `cat_name`, `cat_id` FROM `'.$global_config_arr['pref']."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'", $FD->sql()->conn() );
+        $index = mysql_query('SELECT `cat_name`, `cat_id` FROM `'.$FD->config('pref')."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'", $FD->sql()->conn() );
         $cat_arr = mysql_fetch_assoc($index);
         if (!empty($cat_arr)) {
 			$cat_arr['cat_name'] = killhtml($cat_arr['cat_name']);
@@ -178,9 +178,9 @@
 
 
         // Preview Page Template
-        $global_config_arr['dyn_title'] = 1;
-        $global_config_arr['dyn_title_ext'] = '{..ext..}';
-        $global_config_arr['dyn_title_page'] = $TEXT['page']->get('preview_title').': '.$news_arr['news_title'];
+        $FD->setConfig('dyn_title', 1);
+        $FD->setConfig('dyn_title_ext', '{..ext..}');
+        $FD->setConfig('dyn_title_page', $FD->text('page', 'preview_title').': '.$news_arr['news_title']);
 
         $theTemplate = new template();
         $theTemplate->setFile('0_main.tpl');

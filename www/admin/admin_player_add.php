@@ -44,7 +44,7 @@ if (
 
     mysql_query ( '
                                         INSERT INTO
-                                                '.$global_config_arr['pref']."player
+                                                '.$FD->config('pref')."player
                                                 ( video_type, video_x, video_title, video_lenght, video_desc, dl_id )
                                         VALUES (
                                                 '".$_POST['video_type']."',
@@ -55,7 +55,7 @@ if (
                                                 '".$_POST['dl_id']."'
                                          )
         ", $FD->sql()->conn() );
-    systext ( 'Video erfolgreich eingetragen', $admin_phrases['common']['info'] );
+    systext ( 'Video erfolgreich eingetragen', $FD->text('admin', 'info') );
 
     // Unset Vars
     unset ( $_POST );
@@ -70,18 +70,18 @@ if ( TRUE )
 {
         // Display Error Messages
         if ( isset ( $_POST['sended'] ) ) {
-                  systext ( $admin_phrases['common']['note_notfilled'], $admin_phrases['common']['error'], TRUE );
+                  systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
         }
 
-    $_POST['video_title'] = killhtml ( $_POST['video_title'] );
-    $_POST['video_desc'] = killhtml ( $_POST['video_desc'] );
+    $_POST['video_title'] = isset($_POST['video_title']) ? killhtml ( $_POST['video_title'] ) : '';
+    $_POST['video_desc'] = isset($_POST['video_desc']) ? killhtml ( $_POST['video_desc'] ) : '';
     settype ( $_POST['video_type'], 'integer' );
     settype ( $_POST['dl_id'], 'integer' );
 
-    $_POST['video_url'] = killhtml ( $_POST['video_url'] );
-    $_POST['video_youtube'] = killhtml ( $_POST['video_youtube'] );
-    $_POST['video_myvideo'] = killhtml ( $_POST['video_myvideo'] );
-    $_POST['video_other'] = killhtml ( $_POST['video_other'] );
+    $_POST['video_url'] = isset($_POST['video_url']) ? killhtml ( $_POST['video_url'] ) : '';
+    $_POST['video_youtube'] = isset($_POST['video_youtube']) ? killhtml ( $_POST['video_youtube'] ) : '';
+    $_POST['video_myvideo'] = isset($_POST['video_myvideo']) ? killhtml ( $_POST['video_myvideo'] ) : '';
+    $_POST['video_other'] = isset($_POST['video_other']) ? killhtml ( $_POST['video_other'] ) : '';
 
     if ($_POST['video_h'] != '' ) {
        $_POST['video_h'] = add_zero ( $_POST['video_h'] );
@@ -185,7 +185,7 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    L&auml;nge: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                    L&auml;nge: <span class="small">'.$FD->text('admin', 'optional').'</span><br>
                                     <span class="small">Die Laufzeit des Videos.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -196,7 +196,7 @@ if ( TRUE )
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Beschreibung: <span class="small">'.$admin_phrases['common']['optional'].'</span><br>
+                                    Beschreibung: <span class="small">'.$FD->text('admin', 'optional').'</span><br>
                                     <span class="small">Text, der das Video beschreibt.</span>
                                 </td>
                                 <td class="config" valign="top">
@@ -215,7 +215,7 @@ if ( TRUE )
         // DL auflisten
         $index = mysql_query ( '
                                                         SELECT D.dl_id, D.dl_name, C.cat_name
-                                                        FROM '.$global_config_arr['pref'].'dl D, '.$global_config_arr['pref'].'dl_cat AS C
+                                                        FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C
                                                         WHERE D.cat_id = C.cat_id
                                                         ORDER BY D.dl_name ASC
         ', $FD->sql()->conn() );
@@ -233,7 +233,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' Video hinzuf&uuml;gen
+                                        '.$FD->text('admin', 'button_arrow').' Video hinzuf&uuml;gen
                                     </button>
                                 </td>
                             </tr>

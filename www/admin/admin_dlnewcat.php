@@ -9,7 +9,7 @@ if (!empty($_POST['catname']))
     $_POST['catname'] = savesql($_POST['catname']);
 
     settype($_POST['subcatof'], 'integer');
-    mysql_query('INSERT INTO '.$global_config_arr['pref']."dl_cat (subcat_id, cat_name)
+    mysql_query('INSERT INTO '.$FD->config('pref')."dl_cat (subcat_id, cat_name)
                  VALUES ('".$_POST['subcatof']."',
                          '".$_POST['catname']."');", $FD->sql()->conn() );
     systext('Kategorie wurde hinzugef&uuml;gt');
@@ -24,7 +24,7 @@ if (!empty($_POST['catname']))
 if(true)
 {
     if(isset($_POST['sended'])) {
-        echo get_systext($TEXT['admin']->get('changes_not_saved').'<br>'.$TEXT['admin']->get('form_not_filled'), $TEXT['admin']->get('error'), 'red', $TEXT['admin']->get('icon_save_error'));
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
     echo'

@@ -1,4 +1,4 @@
 <?php
     header('Status: 404 Not Found', true, 404);
-    systext($TEXT['admin']->get('404_error'), $TEXT['admin']->get('file_not_found'), 'red', $TEXT['admin']->get('icon_error'));
+    systext($FD->text("admin", "404_error"), $FD->text("admin", "file_not_found"), 'red', $FD->text("admin", "icon_error"));
 ?>

@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
+-- version 3.3.9
 -- http://www.phpmyadmin.net
 --
--- Host: localhost:3306
--- Erstellungszeit: 23. Jun 2012 um 14:30
--- Server Version: 5.5.24-log
--- PHP-Version: 5.4.3
+-- Host: localhost
+-- Erstellungszeit: 26. Juni 2012 um 21:51
+-- Server Version: 5.1.53
+-- PHP-Version: 5.3.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -95,15 +94,14 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('editor_design', 'fseditor', 'admin_editor_design.php', 2, 0),
 ('editor_smilies', 'fseditor', 'admin_editor_smilies.php', 3, 0),
 ('editor_fscodes', 'fseditor', 'admin_editor_fscode.php', 4, 0),
-('gallery_config', 'gallery', 'admin_gallery_config.php', 1, 0),
-('gallery_img_add', 'gallery', 'gallery_img', 1, 1),
-('gallery_wp_add', 'gallery', 'gallery_wp', 1, 1),
-('gallery_cat', 'gallery', 'admin_gallery_cat.php', 2, 0),
-('gallery_img_edit', 'gallery', 'gallery_img', 2, 1),
-('gallery_wp_edit', 'gallery', 'gallery_wp', 2, 1),
-('gallery_folder', 'gallery', 'admin_gallery_folder.php', 3, 0),
-('gallery_img', 'gallery', 'admin_gallery_img.php', 3, 0),
-('gallery_wp', 'gallery', 'admin_gallery_wp.php', 4, 0),
+('gallery_config', 'gallery', 'admin_screenconfig.php', 1, 0),
+('screens_add', 'gallery_img', 'admin_screenadd.php', 1, 0),
+('wp_add', 'gallery_wp', 'admin_wallpaperadd.php', 1, 0),
+('gallery_cat', 'gallery', 'admin_screencat.php', 2, 0),
+('randompic_config', 'gallery_preview', 'admin_randompic_config.php', 1, 0),
+('gallery_newcat', 'gallery', 'admin_screennewcat.php', 3, 0),
+('screens_edit', 'gallery_img', 'admin_screenedit.php', 2, 0),
+('wp_edit', 'gallery_wp', 'admin_wallpaperedit.php', 2, 0),
 ('gen_config', 'general', 'admin_general_config.php', 1, 0),
 ('gen_announcement', 'general', 'admin_allannouncement.php', 2, 0),
 ('gen_captcha', 'general', 'admin_captcha_config.php', 2, 0),
@@ -175,7 +173,10 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('news_comments_list', 'news', 'admin_news_comments_list.php', 4, 0),
 ('cimg_cat', 'cimg', 'admin_cimgcats.php', 3, 0),
 ('cimg_import', 'cimg', 'admin_cimgimport.php', 4, 0),
-('stat_ref_delete', 'stats', 'stat_ref', 1, 1);
+('stat_ref_delete', 'stats', 'stat_ref', 1, 1),
+('randompic_cat', 'gallery_preview', 'admin_randompic_cat.php', 2, 0),
+('timedpic_add', 'gallery_preview', 'admin_randompic_time_add.php', 3, 0),
+('timedpic_edit', 'gallery_preview', 'admin_randompic_time.php', 4, 0);
 
 -- --------------------------------------------------------
 
@@ -421,7 +422,7 @@ CREATE TABLE `fs2_captcha_config` (
 --
 
 INSERT INTO `fs2_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transparent`, `captcha_text_color`, `captcha_first_lower`, `captcha_first_upper`, `captcha_second_lower`, `captcha_second_upper`, `captcha_use_addition`, `captcha_use_subtraction`, `captcha_use_multiplication`, `captcha_create_easy_arithmetics`, `captcha_x`, `captcha_y`, `captcha_show_questionmark`, `captcha_use_spaces`, `captcha_show_multiplication_as_x`, `captcha_start_text_x`, `captcha_start_text_y`, `captcha_font_size`, `captcha_font_file`) VALUES
-(1, 'F505F5', 0, 'FFFFFF', 1, 5, 1, 5, 1, 1, 0, 1, 58, 18, 0, 1, 1, 0, 0, 5, '');
+(1, 'FAFCF1', 0, '000000', 1, 5, 1, 5, 1, 1, 0, 1, 58, 18, 0, 1, 1, 0, 0, 5, '');
 
 -- --------------------------------------------------------
 
@@ -438,6 +439,11 @@ CREATE TABLE `fs2_cimg` (
   `cat` mediumint(8) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Daten für Tabelle `fs2_cimg`
+--
+
 
 -- --------------------------------------------------------
 
@@ -485,7 +491,7 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('info', '{}', 'startup'),
 ('articles', '{\\"acp_per_page\\":\\"3\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"1\\",\\"com_sort\\":\\"ASC\\",\\"acp_view\\":\\"2\\"}', 'none'),
 ('search', '{\\"id\\":\\"0\\",\\"search_num_previews\\":\\"10\\",\\"search_and\\":\\"AND, and, &&\\",\\"search_or\\":\\"OR, or, ||\\",\\"search_xor\\":\\"XOR, xor\\",\\"search_not\\":\\"!, -\\",\\"search_wildcard\\":\\"*, %\\",\\"search_min_word_length\\":\\"3\\",\\"search_allow_phonetic\\":\\"1\\",\\"search_use_stopwords\\":\\"1\\"}', 'none'),
-('cronjobs', '{\\"last_cronjob_time\\":\\"1340460026\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup');
+('cronjobs', '{\\"last_cronjob_time\\":\\"1340655385\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup');
 
 -- --------------------------------------------------------
 
@@ -510,7 +516,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 68, 2392, 2, 4, 65527, 1);
+(1, 71, 2461, 2, 4, 65528, 1);
 
 -- --------------------------------------------------------
 
@@ -610,7 +616,9 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2012, 6, 18, 1, 6),
 (2012, 6, 19, 1, 14),
 (2012, 6, 21, 2, 25),
-(2012, 6, 23, 1, 5);
+(2012, 6, 23, 1, 5),
+(2012, 6, 25, 1, 7),
+(2012, 6, 26, 2, 62);
 
 -- --------------------------------------------------------
 
@@ -909,7 +917,7 @@ CREATE TABLE `fs2_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 --
 -- Daten für Tabelle `fs2_news`
@@ -930,7 +938,8 @@ INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title
 (40, 2, 1, 1318963680, 'Überarbeitete Umfrage zum besten Entwicklerstudio aller Zeiten (News) ', 'bkah', 1, 1, 0),
 (41, 1, 1, 1325103780, 'Hallo', 'Hallo', 1, 1, 0),
 (42, 1, 1, 1325103780, 'Hallo', 'Hallo', 1, 1, 1325104446),
-(43, 1, 1, 1325104440, 'Tsdsdfsd', 'fsdfsdfsdfsdfsdf', 1, 1, 0);
+(43, 1, 1, 1325104440, 'Tsdsdfsd', 'fsdfsdfsdfsdfsdf', 1, 1, 0),
+(44, 2, 1, 1340724960, 'test', 'test', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1047,7 +1056,7 @@ CREATE TABLE `fs2_news_links` (
   `link_url` varchar(255) DEFAULT NULL,
   `link_target` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`link_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=104 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=105 ;
 
 --
 -- Daten für Tabelle `fs2_news_links`
@@ -1082,7 +1091,8 @@ INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `li
 (42, 100, 'Test', 'http://asdasdasd', 0),
 (42, 101, 'asdasd', 'http://asdasd', 0),
 (43, 102, 'sdfsdf', 'http://sdfsdfsd', 1),
-(43, 103, 'sdfsd', 'http://sdfsdf', 0);
+(43, 103, 'sdfsd', 'http://sdfsdf', 0),
+(44, 104, 'test', 'http://sdsd', 0);
 
 -- --------------------------------------------------------
 
@@ -1333,6 +1343,11 @@ CREATE TABLE `fs2_poll_voters` (
   PRIMARY KEY (`voter_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
+--
+-- Daten für Tabelle `fs2_poll_voters`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -1529,6 +1544,11 @@ CREATE TABLE `fs2_screen_random` (
   `end` int(11) NOT NULL,
   PRIMARY KEY (`random_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Daten für Tabelle `fs2_screen_random`
+--
+
 
 -- --------------------------------------------------------
 
@@ -2180,8 +2200,7 @@ CREATE TABLE `fs2_user` (
   `user_wlm` varchar(50) DEFAULT NULL,
   `user_yim` varchar(50) DEFAULT NULL,
   `user_skype` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_mail` (`user_mail`)
+  PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
@@ -2211,7 +2230,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1340461705);
+('127.0.0.1', 1, 1340744156);
 
 -- --------------------------------------------------------
 
@@ -2317,6 +2336,11 @@ CREATE TABLE `fs2_wallpaper` (
   PRIMARY KEY (`wallpaper_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=1 ;
 
+--
+-- Daten für Tabelle `fs2_wallpaper`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -2331,6 +2355,7 @@ CREATE TABLE `fs2_wallpaper_sizes` (
   PRIMARY KEY (`size_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=1 ;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Daten für Tabelle `fs2_wallpaper_sizes`
+--
+
