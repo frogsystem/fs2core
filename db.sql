@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 02. Juli 2012 um 13:39
+-- Erstellungszeit: 02. Juli 2012 um 16:09
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -431,7 +431,7 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('info', '{}', 'startup'),
 ('articles', '{\\"acp_per_page\\":\\"3\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"1\\",\\"com_sort\\":\\"ASC\\",\\"acp_view\\":\\"2\\"}', 'none'),
 ('search', '{\\"id\\":\\"0\\",\\"search_num_previews\\":\\"10\\",\\"search_and\\":\\"AND, and, &&\\",\\"search_or\\":\\"OR, or, ||\\",\\"search_xor\\":\\"XOR, xor\\",\\"search_not\\":\\"!, -\\",\\"search_wildcard\\":\\"*, %\\",\\"search_min_word_length\\":\\"3\\",\\"search_allow_phonetic\\":\\"1\\",\\"search_use_stopwords\\":\\"1\\"}', 'none'),
-('cronjobs', '{\\"last_cronjob_time\\":\\"1341232916\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup'),
+('cronjobs', '{\\"last_cronjob_time\\":\\"1341245080\\",\\"last_cronjob_time_daily\\":\\"1341242825\\",\\"last_cronjob_time_hourly\\":\\"1341244996\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup'),
 ('captcha', '{\\"captcha_bg_color\\":\\"FAFCF1\\",\\"captcha_bg_transparent\\":\\"0\\",\\"captcha_text_color\\":\\"000000\\",\\"captcha_first_lower\\":\\"1\\",\\"captcha_first_upper\\":\\"5\\",\\"captcha_second_lower\\":\\"1\\",\\"captcha_second_upper\\":\\"5\\",\\"captcha_use_addition\\":\\"1\\",\\"captcha_use_subtraction\\":\\"1\\",\\"captcha_use_multiplication\\":\\"0\\",\\"captcha_create_easy_arithmetics\\":\\"1\\",\\"captcha_x\\":\\"58\\",\\"captcha_y\\":\\"18\\",\\"captcha_show_questionmark\\":\\"0\\",\\"captcha_use_spaces\\":\\"1\\",\\"captcha_show_multiplication_as_x\\":\\"1\\",\\"captcha_start_text_x\\":\\"0\\",\\"captcha_start_text_y\\":\\"0\\",\\"captcha_font_size\\":\\"5\\",\\"captcha_font_file\\":\\"\\"}', 'none'),
 ('downloads', '{\\"screen_x\\":\\"1024\\",\\"screen_y\\":\\"768\\",\\"thumb_x\\":\\"120\\",\\"thumb_y\\":\\"90\\",\\"quickinsert\\":\\"test\\''\\",\\"dl_rights\\":\\"2\\",\\"dl_show_sub_cats\\":\\"1\\"}', 'none');
 
@@ -458,7 +458,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 73, 2475, 2, 4, 65528, 1);
+(1, 73, 2480, 2, 4, 65528, 1);
 
 -- --------------------------------------------------------
 
@@ -562,7 +562,7 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2012, 6, 25, 1, 7),
 (2012, 6, 26, 2, 62),
 (2012, 6, 27, 1, 6),
-(2012, 7, 2, 1, 8);
+(2012, 7, 2, 1, 13);
 
 -- --------------------------------------------------------
 
@@ -794,27 +794,6 @@ CREATE TABLE `fs2_hashes` (
 -- Daten für Tabelle `fs2_hashes`
 --
 
-INSERT INTO `fs2_hashes` (`id`, `hash`, `type`, `typeId`, `deleteTime`) VALUES
-(59, '8Y218XSIqYpAdKfdmSXM7y9CWg8pRFjB1boV6KPW', 'newpassword', 2, 0);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_iplist`
---
-
-DROP TABLE IF EXISTS `fs2_iplist`;
-CREATE TABLE `fs2_iplist` (
-  `ip` varchar(18) NOT NULL,
-  PRIMARY KEY (`ip`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_iplist`
---
-
-INSERT INTO `fs2_iplist` (`ip`) VALUES
-('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -2138,7 +2117,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 0, 1341235413);
+('127.0.0.1', 1, 1341245080);
 
 -- --------------------------------------------------------
 
