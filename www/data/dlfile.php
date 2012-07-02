@@ -3,12 +3,8 @@
 $FD->setConfig('info', 'canonical', array('id'));
 
 // Load Config Array
-$index = mysql_query ( '
-                        SELECT *
-                        FROM `'.$FD->config('pref').'dl_config`
-                        WHERE `id` = 1
-', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
+$config_arr = json_array_decode($data);
 
 $index = mysql_query ( '
                         SELECT `show_type`, `show_size_x`, `show_size_y`

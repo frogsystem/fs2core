@@ -3,12 +3,8 @@
 $FD->setConfig('info', 'canonical', array('cat_id', 'keyword'));
 
 // Load Config Array
-$index = mysql_query ( '
-                        SELECT *
-                        FROM `'.$FD->config('pref').'dl_config`
-                        WHERE `id` = 1
-', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
+$config_arr = json_array_decode($data);
 
 if (!isset($_GET['cat_id']) && isset($_GET['catid'])) {
     $_GET['cat_id'] = $_GET['catid'];

@@ -1,30 +1,39 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
+###################
+## Page Settings ##
+###################
+$used_cols = array('screen_x', 'screen_y', 'thumb_x', 'thumb_y', 'quickinsert', 'dl_rights', 'dl_show_sub_cats');
 
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if (isset($_POST['screenx']) && isset($_POST['screeny']) && isset($_POST['thumbx']) && isset($_POST['thumby']) && isset($_POST['quickinsert']))
+if (isset($_POST['screen_x']) && isset($_POST['screen_y']) && isset($_POST['thumb_x']) && isset($_POST['thumb_y']) && isset($_POST['quickinsert']))
 {
-    settype($_POST['screenx'], 'integer');
-    settype($_POST['screeny'], 'integer');
-    settype($_POST['thumbx'], 'integer');
-    settype($_POST['thumby'], 'integer');
+    settype($_POST['screen_x'], 'integer');
+    settype($_POST['screen_y'], 'integer');
+    settype($_POST['thumb_x'], 'integer');
+    settype($_POST['thumb_y'], 'integer');
     settype($_POST['dl_rights'], 'integer');
-    $_POST['quickinsert'] = savesql($_POST['quickinsert']);
     settype($_POST['dl_show_sub_cats'], 'integer');
 
-    $update = 'UPDATE '.$FD->config('pref')."dl_config
-               SET screen_x = '$_POST[screenx]',
-                   screen_y = '$_POST[screeny]',
-                   thumb_x = '$_POST[thumbx]',
-                   thumb_y = '$_POST[thumby]',
-                   quickinsert = '$_POST[quickinsert]',
-                   dl_rights = '$_POST[dl_rights]',
-                   dl_show_sub_cats = '$_POST[dl_show_sub_cats]'
-               ";
-    mysql_query($update, $FD->sql()->conn() );
-    systext('Die Konfiguration wurde aktualisiert.');
+    // prepare data
+    $data = frompost($used_cols);
+
+    // save config
+    try {
+        $FD->saveConfig('downloads', $data);
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );        
+    }
+
+    // Unset Vars
     unset($_POST);
 }
 
@@ -36,12 +45,13 @@ if(true)
 {
     if(isset($_POST['sended'])) {
         echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
+    } else {
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'downloads'"));
+        $data = json_array_decode($data['config_data']);
+        putintopost($data);
     }
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_config', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc($index);
-
-    settype ( $config_arr['dl_show_sub_cats'], 'integer' );
+    $_POST = array_map('killhtml', $_POST);
 
     echo'
                     <form action="" method="post">
@@ -55,9 +65,9 @@ if(true)
                                     <font class="small">Stellt die max. Upload Gr&ouml;&szlig;e der Vorschau-Bilder ein</font>
                                 </td>
                                 <td class="config" valign="top" width="30%">
-                                    <input class="text" size="5" name="screenx" value="'.$config_arr['screen_x'].'" maxlength="4">
+                                    <input class="text" size="5" name="screen_x" value="'.$_POST['screen_x'].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="screeny" value="'.$config_arr['screen_y'].'" maxlength="4">
+                                    <input class="text" size="5" name="screen_y" value="'.$_POST['screen_y'].'" maxlength="4">
                                 </td>
                             </tr>
                             <tr>
@@ -66,9 +76,9 @@ if(true)
                                     <font class="small">Gibt die Gr&ouml;&szlig;e der Thumbnails an</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="5" name="thumbx" value="'.$config_arr['thumb_x'].'" maxlength="3">
+                                    <input class="text" size="5" name="thumb_x" value="'.$_POST['thumb_x'].'" maxlength="3">
                                     x
-                                    <input class="text" size="5" name="thumby" value="'.$config_arr['thumb_y'].'" maxlength="3">
+                                    <input class="text" size="5" name="thumb_y" value="'.$_POST['thumb_y'].'" maxlength="3">
                                 </td>
                             </tr>
                             <tr>
@@ -77,7 +87,7 @@ if(true)
                                     <font class="small">Der Datei-Pfad der mit dem Quick-Insert Button eingef&uuml;gt wird.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="40" name="quickinsert" value="'.stripslashes(killhtml($config_arr['quickinsert'])).'" maxlength="255">
+                                    <input class="text" size="40" name="quickinsert" value="'.unslash($_POST['quickinsert']).'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
@@ -88,15 +98,15 @@ if(true)
                                 <td class="config" valign="top" width="50%">
                                     <select name="dl_rights">
                                         <option value="2"';
-                                        if ($config_arr['dl_rights'] == 2)
+                                        if ($_POST['dl_rights'] == 2)
                                             echo ' selected="selected"';
                                         echo'>alle User</option>
                                         <option value="1"';
-                                        if ($config_arr['dl_rights'] == 1)
+                                        if ($_POST['dl_rights'] == 1)
                                             echo ' selected="selected"';
                                         echo'>registrierte User</option>
                                         <option value="0"';
-                                        if ($config_arr['dl_rights'] == 0)
+                                        if ($_POST['dl_rights'] == 0)
                                             echo ' selected="selected"';
                                         echo'>niemanden</option>
                                     </select>
@@ -108,7 +118,7 @@ if(true)
                                     <font class="small">Zeigt immer alle Unterkategorien an, auch wenn Ordner nicht ge&ouml;ffnet.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input type="checkbox" name="dl_show_sub_cats" value="1" '.getchecked ( 1, $config_arr['dl_show_sub_cats'] ).'>
+                                    <input type="checkbox" name="dl_show_sub_cats" value="1" '.getchecked ( 1, $_POST['dl_show_sub_cats'] ).'>
                                 </td>
                             </tr>
                             <tr>

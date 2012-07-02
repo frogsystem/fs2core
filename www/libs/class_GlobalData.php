@@ -121,8 +121,8 @@ class GlobalData {
     public function saveConfig($name, $newdata) {
         try {
             //get original data from db
-            $original_data = $this->sql->getRow('config', array('config_data'), array('W' => "`config_name` = '".$name."'"));
-            $original_data = array_map('utf8_decode', json_decode($original_data['config_data'], true));
+            $original_data = $this->sql->getField('config', 'config_data', array('W' => "`config_name` = '".$name."'"));
+            $original_data = array_map('utf8_decode', json_decode($original_data, true));
 
             // update data
             foreach ($newdata as $key => $value) {

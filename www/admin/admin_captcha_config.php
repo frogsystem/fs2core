@@ -1,5 +1,11 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+###################
+## Page Settings ##
+###################
+$used_cols = array('captcha_bg_color', 'captcha_bg_transparent', 'captcha_text_color', 'captcha_first_lower', 'captcha_first_upper', 'captcha_second_lower', 'captcha_second_upper', 'captcha_use_addition', 'captcha_use_subtraction', 'captcha_use_multiplication', 'captcha_create_easy_arithmetics', 'captcha_x', 'captcha_y', 'captcha_show_questionmark', 'captcha_use_spaces', 'captcha_show_multiplication_as_x', 'captcha_start_text_x', 'captcha_start_text_y', 'captcha_font_size', 'captcha_font_file');
+
+
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
@@ -52,41 +58,17 @@ if (true
     settype ( $_POST['captcha_start_text_y'], 'integer' );
     settype ( $_POST['captcha_font_size'], 'integer' );
 
-    // MySQL-Queries
-    mysql_query ( '
-                    UPDATE
-                        `'.$FD->config('pref')."captcha_config`
-                    SET
-                        `captcha_bg_color` = '".$_POST['captcha_bg_color']."',
-                        `captcha_bg_transparent` = '".$_POST['captcha_bg_transparent']."',
-                        `captcha_text_color` = '".$_POST['captcha_text_color']."',
-                        `captcha_first_lower` = '".$_POST['captcha_first_lower']."',
-                        `captcha_first_upper` = '".$_POST['captcha_first_upper']."',
-                        `captcha_second_lower` = '".$_POST['captcha_second_lower']."',
-                        `captcha_second_upper` = '".$_POST['captcha_second_upper']."',
-                        `captcha_use_addition` = '".$_POST['captcha_use_addition']."',
-                        `captcha_use_subtraction` = '".$_POST['captcha_use_subtraction']."',
-                        `captcha_use_multiplication` = '".$_POST['captcha_use_multiplication']."',
-                        `captcha_create_easy_arithmetics` = '".$_POST['captcha_create_easy_arithmetics']."',
-                        `captcha_x` = '".$_POST['captcha_x']."',
-                        `captcha_y` = '".$_POST['captcha_y']."',
-                        `captcha_show_questionmark` = '".$_POST['captcha_show_questionmark']."',
-                        `captcha_use_spaces` = '".$_POST['captcha_use_spaces']."',
-                        `captcha_show_multiplication_as_x` = '".$_POST['captcha_show_multiplication_as_x']."',
-                        `captcha_start_text_x` = '".$_POST['captcha_start_text_x']."',
-                        `captcha_start_text_y` = '".$_POST['captcha_start_text_y']."',
-                        `captcha_font_size` = '".$_POST['captcha_font_size']."',
-                        `captcha_font_file` = '".$_POST['captcha_font_file']."'
-                    WHERE
-                        `id` = '1'
-    ", $FD->sql()->conn() );
+    // prepare data
+    $data = frompost($used_cols);
 
-    // Display Message
-    systext ( $FD->text('admin', 'changes_saved'),
-        $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_ok') );
+    // save config
+    try {
+        $FD->saveConfig('captcha', $data);
+        systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {}
 
     // Unset Vars
-    unset ( $_POST );
+    unset($_POST);
 }
 
 /////////////////////////////////////
@@ -136,21 +118,17 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $index = mysql_query ( '
-                                    SELECT *
-                                    FROM `'.$FD->config('pref')."captcha_config`
-                                    WHERE `id` = '1'
-        ", $FD->sql()->conn() );
-        $config_arr = mysql_fetch_assoc($index);
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'captcha'"));
+        $data = json_array_decode($data['config_data']);
+        
         // create missing Data
-        if ( in_array ( $config_arr['captcha_font_size'], array ( 1, 2, 3, 4, 5 ) ) ) {
-            $config_arr['captcha_font'] = $config_arr['captcha_font_size'];
+        if ( in_array ( $data['captcha_font_size'], array ( 1, 2, 3, 4, 5 ) ) ) {
+            $data['captcha_font'] = $data['captcha_font_size'];
         } else {
-            $config_arr['captcha_font'] = $config_arr['captcha_font_file'];
+            $data['captcha_font'] = $data['captcha_font_file'];
         }
-        unset ( $config_arr['captcha_font_size'] );
-        unset ( $config_arr['captcha_font_file'] );
-        putintopost ( $config_arr );
+        unset($data['captcha_font_size'], $data['captcha_font_file']);
+        putintopost($data);    
     }
 
     // security functions
