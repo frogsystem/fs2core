@@ -18,6 +18,7 @@ function daily_cronjobs ($time = null, $save_time = true) {
         delete_old_randoms();
         search_index();  
         clean_referers();
+        HashMapper::deleteByTime();
         
         if ($save_time)
             $FD->saveConfig('cronjobs', array('last_cronjob_time' => $time));
