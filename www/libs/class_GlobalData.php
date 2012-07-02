@@ -12,7 +12,7 @@
 class GlobalData {
 
     // Properties
-    private $sql;                   // sql connectin
+    private $sql;                   // sql connection
     private $text = array();        // Text objects
     private $config = array();      // config data
 
