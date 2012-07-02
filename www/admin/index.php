@@ -24,6 +24,7 @@ require_once(FS2_ROOT_PATH . 'libs/class_adminpage.php');
 
 // Constructor Calls
 setTimezone($FD->cfg('timezone'));
+run_cronjobs();
 
 
 ######################
