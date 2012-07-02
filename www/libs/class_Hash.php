@@ -88,7 +88,7 @@ class Hash
     }
 
     public function getURL() {
-        return '?go=confirm&h='.$this->getHash();
+        return url('confirm', array('h' => $this->getHash()));
     }
 
 }
