@@ -20,16 +20,22 @@
  *
  * */
 
-/* Shortening Feed Content
+/* Truncate Feed Content
+ * 
+ * Set $truncate = x to cut the News after x chars.
+ * $truncate_extension will be added at the end of the content.
+ * Use $truncate_awareness and $truncate_options to cut the feed content
+ * word, html and/or bbcode aware, counting html/bbcode or not and a rule
+ * if you want to stay below the specified x value in any case.
+ * See StringCutter for detailed explenation.
  *
- * Set $shortening = x to cut the News after x chars (including html and fscode).
- * $extension will be added at the end of the content.
+ * Set $truncate = false if you don't want to cut the content.
+ * $truncate_extension will be ignored.
  *
- * Set $shortening = false if you don't want to cut the content.
- * $extensiion will be ignored.
- *
- * $shortening = false;
- * $extension = "...";
+ * $truncate = false
+ * $truncate_extension = "";
+ * $truncate_awareness = array('word' => true, 'html' => true, 'bbcode' => false)
+ * $truncate_options = array('count_html' => false, 'count_bbcode' => false, 'below' => true)
  *
  * */
 
@@ -52,9 +58,9 @@
  * Most template functions can't be used within feeds (e.g. applets).
  * So they won't be converted and should be removed.
  *
- * preserve = don' convert, don't remove text representation
- * remove   = don' convert, remove text representation
- * soft*    = convert if possible, preserve or remove others
+ * preserve   = don' convert, don't remove text representation
+ * remove     = don' convert, remove text representation
+ * softremove = convert if possible, preserve or remove others
  *
  * $tpl_functions = "softremove";
  *
@@ -143,13 +149,13 @@ abstract class Feed {
         $this->lastUpdate = 0;
 
         // News Config + Infos
-        $config_arr = $FD->sql()->getById('news_config', array('num_news'), 1);
+        $FD->loadConfigOnce('news');
 
         // Get News from DB
         $news_arr = $FD->sql()->getData('news', array('news_id', 'news_text', 'news_title', 'news_date', 'user_id'), array(
             'W' => '`news_date` <= '.$FD->env('time').' AND `news_active` = 1',
             'O' => '`news_date` DESC',
-            'L' => $config_arr['num_news'],
+            'L' => $FD->sql()->escape($FD->cfg('news', 'num_news')),
         ));
 
         // Parse News items
