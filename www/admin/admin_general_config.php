@@ -52,8 +52,14 @@ if (
     // save config
     try {
         $FD->saveConfig('main', $data);
-        systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
-    } catch (Exception $e) {}
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );        
+    }
 
     // Unset Vars
     unset($_POST);
