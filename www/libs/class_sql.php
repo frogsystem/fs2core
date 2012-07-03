@@ -297,7 +297,7 @@ class sql {
         if (count($result) >= 1)
             return array_shift($result);
         else
-            Throw new ErrorException('MySQL Error: Field not found');
+            return false;
     }
     // single field by Id
     public function getFieldById ($table, $field, $id, $id_col = 'id') {
@@ -317,7 +317,7 @@ class sql {
 
     // Saving to DB by Id
     // existing entry => update, else => insert
-    public function save ($table, $data, $id = 'id') {
+    public function save ($table, $data, $id = 'id', $auto_id = true) {
         // Update
         if (isset($data[$id]) && $this->getFieldById($table, $id, $this->escape($data[$id]), $id) !== false) {
             try {
@@ -329,7 +329,9 @@ class sql {
         // Insert
         } else  {
             try {
-                unset($data[$id]);
+                if ($auto_id) {
+                    unset($data[$id]);
+                }
                 return $this->insertId($table, $data);
             } catch (Exception $e) {
                 throw $e;
@@ -347,9 +349,8 @@ class sql {
         $cols = ($vals = array());
         foreach($data as $column => $value) {
             $cols[] = '`'.$column.'`';
-            $vals[] = "'".$value."'";
+            $vals[] = "'".$this->escape($value)."'";
         }
-        $vals = array_map($this->escape, $vals);
 
         // build query string...
         $qrystr = 'INSERT INTO `'.$this->pref.$table.'` ('.implode(',', $cols).') VALUES ('.implode(',', $vals).')';
@@ -358,12 +359,11 @@ class sql {
     }
     // insert with returning auto increment value
     public function insertId ($table, $data) {
-        $this->insert($table, $data);
-
-        try {
+        try {        
+            $this->insert($table, $data);
             return mysql_insert_id($this->sql);
         } catch (Exception $e) {
-            throw $e;
+            Throw $e;
         }
     }
 

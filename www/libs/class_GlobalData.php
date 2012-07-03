@@ -122,7 +122,12 @@ class GlobalData {
         try {
             //get original data from db
             $original_data = $this->sql->getField('config', 'config_data', array('W' => "`config_name` = '".$name."'"));
-            $original_data = array_map('utf8_decode', json_decode($original_data, true));
+            if (!empty($original_data))
+                $original_data = array_map('utf8_decode', json_decode($original_data, true));
+            else {
+                $original_data = array();
+            }
+            
 
             // update data
             foreach ($newdata as $key => $value) {
@@ -136,7 +141,7 @@ class GlobalData {
             );
 
             // save to db
-            $this->sql->save('config', $newdata, 'config_name');
+            $this->sql->save('config', $newdata, 'config_name', false);
 
             // Reload Data
             $this->reloadConfig($name, $newdata['config_data'], true);
