@@ -379,7 +379,8 @@ function action_comments_delete ( $DATA )
 $FILE_SHOW_START = true;
 $news_cols = array('news_id', 'cat_id', 'user_id', 'news_date', 'news_title', 'news_text', 'news_active', 'news_comments_allowed', 'news_search_update');
 
-$config_arr = $sql->getById('news_config', array('html_code', 'fs_code', 'para_handling', 'acp_view', 'acp_per_page'), 1);
+$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
+$config_arr = json_array_decode($config_arr['config_data']);
 $config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
 $config_arr['fs'] = in_array($config_arr['fs_code'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
 $config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");

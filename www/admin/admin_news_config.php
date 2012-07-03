@@ -3,7 +3,7 @@
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array('id', 'num_news', 'num_head', 'html_code', 'fs_code', 'para_handling', 'cat_pic_x', 'cat_pic_y', 'cat_pic_size', 'com_rights', 'com_antispam', 'news_headline_lenght', 'acp_per_page', 'acp_view', 'com_sort', 'news_headline_ext', 'acp_force_cat_selection');
+$used_cols = array('num_news', 'num_head', 'html_code', 'fs_code', 'para_handling', 'cat_pic_x', 'cat_pic_y', 'cat_pic_size', 'com_rights', 'com_antispam', 'news_headline_lenght', 'acp_per_page', 'acp_view', 'com_sort', 'news_headline_ext', 'acp_force_cat_selection');
 
 
 ///////////////////////
@@ -23,13 +23,18 @@ if (
 {
     // prepare data
     $data = frompost($used_cols);
-    $data['id'] = 1;
 
-    // save to db
+    // save config
     try {
-        $sql->save('news_config', $data);
-        systext($FD->text("admin", "changes_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "info"), 'green', $FD->text("admin", "icon_save_ok"));
-    } catch (Exception $e) {}
+        $FD->saveConfig('news', $data);
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );        
+    }
 
     // Unset Vars
     unset($_POST);
@@ -47,7 +52,8 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('news_config', $used_cols, array('W' => '`id` = 1'));
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
+        $data = json_array_decode($data['config_data']);
         putintopost($data);
     }
 

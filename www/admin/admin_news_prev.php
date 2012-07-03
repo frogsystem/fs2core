@@ -69,8 +69,8 @@
     else {
 
         // Get News Config
-        $index = mysql_query('SELECT * FROM `'.$FD->config('pref')."news_config` WHERE `id` = '1'", $FD->sql()->conn() );
-        $config_arr = mysql_fetch_assoc($index);
+        $config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
+        $config_arr = json_array_decode($config_arr['config_data']);
 
         // Load Data from $_POST
         $news_arr['comment_url'] = '?go=news_preview';

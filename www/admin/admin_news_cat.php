@@ -5,8 +5,7 @@
 ///////////////////////
 
 // Create News-Config-Array
-$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'news_config', $FD->sql()->conn() );
-$news_config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('news');
 $showdefault = TRUE;
 
 
@@ -41,7 +40,7 @@ if (
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != '' ) {
-      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'news_'.$id, $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'news_'.$id, $FD->cfg('news', 'cat_pic_size')*1024, $FD->cfg('news', 'cat_pic_x']), $FD->cfg('news', 'cat_pic_y') );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -100,7 +99,7 @@ elseif (
       }
     } elseif ( $_FILES['cat_pic']['name'] != '' ) {
       image_delete ( 'images/cat/', 'news_'.$_POST['cat_id'] );
-      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'news_'.$_POST['cat_id'], $news_config_arr['cat_pic_size']*1024, $news_config_arr['cat_pic_x'], $news_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'news_'.$_POST['cat_id'], $FD->cfg('news', 'cat_pic_size')*1024, $FD->cfg('news', 'cat_pic_x'), $FD->cfg('news', 'cat_pic_y') );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -280,7 +279,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 		}
 		echo'
 									<span class="small">
-										['.$FD->text("admin", "max").' '.$news_config_arr['cat_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$news_config_arr['cat_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$news_config_arr['cat_pic_size'].' '.$FD->text("admin", "kib").']
+										['.$FD->text("admin", "max").' '.$FD->cfg('news', 'cat_pic_x').' '.$FD->text("admin", "resolution_x").' '.$FD->cfg('news', 'cat_pic_y').' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$FD->cfg('news', 'cat_pic_size').' '.$FD->text("admin", "kib").']
 									</span>
 								</td>
 							</tr>
@@ -441,7 +440,7 @@ elseif ( $showdefault == TRUE )
 								<td class="config">
 									<input name="cat_pic" type="file" size="30" class="text"><br>
 									<span class="small">
-										['.$FD->text("admin", "max").' '.$news_config_arr['cat_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$news_config_arr['cat_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$news_config_arr['cat_pic_size'].' '.$FD->text("admin", "kib").']
+										['.$FD->text("admin", "max").' '.$FD->cfg('news', 'cat_pic_x').' '.$FD->text("admin", "resolution_x").' '.$FD->cfg('news', 'cat_pic_y').' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$FD->cfg('news', 'cat_pic_size').' '.$FD->text("admin", "kib").']
 									</span>
 								</td>
 							</tr>

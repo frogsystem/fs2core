@@ -6,10 +6,10 @@
 ###################
 $news_cols = array('cat_id', 'user_id', 'news_date', 'news_title', 'news_text', 'news_active', 'news_comments_allowed', 'news_search_update');
 
-$config_arr = $sql->getById('news_config', array('html_code', 'fs_code', 'para_handling', 'acp_force_cat_selection'), 1);
-$config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
-$config_arr['fs'] = in_array($config_arr['fs_code'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
-$config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
+$FD->loadConfig('news');
+$config_arr['html'] = in_array($FD->cfg('news', 'html_code'), array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
+$config_arr['fs'] = in_array($FD->cfg('news', 'fs_code'), array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
+$config_arr['para'] = in_array($FD->cfg('news', 'para_handling'), array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
 
 $config_arr['short_url_len'] = 50;
 $config_arr['short_url_rep'] = '...';
@@ -210,7 +210,7 @@ if ( TRUE ) {
 
     // cat options
     initstr($cat_options);
-    if ($config_arr['acp_force_cat_selection'] == 1) {
+    if ($FD->cfg('news', 'acp_force_cat_selection') == 1) {
         $cat_options .= '<option value="-1" '.getselected(-1, $_POST['cat_id']).'>'.$FD->text("admin", "please_select").'</option>'."\n";
         $cat_options .= '<option value="-1">'.$FD->text("admin", "select_hr").'</option>'."\n";
     }
