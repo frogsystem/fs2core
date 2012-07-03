@@ -1,6 +1,11 @@
+# Eigene Fehlerseiten
+ErrorDocument 403 http://localhost/fs2/www/403.html
+ErrorDocument 404 http://localhost/fs2/www/404.html
+
+# Aktiviere RewriteEngine (noetig für alle Rewrites)
 RewriteEngine On
 
-# SEO-URLs an index.php weiterleiten
+# SEO-URLs
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.+)\.html$ index.php?seoq=$1 [L,QSA]

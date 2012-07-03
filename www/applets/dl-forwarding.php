@@ -18,8 +18,8 @@ if (
     )
 {
     // Load Config Array
-    $index = mysql_query ( ' SELECT * FROM `'.$FD->config('pref').'dl_config`', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc ( $index );
+    $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
+    $config_arr = json_array_decode($data);
 
     // Get File Data
     $index = mysql_query ( '

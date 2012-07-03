@@ -297,8 +297,7 @@ $index=mysql_query('select * from '.$FD->config('pref').'counter', $FD->sql()->c
 $counterdaten = mysql_fetch_assoc($index);
 
 // User online
-$index = mysql_query('select count(*) as total from '.$FD->config('pref').'useronline', $FD->sql()->conn() );
-$anzuseronline= mysql_fetch_assoc($index);
+$online = get_online_ips();
 
 // Best frequentierter Tag
 $index = mysql_query('select * from '.$FD->config('pref').'counter_stat order by s_hits desc limit 1', $FD->sql()->conn() );
@@ -333,10 +332,28 @@ echo'
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            '.$FD->text('page', 'user_online').'
+                                            '.$FD->text('page', 'online_visitors').'
                                         </td>
                                         <td class="n" align="center">
-                                            '.point_number($anzuseronline['total']).'
+                                            '.point_number($online['all']).'
+                                        </td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                        <td class="n" align="center">
+                                            '.$FD->text('page', 'online_guests').'
+                                        </td>
+                                        <td class="n" align="center">
+                                            '.point_number($online['guests']).'
+                                        </td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                        <td class="n" align="center">
+                                            '.$FD->text('page', 'online_registered').'
+                                        </td>
+                                        <td class="n" align="center">
+                                            '.point_number($online['users']).'
                                         </td>
                                     </tr>
                                     <tr>

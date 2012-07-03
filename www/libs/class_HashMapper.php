@@ -76,13 +76,23 @@ class HashMapper
         }
     }
 
-    // save to DB
+    // delete from DB
     public function delete($hash) {
         $this->sql->deleteById('hashes', $hash->getId());
     }
+    
+    // delete from DB by deleteTime
+    public static function deleteByTime($time = null) {
+        global $FD;
+        
+        if (empty($time))
+            $time = $FD->env('time');
+        
+        $FD->sql()->delete('hashes', array('W' => "`deleteTime` < '".$FD->sql()->escape($time)."'"));
+    }    
 
 
-    // Create new hash By Payment
+    // create new hash for a new Password Request
     public function createForNewPassword($userid) {
         $hash = new Hash();
         $hash->setHash($this->calculateHash());

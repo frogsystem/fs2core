@@ -2,27 +2,74 @@
 ///////////////////////////////
 //// start pseudo cronjobs ////
 ///////////////////////////////
-function daily_cronjobs ($time = null, $save_time = true) {
+function run_cronjobs ($time = null, $save_time = true) {
     global $FD;
     
     // set now
     if (empty($time))
         $time = $FD->env('time');
         
-    // make 3am
+    // calc 3am
     $today_3am = mktime(3, 0, 0, date('m', $time), date ('d', $time), date ('Y', $time));
-    $today_3am = ($today_3am > $FD->cfg('time')) ? $today_3am - 24*60*60 : $today_3am;
+    $today_3am = ($today_3am > $FD->cfg('time')) ? $today_3am - 24*60*60 : $today_3am;    
     
-    // Run Cronjobs or nt
-    if ($FD->cfg('cronjobs', 'last_cronjob_time') < $today_3am) {
-        delete_old_randoms();
-        search_index();  
-        clean_referers();
-        
-        if ($save_time)
-            $FD->saveConfig('cronjobs', array('last_cronjob_time' => $time));
-    }
+    // calc next hour
+    $last_hour = $time-(date('i', $time)*60)-date('s', $time); // now - min and sec of this hour
+    
+    // Run Cronjobs or not
+    if ($FD->cfg('cronjobs', 'last_cronjob_time_daily') < $today_3am)
+        cronjobs_daily($time);
+    if ($FD->cfg('cronjobs', 'last_cronjob_time_hourly') < $last_hour)
+        cronjobs_hourly($time);
+    if (($FD->cfg('cronjobs', 'last_cronjob_time')+5*60) < $time)
+        cronjobs_instantly_bufferd($time);
 }
+
+////////////////////////
+//// daily cronjobs ////
+////////////////////////
+function cronjobs_daily ($save_time = null) {
+    global $FD;
+    
+    // Run Cronjobs
+    delete_old_randoms();
+    search_index();  
+    clean_referers();
+    HashMapper::deleteByTime();
+    
+    // save time
+    if (!empty($save_time))
+        $FD->saveConfig('cronjobs', array('last_cronjob_time_daily' => $save_time));    
+}
+
+/////////////////////////
+//// hourly cronjobs ////
+/////////////////////////
+function cronjobs_hourly ($save_time = null) {
+    global $FD;
+    
+    // Run Cronjobs
+    
+    
+    // save time
+    if (!empty($save_time))
+        $FD->saveConfig('cronjobs', array('last_cronjob_time_hourly' => $save_time));  
+}
+
+/////////////////////////////////////////
+//// instant tasks, bufferd for 5min ////
+/////////////////////////////////////////
+function cronjobs_instantly_bufferd ($save_time = null) {
+    global $FD;
+    
+    // Run Cronjobs
+    clean_iplist();
+    
+    // save time
+    if (!empty($save_time))
+        $FD->saveConfig('cronjobs', array('last_cronjob_time' => $save_time)); 
+}
+
 
 //////////////////////////////////////
 //// clean up referrers by config ////
@@ -930,8 +977,7 @@ function count_all ( $GOTO )
     $hit_day = date ( 'd' );
 
     visit_day_exists ( $hit_year, $hit_month, $hit_day );
-        count_hit ( $GOTO );
-        count_visit ( $GOTO );
+    count_hit ( $GOTO );
 }
 
 ///////////////////////////////////
@@ -949,7 +995,6 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
 
     if ( $rows <= 0 ) {
         mysql_query('INSERT INTO '.$FD->config('pref')."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')", $FD->sql()->conn() );
-        mysql_query('DELETE FROM '.$FD->config('pref').'iplist', $FD->sql()->conn() );
     }
 }
 
@@ -982,25 +1027,14 @@ function count_visit ( $GOTO )
 {
     global $FD;
 
-    $time = time ();             // timestamp
-    $counttime = '86400';       // time to save IPs (1 day = 86400)
     $visit_year = date ( 'Y' );
     $visit_month = date( 'm' );
     $visit_day = date ( 'd' );
 
-        // check if errorpage
-        if ( $GOTO != '404' && $GOTO != '403' ) {
-                // save IP & visit
-            $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."iplist WHERE ip = '".savesql($_SERVER['REMOTE_ADDR'])."'", $FD->sql()->conn() );
-
-            if ( mysql_num_rows ( $index ) <= 0 ) {
-                mysql_query ( 'UPDATE '.$FD->config('pref').'counter SET visits = visits + 1', $FD->sql()->conn() );
-                mysql_query ( 'UPDATE '.$FD->config('pref').'counter_stat
-                               SET s_visits = s_visits + 1
-                               WHERE s_year = '.$visit_year.' AND s_month = '.$visit_month.' AND s_day = '.$visit_day, $FD->sql()->conn() );
-                mysql_query ( 'INSERT INTO '.$FD->config('pref')."iplist (`ip`) VALUES ('".savesql($_SERVER['REMOTE_ADDR'])."')", $FD->sql()->conn() );
-            }
-        }
+    mysql_query('UPDATE '.$FD->config('pref').'counter SET visits = visits + 1', $FD->sql()->conn() );
+    mysql_query('UPDATE '.$FD->config('pref').'counter_stat
+                    SET s_visits = s_visits + 1
+                    WHERE s_year = '.$visit_year.' AND s_month = '.$visit_month.' AND s_day = '.$visit_day, $FD->sql()->conn() );
 }
 
 
@@ -1011,32 +1045,52 @@ function save_visitors ()
 {
     global $FD;
 
-    $time = time(); // timestamp
     $ip = savesql($_SERVER['REMOTE_ADDR']); // IP-Adress
 
-        // get user_id or set user_id=0
-        if ( isset ( $_SESSION['user_id'] ) && $_SESSION['user_level'] == 'loggedin' ) {
-            $user_id = $_SESSION['user_id'];
-            settype ( $user_id, 'integer');
-        } else {
-            $user_id = 0;
-        }
-
-    // delete offline users
-    mysql_query ( 'DELETE FROM '.$FD->config('pref').'useronline WHERE date < ('.$time.' - 300)', $FD->sql()->conn() );
-
-    // save online users
-    $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."useronline WHERE ip='".$ip."'", $FD->sql()->conn() );
-
-        // update existing users
-        if ( mysql_num_rows ( $index ) >= 1 && mysql_result ( $index, 0, 'user_id' ) != $user_id ) {
-        mysql_query ( 'UPDATE '.$FD->config('pref')."useronline SET user_id = '".$user_id."' WHERE ip = '".$ip."'", $FD->sql()->conn() );
-    }
-        if ( mysql_num_rows ( $index ) >= 1 ) {
-        mysql_query ( 'UPDATE '.$FD->config('pref')."useronline SET date = '".$time."' WHERE ip='".$ip."'", $FD->sql()->conn() );
+    // get user_id or set user_id=0
+    if (is_loggedin() && isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+        settype($user_id, 'integer');
     } else {
-        mysql_query ( 'INSERT INTO '.$FD->config('pref')."useronline (ip, user_id, date) VALUES ('".$ip."', '".$user_id."', '".$time."')", $FD->sql()->conn() );
+        $user_id = 0;
     }
+
+    // Exisiting user for ip?    
+    $user = $FD->sql()->getRow('useronline', '*', array('W' => "`ip` = '".$ip."'"));
+
+    // no user => create new
+    if (empty($user)) {
+        $FD->sql()->insert('useronline', array(
+            'ip' => $ip,
+            'user_id' => $user_id,
+            'date' => $FD->env('time')
+        ));
+        
+        // and count the visit
+        count_visit();
+    }
+    
+    // new user_id (and update time)
+    else if ($user['user_id'] != $user_id) {
+        $FD->sql()->update('useronline', array('user_id' => $user_id, 'date' => $FD->env('time') ), array('W' => "`ip` = '".$ip."'"));
+    }
+    
+    // we know the user => just update time
+    else {
+        $FD->sql()->update('useronline', array('date' => $FD->env('time') ), array('W' => "`ip` = '".$ip."'"));
+    }
+}
+
+//////////////////////
+//// clean iplist ////
+//////////////////////
+function clean_iplist()
+{
+    global $FD;
+
+    $counttime = '86400';       // time to save IPs (1 day = 86400)
+    $time = $FD->env('time') - $counttime;
+    $FD->sql()->delete('useronline', array('W' => "`date` <= '".$time."'"));
 }
 
 

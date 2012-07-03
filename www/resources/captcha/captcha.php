@@ -12,8 +12,8 @@ require ( FS2_ROOT_PATH . 'login.inc.php' );
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'captcha_config', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc($index);
+$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'captcha'"));
+$config_arr = json_array_decode($config_arr['config_data']);
 
 
 ////////////////////////

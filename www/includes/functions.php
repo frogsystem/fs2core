@@ -1,6 +1,32 @@
 <?php
 require_once(FS2_ROOT_PATH . 'includes/newfunctions.php');
 
+
+////////////////////
+//// IPs Online ///
+////////////////////
+function get_online_ips () {
+    global $FD;
+
+    // init array
+    $numbers = array('users' => 0, 'guests' => 0, 'all' => 0);
+    
+    // get values from db
+    $numbers['users'] = $FD->sql()->getField('useronline',
+        array('COL' => 'user_id', 'FUNC' => 'COUNT', 'AS' => 'users'),
+        array('W' => "`date` > '".($FD->env('time')-300)."' AND `user_id` != 0")
+    );
+    $numbers['guests'] = $FD->sql()->getField('useronline',
+        array('COL' => 'user_id', 'FUNC' => 'COUNT', 'AS' => 'guests'),
+        array('W' => "`date` > '".($FD->env('time')-300)."' AND `user_id` = 0")
+    );
+    
+    //calc all
+    $numbers['all'] = $numbers['users'] + $numbers['guests'];
+    
+    return $numbers;
+}
+
 /////////////////////////
 //// Delete Referrers ///
 /////////////////////////

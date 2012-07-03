@@ -74,8 +74,6 @@ if ( TRUE )
         $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'main'"));
         $data = json_array_decode($data['config_data']);
         putintopost($data);
-        //temp. line
-        if (!isset($_POST['count_referers'])) $_POST['count_referers'] = 1;
     }
 
     // security functions

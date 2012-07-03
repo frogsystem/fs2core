@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 26. Juni 2012 um 21:51
+-- Erstellungszeit: 02. Juli 2012 um 16:09
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -388,45 +388,6 @@ INSERT INTO `fs2_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_da
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_captcha_config`
---
-
-DROP TABLE IF EXISTS `fs2_captcha_config`;
-CREATE TABLE `fs2_captcha_config` (
-  `id` tinyint(1) NOT NULL,
-  `captcha_bg_color` varchar(6) NOT NULL DEFAULT 'FFFFFF',
-  `captcha_bg_transparent` tinyint(1) NOT NULL DEFAULT '0',
-  `captcha_text_color` varchar(6) NOT NULL DEFAULT '000000',
-  `captcha_first_lower` smallint(3) NOT NULL DEFAULT '1',
-  `captcha_first_upper` smallint(3) NOT NULL DEFAULT '5',
-  `captcha_second_lower` smallint(3) NOT NULL DEFAULT '1',
-  `captcha_second_upper` smallint(3) NOT NULL DEFAULT '5',
-  `captcha_use_addition` tinyint(1) NOT NULL DEFAULT '1',
-  `captcha_use_subtraction` tinyint(1) NOT NULL DEFAULT '0',
-  `captcha_use_multiplication` tinyint(1) NOT NULL DEFAULT '0',
-  `captcha_create_easy_arithmetics` tinyint(1) NOT NULL DEFAULT '1',
-  `captcha_x` smallint(3) NOT NULL DEFAULT '80',
-  `captcha_y` smallint(2) NOT NULL DEFAULT '15',
-  `captcha_show_questionmark` tinyint(1) NOT NULL DEFAULT '1',
-  `captcha_use_spaces` tinyint(1) NOT NULL DEFAULT '1',
-  `captcha_show_multiplication_as_x` tinyint(1) NOT NULL DEFAULT '1',
-  `captcha_start_text_x` smallint(3) NOT NULL DEFAULT '0',
-  `captcha_start_text_y` smallint(2) NOT NULL DEFAULT '0',
-  `captcha_font_size` smallint(2) NOT NULL DEFAULT '3',
-  `captcha_font_file` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_captcha_config`
---
-
-INSERT INTO `fs2_captcha_config` (`id`, `captcha_bg_color`, `captcha_bg_transparent`, `captcha_text_color`, `captcha_first_lower`, `captcha_first_upper`, `captcha_second_lower`, `captcha_second_upper`, `captcha_use_addition`, `captcha_use_subtraction`, `captcha_use_multiplication`, `captcha_create_easy_arithmetics`, `captcha_x`, `captcha_y`, `captcha_show_questionmark`, `captcha_use_spaces`, `captcha_show_multiplication_as_x`, `captcha_start_text_x`, `captcha_start_text_y`, `captcha_font_size`, `captcha_font_file`) VALUES
-(1, 'FAFCF1', 0, '000000', 1, 5, 1, 5, 1, 1, 0, 1, 58, 18, 0, 1, 1, 0, 0, 5, '');
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs2_cimg`
 --
 
@@ -491,7 +452,9 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('info', '{}', 'startup'),
 ('articles', '{\\"acp_per_page\\":\\"3\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"1\\",\\"com_sort\\":\\"ASC\\",\\"acp_view\\":\\"2\\"}', 'none'),
 ('search', '{\\"id\\":\\"0\\",\\"search_num_previews\\":\\"10\\",\\"search_and\\":\\"AND, and, &&\\",\\"search_or\\":\\"OR, or, ||\\",\\"search_xor\\":\\"XOR, xor\\",\\"search_not\\":\\"!, -\\",\\"search_wildcard\\":\\"*, %\\",\\"search_min_word_length\\":\\"3\\",\\"search_allow_phonetic\\":\\"1\\",\\"search_use_stopwords\\":\\"1\\"}', 'none'),
-('cronjobs', '{\\"last_cronjob_time\\":\\"1340655385\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup');
+('cronjobs', '{\\"last_cronjob_time\\":\\"1341245080\\",\\"last_cronjob_time_daily\\":\\"1341242825\\",\\"last_cronjob_time_hourly\\":\\"1341244996\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup'),
+('captcha', '{\\"captcha_bg_color\\":\\"FAFCF1\\",\\"captcha_bg_transparent\\":\\"0\\",\\"captcha_text_color\\":\\"000000\\",\\"captcha_first_lower\\":\\"1\\",\\"captcha_first_upper\\":\\"5\\",\\"captcha_second_lower\\":\\"1\\",\\"captcha_second_upper\\":\\"5\\",\\"captcha_use_addition\\":\\"1\\",\\"captcha_use_subtraction\\":\\"1\\",\\"captcha_use_multiplication\\":\\"0\\",\\"captcha_create_easy_arithmetics\\":\\"1\\",\\"captcha_x\\":\\"58\\",\\"captcha_y\\":\\"18\\",\\"captcha_show_questionmark\\":\\"0\\",\\"captcha_use_spaces\\":\\"1\\",\\"captcha_show_multiplication_as_x\\":\\"1\\",\\"captcha_start_text_x\\":\\"0\\",\\"captcha_start_text_y\\":\\"0\\",\\"captcha_font_size\\":\\"5\\",\\"captcha_font_file\\":\\"\\"}', 'none'),
+('downloads', '{\\"screen_x\\":\\"1024\\",\\"screen_y\\":\\"768\\",\\"thumb_x\\":\\"120\\",\\"thumb_y\\":\\"90\\",\\"quickinsert\\":\\"test\\''\\",\\"dl_rights\\":\\"2\\",\\"dl_show_sub_cats\\":\\"1\\"}', 'none');
 
 -- --------------------------------------------------------
 
@@ -516,7 +479,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 71, 2461, 2, 4, 65528, 1);
+(1, 73, 2480, 2, 4, 65528, 1);
 
 -- --------------------------------------------------------
 
@@ -618,7 +581,9 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2012, 6, 21, 2, 25),
 (2012, 6, 23, 1, 5),
 (2012, 6, 25, 1, 7),
-(2012, 6, 26, 2, 62);
+(2012, 6, 26, 2, 62),
+(2012, 6, 27, 1, 6),
+(2012, 7, 2, 1, 13);
 
 -- --------------------------------------------------------
 
@@ -682,32 +647,6 @@ INSERT INTO `fs2_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 (4, 0, 'sdfsdf'),
 (5, 4, 'hans'),
 (6, 5, 'wurst');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_dl_config`
---
-
-DROP TABLE IF EXISTS `fs2_dl_config`;
-CREATE TABLE `fs2_dl_config` (
-  `id` tinyint(1) NOT NULL,
-  `screen_x` int(11) DEFAULT NULL,
-  `screen_y` int(11) DEFAULT NULL,
-  `thumb_x` int(11) DEFAULT NULL,
-  `thumb_y` int(11) DEFAULT NULL,
-  `quickinsert` varchar(255) NOT NULL,
-  `dl_rights` tinyint(1) NOT NULL DEFAULT '1',
-  `dl_show_sub_cats` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_dl_config`
---
-
-INSERT INTO `fs2_dl_config` (`id`, `screen_x`, `screen_y`, `thumb_x`, `thumb_y`, `quickinsert`, `dl_rights`, `dl_show_sub_cats`) VALUES
-(1, 1024, 768, 120, 90, 'test', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -876,27 +815,6 @@ CREATE TABLE `fs2_hashes` (
 -- Daten für Tabelle `fs2_hashes`
 --
 
-INSERT INTO `fs2_hashes` (`id`, `hash`, `type`, `typeId`, `deleteTime`) VALUES
-(59, '8Y218XSIqYpAdKfdmSXM7y9CWg8pRFjB1boV6KPW', 'newpassword', 2, 0);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_iplist`
---
-
-DROP TABLE IF EXISTS `fs2_iplist`;
-CREATE TABLE `fs2_iplist` (
-  `ip` varchar(18) NOT NULL,
-  PRIMARY KEY (`ip`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_iplist`
---
-
-INSERT INTO `fs2_iplist` (`ip`) VALUES
-('127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -1249,7 +1167,7 @@ CREATE TABLE `fs2_poll` (
   `poll_type` tinyint(4) DEFAULT NULL,
   `poll_participants` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`poll_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Daten für Tabelle `fs2_poll`
@@ -1262,7 +1180,8 @@ INSERT INTO `fs2_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll
 (4, 'Test1', 1316985420, 1319577420, 0, 1),
 (5, 'Test2', 1316985420, 1319577420, 0, 1),
 (6, 'Test3', 1316990760, 1319582760, 1, 1),
-(7, 'Test4', 1316990760, 1319582760, 0, 1);
+(7, 'Test4', 1316990760, 1319582760, 0, 1),
+(8, 'Wurst \\''oder\\" Käse?', 1340789940, 1354012740, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1277,7 +1196,7 @@ CREATE TABLE `fs2_poll_answers` (
   `answer` varchar(255) DEFAULT NULL,
   `answer_count` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`answer_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Daten für Tabelle `fs2_poll_answers`
@@ -1305,7 +1224,9 @@ INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`
 (6, 19, '', 0),
 (6, 20, '', 0),
 (7, 21, 'asd', 1),
-(7, 22, 'asd', 0);
+(7, 22, 'asd', 0),
+(8, 23, 'Wurst', 1),
+(8, 24, 'Käse', 0);
 
 -- --------------------------------------------------------
 
@@ -1341,7 +1262,7 @@ CREATE TABLE `fs2_poll_voters` (
   `ip_address` varchar(15) NOT NULL DEFAULT '0.0.0.0',
   `time` int(32) NOT NULL DEFAULT '0',
   PRIMARY KEY (`voter_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fs2_poll_voters`
@@ -1587,7 +1508,7 @@ CREATE TABLE `fs2_search_index` (
   `search_index_count` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1850 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1851 ;
 
 --
 -- Daten für Tabelle `fs2_search_index`
@@ -1821,7 +1742,8 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 (1625, 4, 'news', 1, 1),
 (1624, 3, 'news', 1, 1),
 (1623, 2, 'news', 1, 1),
-(1622, 1, 'news', 1, 5);
+(1622, 1, 'news', 1, 5),
+(1850, 33, 'news', 44, 2);
 
 -- --------------------------------------------------------
 
@@ -1837,7 +1759,7 @@ CREATE TABLE `fs2_search_time` (
   `search_time_date` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_time_id`),
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=195 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=196 ;
 
 --
 -- Daten für Tabelle `fs2_search_time`
@@ -1872,7 +1794,8 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 (166, 'news', 1, 1340294806),
 (178, 'news', 38, 1340294806),
 (179, 'news', 39, 1340294806),
-(180, 'news', 42, 1340294806);
+(180, 'news', 42, 1340294806),
+(195, 'news', 44, 1340787648);
 
 -- --------------------------------------------------------
 
@@ -2209,7 +2132,7 @@ CREATE TABLE `fs2_user` (
 
 INSERT INTO `fs2_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
 (1, 'admin', 'fed81761ca322b59c39599ab264e9129', '5Y5FNoZlgO', 'mail@sweil.de', 1, 0, 1, 1302517173, 0, '', '', '', '', '', ''),
-(2, 'test', '7536490f62673f20cf771bca4767799b', 'EcA0ybxfP1', 'asd@hallo.de', 1, 0, 0, 1306281600, 0, '', '', '', '', '', '');
+(2, 'test', '7536490f62673f20cf771bca4767799b', 'EcA0ybxfP1', 'asd@hallo.de', 1, 1, 0, 1306274400, 0, '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -2230,7 +2153,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1340744156);
+('127.0.0.1', 1, 1341245080);
 
 -- --------------------------------------------------------
 

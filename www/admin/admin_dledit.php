@@ -39,8 +39,9 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
         }
 
         // Neues Bild hochladen
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_config', $FD->sql()->conn() );
-        $admin_dl_config_arr = mysql_fetch_assoc($index);
+        $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
+        $admin_dl_config_arr = json_array_decode($data);        
+
         if ($_FILES['dlimg']['name'] != '')
         {
             $upload = upload_img($_FILES['dlimg'], 'images/downloads/', $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr['screen_x'], $admin_dl_config_arr['screen_y']);
@@ -198,8 +199,8 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
     }
     $_POST['options'] += $_POST['optionsadd'];
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_config', $FD->sql()->conn() );
-    $admin_dl_config_arr = mysql_fetch_assoc($index);
+    $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
+    $admin_dl_config_arr = json_array_decode($data);
 
     echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">

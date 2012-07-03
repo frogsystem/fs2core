@@ -26,36 +26,12 @@ $index = mysql_query ( '
 $today_arr = mysql_fetch_assoc ( $index );
 
 
-// Visitors online
-$index = mysql_query ( "
-                        SELECT
-                            count(`ip`) AS 'total'
-                        FROM
-                            `".$FD->config('pref').'useronline`
-', $FD->sql()->conn() );
-$useronline_arr['total'] = mysql_result ( $index, 0, 'total' );
+// Any users online
+$online = get_online_ips();
 
-// Registered online
-$index = mysql_query ( "
-                        SELECT
-                            count(`ip`) AS 'registered'
-                        FROM
-                            `".$FD->config('pref').'useronline`
-                        WHERE
-                            `user_id` != 0
-', $FD->sql()->conn() );
-$useronline_arr['registered'] = mysql_result ( $index, 0, 'registered' );
-
-// Guests online
-$index = mysql_query ( "
-                        SELECT
-                            count(`ip`) AS 'guests'
-                        FROM
-                            `".$FD->config('pref').'useronline`
-                        WHERE
-                            `user_id` = 0
-', $FD->sql()->conn() );
-$useronline_arr['guests'] = mysql_result ( $index, 0, 'guests' );
+$useronline_arr['total'] = $online['all'];
+$useronline_arr['registered'] = $online['users'];
+$useronline_arr['guests'] = $online['guests'];
 
 
 // Create Template
