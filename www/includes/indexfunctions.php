@@ -1023,7 +1023,7 @@ function count_hit ( $GOTO )
 /////////////////////
 //// count visit ////
 /////////////////////
-function count_visit ( $GOTO )
+function count_visit ()
 {
     global $FD;
 
