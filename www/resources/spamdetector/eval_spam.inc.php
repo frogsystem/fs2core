@@ -1,7 +1,7 @@
 <?php
 /*
     This file is part of the Frogsystem Spam Detector.
-    Copyright (C) 2011  Thoronador
+    Copyright (C) 2011, 2012  Thoronador
 
     The Frogsystem Spam Detector is free software: you can redistribute it
     and/or modify it under the terms of the GNU General Public License as
@@ -19,7 +19,7 @@
     Additional permission under GNU GPL version 3 section 7
 
     If you modify this Program, or any covered work, by linking or combining it
-    with Frogsystem 2 (or a modified version of Frogsystem 2), containing parts
+    with Frogsystem (or a modified version of Frogsystem), containing parts
     covered by the terms of Creative Commons Attribution-ShareAlike 3.0, the
     licensors of this Program grant you additional permission to convey the
     resulting work. Corresponding Source for a non-source form of such a
@@ -88,12 +88,36 @@
                         for an unregistered user
          poster_name  - the name of the user who posted the comment
          comment_text - the comment's complete text
+         use_b8       - set this to true to use b8 ("Bayesian") evaluation
+         b8           - preinitialised instance of the b8 class
   */
-  function spamEvaluation($title, $poster_id, $poster_name, $comment_text)
+  function spamEvaluation($title, $poster_id, $poster_name, $comment_text, $use_b8=false, &$b8=NULL)
   {
+    $comment_text = strtolower($comment_text);
+    if ($use_b8)
+    {
+      require_once(FS2_ROOT_PATH.'/b8/b8.php');
+      if ($b8==NULL)
+      {
+        $success = 'No b8 instance passed to spamEvaluation() function!';
+      }
+      else
+      {
+        //check if b8 construction was successful
+        $success = $b8->validate();
+      }
+      if ($success!==true)
+      {
+		echo '<b>Error:</b> Could not initialize b8. error code: '.$success;
+		//will use "normal" evaluation instead
+		return spamEvaluation($title, $poster_id, $poster_name, $comment_text, false, $b8);
+	  }
+	  //pass comment title, poster's name and comment text as text
+	  // -- comment text is already in lower case, so no strtolower() on that part
+	  return $b8->classify(strtolower($title.' '.$poster_name).' '.$comment_text);
+    }//if b8
     //test for url tags in comment text
     // ---- raise level for every opening url tag
-    $comment_text = strtolower($comment_text);
     $spam_level = substr_count($comment_text, '[url=') //URL tag with name
                  + substr_count($comment_text, '[url]') //URL tag w/o name
                  + substr_count($comment_text, '[link') //invalid URL tag, but some bots seem to use that one
@@ -128,15 +152,26 @@
     return $spam_level;
   }//function
 
-  /* turns the given spam level into a human-readable text with approoriate
+  /* turns the given spam level into a human-readable text with appropriate
      colour and returns that as HTML code snippet
 
      parameters:
-         level - the spam level, an integer value (ideally the one returned by
-                 the spamEvaluation() function)
+         level - the spam level, an integer or float value (ideally the one
+                 returned by the spamEvaluation() function)
+                 If it is a float value, it will be interpreted as probability.
   */
   function spamLevelToText($level)
   {
+    if (is_float($level))
+    {
+      $percentage = round($level*100);
+      if ($level<=0.25) return '<font color="#00cc00">unwahrscheinlich ('.$percentage.'%)</font>';
+      if ($level<=0.5) return '<font color="#cccc00">gering ('.$percentage.'%)</font>';
+      if ($level<=0.75) return '<font color="#ff8000">mittel ('.$percentage.'%)</font>';
+      //higher than 75%
+      return '<font color="#ff0000"><b>hoch ('.$percentage.'%)</b></font>';
+    }
+    //usual integer-based stuff
     if ($level<=0) return '<font color="#00cc00">unwahrscheinlich</font>';
     if ($level==1) return '<font color="#cccc00">gering</font>';
     if ($level==2) return '<font color="#ff8000">mittel</font>';
