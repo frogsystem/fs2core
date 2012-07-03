@@ -58,9 +58,10 @@
  * Most template functions can't be used within feeds (e.g. applets).
  * So they won't be converted and should be removed.
  *
- * preserve   = don' convert, don't remove text representation
- * remove     = don' convert, remove text representation
- * softremove = convert if possible, preserve or remove others
+ * preserve     = don' convert, don't remove text representation
+ * remove       = don' convert, remove text representation
+ * softremove   = convert if possible, remove others
+ * softpreserve = convert if possible, preserve others
  *
  * $tpl_functions = "softremove";
  *
