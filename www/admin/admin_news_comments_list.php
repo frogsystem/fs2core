@@ -1,4 +1,4 @@
-<?php  if (!defined('ACP_GO')) die('Unauthorized access!');
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 /*
     This file is part of the Frogsystem Spam Detector.
     Copyright (C) 2011  Thoronador

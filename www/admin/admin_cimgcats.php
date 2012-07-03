@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 if(!isset($_POST['name'])) $_POST['name'] = '';
 if(!isset($_POST['description'])) $_POST['description'] = '';
 if(isset($_POST['add'])){

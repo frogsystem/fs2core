@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
     $TEMPLATE_GO = 'tpl_dl';
     $TEMPLATE_FILE = '0_downloads.tpl';

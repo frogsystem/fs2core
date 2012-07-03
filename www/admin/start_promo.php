@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 $index = mysql_query ( '
 						SELECT COUNT(`partner_id`) AS \'num_partner\'
 						FROM '.$FD->config('pref').'partner

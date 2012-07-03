@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
     $TEMPLATE_GO = 'style_js';
     $TEMPLATE_FILE = 'js';
     $TEMPLATE_EDIT = null;

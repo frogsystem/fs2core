@@ -1,4 +1,4 @@
-<?php if (ACP_GO == 'find_file') {
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 //identify directories
 function ftp_is_dir($conn, $dir) {
@@ -114,4 +114,4 @@ try {
 
 echo get_content_container('&nbsp;', $content);
 
-} ?>
+?>

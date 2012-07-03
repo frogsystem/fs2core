@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
     $TEMPLATE_GO = 'style_nav';
     $TEMPLATE_FILE = 'nav';
     $TEMPLATE_EDIT = null;

@@ -1,4 +1,4 @@
-<?php if (ACP_GO == 'applets_edit') {
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 #TODO: fileaccess
 
@@ -356,4 +356,4 @@ if ( !isset ( $_POST['applet_id'] ) )
 }
 
 
-} ?>
+?>

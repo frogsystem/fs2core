@@ -1,4 +1,4 @@
-<?php if (ACP_GO == 'find_user') {
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 // get script
 $adminpage->clearConds();
@@ -55,4 +55,4 @@ if (!empty($_POST['filter'])) {
     echo get_content_container('&nbsp;', $content);
 }
 
-} ?>
+?>

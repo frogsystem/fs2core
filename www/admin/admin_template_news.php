@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
     $TEMPLATE_GO = 'tpl_news';
     $TEMPLATE_FILE = '0_news.tpl';
     $TEMPLATE_EDIT = null;

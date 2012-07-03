@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 $active_style = $FD->config('style_tag');
 
 $index = mysql_query ( "

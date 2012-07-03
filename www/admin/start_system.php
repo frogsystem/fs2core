@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 $index = mysql_query ( "
                         SELECT COUNT(`alias_id`) AS 'num_aliases'
                         FROM `".$FD->config('pref').'aliases`

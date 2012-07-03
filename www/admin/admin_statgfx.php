@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 /* FS2 PHP Init */
 set_include_path('.');
 define('FS2_ROOT_PATH', './../', true);

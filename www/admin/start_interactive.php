@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 $index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_config', $FD->sql()->conn() );
 $config_arr = mysql_fetch_assoc($index);
 $date = date('U');

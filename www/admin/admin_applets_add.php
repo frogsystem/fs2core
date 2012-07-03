@@ -1,4 +1,4 @@
-<?php if (ACP_GO == 'applets_add') {
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 #TODO: fileaccess
 
@@ -149,4 +149,4 @@ echo '
                     </form>
 ';
 
-} ?>
+?>

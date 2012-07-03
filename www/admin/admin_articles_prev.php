@@ -1,4 +1,4 @@
-<?php if (ACP_GO == 'article_preview') {
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 
 // Reload Page
@@ -169,4 +169,4 @@ else {
 
 }
 
-} ?>
+?>

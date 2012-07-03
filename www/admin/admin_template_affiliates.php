@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
     $TEMPLATE_GO = 'tpl_affiliates';
     $TEMPLATE_FILE = '0_affiliates.tpl';
     $TEMPLATE_EDIT = null;

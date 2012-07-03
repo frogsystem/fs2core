@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 // Load existing "article_url"s in Array
 $url_arr = get_article_urls ();
 

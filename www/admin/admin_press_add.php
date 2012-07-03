@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 //////////////////////////////////////////////////
 //// Neues Pre-, Re oder Interview einstellen ////

@@ -1,4 +1,4 @@
-<?php if ( ACP_GO === 'start_general' ) {
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 // Online since
 $online_since = $sql->getRow('counter_stat', array('s_year', 's_month', 's_day'), array('O' => '`s_year`, `s_month`, `s_day`'));
@@ -51,4 +51,4 @@ $adminpage->addText('ref_date', $ref['date_time']);
 
 echo $adminpage->get('main');
 
-} ?>
+?>

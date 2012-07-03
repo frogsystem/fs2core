@@ -1,4 +1,4 @@
-<?php if (ACP_GO == 'news_add') {
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 
 ###################
@@ -281,4 +281,4 @@ if ( TRUE ) {
     echo $adminpage->get('main');
 }
 
-} ?>
+?>

@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 $index = mysql_query ( "
                         SELECT COUNT(`news_id`) AS 'num_news'
                         FROM ".$FD->config('pref').'news

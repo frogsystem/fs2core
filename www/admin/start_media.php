@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 $index = mysql_query ( "
 						SELECT COUNT(`cat_id`) AS 'num_gallery'
 						FROM ".$FD->config('pref').'screen_cat

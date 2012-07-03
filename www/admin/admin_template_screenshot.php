@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
     $TEMPLATE_GO = 'tpl_screens';
     $TEMPLATE_FILE = '0_screenshots.tpl';
