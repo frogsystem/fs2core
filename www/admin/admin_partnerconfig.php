@@ -1,43 +1,61 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+###################
+## Page Settings ##
+###################
+$used_cols = array('partner_anzahl', 'small_x', 'small_y', 'small_allow', 'big_x', 'big_y', 'big_allow', 'file_size');
+
+
 //////////////////////////////
 /// Partnerseite editieren ///
 //////////////////////////////
 
 if (isset($_POST['small_x']) && isset($_POST['small_y']) && isset($_POST['big_x']) && isset($_POST['big_y']) && isset($_POST['file_size']) && (isset($_POST['partner_anzahl']) && $_POST['partner_anzahl']>0))
 {
-    settype($_POST['small_x'], 'integer');
-    settype($_POST['small_y'], 'integer');
-    settype($_POST['big_x'], 'integer');
-    settype($_POST['big_y'], 'integer');
-    settype($_POST['partner_anzahl'], 'integer');
-    settype($_POST['file_size'], 'integer');
-    $update = 'UPDATE '.$FD->config('pref')."partner_config
-               SET partner_anzahl = '$_POST[partner_anzahl]',
-                   small_x = '$_POST[small_x]',
-                   small_y = '$_POST[small_y]',
-                   small_allow = '$_POST[small_allow]',
-                   big_x = '$_POST[big_x]',
-                   big_y = '$_POST[big_y]',
-                   big_allow = '$_POST[big_allow]',
-                   file_size = '$_POST[file_size]'";
-    mysql_query($update, $FD->sql()->conn() );
-    systext('Die Konfiguration wurde aktualisiert.');
+    // prepare data
+    $data = frompost($used_cols);    
+    
+    // save config
+    try {
+        $FD->saveConfig('affiliates', $data);
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );        
+    }
+
+    // Unset Vars
+    unset($_POST);
 }
 
 //////////////////////////////
 /// Partnerseite anzeigen ////
 //////////////////////////////
 
-else
+if ( TRUE )
 {
+    
+    // Display Error Messages
+    if (isset($_POST['sended'])) {
+        systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'partner_config', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc($index);
+    // Load Data from DB into Post
+    } else {
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'affiliates'"));
+        $data = json_array_decode($data['config_data']);
+        putintopost($data);
+    }    
+
+    // security functions
+    $_POST = array_map('killhtml', $_POST);
 
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="partner_config" name="go">
+                        <input type="hidden" value="1" name="sended">
                         <table border="0" cellpadding="4" cellspacing="0" >
                             <tr><td colspan="2" class="line">Einstellungen</td></tr>
                             <tr>
@@ -47,7 +65,7 @@ else
                                     <b>Permanente Partner werden grunds&auml;tzlich immer angezeigt!</b></font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="partner_anzahl" size="1" value="'.$config_arr['partner_anzahl'].'" maxlength="2"> Partnerseiten
+                                    <input class="text" name="partner_anzahl" size="1" value="'.$_POST['partner_anzahl'].'" maxlength="2"> Partnerseiten
                                     <br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
                                 </td>
                             </tr>
@@ -59,9 +77,9 @@ else
                                     <font class="small">Stellt die Gr&ouml;&szlig;e der kleinen Bilder ein.</font>
                                 </td>
                                 <td class="config" valign="top" width="30%">
-                                    <input class="text" size="5" name="small_x" value="'.$config_arr['small_x'].'" maxlength="4">
+                                    <input class="text" size="5" name="small_x" value="'.$_POST['small_x'].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="small_y" value="'.$config_arr['small_y'].'" maxlength="4"> Pixel
+                                    <input class="text" size="5" name="small_y" value="'.$_POST['small_y'].'" maxlength="4"> Pixel
                                 </td>
                             </tr>
                             <tr>
@@ -72,11 +90,11 @@ else
                                 <td class="config" valign="top" width="50%">
                                     <select name="small_allow">
                                         <option value="0"';
-                                        if ($config_arr['small_allow'] == 0)
+                                        if ($_POST['small_allow'] == 0)
                                             echo ' selected="selected"';
                                         echo'>m&uuml;ssen exakt diese Gr&ouml;&szlig;e haben</option>
                                         <option value="1"';
-                                        if ($config_arr['small_allow'] == 1)
+                                        if ($_POST['small_allow'] == 1)
                                             echo ' selected="selected"';
                                         echo'>d&uuml;rfen auch kleiner sein</option>
                                     </select>
@@ -88,9 +106,9 @@ else
                                     <font class="small">Stellt die Gr&ouml;&szlig;e der gro&szlig;en Bilder ein.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="5" name="big_x" value="'.$config_arr['big_x'].'" maxlength="3">
+                                    <input class="text" size="5" name="big_x" value="'.$_POST['big_x'].'" maxlength="3">
                                     x
-                                    <input class="text" size="5" name="big_y" value="'.$config_arr['big_y'].'" maxlength="3"> Pixel
+                                    <input class="text" size="5" name="big_y" value="'.$_POST['big_y'].'" maxlength="3"> Pixel
                                 </td>
                             </tr>
                             <tr>
@@ -101,11 +119,11 @@ else
                                 <td class="config" valign="top" width="50%">
                                     <select name="big_allow">
                                         <option value="0"';
-                                        if ($config_arr['big_allow'] == 0)
+                                        if ($_POST['big_allow'] == 0)
                                             echo ' selected="selected"';
                                         echo'>m&uuml;ssen exakt diese Gr&ouml;&szlig;e haben</option>
                                         <option value="1"';
-                                        if ($config_arr['big_allow'] == 1)
+                                        if ($_POST['big_allow'] == 1)
                                             echo ' selected="selected"';
                                         echo'>d&uuml;rfen auch kleiner sein</option>
                                     </select>
@@ -117,7 +135,7 @@ else
                                     <font class="small">Dateigr&ouml;&szlig;e, bis zu der Bilder hochgeladen werden k&ouml;nnen.</font>
                                 </td>
                                 <td class="config" valign="top" width="30%">
-                                    <input class="text" size="5" name="file_size" value="'.$config_arr['file_size'].'" maxlength="4"> KB
+                                    <input class="text" size="5" name="file_size" value="'.$_POST['file_size'].'" maxlength="4"> KB
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

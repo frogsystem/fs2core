@@ -12,7 +12,7 @@
 class ConfigInfo extends ConfigData {
 
     // startup
-    public function startup() {
+    protected function startup() {
         // set canonical paramters default to null (= no paramters)
         $this->setConfig('canonical', null);
     }

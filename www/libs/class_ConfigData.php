@@ -17,7 +17,7 @@ class ConfigData {
     // create config object
     // DO NOT OVERRIDE
     // use startup() for your code
-    final public function __construct($data, $json = false) {
+    final public  function __construct($data, $json = false) {
         // set start data
         if ($json) {
             $data = json_decode($data, true);
@@ -37,7 +37,7 @@ class ConfigData {
 
     // methode called on object init
     // override this methode
-    public function startup() {
+    protected function startup() {
         // do something here if you want
     }
 

@@ -12,7 +12,7 @@
 class ConfigEnv extends ConfigData {
 
     // startup
-    public function startup() {
+    protected function startup() {
         global $sql, $spam, $path;
 
         // set env data

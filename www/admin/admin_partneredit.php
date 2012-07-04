@@ -3,8 +3,9 @@
 //////////////////////////////
 /// Config laden /////////////
 //////////////////////////////
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'partner_config', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc($index);
+$FD->loadConfig('affiliates');
+$config_arr = $FD->configObject('affiliates')->getConfigArray();
+
 if ($config_arr['small_allow'] == 0) {
     $config_arr['small_allow_bool'] = true;
     $config_arr['small_allow_text'] = $FD->text('page', 'exact');

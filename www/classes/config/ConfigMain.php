@@ -12,7 +12,7 @@
 class ConfigMain extends ConfigData {
 
     // startup
-    public function startup() {
+    protected function startup() {
         global $sql, $spam, $path;
 
         // TODO: remove backwards compatibility, (soll in Zukunft nur in env)
