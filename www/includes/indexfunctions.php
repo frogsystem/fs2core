@@ -32,7 +32,6 @@ function cronjobs_daily ($save_time = null) {
     global $FD;
     
     // Run Cronjobs
-    delete_old_randoms();
     search_index();  
     clean_referers();
     HashMapper::deleteByTime();
@@ -50,7 +49,6 @@ function cronjobs_hourly ($save_time = null) {
     
     // Run Cronjobs
     
-    
     // save time
     if (!empty($save_time))
         $FD->saveConfig('cronjobs', array('last_cronjob_time_hourly' => $save_time));  
@@ -64,6 +62,7 @@ function cronjobs_instantly_bufferd ($save_time = null) {
     
     // Run Cronjobs
     clean_iplist();
+    clean_timed_preview_images();
     
     // save time
     if (!empty($save_time))
@@ -1122,20 +1121,18 @@ function save_referer ()
 }
 
 
-///////////////////////////////
-//// del old timed randoms ////
-///////////////////////////////
-function delete_old_randoms ()
-{
-  global $FD;
+//////////////////////////////////////////////////////////
+//// clean database from expired timed preview_images ////
+//////////////////////////////////////////////////////////
+function clean_timed_preview_images () {
+    global $FD;
+    $FD->loadConfig('preview_images');
 
-  //~ if ($FD->config('random_timed_deltime') != -1) {
-    //~ // Alte Zufallsbild-Einträge aus der Datenbank entfernen
-    //~ mysql_query('DELETE a
-                //~ FROM '.$FD->config('pref').'screen_random a, '.$FD->config('pref').'global_config b
-                //~ WHERE a.end < UNIX_TIMESTAMP()-b.random_timed_deltime', $FD->sql()->conn() );
-  //~ }
-  //TODO rewrite preview image module
+    // do we want to remove old entries?
+    if ($FD->config('preview_images', 'random_timed_deltime') != -1) {
+        // remove old entries
+        $FD->sql()->delete('screen_random', array('W' => "`end` < '".($FD->env('time')-$FD->config('preview_images', 'random_timed_deltime'))."'"));
+    }
 }
 
 
