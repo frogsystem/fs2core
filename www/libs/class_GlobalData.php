@@ -95,6 +95,14 @@ class GlobalData {
         
         // Load corresponding class and get config array
         return $this->createConfigObject($config['config_name'], $config['config_data'], true);
+    }
+    
+    
+    
+    // get access on a config object
+    public function getConfigObject($name) {
+        // Load corresponding class and get config array
+        return  $this->config[$name];
     }    
 
     // set config
@@ -111,9 +119,6 @@ class GlobalData {
         } else {
             Throw Exception('Invalid Call of method "setConfig"');
         }
-
-        //TODO backwards update $global_config_arr
-        //$this->setOldArray();
     }
 
     // set config
