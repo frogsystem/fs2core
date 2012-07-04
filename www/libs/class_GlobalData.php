@@ -47,14 +47,14 @@ class GlobalData {
     public function loadConfig($name) {
         // only if config not yet exists
         if (!$this->configExists($name))
-            $this->config[$name] = getConfigObjectFromDatabase($name);
+            $this->config[$name] = $this->getConfigObjectFromDatabase($name);
     }
     
     // reload config
     private function reloadConfig($name, $data = null, $json = false) {
         // get from DB
         if (empty($data)) {
-            $this->config[$name] = getConfigObjectFromDatabase($name);
+            $this->config[$name] = $this->getConfigObjectFromDatabase($name);
         
         // set data from input
         } else {
@@ -100,7 +100,7 @@ class GlobalData {
     
     
     // get access on a config object
-    public function getConfigObject($name) {
+    public function configObject($name) {
         // Load corresponding class and get config array
         return  $this->config[$name];
     }    
