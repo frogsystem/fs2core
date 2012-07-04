@@ -3,8 +3,8 @@
 $FD->setConfig('info', 'canonical', array('lang', 'cat', 'game'));
 
 // Get Config
-$index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'press_config`', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('press');
+$config_arr = $FD->configObject('press')->getConfigArray();
 
 
 // Local Functions

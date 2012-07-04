@@ -16,8 +16,7 @@ function get_poll_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
 }
 
 // Get Config Array
-$index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll_config`', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('polls');
 
 ////////////////////////////
 ///// Umfrage anzeigen /////
@@ -49,8 +48,8 @@ if ( $_GET['id'] ) {
     {
         if ($poll_arr['all_votes'] != 0) {
             $answer_arr['prozent'] = round ( $answer_arr['answer_count'] / $poll_arr['all_votes'] * 100, 1 );
-            $answer_arr['bar_width'] = round ( $answer_arr['answer_count'] / $poll_arr['all_votes']* $config_arr['answerbar_width'] );
-            $answer_arr['bar_width'] .= ( $config_arr['answerbar_type'] == 1 ) ? '%' : 'px' ;
+            $answer_arr['bar_width'] = round ( $answer_arr['answer_count'] / $poll_arr['all_votes']* $FD->cfg('polls', 'answerbar_width'));
+            $answer_arr['bar_width'] .= ( $FD->cfg('polls', 'answerbar_type') == 1 ) ? '%' : 'px' ;
         } else {
             $answer_arr['prozent'] = 0;
             $answer_arr['bar_width'] = '1px';

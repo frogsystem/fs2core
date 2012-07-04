@@ -15,7 +15,8 @@ require ( FS2_ROOT_PATH . 'includes/newfunctions.php' );
 
 if ( $FD->sql()->conn() )
 {
-    $config_arr = $sql->getById('player_config', '*', 1);
+    $FD->loadConfig('video_player');
+    $config_arr = $FD->configObject('video_player')->getConfigArray();
 
     // security functions
     settype ( $config_arr['cfg_loop'], 'integer' );

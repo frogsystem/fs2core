@@ -6,9 +6,7 @@
 ////////////////////////////
 /// Konfiguration laden ////
 ////////////////////////////
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_config', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc($index);
-
+$FD->loadConfig('polls');
 
 ///////////////////////
 /// Load Poll Data ////
@@ -123,8 +121,8 @@ if (isset($_POST['poll_id']) &&
     {
         if ($all_votes != 0) {
             $answer_arr['percentage'] = round($answer_arr['answer_count'] / $all_votes * 100, 1);
-            $answer_arr['bar_width'] = round($answer_arr['answer_count'] / $all_votes * $config_arr['answerbar_width'] );
-            if ( $config_arr['answerbar_type'] == 1 ) {
+            $answer_arr['bar_width'] = round($answer_arr['answer_count'] / $all_votes * $FD->cfg('polls', 'answerbar_width'));
+            if ( $FD->cfg('polls', 'answerbar_type') == 1 ) {
                 $answer_arr['bar_width'] .= '%';
             } else {
                 $answer_arr['bar_width'] .= 'px';

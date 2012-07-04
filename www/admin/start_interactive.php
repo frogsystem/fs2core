@@ -1,7 +1,5 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'poll_config', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc($index);
 $date = date('U');
 $index = mysql_query('SELECT * FROM '.$FD->config('pref')."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ", $FD->sql()->conn() );
 if ( $poll_arr = mysql_fetch_assoc($index) ) {

@@ -1,5 +1,10 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+###################
+## Page Settings ##
+###################
+$used_cols = array('game_navi', 'cat_navi', 'lang_navi', 'show_press', 'show_root', 'order_by', 'order_type');
+
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
@@ -7,24 +12,22 @@
 if (isset($_POST['sended'])
    )
 {
-    settype($_POST['game_navi'], 'integer');
-    settype($_POST['cat_navi'], 'integer');
-    settype($_POST['lang_navi'], 'integer');
-    settype($_POST['show_press'], 'integer');
-    settype($_POST['show_root'], 'integer');
-    $_POST['order_type'] = savesql($_POST['order_type']);
-    $_POST['order_by'] = savesql($_POST['order_by']);
+    // prepare data
+    $data = frompost($used_cols);
+      
+    // save config
+    try {
+        $FD->saveConfig('press', $data);
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );        
+    }
 
-    mysql_query('UPDATE '.$FD->config('pref')."press_config
-                 SET game_navi = '$_POST[game_navi]',
-                     cat_navi = '$_POST[cat_navi]',
-                     lang_navi = '$_POST[lang_navi]',
-                     show_press = '$_POST[show_press]',
-                     show_root = '$_POST[show_root]',
-                     order_type = '$_POST[order_type]',
-                     order_by = '$_POST[order_by]'
-                 WHERE id = '1'", $FD->sql()->conn() );
-    systext('Die Konfiguration wurde aktualisiert');
+    // Unset Vars
     unset($_POST);
 }
 
@@ -34,29 +37,19 @@ if (isset($_POST['sended'])
 
 if(true)
 {
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'press_config', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc($index);
+    // Display Error Messages
+    if (isset($_POST['sended'])) {
+        systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
-    if (isset($_POST['sended']))
-    {
-        $config_arr['game_navi'] = $_POST['game_navi'];
-        $config_arr['cat_navi'] = $_POST['cat_navi'];
-        $config_arr['lang_navi'] = $_POST['lang_navi'];
-        $config_arr['show_press'] = $_POST['show_press'];
-        $config_arr['show_root'] = $_POST['show_root'];
-        $config_arr['order_type'] = $_POST['order_type'];
-        $config_arr['order_by'] = $_POST['order_by'];
-
-        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
-    }
-
-    settype($config_arr['game_navi'], 'integer');
-    settype($config_arr['cat_navi'], 'integer');
-    settype($config_arr['lang_navi'], 'integer');
-    settype($config_arr['show_press'], 'integer');
-    settype($config_arr['show_root'], 'integer');
-    $config_arr['order_type'] = savesql($config_arr['order_type']);
-    $config_arr['order_by'] = savesql($config_arr['order_by']);
+    // Load Data from DB into Post
+    } else {
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'press'"));
+        $data = json_array_decode($data['config_data']);
+        putintopost($data);
+    }       
+    
+    // security functions
+    $_POST = array_map('killhtml', $_POST);
 
     echo'
                     <form action="" method="post">
@@ -72,11 +65,11 @@ if(true)
                                     <td class="config" valign="top" width="50%">
                                     <select name="show_press">
                                     <option value="1"';
-                 if ($config_arr['show_press'] == 1)
+                 if ($_POST['show_press'] == 1)
                    echo ' selected="selected"';
                  echo'>in allen Ordnern</option>
                                   <option value="0"';
-                 if ($config_arr['show_press'] == 0)
+                 if ($_POST['show_press'] == 0)
                    echo ' selected="selected"';
                  echo'>nur in Ordnern der letzten Ebene</option>
                                     </select>
@@ -90,11 +83,11 @@ if(true)
                                     <td class="config" valign="top" width="50%">
                                     <select name="show_root">
                                     <option value="0"';
-                 if ($config_arr['show_root'] == 0)
+                 if ($_POST['show_root'] == 0)
                    echo ' selected="selected"';
                  echo'>nicht anzeigen</option>
                            <option value="1"';
-                   if ($config_arr['show_root'] == 1)
+                   if ($_POST['show_root'] == 1)
                    echo ' selected="selected"';
                  echo'>anzeigen</option>
                                     </select>
@@ -107,13 +100,13 @@ if(true)
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <input type="checkbox" style="vertical-align:middle;" name="game_navi" value="1"';
-    if ($config_arr['game_navi'] == 1) {echo " checked=checked";}
+    if ($_POST['game_navi'] == 1) {echo " checked=checked";}
     echo'>Spiele<br />
                                     <input type="checkbox" style="vertical-align:middle;" name="cat_navi" value="1"';
-    if ($config_arr['cat_navi'] == 1) {echo " checked=checked";}
+    if ($_POST['cat_navi'] == 1) {echo " checked=checked";}
     echo'>Kategorien<br />
                                     <input type="checkbox" style="vertical-align:middle;" name="lang_navi" value="1"';
-    if ($config_arr['lang_navi'] == 1) {echo " checked=checked";}
+    if ($_POST['lang_navi'] == 1) {echo " checked=checked";}
     echo'>Sprachen
                                 </td>
                             </tr>
@@ -126,21 +119,21 @@ if(true)
                                     sortieren
                                     <select name="order_by">
                                     <option value="press_title"';
-                 if ($config_arr['order_by'] == "press_title")
+                 if ($_POST['order_by'] == "press_title")
                    echo ' selected="selected"';
                  echo'>nach Titel</option>
                                   <option value="press_date"';
-                 if ($config_arr['order_by'] == "press_date")
+                 if ($_POST['order_by'] == "press_date")
                    echo ' selected="selected"';
                  echo'>nach Datum</option>
                                     </select>,
                                     <select name="order_type">
                                     <option value="asc"';
-                 if ($config_arr['order_type'] == "asc")
+                 if ($_POST['order_type'] == "asc")
                    echo ' selected="selected"';
                  echo'>aufsteigend</option>
                                   <option value="desc"';
-                 if ($config_arr['order_type'] == "desc")
+                 if ($_POST['order_type'] == "desc")
                    echo ' selected="selected"';
                  echo'>absteigend</option>
                                     </select>
