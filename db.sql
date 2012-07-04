@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 02. Juli 2012 um 16:09
+-- Erstellungszeit: 04. Juli 2012 um 20:55
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -378,12 +378,14 @@ CREATE TABLE `fs2_cimg` (
   `hasthumb` tinyint(1) NOT NULL,
   `cat` mediumint(8) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `fs2_cimg`
 --
 
+INSERT INTO `fs2_cimg` (`id`, `name`, `type`, `hasthumb`, `cat`) VALUES
+(1, 'camerazoom-20111218133317187', 'jpg', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -397,14 +399,15 @@ CREATE TABLE `fs2_cimg_cats` (
   `name` varchar(25) NOT NULL,
   `description` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs2_cimg_cats`
 --
 
 INSERT INTO `fs2_cimg_cats` (`id`, `name`, `description`) VALUES
-(1, 'Test', '');
+(1, 'Test', ''),
+(2, 'dfgdf', 'gfgfg');
 
 -- --------------------------------------------------------
 
@@ -416,7 +419,7 @@ DROP TABLE IF EXISTS `fs2_config`;
 CREATE TABLE `fs2_config` (
   `config_name` varchar(30) NOT NULL,
   `config_data` text NOT NULL,
-  `config_loadhook` varchar(255) NOT NULL,
+  `config_loadhook` varchar(255) NOT NULL DEFAULT 'none',
   KEY `config_name` (`config_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -425,15 +428,21 @@ CREATE TABLE `fs2_config` (
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUES
-('main', '{\\"title\\":\\"Hansens wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}\\\\u00a0<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">\\\\u00a0{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab\\\\u00a0zur\\\\u00fcck<\\\\/a>\\\\u00a0|\\",\\"page_next\\":\\"|\\\\u00a0<a href=\\\\\\"{..url..}\\\\\\">weiter \\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"url_style\\":\\"default\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\",\\"count_referers\\":\\"1\\"}', 'startup'),
+('main', '{\\"title\\":\\"Hansen\\''s wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}\\\\u00a0<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">\\\\u00a0{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab\\\\u00a0zur\\\\u00fcck<\\\\/a>\\\\u00a0|\\",\\"page_next\\":\\"|\\\\u00a0<a href=\\\\\\"{..url..}\\\\\\">weiter \\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"url_style\\":\\"seo\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\",\\"count_referers\\":\\"1\\"}', 'startup'),
 ('system', '{\\"var_loop\\":20}', 'startup'),
 ('env', '{}', 'startup'),
 ('info', '{}', 'startup'),
 ('articles', '{\\"acp_per_page\\":\\"3\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"1\\",\\"com_sort\\":\\"ASC\\",\\"acp_view\\":\\"2\\"}', 'none'),
 ('search', '{\\"id\\":\\"0\\",\\"search_num_previews\\":\\"10\\",\\"search_and\\":\\"AND, and, &&\\",\\"search_or\\":\\"OR, or, ||\\",\\"search_xor\\":\\"XOR, xor\\",\\"search_not\\":\\"!, -\\",\\"search_wildcard\\":\\"*, %\\",\\"search_min_word_length\\":\\"3\\",\\"search_allow_phonetic\\":\\"1\\",\\"search_use_stopwords\\":\\"1\\"}', 'none'),
-('cronjobs', '{\\"last_cronjob_time\\":\\"1341245080\\",\\"last_cronjob_time_daily\\":\\"1341242825\\",\\"last_cronjob_time_hourly\\":\\"1341244996\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup'),
+('cronjobs', '{\\"last_cronjob_time\\":\\"1341435247\\",\\"last_cronjob_time_daily\\":\\"1341352999\\",\\"last_cronjob_time_hourly\\":\\"1341432281\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup'),
 ('captcha', '{\\"captcha_bg_color\\":\\"FAFCF1\\",\\"captcha_bg_transparent\\":\\"0\\",\\"captcha_text_color\\":\\"000000\\",\\"captcha_first_lower\\":\\"1\\",\\"captcha_first_upper\\":\\"5\\",\\"captcha_second_lower\\":\\"1\\",\\"captcha_second_upper\\":\\"5\\",\\"captcha_use_addition\\":\\"1\\",\\"captcha_use_subtraction\\":\\"1\\",\\"captcha_use_multiplication\\":\\"0\\",\\"captcha_create_easy_arithmetics\\":\\"1\\",\\"captcha_x\\":\\"58\\",\\"captcha_y\\":\\"18\\",\\"captcha_show_questionmark\\":\\"0\\",\\"captcha_use_spaces\\":\\"1\\",\\"captcha_show_multiplication_as_x\\":\\"1\\",\\"captcha_start_text_x\\":\\"0\\",\\"captcha_start_text_y\\":\\"0\\",\\"captcha_font_size\\":\\"5\\",\\"captcha_font_file\\":\\"\\"}', 'none'),
-('downloads', '{\\"screen_x\\":\\"1024\\",\\"screen_y\\":\\"768\\",\\"thumb_x\\":\\"120\\",\\"thumb_y\\":\\"90\\",\\"quickinsert\\":\\"test\\''\\",\\"dl_rights\\":\\"2\\",\\"dl_show_sub_cats\\":\\"1\\"}', 'none');
+('downloads', '{\\"screen_x\\":\\"1024\\",\\"screen_y\\":\\"768\\",\\"thumb_x\\":\\"120\\",\\"thumb_y\\":\\"90\\",\\"quickinsert\\":\\"test\\''\\",\\"dl_rights\\":\\"2\\",\\"dl_show_sub_cats\\":\\"1\\"}', 'none'),
+('affiliates', '{\\"partner_anzahl\\":\\"5\\",\\"small_x\\":\\"88\\",\\"small_y\\":\\"31\\",\\"big_x\\":\\"468\\",\\"big_y\\":\\"60\\",\\"big_allow\\":\\"1\\",\\"file_size\\":\\"1024\\",\\"small_allow\\":\\"0\\"}', 'none'),
+('news', '{\\"num_news\\":\\"11\\",\\"num_head\\":\\"5\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"2\\",\\"news_headline_lenght\\":\\"20\\",\\"acp_per_page\\":\\"15\\",\\"acp_view\\":\\"2\\",\\"com_sort\\":\\"DESC\\",\\"news_headline_ext\\":\\" ...\\",\\"acp_force_cat_selection\\":\\"1\\"}', 'none'),
+('video_player', '{\\"cfg_player_x\\":\\"500\\",\\"cfg_player_y\\":\\"280\\",\\"cfg_autoplay\\":\\"0\\",\\"cfg_autoload\\":\\"1\\",\\"cfg_buffer\\":\\"5\\",\\"cfg_buffermessage\\":\\"Buffering _n_\\",\\"cfg_buffercolor\\":\\"#FFFFFF\\",\\"cfg_bufferbgcolor\\":\\"#000000\\",\\"cfg_buffershowbg\\":\\"0\\",\\"cfg_titlesize\\":\\"20\\",\\"cfg_titlecolor\\":\\"#FFFFFF\\",\\"cfg_margin\\":\\"5\\",\\"cfg_showstop\\":\\"1\\",\\"cfg_showvolume\\":\\"1\\",\\"cfg_showtime\\":\\"1\\",\\"cfg_showplayer\\":\\"autohide\\",\\"cfg_showloading\\":\\"always\\",\\"cfg_showfullscreen\\":\\"1\\",\\"cfg_showmouse\\":\\"autohide\\",\\"cfg_loop\\":\\"0\\",\\"cfg_playercolor\\":\\"#a6a6a6\\",\\"cfg_loadingcolor\\":\\"#000000\\",\\"cfg_bgcolor\\":\\"#FAFCF1\\",\\"cfg_bgcolor1\\":\\"#E7E7E7\\",\\"cfg_bgcolor2\\":\\"#cccccc\\",\\"cfg_buttoncolor\\":\\"#000000\\",\\"cfg_buttonovercolor\\":\\"#E7E7E7\\",\\"cfg_slidercolor1\\":\\"#cccccc\\",\\"cfg_slidercolor2\\":\\"#bbbbbb\\",\\"cfg_sliderovercolor\\":\\"#E7E7E7\\",\\"cfg_loadonstop\\":\\"1\\",\\"cfg_onclick\\":\\"playpause\\",\\"cfg_ondoubleclick\\":\\"fullscreen\\",\\"cfg_playertimeout\\":\\"1500\\",\\"cfg_videobgcolor\\":\\"#000000\\",\\"cfg_volume\\":\\"100\\",\\"cfg_shortcut\\":\\"1\\",\\"cfg_playeralpha\\":\\"100\\",\\"cfg_top1_url\\":\\"\\",\\"cfg_top1_x\\":\\"0\\",\\"cfg_top1_y\\":\\"0\\",\\"cfg_showiconplay\\":\\"1\\",\\"cfg_iconplaycolor\\":\\"#FFFFFF\\",\\"cfg_iconplaybgcolor\\":\\"#000000\\",\\"cfg_iconplaybgalpha\\":\\"75\\",\\"cfg_showtitleandstartimage\\":\\"0\\"}', 'none'),
+('polls', '{\\"answerbar_width\\":\\"100\\",\\"answerbar_type\\":\\"0\\"}', 'none'),
+('press', '{\\"game_navi\\":\\"1\\",\\"cat_navi\\":\\"1\\",\\"lang_navi\\":\\"0\\",\\"show_press\\":\\"0\\",\\"show_root\\":\\"0\\",\\"order_by\\":\\"press_date\\",\\"order_type\\":\\"desc\\"}', 'none'),
+('preview_images', '{\\"active\\":\\"1\\",\\"type_priority\\":\\"1\\",\\"use_priority_only\\":\\"0\\",\\"timed_deltime\\":\\"604800\\"}', 'none');
 
 -- --------------------------------------------------------
 
@@ -458,7 +467,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 73, 2480, 2, 4, 65528, 1);
+(1, 77, 2519, 2, 4, 65528, 1);
 
 -- --------------------------------------------------------
 
@@ -481,7 +490,7 @@ CREATE TABLE `fs2_counter_ref` (
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://localhost/', 55, 1302557491, 1307980522),
-('http://localhost/fs2/', 7, 1316955935, 1340460035);
+('http://localhost/fs2/', 18, 1316955935, 1341432966);
 
 -- --------------------------------------------------------
 
@@ -562,7 +571,9 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2012, 6, 25, 1, 7),
 (2012, 6, 26, 2, 62),
 (2012, 6, 27, 1, 6),
-(2012, 7, 2, 1, 13);
+(2012, 7, 2, 1, 23),
+(2012, 7, 3, 1, 10),
+(2012, 7, 4, 2, 19);
 
 -- --------------------------------------------------------
 
@@ -788,7 +799,7 @@ CREATE TABLE `fs2_hashes` (
   `deleteTime` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Daten für Tabelle `fs2_hashes`
@@ -892,41 +903,6 @@ INSERT INTO `fs2_news_comments` (`comment_id`, `news_id`, `comment_poster`, `com
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_news_config`
---
-
-DROP TABLE IF EXISTS `fs2_news_config`;
-CREATE TABLE `fs2_news_config` (
-  `id` tinyint(1) NOT NULL,
-  `num_news` int(11) DEFAULT NULL,
-  `num_head` int(11) DEFAULT NULL,
-  `html_code` tinyint(4) DEFAULT NULL,
-  `fs_code` tinyint(4) DEFAULT NULL,
-  `para_handling` tinyint(4) DEFAULT NULL,
-  `cat_pic_x` smallint(4) NOT NULL DEFAULT '0',
-  `cat_pic_y` smallint(4) NOT NULL DEFAULT '0',
-  `cat_pic_size` smallint(4) NOT NULL DEFAULT '0',
-  `com_rights` tinyint(1) NOT NULL DEFAULT '1',
-  `com_antispam` tinyint(1) NOT NULL DEFAULT '1',
-  `com_sort` varchar(4) NOT NULL DEFAULT 'DESC',
-  `news_headline_lenght` smallint(3) NOT NULL DEFAULT '-1',
-  `news_headline_ext` varchar(30) NOT NULL,
-  `acp_per_page` smallint(3) NOT NULL DEFAULT '15',
-  `acp_view` tinyint(1) NOT NULL DEFAULT '1',
-  `acp_force_cat_selection` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_news_config`
---
-
-INSERT INTO `fs2_news_config` (`id`, `num_news`, `num_head`, `html_code`, `fs_code`, `para_handling`, `cat_pic_x`, `cat_pic_y`, `cat_pic_size`, `com_rights`, `com_antispam`, `com_sort`, `news_headline_lenght`, `news_headline_ext`, `acp_per_page`, `acp_view`, `acp_force_cat_selection`) VALUES
-(1, 10, 5, 2, 4, 4, 150, 150, 1024, 2, 2, 'DESC', 20, ' ...', 15, 2, 1);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs2_news_links`
 --
 
@@ -1002,33 +978,6 @@ INSERT INTO `fs2_partner` (`partner_id`, `partner_name`, `partner_link`, `partne
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_partner_config`
---
-
-DROP TABLE IF EXISTS `fs2_partner_config`;
-CREATE TABLE `fs2_partner_config` (
-  `id` tinyint(1) NOT NULL DEFAULT '1',
-  `partner_anzahl` tinyint(2) NOT NULL DEFAULT '0',
-  `small_x` int(4) NOT NULL DEFAULT '0',
-  `small_y` int(4) NOT NULL DEFAULT '0',
-  `small_allow` tinyint(1) NOT NULL DEFAULT '0',
-  `big_x` int(4) NOT NULL DEFAULT '0',
-  `big_y` int(4) NOT NULL DEFAULT '0',
-  `big_allow` tinyint(1) NOT NULL DEFAULT '0',
-  `file_size` int(4) NOT NULL DEFAULT '1024',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_partner_config`
---
-
-INSERT INTO `fs2_partner_config` (`id`, `partner_anzahl`, `small_x`, `small_y`, `small_allow`, `big_x`, `big_y`, `big_allow`, `file_size`) VALUES
-(1, 5, 88, 31, 0, 468, 60, 1, 1024);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs2_player`
 --
 
@@ -1050,71 +999,6 @@ CREATE TABLE `fs2_player` (
 
 INSERT INTO `fs2_player` (`video_id`, `video_type`, `video_x`, `video_title`, `video_lenght`, `video_desc`, `dl_id`) VALUES
 (1, 1, 'http://dl.worldofplayers.de/wop/witcher/witcher2/sonstiges/ausgepackt.flv', 'Test', 80, 'Test', 0);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_player_config`
---
-
-DROP TABLE IF EXISTS `fs2_player_config`;
-CREATE TABLE `fs2_player_config` (
-  `id` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_player_x` mediumint(9) NOT NULL,
-  `cfg_player_y` mediumint(9) NOT NULL,
-  `cfg_autoplay` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_autoload` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_buffer` smallint(2) NOT NULL DEFAULT '5',
-  `cfg_buffermessage` varchar(100) NOT NULL DEFAULT 'Buffering _n_',
-  `cfg_buffercolor` varchar(7) NOT NULL DEFAULT '#FFFFFF',
-  `cfg_bufferbgcolor` varchar(7) NOT NULL DEFAULT '#000000',
-  `cfg_buffershowbg` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_titlesize` smallint(2) NOT NULL DEFAULT '20',
-  `cfg_titlecolor` varchar(7) NOT NULL DEFAULT '#FFFFFF',
-  `cfg_margin` smallint(2) NOT NULL DEFAULT '0',
-  `cfg_showstop` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_showvolume` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_showtime` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_showplayer` varchar(8) NOT NULL DEFAULT 'always',
-  `cfg_showloading` varchar(8) NOT NULL DEFAULT 'always',
-  `cfg_showfullscreen` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_showmouse` varchar(8) NOT NULL DEFAULT 'autohide',
-  `cfg_loop` tinyint(1) NOT NULL DEFAULT '0',
-  `cfg_playercolor` varchar(7) NOT NULL,
-  `cfg_loadingcolor` varchar(7) NOT NULL,
-  `cfg_bgcolor` varchar(7) NOT NULL,
-  `cfg_bgcolor1` varchar(7) NOT NULL,
-  `cfg_bgcolor2` varchar(7) NOT NULL,
-  `cfg_buttoncolor` varchar(7) NOT NULL,
-  `cfg_buttonovercolor` varchar(7) NOT NULL,
-  `cfg_slidercolor1` varchar(7) NOT NULL,
-  `cfg_slidercolor2` varchar(7) NOT NULL,
-  `cfg_sliderovercolor` varchar(7) NOT NULL,
-  `cfg_loadonstop` tinyint(1) NOT NULL DEFAULT '0',
-  `cfg_onclick` varchar(9) NOT NULL DEFAULT 'playpause',
-  `cfg_ondoubleclick` varchar(10) NOT NULL DEFAULT 'fullscreen',
-  `cfg_playertimeout` mediumint(6) NOT NULL DEFAULT '1500',
-  `cfg_videobgcolor` varchar(7) NOT NULL,
-  `cfg_volume` smallint(3) NOT NULL DEFAULT '80',
-  `cfg_shortcut` tinyint(1) NOT NULL DEFAULT '0',
-  `cfg_playeralpha` smallint(3) NOT NULL DEFAULT '0',
-  `cfg_top1_url` varchar(100) NOT NULL,
-  `cfg_top1_x` smallint(4) NOT NULL,
-  `cfg_top1_y` smallint(4) NOT NULL,
-  `cfg_showiconplay` tinyint(1) NOT NULL DEFAULT '1',
-  `cfg_iconplaycolor` varchar(7) NOT NULL,
-  `cfg_iconplaybgcolor` varchar(7) NOT NULL,
-  `cfg_iconplaybgalpha` smallint(3) NOT NULL DEFAULT '100',
-  `cfg_showtitleandstartimage` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_player_config`
---
-
-INSERT INTO `fs2_player_config` (`id`, `cfg_player_x`, `cfg_player_y`, `cfg_autoplay`, `cfg_autoload`, `cfg_buffer`, `cfg_buffermessage`, `cfg_buffercolor`, `cfg_bufferbgcolor`, `cfg_buffershowbg`, `cfg_titlesize`, `cfg_titlecolor`, `cfg_margin`, `cfg_showstop`, `cfg_showvolume`, `cfg_showtime`, `cfg_showplayer`, `cfg_showloading`, `cfg_showfullscreen`, `cfg_showmouse`, `cfg_loop`, `cfg_playercolor`, `cfg_loadingcolor`, `cfg_bgcolor`, `cfg_bgcolor1`, `cfg_bgcolor2`, `cfg_buttoncolor`, `cfg_buttonovercolor`, `cfg_slidercolor1`, `cfg_slidercolor2`, `cfg_sliderovercolor`, `cfg_loadonstop`, `cfg_onclick`, `cfg_ondoubleclick`, `cfg_playertimeout`, `cfg_videobgcolor`, `cfg_volume`, `cfg_shortcut`, `cfg_playeralpha`, `cfg_top1_url`, `cfg_top1_x`, `cfg_top1_y`, `cfg_showiconplay`, `cfg_iconplaycolor`, `cfg_iconplaybgcolor`, `cfg_iconplaybgalpha`, `cfg_showtitleandstartimage`) VALUES
-(1, 500, 280, 0, 1, 5, 'Buffering _n_', '#FFFFFF', '#000000', 0, 20, '#FFFFFF', 5, 1, 1, 1, 'autohide', 'always', 1, 'autohide', 0, '#a6a6a6', '#000000', '#FAFCF1', '#E7E7E7', '#cccccc', '#000000', '#E7E7E7', '#cccccc', '#bbbbbb', '#E7E7E7', 1, 'playpause', 'fullscreen', 1500, '#000000', 100, 1, 100, '', 0, 0, 1, '#FFFFFF', '#000000', 75, 0);
 
 -- --------------------------------------------------------
 
@@ -1195,27 +1079,6 @@ INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_poll_config`
---
-
-DROP TABLE IF EXISTS `fs2_poll_config`;
-CREATE TABLE `fs2_poll_config` (
-  `id` tinyint(1) NOT NULL,
-  `answerbar_width` smallint(3) NOT NULL DEFAULT '100',
-  `answerbar_type` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_poll_config`
---
-
-INSERT INTO `fs2_poll_config` (`id`, `answerbar_width`, `answerbar_type`) VALUES
-(1, 100, 1);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs2_poll_voters`
 --
 
@@ -1287,32 +1150,6 @@ INSERT INTO `fs2_press_admin` (`id`, `type`, `title`) VALUES
 (4, 1, 'Beispiel-Spiel'),
 (5, 2, 'Review'),
 (6, 2, 'Interview');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_press_config`
---
-
-DROP TABLE IF EXISTS `fs2_press_config`;
-CREATE TABLE `fs2_press_config` (
-  `id` mediumint(8) NOT NULL DEFAULT '1',
-  `game_navi` tinyint(1) NOT NULL DEFAULT '0',
-  `cat_navi` tinyint(1) NOT NULL DEFAULT '0',
-  `lang_navi` tinyint(1) NOT NULL DEFAULT '0',
-  `show_press` tinyint(1) NOT NULL DEFAULT '1',
-  `show_root` tinyint(1) NOT NULL DEFAULT '0',
-  `order_by` varchar(10) NOT NULL,
-  `order_type` varchar(4) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_press_config`
---
-
-INSERT INTO `fs2_press_config` (`id`, `game_navi`, `cat_navi`, `lang_navi`, `show_press`, `show_root`, `order_by`, `order_type`) VALUES
-(1, 1, 1, 0, 0, 0, 'press_date', 'desc');
 
 -- --------------------------------------------------------
 
@@ -1434,28 +1271,6 @@ CREATE TABLE `fs2_screen_random` (
 -- Daten für Tabelle `fs2_screen_random`
 --
 
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_screen_random_config`
---
-
-DROP TABLE IF EXISTS `fs2_screen_random_config`;
-CREATE TABLE `fs2_screen_random_config` (
-  `id` mediumint(8) NOT NULL DEFAULT '1',
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  `type_priority` tinyint(1) NOT NULL DEFAULT '1',
-  `use_priority_only` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_screen_random_config`
---
-
-INSERT INTO `fs2_screen_random_config` (`id`, `active`, `type_priority`, `use_priority_only`) VALUES
-(1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -2117,7 +1932,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1341245080);
+('127.0.0.1', 1, 1341434783);
 
 -- --------------------------------------------------------
 
