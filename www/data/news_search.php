@@ -3,7 +3,7 @@
 $FD->setConfig('info', 'canonical', array('keyword', 'year', 'month'));
 
 // Load News Config
-$FD->loadConfigOnce('news');
+$FD->loadConfig('news');
 
 ////////////////////////////////
 ////// Suchfeld erzeugen ///////

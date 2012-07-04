@@ -42,24 +42,28 @@ class GlobalData {
     }
 
 
-    // load configs
+    // load config
+    // use reloadConfig if you want to get the data fresh from the databse
     public function loadConfig($name) {
-        // Load config from DB
-        $config = $this->sql->getRow('config', '*', array('W' => "`config_name` = '".$name."'"));
-        
-        // Load corresponding class and get config array
-        $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
+        // only if config not yet exists
+        if (!$this->configExists($name))
+            $this->config[$name] = getConfigObjectFromDatabase($name);
     }
     
-    // load configs only if not yet loaded
-    public function loadConfigOnce($name) {
-        // only if not yet loaded
-        if (!$this->configExists($name))
-            $this->loadConfig($name);
+    // reload config
+    private function reloadConfig($name, $data = null, $json = false) {
+        // get from DB
+        if (empty($data)) {
+            $this->config[$name] = getConfigObjectFromDatabase($name);
+        
+        // set data from input
+        } else {
+            $this->config[$name] = $this->createConfigObject($name, $data, $json);
+        }
     }
     
     // load configs by hook
-    private function loadConfigsByHook($hook) {
+    public function loadConfigsByHook($hook, $reload = false) {
 
         // include ConfigData
         require_once(FS2_ROOT_PATH . 'libs/class_ConfigData.php');
@@ -68,22 +72,8 @@ class GlobalData {
         $data = $this->sql->getData('config', '*', array('W' => "`config_loadhook` = '".$hook."'") );
         foreach ($data as $config) {
             // Load corresponding class and get config array
-            $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
-        }
-
-        //$this->setOldArray();   // TODO remove backwards compatibility
-    }
-    
-    
-    // reload config
-    private function reloadConfig($name, $data = null, $json = false) {
-        // get from DB
-        if (empty($data)) {
-            $this->loadConfig($name);
-        
-        // set data from input
-        } else {
-            $this->config['$name'] = $this->createConfigObject($name, $data, $json);
+            if ($reload || !$this->configExists($name))
+                $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
         }
     }
     
@@ -97,6 +87,15 @@ class GlobalData {
             $class_name = 'ConfigData';
         return new $class_name($data, $json);
     }
+   
+    // create config object from db
+    private function getConfigObjectFromDatabase($name) {
+        // Load config from DB
+        $config = $this->sql->getRow('config', '*', array('W' => "`config_name` = '".$name."'"));
+        
+        // Load corresponding class and get config array
+        return $this->createConfigObject($config['config_name'], $config['config_data'], true);
+    }    
 
     // set config
     public function setConfig() {

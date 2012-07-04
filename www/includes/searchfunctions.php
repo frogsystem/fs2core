@@ -1,7 +1,7 @@
 <?php
 function get_default_operators () {
     global $FD;
-    $FD->loadConfigOnce('search');
+    $FD->loadConfig('search');
 
     $and = explode(',', $FD->cfg('search', 'search_and'));
     $or  = explode(',', $FD->cfg('search', 'search_or'));
@@ -248,7 +248,7 @@ function compress_search_data ( $TEXT ) {
 
 function delete_stopwords ($TEXT) {
     global $FD;
-    $FD->loadConfigOnce('search');
+    $FD->loadConfig('search');
 
     $locSearch = array();
     $locReplace = array();

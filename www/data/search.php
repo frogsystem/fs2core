@@ -9,7 +9,7 @@ $news_cols = array('news_id', 'news_title', 'news_date');
 $article_cols = array('article_id', 'article_url', 'article_title', 'article_date');
 $dl_cols = array('dl_id', 'dl_date', 'dl_name');
 $config_cols = array('search_num_previews', 'search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard', 'search_min_word_length', 'search_allow_phonetic', 'search_use_stopwords');
-$FD->loadConfigOnce('search');
+$FD->loadConfig('search');
 
 
 // Security Functions

@@ -150,7 +150,7 @@ abstract class Feed {
         $this->lastUpdate = 0;
 
         // News Config + Infos
-        $FD->loadConfigOnce('news');
+        $FD->loadConfig('news');
 
         // Get News from DB
         $news_arr = $FD->sql()->getData('news', array('news_id', 'news_text', 'news_title', 'news_date', 'user_id'), array(
