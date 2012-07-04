@@ -1,11 +1,8 @@
 <?php
 // Load Config Array
-$index = mysql_query ( '
-                        SELECT *
-                        FROM `'.$FD->config('pref').'screen_random_config`
-                        WHERE `id` = 1
-', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('preview_images');
+$random_config_arr = $FD->configObject('preview_images')->getConfigArray();
+
 
 // Load Config Array
 $index = mysql_query ( '
@@ -13,7 +10,7 @@ $index = mysql_query ( '
                         FROM `'.$FD->config('pref').'screen_config`
                         WHERE `id` = 1
 ', $FD->sql()->conn() );
-$config_arr = array_merge ( (array)$config_arr, (array)mysql_fetch_assoc ( $index ) );
+$config_arr = array_merge ( (array)$random_config_arr, (array)mysql_fetch_assoc ( $index ) );
 
 // Check System
 if ( $config_arr['active'] == 1 ) {
