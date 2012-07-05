@@ -33,8 +33,8 @@ if ($FD->sql()->conn() )
     $_GET['single'] = ( isset ( $_GET['single'] ) ) ? TRUE : FALSE;
 
     // Config Array
-    $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'screen_config', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc ( $index ) ;
+    $FD->loadConfig('screens');
+    $config_arr = $FD->configObject('screens')->getConfigArray();
 
     // No Image found yet
     $image_found = FALSE;

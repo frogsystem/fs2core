@@ -26,12 +26,8 @@ settype ( $_GET['order'], 'integer' );
 
 $_GET['sort'] = ( in_array ( $_GET['sort'], array ( 'id', 'name', 'mail', 'reg_date', 'num_news', 'num_comments', 'num_articles', 'num_downloads' ) ) ) ? $_GET['sort'] : 'name';
 
-$index = mysql_query ( '
-    SELECT *
-    FROM `'.$FD->config('pref')."user_config`
-    WHERE `id` = '1'
-", $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('users');
+$config_arr = $FD->configObject('users')->getConfigArray();
 
 // Get Number of Users
 $index = mysql_query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`', $FD->sql()->conn() );

@@ -1,5 +1,9 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+//load config
+$FD->loadConfig('screens');
+$config_arr = $FD->configObject('screens')->getConfigArray();
+
 //////////////////////////////
 //// Screenshot editieren ////
 //////////////////////////////
@@ -45,9 +49,6 @@ elseif (isset($_POST['screenid']))
 
     if ($_POST['do'] == 'newthumb')
     {
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config');  // Screenshot Konfiguration auslesen
-        $config_arr = mysql_fetch_assoc($index);
-
         image_delete('images/screenshots/',$_POST['screenid'].'_s');
 
         $newthumb = create_thumb_from(image_url('images/screenshots/',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);

@@ -1,5 +1,10 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+###################
+## Page Settings ##
+###################
+$used_cols = array('screen_x', 'screen_y', 'screen_thumb_x', 'screen_thumb_y', 'screen_size', 'screen_rows', 'screen_cols', 'screen_order', 'screen_sort', 'show_type', 'show_size_x', 'show_size_y', 'show_img_x', 'show_img_y', 'wp_x', 'wp_y', 'wp_thumb_x', 'wp_thumb_y', 'wp_size', 'wp_rows', 'wp_cols', 'wp_order', 'wp_sort');
+
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
@@ -28,97 +33,44 @@ if (TRUE
     && (isset($_POST['wp_cols']) AND $_POST['wp_cols'] != '' AND $_POST['wp_cols'] != '0')
    )
 {
-    settype($_POST['show_type'], 'integer');
-    settype($_POST['show_size_x'], 'integer');
-    settype($_POST['show_size_y'], 'integer');
-    settype($_POST['show_img_x'], 'integer');
-    settype($_POST['show_img_y'], 'integer');
+    // prepare data
+    $data = frompost($used_cols);
+      
+    // save config
+    try {
+        $FD->saveConfig('screens', $data);
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );        
+    }
 
-    settype($_POST['screen_x'], 'integer');
-    settype($_POST['screen_y'], 'integer');
-    settype($_POST['screen_thumb_x'], 'integer');
-    settype($_POST['screen_thumb_y'], 'integer');
-    settype($_POST['screen_size'], 'integer');
-    settype($_POST['screen_rows'], 'integer');
-    settype($_POST['screen_cols'], 'integer');
-    $_POST['screen_order'] = savesql($_POST['screen_order']);
-    $_POST['screen_sort'] = savesql($_POST['screen_sort']);
-
-    settype($_POST['wp_x'], 'integer');
-    settype($_POST['wp_y'], 'integer');
-    settype($_POST['wp_thumb_x'], 'integer');
-    settype($_POST['wp_thumb_y'], 'integer');
-    settype($_POST['wp_size'], 'integer');
-    settype($_POST['wp_rows'], 'integer');
-    settype($_POST['wp_cols'], 'integer');
-    $_POST['wp_order'] = savesql($_POST['wp_order']);
-    $_POST['wp_sort'] = savesql($_POST['wp_sort']);
-
-    $update = 'UPDATE '.$FD->config('pref')."screen_config
-               SET screen_x = '$_POST[screen_x]',
-                   screen_y = '$_POST[screen_y]',
-                   screen_thumb_x = '$_POST[screen_thumb_x]',
-                   screen_thumb_y = '$_POST[screen_thumb_y]',
-                   screen_size = '$_POST[screen_size]',
-                   screen_rows = '$_POST[screen_rows]',
-                   screen_cols = '$_POST[screen_cols]',
-                   screen_order = '$_POST[screen_order]',
-                   screen_sort = '$_POST[screen_sort]',
-
-                   show_type = '$_POST[show_type]',
-                   show_size_x = '$_POST[show_size_x]',
-                   show_size_y = '$_POST[show_size_y]',
-                   show_img_x = '$_POST[show_img_x]',
-                   show_img_y = '$_POST[show_img_y]',
-
-                   wp_x = '$_POST[wp_x]',
-                   wp_y = '$_POST[wp_y]',
-                   wp_thumb_x = '$_POST[wp_thumb_x]',
-                   wp_thumb_y = '$_POST[wp_thumb_y]',
-                   wp_size = '$_POST[wp_size]',
-                   wp_rows = '$_POST[wp_rows]',
-                   wp_cols = '$_POST[wp_cols]',
-                   wp_order = '$_POST[wp_order]',
-                   wp_sort = '$_POST[wp_sort]'";
-
-    mysql_query($update, $FD->sql()->conn() );
-    systext('Die Konfiguration wurde aktualisiert');
+    // Unset Vars
+    unset($_POST); 
 }
 
 /////////////////////////////////////
 ////// Konfiguration Formular ///////
 /////////////////////////////////////
 
-else
-{
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc($index);
+if (true) {
+    
+    // Display Error Messages
+    if (isset($_POST['sended'])) {
+        systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
-    settype($config_arr['show_type'], 'integer');
-    settype($config_arr['show_size_x'], 'integer');
-    settype($config_arr['show_size_y'], 'integer');
-    settype($config_arr['show_img_x'], 'integer');
-    settype($config_arr['show_img_y'], 'integer');
-
-    settype($config_arr['screen_x'], 'integer');
-    settype($config_arr['screen_y'], 'integer');
-    settype($config_arr['screen_thumb_x'], 'integer');
-    settype($config_arr['screen_thumb_y'], 'integer');
-    settype($config_arr['screen_size'], 'integer');
-    settype($config_arr['screen_rows'], 'integer');
-    settype($config_arr['screen_cols'], 'integer');
-    $config_arr['screen_order'] = killhtml($config_arr['screen_order']);
-    $config_arr['screen_sort'] = killhtml($config_arr['screen_sort']);
-
-    settype($config_arr['wp_x'], 'integer');
-    settype($config_arr['wp_y'], 'integer');
-    settype($config_arr['wp_thumb_x'], 'integer');
-    settype($config_arr['wp_thumb_y'], 'integer');
-    settype($config_arr['wp_size'], 'integer');
-    settype($config_arr['wp_rows'], 'integer');
-    settype($config_arr['wp_cols'], 'integer');
-    $config_arr['wp_order'] = killhtml($config_arr['wp_order']);
-    $config_arr['wp_sort'] = killhtml($config_arr['wp_sort']);
+    // Load Data from DB into Post
+    } else {
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'screens'"));
+        $data = json_array_decode($data['config_data']);
+        putintopost($data);
+    }    
+    
+    // security functions
+    $_POST = array_map('killhtml', $_POST);
 
     echo'
                     <form action="" method="post">
@@ -133,11 +85,11 @@ else
                                 <td class="config" valign="top">
                                     <select name="show_type">
                                         <option value="0"';
-                                        if ($config_arr['show_type'] === 0)
+                                        if ($_POST['show_type'] === 0)
                                           echo ' selected="selected"';
                                         echo'>im Fenster (normaler Link)</option>
                                         <option value="1"';
-                                        if ($config_arr['show_type'] === 1)
+                                        if ($_POST['show_type'] === 1)
                                           echo ' selected="selected"';
                                         echo'>als PopUp-Fenster</option>
                                     </select>
@@ -149,9 +101,9 @@ else
                                     <font class="small">Die Gr&ouml;&szlig;e des PopUps, falls diese Variante gew&auml;hlt ist.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="5" name="show_size_x" value="'.$config_arr['show_size_x'].'" maxlength="4">
+                                    <input class="text" size="5" name="show_size_x" value="'.$_POST['show_size_x'].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="show_size_y" value="'.$config_arr['show_size_y'].'" maxlength="4"> Pixel
+                                    <input class="text" size="5" name="show_size_y" value="'.$_POST['show_size_y'].'" maxlength="4"> Pixel
                                 </td>
                             </tr>
                             <tr>
@@ -160,9 +112,9 @@ else
                                     <font class="small">Die Gr&ouml;&szlig;e, in der die Bilder im Bilderbetrachter max. angezeigt werden.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="5" name="show_img_x" value="'.$config_arr['show_img_x'].'" maxlength="4">
+                                    <input class="text" size="5" name="show_img_x" value="'.$_POST['show_img_x'].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="show_img_y" value="'.$config_arr['show_img_y'].'" maxlength="4"> Pixel
+                                    <input class="text" size="5" name="show_img_y" value="'.$_POST['show_img_y'].'" maxlength="4"> Pixel
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -173,9 +125,9 @@ else
                                     <font class="small">Die max. Abmessungen, bis zu denen Bilder hochgeladen werden k&ouml;nnen.</font>
                                 </td>
                                 <td class="config" valign="top" width="35%">
-                                    <input class="text" size="5" name="screen_x" value="'.$config_arr['screen_x'].'" maxlength="4">
+                                    <input class="text" size="5" name="screen_x" value="'.$_POST['screen_x'].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="screen_y" value="'.$config_arr['screen_y'].'" maxlength="4"> Pixel
+                                    <input class="text" size="5" name="screen_y" value="'.$_POST['screen_y'].'" maxlength="4"> Pixel
                                 </td>
                             </tr>
                             <tr>
@@ -184,9 +136,9 @@ else
                                     <font class="small">Die Gr&ouml;&szlig;e der Bilder-Thumbnails.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="5" name="screen_thumb_x" value="'.$config_arr['screen_thumb_x'].'" maxlength="3">
+                                    <input class="text" size="5" name="screen_thumb_x" value="'.$_POST['screen_thumb_x'].'" maxlength="3">
                                     x
-                                    <input class="text" size="5" name="screen_thumb_y" value="'.$config_arr['screen_thumb_y'].'" maxlength="3"> Pixel
+                                    <input class="text" size="5" name="screen_thumb_y" value="'.$_POST['screen_thumb_y'].'" maxlength="3"> Pixel
                                 </td>
                             </tr>
                             <tr>
@@ -195,7 +147,7 @@ else
                                     <font class="small">Die max. Dateigr&ouml;&szlig;e, bis zu der Bilder hochgeladen werden k&ouml;nnen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="12" name="screen_size" value="'.$config_arr['screen_size'].'" maxlength="7"> KB
+                                    <input class="text" size="12" name="screen_size" value="'.$_POST['screen_size'].'" maxlength="7"> KB
                                 </td>
                             </tr>
                             <tr>
@@ -204,7 +156,7 @@ else
                                     <font class="small">Die Anzahl der Bildern die auf einer Seite angezeigt werden.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="1" name="screen_rows" value="'.$config_arr['screen_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="screen_cols" value="'.$config_arr['screen_cols'].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
+                                    <input class="text" size="1" name="screen_rows" value="'.$_POST['screen_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="screen_cols" value="'.$_POST['screen_cols'].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
                                 </td>
                             </tr>
                             <tr>
@@ -215,21 +167,21 @@ else
                                 <td class="config" valign="top">
                                     <select name="screen_order">
                                         <option value="id"';
-                                        if ($config_arr['screen_order'] == 'id')
+                                        if ($_POST['screen_order'] == 'id')
                                           echo ' selected="selected"';
                                         echo'>Datum</option>
                                         <option value="title"';
-                                        if ($config_arr['screen_order'] == 'title')
+                                        if ($_POST['screen_order'] == 'title')
                                           echo ' selected="selected"';
                                         echo'>Title</option>
                                     </select>
                                     <select name="screen_sort">
                                         <option value="asc"';
-                                        if ($config_arr['screen_sort'] == 'asc')
+                                        if ($_POST['screen_sort'] == 'asc')
                                           echo ' selected="selected"';
                                         echo'>aufsteigend</option>
                                         <option value="desc"';
-                                        if ($config_arr['screen_sort'] == 'desc')
+                                        if ($_POST['screen_sort'] == 'desc')
                                           echo ' selected="selected"';
                                         echo'>absteigend</option>
                                     </select>
@@ -243,9 +195,9 @@ else
                                     <font class="small">Die max. Abmessungen, bis zu denen Wallpaper hochgeladen werden k&ouml;nnen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="5" name="wp_x" value="'.$config_arr['wp_x'].'" maxlength="4">
+                                    <input class="text" size="5" name="wp_x" value="'.$_POST['wp_x'].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="wp_y" value="'.$config_arr['wp_y'].'" maxlength="4"> Pixel
+                                    <input class="text" size="5" name="wp_y" value="'.$_POST['wp_y'].'" maxlength="4"> Pixel
                                 </td>
                             </tr>
                             <tr>
@@ -254,9 +206,9 @@ else
                                     <font class="small">Die Gr&ouml;&szlig;e der Wallpaper-Thumbnails.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="5" name="wp_thumb_x" value="'.$config_arr['wp_thumb_x'].'" maxlength="3">
+                                    <input class="text" size="5" name="wp_thumb_x" value="'.$_POST['wp_thumb_x'].'" maxlength="3">
                                     x
-                                    <input class="text" size="5" name="wp_thumb_y" value="'.$config_arr['wp_thumb_y'].'" maxlength="3"> Pixel
+                                    <input class="text" size="5" name="wp_thumb_y" value="'.$_POST['wp_thumb_y'].'" maxlength="3"> Pixel
                                 </td>
                             </tr>
                             <tr>
@@ -265,7 +217,7 @@ else
                                     <font class="small">Die max. Dateigr&ouml;&szlig;e, bis zu der Wallpaper hochgeladen werden k&ouml;nnen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="12" name="wp_size" value="'.$config_arr['wp_size'].'" maxlength="7"> KB
+                                    <input class="text" size="12" name="wp_size" value="'.$_POST['wp_size'].'" maxlength="7"> KB
                                 </td>
                             </tr>
                             <tr>
@@ -274,7 +226,7 @@ else
                                     <font class="small">Die Anzahl der Wallpaper die auf einer Seite angezeigt werden.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="1" name="wp_rows" value="'.$config_arr['wp_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="wp_cols" value="'.$config_arr['wp_cols'].'" maxlength="2"> Wallpaper<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
+                                    <input class="text" size="1" name="wp_rows" value="'.$_POST['wp_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="wp_cols" value="'.$_POST['wp_cols'].'" maxlength="2"> Wallpaper<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
                                 </td>
                             </tr>
                             <tr>
@@ -285,21 +237,21 @@ else
                                 <td class="config" valign="top">
                                     <select name="wp_order">
                                         <option value="id"';
-                                        if ($config_arr['wp_order'] == 'id')
+                                        if ($_POST['wp_order'] == 'id')
                                           echo ' selected="selected"';
                                         echo'>Datum</option>
                                         <option value="title"';
-                                        if ($config_arr['wp_order'] == 'title')
+                                        if ($_POST['wp_order'] == 'title')
                                           echo ' selected="selected"';
                                         echo'>Titel</option>
                                     </select>
                                     <select name="wp_sort">
                                         <option value="asc"';
-                                        if ($config_arr['wp_sort'] == 'asc')
+                                        if ($_POST['wp_sort'] == 'asc')
                                           echo ' selected="selected"';
                                         echo'>aufsteigend</option>
                                         <option value="desc"';
-                                        if ($config_arr['wp_sort'] == 'desc')
+                                        if ($_POST['wp_sort'] == 'desc')
                                           echo ' selected="selected"';
                                         echo'>absteigend</option>
                                     </select>

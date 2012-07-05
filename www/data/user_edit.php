@@ -4,12 +4,8 @@
 ///////////////////////////////////////////
 settype ( $_POST['user_id'], 'integer');
 
-$index = mysql_query ( '
-    SELECT *
-    FROM `'.$FD->config('pref')."user_config`
-    WHERE `id` = '1'
-", $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('users');
+$config_arr = $FD->configObject('users')->getConfigArray();
 
 //////////////////////
 //// Save Changes ////

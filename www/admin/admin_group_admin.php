@@ -3,13 +3,8 @@
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."user_config WHERE `id` = '1'", $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
-// Create group-Config-Array
-$group_config_arr['cat_pic_x'] = 200;
-$group_config_arr['cat_pic_y'] = 50;
-$group_config_arr['cat_pic_size'] = 1024;
-
+$FD->loadConfig('groups');
+$config_arr = $FD->configObject('groups')->getConfigArray();
 
 //////////////////////
 // Update Database  //

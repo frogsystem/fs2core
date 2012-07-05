@@ -1,5 +1,10 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+###################
+## Page Settings ##
+###################
+$used_cols = array('group_pic_x', 'group_pic_y', 'group_pic_size');
+
 ///////////////////////
 //// Update Config ////
 ///////////////////////
@@ -10,26 +15,23 @@ if (
 		&& isset($_POST['group_pic_size']) && $_POST['group_pic_size'] > 0
 	)
 {
-	// security functions
-    settype ( $_POST['group_pic_x'], 'integer' );
-    settype ( $_POST['group_pic_y'], 'integer' );
-    settype ( $_POST['group_pic_size'], 'integer' );
-
-	// MySQL-Queries
-    mysql_query ( '
-					UPDATE `'.$FD->config('pref')."user_config`
-					SET
-						`group_pic_x` = '".$_POST['group_pic_x']."',
-						`group_pic_y` = '".$_POST['group_pic_y']."',
-						`group_pic_size` = '".$_POST['group_pic_size']."'
-					WHERE `id` = '1'
-	", $FD->sql()->conn() );
-
-	// system messages
-    systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'));
+    // prepare data
+    $data = frompost($used_cols);
+      
+    // save config
+    try {
+        $FD->saveConfig('groups', $data);
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );        
+    }
 
     // Unset Vars
-    unset ( $_POST );
+    unset($_POST);
 }
 
 /////////////////////
@@ -38,25 +40,19 @@ if (
 
 if ( TRUE )
 {
-	// Display Error Messages
-	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
+    // Display Error Messages
+    if (isset($_POST['sended'])) {
+        systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
-	// Load Data from DB into Post
-	} else {
-	    $index = mysql_query ( '
-								SELECT *
-								FROM '.$FD->config('pref')."user_config
-								WHERE `id` = '1'
-		", $FD->sql()->conn() );
-	    $config_arr = mysql_fetch_assoc($index);
-	    putintopost ( $config_arr );
-	}
-
-	// security functions
-    settype ( $_POST['group_pic_x'], 'integer' );
-    settype ( $_POST['group_pic_y'], 'integer' );
-    settype ( $_POST['group_pic_size'], 'integer' );
+    // Load Data from DB into Post
+    } else {
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'groups'"));
+        $data = json_array_decode($data['config_data']);
+        putintopost($data);
+    }    
+    
+    // security functions
+    $_POST = array_map('killhtml', $_POST);
 
 	// Display Form
     echo'

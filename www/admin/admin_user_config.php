@@ -1,5 +1,10 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+###################
+## Page Settings ##
+###################
+$used_cols = array('user_per_page', 'registration_antispam', 'avatar_x', 'avatar_y', 'avatar_size', 'reg_date_format', 'user_list_reg_date_format');
+
 ///////////////////////
 //// Update Config ////
 ///////////////////////
@@ -13,34 +18,23 @@ if (
         && isset($_POST['user_list_reg_date_format']) && $_POST['user_list_reg_date_format'] != ''
     )
 {
-    // security functions
-    settype ( $_POST['user_per_page'], 'integer' );
-    settype ( $_POST['registration_antispam'], 'integer' );
-    settype ( $_POST['avatar_x'], 'integer' );
-    settype ( $_POST['avatar_y'], 'integer' );
-    settype ( $_POST['avatar_size'], 'integer' );
-    $_POST['reg_date_format'] = savesql ( $_POST['reg_date_format'] );
-    $_POST['user_list_reg_date_format'] = savesql ( $_POST['user_list_reg_date_format'] );
-
-    // MySQL-Queries
-    mysql_query ( '
-                    UPDATE `'.$FD->config('pref')."user_config`
-                    SET
-                        `user_per_page` = '".$_POST['user_per_page']."',
-                        `registration_antispam` = '".$_POST['registration_antispam']."',
-                        `avatar_x` = '".$_POST['avatar_x']."',
-                        `avatar_y` = '".$_POST['avatar_y']."',
-                        `avatar_size` = '".$_POST['avatar_size']."',
-                        `reg_date_format` = '".$_POST['reg_date_format']."',
-                        `user_list_reg_date_format` = '".$_POST['user_list_reg_date_format']."'
-                    WHERE `id` = '1'
-    ", $FD->sql()->conn() );
-
-    // system messages
-    systext($FD->text("admin", "changes_saved"), $FD->text("admin", "info"));
+    // prepare data
+    $data = frompost($used_cols);
+      
+    // save config
+    try {
+        $FD->saveConfig('users', $data);
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );        
+    }
 
     // Unset Vars
-    unset ( $_POST );
+    unset($_POST); 
 }
 
 /////////////////////
@@ -50,28 +44,18 @@ if (
 if ( TRUE )
 {
     // Display Error Messages
-    if ( isset ( $_POST['sended'] ) ) {
-        systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
+    if (isset($_POST['sended'])) {
+        systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
     // Load Data from DB into Post
     } else {
-        $index = mysql_query ( '
-                                SELECT *
-                                FROM '.$FD->config('pref')."user_config
-                                WHERE `id` = '1'
-        ", $FD->sql()->conn() );
-        $config_arr = mysql_fetch_assoc($index);
-        putintopost ( $config_arr );
-    }
-
+        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'users'"));
+        $data = json_array_decode($data['config_data']);
+        putintopost($data);
+    }    
+    
     // security functions
-    settype ( $_POST['user_per_page'], 'integer' );
-    settype ( $_POST['registration_antispam'], 'integer' );
-    settype ( $_POST['avatar_x'], 'integer' );
-    settype ( $_POST['avatar_y'], 'integer' );
-    settype ( $_POST['avatar_size'], 'integer' );
-    $_POST['reg_date_format'] = killhtml ( $_POST['reg_date_format'] );
-    $_POST['user_list_reg_date_format'] = killhtml ( $_POST['user_list_reg_date_format'] );
+    $_POST = array_map('killhtml', $_POST);
 
     // Display Form
     echo'

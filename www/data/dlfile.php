@@ -6,12 +6,8 @@ $FD->setConfig('info', 'canonical', array('id'));
 $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
 $config_arr = json_array_decode($data);
 
-$index = mysql_query ( '
-                        SELECT `show_type`, `show_size_x`, `show_size_y`
-                        FROM `'.$FD->config('pref').'screen_config`
-                        WHERE `id` = 1
-', $FD->sql()->conn() );
-$screen_config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('screens');
+$screen_config_arr = $FD->configObject('screens')->getConfigArray();
 
 // Security Functions
 $_GET['id'] = ( isset ( $_GET['fileid'] ) && !isset ( $_GET['id'] ) ) ? $_GET['fileid'] : $_GET['id'];

@@ -23,8 +23,8 @@ function user_name_free ( $USERNAME ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."user_config WHERE `id` = '1'", $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('users');
+$config_arr = $FD->configObject('users')->getConfigArray();
 
 //////////////////
 //// Add User ////

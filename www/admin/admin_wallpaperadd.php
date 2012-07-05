@@ -3,8 +3,8 @@
 /////////////////////
 //// Config laden ///
 /////////////////////
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config');  // WP Konfiguration auslesen
-$config_arr = mysql_fetch_assoc($index);
+$FD->loadConfig('screens');
+$config_arr = $FD->configObject('screens')->getConfigArray();
 
 /////////////////////////////
 //// Screenshot hochladen ///

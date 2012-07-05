@@ -3,8 +3,8 @@
 /////////////////////
 //// Config laden ///
 /////////////////////
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config');  // WP Konfiguration auslesen
-$config_arr = mysql_fetch_assoc($index);
+$FD->loadConfig('screens');
+$config_arr = $FD->configObject('screens')->getConfigArray();
 
 ////////////////////////////
 //// Wallpaper editieren ///
@@ -143,9 +143,6 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
     //Thumb neu erstellen
     if ($_POST['sended'] == 'newthumb')
     {
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config');  // WP Konfiguration auslesen
-        $config_arr = mysql_fetch_assoc($index);
-
         $index = mysql_query('SELECT wallpaper_name FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'", $FD->sql()->conn() );
         $wp_name = mysql_result($index,0,'wallpaper_name');
 

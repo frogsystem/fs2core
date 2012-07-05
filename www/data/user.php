@@ -13,12 +13,8 @@ $_GET['id'] = ( isset ( $_GET['id'] ) ? $_GET['id'] : $_GET['id'] );
 $_GET['id'] = ( !$_GET['id'] && $_SESSION['user_id'] ? $_SESSION['user_id'] : $_GET['id'] );
 settype ( $_GET['id'], 'integer');
 
-$index = mysql_query ( '
-    SELECT *
-    FROM `'.$FD->config('pref')."user_config`
-    WHERE `id` = '1'
-", $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('users');
+$config_arr = $FD->configObject('users')->getConfigArray();
 
 //////////////////////
 //// Show Profile ////

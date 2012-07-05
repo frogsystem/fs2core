@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 04. Juli 2012 um 20:55
+-- Erstellungszeit: 05. Juli 2012 um 07:37
 -- Server Version: 5.1.53
 -- PHP-Version: 5.3.4
 
@@ -434,7 +434,7 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('info', '{}', 'startup'),
 ('articles', '{\\"acp_per_page\\":\\"3\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"1\\",\\"com_sort\\":\\"ASC\\",\\"acp_view\\":\\"2\\"}', 'none'),
 ('search', '{\\"id\\":\\"0\\",\\"search_num_previews\\":\\"10\\",\\"search_and\\":\\"AND, and, &&\\",\\"search_or\\":\\"OR, or, ||\\",\\"search_xor\\":\\"XOR, xor\\",\\"search_not\\":\\"!, -\\",\\"search_wildcard\\":\\"*, %\\",\\"search_min_word_length\\":\\"3\\",\\"search_allow_phonetic\\":\\"1\\",\\"search_use_stopwords\\":\\"1\\"}', 'none'),
-('cronjobs', '{\\"last_cronjob_time\\":\\"1341435247\\",\\"last_cronjob_time_daily\\":\\"1341352999\\",\\"last_cronjob_time_hourly\\":\\"1341432281\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup'),
+('cronjobs', '{\\"last_cronjob_time\\":\\"1341473400\\",\\"last_cronjob_time_daily\\":\\"1341439213\\",\\"last_cronjob_time_hourly\\":\\"1341471617\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup'),
 ('captcha', '{\\"captcha_bg_color\\":\\"FAFCF1\\",\\"captcha_bg_transparent\\":\\"0\\",\\"captcha_text_color\\":\\"000000\\",\\"captcha_first_lower\\":\\"1\\",\\"captcha_first_upper\\":\\"5\\",\\"captcha_second_lower\\":\\"1\\",\\"captcha_second_upper\\":\\"5\\",\\"captcha_use_addition\\":\\"1\\",\\"captcha_use_subtraction\\":\\"1\\",\\"captcha_use_multiplication\\":\\"0\\",\\"captcha_create_easy_arithmetics\\":\\"1\\",\\"captcha_x\\":\\"58\\",\\"captcha_y\\":\\"18\\",\\"captcha_show_questionmark\\":\\"0\\",\\"captcha_use_spaces\\":\\"1\\",\\"captcha_show_multiplication_as_x\\":\\"1\\",\\"captcha_start_text_x\\":\\"0\\",\\"captcha_start_text_y\\":\\"0\\",\\"captcha_font_size\\":\\"5\\",\\"captcha_font_file\\":\\"\\"}', 'none'),
 ('downloads', '{\\"screen_x\\":\\"1024\\",\\"screen_y\\":\\"768\\",\\"thumb_x\\":\\"120\\",\\"thumb_y\\":\\"90\\",\\"quickinsert\\":\\"test\\''\\",\\"dl_rights\\":\\"2\\",\\"dl_show_sub_cats\\":\\"1\\"}', 'none'),
 ('affiliates', '{\\"partner_anzahl\\":\\"5\\",\\"small_x\\":\\"88\\",\\"small_y\\":\\"31\\",\\"big_x\\":\\"468\\",\\"big_y\\":\\"60\\",\\"big_allow\\":\\"1\\",\\"file_size\\":\\"1024\\",\\"small_allow\\":\\"0\\"}', 'none'),
@@ -442,7 +442,10 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('video_player', '{\\"cfg_player_x\\":\\"500\\",\\"cfg_player_y\\":\\"280\\",\\"cfg_autoplay\\":\\"0\\",\\"cfg_autoload\\":\\"1\\",\\"cfg_buffer\\":\\"5\\",\\"cfg_buffermessage\\":\\"Buffering _n_\\",\\"cfg_buffercolor\\":\\"#FFFFFF\\",\\"cfg_bufferbgcolor\\":\\"#000000\\",\\"cfg_buffershowbg\\":\\"0\\",\\"cfg_titlesize\\":\\"20\\",\\"cfg_titlecolor\\":\\"#FFFFFF\\",\\"cfg_margin\\":\\"5\\",\\"cfg_showstop\\":\\"1\\",\\"cfg_showvolume\\":\\"1\\",\\"cfg_showtime\\":\\"1\\",\\"cfg_showplayer\\":\\"autohide\\",\\"cfg_showloading\\":\\"always\\",\\"cfg_showfullscreen\\":\\"1\\",\\"cfg_showmouse\\":\\"autohide\\",\\"cfg_loop\\":\\"0\\",\\"cfg_playercolor\\":\\"#a6a6a6\\",\\"cfg_loadingcolor\\":\\"#000000\\",\\"cfg_bgcolor\\":\\"#FAFCF1\\",\\"cfg_bgcolor1\\":\\"#E7E7E7\\",\\"cfg_bgcolor2\\":\\"#cccccc\\",\\"cfg_buttoncolor\\":\\"#000000\\",\\"cfg_buttonovercolor\\":\\"#E7E7E7\\",\\"cfg_slidercolor1\\":\\"#cccccc\\",\\"cfg_slidercolor2\\":\\"#bbbbbb\\",\\"cfg_sliderovercolor\\":\\"#E7E7E7\\",\\"cfg_loadonstop\\":\\"1\\",\\"cfg_onclick\\":\\"playpause\\",\\"cfg_ondoubleclick\\":\\"fullscreen\\",\\"cfg_playertimeout\\":\\"1500\\",\\"cfg_videobgcolor\\":\\"#000000\\",\\"cfg_volume\\":\\"100\\",\\"cfg_shortcut\\":\\"1\\",\\"cfg_playeralpha\\":\\"100\\",\\"cfg_top1_url\\":\\"\\",\\"cfg_top1_x\\":\\"0\\",\\"cfg_top1_y\\":\\"0\\",\\"cfg_showiconplay\\":\\"1\\",\\"cfg_iconplaycolor\\":\\"#FFFFFF\\",\\"cfg_iconplaybgcolor\\":\\"#000000\\",\\"cfg_iconplaybgalpha\\":\\"75\\",\\"cfg_showtitleandstartimage\\":\\"0\\"}', 'none'),
 ('polls', '{\\"answerbar_width\\":\\"100\\",\\"answerbar_type\\":\\"0\\"}', 'none'),
 ('press', '{\\"game_navi\\":\\"1\\",\\"cat_navi\\":\\"1\\",\\"lang_navi\\":\\"0\\",\\"show_press\\":\\"0\\",\\"show_root\\":\\"0\\",\\"order_by\\":\\"press_date\\",\\"order_type\\":\\"desc\\"}', 'none'),
-('preview_images', '{\\"active\\":\\"1\\",\\"type_priority\\":\\"1\\",\\"use_priority_only\\":\\"0\\",\\"timed_deltime\\":\\"604800\\"}', 'none');
+('preview_images', '{\\"active\\":\\"1\\",\\"type_priority\\":\\"1\\",\\"use_priority_only\\":\\"0\\",\\"timed_deltime\\":\\"604800\\"}', 'none'),
+('groups', '{\\"group_pic_x\\":\\"250\\",\\"group_pic_y\\":\\"25\\",\\"group_pic_size\\":\\"100\\"}', 'none'),
+('screens', '{\\"screen_x\\":\\"1500\\",\\"screen_y\\":\\"1500\\",\\"screen_thumb_x\\":\\"120\\",\\"screen_thumb_y\\":\\"90\\",\\"screen_size\\":\\"1024\\",\\"screen_rows\\":\\"5\\",\\"screen_cols\\":\\"3\\",\\"screen_order\\":\\"id\\",\\"screen_sort\\":\\"desc\\",\\"show_type\\":\\"1\\",\\"show_size_x\\":\\"950\\",\\"show_size_y\\":\\"700\\",\\"show_img_x\\":\\"800\\",\\"show_img_y\\":\\"600\\",\\"wp_x\\":\\"2000\\",\\"wp_y\\":\\"2000\\",\\"wp_thumb_x\\":\\"200\\",\\"wp_thumb_y\\":\\"150\\",\\"wp_size\\":\\"1536\\",\\"wp_rows\\":\\"6\\",\\"wp_cols\\":\\"2\\",\\"wp_order\\":\\"id\\",\\"wp_sort\\":\\"desc\\"}', 'none'),
+('users', '{\\"user_per_page\\":\\"30\\",\\"registration_antispam\\":\\"1\\",\\"avatar_x\\":\\"110\\",\\"avatar_y\\":\\"110\\",\\"avatar_size\\":\\"20\\",\\"reg_date_format\\":\\"l, j. F Y\\",\\"user_list_reg_date_format\\":\\"j. F Y\\"}', 'none');
 
 -- --------------------------------------------------------
 
@@ -467,7 +470,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 77, 2519, 2, 4, 65528, 1);
+(1, 78, 2522, 2, 4, 65528, 1);
 
 -- --------------------------------------------------------
 
@@ -573,7 +576,8 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2012, 6, 27, 1, 6),
 (2012, 7, 2, 1, 23),
 (2012, 7, 3, 1, 10),
-(2012, 7, 4, 2, 19);
+(2012, 7, 4, 2, 20),
+(2012, 7, 5, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -1209,48 +1213,6 @@ CREATE TABLE `fs2_screen_cat` (
 INSERT INTO `fs2_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`, `cat_date`, `randompic`) VALUES
 (1, 'Screenshots', 1, 1, 1302517148, 1),
 (2, 'Wallpaper', 2, 1, 1302517148, 0);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_screen_config`
---
-
-DROP TABLE IF EXISTS `fs2_screen_config`;
-CREATE TABLE `fs2_screen_config` (
-  `id` tinyint(1) NOT NULL,
-  `screen_x` int(4) DEFAULT NULL,
-  `screen_y` int(4) DEFAULT NULL,
-  `screen_thumb_x` int(4) DEFAULT NULL,
-  `screen_thumb_y` int(4) DEFAULT NULL,
-  `screen_size` int(4) DEFAULT NULL,
-  `screen_rows` int(2) NOT NULL,
-  `screen_cols` int(2) NOT NULL,
-  `screen_order` varchar(10) NOT NULL,
-  `screen_sort` varchar(4) NOT NULL,
-  `show_type` tinyint(1) NOT NULL DEFAULT '0',
-  `show_size_x` smallint(4) NOT NULL DEFAULT '0',
-  `show_size_y` smallint(4) NOT NULL DEFAULT '0',
-  `show_img_x` int(4) DEFAULT NULL,
-  `show_img_y` int(4) DEFAULT NULL,
-  `wp_x` int(4) DEFAULT NULL,
-  `wp_y` int(4) DEFAULT NULL,
-  `wp_thumb_x` int(4) DEFAULT NULL,
-  `wp_thumb_y` int(4) DEFAULT NULL,
-  `wp_order` varchar(10) NOT NULL,
-  `wp_size` int(4) DEFAULT NULL,
-  `wp_rows` int(2) NOT NULL,
-  `wp_cols` int(2) NOT NULL,
-  `wp_sort` varchar(4) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_screen_config`
---
-
-INSERT INTO `fs2_screen_config` (`id`, `screen_x`, `screen_y`, `screen_thumb_x`, `screen_thumb_y`, `screen_size`, `screen_rows`, `screen_cols`, `screen_order`, `screen_sort`, `show_type`, `show_size_x`, `show_size_y`, `show_img_x`, `show_img_y`, `wp_x`, `wp_y`, `wp_thumb_x`, `wp_thumb_y`, `wp_order`, `wp_size`, `wp_rows`, `wp_cols`, `wp_sort`) VALUES
-(1, 1500, 1500, 120, 90, 1024, 5, 3, 'id', 'desc', 1, 950, 700, 800, 600, 2000, 2000, 200, 150, 'id', 1536, 6, 2, 'desc');
 
 -- --------------------------------------------------------
 
@@ -1932,36 +1894,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1341434783);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fs2_user_config`
---
-
-DROP TABLE IF EXISTS `fs2_user_config`;
-CREATE TABLE `fs2_user_config` (
-  `id` tinyint(1) NOT NULL,
-  `user_per_page` tinyint(3) NOT NULL,
-  `registration_antispam` tinyint(1) NOT NULL DEFAULT '0',
-  `avatar_x` smallint(3) NOT NULL DEFAULT '110',
-  `avatar_y` smallint(3) NOT NULL DEFAULT '110',
-  `avatar_size` smallint(4) NOT NULL DEFAULT '1024',
-  `group_pic_x` smallint(3) NOT NULL DEFAULT '250',
-  `group_pic_y` smallint(3) NOT NULL DEFAULT '25',
-  `group_pic_size` smallint(4) NOT NULL DEFAULT '1024',
-  `reg_date_format` varchar(50) NOT NULL,
-  `user_list_reg_date_format` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_user_config`
---
-
-INSERT INTO `fs2_user_config` (`id`, `user_per_page`, `registration_antispam`, `avatar_x`, `avatar_y`, `avatar_size`, `group_pic_x`, `group_pic_y`, `group_pic_size`, `reg_date_format`, `user_list_reg_date_format`) VALUES
-(1, 50, 1, 110, 110, 20, 250, 25, 50, 'l, j. F Y', 'j. F Y');
+('127.0.0.1', 1, 1341471622);
 
 -- --------------------------------------------------------
 

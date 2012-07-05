@@ -24,8 +24,8 @@ if (isset($_GET['catid']))
     settype($_GET['catid'], 'integer');
 
     //config_arr
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_config', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc($index);
+    $FD->loadConfig('screens');
+    $config_arr = $FD->configObject('screens')->getConfigArray();
 
     //cat_arr
     $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = $_GET[catid]", $FD->sql()->conn() );

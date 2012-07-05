@@ -25,8 +25,8 @@ function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."user_config WHERE `id` = '1'", $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc ( $index );
+$FD->loadConfig('users');
+$config_arr = $FD->configObject('users')->getConfigArray();
 
 
 /////////////////////

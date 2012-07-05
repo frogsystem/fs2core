@@ -2,8 +2,8 @@
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'user_config', $FD->sql()->conn() );
-$config_arr = mysql_fetch_assoc($index);
+$FD->loadConfig('users');
+$config_arr = $FD->configObject('users')->getConfigArray();
 $show_form = TRUE;
 
 
