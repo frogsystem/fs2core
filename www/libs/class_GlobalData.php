@@ -49,7 +49,7 @@ class GlobalData {
         if (!$this->configExists($name))
             $this->config[$name] = $this->getConfigObjectFromDatabase($name);
     }
-    
+
     // reload config
     private function reloadConfig($name, $data = null, $json = false) {
         // get from DB
@@ -61,7 +61,7 @@ class GlobalData {
             $this->config[$name] = $this->createConfigObject($name, $data, $json);
         }
     }
-    
+
     // load configs by hook
     public function loadConfigsByHook($hook, $reload = false) {
 
@@ -72,11 +72,11 @@ class GlobalData {
         $data = $this->sql->getData('config', '*', array('W' => "`config_loadhook` = '".$hook."'") );
         foreach ($data as $config) {
             // Load corresponding class and get config array
-            if ($reload || !$this->configExists($name))
+            if ($reload || !$this->configExists($config['config_name']))
                 $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
         }
     }
-    
+
     // create config object
     private function createConfigObject($name, $data, $json) {
         // Load corresponding class and get config array
@@ -87,7 +87,7 @@ class GlobalData {
             $class_name = 'ConfigData';
         return new $class_name($data, $json);
     }
-   
+
     // create config object from db
     private function getConfigObjectFromDatabase($name) {
         // Load config from DB
@@ -96,9 +96,9 @@ class GlobalData {
         // Load corresponding class and get config array
         return $this->createConfigObject($config['config_name'], $config['config_data'], true);
     }
-    
-    
-    
+
+
+
     // get access on a config object
     public function configObject($name) {
         // Load corresponding class and get config array
@@ -222,20 +222,6 @@ class GlobalData {
     public function setPageText($obj) {
         return $this->text['page'] = $obj;
     }
-
-
-
-
-
-    // TODO remove backwards compatibility
-    // create global config array
-    /*public function setOldArray() {
-        global $global_config_arr;
-
-        $global_config_arr = $this->config['main']->getConfigArray();
-        $global_config_arr['system'] = $this->config['system']->getConfigArray();
-        $global_config_arr['env'] = $this->config['env']->getConfigArray();
-    }*/
 
 }
 
