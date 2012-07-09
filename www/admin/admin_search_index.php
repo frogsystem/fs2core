@@ -15,7 +15,7 @@ if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( 'update', 'new
         update_search_index ( 'dl' );
         // Display Message
         systext ( $FD->text('page', 'search_index_updated'),
-            $FD->text('page', 'info'), FALSE, $FD->text('page', 'icon_save_ok') );
+            $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_ok') );
 
     // New
     } elseif ( $_POST['do'] == 'new' ) {
@@ -24,7 +24,7 @@ if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( 'update', 'new
         new_search_index ( 'dl' );
         // Display Message
         systext ( $FD->text('page', 'search_index_renewed'),
-            $FD->text('page', 'info'), FALSE, $FD->text('page', 'icon_save_add') );
+            $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_add') );
 
     // Delete
     } elseif ( $_POST['do'] == 'delete' ) {
@@ -33,7 +33,7 @@ if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( 'update', 'new
         delete_search_index ( 'dl' );
         // Display Message
         systext ( $FD->text('page', 'search_index_deleted'),
-            $FD->text('page', 'info'), FALSE, $FD->text('page', 'icon_trash_ok') );
+            $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_trash_ok') );
 
     // Delete with word List
     } elseif ( $_POST['do'] == 'delete_with_word' ) {
@@ -43,7 +43,7 @@ if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( 'update', 'new
         delete_word_list();
         // Display Message
         systext ( $FD->text('page', 'search_index_deleted_with_word_list'),
-            $FD->text('page', 'info'), FALSE, $FD->text('page', 'icon_trash_ok') );
+            $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_trash_ok') );
     }
 }
 

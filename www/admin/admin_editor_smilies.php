@@ -127,7 +127,7 @@ elseif (($_GET['action']=='moveup' OR $_GET['action']=='movedown') AND isset($_G
            <tr>
              <td class="buttontd" colspan="3">
                <button class="button_new" type="submit">
-                 '.$FD->text('page', 'arrow').' '.$FD->text('page', 'smilie_add_button').'
+                 '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'smilie_add_button').'
                </button>
              </td>
            </tr>

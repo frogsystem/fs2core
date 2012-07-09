@@ -1,5 +1,6 @@
 # Statistikansicht
 
+website_statistics:           Webseiten-Statistik
 daily_statistics:             Tagesstatistik
 monthly_statistics:           Monatsstatistik
 other_statistics:             Weitere Statistiken

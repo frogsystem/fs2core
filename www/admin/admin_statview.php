@@ -20,7 +20,8 @@ $month_arr = explode(',', $FD->text('frontend', 'month_names_array'));
 //////////////////////////////////
 
 echo'
-                    <table border="0" cellpadding="10" cellspacing="0" width="600" align="center">
+                    <table class="configtable" cellpadding="4" cellspacing="0">
+                        <tr><td class="line" colspan="3">'.$FD->text('page', 'website_statistics').'</td></tr>
                         <tr>
                             <td width="100%" colspan="2" align="center">
 ';
@@ -33,7 +34,7 @@ $dbfirstyear = mysql_result($index, 0, 's_year');
 $index = mysql_query('SELECT s_month FROM '.$FD->config('pref')."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1", $FD->sql()->conn() );
 $dbfirstmonth = mysql_result($index, 0, 's_month');
 
-echo '<a href="'.$_SERVER['PHP_SELF'].'?mid='.$_GET['mid'].'&go=stat_view&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'&PHPSESSID='.session_id().'">';
+echo '<a href="?go=stat_view&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'">';
 if ( $_GET['s_year'] == $dbfirstyear ) { echo '<b>'; }
 echo $dbfirstyear;
 if ( $_GET['s_year'] == $dbfirstyear ) { echo '</b>'; }
@@ -45,7 +46,7 @@ if ($dbfirstyear < date('Y'))
 {
     for ($y=$dbfirstyear+1; $y<=date('Y'); $y++)
     {
-        echo ' | <a href="'.$_SERVER['PHP_SELF'].'?mid='.$_GET['mid'].'&go=stat_view&s_year='.$y.'&s_month=1&PHPSESSID='.session_id().'">';
+        echo ' | <a href="?go=stat_view&s_year='.$y.'&s_month=1">';
         if ( $_GET['s_year'] == $y ) { echo '<b>'; }
 		echo $y;
         if ( $_GET['s_year'] == $y ) { echo '</b>'; }
@@ -66,7 +67,7 @@ echo'
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" colspan="4" align="center">
-                                            <b>'.$FD->text('page', 'daily_statistics').' ('.$month_arr[$monthname-1].')</b>
+                                            <b>'.$FD->text('page', 'daily_statistics').' ('.$month_arr[$monthname-1].' '.$_GET['s_year'].')</b>
                                         </td>
                                     </tr>
                                     <tr>
@@ -88,20 +89,21 @@ echo'
 // Höchste PI diesen Monat ermitteln
 $index = mysql_query('SELECT s_hits
                       FROM '.$FD->config('pref')."counter_stat
-                      WHERE s_year  = $_GET[s_year] AND s_month = $_GET[s_month]
+                      WHERE s_year  = '".$_GET['s_year']."' AND s_month = '".$_GET['s_month']."'
                       ORDER BY s_hits desc
                       LIMIT 1", $FD->sql()->conn() );
 
-$dbmaxhits = mysql_result($index, 0, 's_hits');
-
+if (false == ($dbmaxhits = @mysql_result($index, 0, 's_hits')))
+    $dbmaxhits = 0;
+    
 // Tage ausgeben
 for ($d=1; $d<date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1; $d++)
 {
     $index = mysql_query('SELECT *
                           FROM '.$FD->config('pref')."counter_stat
-                          WHERE s_year  = $_GET[s_year] AND
-                                s_month = $_GET[s_month] AND
-                                s_day   = $d", $FD->sql()->conn() );
+                          WHERE s_year  = '".$_GET['s_year']."' AND
+                                s_month = '".$_GET['s_month']."' AND
+                                s_day   = '".$d."'", $FD->sql()->conn() );
     $rows = mysql_num_rows($index);
     $dayname = date('w', mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
     $class = (($dayname == 0) || ($dayname == 6)) ? 'class="nw"' : 'class="n"';
@@ -155,19 +157,25 @@ for ($d=1; $d<date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1;
     }
 }
 
-$visitsdurchschnitt = $visitsall / $dcount;
-$hitsdurchschnitt = $hitsall / $dcount;
+if (empty($dcount)) {
+    $visitsdurchschnitt = "-";
+    $hitsdurchschnitt = "-";
+} else {
+    $visitsdurchschnitt = round($visitsall / $dcount, 2);
+    $hitsdurchschnitt = round($hitsall / $dcount, 2);
+}
 
+    
 echo'
                                     <tr>
                                         <td class="h" align="center">
                                             '.$FD->text('page', 'average').'
                                         </td>
                                         <td class="h" align="center">
-                                            '.point_number(round($visitsdurchschnitt)).'
+                                            '.$visitsdurchschnitt.'
                                         </td>
                                         <td class="h" align="center">
-                                            '.point_number(round($hitsdurchschnitt)).'
+                                            '.$hitsdurchschnitt.'
                                         </td>
                                         <td class="h" align="center">
                                             &nbsp
@@ -235,7 +243,9 @@ for ($m=1; $m<13; $m++)
                                             '.point_number($sum_arr['sumhits']).'
                                         </td>
                                         <td class="n" align="left" style="font-size:1pt;" class="bottom">
-                                            <img align="left" title="'.$FD->text("page", "show_chart").'" class="bottom" onClick=\'open("admin_statgfx.php?s_year='.$_GET['s_year'].'&s_month='.$m.'","Picture","width=520,height=330,screenX=200,screenY=150")\' style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
+                                            <img align="left" title="'.$FD->text("page", "show_chart").'" class="bottom"
+                                            onClick=\''.openpopup ('?go=statgfx&amp;s_year='.$_GET['s_year'].'&amp;s_month='.$m.'', 520, 330).'\'
+                                            style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
                                             <img border="0" src="img/null.gif" height="4" width="1"><br>
                                             <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
                                             <img border="0" src="img/chits.gif" height="4" width="'.round($hitswidth).'">

@@ -1,18 +1,7 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-/* FS2 PHP Init */
-set_include_path('.');
-define('FS2_ROOT_PATH', './../', true);
-require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
-phpinit();
-/* End of FS2 PHP Init */
+$JUST_CONTENT = true;
 
-
-require_once( FS2_ROOT_PATH . 'login.inc.php');
-require_once( FS2_ROOT_PATH . 'includes/functions.php');
-
-//get lang
-$lang = new lang(false, 'admin/admin_statview');
 
 if (!has_perm('stat_view')) die('Unauthorized access!');
 
@@ -30,6 +19,7 @@ settype ($_GET['s_month'], 'integer');
 $monthnames = explode(',', $FD->text('frontend', 'month_names_array'));
 $monthname = $monthnames[$_GET['s_month']-1];
 $feldbreite = 458 / date_loc('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']));  // Anzahle der Tage im Monat
+
 $imagewidth = 500;
 $imageheight = 300;
 
@@ -45,7 +35,7 @@ $farbe_text2  = imagecolorallocate($image,25,25,25);
 $farbe_text3  = imagecolorallocate($image,204,204,204);
 
 // Oberfläche
-imagestring ($image,3,140,11, $lang->get('monthly_statistics')." ($monthname $_GET[s_year])",$farbe_text);
+imagestring ($image,3,140,11, $FD->text('page', 'monthly_statistics')." ($monthname $_GET[s_year])",$farbe_text);
 imagefilledrectangle($image,20,35,45,40,$farbe_visits);
 imagestring ($image,2,57,30,'Visits',$farbe_text);
 imagefilledrectangle($image,455,35,480,40,$farbe_hits);

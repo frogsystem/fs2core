@@ -18,10 +18,10 @@
   <form method="get" action="">
 
     <input type="hidden" name="go" value="search">
-    <input class="input input_highlight middle" name="keyword" size="60" maxlength="100" value="{..keyword..}">
+    <input class="input input_highlight middle" name="keyword" size="55" maxlength="100" value="{..keyword..}">
     <input class="pointer middle" type="submit" value="Suchen">
     &nbsp;<span class="link small middle" onclick="$('#extended_search').toggle('blind')">(Erweitert)</span>
-    <span class="small">Erlaubte Operatoren: <a href="?go=search_help"><b>{..operators..}</b></a></span>
+    <span class="small">Erlaubte Operatoren: <a href="$URL(search_help)"><b>{..operators..}</b></a></span>
 
 
     <p id="extended_search" class="hidden" style="width:100%">

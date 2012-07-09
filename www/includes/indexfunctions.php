@@ -61,7 +61,6 @@ function cronjobs_instantly_bufferd ($save_time = null) {
     global $FD;
     
     // Run Cronjobs
-    clean_iplist();
     clean_timed_preview_images();
     
     // save time
@@ -1045,7 +1044,8 @@ function save_visitors ()
     global $FD;
 
     $ip = savesql($_SERVER['REMOTE_ADDR']); // IP-Adress
-
+    clean_iplist(); // remove old users first
+    
     // get user_id or set user_id=0
     if (is_loggedin() && isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
