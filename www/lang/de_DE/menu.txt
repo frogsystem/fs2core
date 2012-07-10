@@ -44,6 +44,7 @@ group_snippets:                 Schnipsel
 group_aliases:                  Weiterleitungen
 group_search:                   Suche
 group_fscodes:                  FS Codes
+group_db:                       Datenbank
 
 # Startseiten
 page_title_start_general:       Allgemein
@@ -356,3 +357,7 @@ page_title_find_user:           Suche nach Usern ...
 page_title_find_file:           Datei auswählen ...
 page_title_news_preview:        News-Vorschau
 page_title_article_preview:     Artikel-Vorschau
+
+# Datenbank
+page_title_table_admin:         Tabellen
+page_link_table_admin:          Tabellen

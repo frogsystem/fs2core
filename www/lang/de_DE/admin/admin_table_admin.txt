@@ -1,0 +1,25 @@
+# table_admin phrases
+pageinfo_title:  Tabellen verwalten
+
+table_name:      Name
+table_rows:      Zeilen
+table_length:    Gr&ouml;&szlig;e
+table_data:      Daten
+table_index:     Index
+table_free:      &Uuml;berhang
+
+tables:          Tabellen
+rows:            Zeile(n)
+bytes:           Bytes
+
+innodb_hint:     *=MySQL-Versionen vor 5.1.28 zeigen für InnoDB-Tabellen leider keinen korrekten Wert in dieser Spalte, daher wird hier einfach der Wert&nbsp;0 angenommen.
+
+selected_tables: Ausgew&auml;hlte Tabellen...
+op_check:        &uuml;berprüfen
+op_analyze:      analysieren
+op_repair:       reparieren
+op_optimize:     optimieren
+
+operation:       Operation
+type:            Type
+message:         Nachricht
