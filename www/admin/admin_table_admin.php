@@ -26,7 +26,7 @@
            break;
       default:
            $query = 'OPTIMIZE TABLE `';
-           break; 
+           break;
     }//swi
     $_POST['selected_tables'] = array_map('savesql', $_POST['selected_tables']);
     $query .= implode('`, `', $_POST['selected_tables']).'`';
@@ -39,7 +39,7 @@
       $adminpage->addText('msg', $row['Msg_text']);
       $op_results .= $adminpage->get('op_entry');
     }//while
-    
+
     $adminpage->clearTexts();
     $adminpage->addText('op_entries', $op_results);
     $op_results = $adminpage->get('op_table');
