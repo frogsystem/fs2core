@@ -6,43 +6,63 @@
     return getsize($len/1024);
   }
 
-  $op_results = ''; //TODO: fill with results from operations (ops not implemented yet)
+  $op_results = ''; //fill with results from operations
   if (isset($_POST['op']) && isset($_POST['selected_tables']))
   {
     if (!is_array($_POST['selected_tables']))
     {
       $_POST['selected_tables'] = array($_POST['selected_tables']);
     }
-    switch ($_POST['op'])
-    {
-      case 'check':
-           $query = 'CHECK TABLE `';
-           break;
-      case 'repair':
-           $query = 'REPAIR TABLE `';
-           break;
-      case 'analyze':
-           $query = 'ANALYZE TABLE `';
-           break;
-      default:
-           $query = 'OPTIMIZE TABLE `';
-           break;
-    }//swi
-    $_POST['selected_tables'] = array_map('savesql', $_POST['selected_tables']);
-    $query .= implode('`, `', $_POST['selected_tables']).'`';
-    $query = mysql_query($query, $FD->sql()->conn());
+
+    //get valid tables
+    $allowed = array();
+    $query = mysql_query('SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_NAME LIKE \''.$FD->config('pref').'%\'', $FD->sql()->conn());
     while ($row = mysql_fetch_assoc($query))
     {
-      $adminpage->addText('table_name', $row['Table']);
-      $adminpage->addText('op', $row['Op']);
-      $adminpage->addText('type', $row['Msg_type']);
-      $adminpage->addText('msg', $row['Msg_text']);
-      $op_results .= $adminpage->get('op_entry');
+      $allowed[] = $row['TABLE_NAME'];
     }//while
+    //...and remove non-existing/other tables
+    foreach($_POST['selected_tables'] as $key => $value)
+    {
+      if (!in_array($value, $allowed))
+      {
+        unset($_POST['selected_tables'][$key]);
+      }
+    }//foreach
 
-    $adminpage->clearTexts();
-    $adminpage->addText('op_entries', $op_results);
-    $op_results = $adminpage->get('op_table');
+    if (!empty($_POST['selected_tables']))
+    {
+      switch ($_POST['op'])
+      {
+        case 'check':
+             $query = 'CHECK TABLE `';
+             break;
+        case 'repair':
+             $query = 'REPAIR TABLE `';
+             break;
+        case 'analyze':
+             $query = 'ANALYZE TABLE `';
+             break;
+        default:
+             $query = 'OPTIMIZE TABLE `';
+             break;
+      }//swi
+      $_POST['selected_tables'] = array_map('savesql', $_POST['selected_tables']);
+      $query .= implode('`, `', $_POST['selected_tables']).'`';
+      $query = mysql_query($query, $FD->sql()->conn());
+      while ($row = mysql_fetch_assoc($query))
+      {
+        $adminpage->addText('table_name', $row['Table']);
+        $adminpage->addText('op', $row['Op']);
+        $adminpage->addText('type', $row['Msg_type']);
+        $adminpage->addText('msg', $row['Msg_text']);
+        $op_results .= $adminpage->get('op_entry');
+      }//while
+
+      $adminpage->clearTexts();
+      $adminpage->addText('op_entries', $op_results);
+      $op_results = $adminpage->get('op_table');
+    }//if not empty
   }//if
 
   //main form/output
