@@ -1,0 +1,25 @@
+# table_admin phrases
+pageinfo_title:  Manage tables
+
+table_name:      Name
+table_rows:      Rows
+table_length:    Size
+table_data:      Data
+table_index:     Index
+table_free:      Free data
+
+tables:          Tables
+rows:            Row(n)
+bytes:           bytes
+
+innodb_hint:     *=MySQL versions prior to 5.1.28 cannot show a correct value for InnoDB tables in this column. Therefore, a value of zero will be assumed.
+
+selected_tables: Operation to perform with selected tables...
+op_check:        check
+op_analyze:      analyze
+op_repair:       repair
+op_optimize:     optimize
+
+operation:       Operation
+type:            Type
+message:         Message

@@ -44,6 +44,7 @@ group_snippets:                 Snippets
 group_aliases:                  Aliases
 group_search:                   Search
 group_fscodes:                  FSCodes
+group_db:                       Database
 
 # Startseiten
 page_title_start_general:       General
@@ -334,3 +335,7 @@ page_title_find_user:           Search for users ...
 page_title_find_file:           Select file ...
 page_title_news_preview:        News preview
 page_title_article_preview:     Article preview
+
+# Datenbank
+page_title_table_admin:         Tables
+page_link_table_admin:          Tables

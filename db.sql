@@ -156,7 +156,8 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('randompic_cat', 'gallery_preview', 'admin_randompic_cat.php', 2, 0),
 ('timedpic_add', 'gallery_preview', 'admin_randompic_time_add.php', 3, 0),
 ('timedpic_edit', 'gallery_preview', 'admin_randompic_time.php', 4, 0),
-('statgfx', 'popup', 'admin_statgfx.php', 0, 0);
+('statgfx', 'popup', 'admin_statgfx.php', 0, 0),
+('table_admin', 'db', 'admin_table_admin.php', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -201,6 +202,7 @@ INSERT INTO `fs2_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 ('applets', 'system', 1),
 ('snippets', 'system', 2),
 ('aliases', 'system', 3),
+('db', 'system', 4),
 ('search', 'general', 4),
 ('popup', 'none', 0);
 
