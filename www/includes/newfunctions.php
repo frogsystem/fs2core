@@ -7,7 +7,7 @@
 function sp_string($number, $singular, $plural) {
     if ($number == 1)
         return $singular;
-        
+
     return $plural;
 }
 
@@ -329,7 +329,7 @@ function has_perm ($perm) {
     return (isset($_SESSION[$perm]) && $_SESSION[$perm] === 1);
 }
 function is_authorized () {
-    return ($_SESSION['user_level'] === 'authorized');
+    return (isset($_SESSION['user_level']) && $_SESSION['user_level'] === 'authorized');
 }
 function is_loggedin () {
     return ($_SESSION['user_level'] === 'loggedin' || is_authorized ());
