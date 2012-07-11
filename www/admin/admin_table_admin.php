@@ -16,7 +16,8 @@
 
     //get valid tables
     $allowed = array();
-    $query = mysql_query('SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_NAME LIKE \''.$FD->config('pref').'%\'', $FD->sql()->conn());
+    $query = mysql_query('SELECT TABLE_NAME FROM information_schema.tables '
+       .'WHERE TABLE_NAME LIKE \''.$FD->config('pref').'%\' AND TABLE_SCHEMA=\''.$FD->sql()->getDatabaseName().'\'', $FD->sql()->conn());
     while ($row = mysql_fetch_assoc($query))
     {
       $allowed[] = $row['TABLE_NAME'];
@@ -69,7 +70,9 @@
   $table_list = '';
   $hasInnoDB = false;
   $total = array('tabs' => 0, 'rows' => 0, 'size' => 0, 'free' => 0);
-  $query = mysql_query('SELECT * FROM information_schema.tables WHERE table_name LIKE \''.$FD->config('pref').'%\' ORDER BY table_name ASC');
+  $query = mysql_query('SELECT * FROM information_schema.tables'
+    .' WHERE table_name LIKE \''.$FD->config('pref').'%\''
+    .' AND TABLE_SCHEMA=\''.$FD->sql()->getDatabaseName().'\' ORDER BY table_name ASC');
   while ($row = mysql_fetch_assoc($query))
   {
     $adminpage->addText('table_name', $row['TABLE_NAME']);
