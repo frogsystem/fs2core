@@ -25,10 +25,10 @@ if ($config_arr['big_allow'] == 0) {
 ///////////////////////////////
 //// Partnerbild hochladen ////
 ///////////////////////////////
-if ($_FILES['bild_small']['name'] != ''
-    && $_FILES['bild_big']['name'] != ''
-    && ($_POST['name'] AND $_POST['name'] != '')
-    && ($_POST['link'] AND $_POST['link'] != '')
+if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
+    && isset($_FILES['bild_big']['name']) && $_FILES['bild_big']['name'] != ''
+    && (isset($_POST['name']) AND $_POST['name'] != '')
+    && (isset($_POST['link']) AND $_POST['link'] != '')
    )
 {
     $_POST['name'] = savesql($_POST['name']);
@@ -101,6 +101,9 @@ elseif (isset($_POST['sended'])) {
     $_POST['permanent'] = isset($_POST['permanent']) ? ' checked="checked"' : '';
 }
 
+if (!isset($_POST['name'])) $_POST['name'] = '';
+if (!isset($_POST['description'])) $_POST['description'] = '';
+if (!isset($_POST['permanent'])) $_POST['permanent'] = '';
 
 //////////////////////////
 //// Partner Formular ////

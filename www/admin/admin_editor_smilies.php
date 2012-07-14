@@ -4,7 +4,7 @@
 //// New Smilie ////
 ////////////////////
 
-if ($_FILES['newsmilie']['name'] != '' AND isset($_POST['replace_string']))
+if (isset($_FILES['newsmilie']['name']) AND $_FILES['newsmilie']['name'] != '' AND isset($_POST['replace_string']))
 {
     $_POST['replace_string'] = savesql(killhtml($_POST['replace_string']));
     settype($_POST['insert_after'], 'integer');
@@ -53,7 +53,7 @@ elseif (isset($_POST['delete_smilies']))
 //// Smilie Positionen  ////
 ////////////////////////////
 
-elseif (($_GET['action']=='moveup' OR $_GET['action']=='movedown') AND isset($_GET['oid']))
+elseif (isset($_GET['action']) AND ($_GET['action']=='moveup' OR $_GET['action']=='movedown') AND isset($_GET['oid']))
 {
     $_GET['oid'] = intval($_GET['oid']);
     if ($_GET['action']=='moveup')

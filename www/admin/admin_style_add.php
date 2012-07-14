@@ -121,11 +121,11 @@ if ( !is_writable ( FS2_ROOT_PATH . 'styles/' ) ) {
 
 
     // Security Functions
-    $_POST['style_name'] = killhtml ( $_POST['style_name'] );
-    $_POST['style_version'] = killhtml ( $_POST['style_version'] );
-    $_POST['style_copyright'] = killhtml ( $_POST['style_copyright'] );
+    $_POST['style_name'] = isset($_POST['style_name']) ? killhtml ( $_POST['style_name'] ) : '';
+    $_POST['style_version'] = isset($_POST['style_version']) ? killhtml ( $_POST['style_version'] ) : '';
+    $_POST['style_copyright'] = isset($_POST['style_copyright']) ? killhtml ( $_POST['style_copyright'] ) : '';
 
-    $_POST['style_tag'] = killhtml ( $_POST['style_tag'] );
+    $_POST['style_tag'] = isset($_POST['style_tag']) ? killhtml ( $_POST['style_tag'] ) : '';
     $_POST['style_create_as'] = ( $_POST['style_create_as'] == 'copy' ) ? 'copy' : 'new';
     settype ( $_POST['style_allow_use'], 'integer' );
     settype ( $_POST['style_allow_edit'], 'integer' );

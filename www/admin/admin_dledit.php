@@ -40,7 +40,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
 
         // Neues Bild hochladen
         $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-        $admin_dl_config_arr = json_array_decode($data);        
+        $admin_dl_config_arr = json_array_decode($data);
 
         if ($_FILES['dlimg']['name'] != '')
         {
@@ -454,6 +454,7 @@ else
     ';
 
     // Daten aus der DB lesen
+    $wherecat = '';
     if (isset($_POST['dlcatid']))
     {
         settype($_POST['dlcatid'], 'integer');

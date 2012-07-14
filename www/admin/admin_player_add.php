@@ -83,12 +83,15 @@ if ( TRUE )
     $_POST['video_myvideo'] = isset($_POST['video_myvideo']) ? killhtml ( $_POST['video_myvideo'] ) : '';
     $_POST['video_other'] = isset($_POST['video_other']) ? killhtml ( $_POST['video_other'] ) : '';
 
+    if (!isset($_POST['video_h'])) $_POST['video_h'] = '';
     if ($_POST['video_h'] != '' ) {
        $_POST['video_h'] = add_zero ( $_POST['video_h'] );
     }
+    if (!isset($_POST['video_m'])) $_POST['video_m'] = '';
     if ($_POST['video_m'] != '' ) {
        $_POST['video_m'] = add_zero ( $_POST['video_m'] );
     }
+    if (!isset($_POST['video_s'])) $_POST['video_s'] = '';
     if ($_POST['video_s'] != '' ) {
        $_POST['video_s'] = add_zero ( $_POST['video_s'] );
     }
