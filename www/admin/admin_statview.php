@@ -95,8 +95,11 @@ $index = mysql_query('SELECT s_hits
 
 if (false == ($dbmaxhits = @mysql_result($index, 0, 's_hits')))
     $dbmaxhits = 0;
-    
+
 // Tage ausgeben
+$dcount = 0;
+$visitsall = 0;
+$hitsall = 0;
 for ($d=1; $d<date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1; $d++)
 {
     $index = mysql_query('SELECT *
@@ -165,7 +168,7 @@ if (empty($dcount)) {
     $hitsdurchschnitt = round($hitsall / $dcount, 2);
 }
 
-    
+
 echo'
                                     <tr>
                                         <td class="h" align="center">
@@ -220,6 +223,9 @@ $index = mysql_query('SELECT SUM(s_hits) AS sumhits
                       ORDER BY sumhits desc", $FD->sql()->conn() );
 $maxhits = mysql_result($index, 0, 'sumhits');
 
+$mcount = 0;
+$supervisits = 0;
+$superhits = 0;
 for ($m=1; $m<13; $m++)
 {
     $index = mysql_query('SELECT SUM(s_visits) AS sumvisits, SUM(s_hits) AS sumhits

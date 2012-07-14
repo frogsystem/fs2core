@@ -40,7 +40,7 @@ if (
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != '' ) {
-      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'news_'.$id, $FD->cfg('news', 'cat_pic_size')*1024, $FD->cfg('news', 'cat_pic_x']), $FD->cfg('news', 'cat_pic_y') );
+      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'news_'.$id, $FD->cfg('news', 'cat_pic_size')*1024, $FD->cfg('news', 'cat_pic_x'), $FD->cfg('news', 'cat_pic_y') );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 

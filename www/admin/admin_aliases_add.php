@@ -38,10 +38,10 @@ if (
 ////////////////////////
 
 // Security Functions
-$_POST['alias_go'] = killhtml ( $_POST['alias_go'] );
-$_POST['alias_forward_to'] = killhtml ( $_POST['alias_forward_to'] );
+$_POST['alias_go'] = isset($_POST['alias_go']) ? killhtml ( $_POST['alias_go'] ) : '';
+$_POST['alias_forward_to'] = isset($_POST['alias_forward_to']) ? killhtml ( $_POST['alias_forward_to'] ) : '';
 
-settype ( $_POST['alias_active'], "integer" );
+settype ( $_POST['alias_active'], 'integer' );
 
 
 // Check for Errors

@@ -58,7 +58,7 @@ echo '
                             </tr>
 ';
 
-if ( $num_shop  > 0 && $temp_biggest_exists  > 0 ) {
+if ( $num_shop  > 0 ) {
 	echo '
                             <tr>
                                 <td class="configthin">'.$FD->text('page', 'newest_product').':</td>

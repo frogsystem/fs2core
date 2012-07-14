@@ -11,8 +11,8 @@ $used_cols = array('captcha_bg_color', 'captcha_bg_transparent', 'captcha_text_c
 /////////////////////////////////////
 
 if (true
-        && is_hexcolor ( '#'.$_POST['captcha_bg_color'] )
-        && is_hexcolor ( '#'.$_POST['captcha_text_color'] )
+        && isset($_POST['captcha_bg_color']) && is_hexcolor ( '#'.$_POST['captcha_bg_color'] )
+        && isset($_POST['captcha_text_color']) && is_hexcolor ( '#'.$_POST['captcha_text_color'] )
         && $_POST['captcha_first_lower'] != ''
         && $_POST['captcha_first_upper'] != ''
         && $_POST['captcha_first_lower'] <= $_POST['captcha_first_upper']
@@ -120,7 +120,7 @@ if ( TRUE )
     } else {
         $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'captcha'"));
         $data = json_array_decode($data['config_data']);
-        
+
         // create missing Data
         if ( in_array ( $data['captcha_font_size'], array ( 1, 2, 3, 4, 5 ) ) ) {
             $data['captcha_font'] = $data['captcha_font_size'];
@@ -128,7 +128,7 @@ if ( TRUE )
             $data['captcha_font'] = $data['captcha_font_file'];
         }
         unset($data['captcha_font_size'], $data['captcha_font_file']);
-        putintopost($data);    
+        putintopost($data);
     }
 
     // security functions

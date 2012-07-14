@@ -94,6 +94,9 @@ else
     }
     $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
 
+    if (!isset($_POST['wallpaper_name'])) $_POST['wallpaper_name'] = '';
+    if (!isset($_POST['wallpaper_title'])) $_POST['wallpaper_title'] = '';
+
 echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input id="send" type="hidden" value="0" name="wpadd">
