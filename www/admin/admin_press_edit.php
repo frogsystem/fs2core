@@ -384,7 +384,7 @@ $index = mysql_query('SELECT press_id FROM '.$FD->config('pref').'press', $FD->s
 if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
 {
 
-    unset($filterwhere);
+    $filterwhere = '';
     if (isset($_POST['gameid']) AND $_POST['gameid'] != 0)
     {
         if ($filterwhere != '') {

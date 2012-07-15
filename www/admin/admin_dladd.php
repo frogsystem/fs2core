@@ -91,6 +91,7 @@ if(true)
     {
         $_POST['options'] = 1;
     }
+    if (!isset($_POST['optionsadd'])) $_POST['optionsadd'] = 0;
     $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
 
     $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
@@ -174,7 +175,7 @@ if(true)
     for ($i=1; $i<=$_POST['options']; $i++)
     {
         $j = $i - 1;
-        if ($_POST['fname'][$j] OR $_POST['furl'][$j] OR $_POST['fsize'][$j] OR isset($fmirror[$j]))
+        if (isset($_POST['fname'][$j]) OR isset($_POST['furl'][$j]) OR isset($_POST['fsize'][$j]) OR isset($fmirror[$j]))
         {
             if (isset($fmirror[$j]))
                $f_checked='checked="checked"';

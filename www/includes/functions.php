@@ -10,7 +10,7 @@ function get_online_ips () {
 
     // init array
     $numbers = array('users' => 0, 'guests' => 0, 'all' => 0);
-    
+
     // get values from db
     $numbers['users'] = $FD->sql()->getField('useronline',
         array('COL' => 'user_id', 'FUNC' => 'COUNT', 'AS' => 'users'),
@@ -20,10 +20,10 @@ function get_online_ips () {
         array('COL' => 'user_id', 'FUNC' => 'COUNT', 'AS' => 'guests'),
         array('W' => "`date` > '".($FD->env('time')-300)."' AND `user_id` = 0")
     );
-    
+
     //calc all
     $numbers['all'] = $numbers['users'] + $numbers['guests'];
-    
+
     return $numbers;
 }
 
@@ -31,7 +31,7 @@ function get_online_ips () {
 //// Delete Referrers ///
 /////////////////////////
 function delete_referrers ($days, $hits, $contact, $age, $amount, $time = null) {
-    
+
     global $FD;
 
     // set now
@@ -40,7 +40,7 @@ function delete_referrers ($days, $hits, $contact, $age, $amount, $time = null) 
 
     // get last date
     $del_date = $time - $days * 86400;
-    
+
     // security and sql prepartion
     settype($hits, 'integer');
     switch ($contact) {
@@ -427,9 +427,9 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
 {
     $filterarray = explode ( ',', $FILTER );
     $filterarray = array_map ( 'trim', $filterarray );
-    unset ( $query );
-    unset ( $and_query );
-    unset ( $or_query );
+    $query = '';
+    $and_query = '';
+    $or_query = '';
 
     $first_and = true;
     $first_or = true;
@@ -457,7 +457,6 @@ function get_filter_where ( $FILTER, $SEARCH_FIELD )
             $or_query .= $like . " '%" . $string . "%'";
             $first_or = false;
         }
-        $i++;
     }
 
     if ( $or_query != '' )

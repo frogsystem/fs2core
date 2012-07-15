@@ -21,6 +21,7 @@ if ( $poll_arr = mysql_fetch_assoc($index) ) {
     $all_votes = mysql_result ( $index, 0, 'num_votes' );
 
     $index = mysql_query('SELECT * FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '".$poll_arr['poll_id']."' ORDER BY answer_id ASC", $FD->sql()->conn() );
+    $antworten = '';
     while ($answer_arr = mysql_fetch_assoc($index))
     {
         if ($all_votes != 0)

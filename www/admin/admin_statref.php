@@ -11,7 +11,7 @@ $cronjobs_cols = array('ref_cron', 'ref_days', 'ref_hits', 'ref_contact', 'ref_a
 
 if (
     has_perm('stat_ref_delete')
-    && $_POST['delete_referrer'] == 1 && isset ( $_POST['del_days'] ) && isset ( $_POST['del_hits'] )
+    && isset($_POST['delete_referrer']) && $_POST['delete_referrer'] == 1 && isset ( $_POST['del_days'] ) && isset ( $_POST['del_hits'] )
 ) {
     settype ($_POST['del_cron'], 'integer');
     settype ($_POST['del_days'], 'integer');
@@ -30,7 +30,7 @@ if (
     }
     else
     {
-    
+
         // Delete Refs now
         if ($_POST['del_cron'] == 42) {
             $rows = delete_referrers ($_POST['del_days'], $_POST['del_hits'], $_POST['del_contact'], $_POST['del_age'], $_POST['del_amount']);
@@ -47,7 +47,7 @@ if (
                         $FD->text('page', 'affected_rows') . ': ' .
                         $rows ;
             systext ( $message, $FD->text("page", "info") );
-            
+
         // save config for referer cronjob
         } else {
             try {
@@ -80,24 +80,33 @@ else
     }
 
     settype ( $_POST['limit'], 'integer' );
+    if (!isset($_POST['filter'])) $_POST['filter'] = '';
     $filter = savesql ( $_POST['filter'] );
     $_POST['filter'] = killhtml ( $_POST['filter'] );
 
+    if (!isset($_POST['order'])) $_POST['order'] = 'f'; //default
     switch ( $_POST['order'] )
     {
-        case 'u': $usel = 'selected'; break;
-        case 'c': $csel = 'selected'; break;
-        case 'l': $lsel = 'selected'; break;
+        case 'u': $usel = 'selected'; $csel = ''; $lsel = ''; $fsel = ''; break;
+        case 'c': $csel = 'selected'; $usel = ''; $lsel = ''; $fsel = ''; break;
+        case 'l': $lsel = 'selected'; $usel = ''; $csel = ''; $fsel = ''; break;
         default:
 			$fsel = 'selected';
+			$usel = ''; $csel = ''; $lsel = '';
 			$_POST['order'] = 'f';
 			break;
     }
+
+    if (!isset($_POST['sort'])) $_POST['sort'] = 'DESC'; //default
     switch ( $_POST['sort'] )
     {
-        case 'ASC': $ascsel = 'selected'; break;
+        case 'ASC':
+            $ascsel = 'selected';
+            $descsel = '';
+            break;
         default:
 			$descsel = 'selected';
+			$ascsel = '';
 			$_POST['sort'] = 'DESC';
 			break;
     }
@@ -273,15 +282,15 @@ else
 /// Referrer löschen ///
 ////////////////////////
     if (has_perm('stat_ref_delete')) {
-        
+
         // Get Config data
         $cronjobs = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'cronjobs'"));
         $cronjobs = json_array_decode($cronjobs['config_data']);
         $cronjobs = array_filter_keys($cronjobs, $cronjobs_cols);
         putintopost($cronjobs);
-        
+
         // security functions
-        $_POST = array_map('killhtml', $_POST);        
+        $_POST = array_map('killhtml', $_POST);
 
         echo'
                     <form action="" method="post">

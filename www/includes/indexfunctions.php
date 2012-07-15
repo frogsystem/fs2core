@@ -4,18 +4,18 @@
 ///////////////////////////////
 function run_cronjobs ($time = null, $save_time = true) {
     global $FD;
-    
+
     // set now
     if (empty($time))
         $time = $FD->env('time');
-        
+
     // calc 3am
     $today_3am = mktime(3, 0, 0, date('m', $time), date ('d', $time), date ('Y', $time));
-    $today_3am = ($today_3am > $FD->cfg('time')) ? $today_3am - 24*60*60 : $today_3am;    
-    
+    $today_3am = ($today_3am > $FD->cfg('time')) ? $today_3am - 24*60*60 : $today_3am;
+
     // calc next hour
     $last_hour = $time-(date('i', $time)*60)-date('s', $time); // now - min and sec of this hour
-    
+
     // Run Cronjobs or not
     if ($FD->cfg('cronjobs', 'last_cronjob_time_daily') < $today_3am)
         cronjobs_daily($time);
@@ -30,15 +30,15 @@ function run_cronjobs ($time = null, $save_time = true) {
 ////////////////////////
 function cronjobs_daily ($save_time = null) {
     global $FD;
-    
+
     // Run Cronjobs
-    search_index();  
+    search_index();
     clean_referers();
     HashMapper::deleteByTime();
-    
+
     // save time
     if (!empty($save_time))
-        $FD->saveConfig('cronjobs', array('last_cronjob_time_daily' => $save_time));    
+        $FD->saveConfig('cronjobs', array('last_cronjob_time_daily' => $save_time));
 }
 
 /////////////////////////
@@ -46,12 +46,12 @@ function cronjobs_daily ($save_time = null) {
 /////////////////////////
 function cronjobs_hourly ($save_time = null) {
     global $FD;
-    
+
     // Run Cronjobs
-    
+
     // save time
     if (!empty($save_time))
-        $FD->saveConfig('cronjobs', array('last_cronjob_time_hourly' => $save_time));  
+        $FD->saveConfig('cronjobs', array('last_cronjob_time_hourly' => $save_time));
 }
 
 /////////////////////////////////////////
@@ -59,13 +59,13 @@ function cronjobs_hourly ($save_time = null) {
 /////////////////////////////////////////
 function cronjobs_instantly_bufferd ($save_time = null) {
     global $FD;
-    
+
     // Run Cronjobs
     clean_timed_preview_images();
-    
+
     // save time
     if (!empty($save_time))
-        $FD->saveConfig('cronjobs', array('last_cronjob_time' => $save_time)); 
+        $FD->saveConfig('cronjobs', array('last_cronjob_time' => $save_time));
 }
 
 
@@ -74,11 +74,11 @@ function cronjobs_instantly_bufferd ($save_time = null) {
 //////////////////////////////////////
 function clean_referers ($time = null) {
     global $FD;
-    
+
     // set time
     if (empty($time))
-        $time = $FD->env('time');    
-    
+        $time = $FD->env('time');
+
     if ($FD->cfg('cronjobs', 'ref_cron') == 1) {
         delete_referrers(
             $FD->cfg('cronjobs', 'ref_days'),
@@ -318,7 +318,7 @@ function get_meta ()
 function get_title ()
 {
     global $FD;
-    
+
     if ($FD->cfg('dyn_title') == 1 && $FD->configExists('info', 'page_title')) {
         $dyn_title = str_replace('{..title..}', $FD->cfg('title'), $FD->cfg('dyn_title_ext'));
         $dyn_title = str_replace('{..ext..}', $FD->info('page_title'), $dyn_title);
@@ -909,8 +909,9 @@ function get_seo () {
         extract($_REQUEST);
 
     // Hotlinkingschutz vom FS2 zufrieden stellen
-    if (preg_match('/\/dlfile--.*\.html$/', $_SERVER['HTTP_REFERER']))
-        $_SERVER['HTTP_REFERER'] .= '?go=dlfile';
+    if (isset($_SERVER['HTTP_REFERER']))
+      if (preg_match('/\/dlfile--.*\.html$/', $_SERVER['HTTP_REFERER']))
+          $_SERVER['HTTP_REFERER'] .= '?go=dlfile';
 }
 
 
@@ -950,16 +951,16 @@ function forward_aliases ( $GOTO )
 
     $aliases = $FD->sql()->getData(
         'aliases',
-        array('alias_go', 'alias_forward_to'), 
+        array('alias_go', 'alias_forward_to'),
         array('W' => "`alias_active` = 1 AND `alias_go` = '".$GOTO."'")
     );
-    
+
     foreach ($aliases as $alias) {
         if ($GOTO == $alias['alias_go']) {
             $GOTO = $alias['alias_forward_to'];
         }
     }
-    
+
     return $GOTO;
 }
 
@@ -1045,7 +1046,7 @@ function save_visitors ()
 
     $ip = savesql($_SERVER['REMOTE_ADDR']); // IP-Adress
     clean_iplist(); // remove old users first
-    
+
     // get user_id or set user_id=0
     if (is_loggedin() && isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
@@ -1054,7 +1055,7 @@ function save_visitors ()
         $user_id = 0;
     }
 
-    // Exisiting user for ip?    
+    // Exisiting user for ip?
     $user = $FD->sql()->getRow('useronline', '*', array('W' => "`ip` = '".$ip."'"));
 
     // no user => create new
@@ -1064,16 +1065,16 @@ function save_visitors ()
             'user_id' => $user_id,
             'date' => $FD->env('time')
         ));
-        
+
         // and count the visit
         count_visit();
     }
-    
+
     // new user_id (and update time)
     else if ($user['user_id'] != $user_id) {
         $FD->sql()->update('useronline', array('user_id' => $user_id, 'date' => $FD->env('time') ), array('W' => "`ip` = '".$ip."'"));
     }
-    
+
     // we know the user => just update time
     else {
         $FD->sql()->update('useronline', array('date' => $FD->env('time') ), array('W' => "`ip` = '".$ip."'"));

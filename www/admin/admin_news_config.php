@@ -12,13 +12,13 @@ $used_cols = array('num_news', 'num_head', 'html_code', 'fs_code', 'para_handlin
 
 // Write Data into DB
 if (
-		$_POST['num_news'] && $_POST['num_news'] > 0
-		&& $_POST['num_head'] && $_POST['num_head'] > 0
-		&& $_POST['cat_pic_x'] && $_POST['cat_pic_x'] > 0
-		&& $_POST['cat_pic_y'] && $_POST['cat_pic_y'] > 0
-		&& $_POST['cat_pic_size'] && $_POST['cat_pic_size'] > 0
-		&& $_POST['news_headline_lenght']
-		&& $_POST['acp_per_page'] && $_POST['acp_per_page'] > 0
+		isset($_POST['num_news']) && $_POST['num_news'] > 0
+		&& isset($_POST['num_head']) && $_POST['num_head'] > 0
+		&& isset($_POST['cat_pic_x']) && $_POST['cat_pic_x'] > 0
+		&& isset($_POST['cat_pic_y']) && $_POST['cat_pic_y'] > 0
+		&& isset($_POST['cat_pic_size']) && $_POST['cat_pic_size'] > 0
+		&& isset($_POST['news_headline_lenght'])
+		&& isset($_POST['acp_per_page']) && $_POST['acp_per_page'] > 0
 	)
 {
     // prepare data
@@ -33,7 +33,7 @@ if (
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
