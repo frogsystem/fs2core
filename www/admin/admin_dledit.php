@@ -64,7 +64,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
         mysql_query($update, $FD->sql()->conn() );
 
         // Update Search Index (or not)
-        if ( $FD->config('search_index_update') === 1 ) {
+        if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
             // Include searchfunctions.php
             require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
             update_search_index ( 'dl' );

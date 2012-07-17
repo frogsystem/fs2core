@@ -60,13 +60,27 @@ if (
     $_POST['news_search_update'] = 0;
     $data = frompost($news_cols);
     unset($data['news_id']);
-
+    
     // MySQL-Insert-Query
     try {
+        // Get User
+        try {    
+            $user_id = $FD->sql()->getField('user', 'user_id', array('W' => "`user_name` = '".$FD->sql()->escape($_POST['user_name'])."'"));
+        } catch (Exception $e) {
+            Throw $e;
+        }
+
+        if (empty($user_id)) {
+            Throw new FormException($FD->text('admin', 'no_user_found_for_name'));
+        }
+        
+        $data['user_id'] = $user_id;
+        
+        // Save News
         $newsid = $sql->save('news', $data, 'news_id');
 
         // Update Search Index (or not)
-        if ( $FD->config('search_index_update') === 1 ) {
+        if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
             // Include searchfunctions.php
             require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
             update_search_index ('news');
@@ -103,13 +117,19 @@ if (
         } catch (Exception $e) {}
 
 
-        echo get_systext($FD->text('page', 'news_not_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));
+        echo get_systext($FD->text('page', 'news_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));
 
         // Unset Vars
         unset ($_POST);
 
+    } catch (FormException $e) {
+        echo get_systext($FD->text('page', 'news_not_added').'<br>'.$e->getMessage(),
+        $FD->text('admin', 'unknown_user'), 'red', $FD->text('admin', 'icon_user_question'));
+        $_POST['sended'] = "okay";
     } catch (Exception $e) {
-        echo get_systext($FD->text('page', 'news_not_added').'<br>Caught exception: '.$e->getMessage(), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
+        echo get_systext($FD->text('page', 'news_not_added').'<br>'.
+        (DEBUG ? 'Caught exception: '.$e->getMessage() : $FD->text('admin', 'unknown_error')),
+        $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
 }
@@ -179,7 +199,7 @@ if ( TRUE ) {
             }
 
         // display error
-        } else {
+        } elseif ($_POST['sended'] != "okay") {
             echo get_systext($FD->text('page', 'news_not_added').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
         }
 
@@ -188,7 +208,8 @@ if ( TRUE ) {
         $_POST['news_active'] = 1;
         $_POST['news_comments_allowed'] = 1;
         $_POST['user_id'] = $_SESSION['user_id'];
-
+        $_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
+        
         $_POST['d'] = date('d');
         $_POST['m'] = date('m');
         $_POST['y'] = date('Y');
@@ -199,7 +220,7 @@ if ( TRUE ) {
     }
 
     // Get User
-    $_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
+    //$_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
 
     // security functions
     $_POST = array_map('killhtml', $_POST);

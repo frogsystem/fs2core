@@ -424,6 +424,20 @@ if (
 
     // MySQL-Insert-Query
     try {
+        // Get User
+        try {    
+            $user_id = $FD->sql()->getField('user', 'user_id', array('W' => "`user_name` = '".$FD->sql()->escape($_POST['user_name'])."'"));
+        } catch (Exception $e) {
+            Throw $e;
+        }
+
+        if (empty($user_id)) {
+            Throw new FormException($FD->text('admin', 'no_user_found_for_name'));
+        }
+        
+        $data['user_id'] = $user_id;
+        
+        // Save News        
         $newsid = $sql->save('news', $data, 'news_id');
 
         // delete all links
@@ -455,7 +469,7 @@ if (
         }
 
         // Update Search Index (or not)
-        if ( $FD->config('search_index_update') === 1 ) {
+        if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
             // Include searchfunctions.php
             require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
             update_search_index ('news');
@@ -466,8 +480,14 @@ if (
         // Unset Vars
         unset ($_POST);
 
+    } catch (FormException $e) {
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$e->getMessage(),
+        $FD->text('admin', 'unknown_user'), 'red', $FD->text('admin', 'icon_user_question'));
+        $_POST['sended'] = "okay";
     } catch (Exception $e) {
-        echo get_systext($FD->text("admin", "changes_not_saved").'<br>Caught exception: '.$e->getMessage(), $FD->text("admin", "error"), 'red', $FD->text('admin', 'icon_save_error'));
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.
+        (DEBUG ? 'Caught exception: '.$e->getMessage() : $FD->text('admin', 'unknown_error')),
+        $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 }
 
@@ -663,7 +683,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
                 }
 
             // display error
-            } else {
+            } elseif ($_POST['sended'] != "okay") {
                 echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
             }
 
@@ -671,6 +691,9 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
         } else {
             $data = $sql->getById('news', $news_cols, $_POST['news_id'], 'news_id');
             putintopost($data);
+
+            // Get User name
+            $_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
 
             $_POST['d'] = date('d', $_POST['news_date']);
             $_POST['m'] = date('m', $_POST['news_date']);
@@ -695,7 +718,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
         }
 
         // Get User
-        $_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
+        //$_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
 
         // security functions
         $_POST = array_map('killhtml', $_POST);

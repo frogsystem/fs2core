@@ -288,7 +288,8 @@ function openpopup ( $FILE, $WIDTH, $HEIGHT )
 {
         $half_width = $WIDTH / 2;
         $half_height = $HEIGHT / 2;
-        $javascript = 'open("'.$FILE.'","_blank","width='.$WIDTH.',height='.$HEIGHT.',top="+((screen.height/2)-'.$half_height.')+",left="+((screen.width/2)-'.$half_width.')+",scrollbars=YES,location=YES,status=YES")';
+        //$javascript = 'open("'.$FILE.'","_blank","width='.$WIDTH.',height='.$HEIGHT.',top="+((screen.height/2)-'.$half_height.')+",left="+((screen.width/2)-'.$half_width.')+",scrollbars=YES,location=YES,status=YES")';
+        $javascript = 'popUp("'.$FILE.'", "_blank", '.$WIDTH.', '.$HEIGHT.')';
 
         return $javascript;
 }

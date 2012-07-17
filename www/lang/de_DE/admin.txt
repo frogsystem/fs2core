@@ -134,6 +134,8 @@ images_not_all_deleted:                  Nicht alle Bilder konnten gelöscht werd
 sql_error:                               SQL-Fehler:
 access_denied:                           Zugriff verweigert
 403_error:                               Sie haben keine Rechte, um auf diese Seite zuzugreifen.
+unknown_user:                            Unbekannter Benutzer
+no_user_found_for_name:                  Es konnte kein Benutzer mit diesem Namen gefunden werden.
 
 
 # Message-Images
@@ -156,6 +158,7 @@ icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt
 icon_up:                                 <img src="icons/up.jpg" alt="Nach oben verschieben" align="absmiddle">
 icon_down:                               <img src="icons/down.jpg" alt="Nach unten verschieben" align="absmiddle">
 icon_link_error:                         <img src="icons/link_error.jpg" alt="Link Fehler" align="absmiddle">
+icon_user_question:                      <img src="icons/user_question.jpg" alt="Unbekannter Benutzer" align="absmiddle">
 
 
 # Upload-Messages

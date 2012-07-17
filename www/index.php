@@ -12,6 +12,7 @@ phpinit();
 require_once(FS2_ROOT_PATH . 'login.inc.php');
 
 //Include Functions-Files
+require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
 require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
 require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');

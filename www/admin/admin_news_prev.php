@@ -1,4 +1,4 @@
-<?php if (ACP_GO == 'news_preview') {
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
     // Reload Page
     if ( !$_POST['sended'] ) {
@@ -56,9 +56,7 @@
 
         </form>
 
-        <p>
-            '.$FD->text("page", "preview_note").'
-        </p>
+        '.get_content_container('&nbsp;', $FD->text("page", "preview_note")).'
         ';
 
         // "Display" Reload Page
@@ -196,4 +194,4 @@
         $JUST_CONTENT = true; //preview has own html head
     }
 
-} ?>
+?>

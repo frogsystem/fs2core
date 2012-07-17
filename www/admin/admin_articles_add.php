@@ -62,7 +62,7 @@ if (
     ", $FD->sql()->conn() );
 
     // Update Search Index (or not)
-    if ( $FD->config('search_index_update') === 1 ) {
+    if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
         // Include searchfunctions.php
         require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
         update_search_index ( 'articles' );

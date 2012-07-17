@@ -17,6 +17,7 @@ require_once(FS2_ROOT_PATH . 'libs/class_GlobalData.php');
 require_once(FS2_ROOT_PATH . 'login.inc.php');
 
 //Include Library-Classes
+require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
 require_once(FS2_ROOT_PATH . 'libs/class_template.php');
 require_once(FS2_ROOT_PATH . 'libs/class_fileaccess.php');
 require_once(FS2_ROOT_PATH . 'libs/class_lang.php');

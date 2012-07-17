@@ -274,7 +274,7 @@ class sql {
     // only a single data row
     public function getRow ($table, $cols, $options = array(), $start = 0) {
         // Set Limit
-        $options['L'] = "$start,1";
+        $options['L'] = $start.",1";
 
         // Get Result
         $result = $this->get($table, $cols, $options);
@@ -293,7 +293,7 @@ class sql {
     // only a single data field
     public function getField ($table, $field, $options = array(), $start = 0) {
         // Get Result
-        $result = $this->getRow($table, array($field), $options);
+        $result = $this->getRow($table, array($field), $options, $start);
         if (count($result) >= 1)
             return array_shift($result);
         else
