@@ -137,6 +137,8 @@ if ( TRUE )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
+                            
+                            <!--
                             <tr><td class="line" colspan="2">'.$FD->text("page", "comment_settings_title").' - Noch ohne Funktion</td></tr>
                             <tr>
                                 <td class="config">
@@ -179,6 +181,8 @@ if ( TRUE )
                                 </td>
                             </tr>
 							<tr><td class="space"></td></tr>
+                            -->
+                            
                             <tr><td class="line" colspan="2">Admin-CP Einstellungen</td></tr>
                             <tr>
                                 <td class="config">

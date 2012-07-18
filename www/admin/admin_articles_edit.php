@@ -57,8 +57,8 @@ function default_display_filter ( $FORM )
                                         <option value="article_url" '.getselected ( 'article_url', $FORM['order'] ).'>'.$FD->text('page', 'edit_filter_url').'</option>
                                     </select>,
                                     <select name="sort">
-                                        <option value="ASC" '.getselected ( 'ASC', $FORM['sort'] ).'>'.$FD->text('admin', 'ascending').'</option>
-                                        <option value="DESC" '.getselected ( 'DESC', $FORM['sort'] ).'>'.$FD->text('admin', 'descending').'</option>
+                                        <option value="ASC" '.getselected ( 'ASC', $FORM['sort'] ).'>'.$FD->text('admin', 'asc').'</option>
+                                        <option value="DESC" '.getselected ( 'DESC', $FORM['sort'] ).'>'.$FD->text('admin', 'desc').'</option>
                                     </select>
 
                                 </td>
@@ -138,7 +138,7 @@ function default_get_entry_data ( $articles_arr )
         // Only for full and extended view
         if ($config_arr['acp_view'] == 1 || $config_arr['acp_view'] == 2) {
             if ( $articles_arr['article_date'] != 0 ) {
-                $articles_arr['article_date_formated'] = ''.$FD->text('admin', 'on_date').' <b>' . date ( $FD->text('admin', 'date_format') , $articles_arr['article_date'] ) . '</b>,';
+                $articles_arr['article_date_formated'] = ''.$FD->text('admin', 'at_date').' <b>' . date_loc ( $FD->text('admin', 'date') , $articles_arr['article_date'] ) . '</b>,';
             } else {
                 $articles_arr['article_date_formated'] = '';
             }
@@ -261,6 +261,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                         <input type="hidden" name="order" value="'.$FORM['order'].'" >
                         <input type="hidden" name="sort" value="'.$FORM['sort'].'">
                         <input type="hidden" name="cat_id" value="'.$FORM['cat_id'].'">
+                        <input type="hidden" name="page" value="'.$FORM['page'].'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                                                         <tr><td class="line" colspan="4">'.$FD->text('page', 'edit_select_article').' ('.$pagenav_arr['total_entries'].' '.$FD->text('page', 'edit_entries_found').')</td></tr>
 
@@ -297,7 +298,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                                                                 <td class="right">
                                                                         <select name="article_action" size="1">
                                                                                 <option value="edit">'.$FD->text('admin', 'selection_edit').'</option>
-                                                                                <option value="delete">'.$FD->text('admin', 'selection_del').'</option>
+                                                                                <option value="delete">'.$FD->text('admin', 'selection_delete').'</option>
                                                                         </select>
                                                                 </td>
                                                         </tr>
@@ -305,7 +306,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
                                                         <tr>
                                                                 <td class="buttontd">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
+                                                                                '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -557,7 +558,7 @@ function action_delete_get_data ( $ARTICLE_ID )
 
         // Get other Data
         if ( $articles_arr['article_date'] != 0 ) {
-        $articles_arr['article_date_formated'] = ''.$FD->text('admin', 'on').' <b>' . date ( $FD->text('admin', 'date_format') , $articles_arr['article_date'] ) . '</b>,';
+        $articles_arr['article_date_formated'] = ''.$FD->text('admin', 'at_date').' <b>' . date ( $FD->text('admin', 'date') , $articles_arr['article_date'] ) . '</b>,';
         } else {
             $articles_arr['article_date_formated'] = '';
         }
@@ -566,7 +567,7 @@ function action_delete_get_data ( $ARTICLE_ID )
 
         if ( $articles_arr['article_user'] != 0 ) {
             $index2 = mysql_query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$articles_arr['article_user'].'', $FD->sql()->conn() );
-            $articles_arr['user_name'] = $FD->text('admin', 'by_posted') .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
+            $articles_arr['user_name'] = $FD->text('admin', 'by') .' <b>' . mysql_result ( $index2, 0, 'user_name' ) . '</b>,';
         } else {
             $articles_arr['user_name'] = '';
         }
@@ -593,6 +594,7 @@ function action_delete_display_page ( $articles_arr )
                                                 <input type="hidden" name="article_action" value="'.$_POST['article_action'].'">
                                                 <input type="hidden" name="article_id" value="'.$articles_arr['article_id'].'">
                                                 <input type="hidden" name="go" value="articles_edit">
+                                                <input type="hidden" name="page" value="'.$_POST['page'].'">
                                                 <table class="configtable" cellpadding="4" cellspacing="0">
                                                         <tr><td class="line">'.$FD->text("page", "delete_title").'</td></tr>
                                                         <tr>
@@ -659,7 +661,7 @@ function action_delete_display_page ( $articles_arr )
                                                         <tr>
                                                                 <td class="buttontd" colspan="2">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
+                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button_long").'
                                                                         </button>
                                                                 </td>
                                                         </tr>

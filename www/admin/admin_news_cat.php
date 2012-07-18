@@ -183,7 +183,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 		// Display Error Messages
 		if ( isset ( $_POST['sended'] ) ) {
             $cat_arr = getfrompost ( $cat_arr );
-            systext ( $FD->text("admin", "note_notfilled"), $FD->text("admin", "error"), TRUE );
+            systext ( $FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), TRUE );
 		}
 
 		// Security-Functions
@@ -243,14 +243,14 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="cat_username" value="'.$cat_arr['cat_username'].'">
                                     <input type="hidden" id="userid" name="cat_user" value="'.$cat_arr['cat_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( 'admin_finduser.php', 400, 400 ).'\' value="'.$FD->text("admin", "change_button").'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("admin", "change").'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
        						<tr><td class="line" colspan="2">'.$FD->text("page", "edit_cat_title_optional").'</td></tr>
        						<tr>
            						<td class="config">
-             						'.$FD->text("page", "edit_cat_image").': <span class="small">'.$FD->text("admin", "optional").'</span><br><br>
+             						'.$FD->text("page", "edit_cat_image").': <span class="small">('.$FD->text("admin", "optional").')</span><br><br>
 	 	';
 		if ( image_exists ( 'images/cat/', 'news_'.$cat_arr['cat_id'] ) ) {
 		    echo '
@@ -267,7 +267,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 									</table>
 			';
 		} else {
-		    echo '<span class="small">'.$FD->text("admin", "no_image").'</span><br>';
+		    echo '<span class="small">'.$FD->text("admin", "no_image_found").'</span><br>';
 		}
 		echo'                   	<br>
 								</td>
@@ -285,7 +285,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 							</tr>
 							<tr align="left" valign="top">
 								<td class="config">
-            						'.$FD->text("page", "edit_cat_description").': <span class="small">'.$FD->text("admin", "optional").'</span><br>
+            						'.$FD->text("page", "edit_cat_description").': <span class="small">('.$FD->text("admin", "optional").')</span><br>
 									<span class="small">'.$FD->text("page", "edit_cat_description_desc").'</span>
 								</td>
 								<td class="config">
@@ -296,7 +296,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 							<tr>
 								<td class="buttontd" colspan="2">
 									<button class="button_new" type="submit">
-										'.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
+										'.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
 									</button>
 								</td>
 							</tr>
@@ -377,7 +377,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 							<tr>
 								<td class="buttontd" colspan="2">
 									<button class="button_new" type="submit">
-										'.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
+										'.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
 									</button>
 								</td>
 							</tr>
@@ -414,7 +414,7 @@ elseif ( $showdefault == TRUE )
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
 		$_POST['cat_name'] = killhtml ( $_POST['cat_name'] );
-		systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
+		systext ( $FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), TRUE );
 	}
 
     // Display Add-Form
@@ -507,7 +507,7 @@ elseif ( $showdefault == TRUE )
 								<td style="text-align:right;" colspan="3">
 									<select name="cat_action" size="1">
 										<option value="edit">'.$FD->text('admin', 'selection_edit').'</option>
-										<option value="delete">'.$FD->text('admin', 'selection_del').'</option>
+										<option value="delete">'.$FD->text('admin', 'selection_delete').'</option>
 									</select>
 								</td>
 							</tr>
@@ -515,7 +515,7 @@ elseif ( $showdefault == TRUE )
 							<tr>
 								<td class="buttontd" colspan="3">
 									<button class="button_new" type="submit">
-										'.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
+										'.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
 									</button>
 								</td>
 							</tr>

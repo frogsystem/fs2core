@@ -311,6 +311,10 @@ input[type='button'], input[type='reset'], input[type='submit'] {
     padding-bottom:2px;
     cursor:pointer;
 }
+input[readonly], input[disabled] {
+    color:#444444;
+    background-color:#EEEEEE;
+}
 
 textarea {
     font-family: "Courier New", Courier, monospace;

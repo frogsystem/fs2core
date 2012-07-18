@@ -147,7 +147,7 @@ else
                                                         <tr><td class="line" colspan="2">'.$FD->text("page", "articles_info_title").'</td></tr>
                             <tr>
                                 <td class="config" width="250">
-                                    '.$FD->text("page", "articles_url").': <span class="small">'.$FD->text("admin", "optional").'</span><br>
+                                    '.$FD->text("page", "articles_url").': <span class="small">('.$FD->text("admin", "optional").')</span><br>
                                     <span class="small">'.$FD->text("page", "articles_url_desc").'</span>
                                 </td>
                                 <td class="config" width="350">
@@ -175,7 +175,7 @@ else
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$FD->text("page", "articles_date").': <span class="small">'.$FD->text("admin", "optional").'</span><br>
+                                    '.$FD->text("page", "articles_date").': <span class="small">('.$FD->text("admin", "optional").')</span><br>
                                     <span class="small">'.$FD->text("page", "articles_date_desc").'</span>
                                 </td>
                                 <td class="config">
@@ -187,20 +187,20 @@ else
                                                                         '.js_nowbutton ( $nowbutton_array, $FD->text("admin", "today") ).'
                                     <input onClick=\'document.getElementById("d").value="";
                                                      document.getElementById("m").value="";
-                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$FD->text("admin", "delete_button").'">
+                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$FD->text("admin", "delete").'">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$FD->text("page", "articles_poster").': <span class="small">'.$FD->text("admin", "optional").'</span><br>
+                                    '.$FD->text("page", "articles_poster").': <span class="small">('.$FD->text("admin", "optional").')</span><br>
                                     <span class="small">'.$FD->text("page", "articles_poster_desc").'</span>
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="article_user_name" value="'.$_POST['article_user_name'].'">
+                                    <input class="text" size="30" maxlength="100" disabled="disabled" readonly="readonly" id="username" name="article_user_name" value="'.$_POST['article_user_name'].'">
                                     <input type="hidden" id="userid" name="article_user" value="'.$_POST['article_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("admin", "change_button").'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("admin", "change").'">
                                     <input onClick=\'document.getElementById("username").value="";
-                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$FD->text("admin", "delete_button").'">
+                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$FD->text("admin", "delete").'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -262,7 +262,7 @@ else
                             </tr>
                             <tr>
                                                                 <td class="config" colspan="2">
-                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$FD->text("admin", "preview_button").'">
+                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$FD->text("admin", "preview").'">
                                                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>

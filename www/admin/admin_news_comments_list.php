@@ -80,7 +80,7 @@
         if ( $POSTDATA['comment_delete'] == 1 ) {
             db_delete_comment ( $POSTDATA );
         } else {
-             systext( 'Kommentare wurden nicht gel&ouml;scht', $FD->text('admin', 'error'), FALSE, $FD->text('page', 'trash_error') );
+             systext( 'Kommentare wurden nicht gel&ouml;scht', $FD->text('admin', 'info'), "green", $FD->text('page', 'trash_error') );
         }
 
         // Unset Vars

@@ -53,10 +53,8 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
             <input type="hidden" name="article_para" id="article_para" value="">
             <input type="hidden" name="article_text" id="article_text" value="">
         </form>
-
-        <p>
-            '.$FD->text("page", "preview_note").'
-        </p>
+    
+        '.get_content_container('&nbsp;', $FD->text("page", "preview_note")).'
     ';
 
     // "Display" Reload Page
@@ -161,7 +159,7 @@ else {
     $theTemplate->tag('copyright', get_copyright());
 
     $template_general = (string) $theTemplate;
-    $template_general = tpl_replacements($template_general);
+    $template_general = tpl_functions_init($template_general);
 
     // Get Main Template
     echo get_maintemplate ($template_general, '../');
