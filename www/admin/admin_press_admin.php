@@ -5,7 +5,7 @@
 ////////////////////////////
 if (isset($_POST['entry_action'])
     && $_POST['entry_action'] == 'add'
-    && isset($_POST['entry_is'])
+    && isset($_POST['entry_is'])&& !empty($_POST['entry_is'])
     && (isset($_POST['title']) AND $_POST['title'] != '')
    )
 {
@@ -27,6 +27,7 @@ if (isset($_POST['entry_action'])
     }
 
     echo get_systext(implode('<br>', $msg), $FD->text("admin", "info"), 'green', $FD->text("admin", "icon_save_add"));
+    unset($_POST);
 }
 
 ////////////////////////////
@@ -218,11 +219,13 @@ elseif (isset($_POST['entry_action'])
     echo'
                                 </td>
                             </tr>
-                            <tr align="left" valign="top">
-                                <td class="config" colspan="2">
-                                    <input type="submit" value="&Auml;nderungen speichern" class="button">
+                            <tr>
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
+                                    </button>
                                 </td>
-                            </tr>
+                            </tr>                              
                         </table>
                     </form>
     ';
@@ -302,7 +305,7 @@ elseif (isset($_POST['entry_action'])
                                         <option value="0">'.$FD->text("page", "delnotconfirm").'</option>
                                         <option value="1">'.$FD->text("page", "delconfirm").'</option>
                                     </select>
-                                    <input type="submit" value="'.$FD->text("admin", "do_button").'">
+                                    <input type="submit" value="'.$FD->text("admin", "do_action_button_long").'">
                                 </td>
                             </tr>
                             <tr><td>&nbsp;</td></tr>
@@ -369,10 +372,23 @@ elseif (isset($_POST['entry_action'])
 ////////////////////////////
 if (!isset($_POST['entry_id']))
 {
+
+    //Error Message
+    if ($_POST['sended'] == 'add') {
+        systext ("Eintrag wurde nicht hinzugef&uuml;gt<br>".$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), "red", $FD->text("admin", "icon_save_error"));
+
+        $entry_arr['title'] = killhtml($_POST['title']);
+        settype($_POST['entry_is'], 'integer');
+    } else {
+        $_POST['title'] = "";
+        $_POST['entry_is'] = 0;
+    } 
+    
     echo'
                     <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" value="press_admin" name="go">
                         <input type="hidden" value="add" name="entry_action">
+                        <input type="hidden" value="add" name="sended">
                         <table class="content" cellpadding="3" cellspacing="0">
                             <tr><td colspan="4"><h3>Neuen Eintrag hinzuf&uuml;gen</h3><hr></td></tr>
                             <tr align="left" valign="top">
@@ -389,17 +405,18 @@ if (!isset($_POST['entry_id']))
                             </tr>
                             <tr align="left" valign="top">
                                 <td class="config" valign="top">
-                                    <input class="text" size="20" name="entry_pic" type="file" />
+                                    <input class="text" size="20" name="entry_pic" type="file">
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="25" name="title" maxlength="100" value="" />
+                                    <input class="text" size="25" name="title" maxlength="100" value="'.$_POST['title'].'">
                                 </td>
                                 <td class="config" valign="top">
                                     <select name="entry_is" size="1">
-                                        <option value="0" selected="selected">----------</option>
-                                        <option value="1">Spiel</option>
-                                        <option value="2">Kategorie</option>
-                                        <option value="3">Sprache</option>
+                                        <option value="0" '.getselected($_POST['entry_is'], 0).'>'.$FD->text('admin', 'please_select').'</option>
+                                        <option value="0">----------</option>
+                                        <option value="1" '.getselected($_POST['entry_is'], 1).'>Spiel</option>
+                                        <option value="2" '.getselected($_POST['entry_is'], 2).'>Kategorie</option>
+                                        <option value="3" '.getselected($_POST['entry_is'], 3).'>Sprache</option>
                                     </select>
                                 </td>
                                 <td class="config" valign="top">
@@ -412,7 +429,7 @@ if (!isset($_POST['entry_id']))
 
     echo'<p></p>
                         <table class="content " cellpadding="3" cellspacing="0">
-                            <tr><td colspan="4"><h3>Spiele bearbeiten</h3><hr></td></tr>
+                            <tr><td colspan="4"><h3>Eintr&auml;ge bearbeiten</h3><hr></td></tr>
     ';
 
     for ($i=1;$i<=3;$i++)
@@ -490,11 +507,17 @@ if (!isset($_POST['entry_id']))
                                 <td class="config" colspan="4" style="text-align:right;">
                                    <select class="select_type" name="entry_action" size="1">
                                      <option class="select_one" value="edit">'.$FD->text("admin", "selection_edit").'</option>
-                                     <option class="select_red select_one" value="delete">'.$FD->text("admin", "selection_del").'</option>
+                                     <option class="select_red select_one" value="delete">'.$FD->text("admin", "selection_delete").'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$FD->text("admin", "do_button").'">
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="buttontd" colspan="4">
+                                    <button class="button_new" type="submit">
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text('admin', 'do_action_button_long').'
+                                    </button>
+                                </td>
+                            </tr>                              
                         </tbody>
                     </form>
             ';

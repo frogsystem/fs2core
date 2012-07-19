@@ -140,8 +140,10 @@ if(true)
                                 </td>
                             </tr>
                             <tr>
-                                <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Absenden">
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
+                                    </button>
                                 </td>
                             </tr>
                         </table>

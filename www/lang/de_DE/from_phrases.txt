@@ -503,15 +503,6 @@ delete_question:                                   Soll dieser Artikel wirklich 
 article_deleted:                                   Artikel wurde erfolgreich gelöscht
 article_not_deleted:                               Artikel wurde nicht gelöscht
 
-
-#press
-delpage:                                           Eintrag löschen
-delpage_question:                                  Soll der Eintrag wirklich gelöscht werden?
-delconfirm:                                        Eintrag löschen
-delnotconfirm:                                     Eintrag nicht löschen
-note_noreleases:                                   Es wurden keine Presseberichte gefunden!
-
-
 #random
 start_time:                                        Startzeit
 end_time:                                          Endzeit

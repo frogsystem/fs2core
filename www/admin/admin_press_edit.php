@@ -294,10 +294,12 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
                             </tr>
                             <tr><td>&nbsp;</td></tr>
                             <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="&Auml;nderungen speichern">
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
+                                    </button>
                                 </td>
-                            </tr>
+                            </tr>                          
                         </table>
                     </form>
     ';
@@ -357,7 +359,7 @@ elseif (isset($_POST['press_action'])
                                         <option value="0">Pressebericht nicht l&ouml;schen</option>
                                         <option value="1">Pressebericht l&ouml;schen</option>
                                     </select>
-                                    <input type="submit" value="'.$FD->text("admin", "do_button").'">
+                                    <input type="submit" value="'.$FD->text("admin", "do_action_button_long").'">
                                 </td>
                             </tr>
                             <tr><td>&nbsp;</td></tr>
@@ -583,11 +585,17 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                                 <td class="right" colspan="4">
                                    <select class="select_type" name="press_action" size="1">
                                      <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
-                                     <option class="select_red select_one" value="delete">'.$FD->text('admin', 'selection_del').'</option>
+                                     <option class="select_red select_one" value="delete">'.$FD->text('admin', 'selection_delete').'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$FD->text('admin', 'do_button').'">
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="buttontd" colspan="4">
+                                    <button class="button_new" type="submit">
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text('admin', 'do_action_button_long').'
+                                    </button>
+                                </td>
+                            </tr>                              
                         </table>
                     </form>
         ';

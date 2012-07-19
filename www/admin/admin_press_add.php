@@ -229,10 +229,12 @@ if(true)
                             </tr>
 
                             <tr>
-                                <td colspan="2">
-                                    <input class="button" type="submit" value="Pressebericht hinzuf&uuml;gen">
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$FD->text("admin", "button_arrow").' Pressebericht hinzuf&uuml;gen
+                                    </button>
                                 </td>
-                            </tr>
+                            </tr>                            
                         </table>
                     </form>
     ';
