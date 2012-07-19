@@ -6,7 +6,7 @@
 define('UPLOAD_PATH', FS2_ROOT_PATH.'upload/', true);
 define('CIMG_PATH', FS2_ROOT_PATH.'media/content/', true);
 
-if(isset($_POST['import'])){
+if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "import"){
     if (!isset($_POST['thumb']))
         $_POST['thumb'] = array();
 
@@ -34,8 +34,8 @@ if(isset($_POST['import'])){
     } else {
         systext('Es m&uuml;ssen Bilder ausgew&auml;hlt werden!');
     }
-    unset($_POST['import']);
-} elseif(isset($_POST['delete'])){
+    unset($_POST);
+} elseif(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "delete"){
     if(count($_POST['image']) > 0){
         $count1 = 0;
         $count2 = 0;
@@ -66,10 +66,10 @@ if(isset($_POST['import'])){
     } else {
         systext('Es m&uuml;ssen Bilder ausgew&auml;hlt werden!');
     }
-    unset($_POST['delete']);
+    unset($_POST);
 }
 
-if(!isset($_POST['import']) && !isset($_POST['delete'])){
+if(!isset($_POST['cat_action']) || !isset($_POST['sended'])){
     $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg`');
     $img = array();
     while(($row = mysql_fetch_assoc($qry)) !== false){
@@ -95,29 +95,60 @@ if(!isset($_POST['import']) && !isset($_POST['delete'])){
     }
 
     if($found > 0){
-        if($found == 1){
-            systext($found.' neues Bild gefunden');
-        } else {
-            systext($found.' neue Bilder gefunden');
-        }
+        $select_all_none = '<span class="small">
+                         (<span class="link" onclick="groupselect(\'#image_list\', true)">alle</span> / <span class="link" onclick="groupselect(\'#image_list\', false)">keine</span>  ausw&auml;hlen)
+                    </span>';       
+        
+        systext($found.sp_string($found, ' neues Bild', ' neue Bilder').' gefunden&nbsp;'.$select_all_none, "Bilder aus Upload-Ordner importieren");
         $upload_path = UPLOAD_PATH;
-        echo '<form action="" method="post"><table cellspacing="0" cellpadding="4" border="0" width="600"><tbody>';
+    
+        echo '<form action="" method="post">
+            <input type="hidden" name="sended" value="1">
+        <table class="configtable" cellpadding="4" cellspacing="0" id="image_list">
+        <tbody>';
         foreach($bildnamen as $bild){
             echo <<< FS2_STRING
     <tr>
-        <td><input type="checkbox" name="image[]" value="{$bild[0]}{$bild[2]}"></td>
-        <td class="config">{$bild[0]} <font class="small">(<a href="{$upload_path}{$bild[0]}{$bild[2]}" target="_blank">ansehen</a>)</font>
+        <td width="20">
+            {$FD->text('admin', 'checkbox')}
+            <input class="hidden" type="checkbox" name="image[]" value="{$bild[0]}{$bild[2]}" id="img_{$bild[0]}{$bild[2]}">
+        </td>
+        <td><label for="img_{$bild[0]}{$bild[2]}">{$bild[0]} <span class="small">(<a href="{$upload_path}{$bild[0]}{$bild[2]}" target="_blank">ansehen</a>)</span></label>
 FS2_STRING;
 if($bild[1]) echo '<br><font class="small">Thumbnail gefunden</font><input type="hidden" name="thumb[]" value="'.$bild[0].$bild[2].'">';
 echo '    </tr>';
         }
-        echo '    <tr><td class="config" rowspan="2">Auswahl:</td><td><input class="button" type="submit" name="delete" value="l&ouml;schen!"></td></tr>';
-        echo '    <tr><td class="config">in die Kategorie <select name="cat"><option value="0">Keine Kategorie</option>';
-        $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
-        while(($cat = mysql_fetch_assoc($qry)) !== false){
-            echo '<option value="'.$cat['id'].'" title="'.$cat['description'].'">'.$cat['name'].'</option>';
-        }
-        echo '</select> <input class="button" type="submit" name="import" value="importieren!"></td></tr></table></form>';
+        
+        echo'        
+        
+            <tr><td class="space"></td></tr>
+            <tr>
+                <td colspan="2">
+                    <div class="atleft" id="import_to">
+                        Bilder in diese Kategorie importieren: <select name="cat"><option value="0">Keine Kategorie</option>';
+                            $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
+                            while(($cat = mysql_fetch_assoc($qry)) !== false){
+                                echo '<option value="'.$cat['id'].'" title="'.$cat['description'].'">'.$cat['name'].'</option>';
+                            }
+                            echo '</select> 
+                    </div>
+                    <div class="atright">
+                        <select name="cat_action" size="1" onchange=\'if ($(this).val()=="import") {$("#import_to").show();} else {$("#import_to").hide();}\'>
+                            <option value="import">'.$FD->text('admin', 'selection_import').'</option>
+                            <option value="delete">'.$FD->text('admin', 'selection_delete').'</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr><td class="space"></td></tr>
+            <tr>
+                <td class="buttontd" colspan="5">
+                    <button class="button_new" type="submit">
+                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
+                    </button>
+                </td>
+            </tr>
+        </table></form>';
     } else {
         systext('Keine neuen Bilder gefunden');
     }

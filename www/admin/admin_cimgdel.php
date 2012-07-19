@@ -19,27 +19,35 @@ if(isset($_GET['file'])){
                         $tableheight = ($row['hasthumb'] == 0) ? 6 : 3;
                         echo <<< FS2_STRING
 <form action="" method="post">
-    <table>
+    <input type="hidden" name="edit" value="1">
+    <table class="configtable" cellpadding="4" cellspacing="0">
         <thead>
+            <tr><td class="line" colspan="3">Inhaltsbild bearbeiten</td></tr>
             <tr>
-                <td colspan="3" class="config">Datei {$row['name']} bearbeiten</td>
+                <td colspan="3">Datei <b>{$row['name']}.{$row['type']}</b> bearbeiten</td>
             </tr>
+            <tr><td class="space"></td></tr>
         </thead>
         <tfoot>
+            <tr><td class="space"></td></tr>
             <tr>
-                <td colspan="3" style="text-align: center"><input class="button" name="edit" type="submit" value="&Auml;nderungen speichern"></td>
-            </tr>
+                <td class="buttontd" colspan="3">
+                    <button class="button_new" type="submit">
+                        {$FD->text("admin", "button_arrow")} {$FD->text("admin", "save_changes_button")}
+                    </button>
+                </td>
+            </tr>            
         </tfoot>
         <tbody>
             <tr>
-                <td rowspan="{$tableheight}">
+                <td rowspan="{$tableheight}" valign="top">
                     <img src="{$cimg_path}{$row['name']}.{$row['type']}" alt="{$row['name']}" style="max-width: 200px;">
                 </td>
                 <td class="config">
                     Dateiname:
                 </td>
-                <td>
-                    <input class="text" name="name" size="10" type="text" value="{$row['name']}">
+                <td width="300">
+                    <input class="text" name="name" size="30" maxlength="255" type="text" value="{$row['name']}"><b>.{$row['type']}</b>
                 </td>
             </tr>
 FS2_STRING;
@@ -48,18 +56,19 @@ if($row['hasthumb'] == 0){
             <tr>
                 <td class="config">
                     Thumbnail:<br>
-                    <font class="small">Soll ein Thumbnail (Vorschaubild) erstellt werden?</font>
+                    <font class="small">Soll ein Vorschaubild erstellt werden?</font>
                 </td>
                 <td>
-                    <input class="text" name="thumb" size="10" type="checkbox" value="1">
+                    {$FD->text('admin', 'checkbox')}
+                    <input class="hidden" name="thumb" size="10" type="checkbox" value="1">
                 </td>
             </tr>
             <tr>
                 <td class="config" rowspan="2">
                     Thumbnail-Ma&szlig;e:
-                    <font class="small">(Breite x H&ouml;he)</font>
                     <br>
-                    <font class="small">Max. Abmessungen des Thumbnails.</font>
+                    <span class="small">(Breite x H&ouml;he)<br>
+                    Max. Abmessungen des Thumbnails.</span>
                 </td>
                 <td class="config">
                     <input class="text" maxlength="4" size="5" name="width" value="">
@@ -75,7 +84,7 @@ if($row['hasthumb'] == 0){
             </tr>
             <tr>
                 <td>
-                    <div class="button" id="calcbutton" onclick="calcsite(); return false;" style="display: none; padding: 2px; text-align: center;">Andere Seite berechnen</div>
+                    <button class="pointer" id="calcbutton" onclick="calcsite(); return false;">Andere Seite berechnen</button>
                     <script type="text/javascript">
                         <!--
                             function calcsite(){
@@ -124,18 +133,8 @@ echo <<< FS2_STRING
                     <font class="small">Soll die Datei endg&uuml;ltig gel&ouml;scht werden?</font>
                 </td>
                 <td>
-                    <input class="text" name="delete" size="10" type="checkbox" onchange="checkdel(this);" value="1">
-                    <script type="text/javascript">
-                        <!--
-                            function checkdel(element){
-                                if(element.checked == true){
-                                    var check = confirm("Soll die Datei wirklich gelöscht werden?");
-                                    if(!check)
-                                       element.checked = false;
-                                }
-                            }
-                        // -->
-                    </script>
+                    {$FD->text('admin', 'checkbox')}
+                    <input class="hidden cb-red" name="delete" type="checkbox" id="cpd" value="1" onchange='delalert("cpd", "{$FD->text("admin", "js_delete_image")}")'>
                 </td>
             </tr>
         </tbody>

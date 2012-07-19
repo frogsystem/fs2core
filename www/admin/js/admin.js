@@ -55,13 +55,14 @@ $().ready(function(){
 
     //~ Image Checkboxes
     function colorcb (cb, hover, type) {
-        if (cb.hasClass("cb-red")) {
+        var checkbox = cb.next("input[type='"+type+"']:enabled");
+        
+        if (checkbox.hasClass("cb-red")) {
             var color = "red";
         } else {
             var color = "green";
         }
-
-        var checkbox = cb.next("input[type='"+type+"']:enabled");
+        
         if (checkbox.is(":checked")) {
             if (hover) {
                 cb.attr("src", "images/"+type+"-"+color+"-active-hover.png");
@@ -89,12 +90,21 @@ $().ready(function(){
         }
     }
 
-    //~ Image Checkboxes
+    //~ (De-)Select Checkboxes of paragraph
     function permselect (obj, checked) {
         obj.parents("p:first").find("input[type=checkbox]:enabled").each(function (index, ele) {
             $(ele).prop("checked", checked);
+            $(ele).change();
         });
     }
+    
+    //~ (De-)Select Checkboxes of generic parent
+    function groupselect (parentstr, checked) {
+        $(parentstr).find("input[type=checkbox]:enabled").each(function (index, ele) {
+            $(ele).prop("checked", checked);
+            $(ele).change();
+        });
+    }    
 
 //--------------------------------
 // END - Functions

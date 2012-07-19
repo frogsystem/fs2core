@@ -10,12 +10,12 @@
 /* addtional secondary styles (has to be at the end */
 /**************************************************/
 strong {
-    font-weight:bold;
-    font-size:100%;
+    font-weight:bold !important;
+    font-size:100% !important;
 }
 em {
-    font-style:italic;
-    font-size:100%;
+    font-style:italic !important;
+    font-size:100% !important;
 }
 
 
@@ -24,13 +24,13 @@ em {
 }
 
 .small {
-    font-size:9pt;
+    font-size:9pt !important;
 }
 .smaller {
-    font-size:8pt;
+    font-size:8pt !important;
 }
 .mini {
-    font-size:7pt;
+    font-size:7pt !important;
 }
 
 .top {

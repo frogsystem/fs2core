@@ -142,8 +142,8 @@ page_title_cimg_admin:          verwalten
 page_link_cimg_admin:           verwalten
 page_title_cimg_cat:            Kategorien
 page_link_cimg_cat:             Kategorien
-page_title_cimg_import:          Alte Bilder importieren
-page_link_cimg_import:           importieren
+page_title_cimg_import:         Bilder importieren
+page_link_cimg_import:          importieren
 
 # Galerie > Allgemein (neu)
 page_title_gallery_config:      Konfiguration ändern

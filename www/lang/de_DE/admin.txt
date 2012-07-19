@@ -102,6 +102,7 @@ selection_delete:                        Auswahl löschen
 selection_up:                            nach oben
 selection_down:                          nach unten
 selection_save:                          Auswahl speichern
+selection_import:                        Auswahl importieren
 
 
 # Button Captions
