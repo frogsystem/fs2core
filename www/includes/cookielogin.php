@@ -94,10 +94,10 @@ function logout_user()
 /////////////////////////
 if ( isset($_POST['login']) && $_POST['login'] == 1 ) {
     $FD->setConfig('login_state', user_login ( $_POST['username'], $_POST['userpassword'], FALSE));
-} elseif ( isset($_COOKIE['login']) && isset($_GET['go']) && $_GET['go'] != 'logout' && $_SESSION['user_level'] != 'loggedin') {
+} elseif ( isset($_COOKIE['login']) && $_SESSION['user_level'] != 'loggedin') {
     $userpassword = substr ( $_COOKIE['login'], 0, 32 );
     $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
-    $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));
+    $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));echo"a";
 }
 
 if ( isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $FD->config('login_state') == 0 ) {
