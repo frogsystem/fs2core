@@ -13,7 +13,7 @@ if(isset($_POST['add'])){
     } else {
         systext('Es muss ein Name f&uuml;r die Kategorie angegeben werden!', false, true);
     }
-} elseif(isset($_POST['edit'])){
+} elseif(isset($_POST['change']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "save"){
     if(isset($_POST['cat'])){
         $count = 0;
         foreach($_POST['cat'] as $cat){
@@ -32,7 +32,7 @@ if(isset($_POST['add'])){
     } else {
         systext('Es muss eine Auswahl getroffen werden.');
     }
-} elseif(isset($_POST['delete'])){
+} elseif(isset($_POST['change']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "delete"){
     if(isset($_POST['cat'])){
         $count = 0;
         foreach($_POST['cat'] as $cat){
@@ -51,16 +51,15 @@ if(isset($_POST['add'])){
 }
 echo <<< FS2_STRING
 <form action="" method="post">
-    <table cellspacing="0" cellpadding="4" border="0" width="600">
-        <tr>
-            <td class="config" colspan="2">Neue Kategorie hinzuf&uuml;gen</td>
-        </tr>
+        <input type="hidden" name="add" value="1">
+        <table class="configtable" cellpadding="4" cellspacing="0">
+        <tr><td class="line" colspan="2">{$FD->text('admin', 'cat_new')}</td></tr>
         <tr>
             <td class="config">
                 Name:
             </td>
             <td>
-                <input class="text" name="name" size="50" type="text" value="{$_POST['name']}">
+                <input class="text" name="name" size="40" maxlength="25" type="text" value="{$_POST['name']}">
             </td>
         </tr>
         <tr>
@@ -71,45 +70,90 @@ echo <<< FS2_STRING
                 <textarea class="text" cols="50" name="description" rows="5">{$_POST['description']}</textarea>
             </td>
         </tr>
+        <tr><td class="space"></td></tr>
         <tr>
-            <td colspan="2" style="text-align: center;">
-                <input class="button" name="add" type="submit" value="Neue Kategorie anlegen">
+            <td class="buttontd" colspan="2">
+                <button class="button_new" type="submit">
+                    {$FD->text("admin", "button_arrow")} {$FD->text("admin", "cat_add")}
+                </button>
             </td>
         </tr>
+        <tr><td class="space"></td></tr>     
     </table>
-    <table cellspacing="0" cellpadding="4" border="0" width="600" style="margin-top: 15px;">
-        <tr>
-            <td class="config" colspan="3">Kategorie bearbeiten</td>
-        </tr>
+</form>
+<p></p>
+<form action="" method="post">
+    <input type="hidden" name="change" value="1">
+    <table class="configtable" cellpadding="4" cellspacing="0">
+        <tr><td class="space"></td></tr>
+        <tr><td class="line" colspan="3">{$FD->text('admin', 'cats_edit')}</td></tr>
 FS2_STRING;
 $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
 if(mysql_num_rows($qry) > 0){
+    echo <<< FS2_STRING
+        <tr class="config">
+            <td>
+                Auswahl
+            </td>
+            <td>
+                Name
+            </td>
+            <td>
+                Beschreibung
+            </td>
+        </tr>
+FS2_STRING;
+    
+    // entries
     $options = '<option value="0">Keine Kategorie</option>';
     while(($row = mysql_fetch_assoc($qry)) !== false){
     $options .= '<option value="'.$row['id'].'" title="'.$row['description'].'">'.$row['name'].'</option>';
         echo <<< FS2_STRING
         <tr>
             <td style="vertical-align: top;">
-                <input name="cat[]" type="checkbox" value="{$row['id']}">
+                {$FD->text('admin', 'checkbox')}
+                <input class="hidden" name="cat[]" type="checkbox" value="{$row['id']}">
             </td>
             <td style="vertical-align: top;">
-                <input class="text" name="cat{$row['id']}[name]" size="20" type="text" value="{$row['name']}">
+                <input class="text" name="cat{$row['id']}[name]" size="30" maxlength="25" type="text" value="{$row['name']}">
             </td>
             <td>
-                <textarea class="text" name="cat{$row['id']}[description]" cols="20" rows="5">{$row['description']}</textarea>
+                <textarea class="text" name="cat{$row['id']}[description]" cols="30" rows="5">{$row['description']}</textarea>
             </td>
         </tr>
 FS2_STRING;
     }
+    
     echo <<< FS2_STRING
+        <tr><td class="space"></td></tr>    
         <tr>
-            <td class="config" rowspan="2">Auswahl:</td>
-            <td class="config" colspan="2"><input class="button" type="submit" name="delete" value="l&ouml;schen"><br>und eventuelle Bilder in die Kategorie <select name="newcat">{$options}</select> verschieben!</td>
+            
+        </tr>        
+        <tr><td class="space"></td></tr>
+        <tr>
+            <td class="config" colspan="3">
+                <div class="atleft small">
+                    Bilder beim L&ouml;schen verschieben nach 
+                    <select name="newcat">{$options}</select>
+                </div>
+                <div class="atright">
+                    <select name="cat_action" size="1">
+                        <option value="save">{$FD->text("admin", "selection_save")}</option>
+                        <option value="delete">{$FD->text("admin", "selection_delete")}</option>
+                    </select>
+                </div>
+            </td>
         </tr>
+        <tr><td class="space"></td></tr>
         <tr>
-            <td colspan="2"><input class="button" type="submit" name="edit" value="speichern!"></td>
+            <td class="buttontd" colspan="3">
+                <button class="button_new" type="submit">
+                    {$FD->text("admin", "button_arrow")} {$FD->text("admin", "do_action_button_long")}
+                </button>
+            </td>
         </tr>
 FS2_STRING;
+
 } else {
     echo '<tr><td colspn="3">';
     systext('Es wurde keine Kategorie angelegt.');

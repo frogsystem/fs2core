@@ -101,6 +101,7 @@ selection_edit:                          Auswahl bearbeiten
 selection_delete:                        Auswahl löschen
 selection_up:                            nach oben
 selection_down:                          nach unten
+selection_save:                          Auswahl speichern
 
 
 # Button Captions
@@ -114,6 +115,9 @@ search_button:                           Suchen
 add_button:                              Hinzufügen
 save_button:                             Speichern
 apply_button:                            Anwenden
+upload_button:                           Hochladen
+upload_file_button:                      Datei hochladen
+upload_image_button:                     Bild hochladen
 
 
 # Messages
@@ -191,6 +195,11 @@ cat_images_deleted:                      Kategorie-Bilder wurden gelöscht
 cat_images_not_all_deleted:              Nicht alle Kategorie-Bilder konnten gelöscht werden
 cats_up:                                 Kategorien wurden nach oben verschoben
 cats_down:                               Kategorien wurden nach unten verschoben
+cat_new:                                 Neue Kategorie
+cat_add:                                 Kategorie hinzufügen
+cat_add_other_settings:                  Kategorie hinzufügen &amp; weitere Einstellungen vornehmen
+cats_edit:                               Kategorien bearbeiten
+
 
 
 # Some other Texts

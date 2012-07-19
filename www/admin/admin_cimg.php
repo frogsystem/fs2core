@@ -86,7 +86,8 @@ echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="cimg_add" name="go">
                         <input type="hidden" name="sended" value="">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr><td class="line" colspan="2">Inhaltsbild hochladen</td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
@@ -155,9 +156,12 @@ echo '
                                     <font class="small"><b>Hinweis:</b> Das Seitenverh&auml;ltnis wird beibehalten!</font>
                                 </td>
                             </tr>
+							<tr><td class="space"></td></tr>
                             <tr>
-                                <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Hochladen">
+                                <td class="buttontd" colspan="2">
+                                    <button class="button_new" type="submit">
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "upload_image_button").'
+                                    </button>
                                 </td>
                             </tr>
                         </table>
