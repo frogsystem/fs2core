@@ -15,34 +15,35 @@
 
 <!--section-start::MAINPAGE--><body>
   <div id="main">
-    
+
     <div id="header">
       <div id="title">&nbsp;Frogsystem 2 (Alix 5)</div>
-    </div> 
+    </div>
 
     <div id="menu_left">
-    $NAV(left.nav)  
+    $NAV(left.nav)
     </div>
-    
+
     <div id="menu_right">
       $APP(user-menu.php)
+      $APP(topmodules.php)
       $APP(preview-image.php)
-      $APP(shop-system.php)      
+      $APP(shop-system.php)
       $APP(poll-system.php)
       $APP(affiliates.php)
       $APP(mini-statistics.php)
-    </div>   
-    
+    </div>
+
     <div id="content">
       $APP(announcement.php)
       {..content..}
     </div>
-    
+
     <div id="footer">
       <span class="copyright">ÑLight Frogì-Style &copy; Stoffel &amp; Sweil | Frog-Photo &copy; <a href="http://www.flickr.com/photos/joi/1157708196/" target="_blank">Joi</a><br>
       {..copyright..}</span>
     </div>
-    
+
   </div>
 </body><!--section-end::MAINPAGE-->
 
@@ -52,22 +53,22 @@
     <p><b>{..caption..}</b></p>
     <div class="center middle" style="width:800px; height:600px; display:table-cell;">
       {..image..}
-    </div>      
+    </div>
     <table style="width:100%;" cellspacing="0" cellpadding="3">
       <tr>
         <td width="33%" align="right">
           {..prev_link..}
         </td>
         <td width="33%" align="center">
-          <a href="javascript:self.close()">Fenster&nbsp;schlieﬂen</a>   
+          <a href="javascript:self.close()">Fenster&nbsp;schlieﬂen</a>
         </td>
         <td width="33%" align="left">
           {..next_link..}
         </td>
       </tr>
-    </table>    
+    </table>
   </div>
-  
+
 </body>
 <!--section-end::POPUPVIEWER-->
 
@@ -86,12 +87,12 @@
   - <b>{..hits..}</b> Hits<br>
   - <b>{..hits_today..}</b> Hits heute
 </p>
-<p class="small">  
+<p class="small">
   - <b>{..visitors_online..}</b> Besucher online<br>
   - <b>{..registered_online..}</b> registrierte <br>
   - <b>{..guests_online..}</b> G‰ste
 </p>
-<p class="small">  
+<p class="small">
   - <b>{..num_users..}</b> registrierte User<br>
   - <b>{..num_news..}</b> News<br>
   - <b>{..num_comments..}</b> Kommentare<br>
