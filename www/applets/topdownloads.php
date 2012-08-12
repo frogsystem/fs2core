@@ -39,8 +39,8 @@
   while ($row=mysql_fetch_assoc($index))
   {
     $template = new template();
-    $template->setFile('0_top_modules.tpl');
-    $template->load('module_entry');
+    $template->setFile('0_top_downloads.tpl');
+    $template->load('download_entry');
     $template->tag('dl_id', $row['id'] );
     $template->tag('name', $row['name'] );
 
@@ -50,15 +50,15 @@
   if ($entries==='')
   {
     $template = new template();
-    $template->setFile('0_top_modules.tpl');
+    $template->setFile('0_top_downloads.tpl');
     $template->load('no_entries');
 
     $entries = $template->display();
   }
 
   $template = new template();
-  $template->setFile('0_top_modules.tpl');
-  $template->load('modules');
+  $template->setFile('0_top_downloads.tpl');
+  $template->load('downloads');
   $template->tag('entries', $entries );
 
   $template = $template->display();
