@@ -127,7 +127,7 @@ class GlobalData {
             //get original data from db
             $original_data = $this->sql->getField('config', 'config_data', array('W' => "`config_name` = '".$name."'"));
             if (!empty($original_data))
-                $original_data = array_map('utf8_decode', json_decode($original_data, true));
+                $original_data = json_array_decode($original_data);
             else {
                 $original_data = array();
             }

@@ -17,14 +17,10 @@ class ConfigData {
     // create config object
     // DO NOT OVERRIDE
     // use startup() for your code
-    final public  function __construct($data, $json = false) {
+    final public  function __construct($data, $json = false) {      
         // set start data
         if ($json) {
-            $data = json_decode($data, true);
-            // empty json creates null instead of emtpy array => error
-            if (empty($data)) // prevent this
-                $data = array();
-            $this->config = array_map("utf8_decode", $data);
+            $this->config = json_array_decode($data);
         } else {
             $this->config = $data;
         }

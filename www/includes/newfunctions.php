@@ -92,12 +92,21 @@ function http_response_text($code) {
 //// Decode JSON to Array with UTF8 ////
 ////////////////////////////////////////
 function json_array_decode ($string) {
-    return array_map('utf8_decode', json_decode($string, true));
+    // JSON for PHP <= 5.2
+    require_once(FS2_ROOT_PATH . 'resources/jsonwrapper/jsonwrapper_helper.php');
+    
+    $data = json_decode($string, true);
+    // empty json creates null not emtpy array => error
+    if (empty($data)) // prevent this
+        $data = array();
+    return array_map('utf8_decode', $data);
 }
 ///////////////////////////////////////
 //// Encode Array from JSON & UTF8 ////
 ///////////////////////////////////////
 function json_array_encode ($array) {
+    // JSON for PHP <= 5.2
+    require_once(FS2_ROOT_PATH . 'resources/jsonwrapper/jsonwrapper_helper.php');
     return json_encode(array_map('utf8_encode', $array), JSON_FORCE_OBJECT);
 }
 
