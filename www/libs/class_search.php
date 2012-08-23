@@ -197,12 +197,11 @@ class Search
             while($leaf = $this->tree->nextLeaf()) {
                 $wordlist = $this->getResultsForLeaf($leaf, $words);
                 //sort wordlist by id
-                usort($wordlist, function ($word1, $word2) {
-                    $a = $word1['id'];
-                    $b = $word2['id'];
+                usort($wordlist, create_function('$word1, $word2', '
+                    $a = $word1[\'id\'];
+                    $b = $word2[\'id\'];
 
-                    return ($a == $b) ? 0 : (($a < $b) ? -1 : 1);
-                });
+                    return ($a == $b) ? 0 : (($a < $b) ? -1 : 1);'));
 
                 $leaf->setDBData($wordlist);
             }
@@ -331,7 +330,7 @@ class Search
 
         //compare and add rank
         $cmp_plus = function (&$v1, $v2) {
-            return compare_update_rank ($v1, $v2, function ($v1, $v2) {return $v1+$v2;});
+            return compare_update_rank ($v1, $v2, create_function('$v1, $v2', 'return $v1+$v2;'));
         };
 
         // get data for matching keys

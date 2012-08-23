@@ -24,9 +24,9 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
     $date = time();
     try {
         $poll_ids = $sql->getData('poll', array('poll_id'), array('W' => '`poll_end` > '.$date.' AND `poll_start` < '.$date));
-        $filterd_ids = array_filter($poll_ids, function ($poll) {
-            return !checkVotedPoll($poll['poll_id']);
-        });
+        $filterd_ids = array_filter($poll_ids, create_function('$poll',
+            'return !checkVotedPoll($poll[\'poll_id\']);'));
+
         if (count($filterd_ids) == 0)
             $filterd_ids = $poll_ids;
             
