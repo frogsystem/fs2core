@@ -1198,7 +1198,6 @@ function savesql ( $TEXT )
 function unslash($TEXT)
 {
     global $FD;
-
     if ($FD->env('slash'))
          $TEXT = stripslashes($TEXT);
 

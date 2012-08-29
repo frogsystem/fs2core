@@ -72,10 +72,8 @@ class SearchOperator extends SearchTree
         $right = $this->right->getSet();
 
         //compare on average
-        $cmp_avg = function (&$v1, $v2) {
-            return compare_update_rank ($v1, $v2, create_function('$r1, $r2', 'return ($r1+$r2)/2;'));
-        };
-
+        $cmp_avg = create_function ('&$v1, $v2', 
+            'return compare_update_rank ($v1, $v2, create_function(\'$r1, $r2\', \'return ($r1+$r2)/2;\'));');
 
         // switch through operations and call set-functions
         switch ($this->operation) {

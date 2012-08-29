@@ -215,10 +215,9 @@ function highlight ($word, $text, $class = 'red', $style = '')
 ////////////////////////
 function url_seo ($go, $args, $go_in_args = false) {
 
-	$urlencodeext = function ($url) {
+	$urlencodeext = create_function ('$url', '
 		// Folge von Bindestriche um zwei Striche erweitern
-		return urlencode(preg_replace('/-+/', '$0--', $url));
-	};
+		return urlencode(preg_replace(\'/-+/\', \'$0--\', $url));');
 
     if ($go_in_args) {
         unset($args['go']);

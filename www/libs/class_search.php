@@ -58,9 +58,8 @@ class Search
         $this->original_query = $query;
 
         //compute operators and modifiers
-        $rectrim = function ($ele) {
-            return array_map('trim', $ele);
-        };
+        $rectrim = create_function ('$ele', '
+            return array_map(\'trim\', $ele);');
 
         $operators = array (
             'and' => explode(',', $this->config['search_and']),
@@ -312,26 +311,24 @@ class Search
         $keys = array_unique(array_merge($front, $end), SORT_STRING);
 
         // fucntion to compare found-data-arrays
-        $cmp = function ($v1, $v2) {
-            if ($v1['id'] > $v2['id']) return -1;
-            if ($v1['id'] == $v2['id']) return 0;
-            return 1;
-        };
+        $cmp = create_function ('$v1, $v2', '
+            if ($v1[\'id\'] > $v2[\'id\']) return -1;
+            if ($v1[\'id\'] == $v2[\'id\']) return 0;
+            return 1;');
+        
         // fucntion to compare found-data-arrays and update rank
-        $cmp_newrank = function (&$v1, $v2) {
-            if ($v1['id'] > $v2['id'])
+        $cmp_newrank = create_function ('&$v1, $v2', '
+            if ($v1[\'id\'] > $v2[\'id\'])
                 return -1;
-            if ($v1['id'] == $v2['id']) {
-                $v1['rank'] = $v1['rank']+$v2['rank'];
+            if ($v1[\'id\'] == $v2[\'id\']) {
+                $v1[\'rank\'] = $v1[\'rank\']+$v2[\'rank\'];
                 return 0;
             }
-            return 1;
-        };
+            return 1;');
 
         //compare and add rank
-        $cmp_plus = function (&$v1, $v2) {
-            return compare_update_rank ($v1, $v2, create_function('$v1, $v2', 'return $v1+$v2;'));
-        };
+        $cmp_plus = create_function ('&$v1, $v2', '
+            return compare_update_rank ($v1, $v2, create_function(\'$v1, $v2\', \'return $v1+$v2;\'));');
 
         // get data for matching keys
         $return_array = array();

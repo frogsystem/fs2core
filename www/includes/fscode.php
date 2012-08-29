@@ -95,9 +95,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             case 'space':   $tab = ' ';         break;
         }
         // create local tab function
-        $tab_func = function ($text) use ($flags, $tab) {
-            return tab2space($text, $flags['tabsize'], $tab);
-        };
+        $tab_func = create_function ('$text', 'return tab2space($text, '.$flags['tabsize'].', '.$tab.');');
         // add the filter
         $fscode->addFilter (STRINGPARSER_FILTER_POST, $tab_func);
     }

@@ -985,10 +985,9 @@ function fillsession ($uid) {
         array('W' => "`perm_for_group` = '0' AND `x_id` = '".$USER_ARR['user_id']."' AND `x_id` != '0'")
     );
 
-    $fold_perms = function ($arr, $ele) {
-        array_push($arr, $ele['perm_id']);
-        return $arr;
-    };
+    $fold_perms = create_function ('$arr, $ele', '
+        array_push($arr, $ele[\'perm_id\']);
+        return $arr;');
 
     $group_granted = array_reduce ($group_granted['data'], $fold_perms, array());
     $user_granted = array_reduce ($user_granted['data'], $fold_perms, array());
