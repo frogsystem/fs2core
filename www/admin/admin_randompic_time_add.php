@@ -47,6 +47,8 @@ else
         $_POST['endmin'] = date('i', $end);
     }
 
+    if (!isset($_POST['screen_id'])) $_POST['screen_id'] = '';
+
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="timedpic_add" name="go">
@@ -58,7 +60,7 @@ else
                                     <font class="small">Bild ausw&auml;hlen</font>
                                 </td>
                                 <td valign="top" width="240">
-                                    <input type="button" class="button" value="Bild ausw&auml;hlen" onClick=\'open("admin_findpicture.php","Bild","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\'">
+                                    <input type="button" class="button" value="Bild ausw&auml;hlen" onClick=\'open("admin_findpicture.php","Bild","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\'>
                                     <input type="text" id="screen_selectortext" value="'. (!empty($_POST['screen_id'])?'Bild ausgew&auml;hlt!':'Kein Bild gew&auml;hlt!') .'" size="17" readonly="readonly" class="text">
                                     <input type="hidden" id="screen_id" name="screen_id" value="'. $_POST['screen_id'] .'">
                                 </td>
