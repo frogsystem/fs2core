@@ -1,14 +1,16 @@
-<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+<?php
+/*commented out, because script is usually not called via index.php, but via
+  JavaScript open() Thus, ACP_GO is not set, even for authorized users. */
+//if (!defined('ACP_GO')) die('Unauthorized access!');
 
 // Start Session
 session_start();
 
 // fs2 include path
 set_include_path ( '.' );
-define ( FS2_ROOT_PATH, './../', TRUE );
-
+define ( 'FS2_ROOT_PATH', './../', TRUE );
 require( FS2_ROOT_PATH . 'login.inc.php');
-require( FS2_ROOT_PATH . 'includes/functions.php');
+require( FS2_ROOT_PATH . 'includes/imagefunctions.php');
 require( FS2_ROOT_PATH . 'includes/adminfunctions.php');
 
 echo'
