@@ -18,6 +18,8 @@ define('DEBUG', TRUE);
 
 
 // TODO: Pre-Import Hook
+if (!DEBUG)
+    error_reporting(0);
 
 ////////////////////////////////////////
 //// Include important files & libs ////
