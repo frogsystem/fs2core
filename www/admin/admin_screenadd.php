@@ -114,7 +114,7 @@ echo '
                         <input name="sended" class="button input_width" type="submit" value="Bilder hochladen">
 
                         <p>
-                            <b>Hinweis:</b> Alle Billder zusammen d&uuml;rfen nicht gr&ouml;&szlig;er als '.ini_get('post_max_size').'B sein (Server-Vorgabe).
+                            <b>Hinweis:</b> Alle Bilder zusammen d&uuml;rfen nicht gr&ouml;&szlig;er als '.ini_get('post_max_size').'B sein (Server-Vorgabe).
                         </p>
 
                     </form>
