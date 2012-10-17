@@ -16,9 +16,6 @@ image_5:                                           Fehler beim Bilder-Upload: Bi
 image_6:                                           Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden ['Code: IMGxU6']
 image_deleted:                                     Bild wurde erfolgreich gelöscht
 image_not_deleted:                                 Bild konnte nicht gelöscht werden
-thumb_0:                                           Thumbnail wurde erfolgreich erstellt
-thumb_1:                                           Thumbnail konnte nicht erstellt werden: Ungültiger Dateityp
-thumb_2:                                           Thumbnail konnte nicht erstellt werden: Es trat ein Fehler auf
 optional:                                          (optional)
 selection:                                         Auswahl
 active:                                            aktiv

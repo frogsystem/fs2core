@@ -168,7 +168,7 @@ icon_link_error:                         <img src="icons/link_error.jpg" alt="Li
 icon_user_question:                      <img src="icons/user_question.jpg" alt="Unbekannter Benutzer" align="absmiddle">
 
 
-# Upload-Messages
+# Image-Upload-Messages
 image_upload_error_0:                    Bild wurde erfolgreich hochgeladen
 image_upload_error_1:                    Fehler beim Bilder-Upload: Ungültiger Dateityp [Code: IMGxU1]
 image_upload_error_2:                    Fehler beim Bilder-Upload: Bild konnte nicht hochgladen werden [Code: IMGxU2]
@@ -176,6 +176,11 @@ image_upload_error_3:                    Fehler beim Bilder-Upload: Bild ist zu 
 image_upload_error_4:                    Fehler beim Bilder-Upload: Bild ist zu groß (Abmessungen) [Code: IMGxU4]
 image_upload_error_5:                    Fehler beim Bilder-Upload: Bild entspricht nicht den erforderlichen Abmessungen [Code: IMGxU5]
 image_upload_error_6:                    Fehler beim Bilder-Upload: Bild konnte nicht erstellt werden [Code: IMGxU6]
+
+# Thumb-Creation-Messages
+thumb_create_okay:                       Thumbnail wurde erfolgreich erstellt
+thumb_create_error_1:                    Thumbnail konnte nicht erstellt werden: Ungültiger Dateityp
+thumb_create_error_2:                    Thumbnail konnte nicht erstellt werden: Es trat ein Fehler auf
 
 
 # Frequently used Category-Related Phrases
@@ -205,6 +210,10 @@ cats_edit:                               Kategorien bearbeiten
 
 # Some other Texts
 monthly_statistics:                      Monatsstatistik
+
+
+
+
 
 
 # Old

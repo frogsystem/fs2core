@@ -244,13 +244,13 @@ function create_thumb_notice($upload)
   switch ($upload)
   {
     case 0:
-      return $FD->text("admin", "thumb_0");
+      return $FD->text("admin", "thumb_create_okay");
       break;
     case 1:
-      return $FD->text("admin", "thumb_1");
+      return $FD->text("admin", "thumb_create_error_1");
       break;
     case 2:
-      return $FD->text("admin", "thumb_2");
+      return $FD->text("admin", "thumb_create_error_2");
       break;
   }
 }

@@ -166,6 +166,7 @@ else
 
     echo'
 						<table class="configtable" cellpadding="4" cellspacing="0">
+                            <tr><td class="space"></td></tr>
 							<tr><td class="line">'.$FD->text('page', 'referrer_list_title').'</td></tr>
 						</table>
 

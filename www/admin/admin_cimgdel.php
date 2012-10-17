@@ -16,7 +16,7 @@ if(isset($_GET['file'])){
                         while(($cat = mysql_fetch_assoc($qry)) !== false){
                             $cats[] = $cat;
                         }
-                        $tableheight = ($row['hasthumb'] == 0) ? 6 : 3;
+                        $tableheight = ($row['hasthumb'] == 0) ? 6 : 6;
                         echo <<< FS2_STRING
 <form action="" method="post">
     <input type="hidden" name="edit" value="1">
@@ -39,9 +39,11 @@ if(isset($_GET['file'])){
             </tr>            
         </tfoot>
         <tbody>
-            <tr>
+            <tr valign="top">
                 <td rowspan="{$tableheight}" valign="top">
-                    <img src="{$cimg_path}{$row['name']}.{$row['type']}" alt="{$row['name']}" style="max-width: 200px;">
+                    <a href="{$cimg_path}{$row['name']}.{$row['type']}" target="_blank" title="In Originalgröße anzeigen">
+                        <img src="{$cimg_path}{$row['name']}.{$row['type']}" alt="{$row['name']}" style="max-width: 200px;">
+                    </a>
                 </td>
                 <td class="config">
                     Dateiname:
@@ -53,17 +55,34 @@ if(isset($_GET['file'])){
 FS2_STRING;
 if($row['hasthumb'] == 0){
     echo <<< FS2_STRING
-            <tr>
+            <tr valign="top">
                 <td class="config">
                     Thumbnail:<br>
                     <font class="small">Soll ein Vorschaubild erstellt werden?</font>
                 </td>
                 <td>
                     {$FD->text('admin', 'checkbox')}
-                    <input class="hidden" name="thumb" size="10" type="checkbox" value="1">
+                    <input class="hidden" name="thumb" size="10" type="checkbox" value="1" onChange="$('.thumb_settings').toggle()">
                 </td>
             </tr>
-            <tr>
+FS2_STRING;
+} else {
+    echo <<< FS2_STRING
+            <tr valign="top">
+                <td class="config">
+                    Thumbnail:<br>
+                    <span class="small">Soll ein neues Vorschaubild erstellt werden?</span>
+                </td>
+                <td>
+                    {$FD->text('admin', 'checkbox')}
+                    <input class="hidden" name="thumb" size="10" type="checkbox" value="1" onChange="$('.thumb_settings').toggle()">
+                    <br><span class="small">Es existiert bereits ein Vorschaubild. Soll das aktuelle Vorschaubild durch ein neues ersetzt werden?</span>
+                </td>
+            </tr>
+FS2_STRING;
+}
+    echo <<< FS2_STRING
+            <tr valign="top" class="thumb_settings hidden">
                 <td class="config" rowspan="2">
                     Thumbnail-Ma&szlig;e:
                     <br>
@@ -82,7 +101,7 @@ if($row['hasthumb'] == 0){
                     </font>
                 </td>
             </tr>
-            <tr>
+            <tr valign="top" class="thumb_settings hidden">
                 <td>
                     <button class="pointer" id="calcbutton" onclick="calcsite(); return false;">Andere Seite berechnen</button>
                     <script type="text/javascript">
@@ -110,16 +129,14 @@ if($row['hasthumb'] == 0){
                     </script>
                 </td>
             </tr>
-FS2_STRING;
-}
-echo <<< FS2_STRING
-            <tr>
+            <tr valign="top">
                 <td class="config">
                     Kategorie:
                 </td>
                 <td>
                     <select class="text" name="cat">
 FS2_STRING;
+
 foreach($cats as $cat){
     echo '<option value="'.$cat['id'].'" title="'.$cat['description'].'"'.getselected($cat['id'], $row['cat']).'>'.$cat['name'].'</option>';
 }
@@ -127,7 +144,7 @@ echo <<< FS2_STRING
                     </select>
                 </td>
             </tr>
-            <tr>
+            <tr valign="top">
                 <td class="config">
                     L&ouml;schen:<br>
                     <font class="small">Soll die Datei endg&uuml;ltig gel&ouml;scht werden?</font>
@@ -170,12 +187,18 @@ FS2_STRING;
                         $text[] = 'Die Kategorie wurde erfolgreich ge&auml;ndert.';
                     }
 
-                    if(isset($_POST['thumb'])){
+                    if(isset($_POST['thumb']) && !empty($_POST['width']) && !empty($_POST['height'])){
                         $thumb = create_thumb_from(image_url('media/content/', $row['name'], FALSE, TRUE), $_POST['width'], $_POST['height']);
                         $text[] = create_thumb_notice($thumb);
                         mysql_query('UPDATE `'.$FD->config('pref').'cimg` SET `hasthumb`=1 WHERE `id`='.$file);
+                    } elseif (isset($_POST['thumb'])) {
+                        $text[] = "Bitte Abmessung für das Vorschaubild angeben";
                     }
-
+                    
+                    if (empty($text)) {
+                        $text[] = "Keine Änderungen vorgenommen";
+                    }
+                    
                     systext(implode('<br>', $text));
                 }
                 unset($_GET['file']);
@@ -201,7 +224,24 @@ if(!isset($_GET['file'])){ // select file
     }
     $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg` ORDER BY `cat`');
     if(mysql_num_rows($qry) > 0){
-        echo '<table border="0" cellpadding="4" cellspacing="0" width="600">';
+        echo <<< FS2_STRING
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("a.thumbpreview").hover(function(e){
+                        var img = $(this).parents('td:first').find('img.thumbpreview');
+                        if (!img.attr("src")) {
+                            img.attr("src", $(this).attr("href")).css("border", "1px solid #434343");
+                        }
+                        img.show();
+                    }, function(e) {
+                        $(this).parents('td:first').find('img.thumbpreview').hide();
+                    });
+                });
+            </script>
+FS2_STRING;
+        
+        
+        echo '<table class="content" cellpadding="0" cellspacing="0">';
         $actcat = array('id' => 0, 'name' => 'Dateien ohne Kategorie', 'description' => '');
         $first = true;
         while(($row = mysql_fetch_assoc($qry)) !== false) {
@@ -211,26 +251,46 @@ if(!isset($_GET['file'])){ // select file
                 $first = true;
             }
             if($first){
-                echo '    <tr><td class="space" colspan="2"></td></tr>
-    <tr align="left" valign="top">
-        <td class="config">
-            Kategorie: <i>'.$actcat['name'].'</i><br><font class="small">'.$actcat['description'].'</font>
-        </td>
-        <td style="text-align: right;">
-            <a id="cat'.$actcat['id'].'_collapslink1" href="#" onclick="$(\'.cat'.$actcat['id'].'\').css(\'display\', \'none\'); $(this).css(\'display\', \'none\'); $(\'#cat'.$actcat['id'].'_collapslink2\').css(\'display\', \'inline\'); return false;">Einklappen</a>
-            <a id="cat'.$actcat['id'].'_collapslink2" href="#" onclick="$(\'.cat'.$actcat['id'].'\').css(\'display\', \'table-row\'); $(this).css(\'display\', \'none\'); $(\'#cat'.$actcat['id'].'_collapslink1\').css(\'display\', \'inline\'); return false;" style="display:none;">Ausklappen</a>
-        </td>
-    </tr>';
+                echo '        
+                    <tr><td class="space" colspan="2"></td></tr>
+                    <tr>
+                        <td colspan="3">
+                            <h3> Kategorie: '.$actcat['name'].'
+                                <span class="small atright">
+                                    <a id="cat'.$actcat['id'].'_collapslink1" href="#" onclick="$(\'.cat'.$actcat['id'].'\').css(\'display\', \'none\'); $(this).css(\'display\', \'none\'); $(\'#cat'.$actcat['id'].'_collapslink2\').css(\'display\', \'inline\'); return false;">Einklappen</a>
+                                    <a id="cat'.$actcat['id'].'_collapslink2" href="#" onclick="$(\'.cat'.$actcat['id'].'\').css(\'display\', \'table-row\'); $(this).css(\'display\', \'none\'); $(\'#cat'.$actcat['id'].'_collapslink1\').css(\'display\', \'inline\'); return false;" style="display:none;">Ausklappen</a>
+                                </span>
+                            </h3>
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:70%">
+                            <span class="small">'.$actcat['description'].'</span>
+                        </td>
+                        <td class="center">
+                            <span class="cat'.$actcat['id'].'">Vorschaubild</span>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>                    
+                ';
                 $first = false;
             }
-            echo '    <tr align="left" class="cat'.$actcat['id'].'" valign="top">
-        <td class="config" width="75%">
-            '.$row['name'].' <font class="small">(<a href="'.$cimg_path.$row['name'].'.'.$row['type'].'" target="_blank">ansehen</a>)</font>
-        </td>
-        <td class="config" width="25%">
-            <a class="button" href="./?go='.$_GET['go'].'&amp;file='.$row['id'].'" style="display: block; font-weight: bold; padding: 2px; text-align: center;">Bearbeiten</a>
-        </td>
-    </tr>';
+            echo '
+                <tr align="left" class="cat'.$actcat['id'].'" valign="top">
+                    <td>
+                        '.$row['name'].' <span class="small">(<a class="thumbpreview" href="'.$cimg_path.$row['name'].'.'.$row['type'].'" target="_blank">ansehen</a>)</span>
+                        <img class="thumbpreview hidden" style="position: absolute; margin-left:5px; margin-top:5px; max-width: 200px; max-height: 400px;">
+                    </td>
+                    <td class="center">
+                        <span class="small">'.($row['hasthumb']?$FD->text('admin', 'yes'):$FD->text('admin', 'no')).'</span>
+                    </td>
+                    <td class="right">
+                        <a href="./?go='.$_GET['go'].'&amp;file='.$row['id'].'">Bearbeiten</a>
+                    </td>
+                </tr>
+            ';
         }
         echo '</table>';
     } else {

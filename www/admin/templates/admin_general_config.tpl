@@ -24,7 +24,7 @@
             <td>
                 <!--COMMON::checkbox-->
                 <input class="hidden" type="checkbox" name="dyn_title" value="1" <!--IF::dyn_title-->checked<!--ENDIF-->
-                onChange="$('#dyn_title_ext_tr').toggle($(this).prop('checked'))" >
+                onChange="$('#dyn_title_ext_tr').toggle()" >
             </td>
         </tr>
 

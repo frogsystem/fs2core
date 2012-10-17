@@ -19,7 +19,7 @@ function db_edit_comment ( $DATA )
                             comment_id = '".$DATA['comment_id']."'
     ", $FD->sql()->conn() );
 
-    systext( $FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), FALSE, $FD->text('page', 'save_ok') );
+    systext( $FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_ok') );
 }
 
 function db_delete_comment ( $DATA )
@@ -40,7 +40,7 @@ function db_delete_comment ( $DATA )
                     SET `comments` = `comments` - '.mysql_affected_rows ().'
     ', $FD->sql()->conn() );
 
-    systext( $FD->text('page', 'news_comment_deleted'), $FD->text('admin', 'info'), FALSE, $FD->text('page', 'trash_ok') );
+    systext( $FD->text('page', 'comment_deleted'), $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_trash_ok') );
 }
 
 // Prevent further execution when included
@@ -134,7 +134,7 @@ function action_delete_display_page ( $return_arr )
                     <tr>
                         <td class="buttontd">
                             <button class="button_new" type="submit">
-                                '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
+                                '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
                             </button>
                         </td>
                     </tr>
@@ -216,7 +216,7 @@ function action_comments_select ( $DATA )
                                                         <tr>
                                                                 <td class="buttontd" colspan="4">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
+                                                                                '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
                                                                         </button>
                                                                 </td>
                                                         </tr>

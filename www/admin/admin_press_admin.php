@@ -351,14 +351,15 @@ elseif (isset($_POST['entry_action'])
 
         echo'
                     <form action="" method="post">
-                        <table cellpadding="0" cellspacing="0" width="100%">
+                        <table class="content"  cellpadding="0" cellspacing="0" width="100%">
+                            <tr><td colspan="4"><h3>Eintrag l&ouml;schen</h3><hr></td></tr>
                             <tr valign="middle">
                                 <td class="config">
                                     Der letzte Eintrag eines Typs kann nicht gel&ouml;scht werden.<br>
                                     Bitte zuerst einen neuen Eintrag des Typs &bdquo;'.$entry_arr['type_text'].'&rdquo; anlegen.
                                 </td>
                                 <td>
-                                    <input class="button" type="submit" value="zur&uuml;ck zur &Uuml;bersicht">
+                                    <input type="submit" value="zur&uuml;ck zur &Uuml;bersicht">
                                 </td>
                             </tr>
                         </table>
@@ -393,9 +394,6 @@ if (!isset($_POST['entry_id']))
                             <tr><td colspan="4"><h3>Neuen Eintrag hinzuf&uuml;gen</h3><hr></td></tr>
                             <tr align="left" valign="top">
                                 <td valign="top">
-                                    <span class="small">Bild ausw&auml;hlen: (optional)</span>
-                                </td>
-                                <td valign="top">
                                     <span class="small">Titel:</span>
                                 </td>
                                 <td valign="top">
@@ -404,9 +402,6 @@ if (!isset($_POST['entry_id']))
                                 <td valign="top"></td>
                             </tr>
                             <tr align="left" valign="top">
-                                <td class="config" valign="top">
-                                    <input class="text" size="20" name="entry_pic" type="file">
-                                </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="25" name="title" maxlength="100" value="'.$_POST['title'].'">
                                 </td>
@@ -421,6 +416,16 @@ if (!isset($_POST['entry_id']))
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="submit" value="Hinzuf&uuml;gen">
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td valign="top" colspan="4">
+                                    <span class="small">Bild ausw&auml;hlen: (optional)</span>
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td class="config" valign="top" colspan="4">
+                                    <input class="text" size="20" name="entry_pic" type="file">
                                 </td>
                             </tr>
                         </table>

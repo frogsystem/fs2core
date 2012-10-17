@@ -6,6 +6,7 @@ comments_select_title:              Kommentare bearbeiten
 comments_content:                   Inhalt
 comments_info:                      Informationen
 comments_not_found:                 Keine Kommentare gefunden!
+comment_deleted:                    Kommentar wurde erfolgreich gelöscht
 
 # News
 news_not_found:                       Keine News gefunden!
