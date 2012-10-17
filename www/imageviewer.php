@@ -2,11 +2,11 @@
 // Start Session
 session_start ();
 // Disable magic_quotes_runtime
-set_magic_quotes_runtime ( FALSE );
+ini_set( 'magic_quotes_runtime', '0' );
 
 // fs2 include path
 set_include_path ( '.' );
-define ( FS2_ROOT_PATH, './', TRUE );
+define ( 'FS2_ROOT_PATH', './', TRUE );
 
 // Inlcude DB Connection File
 require ( FS2_ROOT_PATH . 'login.inc.php');
@@ -25,7 +25,6 @@ if ($FD->sql()->conn() )
 
     // Constructor Calls
     set_style ();
-
 
     // Security Functions
     $_GET['id'] = ( isset ( $_GET['screenid'] ) ) ? $_GET['screenid'] : $_GET['id'];
