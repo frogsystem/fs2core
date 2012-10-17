@@ -97,7 +97,7 @@ if ( isset($_POST['login']) && $_POST['login'] == 1 ) {
 } elseif ( isset($_COOKIE['login']) && $_SESSION['user_level'] != 'loggedin') {
     $userpassword = substr ( $_COOKIE['login'], 0, 32 );
     $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
-    $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));echo"a";
+    $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));
 }
 
 if ( isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $FD->config('login_state') == 0 ) {

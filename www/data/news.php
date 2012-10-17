@@ -107,7 +107,7 @@ while ($news_arr = mysql_fetch_assoc($index))
     $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
 }
 unset($news_arr);
-print_d(mysql_error());
+
 // Get Template
 $template = new template();
 $template->setFile('0_news.tpl');

@@ -794,7 +794,6 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
         // display page
         ini_set('xdebug.var_display_max_data', 20000 );
         $t = $adminpage->get('main');
-        #var_dump($t);
         echo $t;
     }
 

@@ -1088,9 +1088,8 @@ function clean_iplist()
 {
     global $FD;
 
-    $counttime = '86400';       // time to save IPs (1 day = 86400)
-    $time = $FD->env('time') - $counttime;
-    $FD->sql()->delete('useronline', array('W' => "`date` <= '".$time."'"));
+    $time = strtotime("today");
+    $FD->sql()->delete('useronline', array('W' => "`date` < '".$time."'"));
 }
 
 

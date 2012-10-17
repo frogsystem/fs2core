@@ -118,63 +118,66 @@ $index = mysql_query('SELECT s_visits
                       ORDER BY s_visits DESC
                       LIMIT 1", $FD->sql()->conn() );
 $dbmaxvisits = mysql_result($index, 0, 's_visits');
-$visitsarray = array(0);
-$arraycount = 2;
-$startwert = 21 + $feldbreite/2;
-for ($d=1; $d<$anz_tage+1; $d++)
-{
-    $index = mysql_query('SELECT s_visits
-                          FROM '.$FD->config('pref')."counter_stat
-                          WHERE s_year  = $_GET[s_year] AND
-                                s_month = $_GET[s_month] AND
-                                s_day   = $d", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows > 0)
-    {
-        $dbvisits = mysql_result($index, 0, 's_visits');
-        // X-Koordinate
-        $visitsarray[$arraycount] = $startwert;
-        $startwert = $startwert + $feldbreite;
-        $arraycount = $arraycount+1;
-        // Y-Koordinate
-        $visitsarray[$arraycount] = 285 - ($dbvisits / $dbmaxvisits * 160);
-        $arraycount = $arraycount+1;
-    }
-    else
-    {
-        // X-Koordinate
-        $visitsarray[$arraycount] = $startwert;
-        $startwert = $startwert + $feldbreite;
-        $arraycount = $arraycount+1;
-        // Y-Koordinate
-        $visitsarray[$arraycount] = 285;
-        $arraycount = $arraycount+1;
-    }
+if ($dbmaxvisits > 0) {
+  $visitsarray = array(0);
+  $arraycount = 2;
+  $startwert = 21 + $feldbreite/2;
+  for ($d=1; $d<$anz_tage+1; $d++)
+  {
+      $index = mysql_query('SELECT s_visits
+                            FROM '.$FD->config('pref')."counter_stat
+                            WHERE s_year  = $_GET[s_year] AND
+                                  s_month = $_GET[s_month] AND
+                                  s_day   = $d", $FD->sql()->conn() );
+      $rows = mysql_num_rows($index);
+      if ($rows > 0)
+      {
+          $dbvisits = mysql_result($index, 0, 's_visits');
+          // X-Koordinate
+          $visitsarray[$arraycount] = $startwert;
+          $startwert = $startwert + $feldbreite;
+          $arraycount = $arraycount+1;
+          // Y-Koordinate
+          $visitsarray[$arraycount] = 285 - ($dbvisits / $dbmaxvisits * 160);
+          $arraycount = $arraycount+1;
+      }
+      else
+      {
+          // X-Koordinate
+          $visitsarray[$arraycount] = $startwert;
+          $startwert = $startwert + $feldbreite;
+          $arraycount = $arraycount+1;
+          // Y-Koordinate
+          $visitsarray[$arraycount] = 285;
+          $arraycount = $arraycount+1;
+      }
+  }
+
+  // X-Koordinate
+  $visitsarray[$arraycount] = 479;
+  $arraycount = $arraycount+1;
+  // Y-Koordinate
+  $visitsarray[$arraycount] = $visitsarray[$arraycount-2];
+  $arraycount = $arraycount+1;
+  // X-Koordinate
+  $visitsarray[$arraycount] = 480;
+  $arraycount = $arraycount+1;
+  // Y-Koordinate
+  $visitsarray[$arraycount] = 285;
+  $arraycount = $arraycount+1;
+  // X-Koordinate
+  $visitsarray[$arraycount] = 20;
+  $arraycount = $arraycount+1;
+  // Y-Koordinate
+  $visitsarray[$arraycount] = 285;
+  $arraycount = $arraycount+1;
+
+  $visitsarray[0] = 21;
+  $visitsarray[1] = $visitsarray[3];
+  imagefilledpolygon($image, $visitsarray, round($arraycount/2) , $farbe_visits);
+} else {
+  $dbmaxvisits = 1;
 }
-
-// X-Koordinate
-$visitsarray[$arraycount] = 479;
-$arraycount = $arraycount+1;
-// Y-Koordinate
-$visitsarray[$arraycount] = $visitsarray[$arraycount-2];
-$arraycount = $arraycount+1;
-// X-Koordinate
-$visitsarray[$arraycount] = 480;
-$arraycount = $arraycount+1;
-// Y-Koordinate
-$visitsarray[$arraycount] = 285;
-$arraycount = $arraycount+1;
-// X-Koordinate
-$visitsarray[$arraycount] = 20;
-$arraycount = $arraycount+1;
-// Y-Koordinate
-$visitsarray[$arraycount] = 285;
-$arraycount = $arraycount+1;
-
-$visitsarray[0] = 21;
-$visitsarray[1] = $visitsarray[3];
-imagefilledpolygon($image, $visitsarray, round($arraycount/2) , $farbe_visits);
-
 
 // Tage
 $startwert = 24;

@@ -7,7 +7,6 @@ phpinit();
 /* End of FS2 PHP Init */
 
 
-
 // Inlcude DB Connection File or exit()
 require_once(FS2_ROOT_PATH . 'login.inc.php');
 
@@ -16,7 +15,6 @@ require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
 require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
 require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
-
 
 // Constructor Calls
 // TODO: "Constructor Hook"
