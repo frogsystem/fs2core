@@ -130,11 +130,11 @@ if ( TRUE )
 
 	// security functions
     $_POST = array_map('killhtml', $_POST);
-    $_POST = array_map(function($ele) {
+    $_POST = array_map(create_function('$ele', '
         if (is_hexcolor($ele))
             $ele = substr($ele, 1);
         return $ele;
-    },  $_POST);
+    '),  $_POST);
 
 	// Display Form
     echo'

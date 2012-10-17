@@ -269,12 +269,12 @@ function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FAL
         $savedate_arr['i'] = $I;
         $savedate_arr['s'] = $S;
 
-        $savedate_arr = array_map(function ($ele) {
+        $savedate_arr = array_map(create_function('$ele', '
             if ($ele == 0)
-                return '';
-        return sprintf('%02d', $ele);
+                return "";
+        return sprintf("%02d", $ele);
 
-        }, $savedate_arr);
+        '), $savedate_arr);
     }
 
     return $savedate_arr;

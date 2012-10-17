@@ -380,15 +380,15 @@ function hex2dec_color ($COLOR) {
 //// all entries with keys not in $keys will be removed ////
 ////////////////////////////////////////////////////////////
 function array_filter_keys ($input, $keys) {
-    return array_filter($input, function($item) use (&$input, $keys) {
-        if (in_array(key($input), $keys)) {
-            next($input);
-            return true;
-        } else {
-            next($input);
-            return false;
+    $new_arr = array();
+    
+    foreach($input as $key=>$value) {
+        if (!in_array($key, $keys)) {
+            $new_arr[$key] = $value;
         }
-    });
+    }
+    
+    return $new_arr;
 }
 
 ///////////////////////////

@@ -72,11 +72,11 @@ if ( strlen ( $config_arr['cfg_top1_url'] ) > 0 ) {
 }
 
 // kill color hashes
-$config_arr = array_map(function($ele) {
+$config_arr = array_map(create_function('$ele', '
     if (is_hexcolor($ele))
         $ele = substr($ele, 1);
     return $ele;
-},  $config_arr);
+'),  $config_arr);
 
     echo 'autoplay='.$config_arr['cfg_autoplay'].'
 autoload='.$config_arr['cfg_autoload'].'

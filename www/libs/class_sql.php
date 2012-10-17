@@ -67,7 +67,7 @@ class sql {
     }
 
     // "unsave" sql data (stripslash if on old systems)
-    private function unslash ($VAL) {
+    public static function unslash ($VAL) {
         // fallback
         if (SLASH) {
             $VAL = stripslashes($VAL);
@@ -245,13 +245,11 @@ class sql {
 
         // Unslash the result
         if ($num > 0) {
-			require_once(FS2_ROOT_PATH.'libs/class_fullaccesswrapper.php');
-			$self = giveAccess($this);  // $self := $this
-			$lokal = function ($row) use ($self) {
-				return array_map(function($r) use($self) {
-					return $self->unslash($r);
-				}, $row);
-			};
+			$lokal = create_function('$row', '
+				return array_map(create_function(\'$r\', \'
+					return sql::unslash($r);
+				\'), $row);
+			');
             $rows = array_map($lokal, $rows);
         }
 

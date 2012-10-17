@@ -82,19 +82,22 @@ class adminpage {
                 $tmpval = $this->lambdavars($tmpval, $lambdas);
 
                 // closure for replace callback
-                require_once(FS2_ROOT_PATH.'libs/class_fullaccesswrapper.php');
-                $self = giveAccess($this);  // $self := $this
-                $getcond = function ($match) use ($lambdas, $self, &$getcond) {
-                    if ($self->cond[$lambdas[$match[1]]]) { // IF-branch
-                        return $self->replacer($match[2], $getcond); // call replacer recursiv
+                
+                $GLOBALS["AP_cond"] = $this->cond;
+                $GLOBALS["AP_lambdas"] = $lambdas;
+
+                $GLOBALS["getcond"] = create_function ('$match', ' 
+                    if ($GLOBALS["AP_cond"][$GLOBALS["AP_lambdas"][$match[1]]]) { // IF-branch
+                        return adminpage::replacer($match[2], $GLOBALS["getcond"]); // call replacer recursiv
                     } elseif (isset($match[3])) { // ELSE-branch
-                        return $self->replacer($match[3], $getcond);
+                        return adminpage::replacer($match[3], $GLOBALS["getcond"]);
                     }
-                    return ''; // remove all undefined conds
-                };
+                    return ""; // remove all undefined conds
+                ');
 
                 //replace ifs
-                $tmpval = $this->replacer($tmpval, $getcond);
+                $tmpval = adminpage::replacer($tmpval, $GLOBALS["getcond"]);
+                unset($GLOBALS["AP_cond"], $GLOBALS["AP_lambdas"]);
             }
 
 
@@ -126,32 +129,30 @@ class adminpage {
     }
 
 
-    public function replacer($string, $callback) {
+    public static function replacer($string, $callback) {
         return preg_replace_callback('/<!\-\-IF::([0-9]+?)\-\->(.*?)(?:<!\-\-ELSE::\1\-\->(.*?))?<!\-\-ENDIF::\1\-\->/s', $callback, $string);
     }
 
     private function lambdavars($tpl, &$name) {
         $num = 0;
         $push = array();
+        
+        $tokenizer = create_function("\$match,&\$num,&\$name,&\$push", "
+            if (\$match[1] == \"IF\") {
+                \$name[\$num] = \$match[2];
+                array_push(\$push, \$num);
+                return \"<!--IF::\".\$num++.\"-->\";
 
-        $tokenizer = function ($match) use (&$num, &$name, &$push) {
+            } elseif (\$match[1] == \"ELSE\") {
+                return \"<!--ELSE::\".end(\$push).\"-->\";
 
-            if ($match[1] == 'IF') {
-                $name[$num] = $match[2];
-                array_push($push, $num);
-                return '<!--IF::'.$num++.'-->';
-
-            } elseif ($match[1] == 'ELSE') {
-                return '<!--ELSE::'.end($push).'-->';
-
-            } elseif ($match[1] == 'ENDIF') {
-                return '<!--ENDIF::'.array_pop($push).'-->';
+            } elseif (\$match[1] == \"ENDIF\") {
+                return \"<!--ENDIF::\".array_pop(\$push).\"-->\";
             }
+            return \$match[0];       
+        ");
 
-            return $match[0];
-        };
-
-        $tpl = preg_replace_callback('/(?|<!\-\-(IF)::(.+?)\-\->|<!\-\-(ELSE)\-\->|<!\-\-(ENDIF)\-\->)/', $tokenizer, $tpl);
+        $tpl = preg_replace('/(?|<!\-\-(IF)::(.+?)\-\->|<!\-\-(ELSE)\-\->|<!\-\-(ENDIF)\-\->)/e', '$tokenizer(array(\'$0\',\'$1\',\'$2\'),$num,$name,$push)', $tpl);
 
         return $tpl;
     }
