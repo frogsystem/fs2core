@@ -131,6 +131,9 @@ function htmlenclose ($TEXT, $TAG) {
 //// empty with trim for strings ////
 /////////////////////////////////////
 function emptystr ($text) {
+    if (!isset($text))
+        return true;
+
     $text = trim($text);
     return empty($text);
 }

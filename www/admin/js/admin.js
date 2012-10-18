@@ -100,10 +100,18 @@ $().ready(function(){
     
     //~ (De-)Select Checkboxes of generic parent
     function groupselect (parentstr, checked) {
-        $(parentstr).find("input[type=checkbox]:enabled").each(function (index, ele) {
-            $(ele).prop("checked", checked);
-            $(ele).change();
-        });
+        var par = $(parentstr).find("input[type=checkbox]:enabled");
+        if (checked == "invert") {
+            par.each(function (index, ele) {
+                $(ele).prop("checked", !$(ele).prop("checked"));
+                $(ele).change();
+            });
+        } else {
+            par.each(function (index, ele) {
+                $(ele).prop("checked", checked);
+                $(ele).change();
+            });
+        }
     }    
 
 //--------------------------------

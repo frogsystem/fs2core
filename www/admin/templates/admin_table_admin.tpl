@@ -1,12 +1,12 @@
 <!--section-start::main-->
 <form method="post" action="">
-<table cellpadding="1" cellspacing="1">
+<table class="content small" cellpadding="1" cellspacing="1" id="table_list">
     <tr><td colspan="7"><h3><!--LANG::pageinfo_title--></h3><hr></td></tr>
     <tr>
         <td colspan="7" align="center">
           <!--TEXT::op_results-->
         </td>
-    </tr>
+    </tr>   
     <tr>
         <td></td>
         <td><b><!--LANG::table_name--></b></td>
@@ -53,8 +53,8 @@
 
 <!--section-start::table_entry-->
     <tr>
-        <td><input type="checkbox" value="<!--TEXT::table_name_esc-->" name="selected_tables[]"></td>
-        <td><b><!--TEXT::table_name--></b></td>
+        <td class="center"><input type="checkbox" id="table_id_<!--TEXT::table_name_esc-->" value="<!--TEXT::table_name_esc-->" name="selected_tables[]"></td>
+        <td><label for="table_id_<!--TEXT::table_name_esc-->"><b><!--TEXT::table_name--></b></label></td>
         <td style="margin: 0.1em; padding: 0.3em; text-align: center;"><!--TEXT::table_rows--></td>
         <td><!--TEXT::table_length--></td>
         <td><!--TEXT::table_data--></td>
@@ -88,6 +88,10 @@
 <!--section-end::op_entry-->
 
 <!--section-start::summary-->
+    <tr>
+        <td></td>
+        <td colspan="6"><span class="small">(<span class="link" onclick="groupselect('#table_list', true)"><!--COMMON::selection_all--></span>/<span class="link" onclick="groupselect('#table_list', false)"><!--COMMON::selection_none--></span>/<span class="link" onclick="groupselect('#table_list', 'invert')"><!--COMMON::selection_invert--></span>)</span></td>
+    </tr>
     <tr>
         <td colspan="2"><b>Total: <!--TEXT::tabs--> <!--LANG::tables--></b></td>
         <td><b><!--TEXT::rows--> <!--LANG::rows--></b></td>

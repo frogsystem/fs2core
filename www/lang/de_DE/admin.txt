@@ -72,11 +72,16 @@ replace_img:                             Ersetzt das bisherige Bild
 delete_image:                            Bild löschen
 js_delete_image:                         Bild löschen?
 no_image_found:                          Es wurde kein Bild gefunden
+image_not_found:                         Bild nicht gefunden
 search:                                  Suche
 search_for:                              Suche nach
 filter:                                  Filter
 note:                                    Hinweis
 notes:                                   Hinweise
+selection_all:                           alle
+selection_none:                          keine
+selection_invert:                        invertieren
+
 
 
 # Date and Time for Admin CP
@@ -122,8 +127,13 @@ upload_image_button:                     Bild hochladen
 
 
 # Messages
+# deprecated
 error:                                   Es trat ein Fehler auf
+# deprecated
 unknown_error:                           Es trat ein unbekannter Fehler auf
+
+error_occurred:                          Es trat ein Fehler auf
+unknown_error_occurred:                  Es trat ein unbekannter Fehler auf
 info:                                    Information
 changes_saved:                           Änderungen wurden gespeichert
 changes_not_saved:                       Änderungen wurden nicht gespeichert
@@ -301,22 +311,22 @@ snippet_exists:                          Dieses Suchmuster existiert bereits
 snippets_not_found:                      Keine Schnipsel gefunden!
 snippet_active:                          aktiv
 snippet_not_active:                      nicht aktiv
-alias_add_title:                         Weiterleitung hinzufügen
-alias_select_title:                      Weiterleitungen auswählen
-alias_edit_title:                        Weiterleitung bearbeiten
-aliases_delete_title:                    Weiterleitungen löschen
-aliases_delete_question:                 Sollen diese Weiterleitungen wirklich gelöscht werden?
-alias_go_title:                          Weiterleitung
-alias_go_desc:                           Adresse, für die eine Weiterleitung angelegt werden soll.
-alias_forward_to_title:                  Original
-alias_forward_to_desc:                   Adresse, auf die weitergeleitet wird.
-alias_active_title:                      Weiterleitung aktivieren
-alias_active_desc:                       De-/Aktiviert die Weiterleitung.
-alias_added:                             Weiterleitung wurde hinzugefügt
-alias_not_added:                         Weiterleitung wurde nicht hinzugefügt
-aliases_deleted:                         Weiterleitungen wurden gelöscht
-aliases_not_deleted:                     Weiterleitungen wurden nicht gelöscht
-aliases_not_found:                       Keine Weiterleitungen gefunden!
+alias_add_title:                         Alias hinzufügen
+alias_select_title:                      Aliasse auswählen
+alias_edit_title:                        Alias bearbeiten
+aliases_delete_title:                    Aliasse löschen
+aliases_delete_question:                 Sollen diese Aliasse wirklich gelöscht werden?
+alias_go_title:                          Alias
+alias_go_desc:                           Alias-Adresse, die angelegt werden soll.
+alias_forward_to_title:                  Original-Adresse
+alias_forward_to_desc:                   Original-Adresse die unter dem Alias angezeigt werden soll.
+alias_active_title:                      Alias aktivieren
+alias_active_desc:                       De-/Aktiviert den Alias.
+alias_added:                             Alias wurde hinzugefügt
+alias_not_added:                         Alias wurde nicht hinzugefügt
+aliases_deleted:                         Aliasse wurden gelöscht
+aliases_not_deleted:                     Aliasse wurden nicht gelöscht
+aliases_not_found:                       Kein Alias gefunden!
 alias_active:                            aktiv
 alias_not_active:                        nicht aktiv
 

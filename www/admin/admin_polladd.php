@@ -4,7 +4,7 @@
 //// Umfrage hinzufügen ////
 ////////////////////////////
 
-if (isset($_POST['polladd']) && isset($_POST['frage']) && isset($_POST['ant'][0]) && isset($_POST['ant'][1]))
+if (isset($_POST['polladd']) && !isset($_POST['add_answers']) && isset($_POST['frage']) && !emptystr($_POST['ant'][0]) && !emptystr($_POST['ant'][1]))
 {
     $_POST['frage'] = savesql($_POST['frage']);
     settype($_POST['type'], 'integer');
@@ -31,9 +31,11 @@ if (isset($_POST['polladd']) && isset($_POST['frage']) && isset($_POST['ant'][0]
 
     for ($i=0; $i<count($_POST['ant']); $i++)
     {
-        mysql_query('INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer)
-                     VALUES ('$id',
-                             '".$_POST['ant'][$i]."');", $FD->sql()->conn() );
+        if (!emptystr($_POST['ant'][$i])) {
+            mysql_query('INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer)
+                         VALUES ('$id',
+                                 '".$_POST['ant'][$i]."');", $FD->sql()->conn() );
+        }
     }
     systext('Umfrage wurde hinzugef&uuml;gt');
     unset($_POST);
@@ -45,7 +47,7 @@ if (isset($_POST['polladd']) && isset($_POST['frage']) && isset($_POST['ant'][0]
 
 if(true)
 {
-    if(isset($_POST['sended'])) {
+    if(isset($_POST['sended']) && !isset($_POST['add_answers'])) {
         echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
     }
 
@@ -257,7 +259,7 @@ if(true)
                                 <td class="configthin">
                                     <input size="2" maxlength="2" class="text" name="optionsadd">
                                     Antwortfelder
-                                    <input  type="submit" value="Hinzuf&uuml;gen">
+                                    <input type="submit" name="add_answers" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                             <tr>
@@ -271,7 +273,7 @@ if(true)
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">
-                                    <br><input   class="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" type="button" value="Hinzuf&uuml;gen">
+                                    <br><input class="button" type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                         </table>

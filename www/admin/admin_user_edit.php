@@ -316,6 +316,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
         // Display Error Messages
         if ( $_POST['sended'] == 'edit' ) {
+            $message = array();
             if ( $_POST['user_id'] == 1 ) {
                 $message[] = 'Der Super-Administrator kann nicht bearbeitet werden';
             }
@@ -330,7 +331,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
             }
             $message = implode ( '<br>', $message );
             if ( strlen ( $message ) == 0 ) {
-                $message = $FD->text("admin", "note_notfilled");
+                $message = $FD->text("admin", "form_not_filled");
             }
             systext ( $message, $FD->text("admin", "error"), TRUE );
         } else {
@@ -631,7 +632,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
                                     </button>
                                 </td>
                             </tr>
@@ -675,7 +676,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button").'
                                     </button>
                                 </td>
                             </tr>
@@ -808,7 +809,7 @@ if ( !isset ( $_POST['user_id'] ) )
                                 <td class="right" colspan="5">
                                     <select name="user_action" size="1">
                                         <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
-                                        <option value="delete">'.$FD->text("admin", "selection_del").'</option>
+                                        <option value="delete">'.$FD->text("admin", "selection_delete").'</option>
                                     </select>
                                 </td>
                             </tr>
@@ -816,7 +817,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr>
                                 <td class="buttontd" colspan="5">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button").'
                                     </button>
                                 </td>
                             </tr>

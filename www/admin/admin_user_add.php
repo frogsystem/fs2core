@@ -158,7 +158,7 @@ if ( TRUE )
         }
         $message = implode ( '<br>', $message );
         if ( strlen ( $message ) == 0 ) {
-            $message = $FD->text("admin", "note_notfilled");
+            $message = $FD->text("admin", "form_not_filled");
         }
         systext ( $message, $FD->text("admin", "error"), TRUE );
     } else {

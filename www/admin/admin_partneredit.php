@@ -144,7 +144,7 @@ elseif (isset($_POST['partner_action'])
                                     <font class="small">'.$FD->text("page", "small_pic_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url('images/partner/', $_POST['partner_id'].'_small').'">
+                                    '.get_image_output('images/partner/', $_POST['partner_id'].'_small', "", '<span class="small">['.$FD->text("admin", "error").': '.$FD->text("admin", "image_not_found").']</span>', false).'
                                    <br /><br />
                                    <input type="file" class="text" name="bild_small" size="50"><br />
                                    <font class="small">
@@ -161,7 +161,7 @@ elseif (isset($_POST['partner_action'])
                                     <font class="small">'.$FD->text("page", "big_pic_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url('images/partner/', $_POST['partner_id'].'_big').'">
+                                    '.get_image_output('images/partner/', $_POST['partner_id'].'_big', "", '<span class="small">['.$FD->text("admin", "error").': '.$FD->text("admin", "image_not_found").']</span>', false).'
                                    <br /><br />
                                    <input type="file" class="text" name="bild_big" size="50"><br />
                                    <font class="small">
@@ -328,9 +328,9 @@ if (!isset($_POST['partner_id']))
                                 <td class="right" colspan="4">
                                    <select class="select_type" name="partner_action" size="1">
                                      <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
-                                     <option class="select_red" value="delete">'.$FD->text('admin', 'selection_del').'</option>
+                                     <option class="select_red" value="delete">'.$FD->text('admin', 'selection_delete').'</option>
                                    </select>
-                                   <input class="button" type="submit" value="'.$FD->text('admin', 'do_button').'">
+                                   <input class="button" type="submit" value="'.$FD->text('admin', 'do_action_button').'">
                                 </td>
                             </tr>
                         </table>

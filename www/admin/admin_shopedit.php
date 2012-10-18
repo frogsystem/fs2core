@@ -77,7 +77,7 @@ if (isset($_POST['artikelid']))
                                     <font class="small">Aktuelles Artikelbild</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <img src="'.image_url ( 'images/shop/', $artikel_arr['artikel_id'].'_s' ).'">
+                                    '.get_image_output('images/shop/', $artikel_arr['artikel_id'].'_s', "", '<span class="small">['.$FD->text('admin', 'error').': '.$FD->text('admin', 'image_not_found').']</span>', false).'
                                 </td>
                             </tr>
                             <tr>

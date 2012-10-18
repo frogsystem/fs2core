@@ -41,7 +41,7 @@ group_templates:                Templates
 group_groups:                   Gruppen
 group_applets:                  Applets
 group_snippets:                 Schnipsel
-group_aliases:                  Weiterleitungen
+group_aliases:                  Aliasse
 group_search:                   Suche
 group_fscodes:                  FS Codes
 group_db:                       Datenbank

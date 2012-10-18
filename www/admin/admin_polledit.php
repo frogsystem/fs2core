@@ -4,58 +4,55 @@
 //// Umfrage aktualisieren ////
 ///////////////////////////////
 
-if (isset($_POST['polledit']) && isset($_POST['frage']) && isset($_POST['ant'][0]) && isset($_POST['ant'][1]))
+if (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_POST['editpollid']) && isset($_POST['delpoll']) && $_POST['delpoll'] == 1)
 {
     // Umfrage löschen
-    settype($_POST['editpollid'], 'integer');
-    if ($_POST['delpoll'])
+    mysql_query('DELETE FROM '.$FD->config('pref')."poll WHERE poll_id = '$_POST[editpollid]'", $FD->sql()->conn() );
+    mysql_query('DELETE FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '$_POST[editpollid]'", $FD->sql()->conn() );
+    systext('Die Umfrage wurde gel&ouml;scht');
+}
+elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_POST['frage']) && !emptystr($_POST['ant'][0]) && !emptystr($_POST['ant'][1]))
+{
+
+    $_POST['frage'] = savesql($_POST['frage']);
+    for($i=0; $i<count($_POST['ant']); $i++)
     {
-        mysql_query('DELETE FROM '.$FD->config('pref')."poll WHERE poll_id = '$_POST[editpollid]'", $FD->sql()->conn() );
-        mysql_query('DELETE FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '$_POST[editpollid]'", $FD->sql()->conn() );
-        systext('Die Umfrage wurde gel&ouml;scht');
+        $_POST['ant'][$i] = savesql($_POST['ant'][$i]);
+        settype($_POST['count'][$i], 'integer');
+        settype($_POST['id'][$i], 'integer');
     }
 
-    else
+    $adate = mktime($_POST['astunde'], $_POST['amin'], 0, $_POST['amonat'], $_POST['atag'], $_POST['ajahr']);
+    $edate = mktime($_POST['estunde'], $_POST['emin'], 0, $_POST['emonat'], $_POST['etag'], $_POST['ejahr']);
+
+    $_POST['type'] = isset($_POST['type']) ? 1 : 0;
+    settype($_POST['participants'], 'integer');
+
+    // Umfrage in der DB aktualisieren
+    $update = 'UPDATE '.$FD->config('pref')."poll
+               SET poll_quest = '$_POST[frage]',
+                   poll_start = '$adate',
+                   poll_end   = '$edate',
+                   poll_type  = '$_POST[type]',
+                   poll_participants  = '$_POST[participants]'
+               WHERE poll_id = $_POST[editpollid]";
+    mysql_query($update, $FD->sql()->conn() );
+
+    // Antworten in der DB aktualisieren
+    for($i=0; $i<count($_POST['ant']); $i++)
     {
-        $_POST['frage'] = savesql($_POST['frage']);
-        for($i=0; $i<count($_POST['ant']); $i++)
+        if (isset($_POST['dela'][$i]) || emptystr($_POST['ant'][$i]))
         {
-            $_POST['ant'][$i] = savesql($_POST['ant'][$i]);
-            settype($_POST['count'][$i], 'integer');
-            settype($_POST['id'][$i], 'integer');
+            mysql_query('DELETE FROM '.$FD->config('pref').'poll_answers WHERE answer_id = ' . $_POST['id'][$i], $FD->sql()->conn() );
         }
-
-        $adate = mktime($_POST['astunde'], $_POST['amin'], 0, $_POST['amonat'], $_POST['atag'], $_POST['ajahr']);
-        $edate = mktime($_POST['estunde'], $_POST['emin'], 0, $_POST['emonat'], $_POST['etag'], $_POST['ejahr']);
-
-        $_POST['type'] = isset($_POST['type']) ? 1 : 0;
-        settype($_POST['participants'], 'integer');
-
-        // Umfrage in der DB aktualisieren
-        $update = 'UPDATE '.$FD->config('pref')."poll
-                   SET poll_quest = '$_POST[frage]',
-                       poll_start = '$adate',
-                       poll_end   = '$edate',
-                       poll_type  = '$_POST[type]',
-                       poll_participants  = '$_POST[participants]'
-                   WHERE poll_id = $_POST[editpollid]";
-        mysql_query($update, $FD->sql()->conn() );
-
-        // Antworten in der DB aktualisieren
-        for($i=0; $i<count($_POST['ant']); $i++)
+        else
         {
-            if (isset($_POST['dela'][$i]))
+            if (!isset($_POST['count'][$i]))
             {
-                settype($_POST['dela'][$i], 'integer');
-                mysql_query('DELETE FROM '.$FD->config('pref').'poll_answers WHERE answer_id = ' . $_POST['dela'][$i], $FD->sql()->conn() );
+                $_POST['count'][$i] = 0;
             }
-            else
-            {
-                if (!isset($_POST['count'][$i]))
-                {
-                    $_POST['count'][$i] = 0;
-                }
-
+            
+            if (!emptystr($_POST['ant'][$i])) {
                 if (!$_POST['id'][$i] && $_POST['ant'][$i])
                 {
                     mysql_query('INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer, answer_count)
@@ -82,11 +79,11 @@ if (isset($_POST['polledit']) && isset($_POST['frage']) && isset($_POST['ant'][0
 ////// Umfrage editieren //////
 ///////////////////////////////
 
-if (isset($_POST['pollid']) || isset($_POST['optionsadd']))
+if (isset($_POST['pollid']))
 {
     $_POST['pollid'] = $_POST['pollid'][0];
 
-     if(isset($_POST['sended']) && !isset($_POST['ant_add'])) {
+     if(isset($_POST['sended'])  && !isset($_POST['add_answers'])) {
         echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
@@ -211,7 +208,7 @@ if (isset($_POST['pollid']) || isset($_POST['optionsadd']))
                                     <font class="small">Nach was soll gefragt werden</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="60" name="frage" value="'.$_POST['frage'].'" maxlength="255">
+                                    <input class="text" size="60" name="frage" value="'.killhtml(unslash($_POST['frage'])).'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
@@ -319,7 +316,7 @@ if (isset($_POST['pollid']) || isset($_POST['optionsadd']))
                                     <font class="small">[Antwort] [Votes] [l&ouml;schen]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="48" name="ant['.$i.']" value="'.$_POST['ant'][$i].'" maxlength="100">
+                                    <input class="text" size="48" name="ant['.$i.']" value="'.killhtml(unslash($_POST['ant'][$i])).'" maxlength="100">
                                     <input class="text" size="5" name="count['.$i.']" value="'.$_POST['count'][$i].'" maxlength="5">
                                     <input name="dela['.$i.']" id="'.$i.'" value="'.$_POST['id'][$i].'" type="checkbox"
                                     onClick=\'delalert ("'.$i.'", "Soll die Antwortmöglichkeit '.$j.' wirklich gelöscht werden?")\'>
@@ -352,7 +349,7 @@ if (isset($_POST['pollid']) || isset($_POST['optionsadd']))
                                 <td class="configthin">
                                     <input size="2" maxlength="2" class="text" name="optionsadd">
                                     Antwortfelder
-                                    <input name="ant_add"  type="submit" value="Hinzuf&uuml;gen">
+                                    <input type="submit" name="add_answers" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                             <tr>
@@ -383,7 +380,7 @@ if (isset($_POST['pollid']) || isset($_POST['optionsadd']))
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">
-                                    <br><input class="button" type="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" value="Absenden">
+                                    <br><input class="button" type="submit" value="Absenden">
                                 </td>
                             </tr>
                         </table>
@@ -429,16 +426,16 @@ else
         $poll_arr['poll_end'] = date('d.m.Y' , $poll_arr['poll_end']);
         if ($poll_arr['poll_type'] == 1)
         {
-            $poll_arr['poll_type'] = $FD->text("page", "multiple_choice");
+            $poll_arr['poll_type'] = $FD->text("frontend", "multiple_choice");
         }
         else
         {
-            $poll_arr['poll_type'] = $FD->text("page", "single_choice");
+            $poll_arr['poll_type'] = $FD->text("frontend", "single_choice");
         }
         echo'
                             <tr class="select_entry thin">
                                 <td class="configthin">
-                                    '.$poll_arr['poll_quest'].'
+                                    '.unslash($poll_arr['poll_quest']).'
                                 </td>
                                 <td class="configthin">
                                     <font class="small">'.$poll_arr['poll_type'].'</font>

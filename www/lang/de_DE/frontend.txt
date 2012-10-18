@@ -39,8 +39,6 @@ not_twice:                                         Du hast dich bereits auf der 
 logged_in:                                         Du bist eingeloggt
 logged_out:                                        Du bist nun wieder ausgeloggt
 article_not_found:                                 Artikel nicht vorhanden
-multiple_choise:                                   Mehrfachauswahl
-single_choice:                                     Einzelauswahl
 
 
 # new Language-Definition for frontend
@@ -122,3 +120,7 @@ quote:                          Zitat
 quote_by:                       Zitat von
 code:                           Quelltext
 video:                          Video
+
+# poll
+multiple_choice:                Mehrfachauswahl
+single_choice:                  Einzelauswahl

@@ -240,7 +240,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
                             <tr>
                                 <td colspan="3" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>

@@ -260,7 +260,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly id="username" name="user_group_user_name" value="'.$group_arr['user_group_user_name'].'">
                                     <input type="hidden" id="userid" name="user_group_user" value="'.$group_arr['user_group_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( 'admin_finduser.php', 400, 400 ).'\' value="'.$FD->text('admin', 'change_button').'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( 'admin_finduser.php', 400, 400 ).'\' value="'.$FD->text('admin', 'change').'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -347,7 +347,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
                                     </button>
                                 </td>
                             </tr>
@@ -398,7 +398,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button').'
                                     </button>
                                 </td>
                             </tr>
@@ -557,7 +557,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_button_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button').'
                                     </button>
                                 </td>
                             </tr>

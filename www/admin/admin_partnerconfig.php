@@ -142,7 +142,7 @@ if ( TRUE )
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button type="submit" value="" class="button_new">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>
