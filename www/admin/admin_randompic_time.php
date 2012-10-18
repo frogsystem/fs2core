@@ -130,7 +130,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
                                     <font class="small">Bild ausw&auml;hlen</font>
                                 </td>
                                 <td valign="top" width="240">
-                                    <input type="button" class="button" value="Bild ausw&auml;hlen" onClick=\'open("admin_findpicture.php","Bild","width=360,height=300,screenX=50,screenY=50,scrollbars=YES")\'">
+                                    <input class="nshide" type="button" onClick=\'popUp("?go=find_gallery_img", "_blank", 360, 300)\' value="Bild ausw&auml;hlen">
                                     <input type="text" id="screen_selectortext" value="'. (!empty($random_arr['screen_id'])?'Bild ausgew&auml;hlt!':'Kein Bild gew&auml;hlt!') .'" size="17" readonly="readonly" class="text">
                                     <input type="hidden" id="screen_id" name="screen_id" value="'.$random_arr['screen_id'].'">
                                 </td>

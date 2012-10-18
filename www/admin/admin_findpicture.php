@@ -1,34 +1,10 @@
-<?php
-/*commented out, because script is usually not called via index.php, but via
-  JavaScript open() Thus, ACP_GO is not set, even for authorized users. */
-//if (!defined('ACP_GO')) die('Unauthorized access!');
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-// Start Session
-session_start();
-
-// fs2 include path
-set_include_path ( '.' );
-define ( 'FS2_ROOT_PATH', './../', TRUE );
-require( FS2_ROOT_PATH . 'login.inc.php');
-require( FS2_ROOT_PATH . 'includes/imagefunctions.php');
-require( FS2_ROOT_PATH . 'includes/adminfunctions.php');
 
 echo'
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title>Frogsystem 2 - Bild ausw&auml;hlen</title>
-    <link rel="stylesheet" type="text/css" href="admin.css">
-</head>
-<body id="find_body">
-
-            <div id="find_head">
-                &nbsp;<img border="0" src="img/pointer.png" alt="" align="top" />
-                <b>BILD AUSW&Auml;HLEN</b>
-            </div>
             <div align="center">
 
-                    <form action="'.$_SERVER['PHP_SELF'].'" method="post">
+                    <form action="?go=find_gallery_img" method="post">
                     <table border="0" cellpadding="2" cellspacing="0" width="287">
                                 <tr>
                                     <td align="left" class="configthin">
@@ -44,17 +20,17 @@ echo '
                                         <input class="button" type="submit" value="Anzeigen">
                                     </td>
                                 </tr>
-                            </table>
-                        </form>
+                    </table>
+                    </form>
 
 ';
 if (isset($_POST['cat']))
 {
     echo'
-                    <br />
-     <div id="find_container">
-         <div id="find_top">Bilder</div>
-             <table border="0" cellpadding="2" cellspacing="0" width="287" style="padding-left:13px;"
+            <br />
+    <div id="find_container">
+        <div id="find_top">Bilder</div>
+        <table border="0" cellpadding="2" cellspacing="0" width="287" style="padding-left:13px;"
     ';
     $_POST['cat'] = savesql($_POST['cat']);
     $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen WHERE cat_id = '. $_POST['cat'] .' ORDER BY screen_id DESC', $FD->sql()->conn() );
@@ -100,18 +76,13 @@ if (isset($_POST['cat']))
     }
     echo'
                     </table>
-         </div>
+    </div>
          <div id="find_foot"></div>
     ';
 }
 
 echo'
-                </div>
-            </div>
         </div>
-    </div>
-</body>
-</html>
 ';
 
 ?>
