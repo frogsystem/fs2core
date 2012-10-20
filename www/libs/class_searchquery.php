@@ -240,3 +240,4 @@ class SearchQuery
         return delete_stopwords(compress_search_data($text));
     }
 }
+?>

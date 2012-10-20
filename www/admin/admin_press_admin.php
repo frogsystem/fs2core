@@ -531,3 +531,4 @@ if (!isset($_POST['entry_id']))
     }
     echo '</table>';
 }
+?>
