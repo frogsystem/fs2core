@@ -341,3 +341,4 @@ class Search
         return $return_array;
     }
 }
+?>
