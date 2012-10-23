@@ -16,7 +16,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Additional permission under GNU GPL version 3 section 7
 
     If you modify this Program, or any covered work, by linking or combining it
@@ -27,7 +27,7 @@
     combination shall include the source code for the parts of Frogsystem used
     as well as that of the covered work.
 */
-    
+
 // perform comment actions
 
 
@@ -96,7 +96,7 @@
   $_GET['start'] = (int) $_GET['start'];
   settype($_GET['start'], 'integer');
   //Anzahl der Kommentare auslesen
-  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref').'news_comments`', $FD->sql()->conn());
+  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref').'comments` WHERE content_type=\'news\'', $FD->sql()->conn());
   $cc = mysql_fetch_assoc($query);
   $cc = (int) $cc['cc'];
   if ($_GET['start']>=$cc)
@@ -106,9 +106,10 @@
 
   //Kommentare auslesen
   $query = mysql_query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text, '
-                      .'`'.$FD->config('pref').'news_comments`.news_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title '
-                      .'FROM `'.$FD->config('pref').'news_comments`, `'.$FD->config('pref').'news` '
-                      .'WHERE `'.$FD->config('pref').'news_comments`.news_id=`'.$FD->config('pref').'news`.news_id '
+                      .'`'.$FD->config('pref').'comments`.content_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title '
+                      .'FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news` '
+                      .'WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id '
+                      .'       AND content_type=\'news\''
                       .'ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30', $FD->sql()->conn());
   $rows = mysql_num_rows($query);
 
@@ -251,6 +252,6 @@ echo <<<EOT
                             </tr>
                         </table>
 EOT;
- 
-                        
+
+
 ?>
