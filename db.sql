@@ -886,13 +886,14 @@ INSERT INTO `fs2_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`,
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_news_comments`
+-- Tabellenstruktur für Tabelle `fs2_comments`
 --
 
-DROP TABLE IF EXISTS `fs2_news_comments`;
-CREATE TABLE `fs2_news_comments` (
+DROP TABLE IF EXISTS `fs2_comments`;
+CREATE TABLE `fs2_comments` (
   `comment_id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `news_id` mediumint(8) DEFAULT NULL,
+  `content_id` mediumint(8) NOT NULL,
+  `content_type` varchar(32) NOT NULL,
   `comment_poster` varchar(32) DEFAULT NULL,
   `comment_poster_id` mediumint(8) DEFAULT NULL,
   `comment_poster_ip` varchar(16) NOT NULL,
@@ -904,11 +905,11 @@ CREATE TABLE `fs2_news_comments` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Daten für Tabelle `fs2_news_comments`
+-- Daten für Tabelle `fs2_comments`
 --
 
-INSERT INTO `fs2_news_comments` (`comment_id`, `news_id`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(3, 5, '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans');
+INSERT INTO `fs2_comments` (`comment_id`, `content_id`, `content_type`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
+(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans');
 
 -- --------------------------------------------------------
 

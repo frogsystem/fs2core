@@ -1055,7 +1055,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr['user_url'] = url('user', array('id' => $news_arr['user_id']));
 
     // Kommentare lesen
-    $index2 = mysql_query('SELECT comment_id FROM '.$FD->config('pref').'news_comments WHERE news_id = '.$news_arr['news_id'].'', $FD->sql()->conn() );
+    $index2 = mysql_query('SELECT comment_id FROM '.$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'', $FD->sql()->conn() );
     $news_arr['kommentare'] = mysql_num_rows($index2);
 
     // Get Related Links

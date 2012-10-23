@@ -133,7 +133,7 @@ elseif (isset($_POST['do']) && $_POST['do'] == 'sync')
     $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$FD->config('pref').'news', $FD->sql()->conn() );
     $sync_arr['news'] = mysql_result($index,0,'news');
 
-    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$FD->config('pref').'news_comments', $FD->sql()->conn() );
+    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$FD->config('pref').'comments', $FD->sql()->conn() );
     $sync_arr['comments'] = mysql_result($index,0,'comments');
 
     $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$FD->config('pref').'articles', $FD->sql()->conn() );

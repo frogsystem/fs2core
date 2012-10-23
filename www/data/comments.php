@@ -81,11 +81,11 @@ if (isset($_POST['add_comment']))
 
                     $index = mysql_query( '
                                             SELECT `comment_id`
-                                            FROM `'.$FD->config('pref')."news_comments`
+                                            FROM `'.$FD->config('pref')."comments`
                                             WHERE
                                                 `comment_text` = '".$_POST['text']."'
-                                            AND
-                                                `comment_date` >  '".$duplicate_time."'
+                                            AND `content_type` = 'news'
+                                            AND `comment_date` >  '".$duplicate_time."'
                                             LIMIT 0,1
                     ", $FD->sql()->conn() );
                                              echo mysql_error();
@@ -100,8 +100,9 @@ if (isset($_POST['add_comment']))
 
                         mysql_query ( '
                                         INSERT INTO
-                                            `'.$FD->config('pref')."news_comments` (
-                                                news_id,
+                                            `'.$FD->config('pref')."comments` (
+                                                content_id,
+                                                content_type,
                                                 comment_poster,
                                                 comment_poster_id,
                                                 comment_poster_ip,
@@ -112,6 +113,7 @@ if (isset($_POST['add_comment']))
                                          VALUES
                                             (
                                                 '".$_POST['id']."',
+                                                'news',
                                                 '".$_POST['name']."',
                                                 '$userid',
                                                 '".savesql($_SERVER['REMOTE_ADDR'])."',
@@ -206,7 +208,7 @@ if ( $SHOW == TRUE ) {
     $html_active = ($html) ? 'an' : 'aus';
 
     // Kommentare erzeugen
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'news_comments WHERE news_id = '.$_GET['id'].' ORDER BY comment_date '.$config_arr['com_sort'], $FD->sql()->conn() );
+    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'comments WHERE content_id = '.$_GET['id'].' AND content_type=\'news\' ORDER BY comment_date '.$config_arr['com_sort'], $FD->sql()->conn() );
     while ($comment_arr = mysql_fetch_assoc($index))
     {
 

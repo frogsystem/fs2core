@@ -11,12 +11,13 @@ function db_edit_comment ( $DATA )
     // MySQL-Update-Query: Comment
     mysql_query ( '
                     UPDATE
-                            '.$FD->config('pref')."news_comments
+                            '.$FD->config('pref')."comments
                     SET
                             comment_title = '".$DATA['title']."',
                             comment_text = '".$DATA['text']."'
                     WHERE
                             comment_id = '".$DATA['comment_id']."'
+                        AND content_type='news'
     ", $FD->sql()->conn() );
 
     systext( $FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_ok') );
@@ -31,7 +32,7 @@ function db_delete_comment ( $DATA )
     // MySQL-Delete-Query: Comment
     mysql_query ( '
                     DELETE FROM
-                            '.$FD->config('pref').'news_comments
+                            '.$FD->config('pref').'comments
                     WHERE
                             `comment_id` IN ('.implode ( ',', $DATA['comment_id'] ).')
     ', $FD->sql()->conn() );
@@ -64,7 +65,7 @@ function action_delete_get_data ( $IDS )
 
         $news_arr['news_date_formated'] = ''.$FD->text('admin', 'on').' <b>' . date ( $FD->text('admin', 'date_format') , $news_arr['news_date'] ) . '</b> '.$FD->text('admin', 'at').' <b>' . date ( $FD->text('admin', 'time_format') , $news_arr['news_date'] ) . '</b>';
 
-        $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'news_comments WHERE news_id = '.$news_arr['news_id'].'', $FD->sql()->conn() );
+        $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'', $FD->sql()->conn() );
         $news_arr['num_comments'] = mysql_result ( $index2, 0, 'number' );
 
         $index2 = mysql_query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id']."", $FD->sql()->conn() );
@@ -166,14 +167,14 @@ function action_comments_select ( $DATA )
                 ';
 
                 // Get Number of Comments
-                  $index = mysql_query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'news_comments WHERE news_id = '.$DATA['news_id'].'', $FD->sql()->conn() );
+                  $index = mysql_query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\'', $FD->sql()->conn() );
                   $number = mysql_result ( $index, 0, 'number' );
 
                   if ( $number >= 1 ) {
                         $index = mysql_query ( '
                                                                         SELECT *
-                                                                        FROM '.$FD->config('pref').'news_comments
-                                                                        WHERE news_id = '.$DATA['news_id'].'
+                                                                        FROM '.$FD->config('pref').'comments
+                                                                        WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\' 
                                                                         ORDER BY comment_date DESC
                         ', $FD->sql()->conn() );
 
@@ -232,9 +233,9 @@ function action_comments_edit ( $DATA )
     settype ( $DATA['comment_id'], 'integer' );
     $index = mysql_query ( '
                                                         SELECT *
-                                                        FROM '.$FD->config('pref').'news_comments
-                                                        WHERE comment_id = '.$DATA['comment_id'].'
-        ', $FD->sql()->conn() );
+                                                        FROM '.$FD->config('pref').'comments
+                                                        WHERE comment_id = '.$DATA['comment_id']." AND content_type='news' 
+        ", $FD->sql()->conn() );
     $comment_arr = mysql_fetch_assoc ( $index );
 
         // Get other Data
@@ -248,7 +249,7 @@ function action_comments_edit ( $DATA )
                     <form action="" method="post">
                         <input type="hidden" name="news_action" value="comments">
                         <input type="hidden" name="comment_action" value="edit">
-                        <input type="hidden" name="news_id[]" value="'.$comment_arr['news_id'].'">
+                        <input type="hidden" name="news_id[]" value="'.$comment_arr['content_id'].'">
                         <input type="hidden" name="comment_id" value="'.$comment_arr['comment_id'].'">
                         <input type="hidden" name="sended" value="edit">
                         <table class="configtable" cellpadding="4" cellspacing="0">
@@ -324,7 +325,7 @@ function action_comments_delete ( $DATA )
 
         $index = mysql_query ( '
                                 SELECT *
-                                FROM `'.$FD->config('pref').'news_comments`
+                                FROM `'.$FD->config('pref').'comments`
                                 WHERE `comment_id` IN ('.implode ( ',', $DATA['comment_id'] ).')
         ', $FD->sql()->conn() );
 
@@ -425,7 +426,7 @@ if (
     // MySQL-Insert-Query
     try {
         // Get User
-        try {    
+        try {
             $user_id = $FD->sql()->getField('user', 'user_id', array('W' => "`user_name` = '".$FD->sql()->escape($_POST['user_name'])."'"));
         } catch (Exception $e) {
             Throw $e;
@@ -434,10 +435,10 @@ if (
         if (empty($user_id)) {
             Throw new FormException($FD->text('admin', 'no_user_found_for_name'));
         }
-        
+
         $data['user_id'] = $user_id;
-        
-        // Save News        
+
+        // Save News
         $newsid = $sql->save('news', $data, 'news_id');
 
         // delete all links
@@ -515,7 +516,7 @@ elseif (
             // delete all links
             $sql->delete('news_links', array('W' => "`news_id` = '".$_POST['news_id']."'"));
             // delete all comments
-            $comment_rows = $sql->delete('news_comments', array('W' => "`news_id` = '".$_POST['news_id']."'"));
+            $comment_rows = $sql->delete('comments', array('W' => "`content_id` = '".$_POST['news_id']."' AND content_type='news'"));
 
             // update counter
             try {
@@ -972,9 +973,9 @@ if ($FILE_SHOW_START)
                 //get additional data
                 $user = $sql->getFieldById('user', 'user_name', $news['user_id'], 'user_id');
                 $cat = $sql->getFieldById('news_cat', 'cat_name', $news['cat_id'], 'cat_id');
-                $num_comments = $sql->getField('news_comments',
+                $num_comments = $sql->getField('comments',
                     array('COL' => 'comment_id', 'AS' => 'news_comments', 'FUNC' => 'count'),
-                    array('W' => "`news_id` = '".$news['news_id']."'")
+                    array('W' => "`content_id` = '".$news['news_id']."' AND `content_type` = 'news'")
                 );
                 $num_links = $sql->getField('news_links',
                     array('COL' => 'link_id', 'AS' => 'num_links', 'FUNC' => 'count'),
