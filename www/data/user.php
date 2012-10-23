@@ -66,7 +66,7 @@ if ( mysql_num_rows ( $index ) > 0 ) {
 
     $index = mysql_query ( '
         SELECT COUNT(`comment_id`) AS `number`
-        FROM `'.$FD->config('pref')."news_comments`
+        FROM `'.$FD->config('pref')."comments`
         WHERE `comment_poster_id` = '".$user_arr['user_id']."'
     ", $FD->sql()->conn() );
     $user_arr['user_num_comments'] = mysql_result ( $index, 0, 'number' );

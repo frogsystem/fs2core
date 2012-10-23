@@ -16,7 +16,7 @@ $num_news_cat = mysql_result ( $index, 0, 'num_news_cat' );
 
 $index = mysql_query ( "
                         SELECT COUNT(`comment_id`) AS 'num_comments'
-                        FROM ".$FD->config('pref').'news_comments
+                        FROM ".$FD->config('pref').'comments
                         LIMIT 0,1
 ', $FD->sql()->conn() );
 $num_comments = mysql_result ( $index, 0, 'num_comments' );
@@ -43,8 +43,8 @@ if ( $num_news  > 0 ) {
     if ( $num_comments  > 0 ) {
         $index = mysql_query ( "
                                 SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
-                                FROM ".$FD->config('pref').'news_comments C, '.$FD->config('pref').'news N
-                                WHERE N.`news_id` = C.`news_id`
+                                FROM ".$FD->config('pref').'comments C, '.$FD->config('pref').'news N
+                                WHERE N.`news_id` = C.`content_id` AND C.`content_type`=\'news\' 
                                 GROUP BY N.`news_title`
                                 ORDER BY `best_news_com_num` DESC
                                 LIMIT 0,1
@@ -54,7 +54,7 @@ if ( $num_news  > 0 ) {
 
         $index = mysql_query ( "
                                 SELECT COUNT(C.`comment_id`) AS 'best_com_poster_num', U.`user_name`
-                                FROM `".$FD->config('pref').'user` U, `'.$FD->config('pref').'news_comments` C
+                                FROM `".$FD->config('pref').'user` U, `'.$FD->config('pref').'comments` C
                                 WHERE C.`comment_poster_id` = U.`user_id`
                                 AND C.`comment_poster_id` > 0
                                 GROUP BY U.`user_name`

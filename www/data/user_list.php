@@ -61,7 +61,7 @@ $query = 'SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user
   (SELECT COUNT(`news_id`) FROM `'.$pref.'news`
    WHERE `'.$pref.'news`.`user_id` = `'.$pref.'user`.`user_id`) AS user_num_news,
 
-  (SELECT COUNT(`comment_id`) FROM `'.$pref.'news_comments`
+  (SELECT COUNT(`comment_id`) FROM `'.$pref.'comments`
    WHERE `comment_poster_id` = `'.$pref.'user`.`user_id`) AS user_num_comments,
 
   (SELECT COUNT(`article_id`) FROM `'.$pref.'articles`

@@ -261,9 +261,9 @@ elseif (
                         WHERE `cat_user` = '".$_POST['user_id']."'
         ", $FD->sql()->conn() );
 
-        // update news_comments
+        // update comments
         mysql_query ( '
-                        UPDATE '.$FD->config('pref')."news_comments
+                        UPDATE '.$FD->config('pref')."comments
                         SET `comment_poster_id` = '0',
                             `comment_poster` = '".$user_arr['user_name']."'
                         WHERE `comment_poster_id` = '".$_POST['user_id']."'
