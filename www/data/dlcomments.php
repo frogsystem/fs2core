@@ -2,6 +2,7 @@
 /*
     Frogsystem Download comments script
     Copyright (C) 2006-2007  Stefan Bollmann
+    Copyright (C) 2012       Thoronador (adjustments for alix5)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,74 +29,142 @@
 */
 
 
+///////////////////////
+//// Configs laden ////
+///////////////////////
+
+//Kommentar-Config
+$index = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'news_config`', $db);
+$config_arr = mysql_fetch_assoc($index);
+//Editor config
+$index = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'editor_config`', $db);
+$editor_config = mysql_fetch_assoc($index);
+
+$SHOW = TRUE;
+
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-session_start();
-function encrypt($string, $key) {
-  $result = '';
-  for($i=0; $i<strlen($string); $i++) {
-    $char = substr($string, $i, 1);
-    $keychar = substr($key, ($i % strlen($key))-1, 1);
-    $char = chr(ord($char)+ord($keychar));
-    $result.=$char;
-  }
-  return base64_encode($result);
+if ( $config_arr['com_antispam'] == 1 && $_SESSION['user_id'] ) {
+    $anti_spam = check_captcha ( $_POST['spam'], 0 );
+} else {
+    $anti_spam = check_captcha ( $_POST['spam'], $config_arr['com_antispam'] );
 }
-$sicherheits_eingabe = encrypt($_POST['spam'], '3g7fg6hr59');
-$sicherheits_eingabe = str_replace('=', '', $sicherheits_eingabe);
+
+/////////////////////////
+//// User has rights ////
+/////////////////////////
+settype ( $_SESSION['user_id'], 'integer' );
+$index = mysql_query ( '
+                                                SELECT *
+                                                FROM `'.$global_config_arr['pref']."user`
+                                                WHERE user_id = '".$_SESSION['user_id']."'
+", $db);
+$user_arr = mysql_fetch_assoc($index);
+
+if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SESSION['user_id'] ) ) {
+    $comments_right = TRUE;
+} elseif ( $config_arr['com_rights'] == 3 && is_in_staff ( $_SESSION['user_id'] ) ) {
+    $comments_right = TRUE;
+} elseif ( $config_arr['com_rights'] == 4 && is_admin ( $_SESSION['user_id'] ) ) {
+    $comments_right = TRUE;
+} else {
+    $comments_right = FALSE;
+}
 
 //////////////////////////////
 //// Kommentar hinzufügen ////
 //////////////////////////////
 
-if (isset($_POST[addcomment]))
+if (isset($_POST['add_comment']))
 {
-
-    if ($fileid && ($_POST[name] != "" || $_SESSION["user_id"]) && $_POST[title] != "" && $_POST[text] != ""
-        && (($sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] AND is_numeric($_POST["spam"]) == true AND $sicherheits_eingabe == true) OR $_SESSION["user_id"]))
+    if (isset($_POST['id'])
+         && ($_POST['name'] != '' || $_SESSION['user_id'])
+         && $_POST['title'] != ''
+         && $_POST['text'] != ''
+         && $anti_spam == TRUE)
     {
+                settype($_POST['id'], 'integer');
+                $dl_comments_allowed = TRUE; //make this one dynamic in the future
 
-        settype($_POST[fileid], 'integer');
-        $_POST[name] = savesql($_POST[name]);
-        $_POST[title] = savesql($_POST[title]);
-        $_POST[text] = savesql($_POST[text]);
-        $commentdate = date("U");
+                if ( $dl_comments_allowed ) {
 
-        if ($_SESSION["user_id"])
-        {
-            $userid = $_SESSION["user_id"];
-            $name = "";
-        }
-        else
-        {
-            $userid = 0;
-        }
+                    // Security Functions
+                    $_POST['text'] = savesql($_POST['text']);
+                    $_POST['name'] = savesql($_POST['name']);
+                    $_POST['title'] = savesql($_POST['title']);
+                    settype( $_POST['id'], 'integer' );
 
-        mysql_query("INSERT INTO fsplus_dl_comments (dl_id, comment_poster, comment_poster_id, comment_date, comment_title, comment_text)
-                     VALUES ('$fileid',
-                             '".$_POST[name]."',
-                             '$userid',
-                             '$commentdate',
-                             '".$_POST[title]."',
-                             '".$_POST[text]."');", $db);
-        mysql_query("update fs_counter set comments=comments+1", $db);
+                    $commentdate = time();
+                    $duplicate_time = $commentdate - ( 5 * 60 );
+
+                    $index = mysql_query( '
+                                            SELECT `comment_id`
+                                            FROM `'.$global_config_arr['pref'].'comments`
+                                            WHERE
+                                                `comment_text` = \''.$_POST['text']."'
+                                            AND
+                                                `comment_date` >  '".$duplicate_time."'
+                                            LIMIT 0,1",
+                                          $db);
+                                          echo mysql_error();
+                    if ( mysql_num_rows ( $index ) == 0 ) {
+
+                        if ($_SESSION['user_id']) {
+                            $userid = $_SESSION['user_id'];
+                            $name = '';
+                        } else {
+                            $userid = 0;
+                        }
+
+                        mysql_query ( '
+                                        INSERT INTO
+                                            `'.$global_config_arr['pref'].'comments` (
+                                                content_id,
+                                                comment_poster,
+                                                comment_poster_id,
+                                                comment_poster_ip,
+                                                comment_date,
+                                                comment_title,
+                                                comment_text,
+                                                content_type
+                                            )
+                                         VALUES
+                                            (
+                                                \''.$_POST['id']."',
+                                                '".$_POST['name']."',
+                                                '$userid',
+                                                '".savesql($_SERVER['REMOTE_ADDR'])."',
+                                                '$commentdate',
+                                                '".$_POST['title']."',
+                                                '".$_POST['text']."',
+                                                'dl'
+                                            )", $db );
+                        mysql_query('UPDATE `'.$global_config_arr['pref'].'counter` SET comments=comments+1', $db);
+                        $SHOW = FALSE;
+                        $template = forward_message ( $TEXT->get('news_title'), $TEXT->get('comment_added'), $_SERVER['REQUEST_URI'] );
+                    } else {
+                        $SHOW = FALSE;
+                        $template = forward_message ( $TEXT->get('news_title'), $TEXT->get('comment_not_added').'<br>'.$TEXT->get('comment_duplicate'), $_SERVER['REQUEST_URI'] );
+                    }
+                } else {
+                    $message_template = sys_message($phrases['sysmessage'], $phrases['comm_not_allowd']);
+                }
     }
     else
     {
-        $reason = "";
-        if ( !($_POST[name] != "" || $_SESSION["user_id"])
-            || $_POST[title] == ""
-            || $_POST[text] == "")
+        $reason = array();
+        if ( !($_POST['name'] != '' || $_SESSION['user_id'])
+            || $_POST['title'] == ''
+            || $_POST['text'] == '')
         {
-            $reason = $phrases[comment_empty];
+            $reason[] = $phrases['comment_empty'];
         }
-        if ((!($sicherheits_eingabe == $_SESSION['rechen_captcha_spam'] AND is_numeric($_POST["spam"]) == true AND $sicherheits_eingabe == true)) AND !($_SESSION["user_id"]))
+        if (!($anti_spam == TRUE))
         {
-            $reason .= $phrases[comment_spam];
+            $reason[] = $phrases['comment_spam'];
         }
-        sys_message($phrases[comment_not_added], $reason);
-
+        $message_template = sys_message($phrases['comment_not_added'], implode ( '<br>', $reason ) );
     }
 }
 
@@ -103,242 +172,171 @@ if (isset($_POST[addcomment]))
 //// Kommentare ausgeben /////
 //////////////////////////////
 
-settype($_GET[fileid], 'integer');
-$index = mysql_query("select * from fs_news_config", $db);
-$config_arr = mysql_fetch_assoc($index);
-$time = time();
+$news_config_arr = $config_arr;
+$news_message_template = $message_template;
+$news_template = $template;
 
-// Download anzeigen
-settype($_GET[fileid], 'integer');
-$index = mysql_query("select * from fs_dl where dl_id = $_GET[fileid] and dl_open = 1", $db);
-if (mysql_num_rows($index) > 0)
+if ($SHOW===TRUE)
 {
-    $file_arr = mysql_fetch_assoc($index);
 
-    // Username auslesen
-    $index = mysql_query("select user_name from fs_user where user_id = $file_arr[user_id]", $db);
-    $file_arr[user_name] = mysql_result($index, 0, "user_name");
-    $file_arr[user_url] = "?go=profil&userid=" . $file_arr[user_id];
+  //include dlfile.php to do the download template for us
+  include_once('dlfile.php');
 
-    // Link zum Autor generieren
-    if (!isset($file_arr[dl_autor]))
+  $dl_template = $template;
+
+  // Text formatieren
+  $html = ($news_config_arr['html_code']>=3);
+  $fs   = ($news_config_arr['fs_code']>=3);
+  $para = ($news_config_arr['para_handling']>=3);
+
+  //FScode-Html Anzeige
+  $fs_active = ($fs) ? 'an' : 'aus';
+  $html_active = ($html) ? 'an' : 'aus';
+
+  $index = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'comments` WHERE content_id = \''.intval($_GET['id'])."' AND content_type='dl' ORDER BY comment_date ASC", $db);
+
+  $comments = '';
+  while ($comment_arr = mysql_fetch_assoc($index))
+  {
+
+    // User auslesen
+    if ($comment_arr['comment_poster_id'] != 0)
     {
-        $file_arr[dl_autor_link] = "-";
+      $index2 = mysql_query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$global_config_arr['pref'].'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $db);
+      $comment_arr['comment_poster'] = kill_replacements ( mysql_result($index2, 0, 'user_name' ), TRUE );
+      $comment_arr['user_is_admin'] = mysql_result($index2, 0, 'user_is_admin');
+      $comment_arr['user_is_staff'] = mysql_result($index2, 0, 'user_is_staff');
+      $comment_arr['user_group'] = mysql_result($index2, 0, 'user_group');
+
+      if (image_exists('media/user-images/',$comment_arr['comment_poster_id'])) {
+        $comment_arr['comment_avatar'] = '<img align="left" src="'.image_url('media/user-images/',$comment_arr['comment_poster_id']).'" alt="'.$comment_arr['comment_poster'].'">';
+      } else {
+        $comment_arr['comment_avatar'] = '';
+      }
+
+      if ( $comment_arr['user_is_staff'] == 1 || $comment_arr['user_is_admin'] == 1 ) {
+        $comment_arr['comment_poster'] = '<b>' . $comment_arr['comment_poster'] . '</b>';
+      }
+
+      // Benutzer Rang
+      $user_arr['rank_data'] = get_user_rank ( $comment_arr['user_group'], $comment_arr['user_is_admin'] );
+      $comment_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
+
+      // Get User Template
+      $template = new template();
+      $template->setFile('0_news.tpl');
+      $template->load('COMMENT_USER');
+
+      $template->tag('url', '?go=user&amp;id='.$comment_arr['comment_poster_id'] );
+      $template->tag('name', $comment_arr['comment_poster'] );
+      $template->tag('image', $comment_arr['comment_avatar'] );
+      $template->tag('rank', $comment_arr['user_rank'] );
+
+      $template = $template->display ();
+      $comment_arr['comment_poster'] = $template;
     }
     else
     {
-        $file_arr[dl_autor_link] = '<a href="'.$file_arr[dl_autor_url].'" target="_blank">'.$file_arr[dl_autor].'</a>';
+      $comment_arr['comment_avatar'] = '';
+      $comment_arr['comment_poster'] = kill_replacements ( $comment_arr['comment_poster'], TRUE );
+      $comment_arr['user_rank'] = '';
     }
 
-    // Thumbnail vorhanden?
-    if (file_exists("images/dl/".$file_arr[dl_id]."_s.jpg"))
-    {
-        $file_arr[dl_bild] = "images/dl/" . $file_arr[dl_id] . ".jpg";
-        $file_arr[dl_thumb] = "images/dl/" . $file_arr[dl_id] . "_s.jpg";
-    }
-    else
-    {
-        $file_arr[dl_bild] = "images/design/nopic120.gif";
-        $file_arr[dl_thumb] = "images/design/nopic120.gif";
+    if ($fs) {
+      $comment_arr['comment_text'] = fscode( kill_replacements ( $comment_arr['comment_text'] ),$fs,$html,$para, $editor_config['do_bold'], $editor_config['do_italic'], $editor_config['do_underline'], $editor_config['do_strike'], $editor_config['do_center'], $editor_config['do_url'], $editor_config['do_home'], $editor_config['do_email'], $editor_config['do_img'], $editor_config['do_cimg'], $editor_config['do_list'], $editor_config['do_numlist'], $editor_config['do_font'], $editor_config['do_color'], $editor_config['do_size'], $editor_config['do_code'], $editor_config['do_quote'], $editor_config['do_noparse'], $editor_config['do_smilies']);
+    } else {
+      $comment_arr['comment_text'] = fscode( kill_replacements ( $comment_arr['comment_text'] ), $fs, $html, $para);
     }
 
-    // Sonstige Daten ermitteln
-    $file_arr[dl_size_berechnet] = getsize($file_arr[dl_size]);
-    $file_arr[dl_date] = date("d.m.Y" , $file_arr[dl_date]) . " ".$phrases[time_at]." " . date("H:i" , $file_arr[dl_date]);
-    $file_arr[dl_traffic] = getsize($file_arr[dl_size]*$file_arr[dl_loads]);
-    $file_arr[dl_text] = fscode($file_arr[dl_text], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    $comment_arr['comment_date'] = date_loc ( $global_config_arr['datetime'] , $comment_arr['comment_date'] );
+    $comment_arr['comment_title'] = kill_replacements( $comment_arr['comment_title'], TRUE );
 
-/////   NEU ANFANG   /////
+    // Get Comment Template
+    $template = new template();
+    $template->setFile('0_news.tpl');
+    $template->load('COMMMENT_ENTRY');
 
-	// Kommentare
-	$file_arr[comment_url] = "nwn/?go=dlcomments2&amp;fileid=$_GET[fileid]";
+    $template->tag('titel', $comment_arr['comment_title'] );
+    $template->tag('date', $comment_arr['comment_date'] );
+    $template->tag('text', $comment_arr['comment_text'] );
+    $template->tag('user', $comment_arr['comment_poster'] );
+    $template->tag('user_image', $comment_arr['comment_avatar'] );
+    $template->tag('user_rank', $comment_arr['user_rank'] );
 
-	// Kommentare lesen
-    $index_dlcomms = mysql_query("select dl_comment_id from fsplus_dl_comments where dl_id = $_GET[fileid]", $db);
-	$file_arr[kommentare] = mysql_num_rows($index_dlcomms);
-
-/////   NEU ENDE   /////
-
-    // User eingeloggt?
-    if ($_SESSION[user_level] == "loggedin")
-    {
-        $file_arr[dl_link] = '<a target="_blank" href="?go=dl&amp;fileid='.$file_arr[dl_id].'&amp;dl=true"><b>Download</b></a><br><font color="red">Hinweis:</font> "Ziel speichern unter" ist nicht möglich.';
-    }
-    else
-    {
-        $file_arr[dl_link] = $phrases[dl_not_logged_in];
-    }
-
-    // Mirrors auslesen
-    if ($index = mysql_query("select * from fs_dl_mirrors where dl_id = $file_arr[dl_id]", $db))
-    {
-        $counter = 0;
-        while ($mirror_arr = mysql_fetch_assoc($index))
-        {
-            $counter += 1;
-            $index2 = mysql_query("select template_code from fs_template where template_name = 'dl_mirror'", $db);
-            $template = stripslashes(mysql_result($index2, 0, "template_code"));
-            $template = str_replace("{nummer}", $counter, $template);
-            $template = str_replace("{name}", $mirror_arr[mirror_name], $template);
-            $template = str_replace("{url}", "nwn/?go=dl&amp;mirrorid=".$mirror_arr[mirror_id]."&amp;dl=true", $template);
-            $template = str_replace("{hits}", $mirror_arr[mirror_count], $template);
-            $mirrors .= $template;
-        }
-        unset($mirror_arr);
-    }
+    $comments .= $template->display();
+  }//while
+  unset($comment_arr);
 
 
-    // Suchfeld auslesen
-    $index = mysql_query("select template_code from fs_template where template_name = 'dl_search_field'", $db);
-    $suchfeld = stripslashes(mysql_result($index, 0, "template_code"));
+  // Get Comments Form Name Template
+  $form_name = new template();
+  $form_name->setFile('0_news.tpl');
+  $form_name->load('COMMENT_FORM_NAME');
+  $form_name = $form_name->display ();
 
-    // Navigation erzeugen
-    $valid_ids = array();
-    get_dl_categories (&$valid_ids, -1);
+  if ( isset ( $_SESSION['user_name'] ) ) {
+    $form_name = kill_replacements ( $_SESSION['user_name'], TRUE );
+    $form_name .= '<input type="hidden" name="name" id="name" value="1">';
+  }
 
-    foreach ($valid_ids as $cat)
-    {
-        if ($cat[cat_id] == $file_arr[cat_id])
-        {
-            $icon = "dl_ordner_offen.gif";
-        }
-        else
-        {
-            $icon = "dl_ordner.gif";
-        }
-        $index = mysql_query("select template_code from fs_template where template_name = 'dl_navigation'", $db);
-        $template = stripslashes(mysql_result($index, 0, "template_code"));
-        $template = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]) . $template;
-        $template = str_replace("{kategorie_url}", "nwn2/?go=download3&amp;catid=".$cat[cat_id], $template);
-        $template = str_replace("{icon}", $icon, $template);
-        $template = str_replace("{kategorie_name}", $cat[cat_name], $template);
-        $navi .= $template;
-    }
-    unset($valid_ids);
+  // Get Comments Captcha Template
+  $form_spam = new template();
+  $form_spam->setFile('0_news.tpl');
+  $form_spam->load('COMMENT_CAPTCHA');
+  $form_spam->tag('captcha_url', FS2_ROOT_PATH . 'resources/captcha/captcha.php?i='.generate_pwd(8) );
+  $form_spam = $form_spam->display ();
 
-    $index = mysql_query("select template_code from fs_template where template_name = 'dl_file_body'", $db);
-    $template = stripslashes(mysql_result($index, 0, "template_code"));
-    $template = str_replace("{navigation}", $navi, $template);
-    $template = str_replace("{suchfeld}", $suchfeld, $template);
-    $template = str_replace("{titel}", $file_arr[dl_name], $template);
-    $template = str_replace("{größe}", $file_arr[dl_size_berechnet], $template);
-    $template = str_replace("{bild}", $file_arr[dl_bild], $template);
-    $template = str_replace("{thumbnail}", $file_arr[dl_thumb], $template);
-    $template = str_replace("{datum}", $file_arr[dl_date], $template);
-    $template = str_replace("{uploader}", $file_arr[user_name], $template);
-    $template = str_replace("{uploader_url}", $file_arr[user_url], $template);
-    $template = str_replace("{autor_link}", $file_arr[dl_autor_link], $template);
-    $template = str_replace("{traffic}", $file_arr[dl_traffic], $template);
-    $template = str_replace("{hits}", $file_arr[dl_loads], $template);
-    $template = str_replace("{text}", $file_arr[dl_text], $template);
-    $template = str_replace("{link}", $file_arr[dl_link], $template);
-    $template = str_replace("{mirrors}", $mirrors, $template);
-    $template = str_replace("{kommentar_url}", $file_arr[comment_url], $template);
-    $template = str_replace("{kommentar_anzahl}", $file_arr[kommentare], $template);
+  // Get Comments Form Name Template
+  $form_spam_text = new template();
+  $form_spam_text->setFile('0_news.tpl');
+  $form_spam_text->load('COMMENT_CAPTCHA_TEXT');
+  $form_spam_text = $form_spam_text->display ();
 
-    echo $template;
 
-    unset($template);
+  if (
+      $news_config_arr['com_antispam'] == 0 ||
+      ( $news_config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSION['user_id']!=0) ||
+      ( $news_config_arr['com_antispam'] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
+   )
+  {
+    $form_spam = '';
+    $form_spam_text = '';
+  }
 
-}
+
+  //Textarea
+  $template_textarea = create_textarea('text', '', $editor_config['textarea_width'], $editor_config['textarea_height'], 'text', false, $editor_config['smilies'], $editor_config['bold'], $editor_config['italic'], $editor_config['underline'], $editor_config['strike'], $editor_config['center'], $editor_config['font'], $editor_config['color'], $editor_config['size'], $editor_config['img'], $editor_config['cimg'], $editor_config['url'], $editor_config['home'], $editor_config['email'], $editor_config['code'], $editor_config['quote'], $editor_config['noparse']);
+
+  // Get Comment Form Template
+  $template = new template();
+  $template->setFile('0_news.tpl');
+  $template->load('COMMENT_FORM');
+
+  $template->tag('news_id', $_GET['id'] );
+  $template->tag('name_input', $form_name );
+  $template->tag('textarea', $template_textarea );
+  $template->tag('html', $html_active );
+  $template->tag('fs_code', $fs_active );
+  $template->tag('captcha', $form_spam );
+  $template->tag('captcha_text', $form_spam_text  );
+
+  $formular_template = $template->display();
+
+
+  $_GET['id'] = (isset($_GET['fileid']) && !isset($_GET['id'])) ? $_GET['fileid'] : $_GET['id'];
+  settype($_GET['id'], 'integer');
+  $presence = mysql_query('SELECT dl_id FROM `'.$global_config_arr['pref'].'dl` where dl_id = '.$_GET['id'].' AND dl_open = 1', $db);
+  if (mysql_num_rows($presence)>0)
+  {
+    $template = $news_message_template . $dl_template . $comments . $formular_template;
+  }
+  else
+  {
+    $template = $news_message_template . $dl_template;
+  }
+}//if SHOW==TRUE
 else
 {
-    sys_message($phrases[sysmessage], $phrases[dl_not_exist]);
+  $template = $news_message_template . $template;
 }
-
-// Kommentare erzeugen
-$index = mysql_query("select * from fsplus_dl_comments where dl_id = $_GET[fileid] order by comment_date asc", $db);
-while ($comment_arr = mysql_fetch_assoc($index))
-{
-    // User auslesen
-    if ($comment_arr[comment_poster_id] != 0)
-    {
-        $index2 = mysql_query("select user_name, is_admin from fs_user where user_id = $comment_arr[comment_poster_id]", $db);
-        $comment_arr[comment_poster] = killhtml(mysql_result($index2, 0, "user_name"));
-        $comment_arr[is_admin] = mysql_result($index2, 0, "is_admin");
-        if (file_exists("images/avatare/".$comment_arr[comment_poster_id].".gif"))
-        {
-            $comment_arr[comment_avatar] = '<div style="width:120px;"><img align="left" src="images/avatare/'.$comment_arr[comment_poster_id].'.gif" alt="'.$comment_arr[comment_poster].'"></div>';
-        }
-        if ($comment_arr[is_admin] == 1)
-        {
-            $comment_arr[comment_poster] = "<b>" . $comment_arr[comment_poster] . "</b>";
-        }
-        $index2 = mysql_query("select template_code from fs_template where template_name = 'news_comment_autor'", $db);
-        $comment_autor = stripslashes(mysql_result($index2, 0, "template_code"));
-        $comment_autor = str_replace("{url}", "?go=profil&amp;userid=".$comment_arr[comment_poster_id], $comment_autor);
-        $comment_autor = str_replace("{name}", $comment_arr[comment_poster], $comment_autor);
-        $comment_arr[comment_poster] = $comment_autor;
-    }
-    else
-    {
-        $comment_arr[comment_avatar] = "";
-        $comment_arr[comment_poster] = killhtml($comment_arr[comment_poster]);
-    }
-
-    // Text formatieren
-    if ($config_arr[html_code] < 3)
-    {
-        $comment_arr[comment_text] = killhtml($comment_arr[comment_text]);
-    }
-    if ($config_arr[fs_code] == 3)
-    {
-        $comment_arr[comment_text] = fscode($comment_arr[comment_text], 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0);
-    }
-    else
-    {
-        $comment_arr[comment_text] = fscode($comment_arr[comment_text], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    }
-
-    $comment_arr[comment_date] = date("d.m.Y" , $comment_arr[comment_date]) . " um " . date("H:i" , $comment_arr[comment_date]);
-
-    // Template auslesen und füllen
-    $index2 = mysql_query("select template_code from fs_template where template_name = 'news_comment_body'", $db);
-    $template = stripslashes(mysql_result($index2, 0, "template_code"));
-    $template = str_replace("{titel}", killhtml($comment_arr[comment_title]), $template);
-    $template = str_replace("{datum}", $comment_arr[comment_date], $template);
-    $template = str_replace("{text}", $comment_arr[comment_text], $template);
-    $template = str_replace("{autor}", $comment_arr[comment_poster], $template);
-    $template = str_replace("{autor_avatar}", $comment_arr[comment_avatar], $template);
-
-    echo $template;
-}
-unset($comment_arr);
-
-// Eingabeformular generieren
-$index = mysql_query("select template_code from fs_template where template_name = 'news_comment_form_name'", $db);
-$form_name = stripslashes(mysql_result($index, 0, "template_code"));
-
-$index = mysql_query("select template_code from fs_template where template_name = 'news_comment_form_spam'", $db);
-$form_spam = stripslashes(mysql_result($index, 0, "template_code"));
-
-$form_spam_text ='<br /><br />
- <table border="0" cellspacing="5" cellpadding="0" width="100%">
-  <tr>
-   <td valign="top" align="left">
-<div id="antispam"><font size="1">* Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern, müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.</font></div>
-   </td>
-  </tr>
- </table>';
-
-if (isset($_SESSION[user_name]))
-{
-    $form_name = $_SESSION[user_name];
-    $form_name .= '<input type="hidden" name="name" id="name" value="1">';
-    $form_spam = "";
-    $form_spam_text ="";
-}
-
-$index = mysql_query("select template_code from fs_template where template_name = 'news_comment_form'", $db);
-$template = stripslashes(mysql_result($index, 0, "template_code"));
-$template = str_replace("{newsid}", $_GET[fileid], $template);
-$template = str_replace("{name_input}", $form_name, $template);
-$template = str_replace("{antispam}", $form_spam, $template);
-$template = str_replace("{antispamtext}", $form_spam_text, $template);
-
-echo $template;
-unset($template);
-
-$fileid = $_GET[fileid];
-
 ?>
