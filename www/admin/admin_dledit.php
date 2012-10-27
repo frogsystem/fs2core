@@ -385,6 +385,60 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
                         </table>
                     </form>
     ';
+
+    //List of download comments
+    echo '<form action="" method="post">
+            <input type="hidden" name="go" value="dlcommentedit">
+            <input type="hidden" name="PHPSESSID" value="'.session_id().'">
+          <table border="0" cellpadding="4" cellspacing="0" width="600">
+              <tr>
+                  <td class="config" colspan="4" valign="top">
+                      <br><br>Kommentare
+                  </td>
+              </tr>
+              ';
+    $comments = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'", $db);
+    if (mysql_num_rows($comments)===0)
+    {
+      echo '<tr>
+              <td class="configthin" colspan="4" align="center">Keine Kommentare vorhanden!</td>
+            </tr>';
+    }
+    else
+    {
+      echo '<tr>
+                  <td class="config" width="30%" valign="top">Titel</td>
+                  <td class="config" width="30%" valign="top">Poster</td>
+                  <td class="config" width="25%" valign="top">Datum</td>
+                  <td class="config" width="15%" valign="top">bearbeiten</td>
+            </tr>';
+      while ($row = mysql_fetch_assoc($comments))
+      {
+        echo '<tr>
+                <td class="configthin">'.htmlentities($row['comment_title']).'</td>
+                <td class="configthin">';
+        if ($row['comment_poster_id']!=0)
+        {
+          $user = mysql_query('SELECT user_id, user_name FROM `'.$FD->config('pref').'user` WHERE user_id=\''.$row['comment_poster_id']."' LIMIT 1", $db);
+          $user = mysql_fetch_assoc($user);
+          $row['comment_poster'] = $user['user_name'];
+        }
+        echo $row['comment_poster'].'</td>
+                  <td class="configthin">'.date('d.m.Y, H:i', $row['comment_date']).'</td>
+                  <td class="configthin"><input type="radio" value="'.$row['comment_id'].'" name="commentid">
+              </tr>';
+      }//while
+      echo '<tr>
+              <td colspan="4"> &nbsp; </td>
+            </tr>
+            <tr>
+              <td align="center" colspan="4">
+                <input class="button" type="submit" value="Editieren">
+              </td>
+            </tr>';
+    }
+    echo '</table>
+         </form>';
 }
 
 ////////////////////////////////

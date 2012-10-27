@@ -184,6 +184,9 @@ $TEMPLATE_EDIT[] = array (
         array ( 'tag' => 'files', 'text' => $FD->text("template", "dl_entry_body_files") ),
         array ( 'tag' => 'statistics', 'text' => $FD->text("template", "dl_entry_body_statistics") ),
         array ( 'tag' => 'messages', 'text' => $FD->text("template", "dl_entry_body_messages") ),
+        //TODO: localize texts
+        array ( 'tag' => 'comments_url', 'text' => 'URL zur Kommentaransicht des Downloads' ),
+        array ( 'tag' => 'comments_number', 'text' => 'Anzahl der zum Download abgegebenen Kommentare' )
     )
 );
 
@@ -194,3 +197,4 @@ $TEMPLATE_EDIT[] = array (
 
 echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>
+
