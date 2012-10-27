@@ -3,7 +3,7 @@
     $TEMPLATE_GO = "tpl_dl";
     $TEMPLATE_FILE = "0_downloads.tpl";
     $TEMPLATE_EDIT = null;
-    
+
 $TEMPLATE_EDIT[] = array (
     name => "APPLET_LINE",
     title => $TEXT['template']->get("dl_applet_line_title"),
@@ -184,6 +184,9 @@ $TEMPLATE_EDIT[] = array (
         array ( tag => "files", text => $TEXT['template']->get("dl_entry_body_files") ),
         array ( tag => "statistics", text => $TEXT['template']->get("dl_entry_body_statistics") ),
         array ( tag => "messages", text => $TEXT['template']->get("dl_entry_body_messages") ),
+        //TODO: localize texts
+        array ( 'tag' => 'comments_url', 'text' => 'URL zur Kommentaransicht des Downloads' ),
+        array ( 'tag' => 'comments_number', 'text' => 'Anzahl der zum Download abgegebenen Kommentare' )
     )
 );
 

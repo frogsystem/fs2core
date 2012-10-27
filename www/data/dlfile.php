@@ -219,6 +219,11 @@ if (mysql_num_rows($index) > 0)
     $template->tag("files", $files );
     $template->tag("statistics", $stats );
     $template->tag("messages", $messages_template );
+    $template->tag('comments_url', '?go=dlcomments&amp;fileid='.$dl_arr['dl_id'] );
+    //get number of comments
+    $cc = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$global_config_arr['pref']."comments` WHERE content_type='dl' AND content_id='".$dl_arr['dl_id']."'", $db);
+    $cc = mysql_fetch_assoc($cc);
+    $template->tag('comments_number', $cc['cc'] );
 
     $template = $template->display ();
 } else {
