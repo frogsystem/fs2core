@@ -390,14 +390,15 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
     echo '<form action="" method="post">
             <input type="hidden" name="go" value="dlcommentedit">
             <input type="hidden" name="PHPSESSID" value="'.session_id().'">
-          <table border="0" cellpadding="4" cellspacing="0" width="600">
+          <table border="0" cellpadding="4" cellspacing="0" width="600" class="content">
               <tr>
                   <td class="config" colspan="4" valign="top">
-                      <br><br>Kommentare
+                      <br><br><h3>Kommentare</h3>
+                      <hr>
                   </td>
               </tr>
               ';
-    $comments = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'", $db);
+    $comments = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'", $FD->sql()->conn());
     if (mysql_num_rows($comments)===0)
     {
       echo '<tr>
@@ -415,17 +416,17 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
       while ($row = mysql_fetch_assoc($comments))
       {
         echo '<tr>
-                <td class="configthin">'.htmlentities($row['comment_title']).'</td>
-                <td class="configthin">';
+                <td class="configthin small">'.htmlentities($row['comment_title']).'</td>
+                <td class="configthin small">';
         if ($row['comment_poster_id']!=0)
         {
-          $user = mysql_query('SELECT user_id, user_name FROM `'.$FD->config('pref').'user` WHERE user_id=\''.$row['comment_poster_id']."' LIMIT 1", $db);
+          $user = mysql_query('SELECT user_id, user_name FROM `'.$FD->config('pref').'user` WHERE user_id=\''.$row['comment_poster_id']."' LIMIT 1", $FD->sql()->conn());
           $user = mysql_fetch_assoc($user);
           $row['comment_poster'] = $user['user_name'];
         }
         echo $row['comment_poster'].'</td>
-                  <td class="configthin">'.date('d.m.Y, H:i', $row['comment_date']).'</td>
-                  <td class="configthin"><input type="radio" value="'.$row['comment_id'].'" name="commentid">
+                  <td class="configthin small">'.date('d.m.Y, H:i', $row['comment_date']).'</td>
+                  <td class="configthin small"><input type="radio" value="'.$row['comment_id'].'" name="commentid">
               </tr>';
       }//while
       echo '<tr>

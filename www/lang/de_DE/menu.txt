@@ -208,6 +208,8 @@ page_title_dl_cat:              Kategorien verwalten
 page_link_dl_cat:               Kategorien
 page_title_dl_newcat:           Neue Kategorie
 page_link_dl_newcat:            Neue Kategorie
+page_title_dlcommentedit:       Kommentare bearbeiten
+page_link_dlcommentedit:        Kommentare
 
 # Videos
 page_title_player_config:       Konfiguration ändern

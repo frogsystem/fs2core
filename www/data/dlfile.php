@@ -216,7 +216,7 @@ if (mysql_num_rows($index) > 0)
     $template->tag('messages', $messages_template );
     $template->tag('comments_url', '?go=dlcomments&amp;fileid='.$dl_arr['dl_id'] );
     //get number of comments
-    $cc = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref')."comments` WHERE content_type='dl' AND content_id='".$dl_arr['dl_id']."'", $db);
+    $cc = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref')."comments` WHERE content_type='dl' AND content_id='".$dl_arr['dl_id']."'", $FD->sql()->conn());
     $cc = mysql_fetch_assoc($cc);
     $template->tag('comments_number', $cc['cc'] );
 

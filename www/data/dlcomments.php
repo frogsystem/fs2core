@@ -2,7 +2,7 @@
 /*
     Frogsystem Download comments script
     Copyright (C) 2006-2007  Stefan Bollmann
-    Copyright (C) 2012       Thoronador (adjustments for alix5)
+    Copyright (C) 2012       Thoronador (adjustments for alix5/alix6)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,10 +34,10 @@
 ///////////////////////
 
 //Kommentar-Config
-$index = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'news_config`', $db);
-$config_arr = mysql_fetch_assoc($index);
+$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
+$config_arr = json_array_decode($config_arr['config_data']);
 //Editor config
-$index = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'editor_config`', $db);
+$index = mysql_query('SELECT * FROM `'.$FD->config('pref').'editor_config`', $FD->sql()->conn());
 $editor_config = mysql_fetch_assoc($index);
 
 $SHOW = TRUE;
@@ -45,9 +45,11 @@ $SHOW = TRUE;
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-if ( $config_arr['com_antispam'] == 1 && $_SESSION['user_id'] ) {
+if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSION['user_id']!=0 ) {
     $anti_spam = check_captcha ( $_POST['spam'], 0 );
 } else {
+	if (!isset($_POST['spam']))
+		$_POST['spam'] = '';
     $anti_spam = check_captcha ( $_POST['spam'], $config_arr['com_antispam'] );
 }
 
@@ -57,9 +59,9 @@ if ( $config_arr['com_antispam'] == 1 && $_SESSION['user_id'] ) {
 settype ( $_SESSION['user_id'], 'integer' );
 $index = mysql_query ( '
                                                 SELECT *
-                                                FROM `'.$global_config_arr['pref']."user`
+                                                FROM `'.$FD->config('pref')."user`
                                                 WHERE user_id = '".$_SESSION['user_id']."'
-", $db);
+", $FD->sql()->conn());
 $user_arr = mysql_fetch_assoc($index);
 
 if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SESSION['user_id'] ) ) {
@@ -100,14 +102,13 @@ if (isset($_POST['add_comment']))
 
                     $index = mysql_query( '
                                             SELECT `comment_id`
-                                            FROM `'.$global_config_arr['pref'].'comments`
+                                            FROM `'.$FD->config('pref').'comments`
                                             WHERE
                                                 `comment_text` = \''.$_POST['text']."'
                                             AND
                                                 `comment_date` >  '".$duplicate_time."'
                                             LIMIT 0,1",
-                                          $db);
-                                          echo mysql_error();
+                                          $FD->sql()->conn());
                     if ( mysql_num_rows ( $index ) == 0 ) {
 
                         if ($_SESSION['user_id']) {
@@ -119,7 +120,7 @@ if (isset($_POST['add_comment']))
 
                         mysql_query ( '
                                         INSERT INTO
-                                            `'.$global_config_arr['pref'].'comments` (
+                                            `'.$FD->config('pref').'comments` (
                                                 content_id,
                                                 comment_poster,
                                                 comment_poster_id,
@@ -139,16 +140,16 @@ if (isset($_POST['add_comment']))
                                                 '".$_POST['title']."',
                                                 '".$_POST['text']."',
                                                 'dl'
-                                            )", $db );
-                        mysql_query('UPDATE `'.$global_config_arr['pref'].'counter` SET comments=comments+1', $db);
+                                            )", $FD->sql()->conn() );
+                        mysql_query('UPDATE `'.$FD->config('pref').'counter` SET comments=comments+1', $FD->sql()->conn());
                         $SHOW = FALSE;
-                        $template = forward_message ( $TEXT->get('news_title'), $TEXT->get('comment_added'), $_SERVER['REQUEST_URI'] );
+                        $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_added"), $FD->cfg('virtualhost') );
                     } else {
                         $SHOW = FALSE;
-                        $template = forward_message ( $TEXT->get('news_title'), $TEXT->get('comment_not_added').'<br>'.$TEXT->get('comment_duplicate'), $_SERVER['REQUEST_URI'] );
+                        $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_not_added").'<br>'.$FD->text("frontend", "comment_duplicate"), $FD->cfg('virtualhost') );
                     }
                 } else {
-                    $message_template = sys_message($phrases['sysmessage'], $phrases['comm_not_allowd']);
+                    $message_template = sys_message($FD->text("frontend", "sysmessage"), $FD->text("frontend", "comm_not_allowed"));
                 }
     }
     else
@@ -158,13 +159,13 @@ if (isset($_POST['add_comment']))
             || $_POST['title'] == ''
             || $_POST['text'] == '')
         {
-            $reason[] = $phrases['comment_empty'];
+            $reason[] = $FD->text("frontend", "comment_empty");
         }
         if (!($anti_spam == TRUE))
         {
-            $reason[] = $phrases['comment_spam'];
+            $reason[] = $FD->text("frontend", "comment_spam");
         }
-        $message_template = sys_message($phrases['comment_not_added'], implode ( '<br>', $reason ) );
+        $message_template = sys_message($FD->text("frontend", "comment_not_added"), implode ( '<br>', $reason ) );
     }
 }
 
@@ -193,7 +194,7 @@ if ($SHOW===TRUE)
   $fs_active = ($fs) ? 'an' : 'aus';
   $html_active = ($html) ? 'an' : 'aus';
 
-  $index = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'comments` WHERE content_id = \''.intval($_GET['id'])."' AND content_type='dl' ORDER BY comment_date ASC", $db);
+  $index = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_id = \''.intval($_GET['id'])."' AND content_type='dl' ORDER BY comment_date ASC", $FD->sql()->conn());
 
   $comments = '';
   while ($comment_arr = mysql_fetch_assoc($index))
@@ -202,7 +203,7 @@ if ($SHOW===TRUE)
     // User auslesen
     if ($comment_arr['comment_poster_id'] != 0)
     {
-      $index2 = mysql_query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$global_config_arr['pref'].'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $db);
+      $index2 = mysql_query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn());
       $comment_arr['comment_poster'] = kill_replacements ( mysql_result($index2, 0, 'user_name' ), TRUE );
       $comment_arr['user_is_admin'] = mysql_result($index2, 0, 'user_is_admin');
       $comment_arr['user_is_staff'] = mysql_result($index2, 0, 'user_is_staff');
@@ -227,7 +228,7 @@ if ($SHOW===TRUE)
       $template->setFile('0_news.tpl');
       $template->load('COMMENT_USER');
 
-      $template->tag('url', '?go=user&amp;id='.$comment_arr['comment_poster_id'] );
+      $template->tag('url', url('user', array('id' => $comment_arr['comment_poster_id'])));
       $template->tag('name', $comment_arr['comment_poster'] );
       $template->tag('image', $comment_arr['comment_avatar'] );
       $template->tag('rank', $comment_arr['user_rank'] );
@@ -248,7 +249,7 @@ if ($SHOW===TRUE)
       $comment_arr['comment_text'] = fscode( kill_replacements ( $comment_arr['comment_text'] ), $fs, $html, $para);
     }
 
-    $comment_arr['comment_date'] = date_loc ( $global_config_arr['datetime'] , $comment_arr['comment_date'] );
+    $comment_arr['comment_date'] = date_loc ( $FD->config('datetime') , $comment_arr['comment_date'] );
     $comment_arr['comment_title'] = kill_replacements( $comment_arr['comment_title'], TRUE );
 
     // Get Comment Template
@@ -325,7 +326,7 @@ if ($SHOW===TRUE)
 
   $_GET['id'] = (isset($_GET['fileid']) && !isset($_GET['id'])) ? $_GET['fileid'] : $_GET['id'];
   settype($_GET['id'], 'integer');
-  $presence = mysql_query('SELECT dl_id FROM `'.$global_config_arr['pref'].'dl` where dl_id = '.$_GET['id'].' AND dl_open = 1', $db);
+  $presence = mysql_query('SELECT dl_id FROM `'.$FD->config('pref').'dl` where dl_id = '.$_GET['id'].' AND dl_open = 1', $FD->sql()->conn());
   if (mysql_num_rows($presence)>0)
   {
     $template = $news_message_template . $dl_template . $comments . $formular_template;

@@ -69,6 +69,7 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('dl_edit', 'downloads', 'admin_dledit.php', 3, 0),
 ('dl_cat', 'downloads', 'admin_dlcat.php', 4, 0),
 ('dl_newcat', 'downloads', 'admin_dlnewcat.php', 5, 0),
+('dlcommentedit', 'downloads', 'admin_dlcommentedit.php', 6, 0),
 ('editor_config', 'fseditor', 'admin_editor_config.php', 1, 0),
 ('editor_design', 'fseditor', 'admin_editor_design.php', 2, 0),
 ('editor_smilies', 'fseditor', 'admin_editor_smilies.php', 3, 0),

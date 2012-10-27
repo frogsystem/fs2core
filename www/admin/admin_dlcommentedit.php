@@ -2,7 +2,7 @@
 /*
     Frogsystem Download comments - admin script
     Copyright (C) 2006-2007  Stefan Bollmann
-    Copyright (C) 2012       Thoronador (adjustments for alix5)
+    Copyright (C) 2012       Thoronador (adjustments for alix5/alix6)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,20 +42,20 @@ if (isset($_POST['title']) && isset($_POST['text']))
         $_POST['title'] = savesql($_POST['title']);
         $_POST['text'] = savesql($_POST['text']);
 
-        $update = 'UPDATE `'.$global_config_arr['pref']."comments`
+        $update = 'UPDATE `'.$FD->config('pref')."comments`
                    SET comment_title     = '".$_POST['title']."',
                        comment_text      = '".$_POST['text']."'
                    WHERE comment_id = ".$_POST['ecommentid']." AND content_type='dl'";
-        mysql_query($update, $db);
-        echo mysql_error($db);
+        mysql_query($update, $FD->sql()->conn());
+        echo mysql_error($FD->sql()->conn());
         systext('Der Kommentar wurde editiert.');
     }
     else
     {
-        mysql_query('DELETE FROM `'.$global_config_arr['pref'].'comments` WHERE comment_id = '.$_POST['ecommentid']." AND content_type='dl' LIMIT 1", $db);
-        if (mysql_affected_rows($db)>0)
+        mysql_query('DELETE FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['ecommentid']." AND content_type='dl' LIMIT 1", $FD->sql()->conn());
+        if (mysql_affected_rows($FD->sql()->conn())>0)
         {
-          mysql_query('UPDATE fs_counter SET comments = comments - 1', $db);
+          mysql_query('UPDATE fs_counter SET comments = comments - 1', $FD->sql()->conn());
           systext('Der Kommentar wurde gel&ouml;scht.');
         }
         else
@@ -72,23 +72,23 @@ if (isset($_POST['title']) && isset($_POST['text']))
 if (isset($_POST['commentid']))
 {
     settype($_POST['commentid'], 'integer');
-    $index = mysql_query('SELECT * FROM `'.$global_config_arr['pref'].'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'", $db);
+    $index = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'", $FD->sql()->conn());
     $comment_arr = mysql_fetch_assoc($index);
-	echo mysql_error();
+	echo mysql_error($FD->sql()->conn());
     // Falls registrierter User, Name ermitteln
     if ($comment_arr['comment_poster_id'] != 0)
     {
-        $index = mysql_query('SELECT user_name FROM `'.$global_config_arr['pref'].'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $db);
+        $index = mysql_query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn());
         $comment_arr['comment_poster'] = mysql_result($index, 0, 'user_name');
     }
 
     $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date']) . ' um ' . date('H:i' , $comment_arr['comment_date']);
 
     // FS/HTML Code aktiv?
-    $index = mysql_query('SELECT html_code, fs_code FROM `'.$global_config_arr['pref'].'news_config`', $db);
-    $config_arr = mysql_fetch_assoc($index);
-    $config_arr['html_code'] = ($config_arr['html_code'] == 3) ? 'an' : 'aus';
-    $config_arr['fs_code'] = ($config_arr['fs_code'] == 3) ? 'an' : 'aus';
+    $config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
+    $config_arr = json_array_decode($config_arr['config_data']);
+    $config_arr['html_code'] = ($config_arr['html_code'] >= 3) ? 'an' : 'aus';
+    $config_arr['fs_code'] = ($config_arr['fs_code'] >= 3) ? 'an' : 'aus';
 
     echo'
                     <form action="'.$_SERVER['PHP_SELF'].'" method="post">
