@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 /*
     Frogsystem Download comments - admin script
     Copyright (C) 2006-2007  Stefan Bollmann
@@ -27,6 +27,8 @@
     combination shall include the source code for the parts of Frogsystem used
     as well as that of the covered work.
 */
+
+//TODO: localize texts
 
 /////////////////////////////
 //// Kommentar editieren ////
@@ -69,7 +71,7 @@ if (isset($_POST['title']) && isset($_POST['text']))
 //// Kommentar Formular /////
 /////////////////////////////
 
-if (isset($_POST['commentid']))
+else if (isset($_POST['commentid']))
 {
     settype($_POST['commentid'], 'integer');
     $index = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'", $FD->sql()->conn());
@@ -148,5 +150,15 @@ if (isset($_POST['commentid']))
                         </table>
                     </form>
     ';
+}
+
+////////////////////////////////
+//// Kein Kommentar gewählt ////
+////////////////////////////////
+
+else
+{
+  systext('Kein Kommentar zum Bearbeiten ausgew&auml;hlt!<br>
+           Kommentare m&uuml;ssen beim <a href="?go=dl_edit">zugeh&ouml;rigen Download</a> ausgew&auml;hlt werden.');
 }
 ?>
