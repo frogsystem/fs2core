@@ -75,8 +75,8 @@ if (true) {
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="gallery_config" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr><td colspan="2" class="line">Bildbetrachter</td></tr>
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Bildbetrachter</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Bildbetrachter &ouml;ffnen:<br>
@@ -117,8 +117,7 @@ if (true) {
                                     <input class="text" size="5" name="show_img_y" value="'.$_POST['show_img_y'].'" maxlength="4"> Pixel
                                 </td>
                             </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr><td colspan="2" class="line">Bilder</td></tr>
+                            <tr><td colspan="2"><h3>Bilder</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="65%">
                                     max. Abmessungen:<br>
@@ -187,8 +186,9 @@ if (true) {
                                     </select>
                                 </td>
                             </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr><td colspan="2" class="line">Wallpaper</td></tr>
+
+
+                            <tr><td colspan="2"><h3>Wallpaper</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     max. Abmessungen:<br>
@@ -261,7 +261,7 @@ if (true) {
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button type="submit" value="" class="button_new">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>

@@ -3,13 +3,14 @@
 /////////////////////
 //// Config laden ///
 /////////////////////
+
 $FD->loadConfig('screens');
 $config_arr = $FD->configObject('screens')->getConfigArray();
 
 ////////////////////////////
 //// Wallpaper editieren ///
 ////////////////////////////
-if (isset($_POST['wallpaper_id']) AND $_POST['sended'] == 'edit' AND isset($_POST['size'][0]) AND isset($_POST['wpedit']))
+if (isset($_POST['wallpaper_id']) AND $_POST['sended'] == 'edit' AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['size'][0]) AND isset($_POST['wpedit'])  AND $_POST['wpedit'] == 1)
 {
     $_POST['wallpaper_name'] = savesql($_POST['wallpaper_name']);
     $_POST['wallpaper_title'] = savesql($_POST['wallpaper_title']);
@@ -38,7 +39,7 @@ if (isset($_POST['wallpaper_id']) AND $_POST['sended'] == 'edit' AND isset($_POS
             {
                 settype($_POST['delwp'][$i], 'integer');
                 $index = mysql_query('SELECT size FROM '.$FD->config('pref')."wallpaper_sizes WHERE size_id = '".$_POST['delwp'][$i]."'", $FD->sql()->conn() );
-                $size_name = mysql_result($index, 'size');
+                $size_name = mysql_result($index, 0, 'size');
                 mysql_query('DELETE FROM '.$FD->config('pref')."wallpaper_sizes WHERE size_id = '".$_POST['delwp'][$i]."'", $FD->sql()->conn() );
                 image_delete('images/wallpaper/', "$_POST[oldname]_$size_name");
             }
@@ -46,7 +47,7 @@ if (isset($_POST['wallpaper_id']) AND $_POST['sended'] == 'edit' AND isset($_POS
             {
                 $filesname = "sizeimg_$i";
                 $_POST['size'][$i] = savesql($_POST['size'][$i]);
-                if (isset($_FILES[$filesname]) && $_POST['wpnew'][$i]==1 && $_POST['size'][$i]!='')
+                if (isset($_FILES[$filesname]) && $_POST['wpnew'][$i]==1 && $_POST['size'][$i]!='' && !emptystr($_FILES["sizeimg_".$i]['tmp_name']))
                 {
                     $upload = upload_img($_FILES[$filesname], 'images/wallpaper/', $_POST['oldname'].'_'.$_POST['size'][$i].'a', $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
                     systext(upload_img_notice($upload));
@@ -64,7 +65,7 @@ if (isset($_POST['wallpaper_id']) AND $_POST['sended'] == 'edit' AND isset($_POS
                 {
                     $_POST['size_id'][$i] = intval($_POST['size_id'][$i]);
                     $index = mysql_query('SELECT size FROM '.$FD->config('pref')."wallpaper_sizes WHERE size_id = '".$_POST['size_id'][$i]."'", $FD->sql()->conn() );
-                    $size_name = mysql_result($index, 'size');
+                    $size_name = mysql_result($index, 0, 'size');
 
                     image_rename('images/wallpaper/', $_POST['oldname'].'_'.$size_name, $_POST['oldname'].'_'.$_POST['size'][$i].'a');
 
@@ -73,7 +74,7 @@ if (isset($_POST['wallpaper_id']) AND $_POST['sended'] == 'edit' AND isset($_POS
                                WHERE size_id = ".$_POST['size_id'][$i];
                     mysql_query($update, $FD->sql()->conn() );
 
-                    if (isset($_FILES[$filesname]))
+                    if (isset($_FILES[$filesname]) && !emptystr($_FILES["sizeimg_".$i]['tmp_name']))
                     {
                         $upload = upload_img($_FILES[$filesname], 'images/wallpaper/', $_POST['oldname'].'_'.$_POST['size'][$i].'a', $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
                         systext(upload_img_notice($upload));
@@ -89,13 +90,15 @@ if (isset($_POST['wallpaper_id']) AND $_POST['sended'] == 'edit' AND isset($_POS
           image_rename('images/wallpaper/', $_POST['oldname'].'_'.$sizes_arr['size'].'a', $_POST['wallpaper_name'].'_'.$sizes_arr['size']);
      }
      image_rename('images/wallpaper/', $_POST['oldname'].'_s', $_POST['wallpaper_name'].'_s');
-
+     
+     systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));    
+     
    //IF Ende
    }
    else
    {
        systext('Fehler bei der Bearbeitung:<br><br>
-       - Jede Gr&ouml;%szlig;e darf nur einmal vorkommen<br>
+       - Jede Gr&ouml;&szlig;e darf nur einmal vorkommen<br>
        - Der Wallpapername muss einzigartig sein<br><br>
        Da nicht beide Bedingungen nicht erf&uuml;llt sind, wurde die Bearbeitung abgebrochen!');
    }
@@ -165,7 +168,7 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
 
     $error_message = '';
 
-    if (isset($_POST['sended']) && $_POST['sended'] !='newthumb' && !isset($_POST['wp_add']) )
+    if (isset($_POST['sended']) && $_POST['sended'] !='newthumb' && !isset($_POST['wp_edit']) )
     {
       $admin_wp_arr['wallpaper_name'] = $_POST['wallpaper_name'];
       $admin_wp_arr['wallpaper_title'] = $_POST['wallpaper_title'];
@@ -210,7 +213,8 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
                         <input type="hidden" name="sended" value="newthumb">
                         <input type="hidden" name="wp_action" value="'.$_POST['wp_action'].'" />
                         <input type="hidden" name="wallpaper_id" value="'.$admin_wp_arr['wallpaper_id'].'" />
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Wallpaper bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="170">
                                     Wallpaper:<br>
@@ -226,7 +230,7 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
                                     <font class="small">Erstellt ein neues Thumbnail von der Vorlage.</font>
                                 </td>
                                 <td class="config" valign="top" align="left">
-                                  <input class="button" type="submit" value="Jetzt neu erstellen">
+                                  <input type="submit" value="Jetzt neu erstellen">
                                 </td>
                             </tr>
                     </form>
@@ -291,25 +295,26 @@ echo'
                                     <font class="small">Format und WP ausw&auml;hlen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="hidden" name="wpnew['.$j.']" value="'.$_POST['wpnew'][$j].'">
+                                    <input type="hidden" name="wpnew['.$j.']" value="'.(isset($_POST['wpnew'][$j])?$_POST['wpnew'][$j]:0).'">
                                     <input type="hidden" name="size_id['.$j.']" value="'.$_POST['size_id'][$j].'" />
-                                    <input class="text center" id="size'.$j.'" name="size['.$j.']" size="13" maxlength="30" value="'.$_POST['size'][$j].'">&nbsp;&nbsp;
-                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="25">&nbsp;
-                                    <label for="'.$j.'" class="small middle pointer"><b>L&ouml;schen:</b></label><input class="pointer middle" name="delwp['.$j.']" id="'.$j.'" value="'.$_POST['size_id'][$j].'" type="checkbox" onClick=\'delalert ("'.$j.'", "Soll die Größe '.$i.' des Wallpapers wirklich gelöscht werden?")\'><br>
-                                    '.$admin_sizes_arr['wp_exists'][$j].'<br>
-                                    <fieldset>
-                                        <legend class="small"><b>Schnellauswahl</b></legend>
-                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
-                                    </fieldset><br>
+                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="12" maxlength="30" value="'.$_POST['size'][$j].'">&nbsp;
+                                    <select onChange=\'document.getElementById("size'.$j.'").value=this.value; this.selectedIndex = 0\'>
+                                        <option value="">Gr&ouml;&szlig;e ausw&auml;hlen...</option>
+                                        <option value="">-----------</option>
+                                        <option value="800x600">800x600</option>
+                                        <option value="1024x768">1024x768</option>
+                                        <option value="1280x768">1280x768</option>
+                                        <option value="1280x800">1280x800</option>
+                                        <option value="1280x1024">1280x1024</option>
+                                        <option value="1366x768">1366x768</option>
+                                        <option value="1440x900">1440x900</option>
+                                        <option value="1680x1050">1680x1050</option>
+                                        <option value="1920x1080">1920x1080</option>
+                                        <option value="1920x1200">1920x1200</option>
+                                    </select><br>
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="40">&nbsp;<label for="'.$j.'" class="small middle pointer"><b>L&ouml;schen:</b></label><input class="pointer middle" name="delwp['.$j.']" id="'.$j.'" value="'.$_POST['size_id'][$j].'" type="checkbox" onClick=\'delalert ("'.$j.'", "Soll die Größe '.$i.' des Wallpapers wirklich gelöscht werden?")\'>
+                                    <br>'.$admin_sizes_arr['wp_exists'][$j].'
+                                    <br>
                                 </td>
                             </tr>
             ';
@@ -323,22 +328,24 @@ echo'
                                     <font class="small">Format und WP ausw&auml;hlen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input type="hidden" name="wpnew['.$j.']" value="1">
-                                    <input class="text center" id="size'.$j.'" name="size['.$j.']" size="13" maxlength="30" value="">&nbsp;&nbsp;
-                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br><br>
-                                    <fieldset>
-                                        <legend class="small"><b>Schnellauswahl</b></legend>
-                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
-                                    </fieldset><br>
+                                <input type="hidden" name="wpnew['.$j.']" value="1">
+                                    <input class="text left" id="size'.$j.'" name="size['.$j.']" size="12" maxlength="30" value="">&nbsp;
+                                    <select onChange=\'document.getElementById("size'.$j.'").value=this.value; this.selectedIndex = 0\'>
+                                        <option value="">Gr&ouml;&szlig;e ausw&auml;hlen...</option>
+                                        <option value="">-----------</option>
+                                        <option value="800x600">800x600</option>
+                                        <option value="1024x768">1024x768</option>
+                                        <option value="1280x768">1280x768</option>
+                                        <option value="1280x800">1280x800</option>
+                                        <option value="1280x1024">1280x1024</option>
+                                        <option value="1366x768">1366x768</option>
+                                        <option value="1440x900">1440x900</option>
+                                        <option value="1680x1050">1680x1050</option>
+                                        <option value="1920x1080">1920x1080</option>
+                                        <option value="1920x1200">1920x1200</option>
+                                    </select><br>
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="40">
+                                    <br><br>
                                 </td>
                             </tr>
             ';
@@ -353,14 +360,11 @@ echo'
                                 <td class="configthin">
                                     <input size="2" class="text" name="optionsadd">
                                     Wallpaper
-                                    <input class="button" type="submit" name="wp_add" value="Hinzuf&uuml;gen">
+                                    <input type="submit" name="wp_edit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="configthin">
-                                    &nbsp;
-                                </td>
-                                <td align="left"><br>
+                                <td align="left" colspan="2">
                                     <input class="button" type="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" value="Absenden">
                                 </td>
                             </tr>
@@ -381,28 +385,29 @@ echo'
 
 echo '
 <form action="" method="post">
-<table width="100%" cellpadding="4" cellspacing="0">
 <input type="hidden" value="wp_edit" name="go">
 <input type="hidden" name="sended" value="delete" />
 <input type="hidden" name="wallpaper_id" value="'.$wallpaper_arr['wallpaper_id'].'" />
+<table class="content" cellpadding="0" cellspacing="0">
+    <tr><td colspan="4"><h3>Wallpaper löschen</h3><hr></td></tr>
        <tr align="left" valign="top">
            <td class="config" colspan="4">
                <b>Wallpaper l&ouml;schen:</b><br><br>
            </td>
        </tr>
        <tr align="left" valign="top">
-           <td class="config" colspan="3">
+           <td class="thin" colspan="3">
                Soll das untenstehende Wallpaper wirklich gel&ouml;scht werden?
            </td>
            <td width="25%">
-             <input type="submit" value="Ja" class="button">  <input type="button" onclick=\'location.href="?go=wp_edit";\' value="Nein" class="button">
+             <input type="submit" value="Ja">  <input type="button" onclick=\'location.href="?go=wp_edit";\' value="Nein">
            </td>
        <tr>
        <tr>
            <td class="config">
-               <img src="'.image_url('images/wallpaper/', $wallpaper_arr['wallpaper_name'].'_s', false).'" width="100" height="75" alt=""><br>
+               <img src="'.image_url('images/wallpaper/', $wallpaper_arr['wallpaper_name'].'_s', false).'" style="max-width:200px; max-height:100px;"><br>
            </td>
-           <td class="configthin"><b>'.$wallpaper_arr['wallpaper_name'].'</b>';
+           <td class="thin"><b>'.$wallpaper_arr['wallpaper_name'].'</b>';
 
            $index2 = mysql_query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC", $FD->sql()->conn() );
            while ($sizes_arr = mysql_fetch_assoc($index2))
@@ -435,9 +440,10 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="wp_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td><h3>Kategorie auswählen</h3><hr></td></tr>
                             <tr>
-                                <td class="config" width="40%">
+                                <td class="thin" width="40%">
                                     Dateien der Kategorie
                                     <select name="wpcatid">
     ';
@@ -453,7 +459,7 @@ else
     }
     echo'
                                     </select>
-                                    <input class="button" type="submit" value="Anzeigen">
+                                    <input type="submit" value="Anzeigen">
                                 </td>
                             </tr>
                         </table>
@@ -470,7 +476,8 @@ else
         echo'
                     <form action="" method="post">
                         <input type="hidden" value="wp_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="4"><h3>Wallpaper auswählen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="25%">
                                     Wallpaper
@@ -493,28 +500,35 @@ else
                         <input type="hidden" name="wallpaper_id" value="'.$wallpaper_arr['wallpaper_id'].'" />
                         <input type="hidden" value="wp_edit" name="go">
                             <tr>
-                                <td class="config">
-                                    <img src="'.image_url('images/wallpaper/', $wallpaper_arr['wallpaper_name'].'_s').'" width="100" height="75" alt=""><br>
+                                <td class="thin">
+                                    <img src="'.image_url('images/wallpaper/', killhtml(unslash($wallpaper_arr['wallpaper_name'])).'_s').'" style="max-width:200px; max-height:100px;"><br>
 
                                 </td>
-                                <td class="configthin"><b>'.$wallpaper_arr['wallpaper_name'].'</b>';
+                                <td class="thin">'.killhtml(unslash($wallpaper_arr['wallpaper_name']));
 
             $index2 = mysql_query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC", $FD->sql()->conn() );
+            $sizes = array();
             while ($sizes_arr = mysql_fetch_assoc($index2))
             {
-              echo '<br>'.$sizes_arr['size'];
+              $sizes[] = $sizes_arr['size'];
+            }
+            if (!empty($sizes)) {
+                echo '<br><span class="small">'.implode(', ', $sizes).'</span>';
             }
             echo'</td>';
             $index2 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."screen_cat WHERE cat_id = $wallpaper_arr[cat_id]", $FD->sql()->conn() );
+            $db_cat_name = mysql_fetch_row($index2);
+            $db_cat_name = $db_cat_name[0];
+                        
             echo'
-                                <td class="configthin">
-                                    '.$db_cat_name.'
+                                <td class="thin">
+                                    '.killhtml(unslash($db_cat_name)).'
                                 </td>
-                                <td class="configthin">
+                                <td class="thin">
                                     <select name="wp_action" size="1" class="text">
                                         <option value="edit">Bearbeiten</option>
                                         <option value="delete">L&ouml;schen</option>
-                                    </select> <input class="button" type="submit" value="Los" />
+                                    </select> <input type="submit" value="Los" />
                                 </td>
                             </tr>
                     </form>

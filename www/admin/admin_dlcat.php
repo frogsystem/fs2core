@@ -114,7 +114,7 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="dl_cat" name="go">
                         <table class="content select_list" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="3"><h3>Produkt bearbeiten</h3><hr></td></tr>
+                            <tr><td colspan="3"><h3>Kategorie bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="40%">
                                     Name

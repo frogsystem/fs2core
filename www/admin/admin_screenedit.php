@@ -51,8 +51,8 @@ elseif (isset($_POST['screenid']))
     {
         image_delete('images/screenshots/',$_POST['screenid'].'_s');
 
-        $newthumb = create_thumb_from(image_url('images/screenshots/',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);
-        systext(create_thumb_notice($newthumb).'<br />(Cache leeren nicht vergessen!)');
+        $newthumb = @create_thumb_from(image_url('images/screenshots/',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);
+        systext(create_thumb_notice($newthumb));
     }
 
     $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen WHERE screen_id = $_POST[screenid]", $FD->sql()->conn() );
@@ -63,14 +63,15 @@ elseif (isset($_POST['screenid']))
                         <input type="hidden" value="screens_edit" name="go">
                         <input type="hidden" value="newthumb" name="do">
                         <input type="hidden" value="'.$screen_arr['screen_id'].'" name="screenid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Bild bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
                                     <font class="small">Thumbnail des Screenshots</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url('images/screenshots/',$screen_arr['screen_id'].'_s').'" />
+                                   <img src="'.image_url('images/screenshots/',$screen_arr['screen_id'].'_s').'?cachebreaker='.time().'" />
                                 </td>
                             </tr>
                             <tr>
@@ -79,7 +80,7 @@ elseif (isset($_POST['screenid']))
                                     <font class="small">Erstellt ein neues Thumbnail von der Vorlage.</font>
                                 </td>
                                 <td class="config" valign="top" align="left">
-                                  <input class="button" type="submit" value="Jetzt neu erstellen">
+                                  <input type="submit" value="Jetzt neu erstellen">
                                 </td>
                             </tr>
                     </form>
@@ -151,9 +152,10 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="screens_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td><h3>Kategorie auswählen</h3><hr></td></tr>
                             <tr>
-                                <td class="config" width="40%">
+                                <td class="thin" width="40%">
                                     Dateien der Kategorie
                                     <select name="screencatid">
     ';
@@ -169,7 +171,7 @@ else
     }
     echo'
                                     </select>
-                                    <input class="button" type="submit" value="Anzeigen">
+                                    <input type="submit" value="Anzeigen">
                                 </td>
                             </tr>
                         </table>
@@ -185,19 +187,20 @@ else
         echo'<br>
                     <form action="" method="post">
                         <input type="hidden" value="screens_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="4"><h3>Bild auswählen</h3><hr></td></tr>
                             <tr>
-                                <td class="config" width="25%">
+                                <td class="config" width="30%">
                                     Bild
                                 </td>
-                                <td class="config" width="30%">
+                                <td class="config" width="35%">
                                     Titel
                                 </td>
-                                <td class="config" width="30%">
+                                <td class="config" width="35%">
                                     Kategorie
                                 </td>
                                 <td class="config" width="15%">
-                                    bearbeiten
+                                    
                                 </td>
                             </tr>
         ';
@@ -205,37 +208,38 @@ else
         while ($screen_arr = mysql_fetch_assoc($index))
         {
             $index2 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."screen_cat WHERE cat_id = $screen_arr[cat_id]", $FD->sql()->conn() );
+            $db_cat_name = mysql_fetch_row($index2);
+            $db_cat_name = $db_cat_name[0];
+
             echo'
                             <tr style="cursor:pointer;"
                                 onmouseover="javascript:this.style.backgroundColor=\'#EEEEEE\'"
                                 onmouseout="javascript:this.style.backgroundColor=\'transparent\'"
                                 onClick=\'document.getElementById("'.$screen_arr['screen_id'].'").checked="true";\'>
                                 <td class="configthin">
-                                    <img src="'.image_url('images/screenshots/',$screen_arr['screen_id'].'_s').'" />
+                                    <img src="'.image_url('images/screenshots/',killhtml(unslash($screen_arr['screen_id'])).'_s').'"  style="max-width:200px; max-height:100px;">
                                 </td>
-                                <td class="configthin">
-                                    '.$screen_arr['screen_name'].'
+                                <td class="thin">
+                                    '.killhtml(unslash($screen_arr['screen_name'])).'
                                 </td>
-                                <td class="configthin">
-                                    '.$db_cat_name.'
+                                <td class="thin">
+                                    '.killhtml(unslash($db_cat_name)).'
                                 </td>
-                                <td class="configthin">
+                                <td class="thin">
                                     <input type="radio" name="screenid" id="'.$screen_arr['screen_id'].'" value="'.$screen_arr['screen_id'].'">
                                 </td>
                             </tr>
             ';
         }
         echo'
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td colspan="4">
-                                    &nbsp;
+                                <td colspan="4" class="buttontd">
+                                    <button type="submit" value="1" class="button_new" name="sended">
+                                        '.$FD->text('admin', 'button_arrow').' Bild bearbeiten
+                                    </button>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" align="center">
-                                   <input class="button" type="submit" value="editieren">
-                                </td>
-                            </tr>
+                            </tr>                            
                         </table>
                     </form>
         ';

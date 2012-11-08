@@ -415,8 +415,14 @@ else
         ';
     }  */
 
+    echo'
+                                        <option value="0">Alle Kategorien</option>
+                                        <option value="0">--------------------------------------</option>
+    ';  
+
     $valid_ids = array();
     get_dl_categories ($valid_ids, -1);
+
 
     foreach ($valid_ids as $cat)
     {
@@ -455,7 +461,7 @@ else
 
     // Daten aus der DB lesen
     $wherecat = '';
-    if (isset($_POST['dlcatid']))
+    if (isset($_POST['dlcatid']) && $_POST['dlcatid'] != 0)
     {
         settype($_POST['dlcatid'], 'integer');
         $wherecat = 'WHERE cat_id = ' . $_POST['dlcatid'];

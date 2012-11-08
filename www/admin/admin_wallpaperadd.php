@@ -10,7 +10,7 @@ $config_arr = $FD->configObject('screens')->getConfigArray();
 //// Screenshot hochladen ///
 /////////////////////////////
 
-if (isset($_FILES['sizeimg_0']) AND isset($_POST['size']['0']) AND isset($_POST['wallpaper_name']) AND isset($_POST['wpadd']))
+if (isset($_FILES['sizeimg_0']) AND isset($_POST['size']['0']) AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['wpadd']) AND $_POST['wpadd'] == 1)
 {
     $_POST['wallpaper_name'] = savesql($_POST['wallpaper_name']);
     $_POST['wallpaper_title'] = savesql($_POST['wallpaper_title']);
@@ -102,7 +102,8 @@ echo'
                         <input id="send" type="hidden" value="0" name="wpadd">
                         <input type="hidden" value="'.$_POST['options'].'" name="options">
                         <input type="hidden" value="wp_add" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Wallpaper hochladen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="150">
                                     Dateiname:<br>
@@ -216,14 +217,11 @@ echo'
                                 <td class="configthin">
                                     <input size="2" class="text" name="optionsadd">
                                     Wallpaper
-                                    <input class="button" type="submit" value="Hinzuf&uuml;gen">
+                                    <input type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="configthin">
-                                    &nbsp;
-                                </td>
-                                <td align="left"><br>
+                                <td align="left" colspan="2">
                                     <input class="button" type="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" value="Absenden">
                                 </td>
                             </tr>

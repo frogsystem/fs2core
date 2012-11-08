@@ -50,7 +50,7 @@ if (isset($_POST['sended']))
     if ($systext != '') {
         systext($systext);
     } else {
-        systext('Sie m&uuml;ssen schon auch ein Bild ausw&auml;hlen...');
+        systext('Du musst schon auch ein Bild ausw&auml;hlen...', $FD->text('admin', 'error_occurred'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 }
 
@@ -61,11 +61,12 @@ if (isset($_POST['sended']))
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="screens_add" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Bilder hochladen</h3><hr></td></tr>
                             <tr>
                                 <td class="config">
                                     Kategorie:<br>
-                                    <font class="small">In welche Kategorie werden die Bilder eingeordnet</font>
+                                    <span class="small">In welche Kategorie werden die Bilder eingeordnet</span>
                                 </td>
                                 <td class="config">
                                     <select class="input_width" name="catid">
@@ -85,9 +86,9 @@ echo'
                             </tr>
                         </table>
                         <br>
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td class="config">#</td>
+                                <td class="thin">#&nbsp;</td>
                                 <td class="config">
                                     Bilddateien <span class="small">[max. '.$config_arr['screen_x'].' x '.$config_arr['screen_y'].' Pixel] [max. '.$config_arr['screen_size'].' KB]</span>
                                 </td>
@@ -98,20 +99,26 @@ echo'
 for ($i=1; $i<=5; $i++) {
     echo '
                             <tr class="config">
-                                <td valign="middle">'.$i.'</td>
+                                <td valign="middle" class="thin">'.$i.'</td>
                                 <td>
-                                    <input type="file" class="text" name="img'.$i.'" size="40">
+                                    <input type="file" class="text" name="img'.$i.'" size="30">
                                 </td>
-                                <td>
-                                     <input type="text" class="text" name="title'.$i.'" size="40" maxlength="255">
+                                <td width="50%">
+                                     <input type="text" class="text half" name="title'.$i.'" size="40" maxlength="255">
                                 </td>
                             </tr>
     ';
 }
 echo '
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td colspan="3" class="buttontd">
+                                    <button type="submit" value="1" class="button_new" name="sended">
+                                        '.$FD->text('admin', 'button_arrow').' Bilder hochladen
+                                    </button>
+                                </td>
+                            </tr>
                         </table>
-                        <br>
-                        <input name="sended" class="button input_width" type="submit" value="Bilder hochladen">
 
                         <p>
                             <b>Hinweis:</b> Alle Bilder zusammen d&uuml;rfen nicht gr&ouml;&szlig;er als '.ini_get('post_max_size').'B sein (Server-Vorgabe).
