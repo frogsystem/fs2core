@@ -49,23 +49,24 @@ else
 
     if (!isset($_POST['screen_id'])) $_POST['screen_id'] = '';
 
-    echo'
+    echo'<p></p>
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="timedpic_add" name="go">
                         <input type="hidden" value="1" name="sended">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="5"><h3>Zeitgesteuertes Vorschaubild hinzufügen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="160">
                                     Bild:<br>
                                     <font class="small">Bild ausw&auml;hlen</font>
                                 </td>
                                 <td valign="top" width="240">
-                                    <input class="nshide" type="button" onClick=\'popUp("?go=find_gallery_img", "_blank", 360, 300)\' value="Bild ausw&auml;hlen">
+                                    <input class="nshide" type="button" onClick=\'popUp("?go=find_gallery_img", "_blank", 400, 500)\' value="Bild ausw&auml;hlen">
                                     <input type="text" id="screen_selectortext" value="'. (!empty($_POST['screen_id'])?'Bild ausgew&auml;hlt!':'Kein Bild gew&auml;hlt!') .'" size="17" readonly="readonly" class="text">
                                     <input type="hidden" id="screen_id" name="screen_id" value="'. $_POST['screen_id'] .'">
                                 </td>
                                 <td class="config" valign="top" width="200">
-                                    <img id="selected_pic" src="img/no_pic_small.gif" alt="" />
+                                    <img id="selected_pic" src="icons/image_error.gif" alt="Kein Bild gefunden" />
                                 </td>
                             </tr>
                             <tr>
@@ -84,9 +85,9 @@ else
                                                      document.getElementById("startmonth").value="'.$jetzt['monat'].'";
                                                      document.getElementById("startyear").value="'.$jetzt['jahr'].'";
                                                      document.getElementById("starthour").value="'.$jetzt['stunde'].'";
-                                                     document.getElementById("startminute").value="'.$jetzt['minute'].'";\' class="button" type="button" value="Jetzt">
-                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "7", "0", "0", "0", "0");\' class="button" type="button" value="+1 Woche">
-                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "-7", "0", "0", "0", "0");\' class="button" type="button" value="-1 Woche">
+                                                     document.getElementById("startminute").value="'.$jetzt['minute'].'";\' type="button" value="Jetzt">
+                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "7", "0", "0", "0", "0");\' type="button" value="+1 Woche">
+                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "-7", "0", "0", "0", "0");\' type="button" value="-1 Woche">
                                 </td>
                             </tr>
                             <tr>
@@ -105,15 +106,14 @@ else
                                                      document.getElementById("endmonth").value="'.$jetzt['monat'].'";
                                                      document.getElementById("endyear").value="'.$jetzt['jahr'].'";
                                                      document.getElementById("endhour").value="'.$jetzt['stunde'].'";
-                                                     document.getElementById("endminute").value="'.$jetzt['minute'].'";\' class="button" type="button" value="Jetzt">
-                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "7", "0", "0", "0", "0");\' class="button" type="button" value="+1 Woche">
-                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "-7", "0", "0", "0", "0");\' class="button" type="button" value="-1 Woche">
+                                                     document.getElementById("endminute").value="'.$jetzt['minute'].'";\'type="button" value="Jetzt">
+                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "7", "0", "0", "0", "0");\' type="button" value="+1 Woche">
+                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "-7", "0", "0", "0", "0");\' type="button" value="-1 Woche">
                                 </td>
                             </tr>
 
                             <tr>
-                                <td></td>
-                                <td align="left" colspan="2">
+                                <td align="left" colspan="3">
                                     <input class="button" type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>

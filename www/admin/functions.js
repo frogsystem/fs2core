@@ -132,7 +132,7 @@ var lastJQBox;
             theTable = $(this).parents(".select_list:first");
             theLines = theTable.find(".select_entry");
 
-            if ( $(this).find("option:selected").hasClass("select_one") ) {
+            if ( $(this).find("option:selected").hasClass("select_one") && lastJQBox != undefined) {
                 theLines.find("input.select_box").removeAttr("checked");
                 theLines.css("background-color", "transparent");
                 lastJQBox.attr("checked","checked");
