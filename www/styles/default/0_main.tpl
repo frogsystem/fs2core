@@ -2,39 +2,29 @@
   <div id="main">
 
     <div id="header">
-      <h1 id="title">&nbsp;$VAR(page_title)</h1>
+      <div id="title">&nbsp;$VAR(page_title)</div>
     </div>
 
     <div id="menu_left">
-      <p>
-        <a href="$URL(download[cat_id=4 keyword=test])">$URL(download[cat_id=4 keyword=test 1])</a>
-      </p>
-    $APP(mini-search.php)
     $NAV(left.nav)
-    [%feeds%]
-    $DATE(d.m.Y H:i \U\h\r)<br>
-    $DATE(Y-m-d[1216908484])
     </div>
 
     <div id="menu_right">
       $APP(user-menu.php)
       $APP(preview-image.php)
       $APP(shop-system.php)
-      $APP(poll-system.php[random])
+      $APP(poll-system.php)
       $APP(affiliates.php)
       $APP(mini-statistics.php)
     </div>
 
     <div id="content">
-      <div id="content_inner">
-        $APP(announcement.php)
-        {..content..}
-      </div>
+      $APP(announcement.php)
+      {..content..}
     </div>
 
     <div id="footer">
-      <span class="copyright">&bdquo;Light Frog&ldquo;-Style &copy; Stoffel &amp; Sweil | Frog-Photo &copy; <a href="http://www.flickr.com/photos/joi/1157708196/" target="_blank">Joi</a><br>
-       {..copyright..}</span>
+      <span class="copyright">{..copyright..}</span>
     </div>
 
   </div>

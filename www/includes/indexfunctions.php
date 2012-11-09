@@ -165,7 +165,7 @@ function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
 
     $theTemplate->tag('javascript', $template_javascript);
     $theTemplate->tag('jquery', $template_jquery);
-    $theTemplate->tag('jquery-ui', $template_jquery_ui);
+    //~ $theTemplate->tag('jquery-ui', $template_jquery_ui);
 
     $theTemplate->tag('body', $BODY);
 

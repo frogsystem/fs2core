@@ -1,30 +1,26 @@
 <?php
-// Start Session
-session_start ();
-// Disable magic_quotes_runtime
-ini_set( 'magic_quotes_runtime', '0' );
+/* FS2 PHP Init */
+set_include_path('.');
+define('FS2_ROOT_PATH', './', true);
+require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
+phpinit();
+/* End of FS2 PHP Init */
 
-// fs2 include path
-set_include_path ( '.' );
-define ( 'FS2_ROOT_PATH', './', TRUE );
+// Inlcude DB Connection File or exit()
+require_once(FS2_ROOT_PATH . 'login.inc.php');
 
-// Inlcude DB Connection File
-require ( FS2_ROOT_PATH . 'login.inc.php');
+//Include Functions-Files
+require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
+require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
+require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
+require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 
-if ($FD->sql()->conn() )
-{
-    //Include Functions-Files
-    require ( FS2_ROOT_PATH . 'includes/functions.php' );
-    require ( FS2_ROOT_PATH . 'includes/imagefunctions.php' );
-    require ( FS2_ROOT_PATH . 'includes/indexfunctions.php' );
 
-    //Include Library-Classes
-    require ( FS2_ROOT_PATH . 'libs/class_template.php' );
-    require ( FS2_ROOT_PATH . 'libs/class_fileaccess.php' );
-    require ( FS2_ROOT_PATH . 'libs/class_langDataInit.php' );
-
-    // Constructor Calls
-    set_style ();
+// Constructor Calls
+// TODO: "Constructor Hook"
+setTimezone($FD->cfg('timezone'));
+run_cronjobs();
+set_style();
 
     // Security Functions
     $_GET['id'] = ( isset ( $_GET['screenid'] ) ) ? $_GET['screenid'] : $_GET['id'];
@@ -148,8 +144,8 @@ if ($FD->sql()->conn() )
     // Create PopUp-Viewer-Template
     $template_popupviewer = new template();
 
-    $template_popupviewer->setFile('0_general.tpl');
-    $template_popupviewer->load('POPUPVIEWER');
+    $template_popupviewer->setFile('0_viewer.tpl');
+    $template_popupviewer->load('VIEWER');
 
     $template_popupviewer->tag( 'image', $data_array['image'] );
     $template_popupviewer->tag( 'image_url', $data_array['image_url'] );
@@ -161,23 +157,14 @@ if ($FD->sql()->conn() )
     $template_popupviewer->tag( 'next_link', $data_array['next_link'] );
     $template_popupviewer->tag( 'next_image_link', $data_array['next_image_link'] );
 
-    $template_popupviewer = $template_popupviewer->display();
-    $template_popupviewer = replace_snippets ( $template_popupviewer );
-    $template_popupviewer = replace_navigations ( $template_popupviewer );
-    $template_popupviewer = replace_applets ( $template_popupviewer );
-    $template_popupviewer = replace_navigations ( $template_popupviewer );
-    $template_popupviewer = replace_snippets ( $template_popupviewer );
+    $template_popupviewer = (string)  $template_popupviewer; 
+    $template_popupviewer = tpl_functions_init($template_popupviewer);
 
-    $template_popupviewer = replace_globalvars ( $template_popupviewer );
-
-    // Get Main Template
-    $template = get_maintemplate ();
-    $template = str_replace ( '{..body..}', $template_popupviewer, $template);
 
     // Display Page
-    echo $template;
+    echo get_maintemplate($template_popupviewer);
 
-    // Close Connection
-    mysql_close ( $FD->sql()->conn() );
-}
+// Shutdown System
+// TODO: "Shutdown Hook"
+unset($FD);
 ?>

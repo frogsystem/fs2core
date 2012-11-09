@@ -1,5 +1,4 @@
-<!--section-start::VIEWER-->
-<body id="imageviewer">
+<!--section-start::VIEWER--><body id="imageviewer">
 
   <div style="width:100%;" align="center">
     <p><b>{..caption..}</b></p>

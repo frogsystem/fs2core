@@ -19,7 +19,6 @@ body {
 
 #header {
   background-color:#F2F2F2;
-  background-image:url(images/header.jpg);
   background-repeat:no-repeat;
   width:880px;
   height:100px;
@@ -34,7 +33,6 @@ body {
 
 #main {
   background-color:#FFFFFF;
-  background-image:url(images/bg.jpg);
   background-repeat:repeat-y;
   position:absolute;
   width:930px;
@@ -62,7 +60,6 @@ body {
 }
 
 #footer {
-  background-image:url(images/footer.jpg);
   background-repeat:no-repeat;
   width:560px;
   height:66px;
