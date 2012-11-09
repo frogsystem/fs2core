@@ -55,11 +55,11 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     /* Flags:
      * html => false // Decides wheter html is allowed
-     * washtml => false // Should HTML washed from dangerous content?
+     * washtml => false // Should HTML washed from dangerous content? // not yet implemented
      * paragraph => true // (De-)Activates paragraph handling
      * paragraph_to_text => false // Set true to not convert paragraphs into html
-     * tab => oneof(false, nbsp, space) // convert tabs (\t) to &nbsp; \040 or do nothing
-     * tabsize => oneof(false, nbsp, space) // convert tabs (\t) to &nbsp; \040 or \t
+     * tab => oneof(nbsp, space, false) // convert tabs (\t) to &nbsp; a space-sign or do nothing
+     * tabsize => integer // size for one tab
      * */
     $default_flags = array(
         'html' => false,
@@ -95,7 +95,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             case 'space':   $tab = ' ';         break;
         }
         // create local tab function
-        $tab_func = create_function ('$text', 'return tab2space($text, '.$flags['tabsize'].', '.$tab.');');
+        $tab_func = create_function ('$text', 'return tab2space($text, '.$flags['tabsize'].', "'.$tab.'");');
         // add the filter
         $fscode->addFilter (STRINGPARSER_FILTER_POST, $tab_func);
     }
