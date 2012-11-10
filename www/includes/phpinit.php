@@ -17,7 +17,7 @@ function phpinit ($session = true, $header = false, $libloader = null) {
     // Default libloader
     if (is_null($libloader)) {
         $libloader = create_function ('$classname', '
-            @include_once(FS2_ROOT_PATH . \'libs/class_\'.$classname.\'.php\');');
+            include_once(FS2_ROOT_PATH . \'libs/class_\'.$classname.\'.php\');');
     }
 
     // no libloader?

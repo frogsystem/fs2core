@@ -83,7 +83,7 @@ class GlobalData {
         $class_name = "Config".ucfirst(strtolower($name));
         require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
         @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
-        if (!class_exists($class_name))
+        if (!class_exists($class_name, false))
             $class_name = 'ConfigData';
         return new $class_name($data, $json);
     }
