@@ -317,7 +317,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 
 function action_edit_get_data ( $ARTICLE_ID )
 {
-        global $FD;
+        global $FD, $sql;
 
     //Load Article
     $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1", $FD->sql()->conn() );
@@ -456,7 +456,7 @@ function action_edit_display_page ( $data_arr )
                                                                         '.js_nowbutton ( $nowbutton_array, $FD->text("admin", "today") ).'
                                     <input onClick=\'document.getElementById("d").value="";
                                                      document.getElementById("m").value="";
-                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$FD->text("admin", "delete_button").'">
+                                                     document.getElementById("y").value="";\' class="button" type="button" value="'.$FD->text("admin", "delete").'">
                                 </td>
                             </tr>
                             <tr>
@@ -467,9 +467,9 @@ function action_edit_display_page ( $data_arr )
                                 <td class="config">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="article_user_name" value="'.$articles_arr['article_user_name'].'">
                                     <input type="hidden" id="userid" name="article_user" value="'.$articles_arr['article_user'].'">
-                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("admin", "change_button").'">
+                                    <input class="button" type="button" onClick=\''.openpopup ( '?go=find_user', 400, 400 ).'\' value="'.$FD->text("admin", "change").'">
                                     <input onClick=\'document.getElementById("username").value="";
-                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$FD->text("admin", "delete_button").'">
+                                                     document.getElementById("userid").value="0";\' class="button" type="button" value="'.$FD->text("admin", "delete").'">
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -531,7 +531,7 @@ function action_edit_display_page ( $data_arr )
                             </tr>
                             <tr>
                                                                 <td class="config" colspan="2">
-                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$FD->text("admin", "preview_button").'">
+                                    <input class="button" type="button" onClick=\'popTab("?go=article_preview", "_blank")\' value="'.$FD->text("admin", "preview").'">
                                                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
@@ -613,7 +613,7 @@ function action_delete_display_page ( $articles_arr )
                                                         </tr>
                                                         <tr>
                                 <td class="config right">
-                                    <a href="'.$FD->config('virtualhost').'?go=articles&id='.$articles_arr['article_id'].'" target="_blank">» '.$FD->text('page', 'delete_view_article').'</a></div>
+                                    <a href="'.$FD->config('virtualhost').'?go=articles&id='.$articles_arr['article_id'].'" target="_blank">ï¿½ '.$FD->text('page', 'delete_view_article').'</a></div>
                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
