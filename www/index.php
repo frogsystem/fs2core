@@ -21,8 +21,8 @@ require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 get_goto();
 setTimezone($FD->cfg('timezone'));
 run_cronjobs();
-save_visitors();
 count_all($FD->cfg('goto'));
+save_visitors();
 if (!$FD->configExists('main', 'count_referers') || $FD->cfg('main', 'count_referers')==1) {
   save_referer();
 }
