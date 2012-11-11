@@ -19,7 +19,7 @@ if ($FD->cfg('goto') == 'articles') {
 
     // Load Article Data from DB
     $article_arr = $FD->sql()->getRow('articles', '*', array(
-        'W' => "`article_url` = '".$FD->sql()->escape($_GET['go'])."'", 
+        'W' => "`article_url` = '".$FD->cfg('goto')."'", 
         'O' => "`article_id`"));
 
     // Set canonical parameters
