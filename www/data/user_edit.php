@@ -94,7 +94,7 @@ if (
                 $template_mail = get_email_template ( 'signup' );
                 $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_SESSION['user_name'] ), $template_mail );
                 $template_mail = str_replace ( '{..new_password..}', $mailpass, $template_mail );
-                $template_mail = replace_globalvars ( $template_mail );
+                $template_mail = tpl_functions($template_mail, 0, array('VAR'));
                 $email_subject = $FD->text('frontend', 'mail_password_changed_on') . $FD->config('virtualhost');
                 if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_subject, $template_mail ) ) {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");
@@ -113,7 +113,7 @@ if (
     }
 
     // Meldung ausgeben
-    $template .= forward_message ( $FD->text("frontend", "user_profile"), $message, $_SERVER['REQUEST_URI'] );
+    $template .= forward_message ( $FD->text("frontend", "user_profile"), $message, url('user_edit'));
 }
 
 //////////////////////

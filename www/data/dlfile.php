@@ -19,7 +19,7 @@ if (mysql_num_rows($index) > 0)
     $dl_arr = mysql_fetch_assoc($index);
 
     //Seitentitel
-    $FD->setConfig('dyn_title_page', stripslashes ( $dl_arr['dl_name'] ));
+    $FD->setConfig('info', 'page_title', stripslashes ( $dl_arr['dl_name'] ));
 
     //Config einlesen
     $dl_config_arr = $config_arr;

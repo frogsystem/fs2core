@@ -176,6 +176,6 @@ $template->tag('page_title', $page_titel );
 $template = $template->display ();
 
 //Seitentitel
-$FD->setConfig('dyn_title_page', $page_titel);
+$FD->setConfig('info', 'page_title', $page_titel);
 
 ?>

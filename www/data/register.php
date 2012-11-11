@@ -76,7 +76,7 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
         $template_mail = get_email_template ( 'signup' );
         $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_POST['user_name'] ), $template_mail );
         $template_mail = str_replace ( '{..new_password..}', $userpass_mail, $template_mail );
-        $template_mail = replace_globalvars ( $template_mail );
+        $template_mail = tpl_functions($template_mail, 0, array('VAR'));
         $email_subject = $FD->text("frontend", "mail_registerd_on") . $FD->config('virtualhost');
         if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
             $email_message = '<br>'.$FD->text("frontend", "mail_registerd_sended");

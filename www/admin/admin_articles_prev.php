@@ -148,7 +148,7 @@ else {
     // Preview Page Template
     $FD->setConfig('dyn_title', 1);
     $FD->setConfig('dyn_title_ext', '{..ext..}');
-    $FD->setConfig('dyn_title_page', $FD->text('page', 'preview_title').': '.$article_arr['article_title']);
+    $FD->setConfig('info', 'page_title', $FD->text('page', 'preview_title').': '.$article_arr['article_title']);
 
 
     // Display Preview Page

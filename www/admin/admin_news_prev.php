@@ -178,7 +178,7 @@
         // Preview Page Template
         $FD->setConfig('dyn_title', 1);
         $FD->setConfig('dyn_title_ext', '{..ext..}');
-        $FD->setConfig('dyn_title_page', $FD->text('page', 'preview_title').': '.$news_arr['news_title']);
+        $FD->setConfig('info', 'page_title', $FD->text('page', 'preview_title').': '.$news_arr['news_title']);
 
         $theTemplate = new template();
         $theTemplate->setFile('0_main.tpl');
