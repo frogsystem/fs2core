@@ -538,7 +538,7 @@ function action_edit_display_page ( $data_arr )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit" name="news_edit" value="1">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
                                     </button>
                                 </td>
                             </tr>

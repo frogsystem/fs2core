@@ -13,3 +13,4 @@ articles_text: Text
 articles_use_html: HTML verwenden
 articles_use_fscode: FSCode verwenden
 articles_use_para: Absatzbehandlung verwenden
+articles_add_button: Artikel hinzufügen

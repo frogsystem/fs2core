@@ -79,7 +79,7 @@ elseif ((isset($_POST['ed']) && isset($_POST['em']) && isset($_POST['ey'])) AND 
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'save_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>
@@ -243,7 +243,7 @@ else
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit" value="1">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'save_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>
