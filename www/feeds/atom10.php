@@ -5,7 +5,7 @@
 $feed_url = 'feeds/atom10.php';
 $settings = array (
     'to_html' => array(),
-    'to_text' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist', 'img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'noparse'),
+    'to_text' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist', 'img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'nofscode', 'fscode', 'html', 'nohtml'),
     'to_bbcode' => array(),
 	'truncate' => false, // Set to length if you want to cut!
 	'truncate_extension' => ' &hellip;',

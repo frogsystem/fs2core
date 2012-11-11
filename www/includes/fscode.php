@@ -37,7 +37,9 @@ function get_all_fscodes() {
         'img', 'cimg',
         'list', 'numlist',
         'code', 'quote', 'video',
-        'noparse', 'smilies'
+        'nofscode', 'fscode',
+        'smilies',
+        'html', 'nohtml'
     );
 }
 
@@ -221,15 +223,35 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'text' => true),
             'image', array ('listitem', 'block', 'inline', 'link'), array ());
 
+    // fscode
+    if (in_array('html', $to_html))
+        $fscode->addCode ('html', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
+            'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
+    elseif  (in_array('html', $to_text))
+        $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
+            'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());      
 
-    // noparse
-    if (!in_array('noparse', $to_html) && !in_array('noparse', $to_text)) {
-        $fscode->addCode ('noparse', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '[noparse]', 'end_tag' => '[/noparse]'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    } else {
+    // nofscode
+    if (in_array('nofscode', $to_html) || in_array('nofscode', $to_text)) {
+        $fscode->addCode ('nofscode', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
+            'inline', array ('listitem', 'block', 'inline', 'link'), array ());        
         $fscode->addCode ('noparse', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
             'inline', array ('listitem', 'block', 'inline', 'link'), array ());
     }
+    
+    // html
+    if (in_array('html', $to_html))
+        $fscode->addCode ('html', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
+            'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
+    elseif  (in_array('html', $to_text))
+        $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
+            'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
+            
+    // nohtml
+    if (in_array('nohtml', $to_html) || in_array('nohtml', $to_text))
+        $fscode->addCode ('html', 'callback_replace', 'killhtml', array (),
+            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+
 
     // list
     if (in_array('list', $to_html))
