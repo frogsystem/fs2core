@@ -38,12 +38,10 @@ $theTemplate->tag('content', get_content($FD->cfg('goto')));
 $theTemplate->tag('copyright', get_copyright());
 
 $template_general = (string) $theTemplate;
-$template_general = tpl_functions_init($template_general);
-
 // TODO: "Template Manipulation Hook"
 
 // Display Page
-echo get_maintemplate($template_general);
+echo tpl_functions_init(get_maintemplate($template_general));
 
 
 // Shutdown System

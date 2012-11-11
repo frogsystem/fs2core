@@ -931,7 +931,9 @@ function get_goto ()
     }
 
     // Check $_GET['go']
+    $FD->setConfig('env', 'get_go_raw', $_GET['go']);
     $goto = empty($_GET['go']) ? $FD->cfg('home_real') : savesql($_GET['go']);
+    $FD->setConfig('env', 'get_go', $_GET['go']);
 
     // Forward Aliases
     $goto = forward_aliases($goto);
