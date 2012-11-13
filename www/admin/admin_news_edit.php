@@ -111,8 +111,8 @@ function action_delete_display_page ( $return_arr )
                             <input type="hidden" name="news_id[]" value="'.$news_arr['news_id'].'">
                             '.$news_arr['news_title'].' <span class="small">(#'.$news_arr['news_id'].')</span>
                             <span class="right">
-                                <a class="small" href="'.$FD->config('virtualhost').'?go=comments&id='.$news_arr['news_id'].'" target="_blank">
-                                    » '.$FD->text('page', 'news_delete_view_news').'
+                                <a class="small" href="'.$FD->config('virtualhost').'?go=comments&amp;id='.$news_arr['news_id'].'" target="_blank">
+                                    &raquo; '.$FD->text('page', 'news_delete_view_news').'
                                 </a>
                             </span>
                             <br>

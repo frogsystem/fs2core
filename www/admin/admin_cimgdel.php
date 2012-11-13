@@ -41,7 +41,7 @@ if(isset($_GET['file'])){
         <tbody>
             <tr valign="top">
                 <td rowspan="{$tableheight}" valign="top">
-                    <a href="{$cimg_path}{$row['name']}.{$row['type']}" target="_blank" title="In Originalgröße anzeigen">
+                    <a href="{$cimg_path}{$row['name']}.{$row['type']}" target="_blank" title="In Originalgr&ouml;&szlig;e anzeigen">
                         <img src="{$cimg_path}{$row['name']}.{$row['type']}" alt="{$row['name']}" style="max-width: 200px;">
                     </a>
                 </td>

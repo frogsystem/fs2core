@@ -155,7 +155,7 @@ if (true) {
                                     <font class="small">Die Anzahl der Bildern die auf einer Seite angezeigt werden.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="1" name="screen_rows" value="'.$_POST['screen_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="screen_cols" value="'.$_POST['screen_cols'].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
+                                    <input class="text" size="1" name="screen_rows" value="'.$_POST['screen_rows'].'" maxlength="2"> Reihen &agrave; <input class="text" size="1" name="screen_cols" value="'.$_POST['screen_cols'].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
                                 </td>
                             </tr>
                             <tr>
@@ -226,7 +226,7 @@ if (true) {
                                     <font class="small">Die Anzahl der Wallpaper die auf einer Seite angezeigt werden.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="1" name="wp_rows" value="'.$_POST['wp_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="wp_cols" value="'.$_POST['wp_cols'].'" maxlength="2"> Wallpaper<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
+                                    <input class="text" size="1" name="wp_rows" value="'.$_POST['wp_rows'].'" maxlength="2"> Reihen &agrave; <input class="text" size="1" name="wp_cols" value="'.$_POST['wp_cols'].'" maxlength="2"> Wallpaper<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
                                 </td>
                             </tr>
                             <tr>
