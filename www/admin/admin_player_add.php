@@ -179,8 +179,7 @@ if ( TRUE )
                                     HTML-Code:<br>
                                     <span class="small">HTML-Code um das Video einzubinden.<br><br>
                                     <span class="small">Damit das Video in unterschiedlichen Gr&ouml;&szlig;en dargstellt werden kann, bitte alle Breitenangaben durch <b>{width}</b> und alle H&ouml;henangaben durch <b>{height}</b> ersetzen.<br><br>
-                                    Angaben innerhalb von »style« m&uuml;ssen durch <b>{width_css}</b> bzw. <b>{height_css}</b> ersetzt werden.</span>
-
+                                    Angaben innerhalb von &raquo;style&laquo; m&uuml;ssen durch <b>{width_css}</b> bzw. <b>{height_css}</b> ersetzt werden.</span>
                                 </td>
                                 <td class="config" valign="top">
                                     <textarea class="text" name="video_other" rows="10" cols="50" wrap="virtual">'.$_POST['video_other'].'</textarea>
