@@ -186,7 +186,7 @@ echo'
          version '.$FD->config('version').'
      </div>
      <div id="head_link">
-         <a href="'.$FD->config('virtualhost').'" target="_self" class="head_link">» '.$FD->text("menu", "admin_link_to_page").'</a>
+         <a href="'.$FD->config('virtualhost').'" target="_self" class="head_link">&raquo; '.$FD->text('menu', 'admin_link_to_page').'</a>
      </div>
 </div>
 <!-- /Page Head -->';

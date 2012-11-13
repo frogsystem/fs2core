@@ -613,7 +613,7 @@ function action_delete_display_page ( $articles_arr )
                                                         </tr>
                                                         <tr>
                                 <td class="config right">
-                                    <a href="'.$FD->config('virtualhost').'?go=articles&id='.$articles_arr['article_id'].'" target="_blank">� '.$FD->text('page', 'delete_view_article').'</a></div>
+                                    <a href="'.$FD->config('virtualhost').'?go=articles&amp;id='.$articles_arr['article_id'].'" target="_blank">&raquo; '.$FD->text('page', 'delete_view_article').'</a></div>
                                 </td>
                                                         </tr>
                                                         <tr><td class="space"></td></tr>
