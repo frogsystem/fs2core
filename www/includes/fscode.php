@@ -56,7 +56,10 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
      * */
 
     /* Flags:
-     * html => false // Decides wheter html is allowed
+     * fscode => true // Decides wheter fscode is allowed otherwise then [fscode]-tag
+     * nofscodeatall => false // ignore EVERY fscode, including [fscode]-tag
+     * html => false // Decides wheter html is allowed otherwise then [html]-tag
+     * nohtmlatall => false // ignore EVERY html, including [html]-tag
      * washtml => false // Should HTML washed from dangerous content? // not yet implemented
      * paragraph => true // (De-)Activates paragraph handling
      * paragraph_to_text => false // Set true to not convert paragraphs into html
@@ -64,7 +67,10 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
      * tabsize => integer // size for one tab
      * */
     $default_flags = array(
+        'fscode' => true,
+        'nofscodeatall' => false,
         'html' => false,
+        'nohtmlatall' => false,
         'washtml' => false,
         'paragraph' => true,
         'paragraph_to_text' => false,
@@ -78,11 +84,16 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     $fscode = new StringParser_BBCode ();
 
     // Flags
-    if (!$flags['html'])
+    if (!$flags['html'] || $flags['nohtmlatall']) {
         $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
+    }
+    if ($flags['nohtmlatall']) {
+        $fscode->addParser ('htmlblock', 'killhtml');
+    }
+        
     if ($flags['washtml']) {
         //TODO: washtml http://www.ubixis.com/washtml/
-        // $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'washtml');
+        // $bbcode->addParser (array ('block', 'inline', 'link', 'listitem', 'htmlblock'), 'washtml');
     }
     if ($flags['paragraph'])
         $fscode->setRootParagraphHandling (true);
@@ -112,252 +123,269 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     $fscode->addParser ('code', 'killhtml');
     $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
 
-    // smilies
-    if (in_array('smilies', $to_html))
-        $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'do_fscode_smilies');
+    // FSCode?
+    if ($flags['fscode'] && !$flags['nofscodeatall']) {
 
-    // b
-    if (in_array('b', $to_html))
-        $fscode->addCode ('b', 'simple_replace', null, array ('start_tag' => '<b>', 'end_tag' => '</b>'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('b', $to_text))
-        $fscode->addCode ('b', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+        // smilies
+        if (in_array('smilies', $to_html))
+            $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'do_fscode_smilies');
 
-    // i
-    if (in_array('i', $to_html))
-        $fscode->addCode ('i', 'simple_replace', null, array ('start_tag' => '<i>', 'end_tag' => '</i>'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('i', $to_text))
-        $fscode->addCode ('i', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+        // b
+        if (in_array('b', $to_html))
+            $fscode->addCode ('b', 'simple_replace', null, array ('start_tag' => '<b>', 'end_tag' => '</b>'),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('b', $to_text))
+            $fscode->addCode ('b', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
 
-    // u
-    if (in_array('u', $to_html))
-        $fscode->addCode ('u', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:underline">', 'end_tag' => '</span>'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('u', $to_text))
-        $fscode->addCode ('u', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+        // i
+        if (in_array('i', $to_html))
+            $fscode->addCode ('i', 'simple_replace', null, array ('start_tag' => '<i>', 'end_tag' => '</i>'),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('i', $to_text))
+            $fscode->addCode ('i', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
 
-    // s
-    if (in_array('s', $to_html))
-        $fscode->addCode ('s', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:line-through">', 'end_tag' => '</span>'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('s', $to_text))
-        $fscode->addCode ('s', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+        // u
+        if (in_array('u', $to_html))
+            $fscode->addCode ('u', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:underline">', 'end_tag' => '</span>'),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('u', $to_text))
+            $fscode->addCode ('u', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
 
-    // center
-    if (in_array('center', $to_html)) {
-        $fscode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<p align="center">', 'end_tag' => '</p>'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-        $fscode->setCodeFlag ('center', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-    } elseif  (in_array('center', $to_text))
-        $fscode->addCode ('center', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+        // s
+        if (in_array('s', $to_html))
+            $fscode->addCode ('s', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:line-through">', 'end_tag' => '</span>'),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('s', $to_text))
+            $fscode->addCode ('s', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
 
-    // url
-    if (in_array('url', $to_html))
-        $fscode->addCode ('url', 'usecontent?', 'do_fscode_url', array ('usecontent_param' => 'default'),
-            'link', array ('listitem', 'block', 'inline'), array ('link'));
-    elseif  (in_array('url', $to_text))
-        $fscode->addCode ('url', 'usecontent?', 'do_fscode_url', array ('usecontent_param' => 'default', 'text' => true),
-            'link', array ('listitem', 'block', 'inline'), array ('link'));
+        // center
+        if (in_array('center', $to_html)) {
+            $fscode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<p align="center">', 'end_tag' => '</p>'),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+            $fscode->setCodeFlag ('center', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+        } elseif  (in_array('center', $to_text))
+            $fscode->addCode ('center', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
 
-    // home
-    if (in_array('home', $to_html))
-        $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'fullurl' => $flags['full_urls']),
-            'link', array ('listitem', 'block', 'inline'), array ('link'));
-    elseif  (in_array('home', $to_text))
-        $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'text' => true, 'fullurl' => $flags['full_urls']),
-            'link', array ('listitem', 'block', 'inline'), array ('link'));
+        // url
+        if (in_array('url', $to_html))
+            $fscode->addCode ('url', 'usecontent?', 'do_fscode_url', array ('usecontent_param' => 'default'),
+                'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+        elseif  (in_array('url', $to_text))
+            $fscode->addCode ('url', 'usecontent?', 'do_fscode_url', array ('usecontent_param' => 'default', 'text' => true),
+                'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
 
-    // email
-    if (in_array('email', $to_html))
-        $fscode->addCode ('email', 'usecontent?', 'do_fscode_email', array ('usecontent_param' => 'default'),
-            'link', array ('listitem', 'block', 'inline'), array ('link'));
-    elseif  (in_array('email', $to_text))
-        $fscode->addCode ('email', 'usecontent?', 'do_fscode_email', array ('usecontent_param' => 'default', 'text' => true),
-            'link', array ('listitem', 'block', 'inline'), array ('link'));
+        // home
+        if (in_array('home', $to_html))
+            $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'fullurl' => $flags['full_urls']),
+                'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+        elseif  (in_array('home', $to_text))
+            $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'text' => true, 'fullurl' => $flags['full_urls']),
+                'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
 
-    // font
-    if (in_array('font', $to_html))
-        $fscode->addCode ('font', 'callback_replace', 'do_fscode_fcs', array ('type' => 'font'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('font', $to_text)) {
-        $fscode->addCode ('font', 'callback_replace', 'simple_replace_ignore_attributs', array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    }
+        // email
+        if (in_array('email', $to_html))
+            $fscode->addCode ('email', 'usecontent?', 'do_fscode_email', array ('usecontent_param' => 'default'),
+                'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+        elseif  (in_array('email', $to_text))
+            $fscode->addCode ('email', 'usecontent?', 'do_fscode_email', array ('usecontent_param' => 'default', 'text' => true),
+                'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
 
-    // color
-    if (in_array('color', $to_html))
-        $fscode->addCode ('color', 'callback_replace', 'do_fscode_fcs', array ('type' => 'color'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('color', $to_text))
-        $fscode->addCode ('color', 'callback_replace', 'simple_replace_ignore_attributs', array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+        // font
+        if (in_array('font', $to_html))
+            $fscode->addCode ('font', 'callback_replace', 'do_fscode_fcs', array ('type' => 'font'),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('font', $to_text)) {
+            $fscode->addCode ('font', 'callback_replace', 'simple_replace_ignore_attributs', array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        }
 
-    // size
-    if (in_array('size', $to_html))
-        $fscode->addCode ('size', 'callback_replace', 'do_fscode_fcs', array ('type' => 'size'),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('size', $to_text))
-        $fscode->addCode ('size', 'callback_replace', 'simple_replace_ignore_attributs', array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
+        // color
+        if (in_array('color', $to_html))
+            $fscode->addCode ('color', 'callback_replace', 'do_fscode_fcs', array ('type' => 'color'),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('color', $to_text))
+            $fscode->addCode ('color', 'callback_replace', 'simple_replace_ignore_attributs', array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+
+        // size
+        if (in_array('size', $to_html))
+            $fscode->addCode ('size', 'callback_replace', 'do_fscode_fcs', array ('type' => 'size'),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('size', $to_text))
+            $fscode->addCode ('size', 'callback_replace', 'simple_replace_ignore_attributs', array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
 
 
-    // img
-    if (in_array('img', $to_html))
-        $fscode->addCode ('img', 'usecontent?', 'do_fscode_img', array ('usecontent_param' => 'default'),
-            'image', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('img', $to_text))
-        $fscode->addCode ('img', 'usecontent?', 'do_fscode_img', array ('usecontent_param' => 'default', 'text' => true),
-            'image', array ('listitem', 'block', 'inline', 'link'), array ());
+        // img
+        if (in_array('img', $to_html))
+            $fscode->addCode ('img', 'usecontent?', 'do_fscode_img', array ('usecontent_param' => 'default'),
+                'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('img', $to_text))
+            $fscode->addCode ('img', 'usecontent?', 'do_fscode_img', array ('usecontent_param' => 'default', 'text' => true),
+                'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
 
-    // cimg
-    if (in_array('cimg', $to_html))
-        $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default'),
-            'image', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('cimg', $to_text))
-        $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'text' => true),
-            'image', array ('listitem', 'block', 'inline', 'link'), array ());
+        // cimg
+        if (in_array('cimg', $to_html))
+            $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default'),
+                'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        elseif  (in_array('cimg', $to_text))
+            $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'text' => true),
+                'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
 
-    // fscode
-    if (in_array('html', $to_html))
-        $fscode->addCode ('html', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
-            'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('html', $to_text))
-        $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
-            'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());      
+        // fscode
+        if (in_array('fscode', $to_html) || in_array('fscode', $to_text)) {
+            $fscode->addCode ('fscode', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        }
 
-    // nofscode
-    if (in_array('nofscode', $to_html) || in_array('nofscode', $to_text)) {
-        $fscode->addCode ('nofscode', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());        
-        $fscode->addCode ('noparse', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-    }
+        // nofscode
+        if (in_array('nofscode', $to_html) || in_array('nofscode', $to_text)) {
+            $fscode->addCode ('nofscode', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());        
+            $fscode->addCode ('noparse', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        }
+        
+        // html
+        $fscode->setCodeFlag ('html', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+        if (in_array('html', $to_html)) {
+            $fscode->addCode ('html', 'usecontent?', 'simple_usecontent_replace', array ('usecontent_param' => 'fscode', 'start_tag' => '', 'end_tag' => ''),
+                'htmlblock', array ('list', 'listitem', 'block', 'inline', 'link'), array ());
+        } elseif  (in_array('html', $to_text)) {
+            $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
+                'htmlblock', array ('list', 'listitem', 'block', 'inline', 'link'), array ());
+        }
+                
+        // nohtml
+        if (in_array('nohtml', $to_html) || in_array('nohtml', $to_text))
+            $fscode->addCode ('nohtml', 'callback_replace', 'killhtml', array (),
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+
+
+        // list
+        if (in_array('list', $to_html))
+            $fscode->addCode ('list', 'simple_replace', null, array ('start_tag' => '<ul>', 'end_tag' => '</ul>'),
+                'list', array ('block', 'listitem', 'htmlblock'), array ('link'));
+        elseif  (in_array('list', $to_text))
+            $fscode->addCode ('list', 'callback_replace', 'do_fscode_textlists', array (),
+                'list', array ('block', 'listitem', 'htmlblock'), array ('link'));
+
+        if (in_array('list', $to_html) || in_array('list', $to_text)) {
+            $fscode->setCodeFlag ('list', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+        }
+        if (in_array('list', $to_html) && $flags['paragraph']) {
+            $fscode->setCodeFlag ('list', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
+            $fscode->setCodeFlag ('list', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
+        }
+
+        // numlist
+        if (in_array('numlist', $to_html))
+            $fscode->addCode ('numlist', 'simple_replace', null, array ('start_tag' => '<ol>', 'end_tag' => '</ol>'),
+                'list', array ('block', 'listitem', 'htmlblock'), array ('link'));
+        elseif  (in_array('numlist', $to_text))
+            $fscode->addCode ('numlist', 'callback_replace', 'do_fscode_textlists', array (),
+                'list', array ('block', 'listitem', 'htmlblock'), array ('link'));
+
+        if (in_array('numlist', $to_html) || in_array('numlist', $to_text)) {
+            $fscode->setCodeFlag ('numlist', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+        }
+        if (in_array('numlist', $to_html) && $flags['paragraph']) {
+            $fscode->setCodeFlag ('numlist', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
+            $fscode->setCodeFlag ('numlist', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
+        }
+
+
+        // *
+        if (in_array('list', $to_html) || in_array('numlist', $to_html))
+            $fscode->addCode ('*', 'simple_replace', null, array ('start_tag' => '<li>', 'end_tag' => '</li>'),
+                'listitem', array ('list'), array ());
+        elseif (in_array('list', $to_text) || in_array('numlist', $to_text))
+            $fscode->addCode ('*', 'callback_replace', 'do_fscode_textlistitems', array ('start_tag' => "\n", 'end_tag' => "<br>", 'list_item' => "- ", 'numlist_item' => "%d. "),
+                'listitem', array ('list'), array ());
+
+        if (in_array('numlist', $to_html) || in_array('numlist', $to_text)
+            || in_array('list', $to_html) || in_array('numlist', $list)) {
+            $fscode->addParser ('list', 'fscode_stripcontents');
+            $fscode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
+            $fscode->setCodeFlag ('*', 'paragraphs', false);
+        }
+        if (in_array('list', $to_text) || in_array('numlist', $to_text)) {
+                $fscode->setCodeFlag ('list', 'opentag.after.newline', BBCODE_NEWLINE_DROP);
+                $fscode->setCodeFlag ('numlist', 'opentag.after.newline', BBCODE_NEWLINE_DROP);
+                $fscode->setCodeFlag ('list', 'closetag.after.newline', BBCODE_NEWLINE_DROP);
+                $fscode->setCodeFlag ('numlist', 'closetag.after.newline', BBCODE_NEWLINE_DROP);
+                $fscode->setCodeFlag ('*', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
+                $fscode->setCodeFlag ('*', 'opentag.after.newline', BBCODE_NEWLINE_DROP);
+                $fscode->setCodeFlag ('*', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
+                $fscode->setCodeFlag ('*', 'closetag.after.newline', BBCODE_NEWLINE_DROP);
+        }
+
+
+
+        // code
+        if (in_array('code', $to_html))
+            $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array (),
+                'code', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+        elseif  (in_array('code', $to_text))
+            $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array ('text' => true),
+                'code', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+
+        if (in_array('code', $to_html) || in_array('code', $to_text)) {
+            $fscode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+            $fscode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
+            $fscode->setCodeFlag ('code', 'paragraphs', false);
+        }
+
+
+        // quote
+        if (in_array('quote', $to_html))
+            $fscode->addCode ('quote', 'callback_replace', 'do_fscode_quote', array (),
+                'block', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+        elseif  (in_array('quote', $to_text))
+            $fscode->addCode ('quote', 'callback_replace', 'do_fscode_quote', array ('text' => true),
+                'block', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+
+        if (in_array('quote', $to_html) || in_array('quote', $to_text)) {
+            #$fscode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+            $fscode->setCodeFlag ('quote', 'paragraphs', false);
+        }
+
+
+        // video (old: player)
+        if (in_array('video', $to_html)) {
+            $fscode->addCode ('video', 'usecontent', 'do_fscode_video', array (),
+                'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
+            $fscode->addCode ('player', 'usecontent', 'do_fscode_video', array (),
+                'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
+        }
+        elseif  (in_array('video', $to_text)) {
+            $fscode->addCode ('video', 'usecontent', 'do_fscode_video', array ('text' => true),
+                'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
+            $fscode->addCode ('player', 'usecontent', 'do_fscode_video', array ('text' => true),
+                'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
+        }
+        if (in_array('video', $to_html) || in_array('video', $to_text)) {
+            $fscode->setCodeFlag ('video', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+            $fscode->setCodeFlag ('player', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+        }
     
-    // html
-    if (in_array('html', $to_html))
-        $fscode->addCode ('html', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
-            'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
-    elseif  (in_array('html', $to_text))
-        $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
-            'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
-            
-    // nohtml
-    if (in_array('nohtml', $to_html) || in_array('nohtml', $to_text))
-        $fscode->addCode ('html', 'callback_replace', 'killhtml', array (),
-            'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-
-    // list
-    if (in_array('list', $to_html))
-        $fscode->addCode ('list', 'simple_replace', null, array ('start_tag' => '<ul>', 'end_tag' => '</ul>'),
-            'list', array ('block', 'listitem'), array ('link'));
-    elseif  (in_array('list', $to_text))
-        $fscode->addCode ('list', 'callback_replace', 'do_fscode_textlists', array (),
-            'list', array ('block', 'listitem'), array ('link'));
-
-    if (in_array('list', $to_html) || in_array('list', $to_text)) {
-        $fscode->setCodeFlag ('list', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-    }
-    if (in_array('list', $to_html) && $flags['paragraph']) {
-        $fscode->setCodeFlag ('list', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
-        $fscode->setCodeFlag ('list', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
-    }
-
-    // numlist
-    if (in_array('numlist', $to_html))
-        $fscode->addCode ('numlist', 'simple_replace', null, array ('start_tag' => '<ol>', 'end_tag' => '</ol>'),
-            'list', array ('block', 'listitem'), array ('link'));
-    elseif  (in_array('numlist', $to_text))
-        $fscode->addCode ('numlist', 'callback_replace', 'do_fscode_textlists', array (),
-            'list', array ('block', 'listitem'), array ('link'));
-
-    if (in_array('numlist', $to_html) || in_array('numlist', $to_text)) {
-        $fscode->setCodeFlag ('numlist', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-    }
-    if (in_array('numlist', $to_html) && $flags['paragraph']) {
-        $fscode->setCodeFlag ('numlist', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
-        $fscode->setCodeFlag ('numlist', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
-    }
-
-
-    // *
-    if (in_array('list', $to_html) || in_array('numlist', $to_html))
-        $fscode->addCode ('*', 'simple_replace', null, array ('start_tag' => '<li>', 'end_tag' => '</li>'),
-            'listitem', array ('list'), array ());
-    elseif (in_array('list', $to_text) || in_array('numlist', $to_text))
-        $fscode->addCode ('*', 'callback_replace', 'do_fscode_textlistitems', array ('start_tag' => "\n", 'end_tag' => "<br>", 'list_item' => "- ", 'numlist_item' => "%d. "),
-            'listitem', array ('list'), array ());
-
-    if (in_array('numlist', $to_html) || in_array('numlist', $to_text)
-        || in_array('list', $to_html) || in_array('numlist', $list)) {
-        $fscode->addParser ('list', 'fscode_stripcontents');
-        $fscode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
-        $fscode->setCodeFlag ('*', 'paragraphs', false);
-    }
-    if (in_array('list', $to_text) || in_array('numlist', $to_text)) {
-            $fscode->setCodeFlag ('list', 'opentag.after.newline', BBCODE_NEWLINE_DROP);
-            $fscode->setCodeFlag ('numlist', 'opentag.after.newline', BBCODE_NEWLINE_DROP);
-            $fscode->setCodeFlag ('list', 'closetag.after.newline', BBCODE_NEWLINE_DROP);
-            $fscode->setCodeFlag ('numlist', 'closetag.after.newline', BBCODE_NEWLINE_DROP);
-            $fscode->setCodeFlag ('*', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
-            $fscode->setCodeFlag ('*', 'opentag.after.newline', BBCODE_NEWLINE_DROP);
-            $fscode->setCodeFlag ('*', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
-            $fscode->setCodeFlag ('*', 'closetag.after.newline', BBCODE_NEWLINE_DROP);
-    }
-
-
-
-    // code
-    if (in_array('code', $to_html))
-        $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array (),
-            'code', array ('listitem', 'block', 'inline'), array ('link'));
-    elseif  (in_array('code', $to_text))
-        $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array ('text' => true),
-            'code', array ('listitem', 'block', 'inline'), array ('link'));
-
-    if (in_array('code', $to_html) || in_array('code', $to_text)) {
-        $fscode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-        $fscode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
-        $fscode->setCodeFlag ('code', 'paragraphs', false);
-    }
-
-
-    // quote
-    if (in_array('quote', $to_html))
-        $fscode->addCode ('quote', 'callback_replace', 'do_fscode_quote', array (),
-            'block', array ('listitem', 'block', 'inline'), array ('link'));
-    elseif  (in_array('quote', $to_text))
-        $fscode->addCode ('quote', 'callback_replace', 'do_fscode_quote', array ('text' => true),
-            'block', array ('listitem', 'block', 'inline'), array ('link'));
-
-    if (in_array('quote', $to_html) || in_array('quote', $to_text)) {
-        #$fscode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-        $fscode->setCodeFlag ('quote', 'paragraphs', false);
-    }
-
-
-    // video (old: player)
-    if (in_array('video', $to_html)) {
-        $fscode->addCode ('video', 'usecontent', 'do_fscode_video', array (),
-            'block', array ('block'), array ('link', 'listitem'));
-        $fscode->addCode ('player', 'usecontent', 'do_fscode_video', array (),
-            'block', array ('block'), array ('link', 'listitem'));
-    }
-    elseif  (in_array('video', $to_text)) {
-        $fscode->addCode ('video', 'usecontent', 'do_fscode_video', array ('text' => true),
-            'block', array ('block'), array ('link', 'listitem'));
-        $fscode->addCode ('player', 'usecontent', 'do_fscode_video', array ('text' => true),
-            'block', array ('block'), array ('link', 'listitem'));
-    }
-    if (in_array('video', $to_html) || in_array('video', $to_text)) {
-        $fscode->setCodeFlag ('video', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-        $fscode->setCodeFlag ('player', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+    // FSCode Tag
+    } elseif (!$flags['nofscodeatall']) {
+        // fscode
+        if (in_array('fscode', $to_html)) {
+            $bbcode->setCodeFlag ('fscode', 'paragraphs', true);
+            $fscode->addCode ('html', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
+                'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
+        }
+        elseif  (in_array('fscode', $to_text)) {
+            $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
+                'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
+        }
     }
 
     // Parse FSCode

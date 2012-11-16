@@ -359,9 +359,9 @@ function action_edit_get_data ( $ARTICLE_ID )
     $config_arr['para_handling_text'] = ( $config_arr['para_handling_bool'] ) ? $FD->text("admin", "on") : $FD->text("admin", "off");
 
         // Security-Functions
-    $articles_arr['article_url'] = killhtml ( $articles_arr['article_url'] );
-    $articles_arr['article_title'] = killhtml ( $articles_arr['article_title'] );
-    $articles_arr['article_text'] = killhtml ( $articles_arr['article_text'] );
+    $articles_arr['article_url'] = killhtml ( unslash($articles_arr['article_url'] ));
+    $articles_arr['article_title'] = killhtml ( unslash($articles_arr['article_title'] ));
+    $articles_arr['article_text'] = killhtml ( unslash($articles_arr['article_text'] ));
     settype ( $articles_arr['article_user'], 'integer' );
     settype ( $articles_arr['article_html'], 'integer' );
     settype ( $articles_arr['article_fscode'], 'integer' );

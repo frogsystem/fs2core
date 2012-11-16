@@ -1221,9 +1221,8 @@ function unquote ($TEXT)
 // Format text with FS Code //
 //////////////////////////////
 
-function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0, $do_fscode=0, $do_html=0, $_do_nohtml)
+function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0, $do_fscode=0, $do_html=0, $do_nohtml=0)
 {
-    include_once ( FS2_ROOT_PATH . 'includes/fscode.php');
     $flags = array('html' => $html, 'paragraph' => $para,
     );
 
@@ -1257,7 +1256,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         if ($do_nohtml==1)      array_push($fscodes, 'nohtml');
     }
 
-    return parse_fscode(stripslashes($text), $flags, $fscodes);
+    return parse_fscode(unslash($text), $flags, $fscodes);
 
 }
 
