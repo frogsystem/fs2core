@@ -7,7 +7,7 @@
  *
  * this class provides access and datahandling for confirment hashes
  */
-require('class_hash.php');
+require('class_Hash.php');
 
 class HashMapper
 {
