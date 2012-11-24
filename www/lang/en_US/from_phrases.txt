@@ -16,9 +16,6 @@ image_5:                                           Image upload failed: The imag
 image_6:                                           Image upload failed: The image could not be created ['Code: IMGxU6']
 image_deleted:                                     Image deleted
 image_not_deleted:                                 Image could not be deleted
-thumb_0:                                           Thumbnail creation successful
-thumb_1:                                           Thumbnail could not be created: Invalid file tyle
-thumb_2:                                           Thumbnail could not be created: An error occured
 optional:                                          (optional)
 selection:                                         Selection
 active:                                            active
@@ -237,7 +234,7 @@ edit_day_visits:                                   Visitors
 edit_day_visits_desc:                              Number of visitors on
 edit_day_hits:                                     Hits
 edit_day_hits_desc:                                Number of hits on
-sync_title:                                        
+sync_title:
 sync_now:                                          Synchronize statistics
 sync_now_desc:                                     Synchronizes the statistics with the values from the database.
 sync_now_button:                                   Synchronize now
@@ -434,12 +431,12 @@ sort_comments:                                     Sort comments
 sort_comments_desc:                                The order by which comments are shown.
 sort_comments_old_first:                           Old ones first
 sort_comments_new_first:                           New ones first
-anti_spam_comments:                                Anti spam at comments for
-anti_spam_comments_desc:                           Anti spam captcha at comments are activated for ...
-anti_spam_comments_all:                            all users
-anti_spam_comments_staff:                          all except staff
-anti_spam_comments_reg:                            unregistered users
-anti_spam_comments_nobody:                         nobody
+spam_comments:                                     Anti spam at comments for
+spam_comments_desc:                                Anti spam captcha at comments are activated for ...
+spam_comments_all:                                 all users
+spam_comments_staff:                               all except staff
+spam_comments_reg:                                 unregistered users
+spam_comments_nobody:                              nobody
 new_cat_added:                                     Category has been added
 cat_deleted:                                       Category has been deleted
 cat_not_deleted:                                   Category has not been deleted
@@ -502,15 +499,6 @@ delete_view_article:                               View full article
 delete_question:                                   Do you really want to delete this article?
 article_deleted:                                   Article has been deleted
 article_not_deleted:                               Article has not been deleted
-
-
-#press
-delpage:                                           Delete entry
-delpage_question:                                  Do you really want to delete that entry?
-delconfirm:                                        Delete entry
-delnotconfirm:                                     Do not delete entry
-note_noreleases:                                   No press reports found!
-
 
 #random
 start_time:                                        Start time
