@@ -6,6 +6,7 @@ comments_select_title:              Edit comments
 comments_content:                   Content
 comments_info:                      Information
 comments_not_found:                 No comments found!
+comment_deleted:                    Comment has been deleted successfully
 
 # News
 news_not_found:                     No News found!

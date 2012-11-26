@@ -1,0 +1,17 @@
+articles_info_title: Information
+articles_url: URL
+articles_url_desc: Part of the URL that will be appended to ?go=
+articles_cat: Category
+articles_cat_desc: The category of the article.
+articles_date: Date of creation
+articles_date_desc: Date of creation of the article.
+articles_poster: Author
+articles_poster_desc: The author of the article
+articles_new_title: Create article
+articles_title: Title
+articles_text: Text
+articles_use_html: Use HTML
+articles_use_fscode: Use FSCode
+articles_use_para: Use paragraph handling
+articles_add_button: Add article
+articles_added: Article has been added

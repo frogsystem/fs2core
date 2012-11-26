@@ -1,5 +1,6 @@
 # Statistikansicht
 
+website_statistics:           Website statistics
 daily_statistics:             Daily statistics
 monthly_statistics:           Monthly statistics
 other_statistics:             Other statistics
@@ -14,4 +15,6 @@ hits_total:                   Total hits
 best_day_hits:                Best day (hits)
 chart:                        Graphics
 show_chart:                   Show chart
-user_online:                  Users online
+online_visitors:              Visitors online
+online_guests:                Guests online
+online_registered:            Registered users online

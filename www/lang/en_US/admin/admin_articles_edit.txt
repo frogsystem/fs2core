@@ -1,0 +1,12 @@
+#@admin/admin_articles_add
+
+
+edit_filter_title: Filter &amp; Sort
+edit_filter_from: Articles from
+edit_filter_all_cat: all categories
+edit_filter_sort: sort by
+edit_filter_date: Date
+edit_filter_arttitle: Title
+edit_filter_url: URL
+edit_select_article: Select article
+edit_entries_found: records found

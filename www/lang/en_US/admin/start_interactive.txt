@@ -1,0 +1,10 @@
+#interactive startpage
+
+#@admin/admin_polls
+latest_poll:                Latest poll
+number_of_polls:            Number of polls
+overall_participants:       Overall number of participants
+most_participants:          Most participants
+overall_votes:              Overall number of votes
+most_votes:                 Most votes
+vote_s:                     Vote(s)
