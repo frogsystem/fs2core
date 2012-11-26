@@ -63,7 +63,7 @@ feed_atom10:                Atom 1.0
 url_style:                  URL style
 url_style_desc:             Defines how URLs are shown and created.
 url_style_info:             <b>Attention:</b> Please read the hints about the use of <a href="http://wiki.frogsystem.de/seo-urls" target="_blank">search engine optimised URLs</a>!
-url_style_default:          Default (?go=page&amp;p1=v1)
+url_style_default:          Simple (?go=page&amp;p1=v1)
 url_style_seo:              Search engine optimised (page--p1-v1.html)
 
 date:                       Date

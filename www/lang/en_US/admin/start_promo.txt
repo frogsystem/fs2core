@@ -1,0 +1,5 @@
+#promo startpage
+number_of_affiliates:       Number of affiliates
+newest_affiliate:           Newest affiliate
+number_of_products:         Number of products
+newest_product:             Newest product

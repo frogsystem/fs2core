@@ -1,0 +1,15 @@
+#common phrases for polls
+
+multiple_selection:         Multiple choice
+single_selection:           Single choice
+
+number_of_participants:     Number of participants
+number_of_votes:            Number of votes
+type_of_poll:               Umfrageart
+period_of_poll:             Umfragedauer
+participant:                Teilnehmer
+participants:               Teilnehmer
+participant_s:              Teilnehmer(n)
+vote:                       Vote
+votes:                      Votes
+vote_s:                     Vote(s)
