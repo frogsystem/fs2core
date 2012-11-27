@@ -1,0 +1,12 @@
+#@from_phrases
+
+start_time:                                        Start time
+end_time:                                          End time
+title:                                             Title
+delpic:                                            Delete time-controlled random image
+delpic_question:                                   Do you really want to delete the time-controlled random image?
+delconfirm:                                        Delete random image
+delnotconfirm:                                     Do not delete random image
+delnote:                                           <b>Hint:</b> Only the entry for the time-controlled random image will be deleted. The image itself remains.
+note_deleted:                                      The time-controlled random image has been deleted successfully!
+note_notdeleted:                                   The time-controlled random image has not been deleted!

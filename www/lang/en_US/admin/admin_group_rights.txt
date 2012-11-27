@@ -1,0 +1,16 @@
+#@from_phrases
+group_name_and_symbol:          Group name &amp; symbol
+group_info:                     Information
+group_members:                  Members
+select_group:                   Select group
+
+change_grouprights:             Change group permissions
+no_groups_found:                No groups found!
+
+group_edit_not_allowed:         You are not allowed to edit this group
+
+all:                            all
+none:                           none
+
+change_grouprights_for:         Change group permissions for
+sub_rights_note:                Sub-permissions only take effect, if the according main permission has been granted, too.

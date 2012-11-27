@@ -71,9 +71,17 @@ default:                                 default
 replace_img:                             Replaces the current image!
 delete_image:                            Delete image
 js_delete_image:                         Delete image?
+no_image_found:                          No image found
+image_not_found:                         Image not found
 search:                                  Search
 search_for:                              Search for
 filter:                                  filter
+note:                                    Hinweis
+notes:                                   Hinweise
+selection_all:                           all
+selection_none:                          none
+selection_invert:                        invert
+
 
 
 # Date and Time for Admin CP
@@ -82,6 +90,7 @@ time:                                    h:i a
 date_time:                               h:i a, Y/m/d
 seconds:                                 seconds
 at_time:                                 at
+time_appendix:                           o'clock
 at_date:                                 on
 
 # Frequently used Images
@@ -95,8 +104,10 @@ selected:                                Selected
 selection_noaction:                      Please select
 selection_edit:                          edit
 selection_delete:                        delete
-selection_up:                            nach oben
-selection_down:                          nach unten
+selection_up:                            move up
+selection_down:                          move down
+selection_save:                          save selection
+selection_import:                        import selection
 
 
 # Button Captions
@@ -109,11 +120,20 @@ file_select_button:                      Select file
 search_button:                           Search
 add_button:                              Add
 save_button:                             Save
+apply_button:                            Apply
+upload_button:                           Upload
+upload_file_button:                      Upload file
+upload_image_button:                     Upload image
 
 
 # Messages
+# deprecated
 error:                                   An error occured
+# deprecated
 unknown_error:                           An unknown error occured
+
+error_occurred:                          An error occured
+unknown_error_occurred:                  An unknown error occured
 info:                                    Information
 changes_saved:                           Changes have been saved
 changes_not_saved:                       Changes have not been saved
@@ -125,12 +145,14 @@ error_file_access:                       Please check the file and directory per
 file_deleted:                            File has been deleted
 file_not_deleted:                        File has not been deleted
 image_deleted:                           Image has been deleted
-image_not_deleted:                       Immage could not be deleted
+image_not_deleted:                       Image could not be deleted
 images_deleted:                          Images have been deleted
 images_not_all_deleted:                  Not all images could be deleted
 sql_error:                               SQL error:
 access_denied:                           Access denied
 403_error:                               You do not have permission to access that page.
+unknown_user:                            Unknown user
+no_user_found_for_name:                  No user found with that name.
 
 
 # Message-Images
@@ -153,9 +175,10 @@ icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt
 icon_up:                                 <img src="icons/up.jpg" alt="Move upwards" align="absmiddle">
 icon_down:                               <img src="icons/down.jpg" alt="Move downwards" align="absmiddle">
 icon_link_error:                         <img src="icons/link_error.jpg" alt="Link error" align="absmiddle">
+icon_user_question:                      <img src="icons/user_question.jpg" alt="Unknown user" align="absmiddle">
 
 
-# Upload-Messages
+# Image-Upload-Messages
 image_upload_error_0:                    Image was uploaded successfully
 image_upload_error_1:                    Image upload failed: Invalid file type [Code: IMGxU1]
 image_upload_error_2:                    Image upload failed: The image could not be uploaded [Code: IMGxU2]
@@ -163,6 +186,11 @@ image_upload_error_3:                    Image upload failed: The image is too b
 image_upload_error_4:                    Image upload failed: The image is too big (width and/or height) [Code: IMGxU4]
 image_upload_error_5:                    Image upload failed: The image does not have the required width and height [Code: IMGxU5]
 image_upload_error_6:                    Image upload failed: The image could not be created [Code: IMGxU6]
+
+# Thumb-Creation-Messages
+thumb_create_okay:                       Thumbnail creation was successful
+thumb_create_error_1:                    Thumbnail could not be created: Invalid file type
+thumb_create_error_2:                    Thumbnail could not be created: An error occured
 
 
 # Frequently used Category-Related Phrases
@@ -173,6 +201,8 @@ cats_select:                             Select categories
 cats_not_found:                          No categories found!
 cat_added:                               Category has been added
 cat_not_added:                           Category has not been added
+cat_deleted:                             Category has been deleted
+cat_not_deleted:                         Category has not been deleted
 cats_deleted:                            Categories have been deleted
 cats_not_deleted:                        Categories have not been deleted
 cats_not_all_deleted:                    Not all categories could be deleted
@@ -183,19 +213,22 @@ cat_images_deleted:                      Category images deleted
 cat_images_not_all_deleted:              Not all category images could be deleted
 cats_up:                                 Move categories up
 cats_down:                               Move categories down
+cat_new:                                 New category
+cat_add:                                 Add category
+cat_add_other_settings:                  Add categorie &amp; adjust other settings
+cats_edit:                               Edit category
+
 
 
 # Some other Texts
 monthly_statistics:                      Monthly statistics
 
 
+
+
+
+
 # Old
-system_start_num_aliases:                Number of aliases
-system_start_num_aliases_active:         Number of active aliases
-system_start_num_applets:                Number of applets
-system_start_num_applets_active:         Number of active applets
-system_start_num_snippets:               Number of snippets
-system_start_num_snippets_active:        Number of active snippets
 
 news_edit_selection_comments:            Manage comments
 news_comments_delete_title:              Delete comments
@@ -345,13 +378,6 @@ template_select_template:                Select template for editing
 
 
 # What are these lines doing here? They aren't present in the German admin.txt.
-config_publisher_title:                  Publisher
-config_publisher_desc:                   Herausgeber (Webmaster) der Seite.
-config_copyright_title:                  Copyright
-config_copyright_desc:                   Copyright-Hinweise der Urheber.
-config_style_title:                      Active Style
-config_style_desc:                       Style, der als Design der Hauptseite verwendet wird.
-
 search_config_title:                     Settings
 search_config_num_previews_title:        Number of results
 search_config_num_previews_desc:         The maximum number of results shown.

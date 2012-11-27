@@ -1,0 +1,20 @@
+post_settings_title: Posts
+post_settings_info: <b>Hint</b>: This setting defines the basic availability for use in articles only. You can (de-)activate the use of HTML, FSCode and paragraph handling seperately for each article.
+allow_html: HTML-Code
+allow_html_desc: Allows HTML code in ...
+allow_fs: FS-Code
+allow_fs_desc: Allows FS-Code in ...
+allow_para: Paragraph handling
+allow_para_desc: Activates paragraph handling in ...
+allow_code_no: Off
+allow_code_articles: articles
+allow_code_comments: comments
+allow_code_both: articles &amp; comments
+
+cat_settings_title: Categories
+cat_img_max_width: Category image - max. width
+cat_img_max_width_desc: Max. width of a category image in pixels.
+cat_img_max_height: Category image - max. height
+cat_img_max_height_desc: Max. height of a category image in pixels.
+cat_img_max_size: Category image - max. file size
+cat_img_max_size_desc: Max. file size of a category image in KiB.
