@@ -313,7 +313,8 @@ INSERT INTO `fs2_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_
 (11, 'dl-forwarding', 1, 1, 0),
 (9, 'mini-search', 1, 1, 1),
 (10, 'affiliates', 1, 2, 1),
-(12, 'test', 1, 2, 1);
+(12, 'test', 1, 2, 1),
+(13, 'forumfeed', 1, 2, 1);
 
 -- --------------------------------------------------------
 
