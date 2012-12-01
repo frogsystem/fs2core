@@ -624,3 +624,21 @@ partner_navi_body_description:         Aussehen der Partnerliste im Menü.
 partner_navi_body_help_1:              Einzelne Ausgabe aller Partner.
 partner_navi_body_help_2:              Einzelne Ausgabe der Partner, die permanent angezeigt werden sollen.
 partner_navi_body_help_3:              Einzelne Ausgabe der Partner, die nicht permanent angezeigt werden sollen.
+
+
+forumfeed_entry_title:                 Threadeintrag
+forumfeed_entry_desc:                  Darstellung eines einzelnen Threadeintrags in der Threadliste
+forumfeed_entry_thread_id:             ID des Threads
+forumfeed_entry_thread_author:         Name des Threaderstellers
+forumfeed_entry_thread_title:          Titel des Threads
+forumfeed_entry_thread_date:           Erstelldatum des Threads (nur Tag)
+forumfeed_entry_thread_time:           Erstellzeit des Threads (nur Uhrzeit)
+
+forumfeed_body_title:                  Threadliste
+forumfeed_body_desc:                   Darstellung der Liste der neuesten Threads
+forumfeed_body_entries:                Bindet die Threads ein
+
+forumfeed_failed_title:                Fehlerzeile
+forumfeed_failed_desc:                 Darstellung der Threadeinträge, falls ein Fehler auftrat
+forumfeed_empty_title:                 Leerer Feed
+forumfeed_empty_desc:                  Darstellung der Threadeinträge, falls der Feed keine Threads enthält

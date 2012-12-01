@@ -624,3 +624,21 @@ partner_navi_body_description:         Design of affiliate list in the menu.
 partner_navi_body_help_1:              Einzelne Ausgabe aller Partner.
 partner_navi_body_help_2:              Einzelne Ausgabe der Partner, die permanent angezeigt werden sollen.
 partner_navi_body_help_3:              Einzelne Ausgabe der Partner, die nicht permanent angezeigt werden sollen.
+
+
+forumfeed_entry_title:                 Thread Entry
+forumfeed_entry_desc:                  Design of a single thread entry in the list
+forumfeed_entry_thread_id:             Thread ID
+forumfeed_entry_thread_author:         Name of thread author
+forumfeed_entry_thread_title:          Title of the thread
+forumfeed_entry_thread_date:           Date of creation of the thread (day only)
+forumfeed_entry_thread_time:           Time of creation of the thread (time only)
+
+forumfeed_body_title:                  Thread List
+forumfeed_body_desc:                   Design of the list of newest threads
+forumfeed_body_entries:                Includes the thread entries one by one
+
+forumfeed_failed_title:                Failure Line
+forumfeed_failed_desc:                 Design of thread entries, if feed retrieval failed
+forumfeed_empty_title:                 Empty Feed
+forumfeed_empty_desc:                  Design of thread entries, if the feed is empty
