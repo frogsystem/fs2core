@@ -28,11 +28,9 @@
     as well as that of the covered work.
 */
 
-
-$xml_elements = array();
-$thread_elem = array();
-$feedThreadList = array();
-
+/* tries to get the contents of a remote file via cURL.
+   Returns content as string in case of success, or false if an error occured.
+*/
 function getRemoteFileCURL($url)
 {
   $ch = curl_init();
@@ -54,65 +52,70 @@ function getRemoteFileCURL($url)
   return $content;
 }
 
-
-function startHandler($parser, $name, $attr)
+/* class that handles parsing of XML feed */
+class ForumFeedParser
 {
-  global $xml_elements, $thread_elem;
+  public $xml_elements = array();
+  public $thread_elem = array();
+  public $feedThreadList = array();
+  public $baseURL = '';
 
-  $xml_elements[] = $name;
-  if ($name==='thread')
+  public function startHandler($parser, $name, $attr)
   {
-    $thread_elem = array('id' => intval($attr['id']));
+    $this->xml_elements[] = $name;
+    if ($name==='thread')
+    {
+      $this->thread_elem = array('id' => intval($attr['id']));
+    }
   }
-}
 
-function endHandler($parser, $name)
-{
-  global $xml_elements, $thread_elem, $feedThreadList;
-
-  if ($name==='thread')
+  public function endHandler($parser, $name)
   {
-    $feedThreadList[] = $thread_elem;
+    if ($name==='thread')
+    {
+      $this->feedThreadList[] = $this->thread_elem;
+    }
+    array_pop($this->xml_elements);
   }
-  array_pop($xml_elements);
-}
 
-function cdataHandler($parser, $data)
-{
-  global $xml_elements, $thread_elem;
-
-  $current_elem = end($xml_elements);
-  if ($current_elem===NULL) return;
-  switch ($current_elem)
+  public function cdataHandler($parser, $data)
   {
-    case 'title':
-    case 'author':
-    case 'date':
-    case 'time':
-         if (!isset($thread_elem[$current_elem]))
-           $thread_elem[$current_elem] = $data;
-         else $thread_elem[$current_elem] .= $data;
-         break;
-  }//swi
-  return;
-}
+    $current_elem = end($this->xml_elements);
+    if ($current_elem===NULL) return;
+    switch ($current_elem)
+    {
+      case 'title':
+      case 'author':
+      case 'date':
+      case 'time':
+           if (!isset($this->thread_elem[$current_elem]))
+             $this->thread_elem[$current_elem] = $data;
+           else $this->thread_elem[$current_elem] .= $data;
+           break;
+      case 'url':
+           $this->baseURL .= $data;
+           break;
+    }//swi
+    return;
+  }
 
-function parseForumFeedXML($url)
-{
-  global $feedThreadList;
+  public function parse($url)
+  {
+    $xml_content = getRemoteFileCURL($url);
+    if ($xml_content===false) return false;
 
-  $xml_content = getRemoteFileCURL($url);
-  if ($xml_content===false) return false;
+    $parser = xml_parser_create('ISO-8859-1');
+    xml_set_object($parser, $this);
+    xml_set_element_handler($parser, 'startHandler', 'endHandler');
+    xml_set_character_data_handler($parser, 'cdataHandler');
+    xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+    xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'ISO-8859-1');
+    $status = xml_parse($parser, $xml_content, true);
+    xml_parser_free($parser);
+    if ($status===0) return false; //xml_parse failed, if status is zero
+    return $this->feedThreadList;
+  }
 
-  $parser = xml_parser_create('ISO-8859-1');
-  xml_set_element_handler($parser, 'startHandler', 'endHandler');
-  xml_set_character_data_handler($parser, 'cdataHandler');
-  xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-  xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'ISO-8859-1');
-  $status = xml_parse($parser, $xml_content, true);
-  xml_parser_free($parser);
-  if ($status===0) return false; //xml_parse failed, if status is zero
-  return $feedThreadList;
-}
+} //end of class
 
 ?>

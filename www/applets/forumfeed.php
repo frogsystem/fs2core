@@ -34,7 +34,9 @@
 
   require_once(FS2_ROOT_PATH . 'includes/forumfeedfunctions.php');
 
-  $threads = parseForumFeedXML($ff_config['feed_url']);
+  $ffp = new ForumFeedParser();
+
+  $threads = $ffp->parse($ff_config['feed_url']);
   $threads_output = '';
 
   if ($threads===false)
@@ -62,12 +64,13 @@
       $template->load('THREAD_ENTRY');
       $template->tag('id', $threads[$i]['id']);
       if (strlen($threads[$i]['title'])>$ff_config['title_max'])
-        $template->tag('title', substr($threads[$i]['title'], 0, $ff_config['title_max']).'...' );
+        $template->tag('title', htmlentities(substr($threads[$i]['title'], 0, $ff_config['title_max']), ENT_COMPAT, 'ISO-8859-1').'...' );
       else
-        $template->tag('title', $threads[$i]['title']);
-      $template->tag('author', $threads[$i]['author']);
+        $template->tag('title', htmlentities($threads[$i]['title'], ENT_COMPAT, 'ISO-8859-1'));
+      $template->tag('author', htmlentities($threads[$i]['author'], ENT_COMPAT, 'ISO-8859-1'));
       $template->tag('date', $threads[$i]['date']);
       $template->tag('time', $threads[$i]['time']);
+      $template->tag('base', $ffp->baseURL);
       $threads_output .= $template->display();
     }//for
   }//else
@@ -76,6 +79,7 @@
   $template->setFile('0_forumfeed.tpl');
   $template->load('THREADS_BODY');
   $template->tag('entries', $threads_output);
+  $template->tag('base', $ffp->baseURL);
 
   $template = $template->display();
 ?>

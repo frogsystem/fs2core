@@ -633,6 +633,7 @@ forumfeed_entry_thread_author:         Name of thread author
 forumfeed_entry_thread_title:          Title of the thread
 forumfeed_entry_thread_date:           Date of creation of the thread (day only)
 forumfeed_entry_thread_time:           Time of creation of the thread (time only)
+forumfeed_base:                        Basic forum URL
 
 forumfeed_body_title:                  Thread List
 forumfeed_body_desc:                   Design of the list of newest threads

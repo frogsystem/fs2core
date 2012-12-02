@@ -17,6 +17,7 @@
         array ( 'tag' => 'author', 'text' => $FD->text('template', 'forumfeed_entry_thread_author') ),
         array ( 'tag' => 'date', 'text' => $FD->text('template', 'forumfeed_entry_thread_date') ),
         array ( 'tag' => 'time', 'text' => $FD->text('template', 'forumfeed_entry_thread_time') ),
+        array ( 'tag' => 'base', 'text' => $FD->text('template', 'forumfeed_base') )
     )
   );
 
@@ -27,7 +28,8 @@
     'rows' => 8,
     'cols' => 66,
     'help' => array (
-        array ( 'tag' => 'entries', 'text' => $FD->text('template', 'forumfeed_body_entries') )
+        array ( 'tag' => 'entries', 'text' => $FD->text('template', 'forumfeed_body_entries') ),
+        array ( 'tag' => 'base', 'text' => $FD->text('template', 'forumfeed_base') )
     )
   );
 

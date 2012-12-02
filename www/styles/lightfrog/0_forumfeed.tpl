@@ -1,6 +1,6 @@
 <!--section-start::THREAD_ENTRY--><div>
   <span style="float: left">
-    <a href="http://www.vbulletin-germany.com/forum/showthread.php?t={..id..}" target="_blank">
+    <a href="{..base..}showthread.php?t={..id..}" target="_blank">
       <b>{..title..}</b>
     </a> <small>({..author..})</small>
   </span>
@@ -11,9 +11,9 @@
 <!--section-start::THREADS_BODY--><p>
   <b>Neueste Forenthreads:</b>
 </p>
-<p>
+<div>
   {..entries..}
-</p>
+</div>
 <!--section-end::THREADS_BODY-->
 
 <!--section-start::THREADS_FAILED--><div align="center">
