@@ -85,9 +85,10 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('wp_edit', 'gallery_wp', 'admin_wallpaperedit.php', 2, 0),
 ('gen_config', 'general', 'admin_general_config.php', 1, 0),
 ('gen_announcement', 'general', 'admin_allannouncement.php', 2, 0),
-('gen_captcha', 'general', 'admin_captcha_config.php', 2, 0),
+('gen_captcha', 'general', 'admin_captcha_config.php', 3, 0),
 ('gen_emails', 'general', 'admin_allemail.php', 4, 0),
 ('gen_phpinfo', 'general', 'admin_allphpinfo.php', 5, 0),
+('forumfeed_config', 'general', 'admin_forumfeed_config.php', 6, 0),
 ('group_config', 'groups', 'admin_group_config.php', 1, 0),
 ('group_admin', 'groups', 'admin_group_admin.php', 2, 0),
 ('group_rights', 'groups', 'admin_group_rights.php', 3, 0),
@@ -503,7 +504,8 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('preview_images', '{"active":"1","type_priority":"1","use_priority_only":"0","timed_deltime":"604800"}', 'none'),
 ('groups', '{"group_pic_x":"250","group_pic_y":"25","group_pic_size":"100"}', 'none'),
 ('screens', '{"screen_x":"3500","screen_y":"3500","screen_thumb_x":"120","screen_thumb_y":"90","screen_size":"2048","screen_rows":"5","screen_cols":"3","screen_order":"id","screen_sort":"desc","show_type":"1","show_size_x":"950","show_size_y":"700","show_img_x":"800","show_img_y":"600","wp_x":"2000","wp_y":"2000","wp_thumb_x":"200","wp_thumb_y":"150","wp_size":"2048","wp_rows":"6","wp_cols":"2","wp_order":"id","wp_sort":"desc"}', 'none'),
-('users', '{"user_per_page":"30","registration_antispam":"1","avatar_x":"110","avatar_y":"110","avatar_size":"20","reg_date_format":"l, j. F Y","user_list_reg_date_format":"j. F Y"}', 'none');
+('users', '{"user_per_page":"30","registration_antispam":"1","avatar_x":"110","avatar_y":"110","avatar_size":"20","reg_date_format":"l, j. F Y","user_list_reg_date_format":"j. F Y"}', 'none'),
+('forumfeed', '{"feed_url":"http:\\/\\/www.vbulletin-germany.com\\/forum\\/external.php?type=xml","thread_limit":"5","title_max":"45"}', 'none');
 
 -- --------------------------------------------------------
 

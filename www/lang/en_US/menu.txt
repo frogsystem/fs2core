@@ -76,6 +76,8 @@ page_title_gen_emails:          Edit Email Templates
 page_link_gen_emails:           Emails
 page_title_gen_phpinfo:         PHP & Server Information
 page_link_gen_phpinfo:          PHP Info
+page_title_forumfeed_config:    Forum Feed Configuration
+page_link_forumfeed_config:     Forum Feed
 
 # Editor
 page_title_editor_config:       Edit Settings

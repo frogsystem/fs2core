@@ -28,16 +28,13 @@
     as well as that of the covered work.
 */
 
-  //change the URL to the URL of your feed!
-  $url = 'http://www.vbulletin-germany.com/forum/external.php?type=xml';
-  //the maximum number of thread entries - change if desired!
-  $limit = 5;
-  //the maximum length of a title before it gets shortened
-  $title_max = 45;
+  //load config from DB
+  $ff_config = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'forumfeed'"));
+  $ff_config = json_array_decode($ff_config['config_data']);
 
   require_once(FS2_ROOT_PATH . 'includes/forumfeedfunctions.php');
 
-  $threads = parseForumFeedXML($url);
+  $threads = parseForumFeedXML($ff_config['feed_url']);
   $threads_output = '';
 
   if ($threads===false)
@@ -57,15 +54,15 @@
   else
   {
     //successful retrieval of threads; now list them
-    $limit = (count($threads)<$limit) ? count($threads) : $limit;
+    $limit = (count($threads)<$ff_config['thread_limit']) ? count($threads) : $ff_config['thread_limit'];
     for ($i=0; $i<$limit; $i=$i+1)
     {
       $template = new template();
       $template->setFile('0_forumfeed.tpl');
       $template->load('THREAD_ENTRY');
       $template->tag('id', $threads[$i]['id']);
-      if (strlen($threads[$i]['title'])>$title_max)
-        $template->tag('title', substr($threads[$i]['title'], 0, $title_max).'...' );
+      if (strlen($threads[$i]['title'])>$ff_config['title_max'])
+        $template->tag('title', substr($threads[$i]['title'], 0, $ff_config['title_max']).'...' );
       else
         $template->tag('title', $threads[$i]['title']);
       $template->tag('author', $threads[$i]['author']);
