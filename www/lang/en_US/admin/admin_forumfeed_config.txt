@@ -2,6 +2,7 @@ pageinfo_title:             Forum feed configuration
 
 feed_url:                   Feed URL
 feed_url_desc:              URL of the XML feed that contains the newest threads
+feed_notes:                 <b>Hint:</b> Currently only XML feeds of vBulletin forums are supported.
 thread_limit:               Number of threads
 thread_limit_desc:          Max. number of threads that will be shown by the applet
 title_max:                  Shorten title to

@@ -12,7 +12,8 @@
         <span class="small"><!--LANG::feed_url_desc--></span>
       </td>
       <td>
-        <input class="half" name="feed_url" maxlength="100" value="<!--TEXT::feed_url-->">
+        <input class="half" name="feed_url" maxlength="100" value="<!--TEXT::feed_url-->"><br>
+        <span class="small">(<!--LANG::feed_notes-->)</span>
       </td>
     </tr>
 

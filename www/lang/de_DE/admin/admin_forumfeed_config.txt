@@ -2,7 +2,8 @@ pageinfo_title:             Konfiguration des Forentickers
 
 feed_url:                   Feed-URL
 feed_url_desc:              URL des XML-Feeds mit den neusten Forenthreads
+feed_notes:                 <b>Hinweis:</b> Zur Zeit werden nur XML-Feeds von vBulletin-Foren unterst&uuml;tzt.
 thread_limit:               Threadanzahl
 thread_limit_desc:          Max. Anzahl der Threads, die im Forenticker aufgelistet werden
-title_max:                  Titel kürzen auf
+title_max:                  Titel k&uuml;rzen auf
 title_max_desc:             Max. Zeichenanzahl eines Threadtitels
