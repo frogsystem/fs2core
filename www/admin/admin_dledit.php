@@ -197,7 +197,7 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
     {
         $_POST['options'] = count($_POST['fname']);
     }
-    $_POST['options'] += $_POST['optionsadd'];
+    $_POST['options'] += isset($_POST['optionsadd']) ? $_POST['optionsadd'] : 0;
 
     $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
     $admin_dl_config_arr = json_array_decode($data);
@@ -216,7 +216,7 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
                             <tr>
                                 <td class="config" valign="top" width="40%">
                                     Kategorie:<br>
-                                    <font class="small">Die News geh&ouml;rt zur Kategorie</font>
+                                    <font class="small">Der Download geh&ouml;rt zur Kategorie</font>
                                 </td>
                                 <td class="config" width="60%" valign="top">
                                     <select name="catid">
@@ -280,7 +280,7 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
     $index = mysql_query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
     $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);
 
-    // Mirros auflisten
+    // Mirrors auflisten
     for ($i=1; $i<=$_POST['options']; $i++)
     {
         $j = $i - 1;
@@ -311,7 +311,7 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
                                     <input  type="button" onClick=\'document.getElementById("furl'.$j.'").value="'.$admin_dl_config_arr['quickinsert'].'";\' value="Quick-Insert Pfad"><br>
                                     <input class="text" size="30" value="'.killhtml($_POST['fsize'][$j]).'" name="fsize['.$j.']" maxlength="8" id="fsize'.$j.'"> KB<br />
                                     <input class="text" size="30" value="'.$_POST['fcount'][$j].'" name="fcount['.$j.']" maxlength="100"> Downloads<br />
-                                    Ja, Mirror: <input type="checkbox" name="fmirror['.$j.'] '.$f_checked.'"><br />
+                                    Ja, Mirror: <input type="checkbox" name="fmirror['.$j.']" '.$f_checked.'><br />
                                     L&ouml;schen: <input name="delf['.$j.']" id="delf['.$j.']" value="'.$_POST['fid'][$j].'" type="checkbox"
                                     onClick=\'delalert ("delf['.$j.']", "Soll das File (Nr. '.$i.') wirklich gelöscht werden?")\'>
                                     <input type="hidden" name="fid['.$j.']" value="'.$_POST['fid'][$j].'">
@@ -418,7 +418,7 @@ else
     echo'
                                         <option value="0">Alle Kategorien</option>
                                         <option value="0">--------------------------------------</option>
-    ';  
+    ';
 
     $valid_ids = array();
     get_dl_categories ($valid_ids, -1);
