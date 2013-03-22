@@ -84,7 +84,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         $_POST['snippet_id'] = $_POST['snippet_id'][0];
 
         // Display Error Messages
-        if ( $_POST['sended'] == 'edit' ) {
+        if ( isset($_POST['sended']) && ($_POST['sended'] == 'edit') ) {
 
             // Shouldn't happen
 
@@ -281,6 +281,8 @@ if ( !isset ( $_POST['snippet_id'] ) )
             ';
         }
 
+        if (!isset($_POST['snippet_action']))
+          $_POST['snippet_action'] = '';
         // display footer with button
         echo'
                             <tr><td class="space"></td></tr>

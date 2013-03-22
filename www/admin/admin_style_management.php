@@ -52,12 +52,16 @@ if (
     $style_ini = FS2_ROOT_PATH . 'styles/' . stripslashes ( mysql_result ( $index, 0, 'style_tag' ) ) . '/style.ini';
     $ACCESS = new fileaccess();
     if ( $ACCESS->putFileData( $style_ini, $new_ini_data ) === FALSE ) {
-        $error_extenion = '<br>'.$FD->text("admin", "style_info_not_saved");
+        $error_extension = '<br>'.$FD->text('admin', 'style_info_not_saved');
+    }
+    else
+    {
+        $error_extension = '';
     }
 
     // Display Message
-    systext ( $FD->text("admin", "changes_saved").$error_extenion,
-        $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_ok") );
+    systext ( $FD->text('admin', 'changes_saved').$error_extension,
+        $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_ok') );
 
     // Unset Vars
     unset ( $_POST );
@@ -200,11 +204,11 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
         $_POST['style_id'] = $_POST['style_id'][0];
 
         // Display Error Messages
-        if ( $_POST['sended'] == 'edit' ) {
+        if ( isset($_POST['sended']) && ($_POST['sended'] == 'edit') ) {
 
-            $error_message = $FD->text("admin", "form_not_filled");
-            systext ( $FD->text("admin", "style_not_edited").'<br>'.$error_message,
-                $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_save_error") );
+            $error_message = $FD->text('admin', 'form_not_filled');
+            systext ( $FD->text('admin', 'style_not_edited').'<br>'.$error_message,
+                $FD->text('admin', 'error'), TRUE, $FD->text('admin', 'icon_save_error') );
 
         // Get Data from DB
         } else {
@@ -597,6 +601,8 @@ if ( !isset ( $_POST['style_id'] ) )
             ';
         }
 
+        if (!isset($_POST['style_action']))
+          $_POST['style_action'] = '';
         // display footer with button
         echo'
                             <tr><td class="space"></td></tr>

@@ -174,7 +174,7 @@ function action_comments_select ( $DATA )
                         $index = mysql_query ( '
                                                                         SELECT *
                                                                         FROM '.$FD->config('pref').'comments
-                                                                        WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\' 
+                                                                        WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\'
                                                                         ORDER BY comment_date DESC
                         ', $FD->sql()->conn() );
 
@@ -208,8 +208,8 @@ function action_comments_select ( $DATA )
                                                         <tr>
                                                             <td class="right" colspan="4">
                                                                 <select class="select_type" name="comment_action" size="1">
-                                                                    <option class="select_one" value="edit" '.getselected( 'edit', $_POST['comment_action'] ).'>'.$FD->text('admin', 'selection_edit').'</option>
-                                                                    <option class="select_red" value="delete" '.getselected( 'delete', $_POST['comment_action'] ).'>'.$FD->text('admin', 'selection_delete').'</option>
+                                                                    <option class="select_one" value="edit" '.getselected( 'edit', isset($_POST['comment_action']) ? $_POST['comment_action'] : '').'>'.$FD->text('admin', 'selection_edit').'</option>
+                                                                    <option class="select_red" value="delete" '.getselected( 'delete', isset($_POST['comment_action']) ? $_POST['comment_action'] : '' ).'>'.$FD->text('admin', 'selection_delete').'</option>
                                                                 </select>
                                                             </td>
                                                         </tr>
@@ -234,7 +234,7 @@ function action_comments_edit ( $DATA )
     $index = mysql_query ( '
                                                         SELECT *
                                                         FROM '.$FD->config('pref').'comments
-                                                        WHERE comment_id = '.$DATA['comment_id']." AND content_type='news' 
+                                                        WHERE comment_id = '.$DATA['comment_id']." AND content_type='news'
         ", $FD->sql()->conn() );
     $comment_arr = mysql_fetch_assoc ( $index );
 
@@ -256,7 +256,7 @@ function action_comments_edit ( $DATA )
                             <tr>
                                 <td class="config" valign="top">
                                     Datum:<br>
-                                    <font class="small">Das Kommentar wurde geschreiben am</font>
+                                    <font class="small">Das Kommentar wurde geschrieben am</font>
                                 </td>
                                 <td class="config" valign="top">
                                     '.$comment_arr['comment_date_formated'].'
@@ -265,7 +265,7 @@ function action_comments_edit ( $DATA )
                             <tr>
                                 <td class="config" valign="top">
                                     Poster:<br>
-                                    <font class="small">Diese Person hat das Kommentar geschreiben</font>
+                                    <font class="small">Diese Person hat das Kommentar geschrieben</font>
                                 </td>
                                 <td class="config" valign="top">
                                     '.$comment_arr['comment_poster'].'
@@ -761,10 +761,10 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
         $link_list = $adminpage->get('link_list');
 
         //link add
-        $adminpage->addCond('target_0', $_POST['new_link_target'] === 0);
-        $adminpage->addCond('target_1', $_POST['new_link_target'] === 1);
+        $adminpage->addCond('target_0', isset($_POST['new_link_target']) && $_POST['new_link_target'] === 0);
+        $adminpage->addCond('target_1', isset($_POST['new_link_target']) && $_POST['new_link_target'] === 1);
         $adminpage->addCond('button', true);
-        $adminpage->addText('name', $_POST['new_link_name']);
+        $adminpage->addText('name', isset($_POST['new_link_name']) ? $_POST['new_link_name'] : '');
         $adminpage->addText('name_name', 'new_link_name');
         $adminpage->addText('url', $_POST['new_link_url']);
         $adminpage->addText('url_name', 'new_link_url');
@@ -819,7 +819,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
             settype ( $_POST['news_id'], 'integer' );
             if (
                     $_POST['news_id'] && $_POST['news_action'] == 'comments' &&
-                    $_POST['comment_id'] && $_POST['comment_action']
+                    isset($_POST['comment_id']) && isset($_POST['comment_action'])
                 )
             {
                 // Edit Comment

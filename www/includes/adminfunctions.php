@@ -518,6 +518,8 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
         $class2 = 'class="nomonospace"';
     }
 
+    if (!isset($width2))
+      $width2 = '';
     $style = $name2.' '.$class2.' style="'.$width2.' '.$height2.'"';
 
   $smilies = '';

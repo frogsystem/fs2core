@@ -33,11 +33,11 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
       $_POST['newname'] = basename ($_FILES['cimg']['name'],'.'.$oldname_data);
   }
 
-  settype ($_POST['cat'],integer);
-  settype ($_POST['width'],integer);
-  settype ($_POST['height'],integer);
+  settype ($_POST['cat'], 'integer');
+  settype ($_POST['width'], 'integer');
+  settype ($_POST['height'], 'integer');
 
-  if (!image_exists('media/content/',$_POST['newname'])  AND !image_exists('media/content/',$_POST['newname']."_s"))
+  if (!image_exists('media/content/',$_POST['newname'])  AND !image_exists('media/content/',$_POST['newname'].'_s'))
   {
     $upload = upload_img($_FILES['cimg'], 'media/content/', $_POST['newname'], 1024*1024, 9999, 9999);
     $message = upload_img_notice ( $upload );
@@ -81,6 +81,10 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
     }
 
 
+    if(!isset($_POST['oldname']))
+      $_POST['oldname'] = 0;
+    if(!isset($_POST['newname']))
+      $_POST['newname'] = '';
 
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
@@ -135,6 +139,12 @@ if(count($cats) > 0){
                                 </td>
                             </tr>';
 }
+if(!isset($_POST['thumb']))
+  $_POST['thumb'] = 0;
+if(!isset($_POST['width']))
+  $_POST['width'] = '';
+if(!isset($_POST['height']))
+  $_POST['height'] = '';
 echo '
                             <tr>
                                 <td class="config" valign="top">

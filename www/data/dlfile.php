@@ -77,6 +77,8 @@ if (mysql_num_rows($index) > 0)
       $messages_template .= $FD->text('frontend', 'dl_not_logged_in');
     }
 
+    if (!isset($messages_template))
+      $messages_template = '';
     if ($messages_template != '')
       $messages_template .= '<br>';
     $messages_template .= $FD->text('frontend', 'dl_not_save_as');
@@ -86,6 +88,10 @@ if (mysql_num_rows($index) > 0)
     if ( $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use", $FD->sql()->conn() )) {
         $stats_arr['number'] = mysql_num_rows($index);
 
+        $stats_arr['size'] = 0;
+        $stats_arr['hits'] = 0;
+        $stats_arr['traffic'] = 0;
+        $files = '';
         while ($file_arr = mysql_fetch_assoc($index)) {
             $stats_arr['size'] = $stats_arr['size'] + $file_arr['file_size'];
             $stats_arr['hits'] = $stats_arr['hits'] + $file_arr['file_count'];
@@ -124,7 +130,7 @@ if (mysql_num_rows($index) > 0)
     }
 
     // Stats erstellen
-    $stats_arr['number'] = ( $stats_arr['number'] == 1 ) ? $stats_arr['number'].' '.$FD->text("frontend", "download_file") : $stats_arr['number'].' '.$FD->text("frontend", "download_files");
+    $stats_arr['number'] = ( $stats_arr['number'] == 1 ) ? $stats_arr['number'].' '.$FD->text('frontend', 'download_file') : $stats_arr['number'].' '.$FD->text('frontend', 'download_files');
     $stats_arr['traffic'] = getsize($stats_arr['traffic']);
     $stats_arr['size'] = getsize($stats_arr['size']);
 
@@ -164,6 +170,7 @@ if (mysql_num_rows($index) > 0)
     $valid_ids = array();
     get_dl_categories ($valid_ids, $dl_arr['cat_id'], $config_arr['dl_show_sub_cats'] );
 
+    $navi_lines = '';
     foreach ( $valid_ids as $cat ) {
         if ($cat['cat_id'] == $dl_arr['cat_id']) {
             $icon_url = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';

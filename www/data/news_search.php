@@ -15,8 +15,9 @@ if (mysql_num_rows($index) == 0) {
     $years = '<option value="'.$years.'">'.$years.'</option>';
 } else {
     $years_arr = mysql_fetch_assoc($index);
-    for ($years_arr[i]=date('Y',$years_arr['news_date']);$years_arr[i]<=date('Y');$years_arr[i]++) {
-        $years .= '<option value="'.$years_arr[i].'">'.$years_arr[i].'</option>';
+    $years = '';
+    for ($years_arr['i']=date('Y',$years_arr['news_date']);$years_arr['i']<=date('Y');$years_arr['i']++) {
+        $years .= '<option value="'.$years_arr['i'].'">'.$years_arr['i'].'</option>';
     }
 }
 
@@ -26,7 +27,7 @@ $template->setFile('0_news.tpl');
 $template->load('SEARCH');
 
 $template->tag('years', $years );
-$template->tag('keyword', kill_replacements ( $_REQUEST['keyword'], TRUE ) );
+$template->tag('keyword', kill_replacements ( isset($_REQUEST['keyword']) ? $_REQUEST['keyword'] : '' , TRUE ) );
 
 $template = $template->display ();
 $searchform_template = $template;
@@ -36,7 +37,7 @@ $searchform_template = $template;
 /// News nach Datum anzeigen ///
 ////////////////////////////////
 
-if ($_REQUEST['year'] && $_REQUEST['month'])
+if (isset($_REQUEST['year']) && isset($_REQUEST['month']))
 {
     settype($_REQUEST['year'], 'integer');
     settype($_REQUEST['month'], 'integer');
@@ -57,6 +58,7 @@ if ($_REQUEST['year'] && $_REQUEST['month'])
 
     if (mysql_num_rows($index) > 0)  // News vorhanden?
     {
+        $news_template = '';
         while ($news_arr = mysql_fetch_assoc($index))
         {
             $news_template .= display_news($news_arr, $FD->cfg('news', 'html_code'), $FD->cfg('news', 'fs_code'), $FD->cfg('news', 'para_handling'));
@@ -73,7 +75,7 @@ if ($_REQUEST['year'] && $_REQUEST['month'])
 // News nach Keyword anzeigen //
 ////////////////////////////////
 
-elseif ($_REQUEST['keyword'])
+elseif (isset($_REQUEST['keyword']))
 {
     $_REQUEST['keyword'] = savesql($_REQUEST['keyword']);
 
@@ -89,6 +91,7 @@ elseif ($_REQUEST['keyword'])
     ', $FD->sql()->conn() );
     if (mysql_num_rows($index) > 0)  // News vorhanden?
     {
+        $news_template = '';
         while ($news_arr = mysql_fetch_assoc($index))
         {
             $news_template .= display_news($news_arr, $FD->cfg('news', 'html_code'), $FD->cfg('news', 'fs_code'), $FD->cfg('news', 'para_handling'));

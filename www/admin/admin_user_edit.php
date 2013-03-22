@@ -315,7 +315,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
 
         // Display Error Messages
-        if ( $_POST['sended'] == 'edit' ) {
+        if ( isset($_POST['sended']) && ($_POST['sended'] == 'edit') ) {
             $message = array();
             if ( $_POST['user_id'] == 1 ) {
                 $message[] = 'Der Super-Administrator kann nicht bearbeitet werden';
@@ -694,7 +694,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
 if ( !isset ( $_POST['user_id'] ) )
 {
-    // dislplay search form
+    if (!isset($_POST['filter']))
+      $_POST['filter'] = '';
+    // display search form
     echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="user_edit">

@@ -197,7 +197,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text("frontend", "group_image_of").' '.$group_arr['user_group_name'].'">' : '' );
 
         unset ( $title_style );
-        $title_style .= ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : '' );
+        $title_style = ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : '' );
         switch ( $group_arr['user_group_highlight'] ) {
             case 1:
                 $highlight_css = 'font-weight:bold;';

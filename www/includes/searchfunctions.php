@@ -50,7 +50,7 @@ function delete_search_index_for_one ( $ID, $TYPE ) {
     mysql_query ( '
                     DELETE FROM `'.$FD->config('pref')."search_time`
                     WHERE `search_time_type` = '".$TYPE."'
-                    AND `search_time_document_id` = '".$$ID."'
+                    AND `search_time_document_id` = '".$ID."'
     ", $FD->sql()->conn() );
 }
 

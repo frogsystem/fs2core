@@ -132,6 +132,7 @@ if (isset($_GET['catid']))
             $zaehler = 0;
             $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen WHERE cat_id = $cat_arr[cat_id] ORDER by screen_id $config_arr[screen_sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]", $FD->sql()->conn() );
 
+            $pics = '';
             while ($screen_arr = mysql_fetch_assoc($index))
             {
                 $screen_arr['screen_thumb'] = image_url('images/screenshots/', $screen_arr['screen_id'].'_s');
@@ -210,6 +211,7 @@ if (isset($_GET['catid']))
 
 else {
     $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_visibility = 1 ORDER BY cat_date DESC', $FD->sql()->conn() );
+    $cats = '';
     while ($cat_arr = mysql_fetch_assoc($index))
     {
         if ($cat_arr['cat_type']==2) {

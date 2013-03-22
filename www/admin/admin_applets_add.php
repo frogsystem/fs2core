@@ -63,7 +63,7 @@ if (
 /////////////////////////
 
 // Security Functions
-$_POST['applet_file'] = killhtml ( $_POST['applet_file'] );
+$_POST['applet_file'] = killhtml ( isset($_POST['applet_file']) ? $_POST['applet_file'] : '' );
 
 settype ( $_POST['applet_active'], 'integer' );
 settype ( $_POST['applet_output'], 'integer' );
@@ -88,6 +88,10 @@ if ( isset ( $_POST['sended'] ) ) {
 }
 
 
+if (!isset($_POST['applet_include']))
+{
+  $_POST['applet_include'] = INCLUDE_ALWAYS;
+}
 // Display Form
 echo '
                     <form action="" method="post">

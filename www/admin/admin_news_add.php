@@ -60,11 +60,11 @@ if (
     $_POST['news_search_update'] = 0;
     $data = frompost($news_cols);
     unset($data['news_id']);
-    
+
     // MySQL-Insert-Query
     try {
         // Get User
-        try {    
+        try {
             $user_id = $FD->sql()->getField('user', 'user_id', array('W' => "`user_name` = '".$FD->sql()->escape($_POST['user_name'])."'"));
         } catch (Exception $e) {
             Throw $e;
@@ -73,9 +73,9 @@ if (
         if (empty($user_id)) {
             Throw new FormException($FD->text('admin', 'no_user_found_for_name'));
         }
-        
+
         $data['user_id'] = $user_id;
-        
+
         // Save News
         $newsid = $sql->save('news', $data, 'news_id');
 
@@ -209,7 +209,7 @@ if ( TRUE ) {
         $_POST['news_comments_allowed'] = 1;
         $_POST['user_id'] = $_SESSION['user_id'];
         $_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
-        
+
         $_POST['d'] = date('d');
         $_POST['m'] = date('m');
         $_POST['y'] = date('Y');
@@ -231,6 +231,8 @@ if ( TRUE ) {
 
     // cat options
     initstr($cat_options);
+    if (!isset($_POST['cat_id']))
+      $_POST['cat_id'] = 0;
     if ($FD->cfg('news', 'acp_force_cat_selection') == 1) {
         $cat_options .= '<option value="-1" '.getselected(-1, $_POST['cat_id']).'>'.$FD->text("admin", "please_select").'</option>'."\n";
         $cat_options .= '<option value="-1">'.$FD->text("admin", "select_hr").'</option>'."\n";
@@ -246,7 +248,7 @@ if ( TRUE ) {
     //link entries
     initstr($link_entries);
     $c = 0;
-    if (!is_array($_POST['link_name']))
+    if (!isset($_POST['link_name']) || !is_array($_POST['link_name']))
         $_POST['link_name'] = array();
 
     foreach($_POST['link_name'] as $id => $val) {
@@ -267,10 +269,10 @@ if ( TRUE ) {
     $link_list = $adminpage->get('link_list');
 
     //link add
-    $adminpage->addCond('target_0', $_POST['new_link_target'] === 0);
-    $adminpage->addCond('target_1', $_POST['new_link_target'] === 1);
+    $adminpage->addCond('target_0', isset($_POST['new_link_target']) && $_POST['new_link_target'] === 0);
+    $adminpage->addCond('target_1', isset($_POST['new_link_target']) && $_POST['new_link_target'] === 1);
     $adminpage->addCond('button', true);
-    $adminpage->addText('name', $_POST['new_link_name']);
+    $adminpage->addText('name', isset($_POST['new_link_name']) ? $_POST['new_link_name'] : '');
     $adminpage->addText('name_name', 'new_link_name');
     $adminpage->addText('url', $_POST['new_link_url']);
     $adminpage->addText('url_name', 'new_link_url');
@@ -294,7 +296,7 @@ if ( TRUE ) {
     $adminpage->addText('html', $config_arr['html']);
     $adminpage->addText('fs', $config_arr['fs']);
     $adminpage->addText('para', $config_arr['para']);
-    $adminpage->addText('the_editor', create_editor('news_text', $_POST['news_text'], '', '250px', 'full', FALSE));
+    $adminpage->addText('the_editor', create_editor('news_text', isset($_POST['news_text']) ? $_POST['news_text'] : '', '', '250px', 'full', FALSE));
     $adminpage->addText('link_list', $link_list);
     $adminpage->addText('link_add', $link_add);
 
