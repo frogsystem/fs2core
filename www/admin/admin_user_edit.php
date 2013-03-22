@@ -315,7 +315,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
 
         // Display Error Messages
-        if ( $_POST['sended'] == 'edit' ) {
+        if ( isset($_POST['sended']) && ($_POST['sended'] == 'edit') ) {
             $message = array();
             if ( $_POST['user_id'] == 1 ) {
                 $message[] = 'Der Super-Administrator kann nicht bearbeitet werden';

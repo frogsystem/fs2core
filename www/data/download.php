@@ -37,7 +37,7 @@ if (isset($_GET['keyword']) && $_GET['keyword'] != '')
     $query = "WHERE cat_id = $_GET[cat_id] AND";
     if ($_GET['cat_id'] == 0) {
        $query = 'WHERE';
-       $page_titel = $FD->text("frontend", "download_all_downloads");
+       $page_titel = $FD->text('frontend', 'download_all_downloads');
     }
 
 }
@@ -50,6 +50,11 @@ if (isset($_GET['keyword']) && $_GET['keyword'] != '')
 $valid_ids = array();
 get_dl_categories ($valid_ids, $_GET['cat_id'], $config_arr['dl_show_sub_cats'] );
 
+$navi_lines = '';
+if (!isset($page_titel))
+{
+  $page_titel = '';
+}
 foreach ($valid_ids as $cat) {
     $cat['cat_name'] = stripslashes ( $cat['cat_name'] );
 

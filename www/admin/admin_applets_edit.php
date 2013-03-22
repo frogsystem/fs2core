@@ -94,7 +94,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         $_POST['applet_id'] = $_POST['applet_id'][0];
 
         // Display Error Messages
-        if ( $_POST['sended'] == 'edit' ) {
+        if ( isset($_POST['sended']) && ($_POST['sended'] == 'edit') ) {
 
             // Shouldn't happen
 
@@ -315,6 +315,8 @@ if ( !isset ( $_POST['applet_id'] ) )
             ';
         }
 
+        if (!isset($_POST['applet_action']))
+          $_POST['applet_action'] = '';
         // display footer with button
         echo'
                             <tr><td class="space"></td></tr>
