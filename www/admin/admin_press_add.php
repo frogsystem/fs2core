@@ -57,18 +57,18 @@ if ((isset($_POST['title']) AND $_POST['title'] != '')
 if(true)
 {
     //Initialisiere Werte
-    unset($press_arr['press_title']);
+    $press_arr['press_title'] = '';
     $press_arr['press_url'] = 'http://';
-    unset($press_arr['press_intro']);
-    unset($press_arr['press_text']);
-    unset($press_arr['press_note']);
-    unset($press_arr['press_game']);
-    unset($press_arr['press_cat']);
-    unset($press_arr['press_lang']);
+    $press_arr['press_intro'] = '';
+    $press_arr['press_text'] = '';
+    $press_arr['press_note'] = '';
+    $press_arr['press_game'] = 0;
+    $press_arr['press_cat'] = 0;
+    $press_arr['press_lang'] = 0;
 
-    unset($date['tag']);
-    unset($date['monat']);
-    unset($date['jahr']);
+    $date['tag'] = '';
+    $date['monat'] = '';
+    $date['jahr'] = '';
 
 
     //Zeit-Array für Heute Button
@@ -234,7 +234,7 @@ if(true)
                                         '.$FD->text("admin", "button_arrow").' Pressebericht hinzuf&uuml;gen
                                     </button>
                                 </td>
-                            </tr>                            
+                            </tr>
                         </table>
                     </form>
     ';

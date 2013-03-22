@@ -32,7 +32,7 @@ if ((isset($_POST['name']) AND $_POST['name'] != '')
     && isset($_POST['partner_id'])
    )
 {
-    unset($message);
+    $message = '';
 
     $_POST['name'] = savesql($_POST['name']);
     $_POST['link'] = savesql($_POST['link']);
@@ -75,6 +75,7 @@ if ((isset($_POST['name']) AND $_POST['name'] != '')
 //////////////////////////////
 elseif (isset($_POST['partner_action'])
     && $_POST['partner_action'] == 'delete'
+    && isset($_POST['sended'])
     && $_POST['sended'] == 'delete'
     && isset($_POST['partner_id'])
    )
@@ -121,7 +122,7 @@ elseif (isset($_POST['partner_action'])
 
 
     //Error Message
-    if ($_POST['sended'] == 'edit') {
+    if ( isset($_POST['sended']) && $_POST['sended'] == 'edit') {
         systext ($FD->text('admin', 'note_notfilled'));
 
         $partner_arr['partner_name'] = killhtml($_POST['name']);

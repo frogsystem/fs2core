@@ -394,7 +394,7 @@ function do_fscode_url ($action, $attributes, $content, $params, $node_object) {
     }
 
     // Return html or text
-    if ($params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true)
         return ($url == $text) ? $url : $text . ' ('.$url.')';
     else
         return '<a href="'.$url.'" target="_blank">'.$text.'</a>';
@@ -492,7 +492,7 @@ function do_fscode_email ($action, $attributes, $content, $params, $node_object)
     }
 
     // Return html or text
-    if ($params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true)
         return ($url == $text) ? $text : $text . ' ('.$url.')';
     else
         return '<a href="mailto:'.$url.'" target="_blank">'.$text.'</a>';
@@ -563,7 +563,7 @@ function do_fscode_img ($action, $attributes, $content, $params, $node_object) {
     $title_full = isset ($content_arr[2]) ? ' title="'.$content_arr[2].'"' : '';
 
     // Return html or text
-    if ($params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true)
         return (isset($content_arr[2])) ? $FD->text('frontend', 'image').': '.$content_arr[2]. ' ('.$content_arr[0].')' : $FD->text('frontend', 'image').': '.$content_arr[0];
     else
         if (!isset ($attributes['default']))
@@ -646,8 +646,8 @@ function do_fscode_code ($action, $attributes, $content, $params, $node_object) 
         unset($attributes['default']);
 
 
-    // Get HTMl or text
-    if ($params['text'] === true) {
+    // Get HTML or text
+    if (isset($params['text']) && $params['text'] === true) {
         if (!isset ($attributes['default'])) {
             $parsed = $FD->text('frontend', 'code').': '.$content;
         } else {
@@ -676,8 +676,8 @@ function do_fscode_quote ($action, $attributes, $content, $params, $node_object)
             return true;
     }
 
-    // Get HTMl or text
-    if ($params['text'] === true) {
+    // Get HTML or text
+    if (isset($params['text']) && $params['text'] === true) {
         if (!isset ($attributes['default'])) {
             $parsed = $FD->text('frontend', 'quote').': '.$content;
         } else {
@@ -712,8 +712,8 @@ function do_fscode_video ($action, $attributes, $content, $params, $node_object)
         return true;
     }
 
-    // Get HTMl or text
-    if ($params['text'] === true) {
+    // Get HTML or text
+    if (isset($params['text']) && $params['text'] === true) {
         return get_player($content, true, true, true);
     } else {
         if (!isset ($attributes['default'])) {

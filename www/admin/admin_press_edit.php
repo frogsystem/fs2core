@@ -127,8 +127,8 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
 
 
     //Error Message
-    if ($_POST['sended'] == 'edit') {
-        echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
+    if (isset($_POST['sended']) && $_POST['sended'] == 'edit') {
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
 
         $press_arr['press_title'] = killhtml($_POST['title']);
@@ -299,7 +299,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
                                         '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
                                     </button>
                                 </td>
-                            </tr>                          
+                            </tr>
                         </table>
                     </form>
     ';
@@ -416,6 +416,8 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
         $filterwhere = 'WHERE' . $filterwhere;
     }
 
+    if (!isset($_POST['gameid']))
+      $_POST['gameid'] = 0;
     if (!isset($_POST['order_by']))
     {
         $_POST['order_by'] = 'press_date';
@@ -424,6 +426,10 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
     {
         $_POST['order_type'] = 'desc';
     }
+    if (!isset($_POST['catid']))
+      $_POST['catid'] = 0;
+    if (!isset($_POST['langid']))
+      $_POST['langid'] = 0;
 
     echo'
                     <form action="" method="post">
@@ -595,7 +601,7 @@ if (!isset($_POST['press_id']) && mysql_num_rows($index) > 0)
                                         '.$FD->text("admin", "button_arrow").' '.$FD->text('admin', 'do_action_button_long').'
                                     </button>
                                 </td>
-                            </tr>                              
+                            </tr>
                         </table>
                     </form>
         ';

@@ -116,6 +116,7 @@
 			$cat_arr['cat_name'] = killhtml($cat_arr['cat_name']);
 		} else {
 			$cat_arr['cat_name'] = '?';
+			$cat_arr['cat_id'] = -1;
 		}
         $cat_arr['cat_pic'] = image_url('images/cat/', 'news_'.$cat_arr['cat_id']);
 
