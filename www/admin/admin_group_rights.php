@@ -19,7 +19,7 @@ function get_group_rights_array ( $GROUP_ID )
     while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
             $rights[] = $temp_arr['perm_id'];
     }
-    if ( !is_array ( $rights ) ) {
+    if ( !isset ( $rights ) || !is_array ( $rights ) ) {
         $rights = array ();
     }
 
@@ -61,7 +61,7 @@ if ( isset( $_POST['user_group_id'] ) ) {
         ", $FD->sql()->conn() );
         while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
             // permission is not longer granted
-            if ( $_POST[$page_arr['page_id']] == 0 && in_array ( $page_arr['page_id'], $group_rights ) ) {
+            if ( ( !isset($_POST[$page_arr['page_id']]) || ($_POST[$page_arr['page_id']] == 0) ) && in_array ( $page_arr['page_id'], $group_rights ) ) {
                 mysql_query ( '
                                 DELETE
                                 FROM `'.$FD->config('pref')."user_permissions`
@@ -71,7 +71,7 @@ if ( isset( $_POST['user_group_id'] ) ) {
                 ", $FD->sql()->conn() );
 
             // permission is now granted
-            } elseif ( $_POST[$page_arr['page_id']] == 1 && !in_array ( $page_arr['page_id'], $group_rights ) ) {
+            } elseif ( isset($_POST[$page_arr['page_id']]) && $_POST[$page_arr['page_id']] == 1 && !in_array ( $page_arr['page_id'], $group_rights ) ) {
                 mysql_query ( '
                                 INSERT
                                 INTO `'.$FD->config('pref')."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
@@ -221,7 +221,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
             }
             echo '<p>'.$GROUP_ARR['title'].' <span class="small">(<span class="link" onclick="permselect($(this), true)">'.$FD->text('page', 'all').'</span>/<span class="link" onclick="permselect($(this), false)">'.$FD->text('page', 'none').'</span>)</span><br>';
             foreach ( $GROUP_ARR['links'] as $PAGE_ID => $PAGE_ARR ) {
-                echo ( $PAGE_ARR['sub'] == TRUE ) ? '<img style="vertical-align: middle;" src="icons/sub-right-arrow.gif" alt="->">' : '';
+                echo ( isset($PAGE_ARR['sub']) && ($PAGE_ARR['sub'] == TRUE) ) ? '<img style="vertical-align: middle;" src="icons/sub-right-arrow.gif" alt="->">' : '';
                 echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" id="'.$PAGE_ID.'" name="'.$PAGE_ID.'" value="1"
                 '.getchecked ( $PAGE_ARR['granted'], 'group' ).'
                 '.getdisabled ( $PAGE_ARR['granted'], 'bad' ).'

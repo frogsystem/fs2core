@@ -21,9 +21,17 @@ function get_user_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
 ///////////////////////////////////////////
 //// Security Functions & Config Array ////
 ///////////////////////////////////////////
+if (!isset($_GET['order']))
+{
+  $_GET['order'] = 1;
+}
 $_GET['order'] = ( in_array ( $_GET['order'], array ( '0', 'desc', 'DESC', 'down', 'DOWN' ) ) ) ? 0 : 1;
 settype ( $_GET['order'], 'integer' );
 
+if (!isset($_GET['sort']))
+{
+  $_GET['sort'] = 'name';
+}
 $_GET['sort'] = ( in_array ( $_GET['sort'], array ( 'id', 'name', 'mail', 'reg_date', 'num_news', 'num_comments', 'num_articles', 'num_downloads' ) ) ) ? $_GET['sort'] : 'name';
 
 $FD->loadConfig('users');

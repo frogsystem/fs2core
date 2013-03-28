@@ -98,7 +98,7 @@ elseif (
     $message = $FD->text('admin', 'changes_saved');
 
     // Image-Operations
-    if ( $_POST['group_pic_delete'] == 1 ) {
+    if ( isset($_POST['group_pic_delete']) && ($_POST['group_pic_delete'] == 1) ) {
       if ( image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] ) ) {
         $message .= '<br>' . $FD->text('admin', 'image_deleted');
       } else {
@@ -425,6 +425,8 @@ else
     }
 
     // Display Add-Form
+    if (!isset($_POST['cat_name']))
+      $_POST['cat_name'] = '';
     echo '
                     <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="sended" value="add">

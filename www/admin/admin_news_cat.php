@@ -91,7 +91,7 @@ elseif (
     $message = $FD->text('admin', 'changes_saved');
 
 	// Image-Operations
-    if ( $_POST['cat_pic_delete'] == 1 ) {
+    if ( isset($_POST['cat_pic_delete']) && $_POST['cat_pic_delete'] == 1 ) {
       if ( image_delete ( 'images/cat/', 'news_'.$_POST['cat_id'] ) ) {
         $message .= '<br>' . $FD->text('admin', 'image_deleted');
       } else {
@@ -410,7 +410,9 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 // Display New Category & Category Listing
 elseif ( $showdefault == TRUE )
 {
-    // New Caregory
+    // New Category
+    if(!isset($_POST['cat_name']))
+      $_POST['cat_name'] = '';
 	// Display Error Messages
 	if ( isset ( $_POST['sended'] ) ) {
 		$_POST['cat_name'] = killhtml ( $_POST['cat_name'] );

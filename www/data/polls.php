@@ -26,7 +26,7 @@ if ( isset ($_GET['pollid']) && !isset($_GET['id']) ) {
 }
 
 
-if ( $_GET['id'] ) {
+if ( isset($_GET['id']) ) {
     settype ( $_GET['id'], 'integer' );
     $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll` WHERE `poll_id` = '.$_GET['id'], $FD->sql()->conn() );
     $poll_arr = mysql_fetch_assoc($index);
@@ -92,8 +92,8 @@ if ( $_GET['id'] ) {
 ////////////////////////////
 
 else {
-    $_GET['order'] = ( in_array ( $_GET['order'], array ( '1', 'asc', 'ASC', 'up', 'UP' ) ) ) ? 'ASC' : 'DESC';
-    $_GET['sort'] = ( in_array ( $_GET['sort'], array ( 'question', 'all_votes', 'participants', 'type', 'start_date', 'end_date' ) ) ) ? $_GET['sort'] : 'end_date';
+    $_GET['order'] = ( in_array ( isset($_GET['order']) ? $_GET['order'] : '', array ( '1', 'asc', 'ASC', 'up', 'UP' ) ) ) ? 'ASC' : 'DESC';
+    $_GET['sort'] = ( in_array ( isset($_GET['sort']) ? $_GET['sort'] : '', array ( 'question', 'all_votes', 'participants', 'type', 'start_date', 'end_date' ) ) ) ? $_GET['sort'] : 'end_date';
 
     switch ( $_GET['sort'] ) {
         case 'question': {

@@ -50,7 +50,7 @@ elseif ((isset($_POST['title']) AND $_POST['title'] != '')
                  WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
     systext('Der Eintrag wurde aktualisiert!');
 
-    if ($_POST['entry_pic_delete'] == 1)
+    if (isset($_POST['entry_pic_delete']) && $_POST['entry_pic_delete'] == 1)
     {
       if (image_delete('images/press/', $_POST['entry_is'].'_'.$_POST['entry_id']))
       {
@@ -73,6 +73,7 @@ elseif ((isset($_POST['title']) AND $_POST['title'] != '')
 ////////////////////////////
 elseif (isset($_POST['entry_action'])
     && $_POST['entry_action'] == 'delete'
+    && isset($_POST['sended'])
     && $_POST['sended'] == 'delete'
     && isset($_POST['entry_move_to'])
     && isset($_POST['entry_id'])
@@ -86,7 +87,7 @@ elseif (isset($_POST['entry_action'])
         $index = mysql_query('SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
         $entry_arr['type'] = mysql_result($index, 0, 'type');
 
-        switch ($entry_arr[type])
+        switch ($entry_arr['type'])
         {
             case 3:
                 $entry_arr['type_set'] = "SET press_lang = '$_POST[entry_move_to]'";
@@ -146,8 +147,8 @@ elseif (isset($_POST['entry_action'])
     $entry_arr['title'] = killhtml($entry_arr['title']);
 
     //Error Message
-    if ($_POST['sended'] == 'edit') {
-        systext ($FD->text("admin", "note_notfilled"));
+    if (isset($_POST['sended']) && $_POST['sended'] == 'edit') {
+        systext ($FD->text('admin', 'note_notfilled'));
 
         $entry_arr['title'] = killhtml($_POST['title']);
         $entry_arr['type'] = $_POST['entry_is'];
@@ -225,7 +226,7 @@ elseif (isset($_POST['entry_action'])
                                         '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_changes_button").'
                                     </button>
                                 </td>
-                            </tr>                              
+                            </tr>
                         </table>
                     </form>
     ';
@@ -375,16 +376,16 @@ if (!isset($_POST['entry_id']))
 {
 
     //Error Message
-    if ($_POST['sended'] == 'add') {
-        systext ("Eintrag wurde nicht hinzugef&uuml;gt<br>".$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), "red", $FD->text("admin", "icon_save_error"));
+    if (isset($_POST['sended']) && $_POST['sended'] == 'add') {
+        systext ('Eintrag wurde nicht hinzugef&uuml;gt<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
         $entry_arr['title'] = killhtml($_POST['title']);
         settype($_POST['entry_is'], 'integer');
     } else {
-        $_POST['title'] = "";
+        $_POST['title'] = '';
         $_POST['entry_is'] = 0;
-    } 
-    
+    }
+
     echo'
                     <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" value="press_admin" name="go">
@@ -522,7 +523,7 @@ if (!isset($_POST['entry_id']))
                                         '.$FD->text("admin", "button_arrow").' '.$FD->text('admin', 'do_action_button_long').'
                                     </button>
                                 </td>
-                            </tr>                              
+                            </tr>
                         </tbody>
                     </form>
             ';

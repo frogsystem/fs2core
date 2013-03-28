@@ -49,7 +49,7 @@ elseif (
     )
 {
     if ( $_POST['alias_delete'] == 1 ) {
-    
+
         // Security-Functions
         $_POST['alias_id'] = array_map ( 'intval', explode ( ',', $_POST['alias_id'] ) );
 
@@ -89,11 +89,11 @@ if ( isset ( $_POST['alias_id'] ) && isset($_POST['alias_action']) )
         $_POST['alias_id'] = $_POST['alias_id'][0];
 
         // Display Error Messages
-        if ( $_POST['sended'] == 'edit' ) {
+        if ( isset($_POST['sended']) && ($_POST['sended'] == 'edit') ) {
 
-            $error_message = $FD->text("admin", "form_not_filled");
-            systext ( $FD->text("admin", "alias_not_edited").'<br>'.$error_message,
-                $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_save_error") );
+            $error_message = $FD->text('admin', 'form_not_filled');
+            systext ( $FD->text('admin', 'alias_not_edited').'<br>'.$error_message,
+                $FD->text('admin', 'error'), TRUE, $FD->text('admin', 'icon_save_error') );
 
         // Get Data from DB
         } else {
@@ -287,6 +287,8 @@ if ( !isset ( $_POST['alias_id'] ) )
             ';
         }
 
+        if(!isset($_POST['alias_action']))
+          $_POST['alias_action'] = '';
         // display footer with button
         echo'
                             <tr><td class="space"></td></tr>

@@ -9,7 +9,7 @@ table_index:     Index
 table_free:      Free data
 
 tables:          Tables
-rows:            Row(n)
+rows:            Row(s)
 bytes:           bytes
 
 innodb_hint:     *=MySQL versions prior to 5.1.28 cannot show a correct value for InnoDB tables in this column. Therefore, a value of zero will be assumed.
