@@ -2,8 +2,8 @@
 /**
  * @file     class_sql.php
  * @folder   /libs
- * @version  0.4
- * @author   Sweil, Satans Krümelmonster
+ * @version  0.5
+ * @author   Sweil, Satans Krümelmonster, Thoronador
  *
  * this class provides several methodes for database-access
  */
@@ -23,19 +23,22 @@ class sql {
     // Constructor
     // connects the database, saves SQL-Connection, database-name and prefix
     public function __construct($host, $data, $user, $pass, $pref) {
-        $this->sql = @mysql_connect($host, $user, $pass);
-        if ($this->sql !== false && mysql_select_db($data, $this->sql)) {
+        try {
+            $this->sql = new PDO("mysql:$host;dbname=$data", $user, $pass);
             $this->db = $data;
             $this->pref = $pref;
-        } else {
+        }
+        catch (Exception $e)
+        {
             $this->sql = false;
-            Throw new ErrorException('No Connection to Database: '.mysql_error());
+            $this->error = $e->getMessage();
+            Throw new ErrorException('No Connection to Database: '.$e->getMessage());
         }
     }
 
     // Destructor closes SQL-Connection
     public function __destruct (){
-        //mysql_close($this->sql);
+        $this->sql = NULL; //destroy PDO instance
     }
 
 
@@ -60,7 +63,9 @@ class sql {
                 settype($VAL, 'float');
             }
         } else {
-            $VAL = mysql_real_escape_string(strval($VAL), $this->conn());
+            //PDO::quote() also adds colon before and after the string, so we
+            //  have to remove it to keep it compatible with old style.
+            $VAL = substr($this->sql->quote(strval($VAL), $this->conn()), 1, -1);
         }
 
         return $VAL;
@@ -79,16 +84,16 @@ class sql {
     // run any query
     public function doQuery ($qrystr) {
         $this->query = str_replace('{..pref..}', $this->pref, $qrystr); // replace {..pref..}
-        $this->result = mysql_query($this->query, $this->sql); // execute query
+        $this->result = $this->sql->query($this->query); // execute query
 
         if ($this->result !== false) {
             unset($this->error);
             return $this->result;
         } else {
-            $this->error[0] = mysql_errno($this->sql); // error number
-            $this->error[1] = mysql_error($this->sql); // error text
+            $this->error[0] = $this->sql->errorCode(); // error number
+            $this->error[1] = $this->sql->errorInfo(); // error text
             $this->error[2] = $this->query;            // query causing the error
-            Throw new ErrorException('MySQL Error: ['.$this->error[0].'] '.$this->error[1]."\n".$this->error[2]);
+            Throw new ErrorException('SQL Error: ['.$this->error[0].'] '.$this->error[1]."\n".$this->error[2]);
             return false;
         }
     }
@@ -170,9 +175,9 @@ class sql {
     private function select ($table, $cols, $options = array(), $distinct = false, $total_rows = false) {
         // empty cols
         if (empty($cols))
-            Throw new ErrorException('MySQL Error: Can\'t select nothing.');
+            Throw new ErrorException('SQL Error: Can\'t select nothing.');
         if (is_array($table) && count($table) <= 0)
-            Throw new ErrorException('MySQL Error: Can\'t select from nothing.');
+            Throw new ErrorException('SQL Error: Can\'t select from nothing.');
 
 
         // Table list
@@ -204,7 +209,7 @@ class sql {
         } elseif ($cols == '*') {
             $cols_list = $cols;
         } else {
-            Throw new ErrorException('MySQL Error: Cannot select because of bad data.');
+            Throw new ErrorException('SQL Error: Cannot select because of bad data.');
         }
 
         // DISTINCT or not
@@ -230,7 +235,7 @@ class sql {
         // Get Data
         $rows = array();
         $result = $this->select($table, $cols, $options, $distinct, $total_rows);
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC) ) {
             $rows[] = $row;
         }
         $num = count($rows);
@@ -238,7 +243,7 @@ class sql {
         // Total rows?
         if ($total_rows) {
             $result = $this->doQuery('SELECT FOUND_ROWS()');
-            list ($total_rows) = mysql_fetch_row ($result);
+            list ($total_rows) = $result->fetch(PDO::FETCH_NUM);
         } else {
             $total_rows = $num;
         }
@@ -310,7 +315,8 @@ class sql {
 
     // num of rows
     public function num ($table, $cols, $options = array(), $distinct = false) {
-        return mysql_num_rows($this->select($table, $cols, $options, $distinct));
+        $stmt = $this->select($table, $cols, $options, $distinct);
+        return $stmt->rowCount();
     }
 
     // Saving to DB by Id
@@ -341,7 +347,7 @@ class sql {
     public function insert ($table, $data) {
         // empty data
         if (empty($data))
-            Throw new ErrorException("MySQL Error: Can't insert empty data.");
+            Throw new ErrorException("SQL Error: Can't insert empty data.");
 
         // prepare data
         $cols = ($vals = array());
@@ -357,9 +363,9 @@ class sql {
     }
     // insert with returning auto increment value
     public function insertId ($table, $data) {
-        try {        
+        try {
             $this->insert($table, $data);
-            return mysql_insert_id($this->sql);
+            return $this->sql->lastInsertId();
         } catch (Exception $e) {
             Throw $e;
         }
@@ -369,7 +375,7 @@ class sql {
     public function update ($table, $data, $options = array()) {
         // empty data
         if (empty($data))
-            Throw new ErrorException("MySQL Error: Can't update empty data.");
+            Throw new ErrorException("SQL Error: Can't update empty data.");
 
         // prepare data
         $list = array();
@@ -390,7 +396,7 @@ class sql {
     public function updateById ($table, $data, $id = "id") {
         // check for id
         if (!isset($data[$id]))
-            Throw new ErrorException("MySQL Error: Can't update because of bad data.");
+            Throw new ErrorException("SQL Error: Can't update because of bad data.");
 
         $options = array ('W' => '`'.$id."`='".$this->escape($data[$id])."'");
 
@@ -407,8 +413,8 @@ class sql {
         $qrystr = 'DELETE FROM `'.$this->pref.$table.'`'.$this->opt($options);
 
         try {
-            $this->doQuery($qrystr);
-            return mysql_affected_rows($this->conn());
+            $stmt = $this->doQuery($qrystr);
+            return $stmt->rowCount();
         } catch (Exception $e) {
             print_r($e->getMessage());
             return false;
