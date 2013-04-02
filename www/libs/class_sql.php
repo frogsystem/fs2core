@@ -25,6 +25,10 @@ class sql {
     public function __construct($host, $data, $user, $pass, $pref) {
         try {
             $this->sql = new PDO("mysql:$host;dbname=$data", $user, $pass);
+            /* TODO: change error mode back to ERRMODE_SILENT
+                     The exception error mode is just used for easier debugging
+                     while migrating to PDO. */
+            $this->sql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db = $data;
             $this->pref = $pref;
         }
