@@ -24,7 +24,7 @@ class sql {
     // connects the database, saves SQL-Connection, database-name and prefix
     public function __construct($host, $data, $user, $pass, $pref) {
         try {
-            $this->sql = new PDO("mysql:$host;dbname=$data", $user, $pass);
+            $this->sql = new PDO("mysql:host=$host;dbname=$data", $user, $pass);
             /* TODO: change error mode back to ERRMODE_SILENT
                      The exception error mode is just used for easier debugging
                      while migrating to PDO. */
@@ -69,7 +69,7 @@ class sql {
         } else {
             //PDO::quote() also adds colon before and after the string, so we
             //  have to remove it to keep it compatible with old style.
-            $VAL = substr($this->sql->quote(strval($VAL), $this->conn()), 1, -1);
+            $VAL = substr($this->sql->quote(strval($VAL), PDO::PARAM_STR), 1, -1);
         }
 
         return $VAL;
