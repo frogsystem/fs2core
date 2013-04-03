@@ -189,6 +189,7 @@ function get_search_word_id ( $WORD ) {
     $stmt->execute(array($WORD));
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($result !== false)
+    {
         $id = $result['search_word_id'];
         $result->closeCursor();
         return $id;
