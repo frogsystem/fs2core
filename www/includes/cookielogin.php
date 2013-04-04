@@ -5,19 +5,19 @@ function user_login ( $username, $password, $iscookie )
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '".$username."'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows == 0) {
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '".$username."'");
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    if ($row === false) {
         $_GET['go'] = 'login';
         if ( $iscookie ) {
             delete_cookie ();
         }
         return 1;  // Fehlercode 1: User nicht vorhanden
     } else {
-        $dbuserpass = mysql_result($index, 0, 'user_password');
-        $dbuserid = mysql_result($index, 0, 'user_id');
-        $username = mysql_result($index, 0, 'user_name');
-        $usersalt = mysql_result($index, 0, 'user_salt');
+        $dbuserpass = $row['user_password'];
+        $dbuserid = $row['user_id'];
+        $username = $row['user_name'];
+        $usersalt = $row['user_salt'];
 
         if ($iscookie===false) {
             $password = md5 ( $password.$usersalt );
@@ -46,18 +46,18 @@ function set_cookie ( $username, $password )
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows == 0)
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'");
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    if ($row === false)
     {
         return false;
     }
     else
     {
 
-        $dbuserpass = mysql_result($index, 0, 'user_password');
-        $dbuserid = mysql_result($index, 0, 'user_id');
-        $dbusersalt= mysql_result($index, 0, 'user_salt');
+        $dbuserpass = $row['user_password'];
+        $dbuserid = $row['user_id'];
+        $dbusersalt= $row['user_salt'];
         $password = md5 ( $password.$dbusersalt );
 
         if ($password == $dbuserpass)

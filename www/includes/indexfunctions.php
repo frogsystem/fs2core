@@ -989,13 +989,12 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
     global $FD;
 
     // check if visit-day exists
-    $daycounter = mysql_query ('SELECT * FROM '.$FD->config('pref').'counter_stat
-                                WHERE s_year = '.$YEAR.' AND s_month = '.$MONTH.' AND s_day = '.$DAY, $FD->sql()->conn() );
+    $daycounter = $FD->sql()->conn()->query ('SELECT * FROM '.$FD->config('pref').'counter_stat
+                                WHERE s_year = '.$YEAR.' AND s_month = '.$MONTH.' AND s_day = '.$DAY);
 
-    $rows = mysql_num_rows ( $daycounter );
-
-    if ( $rows <= 0 ) {
-        mysql_query('INSERT INTO '.$FD->config('pref')."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')", $FD->sql()->conn() );
+    if ( $daycounter->fetch(PDO::FETCH_ASSOC) === false )
+    {
+        $FD->sql()->conn()->exec('INSERT INTO '.$FD->config('pref')."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')" );
     }
 }
 
@@ -1011,13 +1010,13 @@ function count_hit ( $GOTO )
     $hit_month = date ( 'm' );
     $hit_day = date ( 'd' );
 
-        if ( $GOTO != '404' && $GOTO != '403' ) {
-                // count page_hits
-            mysql_query ( 'UPDATE '.$FD->config('pref').'counter SET hits = hits + 1', $FD->sql()->conn() );
-            mysql_query ( 'UPDATE '.$FD->config('pref').'counter_stat
-                           SET s_hits = s_hits + 1
-                           WHERE s_year = '.$hit_year.' AND s_month = '.$hit_month.' AND s_day = '.$hit_day, $FD->sql()->conn() );
-        }
+    if ( $GOTO != '404' && $GOTO != '403' ) {
+        // count page_hits
+        $FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter SET hits = hits + 1' );
+        $FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter_stat
+                                    SET s_hits = s_hits + 1
+                                    WHERE s_year = '.$hit_year.' AND s_month = '.$hit_month.' AND s_day = '.$hit_day );
+    }
 }
 
 
@@ -1032,10 +1031,10 @@ function count_visit ()
     $visit_month = date( 'm' );
     $visit_day = date ( 'd' );
 
-    mysql_query('UPDATE '.$FD->config('pref').'counter SET visits = visits + 1', $FD->sql()->conn() );
-    mysql_query('UPDATE '.$FD->config('pref').'counter_stat
-                    SET s_visits = s_visits + 1
-                    WHERE s_year = '.$visit_year.' AND s_month = '.$visit_month.' AND s_day = '.$visit_day, $FD->sql()->conn() );
+    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter SET visits = visits + 1');
+    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter_stat
+                              SET s_visits = s_visits + 1
+                              WHERE s_year = '.$visit_year.' AND s_month = '.$visit_month.' AND s_day = '.$visit_day);
 }
 
 
@@ -1090,7 +1089,7 @@ function clean_iplist()
 {
     global $FD;
 
-    $time = strtotime("today");
+    $time = strtotime('today');
     $FD->sql()->delete('useronline', array('W' => "`date` < '".$time."'"));
 }
 
@@ -1108,15 +1107,15 @@ function save_referer ()
 		// save referer
 		$referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
 		$referer = savesql($referer);
-		$index =  mysql_query ( 'SELECT * FROM '.$FD->config('pref')."counter_ref WHERE ref_url = '".$referer."'", $FD->sql()->conn() );
+		$index =  $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."counter_ref WHERE ref_url = '".$referer."'" );
 
-		if ( mysql_num_rows ( $index ) <= 0 ) {
+		if ( $index->fetch(PDO::FETCH_ASSOC) === false ) {
 			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-				mysql_query ( 'INSERT INTO '.$FD->config('pref')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')", $FD->sql()->conn() );
+				$FD->sql()->conn()->exec ( 'INSERT INTO '.$FD->config('pref')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')" );
 			}
 		} else {
 			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-					mysql_query ( 'UPDATE '.$FD->config('pref')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = '".$referer."'", $FD->sql()->conn() );
+					$FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = '".$referer."'" );
 			}
 		}
 	}
@@ -1155,31 +1154,31 @@ function set_style ()
     global $FD;
 
     if ( isset ( $_GET['style'] ) && $FD->cfg('allow_other_designs') == 1 ) {
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
                                 SELECT `style_id`, `style_tag`
                                 FROM `'.$FD->config('pref')."styles`
                                 WHERE `style_tag` = '".savesql ( $_GET['style'] )."'
                                 AND `style_allow_use` = 1
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        if ( mysql_num_rows ( $index ) == 1 ) {
-            $FD->setConfig('style', stripslashes ( mysql_result($index, 0, 'style_tag') ) );
-            $FD->setConfig('style_tag', stripslashes ( mysql_result($index, 0, 'style_tag') ) );
-            $FD->setConfig('style_id', mysql_result($index, 0, 'style_id') );
+                                LIMIT 0,1");
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        if ( $row !== false ) {
+            $FD->setConfig('style', stripslashes ( $row['style_tag'] ) );
+            $FD->setConfig('style_tag', stripslashes ( $row['style_tag'] ) );
+            $FD->setConfig('style_id', $row['style_id'] );
         }
     } elseif ( isset ( $_GET['style_id'] ) && $FD->config('allow_other_designs') == 1 ) {
         settype ( $_GET['style_id'], 'integer' );
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
                                 SELECT `style_id`, `style_tag`
                                 FROM `'.$FD->config('pref')."styles`
                                 WHERE `style_id` = '".$_GET['style_id']."'
                                 AND `style_allow_use` = 1
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        if ( mysql_num_rows ( $index ) == 1 ) {
-            $FD->setConfig('style', stripslashes ( mysql_result($index, 0, 'style_tag') ) );
-            $FD->setConfig('style_tag', stripslashes ( mysql_result($index, 0, 'style_tag') ) );
-            $FD->setConfig('style_id', mysql_result($index, 0, 'style_id') );
+                                LIMIT 0,1" );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        if ( $row !== false ) {
+            $FD->setConfig('style', stripslashes ( $row['style_tag'] ) );
+            $FD->setConfig('style_tag', stripslashes ( $row['style_tag'] ) );
+            $FD->setConfig('style_id', $row['style_id'] );
         }
     }
     copyright ();
