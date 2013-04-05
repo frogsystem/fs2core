@@ -27,24 +27,24 @@ if (
     settype ( $_POST['applet_include'], 'integer' );
 
     // Check if Applet exists
-    $index = mysql_query ( 'SELECT `applet_id` FROM `'.$FD->config('pref')."applets` WHERE `applet_file` = '".$_POST['applet_file']."'", $sql->conn() );
+    $index = $sql->conn()->query ( 'SELECT `applet_id` FROM `'.$FD->config('pref')."applets` WHERE `applet_file` = '".$_POST['applet_file']."'" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
 
     // New Applet
-    if ( mysql_num_rows ( $index ) === 0 ) {
-        // MySQL-Queries
-        mysql_query ( '                 INSERT INTO `'.$FD->config('pref')."applets` (
-                                                `applet_file`,
-                                                `applet_active`,
-                                                `applet_include`,
-                                                `applet_output`
-                                        )
-                                        VALUES (
-                                                '".$_POST['applet_file']."',
-                                                '".$_POST['applet_active']."',
-                                                '".$_POST['applet_include']."',
-                                                '".$_POST['applet_output']."'
-                                        )
-        ", $sql->conn() );
+    if ( $row === false ) {
+        // SQL-Queries
+        $sql->conn()->exec ( 'INSERT INTO `'.$FD->config('pref')."applets` (
+                                  `applet_file`,
+                                  `applet_active`,
+                                  `applet_include`,
+                                  `applet_output`
+                             )
+                             VALUES (
+                                  '".$_POST['applet_file']."',
+                                  '".$_POST['applet_active']."',
+                                  '".$_POST['applet_include']."',
+                                  '".$_POST['applet_output']."'
+                             )" );
 
         systext ( $FD->text("admin", "applet_added"),
             $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_add") );

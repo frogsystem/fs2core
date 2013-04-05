@@ -15,8 +15,8 @@ if (
 
     settype ( $_POST['alias_active'], 'integer' );
 
-    // MySQL-Queries
-    mysql_query ( ' INSERT INTO `'.$FD->config('pref')."aliases` (
+    // SQL-Queries
+    $sql->conn()->exec ( ' INSERT INTO `'.$FD->config('pref')."aliases` (
                             `alias_go`,
                             `alias_forward_to`,
                             `alias_active`
@@ -25,8 +25,7 @@ if (
                             '".$_POST['alias_go']."',
                             '".$_POST['alias_forward_to']."',
                             '".$_POST['alias_active']."'
-                    )
-    ", $sql->conn() );
+                    )" );
 
     systext ( $FD->text('admin', 'alias_added'),
         $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_add') );

@@ -1,81 +1,82 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = mysql_query ( '
-                        SELECT `user`
-                        FROM '.$FD->config('pref').'counter
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$num_user = mysql_result ( $index, 0, 'user' );
+$index = $FD->sql()->conn()->query ( '
+                SELECT `user`
+                FROM '.$FD->config('pref').'counter
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_user = $row['user'];
 
-$index = mysql_query ( '
-                        SELECT `user_name`
-                        FROM '.$FD->config('pref').'user
-                        ORDER BY `user_reg_date` DESC
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$last_user = stripslashes ( mysql_result ( $index, 0, 'user_name' ) );
+$index = $FD->sql()->conn()->query ( '
+                SELECT `user_name`
+                FROM '.$FD->config('pref').'user
+                ORDER BY `user_reg_date` DESC
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$last_user = stripslashes ( $row['user_name'] );
 
-$index = mysql_query ( "
-                        SELECT COUNT(`user_id`) AS 'num_staff'
-                        FROM ".$FD->config('pref').'user
-                        WHERE `user_is_staff` = 1
-                        AND `user_is_admin` = 0
-                        AND `user_id` != 1
-', $FD->sql()->conn() );
-$num_staff = mysql_result ( $index, 0, 'num_staff' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`user_id`) AS 'num_staff'
+                FROM ".$FD->config('pref').'user
+                WHERE `user_is_staff` = 1
+                AND `user_is_admin` = 0
+                AND `user_id` != 1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_staff = $row['num_staff'];
 
-$index = mysql_query ( "
-                        SELECT COUNT(`user_group_id`) AS 'num_groups'
-                        FROM ".$FD->config('pref').'user_groups
-                        WHERE `user_group_id` > 0
-', $FD->sql()->conn() );
-$num_groups = mysql_result ( $index, 0, 'num_groups' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`user_group_id`) AS 'num_groups'
+                FROM ".$FD->config('pref').'user_groups
+                WHERE `user_group_id` > 0' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_groups = $row['num_groups'];
 $num_groups++;
 
+$temp_biggest_exists = false;
 if ( $num_groups  > 0 ) {
-    $index = mysql_query ( "
-                            SELECT G.`user_group_name`, COUNT(U.`user_id`) AS 'biggest_num'
-                            FROM ".$FD->config('pref').'user_groups G, '.$FD->config('pref')."user U
-                            WHERE U.`user_group` = G.`user_group_id`
-                            AND U.`user_group` > '0'
-                            AND U.`user_is_staff` = '1'
-                            AND U.`user_is_admin` = '0'
-                            AND U.`user_id` != '1'
-                            GROUP BY `user_group_name`
-                            ORDER BY `biggest_num` DESC
-                            LIMIT 0,1
-    ", $FD->sql()->conn() );
-    $temp_biggest_exists = mysql_num_rows ( $index );
+    $index = $FD->sql()->conn()->query ( "
+                    SELECT G.`user_group_name`, COUNT(U.`user_id`) AS 'biggest_num'
+                    FROM ".$FD->config('pref').'user_groups G, '.$FD->config('pref')."user U
+                    WHERE U.`user_group` = G.`user_group_id`
+                    AND U.`user_group` > '0'
+                    AND U.`user_is_staff` = '1'
+                    AND U.`user_is_admin` = '0'
+                    AND U.`user_id` != '1'
+                    GROUP BY `user_group_name`
+                    ORDER BY `biggest_num` DESC
+                    LIMIT 0,1" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $temp_biggest_exists = ( $row !== false );
 }
-if ( $temp_biggest_exists  > 0 ) {
-    $biggest_group = stripslashes ( mysql_result ( $index, 0, 'user_group_name' ) );
-    $biggest_num = mysql_result ( $index, 0, 'biggest_num' );
+if ( $temp_biggest_exists ) {
+    $biggest_group = stripslashes ( $row['user_group_name'] );
+    $biggest_num = $row['biggest_num'];
 }
 
-$index = mysql_query ( '
-                        SELECT `user_group_name`
-                        FROM '.$FD->config('pref').'user_groups
-                        ORDER BY `user_group_date` DESC
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$last_group = stripslashes ( mysql_result ( $index, 0, 'user_group_name' ) );
+$index = $FD->sql()->conn()->query ( '
+                SELECT `user_group_name`
+                FROM '.$FD->config('pref').'user_groups
+                ORDER BY `user_group_date` DESC
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$last_group = stripslashes ( $row['user_group_name'] );
 
-$index = mysql_query ( "
-                        SELECT COUNT(`user_id`) AS 'num_admin'
-                        FROM ".$FD->config('pref').'user
-                        WHERE `user_is_admin` = 1
-                        OR `user_id` = 1
-', $FD->sql()->conn() );
-$num_admin = mysql_result ( $index, 0, 'num_admin' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`user_id`) AS 'num_admin'
+                FROM ".$FD->config('pref').'user
+                WHERE `user_is_admin` = 1
+                OR `user_id` = 1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_admin = $row['num_admin'];
 $num_staff += $num_admin;
 
-$index = mysql_query ( '
-                        SELECT `user_name`
-                        FROM '.$FD->config('pref').'user
-                        WHERE `user_id` = 1
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$super_admin = stripslashes ( mysql_result ( $index, 0, 'user_name' ) );
+$index = $FD->sql()->conn()->query ( '
+                SELECT `user_name`
+                FROM '.$FD->config('pref').'user
+                WHERE `user_id` = 1
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$super_admin = stripslashes ( $row['user_name'] );
 
 echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
@@ -99,7 +100,7 @@ echo '
                             </tr>
 ';
 
-if ( $num_groups  > 0 && $temp_biggest_exists  > 0 ) {
+if ( $num_groups  > 0 && $temp_biggest_exists ) {
     echo '
                             <tr>
                                 <td class="configthin">'.$FD->text('page', 'biggest_group').':</td>

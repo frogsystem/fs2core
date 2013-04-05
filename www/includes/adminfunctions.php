@@ -178,20 +178,16 @@ function get_article_urls ()
 {
     global $FD;
 
-        $index = mysql_query ( '
-                                                        SELECT
-                                                                article_url
-                                                        FROM
-                                                                '.$FD->config('pref').'articles
-        ', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT article_url FROM '.$FD->config('pref').'articles');
 
-        while ( $result = mysql_fetch_assoc ( $index ) ) {
-                if ( $result['article_url'] != '' ) {
-                        $url_arr[] = $result['article_url'];
-                }
+    while ( $result = $index->fetch(PDO::FETCH_ASSOC) ) {
+        if ( $result['article_url'] != '' ) {
+            $url_arr[] = $result['article_url'];
         }
+    }
 
-        return $url_arr;
+    return $url_arr;
 }
 
 //////////////////////////////
@@ -532,8 +528,8 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
     $zaehler = 0;
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'smilies ORDER by `order` ASC LIMIT 0, 10', $FD->sql()->conn() );
-    while ($smilie_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies ORDER by `order` ASC LIMIT 0, 10');
+    while ($smilie_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $smilie_arr['url'] = image_url('images/smilies/', $smilie_arr['id'], false);
 
@@ -745,7 +741,7 @@ function get_topmenu ($ACTIVE_MENU)
             if ($ACTIVE_MENU == $menu['page_file'])
                 $class = ' class="selected"';
 
-            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$FD->text("menu", 'menu_'.$menu['page_file']).'</a></li>';
+            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$FD->text('menu', 'menu_'.$menu['page_file']).'</a></li>';
         }
     }
 
@@ -827,7 +823,7 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
     if (!empty($template)) {
         $template = '
         <div class="leftmenu'.$class.'">
-            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$FD->text("menu", 'group_'.$GROUP_ID).'</strong>
+            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$FD->text('menu', 'group_'.$GROUP_ID).'</strong>
             <ul>'.$template.'
             </ul>
         </div>';
@@ -851,7 +847,7 @@ function get_link ($PAGE_ID, $GO)
         // active page?
         $class = ($PAGE_ID == $GO) ? ' class="selected"' : '';
 
-        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$FD->text("menu", 'page_link_'.$PAGE_ID).'</a></li>';
+        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$FD->text('menu', 'page_link_'.$PAGE_ID).'</a></li>';
     } else {
         return '';
     }
@@ -869,15 +865,14 @@ function admin_set_cookie($username, $password)
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows == 0)
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'");
+    $USER_ARR = $index->fetch(PDO::FETCH_ASSOC);
+    if ($USER_ARR === false)
     {
         return false;
     }
     else
     {
-        $USER_ARR = mysql_fetch_assoc ( $index );
         if ( $USER_ARR['user_is_staff'] == 1 || $USER_ARR['user_is_admin'] == 1 || $USER_ARR['user_id'] == 1 ) {
             $dbisadmin = 1;
         } else {
@@ -886,9 +881,9 @@ function admin_set_cookie($username, $password)
 
         if ($dbisadmin == 1)
         {
-            $dbuserpass = mysql_result($index, 0, 'user_password');
-            $dbuserid = mysql_result($index, 0, 'user_id');
-            $dbusersalt= mysql_result($index, 0, 'user_salt');
+            $dbuserpass = $USER_ARR['user_password'];
+            $dbuserid = $USER_ARR['user_id'];
+            $dbusersalt= $USER_ARR['user_salt'];
             $password = md5 ( $password.$dbusersalt );
 
             if ($password == $dbuserpass)
@@ -919,15 +914,14 @@ function admin_login($username, $password, $iscookie)
 
     $username = savesql($username);
     $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows == 0)
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'");
+    $USER_ARR = $index->fetch(PDO::FETCH_ASSOC);
+    if ($USER_ARR === false)
     {
         return 1;  // Fehlercode 1: User nicht vorhanden
     }
     else
     {
-        $USER_ARR = mysql_fetch_assoc ( $index );
         if ( $USER_ARR['user_is_staff'] == 1 || $USER_ARR['user_is_admin'] == 1 || $USER_ARR['user_id'] == 1 ) {
             $dbisadmin = 1;
         } else {
@@ -936,9 +930,9 @@ function admin_login($username, $password, $iscookie)
 
         if ($dbisadmin == 1)
         {
-            $dbuserpass = mysql_result($index, 0, 'user_password');
-            $dbuserid = mysql_result($index, 0, 'user_id');
-            $dbusersalt = mysql_result($index, 0, 'user_salt');
+            $dbuserpass = $USER_ARR['user_password'];
+            $dbuserid = $USER_ARR['user_id'];
+            $dbusersalt = $USER_ARR['user_salt'];
 
             if ($iscookie===false)
             {

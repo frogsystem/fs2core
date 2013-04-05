@@ -21,7 +21,7 @@ if (   ( isset($_POST['signup']) && $_POST['signup'] != '' )
     $_POST['email'] = savesql ( $_POST['email'] );
 
     // MySQL-Queries
-    mysql_query ( '
+    $sql->conn()->exec ( '
                     UPDATE `'.$FD->config('pref')."email`
                     SET
                         `signup` = '".$_POST['signup']."',
@@ -30,8 +30,7 @@ if (   ( isset($_POST['signup']) && $_POST['signup'] != '' )
                         `use_admin_mail` = '".$_POST['use_admin_mail']."',
                         `email` = '".$_POST['email']."',
                         `html` = '".$_POST['html']."'
-                    WHERE `id` = '1'
-    ", $sql->conn() );
+                    WHERE `id` = '1'" );
 
     // system messages
     systext( $FD->text('page', 'changes_saved'), $FD->text('page', 'info'), FALSE, $FD->text('page', 'save_ok') );
@@ -185,26 +184,4 @@ if ( TRUE )
     ';
 }
 
-/*
-                            <tr>
-                                <td class="config" colspan="2">
-                                    '.$FD->text('page', 'email_delete_title').'<br />
-                                    <span class="small">'.$FD->text('page', 'email_delete_desc').'</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="config">
-                                    <span class="small" style="padding-bottom:5px; display:block;"><b>'.$FD->text('page', 'valid_tags').':</b></span>
-                                    <span class="small">
-                                        '.insert_tt('{..X..}',$FD->text('page', 'email_username'),'delete_account').'
-                                        '.insert_tt('{..X..}',$FD->text('page', 'email_password'),'delete_account').'
-                                        '.insert_tt('{..X..}',$FD->text('page', 'email_virtualhost'),'delete_account').'
-                                    </span>
-                                </td>
-                                <td class="config">
-                                    '.create_editor('delete_account', $_POST['delete_account'], '100%', '200px', '', FALSE).'
-                                </td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-*/
 ?>

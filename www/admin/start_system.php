@@ -1,41 +1,41 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = mysql_query ( "
-                        SELECT COUNT(`alias_id`) AS 'num_aliases'
-                        FROM `".$FD->config('pref').'aliases`
-', $FD->sql()->conn() );
-$num_aliases = mysql_result ( $index, 0, 'num_aliases' );
-$index = mysql_query ( "
-                        SELECT COUNT(`alias_id`) AS 'num_aliases_active'
-                        FROM `".$FD->config('pref').'aliases`
-                        WHERE `alias_active` = 1
-', $FD->sql()->conn() );
-$num_aliases_active = mysql_result ( $index, 0, 'num_aliases_active' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`alias_id`) AS 'num_aliases'
+                FROM `".$FD->config('pref').'aliases`' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_aliases = $row['num_aliases'];
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`alias_id`) AS 'num_aliases_active'
+                FROM `".$FD->config('pref').'aliases`
+                WHERE `alias_active` = 1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_aliases_active = $row['num_aliases_active'];
 
-$index = mysql_query ( "
-                        SELECT COUNT(`applet_id`) AS 'num_applets'
-                        FROM `".$FD->config('pref').'applets`
-', $FD->sql()->conn() );
-$num_applets = mysql_result ( $index, 0, 'num_applets' );
-$index = mysql_query ( "
-                        SELECT COUNT(`applet_id`) AS 'num_applets_active'
-                        FROM `".$FD->config('pref').'applets`
-                        WHERE `applet_active` = 1
-', $FD->sql()->conn() );
-$num_applets_active = mysql_result ( $index, 0, 'num_applets_active' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`applet_id`) AS 'num_applets'
+                FROM `".$FD->config('pref').'applets`' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_applets = $row['num_applets'];
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`applet_id`) AS 'num_applets_active'
+                FROM `".$FD->config('pref').'applets`
+                WHERE `applet_active` = 1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_applets_active = $row['num_applets_active'];
 
 
-$index = mysql_query ( "
-                        SELECT COUNT(`snippet_id`) AS 'num_snippets'
-                        FROM `".$FD->config('pref').'snippets`
-', $FD->sql()->conn() );
-$num_snippets = mysql_result ( $index, 0, 'num_snippets' );
-$index = mysql_query ( "
-                        SELECT COUNT(`snippet_id`) AS 'num_snippets_active'
-                        FROM `".$FD->config('pref').'snippets`
-                        WHERE `snippet_active` = 1
-', $FD->sql()->conn() );
-$num_snippets_active = mysql_result ( $index, 0, 'num_snippets_active' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`snippet_id`) AS 'num_snippets'
+                FROM `".$FD->config('pref').'snippets`' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_snippets = $row['num_snippets'];
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`snippet_id`) AS 'num_snippets_active'
+                FROM `".$FD->config('pref').'snippets`
+                WHERE `snippet_active` = 1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_snippets_active = $row['num_snippets_active'];
 
 
 echo '

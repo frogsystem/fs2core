@@ -19,15 +19,14 @@ if (
     settype ( $_POST['alias_active'], 'integer' );
     settype ( $_POST['alias_id'], 'integer' );
 
-    // MySQL-Queries
-    mysql_query ( '
+    // SQL-Queries
+    $sql->conn()->exec ( '
                     UPDATE `'.$FD->config('pref')."aliases`
                     SET
                         `alias_go` = '".$_POST['alias_go']."',
                         `alias_forward_to` = '".$_POST['alias_forward_to']."',
                         `alias_active` = '".$_POST['alias_active']."'
-                    WHERE `alias_id` = '".$_POST['alias_id']."'
-    ", $sql->conn() );
+                    WHERE `alias_id` = '".$_POST['alias_id']."'" );
 
     // Display Message
     systext ( $FD->text('admin', 'changes_saved'),
@@ -53,12 +52,11 @@ elseif (
         // Security-Functions
         $_POST['alias_id'] = array_map ( 'intval', explode ( ',', $_POST['alias_id'] ) );
 
-        // MySQL-Delete-Query
-        mysql_query ('
+        // SQL-Delete-Query
+        $sql->conn()->exec ('
                         DELETE
                         FROM `'.$FD->config('pref').'aliases`
-                        WHERE `alias_id` IN ('.implode ( ',', $_POST['alias_id'] ).')
-        ', $sql->conn() );
+                        WHERE `alias_id` IN ('.implode ( ',', $_POST['alias_id'] ).')');
 
         systext ( $FD->text('admin', 'aliases_deleted'),
             $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_trash_ok') );
@@ -97,13 +95,12 @@ if ( isset ( $_POST['alias_id'] ) && isset($_POST['alias_action']) )
 
         // Get Data from DB
         } else {
-            $index = mysql_query ( '
+            $index = $sql->conn()->query ( '
                                     SELECT *
                                     FROM `'.$FD->config('pref')."aliases`
                                     WHERE `alias_id` = '".$_POST['alias_id']."'
-                                    LIMIT 0,1
-            ", $sql->conn() );
-            $data_arr = mysql_fetch_assoc ( $index );
+                                    LIMIT 0,1" );
+            $data_arr = $index->fetch(PDO::FETCH_ASSOC);
             putintopost ( $data_arr );
         }
 
@@ -193,25 +190,21 @@ if ( isset ( $_POST['alias_id'] ) && isset($_POST['alias_action']) )
         ';
 
         // get aliases from db
-        $index = mysql_query ( '
+        $index = $sql->conn()->query ( '
                                 SELECT *
                                 FROM `'.$FD->config('pref').'aliases`
                                 WHERE `alias_id` IN ('.implode ( ',', $_POST['alias_id'] ).')
-                                ORDER BY `alias_go` ASC, `alias_forward_to` ASC
-        ', $sql->conn() );
-        // aliases found
-        if ( mysql_num_rows ( $index ) > 0 ) {
+                                ORDER BY `alias_go` ASC, `alias_forward_to` ASC' );
+        // aliases found?
+        // display aliases
+        while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
-            // display aliases
-            while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+            // get other data
+            $data_arr['active_text'] = ( $data_arr['alias_active'] == 1 ) ? $FD->text('admin', 'alias_active') : $FD->text('admin', 'alias_not_active');
 
-                // get other data
-                $data_arr['active_text'] = ( $data_arr['alias_active'] == 1 ) ? $FD->text('admin', 'alias_active') : $FD->text('admin', 'alias_not_active');
-
-                echo '
-                                    <b>?go='.killhtml ( $data_arr['alias_go'] ).'</b> =>  <b>?go='.killhtml ( $data_arr['alias_forward_to'] ).'</b> ('.$data_arr['active_text'].')<br>
-                ';
-            }
+            echo '
+                                <b>?go='.killhtml ( $data_arr['alias_go'] ).'</b> =>  <b>?go='.killhtml ( $data_arr['alias_forward_to'] ).'</b> ('.$data_arr['active_text'].')<br>
+            ';
         }
 
         // Display End of Table
@@ -249,11 +242,10 @@ if ( !isset ( $_POST['alias_id'] ) )
     ';
 
     // get Aliases from db
-    $index = mysql_query ( '
+    $index = $sql->conn()->query ( '
                             SELECT *
                             FROM `'.$FD->config('pref').'aliases`
-                            ORDER BY `alias_go` ASC, `alias_forward_to` ASC
-    ', $sql->conn() );
+                            ORDER BY `alias_go` ASC, `alias_forward_to` ASC');
 
     // Aliases found
     if ( mysql_num_rows ( $index ) > 0 ) {
@@ -269,7 +261,7 @@ if ( !isset ( $_POST['alias_id'] ) )
         ';
 
         // display Aliases
-        while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+        while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
             // get other data
             $data_arr['active_text'] = ( $data_arr['alias_active'] == 1 ) ? $FD->text('admin', 'yes') : $FD->text('admin', 'no');
