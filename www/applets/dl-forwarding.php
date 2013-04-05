@@ -22,14 +22,14 @@ if (
     $config_arr = json_array_decode($data);
 
     // Get File Data
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
                             SELECT `file_is_mirror`, `file_url`
                             FROM `'.$FD->config('pref').'dl_files`
-                            WHERE `file_id` = '.$_GET['id'].'
-    ', $FD->sql()->conn() );
-    $check_file_is_mirror = mysql_result ( $index, 0, 'file_is_mirror' );
+                            WHERE `file_id` = '.$_GET['id'].' ' );
+    $dlf_row = $index->fetch(PDO::FETCH_ASSOC);
+    $check_file_is_mirror = $dlf_row['file_is_mirror'];
     settype( $check_file_is_mirror, 'integer' );
-    $file_url = stripslashes ( mysql_result ( $index, 0, 'file_url' ) );
+    $file_url = stripslashes ( $dlf_row['file_url'] );
 
     // Is DL a Mirror?
     if (
@@ -39,11 +39,10 @@ if (
         )
     {
         // Update Counter
-        mysql_query ( '
+        $FD->sql()->conn()->exec ( '
                         UPDATE `'.$FD->config('pref')."dl_files`
                         SET `file_count` = `file_count` + 1
-                        WHERE `file_id` = '".$_GET['id']."'
-        ", $FD->sql()->conn() );
+                        WHERE `file_id` = '".$_GET['id']."'" );
         // Forward to the URL
         header ( 'Location: ' . $file_url );
     } else {
