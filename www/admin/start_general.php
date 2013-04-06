@@ -16,15 +16,17 @@ $online = get_online_ips();
 
 // Referrer Num
 $index = $sql->doQuery("SELECT COUNT(`ref_url`) AS 'ref_num' FROM {..pref..}counter_ref");
-$ref['num'] = mysql_result($index, 0, 'ref_num');
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$ref['num'] = $row['ref_num'];
 
 if ($ref['num'] > 0) {
 	// last Ref
 	$index = $sql->doQuery('SELECT ref_url, ref_last FROM {..pref..}counter_ref ORDER BY ref_last DESC LIMIT 0,1');
-	$ref['url'] = stripslashes(mysql_result($index, 0, 'ref_url'));
+	$row = $index->fetch(PDO::FETCH_ASSOC);
+	$ref['url'] = stripslashes($row['ref_url']);
 	$ref['shorturl'] = cut_in_string($ref['url'], 50, '...');
 
-	$ref['date_time'] = date_loc($FD->text('admin', 'date_time'), mysql_result($index, 0, 'ref_last'));
+	$ref['date_time'] = date_loc($FD->text('admin', 'date_time'), $row['ref_last']);
 }
 
 // Conditions

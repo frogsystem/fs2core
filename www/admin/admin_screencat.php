@@ -11,11 +11,11 @@ if (isset($_POST['cat_id']) && !emptystr($_POST['cat_name']) && $_POST['sended']
     $_POST['cat_type'] = intval($_POST['cat_type']);
     $_POST['cat_visibility'] = intval($_POST['cat_visibility']);
 
-    mysql_query('UPDATE '.$FD->config('pref')."screen_cat
+    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."screen_cat
                  SET cat_name = '$_POST[cat_name]',
                      cat_type = '$_POST[cat_type]',
                      cat_visibility = '$_POST[cat_visibility]'
-                 WHERE cat_id = '$_POST[cat_id]'", $FD->sql()->conn() );
+                 WHERE cat_id = '$_POST[cat_id]'");
 
     systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
 }
@@ -29,12 +29,12 @@ elseif (isset($_POST['cat_id']) && $_POST['sended'] == 'delete')
   $_POST['cat_id'] = intval($_POST['cat_id']);
   $_POST['cat_move_to'] = intval($_POST['cat_move_to']);
 
-  mysql_query('DELETE FROM '.$FD->config('pref')."screen_cat
-               WHERE cat_id = '$_POST[cat_id]'", $FD->sql()->conn() );
+  $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen_cat
+               WHERE cat_id = '$_POST[cat_id]'");
 
-  mysql_query('UPDATE '.$FD->config('pref')."screen
+  $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."screen
                SET cat_id = '$_POST[cat_move_to]'
-               WHERE cat_id = '$_POST[cat_id]'", $FD->sql()->conn() );
+               WHERE cat_id = '$_POST[cat_id]'");
 
   systext($FD->text('admin', 'cat_deleted'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_trash_ok'));
 }
@@ -56,8 +56,8 @@ elseif (isset($_POST['cat_id']) AND isset($_POST['cat_action']))
 
   if ($_POST['cat_action'] == 'edit')
   {
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'", $FD->sql()->conn() );
-    $admin_cat_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
+    $admin_cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $admin_cat_arr['cat_name'] = killhtml(unslash($admin_cat_arr['cat_name']));
 
@@ -151,13 +151,15 @@ elseif (isset($_POST['cat_id']) AND isset($_POST['cat_action']))
 
   elseif ($_POST['cat_action'] == 'delete')
   {
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'", $FD->sql()->conn() );
-    $admin_cat_arr = mysql_fetch_assoc($index);
-    
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]' ORDER BY cat_name", $FD->sql()->conn() );
-    if (mysql_num_rows($index) > 0)
-    {
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
+    $admin_cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
+    $index = $FD->sql()->conn()->query('SELECT COUNT(*) AS categ_count FROM '.$FD->config('pref')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]'" );
+    $num_rows = $index->fetchColumn();
+
+    if ($num_rows > 0)
+    {
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]' ORDER BY cat_name" );
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
 
@@ -185,7 +187,7 @@ echo '
            <td>
              <select name="cat_move_to" size="1" class="text">';
 
-  while ($admin_cat_move_arr = mysql_fetch_assoc($index))
+  while ($admin_cat_move_arr = $index->fetch(PDO::FETCH_ASSOC))
   {
     echo'<option value="'.$admin_cat_move_arr['cat_id'].'">'.$admin_cat_move_arr['cat_name'].'</option>';
   }
@@ -242,21 +244,21 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat ORDER BY cat_date DESC', $FD->sql()->conn() );
-    while ($cat_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat ORDER BY cat_date DESC');
+    while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $cat_arr['cat_date'] = date('d.m.Y', $cat_arr['cat_date']);
 
         if ( $cat_arr['cat_type'] == 2 ) {
-            $number_index = mysql_query('SELECT COUNT(wallpaper_id) AS number FROM '.$FD->config('pref')."wallpaper WHERE cat_id = $cat_arr[cat_id]", $FD->sql()->conn() );
+            $number_index = $FD->sql()->conn()->query('SELECT COUNT(wallpaper_id) AS number FROM '.$FD->config('pref')."wallpaper WHERE cat_id = $cat_arr[cat_id]");
         } else {
-            $number_index = mysql_query('SELECT COUNT(screen_id) AS number FROM '.$FD->config('pref')."screen WHERE cat_id = $cat_arr[cat_id]", $FD->sql()->conn() );
+            $number_index = $FD->sql()->conn()->query('SELECT COUNT(screen_id) AS number FROM '.$FD->config('pref')."screen WHERE cat_id = $cat_arr[cat_id]");
         }
 
 
 
 
-        $number_rows = mysql_result($number_index, 0, 'number');
+        $number_rows = $number_index->fetchColumn();
         echo'
                     <form action="" method="post">
                         <input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'" />

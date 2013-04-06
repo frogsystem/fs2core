@@ -60,10 +60,12 @@ if ( $num_news  > 0 ) {
                         GROUP BY U.`user_name`
                         ORDER BY `best_com_poster_num` DESC
                         LIMIT 0,1' );
-        $best_com_poster_rows = mysql_num_rows ( $index );
-        if ( $best_com_poster_rows >= 1 ) {
-            $best_com_poster = stripslashes ( mysql_result ( $index, 0, 'user_name' ) );
-            $best_com_poster_num = mysql_result ( $index, 0, 'best_com_poster_num' );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        $best_com_poster_rows = false;
+        if ( $row !== false ) {
+            $best_com_poster_rows = true;
+            $best_com_poster = stripslashes ( $row['user_name'] );
+            $best_com_poster_num = $row['best_com_poster_num'];
         }
     }
 
@@ -74,9 +76,10 @@ if ( $num_news  > 0 ) {
                     GROUP BY N.`news_title`
                     ORDER BY `best_news_link_num` DESC
                     LIMIT 0,1' );
-    if (mysql_num_rows($index) == 1) {
-        $best_news_link = stripslashes ( mysql_result ( $index, 0, 'news_title' ) );
-        $best_news_link_num = mysql_result ( $index, 0, 'best_news_link_num' );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    if ($row !== false) {
+        $best_news_link = stripslashes ( $row['news_title'] );
+        $best_news_link_num = $row['best_news_link_num'];
     }
 
 
@@ -193,7 +196,7 @@ if ( $num_news  > 0 ) {
                             </tr>
     ';
 
-    if ( $num_comments  > 0 && $best_com_poster_rows >= 1 ) {
+    if ( $num_comments  > 0 && $best_com_poster_rows ) {
         echo '
                             <tr>
                                 <td class="configthin">Flei&szlig;igster Kommentar-Poster:</td>

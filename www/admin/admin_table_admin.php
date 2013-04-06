@@ -16,9 +16,9 @@
 
     //get valid tables
     $allowed = array();
-    $query = mysql_query('SELECT TABLE_NAME FROM information_schema.tables '
-       .'WHERE TABLE_NAME LIKE \''.$FD->config('pref').'%\' AND TABLE_SCHEMA=\''.$FD->sql()->getDatabaseName().'\'', $FD->sql()->conn());
-    while ($row = mysql_fetch_assoc($query))
+    $query = $FD->sql()->conn()->query('SELECT TABLE_NAME FROM information_schema.tables '
+       .'WHERE TABLE_NAME LIKE \''.$FD->config('pref').'%\' AND TABLE_SCHEMA=\''.$FD->sql()->getDatabaseName().'\'');
+    while ($row = $query->fetch(PDO::FETCH_ASSOC))
     {
       $allowed[] = $row['TABLE_NAME'];
     }//while
@@ -50,8 +50,8 @@
       }//swi
       $_POST['selected_tables'] = array_map('savesql', $_POST['selected_tables']);
       $query .= implode('`, `', $_POST['selected_tables']).'`';
-      $query = mysql_query($query, $FD->sql()->conn());
-      while ($row = mysql_fetch_assoc($query))
+      $query = $FD->sql()->conn()->query($query);
+      while ($row = $query->fetch(PDO::FETCH_ASSOC))
       {
         $adminpage->addText('table_name', $row['Table']);
         $adminpage->addText('op', $row['Op']);
@@ -70,10 +70,10 @@
   $table_list = '';
   $hasInnoDB = false;
   $total = array('tabs' => 0, 'rows' => 0, 'size' => 0, 'free' => 0);
-  $query = mysql_query('SELECT * FROM information_schema.tables'
+  $query = $FD->sql()->conn()->query('SELECT * FROM information_schema.tables'
     .' WHERE table_name LIKE \''.$FD->config('pref').'%\''
     .' AND TABLE_SCHEMA=\''.$FD->sql()->getDatabaseName().'\' ORDER BY table_name ASC');
-  while ($row = mysql_fetch_assoc($query))
+  while ($row = $query->fetch(PDO::FETCH_ASSOC))
   {
     $adminpage->addText('table_name', $row['TABLE_NAME']);
     $adminpage->addText('table_name_esc', htmlentities($row['TABLE_NAME']));
