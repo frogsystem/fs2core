@@ -13,11 +13,10 @@ $screen_config_arr = $FD->configObject('screens')->getConfigArray();
 $_GET['id'] = ( isset ( $_GET['fileid'] ) && !isset ( $_GET['id'] ) ) ? $_GET['fileid'] : $_GET['id'];
 settype( $_GET['id'], 'integer' );
 
-$index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id = $_GET[id] AND dl_open = 1", $FD->sql()->conn() );
-if (mysql_num_rows($index) > 0)
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id = $_GET[id] AND dl_open = 1");
+$dl_arr = $index->fetch(PDO::FETCH_ASSOC);
+if ($dl_arr !== false)
 {
-    $dl_arr = mysql_fetch_assoc($index);
-
     //Seitentitel
     $FD->setConfig('info', 'page_title', stripslashes ( $dl_arr['dl_name'] ));
 
@@ -25,8 +24,8 @@ if (mysql_num_rows($index) > 0)
     $dl_config_arr = $config_arr;
 
     // Username auslesen
-    $index = mysql_query('SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = $dl_arr[user_id]", $FD->sql()->conn() );
-    $dl_arr['user_name'] = kill_replacements ( mysql_result($index, 0, 'user_name'), TRUE );
+    $index =$FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = $dl_arr[user_id]");
+    $dl_arr['user_name'] = kill_replacements ( $index->fetchColumn(), TRUE );
     $dl_arr['user_url'] = url('user', array('id' => $dl_arr['user_id']));
 
     // Link zum Autor generieren
@@ -51,9 +50,8 @@ if (mysql_num_rows($index) > 0)
     // Sonstige Daten ermitteln
     $dl_arr['dl_date'] = date_loc ( $FD->config('date'), $dl_arr['dl_date'] );
     $dl_arr['dl_text'] = fscode($dl_arr['dl_text']);
-    $index3 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
-    $dl_arr['cat_name'] = stripslashes(mysql_result($index3, 0, 'cat_name'));
-
+    $index3 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
+    $dl_arr['cat_name'] = stripslashes($index3->fetchColumn());
 
 
     if ($dl_config_arr['dl_rights']==2) {
@@ -85,14 +83,17 @@ if (mysql_num_rows($index) > 0)
 
 
     // Files auslesen
-    if ( $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use", $FD->sql()->conn() )) {
-        $stats_arr['number'] = mysql_num_rows($index);
+    $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use");
+    $num_rows = $index->fetchColumn();
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use");
+    if ( $index !== false ) {
+        $stats_arr['number'] = $num_rows;
 
         $stats_arr['size'] = 0;
         $stats_arr['hits'] = 0;
         $stats_arr['traffic'] = 0;
         $files = '';
-        while ($file_arr = mysql_fetch_assoc($index)) {
+        while ($file_arr = $index->fetch(PDO::FETCH_ASSOC)) {
             $stats_arr['size'] = $stats_arr['size'] + $file_arr['file_size'];
             $stats_arr['hits'] = $stats_arr['hits'] + $file_arr['file_count'];
             $stats_arr['traffic'] = $stats_arr['traffic'] + ($file_arr['file_count']*$file_arr['file_size']);

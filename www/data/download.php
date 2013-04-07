@@ -97,25 +97,31 @@ $dateien = $template->display ();
 
 
 if ($show == TRUE) {
-    $index = mysql_query('SELECT dl_name,
+    $index = $FD->sql()->conn()->query(
+                  'SELECT COUNT(*) AS anzahl
+                   FROM '.$FD->config('pref')."dl
+                   $query dl_open = 1
+                   ORDER BY dl_name");
+    $num_rows = $index->fetchColumn();
+    $index = $FD->sql()->conn()->query('SELECT dl_name,
                                  dl_id,
                                  dl_text,
                                  dl_date,
                                  cat_id
                           FROM '.$FD->config('pref')."dl
                           $query dl_open = 1
-                          ORDER BY dl_name", $FD->sql()->conn() );
+                          ORDER BY dl_name");
 
-    if ( mysql_num_rows ( $index ) > 0 ) {
+    if ( $num_rows > 0 ) {
         $dateien = '';
     }
 
-    while ($dl_arr = mysql_fetch_assoc($index)) {
+    while ($dl_arr = $index->fetch(PDO::FETCH_ASSOC)) {
         $dl_arr['dl_text'] = killfs($dl_arr['dl_text']);
         $dl_arr['dl_text'] = truncate_string($dl_arr['dl_text'], 250, '...');
         $dl_arr['dl_date'] = date_loc( $FD->config('date') , $dl_arr['dl_date'] );
-        $index3 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
-        $dl_arr['cat_name'] = stripslashes(mysql_result($index3, 0, 'cat_name'));
+        $index3 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'" );
+        $dl_arr['cat_name'] = stripslashes($index3->fetchColumn()); //cat_name
 
         // Get Template
         $template = new template();
