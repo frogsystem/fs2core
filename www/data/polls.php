@@ -28,23 +28,23 @@ if ( isset ($_GET['pollid']) && !isset($_GET['id']) ) {
 
 if ( isset($_GET['id']) ) {
     settype ( $_GET['id'], 'integer' );
-    $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll` WHERE `poll_id` = '.$_GET['id'], $FD->sql()->conn() );
-    $poll_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` WHERE `poll_id` = '.$_GET['id'] );
+    $poll_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $poll_arr['poll_start'] = date_loc ( $FD->config('date') , $poll_arr['poll_start']);
     $poll_arr['poll_end'] = date_loc ( $FD->config('date') , $poll_arr['poll_end']);
     $poll_arr['poll_type'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choise") : $FD->text("frontend", "single_choice");
     // all votes
-    $index = mysql_query ( "
-                            SELECT SUM(`answer_count`) AS 'all_votes'
-                            FROM `".$FD->config('pref').'poll_answers`
-                            WHERE `poll_id` = '.$poll_arr['poll_id'].'
-    ', $FD->sql()->conn() );
-    $poll_arr['all_votes'] = mysql_result ( $index, 0, 'all_votes');
+    $index = $FD->sql()->conn()->query ( "
+                    SELECT SUM(`answer_count`) AS 'all_votes'
+                    FROM `".$FD->config('pref').'poll_answers`
+                    WHERE `poll_id` = '.$poll_arr['poll_id'] );
+    $poll_arr['all_votes'] = $index->fetchColumn();
 
     //Prozentzahlen errechnen und template generieren
-    $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll_answers` WHERE `poll_id` = '.$_GET['id'], $FD->sql()->conn() );
-    while($answer_arr = mysql_fetch_assoc($index))
+    $antworten = '';
+    $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll_answers` WHERE `poll_id` = '.$_GET['id'] );
+    while($answer_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         if ($poll_arr['all_votes'] != 0) {
             $answer_arr['prozent'] = round ( $answer_arr['answer_count'] / $poll_arr['all_votes'] * 100, 1 );
@@ -54,7 +54,6 @@ if ( isset($_GET['id']) ) {
             $answer_arr['prozent'] = 0;
             $answer_arr['bar_width'] = '1px';
         }
-
 
         // Get Template
         $template = new template();
@@ -97,50 +96,48 @@ else {
 
     switch ( $_GET['sort'] ) {
         case 'question': {
-            $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_quest` '.$_GET['order'], $FD->sql()->conn() );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_quest` '.$_GET['order'] );
             break;
         }
         case 'all_votes': {
-            $index = mysql_query ( "
+            $index = $FD->sql()->conn()->query ( "
                                     SELECT *, SUM(`A.answer_count`) AS 'all_votes'
                                     FROM `".$FD->config('pref').'poll` P, `'.$FD->config('pref').'poll_answers` A
                                     WHERE P.`poll_id` = A.`poll_id`
-                                    ORDER BY `all_votes` '.$_GET['order'].', P.`poll_quest` ASC
-            ', $FD->sql()->conn() );
+                                    ORDER BY `all_votes` '.$_GET['order'].', P.`poll_quest` ASC' );
             break;
         }
         case 'participants': {
-            $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_participants` '.$_GET['order'].', `poll_quest` ASC', $FD->sql()->conn() );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_participants` '.$_GET['order'].', `poll_quest` ASC' );
             break;
         }
         case 'type': {
-            $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_type` '.$_GET['order'].', `poll_quest` ASC', $FD->sql()->conn() );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_type` '.$_GET['order'].', `poll_quest` ASC' );
             break;
         }
         case 'start_date': {
-            $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_start` '.$_GET['order'].', `poll_quest` ASC', $FD->sql()->conn() );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_start` '.$_GET['order'].', `poll_quest` ASC' );
             break;
         }
         case 'end_date': {
-            $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_end` '.$_GET['order'].', `poll_quest` ASC', $FD->sql()->conn() );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_end` '.$_GET['order'].', `poll_quest` ASC' );
             break;
         }
     }
 
     $list_lines = '';
-    while ( $poll_arr = mysql_fetch_assoc ( $index ) ) {
+    while ( $poll_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $poll_arr['poll_url'] = url('polls', array('id' => $poll_arr['poll_id']));
         $poll_arr['poll_start'] = date_loc ( $FD->config('date') , $poll_arr['poll_start'] );
         $poll_arr['poll_end'] = date_loc ( $FD->config('date') , $poll_arr['poll_end'] );
         $poll_arr['poll_type'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choise") : $FD->text("frontend", "single_choice");
 
         // all votes
-        $index2 = mysql_query ( "
-                                SELECT SUM(`answer_count`) AS 'all_votes'
-                                FROM `".$FD->config('pref').'poll_answers`
-                                WHERE `poll_id` = '.$poll_arr['poll_id'].'
-        ', $FD->sql()->conn() );
-        $poll_arr['all_votes'] = mysql_result ( $index2, 0, 'all_votes');
+        $index2 = $FD->sql()->conn()->query ( "
+                        SELECT SUM(`answer_count`) AS 'all_votes'
+                        FROM `".$FD->config('pref').'poll_answers`
+                        WHERE `poll_id` = '.$poll_arr['poll_id'] );
+        $poll_arr['all_votes'] = $index2->fetchColumn();
 
         // Get Template
         $template = new template();
