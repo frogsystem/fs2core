@@ -5,7 +5,7 @@
 $FD->loadConfig('users');
 $config_arr = $FD->configObject('users')->getConfigArray();
 $show_form = TRUE;
-
+$messages = '';
 
 ///////////////////
 //// Anti-Spam ////

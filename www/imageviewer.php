@@ -52,19 +52,19 @@ set_style();
     // Gallery Image
     } else {
         // Get Image Data
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
                                 SELECT `screen_name`, `cat_id` FROM `'.$FD->config('pref').'screen`
                                 WHERE `screen_id` = '.$_GET['id'].'
-                                LIMIT 0,1
-        ', $FD->sql()->conn() );
+                                LIMIT 0,1' );
 
         $data_array['image'] = image_url ( 'images/screenshots/', $_GET['id'], FALSE );
         $data_array['image_url'] = image_url ( 'images/screenshots/', $_GET['id'] );
         $data_array['image_sizeinfo'] = image_url ( 'images/screenshots/', $_GET['id'], FALSE, TRUE );
 
-        if ( mysql_num_rows ( $index ) == 1 ) {
-            $data_array['caption'] = stripslashes ( mysql_result ( $index, 0, 'screen_name' ) );
-            $cat_id = mysql_result ( $index, 0, 'cat_id' );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        if ( $row !== false ) {
+            $data_array['caption'] = stripslashes ( $row['screen_name'] );
+            $cat_id = $row['cat_id'];
             settype( $cat_id, 'integer' );
             $image_found = TRUE;
         }
@@ -81,17 +81,16 @@ set_style();
         // No single Image
         } else {
             // exists a NEXT image?
-            $index = mysql_query ( '
-                                    SELECT `screen_id`
-                                    FROM `'.$FD->config('pref').'screen`
-                                    WHERE `cat_id` = '.$cat_id.'
-                                    AND `screen_id` > '.$_GET['id'].'
-                                    ORDER BY `screen_id`
-                                    LIMIT 0,1
-            ', $FD->sql()->conn() );
-
-            if ( mysql_num_rows ( $index ) == 1 ) {
-                $next_id = mysql_result ( $index, 0, 'screen_id' );
+            $index = $FD->sql()->conn()->query ( '
+                            SELECT `screen_id`
+                            FROM `'.$FD->config('pref').'screen`
+                            WHERE `cat_id` = '.$cat_id.'
+                            AND `screen_id` > '.$_GET['id'].'
+                            ORDER BY `screen_id`
+                            LIMIT 0,1' );
+            $row = $index->fetch(PDO::FETCH_ASSOC);
+            if ( $row !== false ) {
+                $next_id = $row['screen_id'];
 
                 $data_array['next_url'] = 'imageviewer.php?id='.$next_id;
                 $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_next_text').'</a>';
@@ -99,17 +98,16 @@ set_style();
             }
 
             // exists a PREVIOUS image?
-            $index = mysql_query ( '
-                                    SELECT `screen_id`
-                                    FROM `'.$FD->config('pref').'screen`
-                                    WHERE `cat_id` = '.$cat_id.'
-                                    AND `screen_id` < '.$_GET['id'].'
-                                    ORDER BY `screen_id` DESC
-                                    LIMIT 0,1
-            ', $FD->sql()->conn() );
-
-            if ( mysql_num_rows ( $index ) == 1 ) {
-                $prev_id = mysql_result ( $index, 0, 'screen_id' );
+            $index = $FD->sql()->conn()->query ( '
+                            SELECT `screen_id`
+                            FROM `'.$FD->config('pref').'screen`
+                            WHERE `cat_id` = '.$cat_id.'
+                            AND `screen_id` < '.$_GET['id'].'
+                            ORDER BY `screen_id` DESC
+                            LIMIT 0,1' );
+            $row = $index->fetch(PDO::FETCH_ASSOC);
+            if ( $row !== false ) {
+                $prev_id = $row['screen_id'];
 
                 $data_array['prev_url'] = 'imageviewer.php?id='.$prev_id;
                 $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_prev_text').'</a>';
@@ -157,7 +155,7 @@ set_style();
     $template_popupviewer->tag( 'next_link', $data_array['next_link'] );
     $template_popupviewer->tag( 'next_image_link', $data_array['next_image_link'] );
 
-    $template_popupviewer = (string)  $template_popupviewer; 
+    $template_popupviewer = (string)  $template_popupviewer;
     $template_popupviewer = tpl_functions_init($template_popupviewer);
 
 
