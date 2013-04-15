@@ -6,12 +6,11 @@
 
 if (!empty($_POST['catname']))
 {
-    $_POST['catname'] = savesql($_POST['catname']);
-
     settype($_POST['subcatof'], 'integer');
-    mysql_query('INSERT INTO '.$FD->config('pref')."dl_cat (subcat_id, cat_name)
-                 VALUES ('".$_POST['subcatof']."',
-                         '".$_POST['catname']."');", $FD->sql()->conn() );
+    $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."dl_cat (subcat_id, cat_name)
+                 VALUES ('".$_POST['subcatof']."', ?)");
+    $stmt->execute(array($_POST['catname']));
     systext('Kategorie wurde hinzugef&uuml;gt');
 
     unset($_POST);

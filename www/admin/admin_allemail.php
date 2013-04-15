@@ -14,24 +14,22 @@ if (   ( isset($_POST['signup']) && $_POST['signup'] != '' )
     settype ( $_POST['use_admin_mail'], 'integer' );
     settype ( $_POST['html'], 'integer' );
 
-    $_POST['signup'] = savesql ( $_POST['signup'] );
-    $_POST['change_password'] = savesql ( $_POST['change_password'] );
-    $_POST['change_password_ack'] = savesql ( $_POST['change_password_ack'] );
-    #$_POST['delete_account'] = savesql ( $_POST['delete_account'] );
-    $_POST['email'] = savesql ( $_POST['email'] );
-
-    // MySQL-Queries
-    $sql->conn()->exec ( '
-                    UPDATE `'.$FD->config('pref')."email`
-                    SET
-                        `signup` = '".$_POST['signup']."',
-                        `change_password` = '".$_POST['change_password']."',
-                        `change_password_ack` = '".$_POST['change_password_ack']."',
-                        `use_admin_mail` = '".$_POST['use_admin_mail']."',
-                        `email` = '".$_POST['email']."',
-                        `html` = '".$_POST['html']."'
-                    WHERE `id` = '1'" );
-
+    // SQL-Queries
+    $stmt = $sql->conn()->prepare ( '
+                UPDATE `'.$FD->config('pref')."email`
+                SET
+                    `signup` = ?,
+                    `change_password` = ?,
+                    `change_password_ack` = ?,
+                    `use_admin_mail` = '".$_POST['use_admin_mail']."',
+                    `email` = ?,
+                    `html` = '".$_POST['html']."'
+                WHERE `id` = '1'" );
+    $stmt->execute( array(
+                        $_POST['signup'],
+                        $_POST['change_password'],
+                        $_POST['change_password_ack'],
+                        $_POST['email'] ));
     // system messages
     systext( $FD->text('page', 'changes_saved'), $FD->text('page', 'info'), FALSE, $FD->text('page', 'save_ok') );
 
@@ -51,12 +49,11 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $index = mysql_query ( '
-                                SELECT *
-                                FROM '.$FD->config('pref')."email
-                                WHERE `id` = '1'
-        ", $sql->conn());
-        $email_arr = mysql_fetch_assoc($index);
+        $index = $sql->conn()->query ( '
+                        SELECT *
+                        FROM '.$FD->config('pref')."email
+                        WHERE `id` = '1'" );
+        $email_arr = $index->fetch(PDO::FETCH_ASSOC);
         putintopost ( $email_arr );
     }
 
@@ -67,7 +64,6 @@ if ( TRUE )
     $_POST['signup'] = killhtml ( $_POST['signup'] );
     $_POST['change_password'] = killhtml ( $_POST['change_password'] );
     $_POST['change_password_ack'] = killhtml ( $_POST['change_password_ack'] );
-    #$_POST['delete_account'] = killhtml ( $_POST['delete_account'] );
     $_POST['email'] = killhtml ( $_POST['email'] );
 
     echo '

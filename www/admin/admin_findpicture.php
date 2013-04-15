@@ -1,15 +1,15 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 // search form
-echo'
+echo '
     <form action="" method="post" id="img_search">
         <table class="content" cellpadding="0" cellspacing="0">
             <tr>
                 <td class="center">
                     <select class="select" name="cat" onchange="$(\'#img_search\').submit();">';
 
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
-while($cat_arr = mysql_fetch_array($index)) {
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1' );
+while($cat_arr = $index->fetch(PDO::FETCH_ASSOC)) {
     echo '
                         <option value="'.$cat_arr['cat_id'].'"'. ($_POST['cat']==$cat_arr['cat_id']?'selected':'') .'>'. $cat_arr['cat_name'] .'</option>';
 }
@@ -20,33 +20,35 @@ echo '
             </tr>
         </table>
     </form>';
-    
+
 // display images
 if (isset($_POST['cat']))
 {
-
-    $_POST['cat'] = savesql($_POST['cat']);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen WHERE cat_id = '. $_POST['cat'] .' ORDER BY screen_id DESC', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->prepare('SELECT COUNT(*) FROM '.$FD->config('pref').'screen WHERE cat_id = ?');
+    $index->execute(array($_POST['cat']));
+    $num_rows = $index->fetchColumn();
 
     // nothing found
-    if (mysql_num_rows($index) <= 0) {
+    if ($num_rows <= 0) {
         $main = '
             <table class="content" cellpadding="0" cellspacing="0">
-                <tr><td><h3>Bild auswählen</h3><hr></td></tr>
+                <tr><td><h3>Bild ausw&auml;hlen</h3><hr></td></tr>
                 <tr>
                     <td class="center thin">
                         Keine Bilder gefunden!
                     </td>
                 </tr>
             </table>';
-            
+
     // found images
     } else {
-    
+
         $newLineStart = true;
         $lines = "";
-        
-        while ($screen_arr = mysql_fetch_array($index))
+
+        $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'screen WHERE cat_id = ? ORDER BY screen_id DESC');
+        $index->execute(array($_POST['cat']));
+        while ($screen_arr = $index->fetch())
         {
             if($newLineStart)
             {
@@ -79,16 +81,16 @@ if (isset($_POST['cat']))
             }
 
         }
-        
+
         $main = '
         <table class="content" cellpadding="0" cellspacing="0">
             <tr><td colspan="2"><h3>Bild auswählen</h3><hr></td></tr>
             '.$lines.'
         </table>';
     }
-    
+
     //display table
-    echo get_content_container('&nbsp;', $main);    
+    echo get_content_container('&nbsp;', $main);
 }
 
 ?>
