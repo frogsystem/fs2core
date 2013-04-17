@@ -34,19 +34,17 @@ if ((isset($_POST['name']) AND $_POST['name'] != '')
 {
     $message = '';
 
-    $_POST['name'] = savesql($_POST['name']);
-    $_POST['link'] = savesql($_POST['link']);
-    $_POST['description'] = savesql($_POST['description']);
     settype($_POST['partner_id'], 'integer');
     $_POST['permanent'] = isset($_POST['permanent']) ? 1 : 0;
 
-    $update = 'UPDATE '.$FD->config('pref')."partner
-               SET partner_name = '$_POST[name]',
-                   partner_link = '$_POST[link]',
-                   partner_beschreibung = '$_POST[description]',
+    $stmt = $FD->sql()->conn()->prepare(
+              'UPDATE '.$FD->config('pref')."partner
+               SET partner_name = ?,
+                   partner_link = ?,
+                   partner_beschreibung = ?,
                    partner_permanent = '$_POST[permanent]'
-               WHERE partner_id = '$_POST[partner_id]'";
-    mysql_query($update, $FD->sql()->conn() );
+               WHERE partner_id = '$_POST[partner_id]'");
+    $stmt->execute(array($_POST['name'], $_POST['link'], $_POST['description']));
 
     if ($_FILES['bild_small']['name'] != '')
     {
@@ -84,7 +82,7 @@ elseif (isset($_POST['partner_action'])
 
     if ($_POST['delete_partner'])   // Partnerseite löschen
     {
-        mysql_query('DELETE FROM '.$FD->config('pref')."partner WHERE partner_id = '$_POST[partner_id]'", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."partner WHERE partner_id = '$_POST[partner_id]'");
         image_delete('images/partner/', $_POST['partner_id'].'_small');
         image_delete('images/partner/', $_POST['partner_id'].'_big');
         systext($FD->text('page', 'note_deleted'));
@@ -112,8 +110,8 @@ elseif (isset($_POST['partner_action'])
     $_POST['partner_id'] = $_POST['partner_id'][0];
     settype($_POST['partner_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."partner WHERE partner_id = $_POST[partner_id]", $FD->sql()->conn() );
-    $partner_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."partner WHERE partner_id = $_POST[partner_id]");
+    $partner_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $partner_arr['partner_name'] = killhtml($partner_arr['partner_name']);
     $partner_arr['partner_link'] = killhtml($partner_arr['partner_link']);
@@ -231,8 +229,8 @@ elseif (isset($_POST['partner_action'])
     $_POST['partner_id'] = $_POST['partner_id'][0];
     settype($_POST['partner_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."partner WHERE partner_id = $_POST[partner_id]", $FD->sql()->conn() );
-    $partner_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."partner WHERE partner_id = $_POST[partner_id]");
+    $partner_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $partner_arr['partner_name'] = killhtml($partner_arr['partner_name']);
     $partner_arr['partner_link'] = killhtml($partner_arr['partner_link']);
@@ -285,10 +283,11 @@ if (!isset($_POST['partner_id']))
 {
     $config_arr['small_x_width'] = $config_arr['small_x'] + 20;
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'partner ORDER BY partner_name', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref').'partner');
 
-    if (mysql_num_rows($index) > 0)
+    if ($index->fetchColumn() > 0)
     {
+        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'partner ORDER BY partner_name');
         echo'
                     <form action="" method="post">
                         <input type="hidden" value="partner_edit" name="go">
@@ -307,7 +306,7 @@ if (!isset($_POST['partner_id']))
                             </tr>
         ';
 
-        while ($partner_arr = mysql_fetch_assoc($index))
+        while ($partner_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
             echo'
                             <tr class="select_entry thin">
