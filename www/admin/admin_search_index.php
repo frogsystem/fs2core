@@ -54,8 +54,8 @@ if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( 'update', 'new
 if ( TRUE )
 {
     // Get some Data
-    $words = mysql_query ( "SELECT COUNT(`search_word_id`) AS 'words' FROM `".$FD->config('pref').'search_words`', $FD->sql()->conn() );
-    $docs = mysql_query ( "SELECT COUNT(`search_time_id`) AS 'docs' FROM `".$FD->config('pref').'search_time`', $FD->sql()->conn() );
+    $words = $FD->sql()->conn()->query ( "SELECT COUNT(`search_word_id`) AS 'words' FROM `".$FD->config('pref').'search_words`' );
+    $docs = $FD->sql()->conn()->query ( "SELECT COUNT(`search_time_id`) AS 'docs' FROM `".$FD->config('pref').'search_time`'  );
 
     // Display Form
     echo '
@@ -123,7 +123,7 @@ if ( TRUE )
                                     '.$FD->text('page', 'search_index_info_words').':
                                 </td>
                                 <td class="configthin left">
-                                    '.mysql_result ( $words, 0, 'words' ).'
+                                    '.$words->fetchColumn().'
                                 </td>
                             </tr>
                             <tr>
@@ -131,7 +131,7 @@ if ( TRUE )
                                     '.$FD->text('page', 'search_index_info_docs').':
                                 </td>
                                 <td class="configthin left">
-                                    '.mysql_result ( $docs, 0, 'docs' ).'
+                                    '.$docs->fetchColumn().'
                                 </td>
                             </tr>
                         </table>

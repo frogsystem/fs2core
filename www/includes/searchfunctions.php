@@ -191,7 +191,7 @@ function get_search_word_id ( $WORD ) {
     if ($result !== false)
     {
         $id = $result['search_word_id'];
-        $result->closeCursor();
+        $stmt->closeCursor();
         return $id;
     } else {
         $FD->sql()->conn()->exec ( '

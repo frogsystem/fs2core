@@ -6,18 +6,16 @@
 
 if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']))
 {
-    $_POST['title'] = savesql($_POST['title']);
-    $_POST['url'] = savesql($_POST['url']);
-    $_POST['preis'] = savesql($_POST['preis']);
-    $_POST['text'] = savesql($_POST['text']);
     settype($_POST['hot'], 'integer');
-    mysql_query('INSERT INTO '.$FD->config('pref')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
-                 VALUES ('".$_POST['title']."',
-                         '".$_POST['url']."',
-                         '".$_POST['text']."',
-                         '".$_POST['preis']."',
-                         '".$_POST['hot']."');", $FD->sql()->conn() );
-    $id = mysql_insert_id();
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
+                 VALUES (?,
+                         ?,
+                         ?,
+                         ?,
+                         '".$_POST['hot']."');");
+    $stmt->execute(array($_POST['title'], $_POST['url'], $_POST['text'], $_POST['preis']));
+    $id = $FD->sql()->conn()->->lastInsertId();
 
     $messages = array();
     if (!empty($_FILES['artikelimg']['name']))
