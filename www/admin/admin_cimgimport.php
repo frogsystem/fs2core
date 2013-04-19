@@ -12,11 +12,12 @@ if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'
 
     if(count($_POST['image']) > 0){
         $count = 0;
+        $stmt = $FD->sql()->conn()->prepare('INSERT INTO `'.$FD->config('pref').'cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES (?, ?, ?, ?)');
         foreach($_POST['image'] as $image){
             $thumb = (in_array($image, $_POST['thumb'])) ? 1 : 0;
-            $name = mysql_real_escape_string(substr($image, 0, strrpos($image, '.')));
-            $type = mysql_real_escape_string(substr($image, strrpos($image, '.') + 1));
-            mysql_query('INSERT INTO `'.$FD->config('pref')."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".$name."', '".$type."', ".$thumb.', '.intval($_POST['cat']).')');
+            $name = substr($image, 0, strrpos($image, '.'));
+            $type = substr($image, strrpos($image, '.') + 1);
+            $stmt->execute(array($name, $type, $thumb, intval($_POST['cat'])));
             $count++;
 
             copy (UPLOAD_PATH.$name.'.'.$type, CIMG_PATH.$name.'.'.$type);
@@ -40,8 +41,8 @@ if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'
         $count1 = 0;
         $count2 = 0;
         foreach($_POST['image'] as $image){
-            $name = mysql_real_escape_string(substr($image, 0, strrpos($image, '.')));
-            $type = mysql_real_escape_string(substr($image, strrpos($image, '.') + 1));
+            $name = substr($image, 0, strrpos($image, '.'));
+            $type = substr($image, strrpos($image, '.') + 1);
             if(file_exists(UPLOAD_PATH.$name.'.'.$type)){
                 unlink(UPLOAD_PATH.$name.'.'.$type);
                 $count1++;
@@ -70,9 +71,9 @@ if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'
 }
 
 if(!isset($_POST['cat_action']) || !isset($_POST['sended'])){
-    $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg`');
+    $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg`');
     $img = array();
-    while(($row = mysql_fetch_assoc($qry)) !== false){
+    while(($row = $qry->fetch(PDO::FETCH_ASSOC)) !== false){
         $img[] = $row['name'];
         if($row['hasthumb'] == 1){
            $img[] = $row['name'].'_s';
@@ -97,11 +98,11 @@ if(!isset($_POST['cat_action']) || !isset($_POST['sended'])){
     if($found > 0){
         $select_all_none = '<span class="small">
                          (<span class="link" onclick="groupselect(\'#image_list\', true)">alle</span> / <span class="link" onclick="groupselect(\'#image_list\', false)">keine</span>  ausw&auml;hlen)
-                    </span>';       
-        
+                    </span>';
+
         systext($found.sp_string($found, ' neues Bild', ' neue Bilder').' gefunden&nbsp;'.$select_all_none, "Bilder aus Upload-Ordner importieren");
         $upload_path = UPLOAD_PATH;
-    
+
         echo '<form action="" method="post">
             <input type="hidden" name="sended" value="1">
         <table class="configtable" cellpadding="4" cellspacing="0" id="image_list">
@@ -118,19 +119,19 @@ FS2_STRING;
 if($bild[1]) echo '<br><font class="small">Thumbnail gefunden</font><input type="hidden" name="thumb[]" value="'.$bild[0].$bild[2].'">';
 echo '    </tr>';
         }
-        
-        echo'        
-        
+
+        echo '
+
             <tr><td class="space"></td></tr>
             <tr>
                 <td colspan="2">
                     <div class="atleft" id="import_to">
                         Bilder in diese Kategorie importieren: <select name="cat"><option value="0">Keine Kategorie</option>';
-                            $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
-                            while(($cat = mysql_fetch_assoc($qry)) !== false){
+                            $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
+                            while(($cat = $qry->fetch(PDO::FETCH_ASSOC)) !== false){
                                 echo '<option value="'.$cat['id'].'" title="'.$cat['description'].'">'.$cat['name'].'</option>';
                             }
-                            echo '</select> 
+                            echo '</select>
                     </div>
                     <div class="atright">
                         <select name="cat_action" size="1" onchange=\'if ($(this).val()=="import") {$("#import_to").show();} else {$("#import_to").hide();}\'>

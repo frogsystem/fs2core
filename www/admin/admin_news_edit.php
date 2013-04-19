@@ -4,21 +4,19 @@ function db_edit_comment ( $DATA )
 {
     global $FD;
 
-    $DATA['title'] = savesql ( $DATA['title'] );
-    $DATA['text'] = savesql ( $DATA['text'] );
     settype ( $DATA['comment_id'], 'integer' );
 
-    // MySQL-Update-Query: Comment
-    mysql_query ( '
+    // SQL-Update-Query: Comment
+    $stmt = $FD->sql()->conn()->prepare('
                     UPDATE
                             '.$FD->config('pref')."comments
                     SET
-                            comment_title = '".$DATA['title']."',
-                            comment_text = '".$DATA['text']."'
+                            comment_title = ?,
+                            comment_text = ?
                     WHERE
                             comment_id = '".$DATA['comment_id']."'
-                        AND content_type='news'
-    ", $FD->sql()->conn() );
+                        AND content_type='news'");
+    $stmt->execute(array($DATA['title'], $DATA['text']));
 
     systext( $FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_ok') );
 }
@@ -29,17 +27,15 @@ function db_delete_comment ( $DATA )
 
     $DATA['comment_id'] = array_map ( 'intval', explode ( ',', $DATA['comment_id'] ) );
 
-    // MySQL-Delete-Query: Comment
-    mysql_query ( '
+    // SQL-Delete-Query: Comment
+    $affected = (int) $FD->sql()->conn()->exec ( '
                     DELETE FROM
                             '.$FD->config('pref').'comments
                     WHERE
-                            `comment_id` IN ('.implode ( ',', $DATA['comment_id'] ).')
-    ', $FD->sql()->conn() );
-    mysql_query ( '
+                            `comment_id` IN ('.implode ( ',', $DATA['comment_id'] ).')');
+    $FD->sql()->conn()->exec ( '
                     UPDATE `'.$FD->config('pref').'counter`
-                    SET `comments` = `comments` - '.mysql_affected_rows ().'
-    ', $FD->sql()->conn() );
+                    SET `comments` = `comments` - '.$affected);
 
     systext( $FD->text('page', 'comment_deleted'), $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_trash_ok') );
 }
@@ -60,19 +56,19 @@ function action_delete_get_data ( $IDS )
         unset ($news_arr);
         settype ( $NEWS_ID, 'integer' );
 
-        $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."news WHERE news_id = '".$NEWS_ID."'", $FD->sql()->conn() );
-        $news_arr = mysql_fetch_assoc ( $index );
+        $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news WHERE news_id = '".$NEWS_ID."'" );
+        $news_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         $news_arr['news_date_formated'] = ''.$FD->text('admin', 'on').' <b>' . date ( $FD->text('admin', 'date_format') , $news_arr['news_date'] ) . '</b> '.$FD->text('admin', 'at').' <b>' . date ( $FD->text('admin', 'time_format') , $news_arr['news_date'] ) . '</b>';
 
-        $index2 = mysql_query("SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'', $FD->sql()->conn() );
-        $news_arr['num_comments'] = mysql_result ( $index2, 0, 'number' );
+        $index2 = $FD->sql()->conn()->query("SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'' );
+        $news_arr['num_comments'] = $index2->fetchColumn();
 
-        $index2 = mysql_query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id']."", $FD->sql()->conn() );
-        $news_arr['user_name'] = mysql_result ( $index2, 0, 'user_name' );
+        $index2 = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id']."");
+        $news_arr['user_name'] = $index2->fetchColumn();
 
-        $index2 = mysql_query('SELECT cat_name FROM '.$FD->config('pref').'news_cat WHERE cat_id = '.$news_arr['cat_id']."", $FD->sql()->conn() );
-        $news_arr['cat_name'] = mysql_result ( $index2, 0, 'cat_name' );
+        $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref').'news_cat WHERE cat_id = '.$news_arr['cat_id']."");
+        $news_arr['cat_name'] = $index2->fetchColumn();
 
         $return_arr[] = $news_arr;
     }
@@ -146,10 +142,11 @@ function action_delete_display_page ( $return_arr )
 
 function action_comments_select ( $DATA )
 {
-        global $FD;
+    global $FD;
 
-                // Comments Header
-                echo '
+    $DATA['news_id'] = intval($DATA['news_id']);
+    // Comments Header
+    echo '
                                         <form action="" method="post">
                                                 <input type="hidden" name="sended" value="comment">
                                                 <input type="hidden" name="news_action" value="'.$DATA['news_action'].'">
@@ -164,31 +161,30 @@ function action_comments_select ( $DATA )
                                                             <td class="config center" width="15%">Auswahl</td>
                                                         </tr>
 
-                ';
+    ';
 
-                // Get Number of Comments
-                  $index = mysql_query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\'', $FD->sql()->conn() );
-                  $number = mysql_result ( $index, 0, 'number' );
+    // Get Number of Comments
+    $index = $FD->sql()->conn()->query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\'' );
+    $number = $index->fetchColumn();
 
-                  if ( $number >= 1 ) {
-                        $index = mysql_query ( '
-                                                                        SELECT *
-                                                                        FROM '.$FD->config('pref').'comments
-                                                                        WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\'
-                                                                        ORDER BY comment_date DESC
-                        ', $FD->sql()->conn() );
+    if ( $number >= 1 ) {
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM '.$FD->config('pref').'comments
+                        WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\' 
+                        ORDER BY comment_date DESC');
 
-                        // Display Comment-List
-                        while ( $comment_arr = mysql_fetch_assoc ( $index ) ) {
+        // Display Comment-List
+        while ( $comment_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
-                                // Get other Data
-                                if ( $comment_arr['comment_poster_id'] != 0 ) {
-                                        $index2 = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id']."", $FD->sql()->conn() );
-                                        $comment_arr['comment_poster'] = mysql_result ( $index2, 0, 'user_name' );
-                                }
-                                $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
+            // Get other Data
+            if ( $comment_arr['comment_poster_id'] != 0 ) {
+                    $index2 = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id']."" );
+                    $comment_arr['comment_poster'] = $index2->fetchColumn();
+            }
+            $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
 
-                                echo'
+            echo'
                                                         <tr class="select_entry">
                                                             <td class="configthin middle">'.$comment_arr['comment_title'].'</td>
                                                             <td class="configthin middle"><span class="small">'.$comment_arr['comment_poster'].'</span></td>
@@ -197,13 +193,13 @@ function action_comments_select ( $DATA )
                                                                 <input class="pointer select_box" type="checkbox" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                                                             </td>
                                                         </tr>
-                                ';
+            ';
 
-                        }
-                }
+        }
+    }
 
-                // Footer
-                echo'
+    // Footer
+    echo '
                                                         <tr><td class="space"></td></tr>
                                                         <tr>
                                                             <td class="right" colspan="4">
@@ -223,29 +219,28 @@ function action_comments_select ( $DATA )
                                                         </tr>
                                                 </table>
                                         </form>
-                ';
+    ';
 }
 
 function action_comments_edit ( $DATA )
 {
-        global $FD;
+    global $FD;
 
     settype ( $DATA['comment_id'], 'integer' );
-    $index = mysql_query ( '
-                                                        SELECT *
-                                                        FROM '.$FD->config('pref').'comments
-                                                        WHERE comment_id = '.$DATA['comment_id']." AND content_type='news'
-        ", $FD->sql()->conn() );
-    $comment_arr = mysql_fetch_assoc ( $index );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT *
+                    FROM '.$FD->config('pref').'comments
+                    WHERE comment_id = '.$DATA['comment_id']." AND content_type='news'" );
+    $comment_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-        // Get other Data
-        if ( $comment_arr['comment_poster_id'] != 0 ) {
-                        $index2 = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn() );
-                        $comment_arr['comment_poster'] = mysql_result ( $index2, 0, 'user_name' );
-        }
-        $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
+    // Get other Data
+    if ( $comment_arr['comment_poster_id'] != 0 ) {
+            $index2 = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id'] );
+            $comment_arr['comment_poster'] = $index2->fetchColumn();
+    }
+    $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
 
-    echo'
+    echo '
                     <form action="" method="post">
                         <input type="hidden" name="news_action" value="comments">
                         <input type="hidden" name="comment_action" value="edit">
@@ -301,14 +296,14 @@ function action_comments_edit ( $DATA )
 
 function action_comments_delete ( $DATA )
 {
-        global $FD;
+    global $FD;
 
-        // Security Function
-        $DATA['comment_id'] = ( is_array ( $DATA['comment_id'] ) ) ? $DATA['comment_id'] : array ( $DATA['comment_id'] );
-        $DATA['comment_id'] = array_map ( 'intval', $DATA['comment_id'] );
+    // Security Function
+    $DATA['comment_id'] = ( is_array ( $DATA['comment_id'] ) ) ? $DATA['comment_id'] : array ( $DATA['comment_id'] );
+    $DATA['comment_id'] = array_map ( 'intval', $DATA['comment_id'] );
 
-        // Display Head of Table
-        echo '
+    // Display Head of Table
+    echo '
                     <form action="" method="post">
                         <input type="hidden" name="news_action" value="comments">
                         <input type="hidden" name="comment_action" value="delete">
@@ -321,33 +316,32 @@ function action_comments_delete ( $DATA )
                                 <td class="configthin">
                                     '.$FD->text('admin', 'news_comments_delete_question').'
                                     <br><br>
-        ';
+    ';
 
-        $index = mysql_query ( '
-                                SELECT *
-                                FROM `'.$FD->config('pref').'comments`
-                                WHERE `comment_id` IN ('.implode ( ',', $DATA['comment_id'] ).')
-        ', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT *
+                    FROM `'.$FD->config('pref').'comments`
+                    WHERE `comment_id` IN ('.implode ( ',', $DATA['comment_id'] ).')' );
 
-        while ( $comment_arr = mysql_fetch_assoc ( $index ) ) {
+    while ( $comment_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
-            // Get other Data
-            if ( $comment_arr['comment_poster_id'] != 0 ) {
-                            $index2 = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn() );
-                            $comment_arr['comment_poster'] = mysql_result ( $index2, 0, 'user_name' );
-            }
-            $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
+        // Get other Data
+        if ( $comment_arr['comment_poster_id'] != 0 ) {
+                $index2 = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id'] );
+                $comment_arr['comment_poster'] = $index2->fetchColumn();
+        }
+        $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
 
-            echo '
+        echo '
                                     <b>'.$comment_arr['comment_title'].'</b> <span class="small">(#'.$_POST['news_id'].')</span><br>
                                     <span class="small">gepostet von <b>'.$comment_arr['comment_poster'].'</b> am
                                                                         '.$comment_arr['comment_date_formated'].' Uhr</b><br><br>
                                     <div class="small">'.killhtml ( $comment_arr['comment_text'] ).'</div><br><br>
-            ';
-        }
+        ';
+    }
 
-        // Display End of Table
-        echo '
+    // Display End of Table
+    echo '
                                 </td>
                                 <td class="config right top" style="padding: 0px;">
                                     '.get_yesno_table ( 'comment_delete' ).'
@@ -363,13 +357,8 @@ function action_comments_delete ( $DATA )
                             </tr>
                         </table>
                     </form>
-        ';
-
+    ';
 }
-
-
-
-
 
 
 
@@ -423,7 +412,7 @@ if (
     // set edit time
     $data['news_search_update'] = time();
 
-    // MySQL-Insert-Query
+    // SQL-Insert-Query
     try {
         // Get User
         try {
