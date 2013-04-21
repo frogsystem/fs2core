@@ -210,8 +210,8 @@ else
             break;
     }
 
-    $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'counter_ref '.$query.'', $FD->sql()->conn() );
-    $referrer_number = mysql_num_rows ( $index );
+    $index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'counter_ref '.$query.'' );
+    $referrer_number = $index->fetchColumn();
     if ( $referrer_number <= 0 ) {
     	echo'
                         <tr>
@@ -222,7 +222,8 @@ else
 		';
 	}
 
-	while ( $referrer_arr = mysql_fetch_assoc ( $index ) )
+    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'counter_ref '.$query.'' );
+	while ( $referrer_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
         $dburlfull = $referrer_arr['ref_url'];
 

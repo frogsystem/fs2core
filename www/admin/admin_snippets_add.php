@@ -6,8 +6,9 @@
 
 // Check if Snippet exists
 if ( isset ( $_POST['sended'] ) ) {
-    $index = mysql_query ( 'SELECT `snippet_id` FROM `'.$FD->config('pref')."snippets` WHERE `snippet_tag` = '[%".savesql ( $_POST['snippet_tag'] )."%]'", $FD->sql()->conn() );
-    $snippet_exists = ( mysql_num_rows ( $index ) == 0 ) ? FALSE : TRUE;
+    $stmt = $FD->sql()->conn()->prepare('SELECT COUNT(`snippet_id`) FROM `'.$FD->config('pref')."snippets` WHERE `snippet_tag` = ?");
+    $stmt->execute(array('[%'. $_POST['snippet_tag'] .'%]'));
+    $snippet_exists = ( $stmt->fetchColumn() != 0 );
 } else {
     $snippet_exists = TRUE;
 }
@@ -16,33 +17,28 @@ if ( isset ( $_POST['sended'] ) ) {
 //// Save Data to DB ////
 /////////////////////////
 if (
-        isset ( $_POST['snippet_tag'] )
-        && $_POST['snippet_tag'] != ''
-        && !$snippet_exists
-    )
+    isset ( $_POST['snippet_tag'] )
+    && $_POST['snippet_tag'] != ''
+    && !$snippet_exists
+   )
 {
     // Security Functions
-    $_POST['snippet_tag'] = savesql ( $_POST['snippet_tag'] );
-    $_POST['snippet_text'] = savesql ( $_POST['snippet_text'] );
-
     settype ( $_POST['snippet_active'], 'integer' );
 
     // New Snippet
     if ( !$snippet_exists ) {
 
-        // MySQL-Queries
-        mysql_query ( '
-                                        INSERT INTO `'.$FD->config('pref')."snippets` (
-                                                `snippet_tag`,
-                                                `snippet_text`,
-                                                `snippet_active`
-                                        )
-                                        VALUES (
-                                                '[%".$_POST['snippet_tag']."%]',
-                                                '".$_POST['snippet_text']."',
-                                                '".$_POST['snippet_active']."'
-                                        )
-        ", $FD->sql()->conn() );
+        // SQL-Queries
+        $stmt = $FD->sql()->conn()->prepare('
+                        INSERT INTO `'.$FD->config('pref')."snippets` (
+                                `snippet_tag`,
+                                `snippet_text`,
+                                `snippet_active`)
+                        VALUES (
+                                ?,
+                                ?,
+                                '".$_POST['snippet_active']."')");
+        $stmt->execute(array('[%'.$_POST['snippet_tag'].'%]', $_POST['snippet_text']));
 
         systext ( $FD->text('admin', 'snippet_added'),
             $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_add') );

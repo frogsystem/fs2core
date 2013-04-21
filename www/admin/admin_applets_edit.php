@@ -267,12 +267,11 @@ if ( !isset ( $_POST['applet_id'] ) )
 
     // get applets from db
     $index = $FD->sql()->conn()->query ( '
-                            SELECT *
-                            FROM '.$FD->config('pref').'applets
-                            ORDER BY `applet_file`' );
+                    SELECT COUNT(*)
+                    FROM '.$FD->config('pref').'applets' );
 
     // applets found
-    if ( mysql_num_rows ( $index ) > 0 ) {
+    if ( $index->fetchColum() > 0 ) {
 
         // display table head
         echo '
@@ -286,6 +285,10 @@ if ( !isset ( $_POST['applet_id'] ) )
         ';
 
         // display applets
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM '.$FD->config('pref').'applets
+                        ORDER BY `applet_file`' );
         while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
             // get other data

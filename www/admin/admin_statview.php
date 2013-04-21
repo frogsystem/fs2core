@@ -27,12 +27,12 @@ echo'
 ';
 
 // Erstes Jahr ermitteln
-$index = mysql_query('SELECT s_year FROM '.$FD->config('pref').'counter_stat ORDER BY s_year LIMIT 1', $FD->sql()->conn() );
-$dbfirstyear = mysql_result($index, 0, 's_year');
+$index = $FD->sql()->conn()->query('SELECT s_year FROM '.$FD->config('pref').'counter_stat ORDER BY s_year LIMIT 1');
+$dbfirstyear = $index->fetchColumn();
 
 // Ersten Monat ermitteln
-$index = mysql_query('SELECT s_month FROM '.$FD->config('pref')."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1", $FD->sql()->conn() );
-$dbfirstmonth = mysql_result($index, 0, 's_month');
+$index = $FD->sql()->conn()->query('SELECT s_month FROM '.$FD->config('pref')."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1");
+$dbfirstmonth = $index->fetchColumn();
 
 echo '<a href="?go=stat_view&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'">';
 if ( $_GET['s_year'] == $dbfirstyear ) { echo '<b>'; }
@@ -87,13 +87,14 @@ echo'
 ';
 
 // Höchste PI diesen Monat ermitteln
-$index = mysql_query('SELECT s_hits
-                      FROM '.$FD->config('pref')."counter_stat
-                      WHERE s_year  = '".$_GET['s_year']."' AND s_month = '".$_GET['s_month']."'
-                      ORDER BY s_hits desc
-                      LIMIT 1", $FD->sql()->conn() );
+$index = $FD->sql()->conn()->query(
+             'SELECT s_hits
+              FROM '.$FD->config('pref')."counter_stat
+              WHERE s_year  = '".$_GET['s_year']."' AND s_month = '".$_GET['s_month']."'
+              ORDER BY s_hits desc
+              LIMIT 1" );
 
-if (false == ($dbmaxhits = @mysql_result($index, 0, 's_hits')))
+if (false == ($dbmaxhits = $index->fetchColumn()))
     $dbmaxhits = 0;
 
 // Tage ausgeben
@@ -102,21 +103,22 @@ $visitsall = 0;
 $hitsall = 0;
 for ($d=1; $d<date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1; $d++)
 {
-    $index = mysql_query('SELECT *
-                          FROM '.$FD->config('pref')."counter_stat
-                          WHERE s_year  = '".$_GET['s_year']."' AND
-                                s_month = '".$_GET['s_month']."' AND
-                                s_day   = '".$d."'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
+    $index = $FD->sql()->conn()->query(
+                 'SELECT *
+                  FROM '.$FD->config('pref')."counter_stat
+                  WHERE s_year  = '".$_GET['s_year']."' AND
+                        s_month = '".$_GET['s_month']."' AND
+                        s_day   = '".$d."'" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
     $dayname = date('w', mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
     $class = (($dayname == 0) || ($dayname == 6)) ? 'class="nw"' : 'class="n"';
 
     // Tag vorhanden
-    if ($rows > 0)
+    if ($row !== false)
     {
         $dcount = $dcount+1;
-        $dbvisits = mysql_result($index, 0, 's_visits');
-        $dbhits = mysql_result($index, 0, 's_hits');
+        $dbvisits = $row['s_visits'];
+        $dbhits = $row['s_hits'];
         $visitsall = $visitsall + $dbvisits;
         $hitsall = $hitsall + $dbhits;
         $visitswidth = $dbvisits / ($dbmaxhits/4) * 100;
@@ -216,22 +218,24 @@ echo'
 //////////////////////////////////
 
 // Maximale Montaszahl ermitteln
-$index = mysql_query('SELECT SUM(s_hits) AS sumhits
-                      FROM '.$FD->config('pref')."counter_stat
-                      WHERE s_year = $_GET[s_year]
-                      GROUP BY s_month
-                      ORDER BY sumhits desc", $FD->sql()->conn() );
-$maxhits = mysql_result($index, 0, 'sumhits');
+$index = $FD->sql()->conn()->query(
+             'SELECT SUM(s_hits) AS sumhits
+              FROM '.$FD->config('pref')."counter_stat
+              WHERE s_year = $_GET[s_year]
+              GROUP BY s_month
+              ORDER BY sumhits DESC" );
+$maxhits = $index->fetchColumn();
 
 $mcount = 0;
 $supervisits = 0;
 $superhits = 0;
 for ($m=1; $m<13; $m++)
 {
-    $index = mysql_query('SELECT SUM(s_visits) AS sumvisits, SUM(s_hits) AS sumhits
-                          FROM '.$FD->config('pref')."counter_stat
-                          WHERE s_year = $_GET[s_year] AND s_month = $m", $FD->sql()->conn() );
-    $sum_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query(
+                 'SELECT SUM(s_visits) AS sumvisits, SUM(s_hits) AS sumhits
+                  FROM '.$FD->config('pref')."counter_stat
+                  WHERE s_year = $_GET[s_year] AND s_month = $m" );
+    $sum_arr = $index->fetch(PDO::FETCH_ASSOC);
     if ($sum_arr['sumhits'] > 0)
     {
         $mcount += 1;
@@ -250,7 +254,7 @@ for ($m=1; $m<13; $m++)
                                         </td>
                                         <td class="n" align="left" style="font-size:1pt;" class="bottom">
                                             <img align="left" title="'.$FD->text("page", "show_chart").'" class="bottom"
-                                            onClick=\''.openpopup ('?go=statgfx&amp;s_year='.$_GET['s_year'].'&amp;s_month='.$m.'', 520, 330).'\'
+                                            onClick=\''.openpopup ('?go=statgfx&amp;s_year='.$_GET['s_year'].'&amp;s_month='.$m.'', 520, 330).'\' 
                                             style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
                                             <img border="0" src="img/null.gif" height="4" width="1"><br>
                                             <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
@@ -309,19 +313,19 @@ echo'
 //////////////////////////////////
 
 // Counter lesen
-$index=mysql_query('select * from '.$FD->config('pref').'counter', $FD->sql()->conn() );
-$counterdaten = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query( 'SELECT * FROM '.$FD->config('pref').'counter' );
+$counterdaten = $index->fetch(PDO::FETCH_ASSOC);
 
 // User online
 $online = get_online_ips();
 
 // Best frequentierter Tag
-$index = mysql_query('select * from '.$FD->config('pref').'counter_stat order by s_hits desc limit 1', $FD->sql()->conn() );
-$mosthits = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_hits DESC LIMIT 1');
+$mosthits = $index->fetch(PDO::FETCH_ASSOC);
 
 // Best besuchter Tag
-$index = mysql_query('select * from '.$FD->config('pref').'counter_stat order by s_visits desc limit 1', $FD->sql()->conn() );
-$mostvisits = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_visits DESC LIMIT 1');
+$mostvisits = $index->fetch(PDO::FETCH_ASSOC);
 
 echo'
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">

@@ -43,13 +43,14 @@ imagestring ($image,2,418,30,'Hits',$farbe_text);
 imagefilledrectangle($image,20,45,480,285,$farbe_rot);
 
 // Hitskurve
-$index = mysql_query('SELECT s_hits
-                      FROM '.$FD->env('pref')."counter_stat
-                      WHERE s_year  = $_GET[s_year] and
-                            s_month = $_GET[s_month]
-                      ORDER BY s_hits DESC
-                      LIMIT 1", $FD->sql()->conn() );
-$dbmaxhits = mysql_result($index, 0, 's_hits');
+$index = $FD->sql()->conn()->query(
+             'SELECT s_hits
+              FROM '.$FD->env('pref')."counter_stat
+              WHERE s_year  = $_GET[s_year] and
+                    s_month = $_GET[s_month]
+              ORDER BY s_hits DESC
+              LIMIT 1" );
+$dbmaxhits = $index->fetchColumn();
 
 $hitsarray = array(0);
 $arraycount = 2;
@@ -57,15 +58,16 @@ $startwert = 21 + $feldbreite/2;
 $anz_tage = date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']));
 for ($d=1; $d<$anz_tage+1; $d++)
 {
-    $index = mysql_query('SELECT s_hits
-                          FROM '.$FD->config('pref')."counter_stat
-                          WHERE s_year  = $_GET[s_year] and
-                                s_month = $_GET[s_month] and
-                                s_day   = $d", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows > 0)
+    $index = $FD->sql()->conn()->query(
+                 'SELECT s_hits
+                  FROM '.$FD->config('pref')."counter_stat
+                  WHERE s_year  = $_GET[s_year] and
+                        s_month = $_GET[s_month] and
+                        s_day   = $d" );
+    $row = $index->fetchColumn();
+    if ($row !== false)
     {
-        $dbhits = mysql_result($index, 0, 's_hits');
+        $dbhits = $row['s_hits'];
         // X-Koordinate
         $hitsarray[$arraycount] = $startwert;
         $startwert = $startwert + $feldbreite;
@@ -111,28 +113,30 @@ imagefilledpolygon($image, $hitsarray, round($arraycount/2) , $farbe_hits);
 
 
 // Visitskurve
-$index = mysql_query('SELECT s_visits
-                      FROM '.$FD->config('pref')."counter_stat
-                      WHERE s_year  = $_GET[s_year] and
-                            s_month = $_GET[s_month]
-                      ORDER BY s_visits DESC
-                      LIMIT 1", $FD->sql()->conn() );
-$dbmaxvisits = mysql_result($index, 0, 's_visits');
+$index = $FD->sql()->conn()->query(
+             'SELECT s_visits
+              FROM '.$FD->config('pref')."counter_stat
+              WHERE s_year  = $_GET[s_year] and
+                    s_month = $_GET[s_month]
+              ORDER BY s_visits DESC
+              LIMIT 1" );
+$dbmaxvisits = $index->fetchColumn();
 if ($dbmaxvisits > 0) {
   $visitsarray = array(0);
   $arraycount = 2;
   $startwert = 21 + $feldbreite/2;
   for ($d=1; $d<$anz_tage+1; $d++)
   {
-      $index = mysql_query('SELECT s_visits
-                            FROM '.$FD->config('pref')."counter_stat
-                            WHERE s_year  = $_GET[s_year] AND
-                                  s_month = $_GET[s_month] AND
-                                  s_day   = $d", $FD->sql()->conn() );
-      $rows = mysql_num_rows($index);
-      if ($rows > 0)
+      $index = $FD->sql()->conn()->query(
+                   'SELECT s_visits
+                    FROM '.$FD->config('pref')."counter_stat
+                    WHERE s_year  = $_GET[s_year] AND
+                          s_month = $_GET[s_month] AND
+                          s_day   = $d" );
+      $row = $index->fetch(PDO::FETCH_ASSOC);
+      if ($row !== false)
       {
-          $dbvisits = mysql_result($index, 0, 's_visits');
+          $dbvisits = $row['s_visits'];
           // X-Koordinate
           $visitsarray[$arraycount] = $startwert;
           $startwert = $startwert + $feldbreite;

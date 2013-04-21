@@ -13,20 +13,18 @@ if (
     )
 {
     // Security-Functions
-    $_POST['alias_go'] = savesql ( $_POST['alias_go'] );
-    $_POST['alias_forward_to'] = savesql ( $_POST['alias_forward_to'] );
-
     settype ( $_POST['alias_active'], 'integer' );
     settype ( $_POST['alias_id'], 'integer' );
 
     // SQL-Queries
-    $sql->conn()->exec ( '
-                    UPDATE `'.$FD->config('pref')."aliases`
-                    SET
-                        `alias_go` = '".$_POST['alias_go']."',
-                        `alias_forward_to` = '".$_POST['alias_forward_to']."',
-                        `alias_active` = '".$_POST['alias_active']."'
-                    WHERE `alias_id` = '".$_POST['alias_id']."'" );
+    $stmt = $sql->conn()->prepare ( '
+                UPDATE `'.$FD->config('pref')."aliases`
+                SET
+                    `alias_go` = ?,
+                    `alias_forward_to` = ?,
+                    `alias_active` = '".$_POST['alias_active']."'
+                WHERE `alias_id` = '".$_POST['alias_id']."'" );
+    $stmt->execute(array($_POST['alias_go'], $_POST['alias_forward_to']));
 
     // Display Message
     systext ( $FD->text('admin', 'changes_saved'),
@@ -243,12 +241,11 @@ if ( !isset ( $_POST['alias_id'] ) )
 
     // get Aliases from db
     $index = $sql->conn()->query ( '
-                            SELECT *
-                            FROM `'.$FD->config('pref').'aliases`
-                            ORDER BY `alias_go` ASC, `alias_forward_to` ASC');
+                    SELECT COUNT(*)
+                    FROM `'.$FD->config('pref').'aliases`');
 
     // Aliases found
-    if ( mysql_num_rows ( $index ) > 0 ) {
+    if ( $index->fetchColumn() > 0 ) {
 
         // display table head
         echo '
@@ -261,6 +258,10 @@ if ( !isset ( $_POST['alias_id'] ) )
         ';
 
         // display Aliases
+        $index = $sql->conn()->query ( '
+                        SELECT *
+                        FROM `'.$FD->config('pref').'aliases`
+                        ORDER BY `alias_go` ASC, `alias_forward_to` ASC');
         while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
             // get other data
