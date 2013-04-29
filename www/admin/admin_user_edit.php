@@ -7,15 +7,14 @@
 function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
     global $FD;
 
-    $USER_ID = savesql ( $USER_ID );
-    $USERNAME = savesql ( $USERNAME );
-    $index = mysql_query ( '
-                            SELECT `user_id`
-                            FROM `'.$FD->config('pref')."user`
-                            WHERE `user_name` = '".$USERNAME."'
-                            LIMIT 0,1
-    ", $FD->sql()->conn() );
-    if ( mysql_num_rows ( $index ) > 0 && $USER_ID != mysql_result ( $index, 0, 'user_id' ) ) {
+    $index = $FD->sql()->conn()->prepare ( '
+                    SELECT `user_id`
+                    FROM `'.$FD->config('pref')."user`
+                    WHERE `user_name` = ?
+                    LIMIT 0,1" );
+    $index->execute(array($USERNAME));
+    $row = $index->fetchColumn();
+    if ( $row !== false && $USER_ID != $row ) {
         return FALSE;
     } else {
         return TRUE;
@@ -34,32 +33,23 @@ $config_arr = $FD->configObject('users')->getConfigArray();
 /////////////////////
 
 if (
-
         isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit'
         && isset ( $_POST['user_action'] ) && $_POST['user_action'] == 'edit'
         && isset ( $_POST['user_id'] ) && $_POST['user_id'] != 1 && $_POST['user_id'] != $_SESSION['user_id']
 
-        && $_POST['user_name'] && $_POST['user_name'] != '' && user_name_free_or_itself ( $_POST['user_name'], $_POST['user_id'] ) == TRUE
-        && $_POST['user_mail'] && $_POST['user_mail'] != ''
+        && isset($_POST['user_name']) && $_POST['user_name'] != '' && user_name_free_or_itself ( $_POST['user_name'], $_POST['user_id'] ) == TRUE
+        && isset($_POST['user_mail']) && $_POST['user_mail'] != ''
         && ( ( (
-            ( $_POST['newpwd'] && $_POST['newpwd'] != '' && $_POST['wdhpwd'] && $_POST['wdhpwd'] != '' && $_POST['newpwd'] == $_POST['wdhpwd'] )
+            ( isset($_POST['newpwd']) && $_POST['newpwd'] != '' && isset($_POST['wdhpwd']) && $_POST['wdhpwd'] != '' && $_POST['newpwd'] == $_POST['wdhpwd'] )
             || $_POST['gen_password'] == 1
         ) && $_POST['new_password'] == 1 ) || $_POST['new_password'] == 0 )
-        && $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31
-        && $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12
-        && $_POST['y'] && $_POST['y'] >= 0
+        && isset($_POST['d']) && $_POST['d'] > 0 && $_POST['d'] <= 31
+        && isset($_POST['m']) && $_POST['m'] > 0 && $_POST['m'] <= 12
+        && isset($_POST['y']) && $_POST['y'] >= 0
     )
 {
     // security functions
-    $_POST['user_id'] = savesql ( $_POST['user_id'] );
-    $_POST['user_name'] = savesql ( $_POST['user_name'] );
-    $_POST['user_mail'] = savesql ( $_POST['user_mail'] );
-    $_POST['user_homepage'] = savesql ( $_POST['user_homepage'] );
-    $_POST['user_icq'] = savesql ( $_POST['user_icq'] );
-    $_POST['user_aim'] = savesql ( $_POST['user_aim'] );
-    $_POST['user_wlm'] = savesql ( $_POST['user_wlm'] );
-    $_POST['user_yim'] = savesql ( $_POST['user_yim'] );
-    $_POST['user_skype'] = savesql ( $_POST['user_skype'] );
+    $_POST['user_id'] = intval ( $_POST['user_id'] );
 
     settype ( $_POST['gen_password'], 'integer' );
     settype ( $_POST['user_is_staff'], 'integer' );
@@ -86,7 +76,7 @@ if (
         $_POST['user_homepage'] = '';
     }
 
-    if ( $_POST['new_password'] == 1 && $_POST['gen_password'] == 1 ) {
+    if ( isset($_POST['new_password']) && $_POST['new_password'] == 1 && $_POST['gen_password'] == 1 ) {
         $_POST['newpwd'] = generate_pwd ( 15 );
     }
     $user_salt = generate_pwd ( 10 );
@@ -98,45 +88,52 @@ if (
         $pw_update = '';
     }
 
-    $index = mysql_query ( '
-                            SELECT `user_is_staff`, `user_is_admin`
-                            FROM '.$FD->config('pref')."user
-                            WHERE `user_id` = '".$_POST['user_id']."'
-                            LIMIT 0,1
-    ", $FD->sql()->conn() );
-    $was_staff = mysql_result ( $index, 0, 'user_is_staff' );
-    $was_admin = mysql_result ( $index, 0, 'user_is_admin' );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `user_is_staff`, `user_is_admin`
+                    FROM '.$FD->config('pref')."user
+                    WHERE `user_id` = '".$_POST['user_id']."'
+                    LIMIT 0,1" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $was_staff = $row['user_is_staff'];
+    $was_admin = $row['user_is_admin'];
 
     // user is not longer in staff
     if ( $was_staff == 1 && $_POST['user_is_staff'] == 0 ) {
-        mysql_query ('
-                        DELETE
-                        FROM '.$FD->config('pref')."user_permissions
-                        WHERE `perm_for_group` = '0'
-                        AND `x_id` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ('
+                DELETE
+                FROM '.$FD->config('pref')."user_permissions
+                WHERE `perm_for_group` = '0'
+                AND `x_id` = '".$_POST['user_id']."'" );
     }
 
-    // MySQL-Queries
-    mysql_query ( '
-                    UPDATE `'.$FD->config('pref')."user`
-                    SET
-                        `user_name` = '".$_POST['user_name']."',
-                        ".$pw_update."
-                        `user_mail` = '".$_POST['user_mail']."',
-                        `user_is_staff` = '".$_POST['user_is_staff']."',
-                        `user_group` = '".$_POST['user_group']."',
-                        `user_is_admin` = '".$_POST['user_is_admin']."',
-                        `user_reg_date` = '".$user_date."',
-                        `user_show_mail` = '".$_POST['user_show_mail']."',
-                        `user_homepage` = '".$_POST['user_homepage']."',
-                        `user_icq` = '".$_POST['user_icq']."',
-                        `user_aim` = '".$_POST['user_aim']."',
-                        `user_wlm` = '".$_POST['user_wlm']."',
-                        `user_yim` = '".$_POST['user_yim']."',
-                        `user_skype` = '".$_POST['user_skype']."'
-                    WHERE `user_id` = '".$_POST['user_id']."'
-    ", $FD->sql()->conn() );
+    // SQL-Queries
+    $stmt = $FD->sql()->conn()->prepare ( '
+                UPDATE `'.$FD->config('pref')."user`
+                SET
+                    `user_name` = ?,
+                    ".$pw_update."
+                    `user_mail` = ?,
+                    `user_is_staff` = '".$_POST['user_is_staff']."',
+                    `user_group` = '".$_POST['user_group']."',
+                    `user_is_admin` = '".$_POST['user_is_admin']."',
+                    `user_reg_date` = '".$user_date."',
+                    `user_show_mail` = '".$_POST['user_show_mail']."',
+                    `user_homepage` = ?,
+                    `user_icq` = ?,
+                    `user_aim` = ?,
+                    `user_wlm` = ?,
+                    `user_yim` = ?,
+                    `user_skype` = ?
+                WHERE `user_id` = '".$_POST['user_id']."'" );
+    $stmt->execute(array(
+         $_POST['user_name'],
+         $_POST['user_mail'],
+         $_POST['user_homepage'],
+         $_POST['user_icq'],
+         $_POST['user_aim'],
+         $_POST['user_wlm'],
+         $_POST['user_yim'],
+         $_POST['user_skype'] ));
     $message = $FD->text("admin", "changes_saved");
 
     // image operations
@@ -151,7 +148,7 @@ if (
         $message .= '<br>' . upload_img_notice ( $upload );
     }
 
-    if ( $_POST['new_password'] == 1 ) {
+    if ( isset($_POST['new_password']) && $_POST['new_password'] == 1 ) {
         // send email
         $mm = new MailManager();
 
@@ -197,83 +194,73 @@ elseif (
         settype ( $_POST['user_id'], 'integer' );
 
         // get data from db
-        $index = mysql_query ( '
-                                SELECT `user_name`
-                                FROM '.$FD->config('pref')."user
-                                WHERE `user_id` = '".$_POST['user_id']."'
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        $user_arr = mysql_fetch_assoc ( $index );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT `user_name`
+                        FROM '.$FD->config('pref')."user
+                        WHERE `user_id` = '".$_POST['user_id']."'
+                        LIMIT 0,1" );
+        $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         // Delete Permissions
-        mysql_query ( '
-                        DELETE
-                        FROM '.$FD->config('pref')."user_permissions
-                        WHERE `perm_for_group` = '0'
-                        AND `x_id` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ( '
+                DELETE
+                FROM '.$FD->config('pref')."user_permissions
+                WHERE `perm_for_group` = '0'
+                AND `x_id` = '".$_POST['user_id']."'" );
 
         // update stats
-        mysql_query ( '
-                        UPDATE '.$FD->config('pref').'counter
-                        SET `user` = `user`-1
-        ', $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ( '
+                UPDATE '.$FD->config('pref').'counter
+                SET `user` = `user`-1' );
 
         // update groups
-        mysql_query ( '
-                        UPDATE '.$FD->config('pref')."user_groups
-                        SET `user_group_user` = '1'
-                        WHERE `user_group_user` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ( '
+                UPDATE '.$FD->config('pref')."user_groups
+                SET `user_group_user` = '1'
+                WHERE `user_group_user` = '".$_POST['user_id']."'" );
 
         // update articles
-        mysql_query ( '
-                        UPDATE '.$FD->config('pref')."articles
-                        SET `article_user` = '0'
-                        WHERE `article_user` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ( '
+                UPDATE '.$FD->config('pref')."articles
+                SET `article_user` = '0'
+                WHERE `article_user` = '".$_POST['user_id']."'" );
 
         // update articles_cat
-        mysql_query ( '
-                        UPDATE '.$FD->config('pref')."articles_cat
-                        SET `cat_user` = '1'
-                        WHERE `cat_user` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ( '
+                UPDATE '.$FD->config('pref')."articles_cat
+                SET `cat_user` = '1'
+                WHERE `cat_user` = '".$_POST['user_id']."'" );
 
         // update dl
-        mysql_query ( '
-                        UPDATE '.$FD->config('pref')."dl
-                        SET `user_id` = '1'
-                        WHERE `user_id` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ( '
+                UPDATE '.$FD->config('pref')."dl
+                SET `user_id` = '1'
+                WHERE `user_id` = '".$_POST['user_id']."'" );
 
         // update news
-        mysql_query ( '
-                        UPDATE '.$FD->config('pref')."news
-                        SET `user_id` = '1'
-                        WHERE `user_id` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ( '
+                UPDATE '.$FD->config('pref')."news
+                SET `user_id` = '1'
+                WHERE `user_id` = '".$_POST['user_id']."'" );
 
         // update news_cat
-        mysql_query ( '
-                        UPDATE '.$FD->config('pref')."news_cat
-                        SET `cat_user` = '1'
-                        WHERE `cat_user` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ( '
+                UPDATE '.$FD->config('pref')."news_cat
+                SET `cat_user` = '1'
+                WHERE `cat_user` = '".$_POST['user_id']."'" );
 
         // update comments
-        mysql_query ( '
-                        UPDATE '.$FD->config('pref')."comments
-                        SET `comment_poster_id` = '0',
-                            `comment_poster` = '".$user_arr['user_name']."'
-                        WHERE `comment_poster_id` = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        $stmt = $FD->sql()->conn()->prepare ( '
+                    UPDATE '.$FD->config('pref')."comments
+                    SET `comment_poster_id` = '0',
+                        `comment_poster` = ?
+                    WHERE `comment_poster_id` = '".$_POST['user_id']."'" );
+        $stmt->execute(array($user_arr['user_name']));
 
-        // MySQL-Delete-Query
-        mysql_query ('
-                        DELETE FROM '.$FD->config('pref')."user
-                         WHERE user_id = '".$_POST['user_id']."'
-        ", $FD->sql()->conn() );
+        // SQL-Delete-Query
+        $FD->sql()->conn()->exec ('
+                DELETE FROM '.$FD->config('pref')."user
+                 WHERE user_id = '".$_POST['user_id']."'" );
         $message = 'Benutzer wurde erfolgreich gel&ouml;scht';
 
         // Delete Image
@@ -335,13 +322,12 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
             }
             systext ( $message, $FD->text("admin", "error"), TRUE );
         } else {
-            $index = mysql_query ( '
-                                    SELECT *
-                                    FROM '.$FD->config('pref')."user
-                                    WHERE `user_id` = '".$_POST['user_id']."'
-                                    LIMIT 0,1
-            ", $FD->sql()->conn() );
-            $user_arr = mysql_fetch_assoc ( $index );
+            $index = $FD->sql()->conn()->query ( '
+                            SELECT *
+                            FROM '.$FD->config('pref')."user
+                            WHERE `user_id` = '".$_POST['user_id']."'
+                            LIMIT 0,1" );
+            $user_arr = $index->fetch(PDO::FETCH_ASSOC);
             putintopost ( $user_arr );
             $_POST['d'] = date ( 'd', $_POST['user_reg_date'] );
             $_POST['m'] = date ( 'm', $_POST['user_reg_date'] );
@@ -380,8 +366,8 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         // security functions
         $_POST['user_name'] = killhtml ( $_POST['user_name'] );
         $_POST['user_mail'] = killhtml ( $_POST['user_mail'] );
-        $_POST['newpwd'] = killhtml ( $_POST['newpwd'] );
-        $_POST['wdhpwd'] = killhtml ( $_POST['wdhpwd'] );
+        $_POST['newpwd'] = killhtml ( isset($_POST['newpwd']) ? $_POST['newpwd'] : '' );
+        $_POST['wdhpwd'] = killhtml ( isset($_POST['wdhpwd']) ? $_POST['wdhpwd'] : '' );
         $_POST['user_homepage'] = killhtml ( $_POST['user_homepage'] );
         $_POST['user_icq'] = killhtml ( $_POST['user_icq'] );
         $_POST['user_aim'] = killhtml ( $_POST['user_aim'] );
@@ -396,10 +382,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         }
         settype ( $_POST['user_show_mail'], 'integer' );
 
-        // filter
-        $_POST['filter'] = savesql ( $_POST['filter'] );
-
-        // get oterh data
+        // get other data
         $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0, TRUE );
         $nowbutton_array = array( 'd', 'm', 'y' );
 
@@ -410,7 +393,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                         <input type="hidden" name="user_action" value="edit">
                         <input type="hidden" name="sended" value="edit">
                         <input type="hidden" name="user_id" value="'.$_POST['user_id'].'">
-                        <input type="hidden" name="filter" value="'.$_POST['filter'].'">
+                        <input type="hidden" name="filter" value="'.htmlspecialchars($_POST['filter']).'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="2">Hauptinformationen</td></tr>
                             <tr>
@@ -537,26 +520,24 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                         <option value="0"'.getselected ( $_POST['user_group'], 0 ).'>keine Gruppe</option>
         ';
 
-        $index = mysql_query ('
-                                SELECT `user_group_id`, `user_group_name`
-                                FROM '.$FD->config('pref')."user_groups
-                                WHERE `user_group_id` > 0
-                                ORDER BY `user_group_name`
-        ", $FD->sql()->conn() );
+        $index = $FD->sql()->conn()->query ('
+                        SELECT `user_group_id`, `user_group_name`
+                        FROM '.$FD->config('pref')."user_groups
+                        WHERE `user_group_id` > 0
+                        ORDER BY `user_group_name`" );
 
-        while ( $group_arr = mysql_fetch_assoc( $index ) ) {
+        while ( $group_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
             echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $_POST['user_group'], $group_arr['user_group_id'] ).'>
                 '.$group_arr['user_group_name'].'</option>';
         }
 
-        $index = mysql_query ('
-                                SELECT `user_group_id`, `user_group_name`
-                                FROM '.$FD->config('pref').'user_groups
-                                WHERE `user_group_id` = 0
-                                ORDER BY `user_group_name`
-                                LIMIT 0,1
-        ', $FD->sql()->conn() );
-        $group_arr = mysql_fetch_assoc( $index );
+        $index = $FD->sql()->conn()->query ('
+                        SELECT `user_group_id`, `user_group_name`
+                        FROM '.$FD->config('pref').'user_groups
+                        WHERE `user_group_id` = 0
+                        ORDER BY `user_group_name`
+                        LIMIT 0,1' );
+        $group_arr = $index->fetch(PDO::FETCH_ASSOC);
         echo '<option value="admin" '.getselected ( $_POST['user_group'], 'admin' ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
 
         echo '
@@ -643,13 +624,12 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
     // Delete User
     } elseif ( $_POST['user_action'] == 'delete' && $_POST['user_id'] != 1  && $_POST['user_id'] != $_SESSION['user_id'] ) {
         // get data from db
-        $index = mysql_query ( '
-                                SELECT `user_name`
-                                FROM '.$FD->config('pref')."user
-                                WHERE `user_id` = '".$_POST['user_id']."'
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        $user_arr = mysql_fetch_assoc ( $index );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT `user_name`
+                        FROM '.$FD->config('pref')."user
+                        WHERE `user_id` = '".$_POST['user_id']."'
+                        LIMIT 0,1" );
+        $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         // security functions
         $user_arr['user_name'] = killhtml ( $user_arr['user_name'] );
@@ -724,8 +704,6 @@ if ( !isset ( $_POST['user_id'] ) )
     ';
 
     if ( isset ( $_POST['search'] ) ) {
-        //security functions
-        $_POST['filter'] = savesql ( $_POST['filter'] );
 
         // start display
         echo '
@@ -740,17 +718,17 @@ if ( !isset ( $_POST['user_id'] ) )
         ';
 
         // get users from db
-        $index = mysql_query ( '
-                                SELECT `user_id`, `user_name`, `user_mail`, `user_is_staff`, `user_is_admin`
-                                FROM '.$FD->config('pref')."user
-                                WHERE ( `user_name` LIKE '%".$_POST['filter']."%' OR `user_mail` LIKE '%".$_POST['filter']."%' )
-                                AND `user_id` != '".$_SESSION['user_id']."'
-                                AND `user_id` != '1'
-                                  ORDER BY user_name
-        ", $FD->sql()->conn() );
+        $sql_filter = '%'.$_POST['filter'].'%';
+        $stmt = $FD->sql()->conn()->prepare ( '
+                        SELECT COUNT(`user_id`)
+                        FROM '.$FD->config('pref')."user
+                        WHERE ( `user_name` LIKE ? OR `user_mail` LIKE ? )
+                        AND `user_id` != '".$_SESSION['user_id']."'
+                        AND `user_id` != '1'" );
+        $stmt->execute(array($sql_filter, $sql_filter));
 
         // users found
-        if ( mysql_num_rows ( $index ) > 0 ) {
+        if ( $stmt->fetchColumn() > 0 ) {
             // display table head
             echo '
                             <tr>
@@ -763,7 +741,16 @@ if ( !isset ( $_POST['user_id'] ) )
             ';
 
             // display users
-            while ( $user_arr = mysql_fetch_assoc ( $index ) ) {
+            $index = $FD->sql()->conn()->prepare ( '
+                            SELECT `user_id`, `user_name`, `user_mail`, `user_is_staff`, `user_is_admin`
+                            FROM '.$FD->config('pref')."user
+                            WHERE ( `user_name` LIKE ? OR `user_mail` LIKE ? )
+                            AND `user_id` != '".$_SESSION['user_id']."'
+                            AND `user_id` != '1'
+                            ORDER BY user_name" );
+            $sql_filter = '%'.$_POST['filter'].'%';
+            $index->execute(array($sql_filter, $sql_filter));
+            while ( $user_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
                 // get other data
                 if ( $user_arr['user_is_staff'] == 1 ) {

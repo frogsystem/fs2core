@@ -271,7 +271,7 @@ if ( !isset ( $_POST['applet_id'] ) )
                     FROM '.$FD->config('pref').'applets' );
 
     // applets found
-    if ( $index->fetchColum() > 0 ) {
+    if ( $index->fetchColumn() > 0 ) {
 
         // display table head
         echo '

@@ -10,22 +10,20 @@ if (
     )
 {
     // Security Functions
-    $_POST['alias_go'] = savesql ( $_POST['alias_go'] );
-    $_POST['alias_forward_to'] = savesql ( $_POST['alias_forward_to'] );
-
     settype ( $_POST['alias_active'], 'integer' );
 
     // SQL-Queries
-    $sql->conn()->exec ( ' INSERT INTO `'.$FD->config('pref')."aliases` (
+    $stmt = $sql->conn()->prepare ( ' INSERT INTO `'.$FD->config('pref')."aliases` (
                             `alias_go`,
                             `alias_forward_to`,
                             `alias_active`
                     )
                     VALUES (
-                            '".$_POST['alias_go']."',
-                            '".$_POST['alias_forward_to']."',
+                            ?,
+                            ?,
                             '".$_POST['alias_active']."'
                     )" );
+    $stmt->execute(array($_POST['alias_go'], $_POST['alias_forward_to']));
 
     systext ( $FD->text('admin', 'alias_added'),
         $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_add') );

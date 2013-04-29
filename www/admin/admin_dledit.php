@@ -11,8 +11,8 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
     // Download löschen
     if (isset($_POST['deldl']))
     {
-        mysql_query('DELETE FROM '.$FD->config('pref')."dl WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
-        mysql_query('DELETE FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[editdlid]'", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."dl WHERE dl_id = '$_POST[editdlid]'");
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[editdlid]'");
         image_delete('images/dl/', "$_POST[editdlid]_s");
         image_delete('images/dl/', $_POST['editdlid']);
         systext('Download wurde gel&ouml;scht');
@@ -23,15 +23,9 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
     }
     else
     {
-        $_POST['title'] = savesql($_POST['title']);
-        $_POST['text'] = savesql($_POST['text']);
-        $_POST['autor'] = savesql($_POST['autor']);
-        $_POST['autorurl'] = savesql($_POST['autorurl']);
         settype($_POST['catid'], 'integer');
         for($i=0; $i<count($_POST['fname']); $i++)
         {
-            $_POST['fname'][$i] = savesql($_POST['fname'][$i]);
-            $_POST['furl'][$i] = savesql($_POST['furl'][$i]);
             settype($_POST['fsize'][$i], 'integer');
             settype($_POST['fcount'][$i], 'integer');
             settype($_POST['fid'][$i], 'integer');
@@ -52,16 +46,19 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
 
         $dlopen = isset($_POST['dlopen']) ? 1 : 0;
 
-        $update = 'UPDATE '.$FD->config('pref')."dl
+        $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."dl
                    SET cat_id       = '$_POST[catid]',
-                       dl_name      = '$_POST[title]',
-                       dl_text      = '$_POST[text]',
-                       dl_autor     = '$_POST[autor]',
-                       dl_autor_url = '$_POST[autorurl]',
+                       dl_name      = ?,
+                       dl_text      = ?,
+                       dl_autor     = ?,
+                       dl_autor_url = ?,
                        dl_open      = '$dlopen',
                        dl_search_update = '".time()."'
-                   WHERE dl_id = $_POST[editdlid]";
-        mysql_query($update, $FD->sql()->conn() );
+                   WHERE dl_id = $_POST[editdlid]");
+        $stmt->execute(array($_POST['title'],
+                             $_POST['text'],
+                             $_POST['autor'],
+                             $_POST['autorurl']));
 
         // Update Search Index (or not)
         if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
@@ -74,10 +71,10 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
         // Files  aktualisieren
         for ($i=0; $i<count($_POST['fname']); $i++)
         {
-            if ($_POST['delf'][$i])
+            if (isset($_POST['delf'][$i]) && $_POST['delf'][$i]!=0)
             {
                 settype($_POST['delf'][$i], 'integer');
-                mysql_query('DELETE FROM '.$FD->config('pref').'dl_files WHERE file_id = ' . $_POST['delf'][$i], $FD->sql()->conn() );
+                $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'dl_files WHERE file_id = ' . $_POST['delf'][$i]);
             }
             else
             {
@@ -88,26 +85,27 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
 
                 if ($_POST['fnew'][$i]==1 && $_POST['fname'][$i]!='')
                 {
-                    $insert = 'INSERT INTO '.$FD->config('pref')."dl_files (dl_id, file_count, file_name, file_url, file_size, file_is_mirror)
-                               VALUES ('".$_POST['editdlid']."',
+                    $stmt = $FD->sql()->conn()->prepare(
+                                'INSERT INTO '.$FD->config('pref')."dl_files
+                                    (dl_id, file_count, file_name, file_url, file_size, file_is_mirror)
+                                 VALUES ('".$_POST['editdlid']."',
                                        '".$_POST['fcount'][$i]."',
-                                       '".$_POST['fname'][$i]."',
-                                       '".$_POST['furl'][$i]."',
+                                       ?,
+                                       ?,
                                        '".$_POST['fsize'][$i]."',
-                                       '".$_POST['fmirror'][$i]."')";
-                    mysql_query($insert, $FD->sql()->conn() );
-
+                                       '".$_POST['fmirror'][$i]."')");
+                    $stmt->execute(array($_POST['fname'][$i], $_POST['furl'][$i]));
                 }
                 elseif ($_POST['fnew'][$i]==0)
                 {
-                    $update = 'UPDATE '.$FD->config('pref')."dl_files
-                               SET file_count       = '".$_POST['fcount'][$i]."',
-                                   file_name        = '".$_POST['fname'][$i]."',
-                                   file_url         = '".$_POST['furl'][$i]."',
-                                   file_size        = '".$_POST['fsize'][$i]."',
-                                   file_is_mirror   = '".$_POST['fmirror'][$i]."'
-                               WHERE file_id = ".$_POST['fid'][$i];
-                    mysql_query($update, $FD->sql()->conn() );
+                    $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."dl_files
+                               SET file_count     = '".$_POST['fcount'][$i]."',
+                                   file_name      = ?,
+                                   file_url       = ?,
+                                   file_size      = '".$_POST['fsize'][$i]."',
+                                   file_is_mirror = '".$_POST['fmirror'][$i]."'
+                               WHERE file_id = ".$_POST['fid'][$i]);
+                    $stmt->execute(array($_POST['fname'][$i], $_POST['furl'][$i]));
                 }
             }
         }
@@ -134,63 +132,66 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
     }
     settype($_POST['dlid'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id =  '$_POST[dlid]'", $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id =  '$_POST[dlid]'");
+    $row = $index->fetch(PDO::FETCH_ASSOC);
     if (!isset($_POST['title']))
     {
-        $_POST['title'] = mysql_result($index, 0, 'dl_name');
+        $_POST['title'] = $row['dl_name'];
     }
     if (!isset($_POST['catid']))
     {
-        $_POST['catid'] = mysql_result($index, 0, 'cat_id');
+        $_POST['catid'] = $row['cat_id'];
     }
     if (!isset($_POST['text']))
     {
-        $_POST['text'] = mysql_result($index, 0, 'dl_text');
+        $_POST['text'] = $row['dl_text'];
     }
     if (!isset($_POST['autor']))
     {
-        $_POST['autor'] = mysql_result($index, 0, 'dl_autor');
+        $_POST['autor'] = $row['dl_autor'];
     }
     if (!isset($_POST['autorurl']))
     {
-        $_POST['autorurl'] = mysql_result($index, 0, 'dl_autor_url');
+        $_POST['autorurl'] = $row['dl_autor_url'];
     }
     if (!isset($_POST['dlopen']))
     {
-        $_POST['dlopen'] = mysql_result($index, 0, 'dl_open');
+        $_POST['dlopen'] = $row['dl_open'];
     }
 
     $_POST['dlopen'] = ($_POST['dlopen'] == 1) ? 'checked' : '';
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
+    $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[dlid]'");
+    $rows = $index->fetchColumn();
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id");
     for($i=0; $i<$rows; $i++)
     {
+        $row = $index->fetch(PDO::FETCH_ASSOC);
         if (!isset($_POST['fname'][$i]))
         {
-            $_POST['fname'][$i] = mysql_result($index, $i, 'file_name');
+            $_POST['fname'][$i] = $row['file_name'];
         }
         if (!isset($_POST['fid'][$i]))
         {
-            $_POST['fid'][$i] = mysql_result($index, $i, 'file_id');
+            $_POST['fid'][$i] = $row['file_id'];
         }
         if (!isset($_POST['fcount'][$i]))
         {
-            $_POST['fcount'][$i] = mysql_result($index, $i, 'file_count');
+            $_POST['fcount'][$i] = $row['file_count'];
         }
         if (!isset($_POST['furl'][$i]))
         {
-            $_POST['furl'][$i] = mysql_result($index, $i, 'file_url');
+            $_POST['furl'][$i] = $row['file_url'];
         }
         if (!isset($_POST['fsize'][$i]))
         {
-            $_POST['fsize'][$i] = mysql_result($index, $i, 'file_size');
+            $_POST['fsize'][$i] = $row['file_size'];
         }
         if (!isset($_POST['fnew'][$i]))
         {
             $_POST['fnew'][$i] = 0;
         }
-        $_POST['fmirror'][$i] = mysql_result($index, $i, 'file_is_mirror');
+        $_POST['fmirror'][$i] = $row['file_is_mirror'];
     }
 
     if (!isset($_POST['options']))
@@ -277,8 +278,8 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
-    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);
+    $index = $FD->sql()->conn()->query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1");
+    $ftp = ($index !== FALSE && $index->fetch(PDO::FETCH_ASSOC) !== FALSE);
 
     // Mirrors auflisten
     for ($i=1; $i<=$_POST['options']; $i++)
@@ -405,16 +406,6 @@ else
                                     <select name="dlcatid" class="third">
     ';
 
-    /*/ Kategorie Auswahl erzeugen
-    $index = mysql_query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'dl_cat', $FD->sql()->conn() );
-    while ($cat_arr = mysql_fetch_assoc($index))
-    {
-        $sele = ($_POST['dlcatid'] == $cat_arr['cat_id']) ? 'selected' : '';
-        echo'
-                                        <option value="'.$cat_arr['cat_id'].'" '.$sele.'>'.$cat_arr['cat_name'].'</option>
-        ';
-    }  */
-
     echo'
                                         <option value="0">Alle Kategorien</option>
                                         <option value="0">--------------------------------------</option>
@@ -466,11 +457,11 @@ else
         settype($_POST['dlcatid'], 'integer');
         $wherecat = 'WHERE cat_id = ' . $_POST['dlcatid'];
     }
-    $index = mysql_query('SELECT dl_id, dl_name, cat_id FROM '.$FD->config('pref')."dl $wherecat ORDER BY dl_name", $FD->sql()->conn() );
-    while ($dl_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT dl_id, dl_name, cat_id FROM '.$FD->config('pref')."dl $wherecat ORDER BY dl_name");
+    while ($dl_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
-        $catindex = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
-        $dbcatname = mysql_result($catindex, 0, "cat_name");
+        $catindex = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
+        $dbcatname = $catindex->fetchColumn();
         echo'
                             <tr class="thin select_entry">
                                 <td class="configthin">

@@ -4,18 +4,18 @@
 //// Kategorie bearbeiten ////
 //////////////////////////////
 
-if (isset($_POST['cat_id']) && !emptystr($_POST['cat_name']) && $_POST['sended'] == 'edit')
+if (isset($_POST['cat_id']) && isset($_POST['cat_name']) && !emptystr($_POST['cat_name']) && $_POST['sended'] == 'edit')
 {
-    $_POST['cat_name'] = savesql($_POST['cat_name']);
     $_POST['cat_id'] = intval($_POST['cat_id']);
     $_POST['cat_type'] = intval($_POST['cat_type']);
     $_POST['cat_visibility'] = intval($_POST['cat_visibility']);
 
-    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."screen_cat
-                 SET cat_name = '$_POST[cat_name]',
+    $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."screen_cat
+                 SET cat_name = ?,
                      cat_type = '$_POST[cat_type]',
                      cat_visibility = '$_POST[cat_visibility]'
                  WHERE cat_id = '$_POST[cat_id]'");
+    $stmt->execute(array($_POST['cat_name']));
 
     systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
 }
@@ -23,7 +23,7 @@ if (isset($_POST['cat_id']) && !emptystr($_POST['cat_name']) && $_POST['sended']
 ///////////////////////////
 //// Kategorie löschen ////
 ///////////////////////////
-elseif (isset($_POST['cat_id']) && $_POST['sended'] == 'delete')
+elseif (isset($_POST['cat_id']) && isset($_POST['sended']) && $_POST['sended'] == 'delete')
 {
   //security functions
   $_POST['cat_id'] = intval($_POST['cat_id']);

@@ -10,13 +10,12 @@ function get_user_rights_array ( $USER_ID )
 
     unset ( $user_rights );
 
-    $index = mysql_query ( '
-                            SELECT `perm_id`
-                            FROM '.$FD->config('pref')."user_permissions
-                            WHERE `x_id` = '".$USER_ID."'
-                            AND`perm_for_group` = '0'
-    ", $FD->sql()->conn() );
-    while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `perm_id`
+                    FROM '.$FD->config('pref')."user_permissions
+                    WHERE `x_id` = '".intval($USER_ID)."'
+                    AND`perm_for_group` = '0'" );
+    while ( $temp_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
             $user_rights[] = $temp_arr['perm_id'];
     }
     if ( !isset ( $user_rights ) || !is_array ( $user_rights ) ) {
@@ -33,21 +32,19 @@ function get_group_rights_array ( $GROUP_ID, $IS_USER = FALSE )
     unset ( $group_rights );
 
     if ( $IS_USER == TRUE ) {
-        $index = mysql_query ( '
-                                SELECT `user_group`
-                                FROM '.$FD->config('pref')."user
-                                WHERE `user_id` = '".$GROUP_ID."'
-        ", $FD->sql()->conn() );
-        $GROUP_ID = mysql_result ( $index, 0, 'user_group' );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT `user_group`
+                        FROM '.$FD->config('pref')."user
+                        WHERE `user_id` = '".intval($GROUP_ID)."'" );
+        $GROUP_ID = $index->fetchColumn();
     }
 
-    $index = mysql_query ( '
-                            SELECT `perm_id`
-                            FROM '.$FD->config('pref')."user_permissions
-                            WHERE `x_id` = '".$GROUP_ID."'
-                            AND `perm_for_group` = '1'
-    ", $FD->sql()->conn() );
-    while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `perm_id`
+                    FROM '.$FD->config('pref')."user_permissions
+                    WHERE `x_id` = '".intval($GROUP_ID)."'
+                    AND `perm_for_group` = '1'" );
+    while ( $temp_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
             $group_rights[] = $temp_arr['perm_id'];
     }
     if ( !isset ( $group_rights ) ) {
@@ -76,32 +73,31 @@ if ( isset( $_POST['user_id'] ) ) {
         $user_rights = get_user_rights_array ( $_POST['user_id'] );
 
         // get pages
-        $pageaction = mysql_query ( '
-                                        SELECT `page_id`
-                                        FROM `'.$FD->config('pref')."admin_cp`
-                                        WHERE `group_id` > '0'
-        ", $FD->sql()->conn() );
-        while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
+        $pageaction = $FD->sql()->conn()->query ( '
+                            SELECT `page_id`
+                            FROM `'.$FD->config('pref')."admin_cp`
+                            WHERE `group_id` > '0'" );
+        $stmt_del = $FD->sql()->conn()->prepare('
+                        DELETE
+                        FROM `'.$FD->config('pref')."user_permissions`
+                        WHERE `perm_id` = ?
+                        AND `x_id` = '".$_POST['user_id']."'
+                        AND `perm_for_group` = '0'");
+        $stmt_ins = $FD->sql()->conn()->prepare('
+                        INSERT
+                        INTO `'.$FD->config('pref')."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
+                        VALUES (?, '".$_POST['user_id']."', 0)");
+        while ( $page_arr = $pageaction->fetch(PDO::FETCH_ASSOC) ) {
             // permission is not longer granted
             if ( ( !isset($_POST[$page_arr['page_id']]) || ($_POST[$page_arr['page_id']] == 0) ) && in_array ( $page_arr['page_id'], $user_rights ) ) {
-                mysql_query ( '
-                                DELETE
-                                FROM `'.$FD->config('pref')."user_permissions`
-                                WHERE `perm_id` = '".$page_arr['page_id']."'
-                                AND `x_id` = '".$_POST['user_id']."'
-                                AND `perm_for_group` = '0'
-                ", $FD->sql()->conn() );
+                $stmt_del->execute(array($page_arr['page_id']));
 
             // permission is now granted
             } elseif ( isset($_POST[$page_arr['page_id']]) && $_POST[$page_arr['page_id']] == 1
                         && !in_array ( $page_arr['page_id'], $user_rights )
                         && !in_array ( $page_arr['page_id'], get_group_rights_array ( $_POST['user_id'], TRUE ) )
             ) {
-                mysql_query ( '
-                                INSERT
-                                INTO `'.$FD->config('pref')."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
-                                VALUES ('".$page_arr['page_id']."', '".$_POST['user_id']."', 0)
-                ", $FD->sql()->conn() );
+                $stmt_ins->execute(array($page_arr['page_id']));
             }
         }
 
@@ -129,13 +125,12 @@ if ( isset ( $_POST['edit_user_id'] ) )
     unset ( $group_rights );
 
     // get user data
-    $index = mysql_query ( '
-                            SELECT `user_name`, `user_id`, `user_group`, `user_is_staff`, `user_is_admin`
-                            FROM '.$FD->config('pref')."user
-                            WHERE `user_id` = '".$_POST['edit_user_id']."'
-                            LIMIT 0,1
-    ", $FD->sql()->conn() );
-    $user_arr = mysql_fetch_assoc ( $index );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `user_name`, `user_id`, `user_group`, `user_is_staff`, `user_is_admin`
+                    FROM '.$FD->config('pref')."user
+                    WHERE `user_id` = '".$_POST['edit_user_id']."'
+                    LIMIT 0,1" );
+    $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     // get granted rights
     $user_rights = get_user_rights_array ( $user_arr['user_id'] );
@@ -146,38 +141,45 @@ if ( isset ( $_POST['edit_user_id'] ) )
     $entries = 0;
 
     // get groups
-    $groupaction = mysql_query ( '
-                                    SELECT `group_id`
-                                    FROM `'.$FD->config('pref')."admin_groups`
-                                    WHERE `menu_id` != 'none'
-                                    ORDER BY `menu_id`, `group_pos`
-    ", $FD->sql()->conn() );
-    while ( $group_arr = mysql_fetch_assoc ( $groupaction ) ) {
+    $groupaction = $FD->sql()->conn()->query ( '
+                        SELECT `group_id`
+                        FROM `'.$FD->config('pref')."admin_groups`
+                        WHERE `menu_id` != 'none'
+                        ORDER BY `menu_id`, `group_pos`" );
+    while ( $group_arr = $groupaction->fetch(PDO::FETCH_ASSOC) ) {
         $DATA_ARR[$group_arr['group_id']]['title'] = $FD->text('menu', 'group_'.$group_arr['group_id']);
 
         // get pages
-        $pageaction = mysql_query ( '
-                                        SELECT `page_id`
-                                        FROM `'.$FD->config('pref')."admin_cp`
-                                        WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0
-                                        ORDER BY `page_pos` ASC, `page_id` ASC
-        ", $FD->sql()->conn() );
-        $pageaction_sub = mysql_query ( '
-                                        SELECT `page_id`, `page_file`
-                                        FROM `'.$FD->config('pref')."admin_cp`
-                                        WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1
-                                        ORDER BY `page_file` ASC, `page_pos` ASC, `page_id` ASC
-        ", $FD->sql()->conn() );
+        $pageaction = $FD->sql()->conn()->query ( '
+                            SELECT COUNT(`page_id`)
+                            FROM `'.$FD->config('pref')."admin_cp`
+                            WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0" );
+        $pa_num_rows = $pageaction->fetchColumn();
+        $pageaction = $FD->sql()->conn()->query ( '
+                            SELECT `page_id`
+                            FROM `'.$FD->config('pref')."admin_cp`
+                            WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0
+                            ORDER BY `page_pos` ASC, `page_id` ASC" );
+        $pageaction_sub = $FD->sql()->conn()->query ( '
+                                SELECT COUNT(`page_id`)
+                                FROM `'.$FD->config('pref')."admin_cp`
+                                WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1" );
+        $pas_num_rows = $pageaction_sub->fetchColumn();
+        $pageaction_sub = $FD->sql()->conn()->query ( '
+                                SELECT `page_id`, `page_file`
+                                FROM `'.$FD->config('pref')."admin_cp`
+                                WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1
+                                ORDER BY `page_file` ASC, `page_pos` ASC, `page_id` ASC" );
         // count number of entries
-        $entries = $entries + mysql_num_rows ( $pageaction ) + mysql_num_rows ( $pageaction_sub );
+        $entries = $entries + $pa_num_rows + $pas_num_rows;
 
 
-        while ( $page_arr_sub = mysql_fetch_assoc ( $pageaction_sub ) ) {
+        while ( $page_arr_sub = $pageaction_sub->fetch(PDO::FETCH_ASSOC) ) {
             $SUB_ARR[$page_arr_sub['page_file']][$page_arr_sub['page_id']] = $FD->text('menu', 'page_link_'.$page_arr_sub['page_id']);
         }
 
 
-        while ( $page_arr = mysql_fetch_assoc ( $pageaction ) ) {
+        while ( $page_arr = $pageaction->fetch(PDO::FETCH_ASSOC) ) {
             $DATA_ARR[$group_arr['group_id']]['links'][$page_arr['page_id']]['page_link'] = $FD->text('menu', 'page_link_'.$page_arr['page_id']);
 
             // is permission granted?
@@ -290,15 +292,13 @@ else
     ';
 
     // get staff-users from db
-    $index = mysql_query ( '
-                            SELECT `user_id`, `user_name`, `user_mail`, `user_group`, `user_is_admin`
-                            FROM '.$FD->config('pref')."user
-                            WHERE `user_is_staff` = '1' AND `user_id` != '1' AND `user_id` != '".$_SESSION['user_id']."'
-                              ORDER BY user_name
-    ", $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT COUNT(`user_id`)
+                    FROM '.$FD->config('pref')."user
+                    WHERE `user_is_staff` = '1' AND `user_id` != '1' AND `user_id` != '".$_SESSION['user_id']."'" );
 
     // users found
-    if ( mysql_num_rows ( $index ) > 0 ) {
+    if ( $index->fetchColumn() > 0 ) {
         // display table head
         echo '
                             <tr>
@@ -310,17 +310,21 @@ else
         ';
 
         // display users
-        while ( $user_arr = mysql_fetch_assoc ( $index ) )
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT `user_id`, `user_name`, `user_mail`, `user_group`, `user_is_admin`
+                        FROM '.$FD->config('pref')."user
+                        WHERE `user_is_staff` = '1' AND `user_id` != '1' AND `user_id` != '".$_SESSION['user_id']."'
+                        ORDER BY user_name" );
+        while ( $user_arr = $index->fetch(PDO::FETCH_ASSOC) )
         {
             // get user group
             if ( $user_arr['user_group'] != 0 ) {
-                $groupindex = mysql_query ( '
-                                                SELECT `user_group_name`
-                                                FROM '.$FD->config('pref')."user_groups
-                                                WHERE `user_group_id` = '".$user_arr['user_group']."'
-                                                   LIMIT 0,1
-                ", $FD->sql()->conn() );
-                $user_arr['user_group_name'] = killhtml ( mysql_result ( $groupindex, 0, 'user_group_name' ) );
+                $groupindex = $FD->sql()->conn()->query ( '
+                                    SELECT `user_group_name`
+                                    FROM '.$FD->config('pref')."user_groups
+                                    WHERE `user_group_id` = '".$user_arr['user_group']."'
+                                       LIMIT 0,1" );
+                $user_arr['user_group_name'] = killhtml ( $groupindex->fetchColumn() );
             } elseif ( $user_arr['user_is_admin'] == 1 ) {
                 $user_arr['user_group_name'] = 'Administrator';
             } else {
