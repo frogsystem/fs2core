@@ -633,7 +633,6 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
         // security functions
         $user_arr['user_name'] = killhtml ( $user_arr['user_name'] );
-        $_POST['filter'] = savesql ( $_POST['filter'] );
 
         echo '
                     <form action="" method="post">
@@ -641,7 +640,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                         <input type="hidden" name="user_action" value="delete">
                         <input type="hidden" name="sended" value="delete">
                         <input type="hidden" name="user_id" value="'.$_POST['user_id'].'">
-                        <input type="hidden" name="filter" value="'.$_POST['filter'].'">
+                        <input type="hidden" name="filter" value="'.htmlspecialchars($_POST['filter']).'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="2">Benutzer l&ouml;schen</td></tr>
                             <tr>
@@ -709,7 +708,7 @@ if ( !isset ( $_POST['user_id'] ) )
         echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="user_edit">
-                        <input type="hidden" name="filter" value="'.$_POST['filter'].'">
+                        <input type="hidden" name="filter" value="'.htmlspecialchars($_POST['filter']).'">
                         <input type="hidden" name="search" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="space"></td></tr>

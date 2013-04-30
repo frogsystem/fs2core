@@ -8,26 +8,26 @@ $url_arr = get_article_urls ();
 /////////////////////
 
 if (
-                isset ( $_POST['sended'] ) &&
-                isset ( $_POST['article_cat_id'] ) &&
-                $_POST['article_title'] && $_POST['article_title'] != '' &&
-                (empty($url_arr) || !in_array ( savesql ( $_POST['article_url'] ), $url_arr )) &&
+        isset ( $_POST['sended'] ) &&
+        isset ( $_POST['article_cat_id'] ) &&
+        isset($_POST['article_title']) && $_POST['article_title'] != '' &&
+        (empty($url_arr) || !in_array ( $_POST['article_url'], $url_arr )) &&
 
-                ( ( $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31 ) || ( $_POST['d'] == '' && $_POST['m'] == '' && $_POST['y'] == '' ) ) &&
-                ( ( $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12 ) || ( $_POST['d'] == '' && $_POST['m'] == '' && $_POST['y'] == '' ) ) &&
-                ( ( $_POST['y'] && $_POST['y'] > 0 ) || ( $_POST['d'] == '' && $_POST['m'] == '' && $_POST['y'] == '' ) )
-        )
+        ( ( $_POST['d'] && $_POST['d'] > 0 && $_POST['d'] <= 31 ) || ( $_POST['d'] == '' && $_POST['m'] == '' && $_POST['y'] == '' ) ) &&
+        ( ( $_POST['m'] && $_POST['m'] > 0 && $_POST['m'] <= 12 ) || ( $_POST['d'] == '' && $_POST['m'] == '' && $_POST['y'] == '' ) ) &&
+        ( ( $_POST['y'] && $_POST['y'] > 0 ) || ( $_POST['d'] == '' && $_POST['m'] == '' && $_POST['y'] == '' ) )
+    )
 {
     // No User
     if ( !isset ( $_POST['article_user'] ) ) {
         $_POST['article_user'] = 0;
     }
 
-    // Security Functions
-    $_POST['article_url'] = savesql ( trim ( $_POST['article_url'] ) );
-    $_POST['article_title'] = savesql ( $_POST['article_title'] );
-    $_POST['article_text'] = savesql ( $_POST['article_text'] );
+    $_POST['article_url'] = trim ( $_POST['article_url'] );
+    $_POST['article_title'] = trim ( $_POST['article_title'] );
+    $_POST['article_text'] = trim ( $_POST['article_text'] );
 
+    // Security Functions
     settype ( $_POST['article_cat_id'], 'integer' );
     settype ( $_POST['article_html'], 'integer' );
     settype ( $_POST['article_user'], 'integer' );
@@ -43,22 +43,23 @@ if (
     }
 
     // SQL-Insert-Query
-    $FD->sql()->conn()->exec ('
-                                INSERT INTO
-                                    '.$FD->config('pref')."articles
-                                    (article_url, article_title, article_date, article_user, article_text, article_html, article_fscode, article_para, article_cat_id, article_search_update)
-                                VALUES (
-                                    '".$_POST['article_url']."',
-                                    '".$_POST['article_title']."',
-                                    '".$articledate."',
-                                    '".$_POST['article_user']."',
-                                    '".$_POST['article_text']."',
-                                    '".$_POST['article_html']."',
-                                    '".$_POST['article_fscode']."',
-                                    '".$_POST['article_para']."',
-                                    '".$_POST['article_cat_id']."',
-                                    '".time()."'
-                                )" );
+    $stmt = $FD->sql()->conn()->prepare ('
+                INSERT INTO
+                    '.$FD->config('pref')."articles
+                    (article_url, article_title, article_date, article_user, article_text, article_html, article_fscode, article_para, article_cat_id, article_search_update)
+                VALUES (
+                    ?,
+                    ?,
+                    '".$articledate."',
+                    '".$_POST['article_user']."',
+                    ?,
+                    '".$_POST['article_html']."',
+                    '".$_POST['article_fscode']."',
+                    '".$_POST['article_para']."',
+                    '".$_POST['article_cat_id']."',
+                    '".time()."'
+                )" );
+    $stmt->execute(array($_POST['article_url'], $_POST['article_title'], $_POST['article_text']));
 
     // Update Search Index (or not)
     if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
@@ -79,7 +80,7 @@ else
 {
     // Display Error Messages
     if ( isset ( $_POST['sended'] ) ) {
-        if ( in_array ( savesql ( $_POST['article_url'] ), $url_arr ) ) {
+        if ( in_array ( $_POST['article_url'], $url_arr ) ) {
             systext ( $FD->text('page', 'existing_url'), $FD->text('admin', 'error'), TRUE );
         } else {
             systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
@@ -294,28 +295,30 @@ if (isset($_POST['url']) && isset($_POST['title']) && isset($_POST['text']) && i
         $date = 0;
     }
 
-    $_POST['url'] = savesql($_POST['url']);
-    $index = $FD->sql()->conn()->query('SELECT artikel_url FROM '.$FD->config('pref')."artikel WHERE artikel_url = '$_POST[url]'");
+    $_POST['url'] = trim($_POST['url']);
+    $index = $FD->sql()->conn()->prepare('SELECT artikel_url FROM '.$FD->config('pref').'artikel WHERE artikel_url = ?');
+    $index->execute(array($_POST['url']));
     $art_row = $index->fetch(PDO::FETCH_ASSOC);
     if ($art_row === false)
     {
-        $_POST['title'] = savesql($_POST['title']);
-        $_POST['text'] = savesql($_POST['text']);
+        $_POST['title'] = trim($_POST['title']);
+        $_POST['text'] = trim($_POST['text']);
         settype($_POST['cat_id'], 'integer');
         settype($_POST['posterid'], 'integer');
         $_POST['search'] = isset($_POST['search']) ? 1 : 0;
         $_POST['fscode'] = isset($_POST['fscode']) ? 1 : 0;
 
-        $FD->sql()->conn()->exec('INSERT INTO '.$FD->config('pref')."artikel
+        $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."artikel
                      VALUES (NULL,
-                             '$_POST[url]',
-                             '$_POST[title]',
+                             ?,
+                             ?,
                              '$date',
                              '$_POST[posterid]',
-                             '$_POST[text]',
+                             ?,
                              '$_POST[search]',
                              '$_POST[fscode]',
                              '$_POST[cat_id]');");
+        $stmt->execute(array($_POST['url'], $_POST['title'], $_POST['text']));
         $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter SET artikel = artikel + 1');
         systext('Artikel wurde gespeichert');
     }

@@ -1170,6 +1170,17 @@ function tab2space($TEXT, $tabsize = 4, $space = '&nbsp;')
 // create save strings for sql //
 /////////////////////////////////
 
+/* TODO / note:
+   ============
+
+   The savesql() function should be removed in the future.
+   Primary reason is that PDO::quote(), which is used to secure text input of
+   SQL queries against SQL injections, is not implemented by all PDO drivers,
+   e.g. PDO_ODBC. Prepared statements should be used instead.
+
+   Also see <http://www.php.net/manual/en/pdo.quote.php> for more info.
+*/
+
 function savesql ( $TEXT )
 {
     global $FD;

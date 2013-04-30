@@ -1103,19 +1103,21 @@ function save_referer ()
 
 	if (isset($_SERVER['HTTP_REFERER'])) {
 
-		$time = time();             // timestamp
+		$time = time(); // timestamp
 		// save referer
 		$referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
-		$referer = savesql($referer);
-		$index =  $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."counter_ref WHERE ref_url = '".$referer."'" );
+		$index = $FD->sql()->conn()->prepare ( 'SELECT * FROM '.$FD->config('pref').'counter_ref WHERE ref_url = ?' );
+		$index->execute(array($referer));
 
 		if ( $index->fetch(PDO::FETCH_ASSOC) === false ) {
 			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-				$FD->sql()->conn()->exec ( 'INSERT INTO '.$FD->config('pref')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')" );
+				$stmt = $FD->sql()->conn()->prepare ( 'INSERT INTO '.$FD->config('pref')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES (?, '1', '".$time."', '".$time."')" );
+				$stmt->execute(array($referer));
 			}
 		} else {
 			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-					$FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = '".$referer."'" );
+				$stmt = $FD->sql()->conn()->prepare ( 'UPDATE '.$FD->config('pref')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = ? LIMIT 1" );
+				$stmt->execute(array($referer));
 			}
 		}
 	}
@@ -1154,12 +1156,13 @@ function set_style ()
     global $FD;
 
     if ( isset ( $_GET['style'] ) && $FD->cfg('allow_other_designs') == 1 ) {
-        $index = $FD->sql()->conn()->query ( '
-                                SELECT `style_id`, `style_tag`
-                                FROM `'.$FD->config('pref')."styles`
-                                WHERE `style_tag` = '".savesql ( $_GET['style'] )."'
-                                AND `style_allow_use` = 1
-                                LIMIT 0,1");
+        $index = $FD->sql()->conn()->prepare ( '
+                        SELECT `style_id`, `style_tag`
+                        FROM `'.$FD->config('pref')."styles`
+                        WHERE `style_tag` = ?
+                        AND `style_allow_use` = 1
+                        LIMIT 0,1");
+        $index->execute(array($_GET['style']));
         $row = $index->fetch(PDO::FETCH_ASSOC);
         if ( $row !== false ) {
             $FD->setConfig('style', stripslashes ( $row['style_tag'] ) );
@@ -1169,11 +1172,11 @@ function set_style ()
     } elseif ( isset ( $_GET['style_id'] ) && $FD->config('allow_other_designs') == 1 ) {
         settype ( $_GET['style_id'], 'integer' );
         $index = $FD->sql()->conn()->query ( '
-                                SELECT `style_id`, `style_tag`
-                                FROM `'.$FD->config('pref')."styles`
-                                WHERE `style_id` = '".$_GET['style_id']."'
-                                AND `style_allow_use` = 1
-                                LIMIT 0,1" );
+                        SELECT `style_id`, `style_tag`
+                        FROM `'.$FD->config('pref')."styles`
+                        WHERE `style_id` = '".$_GET['style_id']."'
+                        AND `style_allow_use` = 1
+                        LIMIT 0,1" );
         $row = $index->fetch(PDO::FETCH_ASSOC);
         if ( $row !== false ) {
             $FD->setConfig('style', stripslashes ( $row['style_tag'] ) );

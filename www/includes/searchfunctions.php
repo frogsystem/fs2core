@@ -184,8 +184,8 @@ function get_search_word_id ( $WORD ) {
     global $FD;
 
     $stmt = $FD->sql()->conn()->prepare ( '
-                            SELECT `search_word_id` FROM `'.$FD->config('pref').'search_words`
-                            WHERE `search_word` = ?');
+                SELECT `search_word_id` FROM `'.$FD->config('pref').'search_words`
+                WHERE `search_word` = ?');
     $stmt->execute(array($WORD));
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($result !== false)
@@ -194,9 +194,10 @@ function get_search_word_id ( $WORD ) {
         $stmt->closeCursor();
         return $id;
     } else {
-        $FD->sql()->conn()->exec ( '
-                        INSERT INTO `'.$FD->config('pref')."search_words` (`search_word`)
-                        VALUES ('".savesql ( $WORD )."')");
+        $stmt = $FD->sql()->conn()->prepare ( '
+                    INSERT INTO `'.$FD->config('pref')."search_words` (`search_word`)
+                    VALUES (?)");
+        $stmt->execute(array($WORD));
         return $FD->sql()->conn()->lastInsertId();
     }
 }
