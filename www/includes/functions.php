@@ -56,8 +56,7 @@ function delete_referrers ($days, $hits, $contact, $age, $amount, $time = null) 
         default: $amount = '>'; break;
     }
 
-    return $FD->sql()->delete('counter_ref', array(
-        'W' => '`ref_'.$contact.'` '.$age." '".$del_date."' AND `ref_count` ".$amount." '".$hits."'"));
+    return $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'counter_ref WHERE `ref_'.$contact.'` '.$age." '".$del_date."' AND `ref_count` ".$amount." '".$hits."'");
 }
 
 ////////////////////
@@ -1281,16 +1280,16 @@ function checkVotedPoll($pollid) {
     settype($pollid, 'integer');
 
     if (isset($_COOKIE['polls_voted'])) {
-        $polls_voted = savesql($_COOKIE['polls_voted']);
-        $votes = explode(',', $polls_voted);
+        $votes = explode(',', $_COOKIE['polls_voted']);
         if (in_array($pollid, $votes )) {
             return true;
         }
     }
     $one_day_ago = time()-60*60*24;
     $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."poll_voters WHERE time <= '".$one_day_ago."'"); //Delete old IPs
-    $query_id = $FD->sql()->conn()->query('SELECT voter_id FROM '.$FD->config('pref')."poll_voters WHERE poll_id = $pollid AND ip_address = '".$_SERVER['REMOTE_ADDR']."' AND time > '".$one_day_ago."'"); //Save IP for 1 Day
-    return ( $query_id->fetch(PDO::FETCH_ASSOC) !== false );
+    $query_id = $FD->sql()->conn()->prepare('SELECT COUNT(voter_id) FROM '.$FD->config('pref')."poll_voters WHERE poll_id = $pollid AND ip_address = ? AND time > '".$one_day_ago."' LIMIT 1"); //Save IP for 1 Day
+    $query_id->execute(array($_SERVER['REMOTE_ADDR']));
+    return ( $query_id->fetchColumn() > 0 );
 }
 
 ///////////////////////////////////////////////////////////////

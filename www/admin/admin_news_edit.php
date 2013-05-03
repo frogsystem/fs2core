@@ -369,8 +369,8 @@ function action_comments_delete ( $DATA )
 $FILE_SHOW_START = true;
 $news_cols = array('news_id', 'cat_id', 'user_id', 'news_date', 'news_title', 'news_text', 'news_active', 'news_comments_allowed', 'news_search_update');
 
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-$config_arr = json_array_decode($config_arr['config_data']);
+$FD->loadConfig('news');
+$config_arr = $FD->configObject('news')->getConfigArray();
 $config_arr['html'] = in_array($config_arr['html_code'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
 $config_arr['fs'] = in_array($config_arr['fs_code'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
 $config_arr['para'] = in_array($config_arr['para_handling'], array(2, 4)) ? $FD->text("admin", "on") : $FD->text("admin", "off");
@@ -385,24 +385,24 @@ $config_arr['short_url_rep'] = '...';
 
 // Edit News
 if (
-        !isset($_POST['edit_link']) && !isset($_POST['add_link']) &&
-        isset ( $_POST['news_id'] ) &&
-        count ( $_POST['news_id'] ) == 1 &&
-        isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit' &&
-        isset ( $_POST['news_action'] ) && $_POST['news_action'] == 'edit' &&
+    !isset($_POST['edit_link']) && !isset($_POST['add_link']) &&
+    isset ( $_POST['news_id'] ) &&
+    count ( $_POST['news_id'] ) == 1 &&
+    isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit' &&
+    isset ( $_POST['news_action'] ) && $_POST['news_action'] == 'edit' &&
 
-        isset ( $_POST['news_title'] ) && $_POST['news_title'] != '' &&
-        isset ( $_POST['news_text'] ) && $_POST['news_text'] != '' &&
+    isset ( $_POST['news_title'] ) && $_POST['news_title'] != '' &&
+    isset ( $_POST['news_text'] ) && $_POST['news_text'] != '' &&
 
-        isset($_POST['d']) && $_POST['d'] != '' && $_POST['d'] > 0 &&
-        isset($_POST['m']) && $_POST['m'] != '' && $_POST['m'] > 0 &&
-        isset($_POST['y']) && $_POST['y'] != '' && $_POST['y'] > 0 &&
-        isset($_POST['h']) && $_POST['h'] != '' && $_POST['h'] >= 0 &&
-        isset($_POST['i']) && $_POST['i'] != '' && $_POST['i'] >= 0 &&
+    isset($_POST['d']) && $_POST['d'] != '' && $_POST['d'] > 0 &&
+    isset($_POST['m']) && $_POST['m'] != '' && $_POST['m'] > 0 &&
+    isset($_POST['y']) && $_POST['y'] != '' && $_POST['y'] > 0 &&
+    isset($_POST['h']) && $_POST['h'] != '' && $_POST['h'] >= 0 &&
+    isset($_POST['i']) && $_POST['i'] != '' && $_POST['i'] >= 0 &&
 
-        isset ( $_POST['cat_id'] ) &&
-        isset ( $_POST['user_id'] )
-    )
+    isset ( $_POST['cat_id'] ) &&
+    isset ( $_POST['user_id'] )
+   )
 {
     // Prepare data
     $_POST['news_date'] = mktime($_POST['h'], $_POST['i'], 0, $_POST['m'], $_POST['d'], $_POST['y']);
@@ -430,28 +430,22 @@ if (
         // Save News
         $newsid = $sql->save('news', $data, 'news_id');
 
-        // delete all links
-        $sql->delete('news_links', array('W' => "`news_id` = '".$newsid."'"));
+        // delete all related links
+        $sql->conn()->exec('DELETE FROM '.$FD->config('pref')."news_links WHERE `news_id` = '".$newsid."'");
 
-        // Insert Links to database
+        // Insert Links into database
         if (!is_array($_POST['link_name']))
             $_POST['link_name'] = array();
+        $stmt = $sql->conn()->prepare('INSERT INTO '.$FD->config('pref').'news_links SET news_id = '.$newsid.', link_name = ?, link_url = ?, link_target = ?');
         foreach ($_POST['link_name'] as $id => $val) {
             if (!empty($_POST['link_name'][$id]) && !empty($_POST['link_url'][$id]) && !in_array($_POST['link_url'][$id], array('http://', 'https://'))) {
 
                 // secure link target
                 $_POST['link_target'][$id] = ($_POST['link_target'][$id] == 1 ? 1 : 0);
 
-                $linkdata = array(
-                    'news_id' => $newsid,
-                    'link_name' => $_POST['link_name'][$id],
-                    'link_url' => $_POST['link_url'][$id],
-                    'link_target' => $_POST['link_target'][$id]
-                );
-
                 // insert into db
                 try {
-                    $sql->save('news_links', $linkdata, 'link_id');
+                    $stmt->execute(array($_POST['link_name'][$id], $_POST['link_url'][$id], $_POST['link_target'][$id]));
                 } catch (Exception $e) {
                     Throw $e;
                 }
@@ -496,21 +490,20 @@ elseif (
             $_POST['news_id'] = array_map('intval', $_POST['news_id']);
 
             //delete news
-            $num = $sql->delete('news', array('W' => '`news_id` IN ('.implode(',',$_POST['news_id']).')'));
+            $num = $sql->conn()->exec('DELETE FROM '.$FD->config('pref').'news WHERE `news_id` IN ('.implode(',',$_POST['news_id']).')');
 
             // Delete from Search Index
             require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
             delete_search_index_for_one($_POST['news_id'], 'news');
 
             // delete all links
-            $sql->delete('news_links', array('W' => "`news_id` = '".$_POST['news_id']."'"));
+            $sql->conn()->exec('DELETE FROM '.$FD->config('pref').'news_links WHERE `news_id` IN ('.implode(',',$_POST['news_id']).')');
             // delete all comments
-            $comment_rows = $sql->delete('comments', array('W' => "`content_id` = '".$_POST['news_id']."' AND content_type='news'"));
+            $comment_rows = $sql->conn()->exec('DELETE FROM '.$FD->config('pref').'comments WHERE `content_id` IN ('.implode(',',$_POST['news_id']).") AND content_type='news'");
 
             // update counter
             try {
-                $sql->doQuery('UPDATE `{..pref..}counter` SET `news` = `news` - 1 WHERE `id` = 1');
-                $sql->doQuery('UPDATE `{..pref..}counter` SET `comments` = `comments` - '.$comment_rows.' WHERE `id` = 1');
+                $sql->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET `news` = `news` - '.$num.', `comments` - '.$comment_rows.'  WHERE `id` = 1');
             } catch (Exception $e) {}
 
 
@@ -707,9 +700,6 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
             }
         }
 
-        // Get User
-        //$_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
-
         // security functions
         $_POST = array_map('killhtml', $_POST);
 
@@ -793,10 +783,6 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
         $news_arr = action_delete_get_data ( $_POST['news_id'] );
         action_delete_display_page ( $news_arr );
     }
-
-
-
-
 
 
 

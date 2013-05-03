@@ -424,7 +424,7 @@ else
     ';
 
     // Umfragen auflisten
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll ORDER BY poll_start DESC', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll ORDER BY poll_start DESC');
     while ($poll_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $poll_arr['poll_start'] = date('d.m.Y' , $poll_arr['poll_start']) ;

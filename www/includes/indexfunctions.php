@@ -1045,7 +1045,6 @@ function save_visitors ()
 {
     global $FD;
 
-    $ip = savesql($_SERVER['REMOTE_ADDR']); // IP-Adress
     clean_iplist(); // remove old users first
 
     // get user_id or set user_id=0
@@ -1057,15 +1056,14 @@ function save_visitors ()
     }
 
     // Exisiting user for ip?
-    $user = $FD->sql()->getRow('useronline', '*', array('W' => "`ip` = '".$ip."'"));
+    $user = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'useronline WHERE `ip` = ? LIMIT 1');
+    $user->execute(array($_SERVER['REMOTE_ADDR']));
+    $user = $user->fetch(PDO::FETCH_ASSOC);
 
     // no user => create new
     if (empty($user)) {
-        $FD->sql()->insert('useronline', array(
-            'ip' => $ip,
-            'user_id' => $user_id,
-            'date' => $FD->env('time')
-        ));
+        $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref').'useronline SET `ip` = ?, user_id='.$user_id.', date='.(int) $FD->env('time'));
+        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
 
         // and count the visit
         count_visit();
@@ -1073,12 +1071,14 @@ function save_visitors ()
 
     // new user_id (and update time)
     else if ($user['user_id'] != $user_id) {
-        $FD->sql()->update('useronline', array('user_id' => $user_id, 'date' => $FD->env('time') ), array('W' => "`ip` = '".$ip."'"));
+        $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref').'useronline SET user_id = '.$user_id.', date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
+        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
     }
 
     // we know the user => just update time
     else {
-        $FD->sql()->update('useronline', array('date' => $FD->env('time') ), array('W' => "`ip` = '".$ip."'"));
+        $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref').'useronline SET date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
+        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
     }
 }
 
@@ -1090,7 +1090,7 @@ function clean_iplist()
     global $FD;
 
     $time = strtotime('today');
-    $FD->sql()->delete('useronline', array('W' => "`date` < '".$time."'"));
+    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."useronline WHERE `date` < '".$time."'");
 }
 
 
@@ -1134,7 +1134,7 @@ function clean_timed_preview_images () {
     // do we want to remove old entries?
     if ($FD->config('preview_images', 'random_timed_deltime') != -1) {
         // remove old entries
-        $FD->sql()->delete('screen_random', array('W' => "`end` < '".($FD->env('time')-$FD->config('preview_images', 'random_timed_deltime'))."'"));
+        $FD->sql()->conn()->query('DELETE FROM '.$FD->config('pref')."screen_random WHERE `end` < '".($FD->env('time')-$FD->config('preview_images', 'random_timed_deltime'))."'");
     }
 }
 

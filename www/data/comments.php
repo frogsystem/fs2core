@@ -7,8 +7,8 @@
 $FD->setConfig('info', 'canonical', array('id'));
 
 //Kommentar-Config
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-$config_arr = json_array_decode($config_arr['config_data']);
+$FD->loadConfig('news');
+$config_arr = $FD->configObject('news')->getConfigArray();
 //Editor config
 $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'editor_config');
 $editor_config = $index->fetch(PDO::FETCH_ASSOC);
@@ -321,10 +321,10 @@ if ( $SHOW == TRUE ) {
 
 
     if (
-                    $config_arr['com_antispam'] == 0 ||
-                    ( $config_arr['com_antispam'] == 1 && $_SESSION['user_id'] ) ||
-                    ( $config_arr['com_antispam'] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
-            )
+        $config_arr['com_antispam'] == 0 ||
+        ( $config_arr['com_antispam'] == 1 && $_SESSION['user_id'] ) ||
+        ( $config_arr['com_antispam'] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
+       )
     {
         $form_spam = '';
         $form_spam_text ='';

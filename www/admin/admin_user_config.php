@@ -10,17 +10,17 @@ $used_cols = array('user_per_page', 'registration_antispam', 'avatar_x', 'avatar
 ///////////////////////
 
 if (
-        isset($_POST['user_per_page']) && ( $_POST['user_per_page'] > 0 || $_POST['user_per_page'] == -1 )
-        && isset($_POST['avatar_x']) && $_POST['avatar_x'] > 0
-        && isset($_POST['avatar_y']) && $_POST['avatar_y'] > 0
-        && isset($_POST['avatar_size']) && $_POST['avatar_size'] > 0
-        && isset($_POST['reg_date_format']) && $_POST['reg_date_format'] != ''
-        && isset($_POST['user_list_reg_date_format']) && $_POST['user_list_reg_date_format'] != ''
-    )
+    isset($_POST['user_per_page']) && ( $_POST['user_per_page'] > 0 || $_POST['user_per_page'] == -1 )
+    && isset($_POST['avatar_x']) && $_POST['avatar_x'] > 0
+    && isset($_POST['avatar_y']) && $_POST['avatar_y'] > 0
+    && isset($_POST['avatar_size']) && $_POST['avatar_size'] > 0
+    && isset($_POST['reg_date_format']) && $_POST['reg_date_format'] != ''
+    && isset($_POST['user_list_reg_date_format']) && $_POST['user_list_reg_date_format'] != ''
+   )
 {
     // prepare data
     $data = frompost($used_cols);
-      
+
     // save config
     try {
         $FD->saveConfig('users', $data);
@@ -30,11 +30,11 @@ if (
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
-    unset($_POST); 
+    unset($_POST);
 }
 
 /////////////////////
@@ -49,11 +49,11 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'users'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('users');
+        $data = $FD->configObject('users')->getConfigArray();
         putintopost($data);
-    }    
-    
+    }
+
     // security functions
     $_POST = array_map('killhtml', $_POST);
 

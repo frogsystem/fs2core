@@ -863,9 +863,8 @@ function admin_set_cookie($username, $password)
 {
     global $FD;
 
-    $username = savesql($username);
-    $password = savesql($password);
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'");
+    $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'user WHERE user_name = ?');
+    $index->execute(array($username));
     $USER_ARR = $index->fetch(PDO::FETCH_ASSOC);
     if ($USER_ARR === false)
     {
@@ -890,7 +889,7 @@ function admin_set_cookie($username, $password)
             {
                 $inhalt = $password . $username;
                 setcookie ('login', $inhalt, time()+2592000, '/');
-                return true;  // Login akzeptiert
+                return true;  // login accepted
             }
             else
             {
@@ -912,13 +911,12 @@ function admin_login($username, $password, $iscookie)
 {
     global $FD;
 
-    $username = savesql($username);
-    $password = savesql($password);
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'");
+    $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'user WHERE user_name = ? LIMIT 1');
+    $index->execute(array($username));
     $USER_ARR = $index->fetch(PDO::FETCH_ASSOC);
     if ($USER_ARR === false)
     {
-        return 1;  // Fehlercode 1: User nicht vorhanden
+        return 1;  // error code 1: user does not exist
     }
     else
     {
@@ -943,16 +941,16 @@ function admin_login($username, $password, $iscookie)
             {
                 $_SESSION['user_level'] = 'authorized';
                 fillsession($dbuserid);
-                return 0;  // Login akzeptiert
+                return 0;  // login accepted
             }
             else
             {
-                return 2;  // Fehlercode 2: Falsches Passwort
+                return 2;  // error code 2: wrong password
             }
         }
         else
         {
-            return 3;  // Fehlercode 3: Keine Zugriffsrechte auf die Admin
+            return 3;  // error code 3: no access privileges for admin area
         }
     }
 }

@@ -14,7 +14,7 @@ if (isset($_POST['sended'])
 {
     // prepare data
     $data = frompost($used_cols);
-      
+
     // save config
     try {
         $FD->saveConfig('press', $data);
@@ -24,7 +24,7 @@ if (isset($_POST['sended'])
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
@@ -43,11 +43,11 @@ if(true)
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'press'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('press');
+        $data = $FD->configObject('press')->getConfigArray();
         putintopost($data);
-    }       
-    
+    }
+
     // security functions
     $_POST = array_map('killhtml', $_POST);
 

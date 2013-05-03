@@ -5,8 +5,8 @@
 //////////////////////////
 
 // Create Articles-Config-Array
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'articles'"));
-$articles_config_arr = json_array_decode($config_arr['config_data']);
+$FD->loadConfig('articles');
+$articles_config_arr = $FD->configObject('articles')->getConfigArray();
 $showdefault = TRUE;
 
 

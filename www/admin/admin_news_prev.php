@@ -67,8 +67,8 @@
     else {
 
         // Get News Config
-        $config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-        $config_arr = json_array_decode($config_arr['config_data']);
+        $FD->loadConfig('news');
+        $config_arr = $FD->configObject('news')->getConfigArray();
 
         // Load Data from $_POST
         $news_arr['comment_url'] = '?go=news_preview';

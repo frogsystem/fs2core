@@ -73,7 +73,7 @@ if (
 }
 
 //////////////////////////////
-//// Display Articel Form ////
+//// Display Article Form ////
 //////////////////////////////
 
 else
@@ -92,8 +92,8 @@ else
     }
 
     // Load Article Config
-    $config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'articles'"));
-    $config_arr = json_array_decode($config_arr['config_data']);
+    $FD->loadConfig('articles');
+    $config_arr = $FD->configObject('articles')->getConfigArray();
 
     // Create HTML, FSCode & Para-Handling Vars
     $config_arr['html_code_bool'] = ($config_arr['html_code'] == 2 || $config_arr['html_code'] == 4);
