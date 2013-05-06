@@ -55,7 +55,7 @@ class GlobalData {
         // get from DB
         if (empty($data)) {
             $this->config[$name] = $this->getConfigObjectFromDatabase($name);
-        
+
         // set data from input
         } else {
             $this->config[$name] = $this->createConfigObject($name, $data, $json);
@@ -69,11 +69,15 @@ class GlobalData {
         require_once(FS2_ROOT_PATH . 'libs/class_ConfigData.php');
 
         // Load configs from DB
-        $data = $this->sql->getData('config', '*', array('W' => "`config_loadhook` = '".$hook."'") );
+        $data = $this->sql->conn()->prepare(
+                        'SELECT * FROM '.$this->sql->getPrefix().'config
+                         WHERE `config_loadhook` = ?');
+        $data->execute(array($hook));
+        $data = $data->fetchAll(PDO::FETCH_ASSOC);
         foreach ($data as $config) {
             // Load corresponding class and get config array
             if ($reload || !$this->configExists($config['config_name']))
-                $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
+                $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], stripslashes($config['config_data']), true);
         }
     }
 
@@ -91,10 +95,14 @@ class GlobalData {
     // create config object from db
     private function getConfigObjectFromDatabase($name) {
         // Load config from DB
-        $config = $this->sql->getRow('config', '*', array('W' => "`config_name` = '".$name."'"));
-        
+        $config = $this->sql->conn()->prepare(
+                         'SELECT * FROM '.$this->sql->getPrefix().'config
+                          WHERE `config_name` = ? LIMIT 1');
+        $config->execute(array($name));
+        $config = $config->fetch(PDO::FETCH_ASSOC);
+
         // Load corresponding class and get config array
-        return $this->createConfigObject($config['config_name'], $config['config_data'], true);
+        return $this->createConfigObject($config['config_name'], stripslashes($config['config_data']), true);
     }
 
 
@@ -103,7 +111,7 @@ class GlobalData {
     public function configObject($name) {
         // Load corresponding class and get config array
         return  $this->config[$name];
-    }    
+    }
 
     // set config
     public function setConfig() {
@@ -131,7 +139,7 @@ class GlobalData {
             else {
                 $original_data = array();
             }
-            
+
 
             // update data
             foreach ($newdata as $key => $value) {
@@ -149,7 +157,7 @@ class GlobalData {
 
             // Reload Data
             $this->reloadConfig($name, $newdata['config_data'], true);
-            
+
         } catch (Exception $e) {
             throw $e;
         }
@@ -171,7 +179,7 @@ class GlobalData {
             Throw Exception('Invalid Call of method "config"');
         }
     }
-    
+
     // Aliases
     public function cfg() {
         return call_user_func_array(array($this, 'config'), func_get_args());
@@ -188,7 +196,7 @@ class GlobalData {
 
     // config and/or key exists
     public function configExists() {
-        
+
         // check for config
         if (func_num_args() == 1) {
             return isset($this->config[func_get_arg(0)]);

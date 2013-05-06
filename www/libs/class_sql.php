@@ -270,13 +270,14 @@ class sql {
         );
     }
 
+    /*
     // get data from database
     public function getData ($table, $cols, $options = array(), $distinct = false) {
         // Get Result
         $result = $this->get($table, $cols, $options, $distinct);
         return $result['data'];
     }
-
+    */
 
     // only a single data row
     public function getRow ($table, $cols, $options = array(), $start = 0) {
@@ -291,11 +292,13 @@ class sql {
             return array();
         }
     }
+    /*
     // single row by Id
     public function getById ($table, $cols, $id, $id_col = 'id') {
         $options = array ('W' => '`'.$id_col."`='".$this->escape($id)."'");
         return $this->getRow($table, $cols, $options);
     }
+    */
 
     // only a single data field
     public function getField ($table, $field, $options = array(), $start = 0) {
@@ -317,11 +320,13 @@ class sql {
         }
     }
 
+    /*
     // num of rows
     public function num ($table, $cols, $options = array(), $distinct = false) {
         $stmt = $this->select($table, $cols, $options, $distinct);
         return $stmt->rowCount();
     }
+    */
 
     // Saving to DB by Id
     // existing entry => update, else => insert

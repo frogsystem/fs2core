@@ -3,8 +3,8 @@
 $FD->setConfig('info', 'canonical', array('id'));
 
 // Load Config Array
-$data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-$config_arr = json_array_decode($data);
+$FD->loadConfig('downloads');
+$config_arr = $FD->configObject('downloads')->getConfigArray();
 
 $FD->loadConfig('screens');
 $screen_config_arr = $FD->configObject('screens')->getConfigArray();

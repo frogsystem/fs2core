@@ -12,20 +12,20 @@ if (
 
 // Download-Link clicked
 if (
-        isset ($_GET['id'])
-        && isset ($_GET['dl']) && $_GET['dl'] === TRUE
-        && ( $_SERVER['HTTP_REFERER'] == '' || strstr ( $_SERVER['HTTP_REFERER'], '?go=dlfile' ) )
-    )
+    isset ($_GET['id'])
+    && isset ($_GET['dl']) && $_GET['dl'] === TRUE
+    && ( $_SERVER['HTTP_REFERER'] == '' || strstr ( $_SERVER['HTTP_REFERER'], '?go=dlfile' ) )
+   )
 {
     // Load Config Array
-    $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-    $config_arr = json_array_decode($data);
+    $FD->loadConfig('downloads');
+    $config_arr = $FD->configObject('downloads')->getConfigArray();
 
     // Get File Data
     $index = $FD->sql()->conn()->query ( '
-                            SELECT `file_is_mirror`, `file_url`
-                            FROM `'.$FD->config('pref').'dl_files`
-                            WHERE `file_id` = '.$_GET['id'].' ' );
+                    SELECT `file_is_mirror`, `file_url`
+                    FROM `'.$FD->config('pref').'dl_files`
+                    WHERE `file_id` = '.$_GET['id'].' ' );
     $dlf_row = $index->fetch(PDO::FETCH_ASSOC);
     $check_file_is_mirror = $dlf_row['file_is_mirror'];
     settype( $check_file_is_mirror, 'integer' );
@@ -40,9 +40,9 @@ if (
     {
         // Update Counter
         $FD->sql()->conn()->exec ( '
-                        UPDATE `'.$FD->config('pref')."dl_files`
-                        SET `file_count` = `file_count` + 1
-                        WHERE `file_id` = '".$_GET['id']."'" );
+                UPDATE `'.$FD->config('pref')."dl_files`
+                SET `file_count` = `file_count` + 1
+                WHERE `file_id` = '".$_GET['id']."'" );
         // Forward to the URL
         header ( 'Location: ' . $file_url );
     } else {

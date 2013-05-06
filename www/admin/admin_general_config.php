@@ -8,21 +8,21 @@
 $used_cols = array('title', 'dyn_title', 'dyn_title_ext', 'protocol', 'url', 'other_protocol', 'admin_mail', 'description', 'keywords', 'publisher', 'copyright', 'style_id', 'allow_other_designs', 'show_favicon', 'home', 'home_text', 'language_text', 'feed', 'date', 'time', 'datetime', 'timezone', 'auto_forward', 'count_referers', 'page', 'page_prev', 'page_next', 'url_style');
 
 
-/////////////////////////////////////
-//// Konfiguration aktualisieren ////
-/////////////////////////////////////
+//////////////////////////////
+//// update configuration ////
+//////////////////////////////
 if (
-                !empty($_POST['title'])
-                && !empty($_POST['url'])
-                && !empty($_POST['admin_mail'])
-                && !empty($_POST['date'])
-                && isset($_POST['count_referers'])
-                && !empty($_POST['page'])
-                && !empty($_POST['page_next'])
-                && !empty($_POST['page_prev'])
-                && is_language_text($_POST['language_text'])
-                && ($_POST['home'] == 0 || ($_POST['home'] == 1 && !empty($_POST['home_text'])))
-    )
+    !empty($_POST['title'])
+    && !empty($_POST['url'])
+    && !empty($_POST['admin_mail'])
+    && !empty($_POST['date'])
+    && isset($_POST['count_referers'])
+    && !empty($_POST['page'])
+    && !empty($_POST['page_next'])
+    && !empty($_POST['page_prev'])
+    && is_language_text($_POST['language_text'])
+    && ($_POST['home'] == 0 || ($_POST['home'] == 1 && !empty($_POST['home_text'])))
+   )
 {
     // url slash & leading http://
     if (substr($_POST['url'], -1) != '/') {
@@ -42,9 +42,11 @@ if (
 
     // style tag
     try {
-        $data['style_tag'] = $sql->getField('styles', 'style_tag',
-            array('W' => '`style_id` = '.$_POST['style_id'].' AND `style_id` != 0 AND `style_allow_use` = 1')
-        );
+        $data['style_tag'] = $FD->sql()->conn()->query(
+                                 'SELECT style_tag FROM '.$FD->config('pref').'styles
+                                  WHERE `style_id` = '.intval($_POST['style_id']).' AND `style_id` != 0 AND `style_allow_use` = 1
+                                  LIMIT 1');
+        $data['style_tag'] = $data['style_tag']->fetchColumn();
     } catch (Exception $e) {
         unset($data['style_tag'], $data['style_id']);
     }
@@ -117,12 +119,14 @@ if ( TRUE )
     );
 
     // styles
-    $styles = $sql->get('styles', array('style_id', 'style_tag'),
-        array('W' => '`style_id` != 0 AND `style_allow_use` = 1', 'O' => '`style_tag`')
-    );
+    $styles = $FD->sql()->conn()->query(
+                  'SELECT style_id, style_tag FROM '.$FD->config('pref').'styles
+                  WHERE `style_id` != 0 AND `style_allow_use` = 1
+                  ORDER BY `style_tag`');
+    $styles = $styles->fetchAll(PDO::FETCH_ASSOC);
 
     initstr($style_options);
-    foreach ($styles['data'] as $style) {
+    foreach ($styles as $style) {
         settype($style['style_id'], 'integer');
         $style_options .=
         '<option value="'.$style['style_id'].'" '

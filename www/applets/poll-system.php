@@ -15,7 +15,8 @@ $FD->loadConfig('polls');
 //poll id given
 if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
     try {
-        $poll_arr = $sql->getById('poll', '*', $SCRIPT['argv'][1], 'poll_id');
+        $poll_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll WHERE poll_id = '.intval($SCRIPT['argv'][1]).' LIMIT 1');
+        $poll_arr = $poll_arr->fetch(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
     }
 
@@ -23,7 +24,10 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
 } elseif ($SCRIPT['argc'] >= 2 && $SCRIPT['argv'][1] == 'random') {
     $date = time();
     try {
-        $poll_ids = $sql->getData('poll', array('poll_id'), array('W' => '`poll_end` > '.$date.' AND `poll_start` < '.$date));
+        $poll_ids = $FD->sql()->conn()->query(
+                         'SELECT poll_id FROM '.$FD->config('pref').'poll
+                          WHERE `poll_end` > '.$date.' AND `poll_start` < '.$date);
+        $poll_ids = $poll_ids->fetchAll(PDO::FETCH_ASSOC);
         $filterd_ids = array_filter($poll_ids, create_function('$poll',
             'return !checkVotedPoll($poll[\'poll_id\']);'));
 
@@ -34,18 +38,23 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
         if (count($filterd_ids) == 0)
             Throw new ErrorException('No active Poll in Database');
 
-        $poll_arr = $sql->getById('poll', '*', $poll_ids[array_rand($filterd_ids)]['poll_id'], 'poll_id');
+        $poll_arr = $FD->sql()->conn()->query(
+                     'SELECT * FROM '.$FD->config('pref').'poll
+                      WHERE poll_id = '.intval($poll_ids[array_rand($filterd_ids)]['poll_id']).'
+                      LIMIT 1');
+        $poll_arr = $poll_arr->fetch(PDO::FETCH_ASSOC);
         $poll_arr['random'] = true;
     } catch (Exception $e) {
     }
 
 // last poll
 } else {
-    $poll_arr = $FD->sql()->getRow('poll', '*', array(
-        'W' => '`poll_end` > '.$FD->env('date').' AND `poll_start` < '.$FD->env('date'),
-        'O' => '`poll_start` DESC, `poll_id` DESC',
-        'L' => '0,1'
-    ));
+    $poll_arr = $FD->sql()->conn()->query(
+                     'SELECT * FROM '.$FD->config('pref').'poll
+                      WHERE `poll_end` > '.$FD->env('date').' AND `poll_start` < '.$FD->env('date').'
+                      ORDER BY `poll_start` DESC, `poll_id` DESC
+                      LIMIT 0,1');
+    $poll_arr = $poll_arr->fetch(PDO::FETCH_ASSOC);
 }
 
 //////////////////////////
@@ -116,6 +125,7 @@ if (isset($_POST['poll_id']) &&
     $answer_arr = $index->fetch(PDO::FETCH_ASSOC);
     $all_votes = $answer_arr['all_votes'];
 
+    $antworten = '';
     $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC');
     while ($answer_arr = $index->fetch(PDO::FETCH_ASSOC))
     {

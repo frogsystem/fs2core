@@ -3,8 +3,8 @@
 $FD->setConfig('info', 'canonical', array('cat_id', 'keyword'));
 
 // Load Config Array
-$data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-$config_arr = json_array_decode($data);
+$FD->loadConfig('downloads');
+$config_arr = $FD->configObject('downloads')->getConfigArray();
 
 if (!isset($_GET['cat_id']) && isset($_GET['catid'])) {
     $_GET['cat_id'] = $_GET['catid'];
@@ -100,8 +100,7 @@ if ($show == TRUE) {
     $index = $FD->sql()->conn()->query(
                   'SELECT COUNT(*) AS anzahl
                    FROM '.$FD->config('pref')."dl
-                   $query dl_open = 1
-                   ORDER BY dl_name");
+                   $query dl_open = 1");
     $num_rows = $index->fetchColumn();
     $index = $FD->sql()->conn()->query('SELECT dl_name,
                                  dl_id,

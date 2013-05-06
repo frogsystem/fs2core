@@ -415,11 +415,18 @@ function get_content ($GOTO)
     } else {
 
     // Articles from DB
-    $num = $sql->num('articles', array('article_id'), array('W' => "`article_url` = '".$GOTO."'", 'L' => '0,1'));
+    $stmt = $FD->sql()->conn()->prepare(
+                  'SELECT COUNT(article_id) FROM '.$FD->config('pref').'articles
+                   WHERE `article_url` = ? LIMIT 0,1');
+    $stmt->execute(array($GOTO));
+    $num = $stmt->fetchColumn();
     if ($num >= 1) {
 
         // Forward Aliases
-        $alias = $sql->getRow('aliases', array('alias_forward_to'), array('W' => "`alias_active` = 1 AND `alias_go` = 'articles.php'"));
+        $alias = $FD->sql()->conn()->query(
+                      'SELECT alias_forward_to FROM '.$FD->config('pref')."aliases
+                       WHERE `alias_active` = 1 AND `alias_go` = 'articles.php'");
+        $alias = $alias->fetch(PDO::FETCH_ASSOC);
         if (!empty($alias)) {
             include(FS2_ROOT_PATH . 'data/' . stripslashes($alias['alias_forward_to']));
         } else {
@@ -582,7 +589,11 @@ function load_applets()
     global $sql, $FD;
 
     // Load Applets from DB
-    $applet_data = $sql->getData('applets', array('applet_include', 'applet_file', 'applet_output'), array('W' => '`applet_active` = 1'));
+    $applet_data = $FD->sql()->conn()->query(
+                       'SELECT applet_include, applet_file, applet_output
+                        FROM '.$FD->config('pref').'applets
+                        WHERE `applet_active` = 1');
+    $applet_data = $applet_data->fetchAll(PDO::FETCH_ASSOC);
 
     // Write Applets into Array & get Applet Template
     initstr($template);
@@ -651,11 +662,13 @@ function tpl_func_snippets($original, $main_argument, $other_arguments)
     // Load Navigation on demand
     if (!isset($SNP[$main_argument])) {
         // Get Snippet and write into Array
-        $data = $sql->getRow('snippets', array('snippet_tag','snippet_text'), array('W' => "`snippet_tag` = '".$original."' AND `snippet_active` =  1"));
-
+        $data = $sql->conn()->prepare(
+                    'SELECT snippet_tag, snippet_text FROM '.$sql->getPrefix().'snippets
+                     WHERE `snippet_tag` = ? AND `snippet_active` = 1 LIMIT 1');
+        $data->execute(array($original));
+        $data = $data->fetch(PDO::FETCH_ASSOC);
         // Snippet not found?
         if (empty($data)) {
-            //$data['snippet_text'] = 'Error: Snippet not found!';
             $data['snippet_text'] = $original;
         }
 
@@ -676,7 +689,6 @@ function tpl_func_applets($original, $main_argument, $other_arguments)
 
     // Applet does not exists
     if (!isset($APP[$main_argument])) {
-        //return "Error: Applet not found!";
         return $original;
     }
 
@@ -951,11 +963,11 @@ function forward_aliases ( $GOTO )
 {
     global $FD;
 
-    $aliases = $FD->sql()->getData(
-        'aliases',
-        array('alias_go', 'alias_forward_to'),
-        array('W' => "`alias_active` = 1 AND `alias_go` = '".$GOTO."'")
-    );
+    $aliases = $FD->sql()->conn()->prepare(
+                     'SELECT alias_go, alias_forward_to FROM '.$FD->config('pref').'aliases
+                      WHERE `alias_active` = 1 AND `alias_go` = ?');
+    $aliases->execute(array($GOTO));
+    $aliases = $aliases->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($aliases as $alias) {
         if ($GOTO == $alias['alias_go']) {

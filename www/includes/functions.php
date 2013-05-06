@@ -12,14 +12,16 @@ function get_online_ips () {
     $numbers = array('users' => 0, 'guests' => 0, 'all' => 0);
 
     // get values from db
-    $numbers['users'] = $FD->sql()->getField('useronline',
-        array('COL' => 'user_id', 'FUNC' => 'COUNT', 'AS' => 'users'),
-        array('W' => "`date` > '".($FD->env('time')-300)."' AND `user_id` != 0")
-    );
-    $numbers['guests'] = $FD->sql()->getField('useronline',
-        array('COL' => 'user_id', 'FUNC' => 'COUNT', 'AS' => 'guests'),
-        array('W' => "`date` > '".($FD->env('time')-300)."' AND `user_id` = 0")
-    );
+    $numbers['users'] = $FD->sql()->conn()->query(
+                            'SELECT COUNT(user_id) AS users
+                             FROM '.$FD->config('pref')."useronline
+                             WHERE `date` > '".($FD->env('time')-300)."' AND `user_id` != 0");
+    $numbers['users'] = $numbers['users']->fetchColumn();
+    $numbers['guests'] = $FD->sql()->conn()->query(
+                            'SELECT COUNT(user_id) AS guests
+                             FROM '.$FD->config('pref')."useronline
+                             WHERE `date` > '".($FD->env('time')-300)."' AND `user_id` = 0");
+    $numbers['guests'] = $numbers['guests']->fetchColumn();
 
     //calc all
     $numbers['all'] = $numbers['users'] + $numbers['guests'];

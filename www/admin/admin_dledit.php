@@ -33,8 +33,8 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
         }
 
         // Neues Bild hochladen
-        $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-        $admin_dl_config_arr = json_array_decode($data);
+        $FD->loadConfig('downloads');
+        $admin_dl_config_arr = $FD->configObject('downloads')->getConfigArray();
 
         if ($_FILES['dlimg']['name'] != '')
         {
@@ -200,8 +200,8 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
     }
     $_POST['options'] += isset($_POST['optionsadd']) ? $_POST['optionsadd'] : 0;
 
-    $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-    $admin_dl_config_arr = json_array_decode($data);
+    $FD->loadConfig('downloads');
+    $admin_dl_config_arr = $FD->configObject('downloads')->getConfigArray();
 
     echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">

@@ -286,8 +286,8 @@ else
     if (has_perm('stat_ref_delete')) {
 
         // Get Config data
-        $cronjobs = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'cronjobs'"));
-        $cronjobs = json_array_decode($cronjobs['config_data']);
+        $FD->loadConfig('cronjobs');
+        $cronjobs = $FD->configObject('cronjobs')->getConfigArray();
         $cronjobs = array_filter_keys($cronjobs, $cronjobs_cols);
         putintopost($cronjobs);
 

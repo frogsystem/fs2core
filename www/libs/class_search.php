@@ -46,11 +46,11 @@ class Search
         require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
 
         // assign global vars
-        global $sql;
+        global $sql, $FD;
         $this->sql = $sql;
         $config_cols = array('search_num_previews', 'search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard', 'search_min_word_length', 'search_allow_phonetic', 'search_use_stopwords');
-        $config = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'search'"));
-        $this->config = json_array_decode($config['config_data']);
+        $FD->loadConfig('search');
+        $this->config = $FD->configObject('search')->getConfigArray();
 
         // assign vars
         $this->type = $type;
