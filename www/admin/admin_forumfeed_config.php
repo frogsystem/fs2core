@@ -37,8 +37,8 @@ if ( isset($_POST['feed_url'])
     systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
   } else {
     // Load Data from DB into Post
-    $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'forumfeed'"));
-    $data = json_array_decode($data['config_data']);
+    $FD->loadConfig('forumfeed');
+    $data = $FD->configObject('forumfeed')->getConfigArray();
     putintopost($data);
   }
 

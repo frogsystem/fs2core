@@ -1,7 +1,7 @@
 <?php
 /*
     This file is part of the Frogsystem Forum Feed applet.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@
 */
 
   //load config from DB
-  $ff_config = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'forumfeed'"));
-  $ff_config = json_array_decode($ff_config['config_data']);
+  $FD->loadConfig('forumfeed');
+  $ff_config = $FD->configObject('forumfeed')->getConfigArray();
 
   require_once(FS2_ROOT_PATH . 'includes/forumfeedfunctions.php');
 
