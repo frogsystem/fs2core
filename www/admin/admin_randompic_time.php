@@ -22,7 +22,7 @@ if (!empty($_POST['screen_id'])
                       start = '$startdate',
                       end = '$enddate'
                   WHERE random_id = '$_POST[random_id]'";
-        mysql_query($update, $FD->sql()->conn() );
+        $FD->sql()->conn()->exec($update);
 
         systext('Das zeitgesteuerte Zufallsbild wurde ge&auml;ndert!');
     }
@@ -51,7 +51,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 
     if ($_POST['delete_random'])   // Randompic löschen
     {
-        mysql_query('DELETE FROM '.$FD->config('pref')."screen_random WHERE random_id = '$_POST[random_id]'", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen_random WHERE random_id = '$_POST[random_id]'");
         systext($FD->text('page', 'note_deleted'));
     }
     else
@@ -76,8 +76,8 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
 {
     settype($_POST['random_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
-    $random_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]");
+    $random_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     //Zeitdaten
     $random_arr['start_d'] = date('d', $random_arr['start']);
@@ -102,7 +102,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
 
     //Error Message
     if ($_POST['sended'] == 'edit') {
-        systext ($FD->text("admin", "note_notfilled"));
+        systext ($FD->text('admin', 'note_notfilled'));
 
         $random_arr['start_d'] = $_POST['start_d'];
         $random_arr['start_m'] = $_POST['start_m'];
@@ -205,14 +205,14 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 {
     settype($_POST['random_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
-    $random_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]");
+    $random_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $random_arr['start'] = date('d.m.Y H:i ', $random_arr['start']) . 'Uhr';
     $random_arr['end'] = date('d.m.Y H:i ', $random_arr['end']) . 'Uhr';
 
-    $index = mysql_query('SELECT screen_name FROM '.$FD->config('pref')."screen WHERE screen_id = $random_arr[screen_id]", $FD->sql()->conn() );
-    $random_arr['title'] = mysql_result($index,0,'screen_name');
+    $index = $FD->sql()->conn()->query('SELECT screen_name FROM '.$FD->config('pref')."screen WHERE screen_id = $random_arr[screen_id]");
+    $random_arr['title'] = $index->fetchCoulm();
 
     if ($random_arr['title'] != '') {
         $random_arr['title'] = '<b>'.killhtml($random_arr['title']).'</b><br /><br />';
@@ -288,8 +288,8 @@ if (!isset($_POST['random_id']))
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_random a, '.$FD->config('pref').'screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC', $FD->sql()->conn() );
-    while ($random_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_random a, '.$FD->config('pref').'screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC');
+    while ($random_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $random_arr['start'] = date('d.m.Y H:i', $random_arr['start']);
         $random_arr['end'] = date('d.m.Y H:i', $random_arr['end']);
@@ -324,7 +324,7 @@ if (!isset($_POST['random_id']))
                                         <option class="select_red select_one" value="delete">'.$FD->text('admin', 'selection_delete').'</option>
                                     </select>
                                 </td>
-                            </tr>                            
+                            </tr>
                             <tr>
                                 <td colspan="5">
                                     <button class="button" type="submit">

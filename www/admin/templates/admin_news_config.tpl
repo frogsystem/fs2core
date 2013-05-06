@@ -193,7 +193,7 @@
                 <select name="acp_view">
                     <option value="0" <!--IF::acp_view_0-->selected<!--ENDIF-->><!--LANG::entry_view_simple--></option>
                     <option value="2" <!--IF::acp_view_2-->selected<!--ENDIF-->><!--LANG::entry_view_extended--></option>
-                    <option value="1" <!--IF::acp_view_1-->selected<!--ENDIF-->><!--LANG::entry_view_full-->t</option>
+                    <option value="1" <!--IF::acp_view_1-->selected<!--ENDIF-->><!--LANG::entry_view_full--></option>
                 </select>
             </td>
         </tr>

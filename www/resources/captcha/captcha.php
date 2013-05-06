@@ -12,8 +12,8 @@ require ( FS2_ROOT_PATH . 'login.inc.php' );
 /////////////////////
 //// Load Config ////
 /////////////////////
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'captcha'"));
-$config_arr = json_array_decode($config_arr['config_data']);
+$FD->loadConfig('captcha');
+$config_arr = $FD->configObject('captcha')->getConfigArray();
 
 
 ////////////////////////

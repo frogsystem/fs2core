@@ -6,35 +6,33 @@
 
 if (isset($_POST['polladd']) && !isset($_POST['add_answers']) && isset($_POST['frage']) && !emptystr($_POST['ant'][0]) && !emptystr($_POST['ant'][1]))
 {
-    $_POST['frage'] = savesql($_POST['frage']);
     settype($_POST['type'], 'integer');
-    for ($i=0; $i<count($_POST['ant']); $i++)
-    {
-        $_POST['ant'][$i] = savesql($_POST['ant'][$i]);
-    }
-
     $adate = mktime($_POST['nowstunde'], $_POST['nowmin'], 0, $_POST['nowmonat'], $_POST['nowtag'], $_POST['nowjahr']);
     $edate = mktime($_POST['endstunde'], $_POST['endmin'], 0, $_POST['endmonat'], $_POST['endtag'], $_POST['endjahr']);
 
     $_POST['type'] = ($_POST['type'] == 1) ? 1 : 0;
 
     // Umfrage in die DB eintragen
-    mysql_query('INSERT INTO '.$FD->config('pref')."poll (poll_quest, poll_start, poll_end, poll_type)
-                 VALUES ('".$_POST['frage']."',
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."poll (poll_quest, poll_start, poll_end, poll_type)
+                 VALUES (?,
                          '$adate',
                          '$edate',
-                         '".$_POST['type']."');", $FD->sql()->conn() );
+                         '".$_POST['type']."')");
+    $stmt->execute(array($_POST['frage']));
 
     // Antworten in die DB eintragen
-    $index = mysql_query('SELECT poll_id FROM '.$FD->config('pref')."poll WHERE poll_quest = '".$_POST['frage']."'");
-    $id = mysql_result($index, 0, 'poll_id');
+    $stmt = $FD->sql()->conn()->prepare('SELECT poll_id FROM '.$FD->config('pref').'poll WHERE poll_quest = ?');
+    $stmt->execute(array($_POST['frage']));
+    $id = $stmt->fetchColumn();
 
+    $stmt = $FD->sql()->conn()->prepare(
+                  'INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer)
+                   VALUES ('$id', ?)");
     for ($i=0; $i<count($_POST['ant']); $i++)
     {
         if (!emptystr($_POST['ant'][$i])) {
-            mysql_query('INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer)
-                         VALUES ('$id',
-                                 '".$_POST['ant'][$i]."');", $FD->sql()->conn() );
+            $stmt->execute(array($_POST['ant'][$i]));
         }
     }
     systext('Umfrage wurde hinzugef&uuml;gt');
@@ -96,6 +94,10 @@ if(true)
     {
         $_POST['type'] = 'checked';
     }
+    else
+    {
+        $_POST['type'] = '';
+    }
 
     if (!isset($_POST['endmonat']))
     {
@@ -109,6 +111,10 @@ if(true)
         $_POST['endjahr'] = ($_POST['nowmonat'] > $_POST['endmonat']) ? ($_POST['nowjahr'] + 1) : $_POST['nowjahr'];
     }
 
+    if(!isset($_POST['frage']))
+    {
+      $_POST['frage'] = '';
+    }
 
     echo'
                     <form id="form" action="" method="post">

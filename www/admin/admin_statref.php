@@ -210,8 +210,8 @@ else
             break;
     }
 
-    $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'counter_ref '.$query.'', $FD->sql()->conn() );
-    $referrer_number = mysql_num_rows ( $index );
+    $index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'counter_ref '.$query.'' );
+    $referrer_number = $index->fetchColumn();
     if ( $referrer_number <= 0 ) {
     	echo'
                         <tr>
@@ -222,7 +222,8 @@ else
 		';
 	}
 
-	while ( $referrer_arr = mysql_fetch_assoc ( $index ) )
+    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'counter_ref '.$query.'' );
+	while ( $referrer_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
         $dburlfull = $referrer_arr['ref_url'];
 
@@ -285,8 +286,8 @@ else
     if (has_perm('stat_ref_delete')) {
 
         // Get Config data
-        $cronjobs = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'cronjobs'"));
-        $cronjobs = json_array_decode($cronjobs['config_data']);
+        $FD->loadConfig('cronjobs');
+        $cronjobs = $FD->configObject('cronjobs')->getConfigArray();
         $cronjobs = array_filter_keys($cronjobs, $cronjobs_cols);
         putintopost($cronjobs);
 

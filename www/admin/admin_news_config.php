@@ -12,14 +12,14 @@ $used_cols = array('num_news', 'num_head', 'html_code', 'fs_code', 'para_handlin
 
 // Write Data into DB
 if (
-		isset($_POST['num_news']) && $_POST['num_news'] > 0
-		&& isset($_POST['num_head']) && $_POST['num_head'] > 0
-		&& isset($_POST['cat_pic_x']) && $_POST['cat_pic_x'] > 0
-		&& isset($_POST['cat_pic_y']) && $_POST['cat_pic_y'] > 0
-		&& isset($_POST['cat_pic_size']) && $_POST['cat_pic_size'] > 0
-		&& isset($_POST['news_headline_lenght'])
-		&& isset($_POST['acp_per_page']) && $_POST['acp_per_page'] > 0
-	)
+	isset($_POST['num_news']) && $_POST['num_news'] > 0
+	&& isset($_POST['num_head']) && $_POST['num_head'] > 0
+	&& isset($_POST['cat_pic_x']) && $_POST['cat_pic_x'] > 0
+	&& isset($_POST['cat_pic_y']) && $_POST['cat_pic_y'] > 0
+	&& isset($_POST['cat_pic_size']) && $_POST['cat_pic_size'] > 0
+	&& isset($_POST['news_headline_lenght'])
+	&& isset($_POST['acp_per_page']) && $_POST['acp_per_page'] > 0
+   )
 {
     // prepare data
     $data = frompost($used_cols);
@@ -52,8 +52,8 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('news');
+        $data = $FD->configObject('news')->getConfigArray();
         putintopost($data);
     }
 

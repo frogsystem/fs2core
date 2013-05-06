@@ -1,19 +1,18 @@
 <?php
 // Get Data from DB
-$index = mysql_query ( '
+$index = $FD->sql()->conn()->query ( '
                         SELECT
                             `artikel_id`, `artikel_name`, `artikel_url`, `artikel_preis`
                         FROM
                             `'.$FD->config('pref').'shop`
                         WHERE
-                            `artikel_hot` = 1
-', $FD->sql()->conn() );
+                            `artikel_hot` = 1' );
 
 // Security Functions
 $applet_items = array();
 
 // Get Item Templates
-while ( $shop_arr = mysql_fetch_assoc ( $index ) ) {
+while ( $shop_arr = $index->fetch( PDO::FETCH_ASSOC ) ) {
 
     settype ( $shop_arr['artikel_id'], 'integer' );
     $shop_arr['artikel_name'] = stripslashes ( $shop_arr['artikel_name'] );

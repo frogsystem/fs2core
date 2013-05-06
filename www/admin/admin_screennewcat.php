@@ -4,20 +4,21 @@
 //// Kategorie hinzufügen ////
 //////////////////////////////
 
-if (!emptystr($_POST['cat_name']))
+if (isset($_POST['cat_name']) && !emptystr($_POST['cat_name']))
 {
-    $_POST['cat_name'] = savesql($_POST['cat_name']);
     $_POST['cat_type'] = intval($_POST['cat_type']);
     $_POST['cat_visibility'] = intval($_POST['cat_visibility']);
 
     $time = time();
-    mysql_query('INSERT INTO '.$FD->config('pref')."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
-                 VALUES ('".$_POST['cat_name']."',
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
+                 VALUES (?,
                          '".$_POST['cat_type']."',
                          '".$_POST['cat_visibility']."',
-                         '$time')", $FD->sql()->conn() );
+                         '$time')");
+    $stmt->execute(array($_POST['cat_name']));
 
-    systext($FD->text('admin', 'cat_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));    
+    systext($FD->text('admin', 'cat_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));
 }
 
 //////////////////////////////
@@ -30,7 +31,7 @@ else
       $error_message = 'Bitte f&uuml;llen Sie <b>alle Pflichfelder</b> aus!';
       systext($error_message, $FD->text('admin', 'error_occurred'), 'red', $FD->text('admin', 'icon_save_error'));
     }
-    
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="gallery_newcat" name="go">

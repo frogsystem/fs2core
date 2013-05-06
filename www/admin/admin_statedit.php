@@ -11,12 +11,12 @@ if ((isset($_POST['d']) && isset($_POST['m']) && isset($_POST['y']) && isset($_P
     settype($_POST['y'], 'integer');
     settype($_POST['v'], 'integer');
     settype($_POST['h'], 'integer');
-    mysql_query('UPDATE '.$FD->config('pref')."counter_stat
+    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."counter_stat
                  SET s_visits = $_POST[v],
                      s_hits   = $_POST[h]
                  WHERE s_day   = $_POST[d] AND
                        s_month = $_POST[m] AND
-                       s_year  = $_POST[y]", $FD->sql()->conn() );
+                       s_year  = $_POST[y]");
     systext( $FD->text('page', 'changes_saved'), $FD->text('page', 'info') );
 }
 
@@ -29,25 +29,25 @@ elseif ((isset($_POST['ed']) && isset($_POST['em']) && isset($_POST['ey'])) AND 
     settype($_POST['ed'], 'integer');
     settype($_POST['em'], 'integer');
     settype($_POST['ey'], 'integer');
-    $index = mysql_query('SELECT s_visits,
+    $index = $FD->sql()->conn()->query('SELECT s_visits,
                                  s_hits
                           FROM '.$FD->config('pref')."counter_stat
                           WHERE s_day = $_POST[ed] and
                                 s_month = $_POST[em] and
-                                s_year = $_POST[ey]", $FD->sql()->conn() );
+                                s_year = $_POST[ey]");
 
 	$_POST['ed'] = date ( 'd', mktime ( 0, 0, 0, $_POST['em'], $_POST['ed'], $_POST['ey'] ) );
 	$_POST['em'] = date ( 'm', mktime ( 0, 0, 0, $_POST['em'], $_POST['ed'], $_POST['ey'] ) );
 	$_POST['ey'] = date ( 'Y', mktime ( 0, 0, 0, $_POST['em'], $_POST['ed'], $_POST['ey'] ) );
 
-    if (mysql_num_rows($index) == 0)
+    $counter_arr = $index->fetch(PDO::FETCH_ASSOC);
+
+    if ($counter_arr === false)
     {
         systext( $FD->text('page', 'edit_day_no_data'), $FD->text('page', 'edit_day_title').' ('.$_POST['ed'].'. '.$_POST['em'].'. '.$_POST['ey'].')' );
     }
     else
 	{
-		$counter_arr = mysql_fetch_assoc($index);
-
         echo'
 					<form action="" method="post">
 						<input type="hidden" value="stat_edit" name="go">
@@ -107,13 +107,14 @@ elseif ((isset($_POST['editvisits']) && $_POST['editvisits'] != '' &&
     settype($_POST['editnews'], 'integer');
     settype($_POST['editartikel'], 'integer');
     settype($_POST['editcomments'], 'integer');
-    mysql_query('UPDATE '.$FD->config('pref')."counter
-                 SET visits = '$_POST[editvisits]',
-                     hits = '$_POST[edithits]',
-                     user = '$_POST[edituser]',
-                     news = '$_POST[editnews]',
-                     artikel = '$_POST[editartikel]',
-                     comments = '$_POST[editcomments]'", $FD->sql()->conn() );
+    $FD->sql()->conn()->exec(
+        'UPDATE '.$FD->config('pref')."counter
+         SET visits = '$_POST[editvisits]',
+             hits = '$_POST[edithits]',
+             user = '$_POST[edituser]',
+             news = '$_POST[editnews]',
+             artikel = '$_POST[editartikel]',
+             comments = '$_POST[editcomments]'" );
     systext( $FD->text('page', 'changes_saved'), $FD->text('page', 'info') );
 }
 
@@ -123,29 +124,29 @@ elseif ((isset($_POST['editvisits']) && $_POST['editvisits'] != '' &&
 
 elseif (isset($_POST['do']) && $_POST['do'] == 'sync')
 {
-    $index = mysql_query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$FD->config('pref').'counter_stat', $FD->sql()->conn() );
-    $sync_arr['hits'] = mysql_result($index,0,'hits');
-    $sync_arr['visits'] = mysql_result($index,0,'visits');
+    $index = $FD->sql()->conn()->query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$FD->config('pref').'counter_stat');
+    $sync_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-    $index = mysql_query("SELECT COUNT(user_id) AS 'user' FROM ".$FD->config('pref').'user', $FD->sql()->conn() );
-    $sync_arr['user'] = mysql_result($index,0,'user');
+    $index = $FD->sql()->conn()->query("SELECT COUNT(user_id) AS 'user' FROM ".$FD->config('pref').'user');
+    $sync_arr['user'] = $index->fetchColumn();
 
-    $index = mysql_query("SELECT COUNT(news_id) AS 'news' FROM ".$FD->config('pref').'news', $FD->sql()->conn() );
-    $sync_arr['news'] = mysql_result($index,0,'news');
+    $index = $FD->sql()->conn()->query("SELECT COUNT(news_id) AS 'news' FROM ".$FD->config('pref').'news');
+    $sync_arr['news'] = $index->fetchColumn();
 
-    $index = mysql_query("SELECT COUNT(comment_id) AS 'comments' FROM ".$FD->config('pref').'comments', $FD->sql()->conn() );
-    $sync_arr['comments'] = mysql_result($index,0,'comments');
+    $index = $FD->sql()->conn()->query("SELECT COUNT(comment_id) AS 'comments' FROM ".$FD->config('pref').'comments');
+    $sync_arr['comments'] = $index->fetchColumn();
 
-    $index = mysql_query("SELECT COUNT(article_id) AS 'articles' FROM ".$FD->config('pref').'articles', $FD->sql()->conn() );
-    $sync_arr['articles'] = mysql_result($index,0,'articles');
+    $index = $FD->sql()->conn()->query("SELECT COUNT(article_id) AS 'articles' FROM ".$FD->config('pref').'articles');
+    $sync_arr['articles'] = $index->fetchColumn();
 
-    mysql_query('UPDATE '.$FD->config('pref')."counter
-                 SET visits = '$sync_arr[visits]',
-                     hits = '$sync_arr[hits]',
-                     user = '$sync_arr[user]',
-                     news = '$sync_arr[news]',
-                     artikel = '$sync_arr[articles]',
-                     comments = '$sync_arr[comments]'", $FD->sql()->conn() );
+    $FD->sql()->conn()->exec(
+        'UPDATE '.$FD->config('pref')."counter
+         SET visits = '$sync_arr[visits]',
+             hits = '$sync_arr[hits]',
+             user = '$sync_arr[user]',
+             news = '$sync_arr[news]',
+             artikel = '$sync_arr[articles]',
+             comments = '$sync_arr[comments]'");
     systext( $FD->text('page', 'synchronised'), $FD->text('page', 'info') );
 }
 //////////////////////////////////////
@@ -159,8 +160,8 @@ else
     $heute['m'] = date('m');
     $heute['y'] = date('Y');
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'counter', $FD->sql()->conn() );
-    $counter_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter');
+    $counter_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     echo'
                     <form action="" method="post">
@@ -178,7 +179,6 @@ else
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-
                     </form>
 
 

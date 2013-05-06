@@ -1,148 +1,149 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = mysql_query ( "
-                        SELECT COUNT(`news_id`) AS 'num_news'
-                        FROM ".$FD->config('pref').'news
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$num_news = mysql_result ( $index, 0, 'num_news' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`news_id`) AS 'num_news'
+                FROM ".$FD->config('pref').'news
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_news = $row['num_news'];
 
-$index = mysql_query ( "
-                        SELECT COUNT(`cat_id`) AS 'num_news_cat'
-                        FROM ".$FD->config('pref').'news_cat
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$num_news_cat = mysql_result ( $index, 0, 'num_news_cat' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`cat_id`) AS 'num_news_cat'
+                FROM ".$FD->config('pref').'news_cat
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_news_cat = $row['num_news_cat'];
 
-$index = mysql_query ( "
-                        SELECT COUNT(`comment_id`) AS 'num_comments'
-                        FROM ".$FD->config('pref').'comments
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$num_comments = mysql_result ( $index, 0, 'num_comments' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`comment_id`) AS 'num_comments'
+                FROM ".$FD->config('pref').'comments
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_comments = $row['num_comments'];
 
-$index = mysql_query ( "
-                        SELECT COUNT(`link_id`) AS 'num_links'
-                        FROM ".$FD->config('pref').'news_links
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$num_links = mysql_result ( $index, 0, 'num_links' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`link_id`) AS 'num_links'
+                FROM ".$FD->config('pref').'news_links
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_links = $row['num_links'];
 
 if ( $num_news  > 0 ) {
-    $index = mysql_query ( "
-                            SELECT COUNT(C.`cat_id`) AS 'best_news_cat_num', C.`cat_name`
-                            FROM ".$FD->config('pref').'news_cat C, '.$FD->config('pref').'news N
-                            WHERE N.`cat_id` = C.`cat_id`
-                            GROUP BY C.`cat_name`
-                            ORDER BY `best_news_cat_num` DESC
-                            LIMIT 0,1
-    ', $FD->sql()->conn() );
-    $best_news_cat = stripslashes ( mysql_result ( $index, 0, 'cat_name' ) );
-    $best_news_cat_num = mysql_result ( $index, 0, 'best_news_cat_num' );
+    $index = $FD->sql()->conn()->query ( "
+                    SELECT COUNT(C.`cat_id`) AS 'best_news_cat_num', C.`cat_name`
+                    FROM ".$FD->config('pref').'news_cat C, '.$FD->config('pref').'news N
+                    WHERE N.`cat_id` = C.`cat_id`
+                    GROUP BY C.`cat_name`
+                    ORDER BY `best_news_cat_num` DESC
+                    LIMIT 0,1' );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $best_news_cat = stripslashes ( $row['cat_name'] );
+    $best_news_cat_num = $row['best_news_cat_num'];
 
     if ( $num_comments  > 0 ) {
-        $index = mysql_query ( "
-                                SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
-                                FROM ".$FD->config('pref').'comments C, '.$FD->config('pref').'news N
-                                WHERE N.`news_id` = C.`content_id` AND C.`content_type`=\'news\' 
-                                GROUP BY N.`news_title`
-                                ORDER BY `best_news_com_num` DESC
-                                LIMIT 0,1
-        ', $FD->sql()->conn() );
-        $best_news_com = stripslashes ( mysql_result ( $index, 0, 'news_title' ) );
-        $best_news_com_num = mysql_result ( $index, 0, 'best_news_com_num' );
+        $index = $FD->sql()->conn()->query ( "
+                        SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
+                        FROM ".$FD->config('pref').'comments C, '.$FD->config('pref').'news N
+                        WHERE N.`news_id` = C.`content_id` AND C.`content_type`=\'news\' 
+                        GROUP BY N.`news_title`
+                        ORDER BY `best_news_com_num` DESC
+                        LIMIT 0,1' );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        $best_news_com = stripslashes ( $row['news_title'] );
+        $best_news_com_num = $row['best_news_com_num'];
 
-        $index = mysql_query ( "
-                                SELECT COUNT(C.`comment_id`) AS 'best_com_poster_num', U.`user_name`
-                                FROM `".$FD->config('pref').'user` U, `'.$FD->config('pref').'comments` C
-                                WHERE C.`comment_poster_id` = U.`user_id`
-                                AND C.`comment_poster_id` > 0
-                                GROUP BY U.`user_name`
-                                ORDER BY `best_com_poster_num` DESC
-                                LIMIT 0,1
-        ', $FD->sql()->conn() );
-        $best_com_poster_rows = mysql_num_rows ( $index );
-        if ( $best_com_poster_rows >= 1 ) {
-            $best_com_poster = stripslashes ( mysql_result ( $index, 0, 'user_name' ) );
-            $best_com_poster_num = mysql_result ( $index, 0, 'best_com_poster_num' );
+        $index = $FD->sql()->conn()->query ( "
+                        SELECT COUNT(C.`comment_id`) AS 'best_com_poster_num', U.`user_name`
+                        FROM `".$FD->config('pref').'user` U, `'.$FD->config('pref').'comments` C
+                        WHERE C.`comment_poster_id` = U.`user_id`
+                        AND C.`comment_poster_id` > 0
+                        GROUP BY U.`user_name`
+                        ORDER BY `best_com_poster_num` DESC
+                        LIMIT 0,1' );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        $best_com_poster_rows = false;
+        if ( $row !== false ) {
+            $best_com_poster_rows = true;
+            $best_com_poster = stripslashes ( $row['user_name'] );
+            $best_com_poster_num = $row['best_com_poster_num'];
         }
     }
 
-    $index = mysql_query ( "
-                            SELECT COUNT(L.`link_id`) AS 'best_news_link_num', N.`news_title`
-                            FROM ".$FD->config('pref').'news_links L, '.$FD->config('pref').'news N
-                            WHERE N.`news_id` = L.`news_id`
-                            GROUP BY N.`news_title`
-                            ORDER BY `best_news_link_num` DESC
-                            LIMIT 0,1
-    ', $FD->sql()->conn() );
-    if (mysql_num_rows($index) == 1) {
-        $best_news_link = stripslashes ( mysql_result ( $index, 0, 'news_title' ) );
-        $best_news_link_num = mysql_result ( $index, 0, 'best_news_link_num' );
+    $index = $FD->sql()->conn()->query ( "
+                    SELECT COUNT(L.`link_id`) AS 'best_news_link_num', N.`news_title`
+                    FROM ".$FD->config('pref').'news_links L, '.$FD->config('pref').'news N
+                    WHERE N.`news_id` = L.`news_id`
+                    GROUP BY N.`news_title`
+                    ORDER BY `best_news_link_num` DESC
+                    LIMIT 0,1' );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    if ($row !== false) {
+        $best_news_link = stripslashes ( $row['news_title'] );
+        $best_news_link_num = $row['best_news_link_num'];
     }
 
 
-    $index = mysql_query ( "
-                            SELECT COUNT(N.`news_id`) AS 'best_news_poster_num', U.`user_name`
-                            FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'news N
-                            WHERE N.`user_id` = U.`user_id`
-                            GROUP BY U.`user_name`
-                            ORDER BY `best_news_poster_num` DESC
-                            LIMIT 0,1
-    ', $FD->sql()->conn() );
-    $best_news_poster = stripslashes ( mysql_result ( $index, 0, 'user_name' ) );
-    $best_news_poster_num = mysql_result ( $index, 0, 'best_news_poster_num' );
+    $index = $FD->sql()->conn()->query ( "
+                    SELECT COUNT(N.`news_id`) AS 'best_news_poster_num', U.`user_name`
+                    FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'news N
+                    WHERE N.`user_id` = U.`user_id`
+                    GROUP BY U.`user_name`
+                    ORDER BY `best_news_poster_num` DESC
+                    LIMIT 0,1' );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $best_news_poster = stripslashes ( $row['user_name'] );
+    $best_news_poster_num = $row['best_news_poster_num'];
 }
 
 
-$index = mysql_query ( "
-                        SELECT COUNT(`article_id`) AS 'num_articles'
-                        FROM ".$FD->config('pref').'articles
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$num_articles = mysql_result ( $index, 0, 'num_articles' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`article_id`) AS 'num_articles'
+                FROM ".$FD->config('pref').'articles
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_articles = $row['num_articles'];
 
-$index = mysql_query ( "
-                        SELECT COUNT(`cat_id`) AS 'num_articles_cat'
-                        FROM ".$FD->config('pref').'articles_cat
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$num_articles_cat = mysql_result ( $index, 0, 'num_articles_cat' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`cat_id`) AS 'num_articles_cat'
+                FROM ".$FD->config('pref').'articles_cat
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_articles_cat = $row['num_articles_cat'];
 
-$index = mysql_query ( "
-                        SELECT COUNT(A.`article_id`) AS 'best_article_poster_num', U.`user_name`
-                        FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'articles A
-                        WHERE A.`article_user` = U.`user_id`
-                        AND A.`article_user` > 0
-                        GROUP BY U.`user_name`
-                        ORDER BY `best_article_poster_num` DESC
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-if ( mysql_num_rows ( $index) > 0 ) {
-    $best_article_poster = stripslashes ( mysql_result ( $index, 0, 'user_name' ) );
-    $best_article_poster_num = mysql_result ( $index, 0, 'best_article_poster_num' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(A.`article_id`) AS 'best_article_poster_num', U.`user_name`
+                FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'articles A
+                WHERE A.`article_user` = U.`user_id`
+                AND A.`article_user` > 0
+                GROUP BY U.`user_name`
+                ORDER BY `best_article_poster_num` DESC
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+if ( $row !== false ) {
+    $best_article_poster = stripslashes ( $row['user_name'] );
+    $best_article_poster_num = $row['best_article_poster_num'];
     settype ( $best_article_poster_num, 'integer' );
 }
 
-$index = mysql_query ( "
-                        SELECT COUNT(`press_id`) AS 'num_press'
-                        FROM ".$FD->config('pref').'press
-                        LIMIT 0,1
-', $FD->sql()->conn() );
-$num_press = mysql_result ( $index, 0, 'num_press' );
+$index = $FD->sql()->conn()->query ( "
+                SELECT COUNT(`press_id`) AS 'num_press'
+                FROM ".$FD->config('pref').'press
+                LIMIT 0,1' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$num_press = $row['num_press'];
 
 if ( $num_press  > 0 ) {
-    $index = mysql_query ( "
-                            SELECT COUNT(V.`id`) AS 'best_press_lang_num', V.`title`
-                            FROM ".$FD->config('pref').'press P, '.$FD->config('pref')."press_admin V
-                            WHERE P.`press_lang` = V.`id`
-                            AND V.`type` = '3'
-                            GROUP BY V.`title`
-                            ORDER BY `best_press_lang_num` DESC
-                            LIMIT 0,1
-    ", $FD->sql()->conn() );
-    $best_press_lang = stripslashes ( mysql_result ( $index, 0, 'title' ) );
-    $best_press_lang_num = mysql_result ( $index, 0, 'best_press_lang_num' );
+    $index = $FD->sql()->conn()->query ( "
+                    SELECT COUNT(V.`id`) AS 'best_press_lang_num', V.`title`
+                    FROM ".$FD->config('pref').'press P, '.$FD->config('pref')."press_admin V
+                    WHERE P.`press_lang` = V.`id`
+                    AND V.`type` = '3'
+                    GROUP BY V.`title`
+                    ORDER BY `best_press_lang_num` DESC
+                    LIMIT 0,1" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $best_press_lang = stripslashes ($row['title'] );
+    $best_press_lang_num = $row['best_press_lang_num'];
 }
 
 echo '
@@ -195,7 +196,7 @@ if ( $num_news  > 0 ) {
                             </tr>
     ';
 
-    if ( $num_comments  > 0 && $best_com_poster_rows >= 1 ) {
+    if ( $num_comments  > 0 && $best_com_poster_rows ) {
         echo '
                             <tr>
                                 <td class="configthin">Flei&szlig;igster Kommentar-Poster:</td>

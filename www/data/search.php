@@ -64,9 +64,10 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $news_num_results) {
 
                 // get data for entry
-                $news = $sql->getRow('news', $news_cols, array(
-                    'W' => '`news_id` = '.$found['id'].' AND `news_date` <= '.time().' AND `news_active` = 1'
-                ));
+                $news = $FD->sql()->conn()->query(
+                            'SELECT news_id, news_title, news_date FROM '.$FD->config('pref').'news
+                             WHERE `news_id` = '.intval($found['id']).' AND `news_date` <= '.time().' AND `news_active` = 1');
+                $news = $news->fetch(PDO::FETCH_ASSOC);
 
                 // entry is ok
                 if (!empty($news)) {
@@ -125,10 +126,12 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             //run through results
             while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $articles_num_results) {
 
-                // get data for entrie
-                $article = $sql->getRow('articles', $article_cols, array(
-                    'W' => '`article_id` = '.$found['id']
-                ));
+                // get data for entry
+                $article = $FD->sql()->conn()->query(
+                                'SELECT article_id, article_url, article_title, article_date
+                                 FROM '.$FD->config('pref').'articles
+                                 WHERE `article_id` = '.intval($found['id']));
+                $article = $article->fetch(PDO::FETCH_ASSOC);
 
                 // entry is ok
                 if (!empty($article)) {
@@ -194,10 +197,11 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             //run through results
             while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $downloads_num_results) {
 
-                // get data for entrie
-                $dl = $sql->getRow('dl', $dl_cols, array(
-                    'W' => '`dl_id` = '.$found['id'].' AND `dl_open` = 1'
-                ));
+                // get data for entry
+                $dl = $FD->sql()->conn()->query(
+                          'SELECT dl_id, dl_date, dl_name FROM '.$FD->config('pref').'dl
+                           WHERE `dl_id` = '.intval($found['id']).' AND `dl_open` = 1');
+                $dl = $dl->fetch(PDO::FETCH_ASSOC);
 
                 // entry is ok
                 if (!empty($dl)) {

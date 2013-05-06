@@ -10,9 +10,9 @@ if (isset($_POST['sended']))
     {
         $key = intval($key); //better be safe than sorry
         $val = intval($val);
-        mysql_query('UPDATE '.$FD->config('pref')."screen_cat
+        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."screen_cat
                      SET randompic = '$val'
-                     WHERE cat_id = '$key'", $FD->sql()->conn() );
+                     WHERE cat_id = '$key'");
     }
     systext('Einstellungen wurden gespeichert!');
 }
@@ -44,12 +44,12 @@ if (isset($_POST['sended']))
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type != 2 ORDER BY cat_name ASC', $FD->sql()->conn() );
-    while ($cat_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type != 2 ORDER BY cat_name ASC');
+    while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $cat_arr['cat_date'] = date('d.m.Y', $cat_arr['cat_date']);
-        $screen_index = mysql_query('SELECT cat_id FROM '.$FD->config('pref')."screen where cat_id = $cat_arr[cat_id]", $FD->sql()->conn() );
-        $screen_rows = mysql_num_rows($screen_index);
+        $screen_index = $FD->sql()->conn()->query('SELECT COUNT(cat_id) FROM '.$FD->config('pref')."screen where cat_id = $cat_arr[cat_id]");
+        $screen_rows = $screen_index->fetchColumn();
         echo'
                             <input type="hidden" name="randompic_cat['.$cat_arr['cat_id'].']" value="0">
                             <tr>

@@ -50,11 +50,11 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $search = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'search'"));
-        $search = json_array_decode($search['config_data']);        
+        $FD->loadConfig('search');
+        $search = $FD->configObject('search')->getConfigArray();
 
-        $cronjobs = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'cronjobs'"));
-        $cronjobs = json_array_decode($cronjobs['config_data']);
+        $FD->loadConfig('cronjobs');
+        $cronjobs = $FD->configObject('cronjobs')->getConfigArray();
         $cronjobs = array_filter_keys($cronjobs, $cronjobs_cols);
 
         $data = array_merge($cronjobs, $search);

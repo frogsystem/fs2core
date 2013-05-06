@@ -39,7 +39,7 @@ if (isset($_POST['sended']) AND (($_POST['timed_deltime']==1 AND $_POST['deltime
 
     // prepare data
     $data = frompost($used_cols);
-      
+
     // save config
     try {
         $FD->saveConfig('preview_images', $data);
@@ -49,11 +49,11 @@ if (isset($_POST['sended']) AND (($_POST['timed_deltime']==1 AND $_POST['deltime
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
-    unset($_POST); 
+    unset($_POST);
 }
 
 /////////////////////////////////////
@@ -68,8 +68,8 @@ if(true)
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'preview_images'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('preview_images');
+        $data = $FD->configObject('preview_images')->getConfigArray();
         putintopost($data);
     }
 
@@ -77,7 +77,7 @@ if(true)
     if ($_POST['timed_deltime']>0) {
         $_POST['deltime_time_h'] = $_POST['timed_deltime']/(60*60);
         $_POST['timed_deltime'] = 1;
-        
+
         //month, weeks, days, hours
         if ($_POST['deltime_time_h']%(24*30) == 0) {
             $_POST['deltime_type'] = 'm';
@@ -92,11 +92,11 @@ if(true)
             $_POST['deltime_type'] = 'h';
             $_POST['deltime_time'] = $_POST['deltime_time_h'];
         }
-    }    
-    
+    }
+
     // security functions
     $_POST = array_map('killhtml', $_POST);
-    
+
   echo'<form action="" method="post">
          <input type="hidden" value="randompic_config" name="go">
          <input type="hidden" name="sended" value="1">

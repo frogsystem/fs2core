@@ -10,7 +10,7 @@ if (!empty($_POST['screen_id'])) {
 }
 if ($startdate < $enddate) {
     settype($_POST['screen_id'], 'integer');
-    mysql_query('INSERT INTO '.$FD->config('pref')."screen_random (screen_id, start, end)
+    $FD->sql()->conn()->exec('INSERT INTO '.$FD->config('pref')."screen_random (screen_id, start, end)
                  VALUES ('". $_POST['screen_id'] ."',
                          '". $startdate ."',
                          '". $enddate ."'

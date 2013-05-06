@@ -178,20 +178,16 @@ function get_article_urls ()
 {
     global $FD;
 
-        $index = mysql_query ( '
-                                                        SELECT
-                                                                article_url
-                                                        FROM
-                                                                '.$FD->config('pref').'articles
-        ', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT article_url FROM '.$FD->config('pref').'articles');
 
-        while ( $result = mysql_fetch_assoc ( $index ) ) {
-                if ( $result['article_url'] != '' ) {
-                        $url_arr[] = $result['article_url'];
-                }
+    while ( $result = $index->fetch(PDO::FETCH_ASSOC) ) {
+        if ( $result['article_url'] != '' ) {
+            $url_arr[] = $result['article_url'];
         }
+    }
 
-        return $url_arr;
+    return $url_arr;
 }
 
 //////////////////////////////
@@ -532,8 +528,8 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
           <table cellpadding="2" cellspacing="0" border="0" width="100%">';
 
     $zaehler = 0;
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'smilies ORDER by `order` ASC LIMIT 0, 10', $FD->sql()->conn() );
-    while ($smilie_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies ORDER by `order` ASC LIMIT 0, 10');
+    while ($smilie_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $smilie_arr['url'] = image_url('images/smilies/', $smilie_arr['id'], false);
 
@@ -734,10 +730,14 @@ function get_topmenu ($ACTIVE_MENU)
 {
     global $sql, $FD;
 
-    $menu_arr = $sql->get('admin_cp', array('page_id', 'page_file'), array('W' => "`group_id` = '-1' AND `page_int_sub_perm` = 0", 'O' => '`page_pos`, `page_file`'));
+    $menu_arr = $FD->sql()->conn()->query(
+                     'SELECT page_id, page_file FROM '.$FD->config('pref')."admin_cp
+                      WHERE `group_id` = '-1' AND `page_int_sub_perm` = 0
+                      ORDER BY `page_pos`, `page_file`");
+    $menu_arr = $menu_arr->fetchAll(PDO::FETCH_ASSOC);
 
     $template = '<ul class="topmenu">';
-    foreach($menu_arr['data'] as $menu) {
+    foreach($menu_arr as $menu) {
         // check permissions
         if (is_authorized() && check_topmenu_permissions($menu['page_file'])) {
             // highlight the active menu
@@ -745,7 +745,7 @@ function get_topmenu ($ACTIVE_MENU)
             if ($ACTIVE_MENU == $menu['page_file'])
                 $class = ' class="selected"';
 
-            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$FD->text("menu", 'menu_'.$menu['page_file']).'</a></li>';
+            $template .= "\n".'        <li'.$class.'><a href="?go='.$menu['page_id'].'" target="_self">'.$FD->text('menu', 'menu_'.$menu['page_file']).'</a></li>';
         }
     }
 
@@ -763,17 +763,15 @@ function check_topmenu_permissions ($MENU_ID)
 {
     global $sql;
 
-    $page_arr = $sql->get(
-        array('P' => 'admin_cp', 'G' => 'admin_groups'),
-        array(
-            array('COL' => 'page_id', 'FROM' => 'P')
-        ),
-        array('W' => "G.`menu_id` = '".$MENU_ID."' AND P.`group_id` = G.`group_id` AND P.`page_int_sub_perm` = 0",
-        'O' => 'P.`page_id`')
-    );
+    $page_arr = $sql->conn()->prepare(
+                    'SELECT P.page_id AS page_id
+                     FROM '.$sql->getPrefix().'admin_cp P, '.$sql->getPrefix().'admin_groups G
+                     WHERE G.`menu_id` = ? AND P.`group_id` = G.`group_id` AND P.`page_int_sub_perm` = 0
+                     ORDER BY P.`page_id`');
+    $page_arr->execute(array($MENU_ID));
+    $page_arr = $page_arr->fetchAll(PDO::FETCH_ASSOC);
 
-
-    foreach($page_arr['data'] as $page) {
+    foreach($page_arr as $page) {
         if (has_perm($page['page_id'])) {
             return true;
         }
@@ -790,11 +788,16 @@ function get_leftmenu ($ACTIVE_MENU, $GO)
     global $sql;
 
     // get data from db
-    $group_arr = $sql->get('admin_groups', array('group_id'), array('W' => "`menu_id` = '".$ACTIVE_MENU."' AND `group_id` NOT IN ('0', '-1')", 'O' => '`group_pos`'));
+    $group_arr = $sql->conn()->prepare(
+                       'SELECT group_id FROM '.$sql->getPrefix()."admin_groups
+                        WHERE `menu_id` = ? AND `group_id` NOT IN ('0', '-1')
+                        ORDER BY `group_pos`");
+    $group_arr->execute(array($ACTIVE_MENU));
+    $group_arr = $group_arr->fetchAll(PDO::FETCH_ASSOC);
 
     // get template
     initstr($template);
-    foreach($group_arr['data'] as $group) {
+    foreach($group_arr as $group) {
         $template .= get_leftmenu_group($group['group_id'], empty($template), $GO);
     }
 
@@ -809,11 +812,16 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
     global $sql, $FD;
 
     // get links from database
-    $page_arr = $sql->get('admin_cp', array('page_id'), array('W' => "`group_id` = '".$GROUP_ID."' AND `page_int_sub_perm` = 0", 'O' => '`page_pos`, `page_id`'));
+    $page_arr = $FD->sql()->conn()->prepare(
+                       'SELECT page_id FROM '.$FD->config('pref').'admin_cp
+                        WHERE `group_id` = ? AND `page_int_sub_perm` = 0
+                        ORDER BY `page_pos`, `page_id`');
+    $page_arr->execute(array($GROUP_ID));
+    $page_arr = $page_arr->fetchAll(PDO::FETCH_ASSOC);
 
     // get template
     initstr($template);
-    foreach($page_arr['data'] as $page) {
+    foreach($page_arr as $page) {
         $template .= get_link($page['page_id'], $GO);
     }
 
@@ -827,7 +835,7 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
     if (!empty($template)) {
         $template = '
         <div class="leftmenu'.$class.'">
-            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$FD->text("menu", 'group_'.$GROUP_ID).'</strong>
+            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$FD->text('menu', 'group_'.$GROUP_ID).'</strong>
             <ul>'.$template.'
             </ul>
         </div>';
@@ -851,7 +859,7 @@ function get_link ($PAGE_ID, $GO)
         // active page?
         $class = ($PAGE_ID == $GO) ? ' class="selected"' : '';
 
-        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$FD->text("menu", 'page_link_'.$PAGE_ID).'</a></li>';
+        return "\n".'               <li'.$class.'><a href="?go='.$PAGE_ID.'">'.$FD->text('menu', 'page_link_'.$PAGE_ID).'</a></li>';
     } else {
         return '';
     }
@@ -867,17 +875,15 @@ function admin_set_cookie($username, $password)
 {
     global $FD;
 
-    $username = savesql($username);
-    $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows == 0)
+    $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'user WHERE user_name = ?');
+    $index->execute(array($username));
+    $USER_ARR = $index->fetch(PDO::FETCH_ASSOC);
+    if ($USER_ARR === false)
     {
         return false;
     }
     else
     {
-        $USER_ARR = mysql_fetch_assoc ( $index );
         if ( $USER_ARR['user_is_staff'] == 1 || $USER_ARR['user_is_admin'] == 1 || $USER_ARR['user_id'] == 1 ) {
             $dbisadmin = 1;
         } else {
@@ -886,16 +892,16 @@ function admin_set_cookie($username, $password)
 
         if ($dbisadmin == 1)
         {
-            $dbuserpass = mysql_result($index, 0, 'user_password');
-            $dbuserid = mysql_result($index, 0, 'user_id');
-            $dbusersalt= mysql_result($index, 0, 'user_salt');
+            $dbuserpass = $USER_ARR['user_password'];
+            $dbuserid = $USER_ARR['user_id'];
+            $dbusersalt= $USER_ARR['user_salt'];
             $password = md5 ( $password.$dbusersalt );
 
             if ($password == $dbuserpass)
             {
                 $inhalt = $password . $username;
                 setcookie ('login', $inhalt, time()+2592000, '/');
-                return true;  // Login akzeptiert
+                return true;  // login accepted
             }
             else
             {
@@ -909,25 +915,23 @@ function admin_set_cookie($username, $password)
     }
 }
 
-////////////////////////////////
-/////// Logindaten prüfen //////
-////////////////////////////////
+///////////////////////////////
+/////// Check Login Data //////
+///////////////////////////////
 
 function admin_login($username, $password, $iscookie)
 {
     global $FD;
 
-    $username = savesql($username);
-    $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows == 0)
+    $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'user WHERE user_name = ? LIMIT 1');
+    $index->execute(array($username));
+    $USER_ARR = $index->fetch(PDO::FETCH_ASSOC);
+    if ($USER_ARR === false)
     {
-        return 1;  // Fehlercode 1: User nicht vorhanden
+        return 1;  // error code 1: user does not exist
     }
     else
     {
-        $USER_ARR = mysql_fetch_assoc ( $index );
         if ( $USER_ARR['user_is_staff'] == 1 || $USER_ARR['user_is_admin'] == 1 || $USER_ARR['user_id'] == 1 ) {
             $dbisadmin = 1;
         } else {
@@ -936,9 +940,9 @@ function admin_login($username, $password, $iscookie)
 
         if ($dbisadmin == 1)
         {
-            $dbuserpass = mysql_result($index, 0, 'user_password');
-            $dbuserid = mysql_result($index, 0, 'user_id');
-            $dbusersalt = mysql_result($index, 0, 'user_salt');
+            $dbuserpass = $USER_ARR['user_password'];
+            $dbuserid = $USER_ARR['user_id'];
+            $dbusersalt = $USER_ARR['user_salt'];
 
             if ($iscookie===false)
             {
@@ -949,68 +953,73 @@ function admin_login($username, $password, $iscookie)
             {
                 $_SESSION['user_level'] = 'authorized';
                 fillsession($dbuserid);
-                return 0;  // Login akzeptiert
+                return 0;  // login accepted
             }
             else
             {
-                return 2;  // Fehlercode 2: Falsches Passwort
+                return 2;  // error code 2: wrong password
             }
         }
         else
         {
-            return 3;  // Fehlercode 3: Keine Zugriffsrechte auf die Admin
+            return 3;  // error code 3: no access privileges for admin area
         }
     }
 }
 
-////////////////////////////////
-//////// Session füllen ////////
-////////////////////////////////
+//////////////////////////////
+//////// Fill Session ////////
+//////////////////////////////
 
 function fillsession ($uid) {
     global $FD;
     global $sql;
 
-    $USER_ARR = $sql->getRow('user', array('user_id', 'user_name', 'user_is_staff', 'user_group', 'user_group'),
-        array('W' => "`user_id` = '".$uid."'")
-    );
+    $USER_ARR = $FD->sql()->conn()->query(
+                     'SELECT user_id, user_name, user_is_staff, user_group, user_is_admin
+                      FROM '.$FD->config('pref').'user
+                      WHERE `user_id` = '.intval($uid).' LIMIT 1');
+    $USER_ARR = $USER_ARR->fetch(PDO::FETCH_ASSOC);
 
-    $_SESSION['user_id'] =  $USER_ARR['user_id'];
+    $_SESSION['user_id'] =  intval($USER_ARR['user_id']);
     $_SESSION['user_name'] =  $USER_ARR['user_name'];
     $_SESSION['user_is_staff'] =  $USER_ARR['user_is_staff'];
 
     // get user permissions
-    $group_granted = $sql->get('user_permissions', array('perm_id'),
-        array('W' => "`perm_for_group` = '1' AND `x_id` = '".$USER_ARR['user_group']."' AND `x_id` != '0'")
-    );
-    $user_granted = $sql->get('user_permissions', array('perm_id'),
-        array('W' => "`perm_for_group` = '0' AND `x_id` = '".$USER_ARR['user_id']."' AND `x_id` != '0'")
-    );
+    $group_granted = $FD->sql()->conn()->query(
+                         'SELECT perm_id FROM '.$FD->config('pref')."user_permissions
+                          WHERE `perm_for_group` = '1' AND `x_id` = '".intval($USER_ARR['user_group'])."' AND `x_id` != '0'");
+    $group_granted = $group_granted->fetchAll(PDO::FETCH_ASSOC);
+    $user_granted = $FD->sql()->conn()->query(
+                          'SELECT perm_id FROM '.$FD->config('pref')."user_permissions
+                           WHERE `perm_for_group` = '0' AND `x_id` = '".intval($USER_ARR['user_id'])."' AND `x_id` != '0'");
+    $user_granted = $user_granted->fetchAll(PDO::FETCH_ASSOC);
 
     $fold_perms = create_function ('$arr, $ele', '
         array_push($arr, $ele[\'perm_id\']);
         return $arr;');
 
-    $group_granted = array_reduce ($group_granted['data'], $fold_perms, array());
-    $user_granted = array_reduce ($user_granted['data'], $fold_perms, array());
+    $group_granted = array_reduce ($group_granted, $fold_perms, array());
+    $user_granted = array_reduce ($user_granted, $fold_perms, array());
 
     $granted = array_unique(array_merge($group_granted, $user_granted));
 
 
-    $inherited = $sql->get(
-        array('I' => 'admin_inherited', 'A' => 'admin_cp'),
-        array(array('COL' => 'pass_to', 'AS' => 'perm_id', 'FROM' => 'I')),
-        array('W' => "A.`group_id`= I.`group_id` AND A.`page_id` IN ('".implode("','", $granted)."')"), true
-    );
-    $inherited = array_reduce ($inherited['data'], $fold_perms, array());
+    $inherited = $FD->sql()->conn()->query(
+                     'SELECT pass_to AS perm_id
+                      FROM '.$FD->config('pref').'admin_inherited I, '.$FD->config('pref')."admin_cp A
+                      WHERE A.`group_id`= I.`group_id` AND A.`page_id` IN ('".implode("','", $granted)."')");
+    $inherited = $inherited->fetchAll(PDO::FETCH_ASSOC);
+    $inherited = array_reduce ($inherited, $fold_perms, array());
     $granted = array_unique(array_merge($granted, $inherited));
 
     // pages permissions
-    $permissions = $sql->get('admin_cp', array('page_id'),
-        array('W' => '`group_id` != -1', 'O' => '`page_id`')
-    );
+    $permissions = $FD->sql()->conn()->query(
+                         'SELECT page_id FROM '.$FD->config('pref').'admin_cp
+                          WHERE `group_id` != -1 ORDER BY `page_id`');
+    $permissions = $permissions->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($permissions['data'] as $permission) {
+    foreach ($permissions as $permission) {
         $permission = $permission['page_id'];
 
         // admin
@@ -1028,11 +1037,12 @@ function fillsession ($uid) {
     }
 
     // startpage permissions
-    $permissions = $sql->get('admin_cp', array('page_id', 'page_file'),
-        array('W' => '`group_id` = -1', 'O' => '`page_id`')
-    );
+    $permissions = $FD->sql()->conn()->query(
+                         'SELECT page_id, page_file FROM '.$FD->config('pref').'admin_cp
+                          WHERE `group_id` = -1 ORDER BY `page_id`');
+    $permissions = $permissions->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($permissions['data'] as $permission) {
+    foreach ($permissions as $permission) {
         // admin
         if($USER_ARR['user_id'] == 1 || $USER_ARR['user_is_admin'] == 1) {
             $_SESSION[$permission['page_id']] = 1;

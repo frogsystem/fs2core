@@ -5,18 +5,18 @@
 $FD->loadConfig('users');
 $config_arr = $FD->configObject('users')->getConfigArray();
 $show_form = TRUE;
-
+$messages = '';
 
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-$anti_spam = check_captcha ( $_POST['captcha'], $config_arr['registration_antispam'] );
+$anti_spam = check_captcha ( isset($_POST['captcha']) ? $_POST['captcha'] : '', $config_arr['registration_antispam'] );
 
 /////////////////////////////
 //// Bereits Registriert ////
 /////////////////////////////
 
-if ( $_SESSION['user_id'] ) {
+if ( isset($_SESSION['user_id']) && $_SESSION['user_id']!=0 ) {
     $show_form = FALSE;
     $messages = forward_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_register_not_twice"), '?go='.$FD->config('home_real') );
 }
@@ -25,27 +25,25 @@ if ( $_SESSION['user_id'] ) {
 //// Add User ////
 //////////////////
 
-elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] )
+elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POST['new_pwd']) && isset($_POST['wdh_pwd']) )
 {
-    $_POST['user_name'] = savesql ( $_POST['user_name'] );
-    $_POST['user_mail'] = savesql ( $_POST['user_mail'] );
     $user_salt = generate_pwd ( 10 );
     $userpass = md5 ( $_POST['new_pwd'].$user_salt );
     $userpass_mail = $_POST['new_pwd'];
 
     // user exists or existing email negative anti spam
-    $index = mysql_query ( "
-                            SELECT COUNT(`user_id`) AS 'number'
-                            FROM ".$FD->config('pref')."user
-                            WHERE user_name = '".$_POST['user_name']."'
-    ", $FD->sql()->conn() );
-    $existing_users = mysql_result ( $index, 0, 'number' );
-    $index = mysql_query ( "
-                            SELECT COUNT(`user_id`) AS 'number'
-                            FROM ".$FD->config('pref')."user
-                            WHERE user_mail = '".$_POST['user_mail']."'
-    ", $FD->sql()->conn() );
-    $existing_mails = mysql_result ( $index, 0, 'number' );
+    $stmt = $FD->sql()->conn()->prepare ( "
+                SELECT COUNT(`user_id`) AS 'number'
+                FROM ".$FD->config('pref').'user
+                WHERE user_name = ?' );
+    $stmt->execute( array( $_POST['user_name'] ) );
+    $existing_users = $stmt->fetchColumn();
+    $stmt = $FD->sql()->conn()->prepare ( "
+                SELECT COUNT(`user_id`) AS 'number'
+                FROM ".$FD->config('pref').'user
+                WHERE user_mail = ?' );
+    $stmt->execute( array( $_POST['user_mail'] ) );
+    $existing_mails = $stmt->fetchColumn();
 
     // get error message
     if ( $existing_users > 0 || $existing_mails > 0 || $anti_spam != TRUE || $_POST['new_pwd'] != $_POST['wdh_pwd'] ) {
@@ -84,22 +82,18 @@ elseif ( $_POST['user_name'] && $_POST['user_mail'] && $_POST['new_pwd'] && $_PO
             $email_message = '<br>'.$FD->text("frontend", "mail_registerd_not_sended");
         }
 
-        mysql_query ( '
+        $stmt = $FD->sql()->conn()->prepare ( '
                         INSERT INTO
                             `'.$FD->config('pref')."user`
                             (`user_name`, `user_password`, `user_salt`, `user_mail`, `user_reg_date`)
                         VALUES (
-                            '".$_POST['user_name']."',
-                            '".$userpass."',
-                            '".$user_salt."',
-                            '".$_POST['user_mail']."',
-                            '".$regdate."'
-                        )
-        ", $FD->sql()->conn() );
+                            ?, '".$userpass."', '".$user_salt."', ?, '".$regdate."'
+                        )" );
+        $stmt->execute(array($_POST['user_name'], $_POST['user_mail']));
 
-        $index = mysql_query ( 'SELECT COUNT(`user_id`) AS `user_number` FROM '.$FD->config('pref').'user', $FD->sql()->conn() );
-        $new_user_num = mysql_result ( $index, 0, 'user_number' );
-        mysql_query ( 'UPDATE `'.$FD->config('pref')."counter` SET `user` = '".$new_user_num."'", $FD->sql()->conn() );
+        $index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS `user_number` FROM '.$FD->config('pref').'user' );
+        $new_user_num = $index->fetchColumn();
+        $FD->sql()->conn()->exec ( 'UPDATE `'.$FD->config('pref')."counter` SET `user` = '".$new_user_num."'" );
 
         $messages = forward_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_registered").$email_message, '?go=login' );
 
@@ -157,8 +151,8 @@ if ( $show_form == TRUE ) {
     $template = $template->display ();
 
     // Add Messages
-    $template =  $messages . $template;
+    $template = $messages . $template;
 } else {
-    $template =  $messages;
+    $template = $messages;
 }
 ?>
