@@ -13,8 +13,8 @@ $used_cols = array('partner_anzahl', 'small_x', 'small_y', 'small_allow', 'big_x
 if (isset($_POST['small_x']) && isset($_POST['small_y']) && isset($_POST['big_x']) && isset($_POST['big_y']) && isset($_POST['file_size']) && (isset($_POST['partner_anzahl']) && $_POST['partner_anzahl']>0))
 {
     // prepare data
-    $data = frompost($used_cols);    
-    
+    $data = frompost($used_cols);
+
     // save config
     try {
         $FD->saveConfig('affiliates', $data);
@@ -24,7 +24,7 @@ if (isset($_POST['small_x']) && isset($_POST['small_y']) && isset($_POST['big_x'
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
@@ -37,17 +37,17 @@ if (isset($_POST['small_x']) && isset($_POST['small_y']) && isset($_POST['big_x'
 
 if ( TRUE )
 {
-    
+
     // Display Error Messages
     if (isset($_POST['sended'])) {
         systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'affiliates'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('affiliates');
+        $data = $FD->configObject('affiliates')->getConfigArray();
         putintopost($data);
-    }    
+    }
 
     // security functions
     $_POST = array_map('killhtml', $_POST);

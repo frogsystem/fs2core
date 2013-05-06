@@ -11,9 +11,9 @@ if(!isset($_POST['thumb']))     $_POST['thumb'] = 0;
 if(!isset($_POST['width']))     $_POST['width'] = '';
 if(!isset($_POST['height']))    $_POST['height'] = '';
 
-$catsqry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
+$catsqry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
 $cats = array();
-while(($cat = mysql_fetch_assoc($catsqry)) !== false){
+while(($cat = $catsqry->fetch(PDO::FETCH_ASSOC)) !== false){
     $cats[] = $cat;
 }
 
@@ -45,7 +45,10 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
       $thumb = create_thumb_from ( image_url ( 'media/content/', $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
       $message .= '<br>' . create_thumb_notice ( $thumb );
     }
-    mysql_query('INSERT INTO `'.$FD->config('pref')."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".mysql_real_escape_string($_POST['newname'])."', '".mysql_real_escape_string($oldname_data)."', ".intval($_POST['thumb']).', '.intval($_POST['cat']).')');
+    $stmt = $FD->sql()->conn()->prepare('
+                  INSERT INTO `'.$FD->config('pref')."cimg` (`name`, `type`, `hasthumb`, `cat`)
+                  VALUES (?, ?, ".intval($_POST['thumb']).', '.intval($_POST['cat']).')');
+    $stmt->execute(array($_POST['newname'], $oldname_data));
     unset($_POST['width']);
     unset($_POST['height']);
     unset($_POST['oldname']);

@@ -5,8 +5,8 @@
 //////////////////////////
 
 // Create Articles-Config-Array
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'articles'"));
-$articles_config_arr = json_array_decode($config_arr['config_data']);
+$FD->loadConfig('articles');
+$articles_config_arr = $FD->configObject('articles')->getConfigArray();
 $showdefault = TRUE;
 
 
@@ -22,22 +22,20 @@ if (
 	)
 {
     // Security-Functions
-    $_POST['cat_name'] = savesql ( $_POST['cat_name'] );
     $_POST['cat_user'] = $_SESSION['user_id'];
     settype ( $_POST['cat_user'], 'integer' );
     $cat_date = time ();
 
-    // MySQL-Update-Query
-    $insert_query = mysql_query ('
-					INSERT INTO '.$FD->config('pref')."articles_cat (cat_name, cat_date, cat_user)
-					VALUES (
-						'".$_POST['cat_name']."',
-						'".$cat_date."',
-						'".$_POST['cat_user']."'
-					)
-	", $FD->sql()->conn() );
+    // SQL-Insert-Query
+    $stmt = $FD->sql()->conn()->prepare('
+				INSERT INTO '.$FD->config('pref')."articles_cat (cat_name, cat_date, cat_user)
+				VALUES (
+					?,
+					'".$cat_date."',
+					'".$_POST['cat_user']."')");
+    $stmt->execute(array($_POST['cat_name']));
+    $id = $FD->sql()->conn()->lastInsertId();
     $message = $FD->text('page', 'new_cat_added');
-    $id = mysql_insert_id ( $FD->sql()->conn() );
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != '' ) {
@@ -53,7 +51,7 @@ if (
 
     // Set Vars
     $_POST['cat_action'] = 'edit';
-    $_POST['cat_id'] = mysql_insert_id ( $FD->sql()->conn() );
+    $_POST['cat_id'] = $FD->sql()->conn()->lastInsertId();
 }
 
 // Update Category
@@ -71,24 +69,23 @@ elseif (
 	)
 {
     // Security-Functions
-    $_POST['cat_name'] = savesql ( $_POST['cat_name'] );
-    $_POST['cat_description'] = savesql ( $_POST['cat_description'] );
     settype ( $_POST['cat_id'], 'integer' );
     settype ( $_POST['cat_user'], 'integer' );
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
     $cat_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
-    // MySQL-Update-Query
-    mysql_query ('
-					UPDATE '.$FD->config('pref')."articles_cat
-                 	SET
-					 	cat_name 			= '".$_POST['cat_name']."',
-                     	cat_description 	= '".$_POST['cat_description']."',
-                     	cat_date 			= '".$cat_date."',
-                     	cat_user 			= '".$_POST['cat_user']."'
-                 	WHERE
-					 	cat_id 				= '".$_POST['cat_id']."'
-	", $FD->sql()->conn() );
+    // SQL-Update-Query
+    $stmt = $FD->sql()->conn()->prepare('
+				UPDATE '.$FD->config('pref')."articles_cat
+                SET
+				 	cat_name 		= ?,
+                   	cat_description = ?,
+                   	cat_date 		= '".$cat_date."',
+                   	cat_user 		= '".$_POST['cat_user']."'
+                WHERE
+				 	cat_id 			= '".$_POST['cat_id']."'
+	");
+	$stmt->execute(array($_POST['cat_name'], $_POST['cat_description']));
     $message = $FD->text('admin', 'changes_saved');
 
 	// Image-Operations
@@ -127,21 +124,19 @@ elseif (
         settype ( $_POST['cat_id'], 'integer' );
         settype ( $_POST['cat_move_to'], 'integer' );
 
-        // MySQL-Query move Articles to other Category
-        mysql_query ('
-						UPDATE '.$FD->config('pref')."articles
-    	             	SET
-						 	cat_id 				= '".$_POST['cat_move_to']."'
-            	     	WHERE
-						 	cat_id 				= '".$_POST['cat_id']."'
-		", $FD->sql()->conn() );
+        // SQL-Query moves Articles to other Category
+        $FD->sql()->conn()->exec ('
+				UPDATE '.$FD->config('pref')."articles
+    	        SET
+				 	cat_id = '".$_POST['cat_move_to']."'
+            	WHERE
+					cat_id = '".$_POST['cat_id']."'" );
 
-		// MySQL-Delete-Query
-    	mysql_query ('
-						DELETE FROM '.$FD->config('pref')."articles_cat
-                 		WHERE
-						 	cat_id 				= '".$_POST['cat_id']."'
-		", $FD->sql()->conn() );
+		// SQL-Delete-Query
+    	$FD->sql()->conn()->exec ('
+				DELETE FROM '.$FD->config('pref')."articles_cat
+                WHERE
+					cat_id = '".$_POST['cat_id']."'" );
 		$message = $FD->text('page', 'cat_deleted');
 
 		// Delete Category Image
@@ -176,8 +171,8 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
     {
 
 		// Load Data from DB
-		$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'", $FD->sql()->conn() );
-		$cat_arr = mysql_fetch_assoc ( $index );
+		$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'" );
+		$cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 		// Display Error Messages
 		if ( isset ( $_POST['sended'] ) ) {
@@ -190,8 +185,8 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 		$cat_arr['cat_description'] = killhtml ( $cat_arr['cat_description'] );
 
     	// Get User
-    	$index = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'", $FD->sql()->conn() );
-    	$cat_arr['cat_username'] = killhtml ( mysql_result ( $index, 0, 'user_name' ) );
+    	$index = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
+    	$cat_arr['cat_username'] = killhtml ( $index->fetchColumn() );
 
 		// Create Date-Arrays
     	if ( !isset ( $_POST['d'] ) ) {
@@ -306,13 +301,13 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 	// Delete Category
 	elseif ( $_POST['cat_action'] == 'delete' )
 	{
-		$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat', $FD->sql()->conn() );
+		$index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'articles_cat' );
 
 		// Not Last Category
-		if ( mysql_num_rows ( $index ) > 1 ) {
+		if ( $index->fetchColumn() > 1 ) {
 
-			$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'", $FD->sql()->conn() );
-			$cat_arr = mysql_fetch_assoc ( $index );
+			$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'" );
+			$cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 			$cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
 
@@ -340,8 +335,8 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 									<select class="text" name="cat_move_to" size="1">
 			';
 
-			$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name", $FD->sql()->conn() );
-			while ( $move_arr = mysql_fetch_assoc ( $index ) ) {
+			$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name" );
+			while ( $move_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 				echo '<option value="'.$move_arr['cat_id'].'">'.killhtml ( $move_arr['cat_name'] ).'</option>';
 			}
 			echo'
@@ -444,11 +439,11 @@ elseif ( $showdefault == TRUE )
 	';
 
 	// Get Categories from DB
-	$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat ORDER BY cat_name', $FD->sql()->conn() );
-	while ( $cat_arr = mysql_fetch_assoc ( $index ) )
+	$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat ORDER BY cat_name' );
+	while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
 	{
-		$index_username = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'", $FD->sql()->conn() );
-        $cat_arr['cat_user'] = mysql_result ( $index_username, 0, 'user_name' );
+		$index_username = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
+        $cat_arr['cat_user'] = $index_username->fetchColumn();
 
 		// Display each Category
 		echo '

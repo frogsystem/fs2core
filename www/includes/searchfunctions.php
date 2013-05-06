@@ -29,62 +29,55 @@ function new_search_index ( $FOR ) {
 function delete_search_index ( $FOR ) {
     global $FD;
 
-    mysql_query ( '
+    $FD->sql()->conn()->exec ( '
                     DELETE FROM `'.$FD->config('pref')."search_index`
-                    WHERE `search_index_type` = '".$FOR."'
-    ", $FD->sql()->conn() );
-    mysql_query ( '
+                    WHERE `search_index_type` = '".$FOR."'");
+    $FD->sql()->conn()->exec ( '
                     DELETE FROM `'.$FD->config('pref')."search_time`
-                    WHERE `search_time_type` = '".$FOR."'
-    ", $FD->sql()->conn() );
+                    WHERE `search_time_type` = '".$FOR."'");
 }
 
 function delete_search_index_for_one ( $ID, $TYPE ) {
     global $FD;
 
-    mysql_query ( '
+    $FD->sql()->conn()->exec ( '
                     DELETE FROM `'.$FD->config('pref')."search_index`
                     WHERE `search_index_type` = '".$TYPE."'
-                    AND `search_index_document_id` = '".$ID."'
-    ", $FD->sql()->conn() );
-    mysql_query ( '
+                    AND `search_index_document_id` = '".$ID."'");
+    $FD->sql()->conn()->exec ( '
                     DELETE FROM `'.$FD->config('pref')."search_time`
                     WHERE `search_time_type` = '".$TYPE."'
-                    AND `search_time_document_id` = '".$ID."'
-    ", $FD->sql()->conn() );
+                    AND `search_time_document_id` = '".$ID."'");
 }
 
 
 function delete_word_list () {
     global $FD;
 
-    mysql_query ( '
-                    TRUNCATE TABLE `'.$FD->config('pref').'search_words`
-    ', $FD->sql()->conn() );
+    $FD->sql()->conn()->exec ( '
+                    TRUNCATE TABLE `'.$FD->config('pref').'search_words`');
 }
 
 function update_search_index ( $FOR ) {
     global $FD;
 
     $data = get_make_search_index ( $FOR );
-    while ( $data_arr = mysql_fetch_assoc ( $data ) ) {
+    while ( $data_arr = $data->fetch( PDO::FETCH_ASSOC ) ) {
         // Compress Text and filter Stopwords
         $data_arr['search_data'] = delete_stopwords ( compress_search_data ( $data_arr['search_data'] ) );
 
         // Remove Old Indexes & Update Timestamp
         if ( $data_arr['search_time_id'] != null ) {
-             mysql_query ( '
+             $FD->sql()->conn()->exec ( '
                             DELETE FROM `'.$FD->config('pref')."search_index`
                             WHERE `search_index_type` = '".$data_arr['search_time_type']."'
-                            AND `search_index_document_id` = ".$data_arr['search_time_document_id']."
-             ", $FD->sql()->conn() );
-             mysql_query ( '
+                            AND `search_index_document_id` = ".$data_arr['search_time_document_id']);
+             $FD->sql()->conn()->exec ( '
                             UPDATE `'.$FD->config('pref')."search_time`
                             SET `search_time_date` = '".time()."'
-                            WHERE `search_time_id` = '".$data_arr['search_time_id']."'
-             ", $FD->sql()->conn() );
+                            WHERE `search_time_id` = '".$data_arr['search_time_id']."'" );
         } else {
-             mysql_query ( '
+             $FD->sql()->conn()->exec ( '
                             INSERT INTO
                                 `'.$FD->config('pref')."search_time`
                                 (`search_time_type`, `search_time_document_id`, `search_time_date`)
@@ -92,8 +85,7 @@ function update_search_index ( $FOR ) {
                                 '".$data_arr['search_time_type']."',
                                 '".$data_arr['search_time_document_id']."',
                                 '".time()."'
-                            )
-             ", $FD->sql()->conn() );
+                            )" );
         }
 
         // Pass through word list
@@ -123,13 +115,12 @@ function update_search_index ( $FOR ) {
         }
 
         // Insert Indexes
-        mysql_query ( '
+        $FD->sql()->conn()->exec ( '
                         INSERT INTO
                             `'.$FD->config('pref').'search_index`
                             (`search_index_word_id`, `search_index_type`, `search_index_document_id`, `search_index_count`)
                         VALUES
-                            ' . implode ( ',', $insert_values ) . '
-        ', $FD->sql()->conn() );
+                            ' . implode ( ',', $insert_values ) . '' );
     }
 }
 
@@ -140,7 +131,7 @@ function get_make_search_index ( $FOR ) {
     switch ( $FOR ) {
         case 'dl':
             // DL
-            return mysql_query ( "
+            return $FD->sql()->conn()->query ( "
                 SELECT
                     `dl_id` AS 'search_time_document_id',
                     `search_time_id`,
@@ -152,12 +143,11 @@ function get_make_search_index ( $FOR ) {
                     AND FIND_IN_SET('dl', `search_time_type`)
                 WHERE 1
                     AND ( `search_time_id` IS NULL OR `dl_search_update` > `search_time_date` )
-                ORDER BY `dl_search_update`
-            ", $FD->sql()->conn() );
+                ORDER BY `dl_search_update`" );
             break;
         case 'articles':
             // Articles
-            return mysql_query ( "
+            return $FD->sql()->conn()->query ( "
                 SELECT
                     `article_id` AS 'search_time_document_id',
                     `search_time_id`,
@@ -169,12 +159,11 @@ function get_make_search_index ( $FOR ) {
                     AND FIND_IN_SET('articles', `search_time_type`)
                 WHERE 1
                     AND ( `search_time_id` IS NULL OR `article_search_update` > `search_time_date` )
-                ORDER BY `article_search_update`
-            ", $FD->sql()->conn() );
+                ORDER BY `article_search_update`" );
             break;
         case 'news':
             // News
-            return mysql_query ( "
+            return $FD->sql()->conn()->query ( "
                 SELECT
                     `news_id` AS 'search_time_document_id',
                     `search_time_id`,
@@ -186,8 +175,7 @@ function get_make_search_index ( $FOR ) {
                     AND FIND_IN_SET('news', `search_time_type`)
                 WHERE 1
                     AND ( `search_time_id` IS NULL OR `news_search_update` > `search_time_date` )
-                ORDER BY `news_search_update`
-            ", $FD->sql()->conn() );
+                ORDER BY `news_search_update`" );
             break;
     }
 }
@@ -195,18 +183,22 @@ function get_make_search_index ( $FOR ) {
 function get_search_word_id ( $WORD ) {
     global $FD;
 
-    $index = mysql_query ( '
-                            SELECT `search_word_id` FROM `'.$FD->config('pref')."search_words`
-                            WHERE `search_word` = '".savesql ( $WORD )."'
-    ", $FD->sql()->conn() );
-    if ( mysql_num_rows ( $index ) >= 1 ) {
-        return mysql_result ( $index, 0, 'search_word_id' );
+    $stmt = $FD->sql()->conn()->prepare ( '
+                SELECT `search_word_id` FROM `'.$FD->config('pref').'search_words`
+                WHERE `search_word` = ?');
+    $stmt->execute(array($WORD));
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result !== false)
+    {
+        $id = $result['search_word_id'];
+        $stmt->closeCursor();
+        return $id;
     } else {
-        mysql_query ( '
-                        INSERT INTO `'.$FD->config('pref')."search_words` (`search_word`)
-                        VALUES ('".savesql ( $WORD )."')
-        ", $FD->sql()->conn() );
-        return mysql_insert_id ( $FD->sql()->conn() );
+        $stmt = $FD->sql()->conn()->prepare ( '
+                    INSERT INTO `'.$FD->config('pref')."search_words` (`search_word`)
+                    VALUES (?)");
+        $stmt->execute(array($WORD));
+        return $FD->sql()->conn()->lastInsertId();
     }
 }
 

@@ -3,10 +3,11 @@
 if(!isset($_POST['name'])) $_POST['name'] = '';
 if(!isset($_POST['description'])) $_POST['description'] = '';
 if(isset($_POST['add'])){
-    $name = mysql_real_escape_string(trim($_POST['name']));
-    $desc = mysql_real_escape_string(trim($_POST['description']));
+    $name = trim($_POST['name']);
+    $desc = trim($_POST['description']);
     if(!empty($name)){
-        mysql_query('INSERT INTO `'.$FD->config('pref')."cimg_cats` (`name`, `description`) VALUES ('".$name."', '".$desc."')");
+        $stmt = $FD->sql()->conn()->prepare('INSERT INTO `'.$FD->config('pref').'cimg_cats` (`name`, `description`) VALUES (?, ?)');
+        $stmt->execute(array($name, $desc));
         $_POST['name'] = '';
         $_POST['description'] = '';
         systext('Kategorie erfolgreich angelegt!');
@@ -16,11 +17,12 @@ if(isset($_POST['add'])){
 } elseif(isset($_POST['change']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "save"){
     if(isset($_POST['cat'])){
         $count = 0;
+        $stmt = $FD->sql()->conn()->prepare('UPDATE `'.$FD->config('pref').'cimg_cats` SET `name`=?, `description`=? WHERE `id`=?');
         foreach($_POST['cat'] as $cat){
-            $name = mysql_real_escape_string(trim($_POST['cat'.$cat]['name']));
-            $desc = mysql_real_escape_string(trim($_POST['cat'.$cat]['description']));
+            $name = trim($_POST['cat'.$cat]['name']);
+            $desc = trim($_POST['cat'.$cat]['description']);
             if(!empty($name)){
-                mysql_query('UPDATE `'.$FD->config('pref')."cimg_cats` SET `name`='".$name."', `description`='".$desc."' WHERE `id`=".intval($cat));
+                $stmt->execute(array($name, $desc, intval($cat)));
                 $count++;
             }
         }
@@ -35,9 +37,10 @@ if(isset($_POST['add'])){
 } elseif(isset($_POST['change']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "delete"){
     if(isset($_POST['cat'])){
         $count = 0;
+        $stmt = $FD->sql()->conn()->prepare('UPDATE `'.$FD->config('pref')."cimg` SET `cat`=? WHERE `cat`=?");
         foreach($_POST['cat'] as $cat){
-            mysql_query('DELETE FROM `'.$FD->config('pref').'cimg_cats` WHERE `id`='.intval($cat));
-            mysql_query('UPDATE `'.$FD->config('pref')."cimg` SET `cat`='".mysql_real_escape_string(trim($_POST['newcat']))."' WHERE `cat`=".intval($cat));
+            $FD->sql()->conn()->exec('DELETE FROM `'.$FD->config('pref').'cimg_cats` WHERE `id`='.intval($cat));
+            $stmt->execute(array(trim($_POST['newcat']), intval($cat)));
             $count++;
         }
         if($count == 1){
@@ -78,7 +81,7 @@ echo <<< FS2_STRING
                 </button>
             </td>
         </tr>
-        <tr><td class="space"></td></tr>     
+        <tr><td class="space"></td></tr>
     </table>
 </form>
 <p></p>
@@ -88,8 +91,8 @@ echo <<< FS2_STRING
         <tr><td class="space"></td></tr>
         <tr><td class="line" colspan="3">{$FD->text('admin', 'cats_edit')}</td></tr>
 FS2_STRING;
-$qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
-if(mysql_num_rows($qry) > 0){
+$qry = $FD->sql()->conn()->query('SELECT COUNT(*) FROM `'.$FD->config('pref').'cimg_cats`');
+if($qry->fetchColumn() > 0){
     echo <<< FS2_STRING
         <tr class="config">
             <td>
@@ -103,10 +106,11 @@ if(mysql_num_rows($qry) > 0){
             </td>
         </tr>
 FS2_STRING;
-    
+
     // entries
     $options = '<option value="0">Keine Kategorie</option>';
-    while(($row = mysql_fetch_assoc($qry)) !== false){
+    $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
+    while(($row = $qry->fetch(PDO::FETCH_ASSOC)) !== false){
     $options .= '<option value="'.$row['id'].'" title="'.$row['description'].'">'.$row['name'].'</option>';
         echo <<< FS2_STRING
         <tr>
@@ -123,17 +127,17 @@ FS2_STRING;
         </tr>
 FS2_STRING;
     }
-    
+
     echo <<< FS2_STRING
-        <tr><td class="space"></td></tr>    
+        <tr><td class="space"></td></tr>
         <tr>
-            
-        </tr>        
+
+        </tr>
         <tr><td class="space"></td></tr>
         <tr>
             <td class="config" colspan="3">
                 <div class="atleft small">
-                    Bilder beim L&ouml;schen verschieben nach 
+                    Bilder beim L&ouml;schen verschieben nach
                     <select name="newcat">{$options}</select>
                 </div>
                 <div class="atright">

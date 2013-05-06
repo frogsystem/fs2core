@@ -10,17 +10,13 @@ if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && 
     settype($_POST['artikelid'], 'integer');
     if (isset($_POST['delartikel']))
     {
-        mysql_query('DELETE FROM '.$FD->config('pref')."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."shop WHERE artikel_id = $_POST[artikelid]");
         image_delete ('images/shop/', $_POST['artikelid'] );
         image_delete( 'images/shop/', $_POST['artikelid'] );
         systext('Artikel wurde gel&ouml;scht');
     }
     else
     {
-        $_POST['title'] = savesql($_POST['title']);
-        $_POST['url'] = savesql($_POST['url']);
-        $_POST['preis'] = savesql($_POST['preis']);
-        $_POST['text'] = savesql($_POST['text']);
         $_POST['hot'] = isset($_POST['hot']) ? 1 : 0;
 
         $messages = array();
@@ -32,14 +28,18 @@ if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && 
             $thumb = create_thumb_from(image_url('images/shop/',$_POST['artikelid'],FALSE, TRUE), 100, 100);
             $messages[] = create_thumb_notice($thumb);
         }
-        $update = 'UPDATE '.$FD->config('pref')."shop
-                   SET artikel_name  = '$_POST[title]',
-                       artikel_url   = '$_POST[url]',
-                       artikel_text  = '$_POST[text]',
-                       artikel_preis = '$_POST[preis]',
+        $stmt = $FD->sql()->conn()->prepare(
+                  'UPDATE '.$FD->config('pref')."shop
+                   SET artikel_name  = ?,
+                       artikel_url   = ?,
+                       artikel_text  = ?,
+                       artikel_preis = ?,
                        artikel_hot   = '$_POST[hot]'
-                   WHERE artikel_id = '$_POST[artikelid]'";
-        mysql_query($update, $FD->sql()->conn() );
+                   WHERE artikel_id = '$_POST[artikelid]'");
+        $stmt->execute(array($_POST['title'],
+                             $_POST['url'],
+                             $_POST['text'],
+                             $_POST['preis']));
         $messages[] = $FD->text('admin', 'changes_saved');
 
         echo get_systext(implode('<br>', $messages), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
@@ -60,8 +60,8 @@ if (isset($_POST['artikelid']))
     }
 
     settype($_POST['artikelid'], 'integer');
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."shop WHERE artikel_id = $_POST[artikelid]", $FD->sql()->conn() );
-    $artikel_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."shop WHERE artikel_id = $_POST[artikelid]");
+    $artikel_arr = $index->fetch(PDO::FETCH_ASSOC);
     $dbartikelhot = ($artikel_arr['artikel_hot'] == 1) ? 'checked' : '';
 
     echo'
@@ -179,10 +179,10 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT artikel_id, artikel_name, artikel_preis
+    $index = $FD->sql()->conn()->query('SELECT artikel_id, artikel_name, artikel_preis
                           FROM '.$FD->config('pref').'shop
-                          ORDER BY artikel_name DESC', $FD->sql()->conn() );
-    while ($artikel_arr = mysql_fetch_assoc($index))
+                          ORDER BY artikel_name DESC');
+    while ($artikel_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         echo'
                             <tr class="select_entry thin">

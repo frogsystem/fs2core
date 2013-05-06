@@ -67,8 +67,8 @@
     else {
 
         // Get News Config
-        $config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-        $config_arr = json_array_decode($config_arr['config_data']);
+        $FD->loadConfig('news');
+        $config_arr = $FD->configObject('news')->getConfigArray();
 
         // Load Data from $_POST
         $news_arr['comment_url'] = '?go=news_preview';
@@ -110,8 +110,8 @@
 
         // Kategorie lesen
         settype($_POST['news_cat_id'], 'integer');
-        $index = mysql_query('SELECT `cat_name`, `cat_id` FROM `'.$FD->config('pref')."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'", $FD->sql()->conn() );
-        $cat_arr = mysql_fetch_assoc($index);
+        $index = $FD->sql()->conn()->query('SELECT `cat_name`, `cat_id` FROM `'.$FD->config('pref')."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'");
+        $cat_arr = $index->fetch(PDO::FETCH_ASSOC);
         if (!empty($cat_arr)) {
 			$cat_arr['cat_name'] = killhtml($cat_arr['cat_name']);
 		} else {

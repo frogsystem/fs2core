@@ -118,8 +118,8 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'captcha'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('captcha');
+        $data = $FD->configObject('captcha')->getConfigArray();
 
         // create missing Data
         if ( in_array ( $data['captcha_font_size'], array ( 1, 2, 3, 4, 5 ) ) ) {

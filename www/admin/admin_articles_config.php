@@ -42,10 +42,10 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'articles'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('articles');
+        $data = $FD->configObject('articles')->getConfigArray();
         putintopost($data);
-    }    
+    }
 
     // security functions
     $_POST = array_map('killhtml', $_POST);
@@ -137,7 +137,7 @@ if ( TRUE )
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            
+
                             <!--
                             <tr><td class="line" colspan="2">'.$FD->text("page", "comment_settings_title").' - Noch ohne Funktion</td></tr>
                             <tr>
@@ -182,7 +182,7 @@ if ( TRUE )
                             </tr>
 							<tr><td class="space"></td></tr>
                             -->
-                            
+
                             <tr><td class="line" colspan="2">Admin-CP Einstellungen</td></tr>
                             <tr>
                                 <td class="config">

@@ -38,8 +38,8 @@ $FD->loadConfig('users');
 $config_arr = $FD->configObject('users')->getConfigArray();
 
 // Get Number of Users
-$index = mysql_query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`', $FD->sql()->conn() );
-$row = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
 $config_arr['number_of_users'] = $row['num_users'];
 if ( $config_arr['user_per_page'] == -1 ) {
     $config_arr['user_per_page'] = $config_arr['number_of_users'];
@@ -123,7 +123,7 @@ $limit = ' LIMIT '.intval($config_arr['prev_page']*$config_arr['user_per_page'])
 /*finally get the data... still may take several seconds for large user base
   and unfavourable sort criterion, but it should take less memory and execute
   faster than the previous code*/
-$index = mysql_query ( $query.$limit, $FD->sql()->conn() );
+$index = $FD->sql()->conn()->query ( $query.$limit );
 
 ///////////////////////////
 //// Display User List ////
@@ -144,7 +144,7 @@ $adminline_template->load ( 'USERLIST_ADMINLINE' );
 
 // Get Lines
 $lines = array();
-while ( $row = mysql_fetch_assoc($index) )
+while ( $row = $index->fetch(PDO::FETCH_ASSOC) )
 {
     if ( $row['user_is_staff'] == 1 ) {
         $line_template = $staffline_template;

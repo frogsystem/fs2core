@@ -17,17 +17,12 @@ if ((isset($_POST['title']) AND $_POST['title'] != '')
     settype($_POST['year'], 'integer');
     $datum = mktime(0, 0, 0, $_POST['month'], $_POST['day'], $_POST['year']);
 
-    $_POST['title'] = savesql($_POST['title']);
-    $_POST['url'] = savesql($_POST['url']);
-    $_POST['intro'] = savesql($_POST['intro']);
-    $_POST['text'] = savesql($_POST['text']);
-    $_POST['note'] = savesql($_POST['note']);
-
     settype($_POST['game'], 'integer');
     settype($_POST['cat'], 'integer');
     settype($_POST['lang'], 'integer');
 
-    mysql_query('INSERT INTO
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO
                  '.$FD->config('pref')."press (press_title,
                            press_url,
                            press_date,
@@ -37,15 +32,20 @@ if ((isset($_POST['title']) AND $_POST['title'] != '')
                            press_lang,
                            press_game,
                            press_cat)
-                 VALUES ('$_POST[title]',
-                         '$_POST[url]',
+                 VALUES (?,
+                         ?,
                          '$datum',
-                         '$_POST[intro]',
-                         '$_POST[text]',
-                         '$_POST[note]',
+                         ?,
+                         ?,
+                         ?,
                          '$_POST[lang]',
                          '$_POST[game]',
-                         '$_POST[cat]')", $FD->sql()->conn() );
+                         '$_POST[cat]')");
+    $stmt->execute(array($_POST['title'],
+                         $_POST['url'],
+                         $_POST['intro'],
+                         $_POST['text'],
+                         $_POST['note']));
 
     systext('Pressebericht wurde gespeichert.');
     unset($_POST);
@@ -175,9 +175,10 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="game" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
-                          WHERE type = '1' ORDER BY title", $FD->sql()->conn() );
-    while ($game_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query(
+                 'SELECT * FROM '.$FD->config('pref')."press_admin
+                  WHERE type = '1' ORDER BY title");
+    while ($game_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         echo'<option value="'.$game_arr['id'].'"';
         if ($game_arr['id'] == $press_arr['press_game']) {echo' selected="selected"';}
@@ -195,9 +196,9 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="cat" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
-                          WHERE type = '2' ORDER BY title", $FD->sql()->conn() );
-    while ($cat_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
+                                        WHERE type = '2' ORDER BY title" );
+    while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         echo'<option value="'.$cat_arr['id'].'"';
         if ($cat_arr['id'] == $press_arr['press_cat']) {echo' selected="selected"';}
@@ -215,9 +216,9 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="lang" size="1" class="text">';
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
-                          WHERE type = '3' ORDER BY title", $FD->sql()->conn() );
-    while ($lang_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
+                                        WHERE type = '3' ORDER BY title");
+    while ($lang_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         echo'<option value="'.$lang_arr['id'].'"';
         if ($lang_arr['id'] == $press_arr['press_lang']) {echo' selected="selected"';}

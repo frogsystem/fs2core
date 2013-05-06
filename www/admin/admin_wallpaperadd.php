@@ -12,27 +12,27 @@ $config_arr = $FD->configObject('screens')->getConfigArray();
 
 if (isset($_FILES['sizeimg_0']) AND isset($_POST['size']['0']) AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['wpadd']) AND $_POST['wpadd'] == 1)
 {
-    $_POST['wallpaper_name'] = savesql($_POST['wallpaper_name']);
-    $_POST['wallpaper_title'] = savesql($_POST['wallpaper_title']);
 
-$index = mysql_query('SELECT * FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_name = '$_POST[wallpaper_name]'", $FD->sql()->conn());
-if (mysql_num_rows($index)==0) {
+$index = $FD->sql()->conn()->prepare('SELECT COUNT(*) AS wp_count FROM '.$FD->config('pref').'wallpaper WHERE wallpaper_name = ?');
+$index->execute(array($_POST['wallpaper_name']));
+$row = $index->fetch(PDO::FETCH_ASSOC);
+if ($row['wp_count']==0) {
 
     for ($i=1; $i<=$_POST['options']; $i++)
     {
       $j = $i - 1;
-      $_POST['size'][$j] = savesql($_POST['size'][$j]);
       $filesname = "sizeimg_$j";
       if (!isset($_FILES[$filesname]))
         $_POST['size'][$j] = '';
     }
 
     $_POST['catid'] = intval($_POST['catid']);
-    mysql_query('INSERT INTO '.$FD->config('pref')."wallpaper (wallpaper_name, wallpaper_title, cat_id)
-                 VALUES ('".$_POST['wallpaper_name']."',
-                         '".$_POST['wallpaper_title']."',
-                         '".$_POST['catid']."')", $FD->sql()->conn());
-    $wp_id = mysql_insert_id();
+    $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper (wallpaper_name, wallpaper_title, cat_id)
+                 VALUES (?,
+                         ?,
+                         '".$_POST['catid']."')");
+    $stmt->execute(array($_POST['wallpaper_name'], $_POST['wallpaper_title']));
+    $wp_id = $FD->sql()->conn()->lastInsertId();
 
     $message = '';
 
@@ -48,9 +48,9 @@ if (mysql_num_rows($index)==0) {
         switch ($upload)
         {
         case 0:
-          mysql_query('INSERT INTO '.$FD->config('pref')."wallpaper_sizes (wallpaper_id, size)
-                       VALUES ('".$wp_id."',
-                               '".$_POST['size'][$j]."')", $FD->sql()->conn());
+          $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper_sizes (wallpaper_id, size)
+                       VALUES ('".$wp_id."', ?)");
+          $stmt->execute(array($_POST['size'][$j]));
           break;
         }
 
@@ -130,8 +130,8 @@ echo'
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 2', $FD->sql()->conn());
-while ($cat_arr = mysql_fetch_assoc($index))
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 2');
+while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'
                                         <option value="'.$cat_arr['cat_id'].'">

@@ -35,7 +35,7 @@ if (TRUE
 {
     // prepare data
     $data = frompost($used_cols);
-      
+
     // save config
     try {
         $FD->saveConfig('screens', $data);
@@ -45,11 +45,11 @@ if (TRUE
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
-    unset($_POST); 
+    unset($_POST);
 }
 
 /////////////////////////////////////
@@ -57,18 +57,18 @@ if (TRUE
 /////////////////////////////////////
 
 if (true) {
-    
+
     // Display Error Messages
     if (isset($_POST['sended'])) {
         systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'screens'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('screens');
+        $data = $FD->configObject('screens')->getConfigArray();
         putintopost($data);
-    }    
-    
+    }
+
     // security functions
     $_POST = array_map('killhtml', $_POST);
 

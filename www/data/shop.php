@@ -7,16 +7,15 @@ $FD->loadConfig('screens');
 $screen_config_arr = $FD->configObject('screens')->getConfigArray();
 
 // Get Data from DB
-$index = mysql_query ( '
-                        SELECT *
-                        FROM `'.$FD->config('pref').'shop`
-', $FD->sql()->conn() );
+$index = $FD->sql()->conn()->query ( '
+                SELECT *
+                FROM `'.$FD->config('pref').'shop`' );
 
 // Security Functions
 $shop_items = array();
 
 // Get Item Templates
-while ( $shop_arr = mysql_fetch_assoc ( $index ) ) {
+while ( $shop_arr = $index->fetch( PDO::FETCH_ASSOC ) ) {
 
     settype ( $shop_arr['artikel_id'], 'integer' );
     $shop_arr['artikel_name'] = stripslashes ( $shop_arr['artikel_name'] );

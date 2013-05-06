@@ -96,22 +96,26 @@
   $_GET['start'] = (int) $_GET['start'];
   settype($_GET['start'], 'integer');
   //Anzahl der Kommentare auslesen
-  $query = mysql_query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref').'comments` WHERE content_type=\'news\'', $FD->sql()->conn());
-  $cc = mysql_fetch_assoc($query);
-  $cc = (int) $cc['cc'];
+  $query = $FD->sql()->conn()->query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref').'comments` WHERE content_type=\'news\'');
+  $cc = (int) $query->fetchColumn();
   if ($_GET['start']>=$cc)
   {
     $_GET['start'] = $cc - ($cc % 30);
   }
 
   //Kommentare auslesen
-  $query = mysql_query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text, '
-                      .'`'.$FD->config('pref').'comments`.content_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title '
-                      .'FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news` '
-                      .'WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id '
-                      .'       AND content_type=\'news\''
-                      .'ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30', $FD->sql()->conn());
-  $rows = mysql_num_rows($query);
+  $query = $FD->sql()->conn()->query('SELECT COUNT(comment_id)
+                  FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news`
+                  WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
+                         AND content_type=\'news\' 
+                  ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30');
+  $rows = $query->fetchColumn();
+  $query = $FD->sql()->conn()->query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text,
+                  `'.$FD->config('pref').'comments`.content_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title
+                  FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news`
+                  WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
+                         AND content_type=\'news\' 
+                  ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30');
 
   //Bereich (zahlenm‰ﬂig)
   $bereich = '<font class="small">'.($_GET['start']+1).' ... '.($_GET['start'] + $rows).'</font>';
@@ -156,16 +160,16 @@ echo <<<EOT
 EOT;
   require_once(FS2_ROOT_PATH . 'resources/spamdetector/eval_spam.inc.php');
 
-  while ($comment_arr = mysql_fetch_assoc($query))
+  while ($comment_arr = $query->fetch(PDO::FETCH_ASSOC))
   {
     if ($comment_arr['comment_poster_id'] != 0)
     {
-      $userindex = mysql_query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = \''.$comment_arr['comment_poster_id'].'\'', $FD->sql()->conn());
-      $comment_arr['comment_poster'] = mysql_result($userindex, 0, 'user_name');
+      $userindex = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = \''.$comment_arr['comment_poster_id'].'\'');
+      $comment_arr['comment_poster'] = $userindex->fetchColumn();
     }
     $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date'])
                                       .' um '.date('H:i' , $comment_arr['comment_date']);
-    echo'<tr>
+    echo '<tr>
            <td class="configthin">
                '.$comment_arr['comment_title'].'
            </td>

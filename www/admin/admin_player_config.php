@@ -104,7 +104,7 @@ if (
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
@@ -123,8 +123,8 @@ if ( TRUE )
 
 	// Load Data from DB into Post
 	} else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'video_player'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('video_player');
+        $data = $FD->configObject('video_player')->getConfigArray();
         putintopost($data);
 	}
 

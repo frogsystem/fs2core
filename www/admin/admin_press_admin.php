@@ -9,17 +9,18 @@ if (isset($_POST['entry_action'])
     && (isset($_POST['title']) AND $_POST['title'] != '')
    )
 {
-    $_POST['title'] = savesql($_POST['title']);
     settype($_POST['entry_is'], 'integer');
 
-    mysql_query('INSERT INTO '.$FD->config('pref')."press_admin
-                 (type, title)
-                 VALUES ('$_POST[entry_is]', '$_POST[title]')", $FD->sql()->conn() );
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref').'press_admin
+                   (type, title)
+                 VALUES (?, ?)');
+    $stmt->execute(array($_POST['entry_is'], $_POST['title']));
     $msg = array();
     $msg[] = 'Eintrag wurde hinzugef&uuml;gt!';
 
     if ($_FILES['entry_pic']['name'] != '') {
-        $id = mysql_insert_id();
+        $id = $FD->sql()->conn()->lastInsertId();
         $upload = upload_img($_FILES['entry_pic'], 'images/press/', $_POST['entry_is'].'_'.$id, 1024*1024, 999, 999);
         $msg[] = upload_img_notice($upload);
     } else {
@@ -42,12 +43,13 @@ elseif ((isset($_POST['title']) AND $_POST['title'] != '')
     $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST['entry_id'], 'integer');
     settype($_POST['entry_is'], 'integer');
-    $_POST['title'] = savesql($_POST['title']);
 
-    mysql_query('UPDATE '.$FD->config('pref')."press_admin
-                 SET title = '$_POST[title]',
-                     type = '$_POST[entry_is]'
-                 WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
+    $stmt = $FD->sql()->conn()->prepare(
+                'UPDATE '.$FD->config('pref').'press_admin
+                 SET title = ?,
+                     type = ?
+                 WHERE id = ?');
+    $stmt->execute(array($_POST['title'], $_POST['entry_is'], $_POST['entry_id']));
     systext('Der Eintrag wurde aktualisiert!');
 
     if (isset($_POST['entry_pic_delete']) && $_POST['entry_pic_delete'] == 1)
@@ -81,11 +83,12 @@ elseif (isset($_POST['entry_action'])
 {
     settype($_POST['entry_id'], 'integer');
     settype($_POST['entry_is'], 'integer');
+    settype($_POST['entry_move_to'], 'integer');
 
     if ($_POST['delete_press_admin'])   // Partnerseite löschen
     {
-        $index = mysql_query('SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
-        $entry_arr['type'] = mysql_result($index, 0, 'type');
+        $index = $FD->sql()->conn()->query('SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = '$_POST[entry_id]'");
+        $entry_arr['type'] = $index->fetchColumn();
 
         switch ($entry_arr['type'])
         {
@@ -103,10 +106,10 @@ elseif (isset($_POST['entry_action'])
                 break;
         }
 
-        mysql_query('UPDATE '.$FD->config('pref').'press '.$entry_arr['type_set'].' '.$entry_arr['type_where'], $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'press '.$entry_arr['type_set'].' '.$entry_arr['type_where']);
 
-        mysql_query('DELETE FROM '.$FD->config('pref')."press_admin
-                     WHERE id = '$_POST[entry_id]'", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."press_admin
+                                  WHERE id = '$_POST[entry_id]'");
 
         $msg[] = 'Der Eintrag wurde gel&ouml;scht!';
 
@@ -141,8 +144,8 @@ elseif (isset($_POST['entry_action'])
 {
     $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST['entry_id'], 'integer');
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]", $FD->sql()->conn() );
-    $entry_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]");
+    $entry_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $entry_arr['title'] = killhtml($entry_arr['title']);
 
@@ -242,13 +245,13 @@ elseif (isset($_POST['entry_action'])
 {
     $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST['entry_id'], 'integer');
-    $index = mysql_query('SELECT COUNT(id) AS number FROM '.$FD->config('pref').'press_admin
-                          WHERE type = (SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id])", $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query('SELECT COUNT(id) AS number FROM '.$FD->config('pref').'press_admin
+                          WHERE type = (SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id])");
 
-    if (mysql_result($index,0,'number') > 1)
+    if ($index->fetchColumn() > 1)
     {
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]", $FD->sql()->conn() );
-        $entry_arr = mysql_fetch_assoc($index);
+        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]");
+        $entry_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         $entry_arr['title'] = killhtml($entry_arr['title']);
         switch ($entry_arr['type'])
@@ -317,10 +320,10 @@ elseif (isset($_POST['entry_action'])
                                 <td align="right">
                                     <select name="entry_move_to" size="1" class="text">';
 
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin
+        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
                               WHERE type = '$entry_arr[type]' AND id != '$entry_arr[id]'
-                              ORDER BY title", $FD->sql()->conn() );
-        while ($entry_move_arr = mysql_fetch_assoc($index))
+                              ORDER BY title");
+        while ($entry_move_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
             echo'<option value="'.$entry_move_arr['id'].'">'.$entry_move_arr['title'].'</option>';
         }
@@ -334,8 +337,8 @@ elseif (isset($_POST['entry_action'])
     }
     else
     {
-        $index = mysql_query('SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]", $FD->sql()->conn() );
-        $entry_arr['type'] = mysql_result($index, 0, 'type');
+        $index = $FD->sql()->conn()->query('SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]");
+        $entry_arr['type'] = $index->fetchColumn();
 
         switch ($entry_arr['type'])
         {
@@ -440,8 +443,9 @@ if (!isset($_POST['entry_id']))
 
     for ($i=1;$i<=3;$i++)
     {
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE type='$i' ORDER BY type, title");
-        if (mysql_num_rows($index) > 0)
+        $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."press_admin WHERE type='$i'");
+        $num_rows = $index->fetchColumn();
+        if ($num_rows > 0)
         {
             switch ($i)
             {
@@ -473,7 +477,8 @@ if (!isset($_POST['entry_id']))
             unset($head);
         }
 
-        while ($entry_arr = mysql_fetch_assoc($index))
+        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE type='$i' ORDER BY type, title");
+        while ($entry_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
             switch ($entry_arr['type'])
             {
@@ -506,7 +511,7 @@ if (!isset($_POST['entry_id']))
             ';
         }
 
-        if (mysql_num_rows($index) > 0)
+        if ($num_rows > 0)
         {
             echo'
                             <tr>

@@ -17,7 +17,8 @@ $adminpage->addText('file_id', $_GET['id']);
 echo $adminpage->get('script');
 
 try {
-    $ftp = $sql->getRow('ftp', '*', array('W' =>  '`ftp_id` = 1'));
+    $ftp = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'ftp WHERE `ftp_id` = 1 LIMIT 1');
+    $ftp = $ftp->fetch(PDO::FETCH_ASSOC);
 
     // Verbindung aufbauen
     if($ftp['ftp_ssl']) {

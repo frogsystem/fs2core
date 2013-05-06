@@ -14,37 +14,37 @@ define('INCLUDE_ONDEMAND', 2);
 /////////////////////////
 
 if (
-        isset ( $_POST['applet_file'] )
-        && $_POST['applet_file'] != ''
-        && file_exists ( FS2_ROOT_PATH . 'applets/' . $_POST['applet_file'] . '.php' )
+    isset ( $_POST['applet_file'] )
+    && $_POST['applet_file'] != ''
+    && file_exists ( FS2_ROOT_PATH . 'applets/' . $_POST['applet_file'] . '.php' )
     )
 {
-
-    $_POST['applet_file'] = savesql ( $_POST['applet_file'] );
 
     settype ( $_POST['applet_active'], 'integer' );
     settype ( $_POST['applet_output'], 'integer' );
     settype ( $_POST['applet_include'], 'integer' );
 
     // Check if Applet exists
-    $index = mysql_query ( 'SELECT `applet_id` FROM `'.$FD->config('pref')."applets` WHERE `applet_file` = '".$_POST['applet_file']."'", $sql->conn() );
+    $index = $sql->conn()->prepare ( 'SELECT `applet_id` FROM `'.$FD->config('pref').'applets` WHERE `applet_file` = ?' );
+    $index->execute(array($_POST['applet_file']));
+    $row = $index->fetch(PDO::FETCH_ASSOC);
 
     // New Applet
-    if ( mysql_num_rows ( $index ) === 0 ) {
-        // MySQL-Queries
-        mysql_query ( '                 INSERT INTO `'.$FD->config('pref')."applets` (
-                                                `applet_file`,
-                                                `applet_active`,
-                                                `applet_include`,
-                                                `applet_output`
-                                        )
-                                        VALUES (
-                                                '".$_POST['applet_file']."',
-                                                '".$_POST['applet_active']."',
-                                                '".$_POST['applet_include']."',
-                                                '".$_POST['applet_output']."'
-                                        )
-        ", $sql->conn() );
+    if ( $row === false ) {
+        // SQL-Queries
+        $stmt = $sql->conn()->prepare ( 'INSERT INTO `'.$FD->config('pref')."applets` (
+                                  `applet_file`,
+                                  `applet_active`,
+                                  `applet_include`,
+                                  `applet_output`
+                             )
+                             VALUES (
+                                  ?,
+                                  '".$_POST['applet_active']."',
+                                  '".$_POST['applet_include']."',
+                                  '".$_POST['applet_output']."'
+                             )" );
+        $stmt->execute(array($_POST['applet_file']));
 
         systext ( $FD->text("admin", "applet_added"),
             $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_add") );

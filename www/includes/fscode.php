@@ -315,7 +315,6 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             'block', array ('listitem', 'block', 'inline'), array ('link'));
 
     if (in_array('quote', $to_html) || in_array('quote', $to_text)) {
-        #$fscode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         $fscode->setCodeFlag ('quote', 'paragraphs', false);
     }
 
@@ -370,7 +369,8 @@ function simple_replace_ignore_attributs ($action, $attributes, $content, $param
 function do_fscode_smilies ($text) {
     global $FD;
 
-    $smilies = $FD->sql()->getData('smilies', '*');
+    $smilies = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies');
+    $smilies = $smilies->fetchAll(PDO::FETCH_ASSOC);
     foreach ($smilies as $smiley) {
         $url = image_url('images/smilies/', $smiley['id']);
         $text = str_replace ($smiley['replace_string'], '<img src="'.$url.'" alt="'.$smiley['replace_string'].'" align="top">', $text);

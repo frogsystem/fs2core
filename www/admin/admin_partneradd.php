@@ -31,21 +31,20 @@ if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
     && (isset($_POST['link']) AND $_POST['link'] != '')
    )
 {
-    $_POST['name'] = savesql($_POST['name']);
-    $_POST['link'] = savesql($_POST['link']);
-    $_POST['description'] = savesql($_POST['description']);
     $_POST['permanent'] = isset($_POST['permanent']) ? 1 : 0;
 
-    mysql_query('INSERT INTO '.$FD->config('pref')."partner
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."partner
                         (partner_name,
                          partner_link,
                          partner_beschreibung,
                          partner_permanent)
-                 VALUES ('".$_POST['name']."',
-                         '".$_POST['link']."',
-                         '".$_POST['description']."',
-                         '".$_POST['permanent']."')", $FD->sql()->conn() );
-    $id = mysql_insert_id();
+                 VALUES (?,
+                         ?,
+                         ?,
+                         '".$_POST['permanent']."')");
+    $stmt->execute(array($_POST['name'], $_POST['link'], $_POST['description']));
+    $id = $FD->sql()->conn()->lastInsertId();
 
     $upload1 = upload_img($_FILES['bild_small'], 'images/partner/', $id.'_small', $config_arr['file_size']*1024, $config_arr['small_x'], $config_arr['small_y'], 100, $config_arr['small_allow_bool']);
 
@@ -72,7 +71,7 @@ if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
         default:
           systext ($FD->text('page', 'big_pic'). ': ' . upload_img_notice($upload2));
           systext ($FD->text('page', 'note_notadded'));
-          mysql_query('DELETE FROM '.$FD->config('pref')."partner WHERE partner_id = '$id'");
+          $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."partner WHERE partner_id = '$id'");
           image_delete('images/partner/', $id.'_small');
           image_delete('images/partner/', $id.'_big');
         }
@@ -81,7 +80,7 @@ if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
       default:
         systext ($FD->text('page', 'small_pic') . ': ' . upload_img_notice($upload1));
         systext ($FD->text('page', 'note_notadded'));
-        mysql_query('DELETE FROM '.$FD->config(pref)."partner WHERE partner_id = '$id'");
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config(pref)."partner WHERE partner_id = '$id'");
         image_delete('images/partner/', $id.'_small');
         image_delete('images/partner/', $id.'_big');
     }

@@ -28,12 +28,11 @@ if ( is_loggedin() ) {
     $template->tag('logout_url', url('logout'));
 
     // Admin-Link
-    $index = mysql_query ('
+    $index = $FD->sql()->conn()->query ('
                             SELECT `user_id`, `user_is_staff`, `user_is_admin`
                             FROM '.$FD->config('pref')."user
-                            WHERE `user_id` = '".$user_id."'
-    ", $FD->sql()->conn() );
-    $data_arr = mysql_fetch_assoc ( $index );
+                            WHERE `user_id` = '".$user_id."'" );
+    $data_arr = $index->fetch( PDO::FETCH_ASSOC );
     if ( $data_arr['user_is_staff'] == 1 || $data_arr['user_is_admin'] == 1 || $data_arr['user_id'] == 1 ) {
         $template_admincp = new template();
         $template_admincp->setFile('0_user.tpl');

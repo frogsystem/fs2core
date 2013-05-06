@@ -61,11 +61,15 @@ if (
     $data = frompost($news_cols);
     unset($data['news_id']);
 
-    // MySQL-Insert-Query
+    // SQL-Insert-Query
     try {
         // Get User
         try {
-            $user_id = $FD->sql()->getField('user', 'user_id', array('W' => "`user_name` = '".$FD->sql()->escape($_POST['user_name'])."'"));
+            $user_id = $FD->sql()->conn()->prepare(
+                           'SELECT user_id FROM '.$FD->config('pref').'user
+                           WHERE `user_name` = ? LIMIT 1');
+            $user_id->execute(array($_POST['user_name']));
+            $user_id = $user_id->fetchColumn();
         } catch (Exception $e) {
             Throw $e;
         }
@@ -74,7 +78,7 @@ if (
             Throw new FormException($FD->text('admin', 'no_user_found_for_name'));
         }
 
-        $data['user_id'] = $user_id;
+        $data['user_id'] = intval($user_id);
 
         // Save News
         $newsid = $sql->save('news', $data, 'news_id');
@@ -87,6 +91,12 @@ if (
         }
 
         // Insert Links to database
+        $stmt = $FD->sql()->conn()->prepare(
+                    'INSERT INTO '.$FD->config('pref').'news_links
+                     SET news_id = '.intval($newsid).',
+                         link_name = ?,
+                         link_url = ?,
+                         link_target = ?');
         foreach ((array) $_POST['link_name'] as $id => $val)
         {
             if (!empty($_POST['link_name'][$id]) && !empty($_POST['link_url'][$id]) && !in_array($_POST['link_url'][$id], array('http://', 'https://'))) {
@@ -94,28 +104,15 @@ if (
                 // secure link target
                 $_POST['link_target'][$id] = ($_POST['link_target'][$id] == 1 ? 1 : 0);
 
-                $linkdata = array(
-                    'news_id' => $newsid,
-                    'link_name' => $_POST['link_name'][$id],
-                    'link_url' => $_POST['link_url'][$id],
-                    'link_target' => $_POST['link_target'][$id]
-                );
-
                 // insert into db
-                try {
-                    $sql->save('news_links', $linkdata, 'link_id');
-                } catch (Exception $e) {
-                    Throw $e;
-                }
-
+                $stmt->execute(array($_POST['link_name'][$id], $_POST['link_url'][$id], $_POST['link_target'][$id]));
             }
         }
 
         // update counter
         try {
-            $sql->doQuery('UPDATE `{..pref..}counter` SET `news` = `news` + 1 WHERE `id` = 1');
+            $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET `news` = `news` + 1 WHERE `id` = 1');
         } catch (Exception $e) {}
-
 
         echo get_systext($FD->text('page', 'news_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));
 
@@ -208,7 +205,9 @@ if ( TRUE ) {
         $_POST['news_active'] = 1;
         $_POST['news_comments_allowed'] = 1;
         $_POST['user_id'] = $_SESSION['user_id'];
-        $_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
+        $_POST['user_name'] = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user
+                                                         WHERE user_id = '.intval($_POST['user_id']).' LIMIT 1');
+        $_POST['user_name'] = $_POST['user_name']->fetchColumn();
 
         $_POST['d'] = date('d');
         $_POST['m'] = date('m');
@@ -218,9 +217,6 @@ if ( TRUE ) {
 
         $_POST['new_link_url'] = 'http://';
     }
-
-    // Get User
-    //$_POST['user_name'] = $sql->getFieldById('user', 'user_name', $_POST['user_id'], 'user_id');
 
     // security functions
     $_POST = array_map('killhtml', $_POST);
@@ -238,8 +234,9 @@ if ( TRUE ) {
         $cat_options .= '<option value="-1">'.$FD->text("admin", "select_hr").'</option>'."\n";
     }
 
-    $cats = $sql->get('news_cat', array('cat_id', 'cat_name'));
-    foreach ($cats['data'] as $cat) {
+    $cats = $FD->sql()->conn()->query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'news_cat');
+    $cats = $cats->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($cats as $cat) {
         settype ($cat['cat_id'], 'integer');
         $cat_options .= '<option value="'.$cat['cat_id'].'" '.getselected($cat['cat_id'], $_POST['cat_id']).'>'.$cat['cat_name'].'</option>'."\n";
     }

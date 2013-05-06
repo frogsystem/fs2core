@@ -12,14 +12,16 @@ function get_online_ips () {
     $numbers = array('users' => 0, 'guests' => 0, 'all' => 0);
 
     // get values from db
-    $numbers['users'] = $FD->sql()->getField('useronline',
-        array('COL' => 'user_id', 'FUNC' => 'COUNT', 'AS' => 'users'),
-        array('W' => "`date` > '".($FD->env('time')-300)."' AND `user_id` != 0")
-    );
-    $numbers['guests'] = $FD->sql()->getField('useronline',
-        array('COL' => 'user_id', 'FUNC' => 'COUNT', 'AS' => 'guests'),
-        array('W' => "`date` > '".($FD->env('time')-300)."' AND `user_id` = 0")
-    );
+    $numbers['users'] = $FD->sql()->conn()->query(
+                            'SELECT COUNT(user_id) AS users
+                             FROM '.$FD->config('pref')."useronline
+                             WHERE `date` > '".($FD->env('time')-300)."' AND `user_id` != 0");
+    $numbers['users'] = $numbers['users']->fetchColumn();
+    $numbers['guests'] = $FD->sql()->conn()->query(
+                            'SELECT COUNT(user_id) AS guests
+                             FROM '.$FD->config('pref')."useronline
+                             WHERE `date` > '".($FD->env('time')-300)."' AND `user_id` = 0");
+    $numbers['guests'] = $numbers['guests']->fetchColumn();
 
     //calc all
     $numbers['all'] = $numbers['users'] + $numbers['guests'];
@@ -56,8 +58,7 @@ function delete_referrers ($days, $hits, $contact, $age, $amount, $time = null) 
         default: $amount = '>'; break;
     }
 
-    return $FD->sql()->delete('counter_ref', array(
-        'W' => '`ref_'.$contact.'` '.$age." '".$del_date."' AND `ref_count` ".$amount." '".$hits."'"));
+    return $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'counter_ref WHERE `ref_'.$contact.'` '.$age." '".$del_date."' AND `ref_count` ".$amount." '".$hits."'");
 }
 
 ////////////////////
@@ -184,17 +185,16 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         $retrun_arr['user_group_title'] = '';
         $retrun_arr['user_group_rank'] = '';
     } else {
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
             SELECT *
             FROM `'.$FD->config('pref')."user_groups`
-            WHERE `user_group_id` = '".$GROUP_ID."'
-        ", $FD->sql()->conn() );
-        $group_arr = mysql_fetch_assoc ( $index );
+            WHERE `user_group_id` = '".$GROUP_ID."'");
+        $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         settype ( $group_arr['user_group_id'], 'integer' );
         $group_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
         $group_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
-        $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text("frontend", "group_image_of").' '.$group_arr['user_group_name'].'">' : '' );
+        $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text('frontend', 'group_image_of').' '.$group_arr['user_group_name'].'">' : '' );
 
         unset ( $title_style );
         $title_style = ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : '' );
@@ -241,13 +241,12 @@ function get_sub_cats ( $CAT_ID, $REC_SUB_CAT_ARRAY )
     static $sub_cat_ids = array();
     $sub_cat_ids = $REC_SUB_CAT_ARRAY;
 
-    $subcat_index = mysql_query ( '
+    $subcat_index = $FD->sql()->conn()->query ( '
         SELECT `cat_id`
         FROM `'.$FD->config('pref')."dl_cat`
-        WHERE `subcat_id` = '".$CAT_ID."'
-    ", $FD->sql()->conn() );
+        WHERE `subcat_id` = '".$CAT_ID."'" );
 
-    while ( $subcats = mysql_fetch_assoc ( $subcat_index ) ) {
+    while ( $subcats = $subcat_index->fetch(PDO::FETCH_ASSOC) ) {
         $sub_cat_ids[] = $subcats['cat_id'];
         get_sub_cats ( $subcats['cat_id'], $sub_cat_ids );
     }
@@ -263,19 +262,18 @@ function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
     static $i = 0;
 
     $i++;
-    $data[$CAT_ID] = mysql_query ( '
+    $data[$CAT_ID] = $FD->sql()->conn()->query ( '
         SELECT *
         FROM `'.$FD->config('pref')."dl_cat`
-        WHERE `subcat_id` = '".$CAT_ID."'
-    ", $FD->sql()->conn() );
+        WHERE `subcat_id` = '".$CAT_ID."'" );
 
-    while ( $array = mysql_fetch_assoc ( $data[$CAT_ID] ) ) {
-        $index = mysql_query ( '
+    while ( $array = $data[$CAT_ID]->fetch(PDO::FETCH_ASSOC) ) {
+        $index = $FD->sql()->conn()->query ( '
             SELECT `cat_id`
             FROM `'.$FD->config('pref')."dl_cat`
-            WHERE `subcat_id` = '".$array['cat_id']."'
-        ", $FD->sql()->conn() );
-        $num_subcat = mysql_num_rows ( $index );
+            WHERE `subcat_id` = '".$array['cat_id']."'");
+        $all_subcats = $index->fetchAll(PDO::FETCH_ASSOC);
+        $num_subcat = is_array ( $all_subcats ) ? count($all_subcats) : 0;
 
         unset ( $ids );
         $ids = get_sub_cats ( $array['cat_id'], array() );
@@ -318,30 +316,28 @@ function get_timed_pic ()
     global $FD;
 
     $time = time();
-    $index = mysql_query ( "
+    $index = $FD->sql()->conn()->query ( "
                             SELECT COUNT(R.`screen_id`) AS 'images'
                             FROM `".$FD->config('pref').'screen_random` R
-                            WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.'
-    ', $FD->sql()->conn() );
-
-    $num_images = mysql_result ( $index, 0, 'images' );
+                            WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.' ' );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $num_images = $row['images'];
     if ( $num_images > 0 ) {
         // Get random number
         $rand = rand ( 0, $num_images - 1 );
-        $index = mysql_query ( '
+        $index =  $FD->sql()->conn()->query ( '
                                 SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
                                 FROM `'.$FD->config('pref').'screen_random` R, `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                                 WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.'
                                 AND R.`screen_id` = S.`screen_id`
-                                LIMIT '.$rand.',1
-        ', $FD->sql()->conn() );
-
-        $dbscreen['id'] = mysql_result ( $index, 0, 'screen_id' );
+                                LIMIT '.$rand.',1' );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        $dbscreen['id'] = $row['screen_id'];
         settype ( $dbscreen['id'], 'integer' );
-        $dbscreen['caption'] = stripslashes ( mysql_result ( $index, 0, 'screen_name' ) );
-        $dbscreen['cat_id'] = mysql_result ( $index, 0, 'cat_id' );
+        $dbscreen['caption'] = stripslashes ( $row['screen_name'] );
+        $dbscreen['cat_id'] = $row['cat_id'];
         settype ( $dbscreen['cat_id'], 'integer' );
-        $dbscreen['cat_title'] = stripslashes ( mysql_result ( $index, 0, 'cat_name' ) );
+        $dbscreen['cat_title'] = stripslashes ( $row['cat_name'] );
         $dbscreen['type'] = 1;
 
         return $dbscreen;
@@ -358,31 +354,29 @@ function get_random_pic ()
     global $FD;
 
     // Get number of possible Screens
-    $index = mysql_query ( "
+    $index = $FD->sql()->conn()->query ( "
                             SELECT COUNT(S.`screen_id`) AS 'images'
                             FROM `".$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                             WHERE C.`randompic` = 1
-                            AND C.`cat_id` = S.`cat_id`
-    ', $FD->sql()->conn() );
-
-    $num_images = mysql_result ( $index, 0, 'images' );
+                            AND C.`cat_id` = S.`cat_id`' );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $num_images = $row['images'];
     if ( $num_images > 0 ) {
         // Get random number
         $rand = rand ( 0, $num_images - 1 );
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
                                 SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
                                 FROM `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                                 WHERE C.`randompic` = 1
                                 AND C.`cat_id` = S.`cat_id`
-                                LIMIT '.$rand.',1
-        ', $FD->sql()->conn() );
-
-        $dbscreen['id'] = mysql_result ( $index, 0, 'screen_id' );
+                                LIMIT '.$rand.',1' );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        $dbscreen['id'] = $row['screen_id'];
         settype ( $dbscreen['id'], 'integer' );
-        $dbscreen['caption'] = stripslashes ( mysql_result ( $index, 0, 'screen_name' ) );
-        $dbscreen['cat_id'] = mysql_result ( $index, 0, 'cat_id' );
+        $dbscreen['caption'] = stripslashes ( $row['screen_name'] );
+        $dbscreen['cat_id'] = $row['cat_id'];
         settype ( $dbscreen['cat_id'], 'integer' );
-        $dbscreen['cat_title'] = stripslashes ( mysql_result ( $index, 0, 'cat_name' ) );
+        $dbscreen['cat_title'] = stripslashes ( $row['cat_name'] );
         $dbscreen['type'] = 2;
 
         return $dbscreen;
@@ -527,14 +521,13 @@ function is_in_staff ( $USER_ID )
     settype ( $USER_ID, 'integer' );
 
     if ( $USER_ID ) {
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
                                 SELECT user_id, user_is_staff, user_is_admin
                                 FROM '.$FD->config('pref')."user
                                 WHERE user_id = '".$USER_ID."'
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        if ( mysql_num_rows ( $index ) > 0 ) {
-            if ( mysql_result ( $index, 0, 'user_is_staff' ) == 1 || mysql_result ( $index, 0, 'user_is_admin' ) == 1 || mysql_result ( $index, 0, 'user_id' ) == 1 ) {
+                                LIMIT 0,1");
+        if ( $row = $index->fetch(PDO::FETCH_ASSOC) ) {
+            if ( $row['user_is_staff'] == 1 || $row['user_is_admin'] == 1 || $row['user_id'] == 1 ) {
                  return TRUE;
             }
         }
@@ -553,14 +546,13 @@ function is_admin ( $USER_ID )
     settype ( $USER_ID, 'integer' );
 
     if ( $USER_ID ) {
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
                                 SELECT user_id, user_is_admin
                                 FROM '.$FD->config('pref')."user
                                 WHERE user_id = '".$USER_ID."'
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        if ( mysql_num_rows ( $index ) > 0 ) {
-            if ( mysql_result ( $index, 0, 'user_is_admin' ) == 1 || mysql_result ( $index, 0, 'user_id' ) == 1 ) {
+                                LIMIT 0,1" );
+        if ( $row = $index->fetch(PDO::FETCH_ASSOC) ) {
+            if ( $row['user_is_admin'] == 1 || $row['user_id'] == 1 ) {
                  return TRUE;
             }
         }
@@ -572,16 +564,19 @@ function is_admin ( $USER_ID )
 //// Get Template ////
 //////////////////////
 
+/// TODO: get_template() does not seem to be used anywhere anymore, so it
+///       should be removed.
+
 function get_template ( $TEMPLATE_NAME )
 {
     global $FD;
 
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
                             SELECT `'.$TEMPLATE_NAME.'`
                             FROM '.$FD->config('pref')."template
-                            WHERE `id` = '".$FD->config('design')."'
-    ", $FD->sql()->conn() );
-    return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
+                            WHERE `id` = '".$FD->config('design')."'" );
+    $result = $index->fetch(PDO::FETCH_ASSOC);
+    return stripslashes ( $result[$TEMPLATE_NAME] );
 }
 
 ////////////////////////////
@@ -592,13 +587,12 @@ function get_email_template ( $TEMPLATE_NAME )
 {
     global $FD;
 
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
                             SELECT `'.$TEMPLATE_NAME.'`
                             FROM '.$FD->config('pref')."email
-                            WHERE `id` = '1'
-    ", $FD->sql()->conn() );
-
-    return stripslashes ( mysql_result ( $index, 0, $TEMPLATE_NAME ) );
+                            WHERE `id` = '1'" );
+    $result = $index->fetch(PDO::FETCH_ASSOC);
+    return stripslashes ( $result[$TEMPLATE_NAME] );
 }
 
 ////////////////////
@@ -609,17 +603,16 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
 {
     global $FD;
 
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
                             SELECT `use_admin_mail`, `email`, `html`
                             FROM '.$FD->config('pref')."email
-                            WHERE `id` = '1'
-    ", $FD->sql()->conn() );
-
+                            WHERE `id` = '1'");
+    $row = $index->fetch(PDO::FETCH_ASSOC);
     if ( $FROM == FALSE ) {
-        if ( mysql_result ( $index, 0, 'use_admin_mail' ) == 1 ) {
+        if ( $row['use_admin_mail'] == 1 ) {
             $header  = 'From: ' . $FD->config('admin_mail') . "\n";
         } else {
-            $header  = 'From: ' . stripslashes ( mysql_result ( $index, 0, 'email' ) ) . "\n";
+            $header  = 'From: ' . stripslashes ( $row['email'] ) . "\n";
         }
     } else {
         $header  = 'From: ' . $FROM . "\n";
@@ -629,7 +622,7 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
     $header .= 'X-Sender-IP: ' . $_SERVER['REMOTE_ADDR'] . "\n";
 
     if ( $HTML == FALSE || $HTML == 'html' ) {
-        if ( mysql_result ( $index, 0, 'html' ) == 1 ) {
+        if ( $row['html'] == 1 ) {
             $header .= 'Content-Type: text/html';
             $TEXT = fscode ( $TEXT, true, true, false );
             $TEXT = '<html><body>' . $TEXT . '</body></html>';
@@ -676,18 +669,17 @@ function create_textarea($name, $text='', $width='', $height='', $class='', $all
     $smilies_table = '
           <table cellpadding="2" cellspacing="0" border="0">';
 
-    $index = mysql_query ( 'SELECT * FROM `'.$FD->config('pref').'editor_config`', $FD->sql()->conn() );
-    $config_arr = mysql_fetch_assoc ( $index );
+    $index =$FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'editor_config`' );
+    $config_arr = $index->fetch(PDO::FETCH_ASSOC);
     $config_arr['num_smilies'] = $config_arr['smilies_rows']*$config_arr['smilies_cols'];
 
     $zaehler = 0;
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
                             SELECT *
                             FROM `'.$FD->config('pref').'smilies`
                             ORDER BY `order` ASC
-                            LIMIT 0, '.$config_arr['num_smilies'].'
-    ', $FD->sql()->conn() );
-    while ( $smilie_arr = mysql_fetch_assoc ( $index ) )
+                            LIMIT 0, '.$config_arr['num_smilies'].' ' );
+    while ( $smilie_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
         $smilie_arr['url'] = image_url ( 'images/smilies/', $smilie_arr['id'] );
         $smilie_template = '<td><img src="'.$smilie_arr['url'].'" alt="'.$smilie_arr['replace_string'].'" onClick="insert(\''.$name.'\', \''.$smilie_arr['replace_string'].'\', \'\')" class="editor_smilies"></td>';
@@ -968,13 +960,12 @@ function get_dl_categories (&$IDs, $CAT_ID, $SHOW_SUB = 1, $ID = 0, $LEVEL = -1 
 {
     global $FD;
 
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
                             SELECT * FROM `'.$FD->config('pref')."dl_cat`
                             WHERE `subcat_id` = '".$ID."'
-                            ORDER BY `cat_name`
-    ", $FD->sql()->conn() );
+                            ORDER BY `cat_name`" );
 
-    while ( $line = mysql_fetch_assoc ( $index ) ) {
+    while ( $line = $index->fetch(PDO::FETCH_ASSOC) ) {
         $line['level'] = $LEVEL + 1;
         $IDs[] = $line;
         if ( $SHOW_SUB == 1 || $line['cat_id'] == $CAT_ID || in_array ( $CAT_ID, get_sub_cats ( $line['cat_id'], array () ) ) ) {
@@ -995,8 +986,9 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr['comment_url'] = url('comments', array('id' => $news_arr['news_id']));
 
     // Kategorie lesen
-    $index2 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$news_arr['cat_id']."'", $FD->sql()->conn() );
-    $news_arr['cat_name'] = mysql_result($index2, 0, 'cat_name');
+    $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$news_arr['cat_id']."'");
+    $row = $index2->fetch(PDO::FETCH_ASSOC);
+    $news_arr['cat_name'] = $row['cat_name'];
     $news_arr['cat_pic'] = image_url('images/cat/', 'news_'.$news_arr['cat_id']);
 
     // Text formatieren
@@ -1050,18 +1042,20 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr['news_title'] = killhtml ( $news_arr['news_title'] );
 
     // User auslesen
-    $index2 = mysql_query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id'].'', $FD->sql()->conn() );
-    $news_arr['user_name'] = kill_replacements ( mysql_result($index2, 0, 'user_name'), TRUE );
+    $index2 = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id'].'' );
+    $row = $index2->fetch(PDO::FETCH_ASSOC);
+    $news_arr['user_name'] = kill_replacements ( $row['user_name'], TRUE );
     $news_arr['user_url'] = url('user', array('id' => $news_arr['user_id']));
 
     // Kommentare lesen
-    $index2 = mysql_query('SELECT comment_id FROM '.$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'', $FD->sql()->conn() );
-    $news_arr['kommentare'] = mysql_num_rows($index2);
+    $index2 = $FD->sql()->conn()->query('SELECT comment_id FROM '.$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'' );
+    $all_comment_ids = $index2->fetchAll(PDO::FETCH_ASSOC);
+    $news_arr['kommentare'] = count($all_comment_ids);
 
     // Get Related Links
     $link_tpl = '';
-    $index2 = mysql_query('SELECT * FROM '.$FD->config('pref').'news_links WHERE news_id = '.$news_arr['news_id'].' ORDER BY link_id', $FD->sql()->conn() );
-    while ($link_arr = mysql_fetch_assoc($index2))
+    $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'news_links WHERE news_id = '.$news_arr['news_id'].' ORDER BY link_id');
+    while ($link_arr = $index2->fetch(PDO::FETCH_ASSOC))
     {
         $link_arr['link_name'] = killhtml ( $link_arr['link_name'] );
         $link_arr['link_url'] = killhtml ( $link_arr['link_url'] );
@@ -1079,7 +1073,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
         $link = $link->display ();
         $link_tpl .= $link;
     }
-    if (mysql_num_rows($index2) > 0) {
+    if ($link_tpl!=='') {
         // Get Links Body Template
         $related_links = new template();
         $related_links->setFile('0_news.tpl');
@@ -1177,6 +1171,17 @@ function tab2space($TEXT, $tabsize = 4, $space = '&nbsp;')
 // create save strings for sql //
 /////////////////////////////////
 
+/* TODO / note:
+   ============
+
+   The savesql() function should be removed in the future.
+   Primary reason is that PDO::quote(), which is used to secure text input of
+   SQL queries against SQL injections, is not implemented by all PDO drivers,
+   e.g. PDO_ODBC. Prepared statements should be used instead.
+
+   Also see <http://www.php.net/manual/en/pdo.quote.php> for more info.
+*/
+
 function savesql ( $TEXT )
 {
     global $FD;
@@ -1186,7 +1191,7 @@ function savesql ( $TEXT )
          $TEXT = addslashes($TEXT);
 
     if ( !is_numeric ( $TEXT ) ) {
-        $TEXT = mysql_real_escape_string($TEXT, $FD->sql()->conn() );
+        $TEXT = substr($FD->sql()->conn()->quote($TEXT), 1, -1);
     }
     return $TEXT;
 }
@@ -1255,137 +1260,6 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
     }
 
     return parse_fscode(stripslashes($text), $flags, $fscodes);
-
-
-
-    // OLD
-    /*
-
-        $bbcode = new StringParser_BBCode ();
-
-        $bbcode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
-
-        if ($html==false) {
-            #$bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'strip_tags');
-            $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
-        }
-        $bbcode->addParser (array ('code'), 'killhtml');
-
-        $bbcode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'stripslashes');
-        if ($all==true) {
-              $bbcode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'html_nl2br');
-        }
-        $bbcode->addParser ('list', 'bbcode_stripcontents');
-
-        if ($all==true OR $do_smilies==1)
-        $bbcode->addParser (array ('block', 'inline', 'link', 'listitem'), 'do_bbcode_smilies');
-
-        if ($all==true OR $do_b==1)
-        $bbcode->addCode ('b', 'simple_replace', null, array ('start_tag' => '<b>', 'end_tag' => '</b>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_i==1)
-        $bbcode->addCode ('i', 'simple_replace', null, array ('start_tag' => '<i>', 'end_tag' => '</i>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_u==1)
-        $bbcode->addCode ('u', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:underline">', 'end_tag' => '</span>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_s==1)
-        $bbcode->addCode ('s', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:line-through">', 'end_tag' => '</span>'),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_center==1) {
-            $bbcode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<p align="center">', 'end_tag' => '</p>'),
-                              'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-            $bbcode->setCodeFlag ('center', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-        }
-
-        if ($all==true OR $do_url==1)
-        $bbcode->addCode ('url', 'usecontent?', 'do_bbcode_url', array ('usecontent_param' => 'default'),
-                          'link', array ('listitem', 'block', 'inline'), array ('link'));
-
-        if ($all==true OR $do_homelink==1)
-        $bbcode->addCode ('home', 'usecontent?', 'do_bbcode_homelink', array ('usecontent_param' => 'default'),
-                          'link', array ('listitem', 'block', 'inline'), array ('link'));
-
-        if ($all==true OR $do_email==1)
-        $bbcode->addCode ('email', 'usecontent?', 'do_bbcode_email', array ('usecontent_param' => 'default'),
-                          'link', array ('listitem', 'block', 'inline'), array ('link'));
-
-        if ($all==true OR $do_img==1)
-        $bbcode->addCode ('img', 'usecontent?', 'do_bbcode_img', array (),
-                          'image', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_cimg==1)
-        $bbcode->addCode ('cimg', 'usecontent?', 'do_bbcode_cimg', array (),
-                          'image', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_player==1)
-        $bbcode->addCode ('player', 'usecontent?', 'do_bbcode_player', array (),
-                          'block', array ('block', 'inline'), array ('listitem', 'link'));
-
-        if ($all==true OR $do_list==1)
-        $bbcode->addCode ('list', 'simple_replace', null, array ('start_tag' => '<ul>', 'end_tag' => '</ul>'),
-                          'list', array ('block', 'listitem'), array ('link'));
-
-        if ($all==true OR $do_numlist==1)
-        $bbcode->addCode ('numlist', 'simple_replace', null, array ('start_tag' => '<ol>', 'end_tag' => '</ol>'),
-                          'list', array ('block', 'listitem'), array ('link'));
-
-        if ($all==true OR $do_list==1 OR $do_numlist==1) {
-            $bbcode->addCode ('*', 'simple_replace', null, array ('start_tag' => '<li>', 'end_tag' => '</li>'),
-                              'listitem', array ('list'), array ());
-            $bbcode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
-            $bbcode->setCodeFlag ('*', 'paragraphs', false);
-            $bbcode->setCodeFlag ('list', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-            $bbcode->setCodeFlag ('list', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
-            $bbcode->setCodeFlag ('list', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
-        }
-
-
-        if ($all==true OR $do_font==1)
-        $bbcode->addCode ('font', 'callback_replace', 'do_bbcode_font', array (),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_color==1)
-        $bbcode->addCode ('color', 'callback_replace', 'do_bbcode_color', array (),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_size==1)
-        $bbcode->addCode ('size', 'callback_replace', 'do_bbcode_size', array (),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($all==true OR $do_code==1) {
-            $bbcode->addCode ('code', 'usecontent', 'do_bbcode_code', array (),
-                              'code', array ('listitem', 'block', 'inline'), array ('link'));
-            $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-            $bbcode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
-        }
-
-        if ($all==true OR $do_quote==1) {
-            $bbcode->addCode ('quote', 'callback_replace', 'do_bbcode_quote', array (),
-                              'block', array ('listitem', 'block', 'inline'), array ('link'));
-            $bbcode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-            $bbcode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
-        }
-
-        if ($all==true OR $do_noparse==1)
-        $bbcode->addCode ('noparse', 'usecontent', 'do_bbcode_noparse', array (),
-                          'inline', array ('listitem', 'block', 'inline', 'link'), array ());
-
-        if ($para==true) {
-            $bbcode->setRootParagraphHandling (true);
-        }
-
-        $bbcode->setGlobalCaseSensitive (false);
-        $bbcode->setMixedAttributeTypes (true);
-        $parsedtext = $bbcode->parse ($text);
-        unset($bbcode);
-
-        return $parsedtext;
-    */
 }
 
 //////////////////////////
@@ -1405,23 +1279,19 @@ function checkVotedPoll($pollid) {
 
     global $FD;
 
-        settype($pollid, 'integer');
+    settype($pollid, 'integer');
 
-        if (isset($_COOKIE['polls_voted'])) {
-            $polls_voted = savesql($_COOKIE['polls_voted']);
-            $votes = explode(',', $polls_voted);
-            if (in_array($pollid, $votes )) {
-                return true;
-            }
+    if (isset($_COOKIE['polls_voted'])) {
+        $votes = explode(',', $_COOKIE['polls_voted']);
+        if (in_array($pollid, $votes )) {
+            return true;
         }
-        $one_day_ago = time()-60*60*24;
-        mysql_query('DELETE FROM '.$FD->config('pref')."poll_voters WHERE time <= '".$one_day_ago."'", $FD->sql()->conn() ); //Delete old IPs
-        $query_id = mysql_query('SELECT voter_id FROM '.$FD->config('pref')."poll_voters WHERE poll_id = $pollid AND ip_address = '".$_SERVER['REMOTE_ADDR']."' AND time > '".$one_day_ago."'", $FD->sql()->conn() ); //Save IP for 1 Day
-        if (mysql_num_rows($query_id) > 0) {
-                return true;
-        }
-
-        return false;
+    }
+    $one_day_ago = time()-60*60*24;
+    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."poll_voters WHERE time <= '".$one_day_ago."'"); //Delete old IPs
+    $query_id = $FD->sql()->conn()->prepare('SELECT COUNT(voter_id) FROM '.$FD->config('pref')."poll_voters WHERE poll_id = $pollid AND ip_address = ? AND time > '".$one_day_ago."' LIMIT 1"); //Save IP for 1 Day
+    $query_id->execute(array($_SERVER['REMOTE_ADDR']));
+    return ( $query_id->fetchColumn() > 0 );
 }
 
 ///////////////////////////////////////////////////////////////
@@ -1429,15 +1299,15 @@ function checkVotedPoll($pollid) {
 ///////////////////////////////////////////////////////////////
 function registerVoter($pollid, $voter_ip) {
 
-        global $FD;
+    global $FD;
 
-        settype($pollid, 'integer');
+    settype($pollid, 'integer');
 
-        mysql_query('INSERT INTO '.$FD->config('pref')."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
-        if (!isset($_COOKIE['polls_voted'])) {
-                setcookie('polls_voted', $pollid, time()+60*60*24*60); //2 months
-        } else {
-                setcookie('polls_voted', $_COOKIE['polls_voted'].','.$pollid, time()+60*60*24*60);
-        }
+    $FD->sql()->conn()->exec('INSERT INTO '.$FD->config('pref')."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
+    if (!isset($_COOKIE['polls_voted'])) {
+        setcookie('polls_voted', $pollid, time()+60*60*24*60); //2 months
+    } else {
+        setcookie('polls_voted', $_COOKIE['polls_voted'].','.$pollid, time()+60*60*24*60);
+    }
 }
 ?>

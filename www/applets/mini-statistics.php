@@ -6,12 +6,12 @@ $stats_day = date ( 'd' );
 
 
 // Overall Data
-$index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'counter', $FD->sql()->conn() );
-$counter_arr = mysql_fetch_assoc ( $index ) ;
+$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'counter' );
+$counter_arr = $index->fetch( PDO::FETCH_ASSOC ) ;
 
 
 // Visitors today
-$index = mysql_query ( '
+$index = $FD->sql()->conn()->query ( '
                         SELECT
                             `s_hits`, `s_visits`
                         FROM
@@ -21,9 +21,8 @@ $index = mysql_query ( '
                         AND
                             `s_month` = '".$stats_month."'
                         AND
-                            `s_day` = '".$stats_day."'
-", $FD->sql()->conn() );
-$today_arr = mysql_fetch_assoc ( $index );
+                            `s_day` = '".$stats_day."'" );
+$today_arr = $index->fetch( PDO::FETCH_ASSOC );
 
 
 // Any users online

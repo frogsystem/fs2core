@@ -17,9 +17,9 @@ if (isset($_POST['sended']))
     for ($i=1; $i<=5; $i++) {
         if ($_FILES['img'.$i]['name'] != '') {
             // Insert into DB
-            $title = savesql($_POST['title'.$i]);
-            mysql_query('INSERT INTO '.$FD->config('pref')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $FD->sql()->conn() );
-            $id = mysql_insert_id();
+            $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."', ?)");
+            $stmt->execute(array($_POST['title'.$i]));
+            $id = $FD->sql()->conn()->lastInsertId();
 
             // File Operations
             $upload = upload_img($_FILES['img'.$i], 'images/screenshots/', $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
@@ -27,7 +27,7 @@ if (isset($_POST['sended']))
 
             // Upload Failed => Delete from DB
             if ($upload != 0) {
-                mysql_query('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = '".$id."'");
+                $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = '".$id."'");
 
             // Else create Thumb
             } else {
@@ -71,11 +71,15 @@ echo'
                                 <td class="config">
                                     <select class="input_width" name="catid">
 ';
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
-while ($cat_arr = mysql_fetch_assoc($index))
+if (!isset($_POST['catid']))
+{
+  $_POST['catid'] = -1;
+}
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1');
+while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'
-                                        <option value="'.$cat_arr['cat_id'].'">
+                                        <option value="'.$cat_arr['cat_id'].'"'.($_POST['catid']==$cat_arr['cat_id'] ? ' selected' : '').'>
                                             '.$cat_arr['cat_name'].'
                                         </option>
     ';
@@ -123,7 +127,6 @@ echo '
                         <p>
                             <b>Hinweis:</b> Alle Bilder zusammen d&uuml;rfen nicht gr&ouml;&szlig;er als '.ini_get('post_max_size').'B sein (Server-Vorgabe).
                         </p>
-
                     </form>
 ';
 ?>

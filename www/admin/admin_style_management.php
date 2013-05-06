@@ -30,26 +30,24 @@ if (
     settype ( $_POST['style_allow_use'], 'integer' );
     settype ( $_POST['style_allow_edit'], 'integer' );
 
-    // MySQL-Queries
-    mysql_query ( '
-                    UPDATE `'.$FD->config('pref')."styles`
-                    SET
-                        `style_allow_use` = '".$_POST['style_allow_use']."',
-                        `style_allow_edit` = '".$_POST['style_allow_edit']."'
-                    WHERE `style_id` = '".$_POST['style_id']."'
-    ", $FD->sql()->conn() );
+    // SQL-Queries
+    $FD->sql()->conn()->exec ( '
+            UPDATE `'.$FD->config('pref')."styles`
+            SET
+                `style_allow_use` = '".$_POST['style_allow_use']."',
+                `style_allow_edit` = '".$_POST['style_allow_edit']."'
+            WHERE `style_id` = '".$_POST['style_id']."'" );
 
-    $index = mysql_query ( '
-                            SELECT `style_tag`
-                            FROM `'.$FD->config('pref')."styles`
-                            WHERE `style_id` = ".$_POST['style_id']."
-    ", $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `style_tag`
+                    FROM `'.$FD->config('pref')."styles`
+                    WHERE `style_id` = ".$_POST['style_id'] );
 
     $new_ini_data = $_POST['style_name']."
 ".$_POST['style_version']."
 ".$_POST['style_copyright'];
 
-    $style_ini = FS2_ROOT_PATH . 'styles/' . stripslashes ( mysql_result ( $index, 0, 'style_tag' ) ) . '/style.ini';
+    $style_ini = FS2_ROOT_PATH . 'styles/' . stripslashes ( $index->fetchColumn() ) . '/style.ini';
     $ACCESS = new fileaccess();
     if ( $ACCESS->putFileData( $style_ini, $new_ini_data ) === FALSE ) {
         $error_extension = '<br>'.$FD->text('admin', 'style_info_not_saved');
@@ -83,22 +81,20 @@ elseif (
         settype ( $_POST['style_id'], 'integer' );
 
         // Check if style is last
-        $index = mysql_query ( '
-                                SELECT `style_id`
-                                FROM `'.$FD->config('pref').'styles`
-                                WHERE `style_allow_use` = 1
-                                AND `style_id` != '.$_POST['style_id'].'
-        ', $FD->sql()->conn() );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT COUNT(`style_id`)
+                        FROM `'.$FD->config('pref').'styles`
+                        WHERE `style_allow_use` = 1
+                        AND `style_id` != '.$_POST['style_id'] );
 
         // Not last usable Style
-        if ( mysql_num_rows ( $index ) >= 1 ) {
+        if ( $index->fetchColumn() >= 1 ) {
 
-            // MySQL-Delete-Query
-            mysql_query ('
-                            DELETE
-                            FROM `'.$FD->config('pref').'styles`
-                            WHERE `style_id` = '.$_POST['style_id'].'
-            ', $FD->sql()->conn() );
+            // SQL-Delete-Query
+            $FD->sql()->conn()->exec ('
+                    DELETE
+                    FROM `'.$FD->config('pref').'styles`
+                    WHERE `style_id` = '.$_POST['style_id'] );
 
             if (
                 $FD->config('style_id') == $_POST['style_id']
@@ -108,24 +104,24 @@ elseif (
                 // Security-Functions
                 settype ( $_POST['new_style_id'], 'integer' );
 
-                $index = mysql_query ( '
-                                        SELECT `style_tag`
-                                        FROM `'.$FD->config('pref').'styles`
-                                        WHERE `style_id` = '.$_POST['new_style_id'].'
-                                        AND `style_id` != 0
-                                        AND `style_allow_use` = 1
-                                        LIMIT 0,1
-                ', $FD->sql()->conn() );
-                if ( mysql_num_rows ( $index ) == 1 ) {
-                    // MySQL-Queries
-                    mysql_query ( '
-                                    UPDATE
-                                        `'.$FD->config('pref')."global_config`
-                                    SET
-                                        `style_id` = '".$_POST['new_style_id']."',
-                                        `style_tag` = '".stripslashes ( mysql_result ( $index, 0, 'style_tag' ) )."'
-                                    WHERE `id` = '1'
-                    ", $FD->sql()->conn() );
+                $index = $FD->sql()->conn()->query ( '
+                                SELECT `style_tag`
+                                FROM `'.$FD->config('pref').'styles`
+                                WHERE `style_id` = '.$_POST['new_style_id'].'
+                                AND `style_id` != 0
+                                AND `style_allow_use` = 1
+                                LIMIT 0,1' );
+                $tag = $index->fetchColumn();
+                if ( $tag !== false ) {
+                    // SQL-Queries
+                    $stmt = $FD->sql()->conn()->prepare('
+                                UPDATE
+                                    `'.$FD->config('pref')."global_config`
+                                SET
+                                    `style_id` = '".$_POST['new_style_id']."',
+                                    `style_tag` = ?
+                                WHERE `id` = '1'");
+                    $stmt->execute(array(stripslashes ( $tag )));
                 }
             }
 
@@ -158,17 +154,14 @@ elseif (
 
     if ( file_exists ( FS2_ROOT_PATH . 'styles/' . $_POST['style_tag'] . '/style.ini' ) ) {
 
-        // Security-Functions
-        $_POST['style_tag'] = savesql ( $_POST['style_tag'] );
-
-        // MySQL-Queries
-        mysql_query ( '
-                        INSERT INTO
-                            `'.$FD->config('pref')."styles`
-                            (`style_tag`, `style_allow_use`, `style_allow_edit`)
-                        VALUES
-                            ( '".$_POST['style_tag']."', 1, 1 )
-        ", $FD->sql()->conn() );
+        // SQL-Queries
+        $stmt = $FD->sql()->conn()->prepare('
+                    INSERT INTO
+                        `'.$FD->config('pref')."styles`
+                        (`style_tag`, `style_allow_use`, `style_allow_edit`)
+                    VALUES
+                        ( ?, 1, 1 )");
+        $stmt->execute(array($_POST['style_tag']));
 
         // Display info
         systext ( $FD->text("admin", "style_installed"),
@@ -176,7 +169,7 @@ elseif (
 
         // Go to Edit-Page of the installed Style
         unset ( $_POST );
-        $_POST['style_id'] = mysql_insert_id ();
+        $_POST['style_id'] = $FD->sql()->conn()->lastInsertId();
         $_POST['style_action'] = 'edit';
 
     } else {
@@ -212,13 +205,12 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
 
         // Get Data from DB
         } else {
-            $index = mysql_query ( '
-                                    SELECT *
-                                    FROM `'.$FD->config('pref')."styles`
-                                    WHERE `style_id` = '".$_POST['style_id']."'
-                                    LIMIT 0,1
-            ", $FD->sql()->conn() );
-            $data_arr = mysql_fetch_assoc ( $index );
+            $index = $FD->sql()->conn()->query ( '
+                            SELECT *
+                            FROM `'.$FD->config('pref')."styles`
+                            WHERE `style_id` = '".$_POST['style_id']."'
+                            LIMIT 0,1" );
+            $data_arr = $index->fetch(PDO::FETCH_ASSOC);
             $style_ini = FS2_ROOT_PATH . 'styles/' . stripslashes ( $data_arr['style_tag'] ) . '/style.ini';
             $ACCESS = new fileaccess();
             $ini_lines = $ACCESS->getFileArray( $style_ini );
@@ -325,17 +317,16 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
         $_POST['style_id'] = $_POST['style_id'][0];
 
         // Check if style is last
-        $index = mysql_query ( '
-                                SELECT `style_id`, `style_tag`
-                                FROM `'.$FD->config('pref').'styles`
-                                WHERE `style_id` != 0
-                                AND `style_allow_use` = 1
-                                AND `style_id` != '.$_POST['style_id'].'
-                                ORDER BY `style_tag`
-        ', $FD->sql()->conn() );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT COUNT(`style_id`)
+                        FROM `'.$FD->config('pref').'styles`
+                        WHERE `style_id` != 0
+                        AND `style_allow_use` = 1
+                        AND `style_id` != '.$_POST['style_id'].'
+                        ORDER BY `style_tag`' );
 
         // Not last usable Style
-        if ( mysql_num_rows ( $index ) >= 1 ) {
+        if ( $index->fetchColumn() >= 1 ) {
 
             // Display Head of Table
             echo '
@@ -353,13 +344,12 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
             ';
 
             // get style from db
-            $data = mysql_query ( '
-                                    SELECT *
-                                    FROM `'.$FD->config('pref').'styles`
-                                    WHERE `style_id` = '.$_POST['style_id'].'
-                                    LIMIT 0,1
-            ', $FD->sql()->conn() );
-            $data_arr = mysql_fetch_assoc ( $data );
+            $data = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM `'.$FD->config('pref').'styles`
+                        WHERE `style_id` = '.$_POST['style_id'].'
+                        LIMIT 0,1');
+            $data_arr = $data->fetch(PDO::FETCH_ASSOC);
             $data_arr['ini_lines'] = get_style_ini_data ( FS2_ROOT_PATH . 'styles/' . stripslashes ( $data_arr['style_tag'] ) . '/style.ini' );
 
             // display style info
@@ -382,7 +372,14 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                                             <td class="middle config">
                                                 <select class="input_width_mini" name="new_style_id" size="1">
                 ';
-                while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
+                $index = $FD->sql()->conn()->query ( '
+                        SELECT `style_id`, `style_tag`
+                        FROM `'.$FD->config('pref').'styles`
+                        WHERE `style_id` != 0
+                        AND `style_allow_use` = 1
+                        AND `style_id` != '.$_POST['style_id'].'
+                        ORDER BY `style_tag`' );
+                while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
                     settype ( $style_arr['style_id'], 'integer' );
                     echo '<option value="'.$style_arr['style_id'].'">'.killhtml ( $style_arr['style_tag'] ).'</option>';
                 }
@@ -439,19 +436,25 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
 if ( !isset ( $_POST['style_id'] ) )
 {
     // get Styles from db
-    $index = mysql_query ( '
-                            SELECT *
-                            FROM `'.$FD->config('pref')."styles`
-                            WHERE `style_id` != 0
-                            AND `style_tag` != 'default'
-                            ORDER BY `style_tag`
-    ", $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT COUNT(*)
+                    FROM `'.$FD->config('pref')."styles`
+                    WHERE `style_id` != 0
+                    AND `style_tag` != 'default'
+                    ORDER BY `style_tag`" );
 
-    $num_of_styles = mysql_num_rows ( $index );
+    $num_of_styles = $index->fetchColumn();
+
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT *
+                    FROM `'.$FD->config('pref')."styles`
+                    WHERE `style_id` != 0
+                    AND `style_tag` != 'default'
+                    ORDER BY `style_tag`" );
 
     $style_arr = array();
     $style_tag_arr = array();
-    while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+    while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $style_arr[] = $data_arr;
         $style_tag_arr[] = $data_arr['style_tag'];
     }

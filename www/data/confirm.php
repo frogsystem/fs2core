@@ -12,7 +12,11 @@ if (isset($_GET['h'])) {
         switch($hash->getType()) {
             case 'newpassword':
                 //load user data from db
-                $userdata = $FD->sql()->getById('user', array('user_id', 'user_name', 'user_mail'), $hash->getTypeId(), 'user_id');
+                $userdata = $FD->sql()->conn()->query(
+                                  'SELECT user_id, user_name, user_mail
+                                   FROM '.$FD->config('pref').'user
+                                   WHERE user_id = '.intval($hash->getTypeId()).' LIMIT 1');
+                $userdata = $userdata->fetch(PDO::FETCH_ASSOC);
 
                 // create new Password
                 $newpassword = generate_pwd(15);
@@ -20,8 +24,13 @@ if (isset($_GET['h'])) {
                 $userdata['user_password'] = md5($newpassword.$salt);
                 $userdata['user_salt'] = $salt;
 
-                // save password todb
-                $FD->sql()->save('user', $userdata, 'user_id');
+                // save password to db
+                $stmt = $FD->sql()->conn()->prepare(
+                              'UPDATE '.$FD->config('pref').'user
+                               SET user_password = ?, user_salt = ?
+                               WHERE user_id = '.intval($userdata['user_id']).'
+                               LIMIT 1');
+                $stmt->execute(array($userdata['user_password'], $userdata['user_salt']));
 
                 // set message
                 $messages = array($FD->text('frontend', 'new_password_confirmed_text'));
