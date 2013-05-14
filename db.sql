@@ -3,7 +3,6 @@
 -- Host: localhost    Database: fs2
 -- ------------------------------------------------------
 -- Server version	5.1.53-community-log
--- Test
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1289,4 +1288,4 @@ CREATE TABLE `fs2_wallpaper_sizes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-05-14 15:19:12
+-- Dump completed on 2013-05-14 15:24:37
