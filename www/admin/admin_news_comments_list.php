@@ -529,7 +529,7 @@ echo '
            </td>
          </tr>
          <tr>
-           <td style="text-align:center;" colspan="4"><font size="1">Zugeh&ouml;rige Newsmeldung: <a href="../?go=comments&id='
+           <td style="text-align:center;" colspan="4"><font size="1">Zugeh&ouml;rige Newsmeldung: <a href="../?go=comments&amp;id='
                                               .$comment_arr['news_id'].'" target="_blank">&quot;'
                                               .htmlentities($comment_arr['news_title'], ENT_QUOTES).'&quot;</a></font>
            </td>
@@ -539,7 +539,7 @@ echo '
     if ($comment_arr['comment_classification']==0)
     {
       //unclassified comment
-      echo '         <form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline";>
+      echo '         <form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline;">
                <input type="hidden" value="news_comments_list" name="go">
                <input type="hidden" value="'.$_GET['start'].'" name="start">
                <input type="hidden" value="'.$_GET['sort'].'" name="sort">
@@ -547,7 +547,7 @@ echo '
                <input type="hidden" name="commentid" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="b8_action" value="mark_as_ham">
                <input class="button" type="submit" value="Kein Spam :)">
-             </form><form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline";>
+             </form><form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline;">
                <input type="hidden" value="news_comments_list" name="go">
                <input type="hidden" value="'.$_GET['start'].'" name="start">
                <input type="hidden" value="'.$_GET['sort'].'" name="sort">
