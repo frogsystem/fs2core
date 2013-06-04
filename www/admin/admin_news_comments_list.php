@@ -88,7 +88,101 @@
     }
 //
 
+  //no b8 at first
+  $b8 = NULL;
+  //Is there something to do for b8?
+  if (isset($_POST['commentid']) && isset($_POST['b8_action']))
+  {
+    //got work to do
+    settype($_POST['commentid'], 'integer');
+    $_POST['commentid'] = (int) $_POST['commentid'];
+    //check comment's current status
+    $query = $FD->sql()->conn()->query('SELECT comment_id, comment_title, comment_poster,
+                  comment_poster_id, comment_text, comment_classification
+                  FROM `'.$FD->config('pref').'comments` WHERE comment_id=\''.$_POST['commentid'].'\'');
+    if ($result = $query->fetch(PDO::FETCH_ASSOC))
+    {
+      //found it, go on
+      if ($result['comment_classification']!=0)
+      {
+        //already has classification
+        echo '<center><b>Fehler:</b> Der Kommentar mit der angegebenen ID ist '
+          .'schon als ';
+        if ($result['comment_classification']>0)
+        {
+          echo 'spamfrei';
+        }
+        else
+        {
+          echo 'Spam';
+        }
+        echo ' klassifiert!</center>';
+      }//if classification<>0
+      else
+      {
+        //no classification, go for it!
+        // -- retrieve name, if applicable
+        if ($result['comment_poster_id'] != 0)
+        {
+          $userindex = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = \''.$result['comment_poster_id'].'\'');
+          $comment_arr['comment_poster'] = $userindex->fetchColumn();
+        }
+        //include b8 stuff
+        require_once FS2_ROOT_PATH.'resources/spamdetector/b8/b8.php';
+        //create b8 object
+        $success = true;
+        try {
+          $b8 = new b8(array('storage' => 'mysql'), array('connection' => $FD->sql()->conn()));
+        }
+        catch (Exception $e)
+        {
+          $success = false;
+          $b8 = NULL; //free it
+          echo '<center><b>Fehler:</b> Konnte b8 nicht starten! '.$e->getMessage().'</center>';
+        }
+        //check if construction was successful
+        if ($success)
+	    {
+	      switch ($_POST['b8_action'])
+	      {
+	        case 'mark_as_ham':
+                 $query = $FD->sql()->conn()->query('UPDATE `'.$FD->config('pref').'comments` SET comment_classification=\'1\' WHERE comment_id=\''.$_POST['commentid'].'\'');
+                 if (!$query)
+                 {
+                   //SQL error?
+                   $info = $FD->sql()->conn()->errorInfo();
+                   echo $info[2];
+                 }
+	             $b8->learn(strtolower($result['comment_title'].' '.$result['comment_poster'].' '.$result['comment_text']), b8::HAM);
+	             break;
+	        case 'mark_as_spam':
+	             $query = $FD->sql()->conn()->query('UPDATE `'.$FD->config('pref').'comments` SET comment_classification=\'-1\' WHERE comment_id=\''.$_POST['commentid'].'\'');
+	             if (!$query)
+                 {
+                   //SQL error?
+                   $info = $FD->sql()->conn()->errorInfo();
+                   echo $info[2];
+                 }
+                 $b8->learn(strtolower($result['comment_title'].' '.$result['comment_poster'].' '.$result['comment_text']), b8::SPAM);
+	             break;
+	        default:
+	             //Form manipulation or programmer's stupidity? I don't like it either way!
+	             echo '<center><b>b8-Fehler:</b> Die angegebene Aktion ist nicht'
+                     .'g&uuml;ltig.</center>';
+                 break;
+	      }//swi
+	    }//else (b8 init successful)
+      }//else
+    }
+    else
+    {
+      //not found, there is no such comment
+      echo '<center><b>Fehler:</b> Kein Kommentar mit der angegebenen ID ist '
+          .'vorhanden! Es wird keine Klassifizierung vorgenommen.</center>';
+    }//else
+  }//if b8
 
+  //check GET parameter start
   if (!isset($_GET['start']) || $_GET['start']<0)
   {
     $_GET['start'] = 0;
@@ -111,7 +205,8 @@
                   ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30');
   $rows = $query->fetchColumn();
   $query = $FD->sql()->conn()->query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text,
-                  `'.$FD->config('pref').'comments`.content_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title
+                  `'.$FD->config('pref').'comments`.content_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title,
+                  comment_classification
                   FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news`
                   WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
                          AND content_type=\'news\' 
@@ -119,7 +214,7 @@
 
   //Bereich (zahlenm‰ﬂig)
   $bereich = '<font class="small">'.($_GET['start']+1).' ... '.($_GET['start'] + $rows).'</font>';
-  //Ist dies nicht die erste Seite?
+  //Is this not the first page?
   if ($_GET['start']>0)
   {
     $prev_start = $_GET['start']-30;
@@ -128,12 +223,12 @@
       $prev_start = 0;
     }
     $prev_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&start='.$prev_start.'"><- zur&uuml;ck</a>';
-  }//if nicht erste Seite
-  //Ist dies nicht die letzte Seite?
+  }//if not first page
+  //Is this not the last page?
   if ($_GET['start']+30<$cc)
   {
     $next_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&start='.($_GET['start']+30).'">weiter -></a>';
-  }//if nicht die letzte Seite
+  }//if not the last page
 
 echo <<<EOT
   <table class="configtable" cellpadding="4" cellspacing="0">
@@ -185,7 +280,8 @@ EOT;
            </td>
            <td class="configthin">
                '.spamLevelToText(spamEvaluation($comment_arr['comment_title'],
-                 $comment_arr['comment_poster_id'], $comment_arr['comment_poster'], $comment_arr['comment_text'])).'
+                 $comment_arr['comment_poster_id'], $comment_arr['comment_poster'],
+                 $comment_arr['comment_text'], true, $FD->sql()->conn())).'
            </td>
            <td class="configthin" rowspan="2">
              <form action="" method="post">
@@ -214,6 +310,37 @@ EOT;
                                               .$comment_arr['news_id'].'" target="_blank">&quot;'
                                               .htmlentities($comment_arr['news_title'], ENT_QUOTES).'&quot;</a></font>
            </td>
+         </tr>
+         <tr>
+           <td style="text-align:center;" colspan="5">';
+    if ($comment_arr['comment_classification']==0)
+    {
+      //unclassified comment
+      echo '         <form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline";>
+               <input type="hidden" value="news_comments_list" name="go">
+               <input type="hidden" value="'.$_GET['start'].'" name="start">
+               <input type="hidden" name="commentid" value="'.$comment_arr['comment_id'].'">
+               <input type="hidden" name="b8_action" value="mark_as_ham">
+               <input class="button" type="submit" value="Kein Spam :)">
+             </form><form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline";>
+               <input type="hidden" value="news_comments_list" name="go">
+               <input type="hidden" value="'.$_GET['start'].'" name="start">
+               <input type="hidden" name="commentid" value="'.$comment_arr['comment_id'].'">
+               <input type="hidden" name="b8_action" value="mark_as_spam">
+               <input class="button" type="submit" value="Das ist Spam!">
+             </form>';
+    }//if class==0
+    else if ($comment_arr['comment_classification']>0)
+    {
+      //comment classified as ham
+      echo '<font color="#008000" size="1">Als spamfrei markiert</font>';
+    }
+    else if ($comment_arr['comment_classification']<0)
+    {
+      //comment classified as spam
+      echo '<font color="#C00000" size="1">Als Spam markiert</font>';
+    }
+echo '         </td>
          </tr>
          <tr>
            <td colspan="5"><hr width="95%" style="color: #cccccc; background-color: #cccccc;"></td>

@@ -23,6 +23,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `b8_wordlist`
+--
+
+DROP TABLE IF EXISTS `b8_wordlist`;
+CREATE TABLE `b8_wordlist` (
+  `token` varchar(255) character set utf8 collate utf8_bin NOT NULL,
+  `count_ham` int unsigned default NULL,
+  `count_spam` int unsigned default NULL,
+  PRIMARY KEY (`token`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `fs2_admin_cp`
+--
+
+INSERT INTO `b8_wordlist` (`token`, `count_ham`) VALUES ('b8*dbversion', '3');
+INSERT INTO `b8_wordlist` (`token`, `count_ham`, `count_spam`) VALUES ('b8*texts', '0', '0');
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `fs2_admin_cp`
 --
 
@@ -424,6 +445,7 @@ CREATE TABLE `fs2_comments` (
   `comment_date` int(11) DEFAULT NULL,
   `comment_title` varchar(100) DEFAULT NULL,
   `comment_text` text,
+  `comment_classification` TINYINT NOT NULL DEFAULT '0'
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
