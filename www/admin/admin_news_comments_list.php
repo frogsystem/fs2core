@@ -88,6 +88,142 @@
     }
 //
 
+
+  //statistics requested?
+  if (isset($_REQUEST['b8_stats']))
+  {
+    $query = $FD->sql()->conn()->query('SELECT * FROM b8_wordlist WHERE token LIKE \'b8*%\'');
+    $b8_info = array();
+    while ($result = $query->fetch(PDO::FETCH_ASSOC))
+    {
+      switch ($result['token'])
+      {
+        case 'b8*texts':
+             $b8_info['b8*texts.ham'] = $result['count_ham'];
+             $b8_info['b8*texts.spam'] = $result['count_spam'];
+             break;
+        case 'b8*dbversion':
+             $b8_info['b8*dbversion'] = $result['count_ham'];
+             break;
+      }//swi
+    }//while
+    echo '
+    <table class="configtable" cellpadding="4" cellspacing="0">
+      <tr>
+        <td style="text-align:center;" class="line" colspan="3">
+           <strong>Statistik zur Wortliste</strong>
+        </td>
+      </tr>
+      <tr>
+        <td class="config" width="33%">
+          Gelernte spamfreie Kommentare
+        </td>
+        <td class="config" width="33%">
+          Gelernte Spamkommentare
+        </td>
+        <td class="config">
+           BayesDB-Version
+        </td>
+      </tr>
+      <tr>
+        <td class="configthin" style="text-align:center;">'.$b8_info['b8*texts.ham'].'</td>
+        <td class="configthin" style="text-align:center;">'.$b8_info['b8*texts.spam'].'</td>
+        <td class="configthin" style="text-align:center;">'.$b8_info['b8*dbversion'].'</td>
+      </tr>
+    </table>';
+    //get most used ham words
+    $query = $FD->sql()->conn()->query('SELECT token, count_ham
+                    FROM b8_wordlist WHERE token NOT LIKE \'b8*%\' 
+                    ORDER BY count_ham DESC LIMIT 30');
+    $ham_words = array();
+    while ($result = $query->fetch(PDO::FETCH_ASSOC))
+    {
+      $ham_words[] = array('token' => $result['token'], 'ham' => (int) $result['count_ham']);
+    }//while
+    //get most used spam words
+    $query = $FD->sql()->conn()->query('SELECT token, count_spam
+                    FROM b8_wordlist WHERE token NOT LIKE \'bayes*%\' 
+                    ORDER BY count_spam DESC LIMIT 30');
+    $spam_words = array();
+    while ($result = $query->fetch(PDO::FETCH_ASSOC))
+    {
+      $spam_words[] = array('token' => $result['token'], 'spam' => (int) $result['count_spam']);
+    }//while
+    $ham_count = count($ham_words);
+    $spam_count = count($spam_words);
+    $max_count = max($ham_count, $spam_count);
+    //print table
+    echo '<br><br>
+    <table border="0" cellpadding="2" cellspacing="0" class="configtable">
+      <tr>
+        <td style="text-align:center;" class="config" colspan="2" width="50%">
+           H&auml;ufigste Spamtokens
+        </td>
+        <td style="text-align:center;" class="config" colspan="2" width="50%">
+           H&auml;ufigste spamfreie Tokens
+        </td>
+      </tr>
+      <tr>
+        <td class="config">
+           Token
+        </td>
+        <td style="text-align:center;" class="config">
+           Anzahl
+        </td>
+        <td class="config">
+           Token
+        </td>
+        <td style="text-align:center;" class="config">
+           Anzahl
+        </td>
+      </tr>';
+    if ($max_count==0)
+    {
+      echo '<tr>
+        <td style="text-align:center;" class="configthin" colspan="4">
+           <strong>Es sind noch keine Tokens in der Wortliste vorhanden.</strong>
+        </td>
+      </tr>';
+    }
+    else
+    {
+      for ($i=0; $i<$max_count; $i = $i +1)
+      {
+        //Spam
+        if ($i<$spam_count)
+        {
+          echo '<tr>
+        <td class="configthin">'.htmlspecialchars($spam_words[$i]['token']).'</td>
+        <td class="configthin" style="text-align:center;">'.$spam_words[$i]['spam'].'</td>';
+        }
+        else
+        {
+          echo '<tr>
+        <td class="configthin" colspan="2"> </td>';
+        }
+        //Ham
+        if ($i<$ham_count)
+        {
+          echo '<td class="configthin">'.htmlspecialchars($ham_words[$i]['token']).'</td>
+        <td class="configthin" style="text-align:center;">'.$ham_words[$i]['ham'].'</td>
+      </tr>';
+        }
+        else
+        {
+          echo '<td class="configthin" colspan="2"> </td></tr>';
+        }
+      }//for
+    }//else (Tokens vorhanden)
+
+    echo '</table>
+    <br>
+    <center><a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list">Zur&uuml;ck zur Kommentarliste</a></center><br>';
+  }//if stats requested
+  else
+  {
+    //no stats, normal list
+
+
   //no b8 at first
   $b8 = NULL;
   //Is there something to do for b8?
@@ -201,7 +337,7 @@
   $query = $FD->sql()->conn()->query('SELECT COUNT(comment_id)
                   FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news`
                   WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
-                         AND content_type=\'news\' 
+                         AND content_type=\'news\'
                   ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30');
   $rows = $query->fetchColumn();
   $query = $FD->sql()->conn()->query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text,
@@ -209,7 +345,7 @@
                   comment_classification
                   FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news`
                   WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
-                         AND content_type=\'news\' 
+                         AND content_type=\'news\'
                   ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30');
 
   //Bereich (zahlenm‰ﬂig)
@@ -222,12 +358,12 @@
     {
       $prev_start = 0;
     }
-    $prev_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&start='.$prev_start.'"><- zur&uuml;ck</a>';
+    $prev_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;start='.$prev_start.'"><- zur&uuml;ck</a>';
   }//if not first page
   //Is this not the last page?
   if ($_GET['start']+30<$cc)
   {
-    $next_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&start='.($_GET['start']+30).'">weiter -></a>';
+    $next_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;start='.($_GET['start']+30).'">weiter -></a>';
   }//if not the last page
 
 echo <<<EOT
@@ -378,11 +514,14 @@ EOT;
   {
     echo $next_page;
   }
-echo <<<EOT
+echo '
                                 </td>
                             </tr>
-                        </table>
-EOT;
-
-
+                            <tr>
+                            <td colspan="3" style="text-align:center;" class="configthin">
+                              <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;b8_stats=1">Statistik anzeigen</a>
+                            </td>
+                          </tr>
+                        </table>';
+  } //else
 ?>
