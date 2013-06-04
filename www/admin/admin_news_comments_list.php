@@ -362,12 +362,60 @@
   }
   $_GET['start'] = (int) $_GET['start'];
   settype($_GET['start'], 'integer');
+  //check GET parameter order
+  if (isset($_POST['order']) && !isset($_GET['order']))
+  {
+    //value of order can be sent via POST (form), too
+    $_GET['order'] = $_POST['order'];
+  }
+  if (!isset($_GET['order']))
+  {
+    $_GET['order'] = 1;
+  }
+  settype($_GET['order'], 'integer');
+  //check allowed values
+  if ($_GET['order']!=1)
+  {
+    $_GET['order'] = 0;
+  }//if
+  //sort criterion set?
+  if (!isset($_GET['sort']))
+  {
+    $_GET['sort'] = 'date';
+  }
+  settype($_GET['sort'], 'string');
+
   //Anzahl der Kommentare auslesen
   $query = $FD->sql()->conn()->query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref').'comments` WHERE content_type=\'news\'');
   $cc = (int) $query->fetchColumn();
   if ($_GET['start']>=$cc)
   {
     $_GET['start'] = $cc - ($cc % 30);
+  }
+  //check for valid parameters and set order clause
+  switch ($_GET['sort'])
+  {
+    case 'date':
+         $order = 'comment_date';
+         break;
+    case 'name':
+         $order = 'real_name';
+         break;
+    case 'title':
+         $order = 'comment_title';
+         break;
+    default:
+         $_GET['sort'] = 'date';
+         $order = 'comment_date';
+         break;
+  }//swi
+  if ($_GET['order']===0)
+  {
+    $order .= ' ASC';
+  }
+  else
+  {
+    $order .= ' DESC';
   }
 
   //Kommentare auslesen
@@ -379,11 +427,12 @@
   $rows = $query->fetchColumn();
   $query = $FD->sql()->conn()->query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text,
                   `'.$FD->config('pref').'comments`.content_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title,
-                  comment_classification
-                  FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news`
+                  comment_classification, IF(comment_poster_id=0, comment_poster, `'.$FD->config('pref').'user`.user_name) AS real_name
+                  FROM `'.$FD->config('pref').'comments` LEFT JOIN `'.$FD->config('pref').'user`
+                  ON `'.$FD->config('pref').'comments`.comment_poster_id=`'.$FD->config('pref').'user`.user_id, `'.$FD->config('pref').'news`
                   WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
                          AND content_type=\'news\'
-                  ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30');
+                  ORDER BY '.$order.' LIMIT '.$_GET['start'].', 30');
 
   //Bereich (zahlenm‰ﬂig)
   $bereich = '<font class="small">'.($_GET['start']+1).' ... '.($_GET['start'] + $rows).'</font>';
@@ -395,28 +444,30 @@
     {
       $prev_start = 0;
     }
-    $prev_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;start='.$prev_start.'"><- zur&uuml;ck</a>';
+    $prev_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort='.$_GET['sort'].'&amp;order='.$_GET['order'].'&amp;start='.$prev_start.'"><- zur&uuml;ck</a>';
   }//if not first page
   //Is this not the last page?
   if ($_GET['start']+30<$cc)
   {
-    $next_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;start='.($_GET['start']+30).'">weiter -></a>';
+    $next_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort='.$_GET['sort'].'&amp;order='.$_GET['order'].'&amp;start='.($_GET['start']+30).'">weiter -></a>';
   }//if not the last page
 
-echo <<<EOT
+  $inverse_order = ($_GET['order']+1) % 2;
+
+echo '
   <table class="configtable" cellpadding="4" cellspacing="0">
     <tr>
       <td class="line" colspan="5">Kommentarliste</td>
     </tr>
     <tr>
       <td class="config" width="30%">
-          Titel
+          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=title&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Titel</a>
       </td>
       <td class="config" width="30%">
-          Poster
+          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=name&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Poster</a>
       </td>
       <td class="config" width="20%">
-          Datum
+          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=date&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Datum</a>
       </td>
       <td class="config" width="10%">
           Spamwahrscheinlichkeit
@@ -425,15 +476,14 @@ echo <<<EOT
           bearbeiten
       </td>
     </tr>
-EOT;
+  ';
   require_once(FS2_ROOT_PATH . 'resources/spamdetector/eval_spam.inc.php');
 
   while ($comment_arr = $query->fetch(PDO::FETCH_ASSOC))
   {
     if ($comment_arr['comment_poster_id'] != 0)
     {
-      $userindex = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = \''.$comment_arr['comment_poster_id'].'\'');
-      $comment_arr['comment_poster'] = $userindex->fetchColumn();
+      $comment_arr['comment_poster'] = $comment_arr['real_name'];
     }
     $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date'])
                                       .' um '.date('H:i' , $comment_arr['comment_date']);
@@ -492,12 +542,16 @@ EOT;
       echo '         <form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline";>
                <input type="hidden" value="news_comments_list" name="go">
                <input type="hidden" value="'.$_GET['start'].'" name="start">
+               <input type="hidden" value="'.$_GET['sort'].'" name="sort">
+               <input type="hidden" value="'.$_GET['order'].'" name="order">
                <input type="hidden" name="commentid" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="b8_action" value="mark_as_ham">
                <input class="button" type="submit" value="Kein Spam :)">
              </form><form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline";>
                <input type="hidden" value="news_comments_list" name="go">
                <input type="hidden" value="'.$_GET['start'].'" name="start">
+               <input type="hidden" value="'.$_GET['sort'].'" name="sort">
+               <input type="hidden" value="'.$_GET['order'].'" name="order">
                <input type="hidden" name="commentid" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="b8_action" value="mark_as_spam">
                <input class="button" type="submit" value="Das ist Spam!">
@@ -508,16 +562,16 @@ EOT;
       //comment classified as ham
       echo '<font color="#008000" size="1">Als spamfrei markiert</font> <a href="'
           .$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;b8_action=unclassify&amp;commentid='
-          .$comment_arr['comment_id'].'&amp;start='.$_GET['start']
-          .'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
+          .$comment_arr['comment_id'].'&amp;start='.$_GET['start'].'&amp;sort='.$_GET['sort']
+          .'&amp;order='.$_GET['order'].'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
     }
     else if ($comment_arr['comment_classification']<0)
     {
       //comment classified as spam
       echo '<font color="#C00000" size="1">Als Spam markiert</font> <a href="'
           .$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;b8_action=unclassify&amp;commentid='
-          .$comment_arr['comment_id'].'&amp;start='.$_GET['start']
-          .'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
+          .$comment_arr['comment_id'].'&amp;start='.$_GET['start'].'&amp;sort='.$_GET['sort']
+          .'&amp;order='.$_GET['order'].'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
     }
 echo '         </td>
          </tr>
