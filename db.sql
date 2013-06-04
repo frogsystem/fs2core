@@ -445,7 +445,9 @@ CREATE TABLE `fs2_comments` (
   `comment_date` int(11) DEFAULT NULL,
   `comment_title` varchar(100) DEFAULT NULL,
   `comment_text` text,
-  `comment_classification` TINYINT NOT NULL DEFAULT '0'
+  `comment_classification` TINYINT NOT NULL DEFAULT '0',
+  `spam_probability` FLOAT NOT NULL DEFAULT '0.5',
+  `needs_update` TINYINT NOT NULL DEFAULT '1',
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;

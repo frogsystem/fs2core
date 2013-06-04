@@ -89,26 +89,27 @@
          poster_name  - the name of the user who posted the comment
          comment_text - the comment's complete text
          use_b8       - set this to true to use b8 ("Bayesian") evaluation
-         connex       - the DB's PDO object
+         b8           - preinitialised instance of the b8 class
   */
-  function spamEvaluation($title, $poster_id, $poster_name, $comment_text, $use_b8=false, $connex=NULL)
+  function spamEvaluation($title, $poster_id, $poster_name, $comment_text, $use_b8=false, $b8=NULL)
   {
     $comment_text = strtolower($comment_text);
     if ($use_b8)
     {
       require_once FS2_ROOT_PATH.'/resources/spamdetector/b8/b8.php';
-      try {
-        $b8 = new b8(array('storage' => 'mysql'), array('connection' => $connex));
-        $success = true;
-      }
-      catch (Exception $e)
+      if ($b8==NULL)
       {
-        $success = $e->getMessage();
+        $success = 'No b8 instance passed to spamEvaluation() function!';
+      }
+      else
+      {
+        //check if b8 construction was successful
+        $success = (is_object($b8) && get_class($b8)==='b8') ? true : 'Value passed to spamEvaluation() function is not a b8 object!';
       }
       //check if construction was successful
       if ($success!==true)
       {
-		echo '<b>Error:</b> Could not initialize b8. error code: '.$success;
+		echo '<b>Error:</b> Could not perform spam evaluation with b8. '.$success;
 		//will use "normal" evaluation instead
 		return spamEvaluation($title, $poster_id, $poster_name, $comment_text, false, NULL);
 	  }
