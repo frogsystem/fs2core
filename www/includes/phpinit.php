@@ -12,10 +12,10 @@ function phpinit ($session = true, $header = false, $libloader = null) {
         session_start();
 
     // Disable magic_quotes_runtime
-    if (!get_magic_quotes_gpc() || !get_magic_quotes_runtime()) {
-		ini_set('magic_quotes_gpc', 0);
-		ini_set('magic_quotes_runtime', 0);
-	}
+    if (get_magic_quotes_gpc() || get_magic_quotes_runtime()) {
+        ini_set('magic_quotes_gpc', 0);
+        ini_set('magic_quotes_runtime', 0);
+    }
 
     // Default libloader
     if (is_null($libloader)) {
