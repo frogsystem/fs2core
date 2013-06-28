@@ -1,7 +1,7 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
     // Reload Page
-    if ( !$_POST['sended'] ) {
+    if ( !isset($_POST['sended']) ) {
 
         // Reload Page Template
         $template = '
@@ -65,7 +65,12 @@
 
     // Preview Page
     else {
-
+        // goto
+        $goto = 'news_preview';
+        $FD->setConfig('env', 'get_go', $goto);
+        $FD->setConfig('goto', $goto);
+        $FD->setConfig('env', 'goto', $goto);  
+    
         // Get News Config
         $FD->loadConfig('news');
         $config_arr = $FD->configObject('news')->getConfigArray();

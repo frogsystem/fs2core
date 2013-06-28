@@ -28,6 +28,7 @@ $edit_table = $adminpage->get('edit_table', false);
 $adminpage->addText('table', $edit_table);
 $script_edit = $adminpage->get('link_edit', false);
 
+$adminpage->addCond('notscript', false);
 $script_entry = $adminpage->get('link_entry', false);
 $adminpage->addText('sul', $config_arr['short_url_len']);
 $adminpage->addText('sur', $config_arr['short_url_rep']);
@@ -285,6 +286,7 @@ if ( TRUE ) {
     $adminpage->addCond('news_comments_allowed', $_POST['news_comments_allowed'] === 1);
 
     // Values
+    unset($_POST['link_name']);
     foreach ($_POST as $key => $value) {
         $adminpage->addText($key, $value);
     }

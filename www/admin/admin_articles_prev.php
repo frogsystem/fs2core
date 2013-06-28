@@ -2,7 +2,7 @@
 
 
 // Reload Page
-if ( !$_POST['article_text'] && !$_POST['sended'] ) {
+if ( !isset($_POST['article_text']) && !isset($_POST['sended']) ) {
     // Reload Page Template
     $template = '
         <script type="text/javascript">
@@ -63,6 +63,12 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
 
 // Preview Page
 else {
+    // goto
+    $goto = 'articles_preview';
+    $FD->setConfig('env', 'get_go', $goto);
+    $FD->setConfig('goto', $goto);
+    $FD->setConfig('env', 'goto', $goto);    
+    
 
     // Load Data from $_POST
     $article_arr['article_title'] = stripslashes ( $_POST['article_title'] );

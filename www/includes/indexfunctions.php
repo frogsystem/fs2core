@@ -1144,9 +1144,9 @@ function clean_timed_preview_images () {
     $FD->loadConfig('preview_images');
 
     // do we want to remove old entries?
-    if ($FD->config('preview_images', 'random_timed_deltime') != -1) {
+    if ($FD->config('preview_images', 'timed_deltime') != -1) {
         // remove old entries
-        $FD->sql()->conn()->query('DELETE FROM '.$FD->config('pref')."screen_random WHERE `end` < '".($FD->env('time')-$FD->config('preview_images', 'random_timed_deltime'))."'");
+        $FD->sql()->conn()->query('DELETE FROM '.$FD->config('pref')."screen_random WHERE `end` < '".($FD->env('time')-$FD->config('preview_images', 'timed_deltime'))."'");
     }
 }
 
