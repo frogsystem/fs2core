@@ -43,7 +43,7 @@ if ( $poll_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
                                 </td>
                             </tr>
         ';
-        $template = str_replace('{answer}', unslash ($answer_arr['answer']), $template);
+        $template = str_replace('{answer}', ($answer_arr['answer']), $template);
         $template = str_replace('{votes}', $answer_arr['answer_count'], $template);
         $template = str_replace('{percentage}', $answer_arr['percentage'].'%', $template);
         $template = str_replace('{bar_width}', $answer_arr['bar_width'], $template);
@@ -75,7 +75,7 @@ if ( $poll_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
                                 <td class="configthin" colspan="2"><b>{start_datum}</b> bis <b>{end_datum}</b></td>
                             </tr>
     ';
-    $template = str_replace('{question}', unslash($poll_arr['poll_quest']), $template);
+    $template = str_replace('{question}', ($poll_arr['poll_quest']), $template);
     $template = str_replace('{answers}', $antworten, $template);
     $template = str_replace('{all_votes}', $all_votes, $template);
     $template = str_replace('{typ}', $poll_arr['poll_type'], $template);
@@ -116,7 +116,7 @@ if ( $num_polls  > 0 ) {
                     ORDER BY `poll_participants` DESC
                     LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $biggest_poll_part = stripslashes ( $row['poll_quest'] );
+    $biggest_poll_part =  ( $row['poll_quest'] );
     $most_participants = $row['poll_participants'];
 
     $index = $FD->sql()->conn()->query ( "
@@ -127,7 +127,7 @@ if ( $num_polls  > 0 ) {
                     ORDER BY `num_votes` DESC
                     LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $biggest_poll_vote = stripslashes ( $row['poll_quest'] );
+    $biggest_poll_vote =  ( $row['poll_quest'] );
     $most_votes = $row['num_votes'];
 }
 

@@ -17,9 +17,9 @@ while ( $affiliates_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
     // Security Functions
     settype ( $affiliates_arr['partner_id'], 'integer' );
     settype ( $affiliates_arr['partner_permanent'], 'integer' );
-    $affiliates_arr['partner_link'] = stripslashes ( $affiliates_arr['partner_link'] );
-    $affiliates_arr['partner_name'] = stripslashes ( $affiliates_arr['partner_name'] );
-    $affiliates_arr['partner_beschreibung'] = stripslashes ( $affiliates_arr['partner_beschreibung'] );
+    $affiliates_arr['partner_link'] =  ( $affiliates_arr['partner_link'] );
+    $affiliates_arr['partner_name'] =  ( $affiliates_arr['partner_name'] );
+    $affiliates_arr['partner_beschreibung'] =  ( $affiliates_arr['partner_beschreibung'] );
 
     // Get Template
     $template = new template();

@@ -24,7 +24,7 @@ if ($ref['num'] > 0) {
 	// last Ref
 	$index = $sql->conn()->query('SELECT ref_url, ref_last FROM '.$FD->config('pref').'counter_ref ORDER BY ref_last DESC LIMIT 0,1');
 	$row = $index->fetch(PDO::FETCH_ASSOC);
-	$ref['url'] = stripslashes($row['ref_url']);
+	$ref['url'] = ($row['ref_url']);
 	$ref['shorturl'] = cut_in_string($ref['url'], 50, '...');
 
 	$ref['date_time'] = date_loc($FD->text('admin', 'date_time'), $row['ref_last']);

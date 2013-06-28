@@ -13,7 +13,6 @@ $dbc['pref'] = 'fs2_'; //Table Prefix
 ////////////////////////
 $spam = 'wKAztWWB2Z'; //Anti-Spam Encryption-Code
 $path = dirname(__FILE__) . '/'; //Dateipfad
-define('SLASH', TRUE);
 define('DEBUG', TRUE);
 
 

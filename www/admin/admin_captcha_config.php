@@ -36,10 +36,6 @@ if (true
         $_POST['captcha_font_file'] = $_POST['captcha_font'];
     }
     // security functions
-    $_POST['captcha_bg_color'] = savesql ( $_POST['captcha_bg_color'] );
-    $_POST['captcha_text_color'] = savesql ( $_POST['captcha_text_color'] );
-    $_POST['captcha_font_file'] = savesql ( $_POST['captcha_font_file'] );
-
     settype ( $_POST['captcha_bg_transparent'], 'integer' );
     settype ( $_POST['captcha_first_lower'], 'integer' );
     settype ( $_POST['captcha_first_upper'], 'integer' );

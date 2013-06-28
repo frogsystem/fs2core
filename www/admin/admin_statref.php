@@ -16,9 +16,6 @@ if (
     settype ($_POST['del_cron'], 'integer');
     settype ($_POST['del_days'], 'integer');
     settype ($_POST['del_hits'], 'integer');
-    savesql ($_POST['del_contact']);
-    savesql ($_POST['del_age']);
-    savesql ($_POST['del_amount']);
 
 	if ( $_POST['del_days'] < 1 )
     {
@@ -81,7 +78,7 @@ else
 
     settype ( $_POST['limit'], 'integer' );
     if (!isset($_POST['filter'])) $_POST['filter'] = '';
-    $filter = savesql ( $_POST['filter'] );
+    $filter = $_POST['filter'];
     $_POST['filter'] = killhtml ( $_POST['filter'] );
 
     if (!isset($_POST['order'])) $_POST['order'] = 'f'; //default

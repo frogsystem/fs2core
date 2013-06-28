@@ -233,7 +233,7 @@ function compress_search_data ( $TEXT ) {
     $locReplace[] = ' ';
     $locReplace[] = ' ';
 
-    $TEXT = trim(strtolower (stripslashes (killfs ($TEXT))));
+    $TEXT = trim(strtolower ( (killfs ($TEXT))));
     $TEXT = preg_replace ( $locSearch, $locReplace, $TEXT );
     return $TEXT;
 }

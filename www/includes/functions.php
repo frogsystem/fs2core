@@ -192,12 +192,12 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         settype ( $group_arr['user_group_id'], 'integer' );
-        $group_arr['user_group_name'] = stripslashes ( $group_arr['user_group_name'] );
-        $group_arr['user_group_title'] = stripslashes ( $group_arr['user_group_title'] );
+        $group_arr['user_group_name'] =  ( $group_arr['user_group_name'] );
+        $group_arr['user_group_title'] =  ( $group_arr['user_group_title'] );
         $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text('frontend', 'group_image_of').' '.$group_arr['user_group_name'].'">' : '' );
 
         unset ( $title_style );
-        $title_style = ( $group_arr['user_group_color'] != -1 ? 'color:#'.stripslashes ( $group_arr['user_group_color'] ).';' : '' );
+        $title_style = ( $group_arr['user_group_color'] != -1 ? 'color:#'. ( $group_arr['user_group_color'] ).';' : '' );
         switch ( $group_arr['user_group_highlight'] ) {
             case 1:
                 $highlight_css = 'font-weight:bold;';
@@ -334,10 +334,10 @@ function get_timed_pic ()
         $row = $index->fetch(PDO::FETCH_ASSOC);
         $dbscreen['id'] = $row['screen_id'];
         settype ( $dbscreen['id'], 'integer' );
-        $dbscreen['caption'] = stripslashes ( $row['screen_name'] );
+        $dbscreen['caption'] =  ( $row['screen_name'] );
         $dbscreen['cat_id'] = $row['cat_id'];
         settype ( $dbscreen['cat_id'], 'integer' );
-        $dbscreen['cat_title'] = stripslashes ( $row['cat_name'] );
+        $dbscreen['cat_title'] =  ( $row['cat_name'] );
         $dbscreen['type'] = 1;
 
         return $dbscreen;
@@ -373,10 +373,10 @@ function get_random_pic ()
         $row = $index->fetch(PDO::FETCH_ASSOC);
         $dbscreen['id'] = $row['screen_id'];
         settype ( $dbscreen['id'], 'integer' );
-        $dbscreen['caption'] = stripslashes ( $row['screen_name'] );
+        $dbscreen['caption'] =  ( $row['screen_name'] );
         $dbscreen['cat_id'] = $row['cat_id'];
         settype ( $dbscreen['cat_id'], 'integer' );
-        $dbscreen['cat_title'] = stripslashes ( $row['cat_name'] );
+        $dbscreen['cat_title'] =  ( $row['cat_name'] );
         $dbscreen['type'] = 2;
 
         return $dbscreen;
@@ -576,7 +576,7 @@ function get_template ( $TEMPLATE_NAME )
                             FROM '.$FD->config('pref')."template
                             WHERE `id` = '".$FD->config('design')."'" );
     $result = $index->fetch(PDO::FETCH_ASSOC);
-    return stripslashes ( $result[$TEMPLATE_NAME] );
+    return  ( $result[$TEMPLATE_NAME] );
 }
 
 ////////////////////////////
@@ -592,7 +592,7 @@ function get_email_template ( $TEMPLATE_NAME )
                             FROM '.$FD->config('pref')."email
                             WHERE `id` = '1'" );
     $result = $index->fetch(PDO::FETCH_ASSOC);
-    return stripslashes ( $result[$TEMPLATE_NAME] );
+    return  ( $result[$TEMPLATE_NAME] );
 }
 
 ////////////////////
@@ -612,7 +612,7 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
         if ( $row['use_admin_mail'] == 1 ) {
             $header  = 'From: ' . $FD->config('admin_mail') . "\n";
         } else {
-            $header  = 'From: ' . stripslashes ( $row['email'] ) . "\n";
+            $header  = 'From: ' .  ( $row['email'] ) . "\n";
         }
     } else {
         $header  = 'From: ' . $FROM . "\n";
@@ -1166,62 +1166,6 @@ function tab2space($TEXT, $tabsize = 4, $space = '&nbsp;')
     return $TEXT;
 }
 
-
-/////////////////////////////////
-// create save strings for sql //
-/////////////////////////////////
-
-/* TODO / note:
-   ============
-
-   The savesql() function should be removed in the future.
-   Primary reason is that PDO::quote(), which is used to secure text input of
-   SQL queries against SQL injections, is not implemented by all PDO drivers,
-   e.g. PDO_ODBC. Prepared statements should be used instead.
-
-   Also see <http://www.php.net/manual/en/pdo.quote.php> for more info.
-*/
-
-function savesql ( $TEXT )
-{
-    global $FD;
-
-    $TEXT = unquote($TEXT);
-    if (SLASH)
-         $TEXT = addslashes($TEXT);
-
-    if ( !is_numeric ( $TEXT ) ) {
-        $TEXT = substr($FD->sql()->conn()->quote($TEXT), 1, -1);
-    }
-    return $TEXT;
-}
-
-/////////////////////////////////
-// create save strings for sql //
-/////////////////////////////////
-
-function unslash($TEXT)
-{
-    global $FD;
-    if ($FD->env('slash'))
-         $TEXT = stripslashes($TEXT);
-
-    return $TEXT;
-}
-
-
-/////////////////////////////////
-// create save strings for sql //
-/////////////////////////////////
-
-function unquote ($TEXT)
-{
-    if (get_magic_quotes_gpc()) {
-        $TEXT = stripslashes($TEXT);
-    }
-    return $TEXT;
-}
-
 //////////////////////////////
 // Format text with FS Code //
 //////////////////////////////
@@ -1259,7 +1203,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         if ($do_smilies==1)     array_push($fscodes, 'smilies');
     }
 
-    return parse_fscode(stripslashes($text), $flags, $fscodes);
+    return parse_fscode(($text), $flags, $fscodes);
 }
 
 //////////////////////////

@@ -29,7 +29,7 @@ if (
     $dlf_row = $index->fetch(PDO::FETCH_ASSOC);
     $check_file_is_mirror = $dlf_row['file_is_mirror'];
     settype( $check_file_is_mirror, 'integer' );
-    $file_url = stripslashes ( $dlf_row['file_url'] );
+    $file_url =  ( $dlf_row['file_url'] );
 
     // Is DL a Mirror?
     if (

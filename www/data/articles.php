@@ -43,7 +43,7 @@ else {
         // Set canonical parameters
         $FD->setConfig('info', 'canonical', array());
         // Set goto
-        $FD->setConfig('main', 'goto', unslash($article_arr['article_url']));
+        $FD->setConfig('main', 'goto', ($article_arr['article_url']));
     }
 
     // Security Functions
@@ -100,7 +100,7 @@ else {
 
     // Format Article-Text
     $article_arr['article_text'] = fscode ( $article_arr['article_text'], $article_arr['fscode_bool'], $article_arr['html_bool'], $article_arr['para_bool'] );
-    $article_arr['article_title'] = unslash($article_arr['article_title']);
+    $article_arr['article_title'] = ($article_arr['article_title']);
 
     // Create Template
     $article_arr['template'] = new template();
@@ -120,7 +120,7 @@ else {
 
     // Dynamic Title Settings
     $FD->setConfig('info', 'page_title', $article_arr['article_title']);
-    $FD->setConfig('info', 'content_author', unslash($user_arr['user_name']));
+    $FD->setConfig('info', 'content_author', ($user_arr['user_name']));
 }
 
 // Display Template

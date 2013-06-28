@@ -374,11 +374,11 @@ if ($config_arr['show_press_sql'] == true)
         $press_arr['press_note_formated'] = $template->display ();
 
         $index2 = $FD->sql()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_game]'");
-        $press_arr['press_game_title'] = stripslashes($index2->fetchColumn());
+        $press_arr['press_game_title'] = ($index2->fetchColumn());
         $index2 = $FD->sql()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_cat]'");
-        $press_arr['press_cat_title'] = stripslashes($index2->fetchColumn());
+        $press_arr['press_cat_title'] = ($index2->fetchColumn());
         $index2 = $FD->sql()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_lang]'");
-        $press_arr['press_lang_title'] = stripslashes($index2->fetchColumn());
+        $press_arr['press_lang_title'] = ($index2->fetchColumn());
 
 
         // Get Note Template
@@ -386,8 +386,8 @@ if ($config_arr['show_press_sql'] == true)
         $template->setFile('0_press.tpl');
         $template->load('ENTRY_BODY');
 
-        $template->tag('title', stripslashes ( $press_arr['press_title'] ) );
-        $template->tag('url', stripslashes ( $press_arr['press_url'] ) );
+        $template->tag('title',  ( $press_arr['press_title'] ) );
+        $template->tag('url',  ( $press_arr['press_url'] ) );
         $template->tag('date', date_loc ( $FD->config('date'), $press_arr['press_date'] ) );
         $template->tag('text', fscode ( $press_arr['press_text'] ) );
         $template->tag('intro', ( $press_arr['press_intro'] != '' ) ? $press_arr['press_intro_formated'] : '' );

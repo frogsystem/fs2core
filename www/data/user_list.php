@@ -165,7 +165,7 @@ while ( $row = $index->fetch(PDO::FETCH_ASSOC) )
     $line_template->tag ( 'user_image_url', image_url ( 'media/user-images/', $row['user_id'] ) );
     $line_template->tag ( 'user_mail', ( $row['user_show_mail'] == 1 ) ? kill_replacements ( $row['user_mail'], TRUE ) : '-' );
     $line_template->tag ( 'user_rank', $temp_rank_data );
-    $line_template->tag ( 'user_reg_date', date_loc ( stripslashes ( $config_arr['user_list_reg_date_format'] ), $row['user_reg_date'] ) );
+    $line_template->tag ( 'user_reg_date', date_loc (  ( $config_arr['user_list_reg_date_format'] ), $row['user_reg_date'] ) );
     $line_template->tag ( 'user_num_news', $row['user_num_news'] );
     $line_template->tag ( 'user_num_comments', $row['user_num_comments'] );
     $line_template->tag ( 'user_num_articles', $row['user_num_articles'] );

@@ -62,7 +62,7 @@ if ( isset($_GET['id']) ) {
             $template->setFile('0_polls.tpl');
             $template->load('ANSWER_LINE');
 
-            $template->tag('answer', stripslashes ( $answer_arr['answer'] ) );
+            $template->tag('answer',  ( $answer_arr['answer'] ) );
             $template->tag('votes', $answer_arr['answer_count'] );
             $template->tag('percentage', $answer_arr['prozent']."%" );
             $template->tag('bar_width', $answer_arr['bar_width'] );
@@ -77,7 +77,7 @@ if ( isset($_GET['id']) ) {
         $template->setFile('0_polls.tpl');
         $template->load('BODY');
 
-        $template->tag('question', stripslashes ( $poll_arr['poll_quest'] ) );
+        $template->tag('question',  ( $poll_arr['poll_quest'] ) );
         $template->tag('answers', $antworten );
         $template->tag('all_votes', $poll_arr['all_votes'] );
         $template->tag('participants', $poll_arr['poll_participants'] );
@@ -151,7 +151,7 @@ else {
         $template->setFile('0_polls.tpl');
         $template->load('LIST_LINE');
 
-        $template->tag('question', stripslashes ( $poll_arr['poll_quest'] ) );
+        $template->tag('question',  ( $poll_arr['poll_quest'] ) );
         $template->tag('url', $poll_arr['poll_url'] );
         $template->tag('all_votes', $poll_arr['all_votes'] );
         $template->tag('participants', $poll_arr['poll_participants'] );

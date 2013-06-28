@@ -178,7 +178,7 @@ if ( $SHOW == TRUE ) {
                     LIMIT 0,1' );
         $news_arr = $index->fetch(PDO::FETCH_ASSOC);
         $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
-        $FD->setConfig('info', 'page_title', stripslashes ( $news_arr['news_title'] ) );
+        $FD->setConfig('info', 'page_title',  ( $news_arr['news_title'] ) );
     } else {
         $news_template = sys_message($FD->text('frontend', 'sysmessage'), $FD->text('frontend', 'news_not_exist'), 404);
     }

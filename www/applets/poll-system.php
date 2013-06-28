@@ -147,7 +147,7 @@ if (isset($_POST['poll_id']) &&
         $template->setFile('0_polls.tpl');
         $template->load('APPLET_RESULT_ANSWER_LINE');
 
-        $template->tag('answer', stripslashes ( $answer_arr['answer'] ) );
+        $template->tag('answer',  ( $answer_arr['answer'] ) );
         $template->tag('votes', $answer_arr['answer_count'] );
         $template->tag('percentage', $answer_arr['percentage'].'%' );
         $template->tag('bar_width', $answer_arr['bar_width'] );
@@ -196,7 +196,7 @@ elseif (isset($poll_arr['poll_id']) && !checkVotedPoll($poll_arr['poll_id'])) {
         $template->load('APPLET_POLL_ANSWER_LINE');
 
         $template->tag('answer_id', $answer_arr['answer_id'] );
-        $template->tag('answer', stripslashes ( $answer_arr['answer'] ) );
+        $template->tag('answer',  ( $answer_arr['answer'] ) );
         $template->tag('type', $poll_arr['poll_type2'] );
         $template->tag('multiple', $poll_arr['poll_type3'] );
 

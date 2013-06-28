@@ -87,7 +87,7 @@ if(true)
                                     <font class="small">Der Datei-Pfad der mit dem Quick-Insert Button eingef&uuml;gt wird.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="40" name="quickinsert" value="'.unslash($_POST['quickinsert']).'" maxlength="255">
+                                    <input class="text" size="40" name="quickinsert" value="'.($_POST['quickinsert']).'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>

@@ -13,7 +13,7 @@ $index = $FD->sql()->conn()->query ( '
                 ORDER BY `user_reg_date` DESC
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
-$last_user = stripslashes ( $row['user_name'] );
+$last_user =  ( $row['user_name'] );
 
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`user_id`) AS 'num_staff'
@@ -49,7 +49,7 @@ if ( $num_groups  > 0 ) {
     $temp_biggest_exists = ( $row !== false );
 }
 if ( $temp_biggest_exists ) {
-    $biggest_group = stripslashes ( $row['user_group_name'] );
+    $biggest_group =  ( $row['user_group_name'] );
     $biggest_num = $row['biggest_num'];
 }
 
@@ -59,7 +59,7 @@ $index = $FD->sql()->conn()->query ( '
                 ORDER BY `user_group_date` DESC
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
-$last_group = stripslashes ( $row['user_group_name'] );
+$last_group =  ( $row['user_group_name'] );
 
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`user_id`) AS 'num_admin'
@@ -76,7 +76,7 @@ $index = $FD->sql()->conn()->query ( '
                 WHERE `user_id` = 1
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
-$super_admin = stripslashes ( $row['user_name'] );
+$super_admin =  ( $row['user_name'] );
 
 echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">

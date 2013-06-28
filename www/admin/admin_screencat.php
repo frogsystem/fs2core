@@ -59,7 +59,7 @@ elseif (isset($_POST['cat_id']) AND isset($_POST['cat_action']))
     $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
     $admin_cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-    $admin_cat_arr['cat_name'] = killhtml(unslash($admin_cat_arr['cat_name']));
+    $admin_cat_arr['cat_name'] = killhtml(($admin_cat_arr['cat_name']));
 
     $error_message = '';
 
@@ -173,7 +173,7 @@ echo '
         <tr><td colspan="6"><h3>Kategorie l&ouml;schen</h3><hr></td></tr>
        <tr align="left" valign="top">
            <td width="50%" class="thin">
-               Soll die Kategorie "<b>'.killhtml(unslash($admin_cat_arr['cat_name'])).'</b>" wirklich gel&ouml;scht werden?
+               Soll die Kategorie "<b>'.killhtml(($admin_cat_arr['cat_name'])).'</b>" wirklich gel&ouml;scht werden?
            </td>
            <td width="50%">
              <input type="submit" value="Ja">  <input type="button" onclick=\'location.href="?go=gallery_cat";\' value="Nein">
@@ -265,7 +265,7 @@ else
                         <input type="hidden" value="gallery_cat" name="go">
                             <tr>
                                 <td class="thin">
-                                    '.killhtml(unslash($cat_arr['cat_name'])).'
+                                    '.killhtml(($cat_arr['cat_name'])).'
                                 </td>
                                 <td class="thin">
                                     '.$number_rows.'

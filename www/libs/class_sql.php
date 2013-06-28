@@ -49,14 +49,6 @@ class sql {
     // save sql data
     public function escape ($VAL) {
 
-        // remove fucking magic quotes
-        if (get_magic_quotes_gpc())
-            $VAL = stripslashes($VAL);
-
-        // fallback
-        if (SLASH)
-            $VAL = addslashes($VAL);
-
         // save data
         if (is_numeric($VAL)) {
             if (floatval($VAL) == intval($VAL)) {
@@ -72,15 +64,6 @@ class sql {
             $VAL = substr($this->sql->quote(strval($VAL), PDO::PARAM_STR), 1, -1);
         }
 
-        return $VAL;
-    }
-
-    // "unsave" sql data (stripslash if on old systems)
-    public static function unslash ($VAL) {
-        // fallback
-        if (SLASH) {
-            $VAL = stripslashes($VAL);
-        }
         return $VAL;
     }
 
@@ -250,16 +233,6 @@ class sql {
             list ($total_rows) = $result->fetch(PDO::FETCH_NUM);
         } else {
             $total_rows = $num;
-        }
-
-        // Unslash the result
-        if ($num > 0) {
-			$lokal = create_function('$row', '
-				return array_map(create_function(\'$r\', \'
-					return sql::unslash($r);
-				\'), $row);
-			');
-            $rows = array_map($lokal, $rows);
         }
 
         // Return the result

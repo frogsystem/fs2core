@@ -23,7 +23,7 @@ settype($_GET['cat_id'], 'integer');
 
 if (isset($_GET['keyword']) && $_GET['keyword'] != '')
 {
-    $sql_keyword = savesql( $_GET['keyword'] );
+    $sql_keyword = $_GET['keyword'];
     $_GET['keyword'] = kill_replacements ( $_GET['keyword'], TRUE );
     if ($_GET['cat_id'] != 0) {
         $query = "WHERE (dl_text LIKE '%".$sql_keyword."%' OR dl_name LIKE '%".$sql_keyword."%') AND cat_id = ".$_GET['cat_id'].' AND';
@@ -56,7 +56,7 @@ if (!isset($page_titel))
   $page_titel = '';
 }
 foreach ($valid_ids as $cat) {
-    $cat['cat_name'] = stripslashes ( $cat['cat_name'] );
+    $cat['cat_name'] =  ( $cat['cat_name'] );
 
     if ($cat['cat_id'] == $_GET['cat_id']) {
         $icon_url = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';
@@ -120,14 +120,14 @@ if ($show == TRUE) {
         $dl_arr['dl_text'] = truncate_string($dl_arr['dl_text'], 250, '...');
         $dl_arr['dl_date'] = date_loc( $FD->config('date') , $dl_arr['dl_date'] );
         $index3 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'" );
-        $dl_arr['cat_name'] = stripslashes($index3->fetchColumn()); //cat_name
+        $dl_arr['cat_name'] = ($index3->fetchColumn()); //cat_name
 
         // Get Template
         $template = new template();
         $template->setFile('0_downloads.tpl');
         $template->load('PREVIEW_LINE');
 
-        $template->tag('title', stripslashes ( $dl_arr['dl_name'] ) );
+        $template->tag('title',  ( $dl_arr['dl_name'] ) );
         $template->tag('url', url('dlfile', array('id' => $dl_arr['dl_id'])));
         $template->tag('cat_name', $dl_arr['cat_name'] );
         $template->tag('date', $dl_arr['dl_date'] );

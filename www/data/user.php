@@ -41,10 +41,10 @@ if ( $user_arr!==false ) {
         $user_arr['user_group_text'] = '-';
     }
 
-    $user_arr['user_reg_date_text'] = date_loc ( stripslashes ( $config_arr['reg_date_format'] ), $user_arr['user_reg_date'] );
+    $user_arr['user_reg_date_text'] = date_loc (  ( $config_arr['reg_date_format'] ), $user_arr['user_reg_date'] );
 
     if (  $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != 'http://' ) {
-        $user_arr['user_homepage_link'] = '<a href="'.kill_replacements ( $user_arr['user_homepage'], FALSE, TRUE ).'" target="_blank">'.kill_replacements ( $user_arr['user_homepage'], TRUE ).'</a>';
+        $user_arr['user_homepage_link'] = '<a href="'.kill_replacements ( $user_arr['user_homepage']).'" target="_blank">'.kill_replacements ( $user_arr['user_homepage'], TRUE ).'</a>';
     } else {
         $user_arr['user_homepage_link'] = '-';
     }
@@ -103,7 +103,7 @@ if ( $user_arr!==false ) {
     $template->tag ( 'user_reg_date', $user_arr['user_reg_date_text'] );
 
     $template->tag ( 'user_homepage_link', $user_arr['user_homepage_link'] );
-    $template->tag ( 'user_homepage_url', kill_replacements ( $user_arr['user_homepage'], FALSE, TRUE ) );
+    $template->tag ( 'user_homepage_url', kill_replacements ( $user_arr['user_homepage'] ) );
     $template->tag ( 'user_icq', $user_arr['user_icq'] );
     $template->tag ( 'user_aim', $user_arr['user_aim'] );
     $template->tag ( 'user_wlm', $user_arr['user_wlm'] );

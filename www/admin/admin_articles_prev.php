@@ -71,7 +71,7 @@ else {
     
 
     // Load Data from $_POST
-    $article_arr['article_title'] = stripslashes ( $_POST['article_title'] );
+    $article_arr['article_title'] =  ( $_POST['article_title'] );
 
     // Create Article-Date
     if (

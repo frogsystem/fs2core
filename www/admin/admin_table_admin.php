@@ -48,7 +48,7 @@
              $query = 'OPTIMIZE TABLE `';
              break;
       }//swi
-      $_POST['selected_tables'] = array_map('savesql', $_POST['selected_tables']);
+
       $query .= implode('`, `', $_POST['selected_tables']).'`';
       $query = $FD->sql()->conn()->query($query);
       while ($row = $query->fetch(PDO::FETCH_ASSOC))

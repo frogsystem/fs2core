@@ -56,18 +56,18 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
     if ( $stmt->fetchColumn() == 1 ) {
         if ( $MANYFILES ) {
             if ( $_POST['file'] == 'new' ) {
-                $_POST['file_name'] = unquote ( $_POST['file_name'] );
+
                 if ( trim ( $_POST['file_name'] ) == '' ) {
                     systext ( $FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "template_no_filename"),
                         $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
                     echo '<br>';
-                    $_POST[$TEMPLATE_ARR[0]['name']] = unquote ( $_POST[$TEMPLATE_ARR[0]['name']] );
+
                     return 'file_name';
                 }
                 $TEMPLATE_FILE = $_POST['file_name'] . '.' . $TEMPLATE_FILE;
                 $_POST['file'] = $TEMPLATE_FILE;
             } elseif ( trim ( $_POST[$TEMPLATE_ARR[0]['name']] ) == '' ) {
-                $TEMPLATE_FILE = unquote ( $_POST['file'] );
+                $TEMPLATE_FILE = $_POST['file'];
                 $file_path =  $directory_path . $TEMPLATE_FILE;
                 if ( $access->deleteFile ( $file_path ) ) {
                     systext ( $FD->text("admin", "file_deleted"),
@@ -84,12 +84,12 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
                     return 'file_delete_error';
                 }
             } else {
-                $TEMPLATE_FILE = unquote ( $_POST['file'] );
+                $TEMPLATE_FILE = $_POST['file'];
             }
-            $file_data = ''.unquote ( $_POST[$TEMPLATE_ARR[0]['name']] ).'';
+            $file_data = ''.$_POST[$TEMPLATE_ARR[0]['name']].'';
         } else {
             foreach ($TEMPLATE_ARR as $template) {
-                $file_data .= '<!--section-start::' . $template['name'] . '-->' . unquote ( $_POST[$template['name']] ) . '<!--section-end::'.$template['name'] . '-->
+                $file_data .= '<!--section-start::' . $template['name'] . '-->' . $_POST[$template['name']] . '<!--section-end::'.$template['name'] . '-->
 
 ';
             }
@@ -141,7 +141,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     if ( !isset ( $_POST['style'] ) ) {
         $_POST['style'] = $FD->config('style');
     } else {
-        $_POST['style'] = unquote ( $_POST['style'] );
+        $_POST['style'] =  $_POST['style'];
     }
 
     // Check Edit Allowed
@@ -202,8 +202,8 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
         // Set Default File
         if ( isset ( $_POST['file'] ) ) {
-            $_POST['file'] = unquote ( $_POST['file'] );
-            if ( !in_array ( unquote ( $_POST['file'] ), $file_arr ) && $_POST['file'] != 'new' ) {
+            $_POST['file'] = $_POST['file'];
+            if ( !in_array ( $_POST['file'], $file_arr ) && $_POST['file'] != 'new' ) {
                  $_POST['file'] = $file_arr[0];
             }
         } else {
@@ -299,7 +299,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         // Get Data from Post or tpl-File
         if ( templatepage_postcheck ( $TEMPLATE_ARR ) && isset( $_POST['reload'] ) ) {
             foreach ($TEMPLATE_ARR as $template_key => $template_infos) {
-                $TEMPLATE_ARR[$template_key]['template'] = htmlspecialchars ( unquote ( $_POST[$template_infos['name']] ) );
+                $TEMPLATE_ARR[$template_key]['template'] = htmlspecialchars ( $_POST[$template_infos['name']] );
             }
         } elseif ( $MANYFILES === TRUE ) {
             foreach ($TEMPLATE_ARR as $template_key => $template_infos) {
@@ -416,7 +416,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                             AND `style_allow_edit` = 1
                             ORDER BY `style_tag`' );
             while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-                $style_arr['style_tag'] = stripslashes ( $style_arr['style_tag'] );
+                $style_arr['style_tag'] =  ( $style_arr['style_tag'] );
                 if ( is_dir ( FS2_ROOT_PATH . 'styles/' . $style_arr['style_tag'] ) == TRUE ) {
                     $select_template .= '<option value="'.$style_arr['style_tag'].'" '.getselected ($style_arr['style_tag'], $_POST['style']).'>'.$style_arr['style_tag'];
                     $style_arr['style_tag'] == $FD->config('style') ? $select_template .= ' (aktiv)' : $select_template .= '';
@@ -528,7 +528,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $index = $FD->sql()->conn()->query ( '
                     SELECT `applet_file` FROM `'.$FD->config('pref').'applets` WHERE `applet_active` = 1 AND `applet_output` = 1' );
     while ( $app_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-        $app = stripslashes ( $app_arr['applet_file'] );
+        $app =  ( $app_arr['applet_file'] );
         $the_app = '$APP('.$app.'.php)';
         $applets_array[] = '<tr class="pointer tag_click_class" title="'.$the_app.' einf&uuml;gen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
@@ -538,7 +538,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $index = $FD->sql()->conn()->query ( '
                     SELECT `snippet_tag` FROM `'.$FD->config('pref').'snippets` WHERE `snippet_active` = 1' );
     while ( $snippets_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-        $the_snippet = stripslashes ( $snippets_arr['snippet_tag'] );
+        $the_snippet =  ( $snippets_arr['snippet_tag'] );
         $snippets_array[] = '<tr class="pointer tag_click_class" title="'.$the_snippet.' einf&uuml;gen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['snippets'] = create_dropdown ( 'Schnipsel', implode ( '', $snippets_array ) );

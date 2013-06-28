@@ -41,7 +41,7 @@ while ($newshead_arr = $index->fetch(PDO::FETCH_ASSOC))
     $template->setFile('0_news.tpl');
     $template->load('APPLET_LINE');
 
-    $template->tag('title', stripslashes ( $newshead_arr['news_title'] ) );
+    $template->tag('title',  ( $newshead_arr['news_title'] ) );
     $template->tag('date', $newshead_arr['news_date'] );
     $template->tag('url', url('comments', array('id' => $newshead_arr['news_id'])));
     $template->tag('news_id', $newshead_arr['news_id'] );
@@ -70,7 +70,7 @@ while ($dlhead_arr = $index->fetch(PDO::FETCH_ASSOC))
     $template->setFile('0_downloads.tpl');
     $template->load('APPLET_LINE');
 
-    $template->tag('title', stripslashes ( $dlhead_arr['dl_name'] ) );
+    $template->tag('title',  ( $dlhead_arr['dl_name'] ) );
     $template->tag('date', $dlhead_arr['dl_date'] );
     $template->tag('url', url('dlfile', array('id' => $dlhead_arr['dl_id'])));
     $template->tag('download_id', $dlhead_arr['dl_id'] );

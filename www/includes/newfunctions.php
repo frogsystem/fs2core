@@ -286,7 +286,7 @@ function date_loc ($DATE_STRING, $TIMESTAMP)
 ////////////////////////////////////////
 //// Kill Replacments-Codes in Text ////
 ////////////////////////////////////////
-function kill_replacements ($TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE)
+function kill_replacements ($TEXT, $KILLHTML = FALSE)
 {
     $a = array('{..', '..}', '[%', '%]', '$NAV(', '$APP(', '$VAR(');
     $b = array('&#x7B;&#x2E;&#x2E;', '&#x2E;&#x2E;&#x7D;',  '&#x5B;&#x25;', '&#x25;&#x5D;', '&#x24;NAV&#x28;', '&#x24;APP&#x28;', '&#x24;APP&#x28;', '&#x24;VAR&#x28;');
@@ -295,8 +295,6 @@ function kill_replacements ($TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE)
 
     if ($KILLHTML === true) {
         return killhtml($TEXT);
-    } elseif ($STRIPSLASHES === TRUE) {
-        return stripslashes($TEXT);
     }
     return $TEXT;
 }
