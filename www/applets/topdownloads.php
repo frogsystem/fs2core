@@ -28,15 +28,15 @@
     as well as that of the covered work.
 */
 
-  $index = mysql_query('SELECT t1.dl_id AS id, t1.dl_name AS name, SUM(t2.file_count) AS sum_loads
-        FROM `'.$FD->config('pref').'dl_files` t2
-        LEFT JOIN `'.$FD->config('pref').'dl` t1 ON t2.dl_id=t1.dl_id
+  $index = $FD->sql()->doQuery('SELECT t1.dl_id AS id, t1.dl_name AS name, SUM(t2.file_count) AS sum_loads
+        FROM `{..pref..}dl_files` t2
+        LEFT JOIN `{..pref..}dl` t1 ON t2.dl_id=t1.dl_id
         GROUP  BY t2.dl_id
         ORDER  BY sum_loads DESC
-        LIMIT 10', $FD->sql()->conn());
+        LIMIT 10');
 
   $entries = '';
-  while ($row=mysql_fetch_assoc($index))
+  foreach ($index as $row)
   {
     $template = new template();
     $template->setFile('0_top_downloads.tpl');

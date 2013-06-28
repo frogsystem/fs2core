@@ -936,14 +936,14 @@ function get_seo () {
 function get_goto ()
 {
     global $FD;
-
+        
     //check seo
     if ($FD->cfg('url_style') == 'seo') {
         get_seo();
     }
 
     // Check $_GET['go']
-    $FD->setConfig('env', 'get_go_raw', $_GET['go']);
+    $FD->setConfig('env', 'get_go_raw', isset($_GET['go'])?$_GET['go']:null);
     $goto = empty($_GET['go']) ? $FD->cfg('home_real') : savesql($_GET['go']);
     $FD->setConfig('env', 'get_go', $goto);
 
