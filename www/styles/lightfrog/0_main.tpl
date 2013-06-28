@@ -18,6 +18,7 @@
 
     <div id="menu_right">
       $APP(user-menu.php)
+      $APP(topdownloads.php)
       $APP(preview-image.php)
       $APP(shop-system.php)
       $APP(poll-system.php[random])
