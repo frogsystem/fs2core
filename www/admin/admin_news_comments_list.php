@@ -150,7 +150,7 @@
         //create b8 object
         $success = true;
         try {
-          $b8 = new b8(array('storage' => 'mysql'), array('connection' => $FD->sql()->conn()));
+          $b8 = new b8(array('storage' => 'mysql'), array('table_name' => $FD->config('pref').'b8_wordlist', 'connection' => $FD->sql()->conn()));
         }
         catch (Exception $e)
         {
@@ -240,7 +240,7 @@
   if ($b8==NULL)
   {
     try {
-      $b8 = new b8(array('storage' => 'mysql'), array('connection' => $FD->sql()->conn()));
+      $b8 = new b8(array('storage' => 'mysql'), array('table_name' => $FD->config('pref').'b8_wordlist', 'connection' => $FD->sql()->conn()));
     }
     catch (Exception $e)
     {
