@@ -37,19 +37,19 @@ if ( $num_news  > 0 ) {
                     ORDER BY `best_news_cat_num` DESC
                     LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $best_news_cat =  ( $row['cat_name'] );
+    $best_news_cat = $row['cat_name'];
     $best_news_cat_num = $row['best_news_cat_num'];
 
     if ( $num_comments  > 0 ) {
         $index = $FD->sql()->conn()->query ( "
                         SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
                         FROM ".$FD->config('pref').'comments C, '.$FD->config('pref').'news N
-                        WHERE N.`news_id` = C.`content_id` AND C.`content_type`=\'news\' 
+                        WHERE N.`news_id` = C.`content_id` AND C.`content_type`=\'news\'
                         GROUP BY N.`news_title`
                         ORDER BY `best_news_com_num` DESC
                         LIMIT 0,1' );
         $row = $index->fetch(PDO::FETCH_ASSOC);
-        $best_news_com =  ( $row['news_title'] );
+        $best_news_com = $row['news_title'];
         $best_news_com_num = $row['best_news_com_num'];
 
         $index = $FD->sql()->conn()->query ( "
@@ -64,7 +64,7 @@ if ( $num_news  > 0 ) {
         $best_com_poster_rows = false;
         if ( $row !== false ) {
             $best_com_poster_rows = true;
-            $best_com_poster =  ( $row['user_name'] );
+            $best_com_poster = $row['user_name'];
             $best_com_poster_num = $row['best_com_poster_num'];
         }
     }
@@ -78,7 +78,7 @@ if ( $num_news  > 0 ) {
                     LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     if ($row !== false) {
-        $best_news_link =  ( $row['news_title'] );
+        $best_news_link = $row['news_title'];
         $best_news_link_num = $row['best_news_link_num'];
     }
 
@@ -91,7 +91,7 @@ if ( $num_news  > 0 ) {
                     ORDER BY `best_news_poster_num` DESC
                     LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $best_news_poster =  ( $row['user_name'] );
+    $best_news_poster =  $row['user_name'];
     $best_news_poster_num = $row['best_news_poster_num'];
 }
 
@@ -120,7 +120,7 @@ $index = $FD->sql()->conn()->query ( "
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 if ( $row !== false ) {
-    $best_article_poster =  ( $row['user_name'] );
+    $best_article_poster = $row['user_name'];
     $best_article_poster_num = $row['best_article_poster_num'];
     settype ( $best_article_poster_num, 'integer' );
 }
@@ -142,7 +142,7 @@ if ( $num_press  > 0 ) {
                     ORDER BY `best_press_lang_num` DESC
                     LIMIT 0,1" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $best_press_lang =  ($row['title'] );
+    $best_press_lang = $row['title'];
     $best_press_lang_num = $row['best_press_lang_num'];
 }
 

@@ -187,13 +187,13 @@ else
         echo'
                             <tr class="select_entry thin">
                                 <td class="config">
-                                    <img src="'.image_url ( 'images/shop/', $artikel_arr['artikel_id']."_s" ).'" alt="'. ( $artikel_arr['artikel_name'] ).'">
+                                    <img src="'.image_url ( 'images/shop/', $artikel_arr['artikel_id'].'_s' ).'" alt="'. killhtml($artikel_arr['artikel_name']) .'">
                                 </td>
                                 <td class="configthin">
-                                    '. ( $artikel_arr['artikel_name'] ).'
+                                    '. $artikel_arr['artikel_name'] .'
                                 </td>
                                 <td class="configthin">
-                                    '. ( $artikel_arr['artikel_preis'] ).'
+                                    '. $artikel_arr['artikel_preis'] .'
                                 </td>
                                 <td class="config">
                                     <input class="select_box" type="checkbox" name="artikelid[]" value="'.$artikel_arr['artikel_id'].'">

@@ -53,7 +53,7 @@ if ( !isset($_POST['article_text']) && !isset($_POST['sended']) ) {
             <input type="hidden" name="article_para" id="article_para" value="">
             <input type="hidden" name="article_text" id="article_text" value="">
         </form>
-    
+
         '.get_content_container('&nbsp;', $FD->text("page", "preview_note")).'
     ';
 
@@ -67,11 +67,11 @@ else {
     $goto = 'articles_preview';
     $FD->setConfig('env', 'get_go', $goto);
     $FD->setConfig('goto', $goto);
-    $FD->setConfig('env', 'goto', $goto);    
-    
+    $FD->setConfig('env', 'goto', $goto);
+
 
     // Load Data from $_POST
-    $article_arr['article_title'] =  ( $_POST['article_title'] );
+    $article_arr['article_title'] = $_POST['article_title'];
 
     // Create Article-Date
     if (

@@ -55,7 +55,7 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
 
             switch ( $video_arr['video_type'] ) {
                 case -1:
-                    $template_player =  ( $video_arr['video_x'] );
+                    $template_player = $video_arr['video_x'];
                     break;
                 case 3:
                     $template_player = $template_myvideo;

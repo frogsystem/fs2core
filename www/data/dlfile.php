@@ -18,7 +18,7 @@ $dl_arr = $index->fetch(PDO::FETCH_ASSOC);
 if ($dl_arr !== false)
 {
     //Seitentitel
-    $FD->setConfig('info', 'page_title',  ( $dl_arr['dl_name'] ));
+    $FD->setConfig('info', 'page_title', $dl_arr['dl_name'] );
 
     //Config einlesen
     $dl_config_arr = $config_arr;
@@ -51,7 +51,7 @@ if ($dl_arr !== false)
     $dl_arr['dl_date'] = date_loc ( $FD->config('date'), $dl_arr['dl_date'] );
     $dl_arr['dl_text'] = fscode($dl_arr['dl_text']);
     $index3 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
-    $dl_arr['cat_name'] = ($index3->fetchColumn());
+    $dl_arr['cat_name'] = $index3->fetchColumn();
 
 
     if ($dl_config_arr['dl_rights']==2) {
@@ -117,7 +117,7 @@ if ($dl_arr !== false)
             $template->setFile('0_downloads.tpl');
             $template->load('ENTRY_FILE_LINE');
 
-            $template->tag('name',  ( $file_arr['file_name'] ) );
+            $template->tag('name', $file_arr['file_name'] );
             $template->tag('url', url($_GET['go'], array('id' => $file_arr['file_id'], 'dl' => 'TRUE')));
             $template->tag('size', $file_arr['file_size'] );
             $template->tag('traffic', $file_arr['file_traffic'] );
@@ -185,7 +185,7 @@ if ($dl_arr !== false)
 
         $template->tag('icon_url', $icon_url );
         $template->tag('cat_url', url('download', array('cat_id' => $cat['cat_id'])));
-        $template->tag('cat_name',  ( $cat['cat_name'] ) );
+        $template->tag('cat_name', $cat['cat_name'] );
 
         $template = $template->display ();
         $navi_lines .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $cat['level']) . $template;
@@ -198,14 +198,12 @@ if ($dl_arr !== false)
     $template->tag('lines', $navi_lines );
     $navi = $template->display ();
 
-
-
     // Get Body Template
     $template = new template();
     $template->setFile('0_downloads.tpl');
     $template->load('ENTRY_BODY');
 
-    $template->tag('title',  ( $dl_arr['dl_name'] ) );
+    $template->tag('title', $dl_arr['dl_name'] );
     $template->tag('img_url', $dl_arr['dl_bild'] );
     $template->tag('thumb_url', $dl_arr['dl_thumb'] );
     $template->tag('viewer_link', $dl_arr['viewer_link'] );

@@ -77,7 +77,7 @@ class GlobalData {
         foreach ($data as $config) {
             // Load corresponding class and get config array
             if ($reload || !$this->configExists($config['config_name']))
-                $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], ($config['config_data']), true);
+                $this->config[$config['config_name']] = $this->createConfigObject($config['config_name'], $config['config_data'], true);
         }
     }
 
@@ -102,9 +102,8 @@ class GlobalData {
         $config = $config->fetch(PDO::FETCH_ASSOC);
 
         // Load corresponding class and get config array
-        return $this->createConfigObject($config['config_name'], ($config['config_data']), true);
+        return $this->createConfigObject($config['config_name'], $config['config_data'], true);
     }
-
 
 
     // get access on a config object
@@ -232,6 +231,5 @@ class GlobalData {
     }
 
 }
-
 
 ?>

@@ -47,7 +47,7 @@ if (
 ".$_POST['style_version']."
 ".$_POST['style_copyright'];
 
-    $style_ini = FS2_ROOT_PATH . 'styles/' .  ( $index->fetchColumn() ) . '/style.ini';
+    $style_ini = FS2_ROOT_PATH . 'styles/' . $index->fetchColumn() . '/style.ini';
     $ACCESS = new fileaccess();
     if ( $ACCESS->putFileData( $style_ini, $new_ini_data ) === FALSE ) {
         $error_extension = '<br>'.$FD->text('admin', 'style_info_not_saved');
@@ -211,7 +211,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                             WHERE `style_id` = '".$_POST['style_id']."'
                             LIMIT 0,1" );
             $data_arr = $index->fetch(PDO::FETCH_ASSOC);
-            $style_ini = FS2_ROOT_PATH . 'styles/' .  ( $data_arr['style_tag'] ) . '/style.ini';
+            $style_ini = FS2_ROOT_PATH . 'styles/' . $data_arr['style_tag'] . '/style.ini';
             $ACCESS = new fileaccess();
             $ini_lines = $ACCESS->getFileArray( $style_ini );
             $data_arr['style_name'] = $ini_lines[0];
@@ -350,7 +350,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                         WHERE `style_id` = '.$_POST['style_id'].'
                         LIMIT 0,1');
             $data_arr = $data->fetch(PDO::FETCH_ASSOC);
-            $data_arr['ini_lines'] = get_style_ini_data ( FS2_ROOT_PATH . 'styles/' .  ( $data_arr['style_tag'] ) . '/style.ini' );
+            $data_arr['ini_lines'] = get_style_ini_data ( FS2_ROOT_PATH . 'styles/' . $data_arr['style_tag'] . '/style.ini' );
 
             // display style info
             echo '
@@ -581,7 +581,7 @@ if ( !isset ( $_POST['style_id'] ) )
         foreach ( $style_arr as $data_arr ) {
 
             // Security Functions
-            $data_arr['style_folder'] =  ( $data_arr['style_tag'] );
+            $data_arr['style_folder'] = $data_arr['style_tag'];
             $data_arr['style_tag'] = killhtml ( $data_arr['style_tag'] );
 
             $style_ini = FS2_ROOT_PATH . 'styles/' . $data_arr['style_folder'] . '/style.ini';

@@ -13,7 +13,7 @@ if ( $num_partner  > 0 ) {
 				ORDER BY `partner_id` DESC
 				LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $last_partner =  ( $row['partner_name'] );
+    $last_partner = $row['partner_name'];
 }
 
 $index = $FD->sql()->conn()->query ( "
@@ -29,7 +29,7 @@ if ( $num_shop  > 0 ) {
 				ORDER BY `artikel_id` DESC
 				LIMIT 0,1'  );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $last_shop =  ( $row['artikel_name'] );
+    $last_shop = $row['artikel_name'];
 }
 
 
