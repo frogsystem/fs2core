@@ -192,12 +192,10 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         settype ( $group_arr['user_group_id'], 'integer' );
-        $group_arr['user_group_name'] =  ( $group_arr['user_group_name'] );
-        $group_arr['user_group_title'] =  ( $group_arr['user_group_title'] );
         $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text('frontend', 'group_image_of').' '.$group_arr['user_group_name'].'">' : '' );
 
         unset ( $title_style );
-        $title_style = ( $group_arr['user_group_color'] != -1 ? 'color:#'. ( $group_arr['user_group_color'] ).';' : '' );
+        $title_style = ( $group_arr['user_group_color'] != -1 ? 'color:#'.$group_arr['user_group_color'].';' : '' );
         switch ( $group_arr['user_group_highlight'] ) {
             case 1:
                 $highlight_css = 'font-weight:bold;';
@@ -317,27 +315,27 @@ function get_timed_pic ()
 
     $time = time();
     $index = $FD->sql()->conn()->query ( "
-                            SELECT COUNT(R.`screen_id`) AS 'images'
-                            FROM `".$FD->config('pref').'screen_random` R
-                            WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.' ' );
+                    SELECT COUNT(R.`screen_id`) AS 'images'
+                    FROM `".$FD->config('pref').'screen_random` R
+                    WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.' ' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $num_images = $row['images'];
     if ( $num_images > 0 ) {
         // Get random number
         $rand = rand ( 0, $num_images - 1 );
         $index =  $FD->sql()->conn()->query ( '
-                                SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
-                                FROM `'.$FD->config('pref').'screen_random` R, `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
-                                WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.'
-                                AND R.`screen_id` = S.`screen_id`
-                                LIMIT '.$rand.',1' );
+                        SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
+                        FROM `'.$FD->config('pref').'screen_random` R, `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
+                        WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.'
+                        AND R.`screen_id` = S.`screen_id`
+                        LIMIT '.$rand.',1' );
         $row = $index->fetch(PDO::FETCH_ASSOC);
         $dbscreen['id'] = $row['screen_id'];
         settype ( $dbscreen['id'], 'integer' );
-        $dbscreen['caption'] =  ( $row['screen_name'] );
+        $dbscreen['caption'] = $row['screen_name'];
         $dbscreen['cat_id'] = $row['cat_id'];
         settype ( $dbscreen['cat_id'], 'integer' );
-        $dbscreen['cat_title'] =  ( $row['cat_name'] );
+        $dbscreen['cat_title'] = $row['cat_name'];
         $dbscreen['type'] = 1;
 
         return $dbscreen;
@@ -355,28 +353,28 @@ function get_random_pic ()
 
     // Get number of possible Screens
     $index = $FD->sql()->conn()->query ( "
-                            SELECT COUNT(S.`screen_id`) AS 'images'
-                            FROM `".$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
-                            WHERE C.`randompic` = 1
-                            AND C.`cat_id` = S.`cat_id`' );
+                    SELECT COUNT(S.`screen_id`) AS 'images'
+                    FROM `".$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
+                    WHERE C.`randompic` = 1
+                    AND C.`cat_id` = S.`cat_id`' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $num_images = $row['images'];
     if ( $num_images > 0 ) {
         // Get random number
         $rand = rand ( 0, $num_images - 1 );
         $index = $FD->sql()->conn()->query ( '
-                                SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
-                                FROM `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
-                                WHERE C.`randompic` = 1
-                                AND C.`cat_id` = S.`cat_id`
-                                LIMIT '.$rand.',1' );
+                        SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
+                        FROM `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
+                        WHERE C.`randompic` = 1
+                        AND C.`cat_id` = S.`cat_id`
+                        LIMIT '.$rand.',1' );
         $row = $index->fetch(PDO::FETCH_ASSOC);
         $dbscreen['id'] = $row['screen_id'];
         settype ( $dbscreen['id'], 'integer' );
-        $dbscreen['caption'] =  ( $row['screen_name'] );
+        $dbscreen['caption'] = $row['screen_name'];
         $dbscreen['cat_id'] = $row['cat_id'];
         settype ( $dbscreen['cat_id'], 'integer' );
-        $dbscreen['cat_title'] =  ( $row['cat_name'] );
+        $dbscreen['cat_title'] = $row['cat_name'];
         $dbscreen['type'] = 2;
 
         return $dbscreen;
@@ -572,11 +570,11 @@ function get_template ( $TEMPLATE_NAME )
     global $FD;
 
     $index = $FD->sql()->conn()->query ( '
-                            SELECT `'.$TEMPLATE_NAME.'`
-                            FROM '.$FD->config('pref')."template
-                            WHERE `id` = '".$FD->config('design')."'" );
+                    SELECT `'.$TEMPLATE_NAME.'`
+                    FROM '.$FD->config('pref')."template
+                    WHERE `id` = '".$FD->config('design')."'" );
     $result = $index->fetch(PDO::FETCH_ASSOC);
-    return  ( $result[$TEMPLATE_NAME] );
+    return $result[$TEMPLATE_NAME];
 }
 
 ////////////////////////////
@@ -588,11 +586,11 @@ function get_email_template ( $TEMPLATE_NAME )
     global $FD;
 
     $index = $FD->sql()->conn()->query ( '
-                            SELECT `'.$TEMPLATE_NAME.'`
-                            FROM '.$FD->config('pref')."email
-                            WHERE `id` = '1'" );
+                    SELECT `'.$TEMPLATE_NAME.'`
+                    FROM '.$FD->config('pref')."email
+                    WHERE `id` = '1'" );
     $result = $index->fetch(PDO::FETCH_ASSOC);
-    return  ( $result[$TEMPLATE_NAME] );
+    return $result[$TEMPLATE_NAME];
 }
 
 ////////////////////
@@ -604,15 +602,15 @@ function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
     global $FD;
 
     $index = $FD->sql()->conn()->query ( '
-                            SELECT `use_admin_mail`, `email`, `html`
-                            FROM '.$FD->config('pref')."email
-                            WHERE `id` = '1'");
+                    SELECT `use_admin_mail`, `email`, `html`
+                    FROM '.$FD->config('pref')."email
+                    WHERE `id` = '1'");
     $row = $index->fetch(PDO::FETCH_ASSOC);
     if ( $FROM == FALSE ) {
         if ( $row['use_admin_mail'] == 1 ) {
             $header  = 'From: ' . $FD->config('admin_mail') . "\n";
         } else {
-            $header  = 'From: ' .  ( $row['email'] ) . "\n";
+            $header  = 'From: ' . $row['email'] . "\n";
         }
     } else {
         $header  = 'From: ' . $FROM . "\n";
@@ -1203,7 +1201,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         if ($do_smilies==1)     array_push($fscodes, 'smilies');
     }
 
-    return parse_fscode(($text), $flags, $fscodes);
+    return parse_fscode($text, $flags, $fscodes);
 }
 
 //////////////////////////

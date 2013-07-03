@@ -33,7 +33,7 @@ if ( $num_gallery_img > 0 ) {
 					ORDER BY `best_gallery_num` DESC
 					LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $best_gallery =  ( $row['cat_name'] );
+    $best_gallery = $row['cat_name'];
     $best_gallery_num = $row['best_gallery_num'];
 }
 if ( $num_gallery_wp > 0 ) {
@@ -46,7 +46,7 @@ if ( $num_gallery_wp > 0 ) {
 					ORDER BY `best_gallery_num` DESC
 					LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-	$best_gallery2 =  ( $row['cat_name'] );
+	$best_gallery2 = $row['cat_name'];
 	$best_gallery_num2 = $row['best_gallery_num'];
 }
 
@@ -80,7 +80,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 					ORDER BY `best_dl_files_num` DESC
 					LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $best_dl_files =  ( $row['dl_name'] );
+    $best_dl_files = $row['dl_name'];
     $best_dl_files_num = $row['best_dl_files_num'];
 
     $index = $FD->sql()->conn()->query ( "
@@ -91,7 +91,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 					ORDER BY `best_dl_count_num` DESC
 					LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $best_dl_count =  ( $row['dl_name'] );
+    $best_dl_count = $row['dl_name'];
     $best_dl_count_num = $row['best_dl_count_num'];
 
     $index = $FD->sql()->conn()->query ( "
@@ -102,7 +102,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 					ORDER BY `best_dl_traffic_num` DESC
 					LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $best_dl_traffic =  ( $row['dl_name'] );
+    $best_dl_traffic = $row['dl_name'];
     $best_dl_traffic_num = getsize ( $row['best_dl_traffic_num'] );
 
     $index = $FD->sql()->conn()->query ( "
@@ -113,7 +113,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 					ORDER BY `best_dl_uploader_num` DESC
 					LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
-    $best_dl_uploader =  ( $row['user_name'] );
+    $best_dl_uploader =  $row['user_name'];
     $best_dl_uploader_num = $row['best_dl_uploader_num'];
 }
 

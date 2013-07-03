@@ -68,29 +68,22 @@ if (
 	settype ( $_POST['cfg_top1_y'], 'integer' );
 	settype ( $_POST['cfg_loadonstop'], 'integer' );
 
-	$_POST['cfg_videobgcolor'] =  ( '#'.$_POST['cfg_videobgcolor'] );
-	$_POST['cfg_bgcolor1'] =  ( '#'.$_POST['cfg_bgcolor1'] );
-	$_POST['cfg_bgcolor2'] =  ( '#'.$_POST['cfg_bgcolor2'] );
-	$_POST['cfg_bgcolor'] =  ( '#'.$_POST['cfg_bgcolor'] );
-	$_POST['cfg_showplayer'] =  ( $_POST['cfg_showplayer'] );
-	$_POST['cfg_showloading'] =  ( $_POST['cfg_showloading'] );
-	$_POST['cfg_playercolor'] =  ( '#'.$_POST['cfg_playercolor'] );
-	$_POST['cfg_loadingcolor'] =  ( '#'.$_POST['cfg_loadingcolor'] );
-	$_POST['cfg_buttoncolor'] =  ( '#'.$_POST['cfg_buttoncolor'] );
-	$_POST['cfg_buttonovercolor'] =  ( '#'.$_POST['cfg_buttonovercolor'] );
-	$_POST['cfg_slidercolor1'] =  ( '#'.$_POST['cfg_slidercolor1'] );
-	$_POST['cfg_slidercolor2'] =  ( '#'.$_POST['cfg_slidercolor2'] );
-	$_POST['cfg_sliderovercolor'] =  ( '#'.$_POST['cfg_sliderovercolor'] );
-	$_POST['cfg_buffermessage'] =  ( $_POST['cfg_buffermessage'] );
-	$_POST['cfg_buffercolor'] =  ( '#'.$_POST['cfg_buffercolor'] );
-	$_POST['cfg_bufferbgcolor'] =  ( '#'.$_POST['cfg_bufferbgcolor'] );
-	$_POST['cfg_titlecolor'] =  ( '#'.$_POST['cfg_titlecolor'] );
-	$_POST['cfg_onclick'] =  ( $_POST['cfg_onclick'] );
-	$_POST['cfg_ondoubleclick'] =  ( $_POST['cfg_ondoubleclick'] );
-	$_POST['cfg_showmouse'] =  ( $_POST['cfg_showmouse'] );
-	$_POST['cfg_iconplaycolor'] =  ( '#'.$_POST['cfg_iconplaycolor'] );
-	$_POST['cfg_iconplaybgcolor'] =  ( '#'.$_POST['cfg_iconplaybgcolor'] );
-	$_POST['cfg_top1_url'] =  ( $_POST['cfg_top1_url'] );
+	$_POST['cfg_videobgcolor'] =  '#'.$_POST['cfg_videobgcolor'];
+	$_POST['cfg_bgcolor1'] = '#'.$_POST['cfg_bgcolor1'];
+	$_POST['cfg_bgcolor2'] = '#'.$_POST['cfg_bgcolor2'];
+	$_POST['cfg_bgcolor'] = '#'.$_POST['cfg_bgcolor'];
+	$_POST['cfg_playercolor'] = '#'.$_POST['cfg_playercolor'];
+	$_POST['cfg_loadingcolor'] = '#'.$_POST['cfg_loadingcolor'];
+	$_POST['cfg_buttoncolor'] = '#'.$_POST['cfg_buttoncolor'];
+	$_POST['cfg_buttonovercolor'] = '#'.$_POST['cfg_buttonovercolor'];
+	$_POST['cfg_slidercolor1'] = '#'.$_POST['cfg_slidercolor1'];
+	$_POST['cfg_slidercolor2'] = '#'.$_POST['cfg_slidercolor2'];
+	$_POST['cfg_sliderovercolor'] = '#'.$_POST['cfg_sliderovercolor'];
+	$_POST['cfg_buffercolor'] = '#'.$_POST['cfg_buffercolor'];
+	$_POST['cfg_bufferbgcolor'] = '#'.$_POST['cfg_bufferbgcolor'];
+	$_POST['cfg_titlecolor'] = '#'.$_POST['cfg_titlecolor'];
+	$_POST['cfg_iconplaycolor'] = '#'.$_POST['cfg_iconplaycolor'];
+	$_POST['cfg_iconplaybgcolor'] = '#'.$_POST['cfg_iconplaybgcolor'];
 
     // prepare data
     $data = frompost($used_cols);

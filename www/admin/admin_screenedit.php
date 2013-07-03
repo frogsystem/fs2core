@@ -216,13 +216,13 @@ else
                                 onmouseout="javascript:this.style.backgroundColor=\'transparent\'"
                                 onClick=\'document.getElementById("'.$screen_arr['screen_id'].'").checked="true";\'>
                                 <td class="configthin">
-                                    <img src="'.image_url('images/screenshots/',killhtml(($screen_arr['screen_id'])).'_s').'"  style="max-width:200px; max-height:100px;">
+                                    <img src="'.image_url('images/screenshots/',killhtml($screen_arr['screen_id']).'_s').'"  style="max-width:200px; max-height:100px;">
                                 </td>
                                 <td class="thin">
-                                    '.killhtml(($screen_arr['screen_name'])).'
+                                    '.killhtml($screen_arr['screen_name']).'
                                 </td>
                                 <td class="thin">
-                                    '.killhtml(($db_cat_name)).'
+                                    '.killhtml($db_cat_name).'
                                 </td>
                                 <td class="thin">
                                     <input type="radio" name="screenid" id="'.$screen_arr['screen_id'].'" value="'.$screen_arr['screen_id'].'">

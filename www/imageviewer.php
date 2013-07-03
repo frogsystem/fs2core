@@ -63,7 +63,7 @@ set_style();
 
         $row = $index->fetch(PDO::FETCH_ASSOC);
         if ( $row !== false ) {
-            $data_array['caption'] =  ( $row['screen_name'] );
+            $data_array['caption'] = $row['screen_name'];
             $cat_id = $row['cat_id'];
             settype( $cat_id, 'integer' );
             $image_found = TRUE;

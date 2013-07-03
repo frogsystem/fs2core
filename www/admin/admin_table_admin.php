@@ -25,7 +25,7 @@
     //...and remove non-existing/other tables
     foreach($_POST['selected_tables'] as $key => $value)
     {
-      if (!in_array($value, $allowed))
+      if (!in_array($value, $allowed, true))
       {
         unset($_POST['selected_tables'][$key]);
       }

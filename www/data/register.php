@@ -72,11 +72,11 @@ elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POS
 
         // Send Email
         $template_mail = get_email_template ( 'signup' );
-        $template_mail = str_replace ( '{..user_name..}',  ( $_POST['user_name'] ), $template_mail );
+        $template_mail = str_replace ( '{..user_name..}', $_POST['user_name'], $template_mail );
         $template_mail = str_replace ( '{..new_password..}', $userpass_mail, $template_mail );
         $template_mail = tpl_functions($template_mail, 0, array('VAR'));
         $email_subject = $FD->text("frontend", "mail_registerd_on") . $FD->config('virtualhost');
-        if ( @send_mail (  ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
+        if ( @send_mail ( $_POST['user_mail'], $email_subject, $template_mail ) ) {
             $email_message = '<br>'.$FD->text("frontend", "mail_registerd_sended");
         } else {
             $email_message = '<br>'.$FD->text("frontend", "mail_registerd_not_sended");
