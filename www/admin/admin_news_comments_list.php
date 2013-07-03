@@ -30,20 +30,18 @@
 
 // perform comment actions
 
-
-
     // Edit Comments
     if (
-                    isset ( $_POST['news_id'] ) &&
-                    count ( $_POST['news_id'] ) == 1 &&
-                    isset ( $_POST['comment_id'] ) &&
-                    isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit' &&
-                    isset ( $_POST['news_action'] ) && $_POST['news_action'] == 'comments' &&
-                    isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == 'edit' &&
+        isset ( $_POST['news_id'] ) &&
+        count ( $_POST['news_id'] ) == 1 &&
+        isset ( $_POST['comment_id'] ) &&
+        isset ( $_POST['sended'] ) && $_POST['sended'] == 'edit' &&
+        isset ( $_POST['news_action'] ) && $_POST['news_action'] == 'comments' &&
+        isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == 'edit' &&
 
-                    $_POST['title'] && $_POST['title'] != '' &&
-                    $_POST['text'] && $_POST['text'] != ''
-            )
+        isset ( $_POST['title'] ) && $_POST['title'] != '' &&
+        isset ( $_POST['text'] ) && $_POST['text'] != ''
+       )
     {
         // unset data, so admin_news_edit.php doesnt perform anything
         $POSTDATA = $_POST;
@@ -61,13 +59,13 @@
 
     // Delete Comments
     elseif (
-                    isset ( $_POST['news_id'] ) &&
-                    isset ( $_POST['comment_id'] ) &&
-                    isset ( $_POST['sended'] ) && $_POST['sended'] == 'delete' &&
-                    isset ( $_POST['news_action'] ) && $_POST['news_action'] == 'comments' &&
-                    isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == 'delete' &&
-                    isset ( $_POST['comment_delete'] )
-            )
+            isset ( $_POST['news_id'] ) &&
+            isset ( $_POST['comment_id'] ) &&
+            isset ( $_POST['sended'] ) && $_POST['sended'] == 'delete' &&
+            isset ( $_POST['news_action'] ) && $_POST['news_action'] == 'comments' &&
+            isset ( $_POST['comment_action'] ) && $_POST['comment_action'] == 'delete' &&
+            isset ( $_POST['comment_delete'] )
+           )
     {
         // unset data, so admin_news_edit.php doesnt perform anything
         $POSTDATA = $_POST;
@@ -277,7 +275,7 @@
   //statistics requested?
   if (isset($_REQUEST['b8_stats']))
   {
-    $query = $FD->sql()->conn()->query('SELECT * FROM b8_wordlist WHERE token LIKE \'b8*%\' LIMIT 2');
+    $query = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'b8_wordlist` WHERE token LIKE \'b8*%\' LIMIT 2');
     $b8_info = array();
     while ($result = $query->fetch(PDO::FETCH_ASSOC))
     {
@@ -352,7 +350,7 @@
     </table>';
     //get most used ham words
     $query = $FD->sql()->conn()->query('SELECT token, count_ham
-                    FROM b8_wordlist WHERE token NOT LIKE \'b8*%\' 
+                    FROM `'.$FD->config('pref').'b8_wordlist` WHERE token NOT LIKE \'b8*%\'
                     ORDER BY count_ham DESC LIMIT 30');
     $ham_words = array();
     while ($result = $query->fetch(PDO::FETCH_ASSOC))
@@ -361,7 +359,7 @@
     }//while
     //get most used spam words
     $query = $FD->sql()->conn()->query('SELECT token, count_spam
-                    FROM b8_wordlist WHERE token NOT LIKE \'b8*%\' 
+                    FROM `'.$FD->config('pref').'b8_wordlist` WHERE token NOT LIKE \'b8*%\'
                     ORDER BY count_spam DESC LIMIT 30');
     $spam_words = array();
     while ($result = $query->fetch(PDO::FETCH_ASSOC))

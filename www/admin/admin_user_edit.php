@@ -153,12 +153,12 @@ if (
         $mm = new MailManager();
 
         $content = get_email_template ('change_password');
-        $content = str_replace ( '{..user_name..}', ( $_POST['user_name'] ), $content );
+        $content = str_replace ( '{..user_name..}', $_POST['user_name'], $content );
         $content = str_replace ( '{..new_password..}', $_POST['newpwd'], $content );
 
         $subject = $FD->text('frontend', 'mail_password_changed_on') . $FD->cfg('virtualhost');
 
-        $mail = new Mail($mm->getDefaultSender(), ($_POST['user_mail']), $subject, $content, $mm->getHtmlConfig(), true);
+        $mail = new Mail($mm->getDefaultSender(), $_POST['user_mail'], $subject, $content, $mm->getHtmlConfig(), true);
 
         if ($mail->send()) {
             $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");

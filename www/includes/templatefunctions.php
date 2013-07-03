@@ -416,7 +416,6 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                             AND `style_allow_edit` = 1
                             ORDER BY `style_tag`' );
             while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-                $style_arr['style_tag'] =  ( $style_arr['style_tag'] );
                 if ( is_dir ( FS2_ROOT_PATH . 'styles/' . $style_arr['style_tag'] ) == TRUE ) {
                     $select_template .= '<option value="'.$style_arr['style_tag'].'" '.getselected ($style_arr['style_tag'], $_POST['style']).'>'.$style_arr['style_tag'];
                     $style_arr['style_tag'] == $FD->config('style') ? $select_template .= ' (aktiv)' : $select_template .= '';
@@ -528,7 +527,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $index = $FD->sql()->conn()->query ( '
                     SELECT `applet_file` FROM `'.$FD->config('pref').'applets` WHERE `applet_active` = 1 AND `applet_output` = 1' );
     while ( $app_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-        $app =  ( $app_arr['applet_file'] );
+        $app = $app_arr['applet_file'];
         $the_app = '$APP('.$app.'.php)';
         $applets_array[] = '<tr class="pointer tag_click_class" title="'.$the_app.' einf&uuml;gen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
@@ -538,7 +537,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $index = $FD->sql()->conn()->query ( '
                     SELECT `snippet_tag` FROM `'.$FD->config('pref').'snippets` WHERE `snippet_active` = 1' );
     while ( $snippets_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-        $the_snippet =  ( $snippets_arr['snippet_tag'] );
+        $the_snippet = $snippets_arr['snippet_tag'];
         $snippets_array[] = '<tr class="pointer tag_click_class" title="'.$the_snippet.' einf&uuml;gen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['snippets'] = create_dropdown ( 'Schnipsel', implode ( '', $snippets_array ) );
@@ -762,7 +761,7 @@ function ensure_copyright ( $TEMPLATE_NAME )
 {
     if (!isset($_POST[$TEMPLATE_NAME]))
         return true;
-    
+
     $OC = new template ();
     if ( strpos ( $_POST[$TEMPLATE_NAME], $OC->getOpener().'copyright'.$OC->getCloser() ) === FALSE ) {
         return FALSE;

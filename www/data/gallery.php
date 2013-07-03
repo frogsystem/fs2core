@@ -79,7 +79,7 @@ if (isset($_GET['catid']))
                 $sizes = '';
                 while ($sizes_arr = $index2->fetch(PDO::FETCH_ASSOC))
                 {
-                    $sizes_arr['url'] = image_url('images/wallpaper/',  ( $wp_arr['wallpaper_name'] ).'_'.$sizes_arr['size']);
+                    $sizes_arr['url'] = image_url('images/wallpaper/', $wp_arr['wallpaper_name'].'_'.$sizes_arr['size']);
 
                     // Get Template
                     $template = new template();
@@ -87,7 +87,7 @@ if (isset($_GET['catid']))
                     $template->load('SIZE');
 
                     $template->tag('url',  $sizes_arr['url'] );
-                    $template->tag('size',  ( $sizes_arr['size'] ) );
+                    $template->tag('size', $sizes_arr['size'] );
 
                     $template = $template->display ();
                     $sizes .= $template;
@@ -99,7 +99,7 @@ if (isset($_GET['catid']))
                 $template->load('WALLPAPER');
 
                 $template->tag('thumb_url', $wp_arr['thumb_url'] );
-                $template->tag('caption',  ( $wp_arr['wallpaper_title'] ) );
+                $template->tag('caption', $wp_arr['wallpaper_title'] );
                 $template->tag('sizes', $sizes );
 
                 $template = $template->display ();
@@ -152,7 +152,7 @@ if (isset($_GET['catid']))
                 $template->tag('img_url', $screen_arr['screen_url'] );
                 $template->tag('viewer_link', $screen_arr['img_link'] );
                 $template->tag('thumb_url', $screen_arr['screen_thumb'] );
-                $template->tag('caption',  ( $screen_arr['screen_name'] ) );
+                $template->tag('caption', $screen_arr['screen_name'] );
 
                 $template = $template->display ();
 
@@ -200,7 +200,7 @@ if (isset($_GET['catid']))
     $template->setFile('0_screenshots.tpl');
     $template->load('BODY');
 
-    $template->tag('name',  ( $cat_arr['cat_name'] ) );
+    $template->tag('name', $cat_arr['cat_name'] );
     $template->tag('screenshots', $pics );
     $template->tag('page_nav', $pagenav );
 
@@ -230,7 +230,7 @@ else {
         $template->load('CATEGORY');
 
         $template->tag('url', url($_GET['go'], array('catid' => $cat_arr['cat_id'])));
-        $template->tag('name',  ( $cat_arr['cat_name'] ) );
+        $template->tag('name', $cat_arr['cat_name'] );
         $template->tag('date', $cat_arr['cat_date'] );
         $template->tag('number', $cat_arr['cat_menge'] );
 

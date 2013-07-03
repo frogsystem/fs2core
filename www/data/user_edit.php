@@ -100,11 +100,11 @@ if (
 
                 // Send E-Mail
                 $template_mail = get_email_template ( 'signup' );
-                $template_mail = str_replace ( '{..user_name..}',  ( $_SESSION['user_name'] ), $template_mail );
+                $template_mail = str_replace ( '{..user_name..}', $_SESSION['user_name'], $template_mail );
                 $template_mail = str_replace ( '{..new_password..}', $mailpass, $template_mail );
                 $template_mail = tpl_functions($template_mail, 0, array('VAR'));
                 $email_subject = $FD->text('frontend', 'mail_password_changed_on') . $FD->config('virtualhost');
-                if ( @send_mail (  ( $_POST['usermail'] ), $email_subject, $template_mail ) ) {
+                if ( @send_mail ( $_POST['usermail'], $email_subject, $template_mail ) ) {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");
                 } else {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_not_sended");
