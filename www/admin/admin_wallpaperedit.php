@@ -436,6 +436,8 @@ else
     {
         settype($_POST['wpcatid'], 'integer');
         $wherecat = 'WHERE cat_id = ' . $_POST['wpcatid'];
+    } else {
+        $_POST['wpcatid'] = null;
     }
 
     echo'

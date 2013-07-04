@@ -190,8 +190,10 @@ if (isset($_POST['pollid']))
         }
     }
 
-    if (!isset($_POST['options']))
-    {
+    if (!isset($_POST['optionsadd'])){
+        $_POST['optionsadd'] = 0;
+    }
+    if (!isset($_POST['options'])){
         $_POST['options'] = count($_POST['ant']);
     }
     $_POST['options'] += $_POST['optionsadd'];
@@ -208,7 +210,7 @@ if (isset($_POST['pollid']))
                         <table class="content select_list" cellpadding="3" cellspacing="0">
                             <tr><td colspan="5"><h3>Umfrage bearbeiten</h3><hr></td></tr>
                             <tr>
-                                <td class="config" valign="top">
+                                <td class="config" valign="top" width="120">
                                     Frage:<br>
                                     <font class="small">Nach was soll gefragt werden</font>
                                 </td>

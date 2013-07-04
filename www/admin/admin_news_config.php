@@ -60,7 +60,6 @@ if ( TRUE )
     // security functions
     $_POST = array_map('killhtml', $_POST);
 
-
     // Conditions
     for ($i=1; $i<=4; $i++)
         $adminpage->addCond("html_code_$i", $_POST['html_code'] === $i);

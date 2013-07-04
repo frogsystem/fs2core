@@ -125,7 +125,7 @@ if(true)
                         <table class="content" cellpadding="3" cellspacing="0">
                             <tr><td colspan="2"><h3>Umfrage hinzuf&uuml;gen</h3><hr></td></tr>
                             <tr>
-                                <td class="config" valign="top">
+                                <td class="config" valign="top" width="120">
                                     Frage:<br>
                                     <font class="small">Nach was soll gefragt werden</font>
                                 </td>

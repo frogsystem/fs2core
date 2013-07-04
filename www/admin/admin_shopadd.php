@@ -4,7 +4,8 @@
 //// Artikel einstellen ////
 ////////////////////////////
 
-if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']))
+if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis'])
+    && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
 {
     settype($_POST['hot'], 'integer');
     $stmt = $FD->sql()->conn()->prepare(
@@ -15,7 +16,7 @@ if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url'
                          ?,
                          '".$_POST['hot']."');");
     $stmt->execute(array($_POST['title'], $_POST['url'], $_POST['text'], $_POST['preis']));
-    $id = $FD->sql()->conn()->->lastInsertId();
+    $id = $FD->sql()->conn()->lastInsertId();
 
     $messages = array();
     if (!empty($_FILES['artikelimg']['name']))

@@ -29,7 +29,7 @@ if (!$FD->configExists('main', 'count_referers') || $FD->cfg('main', 'count_refe
 set_style();
 copyright();
 
-
+var_dump($FD->cfg('cronjobs', 'search_index_update'));
 // Get Body-Template
 $theTemplate = new template();
 $theTemplate->setFile('0_main.tpl');

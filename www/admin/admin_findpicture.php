@@ -1,5 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+if (!isset($_POST['cat']))
+    $_POST['cat'] = null;
+
 // search form
 echo '
     <form action="" method="post" id="img_search">

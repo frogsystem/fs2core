@@ -244,7 +244,7 @@ for ($m=1; $m<13; $m++)
         echo'
                                     <tr>
                                         <td class="n" align="center">
-                                            <a href="'.$_SERVER['PHP_SELF'].'?mid='.$_GET['mid'].'&go=stat_view&s_year='.$_GET['s_year'].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
+                                            <a href="'.$_SERVER['PHP_SELF'].'?go=stat_view&s_year='.$_GET['s_year'].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
                                         </td>
                                         <td class="n" align="center">
                                             '.point_number($sum_arr['sumvisits']).'

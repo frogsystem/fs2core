@@ -9,12 +9,12 @@ edit_cat_name: Name
 edit_cat_name_desc: Name der Kategorie
 edit_cat_date: Erstellungsdatum
 edit_cat_date_desc: Die Kategorie wurde erstellt am ...
-edit_cat_by: Ersteller
-edit_cat_by_desc: Die Kategorie wurde erstellt von ...
+edit_cat_created_by: Ersteller
+edit_cat_created_by_desc: Die Kategorie wurde erstellt von ...
 edit_cat_title_optional: Zusätzliche Einstellungen
 edit_cat_image: Bild
-edit_cat_desc: Beschreibung
-edit_cat_desc_desc: Ein kurzer Text über die Kategorie.
+edit_cat_description: Beschreibung
+edit_cat_description_desc: Ein kurzer Text über die Kategorie.
 
 delete_cat_title: Kategorie löschen
 delete_cat_question: Soll diese Kategorie wirklich gelöscht werden

@@ -286,7 +286,7 @@ if ( TRUE ) {
     $adminpage->addCond('news_comments_allowed', $_POST['news_comments_allowed'] === 1);
 
     // Values
-    unset($_POST['link_name']);
+    unset($_POST['link_name'], $_POST['link_url'], $_POST['link_target']);
     foreach ($_POST as $key => $value) {
         $adminpage->addText($key, $value);
     }

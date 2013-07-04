@@ -101,7 +101,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
     $jetzt['minute'] = date('i', $jetzt['time']);
 
     //Error Message
-    if ($_POST['sended'] == 'edit') {
+    if (isset($_POST['sended']) && $_POST['sended'] == 'edit') {
         systext ($FD->text('admin', 'note_notfilled'));
 
         $random_arr['start_d'] = $_POST['start_d'];
@@ -126,7 +126,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
                         <table class="content" cellpadding="0" cellspacing="0">
                             <tr><td colspan="5"><h3>Zeitgesteuertes Vorschaubild bearbeiten</h3><hr></td></tr>
                             <tr>
-                                <td class="config" valign="top" width="160">
+                                <td class="config" valign="top" width="120">
                                     Bild:<br>
                                     <font class="small">Bild ausw&auml;hlen</font>
                                 </td>
@@ -143,7 +143,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
                             <tr>
                                 <td class="config" valign="top">
                                     Startzeit:<br>
-                                    <font class="small">Bild soll angezeigt werden ab</font>
+                                    <font class="small">Bild anzeigen ab</font>
                                 </td>
                                 <td class="config" valign="top" colspan="2">
                                     <input id="startday" class="text" size="1" value="'.$random_arr['start_d'].'" name="nowtag" maxlength="2"> .
@@ -164,7 +164,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
                             <tr>
                                 <td class="config" valign="top">
                                     Endzeit:<br>
-                                    <font class="small">Bild soll angezeigt werden bis</font>
+                                    <font class="small">Bild anzeigen bis</font>
                                 </td>
                                 <td class="config" valign="top" colspan="2">
                                     <input id="endday"  class="text" size="1" value="'.$random_arr['end_d'].'" name="endtag" maxlength="2"> .
@@ -212,7 +212,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
     $random_arr['end'] = date('d.m.Y H:i ', $random_arr['end']) . 'Uhr';
 
     $index = $FD->sql()->conn()->query('SELECT screen_name FROM '.$FD->config('pref')."screen WHERE screen_id = $random_arr[screen_id]");
-    $random_arr['title'] = $index->fetchCoulm();
+    $random_arr['title'] = $index->fetchColumn();
 
     if ($random_arr['title'] != '') {
         $random_arr['title'] = '<b>'.killhtml($random_arr['title']).'</b><br /><br />';

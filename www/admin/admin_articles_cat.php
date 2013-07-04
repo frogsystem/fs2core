@@ -231,8 +231,8 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
-                                    '.$FD->text("page", "edit_cat_by").':<br>
-                                    <span class="small">'.$FD->text("page", "edit_cat_by_desc").'</span>
+                                    '.$FD->text("page", "edit_cat_created_by").':<br>
+                                    <span class="small">'.$FD->text("page", "edit_cat_created_by_desc").'</span>
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" size="30" maxlength="100" readonly="readonly" id="username" name="cat_username" value="'.$cat_arr['cat_username'].'">
@@ -279,8 +279,8 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 							</tr>
 							<tr align="left" valign="top">
 								<td class="config">
-            						'.$FD->text("page", "edit_cat_desc").': <span class="small">('.$FD->text("admin", "optional").')</span><br>
-									<span class="small">'.$FD->text("page", "edit_cat_desc_desc").'</span>
+            						'.$FD->text("page", "edit_cat_description").': <span class="small">('.$FD->text("admin", "optional").')</span><br>
+									<span class="small">'.$FD->text("page", "edit_cat_description_desc").'</span>
 								</td>
 								<td class="config">
 									<textarea class="text" name="cat_description" rows="5" cols="50" wrap="virtual">'.$cat_arr['cat_description'].'</textarea>

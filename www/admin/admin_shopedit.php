@@ -5,7 +5,8 @@
 //// Artikel aktualiesieren ////
 ////////////////////////////////
 
-if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && $_POST['sended'] == 'edit')
+if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && $_POST['sended'] == 'edit'
+    && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
 {
     settype($_POST['artikelid'], 'integer');
     if (isset($_POST['delartikel']))

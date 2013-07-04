@@ -18,6 +18,7 @@ function templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, $SAVE
                 systext ( $FD->text("admin", "changes_saved"),
                     $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_save_ok") );
                 echo '<br>';
+                $_POST = $_POST+array('style' => null, 'file' => null);
                 $style = $_POST['style'];
                 $file = $_POST['file'];
                 unset ( $_POST );
@@ -202,7 +203,6 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
         // Set Default File
         if ( isset ( $_POST['file'] ) ) {
-            $_POST['file'] = $_POST['file'];
             if ( !in_array ( $_POST['file'], $file_arr ) && $_POST['file'] != 'new' ) {
                  $_POST['file'] = $file_arr[0];
             }
@@ -643,7 +643,7 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
     global $FD;
 
     // Get Tag-Menu
-    $help_template = get_taglist ( $editor_arr['help'], $editor_arr['name'] );
+    $help_template = get_taglist ( isset($editor_arr['help'])?$editor_arr['help']:array(), $editor_arr['name'] );
 
     // Get dropdowns
     $dropdowns = get_dropdowns ( 'editor_'.$editor_arr['name'] );

@@ -1,15 +1,22 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+////////////////////////
+//// settings and co ///
+////////////////////////
+$defaults = array(
+  'oldname' => 1,
+  'newname' => '',
+  'cat' => '',
+  'thumb' => 0,
+  'width' => '',
+  'height' => '',
+);
+
+
 /////////////////////////////
 //// Screenshot hochladen ///
 /////////////////////////////
 
-if(!isset($_POST['oldname']))   $_POST['oldname'] = 0;
-if(!isset($_POST['newname']))   $_POST['newname'] = '';
-if(!isset($_POST['cat']))       $_POST['cat'] = '';
-if(!isset($_POST['thumb']))     $_POST['thumb'] = 0;
-if(!isset($_POST['width']))     $_POST['width'] = '';
-if(!isset($_POST['height']))    $_POST['height'] = '';
 
 $catsqry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
 $cats = array();
@@ -83,11 +90,8 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
       systext($error_message);
     }
 
-
-    if(!isset($_POST['oldname']))
-      $_POST['oldname'] = 0;
-    if(!isset($_POST['newname']))
-      $_POST['newname'] = '';
+    // set defaults
+    $_POST = $_POST+$defaults;
 
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
@@ -111,10 +115,11 @@ echo'
                                     <font class="small">Soll das Bild den urspr&uuml;nglichen Namen behalten?</font>
                                 </td>
                                 <td class="config" valign="middle">
-                                  <input class="text" type="checkbox" name="oldname" id="newname" value="1"'.getchecked($_POST['oldname'], 1).'/>
+                                  '.$FD->text("admin", "checkbox").'
+                                  <input class="hidden" class="text" type="checkbox" name="oldname" id="newname" value="1"'.getchecked($_POST['oldname'], 1).'>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="hidden" id="newname_line">
                                 <td valign="top" class="config">
                                     Neuer Bildname:<br>
                                     <font class="small">ohne Dateiendung</font>
@@ -179,5 +184,17 @@ echo '
                             </tr>
                         </table>
                     </form>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function(){
+                            $("#newname").change(function(event) {
+                                if ($(this).is(":checked")) {
+                                    $("#newname_line").hide();
+                                } else {
+                                    $("#newname_line").show();
+                                }
+                            });
+                        });
+                    
+                    </script>
 ';
 ?>

@@ -94,6 +94,7 @@ if(true)
     }
     if (!isset($_POST['optionsadd'])) $_POST['optionsadd'] = 0;
     $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
+    $_POST = $_POST+array_fill_keys(array('title', 'text', 'autor', 'autorurl'), null);
 
     $FD->loadConfig('downloads');
     $admin_dl_config_arr = $FD->configObject('downloads')->getConfigArray();

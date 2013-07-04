@@ -157,7 +157,7 @@ function killhtml ($VAL, $ARR = true) {
             settype($VAL, 'float');
         }
     } else {
-        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES, 'ISO-8859-1', false);
+        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES, 'ISO-8859-1', true);
         settype($VAL, 'string');
     }
 
@@ -381,15 +381,7 @@ function hex2dec_color ($COLOR) {
 //// all entries with keys not in $keys will be removed ////
 ////////////////////////////////////////////////////////////
 function array_filter_keys ($input, $keys) {
-    $new_arr = array();
-    
-    foreach($input as $key=>$value) {
-        if (!in_array($key, $keys)) {
-            $new_arr[$key] = $value;
-        }
-    }
-    
-    return $new_arr;
+    return array_intersect_key($input, array_flip($keys));
 }
 
 ///////////////////////////

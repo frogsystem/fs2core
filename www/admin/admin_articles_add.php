@@ -152,7 +152,7 @@ else
                                     <span class="small">'.$FD->text("page", "articles_url_desc").'</span>
                                 </td>
                                 <td class="config" width="350">
-                                    ?go = <input class="text" size="45" maxlength="100" name="article_url" value="'.$_POST['article_url'].'">
+                                    ?go = <input class="text" size="40" maxlength="100" name="article_url" value="'.$_POST['article_url'].'">
                                 </td>
                             </tr>
                             <tr>

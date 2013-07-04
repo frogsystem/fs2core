@@ -413,7 +413,8 @@ else
 
     $valid_ids = array();
     get_dl_categories ($valid_ids, -1);
-
+    if (!isset($_POST['dlcatid']))
+        $_POST['dlcatid'] = null;
 
     foreach ($valid_ids as $cat)
     {

@@ -147,6 +147,8 @@ else
     {
         settype($_POST['screencatid'], 'integer');
         $wherecat = 'WHERE cat_id = ' . $_POST['screencatid'];
+    } else {
+        $_POST['screencatid'] = null;
     }
 
     echo'

@@ -285,6 +285,7 @@ else
         // Get Config data
         $FD->loadConfig('cronjobs');
         $cronjobs = $FD->configObject('cronjobs')->getConfigArray();
+        
         $cronjobs = array_filter_keys($cronjobs, $cronjobs_cols);
         putintopost($cronjobs);
 

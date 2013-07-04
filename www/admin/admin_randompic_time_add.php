@@ -14,7 +14,7 @@ if ($startdate < $enddate) {
                  VALUES ('". $_POST['screen_id'] ."',
                          '". $startdate ."',
                          '". $enddate ."'
-                        )", $FD->sql()->conn() );
+                        )");
     systext('Zeitgesteuertes Zufallsbild wurde hinzugef&uuml;gt');
 }
 /////////////////////////////
@@ -56,7 +56,7 @@ else
                         <table class="content" cellpadding="0" cellspacing="0">
                             <tr><td colspan="5"><h3>Zeitgesteuertes Vorschaubild hinzufügen</h3><hr></td></tr>
                             <tr>
-                                <td class="config" valign="top" width="160">
+                                <td class="config" valign="top" width="120">
                                     Bild:<br>
                                     <font class="small">Bild ausw&auml;hlen</font>
                                 </td>
@@ -72,7 +72,7 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Startzeit:<br>
-                                    <font class="small">Bild soll angezeigt werden ab</font>
+                                    <font class="small">Bild angezeigen ab</font>
                                 </td>
                                 <td class="config" valign="top" colspan="2">
                                     <input id="startday" class="text" size="1" value="'.$_POST['nowtag'].'" name="nowtag" maxlength="2"> .
@@ -93,7 +93,7 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Endzeit:<br>
-                                    <font class="small">Bild soll angezeigt werden bis</font>
+                                    <font class="small">Bild angezeigen bis</font>
                                 </td>
                                 <td class="config" valign="top" colspan="2">
                                     <input id="endday"  class="text" size="1" value="'.$_POST['endtag'].'" name="endtag" maxlength="2"> .
