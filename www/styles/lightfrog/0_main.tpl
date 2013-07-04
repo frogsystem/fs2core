@@ -6,23 +6,18 @@
     </div>
 
     <div id="menu_left">
-      <p>
-        <a href="$URL(download[cat_id=4 keyword=test])">$URL(download[cat_id=4 keyword=test 1])</a>
-      </p>
-    $APP(mini-search.php)
+    $APP(mini-search.php)<br>
     $NAV(left.nav)
     [%feeds%]
-    $DATE(d.m.Y H:i \U\h\r)<br>
-    $DATE(Y-m-d[1216908484])
     </div>
 
     <div id="menu_right">
       $APP(user-menu.php)
-      $APP(topdownloads.php)
       $APP(preview-image.php)
       $APP(shop-system.php)
       $APP(poll-system.php[random])
       $APP(affiliates.php)
+      $APP(topdownloads.php)
       $APP(mini-statistics.php)
     </div>
 
@@ -57,3 +52,4 @@
 </html><!--section-end::MATRIX-->
 
 <!--section-start::DOCTYPE--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!--section-end::DOCTYPE-->
+

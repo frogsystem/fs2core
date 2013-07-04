@@ -31,7 +31,7 @@ $template->tag('keyword', kill_replacements ( isset($_REQUEST['keyword']) ? $_RE
 
 $template = $template->display ();
 $searchform_template = $template;
-
+initstr($news_template);
 
 ////////////////////////////////
 /// News nach Datum anzeigen ///

@@ -1,13 +1,4 @@
 <?php
-///////////////////////
-//// DB Login Vars ////
-///////////////////////
-$dbc['host'] = 'localhost'; //Database Hostname
-$dbc['user'] = 'frogsystem'; //Database Username
-$dbc['pass'] = 'frogsystem'; //Database User-Password
-$dbc['data'] = 'fs2'; //Database Name
-$dbc['pref'] = 'fs2_'; //Table Prefix
-
 ////////////////////////
 //// Hardcoded Vars ////
 ////////////////////////
@@ -23,6 +14,7 @@ if (!DEBUG)
 ////////////////////////////////////////
 //// Include important files & libs ////
 ////////////////////////////////////////
+require_once(FS2_ROOT_PATH . 'config/db_connection.php');
 require_once(FS2_ROOT_PATH . 'libs/class_GlobalData.php');
 require_once(FS2_ROOT_PATH . 'libs/class_lang.php');
 require_once(FS2_ROOT_PATH . 'libs/class_sql.php');
