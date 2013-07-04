@@ -213,7 +213,7 @@ if (isset($_POST['pollid']))
                                     <font class="small">Nach was soll gefragt werden</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="60" name="frage" value="'.killhtml(($_POST['frage'])).'" maxlength="255">
+                                    <input class="text" size="60" name="frage" value="'.killhtml($_POST['frage']).'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
@@ -321,7 +321,7 @@ if (isset($_POST['pollid']))
                                     <font class="small">[Antwort] [Votes] [l&ouml;schen]</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="48" name="ant['.$i.']" value="'.killhtml(($_POST['ant'][$i])).'" maxlength="100">
+                                    <input class="text" size="48" name="ant['.$i.']" value="'.killhtml($_POST['ant'][$i]).'" maxlength="100">
                                     <input class="text" size="5" name="count['.$i.']" value="'.$_POST['count'][$i].'" maxlength="5">
                                     <input name="dela['.$i.']" id="'.$i.'" value="'.$_POST['id'][$i].'" type="checkbox"
                                     onClick=\'delalert ("'.$i.'", "Soll die Antwortmöglichkeit '.$j.' wirklich gelöscht werden?")\'>
@@ -440,7 +440,7 @@ else
         echo'
                             <tr class="select_entry thin">
                                 <td class="configthin">
-                                    '.($poll_arr['poll_quest']).'
+                                    '.$poll_arr['poll_quest'].'
                                 </td>
                                 <td class="configthin">
                                     <font class="small">'.$poll_arr['poll_type'].'</font>

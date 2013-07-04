@@ -41,7 +41,7 @@ if ( $user_arr!==false ) {
         $user_arr['user_group_text'] = '-';
     }
 
-    $user_arr['user_reg_date_text'] = date_loc (  ( $config_arr['reg_date_format'] ), $user_arr['user_reg_date'] );
+    $user_arr['user_reg_date_text'] = date_loc ( $config_arr['reg_date_format'], $user_arr['user_reg_date'] );
 
     if (  $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != 'http://' ) {
         $user_arr['user_homepage_link'] = '<a href="'.kill_replacements ( $user_arr['user_homepage']).'" target="_blank">'.kill_replacements ( $user_arr['user_homepage'], TRUE ).'</a>';

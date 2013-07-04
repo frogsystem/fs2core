@@ -502,10 +502,10 @@ else
                         <input type="hidden" value="wp_edit" name="go">
                             <tr>
                                 <td class="thin">
-                                    <img src="'.image_url('images/wallpaper/', killhtml(($wallpaper_arr['wallpaper_name'])).'_s').'" style="max-width:200px; max-height:100px;"><br>
+                                    <img src="'.image_url('images/wallpaper/', killhtml($wallpaper_arr['wallpaper_name']).'_s').'" style="max-width:200px; max-height:100px;"><br>
 
                                 </td>
-                                <td class="thin">'.killhtml(($wallpaper_arr['wallpaper_name']));
+                                <td class="thin">'.killhtml($wallpaper_arr['wallpaper_name']);
 
             $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC");
             $sizes = array();
@@ -522,7 +522,7 @@ else
 
             echo'
                                 <td class="thin">
-                                    '.killhtml(($db_cat_name)).'
+                                    '.killhtml($db_cat_name).'
                                 </td>
                                 <td class="thin">
                                     <select name="wp_action" size="1" class="text">

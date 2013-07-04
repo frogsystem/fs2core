@@ -428,7 +428,7 @@ function get_content ($GOTO)
                        WHERE `alias_active` = 1 AND `alias_go` = 'articles.php'");
         $alias = $alias->fetch(PDO::FETCH_ASSOC);
         if (!empty($alias)) {
-            include(FS2_ROOT_PATH . 'data/' . ($alias['alias_forward_to']));
+            include(FS2_ROOT_PATH . 'data/' . $alias['alias_forward_to']);
         } else {
             include(FS2_ROOT_PATH . 'data/articles.php');
         }
@@ -936,7 +936,7 @@ function get_seo () {
 function get_goto ()
 {
     global $FD;
-        
+
     //check seo
     if ($FD->cfg('url_style') == 'seo') {
         get_seo();
@@ -1177,8 +1177,8 @@ function set_style ()
         $index->execute(array($_GET['style']));
         $row = $index->fetch(PDO::FETCH_ASSOC);
         if ( $row !== false ) {
-            $FD->setConfig('style',  ( $row['style_tag'] ) );
-            $FD->setConfig('style_tag',  ( $row['style_tag'] ) );
+            $FD->setConfig('style', $row['style_tag'] );
+            $FD->setConfig('style_tag', $row['style_tag'] );
             $FD->setConfig('style_id', $row['style_id'] );
         }
     } elseif ( isset ( $_GET['style_id'] ) && $FD->config('allow_other_designs') == 1 ) {
@@ -1191,8 +1191,8 @@ function set_style ()
                         LIMIT 0,1" );
         $row = $index->fetch(PDO::FETCH_ASSOC);
         if ( $row !== false ) {
-            $FD->setConfig('style',  ( $row['style_tag'] ) );
-            $FD->setConfig('style_tag',  ( $row['style_tag'] ) );
+            $FD->setConfig('style', $row['style_tag'] );
+            $FD->setConfig('style_tag', $row['style_tag'] );
             $FD->setConfig('style_id', $row['style_id'] );
         }
     }

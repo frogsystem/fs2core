@@ -49,7 +49,7 @@ if (
                             FROM `'.$FD->config('pref').'styles`
                             WHERE `style_id` = '.$_POST['copy_style_id'].'
                             LIMIT 0,1' );
-            $copy_style_path = FS2_ROOT_PATH . 'styles/' .  ( $index->fetchColumn() );
+            $copy_style_path = FS2_ROOT_PATH . 'styles/' . $index->fetchColumn();
             if (
                     $ACCESS->copyAny( $copy_style_path, $new_style_path, 0777, 0644 )
                     && $ACCESS->putFileData( $new_style_path . '/style.ini', $new_ini_data )
