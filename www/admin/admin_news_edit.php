@@ -832,12 +832,12 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
 if ($FILE_SHOW_START)
 {
     // Filter
-    $_REQUEST['order'] = killhtml(isset($_REQUEST['order']) ? $_REQUEST['order'] : "news_date");
-    $_REQUEST['sort'] = killhtml(isset($_REQUEST['sort']) ? $_REQUEST['sort'] : "DESC");
-    $_REQUEST['filter_cat'] = isset($_REQUEST['filter_cat']) ? $_REQUEST['filter_cat'] : 0;
+    $_REQUEST['order'] = killhtml(isset($_REQUEST['order']) && !empty($_REQUEST['order']) ? $_REQUEST['order'] : "news_date");
+    $_REQUEST['sort'] = killhtml(isset($_REQUEST['sort']) && !empty($_REQUEST['sort']) ? $_REQUEST['sort'] : "DESC");
+    $_REQUEST['filter_cat'] = isset($_REQUEST['filter_cat']) && !empty($_REQUEST['filter_cat']) ? $_REQUEST['filter_cat'] : 0;
     settype($_REQUEST['filter_cat'], 'integer');
     settype($_REQUEST['search_type'], 'integer');
-    $_REQUEST['filter_string'] = isset($_REQUEST['filter_string']) ? killhtml($_REQUEST['filter_string']) : '';
+    $_REQUEST['filter_string'] = isset($_REQUEST['filter_string']) && !empty($_REQUEST['filter_string']) ? killhtml($_REQUEST['filter_string']) : '';
 
     //cat filter options
     initstr($cat_filter_options);
@@ -911,9 +911,10 @@ if ($FILE_SHOW_START)
                                 ORDER BY `'.$_REQUEST['order'].'` '.$_REQUEST['sort'].', `news_id` '.$_REQUEST['sort'].'
                                 LIMIT '.($_REQUEST['page']-1)*$config_arr['acp_per_page'].",".$config_arr['acp_per_page']);
             $news_data = $news_data->fetchAll(PDO::FETCH_ASSOC);
-            $total_entries = count($news_data);
+            $total_entries = $sql->conn()->prepare('SELECT COUNT(*) FROM '.$FD->config('pref').'news '.$where);
+            $total_entries->execute();
+            $total_entries = $total_entries->fetch(PDO::FETCH_COLUMN);
         }
-
 
         //run through results
         $entries = array();
