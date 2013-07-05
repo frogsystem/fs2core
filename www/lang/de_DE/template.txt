@@ -165,6 +165,8 @@ user_list_staffline_title:             Mitarbeiter-Zeile
 user_list_staffline_desc:              Darstellung der Zeile für Mitarbeiter
 user_list_adminline_title:             Administrator-Zeile
 user_list_adminline_desc:              Darstellung der Zeile für Administratoren
+new_password_title:                    Zugangsdaten anfordern-Seite
+new_password_desc:                     Seite um neue Zugangsdaten anzufordern.
 
 articles_author_title:                 Autor-Template
 articles_author_desc:                  Template für den Autor eines Artikels
@@ -300,9 +302,14 @@ search_results_body_more_results:      Bindet „Mehr Ergebnisse“-Link ein, wenn n
 search_body_title:                     Suchseite
 search_body_desc:                      Darstellung der gesamten Suchseite
 search_body_search:                    Bindet das Suchfeld ein.
+search_body_info:                      Bindet den Informations-Block ein.
 search_body_news:                      Bindet die News-Suchergebnisse ein.
 search_body_articles:                  Bindet die Artikel-Suchergebnisse ein.
 search_body_downloads:                 Bindet die Downloads-Suchergebnisse ein.
+search_info_title:                     Informations-Block
+search_info_desc:                      Beinhaltet Informationen zur gestellten Suchanfrage.
+search_info_query:                     Die bereinigte Suchanfrage.
+search_info_num_results:               Anzahl insgesamt gefundener Datensätze.
 
 previewimg_body_title:                 Vorschaubild
 previewimg_body_desc:                  Darstellung des Vorschaubild-Applets
