@@ -802,7 +802,7 @@ function tpl_func_url($original, $main_argument, $other_arguments)
         $full = false; // reset $full indicator (because the last one wasn't last of all)
         $param = explode('=', $argument, 2); // explode by =
         if (count($param) < 2) { // only value of param available
-            if ($param[0] == 'true' || $param[0] == 1) { // param maybe indicating a full url request
+            if (strtolower($param[0]) == 'true' || $param[0] == 1) { // param maybe indicating a full url request
                 $full = true; // but only if it's the last one
                 break;
             } else {
@@ -814,7 +814,7 @@ function tpl_func_url($original, $main_argument, $other_arguments)
     }
 
     // finally create URL
-    return url($main_argument, $params, $full);
+    return url(trim($main_argument), $params, $full);
 }
 
 // fs2seourl Version 1.01 (27.08.2001)
