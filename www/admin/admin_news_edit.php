@@ -911,9 +911,8 @@ if ($FILE_SHOW_START)
                                 ORDER BY `'.$_REQUEST['order'].'` '.$_REQUEST['sort'].', `news_id` '.$_REQUEST['sort'].'
                                 LIMIT '.($_REQUEST['page']-1)*$config_arr['acp_per_page'].",".$config_arr['acp_per_page']);
             $news_data = $news_data->fetchAll(PDO::FETCH_ASSOC);
-            $total_entries = $sql->conn()->prepare('SELECT COUNT(*) FROM '.$FD->config('pref').'news '.$where);
-            $total_entries->execute();
-            $total_entries = $total_entries->fetch(PDO::FETCH_COLUMN);
+            $total_entries = $sql->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref').'news '.$where);
+            $total_entries = $total_entries->fetchColumn();
         }
 
         //run through results
