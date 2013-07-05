@@ -284,28 +284,28 @@ function get_meta ()
     foreach ($keyword_arr as $key => $value) {
         $keyword_arr[$key] = trim($value);
     }
-    $keywords = implode(', ', $keyword_arr);
+    $keywords = htmlspecialchars(implode(', ', $keyword_arr));
 
     $template = '
-    <meta name="title" content="'.get_title().'">
+    <meta name="title" content="'.htmlspecialchars(get_title()).'">
     '.get_meta_author().'
-    <meta name="publisher" content="'.$FD->config('publisher').'">
-    <meta name="copyright" content="'.$FD->config('copyright').'">
+    <meta name="publisher" content="'.htmlspecialchars($FD->config('publisher')).'">
+    <meta name="copyright" content="'.htmlspecialchars($FD->config('copyright')).'">
     <meta name="generator" content="Frogsystem 2 [http://www.frogsystem.de]">
-    <meta name="description" content="'.$FD->config('description').'">
+    <meta name="description" content="'.htmlspecialchars($FD->config('description')).'">
     '.get_meta_abstract().'
-    <meta http-equiv="content-language" content="'.$FD->config('language').'">
+    <meta http-equiv="content-language" content="'.htmlspecialchars($FD->config('language')).'">
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <meta name="robots" content="index,follow">
     <meta name="Revisit-after" content="3 days">
-    <meta name="DC.Title" content="'.get_title().'">
+    <meta name="DC.Title" content="'.htmlspecialchars(get_title()).'">
     '.get_meta_author(TRUE).'
-    <meta name="DC.Rights" content="'.$FD->config('copyright').'">
-    <meta name="DC.Publisher" content="'.$FD->config('publisher').'">
-    <meta name="DC.Description" content="'.$FD->config('description').'">
-    <meta name="DC.Language" content="'.$FD->config('language').'">
+    <meta name="DC.Rights" content="'.htmlspecialchars($FD->config('copyright')).'">
+    <meta name="DC.Publisher" content="'.htmlspecialchars($FD->config('publisher')).'">
+    <meta name="DC.Description" content="'.htmlspecialchars($FD->config('description')).'">
+    <meta name="DC.Language" content="'.htmlspecialchars($FD->config('language')).'">
     <meta name="DC.Format" content="text/html">
-    <meta name="keywords" lang="'.$FD->config('language').'" content="'.$keywords.'">
+    <meta name="keywords" lang="'.htmlspecialchars($FD->config('language')).'" content="'.$keywords.'">
     '.get_canonical().'
     ';
 
@@ -341,9 +341,9 @@ function get_meta_author ($DC = FALSE)
         $author = $FD->config('publisher');
 
     if ($DC)
-        $output = '<meta name="DC.Creator" content="'.$author.'">';
+        $output = '<meta name="DC.Creator" content="'.htmlspecialchars($author).'">';
     else
-        $output = '<meta name="author" content="'.$author.'">';
+        $output = '<meta name="author" content="'.htmlspecialchars($author).'">';
 
     return $output;
 }
@@ -356,9 +356,9 @@ function get_meta_abstract ()
     global $FD;
 
     if ($FD->configExists('content_abstract') && $FD->config('content_abstract') != '') {
-        return '<meta name="abstract" content="'.$FD->config('content_abstract').'">';
+        return '<meta name="abstract" content="'.htmlspecialchars($FD->config('content_abstract')).'">';
     } else {
-        return '<meta name="abstract" content="'.$FD->config('description').'">';
+        return '<meta name="abstract" content="'.htmlspecialchars($FD->config('description')).'">';
     }
 }
 
