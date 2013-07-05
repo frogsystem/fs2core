@@ -754,7 +754,7 @@ function tpl_func_globalvars($original, $main_argument, $other_arguments)
         'page_dyn_title'                => get_title(),
         'date'                          => date_loc($FD->cfg('date'), $FD->cfg('env', 'date')),
         'time'                          => date_loc($FD->cfg('time'), $FD->cfg('env', 'date')),
-        'page_dyndate_time_title'       => date_loc($FD->cfg('datetime'), $FD->cfg('env', 'date')),
+        'date_time'                     => date_loc($FD->cfg('datetime'), $FD->cfg('env', 'date')),
     );
 
     //set error msg
@@ -770,6 +770,10 @@ function tpl_func_globalvars($original, $main_argument, $other_arguments)
 /////////////////////////////////////
 function tpl_func_date($original, $main_argument, $other_arguments)
 {
+    // Example:
+    // $DATE(d.m.Y) => 03.05.2013 (where today is 03.05.2013)
+    // $DATE(d.m.Y [946706400]) => 01.01.2000 (946706400 is timestamp of 01.01.2000)
+    
     // current timestamp if no other timestamp is passed
     if (empty($other_arguments))
         $other_arguments = time();
