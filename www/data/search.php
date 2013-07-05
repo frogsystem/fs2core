@@ -61,7 +61,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'news_date DESC', 'news_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $news_num_results) {
+            while($FD->cfg('search', 'search_num_previews') > $news_num_results && ($found = $search->next())) {
 
                 // get data for entry
                 $news = $FD->sql()->conn()->query(
@@ -106,7 +106,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($news_more);
             if ($search->next()) {
                 $news_more = $more_results_template;
-                $news_more->tag('main_search_url', url('news_search', array('keyword' => implode('+',$keyword_arr))));
+                $news_more->tag('main_search_url', url('news_search', array('keyword' => urlencode ($_REQUEST['keyword']))));
                 $news_more = (string) $news_more;
 
             //no results
@@ -124,7 +124,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'article_date DESC', 'article_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $articles_num_results) {
+            while($FD->cfg('search', 'search_num_previews') > $articles_num_results && ($found = $search->next())) {
 
                 // get data for entry
                 $article = $FD->sql()->conn()->query(
@@ -176,7 +176,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($articles_more);
             if ($search->next()) {
                 $articles_more = $more_results_template;
-                $articles_more->tag('main_search_url', url('foo', array('keyword' => implode('+',$keyword_arr))));
+                $articles_more->tag('main_search_url', url('foo', array('keyword' => urlencode ($_REQUEST['keyword']))));
                 $articles_more = (string) $articles_more;
 
             //no results
@@ -195,7 +195,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'dl_date DESC', 'dl_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $downloads_num_results) {
+            while($FD->cfg('search', 'search_num_previews') > $downloads_num_results && ($found = $search->next())) {
 
                 // get data for entry
                 $dl = $FD->sql()->conn()->query(
@@ -240,7 +240,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($downloads_more);
             if ($search->next()) {
                 $downloads_more = $more_results_template;
-                $downloads_more->tag('main_search_url', url('download', array('cat_id' => 'all', 'keyword' => implode('+', $keyword_arr))));
+                $downloads_more->tag('main_search_url', url('download', array('cat_id' => 'all', 'keyword' => urlencode($_REQUEST['keyword']))));
                 $downloads_more = (string) $downloads_more;
 
             //no results
