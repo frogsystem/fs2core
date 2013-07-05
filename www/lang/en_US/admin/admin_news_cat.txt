@@ -9,12 +9,12 @@ edit_cat_name: Name
 edit_cat_name_desc: Name of the category
 edit_cat_date: Date of creation
 edit_cat_date_desc: The category was created on ...
-edit_cat_by: Creator
-edit_cat_by_desc: The category was created by ...
+edit_cat_created_by: Creator
+edit_cat_created_by_desc: The category was created by ...
 edit_cat_title_optional: Additional settings
 edit_cat_image: Image
-edit_cat_desc: Description
-edit_cat_desc_desc: A short text that describes the category.
+edit_cat_description: Description
+edit_cat_description_desc: A short text that describes the category.
 
 delete_cat_title: Delete category
 delete_cat_question: Do you really want to delete this category

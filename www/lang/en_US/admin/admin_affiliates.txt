@@ -1,0 +1,31 @@
+small_pic:                                         Partner image, small
+small_pic_desc:                                    Small partner image for the navigation.
+big_pic:                                           Partner image, big
+big_pic_desc:                                      Big partner image for the summary page.
+name:                                              Partner name
+name_desc:                                         Name of the partner site.
+link:                                              Link
+link_desc:                                         URL of the partner site.
+desc:                                              Description
+desc_desc:                                         Short description of the partner site.
+perm:                                              Show permanently
+perm_desc:                                         Small partner image is shown permanently in the navigation.
+partnerpage:                                       Partner site
+delpage:                                           Delete partner site
+delpage_question:                                  Do you really want to delete the partner site?
+delconfirm:                                        Delete partner site
+delnotconfirm:                                     Do not delete partner site
+add:                                               Add partner site
+save:                                              Save changes
+exact:                                             exact
+max:                                               max.
+px:                                                pixel
+kb:                                                KB
+note_notadded:                                     Partner site could not be added!
+note_addmore:                                      Add another partner site:
+note_uploaded:                                     Images have been uploaded!
+note_added:                                        Partner site has been added!
+note_edited:                                       Changes have been saved!
+note_deleted:                                      The partner site has been deleted!
+note_notdeleted:                                   The partner site has not been deleted!
+note_nopages:                                      No partner sites found!
