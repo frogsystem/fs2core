@@ -206,8 +206,11 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
             case 5:
                 $highlight_css = 'font-weight:bold;font-style:italic;';
                 break;
+            default:
+                $highlight_css = '';
+                break;
         }
-        $title_style .= ( $highlight_css != '' ? $highlight_css : '' );
+        $title_style .= $highlight_css;
         $group_arr['user_group_title_colored'] = '<span style="'.$title_style.'">'.$group_arr['user_group_title'].'</span>';
 
         $rank_template = new template();
@@ -495,13 +498,13 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
 
     if ( $ACTIVATION == 0 ) {
         return TRUE;
-    } elseif ( $ACTIVATION == 1 && $_SESSION['user_id'] ) {
+    } elseif ( $ACTIVATION == 1 && isset($_SESSION['user_id']) ) {
         return TRUE;
-    } elseif ( $ACTIVATION == 3 && $_SESSION['user_id'] && is_in_staff ( $_SESSION['user_id'] ) ) {
+    } elseif ( $ACTIVATION == 3 && isset($_SESSION['user_id']) && is_in_staff ( $_SESSION['user_id'] ) ) {
         return TRUE;
-    } elseif ( $ACTIVATION == 4 && $_SESSION['user_id'] && is_admin ( $_SESSION['user_id'] ) ) {
+    } elseif ( $ACTIVATION == 4 && isset($_SESSION['user_id']) && is_admin ( $_SESSION['user_id'] ) ) {
         return TRUE;
-    } elseif ( $sicherheits_eingabe == $_SESSION['captcha'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
+    } elseif ( isset($_SESSION['captcha']) && $sicherheits_eingabe == $_SESSION['captcha'] && $sicherheits_eingabe == TRUE && is_numeric( $SOLUTION ) == TRUE ) {
         return TRUE;
     } else {
         return FALSE;
@@ -597,41 +600,16 @@ function get_email_template ( $TEMPLATE_NAME )
 //// send email ////
 ////////////////////
 
-function send_mail ( $TO, $SUBJECT, $TEXT, $HTML = FALSE, $FROM = FALSE )
+function send_mail ( $TO, $SUBJECT, $CONTENT, $HTML = TRUE, $FROM = FALSE, $TPL_FUNC = true)
 {
     global $FD;
 
-    $index = $FD->sql()->conn()->query ( '
-                    SELECT `use_admin_mail`, `email`, `html`
-                    FROM '.$FD->config('pref')."email
-                    WHERE `id` = '1'");
-    $row = $index->fetch(PDO::FETCH_ASSOC);
-    if ( $FROM == FALSE ) {
-        if ( $row['use_admin_mail'] == 1 ) {
-            $header  = 'From: ' . $FD->config('admin_mail') . "\n";
-        } else {
-            $header  = 'From: ' . $row['email'] . "\n";
-        }
-    } else {
-        $header  = 'From: ' . $FROM . "\n";
-    }
 
-    $header .= 'X-Mailer: PHP/' . phpversion() . "\n";
-    $header .= 'X-Sender-IP: ' . $_SERVER['REMOTE_ADDR'] . "\n";
-
-    if ( $HTML == FALSE || $HTML == 'html' ) {
-        if ( $row['html'] == 1 ) {
-            $header .= 'Content-Type: text/html';
-            $TEXT = fscode ( $TEXT, true, true, false );
-            $TEXT = '<html><body>' . $TEXT . '</body></html>';
-        } else {
-            $header .= 'Content-Type: text/plain';
-        }
-    } else  {
-        $header .= 'Content-Type: text/plain';
-    }
-
-    return @mail ( $TO, $SUBJECT, $TEXT, $header );
+    if ($FROM == FALSE) {
+        $FROM = MailManager::getDefaultSender();
+    }    
+    $mail = new Mail($FROM, $TO, $SUBJECT, $CONTENT, $HTML, $TPL_FUNC);
+    return $mail->send();
 }
 
 

@@ -74,9 +74,8 @@ elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POS
         $template_mail = get_email_template ( 'signup' );
         $template_mail = str_replace ( '{..user_name..}', $_POST['user_name'], $template_mail );
         $template_mail = str_replace ( '{..new_password..}', $userpass_mail, $template_mail );
-        $template_mail = tpl_functions($template_mail, 0, array('VAR'));
-        $email_subject = $FD->text("frontend", "mail_registerd_on") . $FD->config('virtualhost');
-        if ( @send_mail ( $_POST['user_mail'], $email_subject, $template_mail ) ) {
+        $email_subject = $FD->text("frontend", "mail_registerd_on") .' '. $FD->config('virtualhost');
+        if (send_mail ($_POST['user_mail'], $email_subject, $template_mail, MailManager::getHtmlConfig())) {
             $email_message = '<br>'.$FD->text("frontend", "mail_registerd_sended");
         } else {
             $email_message = '<br>'.$FD->text("frontend", "mail_registerd_not_sended");
@@ -95,9 +94,12 @@ elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POS
         $new_user_num = $index->fetchColumn();
         $FD->sql()->conn()->exec ( 'UPDATE `'.$FD->config('pref')."counter` SET `user` = '".$new_user_num."'" );
 
-        $messages = forward_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_registered").$email_message, '?go=login' );
+        $messages = forward_message($FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_registered").$email_message, url($FD->cfg('home_real')));
 
-        unset($_POST);
+        //login user
+        $FD->setConfig('login_state', user_login($_POST['user_name'], $userpass_mail, FALSE));
+
+        unset($_POST, $userpass_mail);
         $show_form = FALSE;
     }
 }

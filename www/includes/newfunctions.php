@@ -341,7 +341,7 @@ function is_authorized () {
     return (isset($_SESSION['user_level']) && $_SESSION['user_level'] === 'authorized');
 }
 function is_loggedin () {
-    return ($_SESSION['user_level'] === 'loggedin' || is_authorized ());
+    return ((isset($_SESSION['user_level']) && $_SESSION['user_level'] === 'loggedin') || is_authorized ());
 }
 
 /////////////////////////////////////////

@@ -39,6 +39,7 @@ not_twice:                                         Du hast dich bereits auf der 
 logged_in:                                         Du bist eingeloggt
 logged_out:                                        Du bist nun wieder ausgeloggt
 article_not_found:                                 Artikel nicht vorhanden
+user_mail_exists:                                  Diese E-Mail-Adresse wurde schon registriert.  Bitte wähle eine andere aus.
 
 
 # new Language-Definition for frontend

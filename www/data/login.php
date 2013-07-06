@@ -5,16 +5,16 @@ $FD->setConfig('info', 'canonical', array('newpassword'));
 ///////////////////////////////////
 //// User is already logged in ////
 ///////////////////////////////////
-if ( $_SESSION['user_level'] == 'loggedin' && $_POST['login'] == 1 ) {
+if ( isset($_SESSION['user_level']) && $_SESSION['user_level'] == 'loggedin' && isset($_POST['login']) && $_POST['login'] == 1 ) {
     $template = forward_message ( $FD->text("frontend", "user_login"), $FD->text("frontend", "user_login_ok"), url($FD->cfg('home_real')));
-} elseif ( $_SESSION['user_level'] == 'loggedin' ) {
+} elseif ( isset($_SESSION['user_level']) && $_SESSION['user_level'] == 'loggedin' ) {
     $template = sys_message ( $FD->text("frontend", "user_login"), $FD->text("frontend", "user_login_ok") );
 }
 
 //////////////////////////////
 //// Request new password ////
 //////////////////////////////
-elseif (isset($_GET['newpassword']) && $_POST['login'] != 1) {
+elseif (isset($_GET['newpassword']) && (!isset($_POST['login']) || $_POST['login'] != 1)) {
 
     // Check Mail
     if (isset($_POST['newpassword_mail'])) {

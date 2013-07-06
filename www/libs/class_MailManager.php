@@ -2,7 +2,7 @@
 /**
  * @file     class_MailManager.php
  * @folder   /libs
- * @version  0.1
+ * @version  0.2
  * @author   Sweil
  *
  * this class provides methods for mail creation
@@ -12,12 +12,12 @@ class MailManager
 {
     // Der Konstruktur
     public function  __construct() {
-        global $FD;
+        //~ global $FD;
     }
 
 
     // Get Html Config
-    public function getHtmlConfig()  {
+    public static function getHtmlConfig()  {
         global $FD;
 
         try {
@@ -30,7 +30,7 @@ class MailManager
     }
 
     // Get Default Mail
-    public function getDefaultSender()  {
+    public static function getDefaultSender()  {
         global $FD;
 
         try {
