@@ -29,6 +29,7 @@ if (
           image_rename ( 'media/user-images/', $_SESSION['user_id'].'_old', $_SESSION['user_id'] );
         }
     }
+    initstr($message);
 
     // Update Database
     $_POST['user_show_mail'] = isset ( $_POST['user_show_mail'] ) ? 1 : 0;
@@ -95,19 +96,21 @@ if (
 
                 // Update Cookie
                 if ( $_COOKIE['login'] ) {
-                    set_cookie ( $user_name, $_POST['new_pwd'] );
+                    set_cookie ( $user_name, $mail_password );
                 }
 
                 // Send E-Mail
                 $template_mail = get_email_template ( 'signup' );
                 $template_mail = str_replace ( '{..user_name..}', $_SESSION['user_name'], $template_mail );
-                $template_mail = str_replace ( '{..new_password..}', $mailpass, $template_mail );
+                $template_mail = str_replace ( '{..new_password..}', $mail_password, $template_mail );
                 $email_subject = $FD->text('frontend', 'mail_password_changed_on') .' '. $FD->config('virtualhost');
-                if (send_mail($_POST['usermail'], $email_subject, $template_mail, MailManager::getHtmlConfig())) {
+                if (send_mail($_POST['user_mail'], $email_subject, $template_mail, MailManager::getHtmlConfig())) {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");
                 } else {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_not_sended");
                 }
+                
+                unset($mail_password);
 
             } else {
                 $message .= '<br>' . $FD->text("frontend", "user_password_change_failed") . '<br>' . $FD->text("frontend", "user_password_change_error_new");

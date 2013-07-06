@@ -15,22 +15,28 @@ class Mail {
     private $from;
     private $subject;
     private $content;
+    private $rawContent;
     private $html = true;
 
     // Der Konstruktur
-    public function  __construct($FROM, $TO, $SUBJECT, $CONTENT, $HTML = true, $TPL_FUNC = true) {
+    public function  __construct($FROM, $TO, $SUBJECT, $CONTENT, $HTML = true, $TPL_FUNC = true, $FSCODE = true) {
         $this->from = $FROM;
         $this->to = $TO;
-        $this->subject = $SUBJECT;
+        $this->subject = utf8_encode($SUBJECT);
         $this->html = $HTML;
+        $this->content = $rawContent = $CONTENT;
 
         if ($TPL_FUNC) {
             global $FD;
             require_once(FS2_ROOT_PATH.'includes/indexfunctions.php');
-            $this->content = tpl_functions($CONTENT, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL', 'SNP'), true);
+            $this->content = tpl_functions($this->content, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL', 'SNP'), true);
+        }
+        if ($FSCODE && $HTML) {
+            require_once(FS2_ROOT_PATH.'includes/fscode.php');
+            $this->content = parse_all_fscodes($this->content, array('html'=>true));
         }
 
-        $this->content = utf8_encode($CONTENT);
+        $this->content = utf8_encode($this->content);
     }
 
 
