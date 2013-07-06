@@ -163,5 +163,8 @@
   {..statistics..}
 </table>
 <br>
-{..search..}<!--section-end::ENTRY_BODY-->
+{..search..}
+<br>
+<a href="{..comments_url..}">Kommentare ({..comments_number..})</a>
+<br><!--section-end::ENTRY_BODY-->
 
