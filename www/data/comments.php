@@ -1,16 +1,16 @@
 <?php
-///////////////////////
-//// Configs laden ////
-///////////////////////
+//////////////////////
+//// Load Configs ////
+//////////////////////
 
 // Set canonical parameters
 $FD->setConfig('info', 'canonical', array('id'));
 
-//Kommentar-Config
+//Comment Config
 $FD->loadConfig('news');
 $config_arr = $FD->configObject('news')->getConfigArray();
 //Editor config
-$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'editor_config');
+$index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'editor_config`');
 $editor_config = $index->fetch(PDO::FETCH_ASSOC);
 
 $SHOW = TRUE;
@@ -32,7 +32,7 @@ if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSIO
 settype ( $_SESSION['user_id'], 'integer' );
 $index = $FD->sql()->conn()->query ( '
                 SELECT *
-                FROM '.$FD->config('pref')."user
+                FROM `'.$FD->config('pref')."user`
                 WHERE user_id = '".$_SESSION["user_id"]."'");
 $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
@@ -46,13 +46,13 @@ if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SES
     $comments_right = FALSE;
 }
 
-//////////////////////////////
-//// Kommentar hinzufügen ////
-//////////////////////////////
+/////////////////////
+//// Add comment ////
+/////////////////////
 initstr($message_template);
 if (isset($_POST['add_comment']))
 {
-    if ($_POST['id']
+    if (isset($_POST['id'])
          && ($_POST['name'] != '' || $_SESSION['user_id'])
          && $_POST['title'] != ''
          && $_POST['text'] != ''
@@ -79,7 +79,6 @@ if (isset($_POST['add_comment']))
                                     FROM `'.$FD->config('pref')."comments`
                                     WHERE
                                         `comment_text` = ?
-                                    AND `content_type` = 'news'
                                     AND `comment_date` >  '".$duplicate_time."'
                                     LIMIT 0,1");
                     $index = $stmt->execute(array($_POST['text']));
@@ -120,7 +119,7 @@ if (isset($_POST['add_comment']))
                                            $_SERVER['REMOTE_ADDR'],
                                            $_POST['title'],
                                            $_POST['text'] ) );
-                        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter SET comments=comments+1');
+                        $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments=comments+1');
                         $SHOW = FALSE;
                         $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_added"), $FD->cfg('virtualhost') );
                     } else {
@@ -142,22 +141,22 @@ if (isset($_POST['add_comment']))
         }
         if (!($anti_spam == TRUE))
         {
-                        $reason[] = $FD->text("frontend", "comment_spam");
+            $reason[] = $FD->text("frontend", "comment_spam");
         }
         $message_template = sys_message($FD->text("frontend", "comment_not_added"), implode ( '<br>', $reason ) );
     }
 }
 
-//////////////////////////////
-//// Kommentare ausgeben /////
-//////////////////////////////
+////////////////////////
+//// Show comments /////
+////////////////////////
 if ( $SHOW == TRUE ) {
 
 
     settype($_GET['id'], 'integer');
     $time = time();
 
-    // News anzeigen
+    // show news
     $index = $FD->sql()->conn()->query( '
                     SELECT COUNT(*) AS news_rows
                     FROM '.$FD->config('pref')."news
@@ -183,7 +182,7 @@ if ( $SHOW == TRUE ) {
         $news_template = sys_message($FD->text('frontend', 'sysmessage'), $FD->text('frontend', 'news_not_exist'), 404);
     }
 
-    // Text formatieren
+    // format text
     switch ($config_arr['html_code'])
     {
         case 1: $html = false; break;
@@ -206,11 +205,11 @@ if ( $SHOW == TRUE ) {
         case 4: $para = true; break;
     }
 
-    //FScode-Html Anzeige
+    //FS Code / HTML
     $fs_active = ($fs) ? 'an' : 'aus';
     $html_active = ($html) ? 'an' : 'aus';
 
-    // Kommentare erzeugen
+    // Generate comments
     $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'comments WHERE content_id = '.$_GET['id'].' AND content_type=\'news\' ORDER BY comment_date '.$config_arr['com_sort'] );
     $num_rows = 0;
     if (!isset($comments_template))
@@ -218,7 +217,7 @@ if ( $SHOW == TRUE ) {
     while ($comment_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $num_rows += 1;
-        // User auslesen
+        // Get user
         if ($comment_arr['comment_poster_id'] != 0)
         {
             $index2 = $FD->sql()->conn()->query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
@@ -238,7 +237,7 @@ if ( $SHOW == TRUE ) {
                 $comment_arr['comment_poster'] = '<b>' . $comment_arr['comment_poster'] . '</b>';
             }
 
-            // Benutzer Rang
+            // User rank
             $user_arr['rank_data'] = get_user_rank ( $comment_arr['user_group'], $comment_arr['user_is_admin'] );
             $comment_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
 
