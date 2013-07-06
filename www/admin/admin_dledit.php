@@ -125,7 +125,6 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
         echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
-
     if (isset($_POST['tempid']))
     {
         $_POST['dlid'] = $_POST['tempid'];
@@ -386,6 +385,61 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
                         </table>
                     </form>
     ';
+
+    //List of download comments
+    echo '<form action="" method="post">
+            <input type="hidden" name="go" value="dlcommentedit">
+            <input type="hidden" name="PHPSESSID" value="'.session_id().'">
+          <table border="0" cellpadding="4" cellspacing="0" width="600" class="content">
+              <tr>
+                  <td class="config" colspan="4" valign="top">
+                      <br><br><h3>Kommentare</h3>
+                      <hr>
+                  </td>
+              </tr>
+              ';
+    $comments = $FD->sql()->conn()->query('SELECT COUNT(*) FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'");
+    if ($comments->fetchColumn()==0)
+    {
+      echo '<tr>
+              <td class="configthin" colspan="4" align="center">Keine Kommentare vorhanden!</td>
+            </tr>';
+    }
+    else
+    {
+      echo '<tr>
+                  <td class="config" width="30%" valign="top">Titel</td>
+                  <td class="config" width="30%" valign="top">Poster</td>
+                  <td class="config" width="25%" valign="top">Datum</td>
+                  <td class="config" width="15%" valign="top">bearbeiten</td>
+            </tr>';
+      $comments = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'");
+      while ($row = $comments->fetch(PDO::FETCH_ASSOC))
+      {
+        echo '<tr>
+                <td class="configthin small">'.htmlentities($row['comment_title']).'</td>
+                <td class="configthin small">';
+        if ($row['comment_poster_id']!=0)
+        {
+          $user = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref')."user` WHERE user_id='".$row['comment_poster_id']."' LIMIT 1");
+          $row['comment_poster'] = $user->fetchColumn();
+        }
+        echo $row['comment_poster'].'</td>
+                  <td class="configthin small">'.date('d.m.Y, H:i', $row['comment_date']).'</td>
+                  <td class="configthin small"><input type="radio" value="'.$row['comment_id'].'" name="commentid">
+              </tr>';
+      }//while
+      echo '<tr>
+              <td colspan="4"> &nbsp; </td>
+            </tr>
+            <tr>
+              <td align="center" colspan="4">
+                <input class="button" type="submit" value="Editieren">
+              </td>
+            </tr>';
+    }
+    echo '</table>
+         </form>';
 }
 
 ////////////////////////////////
