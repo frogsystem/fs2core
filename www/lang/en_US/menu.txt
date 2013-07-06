@@ -210,6 +210,8 @@ page_title_dl_cat:              manage categories
 page_link_dl_cat:               categories
 page_title_dl_newcat:           New category
 page_link_dl_newcat:            New category
+page_title_dlcommentedit:       edit comments
+page_link_dlcommentedit:        comments
 
 # Videos
 page_title_player_config:       change configuration
