@@ -2,7 +2,7 @@
 /*
     Frogsystem Download comments script
     Copyright (C) 2006-2007  Stefan Bollmann
-    Copyright (C) 2012       Thoronador (adjustments for alix5/alix6)
+    Copyright (C) 2012-2013  Thoronador (adjustments for alix5/alix6)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,16 +29,16 @@
 */
 
 
-///////////////////////
-//// Configs laden ////
-///////////////////////
+//////////////////////
+//// Load Configs ////
+//////////////////////
 
-//Kommentar-Config
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-$config_arr = json_array_decode($config_arr['config_data']);
+//Comment Config
+$FD->loadConfig('news'); //TODO: introduce own configuration for download comments
+$config_arr = $FD->configObject('news')->getConfigArray();
 //Editor config
-$index = mysql_query('SELECT * FROM `'.$FD->config('pref').'editor_config`', $FD->sql()->conn());
-$editor_config = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'editor_config`');
+$editor_config = $index->fetch(PDO::FETCH_ASSOC);
 
 $SHOW = TRUE;
 
@@ -57,12 +57,11 @@ if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSIO
 //// User has rights ////
 /////////////////////////
 settype ( $_SESSION['user_id'], 'integer' );
-$index = mysql_query ( '
-                                                SELECT *
-                                                FROM `'.$FD->config('pref')."user`
-                                                WHERE user_id = '".$_SESSION['user_id']."'
-", $FD->sql()->conn());
-$user_arr = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query ( '
+                SELECT *
+                FROM `'.$FD->config('pref')."user`
+                WHERE user_id = '".intval($_SESSION['user_id'])."'");
+$user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SESSION['user_id'] ) ) {
     $comments_right = TRUE;
@@ -74,9 +73,9 @@ if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SES
     $comments_right = FALSE;
 }
 
-//////////////////////////////
-//// Kommentar hinzufügen ////
-//////////////////////////////
+/////////////////////
+//// Add comment ////
+/////////////////////
 
 if (isset($_POST['add_comment']))
 {
@@ -92,24 +91,21 @@ if (isset($_POST['add_comment']))
                 if ( $dl_comments_allowed ) {
 
                     // Security Functions
-                    $_POST['text'] = savesql($_POST['text']);
-                    $_POST['name'] = savesql($_POST['name']);
-                    $_POST['title'] = savesql($_POST['title']);
                     settype( $_POST['id'], 'integer' );
 
                     $commentdate = time();
                     $duplicate_time = $commentdate - ( 5 * 60 );
 
-                    $index = mysql_query( '
-                                            SELECT `comment_id`
-                                            FROM `'.$FD->config('pref').'comments`
+                    $index = $FD->sql()->conn()->prepare('
+                                            SELECT COUNT(`comment_id`)
+                                            FROM `'.$FD->config('pref')."comments`
                                             WHERE
-                                                `comment_text` = \''.$_POST['text']."'
+                                                `comment_text` = ?
                                             AND
                                                 `comment_date` >  '".$duplicate_time."'
-                                            LIMIT 0,1",
-                                          $FD->sql()->conn());
-                    if ( mysql_num_rows ( $index ) == 0 ) {
+                                            LIMIT 0,1");
+                    $index->execute(array($_POST['text']));
+                    if ( $index->fetchColumn() == 0 ) {
 
                         if ($_SESSION['user_id']) {
                             $userid = $_SESSION['user_id'];
@@ -118,7 +114,7 @@ if (isset($_POST['add_comment']))
                             $userid = 0;
                         }
 
-                        mysql_query ( '
+                        $stmt = $FD->sql()->conn()->prepare ( '
                                         INSERT INTO
                                             `'.$FD->config('pref').'comments` (
                                                 content_id,
@@ -133,15 +129,16 @@ if (isset($_POST['add_comment']))
                                          VALUES
                                             (
                                                 \''.$_POST['id']."',
-                                                '".$_POST['name']."',
+                                                ?,
                                                 '$userid',
-                                                '".savesql($_SERVER['REMOTE_ADDR'])."',
+                                                ?,
                                                 '$commentdate',
-                                                '".$_POST['title']."',
-                                                '".$_POST['text']."',
+                                                ?,
+                                                ?,
                                                 'dl'
-                                            )", $FD->sql()->conn() );
-                        mysql_query('UPDATE `'.$FD->config('pref').'counter` SET comments=comments+1', $FD->sql()->conn());
+                                            )");
+                        $stmt->execute(array($_POST['name'], $_SERVER['REMOTE_ADDR'], $_POST['title'], $_POST['text']));
+                        $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments=comments+1');
                         $SHOW = FALSE;
                         $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_added"), $FD->cfg('virtualhost') );
                     } else {
@@ -169,17 +166,16 @@ if (isset($_POST['add_comment']))
     }
 }
 
-//////////////////////////////
-//// Kommentare ausgeben /////
-//////////////////////////////
+////////////////////////
+//// Show comments /////
+////////////////////////
 
 $news_config_arr = $config_arr;
-$news_message_template = $message_template;
+$news_message_template = isset($message_template) ? $message_template : '';
 $news_template = $template;
 
 if ($SHOW===TRUE)
 {
-
   //include dlfile.php to do the download template for us
   include_once('dlfile.php');
 
@@ -190,24 +186,25 @@ if ($SHOW===TRUE)
   $fs   = ($news_config_arr['fs_code']>=3);
   $para = ($news_config_arr['para_handling']>=3);
 
-  //FScode-Html Anzeige
+  //FS Code / HTML
   $fs_active = ($fs) ? 'an' : 'aus';
   $html_active = ($html) ? 'an' : 'aus';
 
-  $index = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_id = \''.intval($_GET['id'])."' AND content_type='dl' ORDER BY comment_date ASC", $FD->sql()->conn());
+  $index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref')."comments` WHERE content_id = '".intval($_GET['id'])."' AND content_type='dl' ORDER BY comment_date ASC");
 
   $comments = '';
-  while ($comment_arr = mysql_fetch_assoc($index))
+  while ($comment_arr = $index->fetch(PDO::FETCH_ASSOC))
   {
 
-    // User auslesen
+    // Get user name
     if ($comment_arr['comment_poster_id'] != 0)
     {
-      $index2 = mysql_query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn());
-      $comment_arr['comment_poster'] = kill_replacements ( mysql_result($index2, 0, 'user_name' ), TRUE );
-      $comment_arr['user_is_admin'] = mysql_result($index2, 0, 'user_is_admin');
-      $comment_arr['user_is_staff'] = mysql_result($index2, 0, 'user_is_staff');
-      $comment_arr['user_group'] = mysql_result($index2, 0, 'user_group');
+      $index2 = $FD->sql()->conn()->query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
+      $user_arr = $index2->fetch(PDO::FETCH_ASSOC);
+      $comment_arr['comment_poster'] = kill_replacements ( $user_arr['user_name'], TRUE );
+      $comment_arr['user_is_admin'] = $user_arr['user_is_admin'];
+      $comment_arr['user_is_staff'] = $user_arr['user_is_staff'];
+      $comment_arr['user_group'] = $user_arr['user_group'];
 
       if (image_exists('media/user-images/',$comment_arr['comment_poster_id'])) {
         $comment_arr['comment_avatar'] = '<img align="left" src="'.image_url('media/user-images/',$comment_arr['comment_poster_id']).'" alt="'.$comment_arr['comment_poster'].'">';
@@ -326,8 +323,8 @@ if ($SHOW===TRUE)
 
   $_GET['id'] = (isset($_GET['fileid']) && !isset($_GET['id'])) ? $_GET['fileid'] : $_GET['id'];
   settype($_GET['id'], 'integer');
-  $presence = mysql_query('SELECT dl_id FROM `'.$FD->config('pref').'dl` where dl_id = '.$_GET['id'].' AND dl_open = 1', $FD->sql()->conn());
-  if (mysql_num_rows($presence)>0)
+  $presence = $FD->sql()->conn()->query('SELECT COUNT(dl_id) FROM `'.$FD->config('pref').'dl` where dl_id = '.$_GET['id'].' AND dl_open = 1');
+  if ($presence->fetchColumn()>0)
   {
     $template = $news_message_template . $dl_template . $comments . $formular_template;
   }

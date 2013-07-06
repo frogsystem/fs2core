@@ -2,7 +2,7 @@
 /*
     Frogsystem Download comments - admin script
     Copyright (C) 2006-2007  Stefan Bollmann
-    Copyright (C) 2012       Thoronador (adjustments for alix5/alix6)
+    Copyright (C) 2012-2013  Thoronador (adjustments for alix5/alix6)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,9 +30,9 @@
 
 //TODO: localize texts
 
-/////////////////////////////
-//// Kommentar editieren ////
-/////////////////////////////
+//////////////////////
+//// Edit comment ////
+//////////////////////
 
 if (isset($_POST['title']) && isset($_POST['text']))
 {
@@ -41,23 +41,21 @@ if (isset($_POST['title']) && isset($_POST['text']))
     if (!isset($_POST['delcomment']))
     {
         settype($_POST['commentposterid'], 'integer');
-        $_POST['title'] = savesql($_POST['title']);
-        $_POST['text'] = savesql($_POST['text']);
 
-        $update = 'UPDATE `'.$FD->config('pref')."comments`
-                   SET comment_title     = '".$_POST['title']."',
-                       comment_text      = '".$_POST['text']."'
-                   WHERE comment_id = ".$_POST['ecommentid']." AND content_type='dl'";
-        mysql_query($update, $FD->sql()->conn());
-        echo mysql_error($FD->sql()->conn());
+        $stmt = $FD->sql()->conn()->prepare(
+                  'UPDATE `'.$FD->config('pref')."comments`
+                   SET comment_title     = ?,
+                       comment_text      = ?
+                   WHERE comment_id = '".$_POST['ecommentid']."' AND content_type='dl'");
+        $stmt->execute(array($_POST['title'], $_POST['text']));
         systext('Der Kommentar wurde editiert.');
     }
     else
     {
-        mysql_query('DELETE FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['ecommentid']." AND content_type='dl' LIMIT 1", $FD->sql()->conn());
-        if (mysql_affected_rows($FD->sql()->conn())>0)
+        $affected = $FD->sql()->conn()->exec('DELETE FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['ecommentid']." AND content_type='dl' LIMIT 1");
+        if ($affected>0)
         {
-          mysql_query('UPDATE fs_counter SET comments = comments - 1', $FD->sql()->conn());
+          $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments = comments - 1');
           systext('Der Kommentar wurde gel&ouml;scht.');
         }
         else
@@ -67,28 +65,27 @@ if (isset($_POST['title']) && isset($_POST['text']))
     }
 }
 
-/////////////////////////////
-//// Kommentar Formular /////
-/////////////////////////////
+///////////////////////
+//// Comment Form /////
+///////////////////////
 
 else if (isset($_POST['commentid']))
 {
     settype($_POST['commentid'], 'integer');
-    $index = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'", $FD->sql()->conn());
-    $comment_arr = mysql_fetch_assoc($index);
-	echo mysql_error($FD->sql()->conn());
-    // Falls registrierter User, Name ermitteln
+    $index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'");
+    $comment_arr = $index->fetch(PDO::FETCH_ASSOC);
+    // If it's a registered user, get the name.
     if ($comment_arr['comment_poster_id'] != 0)
     {
-        $index = mysql_query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn());
-        $comment_arr['comment_poster'] = mysql_result($index, 0, 'user_name');
+        $index = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
+        $comment_arr['comment_poster'] = $index->fetchColumn();
     }
 
     $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date']) . ' um ' . date('H:i' , $comment_arr['comment_date']);
 
-    // FS/HTML Code aktiv?
-    $config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-    $config_arr = json_array_decode($config_arr['config_data']);
+    // FS code/HTML active?
+    $FD->loadConfig('news'); //TODO: introduce own configuration for download comments
+    $config_arr = $FD->configObject('news')->getConfigArray();
     $config_arr['html_code'] = ($config_arr['html_code'] >= 3) ? 'an' : 'aus';
     $config_arr['fs_code'] = ($config_arr['fs_code'] >= 3) ? 'an' : 'aus';
 
@@ -97,7 +94,7 @@ else if (isset($_POST['commentid']))
                         <input type="hidden" value="dlcommentedit" name="go">
                         <input type="hidden" value="'.session_id().'" name="PHPSESSID">
                         <input type="hidden" value="'.$comment_arr['comment_id'].'" name="ecommentid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" border="0" cellpadding="4" cellspacing="0" width="600">
                             <tr>
                                 <td class="config" valign="top">
                                     Datum:<br>
@@ -110,10 +107,10 @@ else if (isset($_POST['commentid']))
                             <tr>
                                 <td class="config" valign="top">
                                     Poster:<br>
-                                    <font class="small">Diese Person hat das Kommentar geschreiben</font>
+                                    <font class="small">Diese Person hat den Kommentar geschrieben</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.$comment_arr['comment_poster'].'
+                                    '.htmlspecialchars($comment_arr['comment_poster']).'
                                 </td>
                             </tr>
                             <tr>
@@ -122,16 +119,16 @@ else if (isset($_POST['commentid']))
                                     <font class="small">Titel des Kommentars</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="33" name="title" value="'.$comment_arr['comment_title'].'" maxlength="100">
+                                    <input class="text" size="33" name="title" value="'.htmlspecialchars($comment_arr['comment_title']).'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Text:<br>
-                                    <font class="small">HTML ist '.$config_arr['html_code'].'. FS-Code ist '.$config_arr['fs_code'].'</font>
+                                    <font class="small">HTML ist '.$config_arr['html_code'].'. FS-Code ist '.$config_arr['fs_code'].'.</font>
                                 </td>
                                 <td valign="top">
-                                    <textarea rows="8" cols="66" name="text">'.$comment_arr['comment_text'].'</textarea>
+                                    <textarea rows="8" cols="60" name="text">'.htmlspecialchars($comment_arr['comment_text']).'</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -152,9 +149,9 @@ else if (isset($_POST['commentid']))
     ';
 }
 
-////////////////////////////////
-//// Kein Kommentar gewählt ////
-////////////////////////////////
+/////////////////////////////
+//// No comment selected ////
+/////////////////////////////
 
 else
 {

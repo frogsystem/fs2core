@@ -125,7 +125,6 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
         echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 
-
     if (isset($_POST['tempid']))
     {
         $_POST['dlid'] = $_POST['tempid'];
@@ -399,8 +398,8 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
                   </td>
               </tr>
               ';
-    $comments = mysql_query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'", $FD->sql()->conn());
-    if (mysql_num_rows($comments)===0)
+    $comments = $FD->sql()->conn()->query('SELECT COUNT(*) FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'");
+    if ($comments->fetchColumn()==0)
     {
       echo '<tr>
               <td class="configthin" colspan="4" align="center">Keine Kommentare vorhanden!</td>
@@ -414,16 +413,16 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
                   <td class="config" width="25%" valign="top">Datum</td>
                   <td class="config" width="15%" valign="top">bearbeiten</td>
             </tr>';
-      while ($row = mysql_fetch_assoc($comments))
+      $comments = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'");
+      while ($row = $comments->fetch(PDO::FETCH_ASSOC))
       {
         echo '<tr>
                 <td class="configthin small">'.htmlentities($row['comment_title']).'</td>
                 <td class="configthin small">';
         if ($row['comment_poster_id']!=0)
         {
-          $user = mysql_query('SELECT user_id, user_name FROM `'.$FD->config('pref').'user` WHERE user_id=\''.$row['comment_poster_id']."' LIMIT 1", $FD->sql()->conn());
-          $user = mysql_fetch_assoc($user);
-          $row['comment_poster'] = $user['user_name'];
+          $user = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref')."user` WHERE user_id='".$row['comment_poster_id']."' LIMIT 1");
+          $row['comment_poster'] = $user->fetchColumn();
         }
         echo $row['comment_poster'].'</td>
                   <td class="configthin small">'.date('d.m.Y, H:i', $row['comment_date']).'</td>

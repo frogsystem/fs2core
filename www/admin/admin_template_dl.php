@@ -197,4 +197,3 @@ $TEMPLATE_EDIT[] = array (
 
 echo templatepage_init ($TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE);
 ?>
-
