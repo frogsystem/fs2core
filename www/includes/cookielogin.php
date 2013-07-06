@@ -87,30 +87,24 @@ function logout_user()
 }
 
 
-function cookielogin() {
-    global $FD;
-    
-    /////////////////////////
-    //// Do Cookie Stuff ////
-    /////////////////////////
-    if ( isset($_POST['login']) && $_POST['login'] == 1 ) {
-        $FD->setConfig('login_state', user_login ( $_POST['username'], $_POST['userpassword'], FALSE));
-    } elseif ( isset($_COOKIE['login']) && $_SESSION['user_level'] != 'loggedin') {
-        $userpassword = substr ( $_COOKIE['login'], 0, 32 );
-        $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
-        $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));
-    }
-
-    if ( isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $FD->config('login_state') == 0 ) {
-        set_cookie ( $_POST['username'], $_POST['userpassword'] );
-    }
-
-
-    ////////////////
-    //// Logout ////
-    ////////////////
-    if ($FD->cfg('goto') == 'logout' && (!isset($_POST['go']) || $_POST['go'] != 'login')) {
-        logout_user();
+function userlogin() {    
+    // Login in User
+    if (!is_loggedin()) {
+        global $FD;
+        // From Post
+        if (isset($_POST['login']) && $_POST['login'] == 1) {
+            $FD->setConfig('login_state', user_login($_POST['username'], $_POST['userpassword'], FALSE));
+        // From Cookie
+        } elseif(isset($_COOKIE['login'])) {
+            $userpassword = substr ($_COOKIE['login'], 0, 32);
+            $username = substr($_COOKIE['login'], 32, strlen($_COOKIE['login']));
+            $FD->setConfig('login_state', user_login($username, $userpassword, TRUE));
+        }
+        
+        // stay online?
+        if (isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $FD->config('login_state') == 0) {
+            set_cookie ($_POST['username'], $_POST['userpassword']);
+        }
     }
 }
 ?>

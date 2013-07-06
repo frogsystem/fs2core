@@ -19,7 +19,7 @@ require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 // Constructor Calls
 // TODO: "Constructor Hook"
 get_goto();
-cookielogin();
+userlogin();
 setTimezone($FD->cfg('timezone'));
 run_cronjobs();
 count_all($FD->cfg('goto'));
