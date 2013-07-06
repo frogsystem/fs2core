@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 29. Jun 2013 um 15:21
+-- Erstellungszeit: 06. Jul 2013 um 23:39
 -- Server Version: 5.1.53-community-log
 -- PHP-Version: 5.4.3
 
@@ -336,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `fs2_articles` (
   PRIMARY KEY (`article_id`),
   KEY `article_url` (`article_url`),
   FULLTEXT KEY `article_text` (`article_title`,`article_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fs2_articles`
@@ -346,7 +346,8 @@ INSERT INTO `fs2_articles` (`article_id`, `article_url`, `article_title`, `artic
 (1, 'fscode', 'FSCode Liste', 1302472800, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n[html fscode]<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">[b][u][size=3]FS-Code:[/size][/u][/b]</td><td width="50%">[b][u][size=3]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiver Text[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 0[/size][/noparse]</td><td>[size=0]Text in Größe 0[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 1[/size][/noparse]</td><td>[size=1]Text in Größe 1[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 2[/size][/noparse]</td><td>[size=2]Text in Größe 2[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 3[/size][/noparse]</td><td>[size=3]Text in Größe 3[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 4[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 5[/size][/noparse]</td><td>[size=5]Text in Größe 5[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 6[/size][/noparse]</td><td>[size=6]Text in Größe 6[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 7[/size][/noparse]</td><td>[size=7]Text in Größe 7[/size]</td></tr><tr><td>[noparse][noparse]Text mit [b]FS[/b]Code[/noparse][/noparse]</td><td>[noparse]kein [b]fetter[/b] Text[/noparse]</td></tr> <tr><td colspan="2"><hr></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan="2"><hr></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan="2"><hr></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]http://localhost/fs2/www/images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]http://localhost/fs2/www/images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]http://localhost/fs2/www/images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>[/html]', 0, 1, 1, 1, 1352740622),
 (2, '', 'ie 8 test', 1302480000, 1, 'ie 8 test', 1, 1, 1, 1, 1302560322),
 (3, 'sds', 'fsdfsdf', 1302739200, 1, 'sdf', 1, 1, 1, 1, 1302797133),
-(4, 'sd', 'hallo', 1302739200, 1, 'sdfsdf', 1, 1, 1, 1, 1302797137);
+(4, 'sd', 'hallo', 1302739200, 1, 'sdfsdf', 1, 1, 1, 1, 1302797137),
+(5, 'sss', 'sdfdfdf', 1372888800, 1, 'sdfsdfdf', 1, 1, 1, 1, 1372971785);
 
 -- --------------------------------------------------------
 
@@ -369,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `fs2_articles_cat` (
 --
 
 INSERT INTO `fs2_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
-(1, 'Artikel', '', 1302517148, 1);
+(1, 'Artikel', '', 1302472800, 1);
 
 -- --------------------------------------------------------
 
@@ -460,7 +461,7 @@ CREATE TABLE IF NOT EXISTS `fs2_comments` (
 --
 
 INSERT INTO `fs2_comments` (`comment_id`, `content_id`, `content_type`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`, `comment_classification`, `spam_probability`, `needs_update`) VALUES
-(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans', 0, 0.5, 1);
+(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans', 0, 0.5, 0);
 
 -- --------------------------------------------------------
 
@@ -473,7 +474,7 @@ CREATE TABLE IF NOT EXISTS `fs2_config` (
   `config_name` varchar(30) NOT NULL,
   `config_data` text NOT NULL,
   `config_loadhook` varchar(255) NOT NULL DEFAULT 'none',
-  KEY `config_name` (`config_name`)
+  UNIQUE KEY `config_name` (`config_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -481,17 +482,17 @@ CREATE TABLE IF NOT EXISTS `fs2_config` (
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUES
-('main', '{"title":"Hansen''s wunderbare Welt","dyn_title":"1","dyn_title_ext":"{..title..} \\u00bb {..ext..}","admin_mail":"mail@sweil.de","description":"","keywords":"","publisher":"","copyright":"","style_id":"1","allow_other_designs":"1","show_favicon":"1","home":"0","home_text":"","language_text":"de_DE","feed":"rss20","date":"d.m.Y","time":"H:i \\\\U\\\\h\\\\r","datetime":"d.m.Y, H:i \\\\U\\\\h\\\\r","timezone":"Europe\\/Berlin","auto_forward":"4","page":"<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}\\u00a0<\\/div>Seite <b>{..page_number..}<\\/b> von <b>{..total_pages..}<\\/b><div style=\\"width:70px; float:right;\\">\\u00a0{..next..}<\\/div><\\/div>","page_prev":"<a href=\\"{..url..}\\">\\u00ab\\u00a0zur\\u00fcck<\\/a>\\u00a0|","page_next":"|\\u00a0<a href=\\"{..url..}\\">weiter \\u00bb<\\/a>","style_tag":"lightfrog","version":"2.alix6","url_style":"seo","protocol":"http:\\/\\/","url":"localhost\\/fs2\\/www\\/","other_protocol":"1","count_referers":"1"}', 'startup'),
+('main', '{"title":"Hansen''s wunderbare Welt","dyn_title":"1","dyn_title_ext":"{..title..} \\u00bb {..ext..}","admin_mail":"mail@sweil.de","description":"","keywords":"","publisher":"","copyright":"","style_id":"1","allow_other_designs":"1","show_favicon":"1","home":"0","home_text":"","language_text":"de_DE","feed":"rss20","date":"d.m.Y","time":"H:i \\\\U\\\\h\\\\r","datetime":"d.m.Y, H:i \\\\U\\\\h\\\\r","timezone":"Europe\\/Berlin","auto_forward":"4","page":"<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;<\\/div>Seite <b>{..page_number..}<\\/b> von <b>{..total_pages..}<\\/b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}<\\/div><\\/div>","page_prev":"<a href=\\"{..url..}\\">\\u00ab&nbsp;zur\\u00fcck<\\/a>&nbsp|","page_next":"|&nbsp<a href=\\"{..url..}\\">weiter&nbsp\\u00bb<\\/a>","style_tag":"lightfrog","version":"2.alix6","url_style":"seo","protocol":"http:\\/\\/","url":"localhost\\/fs2\\/www\\/","other_protocol":"1","count_referers":"1"}', 'startup'),
 ('system', '{"var_loop":20}', 'startup'),
 ('env', '{}', 'startup'),
 ('info', '{}', 'startup'),
-('articles', '{"acp_per_page":"25","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"0","com_antispam":"0","com_sort":"0","acp_view":"2"}', 'none'),
+('articles', '{"acp_per_page":"2","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"0","com_antispam":"0","com_sort":"0","acp_view":"2"}', 'none'),
 ('search', '{"id":"0","search_num_previews":"10","search_and":"AND, and, &&","search_or":"OR, or, ||","search_xor":"XOR, xor","search_not":"!, -","search_wildcard":"*, %","search_min_word_length":"3","search_allow_phonetic":"1","search_use_stopwords":"1"}', 'none'),
-('cronjobs', '{"last_cronjob_time":"1372519256","last_cronjob_time_daily":"1372432733","last_cronjob_time_hourly":"1372519256"}', 'startup'),
+('cronjobs', '{"last_cronjob_time":"1373127308","last_cronjob_time_daily":"1373065069","last_cronjob_time_hourly":"1373127308","search_index_update":"1","ref_cron":"1","ref_days":"5","ref_hits":"5","ref_contact":"first","ref_age":"older","ref_amount":"less"}', 'startup'),
 ('captcha', '{"captcha_bg_color":"FAFCF1","captcha_bg_transparent":"0","captcha_text_color":"AB30AB","captcha_first_lower":"1","captcha_first_upper":"5","captcha_second_lower":"1","captcha_second_upper":"5","captcha_use_addition":"1","captcha_use_subtraction":"1","captcha_use_multiplication":"0","captcha_create_easy_arithmetics":"1","captcha_x":"58","captcha_y":"18","captcha_show_questionmark":"0","captcha_use_spaces":"1","captcha_show_multiplication_as_x":"1","captcha_start_text_x":"0","captcha_start_text_y":"0","captcha_font_size":"5","captcha_font_file":""}', 'none'),
 ('downloads', '{"screen_x":"1024","screen_y":"768","thumb_x":"120","thumb_y":"90","quickinsert":"test''","dl_rights":"2","dl_show_sub_cats":"0"}', 'none'),
 ('affiliates', '{"partner_anzahl":"5","small_x":"88","small_y":"31","big_x":"468","big_y":"60","big_allow":"1","file_size":"1024","small_allow":"0"}', 'none'),
-('news', '{"num_news":"11","num_head":"5","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"2","com_antispam":"2","news_headline_lenght":"20","acp_per_page":"15","acp_view":"2","com_sort":"DESC","news_headline_ext":" ...","acp_force_cat_selection":"1"}', 'none'),
+('news', '{"num_news":"11","num_head":"5","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"2","com_antispam":"2","news_headline_lenght":"20","acp_per_page":"3","acp_view":"2","com_sort":"DESC","news_headline_ext":"&nbsp;...","acp_force_cat_selection":"1"}', 'none'),
 ('video_player', '{"cfg_player_x":"500","cfg_player_y":"280","cfg_autoplay":"0","cfg_autoload":"1","cfg_buffer":"5","cfg_buffermessage":"Buffering _n_","cfg_buffercolor":"#FFFFFF","cfg_bufferbgcolor":"#000000","cfg_buffershowbg":"0","cfg_titlesize":"20","cfg_titlecolor":"#FFFFFF","cfg_margin":"5","cfg_showstop":"1","cfg_showvolume":"1","cfg_showtime":"1","cfg_showplayer":"autohide","cfg_showloading":"always","cfg_showfullscreen":"1","cfg_showmouse":"autohide","cfg_loop":"0","cfg_playercolor":"#a6a6a6","cfg_loadingcolor":"#000000","cfg_bgcolor":"#FAFCF1","cfg_bgcolor1":"#E7E7E7","cfg_bgcolor2":"#cccccc","cfg_buttoncolor":"#000000","cfg_buttonovercolor":"#E7E7E7","cfg_slidercolor1":"#cccccc","cfg_slidercolor2":"#bbbbbb","cfg_sliderovercolor":"#E7E7E7","cfg_loadonstop":"1","cfg_onclick":"playpause","cfg_ondoubleclick":"fullscreen","cfg_playertimeout":"1500","cfg_videobgcolor":"#000000","cfg_volume":"100","cfg_shortcut":"1","cfg_playeralpha":"100","cfg_top1_url":"","cfg_top1_x":"0","cfg_top1_y":"0","cfg_showiconplay":"1","cfg_iconplaycolor":"#FFFFFF","cfg_iconplaybgcolor":"#000000","cfg_iconplaybgalpha":"75","cfg_showtitleandstartimage":"0"}', 'none'),
 ('polls', '{"answerbar_width":"100","answerbar_type":"0"}', 'none'),
 ('press', '{"game_navi":"1","cat_navi":"1","lang_navi":"0","show_press":"0","show_root":"0","order_by":"press_date","order_type":"desc"}', 'none'),
@@ -523,7 +524,7 @@ CREATE TABLE IF NOT EXISTS `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 91, 2865, 2, 4, 16, 1);
+(1, 96, 3143, 5, 5, 18, 1);
 
 -- --------------------------------------------------------
 
@@ -546,8 +547,7 @@ CREATE TABLE IF NOT EXISTS `fs2_counter_ref` (
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://localhost/', 55, 1302557491, 1307980522),
-('http://localhost/fs2/', 20, 1316955935, 1368367379),
-('http://neu.weibilo.de/admin/?go=login', 3, 1352584229, 1352584233);
+('http://localhost/fs2/', 20, 1316955935, 1368367379);
 
 -- --------------------------------------------------------
 
@@ -644,7 +644,10 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2013, 2, 27, 1, 1),
 (2013, 5, 12, 1, 2),
 (2013, 6, 28, 2, 20),
-(2013, 6, 29, 1, 1);
+(2013, 6, 29, 1, 1),
+(2013, 7, 4, 1, 13),
+(2013, 7, 5, 3, 131),
+(2013, 7, 6, 1, 134);
 
 -- --------------------------------------------------------
 
@@ -827,7 +830,7 @@ CREATE TABLE IF NOT EXISTS `fs2_email` (
 --
 
 INSERT INTO `fs2_email` (`id`, `signup`, `change_password`, `delete_account`, `change_password_ack`, `use_admin_mail`, `email`, `html`) VALUES
-(1, 'Hallo  {..user_name..},\r\n\r\nDu hast dich bei $VAR(page_title) registriert. Deine Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=editprofil]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {..user_name..},\r\n\r\nDein Passwort bei $VAR(page_title) wurde geändert. Deine neuen Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$VAR(url)?go=user_edit]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders überlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!', 'Hallo {..user_name..},\r\n\r\nDu hast für deinen Account auf $VAR(page_title) ein neues Passwort angefordert. Um den Vorgang abzuschließen musst du nur noch innerhalb der nächsten zwei Tage den folgenden Link anklicken: [url={..new_password_url..}]Neues Passwort setzen[/url]\r\n\r\nFalls du [b]kein[/b] neues Passwort angefordert hast, ignoriere diese E-Mail einfach. Du kannst dich weiterhin mit deinem bisherigen Passwort bei uns anmelden.\r\n\r\nDein Team von $VAR(page_title)!', 1, '', 1);
+(1, 'Hallo  {..user_name..},\r\n\r\nDu hast dich bei $VAR(page_title) registriert. Deine Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$URL(user_edit[1])]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {..user_name..},\r\n\r\nDein Passwort bei $VAR(page_title) wurde geändert. Deine neuen Zugangsdaten sind:\r\n\r\nBenutzername: {..user_name..}\r\nPasswort: {..new_password..}\r\n\r\nFalls du deine Daten ändern möchtest, kannst du das gerne auf deiner [url=$URL(user_edit[1])]Profilseite[/url] tun.\r\n\r\nDein Team von $VAR(page_title)!', 'Hallo {username},\r\n\r\nSchade, dass du dich von unserer Seite abgemeldet hast. Falls du es dir doch noch anders überlegen willst, [url={virtualhost}]kannst du ja nochmal rein schauen[/url].\r\n\r\nDein Webseiten-Team!', 'Hallo {..user_name..},\r\n\r\nDu hast für deinen Account auf $VAR(page_title) ein neues Passwort angefordert. Um den Vorgang abzuschließen musst du nur noch innerhalb der nächsten zwei Tage den folgenden Link anklicken: [url={..new_password_url..}]Neues Passwort setzen[/url]\r\n\r\nFalls du [b]kein[/b] neues Passwort angefordert hast, ignoriere diese E-Mail einfach. Du kannst dich weiterhin mit deinem bisherigen Passwort bei uns anmelden.\r\n\r\nDein Team von $VAR(page_title)!', 1, '', 0);
 
 -- --------------------------------------------------------
 
@@ -891,7 +894,7 @@ CREATE TABLE IF NOT EXISTS `fs2_news` (
   `news_search_update` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`news_id`),
   FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
 
 --
 -- Daten für Tabelle `fs2_news`
@@ -913,7 +916,9 @@ INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title
 (41, 1, 1, 1325103780, 'Hallo', 'Hallo', 1, 1, 0),
 (42, 1, 1, 1325103780, 'Hallo', 'Hallo', 1, 1, 1325104446),
 (43, 1, 1, 1325104440, 'Tsdsdfsd', 'fsdfsdfsdfsdfsdf', 1, 1, 0),
-(44, 2, 1, 1340724960, 'test', 'test', 1, 1, 0);
+(44, 2, 1, 1340724960, 'test', 'test', 1, 1, 0),
+(45, 1, 1, 1373021880, 'test', 'test', 1, 1, 0),
+(46, 2, 1, 1373021880, 'test', 'test', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1259,7 +1264,7 @@ CREATE TABLE IF NOT EXISTS `fs2_screen_random` (
   `start` int(11) NOT NULL,
   `end` int(11) NOT NULL,
   PRIMARY KEY (`random_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -1276,7 +1281,7 @@ CREATE TABLE IF NOT EXISTS `fs2_search_index` (
   `search_index_count` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2853 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2857 ;
 
 --
 -- Daten für Tabelle `fs2_search_index`
@@ -1509,7 +1514,11 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 (2564, 27, 'news', 1, 1),
 (2563, 26, 'news', 1, 1),
 (2562, 25, 'news', 1, 1),
-(2561, 24, 'news', 1, 1);
+(2561, 24, 'news', 1, 1),
+(2853, 33, 'news', 45, 2),
+(2854, 33, 'news', 46, 2),
+(2855, 164, 'articles', 5, 1),
+(2856, 165, 'articles', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -1525,7 +1534,7 @@ CREATE TABLE IF NOT EXISTS `fs2_search_time` (
   `search_time_date` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_time_id`),
   UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=316 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=319 ;
 
 --
 -- Daten für Tabelle `fs2_search_time`
@@ -1561,7 +1570,10 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 (297, 'news', 36, 1341852981),
 (296, 'news', 7, 1341852981),
 (301, 'news', 42, 1341852981),
-(300, 'news', 39, 1341852981);
+(300, 'news', 39, 1341852981),
+(316, 'news', 45, 1373021954),
+(317, 'news', 46, 1373021954),
+(318, 'articles', 5, 1373021954);
 
 -- --------------------------------------------------------
 
@@ -1575,7 +1587,7 @@ CREATE TABLE IF NOT EXISTS `fs2_search_words` (
   `search_word` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
   UNIQUE KEY `search_word` (`search_word`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=164 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=166 ;
 
 --
 -- Daten für Tabelle `fs2_search_words`
@@ -1744,7 +1756,9 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 (160, 'libapr'),
 (161, 'src'),
 (162, 'rpm'),
-(163, 'localhost');
+(163, 'localhost'),
+(164, 'sdfdfdf'),
+(165, 'sdfsdfdf');
 
 -- --------------------------------------------------------
 
@@ -1761,14 +1775,15 @@ CREATE TABLE IF NOT EXISTS `fs2_shop` (
   `artikel_preis` varchar(10) DEFAULT NULL,
   `artikel_hot` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`artikel_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `fs2_shop`
 --
 
 INSERT INTO `fs2_shop` (`artikel_id`, `artikel_name`, `artikel_url`, `artikel_text`, `artikel_preis`, `artikel_hot`) VALUES
-(1, 'test', 'Amazon', 'Tolles Handy', 'EUR 12', 0);
+(1, 'test', 'Amazon', 'Tolles Handy', 'EUR 12', 1),
+(2, 'sd', 'sd', '', '2', 0);
 
 -- --------------------------------------------------------
 
@@ -1872,15 +1887,18 @@ CREATE TABLE IF NOT EXISTS `fs2_user` (
   `user_yim` varchar(50) DEFAULT NULL,
   `user_skype` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fs2_user`
 --
 
 INSERT INTO `fs2_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
-(1, 'admin', '7bbc920bc19341e0491d72421445022c', '4s3Id3yxtq', 'mail@sweil.de', 1, 0, 1, 1302517173, 0, '', '', '', '', '', ''),
-(2, 'test', '7536490f62673f20cf771bca4767799b', 'EcA0ybxfP1', 'asd@hallo.de', 1, 1, 0, 1306274400, 0, '', '', '', '', '', '');
+(1, 'admin', '7085d0eaaa5857f5ef88ab5ea7da9051', 'tL9z1MC3p3', 'mail@sweil.de', 1, 0, 1, 1302517173, 0, '', '', '', '', '', ''),
+(2, 'test', '0c35412b82a52ff0f65cfd183cfca421', '1b6uGVHMFO', 'asd@hallo.de', 1, 0, 0, 1306274400, 0, '', '', '', '', '', ''),
+(3, 'tester', 'fa085482aa8c10eb796792ea2ec938c1', 'KGJEcaHyVq', 'mail@moritzkornher.de', 0, 0, 0, 1373109834, 0, '', '', '', '', '', ''),
+(4, 'tester5', 'dfc59ea79af442d663cdcddeb9616066', 'r3NQ66bmjF', 'blah@sweil.de', 0, 0, 0, 1373061600, 0, '', '', '', '', '', ''),
+(5, 'Aqua', '3f1d2e6ae16444d2bfae4dac7b40f1b9', '7O7ELf5Qrz', 'test@sweil.de', 0, 0, 0, 1373124893, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1895,13 +1913,6 @@ CREATE TABLE IF NOT EXISTS `fs2_useronline` (
   `date` int(30) DEFAULT NULL,
   PRIMARY KEY (`ip`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `fs2_useronline`
---
-
-INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('::1', 1, 1372519261);
 
 -- --------------------------------------------------------
 
