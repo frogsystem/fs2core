@@ -25,15 +25,14 @@ if (
     settype ( $_POST['applet_output'], 'integer' );
     settype ( $_POST['applet_include'], 'integer' );
 
-    // MySQL-Queries
-    mysql_query ( '
+    // SQL-Queries
+    $sql->conn()->exec ( '
                     UPDATE `'.$FD->config('pref')."applets`
                     SET
                         `applet_active` = '".$_POST['applet_active']."',
                         `applet_include` = '".$_POST['applet_include']."',
                         `applet_output` = '".$_POST['applet_output']."'
-                    WHERE `applet_id` = '".$_POST['applet_id']."'
-    ", $sql->conn() );
+                    WHERE `applet_id` = '".$_POST['applet_id']."'" );
 
     // Display Message
     systext ( $FD->text('admin', 'changes_saved'),
@@ -59,12 +58,11 @@ elseif (
         // Security-Functions
         $_POST['applet_id'] = array_map ( 'intval', explode ( ',', $_POST['applet_id'] ) );
 
-        // MySQL-Delete-Query
-        mysql_query ('
+        // SQL-Delete-Query
+        $FD->sql()->conn()->exec ('
                         DELETE
                         FROM '.$FD->config('pref').'applets
-                        WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')
-        ', $FD->sql()->conn() );
+                        WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')' );
 
         systext ( $FD->text('admin', 'applets_deleted'),
             $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_trash_ok') );
@@ -94,19 +92,18 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         $_POST['applet_id'] = $_POST['applet_id'][0];
 
         // Display Error Messages
-        if ( $_POST['sended'] == 'edit' ) {
+        if ( isset($_POST['sended']) && ($_POST['sended'] == 'edit') ) {
 
             // Shouldn't happen
 
         // Get Data from DB
         } else {
-            $index = mysql_query ( '
+            $index = $FD->sql()->conn()->query ( '
                                     SELECT *
                                     FROM `'.$FD->config('pref')."applets`
                                     WHERE `applet_id` = '".$_POST['applet_id']."'
-                                    LIMIT 0,1
-            ", $FD->sql()->conn() );
-            $data_arr = mysql_fetch_assoc ( $index );
+                                    LIMIT 0,1");
+            $data_arr = $index->fetch(PDO::FETCH_ASSOC);
             putintopost ( $data_arr );
         }
 
@@ -213,29 +210,25 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         ';
 
         // get applets from db
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
                                 SELECT *
                                 FROM '.$FD->config('pref').'applets
                                 WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')
-                                ORDER BY `applet_file`
-        ', $FD->sql()->conn() );
-        // applets found
-        if ( mysql_num_rows ( $index ) > 0 ) {
+                                ORDER BY `applet_file`' );
+        // applets found?
+        // display applets
+        while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
-            // display applets
-            while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+            // get other data
+            $data_arr['text'] = array (
+                (($data_arr['applet_active'] == 1 )  ? $FD->text('admin', 'applet_active') : $FD->text('admin', 'applet_not_active')),
+                (($data_arr['applet_include'] == 1 ) ? $FD->text('page', 'delete_include_always') : $FD->text('page', 'delete_include_ondemand')),
+                (($data_arr['applet_output'] == 1 )  ? $FD->text('admin', 'applet_output_enabled') : $FD->text('admin', 'applet_output_disabled'))
+            );
 
-                // get other data
-                $data_arr['text'] = array (
-                    (($data_arr['applet_active'] == 1 )  ? $FD->text('admin', 'applet_active') : $FD->text('admin', 'applet_not_active')),
-                    (($data_arr['applet_include'] == 1 ) ? $FD->text('page', 'delete_include_always') : $FD->text('page', 'delete_include_ondemand')),
-                    (($data_arr['applet_output'] == 1 )  ? $FD->text('admin', 'applet_output_enabled') : $FD->text('admin', 'applet_output_disabled'))
-                );
-
-                echo '
-                                    <b>'.killhtml ( $data_arr['applet_file'] ).'.php</b> ('.implode(' / ', $data_arr['text']).')<br>
-                ';
-            }
+            echo '
+                                <b>'.killhtml ( $data_arr['applet_file'] ).'.php</b> ('.implode(' / ', $data_arr['text']).')<br>
+            ';
         }
 
         // Display End of Table
@@ -273,14 +266,12 @@ if ( !isset ( $_POST['applet_id'] ) )
     ';
 
     // get applets from db
-    $index = mysql_query ( '
-                            SELECT *
-                            FROM '.$FD->config('pref').'applets
-                            ORDER BY `applet_file`
-    ', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT COUNT(*)
+                    FROM '.$FD->config('pref').'applets' );
 
     // applets found
-    if ( mysql_num_rows ( $index ) > 0 ) {
+    if ( $index->fetchColumn() > 0 ) {
 
         // display table head
         echo '
@@ -294,7 +285,11 @@ if ( !isset ( $_POST['applet_id'] ) )
         ';
 
         // display applets
-        while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM '.$FD->config('pref').'applets
+                        ORDER BY `applet_file`' );
+        while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
             // get other data
             $data_arr['active_text'] = ( $data_arr['applet_active'] == 1 ) ? $FD->text('admin', 'yes') : $FD->text('admin', 'no');
@@ -315,6 +310,8 @@ if ( !isset ( $_POST['applet_id'] ) )
             ';
         }
 
+        if (!isset($_POST['applet_action']))
+          $_POST['applet_action'] = '';
         // display footer with button
         echo'
                             <tr><td class="space"></td></tr>

@@ -55,11 +55,11 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     /* Flags:
      * html => false // Decides wheter html is allowed
-     * washtml => false // Should HTML washed from dangerous content?
+     * washtml => false // Should HTML washed from dangerous content? // not yet implemented
      * paragraph => true // (De-)Activates paragraph handling
      * paragraph_to_text => false // Set true to not convert paragraphs into html
-     * tab => oneof(false, nbsp, space) // convert tabs (\t) to &nbsp; \040 or do nothing
-     * tabsize => oneof(false, nbsp, space) // convert tabs (\t) to &nbsp; \040 or \t
+     * tab => oneof(nbsp, space, false) // convert tabs (\t) to &nbsp; a space-sign or do nothing
+     * tabsize => integer // size for one tab
      * */
     $default_flags = array(
         'html' => false,
@@ -95,7 +95,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             case 'space':   $tab = ' ';         break;
         }
         // create local tab function
-        $tab_func = create_function ('$text', 'return tab2space($text, '.$flags['tabsize'].', '.$tab.');');
+        $tab_func = create_function ('$text', 'return tab2space($text, '.$flags['tabsize'].', "'.$tab.'");');
         // add the filter
         $fscode->addFilter (STRINGPARSER_FILTER_POST, $tab_func);
     }
@@ -315,7 +315,6 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             'block', array ('listitem', 'block', 'inline'), array ('link'));
 
     if (in_array('quote', $to_html) || in_array('quote', $to_text)) {
-        #$fscode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         $fscode->setCodeFlag ('quote', 'paragraphs', false);
     }
 
@@ -370,7 +369,8 @@ function simple_replace_ignore_attributs ($action, $attributes, $content, $param
 function do_fscode_smilies ($text) {
     global $FD;
 
-    $smilies = $FD->sql()->getData('smilies', '*');
+    $smilies = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies');
+    $smilies = $smilies->fetchAll(PDO::FETCH_ASSOC);
     foreach ($smilies as $smiley) {
         $url = image_url('images/smilies/', $smiley['id']);
         $text = str_replace ($smiley['replace_string'], '<img src="'.$url.'" alt="'.$smiley['replace_string'].'" align="top">', $text);
@@ -394,7 +394,7 @@ function do_fscode_url ($action, $attributes, $content, $params, $node_object) {
     }
 
     // Return html or text
-    if ($params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true)
         return ($url == $text) ? $url : $text . ' ('.$url.')';
     else
         return '<a href="'.$url.'" target="_blank">'.$text.'</a>';
@@ -492,7 +492,7 @@ function do_fscode_email ($action, $attributes, $content, $params, $node_object)
     }
 
     // Return html or text
-    if ($params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true)
         return ($url == $text) ? $text : $text . ' ('.$url.')';
     else
         return '<a href="mailto:'.$url.'" target="_blank">'.$text.'</a>';
@@ -563,7 +563,7 @@ function do_fscode_img ($action, $attributes, $content, $params, $node_object) {
     $title_full = isset ($content_arr[2]) ? ' title="'.$content_arr[2].'"' : '';
 
     // Return html or text
-    if ($params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true)
         return (isset($content_arr[2])) ? $FD->text('frontend', 'image').': '.$content_arr[2]. ' ('.$content_arr[0].')' : $FD->text('frontend', 'image').': '.$content_arr[0];
     else
         if (!isset ($attributes['default']))
@@ -646,8 +646,8 @@ function do_fscode_code ($action, $attributes, $content, $params, $node_object) 
         unset($attributes['default']);
 
 
-    // Get HTMl or text
-    if ($params['text'] === true) {
+    // Get HTML or text
+    if (isset($params['text']) && $params['text'] === true) {
         if (!isset ($attributes['default'])) {
             $parsed = $FD->text('frontend', 'code').': '.$content;
         } else {
@@ -676,8 +676,8 @@ function do_fscode_quote ($action, $attributes, $content, $params, $node_object)
             return true;
     }
 
-    // Get HTMl or text
-    if ($params['text'] === true) {
+    // Get HTML or text
+    if (isset($params['text']) && $params['text'] === true) {
         if (!isset ($attributes['default'])) {
             $parsed = $FD->text('frontend', 'quote').': '.$content;
         } else {
@@ -712,8 +712,8 @@ function do_fscode_video ($action, $attributes, $content, $params, $node_object)
         return true;
     }
 
-    // Get HTMl or text
-    if ($params['text'] === true) {
+    // Get HTML or text
+    if (isset($params['text']) && $params['text'] === true) {
         return get_player($content, true, true, true);
     } else {
         if (!isset ($attributes['default'])) {

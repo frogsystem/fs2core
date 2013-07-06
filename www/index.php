@@ -19,10 +19,11 @@ require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 // Constructor Calls
 // TODO: "Constructor Hook"
 get_goto();
+userlogin();
 setTimezone($FD->cfg('timezone'));
 run_cronjobs();
-save_visitors();
 count_all($FD->cfg('goto'));
+save_visitors();
 if (!$FD->configExists('main', 'count_referers') || $FD->cfg('main', 'count_referers')==1) {
   save_referer();
 }
@@ -38,12 +39,10 @@ $theTemplate->tag('content', get_content($FD->cfg('goto')));
 $theTemplate->tag('copyright', get_copyright());
 
 $template_general = (string) $theTemplate;
-$template_general = tpl_functions_init($template_general);
-
 // TODO: "Template Manipulation Hook"
 
 // Display Page
-echo get_maintemplate($template_general);
+echo tpl_functions_init(get_maintemplate($template_general));
 
 
 // Shutdown System

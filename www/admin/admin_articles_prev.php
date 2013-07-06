@@ -2,7 +2,7 @@
 
 
 // Reload Page
-if ( !$_POST['article_text'] && !$_POST['sended'] ) {
+if ( !isset($_POST['article_text']) && !isset($_POST['sended']) ) {
     // Reload Page Template
     $template = '
         <script type="text/javascript">
@@ -53,7 +53,7 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
             <input type="hidden" name="article_para" id="article_para" value="">
             <input type="hidden" name="article_text" id="article_text" value="">
         </form>
-    
+
         '.get_content_container('&nbsp;', $FD->text("page", "preview_note")).'
     ';
 
@@ -63,9 +63,15 @@ if ( !$_POST['article_text'] && !$_POST['sended'] ) {
 
 // Preview Page
 else {
+    // goto
+    $goto = 'articles_preview';
+    $FD->setConfig('env', 'get_go', $goto);
+    $FD->setConfig('goto', $goto);
+    $FD->setConfig('env', 'goto', $goto);
+
 
     // Load Data from $_POST
-    $article_arr['article_title'] = stripslashes ( $_POST['article_title'] );
+    $article_arr['article_title'] = $_POST['article_title'];
 
     // Create Article-Date
     if (
@@ -148,7 +154,7 @@ else {
     // Preview Page Template
     $FD->setConfig('dyn_title', 1);
     $FD->setConfig('dyn_title_ext', '{..ext..}');
-    $FD->setConfig('dyn_title_page', $FD->text('page', 'preview_title').': '.$article_arr['article_title']);
+    $FD->setConfig('info', 'page_title', $FD->text('page', 'preview_title').': '.$article_arr['article_title']);
 
 
     // Display Preview Page

@@ -196,6 +196,8 @@ page_title_timedpic_add:        zeitliches Vorschaubild hinzufügen
 page_link_timedpic_add:         Neues zeitl. VB
 page_title_timedpic_edit:       zeitliche Vorschaubilder verwalten
 page_link_timedpic_edit:        Zeitl. VBs verwalten
+page_title_find_gallery_img:    Bild auswählen
+page_link_find_gallery_img:     Bild auswählen
 
 # Downloads
 page_title_dl_config:           Konfiguration ändern
@@ -308,6 +310,8 @@ page_title_tpl_fscodes:         „FSCodes“ bearbeiten
 page_link_tpl_fscodes:          FSCodes
 page_title_tpl_player:          „Flash-Player“ bearbeiten
 page_link_tpl_player:           Flash-Player
+page_title_tpl_topdownloads:    „Top Downloads“ bearbeiten
+page_link_tpl_topdownloads:     Top Downloads
 
 # Applets
 page_title_applets_add:         hinzufügen

@@ -12,8 +12,8 @@ require ( FS2_ROOT_PATH . 'login.inc.php' );
 /////////////////////
 //// Load Config ////
 /////////////////////
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'captcha'"));
-$config_arr = json_array_decode($config_arr['config_data']);
+$FD->loadConfig('captcha');
+$config_arr = $FD->configObject('captcha')->getConfigArray();
 
 
 ////////////////////////
@@ -139,7 +139,7 @@ $color_text = imagecolorallocate ( $img, $text_color_value['r'], $text_color_val
 
 //Get Font
 if ( $config_arr['captcha_font_size'] == 0 ) {
-     $config_arr['captcha_font'] = imageloadfont ( FS2_ROOT_PATH . 'media/php-fonts/'.stripslashes ( $config_arr['captcha_font_file'] ) );
+     $config_arr['captcha_font'] = imageloadfont ( FS2_ROOT_PATH . 'media/php-fonts/'. $config_arr['captcha_font_file'] );
 } else {
     $config_arr['captcha_font'] = $config_arr['captcha_font_size'];
 }

@@ -9,14 +9,15 @@ $FD->loadConfig('news');
 ////// Suchfeld erzeugen ///////
 ////////////////////////////////
 
-$index = mysql_query('SELECT news_date FROM '.$FD->config('pref').'news ORDER BY news_date ASC LIMIT 0,1', $FD->sql()->conn() );
-if (mysql_num_rows($index) == 0) {
+$index = $FD->sql()->conn()->query('SELECT news_date FROM '.$FD->config('pref').'news ORDER BY news_date ASC LIMIT 0,1' );
+$years_arr = $index->fetch(PDO::FETCH_ASSOC);
+if ($years_arr == false) {
     $years = date('Y');
     $years = '<option value="'.$years.'">'.$years.'</option>';
 } else {
-    $years_arr = mysql_fetch_assoc($index);
-    for ($years_arr[i]=date('Y',$years_arr['news_date']);$years_arr[i]<=date('Y');$years_arr[i]++) {
-        $years .= '<option value="'.$years_arr[i].'">'.$years_arr[i].'</option>';
+    $years = '';
+    for ($years_arr['i']=date('Y',$years_arr['news_date']);$years_arr['i']<=date('Y');$years_arr['i']++) {
+        $years .= '<option value="'.$years_arr['i'].'">'.$years_arr['i'].'</option>';
     }
 }
 
@@ -26,17 +27,17 @@ $template->setFile('0_news.tpl');
 $template->load('SEARCH');
 
 $template->tag('years', $years );
-$template->tag('keyword', kill_replacements ( $_REQUEST['keyword'], TRUE ) );
+$template->tag('keyword', kill_replacements ( isset($_REQUEST['keyword']) ? $_REQUEST['keyword'] : '' , TRUE ) );
 
 $template = $template->display ();
 $searchform_template = $template;
-
+initstr($news_template);
 
 ////////////////////////////////
 /// News nach Datum anzeigen ///
 ////////////////////////////////
 
-if ($_REQUEST['year'] && $_REQUEST['month'])
+if (isset($_REQUEST['year']) && isset($_REQUEST['month']))
 {
     settype($_REQUEST['year'], 'integer');
     settype($_REQUEST['month'], 'integer');
@@ -45,19 +46,28 @@ if ($_REQUEST['year'] && $_REQUEST['month'])
     $endtime = mktime(0, 0, 0, $_REQUEST['month']+1, 0, $_REQUEST['year']);
 
     // News lesen und ausgeben
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
+                            SELECT COUNT(*)
+                            FROM '.$FD->config('pref').'news
+                            WHERE news_date > '.$starttime.'
+                            AND `news_date` < '.$endtime.'
+                            AND `news_active` = 1
+                            AND `news_date` <= '.time() );
+    $num_rows = $index->fetchColumn();
+
+    if ($num_rows > 0)  // News vorhanden?
+    {
+        $index = $FD->sql()->conn()->query ( '
                             SELECT *
                             FROM '.$FD->config('pref').'news
                             WHERE news_date > '.$starttime.'
                             AND `news_date` < '.$endtime.'
                             AND `news_active` = 1
                             AND `news_date` <= '.time().'
-                            ORDER BY news_date DESC
-    ', $FD->sql()->conn() );
+                            ORDER BY news_date DESC' );
 
-    if (mysql_num_rows($index) > 0)  // News vorhanden?
-    {
-        while ($news_arr = mysql_fetch_assoc($index))
+        $news_template = '';
+        while ($news_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
             $news_template .= display_news($news_arr, $FD->cfg('news', 'html_code'), $FD->cfg('news', 'fs_code'), $FD->cfg('news', 'para_handling'));
         }
@@ -73,23 +83,35 @@ if ($_REQUEST['year'] && $_REQUEST['month'])
 // News nach Keyword anzeigen //
 ////////////////////////////////
 
-elseif ($_REQUEST['keyword'])
+elseif (isset($_REQUEST['keyword']))
 {
-    $_REQUEST['keyword'] = savesql($_REQUEST['keyword']);
+    $prepared_keyword = '%'.$_REQUEST['keyword'].'%';
 
     // News lesen und ausgeben
-    $index = mysql_query ( '
-                            SELECT *
-                            FROM '.$FD->config('pref')."news
-                            WHERE ( news_text LIKE '%".$_REQUEST['keyword']."%'
-                            OR news_title LIKE '%".$_REQUEST['keyword']."%' )
-                            AND `news_active` = 1
-                            AND `news_date` <= ".time().'
-                            ORDER BY news_date DESC
-    ', $FD->sql()->conn() );
-    if (mysql_num_rows($index) > 0)  // News vorhanden?
+    $stmt = $FD->sql()->conn()->prepare ( '
+                    SELECT COUNT(*)
+                    FROM '.$FD->config('pref')."news
+                    WHERE ( news_text LIKE ?
+                    OR news_title LIKE ? )
+                    AND `news_active` = 1
+                    AND `news_date` <= ".time().'
+                    ORDER BY news_date DESC' );
+    $stmt->execute(array($prepared_keyword, $prepared_keyword));
+    $num_rows = $stmt->fetchColumn();
+    if ($num_rows > 0)  // News vorhanden?
     {
-        while ($news_arr = mysql_fetch_assoc($index))
+        $stmt = $FD->sql()->conn()->prepare ( '
+                    SELECT *
+                    FROM '.$FD->config('pref')."news
+                    WHERE ( news_text LIKE ?
+                    OR news_title LIKE ? )
+                    AND `news_active` = 1
+                    AND `news_date` <= ".time().'
+                    ORDER BY news_date DESC' );
+        $stmt->execute(array($prepared_keyword, $prepared_keyword));
+
+        $news_template = '';
+        while ($news_arr = $stmt->fetch(PDO::FETCH_ASSOC))
         {
             $news_template .= display_news($news_arr, $FD->cfg('news', 'html_code'), $FD->cfg('news', 'fs_code'), $FD->cfg('news', 'para_handling'));
         }

@@ -13,7 +13,6 @@ if (
 {
     // Security Functions
     $_POST['style_folder'] = $_POST['style_tag'];
-    $_POST['style_tag'] = savesql ( $_POST['style_tag'] );
     $_POST['style_create_as'] = ( $_POST['style_create_as'] == 'copy' ) ? 'copy' : 'new';
     settype ( $_POST['style_allow_use'], 'integer' );
     settype ( $_POST['style_allow_edit'], 'integer' );
@@ -33,28 +32,24 @@ if (
             @$ACCESS->createDir( $new_style_path , 0777 )
             && @$ACCESS->putFileData( $new_style_path . '/style.ini', $new_ini_data )
     ) {
-        // MySQL-Queries
-        mysql_query ( '
-                        INSERT INTO
-                            `'.$FD->config('pref')."styles`
-                            ( `style_tag`, `style_allow_use`, `style_allow_edit` )
-                        VALUES
-                            ( '".$_POST['style_tag']."', '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )
-        ", $FD->sql()->conn() );
+        // SQL-Queries
+        $stmt = $FD->sql()->conn()->prepare( '
+                INSERT INTO
+                    `'.$FD->config('pref')."styles`
+                    ( `style_tag`, `style_allow_use`, `style_allow_edit` )
+                VALUES
+                    ( ?, '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )" );
+        $stmt->execute(array($_POST['style_tag']));
 
         // Copy Style recursive
         if ( $_POST['style_create_as'] == 'copy' && $_POST['copy_style_id'] ) {
-            // MySQL-Queries
-            $index = mysql_query ( '
-                                    SELECT
-                                        `style_tag`
-                                    FROM
-                                        `'.$FD->config('pref').'styles`
-                                    WHERE
-                                        `style_id` = '.$_POST['copy_style_id'].'
-                                    LIMIT 0,1
-            ', $FD->sql()->conn() );
-            $copy_style_path = FS2_ROOT_PATH . 'styles/' . stripslashes ( mysql_result ( $index, 0, 'style_tag' ) );
+            // SQL-Queries
+            $index = $FD->sql()->conn()->query ( '
+                            SELECT `style_tag`
+                            FROM `'.$FD->config('pref').'styles`
+                            WHERE `style_id` = '.$_POST['copy_style_id'].'
+                            LIMIT 0,1' );
+            $copy_style_path = FS2_ROOT_PATH . 'styles/' . $index->fetchColumn();
             if (
                     $ACCESS->copyAny( $copy_style_path, $new_style_path, 0777, 0644 )
                     && $ACCESS->putFileData( $new_style_path . '/style.ini', $new_ini_data )
@@ -152,18 +147,17 @@ if ( !is_writable ( FS2_ROOT_PATH . 'styles/' ) ) {
                                     <div align="right">
                                         <select class="input_width pointer middle" name="copy_style_id" size="1">';
 
-    $index = mysql_query ( '
-                            SELECT `style_id`, `style_tag`
-                            FROM `'.$FD->config('pref').'styles`
-                            ORDER BY `style_id`
-    ', $FD->sql()->conn() );
-    while ( $style_arr = mysql_fetch_assoc ( $index ) ) {
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `style_id`, `style_tag`
+                    FROM `'.$FD->config('pref').'styles`
+                    ORDER BY `style_id`' );
+    while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         settype ( $style_arr['style_id'], 'integer' );
         echo '<option value="'.$style_arr['style_id'].'" '.getselected( $style_arr['style_id'], $_POST['copy_style_id'] ).'>'.killhtml ( $style_arr['style_tag'] );
         echo ( $style_arr['style_id'] == $FD->config('style_id') ) ? ' ('.$FD->text('admin', 'active').')' : '';
         echo '</option>';
     }
-    echo'
+    echo '
                                         </select>
                                     </div>
                                 </td>

@@ -39,18 +39,23 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
 
     if ( is_numeric ( $MULTI ) ) {
         settype ( $MULTI, 'integer' );
-        $index = mysql_query ( '
-                                SELECT *
-                                FROM '.$FD->config('pref')."player
-                                WHERE video_id = '".$MULTI."'
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        if ( mysql_num_rows ( $index ) == 1 ) {
-            $video_arr = mysql_fetch_assoc ( $index );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT COUNT(*) AS num_rows
+                        FROM '.$FD->config('pref')."player
+                        WHERE video_id = '".$MULTI."'
+                        LIMIT 0,1" );
+        $num_rows = $index->fetchColumn();
+        if ( $num_rows == 1 ) {
+            $index = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM '.$FD->config('pref')."player
+                        WHERE video_id = '".$MULTI."'
+                        LIMIT 0,1" );
+            $video_arr = $index->fetch( PDO::FETCH_ASSOC );
 
             switch ( $video_arr['video_type'] ) {
                 case -1:
-                    $template_player = stripslashes ( $video_arr['video_x'] );
+                    $template_player = $video_arr['video_x'];
                     break;
                 case 3:
                     $template_player = $template_myvideo;

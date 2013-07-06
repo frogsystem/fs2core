@@ -165,7 +165,7 @@ function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
 
     $theTemplate->tag('javascript', $template_javascript);
     $theTemplate->tag('jquery', $template_jquery);
-    $theTemplate->tag('jquery-ui', $template_jquery_ui);
+    //~ $theTemplate->tag('jquery-ui', $template_jquery_ui);
 
     $theTemplate->tag('body', $BODY);
 
@@ -284,28 +284,28 @@ function get_meta ()
     foreach ($keyword_arr as $key => $value) {
         $keyword_arr[$key] = trim($value);
     }
-    $keywords = implode(', ', $keyword_arr);
+    $keywords = htmlspecialchars(implode(', ', $keyword_arr));
 
     $template = '
-    <meta name="title" content="'.get_title().'">
+    <meta name="title" content="'.htmlspecialchars(get_title()).'">
     '.get_meta_author().'
-    <meta name="publisher" content="'.$FD->config('publisher').'">
-    <meta name="copyright" content="'.$FD->config('copyright').'">
+    <meta name="publisher" content="'.htmlspecialchars($FD->config('publisher')).'">
+    <meta name="copyright" content="'.htmlspecialchars($FD->config('copyright')).'">
     <meta name="generator" content="Frogsystem 2 [http://www.frogsystem.de]">
-    <meta name="description" content="'.$FD->config('description').'">
+    <meta name="description" content="'.htmlspecialchars($FD->config('description')).'">
     '.get_meta_abstract().'
-    <meta http-equiv="content-language" content="'.$FD->config('language').'">
+    <meta http-equiv="content-language" content="'.htmlspecialchars($FD->config('language')).'">
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <meta name="robots" content="index,follow">
     <meta name="Revisit-after" content="3 days">
-    <meta name="DC.Title" content="'.get_title().'">
+    <meta name="DC.Title" content="'.htmlspecialchars(get_title()).'">
     '.get_meta_author(TRUE).'
-    <meta name="DC.Rights" content="'.$FD->config('copyright').'">
-    <meta name="DC.Publisher" content="'.$FD->config('publisher').'">
-    <meta name="DC.Description" content="'.$FD->config('description').'">
-    <meta name="DC.Language" content="'.$FD->config('language').'">
+    <meta name="DC.Rights" content="'.htmlspecialchars($FD->config('copyright')).'">
+    <meta name="DC.Publisher" content="'.htmlspecialchars($FD->config('publisher')).'">
+    <meta name="DC.Description" content="'.htmlspecialchars($FD->config('description')).'">
+    <meta name="DC.Language" content="'.htmlspecialchars($FD->config('language')).'">
     <meta name="DC.Format" content="text/html">
-    <meta name="keywords" lang="'.$FD->config('language').'" content="'.$keywords.'">
+    <meta name="keywords" lang="'.htmlspecialchars($FD->config('language')).'" content="'.$keywords.'">
     '.get_canonical().'
     ';
 
@@ -341,9 +341,9 @@ function get_meta_author ($DC = FALSE)
         $author = $FD->config('publisher');
 
     if ($DC)
-        $output = '<meta name="DC.Creator" content="'.$author.'">';
+        $output = '<meta name="DC.Creator" content="'.htmlspecialchars($author).'">';
     else
-        $output = '<meta name="author" content="'.$author.'">';
+        $output = '<meta name="author" content="'.htmlspecialchars($author).'">';
 
     return $output;
 }
@@ -356,9 +356,9 @@ function get_meta_abstract ()
     global $FD;
 
     if ($FD->configExists('content_abstract') && $FD->config('content_abstract') != '') {
-        return '<meta name="abstract" content="'.$FD->config('content_abstract').'">';
+        return '<meta name="abstract" content="'.htmlspecialchars($FD->config('content_abstract')).'">';
     } else {
-        return '<meta name="abstract" content="'.$FD->config('description').'">';
+        return '<meta name="abstract" content="'.htmlspecialchars($FD->config('description')).'">';
     }
 }
 
@@ -415,13 +415,20 @@ function get_content ($GOTO)
     } else {
 
     // Articles from DB
-    $num = $sql->num('articles', array('article_id'), array('W' => "`article_url` = '".$GOTO."'", 'L' => '0,1'));
+    $stmt = $FD->sql()->conn()->prepare(
+                  'SELECT COUNT(article_id) FROM '.$FD->config('pref').'articles
+                   WHERE `article_url` = ? LIMIT 0,1');
+    $stmt->execute(array($GOTO));
+    $num = $stmt->fetchColumn();
     if ($num >= 1) {
 
         // Forward Aliases
-        $alias = $sql->getRow('aliases', array('alias_forward_to'), array('W' => "`alias_active` = 1 AND `alias_go` = 'articles.php'"));
+        $alias = $FD->sql()->conn()->query(
+                      'SELECT alias_forward_to FROM '.$FD->config('pref')."aliases
+                       WHERE `alias_active` = 1 AND `alias_go` = 'articles.php'");
+        $alias = $alias->fetch(PDO::FETCH_ASSOC);
         if (!empty($alias)) {
-            include(FS2_ROOT_PATH . 'data/' . stripslashes($alias['alias_forward_to']));
+            include(FS2_ROOT_PATH . 'data/' . $alias['alias_forward_to']);
         } else {
             include(FS2_ROOT_PATH . 'data/articles.php');
         }
@@ -582,7 +589,11 @@ function load_applets()
     global $sql, $FD;
 
     // Load Applets from DB
-    $applet_data = $sql->getData('applets', array('applet_include', 'applet_file', 'applet_output'), array('W' => '`applet_active` = 1'));
+    $applet_data = $FD->sql()->conn()->query(
+                       'SELECT applet_include, applet_file, applet_output
+                        FROM '.$FD->config('pref').'applets
+                        WHERE `applet_active` = 1');
+    $applet_data = $applet_data->fetchAll(PDO::FETCH_ASSOC);
 
     // Write Applets into Array & get Applet Template
     initstr($template);
@@ -651,11 +662,13 @@ function tpl_func_snippets($original, $main_argument, $other_arguments)
     // Load Navigation on demand
     if (!isset($SNP[$main_argument])) {
         // Get Snippet and write into Array
-        $data = $sql->getRow('snippets', array('snippet_tag','snippet_text'), array('W' => "`snippet_tag` = '".$original."' AND `snippet_active` =  1"));
-
+        $data = $sql->conn()->prepare(
+                    'SELECT snippet_tag, snippet_text FROM '.$sql->getPrefix().'snippets
+                     WHERE `snippet_tag` = ? AND `snippet_active` = 1 LIMIT 1');
+        $data->execute(array($original));
+        $data = $data->fetch(PDO::FETCH_ASSOC);
         // Snippet not found?
         if (empty($data)) {
-            //$data['snippet_text'] = 'Error: Snippet not found!';
             $data['snippet_text'] = $original;
         }
 
@@ -676,7 +689,6 @@ function tpl_func_applets($original, $main_argument, $other_arguments)
 
     // Applet does not exists
     if (!isset($APP[$main_argument])) {
-        //return "Error: Applet not found!";
         return $original;
     }
 
@@ -742,7 +754,7 @@ function tpl_func_globalvars($original, $main_argument, $other_arguments)
         'page_dyn_title'                => get_title(),
         'date'                          => date_loc($FD->cfg('date'), $FD->cfg('env', 'date')),
         'time'                          => date_loc($FD->cfg('time'), $FD->cfg('env', 'date')),
-        'page_dyndate_time_title'       => date_loc($FD->cfg('datetime'), $FD->cfg('env', 'date')),
+        'date_time'                     => date_loc($FD->cfg('datetime'), $FD->cfg('env', 'date')),
     );
 
     //set error msg
@@ -758,6 +770,10 @@ function tpl_func_globalvars($original, $main_argument, $other_arguments)
 /////////////////////////////////////
 function tpl_func_date($original, $main_argument, $other_arguments)
 {
+    // Example:
+    // $DATE(d.m.Y) => 03.05.2013 (where today is 03.05.2013)
+    // $DATE(d.m.Y [946706400]) => 01.01.2000 (946706400 is timestamp of 01.01.2000)
+    
     // current timestamp if no other timestamp is passed
     if (empty($other_arguments))
         $other_arguments = time();
@@ -786,7 +802,7 @@ function tpl_func_url($original, $main_argument, $other_arguments)
         $full = false; // reset $full indicator (because the last one wasn't last of all)
         $param = explode('=', $argument, 2); // explode by =
         if (count($param) < 2) { // only value of param available
-            if ($param[0] == 'true' || $param[0] == 1) { // param maybe indicating a full url request
+            if (strtolower($param[0]) == 'true' || $param[0] == 1) { // param maybe indicating a full url request
                 $full = true; // but only if it's the last one
                 break;
             } else {
@@ -798,7 +814,7 @@ function tpl_func_url($original, $main_argument, $other_arguments)
     }
 
     // finally create URL
-    return url($main_argument, $params, $full);
+    return url(trim($main_argument), $params, $full);
 }
 
 // fs2seourl Version 1.01 (27.08.2001)
@@ -931,7 +947,9 @@ function get_goto ()
     }
 
     // Check $_GET['go']
-    $goto = empty($_GET['go']) ? $FD->cfg('home_real') : savesql($_GET['go']);
+    $FD->setConfig('env', 'get_go_raw', isset($_GET['go'])?$_GET['go']:null);
+    $goto = empty($_GET['go']) ? $FD->cfg('home_real') : $_GET['go'];
+    $FD->setConfig('env', 'get_go', $goto);
 
     // Forward Aliases
     $goto = forward_aliases($goto);
@@ -949,11 +967,11 @@ function forward_aliases ( $GOTO )
 {
     global $FD;
 
-    $aliases = $FD->sql()->getData(
-        'aliases',
-        array('alias_go', 'alias_forward_to'),
-        array('W' => "`alias_active` = 1 AND `alias_go` = '".$GOTO."'")
-    );
+    $aliases = $FD->sql()->conn()->prepare(
+                     'SELECT alias_go, alias_forward_to FROM '.$FD->config('pref').'aliases
+                      WHERE `alias_active` = 1 AND `alias_go` = ?');
+    $aliases->execute(array($GOTO));
+    $aliases = $aliases->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($aliases as $alias) {
         if ($GOTO == $alias['alias_go']) {
@@ -987,13 +1005,12 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
     global $FD;
 
     // check if visit-day exists
-    $daycounter = mysql_query ('SELECT * FROM '.$FD->config('pref').'counter_stat
-                                WHERE s_year = '.$YEAR.' AND s_month = '.$MONTH.' AND s_day = '.$DAY, $FD->sql()->conn() );
+    $daycounter = $FD->sql()->conn()->query ('SELECT * FROM '.$FD->config('pref').'counter_stat
+                                WHERE s_year = '.$YEAR.' AND s_month = '.$MONTH.' AND s_day = '.$DAY);
 
-    $rows = mysql_num_rows ( $daycounter );
-
-    if ( $rows <= 0 ) {
-        mysql_query('INSERT INTO '.$FD->config('pref')."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')", $FD->sql()->conn() );
+    if ( $daycounter->fetch(PDO::FETCH_ASSOC) === false )
+    {
+        $FD->sql()->conn()->exec('INSERT INTO '.$FD->config('pref')."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')" );
     }
 }
 
@@ -1009,13 +1026,13 @@ function count_hit ( $GOTO )
     $hit_month = date ( 'm' );
     $hit_day = date ( 'd' );
 
-        if ( $GOTO != '404' && $GOTO != '403' ) {
-                // count page_hits
-            mysql_query ( 'UPDATE '.$FD->config('pref').'counter SET hits = hits + 1', $FD->sql()->conn() );
-            mysql_query ( 'UPDATE '.$FD->config('pref').'counter_stat
-                           SET s_hits = s_hits + 1
-                           WHERE s_year = '.$hit_year.' AND s_month = '.$hit_month.' AND s_day = '.$hit_day, $FD->sql()->conn() );
-        }
+    if ( $GOTO != '404' && $GOTO != '403' ) {
+        // count page_hits
+        $FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter SET hits = hits + 1' );
+        $FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter_stat
+                                    SET s_hits = s_hits + 1
+                                    WHERE s_year = '.$hit_year.' AND s_month = '.$hit_month.' AND s_day = '.$hit_day );
+    }
 }
 
 
@@ -1030,10 +1047,10 @@ function count_visit ()
     $visit_month = date( 'm' );
     $visit_day = date ( 'd' );
 
-    mysql_query('UPDATE '.$FD->config('pref').'counter SET visits = visits + 1', $FD->sql()->conn() );
-    mysql_query('UPDATE '.$FD->config('pref').'counter_stat
-                    SET s_visits = s_visits + 1
-                    WHERE s_year = '.$visit_year.' AND s_month = '.$visit_month.' AND s_day = '.$visit_day, $FD->sql()->conn() );
+    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter SET visits = visits + 1');
+    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter_stat
+                              SET s_visits = s_visits + 1
+                              WHERE s_year = '.$visit_year.' AND s_month = '.$visit_month.' AND s_day = '.$visit_day);
 }
 
 
@@ -1044,7 +1061,6 @@ function save_visitors ()
 {
     global $FD;
 
-    $ip = savesql($_SERVER['REMOTE_ADDR']); // IP-Adress
     clean_iplist(); // remove old users first
 
     // get user_id or set user_id=0
@@ -1056,15 +1072,14 @@ function save_visitors ()
     }
 
     // Exisiting user for ip?
-    $user = $FD->sql()->getRow('useronline', '*', array('W' => "`ip` = '".$ip."'"));
+    $user = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'useronline WHERE `ip` = ? LIMIT 1');
+    $user->execute(array($_SERVER['REMOTE_ADDR']));
+    $user = $user->fetch(PDO::FETCH_ASSOC);
 
     // no user => create new
     if (empty($user)) {
-        $FD->sql()->insert('useronline', array(
-            'ip' => $ip,
-            'user_id' => $user_id,
-            'date' => $FD->env('time')
-        ));
+        $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref').'useronline SET `ip` = ?, user_id='.$user_id.', date='.(int) $FD->env('time'));
+        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
 
         // and count the visit
         count_visit();
@@ -1072,12 +1087,14 @@ function save_visitors ()
 
     // new user_id (and update time)
     else if ($user['user_id'] != $user_id) {
-        $FD->sql()->update('useronline', array('user_id' => $user_id, 'date' => $FD->env('time') ), array('W' => "`ip` = '".$ip."'"));
+        $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref').'useronline SET user_id = '.$user_id.', date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
+        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
     }
 
     // we know the user => just update time
     else {
-        $FD->sql()->update('useronline', array('date' => $FD->env('time') ), array('W' => "`ip` = '".$ip."'"));
+        $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref').'useronline SET date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
+        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
     }
 }
 
@@ -1088,8 +1105,8 @@ function clean_iplist()
 {
     global $FD;
 
-    $time = strtotime("today");
-    $FD->sql()->delete('useronline', array('W' => "`date` < '".$time."'"));
+    $time = strtotime('today');
+    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."useronline WHERE `date` < '".$time."'");
 }
 
 
@@ -1102,19 +1119,21 @@ function save_referer ()
 
 	if (isset($_SERVER['HTTP_REFERER'])) {
 
-		$time = time();             // timestamp
+		$time = time(); // timestamp
 		// save referer
 		$referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
-		$referer = savesql($referer);
-		$index =  mysql_query ( 'SELECT * FROM '.$FD->config('pref')."counter_ref WHERE ref_url = '".$referer."'", $FD->sql()->conn() );
+		$index = $FD->sql()->conn()->prepare ( 'SELECT * FROM '.$FD->config('pref').'counter_ref WHERE ref_url = ?' );
+		$index->execute(array($referer));
 
-		if ( mysql_num_rows ( $index ) <= 0 ) {
+		if ( $index->fetch(PDO::FETCH_ASSOC) === false ) {
 			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-				mysql_query ( 'INSERT INTO '.$FD->config('pref')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES ('".$referer."', '1', '".$time."', '".$time."')", $FD->sql()->conn() );
+				$stmt = $FD->sql()->conn()->prepare ( 'INSERT INTO '.$FD->config('pref')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES (?, '1', '".$time."', '".$time."')" );
+				$stmt->execute(array($referer));
 			}
 		} else {
 			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-					mysql_query ( 'UPDATE '.$FD->config('pref')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = '".$referer."'", $FD->sql()->conn() );
+				$stmt = $FD->sql()->conn()->prepare ( 'UPDATE '.$FD->config('pref')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = ? LIMIT 1" );
+				$stmt->execute(array($referer));
 			}
 		}
 	}
@@ -1129,9 +1148,9 @@ function clean_timed_preview_images () {
     $FD->loadConfig('preview_images');
 
     // do we want to remove old entries?
-    if ($FD->config('preview_images', 'random_timed_deltime') != -1) {
+    if ($FD->config('preview_images', 'timed_deltime') != -1) {
         // remove old entries
-        $FD->sql()->delete('screen_random', array('W' => "`end` < '".($FD->env('time')-$FD->config('preview_images', 'random_timed_deltime'))."'"));
+        $FD->sql()->conn()->query('DELETE FROM '.$FD->config('pref')."screen_random WHERE `end` < '".($FD->env('time')-$FD->config('preview_images', 'timed_deltime'))."'");
     }
 }
 
@@ -1153,31 +1172,32 @@ function set_style ()
     global $FD;
 
     if ( isset ( $_GET['style'] ) && $FD->cfg('allow_other_designs') == 1 ) {
-        $index = mysql_query ( '
-                                SELECT `style_id`, `style_tag`
-                                FROM `'.$FD->config('pref')."styles`
-                                WHERE `style_tag` = '".savesql ( $_GET['style'] )."'
-                                AND `style_allow_use` = 1
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        if ( mysql_num_rows ( $index ) == 1 ) {
-            $FD->setConfig('style', stripslashes ( mysql_result($index, 0, 'style_tag') ) );
-            $FD->setConfig('style_tag', stripslashes ( mysql_result($index, 0, 'style_tag') ) );
-            $FD->setConfig('style_id', mysql_result($index, 0, 'style_id') );
+        $index = $FD->sql()->conn()->prepare ( '
+                        SELECT `style_id`, `style_tag`
+                        FROM `'.$FD->config('pref')."styles`
+                        WHERE `style_tag` = ?
+                        AND `style_allow_use` = 1
+                        LIMIT 0,1");
+        $index->execute(array($_GET['style']));
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        if ( $row !== false ) {
+            $FD->setConfig('style', $row['style_tag'] );
+            $FD->setConfig('style_tag', $row['style_tag'] );
+            $FD->setConfig('style_id', $row['style_id'] );
         }
     } elseif ( isset ( $_GET['style_id'] ) && $FD->config('allow_other_designs') == 1 ) {
         settype ( $_GET['style_id'], 'integer' );
-        $index = mysql_query ( '
-                                SELECT `style_id`, `style_tag`
-                                FROM `'.$FD->config('pref')."styles`
-                                WHERE `style_id` = '".$_GET['style_id']."'
-                                AND `style_allow_use` = 1
-                                LIMIT 0,1
-        ", $FD->sql()->conn() );
-        if ( mysql_num_rows ( $index ) == 1 ) {
-            $FD->setConfig('style', stripslashes ( mysql_result($index, 0, 'style_tag') ) );
-            $FD->setConfig('style_tag', stripslashes ( mysql_result($index, 0, 'style_tag') ) );
-            $FD->setConfig('style_id', mysql_result($index, 0, 'style_id') );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT `style_id`, `style_tag`
+                        FROM `'.$FD->config('pref')."styles`
+                        WHERE `style_id` = '".$_GET['style_id']."'
+                        AND `style_allow_use` = 1
+                        LIMIT 0,1" );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        if ( $row !== false ) {
+            $FD->setConfig('style', $row['style_tag'] );
+            $FD->setConfig('style_tag', $row['style_tag'] );
+            $FD->setConfig('style_id', $row['style_id'] );
         }
     }
     copyright ();

@@ -20,11 +20,15 @@ echo $adminpage->get('search');
 if (!empty($_POST['filter'])) {
 
     //get users by filter
-    $users = $sql->get('user', array('user_name', 'user_id', 'user_is_admin', 'user_is_staff'),
-        array('W' => "user_name LIKE '%".$sql->escape($_POST['filter'])."%'", 'O' => '`user_name`')
-    );
+    $users = $FD->sql()->conn()->prepare(
+                  'SELECT user_name, user_id, user_is_admin, user_is_staff
+                   FROM '.$FD->config('pref').'user
+                   WHERE user_name LIKE ?
+                   ORDER BY `user_name`');
+    $users->execute(array('%'.$_POST['filter'].'%'));
+    $users = $users->fetchAll(PDO::FETCH_ASSOC);
 
-    if ($users['num'] < 1) {
+    if (count($users) < 1) {
         // display error
         $adminpage->clearConds();
         $adminpage->clearTexts();
@@ -32,7 +36,7 @@ if (!empty($_POST['filter'])) {
     } else {
         // get lines
         initstr($lines);
-        foreach ($users['data'] as $user) {
+        foreach ($users as $user) {
             $user['user_name'] = killhtml($user['user_name']);
             $user['user_name'] = ($user['user_is_staff'] == 1) ? htmlenclose($user['user_name'], 'strong') : $user['user_name'];
             $user['user_name'] = ($user['user_is_admin'] == 1) ? htmlenclose($user['user_name'], 'em') : $user['user_name'];

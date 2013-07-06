@@ -3,21 +3,20 @@ function user_login ( $username, $password, $iscookie )
 {
     global $FD;
 
-    $username = savesql($username);
-    $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '".$username."'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows == 0) {
+    $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = ?");
+    $index->execute(array($username));
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    if ($row === false) {
         $_GET['go'] = 'login';
         if ( $iscookie ) {
             delete_cookie ();
         }
-        return 1;  // Fehlercode 1: User nicht vorhanden
+        return 1;  // error code 1: user does not exist
     } else {
-        $dbuserpass = mysql_result($index, 0, 'user_password');
-        $dbuserid = mysql_result($index, 0, 'user_id');
-        $username = mysql_result($index, 0, 'user_name');
-        $usersalt = mysql_result($index, 0, 'user_salt');
+        $dbuserpass = $row['user_password'];
+        $dbuserid = $row['user_id'];
+        $username = $row['user_name'];
+        $usersalt = $row['user_salt'];
 
         if ($iscookie===false) {
             $password = md5 ( $password.$usersalt );
@@ -34,7 +33,7 @@ function user_login ( $username, $password, $iscookie )
             if ( $iscookie ) {
                 delete_cookie ();
             }
-            return 2;  // Fehlercode 2: Falsches Passwort
+            return 2;  // error code 2: wrong password
         }
     }
 }
@@ -44,27 +43,26 @@ function set_cookie ( $username, $password )
 {
     global $FD;
 
-    $username = savesql($username);
-    $password = savesql($password);
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = '$username'", $FD->sql()->conn() );
-    $rows = mysql_num_rows($index);
-    if ($rows == 0)
+    $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'user WHERE user_name = ?');
+    $index->execute(array($username));
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    if ($row === false)
     {
         return false;
     }
     else
     {
 
-        $dbuserpass = mysql_result($index, 0, 'user_password');
-        $dbuserid = mysql_result($index, 0, 'user_id');
-        $dbusersalt= mysql_result($index, 0, 'user_salt');
+        $dbuserpass = $row['user_password'];
+        $dbuserid = $row['user_id'];
+        $dbusersalt= $row['user_salt'];
         $password = md5 ( $password.$dbusersalt );
 
         if ($password == $dbuserpass)
         {
             $inhalt = $password . $username;
             setcookie ('login', $inhalt, time()+2592000, '/' );
-            return true;  // Login akzeptiert
+            return true;  // login accepted
         }
         else
         {
@@ -89,26 +87,24 @@ function logout_user()
 }
 
 
-/////////////////////////
-//// Do Cookie Stuff ////
-/////////////////////////
-if ( isset($_POST['login']) && $_POST['login'] == 1 ) {
-    $FD->setConfig('login_state', user_login ( $_POST['username'], $_POST['userpassword'], FALSE));
-} elseif ( isset($_COOKIE['login']) && $_SESSION['user_level'] != 'loggedin') {
-    $userpassword = substr ( $_COOKIE['login'], 0, 32 );
-    $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
-    $FD->setConfig('login_state', user_login ( $username,  $userpassword, TRUE));
-}
-
-if ( isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $FD->config('login_state') == 0 ) {
-    set_cookie ( $_POST['username'], $_POST['userpassword'] );
-}
-
-
-////////////////
-//// Logout ////
-////////////////
-if ( isset($_GET['go']) && $_GET['go'] == 'logout' && $_POST['go'] != 'login' ) {
-    logout_user();
+function userlogin() {    
+    // Login in User
+    if (!is_loggedin()) {
+        global $FD;
+        // From Post
+        if (isset($_POST['login']) && $_POST['login'] == 1) {
+            $FD->setConfig('login_state', user_login($_POST['username'], $_POST['userpassword'], FALSE));
+        // From Cookie
+        } elseif(isset($_COOKIE['login'])) {
+            $userpassword = substr ($_COOKIE['login'], 0, 32);
+            $username = substr($_COOKIE['login'], 32, strlen($_COOKIE['login']));
+            $FD->setConfig('login_state', user_login($username, $userpassword, TRUE));
+        }
+        
+        // stay online?
+        if (isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $FD->config('login_state') == 0) {
+            set_cookie ($_POST['username'], $_POST['userpassword']);
+        }
+    }
 }
 ?>

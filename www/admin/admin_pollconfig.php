@@ -13,7 +13,7 @@ if (isset($_POST['answerbar_width']))
 {
     // prepare data
     $data = frompost($used_cols);
-      
+
     // save config
     try {
         $FD->saveConfig('polls', $data);
@@ -23,11 +23,11 @@ if (isset($_POST['answerbar_width']))
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
-    unset($_POST);    
+    unset($_POST);
 }
 
 /////////////////////////////////////
@@ -42,11 +42,11 @@ if(true)
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'polls'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('polls');
+        $data = $FD->configObject('polls')->getConfigArray();
         putintopost($data);
-    }    
-    
+    }
+
     // security functions
     $_POST = array_map('killhtml', $_POST);
 

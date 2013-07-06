@@ -34,7 +34,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
 } else {
 
     // Set Dynamic Title
-    $FD->setConfig('dyn_title_page', $FD->text('frontend', 'download_search_for') . ' "' . usersave($_REQUEST['keyword']) . '"');
+    $FD->setConfig('info', 'page_title', $FD->text('frontend', 'download_search_for') . ' "' . usersave($_REQUEST['keyword']) . '"');
 
 	// More Results Template
 	$more_results_template = new template();
@@ -61,12 +61,13 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'news_date DESC', 'news_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $news_num_results) {
+            while($FD->cfg('search', 'search_num_previews') > $news_num_results && ($found = $search->next())) {
 
                 // get data for entry
-                $news = $sql->getRow('news', $news_cols, array(
-                    'W' => '`news_id` = '.$found['id'].' AND `news_date` <= '.time().' AND `news_active` = 1'
-                ));
+                $news = $FD->sql()->conn()->query(
+                            'SELECT news_id, news_title, news_date FROM '.$FD->config('pref').'news
+                             WHERE `news_id` = '.intval($found['id']).' AND `news_date` <= '.time().' AND `news_active` = 1');
+                $news = $news->fetch(PDO::FETCH_ASSOC);
 
                 // entry is ok
                 if (!empty($news)) {
@@ -105,7 +106,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($news_more);
             if ($search->next()) {
                 $news_more = $more_results_template;
-                $news_more->tag('main_search_url', url('news_search', array('keyword' => implode('+',$keyword_arr))));
+                $news_more->tag('main_search_url', url('news_search', array('keyword' => urlencode ($_REQUEST['keyword']))));
                 $news_more = (string) $news_more;
 
             //no results
@@ -123,12 +124,14 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'article_date DESC', 'article_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $articles_num_results) {
+            while($FD->cfg('search', 'search_num_previews') > $articles_num_results && ($found = $search->next())) {
 
-                // get data for entrie
-                $article = $sql->getRow('articles', $article_cols, array(
-                    'W' => '`article_id` = '.$found['id']
-                ));
+                // get data for entry
+                $article = $FD->sql()->conn()->query(
+                                'SELECT article_id, article_url, article_title, article_date
+                                 FROM '.$FD->config('pref').'articles
+                                 WHERE `article_id` = '.intval($found['id']));
+                $article = $article->fetch(PDO::FETCH_ASSOC);
 
                 // entry is ok
                 if (!empty($article)) {
@@ -173,7 +176,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($articles_more);
             if ($search->next()) {
                 $articles_more = $more_results_template;
-                $articles_more->tag('main_search_url', url('foo', array('keyword' => implode('+',$keyword_arr))));
+                $articles_more->tag('main_search_url', url('foo', array('keyword' => urlencode ($_REQUEST['keyword']))));
                 $articles_more = (string) $articles_more;
 
             //no results
@@ -192,12 +195,13 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             $search->setOrder('rank DESC', 'dl_date DESC', 'dl_id ASC');
 
             //run through results
-            while(($found = $search->next()) && $FD->cfg('search', 'search_num_previews') > $downloads_num_results) {
+            while($FD->cfg('search', 'search_num_previews') > $downloads_num_results && ($found = $search->next())) {
 
-                // get data for entrie
-                $dl = $sql->getRow('dl', $dl_cols, array(
-                    'W' => '`dl_id` = '.$found['id'].' AND `dl_open` = 1'
-                ));
+                // get data for entry
+                $dl = $FD->sql()->conn()->query(
+                          'SELECT dl_id, dl_date, dl_name FROM '.$FD->config('pref').'dl
+                           WHERE `dl_id` = '.intval($found['id']).' AND `dl_open` = 1');
+                $dl = $dl->fetch(PDO::FETCH_ASSOC);
 
                 // entry is ok
                 if (!empty($dl)) {
@@ -236,7 +240,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             initstr($downloads_more);
             if ($search->next()) {
                 $downloads_more = $more_results_template;
-                $downloads_more->tag('main_search_url', url('download', array('cat_id' => 'all', 'keyword' => implode('+', $keyword_arr))));
+                $downloads_more->tag('main_search_url', url('download', array('cat_id' => 'all', 'keyword' => urlencode($_REQUEST['keyword']))));
                 $downloads_more = (string) $downloads_more;
 
             //no results

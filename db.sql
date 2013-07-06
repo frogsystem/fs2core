@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 09. Juli 2012 um 16:56
--- Server Version: 5.1.53
--- PHP-Version: 5.3.4
+-- Erstellungszeit: 29. Jun 2013 um 15:21
+-- Server Version: 5.1.53-community-log
+-- PHP-Version: 5.4.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -26,7 +27,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 DROP TABLE IF EXISTS `fs2_admin_cp`;
-CREATE TABLE `fs2_admin_cp` (
+CREATE TABLE IF NOT EXISTS `fs2_admin_cp` (
   `page_id` varchar(255) NOT NULL,
   `group_id` varchar(20) NOT NULL,
   `page_file` varchar(255) NOT NULL,
@@ -146,6 +147,7 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('tpl_editor', 'templates', 'admin_editor_design.php', 13, 0),
 ('tpl_fscodes', 'templates', 'admin_editor_fscode.php', 14, 0),
 ('tpl_player', 'templates', 'admin_template_player.php', 20, 0),
+('tpl_topdownloads', 'templates', 'admin_template_topdownloads.php', 25, 0),
 ('user_config', 'users', 'admin_user_config.php', 1, 0),
 ('user_add', 'users', 'admin_user_add.php', 2, 0),
 ('user_edit', 'users', 'admin_user_edit.php', 3, 0),
@@ -167,7 +169,7 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 --
 
 DROP TABLE IF EXISTS `fs2_admin_groups`;
-CREATE TABLE `fs2_admin_groups` (
+CREATE TABLE IF NOT EXISTS `fs2_admin_groups` (
   `group_id` varchar(20) NOT NULL,
   `menu_id` varchar(20) NOT NULL,
   `group_pos` tinyint(3) NOT NULL DEFAULT '0'
@@ -214,7 +216,7 @@ INSERT INTO `fs2_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_admin_inherited`;
-CREATE TABLE `fs2_admin_inherited` (
+CREATE TABLE IF NOT EXISTS `fs2_admin_inherited` (
   `group_id` varchar(255) NOT NULL,
   `pass_to` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -238,7 +240,7 @@ INSERT INTO `fs2_admin_inherited` (`group_id`, `pass_to`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_aliases`;
-CREATE TABLE `fs2_aliases` (
+CREATE TABLE IF NOT EXISTS `fs2_aliases` (
   `alias_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `alias_go` varchar(100) NOT NULL,
   `alias_forward_to` varchar(100) NOT NULL,
@@ -261,7 +263,7 @@ INSERT INTO `fs2_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_ac
 --
 
 DROP TABLE IF EXISTS `fs2_announcement`;
-CREATE TABLE `fs2_announcement` (
+CREATE TABLE IF NOT EXISTS `fs2_announcement` (
   `id` smallint(4) NOT NULL,
   `announcement_text` text,
   `show_announcement` tinyint(1) NOT NULL DEFAULT '0',
@@ -286,7 +288,7 @@ INSERT INTO `fs2_announcement` (`id`, `announcement_text`, `show_announcement`, 
 --
 
 DROP TABLE IF EXISTS `fs2_applets`;
-CREATE TABLE `fs2_applets` (
+CREATE TABLE IF NOT EXISTS `fs2_applets` (
   `applet_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `applet_file` varchar(100) NOT NULL,
   `applet_active` tinyint(1) NOT NULL DEFAULT '1',
@@ -307,6 +309,7 @@ INSERT INTO `fs2_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_
 (5, 'poll-system', 1, 2, 1),
 (6, 'preview-image', 1, 2, 1),
 (7, 'shop-system', 1, 2, 1),
+(8, 'topdownloads', 1, 2, 1),
 (11, 'dl-forwarding', 1, 1, 0),
 (9, 'mini-search', 1, 1, 1),
 (10, 'affiliates', 1, 2, 1),
@@ -319,7 +322,7 @@ INSERT INTO `fs2_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_
 --
 
 DROP TABLE IF EXISTS `fs2_articles`;
-CREATE TABLE `fs2_articles` (
+CREATE TABLE IF NOT EXISTS `fs2_articles` (
   `article_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `article_url` varchar(100) DEFAULT NULL,
   `article_title` varchar(255) NOT NULL,
@@ -341,7 +344,7 @@ CREATE TABLE `fs2_articles` (
 --
 
 INSERT INTO `fs2_articles` (`article_id`, `article_url`, `article_title`, `article_date`, `article_user`, `article_text`, `article_html`, `article_fscode`, `article_para`, `article_cat_id`, `article_search_update`) VALUES
-(1, 'fscode', 'FSCode Liste', 1302480000, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n<table width=\\"100%\\" cellpadding=\\"0\\" cellspacing=\\"10\\" border=\\"0\\"><tr><td width=\\"50%\\">[b][u][size=3]FS-Code:[/size][/u][/b]</td><td width=\\"50%\\">[b][u][size=3]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiver Text[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 0[/size][/noparse]</td><td>[size=0]Text in Größe 0[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 1[/size][/noparse]</td><td>[size=1]Text in Größe 1[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 2[/size][/noparse]</td><td>[size=2]Text in Größe 2[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 3[/size][/noparse]</td><td>[size=3]Text in Größe 3[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 4[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 5[/size][/noparse]</td><td>[size=5]Text in Größe 5[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 6[/size][/noparse]</td><td>[size=6]Text in Größe 6[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 7[/size][/noparse]</td><td>[size=7]Text&nbsp;in&nbsp;Größe&nbsp;7[/size]</td></tr><tr><td>[noparse][noparse]Text mit [b]FS[/b]Code[/noparse][/noparse]</td><td>[noparse]kein [b]fetter[/b] Text[/noparse]</td></tr> <tr><td colspan=\\"2\\"><hr></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan=\\"2\\"><hr></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan=\\"2\\"><hr></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]$VAR(url)images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>', 1, 1, 1, 1, 1302797140),
+(1, 'fscode', 'FSCode Liste', 1302472800, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n[html fscode]<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">[b][u][size=3]FS-Code:[/size][/u][/b]</td><td width="50%">[b][u][size=3]Beispiel:[/size][/u][/b]</td></tr><tr><td>[noparse][b]fetter Text[/b][/noparse]</td><td>[b]fetter Text[/b]</td></tr><tr><td>[noparse][i]kursiver Text[/i][/noparse]</td><td>[i]kursiver Text[/i]</td></tr><tr><td>[noparse][u]unterstrichener Text[u][/noparse]</td><td>[u]unterstrichener Text[/u]</td></tr><tr><td>[noparse][s]durchgestrichener Text[/s][/noparse]</td><td>[s]durchgestrichener Text[/s]</td></tr><tr><td>[noparse][center]zentrierter Text[/center][/noparse]</td><td>[center]zentrierter Text[/center]</td></tr><tr><td>[noparse][font=Schriftart]Text in Schriftart[/font][/noparse]</td><td>[font=Arial]Text in Arial[/font]</td></tr><tr><td>[noparse][color=Farbcode]Text in Farbe[/color][/noparse]</td><td>[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 0[/size][/noparse]</td><td>[size=0]Text in Größe 0[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 1[/size][/noparse]</td><td>[size=1]Text in Größe 1[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 2[/size][/noparse]</td><td>[size=2]Text in Größe 2[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 3[/size][/noparse]</td><td>[size=3]Text in Größe 3[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 4[/size][/noparse]</td><td>[size=4]Text in Größe 4[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 5[/size][/noparse]</td><td>[size=5]Text in Größe 5[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 6[/size][/noparse]</td><td>[size=6]Text in Größe 6[/size]</td></tr><tr><td>[noparse][size=Größe]Text in Größe 7[/size][/noparse]</td><td>[size=7]Text in Größe 7[/size]</td></tr><tr><td>[noparse][noparse]Text mit [b]FS[/b]Code[/noparse][/noparse]</td><td>[noparse]kein [b]fetter[/b] Text[/noparse]</td></tr> <tr><td colspan="2"><hr></td></tr> <tr><td>[noparse][url]Linkadresse[/url][/noparse]</td><td>[url]http://www.example.com[/url]</td></tr> <tr><td>[noparse][url=Linkadresse]Linktext[/url][/noparse]</td><td>[url=http://www.example.com]Linktext[/url]</td></tr> <tr><td>[noparse][home]Seitenlink[/home][/noparse]</td><td>[home]news[/home]</td></tr> <tr><td>[noparse][home=Seitenlink]Linktext[/home][/noparse]</td><td>[home=news]Linktext[/home]</td></tr> <tr><td>[noparse][email]Email-Adresse[/email][/noparse]</td><td>[email]max.mustermann@example.com[/email]</td></tr> <tr><td>[noparse][email=Email-Adresse]Beispieltext[/email][/noparse]</td><td>[email=max.mustermann@example.com]Beispieltext[/email]</td></tr> <tr><td colspan="2"><hr></td></tr> <tr><td>[noparse][list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list][/noparse]</td><td>[list]<br>[*]Listenelement<br>[*]Listenelement<br>[/list]</td></tr> <tr><td>[noparse][numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist][/noparse]</td><td>[numlist]<br>[*]Listenelement<br>[*]Listenelement<br>[/numlist]</td></tr> <tr><td>[noparse][quote]Ein Zitat[/quote][/noparse]</td><td>[quote]Ein Zitat[/quote]</td></tr><tr><td>[noparse][quote=Quelle]Ein Zitat[/quote][/noparse]</td><td>[quote=Quelle]Ein Zitat[/quote]</td></tr><tr><td>[noparse][code]Schrift mit fester Breite[/code][/noparse]</td><td>[code]Schrift mit fester Breite[/code]</td></tr><tr><td colspan="2"><hr></td></tr><tr><td>[noparse][img]Bildadresse[/img][/noparse]</td><td>[img]http://localhost/fs2/www/images/icons/logo.gif[/img]</td></tr><tr><td>[noparse][img=right]Bildadresse[/img][/noparse]</td><td>[img=right]http://localhost/fs2/www/images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.</td></tr><tr><td>[noparse][img=left]Bildadresse[/img][/noparse]</td><td>[img=left]http://localhost/fs2/www/images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.</td></tr></table>[/html]', 0, 1, 1, 1, 1352740622),
 (2, '', 'ie 8 test', 1302480000, 1, 'ie 8 test', 1, 1, 1, 1, 1302560322),
 (3, 'sds', 'fsdfsdf', 1302739200, 1, 'sdf', 1, 1, 1, 1, 1302797133),
 (4, 'sd', 'hallo', 1302739200, 1, 'sdfsdf', 1, 1, 1, 1, 1302797137);
@@ -353,7 +356,7 @@ INSERT INTO `fs2_articles` (`article_id`, `article_url`, `article_title`, `artic
 --
 
 DROP TABLE IF EXISTS `fs2_articles_cat`;
-CREATE TABLE `fs2_articles_cat` (
+CREATE TABLE IF NOT EXISTS `fs2_articles_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(100) DEFAULT NULL,
   `cat_description` text NOT NULL,
@@ -372,11 +375,33 @@ INSERT INTO `fs2_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_da
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `fs2_b8_wordlist`
+--
+
+DROP TABLE IF EXISTS `fs2_b8_wordlist`;
+CREATE TABLE IF NOT EXISTS `fs2_b8_wordlist` (
+  `token` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `count_ham` int(10) unsigned DEFAULT NULL,
+  `count_spam` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`token`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `fs2_b8_wordlist`
+--
+
+INSERT INTO `fs2_b8_wordlist` (`token`, `count_ham`, `count_spam`) VALUES
+('b8*dbversion', 3, NULL),
+('b8*texts', 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `fs2_cimg`
 --
 
 DROP TABLE IF EXISTS `fs2_cimg`;
-CREATE TABLE `fs2_cimg` (
+CREATE TABLE IF NOT EXISTS `fs2_cimg` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `type` varchar(4) NOT NULL,
@@ -385,13 +410,6 @@ CREATE TABLE `fs2_cimg` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
---
--- Daten für Tabelle `fs2_cimg`
---
-
-INSERT INTO `fs2_cimg` (`id`, `name`, `type`, `hasthumb`, `cat`) VALUES
-(1, 'camerazoom-20111218133317187', 'jpg', 0, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -399,7 +417,7 @@ INSERT INTO `fs2_cimg` (`id`, `name`, `type`, `hasthumb`, `cat`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_cimg_cats`;
-CREATE TABLE `fs2_cimg_cats` (
+CREATE TABLE IF NOT EXISTS `fs2_cimg_cats` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL,
   `description` varchar(100) NOT NULL,
@@ -417,11 +435,42 @@ INSERT INTO `fs2_cimg_cats` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `fs2_comments`
+--
+
+DROP TABLE IF EXISTS `fs2_comments`;
+CREATE TABLE IF NOT EXISTS `fs2_comments` (
+  `comment_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `content_id` mediumint(8) NOT NULL,
+  `content_type` varchar(32) NOT NULL,
+  `comment_poster` varchar(32) DEFAULT NULL,
+  `comment_poster_id` mediumint(8) DEFAULT NULL,
+  `comment_poster_ip` varchar(16) NOT NULL,
+  `comment_date` int(11) DEFAULT NULL,
+  `comment_title` varchar(100) DEFAULT NULL,
+  `comment_text` text,
+  `comment_classification` tinyint(4) NOT NULL DEFAULT '0',
+  `spam_probability` float NOT NULL DEFAULT '0.5',
+  `needs_update` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`comment_id`),
+  FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Daten für Tabelle `fs2_comments`
+--
+
+INSERT INTO `fs2_comments` (`comment_id`, `content_id`, `content_type`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`, `comment_classification`, `spam_probability`, `needs_update`) VALUES
+(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans', 0, 0.5, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `fs2_config`
 --
 
 DROP TABLE IF EXISTS `fs2_config`;
-CREATE TABLE `fs2_config` (
+CREATE TABLE IF NOT EXISTS `fs2_config` (
   `config_name` varchar(30) NOT NULL,
   `config_data` text NOT NULL,
   `config_loadhook` varchar(255) NOT NULL DEFAULT 'none',
@@ -433,24 +482,24 @@ CREATE TABLE `fs2_config` (
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUES
-('main', '{\\"title\\":\\"Hansen\\''s wunderbare Welt\\",\\"dyn_title\\":\\"1\\",\\"dyn_title_ext\\":\\"{..title..} \\\\u00bb {..ext..}\\",\\"admin_mail\\":\\"mail@sweil.de\\",\\"description\\":\\"\\",\\"keywords\\":\\"\\",\\"publisher\\":\\"\\",\\"copyright\\":\\"\\",\\"style_id\\":\\"1\\",\\"allow_other_designs\\":\\"1\\",\\"show_favicon\\":\\"1\\",\\"home\\":\\"0\\",\\"home_text\\":\\"\\",\\"language_text\\":\\"de_DE\\",\\"feed\\":\\"rss20\\",\\"date\\":\\"d.m.Y\\",\\"time\\":\\"H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"datetime\\":\\"d.m.Y, H:i \\\\\\\\U\\\\\\\\h\\\\\\\\r\\",\\"timezone\\":\\"Europe\\\\/Berlin\\",\\"auto_forward\\":\\"4\\",\\"page\\":\\"<div align=\\\\\\"center\\\\\\" style=\\\\\\"width:270px;\\\\\\"><div style=\\\\\\"width:70px; float:left;\\\\\\">{..prev..}\\\\u00a0<\\\\/div>Seite <b>{..page_number..}<\\\\/b> von <b>{..total_pages..}<\\\\/b><div style=\\\\\\"width:70px; float:right;\\\\\\">\\\\u00a0{..next..}<\\\\/div><\\\\/div>\\",\\"page_prev\\":\\"<a href=\\\\\\"{..url..}\\\\\\">\\\\u00ab\\\\u00a0zur\\\\u00fcck<\\\\/a>\\\\u00a0|\\",\\"page_next\\":\\"|\\\\u00a0<a href=\\\\\\"{..url..}\\\\\\">weiter \\\\u00bb<\\\\/a>\\",\\"style_tag\\":\\"lightfrog\\",\\"version\\":\\"2.alix6\\",\\"url_style\\":\\"seo\\",\\"protocol\\":\\"http:\\\\/\\\\/\\",\\"url\\":\\"localhost\\\\/fs2\\\\/www\\\\/\\",\\"other_protocol\\":\\"1\\",\\"count_referers\\":\\"1\\"}', 'startup'),
-('system', '{\\"var_loop\\":20}', 'startup'),
+('main', '{"title":"Hansen''s wunderbare Welt","dyn_title":"1","dyn_title_ext":"{..title..} \\u00bb {..ext..}","admin_mail":"mail@sweil.de","description":"","keywords":"","publisher":"","copyright":"","style_id":"1","allow_other_designs":"1","show_favicon":"1","home":"0","home_text":"","language_text":"de_DE","feed":"rss20","date":"d.m.Y","time":"H:i \\\\U\\\\h\\\\r","datetime":"d.m.Y, H:i \\\\U\\\\h\\\\r","timezone":"Europe\\/Berlin","auto_forward":"4","page":"<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}\\u00a0<\\/div>Seite <b>{..page_number..}<\\/b> von <b>{..total_pages..}<\\/b><div style=\\"width:70px; float:right;\\">\\u00a0{..next..}<\\/div><\\/div>","page_prev":"<a href=\\"{..url..}\\">\\u00ab\\u00a0zur\\u00fcck<\\/a>\\u00a0|","page_next":"|\\u00a0<a href=\\"{..url..}\\">weiter \\u00bb<\\/a>","style_tag":"lightfrog","version":"2.alix6","url_style":"seo","protocol":"http:\\/\\/","url":"localhost\\/fs2\\/www\\/","other_protocol":"1","count_referers":"1"}', 'startup'),
+('system', '{"var_loop":20}', 'startup'),
 ('env', '{}', 'startup'),
 ('info', '{}', 'startup'),
-('articles', '{\\"acp_per_page\\":\\"3\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"1\\",\\"com_sort\\":\\"ASC\\",\\"acp_view\\":\\"2\\"}', 'none'),
-('search', '{\\"id\\":\\"0\\",\\"search_num_previews\\":\\"10\\",\\"search_and\\":\\"AND, and, &&\\",\\"search_or\\":\\"OR, or, ||\\",\\"search_xor\\":\\"XOR, xor\\",\\"search_not\\":\\"!, -\\",\\"search_wildcard\\":\\"*, %\\",\\"search_min_word_length\\":\\"3\\",\\"search_allow_phonetic\\":\\"1\\",\\"search_use_stopwords\\":\\"1\\"}', 'none'),
-('cronjobs', '{\\"last_cronjob_time\\":\\"1341852738\\",\\"last_cronjob_time_daily\\":\\"1341769376\\",\\"last_cronjob_time_hourly\\":\\"1341849676\\",\\"search_index_update\\":\\"2\\",\\"ref_cron\\":\\"1\\",\\"ref_days\\":\\"5\\",\\"ref_hits\\":\\"3\\",\\"ref_contact\\":\\"first\\",\\"ref_age\\":\\"older\\",\\"ref_amount\\":\\"less\\"}', 'startup'),
-('captcha', '{\\"captcha_bg_color\\":\\"FAFCF1\\",\\"captcha_bg_transparent\\":\\"0\\",\\"captcha_text_color\\":\\"AB30AB\\",\\"captcha_first_lower\\":\\"1\\",\\"captcha_first_upper\\":\\"5\\",\\"captcha_second_lower\\":\\"1\\",\\"captcha_second_upper\\":\\"5\\",\\"captcha_use_addition\\":\\"1\\",\\"captcha_use_subtraction\\":\\"1\\",\\"captcha_use_multiplication\\":\\"0\\",\\"captcha_create_easy_arithmetics\\":\\"1\\",\\"captcha_x\\":\\"58\\",\\"captcha_y\\":\\"18\\",\\"captcha_show_questionmark\\":\\"0\\",\\"captcha_use_spaces\\":\\"1\\",\\"captcha_show_multiplication_as_x\\":\\"1\\",\\"captcha_start_text_x\\":\\"0\\",\\"captcha_start_text_y\\":\\"0\\",\\"captcha_font_size\\":\\"5\\",\\"captcha_font_file\\":\\"\\"}', 'none'),
-('downloads', '{\\"screen_x\\":\\"1024\\",\\"screen_y\\":\\"768\\",\\"thumb_x\\":\\"120\\",\\"thumb_y\\":\\"90\\",\\"quickinsert\\":\\"test\\''\\",\\"dl_rights\\":\\"2\\",\\"dl_show_sub_cats\\":\\"0\\"}', 'none'),
-('affiliates', '{\\"partner_anzahl\\":\\"5\\",\\"small_x\\":\\"88\\",\\"small_y\\":\\"31\\",\\"big_x\\":\\"468\\",\\"big_y\\":\\"60\\",\\"big_allow\\":\\"1\\",\\"file_size\\":\\"1024\\",\\"small_allow\\":\\"0\\"}', 'none'),
-('news', '{\\"num_news\\":\\"11\\",\\"num_head\\":\\"5\\",\\"html_code\\":\\"2\\",\\"fs_code\\":\\"4\\",\\"para_handling\\":\\"4\\",\\"cat_pic_x\\":\\"150\\",\\"cat_pic_y\\":\\"150\\",\\"cat_pic_size\\":\\"1024\\",\\"com_rights\\":\\"2\\",\\"com_antispam\\":\\"2\\",\\"news_headline_lenght\\":\\"20\\",\\"acp_per_page\\":\\"15\\",\\"acp_view\\":\\"2\\",\\"com_sort\\":\\"DESC\\",\\"news_headline_ext\\":\\" ...\\",\\"acp_force_cat_selection\\":\\"1\\"}', 'none'),
-('video_player', '{\\"cfg_player_x\\":\\"500\\",\\"cfg_player_y\\":\\"280\\",\\"cfg_autoplay\\":\\"0\\",\\"cfg_autoload\\":\\"1\\",\\"cfg_buffer\\":\\"5\\",\\"cfg_buffermessage\\":\\"Buffering _n_\\",\\"cfg_buffercolor\\":\\"#FFFFFF\\",\\"cfg_bufferbgcolor\\":\\"#000000\\",\\"cfg_buffershowbg\\":\\"0\\",\\"cfg_titlesize\\":\\"20\\",\\"cfg_titlecolor\\":\\"#FFFFFF\\",\\"cfg_margin\\":\\"5\\",\\"cfg_showstop\\":\\"1\\",\\"cfg_showvolume\\":\\"1\\",\\"cfg_showtime\\":\\"1\\",\\"cfg_showplayer\\":\\"autohide\\",\\"cfg_showloading\\":\\"always\\",\\"cfg_showfullscreen\\":\\"1\\",\\"cfg_showmouse\\":\\"autohide\\",\\"cfg_loop\\":\\"0\\",\\"cfg_playercolor\\":\\"#a6a6a6\\",\\"cfg_loadingcolor\\":\\"#000000\\",\\"cfg_bgcolor\\":\\"#FAFCF1\\",\\"cfg_bgcolor1\\":\\"#E7E7E7\\",\\"cfg_bgcolor2\\":\\"#cccccc\\",\\"cfg_buttoncolor\\":\\"#000000\\",\\"cfg_buttonovercolor\\":\\"#E7E7E7\\",\\"cfg_slidercolor1\\":\\"#cccccc\\",\\"cfg_slidercolor2\\":\\"#bbbbbb\\",\\"cfg_sliderovercolor\\":\\"#E7E7E7\\",\\"cfg_loadonstop\\":\\"1\\",\\"cfg_onclick\\":\\"playpause\\",\\"cfg_ondoubleclick\\":\\"fullscreen\\",\\"cfg_playertimeout\\":\\"1500\\",\\"cfg_videobgcolor\\":\\"#000000\\",\\"cfg_volume\\":\\"100\\",\\"cfg_shortcut\\":\\"1\\",\\"cfg_playeralpha\\":\\"100\\",\\"cfg_top1_url\\":\\"\\",\\"cfg_top1_x\\":\\"0\\",\\"cfg_top1_y\\":\\"0\\",\\"cfg_showiconplay\\":\\"1\\",\\"cfg_iconplaycolor\\":\\"#FFFFFF\\",\\"cfg_iconplaybgcolor\\":\\"#000000\\",\\"cfg_iconplaybgalpha\\":\\"75\\",\\"cfg_showtitleandstartimage\\":\\"0\\"}', 'none'),
-('polls', '{\\"answerbar_width\\":\\"100\\",\\"answerbar_type\\":\\"0\\"}', 'none'),
-('press', '{\\"game_navi\\":\\"1\\",\\"cat_navi\\":\\"1\\",\\"lang_navi\\":\\"0\\",\\"show_press\\":\\"0\\",\\"show_root\\":\\"0\\",\\"order_by\\":\\"press_date\\",\\"order_type\\":\\"desc\\"}', 'none'),
-('preview_images', '{\\"active\\":\\"1\\",\\"type_priority\\":\\"1\\",\\"use_priority_only\\":\\"0\\",\\"timed_deltime\\":\\"604800\\"}', 'none'),
-('groups', '{\\"group_pic_x\\":\\"250\\",\\"group_pic_y\\":\\"25\\",\\"group_pic_size\\":\\"100\\"}', 'none'),
-('screens', '{\\"screen_x\\":\\"1500\\",\\"screen_y\\":\\"1500\\",\\"screen_thumb_x\\":\\"120\\",\\"screen_thumb_y\\":\\"90\\",\\"screen_size\\":\\"1024\\",\\"screen_rows\\":\\"5\\",\\"screen_cols\\":\\"3\\",\\"screen_order\\":\\"id\\",\\"screen_sort\\":\\"desc\\",\\"show_type\\":\\"1\\",\\"show_size_x\\":\\"950\\",\\"show_size_y\\":\\"700\\",\\"show_img_x\\":\\"800\\",\\"show_img_y\\":\\"600\\",\\"wp_x\\":\\"2000\\",\\"wp_y\\":\\"2000\\",\\"wp_thumb_x\\":\\"200\\",\\"wp_thumb_y\\":\\"150\\",\\"wp_size\\":\\"1536\\",\\"wp_rows\\":\\"6\\",\\"wp_cols\\":\\"2\\",\\"wp_order\\":\\"id\\",\\"wp_sort\\":\\"desc\\"}', 'none'),
-('users', '{\\"user_per_page\\":\\"30\\",\\"registration_antispam\\":\\"1\\",\\"avatar_x\\":\\"110\\",\\"avatar_y\\":\\"110\\",\\"avatar_size\\":\\"20\\",\\"reg_date_format\\":\\"l, j. F Y\\",\\"user_list_reg_date_format\\":\\"j. F Y\\"}', 'none');
+('articles', '{"acp_per_page":"25","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"0","com_antispam":"0","com_sort":"0","acp_view":"2"}', 'none'),
+('search', '{"id":"0","search_num_previews":"10","search_and":"AND, and, &&","search_or":"OR, or, ||","search_xor":"XOR, xor","search_not":"!, -","search_wildcard":"*, %","search_min_word_length":"3","search_allow_phonetic":"1","search_use_stopwords":"1"}', 'none'),
+('cronjobs', '{"last_cronjob_time":"1372519256","last_cronjob_time_daily":"1372432733","last_cronjob_time_hourly":"1372519256"}', 'startup'),
+('captcha', '{"captcha_bg_color":"FAFCF1","captcha_bg_transparent":"0","captcha_text_color":"AB30AB","captcha_first_lower":"1","captcha_first_upper":"5","captcha_second_lower":"1","captcha_second_upper":"5","captcha_use_addition":"1","captcha_use_subtraction":"1","captcha_use_multiplication":"0","captcha_create_easy_arithmetics":"1","captcha_x":"58","captcha_y":"18","captcha_show_questionmark":"0","captcha_use_spaces":"1","captcha_show_multiplication_as_x":"1","captcha_start_text_x":"0","captcha_start_text_y":"0","captcha_font_size":"5","captcha_font_file":""}', 'none'),
+('downloads', '{"screen_x":"1024","screen_y":"768","thumb_x":"120","thumb_y":"90","quickinsert":"test''","dl_rights":"2","dl_show_sub_cats":"0"}', 'none'),
+('affiliates', '{"partner_anzahl":"5","small_x":"88","small_y":"31","big_x":"468","big_y":"60","big_allow":"1","file_size":"1024","small_allow":"0"}', 'none'),
+('news', '{"num_news":"11","num_head":"5","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"2","com_antispam":"2","news_headline_lenght":"20","acp_per_page":"15","acp_view":"2","com_sort":"DESC","news_headline_ext":" ...","acp_force_cat_selection":"1"}', 'none'),
+('video_player', '{"cfg_player_x":"500","cfg_player_y":"280","cfg_autoplay":"0","cfg_autoload":"1","cfg_buffer":"5","cfg_buffermessage":"Buffering _n_","cfg_buffercolor":"#FFFFFF","cfg_bufferbgcolor":"#000000","cfg_buffershowbg":"0","cfg_titlesize":"20","cfg_titlecolor":"#FFFFFF","cfg_margin":"5","cfg_showstop":"1","cfg_showvolume":"1","cfg_showtime":"1","cfg_showplayer":"autohide","cfg_showloading":"always","cfg_showfullscreen":"1","cfg_showmouse":"autohide","cfg_loop":"0","cfg_playercolor":"#a6a6a6","cfg_loadingcolor":"#000000","cfg_bgcolor":"#FAFCF1","cfg_bgcolor1":"#E7E7E7","cfg_bgcolor2":"#cccccc","cfg_buttoncolor":"#000000","cfg_buttonovercolor":"#E7E7E7","cfg_slidercolor1":"#cccccc","cfg_slidercolor2":"#bbbbbb","cfg_sliderovercolor":"#E7E7E7","cfg_loadonstop":"1","cfg_onclick":"playpause","cfg_ondoubleclick":"fullscreen","cfg_playertimeout":"1500","cfg_videobgcolor":"#000000","cfg_volume":"100","cfg_shortcut":"1","cfg_playeralpha":"100","cfg_top1_url":"","cfg_top1_x":"0","cfg_top1_y":"0","cfg_showiconplay":"1","cfg_iconplaycolor":"#FFFFFF","cfg_iconplaybgcolor":"#000000","cfg_iconplaybgalpha":"75","cfg_showtitleandstartimage":"0"}', 'none'),
+('polls', '{"answerbar_width":"100","answerbar_type":"0"}', 'none'),
+('press', '{"game_navi":"1","cat_navi":"1","lang_navi":"0","show_press":"0","show_root":"0","order_by":"press_date","order_type":"desc"}', 'none'),
+('preview_images', '{"active":"1","type_priority":"1","use_priority_only":"0","timed_deltime":"604800"}', 'none'),
+('groups', '{"group_pic_x":"250","group_pic_y":"25","group_pic_size":"100"}', 'none'),
+('screens', '{"screen_x":"3500","screen_y":"3500","screen_thumb_x":"120","screen_thumb_y":"90","screen_size":"2048","screen_rows":"5","screen_cols":"3","screen_order":"id","screen_sort":"desc","show_type":"1","show_size_x":"950","show_size_y":"700","show_img_x":"800","show_img_y":"600","wp_x":"2000","wp_y":"2000","wp_thumb_x":"200","wp_thumb_y":"150","wp_size":"2048","wp_rows":"6","wp_cols":"2","wp_order":"id","wp_sort":"desc"}', 'none'),
+('users', '{"user_per_page":"30","registration_antispam":"1","avatar_x":"110","avatar_y":"110","avatar_size":"20","reg_date_format":"l, j. F Y","user_list_reg_date_format":"j. F Y"}', 'none');
 
 -- --------------------------------------------------------
 
@@ -459,7 +508,7 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 --
 
 DROP TABLE IF EXISTS `fs2_counter`;
-CREATE TABLE `fs2_counter` (
+CREATE TABLE IF NOT EXISTS `fs2_counter` (
   `id` tinyint(1) NOT NULL,
   `visits` int(11) unsigned NOT NULL DEFAULT '0',
   `hits` int(11) unsigned NOT NULL DEFAULT '0',
@@ -475,7 +524,7 @@ CREATE TABLE `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 77, 2594, 2, 4, 16, 1);
+(1, 91, 2865, 2, 4, 16, 1);
 
 -- --------------------------------------------------------
 
@@ -484,7 +533,7 @@ INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `c
 --
 
 DROP TABLE IF EXISTS `fs2_counter_ref`;
-CREATE TABLE `fs2_counter_ref` (
+CREATE TABLE IF NOT EXISTS `fs2_counter_ref` (
   `ref_url` varchar(255) DEFAULT NULL,
   `ref_count` int(11) DEFAULT NULL,
   `ref_first` int(11) DEFAULT NULL,
@@ -498,7 +547,8 @@ CREATE TABLE `fs2_counter_ref` (
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://localhost/', 55, 1302557491, 1307980522),
-('http://localhost/fs2/', 18, 1316955935, 1341432966);
+('http://localhost/fs2/', 20, 1316955935, 1368367379),
+('http://neu.weibilo.de/admin/?go=login', 3, 1352584229, 1352584233);
 
 -- --------------------------------------------------------
 
@@ -507,7 +557,7 @@ INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) 
 --
 
 DROP TABLE IF EXISTS `fs2_counter_stat`;
-CREATE TABLE `fs2_counter_stat` (
+CREATE TABLE IF NOT EXISTS `fs2_counter_stat` (
   `s_year` int(4) NOT NULL DEFAULT '0',
   `s_month` int(2) NOT NULL DEFAULT '0',
   `s_day` int(2) NOT NULL DEFAULT '0',
@@ -584,7 +634,18 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2012, 7, 4, 2, 20),
 (2012, 7, 5, 0, 2),
 (2012, 7, 8, 0, 7),
-(2012, 7, 9, 1, 65);
+(2012, 7, 9, 1, 65),
+(2012, 10, 25, 0, 22),
+(2012, 11, 8, 0, 16),
+(2012, 11, 9, 2, 45),
+(2012, 11, 10, 0, 33),
+(2012, 11, 11, 1, 41),
+(2012, 11, 12, 1, 89),
+(2012, 11, 13, 1, 1),
+(2013, 2, 27, 1, 1),
+(2013, 5, 12, 1, 2),
+(2013, 6, 28, 2, 20),
+(2013, 6, 29, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -593,7 +654,7 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 --
 
 DROP TABLE IF EXISTS `fs2_dl`;
-CREATE TABLE `fs2_dl` (
+CREATE TABLE IF NOT EXISTS `fs2_dl` (
   `dl_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` mediumint(8) DEFAULT NULL,
   `user_id` mediumint(8) DEFAULT NULL,
@@ -631,7 +692,7 @@ INSERT INTO `fs2_dl` (`dl_id`, `cat_id`, `user_id`, `dl_date`, `dl_name`, `dl_te
 --
 
 DROP TABLE IF EXISTS `fs2_dl_cat`;
-CREATE TABLE `fs2_dl_cat` (
+CREATE TABLE IF NOT EXISTS `fs2_dl_cat` (
   `cat_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `subcat_id` mediumint(8) NOT NULL DEFAULT '0',
   `cat_name` varchar(100) DEFAULT NULL,
@@ -656,7 +717,7 @@ INSERT INTO `fs2_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_dl_files`;
-CREATE TABLE `fs2_dl_files` (
+CREATE TABLE IF NOT EXISTS `fs2_dl_files` (
   `dl_id` mediumint(8) DEFAULT NULL,
   `file_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `file_count` mediumint(8) NOT NULL DEFAULT '0',
@@ -689,7 +750,7 @@ INSERT INTO `fs2_dl_files` (`dl_id`, `file_id`, `file_count`, `file_name`, `file
 --
 
 DROP TABLE IF EXISTS `fs2_editor_config`;
-CREATE TABLE `fs2_editor_config` (
+CREATE TABLE IF NOT EXISTS `fs2_editor_config` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `smilies_rows` int(2) NOT NULL,
   `smilies_cols` int(2) NOT NULL,
@@ -750,7 +811,7 @@ INSERT INTO `fs2_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea
 --
 
 DROP TABLE IF EXISTS `fs2_email`;
-CREATE TABLE `fs2_email` (
+CREATE TABLE IF NOT EXISTS `fs2_email` (
   `id` tinyint(1) NOT NULL DEFAULT '1',
   `signup` text NOT NULL,
   `change_password` text NOT NULL,
@@ -776,7 +837,7 @@ INSERT INTO `fs2_email` (`id`, `signup`, `change_password`, `delete_account`, `c
 --
 
 DROP TABLE IF EXISTS `fs2_ftp`;
-CREATE TABLE `fs2_ftp` (
+CREATE TABLE IF NOT EXISTS `fs2_ftp` (
   `ftp_id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `ftp_title` varchar(100) NOT NULL,
   `ftp_type` varchar(10) NOT NULL,
@@ -802,7 +863,7 @@ INSERT INTO `fs2_ftp` (`ftp_id`, `ftp_title`, `ftp_type`, `ftp_url`, `ftp_user`,
 --
 
 DROP TABLE IF EXISTS `fs2_hashes`;
-CREATE TABLE `fs2_hashes` (
+CREATE TABLE IF NOT EXISTS `fs2_hashes` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `hash` varchar(40) CHARACTER SET utf8 NOT NULL,
   `type` varchar(20) CHARACTER SET utf8 NOT NULL,
@@ -812,11 +873,6 @@ CREATE TABLE `fs2_hashes` (
   UNIQUE KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Daten für Tabelle `fs2_hashes`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -824,7 +880,7 @@ CREATE TABLE `fs2_hashes` (
 --
 
 DROP TABLE IF EXISTS `fs2_news`;
-CREATE TABLE `fs2_news` (
+CREATE TABLE IF NOT EXISTS `fs2_news` (
   `news_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` smallint(6) DEFAULT NULL,
   `user_id` mediumint(8) DEFAULT NULL,
@@ -867,7 +923,7 @@ INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title
 --
 
 DROP TABLE IF EXISTS `fs2_news_cat`;
-CREATE TABLE `fs2_news_cat` (
+CREATE TABLE IF NOT EXISTS `fs2_news_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(100) DEFAULT NULL,
   `cat_description` text NOT NULL,
@@ -887,39 +943,11 @@ INSERT INTO `fs2_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`,
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_comments`
---
-
-DROP TABLE IF EXISTS `fs2_comments`;
-CREATE TABLE `fs2_comments` (
-  `comment_id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `content_id` mediumint(8) NOT NULL,
-  `content_type` varchar(32) NOT NULL,
-  `comment_poster` varchar(32) DEFAULT NULL,
-  `comment_poster_id` mediumint(8) DEFAULT NULL,
-  `comment_poster_ip` varchar(16) NOT NULL,
-  `comment_date` int(11) DEFAULT NULL,
-  `comment_title` varchar(100) DEFAULT NULL,
-  `comment_text` text,
-  PRIMARY KEY (`comment_id`),
-  FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
---
--- Daten für Tabelle `fs2_comments`
---
-
-INSERT INTO `fs2_comments` (`comment_id`, `content_id`, `content_type`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`) VALUES
-(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans');
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `fs2_news_links`
 --
 
 DROP TABLE IF EXISTS `fs2_news_links`;
-CREATE TABLE `fs2_news_links` (
+CREATE TABLE IF NOT EXISTS `fs2_news_links` (
   `news_id` mediumint(8) DEFAULT NULL,
   `link_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `link_name` varchar(100) DEFAULT NULL,
@@ -971,7 +999,7 @@ INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `li
 --
 
 DROP TABLE IF EXISTS `fs2_partner`;
-CREATE TABLE `fs2_partner` (
+CREATE TABLE IF NOT EXISTS `fs2_partner` (
   `partner_id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,
   `partner_name` varchar(150) NOT NULL,
   `partner_link` varchar(250) NOT NULL,
@@ -994,7 +1022,7 @@ INSERT INTO `fs2_partner` (`partner_id`, `partner_name`, `partner_link`, `partne
 --
 
 DROP TABLE IF EXISTS `fs2_player`;
-CREATE TABLE `fs2_player` (
+CREATE TABLE IF NOT EXISTS `fs2_player` (
   `video_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `video_type` tinyint(1) NOT NULL DEFAULT '1',
   `video_x` text NOT NULL,
@@ -1019,7 +1047,7 @@ INSERT INTO `fs2_player` (`video_id`, `video_type`, `video_x`, `video_title`, `v
 --
 
 DROP TABLE IF EXISTS `fs2_poll`;
-CREATE TABLE `fs2_poll` (
+CREATE TABLE IF NOT EXISTS `fs2_poll` (
   `poll_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `poll_quest` varchar(255) DEFAULT NULL,
   `poll_start` int(11) DEFAULT NULL,
@@ -1041,7 +1069,7 @@ INSERT INTO `fs2_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll
 (5, 'Test2', 1316985420, 1319577420, 0, 1),
 (6, 'Test3', 1316990760, 1319582760, 1, 1),
 (7, 'Test4', 1316990760, 1319582760, 0, 1),
-(8, 'Wurst \\''oder\\" Käse?', 1340789940, 1354012740, 0, 1);
+(8, 'Wurst ''oder" Käse?', 1340789940, 1354012740, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -1050,7 +1078,7 @@ INSERT INTO `fs2_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll
 --
 
 DROP TABLE IF EXISTS `fs2_poll_answers`;
-CREATE TABLE `fs2_poll_answers` (
+CREATE TABLE IF NOT EXISTS `fs2_poll_answers` (
   `poll_id` mediumint(8) DEFAULT NULL,
   `answer_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `answer` varchar(255) DEFAULT NULL,
@@ -1086,7 +1114,7 @@ INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`
 (7, 21, 'asd', 1),
 (7, 22, 'asd', 0),
 (8, 23, 'Wurst', 1),
-(8, 24, 'Käse', 0);
+(8, 24, 'Käse', 1);
 
 -- --------------------------------------------------------
 
@@ -1095,18 +1123,13 @@ INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`
 --
 
 DROP TABLE IF EXISTS `fs2_poll_voters`;
-CREATE TABLE `fs2_poll_voters` (
+CREATE TABLE IF NOT EXISTS `fs2_poll_voters` (
   `voter_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `poll_id` mediumint(8) NOT NULL DEFAULT '0',
   `ip_address` varchar(15) NOT NULL DEFAULT '0.0.0.0',
   `time` int(32) NOT NULL DEFAULT '0',
   PRIMARY KEY (`voter_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
---
--- Daten für Tabelle `fs2_poll_voters`
---
-
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -1115,7 +1138,7 @@ CREATE TABLE `fs2_poll_voters` (
 --
 
 DROP TABLE IF EXISTS `fs2_press`;
-CREATE TABLE `fs2_press` (
+CREATE TABLE IF NOT EXISTS `fs2_press` (
   `press_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `press_title` varchar(255) NOT NULL,
   `press_url` varchar(255) NOT NULL,
@@ -1144,7 +1167,7 @@ INSERT INTO `fs2_press` (`press_id`, `press_title`, `press_url`, `press_date`, `
 --
 
 DROP TABLE IF EXISTS `fs2_press_admin`;
-CREATE TABLE `fs2_press_admin` (
+CREATE TABLE IF NOT EXISTS `fs2_press_admin` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL,
@@ -1170,13 +1193,13 @@ INSERT INTO `fs2_press_admin` (`id`, `type`, `title`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_screen`;
-CREATE TABLE `fs2_screen` (
+CREATE TABLE IF NOT EXISTS `fs2_screen` (
   `screen_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cat_id` smallint(6) unsigned DEFAULT NULL,
   `screen_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`screen_id`),
   KEY `cat_id` (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
 -- Daten für Tabelle `fs2_screen`
@@ -1188,14 +1211,15 @@ INSERT INTO `fs2_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 (13, 1, ''),
 (14, 1, ''),
 (15, 1, ''),
-(16, 1, ''),
 (17, 1, ''),
 (18, 1, ''),
 (19, 1, ''),
 (20, 1, ''),
 (21, 1, ''),
 (22, 1, ''),
-(23, 1, '');
+(23, 1, ''),
+(28, 1, ''),
+(29, 1, 'sdfsdf');
 
 -- --------------------------------------------------------
 
@@ -1204,7 +1228,7 @@ INSERT INTO `fs2_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_screen_cat`;
-CREATE TABLE `fs2_screen_cat` (
+CREATE TABLE IF NOT EXISTS `fs2_screen_cat` (
   `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(255) DEFAULT NULL,
   `cat_type` tinyint(1) NOT NULL DEFAULT '0',
@@ -1212,7 +1236,7 @@ CREATE TABLE `fs2_screen_cat` (
   `cat_date` int(11) NOT NULL DEFAULT '0',
   `randompic` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fs2_screen_cat`
@@ -1220,7 +1244,8 @@ CREATE TABLE `fs2_screen_cat` (
 
 INSERT INTO `fs2_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`, `cat_date`, `randompic`) VALUES
 (1, 'Screenshots', 1, 1, 1302517148, 1),
-(2, 'Wallpaper', 2, 1, 1302517148, 0);
+(2, 'Wallpaper', 2, 1, 1302517148, 0),
+(5, 'Test', 1, 1, 1352456924, 0);
 
 -- --------------------------------------------------------
 
@@ -1229,18 +1254,13 @@ INSERT INTO `fs2_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`
 --
 
 DROP TABLE IF EXISTS `fs2_screen_random`;
-CREATE TABLE `fs2_screen_random` (
+CREATE TABLE IF NOT EXISTS `fs2_screen_random` (
   `random_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `screen_id` mediumint(8) NOT NULL,
   `start` int(11) NOT NULL,
   `end` int(11) NOT NULL,
   PRIMARY KEY (`random_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `fs2_screen_random`
---
-
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -1249,7 +1269,7 @@ CREATE TABLE `fs2_screen_random` (
 --
 
 DROP TABLE IF EXISTS `fs2_search_index`;
-CREATE TABLE `fs2_search_index` (
+CREATE TABLE IF NOT EXISTS `fs2_search_index` (
   `search_index_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `search_index_word_id` mediumint(8) NOT NULL DEFAULT '0',
   `search_index_type` enum('news','articles','dl') NOT NULL DEFAULT 'news',
@@ -1257,7 +1277,7 @@ CREATE TABLE `fs2_search_index` (
   `search_index_count` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`search_index_id`),
   UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2767 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2853 ;
 
 --
 -- Daten für Tabelle `fs2_search_index`
@@ -1307,109 +1327,107 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 (2746, 34, 'dl', 4, 1),
 (2745, 34, 'dl', 3, 1),
 (2744, 34, 'dl', 2, 1),
-(2743, 150, 'articles', 1, 2),
-(2742, 149, 'articles', 1, 2),
-(2741, 148, 'articles', 1, 2),
-(2740, 147, 'articles', 1, 2),
-(2739, 146, 'articles', 1, 2),
-(2738, 145, 'articles', 1, 3),
-(2737, 144, 'articles', 1, 3),
-(2736, 143, 'articles', 1, 3),
-(2735, 142, 'articles', 1, 3),
-(2734, 141, 'articles', 1, 3),
-(2733, 140, 'articles', 1, 3),
-(2732, 139, 'articles', 1, 2),
-(2731, 138, 'articles', 1, 2),
+(2852, 163, 'articles', 1, 3),
+(2851, 150, 'articles', 1, 2),
+(2850, 149, 'articles', 1, 2),
+(2849, 148, 'articles', 1, 2),
+(2848, 147, 'articles', 1, 2),
+(2847, 146, 'articles', 1, 2),
+(2846, 145, 'articles', 1, 3),
+(2845, 144, 'articles', 1, 3),
+(2844, 143, 'articles', 1, 3),
+(2843, 142, 'articles', 1, 3),
+(2842, 140, 'articles', 1, 3),
 (2541, 4, 'news', 1, 1),
 (2540, 3, 'news', 1, 1),
 (2539, 2, 'news', 1, 1),
 (2538, 1, 'news', 1, 5),
-(2730, 137, 'articles', 1, 2),
-(2729, 136, 'articles', 1, 4),
-(2728, 135, 'articles', 1, 8),
-(2727, 134, 'articles', 1, 4),
-(2726, 133, 'articles', 1, 1),
-(2725, 132, 'articles', 1, 1),
-(2724, 131, 'articles', 1, 1),
-(2723, 130, 'articles', 1, 1),
-(2722, 129, 'articles', 1, 1),
-(2721, 128, 'articles', 1, 4),
-(2720, 127, 'articles', 1, 2),
-(2719, 126, 'articles', 1, 2),
-(2718, 125, 'articles', 1, 1),
-(2717, 124, 'articles', 1, 1),
-(2716, 123, 'articles', 1, 1),
-(2715, 122, 'articles', 1, 3),
-(2714, 121, 'articles', 1, 3),
-(2713, 120, 'articles', 1, 16),
-(2712, 119, 'articles', 1, 1),
-(2711, 118, 'articles', 1, 1),
-(2710, 117, 'articles', 1, 1),
-(2709, 116, 'articles', 1, 1),
-(2708, 115, 'articles', 1, 1),
+(2841, 139, 'articles', 1, 2),
+(2840, 138, 'articles', 1, 2),
+(2839, 137, 'articles', 1, 2),
+(2838, 136, 'articles', 1, 4),
+(2837, 135, 'articles', 1, 8),
+(2836, 134, 'articles', 1, 4),
+(2835, 133, 'articles', 1, 1),
+(2834, 132, 'articles', 1, 1),
+(2833, 131, 'articles', 1, 1),
+(2832, 130, 'articles', 1, 1),
+(2831, 129, 'articles', 1, 1),
+(2830, 128, 'articles', 1, 4),
+(2829, 127, 'articles', 1, 2),
+(2828, 126, 'articles', 1, 2),
+(2827, 125, 'articles', 1, 4),
+(2826, 124, 'articles', 1, 4),
+(2825, 123, 'articles', 1, 1),
+(2824, 122, 'articles', 1, 3),
+(2823, 120, 'articles', 1, 16),
+(2822, 119, 'articles', 1, 1),
+(2821, 118, 'articles', 1, 1),
+(2820, 117, 'articles', 1, 1),
+(2819, 116, 'articles', 1, 1),
 (2651, 45, 'news', 42, 1),
-(2707, 114, 'articles', 1, 2),
-(2706, 113, 'articles', 1, 2),
-(2705, 112, 'articles', 1, 2),
-(2704, 111, 'articles', 1, 2),
-(2703, 110, 'articles', 1, 3),
-(2702, 109, 'articles', 1, 1),
-(2701, 108, 'articles', 1, 1),
-(2700, 107, 'articles', 1, 1),
-(2699, 106, 'articles', 1, 1),
-(2698, 105, 'articles', 1, 1),
-(2697, 104, 'articles', 1, 3),
-(2696, 103, 'articles', 1, 2),
-(2695, 102, 'articles', 1, 1),
-(2694, 101, 'articles', 1, 1),
-(2693, 100, 'articles', 1, 1),
-(2692, 99, 'articles', 1, 2),
-(2691, 98, 'articles', 1, 1),
-(2690, 97, 'articles', 1, 1),
-(2689, 96, 'articles', 1, 1),
-(2688, 95, 'articles', 1, 1),
-(2687, 94, 'articles', 1, 35),
-(2686, 93, 'articles', 1, 1),
-(2685, 92, 'articles', 1, 1),
-(2684, 91, 'articles', 1, 1),
-(2683, 90, 'articles', 1, 1),
-(2682, 89, 'articles', 1, 1),
-(2681, 88, 'articles', 1, 1),
+(2818, 115, 'articles', 1, 1),
+(2817, 114, 'articles', 1, 2),
+(2816, 113, 'articles', 1, 2),
+(2815, 112, 'articles', 1, 2),
+(2814, 111, 'articles', 1, 2),
+(2813, 110, 'articles', 1, 3),
+(2812, 109, 'articles', 1, 1),
+(2811, 108, 'articles', 1, 1),
+(2810, 107, 'articles', 1, 1),
+(2809, 106, 'articles', 1, 1),
+(2808, 105, 'articles', 1, 1),
+(2807, 104, 'articles', 1, 3),
+(2806, 103, 'articles', 1, 2),
+(2805, 102, 'articles', 1, 1),
+(2804, 101, 'articles', 1, 1),
+(2803, 100, 'articles', 1, 1),
+(2802, 99, 'articles', 1, 2),
+(2801, 98, 'articles', 1, 1),
+(2800, 97, 'articles', 1, 1),
+(2799, 96, 'articles', 1, 1),
+(2798, 95, 'articles', 1, 1),
+(2797, 94, 'articles', 1, 35),
+(2796, 93, 'articles', 1, 1),
+(2795, 92, 'articles', 1, 1),
+(2794, 91, 'articles', 1, 1),
+(2793, 90, 'articles', 1, 1),
+(2792, 89, 'articles', 1, 1),
 (2650, 63, 'news', 39, 2),
 (2649, 62, 'news', 39, 4),
 (2648, 61, 'news', 39, 1),
 (2647, 43, 'news', 39, 6),
 (2646, 33, 'news', 39, 15),
 (2645, 60, 'news', 38, 1),
-(2680, 87, 'articles', 1, 1),
-(2679, 86, 'articles', 1, 1),
-(2678, 85, 'articles', 1, 1),
-(2677, 84, 'articles', 1, 1),
-(2676, 83, 'articles', 1, 2),
-(2675, 82, 'articles', 1, 1),
-(2674, 81, 'articles', 1, 2),
-(2673, 80, 'articles', 1, 1),
-(2672, 79, 'articles', 1, 2),
-(2671, 78, 'articles', 1, 2),
-(2670, 77, 'articles', 1, 1),
-(2669, 76, 'articles', 1, 1),
-(2668, 75, 'articles', 1, 1),
-(2667, 74, 'articles', 1, 2),
-(2666, 73, 'articles', 1, 1),
-(2665, 72, 'articles', 1, 2),
-(2664, 71, 'articles', 1, 2),
-(2663, 70, 'articles', 1, 1),
-(2662, 69, 'articles', 1, 1),
-(2661, 68, 'articles', 1, 1),
-(2660, 67, 'articles', 1, 2),
-(2659, 59, 'articles', 1, 3),
-(2658, 53, 'articles', 1, 1),
+(2791, 88, 'articles', 1, 1),
+(2790, 87, 'articles', 1, 1),
+(2789, 86, 'articles', 1, 1),
+(2788, 85, 'articles', 1, 1),
+(2787, 84, 'articles', 1, 1),
+(2786, 83, 'articles', 1, 2),
+(2785, 82, 'articles', 1, 1),
+(2784, 81, 'articles', 1, 2),
+(2783, 80, 'articles', 1, 1),
+(2782, 79, 'articles', 1, 2),
+(2781, 78, 'articles', 1, 2),
+(2780, 77, 'articles', 1, 1),
+(2779, 76, 'articles', 1, 1),
+(2778, 75, 'articles', 1, 1),
+(2777, 74, 'articles', 1, 2),
+(2776, 73, 'articles', 1, 1),
+(2775, 72, 'articles', 1, 2),
+(2774, 71, 'articles', 1, 2),
+(2773, 70, 'articles', 1, 1),
+(2772, 69, 'articles', 1, 1),
+(2771, 68, 'articles', 1, 1),
+(2770, 67, 'articles', 1, 2),
+(2769, 53, 'articles', 1, 1),
 (2644, 59, 'news', 38, 1),
 (2643, 58, 'news', 38, 1),
 (2642, 57, 'news', 38, 1),
 (2641, 56, 'news', 38, 1),
-(2657, 43, 'articles', 1, 1),
-(2656, 26, 'articles', 1, 2),
+(2768, 43, 'articles', 1, 1),
+(2767, 26, 'articles', 1, 2),
 (2655, 66, 'articles', 4, 1),
 (2654, 65, 'articles', 3, 1),
 (2640, 55, 'news', 38, 1),
@@ -1501,7 +1519,7 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 --
 
 DROP TABLE IF EXISTS `fs2_search_time`;
-CREATE TABLE `fs2_search_time` (
+CREATE TABLE IF NOT EXISTS `fs2_search_time` (
   `search_time_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `search_time_type` enum('news','articles','dl') NOT NULL DEFAULT 'news',
   `search_time_document_id` mediumint(8) NOT NULL,
@@ -1525,7 +1543,7 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 (308, 'dl', 4, 1341852981),
 (307, 'dl', 3, 1341852981),
 (306, 'dl', 2, 1341852981),
-(305, 'articles', 1, 1341852981),
+(305, 'articles', 1, 1361970764),
 (304, 'articles', 4, 1341852981),
 (303, 'articles', 3, 1341852981),
 (302, 'articles', 2, 1341852981),
@@ -1553,12 +1571,12 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 --
 
 DROP TABLE IF EXISTS `fs2_search_words`;
-CREATE TABLE `fs2_search_words` (
+CREATE TABLE IF NOT EXISTS `fs2_search_words` (
   `search_word_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `search_word` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`search_word_id`),
   UNIQUE KEY `search_word` (`search_word`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=163 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=164 ;
 
 --
 -- Daten für Tabelle `fs2_search_words`
@@ -1726,7 +1744,8 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 (159, 'download'),
 (160, 'libapr'),
 (161, 'src'),
-(162, 'rpm');
+(162, 'rpm'),
+(163, 'localhost');
 
 -- --------------------------------------------------------
 
@@ -1735,7 +1754,7 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_shop`;
-CREATE TABLE `fs2_shop` (
+CREATE TABLE IF NOT EXISTS `fs2_shop` (
   `artikel_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `artikel_name` varchar(100) DEFAULT NULL,
   `artikel_url` varchar(255) DEFAULT NULL,
@@ -1759,7 +1778,7 @@ INSERT INTO `fs2_shop` (`artikel_id`, `artikel_name`, `artikel_url`, `artikel_te
 --
 
 DROP TABLE IF EXISTS `fs2_smilies`;
-CREATE TABLE `fs2_smilies` (
+CREATE TABLE IF NOT EXISTS `fs2_smilies` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `replace_string` varchar(15) NOT NULL,
   `order` mediumint(8) NOT NULL,
@@ -1789,7 +1808,7 @@ INSERT INTO `fs2_smilies` (`id`, `replace_string`, `order`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_snippets`;
-CREATE TABLE `fs2_snippets` (
+CREATE TABLE IF NOT EXISTS `fs2_snippets` (
   `snippet_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `snippet_tag` varchar(100) NOT NULL,
   `snippet_text` text NOT NULL,
@@ -1803,7 +1822,7 @@ CREATE TABLE `fs2_snippets` (
 --
 
 INSERT INTO `fs2_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippet_active`) VALUES
-(1, '[%feeds%]', '<p>\r\n  <b>News-Feeds:</b>\r\n</p>\r\n<p align=\\"center\\">\r\n  <a href=\\"$VAR(url)feeds/rss091.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss091.gif\\" alt=\\"RSS 0.91\\" title=\\"RSS 0.91\\" border=\\"0\\"></a><br>\r\n  <a href=\\"$VAR(url)feeds/rss10.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss10.gif\\" alt=\\"RSS 1.0\\" title=\\"RSS 1.0\\" border=\\"0\\"></a><br>\r\n  <a href=\\"$VAR(url)feeds/rss20.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/rss20.gif\\" alt=\\"RSS 2.0\\" title=\\"RSS 2.0\\" border=\\"0\\"></a><br>\r\n  <a href=\\"$VAR(url)feeds/atom10.php\\" target=\\"_self\\"><img src=\\"$VAR(style_icons)feeds/atom10.gif\\" alt=\\"Atom 1.0\\" title=\\"Atom 1.0\\" border=\\"0\\"></a>\r\n</p>', 1);
+(1, '[%feeds%]', '<p>\r\n  <b>News-Feeds:</b>\r\n</p>\r\n<p align="center">\r\n  <a href="$VAR(url)feeds/rss091.php" target="_self"><img src="$VAR(style_icons)feeds/rss091.gif" alt="RSS 0.91" title="RSS 0.91" border="0"></a><br>\r\n  <a href="$VAR(url)feeds/rss10.php" target="_self"><img src="$VAR(style_icons)feeds/rss10.gif" alt="RSS 1.0" title="RSS 1.0" border="0"></a><br>\r\n  <a href="$VAR(url)feeds/rss20.php" target="_self"><img src="$VAR(style_icons)feeds/rss20.gif" alt="RSS 2.0" title="RSS 2.0" border="0"></a><br>\r\n  <a href="$VAR(url)feeds/atom10.php" target="_self"><img src="$VAR(style_icons)feeds/atom10.gif" alt="Atom 1.0" title="Atom 1.0" border="0"></a>\r\n</p>', 1);
 
 -- --------------------------------------------------------
 
@@ -1812,7 +1831,7 @@ INSERT INTO `fs2_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippe
 --
 
 DROP TABLE IF EXISTS `fs2_styles`;
-CREATE TABLE `fs2_styles` (
+CREATE TABLE IF NOT EXISTS `fs2_styles` (
   `style_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `style_tag` varchar(30) NOT NULL,
   `style_allow_use` tinyint(1) NOT NULL DEFAULT '1',
@@ -1836,7 +1855,7 @@ INSERT INTO `fs2_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_all
 --
 
 DROP TABLE IF EXISTS `fs2_user`;
-CREATE TABLE `fs2_user` (
+CREATE TABLE IF NOT EXISTS `fs2_user` (
   `user_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `user_name` char(100) DEFAULT NULL,
   `user_password` char(32) DEFAULT NULL,
@@ -1861,7 +1880,7 @@ CREATE TABLE `fs2_user` (
 --
 
 INSERT INTO `fs2_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
-(1, 'admin', 'fed81761ca322b59c39599ab264e9129', '5Y5FNoZlgO', 'mail@sweil.de', 1, 0, 1, 1302517173, 0, '', '', '', '', '', ''),
+(1, 'admin', '7bbc920bc19341e0491d72421445022c', '4s3Id3yxtq', 'mail@sweil.de', 1, 0, 1, 1302517173, 0, '', '', '', '', '', ''),
 (2, 'test', '7536490f62673f20cf771bca4767799b', 'EcA0ybxfP1', 'asd@hallo.de', 1, 1, 0, 1306274400, 0, '', '', '', '', '', '');
 
 -- --------------------------------------------------------
@@ -1871,7 +1890,7 @@ INSERT INTO `fs2_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `u
 --
 
 DROP TABLE IF EXISTS `fs2_useronline`;
-CREATE TABLE `fs2_useronline` (
+CREATE TABLE IF NOT EXISTS `fs2_useronline` (
   `ip` varchar(30) NOT NULL,
   `user_id` mediumint(8) NOT NULL DEFAULT '0',
   `date` int(30) DEFAULT NULL,
@@ -1883,7 +1902,7 @@ CREATE TABLE `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('127.0.0.1', 1, 1341851765);
+('::1', 1, 1372519261);
 
 -- --------------------------------------------------------
 
@@ -1892,7 +1911,7 @@ INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_user_groups`;
-CREATE TABLE `fs2_user_groups` (
+CREATE TABLE IF NOT EXISTS `fs2_user_groups` (
   `user_group_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `user_group_name` varchar(50) NOT NULL,
   `user_group_description` text,
@@ -1919,7 +1938,7 @@ INSERT INTO `fs2_user_groups` (`user_group_id`, `user_group_name`, `user_group_d
 --
 
 DROP TABLE IF EXISTS `fs2_user_permissions`;
-CREATE TABLE `fs2_user_permissions` (
+CREATE TABLE IF NOT EXISTS `fs2_user_permissions` (
   `perm_id` varchar(255) NOT NULL,
   `x_id` mediumint(8) NOT NULL,
   `perm_for_group` tinyint(1) NOT NULL DEFAULT '1',
@@ -1952,18 +1971,13 @@ INSERT INTO `fs2_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 --
 
 DROP TABLE IF EXISTS `fs2_wallpaper`;
-CREATE TABLE `fs2_wallpaper` (
+CREATE TABLE IF NOT EXISTS `fs2_wallpaper` (
   `wallpaper_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `wallpaper_name` varchar(255) NOT NULL,
   `wallpaper_title` varchar(255) NOT NULL,
   `cat_id` mediumint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`wallpaper_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `fs2_wallpaper`
---
-
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -1972,14 +1986,13 @@ CREATE TABLE `fs2_wallpaper` (
 --
 
 DROP TABLE IF EXISTS `fs2_wallpaper_sizes`;
-CREATE TABLE `fs2_wallpaper_sizes` (
+CREATE TABLE IF NOT EXISTS `fs2_wallpaper_sizes` (
   `size_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `wallpaper_id` mediumint(8) NOT NULL DEFAULT '0',
   `size` varchar(255) NOT NULL,
   PRIMARY KEY (`size_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=4 ;
 
---
--- Daten für Tabelle `fs2_wallpaper_sizes`
---
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

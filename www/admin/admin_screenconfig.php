@@ -35,7 +35,7 @@ if (TRUE
 {
     // prepare data
     $data = frompost($used_cols);
-      
+
     // save config
     try {
         $FD->saveConfig('screens', $data);
@@ -45,11 +45,11 @@ if (TRUE
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
-    unset($_POST); 
+    unset($_POST);
 }
 
 /////////////////////////////////////
@@ -57,26 +57,26 @@ if (TRUE
 /////////////////////////////////////
 
 if (true) {
-    
+
     // Display Error Messages
     if (isset($_POST['sended'])) {
         systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'screens'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('screens');
+        $data = $FD->configObject('screens')->getConfigArray();
         putintopost($data);
-    }    
-    
+    }
+
     // security functions
     $_POST = array_map('killhtml', $_POST);
 
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="gallery_config" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
-                            <tr><td colspan="2" class="line">Bildbetrachter</td></tr>
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Bildbetrachter</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Bildbetrachter &ouml;ffnen:<br>
@@ -117,8 +117,7 @@ if (true) {
                                     <input class="text" size="5" name="show_img_y" value="'.$_POST['show_img_y'].'" maxlength="4"> Pixel
                                 </td>
                             </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr><td colspan="2" class="line">Bilder</td></tr>
+                            <tr><td colspan="2"><h3>Bilder</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="65%">
                                     max. Abmessungen:<br>
@@ -156,7 +155,7 @@ if (true) {
                                     <font class="small">Die Anzahl der Bildern die auf einer Seite angezeigt werden.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="1" name="screen_rows" value="'.$_POST['screen_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="screen_cols" value="'.$_POST['screen_cols'].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
+                                    <input class="text" size="1" name="screen_rows" value="'.$_POST['screen_rows'].'" maxlength="2"> Reihen &agrave; <input class="text" size="1" name="screen_cols" value="'.$_POST['screen_cols'].'" maxlength="2"> Bilder<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
                                 </td>
                             </tr>
                             <tr>
@@ -187,8 +186,9 @@ if (true) {
                                     </select>
                                 </td>
                             </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr><td colspan="2" class="line">Wallpaper</td></tr>
+
+
+                            <tr><td colspan="2"><h3>Wallpaper</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     max. Abmessungen:<br>
@@ -226,7 +226,7 @@ if (true) {
                                     <font class="small">Die Anzahl der Wallpaper die auf einer Seite angezeigt werden.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="1" name="wp_rows" value="'.$_POST['wp_rows'].'" maxlength="2"> Reihen à <input class="text" size="1" name="wp_cols" value="'.$_POST['wp_cols'].'" maxlength="2"> Wallpaper<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
+                                    <input class="text" size="1" name="wp_rows" value="'.$_POST['wp_rows'].'" maxlength="2"> Reihen &agrave; <input class="text" size="1" name="wp_cols" value="'.$_POST['wp_cols'].'" maxlength="2"> Wallpaper<br /><font class="small">(0 ist nicht zul&auml;ssig)</font>
                                 </td>
                             </tr>
                             <tr>
@@ -261,7 +261,7 @@ if (true) {
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button type="submit" value="" class="button_new">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>

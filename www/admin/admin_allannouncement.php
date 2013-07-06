@@ -12,20 +12,19 @@ if ( isset ( $_POST['sended'] ) )
     settype ( $_POST['ann_html'], 'integer' );
     settype ( $_POST['ann_fscode'], 'integer' );
     settype ( $_POST['ann_para'], 'integer' );
-    $_POST['announcement_text'] = savesql ( $_POST['announcement_text'] );
 
-    // MySQL-Queries
-    mysql_query ( '
+    // SQL-Queries
+    $stmt = $sql->conn()->prepare ( '
                     UPDATE `'.$FD->config('pref')."announcement`
                     SET
-                        `announcement_text` = '".$_POST['announcement_text']."',
+                        `announcement_text` = ?,
                         `show_announcement` = '".$_POST['show_announcement']."',
                         `activate_announcement` = '".$_POST['activate_announcement']."',
                         `ann_html` = '".$_POST['ann_html']."',
                         `ann_fscode` = '".$_POST['ann_fscode']."',
                         `ann_para` = '".$_POST['ann_para']."'
-                    WHERE `id` = '1'
-    ", $sql->conn());
+                    WHERE `id` = '1'");
+    $stmt->execute(array($_POST['announcement_text']));
 
     // system messages
     systext( $FD->text('page', 'changes_saved'), $FD->text('page', 'info'), FALSE, $FD->text('page', 'save_ok') );
@@ -46,12 +45,11 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $index = mysql_query ( '
+        $index = $sql->conn()->query ( '
                                 SELECT *
                                 FROM `'.$FD->config('pref')."announcement`
-                                WHERE `id` = '1'
-        ", $sql->conn());
-        $config_arr = mysql_fetch_assoc($index);
+                                WHERE `id` = '1'");
+        $config_arr = $index->fetch(PDO::FETCH_ASSOC);
         putintopost ( $config_arr );
     }
 
@@ -113,7 +111,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'save_long').'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>

@@ -22,7 +22,7 @@ if (!empty($_POST['screen_id'])
                       start = '$startdate',
                       end = '$enddate'
                   WHERE random_id = '$_POST[random_id]'";
-        mysql_query($update, $FD->sql()->conn() );
+        $FD->sql()->conn()->exec($update);
 
         systext('Das zeitgesteuerte Zufallsbild wurde ge&auml;ndert!');
     }
@@ -51,7 +51,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 
     if ($_POST['delete_random'])   // Randompic löschen
     {
-        mysql_query('DELETE FROM '.$FD->config('pref')."screen_random WHERE random_id = '$_POST[random_id]'", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen_random WHERE random_id = '$_POST[random_id]'");
         systext($FD->text('page', 'note_deleted'));
     }
     else
@@ -76,8 +76,8 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
 {
     settype($_POST['random_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
-    $random_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]");
+    $random_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     //Zeitdaten
     $random_arr['start_d'] = date('d', $random_arr['start']);
@@ -101,8 +101,8 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
     $jetzt['minute'] = date('i', $jetzt['time']);
 
     //Error Message
-    if ($_POST['sended'] == 'edit') {
-        systext ($FD->text("admin", "note_notfilled"));
+    if (isset($_POST['sended']) && $_POST['sended'] == 'edit') {
+        systext ($FD->text('admin', 'note_notfilled'));
 
         $random_arr['start_d'] = $_POST['start_d'];
         $random_arr['start_m'] = $_POST['start_m'];
@@ -117,15 +117,16 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
         $random_arr['end_min'] = $_POST['end_min'];
     }
 
-    echo'
+    echo'<p></p>
                     <form action="" method="post">
                         <input type="hidden" value="timedpic_edit" name="go">
                         <input type="hidden" value="edit" name="random_action">
                         <input type="hidden" value="edit" name="sended">
                         <input type="hidden" value="'.$random_arr['random_id'].'" name="random_id">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="5"><h3>Zeitgesteuertes Vorschaubild bearbeiten</h3><hr></td></tr>
                             <tr>
-                                <td class="config" valign="top" width="160">
+                                <td class="config" valign="top" width="120">
                                     Bild:<br>
                                     <font class="small">Bild ausw&auml;hlen</font>
                                 </td>
@@ -142,7 +143,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
                             <tr>
                                 <td class="config" valign="top">
                                     Startzeit:<br>
-                                    <font class="small">Bild soll angezeigt werden ab</font>
+                                    <font class="small">Bild anzeigen ab</font>
                                 </td>
                                 <td class="config" valign="top" colspan="2">
                                     <input id="startday" class="text" size="1" value="'.$random_arr['start_d'].'" name="nowtag" maxlength="2"> .
@@ -155,15 +156,15 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
                                                      document.getElementById("startmonth").value="'.$jetzt['monat'].'";
                                                      document.getElementById("startyear").value="'.$jetzt['jahr'].'";
                                                      document.getElementById("starthour").value="'.$jetzt['stunde'].'";
-                                                     document.getElementById("startminute").value="'.$jetzt['minute'].'";\' class="button" type="button" value="Jetzt">
-                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "7", "0", "0", "0", "0");\' class="button" type="button" value="+1 Woche">
-                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "-7", "0", "0", "0", "0");\' class="button" type="button" value="-1 Woche">
+                                                     document.getElementById("startminute").value="'.$jetzt['minute'].'";\' type="button" value="Jetzt">
+                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "7", "0", "0", "0", "0");\' type="button" value="+1 Woche">
+                                    <input onClick=\'changeDate ("startday", "startmonth", "startyear", "starthour", "startminute", "-7", "0", "0", "0", "0");\' type="button" value="-1 Woche">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Endzeit:<br>
-                                    <font class="small">Bild soll angezeigt werden bis</font>
+                                    <font class="small">Bild anzeigen bis</font>
                                 </td>
                                 <td class="config" valign="top" colspan="2">
                                     <input id="endday"  class="text" size="1" value="'.$random_arr['end_d'].'" name="endtag" maxlength="2"> .
@@ -176,15 +177,14 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
                                                      document.getElementById("endmonth").value="'.$jetzt['monat'].'";
                                                      document.getElementById("endyear").value="'.$jetzt['jahr'].'";
                                                      document.getElementById("endhour").value="'.$jetzt['stunde'].'";
-                                                     document.getElementById("endminute").value="'.$jetzt['minute'].'";\' class="button" type="button" value="Jetzt">
-                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "7", "0", "0", "0", "0");\' class="button" type="button" value="+1 Woche">
-                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "-7", "0", "0", "0", "0");\' class="button" type="button" value="-1 Woche">
+                                                     document.getElementById("endminute").value="'.$jetzt['minute'].'";\' type="button" value="Jetzt">
+                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "7", "0", "0", "0", "0");\' type="button" value="+1 Woche">
+                                    <input onClick=\'changeDate ("endday", "endmonth", "endyear", "endhour", "endminute", "-7", "0", "0", "0", "0");\' type="button" value="-1 Woche">
                                 </td>
                             </tr>
                             <tr><td></td></tr>
                             <tr>
-                                <td></td>
-                                <td align="left" colspan="2">
+                                <td align="left" colspan="3">
                                     <input class="button" type="submit" value="&Auml;nderungen speichern">
                                 </td>
                             </tr>
@@ -205,14 +205,14 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 {
     settype($_POST['random_id'], 'integer');
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]", $FD->sql()->conn() );
-    $random_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]");
+    $random_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $random_arr['start'] = date('d.m.Y H:i ', $random_arr['start']) . 'Uhr';
     $random_arr['end'] = date('d.m.Y H:i ', $random_arr['end']) . 'Uhr';
 
-    $index = mysql_query('SELECT screen_name FROM '.$FD->config('pref')."screen WHERE screen_id = $random_arr[screen_id]", $FD->sql()->conn() );
-    $random_arr['title'] = mysql_result($index,0,'screen_name');
+    $index = $FD->sql()->conn()->query('SELECT screen_name FROM '.$FD->config('pref')."screen WHERE screen_id = $random_arr[screen_id]");
+    $random_arr['title'] = $index->fetchColumn();
 
     if ($random_arr['title'] != '') {
         $random_arr['title'] = '<b>'.killhtml($random_arr['title']).'</b><br /><br />';
@@ -220,16 +220,16 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
         $random_arr['title'] = '<br />';
     }
 
-    echo'
+    echo'<p></p>
                     <form action="" method="post">
                         <input type="hidden" value="timedpic_edit" name="go">
                         <input type="hidden" value="delete" name="random_action">
                         <input type="hidden" value="delete" name="sended">
                         <input type="hidden" value="'.$random_arr['random_id'].'" name="random_id">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>'.$FD->text('page', 'delpic').'</h3><hr></td></tr>
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
-                                    '.$FD->text('page', 'delpic').':<br />
                                     <span class="small">'.$FD->text('page', 'delnote').'</span>
                                 </td>
                             </tr>
@@ -252,7 +252,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
                                         <option value="0">'.$FD->text('page', 'delnotconfirm').'</option>
                                         <option value="1">'.$FD->text('page', 'delconfirm').'</option>
                                     </select>
-                                    <input type="submit" value="'.$FD->text('admin', 'do_button').'" class="button" />
+                                    <input type="submit" value="'.$FD->text('admin', 'do_action_button').'">
                                 </td>
                             </tr>
                         </table>
@@ -266,10 +266,11 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 //////////////////////////////
 if (!isset($_POST['random_id']))
 {
-    echo'
+    echo'<p></p>
                     <form action="" method="post">
                         <input type="hidden" value="timedpic_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content select_list" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="5"><h3>Zeitgesteuerte Vorschaubilder verwalten</h3><hr></td></tr>
                             <tr><td></td></tr>
                             <tr>
                                 <td></td>
@@ -287,37 +288,28 @@ if (!isset($_POST['random_id']))
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_random a, '.$FD->config('pref').'screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC', $FD->sql()->conn() );
-    while ($random_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_random a, '.$FD->config('pref').'screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC');
+    while ($random_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $random_arr['start'] = date('d.m.Y H:i', $random_arr['start']);
         $random_arr['end'] = date('d.m.Y H:i', $random_arr['end']);
 
         echo'
-                            <tr style="cursor:pointer;"
-onmouseover=\'
-  colorOver (document.getElementById("input_'.$random_arr['random_id'].'"), "#EEEEEE", "#64DC6A", this);\'
-onmouseout=\'
-  colorOut (document.getElementById("input_'.$random_arr['random_id'].'"), "transparent", "#49c24f", this);\'
-onClick=\'
-  createClick(document.getElementById("input_'.$random_arr['random_id'].'"));
-  resetUnclicked("reset", "transparent");
-  colorClick (document.getElementById("input_'.$random_arr['random_id'].'"), "#EEEEEE", "#64DC6A", this);\'
-                              >
-                                <td class="configthin">
+                            <tr class="select_entry">
+                                <td class="thin">
                                     <img src="'.image_url('images/screenshots/', $random_arr['screen_id'].'_s').'" alt="" />
                                 </td>
-                                 <td class="configthin">
+                                 <td class="thin">
                                     '.$random_arr['screen_name'].'
                                 </td>
-                                <td class="configthin">
+                                <td class="thin">
                                     '.$random_arr['start'].'
                                 </td>
-                                <td class="configthin">
+                                <td class="thin">
                                     '.$random_arr['end'].'
                                 </td>
-                                <td class="configthin" style="text-align:right;">
-                                    <input type="radio" name="random_id" id="input_'.$random_arr['random_id'].'" value="'.$random_arr['random_id'].'" style="cursor:pointer;" onClick=\'createClick(this);\' />
+                                <td class="thin" style="text-align:right;">
+                                    <input class="select_box" type="radio" name="random_id" id="input_'.$random_arr['random_id'].'" value="'.$random_arr['random_id'].'">
                                 </td>
                             </tr>
 
@@ -326,12 +318,18 @@ onClick=\'
     echo'
                             <tr><td>&nbsp;</td></tr>
                             <tr>
-                                <td class="config" colspan="5" style="text-align:center;">
-                                   <select name="random_action" size="1">
-                                     <option value="edit">'.$FD->text('admin', 'selection_edit').'</option>
-                                     <option value="delete">'.$FD->text('admin', 'selection_del').'</option>
-                                   </select>
-                                   <input class="button" type="submit" value="'.$FD->text('admin', 'do_button').'">
+                                <td class="right" colspan="5">
+                                    <select class="select_type" name="random_action" size="1">
+                                        <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
+                                        <option class="select_red select_one" value="delete">'.$FD->text('admin', 'selection_delete').'</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5">
+                                    <button class="button" type="submit">
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
+                                    </button>
                                 </td>
                             </tr>
                         </table>

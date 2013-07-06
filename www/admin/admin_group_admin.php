@@ -18,23 +18,22 @@ if (
     )
 {
     // Security-Functions
-    $_POST['user_group_name'] = savesql ( $_POST['user_group_name'] );
     $_POST['user_group_user'] = $_SESSION['user_id'];
     settype ( $_POST['user_group_user'], 'integer' );
     $group_date = time ();
 
-    // MySQL-Update-Query
-    $insert_query = mysql_query ('
+    // SQL-Update-Query
+    $stmt = $FD->sql()->conn()->prepare('
                     INSERT INTO '.$FD->config('pref')."user_groups (user_group_name, user_group_date, user_group_user)
                     VALUES (
-                        '".$_POST['user_group_name']."',
+                        ?,
                         '".$group_date."',
                         '".$_POST['user_group_user']."'
-                    )
-    ", $FD->sql()->conn() );
+                    )");
+    $stmt->execute(array($_POST['user_group_name']));
 
     $message = 'Gruppe wurde erfolgreich hinzugef&uuml;gt';
-    $id = mysql_insert_id ( $FD->sql()->conn() );
+    $id = $FD->sql()->conn()->lastInsertId();
 
     // Image-Operations
     if ( $_FILES['user_group_pic']['name'] != '' ) {
@@ -50,7 +49,7 @@ if (
 
     // Set Vars
     $_POST['group_action'] = 'edit';
-    $_POST['user_group_id'] = mysql_insert_id ( $FD->sql()->conn() );
+    $_POST['user_group_id'] = $FD->sql()->conn()->lastInsertId();
 }
 
 // Update group
@@ -68,10 +67,6 @@ elseif (
     )
 {
     // Security-Functions
-    $_POST['user_group_name'] = savesql ( $_POST['user_group_name'] );
-    $_POST['user_group_description'] = savesql ( $_POST['user_group_description'] );
-    $_POST['user_group_title'] = savesql ( $_POST['user_group_title'] );
-    $_POST['user_group_color'] = savesql ( $_POST['user_group_color'] );
     if ( strlen ( trim ( $_POST['user_group_color'] ) ) == 0 ) {
         $_POST['user_group_color'] = -1;
     }
@@ -81,24 +76,27 @@ elseif (
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
     $group_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
-    // MySQL-Update-Query
-    mysql_query ('
-                    UPDATE '.$FD->config('pref')."user_groups
-                     SET
-                         user_group_name = '".$_POST['user_group_name']."',
-                         user_group_description = '".$_POST['user_group_description']."',
-                         user_group_title = '".$_POST['user_group_title']."',
-                         user_group_color = '".$_POST['user_group_color']."',
-                         user_group_highlight = '".$_POST['user_group_highlight']."',
-                         user_group_date = '".$group_date."',
-                         user_group_user = '".$_POST['user_group_user']."'
-                     WHERE
-                         user_group_id = '".$_POST['user_group_id']."'
-    ", $FD->sql()->conn() );
+    // SQL-Update-Query
+    $stmt = $FD->sql()->conn()->prepare('
+                UPDATE '.$FD->config('pref')."user_groups
+                 SET
+                     user_group_name = ?,
+                     user_group_description = ?,
+                     user_group_title = ?,
+                     user_group_color = ?,
+                     user_group_highlight = '".$_POST['user_group_highlight']."',
+                     user_group_date = '".$group_date."',
+                     user_group_user = '".$_POST['user_group_user']."'
+                 WHERE
+                     user_group_id = '".$_POST['user_group_id']."'");
+    $stmt->execute(array($_POST['user_group_name'],
+                         $_POST['user_group_description'],
+                         $_POST['user_group_title'],
+                         $_POST['user_group_color']));
     $message = $FD->text('admin', 'changes_saved');
 
     // Image-Operations
-    if ( $_POST['group_pic_delete'] == 1 ) {
+    if ( isset($_POST['group_pic_delete']) && ($_POST['group_pic_delete'] == 1) ) {
       if ( image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] ) ) {
         $message .= '<br>' . $FD->text('admin', 'image_deleted');
       } else {
@@ -131,24 +129,21 @@ elseif (
         settype ( $_POST['user_group_id'], 'integer' );
 
         // Udpate Users
-        mysql_query ('
-                        UPDATE '.$FD->config('pref')."user
-                        SET user_group = '0'
-                         WHERE user_group = '".$_POST['user_group_id']."'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ('
+                UPDATE '.$FD->config('pref')."user
+                SET user_group = '0'
+                WHERE user_group = '".$_POST['user_group_id']."'");
 
         // Delete Permissions
-        mysql_query ("
-                        DELETE FROM ".$FD->config('pref')."user_permissions
-                         WHERE x_id = '".$_POST['user_group_id']."'
-                         AND perm_for_group = '1'
-        ", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec ("
+                DELETE FROM ".$FD->config('pref')."user_permissions
+                WHERE x_id = '".$_POST['user_group_id']."'
+                    AND perm_for_group = '1'");
 
-        // MySQL-Delete-Query
-        mysql_query ('
-                        DELETE FROM '.$FD->config('pref')."user_groups
-                         WHERE user_group_id = '".$_POST['user_group_id']."'
-        ", $FD->sql()->conn() );
+        // SQL-Delete-Query
+        $FD->sql()->conn()->exec ('
+                DELETE FROM '.$FD->config('pref')."user_groups
+                WHERE user_group_id = '".$_POST['user_group_id']."'");
         $message = 'Gruppe wurde erfolgreich gel&ouml;scht';
 
         // Delete Category Image
@@ -183,11 +178,11 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         settype ( $_POST['user_group_id'], 'integer' );
 
         // Load Data from DB
-        $index = mysql_query ( '
-                                SELECT *
-                                FROM '.$FD->config('pref')."user_groups
-                                WHERE user_group_id = '".$_POST['user_group_id']."'", $FD->sql()->conn() );
-        $group_arr = mysql_fetch_assoc ( $index );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM '.$FD->config('pref')."user_groups
+                        WHERE user_group_id = '".$_POST['user_group_id']."'");
+        $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         // Display Error Messages
         if ( isset ( $_POST['sended'] ) ) {
@@ -208,8 +203,8 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         }
 
         // Get User
-        $index = mysql_query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$group_arr['user_group_user']."'", $FD->sql()->conn() );
-        $group_arr['user_group_user_name'] = killhtml ( mysql_result ( $index, 0, 'user_name' ) );
+        $index = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$group_arr['user_group_user']."'" );
+        $group_arr['user_group_user_name'] = killhtml ( $index->fetchColumn() );
 
         // Create Date-Arrays
         if ( !isset ( $_POST['d'] ) ) {
@@ -361,21 +356,19 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         // security functions
         settype ( $_POST['user_group_id'], 'integer' );
 
-        $index = mysql_query ( '
-                                SELECT `user_group_id`, `user_group_name`
-                                FROM '.$FD->config('pref')."user_groups
-                                WHERE user_group_id = '".$_POST['user_group_id']."'
-        ", $FD->sql()->conn() );
-        $group_arr = mysql_fetch_assoc ( $index );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT `user_group_id`, `user_group_name`
+                        FROM '.$FD->config('pref')."user_groups
+                        WHERE user_group_id = '".$_POST['user_group_id']."'" );
+        $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         $group_arr['user_group_name'] = killhtml ( $group_arr['user_group_name'] );
 
-        $index_numusers = mysql_query ( "
-                                            SELECT COUNT(`user_id`) AS 'num_users'
-                                            FROM `".$FD->config('pref')."user`
-                                            WHERE `user_group` = '".$group_arr['user_group_id']."'
-        ", $FD->sql()->conn() );
-        $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, 'num_users' );
+        $index_numusers = $FD->sql()->conn()->query ( "
+                                SELECT COUNT(`user_id`) AS 'num_users'
+                                FROM `".$FD->config('pref')."user`
+                                WHERE `user_group` = '".$group_arr['user_group_id']."'" );
+        $group_arr['user_group_num_users'] = $index_numusers->fetchColumn();
 
         echo '
                     <form action="" method="post">
@@ -425,6 +418,8 @@ else
     }
 
     // Display Add-Form
+    if (!isset($_POST['cat_name']))
+      $_POST['cat_name'] = '';
     echo '
                     <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="sended" value="add">
@@ -474,15 +469,13 @@ else
     ';
 
     // Get groups from DB
-    $index = mysql_query ( '
-                            SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
-                            FROM `'.$FD->config('pref').'user_groups`
-                            WHERE `user_group_id` > 0
-                            ORDER BY `user_group_name`
-    ', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT COUNT(*)
+                    FROM `'.$FD->config('pref').'user_groups`
+                    WHERE `user_group_id` > 0');
 
     // groups found
-    if ( mysql_num_rows ( $index ) > 0 ) {
+    if ( $index->fetchColumn() > 0 ) {
         // display table head
         echo '
                             <tr>
@@ -493,22 +486,24 @@ else
                             </tr>
                             <tr><td class="space"></td></tr>
         ';
-
-        while ( $group_arr = mysql_fetch_assoc ( $index ) )
+        $index = $FD->sql()->conn()->query( '
+                        SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
+                        FROM `'.$FD->config('pref').'user_groups`
+                        WHERE `user_group_id` > 0
+                        ORDER BY `user_group_name`' );
+        while ( $group_arr = $index->fetch(PDO::FETCH_ASSOC) )
         {
-            $index_username = mysql_query ( '
-                                                SELECT `user_name`
-                                                FROM `'.$FD->config('pref')."user`
-                                                WHERE `user_id` = '".$group_arr['user_group_user']."'
-            ", $FD->sql()->conn() );
-            $group_arr['user_group_user_name'] = mysql_result ( $index_username, 0, 'user_name' );
+            $index_username = $FD->sql()->conn()->query ( '
+                                    SELECT `user_name`
+                                    FROM `'.$FD->config('pref')."user`
+                                    WHERE `user_id` = '".$group_arr['user_group_user']."'" );
+            $group_arr['user_group_user_name'] = $index_username->fetchColumn();
 
-            $index_numusers = mysql_query ( "
-                                                SELECT COUNT(`user_id`) AS 'num_users'
-                                                FROM `".$FD->config('pref')."user`
-                                                WHERE `user_group` = '".$group_arr['user_group_id']."'
-            ", $FD->sql()->conn() );
-            $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, 'num_users' );
+            $index_numusers = $FD->sql()->conn()->query ( "
+                                    SELECT COUNT(`user_id`) AS 'num_users'
+                                    FROM `".$FD->config('pref')."user`
+                                    WHERE `user_group` = '".$group_arr['user_group_id']."'" );
+            $group_arr['user_group_num_users'] = $index_numusers->fetchColumn();
 
             // Display each Group
             echo '
@@ -587,30 +582,27 @@ else
                             <tr><td class="line" colspan="4">'."Verwaltung der Administrator-Gruppe".'</td></tr>
     ';
 
-    // Get groups from DB
-    $index = mysql_query ( '
-                            SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
-                            FROM `'.$FD->config('pref').'user_groups`
-                            WHERE `user_group_id` = 0
-                            LIMIT 0,1
-    ', $FD->sql()->conn() );
+    // Get admin group from DB
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
+                    FROM `'.$FD->config('pref').'user_groups`
+                    WHERE `user_group_id` = 0
+                    LIMIT 0,1' );
 
     // get group data
-    $group_arr = mysql_fetch_assoc ( $index );
+    $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-    $index_username = mysql_query ( '
-                                        SELECT `user_name`
-                                        FROM `'.$FD->config('pref')."user`
-                                        WHERE `user_id` = '".$group_arr['user_group_user']."'
-    ", $FD->sql()->conn() );
-    $group_arr['user_group_user_name'] = mysql_result ( $index_username, 0, 'user_name' );
+    $index_username = $FD->sql()->conn()->query ( '
+                            SELECT `user_name`
+                            FROM `'.$FD->config('pref')."user`
+                            WHERE `user_id` = '".$group_arr['user_group_user']."'" );
+    $group_arr['user_group_user_name'] = $index_username->fetchColumn();
 
-    $index_numusers = mysql_query ( "
-                                        SELECT COUNT(`user_id`) AS 'num_users'
-                                        FROM `".$FD->config('pref')."user`
-                                        WHERE `user_is_admin` = '1'
-    ", $FD->sql()->conn() );
-    $group_arr['user_group_num_users'] = mysql_result ( $index_numusers, 0, 'num_users' );
+    $index_numusers = $FD->sql()->conn()->query ( "
+                            SELECT COUNT(`user_id`) AS 'num_users'
+                            FROM `".$FD->config('pref')."user`
+                            WHERE `user_is_admin` = '1'" );
+    $group_arr['user_group_num_users'] = $index_numusers->fetchColumn();
 
     // Display the Group
     echo '

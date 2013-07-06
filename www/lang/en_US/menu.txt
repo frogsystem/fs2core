@@ -94,6 +94,8 @@ page_title_stat_edit:           edit
 page_link_stat_edit:            edit
 page_title_stat_ref:            Manage & view referrers
 page_link_stat_ref:             Referrers
+page_title_stat_ref_delete:     Delete referrers
+page_link_stat_ref_delete:      delete
 page_title_stat_space:          Disk Space
 page_link_stat_space:           Disk Space
 
@@ -143,7 +145,7 @@ page_link_cimg_cat:             categories
 page_title_cimg_import:         import old images
 page_link_cimg_import:          import
 
-# Galerie > Allgemein
+# Galerie > Allgemein (neu)
 page_title_gallery_config:      change configuration
 page_link_gallery_config:       configuration
 page_title_gallery_cat:         manage categories
@@ -165,7 +167,27 @@ page_link_gallery_wp_add:       add
 page_title_gallery_wp_edit:     Edit wallpaper
 page_link_gallery_wp_edit:      edit
 
-# Galerie > Vorschaubilder
+# Galerie > Allgemein (alt)
+page_title_gallery_config:      change configuration
+page_link_gallery_config:       configuration
+page_title_gallery_cat:         manage categories
+page_link_gallery_cat:          categories
+page_title_gallery_newcat:      Create new category
+page_link_gallery_newcat:       New category
+
+# Galerie > Bilder (alt)
+page_title_screens_add:         Add images
+page_link_screens_add:          add
+page_title_screens_edit:        Edit images
+page_link_screens_edit:         edit
+
+# Galerie > Wallpaper (alt)
+page_title_wp_add:              Add wallpapers
+page_link_wp_add:               add
+page_title_wp_edit:             Edit wallpapers
+page_link_wp_edit:              edit
+
+# Galerie > Vorschaubilder (alt)
 page_title_randompic_config:    change configuration
 page_link_randompic_config:     configuration
 page_title_randompic_cat:       select category
@@ -174,6 +196,8 @@ page_title_timedpic_add:        add
 page_link_timedpic_add:         add
 page_title_timedpic_edit:       verwalten
 page_link_timedpic_edit:        verwalten
+page_title_find_gallery_img:    Select image
+page_link_find_gallery_img:     Select image
 
 # Downloads
 page_title_dl_config:           change configuration
@@ -286,6 +310,8 @@ page_title_tpl_fscodes:         Edit „FSCodes“
 page_link_tpl_fscodes:          FSCodes
 page_title_tpl_player:          Edit „Flash-Player“
 page_link_tpl_player:           Flash-Player
+page_title_tpl_topdownloads:    Edit „Top Downloads“
+page_link_tpl_topdownloads:     Top Downloads
 
 # Applets
 page_title_applets_add:         add
@@ -303,7 +329,7 @@ page_link_snippets_delete:      delete
 page_title_snippets_edit:       edit
 page_link_snippets_edit:        edit
 
-# Aliasse
+# Weiterleitungen
 page_title_aliases_add:         add
 page_link_aliases_add:          add
 page_title_aliases_delete:      delete

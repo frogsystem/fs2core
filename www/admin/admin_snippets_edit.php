@@ -11,19 +11,17 @@ if (
     )
 {
     // Security-Functions
-    $_POST['snippet_text'] = savesql ( $_POST['snippet_text'] );
-
     settype ( $_POST['snippet_id'], 'integer' );
     settype ( $_POST['snippet_active'], 'integer' );
 
-    // MySQL-Queries
-    mysql_query ( '
-                    UPDATE `'.$FD->config('pref')."snippets`
-                    SET
-                        `snippet_text` = '".$_POST['snippet_text']."',
-                        `snippet_active` = '".$_POST['snippet_active']."'
-                    WHERE `snippet_id` = '".$_POST['snippet_id']."'
-    ", $FD->sql()->conn() );
+    // SQL-Queries
+    $stmt = $FD->sql()->conn()->prepare('
+                UPDATE `'.$FD->config('pref')."snippets`
+                SET
+                    `snippet_text` = ?,
+                    `snippet_active` = '".$_POST['snippet_active']."'
+                WHERE `snippet_id` = '".$_POST['snippet_id']."'");
+    $stmt->execute(array($_POST['snippet_text']));
 
     // Display Message
     systext ( $FD->text("admin", "changes_saved"),
@@ -49,12 +47,11 @@ elseif (
         // Security-Functions
         $_POST['snippet_id'] = array_map ( 'intval', explode ( ',', $_POST['snippet_id'] ) );
 
-        // MySQL-Delete-Query
-        mysql_query ('
-                        DELETE
-                        FROM `'.$FD->config('pref').'snippets`
-                        WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
-        ', $FD->sql()->conn() );
+        // SQL-Delete-Query
+        $FD->sql()->conn()->exec ('
+            DELETE
+            FROM `'.$FD->config('pref').'snippets`
+            WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')');
 
         systext ( $FD->text("admin", "snippets_deleted"),
             $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_trash_ok") );
@@ -76,27 +73,26 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
     // Security Function
     $_POST['snippet_id'] = array_map ( 'intval', $_POST['snippet_id'] );
 
-    //////////////////////////
-    //// Edit Applet Form ////
-    //////////////////////////
+    ///////////////////////////
+    //// Edit Snippet Form ////
+    ///////////////////////////
     if ( $_POST['snippet_action'] == 'edit' && count ( $_POST['snippet_id'] ) == 1 )
     {
         $_POST['snippet_id'] = $_POST['snippet_id'][0];
 
         // Display Error Messages
-        if ( $_POST['sended'] == 'edit' ) {
+        if ( isset($_POST['sended']) && ($_POST['sended'] == 'edit') ) {
 
             // Shouldn't happen
 
         // Get Data from DB
         } else {
-            $index = mysql_query ( '
-                                    SELECT *
-                                    FROM `'.$FD->config('pref')."snippets`
-                                    WHERE `snippet_id` = '".$_POST['snippet_id']."'
-                                    LIMIT 0,1
-            ", $FD->sql()->conn() );
-            $data_arr = mysql_fetch_assoc ( $index );
+            $index = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM `'.$FD->config('pref')."snippets`
+                        WHERE `snippet_id` = '".$_POST['snippet_id']."'
+                        LIMIT 0,1" );
+            $data_arr = $index->fetch(PDO::FETCH_ASSOC);
             putintopost ( $data_arr );
         }
 
@@ -168,9 +164,9 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         unset ( $_POST['snippet_id'] );
     }
 
-    ////////////////////////////
-    //// Delete Applet Form ////
-    ////////////////////////////
+    /////////////////////////////
+    //// Delete Snippet Form ////
+    /////////////////////////////
     elseif ( $_SESSION['snippets_delete'] && $_POST['snippet_action'] == 'delete' && count ( $_POST['snippet_id'] ) >= 1 )
     {
         // Display Head of Table
@@ -188,18 +184,21 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
                                     <br><br>
         ';
 
-        // get applets from db
-        $index = mysql_query ( '
-                                SELECT *
-                                FROM `'.$FD->config('pref').'snippets`
-                                WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
-                                ORDER BY `snippet_tag`
-        ', $FD->sql()->conn() );
-        // applets found
-        if ( mysql_num_rows ( $index ) > 0 ) {
+        // get snippets from db
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT COUNT(*)
+                        FROM `'.$FD->config('pref').'snippets`
+                        WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')' );
+        // snippets found
+        if ( $index->fetchColumn() > 0 ) {
 
-            // display applets
-            while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+            // display snippets
+            $index = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM `'.$FD->config('pref').'snippets`
+                        WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
+                        ORDER BY `snippet_tag`' );
+            while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
                 // get other data
                 $data_arr['active_text'] = ( $data_arr['snippet_active'] == 1 ) ? $FD->text("admin", "snippet_active") : $FD->text("admin", "snippet_not_active");
@@ -245,14 +244,12 @@ if ( !isset ( $_POST['snippet_id'] ) )
     ';
 
     // get snippets from db
-    $index = mysql_query ( '
-                            SELECT *
-                            FROM `'.$FD->config('pref').'snippets`
-                            ORDER BY `snippet_tag`
-    ', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ( '
+                SELECT COUNT(*)
+                FROM `'.$FD->config('pref').'snippets`' );
 
     // snippets found
-    if ( mysql_num_rows ( $index ) > 0 ) {
+    if ( $index->fetchColumn() > 0 ) {
 
         // display table head
         echo '
@@ -264,7 +261,11 @@ if ( !isset ( $_POST['snippet_id'] ) )
         ';
 
         // display Snippets
-        while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
+        $index = $FD->sql()->conn()->query ( '
+                SELECT *
+                FROM `'.$FD->config('pref').'snippets`
+                ORDER BY `snippet_tag`' );
+        while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
             // get other data
             $data_arr['active_text'] = ( $data_arr['snippet_active'] == 1 ) ? $FD->text("admin", "yes") : $FD->text("admin", "no");
@@ -281,6 +282,8 @@ if ( !isset ( $_POST['snippet_id'] ) )
             ';
         }
 
+        if (!isset($_POST['snippet_action']))
+          $_POST['snippet_action'] = '';
         // display footer with button
         echo'
                             <tr><td class="space"></td></tr>

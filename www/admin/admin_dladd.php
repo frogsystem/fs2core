@@ -6,17 +6,11 @@
 
 if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
 {
-    $_POST['title'] = savesql($_POST['title']);
-    $_POST['text'] = savesql($_POST['text']);
-    $_POST['autor'] = savesql($_POST['autor']);
-    $_POST['autorurl'] = savesql($_POST['autorurl']);
     settype ($_POST['catid'], 'integer');
     settype ($_POST['userid'], 'integer');
 
     for ($i=0; $i<count($_POST['fname']); $i++)
     {
-        $_POST['fname'][$i] = savesql($_POST['fname'][$i]);
-        $_POST['furl'][$i] = savesql($_POST['furl'][$i]);
         settype ($_POST['fsize'][$i], 'integer');
         $_POST['fmirror'][$i] = isset($_POST['fmirror'][$i]) ? 1 : 0;
     }
@@ -25,18 +19,21 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
     $dldate = time();
 
     // Download eintragen
-    mysql_query('INSERT INTO '.$FD->config('pref')."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
-                                    dl_autor_url, dl_open, dl_search_update)
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
+                    dl_autor_url, dl_open, dl_search_update)
                  VALUES ('".$_POST['catid']."',
                          '".$_POST['userid']."',
                          '$dldate',
-                         '".$_POST['title']."',
-                         '".$_POST['text']."',
-                         '".$_POST['autor']."',
-                         '".$_POST['autorurl']."',
+                         ?,
+                         ?,
+                         ?,
+                         ?,
                          '".$_POST['dlopen']."',
-                         '".time()."')
-    ", $FD->sql()->conn() );
+                         '".time()."')");
+    $stmt->execute(array($_POST['title'], $_POST['text'], $_POST['autor'], $_POST['autorurl']));
+
+    $id = $FD->sql()->conn()->lastInsertId();
 
     // Update Search Index (or not)
     if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
@@ -45,11 +42,9 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
         update_search_index ( 'dl' );
     }
 
-    $id = mysql_insert_id();
-
     // Bild auswerten und hochladen
-    $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-    $admin_dl_config_arr = json_array_decode($data);
+    $FD->loadConfig('downloads');
+    $admin_dl_config_arr = $FD->configObject('downloads')->getConfigArray();
 
     if ($_FILES['dlimg']['name'] != '')
     {
@@ -60,16 +55,22 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
     }
 
     // Files eintragen
+    $stmt = $FD->sql()->conn()->prepare(
+                    'INSERT INTO '.$FD->config('pref')."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
+                     VALUES ('$id',
+                             ?,
+                             ?,
+                             ?,
+                             ?)");
     for ($i=0; $i<count($_POST['fname']); $i++)
     {
         if ($_POST['fname'][$i] != '' AND $_POST['furl'][$i] != '' AND $_POST['fsize'][$i] != '')
         {
-            mysql_query('INSERT INTO '.$FD->config('pref')."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
-                         VALUES ('$id',
-                                 '".$_POST['fname'][$i]."',
-                                 '".$_POST['furl'][$i]."',
-                                 '".$_POST['fsize'][$i]."',
-                                 '".$_POST['fmirror'][$i]."');", $FD->sql()->conn() );
+            $stmt->execute(array(
+                               $_POST['fname'][$i],
+                               $_POST['furl'][$i],
+                               $_POST['fsize'][$i],
+                               $_POST['fmirror'][$i]));
         }
     }
     systext('Download wurde hinzugef&uuml;gt');
@@ -93,9 +94,10 @@ if(true)
     }
     if (!isset($_POST['optionsadd'])) $_POST['optionsadd'] = 0;
     $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
+    $_POST = $_POST+array_fill_keys(array('title', 'text', 'autor', 'autorurl'), null);
 
-    $data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-    $admin_dl_config_arr = json_array_decode($data);
+    $FD->loadConfig('downloads');
+    $admin_dl_config_arr = $FD->configObject('downloads')->getConfigArray();
 
     echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">
@@ -169,8 +171,8 @@ if(true)
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1", $FD->sql()->conn() );
-    $ftp = ($index !== FALSE && mysql_num_rows($index) == 1);
+    $index = $FD->sql()->conn()->query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1");
+    $ftp = ($index !== FALSE && $index->fetch(PDO::FETCH_ASSOC) !== FALSE);
 
     for ($i=1; $i<=$_POST['options']; $i++)
     {

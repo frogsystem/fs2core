@@ -1,0 +1,7 @@
+# pressadmin phrases
+
+delpage:                                           Delete entry
+delpage_question:                                  Do you really want to delete this entry?
+delconfirm:                                        Delete entry
+delnotconfirm:                                     Do not delete entry
+note_noreleases:                                   No press reports found!

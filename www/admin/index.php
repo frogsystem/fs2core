@@ -57,19 +57,15 @@ if (isset($_POST['login']) && $_POST['login'] == 1 && !is_authorized()) {
 
 // security functions
 !isset($_REQUEST['go']) ? $_REQUEST['go'] = null : 1;
-$go = $sql->escape($_REQUEST['go']);
+$go = $_REQUEST['go'];
 
 // get page-data from database
-$acp_arr = $sql->getRow(
-    array('P' => 'admin_cp', 'G' => 'admin_groups'),
-    array(
-        array('COL' => 'page_id', 'FROM' => 'P'),
-        array('COL' => 'page_file', 'FROM' => 'P'),
-        array('COL' => 'group_id', 'FROM' => 'P'),
-        array('COL' => 'menu_id', 'FROM' => 'G'),
-    ),
-    array('W' => "P.`group_id` = G.`group_id` AND P.`page_id` = '".$go."' AND P.`page_int_sub_perm` != 1")
-);
+$acp_arr = $sql->conn()->prepare(
+               'SELECT page_id, page_file, P.group_id AS group_id, menu_id
+                FROM '.$FD->config('pref').'admin_cp P, '.$FD->config('pref').'admin_groups G
+                WHERE P.`group_id` = G.`group_id` AND P.`page_id` = ? AND P.`page_int_sub_perm` != 1');
+$acp_arr->execute(array($go));
+$acp_arr = $acp_arr->fetch(PDO::FETCH_ASSOC);
 
 // if page exisits
 if (!empty($acp_arr)) {
@@ -186,7 +182,7 @@ echo'
          version '.$FD->config('version').'
      </div>
      <div id="head_link">
-         <a href="'.$FD->config('virtualhost').'" target="_self" class="head_link">» '.$FD->text("menu", "admin_link_to_page").'</a>
+         <a href="'.$FD->config('virtualhost').'" target="_self" class="head_link">&raquo; '.$FD->text('menu', 'admin_link_to_page').'</a>
      </div>
 </div>
 <!-- /Page Head -->';

@@ -21,7 +21,7 @@
  * */
 
 /* Truncate Feed Content
- * 
+ *
  * Set $truncate = x to cut the News after x chars.
  * $truncate_extension will be added at the end of the content.
  * Use $truncate_awareness and $truncate_options to cut the feed content
@@ -58,8 +58,8 @@
  * Most template functions can't be used within feeds (e.g. applets).
  * So they won't be converted and should be removed.
  *
- * preserve     = don' convert, don't remove text representation
- * remove       = don' convert, remove text representation
+ * preserve     = don't convert, don't remove text representation
+ * remove       = don't convert, remove text representation
  * softremove   = convert if possible, remove others
  * softpreserve = convert if possible, preserve others
  *
@@ -153,11 +153,13 @@ abstract class Feed {
         $FD->loadConfig('news');
 
         // Get News from DB
-        $news_arr = $FD->sql()->getData('news', array('news_id', 'news_text', 'news_title', 'news_date', 'user_id'), array(
-            'W' => '`news_date` <= '.$FD->env('time').' AND `news_active` = 1',
-            'O' => '`news_date` DESC',
-            'L' => $FD->sql()->escape($FD->cfg('news', 'num_news')),
-        ));
+        $news_arr = $FD->sql()->conn()->query(
+                        'SELECT news_id, news_text, news_title, news_date, user_id
+                         FROM '.$FD->config('pref').'news
+                         WHERE `news_date` <= '.$FD->env('time').' AND `news_active` = 1
+                         ORDER BY `news_date` DESC
+                         LIMIT '.intval($FD->cfg('news', 'num_news')));
+        $news_arr = $news_arr->fetchAll(PDO::FETCH_ASSOC);
 
         // Parse News items
         foreach ($news_arr as $news) {
@@ -167,7 +169,10 @@ abstract class Feed {
                 $this->lastUpdate = $news['news_date'];
 
             // get user name
-            $news['user_name'] = $FD->sql()->getFieldById('user', 'user_name', $news['user_id'], 'user_id');
+            $news['user_name'] = $FD->sql()->conn()->query(
+                                     'SELECT user_name FROM '.$FD->config('pref').'user
+                                      WHERE user_id = '.intval($news['user_id']).' LIMIT 1');
+            $news['user_name'] = $news['user_name']->fetchColumn();
 
             // parse fscode in news
             $flags = array(

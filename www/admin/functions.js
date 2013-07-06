@@ -97,9 +97,9 @@ var lastJQBox;
     $(".select_entry input.select_box").click(
         function () {
             if ( $(this).is(":checked") ) {
-                $(this).removeAttr("checked");
+                $(this).removeProp("checked");
             } else {
-                $(this).attr("checked","checked");
+                $(this).prop("checked", true);
             }
         }
     );
@@ -109,17 +109,17 @@ var lastJQBox;
         function () {
             theTable = $(this).parents(".select_list:first");
             if ( theTable.find("select.select_type:first option:selected").hasClass("select_one") ) {
-                theTable.find(".select_entry input.select_box").removeAttr("checked");
+                theTable.find(".select_entry input.select_box").removeProp("checked");
                 theTable.find(".select_entry").css("background-color", "transparent");
             }
 
             var theBox = $(this).find("input.select_box:first");
 
             if ( theBox.is(":checked") ) {
-                theBox.removeAttr("checked");
+                theBox.removeProp("checked");
                 $(this).css("background-color", "#EEEEEE");
             } else {
-                theBox.attr("checked","checked");
+                theBox.prop("checked", true);
                 setBGcolorCompare ( $(this), theTable.find("select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
                 lastJQBox = theBox;
             }
@@ -132,10 +132,10 @@ var lastJQBox;
             theTable = $(this).parents(".select_list:first");
             theLines = theTable.find(".select_entry");
 
-            if ( $(this).find("option:selected").hasClass("select_one") ) {
-                theLines.find("input.select_box").removeAttr("checked");
+            if ( $(this).find("option:selected").hasClass("select_one") && lastJQBox != undefined) {
+                theLines.find("input.select_box").removeProp("checked");
                 theLines.css("background-color", "transparent");
-                lastJQBox.attr("checked","checked");
+                lastJQBox.prop("checked", true);
             }
 
             setBGcolorCompare ( theLines.find("input.select_box:checked").parents(".select_entry:first"), $(this).find("option:selected").hasClass("select_red"), "#C24949", "#49C24f" );

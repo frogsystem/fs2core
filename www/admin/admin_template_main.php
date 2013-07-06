@@ -36,7 +36,6 @@ $TEMPLATE_EDIT[] = array (
 
         array ( 'tag' => 'javascript', 'text' => $FD->text("template", "matrix_help_javascript") ),
         array ( 'tag' => 'jquery', 'text' => $FD->text("template", "matrix_help_jquery") ),
-        array ( 'tag' => 'jquerytools', 'text' => $FD->text("template", "matrix_help_jquerytools") ),
 
         array ( 'tag' => 'body', 'text' => $FD->text("template", "matrix_help_body") ),
     )

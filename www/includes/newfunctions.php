@@ -157,7 +157,7 @@ function killhtml ($VAL, $ARR = true) {
             settype($VAL, 'float');
         }
     } else {
-        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES, 'ISO-8859-1', false);
+        $VAL = htmlspecialchars(strval($VAL), ENT_QUOTES, 'ISO-8859-1', true);
         settype($VAL, 'string');
     }
 
@@ -286,7 +286,7 @@ function date_loc ($DATE_STRING, $TIMESTAMP)
 ////////////////////////////////////////
 //// Kill Replacments-Codes in Text ////
 ////////////////////////////////////////
-function kill_replacements ($TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE)
+function kill_replacements ($TEXT, $KILLHTML = FALSE)
 {
     $a = array('{..', '..}', '[%', '%]', '$NAV(', '$APP(', '$VAR(');
     $b = array('&#x7B;&#x2E;&#x2E;', '&#x2E;&#x2E;&#x7D;',  '&#x5B;&#x25;', '&#x25;&#x5D;', '&#x24;NAV&#x28;', '&#x24;APP&#x28;', '&#x24;APP&#x28;', '&#x24;VAR&#x28;');
@@ -295,8 +295,6 @@ function kill_replacements ($TEXT, $KILLHTML = FALSE, $STRIPSLASHES = FALSE)
 
     if ($KILLHTML === true) {
         return killhtml($TEXT);
-    } elseif ($STRIPSLASHES === TRUE) {
-        return stripslashes($TEXT);
     }
     return $TEXT;
 }
@@ -343,7 +341,7 @@ function is_authorized () {
     return (isset($_SESSION['user_level']) && $_SESSION['user_level'] === 'authorized');
 }
 function is_loggedin () {
-    return ($_SESSION['user_level'] === 'loggedin' || is_authorized ());
+    return ((isset($_SESSION['user_level']) && $_SESSION['user_level'] === 'loggedin') || is_authorized ());
 }
 
 /////////////////////////////////////////
@@ -383,15 +381,7 @@ function hex2dec_color ($COLOR) {
 //// all entries with keys not in $keys will be removed ////
 ////////////////////////////////////////////////////////////
 function array_filter_keys ($input, $keys) {
-    $new_arr = array();
-    
-    foreach($input as $key=>$value) {
-        if (!in_array($key, $keys)) {
-            $new_arr[$key] = $value;
-        }
-    }
-    
-    return $new_arr;
+    return array_intersect_key($input, array_flip($keys));
 }
 
 ///////////////////////////

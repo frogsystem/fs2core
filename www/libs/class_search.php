@@ -46,11 +46,11 @@ class Search
         require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
 
         // assign global vars
-        global $sql;
+        global $sql, $FD;
         $this->sql = $sql;
         $config_cols = array('search_num_previews', 'search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard', 'search_min_word_length', 'search_allow_phonetic', 'search_use_stopwords');
-        $config = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'search'"));
-        $this->config = json_array_decode($config['config_data']); 
+        $FD->loadConfig('search');
+        $this->config = $FD->configObject('search')->getConfigArray();
 
         // assign vars
         $this->type = $type;
@@ -93,7 +93,7 @@ class Search
         if (!$this->inprogress || $this->error)
             return false;
 
-        return mysql_fetch_assoc($this->result);
+        return $this->result->fetch(PDO::FETCH_ASSOC);
     }
 
     // return number of all found rows
@@ -184,7 +184,7 @@ class Search
 
             // go through results
             $words = array();
-            while ($found = mysql_fetch_assoc($result)) {
+            while ($found = $result->fetch(PDO::FETCH_ASSOC)) {
                 // create array for each word
                 if (!isset($words[$found['word']]) || !is_array($words[$found['word']]))
                     $words[$found['word']] = array();
@@ -261,7 +261,7 @@ class Search
 
             // Get total num of affacted rows
             $num_result = $this->sql->doQuery('SELECT FOUND_ROWS()');
-            list ($this->numberOfFounds) = mysql_fetch_row ($num_result);
+            list ($this->numberOfFounds) = $num_result->fetch(PDO::FETCH_NUM);
 
         } catch (Exception $e) {
             $this->error = true;
@@ -315,7 +315,7 @@ class Search
             if ($v1[\'id\'] > $v2[\'id\']) return -1;
             if ($v1[\'id\'] == $v2[\'id\']) return 0;
             return 1;');
-        
+
         // fucntion to compare found-data-arrays and update rank
         $cmp_newrank = create_function ('&$v1, $v2', '
             if ($v1[\'id\'] > $v2[\'id\'])

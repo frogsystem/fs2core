@@ -7,17 +7,15 @@ echo noscript_nohidden ();
 //////////////////////////
 
 if (
-                isset($_POST['video_title']) && $_POST['video_title'] != '' &&
-                (
-                        ( $_POST['video_type'] == 1 && $_POST['video_url'] && $_POST['video_url'] != '' ) ||
-                        ( $_POST['video_type'] == 2 && $_POST['video_youtube'] && $_POST['video_youtube'] != '' ) ||
-                        ( $_POST['video_type'] == 3 && $_POST['video_myvideo'] && $_POST['video_myvideo'] != '' ) ||
-                        ( $_POST['video_type'] == -1 && $_POST['video_other'] && $_POST['video_other'] != '' )
-                )
+        isset($_POST['video_title']) && $_POST['video_title'] != '' &&
+        (
+            ( $_POST['video_type'] == 1 && isset($_POST['video_url']) && $_POST['video_url'] != '' ) ||
+            ( $_POST['video_type'] == 2 && isset($_POST['video_youtube']) && $_POST['video_youtube'] != '' ) ||
+            ( $_POST['video_type'] == 3 && isset($_POST['video_myvideo']) && $_POST['video_myvideo'] != '' ) ||
+            ( $_POST['video_type'] == -1 && isset($_POST['video_other']) && $_POST['video_other'] != '' )
         )
+    )
 {
-    $_POST['video_title'] = savesql ( $_POST['video_title'] );
-    $_POST['video_desc'] = savesql ( $_POST['video_desc'] );
     settype ( $_POST['video_type'], 'integer' );
     settype ( $_POST['dl_id'], 'integer' );
 
@@ -25,41 +23,40 @@ if (
     settype ( $_POST['video_m'], 'integer' );
     settype ( $_POST['video_s'], 'integer' );
 
-    $_POST['video_lenght'] = $_POST['video_h']*60*60 + $_POST['video_m']*60 +$_POST['video_s'];
+    $_POST['video_lenght'] = $_POST['video_h']*3600 + $_POST['video_m']*60 +$_POST['video_s'];
 
-        switch ( $_POST['video_type'] ) {
-            case 3:
-            $_POST['video_x'] = savesql ( $_POST['video_myvideo'] );
-                break;
-            case 2:
-            $_POST['video_x'] = savesql ( $_POST['video_youtube'] );
-                break;
-            case -1:
-            $_POST['video_x'] = savesql ( $_POST['video_other'] );
-                break;
-                default:
-            $_POST['video_x'] = savesql ( $_POST['video_url'] );
-                break;
-        }
+    switch ( $_POST['video_type'] ) {
+        case 3:
+             $_POST['video_x'] = trim ( $_POST['video_myvideo'] );
+             break;
+        case 2:
+             $_POST['video_x'] = trim ( $_POST['video_youtube'] );
+             break;
+        case -1:
+             $_POST['video_x'] = trim ( $_POST['video_other'] );
+             break;
+        default:
+             $_POST['video_x'] = trim ( $_POST['video_url'] );
+             break;
+    }
 
-    mysql_query ( '
-                                        INSERT INTO
-                                                '.$FD->config('pref')."player
-                                                ( video_type, video_x, video_title, video_lenght, video_desc, dl_id )
-                                        VALUES (
-                                                '".$_POST['video_type']."',
-                                                '".$_POST['video_x']."',
-                                                '".$_POST['video_title']."',
-                                                '".$_POST['video_lenght']."',
-                                                '".$_POST['video_desc']."',
-                                                '".$_POST['dl_id']."'
-                                         )
-        ", $FD->sql()->conn() );
+    $stmt = $FD->sql()->conn()->prepare(
+                    'INSERT INTO
+                         '.$FD->config('pref')."player
+                         ( video_type, video_x, video_title, video_lenght, video_desc, dl_id )
+                     VALUES (
+                             '".$_POST['video_type']."',
+                             ?,
+                             ?,
+                             '".$_POST['video_lenght']."',
+                             ?,
+                             '".$_POST['dl_id']."'
+                            )");
+    $stmt->execute(array($_POST['video_x'], $_POST['video_title'], $_POST['video_desc']));
     systext ( 'Video erfolgreich eingetragen', $FD->text('admin', 'info') );
 
     // Unset Vars
     unset ( $_POST );
-
 }
 
 //////////////////////////
@@ -179,8 +176,7 @@ if ( TRUE )
                                     HTML-Code:<br>
                                     <span class="small">HTML-Code um das Video einzubinden.<br><br>
                                     <span class="small">Damit das Video in unterschiedlichen Gr&ouml;&szlig;en dargstellt werden kann, bitte alle Breitenangaben durch <b>{width}</b> und alle H&ouml;henangaben durch <b>{height}</b> ersetzen.<br><br>
-                                    Angaben innerhalb von »style« m&uuml;ssen durch <b>{width_css}</b> bzw. <b>{height_css}</b> ersetzt werden.</span>
-
+                                    Angaben innerhalb von &raquo;style&laquo; m&uuml;ssen durch <b>{width_css}</b> bzw. <b>{height_css}</b> ersetzt werden.</span>
                                 </td>
                                 <td class="config" valign="top">
                                     <textarea class="text" name="video_other" rows="10" cols="50" wrap="virtual">'.$_POST['video_other'].'</textarea>
@@ -216,13 +212,12 @@ if ( TRUE )
                                         <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verkn&uuml;pfung</option>
         ';
         // DL auflisten
-        $index = mysql_query ( '
-                                                        SELECT D.dl_id, D.dl_name, C.cat_name
-                                                        FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C
-                                                        WHERE D.cat_id = C.cat_id
-                                                        ORDER BY D.dl_name ASC
-        ', $FD->sql()->conn() );
-        while ( $dl_arr = mysql_fetch_assoc ( $index ) )
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT D.dl_id, D.dl_name, C.cat_name
+                        FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C
+                        WHERE D.cat_id = C.cat_id
+                        ORDER BY D.dl_name ASC' );
+        while ( $dl_arr = $index->fetch(PDO::FETCH_ASSOC) )
         {
                 settype ( $dl_arr['dl_id'], 'integer' );
                 echo '<option value="'.$dl_arr['dl_id'].'" '.getselected($dl_arr['dl_id'], $_POST['dl_id']).'>'.$dl_arr['dl_name'].' ('.$dl_arr['cat_name'].')</option>';

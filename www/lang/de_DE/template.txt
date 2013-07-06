@@ -10,6 +10,21 @@ style_css_description:                 Beinhaltet die CSS-Definitionen des Desig
 js_userfunctions_title:                Java Script
 js_userfunctions_description:          Beinhaltet von Benutzern definierten Java Script Code.
 
+main_matrix_title:                      HTML-Matrix
+main_matrix_desc:                       Die HTML-Matrix der Seite
+matrix_help_doctype:                    Bindet den HTML-Doctype ein
+matrix_help_language:                   ISO Sprachcode der Seite
+matrix_help_base_tag:                   Bindet evtl. Base-Tag ein (wichtig für Vorschau)
+matrix_help_title:                      Der Titel der Seite
+matrix_help_title_tag:                  Der Titel der Seite als &lt;title&gt;-Tag
+matrix_help_meta_tags:                  Bindet die generierten Meta-Tags ein
+matrix_help_css_links:                  Bindet die CSS-Stylesheets ein
+matrix_help_favicon_link:               Bindet evtl. das Favicon ein
+matrix_help_feed_link:                  Bindet den Standard-Feed ein
+matrix_help_javascript:                 Bindet die JavaScript-Dateien ein
+matrix_help_jquery:                     Bindet die jQuery-Bibliothek ein
+matrix_help_body:                       Bindet das Template der Hauptseite ein
+
 general_systemmessage_title:           Systemmeldung
 general_systemmessage_desc:            Darstellung von Meldungen, die vom System erzeugt werden
 
@@ -150,6 +165,8 @@ user_list_staffline_title:             Mitarbeiter-Zeile
 user_list_staffline_desc:              Darstellung der Zeile für Mitarbeiter
 user_list_adminline_title:             Administrator-Zeile
 user_list_adminline_desc:              Darstellung der Zeile für Administratoren
+new_password_title:                    Zugangsdaten anfordern-Seite
+new_password_desc:                     Seite um neue Zugangsdaten anzufordern.
 
 articles_author_title:                 Autor-Template
 articles_author_desc:                  Template für den Autor eines Artikels
@@ -224,10 +241,10 @@ news_comment_body_help_5:              Bindet einen evtl. Avatar des Autors ein.
 news_comment_form_spam_title:          Anti Spam
 news_comment_form_spam_description:    Captcha zum Schutz gegen Spam-Bots.
 news_comment_form_spam_help_1:         URL zum Anti Spam Captcha Bild.
-                                    
+
 news_comment_form_spamtext_title:      Anti Spam Text
 news_comment_form_spamtext_desc:       Erklärungstext, warum Anti Spam verwendet wird.
-                                    
+
 news_comment_form_name_title:          Eingabefeld Name
 news_comment_form_name_description:    Wird angezeigt, wenn der User nicht registriert ist.
 
@@ -285,9 +302,14 @@ search_results_body_more_results:      Bindet „Mehr Ergebnisse“-Link ein, wenn n
 search_body_title:                     Suchseite
 search_body_desc:                      Darstellung der gesamten Suchseite
 search_body_search:                    Bindet das Suchfeld ein.
+search_body_info:                      Bindet den Informations-Block ein.
 search_body_news:                      Bindet die News-Suchergebnisse ein.
 search_body_articles:                  Bindet die Artikel-Suchergebnisse ein.
 search_body_downloads:                 Bindet die Downloads-Suchergebnisse ein.
+search_info_title:                     Informations-Block
+search_info_desc:                      Beinhaltet Informationen zur gestellten Suchanfrage.
+search_info_query:                     Die bereinigte Suchanfrage.
+search_info_num_results:               Anzahl insgesamt gefundener Datensätze.
 
 previewimg_body_title:                 Vorschaubild
 previewimg_body_desc:                  Darstellung des Vorschaubild-Applets
@@ -429,15 +451,15 @@ editor_smilies_description:            Darstellung der Smilies-Liste.
 editor_smilies_help_table:             Die Tabelle mit den Smilies.
 
 quote_tag_title:                       Zitat
-quote_tag_description:                 Darstellung des "Zitat" - FSCodes ['quote']text['/quote'] 
+quote_tag_description:                 Darstellung des "Zitat" - FSCodes ['quote']text['/quote']
 quote_tag_help_1:                      Text der vom Zitat-Block umschlossen wird.
 quote_tag_name_title:                  Zitat von
-quote_tag_name_description:            Darstellung des "Zitat von" - FSCodes ['quote=author']text['/quote'] 
+quote_tag_name_description:            Darstellung des "Zitat von" - FSCodes ['quote=author']text['/quote']
 quote_tag_name_help_1:                 Text der vom Zitat-Block umschlossen wird.
 quote_tag_name_help_2:                 Name des Autors, des zitierten Textes.
 
 code_tag_title:                        Code
-code_tag_description:                  Darstellung des "Code" - FSCodes ['code']text['/code'] 
+code_tag_description:                  Darstellung des "Code" - FSCodes ['code']text['/code']
 code_tag_help_1:                       Text der vom Code-Block umschlossen wird.
 
 
@@ -459,7 +481,7 @@ screenshot_cat_help_3:                 Datum an dem die Kategorie erstellt wurde
 screenshot_cat_help_4:                 Anzahl der Bilder in der Kategorie.
 screenshot_body_title:                 Kategorie-Übersicht Body
 screenshot_body_description:           Aussehen der Kategorie-Übersicht.
-screenshot_body_help_1:                Ausgabe der einzelnen Kategorienen.
+screenshot_body_help_1:                Ausgabe der einzelnen Kategorien.
 screenshot_pic_title:                  Screenshot
 screenshot_pic_description:            Aussehen eines einzelnen Screenshots.
 screenshot_pic_help_1:                 URL zum Bild.

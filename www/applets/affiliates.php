@@ -4,23 +4,19 @@ $FD->loadConfig('affiliates');
 $config_arr = $FD->configObject('affiliates')->getConfigArray();
 
 // Get Affiliates
-$index = mysql_query ( '
-                        SELECT *
-                        FROM `'.$FD->config('pref').'partner`
-                        ORDER BY `partner_id`
-', $FD->sql()->conn() );
+$index = $FD->sql()->conn()->query ( '
+                SELECT *
+                FROM `'.$FD->config('pref').'partner`
+                ORDER BY `partner_id`' );
 
 $all_arr = array();
 $perm_arr = array();
 $non_arr = array();
 
-while ( $affiliates_arr = mysql_fetch_assoc( $index ) ) {
+while ( $affiliates_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
     // Security Functions
     settype ( $affiliates_arr['partner_id'], 'integer' );
     settype ( $affiliates_arr['partner_permanent'], 'integer' );
-    $affiliates_arr['partner_link'] = stripslashes ( $affiliates_arr['partner_link'] );
-    $affiliates_arr['partner_name'] = stripslashes ( $affiliates_arr['partner_name'] );
-    $affiliates_arr['partner_beschreibung'] = stripslashes ( $affiliates_arr['partner_beschreibung'] );
 
     // Get Template
     $template = new template();

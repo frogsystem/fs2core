@@ -7,11 +7,11 @@
 $FD->setConfig('info', 'canonical', array('id'));
 
 //Kommentar-Config
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-$config_arr = json_array_decode($config_arr['config_data']);
+$FD->loadConfig('news');
+$config_arr = $FD->configObject('news')->getConfigArray();
 //Editor config
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'editor_config', $FD->sql()->conn() );
-$editor_config = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'editor_config');
+$editor_config = $index->fetch(PDO::FETCH_ASSOC);
 
 $SHOW = TRUE;
 
@@ -30,12 +30,11 @@ if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSIO
 //// User has rights ////
 /////////////////////////
 settype ( $_SESSION['user_id'], 'integer' );
-$index = mysql_query ( '
-                                                SELECT *
-                                                FROM '.$FD->config('pref')."user
-                                                WHERE user_id = '".$_SESSION["user_id"]."'
-", $FD->sql()->conn() );
-$user_arr = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query ( '
+                SELECT *
+                FROM '.$FD->config('pref')."user
+                WHERE user_id = '".$_SESSION["user_id"]."'");
+$user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 if ( $config_arr['com_rights'] == 2 || ( $config_arr['com_rights'] == 1 && $_SESSION['user_id'] ) ) {
     $comments_right = TRUE;
@@ -60,36 +59,31 @@ if (isset($_POST['add_comment']))
          && $anti_spam == TRUE)
     {
                 settype($_POST['id'], 'integer');
-                $index = mysql_query( '
-                                        SELECT `news_comments_allowed`
-                                        FROM '.$FD->config('pref').'news
-                                        WHERE news_id = '.$_POST['id'].'
-                                        LIMIT 0,1
-                ', $FD->sql()->conn() );
+                $index = $FD->sql()->conn()->query( '
+                                SELECT `news_comments_allowed`
+                                FROM '.$FD->config('pref').'news
+                                WHERE news_id = '.$_POST['id'].'
+                                LIMIT 0,1' );
 
-                if ( mysql_result ( $index, 0, 'news_comments_allowed' ) == 1 ) {
+                if ( $index->fetchColumn() == 1 ) {
 
                     // Security Functions
-                    $_POST['text'] = savesql($_POST['text']);
-                    $_POST['name'] = savesql($_POST['name']);
-                    $_POST['title'] = savesql($_POST['title']);
                     settype( $_POST['id'], 'integer' );
 
                     // Set some other Data
                     $commentdate = time();
                     $duplicate_time = $commentdate - ( 5 * 60 );
 
-                    $index = mysql_query( '
-                                            SELECT `comment_id`
-                                            FROM `'.$FD->config('pref')."comments`
-                                            WHERE
-                                                `comment_text` = '".$_POST['text']."'
-                                            AND `content_type` = 'news'
-                                            AND `comment_date` >  '".$duplicate_time."'
-                                            LIMIT 0,1
-                    ", $FD->sql()->conn() );
-                                             echo mysql_error();
-                    if ( mysql_num_rows ( $index ) == 0 ) {
+                    $stmt = $FD->sql()->conn()->prepare('
+                                    SELECT COUNT(`comment_id`) AS duplicate_comment
+                                    FROM `'.$FD->config('pref')."comments`
+                                    WHERE
+                                        `comment_text` = ?
+                                    AND `content_type` = 'news'
+                                    AND `comment_date` >  '".$duplicate_time."'
+                                    LIMIT 0,1");
+                    $index = $stmt->execute(array($_POST['text']));
+                    if ( $stmt->fetchColumn() == 0 ) {
 
                         if ($_SESSION['user_id']) {
                             $userid = $_SESSION['user_id'];
@@ -98,7 +92,7 @@ if (isset($_POST['add_comment']))
                             $userid = 0;
                         }
 
-                        mysql_query ( '
+                        $stmt = $FD->sql()->conn()->prepare('
                                         INSERT INTO
                                             `'.$FD->config('pref')."comments` (
                                                 content_id,
@@ -112,17 +106,21 @@ if (isset($_POST['add_comment']))
                                             )
                                          VALUES
                                             (
-                                                '".$_POST['id']."',
+                                                ?,
                                                 'news',
-                                                '".$_POST['name']."',
+                                                ?,
                                                 '$userid',
-                                                '".savesql($_SERVER['REMOTE_ADDR'])."',
+                                                ?,
                                                 '$commentdate',
-                                                '".$_POST['title']."',
-                                                '".$_POST['text']."'
-                                            )
-                        ", $FD->sql()->conn() );
-                        mysql_query('UPDATE '.$FD->config('pref').'counter SET comments=comments+1', $FD->sql()->conn() );
+                                                ?,
+                                                ?)");
+                        $stmt->execute( array(
+                                           $_POST['id'],
+                                           $_POST['name'],
+                                           $_SERVER['REMOTE_ADDR'],
+                                           $_POST['title'],
+                                           $_POST['text'] ) );
+                        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter SET comments=comments+1');
                         $SHOW = FALSE;
                         $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_added"), $FD->cfg('virtualhost') );
                     } else {
@@ -160,22 +158,27 @@ if ( $SHOW == TRUE ) {
     $time = time();
 
     // News anzeigen
-    $index = mysql_query( '
-                                                    SELECT *
-                                                    FROM '.$FD->config('pref')."news
-                                                    WHERE news_date <= $time
-                                                    AND news_active = 1
-                                                    AND news_id = ".$_GET['id'].'
-                                                    LIMIT 0,1
-    ', $FD->sql()->conn() );
-
-    $news_rows = mysql_num_rows($index);
+    $index = $FD->sql()->conn()->query( '
+                    SELECT COUNT(*) AS news_rows
+                    FROM '.$FD->config('pref')."news
+                    WHERE news_date <= $time
+                    AND news_active = 1
+                    AND news_id = ".$_GET['id'].'
+                    LIMIT 0,1' );
+    $news_rows = $index->fetchColumn();
 
 	initstr($news_template);
     if ($news_rows > 0) {
-        $news_arr = mysql_fetch_assoc($index);
+        $index = $FD->sql()->conn()->query( '
+                    SELECT *
+                    FROM '.$FD->config('pref')."news
+                    WHERE news_date <= $time
+                    AND news_active = 1
+                    AND news_id = ".$_GET['id'].'
+                    LIMIT 0,1' );
+        $news_arr = $index->fetch(PDO::FETCH_ASSOC);
         $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
-        $FD->setConfig('dyn_title_page', stripslashes ( $news_arr['news_title'] ) );
+        $FD->setConfig('info', 'page_title', $news_arr['news_title'] );
     } else {
         $news_template = sys_message($FD->text('frontend', 'sysmessage'), $FD->text('frontend', 'news_not_exist'), 404);
     }
@@ -208,18 +211,22 @@ if ( $SHOW == TRUE ) {
     $html_active = ($html) ? 'an' : 'aus';
 
     // Kommentare erzeugen
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'comments WHERE content_id = '.$_GET['id'].' AND content_type=\'news\' ORDER BY comment_date '.$config_arr['com_sort'], $FD->sql()->conn() );
-    while ($comment_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'comments WHERE content_id = '.$_GET['id'].' AND content_type=\'news\' ORDER BY comment_date '.$config_arr['com_sort'] );
+    $num_rows = 0;
+    if (!isset($comments_template))
+      $comments_template = '';
+    while ($comment_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
-
+        $num_rows += 1;
         // User auslesen
         if ($comment_arr['comment_poster_id'] != 0)
         {
-            $index2 = mysql_query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id'], $FD->sql()->conn() );
-            $comment_arr['comment_poster'] = kill_replacements ( mysql_result($index2, 0, 'user_name' ), TRUE );
-            $comment_arr['user_is_admin'] = mysql_result($index2, 0, 'user_is_admin');
-            $comment_arr['user_is_staff'] = mysql_result($index2, 0, 'user_is_staff');
-            $comment_arr['user_group'] = mysql_result($index2, 0, 'user_group');
+            $index2 = $FD->sql()->conn()->query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
+            $row = $index2->fetch(PDO::FETCH_ASSOC);
+            $comment_arr['comment_poster'] = kill_replacements ( $row['user_name'], TRUE );
+            $comment_arr['user_is_admin'] = $row['user_is_admin'];
+            $comment_arr['user_is_staff'] = $row['user_is_staff'];
+            $comment_arr['user_group'] = $row['user_group'];
 
             if (image_exists('media/user-images/',$comment_arr['comment_poster_id'])) {
                 $comment_arr['comment_avatar'] = '<img align="left" src="'.image_url('media/user-images/',$comment_arr['comment_poster_id']).'" alt="'.$comment_arr['comment_poster'].'">';
@@ -280,7 +287,7 @@ if ( $SHOW == TRUE ) {
         $comments_template .= $template;
     }
     unset($comment_arr);
-    if (mysql_num_rows($index) <= 0  ) {
+    if ($num_rows <= 0  ) {
         if ( $news_arr['news_comments_allowed'] == 1 ) {
             $comments_template = sys_message($FD->text("frontend", "sysmessage"), $FD->text("frontend", "no_comments"));
         } else {
@@ -314,10 +321,10 @@ if ( $SHOW == TRUE ) {
 
 
     if (
-                    $config_arr['com_antispam'] == 0 ||
-                    ( $config_arr['com_antispam'] == 1 && $_SESSION['user_id'] ) ||
-                    ( $config_arr['com_antispam'] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
-            )
+        $config_arr['com_antispam'] == 0 ||
+        ( $config_arr['com_antispam'] == 1 && $_SESSION['user_id'] ) ||
+        ( $config_arr['com_antispam'] == 3 && is_in_staff ( $_SESSION['user_id'] ) )
+       )
     {
         $form_spam = '';
         $form_spam_text ='';

@@ -1,0 +1,4 @@
+# OS-related/generic files
+Thumbs.db
+/update-database.bat
+/dump-database.bat

@@ -26,31 +26,31 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
 
     if ($config_arr['game_navi'] != 0)
     { //Spiele anzeigen
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 1 ORDER BY title ASC', $FD->sql()->conn() );
-        while ($game_arr = mysql_fetch_assoc($index))
+        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 1 ORDER BY title ASC');
+        while ($game_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
-            $select = mysql_query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_game = $game_arr[id]", $FD->sql()->conn() );
-            if (mysql_result($select, 0, 'number') > 0)
+            $select = $FD->sql()->conn()->query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref').'press WHERE press_game = '.intval($game_arr['id']) );
+            if ($select->fetchColumn() > 0)
             { //Es existieren Presseberichte
                 $navi_arr[] = $game_arr['id'];
 
                 if ($config_arr['cat_navi'] != 0)
                 { //Kategorien & Spiele anzeigen
-                    $index2 = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 2 ORDER BY title ASC', $FD->sql()->conn() );
-                    while ($cat_arr = mysql_fetch_assoc($index2))
+                    $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 2 ORDER BY title ASC');
+                    while ($cat_arr = $index2->fetch(PDO::FETCH_ASSOC))
                     {
-                        $select = mysql_query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_game = $game_arr[id] AND press_cat = $cat_arr[id]", $FD->sql()->conn() );
-                        if (mysql_result($select, 0, 'number') > 0)
+                        $select = $FD->sql()->conn()->query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_game = $game_arr[id] AND press_cat = $cat_arr[id]");
+                        if ($select->fetchColumn() > 0)
                         { //Es existieren Presseberichte
                             $navi_arr[][] = $cat_arr['id'];
 
                             if ($config_arr['lang_navi'] != 0)
                             { //Sprachen & Kategorien & Spiele anzeigen
-                                $index3 = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title ASC', $FD->sql()->conn() );
-                                while ($lang_arr = mysql_fetch_assoc($index3))
+                                $index3 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title ASC');
+                                while ($lang_arr = $index3->fetch(PDO::FETCH_ASSOC))
                                 {
-                                    $select = mysql_query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_game = $game_arr[id] AND press_cat = $cat_arr[id] AND press_lang = $lang_arr[id]", $FD->sql()->conn() );
-                                    if (mysql_result($select, 0, 'number') > 0)
+                                    $select = $FD->sql()->conn()->query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_game = $game_arr[id] AND press_cat = $cat_arr[id] AND press_lang = $lang_arr[id]");
+                                    if ($select->fetchColumn() > 0)
                                     { //Es existieren Presseberichte
                                         $navi_arr[][][] = $lang_arr['id'];
                                         $last_arr[] = $lang_arr['id'];
@@ -67,11 +67,11 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
                 }
                 elseif ($config_arr['lang_navi'] != 0)
                 { //Sprachen & Spiele anzeigen
-                    $index1 = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title ASC', $FD->sql()->conn() );
-                    while ($lang_arr = mysql_fetch_assoc($index1))
+                    $index1 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title ASC');
+                    while ($lang_arr = $index1->fetch(PDO::FETCH_ASSOC))
                     {
-                        $select = mysql_query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_game = $game_arr[id] AND press_lang = $lang_arr[id]", $FD->sql()->conn() );
-                        if (mysql_result($select, 0, 'number') > 0)
+                        $select = $FD->sql()->conn()->query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_game = $game_arr[id] AND press_lang = $lang_arr[id]" );
+                        if ($select->fetchColumn() > 0)
                         {
                             $navi_arr[][] = $lang_arr['id'];
                             $last_arr[] = $lang_arr['id'];
@@ -89,21 +89,21 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
 
     elseif ($config_arr['cat_navi'] != 0)
     { //Kategorien anzeigen
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 2 ORDER BY title ASC', $FD->sql()->conn() );
-        while ($cat_arr = mysql_fetch_assoc($index))
+        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 2 ORDER BY title ASC');
+        while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
-            $select = mysql_query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_cat = $cat_arr[id]", $FD->sql()->conn() );
-            if (mysql_result($select, 0, 'number') > 0)
+            $select = $FD->sql()->conn()->query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_cat = $cat_arr[id]");
+            if ($select->fetchColumn() > 0)
             { //Es existieren Presseberichte
                 $navi_arr[] = $cat_arr['id'];
 
                 if ($config_arr['lang_navi'] != 0)
                 { //Sprachen & Kategorien anzeigen
-                    $index2 = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title ASC', $FD->sql()->conn() );
-                    while ($lang_arr = mysql_fetch_assoc($index2))
+                    $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title ASC');
+                    while ($lang_arr = $index2->fetch(PDO::FETCH_ASSOC))
                     {
-                        $select = mysql_query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_cat = $cat_arr[id] AND press_lang = $lang_arr[id]", $FD->sql()->conn() );
-                        if (mysql_result($select, 0, 'number') > 0)
+                        $select = $FD->sql()->conn()->query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_cat = $cat_arr[id] AND press_lang = $lang_arr[id]");
+                        if ($select->fetchColumn() > 0)
                         { //Es existieren Presseberichte
                             $navi_arr[][] = $lang_arr['id'];
                             $last_arr[] = $lang_arr['id'];
@@ -120,11 +120,11 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
 
     elseif ($config_arr['lang_navi'] != 0)
     { //Sprachen anzeigen
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title ASC', $FD->sql()->conn() );
-        while ($lang_arr = mysql_fetch_assoc($index))
+        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title ASC');
+        while ($lang_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
-            $select = mysql_query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_lang = $lang_arr[id]", $FD->sql()->conn() );
-            if (mysql_result($select, 0, 'number') > 0)
+            $select = $FD->sql()->conn()->query('SELECT COUNT(press_id) AS number FROM '.$FD->config('pref')."press WHERE press_lang = $lang_arr[id]");
+            if ($select->fetchColumn() > 0)
             { //Es existieren Presseberichte
                 $navi_arr[] = $lang_arr['id'];
                 $last_arr[] = $lang_arr['id'];
@@ -149,8 +149,8 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
                     {
                         foreach ($value2 as $value3)
                         {
-                            $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $value3", $FD->sql()->conn() );
-                            $entry_arr = mysql_fetch_assoc($index);
+                            $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $value3");
+                            $entry_arr = $index->fetch(PDO::FETCH_ASSOC);
 
                             //Navi URL erstellen
                             switch ($entry_arr['type']) {
@@ -159,23 +159,6 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
                                 default: $navi_url3 = $navi_url2 + array('game' => $entry_arr['id']); break;
                             }
 
-                            /*
-                            $entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder.gif';
-                            switch ($entry_arr['type']) {
-                                case 3:
-                                    if ($_GET['lang']==$entry_arr['id'])
-                                    {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';$open3=true;}
-                                    break;
-                                case 2:
-                                    if ($_GET['cat']==$entry_arr['id'])
-                                    {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';$open3=true;}
-                                    break;
-                                default:
-                                    if ($_GET['game']==$entry_arr['id'])
-                                    {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';$open3=true;}
-                                    break;
-                            }
-                            */
 
                             //Icon URL erstellen, nur Unterordner von geöffneten Ordner anzeigen
                             $entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder.gif';
@@ -201,8 +184,8 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
                     }
                     elseif (!is_array($value2))
                     {
-                        $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $value2", $FD->sql()->conn() );
-                        $entry_arr = mysql_fetch_assoc($index);
+                        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $value2");
+                        $entry_arr = $index->fetch(PDO::FETCH_ASSOC);
 
                         //Navi URL erstellen
                         switch ($entry_arr['type']) {
@@ -211,22 +194,6 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
                             default: $navi_url2 = $navi_url1 + array('game' => $entry_arr['id']); break;
                         }
 
-                        /*
-                        switch ($entry_arr['type']) {
-                            case 3:
-                                if ($_GET['lang']==$entry_arr['id'])
-                                {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';$open2=true;}
-                                break;
-                            case 2:
-                                if ($_GET['cat']==$entry_arr['id'])
-                                {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';$open2=true;}
-                                break;
-                            default:
-                                if ($_GET['game']==$entry_arr['id'])
-                                {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';$open2=true;}
-                                break;
-                        }
-                        */
 
                         //Icon URL erstellen, nur Unterordner von geöffneten Ordner anzeigen
                         $entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder.gif';
@@ -255,8 +222,8 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
             }
             elseif (!is_array($value))
             {
-                $index = mysql_query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $value", $FD->sql()->conn() );
-                $entry_arr = mysql_fetch_assoc($index);
+                $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $value");
+                $entry_arr = $index->fetch(PDO::FETCH_ASSOC);
 
                 //Navi URL erstellen
                 $navi_url = 'press';
@@ -266,27 +233,13 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
                     default: $navi_url1 = array('game' => $entry_arr['id']); break;
                 }
 
-                /*
-                switch ($entry_arr['type']) {
-                    case 3:
-                        if ($_GET['lang']==$entry_arr['id'])
-                        {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif'; $open=true;}
-                        break;
-                    case 2:
-                        if ($_GET['cat']==$entry_arr['id'])
-                        {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif'; $open=true;}
-                        break;
-                    default:
-                        if ($_GET['game']==$entry_arr['id'])
-                        {$entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif'; $open=true;}
-                        break;
-                }
-                */
 
                 //Icon URL erstellen
                 $entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder.gif';
                 $open = FALSE;
-                if ( $_GET['game'] == $entry_arr['id'] || $_GET['cat'] == $entry_arr['id'] || $_GET['lang'] == $entry_arr['id'] ) {
+                if ( (isset($_GET['game']) && $_GET['game'] == $entry_arr['id'])
+                  || (isset($_GET['cat']) && $_GET['cat'] == $entry_arr['id'])
+                  || (isset($_GET['lang']) && $_GET['lang'] == $entry_arr['id']) ) {
                     $open = TRUE;
                     if ( get_num_of_levels ( $_GET['game'], $_GET['cat'], $_GET['lang'] ) == 1 ) {
                         $entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';
@@ -400,11 +353,11 @@ if ($config_arr['show_press'] == 1)
 if ($config_arr['show_press_sql'] == true)
 {
     $sql_query = 'SELECT * FROM '.$FD->config('pref')."press $where_clause ORDER BY $config_arr[order_by] $config_arr[order_type]";
-    $index = mysql_query($sql_query, $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query($sql_query);
 
-    unset($press_releases);
+    $press_releases = '';
 
-    while ($press_arr = mysql_fetch_assoc($index))
+    while ($press_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         // Get Intro Template
         $template = new template();
@@ -420,21 +373,20 @@ if ($config_arr['show_press_sql'] == true)
         $template->tag('note_text', fscode ( $press_arr['press_note'] ) );
         $press_arr['press_note_formated'] = $template->display ();
 
-        $index2 = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_game]'", $FD->sql()->conn() );
-        $press_arr['press_game_title'] = stripslashes(mysql_result($index2, 0, 'title'));
-        $index2 = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_cat]'", $FD->sql()->conn() );
-        $press_arr['press_cat_title'] = stripslashes(mysql_result($index2, 0, 'title'));
-        $index2 = mysql_query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_lang]'", $FD->sql()->conn() );
-        $press_arr['press_lang_title'] = stripslashes(mysql_result($index2, 0, 'title'));
-
+        $index2 = $FD->sql()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_game]'");
+        $press_arr['press_game_title'] = $index2->fetchColumn();
+        $index2 = $FD->sql()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_cat]'");
+        $press_arr['press_cat_title'] = $index2->fetchColumn();
+        $index2 = $FD->sql()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = '$press_arr[press_lang]'");
+        $press_arr['press_lang_title'] = $index2->fetchColumn();
 
         // Get Note Template
         $template = new template();
         $template->setFile('0_press.tpl');
         $template->load('ENTRY_BODY');
 
-        $template->tag('title', stripslashes ( $press_arr['press_title'] ) );
-        $template->tag('url', stripslashes ( $press_arr['press_url'] ) );
+        $template->tag('title', $press_arr['press_title'] );
+        $template->tag('url', $press_arr['press_url'] );
         $template->tag('date', date_loc ( $FD->config('date'), $press_arr['press_date'] ) );
         $template->tag('text', fscode ( $press_arr['press_text'] ) );
         $template->tag('intro', ( $press_arr['press_intro'] != '' ) ? $press_arr['press_intro_formated'] : '' );

@@ -3,8 +3,8 @@
 $FD->setConfig('info', 'canonical', array('id'));
 
 // Load Config Array
-$data = $sql->getField('config', 'config_data', array('W' => "`config_name` = 'downloads'"));
-$config_arr = json_array_decode($data);
+$FD->loadConfig('downloads');
+$config_arr = $FD->configObject('downloads')->getConfigArray();
 
 $FD->loadConfig('screens');
 $screen_config_arr = $FD->configObject('screens')->getConfigArray();
@@ -13,20 +13,19 @@ $screen_config_arr = $FD->configObject('screens')->getConfigArray();
 $_GET['id'] = ( isset ( $_GET['fileid'] ) && !isset ( $_GET['id'] ) ) ? $_GET['fileid'] : $_GET['id'];
 settype( $_GET['id'], 'integer' );
 
-$index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id = $_GET[id] AND dl_open = 1", $FD->sql()->conn() );
-if (mysql_num_rows($index) > 0)
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id = $_GET[id] AND dl_open = 1");
+$dl_arr = $index->fetch(PDO::FETCH_ASSOC);
+if ($dl_arr !== false)
 {
-    $dl_arr = mysql_fetch_assoc($index);
-
     //Seitentitel
-    $FD->setConfig('dyn_title_page', stripslashes ( $dl_arr['dl_name'] ));
+    $FD->setConfig('info', 'page_title', $dl_arr['dl_name'] );
 
     //Config einlesen
     $dl_config_arr = $config_arr;
 
     // Username auslesen
-    $index = mysql_query('SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = $dl_arr[user_id]", $FD->sql()->conn() );
-    $dl_arr['user_name'] = kill_replacements ( mysql_result($index, 0, 'user_name'), TRUE );
+    $index =$FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = $dl_arr[user_id]");
+    $dl_arr['user_name'] = kill_replacements ( $index->fetchColumn(), TRUE );
     $dl_arr['user_url'] = url('user', array('id' => $dl_arr['user_id']));
 
     // Link zum Autor generieren
@@ -51,9 +50,8 @@ if (mysql_num_rows($index) > 0)
     // Sonstige Daten ermitteln
     $dl_arr['dl_date'] = date_loc ( $FD->config('date'), $dl_arr['dl_date'] );
     $dl_arr['dl_text'] = fscode($dl_arr['dl_text']);
-    $index3 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'", $FD->sql()->conn() );
-    $dl_arr['cat_name'] = stripslashes(mysql_result($index3, 0, 'cat_name'));
-
+    $index3 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
+    $dl_arr['cat_name'] = $index3->fetchColumn();
 
 
     if ($dl_config_arr['dl_rights']==2) {
@@ -77,16 +75,25 @@ if (mysql_num_rows($index) > 0)
       $messages_template .= $FD->text('frontend', 'dl_not_logged_in');
     }
 
+    if (!isset($messages_template))
+      $messages_template = '';
     if ($messages_template != '')
       $messages_template .= '<br>';
     $messages_template .= $FD->text('frontend', 'dl_not_save_as');
 
 
     // Files auslesen
-    if ( $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use", $FD->sql()->conn() )) {
-        $stats_arr['number'] = mysql_num_rows($index);
+    $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use");
+    $num_rows = $index->fetchColumn();
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use");
+    if ( $index !== false ) {
+        $stats_arr['number'] = $num_rows;
 
-        while ($file_arr = mysql_fetch_assoc($index)) {
+        $stats_arr['size'] = 0;
+        $stats_arr['hits'] = 0;
+        $stats_arr['traffic'] = 0;
+        $files = '';
+        while ($file_arr = $index->fetch(PDO::FETCH_ASSOC)) {
             $stats_arr['size'] = $stats_arr['size'] + $file_arr['file_size'];
             $stats_arr['hits'] = $stats_arr['hits'] + $file_arr['file_count'];
             $stats_arr['traffic'] = $stats_arr['traffic'] + ($file_arr['file_count']*$file_arr['file_size']);
@@ -110,7 +117,7 @@ if (mysql_num_rows($index) > 0)
             $template->setFile('0_downloads.tpl');
             $template->load('ENTRY_FILE_LINE');
 
-            $template->tag('name', stripslashes ( $file_arr['file_name'] ) );
+            $template->tag('name', $file_arr['file_name'] );
             $template->tag('url', url($_GET['go'], array('id' => $file_arr['file_id'], 'dl' => 'TRUE')));
             $template->tag('size', $file_arr['file_size'] );
             $template->tag('traffic', $file_arr['file_traffic'] );
@@ -124,7 +131,7 @@ if (mysql_num_rows($index) > 0)
     }
 
     // Stats erstellen
-    $stats_arr['number'] = ( $stats_arr['number'] == 1 ) ? $stats_arr['number'].' '.$FD->text("frontend", "download_file") : $stats_arr['number'].' '.$FD->text("frontend", "download_files");
+    $stats_arr['number'] = ( $stats_arr['number'] == 1 ) ? $stats_arr['number'].' '.$FD->text('frontend', 'download_file') : $stats_arr['number'].' '.$FD->text('frontend', 'download_files');
     $stats_arr['traffic'] = getsize($stats_arr['traffic']);
     $stats_arr['size'] = getsize($stats_arr['size']);
 
@@ -164,6 +171,7 @@ if (mysql_num_rows($index) > 0)
     $valid_ids = array();
     get_dl_categories ($valid_ids, $dl_arr['cat_id'], $config_arr['dl_show_sub_cats'] );
 
+    $navi_lines = '';
     foreach ( $valid_ids as $cat ) {
         if ($cat['cat_id'] == $dl_arr['cat_id']) {
             $icon_url = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';
@@ -177,7 +185,7 @@ if (mysql_num_rows($index) > 0)
 
         $template->tag('icon_url', $icon_url );
         $template->tag('cat_url', url('download', array('cat_id' => $cat['cat_id'])));
-        $template->tag('cat_name', stripslashes ( $cat['cat_name'] ) );
+        $template->tag('cat_name', $cat['cat_name'] );
 
         $template = $template->display ();
         $navi_lines .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $cat['level']) . $template;
@@ -190,14 +198,12 @@ if (mysql_num_rows($index) > 0)
     $template->tag('lines', $navi_lines );
     $navi = $template->display ();
 
-
-
     // Get Body Template
     $template = new template();
     $template->setFile('0_downloads.tpl');
     $template->load('ENTRY_BODY');
 
-    $template->tag('title', stripslashes ( $dl_arr['dl_name'] ) );
+    $template->tag('title', $dl_arr['dl_name'] );
     $template->tag('img_url', $dl_arr['dl_bild'] );
     $template->tag('thumb_url', $dl_arr['dl_thumb'] );
     $template->tag('viewer_link', $dl_arr['viewer_link'] );

@@ -12,21 +12,21 @@ if (isset($_POST['title']) AND $_POST['do'] == 'edit')
 {
     settype($_POST['catid'], 'integer');
     settype($_POST['editscreenid'], 'integer');
-    $_POST['title'] = savesql($_POST['title']);
     if ($_POST['delscreen'])   // Screenshot löschen
     {
-        mysql_query('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = $_POST[editscreenid]", $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = $_POST[editscreenid]");
         image_delete('images/screenshots/', $_POST['editscreenid']);
         image_delete('images/screenshots/', "$_POST[editscreenid]_s");
         systext('Screenshot wurde gel&ouml;scht');
     }
     else   // Screenshot editieren
     {
-        $update = 'UPDATE '.$FD->config('pref')."screen
+        $stmt = $FD->sql()->conn()->prepare(
+                  'UPDATE '.$FD->config('pref')."screen
                    SET cat_id = $_POST[catid],
-                   screen_name = '$_POST[title]'
-                   WHERE screen_id = $_POST[editscreenid]";
-        mysql_query($update, $FD->sql()->conn() );
+                   screen_name = ?
+                   WHERE screen_id = $_POST[editscreenid]");
+        $stmt->execute(array($_POST['title']));
         systext('Der Screenshot wurde editiert');
     }
 }
@@ -47,30 +47,31 @@ elseif (isset($_POST['screenid']))
     //security functions
     settype($_POST['screenid'], 'integer');
 
-    if ($_POST['do'] == 'newthumb')
+    if (isset($_POST['do']) && $_POST['do'] == 'newthumb')
     {
         image_delete('images/screenshots/',$_POST['screenid'].'_s');
 
-        $newthumb = create_thumb_from(image_url('images/screenshots/',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);
-        systext(create_thumb_notice($newthumb).'<br />(Cache leeren nicht vergessen!)');
+        $newthumb = @create_thumb_from(image_url('images/screenshots/',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);
+        systext(create_thumb_notice($newthumb));
     }
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen WHERE screen_id = $_POST[screenid]", $FD->sql()->conn() );
-    $screen_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen WHERE screen_id = $_POST[screenid]");
+    $screen_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="screens_edit" name="go">
                         <input type="hidden" value="newthumb" name="do">
                         <input type="hidden" value="'.$screen_arr['screen_id'].'" name="screenid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Bild bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
                                     <font class="small">Thumbnail des Screenshots</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url('images/screenshots/',$screen_arr['screen_id'].'_s').'" />
+                                   <img src="'.image_url('images/screenshots/',$screen_arr['screen_id'].'_s').'?cachebreaker='.time().'" />
                                 </td>
                             </tr>
                             <tr>
@@ -79,7 +80,7 @@ elseif (isset($_POST['screenid']))
                                     <font class="small">Erstellt ein neues Thumbnail von der Vorlage.</font>
                                 </td>
                                 <td class="config" valign="top" align="left">
-                                  <input class="button" type="submit" value="Jetzt neu erstellen">
+                                  <input type="submit" value="Jetzt neu erstellen">
                                 </td>
                             </tr>
                     </form>
@@ -104,8 +105,8 @@ elseif (isset($_POST['screenid']))
                                 <td class="config" valign="top">
                                     <select name="catid">
     ';
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
-    while ($cat_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1');
+    while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $sele = ($screen_arr['cat_id'] == $cat_arr['cat_id']) ? 'selected' : '';
         echo'
@@ -146,19 +147,22 @@ else
     {
         settype($_POST['screencatid'], 'integer');
         $wherecat = 'WHERE cat_id = ' . $_POST['screencatid'];
+    } else {
+        $_POST['screencatid'] = null;
     }
 
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="screens_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td><h3>Kategorie auswählen</h3><hr></td></tr>
                             <tr>
-                                <td class="config" width="40%">
+                                <td class="thin" width="40%">
                                     Dateien der Kategorie
                                     <select name="screencatid">
     ';
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
-    while ($cat_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1');
+    while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $sele = ($_POST['screencatid'] == $cat_arr['cat_id']) ? 'selected' : '';
         echo'
@@ -169,7 +173,7 @@ else
     }
     echo'
                                     </select>
-                                    <input class="button" type="submit" value="Anzeigen">
+                                    <input type="submit" value="Anzeigen">
                                 </td>
                             </tr>
                         </table>
@@ -185,55 +189,56 @@ else
         echo'<br>
                     <form action="" method="post">
                         <input type="hidden" value="screens_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="4"><h3>Bild auswählen</h3><hr></td></tr>
                             <tr>
-                                <td class="config" width="25%">
+                                <td class="config" width="30%">
                                     Bild
                                 </td>
-                                <td class="config" width="30%">
+                                <td class="config" width="35%">
                                     Titel
                                 </td>
-                                <td class="config" width="30%">
+                                <td class="config" width="35%">
                                     Kategorie
                                 </td>
                                 <td class="config" width="15%">
-                                    bearbeiten
+
                                 </td>
                             </tr>
         ';
-        $index = mysql_query('SELECT * FROM '.$FD->config('pref')."screen $wherecat ORDER BY screen_id DESC", $FD->sql()->conn() );
-        while ($screen_arr = mysql_fetch_assoc($index))
+        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen $wherecat ORDER BY screen_id DESC");
+        while ($screen_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
-            $index2 = mysql_query('SELECT cat_name FROM '.$FD->config('pref')."screen_cat WHERE cat_id = $screen_arr[cat_id]", $FD->sql()->conn() );
+            $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."screen_cat WHERE cat_id = $screen_arr[cat_id]");
+            $db_cat_name = $index2->fetchColumn();
+
             echo'
                             <tr style="cursor:pointer;"
                                 onmouseover="javascript:this.style.backgroundColor=\'#EEEEEE\'"
                                 onmouseout="javascript:this.style.backgroundColor=\'transparent\'"
                                 onClick=\'document.getElementById("'.$screen_arr['screen_id'].'").checked="true";\'>
                                 <td class="configthin">
-                                    <img src="'.image_url('images/screenshots/',$screen_arr['screen_id'].'_s').'" />
+                                    <img src="'.image_url('images/screenshots/',killhtml($screen_arr['screen_id']).'_s').'"  style="max-width:200px; max-height:100px;">
                                 </td>
-                                <td class="configthin">
-                                    '.$screen_arr['screen_name'].'
+                                <td class="thin">
+                                    '.killhtml($screen_arr['screen_name']).'
                                 </td>
-                                <td class="configthin">
-                                    '.$db_cat_name.'
+                                <td class="thin">
+                                    '.killhtml($db_cat_name).'
                                 </td>
-                                <td class="configthin">
+                                <td class="thin">
                                     <input type="radio" name="screenid" id="'.$screen_arr['screen_id'].'" value="'.$screen_arr['screen_id'].'">
                                 </td>
                             </tr>
             ';
         }
         echo'
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td colspan="4">
-                                    &nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" align="center">
-                                   <input class="button" type="submit" value="editieren">
+                                <td colspan="4" class="buttontd">
+                                    <button type="submit" value="1" class="button_new" name="sended">
+                                        '.$FD->text('admin', 'button_arrow').' Bild bearbeiten
+                                    </button>
                                 </td>
                             </tr>
                         </table>

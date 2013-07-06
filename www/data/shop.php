@@ -7,19 +7,17 @@ $FD->loadConfig('screens');
 $screen_config_arr = $FD->configObject('screens')->getConfigArray();
 
 // Get Data from DB
-$index = mysql_query ( '
-                        SELECT *
-                        FROM `'.$FD->config('pref').'shop`
-', $FD->sql()->conn() );
+$index = $FD->sql()->conn()->query ( '
+                SELECT *
+                FROM `'.$FD->config('pref').'shop`' );
 
 // Security Functions
 $shop_items = array();
 
 // Get Item Templates
-while ( $shop_arr = mysql_fetch_assoc ( $index ) ) {
+while ( $shop_arr = $index->fetch( PDO::FETCH_ASSOC ) ) {
 
     settype ( $shop_arr['artikel_id'], 'integer' );
-    $shop_arr['artikel_name'] = stripslashes ( $shop_arr['artikel_name'] );
     $shop_arr['artikel_text'] = fscode ( $shop_arr['artikel_text'], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 );
 
     $shop_arr['viewer_url'] = 'imageviewer.php?file=images/shop/'. basename ( image_url ( 'images/shop/', $shop_arr['artikel_id'] ) ).'&single';
@@ -33,8 +31,8 @@ while ( $shop_arr = mysql_fetch_assoc ( $index ) ) {
 
     $template_item->tag('item_titel', $shop_arr['artikel_name'] );
     $template_item->tag('item_text', $shop_arr['artikel_text'] );
-    $template_item->tag('item_url', stripslashes ( $shop_arr['artikel_url'] ) );
-    $template_item->tag('item_price', stripslashes ( $shop_arr['artikel_preis'] ) );
+    $template_item->tag('item_url', $shop_arr['artikel_url'] );
+    $template_item->tag('item_price', $shop_arr['artikel_preis'] );
     $template_item->tag('item_image', get_image_output ( 'images/shop/', $shop_arr['artikel_id'], $shop_arr['artikel_name'] ) );
     $template_item->tag('item_image_url', image_url ( 'images/shop/', $shop_arr['artikel_id'] ) );
     $template_item->tag('item_image_viewer_url', $shop_arr['viewer_url'] );

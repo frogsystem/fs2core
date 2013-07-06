@@ -17,9 +17,9 @@ if (isset($_POST['sended']))
     for ($i=1; $i<=5; $i++) {
         if ($_FILES['img'.$i]['name'] != '') {
             // Insert into DB
-            $title = savesql($_POST['title'.$i]);
-            mysql_query('INSERT INTO '.$FD->config('pref')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."','".$title."')", $FD->sql()->conn() );
-            $id = mysql_insert_id();
+            $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."', ?)");
+            $stmt->execute(array($_POST['title'.$i]));
+            $id = $FD->sql()->conn()->lastInsertId();
 
             // File Operations
             $upload = upload_img($_FILES['img'.$i], 'images/screenshots/', $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
@@ -27,7 +27,7 @@ if (isset($_POST['sended']))
 
             // Upload Failed => Delete from DB
             if ($upload != 0) {
-                mysql_query('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = '".$id."'");
+                $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = '".$id."'");
 
             // Else create Thumb
             } else {
@@ -50,7 +50,7 @@ if (isset($_POST['sended']))
     if ($systext != '') {
         systext($systext);
     } else {
-        systext('Sie m&uuml;ssen schon auch ein Bild ausw&auml;hlen...');
+        systext('Du musst schon auch ein Bild ausw&auml;hlen...', $FD->text('admin', 'error_occurred'), 'red', $FD->text('admin', 'icon_save_error'));
     }
 }
 
@@ -61,20 +61,25 @@ if (isset($_POST['sended']))
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="screens_add" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Bilder hochladen</h3><hr></td></tr>
                             <tr>
                                 <td class="config">
                                     Kategorie:<br>
-                                    <font class="small">In welche Kategorie werden die Bilder eingeordnet</font>
+                                    <span class="small">In welche Kategorie werden die Bilder eingeordnet</span>
                                 </td>
                                 <td class="config">
                                     <select class="input_width" name="catid">
 ';
-$index = mysql_query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1', $FD->sql()->conn() );
-while ($cat_arr = mysql_fetch_assoc($index))
+if (!isset($_POST['catid']))
+{
+  $_POST['catid'] = -1;
+}
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1');
+while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'
-                                        <option value="'.$cat_arr['cat_id'].'">
+                                        <option value="'.$cat_arr['cat_id'].'"'.($_POST['catid']==$cat_arr['cat_id'] ? ' selected' : '').'>
                                             '.$cat_arr['cat_name'].'
                                         </option>
     ';
@@ -85,9 +90,9 @@ echo'
                             </tr>
                         </table>
                         <br>
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td class="config">#</td>
+                                <td class="thin">#&nbsp;</td>
                                 <td class="config">
                                     Bilddateien <span class="small">[max. '.$config_arr['screen_x'].' x '.$config_arr['screen_y'].' Pixel] [max. '.$config_arr['screen_size'].' KB]</span>
                                 </td>
@@ -98,25 +103,30 @@ echo'
 for ($i=1; $i<=5; $i++) {
     echo '
                             <tr class="config">
-                                <td valign="middle">'.$i.'</td>
+                                <td valign="middle" class="thin">'.$i.'</td>
                                 <td>
-                                    <input type="file" class="text" name="img'.$i.'" size="40">
+                                    <input type="file" class="text" name="img'.$i.'" size="30">
                                 </td>
-                                <td>
-                                     <input type="text" class="text" name="title'.$i.'" size="40" maxlength="255">
+                                <td width="50%">
+                                     <input type="text" class="text half" name="title'.$i.'" size="40" maxlength="255">
                                 </td>
                             </tr>
     ';
 }
 echo '
+                            <tr><td class="space"></td></tr>
+                            <tr>
+                                <td colspan="3" class="buttontd">
+                                    <button type="submit" value="1" class="button_new" name="sended">
+                                        '.$FD->text('admin', 'button_arrow').' Bilder hochladen
+                                    </button>
+                                </td>
+                            </tr>
                         </table>
-                        <br>
-                        <input name="sended" class="button input_width" type="submit" value="Bilder hochladen">
 
                         <p>
                             <b>Hinweis:</b> Alle Bilder zusammen d&uuml;rfen nicht gr&ouml;&szlig;er als '.ini_get('post_max_size').'B sein (Server-Vorgabe).
                         </p>
-
                     </form>
 ';
 ?>

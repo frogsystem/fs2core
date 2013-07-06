@@ -1,19 +1,26 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
+////////////////////////
+//// settings and co ///
+////////////////////////
+$defaults = array(
+  'oldname' => 1,
+  'newname' => '',
+  'cat' => '',
+  'thumb' => 0,
+  'width' => '',
+  'height' => '',
+);
+
+
 /////////////////////////////
 //// Screenshot hochladen ///
 /////////////////////////////
 
-if(!isset($_POST['oldname']))   $_POST['oldname'] = 0;
-if(!isset($_POST['newname']))   $_POST['newname'] = '';
-if(!isset($_POST['cat']))       $_POST['cat'] = '';
-if(!isset($_POST['thumb']))     $_POST['thumb'] = 0;
-if(!isset($_POST['width']))     $_POST['width'] = '';
-if(!isset($_POST['height']))    $_POST['height'] = '';
 
-$catsqry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
+$catsqry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
 $cats = array();
-while(($cat = mysql_fetch_assoc($catsqry)) !== false){
+while(($cat = $catsqry->fetch(PDO::FETCH_ASSOC)) !== false){
     $cats[] = $cat;
 }
 
@@ -33,11 +40,11 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
       $_POST['newname'] = basename ($_FILES['cimg']['name'],'.'.$oldname_data);
   }
 
-  settype ($_POST['cat'],integer);
-  settype ($_POST['width'],integer);
-  settype ($_POST['height'],integer);
+  settype ($_POST['cat'], 'integer');
+  settype ($_POST['width'], 'integer');
+  settype ($_POST['height'], 'integer');
 
-  if (!image_exists('media/content/',$_POST['newname'])  AND !image_exists('media/content/',$_POST['newname']."_s"))
+  if (!image_exists('media/content/',$_POST['newname'])  AND !image_exists('media/content/',$_POST['newname'].'_s'))
   {
     $upload = upload_img($_FILES['cimg'], 'media/content/', $_POST['newname'], 1024*1024, 9999, 9999);
     $message = upload_img_notice ( $upload );
@@ -45,7 +52,10 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
       $thumb = create_thumb_from ( image_url ( 'media/content/', $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
       $message .= '<br>' . create_thumb_notice ( $thumb );
     }
-    mysql_query('INSERT INTO `'.$FD->config('pref')."cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES ('".mysql_real_escape_string($_POST['newname'])."', '".mysql_real_escape_string($oldname_data)."', ".intval($_POST['thumb']).', '.intval($_POST['cat']).')');
+    $stmt = $FD->sql()->conn()->prepare('
+                  INSERT INTO `'.$FD->config('pref')."cimg` (`name`, `type`, `hasthumb`, `cat`)
+                  VALUES (?, ?, ".intval($_POST['thumb']).', '.intval($_POST['cat']).')');
+    $stmt->execute(array($_POST['newname'], $oldname_data));
     unset($_POST['width']);
     unset($_POST['height']);
     unset($_POST['oldname']);
@@ -80,7 +90,8 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
       systext($error_message);
     }
 
-
+    // set defaults
+    $_POST = $_POST+$defaults;
 
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
@@ -104,10 +115,11 @@ echo'
                                     <font class="small">Soll das Bild den urspr&uuml;nglichen Namen behalten?</font>
                                 </td>
                                 <td class="config" valign="middle">
-                                  <input class="text" type="checkbox" name="oldname" id="newname" value="1"'.getchecked($_POST['oldname'], 1).'/>
+                                  '.$FD->text("admin", "checkbox").'
+                                  <input class="hidden" class="text" type="checkbox" name="oldname" id="newname" value="1"'.getchecked($_POST['oldname'], 1).'>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="hidden" id="newname_line">
                                 <td valign="top" class="config">
                                     Neuer Bildname:<br>
                                     <font class="small">ohne Dateiendung</font>
@@ -135,6 +147,12 @@ if(count($cats) > 0){
                                 </td>
                             </tr>';
 }
+if(!isset($_POST['thumb']))
+  $_POST['thumb'] = 0;
+if(!isset($_POST['width']))
+  $_POST['width'] = '';
+if(!isset($_POST['height']))
+  $_POST['height'] = '';
 echo '
                             <tr>
                                 <td class="config" valign="top">
@@ -166,5 +184,17 @@ echo '
                             </tr>
                         </table>
                     </form>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function(){
+                            $("#newname").change(function(event) {
+                                if ($(this).is(":checked")) {
+                                    $("#newname_line").hide();
+                                } else {
+                                    $("#newname_line").show();
+                                }
+                            });
+                        });
+                    
+                    </script>
 ';
 ?>

@@ -7,13 +7,12 @@
 function user_name_free ( $USERNAME ) {
     global $FD;
 
-    $USERNAME = savesql ( $USERNAME );
-    $index = mysql_query ( '
-                            SELECT `user_id`
-                            FROM `'.$FD->config('pref')."user`
-                            WHERE `user_name` = '".$USERNAME."'
-    ", $FD->sql()->conn() );
-    if ( mysql_num_rows ( $index ) > 0 ) {
+    $stmt = $FD->sql()->conn()->prepare('
+                SELECT COUNT(`user_id`)
+                FROM `'.$FD->config('pref')."user`
+                WHERE `user_name` = ?");
+    $stmt->execute(array($USERNAME));
+    if ( $stmt->fetchColumn() > 0 ) {
         return FALSE;
     } else {
         return TRUE;
@@ -43,15 +42,6 @@ if (
     )
 {
     // security functions
-    $_POST['user_name'] = savesql ( $_POST['user_name'] );
-    $_POST['user_mail'] = savesql ( $_POST['user_mail'] );
-    $_POST['user_homepage'] = savesql ( $_POST['user_homepage'] );
-    $_POST['user_icq'] = savesql ( $_POST['user_icq'] );
-    $_POST['user_aim'] = savesql ( $_POST['user_aim'] );
-    $_POST['user_wlm'] = savesql ( $_POST['user_wlm'] );
-    $_POST['user_yim'] = savesql ( $_POST['user_yim'] );
-    $_POST['user_skype'] = savesql ( $_POST['user_skype'] );
-
     settype ( $_POST['gen_password'], 'integer' );
     settype ( $_POST['user_is_staff'], 'integer' );
     settype ( $_POST['user_show_mail'], 'integer' );
@@ -83,38 +73,44 @@ if (
     $user_salt = generate_pwd ( 10 );
     $codedpwd = md5 ( $_POST['newpwd'].$user_salt );
 
-    // MySQL-Queries
-    mysql_query ( '
-                    INSERT INTO `'.$FD->config('pref')."user`
-                        ( `user_name`, `user_password`, `user_salt`,
-                        `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
-                        `user_reg_date`, `user_show_mail`, `user_homepage`,
-                        `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype` )
-                    VALUES (
-                        '".$_POST['user_name']."',
-                        '".$codedpwd."',
-                        '".$user_salt."',
-                        '".$_POST['user_mail']."',
-                        '".$_POST['user_is_staff']."',
-                        '".$_POST['user_group']."',
-                        '".$_POST['user_is_admin']."',
-                        '".$user_date."',
-                        '".$_POST['user_show_mail']."',
-                        '".$_POST['user_homepage']."',
-                        '".$_POST['user_icq']."',
-                        '".$_POST['user_aim']."',
-                        '".$_POST['user_wlm']."',
-                        '".$_POST['user_yim']."',
-                        '".$_POST['user_skype']."'
-                    )
-    ", $FD->sql()->conn() );
-    $user_id = mysql_insert_id ( $FD->sql()->conn() );
+    // SQL-Queries
+    $stmt = $FD->sql()->conn()->prepare ( '
+                INSERT INTO `'.$FD->config('pref')."user`
+                    ( `user_name`, `user_password`, `user_salt`,
+                    `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
+                    `user_reg_date`, `user_show_mail`, `user_homepage`,
+                    `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype` )
+                VALUES (
+                    ?,
+                    '".$codedpwd."',
+                    '".$user_salt."',
+                    ?,
+                    '".$_POST['user_is_staff']."',
+                    '".$_POST['user_group']."',
+                    '".$_POST['user_is_admin']."',
+                    '".$user_date."',
+                    '".$_POST['user_show_mail']."',
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?)" );
+    $stmt->execute(array(
+                    $_POST['user_name'],
+                    $_POST['user_mail'],
+                    $_POST['user_homepage'],
+                    $_POST['user_icq'],
+                    $_POST['user_aim'],
+                    $_POST['user_wlm'],
+                    $_POST['user_yim'],
+                    $_POST['user_skype']));
+    $user_id = $FD->sql()->conn()->lastInsertId();
     $message = 'Benutzer wurde erfolgreich hinzugef&uuml;gt';
 
-    mysql_query ( '
-                    UPDATE '.$FD->config('pref').'counter
-                    SET `user` = `user`+1
-    ', $FD->sql()->conn() );
+    $FD->sql()->conn()->exec ( '
+        UPDATE '.$FD->config('pref').'counter
+        SET `user` = `user`+1' );
 
     // upload image
     if ( $_FILES['user_pic']['name'] != '' ) {
@@ -124,11 +120,10 @@ if (
 
     // send email
     $template_mail = get_email_template ( 'signup' );
-    $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_POST['user_name'] ), $template_mail );
+    $template_mail = str_replace ( '{..user_name..}', $_POST['user_name'], $template_mail );
     $template_mail = str_replace ( '{..new_password..}', $_POST['newpwd'], $template_mail );
-    $template_mail = replace_globalvars ( $template_mail );
-    $email_subject = $FD->text("frontend", "mail_registerd_on") . $FD->config('virtualhost');
-    if ( @send_mail ( stripslashes ( $_POST['user_mail'] ), $email_subject, $template_mail ) ) {
+    $email_subject = $FD->text("frontend", "mail_registerd_on") .' '. $FD->config('virtualhost');
+    if ( send_mail ($_POST['user_mail'], $email_subject, $template_mail, MailManager::getHtmlConfig()) ) {
         $email_message = '<br>'.$FD->text("frontend", "mail_registerd_sended");
     } else {
         $email_message = '<br>'.$FD->text("frontend", "mail_registerd_not_sended");
@@ -304,26 +299,24 @@ if ( TRUE )
                                         <option value="0"'.getselected ( $_POST['user_group'], 0 ).'>keine Gruppe</option>
     ';
 
-    $index = mysql_query ('
-                            SELECT `user_group_id`, `user_group_name`
-                            FROM '.$FD->config('pref').'user_groups
-                            WHERE `user_group_id` > 0
-                            ORDER BY `user_group_name`
-    ', $FD->sql()->conn() );
+    $index = $FD->sql()->conn()->query ('
+                    SELECT `user_group_id`, `user_group_name`
+                    FROM '.$FD->config('pref').'user_groups
+                    WHERE `user_group_id` > 0
+                    ORDER BY `user_group_name`' );
 
-    while ( $group_arr = mysql_fetch_assoc( $index ) ) {
+    while ( $group_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         echo '<option value="'.$group_arr['user_group_id'].'" '.getselected ( $_POST['user_group'], $group_arr['user_group_id'] ).'>
             '.$group_arr['user_group_name'].'</option>';
     }
 
-    $index = mysql_query ('
-                            SELECT `user_group_id`, `user_group_name`
-                            FROM '.$FD->config('pref').'user_groups
-                            WHERE `user_group_id` = 0
-                            ORDER BY `user_group_name`
-                            LIMIT 0,1
-    ', $FD->sql()->conn() );
-    $group_arr = mysql_fetch_assoc( $index );
+    $index = $FD->sql()->conn()->query ('
+                    SELECT `user_group_id`, `user_group_name`
+                    FROM '.$FD->config('pref').'user_groups
+                    WHERE `user_group_id` = 0
+                    ORDER BY `user_group_name`
+                    LIMIT 0,1');
+    $group_arr = $index->fetch(PDO::FETCH_ASSOC);
     echo '<option value="admin" '.getselected ( $_POST['user_group'], "admin" ).'>'.$group_arr['user_group_name'].' (alle Rechte)</option>';
 
     echo '

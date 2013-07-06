@@ -41,30 +41,6 @@ if ( $FD->sql()->conn() )
     settype ( $config_arr['cfg_top1_y'], 'integer' );
     settype ( $config_arr['cfg_loadonstop'], 'integer' );
 
-    $config_arr['cfg_videobgcolor'] = stripslashes ( $config_arr['cfg_videobgcolor'] );
-    $config_arr['cfg_bgcolor1'] = stripslashes ( $config_arr['cfg_bgcolor1'] );
-    $config_arr['cfg_bgcolor2'] = stripslashes ( $config_arr['cfg_bgcolor2'] );
-    $config_arr['cfg_bgcolor'] = stripslashes ( $config_arr['cfg_bgcolor'] );
-    $config_arr['cfg_showplayer'] = stripslashes ( $config_arr['cfg_showplayer'] );
-    $config_arr['cfg_showloading'] = stripslashes ( $config_arr['cfg_showloading'] );
-    $config_arr['cfg_playercolor'] = stripslashes ( $config_arr['cfg_playercolor'] );
-    $config_arr['cfg_loadingcolor'] = stripslashes ( $config_arr['cfg_loadingcolor'] );
-    $config_arr['cfg_buttoncolor'] = stripslashes ( $config_arr['cfg_buttoncolor'] );
-    $config_arr['cfg_buttonovercolor'] = stripslashes ( $config_arr['cfg_buttonovercolor'] );
-    $config_arr['cfg_slidercolor1'] = stripslashes ( $config_arr['cfg_slidercolor1'] );
-    $config_arr['cfg_slidercolor2'] = stripslashes ( $config_arr['cfg_slidercolor2'] );
-    $config_arr['cfg_sliderovercolor'] = stripslashes ( $config_arr['cfg_sliderovercolor'] );
-    $config_arr['cfg_buffermessage'] = stripslashes ( $config_arr['cfg_buffermessage'] );
-    $config_arr['cfg_buffercolor'] = stripslashes ( $config_arr['cfg_buffercolor'] );
-    $config_arr['cfg_bufferbgcolor'] = stripslashes ( $config_arr['cfg_bufferbgcolor'] );
-    $config_arr['cfg_titlecolor'] = stripslashes ( $config_arr['cfg_titlecolor'] );
-    $config_arr['cfg_onclick'] = stripslashes ( $config_arr['cfg_onclick'] );
-    $config_arr['cfg_ondoubleclick'] = stripslashes ( $config_arr['cfg_ondoubleclick'] );
-    $config_arr['cfg_showmouse'] = stripslashes ( $config_arr['cfg_showmouse'] );
-    $config_arr['cfg_iconplaycolor'] = stripslashes ( $config_arr['cfg_iconplaycolor'] );
-    $config_arr['cfg_iconplaybgcolor'] = stripslashes ( $config_arr['cfg_iconplaybgcolor'] );
-    $config_arr['cfg_top1_url'] = stripslashes ( $config_arr['cfg_top1_url'] );
-
 if ( strlen ( $config_arr['cfg_top1_url'] ) > 0 ) {
     $config_arr['cfg_top1'] = $config_arr['cfg_top1_url'].'|'.$config_arr['cfg_top1_x'].'|'.$config_arr['cfg_top1_y'];
 } else {

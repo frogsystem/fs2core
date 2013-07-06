@@ -1,0 +1,20 @@
+post_settings_title: Beiträge
+post_settings_info: <b>Hinweis</b>: Hier wird nur die grundsätzliche Möglichkeit zur Verwendung eingstellt. Bei jedem Artikel kann die Verwendung von HTML, FS-Code und der Absatzbehandlung auch noch seperat (de-)aktiviert werden.
+allow_html: HTML-Code
+allow_html_desc: Erlaubt HTML-Code in ...
+allow_fs: FS-Code
+allow_fs_desc: Erlaubt FS-Code in ...
+allow_para: Absatzbehandlung
+allow_para_desc: Aktiviert die Absatzbehandlung in ...
+allow_code_no: Aus
+allow_code_articles: Artikeln
+allow_code_comments: Kommentaren
+allow_code_both: Artikeln &amp; Kommentaren
+
+cat_settings_title: Kategorien
+cat_img_max_width: Kategoriebild - max. Breite
+cat_img_max_width_desc: Max. Breite eines Kategoriebildes in Pixeln.
+cat_img_max_height: Kategoriebild - max. Höhe
+cat_img_max_height_desc: Max. Höhe eines Kategoriebildes in Pixeln.
+cat_img_max_size: Kategoriebild - max. Dateigröße
+cat_img_max_size_desc: Max. Dateigröße eines Kategoriebildes in KiB.

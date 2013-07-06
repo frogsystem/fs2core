@@ -2,12 +2,11 @@
 ///////////////////////////
 //// Show Announcement ////
 ///////////////////////////
-$index = mysql_query ( '
+$index = $FD->sql()->conn()->query( '
                         SELECT *
                         FROM `'.$FD->config('pref')."announcement`
-                        WHERE `id` = '1'
-", $FD->sql()->conn() );
-$ann_arr = mysql_fetch_assoc ( $index );
+                        WHERE `id` = '1'" );
+$ann_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 if ( $ann_arr['show_announcement'] != 0 && $ann_arr['activate_announcement'] == 1 ) {
 

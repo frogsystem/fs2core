@@ -44,9 +44,9 @@ class StringCutter {
 		if (!isset($awareness['word']))
 			$awareness['word'] = false;
 		if (!isset($awareness['html']))
-			$awareness['word'] = false;
+			$awareness['html'] = false;
 		if (!isset($awareness['bbcode']))
-			$awareness['word'] = false;
+			$awareness['bbcode'] = false;
 
 		if (!isset($options['count_html']))
 			$options['count_html'] = false;

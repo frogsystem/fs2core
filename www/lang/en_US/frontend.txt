@@ -1,7 +1,44 @@
-# Language-Definition for frontend.php
-no_connection_to_the_server:     Could not connect to server. Please try again later.
-no_connection:                   Connection Error
-
+# old Language-Definition for frontend
+no_connection:                                     Could not connect to server. Please try again later.
+no_con_title:                                      Connection Error
+sysmessage:                                        System message
+access_denied:                                     Access denied
+file_not_found:                                    File not found
+time_at:                                           at
+pass_change:                                       Password change on
+registration:                                      Registration on
+news_not_exist:                                    News does not exist
+no_result_time:                                    No entries in that time period found
+no_result_word:                                    No entries with that keyword found
+add_comment:                                       Add comment
+comment_not_added:                                 Comment has not been added.
+comment_empty:                                     <br>You have to fill in all fields.
+comment_spam:                                      <br>The arithmetic problem was not solved correctly.
+no_comments:                                       No comments found
+comm_not_allowed:                                  You are not allowed to post comments
+comm_not_activ:                                    The comment feature is deactivated for that news
+no_pics:                                           No images found.
+dl_not_logged_in:                                  <font color="red"><b>Hint:</b></font> If you want to download files, you have to be <a href="?go=login">logged in</a>. Otherwise you can use mirrors only.
+dl_not_allowed:                                    <font color="red"><b>Hint:</b></font> The Download feature is currently deactivated. You can only use the mirrors.
+dl_not_save_as:                                    <font color="red"><b>Hint:</b></font> "Save target as" is not possible.
+dl_not_exist:                                      Download does not exist
+avatar_loaded:                                     Avatar has been uploaded
+avatar_no_jpggif:                                  Avatar could not be uploaded. It has to be a JPG or GIF file
+avatar_to_big:                                     Avatar could not be uploaded. The file is too big
+profile_update:                                    Profile has been updated.
+pass_update:                                       Password has been changed.
+pass_failed:                                       Password change failed
+pass_newwrong:                                     The new password and its repetition do not match
+pass_oldwrong:                                     You have not entered the correct current password
+no_avatar:                                         No image selected
+user_not_exist:                                    User does not exist
+user_exists:                                       User name already exists
+registered:                                        Registration was successful<br>Login is now possible
+user_antispam:                                     The arithmetic problem was not solved correctly
+not_twice:                                         You are already registered.
+logged_in:                                         You are logged in.
+logged_out:                                        you are logged out again.
+article_not_found:                                 Article not found
 
 
 # new Language-Definition for frontend
@@ -16,7 +53,25 @@ no:                              No
 month_names_array:               January,February,March,April,Mai,June,Juli,August,September,October,November,December
 week_days_array:                 Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday
 news_feed:                       News Feed
-
+mail_password_changed_on:        Password change on
+mail_new_password_sended:        A message with the changed login data has been send to the given e-mail address
+mail_new_password_not_sended:    E-mail could not be send<br>An error occured while sending the mail with the changed login data
+mail_registerd_on:               Registration on
+mail_registerd_sended:           A message with the login data has been send to the given e-mail address
+mail_registerd_not_sended:       E-mail could not be send<br>An error occured while sending the mail with the login data
+user_image:                      User image
+user_profile:                    User profile
+user_image_of:                   User image of
+user_admincp_title:              Admin CP
+user_profile_updated:            Profile has been updated
+user_password_changed:           Password has been changed
+user_password_change_failed:     Password change failed
+user_password_change_error_new:  The new password and its repetition do not match
+user_password_change_error_old:  You have not entered the correct current password
+user_image_not_found:            No user image found
+user_not_found:                  User not found
+user_name_exists:                The desired user name already exists
+user_registered:                 Registration was successful<br>Login is now possible
 user_antispam:                   The arithmetic problem was not solved correctly
 user_register_password_error:    The password and its repetition do not match
 user_register_not_twice:         Users cannot register multiple times
@@ -55,6 +110,8 @@ image_upload_error_5:            Image upload failed<br>The image does not have 
 image_upload_error_6:            Image upload failed<br>The image could not be created
 
 # Search
+sq_error_not_and:               Prohibited use of NOT in your Searchquery. Don't use NOT on both sides of AND.
+sq_error_not_or_xor:            Prohibited use of NOT in your Searchquery. Neither use NOT with OR nor XOR.
 sq_invalid_searchstring:        Invalid search query. Please stick to the search rules.
 
 # Common Phrases
@@ -63,3 +120,7 @@ quote:                          Quote
 quote_by:                       Quote by
 code:                           Source code
 video:                          Video
+
+# poll
+multiple_choice:                Multiple choice
+single_choice:                  Single choice

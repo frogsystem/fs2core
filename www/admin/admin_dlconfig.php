@@ -30,7 +30,7 @@ if (isset($_POST['screen_x']) && isset($_POST['screen_y']) && isset($_POST['thum
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
@@ -46,8 +46,8 @@ if(true)
     if(isset($_POST['sended'])) {
         echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'downloads'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('downloads');
+        $data = $FD->configObject('downloads')->getConfigArray();
         putintopost($data);
     }
 
@@ -87,7 +87,7 @@ if(true)
                                     <font class="small">Der Datei-Pfad der mit dem Quick-Insert Button eingef&uuml;gt wird.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="40" name="quickinsert" value="'.unslash($_POST['quickinsert']).'" maxlength="255">
+                                    <input class="text" size="40" name="quickinsert" value="'.$_POST['quickinsert'].'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>

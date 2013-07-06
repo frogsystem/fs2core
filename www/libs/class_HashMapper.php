@@ -7,7 +7,7 @@
  *
  * this class provides access and datahandling for confirment hashes
  */
-require('class_hash.php');
+require('class_Hash.php');
 
 class HashMapper
 {
@@ -22,7 +22,10 @@ class HashMapper
 
     // Hash laden
     private function getById($id) {
-        $data = $this->sql->getById('hashes', '*', $id);
+        $data = $this->sql->conn()->query(
+                        'SELECT * FROM '.$this->sql->getPrefix().'hashes
+                         WHERE id = '.intval($id).' LIMIT 1');
+        $data = $data->fetch(PDO::FETCH_ASSOC);
 
         if (!empty($data)) {
 			$hash = new Hash($data);
@@ -34,7 +37,11 @@ class HashMapper
     }
 
     public function getByHash($hash) {
-        $data = $this->sql->getById('hashes', '*', $hash, 'hash');
+        $data = $this->sql->conn()->prepare(
+                        'SELECT * FROM '.$this->sql->getPrefix().'hashes
+                         WHERE hash = ? LIMIT 1');
+        $data->execute(array($hash));
+        $data = $data->fetch(PDO::FETCH_ASSOC);
 
         if (!empty($data)) {
 			$hash = new Hash($data);
@@ -78,18 +85,20 @@ class HashMapper
 
     // delete from DB
     public function delete($hash) {
-        $this->sql->deleteById('hashes', $hash->getId());
+        $this->sql->conn()->exec('DELETE FROM '.$FD->config('pref').'hashes
+                                  WHERE id = '.intval($hash->getId()));
     }
-    
+
     // delete from DB by deleteTime
     public static function deleteByTime($time = null) {
         global $FD;
-        
+
         if (empty($time))
             $time = $FD->env('time');
-        
-        $FD->sql()->delete('hashes', array('W' => "`deleteTime` < '".$FD->sql()->escape($time)."'"));
-    }    
+
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'hashes
+                                  WHERE `deleteTime` < '.intval($time));
+    }
 
 
     // create new hash for a new Password Request

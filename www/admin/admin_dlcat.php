@@ -9,19 +9,19 @@ if (isset($_POST['catname']))
     settype($_POST['catid'], 'integer');
     if (isset($_POST['delcat']))
     {
-        mysql_query('DELETE FROM '.$FD->config('pref').'dl_cat WHERE cat_id = '.$_POST['catid'], $FD->sql()->conn() );
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'dl_cat WHERE cat_id = '.$_POST['catid']);
         systext('Die Kategorie wurde gel&ouml;scht');
     }
     else
     {
-        $_POST['catname'] = savesql($_POST['catname']);
         settype($_POST['subcatof'], 'integer');
 
-        $update = 'UPDATE '.$FD->config('pref')."dl_cat
+        $stmt = $FD->sql()->conn()->prepare(
+                  'UPDATE '.$FD->config('pref')."dl_cat
                    SET subcat_id = '$_POST[subcatof]',
-                       cat_name = '$_POST[catname]'
-                   WHERE cat_id = $_POST[catid]";
-        mysql_query($update, $FD->sql()->conn() );
+                       cat_name = ?
+                   WHERE cat_id = $_POST[catid]");
+        $stmt->execute(array($_POST['catname']));
         systext('Die Kategorie wurde editiert');
     }
     unset($_POST);
@@ -45,8 +45,8 @@ if (isset($_POST['editcatid']))
     $valid_ids = array();
     get_dl_categories ($valid_ids, $_POST['editcatid']);
 
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$_POST[editcatid]'", $FD->sql()->conn() );
-    $cat_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$_POST[editcatid]'");
+    $cat_arr = $index->fetch(PDO::FETCH_ASSOC);
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_cat" name="go">
@@ -114,7 +114,7 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="dl_cat" name="go">
                         <table class="content select_list" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="3"><h3>Produkt bearbeiten</h3><hr></td></tr>
+                            <tr><td colspan="3"><h3>Kategorie bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="40%">
                                     Name
@@ -127,8 +127,8 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query('SELECT * FROM '.$FD->config('pref').'dl_cat ORDER BY cat_name');
-    while ($cat_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'dl_cat ORDER BY cat_name');
+    while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $sub = ($cat_arr['subcat_id'] == 0) ? 'Nein' : 'Ja';
         echo'

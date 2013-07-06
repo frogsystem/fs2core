@@ -21,17 +21,25 @@ function get_user_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
 ///////////////////////////////////////////
 //// Security Functions & Config Array ////
 ///////////////////////////////////////////
+if (!isset($_GET['order']))
+{
+  $_GET['order'] = 1;
+}
 $_GET['order'] = ( in_array ( $_GET['order'], array ( '0', 'desc', 'DESC', 'down', 'DOWN' ) ) ) ? 0 : 1;
 settype ( $_GET['order'], 'integer' );
 
+if (!isset($_GET['sort']))
+{
+  $_GET['sort'] = 'name';
+}
 $_GET['sort'] = ( in_array ( $_GET['sort'], array ( 'id', 'name', 'mail', 'reg_date', 'num_news', 'num_comments', 'num_articles', 'num_downloads' ) ) ) ? $_GET['sort'] : 'name';
 
 $FD->loadConfig('users');
 $config_arr = $FD->configObject('users')->getConfigArray();
 
 // Get Number of Users
-$index = mysql_query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`', $FD->sql()->conn() );
-$row = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
 $config_arr['number_of_users'] = $row['num_users'];
 if ( $config_arr['user_per_page'] == -1 ) {
     $config_arr['user_per_page'] = $config_arr['number_of_users'];
@@ -115,7 +123,7 @@ $limit = ' LIMIT '.intval($config_arr['prev_page']*$config_arr['user_per_page'])
 /*finally get the data... still may take several seconds for large user base
   and unfavourable sort criterion, but it should take less memory and execute
   faster than the previous code*/
-$index = mysql_query ( $query.$limit, $FD->sql()->conn() );
+$index = $FD->sql()->conn()->query ( $query.$limit );
 
 ///////////////////////////
 //// Display User List ////
@@ -136,7 +144,7 @@ $adminline_template->load ( 'USERLIST_ADMINLINE' );
 
 // Get Lines
 $lines = array();
-while ( $row = mysql_fetch_assoc($index) )
+while ( $row = $index->fetch(PDO::FETCH_ASSOC) )
 {
     if ( $row['user_is_staff'] == 1 ) {
         $line_template = $staffline_template;
@@ -157,7 +165,7 @@ while ( $row = mysql_fetch_assoc($index) )
     $line_template->tag ( 'user_image_url', image_url ( 'media/user-images/', $row['user_id'] ) );
     $line_template->tag ( 'user_mail', ( $row['user_show_mail'] == 1 ) ? kill_replacements ( $row['user_mail'], TRUE ) : '-' );
     $line_template->tag ( 'user_rank', $temp_rank_data );
-    $line_template->tag ( 'user_reg_date', date_loc ( stripslashes ( $config_arr['user_list_reg_date_format'] ), $row['user_reg_date'] ) );
+    $line_template->tag ( 'user_reg_date', date_loc ( $config_arr['user_list_reg_date_format'], $row['user_reg_date'] ) );
     $line_template->tag ( 'user_num_news', $row['user_num_news'] );
     $line_template->tag ( 'user_num_comments', $row['user_num_comments'] );
     $line_template->tag ( 'user_num_articles', $row['user_num_articles'] );

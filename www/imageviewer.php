@@ -1,30 +1,27 @@
 <?php
-// Start Session
-session_start ();
-// Disable magic_quotes_runtime
-ini_set( 'magic_quotes_runtime', '0' );
+/* FS2 PHP Init */
+set_include_path('.');
+define('FS2_ROOT_PATH', './', true);
+require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
+phpinit();
+/* End of FS2 PHP Init */
 
-// fs2 include path
-set_include_path ( '.' );
-define ( 'FS2_ROOT_PATH', './', TRUE );
+// Inlcude DB Connection File or exit()
+require_once(FS2_ROOT_PATH . 'login.inc.php');
 
-// Inlcude DB Connection File
-require ( FS2_ROOT_PATH . 'login.inc.php');
+//Include Functions-Files
+require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
+require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
+require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
+require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 
-if ($FD->sql()->conn() )
-{
-    //Include Functions-Files
-    require ( FS2_ROOT_PATH . 'includes/functions.php' );
-    require ( FS2_ROOT_PATH . 'includes/imagefunctions.php' );
-    require ( FS2_ROOT_PATH . 'includes/indexfunctions.php' );
 
-    //Include Library-Classes
-    require ( FS2_ROOT_PATH . 'libs/class_template.php' );
-    require ( FS2_ROOT_PATH . 'libs/class_fileaccess.php' );
-    require ( FS2_ROOT_PATH . 'libs/class_langDataInit.php' );
-
-    // Constructor Calls
-    set_style ();
+// Constructor Calls
+// TODO: "Constructor Hook"
+userlogin();
+setTimezone($FD->cfg('timezone'));
+run_cronjobs();
+set_style();
 
     // Security Functions
     $_GET['id'] = ( isset ( $_GET['screenid'] ) ) ? $_GET['screenid'] : $_GET['id'];
@@ -56,19 +53,19 @@ if ($FD->sql()->conn() )
     // Gallery Image
     } else {
         // Get Image Data
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
                                 SELECT `screen_name`, `cat_id` FROM `'.$FD->config('pref').'screen`
                                 WHERE `screen_id` = '.$_GET['id'].'
-                                LIMIT 0,1
-        ', $FD->sql()->conn() );
+                                LIMIT 0,1' );
 
         $data_array['image'] = image_url ( 'images/screenshots/', $_GET['id'], FALSE );
         $data_array['image_url'] = image_url ( 'images/screenshots/', $_GET['id'] );
         $data_array['image_sizeinfo'] = image_url ( 'images/screenshots/', $_GET['id'], FALSE, TRUE );
 
-        if ( mysql_num_rows ( $index ) == 1 ) {
-            $data_array['caption'] = stripslashes ( mysql_result ( $index, 0, 'screen_name' ) );
-            $cat_id = mysql_result ( $index, 0, 'cat_id' );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        if ( $row !== false ) {
+            $data_array['caption'] = $row['screen_name'];
+            $cat_id = $row['cat_id'];
             settype( $cat_id, 'integer' );
             $image_found = TRUE;
         }
@@ -85,17 +82,16 @@ if ($FD->sql()->conn() )
         // No single Image
         } else {
             // exists a NEXT image?
-            $index = mysql_query ( '
-                                    SELECT `screen_id`
-                                    FROM `'.$FD->config('pref').'screen`
-                                    WHERE `cat_id` = '.$cat_id.'
-                                    AND `screen_id` > '.$_GET['id'].'
-                                    ORDER BY `screen_id`
-                                    LIMIT 0,1
-            ', $FD->sql()->conn() );
-
-            if ( mysql_num_rows ( $index ) == 1 ) {
-                $next_id = mysql_result ( $index, 0, 'screen_id' );
+            $index = $FD->sql()->conn()->query ( '
+                            SELECT `screen_id`
+                            FROM `'.$FD->config('pref').'screen`
+                            WHERE `cat_id` = '.$cat_id.'
+                            AND `screen_id` > '.$_GET['id'].'
+                            ORDER BY `screen_id`
+                            LIMIT 0,1' );
+            $row = $index->fetch(PDO::FETCH_ASSOC);
+            if ( $row !== false ) {
+                $next_id = $row['screen_id'];
 
                 $data_array['next_url'] = 'imageviewer.php?id='.$next_id;
                 $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_next_text').'</a>';
@@ -103,17 +99,16 @@ if ($FD->sql()->conn() )
             }
 
             // exists a PREVIOUS image?
-            $index = mysql_query ( '
-                                    SELECT `screen_id`
-                                    FROM `'.$FD->config('pref').'screen`
-                                    WHERE `cat_id` = '.$cat_id.'
-                                    AND `screen_id` < '.$_GET['id'].'
-                                    ORDER BY `screen_id` DESC
-                                    LIMIT 0,1
-            ', $FD->sql()->conn() );
-
-            if ( mysql_num_rows ( $index ) == 1 ) {
-                $prev_id = mysql_result ( $index, 0, 'screen_id' );
+            $index = $FD->sql()->conn()->query ( '
+                            SELECT `screen_id`
+                            FROM `'.$FD->config('pref').'screen`
+                            WHERE `cat_id` = '.$cat_id.'
+                            AND `screen_id` < '.$_GET['id'].'
+                            ORDER BY `screen_id` DESC
+                            LIMIT 0,1' );
+            $row = $index->fetch(PDO::FETCH_ASSOC);
+            if ( $row !== false ) {
+                $prev_id = $row['screen_id'];
 
                 $data_array['prev_url'] = 'imageviewer.php?id='.$prev_id;
                 $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_prev_text').'</a>';
@@ -148,8 +143,8 @@ if ($FD->sql()->conn() )
     // Create PopUp-Viewer-Template
     $template_popupviewer = new template();
 
-    $template_popupviewer->setFile('0_general.tpl');
-    $template_popupviewer->load('POPUPVIEWER');
+    $template_popupviewer->setFile('0_viewer.tpl');
+    $template_popupviewer->load('VIEWER');
 
     $template_popupviewer->tag( 'image', $data_array['image'] );
     $template_popupviewer->tag( 'image_url', $data_array['image_url'] );
@@ -161,23 +156,14 @@ if ($FD->sql()->conn() )
     $template_popupviewer->tag( 'next_link', $data_array['next_link'] );
     $template_popupviewer->tag( 'next_image_link', $data_array['next_image_link'] );
 
-    $template_popupviewer = $template_popupviewer->display();
-    $template_popupviewer = replace_snippets ( $template_popupviewer );
-    $template_popupviewer = replace_navigations ( $template_popupviewer );
-    $template_popupviewer = replace_applets ( $template_popupviewer );
-    $template_popupviewer = replace_navigations ( $template_popupviewer );
-    $template_popupviewer = replace_snippets ( $template_popupviewer );
+    $template_popupviewer = (string)  $template_popupviewer;
+    $template_popupviewer = tpl_functions_init($template_popupviewer);
 
-    $template_popupviewer = replace_globalvars ( $template_popupviewer );
-
-    // Get Main Template
-    $template = get_maintemplate ();
-    $template = str_replace ( '{..body..}', $template_popupviewer, $template);
 
     // Display Page
-    echo $template;
+    echo get_maintemplate($template_popupviewer);
 
-    // Close Connection
-    mysql_close ( $FD->sql()->conn() );
-}
+// Shutdown System
+// TODO: "Shutdown Hook"
+unset($FD);
 ?>

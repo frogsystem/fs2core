@@ -68,29 +68,22 @@ if (
 	settype ( $_POST['cfg_top1_y'], 'integer' );
 	settype ( $_POST['cfg_loadonstop'], 'integer' );
 
-	$_POST['cfg_videobgcolor'] = savesql ( '#'.$_POST['cfg_videobgcolor'] );
-	$_POST['cfg_bgcolor1'] = savesql ( '#'.$_POST['cfg_bgcolor1'] );
-	$_POST['cfg_bgcolor2'] = savesql ( '#'.$_POST['cfg_bgcolor2'] );
-	$_POST['cfg_bgcolor'] = savesql ( '#'.$_POST['cfg_bgcolor'] );
-	$_POST['cfg_showplayer'] = savesql ( $_POST['cfg_showplayer'] );
-	$_POST['cfg_showloading'] = savesql ( $_POST['cfg_showloading'] );
-	$_POST['cfg_playercolor'] = savesql ( '#'.$_POST['cfg_playercolor'] );
-	$_POST['cfg_loadingcolor'] = savesql ( '#'.$_POST['cfg_loadingcolor'] );
-	$_POST['cfg_buttoncolor'] = savesql ( '#'.$_POST['cfg_buttoncolor'] );
-	$_POST['cfg_buttonovercolor'] = savesql ( '#'.$_POST['cfg_buttonovercolor'] );
-	$_POST['cfg_slidercolor1'] = savesql ( '#'.$_POST['cfg_slidercolor1'] );
-	$_POST['cfg_slidercolor2'] = savesql ( '#'.$_POST['cfg_slidercolor2'] );
-	$_POST['cfg_sliderovercolor'] = savesql ( '#'.$_POST['cfg_sliderovercolor'] );
-	$_POST['cfg_buffermessage'] = savesql ( $_POST['cfg_buffermessage'] );
-	$_POST['cfg_buffercolor'] = savesql ( '#'.$_POST['cfg_buffercolor'] );
-	$_POST['cfg_bufferbgcolor'] = savesql ( '#'.$_POST['cfg_bufferbgcolor'] );
-	$_POST['cfg_titlecolor'] = savesql ( '#'.$_POST['cfg_titlecolor'] );
-	$_POST['cfg_onclick'] = savesql ( $_POST['cfg_onclick'] );
-	$_POST['cfg_ondoubleclick'] = savesql ( $_POST['cfg_ondoubleclick'] );
-	$_POST['cfg_showmouse'] = savesql ( $_POST['cfg_showmouse'] );
-	$_POST['cfg_iconplaycolor'] = savesql ( '#'.$_POST['cfg_iconplaycolor'] );
-	$_POST['cfg_iconplaybgcolor'] = savesql ( '#'.$_POST['cfg_iconplaybgcolor'] );
-	$_POST['cfg_top1_url'] = savesql ( $_POST['cfg_top1_url'] );
+	$_POST['cfg_videobgcolor'] =  '#'.$_POST['cfg_videobgcolor'];
+	$_POST['cfg_bgcolor1'] = '#'.$_POST['cfg_bgcolor1'];
+	$_POST['cfg_bgcolor2'] = '#'.$_POST['cfg_bgcolor2'];
+	$_POST['cfg_bgcolor'] = '#'.$_POST['cfg_bgcolor'];
+	$_POST['cfg_playercolor'] = '#'.$_POST['cfg_playercolor'];
+	$_POST['cfg_loadingcolor'] = '#'.$_POST['cfg_loadingcolor'];
+	$_POST['cfg_buttoncolor'] = '#'.$_POST['cfg_buttoncolor'];
+	$_POST['cfg_buttonovercolor'] = '#'.$_POST['cfg_buttonovercolor'];
+	$_POST['cfg_slidercolor1'] = '#'.$_POST['cfg_slidercolor1'];
+	$_POST['cfg_slidercolor2'] = '#'.$_POST['cfg_slidercolor2'];
+	$_POST['cfg_sliderovercolor'] = '#'.$_POST['cfg_sliderovercolor'];
+	$_POST['cfg_buffercolor'] = '#'.$_POST['cfg_buffercolor'];
+	$_POST['cfg_bufferbgcolor'] = '#'.$_POST['cfg_bufferbgcolor'];
+	$_POST['cfg_titlecolor'] = '#'.$_POST['cfg_titlecolor'];
+	$_POST['cfg_iconplaycolor'] = '#'.$_POST['cfg_iconplaycolor'];
+	$_POST['cfg_iconplaybgcolor'] = '#'.$_POST['cfg_iconplaybgcolor'];
 
     // prepare data
     $data = frompost($used_cols);
@@ -104,7 +97,7 @@ if (
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
@@ -123,8 +116,8 @@ if ( TRUE )
 
 	// Load Data from DB into Post
 	} else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'video_player'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('video_player');
+        $data = $FD->configObject('video_player')->getConfigArray();
         putintopost($data);
 	}
 
@@ -630,7 +623,7 @@ if ( TRUE )
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "save_long").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>

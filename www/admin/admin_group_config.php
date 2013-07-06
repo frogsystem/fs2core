@@ -10,14 +10,14 @@ $used_cols = array('group_pic_x', 'group_pic_y', 'group_pic_size');
 ///////////////////////
 
 if (
-		isset($_POST['group_pic_x']) && $_POST['group_pic_x'] > 0
-		&& isset($_POST['group_pic_y']) && $_POST['group_pic_y'] > 0
-		&& isset($_POST['group_pic_size']) && $_POST['group_pic_size'] > 0
-	)
+	isset($_POST['group_pic_x']) && $_POST['group_pic_x'] > 0
+	&& isset($_POST['group_pic_y']) && $_POST['group_pic_y'] > 0
+	&& isset($_POST['group_pic_size']) && $_POST['group_pic_size'] > 0
+   )
 {
     // prepare data
     $data = frompost($used_cols);
-      
+
     // save config
     try {
         $FD->saveConfig('groups', $data);
@@ -27,7 +27,7 @@ if (
             $FD->text('admin', 'config_not_saved').'<br>'.
             (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
             $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
-        );        
+        );
     }
 
     // Unset Vars
@@ -46,11 +46,11 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $data = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'groups'"));
-        $data = json_array_decode($data['config_data']);
+        $FD->loadConfig('groups');
+        $data = $FD->configObject('groups')->getConfigArray();
         putintopost($data);
-    }    
-    
+    }
+
     // security functions
     $_POST = array_map('killhtml', $_POST);
 

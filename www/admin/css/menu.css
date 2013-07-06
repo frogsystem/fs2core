@@ -53,12 +53,12 @@ ul.topmenu li a {
 }
 ul.topmenu li a:hover, ul.topmenu li a:focus, ul.topmenu li a:active {
     text-decoration:none;
-    background:#14A643 url('../images/topmenu_hover.jpg') left top repeat-x;
+    background:url('../images/topmenu_hover.jpg') left top repeat-x;
 }
 
 ul.topmenu li.selected a{
     font-weight:bold;
-    background:#14A643 url('../images/topmenu_hover.jpg') left top repeat-x;
+    background:url('../images/topmenu_hover.jpg') left top repeat-x;
 }
 
 

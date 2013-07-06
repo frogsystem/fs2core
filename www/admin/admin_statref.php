@@ -16,9 +16,6 @@ if (
     settype ($_POST['del_cron'], 'integer');
     settype ($_POST['del_days'], 'integer');
     settype ($_POST['del_hits'], 'integer');
-    savesql ($_POST['del_contact']);
-    savesql ($_POST['del_age']);
-    savesql ($_POST['del_amount']);
 
 	if ( $_POST['del_days'] < 1 )
     {
@@ -81,7 +78,7 @@ else
 
     settype ( $_POST['limit'], 'integer' );
     if (!isset($_POST['filter'])) $_POST['filter'] = '';
-    $filter = savesql ( $_POST['filter'] );
+    $filter = $_POST['filter'];
     $_POST['filter'] = killhtml ( $_POST['filter'] );
 
     if (!isset($_POST['order'])) $_POST['order'] = 'f'; //default
@@ -210,8 +207,8 @@ else
             break;
     }
 
-    $index = mysql_query ( 'SELECT * FROM '.$FD->config('pref').'counter_ref '.$query.'', $FD->sql()->conn() );
-    $referrer_number = mysql_num_rows ( $index );
+    $index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'counter_ref '.$query.'' );
+    $referrer_number = $index->fetchColumn();
     if ( $referrer_number <= 0 ) {
     	echo'
                         <tr>
@@ -222,7 +219,8 @@ else
 		';
 	}
 
-	while ( $referrer_arr = mysql_fetch_assoc ( $index ) )
+    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'counter_ref '.$query.'' );
+	while ( $referrer_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
         $dburlfull = $referrer_arr['ref_url'];
 
@@ -285,8 +283,9 @@ else
     if (has_perm('stat_ref_delete')) {
 
         // Get Config data
-        $cronjobs = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'cronjobs'"));
-        $cronjobs = json_array_decode($cronjobs['config_data']);
+        $FD->loadConfig('cronjobs');
+        $cronjobs = $FD->configObject('cronjobs')->getConfigArray();
+        
         $cronjobs = array_filter_keys($cronjobs, $cronjobs_cols);
         putintopost($cronjobs);
 

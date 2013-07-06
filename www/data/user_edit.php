@@ -29,6 +29,7 @@ if (
           image_rename ( 'media/user-images/', $_SESSION['user_id'].'_old', $_SESSION['user_id'] );
         }
     }
+    initstr($message);
 
     // Update Database
     $_POST['user_show_mail'] = isset ( $_POST['user_show_mail'] ) ? 1 : 0;
@@ -39,30 +40,39 @@ if (
         $_POST['user_homepage'] = 'http://'.$_POST['user_homepage'];
     }
 
-    mysql_query ( '
-        UPDATE '.$FD->config('pref')."user
-        SET `user_mail` = '".savesql ( $_POST['user_mail'] )."',
-            `user_show_mail` = '".$_POST['user_show_mail']."',
-            `user_homepage` = '".savesql ( $_POST['user_homepage'] )."',
-            `user_icq` = '".savesql ( $_POST['user_icq'] )."',
-            `user_aim` = '".savesql ( $_POST['user_aim'] )."',
-            `user_wlm` = '".savesql ( $_POST['user_wlm'] )."',
-            `user_yim` = '".savesql ( $_POST['user_yim'] )."',
-            `user_skype` = '".savesql ( $_POST['user_skype'] )."'
-        WHERE `user_id` = '".$_SESSION['user_id']."'
-    ", $FD->sql()->conn() );
-    $message .= $FD->text("frontend", "user_profile_updated");
+    $stmt = $FD->sql()->conn()->prepare('
+        UPDATE '.$FD->config('pref').'user
+        SET `user_mail` = ?,
+            `user_show_mail` = ?,
+            `user_homepage` = ?,
+            `user_icq` = ?,
+            `user_aim` = ?,
+            `user_wlm` = ?,
+            `user_yim` = ?,
+            `user_skype` = ?
+        WHERE `user_id` = ?');
+    $stmt->execute( array(
+            $_POST['user_mail'],
+            $_POST['user_show_mail'],
+            $_POST['user_homepage'],
+            $_POST['user_icq'],
+            $_POST['user_aim'],
+            $_POST['user_wlm'],
+            $_POST['user_yim'],
+            $_POST['user_skype'],
+            $_SESSION['user_id'] ) );
+    $message .= $FD->text('frontend', 'user_profile_updated');
 
     // Save New Password
     if ( $_POST['old_pwd'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] ) {
-        $index = mysql_query ( '
+        $index = $FD->sql()->conn()->query ( '
             SELECT `user_name`, `user_password`, `user_salt`
             FROM `'.$FD->config('pref')."user`
-            WHERE `user_id` = '".$_SESSION['user_id']."'
-        ", $FD->sql()->conn() );
-        $old_password = mysql_result($index, 0, 'user_password');
-        $user_salt = mysql_result($index, 0, 'user_salt');
-        $user_name = mysql_result($index, 0, 'user_name');
+            WHERE `user_id` = '".intval($_SESSION['user_id'])."'" );
+        $row = $index->fetch(PDO::FETCH_ASSOC);
+        $old_password = $row['user_password'];
+        $user_salt = $row['user_salt'];
+        $user_name = $row['user_name'];
 
         $_POST['old_pwd'] = md5 ( $_POST['old_pwd'].$user_salt );
 
@@ -77,30 +87,30 @@ if (
                 unset ( $_POST['wdh_pwd'] );
 
                 // Update Password
-                mysql_query ( '
+                $FD->sql()->conn()->exec ( '
                     UPDATE '.$FD->config('pref')."user
                     SET `user_password` = '".$md5_password."',
                         `user_salt` = '".$new_salt."'
-                    WHERE `user_id` = '".$_SESSION['user_id']."'
-                ", $FD->sql()->conn() );
+                    WHERE `user_id` = '".$_SESSION['user_id']."'" );
                 $message .= '<br>'.$FD->text("frontend", "user_password_changed");
 
                 // Update Cookie
                 if ( $_COOKIE['login'] ) {
-                    set_cookie ( $user_name, $_POST['new_pwd'] );
+                    set_cookie ( $user_name, $mail_password );
                 }
 
                 // Send E-Mail
                 $template_mail = get_email_template ( 'signup' );
-                $template_mail = str_replace ( '{..user_name..}', stripslashes ( $_SESSION['user_name'] ), $template_mail );
-                $template_mail = str_replace ( '{..new_password..}', $mailpass, $template_mail );
-                $template_mail = replace_globalvars ( $template_mail );
-                $email_subject = $FD->text('frontend', 'mail_password_changed_on') . $FD->config('virtualhost');
-                if ( @send_mail ( stripslashes ( $_POST['usermail'] ), $email_subject, $template_mail ) ) {
+                $template_mail = str_replace ( '{..user_name..}', $_SESSION['user_name'], $template_mail );
+                $template_mail = str_replace ( '{..new_password..}', $mail_password, $template_mail );
+                $email_subject = $FD->text('frontend', 'mail_password_changed_on') .' '. $FD->config('virtualhost');
+                if (send_mail($_POST['user_mail'], $email_subject, $template_mail, MailManager::getHtmlConfig())) {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_sended");
                 } else {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_not_sended");
                 }
+                
+                unset($mail_password);
 
             } else {
                 $message .= '<br>' . $FD->text("frontend", "user_password_change_failed") . '<br>' . $FD->text("frontend", "user_password_change_error_new");
@@ -113,7 +123,7 @@ if (
     }
 
     // Meldung ausgeben
-    $template .= forward_message ( $FD->text("frontend", "user_profile"), $message, $_SERVER['REQUEST_URI'] );
+    $template .= forward_message ( $FD->text("frontend", "user_profile"), $message, url('user_edit'));
 }
 
 //////////////////////
@@ -129,14 +139,17 @@ else {
             $messages = '';
         }
 
-        $index = mysql_query ( '
-            SELECT *
+        $index = $FD->sql()->conn()->query ( '
+            SELECT COUNT(*)
             FROM `'.$FD->config('pref')."user`
-            WHERE `user_id` = '".$_SESSION['user_id']."'
-        ", $FD->sql()->conn() );
+            WHERE `user_id` = '".$_SESSION['user_id']."'" );
+        $num_rows = $index->fetchColumn();
+        if ( $num_rows > 0 ) {
+            $index = $FD->sql()->conn()->query ( '
+                SELECT * FROM `'.$FD->config('pref')."user`
+                WHERE `user_id` = '".$_SESSION['user_id']."'" );
 
-        if ( mysql_num_rows ( $index ) > 0 ) {
-            $user_arr = mysql_fetch_assoc ( $index );
+            $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
             $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
             $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.$user_arr['user_name'].'">' : $FD->text("frontend", "user_image_not_found") );

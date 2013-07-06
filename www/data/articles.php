@@ -10,7 +10,8 @@ $FD->loadConfig('articles');
 if ($FD->cfg('goto') == 'articles') {
 
     // Load Article Data from DB
-    $article_arr = $FD->sql()->getById('articles', '*', $_GET['id'], 'article_id');
+    $article_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'articles WHERE article_id = '.intval($_GET['id']));
+    $article_arr = $article_arr->fetch(PDO::FETCH_ASSOC);
 
     // Set canonical parameters
     $FD->setConfig('info', 'canonical', array('id'));
@@ -18,9 +19,11 @@ if ($FD->cfg('goto') == 'articles') {
 } else {
 
     // Load Article Data from DB
-    $article_arr = $FD->sql()->getRow('articles', '*', array(
-        'W' => "`article_url` = '".$FD->sql()->escape($_GET['go'])."'", 
-        'O' => "`article_id`"));
+    $article_arr = $FD->sql()->conn()->query(
+                        'SELECT * FROM '.$FD->config('pref')."articles
+                         WHERE `article_url` = '".$FD->cfg('goto')."'
+                         ORDER BY `article_id` LIMIT 1");
+    $article_arr = $article_arr->fetch(PDO::FETCH_ASSOC);
 
     // Set canonical parameters
     $FD->setConfig('info', 'canonical', array());
@@ -40,15 +43,16 @@ else {
         // Set canonical parameters
         $FD->setConfig('info', 'canonical', array());
         // Set goto
-        $FD->setConfig('main', 'goto', unslash($article_arr['article_url']));
+        $FD->setConfig('main', 'goto', $article_arr['article_url']);
     }
 
     // Security Functions
     settype ( $article_arr['article_user'], 'integer' );
 
     // Get User & Create User Template
-    $user_arr = $FD->sql()->getById('user', array('user_id', 'user_name'), $article_arr['article_user'], 'user_id');
-    
+    $user_arr = $FD->sql()->conn()->query('SELECT user_id, user_name FROM '.$FD->config('pref').'user WHERE user_id ='.intval($article_arr['article_user']).' LIMIT 1');
+    $user_arr = $user_arr->fetch(PDO::FETCH_ASSOC);
+
     // User exists
     if (!empty($user_arr)) {
 
@@ -66,7 +70,7 @@ else {
         $author_template->tag('user_url', $user_arr['user_url']);
 
         $article_arr['author_template'] = $author_template->display();
-        
+
     } else {
         $article_arr['author_template'] = '';
         $user_arr['user_id'] = '';
@@ -77,7 +81,7 @@ else {
     // Get Date & Create Date Template
     if ($article_arr['article_date'] != 0) {
         $article_arr['date_formated'] = date_loc($FD->cfg('date'), $article_arr['article_date']);
-        
+
         // Create Template
         $date_template = new template();
         $date_template->setFile ('0_articles.tpl');
@@ -96,7 +100,6 @@ else {
 
     // Format Article-Text
     $article_arr['article_text'] = fscode ( $article_arr['article_text'], $article_arr['fscode_bool'], $article_arr['html_bool'], $article_arr['para_bool'] );
-    $article_arr['article_title'] = unslash($article_arr['article_title']);
 
     // Create Template
     $article_arr['template'] = new template();
@@ -116,7 +119,7 @@ else {
 
     // Dynamic Title Settings
     $FD->setConfig('info', 'page_title', $article_arr['article_title']);
-    $FD->setConfig('info', 'content_author', unslash($user_arr['user_name']));
+    $FD->setConfig('info', 'content_author', $user_arr['user_name']);
 }
 
 // Display Template

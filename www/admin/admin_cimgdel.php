@@ -5,15 +5,15 @@ $cimg_path = CIMG_PATH;
 
 if(isset($_GET['file'])){
     $file = intval($_GET['file']);
-    $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg` WHERE `id`='.$file);
-    if(mysql_num_rows($qry) > 0){
-        $row = mysql_fetch_assoc($qry);
+    $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg` WHERE `id`='.$file);
+    $row = $qry->fetch(PDO::FETCH_ASSOC);
+    if($row !== false){
         if(file_exists(CIMG_PATH."{$row['name']}.{$row['type']}")){
             if(!isset($_POST['edit'])){ // edit file
                         $imageinfo = getimagesize(CIMG_PATH."{$row['name']}.{$row['type']}");
-                        $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
+                        $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
                         $cats = array(array('id' => 0, 'name' => 'Keine Kategorie', 'description' => ''));
-                        while(($cat = mysql_fetch_assoc($qry)) !== false){
+                        while(($cat = $qry->fetch(PDO::FETCH_ASSOC)) !== false){
                             $cats[] = $cat;
                         }
                         $tableheight = ($row['hasthumb'] == 0) ? 6 : 6;
@@ -36,12 +36,12 @@ if(isset($_GET['file'])){
                         {$FD->text("admin", "button_arrow")} {$FD->text("admin", "save_changes_button")}
                     </button>
                 </td>
-            </tr>            
+            </tr>
         </tfoot>
         <tbody>
             <tr valign="top">
                 <td rowspan="{$tableheight}" valign="top">
-                    <a href="{$cimg_path}{$row['name']}.{$row['type']}" target="_blank" title="In Originalgröße anzeigen">
+                    <a href="{$cimg_path}{$row['name']}.{$row['type']}" target="_blank" title="In Originalgr&ouml;&szlig;e anzeigen">
                         <img src="{$cimg_path}{$row['name']}.{$row['type']}" alt="{$row['name']}" style="max-width: 200px;">
                     </a>
                 </td>
@@ -162,7 +162,7 @@ FS2_STRING;
                 if(!isset($_POST['name']) || empty($_POST['name'])) $_POST['delete'] = 1;
                 if(isset($_POST['delete'])){
                     unlink(CIMG_PATH.$row['name'].'.'.$row['type']);
-                    mysql_query('DELETE FROM `'.$FD->config('pref').'cimg` WHERE `id`='.$file);
+                    $FD->sql()->conn()->exec('DELETE FROM `'.$FD->config('pref').'cimg` WHERE `id`='.intval($file));
                     $text = 'Die Datei "'.$row['name'].'" wurde gel&ouml;scht!';
                     if($row['hasthumb'] == 1 && file_exists(CIMG_PATH."{$row['name']}_s.{$row['type']}")){
                         unlink(CIMG_PATH.$row['name'].'_s.'.$row['type']);
@@ -179,32 +179,33 @@ FS2_STRING;
                             rename(CIMG_PATH.$row['name'].'_s.'.$row['type'], CIMG_PATH.$_POST['name'].'_s.'.$row['type']);
                             $text[] = 'Das Vorschaubild wurde umbenannt!';
                         }
-                        mysql_query('UPDATE `'.$FD->config('pref')."cimg` SET `name`='".mysql_real_escape_string($_POST['name'])."' WHERE `id`=".$file);
+                        $stmt = $FD->sql()->conn()->prepare('UPDATE `'.$FD->config('pref').'cimg` SET `name`= ? WHERE `id`='.intval($file));
+                        $stmt->execute(array($_POST['name']));
                     }
 
                     if($_POST['cat'] != $row['cat']){
-                        mysql_query('UPDATE `'.$FD->config('pref')."cimg` SET `cat`='".intval($_POST['cat'])."' WHERE `id`=".$file);
+                        $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref')."cimg` SET `cat`='".intval($_POST['cat'])."' WHERE `id`=".$file);
                         $text[] = 'Die Kategorie wurde erfolgreich ge&auml;ndert.';
                     }
 
                     if(isset($_POST['thumb']) && !empty($_POST['width']) && !empty($_POST['height'])){
                         $thumb = create_thumb_from(image_url('media/content/', $row['name'], FALSE, TRUE), $_POST['width'], $_POST['height']);
                         $text[] = create_thumb_notice($thumb);
-                        mysql_query('UPDATE `'.$FD->config('pref').'cimg` SET `hasthumb`=1 WHERE `id`='.$file);
+                        $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'cimg` SET `hasthumb`=1 WHERE `id`='.$file);
                     } elseif (isset($_POST['thumb'])) {
                         $text[] = "Bitte Abmessung für das Vorschaubild angeben";
                     }
-                    
+
                     if (empty($text)) {
                         $text[] = "Keine Änderungen vorgenommen";
                     }
-                    
+
                     systext(implode('<br>', $text));
                 }
                 unset($_GET['file']);
             }
         } else {
-            mysql_query('DELETE FROM `'.$FD->config('pref').'cimg` WHERE `id`='.$file);
+            $FD->sql()->conn()->exec('DELETE FROM `'.$FD->config('pref').'cimg` WHERE `id`='.$file);
             systext('Die angegebene Datei wurde nicht im Dateisystem gefunden.<br>Der Eintrag in der Datenbank wurde gel&ouml;scht.', false, true);
             unset($_GET['file']);
         }
@@ -215,15 +216,14 @@ FS2_STRING;
 }
 
 if(!isset($_GET['file'])){ // select file
-    $qry = mysql_query('UPDATE `'.$FD->config('pref').'cimg` SET `cat` = 0 WHERE `cat` != 0 AND `cat` NOT IN (SELECT DISTNICT `id` FROM `'.$FD->config('pref').'cimg_cats`)');
-    $num = mysql_affected_rows();
-    if($num == 1){
+    $num = $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'cimg` SET `cat` = 0 WHERE `cat` != 0 AND `cat` NOT IN (SELECT DISTINCT `id` FROM `'.$FD->config('pref').'cimg_cats`)');
+    if ($num == 1) {
         systext('Ein Datensatz wurde automatisch korrigiert.');
-    } elseif($num > 1){
+    } elseif($num > 1) {
         systext($num.' Datens&auml;tze wurden automatisch korrigiert.');
     }
-    $qry = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg` ORDER BY `cat`');
-    if(mysql_num_rows($qry) > 0){
+    $qry = $FD->sql()->conn()->query('SELECT COUNT(*) FROM `'.$FD->config('pref').'cimg`');
+    if ($qry->fetchColumn() > 0) {
         echo <<< FS2_STRING
             <script type="text/javascript">
                 $(document).ready(function() {
@@ -239,19 +239,20 @@ if(!isset($_GET['file'])){ // select file
                 });
             </script>
 FS2_STRING;
-        
-        
+
+
         echo '<table class="content" cellpadding="0" cellspacing="0">';
         $actcat = array('id' => 0, 'name' => 'Dateien ohne Kategorie', 'description' => '');
         $first = true;
-        while(($row = mysql_fetch_assoc($qry)) !== false) {
+        $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg` ORDER BY `cat`');
+        while(($row = $qry->fetch(PDO::FETCH_ASSOC)) !== false) {
             if($row['cat'] != $actcat['id']){
-                $qry2 = mysql_query('SELECT * FROM `'.$FD->config('pref').'cimg_cats` WHERE `id`='.intval($row['cat']));
-                $actcat = mysql_fetch_assoc($qry2);
+                $qry2 = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats` WHERE `id`='.intval($row['cat']));
+                $actcat = $qry2->fetch(PDO::FETCH_ASSOC);
                 $first = true;
             }
             if($first){
-                echo '        
+                echo '
                     <tr><td class="space" colspan="2"></td></tr>
                     <tr>
                         <td colspan="3">
@@ -273,7 +274,7 @@ FS2_STRING;
                         </td>
                         <td>
                         </td>
-                    </tr>                    
+                    </tr>
                 ';
                 $first = false;
             }

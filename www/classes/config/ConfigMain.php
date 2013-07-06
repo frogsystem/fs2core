@@ -45,6 +45,7 @@ class ConfigMain extends ConfigData {
         $this->setConfig('style',           $this->get('style_tag'));
         $this->setConfig('db_style_id',     $this->get('style_id')); // always contains db value
         $this->setConfig('db_style_tag',    $this->get('style_tag')); // always contains db value
+        $this->setConfig('login_state',     false); // until overwritten by login
     }
 
 

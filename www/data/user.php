@@ -19,17 +19,15 @@ $config_arr = $FD->configObject('users')->getConfigArray();
 //////////////////////
 //// Show Profile ////
 //////////////////////
-$index = mysql_query ( '
+$index = $FD->sql()->conn()->query ( '
     SELECT *
     FROM `'.$FD->config('pref')."user`
-    WHERE `user_id` = '".$_GET['id']."'
-", $FD->sql()->conn() );
+    WHERE `user_id` = '".$_GET['id']."'" );
+$user_arr = $index->fetch( PDO::FETCH_ASSOC );
 
-if ( mysql_num_rows ( $index ) > 0 ) {
-    $user_arr = mysql_fetch_assoc ( $index );
-
+if ( $user_arr!==false ) {
     $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
-    $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.$user_arr['user_name'].'">' : $FD->text("frontend", "user_image_not_found") );
+    $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$FD->text('frontend', 'user_image_of').' '.$user_arr['user_name'].'">' : $FD->text('frontend', 'user_image_not_found') );
     $user_arr['user_mail'] = ( $user_arr['user_show_mail'] == 1 ? kill_replacements ( $user_arr['user_mail'], TRUE ) : '-' );
     $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
     $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
@@ -43,10 +41,10 @@ if ( mysql_num_rows ( $index ) > 0 ) {
         $user_arr['user_group_text'] = '-';
     }
 
-    $user_arr['user_reg_date_text'] = date_loc ( stripslashes ( $config_arr['reg_date_format'] ), $user_arr['user_reg_date'] );
+    $user_arr['user_reg_date_text'] = date_loc ( $config_arr['reg_date_format'], $user_arr['user_reg_date'] );
 
     if (  $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != 'http://' ) {
-        $user_arr['user_homepage_link'] = '<a href="'.kill_replacements ( $user_arr['user_homepage'], FALSE, TRUE ).'" target="_blank">'.kill_replacements ( $user_arr['user_homepage'], TRUE ).'</a>';
+        $user_arr['user_homepage_link'] = '<a href="'.kill_replacements ( $user_arr['user_homepage']).'" target="_blank">'.kill_replacements ( $user_arr['user_homepage'], TRUE ).'</a>';
     } else {
         $user_arr['user_homepage_link'] = '-';
     }
@@ -57,33 +55,33 @@ if ( mysql_num_rows ( $index ) > 0 ) {
     $user_arr['user_yim'] = ( $user_arr['user_yim'] != '' ? kill_replacements ( $user_arr['user_yim'], TRUE ) : '-' );
     $user_arr['user_skype'] = ( $user_arr['user_skype'] != '' ? kill_replacements ( $user_arr['user_skype'], TRUE ) : '-' );
 
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
         SELECT COUNT(`news_id`) AS `number`
         FROM `'.$FD->config('pref')."news`
-        WHERE `user_id` = '".$user_arr['user_id']."'
-    ", $FD->sql()->conn() );
-    $user_arr['user_num_news'] = mysql_result ( $index, 0, 'number' );
+        WHERE `user_id` = '".$user_arr['user_id']."'" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $user_arr['user_num_news'] = $row['number'];
 
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
         SELECT COUNT(`comment_id`) AS `number`
         FROM `'.$FD->config('pref')."comments`
-        WHERE `comment_poster_id` = '".$user_arr['user_id']."'
-    ", $FD->sql()->conn() );
-    $user_arr['user_num_comments'] = mysql_result ( $index, 0, 'number' );
+        WHERE `comment_poster_id` = '".$user_arr['user_id']."'" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $user_arr['user_num_comments'] = $row['number'];
 
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
         SELECT COUNT(`article_id`) AS `number`
         FROM `'.$FD->config('pref')."articles`
-        WHERE `article_user` = '".$user_arr['user_id']."'
-    ", $FD->sql()->conn() );
-    $user_arr['user_num_articles'] = mysql_result ( $index, 0, 'number' );
+        WHERE `article_user` = '".$user_arr['user_id']."'" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $user_arr['user_num_articles'] = $row['number'];
 
-    $index = mysql_query ( '
+    $index = $FD->sql()->conn()->query ( '
         SELECT COUNT(`dl_id`) AS `number`
         FROM `'.$FD->config('pref')."dl`
-        WHERE `user_id` = '".$user_arr['user_id']."'
-    ", $FD->sql()->conn() );
-    $user_arr['user_num_downloads'] = mysql_result ( $index, 0, 'number' );
+        WHERE `user_id` = '".$user_arr['user_id']."'" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $user_arr['user_num_downloads'] = $row['number'];
 
 
     // Create Template
@@ -105,7 +103,7 @@ if ( mysql_num_rows ( $index ) > 0 ) {
     $template->tag ( 'user_reg_date', $user_arr['user_reg_date_text'] );
 
     $template->tag ( 'user_homepage_link', $user_arr['user_homepage_link'] );
-    $template->tag ( 'user_homepage_url', kill_replacements ( $user_arr['user_homepage'], FALSE, TRUE ) );
+    $template->tag ( 'user_homepage_url', kill_replacements ( $user_arr['user_homepage'] ) );
     $template->tag ( 'user_icq', $user_arr['user_icq'] );
     $template->tag ( 'user_aim', $user_arr['user_aim'] );
     $template->tag ( 'user_wlm', $user_arr['user_wlm'] );
@@ -124,6 +122,6 @@ if ( mysql_num_rows ( $index ) > 0 ) {
 //// User ID not found ////
 ///////////////////////////
 else {
-    $template = sys_message ( $FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_not_found"), 404);
+    $template = sys_message ( $FD->text('frontend', 'systemmessage'), $FD->text('frontend', 'user_not_found'), 404);
 }
 ?>

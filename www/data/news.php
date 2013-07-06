@@ -18,18 +18,18 @@ if (isset($_GET['cat'])) {
 ////////////////////////////
 
 // News Konfiguration lesen
-$config_arr = $sql->getRow('config', array('config_data'), array('W' => "`config_name` = 'news'"));
-$config_arr = json_array_decode($config_arr['config_data']);
+$FD->loadConfig('news');
+$config_arr = $FD->configObject('news')->getConfigArray();
 $time = time();
 
 // Headlines erzeugen
-$index = mysql_query('SELECT * FROM '.$FD->config('pref')."news
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."news
                       WHERE news_date <= $time
                       AND news_active = 1
                       ORDER BY news_date DESC
-                      LIMIT $config_arr[num_head]", $FD->sql()->conn() );
+                      LIMIT $config_arr[num_head]");
 $news_line_tpl = '';
-while ($newshead_arr = mysql_fetch_assoc($index))
+while ($newshead_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     $newshead_arr['news_date'] = date_loc ( $FD->config('datetime') , $newshead_arr['news_date'] );
     if ( strlen ( $newshead_arr['news_title'] ) > $config_arr['news_headline_lenght'] && $config_arr['news_headline_lenght'] >=0 ) {
@@ -41,7 +41,7 @@ while ($newshead_arr = mysql_fetch_assoc($index))
     $template->setFile('0_news.tpl');
     $template->load('APPLET_LINE');
 
-    $template->tag('title', stripslashes ( $newshead_arr['news_title'] ) );
+    $template->tag('title', $newshead_arr['news_title'] );
     $template->tag('date', $newshead_arr['news_date'] );
     $template->tag('url', url('comments', array('id' => $newshead_arr['news_id'])));
     $template->tag('news_id', $newshead_arr['news_id'] );
@@ -52,13 +52,13 @@ while ($newshead_arr = mysql_fetch_assoc($index))
 unset($newshead_arr);
 
 // Neuste Downloads erzeugen
-$index = mysql_query('SELECT dl_name, dl_id, dl_date
+$index = $FD->sql()->conn()->query('SELECT dl_name, dl_id, dl_date
                       FROM '.$FD->config('pref')."dl
                       WHERE dl_open = 1
                       ORDER BY dl_date DESC
-                      LIMIT $config_arr[num_head]", $FD->sql()->conn() );
+                      LIMIT $config_arr[num_head]");
 $downloads_tpl = '';
-while ($dlhead_arr = mysql_fetch_assoc($index))
+while ($dlhead_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     $dlhead_arr['dl_date'] = date_loc ( $FD->config('datetime') , $dlhead_arr['dl_date'] );
     if ( strlen ( $dlhead_arr['dl_name'] ) > $config_arr['news_headline_lenght'] ) {
@@ -70,7 +70,7 @@ while ($dlhead_arr = mysql_fetch_assoc($index))
     $template->setFile('0_downloads.tpl');
     $template->load('APPLET_LINE');
 
-    $template->tag('title', stripslashes ( $dlhead_arr['dl_name'] ) );
+    $template->tag('title', $dlhead_arr['dl_name'] );
     $template->tag('date', $dlhead_arr['dl_date'] );
     $template->tag('url', url('dlfile', array('id' => $dlhead_arr['dl_id'])));
     $template->tag('download_id', $dlhead_arr['dl_id'] );
@@ -95,14 +95,14 @@ $headline_template = $template;
 ////// News ausgeben ///////
 ////////////////////////////
 
-$index = mysql_query('SELECT * FROM '.$FD->config('pref')."news
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."news
                       WHERE news_date <= $time
                       AND news_active = 1
                       ".$cat_filter."
                       ORDER BY news_date DESC
-                      LIMIT $config_arr[num_news]", $FD->sql()->conn() );
+                      LIMIT $config_arr[num_news]");
 initstr($news_template);
-while ($news_arr = mysql_fetch_assoc($index))
+while ($news_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     $news_template .= display_news($news_arr, $config_arr['html_code'], $config_arr['fs_code'], $config_arr['para_handling']);
 }
