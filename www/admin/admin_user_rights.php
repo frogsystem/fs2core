@@ -318,7 +318,7 @@ else
         while ( $user_arr = $index->fetch(PDO::FETCH_ASSOC) )
         {
             // get user group
-            if ( $user_arr['user_group'] != 0 ) {
+            if ( $user_arr['user_group'] > 1 ) {
                 $groupindex = $FD->sql()->conn()->query ( '
                                     SELECT `user_group_name`
                                     FROM '.$FD->config('pref')."user_groups

@@ -27,7 +27,7 @@ $num_staff = $row['num_staff'];
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`user_group_id`) AS 'num_groups'
                 FROM ".$FD->config('pref').'user_groups
-                WHERE `user_group_id` > 0' );
+                WHERE `user_group_id` > 1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_groups = $row['num_groups'];
 $num_groups++;
@@ -38,7 +38,7 @@ if ( $num_groups  > 0 ) {
                     SELECT G.`user_group_name`, COUNT(U.`user_id`) AS 'biggest_num'
                     FROM ".$FD->config('pref').'user_groups G, '.$FD->config('pref')."user U
                     WHERE U.`user_group` = G.`user_group_id`
-                    AND U.`user_group` > '0'
+                    AND U.`user_group` > '1'
                     AND U.`user_is_staff` = '1'
                     AND U.`user_is_admin` = '0'
                     AND U.`user_id` != '1'

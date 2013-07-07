@@ -523,7 +523,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         $index = $FD->sql()->conn()->query ('
                         SELECT `user_group_id`, `user_group_name`
                         FROM '.$FD->config('pref')."user_groups
-                        WHERE `user_group_id` > 0
+                        WHERE `user_group_id` > 1
                         ORDER BY `user_group_name`" );
 
         while ( $group_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
@@ -534,7 +534,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         $index = $FD->sql()->conn()->query ('
                         SELECT `user_group_id`, `user_group_name`
                         FROM '.$FD->config('pref').'user_groups
-                        WHERE `user_group_id` = 0
+                        WHERE `user_group_id` = 1
                         ORDER BY `user_group_name`
                         LIMIT 0,1' );
         $group_arr = $index->fetch(PDO::FETCH_ASSOC);

@@ -179,7 +179,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
 {
     global $FD;
 
-    if ( $GROUP_ID == 0 && $IS_ADMIN != 1 ) {
+    if ( $GROUP_ID == 0) {
         $retrun_arr['user_group_id'] = 0;
         $retrun_arr['user_group_name'] = '';
         $retrun_arr['user_group_title'] = '';

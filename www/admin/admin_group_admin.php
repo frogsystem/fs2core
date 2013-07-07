@@ -117,7 +117,7 @@ elseif (
 
 // Delete group
 elseif (
-        isset ( $_POST['user_group_id'] ) && $_POST['user_group_id'] != 0 &&
+        isset ( $_POST['user_group_id'] ) && $_POST['user_group_id'] > 1 &&
         isset ( $_POST['sended'] ) && $_POST['sended'] == 'delete' &&
         isset ( $_POST['group_action'] ) && $_POST['group_action'] == 'delete' &&
         isset ( $_POST['user_group_delete'] )
@@ -143,7 +143,8 @@ elseif (
         // SQL-Delete-Query
         $FD->sql()->conn()->exec ('
                 DELETE FROM '.$FD->config('pref')."user_groups
-                WHERE user_group_id = '".$_POST['user_group_id']."'");
+                WHERE user_group_id = '".$_POST['user_group_id']."'                
+                AND user_group_id > 1");
         $message = 'Gruppe wurde erfolgreich gel&ouml;scht';
 
         // Delete Category Image
@@ -194,7 +195,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         $group_arr['user_group_name'] = killhtml ( $group_arr['user_group_name'] );
         $group_arr['user_group_description'] = killhtml ( $group_arr['user_group_description'] );
         $group_arr['user_group_title'] = killhtml ( $group_arr['user_group_title'] );
-        $group_arr['user_group_color'] = killhtml ( $group_arr['user_group_color'] );
+        $group_arr['user_group_color'] = htmlspecialchars ( $group_arr['user_group_color'] );
         settype ( $group_arr['user_group_highlight'], 'integer' );
 
         //Create Color-Code
@@ -351,7 +352,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
     }
 
     // Delete group
-    elseif ( $_POST['group_action'] == 'delete' && $_POST['user_group_id'] != 0 )
+    elseif ( $_POST['group_action'] == 'delete' && $_POST['user_group_id'] > 1 )
     {
         // security functions
         settype ( $_POST['user_group_id'], 'integer' );
@@ -472,7 +473,7 @@ else
     $index = $FD->sql()->conn()->query ( '
                     SELECT COUNT(*)
                     FROM `'.$FD->config('pref').'user_groups`
-                    WHERE `user_group_id` > 0');
+                    WHERE `user_group_id` > 1');
 
     // groups found
     if ( $index->fetchColumn() > 0 ) {
@@ -489,7 +490,7 @@ else
         $index = $FD->sql()->conn()->query( '
                         SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
                         FROM `'.$FD->config('pref').'user_groups`
-                        WHERE `user_group_id` > 0
+                        WHERE `user_group_id` > 1
                         ORDER BY `user_group_name`' );
         while ( $group_arr = $index->fetch(PDO::FETCH_ASSOC) )
         {
@@ -576,7 +577,7 @@ else
     echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="group_admin">
-                        <input type="hidden" name="user_group_id" value="0">
+                        <input type="hidden" name="user_group_id" value="1">
                         <input type="hidden" name="group_action" value="edit">
                             <tr><td class="space"><br></td></tr>
                             <tr><td class="line" colspan="4">'."Verwaltung der Administrator-Gruppe".'</td></tr>
@@ -586,7 +587,7 @@ else
     $index = $FD->sql()->conn()->query ( '
                     SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
                     FROM `'.$FD->config('pref').'user_groups`
-                    WHERE `user_group_id` = 0
+                    WHERE `user_group_id` = 1
                     LIMIT 0,1' );
 
     // get group data

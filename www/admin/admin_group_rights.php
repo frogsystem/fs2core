@@ -14,7 +14,7 @@ function get_group_rights_array ( $GROUP_ID )
                     SELECT `perm_id`
                     FROM '.$FD->config('pref')."user_permissions
                     WHERE `x_id` = '".intval($GROUP_ID)."'
-                    AND`perm_for_group` = '1'" );
+                    AND `perm_for_group` = '1'" );
     while ( $temp_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
             $rights[] = $temp_arr['perm_id'];
     }
@@ -31,7 +31,7 @@ function get_group_rights_array ( $GROUP_ID )
 //// save changes to db ////
 ////////////////////////////
 
-if ( isset( $_POST['user_group_id'] ) ) {
+if (isset($_POST['user_group_id']) && $_POST['user_group_id'] > 1) {
 
     // security functions
     settype ( $_POST['user_group_id'], 'integer' );
@@ -46,17 +46,17 @@ if ( isset( $_POST['user_group_id'] ) ) {
     $current_user_group = $index->fetchColumn();
 
     // if user is not in group
-    if ( $_POST['user_group_id'] != $current_user_group ) {
+    if ($_POST['user_group_id'] != $current_user_group) {
 
         // get already granted rights
-        $group_rights = get_group_rights_array ( $_POST['user_group_id'] );
+        $group_rights = get_group_rights_array ($_POST['user_group_id']);
 
         // get pages
         $pageaction = $FD->sql()->conn()->query ( '
                             SELECT `page_id`
                             FROM `'.$FD->config('pref')."admin_cp`
                             WHERE `group_id` > '0'" );
-        while ( $page_arr = $pageaction->fetch(PDO::FETCH_ASSOC) ) {
+        while ($page_arr = $pageaction->fetch(PDO::FETCH_ASSOC)) {
             // permission is not longer granted
             if ( ( !isset($_POST[$page_arr['page_id']]) || ($_POST[$page_arr['page_id']] == 0) ) && in_array ( $page_arr['page_id'], $group_rights ) ) {
                 $FD->sql()->conn()->exec ( '
@@ -91,11 +91,11 @@ if ( isset( $_POST['user_group_id'] ) ) {
 //// edit permissions ////
 //////////////////////////
 
-if ( isset ( $_POST['edit_user_group_id'] ) )
+if ( isset($_POST['edit_user_group_id']) && $_POST['edit_user_group_id'] > 1)
 {
     // security functions
-    unset ( $group_rights );
-    settype ( $_POST['edit_user_group_id'], 'integer' );
+    unset ($group_rights);
+    settype ($_POST['edit_user_group_id'], 'integer');
 
     // get group data
     $index = $FD->sql()->conn()->query ( '
@@ -108,7 +108,7 @@ if ( isset ( $_POST['edit_user_group_id'] ) )
     $user_group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     // get granted rights
-    $group_rights = get_group_rights_array ( $user_group_arr['user_group_id'] );
+    $group_rights = get_group_rights_array($user_group_arr['user_group_id']);
 
     // get group of current user
     $index = $FD->sql()->conn()->query ( '
@@ -269,7 +269,8 @@ else
                     SELECT COUNT(`user_group_id`)
                     FROM `'.$FD->config('pref').'user_groups` G, `'.$FD->config('pref')."user` U
                     WHERE U.`user_id` = '".$_SESSION['user_id']."'
-                    AND G.`user_group_id` != U.`user_group`" );
+                    AND G.`user_group_id` != U.`user_group`
+                    AND G.`user_group_id` > 1" );
 
     // groups found
     if ( $index->fetchColumn() > 0 ) {
@@ -290,6 +291,7 @@ else
                         FROM `'.$FD->config('pref').'user_groups` G, `'.$FD->config('pref')."user` U
                         WHERE U.`user_id` = '".$_SESSION['user_id']."'
                         AND G.`user_group_id` != U.`user_group`
+                        AND G.`user_group_id` > 1
                         ORDER BY `user_group_name`" );
         while ( $group_arr = $index->fetch(PDO::FETCH_ASSOC) )
         {
