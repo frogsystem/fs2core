@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 06. Jul 2013 um 23:39
+-- Erstellungszeit: 07. Jul 2013 um 12:02
 -- Server Version: 5.1.53-community-log
 -- PHP-Version: 5.4.3
 
@@ -455,14 +455,15 @@ CREATE TABLE IF NOT EXISTS `fs2_comments` (
   `needs_update` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Daten für Tabelle `fs2_comments`
 --
 
 INSERT INTO `fs2_comments` (`comment_id`, `content_id`, `content_type`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`, `comment_classification`, `spam_probability`, `needs_update`) VALUES
-(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans', 0, 0.5, 0);
+(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans', 0, 0.5, 0),
+(6, 11, 'dl', '1', 1, '::1', 1373196687, 'test', 'test', 0, 0.5, 1);
 
 -- --------------------------------------------------------
 
@@ -489,9 +490,9 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('info', '{}', 'startup'),
 ('articles', '{"acp_per_page":"2","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"0","com_antispam":"0","com_sort":"0","acp_view":"2"}', 'none'),
 ('search', '{"id":"0","search_num_previews":"10","search_and":"AND, and, &&","search_or":"OR, or, ||","search_xor":"XOR, xor","search_not":"!, -","search_wildcard":"*, %","search_min_word_length":"3","search_allow_phonetic":"1","search_use_stopwords":"1"}', 'none'),
-('cronjobs', '{"last_cronjob_time":"1373127308","last_cronjob_time_daily":"1373065069","last_cronjob_time_hourly":"1373127308","search_index_update":"1","ref_cron":"1","ref_days":"5","ref_hits":"5","ref_contact":"first","ref_age":"older","ref_amount":"less"}', 'startup'),
+('cronjobs', '{"last_cronjob_time":"1373198241","last_cronjob_time_daily":"1373196650","last_cronjob_time_hourly":"1373198414","search_index_update":"1","ref_cron":"1","ref_days":"5","ref_hits":"5","ref_contact":"first","ref_age":"older","ref_amount":"less"}', 'startup'),
 ('captcha', '{"captcha_bg_color":"FAFCF1","captcha_bg_transparent":"0","captcha_text_color":"AB30AB","captcha_first_lower":"1","captcha_first_upper":"5","captcha_second_lower":"1","captcha_second_upper":"5","captcha_use_addition":"1","captcha_use_subtraction":"1","captcha_use_multiplication":"0","captcha_create_easy_arithmetics":"1","captcha_x":"58","captcha_y":"18","captcha_show_questionmark":"0","captcha_use_spaces":"1","captcha_show_multiplication_as_x":"1","captcha_start_text_x":"0","captcha_start_text_y":"0","captcha_font_size":"5","captcha_font_file":""}', 'none'),
-('downloads', '{"screen_x":"1024","screen_y":"768","thumb_x":"120","thumb_y":"90","quickinsert":"test''","dl_rights":"2","dl_show_sub_cats":"0"}', 'none'),
+('downloads', '{"screen_x":"1024","screen_y":"768","thumb_x":"120","thumb_y":"90","quickinsert":"test''","dl_rights":"2","dl_show_sub_cats":"0","dl_comments":"1"}', 'none'),
 ('affiliates', '{"partner_anzahl":"5","small_x":"88","small_y":"31","big_x":"468","big_y":"60","big_allow":"1","file_size":"1024","small_allow":"0"}', 'none'),
 ('news', '{"num_news":"11","num_head":"5","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"2","com_antispam":"2","news_headline_lenght":"20","acp_per_page":"3","acp_view":"2","com_sort":"DESC","news_headline_ext":"&nbsp;...","acp_force_cat_selection":"1"}', 'none'),
 ('video_player', '{"cfg_player_x":"500","cfg_player_y":"280","cfg_autoplay":"0","cfg_autoload":"1","cfg_buffer":"5","cfg_buffermessage":"Buffering _n_","cfg_buffercolor":"#FFFFFF","cfg_bufferbgcolor":"#000000","cfg_buffershowbg":"0","cfg_titlesize":"20","cfg_titlecolor":"#FFFFFF","cfg_margin":"5","cfg_showstop":"1","cfg_showvolume":"1","cfg_showtime":"1","cfg_showplayer":"autohide","cfg_showloading":"always","cfg_showfullscreen":"1","cfg_showmouse":"autohide","cfg_loop":"0","cfg_playercolor":"#a6a6a6","cfg_loadingcolor":"#000000","cfg_bgcolor":"#FAFCF1","cfg_bgcolor1":"#E7E7E7","cfg_bgcolor2":"#cccccc","cfg_buttoncolor":"#000000","cfg_buttonovercolor":"#E7E7E7","cfg_slidercolor1":"#cccccc","cfg_slidercolor2":"#bbbbbb","cfg_sliderovercolor":"#E7E7E7","cfg_loadonstop":"1","cfg_onclick":"playpause","cfg_ondoubleclick":"fullscreen","cfg_playertimeout":"1500","cfg_videobgcolor":"#000000","cfg_volume":"100","cfg_shortcut":"1","cfg_playeralpha":"100","cfg_top1_url":"","cfg_top1_x":"0","cfg_top1_y":"0","cfg_showiconplay":"1","cfg_iconplaycolor":"#FFFFFF","cfg_iconplaybgcolor":"#000000","cfg_iconplaybgalpha":"75","cfg_showtitleandstartimage":"0"}', 'none'),
@@ -525,7 +526,7 @@ CREATE TABLE IF NOT EXISTS `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 96, 3143, 5, 5, 18, 1);
+(1, 97, 3174, 5, 5, 18, 2);
 
 -- --------------------------------------------------------
 
@@ -648,7 +649,8 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2013, 6, 29, 1, 1),
 (2013, 7, 4, 1, 13),
 (2013, 7, 5, 3, 131),
-(2013, 7, 6, 1, 134);
+(2013, 7, 6, 1, 134),
+(2013, 7, 7, 1, 31);
 
 -- --------------------------------------------------------
 
@@ -1914,6 +1916,13 @@ CREATE TABLE IF NOT EXISTS `fs2_useronline` (
   `date` int(30) DEFAULT NULL,
   PRIMARY KEY (`ip`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `fs2_useronline`
+--
+
+INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
+('::1', 1, 1373198520);
 
 -- --------------------------------------------------------
 

@@ -164,7 +164,7 @@ $TEMPLATE_EDIT[] = array (
     'name' => 'ENTRY_BODY',
     'title' => $FD->text("template", "dl_entry_body_title"),
     'description' => $FD->text("template", "dl_entry_body_desc"),
-    'rows' => 25,
+    'rows' => 40,
     'cols' => 66,
     'help' => array (
         array ( 'tag' => 'title', 'text' => $FD->text("template", "dl_entry_body_entry_title") ),
@@ -185,7 +185,7 @@ $TEMPLATE_EDIT[] = array (
         array ( 'tag' => 'statistics', 'text' => $FD->text("template", "dl_entry_body_statistics") ),
         array ( 'tag' => 'messages', 'text' => $FD->text("template", "dl_entry_body_messages") ),
         //TODO: localize texts
-        array ( 'tag' => 'comments_url', 'text' => 'URL zur Kommentaransicht des Downloads' ),
+        //~ array ( 'tag' => 'comments_url', 'text' => 'URL zur Kommentaransicht des Downloads' ),
         array ( 'tag' => 'comments_number', 'text' => 'Anzahl der zum Download abgegebenen Kommentare' )
     )
 );

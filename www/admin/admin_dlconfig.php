@@ -3,7 +3,7 @@
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array('screen_x', 'screen_y', 'thumb_x', 'thumb_y', 'quickinsert', 'dl_rights', 'dl_show_sub_cats');
+$used_cols = array('screen_x', 'screen_y', 'thumb_x', 'thumb_y', 'quickinsert', 'dl_rights', 'dl_show_sub_cats', 'dl_comments');
 
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
@@ -17,6 +17,7 @@ if (isset($_POST['screen_x']) && isset($_POST['screen_y']) && isset($_POST['thum
     settype($_POST['thumb_y'], 'integer');
     settype($_POST['dl_rights'], 'integer');
     settype($_POST['dl_show_sub_cats'], 'integer');
+    settype($_POST['dl_comments'], 'integer');
 
     // prepare data
     $data = frompost($used_cols);
@@ -119,6 +120,15 @@ if(true)
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <input type="checkbox" name="dl_show_sub_cats" value="1" '.getchecked ( 1, $_POST['dl_show_sub_cats'] ).'>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top" width="50%">
+                                    Download-Kommentare nutzen:<br>
+                                    <font class="small">Aktiviert die Kommentar-Funktion f&uuml;r Downloads. Einstellungen entsprechen den News-Kommentaren.</font>
+                                </td>
+                                <td class="config" valign="top" width="50%">
+                                    <input type="checkbox" name="dl_comments" value="1" '.getchecked ( 1, $_POST['dl_comments'] ).'>
                                 </td>
                             </tr>
                             <tr>

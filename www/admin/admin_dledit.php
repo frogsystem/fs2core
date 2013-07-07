@@ -491,15 +491,18 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="dl_edit" name="go">
                         <table class="content select_list" cellpadding="3" cellspacing="0">
-                            <tr><td colspan="3"><h3>Download ausw&auml;hlen</h3><hr></td></tr>
+                            <tr><td colspan="4"><h3>Download ausw&auml;hlen</h3><hr></td></tr>
                             <tr>
-                                <td class="config" width="40%">
+                                <td class="config" width="50%">
                                     Titel
                                 </td>
-                                <td class="config" width="40%">
+                                <td class="config" width="25%">
                                     Kategorie
                                 </td>
-                                <td class="config" width="20%">
+                                <td class="config" width="13%">
+                                    Kommentare
+                                </td>
+                                <td class="config" width="12%">
                                     bearbeiten
                                 </td>
                             </tr>
@@ -517,6 +520,10 @@ else
     {
         $catindex = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
         $dbcatname = $catindex->fetchColumn();
+        
+        $comments = $FD->sql()->conn()->query('SELECT COUNT(*) FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$dl_arr['dl_id']."'");
+        $comments_num = $comments->fetchColumn();    
+        
         echo'
                             <tr class="thin select_entry">
                                 <td class="configthin">
@@ -524,6 +531,9 @@ else
                                 </td>
                                 <td class="configthin">
                                     '.$dbcatname.'
+                                </td>
+                                <td class="configthin center">
+                                    '.$comments_num.'
                                 </td>
                                 <td class="top center">
                                     <input class="select_box" type="checkbox" name="dlid[]" value="'.$dl_arr['dl_id'].'">
@@ -534,14 +544,14 @@ else
 
     echo'
                             <tr style="display:none">
-                                <td colspan="3">
+                                <td colspan="4">
                                     <select class="select_type" name="dl_action" size="1">
                                         <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3" align="center">
+                                <td colspan="4" align="center">
                                     <input class="button" type="submit" value="editieren">
                                 </td>
                             </tr>
