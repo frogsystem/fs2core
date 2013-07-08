@@ -1,1 +1,4 @@
 #styles startpage
+active_style:    Active style
+num_styles:      Number of styles
+last_style:      Latest style
