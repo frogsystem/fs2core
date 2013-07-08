@@ -239,6 +239,10 @@ function url_seo ($go, $args, $go_in_args = false) {
 
 		$seourl = substr($seourl, 0, strlen($seourl) - 1);
 	}
+    
+    //trim ending hyphen
+    if (substr($seourl, -1, 1) == '-' && substr($seourl, -2, 1) != '-')
+		$seourl = substr($seourl, 0, -1);
 
 	if (!empty($seourl))
 		$seourl .= '.html';

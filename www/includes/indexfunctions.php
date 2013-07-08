@@ -871,8 +871,11 @@ function get_seo () {
                     $seoparams[$i] = str_replace("\x1", '-', $seoparams[$i]);
 
                 // Die Anzahl der mit "-" getrennten Werte muss gerade sein, sonst Weiterleitung
-                if ((count($seoparams) % 2 != 0) && (count($seoparams) > 0))
-                    $redirect = true;
+                // letzer paramter hat keinen wert, strich am ende fällt weg
+                if ((count($seoparams) % 2 != 0) && (count($seoparams) > 0)) {
+                    //$redirect = true;
+                    array_push($seoparams, null);
+                }
 
                 for ($i = 0; $i < count($seoparams); $i += 2)
                 {
