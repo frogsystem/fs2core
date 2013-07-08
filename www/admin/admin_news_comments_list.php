@@ -154,7 +154,7 @@
         {
           $success = false;
           $b8 = NULL; //free it
-          echo '<center><b>Fehler:</b> Konnte b8 nicht starten! '.$e->getMessage().'</center>';
+          echo '<center><b>'.$FD->text('admin', 'error').':</b> '.$FD->text('page', 'b8_no_start').' '.$e->getMessage().'</center>';
         }
         //check if construction was successful
         if ($success)
@@ -198,14 +198,13 @@
 	             }
 	             else
 	             {
-	               echo '<center><b>b8-Fehler:</b> Der angegebene Kommentar ist nicht'
-                       .' klassifiziert, daher kann dies auch nicht r&uuml;ckg&auml;ngig gemacht werden.</center>';
+	               //cannot unclassify a comment that has no classification
+	               echo '<center><b>'.$FD->text('page', 'b8_error').':</b> '.$FD->text('page', 'b8_not_classified').'</center>';
 	             }
 	             break;
 	        default:
 	             //Form manipulation or programmer's stupidity? I don't like it either way!
-	             echo '<center><b>b8-Fehler:</b> Die angegebene Aktion ist nicht'
-                     .'g&uuml;ltig.</center>';
+	             echo '<center><b>'.$FD->text('page', 'b8_error').':</b> '.$FD->text('page', 'b8_invalid_action').'</center>';
                  break;
 	      }//swi
 	    }//else (b8 init successful)
@@ -214,8 +213,7 @@
     else
     {
       //not found, there is no such comment
-      echo '<center><b>Fehler:</b> Kein Kommentar mit der angegebenen ID ist '
-          .'vorhanden! Es wird keine Klassifizierung vorgenommen.</center>';
+      echo '<center>'.$FD->text('page', 'b8_no_comment').'</center>';
     }//else
   }//if b8
 
@@ -247,7 +245,7 @@
   }
   if ($b8===NULL)
   {
-    echo '<center><b>Fehler:</b> b8 konnte nicht initialisiert werden!</center>';
+    echo '<center>'.$FD->text('admin', 'error').':</b> '.$FD->text('page', 'b8_no_start').'</center>';
   }
   else
   {
@@ -294,18 +292,18 @@
     <table class="configtable" cellpadding="4" cellspacing="0">
       <tr>
         <td style="text-align:center;" class="line" colspan="3">
-           <strong>Statistik zur Wortliste</strong>
+           <strong>'.$FD->text('page', 'stat_wordlist').'</strong>
         </td>
       </tr>
       <tr>
         <td class="config" width="33%">
-          Gelernte spamfreie Kommentare
+          '.$FD->text('page', 'learned_ham').'
         </td>
         <td class="config" width="33%">
-          Gelernte Spamkommentare
+          '.$FD->text('page', 'learned_spam').'
         </td>
         <td class="config">
-           BayesDB-Version
+           '.$FD->text('page', 'b8_db_version').'
         </td>
       </tr>
       <tr>
@@ -334,16 +332,15 @@
     <table class="configtable" cellpadding="4" cellspacing="0">
       <tr>
         <td class="config" width="50%">
-          Kommentare, deren Wahrscheinlichkeit in der Datenbank nicht aktuell ist
+          '.$FD->text('page', 'comments_not_up_to_date').'
         </td>
         <td class="config" width="50%">
-          Gesamtzahl der Kommentare
+          '.$FD->text('page', 'comments_total').'
         </td>
       </tr>
       <tr>
         <td class="configthin" style="text-align:center;">'.$update_count.' ('.$percentage.'%)<br>
-          <small>(Dieser Wert sollte m&ouml;glichst klein sein, um eine korrekte Sortierung nach
-                  Wahrscheinlichkeiten zu erm&ouml;glichen.)</small>
+          <small>'.$FD->text('page', 'not_up_to_date_note').'</small>
         </td>
         <td class="configthin" style="text-align:center;">'.$total_count.'</td>
       </tr>
@@ -374,35 +371,31 @@
     <table border="0" cellpadding="2" cellspacing="0" class="configtable">
       <tr>
         <td style="text-align:center;" class="config" colspan="2" width="50%">
-           H&auml;ufigste Spamtokens
+           '.$FD->text('page', 'frequent_spam').'
         </td>
         <td style="text-align:center;" class="config" colspan="2" width="50%">
-           H&auml;ufigste spamfreie Tokens
+           '.$FD->text('page', 'frequent_ham').'
         </td>
       </tr>
       <tr>
         <td class="config">
-           Token
+           '.$FD->text('page', 'token').'
         </td>
         <td style="text-align:center;" class="config">
-           Anzahl
+           '.$FD->text('page', 'number').'
         </td>
         <td class="config">
-           Token
+           '.$FD->text('page', 'token').'
         </td>
         <td style="text-align:center;" class="config">
-           Anzahl
+           '.$FD->text('page', 'number').'
         </td>
       </tr>';
     if ($max_count==0)
     {
       echo '<tr>
         <td style="text-align:center;" class="configthin" colspan="4">
-           <strong>Es sind noch keine Tokens in der Wortliste vorhanden. Sie
-           m&uuml;ssen erst einige Kommentare als Spam oder spamfrei markieren,
-           damit sich die Wortliste f&uuml;llt und der Spamfilter Spamtexte
-           auch als solche erkennen kann. Andernfalls werden alle Kommentare
-           nur mit 50% bewertet, was wenig hilfreich ist.</strong>
+           <strong>'.$FD->text('page', 'no_tokens_available').'</strong>
         </td>
       </tr>';
     }
@@ -438,7 +431,7 @@
 
     echo '</table>
     <br>
-    <center><a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list">Zur&uuml;ck zur Kommentarliste</a></center><br>';
+    <center><a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list">'.$FD->text('page', 'back_to_list').'</a></center><br>';
   }//if stats requested
   else
   {
@@ -474,7 +467,7 @@
   }
   settype($_GET['sort'], 'string');
 
-  //Anzahl der Kommentare auslesen
+  //get number of comments
   $query = $FD->sql()->conn()->query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref').'comments` WHERE content_type=\'news\'');
   $cc = (int) $query->fetchColumn();
   if ($_GET['start']>=$cc)
@@ -537,12 +530,12 @@
     {
       $prev_start = 0;
     }
-    $prev_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort='.$_GET['sort'].'&amp;order='.$_GET['order'].'&amp;start='.$prev_start.'"><- zur&uuml;ck</a>';
+    $prev_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort='.$_GET['sort'].'&amp;order='.$_GET['order'].'&amp;start='.$prev_start.'">&lt;- '.$FD->text('page', 'prev').'</a>';
   }//if not first page
   //Is this not the last page?
   if ($_GET['start']+30<$cc)
   {
-    $next_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort='.$_GET['sort'].'&amp;order='.$_GET['order'].'&amp;start='.($_GET['start']+30).'">weiter -></a>';
+    $next_page = '<a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort='.$_GET['sort'].'&amp;order='.$_GET['order'].'&amp;start='.($_GET['start']+30).'">'.$FD->text('page', 'next').' -&gt;</a>';
   }//if not the last page
 
   $inverse_order = ($_GET['order']+1) % 2;
@@ -550,23 +543,23 @@
 echo '
   <table class="configtable" cellpadding="4" cellspacing="0">
     <tr>
-      <td class="line" colspan="5">Kommentarliste</td>
+      <td class="line" colspan="5">'.$FD->text('page', 'comments_list').'</td>
     </tr>
     <tr>
       <td class="config" width="30%">
-          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=title&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Titel</a>
+          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=title&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">'.$FD->text('page', 'title').'</a>
       </td>
       <td class="config" width="30%">
-          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=name&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Poster</a>
+          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=name&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">'.$FD->text('page', 'poster').'</a>
       </td>
       <td class="config" width="20%">
-          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=date&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Datum</a>
+          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=date&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">'.$FD->text('page', 'date').'</a>
       </td>
       <td class="config" width="10%">
-          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=prob&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">Spamwahrscheinlichkeit</a>
+          <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;sort=prob&amp;order='.$inverse_order.'&amp;start='.$_GET['start'].'">'.$FD->text('page', 'spam_prob').'</a>
       </td>
       <td class="config" width="10%">
-          bearbeiten
+          '.$FD->text('admin', 'edit').'
       </td>
     </tr>
   ';
@@ -578,8 +571,7 @@ echo '
     {
       $comment_arr['comment_poster'] = $comment_arr['real_name'];
     }
-    $comment_arr['comment_date'] = date('d.m.Y' , $comment_arr['comment_date'])
-                                      .' um '.date('H:i' , $comment_arr['comment_date']);
+    $comment_arr['comment_date'] = date($FD->text('admin', 'date_time'), $comment_arr['comment_date']);
     echo '<tr>
            <td class="configthin">
                '.$comment_arr['comment_title'].'
@@ -588,7 +580,7 @@ echo '
                '.$comment_arr['comment_poster'];
     if ($comment_arr['comment_poster_id'] == 0)
     {
-      echo '<br><small>(unregistriert)</small>';
+      echo '<br><small>('.$FD->text('page', 'not_registered').')</small>';
     }
     echo '           </td>
            <td class="configthin">
@@ -615,7 +607,7 @@ echo '
                <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="edit">
-               <input class="button" type="submit" value="Editieren">
+               <input class="button" type="submit" value="'.htmlspecialchars($FD->text('admin', 'edit')).'">
              </form>
 
              <form action="" method="post">
@@ -625,12 +617,12 @@ echo '
                <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="delete">
-               <input class="button" type="submit" value="L&ouml;schen">
+               <input class="button" type="submit" value="'.htmlspecialchars($FD->text('admin', 'delete')).'">
              </form>
            </td>
          </tr>
          <tr>
-           <td style="text-align:center;" colspan="4"><font size="1">Zugeh&ouml;rige Newsmeldung: <a href="../?go=comments&amp;id='
+           <td style="text-align:center;" colspan="4"><font size="1">'.$FD->text('page', 'related_news').': <a href="../?go=comments&amp;id='
                                               .$comment_arr['news_id'].'" target="_blank">&quot;'
                                               .htmlentities($comment_arr['news_title'], ENT_QUOTES).'&quot;</a></font>
            </td>
@@ -647,7 +639,7 @@ echo '
                <input type="hidden" value="'.$_GET['order'].'" name="order">
                <input type="hidden" name="commentid" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="b8_action" value="mark_as_ham">
-               <input class="button" type="submit" value="Kein Spam :)">
+               <input class="button" type="submit" value="'.$FD->text('page', 'no_spam').'">
              </form><form action="'.$_SERVER['PHP_SELF'].'" method="post" style="display:inline;">
                <input type="hidden" value="news_comments_list" name="go">
                <input type="hidden" value="'.$_GET['start'].'" name="start">
@@ -655,24 +647,24 @@ echo '
                <input type="hidden" value="'.$_GET['order'].'" name="order">
                <input type="hidden" name="commentid" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="b8_action" value="mark_as_spam">
-               <input class="button" type="submit" value="Das ist Spam!">
+               <input class="button" type="submit" value="'.$FD->text('page', 'it_is_spam').'">
              </form>';
     }//if class==0
     else if ($comment_arr['comment_classification']>0)
     {
       //comment classified as ham
-      echo '<font color="#008000" size="1">Als spamfrei markiert</font> <a href="'
+      echo '<font color="#008000" size="1">'.$FD->text('page', 'marked_as_ham').'</font> <a href="'
           .$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;b8_action=unclassify&amp;commentid='
           .$comment_arr['comment_id'].'&amp;start='.$_GET['start'].'&amp;sort='.$_GET['sort']
-          .'&amp;order='.$_GET['order'].'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
+          .'&amp;order='.$_GET['order'].'"><font size="1">('.$FD->text('page', 'revert').')</font></a>';
     }
     else if ($comment_arr['comment_classification']<0)
     {
       //comment classified as spam
-      echo '<font color="#C00000" size="1">Als Spam markiert</font> <a href="'
+      echo '<font color="#C00000" size="1">'.$FD->text('page', 'marked_as_spam').'</font> <a href="'
           .$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;b8_action=unclassify&amp;commentid='
           .$comment_arr['comment_id'].'&amp;start='.$_GET['start'].'&amp;sort='.$_GET['sort']
-          .'&amp;order='.$_GET['order'].'"><font size="1">(r&uuml;ckg&auml;ngig machen)</font></a>';
+          .'&amp;order='.$_GET['order'].'"><font size="1">('.$FD->text('page', 'revert').')</font></a>';
     }
 echo '         </td>
          </tr>
@@ -717,7 +709,7 @@ echo '
                             </tr>
                             <tr>
                             <td colspan="3" style="text-align:center;" class="configthin">
-                              <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;b8_stats=1">Statistik anzeigen</a>
+                              <a href="'.$_SERVER['PHP_SELF'].'?go=news_comments_list&amp;b8_stats=1">'.$FD->text('page', 'show_stats').'</a>
                             </td>
                           </tr>
                         </table>';

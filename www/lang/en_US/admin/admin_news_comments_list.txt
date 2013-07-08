@@ -1,0 +1,38 @@
+title:       Title
+poster:      Poster
+date:        Date
+spam_prob:   Spam probability
+
+b8_error:           b8 error
+b8_no_start:        Could not start b8!
+b8_not_classified:  The given comment is not classified yet, hence it's classification cannot be reverted.
+b8_invalid_action:  The requested action is not valid.
+b8_no_comment:      <b>Error:</b> There is no comment with the given ID! Cannot classify.
+
+stat_wordlist:           Wordlist statistics
+learned_ham:             Learned ham comments
+learned_spam:            Learned spam comments
+b8_db_version:           Bayes DB Version
+comments_not_up_to_date: Comments, whose probability in the database is not up to date
+not_up_to_date_note:     This value should be as small as possible to allow correct sorting of comments by probability.
+comments_total:          Total number of comments
+frequent_spam:           Most frequent spam tokens
+frequent_ham:            Most frequent ham tokens
+token:                   Token
+number:                  Count
+no_tokens_available:     There are no tokens on the wordlist yet. You have to mark comments as spam or ham first, in order to populate the wordlist and allow the filter to recognise spam as such. Otherwise all comments will have a probability of 50%, and that certainly does not help much..
+back_to_list:            Back to comment list
+
+prev:                    previous page
+next:                    next page
+
+comments_list:           Comment List
+not_registered:          not registered
+related_news:            Related News
+no_spam:                 No Spam :)
+it_is_spam:              This is spam!
+marked_as_ham:           marked as ham
+marked_as_spam:          marked as spam
+revert:                  revert
+
+show_stats:              Show Statistics
