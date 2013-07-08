@@ -304,7 +304,6 @@ class sql {
     // Saving to DB by Id
     // existing entry => update, else => insert
     public function save ($table, $data, $id = 'id', $auto_id = true) {
-        
         // Update
         if (isset($data[$id]) && $this->getFieldById($table, $id, $this->escape($data[$id]), $id) !== false) {
             try {
@@ -333,20 +332,16 @@ class sql {
             Throw new ErrorException("SQL Error: Can't insert empty data.");
 
         // prepare data
-        $cols = ($params = array());
+        $cols = ($vals = array());
         foreach($data as $column => $value) {
             $cols[] = '`'.$column.'`';
-            $params[] = ":$column";
+            $vals[] = "'".$this->escape($value)."'";
         }
-        $qrystr = 'INSERT INTO `'.$this->pref.$table.'` ('.implode(', ', $cols).') VALUES ('.implode(', ', $params).')';
-        $stmt = $this->conn()->prepare($qrystr);
-        foreach($data as $column => $value) {
-            var_dump($stmt->bindValue(":$column", strval($value)));
-        }
-        $r = $stmt->execute();
-        var_dump($stmt); echo '<pre>';$stmt->debugDumpParams();echo '</pre>';
-        var_dump($r,$stmt->errorInfo());
-        return  $r;// ... and execute
+
+        // build query string...
+        $qrystr = 'INSERT INTO `'.$this->pref.$table.'` ('.implode(',', $cols).') VALUES ('.implode(',', $vals).')';
+
+        return $this->doQuery($qrystr); // ... and execute
     }
     // insert with returning auto increment value
     public function insertId ($table, $data) {

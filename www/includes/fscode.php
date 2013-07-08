@@ -170,11 +170,11 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         // center
         if (in_array('center', $to_html)) {
             $fscode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<p align="center">', 'end_tag' => '</p>'),
-                    'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+                    'block', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
             $fscode->setCodeFlag ('center', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         } elseif  (in_array('center', $to_text)) {
             $fscode->addCode ('center', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
-                    'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+                    'block', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
 
         // url

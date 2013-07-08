@@ -77,8 +77,7 @@ class HashMapper
 
         // save to db
         try {
-            $id = $this->sql->save('hashes', $data);
-            return $this->getById($id);
+            return $this->getById($this->sql->save('hashes', $data));
         } catch (Exception $e) {
             Throw $e;
         }
@@ -86,7 +85,6 @@ class HashMapper
 
     // delete from DB
     public function delete($hash) {
-        global $FD;
         $this->sql->conn()->exec('DELETE FROM '.$FD->config('pref').'hashes
                                   WHERE id = '.intval($hash->getId()));
     }
