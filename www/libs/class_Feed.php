@@ -12,10 +12,10 @@
  * List of possible FSCodes:
  *
  * b, i, u, s, center, url, home, email, img, cimg, list, numlist,
- * font, color, size, code, quote, video, noparse, smilies
+ * font, color, size, code, quote, video, nofscode, smilies, nohtml, html
  *
  * $to_html = array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist');
- * $to_text = array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'noparse');
+ * $to_text = array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'nofscode', 'nohtml', 'html');
  * $to_bbcode = array();
  *
  * */
@@ -85,7 +85,7 @@ abstract class Feed {
 
     private $settings = array (
         'to_html' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist'),
-        'to_text' => array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'noparse'),
+        'to_text' => array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'nofscode', 'html', 'nohtml'),
         'to_bbcode' => array(),
         'truncate' => false,
         'truncate_extension' => '',

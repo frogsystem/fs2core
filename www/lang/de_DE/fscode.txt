@@ -17,7 +17,7 @@ size: Schriftgröße
 code: Code-Block
 quote: Zitat
 video: Video
-noparse: nicht umzuwandelnder Bereich
+nofscode: nicht umzuwandelnder Bereich
 smilies: Smilies
 
 example_b: [b]fetter Text[/b]
@@ -38,5 +38,5 @@ example_size: [size=5]Text in Größe 5[/size], Größen: 0-7
 example_code: [code]Text in Schrift mit fester Breite[/code], [code=html]Inhalt mit <b>HTML-Code</b>[/code]
 example_quote: [quote]Zitat[/quote], [quote=Quelle]Zitat aus Quelle[/quote]
 example_video: [video]7[/video], [video]Video-URL[/video]
-example_noparse: [noparse]Inhalt mit [b]FS-Code[/b], der nicht umgewandelt wird.[/noparse]
+example_nofscode: [nofscode]Inhalt mit [b]FS-Code[/b], der nicht umgewandelt wird.[/nofscode]
 example_smilies: :-), ;-), :-p, etc.

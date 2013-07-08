@@ -577,7 +577,7 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
     $buttons .= create_editor_seperator();
     $buttons .= create_editor_button_new('admin/editor/code.jpg', 'C', 'Code-Bereich einfügen', "insert('$name', '[code]', '[/code]')");
     $buttons .= create_editor_button_new('admin/editor/quote.jpg', 'Q', 'Zitat einfügen', "insert('$name', '[quote]', '[/quote]')");
-    $buttons .= create_editor_button_new('admin/editor/noparse.jpg', 'N', 'Nicht umzuwandelnden Bereich einfügen', "insert('$name', '[noparse]', '[/noparse]')");
+    $buttons .= create_editor_button_new('admin/editor/nofscode.jpg', 'N', 'Nicht umzuwandelnden Bereich einfügen', "insert('$name', '[nofscode]', '[/nofscode]')");
 
 
     $textarea = '<table cellpadding="0" cellspacing="0" border="0" style="padding-bottom:4px">

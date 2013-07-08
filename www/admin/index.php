@@ -13,6 +13,7 @@ require_once(FS2_ROOT_PATH . 'includes/adminfunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/templatefunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
+require_once(FS2_ROOT_PATH . 'includes/fscode.php');
 require_once(FS2_ROOT_PATH . 'libs/class_GlobalData.php');
 require_once(FS2_ROOT_PATH . 'login.inc.php');
 

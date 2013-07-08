@@ -93,13 +93,15 @@ else {
         $article_arr['date_template'] = '';
     }
 
-    // Create FSCode, HTML & Para Boolean-Values
-    $article_arr['fscode_bool'] = $article_arr['article_fscode'] && oneof($FD->cfg('articles', 'fs_code'), 2, 4);
-    $article_arr['html_bool'] = $article_arr['article_html'] && oneof($FD->cfg('articles', 'html_code'), 2, 4);
-    $article_arr['para_bool'] = $article_arr['article_para'] && oneof($FD->cfg('articles', 'para_handling'), 2, 4);
-
     // Format Article-Text
-    $article_arr['article_text'] = fscode ( $article_arr['article_text'], $article_arr['fscode_bool'], $article_arr['html_bool'], $article_arr['para_bool'] );
+    $parseflags = array(
+        'fscode' => (bool)$article_arr['article_fscode'] ,
+        'nofscodeatall' => !oneof($FD->cfg('articles', 'fs_code'), 2, 4),
+        'html' => (bool)$article_arr['article_html'],
+        'nohtmlatall' => !oneof($FD->cfg('articles', 'html_code'), 2, 4),
+        'paragraph' => ($article_arr['article_para'] && oneof($FD->cfg('articles', 'para_handling'), 2, 4)),
+    );
+    $article_arr['article_text'] = parse_all_fscodes($article_arr['article_text'], $parseflags);
 
     // Create Template
     $article_arr['template'] = new template();

@@ -28,7 +28,7 @@ if (isset($_POST['smilies_rows']) && $_POST['smilies_rows']>0 && isset($_POST['s
     $_POST['email'] = intval($_POST['email']);
     $_POST['code'] = intval($_POST['code']);
     $_POST['quote'] = intval($_POST['quote']);
-    $_POST['noparse'] = intval($_POST['noparse']);
+    $_POST['nofscode'] = intval($_POST['nofscode']);
     $_POST['smilies'] = intval($_POST['smilies']);
     $_POST['do_bold'] = intval($_POST['do_bold']);
     $_POST['do_italic'] = intval($_POST['do_italic']);
@@ -72,7 +72,7 @@ if (isset($_POST['smilies_rows']) && $_POST['smilies_rows']>0 && isset($_POST['s
                    email = '$_POST[email]',
                    code = '$_POST[code]',
                    quote = '$_POST[quote]',
-                   noparse = '$_POST[noparse]',
+                   nofscode = '$_POST[nofscode]',
                    smilies = '$_POST[smilies]',
                    do_bold = '$_POST[do_bold]',
                    do_italic = '$_POST[do_italic]',
@@ -131,7 +131,7 @@ else
         $config_arr['email'] = $_POST['email'];
         $config_arr['code'] = $_POST['code'];
         $config_arr['quote'] = $_POST['quote'];
-        $config_arr['noparse'] = $_POST['noparse'];
+        $config_arr['nofscode'] = $_POST['nofscode'];
         $config_arr['smilies'] = $_POST['smilies'];
         $config_arr['do_bold'] = $_POST['do_bold'];
         $config_arr['do_italic'] = $_POST['do_italic'];
@@ -293,7 +293,7 @@ else
       <img src="icons/editor/quote.gif" alt="" title="'.$FD->text('fscode', 'quote').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/noparse.gif" alt="" title="'.$FD->text('fscode', 'noparse').'">
+      <img src="icons/editor/nofscode.gif" alt="" title="'.$FD->text('fscode', 'nofscode').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
@@ -335,8 +335,8 @@ else
     if ($config_arr['quote'] == 1)
       echo ' checked=checked';
     echo'/></td>
-        <td><input type="checkbox" name="noparse" value="1"';
-    if ($config_arr['noparse'] == 1)
+        <td><input type="checkbox" name="nofscode" value="1"';
+    if ($config_arr['nofscode'] == 1)
       echo ' checked=checked';
     echo'/></td>
 
@@ -478,7 +478,7 @@ else
       <img src="icons/editor/quote.gif" alt="" title="'.$FD->text('fscode', 'example_quote').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/noparse.gif" alt="" title="'.$FD->text('fscode', 'example_noparse').'">
+      <img src="icons/editor/nofscode.gif" alt="" title="'.$FD->text('fscode', 'example_nofscode').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">

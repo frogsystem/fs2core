@@ -15,6 +15,7 @@ require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
 require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
 require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
 require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
+include_once(FS2_ROOT_PATH . 'includes/fscode.php');
 
 // Constructor Calls
 // TODO: "Constructor Hook"

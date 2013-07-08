@@ -106,7 +106,14 @@ else {
     settype ( $_POST['article_html'], 'integer' );
     settype ( $_POST['article_fscode'], 'integer' );
     settype ( $_POST['article_para'], 'integer' );
-    $article_arr['article_text'] = fscode ( $_POST['article_text'], $_POST['article_fscode'], $_POST['article_html'], $_POST['article_para'] );
+    $parseflags = array(
+        'fscode' => $_POST['article_fscode'] ,
+        'nofscodeatall' => false,
+        'html' => $_POST['article_html'],
+        'nohtmlatall' => false,
+        'paragraph' => $_POST['article_para'],
+    );
+    $article_arr['article_text'] = parse_all_fscodes($_POST['article_text'], $parseflags);
 
     // Format User
     $article_arr['article_user_name'] = killhtml ( $_POST['article_user_name'] );

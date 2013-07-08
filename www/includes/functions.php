@@ -780,7 +780,7 @@ if ($all==true OR $fs_quote==1) {
   $buttons .= create_textarea_button('quote.gif', 'Q', 'Zitat einfügen', "insert('$name', '[quote]', '[/quote]')");
 }
 if ($all==true OR $fs_noparse==1) {
-  $buttons .= create_textarea_button('noparse.gif', 'N', 'Nicht umzuwandelnden Bereich einfügen', "insert('$name', '[noparse]', '[/noparse]')");
+  $buttons .= create_textarea_button('nofscode.gif', 'N', 'Nicht umzuwandelnden Bereich einfügen', "insert('$name', '[nofscode]', '[/nofscode]')");
 }
 
     // Get Template
@@ -1146,9 +1146,8 @@ function tab2space($TEXT, $tabsize = 4, $space = '&nbsp;')
 // Format text with FS Code //
 //////////////////////////////
 
-function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0)
+function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0, $do_fscode=0, $do_html=0, $do_nohtml=0)
 {
-    include_once ( FS2_ROOT_PATH . 'includes/fscode.php');
     $flags = array('html' => $html, 'paragraph' => $para,
     );
 
@@ -1174,9 +1173,12 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
         if ($do_size==1)        array_push($fscodes, 'size');
         if ($do_code==1)        array_push($fscodes, 'code');
         if ($do_quote==1)       array_push($fscodes, 'quote');
-        if ($do_noparse==1)     array_push($fscodes, 'noparse');
+        if ($do_nofscode==1)    array_push($fscodes, 'nofscode');
         if ($do_player==1)      array_push($fscodes, 'player');
         if ($do_smilies==1)     array_push($fscodes, 'smilies');
+        if ($do_fscode==1)      array_push($fscodes, 'fscode');
+        if ($do_html==1)        array_push($fscodes, 'html');
+        if ($do_nohtml==1)      array_push($fscodes, 'nohtml');
     }
 
     return parse_fscode($text, $flags, $fscodes);
