@@ -103,7 +103,6 @@ if ( TRUE )
     $adminpage->addCond('url_style_seo', $_POST['url_style'] == 'seo');
     $adminpage->addCond('home_0', $_POST['home'] === 0);
     $adminpage->addCond('home_1', $_POST['home'] === 1);
-    $adminpage->addCond('timezone', $_POST['timezone'] === 'default');
     $adminpage->addCond('ref_active', $_POST['count_referers'] == 1);
     $adminpage->addCond('ref_inactive', $_POST['count_referers'] != 1);
 
@@ -151,7 +150,9 @@ if ( TRUE )
     $adminpage->addText('language_options', $lang_options);
 
     //timezones
-    initstr($timezone_options);
+    $timezone_options = '<option value="UTC" '
+            .getselected('UTC', $_POST['timezone'])
+            .'>UTC</option>'."\n";    
     foreach(get_timezones() as $timezone => $val) {
             $timezone_options .= '<option value="'.$timezone.'" '
             .getselected($timezone, $_POST['timezone'])

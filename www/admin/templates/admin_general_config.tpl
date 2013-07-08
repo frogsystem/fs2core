@@ -286,7 +286,6 @@
             </td>
             <td>
                 <select class="half" name="timezone">
-                    <option value="default" <!--IF::timezone-->selected<!--ENDIF-->><!--LANG::server_default--></option>
                     <!--TEXT::timezones-->
                 </select>
             </td>

@@ -95,8 +95,9 @@ function clean_referers ($time = null) {
 //// Set correct Timezone ////
 //////////////////////////////
 function setTimezone ($timezone) {
-    if (empty($timezone) || $timezone == 'default')
-        date_default_timezone_get();
+    if (empty($timezone) || $timezone == 'default') {
+        $timezone = date_default_timezone_get();
+    }
     date_default_timezone_set($timezone);
 }
 
