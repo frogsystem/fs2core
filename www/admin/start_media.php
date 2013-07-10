@@ -4,22 +4,19 @@ $index = $FD->sql()->conn()->query ( "
 				SELECT COUNT(`cat_id`) AS 'num_gallery'
 				FROM ".$FD->config('pref').'screen_cat
 				LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_gallery = $row['num_gallery'];
+$num_gallery = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
 				SELECT COUNT(`screen_id`) AS 'num_gallery_img'
 				FROM ".$FD->config('pref').'screen
 				LIMIT 0,1');
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_gallery_img = $row['num_gallery_img'];
+$num_gallery_img = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
 				SELECT COUNT(`wallpaper_id`) AS 'num_gallery_wp'
 				FROM ".$FD->config('pref').'wallpaper
 				LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_gallery_wp = $row['num_gallery_wp'];
+$num_gallery_wp = $index->fetchColumn();
 
 $num_gallery_entries = $num_gallery_wp + $num_gallery_img;
 
@@ -60,15 +57,13 @@ $index = $FD->sql()->conn()->query ( "
 				SELECT COUNT(`dl_id`) AS 'num_dl'
 				FROM ".$FD->config('pref').'dl
 				LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_dl = $row['num_dl'];
+$num_dl = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
 				SELECT COUNT(`file_id`) AS 'num_dl_file'
 				FROM ".$FD->config('pref').'dl_files
 				LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_dl_files = $row['num_dl_file'];
+$num_dl_files = $index->fetchColumn();
 
 
 if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
@@ -122,96 +117,46 @@ $index = $FD->sql()->conn()->query ( "
 				SELECT COUNT(`video_id`) AS 'num_video'
 				FROM ".$FD->config('pref').'player
 				LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_video = $row['num_video'];
+$num_video = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
 				SELECT COUNT(`video_id`) AS 'num_video_int'
 				FROM ".$FD->config('pref').'player
 				WHERE `video_type` = 1
 				LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_video_int = $row['num_video_int'];
+$num_video_int = $index->fetchColumn();
 
 $num_video_ext = $num_video - $num_video_int;
 
-echo '
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-							<tr><td class="line" colspan="2">Informationen &amp; Statistik</td></tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Galerien:</td>
-                                <td class="configthin"><b>'.$num_gallery.'</b></td>
-                            </tr>
-';
 
+// Conditions
+$adminpage->addCond('has_galleries', ($num_gallery_entries  > 0));
+$adminpage->addCond('has_dl', ($num_dl  > 0 && $num_dl_files  > 0));
+
+// Values
+$adminpage->addText('num_gallery', $num_gallery);
 if ( $num_gallery_entries  > 0 ) {
-	echo '
-                            <tr>
-                                <td class="configthin" width="200">Gr&ouml;&szlig;te Galerie:</td>
-                                <td class="configthin"><b>'.$best_gallery.'</b> mit <b>'.$best_gallery_num.'</b> Bild(ern)/Wallpaper(n)</td>
-                            </tr>
-	';
+  $adminpage->addText('best_gallery', $best_gallery);
+  $adminpage->addText('best_gallery_num', $best_gallery_num);
 }
-
-echo '
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Bilder:</td>
-                                <td class="configthin"><b>'.$num_gallery_img.'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Wallpaper:</td>
-                                <td class="configthin"><b>'.$num_gallery_wp.'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Eintr&auml;ge (gesamt):</td>
-                                <td class="configthin"><b>'.$num_gallery_entries.'</b></td>
-                            </tr>
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Downloads:</td>
-                                <td class="configthin"><b>'.$num_dl.'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Dateien:</td>
-                                <td class="configthin"><b>'.$num_dl_files.'</b></td>
-                            </tr>
-';
-
+$adminpage->addText('num_gallery_img', $num_gallery_img);
+$adminpage->addText('num_gallery_wp', $num_gallery_wp);
+$adminpage->addText('num_gallery_entries', $num_gallery_entries);
+$adminpage->addText('num_dl', $num_dl);
+$adminpage->addText('num_dl_files', $num_dl_files);
 if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
-	echo '
-                            <tr>
-                                <td class="configthin" width="200">Meiste Dateien:</td>
-                                <td class="configthin"><b>'.$best_dl_files.'</b> mit <b>'.$best_dl_files_num.'</b> Datei(en)</td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">Meiste Downloads:</td>
-                                <td class="configthin"><b>'.$best_dl_count.'</b> mit <b>'.$best_dl_count_num.'</b> Klick(s)</td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">Meister Traffic:</td>
-                                <td class="configthin"><b>'.$best_dl_traffic.'</b> mit <b>'.$best_dl_traffic_num.'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">Flei&szlig;igster Uploader:</td>
-                                <td class="configthin"><b>'.$best_dl_uploader.'</b> mit <b>'.$best_dl_uploader_num.'</b> Download(s)</td>
-                            </tr>
-	';
+  $adminpage->addText('best_dl_files', $best_dl_files);
+  $adminpage->addText('best_dl_files_num', $best_dl_files_num);
+  $adminpage->addText('best_dl_count', $best_dl_count);
+  $adminpage->addText('best_dl_count_num', $best_dl_count_num);
+  $adminpage->addText('best_dl_traffic', $best_dl_traffic);
+  $adminpage->addText('best_dl_traffic_num', $best_dl_traffic_num);
+  $adminpage->addText('best_dl_uploader', $best_dl_uploader);
+  $adminpage->addText('best_dl_uploader_num', $best_dl_uploader_num);
 }
+$adminpage->addText('num_video', $num_video);
+$adminpage->addText('num_video_int', $num_video_int);
+$adminpage->addText('num_video_ext', $num_video_ext);
 
-echo '
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="configthin">Anzahl Videos (gesamt):</td>
-                                <td class="configthin"><b>'.$num_video.'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin">Anzahl eigene Videos:</td>
-                                <td class="configthin"><b>'.$num_video_int.'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin">Anzahl externe Videos:</td>
-                                <td class="configthin"><b>'.$num_video_ext.'</b></td>
-                            </tr>
-						</table>
-';
+echo $adminpage->get('main');
 ?>
