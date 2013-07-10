@@ -2,33 +2,29 @@
 
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`news_id`) AS 'num_news'
-                FROM ".$FD->config('pref').'news
+                FROM `".$FD->config('pref').'news`
                 LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_news = $row['num_news'];
+$num_news = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`cat_id`) AS 'num_news_cat'
-                FROM ".$FD->config('pref').'news_cat
+                FROM `".$FD->config('pref').'news_cat`
                 LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_news_cat = $row['num_news_cat'];
+$num_news_cat = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`comment_id`) AS 'num_comments'
-                FROM ".$FD->config('pref').'comments
+                FROM `".$FD->config('pref').'comments`
                 LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_comments = $row['num_comments'];
+$num_comments = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`link_id`) AS 'num_links'
-                FROM ".$FD->config('pref').'news_links
+                FROM `".$FD->config('pref').'news_links`
                 LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_links = $row['num_links'];
+$num_links = $index->fetchColumn();
 
-if ( $num_news  > 0 ) {
+if ( $num_news > 0 ) {
     $index = $FD->sql()->conn()->query ( "
                     SELECT COUNT(C.`cat_id`) AS 'best_news_cat_num', C.`cat_name`
                     FROM ".$FD->config('pref').'news_cat C, '.$FD->config('pref').'news N
@@ -40,7 +36,7 @@ if ( $num_news  > 0 ) {
     $best_news_cat = $row['cat_name'];
     $best_news_cat_num = $row['best_news_cat_num'];
 
-    if ( $num_comments  > 0 ) {
+    if ( $num_comments > 0 ) {
         $index = $FD->sql()->conn()->query ( "
                         SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
                         FROM ".$FD->config('pref').'comments C, '.$FD->config('pref').'news N
@@ -100,15 +96,13 @@ $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`article_id`) AS 'num_articles'
                 FROM ".$FD->config('pref').'articles
                 LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_articles = $row['num_articles'];
+$num_articles = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`cat_id`) AS 'num_articles_cat'
                 FROM ".$FD->config('pref').'articles_cat
                 LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_articles_cat = $row['num_articles_cat'];
+$num_articles_cat = $index->fetchColumn();
 
 $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(A.`article_id`) AS 'best_article_poster_num', U.`user_name`
@@ -129,10 +123,9 @@ $index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`press_id`) AS 'num_press'
                 FROM ".$FD->config('pref').'press
                 LIMIT 0,1' );
-$row = $index->fetch(PDO::FETCH_ASSOC);
-$num_press = $row['num_press'];
+$num_press = $index->fetchColumn();
 
-if ( $num_press  > 0 ) {
+if ( $num_press > 0 ) {
     $index = $FD->sql()->conn()->query ( "
                     SELECT COUNT(V.`id`) AS 'best_press_lang_num', V.`title`
                     FROM ".$FD->config('pref').'press P, '.$FD->config('pref')."press_admin V
@@ -146,101 +139,48 @@ if ( $num_press  > 0 ) {
     $best_press_lang_num = $row['best_press_lang_num'];
 }
 
-echo '
-                        <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">Informationen &amp; Statistik</td></tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl News:</td>
-                                <td class="configthin"><b>'.$num_news.'</b> News in <b>'.$num_news_cat.'</b> Kategorie(n)</td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Kommentare:</td>
-                                <td class="configthin"><b>'.$num_comments.'</b></td>
-                            </tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Links:</td>
-                                <td class="configthin"><b>'.$num_links.'</b></td>
-                            </tr>
-';
+// Conditions
+$adminpage->addCond('has_news', ($num_news > 0));
+$adminpage->addCond('has_best_news_com', ($num_news > 0) && ($num_comments > 0));
+$adminpage->addCond('has_best_news_link', ($num_news > 0) && ($best_news_link_num > 0));
+$adminpage->addCond('has_best_com_poster', ($num_news > 0) && ($num_comments > 0 && $best_com_poster_rows));
+$adminpage->addCond('has_best_article_poster', ($num_articles > 0 && $best_article_poster_num > 0));
+$adminpage->addCond('has_press', ($num_press > 0));
 
-if ( $num_news  > 0 ) {
-    echo '
-                            <tr>
-                                <td class="configthin">Gr&ouml;&szlig;te Kategorie:</td>
-                                <td class="configthin"><b>'.$best_news_cat.'</b> mit <b>'.$best_news_cat_num.'</b> News</td>
-                            </tr>
-    ';
-
-    if ( $num_comments  > 0 ) {
-        echo '
-                            <tr>
-                                <td class="configthin">Meisten Kommentare:</td>
-                                <td class="configthin"><b>'.$best_news_com.'</b> mit <b>'.$best_news_com_num.'</b> Kommentar(en)</td>
-                            </tr>
-        ';
+// Values
+$adminpage->addText('num_news', $num_news);
+$adminpage->addText('num_news_cat', $num_news_cat);
+$adminpage->addText('num_comments', $num_comments);
+$adminpage->addText('num_links', $num_links);
+if ($num_news > 0) {
+    $adminpage->addText('best_news_cat', $best_news_cat);
+    $adminpage->addText('best_news_cat_num', $best_news_cat_num);
+    if ($num_comments > 0) {
+        $adminpage->addText('best_news_com', $best_news_com);
+        $adminpage->addText('best_news_com_num', $best_news_com_num);
     }
-
-    if ( $best_news_link_num  > 0 ) {
-        echo '
-                                <tr>
-                                    <td class="configthin">Meisten Links:</td>
-                                    <td class="configthin"><b>'.$best_news_link.'</b> mit <b>'.$best_news_link_num.'</b> Link(s)</td>
-                                </tr>
-        ';
+    if ( $best_news_link_num > 0 ) {
+        $adminpage->addText('best_news_link', $best_news_link);
+        $adminpage->addText('best_news_link_num', $best_news_link_num);
     }
-
-    echo '
-                            <tr>
-                                <td class="configthin">Flei&szlig;igster News-Poster:</td>
-                                <td class="configthin"><b>'.$best_news_poster.'</b> mit <b>'.$best_news_poster_num.'</b> News</td>
-                            </tr>
-    ';
-
-    if ( $num_comments  > 0 && $best_com_poster_rows ) {
-        echo '
-                            <tr>
-                                <td class="configthin">Flei&szlig;igster Kommentar-Poster:</td>
-                                <td class="configthin"><b>'.$best_com_poster.'</b> mit <b>'.$best_com_poster_num.'</b> Kommentar(en)</td>
-                            </tr>
-        ';
+    $adminpage->addText('best_news_poster', $best_news_poster);
+    $adminpage->addText('best_news_poster_num', $best_news_poster_num);
+    if ( $num_comments > 0 && $best_com_poster_rows ) {
+        $adminpage->addText('best_com_poster', $best_com_poster);
+        $adminpage->addText('best_com_poster_num', $best_com_poster_num);
     }
 }
-
-echo '
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Artikel:</td>
-                                <td class="configthin"><b>'.$num_articles.'</b> Artikel in <b>'.$num_articles_cat.'</b> Kategorie(n)</td>
-                            </tr>
-';
-
-if ( $num_articles  > 0 && $best_article_poster_num > 0 ) {
-    echo '
-                            <tr>
-                                <td class="configthin">Flei&szlig;igster Artikel-Autor:</td>
-                                <td class="configthin"><b>'.$best_article_poster.'</b> mit <b>'.$best_article_poster_num.'</b> Artikel(n)</td>
-                            </tr>
-    ';
+$adminpage->addText('num_articles', $num_articles);
+$adminpage->addText('num_articles_cat', $num_articles_cat);
+if ( $num_articles > 0 && $best_article_poster_num > 0 ) {
+  $adminpage->addText('best_article_poster', $best_article_poster);
+  $adminpage->addText('best_article_poster_num', $best_article_poster_num);
+}
+$adminpage->addText('num_press', $num_press);
+if ( $num_press > 0 ) {
+  $adminpage->addText('best_press_lang', $best_press_lang);
+  $adminpage->addText('best_press_lang_num', $best_press_lang_num);
 }
 
-echo '
-                            <tr><td class="space"></td></tr>
-                            <tr>
-                                <td class="configthin" width="200">Anzahl Presseberichte:</td>
-                                <td class="configthin"><b>'.$num_press.'</b></td>
-                            </tr>
-';
-
-if ( $num_press  > 0 ) {
-    echo '
-                            <tr>
-                                <td class="configthin">H&auml;ufigste Sprache:</td>
-                                <td class="configthin"><b>'.$best_press_lang.'</b> mit <b>'.$best_press_lang_num.'</b> Pressebericht(en)</td>
-                            </tr>
-    ';
-}
-
-echo '
-                        </table>
-';
+echo $adminpage->get('main');
 ?>

@@ -33,6 +33,9 @@
 //// Load Configs ////
 //////////////////////
 
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('id'));
+
 //Comment Config
 $FD->loadConfig('news'); //TODO: introduce own configuration for download comments
 $config_arr = $FD->configObject('news')->getConfigArray();
@@ -45,7 +48,7 @@ $SHOW = TRUE;
 ///////////////////
 //// Anti-Spam ////
 ///////////////////
-if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSION['user_id']!=0 ) {
+if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSION['user_id'] != 0 && isset($_POST['spam']) ) {
     $anti_spam = check_captcha ( $_POST['spam'], 0 );
 } else {
 	if (!isset($_POST['spam']))
@@ -86,7 +89,7 @@ if (isset($_POST['add_comment']))
          && $anti_spam == TRUE)
     {
                 settype($_POST['id'], 'integer');
-                $dl_comments_allowed = TRUE; //make this one dynamic in the future
+                $dl_comments_allowed = TRUE; //TODO: make this one dynamic in the future
 
                 if ( $dl_comments_allowed ) {
 
@@ -96,16 +99,15 @@ if (isset($_POST['add_comment']))
                     $commentdate = time();
                     $duplicate_time = $commentdate - ( 5 * 60 );
 
-                    $index = $FD->sql()->conn()->prepare('
-                                            SELECT COUNT(`comment_id`)
-                                            FROM `'.$FD->config('pref')."comments`
-                                            WHERE
-                                                `comment_text` = ?
-                                            AND
-                                                `comment_date` >  '".$duplicate_time."'
-                                            LIMIT 0,1");
-                    $index->execute(array($_POST['text']));
-                    if ( $index->fetchColumn() == 0 ) {
+                    $stmt = $FD->sql()->conn()->prepare('
+                                    SELECT COUNT(`comment_id`)
+                                    FROM `'.$FD->config('pref')."comments`
+                                    WHERE
+                                        `comment_text` = ?
+                                    AND `comment_date` >  '".$duplicate_time."'
+                                    LIMIT 0,1");
+                    $stmt->execute(array($_POST['text']));
+                    if ( $stmt->fetchColumn() == 0 ) {
 
                         if ($_SESSION['user_id']) {
                             $userid = $_SESSION['user_id'];
@@ -114,30 +116,33 @@ if (isset($_POST['add_comment']))
                             $userid = 0;
                         }
 
-                        $stmt = $FD->sql()->conn()->prepare ( '
+                        $stmt = $FD->sql()->conn()->prepare('
                                         INSERT INTO
-                                            `'.$FD->config('pref').'comments` (
+                                            `'.$FD->config('pref')."comments` (
                                                 content_id,
+                                                content_type,
                                                 comment_poster,
                                                 comment_poster_id,
                                                 comment_poster_ip,
                                                 comment_date,
                                                 comment_title,
-                                                comment_text,
-                                                content_type
+                                                comment_text
                                             )
                                          VALUES
                                             (
-                                                \''.$_POST['id']."',
+                                                '".$_POST['id']."',
+                                                'dl',
                                                 ?,
                                                 '$userid',
                                                 ?,
                                                 '$commentdate',
                                                 ?,
-                                                ?,
-                                                'dl'
-                                            )");
-                        $stmt->execute(array($_POST['name'], $_SERVER['REMOTE_ADDR'], $_POST['title'], $_POST['text']));
+                                                ?)");
+                        $stmt->execute( array(
+                                           $_POST['name'],
+                                           $_SERVER['REMOTE_ADDR'],
+                                           $_POST['title'],
+                                           $_POST['text'] ) );
                         $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments=comments+1');
                         $SHOW = FALSE;
                         $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_added"), $FD->cfg('virtualhost') );
@@ -181,7 +186,7 @@ if ($SHOW===TRUE)
 
   $dl_template = $template;
 
-  // Text formatieren
+  // format text
   $html = ($news_config_arr['html_code']>=3);
   $fs   = ($news_config_arr['fs_code']>=3);
   $para = ($news_config_arr['para_handling']>=3);
@@ -196,7 +201,7 @@ if ($SHOW===TRUE)
   while ($comment_arr = $index->fetch(PDO::FETCH_ASSOC))
   {
 
-    // Get user name
+    // Get user
     if ($comment_arr['comment_poster_id'] != 0)
     {
       $index2 = $FD->sql()->conn()->query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
@@ -216,7 +221,7 @@ if ($SHOW===TRUE)
         $comment_arr['comment_poster'] = '<b>' . $comment_arr['comment_poster'] . '</b>';
       }
 
-      // Benutzer Rang
+      // User rank
       $user_arr['rank_data'] = get_user_rank ( $comment_arr['user_group'], $comment_arr['user_is_admin'] );
       $comment_arr['user_rank'] = $user_arr['rank_data']['user_group_rank'];
 

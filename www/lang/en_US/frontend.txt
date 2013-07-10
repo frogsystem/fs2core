@@ -39,6 +39,7 @@ not_twice:                                         You are already registered.
 logged_in:                                         You are logged in.
 logged_out:                                        you are logged out again.
 article_not_found:                                 Article not found
+user_mail_exists:                                  This E-mail address has already been used for registration.  Please choose a different address.
 
 
 # new Language-Definition for frontend
