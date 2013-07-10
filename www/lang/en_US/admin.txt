@@ -29,7 +29,7 @@ deleted_records:                         deleted records
 date_info:                               uses the syntax of PHP function <a class="s" href="http://www.php.net/manual/en/function.date.php" target="_blank" class="small">date()</a>
 html:                                    HTML
 fscode:                                  FS-Code
-para:                                    paragraph handling
+para:                                    Paragraph handling
 csv:                                     comma separated values
 
 
@@ -122,8 +122,8 @@ selection_import:                        import selection
 
 # Button Captions
 button_arrow:                            <img class="middle" src="img/pointer.png" alt="->">
-do_action_button:                        Ausführen
-do_action_button_long:                   Aktion ausführen
+do_action_button:                        Execute
+do_action_button_long:                   Execute action
 save_changes_button:                     Save changes
 select_button:                           Select
 file_select_button:                      Select file
@@ -171,15 +171,15 @@ icon_info:                               <img src="icons/info.jpg" alt="Informat
 icon_error:                              <img src="icons/error.jpg" alt="Error" align="absmiddle">
 icon_save_ok:                            <img src="icons/save_ok.jpg" alt="OK" align="absmiddle">
 icon_save_add:                           <img src="icons/save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
-icon_save_error:                         <img src="icons/save_error.jpg" alt="Fehler beim Speichern" align="absmiddle">
-icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="Löschen erfolgreich" align="absmiddle">
-icon_trash_error:                        <img src="icons/trash_error.jpg" alt="Fehler beim Löschen" align="absmiddle">
-icon_trash_caution:                      <img src="icons/trash_caution.jpg" alt="Löschen erfolgreich, aber beachten Sie die Hinweise" align="absmiddle">
+icon_save_error:                         <img src="icons/save_error.jpg" alt="Error while saving" align="absmiddle">
+icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="Deletion successful" align="absmiddle">
+icon_trash_error:                        <img src="icons/trash_error.jpg" alt="Error while deleting" align="absmiddle">
+icon_trash_caution:                      <img src="icons/trash_caution.jpg" alt="Deletion successful, but read the notes" align="absmiddle">
 icon_login:                              <img src="icons/login.jpg" alt="Login" align="absmiddle">
 icon_logout:                             <img src="icons/logout.jpg" alt="Logout" align="absmiddle">
 icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation successful" align="absmiddle">
 icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Uninstalling successful" align="absmiddle">
-icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
+icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="No install action" align="absmiddle">
 icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Access granted" align="absmiddle">
 icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Access denied">
 icon_up:                                 <img src="icons/up.jpg" alt="Move upwards" align="absmiddle">
@@ -296,7 +296,7 @@ captcha_config_text_position_title:      Text position
 captcha_config_text_position_desc:       Position of text relative to the left, upper corner.
 captcha_config_text_position_help:       Distance to left edge and top edge
 captcha_config_text_style_title:         Font face and size
-captcha_config_text_style_desc:          Standard-Schriftart in 5 Größen oder eingefügter PHP-Font.
+captcha_config_text_style_desc:          Default font face in 5 sizes or inserted PHP-Font.
 captcha_config_text_style_default:       Standard, size
 captcha_config_text_options_title:       Text Options
 captcha_config_text_options_desc:        Options to format the captcha.
