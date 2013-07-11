@@ -12,8 +12,7 @@
 </p>
 
 <form method="post">
-  <input type="hidden" name="id" value="{..poll_id..}">
-  <input type="hidden" name="poll" value="1">
+  <input type="hidden" name="poll_id" value="{..poll_id..}">
   <table style="margin-left:-1px; width:100%;"  align="center" cellpadding="1" cellspacing="0">
     <tr>
       <td class="small" colspan="2" align="center">
@@ -24,7 +23,7 @@
     <tr>
       <td colspan="2" align="center">
         <input class="pointer" type="submit" value="Abstimmen"><br>
-        <a class="small" href="?go=polls&id={..poll_id..}">
+        <a class="small" href="?go=polls&amp;id={..poll_id..}">
           (Ergebnis anzeigen)
         </a>
       </td>
@@ -92,27 +91,35 @@
 <!--section-start::LIST_BODY--><b>Umfragen</b><br><br>
 
 <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
-  <tr valign="top">
-    <td align="left">
-      <a href="?go=polls&sort=question&order={..order_question..}"><b>Frage</b> </a>
-      <a class="top" href="?go=polls&sort=question&order={..order_question..}">{..arrow_question..}</a>
+  <tr align="center">
+    <td class="left bottom">
+      <a href="?go=polls&amp;sort=question&amp;order={..order_question..}">
+        <img src="$VAR(style_icons)poll/question.gif" alt="Frage" title="Frage" align="bottom">
+        <br>{..arrow_question..}
+      </a>
     </td>
 
-    <td align="left" width="100">
-      <a href="?go=polls&sort=participants&order={..order_participants..}"><b>Teilnehmer</b> </a>
-      <a class="top" href="?go=polls&sort=participants&order={..order_participants..}">{..arrow_participants..}</a>
+    <td class="left bottom" width="100">
+      <a href="?go=polls&amp;sort=participants&amp;order={..order_participants..}">
+        <img src="$VAR(style_icons)poll/users.gif" alt="Teilnehmer" title="Teilnehmer" align="bottom">
+        <br>{..arrow_participants..}
+      </a>
     </td>
 
-    <td align="left" width="58">
-      <a href="?go=polls&sort=start_date&order={..order_start_date..}"><b>von</b> </a>
-      <a class="top" href="?go=polls&sort=start_date&order={..order_start_date..}">{..arrow_start_date..}</a>
+    <td class="left bottom" width="58">
+      <a href="?go=polls&amp;sort=start_date&amp;order={..order_start_date..}">
+        <img src="$VAR(style_icons)poll/date-from.gif" alt="von" title="von" align="bottom">
+        <br>{..arrow_start_date..}
+      </a>
     </td>
 
-    <td align="left" width="10"></td>
+    <td class="left bottom" width="10"></td>
 
-    <td align="left" width="70">
-      <a href="?go=polls&sort=end_date&order={..order_end_date..}"><b>bis</b> </a>
-      <a class="top" href="?go=polls&sort=end_date&order={..order_end_date..}">{..arrow_end_date..}</a>
+    <td class="left bottom" width="70">
+      <a href="?go=polls&amp;sort=end_date&amp;order={..order_end_date..}">
+        <img src="$VAR(style_icons)poll/date-to.gif" alt="bis" title="bis" align="bottom">
+        <br>{..arrow_end_date..}
+      </a>
     </td>
 
   </tr>
@@ -129,8 +136,8 @@
     </td>
   </tr><!--section-end::ANSWER_LINE-->
 
-<!--section-start::BODY--><b>Umfragen</b>
-<a href="?go=polls" class="small" style="float:right;">(Alle Umfragen)</a>
+<!--section-start::BODY--><b class="atleft">Umfragen</b>
+<a href="?go=polls" class="small atright">(Alle Umfragen)</a>
 <br><br>
 
 <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
