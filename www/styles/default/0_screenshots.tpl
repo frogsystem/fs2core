@@ -17,14 +17,14 @@
 </table><!--section-end::CATEGORY_LIST_BODY-->
 
 <!--section-start::IMAGE-->  <td align="center" valign="top">
-    <a href="{..img_link..}">
-      <img class="pointer" src="{..thumb_url..}" alt="{..caption..}">
+    <a href="{..viewer_link..}" title="{..caption..}">
+      <img class="pointer" src="{..thumb_url..}" alt="{..caption..}" title="{..caption..}">
     </a><br>
     {..caption..}
   </td><!--section-end::IMAGE-->
 
 <!--section-start::BODY--><b>Galerie: {..name..}</b>
-<a href="?go=gallery" class="small" style="float:right;">(Alle Kategorien)</a>
+<a href="?go=gallery" class="small atright">(Alle Kategorien)</a>
 <br><br>
 
 <table border="0" cellpadding="" cellspacing="10" width="100%">

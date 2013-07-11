@@ -12,8 +12,7 @@
 </p>
 
 <form method="post">
-  <input type="hidden" name="id" value="{..poll_id..}">
-  <input type="hidden" name="poll" value="1">
+  <input type="hidden" name="poll_id" value="{..poll_id..}">
   <table style="margin-left:-1px; width:100%;"  align="center" cellpadding="1" cellspacing="0">
     <tr>
       <td class="small" colspan="2" align="center">
@@ -24,7 +23,7 @@
     <tr>
       <td colspan="2" align="center">
         <input class="pointer" type="submit" value="Abstimmen"><br>
-        <a class="small" href="?go=polls&id={..poll_id..}">
+        <a class="small" href="?go=polls&amp;id={..poll_id..}">
           (Ergebnis anzeigen)
         </a>
       </td>
@@ -130,7 +129,7 @@
   </tr><!--section-end::ANSWER_LINE-->
 
 <!--section-start::BODY--><b>Umfragen</b>
-<a href="?go=polls" class="small" style="float:right;">(Alle Umfragen)</a>
+<a href="?go=polls" class="small atright">(Alle Umfragen)</a>
 <br><br>
 
 <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">

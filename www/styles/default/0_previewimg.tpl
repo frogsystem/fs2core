@@ -2,7 +2,7 @@
   <b>Vorschaubild:</b>
 </p>
 <p align="center">
-  <a href="{..viewer_url..}">
+  <a href="{..viewer_url..}" title="{..caption..}">
     {..previewimg..}
   </a><br>
   <span class="small">
@@ -15,7 +15,7 @@
   <b>Vorschaubild:</b>
 </p>
 <p align="center">
-  <b>Kein Vorschaubild gefunden!</b>
+  Kein Vorschaubild gefunden!
 </p>
 <!--section-end::NOIMAGE_BODY-->
 

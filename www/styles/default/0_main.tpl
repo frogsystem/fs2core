@@ -2,19 +2,22 @@
   <div id="main">
 
     <div id="header">
-      <div id="title">&nbsp;$VAR(page_title)</div>
+      <h1 id="title">&nbsp;$VAR(page_title)</h1>
     </div>
 
     <div id="menu_left">
+    $APP(mini-search.php)<br>
     $NAV(left.nav)
+    [%feeds%]
     </div>
 
     <div id="menu_right">
       $APP(user-menu.php)
       $APP(preview-image.php)
       $APP(shop-system.php)
-      $APP(poll-system.php)
+      $APP(poll-system.php[random])
       $APP(affiliates.php)
+      $APP(topdownloads.php)
       $APP(mini-statistics.php)
     </div>
 
@@ -45,4 +48,5 @@
   {..body..}
 </html><!--section-end::MATRIX-->
 
-<!--section-start::DOCTYPE--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!--section-end::DOCTYPE-->
+<!--section-start::DOCTYPE--><!DOCTYPE html><!--section-end::DOCTYPE-->
+

@@ -3,7 +3,7 @@
 <!--section-start::SEARCH--><table style="margin-left:-2px;" cellpadding="2" cellspacing="0">
   <tr>
     <td align="right">
-      <b>Downloads durchsuchen:</b>
+      <b>Kategorie durchsuchen:</b>
     </td>
     <td align="left">
       <form action="" method="get">
@@ -63,7 +63,7 @@
 
 <!--section-start::ENTRY_FILE_LINE-->  <tr>
     <td {..mirror_col..} class="dl_cell">
-      <a target="_blank" href="{..url..}">
+      <a target="_blank" href="{..url..}" rel="nofollow">
         <b>{..name..}</b>
       </a>
     </td>
@@ -83,7 +83,7 @@
   </tr><!--section-end::ENTRY_STATISTICS-->
 
 <!--section-start::ENTRY_BODY--><b>Downloads</b>
-<a href="?go=download&cat_id=all" class="small" style="float:right;">(Alle Downloads)</a>
+<a href="?go=download&cat_id=all" class="small atright">(Alle Downloads)</a>
 
 <p>
   {..navigation..}

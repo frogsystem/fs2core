@@ -17,31 +17,29 @@
 <!--section-start::LINKS_LINE--><li><a href="{..url..}" target="{..target..}">{..title..}</a></li><!--section-end::LINKS_LINE-->
 
 <!--section-start::LINKS_BODY--><b>Weiterf&uuml;hrende Links:</b>
-<ul class="small">
+<ul>
   {..links..}
 </ul>
-
 <!--section-end::LINKS_BODY-->
 
-<!--section-start::NEWS_BODY--><table style="width:100%;" cellpadding="0" cellspacing="0">
+<!--section-start::NEWS_BODY--><table width="100%" cellpadding="0" cellspacing="0">
   <tr>
     <td>
-
-      <b id="news_{..news_id..}">{..titel..}</b>
-      <span class="small" style="float:right;">
+      <b class="atleft" id="news_{..news_id..}">{..titel..}</b>
+      <span class="small atright">
         ({..cat_name..})
       </span><br>
       <span class="small">von <a href="{..user_url..}">{..user_name..}</a>, am {..date..}</span>
 
-      <p>{..text..}</p>
-      <p class="small">
+      {..text..}
+      <div>
         {..related_links..}
-        <span class="small" style="float:right;">
+        <span class="small atright">
           <a href="{..comments_url..}">
              Kommentare ({..comments_number..})
            </a>
         </span>
-      </p>
+      </div>
 
     </td>
   </tr>
@@ -68,12 +66,12 @@
     <td class="comment_td comment_left">
       {..user..}
     </td>
-    <td class="comment_td comment_right">
+    <td class="comment_td">
       <div class="comment_top">
-        <span style="float:left;">
+        <span class="atleft">
           <b>{..titel..}</b>
         </span>
-        <span style="float:right;" class="small">
+        <span class="small atright">
           {..date..}
         </span>
       </div>
@@ -111,7 +109,7 @@
   <b>Kommentar hinzuf&uuml;gen</b>
 </p>
 
-<form method="post" onSubmit="return checkCommentForm()">
+<form action="" method="post" onSubmit="return checkCommentForm()">
   <input type="hidden" name="go" value="comments">
   <input type="hidden" name="add_comment" value="1">
   <input type="hidden" name="id" value="{..news_id..}">
@@ -137,7 +135,7 @@
       <td valign="top">
         <b>Text:</b>
         <p class="small">
-          Html&nbsp;ist&nbsp;<b>{..html..}</b>.<br>
+          HTML&nbsp;ist&nbsp;<b>{..html..}</b>.<br>
           <a href="?go=fscode">FScode</a>&nbsp;ist&nbsp;<b>{..fs_code..}.</b>
         </p>
       </td>
@@ -158,12 +156,12 @@
 <!--section-end::COMMENT_FORM-->
 
 <!--section-start::COMMENT_BODY-->{..news..}
-{..comments..}<br>
+{..comments..}
 {..comment_form..}
 <!--section-end::COMMENT_BODY-->
 
 <!--section-start::SEARCH--><b>News-Suche</b>
-<a href="?go=news_search" class="small" style="float:right;">(Neue Suche)</a>
+<a href="?go=news_search" class="small atright">(Neue Suche)</a>
 <br><br>
 
 <fieldset>
