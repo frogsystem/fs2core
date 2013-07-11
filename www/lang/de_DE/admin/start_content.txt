@@ -1,0 +1,22 @@
+#content startpage
+num_news:             Anzahl News
+news_in:              News in
+categories:           Kategorie(n)
+num_comments:         Anzahl Kommentare
+num_links:            Anzahl Links
+best_news_cat:        Gr&ouml;&szlig;te Kategorie
+with:                 mit
+news:                 News
+best_news_com:        Meisten Kommentare
+comments:             Kommentar(en)
+best_news_link:       Meisten Links
+links:                Link(s)
+best_news_poster:     Flei&szlig;igster News-Poster
+best_com_poster:      Flei&szlig;igster Kommentar-Poster
+num_articles:         Anzahl Artikel
+articles_in:          Artikel in
+best_article_poster:  Flei&szlig;igster Artikel-Autor
+articles:             Artikel(n)
+num_press:            Anzahl Presseberichte
+best_press_lang:      H&auml;ufigste Sprache
+press_reports:        Pressebericht(en)

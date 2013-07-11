@@ -53,7 +53,17 @@ select:                                  auswählen
 selection:                               Auswahl
 active:                                  aktiv
 active_big:                              Aktiv
+template_select_style:                   Zu bearbeitenden Style w&auml;hlen
+template_select_file:                    Zu bearbeitende Datei w&auml;hlen
+edit_templates:                          Templates bearbeiten
 valid_tags:                              Gültige Tags
+global_vars:                             Globale Variablen
+applets:                                 Applets
+snippets:                                Schnipsel
+navigations:                             Navigationen
+format_insert:                           %s einf&uuml;gen
+path:                                    Pfad
+create_new_file:                         Neue Datei erstellen
 output:                                  Ausgabe
 version:                                 Version
 informations_and_statistics:             Informationen & Statistik

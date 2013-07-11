@@ -333,7 +333,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                     <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
                     <input type="hidden" id="section_select" value="">
                     <table class="content_width" border="0" cellpadding="4" cellspacing="0">
-                        <tr class="line"><td colspan="2"><h3>Templates bearbeiten</h3><hr></td></tr>
+                        <tr class="line"><td colspan="2"><h3>'.$FD->text('admin', 'edit_templates').'</h3><hr></td></tr>
         ';
 
         // Special MANYFILES-Things
@@ -403,7 +403,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
             $select_template = '
                                     <tr>
                                         <td>
-                                            <b>Zu bearbeitenden Style w&auml;hlen:</b>
+                                            <b>'.$FD->text('admin', 'template_select_style').':</b>
                                         </td>
                                         <td style="width:350px;">
                                             <select name="style" onChange="this.form.submit();" style="width:200px;">
@@ -418,14 +418,14 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
             while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
                 if ( is_dir ( FS2_ROOT_PATH . 'styles/' . $style_arr['style_tag'] ) == TRUE ) {
                     $select_template .= '<option value="'.$style_arr['style_tag'].'" '.getselected ($style_arr['style_tag'], $_POST['style']).'>'.$style_arr['style_tag'];
-                    $style_arr['style_tag'] == $FD->config('style') ? $select_template .= ' (aktiv)' : $select_template .= '';
+                    $style_arr['style_tag'] == $FD->config('style') ? $select_template .= ' ('.$FD->text('admin', 'active').')' : $select_template .= '';
                     $select_template .= '</option>';
                 }
             }
 
             $select_template .= '
                                             </select>
-                                            <input value="Ausw&auml;hlen" type="submit">
+                                            <input value="'.$FD->text('admin', 'select_button').'" type="submit">
                                         </td>
                                     </tr>
             ';
@@ -441,7 +441,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                                     <tr><td class="space"></td></tr>
                                     <tr>
                                         <td>
-                                            <b>Zu bearbeitende Datei w&auml;hlen:</b>
+                                            <b>'.$FD->text('admin', 'template_select_file').':</b>
                                         </td>
                                         <td style="width:350px;">
                                             <select name="file" onChange="this.form.submit();" style="width:200px;">
@@ -453,9 +453,9 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
             }
 
             $select_template .= '
-                                                <option value="new" '.getselected ( "new", $_POST['file'] ).'>Neue Datei erstellen...</option>
+                                                <option value="new" '.getselected ( "new", $_POST['file'] ).'>'.$FD->text('admin', 'create_new_file').'...</option>
                                             </select>
-                                            <input value="Ausw&auml;hlen" type="submit">
+                                            <input value="'.$FD->text('admin', 'select_button').'" type="submit">
                                         </td>
                                     </tr>
             ';
@@ -469,7 +469,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                                     <tr><td class="space"></td></tr>
                                     <tr>
                                         <td>
-                                            Dateiname:
+                                            '.$FD->text('admin', 'filename').':
                                         </td>
                                         <td style="width:350px;">
                                             <input class="text" name="file_name" size="40" maxlength="60"> .'.$FILE_EXT.'
@@ -519,9 +519,9 @@ function get_dropdowns ( $EDITOR_NAME )
     $global_vars = array ( 'url', 'style_url', 'style_images', 'style_icons', 'page_title', 'page_dyn_title', 'date', 'time', 'date_time' );
     foreach ( $global_vars as $var ) {
         $the_var = '$VAR('.$var.')';
-        $global_vars_array[] = '<tr class="pointer tag_click_class" title="'.$the_var.' einf&uuml;gen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_var.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$VAR(<b>'.$var.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $global_vars_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_var).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_var.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$VAR(<b>'.$var.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
-    $dropdowns['global_vars'] = create_dropdown ( 'Globale Variablen', implode ( '', $global_vars_array ) );
+    $dropdowns['global_vars'] = create_dropdown ( $FD->text('admin', 'global_vars'), implode ( '', $global_vars_array ) );
 
     // Applets
     $index = $FD->sql()->conn()->query ( '
@@ -529,26 +529,26 @@ function get_dropdowns ( $EDITOR_NAME )
     while ( $app_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $app = $app_arr['applet_file'];
         $the_app = '$APP('.$app.'.php)';
-        $applets_array[] = '<tr class="pointer tag_click_class" title="'.$the_app.' einf&uuml;gen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $applets_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_app).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
-    $dropdowns['applets'] = create_dropdown ( 'Applets', implode ( '', $applets_array ) );
+    $dropdowns['applets'] = create_dropdown ( $FD->text('admin', 'applets'), implode ( '', $applets_array ) );
 
     // Snippets
     $index = $FD->sql()->conn()->query ( '
                     SELECT `snippet_tag` FROM `'.$FD->config('pref').'snippets` WHERE `snippet_active` = 1' );
     while ( $snippets_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $the_snippet = $snippets_arr['snippet_tag'];
-        $snippets_array[] = '<tr class="pointer tag_click_class" title="'.$the_snippet.' einf&uuml;gen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $snippets_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_snippet).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
-    $dropdowns['snippets'] = create_dropdown ( 'Schnipsel', implode ( '', $snippets_array ) );
+    $dropdowns['snippets'] = create_dropdown ( $FD->text('admin', 'snippets'), implode ( '', $snippets_array ) );
 
     // Navigationen
     $navs_arr = scandir_ext ( FS2_ROOT_PATH . 'styles/' . $_POST['style'], 'nav' );
     foreach ( $navs_arr as $nav ) {
         $the_nav = '$NAV('.$nav.')';
-        $navs_array[] = '<tr class="pointer tag_click_class" title="'.$the_nav.' einf&uuml;gen" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $navs_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_nav).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
     }
-    $dropdowns['navigations'] = create_dropdown ( 'Navigationen', implode ( '', $navs_array ) );
+    $dropdowns['navigations'] = create_dropdown ( $FD->text('admin', 'navigations'), implode ( '', $navs_array ) );
 
     return $dropdowns;
 }
@@ -568,9 +568,9 @@ function get_taglist ( $TAG_ARR, $EDITOR_NAME )
     if ( count ( $TAG_ARR ) >= 1 ) {
         foreach ( $TAG_ARR as $help ) {
             $the_tag = $OC->getOpener().$help['tag'].$OC->getCloser();
-            $tag_array[] = '<tr class="pointer tag_click_class" title="'.$the_tag.' einf&uuml;gen" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_tag.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_tag.'</b><br>'.$help['text'].'</td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+            $tag_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_tag).'" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_tag.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_tag.'</b><br>'.$help['text'].'</td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
         }
-        $help_template = create_dropdown ( 'Gültige Tags', implode ( '', $tag_array ) );
+        $help_template = create_dropdown ( $FD->text('admin', 'valid_tags'), implode ( '', $tag_array ) );
     } else {
         $help_template = '';
     }
@@ -590,7 +590,7 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
     $footer_template = '
                                     <div class="html-editor-path" id="'.$EDITOR_NAME.'_footer">
                                         <div style="padding:2px; height:13px;" class="smaller">
-                                            <span class="atleft">Pfad: '.$STYLE.' &gt; '.$FILE . $section_text .'</span>
+                                            <span class="atleft">'.$FD->text('admin', 'path').': '.$STYLE.' &gt; '.$FILE . $section_text .'</span>
                                             <span class="html-editor-highlighter">'.$highlighter_text.'</span>
                                         </div>
                                     </div>

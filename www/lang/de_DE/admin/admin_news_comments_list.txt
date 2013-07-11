@@ -1,0 +1,38 @@
+title:       Titel
+poster:      Poster
+date:        Datum
+spam_prob:   Spamwahrscheinlichkeit
+
+b8_error:           b8-Fehler
+b8_no_start:        Konnte b8 nicht starten!
+b8_not_classified:  Der angegebene Kommentar ist nicht klassifiziert, daher kann dies auch nicht r&uuml;ckg&auml;ngig gemacht werden.
+b8_invalid_action:  Die angegebene Aktion ist nicht g&uuml;ltig.
+b8_no_comment:      <b>Fehler:</b> Kein Kommentar mit der angegebenen ID ist vorhanden! Es wird keine Klassifizierung vorgenommen.
+
+stat_wordlist:           Statistik zur Wortliste
+learned_ham:             Gelernte spamfreie Kommentare
+learned_spam:            Gelernte Spamkommentare
+b8_db_version:           BayesDB-Version
+comments_not_up_to_date: Kommentare, deren Wahrscheinlichkeit in der Datenbank nicht aktuell ist
+not_up_to_date_note:     Dieser Wert sollte m&ouml;glichst klein sein, um eine korrekte Sortierung nach Wahrscheinlichkeiten zu erm&ouml;glichen.
+comments_total:          Gesamtzahl der Kommentare
+frequent_spam:           H&auml;ufigste Spamtokens
+frequent_ham:            H&auml;ufigste spamfreie Tokens
+token:                   Token
+number:                  Anzahl
+no_tokens_available:     Es sind noch keine Tokens in der Wortliste vorhanden. Sie m&uuml;ssen erst einige Kommentare als Spam oder spamfrei markieren, damit sich die Wortliste f&uuml;llt und der Spamfilter Spamtexte auch als solche erkennen kann. Andernfalls werden alle Kommentare nur mit 50% bewertet, was wenig hilfreich ist.
+back_to_list:            Zur&uuml;ck zur Kommentarliste
+
+prev:                    zur&uuml;ck
+next:                    weiter
+
+comments_list:           Kommentarliste
+not_registered:          unregistriert
+related_news:            Zugeh&ouml;rige Newsmeldung
+no_spam:                 Kein Spam :)
+it_is_spam:              Das ist Spam!
+marked_as_ham:           Als spamfrei markiert
+marked_as_spam:          Als Spam markiert
+revert:                  r&uuml;ckg&auml;ngig machen
+
+show_stats:              Statistik anzeigen
