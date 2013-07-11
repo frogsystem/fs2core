@@ -31,7 +31,7 @@ if ( isset ( $_GET['info'] ) ) {
                                     '.$FD->text('page', 'phpinfo_phpuser').':
                                 </td>
                                 <td class="configthin" colspan="3">
-                                    '.get_current_user().'
+                                    '.exec('whoami').'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
