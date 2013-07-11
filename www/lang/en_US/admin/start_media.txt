@@ -1,1 +1,21 @@
 #media startpage
+num_gallery:          Number of galleries
+best_gallery:         Largest gallery
+img_or_wp:            image(s)/wallpaper(s)
+num_gallery_img:      Number of images
+num_gallery_wp:       Number of wallpapers
+num_gallery_entries:  Number of entries (total)
+num_dl:               Number of downloads
+num_dl_files:         Number of files
+best_dl_files:        Most files
+with:                 with
+files:                file(s)
+best_dl_count:        Most downloads
+clicks:               click(s)
+best_dl_traffic:      Most traffic
+best_dl_uploader:     Busiest uploader
+downloads:            download(s)
+
+num_video:            Number of videos (total)
+num_video_int:        Number of own videos
+num_video_ext:        Number of external videos
