@@ -3,7 +3,7 @@
 <!--section-start::SEARCH--><table style="margin-left:-2px;" cellpadding="2" cellspacing="0">
   <tr>
     <td align="right">
-      <b>Downloads durchsuchen:</b>
+      <b>Kategorie durchsuchen:</b>
     </td>
     <td align="left">
       <form action="" method="get">
@@ -54,8 +54,8 @@
 </table>
 <br><!--section-end::PREVIEW_LIST-->
 
-<!--section-start::BODY--><b>Downloads</b>
-<a href="?go=download&cat_id=all" class="small" style="float:right;">(Alle Downloads)</a>
+<!--section-start::BODY--><b class="atleft">Downloads</b>
+<a href="?go=download&cat_id=all" class="small atright">(Alle Downloads)</a><br>
 
 {..navigation..}
 {..entries..}
@@ -63,7 +63,7 @@
 
 <!--section-start::ENTRY_FILE_LINE-->  <tr>
     <td {..mirror_col..} class="dl_cell">
-      <a target="_blank" href="{..url..}">
+      <a target="_blank" href="{..url..}" rel="nofollow">
         <b>{..name..}</b>
       </a>
     </td>
@@ -82,12 +82,10 @@
     <td class="dl_cell">{..hits..}</td>
   </tr><!--section-end::ENTRY_STATISTICS-->
 
-<!--section-start::ENTRY_BODY--><b>Downloads</b>
-<a href="?go=download&cat_id=all" class="small" style="float:right;">(Alle Downloads)</a>
+<!--section-start::ENTRY_BODY--><b class="atleft">Downloads</b>
+<a href="?go=download&cat_id=all" class="small atright">(Alle Downloads)</a><br>
 
-<p>
-  {..navigation..}
-</p>
+{..navigation..}
 <p>
   <b>{..title..}</b>
 </p>
@@ -165,5 +163,7 @@
   {..statistics..}
 </table>
 <br>
-{..search..}<!--section-end::ENTRY_BODY-->
+{..search..}
+<br>
+<br><!--section-end::ENTRY_BODY-->
 
