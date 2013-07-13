@@ -110,6 +110,14 @@ image_upload_error_4:            Image upload failed<br>The image is too big (wi
 image_upload_error_5:            Image upload failed<br>The image does not have the required width and height
 image_upload_error_6:            Image upload failed<br>The image could not be created
 
+#new password stuff
+new_password_request:                  Request new password
+new_password_request_successful:       The request of a new password has been successful.
+mail_new_password_request_sended:      An e-mail to confirm the new password request was sent to the given address.
+mail_new_password_request_not_sended:  E-mail could not be sent.<br>An error occured while sending the mail to confirm the password request.
+new_password_user_not_found:           User not found
+new_password_user_not_found_text:      A user with the given e-mail address does not exist.
+
 # Search
 sq_error_not_and:               Prohibited use of NOT in your Searchquery. Don't use NOT on both sides of AND.
 sq_error_not_or_xor:            Prohibited use of NOT in your Searchquery. Neither use NOT with OR nor XOR.
