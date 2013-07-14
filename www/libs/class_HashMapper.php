@@ -11,10 +11,10 @@ require('class_Hash.php');
 
 class HashMapper
 {
-    // Klassen-Variablen
+    // class variables
     private $sql;
 
-    // Der Konstruktur
+    // the constructor
     public function  __construct() {
         global $FD;
         $this->sql = $FD->sql();
@@ -68,7 +68,8 @@ class HashMapper
         $data = array(
             'hash' => $hash->getHash(),
             'type' => $hash->getType(),
-            'typeId' => $hash->getTypeId()
+            'typeId' => $hash->getTypeId(),
+            'deleteTime' => $hash->getDeleteTime()
         );
 
         // no ID?
@@ -85,7 +86,7 @@ class HashMapper
 
     // delete from DB
     public function delete($hash) {
-        $this->sql->conn()->exec('DELETE FROM '.$FD->config('pref').'hashes
+        $this->sql->conn()->exec('DELETE FROM '.$this->sql->getPrefix().'hashes
                                   WHERE id = '.intval($hash->getId()));
     }
 
