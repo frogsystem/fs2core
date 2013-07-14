@@ -874,7 +874,7 @@ function get_seo () {
                 // letzer paramter hat keinen wert, strich am ende fällt weg
                 if ((count($seoparams) % 2 != 0) && (count($seoparams) > 0)) {
                     //$redirect = true;
-                    array_push($seoparams, null);
+                    array_push($seoparams, 1);
                 }
 
                 for ($i = 0; $i < count($seoparams); $i += 2)

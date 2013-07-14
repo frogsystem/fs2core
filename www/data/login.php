@@ -37,18 +37,13 @@ elseif (isset($_GET['newpassword']) && (!isset($_POST['login']) || $_POST['login
             $messages = array($FD->text('frontend', 'new_password_request_successful'));
 
             // send email
-            $mm = new MailManager();
-
-            $mail_subject = $FD->text('frontend', 'mail_new_password_request_on') . $FD->cfg('virtualhost');
+            $mail_subject = $FD->text('frontend', 'mail_new_password_request_on') .' '. $FD->cfg('virtualhost');
             $content = get_email_template ('change_password_ack');
             $content = str_replace ( '{..user_name..}', $user['user_name'], $content );
             $content = str_replace ( '{..new_password_url..}', $FD->cfg('virtualhost').$hash->getURL(), $content );
-            if ($mm->getHtmlConfig())
-                $content = fscode($content, true, true, true);
-            $content = tpl_functions($content, 0, array('VAR'));
 
             // Build Mail and send
-            $mail = new Mail($mm->getDefaultSender(), $user['user_mail'], $mail_subject, $content, $mm->getHtmlConfig());
+            $mail = new Mail(MailManager::getDefaultSender(), $user['user_mail'], $mail_subject, MailManager::parseContent($content), MailManager::getHtmlConfig());
             if ($mail->send()) {
                 $messages[] = $FD->text('frontend', 'mail_new_password_request_sended');
             } else {

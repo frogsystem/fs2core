@@ -111,6 +111,7 @@ image_upload_error_5:            Image upload failed<br>The image does not have 
 image_upload_error_6:            Image upload failed<br>The image could not be created
 
 #new password stuff
+mail_new_password_request_on:          New password request on
 new_password_request:                  Request new password
 new_password_request_successful:       The request of a new password has been successful.
 mail_new_password_request_sended:      An e-mail to confirm the new password request was sent to the given address.

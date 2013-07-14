@@ -608,7 +608,7 @@ function send_mail ( $TO, $SUBJECT, $CONTENT, $HTML = TRUE, $FROM = FALSE, $TPL_
     if ($FROM == FALSE) {
         $FROM = MailManager::getDefaultSender();
     }    
-    $mail = new Mail($FROM, $TO, $SUBJECT, $CONTENT, $HTML, $TPL_FUNC);
+    $mail = new Mail($FROM, $TO, $SUBJECT, MailManager::parseContent($CONTENT, $HTML, $TPL_FUNC), $HTML, $TPL_FUNC);
     return $mail->send();
 }
 

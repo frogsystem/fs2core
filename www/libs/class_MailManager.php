@@ -2,7 +2,7 @@
 /**
  * @file     class_MailManager.php
  * @folder   /libs
- * @version  0.2
+ * @version  0.3
  * @author   Sweil
  *
  * this class provides methods for mail creation
@@ -10,11 +10,6 @@
 
 class MailManager
 {
-    // Der Konstruktur
-    public function  __construct() {
-        //~ global $FD;
-    }
-
 
     // Get Html Config
     public static function getHtmlConfig()  {
@@ -46,6 +41,20 @@ class MailManager
             throw $e;
         }
     }
-
+    
+    // parse fscode and/or tpl_function in mail content
+    public static function parseContent($content, $FSCODE = true, $TPL_FUNC = true)  {
+        if ($TPL_FUNC) {
+            global $FD;
+            require_once(FS2_ROOT_PATH.'includes/indexfunctions.php');
+            $content = tpl_functions($content, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL', 'SNP'), true);
+        }
+        if ($FSCODE && self::getHtmlConfig()) {
+            require_once(FS2_ROOT_PATH.'includes/fscode.php');
+            $content = parse_all_fscodes($content, array('html'=>true));
+        }
+        
+        return $content;
+    }
 }
 ?>

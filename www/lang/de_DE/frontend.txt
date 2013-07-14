@@ -111,6 +111,7 @@ image_upload_error_5:            Bild-Upload fehgeschlagen<br>Das Bild entsprich
 image_upload_error_6:            Bild-Upload fehgeschlagen<br>Das Bild konnte nicht erstellt werden
 
 #new password stuff
+mail_new_password_request_on:          Neues Passwort angefordert auf
 new_password_request:                  Neue Zugangsdaten anfordern
 new_password_request_successful:       Die Anforderung eines neuen Passworts war erfolgreich.
 mail_new_password_request_sended:      Eine E-Mail zur Best&auml;tigung der Anforderung eines neuen Passworts wurde erfolgreich an die angegebene E-Mail-Adresse gesendet.
