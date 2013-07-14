@@ -1,93 +1,113 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
+###################
+## Page Settings ##
+###################
+$used_cols = array('screen_x', 'screen_y', 'thumb_x', 'thumb_y', 'quickinsert', 'dl_rights', 'dl_show_sub_cats', 'dl_comments');
 
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST[screenx] && $_POST[screeny] && $_POST[thumbx] && $_POST[thumby] && $_POST[quickinsert])
+if (isset($_POST['screen_x']) && isset($_POST['screen_y']) && isset($_POST['thumb_x']) && isset($_POST['thumb_y']) && isset($_POST['quickinsert']))
 {
-    settype($_POST[screenx], 'integer');
-    settype($_POST[screeny], 'integer');
-    settype($_POST[thumbx], 'integer');
-    settype($_POST[thumby], 'integer');
-    settype($_POST[dl_rights], 'integer');
-    
-    $update = "UPDATE ".$global_config_arr[pref]."dl_config
-               SET screen_x = '$_POST[screenx]',
-                   screen_y = '$_POST[screeny]',
-                   thumb_x = '$_POST[thumbx]',
-                   thumb_y = '$_POST[thumby]',
-                   quickinsert = '$_POST[quickinsert]',
-                   dl_rights = '$_POST[dl_rights]',
-                   dl_show_sub_cats = '$_POST[dl_show_sub_cats]'
-               ";
-    mysql_query($update, $db);
-    systext("Die Konfiguration wurde aktualisiert");
+    settype($_POST['screen_x'], 'integer');
+    settype($_POST['screen_y'], 'integer');
+    settype($_POST['thumb_x'], 'integer');
+    settype($_POST['thumb_y'], 'integer');
+    settype($_POST['dl_rights'], 'integer');
+    settype($_POST['dl_show_sub_cats'], 'integer');
+    settype($_POST['dl_comments'], 'integer');
+
+    // prepare data
+    $data = frompost($used_cols);
+
+    // save config
+    try {
+        $FD->saveConfig('downloads', $data);
+        systext($FD->text('admin', 'config_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    } catch (Exception $e) {
+        systext(
+            $FD->text('admin', 'config_not_saved').'<br>'.
+            (DEBUG ? $e->getMessage() : $FD->text('admin', 'unknown_error')),
+            $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error')
+        );
+    }
+
+    // Unset Vars
+    unset($_POST);
 }
 
 /////////////////////////////////////
 ////// Konfiguration Formular ///////
 /////////////////////////////////////
 
-else
+if(true)
 {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."dl_config", $db);
-    $config_arr = mysql_fetch_assoc($index);
-    
-    settype ( $config_arr['dl_show_sub_cats'], "integer" );
-    
+    if(isset($_POST['sended'])) {
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
+    } else {
+        $FD->loadConfig('downloads');
+        $data = $FD->configObject('downloads')->getConfigArray();
+        putintopost($data);
+    }
+
+    $_POST = array_map('killhtml', $_POST);
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_config" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="save" name="sended">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Einstellungen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="70%">
-                                    Max. Bildgröße:<br>
-                                    <font class="small">Stellt die max. Upload Größe der Vorschau-Bilder ein</font>
+                                    Max. Bildgr&ouml;&szlig;e:<br>
+                                    <font class="small">Stellt die max. Upload Gr&ouml;&szlig;e der Vorschau-Bilder ein</font>
                                 </td>
                                 <td class="config" valign="top" width="30%">
-                                    <input class="text" size="5" name="screenx" value="'.$config_arr[screen_x].'" maxlength="4">
+                                    <input class="text" size="5" name="screen_x" value="'.$_POST['screen_x'].'" maxlength="4">
                                     x
-                                    <input class="text" size="5" name="screeny" value="'.$config_arr[screen_y].'" maxlength="4">
+                                    <input class="text" size="5" name="screen_y" value="'.$_POST['screen_y'].'" maxlength="4">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    Thumbnail Größe:<br>
-                                    <font class="small">Gibt die Größe der Thumbnails an</font>
+                                    Thumbnail Gr&ouml;&szlig;e:<br>
+                                    <font class="small">Gibt die Gr&ouml;&szlig;e der Thumbnails an</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="5" name="thumbx" value="'.$config_arr[thumb_x].'" maxlength="3">
+                                    <input class="text" size="5" name="thumb_x" value="'.$_POST['thumb_x'].'" maxlength="3">
                                     x
-                                    <input class="text" size="5" name="thumby" value="'.$config_arr[thumb_y].'" maxlength="3">
+                                    <input class="text" size="5" name="thumb_y" value="'.$_POST['thumb_y'].'" maxlength="3">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
                                     Quick-Insert Pfad:<br>
-                                    <font class="small">Der Datei-Pfad der mit dem Quick-Insert Button eingefügt wird.</font>
+                                    <font class="small">Der Datei-Pfad der mit dem Quick-Insert Button eingef&uuml;gt wird.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="40" name="quickinsert" value="'.stripslashes(killhtml($config_arr[quickinsert])).'" maxlength="255">
+                                    <input class="text" size="40" name="quickinsert" value="'.$_POST['quickinsert'].'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    Downloads erlauben für:<br>
+                                    Downloads erlauben f&uuml;r:<br>
                                     <font class="small">Wer darf die Downloads verwenden?</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
                                     <select name="dl_rights">
                                         <option value="2"';
-                                        if ($config_arr[dl_rights] == 2)
+                                        if ($_POST['dl_rights'] == 2)
                                             echo ' selected="selected"';
                                         echo'>alle User</option>
                                         <option value="1"';
-                                        if ($config_arr[dl_rights] == 1)
+                                        if ($_POST['dl_rights'] == 1)
                                             echo ' selected="selected"';
                                         echo'>registrierte User</option>
                                         <option value="0"';
-                                        if ($config_arr[dl_rights] == 0)
+                                        if ($_POST['dl_rights'] == 0)
                                             echo ' selected="selected"';
                                         echo'>niemanden</option>
                                     </select>
@@ -96,10 +116,19 @@ else
                             <tr>
                                 <td class="config" valign="top" width="50%">
                                     Unterkategorien immer zeigen:<br>
-                                    <font class="small">Zeigt immer alle Unterkategorien an, auch wenn Ordner nicht geöffnet.</font>
+                                    <font class="small">Zeigt immer alle Unterkategorien an, auch wenn Ordner nicht ge&ouml;ffnet.</font>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input type="checkbox" name="dl_show_sub_cats" value="1" '.getchecked ( 1, $config_arr['dl_show_sub_cats'] ).'>
+                                    <input type="checkbox" name="dl_show_sub_cats" value="1" '.getchecked ( 1, $_POST['dl_show_sub_cats'] ).'>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="config" valign="top" width="50%">
+                                    Download-Kommentare nutzen:<br>
+                                    <font class="small">Aktiviert die Kommentar-Funktion f&uuml;r Downloads. Einstellungen entsprechen den News-Kommentaren.</font>
+                                </td>
+                                <td class="config" valign="top" width="50%">
+                                    <input type="checkbox" name="dl_comments" value="1" '.getchecked ( 1, $_POST['dl_comments'] ).'>
                                 </td>
                             </tr>
                             <tr>

@@ -1,81 +1,56 @@
 <?php
 // Initialise Time Variables
-$stats_year = date ( "Y" );
-$stats_month = date ( "m" );
-$stats_day = date ( "d" );
+$stats_year = date ( 'Y' );
+$stats_month = date ( 'm' );
+$stats_day = date ( 'd' );
 
 
 // Overall Data
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."counter", $db );
-$counter_arr = mysql_fetch_assoc ( $index ) ;
+$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'counter' );
+$counter_arr = $index->fetch( PDO::FETCH_ASSOC ) ;
 
 
 // Visitors today
-$index = mysql_query ( "
+$index = $FD->sql()->conn()->query ( '
                         SELECT
                             `s_hits`, `s_visits`
                         FROM
-                            `".$global_config_arr['pref']."counter_stat`
+                            `'.$FD->config('pref')."counter_stat`
                         WHERE
                             `s_year` = '".$stats_year."'
                         AND
                             `s_month` = '".$stats_month."'
                         AND
-                            `s_day` = '".$stats_day."'
-", $db);
-$today_arr = mysql_fetch_assoc ( $index );
+                            `s_day` = '".$stats_day."'" );
+$today_arr = $index->fetch( PDO::FETCH_ASSOC );
 
 
-// Visitors online
-$index = mysql_query ( "
-                        SELECT
-                            count(`ip`) AS 'total'
-                        FROM
-                            `".$global_config_arr['pref']."useronline`
-", $db);
-$useronline_arr['total'] = mysql_result ( $index, 0, "total" );
+// Any users online
+$online = get_online_ips();
 
-// Registered online
-$index = mysql_query ( "
-                        SELECT
-                            count(`ip`) AS 'registered'
-                        FROM
-                            `".$global_config_arr['pref']."useronline`
-                        WHERE
-                            `user_id` != 0
-", $db);
-$useronline_arr['registered'] = mysql_result ( $index, 0, "registered" );
-
-// Guests online
-$index = mysql_query ( "
-                        SELECT
-                            count(`ip`) AS 'guests'
-                        FROM
-                            `".$global_config_arr['pref']."useronline`
-                        WHERE
-                            `user_id` = 0
-", $db);
-$useronline_arr['guests'] = mysql_result ( $index, 0, "guests" );
+$useronline_arr['total'] = $online['all'];
+$useronline_arr['registered'] = $online['users'];
+$useronline_arr['guests'] = $online['guests'];
 
 
 // Create Template
 $template = new template();
 
-$template->setFile("0_general.tpl");
-$template->load("STATISTICS");
+$template->setFile('0_general.tpl');
+$template->load('STATISTICS');
 
-$template->tag("visits", point_number ( $counter_arr['visits'] ) );
-$template->tag("visits_today", point_number ( $today_arr['s_visits'] ) );
-$template->tag("hits", point_number ( $counter_arr['hits'] ) );
-$template->tag("hits_today", point_number ( $today_arr['s_hits'] ) );
-$template->tag("visitors_online", point_number ( $useronline_arr['total'] ) );
-$template->tag("registered_online", point_number ( $useronline_arr['registered'] ) );
-$template->tag("guests_online", point_number ( $useronline_arr['guests'] ) );
+$template->tag('visits', point_number ( $counter_arr['visits'] ) );
+$template->tag('visits_today', point_number ( $today_arr['s_visits'] ) );
+$template->tag('hits', point_number ( $counter_arr['hits'] ) );
+$template->tag('hits_today', point_number ( $today_arr['s_hits'] ) );
+$template->tag('visitors_online', point_number ( $useronline_arr['total'] ) );
+$template->tag('registered_online', point_number ( $useronline_arr['registered'] ) );
+$template->tag('guests_online', point_number ( $useronline_arr['guests'] ) );
 
-$template->tag("num_users", point_number ( $counter_arr['user'] ) );
-$template->tag("num_news", point_number ( $counter_arr['news'] ) );
-$template->tag("num_comments", point_number ( $counter_arr['comments'] ) );
-$template->tag("num_articles", point_number ( $counter_arr['artikel'] ) );
+$template->tag('num_users', point_number ( $counter_arr['user'] ) );
+$template->tag('num_news', point_number ( $counter_arr['news'] ) );
+$template->tag('num_comments', point_number ( $counter_arr['comments'] ) );
+$template->tag('num_articles', point_number ( $counter_arr['artikel'] ) );
 
 $template = $template->display();
 ?>

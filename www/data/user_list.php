@@ -1,16 +1,19 @@
 <?php
-//////////////////////////
-//// Locale Functions ////
-//////////////////////////
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('order', 'sort', 'page'));
+
+/////////////////////////
+//// Local Functions ////
+/////////////////////////
 function get_user_list_order ( $SORT, $GET_SORT, $GET_ORDER, $DEFAULT = 1 ) {
     $not_get_order = ( $GET_ORDER == 1 ) ? 0 : 1;
     $new_order = ( $SORT == $GET_SORT ) ? $not_get_order : $DEFAULT;
-    return "?go=user_list&sort=".$SORT."&order=" . $new_order;
+    return url('user_list', array('sort' => $SORT, 'order' => $new_order));
 }
 
 function get_user_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
-    $arrow_direction = ( $GET_ORDER == 0 ) ? "down" : "up";
-    return ( $SORT == $GET_SORT ) ? '<img src="$VAR(style_icons)arrow-' . $arrow_direction . '.gif" alt="">' : "";
+    $arrow_direction = ( $GET_ORDER == 0 ) ? 'down' : 'up';
+    return ( $SORT == $GET_SORT ) ? '<img src="$VAR(style_icons)arrow-' . $arrow_direction . '.gif" alt="">' : '';
 }
 
 
@@ -18,121 +21,26 @@ function get_user_list_arrows ( $SORT, $GET_SORT, $GET_ORDER ) {
 ///////////////////////////////////////////
 //// Security Functions & Config Array ////
 ///////////////////////////////////////////
-$_GET['order'] = ( in_array ( $_GET['order'], array ( "0", "desc", "DESC", "down", "DOWN" ) ) ) ? 0 : 1;
-settype ( $_GET['order'], "integer" );
-
-$_GET['sort'] = ( in_array ( $_GET['sort'], array ( "id", "name", "mail", "reg_date", "num_news", "num_comments", "num_articles", "num_downloads" ) ) ) ? $_GET['sort'] : "name";
-
-$index = mysql_query ( "
-    SELECT *
-    FROM `".$global_config_arr['pref']."user_config`
-    WHERE `id` = '1'
-", $db );
-$config_arr = mysql_fetch_assoc ( $index );
-
-
-////////////////////////
-//// Load User Data ////
-////////////////////////
-$user_arr = array ();
-
-$index = mysql_query ( " SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user_group`, `user_mail`, `user_show_mail`, `user_reg_date` FROM `".$global_config_arr['pref']."user` ORDER BY `user_name` ASC ", $db );
-
-while ( $temp_arr = mysql_fetch_assoc ( $index ) ) {
-
-    $data = mysql_query ( "
-                                SELECT COUNT(`news_id`) AS 'number'
-                                FROM `".$global_config_arr['pref']."news`
-                                WHERE `user_id` = '".$temp_arr['user_id']."'
-    ", $db);
-    $temp_arr['user_num_news'] = mysql_result ( $data, 0, "number" );
-
-    $data = mysql_query ( "
-                                SELECT COUNT(`comment_id`) AS 'number'
-                                FROM `".$global_config_arr['pref']."news_comments`
-                                WHERE `comment_poster_id` = '".$temp_arr['user_id']."'
-    ", $db);
-    $temp_arr['user_num_comments'] = mysql_result ( $data, 0, "number" );
-
-    $data = mysql_query ( "
-                                SELECT COUNT(`article_id`) AS 'number'
-                                FROM `".$global_config_arr['pref']."articles`
-                                WHERE `article_user` = '".$temp_arr['user_id']."'
-    ", $db);
-    $temp_arr['user_num_articles'] = mysql_result ( $data, 0, "number" );
-
-    $data = mysql_query ( "
-                                SELECT COUNT(`dl_id`) AS 'number'
-                                FROM `".$global_config_arr['pref']."dl`
-                                WHERE `user_id` = '".$temp_arr['user_id']."'
-    ", $db);
-    $temp_arr['user_num_downloads'] = mysql_result ( $data, 0, "number" );
-
-    $user_arr[] = $temp_arr;
+if (!isset($_GET['order']))
+{
+  $_GET['order'] = 1;
 }
-foreach ( $user_arr as $key => $row ) {
-    $col_id[$key]  = $row['user_id'];
-    $col_name[$key] = $row['user_name'];
-    $col_staff[$key] = $row['user_is_staff'];
-    $col_admin[$key] = $row['user_is_admin'];
-    $col_group[$key] = $row['user_group'];
-    $col_mail[$key]  = $row['user_mail'];
-    $col_show_mail[$key]  = $row['user_show_mail'];
-    $col_reg_date[$key]  = $row['user_reg_date'];
-    $col_num_news[$key]  = $row['user_num_news'];
-    $col_num_comments[$key]  = $row['user_num_comments'];
-    $col_num_articles[$key]  = $row['user_num_articles'];
-    $col_num_downloads[$key]  = $row['user_num_downloads'];
+$_GET['order'] = ( in_array ( $_GET['order'], array ( '0', 'desc', 'DESC', 'down', 'DOWN' ) ) ) ? 0 : 1;
+settype ( $_GET['order'], 'integer' );
+
+if (!isset($_GET['sort']))
+{
+  $_GET['sort'] = 'name';
 }
-$col_name_low = array_map ( 'strtolower', $col_name );
-$col_mail_low = array_map ( 'strtolower', $col_mail );
+$_GET['sort'] = ( in_array ( $_GET['sort'], array ( 'id', 'name', 'mail', 'reg_date', 'num_news', 'num_comments', 'num_articles', 'num_downloads' ) ) ) ? $_GET['sort'] : 'name';
 
-
-////////////////////////
-//// Sort User Data ////
-////////////////////////
-switch ( $_GET['sort'] ) {
-    case "id": switch ( $_GET['order'] ) {
-        case 0: array_multisort ( $col_id, SORT_DESC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_news, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-        default: array_multisort ( $col_id, SORT_ASC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_news, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-    }
-    case "name": switch ( $_GET['order'] ) {
-        case 0: array_multisort ( $col_name_low, SORT_DESC, SORT_STRING, $col_id, SORT_DESC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_news, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-        default: array_multisort ( $col_name_low, SORT_ASC, SORT_STRING, $col_id, SORT_ASC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_news, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-    }
-    case "mail": switch ( $_GET['order'] ) {
-        case 0: array_multisort ( $col_show_mail, SORT_ASC, $col_mail_low, SORT_DESC, SORT_STRING, $col_name_low, SORT_DESC, SORT_STRING, $col_id, SORT_DESC, SORT_NUMERIC, $col_mail, $col_name, $col_staff, $col_admin, $col_group, $col_reg_date, $col_num_news, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-        default: array_multisort ( $col_show_mail, SORT_DESC, $col_mail_low, SORT_ASC, SORT_STRING, $col_name_low, SORT_ASC, SORT_STRING, $col_id, SORT_ASC, SORT_NUMERIC, $col_mail, $col_name, $col_staff, $col_admin, $col_group, $col_reg_date, $col_num_news, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-    }
-    case "reg_date": switch ( $_GET['order'] ) {
-        case 0: array_multisort ( $col_reg_date, SORT_DESC, SORT_NUMERIC, $col_id, SORT_DESC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_num_news, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-        default: array_multisort ( $col_reg_date, SORT_ASC, SORT_NUMERIC, $col_id, SORT_ASC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_num_news, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-    }
-    case "num_news": switch ( $_GET['order'] ) {
-        case 0: array_multisort ( $col_num_news, SORT_DESC, SORT_NUMERIC, $col_name_low, SORT_DESC, SORT_STRING, $col_id, SORT_DESC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-        default: array_multisort ( $col_num_news, SORT_ASC, SORT_NUMERIC, $col_name_low, SORT_ASC, SORT_STRING, $col_id, SORT_ASC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_comments, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-    }
-    case "num_comments": switch ( $_GET['order'] ) {
-        case 0: array_multisort ( $col_num_comments, SORT_DESC, SORT_NUMERIC, $col_name_low, SORT_DESC, SORT_STRING, $col_id, SORT_DESC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_news, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-        default: array_multisort ( $col_num_comments, SORT_ASC, SORT_NUMERIC, $col_name_low, SORT_ASC, SORT_STRING, $col_id, SORT_ASC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_news, $col_num_articles, $col_num_downloads, $user_arr ); break 2;
-    }
-    case "num_articles": switch ( $_GET['order'] ) {
-        case 0: array_multisort ( $col_num_articles, SORT_DESC, SORT_NUMERIC, $col_name_low, SORT_DESC, SORT_STRING, $col_id, SORT_DESC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_comments, $col_num_news, $col_num_downloads, $user_arr ); break 2;
-        default: array_multisort ( $col_num_articles, SORT_ASC, SORT_NUMERIC, $col_name_low, SORT_ASC, SORT_STRING, $col_id, SORT_ASC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_comments, $col_num_news, $col_num_downloads, $user_arr ); break 2;
-    }
-    case "num_downloads": switch ( $_GET['order'] ) {
-        case 0: array_multisort ( $col_num_downloads, SORT_DESC, SORT_NUMERIC, $col_name_low, SORT_DESC, SORT_STRING, $col_id, SORT_DESC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_comments, $col_num_articles, $col_num_news, $user_arr ); break 2;
-        default: array_multisort ( $col_num_downloads, SORT_ASC, SORT_NUMERIC, $col_name_low, SORT_ASC, SORT_STRING, $col_id, SORT_ASC, SORT_NUMERIC, $col_name, $col_staff, $col_admin, $col_group, $col_mail, $col_show_mail, $col_reg_date, $col_num_comments, $col_num_articles, $col_num_news, $user_arr ); break 2;
-    }
-}
-
-
-///////////////////////////
-//// Display User List ////
-///////////////////////////
+$FD->loadConfig('users');
+$config_arr = $FD->configObject('users')->getConfigArray();
 
 // Get Number of Users
-$config_arr['number_of_users'] = count ( $col_id );
+$index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`' );
+$row = $index->fetch(PDO::FETCH_ASSOC);
+$config_arr['number_of_users'] = $row['num_users'];
 if ( $config_arr['user_per_page'] == -1 ) {
     $config_arr['user_per_page'] = $config_arr['number_of_users'];
 }
@@ -149,50 +57,119 @@ $maximum = $config_arr['page_start'] + $config_arr['user_per_page'];
 $maximum = ( $maximum >= $config_arr['number_of_users'] ) ? $config_arr['number_of_users'] : $maximum;
 
 // Get Page Nav
-$template_page_nav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['user_per_page'], $config_arr['number_of_users'], "?go=user_list&sort=".$_GET['sort']."&order=".$_GET['order']."&page={..page_num..}" );
+$template_page_nav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'], $config_arr['user_per_page'], $config_arr['number_of_users'], url('user_list', array('sort' => $_GET['sort'], 'order' => $_GET['order'], 'page' => '{..page_num..}' )));
 
+
+////////////////////////
+//// Load User Data ////
+////////////////////////
+$pref = $FD->config('pref');
+$query = 'SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user_group`, `user_mail`, `user_show_mail`, `user_reg_date`,
+
+  (SELECT COUNT(`news_id`) FROM `'.$pref.'news`
+   WHERE `'.$pref.'news`.`user_id` = `'.$pref.'user`.`user_id`) AS user_num_news,
+
+  (SELECT COUNT(`comment_id`) FROM `'.$pref.'comments`
+   WHERE `comment_poster_id` = `'.$pref.'user`.`user_id`) AS user_num_comments,
+
+  (SELECT COUNT(`article_id`) FROM `'.$pref.'articles`
+   WHERE `article_user` = `'.$pref.'user`.`user_id`) AS user_num_articles,
+
+  (SELECT COUNT(`dl_id`) FROM `'.$pref.'dl`
+   WHERE `'.$pref.'dl`.`user_id` = `'.$pref.'user`.`user_id`) AS user_num_downloads
+
+ FROM `'.$pref.'user` ORDER BY ';
+
+////////////////////////
+//// Sort User Data ////
+////////////////////////
+switch ( $_GET['sort'] ) {
+    case 'id': switch ( $_GET['order'] ) {
+        case 0: $query .= '`user_id` DESC'; break 2;
+        default: $query .= '`user_id` ASC'; break 2;
+    }
+    case 'name': switch ( $_GET['order'] ) {
+        case 0: $query .= '`user_name` DESC'; break 2;
+        default: $query .= '`user_name` ASC'; break 2;
+    }
+    case 'mail': switch ( $_GET['order'] ) {
+        case 0: $query .= '`user_show_mail` DESC, `user_mail` ASC'; break 2;
+        default: $query .= '`user_show_mail` DESC, `user_mail` DESC'; break 2;
+    }
+    case 'reg_date': switch ( $_GET['order'] ) {
+        case 0: $query .= '`user_reg_date` DESC'; break 2;
+        default: $query .= '`user_reg_date` ASC'; break 2;
+    }
+    case 'num_news': switch ( $_GET['order'] ) {
+        case 0: $query .= 'user_num_news DESC'; break 2;
+        default: $query .= 'user_num_news ASC'; break 2;
+    }
+    case 'num_comments': switch ( $_GET['order'] ) {
+        case 0: $query .= 'user_num_comments DESC'; break 2;
+        default: $query .= 'user_num_comments ASC'; break 2;
+    }
+    case 'num_articles': switch ( $_GET['order'] ) {
+        case 0: $query .= 'user_num_articles DESC'; break 2;
+        default: $query .= 'user_num_articles ASC'; break 2;
+    }
+    case 'num_downloads': switch ( $_GET['order'] ) {
+        case 0: $query .= 'user_num_downloads DESC'; break 2;
+        default: $query .= 'user_num_downloads ASC'; break 2;
+    }
+}
+
+$limit = ' LIMIT '.intval($config_arr['prev_page']*$config_arr['user_per_page']).','.((int)$config_arr['user_per_page']);
+
+/*finally get the data... still may take several seconds for large user base
+  and unfavourable sort criterion, but it should take less memory and execute
+  faster than the previous code*/
+$index = $FD->sql()->conn()->query ( $query.$limit );
+
+///////////////////////////
+//// Display User List ////
+///////////////////////////
 
 // Create Sub-Template
 $userline_template = new template();
-$userline_template->setFile ( "0_user.tpl" );
-$userline_template->load ( "USERLIST_USERLINE" );
+$userline_template->setFile ( '0_user.tpl' );
+$userline_template->load ( 'USERLIST_USERLINE' );
 
 $staffline_template = new template();
-$staffline_template->setFile ( "0_user.tpl" );
-$staffline_template->load ( "USERLIST_STAFFLINE" );
+$staffline_template->setFile ( '0_user.tpl' );
+$staffline_template->load ( 'USERLIST_STAFFLINE' );
 
 $adminline_template = new template();
-$adminline_template->setFile ( "0_user.tpl" );
-$adminline_template->load ( "USERLIST_ADMINLINE" );
+$adminline_template->setFile ( '0_user.tpl' );
+$adminline_template->load ( 'USERLIST_ADMINLINE' );
 
 // Get Lines
 $lines = array();
-for ( $i = $config_arr['page_start']; $i < $maximum; $i++ )
+while ( $row = $index->fetch(PDO::FETCH_ASSOC) )
 {
-    if ( $col_staff[$i] == 1 ) {
+    if ( $row['user_is_staff'] == 1 ) {
         $line_template = $staffline_template;
-    } elseif ( $col_admin[$i] == 1 ) {
+    } elseif ( $row['user_is_admin'] == 1 ) {
         $line_template = $adminline_template;
     } else {
         $line_template = $userline_template;
     }
 
-    $temp_rank_data = get_user_rank ( $col_group[$i], $col_admin[$i] );
+    $temp_rank_data = get_user_rank ( $row['user_group'], $row['user_is_admin'] );
     $temp_rank_data = $temp_rank_data['user_group_rank'];
-    $temp_rank_data = ( $temp_rank_data == "" ) ? "-" : $temp_rank_data;
+    $temp_rank_data = ( $temp_rank_data == '' ) ? '-' : $temp_rank_data;
 
-    $line_template->tag ( "user_id", $col_id[$i] );
-    $line_template->tag ( "user_name", kill_replacements ( $col_name[$i], TRUE ) );
-    $line_template->tag ( "user_url", "?go=user&id=".$col_id[$i] );
-    $line_template->tag ( "user_image", ( image_exists ( "media/user-images/", $col_id[$i] ) ) ? '<img src="'.image_url ( "media/user-images/", $col_id[$i] ).'" alt="'.$TEXT->get("user_image_of")." ".kill_replacements ( $col_name[$i], TRUE ).'">' : $TEXT->get("user_image_not_found") );
-    $line_template->tag ( "user_image_url", image_url ( "media/user-images/", $col_id[$i] ) );
-    $line_template->tag ( "user_mail", ( $col_show_mail[$i] == 1 ) ? kill_replacements ( $col_mail[$i], TRUE ) : "-" );
-    $line_template->tag ( "user_rank", $temp_rank_data );
-    $line_template->tag ( "user_reg_date", date_loc ( stripslashes ( $config_arr['user_list_reg_date_format'] ), $col_reg_date[$i] ) );
-    $line_template->tag ( "user_num_news", $col_num_news[$i] );
-    $line_template->tag ( "user_num_comments", $col_num_comments[$i] );
-    $line_template->tag ( "user_num_articles", $col_num_articles[$i] );
-    $line_template->tag ( "user_num_downloads", $col_num_downloads[$i] );
+    $line_template->tag ( 'user_id', $row['user_id'] );
+    $line_template->tag ( 'user_name', kill_replacements ( $row['user_name'], TRUE ) );
+    $line_template->tag ( 'user_url', url('user', array('id' => $row['user_id'])));
+    $line_template->tag ( 'user_image', ( image_exists ( 'media/user-images/', $row['user_id'] ) ) ? '<img src="'.image_url ( 'media/user-images/', $row['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.kill_replacements ( $row['user_name'], TRUE ).'">' : $FD->text("frontend", "user_image_not_found") );
+    $line_template->tag ( 'user_image_url', image_url ( 'media/user-images/', $row['user_id'] ) );
+    $line_template->tag ( 'user_mail', ( $row['user_show_mail'] == 1 ) ? kill_replacements ( $row['user_mail'], TRUE ) : '-' );
+    $line_template->tag ( 'user_rank', $temp_rank_data );
+    $line_template->tag ( 'user_reg_date', date_loc ( $config_arr['user_list_reg_date_format'], $row['user_reg_date'] ) );
+    $line_template->tag ( 'user_num_news', $row['user_num_news'] );
+    $line_template->tag ( 'user_num_comments', $row['user_num_comments'] );
+    $line_template->tag ( 'user_num_articles', $row['user_num_articles'] );
+    $line_template->tag ( 'user_num_downloads', $row['user_num_downloads'] );
 
     $line_template = $line_template->display ();
 
@@ -202,30 +179,30 @@ for ( $i = $config_arr['page_start']; $i < $maximum; $i++ )
 // Create Template
 $template = new template();
 
-$template->setFile ( "0_user.tpl" );
-$template->load ( "USERLIST" );
+$template->setFile ( '0_user.tpl' );
+$template->load ( 'USERLIST' );
 
-$template->tag ( "page_nav", $template_page_nav );
+$template->tag ( 'page_nav', $template_page_nav );
 
-$template->tag ( "order_id", get_user_list_order ( "id", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "order_name", get_user_list_order ( "name", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "order_mail", get_user_list_order ( "mail", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "order_reg_date", get_user_list_order ( "reg_date", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "order_num_news", get_user_list_order ( "num_news", $_GET['sort'], $_GET['order'], 0 ) );
-$template->tag ( "order_num_comments", get_user_list_order ( "num_comments", $_GET['sort'], $_GET['order'], 0 ) );
-$template->tag ( "order_num_articles", get_user_list_order ( "num_articles", $_GET['sort'], $_GET['order'], 0 ) );
-$template->tag ( "order_num_downloads", get_user_list_order ( "num_downloads", $_GET['sort'], $_GET['order'], 0 ) );
+$template->tag ( 'order_id', get_user_list_order ( 'id', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'order_name', get_user_list_order ( 'name', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'order_mail', get_user_list_order ( 'mail', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'order_reg_date', get_user_list_order ( 'reg_date', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'order_num_news', get_user_list_order ( 'num_news', $_GET['sort'], $_GET['order'], 0 ) );
+$template->tag ( 'order_num_comments', get_user_list_order ( 'num_comments', $_GET['sort'], $_GET['order'], 0 ) );
+$template->tag ( 'order_num_articles', get_user_list_order ( 'num_articles', $_GET['sort'], $_GET['order'], 0 ) );
+$template->tag ( 'order_num_downloads', get_user_list_order ( 'num_downloads', $_GET['sort'], $_GET['order'], 0 ) );
 
-$template->tag ( "arrow_id", get_user_list_arrows ( "id", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "arrow_name", get_user_list_arrows ( "name", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "arrow_mail", get_user_list_arrows ( "mail", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "arrow_reg_date", get_user_list_arrows ( "reg_date", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "arrow_num_news", get_user_list_arrows ( "num_news", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "arrow_num_comments", get_user_list_arrows ( "num_comments", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "arrow_num_articles", get_user_list_arrows ( "num_articles", $_GET['sort'], $_GET['order'] ) );
-$template->tag ( "arrow_num_downloads", get_user_list_arrows ( "num_downloads", $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'arrow_id', get_user_list_arrows ( 'id', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'arrow_name', get_user_list_arrows ( 'name', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'arrow_mail', get_user_list_arrows ( 'mail', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'arrow_reg_date', get_user_list_arrows ( 'reg_date', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'arrow_num_news', get_user_list_arrows ( 'num_news', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'arrow_num_comments', get_user_list_arrows ( 'num_comments', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'arrow_num_articles', get_user_list_arrows ( 'num_articles', $_GET['sort'], $_GET['order'] ) );
+$template->tag ( 'arrow_num_downloads', get_user_list_arrows ( 'num_downloads', $_GET['sort'], $_GET['order'] ) );
 
-$template->tag ( "user_lines", implode ( "
-", $lines ) );
+$template->tag ( 'user_lines', implode ( '
+', $lines ) );
 $template = $template->display ();
 ?>

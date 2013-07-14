@@ -1,38 +1,40 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-if (!isset($_GET[s_year]))
+if (!isset($_GET['s_year']))
 {
-    $_GET[s_year] = date("Y");
+    $_GET['s_year'] = date('Y');
 }
-if (!isset($_GET[s_month]))
+if (!isset($_GET['s_month']))
 {
-    $_GET[s_month] = date("m");
+    $_GET['s_month'] = date('m');
 }
-settype ($_GET[s_year], 'integer');
-settype ($_GET[s_month], 'integer');
+settype ($_GET['s_year'], 'integer');
+settype ($_GET['s_month'], 'integer');
 
-$day_arr = array("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag");
-$month_arr = array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember");
+$day_arr = explode(',', $FD->text('frontend', 'week_days_array'));
+array_unshift($day_arr, array_pop($day_arr));
+$month_arr = explode(',', $FD->text('frontend', 'month_names_array'));
 
 //////////////////////////////////
 //// Jahresauswahl generieren ////
 //////////////////////////////////
 
 echo'
-                    <table border="0" cellpadding="10" cellspacing="0" width="600">
+                    <table class="configtable" cellpadding="4" cellspacing="0">
+                        <tr><td class="line" colspan="3">'.$FD->text('page', 'website_statistics').'</td></tr>
                         <tr>
                             <td width="100%" colspan="2" align="center">
 ';
 
 // Erstes Jahr ermitteln
-$index = mysql_query("SELECT s_year FROM ".$global_config_arr[pref]."counter_stat ORDER BY s_year LIMIT 1", $db);
-$dbfirstyear = mysql_result($index, 0, "s_year");
+$index = $FD->sql()->conn()->query('SELECT s_year FROM '.$FD->config('pref').'counter_stat ORDER BY s_year LIMIT 1');
+$dbfirstyear = $index->fetchColumn();
 
 // Ersten Monat ermitteln
-$index = mysql_query("SELECT s_month FROM ".$global_config_arr[pref]."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1", $db);
-$dbfirstmonth = mysql_result($index, 0, "s_month");
+$index = $FD->sql()->conn()->query('SELECT s_month FROM '.$FD->config('pref')."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1");
+$dbfirstmonth = $index->fetchColumn();
 
-echo '<a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=stat_view&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'&PHPSESSID='.session_id().'">';
+echo '<a href="?go=stat_view&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'">';
 if ( $_GET['s_year'] == $dbfirstyear ) { echo '<b>'; }
 echo $dbfirstyear;
 if ( $_GET['s_year'] == $dbfirstyear ) { echo '</b>'; }
@@ -40,11 +42,11 @@ echo '</a>';
 
 
 // Alle weiteren Jahre auflisten
-if ($dbfirstyear < date("Y"))
+if ($dbfirstyear < date('Y'))
 {
-    for ($y=$dbfirstyear+1; $y<=date("Y"); $y++)
+    for ($y=$dbfirstyear+1; $y<=date('Y'); $y++)
     {
-        echo ' | <a href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=stat_view&s_year='.$y.'&s_month=1&PHPSESSID='.session_id().'">';
+        echo ' | <a href="?go=stat_view&s_year='.$y.'&s_month=1">';
         if ( $_GET['s_year'] == $y ) { echo '<b>'; }
 		echo $y;
         if ( $_GET['s_year'] == $y ) { echo '</b>'; }
@@ -56,7 +58,7 @@ if ($dbfirstyear < date("Y"))
 /// Monatsstatistik generieren ///
 //////////////////////////////////
 
-$monthname = date("n", mktime(0, 0, 0, $_GET[s_month]+1, 0, 0));
+$monthname = date('n', mktime(0, 0, 0, $_GET['s_month']+1, 0, 0));
 echo'
                             </td>
                         </tr>
@@ -65,52 +67,58 @@ echo'
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" colspan="4" align="center">
-                                            <b>Tagesstatistik ('.$month_arr[$monthname-1].')</b>
+                                            <b>'.$FD->text('page', 'daily_statistics').' ('.$month_arr[$monthname-1].' '.$_GET['s_year'].')</b>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="h" align="center">
-                                            <b>Tag</b>
+                                            <b>'.$FD->text('page', 'day').'</b>
                                         </td>
                                         <td class="h" align="center">
-                                            <b>Visits</b>
+                                            <b>'.$FD->text('page', 'visits').'</b>
                                         </td>
                                         <td class="h" align="center">
-                                            <b>Hits</b>
+                                            <b>'.$FD->text('page', 'hits').'</b>
                                         </td>
                                         <td class="h" align="center" width="120">
-                                            <b>Grafik</b>
+                                            <b>'.$FD->text('page', 'chart').'</b>
                                         </td>
                                     </tr>
 ';
 
 // Höchste PI diesen Monat ermitteln
-$index = mysql_query("SELECT s_hits
-                      FROM ".$global_config_arr[pref]."counter_stat
-                      WHERE s_year  = $_GET[s_year] AND s_month = $_GET[s_month]
-                      ORDER BY s_hits desc
-                      LIMIT 1", $db);
+$index = $FD->sql()->conn()->query(
+             'SELECT s_hits
+              FROM '.$FD->config('pref')."counter_stat
+              WHERE s_year  = '".$_GET['s_year']."' AND s_month = '".$_GET['s_month']."'
+              ORDER BY s_hits desc
+              LIMIT 1" );
 
-$dbmaxhits = mysql_result($index, 0, "s_hits");
+if (false == ($dbmaxhits = $index->fetchColumn()))
+    $dbmaxhits = 0;
 
 // Tage ausgeben
-for ($d=1; $d<date("t",mktime(0, 0, 0, $s_month, 1, $s_year))+1; $d++)
+$dcount = 0;
+$visitsall = 0;
+$hitsall = 0;
+for ($d=1; $d<date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1; $d++)
 {
-    $index = mysql_query("SELECT *
-                          FROM ".$global_config_arr[pref]."counter_stat
-                          WHERE s_year  = $_GET[s_year] AND
-                                s_month = $_GET[s_month] AND
-                                s_day   = $d", $db);
-    $rows = mysql_num_rows($index);
-    $dayname = date("w", mktime(0, 0, 0, $_GET[s_month], $d, $_GET[s_year]));
+    $index = $FD->sql()->conn()->query(
+                 'SELECT *
+                  FROM '.$FD->config('pref')."counter_stat
+                  WHERE s_year  = '".$_GET['s_year']."' AND
+                        s_month = '".$_GET['s_month']."' AND
+                        s_day   = '".$d."'" );
+    $row = $index->fetch(PDO::FETCH_ASSOC);
+    $dayname = date('w', mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
     $class = (($dayname == 0) || ($dayname == 6)) ? 'class="nw"' : 'class="n"';
 
     // Tag vorhanden
-    if ($rows > 0)
+    if ($row !== false)
     {
         $dcount = $dcount+1;
-        $dbvisits = mysql_result($index, 0, "s_visits");
-        $dbhits = mysql_result($index, 0, "s_hits");
+        $dbvisits = $row['s_visits'];
+        $dbhits = $row['s_hits'];
         $visitsall = $visitsall + $dbvisits;
         $hitsall = $hitsall + $dbhits;
         $visitswidth = $dbvisits / ($dbmaxhits/4) * 100;
@@ -154,19 +162,25 @@ for ($d=1; $d<date("t",mktime(0, 0, 0, $s_month, 1, $s_year))+1; $d++)
     }
 }
 
-$visitsdurchschnitt = $visitsall / $dcount;
-$hitsdurchschnitt = $hitsall / $dcount;
+if (empty($dcount)) {
+    $visitsdurchschnitt = "-";
+    $hitsdurchschnitt = "-";
+} else {
+    $visitsdurchschnitt = round($visitsall / $dcount, 2);
+    $hitsdurchschnitt = round($hitsall / $dcount, 2);
+}
+
 
 echo'
                                     <tr>
                                         <td class="h" align="center">
-                                            Durchschnitt
+                                            '.$FD->text('page', 'average').'
                                         </td>
                                         <td class="h" align="center">
-                                            '.point_number(round($visitsdurchschnitt)).'
+                                            '.$visitsdurchschnitt.'
                                         </td>
                                         <td class="h" align="center">
-                                            '.point_number(round($hitsdurchschnitt)).'
+                                            '.$hitsdurchschnitt.'
                                         </td>
                                         <td class="h" align="center">
                                             &nbsp
@@ -180,21 +194,21 @@ echo'
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" colspan="4" align="center">
-                                               <b>Monatsstatistik ('.$_GET[s_year].')</b>
+                                               <b>'.$FD->text('page', 'monthly_statistics').' ('.$_GET['s_year'].')</b>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="h" align="center">
-                                            <b>Monat</b>
+                                            <b>'.$FD->text('page', 'month').'</b>
                                         </td>
                                         <td class="h" align="center">
-                                            <b>Visits</b>
+                                            <b>'.$FD->text('page', 'visits').'</b>
                                         </td>
                                         <td class="h" align="center">
-                                            <b>Hits</b>
+                                            <b>'.$FD->text('page', 'hits').'</b>
                                         </td>
                                         <td class="h" align="center" width="120">
-                                            <b>Grafik</b>
+                                            <b>'.$FD->text('page', 'chart').'</b>
                                         </td>
                                     </tr>
 ';
@@ -204,44 +218,52 @@ echo'
 //////////////////////////////////
 
 // Maximale Montaszahl ermitteln
-$index = mysql_query("SELECT SUM(s_hits) AS sumhits
-                      FROM ".$global_config_arr[pref]."counter_stat
-                      WHERE s_year = $_GET[s_year]
-                      GROUP BY s_month
-                      ORDER BY sumhits desc", $db);
-$maxhits = mysql_result($index, 0, "sumhits");
+$index = $FD->sql()->conn()->query(
+             'SELECT SUM(s_hits) AS sumhits
+              FROM '.$FD->config('pref')."counter_stat
+              WHERE s_year = $_GET[s_year]
+              GROUP BY s_month
+              ORDER BY sumhits DESC" );
+$maxhits = $index->fetchColumn();
 
+$mcount = 0;
+$supervisits = 0;
+$superhits = 0;
 for ($m=1; $m<13; $m++)
 {
-    $index = mysql_query("SELECT SUM(s_visits) AS sumvisits, SUM(s_hits) AS sumhits
-                          FROM ".$global_config_arr[pref]."counter_stat
-                          WHERE s_year = $_GET[s_year] AND s_month = $m", $db);
-    $sum_arr = mysql_fetch_assoc($index);
-    if ($sum_arr[sumhits] > 0)
+    $index = $FD->sql()->conn()->query(
+                 'SELECT SUM(s_visits) AS sumvisits, SUM(s_hits) AS sumhits
+                  FROM '.$FD->config('pref')."counter_stat
+                  WHERE s_year = $_GET[s_year] AND s_month = $m" );
+    $sum_arr = $index->fetch(PDO::FETCH_ASSOC);
+    if ($sum_arr['sumhits'] > 0)
     {
         $mcount += 1;
-        $visitswidth = $sum_arr[sumvisits] / ($maxhits/4) * 90;
-        $hitswidth = $sum_arr[sumhits] / $maxhits * 90;
+        $visitswidth = $sum_arr['sumvisits'] / ($maxhits/4) * 90;
+        $hitswidth = $sum_arr['sumhits'] / $maxhits * 90;
         echo'
                                     <tr>
                                         <td class="n" align="center">
-                                            <a style="text-decoration:none;" href="'.$PHP_SELF.'?mid='.$_GET['mid'].'&go=stat_view&PHPSESSID='.session_id().'&s_year='.$_GET[s_year].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
+                                            <a href="'.$_SERVER['PHP_SELF'].'?go=stat_view&s_year='.$_GET['s_year'].'&s_month='.$m.'">'.$month_arr[$m-1].'</a>
                                         </td>
                                         <td class="n" align="center">
-                                            '.point_number($sum_arr[sumvisits]).'
+                                            '.point_number($sum_arr['sumvisits']).'
                                         </td>
                                         <td class="n" align="center">
-                                            '.point_number($sum_arr[sumhits]).'
+                                            '.point_number($sum_arr['sumhits']).'
                                         </td>
-                                        <td class="n" align="left" style="font-size:1pt;">
-                                            <img align="left" onClick=\'open("admin_statgfx.php?s_year='.$_GET[s_year].'&s_month='.$m.'","Picture","width=520,height=330,screenX=200,screenY=150")\' style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
+                                        <td class="n" align="left" style="font-size:1pt;" class="bottom">
+                                            <img align="left" title="'.$FD->text("page", "show_chart").'" class="bottom"
+                                            onClick=\''.openpopup ('?go=statgfx&amp;s_year='.$_GET['s_year'].'&amp;s_month='.$m.'', 520, 330).'\' 
+                                            style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
+                                            <img border="0" src="img/null.gif" height="4" width="1"><br>
                                             <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
                                             <img border="0" src="img/chits.gif" height="4" width="'.round($hitswidth).'">
                                         </td>
                                     </tr>
         ';
-        $supervisits += $sum_arr[sumvisits];
-        $superhits += $sum_arr[sumhits];
+        $supervisits += $sum_arr['sumvisits'];
+        $superhits += $sum_arr['sumhits'];
     }
     else
     {
@@ -270,7 +292,7 @@ $hitsdurchschnitt = $superhits / $mcount;
 echo'
                                     <tr>
                                         <td class="h" align="center">
-                                            Durchschnitt
+                                            '.$FD->text('page', 'average').'
                                         </td>
                                         <td class="h" align="center">
                                             '.point_number(round($visitsdurchschnitt)).'
@@ -291,50 +313,67 @@ echo'
 //////////////////////////////////
 
 // Counter lesen
-$index=mysql_query("select * from ".$global_config_arr[pref]."counter", $db);
-$counterdaten = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query( 'SELECT * FROM '.$FD->config('pref').'counter' );
+$counterdaten = $index->fetch(PDO::FETCH_ASSOC);
 
 // User online
-$index = mysql_query("select count(*) as total from ".$global_config_arr[pref]."useronline", $db);
-$anzuseronline= mysql_fetch_assoc($index);
+$online = get_online_ips();
 
 // Best frequentierter Tag
-$index = mysql_query("select * from ".$global_config_arr[pref]."counter_stat order by s_hits desc limit 1", $db);
-$mosthits = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_hits DESC LIMIT 1');
+$mosthits = $index->fetch(PDO::FETCH_ASSOC);
 
 // Best besuchter Tag
-$index = mysql_query("select * from ".$global_config_arr[pref]."counter_stat order by s_visits desc limit 1", $db);
-$mostvisits = mysql_fetch_assoc($index);
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_visits DESC LIMIT 1');
+$mostvisits = $index->fetch(PDO::FETCH_ASSOC);
 
 echo'
                                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#000000" width="100%">
                                     <tr>
                                         <td class="h" align="center" colspan="2">
-                                            Weitere Statistiken
+                                            '.$FD->text('page', 'other_statistics').'
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            Visits gesamt
+                                            '.$FD->text('page', 'visits_total').'
                                         </td>
                                         <td class="n" align="center">
-                                            '.point_number($counterdaten[visits]).'
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="n" align="center">
-                                            Hits gesamt
-                                        </td>
-                                        <td class="n" align="center">
-                                            '.point_number($counterdaten[hits]).'
+                                            '.point_number($counterdaten['visits']).'
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            User online
+                                            '.$FD->text('page', 'hits_total').'
                                         </td>
                                         <td class="n" align="center">
-                                            '.point_number($anzuseronline[total]).'
+                                            '.point_number($counterdaten['hits']).'
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="n" align="center">
+                                            '.$FD->text('page', 'online_visitors').'
+                                        </td>
+                                        <td class="n" align="center">
+                                            '.point_number($online['all']).'
+                                        </td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                        <td class="n" align="center">
+                                            '.$FD->text('page', 'online_guests').'
+                                        </td>
+                                        <td class="n" align="center">
+                                            '.point_number($online['guests']).'
+                                        </td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                        <td class="n" align="center">
+                                            '.$FD->text('page', 'online_registered').'
+                                        </td>
+                                        <td class="n" align="center">
+                                            '.point_number($online['users']).'
                                         </td>
                                     </tr>
                                     <tr>
@@ -347,18 +386,18 @@ echo'
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            Bester Tag (Visits)
+                                            '.$FD->text('page', 'best_day_visits').'
                                         </td>
                                         <td class="n" align="center">
-                                            '.$mostvisits[s_day].'.'.$mostvisits[s_month].'.'.$mostvisits[s_year].' mit '.point_number($mostvisits[s_visits]).'
+                                            '.$mostvisits['s_day'].'.'.$mostvisits['s_month'].'.'.$mostvisits['s_year'].' '.$FD->text('admin', 'with').' '.point_number($mostvisits['s_visits']).'
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="n" align="center">
-                                            Bester Tag (Hits)
+                                            '.$FD->text('page', 'best_day_hits').'
                                         </td>
                                         <td class="n" align="center">
-                                            '.$mosthits[s_day].'.'.$mosthits[s_month].'.'.$mosthits[s_year].' mit '.point_number($mosthits[s_hits]).'
+                                            '.$mosthits['s_day'].'.'.$mosthits['s_month'].'.'.$mosthits['s_year'].' '.$FD->text('admin', 'with').' '.point_number($mosthits['s_hits']).'
                                         </td>
                                     </tr>
                                 </table>

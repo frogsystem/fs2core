@@ -1,0 +1,42 @@
+# Beschreibung für FSCodes
+b: fett
+i: kursiv
+u: unterstrichen
+s: durchgestrichen
+center: zentriert
+url: Link
+home: Interner Link (Home-Link)
+email: E-Mail-Adresse
+img: Bild (extern via URL)
+cimg: Internes Bild (Inhaltsbild)
+list: Liste
+numlist: Nummerierte Liste
+font: Schriftart
+color: Schriftfarbe
+size: Schriftgröße
+code: Code-Block
+quote: Zitat
+video: Video
+nofscode: nicht umzuwandelnder Bereich
+smilies: Smilies
+
+example_b: [b]fetter Text[/b]
+example_i: [i]kursiver Text[/i]
+example_u: [u]unterstrichener Text[/u]
+example_s: [s]durchgestrichener Text[/s]
+example_center: [center]zentrierter Text[/center]
+example_url: [url=Link-URL]Beschreibung[/url], [url]Link-URL[/url]
+example_home: [home=Seite]Beschreibung[/home], [home]Seite[/home]
+example_email: [email=user@example.com]Beschreibung[/email], [email]user@example.com[/email]
+example_img: [img]Bild-URL[/img]
+example_cimg: [cimg]Inhaltsbild-Name[/cimg]
+example_list: [list][*]ein Listenpunkt [*]anderer Listenpunkt[/list]
+example_numlist: [numlist][*]Listenpunkt 1 [*]Listenpunkt 2[/numlist]
+example_font: [font=Arial]Text in Arial[/font]
+example_color: [color=#FF0000]Text in #FF0000 (rot)[/color], Farben: Hexadezimal-Code, englisches Wort
+example_size: [size=5]Text in Größe 5[/size], Größen: 0-7
+example_code: [code]Text in Schrift mit fester Breite[/code], [code=html]Inhalt mit <b>HTML-Code</b>[/code]
+example_quote: [quote]Zitat[/quote], [quote=Quelle]Zitat aus Quelle[/quote]
+example_video: [video]7[/video], [video]Video-URL[/video]
+example_nofscode: [nofscode]Inhalt mit [b]FS-Code[/b], der nicht umgewandelt wird.[/nofscode]
+example_smilies: :-), ;-), :-p, etc.

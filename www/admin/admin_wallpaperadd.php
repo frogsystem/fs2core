@@ -1,79 +1,81 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 /////////////////////
 //// Config laden ///
 /////////////////////
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_config");  // WP Konfiguration auslesen
-$config_arr = mysql_fetch_assoc($index);
+$FD->loadConfig('screens');
+$config_arr = $FD->configObject('screens')->getConfigArray();
 
 /////////////////////////////
 //// Screenshot hochladen ///
 /////////////////////////////
 
-if (isset($_FILES['sizeimg_0']) AND $_POST['size']['0'] AND $_POST['wallpaper_name'] AND $_POST['wpadd'])
+if (isset($_FILES['sizeimg_0']) AND isset($_POST['size']['0']) AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['wpadd']) AND $_POST['wpadd'] == 1)
 {
-    $_POST[wallpaper_name] = savesql($_POST[wallpaper_name]);
-    $_POST[wallpaper_title] = savesql($_POST[wallpaper_title]);
-    
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."wallpaper WHERE wallpaper_name = '$_POST[wallpaper_name]'", $db);
-if (mysql_num_rows($index)==0) {
-    
-    for ($i=1; $i<=$_POST[options]; $i++)
+
+$index = $FD->sql()->conn()->prepare('SELECT COUNT(*) AS wp_count FROM '.$FD->config('pref').'wallpaper WHERE wallpaper_name = ?');
+$index->execute(array($_POST['wallpaper_name']));
+$row = $index->fetch(PDO::FETCH_ASSOC);
+if ($row['wp_count']==0) {
+
+    for ($i=1; $i<=$_POST['options']; $i++)
     {
       $j = $i - 1;
-      $_POST['size'][$j] = savesql($_POST['size'][$j]);
       $filesname = "sizeimg_$j";
       if (!isset($_FILES[$filesname]))
-        $_POST['size'][$j] = "";
+        $_POST['size'][$j] = '';
     }
-    
-    mysql_query("INSERT INTO ".$global_config_arr[pref]."wallpaper (wallpaper_name, wallpaper_title, cat_id)
-                 VALUES ('".$_POST[wallpaper_name]."',
-                         '".$_POST[wallpaper_title]."',
-                         '".$_POST[catid]."')", $db);
-    $wp_id = mysql_insert_id();
-    
-    $message = "";
-    
-    for ($i=1; $i<=$_POST[options]; $i++)
+
+    $_POST['catid'] = intval($_POST['catid']);
+    $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper (wallpaper_name, wallpaper_title, cat_id)
+                 VALUES (?,
+                         ?,
+                         '".$_POST['catid']."')");
+    $stmt->execute(array($_POST['wallpaper_name'], $_POST['wallpaper_title']));
+    $wp_id = $FD->sql()->conn()->lastInsertId();
+
+    $message = '';
+
+    for ($i=1; $i<=$_POST['options']; $i++)
     {
       $j = $i - 1;
       $filesname = "sizeimg_$j";
-      if (isset($_FILES[$filesname]) AND $_POST['size'][$j] != "")
+      if (isset($_FILES[$filesname]) AND $_POST['size'][$j] != '')
       {
         $j = $i - 1;
-        $upload = upload_img($_FILES[$filesname], "images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][$j], $config_arr[wp_size]*1024, $config_arr[wp_x], $config_arr[wp_y]);
-        $message .= "WP Größe $i: ".upload_img_notice($upload)."<br>";
+        $upload = upload_img($_FILES[$filesname], 'images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][$j], $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
+        $message .= "WP Gr&ouml;&szlig;e $i: ".upload_img_notice($upload).'<br>';
         switch ($upload)
         {
         case 0:
-          mysql_query("INSERT INTO ".$global_config_arr[pref]."wallpaper_sizes (wallpaper_id, size)
-                       VALUES ('".$wp_id."',
-                               '".$_POST['size'][$j]."')", $db);
+          $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper_sizes (wallpaper_id, size)
+                       VALUES ('".$wp_id."', ?)");
+          $stmt->execute(array($_POST['size'][$j]));
           break;
         }
 
       }
     }
-    if (image_exists("images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][0]))
+    if (image_exists('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0]))
     {
-      create_thumb_from(image_url("images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][0], FALSE, TRUE), $config_arr[wp_thumb_x], $config_arr[wp_thumb_y]);
-      $message .= create_thumb_notice($upload)."<br>";
-      image_rename("images/wallpaper/", $_POST['wallpaper_name']."_".$_POST['size'][0]."_s", $_POST[wallpaper_name]."_s");
+      create_thumb_from(image_url('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0], FALSE, TRUE), $config_arr['wp_thumb_x'], $config_arr['wp_thumb_y']);
+      $message .= create_thumb_notice($upload).'<br>';
+      image_rename('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0].'_s', $_POST['wallpaper_name'].'_s');
     }
-    
-  $message .= "<br>Weiteres Wallpaper hinzufügen:";
+
+  $message .= '<br>Weiteres Wallpaper hinzuf&uuml;gen:';
   systext($message);
-  $_POST[wallpaper_name] = "";
-  $_POST[wallpaper_title] = "";
-  for ($i=1; $i<=$_POST[options]; $i++)
+  $_POST['wallpaper_name'] = '';
+  $_POST['wallpaper_title'] = '';
+  for ($i=1; $i<=$_POST['options']; $i++)
   {
     $j = $i - 1;
-    $_POST['size'][$j] = "";
+    $_POST['size'][$j] = '';
   }
 }
 else
   {
-    systext("Es existiert bereits ein Wallpaper mit diesem Namen!");
+    systext('Es existiert bereits ein Wallpaper mit diesem Namen!');
   }
 
 }
@@ -82,25 +84,33 @@ else
 //// Wallpaper Formular ////
 ////////////////////////////
 
-    if (!isset($_POST[options]))
+    if (!isset($_POST['options']))
     {
-        $_POST[options] = 3;
+        $_POST['options'] = 5;
     }
-    $_POST[options] = $_POST[options] + $_POST[optionsadd];
+    if (!isset($_POST['optionsadd']))
+    {
+        $_POST['optionsadd'] = 0;
+    }
+    $_POST['options'] = $_POST['options'] + $_POST['optionsadd'];
+
+    if (!isset($_POST['wallpaper_name'])) $_POST['wallpaper_name'] = '';
+    if (!isset($_POST['wallpaper_title'])) $_POST['wallpaper_title'] = '';
 
 echo'
                     <form id="form" action="" enctype="multipart/form-data" method="post">
                         <input id="send" type="hidden" value="0" name="wpadd">
-                        <input type="hidden" value="'.$_POST[options].'" name="options">
+                        <input type="hidden" value="'.$_POST['options'].'" name="options">
                         <input type="hidden" value="wp_add" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Wallpaper hochladen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="150">
                                     Dateiname:<br>
                                     <font class="small">Name unter dem gespeichert wird.</font>
                                 </td>
                                 <td class="config" valign="top" width="450">
-                                    <input class="text" name="wallpaper_name" size="33" maxlength="100" value="'.$_POST[wallpaper_name].'">
+                                    <input class="text" name="wallpaper_name" size="33" maxlength="100" value="'.$_POST['wallpaper_name'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -109,7 +119,7 @@ echo'
                                     <font class="small">Titel des Wallpapers.<br>(optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="wallpaper_title" size="33" maxlength="255" value="'.$_POST[wallpaper_title].'">
+                                    <input class="text" name="wallpaper_title" size="33" maxlength="255" value="'.$_POST['wallpaper_title'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -120,12 +130,12 @@ echo'
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."screen_cat WHERE cat_type = 2", $db);
-while ($cat_arr = mysql_fetch_assoc($index))
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 2');
+while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'
-                                        <option value="'.$cat_arr[cat_id].'">
-                                            '.$cat_arr[cat_name].'
+                                        <option value="'.$cat_arr['cat_id'].'">
+                                            '.$cat_arr['cat_name'].'
                                         </option>
     ';
 }
@@ -134,33 +144,35 @@ echo'
                                 </td>
                             </tr>';
 
-    for ($i=1; $i<=$_POST[options]; $i++)
+    for ($i=1; $i<=$_POST['options']; $i++)
     {
         $j = $i - 1;
-        if ($_POST[size][$j])
+        if (isset($_POST['size'][$j]))
         {
             echo'
                             <tr>
                                 <td class="config" valign="top">
-                                    Größe '.$i.':<br>
-                                    <font class="small">Format und WP auswählen.</font>
+                                    Gr&ouml;&szlig;e '.$i.':<br>
+                                    <font class="small">Format und WP ausw&auml;hlen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="10" maxlength="30" value="'.$_POST[size][$j].'">&nbsp;&nbsp;
-                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br><br>
-                                    <fieldset>
-                                        <legend class="small"><b>Schnellauswahl</b></legend>
-                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
-                                    </fieldset><br>
+                                    <input class="text" id="size'.$j.'" name="size['.$j.']" size="12" maxlength="30" value="'.$_POST['size'][$j].'">&nbsp;
+                                    <select onChange=\'document.getElementById("size'.$j.'").value=this.value; this.selectedIndex = 0\'>
+                                        <option value="">Gr&ouml;&szlig;e ausw&auml;hlen...</option>
+                                        <option value="">-----------</option>
+                                        <option value="800x600">800x600</option>
+                                        <option value="1024x768">1024x768</option>
+                                        <option value="1280x768">1280x768</option>
+                                        <option value="1280x800">1280x800</option>
+                                        <option value="1280x1024">1280x1024</option>
+                                        <option value="1366x768">1366x768</option>
+                                        <option value="1440x900">1440x900</option>
+                                        <option value="1680x1050">1680x1050</option>
+                                        <option value="1920x1080">1920x1080</option>
+                                        <option value="1920x1200">1920x1200</option>
+                                    </select><br>
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="40">
+                                    <br><br>
                                 </td>
                             </tr>
             ';
@@ -170,31 +182,33 @@ echo'
             echo'
                             <tr>
                                 <td class="config" valign="top">
-                                    Größe '.$i.':<br>
-                                    <font class="small">Format und WP auswählen.</font>
+                                    Gr&ouml;&szlig;e '.$i.':<br>
+                                    <font class="small">Format und WP ausw&auml;hlen.</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text center" id="size'.$j.'" name="size['.$j.']" size="13" maxlength="30" value="">&nbsp;&nbsp;
-                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="33"><br><br>
-                                    <fieldset>
-                                        <legend class="small"><b>Schnellauswahl</b></legend>
-                                        <input style="margin-bottom:5px;" class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="800x600";\' value="800x600">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x768";\' value="1280x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x1024";\' value="1280x1024">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1440x900";\' value="1440x900">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1080";\' value="1920x1080"><br>
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1024x768";\' value="1024x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1280x800";\' value="1280x800">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1366x768";\' value="1366x768">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1680x1050";\' value="1680x1050">
-                                        <input class="size-button" type="button" onClick=\'document.getElementById("size'.$j.'").value="1920x1200";\' value="1920x1200">
-                                    </fieldset><br>
+                                    <input class="text left" id="size'.$j.'" name="size['.$j.']" size="12" maxlength="30" value="">&nbsp;
+                                    <select onChange=\'document.getElementById("size'.$j.'").value=this.value; this.selectedIndex = 0\'>
+                                        <option value="">Gr&ouml;&szlig;e ausw&auml;hlen...</option>
+                                        <option value="">-----------</option>
+                                        <option value="800x600">800x600</option>
+                                        <option value="1024x768">1024x768</option>
+                                        <option value="1280x768">1280x768</option>
+                                        <option value="1280x800">1280x800</option>
+                                        <option value="1280x1024">1280x1024</option>
+                                        <option value="1366x768">1366x768</option>
+                                        <option value="1440x900">1440x900</option>
+                                        <option value="1680x1050">1680x1050</option>
+                                        <option value="1920x1080">1920x1080</option>
+                                        <option value="1920x1200">1920x1200</option>
+                                    </select><br>
+                                    <input type="file" class="text" name="sizeimg_'.$j.'" size="40">
+                                    <br><br>
                                 </td>
                             </tr>
             ';
         }
     }
-    
+
 echo'
                             <tr>
                                 <td class="configthin">
@@ -203,14 +217,11 @@ echo'
                                 <td class="configthin">
                                     <input size="2" class="text" name="optionsadd">
                                     Wallpaper
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="configthin">
-                                    &nbsp;
-                                </td>
-                                <td align="left"><br>
+                                <td align="left" colspan="2">
                                     <input class="button" type="button" onClick="javascript:document.getElementById(\'send\').value=\'1\'; document.getElementById(\'form\').submit();" value="Absenden">
                                 </td>
                             </tr>

@@ -1,75 +1,90 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 
 ////////////////////////////////
 //// Artikel aktualiesieren ////
 ////////////////////////////////
 
-if ($_POST[title] && $_POST[url] && $_POST[preis])
+if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && $_POST['sended'] == 'edit'
+    && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
 {
-    settype($_POST[editartikelid], 'integer');
-    if (isset($_POST[delartikel]))
+    settype($_POST['artikelid'], 'integer');
+    if (isset($_POST['delartikel']))
     {
-        mysql_query("DELETE FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[editartikelid]", $db);
-        image_delete ("images/shop/", $_POST[editartikelid] );
-        image_delete( "images/shop/", $_POST[editartikelid] );
-        systext('Artikel wurde gelöscht');
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."shop WHERE artikel_id = $_POST[artikelid]");
+        image_delete ('images/shop/', $_POST['artikelid'] );
+        image_delete( 'images/shop/', $_POST['artikelid'] );
+        systext('Artikel wurde gel&ouml;scht');
     }
     else
     {
-        $_POST[title] = savesql($_POST[title]);
-        $_POST[url] = savesql($_POST[url]);
-        $_POST[preis] = savesql($_POST[preis]);
-        $_POST[text] = savesql($_POST[text]);
-        $_POST[hot] = isset($_POST[hot]) ? 1 : 0;
+        $_POST['hot'] = isset($_POST['hot']) ? 1 : 0;
 
-        if (isset($_FILES[artikelimg]))
+        $messages = array();
+
+        if (!empty($_FILES['artikelimg']['name']))
         {
-            $upload = upload_img($_FILES[artikelimg], "images/shop/", $_POST[editartikelid], 2*1024*1024, 400, 600);
-            systext(upload_img_notice($upload));
-            $thumb = create_thumb_from(image_url("images/shop/",$_POST[editartikelid],FALSE, TRUE), 100, 100);
-            systext(create_thumb_notice($thumb));
+            $upload = upload_img($_FILES['artikelimg'], 'images/shop/', $_POST['artikelid'], 2*1024*1024, 400, 600);
+            $messages[] = upload_img_notice($upload);
+            $thumb = create_thumb_from(image_url('images/shop/',$_POST['artikelid'],FALSE, TRUE), 100, 100);
+            $messages[] = create_thumb_notice($thumb);
         }
-        $update = "UPDATE ".$global_config_arr[pref]."shop
-                   SET artikel_name  = '$_POST[title]',
-                       artikel_url   = '$_POST[url]',
-                       artikel_text  = '$_POST[text]',
-                       artikel_preis = '$_POST[preis]',
+        $stmt = $FD->sql()->conn()->prepare(
+                  'UPDATE '.$FD->config('pref')."shop
+                   SET artikel_name  = ?,
+                       artikel_url   = ?,
+                       artikel_text  = ?,
+                       artikel_preis = ?,
                        artikel_hot   = '$_POST[hot]'
-                   WHERE artikel_id = '$_POST[editartikelid]'";
-        mysql_query($update, $db);
-        systext("Artikel wurde aktualisiert");
+                   WHERE artikel_id = '$_POST[artikelid]'");
+        $stmt->execute(array($_POST['title'],
+                             $_POST['url'],
+                             $_POST['text'],
+                             $_POST['preis']));
+        $messages[] = $FD->text('admin', 'changes_saved');
+
+        echo get_systext(implode('<br>', $messages), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
     }
+
+    unset($_POST);
 }
 
 ////////////////////////////////
 ////// Artikel editieren ///////
 ////////////////////////////////
 
-elseif ($_POST[artikelid])
+if (isset($_POST['artikelid']))
 {
-    settype($_POST[artikelid], 'integer');
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."shop WHERE artikel_id = $_POST[artikelid]", $db);
-    $artikel_arr = mysql_fetch_assoc($index);
-    $dbartikelhot = ($artikel_arr[artikel_hot] == 1) ? "checked" : "";
+    $_POST['artikelid'] = $_POST['artikelid'][0];
+    if(isset($_POST['sended'])) {
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
+    }
+
+    settype($_POST['artikelid'], 'integer');
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."shop WHERE artikel_id = $_POST[artikelid]");
+    $artikel_arr = $index->fetch(PDO::FETCH_ASSOC);
+    $dbartikelhot = ($artikel_arr['artikel_hot'] == 1) ? 'checked' : '';
 
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shop_edit" name="go">
-                        <input type="hidden" value="'.$artikel_arr[artikel_id].'" name="editartikelid">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="edit" name="sended">
+                        <input type="hidden" value="'.$artikel_arr['artikel_id'].'" name="artikelid">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Produkt bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
                                     <font class="small">Aktuelles Artikelbild</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'">
+                                    '.get_image_output('images/shop/', $artikel_arr['artikel_id'].'_s', "", '<span class="small">['.$FD->text('admin', 'error').': '.$FD->text('admin', 'image_not_found').']</span>', false).'
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Neues Bild:<br>
-                                    <font class="small">Nur ausfüllen, wenn das alte ersetzt werden soll.</font>
+                                    <font class="small">Nur ausf&uuml;llen, wenn das alte ersetzt werden soll.</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="artikelimg" size="33"><br />
@@ -82,7 +97,7 @@ elseif ($_POST[artikelid])
                                     <font class="small">Name des Artikel. Kommt auch in den Hotlink</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="title" size="51" value="'.killhtml ( $artikel_arr[artikel_name] ).'" maxlength="100">
+                                    <input class="text" name="title" size="51" value="'.killhtml ( $artikel_arr['artikel_name'] ).'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -91,7 +106,7 @@ elseif ($_POST[artikelid])
                                     <font class="small">Link zum Produkt</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="url" size="51" value="'.killhtml ( $artikel_arr[artikel_url] ).'" maxlength="255">
+                                    <input class="text" name="url" size="51" value="'.killhtml ( $artikel_arr['artikel_url'] ).'" maxlength="255">
                                 </td>
                             </tr>
                             <tr>
@@ -100,7 +115,7 @@ elseif ($_POST[artikelid])
                                     <font class="small">Kurze Artikelbeschreibung (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", killhtml ( $artikel_arr[artikel_text] ), 330, 130).'
+                                    '.create_editor('text', killhtml ( $artikel_arr['artikel_text'] ), 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -109,13 +124,13 @@ elseif ($_POST[artikelid])
                                     <font class="small">Preis</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" name="preis" size="10" value="'.killhtml ( $artikel_arr[artikel_preis] ).'" maxlength="10">
+                                    <input class="text" name="preis" size="10" value="'.killhtml ( $artikel_arr['artikel_preis'] ).'" maxlength="10">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Hotlink:<br>
-                                    <font class="small">Hotlinks erscheinen rechts im Menü</font>
+                                    <font class="small">Hotlinks erscheinen rechts im Men&uuml;</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="checkbox" name="hot" value="1" '.$dbartikelhot.'>
@@ -123,7 +138,7 @@ elseif ($_POST[artikelid])
                             </tr>
                             <tr>
                                 <td class="config">
-                                    Artikel löschen:
+                                    Artikel l&ouml;schen:
                                 </td>
                                 <td class="config">
                                     <input onClick=\'delalert ("delartikel", "Soll der Shop-Artikel wirklich gelöscht werden?")\' type="checkbox" name="delartikel" id="delartikel" value="1">
@@ -148,7 +163,8 @@ else
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="shop_edit" name="go">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content select_list" cellpadding="3" cellspacing="0" >
+                            <tr><td colspan="4"><h3>Produkt ausw&auml;hlen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="20%">
                                     Bild
@@ -164,32 +180,34 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("SELECT artikel_id, artikel_name, artikel_preis
-                          FROM ".$global_config_arr[pref]."shop
-                          ORDER BY artikel_name DESC", $db);
-    while ($artikel_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT artikel_id, artikel_name, artikel_preis
+                          FROM '.$FD->config('pref').'shop
+                          ORDER BY artikel_name DESC');
+    while ($artikel_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         echo'
-                            <tr>
+                            <tr class="select_entry thin">
                                 <td class="config">
-                                    <img src="'.image_url ( "images/shop/", $artikel_arr['artikel_id']."_s" ).'" alt="'.stripslashes ( $artikel_arr[artikel_name] ).'">
+                                    <img src="'.image_url ( 'images/shop/', $artikel_arr['artikel_id'].'_s' ).'" alt="'. killhtml($artikel_arr['artikel_name']) .'">
                                 </td>
                                 <td class="configthin">
-                                    '.stripslashes ( $artikel_arr[artikel_name] ).'
+                                    '. $artikel_arr['artikel_name'] .'
                                 </td>
                                 <td class="configthin">
-                                    '.stripslashes ( $artikel_arr[artikel_preis] ).'
+                                    '. $artikel_arr['artikel_preis'] .'
                                 </td>
                                 <td class="config">
-                                    <input class="pointer" type="radio" name="artikelid" value="'.$artikel_arr[artikel_id].'">
+                                    <input class="select_box" type="checkbox" name="artikelid[]" value="'.$artikel_arr['artikel_id'].'">
                                 </td>
                             </tr>
         ';
     }
     echo'
-                            <tr>
+                            <tr style="display:none">
                                 <td colspan="4">
-                                    &nbsp;
+                                    <select class="select_type" name="shop_action" size="1">
+                                        <option class="select_one" value="edit">'.$FD->text('admin', 'selection_edit').'</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>

@@ -1,30 +1,37 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 ///////////////////////////////////////
 //// Kategorie in die DB eintragen ////
 ///////////////////////////////////////
 
-if (isset($_POST[catname]))
+if (!empty($_POST['catname']))
 {
-    $_POST[catname] = savesql($_POST[catname]);
+    settype($_POST['subcatof'], 'integer');
+    $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."dl_cat (subcat_id, cat_name)
+                 VALUES ('".$_POST['subcatof']."', ?)");
+    $stmt->execute(array($_POST['catname']));
+    systext('Kategorie wurde hinzugef&uuml;gt');
 
-    settype($_POST[subcatof], 'integer');
-    mysql_query("INSERT INTO ".$global_config_arr[pref]."dl_cat (subcat_id, cat_name)
-                 VALUES ('".$_POST[subcatof]."',
-                         '".$_POST[catname]."');", $db);
-    systext("Kategorie wurde hinzugefügt");
+    unset($_POST);
 }
 
 ///////////////////////////////////////
 ///////// Kategorie Formular //////////
 ///////////////////////////////////////
 
-else
+if(true)
 {
+    if(isset($_POST['sended'])) {
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
+    }
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="dl_newcat" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="add" name="sended">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Kategorie hinzuf&uuml;gen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Name:<br>
@@ -46,12 +53,12 @@ else
     ';
 
     $valid_ids = array();
-    get_dl_categories (&$valid_ids, -1);
+    get_dl_categories ($valid_ids, -1);
 
     foreach ($valid_ids as $cat)
     {
         echo'
-                                        <option value="'.$cat[cat_id].'">'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $cat[ebene]).$cat[cat_name].'</option>
+                                        <option value="'.$cat['cat_id'].'">'.str_repeat('&nbsp;&nbsp;&nbsp;', $cat['level']).$cat['cat_name'].'</option>
         ';
     }
     echo'
@@ -60,7 +67,7 @@ else
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">
-                                    <br><input class="button" type="submit" value="Hinzufügen">
+                                    <br><input class="button" type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                         </table>

@@ -1,5 +1,5 @@
 <?php
-header("Status: 404 Not Found", true, 404);
-$template = sys_message($phrases[sysmessage], '<b><font color="red">Error 404:</font></b> '.$phrases[file_not_found].'.');
-$global_config_arr['dyn_title_page'] = "Error 404";
+header(http_response_text(404), true, 404);
+$template = sys_message($FD->text('frontend', 'sysmessage'), '<b><span style="color:#FF0000;">Error 404:</span></b> '.$FD->text('frontend', 'file_not_found').'.');
+$FD->setConfig('info', 'page_title', 'Error 404');
 ?>

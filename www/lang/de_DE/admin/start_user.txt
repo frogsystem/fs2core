@@ -1,0 +1,9 @@
+# User startpage
+registered_users:               Registrierte Benutzer
+newest_user:                    Neuester Benutzer
+number_of_staff_members:        Anzahl Mitarbeiter
+number_of_groups:               Anzahl Gruppen
+biggest_group:                  Gr&ouml;&szlig;te Gruppe
+staff_member_s:                 Mitarbeiter(n)
+number_of_admins:               Anzahl Administratoren
+name_of_superadmin:             Super-Administrator

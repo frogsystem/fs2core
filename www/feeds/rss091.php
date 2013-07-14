@@ -1,82 +1,42 @@
 <?php
-// Set header
-header("Content-type: application/xml");
+###################
+## Feed Settings ##
+###################
+$feed_url = 'feeds/rss091.php';
+$settings = array (
+    'to_html' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist'),
+    'to_text' => array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'nofscode', 'fscode', 'html', 'nohtml'),
+    'to_bbcode' => array(),
+	'truncate' => false, // Set to length if you want to cut!
+	'truncate_extension' => ' &hellip;',
+	'truncate_awareness' => array('word' => true, 'html' => true, 'bbcode' => false),
+	'truncate_options' => array('count_html' => false, 'count_bbcode' => false, 'below' => true),
+    'use_html' => true,
+    'tpl_functions' => 'softremove'
+);
+##################
+## Settings End ##
+##################
 
-// fs2 include path
-set_include_path ( '.' );
-define ( FS2_ROOT_PATH, "./../", TRUE );
 
-// Inlcude DB Connection File
-require( FS2_ROOT_PATH . "login.inc.php");
+/* FS2 PHP Init */
+set_include_path('.');
+define('FS2_ROOT_PATH', './../', true);
+require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
+phpinit(false, 'Content-type: application/xml');
+/* End of FS2 PHP Init */
 
-if ($db)
-{
-    //Include Functions-Files
-    include( FS2_ROOT_PATH . "includes/functions.php");
-    include( FS2_ROOT_PATH . "includes/imagefunctions.php");
 
-    //Include Library-Classes
-    require ( FS2_ROOT_PATH . "libs/class_template.php" );
-    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
-    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
+// Inlcude DB Connection File or exit()
+require( FS2_ROOT_PATH . 'login.inc.php');
 
-    if ($global_config_arr[virtualhost] == "") {
-        $global_config_arr[virtualhost] = "http://example.com/";
-    }
+//Include Functions-Files & Feed-Lib
+require_once(FS2_ROOT_PATH . 'libs/class_Feed.php');
 
-    // News Config + Infos
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."news_config", $db);
-    $news_config_arr = mysql_fetch_assoc($index);
-    
-    //Feed Header ausgeben
-    echo'<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://www.rssboard.org/rss-0.91.dtd">
-<rss version="0.91">
-    <channel>
-        <language>de</language>
-        <description>'.utf8_encode(htmlspecialchars($global_config_arr[description])).'</description>
-        <link>'.utf8_encode($global_config_arr[virtualhost]).'</link>
-        <title>'.utf8_encode(htmlspecialchars($global_config_arr['title'])).'</title>
-    ';
+// create feed
+$rss091 = new RSS091($FD->cfg('virtualhost').$feed_url, $settings);
+echo $rss091;
 
-    $index = mysql_query("SELECT news_id, news_text, news_title, news_date
-                          FROM ".$global_config_arr[pref]."news
-                          WHERE news_date <= UNIX_TIMESTAMP()
-                          AND news_active = 1
-                          ORDER BY news_date DESC
-                          LIMIT $news_config_arr[num_news]");
-                          
-    while ($news_arr = mysql_fetch_assoc($index)) {
-        // Item ausgeben
-        echo'
-        <item>
-            <title>'.utf8_encode(killhtml($news_arr[news_title])).'</title>
-            <link>'.utf8_encode($global_config_arr[virtualhost].'?go=comments&amp;id='.$news_arr[news_id]).'</link>
-            <pubDate>'.utf8_encode(date("r",$news_arr[news_date])).'</pubDate>
-            <description><![CDATA['.utf8_encode(killfs($news_arr[news_text])).']]></description>
-        </item>
-        ';
-     }
-
-    echo'
-    </channel>
-</rss>
-    ';
-    
-    mysql_close($db);
-    
-} else {
-    //"Keine Verbindung"-Feed
-    echo'<?xml version="1.0" encoding="utf-8"?>
-        <!DOCTYPE rss SYSTEM "http://my.netscape.com/publish/formats/rss-0.91.dtd">
-        <rss version="0.91">
-        <channel>
-        <language>de</language>
-        <description>Fehler: Keine Verbindung zur Datenbank</description>
-        <link>http://example.com/</link>
-        <title>Fehler</title>
-        </channel>
-        </rss>
-    ';
-}
+// Shutdown System
+unset($FD);
 ?>

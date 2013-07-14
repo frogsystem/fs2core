@@ -6,30 +6,31 @@
   <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
     <tr>
       <td>
-        <span class="small">Benutzername:</span>
-      </td>
-    </tr>
-    <tr>    
-      <td>
-        <input class="small input input_highlight" size="20" name="username" maxlength="25">
+        <label class="small" for="username_mini">Benutzername:</label>
       </td>
     </tr>
     <tr>
       <td>
-        <span class="small">Passwort:</span>
+        <input class="small input input_highlight" size="20" id="username_mini" name="username" maxlength="25">
       </td>
     </tr>
-    <tr>    
+    <tr>
       <td>
-        <input class="small input input_highlight" size="20" type="password" name="userpassword" maxlength="50">
+        <label class="small" for="password_mini">Passwort:</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input class="small input input_highlight" size="20" id="password_mini" type="password" name="userpassword" maxlength="50"><br>
+        <a href="$URL(login[newpassword=])" class="small">Passwort vergessen?</a>
       </td>
     </tr>
     <tr><td></td></tr>
-    
+
     <tr>
       <td align="left">
         <label for="stayonline_mini" class="small pointer textmiddle">Angemeldet bleiben?</label>
-        <input class="pointer textmiddle" type="checkbox" id="stayonline_mini" name="stayonline" value="1" checked>          
+        <input class="pointer textmiddle" type="checkbox" id="stayonline_mini" name="stayonline" value="1" checked>
       </td>
     </tr>
     <tr>
@@ -41,34 +42,34 @@
       <td align="left">
         <a class="small" href="?go=register">Noch nicht registriert?</a>
       </td>
-    </tr>    
+    </tr>
   </table>
 </form>
 <!--section-end::APPLET_LOGIN-->
+
+<!--section-start::APPLET_ADMINLINE--><a class="small" href="{..admincp_url..}">- Admin CP</a><br><!--section-end::APPLET_ADMINLINE-->
 
 <!--section-start::APPLET_MENU--><b>Willkommen {..user_name..}!</b><br>
 {..user_image..}
 
 <p>
-  <b>Benutzermenü:</b><br>
+  <b>Benutzermen&uuml;:</b><br>
   <a class="small" href="{..user_edit_url..}">- Mein Profil</a><br>
   {..admincp_line..}
   <a class="small" href="{..logout_url..}">- Abmelden</a>
 </p><!--section-end::APPLET_MENU-->
-
-<!--section-start::APPLET_ADMINLINE--><a class="small" href="{..admincp_url..}">- Admin CP</a><br><!--section-end::APPLET_ADMINLINE-->
 
 <!--section-start::LOGIN--><b>Anmelden</b><br><br>
 
   <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
     <tr>
       <td align="left" colspan="2">
-        <b>Benutzername:</b>
+        <label for="username_main"><b>Benutzername:</b></label>
       </td>
       <td align="center" valign="middle" rowspan="11" width="90"><img src="$VAR(style_images)line.gif" alt=""></td>
       <td align="left" valign="top" rowspan="11">
         <div style="margin-bottom:4px;"><b class="textmiddle">Noch kein Benutzerkonto?</b></div>
-        Jetzt <a href="?go=register">registrieren</a> und folgende Vorteile genießen:
+        Jetzt <a href="?go=register">registrieren</a> und folgende Vorteile genie&szlig;en:
         <ul>
           <li>Zugriff auf Downloads</li>
           <li>Kein CAPTCHA bei Kommentaren</li>
@@ -86,26 +87,27 @@
 <form action="" method="post">
   <input type="hidden" name="go" value="login">
   <input type="hidden" name="login" value="1">
-  
+
     <tr>
       <td align="left">
-        <input class="small input input_highlight" size="33" name="username" maxlength="25">
+        <input class="small input input_highlight" size="33" id="username_main" name="username" maxlength="25">
       </td>
       <td align="left">
         <img src="$VAR(style_icons)user/user.gif" alt="" align="bottom">
-      </td>      
+      </td>
     </tr>
     <tr>
       <td></td>
     </tr>
     <tr>
       <td align="left" colspan="2">
-        <b>Passwort:</b>
+        <label for="password_big"><b>Passwort:</b></label>
       </td>
     </tr>
     <tr>
       <td align="left">
-        <input class="small input input_highlight" size="33" type="password" name="userpassword" maxlength="50">
+        <input class="small input input_highlight" size="33" type="password" id="password_big" name="userpassword" maxlength="50"><br>
+        <a href="$URL(login[newpassword=])" class="small">Passwort vergessen?</a>
       </td>
       <td align="left">
         <img src="$VAR(style_icons)user/key.gif" alt="" align="bottom">
@@ -132,11 +134,38 @@
 </form>
 <!--section-end::LOGIN-->
 
+<!--section-start::NEW_PASSWORD--><h2>Neue Zugangsdaten anfordern</h2>
+
+<p>Wenn du dein Passwort oder Benutzernamen vergessen hast, kannst du hier neue Zugangdaten anfordern. Wir ben&ouml;tigen dazu nur die E-Mail-Adresse, mit der du dich bei uns registriert hast.</p>
+
+<form action="" method="post">
+  <input type="hidden" name="go" value="login">
+  <input type="hidden" name="newpassword" value="">
+
+  <table border="0" cellpadding="2" cellspacing="0">
+    <tr>
+      <td align="left" colspan="2">
+        <label for="newpassword_mail"><b>E-Mail-Adresse:</b></label>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <input class="input input_highlight" size="33" type="text" id="newpassword_mail" name="newpassword_mail" maxlength="50">
+      </td>
+      <td align="center">
+        <button class="pointer" type="submit"><img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom"> Neue Zugangsdaten anfordern</button>
+      </td>
+    </tr>
+  </table>
+
+<p>Falls du keinen Zugriff mehr auf diese E-Mail-Adresse haben solltest, musst du dir leider einen <a href="$URL(register)">neuen Account</a> anlegen.</p>
+<!--section-end::NEW_PASSWORD-->
+
 <!--section-start::REGISTER--><b>Registrierung</b><br><br>
 
 <div>
   Du hast noch kein Benutzerkonto?<br>
-  Dann registriere dich jetzt bei <b>$VAR(page_title)</b> und genieße folgende Vorteile:
+  Dann registriere dich jetzt bei <b>$VAR(page_title)</b> und genie&szlig;e folgende Vorteile:
 
   <ul>
     <li>Zugriff auf Downloads</li>
@@ -144,10 +173,10 @@
     <li>Eigenes Benutzerbild</li>
   </ul>
   <br>
-  
+
   <form action="" method="post" onSubmit="return checkRegistrationForm()">
     <input type="hidden" name="go" value="register">
-  
+
     <table border="0" cellpadding="2" cellspacing="0" align="center">
       <tr>
         <td align="left">
@@ -160,9 +189,9 @@
           <img src="$VAR(style_icons)user/user.gif" alt="" align="bottom">
         </td>
       </tr>
-      
+
       <tr><td></td></tr>
-        
+
       <tr>
         <td align="left">
           <b>E-Mail:</b>
@@ -174,9 +203,9 @@
           <img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom">
         </td>
       </tr>
-      
+
       <tr><td></td></tr>
-        
+
       <tr>
         <td align="left">
           <b>Passwort:</b>
@@ -188,9 +217,9 @@
           <img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom">
         </td>
       </tr>
-      
+
       <tr><td></td></tr>
-        
+
       <tr>
         <td align="left">
           <b>Passwort wiederholen:</b>
@@ -202,11 +231,11 @@
           <img src="$VAR(style_icons)user/key-action.gif" alt="" align="bottom">
         </td>
       </tr>
-      
+
 {..captcha_line..}
-      
+
       <tr><td>&nbsp;</td></tr>
-      
+
       <tr>
         <td align="center">
           <button class="pointer" type="submit" name="register"><img src="$VAR(style_icons)user/user-new.gif" alt="" align="bottom"> Jetzt registrieren</button>
@@ -229,33 +258,32 @@
         <td align="right">
           <img class="textmiddle" src="{..captcha_url..}"> <input class="small input input_highlight" size="20" name="captcha" maxlength="5" autocomplete="off">
           <img class="textmiddle" src="$VAR(style_icons)user/lock.gif" alt="" align="bottom">
-          <div class="small" align="left">Bitte lösen Sie diese Rechenaufgabe.</div>
+          <div class="small" align="left">Bitte die Rechenaufgabe l&ouml;sen.</div>
         </td>
       </tr>
 <!--section-end::CAPTCHA_LINE-->
 
-<!--section-start::CAPTCHA_TEXT--><br><br>
-<table border="0" cellspacing="0" cellpadding="0" width="60%">
-  <tr>
-    <td valign="top" align="left">
-      <div class="small" id="antispam">
-        * Auf dieser Seite kann jeder einen Kommentar zu einer News abgeben. Leider ist sie dadurch ein beliebtes Ziel von sog. Spam-Bots - speziellen Programmen, die automatisiert und zum Teil massenhaft Links zu anderen Internetseiten platzieren. Um das zu verhindern müssen nicht registrierte User eine einfache Rechenaufgabe lösen, die für die meisten Spam-Bots aber nicht lösbar ist. Wenn du nicht jedesmal eine solche Aufgabe lösen möchtest, kannst du dich einfach bei uns <a href="?go=register">registrieren</a>.
-      </div>
-    </td>
-  </tr>
-</table><!--section-end::CAPTCHA_TEXT-->
+<!--section-start::CAPTCHA_TEXT-->    <tr>
+      <td></td>
+      <td>
+        <p class="small" id="captcha_note">
+          <b>Hinweis:</b> Die Rechenaufgabe verhindert, dass Spam-Bots auf dieser Seite Werbung als Kommentar einstellen k&ouml;nnen. Um die Abfrage zu umgehen, kannst du dich <a href="?go=register">registrieren</a>.
+        </p>
+      </td>
+    </tr>
+<!--section-end::CAPTCHA_TEXT-->
 
 <!--section-start::PROFILE--><b>Profil von {..user_name..}</b><br><br>
 
 <table style="margin-left:-2px;" border="0" cellpadding="2" cellspacing="0">
-  
+
   <tr>
     <td colspan="2" width="205"><b>Benutzername:</b></td>
-    
+
     <td align="center" valign="middle" rowspan="28" width="90">
       <img src="$VAR(style_images)line.gif" alt="">
     </td>
-    
+
     <td colspan="2" width="205"><b>Benutzerbild:</b></td>
   </tr>
   <tr>
@@ -265,9 +293,9 @@
     <td rowspan="8" valign="top" style="padding-top:5px;">{..user_image..}</td>
     <td></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>E-Mail:</b></td>
     <td></td>
@@ -277,12 +305,12 @@
     <td>{..user_mail..}</td>
     <td align="right"><img src="$VAR(style_icons)user/mail.gif" alt="" align="bottom"></td>
     <td></td>
-    
+
     <td></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Registriert seit:</b></td>
     <td></td>
@@ -292,10 +320,10 @@
     <td>{..user_reg_date..}</td>
     <td align="right"><img src="$VAR(style_icons)user/date.gif" alt="" align="bottom"></td>
     <td></td>
-    
+
     <td></td>
   </tr>
-  
+
   <tr><td>&nbsp;</td></tr>
 
   <tr>
@@ -310,11 +338,11 @@
     <td>{..user_rank..}</td>
     <td></td>
   </tr>
-  
+
   <tr><td>&nbsp;</td></tr>
-  
+
   <tr>
-    <td colspan="2"><b>Hompage:</b></td>
+    <td colspan="2"><b>Homepage:</b></td>
     <td></td>
     <td colspan="2"><b>News:</b></td>
   </tr>
@@ -325,9 +353,9 @@
     <td>{..user_num_news..}</td>
     <td align="right"><img src="$VAR(style_icons)user/news.gif" alt="" align="bottom"></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>ICQ-Nummer:</b></td>
     <td></td>
@@ -340,9 +368,9 @@
     <td>{..user_num_comments..}</td>
     <td align="right"><img src="$VAR(style_icons)user/comment.gif" alt="" align="bottom"></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>AIM E-Mail:</b></td>
     <td></td>
@@ -355,9 +383,9 @@
     <td>{..user_num_articles..}</td>
     <td align="right"><img src="$VAR(style_icons)user/article.gif" alt="" align="bottom"></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Windows Live ID:</b></td>
     <td></td>
@@ -370,9 +398,9 @@
     <td>{..user_num_downloads..}</td>
     <td align="right"><img src="$VAR(style_icons)user/download.gif" alt="" align="bottom"></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Yahoo!-ID:</b></td>
     <td></td>
@@ -385,9 +413,9 @@
     <td></td>
     <td></td>
   </tr>
-  
+
   <tr><td></td></tr>
-  
+
   <tr>
     <td colspan="2"><b>Skype-Name:</b></td>
     <td></td>
@@ -435,7 +463,7 @@
         <tr>
             <td align="left">{..user_name..}</td>
             <td align="center"><img src="$VAR(style_icons)user/user.gif" alt="" align="bottom"></td>
-            <td align="left"><label for="user_delete_image" class="small pointer textmiddle" style="vertical-align:middle;">Aktuelles Benutzerbild löschen?</label></td>
+            <td align="left"><label for="user_delete_image" class="small pointer textmiddle" style="vertical-align:middle;">Aktuelles Benutzerbild l&ouml;schen?</label></td>
             <td align="center"><input type="checkbox" class="pointer" name="user_delete_image" id="user_delete_image" value="1"></td>
         </tr>
         <tr><td></td></tr>
@@ -447,7 +475,7 @@
             <td align="center" valign="middle" rowspan="9" colspan="2">{..user_image..}</td>
         </tr>
         <tr valign="middle">
-            <td align="left"><label for="user_show_mail" class="small pointer textmiddle" style="vertical-align:middle;">E-Mail im öffentlichen Profl anzeigen?</label></td>
+            <td align="left"><label for="user_show_mail" class="small pointer textmiddle" style="vertical-align:middle;">E-Mail im &ouml;ffentlichen Profil anzeigen?</label></td>
             <td align="center"><input type="checkbox" class="pointer" name="user_show_mail" id="user_show_mail" value="1" {..show_mail_checked..}></td>
         </tr>
         <tr><td></td></tr>
@@ -458,24 +486,24 @@
 
         </tr>
         <tr><td>&nbsp;</td></tr>
-      
-      
+
+
         <tr><td align="left" colspan="2"><b>ICQ-Nummer:</b></td></tr>
         <tr>
            <td align="left"><input class="small input input_highlight" size="33" value="{..user_icq..}" name="user_icq" maxlength="100"></td>
            <td align="center"><img src="$VAR(style_icons)user/icq.gif" alt="ICQ" align="bottom"></td>
-        
+
         </tr>
         <tr><td></td></tr>
         <tr><td align="left" colspan="2"><b>AIM E-Mail:</b></td></tr>
         <tr>
           <td align="left"><input class="small input input_highlight" size="33" value="{..user_aim..}" name="user_aim" maxlength="100"></td>
           <td align="center"><img src="$VAR(style_icons)user/aim.gif" alt="AIM" align="bottom"></td>
-        
+
         </tr>
         <tr><td></td></tr>
         <tr>
-          <td align="left" colspan="2"><b>Windows Live ID:</b></td>          
+          <td align="left" colspan="2"><b>Windows Live ID:</b></td>
           <td align="left" colspan="2"><b>Benutzerbild hochladen:</b></td>
         </tr>
         <tr>
@@ -484,29 +512,29 @@
           <td align="left" valign="top" rowspan="5" colspan="2">
             <input class="small input input_highlight" type="file" name="user_image" style="width:100%;"><br>
             <span class="small">{..image_limits_text..}<br></span>
-          </td>        
+          </td>
         </tr>
         <tr><td></td></tr>
         <tr><td align="left" colspan="2"><b>Yahoo!-ID:</b></td></tr>
         <tr>
            <td align="left"><input class="small input input_highlight" size="33" value="{..user_yim..}" name="user_yim" maxlength="100"></td>
            <td align="center"><img src="$VAR(style_icons)user/yim.gif" alt="YIM" align="bottom"></td>
-        
+
         </tr>
         <tr><td></td></tr>
         <tr><td align="left" colspan="2"><b>Skype-Name:</b></td></tr>
         <tr>
            <td align="left"><input class="small input input_highlight" size="33" value="{..user_skype..}" name="user_skype" maxlength="100"></td>
            <td align="center"><img src="$VAR(style_icons)user/skype.gif" alt="Skype" align="bottom"></td>
-        
+
         </tr>
         <tr>
           <td colspan="2">&nbsp;</td>
           <td rowspan="9"></td>
         </tr>
-      
-      
-        <tr><td align="left" colspan="2"><b>Nur bei einer Passwortänderung:</b></td></tr>
+
+
+        <tr><td align="left" colspan="2"><b>Nur bei einer Passwort&auml;nderung:</b></td></tr>
         <tr><td></td></tr>
         <tr>
           <td align="left" colspan="2"><b>Aktuelles Passwort:</b></td>
@@ -516,7 +544,7 @@
             <td align="left"><input class="small input input_highlight" size="33" id="old_pwd" name="old_pwd" type="password" maxlength="50" autocomplete="off"></td>
             <td align="center"><img src="$VAR(style_icons)user/key.gif" alt="" align="bottom"></td>
             <td align="left"><input class="small input input_highlight" size="33" id="new_pwd" name="new_pwd" type="password" maxlength="50" autocomplete="off"></td>
-            <td align="center"><img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom"></td>          
+            <td align="center"><img src="$VAR(style_icons)user/key-add.gif" alt="" align="bottom"></td>
         </tr>
         <tr><td></td></tr>
 
@@ -543,43 +571,43 @@
 
   <tr align="center">
     <td class="left bottom" width="25%">
-      <a href="?go=user_list&sort=name&order={..order_name..}">
+      <a href="{..order_name..}">
         <img src="$VAR(style_icons)user/user.gif" alt="Benutzername" title="Benutzername" align="bottom">
         <br>{..arrow_name..}
       </a>
     </td>
     <td class="left bottom" width="35%">
-      <a href="?go=user_list&sort=mail&order={..order_mail..}">
+      <a href="{..order_mail..}">
         <img src="$VAR(style_icons)user/mail.gif" alt="E-Mail" title="E-Mail" align="bottom">
         <br>{..arrow_mail..}
       </a>
     </td>
     <td class="left bottom" width="110">
-      <a href="?go=user_list&sort=reg_date&order={..order_reg_date..}">
+      <a href="{..order_reg_date..}">
         <img src="$VAR(style_icons)user/date.gif" alt="Registriert seit" title="Registriert seit" align="bottom">
         <br>{..arrow_reg_date..}
       </a>
     </td>
-    <td class="bottom" width="16">
-      <a href="?go=user_list&sort=num_news&order={..order_num_news..}">
+    <td class="bottom center" width="20">
+      <a href="{..order_num_news..}">
         <img src="$VAR(style_icons)user/news.gif" alt="News" title="News" align="bottom">
         <br>{..arrow_num_news..}
       </a>
     </td>
-    <td class="bottom" width="16">
-      <a href="?go=user_list&sort=num_comments&order={..order_num_comments..}">
+    <td class="bottom center" width="20">
+      <a href="{..order_num_comments..}">
         <img src="$VAR(style_icons)user/comment.gif" alt="Kommentare" title="Kommentare" align="bottom">
         <br>{..arrow_num_comments..}
       </a>
     </td>
-    <td class="bottom" width="16">
-      <a href="?go=user_list&sort=num_articles&order={..order_num_articles..}">
+    <td class="bottom center" width="20">
+      <a href="{..order_num_articles..}">
         <img src="$VAR(style_icons)user/article.gif" alt="Artikel" title="Artikel" align="bottom">
         <br>{..arrow_num_articles..}
       </a>
     </td>
-    <td class="bottom" width="16">
-      <a href="?go=user_list&sort=num_downloads&order={..order_num_downloads..}">
+    <td class="bottom center" width="20">
+      <a href="{..order_num_downloads..}">
         <img src="$VAR(style_icons)user/download.gif" alt="Downloads" title="Downloads" align="bottom">
         <br>{..arrow_num_downloads..}
       </a>

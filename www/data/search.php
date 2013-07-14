@@ -1,524 +1,354 @@
 <?php
-// Locale Functions
-function is_search_op ( $CHECK, $OP_ARR = array ( "AND", "OR", "NOT", "XOR" ) ) {
-    return in_array ( $CHECK, $OP_ARR );
-}
+// Set canonical parameters
+$FD->setConfig('info', 'canonical', array('in_news', 'in_articles', 'in_downloads', 'keyword'));
 
-function compress_keyword ( $TEXT ) {
-    if ( is_search_op ( $TEXT ) ) {
-        return $TEXT;
-    }
-    return delete_stopwords ( compress_search_data ( $TEXT ) );
-}
+###################
+## Page Settings ##
+###################
+$news_cols = array('news_id', 'news_title', 'news_date');
+$article_cols = array('article_id', 'article_url', 'article_title', 'article_date');
+$dl_cols = array('dl_id', 'dl_date', 'dl_name');
+$config_cols = array('search_num_previews', 'search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard', 'search_min_word_length', 'search_allow_phonetic', 'search_use_stopwords');
+$FD->loadConfig('search');
 
-function compare_founds_with_keywords ( $FOUNDS, $KEYWORDS ) {
-    $bool_arr = array ();
-    foreach ( $KEYWORDS as $word ) {
-        if ( !is_search_op ( $word ) ) {
-            $bool_arr[] = ( array_key_exists ( $word, $FOUNDS ) ) ? "TRUE" : "FALSE";
-        } else {
-            switch ( $word ) {
-                case "NOT":
-                    $bool_arr[] = " && !";
-                    break;
-                case "OR":
-                    $bool_arr[] = " || ";
-                    break;
-                case "AND":
-                    $bool_arr[] = " && ";
-                    break;
-                case "XOR":
-                    $bool_arr[] = " xor ";
-                    break;
-            }
-        }
-    }
-    $bool_return = FALSE;
-    $bool_string = implode ( "", $bool_arr );
-    eval ("\$bool_return = (".$bool_string.");" );
-    if ( $bool_return ) {
-        return TRUE;
-    }
-    return  FALSE;
-}
-
-function create_search_word_arr ( $ARR, $DEFAULT = "AND" ) {
-    $ARR = (array) $ARR;
-    $ARR = array_filter ( array_map ( "compress_keyword", $ARR ), "strlen" );
-
-    if ( count ( $ARR ) > 1 ) {
-        $search_word_arr = array ();
-        $before_op = TRUE;
-        foreach ( $ARR as $word ) {
-            if ( is_search_op ( $word ) && $before_op !== TRUE ) {
-                $search_word_arr[] = $word;
-                $before_op = TRUE;
-            } elseif ( $before_op === TRUE && !is_search_op ( $word ) ) {
-                $search_word_arr[] = $word;
-                $before_op = FALSE;
-            } elseif ( !is_search_op ( $word ) )  {
-                $search_word_arr[] = $DEFAULT;
-                $search_word_arr[] = $word;
-                $before_op = FALSE;
-            }
-        }
-        if ( is_search_op ( end ( $search_word_arr ) ) ) {
-            array_pop ( $search_word_arr );
-        }
-        return $search_word_arr;
-    } else {
-        return $ARR;
-    }
-}
-
-function get_id_list_from_result_arr ( $RESULTS_ARR, $SOFT_MAX_SELECT ) {
-    // Security Function
-    $results_id_list = array();
-    $counter_of_last_found = -1;
-
-    // Sort Array by num of founds
-    asort ( $RESULTS_ARR, SORT_NUMERIC );
-    $RESULTS_ARR = array_reverse ( $RESULTS_ARR, TRUE );
-    reset ( $RESULTS_ARR );
-
-    // Get List of IDs to select
-    for ( $i = 0; $i < $SOFT_MAX_SELECT || ( current ( $RESULTS_ARR ) == $counter_of_last_found )  ; $i++ ) {
-        $id = key ( $RESULTS_ARR );
-        $results_id_list[] = $id;
-        if ( $i == ( $SOFT_MAX_SELECT - 1 ) ) {
-            $counter_of_last_found = current ( $RESULTS_ARR );
-        }
-        next ( $RESULTS_ARR );
-    }
-
-    if ( count ( $results_id_list ) <= 0 ) {
-        $results_id_list = array ( -100 );
-    }
-    return $results_id_list;
-}
-
-function sort_replace_arr ( $REPLACE_ARR ) {
-    foreach ( $REPLACE_ARR as $key => $row ) {
-        $col_date[$key] = $row['date'];
-        $col_num_results[$key] = $row['num_results'];
-    }
-    array_multisort ( (array)$col_num_results, SORT_DESC, SORT_NUMERIC, (array)$col_date, SORT_DESC, SORT_NUMERIC, $REPLACE_ARR );
-    return $REPLACE_ARR;
-}
 
 // Security Functions
-$_REQUEST['in_news'] = ( $_REQUEST['in_news'] == 1 ) ? TRUE : FALSE;
-$_REQUEST['in_articles'] = ( $_REQUEST['in_articles'] == 1 ) ? TRUE : FALSE;
-$_REQUEST['in_downloads'] = ( $_REQUEST['in_downloads'] == 1 ) ? TRUE : FALSE;
-$_REQUEST['keyword'] = trim ( $_REQUEST['keyword'] );
+$_REQUEST['in_news'] = (isset($_REQUEST['in_news']) && $_REQUEST['in_news'] == 1) ? true : false;
+$_REQUEST['in_articles'] = (isset($_REQUEST['in_articles']) && $_REQUEST['in_articles'] == 1) ? true : false;
+$_REQUEST['in_downloads'] = (isset($_REQUEST['in_downloads']) && $_REQUEST['in_downloads'] == 1) ? true : false;
+$_REQUEST['phonetic_search'] = (isset($_REQUEST['phonetic_search']) && $_REQUEST['phonetic_search'] == 1) ? true : false;
+$_REQUEST['keyword'] = !isset($_REQUEST['keyword']) ? '' : trim($_REQUEST['keyword']);
 
-// Load Config Array
-$index = mysql_query ( "SELECT * FROM `".$global_config_arr['pref']."search_config` WHERE `id` = 1", $db);
-$config_arr = mysql_fetch_assoc ( $index );
-
-// Create SQL Queries
-if ( ( isset ( $_REQUEST['keyword'] ) && strlen ( trim ( $_REQUEST['keyword'] ) ) >= 3 ) && ( $_REQUEST['in_news'] || $_REQUEST['in_articles'] || $_REQUEST['in_downloads'] ) ) {
-
-    // Include searchfunctions.php
-    require ( FS2_ROOT_PATH . "includes/searchfunctions.php" );
-    $keyword_arr = explode ( " ", $_REQUEST['keyword'] );
-    $keyword_arr = create_search_word_arr ( $keyword_arr );
-
-    // Get Search Types
-    $type_arr = array();
-    if ( $_REQUEST['in_news'] ) {
-        $type_arr[] = "FIND_IN_SET('news',I.`search_index_type`)";
-    }
-    if ( $_REQUEST['in_articles'] ) {
-        $type_arr[] = "FIND_IN_SET('articles',I.`search_index_type`)";
-    }
-    if ( $_REQUEST['in_downloads'] ) {
-        $type_arr[] = "FIND_IN_SET('dl',I.`search_index_type`)";
-    }
-    if ( count ( $type_arr ) > 0 && count ( $type_arr ) < 3 ) {
-        $type_check = "AND ( " . implode ( " OR ", $type_arr ) . " )";
-    } else {
-        $type_check = "";
-    }
+initstr($news_template);
+initstr($articles_template);
+initstr($downloads_template);
 
 
-    $founds_arr = array ();
-    foreach ( $keyword_arr as $word ) {
-        if ( !is_search_op ( $word ) ) {
-            $query = "
-                        SELECT
-                                I.`search_index_document_id` AS 'document_id',
-                                I.`search_index_type` AS 'type',
-                                SUM(I.`search_index_count`) AS 'count'
+// Check if search will be done
+if (empty($_REQUEST['keyword'])) { // keyword empty => no search
+    $_REQUEST['in_news'] = true; // set true for default checked checkboxes
+    $_REQUEST['in_articles'] = true;
+    $_REQUEST['in_downloads'] = true;
 
-                        FROM
-                                `".$global_config_arr['pref']."search_index` AS I,
-                                `".$global_config_arr['pref']."search_words` AS W
+// There is a search
+} else {
 
-                        WHERE   1
-                                " . $type_check  . "
-                                AND W.`search_word_id` = I.`search_index_word_id`
-                                AND W.`search_word` LIKE '%".$word."%'
+    // Set Dynamic Title
+    $FD->setConfig('info', 'page_title', $FD->text('frontend', 'download_search_for') . ' "' . usersave($_REQUEST['keyword']) . '"');
 
-                        GROUP BY `document_id`, `type`
-                        ORDER BY `type`, `count` DESC
-            ";
-            $index = mysql_query ( $query, $db );
+	// More Results Template
+	$more_results_template = new template();
+	$more_results_template->setFile('0_search.tpl');
+	$more_results_template->load('MORE_RESULTS');
 
-            while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
-                $founds_arr[$data_arr['type']][$data_arr['document_id']][$word] = $data_arr['count'];
+	// No Results Template
+	$no_results_template = new template();
+	$no_results_template->setFile('0_search.tpl');
+	$no_results_template->load('NO_RESULTS');
+	$no_results_template = $no_results_template->display ();
+
+
+    // try to compute the search
+    try {
+
+        require_once(FS2_ROOT_PATH . 'libs/class_search.php');
+
+        // Create News Search
+        initstr($news_entries); $news_num_results = 0;
+        if ($_REQUEST['in_news']) {
+            // do the search
+            $search = new Search('news', $_REQUEST['keyword'], $_REQUEST['phonetic_search']);
+            $search->setOrder('rank DESC', 'news_date DESC', 'news_id ASC');
+
+            //run through results
+            while($FD->cfg('search', 'search_num_previews') > $news_num_results && ($found = $search->next())) {
+
+                // get data for entry
+                $news = $FD->sql()->conn()->query(
+                            'SELECT news_id, news_title, news_date FROM '.$FD->config('pref').'news
+                             WHERE `news_id` = '.intval($found['id']).' AND `news_date` <= '.time().' AND `news_active` = 1');
+                $news = $news->fetch(PDO::FETCH_ASSOC);
+
+                // entry is ok
+                if (!empty($news)) {
+                    $news_num_results++;
+
+                    // load template
+                    $template = new template();
+                    $template->setFile('0_search.tpl');
+
+                    // data
+                    $date_formated = date_loc($FD->config('date'), $news['news_date']);
+                    if ($news['news_date'] != 0) {
+                        // Get Date Template
+                        $template->load('RESULT_DATE_TEMPLATE');
+                        $template->tag('date', $date_formated);
+                        $date_template = (string) $template;
+                    } else {
+                        initstr($date_template);
+                        initstr($date_formated);
+                    }
+
+                    // entry
+                    $template->load('RESULT_LINE');
+                    $template->tag('id', $news['news_id']);
+                    $template->tag('title', $news['news_title']);
+                    $template->tag('url', url('comments', array('id' => $news['news_id'])));
+                    $template->tag('date', $date_formated);
+                    $template->tag('date_template', $date_template);
+                    $template->tag('rank', sprintf("%.1F", $found['rank']));
+
+                    $news_entries .= (string) $template;
+                }
             }
-        }
-    }
 
-    $results_arr = array ();
-    foreach ( $founds_arr as $type => $docs ) {
-        foreach ( $docs as $id => $founds ) {
-            if ( compare_founds_with_keywords ( $founds, $keyword_arr ) ) {
-                $results_arr[$type][$id] = array_sum ( $founds );
+            //more results
+            initstr($news_more);
+            if ($search->next()) {
+                $news_more = $more_results_template;
+                $news_more->tag('main_search_url', url('news_search', array('keyword' => urlencode ($_REQUEST['keyword']))));
+                $news_more = (string) $news_more;
+
+            //no results
+            } elseif ($news_num_results == 0) {
+                $news_entries = $no_results_template;
             }
-        }
-    }
 
-}
+        } //END newssearch
 
-if ( $_REQUEST['keyword'] == "" ) {
-    $_REQUEST['in_news'] = TRUE;
-    $_REQUEST['in_articles'] = TRUE;
-    $_REQUEST['in_downloads'] = TRUE;
-} else {
-    // Dynamic Title Settings
-    $global_config_arr['dyn_title_page'] = $TEXT->get("download_search_for") . ' "' . kill_replacements ( $_REQUEST['keyword'], TRUE ) . '"';
-}
+        // Create Articles Search
+        initstr($articles_entries); $articles_num_results = 0;
+        if ($_REQUEST['in_articles']) {
+            // do the search
+            $search = new Search('articles', $_REQUEST['keyword'], $_REQUEST['phonetic_search']);
+            $search->setOrder('rank DESC', 'article_date DESC', 'article_id ASC');
+
+            //run through results
+            while($FD->cfg('search', 'search_num_previews') > $articles_num_results && ($found = $search->next())) {
+
+                // get data for entry
+                $article = $FD->sql()->conn()->query(
+                                'SELECT article_id, article_url, article_title, article_date
+                                 FROM '.$FD->config('pref').'articles
+                                 WHERE `article_id` = '.intval($found['id']));
+                $article = $article->fetch(PDO::FETCH_ASSOC);
+
+                // entry is ok
+                if (!empty($article)) {
+                    $articles_num_results++;
+
+                    // load template
+                    $template = new template();
+                    $template->setFile('0_search.tpl');
+
+                    // data
+                    $date_formated = date_loc($FD->config('date'), $article['article_date']);
+                    if ($article['article_date'] != 0) {
+                        // Get Date Template
+                        $template->load('RESULT_DATE_TEMPLATE');
+                        $template->tag('date', $date_formated);
+                        $date_template = (string) $template;
+                    } else {
+                        initstr($date_template);
+                        initstr($date_formated);
+                    }
+
+                    $article['article_param'] = array();
+                    if (empty($article['article_url'])) {
+                        $article['article_url'] = 'articles';
+                        $article['article_param'] = array('id' => $article['article_id']);
+                    }
+
+                    // entry
+                    $template->load('RESULT_LINE');
+                    $template->tag('id', $article['article_id']);
+                    $template->tag('title', $article['article_title']);
+                    $template->tag('url', url($article['article_url'], $article['article_param']));
+                    $template->tag('date', $date_formated);
+                    $template->tag('date_template', $date_template);
+                    $template->tag('rank', sprintf("%.1F", $found['rank']));
+
+                    $articles_entries .= (string) $template;
+                }
+            }
+
+            //more results
+            initstr($articles_more);
+            if ($search->next()) {
+                $articles_more = $more_results_template;
+                $articles_more->tag('main_search_url', url('foo', array('keyword' => urlencode ($_REQUEST['keyword']))));
+                $articles_more = (string) $articles_more;
+
+            //no results
+            } elseif ($articles_num_results == 0) {
+                $articles_entries = $no_results_template;
+            }
+            $articles_more = ''; // Remove Line when articles_search implemented
+
+        } //END Articlessearch
+
+        // Create News Search
+        initstr($downloads_entries); $downloads_num_results = 0;
+        if ($_REQUEST['in_downloads']) {
+            // do the search
+            $search = new Search('dl', $_REQUEST['keyword'], $_REQUEST['phonetic_search']);
+            $search->setOrder('rank DESC', 'dl_date DESC', 'dl_id ASC');
+
+            //run through results
+            while($FD->cfg('search', 'search_num_previews') > $downloads_num_results && ($found = $search->next())) {
+
+                // get data for entry
+                $dl = $FD->sql()->conn()->query(
+                          'SELECT dl_id, dl_date, dl_name FROM '.$FD->config('pref').'dl
+                           WHERE `dl_id` = '.intval($found['id']).' AND `dl_open` = 1');
+                $dl = $dl->fetch(PDO::FETCH_ASSOC);
+
+                // entry is ok
+                if (!empty($dl)) {
+                    $downloads_num_results++;
+
+                    // load template
+                    $template = new template();
+                    $template->setFile('0_search.tpl');
+
+                    // data
+                    $date_formated = date_loc($FD->config('date'), $dl['dl_date']);
+                    if ($dl['dl_date'] != 0) {
+                        // Get Date Template
+                        $template->load('RESULT_DATE_TEMPLATE');
+                        $template->tag('date', $date_formated);
+                        $date_template = (string) $template;
+                    } else {
+                        initstr($date_template);
+                        initstr($date_formated);
+                    }
+
+                    // entry
+                    $template->load('RESULT_LINE');
+                    $template->tag('id', $dl['dl_id']);
+                    $template->tag('title', $dl['dl_name']);
+                    $template->tag('url', url('dlfile', array('id' => $dl['dl_id'])));
+                    $template->tag('date', $date_formated);
+                    $template->tag('date_template', $date_template);
+                    $template->tag('rank', sprintf("%.1F", $found['rank']));
+
+                    $downloads_entries .= (string) $template;
+                }
+            }
+
+            //more results
+            initstr($downloads_more);
+            if ($search->next()) {
+                $downloads_more = $more_results_template;
+                $downloads_more->tag('main_search_url', url('download', array('cat_id' => 'all', 'keyword' => urlencode($_REQUEST['keyword']))));
+                $downloads_more = (string) $downloads_more;
+
+            //no results
+            } elseif ($downloads_num_results == 0) {
+                $downloads_entries = $no_results_template;
+            }
+
+        } //END dl-search
 
 
-// More Results Template
-$more_results_template = new template();
-$more_results_template->setFile("0_search.tpl");
-$more_results_template->load("MORE_RESULTS");
+        // Results Template
+        $results_template = new template();
+        $results_template->setFile('0_search.tpl');
+        $results_template->load('RESULTS_BODY');
 
-// No Results Template
-$no_results_template = new template();
-$no_results_template->setFile("0_search.tpl");
-$no_results_template->load("NO_RESULTS");
-$no_results_template = $no_results_template->display ();
-
-// Get News Entries
-if ( isset ( $results_arr['news'] ) ) {
-    // Security Function
-    $news_entries = "";
-    $replace_arr = array();
-                                         
-    // Get max. num of data sets to select
-    $num_data_sets = min ( $config_arr['search_num_previews'], count ( $results_arr['news'] ) );
-
-    // Get Data from DB
-    $index = mysql_query ( "
-                            SELECT `news_id`, `news_title`, `news_date`
-                            FROM `".$global_config_arr['pref']."news`
-                            WHERE `news_id` IN(" . implode ( ",", get_id_list_from_result_arr ( $results_arr['news'], $num_data_sets  ) ) . ")
-                            AND `news_date` <= ".time()."
-                            AND `news_active` = 1
-                            ORDER BY `news_date` DESC
-    ", $db );
-    while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
-        settype ( $data_arr['news_id'], "integer" );
-        $replace_arr[] = array (
-            "id" => $data_arr['news_id'],
-            "title" => $data_arr['news_title'],
-            "date" => $data_arr['news_date'],
-            "num_results" => $results_arr['news'][$data_arr['news_id']],
-        );
-    }
-
-    // Sort Data Array by Counter and Date
-    $replace_arr = sort_replace_arr ( $replace_arr );
-    
-    // Get More Results Template
-    if ( count ( $replace_arr ) > $config_arr['search_num_previews'] ) {
-        $news_more = $more_results_template;
-        $news_more->tag("main_search_url", "?go=news_search&amp;keyword=".implode ( "+", $keyword_arr ) );
-        $news_more = $news_more->display ();
-    } else {
-        $news_more = "";
-    }
-
-    // Create Template for Entries
-    $news_num_results = 0;
-    for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
-        $data = $replace_arr[$i];
-        $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
-
-        if ( $data['date'] != 0 ) {
-            // Get Date Template
-            $template = new template();
-            $template->setFile("0_search.tpl");
-            $template->load("RESULT_DATE_TEMPLATE");
-            $template->tag("date", $date_formated );
-            $date_template = $template->display ();
-        } else {
-            $date_template = "";
-        }
-
-        // Get Template
-        $template = new template();
-        $template->setFile("0_search.tpl");
-        $template->load("RESULT_LINE");
-
-        $template->tag("id", $data['id'] );
-        $template->tag("title", stripslashes ( $data['title'] ) );
-        $template->tag("url", "?go=comments&amp;id=" . $data['id'] );
-        $template->tag("date", $date_formated );
-        $template->tag("date_template", $date_template );
-        $template->tag("num_matches", $data['num_results'] );
-
-        $news_entries .= $template->display ();
-        $news_num_results = $i;
-    }
-    $news_entries = ( count ( $replace_arr ) >= 1 ) ? $news_entries : $no_results_template;
-    $news_num_results++;
-} else {
-    $news_entries = $no_results_template;
-    $news_num_results = 0;
-    $news_more = "";
-}
-
-// Get Articles Entries
-if ( isset ( $results_arr['articles'] ) ) {
-    // Security Function
-    $articles_entries = "";
-    $replace_arr = array();
-    
-    // Get max. num of data sets to select
-    $num_data_sets = min ( $config_arr['search_num_previews'], count ( $results_arr['articles'] ) );
-    $num_data_sets = count ( $results_arr['articles'] ); // Remove Line when articles_search implemented
-
-    // Get Data from DB
-    $index = mysql_query ( "
-                            SELECT `article_id`, `article_url`, `article_title`, `article_date`
-                            FROM `".$global_config_arr['pref']."articles`
-                            WHERE `article_id` IN(" . implode ( ",", get_id_list_from_result_arr ( $results_arr['articles'], $num_data_sets  ) ) . ")
-                            ORDER BY `article_date` DESC
-    ", $db );
-    while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
-        settype ( $data_arr['news_id'], "integer" );
-        $article_arr['article_url'] = ( $article_arr['article_url'] == "" ) ? "articles&amp;id=".$article_arr['article_id'] : stripslashes ( $article_arr['article_url'] );
-        $replace_arr[] = array (
-            "id" => $data_arr['article_id'],
-            "title" => $data_arr['article_title'],
-            "url" => $data_arr['article_url'],
-            "date" => $data_arr['article_date'],
-            "num_results" => $results_arr['articles'][$data_arr['article_id']],
-        );
-    }
-    
-    // Sort Data Array by Counter and Date
-    $replace_arr = sort_replace_arr ( $replace_arr );
-    
-    // Get More Results Template
-    if ( count ( $replace_arr ) > $config_arr['search_num_previews'] ) {
-        $articles_more = $more_results_template;
-        $articles_more->tag("main_search_url", "?go=articles_search&amp;keyword=".implode ( "+", $keyword_arr ) );
-        $articles_more = $articles_more->display ();
-    } else {
-        $articles_more = "";
-    }
-    $articles_more = ""; // Remove Line when articles_search implemented
-
-    // Create Template for Entries
-    $articles_num_results = 0;
-    for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
-        $data = $replace_arr[$i];
-        $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
-
-        if ( $data['date'] != 0 ) {
-            // Get Date Template
-            $template = new template();
-            $template->setFile("0_search.tpl");
-            $template->load("RESULT_DATE_TEMPLATE");
-            $template->tag("date", $date_formated );
-            $date_template = $template->display ();
-        } else {
-            $date_template = "";
+        // News Template
+        if (!empty($_REQUEST['keyword']) && $_REQUEST['in_news']) {
+            // Get Template
+            $template = $results_template;
+            $template->tag('type_title', $FD->text("frontend", "search_news_title") );
+            $template->tag('results', $news_entries );
+            $template->tag('num_results', $news_num_results );
+            $template->tag('more_results', $news_more );
+            $news_template = (string) $template;
         }
 
-        // Get Template
-        $template = new template();
-        $template->setFile("0_search.tpl");
-        $template->load("RESULT_LINE");
-
-        $template->tag("id", $data['id'] );
-        $template->tag("title", stripslashes ( $data['title'] ) );
-        $template->tag("url", "?go=" . $data['url'] );
-        $template->tag("date", $date_formated );
-        $template->tag("date_template", $date_template );
-        $template->tag("num_matches", $data['num_results'] );
-
-        $articles_entries .= $template->display ();
-        $articles_num_results = $i;
-    }
-    $articles_entries = ( count ( $replace_arr ) >= 1 ) ? $articles_entries : $no_results_template;
-    $articles_num_results++;
-} else {
-    $articles_entries = $no_results_template;
-    $articles_num_results = 0;
-    $articles_more = "";
-}
-
-
-// Get Download Entries
-if ( isset ( $results_arr['dl'] ) ) {
-    // Security Function
-    $downloads_entries = "";
-    $replace_arr = array();
-    
-    // Get max. num of data sets to select
-    $num_data_sets = min ( $config_arr['search_num_previews'], count ( $results_arr['dl'] ) );
-
-    // Get Data from DB
-    $index = mysql_query ( "
-                            SELECT `dl_id`, `dl_name`, `dl_date`
-                            FROM `".$global_config_arr['pref']."dl`
-                            WHERE `dl_id` IN(" . implode ( ",", get_id_list_from_result_arr ( $results_arr['dl'], $num_data_sets  ) ) . ")
-                            AND `dl_open` = 1
-                            ORDER BY `dl_date` DESC
-    ", $db );
-    while ( $data_arr = mysql_fetch_assoc ( $index ) ) {
-        settype ( $data_arr['dl_id'], "integer" );
-        $replace_arr[] = array (
-            "id" => $data_arr['dl_id'],
-            "title" => $data_arr['dl_name'],
-            "date" => $data_arr['dl_date'],
-            "num_results" => $results_arr['dl'][$data_arr['dl_id']],
-        );
-    }
-
-    // Sort Data Array by Counter and Date
-    $replace_arr = sort_replace_arr ( $replace_arr );
-
-    // Get More Results Template
-    if ( count ( $replace_arr ) > $config_arr['search_num_previews'] ) {
-        $downloads_more = $more_results_template;
-        $downloads_more->tag("main_search_url", "?go=download&amp;cat_id=all&amp;keyword=".implode ( "+", $keyword_arr ) );
-        $downloads_more = $downloads_more->display ();
-    } else {
-        $downloads_more = "";
-    }
-
-    // Create Template for Entries
-    $downloads_num_results = 0;
-    for ( $i = 0; $i < min ( $num_data_sets, count ( $replace_arr ) ); $i++ ) {
-        $data = $replace_arr[$i];
-        $date_formated = date_loc ( $global_config_arr['date'], $data['date'] );
-
-        if ( $data['date'] != 0 ) {
-            // Get Date Template
-            $template = new template();
-            $template->setFile("0_search.tpl");
-            $template->load("RESULT_DATE_TEMPLATE");
-            $template->tag("date", $date_formated );
-            $date_template = $template->display ();
-        } else {
-            $date_template = "";
+        // Articles Template
+        if (!empty($_REQUEST['keyword']) && $_REQUEST['in_articles']) {
+            // Get Template
+            $template = $results_template;
+            $template->tag('type_title', $FD->text("frontend", "search_articles_title") );
+            $template->tag('results', $articles_entries );
+            $template->tag('num_results', $articles_num_results );
+            $template->tag('more_results', $articles_more );
+            $articles_template = (string) $template;
         }
 
-        // Get Template
-        $template = new template();
-        $template->setFile("0_search.tpl");
-        $template->load("RESULT_LINE");
+        // Downloads Template
+        if (!empty($_REQUEST['keyword']) && $_REQUEST['in_downloads']) {
+            // Get Template
+            $template = $results_template;
+            $template->tag('type_title', $FD->text("frontend", "search_downloads_title") );
+            $template->tag('results', $downloads_entries );
+            $template->tag('num_results', $downloads_num_results );
+            $template->tag('more_results', $downloads_more );
+            $downloads_template = (string) $template;
+        }
 
-        $template->tag("id", $data['id'] );
-        $template->tag("title", stripslashes ( $data['title'] ) );
-        $template->tag("url", "?go=dlfile&amp;id=" . $data['id'] );
-        $template->tag("date", $date_formated );
-        $template->tag("date_template", $date_template );
-        $template->tag("num_matches", $data['num_results'] );
+        // no errors
+        initstr($error_template);
 
-        $downloads_entries .= $template->display ();
-        $downloads_num_results = $i;
+    // catch exeptions
+    } catch (Exception $e) {
+        $news_template = $articles_template = $downloads_template = '';
+        $error_template = sys_message('ERROR', $e->getMessage());
     }
-    $downloads_entries = ( count ( $replace_arr ) >= 1 ) ? $downloads_entries : $no_results_template;
-    $downloads_num_results++;
-} else {
-    $downloads_entries = $no_results_template;
-    $downloads_num_results = 0;
-    $downloads_more = "";
-}
-
-
-// Results Template
-$results_template = new template();
-$results_template->setFile("0_search.tpl");
-$results_template->load("RESULTS_BODY");
-
-// News Template
-if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_news'] === TRUE ) {
-    // Get Template
-    $template = $results_template;
-    $template->tag("type_title", $TEXT->get("search_news_title") );
-    $template->tag("results", $news_entries );
-    $template->tag("num_results", $news_num_results );
-    $template->tag("more_results", $news_more );
-    $news_template = $template->display ();
-} else {
-    $news_template = "";
-}
-
-// Articles Template
-if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_articles'] === TRUE ) {
-    // Get Template
-    $template = $results_template;
-    $template->tag("type_title", $TEXT->get("search_articles_title") );
-    $template->tag("results", $articles_entries );
-    $template->tag("num_results", $articles_num_results );
-    $template->tag("more_results", $articles_more );
-    $articles_template = $template->display ();
-} else {
-    $articles_template = "";
-}
-
-// Downloads Template
-if ( trim ( $_REQUEST['keyword'] ) != "" && $_REQUEST['in_downloads'] === TRUE ) {
-    // Get Template
-    $template = $results_template;
-    $template->tag("type_title", $TEXT->get("search_downloads_title") );
-    $template->tag("results", $downloads_entries );
-    $template->tag("num_results", $downloads_num_results );
-    $template->tag("more_results", $downloads_more );
-    $downloads_template = $template->display ();
-} else {
-    $downloads_template = "";
 }
 
 
 // Search Template
-$_REQUEST['in_news'] = ( $_REQUEST['in_news'] ) ? "checked" : "";
-$_REQUEST['in_articles'] = ( $_REQUEST['in_articles'] ) ? "checked" : "";
-$_REQUEST['in_downloads'] = ( $_REQUEST['in_downloads'] ) ? "checked" : "";
-$_REQUEST['keyword'] = kill_replacements ( $_REQUEST['keyword'], TRUE );
+$_REQUEST['in_news'] = $_REQUEST['in_news'] ? 'checked' : '';
+$_REQUEST['in_articles'] = $_REQUEST['in_articles'] ? 'checked' : '';
+$_REQUEST['in_downloads'] = $_REQUEST['in_downloads'] ? 'checked' : '';
+$_REQUEST['phonetic_search'] = $_REQUEST['phonetic_search'] ? 'checked' : '';
+$_REQUEST['keyword'] = usersave($_REQUEST['keyword']);
+
+// Get Default-Operators
+// get searchfunctions if not loaded
+require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
+$ops = get_default_operators();
+
 
 // Get Template
 $template = new template();
-$template->setFile("0_search.tpl");
-$template->load("SEARCH");
+$template->setFile('0_search.tpl');
+$template->load('SEARCH');
+$template->tag('keyword', $_REQUEST['keyword'] );
+$template->tag('operators', implode(' ', $ops)) ;
+$template->tag('search_in_news', $_REQUEST['in_news'] );
+$template->tag('search_in_articles', $_REQUEST['in_articles'] );
+$template->tag('search_in_downloads', $_REQUEST['in_downloads'] );
+$template->tag('phonetic_search', $_REQUEST['phonetic_search'] );
 
-$template->tag("keyword", $_REQUEST['keyword'] );
-$template->tag("search_in_news", $_REQUEST['in_news'] );
-$template->tag("search_in_articles", $_REQUEST['in_articles'] );
-$template->tag("search_in_downloads", $_REQUEST['in_downloads'] );
+$search_template = (string) $template;
 
-$search_template = $template->display ();
+
+// Search info or error
+if (isset($search)) {
+    $template->load('INFO');
+    $template->tag('query', $search->getQuery());
+    $template->tag('num_results', $news_num_results+$articles_num_results+$downloads_num_results);
+    $info = (string) $template;
+} else
+    $info = '';
+$info = !empty($error_template) ? $error_template : $info;
 
 
 // Get Main Template
 $template = new template();
-$template->setFile("0_search.tpl");
-$template->load("BODY");
+$template->setFile('0_search.tpl');
+$template->load('BODY');
 
-$template->tag("search", $search_template );
-$template->tag("news", $news_template );
-$template->tag("articles", $articles_template );
-$template->tag("downloads", $downloads_template );
+$template->tag('search', $search_template );
+$template->tag('info', $info);
+$template->tag('news', $news_template );
+$template->tag('articles', $articles_template );
+$template->tag('downloads', $downloads_template );
 
-$template = $template->display ();
+$template = (string) $template;
+
 ?>

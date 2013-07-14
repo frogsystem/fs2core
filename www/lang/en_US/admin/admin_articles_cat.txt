@@ -1,0 +1,27 @@
+new_cat_title: Add category
+new_cat_name: Name
+new_cat_image: Image
+new_cat_add_button:  Add &amp; adjust additional settings
+
+new_cat_added: Category has been added successfully
+edit_cat_title: Main settings
+edit_cat_name: Name
+edit_cat_name_desc: Name of the category
+edit_cat_date: Date of creation
+edit_cat_date_desc: The category was created on ...
+edit_cat_created_by: Creator
+edit_cat_created_by_desc: The category was created by ...
+edit_cat_title_optional: Additional settings
+edit_cat_image: Image
+edit_cat_description: Description
+edit_cat_description_desc: A short text that describes the category.
+
+delete_cat_title: Delete category
+delete_cat_question: Do you really want to delete this category
+delete_cat_move_to: Move articles of deleted category to
+
+cat_deleted: Categorie has been deleted successfully
+
+list_cat_title: Category management
+list_cat_created_by: created by
+list_cat_created_on: on

@@ -1,99 +1,52 @@
 <?php
-// Start Session
-session_start ();
-
-// Disable magic_quotes_runtime
-set_magic_quotes_runtime ( FALSE );
-
-// fs2 include path
-set_include_path ( '.' );
-define ( 'FS2_ROOT_PATH', "./", TRUE );
-
-// Inlcude DB Connection File
-require ( FS2_ROOT_PATH . "login.inc.php");
-
-//////////////////////////////////
-//// DB Connection etablished ////
-//////////////////////////////////
-if ( $db ) {
-    //Include Functions-Files
-    require ( FS2_ROOT_PATH . "includes/functions.php" );
-    require ( FS2_ROOT_PATH . "includes/cookielogin.php" );
-    require ( FS2_ROOT_PATH . "includes/imagefunctions.php" );
-    require ( FS2_ROOT_PATH . "includes/indexfunctions.php" );
-
-    //Include Library-Classes
-    require ( FS2_ROOT_PATH . "libs/class_template.php" );
-    require ( FS2_ROOT_PATH . "libs/class_fileaccess.php" );
-    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php" );
-
-    //Include Phrases-Files
-    require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
-    $TEXT = new langDataInit ( $global_config_arr['language_text'], "frontend" );
+/* FS2 PHP Init */
+set_include_path('.');
+define('FS2_ROOT_PATH', './', true);
+require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
+phpinit();
+/* End of FS2 PHP Init */
 
 
-    // Constructor Calls
-    delete_old_randoms ();
-    search_index ();
-    set_style ();
-    copyright ();
-    get_goto ( $_GET['go'] );
-    count_all ( $global_config_arr['goto'] );
-    save_referer ();
-    save_visitors ();
+// Inlcude DB Connection File or exit()
+require_once(FS2_ROOT_PATH . 'login.inc.php');
 
-    // Create Index-Template
-    $template_general = new template();
+//Include Functions-Files
+require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
+require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
+require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
+require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
+include_once(FS2_ROOT_PATH . 'includes/fscode.php');
 
-    $template_general->setFile("0_general.tpl");
-    $template_general->load("MAINPAGE");
-    
-    $template_general->tag("content", get_content ( $global_config_arr['goto'] ));
-    $template_general->tag("copyright",  get_copyright ());
-
-    $template_general = $template_general->display();
-
-    $template_general = replace_snippets ( $template_general );
-    $template_general = replace_navigations ( $template_general );
-    $template_general = replace_applets ( $template_general );
-    $template_general = replace_navigations ( $template_general );
-    $template_general = replace_snippets ( $template_general );
-    
-    $template_general = replace_globalvars ( $template_general );
-    
-    // Get Main Template
-    $template = get_maintemplate ();
-    $template = str_replace ( "{..body..}", $template_general, $template);
-
-    // Display Page
-    echo $template;
-
-    // Close Connection
-    mysql_close ( $db );
+// Constructor Calls
+// TODO: "Constructor Hook"
+get_goto();
+userlogin();
+setTimezone($FD->cfg('timezone'));
+run_cronjobs();
+count_all($FD->cfg('goto'));
+save_visitors();
+if (!$FD->configExists('main', 'count_referers') || $FD->cfg('main', 'count_referers')==1) {
+  save_referer();
 }
+set_style();
+copyright();
 
-//////////////////////////////
-//// DB Connection failed ////
-//////////////////////////////
-else {
-    // Include German Phrases
-    require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
-    $TEXT = new langDataInit ( "de_DE", "frontend" );
 
-    // No-Connection-Page Template
-    $template = '
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-    <head>
-        <title>'.$TEXT->get("no_connection").'</title>
-    </head>
-    <body>
-        <b>'.$TEXT->get("no_connection_to_the_server").'</b>
-    </body>
-</html>
-    ';
+// Get Body-Template
+$theTemplate = new template();
+$theTemplate->setFile('0_main.tpl');
+$theTemplate->load('MAIN');
+$theTemplate->tag('content', get_content($FD->cfg('goto')));
+$theTemplate->tag('copyright', get_copyright());
 
-    // Display No-Connection-Page
-    echo $template;
-}
+$template_general = (string) $theTemplate;
+// TODO: "Template Manipulation Hook"
+
+// Display Page
+echo tpl_functions_init(get_maintemplate($template_general));
+
+
+// Shutdown System
+// TODO: "Shutdown Hook"
+unset($FD);
 ?>

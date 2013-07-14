@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 ////////////////////////////
 /////// User prüfen ////////
@@ -7,19 +7,20 @@
 if ( isset ( $_POST['username'] ) && isset ( $_POST['userpassword'] ) )
 {
     $loggedin = admin_login($_POST['username'], $_POST['userpassword'], false);
+
     switch ($loggedin)
     {
         case 0:
-            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Sie sind jetzt eingeloggt', 'Herzlich Willkommen!', FALSE, $TEXT['admin']->get("icon_login") );
+            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!<br>Sie sind jetzt eingeloggt', 'Herzlich Willkommen!', FALSE, $FD->text("admin", "icon_login") );
             break;
         case 1:
-            systext('Der Benutzer existiert nicht', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
+            systext('Der Benutzer existiert nicht', $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
             break;
         case 2:
-            systext('Das Passwort ist nicht korrekt', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
+            systext('Das Passwort ist nicht korrekt', $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
             break;
         case 3:
-            systext('Sie haben keine Rechte für diese Seite', $TEXT['admin']->get("error"), TRUE, $TEXT['admin']->get("icon_error") );
+            systext('Sie haben keine Rechte f&uuml;r diese Seite', $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
             break;
     }
 }
@@ -28,9 +29,9 @@ if ( isset ( $_POST['username'] ) && isset ( $_POST['userpassword'] ) )
 ///// Schon eingeloggt /////
 ////////////////////////////
 
-elseif ($_SESSION['user_level'] == "authorised")
+elseif (is_authorized())
 {
-    systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!');
+            systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!', FALSE, $FD->text("admin", "icon_login") );
 }
 
 ////////////////////////////
@@ -72,7 +73,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases['common']['arrow'].' Einloggen
+                                        '.$FD->text("admin", "button_arrow").' Einloggen
                                     </button>
                                 </td>
                             </tr>

@@ -1,0 +1,27 @@
+new_cat_title: Kategorie hinzufügen
+new_cat_name: Name
+new_cat_image: Bild
+new_cat_add_button:  Hinzufügen &amp; weitere Einstellungen vornehmen
+
+new_cat_added: Kategorie wurde erfolgreich hinzugefügt
+edit_cat_title: Haupteinstellungen
+edit_cat_name: Name
+edit_cat_name_desc: Name der Kategorie
+edit_cat_date: Erstellungsdatum
+edit_cat_date_desc: Die Kategorie wurde erstellt am ...
+edit_cat_created_by: Ersteller
+edit_cat_created_by_desc: Die Kategorie wurde erstellt von ...
+edit_cat_title_optional: Zusätzliche Einstellungen
+edit_cat_image: Bild
+edit_cat_description: Beschreibung
+edit_cat_description_desc: Ein kurzer Text über die Kategorie.
+
+delete_cat_title: Kategorie löschen
+delete_cat_question: Soll diese Kategorie wirklich gelöscht werden
+delete_cat_move_to: News der gelöschten Kategorie verschieben nach
+
+cat_deleted: Kategorie wurde erfolgreich gelöscht
+
+list_cat_title: Kategorieverwaltung
+list_cat_created_by: erstellt von
+list_cat_created_on: am

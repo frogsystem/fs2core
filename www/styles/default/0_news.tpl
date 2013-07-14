@@ -16,33 +16,31 @@
 
 <!--section-start::LINKS_LINE--><li><a href="{..url..}" target="{..target..}">{..title..}</a></li><!--section-end::LINKS_LINE-->
 
-<!--section-start::LINKS_BODY--><b>Weiterführende Links:</b>
-<ul class="small">
+<!--section-start::LINKS_BODY--><b>Weiterf&uuml;hrende Links:</b>
+<ul>
   {..links..}
 </ul>
-
 <!--section-end::LINKS_BODY-->
 
-<!--section-start::NEWS_BODY--><table style="width:100%;" cellpadding="0" cellspacing="0">
+<!--section-start::NEWS_BODY--><table width="100%" cellpadding="0" cellspacing="0">
   <tr>
     <td>
-      
-      <b id="news_{..news_id..}">{..titel..}</b>
-      <span class="small" style="float:right;">
+      <b class="atleft" id="news_{..news_id..}">{..titel..}</b>
+      <span class="small atright">
         ({..cat_name..})
       </span><br>
       <span class="small">von <a href="{..user_url..}">{..user_name..}</a>, am {..date..}</span>
-      
-      <p>{..text..}</p>
-      <p class="small">
+
+      {..text..}
+      <div>
         {..related_links..}
-        <span class="small" style="float:right;">
+        <span class="small atright">
           <a href="{..comments_url..}">
              Kommentare ({..comments_number..})
            </a>
-        </span>          
-      </p>
-      
+        </span>
+      </div>
+
     </td>
   </tr>
 </table>
@@ -68,18 +66,18 @@
     <td class="comment_td comment_left">
       {..user..}
     </td>
-    <td class="comment_td comment_right">
+    <td class="comment_td">
       <div class="comment_top">
-        <span style="float:left;">
+        <span class="atleft">
           <b>{..titel..}</b>
         </span>
-        <span style="float:right;" class="small">
+        <span class="small atright">
           {..date..}
-        </span>      
+        </span>
       </div>
       {..text..}
-    </td>    
-  </tr>  
+    </td>
+  </tr>
 </table><!--section-end::COMMMENT_ENTRY-->
 
 <!--section-start::COMMENT_CAPTCHA-->    <tr>
@@ -88,7 +86,7 @@
       </td>
       <td>
         <input class="small input input_highlight" name="spam" size="30" maxlength="10">
-        <span class="small">Bitte die Rechenaufgabe lösen!</span>
+        <span class="small">Bitte die Rechenaufgabe l&ouml;sen!</span>
         <a class="small" href="#captcha_note">(Hinweis)</a>
       </td>
     </tr><!--section-end::COMMENT_CAPTCHA-->
@@ -97,7 +95,7 @@
       <td></td>
       <td>
         <p class="small" id="captcha_note">
-          <b>Hinweis:</b> Die Rechenaufgabe verhindert, dass Spam-Bots auf dieser Seite Werbung als Kommentar einstellen können. Um die Abfrage zu umgehen, kannst du dich <a href="?go=register">registrieren</a>.
+          <b>Hinweis:</b> Die Rechenaufgabe verhindert, dass Spam-Bots auf dieser Seite Werbung als Kommentar einstellen k&ouml;nnen. Um die Abfrage zu umgehen, kannst du dich <a href="?go=register">registrieren</a>.
         </p>
       </td>
     </tr>
@@ -108,14 +106,14 @@
 <a class="small" href="?go=login">anmelden?</a><!--section-end::COMMENT_FORM_NAME-->
 
 <!--section-start::COMMENT_FORM--><p>
-  <b>Kommentar hinzufügen</b>
+  <b>Kommentar hinzuf&uuml;gen</b>
 </p>
 
-<form method="post" onSubmit="return checkCommentForm()">
+<form action="" method="post" onSubmit="return checkCommentForm()">
   <input type="hidden" name="go" value="comments">
   <input type="hidden" name="add_comment" value="1">
   <input type="hidden" name="id" value="{..news_id..}">
-  
+
   <table style="margin-left:-2px; width:100%;" cellpadding="2" cellspacing="0">
     <tr>
       <td>
@@ -137,7 +135,7 @@
       <td valign="top">
         <b>Text:</b>
         <p class="small">
-          Html&nbsp;ist&nbsp;<b>{..html..}</b>.<br>
+          HTML&nbsp;ist&nbsp;<b>{..html..}</b>.<br>
           <a href="?go=fscode">FScode</a>&nbsp;ist&nbsp;<b>{..fs_code..}.</b>
         </p>
       </td>
@@ -151,19 +149,19 @@
       <td>
         <input class="pointer" type="submit" value="Abschicken">
       </td>
-    </tr>    
+    </tr>
     {..captcha_text..}
   </table>
 </form>
 <!--section-end::COMMENT_FORM-->
 
 <!--section-start::COMMENT_BODY-->{..news..}
-{..comments..}<br>
+{..comments..}
 {..comment_form..}
 <!--section-end::COMMENT_BODY-->
 
 <!--section-start::SEARCH--><b>News-Suche</b>
-<a href="?go=news_search" class="small" style="float:right;">(Neue Suche)</a>
+<a href="?go=news_search" class="small atright">(Neue Suche)</a>
 <br><br>
 
 <fieldset>
@@ -173,7 +171,7 @@
     <select class="input" name="month">
       <option value="1">Januar</option>
       <option value="2">Februar</option>
-      <option value="3">März</option>
+      <option value="3">M&auml;rz</option>
       <option value="4">April</option>
       <option value="5">Mai</option>
       <option value="6">Juni</option>
@@ -194,7 +192,7 @@
 <br><br>
 
 <fieldset>
-  <legend style="color:#000000;"><b>Nach News mit dem Schlüsselwort...</b></legend>
+  <legend style="color:#000000;"><b>Nach News mit dem Schl&uuml;sselwort...</b></legend>
   <form method="get" onSubmit="return checkNewsSearchForm()">
     <input type="hidden" name="go" value="news_search">
     <input class="input input_highlight" id="news_search_keyword" name="keyword" size="30" maxlength="100" value="{..keyword..}">

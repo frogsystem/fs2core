@@ -64,7 +64,7 @@ var lastJQBox;
             $(this).find(".html-editor-list-popup").hide();
         }
     );
-    
+
 
 /////////////////////
 //// Select-List ////
@@ -97,9 +97,9 @@ var lastJQBox;
     $(".select_entry input.select_box").click(
         function () {
             if ( $(this).is(":checked") ) {
-                $(this).removeAttr("checked");
+                $(this).removeProp("checked");
             } else {
-                $(this).attr("checked","checked");
+                $(this).prop("checked", true);
             }
         }
     );
@@ -109,17 +109,17 @@ var lastJQBox;
         function () {
             theTable = $(this).parents(".select_list:first");
             if ( theTable.find("select.select_type:first option:selected").hasClass("select_one") ) {
-                theTable.find(".select_entry input.select_box").removeAttr("checked");
+                theTable.find(".select_entry input.select_box").removeProp("checked");
                 theTable.find(".select_entry").css("background-color", "transparent");
             }
 
             var theBox = $(this).find("input.select_box:first");
 
             if ( theBox.is(":checked") ) {
-                theBox.removeAttr("checked");
+                theBox.removeProp("checked");
                 $(this).css("background-color", "#EEEEEE");
             } else {
-                theBox.attr("checked","checked");
+                theBox.prop("checked", true);
                 setBGcolorCompare ( $(this), theTable.find("select.select_type:first option:selected").hasClass("select_red"), "#DE5B5B", "#64DC6A" );
                 lastJQBox = theBox;
             }
@@ -132,10 +132,10 @@ var lastJQBox;
             theTable = $(this).parents(".select_list:first");
             theLines = theTable.find(".select_entry");
 
-            if ( $(this).find("option:selected").hasClass("select_one") ) {
-                theLines.find("input.select_box").removeAttr("checked");
+            if ( $(this).find("option:selected").hasClass("select_one") && lastJQBox != undefined) {
+                theLines.find("input.select_box").removeProp("checked");
                 theLines.css("background-color", "transparent");
-                lastJQBox.attr("checked","checked");
+                lastJQBox.prop("checked", true);
             }
 
             setBGcolorCompare ( theLines.find("input.select_box:checked").parents(".select_entry:first"), $(this).find("option:selected").hasClass("select_red"), "#C24949", "#49C24f" );
@@ -318,7 +318,7 @@ function open_editor(what) {
     } else {
         var editorWidth = screen.availWidth;
     }
-    
+
     if (screen.availHeight >= 800) {
         var editorHeight = 800;
     } else {
@@ -327,7 +327,7 @@ function open_editor(what) {
 
     x = screen.width/2 - editorWidth/2;
     y = screen.height/2 - editorHeight/2;
-    
+
     EditorWindow = window.open("admin_frogpad.php?height="+editorHeight,"editor","width="+editorWidth+",height="+editorHeight+",left="+x+",top="+y+",screenX="+x+",screenY="+y+"");
 }
 //Close Editor-PopUp
@@ -352,7 +352,7 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
         var css = ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"];
         break;
   }
-  
+
   var textarea = document.getElementById(textareaId);
   var editor = CodeMirror.fromTextArea(textareaId, {
     parserfile: parser,
@@ -363,8 +363,8 @@ function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
     //textWrapping: false,
     continuousScanning: 500,
     tabMode: "shift",
-    height: editorHeight,
-    iframeClass:"html-editor-iframe",
+    height: editorHeight+"px",
+    iframeClass:"CodeMirror-iframe",
     readOnly: readOnlyState
   });
   //editor.setLineNumbers(true);
@@ -465,6 +465,28 @@ function changeDate (dayID, monthID, yearID, hourID, minID, dayShift, monthShift
     document.getElementById(minID).value = newMin;
     return true;
 }
+
+//setNow
+function setNow(y, m, d, h, i, s) {
+    if (document.getElementById(y) != null)
+        document.getElementById(y).value=getCurYear();
+
+    if (document.getElementById(m) != null)
+        document.getElementById(m).value=getCurMonth();
+
+    if (document.getElementById(d) != null)
+        document.getElementById(d).value=getCurDate();
+
+    if (document.getElementById(h) != null)
+        document.getElementById(h).value=getCurHours();
+
+    if (document.getElementById(i) != null)
+        document.getElementById(i).value=getCurMinutes();
+
+    if (document.getElementById(s) != null)
+        document.getElementById(s).value=getCurSeconds();
+}
+
 
 //getCurDate()
 function getCurDate () {

@@ -1,0 +1,369 @@
+# Language-Definition for Admin-CP Menu
+admin_logout_text:              Logout
+admin_login_text:               Login
+admin_link_to_page:             go to hompage
+admin_error_page_title:         Error
+
+# Top-Menu
+menu_general:                   General
+menu_content:                   Content
+menu_media:                     Media
+menu_interactive:               Interactive
+menu_promo:                     Promotion
+menu_user:                      Users
+menu_styles:                    Styles
+menu_system:                    System
+menu_mods:                      AddOns
+
+# Groups
+group_0:                        hidden
+group_-1:                       Home
+group_popup:                    Popups
+group_general:                  Common
+group_fseditor:                 Editor
+group_stats:                    Statistics
+group_news:                     News
+group_articles:                 Articles
+group_press:                    Press Center
+group_cimg:                     Content Images
+group_gallery:                  Gallery
+group_gallery_img:              Gallery Images
+group_gallery_wp:               Wallpapers
+group_gallery_preview:          Preview Images
+group_downloads:                Downloads
+group_player:                   Videos
+group_polls:                    Polls
+group_affiliates:               Affiliates
+group_shop:                     Shop
+group_users:                    Users
+group_styles:                   Styles
+group_templates:                Templates
+group_groups:                   Groups
+group_applets:                  Applets
+group_snippets:                 Snippets
+group_aliases:                  Aliases
+group_search:                   Search
+group_fscodes:                  FSCodes
+group_db:                       Database
+
+# Startseiten
+page_title_start_general:       General
+page_title_start_content:       Content
+page_title_start_media:         Media
+page_title_start_interactive:   Interactive
+page_title_start_promo:         Promotion
+page_title_start_user:          Users
+page_title_start_styles:        Styles
+page_title_start_system:        System
+page_title_start_mods:          AddOns
+
+# Zonen
+page_title_zone_config:         change configuration
+page_link_zone_config:          configuration
+page_title_zone_create:         create
+page_link_zone_create:          create
+page_title_zone_admin:          manage
+page_link_zone_admin:           manage
+
+# Allgemein
+page_title_gen_config:          Page Settings
+page_link_gen_config:           Settings
+page_title_gen_announcement:    Announcement
+page_link_gen_announcement:     Announcement
+page_title_gen_captcha:         Captcha Settings
+page_link_gen_captcha:          Captcha
+page_title_gen_emails:          Edit Email Templates
+page_link_gen_emails:           Emails
+page_title_gen_phpinfo:         PHP & Server Information
+page_link_gen_phpinfo:          PHP Info
+
+# Editor
+page_title_editor_config:       Edit Settings
+page_link_editor_config:        Settings
+page_title_editor_design:       Edit Design
+page_link_editor_design:        Design
+page_title_editor_smilies:      Manage Smilies
+page_link_editor_smilies:       Smilies
+page_title_editor_fscodes:      Edit FSCodes
+page_link_editor_fscodes:       FSCodes
+
+# Statistik
+page_title_stat_view:           view
+page_link_stat_view:            view
+page_title_stat_edit:           edit
+page_link_stat_edit:            edit
+page_title_stat_ref:            Manage & view referrers
+page_link_stat_ref:             Referrers
+page_title_stat_ref_delete:     Delete referrers
+page_link_stat_ref_delete:      delete
+page_title_stat_space:          Disk Space
+page_link_stat_space:           Disk Space
+
+# News
+page_title_news_config:         change configuration
+page_link_news_config:          configuration
+page_title_news_delete:         delete
+page_link_news_delete:          delete
+page_title_news_add:            write
+page_link_news_add:             write
+page_title_news_comments:       comments
+page_link_news_comments:        comments
+page_title_news_edit:           edit
+page_link_news_edit:            edit
+page_title_news_cat:            Manage categories
+page_link_news_cat:             categories
+page_title_news_comments_list:  Manage comments
+page_link_news_comments_list:   comments
+
+# Artikel
+page_title_articles_config:     change configuration
+page_link_articles_config:      configuration
+page_title_articles_add:        write
+page_link_articles_add:         write
+page_title_articles_edit:       edit
+page_link_articles_edit:        edit
+page_title_articles_cat:        manage categories
+page_link_articles_cat:         categories
+
+# Presseberichte
+page_title_press_config:        change configuration
+page_link_press_config:         configuration
+page_title_press_add:           add
+page_link_press_add:            add
+page_title_press_edit:          edit
+page_link_press_edit:           edit
+page_title_press_admin:         manage
+page_link_press_admin:          manage
+
+# Inhalts-Bilder
+page_title_cimg_add:            add
+page_link_cimg_add:             add
+page_title_cimg_admin:          manage
+page_link_cimg_admin:           manage
+page_title_cimg_cat:            categories
+page_link_cimg_cat:             categories
+page_title_cimg_import:         import old images
+page_link_cimg_import:          import
+
+# Galerie > Allgemein (neu)
+page_title_gallery_config:      change configuration
+page_link_gallery_config:       configuration
+page_title_gallery_cat:         manage categories
+page_link_gallery_cat:          categories
+page_title_gallery_folder:      Manage folders
+page_link_gallery_folder:       Folders
+
+page_title_gallery_img:         Manage images
+page_link_gallery_img:          Images
+page_title_gallery_img_add:     Add images
+page_link_gallery_img_add:      add
+page_title_gallery_img_edit:    Edit images
+page_link_gallery_img_edit:     edit
+
+page_title_gallery_wp:          Manage wallpapers
+page_link_gallery_wp:           Wallpaper
+page_title_gallery_wp_add:      Add wallpaper
+page_link_gallery_wp_add:       add
+page_title_gallery_wp_edit:     Edit wallpaper
+page_link_gallery_wp_edit:      edit
+
+# Galerie > Allgemein (alt)
+page_title_gallery_config:      change configuration
+page_link_gallery_config:       configuration
+page_title_gallery_cat:         manage categories
+page_link_gallery_cat:          categories
+page_title_gallery_newcat:      Create new category
+page_link_gallery_newcat:       New category
+
+# Galerie > Bilder (alt)
+page_title_screens_add:         Add images
+page_link_screens_add:          add
+page_title_screens_edit:        Edit images
+page_link_screens_edit:         edit
+
+# Galerie > Wallpaper (alt)
+page_title_wp_add:              Add wallpapers
+page_link_wp_add:               add
+page_title_wp_edit:             Edit wallpapers
+page_link_wp_edit:              edit
+
+# Galerie > Vorschaubilder (alt)
+page_title_randompic_config:    change configuration
+page_link_randompic_config:     configuration
+page_title_randompic_cat:       select category
+page_link_randompic_cat:        category selection
+page_title_timedpic_add:        add
+page_link_timedpic_add:         add
+page_title_timedpic_edit:       verwalten
+page_link_timedpic_edit:        verwalten
+page_title_find_gallery_img:    Select image
+page_link_find_gallery_img:     Select image
+
+# Downloads
+page_title_dl_config:           change configuration
+page_link_dl_config:            configuration
+page_title_dl_add:              add
+page_link_dl_add:               add
+page_title_dl_edit:             edit
+page_link_dl_edit:              edit
+page_title_dl_cat:              manage categories
+page_link_dl_cat:               categories
+page_title_dl_newcat:           New category
+page_link_dl_newcat:            New category
+page_title_dlcommentedit:       edit comments
+page_link_dlcommentedit:        comments
+
+# Videos
+page_title_player_config:       change configuration
+page_link_player_config:        configuration
+page_title_player_add:          add
+page_link_player_add:           add
+page_title_player_edit:         edit
+page_link_player_edit:          edit
+
+# Umfragen
+page_title_poll_config:         change configuration
+page_link_poll_config:          configuration
+page_title_poll_add:            add
+page_link_poll_add:             add
+page_title_poll_edit:           edit
+page_link_poll_edit:            edit
+
+# Partner
+page_title_partner_config:      change configuration
+page_link_partner_config:       configuration
+page_title_partner_add:         add
+page_link_partner_add:          add
+page_title_partner_edit:        edit
+page_link_partner_edit:         edit
+
+# Shop
+page_title_shop_add:            Add product
+page_link_shop_add:             New product
+page_title_shop_edit:           Product summary
+page_link_shop_edit:            Summary
+
+# User
+page_title_user_config:         change configuration
+page_link_user_config:          configuration
+page_title_user_add:            add
+page_link_user_add:             add
+page_title_user_edit:           edit
+page_link_user_edit:            edit
+page_title_user_rights:         change permissions
+page_link_user_rights:          permissions
+
+# Gruppen
+page_title_group_config:        change configuration
+page_link_group_config:         configuration
+page_title_group_admin:         Group administration
+page_link_group_admin:          manage
+page_title_group_rights:        change permissions
+page_link_group_rights:         permissions
+
+# Styles
+page_title_style_add:           create
+page_link_style_add:            create
+page_title_style_management:    manage
+page_link_style_management:     manage
+page_title_style_css:           Edit CSS files
+page_link_style_css:            CSS files
+page_title_style_js:            Edit Java Script files
+page_link_style_js:             JS files
+page_title_style_nav:           Edit navigation files
+page_link_style_nav:            Navigations
+
+# Templates
+page_title_tpl_main:            Edit „Main Template“
+page_link_tpl_main:             Main Template
+page_title_tpl_general:         Edit „General“
+page_link_tpl_general:          General
+page_title_tpl_viewer:          Edit „Image viewer“
+page_link_tpl_viewer:           Image viewer
+page_title_tpl_user:            Edit „Users“
+page_link_tpl_user:             Users
+page_title_tpl_articles:        Edit „Articles“
+page_link_tpl_articles:         Articles
+page_title_tpl_news:            Edit „News“
+page_link_tpl_news:             News
+page_title_tpl_search:          Edit „Search“
+page_link_tpl_search:           Search
+page_title_tpl_poll:            Edit „Polls“
+page_link_tpl_poll:             Polls
+page_title_tpl_press:           Edit „Press reports“
+page_link_tpl_press:            Press reports
+page_title_tpl_screens:         Edit „Screenshots“
+page_link_tpl_screens:          Screenshots
+page_title_tpl_wp:              Edit „Wallpapers“
+page_link_tpl_wp:               Wallpapers
+page_title_tpl_previewimg:      Edit „Preview Image“
+page_link_tpl_previewimg:       Preview Image
+page_title_tpl_dl:              Edit „Downloads“
+page_link_tpl_dl:               Downloads
+page_title_tpl_shop:            Edit „Shop“
+page_link_tpl_shop:             Shop
+page_title_tpl_affiliates:      Edit „Affiliates“
+page_link_tpl_affiliates:       Affiliates
+page_title_tpl_editor:          Edit „Editor“
+page_link_tpl_editor:           Editor
+page_title_tpl_fscodes:         Edit „FSCodes“
+page_link_tpl_fscodes:          FSCodes
+page_title_tpl_player:          Edit „Flash-Player“
+page_link_tpl_player:           Flash-Player
+page_title_tpl_topdownloads:    Edit „Top Downloads“
+page_link_tpl_topdownloads:     Top Downloads
+
+# Applets
+page_title_applets_add:         add
+page_link_applets_add:          add
+page_title_applets_delete:      delete
+page_link_applets_delete:       delete
+page_title_applets_edit:        edit
+page_link_applets_edit:         edit
+
+# Schnipsel
+page_title_snippets_add:        add
+page_link_snippets_add:         add
+page_title_snippets_delete:     delete
+page_link_snippets_delete:      delete
+page_title_snippets_edit:       edit
+page_link_snippets_edit:        edit
+
+# Weiterleitungen
+page_title_aliases_add:         add
+page_link_aliases_add:          add
+page_title_aliases_delete:      delete
+page_link_aliases_delete:       delete
+page_title_aliases_edit:        edit
+page_link_aliases_edit:         edit
+
+# Suche
+page_title_search_config:       Settings
+page_link_search_config:        Settings
+page_title_search_index:        Searchindex
+page_link_search_index:         Searchindex
+
+# FSCodes
+page_title_fscode_add:          Add FS-Code
+page_link_fscode_add:           add
+page_title_fscode_add_php:      PHP-Code
+page_link_fscode_add_php:       PHP-Code
+page_title_fscode_edit:         Edit FS-Code
+page_link_fscode_edit:          edit
+page_title_fscode_edit_php:     PHP-Code
+page_link_fscode_edit_php:      PHP-Code
+page_title_fscode_edit_remove:  delete
+page_link_fscode_edit_remove:   delete
+page_title_fscode_settings:     Settings
+page_link_fscode_settings:      Settings
+
+# PopUps
+page_title_find_applet:         Search for applets ...
+page_title_find_user:           Search for users ...
+page_title_find_file:           Select file ...
+page_title_news_preview:        News preview
+page_title_article_preview:     Article preview
+
+# Datenbank
+page_title_table_admin:         Tables
+page_link_table_admin:          Tables

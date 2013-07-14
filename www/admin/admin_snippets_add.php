@@ -1,12 +1,14 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
 ///////////////////////////////////
 //// Get some Data when sended ////
 ///////////////////////////////////
 
 // Check if Snippet exists
 if ( isset ( $_POST['sended'] ) ) {
-    $index = mysql_query ( "SELECT `snippet_id` FROM `".$global_config_arr['pref']."snippets` WHERE `snippet_tag` = '[%".savesql ( $_POST['snippet_tag'] )."%]'", $db );
-    $snippet_exists = ( mysql_num_rows ( $index ) == 0 ) ? FALSE : TRUE;
+    $stmt = $FD->sql()->conn()->prepare('SELECT COUNT(`snippet_id`) FROM `'.$FD->config('pref')."snippets` WHERE `snippet_tag` = ?");
+    $stmt->execute(array('[%'. $_POST['snippet_tag'] .'%]'));
+    $snippet_exists = ( $stmt->fetchColumn() != 0 );
 } else {
     $snippet_exists = TRUE;
 }
@@ -15,36 +17,31 @@ if ( isset ( $_POST['sended'] ) ) {
 //// Save Data to DB ////
 /////////////////////////
 if (
-        isset ( $_POST['snippet_tag'] )
-        && $_POST['snippet_tag'] != ""
-        && !$snippet_exists
-    )
+    isset ( $_POST['snippet_tag'] )
+    && $_POST['snippet_tag'] != ''
+    && !$snippet_exists
+   )
 {
     // Security Functions
-    $_POST['snippet_tag'] = savesql ( $_POST['snippet_tag'] );
-    $_POST['snippet_text'] = savesql ( $_POST['snippet_text'] );
-    
-    settype ( $_POST['snippet_active'], "integer" );
+    settype ( $_POST['snippet_active'], 'integer' );
 
     // New Snippet
     if ( !$snippet_exists ) {
 
-        // MySQL-Queries
-        mysql_query ( "
-                                        INSERT INTO `".$global_config_arr['pref']."snippets` (
-                                                `snippet_tag`,
-                                                `snippet_text`,
-                                                `snippet_active`
-                                        )
-                                        VALUES (
-                                                '[%".$_POST['snippet_tag']."%]',
-                                                '".$_POST['snippet_text']."',
-                                                '".$_POST['snippet_active']."'
-                                        )
-        ", $db );
-        
-        systext ( $TEXT["admin"]->get("snippet_added"),
-            $TEXT["admin"]->get("info"), FALSE, $TEXT["admin"]->get("icon_save_add") );
+        // SQL-Queries
+        $stmt = $FD->sql()->conn()->prepare('
+                        INSERT INTO `'.$FD->config('pref')."snippets` (
+                                `snippet_tag`,
+                                `snippet_text`,
+                                `snippet_active`)
+                        VALUES (
+                                ?,
+                                ?,
+                                '".$_POST['snippet_active']."')");
+        $stmt->execute(array('[%'.$_POST['snippet_tag'].'%]', $_POST['snippet_text']));
+
+        systext ( $FD->text('admin', 'snippet_added'),
+            $FD->text('admin', 'info'), FALSE, $FD->text('admin', 'icon_save_add') );
         unset ( $_POST );
     }
 }
@@ -54,23 +51,23 @@ if (
 /////////////////////////
 
 // Security Functions
-$_POST['snippet_tag'] = killhtml ( $_POST['snippet_tag'] );
-$_POST['snippet_text'] = killhtml ( $_POST['snippet_text'] );
+$_POST['snippet_tag'] = isset($_POST['snippet_tag']) ? killhtml ( $_POST['snippet_tag'] ) : '';
+$_POST['snippet_text'] = isset($_POST['snippet_text']) ? killhtml ( $_POST['snippet_text'] ) : '';
 
-settype ( $_POST['snippet_active'], "integer" );
+settype ( $_POST['snippet_active'], 'integer' );
 
 // Check for Errors
 if ( isset ( $_POST['sended'] ) ) {
 
     if ( $snippet_exists ) {
-        $error_message = $TEXT["admin"]->get("snippet_exists");
+        $error_message = $FD->text("admin", "snippet_exists");
     } else {
-        $error_message = $TEXT["admin"]->get("form_not_filled");
+        $error_message = $FD->text("admin", "form_not_filled");
     }
-    
+
     // Display Error
-    systext ( $TEXT["admin"]->get("snippet_not_added")."<br>".$error_message,
-        $TEXT["admin"]->get("error"), TRUE, $TEXT["admin"]->get("icon_save_error") );
+    systext ( $FD->text("admin", "snippet_not_added").'<br>'.$error_message,
+        $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_save_error") );
 
 // Set Data
 } else {
@@ -84,11 +81,11 @@ echo '
                         <input type="hidden" name="go" value="snippets_add">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$TEXT["admin"]->get("snippet_add_title").'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text("admin", "snippet_add_title").'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT["admin"]->get("snippet_tag_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("snippet_tag_desc").'</span>
+                                    '.$FD->text("admin", "snippet_tag_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "snippet_tag_desc").'</span>
                                 </td>
                                 <td class="config">
                                     [%&nbsp;<input class="text input_width" name="snippet_tag" maxlength="100" value="'.$_POST['snippet_tag'].'">&nbsp;%]
@@ -96,8 +93,8 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$TEXT["admin"]->get("snippet_active_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("snippet_active_desc").'</span>
+                                    '.$FD->text("admin", "snippet_active_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "snippet_active_desc").'</span>
                                 </td>
                                 <td class="config">
                                     <input class="pointer" type="checkbox" name="snippet_active" value="1" '.getchecked ( 1, $_POST['snippet_active'] ).'>
@@ -105,8 +102,8 @@ echo '
                             </tr>
                             <tr>
                                 <td class="config" colspan="2">
-                                    '.$TEXT["admin"]->get("snippet_text_title").':<br>
-                                    <span class="small">'.$TEXT["admin"]->get("snippet_text_desc").'</span>
+                                    '.$FD->text("admin", "snippet_text_title").':<br>
+                                    <span class="small">'.$FD->text("admin", "snippet_text_desc").'</span>
                                 </td>
                             </tr>
                             <tr>
@@ -118,7 +115,7 @@ echo '
                             <tr>
                                 <td colspan="2" class="buttontd">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$TEXT["admin"]->get("snippet_add_title").'
+                                        '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "snippet_add_title").'
                                     </button>
                                 </td>
                             </tr>

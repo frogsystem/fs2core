@@ -1,15 +1,16 @@
-<?php
-    $TEMPLATE_GO = "style_js";
-    $TEMPLATE_FILE = "js";
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
+
+    $TEMPLATE_GO = 'style_js';
+    $TEMPLATE_FILE = 'js';
     $TEMPLATE_EDIT = null;
 
     $tmp = array (
-        name => "JS",
-        title => $admin_phrases[template][js_userfunctions][title],
-        description => $admin_phrases[template][js_userfunctions][description],
-        rows => 35,
-        cols => 66,
-        help => array (
+        'name' => 'JS',
+        'title' => $FD->text("template", "js_userfunctions_title"),
+        'description' => $FD->text("template", "js_userfunctions_description"),
+        'rows' => 35,
+        'cols' => 66,
+        'help' => array (
         )
     );
     $TEMPLATE_EDIT[] = $tmp;

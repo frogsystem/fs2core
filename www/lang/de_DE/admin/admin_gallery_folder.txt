@@ -1,0 +1,5 @@
+# Language-Definition for [FS2]/admin/admin_gallery_folder.php
+
+# Language-Definition for [FS2]/admin/template/admin_gallery_folder.tpl
+add_title:                  Ordner hinzufügen
+

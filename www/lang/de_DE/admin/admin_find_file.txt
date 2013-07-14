@@ -1,0 +1,13 @@
+select_file: Datei auswählen
+no_connection: Keine Verbindung gefunden!
+connection_error: FTP-Verbindung ist fehlgeschlagen!
+connection_error_text: Verbindungsaufbau zu %s mit Benutzername %s versucht.
+connection_ok: Verbindung zu %s mit Benutzername %s hergestellt.
+
+send_file_size: Dateigröße mit übertragen
+file_size: Dateigröße
+path: Pfad
+change_dir: zum Verzeichnis wechseln
+get_filepath: Dateipfad auswählen
+get_folderpath: Verzeichnispfad auswählen
+up: nach oben

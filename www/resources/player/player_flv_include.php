@@ -1,17 +1,18 @@
 <?php
 
-function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
+function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
 
-    global $global_config_arr, $db;
+    global $FD, $sql;
+    $FD->loadConfig('video_player');
 
     $template_own = '
-    <object type="application/x-shockwave-flash" data="'.$global_config_arr['virtualhost'].'resources/player/player_flv_maxi.swf" width="{..width..}" height="{..height..}">
-        <param name="movie" value="'.$global_config_arr['virtualhost'].'resources/player/player_flv_maxi.swf"></param>
+    <object type="application/x-shockwave-flash" data="'.$FD->config('virtualhost').'resources/player/player_flv_maxi.swf" width="{..width..}" height="{..height..}">
+        <param name="movie" value="'.$FD->config('virtualhost').'resources/player/player_flv_maxi.swf"></param>
         <param name="allowFullScreen" value="true"></param>
-        <param name="FlashVars" value="config='.$global_config_arr['virtualhost'].'resources/player/player_flv_config.php&amp;flv={..url..}&amp;title={..title..}&amp;width={..width..}&amp;height={..height..}"></param>
+        <param name="FlashVars" value="config='.$FD->config('virtualhost').'resources/player/player_flv_config.php&amp;flv={..url..}&amp;title={..title..}&amp;width={..width..}&amp;height={..height..}"></param>
     </object>
     ';
-    
+
     $template_youtube = '
     <object width="{..width..}" height="{..height..}">
         <param name="movie" value="http://www.youtube.com/v/{..url..}&hl=en&fs=1&rel=0"></param>
@@ -28,22 +29,33 @@ function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
     ";
 
 
+    // default width/height
+    if ($WIDTH === true || $HEIGHT === true) {
+        $WIDTH = $WIDTH ? $FD->cfg('video_player', 'cfg_player_x') : $WIDTH;
+        $HEIGHT = $HEIGHT ? $FD->cfg('video_player', 'cfg_player_y') : $HEIGHT;
+    }
+
     $display = FALSE;
-    
+
     if ( is_numeric ( $MULTI ) ) {
-        settype ( $MULTI, "integer" );
-        $index = mysql_query ( "
-                                SELECT *
-                                FROM ".$global_config_arr['pref']."player
-                                WHERE video_id = '".$MULTI."'
-                                LIMIT 0,1
-        ", $db );
-        if ( mysql_num_rows ( $index ) == 1 ) {
-            $video_arr = mysql_fetch_assoc ( $index );
+        settype ( $MULTI, 'integer' );
+        $index = $FD->sql()->conn()->query ( '
+                        SELECT COUNT(*) AS num_rows
+                        FROM '.$FD->config('pref')."player
+                        WHERE video_id = '".$MULTI."'
+                        LIMIT 0,1" );
+        $num_rows = $index->fetchColumn();
+        if ( $num_rows == 1 ) {
+            $index = $FD->sql()->conn()->query ( '
+                        SELECT *
+                        FROM '.$FD->config('pref')."player
+                        WHERE video_id = '".$MULTI."'
+                        LIMIT 0,1" );
+            $video_arr = $index->fetch( PDO::FETCH_ASSOC );
 
             switch ( $video_arr['video_type'] ) {
                 case -1:
-                    $template_player = stripslashes ( $video_arr['video_x'] );
+                    $template_player = $video_arr['video_x'];
                     break;
                 case 3:
                     $template_player = $template_myvideo;
@@ -56,69 +68,110 @@ function get_player ( $MULTI, $WIDTH = 400, $HEIGHT = 320 ) {
                     break;
                 default:
                     $video_arr['video_type'] = 0;
-                    $template_player = "";
+                    $template_player = '';
                     break;
             }
+
+            // DL?
+
+
         } else {
             $video_arr['video_type'] = 0;
         }
     } else {
-        $input = explode ( "|", $MULTI, 2 );
+        $input = explode ( '|', $MULTI, 2 );
         $video_arr['video_x'] = $input[0];
         $video_arr['video_title'] = $input[1];
         $template_player = $template_own;
         $video_arr['video_type'] = 1;
+        $video_arr['dl_id'] = 0;
     }
 
     $video_arr['video_x'] = htmlspecialchars ( $video_arr['video_x'] );
     $video_arr['video_title'] = htmlspecialchars ( $video_arr['video_title'] );
 
-    // get dimensions
-    if ( substr ( $WIDTH, -1 ) == "%" ) {
-        $WIDTH = substr ( $WIDTH, 0, -1 );
-        settype ( $WIDTH, "integer" );
-        $WIDTH = substr ( $WIDTH, 0, -1 ) . "%";
-        $WIDTH_CSS = substr ( $WIDTH, 0, -1 ) . "%";
-    } else {
-        settype ( $WIDTH, "integer" );
-        $WIDTH_CSS = $WIDTH . "px";
+    // return text output?
+    if ($TEXT) {
+        return get_video_text($video_arr['video_x'], $video_arr['video_title'], $video_arr['video_type'], $video_arr['dl_id']);
     }
-    
-    if ( substr ( $HEIGHT, -1 ) == "%" ) {
-        $HEIGHT = substr ( $HEIGHT, 0, -1 );
-        settype ( $HEIGHT, "integer" );
-        $HEIGHT = substr ( $HEIGHT, 0, -1 ) . "%";
-        $HEIGHT_CSS = substr ( $HEIGHT, 0, -1 ) . "%";
+
+    // get dimensions
+    if ( substr ( $WIDTH, -1 ) == '%' ) {
+        $WIDTH = substr ( $WIDTH, 0, -1 );
+        settype ( $WIDTH, 'integer' );
+        $WIDTH = substr ( $WIDTH, 0, -1 ) . '%';
+        $WIDTH_CSS = substr ( $WIDTH, 0, -1 ) . '%';
     } else {
-        settype ( $HEIGHT, "integer" );
-        $HEIGHT_CSS = $HEIGHT . "px";
+        settype ( $WIDTH, 'integer' );
+        $WIDTH_CSS = $WIDTH . 'px';
+    }
+
+    if ( substr ( $HEIGHT, -1 ) == '%' ) {
+        $HEIGHT = substr ( $HEIGHT, 0, -1 );
+        settype ( $HEIGHT, 'integer' );
+        $HEIGHT = substr ( $HEIGHT, 0, -1 ) . '%';
+        $HEIGHT_CSS = substr ( $HEIGHT, 0, -1 ) . '%';
+    } else {
+        settype ( $HEIGHT, 'integer' );
+        $HEIGHT_CSS = $HEIGHT . 'px';
     }
 
 
     if ( $video_arr['video_type'] != 0 ) {
-        $template_player = str_replace ( "{..width..}", $WIDTH, $template_player );
-        $template_player = str_replace ( "{..height..}", $HEIGHT, $template_player );
-        $template_player = str_replace ( "{..width_css..}", $WIDTH_CSS, $template_player );
-        $template_player = str_replace ( "{..height_css..}", $HEIGHT_CSS, $template_player );
+        $template_player = str_replace ( '{..width..}', $WIDTH, $template_player );
+        $template_player = str_replace ( '{..height..}', $HEIGHT, $template_player );
+        $template_player = str_replace ( '{..width_css..}', $WIDTH_CSS, $template_player );
+        $template_player = str_replace ( '{..height_css..}', $HEIGHT_CSS, $template_player );
 
         if ( $video_arr['video_type'] == 1 || $video_arr['video_type'] == 2 || $video_arr['video_type'] == 3 ) {
-            $template_player = str_replace ( "{..url..}", $video_arr['video_x'], $template_player );
+            $template_player = str_replace ( '{..url..}', $video_arr['video_x'], $template_player );
         }
         if ( $video_arr['video_type'] == 1 ) {
-            $template_player = str_replace ( "{..title..}", $video_arr['video_title'], $template_player );
+            $template_player = str_replace ( '{..title..}', $video_arr['video_title'], $template_player );
 
             // Get Player Template
             $template = new template();
-            $template->setFile("0_player.tpl");
-            $template->load("PLAYER");
-            $template->tag("player", $template_player );
+            $template->setFile('0_player.tpl');
+            $template->load('PLAYER');
+            $template->tag('player', $template_player );
             $template = $template->display ();
             $template_player = $template;
         }
     } else {
-        $template_player = "";
+        $template_player = '';
     }
-    
+
     return $template_player;
+}
+
+function get_video_text($url, $title, $type, $dl_id = 0) {
+    global $FD;
+
+    // Existing Download?
+    if ($type == 1 && $dl_id != 0) {
+       $url = url('dlfile', array('id' => $dl_id), true);
+    }
+
+    // $URL ermitteln
+    switch ($type) {
+        case 3: // MyVideo
+            $url = 'http://www.myvideo.de/watch/'.$url.'/';
+            break;
+        case 2: // YouTube
+            $url = 'http://www.youtube.com/watch?v='.$url;
+            break;
+        case 1:
+            $url = $url;
+            break;
+        default:
+            break;
+    }
+
+    // Return Text
+    if (!empty($title)) {
+        return $FD->text('frontend', 'video').': '.$title.' ('.$url.')';
+    } else {
+        return $FD->text('frontend', 'video').': '.$url;
+    }
 }
 ?>

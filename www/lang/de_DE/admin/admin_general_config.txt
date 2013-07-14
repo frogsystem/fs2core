@@ -1,0 +1,98 @@
+pageinfo_title:             Seiteninformationen
+settings_title:             Seiteneinstellungen
+design_title:               Design
+pagenav_title:              Seitennavigation
+
+
+title:                      Titel
+title_desc:                 Der Titel der Seite.
+
+dyn_title:                  Dynamischer Titel
+dyn_title_desc:             Aktiviert dynamische Seitentitel.
+dyn_title_ext:              Dynamischer Titel-Schema
+dyn_title_ext_desc:         Schema des dynamischen Seitentitels.
+dyn_title_page_title:       Standard Seitentitel
+dyn_title_page_title_ext:   Seitenspezifische Titel-Erweiterung
+
+virtualhost:                URL & Protokoll
+virtualhost_desc:           URL und Standard-Protokoll der Seite.
+other_protocol:             Beide Protokolle erlauben
+other_protocol_desc:        Erlaubt den Aufruf der Seite über beide Protokolle.
+
+admin_mail:                 E-Mail-Adresse
+admin_mail_desc:            Absender-Adresse für vom System versendete E-Mails.
+
+description:                Beschreibung
+description_desc:           Ein kurzer Text über die Seite.
+
+author:                     Autor
+author_desc:                Der oder die Webmaster der Seite.
+
+keywords:                   Keywords
+keywords_desc:              Stichwörter zur Seite, bitte mit Kommas trennen.<br>Wichtig für Suchmaschinen!
+
+config_publisher_title:     Herausgeber
+config_publisher_desc:      Herausgeber (Webmaster) der Seite.
+
+config_copyright_title:     Copyright
+config_copyright_desc:      Copyright-Hinweise der Urheber.
+
+style_title:                Aktiver Style
+style_desc:                 Style, der als Design der Hauptseite verwendet wird.
+
+allow_other_styles:         Andere Styles erlauben
+allow_other_styles_desc:    Ermöglicht das Anzeigen der Seite in anderen Styles.<br> ($URL([style=xyz 1]))
+
+show_favicon:               Favicon verwenden
+show_favicon_desc:          Bindet das Favicon ein.<br>($VAR(style_icons)favicon.ico)
+
+home_page:                  Startseite
+home_page_desc:             Legt die Seite fest, die standardmäßig angezeigt wird.
+home_page_default:          Standard (?go=news)
+
+language:                   Sprache
+language_desc:              Die Standard Sprache des Admin-CPs.
+
+feed:                       Feed
+feed_desc:                  Standard Feed der Seite, der im Html-Kopf eingebunden wird.
+feed_rss091:                RSS 0.91
+feed_rss10:                 RSS 1.0
+feed_rss20:                 RSS 2.0
+feed_atom10:                Atom 1.0
+
+url_style:                  URL-Stil
+url_style_desc:             Legt fest wie URLs angezeigt und erzeugt werden.
+url_style_info:             <b>Achtung:</b> Bitte die Hinweise zur Verwendung von <a href="http://wiki.frogsystem.de/seo-urls" target="_blank">Suchmaschinen optimierten URLs</a> lesen!
+url_style_default:          Einfach (?go=seite&amp;p1=v1)
+url_style_seo:              Suchmaschinen optimiert (seite--p1-v1.html)
+
+date:                       Datum
+date_desc:                  Datumsformat, das auf der Seite verwendet werden soll.
+time:                       Zeit
+time_desc:                  Format, das für Zeitangaben auf der Seite verwendet wird.
+date_time:                  Datum &amp; Zeit
+date_time_desc:             Format, das für Datums- und Zeitangaben auf der Seite verwendet wird.
+timezone:                   Zeitzone
+timezone_desc:              Zeitzone in der die Webseite ausgeführt wird.
+server_default:             Server-Standard
+
+auto_forward:               Automatische Weiterleitung
+auto_forward_desc:          Zeit, nach der die automatische Weiterleitung aktiviert wird.
+
+referer:                    Refererz&auml;hlung
+referer_desc:               Aktiviert/deaktiviert die Refererz&auml;hlung bei jedem Seitenaufruf.
+referer_active:             aktiv
+referer_inactive:           deaktiviert
+
+page:                       Seitenanzeige
+page_desc:                  Design der Seitenanzeige bei mehrseitigen Anzeigen.
+page_prev:                  Seite zurück
+page_prev_desc:             Design der "Seite zurück" Schaltfläche.
+page_next:                  Seite weiter
+page_next_desc:             Design der "Seite weiter" Schaltfläche. 
+page_text_page_num:         Nummer der aktuelle Seite    
+page_text_total_pages:      Gesamtzahl der Seiten
+page_text_next:             "Seite zurück" Schaltfläche
+page_text_prev:             "Seite weiter" Schaltfläche
+page_prev_url:              URL zur vorherigen Seite
+page_next_url:              URL zur nächsten Seite

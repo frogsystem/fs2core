@@ -4,17 +4,16 @@ session_start();
 
 // fs2 include path
 set_include_path ( '.' );
-define ( FS2_ROOT_PATH, "./../../", TRUE );
+define ( 'FS2_ROOT_PATH', './../../', TRUE );
 
 // include db-data
-require ( FS2_ROOT_PATH . "login.inc.php" );
-require ( FS2_ROOT_PATH . "includes/functions.php" );
+require ( FS2_ROOT_PATH . 'login.inc.php' );
 
 /////////////////////
 //// Load Config ////
 /////////////////////
-$index = mysql_query ( "SELECT * FROM ".$global_config_arr['pref']."captcha_config", $db );
-$config_arr = mysql_fetch_assoc($index);
+$FD->loadConfig('captcha');
+$config_arr = $FD->configObject('captcha')->getConfigArray();
 
 
 ////////////////////////
@@ -69,7 +68,7 @@ if ( $config_arr['captcha_create_easy_arithmetics'] == 1 ) {
             $n2--;
         }
     }
-    
+
     if ( $operator == 3 && $n1 < 0 && $n2 <0 ) {
         $n1 = abs( $n1 );
         $n2 = abs( $n2 );
@@ -86,18 +85,18 @@ if ( $config_arr['captcha_create_easy_arithmetics'] == 1 ) {
 switch ($operator) {
     case 3:
         if ( $config_arr['captcha_show_multiplication_as_x'] == 1 ) {
-            $sign = " x ";
+            $sign = ' x ';
         } else {
-            $sign = " * ";
+            $sign = ' * ';
         }
         $result = $n1 * $n2;
         break;
     case 2:
-        $sign = " - ";
+        $sign = ' - ';
         $result = $n1 - $n2;
         break;
     default:
-        $sign = " + ";
+        $sign = ' + ';
         $result = $n1 + $n2;
         break;
 }
@@ -113,34 +112,34 @@ function encrypt ( $STRING, $KEY ) {
     }
     return base64_encode ( $result );
 }
-$_SESSION['captcha'] = encrypt ( $result, $global_config_arr['spam'] ); //Key
-$_SESSION['captcha'] = str_replace ( "=", "", $_SESSION['captcha'] );
+$_SESSION['captcha'] = encrypt ( $result, $FD->config('spam') ); //Key
+$_SESSION['captcha'] = str_replace ( '=', '', $_SESSION['captcha'] );
 
 //Create String
 if ( $n2 < 0 ) {
-    $n2 = "( ".$n2." )";
+    $n2 = '( '.$n2.' )';
 }
-$string = $n1.$sign.$n2." = ?";
+$string = $n1.$sign.$n2.' = ?';
 if ( $config_arr['captcha_show_questionmark'] == 0 ) {
-    $string = str_replace ( " ?", "", $string );
+    $string = str_replace ( ' ?', '', $string );
 }
 if ( $config_arr['captcha_use_spaces'] == 0 ) {
-    $string = str_replace ( " ", "", $string );
+    $string = str_replace ( ' ', '', $string );
 }
 
 //Create Image
 $img = imagecreatetruecolor ( $config_arr['captcha_x'], $config_arr['captcha_y'] ) ;
 
 //Colorize Image
-$bg_color_value = hex2dec_color ( $config_arr['captcha_bg_color'] );
-$text_color_value = hex2dec_color ( $config_arr['captcha_text_color'] );
+$bg_color_value = hex2dec_color ( '#'.$config_arr['captcha_bg_color'] );
+$text_color_value = hex2dec_color ( '#'.$config_arr['captcha_text_color'] );
 
 $color_bg = imagecolorallocate ( $img, $bg_color_value['r'], $bg_color_value['g'], $bg_color_value['b'] );
 $color_text = imagecolorallocate ( $img, $text_color_value['r'], $text_color_value['g'], $text_color_value['b'] );
 
 //Get Font
 if ( $config_arr['captcha_font_size'] == 0 ) {
-     $config_arr['captcha_font'] = imageloadfont ( FS2_ROOT_PATH . "media/php-fonts/".stripslashes ( $config_arr['captcha_font_file'] ) );
+     $config_arr['captcha_font'] = imageloadfont ( FS2_ROOT_PATH . 'media/php-fonts/'. $config_arr['captcha_font_file'] );
 } else {
     $config_arr['captcha_font'] = $config_arr['captcha_font_size'];
 }
@@ -157,7 +156,7 @@ if ( $config_arr['captcha_bg_transparent'] == 1 ) {
 }
 
 //Output Image
-header("Content-type: image/gif");
+header('Content-type: image/gif');
 imagegif ( $img );
 imagedestroy( $img );
 ?>

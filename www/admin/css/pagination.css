@@ -1,0 +1,23 @@
+/**************************************************/
+/* Pagination Styles */
+/**************************************************/
+.pagination-page, .pagination-page-selected {
+    border: 1px solid black;
+    background-color: #EEEEEE;
+    padding: 1px 6px;
+}
+
+.pagination-page:hover, .pagination-page:focus, .pagination-page:active {
+    text-decoration: none;
+    background-color: #DDDDDD;
+}
+
+.pagination-page-selected {
+	font-weight: bold;
+}
+
+.pagination-first, .pagination-last, .pagination-prev, .pagination-next {
+}
+
+.pagination-seperator {
+}

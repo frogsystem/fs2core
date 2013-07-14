@@ -1,0 +1,28 @@
+news_information_title:                            Informationen
+news_cat:                                          Kategorie
+news_cat_desc:                                     Die Kategorie, der die News angehört.
+news_date:                                         Datum & Uhrzeit
+news_date_desc:                                    Erscheinungszeitpunkt der News.
+news_poster:                                       User
+news_poster_desc:                                  Der Verfasser der News.
+news_new_title:                                    News schreiben
+news_title:                                        Titel
+news_active:                                       News veröffentlichen
+news_comments_allowed:                             Kommentare erlauben
+news_text:                                         Text
+
+news_link_add:                                     Link hinzufügen
+news_link_title:                                   Titel
+news_link_url:                                     URL
+news_link_open:                                    Link öffnen in
+news_link_blank:                                   neues Fenster
+news_link_self:                                    gleiches Fenster
+news_link_no:                                      keine Aktion
+news_link_delete:                                  Auswahl löschen
+news_link_up:                                      nach oben verschieben
+news_link_down:                                    nach unten verschieben
+news_link_edit:                                    zum Bearbeiten übernehmen
+
+link_not_added:                                    Link wurde nicht hinzugefügt
+link_not_saved:                                    Link wurde nicht gespeichert
+news_button:                                       <!--COMMON::save_changes_button-->

@@ -1,44 +1,59 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 ////////////////////////////
 //// Artikel einstellen ////
 ////////////////////////////
 
-if ($_FILES[artikelimg] && $_POST[title] && $_POST[url] && $_POST[preis])
+if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis'])
+    && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
 {
-    $_POST[title] = savesql($_POST[title]);
-    $_POST[url] = savesql($_POST[url]);
-    $_POST[preis] = savesql($_POST[preis]);
-    $_POST[text] = savesql($_POST[text]);
-    settype($_POST[hot], "integer");
-    mysql_query("INSERT INTO ".$global_config_arr[pref]."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
-                 VALUES ('".$_POST[title]."',
-                         '".$_POST[url]."',
-                         '".$_POST[text]."',
-                         '".$_POST[preis]."',
-                         '".$_POST[hot]."');", $db);
-    $id = mysql_insert_id();
+    settype($_POST['hot'], 'integer');
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
+                 VALUES (?,
+                         ?,
+                         ?,
+                         ?,
+                         '".$_POST['hot']."');");
+    $stmt->execute(array($_POST['title'], $_POST['url'], $_POST['text'], $_POST['preis']));
+    $id = $FD->sql()->conn()->lastInsertId();
 
-    $upload = upload_img($_FILES['artikelimg'], "images/shop/", $id, 2*1024*1024, 400, 600);
-    systext(upload_img_notice($upload));
-    $thumb = create_thumb_from(image_url("images/shop/",$id,FALSE, TRUE), 100, 100);
-    systext(create_thumb_notice($thumb));
+    $messages = array();
+    if (!empty($_FILES['artikelimg']['name']))
+    {
+        $upload = upload_img($_FILES['artikelimg'], 'images/shop/', $id, 2*1024*1024, 400, 600);
+        $messages[] = upload_img_notice($upload);
+        $thumb = create_thumb_from(image_url('images/shop/',$id,FALSE, TRUE), 100, 100);
+        $messages[] = create_thumb_notice($thumb);
+    }
+
+    $messages[] = $FD->text('admin', 'changes_saved');
+
+    echo get_systext(implode('<br>', $messages), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
+    unset($_POST);
 }
 
 ////////////////////////////
 ///// Artikel Formular /////
 ////////////////////////////
 
-else
+if(true)
 {
+    if(isset($_POST['sended'])) {
+        echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
+    }
+
     echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="shop_add" name="go">
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" value="1" name="sended">
+                        <table class="content" cellpadding="3" cellspacing="0">
+                            <tr><td colspan="2"><h3>Produkt hinzuf&uuml;gen</h3><hr></td></tr>
+
                             <tr>
                                 <td class="config" valign="top">
                                     Bild:<br>
-                                    <font class="small">Bild auswählen, dass hochgeladen werden soll.</font>
+                                    <font class="small">Bild ausw&auml;hlen, dass hochgeladen werden soll.</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="file" class="text" name="artikelimg" size="33"><br />
@@ -70,7 +85,7 @@ else
                                     <font class="small">Kurze Artikelbeschreibung (optional)</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.create_editor("text", "", 330, 130).'
+                                    '.create_editor('text', '', 330, 130).'
                                 </td>
                             </tr>
                             <tr>
@@ -85,7 +100,7 @@ else
                             <tr>
                                 <td class="config" valign="top">
                                     Hotlink:<br>
-                                    <font class="small">Hotlinks erscheinen rechts im Menü</font>
+                                    <font class="small">Hotlinks erscheinen rechts im Men&uuml;</font>
                                 </td>
                                 <td class="config" valign="top">
                                     <input type="checkbox" name="hot" value="1">
@@ -93,7 +108,7 @@ else
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">
-                                    <input class="button" type="submit" value="Hinzufügen">
+                                    <input class="button" type="submit" value="Hinzuf&uuml;gen">
                                 </td>
                             </tr>
                         </table>

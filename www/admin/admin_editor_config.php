@@ -1,18 +1,56 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!"');
 
 /////////////////////////////////////
 //// Konfiguration aktualisieren ////
 /////////////////////////////////////
 
-if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_POST[smilies_cols]>0
- AND $_POST[textarea_width] && $_POST[textarea_width]>0 && $_POST[textarea_height] && $_POST[textarea_height]>0)
+if (isset($_POST['smilies_rows']) && $_POST['smilies_rows']>0 && isset($_POST['smilies_cols']) && $_POST['smilies_cols']>0
+ AND isset($_POST['textarea_width']) && $_POST['textarea_width']>0 && isset($_POST['textarea_height']) && $_POST['textarea_height']>0)
 {
-    settype($_POST[smilies_rows], 'integer');
-    settype($_POST[smilies_cols], 'integer');
-    settype($_POST[textarea_width], 'integer');
-    settype($_POST[textarea_height], 'integer');
-    
-    $update = "UPDATE ".$global_config_arr['pref']."editor_config
+    settype($_POST['smilies_rows'], 'integer');
+    settype($_POST['smilies_cols'], 'integer');
+    settype($_POST['textarea_width'], 'integer');
+    settype($_POST['textarea_height'], 'integer');
+    $_POST['bold'] = intval($_POST['bold']);
+    $_POST['italic'] = intval($_POST['italic']);
+    $_POST['underline'] = intval($_POST['underline']);
+    $_POST['strike'] = intval($_POST['strike']);
+    $_POST['center'] = intval($_POST['center']);
+    $_POST['font'] = intval($_POST['font']);
+    $_POST['color'] = intval($_POST['color']);
+    $_POST['size'] = intval($_POST['size']);
+    $_POST['list'] = intval($_POST['list']);
+    $_POST['numlist'] = intval($_POST['numlist']);
+    $_POST['img'] = intval($_POST['img']);
+    $_POST['cimg'] = intval($_POST['cimg']);
+    $_POST['url'] = intval($_POST['url']);
+    $_POST['home'] = intval($_POST['home']);
+    $_POST['email'] = intval($_POST['email']);
+    $_POST['code'] = intval($_POST['code']);
+    $_POST['quote'] = intval($_POST['quote']);
+    $_POST['nofscode'] = intval($_POST['nofscode']);
+    $_POST['smilies'] = intval($_POST['smilies']);
+    $_POST['do_bold'] = intval($_POST['do_bold']);
+    $_POST['do_italic'] = intval($_POST['do_italic']);
+    $_POST['do_underline'] = intval($_POST['do_underline']);
+    $_POST['do_strike'] = intval($_POST['do_strike']);
+    $_POST['do_center'] = intval($_POST['do_center']);
+    $_POST['do_font'] = intval($_POST['do_font']);
+    $_POST['do_color'] = intval($_POST['do_color']);
+    $_POST['do_size'] = intval($_POST['do_size']);
+    $_POST['do_list'] = intval($_POST['do_list']);
+    $_POST['do_numlist'] = intval($_POST['do_numlist']);
+    $_POST['do_img'] = intval($_POST['do_img']);
+    $_POST['do_cimg'] = intval($_POST['do_cimg']);
+    $_POST['do_url'] = intval($_POST['do_url']);
+    $_POST['do_home'] = intval($_POST['do_home']);
+    $_POST['do_email'] = intval($_POST['do_email']);
+    $_POST['do_code'] = intval($_POST['do_code']);
+    $_POST['do_quote'] = intval($_POST['do_quote']);
+    $_POST['do_noparse'] = intval($_POST['do_noparse']);
+    $_POST['do_smilies'] = intval($_POST['do_smilies']);
+
+    $update = 'UPDATE '.$FD->config('pref')."editor_config
                SET smilies_rows = '$_POST[smilies_rows]',
                    smilies_cols = '$_POST[smilies_cols]',
                    textarea_width = '$_POST[textarea_width]',
@@ -25,7 +63,7 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_
                    font = '$_POST[font]',
                    color = '$_POST[color]',
                    size = '$_POST[size]',
-                   list = '$_POST[numlist]',
+                   list = '$_POST[list]',
                    numlist = '$_POST[numlist]',
                    img = '$_POST[img]',
                    cimg = '$_POST[cimg]',
@@ -34,7 +72,7 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_
                    email = '$_POST[email]',
                    code = '$_POST[code]',
                    quote = '$_POST[quote]',
-                   noparse = '$_POST[noparse]',
+                   nofscode = '$_POST[nofscode]',
                    smilies = '$_POST[smilies]',
                    do_bold = '$_POST[do_bold]',
                    do_italic = '$_POST[do_italic]',
@@ -56,9 +94,9 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_
                    do_noparse = '$_POST[do_noparse]',
                    do_smilies = '$_POST[do_smilies]'
                WHERE id = 1";
-    mysql_query($update, $db);
-    
-    systext($admin_phrases[common][changes_saved], $admin_phrases[common][info]);
+    $FD->sql()->conn()->exec($update);
+
+    systext($FD->text('page', 'changes_saved'), $FD->text('page', 'info'));
 }
 
 /////////////////////////////////////
@@ -67,8 +105,8 @@ if ($_POST[smilies_rows] && $_POST[smilies_rows]>0 && $_POST[smilies_cols] && $_
 
 else
 {
-    $index = mysql_query("SELECT * FROM ".$global_config_arr[pref]."editor_config", $db);
-    $config_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'editor_config');
+    $config_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     if (isset($_POST['sended']))
     {
@@ -93,7 +131,7 @@ else
         $config_arr['email'] = $_POST['email'];
         $config_arr['code'] = $_POST['code'];
         $config_arr['quote'] = $_POST['quote'];
-        $config_arr['noparse'] = $_POST['noparse'];
+        $config_arr['nofscode'] = $_POST['nofscode'];
         $config_arr['smilies'] = $_POST['smilies'];
         $config_arr['do_bold'] = $_POST['do_bold'];
         $config_arr['do_italic'] = $_POST['do_italic'];
@@ -115,7 +153,7 @@ else
         $config_arr['do_noparse'] = $_POST['do_noparse'];
         $config_arr['do_smilies'] = $_POST['do_smilies'];
 
-        systext($admin_phrases[common][note_notfilled]."<br />".$admin_phrases[common][only_allowed_values], $admin_phrases[common][error], TRUE);
+        systext($FD->text('page', 'note_notfilled').'<br />'.$FD->text('page', 'only_allowed_values'), $FD->text('page', 'error'), TRUE);
     }
 
     $config_arr['smilies_rows'] = killhtml ( $config_arr['smilies_rows'] );
@@ -128,103 +166,103 @@ else
                         <input type="hidden" value="editor_config" name="go">
                         <input type="hidden" name="sended" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="2">'.$admin_phrases[editor][view_settings_title].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text('page', 'view_settings_title').'</td></tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    '.$admin_phrases[editor][textarea_size].': <span class="small">('.$admin_phrases[common][width_x_height].')</span><br>
-                                    <span class="small">'.$admin_phrases[editor][textarea_size_desc].'</span>
+                                    '.$FD->text('page', 'textarea_size').': <span class="small">('.$FD->text('page', 'width_x_height').')</span><br>
+                                    <span class="small">'.$FD->text('page', 'textarea_size_desc').'</span>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="2" name="textarea_width" value="'.$config_arr[textarea_width].'" maxlength="3"> '.$admin_phrases[common][resolution_x].' <input class="text" size="2" name="textarea_height" value="'.$config_arr[textarea_height].'" maxlength="3"> '.$admin_phrases[common][pixel].'<br>
-                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
+                                    <input class="text" size="2" name="textarea_width" value="'.$config_arr['textarea_width'].'" maxlength="3"> '.$FD->text('page', 'resolution_x').' <input class="text" size="2" name="textarea_height" value="'.$config_arr['textarea_height'].'" maxlength="3"> '.$FD->text('page', 'pixel').'<br>
+                                    <span class="small">('.$FD->text('page', 'zero_not_allowed').')</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    '.$admin_phrases[editor][smilies].':<br>
-                                    <span class="small">'.$admin_phrases[editor][smilies_desc].'</span>
+                                    '.$FD->text('page', 'smilies').':<br>
+                                    <span class="small">'.$FD->text('page', 'smilies_desc').'</span>
                                 </td>
                                 <td class="config" valign="top" width="50%">
-                                    <input class="text" size="1" name="smilies_rows" value="'.$config_arr[smilies_rows].'" maxlength="2"> '.$admin_phrases[editor][smilies_rows].' <input class="text" size="1" name="smilies_cols" value="'.$config_arr[smilies_cols].'" maxlength="2"> '.$admin_phrases[editor][smilies_smilies].'<br>
-                                    <span class="small">('.$admin_phrases[common][zero_not_allowed].')</span>
+                                    <input class="text" size="1" name="smilies_rows" value="'.$config_arr['smilies_rows'].'" maxlength="2"> '.$FD->text('page', 'smilies_rows').' <input class="text" size="1" name="smilies_cols" value="'.$config_arr['smilies_cols'].'" maxlength="2"> '.$FD->text('page', 'smilies_smilies').'<br>
+                                    <span class="small">('.$FD->text('page', 'zero_not_allowed').')</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$admin_phrases[editor][buttons_settings_title].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text('page', 'buttons_settings_title').'</td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[editor][buttons].':<br>
-                                    <span class="small">'.$admin_phrases[editor][buttons_desc].'</span>
+                                    '.$FD->text('page', 'buttons').':<br>
+                                    <span class="small">'.$FD->text('page', 'buttons_desc').'</span>
                                 </td>
                                 <td class="config">
 
                                     <table cellpadding="0" cellspacing="0">
                                       <tr>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/bold.gif" alt="" title="fett">
+      <img src="icons/editor/bold.gif" alt="" title="'.$FD->text('fscode', 'b').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/italic.gif" alt="" title="kursiv">
+      <img src="icons/editor/italic.gif" alt="" title="'.$FD->text('fscode', 'i').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/underline.gif" alt="" title="unterstrichen">
+      <img src="icons/editor/underline.gif" alt="" title="'.$FD->text('fscode', 'u').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/strike.gif" alt="" title="durchgestrichen">
-    </div></td>
-    <td class="editor_td_seperator"></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/center.gif" alt="" title="zentriert">
+      <img src="icons/editor/strike.gif" alt="" title="'.$FD->text('fscode', 's').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/font.gif" alt="" title="Schriftart">
+      <img src="icons/editor/center.gif" alt="" title="'.$FD->text('fscode', 'center').'">
+    </div></td>
+    <td class="editor_td_seperator"></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/font.gif" alt="" title="'.$FD->text('fscode', 'font').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/color.gif" alt="" title="Schriftfarbe">
+      <img src="icons/editor/color.gif" alt="" title="'.$FD->text('fscode', 'color').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/size.gif" alt="" title="Schriftgröße">
+      <img src="icons/editor/size.gif" alt="" title="'.$FD->text('fscode', 'size').'">
     </div></td>
                                       </tr>
                                       <tr>
     <td><input type="checkbox" name="bold" value="1"';
-    if ($config_arr[bold] == 1)
-      echo " checked=checked";
+    if ($config_arr['bold'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="italic" value="1"';
-    if ($config_arr[italic] == 1)
-      echo " checked=checked";
+    if ($config_arr['italic'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="underline" value="1"';
-    if ($config_arr[underline] == 1)
-      echo " checked=checked";
+    if ($config_arr['underline'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="strike" value="1"';
-    if ($config_arr[strike] == 1)
-      echo " checked=checked";
+    if ($config_arr['strike'] == 1)
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
-    
+
     <td><input type="checkbox" name="center" value="1"';
-    if ($config_arr[center] == 1)
-      echo " checked=checked";
+    if ($config_arr['center'] == 1)
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
-    
+
     <td><input type="checkbox" name="font" value="1"';
-    if ($config_arr[font] == 1)
-      echo " checked=checked";
+    if ($config_arr['font'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="color" value="1"';
-    if ($config_arr[color] == 1)
-      echo " checked=checked";
+    if ($config_arr['color'] == 1)
+      echo ' checked=checked';
     echo'/></td>
         <td><input type="checkbox" name="size" value="1"';
-    if ($config_arr[size] == 1)
-      echo " checked=checked";
+    if ($config_arr['size'] == 1)
+      echo ' checked=checked';
     echo'/></td>
                                       </tr>
                                     </table>
@@ -232,81 +270,81 @@ else
                                     <table cellpadding="0" cellspacing="0" style="padding-top:5px;">
                                       <tr>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/img.gif" alt="" title="Bild">
+      <img src="icons/editor/img.gif" alt="" title="'.$FD->text('fscode', 'img').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/cimg.gif" alt="" title="Content-Image">
-    </div></td>
-    <td class="editor_td_seperator"></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/url.gif" alt="" title="Link">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/home.gif" alt="" title="Home-Link">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/email.gif" alt="" title="Email">
+      <img src="icons/editor/cimg.gif" alt="" title="'.$FD->text('fscode', 'cimg').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/code.gif" alt="" title="Code">
+      <img src="icons/editor/url.gif" alt="" title="'.$FD->text('fscode', 'url').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/quote.gif" alt="" title="Zitat">
+      <img src="icons/editor/home.gif" alt="" title="'.$FD->text('fscode', 'home').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/noparse.gif" alt="" title="Noparse-Bereich">
+      <img src="icons/editor/email.gif" alt="" title="'.$FD->text('fscode', 'email').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/smilie.gif" alt="" title="Smilies">
+      <img src="icons/editor/code.gif" alt="" title="'.$FD->text('fscode', 'code').'">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/quote.gif" alt="" title="'.$FD->text('fscode', 'quote').'">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/nofscode.gif" alt="" title="'.$FD->text('fscode', 'nofscode').'">
+    </div></td>
+    <td class="editor_td_seperator"></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/smilie.gif" alt="" title="'.$FD->text('fscode', 'smilies').'">
     </div></td>
                                       </tr>
                                       <tr>
     <td><input type="checkbox" name="img" value="1"';
-    if ($config_arr[img] == 1)
-      echo " checked=checked";
+    if ($config_arr['img'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="cimg" value="1"';
-    if ($config_arr[cimg] == 1)
-      echo " checked=checked";
+    if ($config_arr['cimg'] == 1)
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="url" value="1"';
-    if ($config_arr[url] == 1)
-      echo " checked=checked";
+    if ($config_arr['url'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="home" value="1"';
-    if ($config_arr[home] == 1)
-      echo " checked=checked";
+    if ($config_arr['home'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="email" value="1"';
-    if ($config_arr[email] == 1)
-      echo " checked=checked";
+    if ($config_arr['email'] == 1)
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
 
     <td><input type="checkbox" name="code" value="1"';
-    if ($config_arr[code] == 1)
-      echo " checked=checked";
+    if ($config_arr['code'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="quote" value="1"';
-    if ($config_arr[quote] == 1)
-      echo " checked=checked";
+    if ($config_arr['quote'] == 1)
+      echo ' checked=checked';
     echo'/></td>
-        <td><input type="checkbox" name="noparse" value="1"';
-    if ($config_arr[noparse] == 1)
-      echo " checked=checked";
+        <td><input type="checkbox" name="nofscode" value="1"';
+    if ($config_arr['nofscode'] == 1)
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
 
     <td><input type="checkbox" name="smilies" value="1"';
-    if ($config_arr[smilies] == 1)
-      echo " checked=checked";
+    if ($config_arr['smilies'] == 1)
+      echo ' checked=checked';
     echo'/></td>
                                       </tr>
                                     </table>
@@ -314,184 +352,184 @@ else
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
-                            <tr><td class="line" colspan="2">'.$admin_phrases[editor][fscode_settings_title].'</td></tr>
+                            <tr><td class="line" colspan="2">'.$FD->text('page', 'fscode_settings_title').'</td></tr>
                             <tr>
                                 <td class="config" valign="top" width="50%">
-                                    '.$admin_phrases[editor][fscode].':<br>
-                                    <span class="small">'.$admin_phrases[editor][fscode_desc].'</span>
+                                    '.$FD->text('page', 'fscode').':<br>
+                                    <span class="small">'.$FD->text('page', 'fscode_desc').'</span>
                                     <br /><br />
-                                    <span class="small"><b>'.$admin_phrases[editor][fscode_info].'</b></span>
+                                    <span class="small"><b>'.$FD->text('page', 'fscode_info').'</b></span>
                                 </td>
                                 <td class="config" valign="top" width="50%">
 
                                     <table cellpadding="0" cellspacing="0">
                                       <tr>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/bold.gif" alt="" title="[b]text[/b]">
+      <img src="icons/editor/bold.gif" alt="" title="'.$FD->text('fscode', 'example_b').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/italic.gif" alt="" title="[i]text[/i]">
+      <img src="icons/editor/italic.gif" alt="" title="'.$FD->text('fscode', 'example_i').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/underline.gif" alt="" title="[u]text[/u]">
+      <img src="icons/editor/underline.gif" alt="" title="'.$FD->text('fscode', 'example_u').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/strike.gif" alt="" title="[s]text[/s]">
-    </div></td>
-    <td class="editor_td_seperator"></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/center.gif" alt="" title="[center]text[/center]">
+      <img src="icons/editor/strike.gif" alt="" title="'.$FD->text('fscode', 'example_s').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/font.gif" alt="" title="[font=xzy]text[/font]">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/color.gif" alt="" title="[color=xzy]text[/color]">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/size.gif" alt="" title="[size=xzy]text[/size]">
+      <img src="icons/editor/center.gif" alt="" title="'.$FD->text('fscode', 'example_center').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/list.gif" alt="" title="[list][*]text1[*]text2[/list]">
+      <img src="icons/editor/font.gif" alt="" title="'.$FD->text('fscode', 'example_font').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/numlist.gif" alt="" title="[numlist][*]text1[*]text2[/numlist]">
+      <img src="icons/editor/color.gif" alt="" title="'.$FD->text('fscode', 'example_color').'">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/size.gif" alt="" title="'.$FD->text('fscode', 'example_size').'">
+    </div></td>
+    <td class="editor_td_seperator"></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/list.gif" alt="" title="'.$FD->text('fscode', 'example_list').'">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/numlist.gif" alt="" title="'.$FD->text('fscode', 'example_numlist').'">
     </div></td>
                                       </tr>
                                       <tr>
     <td><input type="checkbox" name="do_bold" value="1"';
-    if ($config_arr[do_bold] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_bold'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_italic" value="1"';
-    if ($config_arr[do_italic] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_italic'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_underline" value="1"';
-    if ($config_arr[do_underline] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_underline'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_strike" value="1"';
-    if ($config_arr[do_strike] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_strike'] == 1)
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_center" value="1"';
-    if ($config_arr[do_center] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_center'] == 1)
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_font" value="1"';
-    if ($config_arr[do_font] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_font'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_color" value="1"';
-    if ($config_arr[do_color] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_color'] == 1)
+      echo ' checked=checked';
     echo'/></td>
         <td><input type="checkbox" name="do_size" value="1"';
-    if ($config_arr[do_size] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_size'] == 1)
+      echo ' checked=checked';
     echo'/></td>
-    
+
     <td></td>
-    
+
     <td><input type="checkbox" name="do_list" value="1"';
-    if ($config_arr[do_list] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_list'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_numlist" value="1"';
-    if ($config_arr[do_numlist] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_numlist'] == 1)
+      echo ' checked=checked';
     echo'/></td>
-    
+
                                       </tr>
                                     </table>
 
                                     <table cellpadding="0" cellspacing="0" style="padding-top:5px;">
                                       <tr>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/img.gif" alt="" title="[img]Img-URL[/img]">
+      <img src="icons/editor/img.gif" alt="" title="'.$FD->text('fscode', 'example_img').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/cimg.gif" alt="" title="[cimg]CImg-Name[/cimg]">
-    </div></td>
-    <td class="editor_td_seperator"></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/url.gif" alt="" title="[url=Link-URL]text[/url], [url]Link-URL[/url]">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/home.gif" alt="" title="[home=Homelink]text[/home], [home]Homelink[/home]">
-    </div></td>
-    <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/email.gif" alt="" title="[email=e@mail.com]text[/email], [email]e@mail.com[/email]">
+      <img src="icons/editor/cimg.gif" alt="" title="'.$FD->text('fscode', 'example_cimg').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/code.gif" alt="" title="[code]text[/code]">
+      <img src="icons/editor/url.gif" alt="" title="'.$FD->text('fscode', 'example_url').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/quote.gif" alt="" title="[quote]text[/quote]">
+      <img src="icons/editor/home.gif" alt="" title="'.$FD->text('fscode', 'example_home').'">
     </div></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/noparse.gif" alt="" title="[noparse]text[/noparse]">
+      <img src="icons/editor/email.gif" alt="" title="'.$FD->text('fscode', 'example_email').'">
     </div></td>
     <td class="editor_td_seperator"></td>
     <td class="editor_td"><div class="editor_button" style="cursor:default;">
-      <img src="icons/editor/smilie.gif" alt="" title=":-), ;-), :-p, etc.">
+      <img src="icons/editor/code.gif" alt="" title="'.$FD->text('fscode', 'example_code').'">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/quote.gif" alt="" title="'.$FD->text('fscode', 'example_quote').'">
+    </div></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/nofscode.gif" alt="" title="'.$FD->text('fscode', 'example_nofscode').'">
+    </div></td>
+    <td class="editor_td_seperator"></td>
+    <td class="editor_td"><div class="editor_button" style="cursor:default;">
+      <img src="icons/editor/smilie.gif" alt="" title="'.$FD->text('fscode', 'example_smilies').'">
     </div></td>
                                       </tr>
                                       <tr>
     <td><input type="checkbox" name="do_img" value="1"';
-    if ($config_arr[do_img] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_img'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_cimg" value="1"';
-    if ($config_arr[do_cimg] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_cimg'] == 1)
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_url" value="1"';
-    if ($config_arr[do_url] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_url'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_home" value="1"';
-    if ($config_arr[do_home] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_home'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_email" value="1"';
-    if ($config_arr[do_email] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_email'] == 1)
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_code" value="1"';
-    if ($config_arr[do_code] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_code'] == 1)
+      echo ' checked=checked';
     echo'/></td>
     <td><input type="checkbox" name="do_quote" value="1"';
-    if ($config_arr[do_quote] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_quote'] == 1)
+      echo ' checked=checked';
     echo'/></td>
         <td><input type="checkbox" name="do_noparse" value="1"';
-    if ($config_arr[do_noparse] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_noparse'] == 1)
+      echo ' checked=checked';
     echo'/></td>
 
     <td></td>
 
     <td><input type="checkbox" name="do_smilies" value="1"';
-    if ($config_arr[do_smilies] == 1)
-      echo " checked=checked";
+    if ($config_arr['do_smilies'] == 1)
+      echo ' checked=checked';
     echo'/></td>
                                       </tr>
                                     </table>
@@ -502,7 +540,7 @@ else
                             <tr>
                                 <td class="buttontd" colspan="2">
                                     <button class="button_new" type="submit">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[common][save_long].'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
                                     </button>
                                 </td>
                             </tr>

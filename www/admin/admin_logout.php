@@ -1,7 +1,8 @@
-<?php
-session_unset();
-systext ( "Sie sind jetzt ausgeloggt", $TEXT['admin']->get("info"), FALSE, $TEXT['admin']->get("icon_logout") );
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-require ( FS2_ROOT_PATH . "admin/admin_login.php" );
+session_unset();
+systext ( 'Sie sind jetzt ausgeloggt', $FD->text("admin", "info"), FALSE, $FD->text("admin", "icon_logout") );
+
+require ( FS2_ROOT_PATH . 'admin/admin_login.php' );
 
 ?>

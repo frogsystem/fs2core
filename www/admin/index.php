@@ -1,53 +1,50 @@
 <?php
-// Start Session
-session_start ();
+/* FS2 PHP Init */
+set_include_path('.');
+define('FS2_ROOT_PATH', './../', true);
+require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
+phpinit();
+/* End of FS2 PHP Init */
 
-// Disable magic_quotes_runtime
-set_magic_quotes_runtime ( FALSE );
-
-// fs2 include path
-set_include_path ( '.' );
-define ( 'FS2_ROOT_PATH', "./../", TRUE );
 
 // inlcude files
-require ( FS2_ROOT_PATH . "login.inc.php" );
-require ( FS2_ROOT_PATH . "includes/functions.php" );
-require ( FS2_ROOT_PATH . "includes/adminfunctions.php" );
-require ( FS2_ROOT_PATH . "includes/imagefunctions.php" );
-require ( FS2_ROOT_PATH . "includes/templatefunctions.php" );
-require ( FS2_ROOT_PATH . "includes/indexfunctions.php" );
+require_once(FS2_ROOT_PATH . 'includes/functions.php');
+require_once(FS2_ROOT_PATH . 'includes/adminfunctions.php');
+require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
+require_once(FS2_ROOT_PATH . 'includes/templatefunctions.php');
+require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
+require_once(FS2_ROOT_PATH . 'includes/fscode.php');
+require_once(FS2_ROOT_PATH . 'libs/class_GlobalData.php');
+require_once(FS2_ROOT_PATH . 'login.inc.php');
 
 //Include Library-Classes
-require ( FS2_ROOT_PATH . "libs/class_template.php");
-require ( FS2_ROOT_PATH . "libs/class_fileaccess.php");
-require ( FS2_ROOT_PATH . "libs/class_langDataInit.php");
+require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
+require_once(FS2_ROOT_PATH . 'libs/class_template.php');
+require_once(FS2_ROOT_PATH . 'libs/class_fileaccess.php');
+require_once(FS2_ROOT_PATH . 'libs/class_lang.php');
+require_once(FS2_ROOT_PATH . 'libs/class_adminpage.php');
 
-//Include Phrases-Files
-require ( FS2_ROOT_PATH . "phrases/phrases_".$global_config_arr['language'].".php" );
-require ( FS2_ROOT_PATH . "phrases/admin_phrases_".$global_config_arr['language'].".php" );
-$TEXT['admin'] = new langDataInit ( $global_config_arr['language_text'], "admin" );
-$TEXT['frontend'] = new langDataInit ( $global_config_arr['language_text'], "frontend" );
-$TEXT['template'] = new langDataInit ( $global_config_arr['language_text'], "template" );
+// Constructor Calls
+setTimezone($FD->cfg('timezone'));
+run_cronjobs();
 
 
 ######################
 ### START OF LOGIN ###
 ######################
 
-if ( isset ( $_POST['stayonline'] ) && $_POST['stayonline'] == 1 ) {
+if (isset($_POST['stayonline']) && $_POST['stayonline'] == 1) {
     admin_set_cookie ( $_POST['username'], $_POST['userpassword'] );
 }
 
-if ( isset ( $_COOKIE['login'] ) && $_COOKIE['login'] && $_SESSION["user_level"] != "authorised" )
-{
-    $userpassword = substr ( $_COOKIE['login'], 0, 32 );
-    $username = substr ( $_COOKIE['login'], 32, strlen ( $_COOKIE['login'] ) );
-    admin_login ( $username, $userpassword, TRUE );
+if (isset($_COOKIE['login']) && $_COOKIE['login'] && !is_authorized()) {
+    $userpassword = substr ($_COOKIE['login'], 0, 32);
+    $username = substr($_COOKIE['login'], 32, strlen ($_COOKIE['login']));
+    admin_login($username, $userpassword, TRUE);
 }
 
-if ( isset ( $_POST['login'] ) && $_POST['login'] == 1 && $_SESSION["user_level"] != "authorised" )
-{
-    admin_login ( $_POST['username'], $_POST['userpassword'], FALSE );
+if (isset($_POST['login']) && $_POST['login'] == 1 && !is_authorized()) {
+    admin_login($_POST['username'], $_POST['userpassword'], false);
 }
 
 ####################
@@ -60,81 +57,139 @@ if ( isset ( $_POST['login'] ) && $_POST['login'] == 1 && $_SESSION["user_level"
 ##################################
 
 // security functions
-$go = isset ( $_REQUEST['go'] ) ? savesql ( $_REQUEST['go'] ) : "";
+!isset($_REQUEST['go']) ? $_REQUEST['go'] = null : 1;
+$go = $_REQUEST['go'];
 
 // get page-data from database
-$index = mysql_query ( "
-                        SELECT P.`page_id`, P.`page_title`, P.`page_file`, P.`page_link`, P.`group_id`, G.`menu_id`, G.`group_title`
-                        FROM `".$global_config_arr['pref']."admin_cp` P, `".$global_config_arr['pref']."admin_groups` G
-                        WHERE P.`group_id` = G.`group_id`
-                        AND P.`page_id` = '".$go."'
-                        LIMIT 0,1
-", $db );
+$acp_arr = $sql->conn()->prepare(
+               'SELECT page_id, page_file, P.group_id AS group_id, menu_id
+                FROM '.$FD->config('pref').'admin_cp P, '.$FD->config('pref').'admin_groups G
+                WHERE P.`group_id` = G.`group_id` AND P.`page_id` = ? AND P.`page_int_sub_perm` != 1');
+$acp_arr->execute(array($go));
+$acp_arr = $acp_arr->fetch(PDO::FETCH_ASSOC);
 
 // if page exisits
-if ( mysql_num_rows ( $index ) == 1 ) {
-    $acp_arr = mysql_fetch_assoc ( $index );
-    $acp_arr['permission'] = $_SESSION[$acp_arr['page_id']];
-    
+if (!empty($acp_arr)) {
+
     // if page is start page
-    if ( $acp_arr['group_id'] == -1 ) {
-        $acp_arr['menu_id'] = $acp_arr['page_link'];
+    if ($acp_arr['group_id'] == -1) {
+        $acp_arr['menu_id'] = $acp_arr['page_file'];
+        $acp_arr['page_file'] = $acp_arr['page_id'].'.php';
     }
+
+    //if popup
+    if ($acp_arr['group_id'] == 'popup') {
+        define('POPUP', true);
+        $title = $FD->text("menu", 'page_title_'.$acp_arr['page_id']);
+    } else {
+        define('POPUP', false);
+        $title = $FD->text("menu", 'group_'.$acp_arr['group_id']).' &#187; '.$FD->text("menu", 'page_title_'.$acp_arr['page_id']);
+    }
+
     // get the page-data
-    $PAGE_DATA_ARR = createpage ( $acp_arr['group_title']." &#187; ".$acp_arr['page_title'], $acp_arr['permission'], $acp_arr['page_file'], $acp_arr['menu_id'] );
+    $PAGE_DATA_ARR = createpage($title, has_perm($acp_arr['page_id']), $acp_arr['page_file'], $acp_arr['menu_id']);
+
+    // initialise templatesystem
+    $adminpage = new adminpage($acp_arr['page_file']);
+
+    // Get Special Page Lang-Text-Files
+    $page_lang = new lang($FD->config('language_text'), 'admin/'.substr($acp_arr['page_file'], 0, -4));
+    $FD->setPageText($page_lang);
+    unset ($page_lang);
+
 } else {
-    $PAGE_DATA_ARR['created'] = FALSE;
+    $PAGE_DATA_ARR['created'] = false;
+    define('POPUP', false);
 }
 
 // logout
-if ( $PAGE_DATA_ARR['created'] == FALSE && $go == 'logout' ) {
-    setcookie ( "login", "", time() - 3600, "/" );
+if ( $PAGE_DATA_ARR['created'] === false && $go == 'logout' ) {
+    setcookie ('login', '', time() - 3600, '/');
     $_SESSION = array();
-    $PAGE_DATA_ARR = createpage( 'Logout', 1, 'admin_logout.php', "none" );
+    $PAGE_DATA_ARR = createpage($FD->text("menu", "admin_logout_text"), true, 'admin_logout.php', 'dash');
 }
 
 // login
-if ( $PAGE_DATA_ARR['created'] == FALSE ) {
-    $go = "login";
-    $PAGE_DATA_ARR = createpage( 'Login', 1, 'admin_login.php', "none" );
+elseif ( $PAGE_DATA_ARR['created'] === false && ($go == 'login' || empty($go)) ) {
+    $go = 'login';
+    $PAGE_DATA_ARR = createpage($FD->text("menu", "admin_login_text"), true, 'admin_login.php', 'dash');
 }
+
+// error
+elseif ( $PAGE_DATA_ARR['created'] === false ) {
+    $go = '404';
+    $PAGE_DATA_ARR = createpage($FD->text("menu", "admin_error_page_title"), true, 'admin_404.php', 'error');
+}
+
+
+
+// Define Constant
+define('ACP_GO', $go);
 
 ################################
 ### END OF DETECTING SUBPAGE ###
 ################################
 
 
-
-//////////////////////////////
-///// display html header
-//////////////////////////////
-
-echo'
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+##########################
+### START OF HTML HEAD ###
+##########################
+ob_start();
+echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
+<!-- HTML Head -->
 <head>
     <title>Frogsystem 2 - '.$PAGE_DATA_ARR['title'].'</title>
-    <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <link rel="stylesheet" type="text/css" href="admin.css">
-    <link rel="stylesheet" type="text/css" href="editor.css">
-    <link rel="stylesheet" type="text/css" href="html-editor.css">
-    <script src="../resources/jquery/jquery-1.4.min.js" type="text/javascript"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+    <link rel="stylesheet" type="text/css" href="css/admin_old.css">
+    <link rel="stylesheet" type="text/css" href="css/editor.css">
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/noscript.css" id="noscriptcss">
+
+    <link rel="shortcut icon" href="icons/favicon.ico">
+
+    <script src="../resources/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="../resources/jquery/jquery-ui.min.js" type="text/javascript"></script>
     <script src="functions.js" type="text/javascript"></script>
     <script src="../includes/js_functions.js" type="text/javascript"></script>
+    <script src="js/admin.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="../resources/colorpicker/css/colorpicker.css">
+    <script type="text/javascript" src="../resources/colorpicker/js/colorpicker.js"></script>
+    <script type="text/javascript" src="js/colorpicker.js"></script>
 </head>
+<!-- /HTML Head -->
+';
+$head = ob_get_clean();
+########################
+### END OF HTML HEAD ###
+########################
+
+if (POPUP !== true) {
+##########################
+### START OF PAGE HEAD ###
+##########################
+echo $head;
+echo'
 <body>
 
-
+<!-- Page Head -->
 <div id="head">
-     '.$global_config_arr['title'].'
+     <h1>'.$FD->config('title').'</h1>
      <div id="head_version">
-         version '.$global_config_arr['version'].'
+         version '.$FD->config('version').'
      </div>
      <div id="head_link">
-         <a href="'.$global_config_arr['virtualhost'].'" target="_self" class="head_link">» zur Hauptseite</a>
+         <a href="'.$FD->config('virtualhost').'" target="_self" class="head_link">&raquo; '.$FD->text('menu', 'admin_link_to_page').'</a>
      </div>
-</div>';
-
+</div>
+<!-- /Page Head -->';
+########################
+### END OF PAGE HEAD ###
+########################
 
 
 ##############################
@@ -142,7 +197,7 @@ echo'
 ##############################
 
 // get navi from DB
-$template_navi = create_navi ( $PAGE_DATA_ARR['menu'], $go );
+$template_navi = get_leftmenu($PAGE_DATA_ARR['menu'], ACP_GO);
 
 ############################
 ### END OF NAVI CREATION ###
@@ -152,106 +207,142 @@ $template_navi = create_navi ( $PAGE_DATA_ARR['menu'], $go );
 ##################################
 ### START OF MENU/NAVI DISPLAY ###
 ##################################
-echo'<div id="menu_top_left"></div>
-<div id="menu_top_loop">';
+echo'
 
-echo create_menu ( $PAGE_DATA_ARR['menu'] ); //creates the menu-list
-
+<!-- Top Menu -->
+<div id="topmenu_left"></div>
+<div id="topmenu_loop">
+    '.get_topmenu($PAGE_DATA_ARR['menu']); //creates the menu-list
 echo '
 </div>
-<div id="menu_top_log">';
 
-if ( $_SESSION["user_level"] == "authorised" )
-{
-    $log_link = "logout";
-    $log_image = "logout.gif";
-    $log_text = "Logout";
-}
-else
-{
-    $log_link = "login";
-    $log_image = "login.gif";
-    $log_text = "Login";
+<div id="topmenu_login">';
+
+if (is_authorized()) {
+    $log_link = 'logout';
+    $log_image = 'logout.gif';
+    $log_text = $FD->text("menu", "admin_logout_text");
+} else {
+    $log_link = 'login';
+    $log_image = 'login.gif';
+    $log_text = $FD->text("menu", "admin_login_text");
 }
 
 echo'
     <table cellpadding="0" cellspacing="0">
         <tr valign="top">
-            <td id="menu_top_log_image_td">
-                   <a href="?go='.$log_link.'" target="_self" class="small">
-                    <img src="img/'.$log_image.'" alt="" title="'.$log_text.'" border="0">
+            <td id="topmenu_login_image">
+                <a href="?go='.$log_link.'" target="_self" class="small">
+                    <img src="icons/'.$log_image.'" alt="" title="'.$log_text.'" border="0">
                 </a>
             </td>
             <td>
-                   <a href="?go='.$log_link.'" target="_self" class="small">
-                     '.$log_text.'
+                <a href="?go='.$log_link.'" target="_self" class="small">
+                    '.$log_text.'
                 </a>
             </td>
         </tr>
     </table>
-';
+</div>
+<!-- /Top Menu -->
 
-unset ( $log_link );
-unset ( $log_image );
-unset ( $log_text );
-
-echo '</div>
+<!-- Main Container -->
 <div id="bg"><div id="bg_padding">
 
+    <!-- Left Menu -->
     <div id="navi_container">';
 
-if ($template_navi == "") {
+if ($template_navi == '') {
     $template_navi = '
-        <div id="navi_top" style="height:43px;">
-            <img src="img/pointer.png" alt="" style="vertical-align:text-bottom">&nbsp;<b>Hallo Admin!</b>
-            <div id="navi_link">
-               Herzlich Willkommen
-               im Admin-CP des Frogsystem 2!
+        <div class="leftmenu top" style="height:43px;">
+            <img src="icons/arrow.gif" alt="->">&nbsp;<b>Hallo Admin!</b>
+            <div><br>
+               Herzlich<br>Willkommen
+               im<br>Admin-CP des<br>Frogsystem 2!
             </div>
-
         </div>';
 }
 
 echo $template_navi;
-echo '</div>';
+echo '
+    </div>
+    <!-- /Left Menu -->
+';
 ################################
 ### END OF MENU/NAVI DISPLAY ###
 ################################
 
 
-echo'
-     <div id="content_container">
-         <div id="content_top">
-           <img border="0" src="img/pointer.png" alt="" style="vertical-align:text-top">
-           <b>'.$PAGE_DATA_ARR['title'].'</b>
-         </div>
-         <div id="content_padding">
-             <div align="center">
-';
+################################
+### START OF CONTENT DISPLAY ###
+################################
+// Include Content File
 
 
-//////////////////////////////
-///// content includes
-//////////////////////////////
+echo '
+    <!-- Content Container -->
+    <div id="content_container">';
 
-require ( FS2_ROOT_PATH . "admin/".$PAGE_DATA_ARR['file'] );
+ob_start();
+require(FS2_ROOT_PATH . 'admin/'.$PAGE_DATA_ARR['file']);
+$content = ob_get_clean();
 
-//////////////////////////////
-////// footer
-//////////////////////////////
+$top = '<h2 class="cb-text">('.$PAGE_DATA_ARR['title'].')</h2>';
+echo get_content_container($top, $content);
 
-echo'
-             </div>
-         </div>
-         <div id="content_foot"></div>
-     </div>
+echo '
+    </div>
+    <!-- /Content Container -->
 
 </div></div>
+<!-- /Main Container -->
 
 </body>
 </html>
 ';
 
-mysql_close ( $db );
+##############################
+### END OF CONTENT DISPLAY ###
+##############################
+
+} else {
+######################################
+### START OF DISPLAY POPUP CONTENT ###
+######################################
+$JUST_CONTENT = false;
+
+ob_start();
+require(FS2_ROOT_PATH . 'admin/'.$PAGE_DATA_ARR['file']);
+$popup = ob_get_clean();
+
+if ($JUST_CONTENT !== true) {
+
+echo $head;
+echo'
+<body id="find_body">
+    <div id="find_head">
+        &nbsp;<img border="0" src="img/pointer.png" alt="->" class="middle">&nbsp;
+        <strong>'.$PAGE_DATA_ARR['title'].'</strong>
+    </div>
+    <div align="left">
+';
+
+echo $popup;
+
+echo'
+    </div>
+</body>
+</html>
+';
+} else {
+    echo $popup;
+}
+
+####################################
+### END OF DISPLAY POPUP CONTENT ###
+####################################
+}
+
+unset($sql);
 
 ?>

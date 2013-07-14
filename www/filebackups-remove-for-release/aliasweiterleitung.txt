@@ -1,0 +1,18 @@
+alias_add_title:                         Weiterleitung hinzufügen
+alias_select_title:                      Weiterleitungen auswählen
+alias_edit_title:                        Weiterleitung bearbeiten
+aliases_delete_title:                    Weiterleitungen löschen
+aliases_delete_question:                 Sollen diese Weiterleitungen wirklich gelöscht werden?
+alias_go_title:                          Weiterleitung
+alias_go_desc:                           Adresse, für die eine Weiterleitung angelegt werden soll.
+alias_forward_to_title:                  Original
+alias_forward_to_desc:                   Adresse, auf die weitergeleitet wird.
+alias_active_title:                      Weiterleitung aktivieren
+alias_active_desc:                       De-/Aktiviert die Weiterleitung.
+alias_added:                             Weiterleitung wurde hinzugefügt
+alias_not_added:                         Weiterleitung wurde nicht hinzugefügt
+aliases_deleted:                         Weiterleitungen wurden gelöscht
+aliases_not_deleted:                     Weiterleitungen wurden nicht gelöscht
+aliases_not_found:                       Keine Weiterleitungen gefunden!
+alias_active:                            aktiv
+alias_not_active:                        nicht aktiv

@@ -4,15 +4,17 @@
 //// Auswahl speichern ////
 ///////////////////////////
 
-if ($_POST['sended'])
+if (isset($_POST['sended']))
 {
     while (list($key, $val) = each($_POST['randompic_cat']))
     {
-        mysql_query("UPDATE ".$global_config_arr[pref]."screen_cat
+        $key = intval($key); //better be safe than sorry
+        $val = intval($val);
+        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."screen_cat
                      SET randompic = '$val'
-                     WHERE cat_id = '$key'", $db);
+                     WHERE cat_id = '$key'");
     }
-    systext("Einstellungen wurden gespeichert!");
+    systext('Einstellungen wurden gespeichert!');
 }
 
 ////////////////////////
@@ -22,7 +24,8 @@ if ($_POST['sended'])
                     <form action="" method="post">
                         <input type="hidden" value="randompic_cat" name="go">
                         <input type="hidden" value="1" name="sended">
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="5"><h3>Kategorien auswählen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="30%">
                                     Name
@@ -41,41 +44,41 @@ if ($_POST['sended'])
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_type != 2 order by cat_name asc", $db);
-    while ($cat_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type != 2 ORDER BY cat_name ASC');
+    while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
-        $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
-        $screen_index = mysql_query("select cat_id from ".$global_config_arr[pref]."screen where cat_id = $cat_arr[cat_id]", $db);
-        $screen_rows = mysql_num_rows($screen_index);
+        $cat_arr['cat_date'] = date('d.m.Y', $cat_arr['cat_date']);
+        $screen_index = $FD->sql()->conn()->query('SELECT COUNT(cat_id) FROM '.$FD->config('pref')."screen where cat_id = $cat_arr[cat_id]");
+        $screen_rows = $screen_index->fetchColumn();
         echo'
-                            <input type="hidden" name="randompic_cat['.$cat_arr[cat_id].']" value="0">
+                            <input type="hidden" name="randompic_cat['.$cat_arr['cat_id'].']" value="0">
                             <tr>
-                                <td class="configthin">
-                                    '.$cat_arr[cat_name].'
+                                <td class="thin">
+                                    '.$cat_arr['cat_name'].'
                                 </td>
-                                <td class="configthin">
+                                <td class="thin">
                                     '.$screen_rows.'
                                 </td>
-                                <td class="configthin">';
-                                    switch ($cat_arr[cat_visibility]) {
+                                <td class="thin">';
+                                    switch ($cat_arr['cat_visibility']) {
                                     case 0:
-                                        echo "Nicht aufrufbar";
+                                        echo 'Nicht aufrufbar';
                                         break;
                                     case 1:
-                                        echo "Sichtbar";
+                                        echo 'Sichtbar';
                                         break;
                                     case 2:
-                                       echo "Nicht in Auswahl";
+                                       echo 'Nicht in Auswahl';
                                        break;
                                     }
                                     echo'
                                 </td>
-                                <td class="configthin">
-                                    '.$cat_arr[cat_date].'
+                                <td class="thin">
+                                    '.$cat_arr['cat_date'].'
                                 </td>
-                                <td class="configthin">
-                                    <input type="checkbox" name="randompic_cat['.$cat_arr[cat_id].']" value="1"';
-                                        if ($cat_arr[randompic] == 1)
+                                <td class="thin">
+                                    <input type="checkbox" name="randompic_cat['.$cat_arr['cat_id'].']" value="1"';
+                                        if ($cat_arr['randompic'] == 1)
                                           echo ' checked=checked';
                                         echo'
                                     >

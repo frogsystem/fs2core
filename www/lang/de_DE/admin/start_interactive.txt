@@ -1,0 +1,10 @@
+#interactive startpage
+
+#@admin/admin_polls
+latest_poll:                Aktuellste Umfrage
+number_of_polls:            Anzahl Umfragen
+overall_participants:       Anzahl Teilnehmer (gesamt)
+most_participants:          Meiste Teilnehmer
+overall_votes:              Anzahl Stimmen (gesamt)
+most_votes:                 Meiste Stimmen
+vote_s:                     Stimme(n)

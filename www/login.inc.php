@@ -1,63 +1,90 @@
 <?php
-///////////////////////
-//// DB Login Vars ////
-///////////////////////
-$dbc['host'] = "localhost"; //Database Hostname
-$dbc['user'] = "frogsystem"; //Database Username
-$dbc['pass'] = "frogsystem"; //Database User-Password
-$dbc['data'] = "frogsystem"; //Database Name
-$dbc['pref'] = "fs_"; //Table Prefix
-
-
 ////////////////////////
 //// Hardcoded Vars ////
 ////////////////////////
-$spam = "QdbNFgEcn0"; //Anti-Spam Encryption-Code
+$spam = 'wKAztWWB2Z'; //Anti-Spam Encryption-Code
+$path = dirname(__FILE__) . '/'; //Dateipfad
+define('DEBUG', TRUE);
 
+
+// TODO: Pre-Import Hook
+if (!DEBUG)
+    error_reporting(0);
+
+////////////////////////////////////////
+//// Include important files & libs ////
+////////////////////////////////////////
+require_once(FS2_ROOT_PATH . 'config/db_connection.php');
+require_once(FS2_ROOT_PATH . 'libs/class_GlobalData.php');
+require_once(FS2_ROOT_PATH . 'libs/class_lang.php');
+require_once(FS2_ROOT_PATH . 'libs/class_sql.php');
+require_once(FS2_ROOT_PATH . 'includes/functions.php');
 
 ///////////////////////
 //// DB Connection ////
 ///////////////////////
-@$db = mysql_connect ( $dbc['host'], $dbc['user'], $dbc['pass'] );
-if ( $db && mysql_select_db ( $dbc['data'], $db ) ) {
 
-    /////////////////////
-    //// Global Vars ////
-    /////////////////////
+// TODO: Pre-Connection Hook
 
-    // General Config + Infos
-    $index = mysql_query ( "SELECT * FROM ".$dbc['pref']."global_config", $db );
-    $global_config_arr = mysql_fetch_assoc ( $index );
-    $global_config_arr = array_map ("stripslashes", $global_config_arr );
+try {
+    // Connect to DB-Server
+    $sql = new sql($dbc['host'], $dbc['data'], $dbc['user'], $dbc['pass'], $dbc['pref']);
 
-    //write $pref into $global_config_arr['pref']
-    $global_config_arr['pref'] = $dbc['pref'];
-    //write $spam into $global_config_arr['spam']
-    $global_config_arr['spam'] = $spam;
-    //write $data into $global_config_arr['data']
-    $global_config_arr['data'] = $dbc['data'];
-    //write systemüath into $global_config_arr['path']
-    $global_config_arr['path'] = dirname(__FILE__) . "/";
-    //write real home page into $global_config_arr['home_real']
-    if ( $global_config_arr['home'] == 1 ) {
-        $global_config_arr['home_real'] = stripslashes ( $global_config_arr['home_text'] );
-    } else {
-        $global_config_arr['home_real'] = "news";
-    }
-    //get short_language code
-    $global_config_arr['language'] = ( preg_match ( "/[a-z]{2}_[A-Z]{2}/", $global_config_arr['language_text'] ) === 1 ) ? substr ( $global_config_arr['language_text'], 0, 2 ) : $global_config_arr['language_text'];
-    // set style (but may be changed later)
-    $global_config_arr['style'] = $global_config_arr['style_tag'];
-    settype ( $global_config_arr['style_id'], "integer" );
-    
-    // Security Funtcions for some important values
-    settype ( $global_config_arr['search_index_update'], "integer" );
+    // Frogsystem Global Data Array
+    $global_data = new GlobalData($sql);
+    $FD =& $global_data; // Use shorthand $FD
+
+    // Unset unused vars
+    unset($spam, $dbc, $path);
+
+//////////////////////////////
+//// DB Connection failed ////
+//////////////////////////////
+} catch (Exception $e) {
+	// log connection error
+	error_log($e->getMessage(), 0);
+
+    // Set header
+    header(http_response_text(503), true, 503);
+    header('Retry-After: '.(string)(60*15)); // 15 Minutes
+
+    // Include lang-class
+    require_once(FS2_ROOT_PATH . 'libs/class_lang.php');
+
+    // get language
+    $de = strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], 'de');
+    $en = strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], 'en');
+
+    if ($de !== false && $de < $en)
+        $TEXT = new lang ('de_DE', 'frontend');
+    else
+        $TEXT = new lang ('en_US', 'frontend');
+
+    // No-Connection-Page Template
+    $template = '
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>'.$TEXT->get("no_connection").'</title>
+    </head>
+    <body>
+		<p>
+			<b>'.$TEXT->get("no_connection_to_the_server").'</b>
+        </p>
+    </body>
+</html>
+    ';
+
+    // Display No-Connection-Page
+    echo $template;
+    exit();
 }
 
+////////////////////////
+//// Init Some Vars ////
+////////////////////////
 
-///////////////////////////////////////////////////
-//// Unset Hardcoded Vars for Security Reasons ////
-///////////////////////////////////////////////////
-unset($dbc);
-unset($spam);
+//TODO: First Init Hook
+
+$_SESSION['user_level'] = !isset($_SESSION['user_level']) ? 'unknown' : $_SESSION['user_level'];
 ?>

@@ -1,0 +1,36 @@
+# Import default texts
+#@admin/admin_news
+
+# Kommentare
+comments_select_title:              Edit comments
+comments_content:                   Content
+comments_info:                      Information
+comments_not_found:                 No comments found!
+comment_deleted:                    Comment has been deleted successfully
+
+# News
+news_not_found:                     No News found!
+
+#filter
+filter_title:               Filter & sort order
+cat_filter:                 Filter
+all_cats:                   All categories
+filter_order:               Sort order
+filter_date:                Date
+filter_id:                  ID
+filter_newstitle:           Title
+
+#search
+search_fulltext: Full text
+search_id: IDs
+search_url: URLs
+
+# Auswahlliste
+select_news:                Select news
+comments:                   Comments
+links:                      Links
+selection_comments:         Edit comments
+
+#Löschen
+news_deleted:               News has been deleted
+news_not_deleted:           News has not been deleted

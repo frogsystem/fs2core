@@ -1,0 +1,31 @@
+small_pic:                                         Partnerbild klein
+small_pic_desc:                                    Kleines Partnerbild für die Navigation.
+big_pic:                                           Partnerbild groß
+big_pic_desc:                                      Großes Partnerbild für die Übersichtsseite.
+name:                                              Partnername
+name_desc:                                         Name der Partnerseite.
+link:                                              Link
+link_desc:                                         URL der Partnerseite.
+desc:                                              Beschreibung
+desc_desc:                                         Kurze Beschreibung der Partnerseite.
+perm:                                              Permanent angezeigen
+perm_desc:                                         Kleines Partnerbild wird in der Navigation permanent angezeigt.
+partnerpage:                                       Partnerseite
+delpage:                                           Partnerseite löschen
+delpage_question:                                  Soll die Partnerseite wirklich gelöscht werden?
+delconfirm:                                        Partnerseite löschen
+delnotconfirm:                                     Partnerseite nicht löschen
+add:                                               Partnerseite hinzufügen
+save:                                              Änderungen speichern
+exact:                                             exakt
+max:                                               max.
+px:                                                Pixel
+kb:                                                KB
+note_notadded:                                     Partnerseite konnte nicht hinzugefügt werden!
+note_addmore:                                      Weitere Partnerseite hinzufügen:
+note_uploaded:                                     Bilder wurden hochgeladen!
+note_added:                                        Partnerseite wurde hinzugefügt!
+note_edited:                                       Änderungen wurden erfolgreich gespeichert!
+note_deleted:                                      Die Partnerseite wurde erfolgreich gelöscht!
+note_notdeleted:                                   Die Partnerseite wurde nicht gelöscht!
+note_nopages:                                      Es wurden keine Partnerseiten gefunden!

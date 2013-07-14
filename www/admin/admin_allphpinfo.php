@@ -6,20 +6,21 @@ if ( isset ( $_GET['info'] ) ) {
 	    phpinfo();
 	}
 
-}
-elseif ( $_SESSION['gen_phpinfo'] == 1 ) {
+} else {
+    if (!defined('ACP_GO')) die('Unauthorized access!');
+
     echo '
                         <table class="configtable" cellpadding="4" cellspacing="0">
-                            <tr><td class="line" colspan="4">'.$admin_phrases[general][phpinfo_title].'</td></tr>
+                            <tr><td class="line" colspan="4">'.$FD->text('page', 'phpinfo_title').'</td></tr>
                             <tr>
                                 <td class="config" width="150">
-                                    '.$admin_phrases[general][phpinfo_version].':
+                                    '.$FD->text('page', 'phpinfo_version').':
                                 </td>
                                 <td class="configthin" width="150">
                                     '.phpversion().'
                                 </td>
                                 <td class="config" width="150">
-                                    '.$admin_phrases[general][phpinfo_zendversion].':
+                                    '.$FD->text('page', 'phpinfo_zendversion').':
                                 </td>
                                 <td class="configthin" width="150">
                                     '.zend_version().'
@@ -27,16 +28,16 @@ elseif ( $_SESSION['gen_phpinfo'] == 1 ) {
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[general][phpinfo_phpuser].':
+                                    '.$FD->text('page', 'phpinfo_phpuser').':
                                 </td>
                                 <td class="configthin" colspan="3">
-                                    '.get_current_user().'
+                                    '.exec('whoami').'
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[general][phpinfo_servername].':
+                                    '.$FD->text('page', 'phpinfo_servername').':
                                 </td>
                                 <td class="configthin">
                                     '.$_SERVER['SERVER_NAME'].'
@@ -48,13 +49,13 @@ elseif ( $_SESSION['gen_phpinfo'] == 1 ) {
                             </tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[general][phpinfo_serverip].':
+                                    '.$FD->text('page', 'phpinfo_serverip').':
                                 </td>
                                 <td class="configthin">
                                     '.$_SERVER['SERVER_ADDR'].':'.$_SERVER['SERVER_PORT'].'
                                 </td>
                                 <td class="config">
-                                    '.$admin_phrases[general][phpinfo_serverprotocol].':
+                                    '.$FD->text('page', 'phpinfo_serverprotocol').':
                                 </td>
                                 <td class="configthin" >
                                     '.$_SERVER['SERVER_PROTOCOL'].'
@@ -63,7 +64,7 @@ elseif ( $_SESSION['gen_phpinfo'] == 1 ) {
                             <tr><td class="space"></td></tr>
                             <tr>
                                 <td class="config">
-                                    '.$admin_phrases[general][phpinfo_serversoftware].':
+                                    '.$FD->text('page', 'phpinfo_serversoftware').':
                                 </td>
                                 <td class="configthin" colspan="3">
                                     '.$_SERVER['SERVER_SOFTWARE'].'
@@ -73,7 +74,7 @@ elseif ( $_SESSION['gen_phpinfo'] == 1 ) {
                             <tr>
                                 <td class="buttontd" colspan="4">
                                     <a class="link_button" href="admin_allphpinfo.php?info" target="_blank">
-                                        '.$admin_phrases[common][arrow].' '.$admin_phrases[general][phpinfo_show_link].'
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'phpinfo_show_link').'
                                     </a>
                                 </td>
                             </tr>

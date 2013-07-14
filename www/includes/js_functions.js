@@ -1,7 +1,52 @@
-function popUp(url, target, width, height) {
-    x = screen.width/2 - width/2;
-    y = screen.height/2 - height/2;
+//--------------------------------
+// START - Document Ready Functions
+//--------------------------------
+$().ready(function(){
+    $("head > link#noscriptcss").remove();
+});
+//--------------------------------
+// END - Document Ready Functions
+//--------------------------------
+
+
+function popUp(url, target, width, height, pos_x, pos_y) {
+    if (typeof pos_x =="undefined") { pos_x = "center"; }
+    if (typeof pos_y =="undefined") { pos_y = "middle"; }
+
+    var x;
+    var y;
+
+    // get x pos
+    switch (pos_x) {
+        case "left":
+            x = 0;
+            break;
+        case "right":
+            x = screen.width - width;
+            break;
+        default: //center
+            x = screen.width/2 - width/2;
+            break;
+    }
+
+    // get y pos
+    switch (pos_y) {
+        case "top":
+            y = 0;
+            break;
+        case "bottom":
+            y = screen.height - height;
+            break;
+        default: //middle
+            y = screen.height/2 - height/2;
+            break;
+    }
+
     window.open(url, target, 'width='+width+',height='+height+',left='+x+',top='+y+',screenX='+x+',screenY='+y+',scrollbars=YES,location=YES,status=YES');
+}
+
+function popTab(url, target) {
+    window.open(url, target);
 }
 
 
@@ -32,6 +77,35 @@ function mozWrap(txtarea, open, close)
         txtarea.scrollTop = scrollTop;
 
         return;
+}
+
+///////////////////////////////////////////////
+//// Short string by cutting in the middle ////
+///////////////////////////////////////////////
+function cut_in_string (string, maxlength, replacement)
+{
+	if (string.length > maxlength) {
+		var part_lenght = Math.ceil(maxlength/2)-Math.ceil(replacement.length/2);
+		var string_start = string.substr(0, part_lenght);
+		var string_end = string.substr(-1*part_lenght);
+		string = string_start+replacement+string_end;
+	}
+	return string;
+}
+
+//////////////////////////
+//// htmlspecialchars ////
+//////////////////////////
+function htmlspecialchars(str,typ) {
+    if(typeof str=="undefined") str="";
+    if(typeof typ!="number") typ=2;
+    typ=Math.max(0,Math.min(3,parseInt(typ)));
+    var from=new Array(/&/g,/</g,/>/g);
+    var to=new Array("&amp;","&lt;","&gt;");
+    if(typ==1 || typ==3) {from.push(/'/g); to.push("&#039;");}
+    if(typ==2 || typ==3) {from.push(/"/g); to.push("&quot;");}
+    for(var i in from) str= str.replace(from[i],to[i]);
+    return str;
 }
 
 

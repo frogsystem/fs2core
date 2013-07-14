@@ -1,0 +1,12 @@
+title:              Seitentitel
+url:                URL
+online_since:       Online seit
+online_visitors:    Besucher online
+online_guests:      davon Gäste
+online_registered: 	davon registrierte User
+visits_total:       Besucher gesamt
+visits_today: 	    Besucher heute
+hits_total: 	    Seitenaufrufe gesamt
+hits_today: 	    Seitenaufrufe heute
+num_of_refs: 	    Anzahl Referrer
+last_ref:           Letzter Referrer

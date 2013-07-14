@@ -1,41 +1,49 @@
-<?php
+<?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 //////////////////////////////
 //// Kategorie bearbeiten ////
 //////////////////////////////
 
-if ($_POST['cat_id'] && $_POST['cat_name'] && $_POST['sended'] == "edit")
+if (isset($_POST['cat_id']) && isset($_POST['cat_name']) && !emptystr($_POST['cat_name']) && $_POST['sended'] == 'edit')
 {
-    $_POST[cat_name] = savesql($_POST[cat_name]);
+    $_POST['cat_id'] = intval($_POST['cat_id']);
+    $_POST['cat_type'] = intval($_POST['cat_type']);
+    $_POST['cat_visibility'] = intval($_POST['cat_visibility']);
 
-    mysql_query("UPDATE ".$global_config_arr[pref]."screen_cat
-                 SET cat_name = '$_POST[cat_name]',
+    $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."screen_cat
+                 SET cat_name = ?,
                      cat_type = '$_POST[cat_type]',
                      cat_visibility = '$_POST[cat_visibility]'
-                 WHERE cat_id = '$_POST[cat_id]'", $db);
-    systext("Kategorie wurde aktualisiert");
+                 WHERE cat_id = '$_POST[cat_id]'");
+    $stmt->execute(array($_POST['cat_name']));
+
+    systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
 }
 
 ///////////////////////////
 //// Kategorie löschen ////
 ///////////////////////////
-elseif ($_POST['cat_id'] && $_POST['sended'] == "delete")
+elseif (isset($_POST['cat_id']) && isset($_POST['sended']) && $_POST['sended'] == 'delete')
 {
-  mysql_query("DELETE FROM ".$global_config_arr[pref]."screen_cat
-               WHERE cat_id = '$_POST[cat_id]'", $db);
+  //security functions
+  $_POST['cat_id'] = intval($_POST['cat_id']);
+  $_POST['cat_move_to'] = intval($_POST['cat_move_to']);
 
-  mysql_query("UPDATE ".$global_config_arr[pref]."screen
+  $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen_cat
+               WHERE cat_id = '$_POST[cat_id]'");
+
+  $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."screen
                SET cat_id = '$_POST[cat_move_to]'
-               WHERE cat_id = '$_POST[cat_id]'", $db);
+               WHERE cat_id = '$_POST[cat_id]'");
 
-  systext("Die Kategorie wurde gelöscht!");
+  systext($FD->text('admin', 'cat_deleted'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_trash_ok'));
 }
 
 //////////////////////////
 /// Kategorie Funktion ///
 //////////////////////////
 
-elseif ($_POST['cat_id'] AND $_POST['cat_action'])
+elseif (isset($_POST['cat_id']) AND isset($_POST['cat_action']))
 {
 
 ////////////////////////////
@@ -43,29 +51,34 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
 ////////////////////////////
 
 
-  if ($_POST['cat_action'] == "edit")
+  //security functions
+  $_POST['cat_id'] = intval($_POST['cat_id']);
+
+  if ($_POST['cat_action'] == 'edit')
   {
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_id = '$_POST[cat_id]'", $db);
-    $admin_cat_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
+    $admin_cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
-    
-    $error_message = "";
+
+    $error_message = '';
 
     if (isset($_POST['sended']))
     {
-      $error_message = "Bitte füllen Sie <b>alle Pflichfelder</b> aus!";
+      $error_message = 'Bitte f&uuml;llen Sie <b>alle Pflichfelder</b> aus!';
+      systext($error_message, $FD->text('admin', 'error_occurred'), 'red', $FD->text('admin', 'icon_save_error'));
     }
-    systext($error_message);
-    
+
+
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="gallery_cat" name="go">
                         <input type="hidden" name="sended" value="edit" />
-                        <input type="hidden" name="cat_action" value="'.$_POST[cat_action].'" />
-                        <input type="hidden" name="cat_id" value="'.$admin_cat_arr[cat_id].'" />
-                        <input type="hidden" name="oldname" value="'.$admin_cat_arr[cat_name].'" />
-                        <table border="0" cellpadding="4" cellspacing="0" width="600">
+                        <input type="hidden" name="cat_action" value="'.$_POST['cat_action'].'" />
+                        <input type="hidden" name="cat_id" value="'.$admin_cat_arr['cat_id'].'" />
+                        <input type="hidden" name="oldname" value="'.$admin_cat_arr['cat_name'].'" />
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="2"><h3>Kategorie bearbeiten</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top">
                                     Name:<br>
@@ -73,7 +86,7 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
                                 </td>
                                 <td class="config" valign="top">
                                     <input class="text" name="cat_name" size="33" maxlength="100"
-                                     value="'.$admin_cat_arr[cat_name].'">
+                                     value="'.$admin_cat_arr['cat_name'].'">
                                 </td>
                             </tr>
                             <tr>
@@ -84,12 +97,12 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
                                 <td class="config" valign="top">
                                     <select name="cat_type" size="1">
                                         <option value="1"';
-                                        if ($admin_cat_arr[cat_type] == 1)
+                                        if ($admin_cat_arr['cat_type'] == 1)
                                           echo ' selected=selected';
                                         echo'
                                         >Screenshots / Zufallsbild</option>
                                         <option value="2"';
-                                        if ($admin_cat_arr[cat_type] == 2)
+                                        if ($admin_cat_arr['cat_type'] == 2)
                                           echo ' selected=selected';
                                         echo'>Wallpaper</option>
                                     </select>
@@ -103,80 +116,80 @@ elseif ($_POST['cat_id'] AND $_POST['cat_action'])
                                 <td class="config" valign="top">
                                     <select name="cat_visibility" size="1">
                                         <option value="1"';
-                                        if ($admin_cat_arr[cat_visibility] == 1)
+                                        if ($admin_cat_arr['cat_visibility'] == 1)
                                           echo ' selected=selected';
-                                        echo'>vollständig sichtbar</option>
+                                        echo'>vollst&auml;ndig sichtbar</option>
                                         <option value="2"';
-                                        if ($admin_cat_arr[cat_visibility] == 2)
+                                        if ($admin_cat_arr['cat_visibility'] == 2)
                                           echo ' selected=selected';
-                                        echo'>nicht in Auswahl verfügbar</option>
+                                        echo'>nicht in Auswahl verf&uuml;gbar</option>
                                         <option value="0"';
-                                        if ($admin_cat_arr[cat_visibility] == 0)
+                                        if ($admin_cat_arr['cat_visibility'] == 0)
                                           echo ' selected=selected';
                                         echo'>nicht aufrufbar</option>
                                     </select>
                                 </td>
                             </tr>
+                            <tr><td colspan="2" class="right"><input type="reset" value="Zur&uuml;cksetzen"></td></tr>
+                            <tr><td class="space"></td></tr>
                             <tr>
-                                <td colspan="2">
-                                    <input type="submit" value="Speichern" class="button" /> <input type="reset" value="Zurücksetzen" class="button" />
+                                <td colspan="2" class="buttontd">
+                                    <button type="submit" value="edit" class="button_new" name="sended">
+                                        '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'save_changes_button').'
+                                    </button>
                                 </td>
                             </tr>
                         </table>
                     </form>
     ';
   }
-  
+
 /////////////////////////
 /// Kategorie löschen ///
 /////////////////////////
 
-  
-  elseif ($_POST['cat_action'] == "delete")
+
+  elseif ($_POST['cat_action'] == 'delete')
   {
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat", $db);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
+    $admin_cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-    if (mysql_num_rows($index) > 1)
+    $index = $FD->sql()->conn()->query('SELECT COUNT(*) AS categ_count FROM '.$FD->config('pref')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]'" );
+    $num_rows = $index->fetchColumn();
+
+    if ($num_rows > 0)
     {
-
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_id = '$_POST[cat_id]'", $db);
-    $admin_cat_arr = mysql_fetch_assoc($index);
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]' ORDER BY cat_name" );
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
 
 echo '
 <form action="" method="post">
-<table width="100%" cellpadding="4" cellspacing="0">
 <input type="hidden" value="gallery_cat" name="go">
 <input type="hidden" value="'.session_id().'" name="PHPSESSID">
 <input type="hidden" name="sended" value="delete" />
-<input type="hidden" name="cat_id" value="'.$admin_cat_arr[cat_id].'" />
+<input type="hidden" name="cat_id" value="'.$admin_cat_arr['cat_id'].'" />
+    <table class="content" cellpadding="0" cellspacing="0">
+        <tr><td colspan="6"><h3>Kategorie l&ouml;schen</h3><hr></td></tr>
        <tr align="left" valign="top">
-           <td class="config">
-               <b>Kategorie löschen:</b><br><br>
-           </td>
-           <td></td>
-       </tr>
-       <tr align="left" valign="top">
-           <td width="50%" class="config">
-               Soll die Kategorie "'.$admin_cat_arr[cat_name].'" wirklich gelöscht werden?
+           <td width="50%" class="thin">
+               Soll die Kategorie "<b>'.killhtml($admin_cat_arr['cat_name']).'</b>" wirklich gel&ouml;scht werden?
            </td>
            <td width="50%">
-             <input type="submit" value="Ja" class="button" />  <input type="button" onclick=\'location.href="?go=gallery_cat";\' value="Nein" class="button" />
+             <input type="submit" value="Ja">  <input type="button" onclick=\'location.href="?go=gallery_cat";\' value="Nein">
            </td>
        </tr>
        <tr><td height="10px"></td></tr>
        <tr align="left" valign="top">
-           <td class="config">
-              Bilder der gelöschten Kategorie verschieben nach:
+           <td class="thin">
+              Bilder der gel&ouml;schten Kategorie verschieben nach:
            </td>
            <td>
              <select name="cat_move_to" size="1" class="text">';
 
-  $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' ORDER BY cat_name", $db);
-  while ($admin_cat_move_arr = mysql_fetch_assoc($index))
+  while ($admin_cat_move_arr = $index->fetch(PDO::FETCH_ASSOC))
   {
-    echo'<option value="'.$admin_cat_move_arr[cat_id].'">'.$admin_cat_move_arr[cat_name].'</option>';
+    echo'<option value="'.$admin_cat_move_arr['cat_id'].'">'.$admin_cat_move_arr['cat_name'].'</option>';
   }
 
 echo'
@@ -187,13 +200,14 @@ echo'
     }
     else
     {
-      echo '<table cellpadding="0" cellspacing="0" width="100%">
+      echo '    <table class="content" cellpadding="0" cellspacing="0">
+        <tr><td colspan="6"><h3>Kategorie l&ouml;schen</h3><hr></td></tr>
             <tr valign="top">
-              <td class="config">
-                Die letzte Kategorie kann nicht gelöscht werden.<br>
-                Bitte legen Sie zuerst eine neue Kategorie an.</td>
+              <td class="thin">
+                Die letzte Kategorie diesen Typs kann nicht gel&ouml;scht werden.<br>
+                Bitte legen Sie zuerst eine neue Kategorie für diesen Typ an.</td>
               <td>
-                <input type="button" onclick=\'location.href="?go=gallery_cat";\' value="Zurück zur Übersicht" class="button" />
+                <input type="button" onclick=\'location.href="?go=gallery_cat";\' value="Zur&uuml;ck zur &Uuml;bersicht">
               </td>
             </tr>
 
@@ -208,7 +222,8 @@ echo'
 else
 {
     echo'
-                        <table border="0" cellpadding="2" cellspacing="0" width="600">
+                        <table class="content" cellpadding="0" cellspacing="0">
+                            <tr><td colspan="6"><h3>Neue Kategorie</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="20%">
                                     Name
@@ -229,65 +244,63 @@ else
                                 </td>
                             </tr>
     ';
-    $index = mysql_query("select * from ".$global_config_arr[pref]."screen_cat order by cat_date desc", $db);
-    while ($cat_arr = mysql_fetch_assoc($index))
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat ORDER BY cat_date DESC');
+    while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
-        $cat_arr[cat_date] = date("d.m.Y", $cat_arr[cat_date]);
+        $cat_arr['cat_date'] = date('d.m.Y', $cat_arr['cat_date']);
 
-        if ( $cat_arr[cat_type] == 2 ) {
-            $number_index = mysql_query("SELECT COUNT(wallpaper_id) AS number FROM ".$global_config_arr[pref]."wallpaper WHERE cat_id = $cat_arr[cat_id]", $db);
+        if ( $cat_arr['cat_type'] == 2 ) {
+            $number_index = $FD->sql()->conn()->query('SELECT COUNT(wallpaper_id) AS number FROM '.$FD->config('pref')."wallpaper WHERE cat_id = $cat_arr[cat_id]");
         } else {
-            $number_index = mysql_query("SELECT COUNT(screen_id) AS number FROM ".$global_config_arr[pref]."screen WHERE cat_id = $cat_arr[cat_id]", $db);
+            $number_index = $FD->sql()->conn()->query('SELECT COUNT(screen_id) AS number FROM '.$FD->config('pref')."screen WHERE cat_id = $cat_arr[cat_id]");
         }
-        
 
-
-
-        $number_rows = mysql_result($number_index, 0, "number");
+        $number_rows = $number_index->fetchColumn();
         echo'
                     <form action="" method="post">
-                        <input type="hidden" name="cat_id" value="'.$cat_arr[cat_id].'" />
+                        <input type="hidden" name="cat_id" value="'.$cat_arr['cat_id'].'" />
                         <input type="hidden" value="gallery_cat" name="go">
                             <tr>
-                                <td class="configthin">
-                                    '.$cat_arr[cat_name].'
+                                <td class="thin">
+                                    '.killhtml($cat_arr['cat_name']).'
                                 </td>
-                                <td class="configthin">
+                                <td class="thin">
                                     '.$number_rows.'
                                 </td>
-                                <td class="configthin">';
-                                    switch ($cat_arr[cat_type]) {
+                                <td class="thin">';
+                                    switch ($cat_arr['cat_type']) {
                                     case 1:
-                                        echo "Screenshots";
+                                        echo 'Screenshots';
                                         break;
                                     case 2:
-                                       echo "Wallpaper";
+                                       echo 'Wallpaper';
                                        break;
                                     }
                                     echo'
                                 </td>
-                                <td class="configthin">';
-                                    switch ($cat_arr[cat_visibility]) {
+                                <td class="thin">';
+                                    switch ($cat_arr['cat_visibility']) {
                                     case 0:
-                                        echo "nicht aufrufbar";
+                                        echo 'nicht aufrufbar';
                                         break;
                                     case 1:
-                                        echo "voll sichtbar";
+                                        echo 'voll sichtbar';
                                         break;
                                     case 2:
-                                       echo "nicht in Auswahl";
+                                       echo 'nicht in Auswahl';
                                        break;
                                     }
                                     echo'
                                 </td>
-                                <td class="configthin">
-                                    '.$cat_arr[cat_date].'
+                                <td class="thin">
+                                    '.$cat_arr['cat_date'].'
                                 </td>
-                                <td class="configthin">
+                                <td class="thin">
                                     <select name="cat_action" size="1" class="text">
                                         <option value="edit">Bearbeiten</option>
-                                        <option value="delete">Löschen</option>
-                                    </select> <input class="button" type="submit" value="Los" />
+                                        <option value="delete">L&ouml;schen</option>
+                                    </select>
+                                    <input type="submit" value="Los">
                                 </td>
                             </tr>
                     </form>

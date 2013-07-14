@@ -12,28 +12,31 @@ class fileaccess
 {
     // constructor
     public function  __construct() {
-         global $global_config_arr;
+         global $FD;  //What is that line doing here?
     }
-    
+
     // getFileData
     public function getFileData($filename, $flags = 0, $context = null, $offset = -1, $maxlen = -1) {
+        if (!is_readable($filename))
+            return false;
+
         if ( $maxlen == -1 ) {
             return file_get_contents($filename, $flags, $context, $offset);
         } else {
             return file_get_contents($filename, $flags, $context, $offset, $maxlen);
         }
     }
-    
+
     // getFileArray
     public function getFileArray($filename, $flags = 0, $context = null) {
         return file($filename, $flags, $context);
     }
-    
+
     // putFileData
     public function putFileData($filename, $data, $flags = 0, $context = null) {
         return file_put_contents($filename, $data, $flags, $context);
     }
-    
+
     // deleteFile
     public function deleteFile ( $filename, $context = null ) {
         if ( is_resource ( $context ) ) {
@@ -42,7 +45,7 @@ class fileaccess
             return unlink( $filename );
         }
     }
-    
+
     // createDir
     public function createDir ( $pathname, $mode = 0777, $recursive = false, $context = null ) {
         if ( is_resource ( $context ) ) {
@@ -55,7 +58,7 @@ class fileaccess
         }
         return $return;
     }
-    
+
     // deleteAny
     public function deleteAny ( $filename, $recursive = FALSE ) {
         if ( is_file ( $filename ) ) {
@@ -63,10 +66,10 @@ class fileaccess
         } elseif ( $recursive === FALSE && is_dir ( $filename ) ) {
             return @rmdir ( $filename );
         } elseif ( $recursive === TRUE && is_dir ( $filename ) )  {
-            $filename = rtrim ( $filename, '\/' ) . "/";
+            $filename = rtrim ( $filename, '\/' ) . '/';
             $contents = @scandir ( $filename );
             if ( is_array ( $contents ) ) {
-                $contents = array_diff ( $contents, array ( ".", ".." ) );
+                $contents = array_diff ( $contents, array ( '.', '..' ) );
                 foreach ( $contents as $content ) {
                     $this->deleteAny( $filename.$content, TRUE );
                 }
@@ -74,14 +77,14 @@ class fileaccess
             return @rmdir ( $filename );
         }
     }
-    
+
     // copyAny
     public function copyAny ( $source, $destination, $foldermode = 0777, $filemode = 0777 ) {
         if ( is_file ( $source ) ) {
             // Case 1: File -> Dir
             $result = FALSE;
             if ( is_dir ( $destination ) ) {
-                $destination = rtrim ( $destination, '\/' ) . "/";
+                $destination = rtrim ( $destination, '\/' ) . '/';
                 $destination = $destination . basename ( $source );
                 $result = copy ( $source, $destination );
             // Case 2: File -> File
@@ -93,11 +96,11 @@ class fileaccess
         } elseif ( is_dir ( $source ) ) {
             // Case 3: Dir -> Dir (Copy each file from Src to Dst)
             if ( is_dir ( $destination ) ) {
-            $source = rtrim ( $source, '\/' ) . "/";
-            $destination = rtrim ( $destination, '\/' ) . "/";
+            $source = rtrim ( $source, '\/' ) . '/';
+            $destination = rtrim ( $destination, '\/' ) . '/';
             $contents = scandir ( $source );
                 if ( is_array ( $contents ) ) {
-                    $contents = array_diff ( $contents, array ( ".", ".." ) );
+                    $contents = array_diff ( $contents, array ( '.', '..' ) );
                     $result = TRUE;
                     foreach ( $contents as $content ) {
                         $old_result = $result;

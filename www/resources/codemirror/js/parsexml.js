@@ -38,6 +38,11 @@ var XMLParser = Editor.Parser = (function() {
             setState(inBlock("xml-comment", "-->"));
             return null;
           }
+          else if (source.lookAhead("DOCTYPE", true)) {
+            source.nextWhileMatches(/[\w\._\-]/);
+            setState(inBlock("xml-doctype", ">"));
+            return "xml-doctype";
+          }
           else {
             return "xml-text";
           }
@@ -130,7 +135,7 @@ var XMLParser = Editor.Parser = (function() {
     var tokenNr = 0, indented = 0;
     var currentTag = null, context = null;
     var consume;
-    
+
     function push(fs) {
       for (var i = fs.length - 1; i >= 0; i--)
         cc.push(fs[i]);
@@ -182,7 +187,7 @@ var XMLParser = Editor.Parser = (function() {
     function base() {
       return pass(element, base);
     }
-    var harmlessTokens = {"xml-text": true, "xml-entity": true, "xml-comment": true, "xml-processing": true};
+    var harmlessTokens = {"xml-text": true, "xml-entity": true, "xml-comment": true, "xml-processing": true, "xml-doctype": true};
     function element(style, content) {
       if (content == "<") cont(tagname, attributes, endtag(tokenNr == 1));
       else if (content == "</") cont(closetagname, expect(">"));
@@ -261,7 +266,7 @@ var XMLParser = Editor.Parser = (function() {
       copy: function(){
         var _cc = cc.concat([]), _tokenState = tokens.state, _context = context;
         var parser = this;
-        
+
         return function(input){
           cc = _cc.concat([]);
           tokenNr = indented = 0;
