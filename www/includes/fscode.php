@@ -90,7 +90,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     if ($flags['nohtmlatall']) {
         $fscode->addParser ('htmlblock', 'killhtml');
     }
-        
+
     if ($flags['washtml']) {
         //TODO: washtml http://www.ubixis.com/washtml/
         // $bbcode->addParser (array ('block', 'inline', 'link', 'listitem', 'htmlblock'), 'washtml');
@@ -148,7 +148,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('i', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
                     'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
-        
+
         // u
         if (in_array('u', $to_html)) {
             $fscode->addCode ('u', 'simple_replace', null, array ('start_tag' => '<span style="text-decoration:underline">', 'end_tag' => '</span>'),
@@ -156,7 +156,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         } elseif  (in_array('u', $to_text)) {
             $fscode->addCode ('u', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
                     'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
-        } 
+        }
 
         // s
         if (in_array('s', $to_html)) {
@@ -166,7 +166,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('s', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
                     'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
-        
+
         // center
         if (in_array('center', $to_html)) {
             $fscode->addCode ('center', 'simple_replace', null, array ('start_tag' => '<p align="center">', 'end_tag' => '</p>'),
@@ -185,7 +185,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('url', 'usecontent?', 'do_fscode_url', array ('usecontent_param' => 'default', 'text' => true),
                     'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         }
-        
+
         // home
         if (in_array('home', $to_html)) {
             $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'fullurl' => $flags['full_urls']),
@@ -194,7 +194,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'text' => true, 'fullurl' => $flags['full_urls']),
                     'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         }
-        
+
         // email
         if (in_array('email', $to_html)) {
             $fscode->addCode ('email', 'usecontent?', 'do_fscode_email', array ('usecontent_param' => 'default'),
@@ -203,7 +203,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('email', 'usecontent?', 'do_fscode_email', array ('usecontent_param' => 'default', 'text' => true),
                     'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         }
-        
+
         // font
         if (in_array('font', $to_html)) {
             $fscode->addCode ('font', 'callback_replace', 'do_fscode_fcs', array ('type' => 'font'),
@@ -221,7 +221,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('color', 'callback_replace', 'simple_replace_ignore_attributs', array ('start_tag' => '', 'end_tag' => ''),
                     'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
-        
+
         // size
         if (in_array('size', $to_html)) {
             $fscode->addCode ('size', 'callback_replace', 'do_fscode_fcs', array ('type' => 'size'),
@@ -239,7 +239,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('img', 'usecontent?', 'do_fscode_img', array ('usecontent_param' => 'default', 'text' => true),
                     'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
-        
+
         // cimg
         if (in_array('cimg', $to_html)) {
             $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default'),
@@ -248,7 +248,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'text' => true),
                     'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
-        
+
         // fscode
         if (in_array('fscode', $to_html) || in_array('fscode', $to_text)) {
             $fscode->addCode ('fscode', 'simple_replace', null, array ('start_tag' => '', 'end_tag' => ''),
@@ -258,11 +258,11 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         // nofscode
         if (in_array('nofscode', $to_html) || in_array('nofscode', $to_text)) {
             $fscode->addCode ('nofscode', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
-                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());        
+                'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
             $fscode->addCode ('noparse', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
                 'inline', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
-            
+
         // html
         $fscode->setCodeFlag ('html', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         if (in_array('html', $to_html)) {
@@ -272,7 +272,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
                 'htmlblock', array ('list', 'listitem', 'block', 'inline', 'link'), array ());
         }
-                    
+
         // nohtml
         if (in_array('nohtml', $to_html) || in_array('nohtml', $to_text)) {
             $fscode->addCode ('nohtml', 'callback_replace', 'killhtml', array (),
@@ -287,7 +287,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('list', 'callback_replace', 'do_fscode_textlists', array (),
                     'list', array ('block', 'listitem', 'htmlblock'), array ('link'));
         }
-        
+
         if (in_array('list', $to_html) || in_array('list', $to_text)) {
             $fscode->setCodeFlag ('list', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         }
@@ -304,7 +304,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('numlist', 'callback_replace', 'do_fscode_textlists', array (),
                     'list', array ('block', 'listitem', 'htmlblock'), array ('link'));
         }
-        
+
         if (in_array('numlist', $to_html) || in_array('numlist', $to_text)) {
             $fscode->setCodeFlag ('numlist', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         }
@@ -347,7 +347,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array ('text' => true),
                     'code', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         }
-        
+
         if (in_array('code', $to_html) || in_array('code', $to_text)) {
             $fscode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
             $fscode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
@@ -384,7 +384,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->setCodeFlag ('video', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
             $fscode->setCodeFlag ('player', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         }
-    
+
     // FSCode Tag
     } elseif (!$flags['nofscodeatall']) {
         // fscode
@@ -392,7 +392,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $bbcode->setCodeFlag ('fscode', 'paragraphs', true);
             $fscode->addCode ('html', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
                 'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
-        
+
         } elseif (in_array('fscode', $to_text)) {
             $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
                 'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
@@ -618,20 +618,31 @@ function do_fscode_img ($action, $attributes, $content, $params, $node_object) {
     if (count($content_arr) == 1) {
         $content_arr[1] = $content_arr[0];
     }
-     // title shall be same like alt
+    // title shall be same like alt
     if (count($content_arr) == 3 && strlen($content_arr[2]) == 0) {
         $content_arr[2] = $content_arr[1];
     }
     $title_full = isset ($content_arr[2]) ? ' title="'.$content_arr[2].'"' : '';
 
+    // safe align=left/right/center
+    if (isset($attributes['default']) && !in_array($attributes['default'], array('left', 'right', 'center'))) {
+        unset($attributes['default']);
+    }
+
+    // safe align=left/right/center
+    if (isset($attributes['default']) && !in_array($attributes['default'], array('left', 'right', 'center'))) {
+        unset($attributes['default']);
+    }
+
     // Return html or text
-    if (isset($params['text']) && $params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true) {
         return (isset($content_arr[2])) ? $FD->text('frontend', 'image').': '.$content_arr[2]. ' ('.$content_arr[0].')' : $FD->text('frontend', 'image').': '.$content_arr[0];
-    else
+    } else {
         if (!isset ($attributes['default']))
             return '<img src="'.$content_arr[0].'" alt="'.$content_arr[1].'"'.$title_full.'>';
         else
             return '<img src="'.$content_arr[0].'" align="'.htmlspecialchars($attributes['default']).'" alt="'.$content_arr[1].'"'.$title_full.'>';
+    }
 }
 
 // Create an image from local database
@@ -639,11 +650,10 @@ function do_fscode_cimg ($action, $attributes, $content, $params, $node_object) 
     global $FD;
 
     // Extend Content Image Url
-    $content .= $FD->cfg('virtualhost').'media/content/';
+    $content = $FD->cfg('virtualhost').'media/content/'.$content;
 
     // Call function for img fscode
     return do_fscode_img($action, $attributes, $content, $params, $node_object);
-
 }
 
 // create text lists
