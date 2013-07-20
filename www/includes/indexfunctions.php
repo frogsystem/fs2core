@@ -1164,7 +1164,7 @@ function clean_timed_preview_images () {
 ///////////////////////////////
 function get_copyright ()
 {
-        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - 2011 Frogsystem-Team</span>';
+        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - 2013 Frogsystem-Team</span>';
 }
 
 
@@ -1220,7 +1220,7 @@ function copyright ()
     $copyright = (string) $template_copyright;
 
     if (strpos($copyright, $template_copyright->getOpener().'copyright'.$template_copyright->getCloser()) == FALSE
-        || strpos(get_copyright(), 'Frogsystem&nbsp;2' ) == FALSE || strpos(get_copyright(), '&copy; 2007 - 2011 Frogsystem-Team') == FALSE
+        || strpos(get_copyright(), 'Frogsystem&nbsp;2' ) == FALSE || strpos(get_copyright(), '&copy; 2007 - 2013 Frogsystem-Team') == FALSE
         || strpos(get_copyright(), 'Powered by' ) == FALSE || strpos(get_copyright(), 'frogsystem.de') == FALSE )
     {
         $FD->setConfig('style',  'default');
