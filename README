@@ -1,6 +1,6 @@
 Development branches:
 
-  - alix6_neu: This is the most recent branch for the next release alix6. Use this a base of your active development.
+  - alix7:     This is the most recent branch for the next release alix6. Use this a base of your active development.
   - master:    This will always be the branch of the latest release. After a new release the
                specific branch will be merged into this one.
 
