@@ -33,6 +33,7 @@
 */
 function getRemoteFileCURL($url)
 {
+  if (!function_exists('curl_init')) return false;
   $ch = curl_init();
   if ($ch===false) return false;
   // set the url to fetch

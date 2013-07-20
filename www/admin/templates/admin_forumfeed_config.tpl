@@ -38,7 +38,7 @@
         <span class="small">(<!--COMMON::zero_not_allowed-->)</span>
       </td>
     </tr>
-
+    <!--TEXT::cURL_missing-->
     <tr>
       <td colspan="2">
         <button class="button" type="submit">
@@ -49,3 +49,13 @@
   </table>
 </form>
 <!--section-end::main-->
+
+<!--section-start::no_cURL-->
+    <tr>
+      <td colspan="2">
+        <strong style="color: red;">
+          <!--LANG::cURL_missing-->
+        </strong>
+      </td>
+    </tr>
+<!--section-end::no_cURL-->

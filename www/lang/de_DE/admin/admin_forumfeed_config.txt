@@ -7,3 +7,5 @@ thread_limit:               Threadanzahl
 thread_limit_desc:          Max. Anzahl der Threads, die im Forenticker aufgelistet werden
 title_max:                  Titel k&uuml;rzen auf
 title_max_desc:             Max. Zeichenanzahl eines Threadtitels
+
+cURL_missing:               Das cURL-Modul f&uuml;r PHP ist nicht installiert! Ohne dieses Modul funktioniert der Forenticker nicht korrekt. Installieren Sie das Modul oder bitten Sie den zust&auml;ndigen Administrator, dies nachzuholen, um den Forenticker nutzen zu k&ouml;nnen.
