@@ -370,7 +370,7 @@ if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
                                                         <tr>
                                                                 <td class="buttontd" colspan="2">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
+                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("page", "do_action_button_long").'
                                                                         </button>
                                                                 </td>
                                                         </tr>
@@ -464,7 +464,7 @@ else
                                                                 <td style="text-align:right;" colspan="3">
                                                                         <select name="video_action" size="1">
                                                                                 <option value="edit">'.$FD->text("admin", "selection_edit").'</option>
-                                                                                <option value="delete">'.$FD->text("admin", "selection_del").'</option>
+                                                                                <option value="delete">'.$FD->text("admin", "selection_delete").'</option>
                                                                         </select>
                                                                 </td>
                                                         </tr>
@@ -472,7 +472,7 @@ else
                                                         <tr>
                                                                 <td class="buttontd" colspan="4">
                                                                         <button class="button_new" type="submit">
-                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_button_long").'
+                                                                                '.$FD->text("admin", "button_arrow").' '.$FD->text("admin", "do_action_button_long").'
                                                                         </button>
                                                                 </td>
                                                         </tr>

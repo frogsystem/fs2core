@@ -143,7 +143,7 @@ elseif (
         // SQL-Delete-Query
         $FD->sql()->conn()->exec ('
                 DELETE FROM '.$FD->config('pref')."user_groups
-                WHERE user_group_id = '".$_POST['user_group_id']."'                
+                WHERE user_group_id = '".$_POST['user_group_id']."'
                 AND user_group_id > 1");
         $message = 'Gruppe wurde erfolgreich gel&ouml;scht';
 
@@ -545,7 +545,7 @@ else
                                 <td style="text-align:right;" colspan="4">
                                     <select name="group_action" size="1">
                                         <option value="edit">'.$FD->text('admin', 'selection_edit').'</option>
-                                        <option value="delete">'.$FD->text('admin', 'selection_del').'</option>
+                                        <option value="delete">'.$FD->text('admin', 'selection_delete').'</option>
                                     </select>
                                 </td>
                             </tr>

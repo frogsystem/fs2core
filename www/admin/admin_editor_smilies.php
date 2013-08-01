@@ -248,7 +248,7 @@ if ( $num_rows > 0 )
                            </td>
                            <td class="buttontd" style="width:100%;">
                              <button class="button_new" type="submit">
-                               '.$FD->text('admin', 'button_arrow').' '.$FD->text('page', 'do_button_long').'
+                               '.$FD->text('admin', 'button_arrow').' '.$FD->text('admin', 'do_action_button_long').'
                              </button>
                            </td>
                          </tr>
