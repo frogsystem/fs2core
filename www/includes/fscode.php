@@ -95,10 +95,12 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         //TODO: washtml http://www.ubixis.com/washtml/
         // $fscode->addParser (array ('block', 'inline', 'link', 'listitem', 'htmlblock'), 'washtml');
     }
-    if ($flags['paragraph'])
+    if ($flags['paragraph']) {
         $fscode->setRootParagraphHandling (true);
-    if ($flags['paragraph_to_text'])
+    }
+    if ($flags['paragraph_to_text']) {
         $fscode->setParagraphHandlingParameters ("\n\n", "\n", "\n");
+    }
 
 
     if ($flags['tab'] !== false) {
@@ -121,10 +123,11 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     // Add some default parsers and filter
     $fscode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
     $fscode->addParser ('code', 'killhtml');
-    $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
 
     // FSCode?
     if ($flags['fscode'] && !$flags['nofscodeatall']) {
+        // linebreaks
+        $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
 
         // smilies
         if (in_array('smilies', $to_html)) {
