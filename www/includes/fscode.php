@@ -93,7 +93,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     if ($flags['washtml']) {
         //TODO: washtml http://www.ubixis.com/washtml/
-        // $bbcode->addParser (array ('block', 'inline', 'link', 'listitem', 'htmlblock'), 'washtml');
+        // $fscode->addParser (array ('block', 'inline', 'link', 'listitem', 'htmlblock'), 'washtml');
     }
     if ($flags['paragraph'])
         $fscode->setRootParagraphHandling (true);
@@ -389,7 +389,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     } elseif (!$flags['nofscodeatall']) {
         // fscode
         if (in_array('fscode', $to_html)) {
-            $bbcode->setCodeFlag ('fscode', 'paragraphs', true);
+            $fscode->setCodeFlag ('fscode', 'paragraphs', true);
             $fscode->addCode ('html', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
                 'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
 
