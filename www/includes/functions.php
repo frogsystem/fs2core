@@ -496,9 +496,9 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
     $sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $FD->config('spam') );
     $sicherheits_eingabe = str_replace ('=', '', $sicherheits_eingabe );
 
-    if ( $ACTIVATION == 0 ) {
+    if ( $ACTIVATION === 0 ) {
         return TRUE;
-    } elseif ( $ACTIVATION == 1 && isset($_SESSION['user_id']) ) {
+    } elseif ( $ACTIVATION == 1 && isset($_SESSION['user_id']) && 0 !== $_SESSION['user_id']) {
         return TRUE;
     } elseif ( $ACTIVATION == 3 && isset($_SESSION['user_id']) && is_in_staff ( $_SESSION['user_id'] ) ) {
         return TRUE;
@@ -607,7 +607,7 @@ function send_mail ( $TO, $SUBJECT, $CONTENT, $HTML = TRUE, $FROM = FALSE, $TPL_
 
     if ($FROM == FALSE) {
         $FROM = MailManager::getDefaultSender();
-    }    
+    }
     $mail = new Mail($FROM, $TO, $SUBJECT, MailManager::parseContent($CONTENT, $HTML, $TPL_FUNC), $HTML, $TPL_FUNC);
     return $mail->send();
 }
