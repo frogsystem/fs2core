@@ -1,3 +1,6 @@
+# Import default texts
+#@admin/admin_news_edit
+
 title:       Titel
 poster:      Poster
 date:        Datum
