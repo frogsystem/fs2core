@@ -1,6 +1,6 @@
 <?php
 
-#   Copyright (C) 2006-2012 Tobias Leupold <tobias.leupold@web.de>
+#   Copyright (C) 2006-2013 Tobias Leupold <tobias.leupold@web.de>
 #
 #   b8 - A statistical ("Bayesian") spam filter written in PHP 5
 #
@@ -18,7 +18,7 @@
 #   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 /**
- * Copyright (C) 2006-2012 Tobias Leupold <tobias.leupold@web.de>
+ * Copyright (C) 2006-2013 Tobias Leupold <tobias.leupold@web.de>
  *
  * @license LGPL 2.1
  * @access public
@@ -31,7 +31,7 @@ class b8
 {
 
 	const DBVERSION = 3;
-
+	
 	public $config = array(
 		'lexer'        => 'default',
 		'degenerator'  => 'default',
@@ -53,7 +53,11 @@ class b8
 	const LEARN   = 'learn';
 	const UNLEARN = 'unlearn';
 	
-	const TRAINER_CATEGORY_FAIL = 'TRAINER_CATEGORY_FAIL';
+	const CLASSIFYER_TEXT_MISSING = 'CLASSIFYER_TEXT_MISSING';
+	
+	const TRAINER_TEXT_MISSING     = 'TRAINER_TEXT_MISSING';
+	const TRAINER_CATEGORY_MISSING = 'TRAINER_CATEGORY_MISSING';
+	const TRAINER_CATEGORY_FAIL    = 'TRAINER_CATEGORY_FAIL';
 
 	/**
 	 * Constructs b8
@@ -168,11 +172,15 @@ class b8
 	 *
 	 * @access public
 	 * @param string $text
-	 * @return float The rating between 0 (ham) and 1 (spam)
+	 * @return mixed float The rating between 0 (ham) and 1 (spam) or an error code
 	 */
 	
-	public function classify($text)
+	public function classify($text = NULL)
 	{
+	
+		# Let's first see if the user called the function correctly
+		if($text === NULL)
+			return self::CLASSIFYER_TEXT_MISSING;
 	
 		# Get the internal database variables, containing the number of ham and
 		# spam texts so the spam probability can be calculated in relation to them
@@ -256,20 +264,15 @@ class b8
 		}
 		
 		# If no token was good for calculation, we really don't know how
-		# to rate this text; so we assume a spam and ham probability of 0.5
-		
-		if($hamminess === 1 and $spamminess === 1) {
-			$hamminess = 0.5;
-			$spamminess = 0.5;
-			$n = 1;
-		}
-		else {
-			# Get the number of relevant ratings
-			$n = count($relevant);
-		}
+		# to rate this text, so can return 0.5 without further calculations.
+		if($hamminess == 1 and $spamminess == 1)
+			return 0.5;
 		
 		# Calculate the combined rating
-		
+
+		# Get the number of relevant ratings
+		$n = count($relevant);
+
 		# The actual hamminess and spamminess
 		$hamminess  = 1 - pow($hamminess,  (1 / $n));
 		$spamminess = 1 - pow($spamminess, (1 / $n));
@@ -396,12 +399,20 @@ class b8
 	 * @access public
 	 * @param string $text
 	 * @param const $category Either b8::SPAM or b8::HAM
-	 * @return void
+	 * @return mixed void or an error code
 	 */
 	
-	public function learn($text, $category)
+	public function learn($text = NULL, $category = NULL)
 	{
+	
+		# Let's first see if the user called the function correctly
+		if($text === NULL)
+			return self::TRAINER_TEXT_MISSING;
+		if($category === NULL)
+			return self::TRAINER_CATEGORY_MISSING;
+			
 		return $this->_process_text($text, $category, self::LEARN);
+		
 	}
 	
 	/**
@@ -410,12 +421,20 @@ class b8
 	 * @access public
 	 * @param string $text
 	 * @param const $category Either b8::SPAM or b8::HAM
-	 * @return void
+	 * @return mixed void or an error code
 	 */
 	
-	public function unlearn($text, $category)
+	public function unlearn($text = NULL, $category = NULL)
 	{
+	
+		# Let's first see if the user called the function correctly
+		if($text === NULL)
+			return self::TRAINER_TEXT_MISSING;
+		if($category === NULL)
+			return self::TRAINER_CATEGORY_MISSING;
+			
 		return $this->_process_text($text, $category, self::UNLEARN);
+		
 	}
 	
 	/**
@@ -425,7 +444,7 @@ class b8
 	 * @param string $text
 	 * @param const $category Either b8::SPAM or b8::HAM
 	 * @param const $action Either b8::LEARN or b8::UNLEARN
-	 * @return void
+	 * @return mixed void or an error code
 	 */
 	
 	private function _process_text($text, $category, $action)
