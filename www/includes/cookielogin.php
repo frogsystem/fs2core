@@ -7,7 +7,9 @@ function user_login ( $username, $password, $iscookie )
     $index->execute(array($username));
     $row = $index->fetch(PDO::FETCH_ASSOC);
     if ($row === false) {
-        $_GET['go'] = 'login';
+        $FD->setConfig('goto', 'login');
+        $FD->setConfig('env', 'goto', 'login');
+
         if ( $iscookie ) {
             delete_cookie ();
         }
@@ -29,7 +31,8 @@ function user_login ( $username, $password, $iscookie )
             return 0;  // Login akzeptiert
         }
         else {
-            $_GET['go'] = 'login';
+            $FD->setConfig('goto', 'login');
+            $FD->setConfig('env', 'goto', 'login');
             if ( $iscookie ) {
                 delete_cookie ();
             }
@@ -87,7 +90,7 @@ function logout_user()
 }
 
 
-function userlogin() {    
+function userlogin() {
     // Login in User
     if (!is_loggedin()) {
         global $FD;
@@ -100,7 +103,7 @@ function userlogin() {
             $username = substr($_COOKIE['login'], 32, strlen($_COOKIE['login']));
             $FD->setConfig('login_state', user_login($username, $userpassword, TRUE));
         }
-        
+
         // stay online?
         if (isset($_POST['stayonline']) && $_POST['stayonline'] == 1 && $FD->config('login_state') == 0) {
             set_cookie ($_POST['username'], $_POST['userpassword']);
