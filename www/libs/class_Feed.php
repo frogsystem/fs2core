@@ -83,20 +83,6 @@
 
 abstract class Feed {
 
-    protected $settings = array (
-        'to_html' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist'),
-        'to_text' => array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'nofscode', 'html', 'nohtml'),
-        'to_bbcode' => array(),
-        'truncate' => false,
-        'truncate_extension' => '',
-        'truncate_awareness' => array('word' => true, 'html' => true, 'bbcode' => false),
-        'truncate_options' => array('count_html' => false, 'count_bbcode' => false, 'below' => true),
-        'use_html' => true,
-        'tpl_functions' => 'softremove',
-        'paragraph_to_text' => false,
-        'tab' => 'nbsp'
-    );
-
     protected $title;
     protected $fsUrl;
     protected $description;
@@ -113,108 +99,13 @@ abstract class Feed {
      *
      * @return void
      */
-    public function __construct($feedUrl, $settings = array()) {
+    public function __construct($feedUrl) {
         // set feed Url
         $this->feedUrl = $feedUrl;
-
-        // set settings
-        $this->setSettings($settings);
     }
 
-    // Set Settings
-    protected function setSettings($settings = array()) {
-        foreach ($settings as $setting => $value) {
-            if (isset($this->settings[$setting]))
-                $this->settings[$setting] = $value;
-        }
-    }
-
-    // Load Data from DB and parse it
-    protected function loadData() {
-        global $FD;
-
-        // Include functions & libs
-        require_once(FS2_ROOT_PATH . 'includes/fscode.php');
-        require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
-
-        // Load virtualhost
-        if (is_empty($virtualhost = $FD->cfg('virtualhost'))) {
-            $virtualhost = 'http://'.$_SERVER['HTTP_HOST'];
-        }
-
-        // Set Header Data
-        $this->title = $FD->cfg('title');
-        $this->fsUrl = $virtualhost;
-        $this->description = $FD->cfg('description');
-        $this->language = $FD->cfg('language');
-        $this->lastUpdate = 0;
-
-        // News Config + Infos
-        $FD->loadConfig('news');
-
-        // Get News from DB
-        $news_arr = $FD->sql()->conn()->query(
-                        'SELECT news_id, news_text, news_title, news_date, user_id
-                         FROM '.$FD->config('pref').'news
-                         WHERE `news_date` <= '.$FD->env('time').' AND `news_active` = 1
-                         ORDER BY `news_date` DESC
-                         LIMIT '.intval($FD->cfg('news', 'num_news')));
-        $news_arr = $news_arr->fetchAll(PDO::FETCH_ASSOC);
-
-        // Parse News items
-        foreach ($news_arr as $news) {
-
-            // check for latest news_date
-            if ($news['news_date'] > $this->lastUpdate)
-                $this->lastUpdate = $news['news_date'];
-
-            // get user name
-            $news['user_name'] = $FD->sql()->conn()->query(
-                                     'SELECT user_name FROM '.$FD->config('pref').'user
-                                      WHERE user_id = '.intval($news['user_id']).' LIMIT 1');
-            $news['user_name'] = $news['user_name']->fetchColumn();
-
-            // parse fscode in news
-            $flags = array(
-                'html' => $this->settings['use_html'],
-                'paragraph' => true,
-                'paragraph_to_text' => $this->settings['paragraph_to_text'],
-                'tab' => $this->settings['tab'],
-                'tabsize' => 8,
-                'full_urls' => true
-            );
-            $parsed_text = parse_fscode($news['news_text'], $flags, $this->settings['to_html'], $this->settings['to_text'], $this->settings['to_bbcode']);
-
-            // tpl_funcions
-            switch ($this->settings['tpl_functions']) {
-                case 'remove':
-                    $parsed_text = remove_tpl_functions($parsed_text, get_all_tpl_functions());
-                    break;
-                case 'softremove':
-                    $parsed_text = tpl_functions ($parsed_text, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL'), false);
-                    $parsed_text = remove_tpl_functions($parsed_text, get_all_tpl_functions());
-                    break;
-                case 'softpreserve':
-                    $parsed_text = tpl_functions ($parsed_text, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL'));
-                    break;
-                default: // preserve
-                    break;
-            }
-
-            // remove any html?
-            if (!$this->settings['use_html'])
-                $parsed_text = strip_tags($parsed_text);
-
-            // Cut Text
-            if ($this->settings['truncate'] !== false) {
-				$parsed_text = StringCutter::truncate($parsed_text, $this->settings['truncate'], $this->settings['truncate_extension'], $this->settings['truncate_awareness'], $this->settings['truncate_options']);
-			}
-
-            // Save item
-            $news['parsed_text'] = $parsed_text;
-            array_push($this->items, $news);
-        }
-    }
+    // Load Data from a source
+    abstract protected function loadData();
 
     // Return the Feed as String
     public function __toString () {
@@ -260,9 +151,7 @@ abstract class Feed {
     public function getItems() {
         return $this->items;
     }
-    public function getSettings() {
-        return $this->settings;
-    }
+
 
     // Define abstract methods
     abstract protected function getHeaderXml();
@@ -271,7 +160,141 @@ abstract class Feed {
 
 }
 
-class RSS20 extends Feed {
+abstract class NewsFeed extends Feed {
+
+    protected $settings = array (
+        'to_html' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist'),
+        'to_text' => array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'nofscode', 'html', 'nohtml'),
+        'to_bbcode' => array(),
+        'truncate' => false,
+        'truncate_extension' => '',
+        'truncate_awareness' => array('word' => true, 'html' => true, 'bbcode' => false),
+        'truncate_options' => array('count_html' => false, 'count_bbcode' => false, 'below' => true),
+        'use_html' => true,
+        'tpl_functions' => 'softremove',
+        'paragraph_to_text' => false,
+        'tab' => 'nbsp'
+    );
+
+    /**
+     * Constructor of class Feed.
+     *
+     * @return void
+     */
+    public function __construct($feedUrl, $settings = array()) {
+        parent::__construct($feedUrl);
+
+        // set settings
+        $this->setSettings($settings);
+    }
+
+
+    // Set Settings
+    protected function setSettings($settings = array()) {
+        foreach ($settings as $setting => $value) {
+            if (isset($this->settings[$setting]))
+                $this->settings[$setting] = $value;
+        }
+    }
+
+    // Get Settings
+    public function getSettings() {
+        return $this->settings;
+    }
+
+    protected function loadData() {
+       global $FD;
+
+        // Load virtualhost
+        if (is_empty($virtualhost = $FD->cfg('virtualhost'))) {
+            $virtualhost = 'http://'.$_SERVER['HTTP_HOST'];
+        }
+
+        // Set Header Data
+        $this->title = $FD->cfg('title');
+        $this->fsUrl = $virtualhost;
+        $this->description = $FD->cfg('description');
+        $this->language = $FD->cfg('language');
+        $this->lastUpdate = 0;
+
+        // News Config + Infos
+        $FD->loadConfig('news');
+
+        // Get News from DB
+        $news_arr = $FD->sql()->conn()->query(
+                        'SELECT news_id, news_text, news_title, news_date, user_id
+                         FROM '.$FD->config('pref').'news
+                         WHERE `news_date` <= '.$FD->env('time').' AND `news_active` = 1
+                         ORDER BY `news_date` DESC
+                         LIMIT '.intval($FD->cfg('news', 'num_news')));
+        $news_arr = $news_arr->fetchAll(PDO::FETCH_ASSOC);
+
+        // Parse News items
+        foreach ($news_arr as $news) {
+            array_push($this->items, $this->parseNews($news));
+        }
+    }
+
+    protected function parseNews ($news) {
+        global $FD;
+
+        // Include functions & libs
+        require_once(FS2_ROOT_PATH . 'includes/fscode.php');
+
+        // check for latest news_date
+        if ($news['news_date'] > $this->lastUpdate)
+            $this->lastUpdate = $news['news_date'];
+
+        // get user name
+        $news['user_name'] = $FD->sql()->conn()->query(
+                                 'SELECT user_name FROM '.$FD->config('pref').'user
+                                  WHERE user_id = '.intval($news['user_id']).' LIMIT 1');
+        $news['user_name'] = $news['user_name']->fetchColumn();
+
+        // parse fscode in news
+        $flags = array(
+            'html' => $this->settings['use_html'],
+            'paragraph' => true,
+            'paragraph_to_text' => $this->settings['paragraph_to_text'],
+            'tab' => $this->settings['tab'],
+            'tabsize' => 8,
+            'full_urls' => true
+        );
+        $parsed_text = parse_fscode($news['news_text'], $flags, $this->settings['to_html'], $this->settings['to_text'], $this->settings['to_bbcode']);
+
+        // tpl_funcions
+        switch ($this->settings['tpl_functions']) {
+            case 'remove':
+                $parsed_text = remove_tpl_functions($parsed_text, get_all_tpl_functions());
+                break;
+            case 'softremove':
+                $parsed_text = tpl_functions ($parsed_text, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL'), false);
+                $parsed_text = remove_tpl_functions($parsed_text, get_all_tpl_functions());
+                break;
+            case 'softpreserve':
+                $parsed_text = tpl_functions ($parsed_text, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL'));
+                break;
+            default: // preserve
+                break;
+        }
+
+        // remove any html?
+        if (!$this->settings['use_html'])
+            $parsed_text = strip_tags($parsed_text);
+
+        // Cut Text
+        if ($this->settings['truncate'] !== false) {
+            $parsed_text = StringCutter::truncate($parsed_text, $this->settings['truncate'], $this->settings['truncate_extension'], $this->settings['truncate_awareness'], $this->settings['truncate_options']);
+        }
+
+        // Save item
+        $news['parsed_text'] = $parsed_text;
+
+        return $news;
+    }
+}
+
+class RSS20 extends NewsFeed {
 
     // Return Header XML
     protected function getHeaderXml() {
@@ -308,7 +331,7 @@ class RSS20 extends Feed {
     }
 }
 
-class RSS10 extends Feed {
+class RSS10 extends NewsFeed {
 
     // Return Header XML
     protected function getHeaderXml() {
@@ -359,7 +382,7 @@ class RSS10 extends Feed {
     }
 }
 
-class RSS091 extends Feed {
+class RSS091 extends NewsFeed {
 
     // Return Header XML
     protected function getHeaderXml() {
@@ -394,7 +417,7 @@ class RSS091 extends Feed {
     }
 }
 
-class Atom10 extends Feed {
+class Atom10 extends NewsFeed {
 
     // Return Header XML
     protected function getHeaderXml() {

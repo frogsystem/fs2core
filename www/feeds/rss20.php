@@ -23,8 +23,7 @@ $settings = array (
 set_include_path('.');
 define('FS2_ROOT_PATH', './../', true);
 require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
-//~ phpinit(false, 'Content-type: application/xml');
-phpinit(false);
+phpinit(false, 'Content-type: application/xml');
 /* End of FS2 PHP Init */
 
 
