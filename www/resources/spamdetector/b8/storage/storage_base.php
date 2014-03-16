@@ -138,7 +138,7 @@ abstract class b8_storage_base
 			
 		}
 		
-		# Here, we have all availible data in $token_data.
+		# Here, we have all available data in $token_data.
 		
 		$return_data_tokens = array();
 		$return_data_degenerates = array();
@@ -193,7 +193,7 @@ abstract class b8_storage_base
 		# First get the internals, including the ham texts and spam texts counter
 		$internals = $this->get_internals();
 		
-		# Then, fetch all data for all tokens we have (and update their lastseen parameters)
+		# Then, fetch all data for all tokens we have
 		$token_data = $this->_get_query(array_keys($tokens));
 		
 		# Process all tokens to learn/unlearn

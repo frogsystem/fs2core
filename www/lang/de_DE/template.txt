@@ -275,7 +275,7 @@ search_applet_keyword:                 Das Schlüsselwort, nach dem gesucht wurde
 search_search_title:                   Suchfeld
 search_search_desc:                    Suchfeld auf der Hauptsuchseite
 search_search_keyword:                 Das Schlüsselwort, nach dem gesucht wurde.
-search_operators:                      Die verfügbaren Suchoeprtoren als CSV.
+search_operators:                      Die verfügbaren Suchoperatoren als CSV.
 search_search_in_news:                 Setzt die „In News suchen“-Einstellung der HTML-Checkbox
 search_search_in_articles:             Setzt die „In Artikeln suchen“-Einstellung der HTML-Checkbox
 search_search_in_downloads:            Setzt die „In Downloads suchen“-Einstellung der HTML-Checkbox
