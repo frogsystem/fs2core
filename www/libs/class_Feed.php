@@ -83,7 +83,7 @@
 
 abstract class Feed {
 
-    private $settings = array (
+    protected $settings = array (
         'to_html' => array('b', 'i', 'u', 's', 'center', 'url', 'home', 'email', 'list', 'numlist'),
         'to_text' => array('img', 'cimg', 'font', 'color', 'size', 'code', 'quote', 'video', 'nofscode', 'html', 'nohtml'),
         'to_bbcode' => array(),
@@ -97,15 +97,15 @@ abstract class Feed {
         'tab' => 'nbsp'
     );
 
-    private $title;
-    private $fsUrl;
-    private $description;
-    private $language;
+    protected $title;
+    protected $fsUrl;
+    protected $description;
+    protected $language;
 
-    private $lastUpdate;
-    private $feedUrl;
+    protected $lastUpdate;
+    protected $feedUrl;
 
-    private $items = array();
+    protected $items = array();
 
 
     /**
@@ -122,7 +122,7 @@ abstract class Feed {
     }
 
     // Set Settings
-    private function setSettings($settings = array()) {
+    protected function setSettings($settings = array()) {
         foreach ($settings as $setting => $value) {
             if (isset($this->settings[$setting]))
                 $this->settings[$setting] = $value;
@@ -130,7 +130,7 @@ abstract class Feed {
     }
 
     // Load Data from DB and parse it
-    private function loadData() {
+    protected function loadData() {
         global $FD;
 
         // Include functions & libs
