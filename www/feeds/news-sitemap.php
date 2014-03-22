@@ -7,6 +7,8 @@ $news_settings = array (
     'name' => 'The-Witcher.de',
     'language' => 'de',
     'days' => 2,
+    'cat_filter' => array(),
+    'cat_prepend' => false
 );
 ##################
 ## Settings End ##
@@ -30,7 +32,7 @@ require_once(FS2_ROOT_PATH . 'libs/class_Feed.php');
 
 class NewsSitemap extends NewsFeed {
 
-    protected $days;
+    protected $days = 2;
 
     /**
      * Constructor of class Feed.
@@ -41,7 +43,8 @@ class NewsSitemap extends NewsFeed {
         parent::__construct($feedUrl, array());
         $this->title = $news_settings['name'];
         $this->language = $news_settings['language'];
-        $this->days = $news_settings['days'];
+        $this->days = $news_settings['days']?:$this->days;
+        $this->setSettings($news_settings);
     }
 
     protected function loadData() {
@@ -63,12 +66,15 @@ class NewsSitemap extends NewsFeed {
 
         // Get News from DB
         $news_arr = $FD->sql()->conn()->query(
-                        'SELECT news_id, news_text, news_title, news_date, user_id
-                         FROM '.$FD->config('pref').'news
-                         WHERE `news_active` = 1
-                         AND `news_date` <= '.$FD->env('time').'
-                         AND `news_date` > '.(strtotime('today') - 60*60*24*$this->days).'
-                         ORDER BY `news_date` DESC');
+                        'SELECT N.news_id, N.news_text, N.news_title, N.news_date, N.user_id, C.cat_name
+                         FROM '.$FD->config('pref').'news N
+                         LEFT JOIN '.$FD->config('pref').'news_cat C
+                         ON N.cat_id = C.cat_id
+                         WHERE N.`news_active` = 1
+                         AND N.`news_date` <= '.$FD->env('time').'
+                         AND N.`news_date` > '.(strtotime('today') - 60*60*24*$this->days).'
+                         '.(!empty($this->settings['cat_filter']) ? 'AND N.`cat_id` NOT IN ('.implode(',', $this->settings['cat_filter']).')' : '').'
+                         ORDER BY N.`news_date` DESC');
         $news_arr = $news_arr->fetchAll(PDO::FETCH_ASSOC);
 
         // Parse News items

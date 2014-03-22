@@ -336,7 +336,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         }
 
         if (in_array('numlist', $to_html) || in_array('numlist', $to_text)
-            || in_array('list', $to_html) || in_array('numlist', $list))   {
+            || in_array('list', $to_html) || in_array('numlist', $to_text))   {
             $fscode->addParser ('list', 'fscode_stripcontents');
             $fscode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
             $fscode->setCodeFlag ('*', 'paragraphs', false);

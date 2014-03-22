@@ -76,6 +76,19 @@
  *
  * */
 
+/* News Category Options
+ *
+ * Use $cat_filter to filter (= do NOT show) news from category-ids
+ * within this array.
+ * Set $cat_prepend to anything else then 'false' and the category-title
+ * will be prepended to the news title using $cat_prepend as delimiter:
+ *      $feed_title = $cat_title.$cat_prepend.$news_title;
+ *
+ * $cat_filter = array();
+ * $cat_prepend = false;
+ *
+ * */
+
 ##################
 ## Settings End ##
 ##################
@@ -173,7 +186,9 @@ abstract class NewsFeed extends Feed {
         'use_html' => true,
         'tpl_functions' => 'softremove',
         'paragraph_to_text' => false,
-        'tab' => 'nbsp'
+        'tab' => 'nbsp',
+        'cat_filter' => array(),
+        'cat_prepend' => false
     );
 
     /**
@@ -222,9 +237,12 @@ abstract class NewsFeed extends Feed {
 
         // Get News from DB
         $news_arr = $FD->sql()->conn()->query(
-                        'SELECT news_id, news_text, news_title, news_date, user_id
-                         FROM '.$FD->config('pref').'news
-                         WHERE `news_date` <= '.$FD->env('time').' AND `news_active` = 1
+                        'SELECT N.news_id, N.news_text, N.news_title, N.news_date, N.user_id, C.cat_name
+                         FROM '.$FD->config('pref').'news N
+                         LEFT JOIN '.$FD->config('pref').'news_cat C
+                         ON N.cat_id = C.cat_id
+                         WHERE N.`news_date` <= '.$FD->env('time').' AND N.`news_active` = 1
+                         '.(!empty($this->settings['cat_filter']) ? 'AND N.`cat_id` NOT IN ('.implode(',', $this->settings['cat_filter']).')' : '').'
                          ORDER BY `news_date` DESC
                          LIMIT '.intval($FD->cfg('news', 'num_news')));
         $news_arr = $news_arr->fetchAll(PDO::FETCH_ASSOC);
@@ -250,6 +268,12 @@ abstract class NewsFeed extends Feed {
                                  'SELECT user_name FROM '.$FD->config('pref').'user
                                   WHERE user_id = '.intval($news['user_id']).' LIMIT 1');
         $news['user_name'] = $news['user_name']->fetchColumn();
+
+        // prepend cat title
+        //~ var_dump($this->settings['cat_prepend']); exit;
+        if (false !== $this->settings['cat_prepend'] && isset($news['cat_name']) && !empty($news['cat_name'])) {
+            $news['news_title'] = $news['cat_name'].$this->settings['cat_prepend'].$news['news_title'];
+        }
 
         // parse fscode in news
         $flags = array(
