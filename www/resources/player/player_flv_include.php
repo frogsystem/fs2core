@@ -1,6 +1,6 @@
 <?php
 
-function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
+function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false ) {
 
     global $FD, $sql;
     $FD->loadConfig('video_player');
@@ -91,8 +91,10 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
     $video_arr['video_title'] = htmlspecialchars ( $video_arr['video_title'] );
 
     // return text output?
-    if ($TEXT) {
+    if ($MODIFIER == 'text') {
         return get_video_text($video_arr['video_x'], $video_arr['video_title'], $video_arr['video_type'], $video_arr['dl_id']);
+    } else if ($MODIFIER == 'bbcode') {
+        return get_video_bbcode($video_arr['video_x'], $video_arr['video_title'], $video_arr['video_type'], $video_arr['dl_id']);
     }
 
     // get dimensions
@@ -144,12 +146,13 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $TEXT = false ) {
     return $template_player;
 }
 
-function get_video_text($url, $title, $type, $dl_id = 0) {
+function get_video_url($url, $type, $dl_id = 0) {
     global $FD;
 
     // Existing Download?
-    if ($type == 1 && $dl_id != 0) {
-       $url = url('dlfile', array('id' => $dl_id), true);
+    if ($type <= 1 && $dl_id != 0) {
+        $type = 1;
+        $url = url('dlfile', array('id' => $dl_id), true);
     }
 
     // $URL ermitteln
@@ -164,7 +167,16 @@ function get_video_text($url, $title, $type, $dl_id = 0) {
             $url = $url;
             break;
         default:
-            break;
+            return null;
+    }
+
+    return $url;
+}
+function get_video_text($url, $title, $type, $dl_id = 0) {
+    // get url
+    $url = get_video_url($url, $title, $type, $dl_id);
+    if (empty($url)) {
+        return '';
     }
 
     // Return Text
@@ -173,5 +185,20 @@ function get_video_text($url, $title, $type, $dl_id = 0) {
     } else {
         return $FD->text('frontend', 'video').': '.$url;
     }
+}
+function get_video_bbcode($url, $title, $type, $dl_id = 0) {
+    // get url
+    $url = get_video_url($url, $title, $type, $dl_id);
+    if (empty($url)) {
+        return '';
+    }
+
+    // Return Text
+    if (!empty($title)) {
+        $content = $FD->text('frontend', 'video').': '.$title;
+    } else {
+        $content = $FD->text('frontend', 'video').': '.$url;
+    }
+    return '[url='.$url.']'.$content.'[/url]';
 }
 ?>

@@ -51,7 +51,8 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     /* TODO: to_bbcode
      * Convert "special" frogsystem tags to default bbcode
-     * e.g. home, cimg, numlist, size,
+     * Done: home, cimg, video
+     * Todo: numlist, html-videos (because there is no page to link on)
      * may not exists for all types
      * */
 
@@ -196,6 +197,9 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         } elseif  (in_array('home', $to_text)) {
             $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'text' => true, 'fullurl' => $flags['full_urls']),
                     'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+        } elseif  (in_array('home', $to_bbcode)) {
+            $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'bbcode' => true, 'fullurl' => $flags['full_urls']),
+                    'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         }
 
         // email
@@ -249,6 +253,9 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
                     'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         } elseif  (in_array('cimg', $to_text)) {
             $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'text' => true),
+                    'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        } elseif  (in_array('cimg', $to_bbcode)) {
+            $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'bbcode' => true),
                     'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
 
@@ -307,6 +314,9 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('numlist', 'callback_replace', 'do_fscode_textlists', array (),
                     'list', array ('block', 'listitem', 'htmlblock'), array ('link'));
         }
+        //~ elseif  (in_array('numlist', $to_bbcode)) {
+            //~ TODO
+        //~ }
 
         if (in_array('numlist', $to_html) || in_array('numlist', $to_text)) {
             $fscode->setCodeFlag ('numlist', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
@@ -382,8 +392,13 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
                     'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
             $fscode->addCode ('player', 'usecontent', 'do_fscode_video', array ('text' => true),
                     'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
+        } elseif  (in_array('video', $to_bbcode)) {
+            $fscode->addCode ('video', 'usecontent', 'do_fscode_video', array ('bbcode' => true),
+                    'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
+            $fscode->addCode ('player', 'usecontent', 'do_fscode_video', array ('bbcode' => true),
+                    'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
         }
-        if (in_array('video', $to_html) || in_array('video', $to_text)) {
+        if (in_array('video', $to_html) || in_array('video', $to_text) || in_array('video', $to_bbcode)) {
             $fscode->setCodeFlag ('video', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
             $fscode->setCodeFlag ('player', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         }
@@ -536,10 +551,13 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
     }
 
     // Return html or text
-    if (isset($params['text']) && $params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true) {
         return ($url == $content) ? $url : $content . ' ('.$url.')';
-    else
+    } else if (isset($params['bbcode']) && $params['bbcode'] === true) {
+        return ($url == $content) ? '[url]'.$url.'[/url]' : '[url='.$url.']'.$content.'[/url]';
+    } else {
         return '<a href="'.$url.'" target="_self">'.$content.'</a>';
+    }
 }
 
 // Create an email link
@@ -654,6 +672,11 @@ function do_fscode_cimg ($action, $attributes, $content, $params, $node_object) 
 
     // Extend Content Image Url
     $content = $FD->cfg('virtualhost').'media/content/'.$content;
+
+    // return img bbcode
+    if (isset($params['bbcode']) && $params['bbcode'] === true) {
+        return '[img]'.$content.'[/img]';
+    }
 
     // Call function for img fscode
     return do_fscode_img($action, $attributes, $content, $params, $node_object);
@@ -789,7 +812,9 @@ function do_fscode_video ($action, $attributes, $content, $params, $node_object)
 
     // Get HTML or text
     if (isset($params['text']) && $params['text'] === true) {
-        return get_player($content, true, true, true);
+        return get_player($content, true, true, 'text');
+    } else if (isset($params['bbcode']) && $params['bbcode'] === true) {
+        return get_player($content, true, true, 'bbcode');
     } else {
         if (!isset ($attributes['default'])) {
             return get_player ( $content );

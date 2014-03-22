@@ -94,7 +94,7 @@ class NewsSitemap extends NewsFeed {
     <loc>'.utf8_encode(url('comments', array('id' => $item['news_id']), true)).'</loc>
     <news:news>
       <news:publication>
-        <news:name>'.$this->name.'</news:name>
+        <news:name>'.$this->title.'</news:name>
         <news:language>'.$this->language.'</news:language>
       </news:publication>
       <news:publication_date>'.date("c", $item['news_date']).'</news:publication_date>

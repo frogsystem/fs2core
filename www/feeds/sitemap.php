@@ -43,7 +43,8 @@ class Sitemap extends Feed {
         $news_arr = $FD->sql()->conn()->query(
                         'SELECT `news_id`, `news_date`, `news_search_update`
                          FROM '.$FD->config('pref').'news
-                         WHERE `news_active` = 1 AND `news_date` <= '.$FD->env('time').'');
+                         WHERE `news_active` = 1 AND `news_date` <= '.$FD->env('time').'
+                         ORDER BY `news_search_update` DESC');
         $news_arr = $news_arr->fetchAll(PDO::FETCH_ASSOC);
         foreach ($news_arr as $news) {
             $item = array();
@@ -62,7 +63,8 @@ class Sitemap extends Feed {
         $articles = $FD->sql()->conn()->query(
                         'SELECT `article_id`, `article_url`, `article_date`, `article_search_update`
                          FROM '.$FD->config('pref').'articles
-                         WHERE `article_date` <= '.$FD->env('time').'');
+                         WHERE `article_date` <= '.$FD->env('time').'
+                         ORDER BY `article_search_update` DESC');
         $articles = $articles->fetchAll(PDO::FETCH_ASSOC);
         foreach ($articles as $article) {
             $item = array();
@@ -84,7 +86,8 @@ class Sitemap extends Feed {
         $downloads = $FD->sql()->conn()->query(
                         'SELECT `dl_id`, `dl_date`, `dl_search_update`
                          FROM '.$FD->config('pref').'dl
-                         WHERE `dl_open` = 1 AND `dl_date` <= '.$FD->env('time').'');
+                         WHERE `dl_open` = 1 AND `dl_date` <= '.$FD->env('time').'
+                         ORDER BY `dl_search_update` DESC');
         $downloads = $downloads->fetchAll(PDO::FETCH_ASSOC);
         foreach ($downloads as $download) {
             $item = array();
