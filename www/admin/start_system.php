@@ -63,6 +63,7 @@ echo '
                                 <td class="configthin">'.$FD->text("page", "num_snippets").':</td>
                                 <td class="configthin"><b>'.$num_snippets.'</b></td>
                             </tr>
+                            <tr>
                                 <td class="configthin">'.$FD->text("page", "num_snippets_active").':</td>
                                 <td class="configthin"><b>'.$num_snippets_active.'</b></td>
                             </tr>
