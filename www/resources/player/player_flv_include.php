@@ -147,8 +147,6 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false )
 }
 
 function get_video_url($url, $type, $dl_id = 0) {
-    global $FD;
-
     // Existing Download?
     if ($type <= 1 && $dl_id != 0) {
         $type = 1;
@@ -173,6 +171,8 @@ function get_video_url($url, $type, $dl_id = 0) {
     return $url;
 }
 function get_video_text($url, $title, $type, $dl_id = 0) {
+    global $FD;
+
     // get url
     $url = get_video_url($url, $title, $type, $dl_id);
     if (empty($url)) {
@@ -187,6 +187,8 @@ function get_video_text($url, $title, $type, $dl_id = 0) {
     }
 }
 function get_video_bbcode($url, $title, $type, $dl_id = 0) {
+    global $FD;
+
     // get url
     $url = get_video_url($url, $title, $type, $dl_id);
     if (empty($url)) {
