@@ -1,5 +1,5 @@
 <?php
-require_once(FS2_ROOT_PATH . 'libs/class_stringparser_bbcode.php');
+require_once(FS2_ROOT_PATH . 'libs/class_StringParser_BBCode.php');
 
 // strip any fscode
 function strip_fs($str, $allowable_tags = '') {
