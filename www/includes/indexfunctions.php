@@ -367,8 +367,14 @@ function get_meta_abstract ()
 /////////////////////////////////////
 //// Get canonical link meta tag ////
 /////////////////////////////////////
-function get_canonical()
-{
+function get_canonical() {
+    $url = get_canonical_url();
+	if (!empty($url)) {
+        return '<link rel="canonical" href="'.$url.'">';
+    }
+}
+
+function get_canonical_url() {
     global $FD;
 
 	// Check for homepage and in case don't use any paramter (including go) at all
@@ -392,8 +398,9 @@ function get_canonical()
             }
         }
 
-        return '<link rel="canonical" href="'.url($goto, $activeparams, true).'">';
+        return url($goto, $activeparams, true);
     }
+    return url($goto, array(), true);
 }
 
 
