@@ -34,7 +34,7 @@ if (
     // Is DL a Mirror?
     if (
             $config_arr['dl_rights'] == 2
-            || ( $config_arr['dl_rights'] == 1 && $_SESSION['user_level'] == 'loggedin' )
+            || ( $config_arr['dl_rights'] == 1 && is_loggedin() )
             || $check_file_is_mirror == 1
         )
     {

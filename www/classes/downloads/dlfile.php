@@ -54,7 +54,7 @@ if ($dl_arr !== false)
 
     if ($dl_config_arr['dl_rights']==2) {
       $dl_use = '';
-    } elseif ($dl_config_arr['dl_rights']==1 AND $_SESSION['user_level'] == 'loggedin') {
+    } elseif ($dl_config_arr['dl_rights']==1 && is_loggedin()) {
       $dl_use = '';
     } else {
       $dl_use = "AND file_is_mirror = '1'";
@@ -67,7 +67,7 @@ if ($dl_arr !== false)
       $messages_template .= $FD->text('frontend', 'dl_not_allowed');
     }
 
-    if ($dl_config_arr['dl_rights']==1 AND $_SESSION['user_level'] != 'loggedin') {
+    if ($dl_config_arr['dl_rights']==1 && is_loggedin()) {
       if ($messages_template != '')
         $messages_template .= '<br>';
       $messages_template .= $FD->text('frontend', 'dl_not_logged_in');
