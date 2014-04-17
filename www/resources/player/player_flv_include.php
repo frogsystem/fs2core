@@ -174,7 +174,7 @@ function get_video_text($url, $title, $type, $dl_id = 0) {
     global $FD;
 
     // get url
-    $url = get_video_url($url, $title, $type, $dl_id);
+    $url = get_video_url($url, $type, $dl_id);
     if (empty($url)) {
         return '';
     }
@@ -190,7 +190,7 @@ function get_video_bbcode($url, $title, $type, $dl_id = 0) {
     global $FD;
 
     // get url
-    $url = get_video_url($url, $title, $type, $dl_id);
+    $url = get_video_url($url, $type, $dl_id);
     if (empty($url)) {
         return '';
     }
