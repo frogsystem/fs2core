@@ -244,7 +244,8 @@ function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FAL
     settype ( $H, 'integer' );
     settype ( $I, 'integer' );
     settype ( $S, 'integer' );
-
+	
+	$savedate_arr = array();
     if ($WITHOUT_MKTIME !== TRUE) {
 
         $new_date = mktime ( $H, $I, $S, $M, $D, $Y );

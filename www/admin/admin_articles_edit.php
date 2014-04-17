@@ -389,8 +389,10 @@ function action_edit_get_data ( $ARTICLE_ID )
         $articles_arr['d'] = date ( 'd', $articles_arr['article_date'] );
         $articles_arr['m'] = date ( 'm', $articles_arr['article_date'] );
         $articles_arr['y'] = date ( 'y', $articles_arr['article_date'] );
-    }
-    $date_arr = getsavedate ( $articles_arr['d'], $articles_arr['m'], $articles_arr['y'], 0, 0, 0, TRUE );
+		$date_arr = getsavedate ( $articles_arr['d'], $articles_arr['m'], $articles_arr['y'], 0, 0, 0, TRUE );
+    } else {
+		$date_arr = array( 'd' => '', 'm' => '', 'y' => '' );
+	}
     $nowbutton_array = array( 'd', 'm', 'y' );
 
     // Data into Data-Array
