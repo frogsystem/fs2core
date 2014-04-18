@@ -15,9 +15,9 @@ $day_arr = explode(',', $FD->text('frontend', 'week_days_array'));
 array_unshift($day_arr, array_pop($day_arr));
 $month_arr = explode(',', $FD->text('frontend', 'month_names_array'));
 
-//////////////////////////////////
-//// Jahresauswahl generieren ////
-//////////////////////////////////
+/////////////////////////////////
+//// Generate year selection ////
+/////////////////////////////////
 
 echo'
                     <table class="configtable" cellpadding="4" cellspacing="0">
@@ -26,11 +26,11 @@ echo'
                             <td width="100%" colspan="2" align="center">
 ';
 
-// Erstes Jahr ermitteln
+// Determine first year
 $index = $FD->sql()->conn()->query('SELECT s_year FROM '.$FD->config('pref').'counter_stat ORDER BY s_year LIMIT 1');
 $dbfirstyear = $index->fetchColumn();
 
-// Ersten Monat ermitteln
+// find first month
 $index = $FD->sql()->conn()->query('SELECT s_month FROM '.$FD->config('pref')."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1");
 $dbfirstmonth = $index->fetchColumn();
 
@@ -41,7 +41,7 @@ if ( $_GET['s_year'] == $dbfirstyear ) { echo '</b>'; }
 echo '</a>';
 
 
-// Alle weiteren Jahre auflisten
+// List all other (later) years
 if ($dbfirstyear < date('Y'))
 {
     for ($y=$dbfirstyear+1; $y<=date('Y'); $y++)
@@ -54,9 +54,9 @@ if ($dbfirstyear < date('Y'))
     }
 }
 
-//////////////////////////////////
-/// Monatsstatistik generieren ///
-//////////////////////////////////
+///////////////////////////////////
+/// Generate monthly statistics ///
+///////////////////////////////////
 
 $monthname = date('n', mktime(0, 0, 0, $_GET['s_month']+1, 0, 0));
 echo'
@@ -86,7 +86,7 @@ echo'
                                     </tr>
 ';
 
-// Höchste PI diesen Monat ermitteln
+// Find highest PI count for month
 $index = $FD->sql()->conn()->query(
              'SELECT s_hits
               FROM '.$FD->config('pref')."counter_stat
@@ -97,7 +97,7 @@ $index = $FD->sql()->conn()->query(
 if (false == ($dbmaxhits = $index->fetchColumn()))
     $dbmaxhits = 0;
 
-// Tage ausgeben
+// Display Days
 $dcount = 0;
 $visitsall = 0;
 $hitsall = 0;
@@ -113,7 +113,7 @@ for ($d=1; $d<date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1;
     $dayname = date('w', mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
     $class = (($dayname == 0) || ($dayname == 6)) ? 'class="nw"' : 'class="n"';
 
-    // Tag vorhanden
+    // Day exists in DB
     if ($row !== false)
     {
         $dcount = $dcount+1;
@@ -213,11 +213,11 @@ echo'
                                     </tr>
 ';
 
-//////////////////////////////////
-/// Jahresstatistik generieren ///
-//////////////////////////////////
+/////////////////////////////////////////
+/// Generate statistics for full year ///
+/////////////////////////////////////////
 
-// Maximale Montaszahl ermitteln
+// Find maximum monthly hits for year
 $index = $FD->sql()->conn()->query(
              'SELECT SUM(s_hits) AS sumhits
               FROM '.$FD->config('pref')."counter_stat
@@ -308,22 +308,22 @@ echo'
                                 <p>
 ';
 
-//////////////////////////////////
-// sonstige Statistik generieren /
-//////////////////////////////////
+///////////////////////////////
+// Generate other statistics //
+///////////////////////////////
 
-// Counter lesen
+// Read Counter
 $index = $FD->sql()->conn()->query( 'SELECT * FROM '.$FD->config('pref').'counter' );
 $counterdaten = $index->fetch(PDO::FETCH_ASSOC);
 
-// User online
+// Users online
 $online = get_online_ips();
 
-// Best frequentierter Tag
+// Day of most hits
 $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_hits DESC LIMIT 1');
 $mosthits = $index->fetch(PDO::FETCH_ASSOC);
 
-// Best besuchter Tag
+// Day of most visits
 $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_visits DESC LIMIT 1');
 $mostvisits = $index->fetch(PDO::FETCH_ASSOC);
 

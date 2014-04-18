@@ -2,9 +2,9 @@
 
 echo noscript_nohidden ();
 
-//////////////////////////
-//// Video einstellen ////
-//////////////////////////
+///////////////////
+//// Add Video ////
+///////////////////
 
 if (
         isset($_POST['video_title']) && $_POST['video_title'] != '' &&
@@ -59,9 +59,9 @@ if (
     unset ( $_POST );
 }
 
-//////////////////////////
-///// Video Formular /////
-//////////////////////////
+//////////////////////
+///// Video Form /////
+//////////////////////
 
 if ( TRUE )
 {
@@ -211,7 +211,7 @@ if ( TRUE )
                                     <select name="dl_id">
                                         <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verkn&uuml;pfung</option>
         ';
-        // DL auflisten
+        // List DLs
         $index = $FD->sql()->conn()->query ( '
                         SELECT D.dl_id, D.dl_name, C.cat_name
                         FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C

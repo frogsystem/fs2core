@@ -438,7 +438,7 @@ function action_edit_display_page ( $data_arr )
                                 <td class="config">
                                     <select name="article_cat_id">
     ';
-    // Kategorien auflisten
+    // List categories
     $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat' );
     while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {

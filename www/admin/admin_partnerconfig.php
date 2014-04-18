@@ -6,9 +6,9 @@
 $used_cols = array('partner_anzahl', 'small_x', 'small_y', 'small_allow', 'big_x', 'big_y', 'big_allow', 'file_size');
 
 
-//////////////////////////////
-/// Partnerseite editieren ///
-//////////////////////////////
+///////////////////////////
+/// Edit affiliate site ///
+///////////////////////////
 
 if (isset($_POST['small_x']) && isset($_POST['small_y']) && isset($_POST['big_x']) && isset($_POST['big_y']) && isset($_POST['file_size']) && (isset($_POST['partner_anzahl']) && $_POST['partner_anzahl']>0))
 {
@@ -31,9 +31,9 @@ if (isset($_POST['small_x']) && isset($_POST['small_y']) && isset($_POST['big_x'
     unset($_POST);
 }
 
-//////////////////////////////
-/// Partnerseite anzeigen ////
-//////////////////////////////
+///////////////////////////////
+/// Display affiliate site ////
+///////////////////////////////
 
 if ( TRUE )
 {

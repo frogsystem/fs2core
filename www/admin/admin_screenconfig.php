@@ -5,9 +5,9 @@
 ###################
 $used_cols = array('screen_x', 'screen_y', 'screen_thumb_x', 'screen_thumb_y', 'screen_size', 'screen_rows', 'screen_cols', 'screen_order', 'screen_sort', 'show_type', 'show_size_x', 'show_size_y', 'show_img_x', 'show_img_y', 'wp_x', 'wp_y', 'wp_thumb_x', 'wp_thumb_y', 'wp_size', 'wp_rows', 'wp_cols', 'wp_order', 'wp_sort');
 
-/////////////////////////////////////
-//// Konfiguration aktualisieren ////
-/////////////////////////////////////
+//////////////////////////////
+//// Configuration Update ////
+//////////////////////////////
 
 if (TRUE
     && isset ($_POST['show_type'])
@@ -52,9 +52,9 @@ if (TRUE
     unset($_POST);
 }
 
-/////////////////////////////////////
-////// Konfiguration Formular ///////
-/////////////////////////////////////
+/////////////////////////////////
+////// Configuration Form ///////
+/////////////////////////////////
 
 if (true) {
 

@@ -18,12 +18,12 @@ settype ($_GET['s_month'], 'integer');
 
 $monthnames = explode(',', $FD->text('frontend', 'month_names_array'));
 $monthname = $monthnames[$_GET['s_month']-1];
-$feldbreite = 458 / date_loc('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']));  // Anzahle der Tage im Monat
+$feldbreite = 458 / date_loc('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']));  // Numbers of days per month
 
 $imagewidth = 500;
 $imageheight = 300;
 
-// Farben
+// Colours
 $image        = imagecreate($imagewidth,$imageheight);
 $farbe_body   = imagecolorallocate($image,21,21,21);
 $farbe_visits = imagecolorallocate($image,85,85,85);
@@ -34,7 +34,7 @@ $farbe_rand   = imagecolorallocate($image,0,0,0);
 $farbe_text2  = imagecolorallocate($image,25,25,25);
 $farbe_text3  = imagecolorallocate($image,204,204,204);
 
-// Oberfläche
+// Area
 imagestring ($image,3,140,11, $FD->text('page', 'monthly_statistics')." ($monthname $_GET[s_year])",$farbe_text);
 imagefilledrectangle($image,20,35,45,40,$farbe_visits);
 imagestring ($image,2,57,30,'Visits',$farbe_text);
@@ -42,7 +42,7 @@ imagefilledrectangle($image,455,35,480,40,$farbe_hits);
 imagestring ($image,2,418,30,'Hits',$farbe_text);
 imagefilledrectangle($image,20,45,480,285,$farbe_rot);
 
-// Hitskurve
+// Hits curve
 $index = $FD->sql()->conn()->query(
              'SELECT s_hits
               FROM '.$FD->env('pref')."counter_stat
@@ -68,42 +68,42 @@ for ($d=1; $d<$anz_tage+1; $d++)
     if ($row !== false)
     {
         $dbhits = $row['s_hits'];
-        // X-Koordinate
+        // X-coordinate
         $hitsarray[$arraycount] = $startwert;
         $startwert = $startwert + $feldbreite;
         $arraycount = $arraycount+1;
-        // Y-Koordinate
+        // Y-coordinate
         $hitsarray[$arraycount] = 285 - ($dbhits / $dbmaxhits * 220);
         $arraycount = $arraycount+1;
     }
     else
     {
-        // X-Koordinate
+        // X-coordinate
         $hitsarray[$arraycount] = $startwert;
         $startwert = $startwert + $feldbreite;
         $arraycount = $arraycount+1;
-        // Y-Koordinate
+        // Y-coordinate
         $hitsarray[$arraycount] = 285;
         $arraycount = $arraycount+1;
     }
 }
 
-// X-Koordinate
+// X-coordinate
 $hitsarray[$arraycount] = 479;
 $arraycount = $arraycount+1;
-// Y-Koordinate
+// Y-coordinate
 $hitsarray[$arraycount] = $hitsarray[$arraycount-2];
 $arraycount = $arraycount+1;
-// X-Koordinate
+// X-coordinate
 $hitsarray[$arraycount] = 480;
 $arraycount = $arraycount+1;
-// Y-Koordinate
+// Y-coordinate
 $hitsarray[$arraycount] = 285;
 $arraycount = $arraycount+1;
-// X-Koordinate
+// X-coordinate
 $hitsarray[$arraycount] = 20;
 $arraycount = $arraycount+1;
-// Y-Koordinate
+// Y-coordinate
 $hitsarray[$arraycount] = 285;
 $arraycount = $arraycount+1;
 
@@ -112,7 +112,7 @@ $hitsarray[1] = $hitsarray[3];
 imagefilledpolygon($image, $hitsarray, round($arraycount/2) , $farbe_hits);
 
 
-// Visitskurve
+// Visits curve
 $index = $FD->sql()->conn()->query(
              'SELECT s_visits
               FROM '.$FD->config('pref')."counter_stat
@@ -137,42 +137,42 @@ if ($dbmaxvisits > 0) {
       if ($row !== false)
       {
           $dbvisits = $row['s_visits'];
-          // X-Koordinate
+          // X-coordinate
           $visitsarray[$arraycount] = $startwert;
           $startwert = $startwert + $feldbreite;
           $arraycount = $arraycount+1;
-          // Y-Koordinate
+          // Y-coordinate
           $visitsarray[$arraycount] = 285 - ($dbvisits / $dbmaxvisits * 160);
           $arraycount = $arraycount+1;
       }
       else
       {
-          // X-Koordinate
+          // X-coordinate
           $visitsarray[$arraycount] = $startwert;
           $startwert = $startwert + $feldbreite;
           $arraycount = $arraycount+1;
-          // Y-Koordinate
+          // Y-coordinate
           $visitsarray[$arraycount] = 285;
           $arraycount = $arraycount+1;
       }
   }
 
-  // X-Koordinate
+  // X-coordinate
   $visitsarray[$arraycount] = 479;
   $arraycount = $arraycount+1;
-  // Y-Koordinate
+  // Y-coordinate
   $visitsarray[$arraycount] = $visitsarray[$arraycount-2];
   $arraycount = $arraycount+1;
-  // X-Koordinate
+  // X-coordinate
   $visitsarray[$arraycount] = 480;
   $arraycount = $arraycount+1;
-  // Y-Koordinate
+  // Y-coordinate
   $visitsarray[$arraycount] = 285;
   $arraycount = $arraycount+1;
-  // X-Koordinate
+  // X-coordinate
   $visitsarray[$arraycount] = 20;
   $arraycount = $arraycount+1;
-  // Y-Koordinate
+  // Y-coordinate
   $visitsarray[$arraycount] = 285;
   $arraycount = $arraycount+1;
 
@@ -183,7 +183,7 @@ if ($dbmaxvisits > 0) {
   $dbmaxvisits = 1;
 }
 
-// Tage
+// Days
 $startwert = 24;
 for ($d=1; $d<$anz_tage+1; $d++)
 {
@@ -201,7 +201,7 @@ for ($d=1; $d<$anz_tage; $d++)
     imageline($image,$startwert,45,$startwert,285,$farbe_rot);
 }
 
-// Scala
+// Scale
 imagerectangle($image,20,45,480,285,$farbe_rand);
 
 switch (TRUE)

@@ -1,13 +1,13 @@
 <?php
 /////////////////////
-//// Config laden ///
+//// Load Config ////
 /////////////////////
 $FD->loadConfig('screens');
 $config_arr = $FD->configObject('screens')->getConfigArray();
 
-/////////////////////////////
-//// Screenshot hochladen ///
-/////////////////////////////
+///////////////////////////
+//// Screenshot Upload ////
+///////////////////////////
 
 if (isset($_POST['sended']))
 {
@@ -54,9 +54,9 @@ if (isset($_POST['sended']))
     }
 }
 
-/////////////////////////////
-//// Screenshot Formular ////
-/////////////////////////////
+/////////////////////////
+//// Screenshot Form ////
+/////////////////////////
 
 echo'
                     <form action="" enctype="multipart/form-data" method="post">

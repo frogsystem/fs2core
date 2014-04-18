@@ -5,9 +5,9 @@
 ###################
 $used_cols = array('active', 'type_priority', 'use_priority_only', 'timed_deltime');
 
-/////////////////////////////////////
-//// Konfiguration aktualisieren ////
-/////////////////////////////////////
+//////////////////////////////
+//// Configuration Update ////
+//////////////////////////////
 
 if (isset($_POST['sended']) AND (($_POST['timed_deltime']==1 AND $_POST['deltime_time']) OR $_POST['timed_deltime']!=1) )
 {

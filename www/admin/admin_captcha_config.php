@@ -6,9 +6,9 @@
 $used_cols = array('captcha_bg_color', 'captcha_bg_transparent', 'captcha_text_color', 'captcha_first_lower', 'captcha_first_upper', 'captcha_second_lower', 'captcha_second_upper', 'captcha_use_addition', 'captcha_use_subtraction', 'captcha_use_multiplication', 'captcha_create_easy_arithmetics', 'captcha_x', 'captcha_y', 'captcha_show_questionmark', 'captcha_use_spaces', 'captcha_show_multiplication_as_x', 'captcha_start_text_x', 'captcha_start_text_y', 'captcha_font_size', 'captcha_font_file');
 
 
-/////////////////////////////////////
-//// Konfiguration aktualisieren ////
-/////////////////////////////////////
+//////////////////////////////
+//// Update Configuration ////
+//////////////////////////////
 
 if (true
         && isset($_POST['captcha_bg_color']) && is_hexcolor ( '#'.$_POST['captcha_bg_color'] )
@@ -67,9 +67,9 @@ if (true
     unset($_POST);
 }
 
-/////////////////////////////////////
-////// Konfiguration Formular ///////
-/////////////////////////////////////
+/////////////////////////////////
+////// Configuration Form ///////
+/////////////////////////////////
 
 if ( TRUE )
 {

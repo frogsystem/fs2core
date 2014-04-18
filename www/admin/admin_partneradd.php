@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-//////////////////////////////
-/// Config laden /////////////
-//////////////////////////////
+/////////////////////////////
+/// Load Config /////////////
+/////////////////////////////
 $FD->loadConfig('affiliates');
 $config_arr = $FD->configObject('affiliates')->getConfigArray();
 
@@ -22,9 +22,9 @@ if ($config_arr['big_allow'] == 0) {
 }
 
 
-///////////////////////////////
-//// Partnerbild hochladen ////
-///////////////////////////////
+//////////////////////////////
+//// Upload Partner image ////
+//////////////////////////////
 if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
     && isset($_FILES['bild_big']['name']) && $_FILES['bild_big']['name'] != ''
     && (isset($_POST['name']) AND $_POST['name'] != '')
@@ -88,9 +88,9 @@ if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
 }
 
 
-//////////////////////////
-//// Error Message    ////
-//////////////////////////
+///////////////////////
+//// Error Message ////
+///////////////////////
 elseif (isset($_POST['sended'])) {
     echo get_systext($FD->text('admin', 'changes_not_saved').'<br>'.$FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), 'red', $FD->text('admin', 'icon_save_error'));
 
@@ -104,9 +104,9 @@ if (!isset($_POST['name'])) $_POST['name'] = '';
 if (!isset($_POST['description'])) $_POST['description'] = '';
 if (!isset($_POST['permanent'])) $_POST['permanent'] = '';
 
-//////////////////////////
-//// Partner Formular ////
-//////////////////////////
+//////////////////////
+//// Partner Form ////
+//////////////////////
 echo'
                     <form action="" enctype="multipart/form-data" method="post">
                         <input type="hidden" value="partner_add" name="go">

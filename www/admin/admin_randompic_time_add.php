@@ -1,7 +1,7 @@
 <?php
-//////////////////////////////////
-//// Zeitgest. Zb. eintragen /////
-//////////////////////////////////
+//////////////////////////////////////////////
+//// Insert time-controlled random image /////
+//////////////////////////////////////////////
 $startdate = null;
 $enddate   = null;
 if (!empty($_POST['screen_id'])) {
@@ -17,13 +17,13 @@ if ($startdate < $enddate) {
                         )");
     systext('Zeitgesteuertes Zufallsbild wurde hinzugef&uuml;gt');
 }
-/////////////////////////////
-//// Screenshot Formular ////
-/////////////////////////////
+/////////////////////////
+//// Screenshot Form ////
+/////////////////////////
 else
 {
 
-    //Zeit-Array für Jetzt Button
+    //Time Array for "Now" Button
     $jetzt['time'] = time();
     $jetzt['tag'] = date('d', $jetzt['time']);
     $jetzt['monat'] = date('m', $jetzt['time']);
@@ -54,7 +54,7 @@ else
                         <input type="hidden" value="timedpic_add" name="go">
                         <input type="hidden" value="1" name="sended">
                         <table class="content" cellpadding="0" cellspacing="0">
-                            <tr><td colspan="5"><h3>Zeitgesteuertes Vorschaubild hinzufügen</h3><hr></td></tr>
+                            <tr><td colspan="5"><h3>Zeitgesteuertes Vorschaubild hinzuf&uuml;gen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" valign="top" width="120">
                                     Bild:<br>

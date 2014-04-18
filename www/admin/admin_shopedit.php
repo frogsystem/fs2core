@@ -1,9 +1,9 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 
-////////////////////////////////
-//// Artikel aktualiesieren ////
-////////////////////////////////
+////////////////////////
+//// Article Update ////
+////////////////////////
 
 if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && $_POST['sended'] == 'edit'
     && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
@@ -49,9 +49,9 @@ if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && 
     unset($_POST);
 }
 
-////////////////////////////////
-////// Artikel editieren ///////
-////////////////////////////////
+///////////////////////////
+////// Edit Article ///////
+///////////////////////////
 
 if (isset($_POST['artikelid']))
 {
@@ -154,9 +154,9 @@ if (isset($_POST['artikelid']))
         ';
 }
 
-////////////////////////////////
-////// Artikel auswählen ///////
-////////////////////////////////
+/////////////////////////////
+////// Select Article ///////
+/////////////////////////////
 
 else
 {
