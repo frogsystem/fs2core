@@ -11,8 +11,6 @@ $config_arr = $FD->configObject('articles')->getConfigArray();
 ///////////////////
 function default_set_filter_data ( $FORM )
 {
-    global $FD;
-
     if ( !isset ( $FORM['order'] ) ) { $FORM['order'] = 'article_title'; }
     if ( !isset ( $FORM['sort'] ) ) { $FORM['sort'] = 'ASC'; }
     if ( !isset ( $FORM['cat_id'] ) ) { $FORM['cat_id'] = 0; }

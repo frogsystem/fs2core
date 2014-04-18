@@ -44,11 +44,8 @@ class SitemapIndex extends Feed {
 
     // Return Header XML
     protected function getHeaderXml() {
-        global $FD;
-
         return '<?xml version="1.0" encoding="UTF-8"?>
    <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-
     }
 
     // Load Data from DB and parse it

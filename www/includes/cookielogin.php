@@ -57,7 +57,7 @@ function set_cookie ( $username, $password )
     {
 
         $dbuserpass = $row['user_password'];
-        $dbuserid = $row['user_id'];
+        //$dbuserid = $row['user_id'];
         $dbusersalt= $row['user_salt'];
         $password = md5 ( $password.$dbusersalt );
 
