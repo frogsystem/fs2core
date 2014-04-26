@@ -163,7 +163,7 @@ else
                                 <td class="config">
                                     <select name="article_cat_id">
         ';
-    // Kategorien auflisten
+    // List categories
     $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat' );
     while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
@@ -280,13 +280,13 @@ else
 }
 
 
-/////////////////////////////////////
-//// Artikel in die DB schreiben ////
-/////////////////////////////////////
+//////////////////////////////
+//// Save article into DB ////
+//////////////////////////////
 
 if (isset($_POST['url']) && isset($_POST['title']) && isset($_POST['text']) && isset($_POST['cat_id']))
 {
-    if ($_POST['tag'] && $_POST['monat'] && $_POST['jahr'])  // Datum überprüfen
+    if (isset($_POST['tag']) && isset($_POST['monat']) && isset($_POST['jahr']))  // check date
     {
        $date = mktime(0, 0, 0, $_POST['monat'], $_POST['tag'], $_POST['jahr']);
     }

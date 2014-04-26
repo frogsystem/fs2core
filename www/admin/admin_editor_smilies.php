@@ -50,9 +50,9 @@ elseif (isset($_POST['delete_smilies']))
     systext('Ausgew&auml;hlte Smilies wurden gel&ouml;scht!');
 }
 
-////////////////////////////
-//// Smilie Positionen  ////
-////////////////////////////
+///////////////////////////
+//// Smilie Positions  ////
+///////////////////////////
 
 elseif (isset($_GET['action']) AND ($_GET['action']=='moveup' OR $_GET['action']=='movedown') AND isset($_GET['oid']))
 {
@@ -72,9 +72,9 @@ elseif (isset($_GET['action']) AND ($_GET['action']=='moveup' OR $_GET['action']
     }
 }
 
-////////////////////////////
-////// smilie list    //////
-////////////////////////////
+/////////////////////////
+////// smilie list //////
+/////////////////////////
 
   $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'editor_config');
   $config_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -163,7 +163,7 @@ if ( $num_rows > 0 )
                             </tr>
     ';
 
-    // Smilies auslesen
+    // Read Smilies from DB
     $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref').'smilies');
     $smilie_last = $index->fetchColumn();
     $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies ORDER BY `order` ASC');

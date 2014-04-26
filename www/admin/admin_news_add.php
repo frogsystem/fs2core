@@ -159,14 +159,14 @@ if ( TRUE ) {
 
             if(isset($_POST['link']) && !empty($_POST['link_action'])) {
 
-                // löschen
+                // delete
                 if ($_POST['link_action'] == 'del') {
                     unset($_POST['link_name'][$_POST['link']], $_POST['link_url'][$_POST['link']], $_POST['link_target'][$_POST['link']]);
                 }
 
                 //up
                 elseif ($_POST['link_action'] == 'up' && $_POST['link'] != 0) {
-                    // werte tauschen
+                    // exchange values
                     list($_POST['link_name'][$_POST['link']-1], $_POST['link_name'][$_POST['link']])
                         = array($_POST['link_name'][$_POST['link']], $_POST['link_name'][$_POST['link']-1]);
                     list($_POST['link_url'][$_POST['link']-1], $_POST['link_url'][$_POST['link']])
@@ -177,7 +177,7 @@ if ( TRUE ) {
 
                 //down
                 elseif ($_POST['link_action'] == 'down' && $_POST['link'] < count($_POST['link_name'])-1) {
-                    // werte tauschen
+                    // exchange values
                     list($_POST['link_name'][$_POST['link']+1], $_POST['link_name'][$_POST['link']])
                         = array($_POST['link_name'][$_POST['link']], $_POST['link_name'][$_POST['link']+1]);
                     list($_POST['link_url'][$_POST['link']+1], $_POST['link_url'][$_POST['link']])
@@ -186,7 +186,7 @@ if ( TRUE ) {
                         = array($_POST['link_target'][$_POST['link']], $_POST['link_target'][$_POST['link']+1]);
                 }
 
-                //bearbeiten
+                //edit
                 elseif ($_POST['link_action'] == 'edit') {
                     $_POST['new_link_name'] = $_POST['link_name'][$_POST['link']];
                     $_POST['new_link_url'] = $_POST['link_url'][$_POST['link']];

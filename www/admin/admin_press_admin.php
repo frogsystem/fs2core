@@ -70,9 +70,9 @@ elseif ((isset($_POST['title']) AND $_POST['title'] != '')
     unset($_POST['entry_id']);
 }
 
-////////////////////////////
-//// Pressadmin löschen ////
-////////////////////////////
+///////////////////////////
+//// Pressadmin delete ////
+///////////////////////////
 elseif (isset($_POST['entry_action'])
     && $_POST['entry_action'] == 'delete'
     && isset($_POST['sended'])
@@ -85,7 +85,7 @@ elseif (isset($_POST['entry_action'])
     settype($_POST['entry_is'], 'integer');
     settype($_POST['entry_move_to'], 'integer');
 
-    if ($_POST['delete_press_admin'])   // Partnerseite löschen
+    if ($_POST['delete_press_admin'])   // delete press report
     {
         $index = $FD->sql()->conn()->query('SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = '$_POST[entry_id]'");
         $entry_arr['type'] = $index->fetchColumn();
@@ -134,9 +134,9 @@ elseif (isset($_POST['entry_action'])
     unset($_POST['entry_move_to']);
 }
 
-////////////////////////////
-//// Pressadmin anzeigen ///
-////////////////////////////
+/////////////////////////
+//// Pressadmin Show ////
+/////////////////////////
 elseif (isset($_POST['entry_action'])
     && $_POST['entry_action'] == 'edit'
     && isset($_POST['entry_id'])
@@ -235,9 +235,9 @@ elseif (isset($_POST['entry_action'])
     ';
 }
 
-////////////////////////////
-//// Pressadmin löschen ////
-////////////////////////////
+///////////////////////////
+//// Pressadmin Delete ////
+///////////////////////////
 elseif (isset($_POST['entry_action'])
     && $_POST['entry_action'] == 'delete'
     && isset($_POST['entry_id'])

@@ -13,9 +13,9 @@ $defaults = array(
 );
 
 
-/////////////////////////////
-//// Screenshot hochladen ///
-/////////////////////////////
+//////////////////////////
+//// Upload Screenshot ///
+//////////////////////////
 
 
 $catsqry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
@@ -79,9 +79,9 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
 	systext ( $message );
 }
 
-/////////////////////////////
-//// Screenshot Formular ////
-/////////////////////////////
+/////////////////////////
+//// Screenshot Form ////
+/////////////////////////
     $error_message = '';
 
     if (isset($_POST['sended']))

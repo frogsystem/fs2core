@@ -193,11 +193,11 @@ FS2_STRING;
                         $text[] = create_thumb_notice($thumb);
                         $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'cimg` SET `hasthumb`=1 WHERE `id`='.$file);
                     } elseif (isset($_POST['thumb'])) {
-                        $text[] = "Bitte Abmessung für das Vorschaubild angeben";
+                        $text[] = 'Bitte Abmessung f&uuml;r das Vorschaubild angeben';
                     }
 
                     if (empty($text)) {
-                        $text[] = "Keine Änderungen vorgenommen";
+                        $text[] = 'Keine &Auml;nderungen vorgenommen';
                     }
 
                     systext(implode('<br>', $text));

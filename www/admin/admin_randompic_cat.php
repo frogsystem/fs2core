@@ -1,8 +1,8 @@
 <?php
 
-///////////////////////////
-//// Auswahl speichern ////
-///////////////////////////
+////////////////////////
+//// Save Selection ////
+////////////////////////
 
 if (isset($_POST['sended']))
 {
@@ -17,15 +17,15 @@ if (isset($_POST['sended']))
     systext('Einstellungen wurden gespeichert!');
 }
 
-////////////////////////
-/// Eingabeformular ////
-////////////////////////
+///////////////////
+/// Input form ////
+///////////////////
     echo'
                     <form action="" method="post">
                         <input type="hidden" value="randompic_cat" name="go">
                         <input type="hidden" value="1" name="sended">
                         <table class="content" cellpadding="0" cellspacing="0">
-                            <tr><td colspan="5"><h3>Kategorien auswählen</h3><hr></td></tr>
+                            <tr><td colspan="5"><h3>Kategorien ausw&auml;hlen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="30%">
                                     Name

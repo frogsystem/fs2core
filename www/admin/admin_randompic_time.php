@@ -1,7 +1,7 @@
 <?php
-//////////////////////////////
-/// Randompic editieren //////
-//////////////////////////////
+////////////////////////
+//// Edit Randompic ////
+////////////////////////
 $startdate = null;
 $enddate   = null;
 if (!empty($_POST['screen_id'])
@@ -39,9 +39,9 @@ if (!empty($_POST['screen_id'])
 
 
 
-//////////////////////////////
-/// Randompic löschen ////////
-//////////////////////////////
+/////////////////////////////
+/// Delete Randompic ////////
+/////////////////////////////
 elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
     && isset($_POST['sended']) && $_POST['sended'] == 'delete'
     && isset($_POST['random_id'])
@@ -49,7 +49,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 {
     settype($_POST['random_id'], 'integer');
 
-    if ($_POST['delete_random'])   // Randompic löschen
+    if ($_POST['delete_random'])   // Delete Randompic
     {
         $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen_random WHERE random_id = '$_POST[random_id]'");
         systext($FD->text('page', 'note_deleted'));
@@ -67,9 +67,9 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 
 
 
-//////////////////////////////
-/// Randompic editieren //////
-//////////////////////////////
+/////////////////////////
+/// Edit Randompic //////
+/////////////////////////
 elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
         && isset($_POST['random_id'])
        )
@@ -92,7 +92,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
     $random_arr['end_h'] = date('H', $random_arr['end']);
     $random_arr['end_min'] = date('i', $random_arr['end']);
 
-    //Zeit-Array für Jetzt Button
+    //Time Array for "Now" Button
     $jetzt['time'] = time();
     $jetzt['tag'] = date('d', $jetzt['time']);
     $jetzt['monat'] = date('m', $jetzt['time']);
@@ -196,9 +196,9 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
 
 
 
-//////////////////////////////
-/// Randompic löschen ////////
-//////////////////////////////
+/////////////////////////////
+/// Delete Randompic ////////
+/////////////////////////////
 elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
         && isset($_POST['random_id'])
        )
@@ -261,9 +261,9 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 
 
 
-//////////////////////////////
-/// Randompic Auswahl ////////
-//////////////////////////////
+/////////////////////////////
+//// Randompic Selection ////
+/////////////////////////////
 if (!isset($_POST['random_id']))
 {
     echo'<p></p>

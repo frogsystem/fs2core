@@ -1,14 +1,14 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-/////////////////////
-//// Config laden ///
-/////////////////////
+////////////////////
+//// Load Config ///
+////////////////////
 $FD->loadConfig('screens');
 $config_arr = $FD->configObject('screens')->getConfigArray();
 
-/////////////////////////////
-//// Screenshot hochladen ///
-/////////////////////////////
+//////////////////////////
+//// Screenshot Upload ///
+//////////////////////////
 
 if (isset($_FILES['sizeimg_0']) AND isset($_POST['size']['0']) AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['wpadd']) AND $_POST['wpadd'] == 1)
 {
@@ -80,9 +80,9 @@ else
 
 }
 
-////////////////////////////
-//// Wallpaper Formular ////
-////////////////////////////
+////////////////////////
+//// Wallpaper Form ////
+////////////////////////
 
     if (!isset($_POST['options']))
     {

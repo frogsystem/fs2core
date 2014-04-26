@@ -60,7 +60,7 @@ $settings = (object) $settings;
         $text = str_replace(array("\r\n", "\r"), "\n", strip_fs(strip_tags($text)));
         $lines = explode("\n", $text);
         $new_lines = array();
-        foreach ($lines as $i => $line) {
+        foreach ($lines as $line) {
             if(!empty($line)) {
                 $new_lines[] = trim($line);
             }

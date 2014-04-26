@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-////////////////////////////
-//// Umfrage hinzufügen ////
-////////////////////////////
+//////////////////
+//// Add poll ////
+//////////////////
 
 if (isset($_POST['polladd']) && !isset($_POST['add_answers']) && isset($_POST['frage']) && !emptystr($_POST['ant'][0]) && !emptystr($_POST['ant'][1]))
 {
@@ -12,7 +12,7 @@ if (isset($_POST['polladd']) && !isset($_POST['add_answers']) && isset($_POST['f
 
     $_POST['type'] = ($_POST['type'] == 1) ? 1 : 0;
 
-    // Umfrage in die DB eintragen
+    // Insert poll into DB
     $stmt = $FD->sql()->conn()->prepare(
                 'INSERT INTO '.$FD->config('pref')."poll (poll_quest, poll_start, poll_end, poll_type)
                  VALUES (?,
@@ -21,7 +21,7 @@ if (isset($_POST['polladd']) && !isset($_POST['add_answers']) && isset($_POST['f
                          '".$_POST['type']."')");
     $stmt->execute(array($_POST['frage']));
 
-    // Antworten in die DB eintragen
+    // Insert answers into DB
     $stmt = $FD->sql()->conn()->prepare('SELECT poll_id FROM '.$FD->config('pref').'poll WHERE poll_quest = ?');
     $stmt->execute(array($_POST['frage']));
     $id = $stmt->fetchColumn();
@@ -39,9 +39,9 @@ if (isset($_POST['polladd']) && !isset($_POST['add_answers']) && isset($_POST['f
     unset($_POST);
 }
 
-////////////////////////////
-///// Umfrage Formular /////
-////////////////////////////
+/////////////////////
+///// Poll Form /////
+/////////////////////
 
 if(true)
 {
@@ -49,7 +49,7 @@ if(true)
         echo get_systext($FD->text("admin", "changes_not_saved").'<br>'.$FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), 'red', $FD->text("admin", "icon_save_error"));
     }
 
-    //Zeit-Array für Jetzt Button
+    //time array for "Now" Button
     $jetzt['tag'] = date('d');
     $jetzt['monat'] = date('m');
     $jetzt['jahr'] = date('Y');
@@ -225,7 +225,7 @@ if(true)
                             </tr>
     ';
 
-    // Antwortfelder hinzufügen
+    // add fields for answer options
     for ($i=1; $i<$_POST['options']+1; $i++)
     {
         $j = $i - 1;

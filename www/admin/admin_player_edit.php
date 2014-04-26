@@ -284,7 +284,7 @@ if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
                                     <select name="dl_id">
                                         <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verkn&uuml;pfung</option>
         ';
-        // DL auflisten
+        // List downloads
         $index = $FD->sql()->conn()->query ( '
                             SELECT D.dl_id, D.dl_name, C.cat_name
                             FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C

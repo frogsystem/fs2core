@@ -602,9 +602,6 @@ function get_email_template ( $TEMPLATE_NAME )
 
 function send_mail ( $TO, $SUBJECT, $CONTENT, $HTML = TRUE, $FROM = FALSE, $TPL_FUNC = true)
 {
-    global $FD;
-
-
     if ($FROM == FALSE) {
         $FROM = MailManager::getDefaultSender();
     }
@@ -613,9 +610,9 @@ function send_mail ( $TO, $SUBJECT, $CONTENT, $HTML = TRUE, $FROM = FALSE, $TPL_
 }
 
 
-////////////////////////////////
-//// Create textarea        ////
-////////////////////////////////
+/////////////////////////
+//// Create textarea ////
+/////////////////////////
 
 function create_textarea($name, $text='', $width='', $height='', $class='', $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
 {
