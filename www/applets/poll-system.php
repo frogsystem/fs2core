@@ -60,9 +60,9 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
 //////////////////////////
 //// View Result      ////
 //////////////////////////
-if (isset($_POST['poll_id']) &&
+if (
     (
-        ($_POST['poll_id'] === $poll_arr['poll_id'] || $poll_arr['random'] === true)
+        isset($_POST['poll_id']) && ($_POST['poll_id'] === $poll_arr['poll_id'] || $poll_arr['random'] === true)
         || checkVotedPoll($poll_arr['poll_id'])
         || (isset($poll_arr['poll_end']) && time() > $poll_arr['poll_end'])
     )
