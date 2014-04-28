@@ -628,6 +628,7 @@ function load_applets()
 //////////////////////
 function load_an_applet($file, $output, $args)
 {
+	global $FD;
     // Setup $SCRIPT Var
     unset($SCRIPT, $template);
     $SCRIPT['argc'] = array_unshift($args, $file);
