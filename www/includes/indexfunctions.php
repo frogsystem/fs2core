@@ -147,9 +147,9 @@ function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
     $template_javascript = get_js($PATH_PREFIX).'
     <script type="text/javascript" src="'.$PATH_PREFIX.'includes/js_functions.js"></script>';
 
-	// Create jQuery-Lines
+    // Create jQuery-Lines
     $template_jquery = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery.min.js"></script>';
-    $template_jquery_ui = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-ui.min.js"></script>';
+    // $template_jquery_ui = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-ui.min.js"></script>';
 
     // Get HTML-Matrix
     $theTemplate->load('MATRIX');
@@ -410,7 +410,7 @@ function get_canonical_url() {
 /////////////////////
 function get_content ($GOTO)
 {
-    global $FD, $sql;
+    global $FD;
 
     // Display Content
     initstr($template);
@@ -464,7 +464,7 @@ function get_content ($GOTO)
 ////////////////////////////////////
 function tpl_functions_init ($TEMPLATE)
 {
-    global $sql, $NAV, $APP, $FD;
+    global $NAV, $APP, $FD;
 
     // data arrays
     $NAV = array();
@@ -481,8 +481,6 @@ function tpl_functions_init ($TEMPLATE)
 ///////////////////////////////
 function tpl_functions ($TEMPLATE, $COUNT, $filter=array(), $loopend_escape = true)
 {
-    global $sql;
-
     // hardcoded functions
     // this is the only way atm
     $functions = array(
@@ -596,7 +594,7 @@ function get_all_tpl_functions()
 //////////////////////
 function load_applets()
 {
-    global $sql, $FD;
+    global $FD;
 
     // Load Applets from DB
     $applet_data = $FD->sql()->conn()->query(
@@ -608,7 +606,7 @@ function load_applets()
     // Write Applets into Array & get Applet Template
     initstr($template);
     $new_applet_data = array();
-    foreach ($applet_data as $key => $entry) {
+    foreach ($applet_data as $entry) {
         // prepare data
         $entry['applet_file'] .= '.php';
         settype($entry['applet_output'], 'boolean');
@@ -628,11 +626,8 @@ function load_applets()
 //////////////////////
 //// Load Applets ////
 //////////////////////
-function load_an_applet($file, $output, $args) {
-
-    global $FD;
-    global $sql;
-
+function load_an_applet($file, $output, $args)
+{
     // Setup $SCRIPT Var
     unset($SCRIPT, $template);
     $SCRIPT['argc'] = array_unshift($args, $file);
@@ -695,7 +690,7 @@ function tpl_func_snippets($original, $main_argument, $other_arguments)
 /////////////////////////
 function tpl_func_applets($original, $main_argument, $other_arguments)
 {
-    global $APP, $sql, $FD;
+    global $APP;
 
     // Applet does not exists
     if (!isset($APP[$main_argument])) {
@@ -801,9 +796,7 @@ function tpl_func_url($original, $main_argument, $other_arguments)
     // Example:
     // $URL(download[cat_id=4 keyword=test 1])
 
-    global $FD;
-
-    // compute Arguments
+    // compute arguments
     $other_arguments = !empty($other_arguments) ? explode(' ', $other_arguments) : array();
 
     // check each param
@@ -1000,8 +993,6 @@ function forward_aliases ( $GOTO )
 ///////////////////
 function count_all ( $GOTO )
 {
-    global $FD;
-
     $hit_year = date ( 'Y' );
     $hit_month = date ( 'm' );
     $hit_day = date ( 'd' );

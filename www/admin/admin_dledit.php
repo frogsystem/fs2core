@@ -1,14 +1,14 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-////////////////////////////////
-//// Download aktualisieren ////
-////////////////////////////////
+/////////////////////////
+//// Download udpate ////
+/////////////////////////
 
 if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
 {
     settype ($_POST['editdlid'], 'integer');
 
-    // Download löschen
+    // Delete Download
     if (isset($_POST['deldl']))
     {
         $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."dl WHERE dl_id = '$_POST[editdlid]'");
@@ -32,7 +32,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
             $_POST['fmirror'][$i] = isset($_POST['fmirror'][$i]) ? 1 : 0;
         }
 
-        // Neues Bild hochladen
+        // Upload of new image
         $FD->loadConfig('downloads');
         $admin_dl_config_arr = $FD->configObject('downloads')->getConfigArray();
 
@@ -68,7 +68,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
         }
 
 
-        // Files  aktualisieren
+        // Update Files
         for ($i=0; $i<count($_POST['fname']); $i++)
         {
             if (isset($_POST['delf'][$i]) && $_POST['delf'][$i]!=0)
@@ -114,9 +114,9 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
     unset($_POST);
 }
 
-////////////////////////////////
-////// Download editieren //////
-////////////////////////////////
+///////////////////////////
+////// Edit Download //////
+///////////////////////////
 
 if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
 {
@@ -221,7 +221,7 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
                                 <td class="config" width="60%" valign="top">
                                     <select name="catid">
     ';
-    // Kategorien auflisten
+    // List Categories
     $valid_ids = array();
     get_dl_categories ($valid_ids, -1);
 
@@ -442,9 +442,9 @@ if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
          </form>';
 }
 
-////////////////////////////////
-////// Download auswählen //////
-////////////////////////////////
+/////////////////////////////
+////// Select Download //////
+/////////////////////////////
 
 else
 {
@@ -508,7 +508,7 @@ else
                             </tr>
     ';
 
-    // Daten aus der DB lesen
+    // Read data from DB
     $wherecat = '';
     if (isset($_POST['dlcatid']) && $_POST['dlcatid'] != 0)
     {

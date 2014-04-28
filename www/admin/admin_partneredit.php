@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-//////////////////////////////
-/// Config laden /////////////
-//////////////////////////////
+///////////////////
+/// Load Config ///
+///////////////////
 $FD->loadConfig('affiliates');
 $config_arr = $FD->configObject('affiliates')->getConfigArray();
 
@@ -22,9 +22,9 @@ if ($config_arr['big_allow'] == 0) {
 }
 
 
-//////////////////////////////
-/// Partnerseite editieren ///
-//////////////////////////////
+////////////////////////////
+/// Edit affiliated site ///
+////////////////////////////
 if ((isset($_POST['name']) AND $_POST['name'] != '')
     && (isset($_POST['link']) AND $_POST['link'] != '')
     && $_POST['partner_action'] == 'edit'
@@ -68,9 +68,9 @@ if ((isset($_POST['name']) AND $_POST['name'] != '')
 }
 
 
-//////////////////////////////
-/// Partnerseite löschen /////
-//////////////////////////////
+////////////////////////////////
+/// Delete affiliated site /////
+////////////////////////////////
 elseif (isset($_POST['partner_action'])
     && $_POST['partner_action'] == 'delete'
     && isset($_POST['sended'])
@@ -80,7 +80,7 @@ elseif (isset($_POST['partner_action'])
 {
     settype($_POST['partner_id'], 'integer');
 
-    if ($_POST['delete_partner'])   // Partnerseite löschen
+    if ($_POST['delete_partner'])   // Delete affiliated site
     {
         $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."partner WHERE partner_id = '$_POST[partner_id]'");
         image_delete('images/partner/', $_POST['partner_id'].'_small');
@@ -99,9 +99,9 @@ elseif (isset($_POST['partner_action'])
 }
 
 
-//////////////////////////////
-/// Partnerseite anzeigen ////
-//////////////////////////////
+/////////////////////////////
+/// Show affiliated site ////
+/////////////////////////////
 elseif (isset($_POST['partner_action'])
         && $_POST['partner_action'] == 'edit'
         && isset($_POST['partner_id'])
@@ -218,9 +218,9 @@ elseif (isset($_POST['partner_action'])
     ';
 }
 
-//////////////////////////////
-/// Partnerseite löschen /////
-//////////////////////////////
+////////////////////////////////
+/// Delete affiliated site /////
+////////////////////////////////
 elseif (isset($_POST['partner_action'])
         && $_POST['partner_action'] == 'delete'
         && isset($_POST['partner_id'])
@@ -277,7 +277,7 @@ elseif (isset($_POST['partner_action'])
 
 
 //////////////////////////////
-/// Partnerseite auswählen ///
+/// Select affiliated site ///
 //////////////////////////////
 if (!isset($_POST['partner_id']))
 {

@@ -665,9 +665,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
 
 
-////////////////////////////
-////// User auswählen //////
-////////////////////////////
+/////////////////////////
+////// Select User //////
+/////////////////////////
 
 if ( !isset ( $_POST['user_id'] ) )
 {
@@ -714,7 +714,7 @@ if ( !isset ( $_POST['user_id'] ) )
                             <tr><td class="line" colspan="5">Benutzer ausw&auml;hlen</td></tr>
         ';
 
-        // get users from db
+        // get users from DB
         $sql_filter = '%'.$_POST['filter'].'%';
         $stmt = $FD->sql()->conn()->prepare ( '
                         SELECT COUNT(`user_id`)

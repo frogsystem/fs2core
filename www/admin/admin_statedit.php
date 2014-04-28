@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-//////////////////////////////////////
-//// Tagesstatistik aktualisieren ////
-//////////////////////////////////////
+/////////////////////////////////
+//// Update daily statistics ////
+/////////////////////////////////
 
 if ((isset($_POST['d']) && isset($_POST['m']) && isset($_POST['y']) && isset($_POST['v']) && isset($_POST['h'])) AND $_POST['do'] == 'day')
 {
@@ -20,9 +20,9 @@ if ((isset($_POST['d']) && isset($_POST['m']) && isset($_POST['y']) && isset($_P
     systext( $FD->text('page', 'changes_saved'), $FD->text('page', 'info') );
 }
 
-//////////////////////////////////////
-////// Tagesstatistik editieren //////
-//////////////////////////////////////
+///////////////////////////////////
+////// Edit daily statistics //////
+///////////////////////////////////
 
 elseif ((isset($_POST['ed']) && isset($_POST['em']) && isset($_POST['ey'])) AND $_POST['do'] == 'day')
 {
@@ -89,9 +89,9 @@ elseif ((isset($_POST['ed']) && isset($_POST['em']) && isset($_POST['ey'])) AND 
     }
 }
 
-//////////////////////////////////////
-/// Gesamtstatistik aktualisieren ////
-//////////////////////////////////////
+///////////////////////////////////
+/// Update of total statistics ////
+///////////////////////////////////
 
 elseif ((isset($_POST['editvisits']) && $_POST['editvisits'] != '' &&
         isset($_POST['edithits']) && $_POST['edithits'] != '' &&
@@ -118,9 +118,9 @@ elseif ((isset($_POST['editvisits']) && $_POST['editvisits'] != '' &&
     systext( $FD->text('page', 'changes_saved'), $FD->text('page', 'info') );
 }
 
-////////////////////////////////////////
-/// Gesamtstatistik synchronisieren ////
-////////////////////////////////////////
+/////////////////////////////////////
+/// Synchronise Total Statistics ////
+/////////////////////////////////////
 
 elseif (isset($_POST['do']) && $_POST['do'] == 'sync')
 {
@@ -149,13 +149,13 @@ elseif (isset($_POST['do']) && $_POST['do'] == 'sync')
              comments = '$sync_arr[comments]'");
     systext( $FD->text('page', 'synchronised'), $FD->text('page', 'info') );
 }
-//////////////////////////////////////
-///// Gesamtstatistik editieren //////
-//////////////////////////////////////
+//////////////////////////////////
+///// Edit Total Statistics //////
+//////////////////////////////////
 
 else
 {
-    //Zeit-Array für Heute Button
+    //Time Array for "Today" Button
     $heute['d'] = date('d');
     $heute['m'] = date('m');
     $heute['y'] = date('Y');

@@ -11,8 +11,6 @@ $config_arr = $FD->configObject('articles')->getConfigArray();
 ///////////////////
 function default_set_filter_data ( $FORM )
 {
-    global $FD;
-
     if ( !isset ( $FORM['order'] ) ) { $FORM['order'] = 'article_title'; }
     if ( !isset ( $FORM['sort'] ) ) { $FORM['sort'] = 'ASC'; }
     if ( !isset ( $FORM['cat_id'] ) ) { $FORM['cat_id'] = 0; }
@@ -440,7 +438,7 @@ function action_edit_display_page ( $data_arr )
                                 <td class="config">
                                     <select name="article_cat_id">
     ';
-    // Kategorien auflisten
+    // List categories
     $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat' );
     while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {

@@ -1,5 +1,5 @@
 <?php
-//TODO: Beinhaltet fileaccess
+//TODO: Contains fileaccess
 
 /**
 * @file     class_template.php
@@ -7,16 +7,16 @@
 * @version  0.3
 * @author   Sweil
 *
-* this class is responsible for the template operations
-* it's the base class for other template-related classes
+* This class is responsible for the template operations.
+* It's the base class for other template-related classes.
 */
 
 class template
 {
     /**
-    * here you may change the values of the tag opener and closer
-    * We strictly recommend to not change these values, in all templates the default values {.. and ..} are used
-    * opener and closer were changed from { and } to {.. and ..} because of some javascript incompatibilities
+    * Here you may change the values of the tag opener and closer.
+    * We strictly recommend to not change these values, in all templates the default values {.. and ..} are used.
+    * Opener and closer were changed from { and } to {.. and ..} because of some JavaScript incompatibilities.
     **/
     const OPENER                = '{..';
     const CLOSER                = '..}';
@@ -119,31 +119,31 @@ class template
 
     // functions to access templates
     public function load($section) {
-        // Wenn der Section-Cache wurde noch nicht befüllt wurde => alle Sections in den Cache laden
+        // If the section cache has not been filled yet => load all sections into cache
         if ( count ( $this->sections ) <= 0 ) {
-            $file_path = FS2_ROOT_PATH . 'styles/' . $this->getStyle() . '/' . $this->getFile (); // Pfad zur Template-Datei
-            $ACCESS = new fileaccess (); // Object für Dateizugriff erzeugen
-            $search_expression = '/<!--section-start::(.*)-->(.*)<!--section-end::(\1)-->/Uis'; // Regulärer Ausruck um Sections auszuwählen
-            $number_of_sections = preg_match_all ( $search_expression, $ACCESS->getFileData($file_path), $sections ); // Regulären Ausruck ausführen, Anzahl in $number_of_sections, Inhalte in $sections
+            $file_path = FS2_ROOT_PATH . 'styles/' . $this->getStyle() . '/' . $this->getFile (); // Path of Template file
+            $ACCESS = new fileaccess (); // Create object for file access
+            $search_expression = '/<!--section-start::(.*)-->(.*)<!--section-end::(\1)-->/Uis'; // Regular expression to select Sections
+            $number_of_sections = preg_match_all ( $search_expression, $ACCESS->getFileData($file_path), $sections ); // apply regular expression, count into $number_of_sections, contents into $sections
             $this->setSections ( array_flip ( $sections[1] ) ); // array_flip damit die Keys auch die Section-Namen sind
-            $this->setSectionsContent ( $sections[2] ); // Section Inhalte speichern
+            $this->setSectionsContent ( $sections[2] ); // save Section contents
         }
 
-        // Section-Cache wurde bereits befüllt => einfach auslesen
+        // Section Cache already filled => just read it
         if ( $this->sectionExists ( $section ) ) {
             $this->setTemplate ( $this->getSectionContent ( $this->getSectionNumber ( $section ) ) );
             return TRUE;
-        } else { // Falls die Section nicht gefunden wurde
+        } else { // If Section was not found
             return FALSE;
         }
     }
 
-    // toString-Methode um das Template als String auszugeben
+    // toString-Methode to return the template as string
     public function __toString() {
-        $data = $this->getTemplate (); // aktuelles Template laden
-        foreach ( $this->tags as $theTag => $value ) { // Tag-Liste durchgehen
+        $data = $this->getTemplate (); // load current Template
+        foreach ( $this->tags as $theTag => $value ) { // iterate through tag list
             if ( $value !== null ) {
-                $data = str_replace ( self::OPENER . $theTag . self::CLOSER, $value, $data ); // Tags durch Werte ersetzen
+                $data = str_replace ( self::OPENER . $theTag . self::CLOSER, $value, $data ); // replace tags by values
             }
         }
 
@@ -167,12 +167,12 @@ class template
         return $this->__toString();
     }
 
-    // Setzt Template-Tag mit zugehöriger Ersetzung
+    // Sets template tag and corresponding replacement value
     public function tag ( $tag, $value ) {
         $this->tags[$tag] = $value;
     }
 
-    // Destruktor
+    // Destructor
     public function  __destruct(){
         $this->clearSectionCache();
         $this->clearTags();

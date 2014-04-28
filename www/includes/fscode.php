@@ -5,7 +5,7 @@ require_once(FS2_ROOT_PATH . 'libs/class_StringParser_BBCode.php');
 function strip_fs($str, $allowable_tags = '') {
     $allowable_tags = array_map('strtolower', explode(',', $allowable_tags));
 
-    $matches = array();
+    $tags = array();
     preg_match_all('#\[\/?([\w]+)[^\]]*?\]#', $str, $tags, PREG_PATTERN_ORDER);
 
     foreach ($tags[1] as $tag) {
@@ -803,8 +803,6 @@ function do_fscode_quote ($action, $attributes, $content, $params, $node_object)
 // Create a videoplayer
 function do_fscode_video ($action, $attributes, $content, $params, $node_object) {
     require_once ( FS2_ROOT_PATH . 'resources/player/player_flv_include.php' );
-
-    global $FD;
 
     if ($action == 'validate') {
         return true;
