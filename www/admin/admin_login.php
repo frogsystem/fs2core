@@ -58,7 +58,7 @@ else
                                     Passwort:
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="33" type="password" name="userpassword" maxlength="16">
+                                    <input class="text" size="33" type="password" name="userpassword" maxlength="50">
                                 </td>
                             </tr>
                             <tr>
