@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 14. Jul 2013 um 10:10
--- Server Version: 5.1.53-community-log
--- PHP-Version: 5.4.3
+-- Erstellungszeit: 20. Mai 2014 um 19:49
+-- Server Version: 5.6.12-log
+-- PHP-Version: 5.4.12
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `fs2`
 --
+CREATE DATABASE IF NOT EXISTS `fs2` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `fs2`;
 
 -- --------------------------------------------------------
 
@@ -337,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `fs2_articles` (
   PRIMARY KEY (`article_id`),
   KEY `article_url` (`article_url`),
   FULLTEXT KEY `article_text` (`article_title`,`article_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `fs2_articles`
@@ -348,7 +350,9 @@ INSERT INTO `fs2_articles` (`article_id`, `article_url`, `article_title`, `artic
 (2, '', 'ie 8 test', 1302480000, 1, 'ie 8 test', 1, 1, 1, 1, 1302560322),
 (3, 'sds', 'fsdfsdf', 1302739200, 1, 'sdf', 1, 1, 1, 1, 1302797133),
 (4, 'sd', 'hallo', 1302739200, 1, 'sdfsdf', 1, 1, 1, 1, 1302797137),
-(5, 'sss', 'sdfdfdf', 1372888800, 1, 'sdfsdfdf', 1, 1, 1, 1, 1372971785);
+(5, 'sss', 'sdfdfdf', 1372888800, 1, 'sdfsdfdf', 1, 1, 1, 1, 1372971785),
+(6, 'test', 'Test', 1394319600, 1, '<div align="center"><img src="images/content/Planeten/Header.png"></div><br>\r\nInnerhalb des Koprulu-Sektors gibt es viele Planeten und planetenähnliche Objekte, auf denen sich die Weltraumreisenden niedergelassen haben. Eine kurze Übersicht über die wichtigsten Planeten und deren Geschichte soll hier gegeben werden.\r\n\r\n<table width="600px" align="center">\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Aiur.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Aiur</b><br>\r\n<font size="1">Dieser Planet war die Geburtstätte der Protoss und ihr größter Stolz, bis der Overmind mit dem Schwarm dort einfiel und die Protoss nach Shakuras fliehen mussten. Mittlerweile ist Aiur eine riesige Brutstätte der Zerg.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Braxis.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Braxis</b><br>\r\n<font size="1">Zwar soll Braxis aufgrund seiner eisigen Temperaturen einer der lebensfeindlichsten Planeten des gesamten Sektors sein, doch lange Zeit schon wird der Planet sowohl von Terranern als auch von den Protoss besiedelt.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Char.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Char</b><br>\r\n<font size="1">Diese vulkanische Welt ist der Hauptschwarmcluster des Schwarms im Sektor. Milliarden von Zerg warten hier darauf, gegen die Welten der Protoss und der Terraner entsandt zu werden, um Tod und Zerstörung zu bringen.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Kaldir.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Kaldir</b><br>\r\n<font size="1">Durch seine isolierte Position innerhalb des Sektors und die lebensfeindlichen Temperaturen haben sich hier enorm widerstandsfähige Organismen entwickelt. Es wird gemunkelt, dass die Protoss sich hier niedergelassen haben, um Forschungen an besagten Wesen durchzuführen.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Korhal.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Korhal</b><br>\r\n<font size="1">Die terranische Liga hat ihren Hauptsitz auf Korhal und regiert von dort aus alle Vasallenplaneten innerhalb des Sektors. Der ganze Planet ist überzogen mit Siedlungen und gilt als Wiege der terranischen Zivilisation des Koprulu-Sektors.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/MarSara.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Mar Sara</b><br>\r\n<font size="1">Mar Saras Geschichte ist blutig, denn nach der Zerginvasion, welche Millionen das Leben kosteten, verwüsteten die Protoss im Sinne der ihrer Eindämmung der Zergbedrohung die Oberfläche erneut. Durch ein Terraformingprojekt der Liga wurde der Planet mittlerweile wieder bewohnbar und ist nun wieder schwach besiedelt.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Moria.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Moria</b><br>\r\n<font size="1">Auf diesem Planeten wird ein Großteil der für den Bau der terranischen Kriegsmaschinerie benötigten Erze und Mineralien abgebaut. Durch den hohen Umsatz an weltvollen Stoffen gilt diese Welt als ein Krisenherd, der durch den Konflikt zwischen der Liga und dem Kel-Morianischen Kartell genährt wird.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/NeuFolsom.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Neu-Folsom</b><br>\r\n<font size="1">Dieser instabile Planet wurde von der Liga als ein tödliches Gefängnis für all Jene konzipiert, die den ideologischen Grundsätzen der Liga wiedersprechen. Auch politische Feinde des Imperators sind hier eingesperrt. Es heißt, niemand könne diesem Ort entkommen, wenn er erst einmal eingesperrt sei.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Phaeton.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Phaeton</b><br>\r\n<font size="1">Die Wüstenweld Phaetons bietet weitläufige Sanddünen und Geröllansammlungen. Durch die hohen Klippen und tiefen Tunneln gilt diese Welt oft auch als Versteck für Exilanten. Doch auch die Zerg haben die Abgelegenheit des Planeten für sich entdeckt.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Shiloh.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Shiloh</b><br>\r\n<font size="1">Dieser florierende Planet bietet gemäßigtes Klima und liefert vielen Planeten der Terraner Nahrungsmittel in riesigen Mengen. Davon abgesehen gilt dieser Planet außerdem als Geburtsort der Rebellion, ist er doch die Heimatwelt des Rebellen Jim Raynor.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Tarsonis.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Tarsonis</b><br>\r\n<font size="1">Zur Zeit der Konföderation galt dieser Planet als Wiege der Menschheit des gesamten Sektors. Durch den von Arcturus Mengsk eingeleiteten Einfall der Zerg wurde der Planet und damit auch die Konföderation selbst vernichtet und musste der neu gegründeten Liga der Menschen weichen.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Umoja.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Umoja</b><br>\r\n<font size="1">Jener Planet bietet Mengsks Imperium bereits seit dessen Gründung Widerstand und ist Sitz des umojanischen Protektorats. Diese Organisation ist ideologisch den Grundsätzen der Liga entgegengerichtet und arbeitet daran, die Liga zu stürzen.</font></td>\r\n</tr>\r\n</table>', 1, 0, 1, 1, 1394403463),
+(7, 'search_help', 'Suchregeln', 1400536800, 1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]mäuse[/font] => Findet Inhalte mit "Mäuse", "mäuse" oder "Maeuse"\r\n\r\n\r\n[b]Phonetische Suche[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]team[/font] => Findet Inhalte mit "Team", "Tim", "Teen", etc,\r\n\r\n\r\n[b]Suche nach Teilwörtern: *[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n\r\n[b]Mehrere Suchbegriffe: AND [/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo [i]Beispiele:[/i]\r\n[font=monospace]frosch internet[/font] => Findet Inhalte mit "frosch" UND "internet"\r\n[font=monospace]hund AND katze[/font] => Findet Inhalte mit "hund" UND "katze"\r\n\r\n\r\n[b]Suchbegriffe auschließen: ![/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]maus katze !hund[/font] => Findet Inhalte mit "maus" UND "katze", aber OHNE "hund"\r\n\r\n\r\n[b]ODER-Vereinigung: OR[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]papagei OR rabe[/font] => Findet Inhalte mit "papagei" ODER "rabe"\r\n\r\n\r\n[b]Entweder-oder-Suche: XOR[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]frau XOR mann[/font] => Findet Inhalte mit "frau" aber NICHT "mann" und umgekehrt\r\n\r\n\r\n[b]Mehrere Operatoren mit Klammern[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]kind AND (hund XOR katze)[/font] => Findet Inhalte mit "kind" die entweder "hund" oder "katze" enthalten', 1, 1, 1, 1, 1400614560);
 
 -- --------------------------------------------------------
 
@@ -455,7 +459,7 @@ CREATE TABLE IF NOT EXISTS `fs2_comments` (
   `needs_update` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`comment_id`),
   FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `fs2_comments`
@@ -463,7 +467,8 @@ CREATE TABLE IF NOT EXISTS `fs2_comments` (
 
 INSERT INTO `fs2_comments` (`comment_id`, `content_id`, `content_type`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`, `comment_classification`, `spam_probability`, `needs_update`) VALUES
 (3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans', 0, 0.5, 0),
-(6, 11, 'dl', '1', 1, '::1', 1373196687, 'test', 'test', 0, 0.5, 0);
+(6, 11, 'dl', '1', 1, '::1', 1373196687, 'test', 'test', 0, 0.5, 0),
+(7, 45, 'news', 'spam', 0, '::1', 1394920254, 'spam', 'ssdsd', 0, 0.5, 1);
 
 -- --------------------------------------------------------
 
@@ -488,9 +493,9 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('system', '{"var_loop":20}', 'startup'),
 ('env', '{}', 'startup'),
 ('info', '{}', 'startup'),
-('articles', '{"acp_per_page":"2","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"0","com_antispam":"0","com_sort":"0","acp_view":"2"}', 'none'),
+('articles', '{"acp_per_page":"20","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"0","com_antispam":"0","com_sort":"0","acp_view":"2"}', 'none'),
 ('search', '{"id":"0","search_num_previews":"10","search_and":"AND, and, &&","search_or":"OR, or, ||","search_xor":"XOR, xor","search_not":"!, -","search_wildcard":"*, %","search_min_word_length":"3","search_allow_phonetic":"1","search_use_stopwords":"1"}', 'none'),
-('cronjobs', '{"last_cronjob_time":"1373796388","last_cronjob_time_daily":"1373794392","last_cronjob_time_hourly":"1373796000","search_index_update":"1","ref_cron":"1","ref_days":"5","ref_hits":"5","ref_contact":"first","ref_age":"older","ref_amount":"less"}', 'startup'),
+('cronjobs', '{"last_cronjob_time":"1400614351","last_cronjob_time_daily":"1400614351","last_cronjob_time_hourly":"1400614351","search_index_update":"1","ref_cron":"1","ref_days":"5","ref_hits":"5","ref_contact":"first","ref_age":"older","ref_amount":"less"}', 'startup'),
 ('captcha', '{"captcha_bg_color":"FAFCF1","captcha_bg_transparent":"0","captcha_text_color":"AB30AB","captcha_first_lower":"1","captcha_first_upper":"5","captcha_second_lower":"1","captcha_second_upper":"5","captcha_use_addition":"1","captcha_use_subtraction":"1","captcha_use_multiplication":"0","captcha_create_easy_arithmetics":"1","captcha_x":"58","captcha_y":"18","captcha_show_questionmark":"0","captcha_use_spaces":"1","captcha_show_multiplication_as_x":"1","captcha_start_text_x":"0","captcha_start_text_y":"0","captcha_font_size":"5","captcha_font_file":""}', 'none'),
 ('downloads', '{"screen_x":"1024","screen_y":"768","thumb_x":"120","thumb_y":"90","quickinsert":"test''","dl_rights":"2","dl_show_sub_cats":"0","dl_comments":"1"}', 'none'),
 ('affiliates', '{"partner_anzahl":"5","small_x":"88","small_y":"31","big_x":"468","big_y":"60","big_allow":"1","file_size":"1024","small_allow":"0"}', 'none'),
@@ -526,7 +531,7 @@ CREATE TABLE IF NOT EXISTS `fs2_counter` (
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 100, 3256, 5, 5, 18, 2);
+(1, 108, 3333, 5, 7, 18, 3);
 
 -- --------------------------------------------------------
 
@@ -549,7 +554,7 @@ CREATE TABLE IF NOT EXISTS `fs2_counter_ref` (
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://localhost/', 55, 1302557491, 1307980522),
-('http://localhost/fs2/', 20, 1316955935, 1368367379);
+('http://localhost/fs2/', 27, 1316955935, 1400614351);
 
 -- --------------------------------------------------------
 
@@ -653,7 +658,15 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2013, 7, 7, 1, 42),
 (2013, 7, 8, 1, 39),
 (2013, 7, 9, 1, 1),
-(2013, 7, 14, 1, 31);
+(2013, 7, 14, 1, 31),
+(2014, 1, 12, 1, 3),
+(2014, 3, 9, 1, 6),
+(2014, 3, 15, 1, 14),
+(2014, 3, 16, 1, 26),
+(2014, 4, 6, 1, 5),
+(2014, 4, 12, 1, 12),
+(2014, 4, 13, 1, 3),
+(2014, 5, 20, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -879,14 +892,7 @@ CREATE TABLE IF NOT EXISTS `fs2_hashes` (
   `deleteTime` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
-
---
--- Daten für Tabelle `fs2_hashes`
---
-
-INSERT INTO `fs2_hashes` (`id`, `hash`, `type`, `typeId`, `deleteTime`) VALUES
-(6, 'lV59nTmddoAqe6cbRgn5kLdZ6zegxKvUWiraRMeM', 'newpassword', 3, 1373969314);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1932,7 +1938,7 @@ CREATE TABLE IF NOT EXISTS `fs2_useronline` (
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('::1', 1, 1373226787);
+('::1', 1, 1400614604);
 
 -- --------------------------------------------------------
 
