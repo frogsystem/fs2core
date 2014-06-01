@@ -982,7 +982,7 @@ if ($FILE_SHOW_START)
             }
             // full
             if ($config_arr['acp_view'] == 1) { // extened
-                $text_preview = cut_string(killfs($news['news_text']), 250, '...');
+                $text_preview = cut_string(strip_tags(killfs($news['news_text'])), 250, '...');
                 $adminpage->addText('text_preview', $text_preview);
             }
 
