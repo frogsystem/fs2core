@@ -156,7 +156,7 @@ function default_get_entry_data ( $articles_arr )
 
     // Only for full view
     if ($config_arr['acp_view'] == 1) {
-        $articles_arr['article_text_short'] = truncate_string ( killfs (  $articles_arr['article_text'] ) , 250, "..." );
+        $articles_arr['article_text_short'] = truncate_string ( strip_tags(killfs (  $articles_arr['article_text'] )) , 250, "..." );
     }
 
     return $articles_arr;
@@ -570,7 +570,7 @@ function action_delete_get_data ( $ARTICLE_ID )
         $articles_arr['article_date_formated'] = '';
     }
 
-    $articles_arr['article_text_short'] = truncate_string ( killfs (  $articles_arr['article_text'] ) , 250, '...' );
+    $articles_arr['article_text_short'] = truncate_string ( strip_tags(killfs (  $articles_arr['article_text'] )) , 250, '...' );
 
     if ( $articles_arr['article_user'] != 0 ) {
         $index2 = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$articles_arr['article_user']);
