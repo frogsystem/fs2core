@@ -857,6 +857,9 @@ if ( isset($_POST['article_id']) && isset($_POST['article_action']) )
 else
 {
     // Filter
+    if (!isset($_REQUEST)) {
+        $_REQUEST = array();
+    }
     $_REQUEST = default_set_filter_data ( $_REQUEST );
     default_display_filter ( $_REQUEST );
 
