@@ -4,7 +4,7 @@
 //// Add Download ////
 //////////////////////
 
-if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
+if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']) && !isset($_POST['files_add']))
 {
     settype ($_POST['catid'], 'integer');
     settype ($_POST['userid'], 'integer');

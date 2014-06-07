@@ -4,7 +4,7 @@
 //// Download udpate ////
 /////////////////////////
 
-if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
+if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) && !isset($_POST['files_add']))
 {
     settype ($_POST['editdlid'], 'integer');
 
@@ -118,7 +118,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']))
 ////// Edit Download //////
 ///////////////////////////
 
-if (isset($_POST['dlid']) || isset($_POST['optionsadd']))
+if (isset($_POST['dlid']) || isset($_POST['dlid']) && isset($_POST['files_add']) && isset($_POST['optionsadd']))
 {
     $_POST['dlid'] = $_POST['dlid'][0];
     if(isset($_POST['sended']) && !isset($_POST['files_add'])) {
