@@ -1,0 +1,11 @@
+pageinfo_title:             Forum feed configuration
+
+feed_url:                   Feed URL
+feed_url_desc:              URL of the XML feed that contains the newest threads
+feed_notes:                 <b>Hint:</b> Currently only XML feeds of vBulletin forums are supported.
+thread_limit:               Number of threads
+thread_limit_desc:          Max. number of threads that will be shown by the applet
+title_max:                  Shorten title to
+title_max_desc:             Max. number of characters in a thread title
+
+cURL_missing:               The cURL module of PHP is not installed! The forum feed will not work properly withouth that module. Install the module or ask your administrator to do that, so you can use the forum feed applet in all its glory.

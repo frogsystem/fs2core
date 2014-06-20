@@ -12,6 +12,8 @@
     </td>
   </tr>
 </table>
+
+$APP(forumfeed.php)
 <!--section-end::APPLET_BODY-->
 
 <!--section-start::LINKS_LINE--><li><a href="{..url..}" target="{..target..}">{..title..}</a></li><!--section-end::LINKS_LINE-->

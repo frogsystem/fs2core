@@ -76,6 +76,8 @@ page_title_gen_emails:          Edit Email Templates
 page_link_gen_emails:           Emails
 page_title_gen_phpinfo:         PHP & Server Information
 page_link_gen_phpinfo:          PHP Info
+page_title_forumfeed_config:    Forum Feed Configuration
+page_link_forumfeed_config:     Forum Feed
 
 # Editor
 page_title_editor_config:       Edit Settings
@@ -312,6 +314,8 @@ page_title_tpl_player:          Edit „Flash-Player“
 page_link_tpl_player:           Flash-Player
 page_title_tpl_topdownloads:    Edit „Top Downloads“
 page_link_tpl_topdownloads:     Top Downloads
+page_title_tpl_forumfeed:       Edit „Newest Threads“
+page_link_tpl_forumfeed:        Newest Threads
 
 # Applets
 page_title_applets_add:         add
