@@ -32,7 +32,7 @@ class SearchQuery
     // constructor
     public function  __construct ($operators = array(), $modifiers = array()) {
         // get searchtree classe if not loaded
-        require_once(FS2_ROOT_PATH . 'libs/class_searchtree.php');
+        require_once(FS2_ROOT_PATH . 'libs/class_SearchTree.php');
 
         // assign global vars
         global $sql;

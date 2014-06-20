@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-////////////////////////////
-/////// User prüfen ////////
-////////////////////////////
+///////////////////////////
+/////// Check User ////////
+///////////////////////////
 
 if ( isset ( $_POST['username'] ) && isset ( $_POST['userpassword'] ) )
 {
@@ -25,18 +25,18 @@ if ( isset ( $_POST['username'] ) && isset ( $_POST['userpassword'] ) )
     }
 }
 
-////////////////////////////
-///// Schon eingeloggt /////
-////////////////////////////
+/////////////////////////////
+///// Already logged in /////
+/////////////////////////////
 
 elseif (is_authorized())
 {
             systext('Herzlich Willkommen im Admin-CP des Frogsystem 2!', 'Herzlich Willkommen!', FALSE, $FD->text("admin", "icon_login") );
 }
 
-////////////////////////////
-/////// Loginabfrage ///////
-////////////////////////////
+//////////////////////////
+/////// Login form ///////
+//////////////////////////
 
 else
 {
@@ -58,7 +58,7 @@ else
                                     Passwort:
                                 </td>
                                 <td class="config">
-                                    <input class="text" size="33" type="password" name="userpassword" maxlength="16">
+                                    <input class="text" size="33" type="password" name="userpassword" maxlength="50">
                                 </td>
                             </tr>
                             <tr>

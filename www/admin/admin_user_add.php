@@ -194,7 +194,7 @@ if ( TRUE )
     settype ( $_POST['user_group'], 'integer' );
     settype ( $_POST['user_show_mail'], 'integer' );
 
-    // get oterh data
+    // get other data
     $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'], 0, 0, 0, TRUE );
     $nowbutton_array = array( 'd', 'm', 'y' );
 

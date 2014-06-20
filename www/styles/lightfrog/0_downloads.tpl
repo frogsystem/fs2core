@@ -9,7 +9,7 @@
       <form action="" method="get">
         <input type="hidden" name="go" value="download">
         {..input_cat..}
-        <input class="input input_highlight" size="25" maxlen="255" name="keyword" value="{..keyword..}">
+        <input class="input input_highlight" size="25" maxlength="255" name="keyword" value="{..keyword..}">
         <input class="pointer" type="submit" value="Suchen">
         <input class="pointer" type="button" value="Alle anzeigen" onclick="location='{..all_url..}'">
       </form>
@@ -18,7 +18,7 @@
 </table>
 <!--section-end::SEARCH-->
 
-<!--section-start::NAVIGATION_LINE--><img style="margin:3px 2px 3px 0px;" src="{..icon_url..}" alt="{..cat_name..}" align="absmiddle">
+<!--section-start::NAVIGATION_LINE--><img style="margin:3px 2px 3px 0px; vertical-align: middle;" src="{..icon_url..}" alt="{..cat_name..}">
 <a class="middle" href="{..cat_url..}">
   {..cat_name..}
 </a><br><!--section-end::NAVIGATION_LINE-->
@@ -55,7 +55,7 @@
 <br><!--section-end::PREVIEW_LIST-->
 
 <!--section-start::BODY--><b class="atleft">Downloads</b>
-<a href="?go=download&cat_id=all" class="small atright">(Alle Downloads)</a><br>
+<a href="?go=download&amp;cat_id=all" class="small atright">(Alle Downloads)</a><br>
 
 {..navigation..}
 {..entries..}
@@ -83,7 +83,7 @@
   </tr><!--section-end::ENTRY_STATISTICS-->
 
 <!--section-start::ENTRY_BODY--><b class="atleft">Downloads</b>
-<a href="?go=download&cat_id=all" class="small atright">(Alle Downloads)</a><br>
+<a href="?go=download&amp;cat_id=all" class="small atright">(Alle Downloads)</a><br>
 
 {..navigation..}
 <p>

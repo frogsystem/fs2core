@@ -51,7 +51,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
     // try to compute the search
     try {
 
-        require_once(FS2_ROOT_PATH . 'libs/class_search.php');
+        require_once(FS2_ROOT_PATH . 'libs/class_Search.php');
 
         // Create News Search
         initstr($news_entries); $news_num_results = 0;

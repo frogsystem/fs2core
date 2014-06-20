@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-////////////////////////////
-//// Artikel einstellen ////
-////////////////////////////
+/////////////////////////////
+//// Insert shop article ////
+/////////////////////////////
 
 if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis'])
     && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
@@ -33,9 +33,9 @@ if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url'
     unset($_POST);
 }
 
-////////////////////////////
-///// Artikel Formular /////
-////////////////////////////
+////////////////////////
+///// Article Form /////
+////////////////////////
 
 if(true)
 {

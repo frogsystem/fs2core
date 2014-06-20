@@ -109,7 +109,7 @@ if (
                 } else {
                     $message .= '<br>'.$FD->text("frontend", "mail_new_password_not_sended");
                 }
-                
+
                 unset($mail_password);
 
             } else {
@@ -130,7 +130,7 @@ if (
 //// Edit Profile ////
 //////////////////////
 else {
-    if ( $_SESSION['user_level'] == 'loggedin' ) {
+    if (is_loggedin()) {
 
         //Error Messages
         if ( isset( $_POST['user_edit'] ) ) {
@@ -182,7 +182,7 @@ else {
             $template = $messages . $template->display ();
         }
     } else { // Show Login-Page
-        $_SESSION['last_url'] = 'editprofil';
+        $_SESSION['last_url'] = 'user_edit';
         include ( FS2_ROOT_PATH . 'data/login.php' );
     }
 }

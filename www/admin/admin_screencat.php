@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-//////////////////////////////
-//// Kategorie bearbeiten ////
-//////////////////////////////
+///////////////////////
+//// Edit Category ////
+///////////////////////
 
 if (isset($_POST['cat_id']) && isset($_POST['cat_name']) && !emptystr($_POST['cat_name']) && $_POST['sended'] == 'edit')
 {
@@ -20,9 +20,9 @@ if (isset($_POST['cat_id']) && isset($_POST['cat_name']) && !emptystr($_POST['ca
     systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
 }
 
-///////////////////////////
-//// Kategorie löschen ////
-///////////////////////////
+/////////////////////////
+//// Delete Category ////
+/////////////////////////
 elseif (isset($_POST['cat_id']) && isset($_POST['sended']) && $_POST['sended'] == 'delete')
 {
   //security functions
@@ -40,15 +40,15 @@ elseif (isset($_POST['cat_id']) && isset($_POST['sended']) && $_POST['sended'] =
 }
 
 //////////////////////////
-/// Kategorie Funktion ///
+/// Category Functions ///
 //////////////////////////
 
 elseif (isset($_POST['cat_id']) AND isset($_POST['cat_action']))
 {
 
-////////////////////////////
-/// Kategorie bearbeiten ///
-////////////////////////////
+/////////////////////
+/// Edit Category ///
+/////////////////////
 
 
   //security functions
@@ -144,9 +144,9 @@ elseif (isset($_POST['cat_id']) AND isset($_POST['cat_action']))
     ';
   }
 
-/////////////////////////
-/// Kategorie löschen ///
-/////////////////////////
+///////////////////////
+/// Delete Category ///
+///////////////////////
 
 
   elseif ($_POST['cat_action'] == 'delete')
@@ -205,7 +205,7 @@ echo'
             <tr valign="top">
               <td class="thin">
                 Die letzte Kategorie diesen Typs kann nicht gel&ouml;scht werden.<br>
-                Bitte legen Sie zuerst eine neue Kategorie für diesen Typ an.</td>
+                Bitte legen Sie zuerst eine neue Kategorie f&uuml;r diesen Typ an.</td>
               <td>
                 <input type="button" onclick=\'location.href="?go=gallery_cat";\' value="Zur&uuml;ck zur &Uuml;bersicht">
               </td>
@@ -215,9 +215,9 @@ echo'
     }
   }
 }
-///////////////////////////
-/// Kategorie auswählen ///
-///////////////////////////
+///////////////////////
+/// Delete Category ///
+///////////////////////
 
 else
 {

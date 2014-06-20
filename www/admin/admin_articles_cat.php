@@ -170,35 +170,35 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
     if ( $_POST['cat_action'] == 'edit' )
     {
 
-		// Load Data from DB
-		$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'" );
-		$cat_arr = $index->fetch(PDO::FETCH_ASSOC);
+        // Load Data from DB
+        $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'" );
+        $cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-		// Display Error Messages
-		if ( isset ( $_POST['sended'] ) ) {
+        // Display Error Messages
+        if ( isset ( $_POST['sended'] ) ) {
             $cat_arr = getfrompost ( $cat_arr );
             systext ( $FD->text("admin", "form_not_filled"), $FD->text("admin", "error"), TRUE );
-		}
+        }
 
-		// Security-Functions
-		$cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
-		$cat_arr['cat_description'] = killhtml ( $cat_arr['cat_description'] );
+        // Security-Functions
+        $cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
+        $cat_arr['cat_description'] = killhtml ( $cat_arr['cat_description'] );
 
     	// Get User
     	$index = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
     	$cat_arr['cat_username'] = killhtml ( $index->fetchColumn() );
 
-		// Create Date-Arrays
+        // Create Date-Arrays
     	if ( !isset ( $_POST['d'] ) ) {
-    		$_POST['d'] = date ( 'd', $cat_arr['cat_date'] );
-    		$_POST['m'] = date ( 'm', $cat_arr['cat_date'] );
-    		$_POST['y'] = date ( 'Y', $cat_arr['cat_date'] );
-		}
+            $_POST['d'] = date ( 'd', $cat_arr['cat_date'] );
+            $_POST['m'] = date ( 'm', $cat_arr['cat_date'] );
+            $_POST['y'] = date ( 'Y', $cat_arr['cat_date'] );
+        }
         $date_arr = getsavedate ( $_POST['d'], $_POST['m'], $_POST['y'] );
     	$nowbutton_array = array( 'd', 'm', 'y' );
 
-		// Display Page
-		echo '
+        // Display Page
+        echo '
 					<form action="" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="sended" value="edit">
 						<input type="hidden" name="cat_action" value="'.$_POST['cat_action'].'">
@@ -246,8 +246,8 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
            						<td class="config">
              						'.$FD->text("page", "edit_cat_image").': <span class="small">('.$FD->text("admin", "optional").')</span><br><br>
 	 	';
-		if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
-		    echo '
+        if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
+            echo '
 									<img src="'.image_url ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
 		    						<table>
 										<tr>
@@ -260,18 +260,18 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 										</tr>
 									</table>
 			';
-		} else {
-		    echo '<span class="small">'.$FD->text("admin", "no_image_found").'</span><br>';
-		}
-		echo'                   	<br>
+        } else {
+            echo '<span class="small">'.$FD->text("admin", "no_image_found").'</span><br>';
+        }
+        echo '                   	<br>
 								</td>
 								<td class="config">
 									<input name="cat_pic" type="file" size="40" class="text"><br>
 		';
-		if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
-			echo '<span class="small"><b>'.$FD->text("admin", "replace_img").'</b></span><br>';
-		}
-		echo'
+        if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
+            echo '<span class="small"><b>'.$FD->text("admin", "replace_img").'</b></span><br>';
+        }
+        echo'
 									<span class="small">
 										['.$FD->text("admin", "max").' '.$articles_config_arr['cat_pic_x'].' '.$FD->text("admin", "resolution_x").' '.$articles_config_arr['cat_pic_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$articles_config_arr['cat_pic_size'].' '.$FD->text("admin", "kib").']
 									</span>
@@ -296,22 +296,22 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 							</tr>
 						</table>
 					</form>';
-	}
+    }
 
-	// Delete Category
-	elseif ( $_POST['cat_action'] == 'delete' )
-	{
-		$index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'articles_cat' );
+    // Delete Category
+    elseif ( $_POST['cat_action'] == 'delete' )
+    {
+        $index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'articles_cat' );
 
-		// Not Last Category
-		if ( $index->fetchColumn() > 1 ) {
+        // Not Last Category
+        if ( $index->fetchColumn() > 1 ) {
 
-			$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'" );
-			$cat_arr = $index->fetch(PDO::FETCH_ASSOC);
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id = '".$_POST['cat_id']."'" );
+            $cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-			$cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
+            $cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
 
-			echo '
+            echo '
 					<form action="" method="post">
 						<input type="hidden" name="sended" value="delete">
 						<input type="hidden" name="cat_action" value="'.$_POST['cat_action'].'">
@@ -333,13 +333,13 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 								</td>
 								<td style="text-align: right;">
 									<select class="text" name="cat_move_to" size="1">
-			';
+            ';
 
-			$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name" );
-			while ( $move_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-				echo '<option value="'.$move_arr['cat_id'].'">'.killhtml ( $move_arr['cat_name'] ).'</option>';
-			}
-			echo'
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name" );
+            while ( $move_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
+                echo '<option value="'.$move_arr['cat_id'].'">'.killhtml ( $move_arr['cat_name'] ).'</option>';
+            }
+            echo'
 									</select>
 								</td>
 							</tr>
@@ -353,13 +353,13 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 							</tr>
 						</table>
 					</form>
-			';
-		}
+            ';
+        }
 
-		// Last Category
-		else {
-		    systext ( $FD->text("page", "delete_cat_last"), $FD->text("admin", "error"), TRUE );
-		    echo '
+        // Last Category
+        else {
+            systext ( $FD->text("page", "delete_cat_last"), $FD->text("admin", "error"), TRUE );
+            echo '
 						<table class="configtable" cellpadding="4" cellspacing="0">
        						<tr>
            						<td class="config">
@@ -367,8 +367,8 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 								</td>
 							</tr>
 						</table>';
-		}
-	}
+        }
+    }
 }
 
 
@@ -384,13 +384,13 @@ elseif ( $showdefault == TRUE )
     if (!isset($_POST['cat_name']))
       $_POST['cat_name'] = '';
     $_POST['cat_name'] = killhtml ( $_POST['cat_name'] );
-	// Display Error Messages
-	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), TRUE );
-	}
+    // Display Error Messages
+    if ( isset ( $_POST['sended'] ) ) {
+        systext ( $FD->text('admin', 'form_not_filled'), $FD->text('admin', 'error'), TRUE );
+    }
 
     // Display Add-Form
-	echo '
+    echo '
 					<form action="" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="sended" value="add">
 					    <input type="hidden" name="cat_action" value="add">
@@ -427,26 +427,26 @@ elseif ( $showdefault == TRUE )
 							<tr><td class="space"></td></tr>
 						</table>
 					</form>
-	';
+    ';
 
 
-	// Category Listing
-	echo '
+    // Category Listing
+    echo '
 					<form action="" method="post">
 						<input type="hidden" name="go" value="articles_cat">
 						<table class="configtable" cellpadding="4" cellspacing="0">
 						    <tr><td class="line" colspan="3">'.$FD->text('page', 'list_cat_title').'</td></tr>
-	';
+    ';
 
-	// Get Categories from DB
-	$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat ORDER BY cat_name' );
-	while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
-	{
-		$index_username = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
+    // Get Categories from DB
+    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat ORDER BY cat_name' );
+    while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
+    {
+        $index_username = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
         $cat_arr['cat_user'] = $index_username->fetchColumn();
 
-		// Display each Category
-		echo '
+        // Display each Category
+        echo '
 							<tr class="pointer" id="tr_'.$cat_arr['cat_id'].'"
 								onmouseover="'.color_list_entry ( 'input_'.$cat_arr['cat_id'], '#EEEEEE', '#64DC6A', 'this' ).'"
 								onmouseout="'.color_list_entry ( 'input_'.$cat_arr['cat_id'], 'transparent', '#49c24f', 'this' ).'"
@@ -454,10 +454,10 @@ elseif ( $showdefault == TRUE )
 							>
 								<td class="config">
 		';
-		if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
-		    echo '<img src="'.image_url ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">';
-		}
-		echo '
+        if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
+            echo '<img src="'.image_url ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">';
+        }
+        echo '
 								</td>
 								<td class="config" style="width: 100%;">
 									'.$cat_arr['cat_name'].' <span class="small">('.$FD->text("page", "list_cat_created_by").' <b>'.$cat_arr['cat_user'].'</b> '.$FD->text("page", "list_cat_created_on").' <b>'.date ( $FD->config('date'), $cat_arr['cat_date'] ).'</b>)</span><br>
@@ -470,10 +470,10 @@ elseif ( $showdefault == TRUE )
 								</td>
 							</tr>
 		';
-	}
+    }
 
-	// End of Form & Table incl. Submit-Button
- 	echo '
+    // End of Form & Table incl. Submit-Button
+    echo '
 							<tr><td class="space"></td></tr>
 							<tr>
 								<td style="text-align:right;" colspan="3">
@@ -493,6 +493,6 @@ elseif ( $showdefault == TRUE )
 							</tr>
 						</table>
 					</form>
-	';
+    ';
 }
 ?>

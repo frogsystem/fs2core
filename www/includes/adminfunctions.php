@@ -10,7 +10,7 @@ function get_timezones () {
     $cities = array();
     foreach( $timezones as $key => $zones )
     {
-        foreach( $zones as $id => $zone )
+        foreach( $zones as $zone )
         {
             if ( preg_match( '/^(America|Antartica|Arctic|Asia|Atlantic|Europe|Indian|Pacific)\//', $zone['timezone_id'] ) )
                 $cities[$zone['timezone_id']][] = $key;
@@ -35,8 +35,8 @@ function get_timezones () {
 //////////////////////////////////
 function get_content_container ($TOP_TEXT, $CONTENT_TEXT, $OVERALL_STYLE = 'width:100%;', $TOP_STYLE = FALSE, $CONTENT_STYLE = FALSE)
 {
-    $top_style = ( $TOP_STYLE === FALSE ? '' : ' style="'.$TOP_STYLE.'"' );
-    $content_style = ( $CONTENT_STYLE === FALSE ? '' : ' style="'.$CONTENT_STYLE.'"' );
+    // $top_style = ( $TOP_STYLE === FALSE ? '' : ' style="'.$TOP_STYLE.'"' );
+    // $content_style = ( $CONTENT_STYLE === FALSE ? '' : ' style="'.$CONTENT_STYLE.'"' );
 
     $template = '
         <div class="cb">
@@ -244,7 +244,8 @@ function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FAL
     settype ( $H, 'integer' );
     settype ( $I, 'integer' );
     settype ( $S, 'integer' );
-
+	
+	$savedate_arr = array();
     if ($WITHOUT_MKTIME !== TRUE) {
 
         $new_date = mktime ( $H, $I, $S, $M, $D, $Y );
@@ -282,9 +283,9 @@ function getsavedate ( $D, $M, $Y, $H = 0, $I = 0, $S = 0, $WITHOUT_MKTIME = FAL
 
 function openpopup ( $FILE, $WIDTH, $HEIGHT )
 {
-        $half_width = $WIDTH / 2;
+        /* $half_width = $WIDTH / 2;
         $half_height = $HEIGHT / 2;
-        //$javascript = 'open("'.$FILE.'","_blank","width='.$WIDTH.',height='.$HEIGHT.',top="+((screen.height/2)-'.$half_height.')+",left="+((screen.width/2)-'.$half_width.')+",scrollbars=YES,location=YES,status=YES")';
+        $javascript = 'open("'.$FILE.'","_blank","width='.$WIDTH.',height='.$HEIGHT.',top="+((screen.height/2)-'.$half_height.')+",left="+((screen.width/2)-'.$half_width.')+",scrollbars=YES,location=YES,status=YES")'; */
         $javascript = 'popUp("'.$FILE.'", "_blank", '.$WIDTH.', '.$HEIGHT.')';
 
         return $javascript;
@@ -396,9 +397,9 @@ function systext ( $MESSAGE, $TITLE = FALSE, $COLOR = 'green', $IMAGE = FALSE )
     echo get_systext ( $MESSAGE, $TITLE, $COLOR, $IMAGE );
 }
 
-/////////////////////////////////
-//// JS Time-Button erzeugen ////
-/////////////////////////////////
+///////////////////////////////
+//// Create JS Time button ////
+///////////////////////////////
 
 function js_timebutton ( $DATA, $CAPTION, $CLASS = "button" )
 {
@@ -413,15 +414,15 @@ function js_timebutton ( $DATA, $CAPTION, $CLASS = "button" )
         return $template;
 }
 
-////////////////////////////////
-//// JS Now-Button erzeugen ////
-////////////////////////////////
+//////////////////////////////
+//// Create JS Now button ////
+//////////////////////////////
 
 function js_nowbutton ( $DATA, $CAPTION, $CLASS = 'button' )
 {
         $template = '<input class="'.$CLASS.'" type="button" value="'.$CAPTION.'" onClick="';
 
-        foreach ( $DATA as $key => $value ) {
+        foreach ( $DATA as $value ) {
                 $id[] = $value;
         }
         unset ( $value );
@@ -442,9 +443,9 @@ function js_nowbutton ( $DATA, $CAPTION, $CLASS = 'button' )
         return $template;
 }
 
-////////////////////////////////
-//// JS Now-Button erzeugen ////
-////////////////////////////////
+//////////////////////////////
+//// Create JS Now button ////
+//////////////////////////////
 
 function get_datebutton($DATA, $CAPTION, $CLASS = 'button')
 {
@@ -482,9 +483,9 @@ function putintopost ($ARRAY)
     }
 }
 
-////////////////////////////////
-//// Create textarea        ////
-////////////////////////////////
+/////////////////////////
+//// Create textarea ////
+/////////////////////////
 
 function create_editor($name, $text='', $width='', $height='', $class='', $do_smilies=true)
 {
@@ -551,7 +552,6 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
     }
     unset($smilie_arr);
     unset($smilie_template);
-    unset($config_arr);
 
     $smilies .= '</table></fieldset></td>';
   }
@@ -651,9 +651,9 @@ function create_editor_button_new($img_url, $alt, $title, $insert)
 }
 
 
-////////////////////////////////////
-//// Create textarea  Seperator ////
-////////////////////////////////////
+///////////////////////////////////
+//// Create textarea Seperator ////
+///////////////////////////////////
 
 function create_editor_seperator()
 {
@@ -697,10 +697,10 @@ function insert_tt ( $TITLE, $TEXT, $FORM_ID, $NEW_LINE = TRUE, $INSERT = TRUE, 
    return $template;
 }
 
-////////////////////////////////
-//// Seitentitel generieren  ///
-//// und Berechtigung prüfen ///
-////////////////////////////////
+/////////////////////////////
+//// Generate page title  ///
+//// and check permission ///
+/////////////////////////////
 
 function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
 {
@@ -728,7 +728,7 @@ function createpage ($TITLE, $PERMISSION, $FILE, $ACTIVE_MENU)
 /////////////////////////////////
 function get_topmenu ($ACTIVE_MENU)
 {
-    global $sql, $FD;
+    global $FD;
 
     $menu_arr = $FD->sql()->conn()->query(
                      'SELECT page_id, page_file FROM '.$FD->config('pref')."admin_cp
@@ -749,7 +749,6 @@ function get_topmenu ($ACTIVE_MENU)
         }
     }
 
-    #$template = substr ( $template, 0, -24 );
     $template .= "\n".'    </ul>';
 
     return $template;
@@ -809,7 +808,7 @@ function get_leftmenu ($ACTIVE_MENU, $GO)
 //////////////////////////////////////////////
 function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
 {
-    global $sql, $FD;
+    global $FD;
 
     // get links from database
     $page_arr = $FD->sql()->conn()->prepare(
@@ -845,10 +844,10 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
 }
 
 
-////////////////////////////////
-//// Seitenlink generieren   ///
-//// und Berechtigung prüfen ///
-////////////////////////////////
+/////////////////////////////
+//// Generate page link   ///
+//// and check permission ///
+/////////////////////////////
 
 function get_link ($PAGE_ID, $GO)
 {
@@ -867,9 +866,9 @@ function get_link ($PAGE_ID, $GO)
 
 
 
-////////////////////////////////
-//////// Cookie setzen /////////
-////////////////////////////////
+/////////////////////////////
+//////// Set Cookie /////////
+/////////////////////////////
 
 function admin_set_cookie($username, $password)
 {
@@ -893,7 +892,7 @@ function admin_set_cookie($username, $password)
         if ($dbisadmin == 1)
         {
             $dbuserpass = $USER_ARR['user_password'];
-            $dbuserid = $USER_ARR['user_id'];
+            //$dbuserid = $USER_ARR['user_id'];
             $dbusersalt= $USER_ARR['user_salt'];
             $password = md5 ( $password.$dbusersalt );
 

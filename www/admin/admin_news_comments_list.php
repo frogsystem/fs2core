@@ -427,7 +427,7 @@
           echo '<td class="configthin" colspan="2"> </td></tr>';
         }
       }//for
-    }//else (Tokens vorhanden)
+    }//else (Tokens present)
 
     echo '</table>
     <br>
@@ -503,7 +503,7 @@
     $order .= ' DESC';
   }
 
-  //Kommentare auslesen
+  //Read comments from DB
   $query = $FD->sql()->conn()->query('SELECT COUNT(comment_id)
                   FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news`
                   WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
@@ -520,7 +520,7 @@
                          AND content_type=\'news\'
                   ORDER BY '.$order.' LIMIT '.$_GET['start'].', 30');
 
-  //Bereich (zahlenm‰ﬂig)
+  //Range (numbers)
   $bereich = '<font class="small">'.($_GET['start']+1).' ... '.($_GET['start'] + $rows).'</font>';
   //Is this not the first page?
   if ($_GET['start']>0)

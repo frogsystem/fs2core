@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-///////////////////////////////
-/// Pressebericht editieren ///
-///////////////////////////////
+/////////////////////////
+/// Edit Press report ///
+/////////////////////////
 if ((isset($_POST['title']) AND $_POST['title'] != '')
     && (isset($_POST['url']) AND $_POST['url'] != '' AND $_POST['url'] != 'http://')
     && (isset($_POST['day']) AND $_POST['day'] != '')
@@ -51,9 +51,9 @@ if ((isset($_POST['title']) AND $_POST['title'] != '')
 }
 
 
-//////////////////////////////
-/// Pressebericht löschen ////
-//////////////////////////////
+////////////////////////////
+/// Delete Press report ////
+////////////////////////////
 elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'delete'
     && isset($_POST['sended']) && $_POST['sended'] == 'delete'
     && isset($_POST['press_id'])
@@ -62,7 +62,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'delete'
     $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST['press_id'], 'integer');
 
-    if ($_POST['delete_press'])   // Pressebericht löschen
+    if ($_POST['delete_press'])   // Delete Press report
     {
         $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."press WHERE press_id = '$_POST[press_id]'");
         systext('Der Pressebericht wurde gel&ouml;scht.');
@@ -79,9 +79,9 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'delete'
 }
 
 
-//////////////////////////////
-/// Pressebericht anzeigen ///
-//////////////////////////////
+/////////////////////////
+/// Show Press report ///
+/////////////////////////
 elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
         && isset($_POST['press_id'])
        )
@@ -89,7 +89,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
     $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST['press_id'], 'integer');
 
-    // Pressebericht laden
+    // Load Press Report
     $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press WHERE press_id = '$_POST[press_id]'");
     $press_arr = $index->fetch(PDO::FETCH_ASSOC);
 
@@ -102,12 +102,12 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
     settype($_POST['press_cat'], 'integer');
     settype($_POST['press_lang'], 'integer');
 
-    //Bei Bedarf http:// einfügen
+    //If required, add http://
     if ($press_arr['press_url'] == '')
     {
         $press_arr['press_url'] = 'http://';
     }
-    // Datum erzeugen
+    // Create Date
     if ($press_arr['press_date'] != 0)
     {
         $date['tag'] = date('d', $press_arr['press_date']);
@@ -118,7 +118,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
     {
         unset($date);
     }
-    //Zeit-Array für Heute Button
+    //Time Array for "Today" Button
     $heute['time'] = time();
     $heute['tag'] = date('d', $heute['time']);
     $heute['monat'] = date('m', $heute['time']);
@@ -305,9 +305,9 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
 }
 
 
-//////////////////////////////
-/// Pressebericht löschen /////
-//////////////////////////////
+/////////////////////////////
+/// Delete Press report /////
+/////////////////////////////
 elseif (isset($_POST['press_action'])
         && $_POST['press_action'] == 'delete'
         && isset($_POST['press_id'])
@@ -377,9 +377,9 @@ elseif (isset($_POST['press_action'])
 }
 
 
-/////////////////////////////////
-/// Presseberichte ausflisten ///
-/////////////////////////////////
+//////////////////////////
+/// List Press reports ///
+//////////////////////////
 $index = $FD->sql()->conn()->query('SELECT COUNT(press_id) FROM '.$FD->config('pref').'press');
 $num_rows = $index->fetchColumn();
 
@@ -529,9 +529,9 @@ if (!isset($_POST['press_id']) && $num_rows > 0)
     ';
 
 
-/////////////////////////////////
-//// Pressebericht auswählen ////
-/////////////////////////////////
+//////////////////////////////
+//// Select Press reports ////
+//////////////////////////////
     $index = $FD->sql()->conn()->query('SELECT COUNT(*)
                           FROM '.$FD->config('pref')."press
                           $filterwhere

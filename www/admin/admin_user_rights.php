@@ -104,7 +104,7 @@ if ( isset( $_POST['user_id'] ) ) {
         systext ( $FD->text('admin', 'changes_saved'), $FD->text('admin', 'info') );
     }
     else {
-        systext ( 'Dieser User kann nicht bearbeitet werden', $FD->text('admin', 'error'), TRUE );
+        systext ( 'Dieser User kann nicht bearbeitet werden.', $FD->text('admin', 'error'), TRUE );
     }
 
     // Unset Vars

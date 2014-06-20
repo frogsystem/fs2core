@@ -1,10 +1,10 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-/////////////////////////////
-//// Download hinzufügen ////
-/////////////////////////////
+//////////////////////
+//// Add Download ////
+//////////////////////
 
-if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
+if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']) && !isset($_POST['files_add']))
 {
     settype ($_POST['catid'], 'integer');
     settype ($_POST['userid'], 'integer');
@@ -18,7 +18,7 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
     $_POST['dlopen'] = isset($_POST['dlopen']) ? 1 : 0;
     $dldate = time();
 
-    // Download eintragen
+    // Insert Download
     $stmt = $FD->sql()->conn()->prepare(
                 'INSERT INTO '.$FD->config('pref')."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
                     dl_autor_url, dl_open, dl_search_update)
@@ -42,7 +42,7 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
         update_search_index ( 'dl' );
     }
 
-    // Bild auswerten und hochladen
+    // process and upload image
     $FD->loadConfig('downloads');
     $admin_dl_config_arr = $FD->configObject('downloads')->getConfigArray();
 
@@ -54,7 +54,7 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
         systext(create_thumb_notice($thumb));
     }
 
-    // Files eintragen
+    // Insert Files
     $stmt = $FD->sql()->conn()->prepare(
                     'INSERT INTO '.$FD->config('pref')."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
                      VALUES ('$id',
@@ -78,9 +78,9 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']))
     unset($_POST);
 }
 
-/////////////////////////////
-///// Download Formular /////
-/////////////////////////////
+/////////////////////////
+///// Download Form /////
+/////////////////////////
 
 if(true)
 {

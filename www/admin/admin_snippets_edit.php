@@ -154,9 +154,9 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         ';
     }
 
-    //////////////////////////////////////////////////////////////
-    //// Show to much selected Error & Go back to Select Form ////
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    //// Show too much selected Error & Go back to Select Form ////
+    ///////////////////////////////////////////////////////////////
     elseif ( $_POST['snippet_action'] == 'edit' && count ( $_POST['snippet_id'] ) > 1 ) {
         // Display Error
         systext ( $FD->text("admin", "select_only_one_to_edit"),

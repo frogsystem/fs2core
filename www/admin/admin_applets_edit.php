@@ -179,10 +179,10 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         ';
     }
 
-    //////////////////////////////////////////////////////////////
-    //// Show to much selected Error & Go back to Select Form ////
-    //////////////////////////////////////////////////////////////
-    elseif ( $_POST['applet_action'] == "edit" && count ( $_POST['applet_id'] ) > 1 ) {
+    ///////////////////////////////////////////////////////////////
+    //// Show too much selected Error & Go back to Select Form ////
+    ///////////////////////////////////////////////////////////////
+    elseif ( $_POST['applet_action'] == 'edit' && count ( $_POST['applet_id'] ) > 1 ) {
         // Display Error
         systext ( $FD->text("admin", "select_only_one_to_edit"),
             $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );

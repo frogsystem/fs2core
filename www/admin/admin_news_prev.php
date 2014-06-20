@@ -105,7 +105,7 @@
         settype($_POST['news_user'], 'integer');
         $news_arr['user_url'] = '../?go=user&amp;id='.$_POST['news_user'];
 
-        // Text formatieren
+        // Format Text
         $html = ($config_arr['html_code'] == 2 || $config_arr['html_code'] == 4) ? TRUE : FALSE;
         $fs = ($config_arr['fs_code'] == 2 || $config_arr['fs_code'] == 4) ? TRUE : FALSE;
         $para = ($config_arr['para_handling'] == 2 || $config_arr['para_handling'] == 4) ? TRUE : FALSE;
@@ -113,7 +113,7 @@
         $news_arr['news_text'] = fscode ( $_POST['news_text'], $fs, $html, $para );
         $news_arr['news_title'] = killhtml ( $_POST['news_title'] );
 
-        // Kategorie lesen
+        // Read category from DB
         settype($_POST['news_cat_id'], 'integer');
         $index = $FD->sql()->conn()->query('SELECT `cat_name`, `cat_id` FROM `'.$FD->config('pref')."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'");
         $cat_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -197,7 +197,7 @@
 
         // Get Main Template
         echo get_maintemplate ($template_general, '../');
-        $JUST_CONTENT = true; //preview has own html head
+        $JUST_CONTENT = true; //preview has own HTML head
     }
 
 ?>

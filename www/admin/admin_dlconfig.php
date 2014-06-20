@@ -5,9 +5,9 @@
 ###################
 $used_cols = array('screen_x', 'screen_y', 'thumb_x', 'thumb_y', 'quickinsert', 'dl_rights', 'dl_show_sub_cats', 'dl_comments');
 
-/////////////////////////////////////
-//// Konfiguration aktualisieren ////
-/////////////////////////////////////
+//////////////////////////////
+//// Configuration update ////
+//////////////////////////////
 
 if (isset($_POST['screen_x']) && isset($_POST['screen_y']) && isset($_POST['thumb_x']) && isset($_POST['thumb_y']) && isset($_POST['quickinsert']))
 {
@@ -38,9 +38,9 @@ if (isset($_POST['screen_x']) && isset($_POST['screen_y']) && isset($_POST['thum
     unset($_POST);
 }
 
-/////////////////////////////////////
-////// Konfiguration Formular ///////
-/////////////////////////////////////
+/////////////////////////////////
+////// Configuration Form ///////
+/////////////////////////////////
 
 if(true)
 {

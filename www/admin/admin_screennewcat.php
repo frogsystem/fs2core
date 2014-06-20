@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-//////////////////////////////
-//// Kategorie hinzufügen ////
-//////////////////////////////
+//////////////////////
+//// Add category ////
+//////////////////////
 
 if (isset($_POST['cat_name']) && !emptystr($_POST['cat_name']))
 {
@@ -21,9 +21,9 @@ if (isset($_POST['cat_name']) && !emptystr($_POST['cat_name']))
     systext($FD->text('admin', 'cat_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));
 }
 
-//////////////////////////////
-///// Kategorie Formular /////
-//////////////////////////////
+/////////////////////////
+///// Category Form /////
+/////////////////////////
 
 else
 {

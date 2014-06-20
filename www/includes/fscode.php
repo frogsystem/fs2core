@@ -1,11 +1,11 @@
 <?php
-require_once(FS2_ROOT_PATH . 'libs/class_stringparser_bbcode.php');
+require_once(FS2_ROOT_PATH . 'libs/class_StringParser_BBCode.php');
 
 // strip any fscode
 function strip_fs($str, $allowable_tags = '') {
     $allowable_tags = array_map('strtolower', explode(',', $allowable_tags));
 
-    $matches = array();
+    $tags = array();
     preg_match_all('#\[\/?([\w]+)[^\]]*?\]#', $str, $tags, PREG_PATTERN_ORDER);
 
     foreach ($tags[1] as $tag) {
@@ -51,7 +51,8 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     /* TODO: to_bbcode
      * Convert "special" frogsystem tags to default bbcode
-     * e.g. home, cimg, numlist, size,
+     * Done: home, cimg, video
+     * Todo: numlist, html-videos (because there is no page to link on)
      * may not exists for all types
      * */
 
@@ -93,12 +94,14 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
     if ($flags['washtml']) {
         //TODO: washtml http://www.ubixis.com/washtml/
-        // $bbcode->addParser (array ('block', 'inline', 'link', 'listitem', 'htmlblock'), 'washtml');
+        // $fscode->addParser (array ('block', 'inline', 'link', 'listitem', 'htmlblock'), 'washtml');
     }
-    if ($flags['paragraph'])
+    if ($flags['paragraph']) {
         $fscode->setRootParagraphHandling (true);
-    if ($flags['paragraph_to_text'])
+    }
+    if ($flags['paragraph_to_text']) {
         $fscode->setParagraphHandlingParameters ("\n\n", "\n", "\n");
+    }
 
 
     if ($flags['tab'] !== false) {
@@ -121,10 +124,11 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     // Add some default parsers and filter
     $fscode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
     $fscode->addParser ('code', 'killhtml');
-    $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
 
     // FSCode?
     if ($flags['fscode'] && !$flags['nofscodeatall']) {
+        // linebreaks
+        $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
 
         // smilies
         if (in_array('smilies', $to_html)) {
@@ -193,6 +197,9 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         } elseif  (in_array('home', $to_text)) {
             $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'text' => true, 'fullurl' => $flags['full_urls']),
                     'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
+        } elseif  (in_array('home', $to_bbcode)) {
+            $fscode->addCode ('home', 'usecontent?', 'do_fscode_homelink', array ('usecontent_param' => 'default', 'bbcode' => true, 'fullurl' => $flags['full_urls']),
+                    'link', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         }
 
         // email
@@ -246,6 +253,9 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
                     'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         } elseif  (in_array('cimg', $to_text)) {
             $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'text' => true),
+                    'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
+        } elseif  (in_array('cimg', $to_bbcode)) {
+            $fscode->addCode ('cimg', 'usecontent?', 'do_fscode_cimg', array ('usecontent_param' => 'default', 'bbcode' => true),
                     'image', array ('listitem', 'block', 'inline', 'link', 'htmlblock'), array ());
         }
 
@@ -304,6 +314,9 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('numlist', 'callback_replace', 'do_fscode_textlists', array (),
                     'list', array ('block', 'listitem', 'htmlblock'), array ('link'));
         }
+        //~ elseif  (in_array('numlist', $to_bbcode)) {
+            //~ TODO
+        //~ }
 
         if (in_array('numlist', $to_html) || in_array('numlist', $to_text)) {
             $fscode->setCodeFlag ('numlist', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
@@ -323,7 +336,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
         }
 
         if (in_array('numlist', $to_html) || in_array('numlist', $to_text)
-            || in_array('list', $to_html) || in_array('numlist', $list))   {
+            || in_array('list', $to_html) || in_array('numlist', $to_text))   {
             $fscode->addParser ('list', 'fscode_stripcontents');
             $fscode->setCodeFlag ('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
             $fscode->setCodeFlag ('*', 'paragraphs', false);
@@ -379,8 +392,13 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
                     'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
             $fscode->addCode ('player', 'usecontent', 'do_fscode_video', array ('text' => true),
                     'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
+        } elseif  (in_array('video', $to_bbcode)) {
+            $fscode->addCode ('video', 'usecontent', 'do_fscode_video', array ('bbcode' => true),
+                    'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
+            $fscode->addCode ('player', 'usecontent', 'do_fscode_video', array ('bbcode' => true),
+                    'block', array ('block', 'htmlblock'), array ('link', 'listitem'));
         }
-        if (in_array('video', $to_html) || in_array('video', $to_text)) {
+        if (in_array('video', $to_html) || in_array('video', $to_text) || in_array('video', $to_bbcode)) {
             $fscode->setCodeFlag ('video', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
             $fscode->setCodeFlag ('player', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
         }
@@ -389,7 +407,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     } elseif (!$flags['nofscodeatall']) {
         // fscode
         if (in_array('fscode', $to_html)) {
-            $bbcode->setCodeFlag ('fscode', 'paragraphs', true);
+            $fscode->setCodeFlag ('fscode', 'paragraphs', true);
             $fscode->addCode ('html', 'usecontent', 'simple_usecontent_replace', array ('start_tag' => '', 'end_tag' => ''),
                 'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
 
@@ -533,10 +551,13 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
     }
 
     // Return html or text
-    if (isset($params['text']) && $params['text'] === true)
+    if (isset($params['text']) && $params['text'] === true) {
         return ($url == $content) ? $url : $content . ' ('.$url.')';
-    else
+    } else if (isset($params['bbcode']) && $params['bbcode'] === true) {
+        return ($url == $content) ? '[url]'.$url.'[/url]' : '[url='.$url.']'.$content.'[/url]';
+    } else {
         return '<a href="'.$url.'" target="_self">'.$content.'</a>';
+    }
 }
 
 // Create an email link
@@ -651,6 +672,11 @@ function do_fscode_cimg ($action, $attributes, $content, $params, $node_object) 
 
     // Extend Content Image Url
     $content = $FD->cfg('virtualhost').'media/content/'.$content;
+
+    // return img bbcode
+    if (isset($params['bbcode']) && $params['bbcode'] === true) {
+        return '[img]'.$content.'[/img]';
+    }
 
     // Call function for img fscode
     return do_fscode_img($action, $attributes, $content, $params, $node_object);
@@ -778,15 +804,15 @@ function do_fscode_quote ($action, $attributes, $content, $params, $node_object)
 function do_fscode_video ($action, $attributes, $content, $params, $node_object) {
     require_once ( FS2_ROOT_PATH . 'resources/player/player_flv_include.php' );
 
-    global $FD;
-
     if ($action == 'validate') {
         return true;
     }
 
     // Get HTML or text
     if (isset($params['text']) && $params['text'] === true) {
-        return get_player($content, true, true, true);
+        return get_player($content, true, true, 'text');
+    } else if (isset($params['bbcode']) && $params['bbcode'] === true) {
+        return get_player($content, true, true, 'bbcode');
     } else {
         if (!isset ($attributes['default'])) {
             return get_player ( $content );

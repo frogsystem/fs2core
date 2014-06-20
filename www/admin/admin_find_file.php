@@ -20,22 +20,22 @@ try {
     $ftp = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'ftp WHERE `ftp_id` = 1 LIMIT 1');
     $ftp = $ftp->fetch(PDO::FETCH_ASSOC);
 
-    // Verbindung aufbauen
+    // establish connection
     if($ftp['ftp_ssl']) {
         $_SESSION['ftp_conn'] = @ftp_ssl_connect($ftp['ftp_url']);
     } else {
         $_SESSION['ftp_conn'] = @ftp_connect($ftp['ftp_url']);
     }
 
-    // Login mit Benutzername und Passwort
+    // Login with user name and password
     $login_result = @ftp_login($_SESSION['ftp_conn'], $ftp['ftp_user'], $ftp['ftp_pw']);
 
-    // Verbindung ¸berpr¸fen
+    // check connection
     if ((!$_SESSION['ftp_conn']) || (!$login_result)) {
         // display error
         $adminpage->clearConds();
         $adminpage->clearTexts();
-        $adminpage->addText('connection_error_text', sprintf($FD->text("page", "connection_error_text"), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
+        $adminpage->addText('connection_error_text', sprintf($FD->text('page', 'connection_error_text'), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
         $content = $adminpage->get('conn_error');
 
     } else {
@@ -95,7 +95,7 @@ try {
         // display page
         $adminpage->clearConds();
         $adminpage->clearTexts();
-        $adminpage->addText('connection_ok', sprintf($FD->text("page", "connection_ok"), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
+        $adminpage->addText('connection_ok', sprintf($FD->text('page', 'connection_ok'), htmlenclose($ftp['ftp_url'], 'strong'), htmlenclose($ftp['ftp_user'], 'strong')));
         $adminpage->addText('url_links', $furllinks);
         $adminpage->addText('up_url', '?go=find_file&amp;id='.$_GET['id'].'&amp;f='.$_GET['f'].'..');
         $adminpage->addText('lines', implode($folder_list).implode($file_list));
@@ -103,7 +103,7 @@ try {
         $content = $adminpage->get('main');
     }
 
-    // Verbindung schlieﬂen
+    // close connection
     @ftp_close($_SESSION['ftp_conn']);
 
 } catch (Exception $e) {

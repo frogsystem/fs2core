@@ -233,13 +233,13 @@ news_comment_user_rank:                User rank
 news_comment_body_title:               Comment Body
 news_comment_body_description:         The design of a comment.
 news_comment_body_help_1:              The title of the comment.
-news_comment_body_help_2:              Das Datum an dem der Kommentar geschrieben wurde.
+news_comment_body_help_2:              Date on which the comment was written.
 news_comment_body_help_3:              The text of the comment.
 news_comment_body_help_4:              Includes the name of an unregistered user or the "Author of comment" template.
 news_comment_body_help_5:              Includes the authors avatar, if any.
 
 news_comment_form_spam_title:          Anti Spam
-news_comment_form_spam_description:    Captcha for protection agains spam bots.
+news_comment_form_spam_description:    Captcha for protection against spam bots.
 news_comment_form_spam_help_1:         URL of the anti-spam captcha image.
 
 news_comment_form_spamtext_title:      Anti Spam Text
@@ -275,9 +275,11 @@ search_applet_keyword:                 The keyword that was searched for
 search_search_title:                   Search field
 search_search_desc:                    Search field on the main search page
 search_search_keyword:                 The keyword that was searched for.
+search_operators:                      The available search operators as CSV.
 search_search_in_news:                 Sets the „Search in news“ setting of the HTML checkbox
 search_search_in_articles:             Sets the „Search in articles“ setting of the HTML checkbox
 search_search_in_downloads:            Sets the „Search in downloads“ setting of the HTML checkbox
+search_phonetic_search:                Sets the „phonetic search“ setting of the HTML checkbox
 search_result_date_template_title:     Date template
 search_result_date_template_desc:      Template for the date of a search result
 search_result_line_title:              Search result line
@@ -288,6 +290,7 @@ search_result_line_url:                The URL of the found content.
 search_result_line_date:               The date of the found content
 search_result_line_date_template:      Date template, if date is given.
 search_result_line_num_matches:        Number of matches in content.
+search_result_line_rank:               Quality value of the search result.
 search_no_results_title:               "No results" line
 search_no_results_desc:                Design of the hint line, if no results have been found
 search_more_results_title:             "More results" link
@@ -307,7 +310,7 @@ search_body_news:                      Includes the news search results.
 search_body_articles:                  Includes the article search results.
 search_body_downloads:                 Includes the download search results.
 search_info_title:                     Information Block
-search_info_desc:                      Contains informationen about the search query.
+search_info_desc:                      Contains information about the search query.
 search_info_query:                     The cleared up search query.
 search_info_num_results:               Total number of found data sets.
 
@@ -420,6 +423,7 @@ shop_item_url:                         Purchase-URL for the product
 shop_item_price:                       Price of the product
 shop_item_image:                       HTML inclusion of the product image
 shop_item_image_url:                   URL of the product image
+shop_item_image_viewer_url:            URL for opening the image with the image viewer.
 shop_item_small_image:                 HTML inclusion of the small preview image
 shop_item_small_image_url:             URL of the small preview image
 shop_main_body_title:                  Shop
@@ -460,18 +464,18 @@ quote_tag_name_help_2:                 Name of the quote's author.
 
 code_tag_title:                        Code
 code_tag_description:                  Design of the "Code" - FSCode ['code']text['/code']
-code_tag_help_1:                       Text that is surriunded by the code block.
+code_tag_help_1:                       Text that is surrounded by the code block.
 
 
 wallpaper_pic_title:                   Wallpaper
 wallpaper_pic_description:             Design of a single wallpaper.
 wallpaper_pic_help_1:                  URL for thumbnail of the wallpaper.
 wallpaper_pic_help_2:                  Descriptive text of the wallpaper.
+wallpaper_pic_help_3:                  Lists the available wallpaper sizes.
 wallpaper_sizes_title:                 Wallpaper sizes
 wallpaper_sizes_description:           Design of the wallpaper sizes.
 wallpaper_sizes_help_1:                URL for the wallpaper of that size.
 wallpaper_sizes_help_2:                The size of the wallpaper as plain text.
-
 
 screenshot_cat_title:                  Category
 screenshot_cat_description:            Line of a category in the category list
@@ -499,7 +503,7 @@ press_navi_line_description:           One line of the navigation.
 press_navi_line_help_1:                URL for opening/displaying the folder in the navigation.
 press_navi_line_help_2:                The title of the navigation folder.
 press_navi_line_help_3:                URL of image of the navigation folder.
-press_navi_line_help_4:                URL zu einem entsprechenden Standard-Ordnersymbol.
+press_navi_line_help_4:                URL of a corresponding default folder icon.
 press_navi_main_title:                 Navigation
 press_navi_main_description:           Design of the navigation.
 press_navi_main_help_1:                Includes the folders/lines of the navigation one after another.

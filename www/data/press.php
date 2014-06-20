@@ -198,7 +198,9 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
                         //Icon URL erstellen, nur Unterordner von geöffneten Ordner anzeigen
                         $entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder.gif';
                         $open2 = FALSE;
-                        if ( $_GET['game']==$entry_arr['id'] || $_GET['cat']==$entry_arr['id'] || $_GET['lang']==$entry_arr['id'] ) {
+                        if ( (isset($_GET['game']) && $_GET['game']==$entry_arr['id'])
+                             || (isset($_GET['cat']) && $_GET['cat']==$entry_arr['id'])
+                             || (isset($_GET['lang']) && $_GET['lang']==$entry_arr['id']) ) {
                             $open2 = TRUE;
                             if ( get_num_of_levels ( $_GET['game'], $_GET['cat'], $_GET['lang'] ) == 2 ) {
                                 $entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';
@@ -241,7 +243,9 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
                   || (isset($_GET['cat']) && $_GET['cat'] == $entry_arr['id'])
                   || (isset($_GET['lang']) && $_GET['lang'] == $entry_arr['id']) ) {
                     $open = TRUE;
-                    if ( get_num_of_levels ( $_GET['game'], $_GET['cat'], $_GET['lang'] ) == 1 ) {
+                    if ( get_num_of_levels ( isset($_GET['game']) ? $_GET['game'] : null,
+                                             isset($_GET['cat']) ? $_GET['cat'] : null,
+                                             isset($_GET['lang']) ? $_GET['lang'] : null) == 1 ) {
                         $entry_arr['icon_url'] = $FD->config('virtualhost').'styles/'.$FD->config('style').'/icons/folder_open.gif';
                     }
                 }
@@ -302,7 +306,9 @@ if ($config_arr['show_press'] == 0)
     {
         $config_arr['show_press'] = 1;
     }
-    elseif (in_array($_GET['game'], $last_arr) || in_array($_GET['cat'], $last_arr) || in_array($_GET['lang'], $last_arr))
+    elseif ((isset($_GET['game']) ? in_array($_GET['game'], $last_arr) : false)
+           || (isset($_GET['cat']) ? in_array($_GET['cat'], $last_arr) : false)
+           || (isset($_GET['lang']) ? in_array($_GET['lang'], $last_arr) : false))
     {
         $config_arr['show_press'] = 1;
     }
@@ -350,12 +356,13 @@ if ($config_arr['show_press'] == 1)
 /////////////////////////////
 /// Presseberichte laden ////
 /////////////////////////////
+
+$press_releases = '';
+
 if ($config_arr['show_press_sql'] == true)
 {
     $sql_query = 'SELECT * FROM '.$FD->config('pref')."press $where_clause ORDER BY $config_arr[order_by] $config_arr[order_type]";
     $index = $FD->sql()->conn()->query($sql_query);
-
-    $press_releases = '';
 
     while ($press_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
