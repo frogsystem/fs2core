@@ -12,7 +12,9 @@ $settings = array (
 	'truncate_awareness' => array('word' => true, 'html' => true, 'bbcode' => false),
 	'truncate_options' => array('count_html' => false, 'count_bbcode' => false, 'below' => true),
     'use_html' => true,
-    'tpl_functions' => 'softremove'
+    'tpl_functions' => 'softremove',
+    'cat_filter' => array(),
+    'cat_prepend' => false
 );
 ##################
 ## Settings End ##
@@ -23,8 +25,7 @@ $settings = array (
 set_include_path('.');
 define('FS2_ROOT_PATH', './../', true);
 require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
-//~ phpinit(false, 'Content-type: application/xml');
-phpinit(false);
+phpinit(false, 'Content-type: application/xml');
 /* End of FS2 PHP Init */
 
 

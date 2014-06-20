@@ -21,8 +21,9 @@ $SHOW = TRUE;
 if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSION['user_id'] != 0 && isset($_POST['spam']) ) {
     $anti_spam = check_captcha ( $_POST['spam'], 0 );
 } else {
-	if (!isset($_POST['spam']))
+	if (!isset($_POST['spam'])) {
 		$_POST['spam'] = '';
+    }
     $anti_spam = check_captcha ( $_POST['spam'], $config_arr['com_antispam'] );
 }
 

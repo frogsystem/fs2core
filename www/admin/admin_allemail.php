@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-/////////////////////////////////
-//// Datenbank aktualisieren ////
-/////////////////////////////////
+/////////////////////////
+//// Database update ////
+/////////////////////////
 
 if (   ( isset($_POST['signup']) && $_POST['signup'] != '' )
     && ( isset($_POST['change_password']) && $_POST['change_password'] != '' )

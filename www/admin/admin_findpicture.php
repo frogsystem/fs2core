@@ -87,7 +87,7 @@ if (isset($_POST['cat']))
 
         $main = '
         <table class="content" cellpadding="0" cellspacing="0">
-            <tr><td colspan="2"><h3>Bild auswählen</h3><hr></td></tr>
+            <tr><td colspan="2"><h3>Bild ausw&auml;hlen</h3><hr></td></tr>
             '.$lines.'
         </table>';
     }

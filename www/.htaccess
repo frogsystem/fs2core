@@ -2,10 +2,12 @@
 ErrorDocument 403 http://localhost/fs2/www/403.html
 ErrorDocument 404 http://localhost/fs2/www/404.html
 
-# Aktiviere RewriteEngine (noetig für alle Rewrites)
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    # Aktiviere RewriteEngine
+    RewriteEngine On
 
-# SEO-URLs
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.+)\.html$ index.php?seoq=$1 [L,QSA]
+    # SEO-URLs
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)\.html$ index.php?seoq=$1 [L,QSA]
+</IfModule>

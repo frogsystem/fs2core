@@ -166,11 +166,11 @@
             <input class="pointer" type="radio" name="link" value="<!--TEXT::id-->">
         </div>
         <div class="nshide right">
-            <img class="pointer" src="icons/up.gif" onClick="up($(this).parents(\'tr:first\'))" alt="<!--COMMON::up-->" title="<!--COMMON::up-->">&nbsp;
-            <img class="pointer" src="icons/down.gif" onClick="down($(this).parents(\'tr:first\'))" alt="<!--COMMON::down-->" title="<!--COMMON::down-->">
+            <img class="pointer" src="icons/up.gif" onClick="up($(this).parents(\'tr:first\'));" alt="<!--COMMON::up-->" title="<!--COMMON::up-->">&nbsp;
+            <img class="pointer" src="icons/down.gif" onClick="down($(this).parents(\'tr:first\'));" alt="<!--COMMON::down-->" title="<!--COMMON::down-->">
             &nbsp;&nbsp;&nbsp;
-            <img class="pointer" src="icons/edit.gif" onClick="edit($(this).parents(\'tr:first\'))" alt="<!--COMMON::edit-->" title="<!--COMMON::edit-->">&nbsp;
-            <img class="pointer" src="icons/delete.gif" onClick="remove($(this).parents(\'tr:first\'))" alt="<!--COMMON::delete-->" title="<!--COMMON::delete-->">
+            <img class="pointer" src="icons/edit.gif" onClick="edit($(this).parents(\'tr:first\'));" alt="<!--COMMON::edit-->" title="<!--COMMON::edit-->">&nbsp;
+            <img class="pointer" src="icons/delete.gif" onClick="removeLink($(this).parents(\'tr:first\'));" alt="<!--COMMON::delete-->" title="<!--COMMON::delete-->">
         </div>
     </td>
 </tr>
@@ -245,7 +245,7 @@
 <!--section-start::script-->
 <script type="text/javascript">
     jQuery(document).ready(function(){
-        $("tr.link_entry").live("mouseover mouseout", function(event) {
+        $("#link_list").delegate("tr.link_entry", "mouseover mouseout", function(event) {
             if ( event.type == "mouseover" ) {
                 $(this).css("background-color", "#EEEEEE");
             } else {
@@ -299,7 +299,7 @@
         }
     }
 
-    function remove(l) {
+    function removeLink(l) {
         var id = parseInt(l.find("input[name=link]").val());
 
         if (id < link_arr.length) {

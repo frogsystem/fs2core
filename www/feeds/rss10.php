@@ -12,7 +12,9 @@ $settings = array (
 	'truncate_awareness' => array('word' => true, 'html' => true, 'bbcode' => false),
 	'truncate_options' => array('count_html' => false, 'count_bbcode' => false, 'below' => true),
     'use_html' => true,
-    'tpl_functions' => 'softremove'
+    'tpl_functions' => 'softremove',
+    'cat_filter' => array(),
+    'cat_prepend' => false
 );
 ##################
 ## Settings End ##

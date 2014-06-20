@@ -5,9 +5,9 @@
 ###################
 $cronjobs_cols = array('ref_cron', 'ref_days', 'ref_hits', 'ref_contact', 'ref_age', 'ref_amount');
 
-//////////////////////////
-//// Referrer Löschen ////
-//////////////////////////
+////////////////////////
+//// Delete Referer ////
+////////////////////////
 
 if (
     has_perm('stat_ref_delete')
@@ -65,9 +65,9 @@ if (
     }
 }
 
-//////////////////////////
-/// Filter definieren ////
-//////////////////////////
+//////////////////////
+/// Define Filter ////
+//////////////////////
 
 else
 {
@@ -157,9 +157,9 @@ else
 					</form>
 	';
 
-//////////////////////////
-/// Referrer anzeigen ////
-//////////////////////////
+/////////////////////
+/// Show Referer ////
+/////////////////////
 
     echo'
 						<table class="configtable" cellpadding="4" cellspacing="0">
@@ -277,9 +277,9 @@ else
 					</table>
 	';
 
-////////////////////////
-/// Referrer löschen ///
-////////////////////////
+//////////////////////
+/// Delete Referer ///
+//////////////////////
     if (has_perm('stat_ref_delete')) {
 
         // Get Config data

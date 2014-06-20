@@ -13,9 +13,9 @@ $defaults = array(
 );
 
 
-/////////////////////////////
-//// Screenshot hochladen ///
-/////////////////////////////
+//////////////////////////
+//// Upload Screenshot ///
+//////////////////////////
 
 
 $catsqry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
@@ -46,7 +46,7 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
 
   if (!image_exists('media/content/',$_POST['newname'])  AND !image_exists('media/content/',$_POST['newname'].'_s'))
   {
-    $upload = upload_img($_FILES['cimg'], 'media/content/', $_POST['newname'], 1024*1024, 9999, 9999);
+    $upload = upload_img($_FILES['cimg'], 'media/content/', $_POST['newname'], 1024*1024*5, 9999, 9999);
     $message = upload_img_notice ( $upload );
     if ($make_thumb) {
       $thumb = create_thumb_from ( image_url ( 'media/content/', $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
@@ -79,9 +79,9 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
 	systext ( $message );
 }
 
-/////////////////////////////
-//// Screenshot Formular ////
-/////////////////////////////
+/////////////////////////
+//// Screenshot Form ////
+/////////////////////////
     $error_message = '';
 
     if (isset($_POST['sended']))

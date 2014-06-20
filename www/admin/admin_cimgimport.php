@@ -9,8 +9,10 @@ define('CIMG_PATH', FS2_ROOT_PATH.'media/content/', true);
 if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "import"){
     if (!isset($_POST['thumb']))
         $_POST['thumb'] = array();
-
-    if(count($_POST['image']) > 0){
+		
+	if(count($_POST['image']) > 0 && !is_writable ( CIMG_PATH )){ 
+		systext('Keine Schreibrechte auf das Verzeichnis '.CIMG_PATH.'.');
+	}elseif(count($_POST['image']) > 0){
         $count = 0;
         $stmt = $FD->sql()->conn()->prepare('INSERT INTO `'.$FD->config('pref').'cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES (?, ?, ?, ?)');
         foreach($_POST['image'] as $image){

@@ -212,7 +212,7 @@ echo'
 <!-- Top Menu -->
 <div id="topmenu_left"></div>
 <div id="topmenu_loop">
-    '.get_topmenu($PAGE_DATA_ARR['menu']); //creates the menu-list
+    '.get_topmenu($PAGE_DATA_ARR['menu']); //creates the menu list
 echo '
 </div>
 

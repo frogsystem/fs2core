@@ -604,8 +604,6 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
 /////////////////////////////
 function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 {
-    global $FD;
-
     if ( file_exists ( FS2_ROOT_PATH . 'styles/default/' . $FILE ) ) {
         $original['button'] = '
                                             <div class="html-editor-button html-editor-button-original" onClick="toggelOriginal(\''.$EDITOR_NAME.'\')" title="Original anzeigen">
@@ -640,8 +638,6 @@ function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 ////////////////////////////////
 function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
 {
-    global $FD;
-
     // Get Tag-Menu
     $help_template = get_taglist ( isset($editor_arr['help'])?$editor_arr['help']:array(), $editor_arr['name'] );
 

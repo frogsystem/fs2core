@@ -275,9 +275,11 @@ search_applet_keyword:                 Das Schlüsselwort, nach dem gesucht wurde
 search_search_title:                   Suchfeld
 search_search_desc:                    Suchfeld auf der Hauptsuchseite
 search_search_keyword:                 Das Schlüsselwort, nach dem gesucht wurde.
+search_operators:                      Die verfügbaren Suchoperatoren als CSV.
 search_search_in_news:                 Setzt die „In News suchen“-Einstellung der HTML-Checkbox
 search_search_in_articles:             Setzt die „In Artikeln suchen“-Einstellung der HTML-Checkbox
 search_search_in_downloads:            Setzt die „In Downloads suchen“-Einstellung der HTML-Checkbox
+search_phonetic_search:                Setzt die „Phonetische Suche“-Einstellung der HTML-Checkbox.
 search_result_date_template_title:     Datum-Template
 search_result_date_template_desc:      Template für das Datum eines Suchergebnisses
 search_result_line_title:              Suchergebnis-Zeile
@@ -288,6 +290,7 @@ search_result_line_url:                Die URL des gefundenen Inhalts.
 search_result_line_date:               Das Datum des gefundenen Inhalts
 search_result_line_date_template:      Datum-Template, wenn Datum vorhanden.
 search_result_line_num_matches:        Anzahl der Fundstellen im Inhalt.
+search_result_line_rank:               Wert der Qualität des Suchergebnisses.
 search_no_results_title:               Keine Ergebnisse-Zeile
 search_no_results_desc:                Darstellung der Hinweis-Zeile, wenn keine Ergebnisse gefunden wurden
 search_more_results_title:             Mehr Ergebnisse-Link
@@ -420,6 +423,7 @@ shop_item_url:                         Zum Produkt gespeicherte Einkauf-URL
 shop_item_price:                       Preis des Produkts
 shop_item_image:                       HTML-Einbindung des Produktbildes
 shop_item_image_url:                   URL des Produktbildes
+shop_item_image_viewer_url:            URL um das Bild im Bildbetrachter zu öffnen.
 shop_item_small_image:                 HTML-Einbindung des kleinen Vorschaubildes
 shop_item_small_image_url:             URL des kleinen Vorschaubildes
 shop_main_body_title:                  Shop
@@ -467,11 +471,11 @@ wallpaper_pic_title:                   Wallpaper
 wallpaper_pic_description:             Aussehen eines einzelnen Wallpapers.
 wallpaper_pic_help_1:                  URL zum Thumbnail des Wallpapers.
 wallpaper_pic_help_2:                  Beschreibungstext des Wallpapers.
+wallpaper_pic_help_3:                  Listet die verfügbaren Wallpaper-Größen auf.
 wallpaper_sizes_title:                 Wallpaper Größen
 wallpaper_sizes_description:           Aussehen der Wallpaper Größen.
 wallpaper_sizes_help_1:                URL zum Wallpaper in dieser Größe.
 wallpaper_sizes_help_2:                Die Größe des Wallpapers als Text.
-
 
 screenshot_cat_title:                  Kategorie
 screenshot_cat_description:            Zeile einer Kategorie in der Kategorie-Übersicht

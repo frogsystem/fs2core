@@ -1,12 +1,12 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-///////////////////////////////
-//// Umfrage aktualisieren ////
-///////////////////////////////
+/////////////////////
+//// Poll update ////
+/////////////////////
 
 if (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_POST['editpollid']) && isset($_POST['delpoll']) && $_POST['delpoll'] == 1)
 {
-    // Umfrage löschen
+    // Delete poll
     $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."poll WHERE poll_id = '".intval($_POST['editpollid'])."'");
     $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '".intval($_POST['editpollid'])."'");
     systext('Die Umfrage wurde gel&ouml;scht');
@@ -26,7 +26,7 @@ elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_PO
     $_POST['type'] = isset($_POST['type']) ? 1 : 0;
     settype($_POST['participants'], 'integer');
 
-    // Umfrage in der DB aktualisieren
+    // Update poll in DB
     $stmt = $FD->sql()->conn()->prepare(
               'UPDATE '.$FD->config('pref')."poll
                SET poll_quest = ?,
@@ -37,7 +37,7 @@ elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_PO
                WHERE poll_id = ?");
     $stmt->execute(array($_POST['frage'], $_POST['editpollid']));
 
-    // Antworten in der DB aktualisieren
+    // Update answers in DB
     for($i=0; $i<count($_POST['ant']); $i++)
     {
         if (isset($_POST['dela'][$i]) || emptystr($_POST['ant'][$i]))
@@ -77,9 +77,9 @@ elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_PO
     unset($_POST);
 }
 
-///////////////////////////////
-////// Umfrage editieren //////
-///////////////////////////////
+///////////////////////
+////// Edit Poll //////
+///////////////////////
 
 if (isset($_POST['pollid']))
 {
@@ -91,7 +91,7 @@ if (isset($_POST['pollid']))
 
 
 
-    //Zeit-Array für Jetzt Button
+    //Time Array for "Now" Button
     $jetzt['tag'] = date('d');
     $jetzt['monat'] = date('m');
     $jetzt['jahr'] = date('Y');
@@ -310,7 +310,7 @@ if (isset($_POST['pollid']))
                             </tr>
     ';
 
-    // Antwortfelder erzeugen
+    // Create answer fields
     for($i=0; $i<$_POST['options']; $i++)
     {
         $j = $i + 1;
@@ -395,9 +395,9 @@ if (isset($_POST['pollid']))
     ';
 }
 
-///////////////////////////////
-////// Umfrage auswählen //////
-///////////////////////////////
+/////////////////////////
+////// Select Poll //////
+/////////////////////////
 
 else
 {
@@ -425,7 +425,7 @@ else
                             </tr>
     ';
 
-    // Umfragen auflisten
+    // List polls
     $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll ORDER BY poll_start DESC');
     while ($poll_arr = $index->fetch(PDO::FETCH_ASSOC))
     {

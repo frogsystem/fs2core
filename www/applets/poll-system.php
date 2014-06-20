@@ -18,6 +18,7 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
         $poll_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll WHERE poll_id = '.intval($SCRIPT['argv'][1]).' LIMIT 1');
         $poll_arr = $poll_arr->fetch(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
+        $poll_arr = array();
     }
 
 // random option
@@ -45,6 +46,7 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
         $poll_arr = $poll_arr->fetch(PDO::FETCH_ASSOC);
         $poll_arr['random'] = true;
     } catch (Exception $e) {
+        $poll_arr = array();
     }
 
 // last poll
@@ -60,15 +62,15 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
 //////////////////////////
 //// View Result      ////
 //////////////////////////
-if (isset($_POST['poll_id']) &&
+if (
     (
-        ($_POST['poll_id'] === $poll_arr['poll_id'] || $poll_arr['random'] === true)
-        || checkVotedPoll($poll_arr['poll_id'])
+        isset($_POST['poll_id']) && ($_POST['poll_id'] === $poll_arr['poll_id'] || $poll_arr['random'] === true)
+        || (isset($poll_arr['poll_id']) && checkVotedPoll($poll_arr['poll_id']))
         || (isset($poll_arr['poll_end']) && time() > $poll_arr['poll_end'])
     )
 )
 {
-    if ($poll_arr['random'] === true && isset($_POST['poll_id'])) {
+    if (isset($_POST['random']) && $poll_arr['random'] === true && isset($_POST['poll_id'])) {
         $poll_arr['poll_id'] = $_POST['poll_id'];
         settype($poll_arr['poll_id'], 'integer');
     }

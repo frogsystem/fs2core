@@ -496,9 +496,9 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
     $sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $FD->config('spam') );
     $sicherheits_eingabe = str_replace ('=', '', $sicherheits_eingabe );
 
-    if ( $ACTIVATION == 0 ) {
+    if ( $ACTIVATION === 0 ) {
         return TRUE;
-    } elseif ( $ACTIVATION == 1 && isset($_SESSION['user_id']) ) {
+    } elseif ( $ACTIVATION == 1 && isset($_SESSION['user_id']) && 0 !== $_SESSION['user_id']) {
         return TRUE;
     } elseif ( $ACTIVATION == 3 && isset($_SESSION['user_id']) && is_in_staff ( $_SESSION['user_id'] ) ) {
         return TRUE;
@@ -602,20 +602,17 @@ function get_email_template ( $TEMPLATE_NAME )
 
 function send_mail ( $TO, $SUBJECT, $CONTENT, $HTML = TRUE, $FROM = FALSE, $TPL_FUNC = true)
 {
-    global $FD;
-
-
     if ($FROM == FALSE) {
         $FROM = MailManager::getDefaultSender();
-    }    
+    }
     $mail = new Mail($FROM, $TO, $SUBJECT, MailManager::parseContent($CONTENT, $HTML, $TPL_FUNC), $HTML, $TPL_FUNC);
     return $mail->send();
 }
 
 
-////////////////////////////////
-//// Create textarea        ////
-////////////////////////////////
+/////////////////////////
+//// Create textarea ////
+/////////////////////////
 
 function create_textarea($name, $text='', $width='', $height='', $class='', $all=true, $fs_smilies=0, $fs_b=0, $fs_i=0, $fs_u=0, $fs_s=0, $fs_center=0, $fs_font=0, $fs_color=0, $fs_size=0, $fs_img=0, $fs_cimg=0, $fs_url=0, $fs_home=0, $fs_email=0, $fs_code=0, $fs_quote=0, $fs_noparse=0)
 {

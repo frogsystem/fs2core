@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-//////////////////////////////////////////////////
-//// Neues Pre-, Re oder Interview einstellen ////
-//////////////////////////////////////////////////
+//////////////////////////////////////////
+//// Insert new Pre-, Re or Interview ////
+//////////////////////////////////////////
 
 if ((isset($_POST['title']) AND $_POST['title'] != '')
     && (isset($_POST['url']) AND $_POST['url'] != '')
@@ -51,12 +51,12 @@ if ((isset($_POST['title']) AND $_POST['title'] != '')
     unset($_POST);
 }
 
-////////////////////////////////////////////
-///// Pre-, Re oder Interview Formular /////
-////////////////////////////////////////////
+//////////////////////////////////////
+///// Pre-, Re or Interview Form /////
+//////////////////////////////////////
 if(true)
 {
-    //Initialisiere Werte
+    //Initialise values
     $press_arr['press_title'] = '';
     $press_arr['press_url'] = 'http://';
     $press_arr['press_intro'] = '';
@@ -71,7 +71,7 @@ if(true)
     $date['jahr'] = '';
 
 
-    //Zeit-Array für Heute Button
+    //Time Array for "Today" Button
     $heute['time'] = time();
     $heute['tag'] = date('d', $heute['time']);
     $heute['monat'] = date('m', $heute['time']);

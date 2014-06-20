@@ -1,15 +1,15 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 /////////////////////
-//// Config laden ///
+//// Load Config ////
 /////////////////////
 
 $FD->loadConfig('screens');
 $config_arr = $FD->configObject('screens')->getConfigArray();
 
-////////////////////////////
-//// Wallpaper editieren ///
-////////////////////////////
+///////////////////////
+//// Edit Wallpaper ///
+///////////////////////
 if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended'] == 'edit' AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['size'][0]) AND isset($_POST['wpedit'])  AND $_POST['wpedit'] == 1)
 {
     $index = $FD->sql()->conn()->prepare('SELECT COUNT(*) FROM '.$FD->config('pref').'wallpaper WHERE wallpaper_name = ?');
@@ -30,7 +30,7 @@ if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended
                WHERE wallpaper_id = $_POST[wallpaper_id]");
     $update->execute(array($_POST['wallpaper_name'], $_POST['wallpaper_title']));
 
-    // Files  aktualisieren
+    // Update Files
         for ($i=0; $i<count($_POST['size']); $i++)
         {
             if (isset($_POST['delwp'][$i]) && $_POST['delwp'][$i])
@@ -89,7 +89,7 @@ if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended
 
      systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
 
-   //IF Ende
+   //IF End
    }
    else
    {
@@ -100,7 +100,7 @@ if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended
    }
 }
 //////////////////////////
-//// Wallpaper löschen ///
+//// Delete Wallpaper ////
 //////////////////////////
 elseif (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended'] == 'delete')
 {
@@ -122,24 +122,24 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['se
     systext('Wallpaper wurden gel&ouml;scht');
 }
 
-//////////////////////////
-/// Wallpaper Funktion ///
-//////////////////////////
+///////////////////////////
+/// Wallpaper Functions ///
+///////////////////////////
 
 elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
 {
   //security function
   $_POST['wallpaper_id'] = intval($_POST['wallpaper_id']);
 
-////////////////////////////
-/// Wallpaper bearbeiten ///
-////////////////////////////
+//////////////////////
+/// Edit Wallpaper ///
+//////////////////////
 
 
   if ($_POST['wp_action'] == 'edit')
   {
 
-    //Thumb neu erstellen
+    //Re-create Thumb
     if (isset($_POST['sended']) && $_POST['sended'] == 'newthumb')
     {
         $index = $FD->sql()->conn()->query('SELECT wallpaper_name FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
@@ -177,7 +177,7 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
         systext($error_message);
     }
 
-    //EDIT ANFANG
+    //EDIT BEGIN
 
     $index2 = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
     $index2_num_rows = (int) $index2->fetchColumn();
@@ -373,9 +373,9 @@ echo'
     ';
   }
 
-/////////////////////////
-/// Wallpaper löschen ///
-/////////////////////////
+////////////////////////
+/// Delete Wallpaper ///
+////////////////////////
 
 
   elseif ($_POST['wp_action'] == 'delete')
@@ -389,7 +389,7 @@ echo '
 <input type="hidden" name="sended" value="delete" />
 <input type="hidden" name="wallpaper_id" value="'.$wallpaper_arr['wallpaper_id'].'" />
 <table class="content" cellpadding="0" cellspacing="0">
-    <tr><td colspan="4"><h3>Wallpaper löschen</h3><hr></td></tr>
+    <tr><td colspan="4"><h3>Wallpaper l&ouml;schen</h3><hr></td></tr>
        <tr align="left" valign="top">
            <td class="config" colspan="4">
                <b>Wallpaper l&ouml;schen:</b><br><br>
@@ -426,9 +426,9 @@ echo '
   }
 }
 
-///////////////////////////
-/// Kategorie auswählen ///
-///////////////////////////
+///////////////////////
+/// Select Category ///
+///////////////////////
 
 else
 {
@@ -470,9 +470,9 @@ else
     ';
 
 
-///////////////////////////
-/// Wallpaper auswählen ///
-///////////////////////////
+////////////////////////
+/// Select Wallpaper ///
+////////////////////////
 
     if (isset($_POST['wpcatid']))
     {

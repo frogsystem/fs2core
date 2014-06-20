@@ -1,8 +1,8 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!"');
 
-/////////////////////////////////////
-//// Konfiguration aktualisieren ////
-/////////////////////////////////////
+//////////////////////////////
+//// Configuration Update ////
+//////////////////////////////
 
 if (isset($_POST['smilies_rows']) && $_POST['smilies_rows']>0 && isset($_POST['smilies_cols']) && $_POST['smilies_cols']>0
  AND isset($_POST['textarea_width']) && $_POST['textarea_width']>0 && isset($_POST['textarea_height']) && $_POST['textarea_height']>0)
@@ -99,9 +99,9 @@ if (isset($_POST['smilies_rows']) && $_POST['smilies_rows']>0 && isset($_POST['s
     systext($FD->text('page', 'changes_saved'), $FD->text('page', 'info'));
 }
 
-/////////////////////////////////////
-////// Konfiguration Formular ///////
-/////////////////////////////////////
+/////////////////////////////////
+////// Konfiguration Form ///////
+/////////////////////////////////
 
 else
 {

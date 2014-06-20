@@ -31,7 +31,23 @@ if ( isset ( $_GET['info'] ) ) {
                                     '.$FD->text('page', 'phpinfo_phpuser').':
                                 </td>
                                 <td class="configthin" colspan="3">
-                                    '.exec('whoami').'
+                                    ';
+    //Do the required POSIX functions to get the current user's name exist?
+    // They usually do on Linux but not on Windows systems.
+    if (function_exists('posix_getuid') && function_exists('posix_getpwuid'))
+    {
+      $user_info = posix_getpwuid(posix_getuid());
+      echo htmlspecialchars($user_info['name']);
+    }
+    else
+    {
+      /* No POSIX functions available, boo! Falling back to get_current_user,
+         although that can (and often will) give incorrect result, but that's
+         the best guess so far. If that bugs you, run your server on a POSIX-
+         compatible system or enable PHP's POSIX extension. */
+      echo htmlspecialchars(get_current_user());
+    }
+    echo '
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

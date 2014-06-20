@@ -4,22 +4,22 @@
 $FD->loadConfig('screens');
 $config_arr = $FD->configObject('screens')->getConfigArray();
 
-//////////////////////////////
-//// Screenshot editieren ////
-//////////////////////////////
+/////////////////////////
+//// Edit Screenshot ////
+/////////////////////////
 
 if (isset($_POST['title']) AND $_POST['do'] == 'edit')
 {
     settype($_POST['catid'], 'integer');
     settype($_POST['editscreenid'], 'integer');
-    if ($_POST['delscreen'])   // Screenshot löschen
+    if ($_POST['delscreen'])   // Delete Screenshot
     {
         $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = $_POST[editscreenid]");
         image_delete('images/screenshots/', $_POST['editscreenid']);
         image_delete('images/screenshots/', "$_POST[editscreenid]_s");
         systext('Screenshot wurde gel&ouml;scht');
     }
-    else   // Screenshot editieren
+    else   // Edit Screenshot
     {
         $stmt = $FD->sql()->conn()->prepare(
                   'UPDATE '.$FD->config('pref')."screen
@@ -32,16 +32,16 @@ if (isset($_POST['title']) AND $_POST['do'] == 'edit')
 }
 
 
-//////////////////////////////
-//// Screenshot anzeigen /////
-//////////////////////////////
+/////////////////////////////
+//// Display Screenshot /////
+/////////////////////////////
 
 elseif (isset($_POST['screenid']))
 {
 
-/////////////////////////////
-//// Thumb neu erstellen ////
-/////////////////////////////
+/////////////////////////
+//// Re-create Thumb ////
+/////////////////////////
 
 
     //security functions
@@ -138,7 +138,7 @@ elseif (isset($_POST['screenid']))
 }
 
 /////////////////////////////
-/// Screenshot Kategorien ///
+/// Screenshot Categories ///
 /////////////////////////////
 
 else
@@ -155,7 +155,7 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="screens_edit" name="go">
                         <table class="content" cellpadding="0" cellspacing="0">
-                            <tr><td><h3>Kategorie auswählen</h3><hr></td></tr>
+                            <tr><td><h3>Kategorie ausw&auml;hlen</h3><hr></td></tr>
                             <tr>
                                 <td class="thin" width="40%">
                                     Dateien der Kategorie
@@ -180,9 +180,9 @@ else
                     </form>
     ';
 
-//////////////////////////////
-//// Screenshot auswählen ////
-//////////////////////////////
+///////////////////////////
+//// Select Screenshot ////
+///////////////////////////
 
     if (isset($_POST['screencatid']))
     {
@@ -190,7 +190,7 @@ else
                     <form action="" method="post">
                         <input type="hidden" value="screens_edit" name="go">
                         <table class="content" cellpadding="0" cellspacing="0">
-                            <tr><td colspan="4"><h3>Bild auswählen</h3><hr></td></tr>
+                            <tr><td colspan="4"><h3>Bild ausw&auml;hlen</h3><hr></td></tr>
                             <tr>
                                 <td class="config" width="30%">
                                     Bild

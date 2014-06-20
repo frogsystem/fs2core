@@ -11,8 +11,6 @@ $config_arr = $FD->configObject('articles')->getConfigArray();
 ///////////////////
 function default_set_filter_data ( $FORM )
 {
-    global $FD;
-
     if ( !isset ( $FORM['order'] ) ) { $FORM['order'] = 'article_title'; }
     if ( !isset ( $FORM['sort'] ) ) { $FORM['sort'] = 'ASC'; }
     if ( !isset ( $FORM['cat_id'] ) ) { $FORM['cat_id'] = 0; }
@@ -158,7 +156,7 @@ function default_get_entry_data ( $articles_arr )
 
     // Only for full view
     if ($config_arr['acp_view'] == 1) {
-        $articles_arr['article_text_short'] = truncate_string ( killfs (  $articles_arr['article_text'] ) , 250, "..." );
+        $articles_arr['article_text_short'] = truncate_string ( strip_tags(killfs (  $articles_arr['article_text'] )) , 250, "..." );
     }
 
     return $articles_arr;
@@ -389,8 +387,10 @@ function action_edit_get_data ( $ARTICLE_ID )
         $articles_arr['d'] = date ( 'd', $articles_arr['article_date'] );
         $articles_arr['m'] = date ( 'm', $articles_arr['article_date'] );
         $articles_arr['y'] = date ( 'y', $articles_arr['article_date'] );
-    }
-    $date_arr = getsavedate ( $articles_arr['d'], $articles_arr['m'], $articles_arr['y'], 0, 0, 0, TRUE );
+		$date_arr = getsavedate ( $articles_arr['d'], $articles_arr['m'], $articles_arr['y'], 0, 0, 0, TRUE );
+    } else {
+		$date_arr = array( 'd' => '', 'm' => '', 'y' => '' );
+	}
     $nowbutton_array = array( 'd', 'm', 'y' );
 
     // Data into Data-Array
@@ -438,7 +438,7 @@ function action_edit_display_page ( $data_arr )
                                 <td class="config">
                                     <select name="article_cat_id">
     ';
-    // Kategorien auflisten
+    // List categories
     $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat' );
     while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
@@ -570,7 +570,7 @@ function action_delete_get_data ( $ARTICLE_ID )
         $articles_arr['article_date_formated'] = '';
     }
 
-    $articles_arr['article_text_short'] = truncate_string ( killfs (  $articles_arr['article_text'] ) , 250, '...' );
+    $articles_arr['article_text_short'] = truncate_string ( strip_tags(killfs (  $articles_arr['article_text'] )) , 250, '...' );
 
     if ( $articles_arr['article_user'] != 0 ) {
         $index2 = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$articles_arr['article_user']);
@@ -857,6 +857,9 @@ if ( isset($_POST['article_id']) && isset($_POST['article_action']) )
 else
 {
     // Filter
+    if (!isset($_REQUEST)) {
+        $_REQUEST = array();
+    }
     $_REQUEST = default_set_filter_data ( $_REQUEST );
     default_display_filter ( $_REQUEST );
 

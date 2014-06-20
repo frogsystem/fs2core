@@ -110,18 +110,18 @@ if (
 
 if ( TRUE )
 {
-	// Display Error Messages
-	if ( isset ( $_POST['sended'] ) ) {
-		systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
+    // Display Error Messages
+    if ( isset ( $_POST['sended'] ) ) {
+        systext ( $FD->text('admin', 'note_notfilled'), $FD->text('admin', 'error'), TRUE );
 
-	// Load Data from DB into Post
-	} else {
+    // Load Data from DB into Post
+    } else {
         $FD->loadConfig('video_player');
         $data = $FD->configObject('video_player')->getConfigArray();
         putintopost($data);
-	}
+    }
 
-	// security functions
+    // security functions
     $_POST = array_map('killhtml', $_POST);
     $_POST = array_map(create_function('$ele', '
         if (is_hexcolor($ele))
@@ -129,7 +129,7 @@ if ( TRUE )
         return $ele;
     '),  $_POST);
 
-	// Display Form
+    // Display Form
     echo'
                     <form action="" method="post">
                         <input type="hidden" name="go" value="player_config">

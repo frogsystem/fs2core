@@ -42,7 +42,7 @@ class Search
     // constructor
     public function  __construct ($type, $query, $phonetic = false) {
         // get searchtree classe if not loaded
-        require_once(FS2_ROOT_PATH . 'libs/class_searchquery.php');
+        require_once(FS2_ROOT_PATH . 'libs/class_SearchQuery.php');
         require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
 
         // assign global vars

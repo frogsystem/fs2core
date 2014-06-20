@@ -147,9 +147,9 @@ function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
     $template_javascript = get_js($PATH_PREFIX).'
     <script type="text/javascript" src="'.$PATH_PREFIX.'includes/js_functions.js"></script>';
 
-	// Create jQuery-Lines
+    // Create jQuery-Lines
     $template_jquery = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery.min.js"></script>';
-    $template_jquery_ui = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-ui.min.js"></script>';
+    // $template_jquery_ui = '<script type="text/javascript" src="'.$PATH_PREFIX .'resources/jquery/jquery-ui.min.js"></script>';
 
     // Get HTML-Matrix
     $theTemplate->load('MATRIX');
@@ -367,8 +367,14 @@ function get_meta_abstract ()
 /////////////////////////////////////
 //// Get canonical link meta tag ////
 /////////////////////////////////////
-function get_canonical()
-{
+function get_canonical() {
+    $url = get_canonical_url();
+	if (!empty($url)) {
+        return '<link rel="canonical" href="'.$url.'">';
+    }
+}
+
+function get_canonical_url() {
     global $FD;
 
 	// Check for homepage and in case don't use any paramter (including go) at all
@@ -392,8 +398,9 @@ function get_canonical()
             }
         }
 
-        return '<link rel="canonical" href="'.url($goto, $activeparams, true).'">';
+        return url($goto, $activeparams, true);
     }
+    return url($goto, array(), true);
 }
 
 
@@ -403,7 +410,7 @@ function get_canonical()
 /////////////////////
 function get_content ($GOTO)
 {
-    global $FD, $sql;
+    global $FD;
 
     // Display Content
     initstr($template);
@@ -429,8 +436,10 @@ function get_content ($GOTO)
                        WHERE `alias_active` = 1 AND `alias_go` = 'articles.php'");
         $alias = $alias->fetch(PDO::FETCH_ASSOC);
         if (!empty($alias)) {
+            $FD->setConfig('env', 'goto', $alias['alias_forward_to']);
             include(FS2_ROOT_PATH . 'data/' . $alias['alias_forward_to']);
         } else {
+            $FD->setConfig('env', 'goto', 'articles');
             include(FS2_ROOT_PATH . 'data/articles.php');
         }
 
@@ -455,7 +464,7 @@ function get_content ($GOTO)
 ////////////////////////////////////
 function tpl_functions_init ($TEMPLATE)
 {
-    global $sql, $NAV, $APP, $FD;
+    global $NAV, $APP, $FD;
 
     // data arrays
     $NAV = array();
@@ -472,8 +481,6 @@ function tpl_functions_init ($TEMPLATE)
 ///////////////////////////////
 function tpl_functions ($TEMPLATE, $COUNT, $filter=array(), $loopend_escape = true)
 {
-    global $sql;
-
     // hardcoded functions
     // this is the only way atm
     $functions = array(
@@ -587,7 +594,7 @@ function get_all_tpl_functions()
 //////////////////////
 function load_applets()
 {
-    global $sql, $FD;
+    global $FD;
 
     // Load Applets from DB
     $applet_data = $FD->sql()->conn()->query(
@@ -599,7 +606,7 @@ function load_applets()
     // Write Applets into Array & get Applet Template
     initstr($template);
     $new_applet_data = array();
-    foreach ($applet_data as $key => $entry) {
+    foreach ($applet_data as $entry) {
         // prepare data
         $entry['applet_file'] .= '.php';
         settype($entry['applet_output'], 'boolean');
@@ -619,11 +626,9 @@ function load_applets()
 //////////////////////
 //// Load Applets ////
 //////////////////////
-function load_an_applet($file, $output, $args) {
-
-    global $FD;
-    global $sql;
-
+function load_an_applet($file, $output, $args)
+{
+	global $FD;
     // Setup $SCRIPT Var
     unset($SCRIPT, $template);
     $SCRIPT['argc'] = array_unshift($args, $file);
@@ -686,7 +691,7 @@ function tpl_func_snippets($original, $main_argument, $other_arguments)
 /////////////////////////
 function tpl_func_applets($original, $main_argument, $other_arguments)
 {
-    global $APP, $sql, $FD;
+    global $APP;
 
     // Applet does not exists
     if (!isset($APP[$main_argument])) {
@@ -774,7 +779,7 @@ function tpl_func_date($original, $main_argument, $other_arguments)
     // Example:
     // $DATE(d.m.Y) => 03.05.2013 (where today is 03.05.2013)
     // $DATE(d.m.Y [946706400]) => 01.01.2000 (946706400 is timestamp of 01.01.2000)
-    
+
     // current timestamp if no other timestamp is passed
     if (empty($other_arguments))
         $other_arguments = time();
@@ -792,9 +797,7 @@ function tpl_func_url($original, $main_argument, $other_arguments)
     // Example:
     // $URL(download[cat_id=4 keyword=test 1])
 
-    global $FD;
-
-    // compute Arguments
+    // compute arguments
     $other_arguments = !empty($other_arguments) ? explode(' ', $other_arguments) : array();
 
     // check each param
@@ -874,7 +877,7 @@ function get_seo () {
                 // letzer paramter hat keinen wert, strich am ende fällt weg
                 if ((count($seoparams) % 2 != 0) && (count($seoparams) > 0)) {
                     //$redirect = true;
-                    array_push($seoparams, 1);
+                    array_push($seoparams, null);
                 }
 
                 for ($i = 0; $i < count($seoparams); $i += 2)
@@ -991,8 +994,6 @@ function forward_aliases ( $GOTO )
 ///////////////////
 function count_all ( $GOTO )
 {
-    global $FD;
-
     $hit_year = date ( 'Y' );
     $hit_month = date ( 'm' );
     $hit_day = date ( 'd' );
@@ -1164,7 +1165,7 @@ function clean_timed_preview_images () {
 ///////////////////////////////
 function get_copyright ()
 {
-        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - 2011 Frogsystem-Team</span>';
+        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de/" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - 2014 Frogsystem-Team</span>';
 }
 
 
@@ -1220,7 +1221,7 @@ function copyright ()
     $copyright = (string) $template_copyright;
 
     if (strpos($copyright, $template_copyright->getOpener().'copyright'.$template_copyright->getCloser()) == FALSE
-        || strpos(get_copyright(), 'Frogsystem&nbsp;2' ) == FALSE || strpos(get_copyright(), '&copy; 2007 - 2011 Frogsystem-Team') == FALSE
+        || strpos(get_copyright(), 'Frogsystem&nbsp;2' ) == FALSE || strpos(get_copyright(), '&copy; 2007 - 2014 Frogsystem-Team') == FALSE
         || strpos(get_copyright(), 'Powered by' ) == FALSE || strpos(get_copyright(), 'frogsystem.de') == FALSE )
     {
         $FD->setConfig('style',  'default');

@@ -29,7 +29,7 @@ $TEMPLATE_EDIT[] = array (
         $tmp['help'][1]['text'] = $FD->text("template", "dl_search_field_help_2");
         $tmp['help'][2]['tag'] = 'all_url';
         $tmp['help'][2]['text'] = $FD->text("template", "dl_search_field_help_3");
-    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is now saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
 $TEMPLATE_EDIT[] = array (
@@ -132,7 +132,7 @@ $TEMPLATE_EDIT[] = array (
         $tmp['help'][5]['text'] = $FD->text("template", "dl_file_help_6");
         $tmp['help'][6]['tag'] = 'mirror_col';
         $tmp['help'][6]['text'] = $FD->text("template", "dl_file_help_7");
-    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is now saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp['name'] = 'ENTRY_FILE_IS_MIRROR';
@@ -140,7 +140,7 @@ $TEMPLATE_EDIT[] = array (
     $tmp['description'] = $FD->text("template", "dl_file_is_mirror_description");
     $tmp['rows'] = '10';
     $tmp['cols'] = '66';
-    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is now saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
     $tmp['name'] = 'ENTRY_STATISTICS';
@@ -156,7 +156,7 @@ $TEMPLATE_EDIT[] = array (
         $tmp['help'][2]['text'] = $FD->text("template", "dl_stats_help_3");
         $tmp['help'][3]['tag'] = 'hits';
         $tmp['help'][3]['text'] = $FD->text("template", "dl_stats_help_4");
-    $TEMPLATE_EDIT[] = $tmp; //$tmp is no saved in the template-creation-array
+    $TEMPLATE_EDIT[] = $tmp; //$tmp is now saved in the template-creation-array
     unset($tmp); //unsets $tmp for safety-issues
 
 
