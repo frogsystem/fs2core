@@ -1,9 +1,8 @@
 Development branches:
 
-  - alix6-bugfixes: This is the branch with bug-fixes for alix6. Use this a base of your development for alix6.
-  - alix6_neu:      This is the base branch of alix6. bugfixes will be merged into it, if occur.
-  - master:         This will always be the branch of the latest release. After a new release the
-                    specific branch will be merged into this one.
+  - alix7:     This is the most recent branch for the next release alix7. Use this a base of your active development.
+  - master:    This will always be the branch of the latest release. After a new release the
+               specific branch will be merged into this one.
 
 Test branches:
 
