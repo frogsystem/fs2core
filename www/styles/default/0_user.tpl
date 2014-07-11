@@ -157,7 +157,7 @@
       </td>
     </tr>
   </table>
-
+</form>
 <p>Falls du keinen Zugriff mehr auf diese E-Mail-Adresse haben solltest, musst du dir leider einen <a href="$URL(register)">neuen Account</a> anlegen.</p>
 <!--section-end::NEW_PASSWORD-->
 
