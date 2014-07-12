@@ -39,15 +39,17 @@ function get_all_fscodes() {
         'code', 'quote', 'video',
         'nofscode', 'fscode',
         'smilies',
-        'html', 'nohtml'
+        'html', 'nohtml',
+        'newline'
     );
 }
 
 // Parse the given text from FSCode
 // converting some tags to html, others to text and maybe some to bbcode
 // not given tags wont be touched at all
+// tags in remove will be killed entirely
 // there are also some flags to affect the entire text
-function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = array(), $to_bbcode = array() ) {
+function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = array(), $to_bbcode = array(), $remove = array()) {
 
     /* TODO: to_bbcode
      * Convert "special" frogsystem tags to default bbcode
@@ -125,10 +127,22 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     $fscode->addFilter (STRINGPARSER_FILTER_PRE, 'convertlinebreaks');
     $fscode->addParser ('code', 'killhtml');
 
+    // remove
+    foreach ($remove as $code) {
+        $fscode->addCode ($code, 'callback_replace', 'fscode_remove', array (),
+                    'inline', array ('list', 'listitem', 'block', 'code', 'inline', 'link', 'htmlblock', 'image'), array ());
+    }
+    $to_html = array_diff($to_html, $remove);
+    $to_text = array_diff($to_text, $remove);
+    $to_bbcode = array_diff($to_bbcode, $remove);
+
+
     // FSCode?
     if ($flags['fscode'] && !$flags['nofscodeatall']) {
         // linebreaks
-        $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
+        if (in_array('newline', $to_html)) {
+            $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
+        }
 
         // smilies
         if (in_array('smilies', $to_html)) {
@@ -427,6 +441,14 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 // Delete all content except linebreaks
 function fscode_stripcontents ($text) {
     return preg_replace ("/[^\n]/", '', $text);
+}
+
+// Delete all content
+function fscode_remove ($action, $attributes, $content, $params, &$node_object) {
+    if ('output' == $action) {
+        return '';
+    }
+    return true;
 }
 
 // Simple Replace:

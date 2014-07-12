@@ -57,15 +57,25 @@ $settings = (object) $settings;
 {
     // should be less than 200 characters
     function summeryFromContent($text, $length, $extension) {
-        $text = str_replace(array("\r\n", "\r"), "\n", strip_fs(strip_tags($text)));
-        $lines = explode("\n", $text);
-        $new_lines = array();
-        foreach ($lines as $line) {
-            if(!empty($line)) {
-                $new_lines[] = trim($line);
-            }
-        }
-        $text = implode(' ', $new_lines);
+
+        $text = parse_fscode($text, array(
+            'nohtmlatall' => true,
+            'paragraph' => false,
+        ), array(), array(
+            'b', 'i', 'u', 's', 'font', 'color', 'size',
+            'center',
+            'url', 'home', 'email',
+            'list', 'numlist',
+            'code', 'quote',
+            'nofscode', 'fscode',
+            'smilies',
+            'html', 'nohtml'
+        ), array(), array(
+            'img', 'cimg',
+            'video',
+        ));
+
+        $text = preg_replace("/[\n\r]/", '', $text);
 
         $text = StringCutter::truncate(htmlspecialchars($text), $length, $extension, array('word'=>true));  //less than 200 characters
         return $text;
@@ -112,7 +122,7 @@ $settings = (object) $settings;
             if (false !== $settings->news_cat_prepend) {
                 $content->title = htmlspecialchars($news_arr['cat_name']).$settings->news_cat_prepend.$content->title;
             }
-            $content->summery = summeryFromContent($news_arr['news_text'], 207, '&hellip;');
+            $content->summery = summeryFromContent($news_arr['news_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $news_arr['news_date']?:$news_arr['news_search_update']);
             $content->last_update = date('c', $news_arr['news_search_update']);
@@ -133,7 +143,7 @@ $settings = (object) $settings;
         // set data
         if (!empty($article_arr)) {
             $content->title = htmlspecialchars($article_arr['article_title']);
-            $content->summery = summeryFromContent($article_arr['article_text'], 207, '&hellip;');
+            $content->summery = summeryFromContent($article_arr['article_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $article_arr['article_date']?:$article_arr['article_search_update']);
             $content->last_update = date('c', $article_arr['article_search_update']);
@@ -155,7 +165,7 @@ $settings = (object) $settings;
         // set data
         if (!empty($downloads)) {
             $content->title = htmlspecialchars($downloads['dl_name']);
-            $content->summery = summeryFromContent($downloads['dl_text'], 207, '&hellip;');
+            $content->summery = summeryFromContent($downloads['dl_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
             $content->last_update = date('c', $downloads['dl_search_update']);
