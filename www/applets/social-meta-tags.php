@@ -16,13 +16,13 @@ $settings = array (
 
     // minimal info, this is a MUST
     'site_name' => '',
-    'default_image' => '', // min. 200x200px, better 280x200px
+    'default_image' => '', // min. 200x200px, better 280x200px, no https!
 
     // extended settings, strongly RECOMMENDED
     // set to false if you don't want use them
     'news_cat_prepend' => ': ', // false or delimiter string
-    'google_plus_page' => '',
-    'twitter_site' => '',
+    'google_plus_page' => '', // with +
+    'twitter_site' => '', // with @
     'fb_admins' => '', // CSV => http://findmyfacebookid.com/
     'og_section' => '', // A high-level section name. E.g. Technology
 );
@@ -124,8 +124,8 @@ $settings = (object) $settings;
             }
             $content->summery = summeryFromContent($news_arr['news_text'], 207, '');
             $content->url = get_canonical_url();
-            $content->date = date('c', $news_arr['news_date']?:$news_arr['news_search_update']);
-            $content->last_update = date('c', $news_arr['news_search_update']);
+            $content->date = date('c', $news_arr['news_date']);
+            $content->last_update = date('c', $news_arr['news_date']?:$news_arr['news_search_update']);
             $content->image = getImageFromContent($news_arr['news_text']);
         }
 
@@ -146,7 +146,7 @@ $settings = (object) $settings;
             $content->summery = summeryFromContent($article_arr['article_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $article_arr['article_date']?:$article_arr['article_search_update']);
-            $content->last_update = date('c', $article_arr['article_search_update']);
+            $content->last_update = date('c', $article_arr['article_date']?:$article_arr['article_search_update']);
             $content->image = getImageFromContent($article_arr['article_text']);
         }
 
@@ -168,7 +168,7 @@ $settings = (object) $settings;
             $content->summery = summeryFromContent($downloads['dl_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
-            $content->last_update = date('c', $downloads['dl_search_update']);
+            $content->last_update = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
             if (image_exists('images/downloads/', $downloads['dl_id'])) {
                 $content->image = image_url('images/downloads/', $downloads['dl_id']);
             }

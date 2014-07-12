@@ -848,7 +848,7 @@ function get_seo () {
 
         $paramdelim = strpos($_GET['seoq'], '--');
 
-        if ($numparams > 0) {
+        if ($numparams > 0 && isset($_GET['go'])) {
             //Wurden hinter das .html noch Parameter gepackt, sind diese massgeblich => Den Rest verwerfen und weiterleiten
             $redirect =	true;
         }
