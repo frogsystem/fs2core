@@ -1,4 +1,8 @@
 <?php
+  $FD->loadConfig('main');
+  $main_config = $FD->configObject('main')->getConfigArray();
+  $current_tag = $main_config['style_tag'];
+
   //change selected style
   if (isset($_GET['new_style']))
   {
@@ -16,6 +20,13 @@
                                   url('style_selection', array()));
     }
   } //if new_style is set
+  else if (isset($_GET['clear']))
+  {
+    //delete style cookie, "expires" 100 days ago
+    setcookie('style', '', time()-100*86400);
+    $template = forward_message($FD->text('frontend', 'style_select_clear'), $FD->text('frontend', 'style_select_reload'),
+                                url('style_selection', array()));
+  } //if clear / delete cookie
   else
   {
     //show list
@@ -56,11 +67,26 @@
       $styles .= $template->display();
     }//while
 
+    $clear = '';
+    if (isset($_COOKIE['style']))
+    {
+      $template = new template();
+      $template->setFile('0_style_select.tpl');
+      $template->load('CLEAR');
+
+      $template->tag('clear_url', url('style_selection', array('clear' => 1)) );
+
+      $clear = $template->display();
+    }
+
     $template = new template();
     $template->setFile('0_style_select.tpl');
     $template->load('BODY');
 
+    $current = isset($_COOKIE['style']) ? htmlentities($_COOKIE['style']) : $FD->text('frontend', 'none').' ('.htmlentities($current_tag).')';
     $template->tag('styles', $styles );
+    $template->tag('current', $current );
+    $template->tag('clear_selection', $clear );
     $template->tag('cookie_hint', $FD->text('frontend', 'style_select_cookie_hint') );
 
     $template = $template->display ();
