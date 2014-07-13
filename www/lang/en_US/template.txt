@@ -628,3 +628,21 @@ partner_navi_body_description:         Design of affiliate list in the menu.
 partner_navi_body_help_1:              Einzelne Ausgabe aller Partner.
 partner_navi_body_help_2:              Einzelne Ausgabe der Partner, die permanent angezeigt werden sollen.
 partner_navi_body_help_3:              Einzelne Ausgabe der Partner, die nicht permanent angezeigt werden sollen.
+
+
+style_select_body_title:               Style Selection Body
+style_select_body_desc:                Design of the style selection
+style_select_body_styles:              List of all selectable styles
+style_select_body_current:             Current style selection
+style_select_body_clear:               Option to clear the (current) style setting
+style_select_body_cookie_hint:         Hint about cookie usage
+style_select_entry_title:              Entry
+style_select_entry_desc:               Design of one single entry within the style list
+style_select_entry_tag:                style tag (e.g. lightfrog)
+style_select_entry_name:               Name of the styles
+style_select_entry_version:            Version of the styles
+style_select_entry_copy:               Copyright note of the styles
+style_select_entry_url:                URL to select the style
+style_select_clear_title:              Reset Style Selection
+style_select_clear_desc:               Design of option to reset the style setting
+style_select_clear_url:                URL for resetting the style setting

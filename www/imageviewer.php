@@ -21,6 +21,9 @@ require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
 userlogin();
 setTimezone($FD->cfg('timezone'));
 run_cronjobs();
+if (isset($_COOKIE['style']) && !isset($_GET['style'])) {
+  $_GET['style'] = $_COOKIE['style'];
+}
 set_style();
 
     // Security Functions
