@@ -88,10 +88,8 @@ news_title:                      News
 comment_added:                   Kommentar wurde hinzugefügt
 comment_not_added:               Kommentar wurde nicht hinzugefügt
 comment_duplicate:               Dieser Kommentar ist das Duplikat eines Kommentars der gerade erst hinzugefügt wurde
-popupviewer_next_text:           Nächstes Bild
-popupviewer_next_image:          <img src="styles//icons/next.gif" alt="N&auml;chstes Bild" title="N&auml;chstes Bild">
+popupviewer_next_text:           N&auml;chstes Bild
 popupviewer_prev_text:           Vorheriges Bild
-popupviewer_prev_image:          <img src="styles//icons/previous.gif" alt="Vorheriges Bild" title="Vorheriges Bild">
 download_file:                   Datei
 download_files:                  Dateien
 download_search_for:             Suche nach
