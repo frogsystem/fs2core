@@ -95,7 +95,7 @@ set_style();
 
                 $data_array['next_url'] = 'imageviewer.php?id='.$next_id;
                 $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_next_text').'</a>';
-                $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_next_image').'</a>';
+                $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self"><img src="styles/'.$FD->config('style').'/icons/next.gif" alt="'.$FD->text('frontend', 'popupviewer_next_text').'" title="'.$FD->text('frontend', 'popupviewer_next_text').'"></a>';
             }
 
             // exists a PREVIOUS image?
@@ -112,7 +112,7 @@ set_style();
 
                 $data_array['prev_url'] = 'imageviewer.php?id='.$prev_id;
                 $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_prev_text').'</a>';
-                $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_prev_image').'</a>';
+                $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self"><img src="styles/'.$FD->config('style').'/icons/previous.gif" alt="'.$FD->text('frontend', 'popupviewer_prev_text').'" title="'.$FD->text('frontend', 'popupviewer_prev_text').'"></a>';
             }
 
         }
