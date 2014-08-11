@@ -89,9 +89,7 @@ comment_added:                   Comment has been added
 comment_not_added:               Comment has not been added
 comment_duplicate:               This comment is a duplicate of a comment that has been added recently
 popupviewer_next_text:           Next Image
-popupviewer_next_image:          <img src="styles//icons/next.gif" alt="Next Image" title="Next Image">
 popupviewer_prev_text:           Previous Image
-popupviewer_prev_image:          <img src="styles//icons/previous.gif" alt="Previous Image" title="Previous Image">
 download_file:                   File
 download_files:                  Files
 download_search_for:             Search for
