@@ -468,7 +468,7 @@ function tpl_functions_init ($TEMPLATE)
 
     // data arrays
     $NAV = array();
-    $APP = load_applets();
+    //~ $APP = load_applets();
 
     // Snippets
     $SNP = array();

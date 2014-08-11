@@ -30,7 +30,7 @@ if (!$FD->configExists('main', 'count_referers') || $FD->cfg('main', 'count_refe
 }
 set_style();
 copyright();
-
+$APP = load_applets();
 
 // Get Body-Template
 $theTemplate = new template();
