@@ -22,7 +22,7 @@ function phpinit ($session = true, $header = false, $libloader = null) {
         $libloader = create_function ('$classname', '
             $class = explode("\\\\", $classname);
             $filename = \'libs/class_\'.end($class).\'.php\';
-            if (file_exists($filename)) {
+            if (file_exists(FS2_ROOT_PATH . $filename)) {
                 include_once(FS2_ROOT_PATH . $filename);
             } else {
                 return false;
