@@ -45,6 +45,7 @@ if (
                 WHERE `file_id` = '".$_GET['id']."'" );
         // Forward to the URL
         header ( 'Location: ' . $file_url );
+        exit;
     } else {
         header ( 'Location: ?go=403' );
     }
