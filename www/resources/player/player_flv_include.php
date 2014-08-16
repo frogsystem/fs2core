@@ -62,7 +62,7 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false )
                     break;
                 case 2:
                     parse_str('v='.$video_arr['video_x'], $data);
-                    $video_arr['video_x'] = array_pop($data);
+                    $video_arr['video_x'] = array_shift($data);
                     $video_arr['video_x'] .= '?'.http_build_query($data);
                     $template_player = $template_youtube;
                     break;
