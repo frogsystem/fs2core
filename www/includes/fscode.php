@@ -87,7 +87,9 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     $fscode = new StringParser_BBCode ();
 
     // Flags
-    if (!$flags['html'] || $flags['nohtmlatall']) {
+    if (is_null($flags['html']) || is_null($flags['nohtmlatall'])) {
+        $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'strip_tags');
+    } else if (!$flags['html'] || $flags['nohtmlatall']) {
         $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'killhtml');
     }
     if ($flags['nohtmlatall']) {
