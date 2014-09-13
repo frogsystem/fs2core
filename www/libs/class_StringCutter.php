@@ -20,7 +20,7 @@ class StringCutter {
      * */
 
     const HTML_STANDALONE = 'area|base|basefont|br|col|frame|hr|img|input|isindex|link|meta|param';
-    const BBCODE_STANDALONE = "\*";
+    const BBCODE_STANDALONE = "*";
 
 
     /**
@@ -83,7 +83,7 @@ class StringCutter {
         $bbcode_regex = '(\[\/?[\w]+[^\]]*?\])?([^\[]*)';
         $html_regex = '(<\/?[\w]+[^>]*?>)?([^<]*)';
         $bbcode_regex = '(\[\/?[\w]+[^\]]*?\])?([^\[]*)';
-        $regex = '((?:<\/?[\w]+[^>]*?>)|(?:\[\/?[\w]+[^\]]*?\]))?([^<\[]*)';
+        $regex = '((?:<\/?[\w]+[^>]*?>)|(?:\[\/?[\w\*]+[^\]]*?\]))?([^<\[]*)';
         $text_parts = array();
         preg_match_all("#$regex#s", $text, $text_parts, PREG_SET_ORDER);
 
