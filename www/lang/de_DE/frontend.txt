@@ -107,6 +107,7 @@ image_upload_error_3:            Bild-Upload fehgeschlagen<br>Das Bild ist zu gr
 image_upload_error_4:            Bild-Upload fehgeschlagen<br>Das Bild ist zu gro&szlig; (Abmessungen)
 image_upload_error_5:            Bild-Upload fehgeschlagen<br>Das Bild entspricht nicht den erforderlichen Abmessungen
 image_upload_error_6:            Bild-Upload fehgeschlagen<br>Das Bild konnte nicht erstellt werden
+error:                           Es trat ein Fehler auf.
 
 #new password stuff
 mail_new_password_request_on:          Neues Passwort angefordert auf
@@ -116,6 +117,7 @@ mail_new_password_request_sended:      Eine E-Mail zur Best&auml;tigung der Anfo
 mail_new_password_request_not_sended:  Eine E-Mail konnte nicht gesendet werden.<br>Beim Senden der E-Mail zur Best&auml;tigung der Passwortanforderung trat ein Fehler auf.
 new_password_user_not_found:           Benutzer nicht gefunden
 new_password_user_not_found_text:      Es existiert kein Benutzer mit der angegebenen E-Mailadresse.
+hash_not_found:                        Der angegebene Hash wurde nicht gefunden. Eventuell ist der Best&auml;tigungslink fehlerhaft oder nicht mehr g&uuml;ltig.
 
 # Search
 sq_error_not_and:               Prohibited use of NOT in your Searchquery. Don't use NOT on both sides of AND.
