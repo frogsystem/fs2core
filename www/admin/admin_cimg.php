@@ -39,6 +39,8 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
   if ($_POST['oldname'] == 1) {
       $_POST['newname'] = basename ($_FILES['cimg']['name'],'.'.$oldname_data);
   }
+  
+  $oldname_data = strtolower($oldname_data);
 
   settype ($_POST['cat'], 'integer');
   settype ($_POST['width'], 'integer');
