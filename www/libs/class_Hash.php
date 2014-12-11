@@ -88,7 +88,11 @@ class Hash
     }
 
     public function getURL() {
-        return url('confirm', array('h' => $this->getHash()));
+        $url = url('confirm', array('h' => $this->getHash()));
+        //Replace HTML entity for ampersand by 'naked' ampersand,
+        // because the password link will be HTML encoded during
+        // mail creation, too.
+        return str_replace('&amp;', '&', $url);
     }
 
 }

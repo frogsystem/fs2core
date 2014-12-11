@@ -14,11 +14,7 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false )
     ';
 
     $template_youtube = '
-    <object width="{..width..}" height="{..height..}">
-        <param name="movie" value="http://www.youtube.com/v/{..url..}&hl=en&fs=1&rel=0"></param>
-        <param name="allowFullScreen" value="true"></param>
-        <embed src="http://www.youtube.com/v/{..url..}&hl=en&fs=1&rel=0" type="application/x-shockwave-flash" allowfullscreen="true" width="{..width..}" height="{..height..}"></embed>
-    </object>
+    <iframe width="{..width..}" height="{..height..}" src="//www.youtube.com/embed/{..url..}" frameborder="0" allowfullscreen></iframe>
     ';
 
     $template_myvideo = "
@@ -61,6 +57,9 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false )
                     $template_player = $template_myvideo;
                     break;
                 case 2:
+                    parse_str('v='.$video_arr['video_x'], $data);
+                    $video_arr['video_x'] = array_shift($data);
+                    $video_arr['video_x'] .= '?'.http_build_query($data);
                     $template_player = $template_youtube;
                     break;
                 case 1:
