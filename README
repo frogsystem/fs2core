@@ -1,8 +1,10 @@
+Master branch:
+  - master:         This will always be the branch of the latest release. After a new release the
+                    specific branch will be merged into this one.
+
 Development branches:
 
-  - alix7:     This is the most recent branch for the next release alix7. Use this a base of your active development.
-  - master:    This will always be the branch of the latest release. After a new release the
-               specific branch will be merged into this one.
+  - alix7:          This is the current development branch for the next version alix7.
 
 Test branches:
 

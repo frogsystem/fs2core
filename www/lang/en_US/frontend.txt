@@ -56,10 +56,10 @@ week_days_array:                 Monday,Tuesday,Wednesday,Thursday,Friday,Saturd
 news_feed:                       News Feed
 mail_password_changed_on:        Password change on
 mail_new_password_sended:        A message with the changed login data has been send to the given e-mail address
-mail_new_password_not_sended:    E-mail could not be send<br>An error occured while sending the mail with the changed login data
+mail_new_password_not_sended:    E-mail could not be send<br>An error occurred while sending the mail with the changed login data
 mail_registerd_on:               Registration on
 mail_registerd_sended:           A message with the login data has been send to the given e-mail address
-mail_registerd_not_sended:       E-mail could not be send<br>An error occured while sending the mail with the login data
+mail_registerd_not_sended:       E-mail could not be send<br>An error occurred while sending the mail with the login data
 user_image:                      User image
 user_profile:                    User profile
 user_image_of:                   User image of
@@ -89,9 +89,7 @@ comment_added:                   Comment has been added
 comment_not_added:               Comment has not been added
 comment_duplicate:               This comment is a duplicate of a comment that has been added recently
 popupviewer_next_text:           Next Image
-popupviewer_next_image:          <img src="styles//icons/next.gif" alt="Next Image" title="Next Image">
 popupviewer_prev_text:           Previous Image
-popupviewer_prev_image:          <img src="styles//icons/previous.gif" alt="Previous Image" title="Previous Image">
 download_file:                   File
 download_files:                  Files
 download_search_for:             Search for
@@ -109,15 +107,17 @@ image_upload_error_3:            Image upload failed<br>The image is too big (fi
 image_upload_error_4:            Image upload failed<br>The image is too big (width and/or height)
 image_upload_error_5:            Image upload failed<br>The image does not have the required width and height
 image_upload_error_6:            Image upload failed<br>The image could not be created
+error:                           An error occurred.
 
 #new password stuff
 mail_new_password_request_on:          New password request on
 new_password_request:                  Request new password
 new_password_request_successful:       The request of a new password has been successful.
 mail_new_password_request_sended:      An e-mail to confirm the new password request was sent to the given address.
-mail_new_password_request_not_sended:  E-mail could not be sent.<br>An error occured while sending the mail to confirm the password request.
+mail_new_password_request_not_sended:  E-mail could not be sent.<br>An error occurred while sending the mail to confirm the password request.
 new_password_user_not_found:           User not found
 new_password_user_not_found_text:      A user with the given e-mail address does not exist.
+hash_not_found:                        Hash not found. This may be caused by an incomplete or outdated confirmation link.
 
 # Search
 sq_error_not_and:               Prohibited use of NOT in your Searchquery. Don't use NOT on both sides of AND.

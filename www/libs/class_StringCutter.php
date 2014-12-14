@@ -20,7 +20,7 @@ class StringCutter {
      * */
 
     const HTML_STANDALONE = 'area|base|basefont|br|col|frame|hr|img|input|isindex|link|meta|param';
-    const BBCODE_STANDALONE = "\*";
+    const BBCODE_STANDALONE = "*";
 
 
     /**
@@ -73,17 +73,17 @@ class StringCutter {
         $stripped_text = StringCutter::strip($text, $awareness['html'], $awareness['bbcode']);
 
         // Create function to get absolut length of splitted text, wordaware or not
-        $calcLength_params = '$l, $t="'.$stripped_text.'", $e="'.$extension.'", $w='.($awareness['word']?'true':'false').', $b='.($options['below']?'true':'false');
+        $calcLength_params = '$l, $t, $e="'.$extension.'", $w='.($awareness['word']?'true':'false').', $b='.($options['below']?'true':'false');
         $calcLength_code = 'return StringCutter::calc_truncated_length($t,$l,$e,$w,$b);';
         $calcLength = create_function($calcLength_params, $calcLength_code);
-        $textonly_length = $calcLength($length);
+        $textonly_length = $calcLength($length, $stripped_text);
 
         // Split Text into parts with 0 or 1 html/bbcode-tag
         $html_regex = '(<\/?[\w]+[^>]*?>)?([^<]*)';
         $bbcode_regex = '(\[\/?[\w]+[^\]]*?\])?([^\[]*)';
         $html_regex = '(<\/?[\w]+[^>]*?>)?([^<]*)';
         $bbcode_regex = '(\[\/?[\w]+[^\]]*?\])?([^\[]*)';
-        $regex = '((?:<\/?[\w]+[^>]*?>)|(?:\[\/?[\w]+[^\]]*?\]))?([^<\[]*)';
+        $regex = '((?:<\/?[\w]+[^>]*?>)|(?:\[\/?[\w\*]+[^\]]*?\]))?([^<\[]*)';
         $text_parts = array();
         preg_match_all("#$regex#s", $text, $text_parts, PREG_SET_ORDER);
 
@@ -177,7 +177,7 @@ class StringCutter {
 
             // Recalculate textonly length if length of html/bbcode contents changed
             if ($htmlbbcode_old_length != $htmlbbcode_length)
-                $textonly_length = $calcLength($length-$htmlbbcode_length);
+                $textonly_length = $calcLength($length-$htmlbbcode_length, $stripped_text);
 
             // string fits in?
             if ($compiled_counter + strlen($part[2]) <= $textonly_length) {

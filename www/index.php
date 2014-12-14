@@ -33,7 +33,7 @@ if (isset($_COOKIE['style']) && !isset($_GET['style'])) {
 }
 set_style();
 copyright();
-
+$APP = load_applets();
 
 // Get Body-Template
 $theTemplate = new template();

@@ -468,7 +468,7 @@ function tpl_functions_init ($TEMPLATE)
 
     // data arrays
     $NAV = array();
-    $APP = load_applets();
+    //~ $APP = load_applets();
 
     // Snippets
     $SNP = array();
@@ -848,7 +848,7 @@ function get_seo () {
 
         $paramdelim = strpos($_GET['seoq'], '--');
 
-        if ($numparams > 0) {
+        if ($numparams > 0 && isset($_GET['go'])) {
             //Wurden hinter das .html noch Parameter gepackt, sind diese massgeblich => Den Rest verwerfen und weiterleiten
             $redirect =	true;
         }
