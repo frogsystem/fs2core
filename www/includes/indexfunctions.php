@@ -500,22 +500,20 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array(), $loopend_escape = tr
         $functions = array_filter_keys($functions, $filter);
         $snippet_functions = array_filter_keys($snippet_functions, $filter);
     }
-
-
+echo '<pre>';
     // Set Pattern and Replacment Code
-    $PATTERN = $REPLACEMENT = array();
+    // Replace Functions with computed values
     if (!empty($functions)) {
-        array_push($PATTERN, '/\$('.implode('|', array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/e');
-        array_push($REPLACEMENT, 'call_tpl_function($functions, $COUNT, array(\'$1\', \'$0\', \'$2\', \'$3\'), $loopend_escape);');
+        $PATTERN = '/\$('.implode('|', array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?|\[(?|(?:"(.*?)")|(.*?))\]|()){0,1}\)/';
+        $REPLACEMENT = create_function('$data', 'return call_tpl_function('.var_export($functions, true).', '.var_export($COUNT, true).', array($data[1], $data[0], $data[2], $data[3]), '.var_export($loopend_escape, true).');');
+        $TEMPLATE = preg_replace_callback($PATTERN, $REPLACEMENT, $TEMPLATE);
     }
     if (!empty($snippet_functions)) {
-        array_push($PATTERN, '/\[%(.*?)%\]/e');
-        array_push($REPLACEMENT, 'call_tpl_function($snippet_functions, $COUNT, array("SNP", "$0", "$1", ""), $loopend_escape);');
+        $PATTERN = '/\[%(.*?)%\]/';
+        $REPLACEMENT = create_function('$data', 'return call_tpl_function('.var_export($snippet_functions, true).', '.var_export($COUNT, true).', array("SNP", $data[0], $data[1], ""), '.var_export($loopend_escape, true).');');
+        $TEMPLATE = preg_replace_callback($PATTERN, $REPLACEMENT, $TEMPLATE);
     }
-
-    // Replace Functions with computed values
-    $TEMPLATE = preg_replace($PATTERN, $REPLACEMENT, $TEMPLATE);
-
+echo '</pre>';
     return $TEMPLATE;
 }
 
