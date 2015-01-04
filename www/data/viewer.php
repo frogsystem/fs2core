@@ -1,5 +1,6 @@
 <?php
     // Security Functions
+    settype( $_GET['id'], 'integer' );
     $_GET['id'] = ( isset ( $_GET['screenid'] ) ) ? $_GET['screenid'] : $_GET['id'];
     settype( $_GET['id'], 'integer' );
     $_GET['single'] = ( isset ( $_GET['single'] ) ) ? TRUE : FALSE;
@@ -20,7 +21,7 @@
 
     // Any Image?
     if ( isset ( $_GET['file'] ) && $_GET['file'] != '' ) {
-        $path_parts = pathinfo ( $_GET['file'] );
+        $path_parts = pathinfo ( urldecode($_GET['file']) );
         $data_array['image'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'], FALSE );
         $data_array['image_url'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'] );
         $data_array['image_sizeinfo'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'], FALSE, TRUE );

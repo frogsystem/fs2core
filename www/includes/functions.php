@@ -61,18 +61,18 @@ function delete_referrers ($days, $hits, $contact, $age, $amount, $time = null) 
 ////////////////////
 //// create URL ////
 ////////////////////
-function url ($go, $args = array(), $full = false) {
+function url ($go, $args = array(), $full = false, $safeargs = array()) {
     global $FD;
 
     switch ($FD->cfg('url_style')) {
         case 'seo':
-            $url = url_seo($go, $args);
+            $url = url_seo($go, $args, false, $safeargs);
             break;
 
         default:
             // check for empty go
             if (!empty($go))
-                $args = array('go' => $go)+$args;
+                $args = array('go' => $go)+$args+$safeargs;
 
             $url = http_build_query($args, 'p', '&amp;');
             if (!empty($url))

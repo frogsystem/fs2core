@@ -36,7 +36,7 @@ if ( $config_arr['active'] == 1 ) {
         if ( $config_arr['show_type'] == 1 ) {
             $half_x = floor ( $config_arr['show_size_x'] / 2 );
             $half_y = floor ( $config_arr['show_size_y'] / 2 );
-            $link = "javascript:popUp('".$link."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";
+            $link = "javascript:popUp('".urlencode($link)."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";
         }
 
         // Get Template

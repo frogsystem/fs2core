@@ -35,13 +35,13 @@ if ($dl_arr !== false)
 
     $dl_arr['dl_bild'] = image_url( 'images/downloads/', $dl_arr['dl_id'] );
     if ( image_exists ( 'images/downloads/', $dl_arr['dl_id'] ) ) {
-        $dl_arr['viewer_link'] = url('viewer', array('file' => 'images/downloads/'.basename($dl_arr['dl_bild']), 'single' => 1));
+        $dl_arr['viewer_link'] = url('viewer', array('single' => 1), false, array('file' => 'images/downloads/'.basename($dl_arr['dl_bild'])));
     } else {
-        $dl_arr['viewer_link'] = url('viewer', array('file' => 'styles/'.$FD->config('style').'/icons/image_error.gif', 'single' => 1));
+        $dl_arr['viewer_link'] = url('viewer', array('single' => 1), false, array('file' => 'styles/'.$FD->config('style').'/icons/image_error.gif'));
     }
 
     if ( $screen_config_arr['show_type'] == 1 ) {
-        $dl_arr['viewer_link'] = "javascript:popUp('".$dl_arr['viewer_link']."','popupviewer','".$screen_config_arr['show_size_x']."','".$screen_config_arr['show_size_y']."');";
+        $dl_arr['viewer_link'] = "javascript:popUp('".urlencode($dl_arr['viewer_link'])."','popupviewer','".$screen_config_arr['show_size_x']."','".$screen_config_arr['show_size_y']."');";
     }
     $dl_arr['dl_thumb'] = image_url('images/downloads/', $dl_arr['dl_id'].'_s');
 

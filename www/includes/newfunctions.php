@@ -212,11 +212,11 @@ function highlight ($word, $text, $class = 'red', $style = '')
 ////////////////////////
 //// create SEO URL ////
 ////////////////////////
-function url_seo ($go, $args, $go_in_args = false) {
+function url_seo ($go, $args, $go_in_args = false, $safeargs = array()) {
 
 	$urlencodeext = create_function ('$url', '
 		// Folge von Bindestriche um zwei Striche erweitern
-		return urlencode(preg_replace(\'/-+/\', \'$0--\', $url));');
+		return rawurlencode(preg_replace(\'/-+/\', \'$0--\', $url));');
 
     if ($go_in_args) {
         unset($args['go']);
@@ -242,6 +242,10 @@ function url_seo ($go, $args, $go_in_args = false) {
 
 	if (!empty($seourl))
 		$seourl .= '.html';
+
+    $safeargs = http_build_query($safeargs, 'p', '&amp;');
+	if (!empty($safeargs))
+        $seourl .= '?'.$safeargs;
 
     return $seourl;
 }

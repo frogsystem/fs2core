@@ -141,7 +141,7 @@ if (isset($_GET['catid']))
                 $screen_arr['screen_url'] = image_url('images/screenshots/', $screen_arr['screen_id'] );
                 $screen_arr['img_link'] = url('viewer', array('id' => $screen_arr['screen_id']));
                 if ( $config_arr['show_type'] == 1 ) {
-                    $screen_arr['img_link'] = "javascript:popUp('".$screen_arr['img_link']."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";
+                    $screen_arr['img_link'] = "javascript:popUp('".urlencode($screen_arr['img_link'])."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";
                 }
 
                 // Get Template
