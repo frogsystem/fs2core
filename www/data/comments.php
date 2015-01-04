@@ -310,7 +310,7 @@ if ( $SHOW == TRUE ) {
     $form_spam = new template();
     $form_spam->setFile('0_news.tpl');
     $form_spam->load('COMMENT_CAPTCHA');
-    $form_spam->tag('captcha_url', FS2_ROOT_PATH . 'resources/captcha/captcha.php?i='.generate_pwd(8) );
+    $form_spam->tag('captcha_url', FS2SOURCE . '/resources/captcha/captcha.php?i='.generate_pwd(8) );
     $form_spam = $form_spam->display ();
 
     // Get Comments Form Name Template

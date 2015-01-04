@@ -16,7 +16,7 @@ define('INCLUDE_ONDEMAND', 2);
 if (
     isset ( $_POST['applet_file'] )
     && $_POST['applet_file'] != ''
-    && file_exists ( FS2_ROOT_PATH . 'applets/' . $_POST['applet_file'] . '.php' )
+    && file_exists ( FS2SOURCE . '/applets/' . $_POST['applet_file'] . '.php' )
     )
 {
 
@@ -71,7 +71,7 @@ settype ( $_POST['applet_output'], 'integer' );
 
 // Check for Errors
 if ( isset ( $_POST['sended'] ) ) {
-    if ( isset ( $_POST['applet_file'] ) && $_POST['applet_file'] !=  '' && !file_exists ( FS2_ROOT_PATH . 'applets/' . $_POST['applet_file'] . '.php' ) ) {
+    if ( isset ( $_POST['applet_file'] ) && $_POST['applet_file'] !=  '' && !file_exists ( FS2SOURCE . '/applets/' . $_POST['applet_file'] . '.php' ) ) {
         $error_message = $FD->text("admin", "applet_file_not_exists");
     } else {
         $error_message = $FD->text("admin", "form_not_filled");

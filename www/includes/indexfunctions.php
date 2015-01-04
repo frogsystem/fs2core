@@ -111,7 +111,7 @@ function search_index ()
 
     if ($FD->cfg('cronjobs', 'search_index_update') == 2) {
         // Include searchfunctions.php
-        require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+        require ( FS2SOURCE . '/includes/searchfunctions.php' );
         update_search_index('news');
         update_search_index('articles');
         update_search_index('dl');
@@ -183,7 +183,7 @@ function get_css ($PATH_PREFIX)
     global $FD;
 
     // Get List of CSS-Files
-    $search_path =  FS2_ROOT_PATH . 'styles/' . $FD->config('style');
+    $search_path =  FS2STYLES . '/' . $FD->config('style');
     $link_path =  $PATH_PREFIX . 'styles/' . $FD->config('style');
     $files = scandir_ext($search_path, 'css');
 
@@ -241,7 +241,7 @@ function get_js ($PATH_PREFIX)
     global $FD;
 
     // Get List of JS-Files
-    $search_path =  FS2_ROOT_PATH . 'styles/' . $FD->config('style');
+    $search_path =  FS2STYLES . '/' . $FD->config('style');
     $link_path =  $PATH_PREFIX . 'styles/' . $FD->config('style');
     $files = scandir_ext($search_path, 'js');
 
@@ -416,10 +416,10 @@ function get_content ($GOTO)
     initstr($template);
 
     // Script-File in /data/
-    if (file_exists('data/'.$GOTO.'.php')) {
-        include(FS2_ROOT_PATH . 'data/'.$GOTO.'.php');
-    } elseif (file_exists ('data/'.$GOTO)) {
-        include(FS2_ROOT_PATH . 'data/'.$GOTO );
+    if (file_exists(FS2SOURCE . '/data/'.$GOTO.'.php')) {
+        include(FS2SOURCE . '/data/'.$GOTO.'.php');
+    } elseif (file_exists (FS2SOURCE . '/data/'.$GOTO)) {
+        include(FS2SOURCE . '/data/'.$GOTO );
     } else {
 
     // Articles from DB
@@ -437,10 +437,10 @@ function get_content ($GOTO)
         $alias = $alias->fetch(PDO::FETCH_ASSOC);
         if (!empty($alias)) {
             $FD->setConfig('env', 'goto', $alias['alias_forward_to']);
-            include(FS2_ROOT_PATH . 'data/' . $alias['alias_forward_to']);
+            include(FS2SOURCE . '/data/' . $alias['alias_forward_to']);
         } else {
             $FD->setConfig('env', 'goto', 'articles');
-            include(FS2_ROOT_PATH . 'data/articles.php');
+            include(FS2SOURCE . '/data/articles.php');
         }
 
         // File-Download
@@ -450,7 +450,7 @@ function get_content ($GOTO)
         } else {
             $FD->setConfig('goto', '404');
             $FD->setConfig('env', 'goto', '404');
-            include(FS2_ROOT_PATH . 'data/404.php');
+            include(FS2SOURCE . '/data/404.php');
         }
     }
 
@@ -500,7 +500,7 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array(), $loopend_escape = tr
         $functions = array_filter_keys($functions, $filter);
         $snippet_functions = array_filter_keys($snippet_functions, $filter);
     }
-echo '<pre>';
+
     // Set Pattern and Replacment Code
     // Replace Functions with computed values
     if (!empty($functions)) {
@@ -513,7 +513,7 @@ echo '<pre>';
         $REPLACEMENT = create_function('$data', 'return call_tpl_function('.var_export($snippet_functions, true).', '.var_export($COUNT, true).', array("SNP", $data[0], $data[1], ""), '.var_export($loopend_escape, true).');');
         $TEMPLATE = preg_replace_callback($PATTERN, $REPLACEMENT, $TEMPLATE);
     }
-echo '</pre>';
+
     return $TEMPLATE;
 }
 
@@ -637,7 +637,7 @@ function load_an_applet($file, $output, $args)
 
     // include applet & load template
     try {
-        include(FS2_ROOT_PATH.'applets/'.$file);
+        include(FS2APPLETS.'/'.$file);
     } catch (Exception $e) {}
 
     //end & clean output buffering
@@ -724,9 +724,9 @@ function tpl_func_navigations($original, $main_argument, $other_arguments)
     // Load Navigation on demand
     if (!isset($NAV[$main_argument])) {
         // Write navigation into Array
-        $STYLE_PATH = 'styles/'.$FD->config('style').'/';
+        $STYLE_PATH = '/'.$FD->config('style').'/';
         $ACCESS = new fileaccess();
-        $template = $ACCESS->getFileData(FS2_ROOT_PATH.$STYLE_PATH.$main_argument);
+        $template = $ACCESS->getFileData(FS2STYLES.$STYLE_PATH.$main_argument);
 
         // File not found?
         if ($template === false) {

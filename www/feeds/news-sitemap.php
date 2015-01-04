@@ -4,7 +4,7 @@
 ###################
 $feed_url = 'feeds/google-news.php';
 $news_settings = array (
-    'name' => 'The-Witcher.de',
+    'name' => 'Frogsystem',
     'language' => 'de',
     'days' => 2,
     'cat_filter' => array(),
@@ -13,22 +13,6 @@ $news_settings = array (
 ##################
 ## Settings End ##
 ##################
-
-
-/* FS2 PHP Init */
-set_include_path('.');
-define('FS2_ROOT_PATH', './../', true);
-require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
-phpinit(false, 'Content-type: application/xml');
-/* End of FS2 PHP Init */
-
-
-// Inlcude DB Connection File or exit()
-require( FS2_ROOT_PATH . 'login.inc.php');
-
-//Include Functions-Files & Feed-Lib
-require_once(FS2_ROOT_PATH . 'libs/class_Feed.php');
-
 
 class NewsSitemap extends NewsFeed {
 
@@ -119,8 +103,4 @@ class NewsSitemap extends NewsFeed {
 // create feed
 $sitemap = new NewsSitemap($FD->cfg('virtualhost').$feed_url, $news_settings);
 echo $sitemap;
-
-// Shutdown System
-unset($FD);
-
 ?>

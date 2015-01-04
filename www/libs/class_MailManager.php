@@ -46,11 +46,11 @@ class MailManager
     public static function parseContent($content, $FSCODE = true, $TPL_FUNC = true)  {
         if ($TPL_FUNC) {
             global $FD;
-            require_once(FS2_ROOT_PATH.'includes/indexfunctions.php');
+            require_once(FS2SOURCE.'/includes/indexfunctions.php');
             $content = tpl_functions($content, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL', 'SNP'), true);
         }
         if ($FSCODE && self::getHtmlConfig()) {
-            require_once(FS2_ROOT_PATH.'includes/fscode.php');
+            require_once(FS2SOURCE.'/includes/fscode.php');
             $content = parse_all_fscodes($content, array('html'=>true));
         }
         

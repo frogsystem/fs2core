@@ -3,8 +3,8 @@
 #TODO: file access
 
 # Define Upload Path
-define('UPLOAD_PATH', FS2_ROOT_PATH.'upload/', true);
-define('CIMG_PATH', FS2_ROOT_PATH.'media/content/', true);
+define('UPLOAD_PATH', FS2UPLOAD.'/', true);
+define('CIMG_PATH', FS2MEDIA.'/content/', true);
 
 if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "import"){
     if (!isset($_POST['thumb']))

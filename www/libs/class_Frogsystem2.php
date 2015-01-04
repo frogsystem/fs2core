@@ -15,8 +15,9 @@ class Frogsystem2 {
     private $root;
     
     public function __construct($root = '.') {
-        // Set internal root
+        // Set internal root and FS2SOURCE fallback
         $this->root = $root;
+        @define('FS2SOURCE', realpath(__DIR__.'/../'));
 
         // include functions and Exceptions
         require_once(FS2SOURCE . '/classes/exceptions.php');
@@ -27,7 +28,6 @@ class Frogsystem2 {
     }
     
     public function init() {
-        
         // Set constants
         define('FS2ROOT', $this->root);
         define('FS2_ROOT_PATH', FS2ROOT.'/', true); // DEPRECATED

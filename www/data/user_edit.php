@@ -183,7 +183,7 @@ else {
         }
     } else { // Show Login-Page
         $_SESSION['last_url'] = 'user_edit';
-        include ( FS2_ROOT_PATH . 'data/login.php' );
+        include ( FS2SOURCE . '/data/login.php' );
     }
 }
 ?>

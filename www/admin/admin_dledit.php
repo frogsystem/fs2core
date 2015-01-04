@@ -18,7 +18,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
         systext('Download wurde gel&ouml;scht');
 
         // Delete from Search Index
-        require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+        require_once ( FS2SOURCE . 'includes/searchfunctions.php' );
         delete_search_index_for_one ( $_POST['editdlid'], 'dl' );
     }
     else
@@ -63,7 +63,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
         // Update Search Index (or not)
         if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
             // Include searchfunctions.php
-            require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+            require_once ( FS2SOURCE . 'includes/searchfunctions.php' );
             update_search_index ( 'dl' );
         }
 

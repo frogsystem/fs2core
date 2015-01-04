@@ -48,7 +48,7 @@
         unset ($_POST);
 
         ob_start();
-        require_once(FS2_ROOT_PATH.'admin/admin_news_edit.php');
+        require_once(FS2SOURCE.'/admin/admin_news_edit.php');
         ob_end_clean();
 
         db_edit_comment ($POSTDATA);
@@ -72,7 +72,7 @@
         unset ($_POST);
 
         ob_start();
-        require_once(FS2_ROOT_PATH.'admin/admin_news_edit.php');
+        require_once(FS2SOURCE.'/admin/admin_news_edit.php');
         ob_end_clean();
 
         if ( $POSTDATA['comment_delete'] == 1 ) {
@@ -106,7 +106,7 @@
   }
 
   //include b8 stuff
-  require_once(FS2_ROOT_PATH . 'resources/spamdetector/b8/b8.php');
+  require_once(FS2SOURCE . '/resources/spamdetector/b8/b8.php');
 
   //Is there something to do for b8?
   if (isset($_POST['commentid']) && isset($_POST['b8_action']))
@@ -231,7 +231,7 @@
     $update_limit = 100;
   }
   //evaluation functions
-  require_once(FS2_ROOT_PATH . 'resources/spamdetector/eval_spam.inc.php');
+  require_once(FS2SOURCE . '/resources/spamdetector/eval_spam.inc.php');
   //create b8 object
   if ($b8==NULL)
   {
@@ -563,7 +563,7 @@ echo '
       </td>
     </tr>
   ';
-  require_once(FS2_ROOT_PATH . 'resources/spamdetector/eval_spam.inc.php');
+  require_once(FS2SOURCE . '/resources/spamdetector/eval_spam.inc.php');
 
   while ($comment_arr = $query->fetch(PDO::FETCH_ASSOC))
   {

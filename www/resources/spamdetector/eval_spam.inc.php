@@ -96,7 +96,7 @@
     $comment_text = strtolower($comment_text);
     if ($use_b8)
     {
-      require_once FS2_ROOT_PATH.'/resources/spamdetector/b8/b8.php';
+      require_once FS2SOURCE.'/resources/spamdetector/b8/b8.php';
       if ($b8==NULL)
       {
         $success = 'No b8 instance passed to spamEvaluation() function!';

@@ -24,7 +24,7 @@ if (
 ".$_POST['style_copyright'];
 
     // New Style Path
-    $new_style_path = FS2_ROOT_PATH . 'styles/' . $_POST['style_folder'];
+    $new_style_path = FS2STYLES . '/' . $_POST['style_folder'];
 
     // Create Sytle Folder
     $ACCESS = new fileaccess();
@@ -49,7 +49,7 @@ if (
                             FROM `'.$FD->config('pref').'styles`
                             WHERE `style_id` = '.$_POST['copy_style_id'].'
                             LIMIT 0,1' );
-            $copy_style_path = FS2_ROOT_PATH . 'styles/' . $index->fetchColumn();
+            $copy_style_path = FS2STYLES . '/' . $index->fetchColumn();
             if (
                     $ACCESS->copyAny( $copy_style_path, $new_style_path, 0777, 0644 )
                     && $ACCESS->putFileData( $new_style_path . '/style.ini', $new_ini_data )
@@ -87,7 +87,7 @@ if (
 ////////////////////////
 
 // Check for file rights
-if ( !is_writable ( FS2_ROOT_PATH . 'styles/' ) ) {
+if ( !is_writable ( FS2STYLES ) ) {
     systext ( $FD->text("admin", "style_folder_not_writable").'<br>'.$FD->text("admin", "error_file_access"),
         $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
 } else {

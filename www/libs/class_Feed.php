@@ -257,7 +257,7 @@ abstract class NewsFeed extends Feed {
         global $FD;
 
         // Include functions & libs
-        require_once(FS2_ROOT_PATH . 'includes/fscode.php');
+        require_once(FS2SOURCE . '/includes/fscode.php');
 
         // check for latest news_date
         if ($news['news_date'] > $this->lastUpdate)

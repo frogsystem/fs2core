@@ -1184,7 +1184,7 @@ function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $d
 
 function killfs($text)
 {
-    include_once ( FS2_ROOT_PATH . 'includes/fscode.php');
+    require_once ( FS2SOURCE . '/includes/fscode.php');
     return strip_fs($text);
 }
 

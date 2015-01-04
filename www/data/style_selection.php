@@ -34,7 +34,7 @@
     $styles = '';
     while (($row = $index->fetch(PDO::FETCH_ASSOC)) !== false)
     {
-      $ini = FS2_ROOT_PATH . 'styles/' . $row['style_tag'] . '/style.ini';
+      $ini = FS2STYLES . '/' . $row['style_tag'] . '/style.ini';
       $data = array();
       if (is_readable($ini))
       {

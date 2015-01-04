@@ -45,7 +45,7 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
 
     $file_data = null;
     $access = new fileaccess();
-    $directory_path = FS2_ROOT_PATH . 'styles/' . $_POST['style'] . '/';
+    $directory_path = FS2STYLES . '/' . $_POST['style'] . '/';
 
     $stmt = $FD->sql()->conn()->prepare ( '
                     SELECT COUNT(`style_id`) AS style_num
@@ -172,7 +172,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     }
 
     // Set Style Path
-    $style_path = FS2_ROOT_PATH . 'styles/' . $_POST['style'];
+    $style_path = FS2STYLES . '/' . $_POST['style'];
 
     // Check if style exists
     if ( ! ( is_dir ( $style_path ) ) ) {
@@ -416,7 +416,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                             AND `style_allow_edit` = 1
                             ORDER BY `style_tag`' );
             while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-                if ( is_dir ( FS2_ROOT_PATH . 'styles/' . $style_arr['style_tag'] ) == TRUE ) {
+                if ( is_dir ( FS2STYLES . '/' . $style_arr['style_tag'] ) == TRUE ) {
                     $select_template .= '<option value="'.$style_arr['style_tag'].'" '.getselected ($style_arr['style_tag'], $_POST['style']).'>'.$style_arr['style_tag'];
                     $style_arr['style_tag'] == $FD->config('style') ? $select_template .= ' ('.$FD->text('admin', 'active').')' : $select_template .= '';
                     $select_template .= '</option>';
@@ -543,7 +543,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $dropdowns['snippets'] = create_dropdown ( $FD->text('admin', 'snippets'), implode ( '', $snippets_array ) );
 
     // Navigationen
-    $navs_arr = scandir_ext ( FS2_ROOT_PATH . 'styles/' . $_POST['style'], 'nav' );
+    $navs_arr = scandir_ext ( FS2STYLES . '/' . $_POST['style'], 'nav' );
     foreach ( $navs_arr as $nav ) {
         $the_nav = '$NAV('.$nav.')';
         $navs_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_nav).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
@@ -604,7 +604,7 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
 /////////////////////////////
 function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 {
-    if ( file_exists ( FS2_ROOT_PATH . 'styles/default/' . $FILE ) ) {
+    if ( file_exists ( FS2SOURCE . '/styles/default/' . $FILE ) ) {
         $original['button'] = '
                                             <div class="html-editor-button html-editor-button-original" onClick="toggelOriginal(\''.$EDITOR_NAME.'\')" title="Original anzeigen">
                                                 <img src="img/null.gif" alt="Original anzeigen" border="0">

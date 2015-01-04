@@ -1,6 +1,6 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-define('CIMG_PATH', FS2_ROOT_PATH.'media/content/', true);
+define('CIMG_PATH', FS2MEDIA.'/content/', true);
 $cimg_path = CIMG_PATH;
 
 if(isset($_GET['file'])){

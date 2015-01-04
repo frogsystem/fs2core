@@ -264,7 +264,7 @@ function delete_stopwords ($TEXT) {
 
 
 function get_stopwords () {
-    $stopfilespath =  FS2_ROOT_PATH . 'resources/stopwords/';
+    $stopfilespath =  FS2SOURCE . '/resources/stopwords/';
     $stopfiles = scandir_ext ( $stopfilespath, 'txt' );
     $ACCESS = new fileaccess();
 

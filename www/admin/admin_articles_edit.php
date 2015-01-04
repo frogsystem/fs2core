@@ -722,7 +722,7 @@ function db_edit_article ( $DATA )
     // Update Search Index (or not)
     if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
         // Include searchfunctions.php
-        require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+        require_once ( FS2SOURCE . '/includes/searchfunctions.php' );
         update_search_index ( 'articles' );
     }
 
@@ -745,7 +745,7 @@ function db_delete_article ( $DATA )
                         LIMIT 1");
 
         // Delete from Search Index
-        require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+        require_once ( FS2SOURCE . '/includes/searchfunctions.php' );
         delete_search_index_for_one ( $DATA['article_id'], 'articles' );
 
         // Update Counter

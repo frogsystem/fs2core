@@ -138,9 +138,9 @@ if ( TRUE )
 
     // languages
     initstr($lang_options);
-    $lang_dirs = scandir_filter(FS2_ROOT_PATH.'lang');
+    $lang_dirs = scandir_filter(FS2LANG);
     foreach($lang_dirs as $lang_dir) {
-        if (is_dir(FS2_ROOT_PATH.'lang/'.$lang_dir) && is_language_text($lang_dir)) {
+        if (is_dir(FS2LANG.'/'.$lang_dir) && is_language_text($lang_dir)) {
             $lang_options .=
             '<option value="'.$lang_dir.'" '
             .getselected($lang_dir, $_POST['language_text'])

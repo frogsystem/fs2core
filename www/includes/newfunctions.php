@@ -92,8 +92,6 @@ function http_response_text($code) {
 //// Decode JSON to Array with UTF8 ////
 ////////////////////////////////////////
 function json_array_decode ($string) {
-    // JSON for PHP <= 5.2
-    require_once(FS2_ROOT_PATH . 'resources/jsonwrapper/jsonwrapper_helper.php');
     
     $data = json_decode($string, true);
     // empty json creates null not emtpy array => error
@@ -105,8 +103,6 @@ function json_array_decode ($string) {
 //// Encode Array from JSON & UTF8 ////
 ///////////////////////////////////////
 function json_array_encode ($array) {
-    // JSON for PHP <= 5.2
-    require_once(FS2_ROOT_PATH . 'resources/jsonwrapper/jsonwrapper_helper.php');
     return json_encode(array_map('utf8_encode', $array), JSON_FORCE_OBJECT);
 }
 
