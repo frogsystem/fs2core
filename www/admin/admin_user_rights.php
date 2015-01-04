@@ -10,7 +10,7 @@ function get_user_rights_array ( $USER_ID )
 
     unset ( $user_rights );
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `perm_id`
                     FROM '.$FD->config('pref')."user_permissions
                     WHERE `x_id` = '".intval($USER_ID)."'
@@ -32,14 +32,14 @@ function get_group_rights_array ( $GROUP_ID, $IS_USER = FALSE )
     unset ( $group_rights );
 
     if ( $IS_USER == TRUE ) {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT `user_group`
                         FROM '.$FD->config('pref')."user
                         WHERE `user_id` = '".intval($GROUP_ID)."'" );
         $GROUP_ID = $index->fetchColumn();
     }
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `perm_id`
                     FROM '.$FD->config('pref')."user_permissions
                     WHERE `x_id` = '".intval($GROUP_ID)."'
@@ -73,17 +73,17 @@ if ( isset( $_POST['user_id'] ) ) {
         $user_rights = get_user_rights_array ( $_POST['user_id'] );
 
         // get pages
-        $pageaction = $FD->sql()->conn()->query ( '
+        $pageaction = $FD->db()->conn()->query ( '
                             SELECT `page_id`
                             FROM `'.$FD->config('pref')."admin_cp`
                             WHERE `group_id` > '0'" );
-        $stmt_del = $FD->sql()->conn()->prepare('
+        $stmt_del = $FD->db()->conn()->prepare('
                         DELETE
                         FROM `'.$FD->config('pref')."user_permissions`
                         WHERE `perm_id` = ?
                         AND `x_id` = '".$_POST['user_id']."'
                         AND `perm_for_group` = '0'");
-        $stmt_ins = $FD->sql()->conn()->prepare('
+        $stmt_ins = $FD->db()->conn()->prepare('
                         INSERT
                         INTO `'.$FD->config('pref')."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
                         VALUES (?, '".$_POST['user_id']."', 0)");
@@ -125,7 +125,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
     unset ( $group_rights );
 
     // get user data
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `user_name`, `user_id`, `user_group`, `user_is_staff`, `user_is_admin`
                     FROM '.$FD->config('pref')."user
                     WHERE `user_id` = '".$_POST['edit_user_id']."'
@@ -141,7 +141,7 @@ if ( isset ( $_POST['edit_user_id'] ) )
     $entries = 0;
 
     // get groups
-    $groupaction = $FD->sql()->conn()->query ( '
+    $groupaction = $FD->db()->conn()->query ( '
                         SELECT `group_id`
                         FROM `'.$FD->config('pref')."admin_groups`
                         WHERE `menu_id` != 'none'
@@ -150,22 +150,22 @@ if ( isset ( $_POST['edit_user_id'] ) )
         $DATA_ARR[$group_arr['group_id']]['title'] = $FD->text('menu', 'group_'.$group_arr['group_id']);
 
         // get pages
-        $pageaction = $FD->sql()->conn()->query ( '
+        $pageaction = $FD->db()->conn()->query ( '
                             SELECT COUNT(`page_id`)
                             FROM `'.$FD->config('pref')."admin_cp`
                             WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0" );
         $pa_num_rows = $pageaction->fetchColumn();
-        $pageaction = $FD->sql()->conn()->query ( '
+        $pageaction = $FD->db()->conn()->query ( '
                             SELECT `page_id`
                             FROM `'.$FD->config('pref')."admin_cp`
                             WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0
                             ORDER BY `page_pos` ASC, `page_id` ASC" );
-        $pageaction_sub = $FD->sql()->conn()->query ( '
+        $pageaction_sub = $FD->db()->conn()->query ( '
                                 SELECT COUNT(`page_id`)
                                 FROM `'.$FD->config('pref')."admin_cp`
                                 WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1" );
         $pas_num_rows = $pageaction_sub->fetchColumn();
-        $pageaction_sub = $FD->sql()->conn()->query ( '
+        $pageaction_sub = $FD->db()->conn()->query ( '
                                 SELECT `page_id`, `page_file`
                                 FROM `'.$FD->config('pref')."admin_cp`
                                 WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1
@@ -292,7 +292,7 @@ else
     ';
 
     // get staff-users from db
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(`user_id`)
                     FROM '.$FD->config('pref')."user
                     WHERE `user_is_staff` = '1' AND `user_id` != '1' AND `user_id` != '".$_SESSION['user_id']."'" );
@@ -310,7 +310,7 @@ else
         ';
 
         // display users
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT `user_id`, `user_name`, `user_mail`, `user_group`, `user_is_admin`
                         FROM '.$FD->config('pref')."user
                         WHERE `user_is_staff` = '1' AND `user_id` != '1' AND `user_id` != '".$_SESSION['user_id']."'
@@ -319,7 +319,7 @@ else
         {
             // get user group
             if ( $user_arr['user_group'] > 1 ) {
-                $groupindex = $FD->sql()->conn()->query ( '
+                $groupindex = $FD->db()->conn()->query ( '
                                     SELECT `user_group_name`
                                     FROM '.$FD->config('pref')."user_groups
                                     WHERE `user_group_id` = '".$user_arr['user_group']."'

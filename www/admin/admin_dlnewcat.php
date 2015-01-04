@@ -7,7 +7,7 @@
 if (!empty($_POST['catname']))
 {
     settype($_POST['subcatof'], 'integer');
-    $stmt = $FD->sql()->conn()->prepare(
+    $stmt = $FD->db()->conn()->prepare(
                 'INSERT INTO '.$FD->config('pref')."dl_cat (subcat_id, cat_name)
                  VALUES ('".$_POST['subcatof']."', ?)");
     $stmt->execute(array($_POST['catname']));

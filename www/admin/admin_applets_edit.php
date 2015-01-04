@@ -59,7 +59,7 @@ elseif (
         $_POST['applet_id'] = array_map ( 'intval', explode ( ',', $_POST['applet_id'] ) );
 
         // SQL-Delete-Query
-        $FD->sql()->conn()->exec ('
+        $FD->db()->conn()->exec ('
                         DELETE
                         FROM '.$FD->config('pref').'applets
                         WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')' );
@@ -98,7 +98,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
 
         // Get Data from DB
         } else {
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                                     SELECT *
                                     FROM `'.$FD->config('pref')."applets`
                                     WHERE `applet_id` = '".$_POST['applet_id']."'
@@ -210,7 +210,7 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         ';
 
         // get applets from db
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                                 SELECT *
                                 FROM '.$FD->config('pref').'applets
                                 WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')
@@ -266,7 +266,7 @@ if ( !isset ( $_POST['applet_id'] ) )
     ';
 
     // get applets from db
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(*)
                     FROM '.$FD->config('pref').'applets' );
 
@@ -285,7 +285,7 @@ if ( !isset ( $_POST['applet_id'] ) )
         ';
 
         // display applets
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT *
                         FROM '.$FD->config('pref').'applets
                         ORDER BY `applet_file`' );

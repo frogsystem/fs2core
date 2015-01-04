@@ -27,11 +27,11 @@ echo'
 ';
 
 // Determine first year
-$index = $FD->sql()->conn()->query('SELECT s_year FROM '.$FD->config('pref').'counter_stat ORDER BY s_year LIMIT 1');
+$index = $FD->db()->conn()->query('SELECT s_year FROM '.$FD->config('pref').'counter_stat ORDER BY s_year LIMIT 1');
 $dbfirstyear = $index->fetchColumn();
 
 // find first month
-$index = $FD->sql()->conn()->query('SELECT s_month FROM '.$FD->config('pref')."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1");
+$index = $FD->db()->conn()->query('SELECT s_month FROM '.$FD->config('pref')."counter_stat WHERE s_year = $dbfirstyear ORDER BY s_month LIMIT 1");
 $dbfirstmonth = $index->fetchColumn();
 
 echo '<a href="?go=stat_view&s_year='.$dbfirstyear.'&s_month='.$dbfirstmonth.'">';
@@ -87,7 +87,7 @@ echo'
 ';
 
 // Find highest PI count for month
-$index = $FD->sql()->conn()->query(
+$index = $FD->db()->conn()->query(
              'SELECT s_hits
               FROM '.$FD->config('pref')."counter_stat
               WHERE s_year  = '".$_GET['s_year']."' AND s_month = '".$_GET['s_month']."'
@@ -103,7 +103,7 @@ $visitsall = 0;
 $hitsall = 0;
 for ($d=1; $d<date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1; $d++)
 {
-    $index = $FD->sql()->conn()->query(
+    $index = $FD->db()->conn()->query(
                  'SELECT *
                   FROM '.$FD->config('pref')."counter_stat
                   WHERE s_year  = '".$_GET['s_year']."' AND
@@ -218,7 +218,7 @@ echo'
 /////////////////////////////////////////
 
 // Find maximum monthly hits for year
-$index = $FD->sql()->conn()->query(
+$index = $FD->db()->conn()->query(
              'SELECT SUM(s_hits) AS sumhits
               FROM '.$FD->config('pref')."counter_stat
               WHERE s_year = $_GET[s_year]
@@ -231,7 +231,7 @@ $supervisits = 0;
 $superhits = 0;
 for ($m=1; $m<13; $m++)
 {
-    $index = $FD->sql()->conn()->query(
+    $index = $FD->db()->conn()->query(
                  'SELECT SUM(s_visits) AS sumvisits, SUM(s_hits) AS sumhits
                   FROM '.$FD->config('pref')."counter_stat
                   WHERE s_year = $_GET[s_year] AND s_month = $m" );
@@ -313,18 +313,18 @@ echo'
 ///////////////////////////////
 
 // Read Counter
-$index = $FD->sql()->conn()->query( 'SELECT * FROM '.$FD->config('pref').'counter' );
+$index = $FD->db()->conn()->query( 'SELECT * FROM '.$FD->config('pref').'counter' );
 $counterdaten = $index->fetch(PDO::FETCH_ASSOC);
 
 // Users online
 $online = get_online_ips();
 
 // Day of most hits
-$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_hits DESC LIMIT 1');
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_hits DESC LIMIT 1');
 $mosthits = $index->fetch(PDO::FETCH_ASSOC);
 
 // Day of most visits
-$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_visits DESC LIMIT 1');
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter_stat ORDER BY s_visits DESC LIMIT 1');
 $mostvisits = $index->fetch(PDO::FETCH_ASSOC);
 
 echo'

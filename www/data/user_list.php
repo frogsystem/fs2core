@@ -38,7 +38,7 @@ $FD->loadConfig('users');
 $config_arr = $FD->configObject('users')->getConfigArray();
 
 // Get Number of Users
-$index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`' );
+$index = $FD->db()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $config_arr['number_of_users'] = $row['num_users'];
 if ( $config_arr['user_per_page'] == -1 ) {
@@ -123,7 +123,7 @@ $limit = ' LIMIT '.intval($config_arr['prev_page']*$config_arr['user_per_page'])
 /*finally get the data... still may take several seconds for large user base
   and unfavourable sort criterion, but it should take less memory and execute
   faster than the previous code*/
-$index = $FD->sql()->conn()->query ( $query.$limit );
+$index = $FD->db()->conn()->query ( $query.$limit );
 
 ///////////////////////////
 //// Display User List ////

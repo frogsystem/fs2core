@@ -8,7 +8,7 @@ if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url'
     && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
 {
     settype($_POST['hot'], 'integer');
-    $stmt = $FD->sql()->conn()->prepare(
+    $stmt = $FD->db()->conn()->prepare(
                 'INSERT INTO '.$FD->config('pref')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
                  VALUES (?,
                          ?,
@@ -16,7 +16,7 @@ if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url'
                          ?,
                          '".$_POST['hot']."');");
     $stmt->execute(array($_POST['title'], $_POST['url'], $_POST['text'], $_POST['preis']));
-    $id = $FD->sql()->conn()->lastInsertId();
+    $id = $FD->db()->conn()->lastInsertId();
 
     $messages = array();
     if (!empty($_FILES['artikelimg']['name']))

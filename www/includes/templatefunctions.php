@@ -47,7 +47,7 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
     $access = new fileaccess();
     $directory_path = FS2STYLES . '/' . $_POST['style'] . '/';
 
-    $stmt = $FD->sql()->conn()->prepare ( '
+    $stmt = $FD->db()->conn()->prepare ( '
                     SELECT COUNT(`style_id`) AS style_num
                     FROM `'.$FD->config('pref').'styles`
                     WHERE `style_tag` = ?
@@ -146,7 +146,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     }
 
     // Check Edit Allowed
-    $stmt = $FD->sql()->conn()->prepare ( "
+    $stmt = $FD->db()->conn()->prepare ( "
                     SELECT COUNT(`style_id`) AS 'number'
                     FROM `".$FD->config('pref').'styles`
                     WHERE `style_tag` = ?
@@ -155,7 +155,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     $stmt->execute(array($_POST['style']));
     if ( $stmt->fetchColumn() != 1 ) {
         // Check Edit Allowed
-        $index = $FD->sql()->conn()->query ( "
+        $index = $FD->db()->conn()->query ( "
                         SELECT COUNT(`style_id`) AS 'number'
                         FROM `".$FD->config('pref')."styles`
                         WHERE `style_allow_edit` = 1
@@ -409,7 +409,7 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                                             <select name="style" onChange="this.form.submit();" style="width:200px;">
             ';
 
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT `style_tag`
                             FROM `'.$FD->config('pref').'styles`
                             WHERE `style_id` != 0
@@ -524,7 +524,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $dropdowns['global_vars'] = create_dropdown ( $FD->text('admin', 'global_vars'), implode ( '', $global_vars_array ) );
 
     // Applets
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `applet_file` FROM `'.$FD->config('pref').'applets` WHERE `applet_active` = 1 AND `applet_output` = 1' );
     while ( $app_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $app = $app_arr['applet_file'];
@@ -534,7 +534,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $dropdowns['applets'] = create_dropdown ( $FD->text('admin', 'applets'), implode ( '', $applets_array ) );
 
     // Snippets
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `snippet_tag` FROM `'.$FD->config('pref').'snippets` WHERE `snippet_active` = 1' );
     while ( $snippets_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $the_snippet = $snippets_arr['snippet_tag'];

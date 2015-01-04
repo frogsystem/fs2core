@@ -1,13 +1,13 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`partner_id`) AS 'num_partner'
 				FROM ".$FD->config('pref').'partner' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_partner = $row['num_partner'];
 
 if ( $num_partner  > 0 ) {
-	$index = $FD->sql()->conn()->query ( '
+	$index = $FD->db()->conn()->query ( '
 				SELECT `partner_name`
 				FROM '.$FD->config('pref').'partner
 				ORDER BY `partner_id` DESC
@@ -16,14 +16,14 @@ if ( $num_partner  > 0 ) {
     $last_partner = $row['partner_name'];
 }
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`artikel_id`) AS 'num_shop'
 				FROM ".$FD->config('pref').'shop' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_shop = $row['num_shop'];
 
 if ( $num_shop  > 0 ) {
-	$index = $FD->sql()->conn()->query ( '
+	$index = $FD->db()->conn()->query ( '
 				SELECT `artikel_name`
 				FROM '.$FD->config('pref').'shop
 				ORDER BY `artikel_id` DESC

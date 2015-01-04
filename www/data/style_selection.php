@@ -6,7 +6,7 @@
   //change selected style
   if (isset($_GET['new_style']))
   {
-    $stmt = $FD->sql()->conn()->prepare('SELECT * FROM `'.$FD->config('pref').'styles` WHERE `style_allow_use` = 1 AND `style_tag` != \'default\' AND `style_tag` = ?');
+    $stmt = $FD->db()->conn()->prepare('SELECT * FROM `'.$FD->config('pref').'styles` WHERE `style_allow_use` = 1 AND `style_tag` != \'default\' AND `style_tag` = ?');
     $stmt->execute(array($_GET['new_style']));
     if (($row = $stmt->fetch(PDO::FETCH_ASSOC)) === false)
     {
@@ -30,7 +30,7 @@
   else
   {
     //show list
-    $index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'styles` WHERE `style_allow_use` = 1 AND `style_tag` != \'default\'');
+    $index = $FD->db()->conn()->query('SELECT * FROM `'.$FD->config('pref').'styles` WHERE `style_allow_use` = 1 AND `style_tag` != \'default\'');
     $styles = '';
     while (($row = $index->fetch(PDO::FETCH_ASSOC)) !== false)
     {

@@ -28,7 +28,7 @@ if ( is_loggedin() ) {
     $template->tag('logout_url', url('logout'));
 
     // Admin-Link
-    $index = $FD->sql()->conn()->query ('
+    $index = $FD->db()->conn()->query ('
                             SELECT `user_id`, `user_is_staff`, `user_is_admin`
                             FROM '.$FD->config('pref')."user
                             WHERE `user_id` = '".$user_id."'" );

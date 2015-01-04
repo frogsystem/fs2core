@@ -42,7 +42,7 @@ if (
 
     // style tag
     try {
-        $data['style_tag'] = $FD->sql()->conn()->query(
+        $data['style_tag'] = $FD->db()->conn()->query(
                                  'SELECT style_tag FROM '.$FD->config('pref').'styles
                                   WHERE `style_id` = '.intval($_POST['style_id']).' AND `style_id` != 0 AND `style_allow_use` = 1
                                   LIMIT 1');
@@ -118,7 +118,7 @@ if ( TRUE )
     );
 
     // styles
-    $styles = $FD->sql()->conn()->query(
+    $styles = $FD->db()->conn()->query(
                   'SELECT style_id, style_tag FROM '.$FD->config('pref').'styles
                   WHERE `style_id` != 0 AND `style_allow_use` = 1
                   ORDER BY `style_tag`');

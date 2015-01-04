@@ -7,7 +7,7 @@ $FD->loadConfig('screens');
 $screen_config_arr = $FD->configObject('screens')->getConfigArray();
 
 // Get Data from DB
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
                 SELECT *
                 FROM `'.$FD->config('pref').'shop`' );
 

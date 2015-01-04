@@ -20,7 +20,7 @@ elseif (isset($_GET['newpassword']) && (!isset($_POST['login']) || $_POST['login
     if (isset($_POST['newpassword_mail'])) {
 
         // check for mail
-        $user = $FD->sql()->conn()->prepare(
+        $user = $FD->db()->conn()->prepare(
                       'SELECT user_id, user_name, user_mail FROM '.$FD->config('pref').'user
                        WHERE `user_mail` = ? LIMIT 1');
         $user->execute(array($_POST['newpassword_mail']));

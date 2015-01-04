@@ -44,7 +44,7 @@ if (
              break;
     }
 
-    $stmt = $FD->sql()->conn()->prepare('
+    $stmt = $FD->db()->conn()->prepare('
                     UPDATE
                         '.$FD->config('pref')."player
                     SET
@@ -80,7 +80,7 @@ elseif (
         settype ( $_POST['video_id'], 'integer' );
 
         // SQL-Delete-Query
-        $FD->sql()->conn()->exec ('
+        $FD->db()->conn()->exec ('
                DELETE FROM
                      '.$FD->config('pref')."player
                WHERE
@@ -116,7 +116,7 @@ if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
 
         // Load Data from DB into Post
         } else {
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT *
                             FROM '.$FD->config('pref')."player
                             WHERE video_id = '".$_POST['video_id']."'" );
@@ -285,7 +285,7 @@ if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
                                         <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verkn&uuml;pfung</option>
         ';
         // List downloads
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                             SELECT D.dl_id, D.dl_name, C.cat_name
                             FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C
                             WHERE D.cat_id = C.cat_id
@@ -316,7 +316,7 @@ if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
     // Delete Video
     elseif ( $_POST['video_action'] == 'delete' )
     {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                        SELECT *
                        FROM '.$FD->config('pref')."player
                        WHERE video_id = '".$_POST['video_id']."'
@@ -395,10 +395,10 @@ else
     ';
 
     // Get Videos from DB
-    $index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'player' );
+    $index = $FD->db()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'player' );
 
     if ( $index->fetchColumn() > 0 ) {
-        $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'player ORDER BY video_title' );
+        $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'player ORDER BY video_title' );
 
         // display table head
         echo '

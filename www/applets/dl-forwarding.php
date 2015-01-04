@@ -22,7 +22,7 @@ if (
     $config_arr = $FD->configObject('downloads')->getConfigArray();
 
     // Get File Data
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `file_is_mirror`, `file_url`
                     FROM `'.$FD->config('pref').'dl_files`
                     WHERE `file_id` = '.$_GET['id'].' ' );
@@ -39,7 +39,7 @@ if (
         )
     {
         // Update Counter
-        $FD->sql()->conn()->exec ( '
+        $FD->db()->conn()->exec ( '
                 UPDATE `'.$FD->config('pref')."dl_files`
                 SET `file_count` = `file_count` + 1
                 WHERE `file_id` = '".$_GET['id']."'" );

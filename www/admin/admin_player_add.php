@@ -40,7 +40,7 @@ if (
              break;
     }
 
-    $stmt = $FD->sql()->conn()->prepare(
+    $stmt = $FD->db()->conn()->prepare(
                     'INSERT INTO
                          '.$FD->config('pref')."player
                          ( video_type, video_x, video_title, video_lenght, video_desc, dl_id )
@@ -212,7 +212,7 @@ if ( TRUE )
                                         <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verkn&uuml;pfung</option>
         ';
         // List DLs
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT D.dl_id, D.dl_name, C.cat_name
                         FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C
                         WHERE D.cat_id = C.cat_id

@@ -7,7 +7,7 @@ function db_edit_comment ( $DATA )
     settype ( $DATA['comment_id'], 'integer' );
 
     // SQL-Update-Query: Comment
-    $stmt = $FD->sql()->conn()->prepare('
+    $stmt = $FD->db()->conn()->prepare('
                     UPDATE
                             '.$FD->config('pref')."comments
                     SET
@@ -28,12 +28,12 @@ function db_delete_comment ( $DATA )
     $DATA['comment_id'] = array_map ( 'intval', explode ( ',', $DATA['comment_id'] ) );
 
     // SQL-Delete-Query: Comment
-    $affected = (int) $FD->sql()->conn()->exec ( '
+    $affected = (int) $FD->db()->conn()->exec ( '
                     DELETE FROM
                             '.$FD->config('pref').'comments
                     WHERE
                             `comment_id` IN ('.implode ( ',', $DATA['comment_id'] ).')');
-    $FD->sql()->conn()->exec ( '
+    $FD->db()->conn()->exec ( '
                     UPDATE `'.$FD->config('pref').'counter`
                     SET `comments` = `comments` - '.$affected);
 
@@ -56,18 +56,18 @@ function action_delete_get_data ( $IDS )
         unset ($news_arr);
         settype ( $NEWS_ID, 'integer' );
 
-        $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news WHERE news_id = '".$NEWS_ID."'" );
+        $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news WHERE news_id = '".$NEWS_ID."'" );
         $news_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         $news_arr['news_date_formated'] = ''.$FD->text('admin', 'on').' <b>' . date ( $FD->text('admin', 'date_format') , $news_arr['news_date'] ) . '</b> '.$FD->text('admin', 'at').' <b>' . date ( $FD->text('admin', 'time_format') , $news_arr['news_date'] ) . '</b>';
 
-        $index2 = $FD->sql()->conn()->query("SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'' );
+        $index2 = $FD->db()->conn()->query("SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'' );
         $news_arr['num_comments'] = $index2->fetchColumn();
 
-        $index2 = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id']."");
+        $index2 = $FD->db()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id']."");
         $news_arr['user_name'] = $index2->fetchColumn();
 
-        $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref').'news_cat WHERE cat_id = '.$news_arr['cat_id']."");
+        $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->config('pref').'news_cat WHERE cat_id = '.$news_arr['cat_id']."");
         $news_arr['cat_name'] = $index2->fetchColumn();
 
         $return_arr[] = $news_arr;
@@ -164,11 +164,11 @@ function action_comments_select ( $DATA )
     ';
 
     // Get Number of Comments
-    $index = $FD->sql()->conn()->query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\'' );
+    $index = $FD->db()->conn()->query ( "SELECT COUNT(comment_id) AS 'number' FROM ".$FD->config('pref').'comments WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\'' );
     $number = $index->fetchColumn();
 
     if ( $number >= 1 ) {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT *
                         FROM '.$FD->config('pref').'comments
                         WHERE content_id = '.$DATA['news_id'].' AND content_type=\'news\'
@@ -179,7 +179,7 @@ function action_comments_select ( $DATA )
 
             // Get other Data
             if ( $comment_arr['comment_poster_id'] != 0 ) {
-                    $index2 = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id']."" );
+                    $index2 = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id']."" );
                     $comment_arr['comment_poster'] = $index2->fetchColumn();
             }
             $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
@@ -227,7 +227,7 @@ function action_comments_edit ( $DATA )
     global $FD;
 
     settype ( $DATA['comment_id'], 'integer' );
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT *
                     FROM '.$FD->config('pref').'comments
                     WHERE comment_id = '.$DATA['comment_id']." AND content_type='news'" );
@@ -235,7 +235,7 @@ function action_comments_edit ( $DATA )
 
     // Get other Data
     if ( $comment_arr['comment_poster_id'] != 0 ) {
-            $index2 = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id'] );
+            $index2 = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id'] );
             $comment_arr['comment_poster'] = $index2->fetchColumn();
     }
     $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
@@ -318,7 +318,7 @@ function action_comments_delete ( $DATA )
                                     <br><br>
     ';
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT *
                     FROM `'.$FD->config('pref').'comments`
                     WHERE `comment_id` IN ('.implode ( ',', $DATA['comment_id'] ).')' );
@@ -327,7 +327,7 @@ function action_comments_delete ( $DATA )
 
         // Get other Data
         if ( $comment_arr['comment_poster_id'] != 0 ) {
-                $index2 = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id'] );
+                $index2 = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$comment_arr['comment_poster_id'] );
                 $comment_arr['comment_poster'] = $index2->fetchColumn();
         }
         $comment_arr['comment_date_formated'] = date ( 'd.m.Y' , $comment_arr['comment_date'] ) . ' um ' . date ( 'H:i' , $comment_arr['comment_date'] );
@@ -415,7 +415,7 @@ if (
     // SQL-Insert-Query
     try {
         // Get User
-        $user_id = $FD->sql()->conn()->prepare(
+        $user_id = $FD->db()->conn()->prepare(
                          'SELECT user_id FROM '.$FD->config('pref').'user
                          WHERE `user_name` = ? LIMIT 1');
         $user_id->execute(array($_POST['user_name']));

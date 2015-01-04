@@ -19,7 +19,7 @@ $config_arr = $FD->configObject('users')->getConfigArray();
 //////////////////////
 //// Show Profile ////
 //////////////////////
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
     SELECT *
     FROM `'.$FD->config('pref')."user`
     WHERE `user_id` = '".$_GET['id']."'" );
@@ -55,28 +55,28 @@ if ( $user_arr!==false ) {
     $user_arr['user_yim'] = ( $user_arr['user_yim'] != '' ? kill_replacements ( $user_arr['user_yim'], TRUE ) : '-' );
     $user_arr['user_skype'] = ( $user_arr['user_skype'] != '' ? kill_replacements ( $user_arr['user_skype'], TRUE ) : '-' );
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
         SELECT COUNT(`news_id`) AS `number`
         FROM `'.$FD->config('pref')."news`
         WHERE `user_id` = '".$user_arr['user_id']."'" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $user_arr['user_num_news'] = $row['number'];
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
         SELECT COUNT(`comment_id`) AS `number`
         FROM `'.$FD->config('pref')."comments`
         WHERE `comment_poster_id` = '".$user_arr['user_id']."'" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $user_arr['user_num_comments'] = $row['number'];
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
         SELECT COUNT(`article_id`) AS `number`
         FROM `'.$FD->config('pref')."articles`
         WHERE `article_user` = '".$user_arr['user_id']."'" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $user_arr['user_num_articles'] = $row['number'];
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
         SELECT COUNT(`dl_id`) AS `number`
         FROM `'.$FD->config('pref')."dl`
         WHERE `user_id` = '".$user_arr['user_id']."'" );

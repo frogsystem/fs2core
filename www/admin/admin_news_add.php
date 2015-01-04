@@ -66,7 +66,7 @@ if (
     try {
         // Get User
         try {
-            $user_id = $FD->sql()->conn()->prepare(
+            $user_id = $FD->db()->conn()->prepare(
                            'SELECT user_id FROM '.$FD->config('pref').'user
                            WHERE `user_name` = ? LIMIT 1');
             $user_id->execute(array($_POST['user_name']));
@@ -92,7 +92,7 @@ if (
         }
 
         // Insert Links to database
-        $stmt = $FD->sql()->conn()->prepare(
+        $stmt = $FD->db()->conn()->prepare(
                     'INSERT INTO '.$FD->config('pref').'news_links
                      SET news_id = '.intval($newsid).',
                          link_name = ?,
@@ -112,7 +112,7 @@ if (
 
         // update counter
         try {
-            $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET `news` = `news` + 1 WHERE `id` = 1');
+            $FD->db()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET `news` = `news` + 1 WHERE `id` = 1');
         } catch (Exception $e) {}
 
         echo get_systext($FD->text('page', 'news_added'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_add'));
@@ -206,7 +206,7 @@ if ( TRUE ) {
         $_POST['news_active'] = 1;
         $_POST['news_comments_allowed'] = 1;
         $_POST['user_id'] = $_SESSION['user_id'];
-        $_POST['user_name'] = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user
+        $_POST['user_name'] = $FD->db()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user
                                                          WHERE user_id = '.intval($_POST['user_id']).' LIMIT 1');
         $_POST['user_name'] = $_POST['user_name']->fetchColumn();
 
@@ -235,7 +235,7 @@ if ( TRUE ) {
         $cat_options .= '<option value="-1">'.$FD->text("admin", "select_hr").'</option>'."\n";
     }
 
-    $cats = $FD->sql()->conn()->query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'news_cat');
+    $cats = $FD->db()->conn()->query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'news_cat');
     $cats = $cats->fetchAll(PDO::FETCH_ASSOC);
     foreach ($cats as $cat) {
         settype ($cat['cat_id'], 'integer');

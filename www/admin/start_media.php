@@ -1,18 +1,18 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`cat_id`) AS 'num_gallery'
 				FROM ".$FD->config('pref').'screen_cat
 				LIMIT 0,1' );
 $num_gallery = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`screen_id`) AS 'num_gallery_img'
 				FROM ".$FD->config('pref').'screen
 				LIMIT 0,1');
 $num_gallery_img = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`wallpaper_id`) AS 'num_gallery_wp'
 				FROM ".$FD->config('pref').'wallpaper
 				LIMIT 0,1' );
@@ -21,7 +21,7 @@ $num_gallery_wp = $index->fetchColumn();
 $num_gallery_entries = $num_gallery_wp + $num_gallery_img;
 
 if ( $num_gallery_img > 0 ) {
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
 					SELECT COUNT(S.`screen_id`) AS 'best_gallery_num', C.`cat_name`
 					FROM ".$FD->config('pref').'screen_cat C, '.$FD->config('pref').'screen S
 					WHERE S.`cat_id` = C.`cat_id`
@@ -34,7 +34,7 @@ if ( $num_gallery_img > 0 ) {
     $best_gallery_num = $row['best_gallery_num'];
 }
 if ( $num_gallery_wp > 0 ) {
-	$index = $FD->sql()->conn()->query ( "
+	$index = $FD->db()->conn()->query ( "
 					SELECT COUNT(W.`wallpaper_id`) AS 'best_gallery_num', C.`cat_name`
 					FROM ".$FD->config('pref').'screen_cat C, '.$FD->config('pref').'wallpaper W
 					WHERE W.`cat_id` = C.`cat_id`
@@ -53,13 +53,13 @@ if ( $num_gallery_wp > 0 && $best_gallery_num2 > $best_gallery_num ) {
 }
 
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`dl_id`) AS 'num_dl'
 				FROM ".$FD->config('pref').'dl
 				LIMIT 0,1' );
 $num_dl = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`file_id`) AS 'num_dl_file'
 				FROM ".$FD->config('pref').'dl_files
 				LIMIT 0,1' );
@@ -67,7 +67,7 @@ $num_dl_files = $index->fetchColumn();
 
 
 if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
 					SELECT COUNT(F.`file_id`) AS 'best_dl_files_num', D.`dl_name`
 					FROM ".$FD->config('pref').'dl D, '.$FD->config('pref').'dl_files F
 					WHERE D.`dl_id` = F.`dl_id`
@@ -78,7 +78,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
     $best_dl_files = $row['dl_name'];
     $best_dl_files_num = $row['best_dl_files_num'];
 
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
 					SELECT SUM(F.`file_count`) AS 'best_dl_count_num', D.`dl_name`
 					FROM ".$FD->config('pref').'dl D, '.$FD->config('pref').'dl_files F
 					WHERE D.`dl_id` = F.`dl_id`
@@ -89,7 +89,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
     $best_dl_count = $row['dl_name'];
     $best_dl_count_num = $row['best_dl_count_num'];
 
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
 					SELECT SUM(F.`file_size`)*SUM(F.`file_count`) AS 'best_dl_traffic_num', D.`dl_name`
 					FROM ".$FD->config('pref').'dl D, '.$FD->config('pref').'dl_files F
 					WHERE D.`dl_id` = F.`dl_id`
@@ -100,7 +100,7 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
     $best_dl_traffic = $row['dl_name'];
     $best_dl_traffic_num = getsize ( $row['best_dl_traffic_num'] );
 
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
 					SELECT COUNT(D.`dl_id`) AS 'best_dl_uploader_num', U.`user_name`
 					FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'dl D
 					WHERE D.`user_id` = U.`user_id`
@@ -113,13 +113,13 @@ if ( $num_dl  > 0 && $num_dl_files  > 0 ) {
 }
 
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`video_id`) AS 'num_video'
 				FROM ".$FD->config('pref').'player
 				LIMIT 0,1' );
 $num_video = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`video_id`) AS 'num_video_int'
 				FROM ".$FD->config('pref').'player
 				WHERE `video_type` = 1

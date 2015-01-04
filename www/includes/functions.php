@@ -9,12 +9,12 @@ function get_online_ips () {
     $numbers = array('users' => 0, 'guests' => 0, 'all' => 0);
 
     // get values from db
-    $numbers['users'] = $FD->sql()->conn()->query(
+    $numbers['users'] = $FD->db()->conn()->query(
                             'SELECT COUNT(user_id) AS users
                              FROM '.$FD->config('pref')."useronline
                              WHERE `date` > '".($FD->env('time')-300)."' AND `user_id` != 0");
     $numbers['users'] = $numbers['users']->fetchColumn();
-    $numbers['guests'] = $FD->sql()->conn()->query(
+    $numbers['guests'] = $FD->db()->conn()->query(
                             'SELECT COUNT(user_id) AS guests
                              FROM '.$FD->config('pref')."useronline
                              WHERE `date` > '".($FD->env('time')-300)."' AND `user_id` = 0");
@@ -55,7 +55,7 @@ function delete_referrers ($days, $hits, $contact, $age, $amount, $time = null) 
         default: $amount = '>'; break;
     }
 
-    return $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'counter_ref WHERE `ref_'.$contact.'` '.$age." '".$del_date."' AND `ref_count` ".$amount." '".$hits."'");
+    return $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref').'counter_ref WHERE `ref_'.$contact.'` '.$age." '".$del_date."' AND `ref_count` ".$amount." '".$hits."'");
 }
 
 ////////////////////
@@ -182,7 +182,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         $retrun_arr['user_group_title'] = '';
         $retrun_arr['user_group_rank'] = '';
     } else {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
             SELECT *
             FROM `'.$FD->config('pref')."user_groups`
             WHERE `user_group_id` = '".$GROUP_ID."'");
@@ -239,7 +239,7 @@ function get_sub_cats ( $CAT_ID, $REC_SUB_CAT_ARRAY )
     static $sub_cat_ids = array();
     $sub_cat_ids = $REC_SUB_CAT_ARRAY;
 
-    $subcat_index = $FD->sql()->conn()->query ( '
+    $subcat_index = $FD->db()->conn()->query ( '
         SELECT `cat_id`
         FROM `'.$FD->config('pref')."dl_cat`
         WHERE `subcat_id` = '".$CAT_ID."'" );
@@ -260,13 +260,13 @@ function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
     static $i = 0;
 
     $i++;
-    $data[$CAT_ID] = $FD->sql()->conn()->query ( '
+    $data[$CAT_ID] = $FD->db()->conn()->query ( '
         SELECT *
         FROM `'.$FD->config('pref')."dl_cat`
         WHERE `subcat_id` = '".$CAT_ID."'" );
 
     while ( $array = $data[$CAT_ID]->fetch(PDO::FETCH_ASSOC) ) {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
             SELECT `cat_id`
             FROM `'.$FD->config('pref')."dl_cat`
             WHERE `subcat_id` = '".$array['cat_id']."'");
@@ -314,7 +314,7 @@ function get_timed_pic ()
     global $FD;
 
     $time = time();
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
                     SELECT COUNT(R.`screen_id`) AS 'images'
                     FROM `".$FD->config('pref').'screen_random` R
                     WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.' ' );
@@ -323,7 +323,7 @@ function get_timed_pic ()
     if ( $num_images > 0 ) {
         // Get random number
         $rand = rand ( 0, $num_images - 1 );
-        $index =  $FD->sql()->conn()->query ( '
+        $index =  $FD->db()->conn()->query ( '
                         SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
                         FROM `'.$FD->config('pref').'screen_random` R, `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                         WHERE R.`start` <= '.$time.' AND R.`end` >= '.$time.'
@@ -352,7 +352,7 @@ function get_random_pic ()
     global $FD;
 
     // Get number of possible Screens
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
                     SELECT COUNT(S.`screen_id`) AS 'images'
                     FROM `".$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                     WHERE C.`randompic` = 1
@@ -362,7 +362,7 @@ function get_random_pic ()
     if ( $num_images > 0 ) {
         // Get random number
         $rand = rand ( 0, $num_images - 1 );
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT S.`screen_id`, S.`screen_name`, C.`cat_id`, C.`cat_name`
                         FROM `'.$FD->config('pref').'screen` S, `'.$FD->config('pref').'screen_cat` C
                         WHERE C.`randompic` = 1
@@ -519,7 +519,7 @@ function is_in_staff ( $USER_ID )
     settype ( $USER_ID, 'integer' );
 
     if ( $USER_ID ) {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                                 SELECT user_id, user_is_staff, user_is_admin
                                 FROM '.$FD->config('pref')."user
                                 WHERE user_id = '".$USER_ID."'
@@ -544,7 +544,7 @@ function is_admin ( $USER_ID )
     settype ( $USER_ID, 'integer' );
 
     if ( $USER_ID ) {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                                 SELECT user_id, user_is_admin
                                 FROM '.$FD->config('pref')."user
                                 WHERE user_id = '".$USER_ID."'
@@ -569,7 +569,7 @@ function get_template ( $TEMPLATE_NAME )
 {
     global $FD;
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `'.$TEMPLATE_NAME.'`
                     FROM '.$FD->config('pref')."template
                     WHERE `id` = '".$FD->config('design')."'" );
@@ -585,7 +585,7 @@ function get_email_template ( $TEMPLATE_NAME )
 {
     global $FD;
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `'.$TEMPLATE_NAME.'`
                     FROM '.$FD->config('pref')."email
                     WHERE `id` = '1'" );
@@ -639,12 +639,12 @@ function create_textarea($name, $text='', $width='', $height='', $class='', $all
     $smilies_table = '
           <table cellpadding="2" cellspacing="0" border="0">';
 
-    $index =$FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'editor_config`' );
+    $index =$FD->db()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'editor_config`' );
     $config_arr = $index->fetch(PDO::FETCH_ASSOC);
     $config_arr['num_smilies'] = $config_arr['smilies_rows']*$config_arr['smilies_cols'];
 
     $zaehler = 0;
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                             SELECT *
                             FROM `'.$FD->config('pref').'smilies`
                             ORDER BY `order` ASC
@@ -930,7 +930,7 @@ function get_dl_categories (&$IDs, $CAT_ID, $SHOW_SUB = 1, $ID = 0, $LEVEL = -1 
 {
     global $FD;
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                             SELECT * FROM `'.$FD->config('pref')."dl_cat`
                             WHERE `subcat_id` = '".$ID."'
                             ORDER BY `cat_name`" );
@@ -956,7 +956,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr['comment_url'] = url('comments', array('id' => $news_arr['news_id']));
 
     // Kategorie lesen
-    $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$news_arr['cat_id']."'");
+    $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$news_arr['cat_id']."'");
     $row = $index2->fetch(PDO::FETCH_ASSOC);
     $news_arr['cat_name'] = $row['cat_name'];
     $news_arr['cat_pic'] = image_url('images/cat/', 'news_'.$news_arr['cat_id']);
@@ -1012,19 +1012,19 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $news_arr['news_title'] = killhtml ( $news_arr['news_title'] );
 
     // User auslesen
-    $index2 = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id'].'' );
+    $index2 = $FD->db()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$news_arr['user_id'].'' );
     $row = $index2->fetch(PDO::FETCH_ASSOC);
     $news_arr['user_name'] = kill_replacements ( $row['user_name'], TRUE );
     $news_arr['user_url'] = url('user', array('id' => $news_arr['user_id']));
 
     // Kommentare lesen
-    $index2 = $FD->sql()->conn()->query('SELECT comment_id FROM '.$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'' );
+    $index2 = $FD->db()->conn()->query('SELECT comment_id FROM '.$FD->config('pref').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'' );
     $all_comment_ids = $index2->fetchAll(PDO::FETCH_ASSOC);
     $news_arr['kommentare'] = count($all_comment_ids);
 
     // Get Related Links
     $link_tpl = '';
-    $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'news_links WHERE news_id = '.$news_arr['news_id'].' ORDER BY link_id');
+    $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'news_links WHERE news_id = '.$news_arr['news_id'].' ORDER BY link_id');
     while ($link_arr = $index2->fetch(PDO::FETCH_ASSOC))
     {
         $link_arr['link_name'] = killhtml ( $link_arr['link_name'] );
@@ -1204,8 +1204,8 @@ function checkVotedPoll($pollid) {
         }
     }
     $one_day_ago = time()-60*60*24;
-    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."poll_voters WHERE time <= '".$one_day_ago."'"); //Delete old IPs
-    $query_id = $FD->sql()->conn()->prepare('SELECT COUNT(voter_id) FROM '.$FD->config('pref')."poll_voters WHERE poll_id = $pollid AND ip_address = ? AND time > '".$one_day_ago."' LIMIT 1"); //Save IP for 1 Day
+    $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref')."poll_voters WHERE time <= '".$one_day_ago."'"); //Delete old IPs
+    $query_id = $FD->db()->conn()->prepare('SELECT COUNT(voter_id) FROM '.$FD->config('pref')."poll_voters WHERE poll_id = $pollid AND ip_address = ? AND time > '".$one_day_ago."' LIMIT 1"); //Save IP for 1 Day
     $query_id->execute(array($_SERVER['REMOTE_ADDR']));
     return ( $query_id->fetchColumn() > 0 );
 }
@@ -1219,7 +1219,7 @@ function registerVoter($pollid, $voter_ip) {
 
     settype($pollid, 'integer');
 
-    $FD->sql()->conn()->exec('INSERT INTO '.$FD->config('pref')."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
+    $FD->db()->conn()->exec('INSERT INTO '.$FD->config('pref')."poll_voters VALUES ('', '$pollid', '$voter_ip', '".time()."')");
     if (!isset($_COOKIE['polls_voted'])) {
         setcookie('polls_voted', $pollid, time()+60*60*24*60); //2 months
     } else {

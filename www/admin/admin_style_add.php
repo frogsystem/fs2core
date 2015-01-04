@@ -33,7 +33,7 @@ if (
             && @$ACCESS->putFileData( $new_style_path . '/style.ini', $new_ini_data )
     ) {
         // SQL-Queries
-        $stmt = $FD->sql()->conn()->prepare( '
+        $stmt = $FD->db()->conn()->prepare( '
                 INSERT INTO
                     `'.$FD->config('pref')."styles`
                     ( `style_tag`, `style_allow_use`, `style_allow_edit` )
@@ -44,7 +44,7 @@ if (
         // Copy Style recursive
         if ( $_POST['style_create_as'] == 'copy' && $_POST['copy_style_id'] ) {
             // SQL-Queries
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT `style_tag`
                             FROM `'.$FD->config('pref').'styles`
                             WHERE `style_id` = '.$_POST['copy_style_id'].'
@@ -147,7 +147,7 @@ if ( !is_writable ( FS2STYLES ) ) {
                                     <div align="right">
                                         <select class="input_width pointer middle" name="copy_style_id" size="1">';
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `style_id`, `style_tag`
                     FROM `'.$FD->config('pref').'styles`
                     ORDER BY `style_id`' );

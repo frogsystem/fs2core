@@ -15,7 +15,7 @@ if (
     settype ( $_POST['snippet_active'], 'integer' );
 
     // SQL-Queries
-    $stmt = $FD->sql()->conn()->prepare('
+    $stmt = $FD->db()->conn()->prepare('
                 UPDATE `'.$FD->config('pref')."snippets`
                 SET
                     `snippet_text` = ?,
@@ -48,7 +48,7 @@ elseif (
         $_POST['snippet_id'] = array_map ( 'intval', explode ( ',', $_POST['snippet_id'] ) );
 
         // SQL-Delete-Query
-        $FD->sql()->conn()->exec ('
+        $FD->db()->conn()->exec ('
             DELETE
             FROM `'.$FD->config('pref').'snippets`
             WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')');
@@ -87,7 +87,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
 
         // Get Data from DB
         } else {
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                         SELECT *
                         FROM `'.$FD->config('pref')."snippets`
                         WHERE `snippet_id` = '".$_POST['snippet_id']."'
@@ -185,7 +185,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         ';
 
         // get snippets from db
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT COUNT(*)
                         FROM `'.$FD->config('pref').'snippets`
                         WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')' );
@@ -193,7 +193,7 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         if ( $index->fetchColumn() > 0 ) {
 
             // display snippets
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                         SELECT *
                         FROM `'.$FD->config('pref').'snippets`
                         WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
@@ -244,7 +244,7 @@ if ( !isset ( $_POST['snippet_id'] ) )
     ';
 
     // get snippets from db
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                 SELECT COUNT(*)
                 FROM `'.$FD->config('pref').'snippets`' );
 
@@ -261,7 +261,7 @@ if ( !isset ( $_POST['snippet_id'] ) )
         ';
 
         // display Snippets
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                 SELECT *
                 FROM `'.$FD->config('pref').'snippets`
                 ORDER BY `snippet_tag`' );

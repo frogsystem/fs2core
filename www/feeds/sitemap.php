@@ -21,7 +21,7 @@ class Sitemap extends Feed {
         global $FD;
 
         // news
-        $news_arr = $FD->sql()->conn()->query(
+        $news_arr = $FD->db()->conn()->query(
                         'SELECT `news_id`, `news_date`, `news_search_update`
                          FROM '.$FD->config('pref').'news
                          WHERE `news_active` = 1 AND `news_date` <= '.$FD->env('time').'
@@ -41,7 +41,7 @@ class Sitemap extends Feed {
         }
 
         // articles
-        $articles = $FD->sql()->conn()->query(
+        $articles = $FD->db()->conn()->query(
                         'SELECT `article_id`, `article_url`, `article_date`, `article_search_update`
                          FROM '.$FD->config('pref').'articles
                          WHERE `article_date` <= '.$FD->env('time').'
@@ -64,7 +64,7 @@ class Sitemap extends Feed {
         }
 
         // downloads
-        $downloads = $FD->sql()->conn()->query(
+        $downloads = $FD->db()->conn()->query(
                         'SELECT `dl_id`, `dl_date`, `dl_search_update`
                          FROM '.$FD->config('pref').'dl
                          WHERE `dl_open` = 1 AND `dl_date` <= '.$FD->env('time').'

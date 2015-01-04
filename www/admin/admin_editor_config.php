@@ -94,7 +94,7 @@ if (isset($_POST['smilies_rows']) && $_POST['smilies_rows']>0 && isset($_POST['s
                    do_noparse = '$_POST[do_noparse]',
                    do_smilies = '$_POST[do_smilies]'
                WHERE id = 1";
-    $FD->sql()->conn()->exec($update);
+    $FD->db()->conn()->exec($update);
 
     systext($FD->text('page', 'changes_saved'), $FD->text('page', 'info'));
 }
@@ -105,7 +105,7 @@ if (isset($_POST['smilies_rows']) && $_POST['smilies_rows']>0 && isset($_POST['s
 
 else
 {
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'editor_config');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'editor_config');
     $config_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     if (isset($_POST['sended']))

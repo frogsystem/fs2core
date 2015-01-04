@@ -32,13 +32,13 @@ elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POS
     $userpass_mail = $_POST['new_pwd'];
 
     // user exists or existing email negative anti spam
-    $stmt = $FD->sql()->conn()->prepare ( "
+    $stmt = $FD->db()->conn()->prepare ( "
                 SELECT COUNT(`user_id`) AS 'number'
                 FROM ".$FD->config('pref').'user
                 WHERE user_name = ?' );
     $stmt->execute( array( $_POST['user_name'] ) );
     $existing_users = $stmt->fetchColumn();
-    $stmt = $FD->sql()->conn()->prepare ( "
+    $stmt = $FD->db()->conn()->prepare ( "
                 SELECT COUNT(`user_id`) AS 'number'
                 FROM ".$FD->config('pref').'user
                 WHERE user_mail = ?' );
@@ -81,7 +81,7 @@ elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POS
             $email_message = '<br>'.$FD->text("frontend", "mail_registerd_not_sended");
         }
 
-        $stmt = $FD->sql()->conn()->prepare ( '
+        $stmt = $FD->db()->conn()->prepare ( '
                         INSERT INTO
                             `'.$FD->config('pref')."user`
                             (`user_name`, `user_password`, `user_salt`, `user_mail`, `user_reg_date`)
@@ -90,9 +90,9 @@ elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POS
                         )" );
         $stmt->execute(array($_POST['user_name'], $_POST['user_mail']));
 
-        $index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS `user_number` FROM '.$FD->config('pref').'user' );
+        $index = $FD->db()->conn()->query ( 'SELECT COUNT(`user_id`) AS `user_number` FROM '.$FD->config('pref').'user' );
         $new_user_num = $index->fetchColumn();
-        $FD->sql()->conn()->exec ( 'UPDATE `'.$FD->config('pref')."counter` SET `user` = '".$new_user_num."'" );
+        $FD->db()->conn()->exec ( 'UPDATE `'.$FD->config('pref')."counter` SET `user` = '".$new_user_num."'" );
 
         $messages = forward_message($FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_registered").$email_message, url($FD->cfg('home_real')));
 

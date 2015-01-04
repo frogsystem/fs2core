@@ -42,7 +42,7 @@ if (isset($_POST['title']) && isset($_POST['text']))
     {
         settype($_POST['commentposterid'], 'integer');
 
-        $stmt = $FD->sql()->conn()->prepare(
+        $stmt = $FD->db()->conn()->prepare(
                   'UPDATE `'.$FD->config('pref')."comments`
                    SET comment_title     = ?,
                        comment_text      = ?
@@ -52,10 +52,10 @@ if (isset($_POST['title']) && isset($_POST['text']))
     }
     else
     {
-        $affected = $FD->sql()->conn()->exec('DELETE FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['ecommentid']." AND content_type='dl' LIMIT 1");
+        $affected = $FD->db()->conn()->exec('DELETE FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['ecommentid']." AND content_type='dl' LIMIT 1");
         if ($affected>0)
         {
-          $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments = comments - 1');
+          $FD->db()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments = comments - 1');
           systext('Der Kommentar wurde gel&ouml;scht.');
         }
         else
@@ -72,12 +72,12 @@ if (isset($_POST['title']) && isset($_POST['text']))
 else if (isset($_POST['commentid']))
 {
     settype($_POST['commentid'], 'integer');
-    $index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'");
+    $index = $FD->db()->conn()->query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'");
     $comment_arr = $index->fetch(PDO::FETCH_ASSOC);
     // If it's a registered user, get the name.
     if ($comment_arr['comment_poster_id'] != 0)
     {
-        $index = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
+        $index = $FD->db()->conn()->query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
         $comment_arr['comment_poster'] = $index->fetchColumn();
     }
 

@@ -40,7 +40,7 @@ if (
         $_POST['user_homepage'] = 'http://'.$_POST['user_homepage'];
     }
 
-    $stmt = $FD->sql()->conn()->prepare('
+    $stmt = $FD->db()->conn()->prepare('
         UPDATE '.$FD->config('pref').'user
         SET `user_mail` = ?,
             `user_show_mail` = ?,
@@ -65,7 +65,7 @@ if (
 
     // Save New Password
     if ( $_POST['old_pwd'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] ) {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
             SELECT `user_name`, `user_password`, `user_salt`
             FROM `'.$FD->config('pref')."user`
             WHERE `user_id` = '".intval($_SESSION['user_id'])."'" );
@@ -87,7 +87,7 @@ if (
                 unset ( $_POST['wdh_pwd'] );
 
                 // Update Password
-                $FD->sql()->conn()->exec ( '
+                $FD->db()->conn()->exec ( '
                     UPDATE '.$FD->config('pref')."user
                     SET `user_password` = '".$md5_password."',
                         `user_salt` = '".$new_salt."'
@@ -139,13 +139,13 @@ else {
             $messages = '';
         }
 
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
             SELECT COUNT(*)
             FROM `'.$FD->config('pref')."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'" );
         $num_rows = $index->fetchColumn();
         if ( $num_rows > 0 ) {
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                 SELECT * FROM `'.$FD->config('pref')."user`
                 WHERE `user_id` = '".$_SESSION['user_id']."'" );
 

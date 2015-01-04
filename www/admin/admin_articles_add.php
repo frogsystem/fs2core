@@ -43,7 +43,7 @@ if (
     }
 
     // SQL-Insert-Query
-    $stmt = $FD->sql()->conn()->prepare ('
+    $stmt = $FD->db()->conn()->prepare ('
                 INSERT INTO
                     '.$FD->config('pref')."articles
                     (article_url, article_title, article_date, article_user, article_text, article_html, article_fscode, article_para, article_cat_id, article_search_update)
@@ -68,7 +68,7 @@ if (
         update_search_index ( 'articles' );
     }
 
-    $FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter SET artikel = artikel + 1' );
+    $FD->db()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter SET artikel = artikel + 1' );
     systext( $FD->text('page', 'articles_added'), $FD->text('admin', 'info'));
 }
 
@@ -121,7 +121,7 @@ else
 
     // Get User
     if ( $_POST['article_user'] != 0 ) {
-        $index = $FD->sql()->conn()->query ( 'SELECT user_name, user_id FROM '.$FD->config('pref')."user WHERE user_id = '".$_POST['article_user']."'" );
+        $index = $FD->db()->conn()->query ( 'SELECT user_name, user_id FROM '.$FD->config('pref')."user WHERE user_id = '".$_POST['article_user']."'" );
         $ur = $index->fetch(PDO::FETCH_ASSOC);
         $_POST['article_user_name'] = killhtml ( $ur['user_name'] );
     } else {
@@ -164,7 +164,7 @@ else
                                     <select name="article_cat_id">
         ';
     // List categories
-    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat' );
+    $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat' );
     while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
         settype ( $cat_arr['cat_id'], 'integer' );
@@ -296,7 +296,7 @@ if (isset($_POST['url']) && isset($_POST['title']) && isset($_POST['text']) && i
     }
 
     $_POST['url'] = trim($_POST['url']);
-    $index = $FD->sql()->conn()->prepare('SELECT artikel_url FROM '.$FD->config('pref').'artikel WHERE artikel_url = ?');
+    $index = $FD->db()->conn()->prepare('SELECT artikel_url FROM '.$FD->config('pref').'artikel WHERE artikel_url = ?');
     $index->execute(array($_POST['url']));
     $art_row = $index->fetch(PDO::FETCH_ASSOC);
     if ($art_row === false)
@@ -308,7 +308,7 @@ if (isset($_POST['url']) && isset($_POST['title']) && isset($_POST['text']) && i
         $_POST['search'] = isset($_POST['search']) ? 1 : 0;
         $_POST['fscode'] = isset($_POST['fscode']) ? 1 : 0;
 
-        $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."artikel
+        $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->config('pref')."artikel
                      VALUES (NULL,
                              ?,
                              ?,
@@ -319,7 +319,7 @@ if (isset($_POST['url']) && isset($_POST['title']) && isset($_POST['text']) && i
                              '$_POST[fscode]',
                              '$_POST[cat_id]');");
         $stmt->execute(array($_POST['url'], $_POST['title'], $_POST['text']));
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter SET artikel = artikel + 1');
+        $FD->db()->conn()->exec('UPDATE '.$FD->config('pref').'counter SET artikel = artikel + 1');
         systext('Artikel wurde gespeichert');
     }
     else

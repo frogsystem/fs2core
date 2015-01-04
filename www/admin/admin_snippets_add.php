@@ -6,7 +6,7 @@
 
 // Check if Snippet exists
 if ( isset ( $_POST['sended'] ) ) {
-    $stmt = $FD->sql()->conn()->prepare('SELECT COUNT(`snippet_id`) FROM `'.$FD->config('pref')."snippets` WHERE `snippet_tag` = ?");
+    $stmt = $FD->db()->conn()->prepare('SELECT COUNT(`snippet_id`) FROM `'.$FD->config('pref')."snippets` WHERE `snippet_tag` = ?");
     $stmt->execute(array('[%'. $_POST['snippet_tag'] .'%]'));
     $snippet_exists = ( $stmt->fetchColumn() != 0 );
 } else {
@@ -29,7 +29,7 @@ if (
     if ( !$snippet_exists ) {
 
         // SQL-Queries
-        $stmt = $FD->sql()->conn()->prepare('
+        $stmt = $FD->db()->conn()->prepare('
                         INSERT INTO `'.$FD->config('pref')."snippets` (
                                 `snippet_tag`,
                                 `snippet_text`,

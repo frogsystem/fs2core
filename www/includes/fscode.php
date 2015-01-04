@@ -473,7 +473,7 @@ function simple_replace_ignore_attributs ($action, $attributes, $content, $param
 function do_fscode_smilies ($text) {
     global $FD;
 
-    $smilies = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies');
+    $smilies = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies');
     $smilies = $smilies->fetchAll(PDO::FETCH_ASSOC);
     foreach ($smilies as $smiley) {
         $url = image_url('images/smilies/', $smiley['id']);

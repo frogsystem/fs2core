@@ -30,7 +30,7 @@
     // Gallery Image
     } else {
         // Get Image Data
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                                 SELECT `screen_name`, `cat_id` FROM `'.$FD->config('pref').'screen`
                                 WHERE `screen_id` = '.$_GET['id'].'
                                 LIMIT 0,1' );
@@ -59,7 +59,7 @@
         // No single Image
         } else {
             // exists a NEXT image?
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT `screen_id`
                             FROM `'.$FD->config('pref').'screen`
                             WHERE `cat_id` = '.$cat_id.'
@@ -76,7 +76,7 @@
             }
 
             // exists a PREVIOUS image?
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT `screen_id`
                             FROM `'.$FD->config('pref').'screen`
                             WHERE `cat_id` = '.$cat_id.'

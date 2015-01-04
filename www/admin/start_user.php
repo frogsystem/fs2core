@@ -1,13 +1,13 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
                 SELECT `user`
                 FROM '.$FD->config('pref').'counter
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_user = $row['user'];
 
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
                 SELECT `user_name`
                 FROM '.$FD->config('pref').'user
                 ORDER BY `user_reg_date` DESC
@@ -15,7 +15,7 @@ $index = $FD->sql()->conn()->query ( '
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $last_user = $row['user_name'];
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`user_id`) AS 'num_staff'
                 FROM ".$FD->config('pref').'user
                 WHERE `user_is_staff` = 1
@@ -24,7 +24,7 @@ $index = $FD->sql()->conn()->query ( "
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_staff = $row['num_staff'];
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`user_group_id`) AS 'num_groups'
                 FROM ".$FD->config('pref').'user_groups
                 WHERE `user_group_id` > 1' );
@@ -34,7 +34,7 @@ $num_groups++;
 
 $temp_biggest_exists = false;
 if ( $num_groups  > 0 ) {
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
                     SELECT G.`user_group_name`, COUNT(U.`user_id`) AS 'biggest_num'
                     FROM ".$FD->config('pref').'user_groups G, '.$FD->config('pref')."user U
                     WHERE U.`user_group` = G.`user_group_id`
@@ -53,7 +53,7 @@ if ( $temp_biggest_exists ) {
     $biggest_num = $row['biggest_num'];
 }
 
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
                 SELECT `user_group_name`
                 FROM '.$FD->config('pref').'user_groups
                 ORDER BY `user_group_date` DESC
@@ -61,7 +61,7 @@ $index = $FD->sql()->conn()->query ( '
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $last_group = $row['user_group_name'];
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`user_id`) AS 'num_admin'
                 FROM ".$FD->config('pref').'user
                 WHERE `user_is_admin` = 1
@@ -70,7 +70,7 @@ $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_admin = $row['num_admin'];
 $num_staff += $num_admin;
 
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
                 SELECT `user_name`
                 FROM '.$FD->config('pref').'user
                 WHERE `user_id` = 1

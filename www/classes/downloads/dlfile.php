@@ -11,7 +11,7 @@ $screen_config_arr = $FD->configObject('screens')->getConfigArray();
 $_GET['id'] = ( isset ( $_GET['fileid'] ) && !isset ( $_GET['id'] ) ) ? $_GET['fileid'] : $_GET['id'];
 settype( $_GET['id'], 'integer' );
 
-$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id = $_GET[id] AND dl_open = 1");
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id = $_GET[id] AND dl_open = 1");
 $dl_arr = $index->fetch(PDO::FETCH_ASSOC);
 if ($dl_arr !== false)
 {
@@ -22,7 +22,7 @@ if ($dl_arr !== false)
     $dl_config_arr = $config_arr;
 
     // Username auslesen
-    $index =$FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = $dl_arr[user_id]");
+    $index =$FD->db()->conn()->query('SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = $dl_arr[user_id]");
     $dl_arr['user_name'] = kill_replacements ( $index->fetchColumn(), TRUE );
     $dl_arr['user_url'] = url('user', array('id' => $dl_arr['user_id']));
 
@@ -48,7 +48,7 @@ if ($dl_arr !== false)
     // Sonstige Daten ermitteln
     $dl_arr['dl_date'] = date_loc ( $FD->config('date'), $dl_arr['dl_date'] );
     $dl_arr['dl_text'] = fscode($dl_arr['dl_text']);
-    $index3 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
+    $index3 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
     $dl_arr['cat_name'] = $index3->fetchColumn();
 
 
@@ -81,9 +81,9 @@ if ($dl_arr !== false)
 
 
     // Files auslesen
-    $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use");
+    $index = $FD->db()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use");
     $num_rows = $index->fetchColumn();
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = $dl_arr[dl_id] $dl_use");
     if ( $index !== false ) {
         $stats_arr['number'] = $num_rows;
 
@@ -220,7 +220,7 @@ if ($dl_arr !== false)
     $template->tag('messages', $messages_template );
     //~ $template->tag('comments_url', url('dlcomments', array('fileid' => $dl_arr['dl_id'])) );
     //get number of comments
-    $cc = $FD->sql()->conn()->query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref')."comments` WHERE content_type='dl' AND content_id='".$dl_arr['dl_id']."'");
+    $cc = $FD->db()->conn()->query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref')."comments` WHERE content_type='dl' AND content_id='".$dl_arr['dl_id']."'");
     $template->tag('comments_number', $cc->fetchColumn() );
 
     $template = $template->display ();

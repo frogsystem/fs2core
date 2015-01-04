@@ -2,7 +2,7 @@
 ///////////////////////////
 //// Show Announcement ////
 ///////////////////////////
-$index = $FD->sql()->conn()->query( '
+$index = $FD->db()->conn()->query( '
                         SELECT *
                         FROM `'.$FD->config('pref')."announcement`
                         WHERE `id` = '1'" );

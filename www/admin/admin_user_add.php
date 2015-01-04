@@ -7,7 +7,7 @@
 function user_name_free ( $USERNAME ) {
     global $FD;
 
-    $stmt = $FD->sql()->conn()->prepare('
+    $stmt = $FD->db()->conn()->prepare('
                 SELECT COUNT(`user_id`)
                 FROM `'.$FD->config('pref')."user`
                 WHERE `user_name` = ?");
@@ -74,7 +74,7 @@ if (
     $codedpwd = md5 ( $_POST['newpwd'].$user_salt );
 
     // SQL-Queries
-    $stmt = $FD->sql()->conn()->prepare ( '
+    $stmt = $FD->db()->conn()->prepare ( '
                 INSERT INTO `'.$FD->config('pref')."user`
                     ( `user_name`, `user_password`, `user_salt`,
                     `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
@@ -105,10 +105,10 @@ if (
                     $_POST['user_wlm'],
                     $_POST['user_yim'],
                     $_POST['user_skype']));
-    $user_id = $FD->sql()->conn()->lastInsertId();
+    $user_id = $FD->db()->conn()->lastInsertId();
     $message = 'Benutzer wurde erfolgreich hinzugef&uuml;gt';
 
-    $FD->sql()->conn()->exec ( '
+    $FD->db()->conn()->exec ( '
         UPDATE '.$FD->config('pref').'counter
         SET `user` = `user`+1' );
 
@@ -299,7 +299,7 @@ if ( TRUE )
                                         <option value="0"'.getselected ( $_POST['user_group'], 0 ).'>keine Gruppe</option>
     ';
 
-    $index = $FD->sql()->conn()->query ('
+    $index = $FD->db()->conn()->query ('
                     SELECT `user_group_id`, `user_group_name`
                     FROM '.$FD->config('pref').'user_groups
                     WHERE `user_group_id` > 1
@@ -310,7 +310,7 @@ if ( TRUE )
             '.$group_arr['user_group_name'].'</option>';
     }
 
-    $index = $FD->sql()->conn()->query ('
+    $index = $FD->db()->conn()->query ('
                     SELECT `user_group_id`, `user_group_name`
                     FROM '.$FD->config('pref').'user_groups
                     WHERE `user_group_id` = 1

@@ -1,31 +1,31 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`news_id`) AS 'num_news'
                 FROM `".$FD->config('pref').'news`
                 LIMIT 0,1' );
 $num_news = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`cat_id`) AS 'num_news_cat'
                 FROM `".$FD->config('pref').'news_cat`
                 LIMIT 0,1' );
 $num_news_cat = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`comment_id`) AS 'num_comments'
                 FROM `".$FD->config('pref').'comments`
                 LIMIT 0,1' );
 $num_comments = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`link_id`) AS 'num_links'
                 FROM `".$FD->config('pref').'news_links`
                 LIMIT 0,1' );
 $num_links = $index->fetchColumn();
 
 if ( $num_news > 0 ) {
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
                     SELECT COUNT(C.`cat_id`) AS 'best_news_cat_num', C.`cat_name`
                     FROM ".$FD->config('pref').'news_cat C, '.$FD->config('pref').'news N
                     WHERE N.`cat_id` = C.`cat_id`
@@ -37,7 +37,7 @@ if ( $num_news > 0 ) {
     $best_news_cat_num = $row['best_news_cat_num'];
 
     if ( $num_comments > 0 ) {
-        $index = $FD->sql()->conn()->query ( "
+        $index = $FD->db()->conn()->query ( "
                         SELECT COUNT(C.`comment_id`) AS 'best_news_com_num', N.`news_title`
                         FROM ".$FD->config('pref').'comments C, '.$FD->config('pref').'news N
                         WHERE N.`news_id` = C.`content_id` AND C.`content_type`=\'news\'
@@ -48,7 +48,7 @@ if ( $num_news > 0 ) {
         $best_news_com = $row['news_title'];
         $best_news_com_num = $row['best_news_com_num'];
 
-        $index = $FD->sql()->conn()->query ( "
+        $index = $FD->db()->conn()->query ( "
                         SELECT COUNT(C.`comment_id`) AS 'best_com_poster_num', U.`user_name`
                         FROM `".$FD->config('pref').'user` U, `'.$FD->config('pref').'comments` C
                         WHERE C.`comment_poster_id` = U.`user_id`
@@ -65,7 +65,7 @@ if ( $num_news > 0 ) {
         }
     }
 
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
                     SELECT COUNT(L.`link_id`) AS 'best_news_link_num', N.`news_title`
                     FROM ".$FD->config('pref').'news_links L, '.$FD->config('pref').'news N
                     WHERE N.`news_id` = L.`news_id`
@@ -79,7 +79,7 @@ if ( $num_news > 0 ) {
     }
 
 
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
                     SELECT COUNT(N.`news_id`) AS 'best_news_poster_num', U.`user_name`
                     FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'news N
                     WHERE N.`user_id` = U.`user_id`
@@ -92,19 +92,19 @@ if ( $num_news > 0 ) {
 }
 
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`article_id`) AS 'num_articles'
                 FROM ".$FD->config('pref').'articles
                 LIMIT 0,1' );
 $num_articles = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`cat_id`) AS 'num_articles_cat'
                 FROM ".$FD->config('pref').'articles_cat
                 LIMIT 0,1' );
 $num_articles_cat = $index->fetchColumn();
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(A.`article_id`) AS 'best_article_poster_num', U.`user_name`
                 FROM ".$FD->config('pref').'user U, '.$FD->config('pref').'articles A
                 WHERE A.`article_user` = U.`user_id`
@@ -119,14 +119,14 @@ if ( $row !== false ) {
     settype ( $best_article_poster_num, 'integer' );
 }
 
-$index = $FD->sql()->conn()->query ( "
+$index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`press_id`) AS 'num_press'
                 FROM ".$FD->config('pref').'press
                 LIMIT 0,1' );
 $num_press = $index->fetchColumn();
 
 if ( $num_press > 0 ) {
-    $index = $FD->sql()->conn()->query ( "
+    $index = $FD->db()->conn()->query ( "
                     SELECT COUNT(V.`id`) AS 'best_press_lang_num', V.`title`
                     FROM ".$FD->config('pref').'press P, '.$FD->config('pref')."press_admin V
                     WHERE P.`press_lang` = V.`id`

@@ -64,7 +64,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             while($FD->cfg('search', 'search_num_previews') > $news_num_results && ($found = $search->next())) {
 
                 // get data for entry
-                $news = $FD->sql()->conn()->query(
+                $news = $FD->db()->conn()->query(
                             'SELECT news_id, news_title, news_date FROM '.$FD->config('pref').'news
                              WHERE `news_id` = '.intval($found['id']).' AND `news_date` <= '.time().' AND `news_active` = 1');
                 $news = $news->fetch(PDO::FETCH_ASSOC);
@@ -127,7 +127,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             while($FD->cfg('search', 'search_num_previews') > $articles_num_results && ($found = $search->next())) {
 
                 // get data for entry
-                $article = $FD->sql()->conn()->query(
+                $article = $FD->db()->conn()->query(
                                 'SELECT article_id, article_url, article_title, article_date
                                  FROM '.$FD->config('pref').'articles
                                  WHERE `article_id` = '.intval($found['id']));
@@ -198,7 +198,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             while($FD->cfg('search', 'search_num_previews') > $downloads_num_results && ($found = $search->next())) {
 
                 // get data for entry
-                $dl = $FD->sql()->conn()->query(
+                $dl = $FD->db()->conn()->query(
                           'SELECT dl_id, dl_date, dl_name FROM '.$FD->config('pref').'dl
                            WHERE `dl_id` = '.intval($found['id']).' AND `dl_open` = 1');
                 $dl = $dl->fetch(PDO::FETCH_ASSOC);
